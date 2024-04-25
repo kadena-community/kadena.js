@@ -43,7 +43,7 @@ const selectPublicKeys = createOption({
   },
   validation: z.string(),
   option: new Option(
-    '-p, --public-keys <publicKeys>',
+    '-k, --public-keys <publicKeys>',
     'Public keys to add to account',
   ),
 });

@@ -16,11 +16,11 @@ import { getTemplates } from '../tx/commands/templates/templates.js';
 import { CommandError } from '../utils/command.util.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
-  getExistingNetworks,
   isNotEmptyString,
   maskStringPreservingStartAndEnd,
   notEmpty,
-} from '../utils/helpers.js';
+} from '../utils/globalHelpers.js';
+import { getExistingNetworks } from '../utils/helpers.js';
 import { log } from '../utils/logger.js';
 import { checkbox, input, select } from '../utils/prompts.js';
 import { tableFormatPrompt } from '../utils/tableDisplay.js';

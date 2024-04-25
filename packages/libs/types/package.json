@@ -46,11 +46,11 @@
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
-    "@microsoft/api-extractor": "^7.38.0",
-    "@rushstack/eslint-config": "~3.3.0",
+    "@microsoft/api-extractor": "^7.43.1",
+    "@rushstack/eslint-config": "~3.6.9",
     "eslint": "^8.45.0",
-    "prettier": "~3.0.3",
-    "typescript": "5.2.2"
+    "prettier": "~3.2.5",
+    "typescript": "5.4.5"
   },
   "publishConfig": {
     "provenance": true

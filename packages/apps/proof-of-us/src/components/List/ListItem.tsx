@@ -94,11 +94,11 @@ export const ListItem: FC<IProps> = ({ token }) => {
 
   const link = useMemo(() => {
     if (isMinted) {
-      return `/user/proof-of-us/t/${token?.id}`;
+      return `/user/proof-of-us/t/${token?.tokenId}`;
     } else {
       return `/user/proof-of-us/mint/${token?.requestKey}?id=${token?.proofOfUsId}`;
     }
-  }, [isMinted, token?.id, token?.requestKey]);
+  }, [isMinted, token?.tokenId, token?.requestKey]);
 
   return (
     <motion.li

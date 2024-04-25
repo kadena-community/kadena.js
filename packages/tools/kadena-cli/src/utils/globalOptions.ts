@@ -205,7 +205,7 @@ export const globalOptions = {
     prompt: () => null,
     validation: z.string().optional(),
     option: new Option(
-      '--directory <directory>',
+      '-d, --directory <directory>',
       `Config file directory path (default: working directory)`,
     ),
     transform(value: string) {

@@ -5,26 +5,24 @@ import { deployFaucet } from './faucet.js';
 import { fundGasStation } from './fundGasStation.js';
 
 export default async function deployDevNetFaucet(
-  chainIds: [ChainId],
+  chainId: ChainId,
   upgrade = false,
 ): Promise<void | undefined> {
   try {
-    chainIds.forEach(async (chain) => {
-      await createNamespace({
-        chainId: chain,
-        upgrade,
-      });
+    await createNamespace({
+      chainId,
+      upgrade,
+    });
 
-      await deployFaucet({
-        chainId: chain,
-        upgrade,
-        namespace: NAMESPACE,
-      });
+    await deployFaucet({
+      chainId,
+      upgrade,
+      namespace: NAMESPACE,
+    });
 
-      await fundGasStation({
-        chainId: chain,
-        upgrade,
-      });
+    await fundGasStation({
+      chainId,
+      upgrade,
     });
   } catch (error) {
     throw Error(error);

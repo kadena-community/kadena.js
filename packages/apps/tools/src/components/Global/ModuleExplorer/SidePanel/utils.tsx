@@ -23,7 +23,11 @@ export const contractToTreeItems = (
       onOpen: () => {
         onInterfacesExpand(
           interfaces.map((i) => {
-            return { chainId: module!.chainId, moduleName: i.name };
+            return {
+              chainId: module!.chainId,
+              moduleName: i.name,
+              network: module!.network,
+            };
           }),
         );
       },
@@ -31,7 +35,11 @@ export const contractToTreeItems = (
         title: (
           <Button
             onPress={() =>
-              onInterfaceClick({ chainId: module!.chainId, moduleName: i.name })
+              onInterfaceClick({
+                chainId: module!.chainId,
+                moduleName: i.name,
+                network: module!.network,
+              })
             }
             isCompact
             endVisual={<MonoExitToApp />}

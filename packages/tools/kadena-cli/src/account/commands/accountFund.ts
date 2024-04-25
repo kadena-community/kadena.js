@@ -1,37 +1,25 @@
-// import { describeModule } from '@kadena/client-utils/built-in';
-// import { Option } from 'commander';
 import ora from 'ora';
-// import { z } from 'zod';
-// import { FAUCET_MODULE_NAME } from '../../constants/devnets.js';
-// import deployDevNetFaucet from '../../devnet/faucet/deploy/index.js';
-// import { networkIsAlive } from '../../devnet/utils/network.js';
-// import { actionAskForDeployDevnet } from '../../prompts/genericActionPrompts.js';
-import { assertCommandError } from '../../utils/command.util.js';
-import { createCommand } from '../../utils/createCommand.js';
-// import { createOption } from '../../utils/createOption.js';
 import {
   CHAIN_ID_ACTION_ERROR_MESSAGE,
   NO_ACCOUNTS_FOUND_ERROR_MESSAGE,
 } from '../../constants/account.js';
+import { FAUCET_MODULE_NAME } from '../../constants/devnets.js';
+import { networkIsAlive } from '../../devnet/utils/network.js';
+import { assertCommandError } from '../../utils/command.util.js';
+import { createCommand } from '../../utils/createCommand.js';
+import { notEmpty } from '../../utils/globalHelpers.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
 import { ensureAccountAliasFilesExists } from '../utils/accountHelpers.js';
 import { fund } from '../utils/fund.js';
 import {
+  deployFaucetsToChains,
+  findMissingModuleDeployments,
   getTxDetails,
   logAccountFundingTxResults,
   logTransactionExplorerUrls,
 } from '../utils/fundHelpers.js';
-
-// const deployDevnet = createOption({
-//   key: 'deployDevnet',
-//   validation: z.boolean(),
-//   prompt: actionAskForDeployDevnet,
-//   option: new Option('-d, --deploy-devnet', 'Deploy devnet if not available.'),
-// });
-
-/* bin/kadena-cli.js account fund --account="testnet.yaml" --amount="20" --network="testnet" --chain-id="0" */
 
 export const createAccountFundCommand = createCommand(
   'fund',
@@ -41,7 +29,7 @@ export const createAccountFundCommand = createCommand(
     accountOptions.fundAmount(),
     globalOptions.networkSelect(),
     accountOptions.chainIdRange(),
-    // deployDevnet(),
+    accountOptions.deployFaucet(),
   ],
   async (option) => {
     const isAccountAliasesExist = await ensureAccountAliasFilesExists();
@@ -53,91 +41,92 @@ export const createAccountFundCommand = createCommand(
     const { account, accountConfig } = await option.account();
     const { amount } = await option.amount();
     const { network, networkConfig } = await option.network({
-      allowedNetworkIds: ['testnet04'],
+      allowedNetworkIds: ['testnet', 'development'],
     });
-    const { chainId } = await option.chainId();
+    const { chainIds } = await option.chainIds();
 
-    if (!chainId) {
-      log.error(CHAIN_ID_ACTION_ERROR_MESSAGE);
-      return;
+    if (!notEmpty(chainIds)) {
+      return log.error(CHAIN_ID_ACTION_ERROR_MESSAGE);
     }
 
-    if (!accountConfig) {
-      log.error(
-        `\nAccount details are missing. Please check selected "${account}" account alias file.\n`,
+    if (!notEmpty(accountConfig)) {
+      return log.error(
+        `Account details are missing. Please check "${account}" account alias file.`,
       );
-      return;
     }
 
     const config = {
       accountConfig,
       amount,
-      chainId,
+      chainIds,
       networkConfig,
     };
 
     log.debug('account-fund:action', config);
 
-    if (['mainnet01', 'development'].includes(networkConfig.networkId)) {
-      log.error(
-        `\nNetwork "${network}" of id "${networkConfig.networkId}" is not supported.\n`,
+    if (networkConfig.networkId.includes('mainnet') === true) {
+      return log.error(
+        `Fundings are not allowed on "${networkConfig.networkId}" network.`,
       );
-      return;
     }
 
     if (accountConfig.fungible.trim() !== 'coin') {
-      log.error(`\nYou can't fund an account other than "coin" fungible.\n`);
-      return;
+      return log.error(`You can't fund an account other than "coin" fungible.`);
     }
 
-    // if (networkConfig.networkId === 'development') {
-    //   if (!(await networkIsAlive(networkConfig.networkHost))) {
-    //     console.log(
-    //       chalk.red(
-    //         `\nDevnet host "${networkConfig.networkHost}" is not running.\n`,
-    //       ),
-    //     );
-    //     return;
-    //   }
+    if (networkConfig.networkId.includes('development') === true) {
+      if (!(await networkIsAlive(networkConfig.networkHost))) {
+        return log.error(
+          `Devnet host "${networkConfig.networkHost}" is not running.`,
+        );
+      }
 
-    //   const hasModuleAvailable = await describeModule(FAUCET_MODULE_NAME, {
-    //     host: networkConfig.networkHost,
-    //     defaults: {
-    //       networkId: networkConfig.networkId,
-    //       meta: { chainId: chainId },
-    //     },
-    //   }).catch(() => false);
+      const undeployedChainIds = await findMissingModuleDeployments(
+        FAUCET_MODULE_NAME,
+        networkConfig,
+        chainIds,
+      );
 
-    //   if (hasModuleAvailable === false) {
-    //     console.log(
-    //       chalk.yellow(
-    //         `\nFaucet module is not available on chain "${chainId}" in "${networkConfig.network}".\n`,
-    //       ),
-    //     );
+      const undeployedChainIdsStr = undeployedChainIds.join(', ');
 
-    //     const { deployDevnet } = await option.deployDevnet();
+      if (undeployedChainIds.length > 0) {
+        log.warning(
+          `Faucet module unavailable on chain "${undeployedChainIdsStr}" in the "${networkConfig.network}" network.`,
+        );
 
-    //     if (!deployDevnet) {
-    //       return;
-    //     }
+        const { deployFaucet } = await option.deployFaucet();
 
-    //     console.log('\nDeploying faucet...\n');
+        if (deployFaucet === false) {
+          return;
+        }
 
-    //     await deployDevNetFaucet([chainId]).catch((e) => {
-    //       console.log(
-    //         chalk.red(
-    //           `\nFailed to deploy faucet module on chain "${chainId}" in "${network}".\n`,
-    //         ),
-    //       );
-    //       throw Error(e);
-    //     });
-    //     console.log(
-    //       chalk.green(
-    //         `\nDeployed faucet module on chain "${chainId}" in "${network}".\n`,
-    //       ),
-    //     );
-    //   }
-    // }
+        const loader = ora(
+          `Deploying faucet on chain Id(s): "${undeployedChainIdsStr}" in "${network}" network...\n`,
+        ).start();
+
+        const [succeededFaucetDeployments, failedFaucetDeployments] =
+          await deployFaucetsToChains(chainIds);
+
+        if (failedFaucetDeployments.length > 0) {
+          const completeError = succeededFaucetDeployments.length === 0;
+          const loaderState = completeError ? 'fail' : 'warn';
+          loader[loaderState](
+            `Failed to deploy faucet module on "${network}" network in the following chain Id(s):\n`,
+          );
+          failedFaucetDeployments.forEach(({ chainId, message }) => {
+            log.error(`Chain Id: ${chainId}, Error: ${message}`);
+          });
+        }
+
+        if (succeededFaucetDeployments.length === 0) {
+          return;
+        }
+
+        loader.succeed(
+          `\nDeployed faucet module on chain "${undeployedChainIdsStr}" in "${network}" network.\n`,
+        );
+      }
+    }
 
     const result = await fund(config);
     const isSuccessOrParitalSuccess =

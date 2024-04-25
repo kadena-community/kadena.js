@@ -1,22 +1,23 @@
 import type { ChainId } from '@kadena/types';
 import { z } from 'zod';
 import { chainIdValidation } from '../account/utils/accountHelpers.js';
-import { KADENA_DIR, MAX_CHAIN_VALUE } from '../constants/config.js';
-import { defaultNetworksPath } from '../constants/networks.js';
+import {
+  INVALID_FILE_NAME_ERROR_MSG,
+  MAX_CHAIN_VALUE,
+} from '../constants/config.js';
+import { NO_NETWORKS_FOUND_ERROR_MESSAGE } from '../constants/networks.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import {
   ensureNetworksConfiguration,
   getNetworksInOrder,
   loadNetworkConfig,
 } from '../networks/utils/networkHelpers.js';
+import { getNetworkDirectory } from '../networks/utils/networkPath.js';
 import { services } from '../services/index.js';
 import { KadenaError } from '../services/service-error.js';
 import type { IPrompt } from '../utils/createOption.js';
-import {
-  getExistingNetworks,
-  isAlphabetic,
-  isNotEmptyString,
-} from '../utils/helpers.js';
+import { isNotEmptyString, isValidFilename } from '../utils/globalHelpers.js';
+import { getExistingNetworks } from '../utils/helpers.js';
 import { input, select } from '../utils/prompts.js';
 import { getInputPrompt } from './generic.js'; // Importing getInputPrompt from another file
 
@@ -51,9 +52,12 @@ export const networkNamePrompt: IPrompt<string> = async (
     message: 'Enter a network name (e.g. "mainnet")',
     default: defaultValue,
     validate: function (input) {
-      if (!isAlphabetic(input)) {
-        return 'Network names must be alphanumeric! Please enter a valid network name.';
+      if (!isNotEmptyString(input.trim())) return 'Network name is required.';
+
+      if (!isValidFilename(input)) {
+        return `Name is used as a filename. ${INVALID_FILE_NAME_ERROR_MSG}`;
       }
+
       return true;
     },
   });
@@ -159,9 +163,7 @@ export const networkSelectPrompt: IPrompt<string> = async (
   );
 
   if (!filteredNetworks.length) {
-    throw new Error(
-      'No networks found. To create one, use: `kadena networks create`. To set default networks, use: `kadena config init`.',
-    );
+    throw new Error(NO_NETWORKS_FOUND_ERROR_MESSAGE);
   }
 
   const networksInOrder = await getNetworksInOrder(filteredNetworks);
@@ -187,23 +189,23 @@ export const networkSelectPrompt: IPrompt<string> = async (
 };
 
 const getEnsureExistingNetworks = async (): Promise<ICustomNetworkChoice[]> => {
-  if (defaultNetworksPath === null || KADENA_DIR === null) {
+  const kadenaDir = services.config.getDirectory();
+  const networkDir = getNetworkDirectory();
+  if (networkDir === null || kadenaDir === null) {
     throw new KadenaError('no_kadena_directory');
   }
   const isNetworksFolderExists =
-    await services.filesystem.directoryExists(defaultNetworksPath);
+    await services.filesystem.directoryExists(networkDir);
   if (
     !isNetworksFolderExists ||
-    (await services.filesystem.readDir(defaultNetworksPath)).length === 0
+    (await services.filesystem.readDir(networkDir)).length === 0
   ) {
-    await ensureNetworksConfiguration(KADENA_DIR);
+    await ensureNetworksConfiguration(kadenaDir);
   }
   const existingNetworks: ICustomNetworkChoice[] = await getExistingNetworks();
 
   if (!existingNetworks.length) {
-    throw new Error(
-      'No existing networks found. To create one, use: `kadena networks create`. To set default networks, use: `kadena config init',
-    );
+    throw new Error(NO_NETWORKS_FOUND_ERROR_MESSAGE);
   }
   return existingNetworks;
 };
@@ -231,14 +233,12 @@ export const networkSelectOnlyPrompt: IPrompt<string> = async (
 
   const filteredNetworks = existingNetworksData.filter((network) =>
     allowedNetworkIds.length > 0
-      ? allowedNetworkIds.includes(network.networkId)
+      ? allowedNetworkIds.some((allowed) => network.networkId.includes(allowed))
       : true,
   );
 
   if (!filteredNetworks.length) {
-    throw new Error(
-      'No supported networks found. To create one, use: `kadena networks create`. To set default networks, use: `kadena config init',
-    );
+    throw new Error(NO_NETWORKS_FOUND_ERROR_MESSAGE);
   }
 
   const networksInOrder = await getNetworksInOrder(filteredNetworks);

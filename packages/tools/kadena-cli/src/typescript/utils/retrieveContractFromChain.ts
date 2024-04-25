@@ -1,5 +1,5 @@
-import type { ChainId } from '@kadena/types';
 import { describeModule } from '@kadena/client-utils/built-in';
+import type { ChainId } from '@kadena/types';
 
 export async function retrieveContractFromChain(
   module: string,
@@ -7,18 +7,15 @@ export async function retrieveContractFromChain(
   networkId: string,
   chainId: ChainId,
 ): Promise<string | undefined> {
-  const moduleDescription = await describeModule(
-    module,
-    {
-      host,
-      defaults: {
-        networkId,
-        meta: {
-          chainId,
-        },
+  const moduleDescription = await describeModule(module, {
+    host,
+    defaults: {
+      networkId,
+      meta: {
+        chainId,
       },
     },
-  );
+  });
 
   return moduleDescription.code;
 }
