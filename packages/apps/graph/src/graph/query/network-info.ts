@@ -1,4 +1,7 @@
-import { getNetworkStatistics } from '@services/network';
+import {
+  getHashRateAndTotalDifficulty,
+  getNetworkStatistics,
+} from '@services/network';
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { networkData } from '@utils/network';
@@ -12,8 +15,14 @@ builder.queryField('networkInfo', (t) =>
     async resolve() {
       try {
         const { networkId, apiVersion } = networkData;
-        const { coinsInCirculation, transactionCount } =
-          await getNetworkStatistics();
+
+        const [
+          { coinsInCirculation, transactionCount },
+          { networkHashRate, totalDifficulty },
+        ] = await Promise.all([
+          getNetworkStatistics(),
+          getHashRateAndTotalDifficulty(),
+        ]);
 
         return {
           networkHost: dotenv.NETWORK_HOST,
@@ -21,6 +30,8 @@ builder.queryField('networkInfo', (t) =>
           apiVersion,
           coinsInCirculation,
           transactionCount,
+          networkHashRate,
+          totalDifficulty,
         };
       } catch (error) {
         throw normalizeError(error);

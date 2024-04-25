@@ -234,11 +234,17 @@ type NetworkInfo {
   """The number of circulating coins."""
   coinsInCirculation: Float!
 
+  """The network hash rate in PH/S."""
+  networkHashRate: Float!
+
   """The host of the network."""
   networkHost: String!
 
   """The ID of the network."""
   networkId: String!
+
+  """The total difficulty in EH."""
+  totalDifficulty: Float!
 
   """The total number of transactions."""
   transactionCount: Int!

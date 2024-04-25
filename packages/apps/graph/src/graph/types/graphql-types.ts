@@ -167,4 +167,6 @@ export interface INetworkInfo {
   apiVersion: string;
   coinsInCirculation: number;
   transactionCount: number;
+  networkHashRate: number;
+  totalDifficulty: number;
 }
