@@ -47,7 +47,7 @@ describe('Textbox', () => {
 
   it('should render the provided start addon', () => {
     render(
-      <TextField label="What is your name?" startAddon={<span>icon</span>} />,
+      <TextField label="What is your name?" startVisual={<span>icon</span>} />,
     );
     const icon = screen.getByText('icon');
     expect(icon).toBeInTheDocument();

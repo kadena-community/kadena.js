@@ -1,13 +1,21 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import { onLayer2, withContentWidth } from '../../../storyDecorators';
+import {
+  getVariants,
+  iconControl,
+  onLayer2,
+  withContentWidth,
+} from '../../../storyDecorators';
 import { atoms } from '../../../styles';
 import { Button } from '../../Button';
 import { NumberField } from './NumberField';
 
 import { MonoAccountCircle } from '@kadena/react-icons/system';
 import { Form } from '../Form';
+import { input } from '../Form.css';
 import type { INumberFieldProps } from './NumberField';
+
+const { variant, fontType, size } = getVariants(input);
 
 const formStoryClass = atoms({
   display: 'flex',
@@ -29,6 +37,102 @@ const meta: Meta<INumberFieldProps> = {
     },
   },
   argTypes: {
+    startVisual: iconControl,
+    fontType: {
+      control: {
+        type: 'radio',
+      },
+      options: fontType,
+      defaultValue: 'ui',
+    },
+    size: {
+      control: {
+        type: 'radio',
+      },
+      options: size,
+      defaultValue: 'md',
+    },
+    variant: {
+      control: {
+        type: 'select',
+      },
+      options: variant,
+    },
+    description: {
+      description: 'Helper text to display below the input.',
+      control: {
+        type: 'text',
+      },
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+    info: {
+      description: 'Additional information to display below the input.',
+      control: {
+        type: 'text',
+      },
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+    tag: {
+      description: 'Tag to display below the input.',
+      control: {
+        type: 'text',
+      },
+      defaultValue: 'tag',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+    label: {
+      description: 'Label to display above the input.',
+      control: {
+        type: 'text',
+      },
+      defaultValue: 'Label',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+    placeholder: {
+      description: 'Placeholder text to display in the input.',
+      control: {
+        type: 'text',
+      },
+      defaultValue: 'This is a placeholder',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+    errorMessage: {
+      description: 'Error message to display below the input.',
+      control: {
+        type: 'text',
+      },
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+    isDisabled: {
+      description: 'Disables the input and applies visual styling.',
+      control: {
+        type: 'boolean',
+      },
+      defaultValue: false,
+    },
+    isRequired: {
+      description: 'Marks the input as required',
+      control: {
+        type: 'boolean',
+      },
+      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
     onChange: {
       description: 'onChange handler',
       control: {
@@ -47,116 +151,19 @@ const meta: Meta<INumberFieldProps> = {
         disable: true,
       },
     },
-    description: {
-      description: 'Helper text to display below the input.',
-      control: {
-        type: 'text',
-      },
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    inputFont: {
-      description: 'Font to use for the input.',
-      control: {
-        type: 'select',
-        options: ['body', 'code'],
-      },
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'body' },
-      },
-    },
-    info: {
-      description: 'Additional information to display below the input.',
-      control: {
-        type: 'text',
-      },
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    label: {
-      description: 'Label to display above the input.',
-      control: {
-        type: 'text',
-      },
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    placeholder: {
-      description: 'Placeholder text to display in the input.',
-      control: {
-        type: 'text',
-      },
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    errorMessage: {
-      description: 'Error message to display below the input.',
-      control: {
-        type: 'text',
-      },
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    isPositive: {
-      description: 'Applies positive visual styling.',
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
-    isInvalid: {
-      description: 'Marks the input as invalid and applies visual styling.',
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
-    isDisabled: {
-      description: 'Disables the input and applies visual styling.',
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
-    isReadOnly: {
-      description: 'Prevents the input from being edited.',
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
-    isRequired: {
-      description: 'Marks the input as required',
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
-    formatOptions: {
-      description:
-        'Allows you to specify the format of the number, such as style with "percent", "exceptZero" or currency with "EUR". Check [aria-number](https://react-spectrum.adobe.com/react-aria/useNumberField.html)',
-    },
+  },
+  args: {
+    fontType: 'ui',
+    size: 'md',
+    variant: 'default',
+    description: 'Helper text',
+    info: 'Additional information',
+    tag: 'tag',
+    label: 'Label',
+    placeholder: 'This is a placeholder',
+    errorMessage: undefined,
+    isDisabled: false,
+    isRequired: false,
   },
 };
 
@@ -167,20 +174,7 @@ type Story = StoryObj<INumberFieldProps>;
 export const NumberFieldStory: Story = {
   name: 'NumberField',
   args: {
-    isDisabled: false,
-    tag: 'tag',
-    description: 'This is helper text',
-    info: '(optional)',
-    label: 'Label',
-    id: 'NumberFieldStory',
-    placeholder: 'This is a placeholder',
     value: 8,
-    isInvalid: false,
-    isPositive: false,
-    isReadOnly: false,
-    isRequired: false,
-    errorMessage: '',
-    inputFont: 'body',
   },
   render: (props) => {
     const [value, setValue] = useState<number | undefined>();
@@ -238,7 +232,7 @@ export const WithStartAddon: Story = {
           label="With addon"
           value={value}
           onValueChange={setValue}
-          startAddon={<MonoAccountCircle />}
+          startVisual={<MonoAccountCircle />}
         />
         <Button type="submit">Submit</Button>
       </Form>
