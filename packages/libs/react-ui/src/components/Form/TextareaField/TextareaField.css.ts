@@ -1,5 +1,5 @@
-import { style } from '@vanilla-extract/css';
-import { atoms, token } from '../../../styles';
+import { style, styleVariants } from '@vanilla-extract/css';
+import { token } from '../../../styles';
 
 export const addon = style({
   position: 'absolute',
@@ -7,48 +7,28 @@ export const addon = style({
   insetInlineEnd: token('spacing.sm'),
 });
 
-export const textarea = style([
-  atoms({
-    borderRadius: 'sm',
-    backgroundColor: 'input.default',
-    border: 'none',
-    color: 'text.base.default',
-    outline: 'none',
-    flex: 1,
-    overflow: 'hidden',
-  }),
-  {
-    paddingInline: token('spacing.md'),
-    paddingBlock: token('spacing.sm'),
-    minHeight: token('size.n20'),
-    resize: 'none',
-    '::placeholder': {
-      color: token('color.text.subtlest.default'),
+const textareaBase = style({
+  resize: 'none',
+  scrollbarWidth: 'none',
+});
+
+export const textarea = styleVariants({
+  sm: [
+    textareaBase,
+    {
+      minHeight: token('size.n24'),
     },
-    boxShadow: `0px 1px 0 0 ${token('color.border.base.default')}`,
-    outlineOffset: '2px',
-    selectors: {
-      '&[data-outlined]': {
-        border: `2px solid ${token('color.border.base.default')}`,
-      },
-      [`&:has(~ ${addon})`]: {
-        paddingInlineEnd: `calc(var(--end-addon-width) + ${token(
-          'spacing.lg',
-        )})`,
-      },
-      '&[data-positive]': {
-        outline: `2px solid ${token('color.border.semantic.positive.@focus')}`,
-      },
-      '&[data-disabled]': {
-        pointerEvents: 'none',
-        backgroundColor: token('color.background.layer.default'),
-      },
-      '&[data-focused]': {
-        outline: `2px solid ${token('color.border.semantic.info.@focus')}`,
-      },
-      '&[data-invalid]': {
-        outline: `2px solid ${token('color.border.semantic.negative.@focus')}`,
-      },
+  ],
+  md: [
+    textareaBase,
+    {
+      minHeight: token('size.n30'),
     },
-  },
-]);
+  ],
+  lg: [
+    textareaBase,
+    {
+      minHeight: '140px',
+    },
+  ],
+});
