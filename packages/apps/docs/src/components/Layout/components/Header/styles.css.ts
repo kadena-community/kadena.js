@@ -147,3 +147,10 @@ export const socialsClass = style([
     xl: { display: 'flex' },
   }),
 ]);
+
+export const reversedIcon = style([
+  {
+    transform: 'rotate(180deg)',
+    transition: '400ms transform ease-out',
+  },
+]);
