@@ -9,11 +9,11 @@ interface IProps {
   item: IMenuItem;
   menuOpen?: boolean;
   root?: boolean;
-  level?: LevelType;
+  level: LevelType;
   testId?: string;
 }
 
-export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 1 }) => {
+export const MainTreeItem: FC<IProps> = ({ item, root = false, level }) => {
   const [menuOpen, setMenuOpen] = useState<boolean>(item.isMenuOpen ?? false);
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const ref = useRef<HTMLLIElement>(null);
@@ -60,7 +60,7 @@ export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 1 }) => {
       {root && (
         <>
           <Item item={item} level={level} />
-          {item.children?.map((v) => (
+          {item.children?.map((v: IMenuItem) => (
             <MainTreeItem key={v.root} level={nextLevel()} item={v} />
           ))}
         </>
@@ -77,7 +77,7 @@ export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 1 }) => {
 
           <TreeList menuOpen={menuOpen} level={`l${nextLevel()}`}>
             {!root && <Item item={item} level={nextLevel()} />}
-            {item.children?.map((v) => {
+            {item.children?.map((v: IMenuItem) => {
               return <MainTreeItem key={v.root} level={nextLevel()} item={v} />;
             })}
           </TreeList>
