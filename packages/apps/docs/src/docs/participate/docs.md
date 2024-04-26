@@ -1,11 +1,8 @@
 ---
 title: Contribute to Kadena documentation
 description:
-  Follow this guide to learn how you can contribute changes to Kadena
-  documentation directly from GitHub or by setting up a local documentation development environment.
-menu: Docs
-label: Docs
-menu: Contribute to documentation
+  Follow this guide to learn how you can contribute changes to Kadena documentation directly from GitHub or by setting up a local documentation development environment.
+menu: Participate
 label: Contribute to documentation
 order: 5
 layout: full

@@ -9,7 +9,7 @@ order: 2
 layout: full
 ---
 
-# Authentication and authorization with Kadena SpireKey
+# Authenticate and authorize with Kadena SpireKey
 
 Kadena SpireKey is an innovative approach to authenticating users and
 authorizing transactions in Web3 and decentralized applications. Kadena SpireKey

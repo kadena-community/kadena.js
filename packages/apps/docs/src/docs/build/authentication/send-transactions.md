@@ -156,8 +156,8 @@ In the following table, you can see the parameters that are currently accepted b
 | --------- | ---- | -------- | ----------- |
 | `transaction` | string  | Required | A base64 encoded string of the unsigned transaction. |
 | `returnUrl` | string  | Required | The url, encoded as a uriComponent, that the wallet should redirect users to after they have signed the transaction. |
-| `translations` | string  | Optional | Custom descriptions that explain what capabilities or operations that the user is user signing for. For more information about using translations to describe transaction details, see [Translate transaction operations](/build/authentication/translate). |
-| `optimistic`   | boolean | Optional | Allows applications to continue the transaction flows without having to wait for the transaction to be confirmed on the blockchain. When this parameter is included, `pendingTxIds` are returned so that the application can keep track of the status of the submitted transactions and update the UI accordingly. For more information about the optimistic transaction flow, see [Allow optimistic account onboarding](/build/authentication/integrate/allow-optimistic-account-onboarding). |
+| `translations` | string  | Optional | Custom descriptions that explain what capabilities or operations that the user is user signing for. For more information about using translations to describe transaction details, see [Translate signing operations](/build/authentication/translate). |
+| `optimistic` | boolean | Optional | Allows applications to continue the transaction flows without having to wait for the transaction to be confirmed on the blockchain. When this parameter is included, `pendingTxIds` are returned so that the application can keep track of the status of the submitted transactions and update the UI accordingly. For more information about the optimistic transaction flow, see [Allow optimistic account onboarding](/build/authentication/integrate#allow-optimistic-account-onboardingh-380147766). |
 
 The following is an example of how you would construct the route:
 
