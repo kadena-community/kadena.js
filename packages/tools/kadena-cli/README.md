@@ -125,6 +125,55 @@ kadena [command] --legacy
 
 ---
 
+# Interactive Mode
+
+Interactive Mode is designed to make command execution more intuitive and
+user-friendly. When you run a command in the Kadena CLI without specifying all
+required options, the CLI automatically prompts you to provide the missing
+inputs. This guided approach helps streamline your workflow and ensures that you
+provide all necessary information to successfully execute a command.
+
+## How It Works
+
+To use Interactive Mode, simply type a command without its options:
+
+```
+kadena [command] [argument]
+```
+
+If the CLI is not running in Quiet Mode (`--quiet`), it will detect the missing
+elements needed for the command to run and will prompt you interactively to
+input them. This means you can start a command with minimal initial input and
+fill in the details as prompted by the CLI.
+
+## Benefits
+
+- **Ease of Use**: Reduces the need to remember all command arguments and
+  options upfront.
+- **Guided Execution**: Ensures that all required inputs are collected before
+  executing a command.
+- **Flexibility**: Allows for a more conversational and less rigid interaction
+  with the CLI.
+
+## Example
+
+If you want to add a new wallet but aren't sure of all the required flags and
+arguments, simply start with:
+
+```
+kadena wallet add
+```
+
+The CLI will then guide you through the necessary steps, asking for each
+required piece of information to complete the wallet addition.
+
+Interactive Mode is especially useful for new users or those who prefer a more
+guided approach when using command-line tools. It also serves as a learning tool
+by demonstrating the required inputs for various commands, enhancing your
+familiarity with the CLI's functionalities.
+
+---
+
 ### Command specific help
 
 To get help on a `subject` use `kadena <subject> --help`
