@@ -81,9 +81,11 @@ async function getAccountAndFungibleNamesByPublicKey(
     throw new Error('Invalid public key');
   }
 
+  let results;
+
   // This is required because prisma queryRaw does not support string interpolation for entire query fragments.
   if (fungible) {
-    return (await prismaClient.$queryRaw`
+    results = (await prismaClient.$queryRaw`
     SELECT DISTINCT to_acct AS accountname, moduleName as fungiblename
     FROM transfers AS tr
     INNER JOIN transactions AS tx
@@ -96,8 +98,8 @@ async function getAccountAndFungibleNamesByPublicKey(
       AND tr.moduleName = ${fungible}
   `) as { accountname: string; fungiblename: string }[];
   } else {
-    return (await prismaClient.$queryRaw`
-    SELECT DISTINCT to_acct AS accountname, moduleName as fungiblename
+    results = (await prismaClient.$queryRaw`
+    SELECT DISTINCT to_acct AS accountname, moduleName as fungiblename, code
     FROM transfers AS tr
     INNER JOIN transactions AS tx
       ON tx.block = tr.block AND tx.requestkey = tr.requestkey
@@ -106,6 +108,21 @@ async function getAccountAndFungibleNamesByPublicKey(
       AND
       (tx.code LIKE ${`%.transfer-create%`}
         OR tx.code LIKE ${`%.create-account%`})
-  `) as { accountname: string; fungiblename: string }[];
+  `) as { accountname: string; fungiblename: string; code: string }[];
+
+    results = results
+      .filter(
+        (result, index, self) =>
+          index ===
+          self.findIndex(
+            (t) =>
+              t.accountname === result.accountname &&
+              t.fungiblename === result.fungiblename,
+          ),
+      )
+      .filter((result) => result.code.includes(result.fungiblename))
+      .map(({ accountname, fungiblename }) => ({ accountname, fungiblename }));
   }
+
+  return results;
 }
