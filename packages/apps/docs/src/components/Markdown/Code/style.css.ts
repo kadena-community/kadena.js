@@ -260,3 +260,9 @@ export const codeTitle = style([
     },
   },
 ]);
+
+export const mermaidClass = style({});
+
+globalStyle(`${code}${mermaidClass}::before`, {
+  backgroundColor: 'transparent',
+});

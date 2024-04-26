@@ -9,7 +9,7 @@ export const setSignatures = (
 
     const signee = signees.find((signee) => signee.publicKey === pubKey);
 
-    if (!signee) return acc;
+    if (!signee || !signee.signature) return acc;
 
     acc.push({ sig: signee.signature });
 

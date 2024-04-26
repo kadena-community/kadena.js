@@ -1,5 +1,6 @@
 import type { ChainId, ICommandResult } from '@kadena/client';
 import { createClient } from '@kadena/client';
+import type { Table } from 'cli-table3';
 import type { Command } from 'commander';
 import ora from 'ora';
 import type { INetworkCreateOptions } from '../../networks/utils/networkHelpers.js';
@@ -8,6 +9,7 @@ import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
+import { createTable } from '../../utils/table.js';
 import { txOptions } from '../txOptions.js';
 
 export const getTxStatus = async ({
@@ -73,7 +75,7 @@ export const getTxStatus = async ({
 export const generateTabularData = (
   chainId: string,
   result: ICommandResult,
-): { header: string[]; rows: string[][] } => {
+): Table => {
   const eventsData = result.events?.map((event) => {
     const { name, module, params } = event;
     const moduleName =
@@ -86,21 +88,18 @@ export const generateTabularData = (
   const events =
     eventsData === undefined ? [['Events', 'N/A']] : [...eventsData];
 
-  const data = [
+  const table = createTable({});
+
+  [
     ['Chain ID', chainId.toString()],
     ['Transaction Status', result.result.status],
     ['Transaction ID', result.txId?.toString() ?? 'N/A'],
     ['Gas', result.gas.toString()],
     ['Block Height', result.metaData?.blockHeight?.toString() ?? 'N/A'],
     ...events,
-  ];
+  ].forEach((x) => table.push(x));
 
-  return {
-    // Currently based on header only the columns are aligned.
-    // So adding empty header to keep the column alignment.
-    header: ['', ''],
-    rows: data,
-  };
+  return table;
 };
 
 export const createTxStatusCommand: (
@@ -137,7 +136,7 @@ export const createTxStatusCommand: (
       log.info(outputColor(`Error: ${errorMessage}`));
     }
 
-    const { header, rows } = generateTabularData(config.chainId, result.data);
-    log.output(log.generateTableString(header, rows), result.data.result);
+    const table = generateTabularData(config.chainId, result.data);
+    log.output(table.toString(), result.data.result);
   },
 );

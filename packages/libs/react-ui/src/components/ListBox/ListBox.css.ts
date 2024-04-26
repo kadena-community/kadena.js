@@ -7,7 +7,7 @@ export const listBoxClass = style([
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: 'layer10.default',
+    backgroundColor: 'surface.default',
     margin: 'no',
     padding: 'no',
     listStyleType: 'none',
@@ -105,7 +105,7 @@ export const listSectionHeadingClass = style([
     paddingBlock: 'xs',
     paddingInline: 'sm',
     color: 'text.base.default',
-    backgroundColor: 'layer10.default',
+    backgroundColor: 'surface.default',
     fontWeight: 'secondaryFont.bold',
   }),
   {

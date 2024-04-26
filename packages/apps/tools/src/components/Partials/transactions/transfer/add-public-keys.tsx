@@ -61,21 +61,21 @@ export const AddPublicKeysSection = ({
     >
       {publicKeys.map((key, index) => (
         <TextField
-          inputFont="code"
+          fontType="code"
           key={`public-key-${index}`}
           id={`public-key-${index}`}
           value={key}
           isReadOnly
           endAddon={
             <Button
-              icon={<MonoDelete />}
-              variant="text"
+              variant="transparent"
               onPress={() => deletePublicKey(index)}
               aria-label="Delete public key"
               title="Delete public Key"
-              color="primary"
               type="button"
-            />
+            >
+              <MonoDelete />
+            </Button>
           }
         />
       ))}
@@ -90,7 +90,7 @@ export const AddPublicKeysSection = ({
 
         <TextField
           id="public-key-input"
-          inputFont="code"
+          fontType="code"
           placeholder={t('Enter Public Key')}
           value={publicKey}
           onChange={(e) => {
@@ -102,7 +102,7 @@ export const AddPublicKeysSection = ({
         />
         <Stack flexDirection={'row-reverse'}>
           <Button
-            endIcon={<MonoAdd />}
+            endVisual={<MonoAdd />}
             onPress={() => {
               const value = publicKey;
               const valid = validatePublicKey(stripAccountPrefix(value || ''));
@@ -114,7 +114,7 @@ export const AddPublicKeysSection = ({
             }}
             aria-label="Add public key"
             title="Add Public Key"
-            color="primary"
+            variant="primary"
             type="button"
             isDisabled={publicKeys.length >= (maxKeysAmount || 10)}
           >

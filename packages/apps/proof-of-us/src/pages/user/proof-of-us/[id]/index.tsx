@@ -14,7 +14,7 @@ const Page: NextPage<IProps> = ({ params }) => {
   return (
     <LoginBoundry>
       <UserLayout>
-        <ProofOfUsProvider>
+        <ProofOfUsProvider proofOfUsId={params.id}>
           <CreateProofOfUs params={params} />
         </ProofOfUsProvider>
       </UserLayout>

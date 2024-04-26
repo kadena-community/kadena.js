@@ -23,11 +23,11 @@ export const useSubscribe = (): IReturn => {
   const canSubmit = Boolean(email) && !hasError;
   const hasSuccess = Boolean(message) && !hasError;
 
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const handleSubscribe = async (
     event: MouseEvent<HTMLButtonElement>,
   ): Promise<void> => {
     event.preventDefault();
-
     setIsLoading(true);
     analyticsEvent(EVENT_NAMES['click:subscribe']);
 

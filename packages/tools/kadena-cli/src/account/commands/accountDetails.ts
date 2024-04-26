@@ -1,15 +1,17 @@
 import type { ChainId } from '@kadena/types';
+import type { Table } from 'cli-table3';
 import { CHAIN_ID_ACTION_ERROR_MESSAGE } from '../../constants/account.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
-import { globalOptions } from '../../utils/globalOptions.js';
 import {
   isNotEmptyObject,
   maskStringPreservingStartAndEnd,
   notEmpty,
-} from '../../utils/helpers.js';
+} from '../../utils/globalHelpers.js';
+import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
+import { createTable } from '../../utils/table.js';
 import { accountOptions } from '../accountOptions.js';
 import type { IAccountDetailsResult } from '../types.js';
 import type { IGetAccountDetailsParams } from '../utils/getAccountDetails.js';
@@ -17,7 +19,7 @@ import { getAccountDetailsFromChain } from '../utils/getAccountDetails.js';
 
 interface IAccountDetailsConfig
   extends Omit<IGetAccountDetailsParams, 'chainId'> {
-  chainId: ChainId[];
+  chainIds: ChainId[];
 }
 
 interface IAccountDetails {
@@ -42,7 +44,7 @@ export async function accountDetails(
   let accountDetailsList: (IAccountDetails | null)[] = [];
   try {
     accountDetailsList = await Promise.all(
-      config.chainId.map(async (chainId) => {
+      config.chainIds.map(async (chainId) => {
         try {
           const accountDetails = await getAccountDetailsFromChain({
             ...config,
@@ -83,17 +85,10 @@ export async function accountDetails(
   };
 }
 
-function generateTableForAccountDetails(accounts: IAccountDetails[]): {
-  headers: string[];
-  data: string[][];
-} {
-  const headers = [
-    'Account Name',
-    'ChainID',
-    'Public Keys',
-    'Predicate',
-    'Balance',
-  ];
+function generateTableForAccountDetails(accounts: IAccountDetails[]): Table {
+  const table = createTable({
+    head: ['Account Name', 'ChainID', 'Public Keys', 'Predicate', 'Balance'],
+  });
 
   const data = accounts.map((acc) => {
     const chainId = Object.keys(acc)[0];
@@ -111,10 +106,9 @@ function generateTableForAccountDetails(accounts: IAccountDetails[]): {
     ];
   });
 
-  return {
-    headers,
-    data: data,
-  };
+  table.push(...data);
+
+  return table;
 }
 
 export const createAccountDetailsCommand = createCommand(
@@ -139,9 +133,9 @@ export const createAccountDetailsCommand = createCommand(
     }
 
     const { networkConfig } = await option.network();
-    const { chainId } = await option.chainId();
+    const { chainIds } = await option.chainIds();
 
-    if (chainId === undefined || chainId.length === 0) {
+    if (chainIds === undefined || chainIds.length === 0) {
       log.error(CHAIN_ID_ACTION_ERROR_MESSAGE);
       return;
     }
@@ -149,14 +143,14 @@ export const createAccountDetailsCommand = createCommand(
     log.debug('account-details:action', {
       account,
       accountConfig,
-      chainId,
+      chainIds,
       networkConfig,
       fungible,
     });
 
     const result = await accountDetails({
       accountName: accountName,
-      chainId: chainId,
+      chainIds: chainIds,
       networkId: networkConfig.networkId,
       networkHost: networkConfig.networkHost,
       fungible: fungible,
@@ -168,10 +162,7 @@ export const createAccountDetailsCommand = createCommand(
         ),
       );
       const table = generateTableForAccountDetails(result.data);
-      log.output(
-        log.generateTableString(table.headers, table.data),
-        result.data,
-      );
+      log.output(table.toString(), result.data);
     }
     assertCommandError(result);
   },

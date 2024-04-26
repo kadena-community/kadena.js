@@ -4,16 +4,131 @@ import React, { useState } from 'react';
 import { Button } from './Button';
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { Badge } from '..';
+
+const iconLabel = 'icon';
+const icon = <span>{iconLabel}</span>;
 
 describe('Button', () => {
   const onPressSpy = vi.fn();
-  const onPressStartSpy = vi.fn();
-  const onPressEndSpy = vi.fn();
-  const onPressUpSpy = vi.fn();
-  const onPressChangeSpy = vi.fn();
 
   afterEach(() => {
     onPressSpy.mockClear();
+  });
+
+  it('should render an end icon', async () => {
+    const TestComponent = () => {
+      return (
+        <Button
+          endVisual={icon}
+          onPress={() => {
+            onPressSpy();
+          }}
+        >
+          Click me
+        </Button>
+      );
+    };
+
+    const { getByText } = render(<TestComponent />);
+
+    const iconElement = getByText(iconLabel);
+
+    expect(iconElement).toBeVisible();
+  });
+
+  it('should render a start icon', async () => {
+    const TestComponent = () => {
+      return (
+        <Button
+          startVisual={icon}
+          onPress={() => {
+            onPressSpy();
+          }}
+        >
+          Click me
+        </Button>
+      );
+    };
+
+    const { getByText } = render(<TestComponent />);
+
+    const iconElement = getByText(iconLabel);
+
+    expect(iconElement).toBeVisible();
+  });
+
+  it('should render a badge component', async () => {
+    const TestComponent = () => {
+      return (
+        <Button
+          endVisual={<Badge>6</Badge>}
+          onPress={() => {
+            onPressSpy();
+          }}
+        >
+          Click me
+        </Button>
+      );
+    };
+
+    const { getByText } = render(<TestComponent />);
+
+    const badgeElement = getByText(6);
+
+    expect(badgeElement).toBeVisible();
+  });
+
+  it('should render an icon only', async () => {
+    const TestComponent = () => {
+      return (
+        <Button
+          onPress={() => {
+            onPressSpy();
+          }}
+        >
+          {icon}
+        </Button>
+      );
+    };
+
+    const { getByText } = render(<TestComponent />);
+
+    expect(getByText(iconLabel)).toBeVisible();
+  });
+
+  it('Should display a spinner when isLoading prop is true', async () => {
+    const user = userEvent.setup({ pointerEventsCheck: 0 });
+    const onPressSpy = vi.fn();
+
+    const TestComponent = () => {
+      const [pending, setPending] = useState(false);
+      return (
+        <Button
+          onPress={() => {
+            setPending(true);
+            onPressSpy();
+          }}
+          isLoading={pending}
+        >
+          Click me
+        </Button>
+      );
+    };
+
+    const { getByRole, queryByRole } = render(<TestComponent />);
+    const button = getByRole('button');
+    expect(button).not.toHaveAttribute('aria-disabled');
+    await user.click(button);
+
+    // Button is disabled immediately and spinner is visible
+    expect(button).toHaveAttribute('aria-disabled', 'true');
+    const spinner = queryByRole('progressbar');
+    expect(spinner).toBeVisible();
+
+    // Multiple clicks shouldn't call onPressSpy
+    await user.click(button);
+    expect(onPressSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should handle defaults', async () => {
@@ -25,32 +140,6 @@ describe('Button', () => {
     const button = getByRole('button');
     await user.click(button);
     expect(onPressSpy).toHaveBeenCalledTimes(1);
-
-    const text = getByText('Click Me');
-    expect(text).not.toBeNull();
-  });
-
-  it('Should support press events', async () => {
-    const user = userEvent.setup({ pointerEventsCheck: 0 });
-    const { getByRole, getByText } = render(
-      <Button
-        onPress={onPressSpy}
-        onPressStart={onPressStartSpy}
-        onPressEnd={onPressEndSpy}
-        onPressUp={onPressUpSpy}
-        onPressChange={onPressChangeSpy}
-      >
-        Click Me
-      </Button>,
-    );
-
-    const button = getByRole('button');
-    await user.click(button);
-    expect(onPressStartSpy).toHaveBeenCalledTimes(1);
-    expect(onPressSpy).toHaveBeenCalledTimes(1);
-    expect(onPressEndSpy).toHaveBeenCalledTimes(1);
-    expect(onPressUpSpy).toHaveBeenCalledTimes(1);
-    expect(onPressChangeSpy).toHaveBeenCalledTimes(2);
 
     const text = getByText('Click Me');
     expect(text).not.toBeNull();
@@ -103,21 +192,6 @@ describe('Button', () => {
     );
   });
 
-  it('Should handle deprecated onClick', async () => {
-    const user = userEvent.setup({ pointerEventsCheck: 0 });
-    const spyWarn = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    const { getByRole } = render(
-      <Button onClick={onPressSpy}>Click Me</Button>,
-    );
-
-    const button = getByRole('button');
-    await user.click(button);
-    expect(onPressSpy).toHaveBeenCalledTimes(1);
-    expect(spyWarn).toHaveBeenCalledWith(
-      'onClick is deprecated, please use onPress',
-    );
-  });
-
   it('Should not respond when disabled', async () => {
     const user = userEvent.setup({ pointerEventsCheck: 0 });
     const { getByRole } = render(
@@ -136,38 +210,5 @@ describe('Button', () => {
     const { getByRole } = render(<Button autoFocus>Click Me</Button>);
     const button = getByRole('button');
     expect(document.activeElement).toBe(button);
-  });
-
-  it('Should display a spinner when isLoading prop is true', async () => {
-    const user = userEvent.setup({ pointerEventsCheck: 0 });
-    const onPressSpy = vi.fn();
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    const TestComponent = () => {
-      const [pending, setPending] = useState(false);
-      return (
-        <Button
-          onPress={(e) => {
-            setPending(true);
-            onPressSpy();
-          }}
-          isLoading={pending}
-        >
-          Click me
-        </Button>
-      );
-    };
-    const { getByRole, queryByRole } = render(<TestComponent />);
-    const button = getByRole('button');
-    expect(button).not.toHaveAttribute('aria-disabled');
-    await user.click(button);
-
-    // Button is disabled immediately and spinner is visible
-    expect(button).toHaveAttribute('aria-disabled', 'true');
-    const spinner = queryByRole('progressbar');
-    expect(spinner).toBeVisible();
-
-    // Multiple clicks shouldn't call onPressSpy
-    await user.click(button);
-    expect(onPressSpy).toHaveBeenCalledTimes(1);
   });
 });

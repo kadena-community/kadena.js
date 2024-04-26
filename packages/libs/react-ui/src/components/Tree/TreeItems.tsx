@@ -1,8 +1,8 @@
 'use client';
+import { MonoCake, MonoExpandMore } from '@kadena/react-icons/system';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { useState } from 'react';
-import { SystemIcon } from '../Icon';
 import {
   treeBranchWrapperVariant,
   treeTitleClass,
@@ -42,8 +42,8 @@ export const TreeItem: FC<ITreeItemProps> = ({
 
   const handleExpandChildren = (index: number): void => {
     if (linked) {
-      expandedChildren.forEach(
-        (childrenIndex) => items?.[childrenIndex]?.onClose?.(),
+      expandedChildren.forEach((childrenIndex) =>
+        items?.[childrenIndex]?.onClose?.(),
       );
       setExpandedChildren([index]);
     } else setExpandedChildren([...expandedChildren, index]);
@@ -78,11 +78,7 @@ export const TreeItem: FC<ITreeItemProps> = ({
               treeToggleVariant[isOpen ? 'opened' : 'closed'],
             )}
           >
-            {hasChildren ? (
-              <SystemIcon.ChevronDown size="md" />
-            ) : (
-              <SystemIcon.Circle size="md" />
-            )}
+            {hasChildren ? <MonoExpandMore /> : <MonoCake />}
           </span>
           <span
             className={classNames(

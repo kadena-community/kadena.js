@@ -10,15 +10,15 @@ import path from 'path';
 import { mempoolGetPending } from './chainweb-node/mempool';
 
 export class SystemCheckError extends Error {
-  originalError?: Error;
+  public originalError?: Error;
 
-  constructor(message: string, originalError?: Error) {
+  public constructor(message: string, originalError?: Error) {
     super(message);
     this.originalError = originalError;
   }
 }
 
-export async function runSystemsCheck() {
+export async function runSystemsCheck(): Promise<void> {
   console.log('\n');
   try {
     return await new Listr([

@@ -1,3 +1,4 @@
+import { MonoExpandMore } from '@kadena/react-icons/system';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import classNames from 'classnames';
 import type { ForwardedRef, ReactNode, Ref } from 'react';
@@ -6,7 +7,6 @@ import type { AriaButtonProps } from 'react-aria';
 import { useButton, useHover } from 'react-aria';
 import type { SelectState } from 'react-stately';
 import { atoms, rotate180Transition } from '../../../styles';
-import { ChevronDown } from '../../Icon/System/SystemIcon';
 import { selectButtonClass } from './Select.css';
 
 export interface ISelectButtonProps<T extends object> extends AriaButtonProps {
@@ -48,7 +48,7 @@ function SelectButtonBase<T extends object>(
       )}
       {props.children}
       <span className={atoms({ marginInlineStart: 'sm' })}>
-        <ChevronDown
+        <MonoExpandMore
           data-open={props.state.isOpen}
           className={rotate180Transition}
         />

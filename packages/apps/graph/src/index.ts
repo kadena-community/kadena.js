@@ -11,6 +11,7 @@ moduleAlias.addAliases({
 
 import { SystemCheckError, runSystemsCheck } from '@services/systems-check';
 import { dotenv } from '@utils/dotenv';
+import type { ExecutionArgs } from 'graphql';
 import { useServer } from 'graphql-ws/lib/use/ws';
 import { createYoga } from 'graphql-yoga';
 import 'json-bigint-patch';
@@ -58,8 +59,10 @@ const wsServer = new WebSocketServer({
 
 useServer(
   {
-    execute: (args: any) => args.rootValue.execute(args),
-    subscribe: (args: any) => args.rootValue.subscribe(args),
+    // @ts-ignore
+    execute: (args: ExecutionArgs) => args.rootValue.execute(args),
+    // @ts-ignore
+    subscribe: (args: ExecutionArgs) => args.rootValue.subscribe(args),
     onSubscribe: async (ctx, msg) => {
       const { schema, execute, subscribe, contextFactory, parse, validate } =
         yogaApp.getEnveloped({

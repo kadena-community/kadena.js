@@ -1,9 +1,9 @@
 'use client';
+import { MonoExpandMore } from '@kadena/react-icons/system';
 import classNames from 'classnames';
 import type { FC, FunctionComponentElement } from 'react';
 import React, { Children, useState } from 'react';
 import { accordionButtonClass } from '../Accordion/Accordion.css';
-import { SystemIcon } from '../Icon';
 import {
   navAccordionGroupButtonClass,
   navAccordionGroupIconClass,
@@ -46,11 +46,10 @@ export const NavAccordionGroup: FC<INavAccordionGroupProps> = ({
         ])}
         onClick={handleClick}
       >
-        <SystemIcon.ChevronDown
+        <MonoExpandMore
           className={classNames(navAccordionGroupIconClass, {
             isOpen,
           })}
-          size="sm"
         />
         <span className={navAccordionGroupTitleClass}>{title}</span>
       </button>

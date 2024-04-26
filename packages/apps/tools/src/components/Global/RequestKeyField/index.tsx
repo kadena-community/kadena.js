@@ -36,7 +36,7 @@ export const RequestKeyField: FC<ITextFieldProps> = forwardRef<
       label={t('Request Key')}
       id="request-key-input"
       placeholder={t('Enter Request Key')}
-      startAddon={<MonoKey />}
+      startVisual={<MonoKey />}
       {...props}
     />
   );

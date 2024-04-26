@@ -1,9 +1,10 @@
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { env } from '@/utils/env';
 import { getReturnHostUrl, getReturnUrl } from '@/utils/getReturnUrl';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAccount } from '../account';
+import { useTransaction } from '../transaction';
 
 export const useSignToken = () => {
   const {
@@ -19,9 +20,7 @@ export const useSignToken = () => {
   const [data] = useState<IProofOfUs | undefined>(undefined);
   const { account } = useAccount();
   const router = useRouter();
-
-  const searchParams = useSearchParams();
-  const transaction = searchParams.get('transaction');
+  const { transaction } = useTransaction();
 
   const sign = async () => {
     const signed = await hasSigned();
@@ -46,8 +45,8 @@ export const useSignToken = () => {
     if (accountIsInitiator) return;
 
     router.replace(
-      `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
-        tx.hash
+      `${getReturnHostUrl()}/user/proof-of-us/mint/${tx.hash}?id=${
+        proofOfUs.proofOfUsId
       }`,
     );
   };
@@ -55,7 +54,7 @@ export const useSignToken = () => {
   useEffect(() => {
     if (!proofOfUs) return;
     sign();
-  }, [searchParams, transaction, proofOfUs]);
+  }, [transaction, proofOfUs]);
 
   const signToken = async () => {
     if (!proofOfUs || !account) return;
@@ -67,7 +66,7 @@ export const useSignToken = () => {
     router.push(
       `${
         process.env.NEXT_PUBLIC_WALLET_URL
-      }sign?transaction=${transaction}&chainId=${
+      }sign#transaction=${transaction}&chainId=${
         env.CHAINID
       }&returnUrl=${getReturnUrl()}
       `,

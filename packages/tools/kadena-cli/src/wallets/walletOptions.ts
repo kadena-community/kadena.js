@@ -6,6 +6,16 @@ import { createOption } from '../utils/createOption.js';
 import { mnemonicPromptTransform } from '../utils/helpers.js';
 
 export const walletOptions = {
+  createWalletConfirmation: createOption({
+    key: 'createWallet' as const,
+    prompt: wallets.createWalletPrompt,
+    defaultIsOptional: false,
+    validation: z.string(),
+    option: new Option(
+      '-c --create-wallet <createWallet>',
+      'Confirmation for creating a new wallet',
+    ),
+  }),
   walletName: createOption({
     key: 'walletName' as const,
     prompt: wallets.walletNamePrompt,
@@ -42,7 +52,7 @@ export const walletOptions = {
     prompt: keys.walletCreateAccountPrompt,
     validation: z.string(),
     option: new Option(
-      '-c, --create-account <createAccount>',
+      '-a, --create-account <createAccount>',
       'Create an account using the first wallet key',
     ),
   }),
@@ -50,7 +60,10 @@ export const walletOptions = {
     key: 'amount' as const,
     prompt: keys.walletGenerateKeyAmountPrompt,
     validation: z.string(),
-    option: new Option('-n, --amount <amount>', 'Amount of keys to generate'),
+    option: new Option(
+      '-n, --amount <amount>',
+      'Amount of keys to generate (default: 1)',
+    ),
   }),
   startIndex: createOption({
     key: 'startIndex' as const,

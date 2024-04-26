@@ -40,7 +40,9 @@ export const listen = (tx: ITransactionDescriptor): Promise<ICommandResult> =>
   getClient().listen(tx);
 
 export const signTransaction =
-  (keyPairs: IKeyPair[]) =>
+  (
+    keyPairs: IKeyPair[],
+  ): ((tx: IUnsignedCommand) => Promise<IUnsignedCommand | ICommand>) =>
   async (tx: IUnsignedCommand): Promise<IUnsignedCommand | ICommand> => {
     const signWithKeypair = createSignWithKeypair(keyPairs);
     const signedTx = await signWithKeypair(tx);
@@ -57,7 +59,7 @@ export const assertTransactionSigned = (
 };
 
 export const signAndAssertTransaction =
-  (keyPairs: IKeyPair[]) =>
+  (keyPairs: IKeyPair[]): ((tx: IUnsignedCommand) => Promise<ICommand>) =>
   async (tx: IUnsignedCommand): Promise<ICommand> => {
     const signedTx = await signTransaction(keyPairs)(tx);
     const assertedTx = assertTransactionSigned(signedTx);

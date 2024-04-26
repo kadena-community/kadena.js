@@ -1,9 +1,9 @@
+import { MonoWarningAmber } from '@kadena/react-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { onLayer1 } from '../../storyDecorators';
 import { atoms } from '../../styles/atoms.css';
 import { Button } from '../Button';
-import { SystemIcon } from '../Icon';
 import { Stack } from '../Layout';
 import type { ITooltipProps } from '../Tooltip';
 import { Tooltip } from '../Tooltip';
@@ -117,7 +117,7 @@ export const TooltipReactNode: Story = {
         closeDelay={closeDelay}
         content={
           <Stack flexDirection="row" gap="xs" alignItems="center">
-            <SystemIcon.AlertBox />
+            <MonoWarningAmber />
             <code>I have an icon!</code>
           </Stack>
         }
@@ -180,7 +180,7 @@ export const Controlled: Story = {
           closeDelay={closeDelay}
           isOpen={isOpen}
         >
-          <SystemIcon.AlertBox />
+          <MonoWarningAmber />
         </Tooltip>
       </>
     );

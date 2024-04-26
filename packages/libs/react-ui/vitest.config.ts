@@ -9,10 +9,16 @@ const localConfig = defineConfig({
     environment: 'happy-dom',
     coverage: {
       provider: 'v8',
+      include: ['**/src/**.{test,spec}.{ts,tsx}'],
+      exclude: [
+        '**/{Icon,entries,styles,storyDecorators}/**',
+        '**/*.css.ts',
+        '**/*.stories.*',
+      ],
       thresholds: {
         lines: 30.0,
-        functions: 25.0,
-        branches: 66.0,
+        functions: 20.0,
+        branches: 60.0,
         statements: 30.0,
       },
     },

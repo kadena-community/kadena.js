@@ -15,7 +15,7 @@ const confirmOption = createOption({
   key: 'confirm',
   defaultIsOptional: false,
   validation: z.boolean(),
-  option: new Option('--confirm', 'Confirm changing wallet password'),
+  option: new Option('-c, --confirm', 'Confirm changing wallet password'),
   async prompt() {
     log.warning(
       `\nYou are about to update the password for this wallet. If you lose your password the wallet can not be recovered.\n`,

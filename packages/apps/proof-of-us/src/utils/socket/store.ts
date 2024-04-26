@@ -157,7 +157,6 @@ const ProofOfUsStore = () => {
     signees: IProofOfUsSignee[],
     account: IProofOfUsSignee,
   ) => {
-    console.log('addsigner??', signees);
     if (signees.find((s) => s.accountName === account.accountName)) return;
 
     const signee: IProofOfUsSignee = {
@@ -182,6 +181,21 @@ const ProofOfUsStore = () => {
     );
   };
 
+  const toggleAllowedToSign = async (
+    proofOfUs: IProofOfUsData,
+    account: IProofOfUsSignee,
+  ) => {
+    const newStatus: ISignerStatus =
+      account.signerStatus === 'init' ? 'notsigning' : 'init';
+    return await set(
+      ref(
+        database,
+        `signees/${proofOfUs.proofOfUsId}/${account.accountName}/signerStatus`,
+      ),
+      newStatus,
+    );
+  };
+
   const updateSignee = async (
     proofOfUs: IProofOfUsData,
     account: IProofOfUsSignee,
@@ -190,6 +204,50 @@ const ProofOfUsStore = () => {
       ref(database, `signees/${proofOfUs.proofOfUsId}/${account.accountName}`),
       account,
     );
+  };
+
+  const updateSigneePing = async (
+    proofOfUs: IProofOfUsData,
+    signee: IProofOfUsSignee,
+  ) => {
+    return await set(
+      ref(
+        database,
+        `signees/${proofOfUs.proofOfUsId}/${signee.accountName}/lastPingTime`,
+      ),
+      Date.now(),
+    );
+  };
+
+  const resetAllSignatures = async (
+    proofOfUs: IProofOfUsData,
+    signees: IProofOfUsSignee[],
+  ) => {
+    const promises = signees.map((signee) => {
+      delete signee.signature;
+      return set(
+        ref(database, `signees/${proofOfUs.proofOfUsId}/${signee.accountName}`),
+        {
+          ...signee,
+          signerStatus:
+            signee.signerStatus !== 'notsigning' ? 'init' : 'notsigning',
+        },
+      );
+    });
+
+    await Promise.all(promises);
+
+    await set(ref(database, `data/${proofOfUs.proofOfUsId}`), {
+      ...proofOfUs,
+      isReadyToSign: false,
+      status: 3,
+      tokenId: null,
+      manifestUri: null,
+      imageUri: null,
+      tx: null,
+      requestKey: null,
+      mintStatus: 'init',
+    });
   };
 
   const closeToken = async (proofOfUsId: string, proofOfUs: IProofOfUsData) => {
@@ -250,7 +308,9 @@ const ProofOfUsStore = () => {
     getProofOfUsSignees,
     addSignee,
     removeSignee,
+    toggleAllowedToSign,
     updateSignee,
+    updateSigneePing,
     addBackground,
     removeBackground,
     closeToken,
@@ -263,6 +323,7 @@ const ProofOfUsStore = () => {
     getAllAccounts,
     saveLeaderboardAccounts,
     listenLeaderboard,
+    resetAllSignatures,
   };
 };
 

@@ -2,7 +2,7 @@ import type { ITransactionDescriptor } from '@kadena/client';
 import type { ChainId } from '@kadena/types';
 import type { INetworkCreateOptions } from '../../networks/utils/networkHelpers.js';
 import type { CommandResult } from '../../utils/command.util.js';
-import { isNotEmptyString, notEmpty } from '../../utils/helpers.js';
+import { isNotEmptyString, notEmpty } from '../../utils/globalHelpers.js';
 import type { IAliasAccountData } from '../types.js';
 import { createAndTransferFund } from './createAndTransferFunds.js';
 import { getAccountDetails } from './getAccountDetails.js';
@@ -20,12 +20,12 @@ export async function fund({
   accountConfig,
   amount,
   networkConfig,
-  chainId,
+  chainIds,
 }: {
   accountConfig: Omit<IAliasAccountData, 'alias'>;
   amount: string;
   networkConfig: Pick<INetworkCreateOptions, 'networkId' | 'networkHost'>;
-  chainId: ChainId[];
+  chainIds: ChainId[];
 }): Promise<CommandResult<ITransactionDescriptor[]>> {
   let status: 'success' | 'partial' | 'error' = 'success';
   const errors: string[] = [];
@@ -34,7 +34,7 @@ export async function fund({
   let accountFundsResult: (ITransactionDescriptor | null)[] = [];
   try {
     accountFundsResult = await Promise.all(
-      chainId.map(async (chainId) => {
+      chainIds.map(async (chainId) => {
         try {
           const accountDetailsFromChain = await getAccountDetails({
             accountName: accountConfig.name,
