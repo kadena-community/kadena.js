@@ -2,11 +2,17 @@
 title: Contribute to Kadena documentation
 description:
   Follow this guide to learn how you can contribute changes to Kadena
-  documentation.
-keywords:
-  - developer documentation
-  - Kadena blockchain
+  documentation directly from GitHub or by setting up a local documentation development environment.
+menu: Docs
+label: Docs
+menu: Contribute to documentation
+label: Contribute to documentation
+order: 5
+layout: full
+
 ---
+
+# Contribute to Kadena documentation
 
 Thank you for your interest in contributing to documentation for the Kadena blockchain and the Kadena community.
 As a member of the community, you are invited and encouraged to contribute to the ever-evolving technical documentation and to the code base.
