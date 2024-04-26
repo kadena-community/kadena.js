@@ -343,7 +343,7 @@ kadena wallet import [options]
 example:
 
 ```
-kadena wallet import-wallet --key-mnemonic="male more sugar violin accuse panel kick nose sign alarm stool inmate" --security-new-password=12345678 --security-verify-password=12345678 --key-wallet="mywalletname"
+kadena wallet import --key-mnemonic="male more sugar violin accuse panel kick nose sign alarm stool inmate" --security-new-password=12345678 --security-verify-password=12345678 --key-wallet="mywalletname"
 ```
 
 password will be hidden after entry: --security-new-password=\*
