@@ -7,8 +7,8 @@ import type {
   KeyboardEvent,
   RefAttributes,
 } from 'react';
-import React, { forwardRef } from 'react';
-import { searchFormClass } from './styles.css';
+import React, { forwardRef, useEffect, useState } from 'react';
+import { buttonClass, searchFormClass } from './styles.css';
 
 interface IProps {
   onKeyUp?: (e: KeyboardEvent<HTMLInputElement>) => void;
@@ -23,9 +23,15 @@ export const SearchBar: ForwardRefExoticComponent<
   // eslint-disable-next-line react/prop-types
   ({ onSubmit = () => {}, onKeyUp = () => {}, query }, ref) => {
     const MagnifierIcon = SystemIcon.Magnify;
+    const [innerQuery, setInnerQuery] = useState(query);
 
-    const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>): void => {
+    useEffect(() => {
+      setInnerQuery(query);
+    }, [query]);
+
+    const handleChange = (e: KeyboardEvent<HTMLInputElement>): void => {
       e.preventDefault();
+      setInnerQuery(e.currentTarget.value);
       onKeyUp(e);
     };
 
@@ -39,14 +45,17 @@ export const SearchBar: ForwardRefExoticComponent<
         {/* TODO: Replace with SearchField */}
         <TextField
           id="seachinput"
-          onKeyUp={handleKeyUp}
+          onChange={handleChange}
           placeholder="Search"
+          name="search"
           ref={ref}
-          defaultValue={query}
+          value={innerQuery}
           type="text"
           aria-label="Search"
           endAddon={
-            <MagnifierIcon className={atoms({ paddingInline: 'n2' })} />
+            <button type="submit" className={buttonClass}>
+              <MagnifierIcon />
+            </button>
           }
         />
       </form>

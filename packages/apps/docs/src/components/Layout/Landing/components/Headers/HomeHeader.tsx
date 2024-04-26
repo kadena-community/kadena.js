@@ -12,7 +12,7 @@ import {
 } from '@kadena/react-ui';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
-import type { FC, KeyboardEvent } from 'react';
+import type { FC, FormEvent, KeyboardEvent } from 'react';
 import React, { useEffect, useState } from 'react';
 import {
   headerClass,
@@ -32,17 +32,17 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
   const [loaderHeaderClass, setLoaderHeaderClass] =
     useState<string>(headerClass);
 
-  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>): void => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    const value = e.currentTarget.value;
-    if (e.key === 'Enter') {
-      analyticsEvent(EVENT_NAMES['click:mobile_search'], {
-        query: value,
-      });
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push(`/search?q=${value}`);
-      e.currentTarget.value = '';
-    }
+    const data = new FormData(e.currentTarget);
+    const value = `${data.get('search')}`;
+
+    analyticsEvent(EVENT_NAMES['click:home_search'], {
+      query: value,
+    });
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    router.push(`/search?q=${value}`);
+    e.currentTarget.value = '';
   };
 
   useEffect(() => {
@@ -69,7 +69,7 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
                 </span>
 
                 <Box className={searchInputWrapper}>
-                  <SearchBar onKeyUp={handleKeyPress} />
+                  <SearchBar onSubmit={handleSubmit} />
                 </Box>
               </Stack>
             </GridItem>

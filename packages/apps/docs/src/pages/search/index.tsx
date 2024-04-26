@@ -21,7 +21,6 @@ const SearchPage: FC = () => {
   const router = useRouter();
   const { q } = router.query as IQuery;
   const [query, setQuery] = useState<string | undefined>(q);
-
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async (

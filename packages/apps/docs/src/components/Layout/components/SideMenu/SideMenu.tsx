@@ -4,7 +4,7 @@ import { Box, Heading, SystemIcon, TextField } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
-import type { FC, KeyboardEvent } from 'react';
+import type { FC, FormEvent, KeyboardEvent } from 'react';
 import React from 'react';
 import { MainTreeItem } from '../TreeMenu/MainTreeItem';
 import { TreeList } from '../TreeMenu/TreeList';
@@ -14,6 +14,7 @@ import { ShowOnMobile } from './components/ShowOnMobile';
 import {
   listClass,
   listItemClass,
+  searchButtonClass,
   sideMenuClass,
   sideMenuTitleButtonClass,
   sideMenuTitleClass,
@@ -35,18 +36,17 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
 
   const activeItem = menuItems.find((item) => item.isMenuOpen);
 
-  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>): void => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    const value = e.currentTarget.value;
-    if (e.key === 'Enter') {
-      analyticsEvent(EVENT_NAMES['click:mobile_search'], {
-        query: value,
-      });
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push(`/search?q=${value}`);
-      closeMenu();
-      e.currentTarget.value = '';
-    }
+    const data = new FormData(e.currentTarget);
+
+    const value = `${data.get('search')}`;
+    analyticsEvent(EVENT_NAMES['click:mobile_search'], {
+      query: value,
+    });
+    router.push(`/search?q=${value}`);
+    e.currentTarget.value = '';
+    closeMenu();
   };
 
   return (
@@ -68,16 +68,20 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
       <ShowOnMobile>
         <Box marginInline="md" marginBlockStart="md" marginBlockEnd="xl">
           {/* TODO: Replace with SearchField */}
-          <TextField
-            id="search"
-            onKeyUp={handleKeyPress}
-            placeholder="Search"
-            type="text"
-            aria-label="Search"
-            endAddon={
-              <MagnifierIcon className={atoms({ paddingInline: 'n2' })} />
-            }
-          />
+          <form onSubmit={handleSubmit}>
+            <TextField
+              id="search"
+              name="search"
+              placeholder="Search"
+              type="text"
+              aria-label="Search"
+              endAddon={
+                <button type="submit" className={searchButtonClass}>
+                  <MagnifierIcon />
+                </button>
+              }
+            />
+          </form>
         </Box>
       </ShowOnMobile>
       <MenuCard cyTestId="sidemenu-main" active={active} idx={0}>
