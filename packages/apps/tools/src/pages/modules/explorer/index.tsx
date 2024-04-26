@@ -24,10 +24,8 @@ import type {
   ILocalCommandResult,
 } from '@kadena/chainweb-node-client';
 import { CHAINS } from '@kadena/chainweb-node-client';
-import { Breadcrumbs, BreadcrumbsItem } from '@kadena/react-ui';
 import type { QueryClient } from '@tanstack/react-query';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import type {
@@ -270,8 +268,6 @@ const ModuleExplorerPage = (
     [setDeepLink],
   );
 
-  const { t } = useTranslation('common');
-
   useToolbar(menuData, router.pathname);
 
   return (
@@ -279,10 +275,6 @@ const ModuleExplorerPage = (
       <Head>
         <title>Kadena Developer Tools - Modules</title>
       </Head>
-      <Breadcrumbs>
-        <BreadcrumbsItem>{t('Modules')}</BreadcrumbsItem>
-        <BreadcrumbsItem>{t('Explorer')}</BreadcrumbsItem>
-      </Breadcrumbs>
       <ModuleExplorer
         modules={modules}
         onModuleClick={onModuleOpen}
