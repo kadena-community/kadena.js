@@ -46,13 +46,7 @@ To store a single NFT on IPFS:
    
    For example, `ipfs://Bayfxyz.../metadata.json" `.
 
-The following example illustrates the file name and link for accessing an individual NFT on IPFS:
-
-**uri:** `ipfs://bafyreiainnf575ivbxffep3xqx4d4v2jrpyz4yrggylfp5i7lru7zpfese/metadata.json`
-**gateway-link:** [[click here]](https://bafyreiainnf575ivbxffep3xqx4d4v2jrpyz4yrggylfp5i7lru7zpfese.ipfs.dweb.link/metadata.json)
-
-Note that these content identifiers are only intended as examples.
-In addition, you should have a thorough understanding of IPFS storage and adjust the steps, as needed, for your IPFS environment.
+For an example of storing a non-fungible token using IPFS, see [Create a non-fungible token](/built/nft-marmalade/create-nft).
 
 ### Store an NFT collection
 
@@ -85,22 +79,7 @@ To store an asset collection on IPFS:
    
    For example, `ipfs://Baymetx.../1.json`.
 
-The following example illustrates the file names and links for accessing a collection on IPFS:
-
-**uri:** `ipfs://bafybeig4ihtm2phax2eodfpubwy467szuiieqafkoywp5khzt6cz2hqrna/1.json`
-
-**gateway:** [[click here]](https://bafybeig4ihtm2phax2eodfpubwy467szuiieqafkoywp5khzt6cz2hqrna.ipfs.dweb.link/1.json)
-
-**collection-asset-folder:** `ipfs://bafybeie4ktsgx4x3gnpvo2uptngez4cvvqdq75iimpnukvpee2x34yp6jm`
-
-**collection-asset-folder-gateway:** [[click here]](https://bafybeie4ktsgx4x3gnpvo2uptngez4cvvqdq75iimpnukvpee2x34yp6jm.ipfs.dweb.link/)
-
-**collection-metadata-folder:** `ipfs://bafybeig4ihtm2phax2eodfpubwy467szuiieqafkoywp5khzt6cz2hqrna`
-
-**collection-metadata-folder-gateway:** [[click here]](https://bafybeig4ihtm2phax2eodfpubwy467szuiieqafkoywp5khzt6cz2hqrna.ipfs.dweb.link/)
-
-Note that these content identifiers are only intended as examples.
-In addition, you should have a thorough understanding of IPFS storage and adjust the steps, as needed for your IPFS environment.
+For an example of storing a non-fungible token collection using IPFS, see [Create a token collection](/built/nft-marmalade/create-a-collection).
 
 ### Verify the metadata details
 
@@ -144,28 +123,44 @@ This function requires a token ID as its argument and returns the associated URI
 
 When you call the `get-uri` function and pass in a token ID, the function accesses the `tokens` map, finds the row corresponding to the provided token ID, and returns the value stored in the `'uri` field of that row. 
 
-## Using Arweave with Akord
+## Leveraging Arweave with Akord
 
-Arweave is a blockchain protocol designed to provide decentralized permanent storage for data. 
+Given the immutable characteristic of NFTs, the associated data's long-term
+accessibility and sustainability are critical aspects to consider. 
+Akord has
+emerged as a powerful tool to handle these requirements, and its importance is
+underscored in the context of Marmalade.
 
-Akord is a platform built on the Arweave blockchain that helps NFT projects and creators get the most of permanent storage and data ownership. Akord facilitates easy uploading to Arweave, caching, reposting, file management, end-to-end encryption, notifications, token-gated access, private messaging, note creation, and more. 
+Arweave is a pioneering protocol designed to modernize the internet's
+foundational structures, augmenting its capacity for storing, addressing, and
+accessing data. 
+This technology is central to our approach to dealing with NFT
+data, ensuring its perpetual availability and integrity and thereby
+strengthening the overall dependability of the NFTs hosted on Marmalade.
+
+### What is Akord?
+
+Akord is a platform built on the Arweave blockchain that helps NFT projects and creators get the most out of permanent storage and data ownership. 
+Akord facilitates easy uploading to Arweave, caching, reposting, file management, end-to-end encryption, notifications, token-gated access, private messaging, note creation and more. 
 
 Everything in Akord happens through public or private digital vaults, where you can invite others and set access control. 
 
 ### How is Akord different?
+While there are other products that also provide data storage on Arweave, Akord has some key differentiating features.
 
-Although there are other products that also provide data storage on Arweave, Akord has some key differentiating features.
+- **The easiest and cheapest way to upload to Arweave**. Akord makes it simple to upload to Arweave via the [API](https://docs.akord.com/api-and-dev-tools/quickest-way-to-upload-to-arweave), [CLI](https://docs.akord.com/api-and-dev-tools/build/cli) or [app](https://v2.akord.com/signup). The only service to offer free Arweave storage, 100 MB on [signup](https://v2.akord.com/signup), their prices are also the [cheapest in the ecosystem](https://akord.com/pricing).
 
-- **The easiest and cheapest way to upload to Arweave**. Akord makes it simple to upload to Arweave using its API, CLI, or application.
-- **The only service to offer free Arweave storage**. Akord offers 100 MB on sign up, and their prices are also the cheapest in the ecosystem. 
-- **A secure space to manage on-chain data**. Akord uses an advanced system of end-to-end encryption that not only secures your files, but also allows key rotation to facilitate collaboration in privacy.  
-- **A focus on user experience for developers and end users**. Akord’s vision is to make the power of web3 accessible, a vision shared by Kadena. 
+- **A secure space to manage on-chain data**. Akord’s advanced system of end-to-end encryption not only secures your files and messages, but uses key rotation to facilitate collaboration within private vaults.
+  
+- **A focus on user experience for developers and end users**. Akord’s vision is to make the power of web3 accessible to everyone, a vision shared by Kadena.
 
 ### Use Akord
 
-All users get [100 MB of free permanent storage](https://v2.akord.com/signup) on Arweave when signing up.
+All users get [100 MB of free permanent storage on Arweave](https://v2.akord.com/signup) when signing up, it literally takes a minute. 
 
-- [Storing NFT assets on Arweave](https://docs.akord.com/nfts/storing-nft-assets-on-arweave-100-mb-free). Learn how to store NFT assets on Arweave using Akord, and how to manage your data by generating a manifest. 
-- [Simple API upload to Arweave](https://docs.akord.com/api-and-dev-tools/simple-api-upload-to-arweave). A super simple, fast way to upload to Arweave with no tokens or wallets needed. 
-- [Full developer documentation](https://docs.akord.com/api-and-dev-tools/learn). Developers can learn about Akord protocol, the Akord API, and open source CLI and Akord JS, as well as how to publish a website on Arweave.
-- [Use the intuitive web app](https://v2.akord.com/signup). The Akord web app abstracts away the complexities of web3 and makes it easy to store any of your data, personal or professional, on Arweave.
+- [**Storing NFT assets on Arweave**](https://docs.akord.com/nfts/storing-nft-assets-on-arweave-100-mb-free). Learn how to store NFT assets on Arweave using Akord, and how to manage your data by generating a manifest.
+- [**Simple API upload to Arweave**](https://docs.akord.com/api-and-dev-tools/simple-api-upload-to-arweave). A super simple, fast way to upload to Arweave with no tokens or wallets needed.
+- [**Full developer documentation**](https://docs.akord.com/api-and-dev-tools/learn). Developers can learn about Akord protocol, the [API](https://docs.akord.com/api-and-dev-tools/quickest-way-to-upload-to-arweave), and open source [CLI](https://docs.akord.com/api-and-dev-tools/build/cli) and [JavaScript SDK](https://github.com/Akord-com/akord-js), as well as how to publish a website on Arweave.
+- [**Use the intuitive web app**](https://v2.akord.com/signup). The Akord web app abstracts away the complexities of web3 and makes it easy to store any of your data, personal or professional, on Arweave. 
+
+For any questions, contact the team in their [Discord](https://discord.com/invite/DVkyUtcKGn). 

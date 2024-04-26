@@ -17,9 +17,7 @@ import {
   Grid,
   GridItem,
   Heading,
-  Link as KandenaLink,
   Stack,
-  SystemIcon,
 } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';

@@ -44,7 +44,7 @@ Cryptography helps provides guarantees within the network that only authorized p
 ## Consensus models
 
 The method that a blockchain uses to batch transactions into blocks and to select which node can submit a block to the chain is called the blockchain's **consensus model** or **consensus algorithm**. 
-All consensus models are concerned with providing threeessential properties: safety, liveness, and fault tolerance.
+All consensus models are concerned with providing three essential properties: safety, liveness, and fault tolerance.
 
 The most commonly-used consensus model is the proof-of-work consensus model. 
 With the proof-of-work consensus model, the node that completes a computational problem first has the right to submit a block to the chain.

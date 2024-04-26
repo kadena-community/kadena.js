@@ -11,4 +11,4 @@ tags: [pact, typescript, account, transactions, utils]
 
 # Cryptography
 
-intro
+Introduction to the importance of cryptography in blockchain technology.
