@@ -49,6 +49,8 @@ const Item: FC<IResultProps> = ({ item }) => {
   const url = filePathToRoute(item.filePath, item.header);
   const content = item.content ?? '';
 
+  console.log(item.content);
+
   return (
     <li>
       <Link href={url} passHref legacyBehavior>
