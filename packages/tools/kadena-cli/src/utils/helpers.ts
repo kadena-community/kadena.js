@@ -113,10 +113,6 @@ export const passwordPromptTransform =
 
     const trimmedPassword = password.trim();
 
-    if (typeof passwordFile !== 'string' && trimmedPassword !== '') {
-      log.info(`You can use the ${flag} flag to provide a password.`);
-    }
-
     if (trimmedPassword.length < 8 && trimmedPassword !== '') {
       throw new CommandError({
         errors: ['Password should be at least 8 characters long.'],
@@ -156,10 +152,6 @@ export const mnemonicPromptTransform =
     }
 
     const trimmedContent = content.trim();
-
-    if (typeof filepath !== 'string') {
-      log.info(`You can use the ${flag} flag to provide a mnemonic.`);
-    }
 
     if (trimmedContent.includes('\n')) {
       log.warning(
