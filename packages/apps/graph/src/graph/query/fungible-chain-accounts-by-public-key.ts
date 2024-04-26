@@ -3,7 +3,7 @@ import { getFungibleChainAccount } from '@services/account-service';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import FungibleChainAccount from '../objects/fungible-chain-account';
-import type { FungibleChainAccount as FungibleChainAccountType } from '../types/graphql-types';
+import type { IFungibleChainAccount } from '../types/graphql-types';
 
 builder.queryField('fungibleChainAccountsByPublicKey', (t) =>
   t.field({
@@ -51,7 +51,7 @@ builder.queryField('fungibleChainAccountsByPublicKey', (t) =>
               });
             }),
           )
-        ).filter(Boolean) as FungibleChainAccountType[];
+        ).filter(Boolean) as IFungibleChainAccount[];
 
         return fungibleChainAccounts;
       } catch (error) {
