@@ -65,7 +65,7 @@ import {
   MonoKeyboardArrowRight,
   MonoLink,
 } from '@kadena/react-icons/system';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
@@ -127,8 +127,7 @@ const NewAccountFaucetPage: FC = () => {
     ],
     queryFn: () => createPrincipal(pubKeys, chainID, pred),
     enabled: pubKeys.length > 0,
-    placeholderData: '',
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   });
 
   const {
