@@ -8,7 +8,6 @@ interface IReturn {
   clickSubMenu: MouseEventHandler<HTMLUListElement>;
   clickMenu: (e: React.MouseEvent<HTMLAnchorElement>, item: IMenuItem) => void;
   active: number;
-  setActive: React.Dispatch<React.SetStateAction<number>>;
   treeRef: RefObject<HTMLUListElement>;
 }
 
@@ -18,8 +17,7 @@ export const useSideMenu = (
 ): IReturn => {
   const router = useRouter();
   const treeRef = useRef<HTMLUListElement>(null);
-  const [oldPathname, setOldPathname] = useState<string>('');
-  const [active, setActive] = useState<number>(1);
+  const [active] = useState<number>(1);
 
   const [offsetScroll, setOffsetScroll] = useState<number>(0);
 
@@ -75,30 +73,6 @@ export const useSideMenu = (
     }
   }, [treeRef, offsetScroll, setOffsetScroll]);
 
-  useEffect(() => {
-    setOldPathname(router.pathname);
-
-    const matchingItem = menuItems.find((item) =>
-      hasSameBasePath(item.root, router.pathname),
-    );
-
-    const hasSubMenu = matchingItem?.children?.length ?? 0;
-
-    if (hasSubMenu) {
-      setActive(1);
-    } else {
-      setActive(0);
-    }
-
-    router.events.on('routeChangeStart', (url) => {
-      if (hasSameBasePath(url, oldPathname) && hasSubMenu) {
-        setActive(1);
-      } else {
-        setActive(0);
-      }
-    });
-  }, [setOldPathname, oldPathname, router.pathname, router.events, menuItems]);
-
   const clickMenu = (
     e: React.MouseEvent<HTMLAnchorElement>,
     item: IMenuItem,
@@ -106,7 +80,6 @@ export const useSideMenu = (
     const hasChildren = item.children?.length ?? 0;
     if (hasSameBasePath(router.pathname, item.root ?? '') && hasChildren) {
       e.preventDefault();
-      setActive(1);
     } else {
       closeMenu();
     }
@@ -131,7 +104,6 @@ export const useSideMenu = (
     clickSubMenu,
     clickMenu,
     active,
-    setActive,
     treeRef,
   };
 };

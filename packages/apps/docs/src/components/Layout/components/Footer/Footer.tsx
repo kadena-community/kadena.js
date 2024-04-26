@@ -18,7 +18,7 @@ export const Footer: FC = () => {
           className={logoClass}
           marginBlock="sm"
         >
-          <DocsLogo overwriteTheme="dark" />
+          <DocsLogo />
         </Stack>
         <div className={spacerClass} />
         <Stack

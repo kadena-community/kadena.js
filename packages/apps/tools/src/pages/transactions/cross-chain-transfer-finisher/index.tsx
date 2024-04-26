@@ -604,7 +604,7 @@ const CrossChainTransferFinisher: FC = () => {
                       <TextareaField
                         autoResize
                         isReadOnly
-                        inputFont="code"
+                        fontType="code"
                         id="sig-text-area"
                         value={formattedSigData}
                         aria-label={t('sigData')}
