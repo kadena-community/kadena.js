@@ -264,6 +264,16 @@ export const codeTitle = style([
 
 export const mermaidClass = style({});
 
+export const copyButtonClass = style({
+  color: tokens.kda.foundation.color.neutral.n0,
+  opacity: '.8',
+  selectors: {
+    '&:hover': {
+      opacity: '.6',
+    },
+  },
+});
+
 globalStyle(`${code}${mermaidClass}::before`, {
   backgroundColor: 'transparent',
 });

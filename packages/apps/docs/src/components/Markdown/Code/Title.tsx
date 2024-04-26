@@ -2,7 +2,7 @@ import { MonoContentCopy } from '@kadena/react-icons';
 import { Button, Stack } from '@kadena/react-ui';
 import type { FC, ReactNode } from 'react';
 import React, { useRef } from 'react';
-import { codeTitle, codeWrapper } from './style.css';
+import { codeTitle, codeWrapper, copyButtonClass } from './style.css';
 
 interface IProp {
   children: ReactNode;
@@ -12,11 +12,11 @@ interface IProp {
 export const TitleWrapper: FC<IProp> = ({ children, ...props }) => {
   const ref = useRef<HTMLDivElement>(null);
 
-  const handleCopy = () => {
+  const handleCopy = async () => {
     if (!ref.current) return;
 
     const codePre = ref.current.parentElement?.querySelector('pre');
-    console.log(codePre?.innerText);
+    await navigator.clipboard.writeText(codePre?.innerText ?? '');
   };
 
   if (props.hasOwnProperty('data-rehype-pretty-code-fragment')) {
@@ -34,7 +34,11 @@ export const TitleWrapper: FC<IProp> = ({ children, ...props }) => {
       </Stack>
       <Stack flex={1} />
       <Stack>
-        <Button onClick={handleCopy} variant="transparent">
+        <Button
+          className={copyButtonClass}
+          onClick={handleCopy}
+          variant="transparent"
+        >
           <MonoContentCopy />
         </Button>
       </Stack>
