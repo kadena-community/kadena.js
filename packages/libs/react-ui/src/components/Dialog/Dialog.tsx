@@ -1,5 +1,6 @@
 import { MonoClose } from '@kadena/react-icons/system';
 import { useObjectRef } from '@react-aria/utils';
+import type { RecipeVariants } from '@vanilla-extract/recipes';
 import cn from 'classnames';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
@@ -10,18 +11,29 @@ import { useOverlayTriggerState } from 'react-stately';
 import type { IModalProps } from '../Modal/Modal';
 import { Modal } from '../Modal/Modal';
 import { DialogContext } from './Dialog.context';
-import { closeButtonClass, overlayClass } from './Dialog.css';
+import { closeButtonClass, intentsRecipe, overlayClass } from './Dialog.css';
+
+type IntentVariants = NonNullable<RecipeVariants<typeof intentsRecipe>>;
 
 interface IBaseDialogProps
   extends Omit<IModalProps, 'children'>,
-    AriaDialogProps {
+    AriaDialogProps,
+    IntentVariants {
   children?: ((state: OverlayTriggerState) => ReactNode) | ReactNode;
   className?: string;
 }
 
 const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
   (props, ref) => {
-    const { className, children, isDismissable = true, state, ...rest } = props;
+    const {
+      className,
+      children,
+      isDismissable = true,
+      state,
+      intent,
+      ...rest
+    } = props;
+    console.log(intent);
     const dialogRef = useObjectRef<HTMLDivElement | null>(ref);
     const { dialogProps, titleProps } = useDialog(
       {
@@ -35,7 +47,7 @@ const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
       <DialogContext.Provider value={{ titleProps, state }}>
         <div
           ref={dialogRef}
-          className={cn(overlayClass, className)}
+          className={cn(overlayClass, className, intentsRecipe({ intent }))}
           {...mergeProps(rest, dialogProps)}
         >
           {typeof children === 'function' ? children(state) : children}
@@ -58,7 +70,9 @@ const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
 
 BaseDialog.displayName = 'BaseDialog';
 
-export interface IDialogProps extends Omit<IBaseDialogProps, 'state'> {
+export interface IDialogProps
+  extends Omit<IBaseDialogProps, 'state'>,
+    IntentVariants {
   children?: ((state: OverlayTriggerState) => ReactNode) | ReactNode;
   isOpen?: boolean;
   defaultOpen?: boolean;
@@ -72,6 +86,7 @@ export const Dialog: FC<IDialogProps> = ({
   isOpen,
   defaultOpen,
   onOpenChange,
+  intent,
   ...props
 }) => {
   const state = useOverlayTriggerState({
@@ -80,9 +95,16 @@ export const Dialog: FC<IDialogProps> = ({
     onOpenChange,
   });
 
+  console.log(intent);
+
   return (
     <Modal isKeyboardDismissDisabled={isKeyboardDismissDisabled} state={state}>
-      <BaseDialog state={state} isDismissable={isDismissable} {...props}>
+      <BaseDialog
+        state={state}
+        intent={intent}
+        isDismissable={isDismissable}
+        {...props}
+      >
         {children}
       </BaseDialog>
     </Modal>

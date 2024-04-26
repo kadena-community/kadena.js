@@ -3,9 +3,14 @@ import React, { useState } from 'react';
 import { Button } from '../Button';
 import type { IDialogProps } from '../Dialog';
 import { Dialog, DialogContent, DialogFooter, DialogHeader } from '../Dialog';
+import { intentsRecipe } from './Dialog.css';
 import { ModalContent } from './StoryComponents';
 
 type DialogStoryProps = IDialogProps & { title: string };
+
+const intentVariants = Object.keys(
+  (intentsRecipe as any).classNames?.variants?.intent,
+) as IDialogProps['intent'][];
 
 const meta: Meta<DialogStoryProps> = {
   title: 'Overlays/Dialog',
@@ -45,6 +50,17 @@ A Dialog is a type of modal that is used to display information or prompt the us
         type: { summary: 'string' },
       },
     },
+    intent: {
+      options: intentVariants,
+      control: {
+        type: 'select',
+      },
+      description: 'Dialog intent color',
+      table: {
+        type: { summary: intentVariants.join(' | ') },
+        defaultValue: { summary: 'default' },
+      },
+    },
   },
 };
 
@@ -56,7 +72,7 @@ export const DialogStory: Story = {
   args: {
     title: 'Dialog Title',
   },
-  render: ({ title }) => {
+  render: ({ title, intent }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -64,6 +80,7 @@ export const DialogStory: Story = {
         <Button onClick={() => setIsOpen(true)}>Modal Trigger</Button>
         <Dialog
           isOpen={isOpen}
+          intent={intent}
           onOpenChange={(isOpen: boolean) => setIsOpen(isOpen)}
         >
           {(state) => (

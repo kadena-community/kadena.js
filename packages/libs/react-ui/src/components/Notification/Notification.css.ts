@@ -17,13 +17,20 @@ export const notificationRecipe = recipe({
       gap: 'sm',
       width: '100%',
     }),
+    {
+      selectors: {
+        '&::before': {
+          backgroundColor: tokens.kda.foundation.color.neutral['n0@alpha10'],
+        },
+      },
+    },
   ],
   variants: {
     intent: semanticColors.reduce(
       (acc, color) => {
         acc[color] = [
           atoms({
-            backgroundColor: `semantic.${color}.default`,
+            backgroundColor: `semantic.${color}.subtle`,
             borderColor: `semantic.${color}.default`,
             color: `text.semantic.${color}.default`,
           }),
