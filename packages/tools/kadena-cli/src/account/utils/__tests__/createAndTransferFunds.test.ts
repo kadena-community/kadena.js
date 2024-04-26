@@ -1,5 +1,6 @@
 import { HttpResponse, http } from 'msw';
 import { beforeEach, describe, expect, it } from 'vitest';
+import { MAINNET_FUND_TRANSFER_ERROR_MESSAGE } from '../../../constants/account.js';
 import { server } from '../../../mocks/server.js';
 import { createAndTransferFund } from '../createAndTransferFunds.js';
 import { testNetworkConfigMock } from './mocks.js';
@@ -29,7 +30,7 @@ describe('createAndTransferFunds', () => {
       });
     }).rejects.toEqual(
       Error(
-        `Failed to create an account and transfer fund: Cannot transfer fund on mainnet`,
+        `Failed to create an account and transfer fund: ${MAINNET_FUND_TRANSFER_ERROR_MESSAGE} "mainnet01"`,
       ),
     );
   });

@@ -7,15 +7,7 @@
     "url": "https://github.com/kadena-community/kadena.js.git",
     "directory": "packages/tools/create-kadena-app"
   },
-  "type": "module",
   "license": "ISC",
-  "bin": {
-    "create-kadena-app": "./bin/index.js"
-  },
-  "files": [
-    "dist",
-    "lib"
-  ],
   "contributors": [
     {
       "name": "Jermaine Jong",
@@ -26,10 +18,18 @@
       "email": "mohamed@kadena.io"
     }
   ],
+  "type": "module",
+  "bin": {
+    "create-kadena-app": "./bin/index.js"
+  },
+  "files": [
+    "dist",
+    "lib"
+  ],
   "scripts": {
+    "build": "pnpm run cleanup && tsc && pnpm run copy",
     "cleanup": "rimraf dist lib",
     "copy": "node ./src/scripts/copy.mjs",
-    "build": "pnpm run cleanup && tsc && pnpm run copy",
     "format": "prettier config src templates --write",
     "lint": "eslint ./src --ext .js,.ts --fix",
     "start": "ts-node --transpile-only src/index.ts",
@@ -46,19 +46,19 @@
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
-    "@rushstack/eslint-config": "~3.3.0",
+    "@rushstack/eslint-config": "~3.6.9",
     "@types/cross-spawn": "~6.0.2",
-    "@types/debug": "~4.1.7",
+    "@types/debug": "~4.1.12",
     "@types/heft-jest": "~1.0.6",
     "@types/mkdirp": "~1.0.2",
-    "@types/node": "^18.17.14",
+    "@types/node": "^20.12.7",
     "@types/rimraf": "~3.0.2",
     "cross-env": "~7.0.3",
     "eslint": "^8.45.0",
-    "prettier": "~3.0.3",
+    "prettier": "~3.2.5",
     "recursive-copy": "^2.0.14",
     "rimraf": "~5.0.1",
-    "ts-node": "~10.8.2",
-    "typescript": "5.2.2"
+    "ts-node": "~10.9.2",
+    "typescript": "5.4.5"
   }
 }

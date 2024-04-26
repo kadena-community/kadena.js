@@ -3,7 +3,7 @@ import { wordlist } from '@scure/bip39/wordlists/english';
 
 import { parseKeyPairsInput } from '../keys/utils/keysHelpers.js';
 import type { IWallet } from '../services/wallet/wallet.types.js';
-import { isNumeric, isValidFilename } from '../utils/helpers.js';
+import { isNumeric, isValidFilename } from '../utils/globalHelpers.js';
 import { input, select } from '../utils/prompts.js';
 
 export async function keyAliasPrompt(): Promise<string> {

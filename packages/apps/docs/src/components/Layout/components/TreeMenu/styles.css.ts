@@ -8,7 +8,6 @@ export const treeListClass = style([
     fontSize: 'sm',
   }),
   {
-    overflowX: 'hidden',
     listStyle: 'none',
     overflowY: 'hidden',
     transition: 'all .5s ease',
@@ -16,6 +15,7 @@ export const treeListClass = style([
 ]);
 
 export const treeListLevelVariantClass = styleVariants({
+  l0: {},
   l1: {},
   l2: {},
   l3: {
@@ -38,6 +38,9 @@ export const linkClass = style([
     textTransform: 'capitalize',
   }),
   {
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
     selectors: {
       '&:hover': {
         color: tokens.kda.foundation.color.brand.primary.n60,
@@ -48,6 +51,7 @@ export const linkClass = style([
 ]);
 
 export const listItemClass = style({
+  overflowX: 'hidden',
   selectors: {
     '&:first-of-type': {
       marginBlockStart: tokens.kda.foundation.spacing.sm,
@@ -56,6 +60,7 @@ export const listItemClass = style({
 });
 
 export const listItemVariants = styleVariants({
+  l0: {},
   l1: {},
   l2: {},
   l3: {
@@ -74,18 +79,28 @@ export const linkActiveClass = styleVariants({
 });
 
 export const levelItemVariantClass = styleVariants({
+  l0: {
+    display: 'block',
+    cursor: 'pointer',
+    fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.medium,
+    padding: `${tokens.kda.foundation.spacing.md} 0 ${tokens.kda.foundation.spacing.sm}`,
+    borderBottom: `1px solid  ${tokens.kda.foundation.color.border.base.boldest}`,
+    fontSize: tokens.kda.foundation.typography.fontSize.lg,
+  },
   l1: {
     display: 'block',
     cursor: 'pointer',
-    fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.bold,
+    fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.regular,
     padding: `${tokens.kda.foundation.spacing.md} 0 ${tokens.kda.foundation.spacing.sm}`,
     borderBottom: `1px solid ${$$borderColor}`,
+    fontSize: tokens.kda.foundation.typography.fontSize.md,
   },
   l2: {
     display: 'block',
     cursor: 'pointer',
     padding: `${tokens.kda.foundation.spacing.xs} 0`,
     border: 0,
+    fontSize: tokens.kda.foundation.typography.fontSize.base,
   },
   l3: {
     display: 'block',
@@ -104,6 +119,7 @@ const markerStyle: Record<string, string> = {
 };
 
 export const levelItemLinkPseudoVariantClass = styleVariants({
+  l0: {},
   l1: {},
   l2: {
     selectors: {
@@ -118,6 +134,14 @@ export const levelItemLinkPseudoVariantClass = styleVariants({
 });
 
 export const treeItemPseudoMenuVariantClass = styleVariants({
+  'l0-true': {
+    selectors: {
+      '&::after': {
+        transform: 'translate(1px, 1px)  rotate(45deg)!important',
+      },
+    },
+  },
+  'l0-false': {},
   'l1-true': {
     selectors: {
       '&::after': {
@@ -152,6 +176,9 @@ export const treeItemButtonClass = style([
     color: 'text.base.default',
   }),
   {
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
     borderTop: 0,
     borderRight: 0,
     borderLeft: 0,
@@ -164,6 +191,19 @@ export const treeItemButtonClass = style([
 ]);
 
 export const treeItemPseudoVariantClass = styleVariants({
+  l0: {
+    selectors: {
+      '&::after': {
+        position: 'absolute',
+        right: tokens.kda.foundation.spacing.xs,
+        content: '+',
+        fontWeight:
+          tokens.kda.foundation.typography.weight.secondaryFont.regular,
+        transform: 'translate(0, 0) rotate(0)',
+        transition: 'transform .2s ease',
+      },
+    },
+  },
   l1: {
     selectors: {
       '&::after': {

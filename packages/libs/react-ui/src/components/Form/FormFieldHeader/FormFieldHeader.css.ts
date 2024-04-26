@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { atoms } from '../../../styles';
+import { atoms, token } from '../../../styles';
 
 export const headerClass = style([
   atoms({
@@ -42,4 +42,15 @@ export const labelClass = style([
     color: 'text.base.default',
     fontWeight: 'secondaryFont.bold',
   }),
+]);
+
+export const disabledLabelClass = style([
+  atoms({
+    fontSize: 'sm',
+    pointerEvents: 'none',
+    fontWeight: 'secondaryFont.bold',
+  }),
+  {
+    color: token('color.text.base.@disabled'),
+  },
 ]);

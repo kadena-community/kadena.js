@@ -11,5 +11,6 @@ export const transformModulesRequest = (
   return modulesRequest.data.map((moduleName) => ({
     chainId: modulesRequest.chainId,
     moduleName,
+    network: modulesRequest.network,
   }));
 };

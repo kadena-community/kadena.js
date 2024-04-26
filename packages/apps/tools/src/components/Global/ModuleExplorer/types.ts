@@ -1,3 +1,4 @@
+import type { Network } from '@/constants/kadena';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 
 export interface IChainModule {
@@ -5,6 +6,7 @@ export interface IChainModule {
   chainId: ChainwebChainId;
   moduleName: string;
   hash?: string;
+  network: Network;
 }
 
 export interface IModule {

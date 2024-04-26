@@ -2,9 +2,10 @@ import type { ChainId } from '@kadena/types';
 import { Option } from 'commander';
 import { z } from 'zod';
 import { CHAIN_ID_RANGE_ERROR_MESSAGE } from '../constants/account.js';
+import { actionAskForDeployFaucet } from '../prompts/genericActionPrompts.js';
 import { account } from '../prompts/index.js';
 import { createOption } from '../utils/createOption.js';
-import { formatZodError, generateAllChainIds } from '../utils/helpers.js';
+import { formatZodError, generateAllChainIds } from '../utils/globalHelpers.js';
 import { log } from '../utils/logger.js';
 import type { IAliasAccountData } from './types.js';
 import {
@@ -22,7 +23,7 @@ export const accountOptions = {
     prompt: account.accountAliasPrompt,
     validation: z.string(),
     option: new Option(
-      '--account-alias <accountAlias>',
+      '-l, --account-alias <accountAlias>',
       'Alias to store your account details',
     ),
   }),
@@ -30,10 +31,7 @@ export const accountOptions = {
     key: 'accountName' as const,
     prompt: account.accountNamePrompt,
     validation: z.string(),
-    option: new Option(
-      '-a, --account-name <accountName>',
-      'Account name',
-    ),
+    option: new Option('-a, --account-name <accountName>', 'Account name'),
   }),
   accountKdnName: createOption({
     key: 'accountKdnName' as const,
@@ -117,13 +115,19 @@ export const accountOptions = {
     key: 'fungible' as const,
     prompt: account.fungiblePrompt,
     validation: z.string(),
-    option: new Option('-f, --fungible <fungible>', 'Fungible module name'),
+    option: new Option(
+      '-f, --fungible <fungible>',
+      'Fungible module name (default: coin)',
+    ),
   }),
   predicate: createOption({
     key: 'predicate' as const,
     prompt: account.predicatePrompt,
     validation: z.string(),
-    option: new Option('-p, --predicate <predicate>', 'Account keyset predicate'),
+    option: new Option(
+      '-p, --predicate <predicate>',
+      'Account keyset predicate',
+    ),
   }),
   fundAmount: createOption({
     key: 'amount' as const,
@@ -153,7 +157,7 @@ export const accountOptions = {
     option: new Option('-c, --confirm', 'Confirm account deletion'),
   }),
   chainIdRange: createOption({
-    key: 'chainId' as const,
+    key: 'chainIds' as const,
     prompt: account.chainIdPrompt,
     defaultIsOptional: false,
     validation: z.string({
@@ -161,7 +165,7 @@ export const accountOptions = {
       invalid_type_error: 'Error: -c, --chain-id must be a number',
     }),
     option: new Option(
-      '-c, --chain-id <chainId>',
+      '-c, --chain-ids <chainIds>',
       'Kadena chain id range (e.g: 1 / 0-3 / 0,1,5 / all)',
     ),
     transform: (chainId: string) => {
@@ -184,5 +188,14 @@ export const accountOptions = {
 
       return parse.data.map((id) => id.toString()) as ChainId[];
     },
+  }),
+  deployFaucet: createOption({
+    key: 'deployFaucet',
+    validation: z.boolean(),
+    prompt: actionAskForDeployFaucet,
+    option: new Option(
+      '-d, --deploy-faucet',
+      'Deploy faucet on devnet if not available on chain.',
+    ),
   }),
 };
