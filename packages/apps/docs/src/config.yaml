@@ -166,6 +166,12 @@ pages:
           integrate:
             url: /integrate
             file: /build/authentication/integrate-an-app.md
+          sendtx:
+            url: /transactions
+            file: /build/authentication/send-transactions.md
+          translate:
+            url: /translate
+            file: /build/authentication/translate-caps.md
       frontend:
         url: /frontend
         file: /build/kadena-cli.md

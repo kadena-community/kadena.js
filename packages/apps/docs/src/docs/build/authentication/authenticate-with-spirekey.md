@@ -3,7 +3,7 @@ title: Authentication and authorization with Kadena SpireKey
 description:
   Provide authentication and authorization services by implementing Kadena
   SpireKey in your decentralized application.
-menu: Authentication and authorization
+menu: Authenticate and authorize
 label: Kadena SpireKey
 order: 2
 layout: full

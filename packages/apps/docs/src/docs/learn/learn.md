@@ -23,7 +23,7 @@ You should start here to learn the basics about blockchains, cryptography, conse
 
 - [What is a blockchain?](/learn/what-is-a-blockchain) introduces the basics of blockchain technology, including the common concepts and terminology you need as context for learning more.
 - [Why build on a blockchain?](/learn/why-build) highlights the unique properties and value propositions that blockchains offer as extensions of the modern internet.
-- [What you need to know about crypto](/learn/cryptography) focuses on the fundamentals of cryptography as the key to all interactions with the blockchain.
+- [Cryptography](/learn/cryptography) focuses on the fundamentals of cryptography as the key to all interactions with the blockchain.
 - [Why Kadena?](/learn/why-kadena) summarizes the core principles and features that set the Kadena network apart.
 - [Consensus](/learn/consensus) describes consensus models and the consensus workflow from peer-to-peer communication, block finalization, and canonical chain resolution.
 - [Chainweb simplified](/learn/chainweb) provides an overview of the Chainweb consensus protocol.
