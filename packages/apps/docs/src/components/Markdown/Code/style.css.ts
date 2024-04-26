@@ -183,6 +183,7 @@ export const codeTitle = style([
     fontWeight: 'secondaryFont.bold',
     textTransform: 'capitalize',
     padding: 'sm',
+    width: '100%',
   }),
   {
     backgroundColor: tokens.kda.foundation.color.palette.blue.n70,
