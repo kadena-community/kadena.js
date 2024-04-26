@@ -22,7 +22,7 @@ interface IProps {
 }
 
 export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
-  const { active, clickSubMenu, treeRef } = useSideMenu(closeMenu, menuItems);
+  const { clickSubMenu, treeRef } = useSideMenu(closeMenu, menuItems);
   const router = useRouter();
   const MagnifierIcon = SystemIcon.Magnify;
   const searchRef = useRef<HTMLInputElement>(null);
@@ -30,7 +30,6 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
 
   useEffect(() => {
     if (!isMenuOpen) return;
-    console.log(searchRef.current);
     searchRef.current?.focus();
   }, [searchRef.current, isMenuOpen]);
 
@@ -72,7 +71,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
 
       <MenuCard
         cyTestId="sidemenu-submenu"
-        active={active}
+        active={1}
         idx={1}
         onClick={clickSubMenu}
       >

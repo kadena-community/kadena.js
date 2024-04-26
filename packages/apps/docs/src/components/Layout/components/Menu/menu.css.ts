@@ -43,7 +43,7 @@ export const menuOpenVariants = styleVariants({
   isClosed: {
     transform: 'translateX(-100%)',
 
-    ...responsiveStyle({ lg: { transform: 'translateX(0)' } }),
+    ...responsiveStyle({ md: { transform: 'translateX(0)' } }),
   },
 });
 
