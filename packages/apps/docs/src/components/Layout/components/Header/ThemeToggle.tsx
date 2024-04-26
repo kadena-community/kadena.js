@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { useTheme } from 'next-themes';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
+import { reversedIcon } from './styles.css';
 
 export const ThemeToggle: FC = () => {
   const [isMounted, setIsMounted] = useState<boolean>(false);
@@ -18,6 +19,7 @@ export const ThemeToggle: FC = () => {
 
   const toggleTheme = (): void => {
     const newTheme = theme === 'dark' ? 'light' : 'dark';
+
     rotateIcon(!isRotated);
     setTheme(newTheme);
     analyticsEvent(EVENT_NAMES['click:change_theme'], {
@@ -33,7 +35,11 @@ export const ThemeToggle: FC = () => {
       title="Toggle between Light and Dark theme"
       aria-label="Toggle between Light and Dark theme"
     >
-      <MonoContrast className={classNames({ reversedIcon: isRotated })} />
+      <MonoContrast
+        className={classNames({
+          [reversedIcon]: isRotated,
+        })}
+      />
     </NavHeaderButton>
   );
 };
