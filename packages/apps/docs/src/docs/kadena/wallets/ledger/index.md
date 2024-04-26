@@ -1,5 +1,5 @@
 ---
-title: Ledger User Guide
+title: Use Ledger harware
 description: Ledger User Guide
 menu: Ledger
 label: Ledger User Guide
