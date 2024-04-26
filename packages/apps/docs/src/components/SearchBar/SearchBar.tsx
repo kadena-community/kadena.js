@@ -22,7 +22,7 @@ export const SearchBar: ForwardRefExoticComponent<
   ({ onSubmit = () => {}, query }, ref) => {
     const MagnifierIcon = SystemIcon.Magnify;
     const [innerQuery, setInnerQuery] = useState(query);
-    const innerRef = useRef<HTMLInputElement>();
+    const innerRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
       setInnerQuery(query);

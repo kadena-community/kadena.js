@@ -25,7 +25,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
   const { active, clickSubMenu, treeRef } = useSideMenu(closeMenu, menuItems);
   const router = useRouter();
   const MagnifierIcon = SystemIcon.Magnify;
-  const searchRef = useRef<HTMLInputElement>();
+  const searchRef = useRef<HTMLInputElement>(null);
   const { isMenuOpen } = useMenu();
 
   useEffect(() => {
