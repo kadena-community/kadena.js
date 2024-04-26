@@ -238,6 +238,12 @@ const ModuleExplorerPage = (
 ) => {
   const { selectedNetwork: network, networksData } = useWalletConnectClient();
 
+  const queryClient = useQueryClient();
+
+  const router = useRouter();
+
+  useToolbar(menuData, router.pathname);
+
   const { data: modules } = useQuery({
     queryKey: ['modules', network, networksData],
     queryFn: () => getModules(network, networksData),
@@ -245,10 +251,6 @@ const ModuleExplorerPage = (
     staleTime: 1500, // We need to set this in combination with initialData, otherwise the query will immediately refetch when it mounts
     refetchOnWindowFocus: false,
   });
-
-  const queryClient = useQueryClient();
-
-  const router = useRouter();
 
   const setDeepLink = useCallback(
     (module: IChainModule) => {
@@ -267,8 +269,6 @@ const ModuleExplorerPage = (
     },
     [setDeepLink],
   );
-
-  useToolbar(menuData, router.pathname);
 
   return (
     <>
