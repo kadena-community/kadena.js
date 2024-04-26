@@ -51,7 +51,7 @@ async function walletSelectionPrompt(
   }
 
   const selectedWallet = await select({
-    message: 'Select a wallet',
+    message: 'Select a wallet:',
     choices: choices,
   });
 
@@ -70,7 +70,7 @@ export async function walletSelectAllPrompt(): Promise<string> {
   if (wallets.length === 0) return 'all';
 
   return await select({
-    message: 'Select a wallet',
+    message: 'Select a wallet:',
     choices: [
       {
         value: 'all',

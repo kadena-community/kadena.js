@@ -8,7 +8,7 @@ export const configLocationPrompt: IPrompt<string> = async (
   isOptional,
 ) => {
   return await select({
-    message: 'Location of kadena config directory',
+    message: 'Location of kadena config directory:',
     choices: [
       {
         value: CWD_KADENA_DIR,

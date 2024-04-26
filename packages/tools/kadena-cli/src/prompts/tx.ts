@@ -93,7 +93,7 @@ export const transactionSelectPrompt: IPrompt<string> = async (args) => {
   }));
 
   const selectedTransaction = await select({
-    message: 'Select a transaction file',
+    message: 'Select a transaction file:',
     choices: choices,
   });
 
@@ -122,7 +122,7 @@ export const transactionsSelectPrompt: IPrompt<string[]> = async (args) => {
   }));
 
   const selectedTransaction = await checkbox({
-    message: 'Select a transaction file',
+    message: 'Select a transaction file:',
     choices: choices,
     pageSize: 10,
     required: true,
@@ -499,7 +499,7 @@ export const templateDataPrompt: IPrompt<string | null> = async () => {
 
 export async function selectSignMethodPrompt(): Promise<'wallet' | 'keyPair'> {
   return await select({
-    message: 'Select an action',
+    message: 'Select an action:',
     choices: [
       {
         value: 'wallet',

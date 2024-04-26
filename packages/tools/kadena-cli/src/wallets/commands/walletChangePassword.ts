@@ -40,11 +40,11 @@ export const createChangeWalletPasswordCommand: (
   [
     globalOptions.walletSelect(),
     securityOptions.createPasswordOption({
-      message: 'Enter your current password',
+      message: 'Enter your current password:',
     }),
     securityOptions.createNewPasswordOption({
-      message: 'Enter the new wallet password',
-      confirmPasswordMessage: 'Re-enter the password',
+      message: 'Enter the new wallet password:',
+      confirmPasswordMessage: 'Re-enter the password:',
     }),
     confirmOption(),
   ],
