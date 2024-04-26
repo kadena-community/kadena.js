@@ -9,6 +9,7 @@ export const argumentConfig = {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   marmalade_sale_namespace: 'marmalade-sale',
   is_upgrade: 'false',
+  upgrade_version_1: 'false',
   network: dotenv.NETWORK_ID,
   chain: dotenv.SIMULATE_DEFAULT_CHAIN_ID,
   sender: sender00.account,
@@ -18,9 +19,19 @@ export const argumentConfig = {
   marmalade_user_key_1: sender00.keys[0].publicKey,
   // eslint-disable-next-line @typescript-eslint/naming-convention
   marmalade_user_key_2: sender00.keys[0].publicKey,
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  kip_ns_user_key_1: sender00.keys[0].publicKey,
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  kip_ns_user_key_2: sender00.keys[0].publicKey,
+};
+
+export const argumentConfigVersion1Upgrade = {
+  ...argumentConfig,
+  is_upgrade: 'true',
+  upgrade_version_1: 'true',
 };
 
 /* Define the order of the namespaces in the marmalade contracts: the smart contracts
 related to the namespace of the first item are going to be deployed first, then the second,
 and so on  */
-export const marmaladeNamespaceOrder = ['marmalade-v2', 'marmalade-sale'];
+export const marmaladeNamespaceOrder = ['util', 'kip', 'marmalade-v2', 'marmalade-sale'];
