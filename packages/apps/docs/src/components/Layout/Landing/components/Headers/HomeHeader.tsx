@@ -12,7 +12,7 @@ import {
 } from '@kadena/react-ui';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
-import type { FC, FormEvent, KeyboardEvent } from 'react';
+import type { FC, FormEvent } from 'react';
 import React, { useEffect, useState } from 'react';
 import {
   headerClass,

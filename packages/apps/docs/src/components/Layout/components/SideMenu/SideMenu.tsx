@@ -1,10 +1,9 @@
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import type { IMenuItem } from '@kadena/docs-tools';
 import { Box, Heading, SystemIcon, TextField } from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
-import type { FC, FormEvent, KeyboardEvent } from 'react';
+import type { FC, FormEvent } from 'react';
 import React from 'react';
 import { MainTreeItem } from '../TreeMenu/MainTreeItem';
 import { TreeList } from '../TreeMenu/TreeList';
@@ -36,7 +35,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
 
   const activeItem = menuItems.find((item) => item.isMenuOpen);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
 
@@ -44,8 +43,8 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
     analyticsEvent(EVENT_NAMES['click:mobile_search'], {
       query: value,
     });
-    router.push(`/search?q=${value}`);
     e.currentTarget.value = '';
+    await router.push(`/search?q=${value}`);
     closeMenu();
   };
 
