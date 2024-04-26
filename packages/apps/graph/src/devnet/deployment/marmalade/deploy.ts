@@ -11,7 +11,7 @@ import { logger } from '@utils/logger';
 import { validateObjectProperties } from '@utils/validate-object';
 import type { IAccount } from '../helper';
 import { inspect, listen, signAndAssertTransaction, submit } from '../helper';
-import { argumentConfig, marmaladeNamespaceOrder } from './config/arguments';
+import { argumentConfig, argumentConfigVersion1Upgrade, marmaladeNamespaceOrder } from './config/arguments';
 import { marmaladeNamespaceConfig } from './config/namespaces';
 import type {
   IMarmaladeLocalConfig,
@@ -78,9 +78,15 @@ export async function deployMarmaladeContracts(
     file.endsWith(marmaladeRemoteConfig.templateExtension),
   );
 
+  const upgradeTemplateFiles = templateFiles.filter(f => {
+    return f.split(".")[1] === "8"
+     || f.split(".")[3] === "guard-policy-v1"
+  });
+
   const codeFiles = readdirSync(codeFileDestinationPath).filter((file) =>
     file.endsWith(marmaladeRemoteConfig.codefileExtension),
   );
+
   await updateTemplateFilesWithCodeFile(
     templateFiles,
     templateDestinationPath,
@@ -92,26 +98,26 @@ export async function deployMarmaladeContracts(
   also taking into account the order provided in the configuration */
 
   templateFiles.sort((a, b) => {
-    const indexA = marmaladeNamespaceOrder.findIndex((order) =>
-      a.includes(order),
-    );
-    const indexB = marmaladeNamespaceOrder.findIndex((order) =>
-      b.includes(order),
-    );
-
-    if (indexA === -1 && indexB === -1) {
-      // Neither a nor b are in marmaladeNamespaceOrder, sort alphabetically
-      return a.localeCompare(b);
-    } else if (indexA === -1) {
-      // Only b is in marmaladeNamespaceOrder, b comes first
-      return 1;
-    } else if (indexB === -1) {
-      // Only a is in marmaladeNamespaceOrder, a comes first
-      return -1;
-    } else {
+    // const indexA = marmaladeNamespaceOrder.findIndex((order) =>
+    //   a.includes(order),
+    // );
+    // const indexB = marmaladeNamespaceOrder.findIndex((order) =>
+    //   b.includes(order),
+    // );
+    //
+    // if (indexA === -1 && indexB === -1) {
+    //   // Neither a nor b are in marmaladeNamespaceOrder, sort alphabetically
+    //   return a.localeCompare(b);
+    // } else if (indexA === -1) {
+    //   // Only b is in marmaladeNamespaceOrder, b comes first
+    //   return 1;
+    // } else if (indexB === -1) {
+    //   // Only a is in marmaladeNamespaceOrder, a comes first
+    //   return -1;
+    // } else {
       // Both a and b are in marmaladeNamespaceOrder, sort based on their positions
-      return indexA - indexB;
-    }
+      return Number(a.split('.')[1]) - Number(b.split('.')[1])
+    // }
   });
 
   // If no chain ids are provided, use the default chain id from the argument config
@@ -138,7 +144,7 @@ export async function deployMarmaladeContracts(
 
         /* Assuming that the template file name is the same as the namespace
     and that the filename contains the namespace*/
-        argumentConfig.marmalade_namespace = templateFile.split('.')[0];
+        // argumentConfig.marmalade_namespace = templateFile.split('.')[0];
         // Change the chain id for each chain
         argumentConfig.chain = chainId;
 
@@ -160,6 +166,39 @@ export async function deployMarmaladeContracts(
         } else {
           logger.info(
             `Sucessfully deployed ${templateFile} on chain ${chainId}`,
+          );
+        }
+      }
+
+      logger.info(`Upgrading Marmalade Contracts on chain ${chainId}...`);
+
+      for (const templateFile of upgradeTemplateFiles) {
+        logger.info(`Deploying ${templateFile}...`);
+
+        /* Assuming that the template file name is the same as the namespace
+    and that the filename contains the namespace*/
+        // argumentConfigVersion1Upgrade.marmalade_namespace = templateFile.split('.')[0];
+        // Change the chain id for each chain
+        argumentConfigVersion1Upgrade.chain = chainId;
+
+        const pactCommand = await createPactCommandFromTemplate(
+          templateFile,
+          argumentConfigVersion1Upgrade,
+          templateDestinationPath,
+        );
+        const transaction = createTransaction(pactCommand);
+
+        const signedTx = await signAndAssertTransaction(signerAccount.keys)(
+          transaction,
+        );
+        const commandResult = await submit(signedTx);
+        const result = await listen(commandResult);
+
+        if (result.result.status !== 'success') {
+          inspect('Result')(commandResult);
+        } else {
+          logger.info(
+            `Sucessfully upgraded ${templateFile} on chain ${chainId}`,
           );
         }
       }
