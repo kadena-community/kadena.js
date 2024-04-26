@@ -9,6 +9,7 @@ export const argumentConfig = {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   marmalade_sale_namespace: 'marmalade-sale',
   is_upgrade: 'false',
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   upgrade_version_1: 'false',
   network: dotenv.NETWORK_ID,
   chain: dotenv.SIMULATE_DEFAULT_CHAIN_ID,
@@ -28,10 +29,6 @@ export const argumentConfig = {
 export const argumentConfigVersion1Upgrade = {
   ...argumentConfig,
   is_upgrade: 'true',
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   upgrade_version_1: 'true',
 };
-
-/* Define the order of the namespaces in the marmalade contracts: the smart contracts
-related to the namespace of the first item are going to be deployed first, then the second,
-and so on  */
-export const marmaladeNamespaceOrder = ['util', 'kip', 'marmalade-v2', 'marmalade-sale'];
