@@ -46,7 +46,7 @@ To store a single NFT on IPFS:
    
    For example, `ipfs://Bayfxyz.../metadata.json" `.
 
-For an example of storing a non-fungible token using IPFS, see [Create a non-fungible token](/built/nft-marmalade/create-nft).
+For an example of storing a non-fungible token using IPFS, see [Create a non-fungible token](/build/nft-marmalade/create-nft).
 
 ### Store an NFT collection
 
@@ -79,7 +79,7 @@ To store an asset collection on IPFS:
    
    For example, `ipfs://Baymetx.../1.json`.
 
-For an example of storing a non-fungible token collection using IPFS, see [Create a token collection](/built/nft-marmalade/create-a-collection).
+For an example of storing a non-fungible token collection using IPFS, see [Create a token collection](/build/nft-marmalade/create-a-collection).
 
 ### Verify the metadata details
 

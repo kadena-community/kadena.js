@@ -12,13 +12,7 @@ import {
 } from '@/components/Layout/components/articleStyles.css';
 import { getPageConfig } from '@/utils/config';
 import type { IMenuData } from '@kadena/docs-tools';
-import {
-  Box,
-  Grid,
-  GridItem,
-  Heading,
-  Stack,
-} from '@kadena/react-ui';
+import { Box, Grid, GridItem, Heading, Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
