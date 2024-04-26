@@ -75,7 +75,12 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
             </GridItem>
             <GridItem>
               {popularPages.length > 0 && (
-                <Box className={mostPopularBoxClass} marginInlineEnd="xxxl">
+                <Box
+                  className={mostPopularBoxClass}
+                  marginBlockStart={{ xs: 'xl', md: 'no' }}
+                  marginInlineStart={{ xs: 'no', md: 'xl', lg: 'no' }}
+                  marginInlineEnd="xxxl"
+                >
                   <MostPopular pages={popularPages} title="Most viewed docs" />
                 </Box>
               )}

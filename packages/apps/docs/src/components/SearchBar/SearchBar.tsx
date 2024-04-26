@@ -6,7 +6,7 @@ import type {
   ForwardedRef,
   RefAttributes,
 } from 'react';
-import React, { forwardRef, useEffect, useState } from 'react';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import { buttonClass, searchFormClass } from './styles.css';
 
 interface IProps {
@@ -22,10 +22,12 @@ export const SearchBar: ForwardRefExoticComponent<
   ({ onSubmit = () => {}, query }, ref) => {
     const MagnifierIcon = SystemIcon.Magnify;
     const [innerQuery, setInnerQuery] = useState(query);
+    const innerRef = useRef<HTMLInputElement>();
 
     useEffect(() => {
       setInnerQuery(query);
-    }, [query]);
+      innerRef.current?.focus();
+    }, [innerRef, query]);
 
     const handleChange: ChangeEventHandler<HTMLInputElement> = (e): void => {
       e.preventDefault();
@@ -45,7 +47,7 @@ export const SearchBar: ForwardRefExoticComponent<
           onChange={handleChange}
           placeholder="Search"
           name="search"
-          ref={ref}
+          ref={innerRef}
           value={innerQuery}
           type="text"
           aria-label="Search"
