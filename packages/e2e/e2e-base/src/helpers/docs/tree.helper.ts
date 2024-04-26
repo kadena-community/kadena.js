@@ -1,22 +1,19 @@
 import type { Locator, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
-import dirTree from 'directory-tree';
-import path from 'path';
-import { extractMetadataFromMarkdown } from './markdown.helper';
+import * as fs from 'fs';
+import path from 'node:path';
 
 export default class TreeHelper {
   private readonly _page: Page;
-  private _parent: Locator;
 
+  private _levelZero: Locator;
   public constructor(page: Page) {
     this._page = page;
-    this._parent = this._page.locator(
-      `[data-cy="sidemenu-submenu"] [data-testid="menuItem-1"]`,
-    );
+    this._levelZero = this._page.getByTestId('l0-item');
   }
 
   /**
-   This function reads the provided directory (based on a page) and validates if all markdown files are present in the menu.
+   This function reads the menu.json file and validates the menu structure for a deployed app.
    @param {string} pageToCheck page to check, e.g. 'Kadena'
    */
   public async validateTree(pageToCheck: string): Promise<void> {
@@ -30,131 +27,146 @@ export default class TreeHelper {
       'apps',
       'docs',
       'src',
-      'pages',
+      '_generated',
     );
-    // console.log('baseDir======');
-    // console.log(baseDir);
-    const directory = path.join(baseDir, pageToCheck);
-    const exclusioDir = path.join(baseDir, 'pact', 'api');
-    const exclusionRegExp = new RegExp(exclusioDir);
-    const expectedTree = await dirTree(directory, {
-      extensions: /\.md/,
-      exclude: [/index.md/, exclusionRegExp],
-    });
 
-    const parents = expectedTree?.children;
-    console.log(parents);
-
-    for (const parent of parents!) {
-      const parentMetaData = await extractMetadataFromMarkdown(parent.path);
-      // Validate Menu Items without Children
-      if (parent.children?.length === 0) {
-        await this._validateSingleMenuItem(pageToCheck, parentMetaData.label);
-      } else {
-        await this._toggleParent(parentMetaData.menu); // Open Parent before validating children
-        for (const child of parent.children!) {
-          const childMetaData = await extractMetadataFromMarkdown(child.path);
-          if (child.children?.length === 0) {
-            await this._validateMenuItemWithChildren(
-              parentMetaData.menu,
-              childMetaData.label,
+    const json = JSON.parse(fs.readFileSync(`${baseDir}/menu.json`, 'utf-8'));
+    const treeItems = json.find(
+      (menuItems: { root: string }) => menuItems.root === `/${pageToCheck}`,
+    );
+    await this._assertLevelZero(treeItems.menu);
+    // Iterate over each level 1 item.
+    // console.log('iterate over each level 1 item')
+    for (const levelOneItem of treeItems.children!) {
+      // console.log('checking L1 without children')
+      // For each level 1 item without children, check if it is attached
+      if (levelOneItem.children?.length === 0) {
+        await this._assertLevelOne(treeItems.menu, levelOneItem.label);
+      } else if (levelOneItem.children?.length !== 0) {
+        // console.log('checking L1 with children')
+        // For each level 1 item with children, check if it is attached and return a locator reference to it
+        await this._assertLevelOne(treeItems.menu, levelOneItem.menu, true);
+        // For Each level 1 with children, iterate over each level 2 item (child)
+        for (const levelTwoItem of levelOneItem.children!) {
+          if (levelTwoItem.children?.length === 0) {
+            // console.log('checking L2 without children')
+            // For each level 2 item without children, check if it is attached
+            await this._assertLevelTwo(
+              treeItems.menu,
+              levelOneItem.menu,
+              levelTwoItem.label,
             );
-          } else {
-            await this._toggleChild(parentMetaData.menu, childMetaData.menu);
-            // validate presence of first level children, this implicitly validates presence of top level menu items with children as well as the children.
-            for (const grandChild of child.children!) {
-              const grandChildMetaData = await extractMetadataFromMarkdown(
-                grandChild.path,
-              );
-              await this._validateMenuItemWithGrandchildren(
-                parentMetaData.menu,
-                childMetaData.menu,
-                grandChildMetaData.label,
+          } else if (levelTwoItem.children?.length !== 0) {
+            // console.log('checking L2 with children')
+            // For each level 2 item with children, check if it is attached and return a locatorReference to it
+            await this._assertLevelTwo(
+              treeItems.menu,
+              levelOneItem.menu,
+              levelTwoItem.menu,
+              true,
+            );
+            for (const levelThreeItem of levelTwoItem.children!) {
+              // console.log('checking L3')
+              // For each level 3 item, check if it is attached
+              await this._assertLevelThree(
+                treeItems.menu,
+                levelOneItem.menu,
+                levelTwoItem.menu,
+                levelThreeItem.label,
               );
             }
           }
         }
-        await this._toggleParent(parentMetaData.menu);
       }
-      // Open Parent before validating children
     }
   }
-  private async _toggleParent(label: string): Promise<void> {
-    await this._page
-      .getByTestId(`l1-item`)
-      .locator(`[data-testid="l1-button"]:text-is("${label}")`)
-      .click();
+
+  private async _assertLevelZero(label: string): Promise<Locator> {
+    const locator = this._levelZero.locator(
+      `[data-testid="l0-button"]:text-is("${label}")`,
+    );
+    //.getByRole('button', { name: `${label} +` , exact: true});
+    await expect(locator).toBeAttached();
+    return locator;
   }
 
-  private async _toggleChild(
-    parentLabel: string,
-    childLabel: string,
+  private async _assertLevelOne(
+    l0label: string,
+    l1label: string,
+    hasChild: boolean = false,
   ): Promise<void> {
-    await this._page
-      .getByTestId(`l1-item`)
-      .locator(
-        `[data-testid="l1-button"]:text-is(${JSON.stringify(
-          parentLabel,
-        )}) + ul [data-testid="l2-item"] [data-testid="l2-button"]:text-is(${JSON.stringify(
-          childLabel,
-        )})`,
-      )
-      .click();
+    const parentLocator = this._levelZero
+      .locator(`[data-testid="l0-button"]:text-is("${l0label}")`) // Find a l0-button wih a specific text
+      .locator('..') // Go up one level (to the parent of the button)
+      .getByTestId('l1-item'); // Find the l1-item child of the parent l0-item
+
+    let menuItem: Locator; // This will chain the desired menu item locator to the parentLocator
+    switch (hasChild) {
+      case true:
+        menuItem = parentLocator.getByRole('button', {
+          name: `${l1label} +`,
+          exact: true,
+        });
+        break;
+      default:
+        menuItem = parentLocator.getByRole('link', {
+          name: `${l1label}`,
+          exact: true,
+        });
+        break;
+    }
+    await expect(menuItem).toBeAttached(); // Assert that the menu item is attached
   }
 
-  private async _validateSingleMenuItem(
-    pageToCheck: string,
-    label: string,
+  private async _assertLevelTwo(
+    l0label: string,
+    l1label: string,
+    l2label: string,
+    hasChild: boolean = false,
   ): Promise<void> {
-    await expect(
-      this._page
-        .getByTestId('l0-item')
-        .filter({
-          has: this._page.getByRole('button', { name: `${pageToCheck} +` }),
-        })
-        .getByTestId(`l1-item`)
-        .locator(`[data-testid="l1-link"]:text-is(${JSON.stringify(label)})`),
-      `Expected ${label} to be visible on level 1 in the menu.`,
-    ).toBeVisible();
+    const parentLocator = this._levelZero
+      .locator(`[data-testid="l0-button"]:text-is("${l0label}")`) // Find a l0-button wih a specific text
+      .locator('..') // Go up one level (to the parent of the button)
+      .getByTestId('l1-item') // Find the l1-item child of the parent l0-item
+      .locator(`[data-testid="l1-button"]:text-is("${l1label}")`) // Find a l1-button with a specific text
+      .locator('..') // Go up one level (to the parent of the button)
+      .getByTestId('l2-item'); // Find the l2-item child of the parent l1-item
+
+    let menuItem: Locator; // This will chain the desired menu item locator to the parentLocator
+    switch (hasChild) {
+      case true:
+        menuItem = parentLocator.getByRole('button', {
+          name: `${l2label}`,
+          exact: true,
+        });
+        break;
+      default:
+        menuItem = parentLocator
+          .getByRole('link', { name: `∙ ${l2label}`, exact: true })
+          .first();
+        break;
+    }
+    await expect(menuItem).toBeAttached();
   }
 
-  private async _validateMenuItemWithChildren(
-    parentLabel: string,
-    childLabel: string,
+  private async _assertLevelThree(
+    l0label: string,
+    l1label: string,
+    l2label: string,
+    l3label: string,
   ): Promise<void> {
-    await expect(
-      this._page
-        .getByTestId(`l1-item`)
-        .locator(
-          `[data-testid="l1-button"]:text-is(${JSON.stringify(
-            parentLabel,
-          )}) + ul [data-testid="l2-item"] [data-testid="l2-link"]:text-is(${JSON.stringify(
-            childLabel,
-          )})`,
-        )
-        .first(),
-      `Expected ${childLabel} to be visible on level 2 in the menu.`,
-    ).toBeVisible();
-  }
+    const menuItem = this._levelZero
+      .locator(`[data-testid="l0-button"]:text-is("${l0label}")`) // Find a l0-button wih a specific text
+      .locator('..') // Go up one level (to the parent of the button)
+      .getByTestId('l1-item') // Find the l1-item child of the parent l0-item
+      .locator(`[data-testid="l1-button"]:text-is("${l1label}")`) // Find a l1-button with a specific text
+      .locator('..') // Go up one level (to the parent of the button)
+      .getByTestId('l2-item') // Find the l2-item child of the parent l1-item
+      .locator(`[data-testid="l2-button"]:text-is("${l2label}")`) // Find a l2-button with a specific text
+      .locator('..') // Go up one level (to the parent of the button)
+      .getByTestId('l3-item') //  Find the l3-item child of the parent l2-item
+      .locator(`[data-testid="l3-link"]:text-is("${l3label}")`); // Find a l3-link with a specific text
 
-  private async _validateMenuItemWithGrandchildren(
-    parentLabel: string,
-    childLabel: string,
-    grandChildLabel: string,
-  ): Promise<void> {
-    await expect(
-      this._page
-        .getByTestId(`l1-item`)
-        .locator(
-          `[data-testid="l1-button"]:text-is(${JSON.stringify(
-            parentLabel,
-          )}) + ul [data-testid="l2-item"] [data-testid="l2-button"]:text-is(${JSON.stringify(
-            childLabel,
-          )}) + ul [data-testid="l3-item"] [data-testid="l3-link"]:text-is(${JSON.stringify(
-            grandChildLabel,
-          )})`,
-        ),
-      `Expected ${grandChildLabel} to be visible on level 3 in the menu.`,
-    ).toBeVisible();
+    await expect(menuItem).toBeAttached();
   }
 }
