@@ -9,123 +9,103 @@ layout: full
 
 # Accounts and keys
 
-With most blockchains, accounts are modeled as simply public/private keypairs
-(i.e. your account name is the same as your public key). This “one-to-one” model
-keeps things simple, but runs into problems when you want to use multiple keys
-for a single account, such as with jointly-owned or majority-ruled accounts.
+With most blockchains, accounts and account addresses that can send and receive funds are based on generating public and secret key pairs then using your public key as your account name. 
+This “one-to-one” model keeps things simple, but runs into problems when you want to use multiple keys for a single account.
+For example, you might want an account to represent joint-ownership for partners in a relationship or the officers in a board of directors who must approve expenditures by a majority vote.
 
-Kadena natively supports multiple keys governing the same account name, and thus
-the distinction between “keys” and “account name” becomes important.
+To handle situations where an account must represent more than one owner, Kadena makes a distinction between **keys** and **accounts**.
+This distinction enables multiple keys to be associated with the same account name.
 
-In simple terms, “account name” refers to your unique name on the blockchain,
-and “keys” refers to the public/private keypairs that grant access to your
-account. In other words, it is the keys that determine ownership of an account.
+In simple terms, an **account name** is a unique name on the blockchain that can hold funds with one or more public and secret key pairs that grant access to the
+account. 
+The keys determine ownership of an account.
+The rules for how many keys are required to act on behalf of the account are defined in a construct called a **keyset**.
 
-Some Kadena account examples:
+## Defining a keyset
 
-**Unnamed account** — account name is the same as a single public key
+A keyset is a specific type of **guard** that consists of one or public keys and a **predicate** that specifies how many of the keys are required to perform an operation. 
+In JSON, a keyset looks similar to the following example:
 
-| **Account Name**                                                  | **Public Key ("Keyset")**                                         |
-| ----------------------------------------------------------------- | ----------------------------------------------------------------- |
-| 961fd95b190aeb38850754fee81b42486d 140e44ee78f8f2d9e25ab69c3053b6 | 961fd95b190aeb38850754fee81b42486d 140e44ee78f8f2d9e25ab69c3053b6 |
+```json
+{
+    "my-keyset-name": {
+        "keys": [
+            "1d5a5e10eb15355422ad66b6c12167bdbb23b1e1ef674ea032175d220b242ed4",
+            "4fe7981d36997c2a327d0d3ce961d3ae0b2d38185ac5e5cd98ad90140bc284d0",
+            "58705e8699678bd15bbda2cf40fa236694895db614aafc82cf1c06c014ca963c"
+        ],
+        "pred": "keys-any"
+    }
+}
+```
 
-**Account Name**
+In this example:
 
-**Public Key ("Keyset")**
+- The keyset name is `my-keyset-name`.
+- There are three public keys defined as owners associated with this keyset.
+- The predicate of `keys-any` means that any of the three public keys can sign transactions and act on the behalf of the account associated with this keyset. 
 
-- 961fd95b190aeb38850754fee81b42486d 140e44ee78f8f2d9e25ab69c3053b6
+## Defining accounts
 
-- 961fd95b190aeb38850754fee81b42486d 140e44ee78f8f2d9e25ab69c3053b6
+An account is an entry in the Kadena coin contract ledger—a key-value store—that consists of the following parts:
 
-**Named account** — account name is some memorable user-defined string
+- An account name in the form of a string of 3 to 256 LATIN-1 characters (key).
+- An account value that holds the decimal balance of funds in the account and a keyset that governs the account.
 
-| **Account Name** | **Public Key ("Keyset")**                                         |
-| ---------------- | ----------------------------------------------------------------- |
-| alice            | 961fd95b190aeb38850754fee81b42486d 140e44ee78f8f2d9e25ab69c3053b6 |
+As you saw in the previous example, the keyset consists of one or more public keys and the predicate that specifies the number of keys that must sign a transaction for the account.
 
-**Account Name**
+There are three built-in predicate options:
 
-**Public Key ("Keyset")**
+- keys-all
+- keys-any
+- keys-2
 
-- alice
+For most accounts—where there's only one public key with ownership of the account—the default predicate of `keys-all` works as you would expect it to, granting ownership of the account to a single party. 
+However, the predicate is important to consider when creating accounts that require multiple signatures or have multiple owners. 
+For example, the `keys-2` predicate requires that at least two public keys defined in the keyset for the account must sign a transaction to authorize the execution of that transaction.
 
-- 961fd95b190aeb38850754fee81b42486d 140e44ee78f8f2d9e25ab69c3053b6
+The following diagram illustrates the relationship between keys, keysets, and accounts:
 
-**Multi-signature account** — a single account is governed by multiple keys
-
-| **Account Name** | **Public Keys ("Keyset")**                                                                                                                                                                            |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| BoardOfDirectors | 961fd95b190aeb38850754fee81b42486d 140e44ee78f8f2d9e25ab69c3053b6 c1cb44cf2327213b29729d1e5f4b70d812 0bc3ab1cbddc60633909324464e6ef 7731d6a6a772dcbf2cd0c8ca5649f902af fd6ed29622738810aa38ef8b307ca7 |
-
-**Account Name**
-
-**Public Keys ("Keyset")**
-
-- BoardOfDirectors
-
-- 961fd95b190aeb38850754fee81b42486d 140e44ee78f8f2d9e25ab69c3053b6 -
-  c1cb44cf2327213b29729d1e5f4b70d812 0bc3ab1cbddc60633909324464e6ef -
-  7731d6a6a772dcbf2cd0c8ca5649f902af fd6ed29622738810aa38ef8b307ca7
-
-All Kadena accounts are comprised of 3 parts:
-
-1. Account name
-2. Keys
-3. Predicate
-
-“Predicate” is something that determines how many signatures are required to
-transfer coins from the account. The three built-in predicate options are
-keys-all, keys-any, and keys-2. Most KDA holders will never see, or even know
-about, their account’s predicate because they will have a traditional single-key
-account wherein keys-all and keys-any do the same thing. However, the predicate
-becomes more important with multi-signature accounts. For example, the keys-2
-predicate requires that at least 2 keys in the account must sign in order to
-authorize a transaction.
+![Keys, keysets, and accounts on the Kadena network](/assets/docs/kadena-account.png)
 
 If you would like to learn more about keys and accounts in
 Kadena,[ check out this article](/blogchain/2020/beginners-guide-to-kadena-accounts-keysets-2020-01-14).
 
-## 2. Kadena is a multi-chain network
+## Kadena is a multi-chain network
 
-Kadena’s major breakthrough is that it has solved scalability in Proof of Work
-blockchains. To achieve this, Kadena has braided together multiple Bitcoin-like
-chains. This means that Kadena is not just a single blockchain, but rather it is
-comprised of several interconnected blockchains. Therefore, we say Kadena is a
-multi-chain network. To visualize how this
-works,[ check out this 3-minute video](https://www.youtube.com/watch?v=hYvXxFbsN6I).
+Kadena’s major breakthrough is that it has solved scalability in proof-of-work blockchains. 
+To achieve this, the Kadena Chainweb consensus protocol braids network connections from multiple parallel chains into a single set of validated blocks.
 
-For users, this means that any account you create will only exist on that chain.
-If you would like to own a particular account name across all chains then you
-must be the first person to create that account on each chain.
+However, each chain in the network operates independently.
+When you create and fund an account on any chain, it only exists on that chain.
+You can create accounts on more than one chain, but they are essentially independent accounts, with separate account balances and potentially different keysets and owners.
+Because the chains operate independently, you should always pay close attention to the network and chain identifier you have selected when you are signing and submitting transactions
 
-Important: The account name alone does not determine ownership. The keyset
-associated with an account determines ownership. You could own account Alice on
-chain ID 0, and someone else could own account Alice on chain ID 5.
+It's also important to remember that the account name doesn't determine ownership of an account. 
+The keyset associated with an account determines ownership. 
+You could own account named Alice on chain ID 0, and someone else could own account Alice on chain ID 5.
 
-The key takeaway is that you should pay attention to the chain on which you are
-transacting.
+If you want to own a specific account name across all of the chains in the network, you would need to be the first person to create that account on each chain.
 
-## 3. Transfers can be done on the same chain or across two different Kadena chains
+To visualize how Kadena Chainweb weaves together connections for multiple chains, check out this [3-minute video](https://www.youtube.com/watch?v=hYvXxFbsN6I).
 
-As the title suggests, there are 2 main ways to move KDA; on the same chain or
-across chains.
+## Transfers within and between chains
 
-The key takeaway here is related to gas—the small fee that users pay in order to
-have their transactions included in a block.
+There are two main ways to move Kadena tokens (KDA) between accounts:
 
-- With same-chain transfers the sender must pay some gas
-- With cross-chain transfers, the sender and the recipient must pay some gas
+- Transfer coins between accounts on the same chain.
+- Transfer coins between accounts on different chains
 
-Cross-chain transfers interact with two different blockchains, so sending KDA
-from one chain to another requires two separate transactions, one on each chain.
+The primary different between these two types of transfers is who pays the transaction fee to have the transaction included in a block.
 
-The good news is that cross-chain transfers sent to a recipient with no funds
-are not necessarily lost forever, they are just incomplete transfers. Anyone
-with funds on the destination chain can help to pay the required gas, allowing
-the transfer to finish as intended. Further, Kadena has set-up gas stations
-which will cover the cost of gas on the destination chain. One such gas station
-can be accessed at[ this page](https://transfer.chainweb.com) which provides an
-interface for finishing cross-chain transfers.
+- With same-chain transfers, the sender must pay the transaction fee.
+- With cross-chain transfers, the sender and the recipient must both pay a transaction fee.
 
-If you would like to learn more about transfers in
-Kadena,[ check out this article](/blogchain/2019/kadena-public-blockchain-getting-started-with-transfers-2019-12-19).
+With a cross-chain transfer, you interact with two different blockchains, which requires two separate transactions, one on each chain.
+
+If you attempt to send a cross-chain transfer to a recipient with no funds on the destination chain, the transfer operation won't be able to complete.
+However, anyone with funds on the destination chain can help to pay the required fee, allowing the transfer to finish as intended. 
+Kadena has also set up **gas stations** cover the cost of transaction fees for cross-chain transfers. 
+If you have an incomplete cross-chain transfer, you can use the [Transfer assistant](https://transfer.chainweb.com) to finish the transaction on the destination chain.
+
+To learn more about transfers in Kadena, see [Getting started with transfers](/blogchain/2019/kadena-public-blockchain-getting-started-with-transfers-2019-12-19).
