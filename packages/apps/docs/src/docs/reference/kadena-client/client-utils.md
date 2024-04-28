@@ -1,7 +1,7 @@
 ---
 title: Client utilities
 description:
-  The `@kadena` libraries provide a TypeScript based application programming interface API for interacting with smart contracts and the Kadena network. The libraries include helper functions for many common tasks in corePact modules, such as the `coin` module, and `core` functions that you can use to develop new interfaces for custom contracts.
+  The `@kadena` libraries provide a TypeScript based application programming interface API for interacting with smart contracts and the Kadena network. The libraries include helper functions for many common tasks in core Pact modules, such as the `coin` module, and `core` functions that you can use to develop new interfaces for custom contracts.
 menu: Frontend libraries
 label: Client utilities
 order: 1

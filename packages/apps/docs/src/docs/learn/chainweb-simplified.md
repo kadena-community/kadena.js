@@ -1,9 +1,9 @@
 ---
-title: Chainweb, simplified
+title: Chainweb simplified
 id: chainweb
 description: Learn about the Chainweb consensus protocol and the multi-chain network in this simplified overview.
 menu: Learn
-label: Chainweb, simplified
+label: Chainweb simplified
 order: 4
 layout: full
 tags: [consensus, nodes, chainweb, braided chain, network]

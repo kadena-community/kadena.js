@@ -20,9 +20,15 @@ With commands designed specifically for building, testing, and managing Kadena-b
 
 ## Before you begin
 
-What are the prerequisites?
-Node version?
-npm or pnpm version?
+Before you use the Kadena command-line interface, verify the following basic requirements:
+
+- You have `node`, version 18 or later, installed.
+
+- You have the `pnpm` package manager installed.
+  
+  Depending on your development environment, you can install pnpm using a standalone script or using a package manager. For example, you can run the command `brew install pnpm` or `npm install --global pnpm` to install pnpm on your local computer. For more information about installing pnpm on different operating systems, see Installation.
+  
+  Run `pnpm --version` to verify that you have pnpm installed and the version you are running.
 
 ## Install
 
