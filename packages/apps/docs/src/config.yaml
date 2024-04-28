@@ -307,62 +307,18 @@ pages:
     url: /tutorials
     file: /tutorials/tutorials.md
     children:
-      pactbeginner:
-        url: /beginner
-        file: /tutorials/beginner/index.md
-        children:
-          webeditor:
-            url: /dev-network
-            file: /tutorials/beginner/dev-network.md
-          helloworld:
-            url: /hello-world
-            file: /tutorials/beginner/hello-world.md
-          languagebasics:
-            url: /language-basics
-            file: /tutorials/beginner/language-basics.md
-          modules:
-            url: /modules
-            file: /tutorials/beginner/modules.md
-          keysets:
-            url: /keysets
-            file: /tutorials/beginner/keysets.md
-          schemastables:
-            url: /schemas-and-tables
-            file: /tutorials/beginner/schemas-and-tables.md
-          atomsdk:
-            url: /atom-sdk
-            file: /tutorials/beginner/atom-sdk.md
-          accountstransfers:
-            url: /accounts-and-transfers
-            file: /tutorials/beginner/accounts-and-transfers.md
-          contractinteraction:
-            url: /contract-interaction
-            file: /tutorials/beginner/contract-interaction.md
-          rotatablewallet:
-            url: /rotatable-wallet
-            file: /tutorials/beginner/rotatable-wallet.md
-          loans:
-            url: /loans
-            file: /tutorials/beginner/loans.md
-          testsdk:
-            url: /test-in-the-sdk
-            file: /tutorials/beginner/test-in-the-sdk.md
-        pactintermediate:
-          url: /intermediate
-          file: /tutorials/intermediate/index.md
-          children:
-            pactjavascript:
-              url: /pact-and-javascript
-              file: /tutorials/intermediate/pact-and-javascript.md
-            safetyflow:
-              url: /safety-using-control-flow
-              file: /tutorials/intermediate/safety-using-control-flow.md
-            interfacespact:
-              url: /interfaces-with-pact
-              file: /tutorials/intermediate/interfaces-with-pact.md
-            builtinfunctions:
-              url: /built-in-functions
-              file: /tutorials/intermediate/built-in-functions.md
+      devnet:
+        url: /dev-network
+        file: /tutorials/dev-network.md
+      helloworld:
+        url: /hello-world
+        file: /tutorials/hello-world.md
+      languagebasics:
+        url: /language-basics
+        file: /tutorials/language-basics.md
+      pactjavascript:
+        url: /pact-and-javascript
+        file: /tutorials/pact-and-javascript.md
   reference:
     url: /reference
     file: /reference/reference.md

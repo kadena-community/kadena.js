@@ -12,9 +12,9 @@ tags: [pact, typescript, account, transactions, utils]
 
 # Develop smart contracts
 
-- [Basic concepts](/tutorials/beginner)
-- [Beginner series](/tutorials/beginner/hello-world)
-- Intermediate series
+- [Set up a local development network](/tutorials/dev-network)
+- [Hello, world](/tutorials/hello-world)
+- [Pact and JavaScript](/tutorials/pact-and-javascript)
 - Common scenarios
 - Language reference 
 
