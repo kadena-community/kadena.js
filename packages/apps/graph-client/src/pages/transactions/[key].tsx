@@ -49,7 +49,7 @@ const RequestKey: React.FC = () => {
           <BreadcrumbsItem href={`${routes.TRANSACTIONS}`}>
             Transactions
           </BreadcrumbsItem>
-            <BreadcrumbsItem>Transaction</BreadcrumbsItem>
+          <BreadcrumbsItem>Transaction</BreadcrumbsItem>
         </Breadcrumbs>
         <GraphQLQueryDialog
           queries={[
