@@ -1,37 +1,9 @@
 import { style } from '@vanilla-extract/css';
 import { calc } from '@vanilla-extract/css-utils';
-import { recipe } from '@vanilla-extract/recipes';
 import { atoms } from '../../styles/atoms.css';
 import { responsiveStyle } from '../../styles/themeUtils';
 import { tokens } from '../../styles/tokens/contract.css';
 import { containerClass as cardContainerClass } from '../Card/Card.css';
-
-export const intentsRecipe = recipe({
-  variants: {
-    intent: {
-      info: [
-        atoms({
-          backgroundColor: 'semantic.info.subtle',
-        }),
-      ],
-      positive: [
-        atoms({
-          backgroundColor: 'semantic.positive.subtle',
-        }),
-      ],
-      warning: [
-        atoms({
-          backgroundColor: 'semantic.warning.subtle',
-        }),
-      ],
-      negative: [
-        atoms({
-          backgroundColor: 'semantic.negative.subtle',
-        }),
-      ],
-    },
-  },
-});
 
 export const openModal = style([
   {
