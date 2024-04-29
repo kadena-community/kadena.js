@@ -27,21 +27,6 @@ type ImportedPagePropsType = Omit<IPageProps, 'frontmatter'> & {
 
 const deserializePageProps = (props: ImportedPagePropsType): IPageProps => {
   const newProps = JSON.parse(JSON.stringify(props)) as IPageProps;
-  newProps.frontmatter = {
-    editLink: '',
-    title: '',
-    navigation: {},
-    menu: '',
-    order: 1,
-    label: '',
-    layout: 'full',
-    description: '',
-  };
-  newProps.menuItems = [];
-  newProps.aSideMenuTree = [];
-  newProps.leftMenuTree = [];
-  newProps.topDocs = [];
-  newProps.headerMenuItems = [];
 
   newProps.frontmatter.lastModifiedDate = props.frontmatter?.lastModifiedDate
     ? new Date(props.frontmatter.lastModifiedDate)
@@ -59,6 +44,7 @@ export const MyApp = ({
   const props = deserializePageProps(pageProps);
   const Layout = getLayout(props.frontmatter.layout);
 
+  console.log({ pageProps });
   // check for a router query
   const router = useRouter();
   useEffect(() => {
