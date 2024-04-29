@@ -62,7 +62,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
               aria-label="Search"
               endAddon={
                 <button type="submit" className={searchButtonClass}>
-                  <MonoSearch className={atoms({ paddingInline: 'n2' })} />
+                  <MonoSearch />
                 </button>
               }
             />

@@ -54,7 +54,7 @@ export const SearchBar: ForwardRefExoticComponent<
           aria-label="Search"
           endAddon={
             <button type="submit" className={buttonClass}>
-              <MonoSearch className={atoms({ paddingInline: 'n2' })} />
+              <MonoSearch />
             </button>
           }
         />
