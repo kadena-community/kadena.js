@@ -1,14 +1,3 @@
-import {
-  remarkAdmonitions,
-  remarkCheckForCodeTitle,
-  remarkFigureOutOfParagraph,
-  remarkFrontmatterToProps,
-  remarkHeadersToProps,
-  remarkPropsToStaticRender,
-  remarkSideMenuToProps,
-  remarkTwitter,
-  remarkYoutube,
-} from '@kadena/docs-tools';
 import mdx from '@next/mdx';
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
 import { readFileSync } from 'fs';
@@ -73,19 +62,7 @@ const withMDX = mdx({
     // If you use remark-gfm, you'll need to use next.config.mjs
     // as the package is ESM only
     // https://github.com/remarkjs/remark-gfm#install
-    remarkPlugins: [
-      remarkGfm,
-      remarkFrontmatter,
-      remarkFrontmatterToProps,
-      remarkHeadersToProps,
-      remarkSideMenuToProps,
-      remarkPropsToStaticRender,
-      remarkAdmonitions,
-      remarkYoutube,
-      remarkTwitter,
-      remarkCheckForCodeTitle,
-      remarkFigureOutOfParagraph,
-    ],
+    remarkPlugins: [remarkGfm, remarkFrontmatter],
     rehypePlugins: [[rehypePrettyCode, options]],
     // If you use `MDXProvider`, uncomment the following line.
     providerImportSource: '@mdx-js/react',
