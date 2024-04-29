@@ -2,7 +2,6 @@ import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import type { IMenuItem } from '@kadena/docs-tools';
 import { MonoSearch } from '@kadena/react-icons';
 import { Box, TextField } from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
 
 import { useRouter } from 'next/router';
 import type { FC, FormEvent } from 'react';

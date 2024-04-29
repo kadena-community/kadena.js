@@ -1,6 +1,5 @@
 import { MonoSearch } from '@kadena/react-icons';
 import { TextField } from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
 import type {
   ChangeEventHandler,
   FormEvent,
