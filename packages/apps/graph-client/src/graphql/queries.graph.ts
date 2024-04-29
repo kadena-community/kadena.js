@@ -44,8 +44,10 @@ export const getBlockFromHash: DocumentNode = gql`
       }
       minerAccount {
         guard {
-          predicate
-          keys
+          ... on Keyset {
+            predicate
+            keys
+          }
         }
       }
       parent {
@@ -88,8 +90,10 @@ export const getFungibleAccount: DocumentNode = gql`
       chainAccounts {
         ...CoreFungibleChainAccountFields
         guard {
-          keys
-          predicate
+          ... on Keyset {
+            keys
+            predicate
+          }
         }
       }
       transactions {
@@ -337,8 +341,10 @@ export const getNonFungibleAccount: DocumentNode = gql`
         tokenId
         chainId
         guard {
-          predicate
-          keys
+          ... on Keyset {
+            predicate
+            keys
+          }
         }
       }
       transactions {
@@ -364,8 +370,10 @@ export const getNonFungibleChainAccount: DocumentNode = gql`
         tokenId
         chainId
         guard {
-          predicate
-          keys
+          ... on Keyset {
+            predicate
+            keys
+          }
         }
       }
       transactions {

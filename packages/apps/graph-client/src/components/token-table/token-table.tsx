@@ -44,10 +44,21 @@ export const TokenTable = (props: ITokenTableProps): JSX.Element => {
                 <Cell>{token.tokenId}</Cell>
                 <Cell>{token.chainId}</Cell>
                 <Cell>{token.balance}</Cell>
+
                 <Cell>
-                  <strong>Predicate:</strong> {token.guard.predicate}
-                  <br />
-                  <strong>Keys:</strong> {token.guard.keys.join(', ')}
+                  {token.guard.__typename === 'Keyset' ? (
+                    <>
+                      <strong>Predicate:</strong> {token.guard.predicate}
+                      <br />
+                      <strong>Keys:</strong> {token.guard.keys.join(', ')}
+                    </>
+                  ) : token.guard.__typename === 'JsonString' ? (
+                    <>
+                      <strong>Guard:</strong> {token.guard.value}
+                    </>
+                  ) : (
+                    <span style={{ color: 'lightgray' }}>N/A</span>
+                  )}
                 </Cell>
               </Row>
             );

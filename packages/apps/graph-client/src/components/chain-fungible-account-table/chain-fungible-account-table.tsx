@@ -51,8 +51,20 @@ export const FungibleChainAccountTable = (
                   {chainAccount.balance}
                 </Link>
               </Cell>
-              <Cell>{chainAccount.guard.predicate}</Cell>
-              <Cell>{chainAccount.guard.keys.join(', ')}</Cell>
+              <Cell>
+                {chainAccount.guard.__typename === 'Keyset' ? (
+                  chainAccount.guard.predicate
+                ) : (
+                  <span style={{ color: 'lightgray' }}>N/A</span>
+                )}
+              </Cell>
+              <Cell>
+                {chainAccount.guard.__typename === 'Keyset' ? (
+                  chainAccount.guard.keys.join(', ')
+                ) : (
+                  <span style={{ color: 'lightgray' }}>N/A</span>
+                )}
+              </Cell>
             </Row>
           ))}
         </TableBody>
