@@ -129,7 +129,8 @@
     "@kadena/types": "workspace:*",
     "debug": "4.3.4",
     "js-yaml": "~4.1.0",
-    "ramda": "^0.29.0"
+    "ramda": "^0.29.0",
+    "zod": "~3.23.0"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",

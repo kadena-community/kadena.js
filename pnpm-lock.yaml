@@ -1919,6 +1919,9 @@ importers:
       ramda:
         specifier: ^0.29.0
         version: 0.29.0
+      zod:
+        specifier: ~3.23.0
+        version: 3.23.0
     devDependencies:
       '@kadena-dev/eslint-config':
         specifier: workspace:*
