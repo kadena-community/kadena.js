@@ -22,7 +22,6 @@ interface IBaseDialogProps
 const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
   (props, ref) => {
     const { className, children, isDismissable = true, state, ...rest } = props;
-
     const dialogRef = useObjectRef<HTMLDivElement | null>(ref);
     const { dialogProps, titleProps } = useDialog(
       {
@@ -80,8 +79,6 @@ export const Dialog: FC<IDialogProps> = ({
     defaultOpen,
     onOpenChange,
   });
-
-  console.log(intent);
 
   return (
     <Modal isKeyboardDismissDisabled={isKeyboardDismissDisabled} state={state}>

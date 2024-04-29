@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Button } from '../Button';
 import type { IDialogProps } from '../Dialog';
 import { Dialog, DialogContent, DialogFooter, DialogHeader } from '../Dialog';
-
 import { ModalContent } from './StoryComponents';
 
 type DialogStoryProps = IDialogProps & { title: string };
