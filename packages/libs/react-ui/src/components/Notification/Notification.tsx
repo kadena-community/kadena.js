@@ -29,7 +29,7 @@ export const Notification: FC<INotificationProps> = ({
   onDismiss,
   icon,
   role,
-  type,
+  type = 'stacked',
 }) => {
   const [isDismissed, setIsDismissed] = useState(false);
 
