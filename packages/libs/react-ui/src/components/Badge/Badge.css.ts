@@ -35,6 +35,35 @@ export const badge = recipe({
         borderColor: token('color.neutral.n1@alpha20'),
         color: token('color.neutral.n0@alpha70'),
       },
+      //kda/foundation/color/background/semantic/positive/inverse/default
+      info: {
+        backgroundColor: token(
+          'color.background.semantic.info.inverse.default',
+        ),
+        borderColor: token('color.neutral.n1@alpha20'),
+        color: token('color.neutral.n0@alpha70'),
+      },
+      warning: {
+        backgroundColor: token(
+          'color.background.semantic.warning.inverse.default',
+        ),
+        borderColor: token('color.neutral.n1@alpha20'),
+        color: token('color.neutral.n0@alpha70'),
+      },
+      positive: {
+        backgroundColor: token(
+          'color.background.semantic.positive.inverse.default',
+        ),
+        borderColor: token('color.neutral.n1@alpha20'),
+        color: token('color.neutral.n0@alpha70'),
+      },
+      negative: {
+        backgroundColor: token(
+          'color.background.semantic.negative.inverse.default',
+        ),
+        borderColor: token('color.neutral.n1@alpha20'),
+        color: token('color.neutral.n0@alpha70'),
+      },
     },
   },
 });

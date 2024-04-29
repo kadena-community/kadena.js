@@ -25,7 +25,14 @@ const meta: Meta<IBadgeProps> = {
     },
     style: {
       control: { type: 'radio' },
-      options: ['default', 'inverse'],
+      options: [
+        'default',
+        'inverse',
+        'info',
+        'warning',
+        'positive',
+        'negative',
+      ],
     },
   },
 };
