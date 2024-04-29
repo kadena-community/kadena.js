@@ -17,15 +17,17 @@ const fetchModule = (
   return describedModule;
 };
 
+const QUERY_KEY = 'module';
+
 const useModuleQuery = (
   module: string,
   networkId: ChainwebNetworkId,
   chainId: ChainwebChainId,
 ) => {
   return useQuery({
-    queryKey: ['module', module, networkId, chainId],
+    queryKey: [QUERY_KEY, module, networkId, chainId],
     queryFn: () => fetchModule(module, networkId, chainId),
   });
 };
 
-export { fetchModule, useModuleQuery };
+export { QUERY_KEY, fetchModule, useModuleQuery };

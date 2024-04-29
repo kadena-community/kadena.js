@@ -26,14 +26,17 @@ const fetchModules = (
   return Promise.all(promises);
 };
 
+const QUERY_KEY = 'modules';
+
 const useModulesQuery = (
   networkId: ChainwebNetworkId,
   chainIds?: ChainwebChainId[],
 ) => {
   return useQuery({
-    queryKey: ['modules', networkId, chainIds],
+    queryKey: [QUERY_KEY, networkId, chainIds],
     queryFn: () => fetchModules(networkId, chainIds),
+    staleTime: Infinity,
   });
 };
 
-export { fetchModules, useModulesQuery };
+export { QUERY_KEY, fetchModules, useModulesQuery };
