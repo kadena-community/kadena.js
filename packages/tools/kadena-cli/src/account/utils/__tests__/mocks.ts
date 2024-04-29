@@ -1,5 +1,5 @@
+import type { ChainId } from '@kadena/types';
 import type { INetworkCreateOptions } from '../../../networks/utils/networkHelpers.js';
-import type { IAddAccountConfig } from '../../types.js';
 
 export const testNetworkConfigMock: INetworkCreateOptions = {
   networkHost: 'https://api.testnet.chainweb.com',
@@ -15,14 +15,14 @@ export const devNetConfigMock: INetworkCreateOptions = {
   network: 'devnet',
 };
 
-export const defaultConfigMock: IAddAccountConfig = {
+export const defaultConfigMock = {
   accountAlias: 'accountAlias',
   accountName: 'accountName',
   fungible: 'coin',
   publicKeysConfig: [],
   publicKeys: '',
   predicate: 'keys-all',
-  chainId: '1',
+  chainId: '1' as ChainId,
   ...testNetworkConfigMock,
   networkConfig: testNetworkConfigMock,
   accountOverwrite: false,
