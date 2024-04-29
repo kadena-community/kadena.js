@@ -2,8 +2,8 @@
 title: kadena client
 description:
   The @kadena/client library provides a TypeScript-based API for interacting
-  with smart contracts and the chainweb network. The library includes modules in
-  three categories creating transactions, signing transactions, and submitting
+  with smart contracts and Chainweb nodes on the Kadena network. The library includes modules in
+  three categories: creating transactions, signing transactions, and submitting transactions
   to the network.
 menu: Reference
 label: Kadena client
