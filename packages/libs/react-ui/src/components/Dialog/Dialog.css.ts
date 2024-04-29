@@ -63,12 +63,7 @@ export const overlayClass = style([
     },
   }),
   {
-    selectors: {
-      '&::before': {
-        backgroundColor: tokens.kda.foundation.color.neutral['n0@alpha10'],
-        // a bit over the main background
-      },
-    },
+    backdropFilter: 'blur(12px)',
     cursor: 'default',
   },
 ]);

@@ -39,7 +39,7 @@ export const Notification: FC<INotificationProps> = ({
     <div
       className={notificationRecipe({
         intent,
-        displayStyle,
+        displayStyle: type === 'inlineStacked' ? 'borderless' : displayStyle,
       })}
       role={role}
     >

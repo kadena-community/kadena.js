@@ -18,33 +18,64 @@ export const notificationRecipe = recipe({
       width: '100%',
     }),
     {
-      selectors: {
-        '&::before': {
-          backgroundColor: tokens.kda.foundation.color.neutral['n0@alpha10'],
-        },
-      },
+      backdropFilter: 'blur(12px)',
     },
   ],
   variants: {
-    intent: semanticColors.reduce(
-      (acc, color) => {
-        acc[color] = [
-          atoms({
-            backgroundColor: `semantic.${color}.subtle`,
-            borderColor: `semantic.${color}.default`,
-            color: `text.semantic.${color}.default`,
-          }),
-          {
-            vars: {
-              [iconColorVar]:
-                tokens.kda.foundation.color.icon.semantic[color]?.default,
-            },
+    intent: {
+      info: [
+        atoms({
+          backgroundColor: 'semantic.info.subtle',
+          borderColor: `semantic.info.default`,
+          color: `text.semantic.info.default`,
+        }),
+        {
+          vars: {
+            [iconColorVar]:
+              tokens.kda.foundation.color.icon.semantic.info.default,
           },
-        ];
-        return acc;
-      },
-      {} as Record<(typeof semanticColors)[number], any>,
-    ),
+        },
+      ],
+      positive: [
+        atoms({
+          backgroundColor: 'semantic.positive.subtle',
+          borderColor: `semantic.positive.default`,
+          color: `text.semantic.positive.default`,
+        }),
+        {
+          vars: {
+            [iconColorVar]:
+              tokens.kda.foundation.color.icon.semantic.positive.default,
+          },
+        },
+      ],
+      warning: [
+        atoms({
+          backgroundColor: 'semantic.warning.subtle',
+          borderColor: `semantic.warning.default`,
+          color: `text.semantic.warning.default`,
+        }),
+        {
+          vars: {
+            [iconColorVar]:
+              tokens.kda.foundation.color.icon.semantic.warning.default,
+          },
+        },
+      ],
+      negative: [
+        atoms({
+          backgroundColor: 'semantic.negative.subtle',
+          borderColor: `semantic.negative.default`,
+          color: `text.semantic.negative.default`,
+        }),
+        {
+          vars: {
+            [iconColorVar]:
+              tokens.kda.foundation.color.icon.semantic.negative.default,
+          },
+        },
+      ],
+    },
     displayStyle: {
       bordered: [
         atoms({
@@ -93,6 +124,11 @@ export const contentClassRecipie = recipe({
       inline: [
         atoms({
           flexDirection: 'row',
+        }),
+      ],
+      inlineStacked: [
+        atoms({
+          flexDirection: 'column',
         }),
       ],
       stacked: [
