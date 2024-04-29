@@ -1,21 +1,14 @@
-import type { ChainId } from '@kadena/types';
-import type { INetworkCreateOptions } from '../networks/utils/networkHelpers.js';
-
 export type Predicate = 'keys-all' | 'keys-2' | 'keys-any';
 
-export interface IAddAccountConfig {
-  accountAlias: string;
-  fungible: string;
-  predicate: string;
-  network: string;
-  chainId: ChainId;
-  networkConfig: INetworkCreateOptions;
-  quiet?: boolean;
-  publicKeys?: string;
-  publicKeysConfig: string[];
-  accountOverwrite: boolean;
-  accountDetailsFromChain?: IAccountDetailsResult;
+export interface IAccountAliasFileConfig {
   accountName: string;
+  fungible: string;
+  publicKeysConfig: Array<string>;
+  predicate: string;
+}
+
+export interface IAddAccountConfig extends IAccountAliasFileConfig {
+  accountAlias: string;
 }
 
 export interface IValidateAccountDetailsConfig

@@ -54,9 +54,24 @@ export const accountAliasPrompt: IPrompt<string> = async () =>
     },
   });
 
-export const accountNamePrompt: IPrompt<string> = async () =>
+export const accountNamePrompt: IPrompt<string> = async (
+  previousQuestions,
+  args,
+  isOptional,
+) =>
   await input({
-    message: 'Enter an account name (optional):',
+    message: isOptional
+      ? 'Enter an account name (optional):'
+      : 'Enter an account name:',
+    validate: function (value: string) {
+      if (isOptional && (!value || value.trim.length === 0)) return true;
+
+      if (!value || value.trim().length < 3) {
+        return 'Account name must be minimum at least 3 characters long.';
+      }
+
+      return true;
+    },
   });
 
 export const accountKdnAddressPrompt: IPrompt<string> = async () =>
@@ -261,8 +276,8 @@ export const accountDeleteConfirmationPrompt: IPrompt<boolean> = async (
     previousQuestions.accountAlias === 'all'
       ? 'all the accounts'
       : selectedAccountsLength > 1
-        ? 'all the selected aliases accounts'
-        : `the ${selectedAccounts} alias account`;
+      ? 'all the selected aliases accounts'
+      : `the ${selectedAccounts} alias account`;
 
   return await select({
     message: `Are you sure you want to delete ${selectedAccountMessage}?`,

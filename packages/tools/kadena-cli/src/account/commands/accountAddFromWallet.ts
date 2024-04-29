@@ -11,7 +11,6 @@ import { checkbox } from '../../utils/prompts.js';
 import { accountOptions } from '../accountOptions.js';
 import { addAccount } from '../utils/addAccount.js';
 import { displayAddAccountSuccess, isEmpty } from '../utils/addHelpers.js';
-import { validateAndRetrieveAccountDetails } from '../utils/validateAndRetrieveAccountDetails.js';
 
 const selectPublicKeys = createOption({
   key: 'publicKeys' as const,
@@ -54,17 +53,14 @@ export const createAddAccountFromWalletCommand = createCommand(
   [
     globalOptions.walletSelect(),
     accountOptions.accountAlias(),
+    accountOptions.accountName({ isOptional: false }),
     accountOptions.fungible(),
-    globalOptions.networkSelect(),
-    globalOptions.chainId(),
     selectPublicKeys(),
     accountOptions.predicate(),
-    accountOptions.accountOverwrite(),
   ],
 
   async (option, values) => {
     const wallet = await option.walletName();
-    const accountAlias = (await option.accountAlias()).accountAlias;
     if (!wallet.walletNameConfig) {
       log.error(`Wallet ${wallet.walletName} does not exist.`);
       return;
@@ -77,9 +73,10 @@ export const createAddAccountFromWalletCommand = createCommand(
       return;
     }
 
+    const accountAlias = (await option.accountAlias()).accountAlias;
+    const accountName = (await option.accountName()).accountName;
+
     const fungible = (await option.fungible()).fungible || 'coin';
-    const { network, networkConfig } = await option.network();
-    const chainId = (await option.chainId()).chainId;
     const { publicKeys, publicKeysConfig } = await option.publicKeys({
       values,
       walletNameConfig: wallet.walletNameConfig,
@@ -89,36 +86,20 @@ export const createAddAccountFromWalletCommand = createCommand(
       accountAlias,
       wallet,
       fungible,
-      network,
-      networkConfig,
-      chainId,
       predicate,
       publicKeys,
       publicKeysConfig,
-      accountOverwrite: false,
     };
 
-    // Account name is not available in the wallet,
-    // so we need to create it from the public keys
-    // and check if account already exists on chain
-    const { accountName, accountDetails, isConfigAreSame } =
-      await validateAndRetrieveAccountDetails(config);
+    log.debug('create-account-add-from-wallet:action', config);
 
-    let accountOverwrite = false;
-    if (!isConfigAreSame) {
-      accountOverwrite = (await option.accountOverwrite()).accountOverwrite;
-    }
-
-    const updatedConfig = {
-      ...config,
+    const result = await addAccount({
+      accountAlias,
       accountName,
-      accountDetailsFromChain: accountDetails,
-      accountOverwrite,
-    };
-
-    log.debug('create-account-add-from-wallet:action', updatedConfig);
-
-    const result = await addAccount(updatedConfig);
+      fungible,
+      predicate,
+      publicKeysConfig,
+    });
 
     assertCommandError(result);
 

@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { writeAccountAliasMinimal } from '../../account/utils/createAccountConfigFile.js';
+import { writeAccountAlias } from '../../account/utils/createAccountConfigFile.js';
 import { log } from '../../utils/logger.js';
 import { relativeToCwd } from '../../utils/path.util.js';
 
@@ -41,7 +41,7 @@ export const createAccountAliasByPublicKey = async (
 }> => {
   const accountName = `k:${publicKey}`;
   const accountFilepath = path.join(directory, `${alias}.yaml`);
-  await writeAccountAliasMinimal(
+  await writeAccountAlias(
     {
       accountName,
       fungible: 'coin',
