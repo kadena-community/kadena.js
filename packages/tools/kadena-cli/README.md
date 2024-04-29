@@ -606,18 +606,16 @@ kadena account add-manual [options]
 
 | **Options**     | **Description**                              | **Required** |
 | --------------- | -------------------------------------------- | ------------ |
-| --account-alias | Set alias for account                        |              |
-| --account-name  | Set account name                             |              |
+| --account-alias | Provide alias for account                    |              |
+| --account-name  | Provide account name                         |              |
 | --fungible      | Fungible module name (default: coin)         |              |
-| --network       | Name of the network to be used               |              |
-| --chain-id      | Chain to be used                             |              |
 | --public-keys   | Comma separated list of public keys          |              |
 | --predicate     | keys-all, keys-any, keys-2, Custom predicate |              |
 
 example:
 
 ```
-kadena account add-manual --account-alias="myalias" --account-name="myaccountname" --fungible="coin" --network="mainnet" --chain-id="1" --public-keys="mypublickey" --predicate="keys-all"
+kadena account add-manual --account-alias="myalias" --account-name="myaccountname" --fungible="coin" --public-keys="mypublickey" --predicate="keys-all"
 ```
 
 ---
@@ -628,18 +626,17 @@ kadena account add-from-wallet [options]
 
 | **Options**     | **Description**                              | **Required** |
 | --------------- | -------------------------------------------- | ------------ |
-| --account-alias | Set alias for account                        |              |
+| --account-alias | Provide alias for account                    |              |
+| --account-name  | Provide account name                         |              |
 | --wallet-name   | Provide the name of the wallet               |              |
 | --fungible      | Fungible module name (default: coin)         |              |
-| --network       | Name of the network to be used               |              |
-| --chain-id      | Chain to be used                             |              |
 | --public-keys   | Comma separated list of public keys          |              |
 | --predicate     | keys-all, keys-any, keys-2, Custom predicate |              |
 
 example:
 
 ```
-kadena account add-from-wallet --account-alias="myalias" --wallet-name="mywallet" --fungible="coin" --network="mainnet" --chain-id="1" --public-keys="publickey" --predicate="keys-all"
+kadena account add-from-wallet --account-alias="myalias" --account-name="k:account" --wallet-name="mywallet" --fungible="coin" --public-keys="publickey" --predicate="keys-all"
 ```
 
 ---
