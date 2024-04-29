@@ -330,9 +330,9 @@ function walletKeysToPromptChoices(wallets: IWallet[]): {
       const publicKeyStr = maskStringPreservingStartAndEnd(publicKey, 24);
       let name = '';
       if (hasAlias) {
-        name = `idx ${indexString} - ${paddedAlias} - ${publicKeyStr}`;
+        name = `  ${indexString} - ${paddedAlias} - ${publicKeyStr}`;
       } else {
-        name = `idx ${indexString} - ${publicKeyStr}`;
+        name = `  ${indexString} - ${publicKeyStr}`;
       }
       acc.push({
         name,
