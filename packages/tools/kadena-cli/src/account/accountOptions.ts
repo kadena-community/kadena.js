@@ -198,4 +198,19 @@ export const accountOptions = {
       'Deploy faucet on devnet if not available on chain.',
     ),
   }),
+  publicKeysWithManual: createOption({
+    key: 'publicKeys' as const,
+    prompt: account.publicKeysSelectWithManualPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-k, --public-keys <publicKeys>',
+      'Public keys (comma separated for multiple keys)',
+    ),
+    expand: async (publicKeys: string) => {
+      return publicKeys
+        ?.split(',')
+        .map((value) => value.trim())
+        .filter((key) => !!key);
+    },
+  }),
 };

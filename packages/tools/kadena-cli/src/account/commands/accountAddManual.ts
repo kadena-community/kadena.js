@@ -14,7 +14,7 @@ export const createAddAccountManualCommand = createCommand(
     accountOptions.accountAlias(),
     accountOptions.accountName({ isOptional: false }),
     accountOptions.fungible(),
-    accountOptions.publicKeys({ isOptional: false }),
+    accountOptions.publicKeysWithManual({ isOptional: false }),
     accountOptions.predicate(),
   ],
 

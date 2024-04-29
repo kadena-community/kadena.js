@@ -11,11 +11,15 @@ import {
   INVALID_FILE_NAME_ERROR_MSG,
   MAX_CHAIN_VALUE,
 } from '../constants/config.js';
+import { services } from '../services/index.js';
+import type { IWallet } from '../services/wallet/wallet.types.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   formatZodError,
+  isAlphanumeric,
   isValidFilename,
   maskStringPreservingStartAndEnd,
+  notEmpty,
   truncateText,
 } from '../utils/globalHelpers.js';
 import { checkbox, input, select } from '../utils/prompts.js';
@@ -320,4 +324,84 @@ export const chainIdPrompt: IPrompt<string> = async (
       return true;
     },
   })) as ChainId;
+};
+
+function walletKeysToPromptChoices(wallets: IWallet[]): {
+  name: string;
+  value: string;
+}[] {
+  const keysList = wallets.flatMap((wallet) => wallet.keys.map((key) => key));
+  const maxAliasLength = Math.max(
+    ...keysList.map(({ alias = '' }) => alias.length),
+  );
+  const hasAlias = maxAliasLength > 0;
+  return keysList.reduce(
+    (acc, key) => {
+      const { index, alias, publicKey } = key;
+      const indexString = index.toString().padEnd(3, ' ');
+      const aliasStr = notEmpty(alias) ? alias : '';
+      const aliasMaxLength = maxAliasLength < 20 ? maxAliasLength : 20;
+      const paddedAlias = aliasStr.padEnd(aliasMaxLength, ' ');
+      const publicKeyStr = maskStringPreservingStartAndEnd(publicKey, 24);
+      let name = '';
+      if (hasAlias) {
+        name = `idx ${indexString} - ${paddedAlias} - ${publicKeyStr}`;
+      } else {
+        name = `idx ${indexString} - ${publicKeyStr}`;
+      }
+      acc.push({
+        name,
+        value: publicKey,
+      });
+      return acc;
+    },
+    [] as { name: string; value: string }[],
+  );
+}
+
+export const publicKeysSelectWithManualPrompt = async (): Promise<string> => {
+  const allWallets = await services.wallet.list();
+
+  const publicKeysChoices = walletKeysToPromptChoices(allWallets);
+
+  publicKeysChoices.unshift({
+    value: '_custom_',
+    name: 'Enter a public key manually',
+  });
+
+  const selectedKeys = await checkbox({
+    message: 'Select public keys to add to account',
+    choices: publicKeysChoices,
+    validate: (input) => {
+      if (input.length === 0) {
+        return 'Please select at least one public key';
+      }
+
+      return true;
+    },
+  });
+
+  if (selectedKeys.includes('_custom_')) {
+    const keys = selectedKeys.filter((key) => key !== '_custom_');
+    const customPublicKey = await input({
+      message: 'Enter your own public key:',
+      validate: function (value: string) {
+        if (!value || !value.trim().length) {
+          return 'Public key cannot be empty.';
+        }
+
+        if (!isAlphanumeric(value)) {
+          return 'Public key must be alphanumeric.';
+        }
+
+        return true;
+      },
+    });
+
+    keys.push(customPublicKey);
+
+    return keys.join(',');
+  }
+
+  return selectedKeys.join(',');
 };

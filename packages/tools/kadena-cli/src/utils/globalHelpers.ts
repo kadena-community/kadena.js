@@ -245,3 +245,9 @@ export function getPubKeyFromAccount(account: string): string {
   const pubKey = account.toLowerCase().slice(2);
   return pubKey;
 }
+
+export function isAlphanumeric(str: string): boolean {
+  // Regular expression that matches only alphanumeric characters
+  const alphanumericRegex = /^[a-z0-9]+$/i;
+  return alphanumericRegex.test(str);
+}
