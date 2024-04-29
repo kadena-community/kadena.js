@@ -265,8 +265,8 @@ export const accountDeleteConfirmationPrompt: IPrompt<boolean> = async (
     previousQuestions.accountAlias === 'all'
       ? 'all the accounts'
       : selectedAccountsLength > 1
-      ? 'all the selected aliases accounts'
-      : `the ${selectedAccounts} alias account`;
+        ? 'all the selected aliases accounts'
+        : `the ${selectedAccounts} alias account`;
 
   return await select({
     message: `Are you sure you want to delete ${selectedAccountMessage}?`,
@@ -320,6 +320,8 @@ export const selectPublicKeysFromWalletPrompt: IPrompt<string> = async (
   const maxAliasLength = Math.max(
     ...wallet.keys.map(({ alias = '' }) => alias.length),
   );
+
+  const hasAlias = wallet.keys.some(({ alias }) => notEmpty(alias));
   const publicKeysList = wallet.keys.reduce(
     (acc, key) => {
       const { index, alias, publicKey } = key;
@@ -328,7 +330,12 @@ export const selectPublicKeysFromWalletPrompt: IPrompt<string> = async (
       const aliasMaxLength = maxAliasLength < 20 ? maxAliasLength : 20;
       const paddedAlias = aliasStr.padEnd(aliasMaxLength, ' ');
       const publicKeyStr = maskStringPreservingStartAndEnd(publicKey, 24);
-      const name = `idx ${indexString} - ${paddedAlias} - ${publicKeyStr}`;
+      let name = '';
+      if (hasAlias) {
+        name = `idx ${indexString} - ${paddedAlias} - ${publicKeyStr}`;
+      } else {
+        name = `idx ${indexString} - ${publicKeyStr}`;
+      }
       acc.push({
         name,
         value: publicKey,
@@ -338,7 +345,7 @@ export const selectPublicKeysFromWalletPrompt: IPrompt<string> = async (
     [] as { name: string; value: string }[],
   );
   const selectedKeys = await checkbox({
-    message: 'Select public keys to add to account:',
+    message: 'Select public keys to add to account(index - alias - publickey):',
     choices: publicKeysList.map(({ name, value }) => ({ value, name })),
     pageSize: 10,
     instructions: MULTI_SELECT_INSTRUCTIONS,
