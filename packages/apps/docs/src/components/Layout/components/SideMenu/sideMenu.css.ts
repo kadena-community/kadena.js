@@ -25,6 +25,16 @@ export const listClass = style([
     listStyle: 'none',
   },
 ]);
+export const searchButtonClass = style([
+  atoms({
+    border: 'none',
+    paddingInline: 'n2',
+    cursor: 'pointer',
+  }),
+  {
+    backgroundColor: 'transparent',
+  },
+]);
 
 export const listItemClass = style([
   atoms({

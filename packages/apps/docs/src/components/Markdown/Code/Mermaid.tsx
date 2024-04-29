@@ -25,7 +25,7 @@ export const Mermaid: FC<PropsWithChildren> = ({ children, ...props }) => {
 
       setTimeout(() => {
         mermaid.contentLoaded();
-      }, 100);
+      }, 150);
     }
   }, []);
 

@@ -12,7 +12,7 @@ import type { GetStaticProps } from 'next';
 import type { NextRouter } from 'next/router';
 import { useRouter } from 'next/router';
 import type { FC, FormEvent } from 'react';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 interface IQuery {
   q?: string;
@@ -36,14 +36,14 @@ const NotFoundPage: FC = () => {
   const router = useRouter();
   const [query] = useState<string | undefined>(createSearchQuery(router));
 
-  const searchInputRef = useRef<HTMLInputElement>(null);
-
   const handleSubmit = async (
     evt: FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     evt.preventDefault();
 
-    const value = searchInputRef.current?.value ?? '';
+    const data = new FormData(evt.currentTarget);
+    const value = `${data.get('search')}`;
+
     await router.push(`/search?q=${value}`);
   };
 
@@ -54,7 +54,7 @@ const NotFoundPage: FC = () => {
         subTitle="Sorry for the inconvenience"
         body="Maybe these results can help you?"
       >
-        <SearchBar ref={searchInputRef} onSubmit={handleSubmit} query={query} />
+        <SearchBar onSubmit={handleSubmit} query={query} />
       </ErrorHeader>
       <div
         className={classNames(contentClass, contentClassVariants.home)}

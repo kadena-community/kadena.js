@@ -2,17 +2,16 @@ import { MonoSearch } from '@kadena/react-icons';
 import { TextField } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
 import type {
+  ChangeEventHandler,
   FormEvent,
   ForwardRefExoticComponent,
   ForwardedRef,
-  KeyboardEvent,
   RefAttributes,
 } from 'react';
-import React, { forwardRef } from 'react';
-import { searchFormClass } from './styles.css';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
+import { buttonClass, searchFormClass } from './styles.css';
 
 interface IProps {
-  onKeyUp?: (e: KeyboardEvent<HTMLInputElement>) => void;
   onSubmit?: (evt: FormEvent<HTMLFormElement>) => void;
   query?: string;
   ref?: ForwardedRef<HTMLInputElement>;
@@ -22,10 +21,18 @@ export const SearchBar: ForwardRefExoticComponent<
   Omit<IProps, 'ref'> & RefAttributes<HTMLInputElement>
 > = forwardRef<HTMLInputElement, IProps>(
   // eslint-disable-next-line react/prop-types
-  ({ onSubmit = () => {}, onKeyUp = () => {}, query }, ref) => {
-    const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>): void => {
+  ({ onSubmit = () => {}, query }, ref) => {
+    const [innerQuery, setInnerQuery] = useState(query);
+    const innerRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+      setInnerQuery(query);
+      innerRef.current?.focus();
+    }, [innerRef, query]);
+
+    const handleChange: ChangeEventHandler<HTMLInputElement> = (e): void => {
       e.preventDefault();
-      onKeyUp(e);
+      setInnerQuery(e.currentTarget.value);
     };
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
@@ -38,13 +45,18 @@ export const SearchBar: ForwardRefExoticComponent<
         {/* TODO: Replace with SearchField */}
         <TextField
           id="seachinput"
-          onKeyUp={handleKeyUp}
+          onChange={handleChange}
           placeholder="Search"
-          ref={ref}
-          defaultValue={query}
+          name="search"
+          ref={innerRef}
+          value={innerQuery}
           type="text"
           aria-label="Search"
-          endAddon={<MonoSearch className={atoms({ paddingInline: 'n2' })} />}
+          endAddon={
+            <button type="submit" className={buttonClass}>
+              <MonoSearch className={atoms({ paddingInline: 'n2' })} />
+            </button>
+          }
         />
       </form>
     );
