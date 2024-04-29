@@ -1,19 +1,25 @@
 import { execution } from '@kadena/client/fp';
 import { pipe } from 'ramda';
+import { z } from 'zod';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
 /**
  * @alpha
  */
-export interface IDescribeModuleOutput {
-  hash: string;
-  blessed: string[];
-  keyset: string;
-  interfaces: string[];
-  name: string;
-  code: string;
-}
+export const describeModuleSchema = z.object({
+  hash: z.string(),
+  blessed: z.array(z.string()),
+  keyset: z.string(),
+  interfaces: z.array(z.string()),
+  name: z.string(),
+  code: z.string(),
+});
+
+/**
+ * @alpha
+ */
+export type DescribeModuleOutput = z.infer<typeof describeModuleSchema>;
 
 /**
  * @alpha
@@ -21,11 +27,16 @@ export interface IDescribeModuleOutput {
 export const describeModule = async (
   module: string,
   config: Omit<IClientConfig, 'sign'>,
-): Promise<IDescribeModuleOutput> => {
+): Promise<DescribeModuleOutput> => {
   const command = pipe(
     () => `(describe-module "${module}")`,
     execution,
     dirtyReadClient(config),
   );
-  return command().execute() as unknown as IDescribeModuleOutput;
+
+  const executed = await command().execute();
+
+  const parsed = describeModuleSchema.parse(executed);
+
+  return parsed;
 };
