@@ -1,6 +1,7 @@
 import menuData from '@/_generated/menu.json';
 import type { IFrontmatterData } from '@/types';
 import { createSlug } from '@/utils/createSlug';
+import { removeImageInfoFromMarkdown } from '@/utils/removeImageInfoFromMarkdown';
 import type { StreamMetaData } from '@7-docs/edge';
 import type { IMenuData } from '@kadena/docs-tools';
 import algoliasearch from 'algoliasearch';
@@ -82,7 +83,7 @@ const cleanUpContent = (content: string): string | undefined => {
 
   // If a match is found, return the title (group 1 of the match)
   if (match && match.length >= 2) {
-    return match[1];
+    return removeImageInfoFromMarkdown(match[1]);
   }
 
   // If no match is found, return null
