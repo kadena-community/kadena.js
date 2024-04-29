@@ -39,7 +39,7 @@ In the Kadena network, resources are spread across multiple chains to reduce lat
 Every block contains a header and transactions.
 Each block header contains a reference to its parent block, so you can trace the chain back to its genesis.
 Forks occur when two blocks reference the same parent.
-Block finalization is a mechanism that resolves forks such that only the canonical chain exists.
+For the chain to continue. there must be a way to resolve forks such that only one canonical chain exists.
 
 A **fork choice rule** is an algorithm that selects the best chain that should be extended.
 The two most common fork choice rules are the **longest chain** rule and the **GHOST** rule.
