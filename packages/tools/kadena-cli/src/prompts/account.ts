@@ -311,18 +311,16 @@ export const chainIdPrompt: IPrompt<string> = async (
   })) as ChainId;
 };
 
-export const selectPublicKeysFromWalletPrompt: IPrompt<string> = async (
-  previousQuestions,
-  args,
-  isOptional,
-) => {
-  const wallet = previousQuestions.walletNameConfig as IWallet;
+function walletKeysToPromptChoices(wallets: IWallet[]): {
+  name: string;
+  value: string;
+}[] {
+  const keysList = wallets.flatMap((wallet) => wallet.keys.map((key) => key));
   const maxAliasLength = Math.max(
-    ...wallet.keys.map(({ alias = '' }) => alias.length),
+    ...keysList.map(({ alias = '' }) => alias.length),
   );
-
-  const hasAlias = wallet.keys.some(({ alias }) => notEmpty(alias));
-  const publicKeysList = wallet.keys.reduce(
+  const hasAlias = maxAliasLength > 0;
+  return keysList.reduce(
     (acc, key) => {
       const { index, alias, publicKey } = key;
       const indexString = index.toString().padEnd(3, ' ');
@@ -344,6 +342,15 @@ export const selectPublicKeysFromWalletPrompt: IPrompt<string> = async (
     },
     [] as { name: string; value: string }[],
   );
+}
+
+export const selectPublicKeysFromWalletPrompt: IPrompt<string> = async (
+  previousQuestions,
+  args,
+  isOptional,
+) => {
+  const wallet = previousQuestions.walletNameConfig as IWallet;
+  const publicKeysList = walletKeysToPromptChoices([wallet]);
   const selectedKeys = await checkbox({
     message: 'Select public keys to add to account(index - alias - publickey):',
     choices: publicKeysList.map(({ name, value }) => ({ value, name })),
