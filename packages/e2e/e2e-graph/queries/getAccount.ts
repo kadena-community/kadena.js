@@ -6,8 +6,10 @@ export function getAccountQuery(accountName: string) {
         chainAccounts {
           ...CoreChainAccountFields
           guard {
-            keys
-            predicate
+            ... on Keyset {
+              keys
+              predicate
+            }
           }
         }
         transactions {
