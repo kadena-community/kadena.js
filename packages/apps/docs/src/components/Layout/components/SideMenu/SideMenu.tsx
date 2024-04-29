@@ -30,7 +30,6 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
 
   useEffect(() => {
     if (!isMenuOpen) return;
-    console.log(searchRef.current);
     searchRef.current?.focus();
   }, [searchRef.current, isMenuOpen]);
 
