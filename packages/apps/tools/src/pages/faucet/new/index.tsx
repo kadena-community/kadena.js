@@ -74,7 +74,7 @@ import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import * as z from 'zod';
+import { z } from 'zod';
 
 interface IFundExistingAccountResponseBody {
   result: {
