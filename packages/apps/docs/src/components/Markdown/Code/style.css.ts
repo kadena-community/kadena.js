@@ -264,7 +264,7 @@ export const codeTitle = style([
 
 export const okCopiedClass = style([
   atoms({
-    color: 'icon.semantic.positive.default',
+    color: 'icon.semantic.positive.inverse.default',
   }),
 ]);
 
@@ -276,10 +276,14 @@ export const copyButtonClass = style({
   selectors: {
     '&:hover': {
       opacity: '.6',
+      background: 'transparent',
     },
   },
 });
 
+globalStyle(`${code}${mermaidClass}::before`, {
+  backgroundColor: 'transparent',
+});
 globalStyle(`${code}${mermaidClass}::before`, {
   backgroundColor: 'transparent',
 });
