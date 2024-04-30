@@ -1,6 +1,7 @@
 import type { IScriptResult } from '@kadena/docs-tools';
 import * as fs from 'fs';
 
+import chalk from 'chalk';
 import redirects from './../../../redirects.mjs';
 import { getSitemapLinkstoArray } from './utils';
 
@@ -30,21 +31,44 @@ const getSitemapLinks = async (): Promise<string[]> => {
   return getSitemapLinkstoArray(xml);
 };
 
-function checkUrlAgainstList(url: string, urlList: IRedirect[]): IRedirect[] {
-  const matchingUrls: IRedirect[] = [];
+export const checkUrlAgainstList = (
+  url: string,
+  urlList: IRedirect[],
+): string[] => {
+  const matchingUrls: string[] = [];
   for (const listItem of urlList) {
     if (listItem.source) {
       const listItemRegex = new RegExp(
         `^${listItem.source.replace(/:\w+/g, '([^/]+)')}$`,
       );
       if (listItemRegex.test(url)) {
-        matchingUrls.push(listItem);
+        const sourceArray = listItem.source.split('/');
+        const destinationArray = listItem.destination.split('/');
+        const urlArray = url.split('/');
+        let isValid = true;
+
+        const newUrlArray = destinationArray.map((slug) => {
+          if (!slug.startsWith(':')) return slug;
+          const positionIdx = sourceArray.lastIndexOf(slug);
+
+          if (!urlArray[positionIdx]) {
+            isValid = false;
+            return '';
+          }
+          return urlArray[positionIdx];
+        });
+
+        //if one of the sections is empty, do not return a url
+        if (isValid) {
+          const newUrl = newUrlArray.join('/');
+          matchingUrls.push(newUrl);
+        }
       }
     }
   }
 
   return matchingUrls;
-}
+};
 
 const checkImportedRedirectsSlugs = (
   url: string,
@@ -58,18 +82,10 @@ const checkImportedRedirectsSlugs = (
   }
 
   return matches.reduce((acc, val) => {
-    if (
-      !sitemapUrls.find((r) => r === val?.destination) &&
-      val?.destination &&
-      val?.destination !== url
-    ) {
-      return !!checkImportedRedirectsSlugs(
-        val.destination,
-        redirects,
-        sitemapUrls,
-      );
+    if (!sitemapUrls.find((r) => r === val) && val && val !== url) {
+      return !!checkImportedRedirectsSlugs(val, redirects, sitemapUrls);
     }
-    if (sitemapUrls.find((r) => r === val?.destination)) {
+    if (sitemapUrls.find((r) => r === val)) {
       return true;
     }
 
@@ -96,5 +112,6 @@ export const checkRedirects = async (): Promise<IScriptResult> => {
 
   const checkUrl = checkUrlCreator(sitemapUrls);
   productionSitemapUrls.forEach(checkUrl);
+
   return { success, errors };
 };
