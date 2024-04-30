@@ -1,8 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { withCenteredStory, withContentWidth } from '../../storyDecorators';
+import { getVariants } from '../../storyDecorators/getVariants';
 import type { IBadgeProps } from './Badge';
 import { Badge } from './Badge';
+import { badge } from './Badge.css';
+
+const { style, size } = getVariants(badge);
 
 const meta: Meta<IBadgeProps> = {
   title: 'Components/Badge',
@@ -21,11 +25,11 @@ const meta: Meta<IBadgeProps> = {
   argTypes: {
     size: {
       control: { type: 'radio' },
-      options: ['lg', 'sm'],
+      options: size,
     },
     style: {
       control: { type: 'radio' },
-      options: ['default', 'inverse'],
+      options: style,
     },
   },
 };
