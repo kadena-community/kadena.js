@@ -25,7 +25,7 @@ export const menuClass = style([
       sm: {
         width: $$leftSideWidth,
       },
-      lg: {
+      md: {
         position: 'sticky',
         top: tokens.kda.foundation.size.n18,
         bottom: 'auto',
@@ -70,7 +70,7 @@ export const menuLayoutVariants = styleVariants({
 
 export const menuBackClass = style([
   atoms({
-    position: 'absolute',
+    position: 'fixed',
     top: 0,
     bottom: 0,
     left: 0,

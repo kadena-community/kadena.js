@@ -37,7 +37,7 @@ export const hamburgerButtonClass = style([
     },
 
     ...responsiveStyle({
-      lg: {
+      md: {
         display: 'none',
       },
     }),
