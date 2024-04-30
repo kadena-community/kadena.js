@@ -1,3 +1,4 @@
+import { MonoChevronRight } from '@kadena/react-icons';
 import {
   Box,
   Card,
@@ -5,7 +6,6 @@ import {
   GridItem,
   Heading,
   Link as KadenaLink,
-  SystemIcon,
   Text,
 } from '@kadena/react-ui';
 
@@ -57,7 +57,7 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
               </Text>
             </Box>
             <KadenaLink
-              endVisual={<SystemIcon.TrailingIcon />}
+              endVisual={<MonoChevronRight />}
               href="/marmalade/quick-start"
             >
               Get started

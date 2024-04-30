@@ -62,6 +62,9 @@ importers:
       '@kadena/pactjs-generator':
         specifier: workspace:*
         version: link:../../libs/pactjs-generator
+      '@kadena/react-icons':
+        specifier: workspace:*
+        version: link:../../libs/react-icons
       '@kadena/react-ui':
         specifier: workspace:*
         version: link:../../libs/react-ui
@@ -34939,6 +34942,7 @@ packages:
     name: hw-app-kda
     version: 0.1.0
     hasBin: true
+    prepare: true
     requiresBuild: true
     dependencies:
       '@ledgerhq/hw-transport': 6.30.3
