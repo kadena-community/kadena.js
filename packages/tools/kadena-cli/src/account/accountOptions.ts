@@ -213,4 +213,13 @@ export const accountOptions = {
         .filter((key) => !!key);
     },
   }),
+  publicKeyDirectory: createOption({
+    key: 'publicKeyDirectory' as const,
+    prompt: () => null,
+    validation: z.string().optional(),
+    option: new Option(
+      '-d, --public-key-directory <publicKeyDirectory>',
+      'Public key directory',
+    ),
+  }),
 };

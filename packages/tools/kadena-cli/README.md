@@ -604,18 +604,27 @@ Tool to manage / fund accounts of fungibles (e.g. coin')
 kadena account add-manual [options]
 ```
 
-| **Options**     | **Description**                              | **Required** |
-| --------------- | -------------------------------------------- | ------------ |
-| --account-alias | Provide alias for account                    |              |
-| --account-name  | Provide account name                         |              |
-| --fungible      | Fungible module name (default: coin)         |              |
-| --public-keys   | Comma separated list of public keys          |              |
-| --predicate     | keys-all, keys-any, keys-2, Custom predicate |              |
+| **Options**               | **Description**                              | **Required** |
+| --------------------------| -------------------------------------------- | ------------ |
+| --account-alias           | Alias for the account                        |              |
+| --account-name            | Name of the account                          |              |
+| --fungible                | Fungible module name (default: coin)         |              |
+| --public-keys             | Comma separated list of public keys          |              |
+| --public-key-directory    | Path of the kadena config directory          |              |
+| --predicate               | keys-all, keys-any, keys-2, Custom predicate |              |
 
 example:
 
 ```
 kadena account add-manual --account-alias="myalias" --account-name="myaccountname" --fungible="coin" --public-keys="mypublickey" --predicate="keys-all"
+```
+
+**Using custom public key directory:**
+
+If you need to fetch public keys from a specific directory other than the current working directory, you can specify it using --public-key-directory. For instance, if the Kadena configuration is located at `/user/dev/.kadena`
+
+```
+kadena account add-manual --account-alias="myalias" --account-name="myaccountname" --fungible="coin" --public-keys="mypublickey" --predicate="keys-all" --public-key-directory=/user/dev/.kadena
 ```
 
 ---
@@ -626,9 +635,9 @@ kadena account add-from-wallet [options]
 
 | **Options**     | **Description**                              | **Required** |
 | --------------- | -------------------------------------------- | ------------ |
-| --account-alias | Provide alias for account                    |              |
-| --account-name  | Provide account name                         |              |
-| --wallet-name   | Provide the name of the wallet               |              |
+| --account-alias | Alias for the account                        |              |
+| --account-name  | Name of the account                          |              |
+| --wallet-name   | Name of the wallet                           |              |
 | --fungible      | Fungible module name (default: coin)         |              |
 | --public-keys   | Comma separated list of public keys          |              |
 | --predicate     | keys-all, keys-any, keys-2, Custom predicate |              |
@@ -656,8 +665,8 @@ kadena account create [options]
 
 | **Options**    | **Description**                              | **Required** |
 | -------------- | -------------------------------------------- | ------------ |
-| --account-name | Provide an account name                      | No           |
-| --fungible     | Fungible e.g coin                            | No           |
+| --account-name | Name of the account                          | No           |
+| --fungible     | Fungible module name (default: coin)         | No           |
 | --chain-id     | Chain to be used                             |              |
 | --public-keys  | Comma separated list of public keys          |              |
 | --predicate    | keys-all, keys-any, keys-2, Custom predicate |              |

@@ -16,6 +16,7 @@ export const createAddAccountManualCommand = createCommand(
     accountOptions.fungible(),
     accountOptions.publicKeysWithManual({ isOptional: false }),
     accountOptions.predicate(),
+    accountOptions.publicKeyDirectory({ disableQuestion: true }),
   ],
 
   async (option) => {
@@ -25,8 +26,10 @@ export const createAddAccountManualCommand = createCommand(
 
     let predicate = 'keys-all';
     let isKeysAllPredicate = false;
-
-    const publicKeysPrompt = await option.publicKeys();
+    const { publicKeyDirectory } = await option.publicKeyDirectory();
+    const publicKeysPrompt = await option.publicKeys({
+      directory: publicKeyDirectory,
+    });
     isKeysAllPredicate = isValidForOnlyKeysAllPredicate(
       accountName,
       publicKeysPrompt.publicKeysConfig,

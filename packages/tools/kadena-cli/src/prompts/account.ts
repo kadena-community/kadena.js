@@ -359,8 +359,14 @@ function walletKeysToPromptChoices(wallets: IWallet[]): {
   );
 }
 
-export const publicKeysSelectWithManualPrompt = async (): Promise<string> => {
-  const allWallets = await services.wallet.list();
+export const publicKeysSelectWithManualPrompt: IPrompt<string> = async (
+  previousQuestions,
+  args,
+  isOptional,
+) => {
+  const allWallets = await services.config.getWallets(
+    previousQuestions.directory as string,
+  );
 
   const publicKeysChoices = walletKeysToPromptChoices(allWallets);
 

@@ -55,7 +55,7 @@ export interface IConfigService {
   // wallet
   getWallet: (filepath: string) => Promise<IWallet | null>;
   setWallet: (wallet: IWalletCreate, update?: boolean) => Promise<string>;
-  getWallets: () => Promise<IWallet[]>;
+  getWallets: (directory?: string) => Promise<IWallet[]>;
   deleteWallet: (filepath: string) => Promise<void>;
 }
 
@@ -211,10 +211,12 @@ export class ConfigService implements IConfigService {
     return filepath;
   }
 
-  public async getWallets(): ReturnType<IConfigService['getWallets']> {
-    const directory = await this.getDirectory();
-    if (directory === null) throw new KadenaError('no_kadena_directory');
-    const walletPath = path.join(directory, WALLET_DIR);
+  public async getWallets(
+    directory?: string,
+  ): ReturnType<IConfigService['getWallets']> {
+    const dir = directory ?? this.getDirectory();
+    if (dir === null) throw new KadenaError('no_kadena_directory');
+    const walletPath = path.join(dir, WALLET_DIR);
     if (!(await this.services.filesystem.directoryExists(walletPath))) {
       return [];
     }
