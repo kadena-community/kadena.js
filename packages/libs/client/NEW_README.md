@@ -909,7 +909,7 @@ createEckoWalletQuicksign(options:{ host?: string }): ISignFunction
 
 ##### Examples
 
-Sign one transaction
+To sign one transaction using the `quicksign` protocol and EckoWallet:
 
 ```typescript
 const quicksignWithEckoWallet = createEckoWalletQuicksign();
@@ -939,7 +939,7 @@ const [txOneSigned, txTwoSigned] = quicksignWithEckoWallet([txOne, txTwo]);
 
 If you have a secret key in a safe environment—for example, a server environment or CI test pipeline—you can sign transactions with the `createSignWithKeypair` function to returns the `sign` function.
 
-the keypair interface
+The `IKeyPair` interface is defined as followis:
 
 ```typescript
 interface IKeyPair {
@@ -962,7 +962,7 @@ const signWithKeypair = createSignWithKeypair({ publicKey, secretKey });
 const signedTx = signWithKeypair(tx);
 ```
 
-Sign with several keys
+To sign with several key pairs:
 
 ```typescript
 const signWithKeypair = createSignWithKeypair([firstKeyPair, secondKeyPair]);
