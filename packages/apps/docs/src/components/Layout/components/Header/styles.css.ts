@@ -154,7 +154,7 @@ export const socialsClass = style([
   }),
 ]);
 
-export const gbaseIcon = style([
+export const baseIcon = style([
   {
     transition: '400ms transform ease',
   },
