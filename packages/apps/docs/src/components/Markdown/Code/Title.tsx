@@ -1,8 +1,13 @@
-import { MonoContentCopy } from '@kadena/react-icons';
+import { MonoCheck, MonoContentCopy } from '@kadena/react-icons';
 import { Button, Stack } from '@kadena/react-ui';
 import type { FC, ReactNode } from 'react';
-import React, { useRef } from 'react';
-import { codeTitle, codeWrapper, copyButtonClass } from './style.css';
+import React, { useCallback, useRef, useState } from 'react';
+import {
+  codeTitle,
+  codeWrapper,
+  copyButtonClass,
+  okCopiedClass,
+} from './style.css';
 
 interface IProp {
   children: ReactNode;
@@ -11,13 +16,19 @@ interface IProp {
 
 export const TitleWrapper: FC<IProp> = ({ children, ...props }) => {
   const ref = useRef<HTMLDivElement>(null);
+  const [isCopied, setIsCopied] = useState(false);
 
-  const handleCopy = async () => {
+  const handleCopy = useCallback(async (): Promise<void> => {
     if (!ref.current) return;
 
     const codePre = ref.current.parentElement?.querySelector('pre');
     await navigator.clipboard.writeText(codePre?.innerText ?? '');
-  };
+
+    setIsCopied(true);
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 3000);
+  }, [setIsCopied]);
 
   if (props.hasOwnProperty('data-rehype-pretty-code-fragment')) {
     return (
@@ -39,7 +50,11 @@ export const TitleWrapper: FC<IProp> = ({ children, ...props }) => {
           onClick={handleCopy}
           variant="transparent"
         >
-          <MonoContentCopy />
+          {isCopied ? (
+            <MonoCheck className={okCopiedClass} />
+          ) : (
+            <MonoContentCopy />
+          )}
         </Button>
       </Stack>
     </div>

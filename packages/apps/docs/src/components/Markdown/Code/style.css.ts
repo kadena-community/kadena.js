@@ -262,6 +262,12 @@ export const codeTitle = style([
   },
 ]);
 
+export const okCopiedClass = style([
+  atoms({
+    color: 'icon.semantic.positive.default',
+  }),
+]);
+
 export const mermaidClass = style({});
 
 export const copyButtonClass = style({
