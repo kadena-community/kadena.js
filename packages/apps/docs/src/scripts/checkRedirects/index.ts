@@ -46,8 +46,6 @@ export const checkUrlAgainstList = (
         const urlArray = url.split('/');
         let isValid = true;
 
-        console.log({ sourceArray, destinationArray, urlArray });
-
         const newUrlArray = destinationArray.map((slug) => {
           if (!slug.startsWith(':')) return slug;
           const positionIdx = sourceArray.lastIndexOf(slug);
