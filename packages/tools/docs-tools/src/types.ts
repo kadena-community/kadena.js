@@ -112,7 +112,7 @@ export interface ILayout {
   author?: string;
 }
 
-export type LevelType = 1 | 2 | 3;
+export type LevelType = 0 | 1 | 2 | 3;
 
 export interface IPageProps {
   headerMenuItems: IMenuItem[];

@@ -6,3 +6,14 @@ export const searchFormClass = style([
     width: '100%',
   }),
 ]);
+
+export const buttonClass = style([
+  atoms({
+    border: 'none',
+    paddingInline: 'n2',
+    cursor: 'pointer',
+  }),
+  {
+    backgroundColor: 'transparent',
+  },
+]);

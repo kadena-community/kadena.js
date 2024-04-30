@@ -61,7 +61,7 @@ export const AddPublicKeysSection = ({
     >
       {publicKeys.map((key, index) => (
         <TextField
-          inputFont="code"
+          fontType="code"
           key={`public-key-${index}`}
           id={`public-key-${index}`}
           value={key}
@@ -90,7 +90,7 @@ export const AddPublicKeysSection = ({
 
         <TextField
           id="public-key-input"
-          inputFont="code"
+          fontType="code"
           placeholder={t('Enter Public Key')}
           value={publicKey}
           onChange={(e) => {

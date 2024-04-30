@@ -17,7 +17,7 @@ import rehypePrettyCode from 'rehype-pretty-code';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkGfm from 'remark-gfm';
 import { BUNDLED_LANGUAGES, getHighlighter } from 'shiki';
-import redirectsConfig from './redirects.mjs';
+import redirectsConfig from './src/redirects/redirects.mjs';
 
 const withVanillaExtract = createVanillaExtractPlugin();
 

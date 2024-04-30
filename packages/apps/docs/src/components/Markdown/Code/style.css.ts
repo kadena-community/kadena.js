@@ -183,6 +183,7 @@ export const codeTitle = style([
     fontWeight: 'secondaryFont.bold',
     textTransform: 'capitalize',
     padding: 'sm',
+    width: '100%',
   }),
   {
     backgroundColor: tokens.kda.foundation.color.palette.blue.n70,
@@ -260,3 +261,29 @@ export const codeTitle = style([
     },
   },
 ]);
+
+export const okCopiedClass = style([
+  atoms({
+    color: 'icon.semantic.positive.inverse.default',
+  }),
+]);
+
+export const mermaidClass = style({});
+
+export const copyButtonClass = style({
+  color: tokens.kda.foundation.color.neutral.n0,
+  opacity: '.8',
+  selectors: {
+    '&:hover': {
+      opacity: '.6',
+      background: 'transparent',
+    },
+  },
+});
+
+globalStyle(`${code}${mermaidClass}::before`, {
+  backgroundColor: 'transparent',
+});
+globalStyle(`${code}${mermaidClass}::before`, {
+  backgroundColor: 'transparent',
+});
