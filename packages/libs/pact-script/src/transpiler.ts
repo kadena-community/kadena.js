@@ -122,8 +122,8 @@ const convertToDbRead = (declaration: ts.VariableDeclaration) => {
       .join(', ');
     return {
       code: `(with-default-read ${table.tableName} ${key}\n${indent(2)(
-        `{${def}}`,
-      )}\n${indent(2)(`{${pr}}`)}`,
+        `{ ${def} }`,
+      )}\n${indent(2)(`{ ${pr} }`)}`,
       openedBlock: 1,
     };
   }
@@ -266,6 +266,7 @@ const createExpression = (
           };
         }
       }
+      return formatError(statement);
     }
 
     case ts.SyntaxKind.ArrayLiteralExpression: {

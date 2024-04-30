@@ -85,13 +85,4 @@ class coin implements fungibleV2, fungibleXChainV1 {
       return this.credit(receiver, guard, amount);
     });
   }
-
-  // test(input: string) {
-  //   if (input === 'hello') {
-  //     return 'world';
-  //   } else if (input === 'name') {
-  //     return 'pact-script';
-  //   }
-  //   return 'Hmm';
-  // }
 }

@@ -62,8 +62,8 @@
     (enforce_unit amount)
     (require_capability (CREDIT account))
     (with-default-read coin-table account
-      {"balance" : -1, "guard" : guard}
-      {"balance" : balance, "guard" : retg}
+      { "balance" : -1, "guard" : guard }
+      { "balance" : balance, "guard" : retg }
       (enforce (= retg guard) "account guards do not match")
       (let ((is_new (if (= balance -1) (enforce_reserved account guard) false)))
         (write "coin-table" account { balance: (if is_new amount (+ balance amount)),guard: retg })
