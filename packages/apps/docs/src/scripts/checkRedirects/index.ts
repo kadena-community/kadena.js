@@ -1,8 +1,7 @@
 import type { IScriptResult } from '@kadena/docs-tools';
 import * as fs from 'fs';
 
-import chalk from 'chalk';
-import redirects from './../../../redirects.mjs';
+import redirects from './../../redirects/redirects.mjs';
 import { getSitemapLinkstoArray } from './utils';
 
 const errors: string[] = [];
@@ -46,6 +45,8 @@ export const checkUrlAgainstList = (
         const destinationArray = listItem.destination.split('/');
         const urlArray = url.split('/');
         let isValid = true;
+
+        console.log({ sourceArray, destinationArray, urlArray });
 
         const newUrlArray = destinationArray.map((slug) => {
           if (!slug.startsWith(':')) return slug;
@@ -95,8 +96,9 @@ const checkImportedRedirectsSlugs = (
 
 const checkUrlCreator =
   (sitemapUrls: string[]) =>
-  async (url: string, idx: number): Promise<void> => {
+  (url: string, idx: number): void => {
     const found = sitemapUrls.find((r) => r === url);
+
     if (found) return;
     if (
       !found &&
@@ -112,6 +114,10 @@ export const checkRedirects = async (): Promise<IScriptResult> => {
 
   const checkUrl = checkUrlCreator(sitemapUrls);
   productionSitemapUrls.forEach(checkUrl);
+
+  if (!errors.length) {
+    success.push('There were no redirect issues found');
+  }
 
   return { success, errors };
 };

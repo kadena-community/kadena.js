@@ -1,4 +1,4 @@
-import { redirects } from './redirects/index.mjs';
+import { redirects } from './index.mjs';
 
 const languages = ['en', 'es', 'ko'];
 

@@ -202,6 +202,9 @@ importers:
       '@next/mdx':
         specifier: ~13.3.4
         version: 13.3.4(@mdx-js/loader@2.3.0)(@mdx-js/react@2.3.0)
+      '@types/xml2js':
+        specifier: ^0.4.14
+        version: 0.4.14
       '@vanilla-extract/css':
         specifier: 1.14.2
         version: 1.14.2
@@ -15307,6 +15310,12 @@ packages:
     dependencies:
       '@types/node': 20.12.7
     dev: true
+
+  /@types/xml2js@0.4.14:
+    resolution: {integrity: sha512-4YnrRemBShWRO2QjvUin8ESA41rH+9nQGLUGZV/1IDhi3SL9OhdpNC/MrulTWuptXKwhx/aDxE7toV0f/ypIXQ==}
+    dependencies:
+      '@types/node': 20.12.7
+    dev: false
 
   /@types/yargs-parser@21.0.0:
     resolution: {integrity: sha512-iO9ZQHkZxHn4mSakYV0vFHAVDyEOIJQrV2uZ06HxEPcx+mt8swXoZHIbaaJ2crJYFfErySgktuTZ3BeLz+XmFA==}

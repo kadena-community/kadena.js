@@ -8,16 +8,6 @@ import { pactPathUrlRedirects } from './paths/pact.mjs';
 import { rootPathUrlRedirects } from './paths/root.mjs';
 import { tagsPathUrlRedirects } from './paths/tags.mjs';
 
-const redirects = [
-  basicsPathUrlRedirects,
-  contributePathUrlRedirects,
-  marmaladePathUrlRedirects,
-  buildPathUrlRedirects,
-  kadenaPathUrlRedirects,
-  pactPathUrlRedirects,
-  rootPathUrlRedirects,
-  blogchainPathUrlRedirects,
-  tagsPathUrlRedirects,
-].flat();
+const redirects = [].flat();
 
 export { redirects };
