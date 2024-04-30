@@ -45,3 +45,11 @@ export const dialogClass = style([
     backdropFilter: 'blur(10px)',
   },
 ]);
+
+export const headerClass = style([
+  atoms({
+    fontSize: 'md',
+    width: '100%',
+    fontWeight: 'primaryFont.bold',
+  }),
+]);

@@ -20,6 +20,7 @@ import { loadNetworkConfig } from '../../networks/utils/networkHelpers.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
+import { globalOptions } from '../../utils/globalOptions.js';
 import { getExistingNetworks } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { txOptions } from '../txOptions.js';
@@ -27,6 +28,7 @@ import { parseTransactionsFromStdin } from '../utils/input.js';
 import {
   extractCommandData,
   getTransactionsFromFile,
+  logTransactionDetails,
 } from '../utils/txHelpers.js';
 
 interface INetworkDetails extends INetworkCreateOptions {
@@ -140,6 +142,7 @@ export const sendTransactionAction = async ({
 
       const client = getClient(details);
 
+      await logTransactionDetails(command);
       const localResponse = await client.local(command);
       if (localResponse.result.status === 'failure') {
         throw localResponse.result.error;
@@ -177,7 +180,7 @@ export const createSendTransactionCommand: (
   'send',
   'Send a transaction to the network',
   [
-    txOptions.directory({ disableQuestion: true }),
+    globalOptions.directory({ disableQuestion: true }),
     txOptions.txSignedTransactionFiles(),
     txOptions.txTransactionNetwork(),
     txOptions.txPoll(),

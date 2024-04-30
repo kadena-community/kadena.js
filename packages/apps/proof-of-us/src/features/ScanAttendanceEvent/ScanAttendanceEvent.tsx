@@ -4,17 +4,17 @@ import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { MessageBlock } from '@/components/MessageBlock/MessageBlock';
 import { useAccount } from '@/hooks/account';
 import { useClaimAttendanceToken } from '@/hooks/data/claimAttendanceToken';
-import { SubmitStatus, useSubmit } from '@/hooks/submit';
+import { useSubmit } from '@/hooks/submit';
 import { useTokens } from '@/hooks/tokens';
+import { useTransaction } from '@/hooks/transaction';
 import { env } from '@/utils/env';
 import { getReturnUrl } from '@/utils/getReturnUrl';
-import { getSigneeAccount } from '@/utils/getSigneeAccount';
 import { Stack } from '@kadena/react-ui';
 import { isAfter, isBefore } from 'date-fns';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import type { Dispatch, FC, SetStateAction } from 'react';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 interface IProps {
   data: IProofOfUsTokenMeta;
@@ -27,35 +27,35 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   data,
   eventId,
   isMinted,
-  handleIsMinted,
 }) => {
-  const { isLoading, hasSuccess, hasError, isPending, claim } =
-    useClaimAttendanceToken();
+  const { claim } = useClaimAttendanceToken();
   const router = useRouter();
-  const searchParams = useSearchParams();
-
   const { account, isMounted, login } = useAccount();
-  const { addMintingData } = useTokens();
-  const { doSubmit, isStatusLoading, status } = useSubmit();
+  const { addMintingData, tokens } = useTokens();
+  const { doSubmit, isStatusLoading } = useSubmit();
+  const { transaction } = useTransaction();
+
+  const tokenId = useMemo(() => {
+    const token = tokens?.find((t) => t.info?.uri === data.manifestUri);
+    return token?.tokenId;
+  }, [tokens, data]);
 
   const getProof = (
     data: IProofOfUsTokenMeta,
-    account: IAccount,
     transaction: string,
   ): IProofOfUsData => {
     const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
 
     const proof: IProofOfUsData = {
-      proofOfUsId: data.properties.eventId,
+      proofOfUsId: data.properties.eventId || '',
       type: 'attendance',
       requestKey: tx.hash,
       title: data.name,
       isReadyToSign: false,
-      signees: [{ ...getSigneeAccount(account), initiator: true }],
       mintStatus: 'init',
       imageUri: data.image,
       date: Date.now(),
-      eventId: data.properties.eventId,
+      eventId: data.properties.eventId || '',
       eventName: data.properties.eventName,
       backgroundColor: data.properties.avatar?.backgroundColor,
       tx: transaction,
@@ -66,25 +66,17 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     return proof;
   };
 
-  useEffect(() => {
-    if (status === SubmitStatus.SUCCESS) {
-      handleIsMinted(true);
-    }
-  }, [status]);
-
-  useEffect(() => {
-    const transaction = searchParams.get('transaction') ?? '';
+  const createProof = async () => {
     if (!transaction || !account) return;
 
-    const proof = getProof(data, account, transaction);
-    addMintingData(proof);
-    // console.log({ proof });
-    // console.log('update in scanattendance');
-    // store.updateProofOfUs(proof, proof);
+    const proof = getProof(data, transaction);
+    await addMintingData(proof);
+    await doSubmit(transaction, proof);
+  };
 
-    console.log('submit');
-    doSubmit(undefined, true);
-  }, [account, searchParams]);
+  useEffect(() => {
+    createProof();
+  }, [account, transaction]);
 
   const handleClaim = async () => {
     const transaction = await claim(eventId);
@@ -94,15 +86,10 @@ export const ScanAttendanceEvent: FC<IProps> = ({
       'base64',
     );
 
-    //const proof = getProof(data, account, bufferedTx);
-    // console.log('update in scanattendance claim');
-    // store.updateProofOfUs(proof, proof);
-    // console.log({ proof });
-
     router.push(
       `${
         process.env.NEXT_PUBLIC_WALLET_URL
-      }/sign?transaction=${bufferedTx}&chainId=${
+      }sign#transaction=${bufferedTx}&chainId=${
         env.CHAINID
       }&returnUrl=${getReturnUrl()}
       `,
@@ -115,15 +102,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   const hasStarted = isBefore(startDate, Date.now());
   const hasEnded = isAfter(Date.now(), endDate);
 
-  const showClaimButton =
-    hasStarted &&
-    !hasEnded &&
-    !hasSuccess &&
-    !hasError &&
-    !isLoading &&
-    !isMinted &&
-    !isPending &&
-    account;
+  const showClaimButton = hasStarted && !hasEnded && !isMinted && account;
 
   return (
     <>
@@ -176,21 +155,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
             <Button onPress={handleClaim}>Claim NFT</Button>
           </Stack>
         )}
-        {isLoading && <MainLoader />}
-        {hasError && (
-          <Stack width="100%" flexDirection="column" gap="md">
-            <MessageBlock title="Error" variant="error">
-              There was an issue with minting
-            </MessageBlock>
-            <Stack gap="md">
-              {account && (
-                <Link href="/user">
-                  <Button>Go to dashboard</Button>
-                </Link>
-              )}
-            </Stack>
-          </Stack>
-        )}
+
         {!account && isMounted && (
           <Stack width="100%">
             <Button onClick={login}>Login to mint</Button>
@@ -201,9 +166,18 @@ export const ScanAttendanceEvent: FC<IProps> = ({
             <MessageBlock title="Success" variant="success">
               The token is minted
             </MessageBlock>
-            <Link href="/user">
-              <Button>Go to dashboard</Button>
-            </Link>
+
+            <Stack gap="md">
+              <Button>
+                <Link href="/user">Go to dashboard</Link>
+              </Button>
+
+              <Button>
+                <Link href={`/user/proof-of-us/t/${tokenId}`}>
+                  Go to Proof{' '}
+                </Link>
+              </Button>
+            </Stack>
           </Stack>
         )}
       </Stack>

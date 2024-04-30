@@ -4,6 +4,7 @@ export const EVENT_NAMES = {
   'click:change_theme': 'click:change_theme',
   'click:open_searchmodal': 'click:open_searchmodal',
   'click:mobile_search': 'click:mobile_search',
+  'click:home_search': 'click:home_search',
   'click:mobile_menu_open': 'click:mobile_menu_open',
   'click:edit_page': 'click:edit_page',
   'click:previous_page': 'click:previous_page',

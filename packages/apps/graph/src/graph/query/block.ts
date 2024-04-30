@@ -8,7 +8,12 @@ builder.queryField('block', (t) =>
   t.prismaField({
     description: 'Retrieve a block by hash.',
     args: {
-      hash: t.arg.string({ required: true }),
+      hash: t.arg.string({
+        required: true,
+        validate: {
+          minLength: 1,
+        },
+      }),
     },
     type: Block,
     nullable: true,

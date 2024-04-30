@@ -28,11 +28,36 @@ builder.queryField('transfers', (t) =>
     description: 'Retrieve transfers. Default page size is 20.',
     edgesNullable: false,
     args: {
-      accountName: t.arg.string({ required: false }),
-      fungibleName: t.arg.string({ required: false }),
-      chainId: t.arg.string({ required: false }),
-      requestKey: t.arg.string({ required: false }),
-      blockHash: t.arg.string({ required: false }),
+      accountName: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      fungibleName: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      chainId: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      requestKey: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      blockHash: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
     },
     type: Prisma.ModelName.Transfer,
     cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',

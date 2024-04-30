@@ -10,16 +10,25 @@ export * from './config/config.types.js';
 
 import type { IPlainKeyService } from './plain-key/plainkey.service.js';
 import { PlainKeyService } from './plain-key/plainkey.service.js';
+import type { IWalletService } from './wallet/wallet.service.js';
+import { WalletService } from './wallet/wallet.service.js';
+
+interface IServiceOptions {
+  configDirectory?: string;
+}
 
 export class Services {
   public filesystem: IFileSystemService;
   public config: IConfigService;
   public plainKey: IPlainKeyService;
+  public wallet: IWalletService;
+  public location?: string;
 
-  public constructor() {
+  public constructor(options?: IServiceOptions) {
     this.filesystem = IS_TEST ? memoryFileSystemService : fileSystemService;
-    this.config = new ConfigService(this);
+    this.config = new ConfigService(this, options?.configDirectory);
     this.plainKey = new PlainKeyService(this);
+    this.wallet = new WalletService(this);
   }
 }
 

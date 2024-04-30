@@ -47,6 +47,7 @@ interface IProofOfUsData {
   tokenId: string;
   requestKey: string;
   manifestUri?: string;
+  manifestData?: string;
   imageUri: string;
   eventName?: string;
   eventId: string;
@@ -58,7 +59,6 @@ interface IProofOfUsData {
   type: TokenType;
   date: number;
   minted?: number;
-  signees: IProofOfUsSignee[];
   title?: string;
   uri?: string;
   isReadyToSign: boolean;
@@ -82,8 +82,8 @@ interface IProofOfUsTokenMeta {
   image: string;
   name: string;
   properties: {
-    eventName: string;
-    eventId: string;
+    eventName?: string;
+    eventId?: string;
     eventType: TokenType;
     date: number;
     avatar?: {
@@ -116,9 +116,7 @@ interface IError {
   status?: string;
 }
 
-type ISignerStatus = 'init' | 'signing' | 'success' | 'error';
-
-type ISocial = string;
+type ISignerStatus = 'init' | 'notsigning' | 'signing' | 'success' | 'error';
 
 interface ISigneePosition {
   xPercentage: number;
@@ -128,10 +126,11 @@ interface ISigneePosition {
 type IProofOfUsSignee = Pick<IAccount, 'accountName' | 'alias'> & {
   name?: string;
   signerStatus: ISignerStatus;
+  signature?: string;
   initiator: boolean;
-  socialLink?: ISocial;
   position?: ISigneePosition;
   publicKey: string;
+  lastPingTime?: number;
 };
 
 type IAccountLeaderboard = Pick<IAccount, 'alias' | 'accountName'> & {
@@ -140,7 +139,7 @@ type IAccountLeaderboard = Pick<IAccount, 'alias' | 'accountName'> & {
 
 type IProofOfUsTokenSignee = Pick<
   IProofOfUsSignee,
-  'accountName' | 'socialLink' | 'position'
+  'accountName' | 'position'
 > & {
   name: string;
 };
@@ -149,10 +148,19 @@ interface IToken {
   eventId?: string;
   proofOfUsId?: string;
   requestKey?: string;
-  id: string;
+  tokenId: string;
   info?: {
     uri: string;
   };
   mintStartDate?: number;
   listener?: Promise<any>;
+}
+
+interface IUploadResult {
+  imageCid: string;
+  imageUrl: string;
+  imageUrlUpload: string;
+  metadataCid: string;
+  metadataUrl: string;
+  metadataUrlUpload: string;
 }

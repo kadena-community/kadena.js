@@ -119,7 +119,7 @@ export const SearchResults: FC<IProps> = ({
                   <Stack justifyContent="flex-end">
                     <Link href={`/search?q=${query}`} passHref legacyBehavior>
                       <Button
-                        endIcon={<SystemIcon.TrailingIcon />}
+                        endVisual={<SystemIcon.TrailingIcon />}
                         title="Go to search results"
                         onPress={state.close}
                       >

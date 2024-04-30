@@ -12,6 +12,7 @@ export interface IModulesResult {
   status?: string;
   data?: string[];
   chainId: ChainwebChainId;
+  network: Network;
 }
 
 export const listModules = async (
@@ -60,5 +61,6 @@ export const listModules = async (
     status: result.status,
     data: 'data' in result ? (result.data as string[]) : [],
     chainId,
+    network,
   };
 };

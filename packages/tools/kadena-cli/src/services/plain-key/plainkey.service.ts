@@ -2,8 +2,9 @@ import { kadenaEncrypt, kadenaKeyPairsFromRandom } from '@kadena/hd-wallet';
 import { kadenaGenKeypair } from '@kadena/hd-wallet/chainweaver';
 import type { IKeyPair as IKeyPairBase } from '@kadena/types';
 import { randomBytes } from 'node:crypto';
-import { notEmpty } from '../../utils/helpers.js';
-import type { IPlainKey, Services } from '../index.js';
+import { notEmpty } from '../../utils/globalHelpers.js';
+import type { IPlainKey } from '../config/config.types.js';
+import type { Services } from '../index.js';
 
 type IKeyPair = IKeyPairBase & {
   legacy?: boolean;
@@ -11,7 +12,7 @@ type IKeyPair = IKeyPairBase & {
 
 export interface IPlainKeyService {
   generateKeyPairs: (amount: number, legacy?: boolean) => Promise<IKeyPair[]>;
-  list: () => Promise<IPlainKey[]>;
+  list: (directory?: string) => Promise<IPlainKey[]>;
   storeKeyPairs: (
     keyPairs: IKeyPair[],
     alias: string,
@@ -88,7 +89,7 @@ export class PlainKeyService implements IPlainKeyService {
     }));
   }
 
-  public list(): ReturnType<IPlainKeyService['list']> {
-    return this.services.config.getPlainKeys();
+  public list(directory?: string): ReturnType<IPlainKeyService['list']> {
+    return this.services.config.getPlainKeys(directory);
   }
 }

@@ -1,7 +1,9 @@
-import { getAllWallets } from '../keys/utils/keysHelpers.js';
+import { INVALID_FILE_NAME_ERROR_MSG } from '../constants/config.js';
+import { services } from '../services/index.js';
+import type { IWallet } from '../services/wallet/wallet.types.js';
 import { CommandError } from '../utils/command.util.js';
 
-import { isValidFilename } from '../utils/helpers.js';
+import { isValidFilename } from '../utils/globalHelpers.js';
 import { input, select } from '../utils/prompts.js';
 
 export async function walletNamePrompt(): Promise<string> {
@@ -9,7 +11,7 @@ export async function walletNamePrompt(): Promise<string> {
     message: `Enter your wallet name:`,
     validate: function (input) {
       if (!isValidFilename(input)) {
-        return `Name is used as a filename. Do not use these characters: \\ / : * ? " < > |. Please choose a different name without these characters.`;
+        return `Name is used as a filename. ${INVALID_FILE_NAME_ERROR_MSG}`;
       }
       return true;
     },
@@ -19,7 +21,7 @@ export async function walletNamePrompt(): Promise<string> {
 async function walletSelectionPrompt(
   specialOptions: ('none' | 'all')[] = [],
 ): Promise<string> {
-  const existingKeys: string[] = await getAllWallets();
+  const existingKeys = await services.wallet.list();
 
   if (existingKeys.length === 0 && !specialOptions.includes('none')) {
     throw new CommandError({
@@ -30,8 +32,8 @@ async function walletSelectionPrompt(
   }
 
   const choices = existingKeys.map((key) => ({
-    value: key,
-    name: `Wallet: ${key}`,
+    value: key.alias,
+    name: `Wallet: ${key.alias}`,
   }));
 
   // Check for special options and add them
@@ -61,11 +63,29 @@ export async function walletSelectPrompt(): Promise<string> {
 }
 
 export async function walletSelectAllPrompt(): Promise<string> {
-  return walletSelectionPrompt(['all']);
+  const wallets = await services.wallet.list();
+
+  // Prevent uselessly prompting the user if there are no wallets
+  // 'all' is a safe fallback as the option will result in an empty array
+  if (wallets.length === 0) return 'all';
+
+  return await select({
+    message: 'Select a wallet',
+    choices: [
+      {
+        value: 'all',
+        name: 'All Wallets',
+      },
+      ...wallets.map((wallet) => ({
+        value: wallet.alias,
+        name: wallet.alias,
+      })),
+    ],
+  });
 }
 
 export async function walletSelectByWalletPrompt(
-  wallets: string[] = [],
+  wallets: IWallet[] = [],
 ): Promise<string> {
   if (wallets.length === 0) {
     throw new CommandError({
@@ -75,10 +95,10 @@ export async function walletSelectByWalletPrompt(
     });
   }
 
-  const choices = wallets.map((key) => {
+  const choices = wallets.map((wallet) => {
     return {
-      value: key,
-      name: `Wallet: ${key}`,
+      value: wallet.alias,
+      name: `Wallet: ${wallet.alias}`,
     };
   });
 
@@ -88,4 +108,14 @@ export async function walletSelectByWalletPrompt(
   });
 
   return selectedWallet;
+}
+
+export async function createWalletPrompt(): Promise<string> {
+  return await select({
+    message: 'Would you like to create a wallet?',
+    choices: [
+      { value: 'true', name: 'Yes' },
+      { value: 'false', name: 'No' },
+    ],
+  });
 }

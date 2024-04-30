@@ -1,7 +1,7 @@
 import type { Command } from 'commander';
 import { createCommand } from '../../utils/createCommand.js';
 import { signWithKeypair } from '../utils/txSignWithKeypair.js';
-import { signWithwallet } from '../utils/txSignWithWallet.js';
+import { signWithWallet } from '../utils/txSignWithWallet.js';
 import { options } from './txSignOptions.js';
 
 /**
@@ -18,7 +18,7 @@ export const createSignCommand: (program: Command, version: string) => void =
     async (option, { stdin, values }) => {
       const signMethod = await option.txSignWith();
       if (signMethod.txSignWith === 'wallet') {
-        return signWithwallet(option, values, stdin);
+        return signWithWallet(option, values, stdin);
       }
       if (signMethod.txSignWith === 'keyPair') {
         return signWithKeypair(option, values, stdin);

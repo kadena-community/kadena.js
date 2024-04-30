@@ -2,7 +2,7 @@ import path from 'node:path';
 
 import type { ICommand, IUnsignedCommand } from '@kadena/types';
 
-import type { IKeyPair } from '../../keys/utils/storage.js';
+import type { IWalletKeyPair } from '../../services/wallet/wallet.types.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import type { CommandOption } from '../../utils/createCommand.js';
@@ -23,7 +23,7 @@ export const signTransactionWithKeyPairAction = async ({
   legacy,
   directory,
 }: {
-  keyPairs: IKeyPair[];
+  keyPairs: IWalletKeyPair[];
   commands: IUnsignedCommand[];
   directory?: string;
   legacy?: boolean;
@@ -61,7 +61,7 @@ export const signTransactionWithKeyPairAction = async ({
 };
 
 export const signTransactionFileWithKeyPairAction = async (data: {
-  keyPairs: IKeyPair[];
+  keyPairs: IWalletKeyPair[];
   files: string[];
   legacy?: boolean;
 }): Promise<
@@ -95,9 +95,13 @@ export async function signWithKeypair(
         ...mode,
         command,
       });
+
       return await signTransactionWithKeyPairAction({
         commands: [command],
-        keyPairs: key.keyPairs,
+        keyPairs: key.keyPairs.map((x) => ({
+          publicKey: x.publicKey,
+          secretKey: x.secretKey!,
+        })),
         legacy: mode.legacy,
       });
     } else {
@@ -117,7 +121,10 @@ export async function signWithKeypair(
       });
       return await signTransactionFileWithKeyPairAction({
         files: absolutePaths,
-        keyPairs: key.keyPairs,
+        keyPairs: key.keyPairs.map((x) => ({
+          publicKey: x.publicKey,
+          secretKey: x.secretKey!,
+        })),
         legacy: mode.legacy,
       });
     }
@@ -126,7 +133,10 @@ export async function signWithKeypair(
   assertCommandError(result);
 
   if (result.data.commands.length === 1) {
-    log.output(JSON.stringify(result.data.commands[0].command, null, 2));
+    log.output(
+      JSON.stringify(result.data.commands[0].command, null, 2),
+      result.data.commands[0].command,
+    );
   }
   result.data.commands.forEach((tx) => {
     log.info(`Signed transaction saved to ${tx.path}`);

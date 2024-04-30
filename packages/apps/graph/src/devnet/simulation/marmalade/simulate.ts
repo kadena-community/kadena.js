@@ -107,6 +107,7 @@ export async function simulateMarmalade({
       });
     }
 
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       for (let i = 0; i < accountCollection.length; i++) {
         // Choose account from
@@ -200,6 +201,11 @@ export async function simulateMarmalade({
             continue;
           }
 
+          if (transferAmount > account.tokens[randomToken]) {
+            logger.warn('Skipping transfer of more tokens than available');
+            continue;
+          }
+
           await transferToken({
             tokenId: randomToken,
             sender: account,
@@ -215,7 +221,7 @@ export async function simulateMarmalade({
     }
   } catch (error) {
     logger.error(error);
-    appendToFile(filepath, { error });
+    appendToFile(filepath, { error: JSON.stringify(error) });
     throw error;
   }
 }
@@ -264,7 +270,7 @@ export async function createAndMintToken({
   uri: string;
   filepath: string;
   accountCollection: IAccountWithTokens[];
-}) {
+}): Promise<string> {
   const tokenId = await createTokenId({ creator, uri });
 
   const createResult = await createToken({
@@ -339,7 +345,7 @@ export async function transferToken({
   amount: number;
   filepath: string;
   accountCollection: IAccountWithTokens[];
-}) {
+}): Promise<void> {
   logger.info(
     `Transfering token ${tokenId}\nAmount ${amount}\nSender ${sender.account}\nReceiver ${receiver.account}`,
   );
@@ -348,7 +354,7 @@ export async function transferToken({
     tokenId,
     sender,
     receiver,
-    amount: new PactNumber(1).toPactDecimal(),
+    amount: new PactNumber(amount).toPactDecimal(),
   });
 
   appendToFile(filepath, {
@@ -397,7 +403,11 @@ export async function mintExistingToken({
   amount: number;
   filepath: string;
   accountCollection: IAccountWithTokens[];
-}) {
+}): Promise<void> {
+  logger.info(
+    `Minting existing token ${tokenId}\nAmount ${amount}\nCreator ${creator.account}`,
+  );
+
   const mintResult = await mintToken({
     creator: creator.account,
     tokenId,

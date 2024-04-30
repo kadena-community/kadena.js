@@ -1,14 +1,21 @@
+import classNames from 'classnames';
 import type { FC } from 'react';
+import { multipleWrapperClass, wrapperClass } from '../ListSignees/style.css';
 import { SigneeItem } from './SigneeItem';
-import { wrapperClass } from './styles.css';
 
 interface IProps {
   signees?: IProofOfUsTokenSignee[];
   authors: { name: string }[];
 }
 export const Signees: FC<IProps> = ({ signees, authors }) => {
+  const isMultiple = !!(signees?.length && signees?.length > 2);
   return (
-    <section className={wrapperClass}>
+    <ul
+      className={classNames(
+        wrapperClass,
+        isMultiple ? multipleWrapperClass : '',
+      )}
+    >
       {signees
         ? signees.map((signee, idx) => (
             <SigneeItem
@@ -16,12 +23,17 @@ export const Signees: FC<IProps> = ({ signees, authors }) => {
               name={signee.name}
               accountName={signee.accountName}
               idx={idx}
-              socialLink={signee.socialLink}
+              isMultiple={isMultiple}
             />
           ))
         : authors.map((author, idx) => (
-            <SigneeItem key={author.name} name={author.name} idx={idx} />
+            <SigneeItem
+              key={author.name}
+              name={author.name}
+              idx={idx}
+              isMultiple={isMultiple}
+            />
           ))}
-    </section>
+    </ul>
   );
 };

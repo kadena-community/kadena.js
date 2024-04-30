@@ -1,24 +1,30 @@
 import { prismaClient } from '@db/prisma-client';
+import type { Event } from '@prisma/client';
 import { Prisma } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
+import {
+  createBlockDepthMap,
+  getConditionForMinimumDepth,
+} from '@services/depth-service';
 import { normalizeError } from '@utils/errors';
 import { parsePrismaJsonColumn } from '@utils/prisma-json-columns';
 import { builder } from '../builder';
 
-const generateEventsFilter = (args: {
+const generateEventsFilter = async (args: {
   qualifiedEventName: string;
   chainId?: string | null | undefined;
   parametersFilter?: string | null | undefined;
   blockHash?: string | null | undefined;
   orderIndex?: number | null | undefined;
   requestKey?: string | null | undefined;
-}): Prisma.EventWhereInput => ({
+  minimumDepth?: number | null | undefined;
+}): Promise<Prisma.EventWhereInput> => ({
   qualifiedName: args.qualifiedEventName,
-  transaction: {
-    NOT: [],
+  requestKey: {
+    not: 'cb',
   },
   ...(args.parametersFilter && {
-    parameters: parsePrismaJsonColumn(args.parametersFilter, {
+    parameters: parsePrismaJsonColumn<'Event'>(args.parametersFilter, {
       query: 'events',
       queryParameter: 'parametersFilter',
       column: 'parameters',
@@ -28,6 +34,12 @@ const generateEventsFilter = (args: {
   ...(args.blockHash && { blockHash: args.blockHash }),
   ...(args.orderIndex && { orderIndex: args.orderIndex }),
   ...(args.requestKey && { requestKey: args.requestKey }),
+  ...(args.minimumDepth && {
+    OR: await getConditionForMinimumDepth(
+      args.minimumDepth,
+      args.chainId ? [args.chainId] : undefined,
+    ),
+  }),
 });
 
 builder.queryField('events', (t) =>
@@ -39,12 +51,48 @@ builder.queryField('events', (t) =>
       An example of such a filter parameter value: \`events(parametersFilter: "{\\"array_starts_with\\": \\"k:abcdefg\\"}")\``,
     edgesNullable: false,
     args: {
-      qualifiedEventName: t.arg.string({ required: true }),
-      chainId: t.arg.string({ required: false }),
-      parametersFilter: t.arg.string({ required: false }),
-      blockHash: t.arg.string({ required: false }),
-      orderIndex: t.arg.int({ required: false }),
-      requestKey: t.arg.string({ required: false }),
+      qualifiedEventName: t.arg.string({
+        required: true,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      chainId: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      parametersFilter: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      blockHash: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      orderIndex: t.arg.int({
+        required: false,
+        validate: {
+          nonnegative: true,
+        },
+      }),
+      requestKey: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      minimumDepth: t.arg.int({
+        required: false,
+        validate: {
+          nonnegative: true,
+        },
+      }),
     },
     type: Prisma.ModelName.Event,
     cursor: 'blockHash_orderIndex_requestKey',
@@ -53,12 +101,13 @@ builder.queryField('events', (t) =>
         withRelations: true,
         first: args.first,
         last: args.last,
+        minimumDepth: args.minimumDepth,
       }),
     }),
     async totalCount(__parent, args) {
       try {
         return await prismaClient.event.count({
-          where: generateEventsFilter(args),
+          where: await generateEventsFilter(args),
         });
       } catch (error) {
         throw normalizeError(error);
@@ -66,15 +115,49 @@ builder.queryField('events', (t) =>
     },
     async resolve(query, __parent, args) {
       try {
-        return await prismaClient.event.findMany({
-          ...query,
-          where: generateEventsFilter(args),
-          orderBy: [
-            { height: 'desc' },
-            { requestKey: 'desc' },
-            { orderIndex: 'desc' },
-          ],
-        });
+        let events: Event[] = [];
+        let skip = 0;
+        const take = query.take;
+
+        while (events.length < take) {
+          const remaining = take - events.length;
+          const fetchedEvents = await prismaClient.event.findMany({
+            ...query,
+            where: await generateEventsFilter(args),
+            orderBy: [
+              { height: 'desc' },
+              { requestKey: 'desc' },
+              { orderIndex: 'desc' },
+            ],
+            take: remaining,
+            skip,
+          });
+
+          if (fetchedEvents.length === 0) {
+            break;
+          }
+
+          if (args.minimumDepth) {
+            const blockHashToDepth = await createBlockDepthMap(
+              fetchedEvents,
+              'blockHash',
+            );
+
+            const filteredEvents = fetchedEvents.filter(
+              (event) =>
+                blockHashToDepth[event.blockHash] >=
+                (args.minimumDepth as number) + 1,
+            );
+
+            events = [...events, ...filteredEvents];
+          } else {
+            events = [...events, ...fetchedEvents];
+          }
+
+          skip += remaining;
+        }
+
+        return events.slice(0, take);
       } catch (error) {
         throw normalizeError(error);
       }

@@ -8,7 +8,11 @@ import {
 import { genKeyPair } from '@kadena/cryptography-utils';
 import { PactNumber } from '@kadena/pactjs';
 import type { ChainId } from '@kadena/types';
-import { GAS_STATIONS_MAP, NAMESPACES_MAP } from '../../constants/account.js';
+import {
+  GAS_STATIONS_MAP,
+  MAINNET_FUND_TRANSFER_ERROR_MESSAGE,
+  NAMESPACES_MAP,
+} from '../../constants/account.js';
 import { DEFAULT_CONTRACT_NAME } from '../../devnet/faucet/deploy/constants.js';
 import type { INetworkCreateOptions } from '../../networks/utils/networkHelpers.js';
 
@@ -21,14 +25,16 @@ export async function transferFund({
     amount: string;
     contract: string;
     chainId: ChainId;
-    networkConfig: INetworkCreateOptions;
+    networkConfig: Pick<INetworkCreateOptions, 'networkId' | 'networkHost'>;
   };
 }): Promise<ITransactionDescriptor> {
   try {
     const { chainId, amount, networkConfig } = config;
 
-    if (networkConfig.networkId === 'mainnet01') {
-      throw new Error('Cannot transfer fund on mainnet');
+    if (networkConfig.networkId.includes('mainnet')) {
+      throw new Error(
+        `${MAINNET_FUND_TRANSFER_ERROR_MESSAGE} "${networkConfig.networkId}"`,
+      );
     }
 
     const keyPair = genKeyPair();

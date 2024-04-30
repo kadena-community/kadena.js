@@ -33,8 +33,9 @@ export const ListItem: FC<IProps> = ({ token }) => {
 
   const loadProofOfUsData = useCallback(async (proofOfUsId: string) => {
     const data = await store.getProofOfUs(proofOfUsId);
+    const signees = await store.getProofOfUsSignees(proofOfUsId);
     if (!data) return;
-    const metaData = await createManifest(data, data?.imageUri);
+    const metaData = await createManifest(data, signees, data?.imageUri);
 
     setInnerData(metaData);
   }, []);
@@ -56,11 +57,18 @@ export const ListItem: FC<IProps> = ({ token }) => {
 
   useEffect(() => {
     setIsMinted(false);
-    if (token?.listener) {
-      token.listener.then((res) => {
+
+    try {
+      if (token?.listener) {
+        token.listener
+          .then((res) => {
+            setIsMinted(true);
+          })
+          .catch(console.log);
+      } else {
         setIsMinted(true);
-      });
-    } else {
+      }
+    } catch (e) {
       setIsMinted(true);
     }
   }, [token, setIsMinted]);
@@ -85,25 +93,12 @@ export const ListItem: FC<IProps> = ({ token }) => {
   }, [token]);
 
   const link = useMemo(() => {
-    if (innerData?.properties.eventType === 'attendance') {
-      if (isMinted) {
-        return `/user/proof-of-us/t/${token?.id}`;
-      }
-      return `/scan/e/${token?.eventId}`;
-    }
-
     if (isMinted) {
-      return `/user/proof-of-us/t/${token?.id}`;
+      return `/user/proof-of-us/t/${token?.tokenId}`;
     } else {
-      return `/user/proof-of-us/t/${token?.id}/${token?.requestKey}`;
+      return `/user/proof-of-us/mint/${token?.requestKey}?id=${token?.proofOfUsId}`;
     }
-  }, [
-    isMinted,
-    token?.id,
-    token?.requestKey,
-    innerData?.properties.eventType,
-    token?.eventId,
-  ]);
+  }, [isMinted, token?.tokenId, token?.requestKey]);
 
   return (
     <motion.li
@@ -119,11 +114,9 @@ export const ListItem: FC<IProps> = ({ token }) => {
           {innerData.properties.eventType === 'attendance' && (
             <AttendanceThumb token={innerData} isMinted={isMinted} />
           )}
-
           {innerData.properties.eventType === 'connect' && (
             <ConnectThumb token={innerData} isMinted={isMinted} />
           )}
-
           <Stack display="flex" flexDirection="column" gap="xs">
             <Text transform="capitalize" bold>
               {innerData.name}

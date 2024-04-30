@@ -1,10 +1,14 @@
 import { isDevEnvironment } from '@/utils/isDevEnvironment';
-import { MonoAnimation, MonoQrCodeScanner } from '@kadena/react-icons/system';
+import {
+  MonoAnimation,
+  MonoQrCodeScanner,
+  MonoViewInAr,
+} from '@kadena/react-icons/system';
 import React from 'react';
 import type { ISidebarToolbarItem } from '../types/Layout';
 import Routes from './routes';
 
-export const menuData: ISidebarToolbarItem[] = [
+const menuData: ISidebarToolbarItem[] = [
   {
     title: 'Faucet',
     icon: <MonoQrCodeScanner />,
@@ -33,14 +37,21 @@ export const menuData: ISidebarToolbarItem[] = [
         title: 'Cross Chain Transfer Finisher',
         href: Routes.CROSS_CHAIN_TRANSFER_FINISHER,
       },
-      ...(isDevEnvironment
-        ? [
-            {
-              title: 'Transfer',
-              href: Routes.TRANSFER,
-            },
-          ]
-        : []),
+      {
+        title: 'Transfer',
+        href: Routes.TRANSFER,
+      },
     ],
   },
 ];
+
+if (isDevEnvironment) {
+  menuData.push({
+    title: 'Modules',
+    icon: <MonoViewInAr />,
+    href: 'modules',
+    items: [{ title: 'Explorer', href: Routes.MODULE_EXPLORER }],
+  });
+}
+
+export { menuData };

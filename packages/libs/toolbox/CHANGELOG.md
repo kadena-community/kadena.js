@@ -1,5 +1,12 @@
 # @kadena/toolbox
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [3bbfeaaa9]
+  - @kadena/client@1.11.0
+
 ## 0.0.4
 
 ### Patch Changes

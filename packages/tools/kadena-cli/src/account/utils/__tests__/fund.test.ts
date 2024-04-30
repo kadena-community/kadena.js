@@ -16,19 +16,22 @@ describe('fund', () => {
         publicKeys: ['publicKey'],
         predicate: 'predicate',
         fungible: 'coin',
-        alias: 'my_testnet.yaml',
       },
       amount: '100',
       networkConfig: testNetworkConfigMock,
-      chainId: '1',
+      chainIds: ['1'],
     });
     expect(result).toStrictEqual({
       status: 'success',
-      data: {
-        chainId: '1',
-        networkId: 'testnet04',
-        requestKey: 'requestKey-1',
-      },
+      data: [
+        {
+          chainId: '1',
+          networkId: 'testnet04',
+          requestKey: 'requestKey-1',
+        },
+      ],
+      errors: [],
+      warnings: [],
     });
   });
 
@@ -57,19 +60,24 @@ describe('fund', () => {
         publicKeys: ['publicKey'],
         predicate: 'predicate',
         fungible: 'coin',
-        alias: 'my_testnet.yaml',
       },
       amount: '100',
       networkConfig: testNetworkConfigMock,
-      chainId: '1',
+      chainIds: ['1'],
     });
     expect(result).toStrictEqual({
       status: 'success',
-      data: {
-        chainId: '1',
-        networkId: 'testnet04',
-        requestKey: 'requestKey-1',
-      },
+      data: [
+        {
+          chainId: '1',
+          networkId: 'testnet04',
+          requestKey: 'requestKey-1',
+        },
+      ],
+      errors: [],
+      warnings: [
+        'Account "accountName" does not exist on Chain ID(s) 1. So the account will be created on these Chain ID(s).',
+      ],
     });
   });
 
@@ -92,16 +100,17 @@ describe('fund', () => {
         publicKeys: ['publicKey'],
         predicate: 'predicate',
         fungible: 'coin',
-        alias: 'my_testnet.yaml',
       },
       amount: '100',
       networkConfig: testNetworkConfigMock,
-      chainId: '1',
+      chainIds: ['1'],
     });
 
     expect(result).toStrictEqual({
       status: 'error',
-      errors: ['{"error":"something went wrong"}'],
+      errors: [],
+      data: [],
+      warnings: ['Error on Chain ID 1 - {"error":"something went wrong"}'],
     });
   });
 
@@ -124,16 +133,19 @@ describe('fund', () => {
         publicKeys: ['publicKey'],
         predicate: 'predicate',
         fungible: 'coin',
-        alias: 'my_testnet.yaml',
       },
       amount: '100',
       networkConfig: testNetworkConfigMock,
-      chainId: '1',
+      chainIds: ['1'],
     });
 
     expect(result).toStrictEqual({
       status: 'error',
-      errors: ['Failed to transfer fund : "{"error":"something went wrong"}"'],
+      data: [],
+      errors: [],
+      warnings: [
+        'Error on Chain ID 1 - Failed to transfer fund : "{"error":"something went wrong"}"',
+      ],
     });
   });
 });

@@ -1,14 +1,11 @@
-import type { IKeyPair } from '@kadena/types';
-import yaml from 'js-yaml';
 import path from 'path';
 
-import { ACCOUNT_DIR, WALLET_DIR } from '../../constants/config.js';
-import type { IWallet } from '../../keys/utils/keysHelpers.js';
-import { services } from '../../services/index.js';
-import { sanitizeFilename } from '../../utils/helpers.js';
+import { KadenaError } from '../../services/service-error.js';
+import { sanitizeFilename } from '../../utils/globalHelpers.js';
 import { log } from '../../utils/logger.js';
 import { relativeToCwd } from '../../utils/path.util.js';
 import type { IAccountDetailsResult, IAddAccountConfig } from '../types.js';
+import { getAccountDirectory } from './accountHelpers.js';
 
 export const isEmpty = (value?: string | null): boolean =>
   value === undefined || value === '' || value === null;
@@ -36,8 +33,12 @@ export const getUpdatedConfig = (
 };
 
 export const getAccountFilePath = (fileName: string): string => {
+  const accountDir = getAccountDirectory();
+  if (accountDir === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
   const sanitizedAlias = sanitizeFilename(fileName);
-  return path.join(ACCOUNT_DIR, `${sanitizedAlias}.yaml`);
+  return path.join(accountDir, `${sanitizedAlias}.yaml`);
 };
 
 export const displayAddAccountSuccess = (
@@ -52,17 +53,3 @@ export const displayAddAccountSuccess = (
     ),
   );
 };
-
-export async function getAllPublicKeysFromWalletConfig(
-  walletNameConfig: IWallet,
-): Promise<Array<string>> {
-  const publicKeysList: Array<string> = [];
-  for (const key of walletNameConfig.keys) {
-    const content = await services.filesystem.readFile(
-      path.join(WALLET_DIR, walletNameConfig?.folder, key),
-    );
-    const parsed = content !== null ? (yaml.load(content) as IKeyPair) : null;
-    publicKeysList.push(parsed?.publicKey ?? '');
-  }
-  return publicKeysList.filter((key) => !isEmpty(key));
-}

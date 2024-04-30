@@ -3,7 +3,7 @@ import { chainIds } from '@utils/chains';
 import { dotenv } from '@utils/dotenv';
 import { builder } from '../builder';
 import FungibleAccount from '../objects/fungible-account';
-import type { FungibleChainAccount } from '../types/graphql-types';
+import type { IFungibleChainAccount } from '../types/graphql-types';
 import { FungibleAccountName } from '../types/graphql-types';
 
 builder.queryField('fungibleAccount', (t) =>
@@ -12,8 +12,18 @@ builder.queryField('fungibleAccount', (t) =>
       'Retrieve an fungible specific account by its name and fungible, such as coin.',
     nullable: true,
     args: {
-      accountName: t.arg.string({ required: true }),
-      fungibleName: t.arg.string({ required: false }),
+      accountName: t.arg.string({
+        required: true,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      fungibleName: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
     },
     type: FungibleAccount,
     async resolve(__parent, args) {
@@ -29,7 +39,7 @@ builder.queryField('fungibleAccount', (t) =>
         )
       ).filter(
         (chainAccount) => chainAccount !== null,
-      ) as FungibleChainAccount[];
+      ) as IFungibleChainAccount[];
 
       if (chainAccounts.length === 0) {
         return null;

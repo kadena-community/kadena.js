@@ -1,20 +1,23 @@
 import type { ChainId } from '@kadena/types';
 import { z } from 'zod';
 import { chainIdValidation } from '../account/utils/accountHelpers.js';
-import { defaultNetworksPath } from '../constants/networks.js';
+import {
+  INVALID_FILE_NAME_ERROR_MSG,
+  MAX_CHAIN_VALUE,
+} from '../constants/config.js';
+import { NO_NETWORKS_FOUND_ERROR_MESSAGE } from '../constants/networks.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import {
   ensureNetworksConfiguration,
   getNetworksInOrder,
   loadNetworkConfig,
 } from '../networks/utils/networkHelpers.js';
+import { getNetworkDirectory } from '../networks/utils/networkPath.js';
 import { services } from '../services/index.js';
+import { KadenaError } from '../services/service-error.js';
 import type { IPrompt } from '../utils/createOption.js';
-import {
-  getExistingNetworks,
-  isAlphabetic,
-  isNotEmptyString,
-} from '../utils/helpers.js';
+import { isNotEmptyString, isValidFilename } from '../utils/globalHelpers.js';
+import { getExistingNetworks } from '../utils/helpers.js';
 import { input, select } from '../utils/prompts.js';
 import { getInputPrompt } from './generic.js'; // Importing getInputPrompt from another file
 
@@ -25,10 +28,10 @@ export const chainIdPrompt: IPrompt<string> = async (
 ) => {
   const defaultValue = (args.defaultValue as string) || '0';
   return (await input({
-    message: 'Enter ChainId (0-19)',
+    message: `Enter ChainId (0-${MAX_CHAIN_VALUE})`,
     default: defaultValue,
     validate: function (input) {
-      const chainId = parseInt(input, 10);
+      const chainId = parseInt(input.trim(), 10);
       const result = chainIdValidation.safeParse(chainId);
       if (!result.success) {
         const formatted = result.error.format();
@@ -49,9 +52,12 @@ export const networkNamePrompt: IPrompt<string> = async (
     message: 'Enter a network name (e.g. "mainnet")',
     default: defaultValue,
     validate: function (input) {
-      if (!isAlphabetic(input)) {
-        return 'Network names must be alphanumeric! Please enter a valid network name.';
+      if (!isNotEmptyString(input.trim())) return 'Network name is required.';
+
+      if (!isValidFilename(input)) {
+        return `Name is used as a filename. ${INVALID_FILE_NAME_ERROR_MSG}`;
       }
+
       return true;
     },
   });
@@ -157,9 +163,7 @@ export const networkSelectPrompt: IPrompt<string> = async (
   );
 
   if (!filteredNetworks.length) {
-    throw new Error(
-      'No networks found. To create one, use: `kadena networks create`. To set default networks, use: `kadena config init`.',
-    );
+    throw new Error(NO_NETWORKS_FOUND_ERROR_MESSAGE);
   }
 
   const networksInOrder = await getNetworksInOrder(filteredNetworks);
@@ -185,20 +189,23 @@ export const networkSelectPrompt: IPrompt<string> = async (
 };
 
 const getEnsureExistingNetworks = async (): Promise<ICustomNetworkChoice[]> => {
+  const kadenaDir = services.config.getDirectory();
+  const networkDir = getNetworkDirectory();
+  if (networkDir === null || kadenaDir === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
   const isNetworksFolderExists =
-    await services.filesystem.directoryExists(defaultNetworksPath);
+    await services.filesystem.directoryExists(networkDir);
   if (
     !isNetworksFolderExists ||
-    (await services.filesystem.readDir(defaultNetworksPath)).length === 0
+    (await services.filesystem.readDir(networkDir)).length === 0
   ) {
-    await ensureNetworksConfiguration();
+    await ensureNetworksConfiguration(kadenaDir);
   }
   const existingNetworks: ICustomNetworkChoice[] = await getExistingNetworks();
 
   if (!existingNetworks.length) {
-    throw new Error(
-      'No existing networks found. To create one, use: `kadena networks create`. To set default networks, use: `kadena config init',
-    );
+    throw new Error(NO_NETWORKS_FOUND_ERROR_MESSAGE);
   }
   return existingNetworks;
 };
@@ -226,14 +233,12 @@ export const networkSelectOnlyPrompt: IPrompt<string> = async (
 
   const filteredNetworks = existingNetworksData.filter((network) =>
     allowedNetworkIds.length > 0
-      ? allowedNetworkIds.includes(network.networkId)
+      ? allowedNetworkIds.some((allowed) => network.networkId.includes(allowed))
       : true,
   );
 
   if (!filteredNetworks.length) {
-    throw new Error(
-      'No supported networks found. To create one, use: `kadena networks create`. To set default networks, use: `kadena config init',
-    );
+    throw new Error(NO_NETWORKS_FOUND_ERROR_MESSAGE);
   }
 
   const networksInOrder = await getNetworksInOrder(filteredNetworks);
@@ -290,8 +295,8 @@ export const networkDeletePrompt: IPrompt<string> = async (
   }
 
   let message = `Are you sure you want to delete the configuration for network "${defaultValue}"?`;
-  if (isNotEmptyString(previousQuestions.isDefaultNetwork)) {
-    message += `\nThis is the "default network". If you delete it, then the default network settings will also be deleted.`;
+  if (previousQuestions.isDefaultNetwork === true) {
+    message += `\nYou have currently set this as your "default network". If you delete it, then the default network settings will also be deleted.`;
   }
 
   return await select({

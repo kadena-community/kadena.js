@@ -1,8 +1,9 @@
+import { MonoErrorOutline } from '@kadena/react-icons/system';
 import classNames from 'classnames';
 import type { ComponentProps, FC, ReactNode } from 'react';
 import React from 'react';
-import { AlertCircleOutline } from '../../Icon/System/SystemIcon';
 import {
+  disabledLabelClass,
   headerClass,
   infoClass,
   labelClass,
@@ -13,6 +14,8 @@ export interface IFormFieldHeaderProps extends ComponentProps<'label'> {
   label: ReactNode;
   tag?: string;
   info?: string;
+  className?: string;
+  isDisabled?: boolean;
 }
 
 export const FormFieldHeader: FC<IFormFieldHeaderProps> = ({
@@ -20,18 +23,19 @@ export const FormFieldHeader: FC<IFormFieldHeaderProps> = ({
   tag,
   info,
   className,
+  isDisabled,
   ...rest
 }) => {
   return (
     <div className={classNames(headerClass, className)}>
-      <label {...rest} className={labelClass}>
+      <label {...rest} className={isDisabled ? disabledLabelClass : labelClass}>
         {label}
       </label>
       {Boolean(tag) && <span className={tagClass}>{tag}</span>}
       {Boolean(info) && (
         <span className={infoClass}>
           {info}
-          <AlertCircleOutline size="sm" />
+          <MonoErrorOutline />
         </span>
       )}
     </div>

@@ -5,9 +5,11 @@ import PrismaPlugin from '@pothos/plugin-prisma';
 import type PrismaTypes from '@pothos/plugin-prisma/generated';
 import RelayPlugin from '@pothos/plugin-relay';
 import TracingPlugin, { wrapResolver } from '@pothos/plugin-tracing';
+import ValidationPlugin from '@pothos/plugin-validation';
 import { Prisma } from '@prisma/client';
 import { logTrace } from '@services/tracing/trace-service';
 import { dotenv } from '@utils/dotenv';
+import { normalizeError } from '@utils/errors';
 import {
   BigIntResolver,
   DateTimeResolver,
@@ -17,22 +19,24 @@ import {
 import type { IncomingMessage } from 'http';
 import { prismaClient } from '../db/prisma-client';
 import type {
-  ContinuationPayload,
-  ExecutionPayload,
-  FungibleAccount,
-  FungibleChainAccount,
-  GasLimitEstimation,
-  GraphConfiguration,
-  Guard,
-  NonFungibleAccount,
-  NonFungibleChainAccount,
-  Token,
-  TokenInfo,
-  TransactionCapability,
-  TransactionCommand,
-  TransactionMempoolInfo,
-  TransactionMeta,
-  TransactionResult,
+  IContinuationPayload,
+  IExecutionPayload,
+  IFungibleAccount,
+  IFungibleChainAccount,
+  IGasLimitEstimation,
+  IGraphConfiguration,
+  IGuard,
+  INonFungibleAccount,
+  INonFungibleChainAccount,
+  INonFungibleToken,
+  INonFungibleTokenBalance,
+  IPactQueryResponse,
+  ITransactionCapability,
+  ITransactionCommand,
+  ITransactionMempoolInfo,
+  ITransactionMeta,
+  ITransactionResult,
+  ITransactionSignature,
 } from './types/graphql-types';
 
 interface IDefaultTypesExtension {
@@ -58,36 +62,37 @@ interface IDefaultTypesExtension {
 
 export interface IContext {
   req: IncomingMessage;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   extensions: any;
-  networkId: string;
 }
 
 export const PRISMA = {
   DEFAULT_SIZE: 20,
 };
 
-// eslint-disable-next-line @rushstack/typedef-var
 export const builder = new SchemaBuilder<
   IDefaultTypesExtension & {
     PrismaTypes: PrismaTypes;
     Context: IContext;
     Objects: {
-      FungibleAccount: FungibleAccount;
-      FungibleChainAccount: FungibleChainAccount;
-      GasLimitEstimation: GasLimitEstimation;
-      GraphConfiguration: GraphConfiguration;
-      Guard: Guard;
-      NonFungibleAccount: NonFungibleAccount;
-      NonFungibleChainAccount: NonFungibleChainAccount;
-      Token: Token;
-      TokenInfo: TokenInfo;
-      TransactionMeta: TransactionMeta;
-      ExecutionPayload: ExecutionPayload;
-      ContinuationPayload: ContinuationPayload;
-      TransactionMempoolInfo: TransactionMempoolInfo;
-      TransactionResult: TransactionResult;
-      TransactionCommand: TransactionCommand;
-      TransactionCapability: TransactionCapability;
+      FungibleAccount: IFungibleAccount;
+      FungibleChainAccount: IFungibleChainAccount;
+      GasLimitEstimation: IGasLimitEstimation;
+      GraphConfiguration: IGraphConfiguration;
+      Guard: IGuard;
+      NonFungibleAccount: INonFungibleAccount;
+      NonFungibleChainAccount: INonFungibleChainAccount;
+      NonFungibleTokenBalance: INonFungibleTokenBalance;
+      NonFungibleToken: INonFungibleToken;
+      TransactionMeta: ITransactionMeta;
+      ExecutionPayload: IExecutionPayload;
+      ContinuationPayload: IContinuationPayload;
+      TransactionMempoolInfo: ITransactionMempoolInfo;
+      TransactionResult: ITransactionResult;
+      TransactionCommand: ITransactionCommand;
+      TransactionCapability: ITransactionCapability;
+      TransactionSignature: ITransactionSignature;
+      PactQueryResponse: IPactQueryResponse;
     };
   }
 >({
@@ -97,6 +102,7 @@ export const builder = new SchemaBuilder<
     PrismaPlugin,
     RelayPlugin,
     TracingPlugin,
+    ValidationPlugin,
   ],
 
   prisma: {
@@ -111,6 +117,10 @@ export const builder = new SchemaBuilder<
   relayOptions: {
     clientMutationId: 'optional',
     cursorType: 'String',
+  },
+
+  validationOptions: {
+    validationError: (message) => normalizeError(message),
   },
 
   ...(dotenv.COMPLEXITY_ENABLED && {
@@ -146,7 +156,6 @@ type ScalarTypeResolver<TScalarInputShape, TScalarOutputShape> =
   >;
 
 // Defines the custom scalars
-// eslint-disable-next-line @rushstack/typedef-var
 const SCALARS = [
   ['BigInt', BigIntResolver],
   ['DateTime', DateTimeResolver],

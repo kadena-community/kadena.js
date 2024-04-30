@@ -1,6 +1,6 @@
-import { isNumeric } from '../../utils/helpers.js';
+import { isNumeric } from '../../utils/globalHelpers.js';
 import { log } from '../../utils/logger.js';
-import type { TableHeader, TableRow } from '../../utils/tableDisplay.js';
+import { createTable } from '../../utils/table.js';
 
 const formatLength = 80;
 
@@ -14,8 +14,9 @@ export async function printTx(
     signed: boolean;
   }[],
 ): Promise<void> {
-  const header: TableHeader = ['Filename', 'Signed'];
-  const rows: TableRow[] = [];
+  const table = createTable({
+    head: ['Filename', 'Signed'],
+  });
 
   if (transactions.length === 0) {
     log.info('No transactions found');
@@ -23,13 +24,13 @@ export async function printTx(
   }
 
   for (const transaction of transactions) {
-    rows.push([
+    table.push([
       transaction.fileName ?? 'N/A',
       transaction.signed === true ? 'Yes' : 'No',
     ]);
   }
 
-  log.output(log.generateTableString(header, rows));
+  log.output(table.toString(), transactions);
 }
 
 export function txDisplayTransaction(

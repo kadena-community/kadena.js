@@ -15,7 +15,7 @@ export const deleteNetworksCommand: (
   version: string,
 ) => void = createCommand(
   'delete',
-  'Delete local network',
+  'Delete network',
   [
     globalOptions.network({ isOptional: false }),
     networkOptions.networkDelete(),
@@ -46,7 +46,9 @@ export const deleteNetworksCommand: (
     }
 
     await removeNetwork(networkData.networkConfig);
-    await removeDefaultNetwork();
+    if (isDefaultNetwork) {
+      await removeDefaultNetwork();
+    }
 
     log.info(
       log.color.green(

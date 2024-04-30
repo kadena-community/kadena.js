@@ -1,60 +1,44 @@
-import React, { useEffect, useState } from 'react';
+import type { FC } from 'react';
+import React, { useEffect } from 'react';
 
-import {
-  Heading,
-  NumberField,
-  Select,
-  SelectItem,
-  Stack,
-  Text,
-} from '@kadena/react-ui';
+import { Heading, Select, SelectItem, Stack } from '@kadena/react-ui';
 
 import Link from 'next/link';
 
-import { ChainSelect } from '@/components/Global/ChainSelect';
 import { LoadingCard } from '@/components/Global/LoadingCard';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
-import { useAccountChainDetailsQuery } from '@/hooks/use-account-chain-details-query';
 import type { AccountDetails } from '@/hooks/use-account-details-query';
 import { useAccountDetailsQuery } from '@/hooks/use-account-details-query';
 import type { DerivationMode } from '@/hooks/use-ledger-public-key';
-import {
-  chainSelectContainerClass,
-  notificationLinkStyle,
-} from '@/pages/transactions/transfer/styles.css';
+import { notificationLinkStyle } from '@/pages/transactions/transfer/styles.css';
 import type { ChainId } from '@kadena/types';
 import useTranslation from 'next-translate/useTranslation';
-import { Controller, useFormContext } from 'react-hook-form';
-import { SenderDetails } from './sender-details';
+import { useFormContext } from 'react-hook-form';
+import { SenderFields } from './sender-fields';
 import type { FormData } from './sign-form';
 
 export const accountFromOptions = ['Ledger', 'Coming soon…'] as const;
 export type SenderType = (typeof accountFromOptions)[number];
 
-export const SignFormSender = ({
-  onDataUpdate,
-  onKeyIdUpdate,
-  onDerivationUpdate,
-  onChainUpdate,
-  signingMethod,
-  onSigningMethodUpdate,
-}: {
+export interface ISignFormSenderProps {
   onDataUpdate: (data: AccountDetails) => void;
   onKeyIdUpdate: (keyId: number) => void;
   onDerivationUpdate: (derivationMode: DerivationMode) => void;
   onChainUpdate: (chainId: ChainId) => void;
   signingMethod: SenderType;
   onSigningMethodUpdate: (method: SenderType) => void;
+}
+
+export const SignFormSender: FC<ISignFormSenderProps> = ({
+  onDataUpdate,
+  onKeyIdUpdate,
+  onDerivationUpdate,
+  onChainUpdate,
+  signingMethod,
+  onSigningMethodUpdate,
 }) => {
   const { t } = useTranslation('common');
-  const {
-    control,
-    formState: { errors },
-    watch,
-  } = useFormContext<FormData>();
-  const [chainSelectOptions, setChainSelectOptions] = useState<
-    { chainId: ChainId; data: string | number }[]
-  >([]);
+  const { watch } = useFormContext<FormData>();
 
   const { selectedNetwork: network } = useWalletConnectClient();
 
@@ -71,36 +55,9 @@ export const SignFormSender = ({
     }
   }, [onDataUpdate, senderData.data, senderData.isSuccess]);
 
-  const senderAccountChains = useAccountChainDetailsQuery({
-    account: watchSender,
-    networkId: network,
-  });
-
-  useEffect(() => {
-    if (senderAccountChains.isSuccess) {
-      if (senderAccountChains?.data) {
-        setChainSelectOptions(
-          senderAccountChains.data.map((item) => ({
-            chainId: item.chainId,
-            data: item.data ? `${item.data.balance.toFixed(4)} KDA` : 'N/A',
-          })),
-        );
-      }
-    }
-  }, [senderAccountChains.isSuccess, senderAccountChains.data]);
-
-  const watchAmount = watch('amount');
-
-  const invalidAmount =
-    senderData.data && senderData.data.balance < watchAmount;
-
-  const invalidAmountMessage = senderData.data
-    ? `Cannot send more than ${senderData.data.balance.toFixed(4)} KDA.`
-    : '';
-
   return (
     <LoadingCard fullWidth isLoading={senderData.isFetching}>
-      <Heading as={'h5'}>{t('Sender')} </Heading>
+      <Heading as={'h5'}>{t('Sender')}</Heading>
 
       <Stack flexDirection={'row'} justifyContent={'space-between'}>
         <Select
@@ -122,75 +79,17 @@ export const SignFormSender = ({
           target={'_blank'}
           key={'key'}
         >
-          {t('Find your key')}
+          {t('forgot-ledger-key-index')}
         </Link>
       </Stack>
 
-      <Stack
-        flexDirection="column"
-        justifyContent="flex-start"
-        alignItems="stretch"
-        gap="md"
-      >
-        <SenderDetails
-          type={signingMethod}
-          onKeyIdUpdate={onKeyIdUpdate}
-          onDerivationUpdate={onDerivationUpdate}
-        />
-
-        <Stack
-          flexDirection={'row'}
-          justifyContent={'space-between'}
-          alignItems={'center'}
-        >
-          <div className={chainSelectContainerClass}>
-            <Controller
-              name="senderChainId"
-              control={control}
-              render={({ field: { onChange, value, ...rest } }) => (
-                <ChainSelect
-                  {...rest}
-                  selectedKey={value}
-                  id="senderChainId"
-                  onSelectionChange={(chainId) => {
-                    onChange(chainId);
-                    onChainUpdate(chainId);
-                  }}
-                  additionalInfoOptions={chainSelectOptions}
-                  isInvalid={!!errors.senderChainId}
-                  errorMessage={errors.senderChainId?.message}
-                />
-              )}
-            />
-          </div>
-          {senderData.isFetching ? (
-            <Text>{t('fetching-data')}</Text>
-          ) : senderData.data ? (
-            <Text>{senderData.data?.balance.toFixed(4)} KDA</Text>
-          ) : (
-            <Text>{t('No funds on selected chain.')}</Text>
-          )}
-        </Stack>
-
-        <Controller
-          name="amount"
-          control={control}
-          render={({ field: { onChange, ...rest } }) => (
-            <NumberField
-              {...rest}
-              id="ledger-transfer-amount"
-              label={t('Amount')}
-              onValueChange={(value) => onChange(value)}
-              isDisabled={!!senderData.error}
-              isInvalid={!!errors.amount || invalidAmount}
-              errorMessage={
-                invalidAmount ? invalidAmountMessage : errors.amount?.message
-              }
-              info={t('The amount of KDA to transfer.')}
-            />
-          )}
-        />
-      </Stack>
+      <SenderFields
+        type={signingMethod}
+        onKeyIdUpdate={onKeyIdUpdate}
+        onDerivationUpdate={onDerivationUpdate}
+        senderDataQuery={senderData}
+        onChainUpdate={onChainUpdate}
+      />
     </LoadingCard>
   );
 };

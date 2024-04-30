@@ -1,10 +1,10 @@
-name: 'Start Blockchain Sandbox'
+name: 'Start Kadena sandbox'
 runs:
   using: 'composite'
   steps:
     - name: Start sandbox
       shell: bash
-      run: docker-compose up -d
+      run: docker compose up -d
       working-directory: .github/actions/sandbox
 
     - name: Check sandbox health

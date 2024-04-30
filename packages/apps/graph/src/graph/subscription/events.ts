@@ -1,5 +1,9 @@
 import { prismaClient } from '@db/prisma-client';
 import type { Event } from '@prisma/client';
+import {
+  createBlockDepthMap,
+  getConditionForMinimumDepth,
+} from '@services/depth-service';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import { parsePrismaJsonColumn } from '@utils/prisma-json-columns';
 import type { IContext } from '../builder';
@@ -14,9 +18,30 @@ builder.subscriptionField('events', (t) =>
        
       An example of such a filter parameter value: \`events(parametersFilter: "{\\"array_starts_with\\": \\"k:abcdefg\\"}")\``,
     args: {
-      qualifiedEventName: t.arg.string({ required: true }),
-      chainId: t.arg.string(),
-      parametersFilter: t.arg.string(),
+      qualifiedEventName: t.arg.string({
+        required: true,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      chainId: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      parametersFilter: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      minimumDepth: t.arg.int({
+        required: false,
+        validate: {
+          nonnegative: true,
+        },
+      }),
     },
     type: [GQLEvent],
     nullable: true,
@@ -26,6 +51,7 @@ builder.subscriptionField('events', (t) =>
         args.qualifiedEventName,
         args.chainId,
         args.parametersFilter,
+        args.minimumDepth,
       ),
     resolve: (parent) => parent,
   }),
@@ -36,31 +62,27 @@ async function* iteratorFn(
   qualifiedEventName: string,
   chainId?: string | null,
   parametersFilter?: string | null,
+  minimumDepth?: number | null,
 ): AsyncGenerator<Event[] | undefined, void, unknown> {
-  const eventResult = await getLastEvents(
-    qualifiedEventName,
-    undefined,
-    chainId,
-    parametersFilter,
-  );
+  let lastEventId;
 
-  let lastEvent;
+  lastEventId = await getLatestEventId();
 
-  if (!nullishOrEmpty(eventResult)) {
-    lastEvent = eventResult[0];
+  if (!nullishOrEmpty(lastEventId)) {
     yield [];
   }
 
   while (!context.req.socket.destroyed) {
     const newEvents = await getLastEvents(
       qualifiedEventName,
-      lastEvent?.id,
+      lastEventId ?? undefined,
       chainId,
       parametersFilter,
+      minimumDepth,
     );
 
     if (!nullishOrEmpty(newEvents)) {
-      lastEvent = newEvents[0];
+      lastEventId = newEvents[0].id;
       yield newEvents;
     }
 
@@ -73,6 +95,7 @@ async function getLastEvents(
   id?: number,
   chainId?: string | null,
   parametersFilter?: string | null,
+  minimumDepth?: number | null,
 ): Promise<Event[]> {
   const defaultFilter: Parameters<typeof prismaClient.event.findMany>[0] = {
     orderBy: {
@@ -93,21 +116,53 @@ async function getLastEvents(
     where: {
       ...extendedFilter.where,
       qualifiedName: eventName,
-      transaction: {
-        NOT: [],
+      requestKey: {
+        not: 'cb',
       },
       ...(chainId && {
         chainId: parseInt(chainId),
       }),
       ...(parametersFilter && {
-        parameters: parsePrismaJsonColumn(parametersFilter, {
+        parameters: parsePrismaJsonColumn<'Event'>(parametersFilter, {
           subscription: 'events',
           queryParameter: 'parametersFilter',
           column: 'parameters',
         }),
       }),
+      ...(minimumDepth && {
+        OR: await getConditionForMinimumDepth(
+          minimumDepth,
+          chainId ? [chainId] : undefined,
+        ),
+      }),
     },
   });
 
-  return foundEvents.sort((a, b) => b.id - a.id);
+  let eventsToReturn = foundEvents;
+
+  if (minimumDepth) {
+    const blockHashToDepth = await createBlockDepthMap(
+      eventsToReturn,
+      'blockHash',
+    );
+
+    eventsToReturn = foundEvents.filter(
+      (event) => blockHashToDepth[event.blockHash] >= minimumDepth,
+    );
+  }
+
+  return eventsToReturn.sort((a, b) => b.id - a.id);
+}
+
+async function getLatestEventId(): Promise<number | null> {
+  try {
+    const lastEventId = await prismaClient.event.aggregate({
+      _max: {
+        id: true,
+      },
+    });
+    return lastEventId._max.id;
+  } catch (error) {
+    return null;
+  }
 }

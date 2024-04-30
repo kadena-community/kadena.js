@@ -2,7 +2,7 @@ import type {
   FungibleChainAccountTransactionsConnection,
   FungibleChainAccountTransfersConnection,
   NonFungibleChainAccountTransactionsConnection,
-  Token,
+  NonFungibleTokenBalance,
 } from '@/__generated__/sdk';
 import {
   useGetFungibleChainAccountQuery,
@@ -165,7 +165,7 @@ const ChainAccount: React.FC = () => {
               onKeyDown={handleKeyPress}
             />
 
-            <Button onClick={search}>Search</Button>
+            <Button onPress={search}>Search</Button>
           </Box>
 
           <Box margin="sm" />
@@ -321,7 +321,7 @@ const ChainAccount: React.FC = () => {
                   <TokenTable
                     tokens={
                       nonFungibleChainAccountData.nonFungibleChainAccount
-                        .nonFungibles as Token[]
+                        .nonFungibleTokenBalances as NonFungibleTokenBalance[]
                     }
                   />
                 </GridItem>

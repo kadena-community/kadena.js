@@ -5,6 +5,7 @@ import { retrieveContract } from './retrieveContract.js';
 import type { Command } from 'commander';
 import { Option } from 'commander';
 import { z } from 'zod';
+import { MAX_CHAIN_VALUE } from '../constants/config.js';
 import { log } from '../utils/logger.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
@@ -34,7 +35,7 @@ const Options = z.object({
       invalid_type_error: 'Error: -c, --chain must be a number',
     })
     .min(0)
-    .max(19),
+    .max(MAX_CHAIN_VALUE),
 });
 
 export type TOptions = z.infer<typeof Options>;

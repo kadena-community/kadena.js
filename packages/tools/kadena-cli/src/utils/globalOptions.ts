@@ -16,26 +16,12 @@ import {
   chainIdValidation,
   formatZodFieldErrors,
 } from '../account/utils/accountHelpers.js';
-import { KEY_EXT, WALLET_EXT } from '../constants/config.js';
-import {
-  getWallet,
-  parseKeyIndexOrRange,
-  parseKeyPairsInput,
-} from '../keys/utils/keysHelpers.js';
-import { readKeyFileContent } from '../keys/utils/storage.js';
+import { parseKeyPairsInput } from '../keys/utils/keysHelpers.js';
 import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
+import { services } from '../services/index.js';
 import { createOption } from './createOption.js';
 import { getDefaultNetworkName, passwordPromptTransform } from './helpers.js';
 import { log } from './logger.js';
-
-// eslint-disable-next-line @rushstack/typedef-var
-export const globalFlags = {
-  quiet: new Option(
-    '-q --quiet',
-    'Disables interactive prompts and skips confirmations',
-  ),
-  legacy: new Option('-l, --legacy', 'Output legacy format'),
-} as const;
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalOptions = {
@@ -45,7 +31,30 @@ export const globalOptions = {
     // quiet is never prompted
     prompt: () => false,
     validation: z.boolean().optional(),
-    option: globalFlags.quiet,
+    option: new Option(
+      '-q --quiet',
+      'Disables interactive prompts and skips confirmations',
+    ),
+  }),
+  json: createOption({
+    key: 'json' as const,
+    // json is never prompted
+    prompt: () => false,
+    validation: z.boolean().optional(),
+    option: new Option(
+      '--json',
+      'Output command data in JSON format on stdout',
+    ),
+  }),
+  yaml: createOption({
+    key: 'yaml' as const,
+    // yaml is never prompted
+    prompt: () => false,
+    validation: z.boolean().optional(),
+    option: new Option(
+      '--yaml',
+      'Output command data in YAML format on stdout',
+    ),
   }),
   legacy: createOption({
     key: 'legacy' as const,
@@ -53,7 +62,7 @@ export const globalOptions = {
       return legacy === true || legacy === 'true' || false;
     },
     validation: z.boolean().optional(),
-    option: globalFlags.legacy,
+    option: new Option('-l, --legacy', 'Output legacy format'),
   }),
   // Logs
   logFolder: createOption({
@@ -115,12 +124,12 @@ export const globalOptions = {
       /* eslint-disable-next-line @typescript-eslint/naming-convention */
       invalid_type_error: 'Error: -c, --chain-id must be a number',
     }),
-    option: new Option('-c, --chain-id <chainId>'),
+    option: new Option('-c, --chain-id <chainId>', 'Kadena chain id (e.g. 0)'),
     transform: (chainId: string) => {
-      const parsedChainId = parseInt(chainId.trim(), 10);
+      const parsedChainId = Number(chainId.trim());
       try {
         chainIdValidation.parse(parsedChainId);
-        return chainId as ChainId;
+        return parsedChainId.toString() as ChainId;
       } catch (error) {
         const errorMessage = formatZodFieldErrors(error);
         throw new Error(`Error: -c --chain-id ${errorMessage}`);
@@ -134,7 +143,7 @@ export const globalOptions = {
     validation: z.string(),
     option: new Option(
       '-k, --key-pairs <keyPairs>',
-      'Enter key pairs as string publicKey=xxx,secretKey=xxx;...',
+      'Key pairs as string publicKey=xxx,secretKey=xxx;...',
     ),
     transform: (input) => {
       try {
@@ -148,76 +157,30 @@ export const globalOptions = {
     key: 'keyAlias',
     prompt: keys.keyAliasPrompt,
     validation: z.string(),
-    option: new Option(
-      '-a, --key-alias <keyAlias>',
-      'Enter an alias to store your key',
-    ),
-  }),
-  keyAliasSelect: createOption({
-    key: 'keyAliasSelect',
-    prompt: keys.keyGetAllKeyFilesPrompt,
-    validation: z.string(),
-    option: new Option(
-      '-a, --key-alias-select <keyAliasSelect>',
-      'Enter a alias to select keys from',
-    ),
-  }),
-  keyIndexOrRange: createOption({
-    key: 'keyIndexOrRange' as const,
-    prompt: keys.keyIndexOrRangePrompt,
-    validation: z.string(),
-    option: new Option(
-      '-r, --key-index-or-range <keyIndexOrRange>',
-      'Enter the index or range of indices for key generation (e.g., 5 or 1-5). Default is 1',
-    ),
-    transform(value) {
-      return parseKeyIndexOrRange(value);
-    },
-  }),
-  keyGenFromChoice: createOption({
-    key: 'keyGenFromChoice',
-    prompt: keys.genFromChoicePrompt,
-    validation: z.string(),
-    option: new Option(
-      '-c, --key-gen-from-choice <keyGenFromChoice>',
-      'Choose an action for generating keys',
-    ),
+    option: new Option('-a, --key-alias <keyAlias>', 'Alias to store your key'),
   }),
   walletSelect: createOption({
     key: 'walletName',
     prompt: wallets.walletSelectPrompt,
     validation: z.string(),
-    option: new Option('-w, --wallet-name <walletName>', 'Enter your wallet'),
+    option: new Option('-w, --wallet-name <walletName>', 'Wallet name'),
     defaultIsOptional: false,
-    expand: async (walletName: string) => {
-      return await getWallet(walletName);
+    expand: async (walletAlias: string) => {
+      return await services.wallet.getByAlias(walletAlias);
     },
   }),
   walletsSelectByWallet: createOption({
     key: 'walletName',
     prompt: async (args) => {
       return Array.isArray(args.wallets)
-        ? wallets.walletSelectByWalletPrompt(args.wallets as string[])
+        ? wallets.walletSelectByWalletPrompt(args.wallets)
         : wallets.walletSelectPrompt();
     },
     validation: z.string(),
-    option: new Option('-w, --wallet-name <walletName>', 'Enter your wallet'),
+    option: new Option('-w, --wallet-name <walletName>', 'Wallet name'),
     defaultIsOptional: false,
-  }),
-  message: createOption({
-    key: 'message' as const,
-    prompt: generic.messagePrompt,
-    validation: z.string(),
-    option: new Option('-m, --message <message>', 'Enter message to decrypt'),
-    transform: async (message: string) => {
-      if (message.includes(WALLET_EXT) || message.includes(KEY_EXT)) {
-        const keyFileContent = await readKeyFileContent(message);
-        if (typeof keyFileContent === 'string') {
-          return keyFileContent;
-        }
-        return keyFileContent?.secretKey;
-      }
-      return message;
+    expand: async (walletAlias: string) => {
+      return await services.wallet.getByAlias(walletAlias);
     },
   }),
   // common
@@ -227,13 +190,29 @@ export const globalOptions = {
     validation: z.string().optional(),
     option: new Option(
       '-o, --out-file <outFile>',
-      'Enter the file name to save the output',
+      'File name to save the output',
     ),
     defaultIsOptional: true,
     transform(value: string) {
       if (!value) return null;
       const file = value.endsWith('.json') ? value : `${value}.json`;
       return join(process.cwd(), file);
+    },
+  }),
+  directory: createOption({
+    key: 'directory' as const,
+    // Directory is an optional flag, and never prompted
+    prompt: () => null,
+    validation: z.string().optional(),
+    option: new Option(
+      '-d, --directory <directory>',
+      `Config file directory path (default: working directory)`,
+    ),
+    transform(value: string) {
+      if (typeof value !== 'string' || value === '') {
+        return process.cwd();
+      }
+      return value;
     },
   }),
 } as const;
@@ -246,12 +225,12 @@ export const securityOptions = {
     return createOption({
       key: 'passwordFile' as const,
       prompt: security.passwordPrompt(args),
-      validation: z.string().or(z.object({ _password: z.string() })),
+      validation: z.literal('-').or(z.object({ _password: z.string() })),
       option: new Option(
         '--password-file <passwordFile>',
         'Filepath to the password file',
       ),
-      transform: passwordPromptTransform('--password-file'),
+      transform: passwordPromptTransform('--password-file', args.useStdin),
     })(optionArgs);
   },
   createNewPasswordOption: (
@@ -261,15 +240,12 @@ export const securityOptions = {
     return createOption({
       key: 'newPasswordFile' as const,
       prompt: security.passwordPrompt(args),
-      validation: z.string().or(z.object({ _password: z.string() })),
+      validation: z.literal('-').or(z.object({ _password: z.string() })),
       option: new Option(
         '--new-password-file <newPasswordFile>',
         'Filepath to the new password file',
       ),
-      transform: passwordPromptTransform('--new-password-file'),
+      transform: passwordPromptTransform('--new-password-file', args.useStdin),
     })(optionArgs);
   },
 };
-
-export type GlobalOptions = typeof globalOptions;
-export type GlobalFlags = typeof globalFlags;

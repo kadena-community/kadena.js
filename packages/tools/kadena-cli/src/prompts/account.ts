@@ -1,13 +1,23 @@
+import type { ChainId } from '@kadena/types';
 import { parse } from 'node:path';
 import {
+  chainIdRangeValidation,
   fundAmountValidation,
   getAllAccountNames,
+  parseChainIdRange,
 } from '../account/utils/accountHelpers.js';
+import { CHAIN_ID_RANGE_ERROR_MESSAGE } from '../constants/account.js';
+import {
+  INVALID_FILE_NAME_ERROR_MSG,
+  MAX_CHAIN_VALUE,
+} from '../constants/config.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
+  formatZodError,
+  isValidFilename,
   maskStringPreservingStartAndEnd,
   truncateText,
-} from '../utils/helpers.js';
+} from '../utils/globalHelpers.js';
 import { checkbox, input, select } from '../utils/prompts.js';
 
 export const publicKeysPrompt: IPrompt<string> = async (
@@ -36,13 +46,17 @@ export const accountAliasPrompt: IPrompt<string> = async () =>
         return 'Alias must be minimum at least 3 characters long.';
       }
 
+      if (!isValidFilename(value)) {
+        return `Alias is used as a filename. ${INVALID_FILE_NAME_ERROR_MSG}`;
+      }
+
       return true;
     },
   });
 
 export const accountNamePrompt: IPrompt<string> = async () =>
   await input({
-    message: 'Enter an account name:',
+    message: 'Enter an account name (optional):',
   });
 
 export const accountKdnAddressPrompt: IPrompt<string> = async () =>
@@ -76,7 +90,12 @@ export const fungiblePrompt: IPrompt<string> = async () =>
     message: 'Enter the name of a fungible:',
   });
 
-export const predicatePrompt: IPrompt<string> = async () => {
+export const predicatePrompt: IPrompt<string> = async (previousQuestions) => {
+  const allowedPredicates =
+    previousQuestions.allowedPredicates !== undefined
+      ? (previousQuestions.allowedPredicates as string[])
+      : [];
+
   const choices = [
     {
       value: 'keys-all',
@@ -96,9 +115,15 @@ export const predicatePrompt: IPrompt<string> = async () => {
     },
   ];
 
+  const filteredChoices = choices.filter(
+    (choice) =>
+      allowedPredicates.length === 0 ||
+      allowedPredicates.includes(choice.value),
+  );
+
   const selectedPredicate = await select({
     message: 'Select a keyset predicate.',
-    choices: choices,
+    choices: filteredChoices,
   });
 
   if (selectedPredicate === 'custom') {
@@ -236,8 +261,8 @@ export const accountDeleteConfirmationPrompt: IPrompt<boolean> = async (
     previousQuestions.accountAlias === 'all'
       ? 'all the accounts'
       : selectedAccountsLength > 1
-      ? 'all the selected aliases accounts'
-      : `the ${selectedAccounts} alias account`;
+        ? 'all the selected aliases accounts'
+        : `the ${selectedAccounts} alias account`;
 
   return await select({
     message: `Are you sure you want to delete ${selectedAccountMessage}?`,
@@ -252,4 +277,32 @@ export const accountDeleteConfirmationPrompt: IPrompt<boolean> = async (
       },
     ],
   });
+};
+
+export const chainIdPrompt: IPrompt<string> = async (
+  previousQuestions,
+  args,
+  isOptional,
+) => {
+  const defaultValue = (args.defaultValue as string) || '0';
+  return (await input({
+    message: `Enter a ChainId (0-${MAX_CHAIN_VALUE}) (comma or hyphen separated e.g 0,1,2 or 1-5 or all):`,
+    default: defaultValue,
+    validate: function (input) {
+      if (input.trim() === 'all') return true;
+
+      const parseInput = parseChainIdRange(input);
+
+      if (!parseInput || !parseInput.length) {
+        return CHAIN_ID_RANGE_ERROR_MESSAGE;
+      }
+
+      const result = chainIdRangeValidation.safeParse(parseInput);
+      if (!result.success) {
+        const formatted = formatZodError(result.error);
+        return `ChainId: ${formatted}`;
+      }
+      return true;
+    },
+  })) as ChainId;
 };

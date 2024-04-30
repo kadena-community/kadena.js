@@ -1,34 +1,31 @@
 import { mergeProps, useObjectRef } from '@react-aria/utils';
+import type { RecipeVariants } from '@vanilla-extract/recipes';
 import classNames from 'classnames';
 import type {
   ChangeEvent,
   ComponentProps,
   ElementRef,
   ForwardedRef,
-  ReactNode,
+  ReactElement,
 } from 'react';
 import React, { forwardRef, useCallback } from 'react';
 import type { AriaNumberFieldProps } from 'react-aria';
 import { useFocusRing, useHover, useLocale, useNumberField } from 'react-aria';
 import { useNumberFieldState } from 'react-stately';
-import { bodyBaseRegular, monospaceBaseRegular } from '../../../styles';
-import { Button } from '../../Button';
-import { ChevronDown, ChevronUp } from '../../Icon/System/SystemIcon';
-import { formField, input, inputContainer, startAddon } from '../Form.css';
-import { FormFieldHeader } from '../FormFieldHeader/FormFieldHeader';
-import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
-import {
-  buttonClass,
-  buttonContainerClass,
-  iconClass,
-} from './NumberField.css';
+import { NumberFieldActions } from '../ActionButtons/NumberFieldActions';
+import { Field } from '../Field/Field';
+import { input } from '../Form.css';
+
+type Variants = NonNullable<RecipeVariants<typeof input>>;
 
 type PickedAriaNumberFieldProps = Omit<
   AriaNumberFieldProps,
   'children' | 'inputElementType' | 'onChange' | 'type'
 >;
 export interface INumberFieldProps extends PickedAriaNumberFieldProps {
-  // block type
+  variant?: Variants['variant'];
+  fontType?: Variants['fontType'];
+  size?: Variants['size'];
   className?: string;
   isPositive?: boolean;
   tag?: string;
@@ -45,13 +42,10 @@ export interface INumberFieldProps extends PickedAriaNumberFieldProps {
    * alias for `AriaNumberFieldProps.onChange`
    */
   onValueChange?: (value: number) => void;
-  startAddon?: ReactNode;
-
+  startVisual?: ReactElement;
   isOutlined?: boolean;
-  inputFont?: 'body' | 'code';
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type, react/function-component-definition
 export function NumberFieldBase(
   props: INumberFieldProps,
   forwardedRef: ForwardedRef<ElementRef<'input'>>,
@@ -66,14 +60,19 @@ export function NumberFieldBase(
   });
 
   const {
-    labelProps,
-    inputProps,
-    descriptionProps,
-    errorMessageProps,
-    incrementButtonProps,
-    decrementButtonProps,
-    ...validation
-  } = useNumberField(
+    size = 'md',
+    fontType = 'ui',
+    className,
+    tag,
+    info,
+    errorMessage,
+    description,
+    variant = 'default',
+    label,
+    startVisual,
+  } = props;
+
+  const { inputProps, ...fieldProps } = useNumberField(
     {
       ...props,
       onChange: props.onValueChange,
@@ -98,89 +97,48 @@ export function NumberFieldBase(
     [props.onChange, inputProps.onChange],
   );
 
-  // aggregate error message from validation props
-  const errorMessage =
-    typeof props.errorMessage === 'function'
-      ? props.errorMessage(validation)
-      : props.errorMessage ?? validation.validationErrors.join(' ');
-
   return (
-    <div className={classNames(formField, props.className)}>
-      {props.label && (
-        <FormFieldHeader
-          label={props.label}
-          tag={props.tag}
-          info={props.info}
-          {...labelProps}
+    <Field
+      {...fieldProps}
+      variant={variant}
+      label={label}
+      isDisabled={isDisabled}
+      description={description}
+      startVisual={startVisual}
+      endAddon={
+        <NumberFieldActions
+          isDisabled={isDisabled}
+          variant={variant}
+          state={state}
         />
-      )}
-      <div className={inputContainer}>
-        {props.startAddon && (
-          <div
-            className={startAddon}
-            ref={(el) => {
-              if (el) {
-                ref.current?.style.setProperty(
-                  '--start-addon-width',
-                  `${el.offsetWidth}px`,
-                );
-              }
-            }}
-          >
-            {props.startAddon}
-          </div>
+      }
+      errorMessage={errorMessage}
+      size={size}
+      tag={tag}
+      info={info}
+      ref={ref}
+    >
+      <input
+        {...mergeProps(inputProps, focusProps, hoverProps)}
+        onChange={handleOnChange}
+        ref={ref}
+        className={classNames(
+          input({
+            variant: fieldProps.isInvalid ? 'negative' : props.variant,
+            size,
+            fontType,
+          }),
+          className,
         )}
-
-        <input
-          {...mergeProps(inputProps, focusProps, hoverProps)}
-          onChange={handleOnChange}
-          ref={ref}
-          className={classNames(
-            input,
-            props.inputFont === 'code' ? monospaceBaseRegular : bodyBaseRegular,
-          )}
-          data-focused={isFocused || undefined}
-          data-disabled={isDisabled || undefined}
-          data-hovered={isHovered || undefined}
-          data-focus-visible={isFocusVisible || undefined}
-          data-invalid={validation.isInvalid || undefined}
-          data-positive={props.isPositive || undefined}
-          data-has-start-addon={!!props.startAddon || undefined}
-          data-outlined={props.isOutlined || undefined}
-        />
-
-        <div className={buttonContainerClass}>
-          <Button
-            icon={<ChevronUp size="sm" className={iconClass} />}
-            variant="text"
-            isCompact
-            className={buttonClass}
-            {...incrementButtonProps}
-          />
-          <Button
-            icon={<ChevronDown size="sm" className={iconClass} />}
-            variant="text"
-            isCompact
-            className={buttonClass}
-            {...decrementButtonProps}
-          />
-        </div>
-      </div>
-
-      {props.description && !validation.isInvalid && (
-        <FormFieldHelpText
-          {...descriptionProps}
-          intent={props.isPositive ? 'positive' : 'info'}
-        >
-          {props.description}
-        </FormFieldHelpText>
-      )}
-      {validation.isInvalid && (
-        <FormFieldHelpText {...errorMessageProps} intent="negative">
-          {errorMessage}
-        </FormFieldHelpText>
-      )}
-    </div>
+        data-focused={isFocused || undefined}
+        data-disabled={isDisabled || undefined}
+        data-hovered={isHovered || undefined}
+        data-focus-visible={isFocusVisible || undefined}
+        data-invalid={props.isInvalid || undefined}
+        data-positive={props.isPositive || undefined}
+        data-has-start-addon={!!props.startVisual || undefined}
+      />
+    </Field>
   );
 }
 

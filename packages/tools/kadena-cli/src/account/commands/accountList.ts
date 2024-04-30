@@ -1,3 +1,4 @@
+import type { Table } from 'cli-table3';
 import type { Command } from 'commander';
 import { parse } from 'node:path';
 import { NO_ACCOUNTS_FOUND_ERROR_MESSAGE } from '../../constants/account.js';
@@ -6,8 +7,9 @@ import {
   isNotEmptyString,
   maskStringPreservingStartAndEnd,
   truncateText,
-} from '../../utils/helpers.js';
+} from '../../utils/globalHelpers.js';
 import { log } from '../../utils/logger.js';
+import { createTable } from '../../utils/table.js';
 import { accountOptions } from '../accountOptions.js';
 import type { IAliasAccountData } from '../types.js';
 import {
@@ -16,17 +18,16 @@ import {
   readAccountFromFile,
 } from '../utils/accountHelpers.js';
 
-function generateTabularData(accounts: IAliasAccountData[]): {
-  header: string[];
-  data: string[][];
-} {
-  const header = [
-    'Account Alias',
-    'Account Name',
-    'Public Key(s)',
-    'Predicate',
-    'Fungible',
-  ];
+function generateTabularData(accounts: IAliasAccountData[]): Table {
+  const table = createTable({
+    head: [
+      'Account Alias',
+      'Account Name',
+      'Public Key(s)',
+      'Predicate',
+      'Fungible',
+    ],
+  });
 
   const data = accounts.map((account) => [
     truncateText(parse(account.alias).name, 32),
@@ -38,10 +39,9 @@ function generateTabularData(accounts: IAliasAccountData[]): {
     account.fungible,
   ]);
 
-  return {
-    header,
-    data,
-  };
+  table.push(...data);
+
+  return table;
 }
 
 async function accountList(
@@ -50,7 +50,7 @@ async function accountList(
   try {
     if (accountAlias === 'all') {
       return await getAllAccounts();
-    }  else {
+    } else {
       const account = await readAccountFromFile(accountAlias);
       return [account];
     }
@@ -89,6 +89,6 @@ export const createAccountListCommand: (
 
     const tabularData = generateTabularData(accountsDetails);
 
-    log.output(log.generateTableString(tabularData.header, tabularData.data));
+    log.output(tabularData.toString(), accountsDetails);
   },
 );

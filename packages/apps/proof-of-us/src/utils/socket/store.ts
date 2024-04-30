@@ -1,6 +1,7 @@
 import { BUILDSTATUS } from '@/constants';
 import { child, get, off, onValue, ref, set, update } from 'firebase/database';
 import type { Dispatch, SetStateAction } from 'react';
+import { convertSignersObjectToArray } from '../convertSignersObjectToArray';
 import { database, dbRef } from '../firebase';
 import { isAlreadySigning } from '../isAlreadySigning';
 
@@ -12,6 +13,18 @@ const ProofOfUsStore = () => {
 
     if (!docRef.exists()) return null;
     return docRef.toJSON() as IProofOfUsData;
+  };
+  const getProofOfUsSignees = async (
+    proofOfUsId: string,
+  ): Promise<IProofOfUsSignee[]> => {
+    const docRef = await get(child(dbRef, `signees/${proofOfUsId}`));
+
+    if (!docRef.exists()) return [];
+
+    const data = convertSignersObjectToArray(
+      docRef.toJSON() as Record<string, IProofOfUsSignee>,
+    );
+    return data;
   };
   const getBackground = async (
     proofOfUsId: string,
@@ -38,9 +51,13 @@ const ProofOfUsStore = () => {
       eventId: process.env.NEXT_PUBLIC_CONNECTION_EVENTID,
       type: 'connect',
       date: Date.now(),
-      signees: [{ ...account, signerStatus: 'init', initiator: true }],
     };
 
+    await set(ref(database, `signees/${proofOfUsId}/${account.accountName}`), {
+      ...account,
+      signerStatus: 'init',
+      initiator: true,
+    });
     await set(ref(database, `data/${proofOfUsId}`), obj);
   };
 
@@ -69,6 +86,20 @@ const ProofOfUsStore = () => {
     });
 
     return () => off(backgroundRef);
+  };
+
+  const listenProofOfUsSigneesData = (
+    proofOfUsId: string,
+    setDataCallback: (data: IProofOfUsSignee[]) => void,
+  ) => {
+    const signeesRef = ref(database, `signees/${proofOfUsId}`);
+    onValue(signeesRef, (snapshot) => {
+      const data = convertSignersObjectToArray(snapshot.val());
+
+      setDataCallback(data);
+    });
+
+    return () => off(signeesRef);
   };
 
   const listenLeaderboard = (
@@ -123,50 +154,104 @@ const ProofOfUsStore = () => {
 
   const addSignee = async (
     proofOfUs: IProofOfUsData,
+    signees: IProofOfUsSignee[],
     account: IProofOfUsSignee,
   ) => {
-    const signeesList = [...proofOfUs.signees];
-    if (!signeesList) return;
+    if (signees.find((s) => s.accountName === account.accountName)) return;
 
-    if (signeesList.find((s) => s.accountName === account.accountName)) return;
+    const signee: IProofOfUsSignee = {
+      ...account,
+      signerStatus: !account.signerStatus ? 'signing' : account.signerStatus,
+      initiator: false,
+    };
 
-    if (!signeesList.length) {
-      signeesList[0] = {
-        ...account,
-        signerStatus: !account.signerStatus ? 'signing' : account.signerStatus,
-      };
-    } else {
-      signeesList[1] = {
-        ...account,
-        signerStatus: !account.signerStatus ? 'signing' : account.signerStatus,
-        initiator: !account.initiator ? false : account.initiator,
-      };
-
-      signeesList.length = 2;
-    }
-
-    return await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
-      signees: signeesList,
-    });
+    return await update(
+      ref(database, `signees/${proofOfUs.proofOfUsId}/${account.accountName}`),
+      signee,
+    );
   };
 
   const removeSignee = async (
     proofOfUs: IProofOfUsData,
     account: IProofOfUsSignee,
   ) => {
-    const signeesList = proofOfUs.signees;
-    if (!signeesList) return;
-
-    const signees = signeesList.filter(
-      (s) => s.accountName !== account.accountName,
+    return await set(
+      ref(database, `signees/${proofOfUs.proofOfUsId}/${account.accountName}`),
+      null,
     );
+  };
 
-    return await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
-      signees: signees,
+  const toggleAllowedToSign = async (
+    proofOfUs: IProofOfUsData,
+    account: IProofOfUsSignee,
+  ) => {
+    const newStatus: ISignerStatus =
+      account.signerStatus === 'init' ? 'notsigning' : 'init';
+    return await set(
+      ref(
+        database,
+        `signees/${proofOfUs.proofOfUsId}/${account.accountName}/signerStatus`,
+      ),
+      newStatus,
+    );
+  };
+
+  const updateSignee = async (
+    proofOfUs: IProofOfUsData,
+    account: IProofOfUsSignee,
+  ) => {
+    return await set(
+      ref(database, `signees/${proofOfUs.proofOfUsId}/${account.accountName}`),
+      account,
+    );
+  };
+
+  const updateSigneePing = async (
+    proofOfUs: IProofOfUsData,
+    signee: IProofOfUsSignee,
+  ) => {
+    return await set(
+      ref(
+        database,
+        `signees/${proofOfUs.proofOfUsId}/${signee.accountName}/lastPingTime`,
+      ),
+      Date.now(),
+    );
+  };
+
+  const resetAllSignatures = async (
+    proofOfUs: IProofOfUsData,
+    signees: IProofOfUsSignee[],
+  ) => {
+    const promises = signees.map((signee) => {
+      delete signee.signature;
+      return set(
+        ref(database, `signees/${proofOfUs.proofOfUsId}/${signee.accountName}`),
+        {
+          ...signee,
+          signerStatus:
+            signee.signerStatus !== 'notsigning' ? 'init' : 'notsigning',
+        },
+      );
+    });
+
+    await Promise.all(promises);
+
+    await set(ref(database, `data/${proofOfUs.proofOfUsId}`), {
+      ...proofOfUs,
+      isReadyToSign: false,
+      status: 3,
+      tokenId: null,
+      manifestUri: null,
+      imageUri: null,
+      tx: null,
+      requestKey: null,
+      mintStatus: 'init',
     });
   };
 
   const closeToken = async (proofOfUsId: string, proofOfUs: IProofOfUsData) => {
+    await set(ref(database, `signees/${proofOfUsId}`), null);
     return await set(ref(database, `data/${proofOfUsId}`), null);
   };
 
@@ -220,19 +305,25 @@ const ProofOfUsStore = () => {
     createProofOfUs,
     getProofOfUs,
     getBackground,
+    getProofOfUsSignees,
     addSignee,
     removeSignee,
+    toggleAllowedToSign,
+    updateSignee,
+    updateSigneePing,
     addBackground,
     removeBackground,
     closeToken,
     updateStatus,
     listenProofOfUsData,
     listenProofOfUsBackgroundData,
+    listenProofOfUsSigneesData,
     updateProofOfUs,
     saveAlias,
     getAllAccounts,
     saveLeaderboardAccounts,
     listenLeaderboard,
+    resetAllSignatures,
   };
 };
 

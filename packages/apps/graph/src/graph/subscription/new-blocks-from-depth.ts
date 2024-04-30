@@ -1,5 +1,6 @@
 import { prismaClient } from '@db/prisma-client';
 import type { Block } from '@prisma/client';
+import { createBlockDepthMap } from '@services/depth-service';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
@@ -10,8 +11,21 @@ builder.subscriptionField('newBlocksFromDepth', (t) =>
     description: 'Subscribe to new blocks from a specific depth.',
     type: [GQLBlock],
     args: {
-      minimumDepth: t.arg.int({ required: true }),
-      chainIds: t.arg.stringList({ required: true }),
+      minimumDepth: t.arg.int({
+        required: true,
+        validate: {
+          nonnegative: true,
+        },
+      }),
+      chainIds: t.arg.stringList({
+        required: true,
+        validate: {
+          minLength: 1,
+          items: {
+            minLength: 1,
+          },
+        },
+      }),
     },
     nullable: true,
     subscribe: (__root, args, context) =>
@@ -114,5 +128,11 @@ async function getLastBlocksWithDepth(
     }),
   );
 
-  return blocks.flat();
+  const blocksToReturn = blocks.flat();
+
+  const blockHashToDepth = await createBlockDepthMap(blocksToReturn, 'hash');
+
+  return blocksToReturn.filter(
+    (block) => blockHashToDepth[block.hash] >= minimumDepth,
+  );
 }

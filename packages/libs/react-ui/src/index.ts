@@ -40,12 +40,14 @@ export type {
   ITagItemProps,
   ITagProps,
   ITextFieldProps,
+  ITextLinkProps,
   ITextProps,
   ITextareaFieldProps,
   IToggleButtonProps,
   ITooltipProps,
   ITrackerCardProps,
   MaskOptions,
+  PressEvent,
 } from './components';
 
 export {
@@ -106,6 +108,7 @@ export {
   TagItem,
   Text,
   TextField,
+  TextLink,
   TextareaField,
   ToggleButton,
   Tooltip,

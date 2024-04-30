@@ -12,14 +12,7 @@ import { Popover } from './Popover';
 
 type PopoverButtonProps = Pick<
   IButtonProps,
-  | 'icon'
-  | 'startIcon'
-  | 'endIcon'
-  | 'variant'
-  | 'color'
-  | 'isCompact'
-  | 'isLoading'
-  | 'isDisabled'
+  'endVisual' | 'variant' | 'isCompact' | 'isLoading' | 'isDisabled'
 >;
 interface IPopoverTriggerProps
   extends PopoverButtonProps,
@@ -44,16 +37,13 @@ function PopoverTriggerBase(
   return (
     <>
       <Button
-        {...triggerProps}
+        {...(triggerProps as IButtonProps)}
         ref={ref}
-        icon={props.icon}
-        color={props.color}
+        endVisual={props.endVisual}
         variant={props.variant}
         isCompact={props.isCompact}
         isLoading={props.isLoading}
         isDisabled={props.isDisabled}
-        startIcon={props.startIcon}
-        endIcon={props.endIcon}
       >
         {props.label}
       </Button>

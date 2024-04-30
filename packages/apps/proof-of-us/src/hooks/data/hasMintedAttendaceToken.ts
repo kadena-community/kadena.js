@@ -15,6 +15,7 @@ export const useHasMintedAttendaceToken = () => {
       setHasError(true);
       return false;
     }
+
     setIsLoading(true);
     setHasError(false);
     setHasSuccess(false);

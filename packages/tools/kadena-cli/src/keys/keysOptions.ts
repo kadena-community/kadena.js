@@ -10,7 +10,7 @@ export const keysOptions = {
     validation: z.string(),
     option: new Option(
       '-n, --key-amount <keyAmount>',
-      'Enter the number of key pairs you want to generate (default: 1)',
+      'Number of key pairs you want to generate (default: 1)',
     ),
     transform: (keyAmount: string) => {
       const parsed = parseInt(keyAmount, 10);

@@ -3,15 +3,25 @@ import type { Transaction } from '@prisma/client';
 import { mempoolLookup } from '@services/chainweb-node/mempool';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
-import { mempooTransactionMapper } from '../mappers/transaction-mapper';
+import { mempoolTransactionMapper } from '../mappers/transaction-mapper';
 import GQLTransaction from '../objects/transaction';
 
 builder.subscriptionField('transaction', (t) =>
   t.field({
     description: 'Listen for a transaction by request key.',
     args: {
-      requestKey: t.arg.string({ required: true }),
-      chainId: t.arg.string({ required: false }),
+      requestKey: t.arg.string({
+        required: true,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      chainId: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
     },
     type: GQLTransaction,
     nullable: true,
@@ -69,7 +79,7 @@ async function checkMempoolForTransaction(
     const transactionData = mempoolData[0];
 
     if (transactionData.tag === 'Pending') {
-      return mempooTransactionMapper(transactionData);
+      return mempoolTransactionMapper(transactionData);
     }
 
     return null;

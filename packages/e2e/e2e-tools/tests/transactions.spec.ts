@@ -94,6 +94,7 @@ test(`Ledger: Transfer to new account on the same chain`, async ({
   await test.step('Set Sender Details', async () => {
     await toolsApp.transferPage.setSender('Ledger');
     await toolsApp.transferPage.setKeyIndex('0');
+    await toolsApp.transferPage.connectLedger();
     await toolsApp.transferPage.setAmount('0.1');
     await toolsApp.transferPage.setSenderChainId('0');
   });
@@ -134,6 +135,7 @@ test(`Ledger: Transfer to existing account on the same chain`, async ({
   await test.step('Set Sender Details', async () => {
     await toolsApp.transferPage.setSender('Ledger');
     await toolsApp.transferPage.setKeyIndex('0');
+    await toolsApp.transferPage.connectLedger();
     await toolsApp.transferPage.setAmount('0.1');
     await toolsApp.transferPage.setSenderChainId('0');
   });
@@ -175,6 +177,7 @@ test(`Ledger: Transfer to new account on a different chain`, async ({
   await test.step('Set Sender Details', async () => {
     await toolsApp.transferPage.setSender('Ledger');
     await toolsApp.transferPage.setKeyIndex('0');
+    await toolsApp.transferPage.connectLedger();
     await toolsApp.transferPage.setAmount('0.1');
     await toolsApp.transferPage.setSenderChainId('0');
   });
@@ -215,6 +218,7 @@ test(`Ledger: Transfer to existing account on a different chain`, async ({
   await test.step('Set Sender Details', async () => {
     await toolsApp.transferPage.setSender('Ledger');
     await toolsApp.transferPage.setKeyIndex('0');
+    await toolsApp.transferPage.connectLedger();
     await toolsApp.transferPage.setAmount('0.1');
     await toolsApp.transferPage.setSenderChainId('0');
   });

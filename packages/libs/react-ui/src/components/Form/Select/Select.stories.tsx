@@ -1,10 +1,10 @@
+import { MonoAccountCircle, MonoAdd } from '@kadena/react-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { onLayer2, withContentWidth } from '../../../storyDecorators';
 import { atoms } from '../../../styles';
 import { getArrayOf } from '../../../utils';
 import { Button } from '../../Button';
-import { Account, Plus } from '../../Icon/System/SystemIcon';
 import { Box } from '../../Layout';
 import { Form } from '../Form';
 import type { ISelectProps } from './Select';
@@ -153,7 +153,7 @@ export const WithIcon: Story = {
   },
   render: (args) => {
     return (
-      <Select {...args} startIcon={<Account />}>
+      <Select {...args} startIcon={<MonoAccountCircle />}>
         <SelectItem key="option1">Option 1</SelectItem>
         <SelectItem key="option2">Option 2</SelectItem>
         <SelectItem key="option3">Option 3</SelectItem>
@@ -167,13 +167,13 @@ export const ComplexItems = () => (
   <Select label="Select an option">
     <SelectItem key="option1" textValue="Option 1">
       <Box alignItems="center" gap="xs" display="flex">
-        <Account />
+        <MonoAccountCircle />
         Option 1
       </Box>
     </SelectItem>
     <SelectItem key="option2" textValue="Option 2">
       <Box alignItems="center" gap="xs" display="flex">
-        <Plus />
+        <MonoAdd />
         Option 2
       </Box>
     </SelectItem>

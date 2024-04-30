@@ -34,7 +34,7 @@ export default async function handler(
     if (!data) return account;
     return {
       ...account,
-      tokenCount: data.nonFungibleAccount?.nonFungibles.length ?? 0,
+      tokenCount: data.nonFungibleAccount?.nonFungibleTokenBalances.length ?? 0,
     };
   });
 

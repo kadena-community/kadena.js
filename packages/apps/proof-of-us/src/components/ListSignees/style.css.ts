@@ -1,39 +1,56 @@
+import { deviceColors } from '@/styles/tokens.css';
 import { atoms, tokens } from '@kadena/react-ui/styles';
-import { style } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 export const wrapperClass = style([
   atoms({
     display: 'flex',
     width: '100%',
     padding: 'no',
+    margin: 'no',
   }),
   {
+    flexWrap: 'wrap',
     listStyle: 'none',
   },
 ]);
-
-export const signeeClass = style([
+export const multipleWrapperClass = style([
   atoms({
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-    gap: 'md',
-    padding: 'md',
+    borderRadius: 'md',
   }),
+  {
+    flexWrap: 'nowrap',
+    border: '1px solid rgba(255,255,255,.2)',
+  },
+]);
+export const readytoMintClass = style([
+  {
+    color: deviceColors.green,
+  },
+]);
+export const notReadytoMintClass = style([
+  {
+    opacity: 0.8,
+  },
+]);
+
+export const multipleSigneeClass = style([
+  atoms({
+    padding: 'md',
+    width: '100%',
+  }),
+]);
+
+export const signeeClass = style([
   {
     flex: '1 1 50%',
     width: '50%',
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     selectors: {
       '&:first-child': {
-        borderTopLeftRadius: tokens.kda.foundation.radius.md,
-        borderBottomLeftRadius: tokens.kda.foundation.radius.md,
-        border: '1px solid rgba(255,255,255,.2)',
-        borderInlineEnd: '0',
-      },
-      '&:last-child': {
-        borderTopRightRadius: tokens.kda.foundation.radius.md,
-        borderBottomRightRadius: tokens.kda.foundation.radius.md,
+        borderRadius: tokens.kda.foundation.radius.md,
         border: '1px solid rgba(255,255,255,.2)',
       },
     },
@@ -57,6 +74,17 @@ export const nameClass = style([
   },
 ]);
 
+export const multipleNameClass = style([
+  {
+    textAlign: 'initial',
+  },
+]);
+export const notAllowedToSignClass = style([
+  {
+    opacity: '.2',
+  },
+]);
+
 export const ellipsClass = style([
   {
     textOverflow: 'ellipsis',
@@ -64,3 +92,49 @@ export const ellipsClass = style([
     whiteSpace: 'nowrap',
   },
 ]);
+
+export const removeClass = style([
+  atoms({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 'md',
+  }),
+  {
+    height: '100%',
+    backgroundColor: deviceColors.red,
+    userSelect: 'none',
+  },
+]);
+
+export const removeSigningClass = style([
+  atoms({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 'md',
+  }),
+  {
+    height: '100%',
+    backgroundColor: deviceColors.blue,
+    userSelect: 'none',
+  },
+]);
+
+globalStyle(`${multipleWrapperClass} > :nth-child(even)`, {
+  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+});
+globalStyle(`${multipleWrapperClass} > :nth-child(odd)`, {
+  backgroundColor: 'rgba(255, 255, 255, 0.2)',
+});
+globalStyle(`${multipleWrapperClass} > :not(:last-child)`, {
+  borderBlockEnd: '1px solid rgba(255,255,255,.2)',
+});
+globalStyle(`${multipleWrapperClass} > :first-child`, {
+  borderTopLeftRadius: tokens.kda.foundation.radius.md,
+  borderTopRightRadius: tokens.kda.foundation.radius.md,
+});
+globalStyle(`${multipleWrapperClass} > :last-child`, {
+  borderBottomLeftRadius: tokens.kda.foundation.radius.md,
+  borderBottomRightRadius: tokens.kda.foundation.radius.md,
+});

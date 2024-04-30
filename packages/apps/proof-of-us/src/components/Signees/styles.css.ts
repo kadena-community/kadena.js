@@ -4,6 +4,8 @@ import { style } from '@vanilla-extract/css';
 export const itemClass = style([
   atoms({
     padding: 'md',
+    flexDirection: 'column',
+    alignItems: 'center',
   }),
   {
     flex: '1 1 50%',
@@ -42,6 +44,7 @@ export const bulletClass = style([
     width: '1.2rem',
     height: '1.2rem',
     aspectRatio: '1/1',
+    backgroundColor: 'var(--bulletColor)',
 
     selectors: {
       '&:before': {
@@ -53,18 +56,7 @@ export const bulletClass = style([
         width: '.8rem',
         height: '.8rem',
         aspectRatio: '1/1',
-      },
-      '&[data-position="0"]': {
-        background: 'rgba(255, 0, 0, 0.42)',
-      },
-      '&[data-position="1"]': {
-        background: 'rgba(255, 199, 0, 0.42)',
-      },
-      '&[data-position="0"]:before': {
-        background: 'rgba(255, 0, 0, 0.42)',
-      },
-      '&[data-position="1"]:before': {
-        background: 'rgba(255, 199, 0, 0.42)',
+        background: 'var(--bulletColor)',
       },
     },
   },
@@ -83,6 +75,7 @@ export const bulletPositionClass = style([
     height: '4.5rem',
     aspectRatio: '1/1',
     zIndex: 100,
+    backgroundColor: 'var(--bulletColor)',
 
     selectors: {
       '&:before': {
@@ -94,18 +87,7 @@ export const bulletPositionClass = style([
         width: '3.5rem',
         height: '3.5rem',
         aspectRatio: '1/1',
-      },
-      '&[data-position="0"]': {
-        background: 'rgba(255, 0, 0, 0.42)',
-      },
-      '&[data-position="1"]': {
-        background: 'rgba(255, 199, 0, 0.42)',
-      },
-      '&[data-position="0"]:before': {
-        background: 'rgba(255, 0, 0, 0.42)',
-      },
-      '&[data-position="1"]:before': {
-        background: 'rgba(255, 199, 0, 0.42)',
+        backgroundColor: 'var(--bulletColor)',
       },
     },
   },

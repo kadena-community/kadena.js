@@ -1,7 +1,7 @@
 import z from 'zod';
 
 import type { ChainId, IPactCommand } from '@kadena/client';
-import { formatZodError } from '../../../utils/helpers.js';
+import { formatZodError } from '../../../utils/globalHelpers.js';
 
 const legacyCapSchema = z
   .object({
