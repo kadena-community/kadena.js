@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { atoms, bodyBaseRegular, token } from '../../styles';
+import { atoms, token } from '../../styles';
 
 // applied on ul
 export const listBoxClass = style([
@@ -7,22 +7,14 @@ export const listBoxClass = style([
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: 'surface.default',
+    backgroundColor: 'input.default',
     margin: 'no',
     padding: 'no',
     listStyleType: 'none',
-    paddingBlock: 'sm',
-    borderRadius: 'sm',
     overflowX: 'hidden',
   }),
   {
     boxShadow: `0px 1px 0 0 ${token('color.border.base.default')}`,
-    ':focus': {
-      outline: 'none',
-    },
-    ':focus-visible': {
-      outline: 'none',
-    },
     selectors: {
       "&[data-scrollable='true']": {
         maxHeight: '500px',
@@ -33,13 +25,18 @@ export const listBoxClass = style([
         borderRadius: '0',
         boxShadow: 'none',
       },
+      '&[data-focus-visible="true"]': {
+        outlineColor: token('color.border.tint.outline'),
+      },
+      '&[data-focused="true"]': {
+        outlineColor: token('color.border.tint.outline'),
+      },
     },
   },
 ]);
 
 // applied on li
 export const listItemClass = style([
-  bodyBaseRegular,
   atoms({
     display: 'flex',
     alignItems: 'center',
@@ -47,23 +44,25 @@ export const listItemClass = style([
     listStyleType: 'none',
     paddingBlock: 'sm',
     paddingInline: 'sm',
-    marginInline: 'xs',
     color: 'text.base.default',
     cursor: 'pointer',
-    borderRadius: 'sm',
   }),
   {
     transition: 'background 0.2s',
+    ':hover': {
+      color: token('color.text.base.default'),
+      backgroundColor: token('color.background.input.@hover'),
+    },
     ':focus': {
-      outline: 'none',
+      outlineColor: 'none',
     },
     ':focus-visible': {
       outline: 'none',
     },
     selectors: {
       '&[data-hovered="true"]': {
-        color: token('color.text.semantic.info.@hover'),
-        backgroundColor: token('color.background.semantic.info.@hover'),
+        color: token('color.text.base.default'),
+        backgroundColor: token('color.background.input.@hover'),
       },
       '&[data-disabled="true"]': {
         color: token('color.text.base.@disabled'),
@@ -74,7 +73,10 @@ export const listItemClass = style([
         backgroundColor: token('color.background.semantic.info.@focus'),
       },
       '&[data-selected="true"]': {
-        color: token('color.text.semantic.info.default'),
+        backgroundColor: token(
+          'color.background.accent.primary.inverse.default',
+        ),
+        color: token('color.text.base.inverse.default'),
         fontWeight: token('typography.weight.secondaryFont.bold'),
       },
       '&[data-has-children="true"]': {

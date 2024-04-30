@@ -1,5 +1,5 @@
 import { useObjectRef } from '@react-aria/utils';
-import type { ForwardedRef, ReactNode } from 'react';
+import type { ForwardedRef, ReactElement } from 'react';
 import React, { forwardRef } from 'react';
 import type { AriaSelectProps } from 'react-aria';
 import { HiddenSelect, useSelect } from 'react-aria';
@@ -8,44 +8,56 @@ import { useSelectState } from 'react-stately';
 import { ListBox } from '../../ListBox';
 import { Popover } from '../../Popover';
 
+import type { RecipeVariants } from '@vanilla-extract/recipes';
 import classNames from 'classnames';
-import { formField } from '../Form.css';
-import { FormFieldHeader } from '../FormFieldHeader/FormFieldHeader';
-import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
-import { selectValueClass } from './Select.css';
+import { Field } from '../Field/Field';
+import { input } from '../Form.css';
+import { selectButtonValue, selectItemClass } from './Select.css';
 import { SelectButton } from './SelectButton';
+
+type Variants = NonNullable<RecipeVariants<typeof input>>;
 
 export interface ISelectProps<T extends object = any>
   extends AriaSelectProps<T> {
-  className?: string;
-  isPositive?: boolean;
-  startIcon?: ReactNode;
-  tag?: string;
-  info?: string;
+  variant?: Variants['variant'];
+  fontType?: Variants['fontType'];
+  size?: Variants['size'];
   /*
    * @deprecated Use `isDisabled` instead. only here to support libs that manages props like `react-hook-form`
    */
   disabled?: boolean;
+  isPositive?: boolean;
+  tag?: string;
+  info?: string;
+  startVisual?: ReactElement;
+  className?: string;
 }
+
 function SelectBase<T extends object>(
   props: ISelectProps<T>,
   forwardedRef: ForwardedRef<HTMLButtonElement>,
 ) {
+  const {
+    size = 'md',
+    fontType = 'ui',
+    className,
+    tag,
+    info,
+    errorMessage,
+    description,
+    variant = 'default',
+    label,
+    startVisual,
+  } = props;
   const isDisabled = props.disabled ?? props.isDisabled;
   const ref = useObjectRef(forwardedRef);
+
   const state = useSelectState({
     ...props,
     isDisabled,
   });
-  const {
-    labelProps,
-    triggerProps,
-    valueProps,
-    menuProps,
-    descriptionProps,
-    errorMessageProps,
-    ...validation
-  } = useSelect(
+
+  const { triggerProps, valueProps, menuProps, ...fieldProps } = useSelect(
     {
       ...props,
       isDisabled,
@@ -54,74 +66,73 @@ function SelectBase<T extends object>(
     ref,
   );
 
-  // aggregate error message from validation props
-  const errorMessage =
-    typeof props.errorMessage === 'function'
-      ? props.errorMessage(validation)
-      : props.errorMessage ?? validation.validationErrors.join(' ');
   return (
-    <div className={classNames(formField, props.className)}>
-      {props.label && (
-        <FormFieldHeader
-          {...labelProps}
-          label={props.label}
-          info={props.info}
-          tag={props.tag}
-        />
-      )}
+    <Field
+      {...fieldProps}
+      variant={variant}
+      label={label}
+      isDisabled={isDisabled}
+      description={description}
+      errorMessage={errorMessage}
+      size={size}
+      tag={tag}
+      info={info}
+      ref={ref}
+      isInvalid={fieldProps.isInvalid}
+    >
       <HiddenSelect
         isDisabled={isDisabled}
         state={state}
         triggerRef={ref}
-        label={props.label}
+        label={label}
         name={props.name}
       />
       <SelectButton
         {...triggerProps}
+        className={classNames(
+          input({
+            size,
+            variant,
+            fontType,
+          }),
+          className,
+        )}
+        size={size}
+        startIcon={startVisual}
         ref={ref}
         state={state}
-        isDisabled={isDisabled}
+        data-disabled={isDisabled || undefined}
         autoFocus={props.autoFocus}
-        isInvalid={validation.isInvalid}
+        isInvalid={fieldProps.isInvalid}
         isPositive={props.isPositive}
-        startIcon={props.startIcon}
         elementType="button"
       >
         <span
           {...valueProps}
-          className={selectValueClass}
           data-placeholder={!state.selectedItem}
+          className={selectButtonValue}
         >
           {state.selectedItem
             ? state.selectedItem.rendered
             : props.placeholder || 'Select an option'}
         </span>
       </SelectButton>
-      {props.description && !validation.isInvalid && (
-        <FormFieldHelpText
-          {...descriptionProps}
-          intent={props.isPositive ? 'positive' : 'info'}
-          data-disabled={isDisabled || undefined}
-        >
-          {props.description}
-        </FormFieldHelpText>
-      )}
-      {validation.isInvalid && (
-        <FormFieldHelpText {...errorMessageProps} intent="negative">
-          {errorMessage}
-        </FormFieldHelpText>
-      )}
       {state.isOpen && (
         <Popover
           state={state}
+          offset={1}
           triggerRef={ref}
           showArrow={false}
           placement="bottom start"
         >
-          <ListBox {...menuProps} state={state} />
+          <ListBox
+            {...menuProps}
+            itemClassName={selectItemClass({ size, fontType })}
+            state={state}
+          />
         </Popover>
       )}
-    </div>
+    </Field>
   );
 }
 

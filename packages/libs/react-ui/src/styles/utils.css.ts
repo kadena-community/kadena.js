@@ -1,6 +1,7 @@
 import { style } from '@vanilla-extract/css';
 
 export const ellipsis = style({
+  fontFamily: 'unset',
   display: 'inline-block',
   overflow: 'hidden',
   textOverflow: 'ellipsis',

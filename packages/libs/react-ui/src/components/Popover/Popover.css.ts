@@ -9,12 +9,13 @@ export const underlayClass = style({
 
 export const popoverClass = style([
   atoms({
-    backgroundColor: 'base.default',
-    borderRadius: 'sm',
+    backgroundColor: 'input.default',
     overflow: 'auto',
   }),
   {
+    backdropFilter: 'blur(64px)',
     maxHeight: '100%',
+    boxShadow: `0 1px 0 0 ${token('color.border.base.default')}`,
   },
 ]);
 
@@ -25,7 +26,7 @@ export const arrowClass = style({
   selectors: {
     "&[data-placement='top']": {
       top: '100%',
-      transform: ' translate(-50%)',
+      transform: 'translate(-50%)',
     },
     "&[data-placement='bottom']": {
       bottom: '100%',

@@ -29,7 +29,7 @@ export const outlineColor = createVar();
 export const iconFill = fallbackVar(token('color.icon.base.@init'));
 const textColor = fallbackVar(token('color.text.base.@init'));
 
-const outlineStyles = {
+export const outlineStyles = {
   outlineStyle: `solid`,
   outlineWidth: '2px',
   outlineOffset: '2px',
@@ -48,10 +48,20 @@ export const baseContainerClass = recipe({
     {
       transition: 'outline-color 0.2s ease-in-out',
       outlineColor: 'transparent',
+      minWidth: '150px',
+      '@media': {
+        [breakpoints.sm]: {
+          maxWidth: '100%',
+        },
+        [breakpoints.md]: {
+          maxWidth: '40rem',
+        },
+      },
       selectors: {
         // outline should not be shown if there is a button which is focused
         '&:focus-within:has(button:not(button:focus))': outlineStyles,
         '&:focus-within:not(&:has(button))': outlineStyles,
+        [`&:focus-within:has(button#select-button)`]: outlineStyles,
       },
     },
   ],
@@ -186,6 +196,72 @@ globalStyle(`${endAddonStyles.fullHeight} button`, {
   borderRadius: '0',
 });
 
+export const inputSizeVariants = {
+  size: {
+    sm: atoms({ paddingBlock: 'n2' }),
+    md: atoms({ paddingBlock: 'n3' }),
+    lg: atoms({ paddingBlock: 'n4' }),
+  },
+} as const;
+
+export const inputFontTypeVariants = {
+  fontType: {
+    ui: uiSmallRegular,
+    code: monospaceSmallRegular,
+  },
+} as const;
+
+export const inputSizeCompoundVariants: {
+  variants: {
+    fontType: keyof (typeof inputFontTypeVariants)['fontType'];
+    size: keyof (typeof inputSizeVariants)['size'];
+  };
+  style: string;
+}[] = [
+  {
+    variants: {
+      size: 'sm',
+      fontType: 'ui',
+    },
+    style: uiSmallestRegular,
+  },
+  {
+    variants: {
+      size: 'md',
+      fontType: 'ui',
+    },
+    style: uiSmallRegular,
+  },
+  {
+    variants: {
+      size: 'lg',
+      fontType: 'ui',
+    },
+    style: uiBaseRegular,
+  },
+  {
+    variants: {
+      size: 'sm',
+      fontType: 'code',
+    },
+    style: monospaceSmallestRegular,
+  },
+  {
+    variants: {
+      size: 'md',
+      fontType: 'code',
+    },
+    style: monospaceSmallRegular,
+  },
+  {
+    variants: {
+      size: 'lg',
+      fontType: 'code',
+    },
+    style: monospaceBaseRegular,
+  },
+];
+
 export const input = recipe({
   base: [
     atoms({
@@ -201,15 +277,6 @@ export const input = recipe({
       transition: 'box-shadow, background-color 0.2s ease-in-out',
       '::placeholder': {
         color: textColor,
-      },
-      minWidth: '150px',
-      '@media': {
-        [breakpoints.sm]: {
-          maxWidth: '100%',
-        },
-        [breakpoints.md]: {
-          maxWidth: '40rem',
-        },
       },
       selectors: {
         '&[data-focused]': {
@@ -242,15 +309,6 @@ export const input = recipe({
     },
   ],
   variants: {
-    size: {
-      sm: atoms({ paddingBlock: 'n2' }),
-      md: atoms({ paddingBlock: 'n3' }),
-      lg: atoms({ paddingBlock: 'n4' }),
-    },
-    fontType: {
-      ui: uiSmallRegular,
-      code: monospaceSmallRegular,
-    },
     variant: {
       default: {
         boxShadow: `0 -1px 0 0 ${token('color.border.base.default')} inset`,
@@ -300,49 +358,8 @@ export const input = recipe({
         },
       },
     },
+    ...inputSizeVariants,
+    ...inputFontTypeVariants,
   },
-  compoundVariants: [
-    {
-      variants: {
-        size: 'sm',
-        fontType: 'ui',
-      },
-      style: uiSmallestRegular,
-    },
-    {
-      variants: {
-        size: 'md',
-        fontType: 'ui',
-      },
-      style: uiSmallRegular,
-    },
-    {
-      variants: {
-        size: 'lg',
-        fontType: 'ui',
-      },
-      style: uiBaseRegular,
-    },
-    {
-      variants: {
-        size: 'sm',
-        fontType: 'code',
-      },
-      style: monospaceSmallestRegular,
-    },
-    {
-      variants: {
-        size: 'md',
-        fontType: 'code',
-      },
-      style: monospaceSmallRegular,
-    },
-    {
-      variants: {
-        size: 'lg',
-        fontType: 'code',
-      },
-      style: monospaceBaseRegular,
-    },
-  ],
+  compoundVariants: inputSizeCompoundVariants,
 });
