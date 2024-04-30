@@ -13,7 +13,7 @@ export const popoverClass = style([
     overflow: 'auto',
   }),
   {
-    backdropFilter: 'blur(64px)',
+    backdropFilter: 'blur(32px)',
     maxHeight: '100%',
     boxShadow: `0 1px 0 0 ${token('color.border.base.default')}`,
   },

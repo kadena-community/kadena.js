@@ -7,7 +7,6 @@ export const listBoxClass = style([
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: 'input.default',
     margin: 'no',
     padding: 'no',
     listStyleType: 'none',
