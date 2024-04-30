@@ -1,13 +1,13 @@
 ---
-title: Accounts and keys
-description: Learn about how accounts are defined on the Kadena blcokchain.
+title: Accounts, keys, and principals
+description: Learn about how public and secret keys are used in accounts and how accounts Kadena blockchain differ from accounts and addresses on most blockchains.
 menu: Learn
-label: Accounts and keys
+label: Accounts, keys, and principals
 order: 2
 layout: full
 ---
 
-# Accounts and keys
+# Accounts, keys, and principals
 
 With most blockchains, accounts and account addresses that can send and receive funds are based on generating public and secret key pairs then using your public key as your account name. 
 This “one-to-one” model keeps things simple, but runs into problems when you want to use multiple keys for a single account.
@@ -69,25 +69,140 @@ The following diagram illustrates the relationship between keys, keysets, and ac
 ![Keys, keysets, and accounts on the Kadena network](/assets/docs/kadena-account.png)
 
 If you would like to learn more about keys and accounts in
-Kadena,[ check out this article](/blogchain/2020/beginners-guide-to-kadena-accounts-keysets-2020-01-14).
+Kadena, see [Beginner's Guide to Kadena: Accounts + Keysets](/blogchain/2020/beginners-guide-to-kadena-accounts-keysets-2020-01-14).
 
-## Kadena is a multi-chain network
+## Accounts on a multi-chain network
 
-Kadena’s major breakthrough is that it has solved scalability in proof-of-work blockchains. 
-To achieve this, the Kadena Chainweb consensus protocol braids network connections from multiple parallel chains into a single set of validated blocks.
+The Kadena network is a scalable proof-of-work blockchain with a consensus model that weaves the transactions and blocks from multiple **parallel chains** into a single and consistent view of the blockchain state.
+For a visual introduction to how the Kadena Chainweb protocol weaves connections from multiple chains into a single view of state, watch the 3-minute video [How Chainweb Works: A Simple Animation](https://www.youtube.com/watch?v=hYvXxFbsN6I).
 
-However, each chain in the network operates independently.
+Ultimately, this single view of state is one network.
+However, each of the parallel chains in the network operates independently.
 When you create and fund an account on any chain, it only exists on that chain.
 You can create accounts on more than one chain, but they are essentially independent accounts, with separate account balances and potentially different keysets and owners.
-Because the chains operate independently, you should always pay close attention to the network and chain identifier you have selected when you are signing and submitting transactions
+Because the chains operate independently, you should always pay close attention to the network and chain identifier you have selected when you are signing and submitting transactions.
 
 It's also important to remember that the account name doesn't determine ownership of an account. 
 The keyset associated with an account determines ownership. 
-You could own account named Alice on chain ID 0, and someone else could own account Alice on chain ID 5.
-
+You could own account named Alice on chain ID 0, and someone else could own an account named Alice on chain ID 5.
 If you want to own a specific account name across all of the chains in the network, you would need to be the first person to create that account on each chain.
 
-To visualize how Kadena Chainweb weaves together connections for multiple chains, check out this [3-minute video](https://www.youtube.com/watch?v=hYvXxFbsN6I).
+## Account names and principals
+
+As mentioned in [Defining accounts](#defining-accounts), an account name can be any string.
+Using an arbitrary string as an account name can be convenient. 
+For example, you might want to create an account with a name that identifies it as a personal or primary account, for example, Lola-Pistola, so that it's easy to differentiate it from an account that you own jointly with another party or a group, for example, Las-Pistolas.
+
+However, using arbitrary account names like these examples can make your account vulnerable to certain kinds of attacks.
+For example, an attacker might try to hijack a transaction that creates an account or transfers funds by changing the guard associated with the account.
+One way to prevent an account from being hijacked by an attacker is to create **principal** account that has its guard pinned to the account name.
+If an attacker tries to hijack the account by changing the guard for a principal account, the result would be a different account and the transaction would fail. 
+
+## Guards
+
+In Pact, guards provide a way to limit access.
+The guard defines the specific conditions that must be met before granting access to the account the guard is protecting. 
+Pact provides several different types of guards to handle different scenarios and use cases.
+You've already seen the most common type of guard—the keyset—and pinning the keyset guard to the account name is the most common scenario for creating a principal account for individual keys or groups of keys.
+
+## Keysets and principals
+
+Keysets represent the most-commonly used type of guard and are the most similar to how most blockchains protect access to accounts using public and secret keys. 
+A keyset holds a collection of one or more public keys and a predicate that defines how many of those keys must sign to satisfy the guard. 
+In Pact, the guard is a Boolean value that must return true for an associated action to take place.
+
+By default, when you define a Keyset with a **single** public key and the **keys-all** predicate, the result is an account name that starts with the `k:` prefix, followed by the public key for the account.
+This naming convention create a principal account for an individual key.
+ 
+Any other type of keyset combination results in an account with the `w:` prefix.
+
+## User guards
+
+In some cases, you might want to customize the guard to allow one of two different keysets to sign. 
+For example, you might have one keyset where the members of a board of directors are registered and another keyset where union representatives are registered. 
+This type of guard can be very flexible and powerful. 
+However, user guards don't allow access to a database during evaluation of the guard. 
+A user guard is ,in essence, a pure function that is evaluated at runtime to guard an account.
+
+Such accounts result in an account with the `u:` prefix.
+
+## Capability guards
+
+Because user guards are required to be pure functions, they can't take database state into account. 
+To gain this dynamic property ,one could retrieve such data while bringing a capability into scope. 
+This way you can define a guard that requires a capability to be brought into scope. 
+This can be achieved using a user guard, but a capability guard is more convenient and a more explicit way to achieve the same.
+
+Accounts guarded by a capability result in an account with the `c:` prefix.
+
+## Accounts recap
+
+Every type of guard can be represented in a unique way. 
+For every type of guard, you have a different protocol name. 
+Here is a short overview of the protocols:
+
+k for single key keysets
+w for multiple keys keysets
+c for capability guards
+u for user guards
+
+There are more principals, but I'll leave it at these as these are the most likely guards you'll use for creating an account.
+
+You can see some examples below.
+
+principal.pact
+(begin-tx)
+(module test G
+  (defcap G() true)
+  (defcap SOME-CAPABILITY(account:string) true)
+  (defun enforce-my-guard(guard:guard)
+    (enforce-keyset guard)))
+(commit-tx)
+
+(env-data
+  { "ks": ["pubkey"]
+  , "mks": ["pubkey1", "pubkey2"]
+  , "amks": { "keys": ["pubkey1", "pubkey2"], "pred": "keys-any" }
+  })
+(begin-tx)
+(expect "Principal name to match"
+  "k:pubkey"
+  (create-principal (read-keyset "ks")))
+(expect "Principal name to match"
+  "w:XJKZlqax4U3SYulCyboYGInyn33ycPFS2wJCVybYsjw:keys-all"
+  (create-principal (read-keyset "mks")))
+(expect "Principal name to match"
+  "w:XJKZlqax4U3SYulCyboYGInyn33ycPFS2wJCVybYsjw:keys-any"
+  (create-principal (read-keyset "amks")))
+(expect "Principal name to match"
+  "c:b7iZJRzXJZqY5gun9HLuKGwiRf8ZJICLvunggRWzlRs"
+  (create-principal (create-capability-guard (test.SOME-CAPABILITY "my-account"))))
+(expect "Principal name to match"
+  "c:jDL5hzYaJEQiw-6x8Hd6_H1w7KrjCCubPSehxt500hM"
+  (create-principal (create-capability-guard (test.SOME-CAPABILITY "my-other-account"))))
+(expect "Principal name to match"
+  "u:test.enforce-my-guard:Xv7uRrsqw9iCQIbGLudMQ7t_DB3xPzki5jqnAupaHoc"
+  (create-principal (create-user-guard (test.enforce-my-guard (read-keyset "ks")))))
+(expect "Principal name to match"
+  "u:test.enforce-my-guard:39DM3OJqENcyQB3--8AuHxPsUTjgCsW-1jh-MFZv--U"
+  (create-principal (create-user-guard (test.enforce-my-guard (read-keyset "mks")))))
+(commit-tx)
+
+(begin-tx)
+(module test G
+  (defcap G() true)
+  (defcap SOME-CAPABILITY(accounts:string) 
+    (enforce true "This is a test")))
+(commit-tx)
+
+(begin-tx)
+(expect "the body of defcap to have no affect on the principal name"
+  "c:b7iZJRzXJZqY5gun9HLuKGwiRf8ZJICLvunggRWzlRs"
+  (create-principal (create-capability-guard (test.SOME-CAPABILITY "my-account"))))
+(expect "the body of defcap to have no affect on the principal name"
+  "c:jDL5hzYaJEQiw-6x8Hd6_H1w7KrjCCubPSehxt500hM"
+  (create-principal (create-capability-guard (test.SOME-CAPABILITY "my-other-account"))))
+(commit-tx)
 
 ## Transfers within and between chains
 
