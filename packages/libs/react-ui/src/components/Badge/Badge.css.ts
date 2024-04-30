@@ -2,15 +2,21 @@ import { recipe } from '@vanilla-extract/recipes';
 import { atoms, token } from '../../styles';
 
 export const badge = recipe({
-  base: atoms({
-    borderRadius: 'xs',
-    border: 'hairline',
-    padding: 'xs',
-    display: 'inline-flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    lineHeight: 'base',
-  }),
+  base: [
+    atoms({
+      borderRadius: 'xs',
+      border: 'hairline',
+      padding: 'xs',
+      display: 'inline-flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      lineHeight: 'base',
+    }),
+    {
+      borderColor: token('color.neutral.n1@alpha20'),
+      color: token('color.neutral.n0@alpha70'),
+    },
+  ],
   variants: {
     size: {
       lg: {
@@ -32,37 +38,26 @@ export const badge = recipe({
       },
       inverse: {
         backgroundColor: token('color.neutral.n1@alpha10'),
-        borderColor: token('color.neutral.n1@alpha20'),
-        color: token('color.neutral.n0@alpha70'),
       },
-      //kda/foundation/color/background/semantic/positive/inverse/default
       info: {
         backgroundColor: token(
           'color.background.semantic.info.inverse.default',
         ),
-        borderColor: token('color.neutral.n1@alpha20'),
-        color: token('color.neutral.n0@alpha70'),
       },
       warning: {
         backgroundColor: token(
           'color.background.semantic.warning.inverse.default',
         ),
-        borderColor: token('color.neutral.n1@alpha20'),
-        color: token('color.neutral.n0@alpha70'),
       },
       positive: {
         backgroundColor: token(
           'color.background.semantic.positive.inverse.default',
         ),
-        borderColor: token('color.neutral.n1@alpha20'),
-        color: token('color.neutral.n0@alpha70'),
       },
       negative: {
         backgroundColor: token(
           'color.background.semantic.negative.inverse.default',
         ),
-        borderColor: token('color.neutral.n1@alpha20'),
-        color: token('color.neutral.n0@alpha70'),
       },
     },
   },
