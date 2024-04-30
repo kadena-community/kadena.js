@@ -19,7 +19,7 @@ export const ellipsis = style({
 
 export const rotate180Transition = style({
   transitionProperty: 'transform',
-  transitionDuration: '100ms',
+  transitionDuration: '400ms',
   transitionTimingFunction: 'ease-in-out',
   transform: 'rotate(0deg)',
 
