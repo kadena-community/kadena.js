@@ -1,9 +1,12 @@
-import React, { createContext, useContext, useState } from 'react';
+import { breakpoints } from '@kadena/react-ui/styles';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useMedia } from 'react-use';
 
 export const MenuContext = createContext<IUseMenuProps | undefined>(undefined);
 
 export const MenuProvider: React.FC<ITMenuProviderProps> = (props) => {
   const context = useContext(MenuContext);
+  const isMediumDevice = useMedia(breakpoints.md, true);
 
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isAsideOpen, setIsAsideOpen] = useState<boolean>(false);
@@ -17,6 +20,12 @@ export const MenuProvider: React.FC<ITMenuProviderProps> = (props) => {
     setIsAsideOpen((v) => !v);
     setIsMenuOpen(false);
   };
+
+  useEffect(() => {
+    if (isMediumDevice) {
+      setIsMenuOpen(false);
+    }
+  }, [isMediumDevice]);
 
   const closeMenu = (): void => setIsMenuOpen(false);
 

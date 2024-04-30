@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { useTheme } from 'next-themes';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
-import { baseIcon, reversedIcon } from './styles.css';
+import { baseIcon, reversedIcon, socialsClass } from './styles.css';
 
 export const ThemeToggle: FC = () => {
   const [isMounted, setIsMounted] = useState<boolean>(false);
@@ -32,6 +32,7 @@ export const ThemeToggle: FC = () => {
 
   return (
     <NavHeaderButton
+      className={socialsClass}
       onPress={toggleTheme}
       title="Toggle between Light and Dark theme"
       aria-label="Toggle between Light and Dark theme"
