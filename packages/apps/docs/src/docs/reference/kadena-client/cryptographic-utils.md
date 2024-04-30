@@ -21,21 +21,21 @@ The library includes the following utility functions for performing cryptographi
 | ----------------- | ------------
 | binToHex | Convert binary numbers to hexadecimal strings.
 | hexToBin | Convert hexadecimal strings to binary numbers.
-| base64UrlEncode | Encode text as Base64 values that can be used for URLs.
-| base64UrlDecode | Decode Base64 values into text.
+| base64UrlEncode | Encode text as a Base64-encoded URL.
+| base64UrlDecode | Convert a Base64-encoded URL to text.
 | base64UrlEncodeArr | Encode an array of text as Base64 values that can be used for URLs.
 | base64UrlDecodeArr | Decode Base64 arrays into text.
 | strToUint8Array | Convert a string to a Uint8Array.
 | uint8ArrayToStr | Convert a Uint8Array to a string.
 | hash | Generate a cryptographic hash for a transaction.
-| hashBin |
-| genKeyPair | Generate a random, cryptographically secure public and secret key.
+| hashBin | Convert a string to a hashed binary using the BLAKE2b-256 hashing algorithm.
+| genKeyPair | Generate a random, cryptographically secure public and secret key using the ED25519 signature scheme.
 | restoreKeyPairFromSecretKey | Restore a key pair from a secret phrase.
-| sign | Sign a transaction.
-| signHash | Generate a cryptographic hash for a signature.
+| sign | Generate a hash using the BLAKE2b-256 hashing algorithm and sign a transaction with a public and secret key pair.
+| signHash | Sign a hashed message using a public and secret key pair.
 | verifySig | Verify a signature.
-| unique |
-| toTweetNaclSecretKey |
+| unique |  Convert an array with IBase64Url values into an array with unique IBase64Url values.
+| toTweetNaclSecretKey | Convert a public and secret key pair into Uint8Array binary object.
 
 You can find the generated API documentation for these utilities in
 [crypto.api.md](https://github.com/kadena-community/kadena.js/blob/main/packages/libs/cryptography-utils/etc/crypto.api.md) and [cryptography-utils.api.md](https://github.com/kadena-community/kadena.js/blob/main/packages/libs/cryptography-utils/etc/cryptography-utils.api.md).
