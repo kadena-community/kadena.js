@@ -4,14 +4,14 @@ import type { FC } from 'react';
 import React, { useState } from 'react';
 import {
   closeButtonClass,
-  contentClassRecipie,
+  contentClassRecipe,
   iconClass,
   notificationRecipe,
 } from './Notification.css';
 
 type Variants = NonNullable<RecipeVariants<typeof notificationRecipe>>;
 type ContentTypeVariants = NonNullable<
-  RecipeVariants<typeof contentClassRecipie>
+  RecipeVariants<typeof contentClassRecipe>
 >;
 export interface INotificationProps extends Variants, ContentTypeVariants {
   children?: React.ReactNode;
@@ -45,7 +45,7 @@ export const Notification: FC<INotificationProps> = ({
     >
       <span className={iconClass}>{icon ? icon : <MonoInfo />}</span>
 
-      <div className={contentClassRecipie({ type })}>{children}</div>
+      <div className={contentClassRecipe({ type })}>{children}</div>
 
       {isDismissable && (
         <button

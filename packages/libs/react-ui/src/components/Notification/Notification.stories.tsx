@@ -1,7 +1,7 @@
 import { MonoCheck, MonoClose } from '@kadena/react-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { withContentWidth } from '../../storyDecorators';
+import { getVariants, withContentWidth } from '../../storyDecorators';
 import type { INotificationProps } from '../Notification';
 import {
   Notification,
@@ -9,22 +9,10 @@ import {
   NotificationFooter,
   NotificationHeading,
 } from '../Notification';
-import { contentClassRecipie, notificationRecipe } from './Notification.css';
+import { contentClassRecipe, notificationRecipe } from './Notification.css';
 
-// eslint-disable-next-line @kadena-dev/typedef-var
-const intentVariants = Object.keys(
-  (notificationRecipe as any).classNames?.variants?.intent,
-) as INotificationProps['intent'][];
-
-// eslint-disable-next-line @kadena-dev/typedef-var
-const displayStyleVariant = Object.keys(
-  (notificationRecipe as any).classNames?.variants?.displayStyle,
-) as INotificationProps['displayStyle'][];
-
-// eslint-disable-next-line @kadena-dev/typedef-var
-const typeStyleVariant = Object.keys(
-  (contentClassRecipie as any).classNames?.variants?.type,
-) as INotificationProps['type'][];
+const notificationVariants = getVariants(notificationRecipe);
+const contentVariants = getVariants(contentClassRecipe);
 
 type StoryType = {
   heading: string;
@@ -46,36 +34,36 @@ const meta: Meta<StoryType> = {
   },
   argTypes: {
     displayStyle: {
-      options: displayStyleVariant,
+      options: notificationVariants.displayStyle,
       control: {
         type: 'select',
       },
       description:
         'The Notification component has bordered and borderless variants. The borderless variant is used for notifications that located within a card or content body, while the bordered variant can be used in all other cases. ',
       table: {
-        type: { summary: displayStyleVariant.join(' | ') },
+        type: { summary: notificationVariants.displayStyle.join(' | ') },
         defaultValue: { summary: 'default' },
       },
     },
     intent: {
-      options: intentVariants,
+      options: notificationVariants.intent,
       control: {
         type: 'select',
       },
       description: 'Notification intent color',
       table: {
-        type: { summary: intentVariants.join(' | ') },
+        type: { summary: notificationVariants.intent.join(' | ') },
         defaultValue: { summary: 'default' },
       },
     },
     type: {
-      options: typeStyleVariant,
+      options: contentVariants.type,
       control: {
         type: 'select',
       },
       description: 'way of presenting the content of the notification',
       table: {
-        type: { summary: typeStyleVariant.join(' | ') },
+        type: { summary: contentVariants.type.join(' | ') },
         defaultValue: { summary: 'default' },
       },
     },

@@ -1,12 +1,8 @@
-import { createVar, style, styleVariants } from '@vanilla-extract/css';
+import { createVar, style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
-import { atoms } from '../../styles/atoms.css';
-import { tokens } from '../../styles/tokens/contract.css';
+import { atoms, token } from '../../styles';
 
 const iconColorVar = createVar();
-
-const semanticColors = ['info', 'positive', 'warning', 'negative'] as const;
-type SemanticColor = (typeof semanticColors)[number];
 
 export const notificationRecipe = recipe({
   base: [
@@ -31,8 +27,7 @@ export const notificationRecipe = recipe({
         }),
         {
           vars: {
-            [iconColorVar]:
-              tokens.kda.foundation.color.icon.semantic.info.default,
+            [iconColorVar]: token('color.icon.semantic.info.default'),
           },
         },
       ],
@@ -44,8 +39,7 @@ export const notificationRecipe = recipe({
         }),
         {
           vars: {
-            [iconColorVar]:
-              tokens.kda.foundation.color.icon.semantic.positive.default,
+            [iconColorVar]: token('color.icon.semantic.positive.default'),
           },
         },
       ],
@@ -57,8 +51,7 @@ export const notificationRecipe = recipe({
         }),
         {
           vars: {
-            [iconColorVar]:
-              tokens.kda.foundation.color.icon.semantic.warning.default,
+            [iconColorVar]: token('color.icon.semantic.warning.default'),
           },
         },
       ],
@@ -70,8 +63,7 @@ export const notificationRecipe = recipe({
         }),
         {
           vars: {
-            [iconColorVar]:
-              tokens.kda.foundation.color.icon.semantic.negative.default,
+            [iconColorVar]: token('color.icon.semantic.negative.default'),
           },
         },
       ],
@@ -84,7 +76,7 @@ export const notificationRecipe = recipe({
           borderRadius: 'sm',
         }),
         {
-          borderLeftWidth: tokens.kda.foundation.border.width.thick,
+          borderLeftWidth: token('border.width.thick'),
         },
       ],
       borderless: [],
@@ -109,7 +101,7 @@ export const closeButtonClass = style([
   },
 ]);
 
-export const contentClassRecipie = recipe({
+export const contentClassRecipe = recipe({
   base: [
     atoms({
       display: 'flex',
@@ -157,8 +149,8 @@ export const iconClass = style([
   }),
   {
     color: iconColorVar,
-    width: tokens.kda.foundation.icon.size.base,
-    height: tokens.kda.foundation.icon.size.base,
+    width: token('icon.size.base'),
+    height: token('icon.size.base'),
   },
 ]);
 
@@ -177,42 +169,64 @@ export const actionsContainerClass = style([
 
 const actionIconVar = createVar();
 
-const actionButtonBase = atoms({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  backgroundColor: 'transparent',
-  border: 'none',
-  margin: 'no',
-  padding: 'no',
-  fontSize: 'base',
-  fontWeight: 'secondaryFont.bold',
-  cursor: 'pointer',
-});
-
-const actionButtonColors: Record<SemanticColor, SemanticColor> =
-  semanticColors.reduce((acc: any, color) => {
-    acc[color] = color;
-    return acc;
-  }, {});
-
-export const actionButtonIntentVariants = styleVariants(
-  actionButtonColors,
-  (color) => {
-    return [
-      actionButtonBase,
-      atoms({
-        color: `text.semantic.${color}.default`,
-      }),
-      {
-        vars: {
-          [actionIconVar]:
-            tokens.kda.foundation.color.icon.semantic[color]?.default,
+export const actionButtonRecipe = recipe({
+  base: atoms({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+    border: 'none',
+    margin: 'no',
+    padding: 'no',
+    fontSize: 'base',
+    fontWeight: 'secondaryFont.bold',
+    cursor: 'pointer',
+  }),
+  variants: {
+    intent: {
+      info: [
+        atoms({
+          color: `text.semantic.info.default`,
+        }),
+        {
+          vars: {
+            [actionIconVar]: token('color.icon.semantic.info.default'),
+          },
         },
-      },
-    ];
+      ],
+      positive: [
+        atoms({
+          color: `text.semantic.positive.default`,
+        }),
+        {
+          vars: {
+            [actionIconVar]: token('color.icon.semantic.positive.default'),
+          },
+        },
+      ],
+      warning: [
+        atoms({
+          color: `text.semantic.warning.default`,
+        }),
+        {
+          vars: {
+            [actionIconVar]: token('color.icon.semantic.warning.default'),
+          },
+        },
+      ],
+      negative: [
+        atoms({
+          color: `text.semantic.negative.default`,
+        }),
+        {
+          vars: {
+            [actionIconVar]: token('color.icon.semantic.negative.default'),
+          },
+        },
+      ],
+    },
   },
-);
+});
 
 export const actionButtonIconClass = style([
   atoms({
