@@ -15,7 +15,7 @@ const createContext = <T extends Record<string, unknown>>() => {
 
 const { setContext, useContext } = createContext<{
   tables: TableInterface[];
-  schemes: SchemeInterface[];
+  schemas: SchemaInterface[];
 }>();
 
 const indent =
@@ -419,10 +419,10 @@ const extractProperty = (item: ts.PropertyDeclaration) => {
       const typeArgs =
         initializer.typeArguments?.map((t) => {
           if (ts.isTypeReferenceNode(t)) {
-            const schemeType = (
+            const schemaType = (
               t.typeName as ts.Identifier
             ).escapedText.toString();
-            return schemeType;
+            return schemaType;
           }
         }) ?? [];
 
@@ -450,9 +450,9 @@ const extractProperty = (item: ts.PropertyDeclaration) => {
   }
 };
 
-const extractScheme =
+const extractSchema =
   (definedInterfaces: DefinedInterface[]) =>
-  (member: ts.ClassElement): SchemeInterface | undefined => {
+  (member: ts.ClassElement): SchemaInterface | undefined => {
     if (member.kind !== ts.SyntaxKind.PropertyDeclaration) {
       return;
     }
@@ -461,10 +461,10 @@ const extractScheme =
     );
     if (
       (decorator && decorator.name === 'defschema') ||
-      (!decorator && initializer.class === 'Scheme')
+      (!decorator && initializer.class === 'Schema')
     ) {
       if (initializer.typeArguments.length !== 1) {
-        throw new Error('type argument is required for defining a scheme');
+        throw new Error('type argument is required for defining a schema');
       }
       const intf = definedInterfaces.find(
         (v) => v.name === initializer.typeArguments[0],
@@ -473,7 +473,7 @@ const extractScheme =
         throw new Error('Interface can not be found');
       }
       return {
-        schemeName: decorator?.arguments?.length
+        schemaName: decorator?.arguments?.length
           ? decorator.arguments[0]
           : name,
         propertyName: name,
@@ -494,7 +494,7 @@ const extractTables = (member: ts.ClassElement): TableInterface | undefined => {
     (!decorator && initializer.class === 'Table')
   ) {
     if (args.length !== 1) {
-      throw new Error('scheme is required for defining a table');
+      throw new Error('schema is required for defining a table');
     }
     return {
       tableName: decorator?.arguments?.length ? decorator.arguments[0] : name,
@@ -537,16 +537,16 @@ const classMember = (member: ts.ClassElement) => {
       const { decorator, name, initializer } = extractProperty(property);
       if (
         (decorator && decorator.name === 'defschema') ||
-        initializer.class === 'Scheme'
+        initializer.class === 'Schema'
       ) {
-        const { schemes } = useContext();
-        const scheme = schemes.find(
+        const { schemas } = useContext();
+        const schema = schemas.find(
           ({ propertyName }) => propertyName === name,
         );
-        if (!scheme) {
-          throw new Error(`Scheme is not available for property ${name}`);
+        if (!schema) {
+          throw new Error(`Schema is not available for property ${name}`);
         }
-        return `(defschema ${scheme?.schemeName}\n${scheme.type.properties
+        return `(defschema ${schema?.schemaName}\n${schema.type.properties
           .map((p) => `  ${p.prop}: ${p.type}`)
           .join('\n')}\n)`;
       }
@@ -557,22 +557,22 @@ const classMember = (member: ts.ClassElement) => {
       ) {
         const { decorator, name, initializer, args } =
           extractProperty(property);
-        const schemeProperty = args[0];
-        if (!schemeProperty) {
-          throw new Error('Scheme should be passed to the Table');
+        const schemaProperty = args[0];
+        if (!schemaProperty) {
+          throw new Error('Schema should be passed to the Table');
         }
-        const { schemes } = useContext();
-        const scheme = schemes.find(
-          ({ propertyName }) => propertyName === schemeProperty,
+        const { schemas } = useContext();
+        const schema = schemas.find(
+          ({ propertyName }) => propertyName === schemaProperty,
         );
-        if (!scheme) {
+        if (!schema) {
           throw new Error(
-            `Scheme is not available for property ${schemeProperty}`,
+            `Schema is not available for property ${schemaProperty}`,
           );
         }
         return `(deftable ${
           (decorator?.arguments && decorator.arguments[0]) ?? name
-        }:{${scheme.schemeName}} )`;
+        }:{${schema.schemaName}} )`;
       }
     }
 
@@ -627,11 +627,11 @@ function convertClass(
     })
     .filter(Boolean)[0];
 
-  const schemes = classObject.members
-    .map(extractScheme(definedInterfaces))
-    .filter(Boolean) as SchemeInterface[];
+  const schemas = classObject.members
+    .map(extractSchema(definedInterfaces))
+    .filter(Boolean) as SchemaInterface[];
 
-  setContext({ schemes });
+  setContext({ schemas });
 
   const tables = classObject.members
     .map(extractTables)
@@ -670,9 +670,9 @@ interface DefinedInterface {
   }[];
 }
 
-interface SchemeInterface {
+interface SchemaInterface {
   type: DefinedInterface;
-  schemeName: string;
+  schemaName: string;
   propertyName: string;
 }
 

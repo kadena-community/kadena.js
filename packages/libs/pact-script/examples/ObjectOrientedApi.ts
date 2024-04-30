@@ -1,4 +1,4 @@
-interface CoinScheme {
+interface CoinSchema {
   balance: decimal;
   guard: guard;
 }
@@ -13,10 +13,10 @@ class coin implements fungibleV2, fungibleXChainV1 {
     enforce(false, 'Enforce non-upgradeability');
   }
 
-  @defschema('coin-scheme') coinScheme =
-    new Scheme<CoinScheme>(/** we can pass model as scheme validator */);
+  @defschema('coin-schema') coinSchema =
+    new Schema<CoinSchema>(/** we can pass model as schema validator */);
 
-  @deftable('coin-table') coinTable = new Table(this.coinScheme);
+  @deftable('coin-table') coinTable = new Table(this.coinSchema);
 
   @defcap DEBIT(sender: string) {
     enforce_guard(this.coinTable.read(sender).guard);

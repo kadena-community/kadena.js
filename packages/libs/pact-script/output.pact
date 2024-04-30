@@ -12,12 +12,12 @@
     (enforce false "Enforce non-upgradeability")
   )
 
-  (defschema coin-scheme
+  (defschema coin-schema
     balance: decimal
     guard: guard
   )
 
-  (deftable coin-table:{coin-scheme} )
+  (deftable coin-table:{coin-schema} )
 
   (defcap DEBIT (sender:string)
     (enforce_guard (at "guard" (read "coin-table" sender) ))

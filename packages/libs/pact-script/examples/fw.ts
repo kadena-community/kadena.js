@@ -23,14 +23,14 @@ declare const table: any;
 declare const enforce_reserved: any;
 declare const namespace: any;
 declare const createTable: any;
-declare const createScheme: any;
+declare const createSchema: any;
 declare const defCap: any;
 declare const defModule: any;
 declare const defGovernance: any;
 declare type decimal = number & { _brand?: 'decimal' };
 declare type guard = any;
 declare class Table<T> {
-  constructor(scheme: Scheme<T>);
+  constructor(schema: Schema<T>);
   read(key: string): any;
   write(key: string, value: any);
 }
@@ -39,4 +39,4 @@ class fungibleV2 {}
 @module('fungible-xchain-v1')
 class fungibleXChainV1 {}
 
-declare class Scheme<T> {}
+declare class Schema<T> {}
