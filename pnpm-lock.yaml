@@ -187,6 +187,9 @@ importers:
       '@kadena/fonts':
         specifier: ~0.0.1
         version: 0.0.1
+      '@kadena/react-icons':
+        specifier: workspace:*
+        version: link:../../libs/react-icons
       '@kadena/react-ui':
         specifier: workspace:*
         version: link:../../libs/react-ui
