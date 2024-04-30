@@ -10,13 +10,13 @@ import { tagsPathUrlRedirects } from './paths/tags.mjs';
 
 const redirects = [
   basicsPathUrlRedirects,
-  blogchainPathUrlRedirects,
-  buildPathUrlRedirects,
   contributePathUrlRedirects,
-  kadenaPathUrlRedirects,
   marmaladePathUrlRedirects,
+  buildPathUrlRedirects,
+  kadenaPathUrlRedirects,
   pactPathUrlRedirects,
   rootPathUrlRedirects,
+  blogchainPathUrlRedirects,
   tagsPathUrlRedirects,
 ].flat();
 
