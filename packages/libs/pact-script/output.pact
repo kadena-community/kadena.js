@@ -49,7 +49,8 @@
     (enforce (> amount 0) "debit amount must be positive")
     (enforce_unit amount)
     (require_capability (DEBIT account))
-    (let ((balance (at "balance" (read "coin-table" account))))
+    (with-read coin-table account
+      {"balance" : balance}
       (enforce (<= amount balance) "Insufficient funds")
       (update "coin-table" account { balance: (- balance amount) })
     )
@@ -60,13 +61,13 @@
     (enforce (> amount 0) "credit amount must be positive")
     (enforce_unit amount)
     (require_capability (CREDIT account))
-    (let (( temp_variable (read "coin-table" account)))
-      (let ((retg (at "guard" temp_variable)))
-        (let ((balance (at "balance" temp_variable)))
-          (enforce (= retg guard) "account guards do not match")
-          (let ((is_new (if (= balance -1) (enforce_reserved account guard) false)))
-            (write "coin-table" account { balance: (if is_new amount (+ balance amount)),guard: retg })
-    ))))
+    (with-default-read coin-table account
+      {"balance" : -1, "guard" : guard}
+      {"balance" : balance, "guard" : retg}
+      (enforce (= retg guard) "account guards do not match")
+      (let ((is_new (if (= balance -1) (enforce_reserved account guard) false)))
+        (write "coin-table" account { balance: (if is_new amount (+ balance amount)),guard: retg })
+    ))
   )
 
   (defun transfer (sender:string receiver:string amount:decimal)
@@ -77,7 +78,8 @@
     (enforce_unit amount)
     (with_capability (TRANSFER sender receiver amount) 
       (debit sender amount)
-      (let ((guard (at "guard" (read "coin-table" receiver))))
+      (with-read coin-table receiver
+        {"guard" : guard}
         (credit receiver guard amount)
       )
     )

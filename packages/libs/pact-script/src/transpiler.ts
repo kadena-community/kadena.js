@@ -77,6 +77,69 @@ const binaryOperatorMapper = (operator: ts.BinaryOperatorToken) => {
   return operatorMap(operator.kind);
 };
 
+const convertToDbRead = (declaration: ts.VariableDeclaration) => {
+  // only use with-read if the declaration is a ObjectBindingPattern
+  if (declaration.name.kind !== ts.SyntaxKind.ObjectBindingPattern) return;
+  if (declaration.initializer?.kind !== ts.SyntaxKind.CallExpression) return;
+  const callExpression = declaration.initializer as ts.CallExpression;
+  let parts = getFunctionName(callExpression).split('.');
+  if (parts.length !== 2) return;
+  const { tables } = useContext();
+  const table = tables?.find(({ propertyName }) => propertyName === parts[0]);
+  if (!table) return;
+  if (parts[1] !== 'read') return;
+  // with-read; with-default-read
+  let readArgs = callExpression.arguments.map(createExpression);
+  if (readArgs.length !== 1) {
+    throw new Error('db read must have only one argument');
+  }
+  const key = readArgs[0];
+  if (typeof key !== 'string') {
+    throw new Error('key can not be variable declaration');
+  }
+  const elements = declaration.name.elements;
+  const vars = elements.map((elm) => {
+    if (elm.name.kind !== ts.SyntaxKind.Identifier) {
+      return { name: formatError(elm.name) };
+    }
+    return {
+      name: elm.name.escapedText,
+      propertyName: elm.propertyName
+        ? (elm.propertyName as ts.Identifier).escapedText
+        : undefined,
+      defaultValue: elm.initializer
+        ? createExpression(elm.initializer)
+        : undefined,
+    };
+  });
+  // use with-default-read
+  if (vars.every(({ defaultValue }) => defaultValue !== undefined)) {
+    const def = vars
+      .map((vr) => `"${vr.propertyName ?? vr.name}" : ${vr.defaultValue}`)
+      .join(', ');
+    const pr = vars
+      .map((vr) => `"${vr.propertyName ?? vr.name}" : ${vr.name}`)
+      .join(', ');
+    return {
+      code: `(with-default-read ${table.tableName} ${key}\n${indent(2)(
+        `{${def}}`,
+      )}\n${indent(2)(`{${pr}}`)}`,
+      openedBlock: 1,
+    };
+  }
+  // use with-read
+  if (vars.every(({ defaultValue }) => defaultValue === undefined)) {
+    const pr = vars
+      .map((vr) => `"${vr.propertyName ?? vr.name}" : ${vr.name}`)
+      .join(', ');
+    return {
+      code: `(with-read ${table.tableName} ${key}\n${indent(2)(`{${pr}}`)}`,
+      openedBlock: 1,
+    };
+  }
+  throw new Error('all variables should have default values or non of them');
+};
+
 const createExpression = (
   statement: ts.Expression | ts.VariableStatement | ts.Block | ts.Statement,
 ): string | { code: string; openedBlock: number } => {
@@ -136,64 +199,73 @@ const createExpression = (
     case ts.SyntaxKind.FirstStatement:
     case ts.SyntaxKind.VariableStatement: {
       const variableStatement = statement as ts.VariableStatement;
-      return (
-        variableStatement.declarationList.declarations.map((dec) => {
-          if (!dec.initializer) {
-            throw new Error('variable should have initializer');
-          }
-          if (dec.name.kind === ts.SyntaxKind.Identifier) {
-            return {
-              code: `(let ((${dec.name.escapedText} ${createExpression(
-                dec.initializer,
-              )}))`,
-              openedBlock: 1,
-            };
-          }
-          if (dec.name.kind === ts.SyntaxKind.ObjectBindingPattern) {
-            const elements = dec.name.elements;
-            const vars = elements.map((elm) => {
-              if (elm.name.kind !== ts.SyntaxKind.Identifier) {
-                return { name: formatError(elm.name) };
-              }
-              return {
-                name: elm.name.escapedText,
-                propertyName: elm.propertyName
-                  ? (elm.propertyName as ts.Identifier).escapedText
-                  : undefined,
-                defaultValue: elm.initializer
-                  ? createExpression(elm.initializer)
-                  : undefined,
-              };
-            });
+      if (variableStatement.declarationList.declarations.length > 1) {
+        throw new Error(
+          'define multiple variables in one statement is not supported',
+        );
+      }
+      const declaration = variableStatement.declarationList.declarations[0];
+      if (!declaration.initializer) {
+        throw new Error('variable should have initializer');
+      }
 
-            if (vars.length === 1 && vars[0].defaultValue === undefined) {
-              const [variable] = vars;
-              return {
-                code: `(let ((${variable.name} (at "${
-                  variable.propertyName ?? variable.name
-                }" ${createExpression(dec.initializer)})))`,
-                openedBlock: 1,
-              };
-            }
-            if (vars.length > 1) {
-              const tempVariable = 'temp_variable';
-              const varChain = vars.reduce(
-                (acc, variable) =>
-                  `(let ((${variable.name} (at "${
-                    variable.propertyName ?? variable.name
-                  }" ${tempVariable})))${acc ? `\n${indent(2)(acc)}` : ''}`,
-                '',
-              );
-              return {
-                code: `(let (( ${tempVariable} ${createExpression(
-                  dec.initializer,
-                )}))\n${indent(2)(varChain)}`,
-                openedBlock: vars.length + 1,
-              };
-            }
+      const databaseRead = convertToDbRead(declaration);
+
+      if (databaseRead) {
+        return databaseRead;
+      }
+
+      if (declaration.name.kind === ts.SyntaxKind.Identifier) {
+        return {
+          code: `(let ((${declaration.name.escapedText} ${createExpression(
+            declaration.initializer,
+          )}))`,
+          openedBlock: 1,
+        };
+      }
+      if (declaration.name.kind === ts.SyntaxKind.ObjectBindingPattern) {
+        const elements = declaration.name.elements;
+        const vars = elements.map((elm) => {
+          if (elm.name.kind !== ts.SyntaxKind.Identifier) {
+            return { name: formatError(elm.name) };
           }
-        })[0] ?? ''
-      );
+          return {
+            name: elm.name.escapedText,
+            propertyName: elm.propertyName
+              ? (elm.propertyName as ts.Identifier).escapedText
+              : undefined,
+            defaultValue: elm.initializer
+              ? createExpression(elm.initializer)
+              : undefined,
+          };
+        });
+
+        if (vars.length === 1 && vars[0].defaultValue === undefined) {
+          const [variable] = vars;
+          return {
+            code: `(let ((${variable.name} (at "${
+              variable.propertyName ?? variable.name
+            }" ${createExpression(declaration.initializer)})))`,
+            openedBlock: 1,
+          };
+        }
+        if (vars.length > 1) {
+          const tempVariable = 'temp_variable';
+          const varChain = vars.reduce(
+            (acc, variable) =>
+              `(let ((${variable.name} (at "${
+                variable.propertyName ?? variable.name
+              }" ${tempVariable})))${acc ? `\n${indent(2)(acc)}` : ''}`,
+            '',
+          );
+          return {
+            code: `(let (( ${tempVariable} ${createExpression(
+              declaration.initializer,
+            )}))\n${indent(2)(varChain)}`,
+            openedBlock: vars.length + 1,
+          };
+        }
+      }
     }
 
     case ts.SyntaxKind.ArrayLiteralExpression: {
@@ -658,4 +730,43 @@ const pact = convertFile(sourceFile).join('\n\n\n');
 if (output) {
   writeFileSync(output, pact);
 }
-console.log(pact);
+// console.log(pact);
+
+export function extractWithComment(
+  fileNames: string[],
+  options: ts.CompilerOptions,
+): void {
+  const program = ts.createProgram(fileNames, options);
+  const checker: ts.TypeChecker = program.getTypeChecker();
+
+  for (const sourceFile of program.getSourceFiles()) {
+    if (!sourceFile.isDeclarationFile) {
+      ts.forEachChild(sourceFile, visit);
+    }
+  }
+
+  function visit(node: ts.Node) {
+    const count = node.getChildCount();
+
+    if (count > 0) {
+      ts.forEachChild(node, visit);
+    }
+
+    if (ts.isPropertyAssignment(node) && node.name) {
+      const symbol = checker.getSymbolAtLocation(node.name);
+      if (symbol) {
+        return serializeSymbol(symbol);
+      }
+    }
+  }
+
+  function serializeSymbol(symbol: ts.Symbol) {
+    return {
+      name: symbol.getName(),
+      comment: ts.displayPartsToString(symbol.getDocumentationComment(checker)),
+      type: checker.typeToString(
+        checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration!),
+      ),
+    };
+  }
+}

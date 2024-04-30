@@ -63,7 +63,8 @@ class coin implements fungibleV2, fungibleXChainV1 {
     enforce(amount > 0.0, 'credit amount must be positive');
     enforce_unit(amount);
     require_capability(this.CREDIT(account));
-    const { balance, guard: retg } = this.coinTable.read(account);
+    const { balance = -1.0, guard: retg = guard } =
+      this.coinTable.read(account);
     enforce(retg === guard, 'account guards do not match');
     const is_new = balance === -1 ? enforce_reserved(account, guard) : false;
     return this.coinTable.write(account, {
@@ -84,4 +85,13 @@ class coin implements fungibleV2, fungibleXChainV1 {
       return this.credit(receiver, guard, amount);
     });
   }
+
+  // test(input: string) {
+  //   if (input === 'hello') {
+  //     return 'world';
+  //   } else if (input === 'name') {
+  //     return 'pact-script';
+  //   }
+  //   return 'Hmm';
+  // }
 }
