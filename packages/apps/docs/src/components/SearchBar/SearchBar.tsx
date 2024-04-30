@@ -1,4 +1,5 @@
-import { SystemIcon, TextField } from '@kadena/react-ui';
+import { MonoSearch } from '@kadena/react-icons';
+import { TextField } from '@kadena/react-ui';
 import type {
   ChangeEventHandler,
   FormEvent,
@@ -20,7 +21,6 @@ export const SearchBar: ForwardRefExoticComponent<
 > = forwardRef<HTMLInputElement, IProps>(
   // eslint-disable-next-line react/prop-types
   ({ onSubmit = () => {}, query }, ref) => {
-    const MagnifierIcon = SystemIcon.Magnify;
     const [innerQuery, setInnerQuery] = useState(query);
     const innerRef = useRef<HTMLInputElement>(null);
 
@@ -53,7 +53,7 @@ export const SearchBar: ForwardRefExoticComponent<
           aria-label="Search"
           endAddon={
             <button type="submit" className={buttonClass}>
-              <MagnifierIcon />
+              <MonoSearch />
             </button>
           }
         />

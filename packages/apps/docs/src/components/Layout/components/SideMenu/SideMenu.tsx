@@ -1,7 +1,7 @@
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import type { IMenuItem } from '@kadena/docs-tools';
-
-import { Box, SystemIcon, TextField } from '@kadena/react-ui';
+import { MonoSearch } from '@kadena/react-icons';
+import { Box, TextField } from '@kadena/react-ui';
 
 import { useRouter } from 'next/router';
 import type { FC, FormEvent } from 'react';
@@ -24,7 +24,6 @@ interface IProps {
 export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
   const { clickSubMenu, treeRef } = useSideMenu(closeMenu, menuItems);
   const router = useRouter();
-  const MagnifierIcon = SystemIcon.Magnify;
   const searchRef = useRef<HTMLInputElement>(null);
   const { isMenuOpen } = useMenu();
 
@@ -61,7 +60,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
               aria-label="Search"
               endAddon={
                 <button type="submit" className={searchButtonClass}>
-                  <MagnifierIcon />
+                  <MonoSearch />
                 </button>
               }
             />

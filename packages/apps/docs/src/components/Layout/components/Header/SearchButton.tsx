@@ -1,6 +1,6 @@
 import { SearchDialog } from '@/components/SearchDialog/SearchDialog';
 import { useOpenSearch } from '@/hooks/useOpenSearch';
-import { SystemIcon } from '@kadena/react-ui';
+import { MonoSearch, MonoSlashForward } from '@kadena/react-icons';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
@@ -23,9 +23,9 @@ export const SearchButton: FC = () => {
         onClick={handleOpenSearch}
         aria-label="Open the search modal"
       >
-        <SystemIcon.Magnify />
+        <MonoSearch />
         <span className={searchButtonSlashClass}>
-          <SystemIcon.SlashForward />
+          <MonoSlashForward />
         </span>
       </button>
 
