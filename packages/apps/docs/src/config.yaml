@@ -459,6 +459,9 @@ pages:
             file: /packages/libs/pactjs-generator/etc/pactjs-generator.api.md
             repo: https://github.com/kadena-community/kadena.js
             url: /pactjs-generator-api
+          cryptographyutils:
+            url: /cryptographic-utils
+            file: /reference/kadena-client/cryptographic-utils.md
       nftreference:
         url: /nft-ref
         file: /reference/marmalade/ledger.md
