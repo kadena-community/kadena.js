@@ -1,6 +1,16 @@
 import { readFileSync, writeFileSync } from 'fs';
 import * as ts from 'typescript';
 
+const nameMap = {
+  with_capability: 'with-capability',
+  enforce_guard: 'enforce-guard',
+  enforce_unit: 'enforce-unit',
+  compose_capability: 'compose-capability',
+  require_capability: 'require-capability',
+  validate_account: 'validate-account',
+  enforce_reserved: 'enforce-reserved',
+};
+
 const createContext = <T extends Record<string, unknown>>() => {
   let context = {} as T;
   return {
@@ -310,7 +320,10 @@ const createExpression = (
 
 const getFunctionName = (callExpression: ts.CallExpression) => {
   if (callExpression.expression.kind === ts.SyntaxKind.Identifier) {
-    return (callExpression.expression as ts.Identifier).escapedText.toString();
+    const name = (
+      callExpression.expression as ts.Identifier
+    ).escapedText.toString();
+    return nameMap[name as keyof typeof nameMap] ?? name;
   }
   let next: ts.PropertyAccessExpression =
     callExpression.expression as ts.PropertyAccessExpression;

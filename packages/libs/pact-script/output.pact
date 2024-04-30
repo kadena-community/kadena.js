@@ -20,7 +20,7 @@
   (deftable coin-table:{coin-schema} )
 
   (defcap DEBIT (sender:string)
-    (enforce_guard (at "guard" (read "coin-table" sender) ))
+    (enforce-guard (at "guard" (read "coin-table" sender) ))
     (enforce (!= sender "") "valid sender")
   )
 
@@ -38,17 +38,17 @@
   (defcap TRANSFER (sender:string receiver:string amount:decimal)
     (managed amount TRANSFER_mgr)
     (enforce (!= sender receiver) "same sender and receiver")
-    (enforce_unit amount)
+    (enforce-unit amount)
     (enforce (> amount 0))
-    (compose_capability (DEBIT sender))
-    (compose_capability (CREDIT receiver))
+    (compose-capability (DEBIT sender))
+    (compose-capability (CREDIT receiver))
   )
 
   (defun debit (account:string amount:decimal)
-    (validate_account account)
+    (validate-account account)
     (enforce (> amount 0) "debit amount must be positive")
-    (enforce_unit amount)
-    (require_capability (DEBIT account))
+    (enforce-unit amount)
+    (require-capability (DEBIT account))
     (with-read coin-table account
       {"balance" : balance}
       (enforce (<= amount balance) "Insufficient funds")
@@ -57,26 +57,26 @@
   )
 
   (defun credit (account:string guard:guard amount:decimal)
-    (validate_account account)
+    (validate-account account)
     (enforce (> amount 0) "credit amount must be positive")
-    (enforce_unit amount)
-    (require_capability (CREDIT account))
+    (enforce-unit amount)
+    (require-capability (CREDIT account))
     (with-default-read coin-table account
       { "balance" : -1, "guard" : guard }
       { "balance" : balance, "guard" : retg }
       (enforce (= retg guard) "account guards do not match")
-      (let ((is_new (if (= balance -1) (enforce_reserved account guard) false)))
+      (let ((is_new (if (= balance -1) (enforce-reserved account guard) false)))
         (write "coin-table" account { balance: (if is_new amount (+ balance amount)),guard: retg })
     ))
   )
 
   (defun transfer (sender:string receiver:string amount:decimal)
     (enforce (!= sender receiver) "same sender and receiver")
-    (validate_account sender)
-    (validate_account receiver)
+    (validate-account sender)
+    (validate-account receiver)
     (enforce (> amount 0))
-    (enforce_unit amount)
-    (with_capability (TRANSFER sender receiver amount) 
+    (enforce-unit amount)
+    (with-capability (TRANSFER sender receiver amount) 
       (debit sender amount)
       (with-read coin-table receiver
         {"guard" : guard}

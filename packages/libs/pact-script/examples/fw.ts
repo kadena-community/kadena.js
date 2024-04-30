@@ -16,8 +16,6 @@ declare const enforce_unit: any;
 declare const compose_capability: any;
 declare const require_capability: any;
 declare const validate_account: any;
-declare const with_read: any;
-declare const with_default_read: any;
 declare const update: any;
 declare const table: any;
 declare const enforce_reserved: any;
