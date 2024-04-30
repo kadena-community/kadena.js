@@ -75,7 +75,6 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
           >
             <SystemIcon.Github />
           </NavHeaderButtonLink>
-
           <ThemeToggle />
 
           <div className={hideOnTabletClass}>

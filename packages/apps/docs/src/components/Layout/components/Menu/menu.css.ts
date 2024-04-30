@@ -57,7 +57,7 @@ export const menuInLayoutVariants = styleVariants({
     atoms({
       display: {
         xs: 'block',
-        lg: 'none',
+        md: 'none',
       },
     }),
   ],
