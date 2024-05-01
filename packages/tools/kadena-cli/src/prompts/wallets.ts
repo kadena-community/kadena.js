@@ -1,4 +1,4 @@
-import { INVALID_FILE_NAME_ERROR_MSG } from '../constants/config.js';
+import { INVALID_FILE_NAME_ERROR_MSG } from '../constants/global.js';
 import { services } from '../services/index.js';
 import type { IWallet } from '../services/wallet/wallet.types.js';
 import { CommandError } from '../utils/command.util.js';

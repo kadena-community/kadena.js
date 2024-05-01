@@ -7,11 +7,11 @@ import {
   parseChainIdRange,
 } from '../account/utils/accountHelpers.js';
 import { CHAIN_ID_RANGE_ERROR_MESSAGE } from '../constants/account.js';
+import { MAX_CHAIN_VALUE } from '../constants/config.js';
 import {
   INVALID_FILE_NAME_ERROR_MSG,
-  MAX_CHAIN_VALUE,
-} from '../constants/config.js';
-import { MULTI_SELECT_INSTRUCTIONS } from '../constants/global.js';
+  MULTI_SELECT_INSTRUCTIONS,
+} from '../constants/global.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   formatZodError,

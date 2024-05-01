@@ -7,3 +7,6 @@ export const MULTI_SELECT_INSTRUCTIONS = chalk.yellow(
     '<enter / return>',
   )} to proceed.`,
 );
+
+export const INVALID_FILE_NAME_ERROR_MSG =
+  'Do not use these characters: \\ / : * ? " < > |. Please choose a different name without these characters';
