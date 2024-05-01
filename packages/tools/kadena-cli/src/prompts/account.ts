@@ -11,6 +11,7 @@ import {
   INVALID_FILE_NAME_ERROR_MSG,
   MAX_CHAIN_VALUE,
 } from '../constants/config.js';
+import { MULTI_SELECT_INSTRUCTIONS } from '../constants/global.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   formatZodError,
@@ -243,6 +244,7 @@ export const accountSelectMultiplePrompt: IPrompt<string> = async (
   const selectedAliases = await checkbox({
     message: 'Select an account:(alias - account name)',
     choices: allAccountChoices,
+    instructions: MULTI_SELECT_INSTRUCTIONS,
   });
 
   return selectedAliases.join(',');
@@ -261,8 +263,8 @@ export const accountDeleteConfirmationPrompt: IPrompt<boolean> = async (
     previousQuestions.accountAlias === 'all'
       ? 'all the accounts'
       : selectedAccountsLength > 1
-        ? 'all the selected aliases accounts'
-        : `the ${selectedAccounts} alias account`;
+      ? 'all the selected aliases accounts'
+      : `the ${selectedAccounts} alias account`;
 
   return await select({
     message: `Are you sure you want to delete ${selectedAccountMessage}?`,

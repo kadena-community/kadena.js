@@ -10,6 +10,7 @@ import {
 } from '../tx/utils/txHelpers.js';
 
 import { getAllAccounts } from '../account/utils/accountHelpers.js';
+import { MULTI_SELECT_INSTRUCTIONS } from '../constants/global.js';
 import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
 import { services } from '../services/index.js';
 import { getTemplates } from '../tx/commands/templates/templates.js';
@@ -126,6 +127,7 @@ export const transactionsSelectPrompt: IPrompt<string[]> = async (args) => {
     choices: choices,
     pageSize: 10,
     required: true,
+    instructions: MULTI_SELECT_INSTRUCTIONS,
   });
 
   return selectedTransaction;
