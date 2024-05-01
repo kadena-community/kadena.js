@@ -1,6 +1,7 @@
 import { BottomPageSection } from '@/components/BottomPageSection/BottomPageSection';
 import { Breadcrumbs } from '@/components/Breadcrumbs/Breadcrumbs';
 import { LastModifiedDate } from '@/components/LastModifiedDate/LastModifiedDate';
+import { TopPageSection } from '@/components/TopPageSection/TopPageSection';
 import type { IPageProps } from '@kadena/docs-tools';
 import classNames from 'classnames';
 import type { FC } from 'react';
@@ -65,7 +66,11 @@ export const Redocly: FC<IPageProps> = ({
         >
           <article className={articleClass}>
             <Breadcrumbs menuItems={leftMenuTree} />
-            <LastModifiedDate date={frontmatter.lastModifiedDate} />
+
+            <TopPageSection
+              lastModifiedDate={frontmatter.lastModifiedDate}
+              editLink={frontmatter.editLink}
+            />
             {children}
             <BottomPageSection
               editLink={frontmatter.editLink}
