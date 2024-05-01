@@ -15,7 +15,7 @@ const meta: Meta<IComboboxProps> = {
   component: Combobox,
   decorators: [withContentWidth, onLayer2],
   parameters: {
-    status: { type: 'releaseCandidate' },
+    status: { type: 'Done' },
     docs: {
       description: {
         component:
@@ -153,7 +153,7 @@ export const WithIcon: Story = {
   },
   render: (args) => {
     return (
-      <Combobox {...args} startIcon={<MonoAccountCircle />}>
+      <Combobox {...args} startVisual={<MonoAccountCircle />}>
         <ComboboxItem key="option1">Option 1</ComboboxItem>
         <ComboboxItem key="option2">Option 2</ComboboxItem>
         <ComboboxItem key="option3">Option 3</ComboboxItem>
