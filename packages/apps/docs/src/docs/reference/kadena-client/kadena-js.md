@@ -38,8 +38,9 @@ Pact.modules[`${namespace}.${moduleName}`][functionName](...args);
 | --------- | ----------- | ----------------- |
 | ...args   | PactValue[] | List of arguments. |
 
+Valid PactValue types:
+
 ```typescript
-// the pseudo code of PactValue type
 type PactValue =
   | string
   | number

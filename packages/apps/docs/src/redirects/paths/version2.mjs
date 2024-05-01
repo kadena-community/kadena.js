@@ -156,12 +156,12 @@ export const version2PathUrlRedirects = [
   },
   {
     source: '/marmalade/what-is-marmalade',
-    destination:'/build/nft-marmalade',
+    destination: '/build/nft-marmalade',
     permanent: true,
   },
   {
     source: '/marmalade/quick-start',
-    destination: 'build/nft-marmalade/get-started',
+    destination: '/build/nft-marmalade/get-started',
     permanent: true,
   },
   {
@@ -325,18 +325,24 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
-    source: '/chainweb/stream-client/api',
+    source: '/chainweb/stream-client',
     destination: '/reference/chainweb-ref/stream-client',
     permanent: true,
   },
   {
+    source: '/chainweb/stream-client/api',
+    destination: '/reference/chainweb-ref/stream-client',
+    permanent: true,
+  },
+
+  {
     source: '/chainweb/js-bindings',
-    destination: '/reference/chainweb-ref/js-binding',
+    destination: '/reference/chainweb-ref/js-bindings',
     permanent: true,
   },
   {
     source: '/chainweb/js-bindings/api',
-    destination: '/reference/chainweb-ref/js-binding',
+    destination: '/reference/chainweb-ref/js-bindings',
     permanent: true,
   },
 
