@@ -118,7 +118,10 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                     <Link className={docsCardLink} href="/deploy">
                       Prepare to deploy
                     </Link>
-                    <Link className={docsCardLink} href="/deploy/chainweb-get-started">
+                    <Link
+                      className={docsCardLink}
+                      href="/deploy/chainweb-get-started"
+                    >
                       Manage a Chainweb node
                     </Link>
 
