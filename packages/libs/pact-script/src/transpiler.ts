@@ -50,11 +50,13 @@ const asPactType = (type: ts.TypeNode) => {
       return 'string';
     case ts.SyntaxKind.NumberKeyword:
       return 'decimal';
+    case ts.SyntaxKind.BooleanKeyword:
+      return 'bool';
     case ts.SyntaxKind.TypeReference: {
       return (type as any).typeName.escapedText as string;
     }
   }
-  return 'string';
+  return undefined;
 };
 
 const operatorMap = (code: number) => {
@@ -128,7 +130,7 @@ const convertToDbRead = (declaration: ts.VariableDeclaration) => {
       .map((vr) => `"${vr.propertyName ?? vr.name}" : ${vr.defaultValue}`)
       .join(', ');
     const pr = vars
-      .map((vr) => `"${vr.propertyName ?? vr.name}" : ${vr.name}`)
+      .map((vr) => `"${vr.propertyName ?? vr.name}" := ${vr.name}`)
       .join(', ');
     return {
       code: `(with-default-read ${table.tableName} ${key}\n${indent(2)(
@@ -140,10 +142,10 @@ const convertToDbRead = (declaration: ts.VariableDeclaration) => {
   // use with-read
   if (vars.every(({ defaultValue }) => defaultValue === undefined)) {
     const pr = vars
-      .map((vr) => `"${vr.propertyName ?? vr.name}" : ${vr.name}`)
+      .map((vr) => `"${vr.propertyName ?? vr.name}" := ${vr.name}`)
       .join(', ');
     return {
-      code: `(with-read ${table.tableName} ${key}\n${indent(2)(`{${pr}}`)}`,
+      code: `(with-read ${table.tableName} ${key}\n${indent(2)(`{ ${pr} }`)}`,
       openedBlock: 1,
     };
   }
@@ -403,7 +405,7 @@ const extractDecorator = (decorator: ts.ModifierLike) => {
 const extractMethod = (method: ts.MethodDeclaration) => {
   const parameters = method.parameters.map((parameter) => ({
     name: (parameter.name as ts.Identifier).escapedText,
-    type: parameter.type ? asPactType(parameter.type) : 'unknown',
+    type: parameter.type ? asPactType(parameter.type) : undefined,
   }));
 
   const statements = method.body ? createBlock(method.body) : [];
@@ -415,6 +417,7 @@ const extractMethod = (method: ts.MethodDeclaration) => {
   return {
     decorator: decorators[0],
     method: (method.name as ts.Identifier).escapedText,
+    returnType: method.type ? asPactType(method.type) : undefined,
     parameters,
     statements,
   };
@@ -519,9 +522,8 @@ const extractTables = (member: ts.ClassElement): TableInterface | undefined => {
 const classMember = (member: ts.ClassElement) => {
   switch (member.kind) {
     case ts.SyntaxKind.MethodDeclaration: {
-      const { decorator, method, parameters, statements } = extractMethod(
-        member as ts.MethodDeclaration,
-      );
+      const { decorator, method, parameters, statements, returnType } =
+        extractMethod(member as ts.MethodDeclaration);
       const params = parameters
         .map(({ name, type }) => `${name}${type ? `:${type}` : ''}`)
         .join(' ');
@@ -540,7 +542,7 @@ const classMember = (member: ts.ClassElement) => {
           decorator?.isCall && decorator.arguments.length > 0
             ? decorator.arguments[0]
             : method
-        } (${params})${
+        }${returnType ? `:${returnType}` : ''} (${params})${
           statements?.length ? `\n${indent(2)(statements.join('\n'))}\n` : ''
         })`;
       }

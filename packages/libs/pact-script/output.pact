@@ -28,7 +28,7 @@
     (enforce (!= receiver "") "valid receiver")
   )
 
-  (defcap TRANSFER-mgr (managed:decimal requested:decimal)
+  (defcap TRANSFER-mgr:decimal (managed:decimal requested:decimal)
     (let ((newbal (- managed requested)))
       (enforce (>= newbal 0) (format "TRANSFER exceeded for balance {}" [managed]))
       newbal
@@ -44,33 +44,33 @@
     (compose-capability (CREDIT receiver))
   )
 
-  (defun debit (account:string amount:decimal)
+  (defun debit:string (account:string amount:decimal)
     (validate-account account)
     (enforce (> amount 0) "debit amount must be positive")
     (enforce-unit amount)
     (require-capability (DEBIT account))
     (with-read coin-table account
-      {"balance" : balance}
+      { "balance" := balance }
       (enforce (<= amount balance) "Insufficient funds")
       (update "coin-table" account { balance: (- balance amount) })
     )
   )
 
-  (defun credit (account:string guard:guard amount:decimal)
+  (defun credit:string (account:string guard:guard amount:decimal)
     (validate-account account)
     (enforce (> amount 0) "credit amount must be positive")
     (enforce-unit amount)
     (require-capability (CREDIT account))
     (with-default-read coin-table account
       { "balance" : -1, "guard" : guard }
-      { "balance" : balance, "guard" : retg }
+      { "balance" := balance, "guard" := retg }
       (enforce (= retg guard) "account guards do not match")
       (let ((is_new (if (= balance -1) (enforce-reserved account guard) false)))
         (write "coin-table" account { balance: (if is_new amount (+ balance amount)),guard: retg })
     ))
   )
 
-  (defun transfer (sender:string receiver:string amount:decimal)
+  (defun transfer:string (sender:string receiver:string amount:decimal)
     (enforce (!= sender receiver) "same sender and receiver")
     (validate-account sender)
     (validate-account receiver)
@@ -79,7 +79,7 @@
     (with-capability (TRANSFER sender receiver amount) 
       (debit sender amount)
       (with-read coin-table receiver
-        {"guard" : guard}
+        { "guard" := guard }
         (credit receiver guard amount)
       )
     )
