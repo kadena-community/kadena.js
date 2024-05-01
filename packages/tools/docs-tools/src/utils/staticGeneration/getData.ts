@@ -3,16 +3,25 @@ import { join } from 'path';
 import type { IConfigTreeItem, IMenuData } from '../../types';
 import { getConfig } from '../getConfig';
 
-export const getData = async (): Promise<IMenuData[]> => {
-  const menuFilePath = join(process.cwd(), 'src/_generated/menu.json');
-  try {
-    const fileData = await readFile(menuFilePath, 'utf-8');
-    const menuData = JSON.parse(fileData);
-    return menuData;
-  } catch (e) {
-    return Promise.reject('Could not load menu data');
-  }
+const getDataCreator = () => {
+  let data: IMenuData[] | undefined;
+
+  return async (): Promise<IMenuData[]> => {
+    if (data) return data;
+
+    const menuFilePath = join(process.cwd(), 'src/_generated/menu.json');
+    try {
+      const fileData = await readFile(menuFilePath, 'utf-8');
+      // eslint-disable-next-line require-atomic-updates
+      data = JSON.parse(fileData);
+      return data as IMenuData[];
+    } catch (e) {
+      return Promise.reject('Could not load menu data');
+    }
+  };
 };
+
+export const getData = getDataCreator();
 
 export const getPages = async (): Promise<IConfigTreeItem[]> => {
   const { pages } = await getConfig();
