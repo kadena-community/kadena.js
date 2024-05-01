@@ -113,7 +113,8 @@ jobs:
         run: docker compose down
         working-directory: .github/actions/sandbox
     
-      - uses: ./.github/actions/archive-volumes
+      - name: Archive volumes
+        uses: ./.github/actions/archive-volumes
         if: always()
         with:
           test-object: ${{ matrix.app }}
@@ -122,7 +123,7 @@ jobs:
         if: always()
         with:
           name: playwright-report
-          path: packages/tools/e2e-tests/playwright-report/
+          path: packages/e2e/e2e-${{ matrix.app }}/playwright-report/
           retention-days: 30
 
   ci-gate:
