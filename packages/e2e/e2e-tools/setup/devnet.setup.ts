@@ -6,22 +6,16 @@ import { deployGasStation } from '@kadena-dev/e2e-base/src/smart-contracts/kaden
 import { expect, test } from '@playwright/test';
 
 test('Deploy kadena-xchain-gas-station', async () => {
-  await test.step(
-    'Deploy Guards Contracts & Gas Station on chain 0',
-    async () => {
-      await deployGuards('0');
-      const deploymentStatus = await deployGasStation('0');
-     expect(deploymentStatus.result.status).toBeDefined();
-    },
-  );
-  await test.step(
-    'Deploy Guards Contracts & Gas Station on chain 1',
-    async () => {
-      await deployGuards('1');
-      const deploymentStatus =  await deployGasStation('1');
-      expect(deploymentStatus.result.status).toBeDefined();
-    },
-  );
+  await test.step('Deploy Guards Contracts & Gas Station on chain 0', async () => {
+    await deployGuards('0');
+    const deploymentStatus = await deployGasStation('0');
+    expect(deploymentStatus.result.status).toBeDefined();
+  });
+  await test.step('Deploy Guards Contracts & Gas Station on chain 1', async () => {
+    await deployGuards('1');
+    const deploymentStatus = await deployGasStation('1');
+    expect(deploymentStatus.result.status).toBeDefined();
+  });
 });
 
 test('Deploy Faucet', async () => {
