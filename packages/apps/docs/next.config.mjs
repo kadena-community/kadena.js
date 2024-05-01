@@ -2,6 +2,7 @@ import {
   remarkAdmonitions,
   remarkCheckForCodeTitle,
   remarkFigureOutOfParagraph,
+  remarkFrontmatterToProps,
   remarkHeadersToProps,
   remarkPropsToStaticRender,
   remarkSideMenuToProps,
@@ -75,6 +76,7 @@ const withMDX = mdx({
     remarkPlugins: [
       remarkGfm,
       remarkFrontmatter,
+      remarkFrontmatterToProps,
       remarkHeadersToProps,
       remarkSideMenuToProps,
       remarkPropsToStaticRender,

@@ -28,7 +28,7 @@ type ImportedPagePropsType = Omit<IPageProps, 'frontmatter'> & {
 const deserializePageProps = (props: ImportedPagePropsType): IPageProps => {
   const newProps = JSON.parse(JSON.stringify(props)) as IPageProps;
 
-  newProps.frontmatter.lastModifiedDate = props.frontmatter?.lastModifiedDate
+  newProps.frontmatter.lastModifiedDate = props.frontmatter.lastModifiedDate
     ? new Date(props.frontmatter.lastModifiedDate)
     : undefined;
   return newProps;
