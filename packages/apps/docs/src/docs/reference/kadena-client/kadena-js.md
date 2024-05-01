@@ -930,6 +930,7 @@ interface IClient {
 ```
 
 You can use object destructuring to extract specific functions.
+For example:
 
 ```TS
 const { submit, local, pollCreateSpv } = createClient();
@@ -1033,21 +1034,26 @@ submitOne(tx): Promise<ITransactionDescriptor>;
 | --------- | -------- | ---------------------------------- |
 | tx        | ICommand | The command object ready to submit. |
 
-## Getting transaction results
+## getStatus
 
-After you submit a transaction, you need to query for the result using a request key.
-You can query transaction results by calling the `/listen` or `/poll` endpoint. 
-- The `/listen` endpoint is a blocking request. It only accepts one request key and returns the results when the transaction result is ready. If you use this endpoint, the HTTP request remains open for a while. 
-- The`/poll` endpoint accepts a list of request keys and responds immediately with the current status of the request key.
+Use getStatus to call the `/poll` endpoint and return the result of requests.
 
-The Kadena client library exposes the following functions to use the /listen or /poll endpoint in different scenarios:
+```TS
+const { getStatus } = createClient();
 
-- `getStatus`
-- `pollStatus`
-- `listen`
-- `pollOne`
+getStatus(transactionDescriptor: TransactionDescriptor[] | ITransactionDescriptor): Promise<{
+    [requestKey: IBase64Url]: { [requestKey:string] ICommandResult};
+}>
+```
+### Parameters
 
-These functions all return the result of a transaction with the following `ICommandResult` interface:
+| Parameter | Type | Description  |
+| --------- | ---- | ------------ |
+| transactionDescriptor | TransactionDescriptor \| TransactionDescriptor[] | One or list of requests to be queried |
+
+### Return value
+
+`ICommandResult` interface:
 
 ```TS
 interface ICommandResult {
@@ -1102,26 +1108,9 @@ interface ICommandResult {
 }
 ```
 
-#### Client: getStatus
+## pollStatus
 
-This function calls `/poll` and returns the result of requests.
-
-```TS
-const { getStatus } = createClient();
-
-getStatus(transactionDescriptor: TransactionDescriptor[] | ITransactionDescriptor): Promise<{
-    [requestKey: IBase64Url]: { [requestKey:string] ICommandResult};
-}>
-```
-
-| Parameter             | Type                                             | Description                           |
-| --------------------- | ------------------------------------------------ | ------------------------------------- |
-| transactionDescriptor | TransactionDescriptor \| TransactionDescriptor[] | One or list of requests to be queried |
-
-#### Client: pollStatus
-
-This function calls `/poll` in intervals and returns the result of all requests
-when all are ready.
+Use pollStatus to call the `/poll` endpoint in intervals and return the result of all requests when all are ready.
 
 ```TS
 const { pollStatus } = createClient();
@@ -1142,18 +1131,21 @@ interface IPollRequestPromise extends Promise {
   [requestKey: IBase64Url]: Promise<ICommandResult>
 }
 ```
+### Parameters
 
-| Parameter             | Type                                                                                                            | Description                                                                                                                                                                                                                                                                                                                                                                                               |
-| --------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| transactionDescriptor | TransactionDescriptor \| TransactionDescriptor[]                                                                | One or list of requests to be queried                                                                                                                                                                                                                                                                                                                                                                     |
-| pollOptions           | { onPoll?: (id: string) => void; timeout?: Milliseconds; interval?: Milliseconds; confirmationDepth?: number; } | onPoll: Callback is called when the request is polling; this might be called several times if the request is not ready yet. Timeout: Timeout if the result is not ready (default `180000` // 3 minutes). Interval: Delay between retries (default is `5000` // 5 seconds). ConfirmationDepth: Set the confirmationDepth for getting the response; this overrides the one you set in createClient function |
+| Parameter | Type | Description  |
+| --------- | ---- | ------------ |
+| transactionDescriptor | TransactionDescriptor \| TransactionDescriptor[] | One or list of requests to be queried. |
+| pollOptions | { onPoll?: (id: string) => void; timeout?: Milliseconds; interval?: Milliseconds; confirmationDepth?: number; } | onPoll: Callback is called when the request is polling; this might be called several times if the request is not ready yet. Timeout: Timeout if the result is not ready (default `180000` // 3 minutes). Interval: Delay between retries (default is `5000` // 5 seconds). ConfirmationDepth: Set the confirmationDepth for getting the response; this overrides the one you set in createClient function |
 
-**Return value:** The return value is a special type of promise. Though you can
+### Return value
+
+The return value is a special type of promise. Though you can
 just await for the result just like a normal promise - which is the case for
 most of the typical use cases - you can still listen for each individual request
 via the `requests` property.
 
-##### Examples
+### Examples
 
 Poll the status of a request:
 
@@ -1173,11 +1165,10 @@ resultPromise.requests["third-request-key"].then(res => {UI.notify(res)});
 const finalResult = await resultPromise;
 ```
 
-#### Client: listen
+## listen
 
-`listen` is another function for fetching the result of one request. It uses the
-`/listen` endpoint, which is a blocking endpoint. **Note**: If your
-network/firewall configuration doesn't allow keeping HTTP connections open for a
+Use listen to call the `/listen` endpoint, which is a blocking endpoint. 
+If your network or firewall configuration doesn't allow keeping HTTP connections open for a
 long time, then it's better to use `pollOne` which has the same interface but
 uses `/poll` under the hood.
 
@@ -1187,14 +1178,13 @@ const { listen } = createClient();
 listen(transactionDescriptor: TransactionDescriptor[] | ITransactionDescriptor): Promise<ICommandResult>
 ```
 
-| Parameter             | Type                  | Description                                                       |
-| --------------------- | --------------------- | ----------------------------------------------------------------- |
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
 | transactionDescriptor | TransactionDescriptor | The request object including `requestKet`, `networkId`, `chainId` |
 
-#### Client: pollOne
+## pollOne
 
-The `pollOne` function fetches the result of only one request via the `/poll`
-endpoint.
+Use `pollOne` to call the `/poll` endpoint to return the result of only one request.
 
 ```TS
 const { pollOne } = createClient();
@@ -1202,31 +1192,14 @@ const { pollOne } = createClient();
 pollOne(transactionDescriptor: TransactionDescriptor[] | ITransactionDescriptor): Promise<ICommandResult>
 ```
 
-| Parameter             | Type                  | Description                                                       |
-| --------------------- | --------------------- | ----------------------------------------------------------------- |
+### Parameters
+| Parameter | Type | Description |
+| ----------| -----| ----------- |
 | transactionDescriptor | TransactionDescriptor | The request object including `requestKet`, `networkId`, `chainId` |
 
-### Read Data from Node
+## local
 
-Apart from transactions, you can also send read requests to the node. This
-mainly utilizes the `/local` endpoint. These kinds of requests return the result
-immediately since you don't need to submit data. You can also use these
-functions to validate your transaction before calling the `/send` endpoint to
-avoid transaction failure, as in some scenarios you need to pay gas even for
-failed transactions.
-
-The following functions all utilize the `/local` endpoint:
-
-- `local`
-- `dirtyRead`
-- `preflight`
-- `signatureVerification`
-- `runPact`
-
-#### Client: local
-
-The `local` function is the most generic function that utilizes the `/local`
-endpoint.
+Use `local` to call the `/local` endpoint.
 
 ```TS
 local(
@@ -1238,14 +1211,14 @@ local(
 The return type is `ICommandResult` with `preflightWarnings` when it is set to
 true.
 
-| Parameter   | Type                                                      | Description                                                                                                                                                                                                                                                                                                            |
-| ----------- | --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| transaction | ICommand \| IUnsignedCommand                              | The signed or unsigned command object                                                                                                                                                                                                                                                                                  |
-| option      | { preflight?: boolean; signatureVerification?: boolean; } | preflight: Runs the code in the preflight mode which simulates submitting the transaction so you can also have the gas consumption result (default = `true`). SignatureVerification: Run the signature verification in the node as well; then the transaction should have the transactions as well (default = `true`). |
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| transaction | ICommand \| IUnsignedCommand | The signed or unsigned command object. |
+| option | { preflight?: boolean; signatureVerification?: boolean; } | preflight: Runs the code in the preflight mode which simulates submitting the transaction so you can also have the gas consumption result (default = `true`). SignatureVerification: Run the signature verification in the node as well; then the transaction should have the transactions as well (default = `true`). |
 
-##### Examples
+### Examples
 
-Use local call to avoid submitting an incorrect transaction:
+To avoid submitting an incorrect transaction:
 
 ```TS
 // Check if the transaction and signatures are correct
@@ -1258,7 +1231,7 @@ if (response.result.status === 'failure') {
 const request = await client.submit(signedTx);
 ```
 
-Use local call for gas estimation:
+To simulate a transaction for gas estimation:
 
 ```TS
 // We don't need to send signatures to check gas estimation;
@@ -1271,22 +1244,23 @@ if (response.result.status === 'failure') {
 const gasEstimation =  response.gas;
 ```
 
-#### Client: dirtyRead
+## dirtyRead
 
-Alias for local where both preflight and signatureVerification are false; useful
-when your code only includes reading data from the node.
+Use `dirtyRead` to read data from a node without submitting a transaction to the blockchain.
 
 ```TS
 dirtyRead(transaction: ICommand | IUnsignedCommand): Promise<ICommandResult>;
 ```
 
+### Parameters
+
 | Parameter   | Type                         | Description                           |
 | ----------- | ---------------------------- | ------------------------------------- |
 | transaction | ICommand \| IUnsignedCommand | The signed or unsigned command object |
 
-##### Examples
+### Examples
 
-Get account balance
+To get an account balance:
 
 ```TS
 const tr = Pact.builder
@@ -1306,31 +1280,34 @@ if (res.result.status === 'failure') {
 const balance = res.result.data;
 ```
 
-#### Client: preflight
+## preflight
 
-Alias for local where preflight is true but signatureVerification is false.
+Use `preflight` to call the `/local` endpoint with the `preflight` value set to true, but `signatureVerification` value set to false.
 
 ```TS
 preflight(transaction: ICommand | IUnsignedCommand): Promise<ICommandResult>;
 ```
+### Parameters
 
 | Parameter   | Type                         | Description                           |
 | ----------- | ---------------------------- | ------------------------------------- |
 | transaction | ICommand \| IUnsignedCommand | The signed or unsigned command object |
 
-#### Client: signatureVerification
+## signatureVerification
 
-Alias for local where preflight is false but signatureVerification is true.
+Use `signatureVerification` to call the `/local` endpoint with the `signatureVerification` value set to true, but `preflight` value set to false.
 
 ```TS
 signatureVerification(transaction: ICommand | IUnsignedCommand): Promise<ICommandResult & { preflightWarnings?: string[] }>;
 ```
 
+### Parameters
+
 | Parameter   | Type                         | Description                           |
 | ----------- | ---------------------------- | ------------------------------------- |
 | transaction | ICommand \| IUnsignedCommand | The signed or unsigned command object |
 
-#### Client: runPact
+## runPact
 
 If you just want to see the result of a pact code and don't want to create a
 command object, you can use the `runPact` function. This function creates a
@@ -1340,13 +1317,15 @@ command object internally.
 runPact(code: string, data?: Record<string, unknown>, options?: { chainId: ChainId; networkId: string }): Promise<ICommandResult>;
 ```
 
-| Parameter | Type                                    | Description                                                    |
-| --------- | --------------------------------------- | -------------------------------------------------------------- |
-| code      | string                                  | Pact code                                                      |
-| data      | Record<string, unknown>                 | Data to be sent with the transaction                           |
-| options   | { chainId: ChainId; networkId: string } | ChainId and networkId that you want to send the transaction to |
+### Parameters
 
-##### Examples
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| code      | string | Pact code. |
+| data      | Record<string, unknown> | Data to be sent with the transaction. |
+| options   | { chainId: ChainId; networkId: string } | ChainId and networkId that you want to send the transaction to. |
+
+### Examples
 
 ```TS
 const { runPact } = createClient()
@@ -1355,32 +1334,24 @@ const result = await runPact(`(coin.getBalance "alice")`, { }, { networkId:"main
 
 ```
 
-### Request SPV (Simple Payment Verification) Proof
+## createSPV
 
-You need SPV proof mainly for cross-chain transactions - but it's not limited to
-this, and you can request SPV proof for all kinds of transactions.
-
-There are two functions for this purpose, both of which use the `/spv` endpoint:
-
-- `createSPV`
-- `pollCreateSPV`
-
-#### Client: createSPV
-
-Request SPV proof if it's ready.
+Use `createSPV` to call the `/spv` endpoint to request a simple payment verification proof if it's ready.
 
 ```TS
 createSpv(transactionDescriptor: ITransactionDescriptor, targetChainId: ChainId): Promise<string>;
 ```
 
-| Parameter             | Type                                                        | Description                                               |
-| --------------------- | ----------------------------------------------------------- | --------------------------------------------------------- |
-| transactionDescriptor | { requestKey: string; networkId: string; chainId: ChainId } | The transaction for which you want to create an SPV proof |
-| targetChainId         | ChainId                                                     | The chain that consumes this proof                        |
+### Parameters
 
-#### Client: pollCreateSPV
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| transactionDescriptor | { requestKey: string; networkId: string; chainId: ChainId } | The transaction for which you want to create an SPV proof. |
+| targetChainId | ChainId | The chain that consumes this proof. |
 
-Poll for the SPV proof and await until it's ready.
+## pollCreateSPV
+
+Use `pollCreateSPV` to poll the `/spv` endpoint for a simple payment verification proof until the proof is ready.
 
 ```TS
 pollCreateSpv(
@@ -1390,13 +1361,15 @@ pollCreateSpv(
 ): Promise<string>;
 ```
 
-| Parameter             | Type                                                                                | Description                                                                                                                                                                                                                                                               |
-| --------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| transactionDescriptor | { requestKey: string; networkId: string; chainId: ChainId }                         | The transaction for which you want to create an SPV proof                                                                                                                                                                                                                 |
-| targetChainId         | ChainId                                                                             | The chain that consumes this proof                                                                                                                                                                                                                                        |
-| pollOptions           | { onPoll?: (id: string) => void; timeout?: Milliseconds; interval?: Milliseconds; } | onPoll: Callback is called when the request is polling; this might be called several times if the request is not ready yet. Timeout: Timeout if the result is not ready (default `180000` // 3 minutes). Interval: Delay between retries (default is `5000` // 5 seconds) |
+### Parameters
 
-##### Examples
+| Parameter | Type | Description |
+| ----------| -----| ----------- |
+| transactionDescriptor | { requestKey: string; networkId: string; chainId: ChainId } | The transaction for which you want to create an SPV proof. |
+| targetChainId | ChainId | The chain that consumes this proof. |
+| pollOptions | { onPoll?: (id: string) => void; timeout?: Milliseconds; interval?: Milliseconds; } | onPoll: Callback is called when the request is polling; this might be called several times if the request is not ready yet. Timeout: Timeout if the result is not ready (default `180000` // 3 minutes). Interval: Delay between retries (default is `5000` // 5 seconds) |
+
+### Examples
 
 ```TS
 const request = await submit(crossChainTx)
@@ -1419,24 +1392,9 @@ const contRequest = await submit(continuationTx)
 const finalResult = await pollOne(contRequest)
 ```
 
-## FP Compose Pact Command
+## composePactCommand
 
-Apart from CommandBuilder api you can use the FP api to create pact command. it
-gives you more flexibility. Actually the command builder api uses the fp api
-under the hood
-
-you need to import functions from `@kadena/client/fp` package.
-
-```typescript
-import { composePactCommand, execution } from '@kadena/client/fp';
-```
-
-### composePactCommand
-
-This function let you compose parts of the command and create the final one, the
-function accepts pure json as well as reducer functions. this function
-eventfully returns `IPartialPactCommand` which will be stringified as `cmd` part
-in the command JSON.
+Use `composePactCommand` to use the functional programming API to compose parts of a Pact command and create the final command object.
 
 ```typescript
 type CommandReducer = (cmd?: IPartialPactCommand | (() => IPartialPactCommand)) => IPartialPactCommand;
@@ -1446,15 +1404,19 @@ composePactCommand(
   ): CommandReducer
 ```
 
-**Note**: the return value is also a CommandReducer function which you can pass
-to another composePactCommand; eventually when you call the function it also
-adds the default values
+### Parameters
 
-| Parameter                    | Type                                         | Description                                       |
-| ---------------------------- | -------------------------------------------- | ------------------------------------------------- |
+| Parameter | Type | Description |
+| --------- | -----| ----------- |
 | ...reducersOrPartialCommands | Array<IPartialPactCommand \| CommandReducer> | list of command reducers or partial pact commands |
 
-#### Examples
+### Return value
+
+The return value is a `CommandReducer` function that you can pass
+to another composePactCommand.
+Eventually, when you call the function, it also adds the default values.
+
+### Examples
 
 ```typescript
 const pactCommand = composePactCommand(
@@ -1479,33 +1441,24 @@ const pactCommand = {
 };
 ```
 
-We developed some common reducers
+### Supported functions
 
-### execution
+You can use the following functions with `composePactCommand`:
+- `execution`
+- `continuation`
+- `addSigner`
+- `addData`
+- `addKeyset`
+- `setMeta`
+- `setNonce`
+- `setNetworkId`
+- `createTransaction`
 
-**Goal**: creating `IPactCommand.payload.exec.code`.
+### Examples
 
-This includes typical Pact code and also the first step of defpact functions.
+The following examples illustrate using composePactCommand in different scenarios.
 
-```typescript
-execution(...codes): { payload: { exec : { code: string, data: {} } }}
-```
-
-| Parameter | Type     | Description   |
-| --------- | -------- | ------------- |
-| ...code   | string[] | list of codes |
-
-example:
-
-use string code
-
-```typescript
-const command: IPactCommand = composePactCommand(
-  execution(`(coin.transfer "alice" "bob" 1.1)`),
-)();
-```
-
-using `Pact.modules` for code
+Create an `execution` command using `Pact.modules`:
 
 ```typescript
 const command: IPactCommand = composePactCommand(
@@ -1513,44 +1466,9 @@ const command: IPactCommand = composePactCommand(
 )();
 ```
 
-### Continuation
-
-**Goal**: creating `IPactCommand.payload.cont`.
-
-This includes a command for the next steps of a defpact (multi-step) function.
-
-```typescript
-continuation(contData: {
-  pactId?: string;
-  step?: number;
-  rollback?: boolean;
-  data?: Record<string, unknown>;
-  proof?: string | null;
-}): {
-  payload: {
-    cont: {
-      pactId?: string;
-      step?: number;
-      rollback?: boolean;
-      data?: Record<string, unknown>;
-      proof?: string | null;
-    };
-  };
-};
-```
-
-| Parameter | Type                                                                                                    | Description                                                                                       |
-| --------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| contData  | { pactId: string, rollback: boolean, step: number, data?: Record<string, any>, proof?: null \| string } | continuation data; step starts from 0; proof is SPV proof that can be generated by calling `/spv` |
-
-#### Example:
-
-`coin.cross-chain` is a multi-step function (defpact) that burns the token in
-the source chain and mints the amount in the target chain. After doing the first
-step successfully, you can call the second step by using continuation.
+Create a `continuation` command:
 
 ```TS
-
 const command: IPactCommand = composePactCommand(
   continuation({
     pactId,
@@ -1559,52 +1477,9 @@ const command: IPactCommand = composePactCommand(
     proof: spvProof
   })
 )()
-
 ```
 
-### Add Signer
-
-**Goal**: adding `IPactCommand.signers` list
-
-You can use the `addSigner` method to add signer's public keys and capability
-list to the command. Later, the Chainweb node can check if all signers signed
-the transaction or not.
-
-**Note**: You can call `addSigner` as many times as you want if the transaction
-has more signers.
-
-```typescript
-addSigner(signerOrSignersList, capabilityCallback): CommandReducer;
-```
-
-| Parameter          | Type                                                                                                   | Description                                                                                                              |
-| ------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
-| signer             | string \| { pubKey: string; scheme?: 'ED25519' \| 'ETH' \| 'WebAuthn'; address?: string;} \| ISigner[] | Public key of the signer or the signer object (this can also be a list of signers if all sign for the same capabilities) |
-| capabilityCallback | (signFor) => ReturnType<signFor>[]                                                                     | Allows you to scope the sign to a specific list of capabilities                                                          |
-
-Chainweb supports three schemes of public keys `ED25519`, `WebAuthn`, `ETH`; the
-default value is `ED25519`. You can pass just the public key if the scheme is
-`ED25519`, otherwise, you need to pass a signer object including pubKey and
-scheme.
-
-#### Examples
-
-Adding a signer for coin transfer
-
-```typescript
-// ED25519 key
-const alicePublicKey =
-  'e7f4da07b1d200f6e45aa6492afed6819297a97563859a5f0df9c54f5abd4aab';
-
-composePactCommand(
-  execution(Pact.modules.coin.transfer('alice', 'bob', { decimal: '1.1' })),
-  addSigner(alicePublicKey, (signFor) => [
-    signFor('coin.TRANSFER', 'alice', 'bob', { decimal: '1.1' }),
-  ]),
-);
-```
-
-Add a signer with `WebAuthn` scheme
+Add a signer with a key that uses the `WebAuthn` signature scheme:
 
 ```typescript
 composePactCommand(
@@ -1615,76 +1490,7 @@ composePactCommand(
 );
 ```
 
-Add a list of signers with no capabilities
-
-```typescript
-composePactCommand(
-  execution('(free.my-module.my-function)'),
-  addSigner([
-    'ED25519_publicKey',
-    { pubKey: 'WebAuthn_publicKey', scheme: 'WebAuthn' },
-  ]),
-);
-```
-
-Add a list of signers with similar capabilities
-
-```typescript
-const pactCommand = composePactCommand(
-  execution(Pact.modules.coin.transfer('alice', 'bob', { decimal: '1.1' })),
-  // e.g., Alice's account is guarded by two keys
-  addSigner(['first_publicKey', 'second_publicKey'], (signFor) => [
-    signFor('coin.TRANSFER', 'alice', 'bob', { decimal: '1.1' }),
-  ]),
-)();
-
-const equivalentPactCommand = {
-  payload: {
-    exec: {
-      code: '(coin.transfer "alice" "bob" 1.1 )',
-      data: {},
-    },
-  },
-  signers: [
-    {
-      pubKey: 'first_publicKey',
-      scheme: 'ED25519',
-      clist: [
-        { name: 'coin.TRANSFER', args: ['alice', 'bob', { decimal: '1.1' }] },
-      ],
-    },
-    {
-      pubKey: 'second_publicKey',
-      scheme: 'ED25519',
-      clist: [
-        { name: 'coin.TRANSFER', args: ['alice', 'bob', { decimal: '1.1' }] },
-      ],
-    },
-  ],
-};
-```
-
-### Add Data
-
-**Goal**: adding `IPactCommand.payload.exec.data` or
-`IPactCommand.payload.cont.data` based on the transaction type
-
-You can use this method to add data to the command, this data is readable in the
-smart contract later. you can also use this data in the code you set in the
-command.
-
-```typescript
-addData(key, value): CommandReducer
-```
-
-| Parameter | Type      | Description                  |
-| --------- | --------- | ---------------------------- |
-| key       | string    | the key associated with data |
-| value     | PactValue | data you want to send        |
-
-#### Examples
-
-transfer with parameters in data
+Add sender and receiver data to a transfer operation:
 
 ```typescript
 composePactCommand(
@@ -1696,40 +1502,7 @@ composePactCommand(
 );
 ```
 
-use transfer create and send the receiver guard
-
-```typescript
-composePactCommand(
-  execution(
-    '(coin.transfer-create "alice" "bob" (read-keyset "bob-guard") 1.1)',
-  ),
-  addData('bob-guard', {
-    keys: ['bob-public-key'],
-    pred: 'keys-all',
-  }),
-);
-```
-
-Here are the corrected sections:
-
-### Add Keyset
-
-Since keysets are commonly used data in commands, we provide `addKeyset` as an
-alternative to `addData` specifically for adding keysets.
-
-```typescript
-addKeyset(name, pred, ...keys): CommandReducer
-```
-
-| Parameter | Type                                        | Description                                                                  |
-| --------- | ------------------------------------------- | ---------------------------------------------------------------------------- |
-| name      | string                                      | the name associated with the keyset                                          |
-| pred      | "keys-all"\|"keys-2"\| "keys-any" \| string | one of the built-in predicate functions or a user-defined predicate function |
-| ...keys   | ...string[]                                 | List of public keys in the keyset                                            |
-
-#### Examples
-
-Transfer create using `readKeyset` helper function
+Add a keyset for a transfer and create operation:
 
 ```typescript
 composePactCommand(
@@ -1745,43 +1518,7 @@ composePactCommand(
 );
 ```
 
-Transfer create as string code
-
-```typescript
-composePactCommand(
-  execution(
-    '(coin.transfer-create "alice" "bob" (readKeyset "bob-guard") 1.1)',
-  ),
-  addKeyset('bob-guard', 'keys-all', 'bob-public-key'),
-);
-```
-
-### Set Meta
-
-**Goal**: adding `IPactCommand.meta`
-
-You can use `setMeta` to add metadata to a command.
-
-```typescript
-setMeta(meta): CommandReducer
-```
-
-| Parameter | Type                                                                                                               | Description         |
-| --------- | ------------------------------------------------------------------------------------------------------------------ | ------------------- |
-| meta      | { chainId: ChainId, senderAccount: string, gasLimit: number, gasPrice: number, ttl: number, creationTime: number } | add metadata object |
-
-#### Metadata
-
-| Property      | Type            | Default value       | description                                                          |
-| ------------- | --------------- | ------------------- | -------------------------------------------------------------------- |
-| chainId       | `"0"` to `"19"` | `undefined`         | id of chain from "0" to "19"                                         |
-| senderAccount | `string`        | `undefined`         | the account address that you want to pay gas from that               |
-| gasLimit      | `number`        | `2500`              | maximum amount of gas you allow to be deducted during running the tx |
-| gasPrice      | `number`        | `1.0e-8`            | price of each gas unit based on KDA (e.g., 0.0000001)                |
-| ttl           | `number`        | `28800`             | ttl (time-to-live) of the tx in seconds; default value is 8 hours    |
-| creationTime  | `number`        | `Date.now() / 1000` | transaction creation time in seconds                                 |
-
-#### Examples
+Set metadata for a transfer operation:
 
 ```typescript
 composePactCommand(
@@ -1790,23 +1527,7 @@ composePactCommand(
   setMeta({ chainId: '02', senderAccount: 'bob' }),
 );
 ```
-
-### Set Nonce
-
-**Goal**: set `IPactCommand.nonce` with your custom nonce; otherwise, it will be
-set with `kjs:${timestamp}`
-
-You can use this function to set the nonce for the transaction.
-
-```typescript
-setNonce(nonce): { nonce: string };
-```
-
-| Parameter | Type   | Description      |
-| --------- | ------ | ---------------- |
-| nonce     | string | nonce for the tx |
-
-#### Examples
+Set a custom nonce:
 
 ```typescript
 composePactCommand(
@@ -1815,22 +1536,7 @@ composePactCommand(
   setNonce('a-custom-nonce'),
 );
 ```
-
-### Set Network Id
-
-**Goal**: set `IPactCommand.network`
-
-You can use this function to set the network for the transaction.
-
-```typescript
-setNetworkId(networkId): { networkId : string }
-```
-
-| Parameter | Type   | Description                                 |
-| --------- | ------ | ------------------------------------------- |
-| networkId | string | network Id (e.g., "mainnet01", "testnet04") |
-
-#### Examples
+Set the network identifier for the transaction
 
 ```typescript
 composePactCommand(
@@ -1839,17 +1545,7 @@ composePactCommand(
   setNetworkId('testnet04'),
 );
 ```
-
-## createTransaction
-
-Use `createTransaction` to create the transaction object. The  `createTransaction` methods converts the `cmd` to a string and adds the hash for the transaction. 
-You must add signatures to this object manually or using a wallet to submit it to the blockchain.
-
-```typescript
-createTransaction(pactCommand:IPactCommand): IUnsignedCommand
-```
-
-### Examples
+Create the transaction object to be signed:
 
 ```typescript
 const pactCommand = composePactCommand(

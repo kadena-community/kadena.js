@@ -155,21 +155,6 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
-    source: '/marmalade/what-is-marmalade',
-    destination: '/build/nft-marmalade',
-    permanent: true,
-  },
-  {
-    source: '/marmalade/quick-start',
-    destination: '/build/nft-marmalade/get-started',
-    permanent: true,
-  },
-  {
-    source: '/marmalade/marmalade-v1',
-    destination: '/build/nft-marmalade',
-    permanent: true,
-  },
-  {
     source: '/marmalade/:slug',
     destination: '/build/nft-marmalade/:slug',
     permanent: true,
@@ -220,6 +205,21 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
+    source: '/marmalade/what-is-marmalade',
+    destination: '/build/nft-marmalade',
+    permanent: true,
+  },
+  {
+    source: '/marmalade/quick-start',
+    destination: '/build/nft-marmalade/get-started',
+    permanent: true,
+  },
+  {
+    source: '/marmalade/marmalade-v1',
+    destination: '/build/nft-marmalade',
+    permanent: true,
+  },
+  {
     source: '/pact',
     destination: '/build/pact',
     permanent: true,
@@ -250,13 +250,8 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
-    source: '/pact/beginner/:slug',
-    destination: '/build/pact/:slug',
-    permanent: true,
-  },
-  {
-    source: '/pact/beginner/web-editor',
-    destination: '/build/pact/dev-network',
+    source: '/pact/beginner/:slug1',
+    destination: '/build/pact/:slug1',
     permanent: true,
   },
   {
@@ -453,4 +448,10 @@ export const version2PathUrlRedirects = [
     destination: '/reference/property-checking/list',
     permanent: true,
   },
+  {
+    source: '/pact/beginner/web-editor',
+    destination: '/build/pact/dev-network',
+    permanent: true,
+  },
+
 ];
