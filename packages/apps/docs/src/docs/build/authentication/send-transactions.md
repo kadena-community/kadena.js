@@ -46,11 +46,10 @@ and secret keys and separate WebAuthN-specific contracts to manage accounts and 
 
 When users register an account using Kadena SpireKey, the cryptographic algorithm
 used to generate the public and secret keys is different from the cryptographic
-algorithm used to generate the public and secret keys for previous Kadena
-accounts. 
+algorithm and ED25519 signature scheme used to generate the public and secret keys for other Kadena accounts. 
 To differentiate Kadena SpireKey account public keys from other public
 keys, transactions must include both the public key and the `scheme` attribute
-set to `WebAuthn` as its value.
+set to `WebAuthn` as its value when signing transactions.
 
 ```ts
 { pubKey: webAuthnPublicKey, scheme: 'WebAuthn' }
