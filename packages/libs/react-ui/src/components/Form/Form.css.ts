@@ -130,6 +130,7 @@ const startAddonBase = style([
   }),
   {
     insetInlineStart: token('spacing.n3'),
+    zIndex: 10,
     color: iconFill,
   },
 ]);

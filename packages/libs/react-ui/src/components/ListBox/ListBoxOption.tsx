@@ -18,8 +18,14 @@ function ListBoxOptionBase<T extends object>(
   forwardedRef: ForwardedRef<HTMLLIElement>,
 ) {
   const ref = useObjectRef(forwardedRef);
-  const { optionProps, isSelected, isDisabled, isFocusVisible, isPressed } =
-    useOption({ key: item.key }, state, ref);
+  const {
+    optionProps,
+    isSelected,
+    isDisabled,
+    isFocusVisible,
+    isFocused,
+    isPressed,
+  } = useOption({ key: item.key }, state, ref);
   const { hoverProps, isHovered } = useHover({
     isDisabled,
   });
@@ -29,6 +35,7 @@ function ListBoxOptionBase<T extends object>(
       {...mergeProps(optionProps, hoverProps)}
       ref={ref}
       data-selected={isSelected || undefined}
+      data-focused={isFocused}
       data-focused-visible={isFocusVisible || undefined}
       data-pressed={isPressed}
       data-disabled={isDisabled}

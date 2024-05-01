@@ -48,12 +48,8 @@ export const listItemClass = style([
   }),
   {
     transition: 'background 0.2s',
-    ':hover': {
-      color: token('color.text.base.default'),
-      backgroundColor: token('color.background.input.@hover'),
-    },
     ':focus': {
-      outlineColor: 'none',
+      outline: 'none',
     },
     ':focus-visible': {
       outline: 'none',
@@ -69,7 +65,7 @@ export const listItemClass = style([
       },
       '&[data-focused="true"]': {
         color: token('color.text.semantic.info.@focus'),
-        backgroundColor: token('color.background.semantic.info.@focus'),
+        backgroundColor: token('color.background.input.@focus'),
       },
       '&[data-selected="true"]': {
         backgroundColor: token(

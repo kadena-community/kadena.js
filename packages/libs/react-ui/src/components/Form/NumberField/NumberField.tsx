@@ -137,6 +137,7 @@ export function NumberFieldBase(
         data-invalid={props.isInvalid || undefined}
         data-positive={props.isPositive || undefined}
         data-has-start-addon={!!props.startVisual || undefined}
+        data-has-end-addon
       />
     </Field>
   );

@@ -78,6 +78,7 @@ function SelectBase<T extends object>(
       tag={tag}
       info={info}
       ref={ref}
+      startVisual={startVisual}
       isInvalid={fieldProps.isInvalid}
     >
       <HiddenSelect
@@ -98,10 +99,11 @@ function SelectBase<T extends object>(
           className,
         )}
         size={size}
-        startIcon={startVisual}
         ref={ref}
         state={state}
         data-disabled={isDisabled || undefined}
+        data-has-end-addon
+        data-has-start-addon={!!startVisual || undefined}
         autoFocus={props.autoFocus}
         isInvalid={fieldProps.isInvalid}
         isPositive={props.isPositive}
