@@ -1,20 +1,18 @@
 ---
-title: Client libraries
+title: Kadena client
 description:
-  The `@kadena/client-utils` library provides a TypeScript based application programming interface API for interacting with smart contracts and the Kadena network. The library includes helper functions for the `coin` module that you can import using `@kadena/client-utils/coin` and `core` functions that you can use to develop interfaces for custom contracts.
-menu: Frontend libraries
-label: Client libraries
-order: 4
+  The @kadena/client library provides a TypeScript-based API for interacting
+  with smart contracts and Chainweb nodes on the Kadena network.
+menu: Frontend frameworks
+label: Kadena client
+order: 3
+
 layout: full
-tags: ['TypeScript', 'Kadena client', 'frontend']
+tags: ['TypeScript', 'Kadena', 'Kadena client', 'frontend']
 ---
 
-# Kadena client libraries
+# Kadena client
 
-The Kadena client is a collection`of libraries, functions, and utilities written in TypeScript to provide a familiar application programming interface (API) for interacting with smart contracts and the Kadena network. 
-
-For a list of released Kadena client packages, see the [kadena.js](https://github.com/kadena-community/kadena.js/tree/main) repository.
-This section provides basic reference information for the `@kadena/client` library.
 The `@kadena/client` library provides a TypeScript-based API for interacting
 with smart contracts and Chainweb nodes on the Kadena network. 
 The library includes modules to help you perform the following types of common tasks:
@@ -24,15 +22,116 @@ The library includes modules to help you perform the following types of common t
 - Submit transactions
 - Query transaction results
 
+If you only need to interact with the `coin` contract, you can use the functions in the `@kadena/client-utils/coin`(../client-utils/README.md) instead of the `@kadena/client` library for a simpler API.
+
+## Get started with Kadena client
+
+One of the most important features of the Kadena client library is that helps you create **command** objects with the correct structure.
+You can then construct and sign transactions to send the command to the blockchain network.
+After you submit a transaction for processing, you can use the Kadena client to listen for the transaction results.
+
+The following example illustrates the structure of a command object:
+
+```typescript
+interface ICommand {
+  cmd: string; // stringified command of <IPactCommand> type
+  hash: string; // cmd-hash
+  sigs: Array<{ sig: string } | undefined>; // array of signatures
+}
+
+interface IPactCommand {
+  payload:
+    | {
+        exec: {
+          code: string;
+          data: Record<string, unknown>;
+        };
+      }
+    | {
+        cont: {
+          pactId: string;
+          step: number;
+          rollback: boolean;
+          data?: Record<string, unknown>;
+          proof?: string | null;
+        };
+      };
+  meta: {
+    chainId: ChainId; // "0" to  "19"
+    sender: string;
+    gasLimit: number;
+    gasPrice: number;
+    ttl: number;
+    creationTime: number;
+  };
+  signers: Array<{
+    pubKey: string;
+    address?: string;
+    scheme?: SignerScheme;
+    clist?: ICap[];
+  }>;
+  verifiers?: Array<{
+    name: string;
+    proof: PactValue;
+    clist?: ICap[];
+  }>;
+  networkId: string;
+  nonce: string;
+}
+```
+
+If your use case is simple enough that you can create the JSON directly, you don't need to use the functions in the Kadena client library. 
+You can also use some parts of the library, without using everything.
+If you prefer to learn from code, check out the [client-examples](https://github.com/kadena-community/kadena.js/tree/main/packages/libs/client-examples).
+
+### Install
+
+You can download and install the `@kadena/client` library with the following command:
+
+```bash
+npm install @kadena/client
+```
+
+### Import
+
+After you install the library, you can import `@kadena/client` functions into a TypeScript or JavaScript program with the following statement:
+
+```typescript
+import { createClient, Pact } from '@kadena/client';
+```
+
+The library also exports functional programming utilities under `@kadena/client/fp` for more flexibility when using a functional programming approach.
+To import functional programming utilities, include the following statement in your TypeScript or JavaScript program.
+
+```typescript
+import { composePactCommand } from '@kadena/client/fp';
+```
+
 ## Pact.modules
 
-Use `Pact.modules` to call smart contract functions with specified arguments.
+Interacting with the Kadena blockchain network and Chainweb nodes is mostly a matter of calling smart contract functions. 
+From the client perspective, you need to write Pact code in a string and pass it to the `IPactCommand.payload.exec.code` interface. 
+Without code completion and validation, writing the Pact code string manually is error-prone and vulnerable to code injection.
+To simplify the process, you can use `Pact.modules` to help you:
+
+- Write type-safe functions.
+- Perform Pact type conversion.
+- Avoid code injection.
+
+You can skip this part of the client library if your code is just a simple **constant** string.
+
+### Basic usage
+
+Use `Pact.modules` with the following format:
+
 
 ```typescript
 import { Pact } from `@kadena/client`;
 
 Pact.modules[`${namespace}.${moduleName}`][functionName](...args);
 ```
+
+### Parameters
 
 | Parameter | Type        | Description       |
 | --------- | ----------- | ----------------- |
@@ -73,9 +172,33 @@ const code = Pact.modules["free.my-module"].["my-function"](["first", { time: ne
 
 ```
 
-## Pact.builder.execution
+### Create type definitions
 
-Use `Pact.builder` to create an execution (exec) command object, `IPactCommand.payload.exec.code`.
+You can use [@kadena/pactjs-cli](/reference/kadena-client/pactjs-cli) to create the type definitions for the Pact module you use.
+After you generate the type definitions file, the code editor in your development environment should provide code completion for functions and capabilities.
+
+To create a type definition file for the `coin` contract:
+
+```bash
+npx @kadena/pactjs-cli contract-generate --contract coin --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact;
+```
+
+## Creating commands
+
+As illustrated in [Get started with Kadena client](#get-started-with-kadena-client), a command is a JSON object with three keys: `cmd`, `hash`, and `sig`. 
+There are two types of commands:
+
+- [Execution](#execution) commands
+- [Continuation](#continuation) commands
+
+You can create the JSON object without using the Kadena client library.
+However, using the library and `Pact.builder` to create the command object simplifies the process.
+
+### Pact.builder.execution
+
+You can use `Pact.builder` to create an execution command object, `IPactCommand.payload.exec.code`.
+Most transactions are execution (exec) commands that complete in a single step.
+Execution commands are also be used for the first step in transactions that are `defpact` multi-step transactions.
 
 ```typescript
 Pact.builder.execution(...codes): IBuilder
@@ -85,7 +208,7 @@ Pact.builder.execution(...codes): IBuilder
 | --------- | -------- | ------------- |
 | ...codes   | string[] | List of input for a function. |
 
-### Examples
+#### Examples
 
 To use strings for the command code:
 
@@ -103,9 +226,9 @@ const builder: IBuilder = Pact.builder.execution(
 );
 ```
 
-## Pact.builder.continuation
+### Pact.builder.continuation
 
-Use `Pact.builder` to create a continuation command object, `IPactCommand.payload.cont`.
+You can use `Pact.builder` to create a continuation command object, `IPactCommand.payload.cont`, which is the type of transaction used for additional steps of `defpact` multi-step transactions.
 
 ```typescript
 Pact.builder.continuation(contData): IBuilder
@@ -127,7 +250,7 @@ The `contData` object consists of the following properties:
 } 
 ```
 
-### Example
+#### Example
 
 The `coin.cross-chain` function is a `defpact` multi-step transaction that burns tokens in
 the source chain and mints tokens in the destination chain. 
@@ -144,10 +267,11 @@ const builder: IBuilder = Pact.builder.continuation({
 
 ```
 
-## addSigner
+### addSigner
 
-Use `addSigner` to add public keys and capabilities for a transaction signer to a command. 
+You can use the `addSigner` method to add public keys and capabilities for a transaction signer to the command. 
 You can call `addSigner` multiple times to add multiple signers to the transaction.
+Later, the Chainweb node checks whether all required signers have signed the transaction or not.
 
 ```typescript
 Pact.builder.execution(...codes).addSigner(signerOrSignersList, capabilityCallback): IBuilder
@@ -157,16 +281,6 @@ Pact.builder.execution(...codes).addSigner(signerOrSignersList, capabilityCallba
 | --------- | ---- | ------------ |
 | signer | string or object\| { pubKey: string; scheme?: 'ED25519' \| 'ETH' \| 'WebAuthn'; address?: string;} \| ISigner[] | Public key of the signer or the signer object (this can also be a list of signers if all of the signers sign for the same capabilities). |
 | capabilityCallback | (signFor) => ReturnType<signFor>[]    | Allows you to scope what the signer is signing for to a specific list of capabilities.   |
-
-The `signer` object consists of the following properties:
-
-```json
-{
-  pubKey: string;
-  scheme?: 'ED25519' \| 'ETH' \| 'WebAuthn'; 
-  address?: string; 
-}
-```
 
 Chainweb supports the following signature schemes for public keys:
 
@@ -178,7 +292,7 @@ The default signature scheme is `ED25519`.
 You can pass just the public key if the signature scheme is `ED25519`.
 If the scheme is not `ED25519`, you must pass a signer object that includes the pubic key and the signature scheme.
 
-### Examples
+#### Examples
 
 To add a signer public key for a `coin` contract transfer:
 
