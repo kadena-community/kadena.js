@@ -13,7 +13,7 @@ import { loadConfigPages } from './utils/loadConfigPages';
 
 const errors: string[] = [];
 const success: string[] = [];
-const IGNORED_REPOS = [''];
+const IGNORED_REPOS = ['https://github.com/kadena-io/pact-5'];
 
 export const checkIgnoredRepos = (repo: string) => {
   return IGNORED_REPOS.includes(repo);

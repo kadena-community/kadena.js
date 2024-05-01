@@ -26,6 +26,7 @@ interface IImportReadMeItemOptions {
 export interface IImportReadMeItem {
   file: string;
   repo: string;
+  dir?: string;
   destination: string;
   title: string;
   options: IImportReadMeItemOptions;

@@ -16,7 +16,7 @@ export const deleteTempDir = (): void => {
 export const noImportRepo = async (
   page: IConfigTreeItem,
   parentTree: IConfigTreeItem[],
-): Promise<void> => {
+): Promise<string> => {
   const url = getUrlNameOfPageFile(page, parentTree);
   const content = `---
   title: REPO ${url}
@@ -48,6 +48,8 @@ export const noImportRepo = async (
   fs.writeFileSync(`${DOCS_ROOT}/${page.destination}/index.md`, content, {
     flag: 'w',
   });
+
+  return content;
 };
 
 export const importRepo = async (item: IImportReadMeItem): Promise<void> => {
