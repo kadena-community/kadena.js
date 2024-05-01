@@ -94,115 +94,65 @@ Using an arbitrary string as an account name can be convenient.
 For example, you might want to create an account with a name that identifies it as a personal or primary account, for example, Lola-Pistola, so that it's easy to differentiate it from an account that you own jointly with another party or a group, for example, Las-Pistolas.
 
 However, using arbitrary account names like these examples can make your account vulnerable to certain kinds of attacks.
-For example, an attacker might try to hijack a transaction that creates an account or transfers funds by changing the guard associated with the account.
-One way to prevent an account from being hijacked by an attacker is to create **principal** account that has its guard pinned to the account name.
-If an attacker tries to hijack the account by changing the guard for a principal account, the result would be a different account and the transaction would fail. 
+For example, an attacker might try to hijack a transaction that creates an account or transfers funds by changing the guard associated with the account name.
+One way to prevent an account from being hijacked by an attacker is to create **principal** account.
+A principal is a way to enforce a one-to-one relationship between a guard and what the guard is there to protect, like the ownership of an account balance.
+If an attacker tries to hijack the account by changing the guard, the guard won't match the account as it's defined in the underlying ledger, so the guard would be rejected and the transaction would fail.
 
-## Guards
+### Guards
 
-In Pact, guards provide a way to limit access.
-The guard defines the specific conditions that must be met before granting access to the account the guard is protecting. 
+In Pact, **guards** provide a way to limit access.
+The guard defines the specific conditions that must be met before granting access to the account, permission, module, or other information that the guard is there to protect. 
 Pact provides several different types of guards to handle different scenarios and use cases.
+
 You've already seen the most common type of guard—the keyset—and pinning the keyset guard to the account name is the most common scenario for creating a principal account for individual keys or groups of keys.
 
-## Keysets and principals
+### Keysets and principals
 
 Keysets represent the most-commonly used type of guard and are the most similar to how most blockchains protect access to accounts using public and secret keys. 
 A keyset holds a collection of one or more public keys and a predicate that defines how many of those keys must sign to satisfy the guard. 
 In Pact, the guard is a Boolean value that must return true for an associated action to take place.
 
-By default, when you define a Keyset with a **single** public key and the **keys-all** predicate, the result is an account name that starts with the `k:` prefix, followed by the public key for the account.
-This naming convention create a principal account for an individual key.
- 
-Any other type of keyset combination results in an account with the `w:` prefix.
+By default, when you define a keyset with a **single** public key and the **keys-all** predicate, the result is an account name that starts with the `k:` prefix, followed by the public key for the account.
+This naming convention creates a principal account for an individual key.
 
-## User guards
+You can also create principal accounts for keysets that have multiple keys and that use either built-in or custom predicate rules. 
+For example, you can define a keyset with two public keys and the built-in predicate `keys-any`. 
+If you create a principal for this account, the keyset information is used to generate a unique hash and the account is created using the `w:` prefix, followed by the hash for the guard.
+
+### Other types of guards
+
+You can create principals for other types of guards and there are several different types of guards you can implement in smart contracts. 
+You learn more about the other types of guards available and how to use them in [Advanced concepts](/build/pact/advanced).
+The most likely guards that you might create a principal account for are **user guards** and **capability guards**.
+
+#### User guards
 
 In some cases, you might want to customize the guard to allow one of two different keysets to sign. 
-For example, you might have one keyset where the members of a board of directors are registered and another keyset where union representatives are registered. 
-This type of guard can be very flexible and powerful. 
-However, user guards don't allow access to a database during evaluation of the guard. 
-A user guard is ,in essence, a pure function that is evaluated at runtime to guard an account.
+For example, you might have one keyset where the keys for the members of a board of directors are registered and another keyset where the keys for union representatives are registered. 
 
-Such accounts result in an account with the `u:` prefix.
+You can create a principal for this type of guard to evaluate the keysets at runtime to determine whether the guard is satisfied by the board of directors or the union representatives.
+If you create a principal for this type of guard, the keyset information is used to generate a unique hash and the account is created using the `u:` prefix, followed by the hash for the guard.
 
-## Capability guards
+User guards can be very flexible and powerful. 
+However, user guards are pure functions that don't allow access to a database during evaluation of the guard. 
+
+#### Capability guards
 
 Because user guards are required to be pure functions, they can't take database state into account. 
-To gain this dynamic property ,one could retrieve such data while bringing a capability into scope. 
-This way you can define a guard that requires a capability to be brought into scope. 
-This can be achieved using a user guard, but a capability guard is more convenient and a more explicit way to achieve the same.
+If you need to access database state, you can define a guard that requires a capability to be brought into scope.
+With this type of guard, you can retrieve database state when you bring the capability into scope. 
+If you create a principal for this type of guard, the guard information is used to generate a unique hash and the account is created using the `c:` prefix, followed by the hash for the guard.
 
-Accounts guarded by a capability result in an account with the `c:` prefix.
+### Account prefixes
 
-## Accounts recap
+Each type of principal and guard uses a unique prefix, so they are easy to recognize.
+If you create principal accounts for the guards, you'll see that the principal accounts use the following set of prefixes:
 
-Every type of guard can be represented in a unique way. 
-For every type of guard, you have a different protocol name. 
-Here is a short overview of the protocols:
-
-k for single key keysets
-w for multiple keys keysets
-c for capability guards
-u for user guards
-
-There are more principals, but I'll leave it at these as these are the most likely guards you'll use for creating an account.
-
-You can see some examples below.
-
-principal.pact
-(begin-tx)
-(module test G
-  (defcap G() true)
-  (defcap SOME-CAPABILITY(account:string) true)
-  (defun enforce-my-guard(guard:guard)
-    (enforce-keyset guard)))
-(commit-tx)
-
-(env-data
-  { "ks": ["pubkey"]
-  , "mks": ["pubkey1", "pubkey2"]
-  , "amks": { "keys": ["pubkey1", "pubkey2"], "pred": "keys-any" }
-  })
-(begin-tx)
-(expect "Principal name to match"
-  "k:pubkey"
-  (create-principal (read-keyset "ks")))
-(expect "Principal name to match"
-  "w:XJKZlqax4U3SYulCyboYGInyn33ycPFS2wJCVybYsjw:keys-all"
-  (create-principal (read-keyset "mks")))
-(expect "Principal name to match"
-  "w:XJKZlqax4U3SYulCyboYGInyn33ycPFS2wJCVybYsjw:keys-any"
-  (create-principal (read-keyset "amks")))
-(expect "Principal name to match"
-  "c:b7iZJRzXJZqY5gun9HLuKGwiRf8ZJICLvunggRWzlRs"
-  (create-principal (create-capability-guard (test.SOME-CAPABILITY "my-account"))))
-(expect "Principal name to match"
-  "c:jDL5hzYaJEQiw-6x8Hd6_H1w7KrjCCubPSehxt500hM"
-  (create-principal (create-capability-guard (test.SOME-CAPABILITY "my-other-account"))))
-(expect "Principal name to match"
-  "u:test.enforce-my-guard:Xv7uRrsqw9iCQIbGLudMQ7t_DB3xPzki5jqnAupaHoc"
-  (create-principal (create-user-guard (test.enforce-my-guard (read-keyset "ks")))))
-(expect "Principal name to match"
-  "u:test.enforce-my-guard:39DM3OJqENcyQB3--8AuHxPsUTjgCsW-1jh-MFZv--U"
-  (create-principal (create-user-guard (test.enforce-my-guard (read-keyset "mks")))))
-(commit-tx)
-
-(begin-tx)
-(module test G
-  (defcap G() true)
-  (defcap SOME-CAPABILITY(accounts:string) 
-    (enforce true "This is a test")))
-(commit-tx)
-
-(begin-tx)
-(expect "the body of defcap to have no affect on the principal name"
-  "c:b7iZJRzXJZqY5gun9HLuKGwiRf8ZJICLvunggRWzlRs"
-  (create-principal (create-capability-guard (test.SOME-CAPABILITY "my-account"))))
-(expect "the body of defcap to have no affect on the principal name"
-  "c:jDL5hzYaJEQiw-6x8Hd6_H1w7KrjCCubPSehxt500hM"
-  (create-principal (create-capability-guard (test.SOME-CAPABILITY "my-other-account"))))
-(commit-tx)
+- k: for single key keysets
+- w: for multiple keys keysets
+- u: for user guards
+- c: for capability guards
 
 ## Transfers within and between chains
 
