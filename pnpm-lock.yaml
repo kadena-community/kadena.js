@@ -1116,8 +1116,8 @@ importers:
         specifier: workspace:*
         version: link:../../libs/types
       '@playwright/test':
-        specifier: ^1.41.1
-        version: 1.41.2
+        specifier: ^1.43.1
+        version: 1.43.1
       '@rushstack/eslint-config':
         specifier: ~3.6.9
         version: 3.6.9(eslint@8.57.0)(typescript@5.4.5)
@@ -1131,14 +1131,14 @@ importers:
         specifier: ^8.45.0
         version: 8.57.0
       eslint-plugin-playwright:
-        specifier: 0.16.0
-        version: 0.16.0(eslint@8.57.0)
+        specifier: 1.6.0
+        version: 1.6.0(eslint@8.57.0)
       parse-md:
         specifier: 2.0.5
         version: 2.0.5
       playwright-i18next-fixture:
         specifier: ^1.0.0
-        version: 1.0.0(@playwright/test@1.41.2)
+        version: 1.0.0(@playwright/test@1.43.1)
       prettier:
         specifier: ~3.2.5
         version: 3.2.5
@@ -1149,8 +1149,8 @@ importers:
         specifier: workspace:*
         version: link:../../apps/docs
       '@playwright/test':
-        specifier: ^1.41.1
-        version: 1.41.2
+        specifier: ^1.43.1
+        version: 1.43.1
     devDependencies:
       '@kadena-dev/e2e-base':
         specifier: workspace:*
@@ -1183,8 +1183,8 @@ importers:
         specifier: ^8.45.0
         version: 8.57.0
       eslint-plugin-playwright:
-        specifier: 0.16.0
-        version: 0.16.0(eslint@8.57.0)
+        specifier: 1.6.0
+        version: 1.6.0(eslint@8.57.0)
       prettier:
         specifier: ~3.2.5
         version: 3.2.5
@@ -1235,8 +1235,8 @@ importers:
         specifier: workspace:*
         version: link:../../libs/types
       '@playwright/test':
-        specifier: ^1.41.1
-        version: 1.41.2
+        specifier: ^1.43.1
+        version: 1.43.1
       '@rushstack/eslint-config':
         specifier: ~3.6.9
         version: 3.6.9(eslint@8.57.0)(typescript@5.4.5)
@@ -1253,14 +1253,14 @@ importers:
         specifier: 3.5.5
         version: 3.5.5(@typescript-eslint/parser@6.19.1)(eslint-plugin-import@2.27.5)(eslint@8.57.0)
       eslint-plugin-playwright:
-        specifier: 0.16.0
-        version: 0.16.0(eslint@8.57.0)
+        specifier: 1.6.0
+        version: 1.6.0(eslint@8.57.0)
       parse-md:
         specifier: 2.0.5
         version: 2.0.5
       playwright-i18next-fixture:
         specifier: ^1.0.0
-        version: 1.0.0(@playwright/test@1.41.2)
+        version: 1.0.0(@playwright/test@1.43.1)
       prettier:
         specifier: ~3.2.5
         version: 3.2.5
@@ -1271,8 +1271,8 @@ importers:
         specifier: workspace:*
         version: link:../../apps/tools
       '@playwright/test':
-        specifier: ^1.41.1
-        version: 1.41.2
+        specifier: ^1.43.1
+        version: 1.43.1
     devDependencies:
       '@kadena-dev/e2e-base':
         specifier: workspace:*
@@ -1308,11 +1308,11 @@ importers:
         specifier: 3.5.5
         version: 3.5.5(@typescript-eslint/parser@6.19.1)(eslint-plugin-import@2.27.5)(eslint@8.57.0)
       eslint-plugin-playwright:
-        specifier: 0.16.0
-        version: 0.16.0(eslint@8.57.0)
+        specifier: 1.6.0
+        version: 1.6.0(eslint@8.57.0)
       playwright-i18next-fixture:
         specifier: ^1.0.0
-        version: 1.0.0(@playwright/test@1.41.2)
+        version: 1.0.0(@playwright/test@1.43.1)
       prettier:
         specifier: ~3.2.5
         version: 3.2.5
@@ -9921,12 +9921,12 @@ packages:
       picocolors: 1.0.0
       tslib: 2.6.2
 
-  /@playwright/test@1.41.2:
-    resolution: {integrity: sha512-qQB9h7KbibJzrDpkXkYvsmiDJK14FULCCZgEcoe2AvFAS64oCirWTwzTlAYEbKaRxWs5TFesE1Na6izMv3HfGg==}
+  /@playwright/test@1.43.1:
+    resolution: {integrity: sha512-HgtQzFgNEEo4TE22K/X7sYTYNqEMMTZmFS8kTq6m8hXj+m1D8TgwgIbumHddJa9h4yl4GkKb8/bgAl2+g7eDgA==}
     engines: {node: '>=16'}
     hasBin: true
     dependencies:
-      playwright: 1.41.2
+      playwright: 1.43.1
 
   /@pnpm/constants@7.1.1:
     resolution: {integrity: sha512-31pZqMtjwV+Vaq7MaPrT1EoDFSYwye3dp6BiHIGRJmVThCQwySRKM7hCvqqI94epNkqFAAYoWrNynWoRYosGdw==}
@@ -21009,16 +21009,18 @@ packages:
       object.fromentries: 2.0.6
       semver: 6.3.1
 
-  /eslint-plugin-playwright@0.16.0(eslint@8.57.0):
-    resolution: {integrity: sha512-DcHpF0SLbNeh9MT4pMzUGuUSnJ7q5MWbP8sSEFIMS6j7Ggnduq8ghNlfhURgty4c1YFny7Ge9xYTO1FSAoV2Vw==}
+  /eslint-plugin-playwright@1.6.0(eslint@8.57.0):
+    resolution: {integrity: sha512-tI1E/EDbHT4Fx5KvukUG3RTIT0gk44gvTP8bNwxLCFsUXVM98ZJG5zWU6Om5JOzH9FrmN4AhMu/UKyEsu0ZoDA==}
+    engines: {node: '>=16.6.0'}
     peerDependencies:
-      eslint: '>=7'
+      eslint: '>=8.40.0'
       eslint-plugin-jest: '>=25'
     peerDependenciesMeta:
       eslint-plugin-jest:
         optional: true
     dependencies:
       eslint: 8.57.0
+      globals: 13.24.0
     dev: true
 
   /eslint-plugin-promise@6.1.1(eslint@8.57.0):
@@ -22453,6 +22455,13 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       type-fest: 0.20.2
+
+  /globals@13.24.0:
+    resolution: {integrity: sha512-AhO5QUcj8llrbG09iWhPU2B204J1xnPeL8kQmVorSsy+Sjj1sk8gIyh6cUocGmH4L0UuhAJy+hJMRA4mgA4mFQ==}
+    engines: {node: '>=8'}
+    dependencies:
+      type-fest: 0.20.2
+    dev: true
 
   /globalthis@1.0.3:
     resolution: {integrity: sha512-sFdI5LyBiNTHjRd7cGPWapiHWMOXKyuBNX/cWJ3NfzrZQVa8GI/8cofCl74AOVqq9W5kNmguTIzJ/1s2gyI9wA==}
@@ -28052,9 +28061,6 @@ packages:
     resolution: {integrity: sha512-W+gxAq7aQ9dJIg/XLKGcRT0cvnStFAQHPaI0pvD0U2l6IVLueUAm3nwN7lkY62zZNmlvNx6jNtE4wlbS+CyqSg==}
     engines: {node: '>= 12.0.0'}
     hasBin: true
-    peerDependenciesMeta:
-      '@parcel/core':
-        optional: true
     dependencies:
       '@parcel/config-default': 2.12.0(@parcel/core@2.12.0)
       '@parcel/core': 2.12.0
@@ -28456,26 +28462,26 @@ packages:
       find-up: 3.0.0
     dev: true
 
-  /playwright-core@1.41.2:
-    resolution: {integrity: sha512-VaTvwCA4Y8kxEe+kfm2+uUUw5Lubf38RxF7FpBxLPmGe5sdNkSg5e3ChEigaGrX7qdqT3pt2m/98LiyvU2x6CA==}
+  /playwright-core@1.43.1:
+    resolution: {integrity: sha512-EI36Mto2Vrx6VF7rm708qSnesVQKbxEWvPrfA1IPY6HgczBplDx7ENtx+K2n4kJ41sLLkuGfmb0ZLSSXlDhqPg==}
     engines: {node: '>=16'}
     hasBin: true
 
-  /playwright-i18next-fixture@1.0.0(@playwright/test@1.41.2):
+  /playwright-i18next-fixture@1.0.0(@playwright/test@1.43.1):
     resolution: {integrity: sha512-7YQXB8zNGlu8ThXaM1pfGefcHdS97FE0Y4R/VrSLwi2DqjJrYx60cWR4KgcEjGvOUaaVMgyu7WlbQJDoHXGzAQ==}
     peerDependencies:
       '@playwright/test': ^1.26.0
     dependencies:
-      '@playwright/test': 1.41.2
+      '@playwright/test': 1.43.1
       i18next: 21.10.0
     dev: true
 
-  /playwright@1.41.2:
-    resolution: {integrity: sha512-v0bOa6H2GJChDL8pAeLa/LZC4feoAMbSQm1/jF/ySsWWoaNItvrMP7GEkvEEFyCTUYKMxjQKaTSg5up7nR6/8A==}
+  /playwright@1.43.1:
+    resolution: {integrity: sha512-V7SoH0ai2kNt1Md9E3Gwas5B9m8KR2GVvwZnAI6Pg0m3sh7UvgiYhRrhsziCmqMJNouPckiOhk8T+9bSAK0VIA==}
     engines: {node: '>=16'}
     hasBin: true
     dependencies:
-      playwright-core: 1.41.2
+      playwright-core: 1.43.1
     optionalDependencies:
       fsevents: 2.3.2
 
@@ -34971,7 +34977,6 @@ packages:
     name: hw-app-kda
     version: 0.1.0
     hasBin: true
-    prepare: true
     requiresBuild: true
     dependencies:
       '@ledgerhq/hw-transport': 6.30.3
