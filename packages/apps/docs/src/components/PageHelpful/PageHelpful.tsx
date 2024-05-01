@@ -1,11 +1,11 @@
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
+import { MonoThumbDownOffAlt, MonoThumbUpOffAlt } from '@kadena/react-icons';
 import {
   Button,
   Dialog,
   DialogContent,
   DialogHeader,
   Stack,
-  SystemIcon,
   Text,
   ToggleButton,
 } from '@kadena/react-ui';
@@ -45,7 +45,7 @@ export const PageHelpful: FC<IProps> = ({ editLink }) => {
         </Text>
         <Stack gap="xs">
           <ToggleButton
-            icon={<SystemIcon.ThumbUpOutline />}
+            icon={<MonoThumbUpOffAlt />}
             onPress={handlePageHelpful}
             title="Useful"
             aria-label="Useful"
@@ -53,7 +53,7 @@ export const PageHelpful: FC<IProps> = ({ editLink }) => {
             isSelected={isPageHelpful === 'up'}
           />
           <ToggleButton
-            icon={<SystemIcon.ThumbDownOutline />}
+            icon={<MonoThumbDownOffAlt />}
             onPress={handlePageNotHelpful}
             title="Not useful"
             aria-label="Not useful"

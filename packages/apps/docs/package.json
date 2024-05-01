@@ -11,7 +11,7 @@
     "7d:query": "npx 7d",
     "algolia-dev": "ALGOLIA_INDEX_NAME=docs_website_dev OPENAI_API_KEY=dummy-key121 npx 7d ingest --files 'src/pages/**/*.md' --files 'src/pages/**/*.mdx' --files 'src/specs/**/*.json' --db algolia --skip-embeddings",
     "algolia-prod": "ALGOLIA_INDEX_NAME=docs_website_prod OPENAI_API_KEY=dummy-key121 npx 7d ingest --files 'src/pages/**/*.md' --files 'src/pages/**/*.mdx'  --files 'src/specs/**/*.json' --db algolia --skip-embeddings",
-    "build": "NODE_OPTIONS='--max-old-space-size=4096' pnpm run build:scripts && next build",
+    "build": "NODE_OPTIONS=--max-old-space-size=4096 pnpm run build:scripts && next build",
     "build:next": "pnpm run build:scripts && next build",
     "build:scripts": "tsx ./src/scripts/build.ts",
     "dev": "NODE_OPTIONS=--max-old-space-size=4096 IGNOREREPO=true NODE_ENV=development pnpm run build:scripts && concurrently \"next dev\" \"pnpm run dev:docswatch\"",
@@ -35,6 +35,7 @@
     "@google-analytics/data": "~3.2.2",
     "@kadena/docs-tools": "workspace:*",
     "@kadena/fonts": "~0.0.1",
+    "@kadena/react-icons": "workspace:*",
     "@kadena/react-ui": "workspace:*",
     "@mailchimp/mailchimp_marketing": "~3.0.80",
     "@mdx-js/loader": "~2.3.0",
@@ -84,6 +85,7 @@
     "@types/node": "^20.12.7",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
+    "@types/xml2js": "^0.4.14",
     "@vanilla-extract/next-plugin": "2.4.0",
     "@vanilla-extract/vite-plugin": "4.0.7",
     "@vanilla-extract/webpack-plugin": "2.3.7",
@@ -112,6 +114,7 @@
     "tsx": "^3.12.10",
     "typescript": "5.4.5",
     "vitest": "^1.1.0",
-    "vitest-dom": "^0.1.1"
+    "vitest-dom": "^0.1.1",
+    "xml2js": "^0.6.2"
   }
 }

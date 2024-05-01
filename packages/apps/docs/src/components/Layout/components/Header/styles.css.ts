@@ -37,7 +37,7 @@ export const hamburgerButtonClass = style([
     },
 
     ...responsiveStyle({
-      lg: {
+      md: {
         display: 'none',
       },
     }),
@@ -67,6 +67,7 @@ export const searchButtonSlashClass = style([
   atoms({
     borderRadius: 'lg',
     marginInlineStart: 'sm',
+    display: 'none',
   }),
   {
     backgroundColor: tokens.kda.foundation.color.neutral.n40,
@@ -77,6 +78,11 @@ export const searchButtonSlashClass = style([
         color: tokens.kda.foundation.color.neutral.n90,
       },
     },
+    ...responsiveStyle({
+      lg: {
+        display: 'block',
+      },
+    }),
   },
 ]);
 
@@ -131,7 +137,7 @@ export const headerButtonClass = style([
 export const hideOnTabletClass = style([
   responsiveStyle({
     xs: { display: 'none' },
-    lg: { display: 'flex' },
+    md: { display: 'flex' },
   }),
 ]);
 
@@ -146,4 +152,16 @@ export const socialsClass = style([
     xs: { display: 'none' },
     xl: { display: 'flex' },
   }),
+]);
+
+export const baseIcon = style([
+  {
+    transition: '400ms transform ease',
+  },
+]);
+
+export const reversedIcon = style([
+  {
+    transform: 'rotate(180deg)',
+  },
 ]);

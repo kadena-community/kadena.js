@@ -12,6 +12,7 @@ import {
 } from '@/components/Layout/components/articleStyles.css';
 import { getPageConfig } from '@/utils/config';
 import type { IMenuData } from '@kadena/docs-tools';
+import { MonoChevronRight } from '@kadena/react-icons';
 import {
   Box,
   Grid,
@@ -19,7 +20,6 @@ import {
   Heading,
   Link as KandenaLink,
   Stack,
-  SystemIcon,
 } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
@@ -73,7 +73,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   <Box marginBlock="md">
                     <KandenaLink
                       href="/build/guides/election-dapp-tutorial"
-                      endVisual={<SystemIcon.TrailingIcon />}
+                      endVisual={<MonoChevronRight />}
                       variant="negative"
                     >
                       Build your first dApp

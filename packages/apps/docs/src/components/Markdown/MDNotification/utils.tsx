@@ -1,5 +1,5 @@
+import { MonoWarning } from '@kadena/react-icons';
 import type { INotificationProps } from '@kadena/react-ui';
-import { SystemIcon } from '@kadena/react-ui';
 import React from 'react';
 
 export type LabelType =
@@ -33,7 +33,7 @@ export const getIcon = (label?: LabelType): INotificationProps['icon'] => {
     case 'caution':
     case 'warning':
     case 'danger':
-      return <SystemIcon.Bell />;
+      return <MonoWarning />;
     case 'note':
     case 'info':
     case 'tip':

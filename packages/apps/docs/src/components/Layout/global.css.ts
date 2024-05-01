@@ -13,7 +13,7 @@ export const $$borderColor = createVar();
 export const globalClass = style({
   vars: {
     [$$navMenu]: '998', //zIndex
-    [$$footerMenu]: '499', //zIndex
+    [$$footerMenu]: '498', //zIndex
     [$$modalZIndex]: '1000', //zIndex
     [$$sideMenu]: '500', //zIndex
     [$$pageWidth]: '1440px', //sizes
