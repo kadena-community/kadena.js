@@ -277,6 +277,8 @@ pages:
               operators:
                 url: /operators
                 file: /pact/reference/functions/operators.md
+                repo: https://github.com/kadena-io/pact-5
+                dir: /docs/builtins
               keysets:
                 url: /keysets
                 file: /pact/reference/functions/keysets.md

@@ -13,6 +13,11 @@ import { loadConfigPages } from './utils/loadConfigPages';
 
 const errors: string[] = [];
 const success: string[] = [];
+const IGNORED_REPOS = [''];
+
+export const checkIgnoredRepos = (repo: string) => {
+  return IGNORED_REPOS.includes(repo);
+};
 
 const copyBlogchain = (): void => {
   fs.mkdirSync(`./src/pages/blogchain`, { recursive: true });
@@ -35,7 +40,7 @@ const copyPages = async (
 ): Promise<void> => {
   for (let i = 0; i < pages.length; i++) {
     const page = pages[i];
-    if (page.repo) {
+    if (page.repo && !checkIgnoredRepos(page.repo)) {
       const parentTree = await getParentTreeFromPage(page);
       page.destination = getUrlNameOfPageFile(page, parentTree ?? []);
 
