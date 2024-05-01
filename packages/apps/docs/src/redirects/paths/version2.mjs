@@ -21,7 +21,7 @@ export const version2PathUrlRedirects = [
   },
   {
     source: '/kadena/kda/kda-concepts',
-    destination: '/learn/accounts-keys',
+    destination: '/learn/accounts',
     permanent: true,
   },
   {
@@ -148,7 +148,7 @@ export const version2PathUrlRedirects = [
     source: '/build/guides/election-dapp-tutorial/:slug',
     destination: '/build/election/:slug',
     permanent: true,
-  }, 
+  },
   {
     source: '/marmalade',
     destination: '/build/nft-marmalade',

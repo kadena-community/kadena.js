@@ -107,6 +107,8 @@ const checkUrlCreator =
   };
 
 export const checkRedirects = async (): Promise<IScriptResult> => {
+  errors.length = 0;
+  success.length = 0;
   const productionSitemapUrls = await getProductionSitemapLinks();
   const sitemapUrls = await getSitemapLinks();
 
@@ -117,8 +119,5 @@ export const checkRedirects = async (): Promise<IScriptResult> => {
     success.push('There were no redirect issues found');
   }
 
-  errors.map(console.log);
   return { success, errors };
 };
-
-checkRedirects();
