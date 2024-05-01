@@ -22,7 +22,7 @@ The library includes modules to help you perform the following types of common t
 - Submit transactions
 - Query transaction results
 
-If you only need to interact with the `coin` contract, you can use the functions in the `@kadena/client-utils/coin`(../client-utils/README.md) instead of the `@kadena/client` library for a simpler API.
+If you only need to interact with the `coin` contract, you can use the functions in the `@kadena/client-utils/coin` library instead of the `@kadena/client` library for a simpler API.
 
 ## Get started with Kadena client
 
@@ -538,7 +538,7 @@ After you set all parts of the command, you can create the transaction object by
 calling the `createTransaction` method. 
 This method adds all of the default values to the command, converts `cmd` to a string, and adds the hash. 
 You must add signatures to the transaction object using a wallet to submit the transaction to the blockchain.
-For information about adding signatures from a wallet, see [wallet-providers](#wallet-providers).
+For information about adding signatures from a wallet, see [Signing transactions](#signing-transactions).
 
 ```typescript
 const transaction: IUnsignedCommand = Pact.builder
@@ -1978,7 +1978,7 @@ composePactCommand(
 After setting all parts of the command, you can create the transaction object by
 calling `createTransaction` function. This will stringify `cmd`, and add the
 hash as well. You need to add signatures to this object via a wallet - check out
-[wallet-providers](#wallet-providers) - in order to submit it to the blockchain.
+[Signing transactions](#signing-transactions) - in order to submit it to the blockchain.
 
 ```typescript
 createTransaction(pactCommand:IPactCommand): IUnsignedCommand

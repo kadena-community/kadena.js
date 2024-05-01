@@ -424,7 +424,7 @@ After you set all parts of the command, you can create the transaction object by
 calling the `createTransaction` method. 
 This method adds all of the default values to the command, converts `cmd` to a string, and adds the hash. 
 You must add signatures to the transaction object using a wallet to submit the transaction to the blockchain.
-For information about adding signatures from a wallet, see [wallet-providers](#wallet-providers).
+For information about adding signatures from a wallet, see [Signing transactions](#signing-transactions).
 
 ```typescript
 const transaction: IUnsignedCommand = Pact.builder
@@ -1859,12 +1859,10 @@ composePactCommand(
 );
 ```
 
-### Create Transaction
+## createTransaction
 
-After setting all parts of the command, you can create the transaction object by
-calling `createTransaction` function. This will stringify `cmd`, and add the
-hash as well. You need to add signatures to this object via a wallet - check out
-[wallet-providers](#wallet-providers) - in order to submit it to the blockchain.
+Use `createTransaction` to create the transaction object. The  `createTransaction` methods converts the `cmd` to a string and adds the hash for the transaction. 
+You must add signatures to this object manually or using a wallet to submit it to the blockchain.
 
 ```typescript
 createTransaction(pactCommand:IPactCommand): IUnsignedCommand
@@ -1893,6 +1891,6 @@ const output = {
 };
 ```
 
-## Complete and Runnable Examples
+## Runnable examples
 
-Check out [Client Examples](../client-examples/)
+For samples of runnable code, see the [client-examples](https://github.com/kadena-community/kadena.js/tree/main/packages/libs/client-examples).

@@ -156,12 +156,12 @@ export const version2PathUrlRedirects = [
   },
   {
     source: '/marmalade/what-is-marmalade',
-    destination: '/build/nft-marmalade',
+    destination:'/build/nft-marmalade',
     permanent: true,
   },
   {
     source: '/marmalade/quick-start',
-    destination: '/build/nft-marmalade/get-started',
+    destination: 'build/nft-marmalade/get-started',
     permanent: true,
   },
   {
@@ -196,22 +196,22 @@ export const version2PathUrlRedirects = [
   },
   {
     source: '/marmalade/concrete-policies/collection-policy',
-    destination: '/build/nft-marmalade/policies',
+    destination: '/build/nft-marmalade/concrete-policies',
     permanent: true,
   },
   {
     source: '/marmalade/concrete-policies/guard-policy',
-    destination: '/build/nft-marmalade/policies',
+    destination: '/build/nft-marmalade/concrete-policies',
     permanent: true,
   },
   {
     source: '/marmalade/concrete-policies/non-fungible-policy',
-    destination: '/build/nft-marmalade/policies',
+    destination: '/build/nft-marmalade/concrete-policies',
     permanent: true,
   },
   {
     source: '/marmalade/concrete-policies/royalty-policy',
-    destination: '/build/nft-marmalade/policies',
+    destination: '/build/nft-marmalade/concrete-policies',
     permanent: true,
   },
   {
@@ -311,32 +311,32 @@ export const version2PathUrlRedirects = [
   },
   {
     source: '/chainweb/compact-database',
-    destination: '/deploy/chainweb/compact-a-database',
+    destination: '/deploy/compact-database',
     permanent: true,
   },
   {
     source: '/chainweb/node-client',
-    destination: '/reference/chainweb',
+    destination: '/reference/chainweb-ref',
     permanent: true,
   },
   {
     source: '/chainweb/node-client/api',
-    destination: '/reference/chainweb/node-client',
+    destination: '/reference/chainweb-ref/node-client',
     permanent: true,
   },
   {
-    source: '/chainweb/stream-client',
-    destination: '/reference/chainweb/stream-client',
+    source: '/chainweb/stream-client/api',
+    destination: '/reference/chainweb-ref/stream-client',
     permanent: true,
   },
   {
-    source: '/chainweb/js-binding',
-    destination: '/reference/chainweb/js-binding',
+    source: '/chainweb/js-bindings',
+    destination: '/reference/chainweb-ref/js-binding',
     permanent: true,
   },
   {
-    source: '/chainweb/js-binding/api',
-    destination: '/reference/chainweb/js-binding',
+    source: '/chainweb/js-bindings/api',
+    destination: '/reference/chainweb-ref/js-binding',
     permanent: true,
   },
 
@@ -404,7 +404,7 @@ export const version2PathUrlRedirects = [
   },
   {
     source: '/pact/reference/pact-repl-cli',
-    destination: '/reference/pact-repl-cli',
+    destination: '/reference/pact-repl',
     permanent: true,
   },
   {

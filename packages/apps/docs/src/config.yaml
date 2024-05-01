@@ -495,8 +495,8 @@ pages:
               dutch:
                 url: /dutch-auction
                 file: /reference/marmalade/dutch-auction-ref.md
-      chainweb:
-        url: /chainweb
+      chainwebref:
+        url: /chainweb-ref
         file: /reference/chainweb/chainweb.md
         children:
           nodeclient:
