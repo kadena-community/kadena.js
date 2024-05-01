@@ -176,7 +176,7 @@ function readAndFilterFiles(
   filterFunction?: (file: string) => boolean,
 ) {
   try {
-    let files = readdirSync(config.path)
+    const files = readdirSync(config.path)
       .filter((file) => file.endsWith(config.extension))
       .filter(filterFunction ?? (() => true));
 
