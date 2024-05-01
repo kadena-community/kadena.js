@@ -244,6 +244,7 @@ export interface IConfigTreeItem {
   url: string;
   file: string;
   repo?: string;
+  repoDir?: string;
   children?: IConfigTreeItem[];
   destination?: string;
 }
