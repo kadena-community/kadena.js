@@ -43,7 +43,7 @@ function SelectButtonBase<T extends object>(
   return (
     <button
       {...mergeProps(buttonProps, dataProps, hoverProps)}
-      id="select-button"
+      data-role="select-button"
       className={classNames(selectButtonClass, props.className)}
       ref={ref}
     >

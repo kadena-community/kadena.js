@@ -9,10 +9,10 @@ import type { RecipeVariants } from '@vanilla-extract/recipes';
 import { recipe } from '@vanilla-extract/recipes';
 import {
   atoms,
-  breakpoints,
   monospaceBaseRegular,
   monospaceSmallRegular,
   monospaceSmallestRegular,
+  responsiveStyle,
   token,
   uiBaseRegular,
   uiSmallRegular,
@@ -49,19 +49,19 @@ export const baseContainerClass = recipe({
       transition: 'outline-color 0.2s ease-in-out',
       outlineColor: 'transparent',
       minWidth: '150px',
-      '@media': {
-        [breakpoints.sm]: {
+      ...responsiveStyle({
+        sm: {
           maxWidth: '100%',
         },
-        [breakpoints.md]: {
+        md: {
           maxWidth: '40rem',
         },
-      },
+      }),
       selectors: {
         // outline should not be shown if there is a button which is focused
         '&:focus-within:has(button:not(button:focus))': outlineStyles,
         '&:focus-within:not(&:has(button))': outlineStyles,
-        [`&:focus-within:has(button#select-button)`]: outlineStyles,
+        [`&:focus-within:has([data-role="select-button"])`]: outlineStyles,
       },
     },
   ],

@@ -101,6 +101,7 @@ function SelectBase<T extends object>(
         size={size}
         ref={ref}
         state={state}
+        isDisabled={isDisabled}
         data-disabled={isDisabled || undefined}
         data-has-end-addon
         data-has-start-addon={!!startVisual || undefined}
