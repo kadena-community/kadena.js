@@ -11,7 +11,7 @@ const meta: Meta<IAvatarProps> = {
   component: Avatar,
   parameters: {
     status: {
-      type: ['needsRevision'],
+      type: ['Done'],
     },
     docs: {
       description: {

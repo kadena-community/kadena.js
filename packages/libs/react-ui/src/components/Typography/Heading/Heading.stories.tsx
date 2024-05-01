@@ -7,7 +7,7 @@ const meta: Meta<typeof Heading> = {
   component: Heading,
   parameters: {
     status: {
-      type: ['releaseCandidate'],
+      type: ['Done'],
     },
   },
   argTypes: {

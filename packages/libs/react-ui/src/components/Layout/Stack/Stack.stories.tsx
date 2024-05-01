@@ -31,7 +31,7 @@ const meta: Meta<typeof Stack> = {
   ],
   parameters: {
     status: {
-      type: 'releaseCandidate',
+      type: 'Done',
     },
     docs: {
       description: {

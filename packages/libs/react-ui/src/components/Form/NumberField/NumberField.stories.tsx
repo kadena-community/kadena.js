@@ -28,7 +28,7 @@ const meta: Meta<INumberFieldProps> = {
   component: NumberField,
   decorators: [withContentWidth, onLayer2],
   parameters: {
-    status: { type: 'releaseCandidate' },
+    status: { type: 'Done' },
     docs: {
       description: {
         component:

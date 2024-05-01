@@ -22,7 +22,7 @@ const meta: Meta<ISelectProps> = {
   component: Select,
   decorators: [withContentWidth, onLayer3],
   parameters: {
-    status: { type: 'releaseCandidate' },
+    status: { type: 'Done' },
     docs: {
       description: {
         component:
