@@ -118,20 +118,14 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                     <Link className={docsCardLink} href="/deploy">
                       Prepare to deploy
                     </Link>
-                    <Link className={docsCardLink} href="/deploy/chainweb">
+                    <Link className={docsCardLink} href="/deploy/chainweb-get-started">
                       Manage a Chainweb node
                     </Link>
 
-                    <Link
-                      className={docsCardLink}
-                      href="/learn/chainweb"
-                    >
+                    <Link className={docsCardLink} href="/learn/chainweb">
                       Chainweb consensus protocol
                     </Link>
-                    <Link
-                      className={docsCardLink}
-                      href="/reference/syntax"
-                    >
+                    <Link className={docsCardLink} href="/reference/syntax">
                       Pact smart contract language
                     </Link>
                   </BrowseSection>
