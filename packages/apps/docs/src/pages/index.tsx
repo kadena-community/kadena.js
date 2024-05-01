@@ -58,8 +58,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                       Why Kadena?
                     </Link>
 
-                    <Link className={docsCardLink} href="/learn/consensus">
-                      Consensus
+                    <Link className={docsCardLink} href="/learn/accounts">
+                      Accounts, keys, and principals
                     </Link>
                   </BrowseSection>
                 </DocsCard>
@@ -95,8 +95,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                     <Link className={docsCardLink} href="/build/pact">
                       Smart contracts
                     </Link>
-                    <Link className={docsCardLink} href="/build/frontend">
-                      Frontend libraries
+                    <Link className={docsCardLink} href="/build/nft-marmalade">
+                      Non-fungible tokens
                     </Link>
                     <Link className={docsCardLink} href="/build/templates">
                       Code templates
@@ -118,19 +118,19 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                     <Link className={docsCardLink} href="/deploy">
                       Prepare to deploy
                     </Link>
-                    <Link className={docsCardLink} href="/deploy">
+                    <Link className={docsCardLink} href="/deploy/chainweb">
                       Manage a Chainweb node
                     </Link>
 
                     <Link
                       className={docsCardLink}
-                      href="https://www.kadena.io/chainweb"
+                      href="/learn/chainweb"
                     >
                       Chainweb consensus protocol
                     </Link>
                     <Link
                       className={docsCardLink}
-                      href="https://www.kadena.io/pact"
+                      href="/reference/syntax"
                     >
                       Pact smart contract language
                     </Link>
