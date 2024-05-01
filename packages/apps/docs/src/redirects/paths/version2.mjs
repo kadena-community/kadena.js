@@ -329,7 +329,6 @@ export const version2PathUrlRedirects = [
     destination: '/reference/chainweb-ref/stream-client',
     permanent: true,
   },
-
   {
     source: '/chainweb/js-bindings',
     destination: '/reference/chainweb-ref/js-bindings',
@@ -340,7 +339,6 @@ export const version2PathUrlRedirects = [
     destination: '/reference/chainweb-ref/js-bindings',
     permanent: true,
   },
-
   {
     source: '/contribute',
     destination: '/participate',
@@ -351,7 +349,6 @@ export const version2PathUrlRedirects = [
     destination: '/deploy',
     permanent: true,
   },
-
   {
     source: '/contribute/node/:slug',
     destination: '/deploy',
@@ -362,7 +359,6 @@ export const version2PathUrlRedirects = [
     destination: '/participate/docs',
     permanent: true,
   },
-
   {
     source: '/contribute/kadena-dao',
     destination: '/participate',
@@ -453,5 +449,4 @@ export const version2PathUrlRedirects = [
     destination: '/build/pact/dev-network',
     permanent: true,
   },
-
 ];
