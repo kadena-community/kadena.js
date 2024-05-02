@@ -14,7 +14,7 @@ export const menuClass = style([
     backgroundColor: tokens.kda.foundation.color.neutral.n0,
     top: tokens.kda.foundation.size.n16,
     overflow: 'hidden',
-    height: `calc(100vh - ${tokens.kda.foundation.size.n13})`,
+    height: `calc(100dvh - ${tokens.kda.foundation.size.n13})`,
     gridArea: 'menu',
     gridRow: '2 / span 3',
     zIndex: $$sideMenu,

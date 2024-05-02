@@ -15,7 +15,9 @@ export const treeListClass = style([
 ]);
 
 export const treeListLevelVariantClass = styleVariants({
-  l0: {},
+  l0: {
+    paddingBlockEnd: '100px',
+  },
   l1: {},
   l2: {},
   l3: {
