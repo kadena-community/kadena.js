@@ -38,6 +38,11 @@ Contracts deployed on the Ethereum network also send and receive transactions us
 The functions in the contract are executed when the contract receives a transaction request.
 Contract addresses use the same format as wallet addresses.
 
+### application-specific integrated circuit (ASIC)
+
+Application-specific integrated circuits (ASIC) are engineered to perform one type of computation to optimize performance.
+In a proof-of-work blockchain like Kadena, computers are often optimized with application-specific integrated circuits to compute hash functions for mining blocks. 
+
 ## B
 
 ### Bitcoin
@@ -98,7 +103,7 @@ underlying protocol or DAO. KDA is an example of a cryptocurrency.
 ### crypto wallet
 
 A crypto wallet is a software program or physical device that allows you to
-store your crypto and allow for the sending and receiving of crypto
+store your digital assets and allow for the sending and receiving of crypto
 transactions. A crypto wallet consists of two key pairs: private keys and public
 keys.
 
@@ -132,6 +137,21 @@ centralized or hierarchical.&#x20;
 Gas is a unit of measurement that represents the computational effort required
 to complete a transaction. How much a user spends to complete a transaction is
 determined by the total amount of gas multiplied by the gas price.&#x20;
+
+## F
+
+### formal verification
+
+Formal verification uses mathematical methods to evaluate all possible paths and outcomes produced by the logic in a a program or smart contract.
+With formal verification, developers can mathematically verify whether their code works as expected or contains bugs that produce unexpected results. 
+Blockchain applications that handle assets with real world value should include formal verification in the software development process.
+
+## H
+
+### hardware wallet
+
+Hardware wallets are physical devices that are designed to securely store secret keys. Typically, hardware wallets are considered more secure devices than desktop or smartphone wallets because they aren't used to connect to the internet. 
+By not allowing internet access, hardware wallets reduce the attack vectors malicious parties can use to attempt to tamper with the device remotely.
 
 ## I
 

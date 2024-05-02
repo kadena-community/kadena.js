@@ -4,7 +4,7 @@ subTitle: "Join the community and contribute to the documentation, code base, an
 id: participate
 description: "Learn about the different ways you can participate and contribute as a member of the Kadena community."
 menu: Participate
-label: Participate
+label: Introduction
 order: 1
 layout: landing
 tags: [pact, typescript, account, transactions, utils]

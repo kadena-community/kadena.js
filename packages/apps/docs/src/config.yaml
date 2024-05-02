@@ -3,7 +3,6 @@ menu:
   - build
   - deploy
   - participate
-  - invest
   - tutorials
   - reference
 
@@ -166,12 +165,9 @@ pages:
           integrate:
             url: /integrate
             file: /build/authentication/integrate-an-app.md
-          sendtx:
+          createtx:
             url: /transactions
-            file: /build/authentication/send-transactions.md
-          translate:
-            url: /translate
-            file: /build/authentication/translate-caps.md
+            file: /build/authentication/create-transactions.md
       frontend:
         url: /frontend
         file: /build/kadena-cli.md
@@ -266,26 +262,6 @@ pages:
       mining:
         url: /start-mining
         file: /deploy/chainweb/start-mining.md
-  invest:
-    url: /invest
-    file: /invest/invest.md
-    children:
-      exchanges:
-        url: /exchanges
-        file: /invest/exchanges.md
-      wallets:
-        url: /wallets
-        file: /invest/wallets.md
-        children:
-          spirekey:
-            url: /spirekey
-            file: /invest/spirekey.md
-          chainweaver:
-            url: /chainweaver
-            file: /invest/chainweaver.md
-          ledger:
-            url: /ledger
-            file: /invest/ledger.md
   participate:
     url: /participate
     file: /participate/participate.md
@@ -306,6 +282,26 @@ pages:
       developers:
         url: /developers
         file: /participate/developer.md
+      tokeninfo:
+        url: /tokens
+        file: /participate/tokens.md
+      exchanges:
+        url: /exchanges
+        file: /participate/exchanges.md
+      wallets:
+        url: /wallets
+        file: /participate/wallets.md
+        children:
+          spirekey:
+            url: /spirekey
+            file: /participate/spirekey.md
+          chainweaver:
+            url: /chainweaver
+            file: /participate/chainweaver.md
+          ledger:
+            url: /ledger
+            file: /participate/ledger.md
+
   tutorials:
     url: /tutorials
     file: /tutorials/tutorials.md

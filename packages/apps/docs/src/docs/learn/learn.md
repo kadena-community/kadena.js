@@ -5,20 +5,18 @@ subTitle: "Start with blockchain basics and core Kadena concepts"
 id: learn
 description: "If you're new, start your journey with an introduction to blockchain technology and educational guides for both technical and non-technical audiences."
 menu: Learn
-label: Learn
+label: Introduction
 order: 1
 layout: landing
 tags: [pact, typescript, account, transactions, utils]
 
 ---
 
+# Engage and learn the fundamentals
+
 If you're new to cryptocurrency, blockchain technology, and decentralized platforms, start here to learn the basics, including how the internet is evolving in the direction of Web3, the problems of security, scalability, and centralization, and the core concepts and design principles at the heart of the Kadena network and Kadena ecosystem.
 
-These topics focus on blockchain fundamentals, Kadena core concepts, and terminology for anyone interested in blockchain and decentralized application use cases.
-
-# Engage and learn
-
-This part of the Kadena Docs site is for concepts and foundational information. 
+This part of the Kadena Docs site is for concepts, foundational information, and terminology for anyone interested in blockchain and decentralized application use cases. 
 You should start here to learn the basics about blockchains, cryptography, consensus, Kadena, and more.
 
 - [What is a blockchain?](/learn/what-is-a-blockchain) introduces the basics of blockchain technology, including the common concepts and terminology you need as context for learning more.

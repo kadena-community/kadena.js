@@ -1,16 +1,15 @@
 ---
-title: Invest in KDA
-subTitle: "Learn about Kadena cryptocurrency and economics"
-id: invest
-description: "Learn about Kadena KDA cryptocurrency, network economics, and the availability of KDA on exchanges."
-menu: Invest
-label: Invest
+title: Kadena coins (KDA)
+id: tokens
+description: "Learn about Kadena tokens, economics, the availability of KDA on exchanges, and holding KDA in a wallet."
+menu: Participate
+label: Tokens
 order: 1
-layout: landing page
+layout: full
 tags: [pact, typescript, account, transactions, utils]
 ---
 
-# Invest in the Kadena network 
+# What are Kadena tokens and how are they used? 
 
 The native Kadena token is listed on exchanges as KDA.
 KDA is a digital currency that is used to pay for the resources used to process transaction on the Kadena public blockchain. 

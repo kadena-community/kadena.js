@@ -5,7 +5,7 @@ subTitle: "Follow tutorials from 'Hello, World!' to your first application"
 id: build
 description: "Try Kadena as a first time user or developer with hands-on tutorials or follow your own path using sample code and how-to guides."
 menu: Build
-label: Build
+label: Introduction
 order: 1
 layout: landing
 tags: [pact, typescript, account, transactions, utils]

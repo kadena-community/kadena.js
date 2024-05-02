@@ -4,7 +4,7 @@ subTitle: "Find technical reference information all in on place"
 id: reference
 description: "Find technical reference information for the Pact smart contract language, the Chainweb protocol, and other Kadena tools."
 menu: Reference
-label: Reference
+label: Introduction
 order: 1
 layout: landing
 tags: [pact, typescript, account, transactions, utils]

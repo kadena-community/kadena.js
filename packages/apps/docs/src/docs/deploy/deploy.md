@@ -4,7 +4,7 @@ subTitle: "Deploy Chainweb nodes and Pact smart contract applications"
 id: deploy
 description: "Learn how to deploy Chainweb nodes and Pact smart contract applications on the Kadena network."
 menu: Deploy
-label: Deploy
+label: Introduction
 order: 1
 layout: landing
 tags: [pact, chainweb, network, node operator, developer]

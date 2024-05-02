@@ -62,10 +62,10 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
               </Heading>
               <Stack flexDirection="column" gap="xxs">
                 <Heading as="h2" variant="h4">
-                  Build your <GradientText>own</GradientText> Internet
+                  Find the <GradientText>information</GradientText> you need with Search
                 </Heading>
                 <span className={subheaderClass}>
-                  Explore our guides and examples to build on Kadena
+                  or explore guides and examples to start building
                 </span>
 
                 <Box className={searchInputWrapper}>

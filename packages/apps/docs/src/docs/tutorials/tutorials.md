@@ -4,7 +4,7 @@ subTitle: "Experience the Kadena blockchain firsthand"
 id: tutorials
 description: "Follow step-by-step tutorials for working with the Kadena network and development tools."
 menu: Tutorials
-label: Tutorials
+label: Introduction
 order: 1
 layout: landing
 tags: [pact, typescript, account, transactions, utils]

@@ -1,16 +1,16 @@
 ---
-title: Send unsigned transactions to Kadena SpireKey
+title: Create transactions for Kadena SpireKey
 description:
   If you're an application developer, you can enable users to sign transactions
-  using their Kadena SpireKey accounts by constructing the transaction in the
+  using their Kadena SpireKey account by constructing the transaction in the
   proper format and sending the unsigned transaction to the SpireKey endpoint.
 menu: Authenticate and authorize
-label: Send unsigned transactions
+label: Construct transactions
 order: 2
 layout: full
 ---
 
-# Send unsigned transactions to Kadena SpireKey
+# Create transactions for Kadena SpireKey
 
 If you enable your application to connect to a Kadena SpireKey wallet as
 described in [Integrate with Kadena SpireKey](/build/authentication/integrate),
@@ -155,7 +155,7 @@ In the following table, you can see the parameters that are currently accepted b
 | --------- | ---- | -------- | ----------- |
 | `transaction` | string  | Required | A base64 encoded string of the unsigned transaction. |
 | `returnUrl` | string  | Required | The url, encoded as a uriComponent, that the wallet should redirect users to after they have signed the transaction. |
-| `translations` | string  | Optional | Custom descriptions that explain what capabilities or operations that the user is user signing for. For more information about using translations to describe transaction details, see [Translate signing operations](/build/authentication/translate). |
+| `translations` | string  | Optional | Custom descriptions that explain what capabilities or operations that the user is user signing for. |
 | `optimistic` | boolean | Optional | Allows applications to continue the transaction flows without having to wait for the transaction to be confirmed on the blockchain. When this parameter is included, `pendingTxIds` are returned so that the application can keep track of the status of the submitted transactions and update the UI accordingly. For more information about the optimistic transaction flow, see [Allow optimistic account onboarding](/build/authentication/integrate#allow-optimistic-account-onboardingh-380147766). |
 
 The following is an example of how you would construct the route:
