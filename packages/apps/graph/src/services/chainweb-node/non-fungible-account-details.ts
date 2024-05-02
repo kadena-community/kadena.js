@@ -34,10 +34,22 @@ export async function getNonFungibleAccountDetails(
     }
 
     if ('guard' in result) {
-      result.guard = {
-        type: 'Guard',
-        value: JSON.stringify(result.guard),
-      };
+      if (
+        'keys' in result.guard &&
+        typeof result.guard.keys === 'object' &&
+        'pred' in result.guard &&
+        typeof result.guard.pred === 'string'
+      ) {
+        result.guard = {
+          keys: result.guard.keys,
+          predicate: result.guard.pred,
+        };
+      } else {
+        result.guard = {
+          type: 'Guard',
+          value: JSON.stringify(result.guard),
+        };
+      }
     }
 
     return result as INonFungibleChainAccountDetails;

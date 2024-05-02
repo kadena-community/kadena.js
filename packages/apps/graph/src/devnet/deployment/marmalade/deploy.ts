@@ -37,11 +37,15 @@ export async function deployMarmaladeContracts(
   nsDestinationPath: string = marmaladeLocalConfig.namespacePath,
 ): Promise<void> {
   logger.info('Validating repository data...');
-  validateConfig(
-    marmaladeRepository,
-    marmaladeLocalConfig,
-    marmaladeRemoteConfig,
-  );
+  if (
+    !validateConfig(
+      marmaladeRepository,
+      marmaladeLocalConfig,
+      marmaladeRemoteConfig,
+    )
+  ) {
+    throw new Error('Invalid repository data');
+  }
 
   logger.info('Preparing directories...');
   await handleDirectorySetup(
@@ -362,8 +366,10 @@ export function validateConfig(
   repositoryConfig: IMarmaladeRepository,
   localConfig: IMarmaladeLocalConfig,
   remoteConfig: IMarmaladeRemoteConfig,
-): void {
-  validateObjectProperties(repositoryConfig, 'Repository');
-  validateObjectProperties(localConfig, 'Local');
-  validateObjectProperties(remoteConfig, 'Remote');
+): boolean {
+  return (
+    validateObjectProperties(repositoryConfig, 'Repository') &&
+    validateObjectProperties(localConfig, 'Local') &&
+    validateObjectProperties(remoteConfig, 'Remote')
+  );
 }

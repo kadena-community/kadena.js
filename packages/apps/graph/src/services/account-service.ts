@@ -24,21 +24,18 @@ export async function getFungibleChainAccount({
     chainId,
   });
 
-  return accountDetails !== null
-    ? {
-        __typename: FungibleChainAccountName,
-        chainId,
-        accountName,
-        fungibleName,
-        guard: {
-          keys: accountDetails.guard.keys,
-          predicate: accountDetails.guard.pred,
-        },
-        balance: accountDetails.balance,
-        transactions: [],
-        transfers: [],
-      }
-    : null;
+  if (!accountDetails || accountDetails === null) return null;
+
+  return {
+    __typename: FungibleChainAccountName,
+    chainId,
+    accountName,
+    fungibleName,
+    guard: accountDetails.guard,
+    balance: accountDetails.balance,
+    transactions: [],
+    transfers: [],
+  };
 }
 
 export async function getNonFungibleChainAccount({
