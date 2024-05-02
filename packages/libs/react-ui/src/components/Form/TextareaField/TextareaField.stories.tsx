@@ -28,7 +28,7 @@ const meta: Meta<ITextareaFieldProps> = {
   component: TextareaField,
   decorators: [withContentWidth, onLayer2],
   parameters: {
-    status: { type: 'Done' },
+    status: { type: 'stable' },
     docs: {
       description: {
         component:

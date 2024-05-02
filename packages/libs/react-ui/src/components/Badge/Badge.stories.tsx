@@ -13,7 +13,7 @@ const meta: Meta<IBadgeProps> = {
   decorators: [withContentWidth, withCenteredStory],
   parameters: {
     status: {
-      type: ['Done'],
+      type: ['stable'],
     },
     docs: {
       description: {

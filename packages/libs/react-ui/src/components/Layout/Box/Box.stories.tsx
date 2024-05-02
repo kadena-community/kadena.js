@@ -15,7 +15,7 @@ const meta: Meta<typeof Box> = {
   decorators: [onLayer2],
   parameters: {
     status: {
-      type: 'Done',
+      type: 'stable',
     },
     docs: {
       description: {

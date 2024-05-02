@@ -26,7 +26,7 @@ const meta: Meta<ITextFieldProps> = {
   component: TextField,
   decorators: [withContentWidth],
   parameters: {
-    status: { type: 'Done' },
+    status: { type: 'stable' },
     docs: {
       description: {
         component:

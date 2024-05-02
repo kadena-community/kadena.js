@@ -38,7 +38,7 @@ const meta: Meta<StoryType> = {
   ],
   parameters: {
     status: {
-      type: 'Done',
+      type: 'stable',
     },
     docs: {
       description: {

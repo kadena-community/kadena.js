@@ -15,7 +15,7 @@ const variants = getVariants(button);
 const meta: Meta<ILinkProps> = {
   title: 'Components/Link',
   parameters: {
-    status: { type: 'Done' },
+    status: { type: 'stable' },
     controls: {
       hideNoControlsWarning: true,
       sort: 'requiredFirst',
