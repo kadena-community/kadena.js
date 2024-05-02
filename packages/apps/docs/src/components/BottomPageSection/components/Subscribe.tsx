@@ -1,9 +1,9 @@
+import { MonoAlternateEmail } from '@kadena/react-icons';
 import {
   Button,
   Heading,
   Notification,
   Stack,
-  SystemIcon,
   TextField,
 } from '@kadena/react-ui';
 import type { FC } from 'react';
@@ -36,11 +36,10 @@ export const Subscribe: FC = () => {
               <Stack gap="sm" paddingBlock="xs">
                 <TextField
                   id="email"
-                  startAddon={<SystemIcon.At />}
+                  startVisual={<MonoAlternateEmail />}
                   onChange={handleFormState}
                   placeholder="Email address"
                   type="email"
-                  isOutlined
                   aria-label="Fill in email address"
                 />
 

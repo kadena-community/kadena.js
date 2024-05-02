@@ -3,19 +3,19 @@ import { createClient, createTransaction } from '@kadena/client';
 import { composePactCommand } from '@kadena/client/fp';
 import { hash as hashFunction } from '@kadena/cryptography-utils';
 import { dotenv } from '@utils/dotenv';
-import { networkConfig } from '../..';
-import type { GasLimitEstimation } from '../../graph/types/graphql-types';
+import { networkData } from '@utils/network';
+import type { IGasLimitEstimation } from '../../graph/types/graphql-types';
 
 export class GasLimitEstimationError extends Error {
-  originalError?: Error;
+  public originalError?: Error;
 
-  constructor(message: string, originalError?: Error) {
+  public constructor(message: string, originalError?: Error) {
     super(message);
     this.originalError = originalError;
   }
 }
 
-interface GasLimitEstimationInput {
+interface IGasLimitEstimationInput {
   cmd?: string;
   hash?: string;
   sigs?: string[];
@@ -26,12 +26,12 @@ interface GasLimitEstimationInput {
   code?: string;
 }
 
-interface BaseInput {
+interface IBaseInput {
   preflight: boolean;
   signatureVerification: boolean;
 }
 
-type FullTransactionInput = BaseInput & {
+type FullTransactionInput = IBaseInput & {
   type: 'full-transaction';
   cmd: string;
   hash: string;
@@ -39,38 +39,45 @@ type FullTransactionInput = BaseInput & {
   networkId?: string;
 };
 
-type StringifiedCommandInput = BaseInput & {
+type StringifiedCommandInput = IBaseInput & {
   type: 'stringified-command';
   cmd: string;
   sigs?: string[];
   networkId?: string;
 };
 
-type FullCommandInput = BaseInput & {
+type FullCommandInput = IBaseInput & {
   type: 'full-command';
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   meta: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   signers: any[];
   networkId?: string;
 };
 
-type PartialCommandInput = BaseInput & {
+type PartialCommandInput = IBaseInput & {
   type: 'partial-command';
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   meta?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   signers?: any[];
   chainId?: ChainId;
   networkId?: string;
 };
 
-type PayloadInput = BaseInput & {
+type PayloadInput = IBaseInput & {
   type: 'payload';
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload: any;
   chainId: ChainId;
   networkId?: string;
 };
 
-type CodeInput = BaseInput & {
+type CodeInput = IBaseInput & {
   type: 'code';
   code: string;
   chainId: ChainId;
@@ -85,7 +92,7 @@ type UserInput =
   | PayloadInput
   | CodeInput;
 
-function jsonParseInput(input: string): GasLimitEstimationInput {
+function jsonParseInput(input: string): IGasLimitEstimationInput {
   try {
     return JSON.parse(input);
   } catch (e) {
@@ -95,7 +102,7 @@ function jsonParseInput(input: string): GasLimitEstimationInput {
   }
 }
 
-function determineInputType(input: GasLimitEstimationInput): UserInput {
+function determineInputType(input: IGasLimitEstimationInput): UserInput {
   if ('cmd' in input && 'hash' in input && 'sigs' in input) {
     return {
       type: 'full-transaction',
@@ -150,13 +157,13 @@ function determineInputType(input: GasLimitEstimationInput): UserInput {
 
 export const estimateGasLimit = async (
   rawInput: string,
-): Promise<GasLimitEstimation> => {
+): Promise<IGasLimitEstimation> => {
   const paredInput = jsonParseInput(rawInput);
   const input = determineInputType(paredInput);
 
-  const networkId = input.networkId || (await networkConfig).networkId;
+  const { networkId } = input.networkId ? input : networkData;
 
-  const returnValue: GasLimitEstimation = {
+  const returnValue: IGasLimitEstimation = {
     amount: 0,
     inputType: input.type,
     usedPreflight: input.preflight,
@@ -165,7 +172,6 @@ export const estimateGasLimit = async (
   };
 
   let transaction: IUnsignedCommand;
-  let configuration;
 
   switch (input.type) {
     case 'full-transaction':
@@ -255,7 +261,7 @@ export const estimateGasLimit = async (
       );
   }
 
-  configuration = {
+  const configuration = {
     preflight: input.preflight,
     signatureVerification: input.signatureVerification,
   };

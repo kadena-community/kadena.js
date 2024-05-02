@@ -1,5 +1,5 @@
 import { createSlug } from '@/utils/createSlug';
-import { SystemIcon } from '@kadena/react-ui';
+import { MonoLink } from '@kadena/react-icons';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
 import { headerClassVariants, headerIconLinkClass } from './styles.css';
@@ -39,7 +39,7 @@ export const TaggedHeading: FC<IProp> = ({ children, as, variant }) => {
     <>
       {children}
       <a className={headerIconLinkClass} id={slug} href={`#${slug}`}>
-        <SystemIcon.Link />
+        <MonoLink />
       </a>
     </>
   );

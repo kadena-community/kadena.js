@@ -35,13 +35,13 @@
     "@kadena-dev/shared-config": "workspace:*",
     "@kadena/types": "workspace:*",
     "@playwright/test": "^1.41.1",
-    "@rushstack/eslint-config": "~3.3.0",
-    "@types/node": "^18.17.14",
+    "@rushstack/eslint-config": "~3.6.9",
+    "@types/node": "^20.12.7",
     "directory-tree": "3.5.1",
     "eslint": "^8.45.0",
     "eslint-plugin-playwright": "0.16.0",
     "parse-md": "2.0.5",
     "playwright-i18next-fixture": "^1.0.0",
-    "prettier": "~3.0.3"
+    "prettier": "~3.2.5"
   }
 }

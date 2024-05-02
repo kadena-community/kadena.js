@@ -1,4 +1,5 @@
 import { useObjectRef } from '@react-aria/utils';
+import classNames from 'classnames';
 import type { ForwardedRef, ReactNode, Ref } from 'react';
 import React, { forwardRef } from 'react';
 import type { AriaListBoxOptions } from 'react-aria';
@@ -10,6 +11,8 @@ import { ListBoxOption } from './ListBoxOption';
 interface IListBoxProps<T extends object> extends AriaListBoxOptions<T> {
   state: ListState<T>;
   label?: ReactNode;
+  listClassName?: string;
+  itemClassName?: string;
 }
 
 function ListBoxBase<T extends object>(
@@ -17,7 +20,7 @@ function ListBoxBase<T extends object>(
   forwardedRef: ForwardedRef<HTMLUListElement>,
 ) {
   const ref = useObjectRef(forwardedRef);
-  const { state } = props;
+  const { state, listClassName, itemClassName } = props;
   const { listBoxProps, labelProps } = useListBox(props, state, ref);
 
   return (
@@ -27,10 +30,15 @@ function ListBoxBase<T extends object>(
         {...listBoxProps}
         ref={ref}
         data-scrollable="true"
-        className={listBoxClass}
+        className={classNames(listBoxClass, listClassName)}
       >
         {[...state.collection].map((item) => (
-          <ListBoxOption key={item.key} item={item} state={state} />
+          <ListBoxOption
+            key={item.key}
+            item={item}
+            state={state}
+            className={itemClassName}
+          />
         ))}
       </ul>
     </>

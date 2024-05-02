@@ -26,7 +26,7 @@ import type {
 import { CHAINS } from '@kadena/chainweb-node-client';
 import { Breadcrumbs, BreadcrumbsItem } from '@kadena/react-ui';
 import type { QueryClient } from '@tanstack/react-query';
-import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -34,12 +34,13 @@ import type {
   GetServerSideProps,
   InferGetServerSidePropsType,
 } from 'next/types';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { getCookieValue, getQueryValue } from './utils';
 
 const QueryParams = {
   MODULE: 'module',
   CHAIN: 'chain',
+  NETWORK: 'network',
 };
 
 export const getModules = async (
@@ -102,6 +103,7 @@ export const getCompleteModule = async (
     moduleName,
     chainId,
     hash,
+    network,
   };
 };
 
@@ -121,13 +123,14 @@ const replaceOldWithNew = (
     return {
       ...old,
       hash: newModule.hash,
+      code: newModule.code,
     };
   });
 };
 
 /*
- * In this function we'll add the `hash` property to the module, so that, in the list of modules,
- * you can see if there are any differences in the module on certain chains.
+ * In this function we'll add the `hash` and `code` property to the module, so that, in the list of
+ * modules, you can see if there are any differences in the module on certain chains.
  */
 export const enrichModule = async (
   module: IModule,
@@ -137,7 +140,7 @@ export const enrichModule = async (
 ) => {
   const promises = module.chains.map((chain) => {
     return getCompleteModule(
-      { moduleName: module.moduleName, chainId: chain },
+      { moduleName: module.moduleName, chainId: chain, network },
       network,
       networksData,
     );
@@ -145,8 +148,40 @@ export const enrichModule = async (
 
   const moduleOnAllChains = await Promise.all(promises);
 
-  queryClient.setQueryData(['modules', network, networksData], (oldData) =>
-    replaceOldWithNew(oldData as IChainModule[], moduleOnAllChains),
+  queryClient.setQueryData<IChainModule[]>(
+    ['modules', network, networksData],
+    (oldData) => replaceOldWithNew(oldData!, moduleOnAllChains),
+  );
+};
+
+/*
+ * In this function we'll add the `hash` and `code` property to the modules, so that, in the list of
+ * modules, you can see if there are any differences in the module on certain chains.
+ */
+export const enrichModules = async (
+  modules: IModule[],
+  network: Network,
+  networksData: INetworkData[],
+  queryClient: QueryClient,
+) => {
+  const promises = modules.reduce<Promise<IChainModule>[]>((acc, module) => {
+    module.chains.forEach((chain) => {
+      acc.push(
+        getCompleteModule(
+          { moduleName: module.moduleName, chainId: chain, network },
+          network,
+          networksData,
+        ),
+      );
+    });
+    return acc;
+  }, []);
+
+  const moduleOnAllChains = await Promise.all(promises);
+
+  queryClient.setQueryData<IChainModule[]>(
+    ['modules', network, networksData],
+    (oldData) => replaceOldWithNew(oldData!, moduleOnAllChains),
   );
 };
 
@@ -175,11 +210,12 @@ export const getServerSideProps: GetServerSideProps<{
     context.query,
     (value) => CHAINS.includes(value),
   );
-  if (moduleQueryValue && chainQueryValue) {
+  const networkQueryValue = getQueryValue(QueryParams.NETWORK, context.query);
+  if (moduleQueryValue && chainQueryValue && networkQueryValue) {
     const moduleResponse = (await describeModule(
       moduleQueryValue,
       chainQueryValue as ChainwebChainId,
-      network,
+      networkQueryValue,
       networksData,
       kadenaConstants.DEFAULT_SENDER,
       kadenaConstants.GAS_PRICE,
@@ -191,6 +227,7 @@ export const getServerSideProps: GetServerSideProps<{
         code: (moduleResponse.result.data as unknown as { code: string }).code,
         moduleName: moduleQueryValue,
         chainId: chainQueryValue as ChainwebChainId,
+        network: networkQueryValue,
       });
     }
   }
@@ -203,10 +240,6 @@ const ModuleExplorerPage = (
 ) => {
   const { selectedNetwork: network, networksData } = useWalletConnectClient();
 
-  const [openedModules, setOpenedModules] = useState<IChainModule[]>(
-    props.openedModules,
-  );
-
   const { data: modules } = useQuery({
     queryKey: ['modules', network, networksData],
     queryFn: () => getModules(network, networksData),
@@ -215,53 +248,14 @@ const ModuleExplorerPage = (
     refetchOnWindowFocus: false,
   });
 
-  const results = useQueries({
-    queries: openedModules.map((module) => {
-      return {
-        queryKey: [
-          'module',
-          network,
-          module.chainId,
-          module.moduleName,
-          networksData,
-        ],
-        queryFn: () => getCompleteModule(module, network, networksData),
-        initialData: () => {
-          return props.openedModules.find((openedModule) => {
-            return (
-              openedModule.moduleName === module.moduleName &&
-              openedModule.chainId === module.chainId
-            );
-          });
-        },
-        staleTime: 1500, // We need to set this in combination with initialData, otherwise the query will immediately refetch when it mounts
-        refetchOnWindowFocus: false,
-      };
-    }),
-  });
-
   const queryClient = useQueryClient();
-
-  const cached = queryClient.getQueriesData({
-    queryKey: ['module', network],
-    type: 'active',
-  });
-  let fetchedModules: IEditorProps['openedModules'] = cached
-    .filter(([, data]) => Boolean(data))
-    .map(([, data]) => data as IChainModule);
-  if (results.every((result) => result.status === 'success')) {
-    fetchedModules = results.map((result) => result.data as IChainModule);
-  }
 
   const router = useRouter();
 
-  const openModule = useCallback<(selectedModule: IChainModule) => void>(
-    (selectedModule) => {
-      setOpenedModules([selectedModule]);
-
-      // eslint-disable-next-line no-void
+  const setDeepLink = useCallback(
+    (module: IChainModule) => {
       void router.replace(
-        `?${QueryParams.MODULE}=${selectedModule.moduleName}&${QueryParams.CHAIN}=${selectedModule.chainId}`,
+        `?${QueryParams.MODULE}=${module.moduleName}&${QueryParams.CHAIN}=${module.chainId}&${QueryParams.NETWORK}=${module.network}`,
         undefined,
         { shallow: true },
       );
@@ -269,23 +263,12 @@ const ModuleExplorerPage = (
     [router],
   );
 
-  const onInterfaceClick = useCallback<
-    (selectedInterface: IChainModule) => void
-  >((selectedInterface) => {
-    setOpenedModules((prev) => {
-      const alreadyOpened = prev.find((module) => {
-        return (
-          module.moduleName === selectedInterface.moduleName &&
-          module.chainId === selectedInterface.chainId
-        );
-      });
-
-      if (alreadyOpened) {
-        return prev;
-      }
-      return [...prev, selectedInterface];
-    });
-  }, []);
+  const onModuleOpen = useCallback<(module: IChainModule) => void>(
+    (module) => {
+      setDeepLink(module);
+    },
+    [setDeepLink],
+  );
 
   const { t } = useTranslation('common');
 
@@ -302,10 +285,9 @@ const ModuleExplorerPage = (
       </Breadcrumbs>
       <ModuleExplorer
         modules={modules}
-        onModuleClick={openModule}
-        onInterfaceClick={onInterfaceClick}
+        onModuleClick={onModuleOpen}
+        onInterfaceClick={onModuleOpen}
         onModuleExpand={({ moduleName, chains }) => {
-          // eslint-disable-next-line no-void
           void enrichModule(
             { moduleName, chains },
             network,
@@ -313,7 +295,22 @@ const ModuleExplorerPage = (
             queryClient,
           );
         }}
-        openedModules={fetchedModules}
+        onInterfacesExpand={(interfaces) => {
+          void enrichModules(
+            interfaces.map((i) => ({
+              chains: [i.chainId],
+              moduleName: i.moduleName,
+            })),
+            network,
+            networksData,
+            queryClient,
+          );
+        }}
+        onActiveModuleChange={setDeepLink}
+        onTabClose={(module) => {
+          console.log('closing', module);
+        }}
+        openedModules={props.openedModules}
       />
     </>
   );

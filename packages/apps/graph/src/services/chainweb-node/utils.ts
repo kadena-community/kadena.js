@@ -1,14 +1,24 @@
 export class PactCommandError extends Error {
-  public pactError: any;
+  public pactError:
+    | {
+        message: string;
+        type: string;
+      }
+    | undefined;
 
-  constructor(message: string, pactError?: any) {
+  public constructor(
+    message: string,
+    pactError?: {
+      message: string;
+      type: string;
+    },
+  ) {
     super(message);
     this.pactError = pactError;
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type CommandData = {
+export interface ICommandData {
   key: string;
   value: string;
-};
+}

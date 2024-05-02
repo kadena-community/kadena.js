@@ -4,6 +4,7 @@ import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import routes from '@/constants/routes';
 import { getTransactionByRequestKey } from '@/graphql/subscriptions.graph';
 import { formatCode, formatLisp } from '@/utils/formatter';
+import { MonoCheck, MonoClose } from '@kadena/react-icons/system';
 import {
   Box,
   Breadcrumbs,
@@ -14,7 +15,6 @@ import {
   Notification,
   Row,
   Stack,
-  SystemIcon,
   Table,
   TableBody,
   TableHeader,
@@ -99,7 +99,7 @@ const RequestKey: React.FC = () => {
                     transaction.result.badResult && (
                       <Notification
                         intent="negative"
-                        icon={<SystemIcon.Close />}
+                        icon={<MonoClose />}
                         role="status"
                       >
                         Transaction failed with status:{' '}
@@ -116,7 +116,7 @@ const RequestKey: React.FC = () => {
                     transaction.result.goodResult && (
                       <Notification
                         intent="positive"
-                        icon={<SystemIcon.Check />}
+                        icon={<MonoCheck />}
                         role="status"
                       >
                         Transaction succeeded with status:
@@ -208,8 +208,8 @@ const RequestKey: React.FC = () => {
                               {transaction.result.goodResult
                                 ? formatCode(transaction.result.goodResult)
                                 : transaction.result.badResult
-                                ? formatCode(transaction.result.badResult)
-                                : 'Unknown'}
+                                  ? formatCode(transaction.result.badResult)
+                                  : 'Unknown'}
                             </pre>
                           </Cell>
                         </Row>
@@ -441,7 +441,7 @@ const RequestKey: React.FC = () => {
                 <Cell>
                   {transaction.cmd.signers
                     ?.map((signer) => {
-                      return signer.publicKey;
+                      return signer.pubkey;
                     })
                     .join(', ')}
                 </Cell>
@@ -451,7 +451,7 @@ const RequestKey: React.FC = () => {
                   <strong>Signatures</strong>
                 </Cell>
                 <Cell>
-                  {transaction.cmd.signers
+                  {transaction.sigs
                     ?.map((signer) => {
                       return signer.sig;
                     })

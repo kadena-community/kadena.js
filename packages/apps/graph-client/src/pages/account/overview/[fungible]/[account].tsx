@@ -150,7 +150,7 @@ const Account: React.FC = () => {
               onKeyDown={handleKeyPress}
             />
 
-            <Button onClick={search}>Search</Button>
+            <Button onPress={search}>Search</Button>
           </Box>
 
           <Box margin="sm" />
@@ -300,7 +300,7 @@ const Account: React.FC = () => {
                   <TokenTable
                     tokens={
                       nonFungibleAccountData.nonFungibleAccount
-                        .nonFungibles as NonFungibleTokenBalance[]
+                        .nonFungibleTokenBalances as NonFungibleTokenBalance[]
                     }
                   />
                 </TabItem>

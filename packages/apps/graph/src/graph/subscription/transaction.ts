@@ -3,7 +3,7 @@ import type { Transaction } from '@prisma/client';
 import { mempoolLookup } from '@services/chainweb-node/mempool';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
-import { mempooTransactionMapper } from '../mappers/transaction-mapper';
+import { mempoolTransactionMapper } from '../mappers/transaction-mapper';
 import GQLTransaction from '../objects/transaction';
 
 builder.subscriptionField('transaction', (t) =>
@@ -79,7 +79,7 @@ async function checkMempoolForTransaction(
     const transactionData = mempoolData[0];
 
     if (transactionData.tag === 'Pending') {
-      return mempooTransactionMapper(transactionData);
+      return mempoolTransactionMapper(transactionData);
     }
 
     return null;

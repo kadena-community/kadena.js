@@ -16,7 +16,7 @@ export const typescriptOptions = {
     validation: z.string().optional(),
     option: new Option(
       '--typescript-caps-interface <interface>',
-      'Custom name for the interface of the caps. Can be used to create a type definition with a limited set of capabilities.',
+      'Custom name for the interface of the caps. Can be used to create a type definition with a limited set of capabilities (optional)',
     ),
   }),
   typescriptFile: createOption({
@@ -55,7 +55,7 @@ export const typescriptOptions = {
     validation: z.string().optional(),
     option: new Option(
       '--typescript-namespace <string>',
-      'use as the namespace of the contract if its not clear in the contract',
+      'use as the namespace of the contract if its not clear in the contract (optional)',
     ),
   }),
 };

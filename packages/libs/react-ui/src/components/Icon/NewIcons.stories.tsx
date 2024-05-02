@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as BranchIcons from '@kadena/react-icons/brand';
 import * as ProductIcons from '@kadena/react-icons/product';
-import * as SystemIcons from '@kadena/react-icons/system';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
@@ -61,59 +60,8 @@ type Story = StoryObj<{
   fill: IconColor;
 }>;
 
-const system = Object.entries(SystemIcons);
 const product = Object.entries(ProductIcons);
 const brand = Object.entries(BranchIcons);
-export const System: Story = {
-  name: 'System',
-  args: {
-    fontSize: 'base',
-    fill: 'base',
-  },
-  render: ({ fontSize, fill }) => {
-    const { contains } = useFilter({ sensitivity: 'base', usage: 'search' });
-    const [search, setSearch] = useState('');
-    return (
-      <div
-        className={atoms({
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 'md',
-          width: '100%',
-        })}
-      >
-        <TextField
-          label="Search"
-          placeholder="Search for an icon by name"
-          onChange={(e) => {
-            setSearch(e.target.value);
-          }}
-        />
-        <div
-          className={atoms({
-            display: 'flex',
-            flexWrap: 'wrap',
-            flex: 1,
-            gap: 'sm',
-          })}
-        >
-          {system
-            .filter(([key]) =>
-              contains(key.toLowerCase(), search.toLowerCase()),
-            )
-            .map(([key, Icon]) => (
-              <Icon
-                key={key}
-                fontSize={icoSizes[fontSize]}
-                fill={iconColors[fill]}
-                title={key}
-              />
-            ))}
-        </div>
-      </div>
-    );
-  },
-};
 
 export const Brand: Story = {
   name: 'Brand',

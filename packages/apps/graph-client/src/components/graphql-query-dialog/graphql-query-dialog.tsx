@@ -1,11 +1,5 @@
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogContent,
-  Divider,
-  SystemIcon,
-} from '@kadena/react-ui';
+import { MonoInfo } from '@kadena/react-icons/system';
+import { Box, Button, Dialog, DialogContent, Divider } from '@kadena/react-ui';
 import type { DocumentNode } from 'graphql';
 import { print } from 'graphql';
 import React, { useState } from 'react';
@@ -27,10 +21,10 @@ export const GraphQLQueryDialog = (
   return (
     <>
       <Button
-        endIcon={<SystemIcon.Information />}
+        endVisual={<MonoInfo />}
         title="Show the GraphQL query used."
         isCompact
-        variant="text"
+        variant="transparent"
         onPress={() => setIsOpen(true)}
       >
         GraphQL

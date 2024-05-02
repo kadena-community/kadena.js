@@ -1,104 +1,160 @@
-/* eslint-disable @kadena-dev/no-eslint-disable */
-
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 import classNames from 'classnames';
-import type {
-  ComponentProps,
-  ElementRef,
-  ForwardedRef,
-  ReactNode,
-} from 'react';
+import type { ForwardedRef, ReactElement } from 'react';
 import React, { forwardRef } from 'react';
-import type { AriaLinkOptions, HoverEvents } from 'react-aria';
+import type { AriaButtonProps, AriaFocusRingProps } from 'react-aria';
 import { useFocusRing, useHover, useLink } from 'react-aria';
-import { button } from '../Button/SharedButton.css';
+import {
+  button,
+  centerContentWrapper,
+  endVisualStyle,
+  iconOnlyStyle,
+  noEndVisualStyle,
+  noStartVisualStyle,
+  reverseDirectionStyle,
+  startVisualStyle,
+} from '../Button/Button.css';
 import { disableLoadingProps } from '../Button/utils';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
 
-type Variants = Omit<NonNullable<RecipeVariants<typeof button>>, 'onlyIcon'>;
-type PickedAriaLinkProps = Omit<AriaLinkOptions, 'elementType'>;
+type Variants = NonNullable<RecipeVariants<typeof button>>;
 
-export interface ILinkProps extends PickedAriaLinkProps, HoverEvents, Variants {
-  className?: string;
-  startIcon?: ReactNode;
-  endIcon?: ReactNode;
-  icon?: ReactNode;
-  children?: ReactNode;
-  /**
-   * @deprecated use `onPress` instead to be consistent with React Aria, also keep in mind that `onPress` is not a native event it is a synthetic event created by React Aria
-   * @see https://react-spectrum.adobe.com/react-aria/useButton.html#props
-   */
-  onClick?: ComponentProps<'button'>['onClick'];
-  style?: ComponentProps<'button'>['style'];
-  title?: ComponentProps<'button'>['title'];
-}
+export type ILinkProps = Omit<AriaFocusRingProps, 'isTextInput'> &
+  Variants &
+  Pick<AriaButtonProps<'button'>, 'aria-label' | 'href' | 'type' | 'target'> & {
+    className?: string;
+    isLoading?: boolean;
+    isDisabled?: boolean;
+    title?: string;
+    style?: React.CSSProperties;
+    loadingLabel?: string;
+    children?: string | number | ReactElement;
+    startVisual?: ReactElement;
+    endVisual?: ReactElement;
+  };
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable react/function-component-definition */
-function BaseLink(
-  props: ILinkProps,
-  forwardedRef: ForwardedRef<ElementRef<'a'>>,
-) {
-  props = disableLoadingProps(props);
-  const ref = useObjectRef(forwardedRef);
-  const { linkProps, isPressed } = useLink(props, ref);
-  const { hoverProps, isHovered } = useHover(props);
-  const { focusProps, isFocused, isFocusVisible } = useFocusRing(props);
+/**
+ * Button component
+ * @param variant - button style variant
+ * @param startVisual - visual to render at the beginning of the button
+ * @param endVisual - visual to render at the end of the button
+ * @param children - label to be shown
+ * @param isDisabled - disabled state
+ * @param isLoading - loading state
+ * @param isCompact - compact button style
+ * @param loadingLabel - label to be shown when loading
+ * @param className - additional class name
+ * @param style - additional style
+ * @param title - title to be shown as HTML tooltip
+ */
 
-  const onlyIcon = props.icon !== undefined;
-  const content = onlyIcon ? (
-    props.icon
-  ) : (
-    <>
-      {props.startIcon}
-      {props.children}
-      {props.endIcon}
-    </>
-  );
+const Link = forwardRef(
+  (
+    {
+      startVisual,
+      endVisual,
+      children,
+      isCompact = false,
+      loadingLabel = 'Loading',
+      variant = 'transparent',
+      className,
+      ...props
+    }: ILinkProps,
+    forwardedRef: ForwardedRef<HTMLAnchorElement>,
+  ) => {
+    props = disableLoadingProps(props);
+    loadingLabel = loadingLabel.trim();
+    const ref = useObjectRef(forwardedRef);
+    const { linkProps, isPressed } = useLink(props, ref);
+    const { hoverProps, isHovered } = useHover(props);
+    const { focusProps, isFocused, isFocusVisible } = useFocusRing(props);
+    const { isLoading, isDisabled, style, title } = props;
 
-  const isLoadingAriaLiveLabel = `${
-    typeof props.children === 'string'
-      ? props.children
-      : linkProps['aria-label'] ?? 'is'
-  } loading`.trim();
+    const iconOnly = Boolean(
+      // check if children is a ReactElement
+      (typeof children !== 'string' && typeof children !== 'number') ||
+        // check if no visuals are provided
+        (!startVisual && !endVisual && !children) ||
+        // check if only one visual is provided
+        (!children &&
+          ((startVisual && !endVisual) || (endVisual && !startVisual))),
+    );
 
-  return (
-    <a
-      {...mergeProps(linkProps, hoverProps, focusProps)}
-      ref={ref}
-      className={classNames(
-        button({
-          variant: props.variant ?? 'text',
-          color: props.color,
-          isCompact: props.isCompact,
-          isLoading: props.isLoading,
-        }),
-        props.className,
-      )}
-      style={props.style}
-      title={props.title}
-      aria-disabled={props.isLoading || undefined}
-      data-disabled={props.isDisabled || undefined}
-      data-pressed={isPressed || undefined}
-      data-hovered={isHovered || undefined}
-      data-focused={isFocused || undefined}
-      data-focus-visible={isFocusVisible || undefined}
-    >
-      {props.isLoading ? (
+    const isLoadingAriaLiveLabel = `${
+      typeof children === 'string' ? children : props['aria-label'] ?? 'is'
+    } loading`.trim();
+
+    return (
+      <a
+        {...mergeProps(linkProps, hoverProps, focusProps)}
+        className={classNames(
+          button({
+            variant,
+            isCompact,
+            isLoading,
+          }),
+          className,
+        )}
+        style={style}
+        title={title}
+        aria-disabled={isLoading || undefined}
+        data-disabled={isDisabled || undefined}
+        data-pressed={isPressed || undefined}
+        data-hovered={(!isPressed && isHovered) || undefined}
+        data-focused={isFocused || undefined}
+        data-focus-visible={isFocusVisible || undefined}
+        ref={ref}
+      >
         <>
-          {onlyIcon ? null : 'Loading'}
-          <ProgressCircle
-            aria-hidden="true"
-            aria-label={isLoadingAriaLiveLabel}
-            isIndeterminate
-          />
+          {isLoading ? (
+            <span
+              className={classNames(
+                !loadingLabel
+                  ? iconOnlyStyle
+                  : {
+                      [noEndVisualStyle]: !endVisual && startVisual,
+                      [noStartVisualStyle]: !startVisual || endVisual,
+                      [startVisualStyle]: startVisual && !endVisual,
+                      [endVisualStyle]: endVisual || !startVisual,
+                      [reverseDirectionStyle]: startVisual && !endVisual,
+                    },
+                centerContentWrapper,
+              )}
+            >
+              {iconOnly && !loadingLabel ? null : loadingLabel}
+              <ProgressCircle
+                size={isCompact ? 'sm' : 'md'}
+                aria-hidden="true"
+                aria-label={isLoadingAriaLiveLabel}
+                isIndeterminate
+              />
+            </span>
+          ) : (
+            <span
+              className={classNames(
+                iconOnly
+                  ? iconOnlyStyle
+                  : {
+                      [noEndVisualStyle]: !endVisual,
+                      [noStartVisualStyle]: !startVisual,
+                      [startVisualStyle]: startVisual,
+                      [endVisualStyle]: endVisual,
+                      [centerContentWrapper]: true,
+                    },
+              )}
+            >
+              {startVisual ?? startVisual}
+              {children}
+              {endVisual ?? endVisual}
+            </span>
+          )}
         </>
-      ) : (
-        content
-      )}
-    </a>
-  );
-}
+      </a>
+    );
+  },
+);
 
-export const Link = forwardRef(BaseLink);
+Link.displayName = 'Link';
+
+export { Link };

@@ -23,7 +23,6 @@ import {
   defaultClientConfig,
   defaultLocalConfig,
   defaultNamespaceConfig,
-  defaultNamespaceDeployOrder,
   defaultRemoteConfig,
   defaultRepositoryConfig,
 } from './defaults';
@@ -51,7 +50,6 @@ interface IDeployMarmaladeInput {
  * @param remoteConfig - The remote configuration for the marmalade deployment: the path to the marmalade templates and code files, the file extensions and the exclude folders
  * @param repositoryConfig - The repository configuration for the marmalade deployment: repository related data and the github token
  * @param namespaceConfig - The namespace configuration for the marmalade deployment: the namespace files and the namespaces to be deployed
- * @param namespaceDeployOrder - The order in which the namespaces will be deployed
  * @param deploymentArguments - The deployment arguments for the marmalade deployment: these will replace the holes in the marmalade templates
  * @param clientConfig - The client configuration for the marmalade deployment: the host, the network id and the sender key
  * @param deleteFilesAfterDeployment - If true, the local files will be deleted after the deployment
@@ -63,7 +61,6 @@ export const deployMarmalade = async ({
   remoteConfig = defaultRemoteConfig,
   repositoryConfig = defaultRepositoryConfig,
   namespaceConfig = defaultNamespaceConfig,
-  namespaceDeployOrder = defaultNamespaceDeployOrder,
   deploymentArguments = defaultArguments,
   clientConfig = defaultClientConfig,
   deleteFilesAfterDeployment = false,
@@ -149,30 +146,11 @@ export const deployMarmalade = async ({
     console.log(`Deploying Marmalade Contracts...`);
 
     /**
-     * sort the templates alphabetically so that the contracts are deployed in the correct order
-     * also taking into account the order provided in the configuration
+     * sort the templates based on the index of the file so that the contracts
+     * are deployed in the correct order
      */
     const templateSort = (a: string, b: string) => {
-      const indexA = namespaceDeployOrder.findIndex((order) =>
-        a.includes(order),
-      );
-      const indexB = namespaceDeployOrder.findIndex((order) =>
-        b.includes(order),
-      );
-
-      if (indexA === -1 && indexB === -1) {
-        // Neither a nor b are in marmaladeNamespaceOrder, sort alphabetically
-        return a.localeCompare(b);
-      } else if (indexA === -1) {
-        // Only b is in marmaladeNamespaceOrder, b comes first
-        return 1;
-      } else if (indexB === -1) {
-        // Only a is in marmaladeNamespaceOrder, a comes first
-        return -1;
-      } else {
-        // Both a and b are in marmaladeNamespaceOrder, sort based on their positions
-        return indexA - indexB;
-      }
+      return Number(a.split('.')[1]) - Number(b.split('.')[1]);
     };
 
     const templateConfig = {
@@ -189,6 +167,35 @@ export const deployMarmalade = async ({
       chainIds,
       templateConfig,
       clientConfig,
+    });
+
+    /**
+     * this is the the templates that will be upgraded; note that this
+     * is very specific to the marmalade contracts
+     */
+    const upgradeTemplatePathsFilter = (file: string) => {
+      return (
+        file.split('.')[1] === '8' || file.split('.')[3] === 'guard-policy-v1'
+      );
+    };
+
+    const upgradeTemplateConfig = {
+      ...templateConfig,
+      deploymentArguments: {
+        ...deploymentArguments,
+        is_upgrade: 'true',
+        upgrade_version_1: 'true',
+      },
+    };
+
+    console.log(`Deploying Upgraded Marmalade Contracts...`);
+
+    // If the templates are for an upgrade, deploy them
+    await deployFromDirectory({
+      chainIds,
+      templateConfig: upgradeTemplateConfig,
+      clientConfig,
+      filterFunction: upgradeTemplatePathsFilter,
     });
 
     if (deleteFilesAfterDeployment) {

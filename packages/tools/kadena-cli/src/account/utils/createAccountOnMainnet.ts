@@ -4,7 +4,7 @@ import { genKeyPair } from '@kadena/cryptography-utils';
 import type { ChainId } from '@kadena/types';
 import { networkDefaults } from '../../constants/networks.js';
 import type { CommandResult } from '../../utils/command.util.js';
-import { isNotEmptyString } from '../../utils/helpers.js';
+import { isNotEmptyString } from '../../utils/globalHelpers.js';
 import type { Predicate } from '../types.js';
 import { createAccountName } from '../utils/createAccountName.js';
 

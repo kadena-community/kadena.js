@@ -93,22 +93,12 @@ export const ListItem: FC<IProps> = ({ token }) => {
   }, [token]);
 
   const link = useMemo(() => {
-    if (innerData?.properties.eventType === 'attendance') {
-      return `/scan/e/${innerData?.properties.eventId}`;
-    }
-
     if (isMinted) {
-      return `/user/proof-of-us/t/${token?.id}`;
+      return `/user/proof-of-us/t/${token?.tokenId}`;
     } else {
-      return `/user/proof-of-us/t/${token?.id}/${token?.requestKey}`;
+      return `/user/proof-of-us/mint/${token?.requestKey}?id=${token?.proofOfUsId}`;
     }
-  }, [
-    isMinted,
-    token?.id,
-    token?.requestKey,
-    innerData?.properties.eventType,
-    token?.eventId,
-  ]);
+  }, [isMinted, token?.tokenId, token?.requestKey]);
 
   return (
     <motion.li

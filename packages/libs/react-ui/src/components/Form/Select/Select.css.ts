@@ -1,46 +1,39 @@
-import { style } from '@vanilla-extract/css';
-import { atoms, bodyBaseRegular, ellipsis, token } from '../../../styles';
+import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
+import { recipe } from '@vanilla-extract/recipes';
+import { atoms, ellipsis, token } from '../../../styles';
+import { inputFontTypeVariants, inputSizeCompoundVariants } from '../Form.css';
+
+export const selectButtonValue = atoms({
+  display: 'flex',
+  flex: 1,
+});
 
 export const selectButtonClass = style([
-  bodyBaseRegular,
   atoms({
     display: 'flex',
-    alignItems: 'center',
-    borderRadius: 'sm',
-    backgroundColor: 'layer10.default',
-    border: 'none',
+    backgroundColor: 'input.default',
+    justifyContent: 'space-between',
     color: 'text.base.default',
-    outline: 'none',
     flex: 1,
     overflow: 'hidden',
+    position: 'relative',
+    alignItems: 'center',
   }),
   {
+    paddingBlock: '0',
     paddingInlineStart: token('spacing.md'),
-    paddingInlineEnd: token('spacing.md'),
-    paddingBlock: token('spacing.sm'),
-    boxShadow: `0px 1px 0 0 ${token('color.border.base.default')}`,
-    outlineOffset: '2px',
+    paddingInlineEnd: '0',
     selectors: {
       '&[data-hovered]': {
         cursor: 'pointer',
       },
-      '&[data-positive]': {
-        outline: `2px solid ${token('color.border.semantic.positive.@focus')}`,
-      },
-      '&[data-disabled]': {
-        pointerEvents: 'none',
-        backgroundColor: token('color.background.base.@disabled'),
-        color: token('color.text.base.@disabled'),
-      },
-      '&[data-focused]': {
-        outline: `2px solid ${token('color.border.semantic.info.@focus')}`,
-      },
-      '&[data-invalid]': {
-        outline: `2px solid ${token('color.border.semantic.negative.@focus')}`,
-      },
     },
   },
 ]);
+
+globalStyle(`${selectButtonClass} > span`, {
+  fontFamily: 'unset',
+});
 
 // applied on a span
 export const selectValueClass = style([
@@ -55,3 +48,29 @@ export const selectValueClass = style([
     },
   },
 ]);
+
+export const selectIconWrapper = style([
+  atoms({
+    backgroundColor: 'surface.default',
+    padding: 'n2',
+  }),
+]);
+
+export const selectIconClass = styleVariants({
+  sm: { height: token('icon.size.xs') },
+  md: { height: token('icon.size.base') },
+  lg: { height: token('icon.size.lg') },
+});
+
+export const selectItemClass = recipe({
+  base: [atoms({ paddingInlineStart: 'md' })],
+  variants: {
+    size: {
+      sm: [],
+      md: [],
+      lg: [],
+    },
+    ...inputFontTypeVariants,
+  },
+  compoundVariants: inputSizeCompoundVariants,
+});

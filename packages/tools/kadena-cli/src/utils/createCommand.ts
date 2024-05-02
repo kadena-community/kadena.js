@@ -2,8 +2,9 @@ import type { Command } from 'commander';
 import { CLINAME } from '../constants/config.js';
 import { CommandError, printCommandError } from './command.util.js';
 import type { OptionType, createOption } from './createOption.js';
+import { notEmpty } from './globalHelpers.js';
 import { globalOptions } from './globalOptions.js';
-import { handlePromptError, notEmpty } from './helpers.js';
+import { handleNoKadenaDirectory, handlePromptError } from './helpers.js';
 import { log } from './logger.js';
 import { readStdin } from './stdin.js';
 import type { FlattenObject, Fn, Prettify } from './typeUtilities.js';
@@ -190,6 +191,7 @@ export const createCommand =
         if (!process.stderr.isTTY) args.quiet = true;
 
         handleQuietOption(args, options);
+
         if (args.json === true) {
           log.setOutputMode('json');
         } else if (args.yaml === true) {
@@ -257,6 +259,7 @@ export const createCommand =
           );
         }
       } catch (error) {
+        if (handleNoKadenaDirectory(error)) return;
         if (error instanceof CommandError) {
           printCommandError(error);
           if (prompted) {

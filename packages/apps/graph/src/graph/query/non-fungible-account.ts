@@ -19,7 +19,7 @@ builder.queryField('nonFungibleAccount', (t) =>
       return {
         __typename: NonFungibleAccountName,
         accountName: args.accountName,
-        nonFungibles: [],
+        nonFungibleTokenBalances: [],
         chainAccounts: [],
         transactions: [],
       };

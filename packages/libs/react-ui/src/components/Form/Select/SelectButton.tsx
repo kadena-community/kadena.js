@@ -1,3 +1,4 @@
+import { MonoExpandMore } from '@kadena/react-icons/system';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import classNames from 'classnames';
 import type { ForwardedRef, ReactNode, Ref } from 'react';
@@ -6,8 +7,11 @@ import type { AriaButtonProps } from 'react-aria';
 import { useButton, useHover } from 'react-aria';
 import type { SelectState } from 'react-stately';
 import { atoms, rotate180Transition } from '../../../styles';
-import { ChevronDown } from '../../Icon/System/SystemIcon';
-import { selectButtonClass } from './Select.css';
+import {
+  selectButtonClass,
+  selectIconClass,
+  selectIconWrapper,
+} from './Select.css';
 
 export interface ISelectButtonProps<T extends object> extends AriaButtonProps {
   state: SelectState<T>;
@@ -16,6 +20,7 @@ export interface ISelectButtonProps<T extends object> extends AriaButtonProps {
   isInvalid?: boolean;
   isPositive?: boolean;
   startIcon?: ReactNode;
+  size: 'sm' | 'md' | 'lg';
 }
 function SelectButtonBase<T extends object>(
   props: ISelectButtonProps<T>,
@@ -38,6 +43,7 @@ function SelectButtonBase<T extends object>(
   return (
     <button
       {...mergeProps(buttonProps, dataProps, hoverProps)}
+      data-role="select-button"
       className={classNames(selectButtonClass, props.className)}
       ref={ref}
     >
@@ -47,10 +53,13 @@ function SelectButtonBase<T extends object>(
         </span>
       )}
       {props.children}
-      <span className={atoms({ marginInlineStart: 'sm' })}>
-        <ChevronDown
+      <span className={selectIconWrapper}>
+        <MonoExpandMore
           data-open={props.state.isOpen}
-          className={rotate180Transition}
+          className={classNames(
+            rotate180Transition,
+            selectIconClass[props.size],
+          )}
         />
       </span>
     </button>

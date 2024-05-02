@@ -1,3 +1,4 @@
+import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { Text, TextField } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import React, { useState, useTransition } from 'react';
@@ -17,6 +18,7 @@ export interface ISidePanelProps {
   onResultClick: IResultsProps['onItemClick'];
   onModuleExpand: IResultsProps['onModuleExpand'];
   onInterfaceClick: IOutlineProps['onInterfaceClick'];
+  onInterfacesExpand: IOutlineProps['onInterfacesExpand'];
   selectedModule?: IChainModule;
 }
 
@@ -24,6 +26,7 @@ const SidePanel = ({
   results,
   onResultClick,
   onInterfaceClick,
+  onInterfacesExpand,
   onModuleExpand,
   selectedModule,
 }: ISidePanelProps): React.JSX.Element => {
@@ -31,6 +34,7 @@ const SidePanel = ({
   const [searchQuery, setSearchQuery] = useState<string>();
   const [isPending, startTransition] = useTransition();
   const { t } = useTranslation('common');
+  const { selectedNetwork } = useWalletConnectClient();
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setText(e.target.value);
@@ -52,6 +56,7 @@ const SidePanel = ({
       </div>
       {isPending && <Text>Loading...</Text>}
       <Results
+        key={`results-${selectedNetwork}`}
         data={results}
         filter={searchQuery}
         onItemClick={onResultClick}
@@ -62,6 +67,7 @@ const SidePanel = ({
         selectedModule={selectedModule}
         className={outlineStyle}
         onInterfaceClick={onInterfaceClick}
+        onInterfacesExpand={onInterfacesExpand}
       />
     </div>
   );

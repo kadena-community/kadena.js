@@ -3,9 +3,7 @@ import { Chalk } from 'chalk';
 import jsYaml from 'js-yaml';
 import { formatWithOptions } from 'node:util';
 import z from 'zod';
-import type { TableHeader, TableRow } from '../utils/tableDisplay.js';
-import { displayTable } from '../utils/tableDisplay.js';
-import { maskSensitiveInfo } from './helpers.js';
+import { maskSensitiveInfo } from './logger-utils.js';
 
 /**
  * Custom logging class for kadena-cli
@@ -46,7 +44,7 @@ const stderrColorsEnabled =
 const stdoutColorsEnabled =
   stderrColorsEnabled === false || process.stdout.isTTY !== true ? false : true;
 
-const LEVELS = {
+export const LEVELS = {
   error: 0,
   warning: 1,
   output: 2,
@@ -58,7 +56,7 @@ const LEVELS = {
 
 type Levels = typeof LEVELS;
 type LevelKey = keyof Levels;
-type LevelValue = Levels[keyof Levels];
+export type LevelValue = Levels[keyof Levels];
 
 type OutputMode = 'plain' | 'json' | 'yaml';
 
@@ -135,27 +133,6 @@ class Logger {
 
   public setLevel(level: LevelValue): void {
     this.level = level;
-  }
-
-  public generateTableString(
-    headers: TableHeader,
-    rows: TableRow[],
-    includeHorizontalSeparator: boolean = false,
-    includeVerticalSeparator: boolean = false,
-  ): string {
-    const { header, separator, body } = displayTable(
-      headers,
-      rows,
-      includeHorizontalSeparator,
-      includeVerticalSeparator,
-    );
-
-    const coloredHeader = this.color.green(header);
-    const tableString =
-      separator.length > 0
-        ? `${coloredHeader}\n${separator}\n${body}`
-        : `${coloredHeader}\n${body}`;
-    return tableString;
   }
 
   public get color(): ChalkInstance {

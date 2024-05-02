@@ -1,16 +1,19 @@
+import { MonoClose, MonoInfo } from '@kadena/react-icons/system';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 import type { FC } from 'react';
 import React, { useState } from 'react';
-import { Close, Information } from '../Icon/System/SystemIcon';
 import {
   closeButtonClass,
-  contentClass,
+  contentClassRecipe,
   iconClass,
   notificationRecipe,
 } from './Notification.css';
 
 type Variants = NonNullable<RecipeVariants<typeof notificationRecipe>>;
-export interface INotificationProps extends Variants {
+type ContentTypeVariants = NonNullable<
+  RecipeVariants<typeof contentClassRecipe>
+>;
+export interface INotificationProps extends Variants, ContentTypeVariants {
   children?: React.ReactNode;
   isDismissable?: boolean;
   onDismiss?: () => void;
@@ -26,6 +29,7 @@ export const Notification: FC<INotificationProps> = ({
   onDismiss,
   icon,
   role,
+  type = 'stacked',
 }) => {
   const [isDismissed, setIsDismissed] = useState(false);
 
@@ -35,15 +39,13 @@ export const Notification: FC<INotificationProps> = ({
     <div
       className={notificationRecipe({
         intent,
-        displayStyle,
+        displayStyle: type === 'inlineStacked' ? 'borderless' : displayStyle,
       })}
       role={role}
     >
-      <span className={iconClass}>
-        {icon ? icon : <Information size="md" />}
-      </span>
+      <span className={iconClass}>{icon ? icon : <MonoInfo />}</span>
 
-      <div className={contentClass}>{children}</div>
+      <div className={contentClassRecipe({ type })}>{children}</div>
 
       {isDismissable && (
         <button
@@ -54,7 +56,7 @@ export const Notification: FC<INotificationProps> = ({
           }}
           aria-label="Close Notification"
         >
-          <Close size="md" />
+          <MonoClose />
         </button>
       )}
     </div>

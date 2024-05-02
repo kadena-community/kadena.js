@@ -1,6 +1,7 @@
+import { MonoEditNote } from '@kadena/react-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import { Stack, SystemIcon } from '..';
+import { Stack } from '..';
 import type { ITagGroupProps } from '../Tag';
 import { Tag, TagGroup, TagItem } from '../Tag';
 
@@ -136,7 +137,7 @@ export const TagComponent: Story = {
       <Tag>
         <Stack gap="xs" alignItems="center">
           Tag Styles
-          <SystemIcon.Edit size="sm" />
+          <MonoEditNote />
         </Stack>
       </Tag>
     );

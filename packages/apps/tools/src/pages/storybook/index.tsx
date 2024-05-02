@@ -9,7 +9,7 @@ import useLedgerPublicKey, {
   derivationModes,
 } from '@/hooks/use-ledger-public-key';
 import type { ChainId } from '@kadena/client';
-import { MonoKey } from '@kadena/react-icons/system';
+import { MonoCAccount, MonoKey, MonoUsb } from '@kadena/react-icons/system';
 import {
   Breadcrumbs,
   BreadcrumbsItem,
@@ -94,7 +94,7 @@ const Storybook = () => {
               />
             </Stack>
             <>
-              <ContentHeader icon="Account" heading="User Details" />
+              <ContentHeader icon={<MonoCAccount />} heading="User Details" />
               {accountDetails ? (
                 <dl>
                   {Object.entries(accountDetails).map(([key, value]) => {
@@ -130,7 +130,7 @@ const Storybook = () => {
             <Stack gap="md">
               <Combobox
                 allowsCustomValue
-                startIcon={<MonoKey />}
+                startVisual={<MonoKey />}
                 label="Key ID"
                 onInputChange={async (value) => {
                   console.log('onInputChange', value);
@@ -160,7 +160,7 @@ const Storybook = () => {
               </Select>
             </Stack>
             <>
-              <ContentHeader icon="UsbFlashDrive" heading="Ledger Public Key" />
+              <ContentHeader icon={<MonoUsb />} heading="Ledger Public Key" />
               {ledgerPublicKey ? (
                 <dl>
                   <dt>Public Key</dt>

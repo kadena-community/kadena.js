@@ -9,9 +9,9 @@ moduleAlias.addAliases({
   '@devnet': `${__dirname}/devnet`,
 });
 
-import { runSystemsCheck } from '@services/systems-check';
+import { SystemCheckError, runSystemsCheck } from '@services/systems-check';
 import { dotenv } from '@utils/dotenv';
-import { NetworkConfig } from '@utils/network';
+import type { ExecutionArgs } from 'graphql';
 import { useServer } from 'graphql-ws/lib/use/ws';
 import { createYoga } from 'graphql-yoga';
 import 'json-bigint-patch';
@@ -32,8 +32,6 @@ const schema = builder.toSchema();
 
 const plugins = [extensionsPlugin()];
 
-export const networkConfig = NetworkConfig.create(dotenv.NETWORK_HOST);
-
 if (dotenv.COMPLEXITY_EXPOSED) {
   plugins.push(complexityPlugin(schema));
 }
@@ -48,7 +46,6 @@ const yogaApp = createYoga({
   context: async () => {
     return {
       extensions: {},
-      networkId: (await networkConfig).networkId,
     };
   },
 });
@@ -62,8 +59,10 @@ const wsServer = new WebSocketServer({
 
 useServer(
   {
-    execute: (args: any) => args.rootValue.execute(args),
-    subscribe: (args: any) => args.rootValue.subscribe(args),
+    // @ts-ignore
+    execute: (args: ExecutionArgs) => args.rootValue.execute(args),
+    // @ts-ignore
+    subscribe: (args: ExecutionArgs) => args.rootValue.subscribe(args),
     onSubscribe: async (ctx, msg) => {
       const { schema, execute, subscribe, contextFactory, parse, validate } =
         yogaApp.getEnveloped({
@@ -99,7 +98,7 @@ httpServer.on('connection', (socket) => {
   httpServer.once('close', () => sockets.delete(socket));
 });
 
-runSystemsCheck(networkConfig)
+runSystemsCheck()
   .then(() => {
     httpServer.listen(dotenv.PORT, () => {
       console.info(
@@ -107,7 +106,17 @@ runSystemsCheck(networkConfig)
       );
     });
   })
-  .catch(() => {
-    console.log('\nSystem checks failed. Unable to start the graph server.\n');
+  .catch((error) => {
+    if (error instanceof SystemCheckError) {
+      console.log(
+        '\nSystem checks failed. Unable to start the graph server.\n',
+      );
+    } else {
+      console.log(
+        '\nAn unexpected error occurred. Unable to start the graph server.\n',
+      );
+      console.error(error);
+    }
+
     process.exit(1);
   });

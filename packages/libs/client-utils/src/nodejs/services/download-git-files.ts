@@ -69,7 +69,9 @@ export async function downloadGitFiles({
   } else if (gitData instanceof Object) {
     if (!gitData.download_url) {
       throw new Error(
-        `An error occurred while downloading the file: ${gitData}`,
+        `An error occurred while downloading the file: ${JSON.stringify(
+          gitData,
+        )}`,
       );
     }
     // if gitData is an object, it means that it's a file and we can download it

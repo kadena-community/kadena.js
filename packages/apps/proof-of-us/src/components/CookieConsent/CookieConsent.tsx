@@ -1,12 +1,12 @@
 'use client';
 
 import { COOKIE_CONSENTNAME, updateConsent } from '@/utils/analytics';
+import { MonoCheck, MonoClose, MonoCookie } from '@kadena/react-icons';
 import {
   Notification,
   NotificationButton,
   NotificationFooter,
   NotificationHeading,
-  SystemIcon,
   Text,
 } from '@kadena/react-ui';
 import type { FC } from 'react';
@@ -44,7 +44,7 @@ export const CookieConsent: FC = () => {
       <Notification
         intent="info"
         displayStyle="borderless"
-        icon={<SystemIcon.Cookie />}
+        icon={<MonoCookie />}
         role="none"
       >
         <NotificationHeading id="cookie-heading">
@@ -60,14 +60,14 @@ export const CookieConsent: FC = () => {
           <NotificationButton
             intent={'positive'}
             onClick={handleAccept}
-            icon={<SystemIcon.Check />}
+            icon={<MonoCheck />}
           >
             Accept
           </NotificationButton>
           <NotificationButton
             intent={'negative'}
             onClick={handleReject}
-            icon={<SystemIcon.Close />}
+            icon={<MonoClose />}
           >
             Reject
           </NotificationButton>

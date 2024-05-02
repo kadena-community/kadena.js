@@ -1,4 +1,5 @@
 import type { NonFungibleTokenBalance } from '@/__generated__/sdk';
+import { KSquareKdacolorGreen } from '@kadena/react-icons/brand';
 import {
   Box,
   Cell,
@@ -23,7 +24,7 @@ export const TokenTable = (props: ITokenTableProps): JSX.Element => {
     <>
       <ContentHeader
         heading="Tokens"
-        icon="KIcon"
+        icon={<KSquareKdacolorGreen />}
         description="All tokens owned by this account"
       />
 
@@ -34,14 +35,20 @@ export const TokenTable = (props: ITokenTableProps): JSX.Element => {
           <Column>Token Id</Column>
           <Column>Chain</Column>
           <Column>Balance</Column>
+          <Column>Guard</Column>
         </TableHeader>
         <TableBody>
           {tokens.map((token, index) => {
             return (
               <Row key={index}>
-                <Cell>{token.id}</Cell>
+                <Cell>{token.tokenId}</Cell>
                 <Cell>{token.chainId}</Cell>
                 <Cell>{token.balance}</Cell>
+                <Cell>
+                  <strong>Predicate:</strong> {token.guard.predicate}
+                  <br />
+                  <strong>Keys:</strong> {token.guard.keys.join(', ')}
+                </Cell>
               </Row>
             );
           })}

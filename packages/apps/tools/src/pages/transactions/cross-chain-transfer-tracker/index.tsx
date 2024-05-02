@@ -242,7 +242,7 @@ const CrossChainTransferTracker: FC = () => {
               type="submit"
               title={t('Search')}
               onPress={() => setOpenItem(undefined)}
-              endIcon={<MonoSearch />}
+              endVisual={<MonoSearch />}
               isLoading={isSubmitting}
             >
               {t('Search')}
@@ -334,9 +334,8 @@ const CrossChainTransferTracker: FC = () => {
               onPress={() => {
                 window.location.href = `/transactions/cross-chain-transfer-finisher?reqKey=${requestKey}`;
               }}
-              endIcon={<MonoLink />}
-              color="positive"
-              variant="contained"
+              endVisual={<MonoLink />}
+              variant="positive"
             >
               {t('Finish Transaction')}
             </Button>

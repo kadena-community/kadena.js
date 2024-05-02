@@ -3,7 +3,7 @@ import { wordlist } from '@scure/bip39/wordlists/english';
 
 import { parseKeyPairsInput } from '../keys/utils/keysHelpers.js';
 import type { IWallet } from '../services/wallet/wallet.types.js';
-import { isNumeric, isValidFilename } from '../utils/helpers.js';
+import { isNumeric, isValidFilename } from '../utils/globalHelpers.js';
 import { input, select } from '../utils/prompts.js';
 
 export async function keyAliasPrompt(): Promise<string> {
@@ -18,8 +18,11 @@ export async function keyAliasPrompt(): Promise<string> {
   });
 }
 
-export async function keyMnemonicPrompt(): Promise<string> {
-  return await input({
+export async function keyMnemonicPrompt(
+  args: Record<string, unknown>,
+): Promise<'-' | { _secret: string }> {
+  if ((args.stdin as string | null) !== null) return '-';
+  const secret = await input({
     message: `Enter your 12-word mnemonic phrase:`,
     validate: function (input) {
       const words = input
@@ -42,6 +45,7 @@ export async function keyMnemonicPrompt(): Promise<string> {
         .join(' ');
     },
   });
+  return { _secret: secret };
 }
 
 export async function keyAmountPrompt(): Promise<string> {

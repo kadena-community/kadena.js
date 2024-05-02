@@ -13,13 +13,12 @@ import { versionCommand } from './version/index.js';
 
 import type { Command } from 'commander';
 import { readFileSync } from 'node:fs';
+import { CLINAME } from './constants/config.js';
 
 const packageJson: { version: string } = JSON.parse(
   readFileSync(new URL('../package.json', import.meta.url), 'utf8'),
 );
 
-// TODO: introduce root flag --no-interactive
-// TODO: introduce root flag --ci
 export function loadProgram(program: Command): Command {
   [
     configCommandFactory,
@@ -41,8 +40,17 @@ export function loadProgram(program: Command): Command {
     });
 
   program
+    .name(CLINAME)
     .description('CLI to interact with Kadena and its ecosystem')
     .version(packageJson.version);
+
+  program.addHelpText(
+    'after',
+    '\nGlobal options:\n' +
+      '  --quiet                   Disables interactive prompts and skips confirmations\n' +
+      '  --json                    Output command data in JSON format on stdout\n' +
+      '  --yaml                    Output command data in YAML format on stdout',
+  );
 
   return program;
 }
