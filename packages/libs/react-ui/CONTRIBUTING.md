@@ -78,7 +78,7 @@ Now, it has been updated with the configuration approach and can be used in the
 following way:
 
 ```tsx
-<Button startIcon="someIcon" loading={false}>
+<Button startVisual="someIcon" loading={false}>
   Label
 </Button>
 ```

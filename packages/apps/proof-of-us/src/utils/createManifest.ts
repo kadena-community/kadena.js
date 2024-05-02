@@ -1,21 +1,21 @@
-import { fetchManifestData } from './fetchManifestData';
-import { getProofOfUs } from './proofOfUs';
+// import { fetchManifestData } from './fetchManifestData';
+// import { getProofOfUs } from './proofOfUs';
 
-const getEventData = async (
-  eventId: string,
-): Promise<IProofOfUsTokenMeta | undefined> => {
-  const event = await getProofOfUs(eventId);
-  if (!event) return;
-  const data = await fetchManifestData(event?.uri);
-  return data;
-};
+// const getEventData = async (
+//   eventId: string,
+// ): Promise<IProofOfUsTokenMeta | undefined> => {
+//   const event = await getProofOfUs(eventId);
+//   if (!event) return;
+//   const data = await fetchManifestData(event?.uri);
+//   return data;
+// };
 
 export const createManifest = async (
   proofOfUs: IProofOfUsData,
   signees: IProofOfUsSignee[],
   url: string,
 ): Promise<IProofOfUsTokenMeta> => {
-  const eventData = await getEventData(proofOfUs.eventId);
+  //const eventData = await getEventData(proofOfUs.eventId);
 
   return {
     name: proofOfUs.title ?? '',
@@ -26,8 +26,6 @@ export const createManifest = async (
     })),
     properties: {
       date: proofOfUs.date,
-      eventName: eventData?.name ?? '',
-      eventId: proofOfUs.eventId,
       eventType: proofOfUs.type,
       avatar: {
         backgroundColor: proofOfUs.backgroundColor ?? '',
@@ -41,7 +39,6 @@ export const createManifest = async (
               xPercentage: signee.position?.xPercentage,
               yPercentage: signee.position?.yPercentage,
             },
-            socialLink: signee.socialLink,
           } as IProofOfUsTokenSignee;
         }) ?? [],
     },

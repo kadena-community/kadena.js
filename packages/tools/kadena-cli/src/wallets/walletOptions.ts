@@ -3,8 +3,19 @@ import { z } from 'zod';
 import { keys, wallets } from '../prompts/index.js';
 import { services } from '../services/index.js';
 import { createOption } from '../utils/createOption.js';
+import { mnemonicPromptTransform } from '../utils/helpers.js';
 
 export const walletOptions = {
+  createWalletConfirmation: createOption({
+    key: 'createWallet' as const,
+    prompt: wallets.createWalletPrompt,
+    defaultIsOptional: false,
+    validation: z.string(),
+    option: new Option(
+      '-c --create-wallet <createWallet>',
+      'Confirmation for creating a new wallet',
+    ),
+  }),
   walletName: createOption({
     key: 'walletName' as const,
     prompt: wallets.walletNamePrompt,
@@ -26,21 +37,22 @@ export const walletOptions = {
         : await services.wallet.getByAlias(walletName);
     },
   }),
-  keyMnemonic: createOption({
-    key: 'keyMnemonic' as const,
+  mnemonicFile: createOption({
+    key: 'mnemonicFile' as const,
     prompt: keys.keyMnemonicPrompt,
-    validation: z.string(),
+    validation: z.literal('-').or(z.object({ _secret: z.string() })),
     option: new Option(
-      '-m, --key-mnemonic <keyMnemonic>',
-      'Enter your 12-word mnemonic phrase to generate keys from',
+      '-m, --mnemonic-file <mnemonicFile>',
+      'Filepath to your 12-word mnemonic phrase file to generate keys from (can be passed via stdin)',
     ),
+    transform: mnemonicPromptTransform('--mnemonic-file'),
   }),
   createAccount: createOption({
     key: 'createAccount' as const,
     prompt: keys.walletCreateAccountPrompt,
     validation: z.string(),
     option: new Option(
-      '-c, --create-account <createAccount>',
+      '-a, --create-account <createAccount>',
       'Create an account using the first wallet key',
     ),
   }),
@@ -48,7 +60,10 @@ export const walletOptions = {
     key: 'amount' as const,
     prompt: keys.walletGenerateKeyAmountPrompt,
     validation: z.string(),
-    option: new Option('-n, --amount <amount>', 'Amount of keys to generate'),
+    option: new Option(
+      '-n, --amount <amount>',
+      'Amount of keys to generate (default: 1)',
+    ),
   }),
   startIndex: createOption({
     key: 'startIndex' as const,

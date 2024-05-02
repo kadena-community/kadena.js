@@ -1,3 +1,4 @@
+import { MonoExpandMore } from '@kadena/react-icons/system';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import classNames from 'classnames';
 import type { ForwardedRef, Ref } from 'react';
@@ -6,7 +7,6 @@ import type { AriaButtonProps } from 'react-aria';
 import { useButton, useHover } from 'react-aria';
 import type { ComboBoxState } from 'react-stately';
 import { rotate180Transition } from '../../../styles';
-import { ChevronDown } from '../..//Icon/System/SystemIcon';
 import { comboBoxButtonClass } from './Combobox.css';
 
 export interface IComboboxButtonProps<T extends object>
@@ -40,7 +40,7 @@ function ComboboxButtonBase<T extends object>(
       className={classNames(comboBoxButtonClass, props.className)}
       ref={ref}
     >
-      <ChevronDown
+      <MonoExpandMore
         data-open={props.state.isOpen}
         className={rotate180Transition}
       />

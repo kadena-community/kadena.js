@@ -1,5 +1,10 @@
 import classNames from 'classnames';
-import type { FC, ForwardedRef, ReactNode } from 'react';
+import type {
+  ForwardRefExoticComponent,
+  ForwardedRef,
+  ReactNode,
+  RefAttributes,
+} from 'react';
 import React, { forwardRef } from 'react';
 import {
   menuClass,
@@ -18,7 +23,9 @@ interface IProps {
   ref?: ForwardedRef<HTMLDivElement>;
 }
 
-export const Menu: FC<IProps> = forwardRef<HTMLDivElement, IProps>(
+export const Menu: ForwardRefExoticComponent<
+  Omit<IProps, 'ref'> & RefAttributes<HTMLDivElement>
+> = forwardRef<HTMLDivElement, IProps>(
   (
     {
       children,

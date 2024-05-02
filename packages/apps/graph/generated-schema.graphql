@@ -15,7 +15,7 @@ type Block implements Node {
 
   """Default page size is 20."""
   events(after: String, before: String, first: Int, last: Int): BlockEventsConnection!
-  hash: ID!
+  hash: String!
   height: BigInt!
   id: ID!
   minerAccount: FungibleChainAccount!
@@ -164,7 +164,7 @@ type FungibleAccountTransfersConnectionEdge {
 type FungibleChainAccount implements Node {
   accountName: String!
   balance: Float!
-  chainId: ID!
+  chainId: String!
   fungibleName: String!
   guard: Guard!
   id: ID!
@@ -235,9 +235,11 @@ type NonFungibleAccount implements Node {
   accountName: String!
   chainAccounts: [NonFungibleChainAccount!]!
   id: ID!
-  nonFungibles: [NonFungibleTokenBalance!]!
+  nonFungibleTokenBalances: [NonFungibleTokenBalance!]!
 
-  """Default page size is 20."""
+  """
+  Default page size is 20. Note that custom token related transactions are not included.
+  """
   transactions(after: String, before: String, first: Int, last: Int): NonFungibleAccountTransactionsConnection!
 }
 
@@ -255,11 +257,13 @@ type NonFungibleAccountTransactionsConnectionEdge {
 """A chain and non-fungible-specific account."""
 type NonFungibleChainAccount implements Node {
   accountName: String!
-  chainId: ID!
+  chainId: String!
   id: ID!
-  nonFungibles: [NonFungibleTokenBalance!]!
+  nonFungibleTokenBalances: [NonFungibleTokenBalance!]!
 
-  """Default page size is 20."""
+  """
+  Default page size is 20. Note that custom token related transactions are not included.
+  """
   transactions(after: String, before: String, first: Int, last: Int): NonFungibleChainAccountTransactionsConnection!
 }
 
@@ -282,11 +286,14 @@ type NonFungibleToken {
 }
 
 """The token identifier and its balance."""
-type NonFungibleTokenBalance {
+type NonFungibleTokenBalance implements Node {
+  accountName: String!
   balance: Int!
   chainId: String!
+  guard: Guard!
   id: ID!
   info: NonFungibleToken
+  tokenId: String!
   version: String!
 }
 
@@ -299,6 +306,15 @@ input PactQuery {
 input PactQueryData {
   key: String!
   value: String!
+}
+
+"""Information related to a token."""
+type PactQueryResponse {
+  chainId: String!
+  code: String!
+  error: String
+  result: String
+  status: String!
 }
 
 type PageInfo {
@@ -368,10 +384,16 @@ type Query {
   """
   fungibleAccount(accountName: String!, fungibleName: String): FungibleAccount
 
+  """Retrieve an account by public key."""
+  fungibleAccountsByPublicKey(fungibleName: String, publicKey: String!): [FungibleAccount!]!
+
   """
   Retrieve an account by its name and fungible, such as coin, on a specific chain.
   """
   fungibleChainAccount(accountName: String!, chainId: String!, fungibleName: String): FungibleChainAccount
+
+  """Retrieve a chain account by public key."""
+  fungibleChainAccountsByPublicKey(chainId: String!, fungibleName: String, publicKey: String!): [FungibleChainAccount!]!
 
   """
   Estimate the gas limit for one or more transactions. Throws an error when the transaction fails or is invalid. The input accepts a JSON object and based on the parameters passed it will determine what type of format it is and return the gas limit estimation. The following types are supported:
@@ -406,7 +428,7 @@ type Query {
   """
   Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).
   """
-  pactQuery(pactQuery: [PactQuery!]!): [String!]!
+  pactQuery(pactQuery: [PactQuery!]!): [PactQueryResponse!]!
 
   """
   Retrieve one transaction by its unique key. Throws an error if multiple transactions are found.
@@ -504,12 +526,10 @@ type Signer implements Node {
   clist: [TransactionCapability!]!
   id: ID!
   orderIndex: Int
-  publicKey: String!
-  requestKey: String!
+  pubkey: String!
 
   """The signature scheme that was used to sign."""
   scheme: String
-  sig: String
 }
 
 type Subscription {
@@ -538,6 +558,7 @@ type Transaction implements Node {
   hash: String!
   id: ID!
   result: TransactionInfo!
+  sigs: [TransactionSignature!]!
 }
 
 """List of capabilities associated with/installed by this signer."""
@@ -626,6 +647,11 @@ type TransactionResultTransfersConnection {
 type TransactionResultTransfersConnectionEdge {
   cursor: String!
   node: Transfer!
+}
+
+"""List of capabilities associated with/installed by this signer."""
+type TransactionSignature {
+  sig: String!
 }
 
 """A transfer of funds from a fungible between two accounts."""

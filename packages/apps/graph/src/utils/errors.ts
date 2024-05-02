@@ -6,12 +6,13 @@ import {
 import { GasLimitEstimationError } from '@services/chainweb-node/estimate-gas-limit';
 import { PactCommandError } from '@services/chainweb-node/utils';
 import { GraphQLError } from 'graphql';
+import { ZodError } from 'zod';
 import { PrismaJsonColumnParsingError } from './prisma-json-columns';
 
 /**
  * Checks what type of error it is and returns a normalized GraphQLError with the correct type, message and a description that clearly translates to the user what the error means.
  */
-export function normalizeError(error: any): GraphQLError {
+export function normalizeError(error: unknown): GraphQLError {
   if (error instanceof PrismaClientInitializationError) {
     return new GraphQLError('Prisma Client Initialization Error', {
       extensions: {
@@ -133,7 +134,7 @@ export function normalizeError(error: any): GraphQLError {
     });
   }
 
-  if (error.name === 'ZodError') {
+  if (error instanceof ZodError) {
     if (error.issues.length > 1) {
       return new GraphQLError('Input Validation Error', {
         extensions: {
@@ -141,7 +142,7 @@ export function normalizeError(error: any): GraphQLError {
           message: 'Multiple validation issues found. See data for details.',
           description:
             'The input provided is invalid. Check the input and try again.',
-          data: error.issues.map((issue: any) => ({
+          data: error.issues.map((issue) => ({
             message: issue.message,
             path: issue.path.join('.'),
           })),
@@ -160,7 +161,12 @@ export function normalizeError(error: any): GraphQLError {
     });
   }
 
-  if (error.type === 'system' && error.code === 'ECONNREFUSED') {
+  if (
+    error instanceof Error &&
+    'code' in error &&
+    'type' in error &&
+    error.code === 'ECONNREFUSED'
+  ) {
     return new GraphQLError('Chainweb Node Connection Refused', {
       extensions: {
         type: error.type,
@@ -175,9 +181,9 @@ export function normalizeError(error: any): GraphQLError {
   return new GraphQLError('Unknown error occured.', {
     extensions: {
       type: 'UnknownError',
-      message: error.message,
+      message: (error as Error).message,
       description: 'An unknown error occured. Check the logs for more details.',
-      data: error.stack,
+      data: (error as Error).stack,
     },
   });
 }

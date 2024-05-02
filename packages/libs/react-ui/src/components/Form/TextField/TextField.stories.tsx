@@ -1,15 +1,19 @@
+import { MonoAccountBalance, MonoCopyAll } from '@kadena/react-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import { onLayer2, withContentWidth } from '../../../storyDecorators';
+import { withContentWidth } from '../../../storyDecorators';
+import { getVariants } from '../../../storyDecorators/getVariants';
 import { atoms } from '../../../styles';
 import { Button } from '../../Button';
-import { Plus } from '../../Icon/System/SystemIcon';
-import { Account } from '../../Icon/System/svgs/Account';
 import { Text } from '../../Typography/Text/Text';
-import { CopyButton } from '../ActionButtons/CopyButton';
 import { Form } from '../Form';
+import { input } from '../Form.css';
 import { TextField } from '../TextField';
 import type { ITextFieldProps } from './TextField';
+
+import { iconControl } from '../../../storyDecorators/iconControl';
+
+const { variant, fontType, size } = getVariants(input);
 
 const formStoryClass = atoms({
   display: 'flex',
@@ -20,9 +24,9 @@ const formStoryClass = atoms({
 const meta: Meta<ITextFieldProps> = {
   title: 'Form/TextField',
   component: TextField,
-  decorators: [withContentWidth, onLayer2],
+  decorators: [withContentWidth],
   parameters: {
-    status: { type: 'releaseCandidate' },
+    status: { type: 'stable' },
     docs: {
       description: {
         component:
@@ -31,6 +35,102 @@ const meta: Meta<ITextFieldProps> = {
     },
   },
   argTypes: {
+    startVisual: iconControl,
+    fontType: {
+      control: {
+        type: 'radio',
+      },
+      options: fontType,
+      defaultValue: 'ui',
+    },
+    size: {
+      control: {
+        type: 'radio',
+      },
+      options: size,
+      defaultValue: 'md',
+    },
+    variant: {
+      control: {
+        type: 'select',
+      },
+      options: variant,
+    },
+    description: {
+      description: 'Helper text to display below the input.',
+      control: {
+        type: 'text',
+      },
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+    info: {
+      description: 'Additional information to display below the input.',
+      control: {
+        type: 'text',
+      },
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+    tag: {
+      description: 'Tag to display below the input.',
+      control: {
+        type: 'text',
+      },
+      defaultValue: 'tag',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+    label: {
+      description: 'Label to display above the input.',
+      control: {
+        type: 'text',
+      },
+      defaultValue: 'Label',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+    placeholder: {
+      description: 'Placeholder text to display in the input.',
+      control: {
+        type: 'text',
+      },
+      defaultValue: 'This is a placeholder',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+    errorMessage: {
+      description: 'Error message to display below the input.',
+      control: {
+        type: 'text',
+      },
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+    isDisabled: {
+      description: 'Disables the input and applies visual styling.',
+      control: {
+        type: 'boolean',
+      },
+      defaultValue: false,
+    },
+    isRequired: {
+      description: 'Marks the input as required',
+      control: {
+        type: 'boolean',
+      },
+      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
     onChange: {
       description: 'onChange handler',
       control: {
@@ -49,112 +149,19 @@ const meta: Meta<ITextFieldProps> = {
         disable: true,
       },
     },
-    description: {
-      description: 'Helper text to display below the input.',
-      control: {
-        type: 'text',
-      },
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    inputFont: {
-      description: 'Font to use for the input.',
-      control: {
-        type: 'select',
-        options: ['body', 'code'],
-      },
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'body' },
-      },
-    },
-    info: {
-      description: 'Additional information to display below the input.',
-      control: {
-        type: 'text',
-      },
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    label: {
-      description: 'Label to display above the input.',
-      control: {
-        type: 'text',
-      },
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    placeholder: {
-      description: 'Placeholder text to display in the input.',
-      control: {
-        type: 'text',
-      },
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    errorMessage: {
-      description: 'Error message to display below the input.',
-      control: {
-        type: 'text',
-      },
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    isPositive: {
-      description: 'Applies positive visual styling.',
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
-    isInvalid: {
-      description: 'Marks the input as invalid and applies visual styling.',
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
-    isDisabled: {
-      description: 'Disables the input and applies visual styling.',
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
-    isReadOnly: {
-      description: 'Prevents the input from being edited.',
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
-    isRequired: {
-      description: 'Marks the input as required',
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
+  },
+  args: {
+    fontType: 'ui',
+    size: 'md',
+    variant: 'default',
+    description: 'Helper text',
+    info: 'Additional information',
+    tag: 'tag',
+    label: 'Label',
+    placeholder: 'This is a placeholder',
+    errorMessage: '',
+    isDisabled: false,
+    isRequired: false,
   },
 };
 
@@ -164,22 +171,6 @@ type Story = StoryObj<ITextFieldProps>;
 
 export const TextFieldStory: Story = {
   name: 'TextField',
-  args: {
-    isDisabled: false,
-    tag: 'tag',
-    description: 'This is helper text',
-    info: '(optional)',
-    label: 'Label',
-    id: 'TextFieldStory',
-    placeholder: 'This is a placeholder',
-    value: '',
-    isInvalid: false,
-    isPositive: false,
-    isReadOnly: false,
-    isRequired: false,
-    errorMessage: '',
-    inputFont: 'body',
-  },
   render: (props) => {
     const [value, setValue] = useState<string>('');
     return <TextField {...props} value={value} onValueChange={setValue} />;
@@ -193,9 +184,44 @@ export const WithoutLabel: Story = {
   },
 };
 
-export const WithAddons: Story = {
-  name: 'With addons',
+export const WithErrorMessage: Story = {
   render: () => {
+    return (
+      <TextField
+        errorMessage="Something went wrong"
+        isInvalid
+        placeholder="placeholder"
+      />
+    );
+  },
+};
+
+export const Disabled: Story = {
+  render: (props) => {
+    return (
+      <TextField
+        {...props}
+        variant="readonly"
+        size="md"
+        label="With addon"
+        placeholder="With addon"
+        startVisual={<MonoAccountBalance />}
+        endAddon={
+          <Button
+            isDisabled
+            variant="transparent"
+            onClick={(e) => e.stopPropagation()}
+          >
+            Button
+          </Button>
+        }
+      />
+    );
+  },
+};
+
+export const Variants: Story = {
+  render: (props) => {
     const [value, setValue] = useState<string>('');
 
     return (
@@ -207,13 +233,74 @@ export const WithAddons: Story = {
         }}
       >
         <TextField
-          label="With addon"
+          {...props}
+          size="sm"
+          label="Default"
+          placeholder="Default"
           value={value}
           onValueChange={setValue}
-          startAddon={<Account />}
-          endAddon={<Button icon={<Plus />} isCompact />}
+          startVisual={<MonoAccountBalance />}
+          endAddon={
+            <Button isCompact variant="transparent">
+              Button
+            </Button>
+          }
         />
-        <Button type="submit">Submit</Button>
+        <TextField
+          {...props}
+          size="md"
+          label="readonly"
+          variant="readonly"
+          placeholder="Readonly"
+          value={value}
+          onValueChange={setValue}
+          startVisual={<MonoAccountBalance />}
+          endAddon={<Button variant="transparent">Button</Button>}
+        />
+        <TextField
+          {...props}
+          size="md"
+          label="negative"
+          variant="negative"
+          placeholder="Negative"
+          value={value}
+          onValueChange={setValue}
+          startVisual={<MonoAccountBalance />}
+          endAddon={<Button variant="transparent">Button</Button>}
+        />
+        <TextField
+          {...props}
+          size="md"
+          label="positive"
+          variant="positive"
+          placeholder="Positive"
+          value={value}
+          onValueChange={setValue}
+          startVisual={<MonoAccountBalance />}
+          endAddon={<Button variant="transparent">Button</Button>}
+        />
+        <TextField
+          {...props}
+          size="md"
+          label="info"
+          variant="info"
+          placeholder="Info"
+          value={value}
+          onValueChange={setValue}
+          startVisual={<MonoAccountBalance />}
+          endAddon={<Button variant="transparent">Button</Button>}
+        />
+        <TextField
+          {...props}
+          size="md"
+          label="warning"
+          variant="warning"
+          placeholder="Warning"
+          value={value}
+          onValueChange={setValue}
+          startVisual={<MonoAccountBalance />}
+          endAddon={<Button variant="transparent">Button</Button>}
+        />
       </Form>
     );
   },
@@ -248,7 +335,6 @@ export const NativeValidation: Story = {
           onValueChange={setEmail}
           placeholder="required (email)"
           minLength={5}
-          maxLength={10}
         />
         <TextField
           isRequired
@@ -385,7 +471,7 @@ export const CustomErrorMessage: Story = {
             v === 'kda' ? 'You are a true believer 🚀' : 'Answer carefully'
           }
           value={value}
-          isPositive={v === 'kda'}
+          variant="positive"
           onValueChange={setValue}
           validationBehavior="aria"
           isInvalid={!!v && v !== 'kda'}
@@ -408,7 +494,11 @@ export const WithCopyButton: Story = {
       <TextField
         id="with-copy-button"
         label="With copy button"
-        endAddon={<CopyButton inputId="with-copy-button" />}
+        endAddon={
+          <Button variant="transparent" onPress={() => alert('Copied!')}>
+            <MonoCopyAll />
+          </Button>
+        }
       />
     );
   },

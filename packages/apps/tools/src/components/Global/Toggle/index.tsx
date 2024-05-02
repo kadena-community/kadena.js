@@ -23,8 +23,8 @@ export const Toggle: FC<IToggleProps> = ({ toggled, label, onClick }) => {
   };
 
   return (
-    <div className={toggleContainerStyle}>
-      <label className={labelStyle}>
+    <label className={toggleContainerStyle}>
+      <span className={labelStyle}>
         <input
           type="checkbox"
           defaultChecked={isToggled}
@@ -33,8 +33,8 @@ export const Toggle: FC<IToggleProps> = ({ toggled, label, onClick }) => {
           aria-label={'toggle'}
         />
         <span className={classNames(spanStyle, { isToggled })} />
-      </label>
+      </span>
       <strong className={strongStyle}>{label}</strong>
-    </div>
+    </label>
   );
 };

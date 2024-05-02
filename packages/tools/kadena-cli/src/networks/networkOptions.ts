@@ -2,7 +2,7 @@ import { Option } from 'commander';
 import { z } from 'zod';
 import { networks } from '../prompts/index.js';
 import { createOption } from '../utils/createOption.js';
-import { isNotEmptyString } from '../utils/helpers.js';
+import { isNotEmptyString } from '../utils/globalHelpers.js';
 import { loadNetworkConfig } from './utils/networkHelpers.js';
 
 export const networkOptions = {
@@ -28,7 +28,7 @@ export const networkOptions = {
     prompt: networks.networkIdPrompt,
     validation: z.string(),
     option: new Option(
-      '--network-id <networkId>',
+      '-i, --network-id <networkId>',
       'Kadena network Id (e.g. "mainnet01")',
     ),
     transform: (networkId: string) => {
@@ -40,7 +40,7 @@ export const networkOptions = {
     prompt: networks.networkHostPrompt,
     validation: z.string(),
     option: new Option(
-      '-h, --network-host <networkHost>',
+      '-s, --network-host <networkHost>',
       'Kadena network host (e.g. "https://api.chainweb.com")',
     ),
     transform: (value: string) => {
@@ -85,11 +85,11 @@ export const networkOptions = {
     ),
   }),
   networkDefaultConfirmation: createOption({
-    key: 'networkDefaultConfirmation' as const,
+    key: 'confirm' as const,
     prompt: networks.networkDefaultConfirmationPrompt,
     validation: z.boolean(),
     option: new Option(
-      '-c, --network-default-confirmation',
+      '-c, --confirm',
       'Confirm to set/unset the network as default',
     ),
   }),

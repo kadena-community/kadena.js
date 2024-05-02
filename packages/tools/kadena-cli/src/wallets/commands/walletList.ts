@@ -1,6 +1,7 @@
 import type { Command } from 'commander';
 
 import { printWalletKeys } from '../../keys/utils/keysDisplay.js';
+import type { IWalletKey } from '../../services/wallet/wallet.types.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { log } from '../../utils/logger.js';
 import { walletOptions } from '../walletOptions.js';
@@ -26,8 +27,19 @@ export const createListWalletsCommand: (
       for (const wallet of config.walletNameConfig) {
         await printWalletKeys(wallet);
       }
+      log.output(
+        null,
+        config.walletNameConfig.reduce(
+          (acc, { alias, keys }) => {
+            acc[alias] = keys;
+            return acc;
+          },
+          {} as Record<string, IWalletKey[]>,
+        ),
+      );
     } else {
       await printWalletKeys(config.walletNameConfig);
+      log.output(null, config.walletNameConfig.keys);
     }
   },
 );

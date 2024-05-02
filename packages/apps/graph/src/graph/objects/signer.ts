@@ -5,9 +5,8 @@ export default builder.prismaNode(Prisma.ModelName.Signer, {
   description: 'A signer for a specific transaction.',
   id: { field: 'requestKey_orderIndex' },
   fields: (t) => ({
-    requestKey: t.exposeString('requestKey'),
     orderIndex: t.exposeInt('orderIndex', { nullable: true }),
-    publicKey: t.exposeString('publicKey'),
+    pubkey: t.exposeString('publicKey'),
     address: t.exposeString('address', {
       nullable: true,
       description: 'The signer for the gas.',
@@ -20,13 +19,15 @@ export default builder.prismaNode(Prisma.ModelName.Signer, {
       type: ['TransactionCapability'],
       resolve: (parent) => {
         return (
-          parent.capabilities as Array<{ args: any[]; name: string }>
-        ).map(({ name, args }) => ({
-          name,
-          args: JSON.stringify(args),
-        }));
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (parent.capabilities as Array<{ args: any[]; name: string }>).map(
+            ({ name, args }) => ({
+              name,
+              args: JSON.stringify(args),
+            }),
+          )
+        );
       },
     }),
-    sig: t.exposeString('signature', { nullable: true }),
   }),
 });

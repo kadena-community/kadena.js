@@ -7,7 +7,7 @@ const meta: Meta<typeof Text> = {
   component: Text,
   parameters: {
     status: {
-      type: ['releaseCandidate'],
+      type: ['stable'],
     },
   },
   argTypes: {

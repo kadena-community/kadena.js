@@ -1,5 +1,5 @@
+import type { Event } from '@/__generated__/sdk';
 import {
-  Event,
   useGetEventsByNameSubscription,
   useGetEventsQuery,
 } from '@/__generated__/sdk';
@@ -34,7 +34,7 @@ const itemsPerPageOptions = [10, 20, 50, 100].map((x) => ({
   value: x,
 }));
 
-const Event: React.FC = () => {
+const EventPage: React.FC = () => {
   const router = useRouter();
 
   const [parametersFilterField, setParametersFilterField] =
@@ -245,7 +245,7 @@ const Event: React.FC = () => {
           onKeyDown={handleKeyPress}
         />
 
-        <Button onClick={search}>Search</Button>
+        <Button onPress={search}>Search</Button>
       </Box>
 
       <Box margin="md" />
@@ -333,4 +333,4 @@ const Event: React.FC = () => {
   );
 };
 
-export default Event;
+export default EventPage;

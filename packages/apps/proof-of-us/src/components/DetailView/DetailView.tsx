@@ -1,4 +1,5 @@
 import { Button } from '@/components/Button/Button';
+import { Confirmation } from '@/components/Confirmation/Confirmation';
 import { MessageBlock } from '@/components/MessageBlock/MessageBlock';
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
@@ -44,12 +45,10 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
 
   const handleRedo = async () => {
     if (!proofOfUs) return;
-    if (!confirm('Are you sure you want to retake your photo?')) return;
     await removeBackground(proofOfUs);
     prev();
   };
   const handleClose = async () => {
-    if (!confirm('Are you sure you want to stop with this token?')) return;
     setIsMounted(false);
     router.replace('/user');
   };
@@ -78,9 +77,14 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
         Prepend={() => (
           <>
             {!isAlreadySigning(proofOfUs) && (
-              <IconButton onClick={handleRedo}>
-                <MonoArrowBack />
-              </IconButton>
+              <Confirmation
+                text="Are you sure you want to retake your photo?"
+                action={handleRedo}
+              >
+                <IconButton title="Retake the photo">
+                  <MonoArrowBack />
+                </IconButton>
+              </Confirmation>
             )}
           </>
         )}
@@ -88,9 +92,14 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
         Append={() => (
           <>
             {!isAlreadySigning(proofOfUs) && (
-              <IconButton onClick={handleClose}>
-                <MonoClose />
-              </IconButton>
+              <Confirmation
+                text="Are you sure you want to stop with this token?"
+                action={handleClose}
+              >
+                <IconButton title="Close">
+                  <MonoClose />
+                </IconButton>
+              </Confirmation>
             )}
           </>
         )}

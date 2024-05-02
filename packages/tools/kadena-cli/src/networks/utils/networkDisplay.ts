@@ -1,7 +1,4 @@
-import {
-  defaultNetworksPath,
-  networkDefaults,
-} from '../../constants/networks.js';
+import { networkDefaults } from '../../constants/networks.js';
 
 import { log } from '../../utils/logger.js';
 
@@ -17,33 +14,39 @@ import type {
 import yaml from 'js-yaml';
 import path from 'path';
 import { services } from '../../services/index.js';
-import type { TableHeader, TableRow } from '../../utils/tableDisplay.js';
+import { KadenaError } from '../../services/service-error.js';
+import { createTable } from '../../utils/table.js';
+import { getNetworkDirectory } from './networkPath.js';
 
 export async function displayNetworksConfig(): Promise<void> {
-  const header: TableHeader = [
-    'Network',
-    'Network ID',
-    'Network Host',
-    'Network Explorer URL',
-    'Default Network',
-  ];
-  const rows: TableRow[] = [];
+  const networkDir = getNetworkDirectory();
+  if (networkDir === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
+
+  const table = createTable({
+    head: [
+      'Network',
+      'Network ID',
+      'Network Host',
+      'Network Explorer URL',
+      'Default Network',
+    ],
+  });
+
   const defaultNetworkName = await getDefaultNetworkName();
   const existingNetworks: ICustomNetworkChoice[] = await getExistingNetworks();
 
   const networks = await Promise.all(
     existingNetworks.map(async (network) => {
-      const networkFilePath = path.join(
-        defaultNetworksPath,
-        `${network.value}.yaml`,
-      );
+      const networkFilePath = path.join(networkDir!, `${network.value}.yaml`);
       const fileContent = await services.filesystem.readFile(networkFilePath);
       const networkConfig: INetworkCreateOptions =
         fileContent !== null
           ? (yaml.load(fileContent) as INetworkCreateOptions)
           : networkDefaults[network.value] !== undefined
-          ? networkDefaults[network.value]
-          : ({} as INetworkCreateOptions);
+            ? networkDefaults[network.value]
+            : ({} as INetworkCreateOptions);
       return {
         ...networkConfig,
       };
@@ -51,7 +54,7 @@ export async function displayNetworksConfig(): Promise<void> {
   );
 
   for (const network of networks) {
-    rows.push([
+    table.push([
       network.network,
       network.networkId ?? 'Not Set',
       network.networkHost ?? 'Not Set',
@@ -60,7 +63,7 @@ export async function displayNetworksConfig(): Promise<void> {
     ]);
   }
 
-  log.output(log.generateTableString(header, rows), {
+  log.output(table.toString(), {
     networks,
     default: defaultNetworkName,
   });

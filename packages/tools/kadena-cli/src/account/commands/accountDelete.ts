@@ -1,18 +1,26 @@
 import { join } from 'path';
 import { NO_ACCOUNTS_FOUND_ERROR_MESSAGE } from '../../constants/account.js';
-import { ACCOUNT_DIR } from '../../constants/config.js';
 import { services } from '../../services/index.js';
+import { KadenaError } from '../../services/service-error.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
-import { isNotEmptyString } from '../../utils/helpers.js';
+import { isNotEmptyString } from '../../utils/globalHelpers.js';
 import { log } from '../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
-import { ensureAccountAliasFilesExists } from '../utils/accountHelpers.js';
+import {
+  ensureAccountAliasFilesExists,
+  getAccountDirectory,
+} from '../utils/accountHelpers.js';
 
 async function deleteAccountDir(): Promise<CommandResult<null>> {
+  const accountDir = getAccountDirectory();
+  if (accountDir === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
+
   try {
-    await services.filesystem.deleteDirectory(ACCOUNT_DIR);
+    await services.filesystem.deleteDirectory(accountDir);
     return {
       data: null,
       status: 'success',
@@ -28,11 +36,16 @@ async function deleteAccountDir(): Promise<CommandResult<null>> {
 async function removeAccount(
   accountAlias: string,
 ): Promise<CommandResult<null>> {
+  const accountDir = getAccountDirectory();
+  if (accountDir === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
+
   if (accountAlias === 'all') {
     return await deleteAccountDir();
   }
 
-  const filePath = join(ACCOUNT_DIR, `${accountAlias}.yaml`);
+  const filePath = join(accountDir, `${accountAlias}.yaml`);
   if (await services.filesystem.fileExists(filePath)) {
     await services.filesystem.deleteFile(filePath);
     return {

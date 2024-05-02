@@ -11,7 +11,6 @@ export const useHasMintedAttendaceToken = () => {
     eventId: string,
     accountName?: string,
   ): Promise<boolean> => {
-    console.log(11, accountName);
     if (!accountName) {
       setHasError(true);
       return false;

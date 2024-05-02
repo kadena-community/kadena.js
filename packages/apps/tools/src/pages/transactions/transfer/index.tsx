@@ -124,8 +124,12 @@ const TransferPage = () => {
           onSenderChainUpdate={setSenderChainId}
           onReceiverChainUpdate={setReceiverChainId}
           setIsLedger={setIsLedger}
+          onReset={() => {
+            setData(null);
+          }}
         />
         <SubmitTransaction
+          key={data?.hash}
           data={data}
           receiverChainId={receiverChainId}
           senderChainId={senderChainId}

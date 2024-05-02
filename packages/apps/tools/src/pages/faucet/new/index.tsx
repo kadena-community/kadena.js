@@ -428,8 +428,7 @@ const NewAccountFaucetPage: FC = () => {
                   isInvalid={!!errors.pubKey}
                   endAddon={
                     <Button
-                      icon={<MonoAdd />}
-                      variant="text"
+                      variant="transparent"
                       onPress={() => {
                         const value = getValues('pubKey');
                         const valid = validatePublicKey(
@@ -446,9 +445,10 @@ const NewAccountFaucetPage: FC = () => {
                       }}
                       aria-label="Add public key"
                       title="Add Public Key"
-                      color="primary"
                       type="button"
-                    />
+                    >
+                      <MonoAdd />
+                    </Button>
                   }
                 />
               )}
@@ -476,17 +476,17 @@ const NewAccountFaucetPage: FC = () => {
                   isDisabled
                   endAddon={
                     <Button
-                      icon={<MonoContentCopy />}
-                      variant="text"
+                      variant="transparent"
                       onPress={async () => {
                         const value = getValues('name');
                         await navigator.clipboard.writeText(value);
                       }}
                       aria-label="Copy Account Name"
                       title="Copy Account Name"
-                      color="primary"
                       type="button"
-                    />
+                    >
+                      <MonoContentCopy />
+                    </Button>
                   }
                 />
               </div>
@@ -503,7 +503,7 @@ const NewAccountFaucetPage: FC = () => {
             <Button
               isLoading={requestStatus.status === 'processing'}
               isDisabled={mainnetSelected}
-              endIcon={<MonoKeyboardArrowRight />}
+              endVisual={<MonoKeyboardArrowRight />}
               title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
               type="submit"
             >

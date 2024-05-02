@@ -20,11 +20,11 @@ const generateEventsFilter = async (args: {
   minimumDepth?: number | null | undefined;
 }): Promise<Prisma.EventWhereInput> => ({
   qualifiedName: args.qualifiedEventName,
-  transaction: {
-    NOT: [],
+  requestKey: {
+    not: 'cb',
   },
   ...(args.parametersFilter && {
-    parameters: parsePrismaJsonColumn(args.parametersFilter, {
+    parameters: parsePrismaJsonColumn<'Event'>(args.parametersFilter, {
       query: 'events',
       queryParameter: 'parametersFilter',
       column: 'parameters',

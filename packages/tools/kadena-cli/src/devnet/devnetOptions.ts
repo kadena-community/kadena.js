@@ -45,7 +45,7 @@ export const devnetOptions = {
     validation: z.number(),
     option: new Option(
       '-p, --port <port>',
-      'Port to forward to the Chainweb node API (e.g. 8080)',
+      'Port to forward to the Chainweb node API (default: 8080)',
     ).argParser((value) => parseInt(value, 10)),
   }),
   devnetUseVolume: createOption({
@@ -63,7 +63,7 @@ export const devnetOptions = {
     validation: z.string(),
     option: new Option(
       '-m, --mountPactFolder <mountPactFolder>',
-      'Mount a folder containing Pact files to the container (e.g. "./pact")',
+      'Mount a folder containing Pact files to the container (e.g. "./pact", optional)',
     ),
   }),
   devnetSelect: createOption({

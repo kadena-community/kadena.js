@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { atoms } from '../../../styles';
+import { atoms, token } from '../../../styles';
 
 export const headerClass = style([
   atoms({
@@ -22,7 +22,7 @@ export const infoClass = style([
 
 export const tagClass = style([
   atoms({
-    backgroundColor: 'layer03.inverse.default',
+    backgroundColor: 'base.inverse.default',
     color: 'text.base.inverse.default',
     borderRadius: 'sm',
     paddingInline: 'sm',
@@ -42,4 +42,15 @@ export const labelClass = style([
     color: 'text.base.default',
     fontWeight: 'secondaryFont.bold',
   }),
+]);
+
+export const disabledLabelClass = style([
+  atoms({
+    fontSize: 'sm',
+    pointerEvents: 'none',
+    fontWeight: 'secondaryFont.bold',
+  }),
+  {
+    color: token('color.text.base.@disabled'),
+  },
 ]);

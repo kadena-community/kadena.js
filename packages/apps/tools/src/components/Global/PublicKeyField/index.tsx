@@ -14,7 +14,7 @@ export const PublicKeyField: FC<ITextFieldProps> = forwardRef<
       {...props}
       ref={ref}
       label={t('Public Key')}
-      inputFont="code"
+      fontType="code"
       id="public-key-input"
       placeholder={t('Enter Public Key')}
     />

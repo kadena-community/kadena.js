@@ -37,6 +37,11 @@ import type { SenderType } from './sign-form-sender';
 
 type TabValue = 'new' | 'existing';
 
+interface IChainInfo {
+  chainId: ChainId;
+  data: string | number;
+}
+
 export const SignFormReceiver = ({
   onDataUpdate,
   onPubKeysUpdate,
@@ -52,19 +57,21 @@ export const SignFormReceiver = ({
 }) => {
   const { t } = useTranslation('common');
 
+  const isLedger = signingMethod === 'Ledger';
+
   const { selectedNetwork: network, networksData } = useWalletConnectClient();
 
   const {
-    control,
     formState: { errors },
     getValues,
+    control,
     watch,
     setValue,
   } = useFormContext<FormData>();
 
-  const [chainSelectOptions, setChainSelectOptions] = useState<
-    { chainId: ChainId; data: string | number }[]
-  >([]);
+  const [chainSelectOptions, setChainSelectOptions] = useState<IChainInfo[]>(
+    [],
+  );
 
   const [watchReceiver, watchChain] = watch(['receiver', 'receiverChainId']);
 
@@ -101,12 +108,32 @@ export const SignFormReceiver = ({
 
   const [toAccountTab, setToAccountTab] = useState<TabValue>('existing');
 
+  const [pubKeys, setPubKeys] = useState<string[]>([]);
+
+  const [initialPublicKey, setInitialPublicKey] = useState<string>('');
+
+  const deletePublicKey = () => setValue('receiver', '');
+
+  const [pred, onPredSelectChange] = useState<PredKey>('keys-all');
+
+  const switchToTabBasedOnChain = (chainInfo: IChainInfo) => {
+    const { data } = chainInfo;
+    const tab = data as TabValue;
+    if (tab === 'new') {
+      setToAccountTab('new');
+      setInitialPublicKey('');
+      setPubKeys([stripAccountPrefix(getValues('receiver'))]);
+    } else {
+      setToAccountTab('existing');
+      setPubKeys([]);
+    }
+  };
+
   const renderAccountFieldWithChain = (tab: TabValue) => (
     <Stack flexDirection={'column'} gap={'md'}>
       <Controller
         name="receiver"
         control={control}
-        defaultValue={''}
         render={({ field }) => (
           <AccountNameField
             {...field}
@@ -116,20 +143,24 @@ export const SignFormReceiver = ({
             isDisabled={tab === 'new'}
             endAddon={
               <Button
-                icon={<MonoContentCopy />}
-                variant="text"
+                variant="transparent"
                 onPress={async () => {
                   await navigator.clipboard.writeText(field.value);
                 }}
                 aria-label="Copy Account Name"
                 title="Copy Account Name"
-                color="primary"
                 type="button"
-              />
+              >
+                <MonoContentCopy />
+              </Button>
+            }
+            description={
+              isLedger ? t('ledger-account-name-signing') : undefined
             }
           />
         )}
       />
+
       <div className={chainSelectContainerClass}>
         <Controller
           name="receiverChainId"
@@ -137,10 +168,19 @@ export const SignFormReceiver = ({
           render={({ field: { onChange, value, ...rest } }) => (
             <ChainSelect
               {...rest}
-              selectedKey={value}
               id="receiverChainId"
+              selectedKey={value}
               onSelectionChange={(chainId) => {
                 onChange(chainId);
+
+                const chainInfo = chainSelectOptions.find(
+                  (item) => item.chainId === chainId,
+                );
+
+                if (chainInfo) {
+                  switchToTabBasedOnChain(chainInfo);
+                }
+
                 onChainUpdate(chainId);
               }}
               additionalInfoOptions={chainSelectOptions}
@@ -152,28 +192,6 @@ export const SignFormReceiver = ({
       </div>
     </Stack>
   );
-
-  const [pubKeys, setPubKeys] = useState<string[]>([]);
-
-  const [initialPublicKey, setInitialPublicKey] = useState<string>('');
-
-  const deletePublicKey = () => setValue('receiver', '');
-
-  const [pred, onPredSelectChange] = useState<PredKey>('keys-all');
-
-  if (toAccountTab === 'existing' && receiverData?.error) {
-    setToAccountTab('new');
-    setInitialPublicKey('');
-    if (getValues('receiver').startsWith('k:')) {
-      setPubKeys([stripAccountPrefix(getValues('receiver'))]);
-    }
-  }
-
-  if (toAccountTab === 'new' && receiverData?.data) {
-    setTimeout(() => {
-      setToAccountTab('existing');
-    }, 500);
-  }
 
   const watchReceiverChainId = watch('receiverChainId');
 
@@ -215,14 +233,14 @@ export const SignFormReceiver = ({
         setChainSelectOptions(
           receiverAccountChains.data.map((item) => ({
             chainId: item.chainId,
-            data: item.data ? `existing` : 'new',
+            data: item.data ? 'existing' : 'new',
           })),
         );
       }
+    } else {
+      setChainSelectOptions([]); // reset to initial state
     }
   }, [receiverAccountChains.isSuccess, receiverAccountChains.data]);
-
-  const isLedger = signingMethod === 'Ledger';
 
   return (
     <LoadingCard fullWidth isLoading={receiverData.isFetching}>

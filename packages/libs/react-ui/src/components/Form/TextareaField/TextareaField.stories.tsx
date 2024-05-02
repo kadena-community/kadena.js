@@ -1,14 +1,21 @@
+import { MonoAdd } from '@kadena/react-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import { onLayer2, withContentWidth } from '../../../storyDecorators';
+import {
+  getVariants,
+  onLayer2,
+  withContentWidth,
+} from '../../../storyDecorators';
 import { atoms } from '../../../styles';
 import { Button } from '../../Button';
-import { Plus } from '../../Icon/System/SystemIcon';
 import { Text } from '../../Typography/Text/Text';
 import { CopyButton } from '../ActionButtons/CopyButton';
 import { Form } from '../Form';
+import { input } from '../Form.css';
 import { TextareaField } from '../TextareaField';
 import type { ITextareaFieldProps } from './TextareaField';
+
+const { variant, fontType, size } = getVariants(input);
 
 const formStoryClass = atoms({
   display: 'flex',
@@ -21,7 +28,7 @@ const meta: Meta<ITextareaFieldProps> = {
   component: TextareaField,
   decorators: [withContentWidth, onLayer2],
   parameters: {
-    status: { type: 'releaseCandidate' },
+    status: { type: 'stable' },
     docs: {
       description: {
         component:
@@ -30,30 +37,34 @@ const meta: Meta<ITextareaFieldProps> = {
     },
   },
   argTypes: {
-    onChange: {
-      description: 'onChange handler',
+    variant: {
+      description: 'Variant of the input.',
       control: {
-        disable: true,
+        type: 'select',
       },
+      options: variant,
       table: {
-        disable: true,
+        type: { summary: 'string' },
+        defaultValue: { summary: 'body' },
       },
     },
-    onValueChange: {
-      description: 'onValueChange handler',
+    size: {
+      description: 'Size of the input.',
       control: {
-        disable: true,
+        type: 'select',
       },
+      options: size,
       table: {
-        disable: true,
+        type: { summary: 'string' },
+        defaultValue: { summary: 'md' },
       },
     },
-    inputFont: {
+    fontType: {
       description: 'Font to use for the input.',
       control: {
         type: 'select',
-        options: ['body', 'code'],
       },
+      options: fontType,
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'body' },
@@ -68,7 +79,6 @@ const meta: Meta<ITextareaFieldProps> = {
         type: { summary: 'string' },
       },
     },
-
     info: {
       description: 'Additional information to display below the input.',
       control: {
@@ -88,7 +98,6 @@ const meta: Meta<ITextareaFieldProps> = {
         defaultValue: { summary: 'false' },
       },
     },
-
     label: {
       description: 'Label to display above the input.',
       control: {
@@ -98,7 +107,6 @@ const meta: Meta<ITextareaFieldProps> = {
         type: { summary: 'string' },
       },
     },
-
     placeholder: {
       description: 'Placeholder text to display in the input.',
       control: {
@@ -108,7 +116,6 @@ const meta: Meta<ITextareaFieldProps> = {
         type: { summary: 'string' },
       },
     },
-
     errorMessage: {
       description: 'Error message to display below the input.',
       control: {
@@ -118,17 +125,6 @@ const meta: Meta<ITextareaFieldProps> = {
         type: { summary: 'string' },
       },
     },
-    isPositive: {
-      description: 'Applies positive visual styling.',
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
-
     isInvalid: {
       description: 'Marks the input as invalid and applies visual styling.',
       control: {
@@ -139,7 +135,6 @@ const meta: Meta<ITextareaFieldProps> = {
         defaultValue: { summary: 'false' },
       },
     },
-
     isDisabled: {
       description: 'Disables the input and applies visual styling.',
       control: {
@@ -150,7 +145,6 @@ const meta: Meta<ITextareaFieldProps> = {
         defaultValue: { summary: 'false' },
       },
     },
-
     isReadOnly: {
       description: 'Prevents the input from being edited.',
       control: {
@@ -161,7 +155,6 @@ const meta: Meta<ITextareaFieldProps> = {
         defaultValue: { summary: 'false' },
       },
     },
-
     isRequired: {
       description: 'Marks the input as required',
       control: {
@@ -170,6 +163,24 @@ const meta: Meta<ITextareaFieldProps> = {
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
+      },
+    },
+    onChange: {
+      description: 'onChange handler',
+      control: {
+        disable: true,
+      },
+      table: {
+        disable: true,
+      },
+    },
+    onValueChange: {
+      description: 'onValueChange handler',
+      control: {
+        disable: true,
+      },
+      table: {
+        disable: true,
       },
     },
   },
@@ -182,6 +193,9 @@ type Story = StoryObj<ITextareaFieldProps>;
 export const TextareaFieldStory: Story = {
   name: 'TextareaField',
   args: {
+    variant: 'default',
+    size: 'md',
+    fontType: 'ui',
     isDisabled: false,
     tag: 'tag',
     description: 'This is helper text',
@@ -196,7 +210,6 @@ export const TextareaFieldStory: Story = {
     isRequired: false,
     autoResize: false,
     errorMessage: '',
-    inputFont: 'body',
   },
   render: (props) => {
     const [value, setValue] = useState<string>('');
@@ -228,7 +241,7 @@ export const WithAddon: Story = {
           label="With addon"
           value={value}
           onValueChange={setValue}
-          endAddon={<Button icon={<Plus />} isCompact />}
+          endAddon={<Button endVisual={<MonoAdd />} isCompact />}
         />
         <Button type="submit">Submit</Button>
       </Form>
@@ -392,6 +405,17 @@ export const WithCopyButton: Story = {
         id="with-copy-button"
         label="With copy button"
         endAddon={<CopyButton inputId="with-copy-button" />}
+      />
+    );
+  },
+};
+export const WithAddons: Story = {
+  render: () => {
+    return (
+      <TextareaField
+        label="With Addons"
+        startVisual={<MonoAdd />}
+        endAddon={<Button>Button</Button>}
       />
     );
   },

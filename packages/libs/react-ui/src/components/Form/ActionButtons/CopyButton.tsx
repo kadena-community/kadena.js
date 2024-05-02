@@ -1,7 +1,7 @@
+import { MonoCheck, MonoContentCopy } from '@kadena/react-icons/system';
 import type { ComponentProps, FC } from 'react';
 import React, { useRef } from 'react';
 import { useAsyncFn } from '../../../utils/useAsyncFn';
-import { Check, ContentCopy } from '../../Icon/System/SystemIcon';
 import { buttonClass } from './CopyButton.css';
 
 export interface ICopyButtonProps
@@ -28,7 +28,7 @@ export const CopyButton: FC<ICopyButtonProps> = ({ inputId, ...restProps }) => {
       onClick={copy}
       className={buttonClass}
     >
-      {isSuccess ? <Check size="sm" /> : <ContentCopy size="sm" />}
+      {isSuccess ? <MonoCheck /> : <MonoContentCopy />}
     </button>
   );
 };
