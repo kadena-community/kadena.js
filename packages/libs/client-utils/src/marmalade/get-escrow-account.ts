@@ -5,24 +5,18 @@ import type { ChainId } from '@kadena/types';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
-interface IGetAccountBalanceInput {
-  tokenId: string;
-  accountName: string;
+interface IGetEscrowInput {
+  saleId: string;
   chainId: ChainId;
   guard: {
     account: string;
   };
 }
 
-const getAccountDetailsCommand = ({
-  tokenId,
-  accountName,
-  chainId,
-  guard,
-}: IGetAccountBalanceInput) =>
+const getEscrowAccountCommand = ({ saleId, chainId, guard }: IGetEscrowInput) =>
   composePactCommand(
     execution(
-      Pact.modules['marmalade-v2.ledger']['details'](tokenId, accountName),
+      Pact.modules['marmalade-v2.policy-manager']['get-escrow-account'](saleId),
     ),
     setMeta({
       senderAccount: guard.account,
@@ -30,10 +24,12 @@ const getAccountDetailsCommand = ({
     }),
   );
 
-export const getAccountDetails = (
-  inputs: IGetAccountBalanceInput,
+export const getEscrowAccount = (
+  inputs: IGetEscrowInput,
   config: IClientConfig,
 ) =>
   dirtyReadClient<
-    PactReturnType<IPactModules['marmalade-v2.ledger']['details']>
-  >(config)(getAccountDetailsCommand(inputs));
+    PactReturnType<
+      IPactModules['marmalade-v2.policy-manager']['get-escrow-account']
+    >
+  >(config)(getEscrowAccountCommand(inputs));

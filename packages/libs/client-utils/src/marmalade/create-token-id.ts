@@ -15,8 +15,8 @@ import {
 import type { IPactInt } from '@kadena/types';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
-import type { ICreateTokenPolicyConfig } from './policy-config';
-import { validatePolicies } from './policy-config';
+import type { ICreateTokenPolicyConfig } from './config';
+import { validatePolicies } from './helpers';
 
 interface ICreateTokenIdInput {
   policyConfig?: ICreateTokenPolicyConfig;

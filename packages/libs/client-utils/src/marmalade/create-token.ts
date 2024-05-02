@@ -20,14 +20,19 @@ import type { IGeneralCapability } from '@kadena/client/lib/interfaces/type-util
 import type { IPactInt } from '@kadena/types';
 import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
+import {
+  formatAdditionalSigners,
+  formatCapabilities,
+} from '../integration-tests/support/helpers';
 import type {
+  CommonProps,
   ICreateTokenPolicyConfig,
   PolicyProps,
   WithCreateTokenPolicy,
-} from './policy-config';
-import { validatePolicies } from './policy-config';
+} from './config';
+import { validatePolicies } from './helpers';
 
-interface ICreateTokenInput {
+interface ICreateTokenInput extends CommonProps {
   policies?: string[];
   uri: string;
   tokenId: string;
@@ -88,7 +93,7 @@ const generatePolicyTransactionData = (
   if (policyConfig?.hasRoyalty) {
     data.push(addData('fungible', props.royalty.fungible));
     data.push(addData('creator', props.royalty.creator));
-    data.push(addData('creator-guard', props.royalty.creatorGuard));
+    data.push(addData('creator-guard', props.royalty.creator.keyset));
     data.push(addData('royalty-rate', props.royalty.royaltyRate.decimal));
   }
 
@@ -114,6 +119,9 @@ const createTokenCommand = <C extends ICreateTokenPolicyConfig>({
   creator,
   chainId,
   policyConfig,
+  meta,
+  capabilities,
+  additionalSigners,
   ...policyProps
 }: WithCreateTokenPolicy<C, ICreateTokenInput>) => {
   validatePolicies(policyConfig as ICreateTokenPolicyConfig, policies);
@@ -129,7 +137,6 @@ const createTokenCommand = <C extends ICreateTokenPolicyConfig>({
         readKeyset('creation-guard'),
       ),
     ),
-    setMeta({ senderAccount: creator.account, chainId }),
     addKeyset('creation-guard', creator.keyset.pred, ...creator.keyset.keys),
     addSigner(creator.keyset.keys, (signFor) => [
       signFor('coin.GAS'),
@@ -142,11 +149,14 @@ const createTokenCommand = <C extends ICreateTokenPolicyConfig>({
         },
         signFor,
       ),
+      ...formatCapabilities(capabilities, signFor),
     ]),
     ...generatePolicyTransactionData(
       policyConfig as ICreateTokenPolicyConfig,
       policyProps as unknown as PolicyProps,
     ),
+    ...formatAdditionalSigners(additionalSigners),
+    setMeta({ senderAccount: creator.account, chainId, ...meta }),
   );
 };
 
