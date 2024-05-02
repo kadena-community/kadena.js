@@ -100,7 +100,7 @@ export const createGenerateWalletCommand: (
           );
         logAccountCreation(accountName, accountFilepath);
         log.info(`\nTo fund the account, use the following command:`);
-        log.info(`kadena account fund --account ${accountName}`);
+        log.info(`kadena account fund --account ${config.accountAlias}`);
       }
 
       log.output(null, {
