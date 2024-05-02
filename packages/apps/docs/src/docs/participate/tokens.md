@@ -28,8 +28,8 @@ You can find an update to the economic model in [Update to the Kadena Token Econ
 
 For information about getting, managing, and moving KDA tokens, see the following topics:
 
-- [Exchanges](/invest/exchanges)
-- [Wallets](/invest/wallets)
+- [Exchanges](/participate/exchanges)
+- [Wallets](/participate/wallets)
 
 ## View recent articles
 

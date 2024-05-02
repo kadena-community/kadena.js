@@ -22,7 +22,7 @@ This section provides an introduction to the custody solutions available with li
 Official Kadena wallet for advanced blockchain usage and smart contract development. 
 Chainweaver has an integrated signing API that enables you to sign transactions interactively from applications that implement the API.
 
-[Get started with Chainweaver](/invest/wallets/chainweaver)
+[Get started with Chainweaver](/participate/wallets/chainweaver)
 
 [Web beta](https://chainweaver.kadena.network)
 

@@ -86,7 +86,7 @@ To install as a virtual application:
 
 ## Create or restore a wallet
 
-As discussed in [Wallets](/invest/wallets), wallets are the primary way you can hold and manage digital assets.
+As discussed in [Wallets](/participate/wallets), wallets are the primary way you can hold and manage digital assets.
 When you start Chainweaver, you have the option to create a new wallet or restore an existing wallet.
 
 ### Create a new wallet
@@ -100,11 +100,11 @@ To create a new wallet:
 2. Record your secret 12-word recovery phrase and store the phrase in a secure location.
 
    You can copy all of the words at once or hover over each word to view and record it.
-   For suggestions on securing your recovery phrase, see [Basic safety tips]().
+   For suggestions on securing your recovery phrase, see [Basic safety tips](#basic-safety-tips).
    .
 3. Verify the recovery phrase by typing each word in the correct order to complete wallet creation.
    
-   After creating the wallet, you'll be ready to [create an account](/invest/wallets/chainweaver#create-an-accounth1279555262) on the blockchain.
+   After creating the wallet, you'll be ready to [create an account](/participate/wallets/chainweaver#create-an-accounth1279555262) on the blockchain.
 
 ### Restore a wallet using a recovery phrase
 

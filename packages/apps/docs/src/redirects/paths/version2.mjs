@@ -11,12 +11,12 @@ export const version2PathUrlRedirects = [
   },
   {
     source: '/kadena/kda',
-    destination: '/invest',
+    destination: '/participate',
     permanent: true,
   },
   {
     source: '/kadena/kda/manage-kda',
-    destination: '/invest',
+    destination: '/participate',
     permanent: true,
   },
   {
@@ -26,27 +26,27 @@ export const version2PathUrlRedirects = [
   },
   {
     source: '/kadena/exchanges',
-    destination: '/invest/exchanges',
+    destination: '/participate/exchanges',
     permanent: true,
   },
   {
     source: '/kadena/exchanges/:slug',
-    destination: '/invest/exchanges',
+    destination: '/participate/exchanges',
     permanent: true,
   },
   {
     source: '/kadena/wallets',
-    destination: '/invest/wallets',
+    destination: '/participate/wallets',
     permanent: true,
   },
   {
     source: '/kadena/wallets/:slug',
-    destination: '/invest/wallets/:slug',
+    destination: '/participate/wallets/:slug',
     permanent: true,
   },
   {
     source: '/kadena/wallets/chainweaver/:slug',
-    destination: '/invest/wallets/chainweaver',
+    destination: '/participate/wallets/chainweaver',
     permanent: true,
   },
   {
