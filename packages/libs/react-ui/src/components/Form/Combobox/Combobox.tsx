@@ -1,24 +1,30 @@
 import { mergeProps, useObjectRef } from '@react-aria/utils';
-import classNames from 'classnames';
 import type { ForwardedRef, ReactNode } from 'react';
 import React, { forwardRef, useRef } from 'react';
 import type { AriaComboBoxProps } from 'react-aria';
 import { useComboBox, useFilter, useHover } from 'react-aria';
 import { useComboBoxState } from 'react-stately';
 
-import { atoms } from '../../../styles';
+import { MonoExpandMore } from '@kadena/react-icons';
+import type { RecipeVariants } from '@vanilla-extract/recipes';
+import classNames from 'classnames';
+import { rotate180Transition } from '../../../styles';
+import { Button } from '../../Button';
 import { ListBox } from '../../ListBox';
 import { Popover } from '../../Popover';
-import { formField } from '../Form.css';
-import { FormFieldHeader } from '../FormFieldHeader/FormFieldHeader';
-import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
-import { comboBoxControlClass, comboBoxInputClass } from './Combobox.css';
-import { ComboboxButton } from './ComboboxButton';
+import { Field } from '../Field/Field';
+import { input } from '../Form.css';
+import { comboBoxControlClass } from './Combobox.css';
+
+type Variants = NonNullable<RecipeVariants<typeof input>>;
 
 export interface IComboboxProps<T extends object = any>
   extends AriaComboBoxProps<T> {
+  variant?: Variants['variant'];
+  fontType?: Variants['fontType'];
+  size?: Variants['size'];
   isPositive?: boolean;
-  startIcon?: ReactNode;
+  startVisual?: ReactNode;
   className?: string;
   tag?: string;
   info?: string;
@@ -41,6 +47,19 @@ function ComboBoxBase<T extends object>(
   const popoverRef = useRef(null);
   const triggerRef = useRef(null);
 
+  const {
+    size = 'md',
+    fontType = 'ui',
+    className,
+    tag,
+    info,
+    errorMessage,
+    description,
+    variant = 'default',
+    startVisual,
+    label,
+  } = props;
+
   const { contains } = useFilter({ sensitivity: 'base' });
   const state = useComboBoxState({
     shouldCloseOnBlur: true,
@@ -49,15 +68,7 @@ function ComboBoxBase<T extends object>(
     defaultFilter: props.defaultFilter || contains,
   });
 
-  const {
-    buttonProps,
-    inputProps,
-    listBoxProps,
-    labelProps,
-    descriptionProps,
-    errorMessageProps,
-    ...validation
-  } = useComboBox(
+  const { buttonProps, inputProps, listBoxProps, ...fieldProps } = useComboBox(
     {
       ...props,
       isDisabled,
@@ -79,57 +90,43 @@ function ComboBoxBase<T extends object>(
     'data-invalid': props.isInvalid || undefined,
     'data-positive': props.isPositive || undefined,
   };
-  // aggregate error message from validation props
-  const errorMessage =
-    typeof props.errorMessage === 'function'
-      ? props.errorMessage(validation)
-      : props.errorMessage ?? validation.validationErrors.join(' ');
 
   return (
-    <div className={classNames(formField, props.className)}>
-      {props.label && (
-        <FormFieldHeader
-          {...labelProps}
-          label={props.label}
-          info={props.info}
-          tag={props.tag}
-        />
-      )}
+    <Field
+      {...fieldProps}
+      variant={variant}
+      label={label}
+      isDisabled={isDisabled}
+      description={description}
+      errorMessage={errorMessage}
+      size={size}
+      tag={tag}
+      info={info}
+      ref={inputRef}
+      isInvalid={fieldProps.isInvalid}
+      startVisual={startVisual}
+      endAddon={
+        <Button variant="transparent" {...buttonProps} ref={buttonRef}>
+          <MonoExpandMore
+            data-open={state.isOpen}
+            className={rotate180Transition}
+          />
+        </Button>
+      }
+    >
       <div
         {...mergeProps(dataProps, hoverProps)}
         ref={triggerRef}
         className={comboBoxControlClass}
       >
-        {props.startIcon && (
-          <span className={atoms({ marginInlineEnd: 'sm' })}>
-            {props.startIcon}
-          </span>
-        )}
-        <input {...inputProps} ref={inputRef} className={comboBoxInputClass} />
-        <ComboboxButton
-          {...buttonProps}
-          ref={buttonRef}
-          state={state}
-          isDisabled={isDisabled}
-          autoFocus={props.autoFocus}
-          isInvalid={validation.isInvalid}
-          isPositive={props.isPositive}
-          elementType="button"
+        <input
+          {...inputProps}
+          ref={inputRef}
+          className={classNames(input({ fontType, variant, size }), className)}
+          data-has-start-addon={!!startVisual || undefined}
+          data-has-end-addon
         />
       </div>
-      {props.description && (
-        <FormFieldHelpText
-          {...descriptionProps}
-          data-disabled={isDisabled || undefined}
-        >
-          {props.description}
-        </FormFieldHelpText>
-      )}
-      {validation.isInvalid && props.errorMessage && (
-        <FormFieldHelpText {...errorMessageProps} intent="negative">
-          {errorMessage}
-        </FormFieldHelpText>
-      )}
       {state.isOpen && (
         <Popover
           state={state}
@@ -142,7 +139,7 @@ function ComboBoxBase<T extends object>(
           <ListBox {...listBoxProps} ref={listBoxRef} state={state} />
         </Popover>
       )}
-    </div>
+    </Field>
   );
 }
 
