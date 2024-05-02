@@ -94,6 +94,7 @@ export const levelItemVariantClass = styleVariants({
     cursor: 'pointer',
     fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.regular,
     padding: `${tokens.kda.foundation.spacing.md} 0 ${tokens.kda.foundation.spacing.sm}`,
+    paddingInlineEnd: tokens.kda.foundation.spacing.md,
     borderBottom: `1px solid ${$$borderColor}`,
     fontSize: tokens.kda.foundation.typography.fontSize.md,
   },
