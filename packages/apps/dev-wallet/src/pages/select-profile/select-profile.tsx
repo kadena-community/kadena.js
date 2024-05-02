@@ -1,5 +1,6 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { Box, Heading, Stack, SystemIcon, Text } from '@kadena/react-ui';
+import { MonoAdd } from '@kadena/react-icons';
+import { Box, Heading, Stack, Text } from '@kadena/react-ui';
 import { Link } from 'react-router-dom';
 import InitialsAvatar from './initials';
 import { aliasClass, cardClass, imgClass } from './select-profile.css';
@@ -41,7 +42,7 @@ export function SelectProfile() {
           <Link to="/create-profile" style={{ textDecoration: 'none' }}>
             <div className={cardClass}>
               <div className={imgClass}>
-                <SystemIcon.Plus size="xl" />
+                <MonoAdd />
               </div>
 
               <div className={aliasClass}>

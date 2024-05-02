@@ -120,7 +120,7 @@ const Header: FC<IHeaderProps> = () => {
             aria-label={t('Select Network')}
             selectedKey={selectedNetwork as string}
             onSelectionChange={(value) => handleOnChange(value as Network)}
-            startIcon={<MonoPublic />}
+            startVisual={<MonoPublic />}
           >
             {[
               ...networksData.map((network: INetworkData) => (

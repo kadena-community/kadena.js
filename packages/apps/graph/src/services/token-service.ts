@@ -82,7 +82,7 @@ export async function getNonFungibleTokenBalances(
 
       result.push({
         __typename: NonFungibleTokenBalanceName,
-        balance,
+        balance: Number(balance),
         accountName,
         tokenId: event.token,
         chainId: finalChainId,

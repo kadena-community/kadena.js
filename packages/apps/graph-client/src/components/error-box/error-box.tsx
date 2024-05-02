@@ -1,5 +1,6 @@
 import type { ApolloError } from '@apollo/client';
-import { Box, Notification, SystemIcon } from '@kadena/react-ui';
+import { MonoClose } from '@kadena/react-icons/system';
+import { Box, Notification } from '@kadena/react-ui';
 import React from 'react';
 
 interface IErrorBoxProps {
@@ -33,7 +34,7 @@ export const ErrorBox = (props: IErrorBoxProps): JSX.Element => {
   }
 
   return (
-    <Notification intent="negative" icon={<SystemIcon.Close />} role="status">
+    <Notification intent="negative" icon={<MonoClose />} role="status">
       {errorTitle}
       <Box margin="sm" />
       {errorMessage}

@@ -17,7 +17,7 @@
     "kadena-graph": "./dist/index.js"
   },
   "scripts": {
-    "build": "pnpm run pactjs:generate:contract:coin && pnpm run pactjs:generate:contract:marmalade && pnpm run pactjs:generate:contract:marmalade-v2 && pnpm prisma:generate && tsc",
+    "build": "pnpm run pactjs:generate:contracts && pnpm prisma:generate && tsc",
     "deploy:marmalade": "ts-node -T src/devnet/deployment/index.ts deploy:marmalade",
     "devnet": "docker volume create kadena_devnet; docker run --rm -it -p 8080:8080 -p 5432:5432 -p 9999:9999 -p 1789:1789 -v kadena_devnet:/data -v ./cwd-extra-migrations:/cwd-extra-migrations:ro --name devnet kadena/devnet",
     "devnet:update": "docker pull kadena/devnet",
@@ -33,6 +33,7 @@
     "pactjs:generate:contract:faucet": "pactjs contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact;",
     "pactjs:generate:contract:marmalade": "pactjs contract-generate --contract marmalade.ledger --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact;",
     "pactjs:generate:contract:marmalade-v2": "pactjs contract-generate --contract marmalade-v2.ledger --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact;",
+    "pactjs:generate:contracts": "npm run pactjs:generate:contract:coin & npm run pactjs:generate:contract:marmalade & npm run pactjs:generate:contract:marmalade-v2",
     "prisma:generate": "prisma generate",
     "prisma:pull": "prisma db pull",
     "prisma:studio": "prisma studio",

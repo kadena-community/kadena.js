@@ -1,11 +1,11 @@
 import { useNetwork } from '@/modules/network/network.hook';
+import { MonoPublic } from '@kadena/react-icons';
 import {
   KadenaLogo,
   NavHeader,
   NavHeaderLinkList,
   NavHeaderSelect,
   SelectItem,
-  SystemIcon,
   Text,
 } from '@kadena/react-ui';
 import { FC } from 'react';
@@ -43,7 +43,7 @@ export const Layout: FC = () => {
           aria-label="Select Network"
           selectedKey={activeNetwork?.networkId}
           onSelectionChange={(value) => handleNetworkUpdate(value as string)}
-          startIcon={<SystemIcon.Earth />}
+          startVisual={<MonoPublic />}
         >
           {networks.map((network) => (
             <SelectItem key={network.networkId} textValue={network.name}>

@@ -33,6 +33,7 @@ export const defaultArguments = {
   marmalade_namespace: 'marmalade-v2',
   marmalade_sale_namespace: 'marmalade-sale',
   is_upgrade: 'false',
+  upgrade_version_1: 'false',
   network: defaultNetworkId,
   chain: defaultChainId,
   sender: defaultAccount.account,
@@ -40,14 +41,9 @@ export const defaultArguments = {
   signer: defaultAccount.publicKeys?.[0] ?? '',
   marmalade_user_key_1: defaultAccount.publicKeys?.[0] ?? '',
   marmalade_user_key_2: defaultAccount.publicKeys?.[0] ?? '',
+  kip_ns_user_key_1: defaultAccount.publicKeys?.[0] ?? '',
+  kip_ns_user_key_2: defaultAccount.publicKeys?.[0] ?? '',
 };
-
-/**
- * Define the order of the namespaces in the marmalade contracts: the smart contracts
- * related to the namespace of the first item are going to be deployed first,
- * then the second, and so on
- */
-export const defaultNamespaceDeployOrder = ['marmalade-v2', 'marmalade-sale'];
 
 export const defaultNamespaceConfig: INamespaceConfig[] = [
   {
