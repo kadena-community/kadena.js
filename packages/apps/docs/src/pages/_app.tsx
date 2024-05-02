@@ -70,7 +70,10 @@ export const MyApp = ({
         <meta name="title" content={title} />
         <meta name="description" content={description} />
         <meta content="text/html; charset=UTF-8" name="Content-Type" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1"
+        />
         {/* <!-- Twitter --> */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content="" />
