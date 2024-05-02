@@ -59,10 +59,9 @@ export default builder.node(
               chainId: parent.chainId,
             });
 
-            return {
-              keys: accountDetails!.guard.keys,
-              predicate: accountDetails!.guard.pred,
-            };
+            //If the account does not exist, the resolver will return null so we can safely use the non-null assertion operator
+
+            return accountDetails!.guard;
           } catch (error) {
             throw normalizeError(error);
           }
