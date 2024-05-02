@@ -6,6 +6,7 @@ import { Analytics } from '@/components/Analytics/Analytics';
 import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { Header } from '@/components/Layout/components/Header/Header';
 import { markDownComponents } from '@/components/Markdown';
+import { useIphoneInputFix } from '@/hooks/useIphoneInputFix';
 import { MenuProvider } from '@/hooks/useMenu/MenuProvider';
 import { getLayout } from '@/utils/getLayout';
 import type { IPageMeta, IPageProps } from '@kadena/docs-tools';
@@ -43,6 +44,7 @@ export const MyApp = ({
 }): JSX.Element => {
   const props = deserializePageProps(pageProps);
   const Layout = getLayout(props.frontmatter.layout);
+  useIphoneInputFix();
 
   // check for a router query
   const router = useRouter();
