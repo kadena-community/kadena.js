@@ -38,7 +38,7 @@ allows wallets to sign multiple transactions in a single request. Version 2.2.3
 further provides bug fixes and better gas defaults for cross-chain operations.
 
 Download or use Chainweaver here:
-[Get started with Chainweaver](/invest/wallets/chainweaver).
+[Get started with Chainweaver](/participate/wallets/chainweaver).
 
 Official release:
 [https://github.com/kadena-io/chainweaver/releases/tag/v2.2.3](https://github.com/kadena-io/chainweaver/releases/tag/v2.2.3)
