@@ -9,7 +9,10 @@ import { PactCommandError } from './utils';
 export interface IFungibleChainAccountDetails {
   account: string;
   balance: number;
-  guard: IKeyset;
+  guard: {
+    keys: string[];
+    pred: IKeyset['predicate'];
+  };
 }
 
 export async function getFungibleAccountDetails(

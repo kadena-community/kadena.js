@@ -26,12 +26,17 @@ export async function getFungibleChainAccount({
 
   if (!accountDetails || accountDetails === null) return null;
 
+  const guard = {
+    predicate: accountDetails.guard.pred,
+    keys: accountDetails.guard.keys,
+  };
+
   return {
     __typename: FungibleChainAccountName,
     chainId,
     accountName,
     fungibleName,
-    guard: accountDetails.guard,
+    guard,
     balance: accountDetails.balance,
     transactions: [],
     transfers: [],
