@@ -440,6 +440,126 @@ describe('getAccountDetails', () => {
   });
 });
 
+describe('getTokenInfo', () => {
+  it('should get the info', async () => {
+    const result = await getTokenInfo(
+      {
+        chainId,
+        guard: {
+          account: sourceAccount.account,
+        },
+        tokenId: tokenId as string,
+      },
+      config,
+    ).execute();
+
+    expect(result).toStrictEqual({
+      supply: 1,
+      precision: { int: 0 },
+      uri: inputs.uri,
+      id: tokenId,
+      policies: [],
+    });
+  });
+  it('should throw an error if token does not exist', async () => {
+    const nonExistingTokenId = 'non-existing-token';
+    const task = getTokenInfo(
+      {
+        chainId,
+        guard: {
+          account: sourceAccount.account,
+        },
+        tokenId: nonExistingTokenId,
+      },
+      config,
+    );
+
+    await expect(() => task.execute()).rejects.toThrowError(
+      new Error(`with-read: row not found: ${nonExistingTokenId}`),
+    );
+  });
+});
+
+describe('getTokenUri', () => {
+  it('should get the uri', async () => {
+    const result = await getUri(
+      {
+        chainId,
+        guard: {
+          account: sourceAccount.account,
+        },
+        tokenId: tokenId as string,
+      },
+      config,
+    ).execute();
+
+    expect(result).toBe(inputs.uri);
+  });
+  it('should throw an error if token does not exist', async () => {
+    const nonExistingTokenId = 'non-existing-token';
+    const task = getUri(
+      {
+        chainId,
+        guard: {
+          account: sourceAccount.account,
+        },
+        tokenId: nonExistingTokenId,
+      },
+      config,
+    );
+
+    await expect(() => task.execute()).rejects.toThrowError(
+      new Error(`with-read: row not found: ${nonExistingTokenId}`),
+    );
+  });
+});
+
+describe('getAccountDetails', () => {
+  it('should get the account details', async () => {
+    const result = await getAccountDetails(
+      {
+        chainId,
+        accountName: sourceAccount.account,
+        guard: {
+          account: sourceAccount.account,
+        },
+        tokenId: tokenId as string,
+      },
+      config,
+    ).execute();
+
+    expect(result).toStrictEqual({
+      account: sourceAccount.account,
+      balance: 1,
+      guard: {
+        keys: [sourceAccount.publicKey],
+        pred: 'keys-all' as const,
+      },
+      id: tokenId,
+    });
+  });
+  it('should throw an error if token does not exist', async () => {
+    const nonExistingTokenId = 'non-existing-token';
+    const task = getAccountDetails(
+      {
+        chainId,
+        accountName: sourceAccount.account,
+        guard: {
+          account: sourceAccount.account,
+        },
+        tokenId: nonExistingTokenId,
+      },
+      config,
+    );
+
+    await expect(() => task.execute()).rejects.toThrowError(
+      new Error(
+        `read: row not found: ${nonExistingTokenId}:${sourceAccount.account}`,
+      ),
+    );
+  });
+});
+
 describe('transferCreateToken', () => {
   it('should transfer-create a token', async () => {
     const withStep = withStepFactory();

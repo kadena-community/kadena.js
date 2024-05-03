@@ -137,6 +137,7 @@ const createTokenCommand = <C extends ICreateTokenPolicyConfig>({
         readKeyset('creation-guard'),
       ),
     ),
+    setMeta({ senderAccount: creator.account, chainId }),
     addKeyset('creation-guard', creator.keyset.pred, ...creator.keyset.keys),
     addSigner(creator.keyset.keys, (signFor) => [
       signFor('coin.GAS'),
