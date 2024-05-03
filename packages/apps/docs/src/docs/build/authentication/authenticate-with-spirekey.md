@@ -1,15 +1,15 @@
 ---
-title: Authentication and authorization with Kadena SpireKey
+title: Authenticate and sign with Kadena SpireKey
 description:
   Provide authentication and authorization services by implementing Kadena
   SpireKey in your decentralized application.
 menu: Authenticate and authorize
-label: Kadena SpireKey
+label: Authentication overview
 order: 2
 layout: full
 ---
 
-# Authenticate and authorize with Kadena SpireKey
+# Authentication overview
 
 Kadena SpireKey is an innovative approach to authenticating users and
 authorizing transactions in Web3 and decentralized applications. Kadena SpireKey
@@ -68,7 +68,7 @@ roles:
 The following diagram provides a simplified overview of the workflow between
 these roles.
 
-![OAuth Flow](/assets/docs/kadena_spirekey_1.png)
+![OAuth roles and workflow](/assets/docs/oauth-diagram.png)
 
 The workflow for Kadena SpireKey is similar. In Kadena SpireKey, your
 decentralized application is the client application hosted on the resource
@@ -99,7 +99,23 @@ enable users to perform the following steps:
 The following diagram illustrates the process for registering an account using
 Kadena SpireKey.
 
-![Registration workflow](/assets/docs/register-spirekey-account.png)
+```mermaid
+sequenceDiagram
+  participant u as User
+  participant s as Kadena SpireKey
+  participant w as WebAuthn
+  participant k as Kadena Blockchain
+    u->>s: create account
+    s->>w: request authentication token
+    w->>s: `WebAuthn-token`
+    s->>k: create account with `WebAuthn-token`
+  alt Validation by blockchain
+    k->>k: executing transaction, mining block
+    k->>s: account created `c:my-account`
+  else Validation failed
+    k->>s: transaction invalid
+  end
+```
 
 ### Log in with Kadena SpireKey
 
