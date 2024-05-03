@@ -1,21 +1,28 @@
 import { MonoAccountCircle, MonoAdd } from '@kadena/react-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import { onLayer2, withContentWidth } from '../../../storyDecorators';
+import {
+  getVariants,
+  onLayer3,
+  withContentWidth,
+} from '../../../storyDecorators';
 import { atoms } from '../../../styles';
 import { getArrayOf } from '../../../utils';
 import { Button } from '../../Button';
 import { Box } from '../../Layout';
 import { Form } from '../Form';
+import { input } from '../Form.css';
 import type { ISelectProps } from './Select';
 import { Select, SelectItem } from './Select';
+
+const { size, variant, fontType } = getVariants(input);
 
 const meta: Meta<ISelectProps> = {
   title: 'Form/Select',
   component: Select,
-  decorators: [withContentWidth, onLayer2],
+  decorators: [withContentWidth, onLayer3],
   parameters: {
-    status: { type: 'releaseCandidate' },
+    status: { type: 'stable' },
     docs: {
       description: {
         component:
@@ -24,6 +31,34 @@ const meta: Meta<ISelectProps> = {
     },
   },
   argTypes: {
+    variant: {
+      description: 'Variant of the input.',
+      control: {
+        type: 'select',
+      },
+      options: variant,
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'default' },
+      },
+    },
+    size: {
+      description: 'Size of the input.',
+      control: {
+        type: 'radio',
+      },
+      options: size,
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'md' },
+      },
+    },
+    fontType: {
+      description: 'Font type of the input.',
+      control: { type: 'radio' },
+      options: fontType,
+      table: { type: { summary: 'string' }, defaultValue: { summary: 'ui' } },
+    },
     description: {
       description: 'Helper text to display below the input.',
       control: {
@@ -51,7 +86,6 @@ const meta: Meta<ISelectProps> = {
         type: { summary: 'string' },
       },
     },
-
     placeholder: {
       description: 'Placeholder text to display in the input.',
       control: {
@@ -61,7 +95,6 @@ const meta: Meta<ISelectProps> = {
         type: { summary: 'string' },
       },
     },
-
     errorMessage: {
       description: 'Error message to display below the input.',
       control: {
@@ -71,17 +104,6 @@ const meta: Meta<ISelectProps> = {
         type: { summary: 'string' },
       },
     },
-    isPositive: {
-      description: 'Applies positive visual styling.',
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
-
     isInvalid: {
       description: 'Marks the input as invalid and applies visual styling.',
       control: {
@@ -92,7 +114,6 @@ const meta: Meta<ISelectProps> = {
         defaultValue: { summary: 'false' },
       },
     },
-
     isDisabled: {
       description: 'Disables the input and applies visual styling.',
       control: {
@@ -120,15 +141,6 @@ export default meta;
 type Story = StoryObj<ISelectProps>;
 
 export const Default: Story = {
-  args: {
-    isDisabled: false,
-    isInvalid: false,
-    isRequired: false,
-    isPositive: false,
-    description: 'Some description',
-    label: 'Select something',
-    placeholder: 'Select an option',
-  },
   render: (args) => {
     return (
       <Select {...args}>
@@ -153,7 +165,7 @@ export const WithIcon: Story = {
   },
   render: (args) => {
     return (
-      <Select {...args} startIcon={<MonoAccountCircle />}>
+      <Select {...args} startVisual={<MonoAccountCircle />}>
         <SelectItem key="option1">Option 1</SelectItem>
         <SelectItem key="option2">Option 2</SelectItem>
         <SelectItem key="option3">Option 3</SelectItem>
@@ -252,4 +264,19 @@ export const NativeValidation: Story = {
       </Form>
     );
   },
+};
+
+export const WithAddons = () => {
+  const items = getArrayOf(
+    (index) => ({
+      label: `Option ${index}`,
+      key: `option${index}`,
+    }),
+    100,
+  );
+  return (
+    <Select label="Select an option" items={items} startVisual={<MonoAdd />}>
+      {(item) => <SelectItem key={item.key}>{item.label}</SelectItem>}
+    </Select>
+  );
 };

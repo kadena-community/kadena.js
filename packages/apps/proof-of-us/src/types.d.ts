@@ -148,7 +148,7 @@ interface IToken {
   eventId?: string;
   proofOfUsId?: string;
   requestKey?: string;
-  id: string;
+  tokenId: string;
   info?: {
     uri: string;
   };

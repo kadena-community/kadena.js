@@ -29,6 +29,7 @@ import { useRouter } from 'next/router';
 import type { FC, ReactNode } from 'react';
 import React, { useState } from 'react';
 import { Logo } from './Logo';
+import { rightSideMenu } from './styles.css';
 
 export interface IHeaderProps {
   logo?: ReactNode;
@@ -89,48 +90,53 @@ const Header: FC<IHeaderProps> = () => {
             </NavHeaderLink>
           ))}
         </NavHeaderLinkList>
-        <NavHeaderButton
-          aria-label="Toggle theme"
-          onPress={() => toggleTheme()}
-          className={atoms({ marginInlineEnd: 'sm' })}
-        >
-          <MonoContrast
+        <div className={rightSideMenu}>
+          <NavHeaderButton
+            aria-label="Toggle theme"
+            onPress={() => toggleTheme()}
+            className={atoms({ marginInlineEnd: 'sm' })}
+          >
+            <MonoContrast
+              className={atoms({
+                color: 'text.base.default',
+              })}
+            />
+          </NavHeaderButton>
+          <NavHeaderButton
+            aria-label={'Application Settings'}
+            onPress={() => handleDevOptionsClick()}
             className={atoms({
-              color: 'text.base.default',
+              marginInlineEnd: 'sm',
             })}
-          />
-        </NavHeaderButton>
-        <NavHeaderButton
-          aria-label={'Application Settings'}
-          onPress={() => handleDevOptionsClick()}
-          className={atoms({
-            marginInlineEnd: 'sm',
-          })}
-        >
-          <MonoBuildCircle
-            className={atoms({
-              color: 'text.base.default',
-            })}
-          />
-        </NavHeaderButton>
-        <NavHeaderSelect
-          id="network-select"
-          aria-label={t('Select Network')}
-          selectedKey={selectedNetwork as string}
-          onSelectionChange={(value) => handleOnChange(value as Network)}
-          startIcon={<MonoPublic />}
-        >
-          {[
-            ...networksData.map((network: INetworkData) => (
-              <SelectItem key={network.networkId} textValue={network.networkId}>
-                {network.label}
-              </SelectItem>
-            )),
-            <SelectItem key="custom" textValue="custom">
-              {t('+ add network')}
-            </SelectItem>,
-          ]}
-        </NavHeaderSelect>
+          >
+            <MonoBuildCircle
+              className={atoms({
+                color: 'text.base.default',
+              })}
+            />
+          </NavHeaderButton>
+          <NavHeaderSelect
+            id="network-select"
+            aria-label={t('Select Network')}
+            selectedKey={selectedNetwork as string}
+            onSelectionChange={(value) => handleOnChange(value as Network)}
+            startVisual={<MonoPublic />}
+          >
+            {[
+              ...networksData.map((network: INetworkData) => (
+                <SelectItem
+                  key={network.networkId}
+                  textValue={network.networkId}
+                >
+                  {network.label}
+                </SelectItem>
+              )),
+              <SelectItem key="custom" textValue="custom">
+                {t('+ add network')}
+              </SelectItem>,
+            ]}
+          </NavHeaderSelect>
+        </div>
         {/* <div className={walletConnectWrapperStyle}>
         <WalletConnectButton />
       </div> */}

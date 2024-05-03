@@ -44,7 +44,7 @@ const ChainSelect: FC<ChainSelectProps> = ({
       label="Chain ID"
       id={id ?? ELEMENT_ID}
       onSelectionChange={onSelectChange}
-      startIcon={<MonoLink />}
+      startVisual={<MonoLink />}
       aria-label="Select Chain ID"
     >
       {CHAINS.map((chainId, index) => (

@@ -6,7 +6,6 @@ import { paragraphWrapperClass } from '../Paragraph/styles.css';
 export const olListClass = style([
   atoms({
     position: 'relative',
-    color: 'text.base.default',
     paddingBlock: 'sm',
     marginInline: 'no',
   }),
@@ -15,6 +14,8 @@ export const olListClass = style([
 globalStyle(`article ol > li`, {
   paddingBlockStart: tokens.kda.foundation.spacing.xxs,
   paddingBlockEnd: tokens.kda.foundation.spacing.xxs,
+  color: tokens.kda.foundation.color.text.subtlest.default,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.base,
 });
 
 globalStyle(
