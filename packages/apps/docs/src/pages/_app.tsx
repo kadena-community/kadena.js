@@ -38,9 +38,12 @@ const deserializePageProps = (props: ImportedPagePropsType): IPageProps => {
     layout: 'full',
     label: '',
   };
-  newProps.frontmatter.lastModifiedDate = props.frontmatter.lastModifiedDate
+  newProps.headerMenuItems = [];
+  newProps.leftMenuTree = [];
+
+  newProps.frontmatter.lastModifiedDate = props.frontmatter?.lastModifiedDate
     ? new Date(props.frontmatter.lastModifiedDate)
-    : undefined;
+    : new Date();
   return newProps;
 };
 
