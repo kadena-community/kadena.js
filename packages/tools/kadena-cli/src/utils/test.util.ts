@@ -36,7 +36,6 @@ export const runCommand = async (
     const stdinMock = vi.spyOn(readStdin, 'readStdin');
     stdinMock.mockImplementation(async () => options.stdin ?? null);
   }
-  if (!argsArray.includes('--quiet')) argsArray.push('--quiet');
   await loadProgram(new Command()).parseAsync([
     'node',
     'index.js',
