@@ -54,10 +54,7 @@ const createTokenCommand = ({
     addKeyset('creation-guard', creator.keyset.pred, ...creator.keyset.keys),
     addSigner(creator.keyset.keys, (signFor) => [
       signFor('coin.GAS'),
-      signFor('marmalade-v2.ledger.CREATE-TOKEN', tokenId, {
-        pred: creator.keyset.pred,
-        keys: creator.keyset.keys,
-      }),
+      signFor('marmalade-v2.ledger.CREATE-TOKEN', tokenId),
     ]),
     setMeta({ senderAccount: creator.account, chainId }),
   );
