@@ -17,7 +17,7 @@ import {
   formatAdditionalSigners,
   formatCapabilities,
 } from '../integration-tests/support/helpers';
-import {
+import type {
   CommonProps,
   IWithdrawSaleTokenPolicyConfig,
   WithWithdrawSaleTokenPolicy,
@@ -89,7 +89,7 @@ const withdrawTokenCommand = <C extends IWithdrawSaleTokenPolicyConfig>({
         timeout,
         saleId,
       ),
-      ...(!!policyConfig?.guarded
+      ...(policyConfig?.guarded
         ? [
             signFor(
               'marmalade-v2.guard-policy-v1.SALE',

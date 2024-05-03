@@ -14,7 +14,7 @@ import {
   formatAdditionalSigners,
   formatCapabilities,
 } from '../integration-tests/support/helpers';
-import { CommonProps } from './config';
+import type { CommonProps } from './config';
 
 interface ITransferCreateTokenInput extends CommonProps {
   policyConfig?: {
@@ -75,7 +75,7 @@ const createTransferTokenCommand = ({
         receiver.account,
         amount,
       ),
-      ...(!!policyConfig?.guarded
+      ...(policyConfig?.guarded
         ? [
             signFor(
               'marmalade-v2.guard-policy-v1.TRANSFER',

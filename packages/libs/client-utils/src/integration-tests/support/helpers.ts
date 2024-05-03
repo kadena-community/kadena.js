@@ -6,12 +6,12 @@ import {
   execution,
   setMeta,
 } from '@kadena/client/fp';
-import { IGeneralCapability } from '@kadena/client/lib/interfaces/type-utilities';
-import { ChainId, ICap, IPactInt } from '@kadena/types';
+import type { IGeneralCapability } from '@kadena/client/lib/interfaces/type-utilities';
+import type { ChainId, ICap, IPactInt } from '@kadena/types';
 import { expect } from 'vitest';
 import { submitClient } from '../../core';
 import type { Any } from '../../core/utils/types';
-import { CommonProps } from '../../marmalade/config';
+import type { CommonProps } from '../../marmalade/config';
 import { sourceAccount } from '../test-data/accounts';
 
 export const withStepFactory = () => {

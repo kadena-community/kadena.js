@@ -13,7 +13,7 @@ import {
   formatAdditionalSigners,
   formatCapabilities,
 } from '../integration-tests/support/helpers';
-import { CommonProps } from './config';
+import type { CommonProps } from './config';
 
 interface ITransferTokenInput extends CommonProps {
   policyConfig?: {
@@ -52,7 +52,7 @@ const transferTokenCommand = ({
 
   return composePactCommand(
     execution(
-      Pact.modules['marmalade-v2.ledger']['transfer'](
+      Pact.modules['marmalade-v2.ledger'].transfer(
         tokenId,
         sender.account,
         receiver.account,
@@ -68,7 +68,7 @@ const transferTokenCommand = ({
         receiver.account,
         amount,
       ),
-      ...(!!policyConfig?.guarded
+      ...(policyConfig?.guarded
         ? [
             signFor(
               'marmalade-v2.guard-policy-v1.TRANSFER',

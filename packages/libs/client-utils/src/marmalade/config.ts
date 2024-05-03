@@ -93,21 +93,21 @@ export const NON_FUNGIBLE_POLICY = 'non-fungible-policy-v1';
 export const ROYALTY_POLICY = 'royalty-policy-v1';
 export const COLLECTION_POLICY = 'collection-policy-v1';
 
-type ConfigToDataMap = {
+interface ConfigToDataMap {
   customPolicies: { customPolicyData: Record<string, any> };
   upgradeableURI: {};
   guarded: { guards: IGuardInfoInput };
   nonFungible: {};
   hasRoyalty: { royalty: IRoyaltyInfoInput };
   collection: { collection: ICollectionInfoInput };
-};
+}
 
-export type PolicyProps = {
+export interface PolicyProps {
   customPolicyData: Record<string, any>;
   guards: IGuardInfoInput;
   royalty: IRoyaltyInfoInput;
   collection: ICollectionInfoInput;
-};
+}
 
 type PolicyDataForConfig<C extends ICreateTokenPolicyConfig> =
   (C['customPolicies'] extends true ? ConfigToDataMap['customPolicies'] : {}) &
@@ -170,17 +170,17 @@ export interface ISaleTokenPolicyConfig {
   hasRoyalty?: boolean;
 }
 
-export type SalePolicyProps = {
+export interface SalePolicyProps {
   auction: ISaleAuctionInfoInput;
   guards: ISaleGuardInfoInput;
   royalty: IRoyaltyInfoInput;
-};
+}
 
-type SaleConfigToDataMap = {
+interface SaleConfigToDataMap {
   auction: { auction: ISaleAuctionInfoInput };
   guarded: { guards: ISaleGuardInfoInput };
   hasRoyalty: { royalty: IRoyaltyInfoInput };
-};
+}
 
 type PolicySaleDataForConfig<C extends ISaleTokenPolicyConfig> =
   (C['auction'] extends true ? SaleConfigToDataMap['auction'] : {}) &
@@ -207,13 +207,13 @@ export interface IWithdrawSaleTokenPolicyConfig {
   guarded?: boolean;
 }
 
-export type WithdrawSalePolicyProps = {
+export interface WithdrawSalePolicyProps {
   guards: IWithdrawSaleGuardInfoInput;
-};
+}
 
-type WithdrawSaleConfigToDataMap = {
+interface WithdrawSaleConfigToDataMap {
   guarded: { guards: IWithdrawSaleGuardInfoInput };
-};
+}
 
 type PolicyWithdrawSaleDataForConfig<C extends ICreateTokenPolicyConfig> =
   C['guarded'] extends true ? WithdrawSaleConfigToDataMap['guarded'] : {};
@@ -253,10 +253,10 @@ export interface IAuctionConfig {
   dutch?: boolean;
 }
 
-export type AuctionProps = {
+export interface AuctionProps {
   conventional: IConventionalAuctionInput;
   dutch: IDutchAuctionInput;
-};
+}
 
 type AuctionDataForConfig<C extends IAuctionConfig> =
   (C['conventional'] extends true ? AuctionProps['conventional'] : {}) &
@@ -290,17 +290,17 @@ export interface IAuctionPurchaseConfig {
   dutch?: boolean;
 }
 
-export type AuctionPurchaseProps = {
+export interface AuctionPurchaseProps {
   conventional: IConventionalAuctionPurchaseInput;
   dutch: IDutchAuctionPurchaseInput;
-};
+}
 
 type AuctionPurchaseDataForConfig<C extends IAuctionPurchaseConfig> =
   C['conventional'] extends true
     ? AuctionPurchaseProps['conventional']
     : {} & C['dutch'] extends true
-    ? AuctionPurchaseProps['dutch']
-    : {};
+      ? AuctionPurchaseProps['dutch']
+      : {};
 
 export type WithAuctionPurchase<C extends IAuctionPurchaseConfig, Base> = Base &
   (AuctionPurchaseDataForConfig<C> | undefined) & {
@@ -320,9 +320,9 @@ export interface IPlaceBidConfig {
   marketplaceFee?: boolean;
 }
 
-export type PlaceBidProps = {
+export interface PlaceBidProps {
   marketplaceFee: IPlaceBidInput;
-};
+}
 
 type PlaceBidDataForConfig<C extends IPlaceBidConfig> =
   C['marketplaceFee'] extends true ? IPlaceBidInput : {};

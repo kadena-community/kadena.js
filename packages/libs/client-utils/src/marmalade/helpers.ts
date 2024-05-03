@@ -1,7 +1,7 @@
+import type { ICreateTokenPolicyConfig } from './config';
 import {
   COLLECTION_POLICY,
   GUARD_POLICY,
-  ICreateTokenPolicyConfig,
   NON_FUNGIBLE_POLICY,
   ROYALTY_POLICY,
 } from './config';

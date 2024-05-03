@@ -46,7 +46,7 @@ import {
 let tokenId: string | undefined;
 let saleId: string | undefined;
 let bidId: string | undefined;
-let timeout = dateToPactInt(addDaysToDate(new Date(), 1));
+const timeout = dateToPactInt(addDaysToDate(new Date(), 1));
 const chainId = '0' as ChainId;
 const inputs = {
   chainId,

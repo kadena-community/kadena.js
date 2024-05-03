@@ -18,7 +18,7 @@ import {
   formatAdditionalSigners,
   formatCapabilities,
 } from '../integration-tests/support/helpers';
-import {
+import type {
   CommonProps,
   ISaleTokenPolicyConfig,
   SalePolicyProps,
@@ -108,7 +108,7 @@ const offerTokenCommand = <C extends ISaleTokenPolicyConfig>({
         amount,
         timeout,
       ),
-      ...(!!policyConfig?.guarded
+      ...(policyConfig?.guarded
         ? [
             signFor(
               'marmalade-v2.guard-policy-v1.SALE',

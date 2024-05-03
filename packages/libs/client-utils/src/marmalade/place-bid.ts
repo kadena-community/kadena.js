@@ -15,7 +15,7 @@ import {
   formatAdditionalSigners,
   formatCapabilities,
 } from '../integration-tests/support/helpers';
-import {
+import type {
   CommonProps,
   IPlaceBidConfig,
   PlaceBidProps,

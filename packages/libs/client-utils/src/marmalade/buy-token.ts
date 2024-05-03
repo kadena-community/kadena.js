@@ -17,7 +17,7 @@ import {
   formatAdditionalSigners,
   formatCapabilities,
 } from '../integration-tests/support/helpers';
-import {
+import type {
   CommonProps,
   IAuctionPurchaseConfig,
   IDutchAuctionPurchaseInput,
@@ -124,7 +124,7 @@ const buyTokenCommand = <C extends IAuctionPurchaseConfig>({
         amount,
         saleId,
       ),
-      ...(!!policyConfig?.guarded
+      ...(policyConfig?.guarded
         ? [
             signFor(
               'marmalade-v2.guard-policy-v1.SALE',
@@ -134,7 +134,7 @@ const buyTokenCommand = <C extends IAuctionPurchaseConfig>({
             ),
           ]
         : []),
-      ...(!!auctionConfig?.dutch
+      ...(auctionConfig?.dutch
         ? [
             signFor(
               'coin.TRANSFER',

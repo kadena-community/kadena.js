@@ -1,8 +1,4 @@
-import type {
-  BuiltInPredicate,
-  IPactModules,
-  PactReturnType,
-} from '@kadena/client';
+import type { IPactModules, PactReturnType } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { composePactCommand, execution, setMeta } from '@kadena/client/fp';
 import type { ChainId } from '@kadena/types';

@@ -42,7 +42,7 @@ import {
 
 let tokenId: string | undefined;
 let saleId: string | undefined;
-let timeout = dateToPactInt(addDaysToDate(new Date(), 1));
+const timeout = dateToPactInt(addDaysToDate(new Date(), 1));
 const chainId = '0' as ChainId;
 const inputs = {
   chainId,
@@ -886,7 +886,7 @@ describe('buyToken', () => {
         },
         updatedPrice: { decimal: String(latestPrice) },
         escrow: {
-          account: (escrowAccount as any)['account'],
+          account: (escrowAccount as any).account,
         },
         chainId,
         tokenId: tokenId as string,

@@ -52,21 +52,21 @@ export const NON_FUNGIBLE_POLICY = 'non-fungible-policy-v1';
 export const ROYALTY_POLICY = 'royalty-policy-v1';
 export const COLLECTION_POLICY = 'collection-policy-v1';
 
-type ConfigToDataMap = {
+interface ConfigToDataMap {
   customPolicies: { customPolicyData: Record<string, any> };
   upgradeableURI: {};
   guarded: { guards: IGuardInfoInput };
   nonFungible: {};
   hasRoyalty: { royalty: IRoyaltyInfoInput };
   collection: { collection: ICollectionInfoInput };
-};
+}
 
-export type PolicyProps = {
+export interface PolicyProps {
   customPolicyData: Record<string, any>;
   guards: IGuardInfoInput;
   royalty: IRoyaltyInfoInput;
   collection: ICollectionInfoInput;
-};
+}
 
 type PolicyDataForConfig<C extends ICreateTokenPolicyConfig> =
   (C['customPolicies'] extends true ? ConfigToDataMap['customPolicies'] : {}) &

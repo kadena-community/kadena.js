@@ -4,7 +4,7 @@ import { composePactCommand, execution, setMeta } from '@kadena/client/fp';
 import type { ChainId } from '@kadena/types';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
-import { IAuctionConfig } from './config';
+import type { IAuctionConfig } from './config';
 
 interface IGetAuctionDetailsInput {
   auctionConfig: IAuctionConfig;
