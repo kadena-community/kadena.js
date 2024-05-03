@@ -5,15 +5,13 @@ import { Box, TextField } from '@kadena/react-ui';
 
 import { useRouter } from 'next/router';
 import type { FC, FormEvent } from 'react';
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { MainTreeItem } from '../TreeMenu/MainTreeItem';
 import { TreeList } from '../TreeMenu/TreeList';
 import { MenuCard } from './MenuCard';
 import { ShowOnMobile } from './components/ShowOnMobile';
 
 import { searchButtonClass, sideMenuClass } from './sideMenu.css';
-
-import { useMenu } from '@/hooks/useMenu/useMenu';
 import { useSideMenu } from './useSideMenu';
 
 interface IProps {
@@ -25,12 +23,6 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
   const { clickSubMenu, treeRef } = useSideMenu(closeMenu, menuItems);
   const router = useRouter();
   const searchRef = useRef<HTMLInputElement>(null);
-  const { isMenuOpen } = useMenu();
-
-  useEffect(() => {
-    if (!isMenuOpen) return;
-    searchRef.current?.focus();
-  }, [searchRef.current, isMenuOpen]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
