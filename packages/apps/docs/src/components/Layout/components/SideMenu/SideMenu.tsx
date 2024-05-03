@@ -1,22 +1,17 @@
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import type { IMenuItem } from '@kadena/docs-tools';
-import { Box, Heading, SystemIcon, TextField } from '@kadena/react-ui';
-import classNames from 'classnames';
+import { MonoSearch } from '@kadena/react-icons';
+import { Box, TextField } from '@kadena/react-ui';
+
 import { useRouter } from 'next/router';
-import type { FC, KeyboardEvent } from 'react';
-import React from 'react';
+import type { FC, FormEvent } from 'react';
+import React, { useRef } from 'react';
 import { MainTreeItem } from '../TreeMenu/MainTreeItem';
 import { TreeList } from '../TreeMenu/TreeList';
 import { MenuCard } from './MenuCard';
-import { ListLink } from './components/ListLink';
 import { ShowOnMobile } from './components/ShowOnMobile';
-import {
-  listClass,
-  listItemClass,
-  sideMenuClass,
-  sideMenuTitleButtonClass,
-  sideMenuTitleClass,
-} from './sideMenu.css';
+
+import { searchButtonClass, sideMenuClass } from './sideMenu.css';
 import { useSideMenu } from './useSideMenu';
 
 interface IProps {
@@ -25,88 +20,58 @@ interface IProps {
 }
 
 export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
-  const { active, clickMenu, clickSubMenu, setActive, treeRef } = useSideMenu(
-    closeMenu,
-    menuItems,
-  );
+  const { clickSubMenu, treeRef } = useSideMenu(closeMenu, menuItems);
   const router = useRouter();
-  const MagnifierIcon = SystemIcon.Magnify;
+  const searchRef = useRef<HTMLInputElement>(null);
 
-  const activeItem = menuItems.find((item) => item.isMenuOpen);
-
-  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>): void => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    const value = e.currentTarget.value;
-    if (e.key === 'Enter') {
-      analyticsEvent(EVENT_NAMES['click:mobile_search'], {
-        query: value,
-      });
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push(`/search?q=${value}`);
-      closeMenu();
-      e.currentTarget.value = '';
-    }
+    const data = new FormData(e.currentTarget);
+    const value = `${data.get('search')}`;
+
+    analyticsEvent(EVENT_NAMES['click:mobile_search'], {
+      query: value,
+    });
+    e.currentTarget.value = '';
+    await router.push(`/search?q=${value}`);
+    closeMenu();
   };
 
   return (
     <div className={sideMenuClass}>
-      {active === 0 && (
-        <div className={sideMenuTitleClass}>
-          <Heading as="h5">Kadena Docs</Heading>
-        </div>
-      )}
-      {active === 1 && (
-        <button
-          type="button"
-          onClick={() => setActive(0)}
-          className={classNames(sideMenuTitleClass, sideMenuTitleButtonClass)}
-        >
-          <Heading as="h5">{activeItem?.menu}</Heading>
-        </button>
-      )}
       <ShowOnMobile>
         <Box marginInline="md" marginBlockStart="md" marginBlockEnd="xl">
           {/* TODO: Replace with SearchField */}
-          <TextField
-            id="search"
-            onKeyUp={handleKeyPress}
-            placeholder="Search"
-            isOutlined
-            type="text"
-            aria-label="Search"
-            endAddon={<MagnifierIcon />}
-          />
+          <form onSubmit={handleSubmit}>
+            <TextField
+              id="search"
+              ref={searchRef}
+              name="search"
+              placeholder="Search"
+              type="text"
+              aria-label="Search"
+              endAddon={
+                <button type="submit" className={searchButtonClass}>
+                  <MonoSearch />
+                </button>
+              }
+            />
+          </form>
         </Box>
       </ShowOnMobile>
-      <MenuCard cyTestId="sidemenu-main" active={active} idx={0}>
-        <ul className={listClass}>
-          {menuItems.map((item) => (
-            <li key={item.root} className={listItemClass}>
-              <ListLink
-                onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) =>
-                  clickMenu(e, item)
-                }
-                href={item.root}
-                hasSubMenu={!!item.children?.length}
-              >
-                {item.menu}
-              </ListLink>
-            </li>
+
+      <MenuCard
+        cyTestId="sidemenu-submenu"
+        active={1}
+        idx={1}
+        onClick={clickSubMenu}
+      >
+        <TreeList ref={treeRef} root={true} level="l0">
+          {menuItems.map((menu) => (
+            <MainTreeItem key={menu.root} item={menu} root={false} level={0} />
           ))}
-        </ul>
+        </TreeList>
       </MenuCard>
-      {activeItem && (
-        <MenuCard
-          cyTestId="sidemenu-submenu"
-          active={active}
-          idx={1}
-          onClick={clickSubMenu}
-        >
-          <TreeList ref={treeRef} root={true}>
-            <MainTreeItem item={activeItem} root={true} />
-          </TreeList>
-        </MenuCard>
-      )}
     </div>
   );
 };

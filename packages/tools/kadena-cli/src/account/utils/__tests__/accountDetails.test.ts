@@ -14,7 +14,7 @@ describe('accountDetails', () => {
   it('should return account details', async () => {
     const result = await accountDetails({
       accountName: 'accountName',
-      chainId: ['1'],
+      chainIds: ['1'],
       networkId: devNetConfigMock.networkId,
       networkHost: devNetConfigMock.networkHost,
       fungible: 'coin',
@@ -45,12 +45,12 @@ describe('accountDetails', () => {
     );
     const result = await accountDetails({
       accountName: 'k:accountName',
-      chainId: ['1'],
+      chainIds: ['1'],
       networkId: devNetConfigMock.networkId,
       networkHost: devNetConfigMock.networkHost,
       fungible: 'coin',
     });
-    const warningMsg = `\nAccount "k:accountName" is not available on\nfollowing chain(s) of the "development" network: 1`;
+    const warningMsg = `\nAccount "k:accountName" is not available on\nfollowing chain(s): 1 on network "development"`;
     expect(result.warnings).toStrictEqual([warningMsg]);
   });
 });

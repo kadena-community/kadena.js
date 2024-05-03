@@ -21,7 +21,6 @@ import { getApiHost } from '@/utils/network';
 import type { ChainId, ITransactionDescriptor } from '@kadena/client';
 
 import {
-  buttonContainerClass,
   infoNotificationColor,
   linkStyle,
   notificationLinkErrorStyle,
@@ -33,6 +32,7 @@ import {
   MonoKeyboardArrowRight,
 } from '@kadena/react-icons/system';
 import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
+import { useQueryClient } from '@tanstack/react-query';
 import Trans from 'next-translate/Trans';
 import Link from 'next/link';
 
@@ -54,6 +54,20 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
     status: FormStatus;
     message?: string;
   }>({ status: 'idle' });
+
+  const isSuccessfulTransfer = requestStatus.status === 'successful';
+
+  const queryClient = useQueryClient();
+
+  if (isSuccessfulTransfer) {
+    // After successfully transferring we'd like to refetch the updated account details
+    void queryClient.invalidateQueries({
+      queryKey: ['account-details'],
+    });
+    void queryClient.invalidateQueries({
+      queryKey: ['account-chain-details'],
+    });
+  }
 
   const { selectedNetwork: network, networksData } = useWalletConnectClient();
   const networkData: INetworkData = networksData.filter(
@@ -228,15 +242,15 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
               ]}
             />
             <Button
-              color="primary"
-              icon={<MonoContentCopy />}
               onPress={async () => {
                 await navigator.clipboard.writeText(requestKey);
               }}
               title={t('copy request Key')}
               aria-label={t('copy request Key')}
-              variant="text"
-            />
+              variant="transparent"
+            >
+              <MonoContentCopy />
+            </Button>
           </Stack>
 
           {!onSameChain ? (
@@ -272,7 +286,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
         <Stack flexDirection={'column'} marginBlockStart={'md'}>
           {requestStatus.message}
 
-          {!onSameChain && requestStatus.status === 'erroneous' ? (
+          {requestStatus.status === 'erroneous' && !onSameChain ? (
             <Stack gap={'sm'} alignItems={'center'}>
               <Trans
                 i18nKey="common:link-to-finisher"
@@ -287,33 +301,33 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
               />
 
               <Button
-                color="primary"
-                icon={
-                  <MonoContentCopy className={notificationLinkErrorStyle} />
-                }
                 onPress={async () => {
                   await navigator.clipboard.writeText(completeLinkToFinisher);
                 }}
                 title={t('copy link to finisher')}
                 aria-label={t('copy link to finisher')}
-                variant="text"
-              />
+                variant="transparent"
+              >
+                <MonoContentCopy className={notificationLinkErrorStyle} />
+              </Button>
             </Stack>
-          ) : null}
+          ) : (
+            t('successful-transfer-page-transfer')
+          )}
         </Stack>
       </FormStatusNotification>
 
-      <div className={buttonContainerClass}>
+      <Stack justifyContent={'flex-end'} gap={'lg'}>
         <Button
           isLoading={isLoading}
-          // isDisabled={ledgerSignState.loading}
-          endIcon={<MonoKeyboardArrowRight />}
+          isDisabled={isSuccessfulTransfer}
+          endVisual={<MonoKeyboardArrowRight />}
           title={t('Transfer')}
           onPress={onSubmit}
         >
           {t('Transfer')}
         </Button>
-      </div>
+      </Stack>
     </Stack>
   );
 };

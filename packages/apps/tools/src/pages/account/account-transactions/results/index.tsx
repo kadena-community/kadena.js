@@ -10,8 +10,10 @@ import { getTransactions } from '@/services/accounts/get-transactions';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import {
   MonoDelete,
+  MonoHistory,
   MonoInfo,
   MonoKeyboardArrowRight,
+  MonoRefresh,
 } from '@kadena/react-icons/system';
 import {
   Box,
@@ -214,10 +216,10 @@ const CheckTransactions: FC = () => {
         </GridItem>
         <GridItem>
           <div className={headerButtonGroupClass}>
-            <Button icon={<MonoDelete />} onClick={resetFiltersEvent}>
+            <Button endVisual={<MonoDelete />} onPress={resetFiltersEvent}>
               {t('Reset all filters')}
             </Button>
-            <Button icon="Refresh" onClick={refreshResultsEvent}>
+            <Button endVisual={<MonoRefresh />} onPress={refreshResultsEvent}>
               {t('Reload')}
             </Button>
           </div>
@@ -250,7 +252,7 @@ const CheckTransactions: FC = () => {
 
       <ContentHeader
         heading={t('Transactions')}
-        icon={'History'}
+        icon={<MonoHistory />}
         description="This table is listing all the incoming and outgoing transactions sorted by date."
       />
       <Box marginBlockEnd="xxxl" />
@@ -272,10 +274,11 @@ const CheckTransactions: FC = () => {
                 <Cell>{displayAccountName(result.fromAccount as string)}</Cell>
                 <Cell>
                   <Button
-                    variant="text"
-                    icon={<MonoKeyboardArrowRight />}
-                    onClick={() => handleOpenTransactionDetails(result)}
-                  />
+                    variant="transparent"
+                    onPress={() => handleOpenTransactionDetails(result)}
+                  >
+                    <MonoKeyboardArrowRight />
+                  </Button>
                 </Cell>
               </Row>
             );

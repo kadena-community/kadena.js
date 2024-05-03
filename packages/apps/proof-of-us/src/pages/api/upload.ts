@@ -1,4 +1,3 @@
-import { createManifest } from '@/utils/createManifest';
 import { store } from '@/utils/socket/store';
 import { createImageUrl, createMetaDataUrl } from '@/utils/upload';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -10,7 +9,7 @@ interface IResponseData {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<IResponseData>,
+  res: NextApiResponse<IResponseData | IUploadResult>,
 ) {
   if (req.method !== 'POST') {
     return res.status(405).json({
@@ -23,13 +22,22 @@ export default async function handler(
 
   const background = await store.getBackground(proofOfUsId);
   const proofOfUs = await store.getProofOfUs(proofOfUsId);
-  const signees = await store.getProofOfUsSignees(proofOfUsId);
 
   if (!background?.bg) {
     return res.status(404).json({
       message: 'background not found',
     });
   }
+
+  const fileSizeLimitMb = 2;
+  const base64String = background.bg.replaceAll('=', '');
+  const size = base64String.length * (3 / 4);
+  if (size > fileSizeLimitMb * 1024 * 1024) {
+    return res.status(500).json({
+      message: `the image more than ${fileSizeLimitMb}Mb`,
+    });
+  }
+
   if (!proofOfUs) {
     return res.status(404).json({
       message: 'proofOfUs not found',
@@ -50,7 +58,7 @@ export default async function handler(
     });
   }
 
-  const manifest = await createManifest(proofOfUs, signees, imageData.url);
+  const manifest = JSON.parse(proofOfUs.manifestData ?? '{}');
   const metadata = await createMetaDataUrl(manifest, proofOfUs.manifestUri);
 
   if (!metadata) {
@@ -60,7 +68,7 @@ export default async function handler(
   }
 
   const client = new NFTStorage({ token: process.env.NFTSTORAGE_API_TOKEN });
-  const results = await Promise.allSettled([
+  const results: any[] = await Promise.allSettled([
     client.storeCar(imageData.data.car),
     client.storeCar(metadata.data.car),
   ]);
@@ -75,16 +83,12 @@ export default async function handler(
     });
   }
 
-  res.status(200).json({
-    message: JSON.stringify(
-      {
-        imageCid: imageData.data.cid.toString(),
-        imageUrl: imageData.url,
-        metadataCid: metadata.data.cid.toString(),
-        metadataUrl: metadata.url,
-      },
-      null,
-      2,
-    ),
-  });
+  return res.status(200).json({
+    imageCid: imageData.data.cid.toString(),
+    imageUrl: imageData.url,
+    imageUrlUpload: `${results[0].value}`,
+    metadataCid: metadata.data.cid.toString(),
+    metadataUrl: metadata.url,
+    metadataUrlUpload: `${results[1].value}`,
+  } as IUploadResult);
 }

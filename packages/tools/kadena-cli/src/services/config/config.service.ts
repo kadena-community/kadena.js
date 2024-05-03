@@ -1,15 +1,26 @@
 import yaml from 'js-yaml';
+import { vol } from 'memfs';
+import { statSync } from 'node:fs';
 import path from 'node:path';
 import sanitize from 'sanitize-filename';
-import { WALLET_DIR, YAML_EXT } from '../../constants/config.js';
+import {
+  CWD_KADENA_DIR,
+  ENV_KADENA_DIR,
+  HOME_KADENA_DIR,
+  IS_TEST,
+  WALLET_DIR,
+  YAML_EXT,
+} from '../../constants/config.js';
 import {
   detectArrayFileParseType,
   getFileParser,
   notEmpty,
   safeYamlParse,
-} from '../../utils/helpers.js';
+} from '../../utils/globalHelpers.js';
+import { log } from '../../utils/logger.js';
 import { relativeToCwd } from '../../utils/path.util.js';
 import type { Services } from '../index.js';
+import { KadenaError } from '../service-error.js';
 import {
   WALLET_SCHEMA_VERSION,
   walletSchema,
@@ -23,7 +34,20 @@ import type {
   IWalletCreate,
 } from './config.types.js';
 
+// To avoid promises / asynchrounous operations in the constructor
+// instead of using a filesystem service, created "directoryExists" helper
+const directoryExists = (path?: string): boolean => {
+  if (path === undefined) return false;
+  try {
+    const stat = IS_TEST ? vol.statSync.bind(vol) : statSync;
+    return stat(path).isDirectory();
+  } catch (e) {
+    return false;
+  }
+};
+
 export interface IConfigService {
+  getDirectory(): string | null;
   // Key
   getPlainKey(filepath: string): Promise<IPlainKey | null>;
   getPlainKeys(directory?: string): Promise<IPlainKey[]>;
@@ -36,8 +60,50 @@ export interface IConfigService {
 }
 
 export class ConfigService implements IConfigService {
-  // eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/parameter-properties
-  public constructor(private services: Services) {}
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  private directory: string | null = null;
+  public constructor(
+    // eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/parameter-properties
+    private services: Services,
+    directory?: string,
+  ) {
+    this.setDirectory(directory);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  private setDirectory(directory?: string): void {
+    // Priority 1: directory passed in constructor
+    if (directory !== undefined) {
+      this.directory = directory;
+      return;
+    }
+    // Priority 2: ENV KADENA_DIR
+    if (ENV_KADENA_DIR !== undefined && directoryExists(ENV_KADENA_DIR)) {
+      this.directory = ENV_KADENA_DIR!;
+      return;
+    } else if (ENV_KADENA_DIR !== undefined) {
+      log.warning(
+        `Warning: 'KADENA_DIR' environment variable is set to a non-existent directory: ${ENV_KADENA_DIR}`,
+      );
+      log.warning();
+    }
+    // Priority 3: CWD .kadena dir
+    if (directoryExists(CWD_KADENA_DIR)) {
+      this.directory = CWD_KADENA_DIR;
+      return;
+    }
+    // Priority 4: HOME .kadena dir
+    if (directoryExists(HOME_KADENA_DIR)) {
+      this.directory = HOME_KADENA_DIR;
+      return;
+    }
+    // No directory found, instruct the user to run `kadena config init`
+    this.directory = null;
+  }
+
+  public getDirectory(): string | null {
+    return this.directory;
+  }
 
   public async getPlainKey(
     filepath: string,
@@ -119,8 +185,10 @@ export class ConfigService implements IConfigService {
     wallet: IWalletCreate,
     update?: boolean,
   ): ReturnType<IConfigService['setWallet']> {
+    const directory = await this.getDirectory();
+    if (directory === null) throw new KadenaError('no_kadena_directory');
     const filename = sanitize(wallet.alias);
-    const filepath = path.join(WALLET_DIR, `${filename}${YAML_EXT}`);
+    const filepath = path.join(directory, WALLET_DIR, `${filename}${YAML_EXT}`);
     const exists = await this.services.filesystem.fileExists(filepath);
     if (exists && update !== true) {
       throw new Error(`Wallet "${relativeToCwd(filepath)}" already exists.`);
@@ -133,7 +201,9 @@ export class ConfigService implements IConfigService {
       keys: wallet.keys,
     };
     if (wallet.legacy) data.legacy = wallet.legacy;
-    await this.services.filesystem.ensureDirectoryExists(WALLET_DIR);
+    await this.services.filesystem.ensureDirectoryExists(
+      path.join(directory, WALLET_DIR),
+    );
     await this.services.filesystem.writeFile(
       filepath,
       yaml.dump(data, { lineWidth: -1 }),
@@ -142,8 +212,14 @@ export class ConfigService implements IConfigService {
   }
 
   public async getWallets(): ReturnType<IConfigService['getWallets']> {
-    const files = await this.services.filesystem.readDir(WALLET_DIR);
-    const filepaths = files.map((file) => path.join(WALLET_DIR, file));
+    const directory = await this.getDirectory();
+    if (directory === null) throw new KadenaError('no_kadena_directory');
+    const walletPath = path.join(directory, WALLET_DIR);
+    if (!(await this.services.filesystem.directoryExists(walletPath))) {
+      return [];
+    }
+    const files = await this.services.filesystem.readDir(walletPath);
+    const filepaths = files.map((file) => path.join(walletPath, file));
 
     const wallets = await Promise.all(
       filepaths.map(async (filepath) =>

@@ -15,6 +15,7 @@ import {
 } from '@/styles/index.css';
 import { getPageConfig } from '@/utils/config';
 import type { IMenuData } from '@kadena/docs-tools';
+import { MonoChevronRight } from '@kadena/react-icons';
 import {
   Box,
   Card,
@@ -22,7 +23,6 @@ import {
   GridItem,
   Heading,
   Link as KadenaLink,
-  SystemIcon,
   Text,
 } from '@kadena/react-ui';
 import classNames from 'classnames';
@@ -57,9 +57,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                 </Text>
               </Box>
               <KadenaLink
-                endIcon={<SystemIcon.TrailingIcon />}
+                endVisual={<MonoChevronRight />}
                 href="/pact/beginner"
-                variant="contained"
               >
                 Getting started
               </KadenaLink>

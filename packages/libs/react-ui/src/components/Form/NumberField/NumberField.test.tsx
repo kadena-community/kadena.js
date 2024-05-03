@@ -41,7 +41,7 @@ describe('NumberField', () => {
   });
 
   it('should render the provided start addon', () => {
-    render(<NumberField label={label} startAddon={<span>icon</span>} />);
+    render(<NumberField label={label} startVisual={<span>icon</span>} />);
     const icon = screen.getByText('icon');
     expect(icon).toBeInTheDocument();
   });

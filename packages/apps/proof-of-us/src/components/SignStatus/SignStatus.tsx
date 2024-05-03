@@ -1,5 +1,10 @@
-import { MonoAccessTime, MonoCheck, MonoClose } from '@kadena/react-icons';
-import { SystemIcon } from '@kadena/react-ui';
+import {
+  MonoAccessTime,
+  MonoCheck,
+  MonoClose,
+  MonoLoading,
+  MonoSignatureNotAllowed,
+} from '@kadena/react-icons';
 import type { FC } from 'react';
 import { animateClass, checkClass } from './style.css';
 
@@ -12,7 +17,8 @@ export const SignStatus: FC<IProps> = ({ status }) => {
     <div>
       {!status && <MonoAccessTime />}
       {status === 'init' && <MonoAccessTime />}
-      {status === 'signing' && <SystemIcon.Loading className={animateClass} />}
+      {status === 'signing' && <MonoLoading className={animateClass} />}
+      {status === 'notsigning' && <MonoSignatureNotAllowed />}
       {status === 'success' && <MonoCheck className={checkClass} />}
       {status === 'error' && <MonoClose />}
     </div>

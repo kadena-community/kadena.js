@@ -24,22 +24,13 @@ jobs:
           fetch-depth: 2
           show-progress: false
 
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: 'pnpm'
+      - name: Runner setup
+        uses: ./.github/actions/runner-setup
 
       - name: Install rust dependencies
         run: |
           sudo apt-get update
           sudo apt-get install libgtk-3-dev libsoup2.4-dev javascriptcoregtk-4.1
-
-      - name: Install dependencies
-        run: pnpm install
 
       - name: Lint monorepo root
         run: pnpm run lint
@@ -67,20 +58,11 @@ jobs:
           fetch-depth: 2
           show-progress: false
 
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: 'pnpm'
-
-      - name: Start Blockchain sandbox
+      - name: Runner Setup  
+        uses: ./.github/actions/runner-setup
+       
+      - name: Setup Kadena sandbox
         uses: ./.github/actions/sandbox
-
-      - name: Install dependencies
-        run: pnpm install
 
       - name: run integration tests
         run: pnpm run test:integration --filter ${{ matrix.package }}
@@ -100,21 +82,11 @@ jobs:
           fetch-depth: 2
           show-progress: false
 
-      - name: Setup devnet sandbox
-        uses: ./.github/actions/sandbox
-
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
-
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install
+      -  name: Runner Setup  
+         uses: ./.github/actions/runner-setup
+      
+      -  name: Setup Kadena sandbox
+         uses: ./.github/actions/sandbox
 
       # Due to how docs is built, we need to explicitly rebuild to generate the correct menu structure.
       - name: build dApps
@@ -125,30 +97,28 @@ jobs:
         if: matrix.app != 'docs'
         run: pnpm turbo build --filter @kadena/${{ matrix.app }}
 
-      - name: Install browsers
-        run: pnpm --filter e2e-${{ matrix.app }} run install:chromium
+      - name: Run end-to-end tests    
+        uses: ./.github/actions/end-to-end-tests
+        with:
+          app: ${{ matrix.app }}
 
-      - name: Run end-to-end tests
-        run: pnpm turbo test:e2e --filter e2e-${{ matrix.app }}
-
-      - name: Archive sandbox logs
-        if: always()
+      - name: Archive sandbox logs    
         uses: ./.github/actions/archive-logs
+        if: always()
         with:
           test-object: ${{ matrix.app }}
 
-      - name: Teardown devnet sandbox
+      - name: Teardown kadena sandbox
         if: always()
-        run: docker-compose down
+        run: docker compose down
         working-directory: .github/actions/sandbox
-      
-      - name: Archive sandbox volume
+    
+      - uses: ./.github/actions/archive-volumes
         if: always()
-        uses: ./.github/actions/archive-volumes
         with:
           test-object: ${{ matrix.app }}
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report

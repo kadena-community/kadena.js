@@ -1,10 +1,12 @@
-export class PrismaJsonColumnParsingError extends Error {
-  query?: string;
-  subscription?: string;
-  queryParameter: string;
-  column: string;
+import type { Prisma } from '@prisma/client';
 
-  constructor(options: {
+export class PrismaJsonColumnParsingError extends Error {
+  public query?: string;
+  public subscription?: string;
+  public queryParameter: string;
+  public column: string;
+
+  public constructor(options: {
     message: string;
     query?: string;
     subscription?: string;
@@ -19,7 +21,7 @@ export class PrismaJsonColumnParsingError extends Error {
   }
 }
 
-export function parsePrismaJsonColumn(
+export function parsePrismaJsonColumn<T>(
   value: string,
   meta: {
     query?: string;
@@ -27,7 +29,7 @@ export function parsePrismaJsonColumn(
     queryParameter: string;
     column: string;
   },
-) {
+): Prisma.JsonFilter<T> {
   try {
     return JSON.parse(value);
   } catch (error) {

@@ -2,7 +2,8 @@
 
 # @kadena/hd-wallet
 
-HD Wallet; key derivation
+Key derivation based on Hierarchical Deterministic (HD)/Mnemonic keys and BIP32,
+for Kadena
 
 <picture>
   <source srcset="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>

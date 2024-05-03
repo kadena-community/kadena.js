@@ -7,10 +7,17 @@ export const underlayClass = style({
   zIndex: token('zIndex.overlay'),
 });
 
-export const popoverClass = atoms({
-  backgroundColor: 'base.default',
-  borderRadius: 'sm',
-});
+export const popoverClass = style([
+  atoms({
+    backgroundColor: 'input.default',
+    overflow: 'auto',
+  }),
+  {
+    backdropFilter: 'blur(32px)',
+    maxHeight: '100%',
+    boxShadow: `0 1px 0 0 ${token('color.border.base.default')}`,
+  },
+]);
 
 export const arrowClass = style({
   width: '12px',
@@ -19,7 +26,7 @@ export const arrowClass = style({
   selectors: {
     "&[data-placement='top']": {
       top: '100%',
-      transform: ' translate(-50%)',
+      transform: 'translate(-50%)',
     },
     "&[data-placement='bottom']": {
       bottom: '100%',

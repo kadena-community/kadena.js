@@ -1,10 +1,10 @@
+import { MonoAccountCircle, MonoAdd } from '@kadena/react-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { onLayer2, withContentWidth } from '../../../storyDecorators';
 import { atoms } from '../../../styles';
 import { getArrayOf } from '../../../utils';
 import { Button } from '../../Button';
-import { Account, Plus } from '../../Icon/System/SystemIcon';
 import { Box } from '../../Layout';
 import { Form } from '../Form';
 import type { IComboboxProps } from './Combobox';
@@ -15,7 +15,7 @@ const meta: Meta<IComboboxProps> = {
   component: Combobox,
   decorators: [withContentWidth, onLayer2],
   parameters: {
-    status: { type: 'releaseCandidate' },
+    status: { type: 'stable' },
     docs: {
       description: {
         component:
@@ -153,7 +153,7 @@ export const WithIcon: Story = {
   },
   render: (args) => {
     return (
-      <Combobox {...args} startIcon={<Account />}>
+      <Combobox {...args} startVisual={<MonoAccountCircle />}>
         <ComboboxItem key="option1">Option 1</ComboboxItem>
         <ComboboxItem key="option2">Option 2</ComboboxItem>
         <ComboboxItem key="option3">Option 3</ComboboxItem>
@@ -167,13 +167,13 @@ export const ComplexItems = () => (
   <Combobox label="Select an option">
     <ComboboxItem key="option1" textValue="Option 1">
       <Box alignItems="center" gap="xs" display="flex">
-        <Account />
+        <MonoAccountCircle />
         Option 1
       </Box>
     </ComboboxItem>
     <ComboboxItem key="option2" textValue="Option 2">
       <Box alignItems="center" gap="xs" display="flex">
-        <Plus />
+        <MonoAdd />
         Option 2
       </Box>
     </ComboboxItem>

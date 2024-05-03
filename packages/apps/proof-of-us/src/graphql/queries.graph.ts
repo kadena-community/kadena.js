@@ -6,9 +6,9 @@ export const GET_TOKENS: DocumentNode = gql`
     nonFungibleAccount(accountName: $accountName) {
       accountName
       id
-      nonFungibles {
+      nonFungibleTokenBalances {
         balance
-        id
+        tokenId
         info {
           uri
         }

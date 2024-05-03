@@ -1,11 +1,11 @@
-import type { FC } from 'react';
+import type { FC, ReactElement } from 'react';
 import React from 'react';
-import { SystemIcon } from '../Icon';
+
 import { Heading, Text } from '../Typography';
 import { containerClass, descriptionClass } from './ContentHeader.css';
 
 export interface IContentHeaderProps {
-  icon: keyof typeof SystemIcon;
+  icon: ReactElement;
   heading: string;
   description?: string;
 }
@@ -15,11 +15,9 @@ export const ContentHeader: FC<IContentHeaderProps> = ({
   heading,
   description,
 }) => {
-  const Icon = icon && SystemIcon[icon];
-
   return (
     <div className={containerClass}>
-      <Icon size="md" />
+      {icon}
       <Heading as="h4">{heading}</Heading>
       {description ? (
         <div className={descriptionClass}>

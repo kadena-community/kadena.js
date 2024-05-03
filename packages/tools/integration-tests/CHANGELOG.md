@@ -1,5 +1,13 @@
 # @kadena-dev/integration-tests
 
+## 0.0.8
+
+### Patch Changes
+
+- Updated dependencies [3bbfeaaa9]
+  - @kadena/client@1.11.0
+  - @kadena/client-utils@0.5.3
+
 ## 0.0.7
 
 ### Patch Changes

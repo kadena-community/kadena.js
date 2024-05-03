@@ -35,6 +35,7 @@ export const overlayClass = style([
     },
   }),
   {
+    backdropFilter: 'blur(12px)',
     cursor: 'default',
   },
 ]);

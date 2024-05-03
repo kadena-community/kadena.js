@@ -26,7 +26,6 @@ const Page: NextPage<IProps> = ({ params }) => {
 
   const init = async () => {
     const result = await hasMinted(eventId, account?.accountName);
-    console.log({ result });
     setIsMinted(result);
   };
 
@@ -39,7 +38,7 @@ const Page: NextPage<IProps> = ({ params }) => {
   return (
     <UserLayout>
       <ScreenHeight>
-        <ProofOfUsProvider>
+        <ProofOfUsProvider proofOfUsId={params.id}>
           <TitleHeader label="Attendance @" />
           {isLoading && <MainLoader />}
           {error && <div>...error</div>}

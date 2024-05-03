@@ -1,6 +1,6 @@
 {
   "name": "@kadena/toolbox",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": true,
   "description": "A collection of utilities designed to assist in developing, testing, and deploying Pact smart contracts.",
   "repository": {
@@ -141,11 +141,11 @@
     "@kadena-dev/shared-config": "workspace:*",
     "@kadena/types": "workspace:*",
     "@types/dockerode": "^3.3.23",
-    "@types/node": "^18.17.14",
+    "@types/node": "^20.12.7",
     "@types/tar": "^6.1.11",
     "@vitest/coverage-v8": "^1.1.0",
     "tsx": "^3.12.10",
-    "typescript": "5.2.2",
+    "typescript": "5.4.5",
     "unbuild": "^2.0.0",
     "vitest": "^1.1.0"
   }

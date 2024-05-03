@@ -7,13 +7,13 @@ import {
 } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
-import { accountDetailsLoader } from '../data-loaders/account-details';
-import type { FungibleChainAccount } from '../types/graphql-types';
+import { fungibleAccountDetailsLoader } from '../data-loaders/fungible-account-details';
+import type { IFungibleChainAccount } from '../types/graphql-types';
 import { FungibleChainAccountName } from '../types/graphql-types';
 import Guard from './guard';
 
 export default builder.node(
-  builder.objectRef<FungibleChainAccount>(FungibleChainAccountName),
+  builder.objectRef<IFungibleChainAccount>(FungibleChainAccountName),
   {
     description: 'A fungible specific chain-account.',
     id: {
@@ -30,11 +30,12 @@ export default builder.node(
       }),
     },
     isTypeOf(source) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return (source as any).__typename === FungibleChainAccountName;
     },
     async loadOne({ chainId, fungibleName, accountName }) {
       try {
-        return getFungibleChainAccount({
+        return await getFungibleChainAccount({
           chainId,
           fungibleName,
           accountName,
@@ -44,7 +45,7 @@ export default builder.node(
       }
     },
     fields: (t) => ({
-      chainId: t.exposeID('chainId'),
+      chainId: t.exposeString('chainId'),
       accountName: t.exposeString('accountName'),
       fungibleName: t.exposeString('fungibleName'),
       guard: t.field({
@@ -52,15 +53,15 @@ export default builder.node(
         complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
         async resolve(parent) {
           try {
-            const accountDetails = await accountDetailsLoader.load({
+            const accountDetails = await fungibleAccountDetailsLoader.load({
               fungibleName: parent.fungibleName,
               accountName: parent.accountName,
               chainId: parent.chainId,
             });
 
             return {
-              keys: accountDetails.guard.keys,
-              predicate: accountDetails.guard.pred,
+              keys: accountDetails!.guard.keys,
+              predicate: accountDetails!.guard.pred,
             };
           } catch (error) {
             throw normalizeError(error);

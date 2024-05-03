@@ -1,10 +1,16 @@
 import type { Command } from 'commander';
 
+import { services } from '../../services/index.js';
+import { KadenaError } from '../../services/service-error.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { networkOptions } from '../networkOptions.js';
-import { removeNetwork, writeNetworks } from '../utils/networkHelpers.js';
+import {
+  mergeNetworkConfig,
+  removeNetwork,
+  writeNetworks,
+} from '../utils/networkHelpers.js';
 
 /**
  * Creates a command to generate wallets.
@@ -25,27 +31,41 @@ export const manageNetworksCommand: (
     networkOptions.networkName(),
   ],
   async (option) => {
+    const kadenaDir = services.config.getDirectory();
+    if (kadenaDir === null) {
+      throw new KadenaError('no_kadena_directory');
+    }
+
     const networkData = await option.network();
     const networkName = await option.networkName();
     const networkId = await option.networkId();
     const networkHost = await option.networkHost();
     const networkExplorerUrl = await option.networkExplorerUrl();
 
-    log.debug('manage-networks', {
+    log.debug('update-network:action', {
       networkExplorerUrl,
       networkHost,
       networkId,
       networkName,
     });
 
-    await writeNetworks({
-      network: networkName.networkName,
-      networkId: networkId.networkId,
-      networkHost: networkHost.networkHost,
-      networkExplorerUrl: networkExplorerUrl.networkExplorerUrl,
-    });
+    const hasNetworkNameChanged =
+      networkData.network !== networkName.networkName;
 
-    if (networkData.network !== networkName.networkName) {
+    const updatedNetworkConfig = await mergeNetworkConfig(
+      kadenaDir,
+      networkData.network,
+      {
+        network: networkName.networkName,
+        networkId: networkId.networkId,
+        networkHost: networkHost.networkHost,
+        networkExplorerUrl: networkExplorerUrl.networkExplorerUrl,
+      },
+    );
+
+    await writeNetworks(kadenaDir, updatedNetworkConfig);
+
+    if (hasNetworkNameChanged) {
       await removeNetwork(networkData.networkConfig);
     }
 

@@ -1,8 +1,8 @@
+import { MonoAdd } from '@kadena/react-icons/system';
 import classNames from 'classnames';
 import React, { useRef } from 'react';
 import { mergeProps, useFocusRing, useHover } from 'react-aria';
 import type { Node, TreeState } from 'react-stately';
-import { Plus } from '../Icon/System/SystemIcon';
 import { Heading } from '../Typography/Heading/Heading';
 import {
   accordionButtonClass,
@@ -44,8 +44,7 @@ export function AccordionItem<T>(props: IAccordionItemProps<T>) {
           className={accordionButtonClass}
         >
           {item.props.title}
-          <Plus
-            size="sm"
+          <MonoAdd
             data-open={isOpen}
             className={isOpen ? rotatedIconClass : defaultIconClass}
           />

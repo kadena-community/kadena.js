@@ -10,10 +10,16 @@ import {
   kadenaSign as legacyKadenaSign,
   kadenaSignFromRootKey as legacyKadenaSignWithSeed,
 } from '@kadena/hd-wallet/chainweaver';
-import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
+import type {
+  ICommand,
+  ICommandPayload,
+  IKeyPair,
+  IUnsignedCommand,
+} from '@kadena/types';
 
-import { isAbsolute, join } from 'path';
+import path, { isAbsolute, join } from 'node:path';
 import { z } from 'zod';
+import { TX_TEMPLATE_FOLDER } from '../../constants/config.js';
 import { ICommandSchema } from '../../prompts/tx.js';
 import { services } from '../../services/index.js';
 import type {
@@ -22,8 +28,9 @@ import type {
   IWalletKeyPair,
 } from '../../services/wallet/wallet.types.js';
 import type { CommandResult } from '../../utils/command.util.js';
-import { notEmpty } from '../../utils/helpers.js';
+import { notEmpty } from '../../utils/globalHelpers.js';
 import { log } from '../../utils/logger.js';
+import { createTable } from '../../utils/table.js';
 import type { ISavedTransaction } from './storage.js';
 
 export interface ICommandData {
@@ -183,6 +190,11 @@ export async function signTransactionWithWallet(
 
     return addSignatures(unsignedTransaction, ...signatures);
   } catch (error) {
+    if (error.message === 'Decryption failed') {
+      throw new Error(
+        'Incorrect password. Please verify the password and try again.',
+      );
+    }
     log.error(`Error signing transaction: ${error.message}`);
     return unsignedTransaction;
   }
@@ -615,3 +627,62 @@ export function processSigningStatus(
     };
   }
 }
+
+export function displaySignersFromUnsignedCommands(
+  unsignedCommands: IUnsignedCommand[],
+): void {
+  unsignedCommands.forEach((unsignedCommand, index) => {
+    const command: IPactCommand = JSON.parse(unsignedCommand.cmd);
+
+    const table = createTable({ head: ['Public Key', 'Capabilities'] });
+
+    table.push(
+      ...command.signers.map((signer) => [
+        signer.pubKey,
+        (signer.clist || [])
+          .map(
+            (capability) => `${capability.name}(${capability.args.join(', ')})`,
+          )
+          .join('\n'),
+      ]),
+    );
+
+    log.info(
+      `Command ${index + 1} (hash: ${
+        unsignedCommand.hash
+      }) will now be signed with the following signers:`,
+    );
+    log.output(table.toString(), command.signers);
+  });
+}
+
+export async function logTransactionDetails(command: ICommand): Promise<void> {
+  const table = createTable({ head: ['Network ID', 'Chain ID'] });
+
+  try {
+    const cmdPayload: ICommandPayload = JSON.parse(command.cmd);
+    const networkId = cmdPayload.networkId ?? 'N/A';
+    const chainId = cmdPayload.meta.chainId ?? 'N/A';
+    const hash = command.hash ?? 'N/A';
+
+    table.push([networkId, chainId]);
+
+    if (table.length > 0) {
+      log.info(
+        log.color.green(`\nTransaction detail for command with hash: ${hash}`),
+      );
+
+      log.output(table.toString(), command);
+      log.info('\n\n');
+    } else {
+      log.info(`No transaction details to display for hash: ${hash}`);
+    }
+  } catch (error) {
+    log.info(`No transaction details to display`);
+  }
+}
+
+export const getTxTemplateDirectory = (): string | null => {
+  const kadenaDir = services.config.getDirectory();
+  return notEmpty(kadenaDir) ? path.join(kadenaDir, TX_TEMPLATE_FOLDER) : null;
+};

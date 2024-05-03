@@ -1,7 +1,8 @@
 export type { IAccordionProps } from './Accordion';
 export type { IAvatarProps } from './Avatar';
+export type { IBadgeProps } from './Badge';
 export type { IBreadcrumbItemProps, IBreadcrumbsProps } from './Breadcrumbs';
-export type { IButtonProps, IToggleButtonProps } from './Button';
+export type { IButtonProps, IToggleButtonProps, PressEvent } from './Button';
 export type { ICardProps } from './Card';
 export type { IContentHeaderProps } from './ContentHeader';
 export type {
@@ -48,12 +49,14 @@ export type { IProgressCircleProps } from './ProgressCircle';
 export type { ITableProps } from './Table';
 export type { ITabItemProps, ITabsProps } from './Tabs';
 export type { ITagGroupProps, ITagItemProps, ITagProps } from './Tag';
+export type { ITextLinkProps } from './TextLink';
 export type { ITooltipProps } from './Tooltip';
 export type { ILabelValue, ITrackerCardProps } from './TrackerCard/TrackerCard';
 export type { IHeadingProps, ITextProps } from './Typography';
 
 export { Accordion, AccordionItem } from './Accordion';
 export { Avatar } from './Avatar';
+export { Badge } from './Badge';
 export { Breadcrumbs, BreadcrumbsItem } from './Breadcrumbs';
 export { Button, ToggleButton } from './Button';
 export { Card } from './Card';
@@ -79,7 +82,7 @@ export {
   TextField,
   TextareaField,
 } from './Form';
-export { ProductIcon, SystemIcon } from './Icon';
+export { ProductIcon } from './Icon';
 export { Box, Grid, GridItem, Stack } from './Layout';
 export { Link } from './Link';
 export { KadenaLogo } from './Logo';
@@ -105,6 +108,7 @@ export { ProgressCircle } from './ProgressCircle';
 export { Cell, Column, Row, Table, TableBody, TableHeader } from './Table';
 export { TabItem, Tabs } from './Tabs';
 export { Tag, TagGroup, TagItem } from './Tag';
+export { TextLink } from './TextLink';
 export { Tooltip } from './Tooltip';
 export { TrackerCard } from './TrackerCard/TrackerCard';
 export { Heading, Text } from './Typography';

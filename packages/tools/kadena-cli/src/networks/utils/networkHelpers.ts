@@ -1,21 +1,21 @@
-import {
-  defaultNetworksPath,
-  defaultNetworksSettingsFilePath,
-  networkDefaults,
-  networkFiles,
-} from '../../constants/networks.js';
+import { getNetworkFiles, networkDefaults } from '../../constants/networks.js';
 
 import {
   formatZodError,
-  getDefaultNetworkName,
   mergeConfigs,
   sanitizeFilename,
-} from '../../utils/helpers.js';
+} from '../../utils/globalHelpers.js';
+import { getDefaultNetworkName } from '../../utils/helpers.js';
 
 import yaml from 'js-yaml';
 import path from 'path';
 import { z } from 'zod';
 import { services } from '../../services/index.js';
+import { KadenaError } from '../../services/service-error.js';
+import {
+  getNetworkDirectory,
+  getNetworksSettingsFilePath,
+} from './networkPath.js';
 
 export interface ICustomNetworkChoice {
   value: string; // | typeof skipSymbol | typeof createSymbol;
@@ -56,43 +56,28 @@ const networkSchema = z.object({
  * @returns {void} - No return value; the function writes directly to a file.
  */
 export async function writeNetworks(
+  kadenaDir: string,
   options: INetworkCreateOptions,
 ): Promise<void> {
   const { network } = options;
   const sanitizedNetwork = sanitizeFilename(network).toLowerCase();
+
   const networkFilePath = path.join(
-    defaultNetworksPath,
+    kadenaDir,
+    'networks',
     `${sanitizedNetwork}.yaml`,
   );
 
-  let existingConfig: INetworkCreateOptions =
-    typeof networkDefaults[network] !== 'undefined'
-      ? { ...networkDefaults[network] }
-      : { ...networkDefaults.other };
+  const validation = networkSchema.safeParse(options);
 
-  if (await services.filesystem.fileExists(networkFilePath)) {
-    const content = await services.filesystem.readFile(networkFilePath);
-    if (content !== null) {
-      existingConfig = yaml.load(content!) as INetworkCreateOptions;
-    }
-  }
-
-  const networkConfig = mergeConfigs(existingConfig, options);
-
-  await services.filesystem.ensureDirectoryExists(networkFilePath);
-
-  const parsed = networkSchema.safeParse(networkConfig);
-
-  if (!parsed.success) {
+  if (!validation.success) {
     throw new Error(
-      `Failed to write network config: ${formatZodError(parsed.error)}`,
+      `Failed to write network config: ${formatZodError(validation.error)}`,
     );
   }
 
-  await services.filesystem.writeFile(
-    networkFilePath,
-    yaml.dump(networkConfig),
-  );
+  await services.filesystem.ensureDirectoryExists(networkFilePath);
+  await services.filesystem.writeFile(networkFilePath, yaml.dump(options));
 }
 
 /**
@@ -104,24 +89,36 @@ export async function writeNetworks(
 export async function removeNetwork(
   options: Pick<INetworkCreateOptions, 'network'>,
 ): Promise<void> {
+  const networkDir = getNetworkDirectory();
+  if (networkDir === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
   const { network } = options;
   const sanitizedNetwork = sanitizeFilename(network).toLowerCase();
-  const networkFilePath = path.join(
-    defaultNetworksPath,
-    `${sanitizedNetwork}.yaml`,
-  );
+  const networkFilePath = path.join(networkDir, `${sanitizedNetwork}.yaml`);
 
   await services.filesystem.deleteFile(networkFilePath);
 }
 
 export async function removeDefaultNetwork(): Promise<void> {
-  await services.filesystem.deleteFile(defaultNetworksSettingsFilePath);
+  const defaultNetworksSettingsFilePath = getNetworksSettingsFilePath();
+  if (defaultNetworksSettingsFilePath === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
+
+  if (await services.filesystem.fileExists(defaultNetworksSettingsFilePath)) {
+    await services.filesystem.deleteFile(defaultNetworksSettingsFilePath);
+  }
 }
 
 export async function loadNetworkConfig(
   network: string,
 ): Promise<INetworksCreateOptions> {
-  const networkFilePath = path.join(defaultNetworksPath, `${network}.yaml`);
+  const networkDir = getNetworkDirectory();
+  if (networkDir === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
+  const networkFilePath = path.join(networkDir, `${network}.yaml`);
 
   const file = await services.filesystem.readFile(networkFilePath);
   if (file === null) {
@@ -131,12 +128,17 @@ export async function loadNetworkConfig(
   return yaml.load(file) as INetworksCreateOptions;
 }
 
-export async function ensureNetworksConfiguration(): Promise<void> {
-  await services.filesystem.ensureDirectoryExists(defaultNetworksPath);
+export async function ensureNetworksConfiguration(
+  kadenaDir: string,
+): Promise<void> {
+  await services.filesystem.ensureDirectoryExists(
+    path.join(kadenaDir, 'networks'),
+  );
 
+  const networkFiles = getNetworkFiles(kadenaDir);
   for (const [network, filePath] of Object.entries(networkFiles)) {
     if (!(await services.filesystem.fileExists(filePath))) {
-      await writeNetworks(networkDefaults[network]);
+      await writeNetworks(kadenaDir, networkDefaults[network]);
     }
   }
 }
@@ -171,4 +173,31 @@ export async function getNetworksInOrder<T extends INetworkChoiceOption>(
     ...partitionedNetworks.defaultNetworks,
     ...partitionedNetworks.remainingNetworks,
   ];
+}
+
+export async function mergeNetworkConfig(
+  kadenaDir: string,
+  network: string,
+  options: INetworkCreateOptions,
+): Promise<INetworkCreateOptions> {
+  const sanitizedNetwork = sanitizeFilename(network).toLowerCase();
+  const networkFilePath = path.join(
+    kadenaDir,
+    'networks',
+    `${sanitizedNetwork}.yaml`,
+  );
+
+  let existingConfig: INetworkCreateOptions =
+    typeof networkDefaults[network] !== 'undefined'
+      ? { ...networkDefaults[network] }
+      : { ...networkDefaults.other };
+
+  if (await services.filesystem.fileExists(networkFilePath)) {
+    const content = await services.filesystem.readFile(networkFilePath);
+    if (content !== null) {
+      existingConfig = yaml.load(content!) as INetworkCreateOptions;
+    }
+  }
+
+  return mergeConfigs(existingConfig, options);
 }

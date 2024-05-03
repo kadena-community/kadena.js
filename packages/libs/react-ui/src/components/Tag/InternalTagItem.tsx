@@ -1,10 +1,10 @@
+import { MonoClose } from '@kadena/react-icons/system';
 import { mergeRefs } from '@react-aria/utils';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
 import type { AriaButtonOptions, AriaTagProps } from 'react-aria';
 import { useButton, useFocusRing, useTag } from 'react-aria';
 import type { ListState } from 'react-stately';
-import { SystemIcon } from '../Icon';
 import { Tag } from './Tag';
 import { closeButtonClass, tagItemClass } from './Tag.css';
 
@@ -14,7 +14,7 @@ const CloseButton: FC<AriaButtonOptions<'button'>> = (props) => {
 
   return (
     <button className={closeButtonClass} {...buttonProps} ref={ref}>
-      <SystemIcon.Close size="sm" />
+      <MonoClose />
     </button>
   );
 };

@@ -9,7 +9,8 @@ import {
   useTableHeaderRow,
 } from 'react-aria';
 import { Stack } from '..';
-import { ChevronDown, ChevronUp } from '../Icon/System/SystemIcon';
+
+import { MonoExpandLess, MonoExpandMore } from '@kadena/react-icons/system';
 import { columnHeader, headerRow } from './Table.css';
 
 interface ITableHeaderRowProps<T> {
@@ -62,7 +63,9 @@ export function TableColumnHeader<T extends object>({
   );
   const { isFocusVisible, focusProps } = useFocusRing();
   const ArrowIcon =
-    state.sortDescriptor?.direction === 'ascending' ? ChevronUp : ChevronDown;
+    state.sortDescriptor?.direction === 'ascending'
+      ? MonoExpandLess
+      : MonoExpandMore;
 
   return (
     <th
