@@ -133,7 +133,7 @@ const createTokenCommand = <C extends ICreateTokenPolicyConfig>({
     addKeyset('creation-guard', creator.keyset.pred, ...creator.keyset.keys),
     addSigner(creator.keyset.keys, (signFor) => [
       signFor('coin.GAS'),
-      signFor('marmalade-v2.ledger.CREATE-TOKEN', tokenId, creator.keyset),
+      signFor('marmalade-v2.ledger.CREATE-TOKEN', tokenId),
 
       ...generatePolicyCapabilities(
         policyConfig as ICreateTokenPolicyConfig,

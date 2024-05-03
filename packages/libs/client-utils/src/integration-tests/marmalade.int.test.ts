@@ -417,7 +417,7 @@ describe('getTokenUri', () => {
     );
 
     await expect(() => task.execute()).rejects.toThrowError(
-      new Error(`read: row not found: ${nonExistingTokenId}`),
+      new Error(`with-read: row not found: ${nonExistingTokenId}`),
     );
   });
 });

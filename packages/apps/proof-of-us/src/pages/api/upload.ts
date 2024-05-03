@@ -28,6 +28,16 @@ export default async function handler(
       message: 'background not found',
     });
   }
+
+  const fileSizeLimitMb = 2;
+  const base64String = background.bg.replaceAll('=', '');
+  const size = base64String.length * (3 / 4);
+  if (size > fileSizeLimitMb * 1024 * 1024) {
+    return res.status(500).json({
+      message: `the image more than ${fileSizeLimitMb}Mb`,
+    });
+  }
+
   if (!proofOfUs) {
     return res.status(404).json({
       message: 'proofOfUs not found',
