@@ -15,7 +15,7 @@ const variants = getVariants(button);
 const meta: Meta<IButtonProps> = {
   title: 'Components/Button',
   parameters: {
-    status: { type: 'releaseCandidate' },
+    status: { type: 'stable' },
     controls: {
       hideNoControlsWarning: true,
       sort: 'requiredFirst',

@@ -76,7 +76,7 @@ function PopoverBase(
   );
 }
 
-interface PopoverInnerProps extends AriaPopoverProps, IPopoverProps {
+interface IPopoverInnerProps extends AriaPopoverProps, IPopoverProps {
   state: OverlayTriggerState;
 }
 
@@ -86,7 +86,7 @@ function PopoverInner({
   portalContainer,
   resizeToTrigger = true,
   ...props
-}: PopoverInnerProps) {
+}: IPopoverInnerProps) {
   const { popoverProps, underlayProps, arrowProps, placement } = usePopover(
     {
       ...props,

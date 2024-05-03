@@ -6,6 +6,7 @@ import { Analytics } from '@/components/Analytics/Analytics';
 import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { Header } from '@/components/Layout/components/Header/Header';
 import { markDownComponents } from '@/components/Markdown';
+import { useIphoneInputFix } from '@/hooks/useIphoneInputFix';
 import { MenuProvider } from '@/hooks/useMenu/MenuProvider';
 import { getLayout } from '@/utils/getLayout';
 import type { IPageMeta, IPageProps } from '@kadena/docs-tools';
@@ -43,6 +44,7 @@ export const MyApp = ({
 }): JSX.Element => {
   const props = deserializePageProps(pageProps);
   const Layout = getLayout(props.frontmatter.layout);
+  useIphoneInputFix();
 
   // check for a router query
   const router = useRouter();
@@ -70,7 +72,10 @@ export const MyApp = ({
         <meta name="title" content={title} />
         <meta name="description" content={description} />
         <meta content="text/html; charset=UTF-8" name="Content-Type" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1"
+        />
         {/* <!-- Twitter --> */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content="" />

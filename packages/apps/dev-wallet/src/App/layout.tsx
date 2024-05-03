@@ -43,7 +43,7 @@ export const Layout: FC = () => {
           aria-label="Select Network"
           selectedKey={activeNetwork?.networkId}
           onSelectionChange={(value) => handleNetworkUpdate(value as string)}
-          startIcon={<MonoPublic />}
+          startVisual={<MonoPublic />}
         >
           {networks.map((network) => (
             <SelectItem key={network.networkId} textValue={network.name}>

@@ -33,6 +33,7 @@ interface IDeployConfig {
   templateConfig?: ITemplateConfig;
   codeFileConfig?: ICodeFileConfig;
   clientConfig: IClientConfig;
+  filterFunction?: (file: string) => boolean;
 }
 
 /**
@@ -42,6 +43,7 @@ interface IDeployConfig {
  * @param templateConfig - The template configuration for the deployment (the namespace and sort functions can be used to define the order and the namespace used for the deployment)
  * @param codeFileConfig - The code file configuration for the deployment (the transaction body generator function can be used to define the transaction body for each code file)
  * @param clientConfig - The client configuration for the deployment
+ * @param filterFunction - A filter function to filter the files to be deployed
  * @throws - If no template or code files are provided
  * @example
  * ```typescript
@@ -66,6 +68,7 @@ export const deployFromDirectory = async ({
   templateConfig,
   codeFileConfig,
   clientConfig,
+  filterFunction,
 }: IDeployConfig) => {
   if (!templateConfig && !codeFileConfig) {
     throw new Error('Please provide a template or a code files directory');
@@ -75,21 +78,9 @@ export const deployFromDirectory = async ({
   let codeFiles: Array<string>;
 
   if (templateConfig) {
-    templateFiles = readdirSync(templateConfig!.path).filter((file) =>
-      file.endsWith(templateConfig!.extension),
-    );
-
-    if (templateConfig.sort) {
-      templateFiles.sort(templateConfig.sort);
-    }
+    templateFiles = readAndFilterFiles(templateConfig, filterFunction);
   } else if (codeFileConfig) {
-    codeFiles = readdirSync(codeFileConfig!.path).filter((file) =>
-      file.endsWith(codeFileConfig!.extension),
-    );
-
-    if (codeFileConfig.sort) {
-      codeFiles.sort(codeFileConfig.sort);
-    }
+    codeFiles = readAndFilterFiles(codeFileConfig, filterFunction);
   }
 
   await Promise.all(
@@ -179,3 +170,23 @@ export const deployFromDirectory = async ({
     }),
   );
 };
+
+function readAndFilterFiles(
+  config: ICodeFileConfig | ITemplateConfig,
+  filterFunction?: (file: string) => boolean,
+) {
+  try {
+    const files = readdirSync(config.path)
+      .filter((file) => file.endsWith(config.extension))
+      .filter(filterFunction ?? (() => true));
+
+    if (config.sort) {
+      files.sort(config.sort);
+    }
+
+    return files;
+  } catch (error) {
+    console.error(`Failed to read directory: ${config.path}`);
+    throw error;
+  }
+}

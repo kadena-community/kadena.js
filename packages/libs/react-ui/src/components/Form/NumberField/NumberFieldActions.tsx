@@ -2,8 +2,8 @@ import { MonoAdd, MonoRemove } from '@kadena/react-icons/system';
 import React from 'react';
 import { Button } from '../../Button/Button';
 
-import type { INumberFieldProps } from '../NumberField';
-import { iconSize } from '../NumberField/NumberField.css';
+import type { INumberFieldProps } from '.';
+import { iconSize } from './NumberField.css';
 
 interface INumberFieldActionsProps {
   isDisabled?: boolean;

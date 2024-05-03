@@ -12,9 +12,9 @@ import React, { forwardRef, useCallback } from 'react';
 import type { AriaNumberFieldProps } from 'react-aria';
 import { useFocusRing, useHover, useLocale, useNumberField } from 'react-aria';
 import { useNumberFieldState } from 'react-stately';
-import { NumberFieldActions } from '../ActionButtons/NumberFieldActions';
 import { Field } from '../Field/Field';
 import { input } from '../Form.css';
+import { NumberFieldActions } from './NumberFieldActions';
 
 type Variants = NonNullable<RecipeVariants<typeof input>>;
 
@@ -137,6 +137,7 @@ export function NumberFieldBase(
         data-invalid={props.isInvalid || undefined}
         data-positive={props.isPositive || undefined}
         data-has-start-addon={!!props.startVisual || undefined}
+        data-has-end-addon
       />
     </Field>
   );
