@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import React, { useRef } from 'react';
 import type { AriaTabProps } from 'react-aria';
-import { useTab } from 'react-aria';
+import { mergeProps, useHover, useTab } from 'react-aria';
 import type { Node, TabListState } from 'react-stately';
 import { tabItemClass } from './Tabs.css';
 
@@ -17,14 +17,16 @@ export const Tab = ({ item, state }: ITabProps): ReactNode => {
   const { key, rendered } = item;
   const ref = useRef(null);
   const { tabProps } = useTab({ key }, state, ref);
+  const { hoverProps, isHovered } = useHover({ ...item, ...state });
 
   return (
     <div
       className={tabItemClass}
-      {...tabProps}
+      {...mergeProps(tabProps, hoverProps)}
       ref={ref}
       role="tab"
       data-selected={state.selectedKey === key}
+      data-hovered={isHovered}
     >
       {rendered}
     </div>

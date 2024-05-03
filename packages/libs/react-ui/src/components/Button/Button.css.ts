@@ -190,6 +190,7 @@ export const button = recipe({
       paddingBlock: 'sm',
     }),
     {
+      minWidth: 'fit-content',
       color: textColor,
       backgroundColor: backgroundColor,
       transition:
