@@ -32,6 +32,10 @@ You should start here to learn the basics about blockchains, cryptography, conse
 
 These topics won't make you an expert, but they should give you a good foundation and links to where you can find out more.
 
+### View recent articles
+
+Use keywords to Search or visit the [Kadena Blogchain](https://www.kadena.io/blog) to browse recent articles to find the topics you're looking for.
+
 <!--
 - [Transaction lifecycle](/learn/transaction-lifecycle) explains transaction types and how transactions are received, queued, and executed.
 - [State and storage](/learn/states-and-storage) describes how Kadena handles state changes and data storage.

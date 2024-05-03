@@ -51,6 +51,6 @@ If you are preparing to deploy on the Kadena test or main network, see the follo
 - Prepare your namespace on the target network
 - 
 
-## View recent articles
+### View recent articles
 
 Use keywords to Search or visit the [Kadena Blogchain](https://www.kadena.io/blog) to browse recent articles to find the topics you're looking for.

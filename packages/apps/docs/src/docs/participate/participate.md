@@ -52,6 +52,6 @@ The Kadena codebase is open source and hosted on GitHub in repositories under tw
 
 For more information about contributing to the codebase, you should browse the repositories and corresponding README files.
 
-## View recent articles
+### View recent articles
 
 Use keywords to Search, visit the [Kadena Blogchain](https://www.kadena.io/blog), or browse popular articles to find the topics you're looking for.

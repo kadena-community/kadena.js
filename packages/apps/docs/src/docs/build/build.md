@@ -45,6 +45,6 @@ If you're a developer ready to take your game to the next level, explore Kadena 
 - Non-fungible token marketplace
 - Frontend libraries and command-line interface
 
-## View recent articles
+### View recent articles
 
 Use keywords to Search or visit the [Kadena Blogchain](https://www.kadena.io/blog) to browse recent articles to find the topics you're looking for.
