@@ -1,7 +1,6 @@
 import type { IPactModules, PactReturnType } from '@kadena/client';
-import { Pact, readKeyset } from '@kadena/client';
+import { Pact } from '@kadena/client';
 import {
-  addKeyset,
   addSigner,
   composePactCommand,
   execution,
@@ -11,7 +10,7 @@ import type { ChainId, IPactDecimal } from '@kadena/types';
 import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
-interface ITransferCreateTokenInput {
+interface ITransferTokenInput {
   policyConfig?: {
     guarded?: boolean;
     hasRoyalty?: boolean;
@@ -27,37 +26,31 @@ interface ITransferCreateTokenInput {
   };
   receiver: {
     account: string;
-    keyset: {
-      keys: string[];
-      pred: 'keys-all' | 'keys-2' | 'keys-any';
-    };
   };
   amount: IPactDecimal;
 }
 
-const createTransferTokenCommand = ({
+const transferTokenCommand = ({
   tokenId,
   chainId,
   sender,
   receiver,
   amount,
   policyConfig,
-}: ITransferCreateTokenInput) => {
+}: ITransferTokenInput) => {
   if (policyConfig?.hasRoyalty) {
     throw new Error('Royalty tokens cannot be transferred.');
   }
 
   return composePactCommand(
     execution(
-      Pact.modules['marmalade-v2.ledger']['transfer-create'](
+      Pact.modules['marmalade-v2.ledger']['transfer'](
         tokenId,
         sender.account,
         receiver.account,
-        readKeyset('receiver-guard'),
         amount,
       ),
     ),
-    addKeyset('receiver-guard', receiver.keyset.pred, ...receiver.keyset.keys),
     addSigner(sender.keyset.keys, (signFor) => [
       signFor('coin.GAS'),
       signFor(
@@ -83,10 +76,10 @@ const createTransferTokenCommand = ({
   );
 };
 
-export const transferCreateToken = (
-  inputs: ITransferCreateTokenInput,
+export const transferToken = (
+  inputs: ITransferTokenInput,
   config: IClientConfig,
 ) =>
   submitClient<
     PactReturnType<IPactModules['marmalade-v2.ledger']['transfer-create']>
-  >(config)(createTransferTokenCommand(inputs));
+  >(config)(transferTokenCommand(inputs));

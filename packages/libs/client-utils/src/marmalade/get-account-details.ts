@@ -5,7 +5,6 @@ import type {
 } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import {
-  addKeyset,
   addSigner,
   composePactCommand,
   execution,
@@ -15,10 +14,10 @@ import type { ChainId } from '@kadena/types';
 import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
-interface IGetBalanceInput {
+interface IGetAccountBalanceInput {
   tokenId: string;
-  chainId: ChainId;
   accountName: string;
+  chainId: ChainId;
   guard: {
     account: string;
     keyset: {
@@ -28,17 +27,16 @@ interface IGetBalanceInput {
   };
 }
 
-const getTokenBalanceCommand = ({
+const getAccountDetailsCommand = ({
   tokenId,
-  chainId,
   accountName,
+  chainId,
   guard,
-}: IGetBalanceInput) =>
+}: IGetAccountBalanceInput) =>
   composePactCommand(
     execution(
-      Pact.modules['marmalade-v2.ledger']['get-balance'](tokenId, accountName),
+      Pact.modules['marmalade-v2.ledger']['details'](tokenId, accountName),
     ),
-    addKeyset('guard', 'keys-all', ...guard.keyset.keys),
     addSigner(guard.keyset.keys, (signFor) => [signFor('coin.GAS')]),
     setMeta({
       senderAccount: guard.account,
@@ -46,10 +44,10 @@ const getTokenBalanceCommand = ({
     }),
   );
 
-export const getTokenBalance = (
-  inputs: IGetBalanceInput,
+export const getAccountDetails = (
+  inputs: IGetAccountBalanceInput,
   config: IClientConfig,
 ) =>
-  submitClient<
-    PactReturnType<IPactModules['marmalade-v2.ledger']['get-balance']>
-  >(config)(getTokenBalanceCommand(inputs));
+  submitClient<PactReturnType<IPactModules['marmalade-v2.ledger']['details']>>(
+    config,
+  )(getAccountDetailsCommand(inputs));
