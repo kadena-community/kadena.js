@@ -1,5 +1,12 @@
 import { prismaClient } from '@db/prisma-client';
+import { chainIds } from '@utils/chains';
 import { dotenv } from '@utils/dotenv';
+
+type BlockWithDifficulty = {
+  creationTime: Date;
+  difficulty: bigint;
+  height: bigint;
+};
 
 export class NetworkError extends Error {
   public networkError?: Error;
@@ -32,6 +39,7 @@ export async function getHashRateAndTotalDifficulty(): Promise<{
   totalDifficulty: number;
 }> {
   try {
+    // Retrieve the blocks.
     const { height: currentHeight } = await prismaClient.block.findFirstOrThrow(
       {
         orderBy: {
@@ -47,66 +55,79 @@ export async function getHashRateAndTotalDifficulty(): Promise<{
     const blocks = await prismaClient.block.findMany({
       where: {
         height: {
-          gte: Number(currentHeight) - 4,
+          gte: Number(currentHeight) - 3,
         },
       },
       select: {
         creationTime: true,
         target: true,
+        height: true,
       },
     });
 
-    const blocksWithDifficulty: { creationTime: Date; difficulty: number }[] =
-      [];
+    // Transform the data and calculate the difficulty per block.
+    const blocksWithDifficulty: BlockWithDifficulty[] = [];
 
     for (const block of blocks) {
-      const base = 2 ** 256;
-
-      let difficulty = base / block.target.toNumber();
-
       blocksWithDifficulty.push({
         creationTime: block.creationTime,
-        difficulty,
+        difficulty: 2n ** 256n / BigInt(block.target.round().toFixed()),
+        height: block.height,
       });
     }
 
-    function aggregateBlockData(
-      blocks: { creationTime: Date; difficulty: number }[],
-    ) {
-      let earliestTime = Number.MAX_SAFE_INTEGER;
-      let totalDifficulty = 0;
-
-      for (const block of blocks) {
-        const blockTimeMillis = block.creationTime.getTime();
-        if (blockTimeMillis < earliestTime) {
-          earliestTime = blockTimeMillis;
-        }
-        totalDifficulty += block.difficulty;
-      }
-
-      return { earliestTime, totalDifficulty };
-    }
-
-    const currentTimeMillis = Date.now();
-    const { earliestTime, totalDifficulty } =
-      aggregateBlockData(blocksWithDifficulty);
-
-    const timeDifference = currentTimeMillis - earliestTime;
-
-    let networkHashRate;
-
-    // Check if the elapsed time is less than 1 second
-    if (timeDifference < 1000) {
-      networkHashRate = 0; // Not enough time has passed to calculate a meaningful hash rate
-    } else {
-      networkHashRate = totalDifficulty / (timeDifference / 1000);
-    }
-
+    // Calculate the data and return it.
     return {
-      networkHashRate: Number(networkHashRate),
-      totalDifficulty: Number(totalDifficulty),
+      networkHashRate: Number(calculateNetworkHashRate(blocksWithDifficulty)),
+      totalDifficulty: Number(
+        calculateTotalDiffulty(currentHeight, blocksWithDifficulty),
+      ),
     };
   } catch (error) {
     throw new NetworkError('Unable to parse response data.', error);
+  }
+}
+
+function calculateNetworkHashRate(blocksWithDifficulty: BlockWithDifficulty[]) {
+  function aggregateBlockData(
+    blocks: { creationTime: Date; difficulty: bigint }[],
+  ) {
+    let earliestTime = Number.MAX_SAFE_INTEGER;
+    let totalDifficulty = 0n;
+
+    for (const block of blocks) {
+      const blockTimeMillis = block.creationTime.getTime();
+      if (blockTimeMillis < earliestTime) {
+        earliestTime = blockTimeMillis;
+      }
+      totalDifficulty += block.difficulty;
+    }
+
+    return { earliestTime, totalDifficulty };
+  }
+
+  const { earliestTime, totalDifficulty } =
+    aggregateBlockData(blocksWithDifficulty);
+
+  const timeDifference = Date.now() - earliestTime;
+
+  return timeDifference < 1000
+    ? 0
+    : totalDifficulty / (BigInt(timeDifference) / 1000n);
+}
+
+function calculateTotalDiffulty(
+  currentHeight: bigint,
+  blocks: BlockWithDifficulty[],
+) {
+  for (let i = currentHeight; i > currentHeight - 3n; i--) {
+    const blocksOfThisHeight = blocks.filter((block) => block.height === i);
+
+    if (blocksOfThisHeight.length === chainIds.length) {
+      return blocksOfThisHeight.reduce(
+        (acc, block) => acc + block.difficulty,
+        0n,
+      );
+    }
   }
 }

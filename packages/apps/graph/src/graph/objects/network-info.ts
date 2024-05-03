@@ -19,10 +19,10 @@ export default builder.objectType('NetworkInfo', {
       description: 'The total number of transactions.',
     }),
     networkHashRate: t.exposeFloat('networkHashRate', {
-      description: 'The network hash rate in PH/S.',
+      description: 'The network hash rate.',
     }),
     totalDifficulty: t.exposeFloat('totalDifficulty', {
-      description: 'The total difficulty in EH.',
+      description: 'The total difficulty.',
     }),
   }),
 });
