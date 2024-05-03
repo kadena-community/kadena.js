@@ -25,7 +25,7 @@ export const logAccountCreation = (
   accountName: string,
   filePath: string,
 ): void => {
-  log.info(log.color.green(`\nAccount created`));
+  log.info(log.color.green(`\nAccount added`));
   log.info(`accountName: ${accountName}\n`);
   log.info(log.color.green('Account Storage Location'));
   log.info(relativeToCwd(filePath));

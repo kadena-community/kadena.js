@@ -7,13 +7,13 @@ import { testTransactions } from '../commands/txTestSignedTransaction.js';
 import { signTransactionFileWithKeyPairAction } from '../utils/txSignWithKeypair.js';
 
 const publicKey =
-  '2619fafe33b3128f38a4e4aefe6a5559371b18b6c25ac897aff165ce14b241b3';
+  '476867d07bd8cab2e34ea99c9501fe64e3f3ce7cdb2ce3aed53d43d856a36574';
 const secretKey =
-  'c4e33c93182268c5ef79979493c7d834c81e62ceed22f8ea235cc776c3da0a43';
+  'N3ZLU2lpWjhuT3dhbER1L2Z3Y2wwUT09LkFpWkZBUFh3Vk9KMnlGL2cuMWNWU25LamN4NTJ0OFdZMlgwT0NJWXN4K2NNSlNUZ0pIZjVYNUtwTERVWUpRQUtXZ25KU2Z4UU1OWmVJbnBtNytQc3VMN0N5aitOWXNNVFlsS3R2cS9RZ1RheDRwM20yT25ObzMrRDdLTkNkOCtnaDd2Vjl3T1dyYnVhNjlkQ1lER1RKNlhiU1BWcFgxK25RU0hoY0JLbVVNRXpNay9JcDdKb1Y2N3JtMzZkYzVEcTEyU05QZ2hsWDhOOTJPOTU3LlIyaG4wSHZZeXJMalRxbWNsUUgrWk9QenpuemJMT091MVQxRDJGYWpaWFE9';
 const targetAccount =
   'k:00b34067644479c769b48b4cc9b2c732e48fc9aeb82d06ecd52dc783550de54d';
 
-describe('template to live test', () => {
+describe('template to legacy live test', () => {
   // NOTE: this tests uses live testnet04 meaning it is not isolated!!!
   it.skip('creates, signs and tests the transaction', async () => {
     const variables = {
@@ -36,6 +36,7 @@ describe('template to live test', () => {
     const signed = await signTransactionFileWithKeyPairAction({
       files: [transaction.data.filePath],
       keyPairs: [{ publicKey, secretKey }],
+      legacy: true,
     });
     assertCommandError(signed);
 

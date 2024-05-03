@@ -71,7 +71,7 @@ export async function keyPairsPrompt(): Promise<string> {
 
 export async function walletCreateAccountPrompt(): Promise<string> {
   return await select({
-    message: 'Create an account using the first wallet key?',
+    message: 'Add an account using the first wallet key?',
     choices: [
       { value: 'true', name: 'Yes' },
       { value: 'false', name: 'No' },
