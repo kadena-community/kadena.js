@@ -1,5 +1,5 @@
 import { MonoArrowBackIosNew, MonoArrowForwardIos } from '@kadena/react-icons';
-import cn from 'classnames';
+import { default as classNames, default as cn } from 'classnames';
 import type { ReactNode } from 'react';
 import React, { useCallback, useEffect, useRef } from 'react';
 import type { AriaTabListProps } from 'react-aria';
@@ -9,6 +9,7 @@ import { Button } from '../Button';
 import { Tab } from './Tab';
 import { TabPanel } from './TabPanel';
 import {
+  fade,
   paginationButton,
   selectorLine,
   tabListClass,
@@ -139,7 +140,7 @@ export const Tabs = ({ className, ...props }: ITabsProps): ReactNode => {
       <div className={tabListControls}>
         <Button
           variant="transparent"
-          className={paginationButton}
+          className={classNames(paginationButton, fade['back'])}
           onPress={() => handlePagination('back')}
         >
           <MonoArrowBackIosNew />
@@ -158,7 +159,7 @@ export const Tabs = ({ className, ...props }: ITabsProps): ReactNode => {
         </div>
         <Button
           variant="transparent"
-          className={paginationButton}
+          className={classNames(paginationButton, fade['forward'])}
           onPress={() => handlePagination('forward')}
         >
           <MonoArrowForwardIos />

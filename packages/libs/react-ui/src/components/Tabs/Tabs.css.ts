@@ -1,5 +1,5 @@
 import { style, styleVariants } from '@vanilla-extract/css';
-import { responsiveStyle, token } from '../../styles';
+import { token } from '../../styles';
 import { atoms } from '../../styles/atoms.css';
 import { tokens } from '../../styles/tokens/contract.css';
 
@@ -16,6 +16,7 @@ export const tabListWrapperClass = style([
     overflowX: 'auto',
     display: 'flex',
     flexDirection: 'row',
+    position: 'relative',
   }),
   {
     scrollbarWidth: 'none',
@@ -125,38 +126,46 @@ export const tabContentClass = style([
 export const paginationButton = style({
   zIndex: 3,
   backgroundColor: token('color.background.base.default'),
-  // display: 'none',
-  // ...responsiveStyle({
-  //   sm: {
-  //     display: 'flex',
-  //   },
-  // }),
 });
 
 export const hiddenClass = style({ visibility: 'hidden' });
 
 const baseFade = style({
-  position: 'absolute',
-  top: 0,
-  width: '4rem',
-  height: '100%',
-  zIndex: 2,
+  position: 'relative',
+  selectors: {
+    '&::before': {
+      zIndex: 2,
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      width: '4rem',
+      height: '100%',
+      pointerEvents: 'none',
+    },
+  },
 });
 
 export const fade = styleVariants({
   back: [
     baseFade,
     {
-      left: '1rem',
-      background: `linear-gradient(90deg, ${token('color.background.neutral.n1.@alpha0')} 24.53%, ${token('color.background.base.default')} 100%)`,
+      selectors: {
+        '&::before': {
+          left: '100%',
+          background: `linear-gradient(90deg, ${token('color.background.base.default')}, ${token('color.neutral.n1@alpha0')})`,
+        },
+      },
     },
   ],
   forward: [
     baseFade,
     {
-      right: '1rem',
-      background:
-        'linear-gradient(270deg, #F5F5F5 24.53%, rgba(245, 245, 245, 0.00) 100%)',
+      selectors: {
+        '&::before': {
+          right: '100%',
+          background: `linear-gradient(90deg, ${token('color.neutral.n1@alpha0')}, ${token('color.background.base.default')})`,
+        },
+      },
     },
   ],
 });
