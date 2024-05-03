@@ -9,7 +9,6 @@ const pages = [
   'learn',
   'build',
   'deploy',
-  'invest',
   'participate',
   'tutorials',
   'reference',
