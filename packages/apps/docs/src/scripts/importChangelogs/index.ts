@@ -11,15 +11,17 @@ import type {
   LinkReference,
   Literal,
   Node,
+  Paragraph,
   Parent,
   Resource,
+  Text,
 } from 'mdast';
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { toString } from 'mdast-util-to-string';
 import { remark } from 'remark';
 import type { Root } from 'remark-gfm';
 import { clone, removeRepoDomain } from '../importReadme';
-import { getTypes, isParent } from '../utils';
+import { getTypes, hasValue, isParent } from '../utils';
 import { TEMP_DIR } from '../utils/build';
 
 const errors: string[] = [];
@@ -32,6 +34,30 @@ interface IRepo {
   fileName: string;
 }
 
+interface IChangelogRecord {
+  label: string;
+  commit?: string;
+  prId?: string;
+}
+
+interface IChanglogContent {
+  label: string;
+  patch: IChangelogRecord[];
+  minor: IChangelogRecord[];
+}
+
+interface IChangelog extends IRepo {
+  content: IChanglogContent[];
+}
+
+enum VersionPosition {
+  PACKAGE = 0,
+  VERSION = 1,
+  PATCH = 2,
+  MINOR = 3,
+}
+
+// TODO: we should add this to the config.yaml
 const REPOS: IRepo[] = [
   {
     name: 'React UI',
@@ -39,6 +65,18 @@ const REPOS: IRepo[] = [
     directory: '/packages/libs/react-ui',
     fileName: 'CHANGELOG.md',
   },
+  // {
+  //   name: 'KadenaJS',
+  //   repo: 'https://github.com/kadena-community/kadena.js.git',
+  //   directory: '/packages/libs/kadena.js',
+  //   fileName: 'CHANGELOG.md',
+  // },
+  // {
+  //   name: 'Pact 4',
+  //   repo: 'https://github.com/kadena-io/pact.git',
+  //   directory: '/',
+  //   fileName: 'CHANGELOG.md',
+  // },
 ];
 
 const getChangelog = (repo: IRepo): string => {
@@ -48,31 +86,107 @@ const getChangelog = (repo: IRepo): string => {
   );
 };
 
+const createVersion = (branch: Node): IChanglogContent => {
+  return {
+    label: hasValue(branch) ? (branch.children[0] as Text).value : '',
+    patch: [],
+    minor: [],
+  };
+};
+
+const crawlContent = (tree: Node): string => {
+  let content = '';
+
+  const innerCrawl = (tree: Node): string => {
+    tree.children?.forEach((branch) => {
+      if (branch.value) {
+        content = `${content}${branch.value}`;
+        return content;
+      }
+      return innerCrawl(branch);
+    });
+  };
+
+  innerCrawl(tree);
+
+  return content;
+};
+
+const createRecord = (content: Node): IChangelogRecord => {
+  const contentString = crawlContent(content);
+
+  const regex = /\b[0-9a-f]{7,9}\b/;
+  const match = contentString.match(regex);
+
+  if (match) {
+    const newContent = contentString
+      .replace(match[0], '')
+      .replace('[]', '')
+      .replace('()', '')
+      .replace(/^\:/, '')
+      .trim();
+
+    const [hash] = match;
+    return { commit: hash, label: newContent };
+  }
+
+  return { label: contentString };
+};
+
+//create a json
+const crawl = (
+  repo: IRepo,
+): ((tree: Node, position?: VersionPosition) => IChangelog) => {
+  const content: IChanglogContent[] = [];
+  let currentPosition: VersionPosition;
+
+  const innerCrawl = (tree: Node, position?: VersionPosition): IChangelog => {
+    if (isParent(tree)) {
+      tree.children.forEach((branch) => {
+        if (branch.type === 'heading' && branch.depth === 2) {
+          content.push(createVersion(branch));
+          currentPosition = VersionPosition.VERSION;
+        }
+
+        if (branch.type === 'heading' && branch.depth === 3) {
+          if (
+            branch.children[0].value === 'Patch Changes' ||
+            branch.children[0].value === 'Bugfixes'
+          ) {
+            currentPosition = VersionPosition.PATCH;
+          }
+          if (branch.children[0].value === 'Minor Changes') {
+            currentPosition = VersionPosition.MINOR;
+          }
+        }
+
+        if (branch.type === 'listItem') {
+          const record = createRecord(branch);
+
+          switch (currentPosition) {
+            case VersionPosition.MINOR:
+              content[content.length - 1].minor.push(record);
+              break;
+            case VersionPosition.PATCH:
+              content[content.length - 1].patch.push(record);
+              break;
+          }
+        }
+
+        innerCrawl(branch, currentPosition);
+      });
+    }
+
+    return { ...repo, content };
+  };
+
+  return innerCrawl;
+};
+
 const createContent = (repo: IRepo) => {
   const md: Root = remark.parse(getChangelog(repo));
 
-  const content = [];
-
-  //create a json
-  const crawl = <T>(tree: Node): T[] => {
-    if (isParent(tree)) {
-      tree.children.forEach((branch) => {
-        if (branch.type === type) {
-          arr.push(branch as unknown as T);
-        }
-        crawl(branch, type, arr);
-      });
-    }
-    return arr;
-  };
-
-  crawl(md);
-
-  //loop through the complete thing
-  //## is the start of version
-  //### patch/minor
-
-  return content;
+  return crawl(repo)(md);
 };
 
 const getContent = async (repos: IRepo[]): Promise<any> => {
@@ -113,11 +227,12 @@ export const importChangelogs = async (): Promise<IScriptResult> => {
   await getRepos(REPOS);
   const content = await getContent(REPOS);
 
+  console.log(111, content[0].content[content[0].content.length - 1]);
+
   if (!errors.length) {
     success.push('Changelogs imported');
   }
 
-  errors.map(console.log);
   return { success, errors };
 };
 

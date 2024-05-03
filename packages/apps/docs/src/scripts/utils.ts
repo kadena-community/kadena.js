@@ -4,6 +4,13 @@ export function isParent(node: Node): node is Parent {
   return 'children' in node;
 }
 
+export function hasValue(node: Node): node is Parent {
+  if (!isParent(node)) return false;
+  if (!node.children[0]) return false;
+
+  return 'value' in node.children[0];
+}
+
 export function getTypes<T>(tree: Node, type: string, arr: T[] = []): T[] {
   if (isParent(tree)) {
     tree.children.forEach((branch) => {
