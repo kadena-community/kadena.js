@@ -62,7 +62,8 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
               </Heading>
               <Stack flexDirection="column" gap="xxs">
                 <Heading as="h2" variant="h4">
-                  Find the <GradientText>information</GradientText> you need with Search
+                  Find the <GradientText>information</GradientText> you need
+                  with Search
                 </Heading>
                 <span className={subheaderClass}>
                   or explore guides and examples to start building

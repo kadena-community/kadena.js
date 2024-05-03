@@ -1,5 +1,5 @@
 ---
-title: Use Ledger User Guide
+title: Use Ledger hardware wallet
 description: Ledger User Guide
 menu: Wallets
 label: Use Ledger hardware wallet

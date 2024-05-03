@@ -14,6 +14,7 @@ tags: [pact, typescript, account, transactions, utils]
 
 - [Set up a local development network](/tutorials/dev-network)
 - [Hello, world](/tutorials/hello-world)
+- [Language basics](/tutorials/language-basics)
 - [Pact and JavaScript](/tutorials/pact-and-javascript)
 - Common scenarios
 - Language reference 
