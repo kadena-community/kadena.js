@@ -97,7 +97,7 @@ export const createConfigInitCommand: (
     if (createAccount === 'true') {
       // when --quiet is passed and account alias is not provided
       // we will not create an account
-      if (!notEmpty(accountAlias)) {
+      if (!notEmpty(accountAlias) || accountAlias.trim().length === 0) {
         log.warning(
           'Account alias is required when creating an account: -l, --account-alias <accountAlias>',
         );
