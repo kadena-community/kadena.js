@@ -1,6 +1,6 @@
 import type { Node, Parent } from 'mdast';
 
-function isParent(node: Node): node is Parent {
+export function isParent(node: Node): node is Parent {
   return 'children' in node;
 }
 

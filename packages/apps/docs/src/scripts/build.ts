@@ -6,6 +6,7 @@ import { createSitemap } from './createSitemap';
 import { createSpecs } from './createSpec';
 import { fixLocalLinks } from './fixLocalLinks';
 import { createDocsTree } from './getdocstree';
+import { importChangelogs } from './importChangelogs/index';
 import { deleteTempDir } from './importReadme/importRepo';
 import { movePages } from './movePages';
 import type { IScriptResult } from './types';
@@ -34,6 +35,7 @@ const runPrettier = async (): Promise<IScriptResult> => {
 (async function (): Promise<void> {
   //starting with a cleanslate, removing the tempdir.
   deleteTempDir();
+  await initFunc(importChangelogs, 'Create a big JSON with all changelog info');
   await initFunc(movePages, 'Move all pages from docs with config.yaml');
   await initFunc(fixLocalLinks, 'fix local links from the config.yaml');
   await initFunc(createDocsTree, 'Create docs tree');
