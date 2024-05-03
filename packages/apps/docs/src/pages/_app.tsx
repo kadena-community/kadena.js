@@ -28,7 +28,16 @@ type ImportedPagePropsType = Omit<IPageProps, 'frontmatter'> & {
 
 const deserializePageProps = (props: ImportedPagePropsType): IPageProps => {
   const newProps = JSON.parse(JSON.stringify(props)) as IPageProps;
-
+  newProps.frontmatter = {
+    editLink: '',
+    navigation: {},
+    title: '',
+    description: '',
+    menu: '',
+    order: 1,
+    layout: 'full',
+    label: '',
+  };
   newProps.frontmatter.lastModifiedDate = props.frontmatter.lastModifiedDate
     ? new Date(props.frontmatter.lastModifiedDate)
     : undefined;
