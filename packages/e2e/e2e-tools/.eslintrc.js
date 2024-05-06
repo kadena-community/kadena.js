@@ -12,10 +12,10 @@ module.exports = {
     'import/parsers': {
       '@typescript-eslint/parser': ['.ts', '.tsx'],
     },
-    "playwright": {
-      "globalAliases": {
-        "test": ["setup"],
-      }
+    playwright: {
+      globalAliases: {
+        test: ['setup'],
+      },
     },
     'import/resolver': {
       node: true,
