@@ -1,0 +1,17 @@
+name: 'Build dApp for end-to-end tests'
+inputs:
+  app:
+    description: 'app under test'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+      - name: build GraphQL
+        shell: bash
+        if: ${{ inputs.app  == 'graph' }}
+        run: pnpm turbo build --filter @kadena/${{ inputs.app }}
+    
+      - name: build dApps # Build the app under test while setting NODE_ENV to test
+        shell: bash
+        if: ${{ inputs.app != 'graph' }}
+        run: pnpm turbo build:e2e --filter @kadena/${{ inputs.app }} --no-cache
