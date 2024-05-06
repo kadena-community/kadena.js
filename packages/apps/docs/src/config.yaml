@@ -267,11 +267,11 @@ pages:
     file: /participate/participate.md
     children:
       nodeoperators:
-        url: /node
-        file: /participate/node/index.md
+        url: /run-node
+        file: /participate/run-node.md
       query:
         url: /query-nodes
-        file: /participate/node/query-blockchain-nodes.md
+        file: /participate/query-blockchain-nodes.md
       docs:
         url: /docs
         file: /participate/docs.md
