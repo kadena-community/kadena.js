@@ -19,4 +19,5 @@ export * from './place-bid';
 export * from './transfer-create-token';
 export * from './transfer-token';
 export * from './update-auction';
+export * from './update-uri';
 export * from './withdraw-token';

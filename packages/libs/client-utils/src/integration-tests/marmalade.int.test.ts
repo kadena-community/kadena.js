@@ -15,6 +15,7 @@ import {
   getUri,
   mintToken,
   transferCreateToken,
+  updateUri,
 } from '../marmalade';
 import { deployMarmalade } from '../nodejs';
 import { NetworkIds } from './support/NetworkIds';
@@ -384,6 +385,50 @@ describe('getTokenUri', () => {
           account: sourceAccount.account,
         },
         tokenId: nonExistingTokenId,
+      },
+      config,
+    );
+
+    await expect(() => task.execute()).rejects.toThrowError(
+      new Error(`with-read: row not found: ${nonExistingTokenId}`),
+    );
+  });
+});
+
+describe('updateUri', () => {
+  it('should update the uri', async () => {
+    const result = await updateUri(
+      {
+        tokenId: tokenId as string,
+        uri: 'ipfs://updated-uri',
+        chainId,
+        guard: {
+          account: sourceAccount.account,
+          keyset: {
+            keys: [sourceAccount.publicKey],
+            pred: 'keys-all' as const,
+          },
+        },
+      },
+      config,
+    ).execute();
+
+    expect(result).toBe(true);
+  });
+  it('should throw an error if token does not exist', async () => {
+    const nonExistingTokenId = 'non-existing-token';
+    const task = updateUri(
+      {
+        tokenId: nonExistingTokenId,
+        uri: 'ipfs://updated-uri',
+        chainId,
+        guard: {
+          account: sourceAccount.account,
+          keyset: {
+            keys: [sourceAccount.publicKey],
+            pred: 'keys-all' as const,
+          },
+        },
       },
       config,
     );
