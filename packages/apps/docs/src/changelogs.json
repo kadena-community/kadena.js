@@ -1,0 +1,541 @@
+{
+  "React UI": {
+    "name": "React UI",
+    "repo": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "/packages/libs/react-ui",
+    "fileName": "CHANGELOG.md",
+    "content": {
+      "0.8.4": {
+        "label": "0.8.4",
+        "patch": [
+          {
+            "label": "Added Avatar component waiting for final tokens",
+            "commits": ["b316674811"],
+            "prIds": []
+          },
+          {
+            "label": "Fixed Popover not rendering when element was bigger than viewport",
+            "commits": ["fa60f7fd9"],
+            "prIds": []
+          },
+          {
+            "label": "Upgrading deps",
+            "commits": ["6aac4b623"],
+            "prIds": []
+          },
+          {
+            "label": "Update input for icons to reactElement",
+            "commits": ["5a304c326"],
+            "prIds": []
+          },
+          {
+            "label": "fix: use new text and header components from react-ui package",
+            "commits": ["8bb3168818"],
+            "prIds": []
+          },
+          {
+            "label": "Update tokens",
+            "commits": ["5c5937eef6"],
+            "prIds": []
+          }
+        ],
+        "minor": [],
+        "misc": []
+      },
+      "0.8.3": {
+        "label": "0.8.3",
+        "patch": [
+          {
+            "label": "Add expand animation to accordion component",
+            "commits": ["25de564cd"],
+            "prIds": []
+          }
+        ],
+        "minor": [],
+        "misc": []
+      },
+      "0.8.2": {
+        "label": "0.8.2",
+        "patch": [
+          {
+            "label": "Extended clickable area for the numberField buttons",
+            "commits": ["550e6d9e4"],
+            "prIds": []
+          }
+        ],
+        "minor": [],
+        "misc": []
+      },
+      "0.8.1": {
+        "label": "0.8.1",
+        "patch": [
+          {
+            "label": "Added more masking options to the MaskedValue component",
+            "commits": ["cce6c38de"],
+            "prIds": []
+          },
+          {
+            "label": "Remove accordion animation",
+            "commits": ["1aa8bfa8d"],
+            "prIds": []
+          }
+        ],
+        "minor": [],
+        "misc": []
+      },
+      "0.8.0": {
+        "label": "0.8.0",
+        "patch": [
+          {
+            "label": "Updated the Pagination component to use the new Button component\nstyles and new tokens",
+            "commits": ["bc5ff9ab1"],
+            "prIds": []
+          },
+          {
+            "label": "Export progressCircle",
+            "commits": ["817eff027"],
+            "prIds": []
+          },
+          {
+            "label": "Updated the NavHeader component export structure, components, and\nstyles",
+            "commits": ["5a52cd69b"],
+            "prIds": []
+          },
+          {
+            "label": "Aria accordion component",
+            "commits": ["eb12b600e"],
+            "prIds": []
+          }
+        ],
+        "minor": [
+          {
+            "label": "Adds NumberField component to the form section",
+            "commits": ["52200486f"],
+            "prIds": []
+          }
+        ],
+        "misc": []
+      },
+      "0.7.1": {
+        "label": "0.7.1",
+        "patch": [
+          {
+            "label": "Update Repository information to enable provenance",
+            "commits": ["b6a44c813"],
+            "prIds": []
+          }
+        ],
+        "minor": [],
+        "misc": []
+      },
+      "0.7.0": {
+        "label": "0.7.0",
+        "patch": [
+          {
+            "label": "Used new token system",
+            "commits": ["940891ac6"],
+            "prIds": []
+          },
+          {
+            "label": "Add zIndex to Tooltip component",
+            "commits": ["13e2cc6a3"],
+            "prIds": []
+          },
+          {
+            "label": "Updat turbo file to cache new build artifacts",
+            "commits": ["1ed317352"],
+            "prIds": []
+          },
+          {
+            "label": "Update Select and Combobox styles",
+            "commits": ["bd357be45"],
+            "prIds": []
+          },
+          {
+            "label": "Allow className on Table components",
+            "commits": ["47e3ac2a9"],
+            "prIds": []
+          }
+        ],
+        "minor": [
+          {
+            "label": "Updated the Tag component to use new design tokens and\nincorporated useTagGroup from react-ariaAdded the TagGroup component which only implements the onRemove and\ndisabledKeys config options from useTagGroup.Added the TagItem component which wraps Item from react-statelyRemoved onClose prop from the Tag component so its primary purpose is for\napplying the tag stylesAdded the tagAsChild prop to allow consumers to place all accessibility\nattributes from TagItem to it's child component. An example use case would\nbe when consumers need to use next/link as a tagIn most cases moving forward, consumers should use the TagGroup and\nTagItem components to compose their tags, however the Tag component is\nstill exposed for when consumers need to compose their own custom component\nusing the Tag styles",
+            "commits": ["a4b469d49"],
+            "prIds": []
+          },
+          {
+            "label": "Updated the Breadcrumbs component to use useBreadcrumbs from\nreact-aria",
+            "commits": ["803668c21"],
+            "prIds": []
+          },
+          {
+            "label": "New form fields",
+            "commits": ["3e940f62e"],
+            "prIds": []
+          },
+          {
+            "label": "Fix logo sizes",
+            "commits": ["b8f8fb55e"],
+            "prIds": []
+          },
+          {
+            "label": "Cleanup old Button and Link components",
+            "commits": ["bc071367c"],
+            "prIds": []
+          },
+          {
+            "label": "Updated the Box, Stack, and Grid components props to map to the new\natom utility classes",
+            "commits": ["fc92629b5"],
+            "prIds": []
+          },
+          {
+            "label": "New brand logos",
+            "commits": ["5516b2467"],
+            "prIds": []
+          },
+          {
+            "label": "Updated the Box, Stack, and Grid components to accept refs",
+            "commits": ["0dc7a52b7"],
+            "prIds": []
+          },
+          {
+            "label": "Updated input props for SelectField, TextareaField and TextField\ncomponents and deprecated Input Select and Textarea in favour of the updated\nones",
+            "commits": ["5e63b76a6"],
+            "prIds": []
+          },
+          {
+            "label": "Breadcrumbs accepts an icon element to be rendered and exposed the\ncomponents in order to compose.",
+            "commits": ["db097d39b"],
+            "prIds": []
+          },
+          {
+            "label": "Use new button tokens and add small tokens utils",
+            "commits": ["90227d348"],
+            "prIds": []
+          },
+          {
+            "label": "updated NavHeader glow initial position and scroll",
+            "commits": ["e10423358"],
+            "prIds": []
+          },
+          {
+            "label": "Add LinkButton component",
+            "commits": ["9d3aab7c8"],
+            "prIds": []
+          },
+          {
+            "label": "Improve react ui build system and remove ts path aliases",
+            "commits": ["58ed2adfa"],
+            "prIds": []
+          }
+        ],
+        "misc": []
+      },
+      "0.6.0": {
+        "label": "0.6.0",
+        "patch": [
+          {
+            "label": "Changed icon to startIcon for form components",
+            "commits": ["5cf64e17c"],
+            "prIds": []
+          },
+          {
+            "label": "Update Text and Heading components to use new design tokens",
+            "commits": ["6d30efacd"],
+            "prIds": []
+          }
+        ],
+        "minor": [
+          {
+            "label": "Added changes in the NavHeader component to improve visibility on\nmobile",
+            "commits": ["269e3bd66"],
+            "prIds": []
+          },
+          {
+            "label": "Updated the Notification, Card, Divider, Tooltip, Dialog, Modal,\nand GradientText components to use the updated design tokens",
+            "commits": ["f2312a16c"],
+            "prIds": []
+          },
+          {
+            "label": "New aria complete button without new tokensUse react aria which come with one major change is onPress instead of\nonClick read more about why\nhttps://react-spectrum.adobe.com/blog/building-a-button-part-1.html. we\nadded onClick to allow easy migration but it is deprecated and we should\nnot use it for new code.Unify the IconButton and Button components using\n<Button icon={<SomeIcon/>} /> instead of IconButton.Change some props names to be consistent with react-aria naming compact\n-> isCompact.Button is not a polymorphic component anymore we will have a separate\nlink component.iconAlign is replaced by specific icon renders props startIcon and\nendIcon, and icon is repurposed for icon-only buttons aka IconButton.Use recipe instead of individual styleVariants.color and variant are now one prop variant and all alternative\nvariants are added as a standalone variant eg\n<Button color=\"primary\" variant=\"alternative\" /> is now\n<Button variant=\"primaryInverted\" /> we use inverted postfix is used\ninstead of alternative to match the intended color inversion behavior.The isCompact variant now works for all button variations before it only\nworked for some color variants.",
+            "commits": ["52664959c"],
+            "prIds": []
+          },
+          {
+            "label": "Update design tokens",
+            "commits": ["5a71173a8"],
+            "prIds": []
+          },
+          {
+            "label": "Added atoms which are utility css classes based on the new design\ntokens",
+            "commits": ["d1f705b4d"],
+            "prIds": []
+          }
+        ],
+        "misc": []
+      },
+      "0.5.0": {
+        "label": "0.5.0",
+        "patch": [
+          {
+            "label": "Added Icons for C: & W: accounts",
+            "commits": ["6992a2b58"],
+            "prIds": []
+          }
+        ],
+        "minor": [
+          {
+            "label": "Updated the Notification component API",
+            "commits": ["a7bb78d8b"],
+            "prIds": []
+          },
+          {
+            "label": "Used react-aria to recreate the Dialog and Modal components",
+            "commits": ["957af9922"],
+            "prIds": []
+          },
+          {
+            "label": "Setup design tokens sync",
+            "commits": ["bf490445c"],
+            "prIds": []
+          },
+          {
+            "label": "Updated the Tooltip component API and styles",
+            "commits": ["854604595"],
+            "prIds": []
+          },
+          {
+            "label": "Refactored Tabs component",
+            "commits": ["a30106c85"],
+            "prIds": []
+          },
+          {
+            "label": "Added TextareaCopy and InputCopy",
+            "commits": ["5250be30b"],
+            "prIds": []
+          },
+          {
+            "label": "Removing the Label component",
+            "commits": ["d9109f3ba"],
+            "prIds": []
+          },
+          {
+            "label": "Updated the Card component's styles and removed the stacked prop.\nUsers can add the Divider component within a Card to achieve the same result\nas using the deprecated stacked prop.",
+            "commits": ["4b8b728dd"],
+            "prIds": []
+          }
+        ],
+        "misc": []
+      },
+      "0.4.0": {
+        "label": "0.4.0",
+        "patch": [],
+        "minor": [
+          {
+            "label": "Refactor InputFieldWrapper for the new FormFieldWrapper component\nwith stacked items",
+            "commits": ["49d8366c7"],
+            "prIds": []
+          }
+        ],
+        "misc": []
+      },
+      "0.3.1": {
+        "label": "0.3.1",
+        "patch": [
+          {
+            "label": "Added overflow prop to the Box, Stack, and Grid components",
+            "commits": ["6f79f73dd"],
+            "prIds": []
+          },
+          {
+            "label": "Added focus state and improved visuals for inputs",
+            "commits": ["6f79f73dd"],
+            "prIds": []
+          }
+        ],
+        "minor": [],
+        "misc": []
+      },
+      "0.3.0": {
+        "label": "0.3.0",
+        "patch": [
+          {
+            "label": "Exported MaskOptions type",
+            "commits": ["6491589b5"],
+            "prIds": []
+          }
+        ],
+        "minor": [
+          {
+            "label": "Exported the Textarea and TextareaField components",
+            "commits": ["11747cde4"],
+            "prIds": []
+          },
+          {
+            "label": "Add new width, height, and className properties to sprinkles and\nupdate Box, Stack and Grid components to use them",
+            "commits": ["8a719c647"],
+            "prIds": []
+          },
+          {
+            "label": "Corrected Tag background color Extracted maskValue string\nutility function from MaskedValue component Accept ReactNode as children\nprop for Tag component",
+            "commits": ["df7044cac"],
+            "prIds": []
+          }
+        ],
+        "misc": []
+      },
+      "0.2.1": {
+        "label": "0.2.1",
+        "patch": [
+          {
+            "label": "Fixed the KodeMono font",
+            "commits": ["fa98adaa8"],
+            "prIds": []
+          },
+          {
+            "label": "No auto-globals for vitest specs",
+            "commits": ["fa6b84e22"],
+            "prIds": []
+          }
+        ],
+        "minor": [],
+        "misc": []
+      },
+      "0.2.0": {
+        "label": "0.2.0",
+        "patch": [
+          {
+            "label": "Minor fixes to Modal, Notification component",
+            "commits": ["5b8161d66"],
+            "prIds": []
+          },
+          {
+            "label": "Upgrade typescript and @types/node dependencies",
+            "commits": ["fec8dfafd"],
+            "prIds": []
+          },
+          {
+            "label": "Migrate from jest to vitest",
+            "commits": ["49a9956fa"],
+            "prIds": []
+          }
+        ],
+        "minor": [
+          {
+            "label": "Cleanup of duplicates, unused code and exports etc",
+            "commits": ["97f19a48b"],
+            "prIds": []
+          },
+          {
+            "label": "New Button component variants and colours",
+            "commits": ["c0e9f781c"],
+            "prIds": []
+          },
+          {
+            "label": "Add ThumbUp and Thumbdown Icon Add close callback event for Modal\ncomponent Add active state variant and ui for IconButton component Update\nButton default style as inline and added block props for full width",
+            "commits": ["3572d7cdd"],
+            "prIds": []
+          },
+          {
+            "label": "Introduced Accordion variant for navigational purposes",
+            "commits": ["b4547a5ab"],
+            "prIds": []
+          },
+          {
+            "label": "Renamed the ProfileCard component to ProfileSummary and refactored\nit to use a subcomponent structure",
+            "commits": ["8374fc752"],
+            "prIds": []
+          },
+          {
+            "label": "Updated the NavHeader component to accept an activeHref instead of\nindex and refactored the implementation to use context instead of cloneElement",
+            "commits": ["27a0996a0"],
+            "prIds": []
+          },
+          {
+            "label": "Added outline prop to select input",
+            "commits": ["66981b4f2"],
+            "prIds": []
+          },
+          {
+            "label": "Added variant and inline props to Notification component",
+            "commits": ["6cf0c27e5"],
+            "prIds": []
+          },
+          {
+            "label": "Updated leftIcon prop to icon",
+            "commits": ["cf3b8aa86"],
+            "prIds": []
+          },
+          {
+            "label": "Added exports for the SelectField component",
+            "commits": ["f31e96dbf"],
+            "prIds": []
+          },
+          {
+            "label": "Aligned Button and IconButton components to have variants and\nactive prop",
+            "commits": ["c371666c4"],
+            "prIds": []
+          },
+          {
+            "label": "Added responsiveStyle and mapToProperty styling utility functions",
+            "commits": ["aae405956"],
+            "prIds": []
+          },
+          {
+            "label": "change the twitter icon to X",
+            "commits": ["659fff8c5"],
+            "prIds": []
+          },
+          {
+            "label": "Add max-width to notification content",
+            "commits": ["80c680d2c"],
+            "prIds": []
+          },
+          {
+            "label": "Added the TextArea and TextAreaField components",
+            "commits": ["251e5165c"],
+            "prIds": []
+          }
+        ],
+        "misc": []
+      },
+      "0.1.0": {
+        "label": "0.1.0",
+        "patch": [],
+        "minor": [
+          {
+            "label": "Updated all components to consistently accept a string for icon\nprops",
+            "commits": ["e8780f4c"],
+            "prIds": []
+          },
+          {
+            "label": "Initial package setup",
+            "commits": ["17230731"],
+            "prIds": []
+          },
+          {
+            "label": "Updated the NavHeader and NavFooter Link components to accept an\nasChild prop so that they can be used with external links",
+            "commits": ["9ef42410"],
+            "prIds": []
+          },
+          {
+            "label": "Refactor Accordion component to use a subcomponent structure",
+            "commits": ["a0bdef5c"],
+            "prIds": []
+          },
+          {
+            "label": "Updated dependencies",
+            "commits": ["5b1d8334e"],
+            "prIds": []
+          },
+          {
+            "label": "Added SelectField component",
+            "commits": ["3e53006e"],
+            "prIds": []
+          }
+        ],
+        "misc": []
+      }
+    }
+  }
+}
