@@ -15,7 +15,7 @@ describe('tx add', () => {
       },
     });
 
-    const logs = await runCommand(['tx', 'add']);
-    expect(logs.includes('transaction saved to')).toEqual(true);
+    const { stderr } = await runCommand(['tx', 'add']);
+    expect(stderr.includes('transaction saved to')).toEqual(true);
   });
 });

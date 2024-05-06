@@ -50,7 +50,7 @@ describe('tx send', () => {
       },
     });
 
-    const logs = await runCommand(['tx', 'send']);
-    expect(logs.includes('submitted with request key')).toEqual(true);
+    const { stderr } = await runCommand(['tx', 'send']);
+    expect(stderr.includes('submitted with request key')).toEqual(true);
   });
 });

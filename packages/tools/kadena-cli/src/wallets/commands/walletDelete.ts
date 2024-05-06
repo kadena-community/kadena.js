@@ -75,7 +75,10 @@ export const createDeleteWalletsCommand: (
       return;
     }
 
-    if (config.walletNameConfig === null) {
+    if (
+      config.walletNameConfig === null ||
+      config.walletNameConfig === undefined
+    ) {
       throw new CommandError({
         errors: [`Wallet: ${config.walletName} does not exist.`],
         exitCode: 1,
