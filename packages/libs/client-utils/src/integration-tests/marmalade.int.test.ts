@@ -10,6 +10,7 @@ import {
   getAccountDetails,
   getTokenInfo,
   getUri,
+  updateUri,
 } from '../marmalade';
 import { createToken } from '../marmalade/create-token';
 import { createTokenId } from '../marmalade/create-token-id';
@@ -412,6 +413,50 @@ describe('getTokenUri', () => {
           },
         },
         tokenId: nonExistingTokenId,
+      },
+      config,
+    );
+
+    await expect(() => task.execute()).rejects.toThrowError(
+      new Error(`with-read: row not found: ${nonExistingTokenId}`),
+    );
+  });
+});
+
+describe('updateUri', () => {
+  it('should update the uri', async () => {
+    const result = await updateUri(
+      {
+        tokenId: tokenId as string,
+        uri: "ipfs://updated-uri",
+        chainId,
+        guard: {
+          account: sourceAccount.account,
+          keyset: {
+            keys: [sourceAccount.publicKey],
+            pred: 'keys-all' as const,
+          },
+        },
+      },
+      config,
+    ).execute();
+
+    expect(result).toBe(true);
+  });
+  it('should throw an error if token does not exist', async () => {
+    const nonExistingTokenId = 'non-existing-token';
+    const task = updateUri(
+      {
+        tokenId: nonExistingTokenId,
+        uri: "ipfs://updated-uri",
+        chainId,
+        guard: {
+          account: sourceAccount.account,
+          keyset: {
+            keys: [sourceAccount.publicKey],
+            pred: 'keys-all' as const,
+          },
+        },
       },
       config,
     );

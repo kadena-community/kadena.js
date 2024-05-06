@@ -1,6 +1,6 @@
 export * from './burn-token';
-export * from './create-token';
 export * from './create-token-id';
+export * from './create-token';
 export * from './get-account-details';
 export * from './get-token-balance';
 export * from './get-token-info';
@@ -9,3 +9,4 @@ export * from './mint-token';
 export * from './policy-config';
 export * from './transfer-create-token';
 export * from './transfer-token';
+export * from './update-uri';
