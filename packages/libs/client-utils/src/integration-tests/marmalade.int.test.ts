@@ -428,7 +428,7 @@ describe('updateUri', () => {
     const result = await updateUri(
       {
         tokenId: tokenId as string,
-        uri: "ipfs://updated-uri",
+        uri: 'ipfs://updated-uri',
         chainId,
         guard: {
           account: sourceAccount.account,
@@ -448,7 +448,7 @@ describe('updateUri', () => {
     const task = updateUri(
       {
         tokenId: nonExistingTokenId,
-        uri: "ipfs://updated-uri",
+        uri: 'ipfs://updated-uri',
         chainId,
         guard: {
           account: sourceAccount.account,

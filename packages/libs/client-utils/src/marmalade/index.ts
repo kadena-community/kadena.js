@@ -1,6 +1,6 @@
 export * from './burn-token';
-export * from './create-token-id';
 export * from './create-token';
+export * from './create-token-id';
 export * from './get-account-details';
 export * from './get-token-balance';
 export * from './get-token-info';

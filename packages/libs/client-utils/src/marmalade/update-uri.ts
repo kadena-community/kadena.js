@@ -33,31 +33,21 @@ const updateUriCommand = ({
   chainId,
   guard,
   policyConfig,
-}: IMintTokenInput) =>  composePactCommand(
-    execution(
-      Pact.modules['marmalade-v2.ledger']['update-uri'](
-        tokenId,
-        uri,
-      ),
-    ),
+}: IMintTokenInput) =>
+  composePactCommand(
+    execution(Pact.modules['marmalade-v2.ledger']['update-uri'](tokenId, uri)),
     addKeyset('guard', guard.keyset.pred, ...guard.keyset.keys),
     addSigner(guard.keyset.keys, (signFor) => [
       signFor('coin.GAS'),
       signFor('marmalade-v2.ledger.UPDATE-URI', tokenId, uri),
-      ...(!!policyConfig?.guarded
-        ? [
-            signFor(
-              'marmalade-v2.guard-policy-v1.UPDATE-URI',
-              tokenId,
-              uri
-            ),
-          ]
+      ...(policyConfig?.guarded
+        ? [signFor('marmalade-v2.guard-policy-v1.UPDATE-URI', tokenId, uri)]
         : []),
     ]),
     setMeta({ senderAccount: guard.account, chainId }),
   );
 
 export const updateUri = (inputs: IMintTokenInput, config: IClientConfig) =>
-  submitClient<PactReturnType<IPactModules['marmalade-v2.ledger']['update-uri']>>(
-    config,
-  )(updateUriCommand(inputs));
+  submitClient<
+    PactReturnType<IPactModules['marmalade-v2.ledger']['update-uri']>
+  >(config)(updateUriCommand(inputs));

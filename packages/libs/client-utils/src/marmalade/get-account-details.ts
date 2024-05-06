@@ -35,7 +35,7 @@ const getAccountDetailsCommand = ({
 }: IGetAccountBalanceInput) =>
   composePactCommand(
     execution(
-      Pact.modules['marmalade-v2.ledger']['details'](tokenId, accountName),
+      Pact.modules['marmalade-v2.ledger'].details(tokenId, accountName),
     ),
     addSigner(guard.keyset.keys, (signFor) => [signFor('coin.GAS')]),
     setMeta({

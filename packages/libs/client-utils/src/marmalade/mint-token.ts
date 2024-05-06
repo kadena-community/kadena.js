@@ -56,7 +56,7 @@ const mintTokenCommand = ({
     addSigner(guard.keyset.keys, (signFor) => [
       signFor('coin.GAS'),
       signFor('marmalade-v2.ledger.MINT', tokenId, accountName, amount),
-      ...(!!policyConfig?.guarded
+      ...(policyConfig?.guarded
         ? [
             signFor(
               'marmalade-v2.guard-policy-v1.MINT',

@@ -67,7 +67,7 @@ const createTransferTokenCommand = ({
         receiver.account,
         amount,
       ),
-      ...(!!policyConfig?.guarded
+      ...(policyConfig?.guarded
         ? [
             signFor(
               'marmalade-v2.guard-policy-v1.TRANSFER',
