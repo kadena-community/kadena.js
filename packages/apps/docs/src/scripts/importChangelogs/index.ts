@@ -1,6 +1,7 @@
 import type { IScriptResult } from '@kadena/docs-tools';
 import fs from 'fs';
 import type { Node, Text } from 'mdast';
+import { App, Octokit } from 'octokit';
 import { remark } from 'remark';
 import type { Root } from 'remark-gfm';
 import { clone, removeRepoDomain } from '../importReadme';
@@ -10,6 +11,8 @@ import { TEMP_DIR } from '../utils/build';
 const errors: string[] = [];
 const success: string[] = [];
 const CHANGELOGFILENAME = './src/changelogs.json';
+
+const octokit = new Octokit({});
 
 interface IRepo {
   name: string;
@@ -159,7 +162,7 @@ const getPrId = (content: string): IChangelogRecord => {
   return { label: content, prIds };
 };
 
-const createRecord = (content: Node): IChangelogRecord => {
+const createRecord = async (content: Node): Promise<IChangelogRecord> => {
   const contentString = crawlContent(content);
 
   const { commits, label: tempLabel } = getCommitId(contentString);
@@ -173,25 +176,25 @@ const createRecord = (content: Node): IChangelogRecord => {
 };
 
 //create a json
-const crawl = (repo: IRepo): ((tree: Node) => IChangelog) => {
+const crawl = (repo: IRepo): ((tree: Node) => Promise<IChangelog>) => {
   const content: Record<string, IChanglogContent> = {};
   let currentPosition: VersionPosition;
   let version: IChanglogContent | undefined;
   const currentContent = getCurrentContent();
 
-  const innerCrawl = (tree: Node): IChangelog => {
+  const innerCrawl = async (tree: Node): Promise<IChangelog> => {
     if (isParent(tree)) {
-      tree.children.forEach((branch) => {
+      tree.children.forEach(async (branch, idx) => {
         if (branch.type === 'heading' && branch.depth === 2) {
           version = createVersion(branch);
-          if (!currentContent[repo.name]?.content[version.label]) {
-            content[version.label] = version;
-            currentPosition = VersionPosition.VERSION;
-          } else {
-            content[version.label] =
-              currentContent[repo.name].content[version.label];
-            version = undefined;
-          }
+          //if (!currentContent[repo.name]?.content[version.label]) {
+          content[version.label] = version;
+          currentPosition = VersionPosition.VERSION;
+          // } else {
+          //   content[version.label] =
+          //     currentContent[repo.name].content[version.label];
+          //   version = undefined;
+          // }
         }
 
         if (branch.type === 'heading' && branch.depth === 3) {
@@ -210,7 +213,7 @@ const crawl = (repo: IRepo): ((tree: Node) => IChangelog) => {
         }
 
         if (branch.type === 'listItem' && version) {
-          const record = createRecord(branch);
+          const record = await createRecord(branch);
 
           switch (currentPosition) {
             case VersionPosition.MINOR:
@@ -224,7 +227,7 @@ const crawl = (repo: IRepo): ((tree: Node) => IChangelog) => {
               break;
           }
         } else {
-          innerCrawl(branch);
+          await innerCrawl(branch);
         }
       });
     }
@@ -235,10 +238,11 @@ const crawl = (repo: IRepo): ((tree: Node) => IChangelog) => {
   return innerCrawl;
 };
 
-const createContent = (repo: IRepo) => {
+const createContent = async (repo: IRepo) => {
   const md: Root = remark.parse(getChangelog(repo));
 
-  return crawl(repo)(md);
+  const repoCrawler = await crawl(repo);
+  return await repoCrawler(md);
 };
 
 const getContent = async (repos: IRepo[]): Promise<IChangelogComplete> => {
@@ -279,6 +283,14 @@ export const importChangelogs = async (): Promise<IScriptResult> => {
   await getRepos(REPOS);
   const content = await getContent(REPOS);
 
+  // get data
+  const data = await octokit.request('GET /repos/{owner}/{repo}/issues', {
+    owner: 'kadena-community',
+    repo: 'kadena.js',
+  });
+
+  console.log(data);
+
   if (!errors.length) {
     fs.writeFileSync(CHANGELOGFILENAME, JSON.stringify(content, null, 2));
     success.push('Changelogs imported');
@@ -286,3 +298,5 @@ export const importChangelogs = async (): Promise<IScriptResult> => {
 
   return { success, errors };
 };
+
+importChangelogs();
