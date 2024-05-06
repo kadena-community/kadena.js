@@ -2,8 +2,8 @@
 title: Pact-JS
 description:
   The `@kadena/pactjs` library provides a TypeScript based application programming interface (API) for interacting with Pact smart contracts and the Kadena network.
-menu: Reference
-label: Kadena client
+menu: Kadena client
+label: Pactjs
 order: 4
 layout: full
 tags: ['TypeScript', 'Kadena client', 'frontend']

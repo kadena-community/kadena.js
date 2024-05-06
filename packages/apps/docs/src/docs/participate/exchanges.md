@@ -17,10 +17,17 @@ For example, a European-based exchange might be inaccessible for US residents or
 
 ## What exchanges do
 
-The main purpose of a cryptocurrency exchange is to allow users to buy and sell coins. 
+The main purpose of a cryptocurrency exchange is to allow users to buy and sell **coins** or **tokens**. 
 In most cases, exchanges don't support all of the features provided by any blockchain, including Kadena. 
 For example, an exchange might only allow trading on a specific Kadena chain or subset of chains.
 Exchanges can also set their own fee schedules for different cryptocurrencies, so you should research your options as thoroughly as possible.
+
+## How tokens are used
+
+The native token for the Kadena public network is listed on exchanges as KDA.
+KDA is a digital currency that is used to pay for the resources consumed to process transaction requests on the Kadena public blockchain.
+Similar to ETH on Ethereum, users pay **transaction fees** to have their transactions included in a block using units of KDA called **gas**.
+KDA is also used to compensate the node operators—often referred to as miners—for validating transactions and adding blocks to the network.
 
 ## Transferring coins
 

@@ -14,7 +14,7 @@ interface to provide specific rules for token actions and royalty payouts
 during the sale of a non-fungible token.
 
 Source code: 
-[royalty-policy.pact](https://github.com/kadena-io/marmalade/blob/v2/pact/concrete-policies/royalty-policy/royalty-policy-v1.pact)
+[royalty-policy.pact](https://github.com/kadena-io/marmalade/blob/main/pact/concrete-policies/royalty-policy/royalty-policy-v1.pact)
 
 ## Schema and table
 

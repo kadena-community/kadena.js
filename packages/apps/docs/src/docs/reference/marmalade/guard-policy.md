@@ -16,7 +16,7 @@ If you apply the guard policy when you create a token, you can specify who is au
 
 This part of the documentation describes the schemas, tables, capabilities, and functions defined in the Marmalade guard policy contract.
 
-Source code: [guard-policy](https://github.com/kadena-io/marmalade/blob/v2/pact/concrete-policies/guard-policy/guard-policy-v1.pact)
+Source code: [guard-policy.pact](https://github.com/kadena-io/marmalade/blob/main/pact/concrete-policies/guard-policy/guard-policy-v1.pact)
 
 ## Schema and table
 

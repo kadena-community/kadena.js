@@ -10,12 +10,12 @@ layout: full
 # Ledger contract
 
 The Marmalade token standard provides interfaces that enable you to define, mint, and secure tokens.
-As discussed in [Layered contract architecture](/build/nft-marmalade/architecture), the Marmalade ledger contract provides the core functionality to create, manage, and transfer tokens minted using the Marmalade token standard.
+As discussed in [Contract architecture](/build/nft-marmalade/architecture), the Marmalade ledger contract provides the core functionality to create, manage, and transfer tokens minted using the Marmalade token standard.
 The ledger contract records and manages all token-related activity to ensure every transaction is accurate, every policy is enforced, and every account is up-to-date.
 
 This part of the documentation describes the functions and capabilities defined in the Marmalade ledger contract.
 
-Source code: [ledger.pact](https://github.com/kadena-io/marmalade/blob/v2/pact/ledger/ledger.pact)
+Source code: [ledger.pact](https://github.com/kadena-io/marmalade/blob/main/pact/ledger/ledger.pact)
 
 ## create-token-id
 
@@ -28,7 +28,7 @@ Use the following arguments to create the token identifier.
 | Argument | Type | Description
 | -------- | ---- | -----------
 | `details` | object | Defines token properties using the metadata schema in JSON file format.
-| `creation-guard` | guard | Specifies the temporary guard—for example, a keyset—used to generate the token identifier. This guard isn't stored and ensure that only the  owner of the creation key can create a specific token identifier.
+| `creation-guard`&nbsp; | guard | Specifies the temporary guard—for example, a keyset—used to generate the token identifier. This guard isn't stored and ensure that only the  owner of the creation key can create a specific token identifier.
 
 Before creating a token, you must choose a temporary guard.
 The guard can be
@@ -61,7 +61,7 @@ Use the following arguments to create a token.
 | `precision` | integer | Specifies the number of decimals allowed for the token supply amount. For non-fungible tokens, the precision must be 0, and should be enforced in the policy's `enforce-init`.
 | `uri` | string | Specifies the uniform resource identifier (uri) to an external JSON file containing token metadata.
 | `policies` | list| Specifies one or more policy contracts with custom functions to execute at marmalade functions
-| `creation-guard` | Specifies the temporary guard—for example, a keyset—used to generate the token identifier. This guard isn't stored and ensure that only the  owner of the creation key can create a specific token identifier.
+| `creation-guard` | guard | Specifies the temporary guard—for example, a keyset—used to generate the token identifier. This guard isn't stored and ensure that only the  owner of the creation key can create a specific token identifier.
 
 To create a token with this function:
 

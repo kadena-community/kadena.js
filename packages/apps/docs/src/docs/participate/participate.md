@@ -10,11 +10,11 @@ layout: landing
 tags: [pact, typescript, account, transactions, utils]
 ---
 
-# Support community and earn rewards
+# Support the community
 
 There are many ways to become an active participant in the Kadena community.
 For example, you can join the conversation on Discord, ask and answer questions on Stack Overflow, or attend Kadena events at conferences. 
-There are also ways you can contribute to the community and be rewarded for your contributions. 
+There are also ways you can contribute to the community by providing feedback about projects in progress or suggesting changes to documentation or the codebase. 
 This part of the documentation highlights how you can get involved and where to find more information about community programs, developer programs, grants, partnerships, business development, and ecosystem opportunities, if you’re interested. 
 
 ## Node providers
@@ -25,15 +25,6 @@ To participate as a Chainweb a node operator, see the following topics:
 - [Run a node](/participate/node)
 - [Query blockchain nodes](/participate/node/query-nodes)
 - [Troubleshoot Chainweb](/deploy/troubleshoot-chainweb)
-
-## Community and ecosystem development programs
-
-To participate as a voice in the community or as a developer, see the following topics:
-
-- [Social media channels](https://www.kadena.io/community)
-- [Community programs](/participate/community)
-- [Developer programs](/participate/developers)
-- [Grants](https://www.kadena.io/grants) and [partnerships](https://www.kadena.io/ecosystem)
 
 ## Contribute to documentation
 
@@ -51,7 +42,3 @@ The Kadena codebase is open source and hosted on GitHub in repositories under tw
 - Repositories in [kadena-community](https://github.com/kadena-community) are focused on tooling and projects to help developers build applications on the Kadena network like the TypeScript libraries in [kadena.js](https://github.com/kadena-community/kadena.js).
 
 For more information about contributing to the codebase, you should browse the repositories and corresponding README files.
-
-### View recent articles
-
-Use keywords to Search, visit the [Kadena Blogchain](https://www.kadena.io/blog), or browse popular articles to find the topics you're looking for.

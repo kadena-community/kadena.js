@@ -12,7 +12,9 @@ layout: full
 # Conventional auction sale contract
 
 This section provides reference information for writing a smart contract to conduct a conventional auction using Marmalade on the Kadena network.
-The reference information includes the capabilities, schemas, tables, functions, and constants defined for a conventional auction. 
+The reference information includes the capabilities, schemas, tables, functions, and constants defined for a conventional auction.
+
+Source code: [conventional-auction.pact](https://github.com/kadena-io/marmalade/blob/main/pact/sale-contracts/conventional-auction/conventional-auction.pact)
 
 ## Capabilities
 

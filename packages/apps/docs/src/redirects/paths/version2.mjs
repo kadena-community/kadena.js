@@ -366,12 +366,12 @@ export const version2PathUrlRedirects = [
   },
   {
     source: '/contribute/ambassadors',
-    destination: '/participate/community',
+    destination: '/participate',
     permanent: true,
   },
   {
     source: '/contribute/ambassadors/:slug',
-    destination: '/participate/community',
+    destination: '/participate',
     permanent: true,
   },
   {
@@ -406,12 +406,12 @@ export const version2PathUrlRedirects = [
   },
   {
     source: '/pact/pactjs/api',
-    destination: '/reference/kadena-client/pactjs',
+    destination: '/reference/kadena-client/pactjs-old',
     permanent: true,
   },
   {
     source: '/pact/pactjs/utils',
-    destination: '/reference/kadena-client/pactjs-utils',
+    destination: '/reference/kadena-client/client-utils',
     permanent: true,
   },
   {

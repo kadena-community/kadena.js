@@ -14,6 +14,8 @@ layout: full
 This section provides reference information for writing a smart contract to conduct a dutch auction using Marmalade on the Kadena network.
 The reference information includes the capabilities, schemas, tables, functions, and constants defined for a dutch auction. 
 
+Source code: [dutch-auction.pact](https://github.com/kadena-io/marmalade/blob/main/pact/sale-contracts/dutch-auction/dutch-auction.pact)
+
 ## Capabilities
 
 The dutch auction smart contract defines the following capabilities to manage permissions:

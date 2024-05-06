@@ -31,11 +31,15 @@ The Kadena client is a collection`of libraries, functions, and utilities written
 
 The Kadena client includes the following packages:
 
-- [Pact-JS](/reference/kadena-client/pactjs-api) is a TypeScript library that provides a frontend application programming interface (API) for interacting with Pact smart contracts and the Kadena network.
+- [Kadena client](/reference/kadena-client) is the primary TypeScript library that provides a frontend application programming interface (API) for performing common tasks such as calling functions in Pact smart contracts and submitting transactions to the Kadena network.
 
-- [Client utilities](reference/kadena-client)
+- [Client utilities](reference/kadena-client/client-utils) is a TypeScript library with a simplified application programming interface (API) for helper utilities.
 
-- [Command-line interface](/reference/kadena-client/kadena-cli)
+- [Command-line interface](/reference/kadena-client/kadena-cli) provides a complete set of commands and command-line options for setting up and managing a local development environment using a command-line workflow.
+
+- [Cryptographic utilities](/reference/kadena-client/cryptographic-utils) provides a collection of utility functions to perform common cryptographic operations.
+
+- The [pactjs-cli](/reference/kadena-client/pactjs-cli) and [pactjs-generator](/reference/kadena-client/pactjs-generator) libraries generate TypeScript types from Pact contracts.
 
 ## NFT marketplace: Marmalade technical reference
 

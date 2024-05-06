@@ -147,21 +147,6 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                     <Link className={docsCardLink} href="/participate">
                       How to get involved
                     </Link>
-
-                    <Link
-                      className={docsCardLink}
-                      href="/participate/community"
-                    >
-                      Community programs
-                    </Link>
-
-                    <Link
-                      className={docsCardLink}
-                      href="/participate/developers"
-                    >
-                      Developer programs
-                    </Link>
-
                     <Link className={docsCardLink} href="/participate/docs">
                       Contribute to doc
                     </Link>
@@ -194,7 +179,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                       className={docsCardLink}
                       href="https://academy.kadena.io"
                     >
-                      Browse courses in the Kadena Academy
+                      Sign up for the Kadena Academy
                     </Link>
                     <Link
                       className={docsCardLink}
@@ -246,63 +231,11 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                 href="https://github.com/kadena-io/pact#installing-pact"
               />
             </BrowseSection>
-
-            <BrowseSection title="Explore core components" direction="row">
-              <BrowseSection.LinkBlock
-                title="Overview of Kadena"
-                subtitle="Find out what we are about"
-                href="/kadena"
-              />
-              <BrowseSection.LinkBlock
-                title="Manage your KDA"
-                subtitle="Wallets & platforms"
-                href="/kadena/kda/manage-kda"
-              />
-              <BrowseSection.LinkBlock
-                title="Kadena.io"
-                subtitle="Home is where the heart is"
-                href="https://kadena.io"
-              />
-              <BrowseSection.LinkBlock
-                title="Overview of Pact"
-                subtitle="Learn the basics of Pact to create a smart contract"
-                href="/pact"
-              />
-              <BrowseSection.LinkBlock
-                title="Chainweb"
-                subtitle="Chainweb is our scalable Proof-Of-Work (PoW) consensus algorithm"
-                href="/chainweb"
-              />
-              <BrowseSection.LinkBlock
-                title="Marmalade"
-                subtitle="Marmalade provides the complete NFT infrastructure."
-                href="/marmalade"
-              />
-            </BrowseSection>
-
-            <BrowseSection title="Participate in programs" direction="row">
-              <BrowseSection.LinkBlock
-                title="Ambassador program"
-                subtitle="Apply for some Ambassador privileges"
-                href="/contribute/ambassadors"
-              />
-              <BrowseSection.LinkBlock
-                title="Technical grants"
-                subtitle="Empowering builders for innovation"
-                href="https://kadena.io/grants/"
-              />
-              <BrowseSection.LinkBlock
-                title="Docs"
-                subtitle="Help to improve our docs"
-                href="/contribute/docs"
-              />
-            </BrowseSection>
-
             <Box>
               <Heading as="h5">Stay up-to-date</Heading>
               <BlogPostsStrip
                 data={blogPosts}
-                link="/blogchain"
+                link="https://www.kadena.io/blog"
                 linkLabel="More Blogchain posts"
               />
             </Box>

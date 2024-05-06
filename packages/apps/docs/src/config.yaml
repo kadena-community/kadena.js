@@ -266,25 +266,15 @@ pages:
     url: /participate
     file: /participate/participate.md
     children:
-      community:
-        url: /community
-        file: /participate/community.md
       nodeoperators:
         url: /node
         file: /participate/node/index.md
-        children:
-          query:
-            url: /query-nodes
-            file: /participate/node/query-blockchain-nodes.md
+      query:
+        url: /query-nodes
+        file: /participate/node/query-blockchain-nodes.md
       docs:
         url: /docs
         file: /participate/docs.md
-      developers:
-        url: /developers
-        file: /participate/developer.md
-      tokeninfo:
-        url: /tokens
-        file: /participate/tokens.md
       exchanges:
         url: /exchanges
         file: /participate/exchanges.md
@@ -419,45 +409,23 @@ pages:
         file: /reference/pact/rest-api.md
       frontend:
         url: /kadena-client
-        file: /reference/kadena-client/client-utils.md
+        file: /reference/kadena-client/kadena-js.md
         children:
+          client-utils:
+            url: /client-utils
+            file: /reference/kadena-client/client-utils.md
           kadena-cli:
             url: /kadena-cli
             file: /reference/kadena-client/kadena-cli.md
-          kadena-js:
-            url: /kadena-js
-            file: /reference/kadena-client/kadena-js.md
           pactjs-old:
             url: /pactjs-old
-            file: /reference/pact/pactjs-api.md
-          pactjs:
-            file: /packages/libs/pactjs/README.md
-            repo: https://github.com/kadena-community/kadena.js
-            url: /pactjs
-          pactjsapi:
-            file: /packages/libs/pactjs/etc/pactjs.api.md
-            repo: https://github.com/kadena-community/kadena.js
-            url: /pactjs-api
-          pactjsutils:
-            file: /packages/libs/pactjs/etc/pactjs-utils.api.md
-            repo: https://github.com/kadena-community/kadena.js
-            url: /pactjs-utils
+            file: /reference/kadena-client/pactjs-api.md
           pactjscli:
-            file: /packages/tools/pactjs-cli/README.md
-            repo: https://github.com/kadena-community/kadena.js
             url: /pactjs-cli
-          pactjscliapi:
-            file: /packages/tools/pactjs-cli/etc/pactjs-cli.api.md
-            repo: https://github.com/kadena-community/kadena.js
-            url: /pactjs-cli-api
+            file: /reference/kadena-client/pactjs-cli.md
           pactjsgenerator:
-            file: /packages/libs/pactjs-generator/README.md
-            repo: https://github.com/kadena-community/kadena.js
             url: /pactjs-generator
-          pactjsgeneratorapi:
-            file: /packages/libs/pactjs-generator/etc/pactjs-generator.api.md
-            repo: https://github.com/kadena-community/kadena.js
-            url: /pactjs-generator-api
+            file: /reference/kadena-client/pactjs-generator.md
           cryptographyutils:
             url: /cryptographic-utils
             file: /reference/kadena-client/cryptographic-utils.md

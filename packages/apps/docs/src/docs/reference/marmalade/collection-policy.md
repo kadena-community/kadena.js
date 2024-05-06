@@ -12,7 +12,7 @@ layout: full
 The collection policy implements the `kip.token-policy-v2` interface to simplify how you can organize tokens into collections.
 This part of the documentation describes the functions and capabilities defined in the collection policy contract.
 
-Source code: [collection-policy.pact](https://github.com/kadena-io/marmalade/blob/v2/pact/concrete-policies/collection-policy/collection-policy-v1.pact)
+Source code: [collection-policy.pact](https://github.com/kadena-io/marmalade/blob/main/pact/concrete-policies/collection-policy/collection-policy-v1.pact)
 
 ## Schemas and tables
 
@@ -39,7 +39,6 @@ This information is stored in the `token` table.
 The collection policy smart contract defines the following capabilities to manage permissions:
 
 - `GOVERNANCE`: Restricts authority to the `marmalade-admin` keyset and ensures only authorized entities can upgrade the contract.
-- `OPERATOR`: Grants authority to the collection's operator for specific actions.
 - `COLLECTION` @event: Regulates collection creation and broadcasts of the COLLECTION event.
 - `TOKEN-COLLECTION` @event: Manages token addition to collections and announces such additions.
 
