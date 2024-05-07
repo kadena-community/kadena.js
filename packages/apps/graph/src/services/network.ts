@@ -2,11 +2,11 @@ import { prismaClient } from '@db/prisma-client';
 import { chainIds } from '@utils/chains';
 import { dotenv } from '@utils/dotenv';
 
-type BlockWithDifficulty = {
+interface IBlockWithDifficulty {
   creationTime: Date;
   difficulty: bigint;
   height: bigint;
-};
+}
 
 export class NetworkError extends Error {
   public networkError?: Error;
@@ -66,7 +66,7 @@ export async function getHashRateAndTotalDifficulty(): Promise<{
     });
 
     // Transform the data and calculate the difficulty per block.
-    const blocksWithDifficulty: BlockWithDifficulty[] = [];
+    const blocksWithDifficulty: IBlockWithDifficulty[] = [];
 
     for (const block of blocks) {
       blocksWithDifficulty.push({
@@ -88,10 +88,12 @@ export async function getHashRateAndTotalDifficulty(): Promise<{
   }
 }
 
-function calculateNetworkHashRate(blocksWithDifficulty: BlockWithDifficulty[]) {
+function calculateNetworkHashRate(
+  blocksWithDifficulty: IBlockWithDifficulty[],
+): bigint {
   function aggregateBlockData(
     blocks: { creationTime: Date; difficulty: bigint }[],
-  ) {
+  ): { earliestTime: number; totalDifficulty: bigint } {
     let earliestTime = Number.MAX_SAFE_INTEGER;
     let totalDifficulty = 0n;
 
@@ -112,14 +114,14 @@ function calculateNetworkHashRate(blocksWithDifficulty: BlockWithDifficulty[]) {
   const timeDifference = Date.now() - earliestTime;
 
   return timeDifference < 1000
-    ? 0
+    ? 0n
     : totalDifficulty / (BigInt(timeDifference) / 1000n);
 }
 
 function calculateTotalDiffulty(
   currentHeight: bigint,
-  blocks: BlockWithDifficulty[],
-) {
+  blocks: IBlockWithDifficulty[],
+): bigint | undefined {
   for (let i = currentHeight; i > currentHeight - 3n; i--) {
     const blocksOfThisHeight = blocks.filter((block) => block.height === i);
 
