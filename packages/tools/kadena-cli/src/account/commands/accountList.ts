@@ -20,13 +20,7 @@ import {
 
 function generateTabularData(accounts: IAliasAccountData[]): Table {
   const table = createTable({
-    head: [
-      'Account Alias',
-      'Account Name',
-      'Public Key(s)',
-      'Predicate',
-      'Fungible',
-    ],
+    head: ['Alias', 'Name', 'Public Key(s)', 'Predicate', 'Fungible'],
   });
 
   const data = accounts.map((account) => [
