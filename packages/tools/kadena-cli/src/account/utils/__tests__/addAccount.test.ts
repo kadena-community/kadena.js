@@ -1,5 +1,4 @@
 /// <reference lib="dom" />
-import yaml from 'js-yaml';
 import { afterEach, assert, describe, expect, it } from 'vitest';
 
 import { server } from '../../../mocks/server.js';

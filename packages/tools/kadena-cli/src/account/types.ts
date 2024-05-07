@@ -1,3 +1,6 @@
+import type { ChainId } from '@kadena/client';
+import type { INetworkCreateOptions } from '../networks/utils/networkHelpers.js';
+
 export type Predicate = 'keys-all' | 'keys-2' | 'keys-any';
 
 export interface IAccountAliasFileConfig {
@@ -14,6 +17,8 @@ export interface IAddAccountConfig extends IAccountAliasFileConfig {
 export interface IValidateAccountDetailsConfig
   extends Omit<IAddAccountConfig, 'accountName'> {
   accountName?: string;
+  chainId: ChainId;
+  networkConfig: INetworkCreateOptions;
 }
 
 export interface IGuard {
