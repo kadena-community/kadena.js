@@ -231,14 +231,6 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                 href="https://github.com/kadena-io/pact#installing-pact"
               />
             </BrowseSection>
-            <Box>
-              <Heading as="h5">Stay up-to-date</Heading>
-              <BlogPostsStrip
-                data={blogPosts}
-                link="https://www.kadena.io/blog"
-                linkLabel="More Blogchain posts"
-              />
-            </Box>
           </Stack>
         </article>
       </div>

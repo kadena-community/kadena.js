@@ -74,4 +74,3 @@ tokens. After users are authenticated by WebAuthn, your application can use the
 account information to construct transactions. The transactions passed back to
 users are signed by Kadena SpireKey using whatever method you choose to
 implement in your application.
-
