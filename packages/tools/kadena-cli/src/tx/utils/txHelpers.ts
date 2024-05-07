@@ -23,8 +23,13 @@ import type {
   IKeyPair,
   IUnsignedCommand,
 } from '@kadena/types';
+import { loadNetworkConfig } from '../../networks/utils/networkHelpers.js';
+import { getExistingNetworks } from '../../utils/helpers.js';
 
-import type { INetworkCreateOptions } from '../../networks/utils/networkHelpers.js';
+import type {
+  ICustomNetworkChoice,
+  INetworkCreateOptions,
+} from '../../networks/utils/networkHelpers.js';
 
 import path, { isAbsolute, join } from 'node:path';
 import { z } from 'zod';
@@ -750,3 +755,51 @@ export function getClient(
 
   return clientInstances.get(clientKey)!;
 }
+
+export const createTransactionWithDetails = async (
+  commands: (ICommand | IUnsignedCommand)[],
+  networkForTransactions: {
+    txTransactionNetwork: string[];
+  },
+): Promise<ITransactionWithDetails[]> => {
+  const transactionsWithDetails: ITransactionWithDetails[] = [];
+  const existingNetworks: ICustomNetworkChoice[] = await getExistingNetworks();
+
+  for (let index = 0; index < commands.length; index++) {
+    const command = commands[index];
+    const network = networkForTransactions.txTransactionNetwork[index];
+
+    if (!existingNetworks.some((item) => item.value === network)) {
+      log.error(
+        `Network "${network}" does not exist. Please create it using "kadena network create" command, the transaction "${
+          index + 1
+        }" with hash "${command.hash}" will not be sent.`,
+      );
+      continue;
+    }
+
+    const networkDetails = await loadNetworkConfig(network);
+    const commandData = extractCommandData(command);
+
+    if (commandData.networkId === networkDetails.networkId) {
+      transactionsWithDetails.push({
+        command,
+        details: {
+          chainId: commandData.chainId as ChainId,
+          ...networkDetails,
+        },
+      });
+    } else {
+      log.error(
+        `Network ID: "${commandData.networkId}" in transaction command ${
+          index + 1
+        } does not match the Network ID: "${
+          networkDetails.networkId
+        }" from the provided network "${network}", transaction with hash "${
+          command.hash
+        }" will not be sent.`,
+      );
+    }
+  }
+  return transactionsWithDetails;
+};
