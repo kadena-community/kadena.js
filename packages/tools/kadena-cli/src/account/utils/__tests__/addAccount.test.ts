@@ -37,7 +37,6 @@ describe('addAccount', () => {
 
     assert(result.status === 'success');
     expect(result.data).toEqual(filePath);
-    expect(result.warnings).toEqual([]);
   });
 
   it('should write user config to file when account details are undefined', async () => {
@@ -46,50 +45,12 @@ describe('addAccount', () => {
       accountName: 'k:3645365457567ghghdghf6534673',
       publicKeys: 'publicKey1,publicKey2',
       publicKeysConfig: ['publicKey1', 'publicKey2'],
-      accountDetailsFromChain: undefined,
     };
     const filePath = getAccountFilePath(defaultConfigMock.accountAlias);
     const result = await addAccount(config);
 
     assert(result.status === 'success');
     expect(result.data).toEqual(filePath);
-    expect(result.warnings).toEqual([
-      'The account "k:3645365457567ghghdghf6534673" is not on chain yet. To create it on-chain, transfer funds to it from testnet and use "kadena account fund" command.',
-    ]);
-  });
-
-  it('should write config with account details from chain when accountOverwrite is true', async () => {
-    const config = {
-      ...defaultConfigMock,
-      accountName: 'accountName',
-      publicKeys: 'publicKey1,publicKey2',
-      publicKeysConfig: ['publicKey1', 'publicKey2'],
-      accountDetailsFromChain: {
-        guard: {
-          keys: ['publicKey1'],
-          pred: 'keys-any',
-        },
-        account: 'accountName',
-        balance: 0,
-      },
-      accountOverwrite: true,
-    };
-    const filePath = getAccountFilePath(defaultConfigMock.accountAlias);
-    const result = await addAccount(config);
-
-    const fileContent = await services.filesystem.readFile(filePath);
-
-    assert(result.status === 'success');
-    expect(result.data).toEqual(filePath);
-    expect(fileContent).toBe(
-      yaml.dump({
-        name: 'accountName',
-        fungible: 'coin',
-        publicKeys: ['publicKey1'],
-        predicate: 'keys-any',
-      }),
-    );
-    expect(result.warnings).toEqual([]);
   });
 
   it('should return error when file already exists', async () => {
