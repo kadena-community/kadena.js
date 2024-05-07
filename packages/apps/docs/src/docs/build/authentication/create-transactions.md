@@ -4,8 +4,8 @@ description:
   If you're an application developer, you can enable users to sign transactions
   using their Kadena SpireKey account by constructing the transaction in the
   proper format and sending the unsigned transaction to the SpireKey endpoint.
-menu: Authenticate and authorize
-label: Construct transactions
+menu: Authenticate accounts
+label: Create transactions
 order: 2
 layout: full
 ---

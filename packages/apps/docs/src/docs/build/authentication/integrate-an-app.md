@@ -2,7 +2,7 @@
 title: Integrate decentralized applications
 description:
   If you're an application developer, you can leverage Kadena SpireKey accounts and WebAuthN authentication and authorization services by connecting to Kadena SpireKey endpoints from your application.
-menu: Authenticate and authorize
+menu: Authenticate accounts
 label: Integrate decentralized apps
 order: 2
 layout: full

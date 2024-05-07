@@ -4,7 +4,7 @@ description:
   Whether you're a user or developer, creating a Kadena SpireKey account is the
   first step to using simplified WebAuthN authentication and authorization
   services.
-menu: Authenticate and authorize
+menu: Authenticate accounts
 label: Register an account
 order: 2
 layout: full
