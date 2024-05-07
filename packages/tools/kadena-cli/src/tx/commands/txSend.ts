@@ -9,13 +9,10 @@ import type {
   ITransactionDescriptor,
   IUnsignedCommand,
 } from '@kadena/client';
-import { createClient, isSignedTransaction } from '@kadena/client';
+import { isSignedTransaction } from '@kadena/client';
 import ora from 'ora';
 import { IS_TEST } from '../../constants/config.js';
-import type {
-  ICustomNetworkChoice,
-  INetworkCreateOptions,
-} from '../../networks/utils/networkHelpers.js';
+import type { ICustomNetworkChoice } from '../../networks/utils/networkHelpers.js';
 import { loadNetworkConfig } from '../../networks/utils/networkHelpers.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
@@ -25,40 +22,20 @@ import { getExistingNetworks } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { txOptions } from '../txOptions.js';
 import { parseTransactionsFromStdin } from '../utils/input.js';
+import { displayTransactionResponse } from '../utils/txDisplayHelper.js';
+import type {
+  INetworkDetails,
+  ISubmitResponse,
+  ITransactionWithDetails,
+} from '../utils/txHelpers.js';
 import {
   extractCommandData,
+  getClient,
   getTransactionsFromFile,
   logTransactionDetails,
 } from '../utils/txHelpers.js';
 
-interface INetworkDetails extends INetworkCreateOptions {
-  chainId: ChainId;
-}
-
-interface ITransactionWithDetails {
-  command: ICommand | IUnsignedCommand;
-  details: INetworkDetails;
-}
-
-interface ISubmitResponse {
-  transaction: IUnsignedCommand | ICommand;
-  details: INetworkDetails;
-  requestKey: string;
-  clientKey: string;
-}
-
 const clientInstances: Map<string, IClient> = new Map();
-
-function getClient(details: INetworkDetails): IClient {
-  const clientKey = `${details.networkHost}-${details.networkId}-${details.chainId}`;
-  if (!clientInstances.has(clientKey)) {
-    const client: IClient = createClient(
-      `${details.networkHost}/chainweb/0.0/${details.networkId}/chain/${details.chainId}/pact`,
-    );
-    clientInstances.set(clientKey, client);
-  }
-  return clientInstances.get(clientKey)!;
-}
 
 export async function pollRequests(
   requestKeys: ISubmitResponse[],
@@ -102,10 +79,8 @@ export async function pollRequests(
       const { requestKey, status } = value;
 
       if (status === 'success' && 'data' in value) {
-        log.info(
-          `Polling success for requestKey: ${requestKey}, result:`,
-          value.data,
-        );
+        log.info(`Polling success for requestKey: ${requestKey}`);
+        displayTransactionResponse(value.data[requestKey], 2);
       } else if (status === 'error' && 'error' in value) {
         log.error(
           `Polling error for requestKey: ${requestKey}, error:`,
@@ -140,7 +115,7 @@ export const sendTransactionAction = async ({
         continue;
       }
 
-      const client = getClient(details);
+      const client = getClient(clientInstances, details);
 
       await logTransactionDetails(command);
       const localResponse = await client.local(command);
