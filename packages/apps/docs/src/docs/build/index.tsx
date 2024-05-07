@@ -13,11 +13,12 @@ import {
   Grid,
   GridItem,
   Heading,
-  Link,
+  Link as KadenaLink,
   Stack,
   Text,
 } from '@kadena/react-ui';
 import type { GetStaticProps } from 'next';
+import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
 
@@ -43,9 +44,12 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                 clicking Quick start.
               </Text>
             </Box>
-            <Link endVisual={<MonoChevronRight />} href="/build/quickstart">
+            <KadenaLink
+              endVisual={<MonoChevronRight />}
+              href="/build/quickstart"
+            >
               Quick start
-            </Link>
+            </KadenaLink>
           </Card>
         </GridItem>
         <GridItem>
@@ -64,8 +68,6 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
             <DocsCard
               label="Quick start"
               description="Follow the Quick start to set up a development environment and deploy your first smart contract on Kadena."
-              schema="warning"
-              background="contribute"
             >
               <BrowseSection marker="none">
                 <Link className={docsCardLink} href="/build/quickstart">
@@ -105,8 +107,6 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
             <DocsCard
               label="Cookbook"
               description="Use the right tools and platforms for building many types of decentralized applications."
-              schema="success"
-              background="quickstart"
             >
               <BrowseSection marker="none">
                 <Link className={docsCardLink} href="/build/cookbook">

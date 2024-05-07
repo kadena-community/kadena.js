@@ -47,8 +47,6 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                 <DocsCard
                   label="Start with core concepts"
                   description="Kadena is a secure and decentralized public blockchain with a revolutionary chain architecture and the tools designed for builders to get the results they expect, faster. If you want to build better user experiences and more diverse applications for blockchain adoption, explore Kadena. From core concepts to developer tooling, Kadena provides everything you need to develop blockchain applications—from concept to launch—in days or weeks instead of months or years."
-                  schema="info"
-                  background="whitepapers"
                 >
                   <BrowseSection marker="none">
                     <Link className={docsCardLink} href="/kadena/why-kadena">
@@ -67,14 +65,12 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                 <DocsCard
                   label="Learn step-by-step in tutorials"
                   description="Get hands-on experience and step-by-step instructions to start your journey from Hello, World! to smart contracts and full stack applications. Whether you are just starting out or an experienced professional, follow simple tutorials and in-depth workshops to reach your goals at your own pace."
-                  schema="warning"
-                  background="contribute"
                 >
                   <Box marginBlock="md">
                     <KandenaLink
                       href="/build/guides/election-dapp-tutorial"
                       endVisual={<MonoChevronRight />}
-                      variant="negative"
+                      variant="primary"
                     >
                       Build your first dApp
                     </KandenaLink>
@@ -100,8 +96,6 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                 <DocsCard
                   label="Set up your development environment"
                   description="If you're ready to start coding, you'll want to set up a local development environment with the tools and resources you'll need to build decentralized applications."
-                  schema="success"
-                  background="quickstart"
                 >
                   <BrowseSection marker="none">
                     <Link

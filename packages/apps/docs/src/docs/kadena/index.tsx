@@ -23,8 +23,6 @@ const Home: FC<IProps> = ({ blogPosts }) => {
             <DocsCard
               label="General"
               description="Kadena was founded on the idea that blockchain could revolutionize how the world interacts and transacts. But to get to mass adoption, chain technology and the ecosystem connecting it to the business world needed to be reimagined from the ground up. Our founders built a proprietary chain architecture and created the tools to make blockchain work for business – at speed, scale, and energy efficiency previously thought unachievable."
-              schema="info"
-              background="contribute"
             >
               <BrowseSection marker="none">
                 <Link className={docsCardLink} href="/kadena/why-kadena">
@@ -43,8 +41,6 @@ const Home: FC<IProps> = ({ blogPosts }) => {
             <DocsCard
               label="Resources"
               description="Miscellaneous resources to make your Kadena journey easier."
-              schema="warning"
-              background="marmalade"
             >
               <BrowseSection marker="none">
                 <Link className={docsCardLink} href="/kadena/glossary">
@@ -60,8 +56,6 @@ const Home: FC<IProps> = ({ blogPosts }) => {
             <DocsCard
               label="Whitepapers"
               description="Read up on the different aspects of Kadena in our whitepapers."
-              schema="success"
-              background="whitepapers"
             >
               <BrowseSection marker="none">
                 <Link

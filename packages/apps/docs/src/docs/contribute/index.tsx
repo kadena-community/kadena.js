@@ -27,8 +27,6 @@ const Home: FC<IProps> = ({ blogPosts }) => {
               adoption. Whether it is keeping the community up to date, writing
               blog posts, or educating new members about the Kadena project,
               they have help promote Kadena and spread awareness."
-              schema="info"
-              background="contribute"
             >
               <BrowseSection marker="none">
                 <Link className={docsCardLink} href={'/contribute/ambassadors'}>
@@ -38,12 +36,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
             </DocsCard>
           </GridItem>
           <GridItem>
-            <DocsCard
-              label="Run a node"
-              description=""
-              schema="warning"
-              background="marmalade"
-            >
+            <DocsCard label="Run a node" description="">
               <BrowseSection marker="none">
                 <Link className={docsCardLink} href="/contribute/node">
                   Run a Node
@@ -80,8 +73,6 @@ const Home: FC<IProps> = ({ blogPosts }) => {
               you can make suggested changes using pull requests. This allows
               community members to improve the documentation and helps improve
               the Kadena developer experience."
-              schema="success"
-              background="whitepapers"
             >
               <BrowseSection marker="none">
                 <Link className={docsCardLink} href={'/contribute/docs'}>

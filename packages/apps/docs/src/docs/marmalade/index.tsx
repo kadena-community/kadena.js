@@ -78,8 +78,6 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
             <DocsCard
               label="Overview"
               description="Marmalade provides smart contracts that execute logic configured by the built-in token policies you select or the custom policies you define."
-              schema="info"
-              background="marmalade"
             >
               <BrowseSection marker="none">
                 <Link
@@ -116,8 +114,6 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
             <DocsCard
               label="Architecture"
               description="The introduction of the multi-policy model in Marmalade V2 aims to enhance the user experience by simplifying token creation and management."
-              schema="warning"
-              background="react"
             >
               <BrowseSection marker="none">
                 <Link className={docsCardLink} href="/marmalade/architecture">
@@ -130,8 +126,6 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
             <DocsCard
               label="Policies"
               description="Marmalade built-in policies simplify token creation by automatically configuring and enforcing the most common token features."
-              schema="success"
-              background="whitepapers"
             >
               <BrowseSection marker="none">
                 <Link
@@ -165,8 +159,6 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
             <DocsCard
               label="Auctions"
               description="With Marmalade, you can write smart contracts to offer tokens for sale in different ways, depending on how you want to handle the mechanics of the sale."
-              schema="success"
-              background="whitepapers"
             >
               <BrowseSection marker="none">
                 <Link className={docsCardLink} href="/marmalade/auctions">

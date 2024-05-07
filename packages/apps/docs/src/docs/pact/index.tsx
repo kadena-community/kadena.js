@@ -84,8 +84,6 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
               <DocsCard
                 label="Introduction"
                 description="Pact is a human-readable smart contract language. It allows anyone to write clearly, directly and safely onto a blockchain — a true innovation for secure and simple smart contract development. Pact will enable you to create entirely new business models and on-chain services."
-                schema="info"
-                background="smartwallet"
               >
                 <BrowseSection marker="none">
                   <Link className={docsCardLink} href="/pact/overview">
@@ -107,8 +105,6 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
               <DocsCard
                 label="Tutorials"
                 description="Start learning Pact and how to implement it."
-                schema="warning"
-                background="react"
               >
                 <BrowseSection marker="none">
                   <Link className={docsCardLink} href="/pact/beginner">
@@ -124,8 +120,6 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
               <DocsCard
                 label="Whitepaper"
                 description="Pact is the programming language for writing smart contracts to be executed by the Kadena blockchain."
-                schema="success"
-                background="whitepapers"
               >
                 <BrowseSection marker="none">
                   <Link
