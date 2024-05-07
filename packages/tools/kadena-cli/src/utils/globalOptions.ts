@@ -10,7 +10,7 @@ import {
 } from '../prompts/index.js';
 
 import type { ChainId } from '@kadena/types';
-import { join } from 'node:path';
+import { isAbsolute, join } from 'node:path';
 
 import {
   chainIdValidation,
@@ -196,7 +196,7 @@ export const globalOptions = {
     transform(value: string) {
       if (!value) return null;
       const file = value.endsWith('.json') ? value : `${value}.json`;
-      return join(process.cwd(), file);
+      return isAbsolute(file) ? file : join(process.cwd(), file);
     },
   }),
   directory: createOption({
