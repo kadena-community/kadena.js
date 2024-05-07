@@ -2,17 +2,16 @@ import { globalOptions } from '../utils/globalOptions.js';
 import { accountOptions } from './accountOptions.js';
 
 export const options = [
-  accountOptions.accountTypeSelection(),
+  accountOptions.accountTypeSelection({ isOptional: false }),
   // common options
   accountOptions.accountAlias(),
   accountOptions.fungible(),
-  globalOptions.networkSelect(),
-  globalOptions.chainId(),
-  accountOptions.accountOverwrite(),
   accountOptions.predicate(),
+  accountOptions.selectPublicKeys(),
   // account manual options
+  globalOptions.networkSelect({ isOptional: true }),
+  globalOptions.chainId({ isOptional: true }),
   accountOptions.accountName(),
   // account wallet options
-  globalOptions.walletSelect(),
-  accountOptions.selectPublicKeys(),
+  globalOptions.walletSelect({ isOptional: true }),
 ];
