@@ -1,5 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import { calc } from '@vanilla-extract/css-utils';
+import { recipe } from '@vanilla-extract/recipes';
 import { atoms } from '../../styles/atoms.css';
 import { responsiveStyle } from '../../styles/themeUtils';
 import { tokens } from '../../styles/tokens/contract.css';
@@ -34,10 +35,6 @@ export const overlayClass = style([
       maxHeight: '75vh',
     },
   }),
-  {
-    backdropFilter: 'blur(12px)',
-    cursor: 'default',
-  },
 ]);
 
 export const closeButtonClass = style([
@@ -77,4 +74,51 @@ export const contentClass = style([
     marginLeft: calc(tokens.kda.foundation.spacing.xxl).negate().toString(),
     marginRight: calc(tokens.kda.foundation.spacing.xxl).negate().toString(),
   },
+]);
+
+export const compactClass = style([
+  responsiveStyle({
+    xs: {
+      maxHeight: '100svh',
+      maxWidth: '100vw',
+    },
+    sm: {
+      maxHeight: '100svh',
+      maxWidth: '100vw',
+    },
+    md: {
+      maxWidth: tokens.kda.foundation.layout.content.maxWidth,
+      maxHeight: '75vh',
+    },
+  }),
+]);
+
+const smallSizes = {
+  xs: {
+    height: '100svh',
+    maxWidth: '100vw',
+  },
+  sm: {
+    height: '100svh',
+    maxWidth: '100vw',
+  },
+};
+export const baseClass = style([
+  responsiveStyle({
+    ...smallSizes,
+    md: {
+      maxHeight: '84svh',
+      maxWidth: '60vw',
+    },
+  }),
+]);
+
+export const largeClass = style([
+  responsiveStyle({
+    ...smallSizes,
+    md: {
+      maxHeight: '96svh',
+      maxWidth: '84vw',
+    },
+  }),
 ]);

@@ -10,13 +10,25 @@ import { useOverlayTriggerState } from 'react-stately';
 import type { IModalProps } from '../Modal/Modal';
 import { Modal } from '../Modal/Modal';
 import { DialogContext } from './Dialog.context';
-import { closeButtonClass, overlayClass } from './Dialog.css';
+import {
+  baseClass,
+  closeButtonClass,
+  compactClass,
+  largeClass,
+  overlayClass,
+} from './Dialog.css';
 
+const classMap = {
+  compact: compactClass,
+  base: baseClass,
+  large: largeClass,
+};
 interface IBaseDialogProps
   extends Omit<IModalProps, 'children'>,
     AriaDialogProps {
   children?: ((state: OverlayTriggerState) => ReactNode) | ReactNode;
   className?: string;
+  size?: 'compact' | 'base' | 'large';
 }
 
 const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
@@ -30,12 +42,17 @@ const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
       },
       dialogRef,
     );
+    console.log(props.size, classMap[props.size ?? 'base'], compactClass);
 
     return (
       <DialogContext.Provider value={{ titleProps, state }}>
         <div
           ref={dialogRef}
-          className={cn(overlayClass, className)}
+          className={cn(
+            overlayClass,
+            className,
+            classMap[props.size ?? 'base'],
+          )}
           {...mergeProps(rest, dialogProps)}
         >
           {typeof children === 'function' ? children(state) : children}
@@ -79,6 +96,7 @@ export const Dialog: FC<IDialogProps> = ({
     defaultOpen,
     onOpenChange,
   });
+  console.log(props);
 
   return (
     <Modal isKeyboardDismissDisabled={isKeyboardDismissDisabled} state={state}>

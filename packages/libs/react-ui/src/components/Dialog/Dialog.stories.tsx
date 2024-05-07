@@ -45,6 +45,13 @@ A Dialog is a type of modal that is used to display information or prompt the us
         type: { summary: 'string' },
       },
     },
+    size: {
+      control: {
+        type: 'radio',
+      },
+      options: ['compact', 'base', 'large'],
+      defaultValue: 'base',
+    },
   },
 };
 
@@ -56,7 +63,7 @@ export const DialogStory: Story = {
   args: {
     title: 'Dialog Title',
   },
-  render: ({ title }) => {
+  render: ({ title, size }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -64,6 +71,7 @@ export const DialogStory: Story = {
         <Button onClick={() => setIsOpen(true)}>Modal Trigger</Button>
         <Dialog
           isOpen={isOpen}
+          size={size}
           onOpenChange={(isOpen: boolean) => setIsOpen(isOpen)}
         >
           {(state) => (

@@ -10,7 +10,7 @@ export const underlayClass = style([
     inset: 0,
   }),
   {
-    // TODO: Update to use token
-    backgroundColor: 'rgba(26, 26, 26, 0.8)',
+    backdropFilter: 'blur(12px)',
+    backgroundColor: 'background.base.default',
   },
 ]);
