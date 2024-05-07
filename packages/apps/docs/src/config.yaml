@@ -155,19 +155,6 @@ pages:
               createauction:
                 url: /create-an-auction
                 file: /build/nft-marmalade/create-an-auction.md
-      authentication:
-        url: /authentication
-        file: /build/authentication/authenticate-with-spirekey.md
-        children:
-          register:
-            url: /register
-            file: /build/authentication/register-an-account.md
-          integrate:
-            url: /integrate
-            file: /build/authentication/integrate-an-app.md
-          createtx:
-            url: /transactions
-            file: /build/authentication/create-transactions.md
       frontend:
         url: /frontend
         file: /build/kadena-cli.md
