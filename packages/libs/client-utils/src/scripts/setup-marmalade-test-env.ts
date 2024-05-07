@@ -19,6 +19,60 @@ import { deployMarmalade } from '../nodejs';
 
 const chainId: ChainId = '0';
 
+const whitelistSale = async (config: IClientConfig, saleContract: string) => {
+  let saleWhitelisted = false;
+
+  try {
+    await preflightClient(config)(
+      composePactCommand(
+        execution(
+          Pact.modules['marmalade-v2.policy-manager']['retrieve-sale'](
+            saleContract,
+          ),
+        ),
+        addSigner([sender00Account.publicKey], (signFor) => [
+          signFor('coin.GAS'),
+        ]),
+        setMeta({ senderAccount: sender00Account.account, chainId }),
+      ),
+    ).execute();
+
+    saleWhitelisted = true;
+  } catch (error) {
+    console.log(`Sale "${saleContract}" not whitelisted, whitelisting now`);
+  }
+
+  if (!saleWhitelisted) {
+    try {
+      await submitClient({
+        host: 'http://127.0.0.1:8080',
+        defaults: {
+          networkId: 'development',
+        },
+        sign: createSignWithKeypair([sender00Account]),
+      })(
+        composePactCommand(
+          execution(
+            Pact.modules['marmalade-v2.policy-manager']['add-sale-whitelist'](
+              () => saleContract,
+            ),
+          ),
+          addSigner([sender00Account.publicKey], (signFor) => [
+            signFor('coin.GAS'),
+            signFor('marmalade-v2.policy-manager.SALE-WHITELIST', saleContract),
+          ]),
+          setMeta({ senderAccount: sender00Account.account, chainId }),
+        ),
+      ).execute();
+
+      saleWhitelisted = true;
+    } catch (error) {
+      console.log(`Error whitelisting the sale contract "${saleContract}"`);
+      throw error;
+    }
+  }
+};
+
 const main = async () => {
   console.log('Setting up marmalade test environment');
 
@@ -48,62 +102,8 @@ const main = async () => {
     });
   }
 
-  let saleWhitelisted = false;
-
-  try {
-    await preflightClient(config)(
-      composePactCommand(
-        execution(
-          Pact.modules['marmalade-v2.policy-manager']['retrieve-sale'](
-            'marmalade-sale.conventional-auction',
-          ),
-        ),
-        addSigner([sender00Account.publicKey], (signFor) => [
-          signFor('coin.GAS'),
-        ]),
-        setMeta({ senderAccount: sender00Account.account, chainId }),
-      ),
-    ).execute();
-
-    saleWhitelisted = true;
-  } catch (error) {
-    console.log('Sale not whitelisted, whitelisting now');
-    console.log('error', error);
-  }
-
-  if (!saleWhitelisted) {
-    try {
-      await submitClient({
-        host: 'http://127.0.0.1:8080',
-        defaults: {
-          networkId: 'development',
-        },
-        sign: createSignWithKeypair([sender00Account]),
-      })(
-        composePactCommand(
-          execution(
-            Pact.modules['marmalade-v2.policy-manager']['add-sale-whitelist'](
-              () => 'marmalade-sale.conventional-auction',
-            ),
-          ),
-          addSigner([sender00Account.publicKey], (signFor) => [
-            signFor('coin.GAS'),
-            signFor(
-              'marmalade-v2.policy-manager.SALE-WHITELIST',
-              'marmalade-sale.conventional-auction',
-            ),
-          ]),
-          setMeta({ senderAccount: sender00Account.account, chainId }),
-        ),
-      ).execute();
-
-      saleWhitelisted = true;
-    } catch (error) {
-      console.log('Error whitelisting the sale');
-      console.log('error', error);
-      throw error;
-    }
-  }
+  await whitelistSale(config, 'marmalade-sale.conventional-auction');
+  await whitelistSale(config, 'marmalade-sale.dutch-auction');
 
   const [resultSourceAccount, resultTargetAccount] = await Promise.all([
     transferCreate(
