@@ -1,6 +1,10 @@
 import type { Command } from 'commander';
 import path from 'path';
-import { ACCOUNT_DIR } from '../../constants/config.js';
+import {
+  ACCOUNT_DIR,
+  CWD_KADENA_DIR,
+  HOME_KADENA_DIR,
+} from '../../constants/config.js';
 import { getNetworkFiles } from '../../constants/networks.js';
 import { ensureNetworksConfiguration } from '../../networks/utils/networkHelpers.js';
 import { Services } from '../../services/index.js';
@@ -23,7 +27,7 @@ export const createConfigInitCommand: (
   'init',
   'Initialize default configuration of the Kadena CLI',
   [
-    configOptions.location(),
+    configOptions.global(),
     walletOptions.createWalletConfirmation(),
     walletOptions.walletName({ isOptional: false }),
     securityOptions.createPasswordOption({
@@ -34,8 +38,10 @@ export const createConfigInitCommand: (
     walletOptions.createAccount(),
   ],
   async (option) => {
-    const { location } = await option.location();
-    log.debug('config init', { location });
+    const { global } = await option.global();
+    const location = global === true ? HOME_KADENA_DIR : CWD_KADENA_DIR;
+    log.debug('config init', { global, location });
+
     const services = new Services({
       configDirectory: location,
     });
