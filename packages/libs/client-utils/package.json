@@ -115,7 +115,8 @@
     "lint:src": "eslint src --ext .js,.ts",
     "pactjs:generate:contract": "pactjs contract-generate --contract coin --contract marmalade-v2.ledger --contract marmalade-sale.conventional-auction --contract marmalade-sale.dutch-auction --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact",
     "test": "vitest run",
-    "test:integration": "vitest run -c ./vitest.integration.config.ts",
+    "test:integration": "pnpm run test:integration:setup && vitest run -c ./vitest.integration.config.ts",
+    "test:integration:setup": "ts-node src/scripts/setup-marmalade-test-env.ts",
     "test:watch": "vitest"
   },
   "dependencies": {

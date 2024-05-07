@@ -3,7 +3,7 @@ import { createSignWithKeypair } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { describeModule } from '../built-in';
-import { getBalance, transfer, transferCreate } from '../coin';
+import { getBalance, transfer } from '../coin';
 import type { IClientConfig } from '../core/utils/helpers';
 import {
   createToken,
@@ -11,14 +11,9 @@ import {
   getTokenBalance,
   mintToken,
 } from '../marmalade';
-import { deployMarmalade } from '../nodejs';
 import { NetworkIds } from './support/NetworkIds';
 import { deployGasStation, withStepFactory } from './support/helpers';
-import {
-  secondaryTargetAccount,
-  sender00Account,
-  sourceAccount,
-} from './test-data/accounts';
+import { sender00Account, sourceAccount } from './test-data/accounts';
 
 let tokenId: string | undefined;
 const chainId = '0' as ChainId;
@@ -44,7 +39,7 @@ const config = {
 };
 
 beforeAll(async () => {
-  const fundConfig: IClientConfig = {
+  const config: IClientConfig = {
     host: 'http://127.0.0.1:8080',
     defaults: {
       networkId: 'development',
@@ -54,25 +49,10 @@ beforeAll(async () => {
     },
     sign: createSignWithKeypair([sender00Account]),
   };
-  let marmaladeDeployed = false;
-
-  try {
-    await describeModule('marmalade-v2.ledger', fundConfig);
-    marmaladeDeployed = true;
-  } catch (error) {
-    console.log('Marmalade not deployed, deploying now');
-  }
-
-  if (!marmaladeDeployed) {
-    await deployMarmalade({
-      chainIds: [chainId],
-      deleteFilesAfterDeployment: true,
-    });
-  }
 
   let gasStationDeployed = false;
   try {
-    await describeModule('free.test-gas-station', fundConfig);
+    await describeModule('free.test-gas-station', config);
     gasStationDeployed = true;
   } catch (error) {
     console.log('Gas station not deployed, deploying now');
@@ -86,14 +66,14 @@ beforeAll(async () => {
 
   const gasStationFunds = await getBalance(
     'test-gas-station',
-    config.defaults.networkId,
+    config.defaults?.networkId as string,
     chainId,
     config.host,
   );
 
   if (gasStationFunds === '0') {
     console.log('Gas station has no funds, topping up now');
-    const result = await transfer(
+    await transfer(
       {
         sender: {
           account: sender00Account.account,
@@ -103,52 +83,9 @@ beforeAll(async () => {
         amount: '100',
         chainId,
       },
-      fundConfig,
+      config,
     ).execute();
-    console.log('result', JSON.stringify(result, null, 2));
   }
-
-  const [resultSourceAccount, resultTargetAccount] = await Promise.all([
-    transferCreate(
-      {
-        sender: {
-          account: sender00Account.account,
-          publicKeys: [sender00Account.publicKey],
-        },
-        receiver: {
-          account: sourceAccount.account,
-          keyset: {
-            keys: [sourceAccount.publicKey],
-            pred: 'keys-all',
-          },
-        },
-        amount: '100',
-        chainId,
-      },
-      fundConfig,
-    ).execute(),
-    transferCreate(
-      {
-        sender: {
-          account: sender00Account.account,
-          publicKeys: [sender00Account.publicKey],
-        },
-        receiver: {
-          account: secondaryTargetAccount.account,
-          keyset: {
-            keys: [secondaryTargetAccount.publicKey],
-            pred: 'keys-all',
-          },
-        },
-        amount: '100',
-        chainId,
-      },
-      fundConfig,
-    ).execute(),
-  ]);
-
-  expect(resultSourceAccount).toBe('Write succeeded');
-  expect(resultTargetAccount).toBe('Write succeeded');
 }, 300000);
 
 describe('createTokenId', () => {

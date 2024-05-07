@@ -1,10 +1,7 @@
 import type { ChainId } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
-import { beforeAll, describe, expect, it } from 'vitest';
-import { describeModule } from '../built-in';
-import { transferCreate } from '../coin';
-import type { IClientConfig } from '../core/utils/helpers';
+import { describe, expect, it } from 'vitest';
 import {
   buyToken,
   createToken,
@@ -14,7 +11,6 @@ import {
   offerToken,
   withdrawToken,
 } from '../marmalade';
-import { deployMarmalade } from '../nodejs';
 import { NetworkIds } from './support/NetworkIds';
 import {
   addMinutesToDate,
@@ -23,11 +19,7 @@ import {
   waitFor,
   withStepFactory,
 } from './support/helpers';
-import {
-  secondaryTargetAccount,
-  sender00Account,
-  sourceAccount,
-} from './test-data/accounts';
+import { secondaryTargetAccount, sourceAccount } from './test-data/accounts';
 
 let tokenId: string | undefined;
 let saleId: string | undefined;
@@ -54,76 +46,6 @@ const config = {
   },
   sign: createSignWithKeypair([sourceAccount]),
 };
-
-beforeAll(async () => {
-  const fundConfig: IClientConfig = {
-    host: 'http://127.0.0.1:8080',
-    defaults: {
-      networkId: 'development',
-      meta: {
-        chainId,
-      },
-    },
-    sign: createSignWithKeypair([sender00Account]),
-  };
-  let marmaladeDeployed = false;
-
-  try {
-    await describeModule('marmalade-v2.ledger', fundConfig);
-    marmaladeDeployed = true;
-  } catch (error) {
-    console.log('Marmalade not deployed, deploying now');
-  }
-
-  if (!marmaladeDeployed) {
-    await deployMarmalade({
-      chainIds: [chainId],
-      deleteFilesAfterDeployment: true,
-    });
-  }
-
-  const [resultSourceAccount, resultTargetAccount] = await Promise.all([
-    transferCreate(
-      {
-        sender: {
-          account: sender00Account.account,
-          publicKeys: [sender00Account.publicKey],
-        },
-        receiver: {
-          account: sourceAccount.account,
-          keyset: {
-            keys: [sourceAccount.publicKey],
-            pred: 'keys-all',
-          },
-        },
-        amount: '100',
-        chainId,
-      },
-      fundConfig,
-    ).execute(),
-    transferCreate(
-      {
-        sender: {
-          account: sender00Account.account,
-          publicKeys: [sender00Account.publicKey],
-        },
-        receiver: {
-          account: secondaryTargetAccount.account,
-          keyset: {
-            keys: [secondaryTargetAccount.publicKey],
-            pred: 'keys-all',
-          },
-        },
-        amount: '100',
-        chainId,
-      },
-      fundConfig,
-    ).execute(),
-  ]);
-
-  expect(resultSourceAccount).toBe('Write succeeded');
-  expect(resultTargetAccount).toBe('Write succeeded');
-}, 300000);
 
 describe('createTokenId', () => {
   it('should return a token id', async () => {
@@ -383,7 +305,7 @@ describe('offerToken - default', () => {
       sign: createSignWithKeypair([secondaryTargetAccount]),
     };
 
-    const task = await offerToken(
+    const task = offerToken(
       {
         chainId,
         tokenId: 'non-existing-token',
@@ -462,7 +384,7 @@ describe('withdrawToken', () => {
 
   it('should withdraw a token from the sale after the timeout have passed', async () => {
     // wait for the sale timeout to pass
-    await waitFor(15000);
+    await waitFor(25000);
 
     const withStep = withStepFactory();
 
