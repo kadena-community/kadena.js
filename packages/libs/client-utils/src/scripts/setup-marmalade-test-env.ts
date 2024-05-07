@@ -5,12 +5,12 @@ import {
   execution,
   setMeta,
 } from '@kadena/client/fp';
-import { ChainId } from '@kadena/types';
+import type { ChainId } from '@kadena/types';
 import { describeModule } from '../built-in';
 import { sourceAccount } from '../built-in/test/test-data';
 import { transferCreate } from '../coin';
 import { preflightClient, submitClient } from '../core';
-import { IClientConfig } from '../core/utils/helpers';
+import type { IClientConfig } from '../core/utils/helpers';
 import {
   secondaryTargetAccount,
   sender00Account,
