@@ -33,7 +33,14 @@ interface IBaseDialogProps
 
 const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
   (props, ref) => {
-    const { className, children, isDismissable = true, state, ...rest } = props;
+    const {
+      className,
+      children,
+      isDismissable = true,
+      size = 'base',
+      state,
+      ...rest
+    } = props;
     const dialogRef = useObjectRef<HTMLDivElement | null>(ref);
     const { dialogProps, titleProps } = useDialog(
       {
@@ -42,7 +49,6 @@ const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
       },
       dialogRef,
     );
-    console.log(props.size, classMap[props.size ?? 'base'], compactClass);
 
     return (
       <DialogContext.Provider value={{ titleProps, state }}>
@@ -96,7 +102,6 @@ export const Dialog: FC<IDialogProps> = ({
     defaultOpen,
     onOpenChange,
   });
-  console.log(props);
 
   return (
     <Modal isKeyboardDismissDisabled={isKeyboardDismissDisabled} state={state}>
