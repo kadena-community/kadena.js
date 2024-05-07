@@ -16,12 +16,13 @@ import type { IWallet } from '../services/wallet/wallet.types.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   formatZodError,
+  isNotEmptyString,
   isValidFilename,
   maskStringPreservingStartAndEnd,
-  notEmpty,
   truncateText,
 } from '../utils/globalHelpers.js';
 import { checkbox, input, select } from '../utils/prompts.js';
+import { tableFormatPrompt } from '../utils/tableDisplay.js';
 
 export const publicKeysPrompt: IPrompt<string> = async (
   previousQuestions,
@@ -311,49 +312,28 @@ export const chainIdPrompt: IPrompt<string> = async (
   })) as ChainId;
 };
 
-function walletKeysToPromptChoices(wallets: IWallet[]): {
-  name: string;
-  value: string;
-}[] {
-  const keysList = wallets.flatMap((wallet) => wallet.keys.map((key) => key));
-  const maxAliasLength = Math.max(
-    ...keysList.map(({ alias = '' }) => alias.length),
-  );
-  const hasAlias = maxAliasLength > 0;
-  return keysList.reduce(
-    (acc, key) => {
-      const { index, alias, publicKey } = key;
-      const indexString = index.toString().padEnd(3, ' ');
-      const aliasStr = notEmpty(alias) ? alias : '';
-      const aliasMaxLength = maxAliasLength < 20 ? maxAliasLength : 20;
-      const paddedAlias = aliasStr.padEnd(aliasMaxLength, ' ');
-      const publicKeyStr = maskStringPreservingStartAndEnd(publicKey, 24);
-      let name = '';
-      if (hasAlias) {
-        name = `  ${indexString} - ${paddedAlias} - ${publicKeyStr}`;
-      } else {
-        name = `  ${indexString} - ${publicKeyStr}`;
-      }
-      acc.push({
-        name,
-        value: publicKey,
-      });
-      return acc;
-    },
-    [] as { name: string; value: string }[],
-  );
-}
-
 export const selectPublicKeysFromWalletPrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,
 ) => {
   const wallet = previousQuestions.walletNameConfig as IWallet;
-  const publicKeysList = walletKeysToPromptChoices([wallet]);
+  const keysList = [wallet].flatMap((wallet) => wallet.keys.map((key) => key));
   const selectedKeys = await checkbox({
     message: 'Select public keys to add to account(index - alias - publickey):',
-    choices: publicKeysList.map(({ name, value }) => ({ value, name })),
+    choices: tableFormatPrompt([
+      ...keysList.map((key) => {
+        const { index, alias, publicKey } = key;
+        return {
+          value: publicKey,
+          name: [
+            index.toString(),
+            isNotEmptyString(alias) ? truncateText(alias, 24) : '',
+            maskStringPreservingStartAndEnd(publicKey, 24),
+          ],
+        };
+      }),
+    ]),
     pageSize: 10,
     instructions: MULTI_SELECT_INSTRUCTIONS,
     validate: (input) => {
