@@ -231,6 +231,11 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                 href="https://github.com/kadena-io/pact#installing-pact"
               />
             </BrowseSection>
+            <BrowseSection.LinkBlock
+                title="Kadena.io"
+                subtitle="Home is where the heart is"
+                href="https://kadena.io"
+              />
           </Stack>
         </article>
       </div>
