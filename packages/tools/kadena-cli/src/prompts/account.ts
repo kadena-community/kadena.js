@@ -12,14 +12,17 @@ import {
   INVALID_FILE_NAME_ERROR_MSG,
   MULTI_SELECT_INSTRUCTIONS,
 } from '../constants/global.js';
+import type { IWallet } from '../services/wallet/wallet.types.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   formatZodError,
+  isNotEmptyString,
   isValidFilename,
   maskStringPreservingStartAndEnd,
   truncateText,
 } from '../utils/globalHelpers.js';
 import { checkbox, input, select } from '../utils/prompts.js';
+import { tableFormatPrompt } from '../utils/tableDisplay.js';
 
 export const publicKeysPrompt: IPrompt<string> = async (
   previousQuestions,
@@ -263,8 +266,8 @@ export const accountDeleteConfirmationPrompt: IPrompt<boolean> = async (
     previousQuestions.accountAlias === 'all'
       ? 'all the accounts'
       : selectedAccountsLength > 1
-      ? 'all the selected aliases accounts'
-      : `the ${selectedAccounts} alias account`;
+        ? 'all the selected aliases accounts'
+        : `the ${selectedAccounts} alias account`;
 
   return await select({
     message: `Are you sure you want to delete ${selectedAccountMessage}?`,
@@ -307,4 +310,39 @@ export const chainIdPrompt: IPrompt<string> = async (
       return true;
     },
   })) as ChainId;
+};
+
+export const selectPublicKeysFromWalletPrompt: IPrompt<string> = async (
+  previousQuestions,
+  args,
+  isOptional,
+) => {
+  const wallet = previousQuestions.walletNameConfig as IWallet;
+  const keysList = [wallet].flatMap((wallet) => wallet.keys.map((key) => key));
+  const selectedKeys = await checkbox({
+    message: 'Select public keys to add to account(index - alias - publickey):',
+    choices: tableFormatPrompt([
+      ...keysList.map((key) => {
+        const { index, alias, publicKey } = key;
+        return {
+          value: publicKey,
+          name: [
+            index.toString(),
+            isNotEmptyString(alias) ? truncateText(alias, 24) : '',
+            maskStringPreservingStartAndEnd(publicKey, 24),
+          ],
+        };
+      }),
+    ]),
+    pageSize: 10,
+    instructions: MULTI_SELECT_INSTRUCTIONS,
+    validate: (input) => {
+      if (input.length === 0) {
+        return 'Please select at least one public key';
+      }
+
+      return true;
+    },
+  });
+  return selectedKeys.join(',');
 };
