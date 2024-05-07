@@ -26,7 +26,7 @@ export const publicKeysPrompt: IPrompt<string> = async (
   isOptional,
 ) =>
   await input({
-    message: 'Enter one or more public keys (comma separated).',
+    message: 'Enter one or more public keys (comma separated):',
     validate: function (value: string) {
       if (isOptional && !value) return true;
 
@@ -40,7 +40,7 @@ export const publicKeysPrompt: IPrompt<string> = async (
 
 export const accountAliasPrompt: IPrompt<string> = async () =>
   await input({
-    message: 'Enter an alias for an account.',
+    message: 'Enter an alias for an account:',
     validate: function (value: string) {
       if (!value || value.trim().length < 3) {
         return 'Alias must be minimum at least 3 characters long.';
@@ -81,7 +81,7 @@ export const fundAmountPrompt: IPrompt<string> = async () =>
       }
       return true;
     },
-    message: 'Enter an amount.',
+    message: 'Enter an amount:',
   });
 
 export const fungiblePrompt: IPrompt<string> = async () =>
@@ -122,13 +122,13 @@ export const predicatePrompt: IPrompt<string> = async (previousQuestions) => {
   );
 
   const selectedPredicate = await select({
-    message: 'Select a keyset predicate.',
+    message: 'Select a keyset predicate:',
     choices: filteredChoices,
   });
 
   if (selectedPredicate === 'custom') {
     const customPredicate = await input({
-      message: 'Enter your own predicate',
+      message: 'Enter your own predicate:',
       validate: function (value: string) {
         if (!value || !value.trim().length) {
           return 'Predicate cannot be empty.';
@@ -199,7 +199,7 @@ export const accountSelectionPrompt = async (
   }
 
   const selectedAlias = await select({
-    message: 'Select an account:(alias - account name)',
+    message: 'Select an account (alias - account name):',
     choices: allAccountChoices,
   });
 
@@ -241,7 +241,7 @@ export const accountSelectMultiplePrompt: IPrompt<string> = async (
 ) => {
   const allAccountChoices = await getAllAccountChoices();
   const selectedAliases = await checkbox({
-    message: 'Select an account:(alias - account name)',
+    message: 'Select an account (alias - account name):',
     choices: allAccountChoices,
   });
 
@@ -261,8 +261,8 @@ export const accountDeleteConfirmationPrompt: IPrompt<boolean> = async (
     previousQuestions.accountAlias === 'all'
       ? 'all the accounts'
       : selectedAccountsLength > 1
-        ? 'all the selected aliases accounts'
-        : `the ${selectedAccounts} alias account`;
+      ? 'all the selected aliases accounts'
+      : `the ${selectedAccounts} alias account`;
 
   return await select({
     message: `Are you sure you want to delete ${selectedAccountMessage}?`,

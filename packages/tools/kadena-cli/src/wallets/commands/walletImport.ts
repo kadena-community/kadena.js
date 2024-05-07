@@ -17,8 +17,8 @@ export const createImportWalletCommand: (
   [
     walletOptions.mnemonicFile(),
     securityOptions.createPasswordOption({
-      message: 'Enter the new wallet password',
-      confirmPasswordMessage: 'Re-enter the password',
+      message: 'Enter the new wallet password:',
+      confirmPasswordMessage: 'Re-enter the password:',
       useStdin: false,
     }),
     walletOptions.walletName({ isOptional: false }),

@@ -28,7 +28,7 @@ export const chainIdPrompt: IPrompt<string> = async (
 ) => {
   const defaultValue = (args.defaultValue as string) || '0';
   return (await input({
-    message: `Enter ChainId (0-${MAX_CHAIN_VALUE})`,
+    message: `Enter ChainId (0-${MAX_CHAIN_VALUE}):`,
     default: defaultValue,
     validate: function (input) {
       const chainId = parseInt(input.trim(), 10);
@@ -49,7 +49,7 @@ export const networkNamePrompt: IPrompt<string> = async (
 ) => {
   const defaultValue = (previousQuestions.network as string) || undefined;
   return await input({
-    message: 'Enter a network name (e.g. "mainnet")',
+    message: 'Enter a network name (e.g. "mainnet"):',
     default: defaultValue,
     validate: function (input) {
       if (!isNotEmptyString(input.trim())) return 'Network name is required.';
@@ -78,7 +78,7 @@ export const networkIdPrompt: IPrompt<string> = async (
   };
 
   return await getInputPrompt(
-    'Enter a network id (e.g. "mainnet01")',
+    'Enter a network id (e.g. "mainnet01"):',
     defaultValue,
     validate,
   );
@@ -102,7 +102,7 @@ export const networkHostPrompt: IPrompt<string> = async (
   };
 
   return await getInputPrompt(
-    'Enter Kadena network host (e.g. "https://api.chainweb.com")',
+    'Enter Kadena network host (e.g. "https://api.chainweb.com"):',
     defaultValue,
     validate,
   );
@@ -115,7 +115,7 @@ export const networkExplorerUrlPrompt: IPrompt<string> = async (
 ) => {
   const defaultValue = args.defaultValue as string;
   return await getInputPrompt(
-    'Enter Kadena network explorer URL (e.g. "https://explorer.chainweb.com/mainnet/tx/")',
+    'Enter Kadena network explorer URL (e.g. "https://explorer.chainweb.com/mainnet/tx/"):',
     defaultValue,
   );
 };
@@ -148,7 +148,7 @@ export const networkSelectPrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  const networkText = (args.networkText as string) ?? 'Select a network';
+  const networkText = (args.networkText as string) ?? 'Select a network:';
   const existingNetworks: ICustomNetworkChoice[] = await getExistingNetworks();
 
   const allowedNetworks =
@@ -249,7 +249,7 @@ export const networkSelectOnlyPrompt: IPrompt<string> = async (
   }));
 
   const selectedNetwork = await select({
-    message: 'Select a network',
+    message: 'Select a network:',
     choices: choices,
   });
 
@@ -277,7 +277,7 @@ export const networkSelectWithNonePrompt: IPrompt<string> = async (
   }
 
   const selectedNetwork = await select({
-    message: 'Select a network',
+    message: 'Select a network:',
     choices: choices,
   });
 

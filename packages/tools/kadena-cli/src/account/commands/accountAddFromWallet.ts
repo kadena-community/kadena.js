@@ -23,7 +23,7 @@ const selectPublicKeys = createOption({
       [] as string[],
     );
     const selectedKeys = await checkbox({
-      message: 'Select public keys to add to account',
+      message: 'Select public keys to add to account:',
       choices: publicKeysList.map((key) => ({ value: key })),
       validate: (input) => {
         if (input.length === 0) {
