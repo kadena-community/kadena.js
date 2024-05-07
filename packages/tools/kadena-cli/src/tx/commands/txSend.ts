@@ -2,7 +2,6 @@ import type { Command } from 'commander';
 import path from 'node:path';
 
 import type {
-  ChainId,
   IClient,
   ICommand,
   IPollOptions,
@@ -12,24 +11,18 @@ import type {
 import { isSignedTransaction } from '@kadena/client';
 import ora from 'ora';
 import { IS_TEST } from '../../constants/config.js';
-import type { ICustomNetworkChoice } from '../../networks/utils/networkHelpers.js';
-import { loadNetworkConfig } from '../../networks/utils/networkHelpers.js';
+
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import { getExistingNetworks } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { txOptions } from '../txOptions.js';
 import { parseTransactionsFromStdin } from '../utils/input.js';
 import { displayTransactionResponse } from '../utils/txDisplayHelper.js';
-import type {
-  INetworkDetails,
-  ISubmitResponse,
-  ITransactionWithDetails,
-} from '../utils/txHelpers.js';
+import type { INetworkDetails, ISubmitResponse } from '../utils/txHelpers.js';
 import {
-  extractCommandData,
+  createTransactionWithDetails,
   getClient,
   getTransactionsFromFile,
   logTransactionDetails,
@@ -178,47 +171,11 @@ export const createSendTransactionCommand: (
     const networkForTransactions = await option.txTransactionNetwork({
       commands,
     });
-    const transactionsWithDetails: ITransactionWithDetails[] = [];
 
-    const existingNetworks: ICustomNetworkChoice[] =
-      await getExistingNetworks();
-
-    for (let index = 0; index < commands.length; index++) {
-      const command = commands[index];
-      const network = networkForTransactions.txTransactionNetwork[index];
-
-      if (!existingNetworks.some((item) => item.value === network)) {
-        log.error(
-          `Network "${network}" does not exist. Please create it using "kadena network create" command, the transaction "${
-            index + 1
-          }" with hash "${command.hash}" will not be sent.`,
-        );
-        continue;
-      }
-
-      const networkDetails = await loadNetworkConfig(network);
-      const commandData = extractCommandData(command);
-
-      if (commandData.networkId === networkDetails.networkId) {
-        transactionsWithDetails.push({
-          command,
-          details: {
-            chainId: commandData.chainId as ChainId,
-            ...networkDetails,
-          },
-        });
-      } else {
-        log.error(
-          `Network ID: "${commandData.networkId}" in transaction command ${
-            index + 1
-          } does not match the Network ID: "${
-            networkDetails.networkId
-          }" from the provided network "${network}", transaction with hash "${
-            command.hash
-          }" will not be sent.`,
-        );
-      }
-    }
+    const transactionsWithDetails = await createTransactionWithDetails(
+      commands,
+      networkForTransactions,
+    );
 
     if (transactionsWithDetails.length > 0) {
       const loader = ora({
