@@ -210,7 +210,9 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
             </BrowseSection>
 
             <Box>
-              <Heading as="h5">Stay up-to-date</Heading>
+              <Heading as="h5" transform="uppercase">
+                Stay up-to-date
+              </Heading>
               <BlogPostsStrip
                 data={blogPosts}
                 link="/blogchain"

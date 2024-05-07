@@ -77,7 +77,9 @@ const Home: FC<IProps> = ({ blogPosts }) => {
       </Box>
 
       <Box>
-        <Heading as="h6">Stay up-to-date</Heading>
+        <Heading as="h6" transform="uppercase">
+          Stay up-to-date
+        </Heading>
         <BlogPostsStrip
           data={blogPosts}
           link={`/tags/kadena`}

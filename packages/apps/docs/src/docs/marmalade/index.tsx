@@ -46,7 +46,9 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
       <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
         <GridItem>
           <Card fullWidth>
-            <Heading as="h4">Quick start</Heading>
+            <Heading as="h4" transform="uppercase">
+              Quick start
+            </Heading>
             <Box marginBlock="md">
               <Text variant="body">
                 Marmalade is the name of the Kadena token standard. The token
@@ -182,7 +184,9 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
         </Grid>
       </Box>
 
-      <Heading as="h6">Stay up-to-date</Heading>
+      <Heading as="h6" transform="uppercase">
+        Stay up-to-date
+      </Heading>
       <BlogPostsStrip
         data={blogPosts}
         link={`/tags/marmalade`}

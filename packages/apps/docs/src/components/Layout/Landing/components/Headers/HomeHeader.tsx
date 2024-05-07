@@ -57,11 +57,11 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
         <Box marginInline={{ xs: 'xs', sm: 'md' }}>
           <Grid columns={{ sm: 1, md: 2 }}>
             <GridItem>
-              <Heading as="h1" variant="h2">
+              <Heading as="h1" variant="h2" transform="uppercase">
                 Kadena
               </Heading>
               <Stack flexDirection="column" gap="xxs">
-                <Heading as="h2" variant="h4">
+                <Heading as="h2" variant="h4" transform="uppercase">
                   Build your <GradientText>own</GradientText> Internet
                 </Heading>
                 <span className={subheaderClass}>

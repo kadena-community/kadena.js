@@ -46,7 +46,9 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
         <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
           <GridItem>
             <Card fullWidth>
-              <Heading as="h4">Learn Pact</Heading>
+              <Heading as="h4" transform="uppercase">
+                Learn Pact
+              </Heading>
               <Box marginBlock="md">
                 <Text variant="body">
                   Pact allows anyone to write clearly, directly and safely onto
@@ -134,7 +136,9 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
           </Grid>
         </Box>
 
-        <Heading as="h6">Stay up-to-date</Heading>
+        <Heading as="h6" transform="uppercase">
+          Stay up-to-date
+        </Heading>
         <BlogPostsStrip
           data={blogPosts}
           link={`/tags/pact`}

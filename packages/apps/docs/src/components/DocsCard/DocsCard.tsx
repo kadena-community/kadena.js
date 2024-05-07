@@ -11,7 +11,7 @@ interface IProps extends PropsWithChildren {
 export const DocsCard: FC<IProps> = ({ children, label, description }) => {
   return (
     <section className={cardClass}>
-      <Heading as="h3" variant="h5">
+      <Heading as="h3" variant="h5" transform="uppercase">
         {label}
       </Heading>
       <Box marginBlock="md" className={descriptionWrapperClass}>

@@ -33,7 +33,9 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
       <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
         <GridItem>
           <Card fullWidth>
-            <Heading as="h4">Get started with tutorials</Heading>
+            <Heading as="h4" transform="uppercase">
+              Get started with tutorials
+            </Heading>
             <Box marginBlock="md">
               <Text variant="body">
                 Building applications to run on a blockchain doesn&apos;t have
@@ -123,7 +125,9 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
 
       <Stack flexDirection="column" gap="xxl">
         <Box>
-          <Heading as="h6">Stay up-to-date</Heading>
+          <Heading as="h6" transform="uppercase">
+            Stay up-to-date
+          </Heading>
           <BlogPostsStrip
             data={blogPosts}
             link={`/tags/kadenajs`}
