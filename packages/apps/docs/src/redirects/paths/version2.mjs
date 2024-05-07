@@ -51,7 +51,7 @@ export const version2PathUrlRedirects = [
   },
   {
     source: '/kadena/wallets/kadena-spirekey',
-    destination: '/build/authentication',
+    destination: '/participate/wallets/spirekey',
     permanent: true,
   },
   {
