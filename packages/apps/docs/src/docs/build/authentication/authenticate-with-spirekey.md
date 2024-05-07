@@ -11,21 +11,14 @@ layout: full
 
 # Authentication overview
 
-Kadena SpireKey is an innovative approach to authenticating users and
-authorizing transactions in Web3 and decentralized applications. Kadena SpireKey
-leverages the OAuth protocol and the Web Authentication (WebAuthn) API to
-provide a secure backend that simplifies the end user experience. With Kadena
-SpireKey, users can connect to a wallet and sign transactions using methods that
-feel familiar to them. For example, an application might present a QR code for
-them to scan to approve a transaction or send a link to a device that enables
-them to authenticate using facial recognition or a fingerprint.
+Kadena SpireKey leverages the OAuth protocol and the Web Authentication (WebAuthn) API to provide a secure backend that simplifies the end user experience. 
+With Kadena SpireKey, users can connect to a wallet and sign transactions using methods that feel familiar to them. 
+For example, an application might present a QR code for them to scan to approve a transaction or send a link to a device that enables them to authenticate using facial recognition or a fingerprint.
 
 ## Simplify authentication and signing
 
-By integrating Kadena SpireKey with your applications, you can allow your users
-to authenticate and sign transactions without using passwords or managing public
-and private keys and by using any method that supports passkeys, including Apple
-ID, Google Accounts, or hardware security keys.
+By integrating Kadena SpireKey with your applications, you can allow your users to authenticate and sign transactions without using passwords or managing public and secret keys.
+Instead, they can use any method that supports passkeys, including Apple ID, Google Accounts, or hardware security keys.
 
 If you're building decentralized applications, implementing Kadena SpireKey can
 help bring down the barriers to adoption by providing a more secure
@@ -65,12 +58,8 @@ these roles.
 
 ![OAuth roles and workflow](/assets/docs/oauth-diagram.png)
 
-The workflow for Kadena SpireKey is similar. In Kadena SpireKey, your
-decentralized application is the client application hosted on the resource
-server, for example, on the Kadena public network. To work with your
-application, users register on the network using Kadena SpireKey. Kadena
-SpireKey then acts as the authorization server and uses WebAuthn to grant access
-tokens. After users are authenticated by WebAuthn, your application can use the
-account information to construct transactions. The transactions passed back to
-users are signed by Kadena SpireKey using whatever method you choose to
-implement in your application.
+The workflow for Kadena SpireKey is similar. In Kadena SpireKey, your decentralized application is the client application hosted on the resource server, for example, on the Kadena public network. 
+To work with your application, users register on the network using Kadena SpireKey. 
+Kadena SpireKey uses WebAuthn to grant access tokens. 
+After users are authenticated by WebAuthn, your application can use the account information to construct transactions. 
+The transactions passed back to users are signed by Kadena SpireKey using whatever method you choose to implement in your application.

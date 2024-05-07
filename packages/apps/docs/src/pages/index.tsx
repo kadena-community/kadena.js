@@ -200,7 +200,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
           </Box>
 
           <Stack flexDirection="column" gap="xxxl">
-            <BrowseSection title="Download useful tools" direction="row">
+            <BrowseSection title="GET STARTED WITH KADENA TODAY" direction="row">
               <BrowseSection.LinkBlock
                 title="Bootstrap Kadena dApp"
                 subtitle="Quickstart your Kadena app"
@@ -230,12 +230,12 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                 subtitle="Install Pact for yourself"
                 href="https://github.com/kadena-io/pact#installing-pact"
               />
+                          <BrowseSection.LinkBlock
+              title="Kadena.io"
+              subtitle="Home is where the heart is"
+              href="https://kadena.io"
+            />
             </BrowseSection>
-            <BrowseSection.LinkBlock
-                title="Kadena.io"
-                subtitle="Home is where the heart is"
-                href="https://kadena.io"
-              />
           </Stack>
         </article>
       </div>
