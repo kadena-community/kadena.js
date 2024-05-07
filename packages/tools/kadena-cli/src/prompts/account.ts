@@ -7,10 +7,11 @@ import {
   parseChainIdRange,
 } from '../account/utils/accountHelpers.js';
 import { CHAIN_ID_RANGE_ERROR_MESSAGE } from '../constants/account.js';
+import { MAX_CHAIN_VALUE } from '../constants/config.js';
 import {
   INVALID_FILE_NAME_ERROR_MSG,
-  MAX_CHAIN_VALUE,
-} from '../constants/config.js';
+  MULTI_SELECT_INSTRUCTIONS,
+} from '../constants/global.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   formatZodError,
@@ -243,6 +244,7 @@ export const accountSelectMultiplePrompt: IPrompt<string> = async (
   const selectedAliases = await checkbox({
     message: 'Select an account (alias - account name):',
     choices: allAccountChoices,
+    instructions: MULTI_SELECT_INSTRUCTIONS,
   });
 
   return selectedAliases.join(',');

@@ -1,6 +1,7 @@
 import { Option } from 'commander';
 import { z } from 'zod';
 
+import { MULTI_SELECT_INSTRUCTIONS } from '../../constants/global.js';
 import type { IWallet } from '../../services/wallet/wallet.types.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
@@ -25,6 +26,8 @@ const selectPublicKeys = createOption({
     const selectedKeys = await checkbox({
       message: 'Select public keys to add to account:',
       choices: publicKeysList.map((key) => ({ value: key })),
+      pageSize: 10,
+      instructions: MULTI_SELECT_INSTRUCTIONS,
       validate: (input) => {
         if (input.length === 0) {
           return 'Please select at least one public key';

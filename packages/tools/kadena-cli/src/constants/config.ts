@@ -42,6 +42,3 @@ export const MAX_CHARACTERS_LENGTH = 80;
 
 export const MAX_CHAIN_IDS: number = 20;
 export const MAX_CHAIN_VALUE: number = MAX_CHAIN_IDS - 1;
-
-export const INVALID_FILE_NAME_ERROR_MSG =
-  'Do not use these characters: \\ / : * ? " < > |. Please choose a different name without these characters';
