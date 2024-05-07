@@ -7,8 +7,9 @@ export const options = [
   accountOptions.accountAlias(),
   accountOptions.fungible(),
   accountOptions.predicate(),
-  accountOptions.selectPublicKeys(),
+  accountOptions.selectPublicKeys({ isOptional: true }),
   // account manual options
+  accountOptions.confirmAccountVerification(),
   globalOptions.networkSelect({ isOptional: true }),
   globalOptions.chainId({ isOptional: true }),
   accountOptions.accountName(),

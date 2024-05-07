@@ -20,6 +20,7 @@ import { isEmpty } from './utils/addHelpers.js';
 export const accountOptions = {
   accountTypeSelection: createOption({
     key: 'type' as const,
+    defaultIsOptional: false,
     prompt: account.accountTypeSelectionPrompt,
     validation: z.string(),
     option: new Option(
@@ -213,15 +214,24 @@ export const accountOptions = {
     defaultIsOptional: false,
     prompt: account.publicKeysForAccountAddPrompt,
     expand: async (publicKeys: string): Promise<string[]> => {
-      const keys = publicKeys.split(',');
+      const keys = publicKeys?.split(',');
       return keys
-        .map((key: string) => key.trim())
+        ?.map((key: string) => key.trim())
         .filter((key: string) => !isEmpty(key));
     },
     validation: z.string(),
     option: new Option(
       '-k, --public-keys <publicKeys>',
       'Public keys to add to account',
+    ),
+  }),
+  confirmAccountVerification: createOption({
+    key: 'verify' as const,
+    validation: z.string(),
+    prompt: account.confirmAccountVerificationPrompt,
+    option: new Option(
+      '-v, --verify <verify>',
+      'Verify account details on chain',
     ),
   }),
 };

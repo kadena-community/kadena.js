@@ -39,6 +39,14 @@ export const addAccountFromWallet = async (
   const { publicKeys, publicKeysConfig } = await option.publicKeys({
     walletNameConfig: wallet.walletNameConfig,
   });
+
+  // when --quiet is passed and public keys are not provided
+  if (!notEmpty(publicKeysConfig) || publicKeysConfig?.length === 0) {
+    throw new Error(
+      'Missing required argument PublicKeys: "-k, --public-keys <publicKeys>"',
+    );
+  }
+
   const predicate = (await option.predicate()).predicate || 'keys-all';
   const config = {
     wallet,

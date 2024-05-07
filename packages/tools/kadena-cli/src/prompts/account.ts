@@ -376,3 +376,19 @@ export const accountTypeSelectionPrompt: IPrompt<string> = async () => {
     ],
   });
 };
+
+export const confirmAccountVerificationPrompt: IPrompt<string> = async () => {
+  return await select({
+    message: 'Do you want to verify the account on chain?',
+    choices: [
+      {
+        value: 'true',
+        name: 'Yes, verify the account on chain before adding',
+      },
+      {
+        value: 'false',
+        name: 'No, add the account without verifying on chain',
+      },
+    ],
+  });
+};
