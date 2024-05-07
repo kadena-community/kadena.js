@@ -1,9 +1,16 @@
-import type { IPactCommand } from '@kadena/client';
+import type {
+  ChainId,
+  IClient,
+  ICommandResult,
+  IPactCommand,
+} from '@kadena/client';
 import {
   addSignatures,
+  createClient,
   createSignWithKeypair,
   isSignedTransaction,
 } from '@kadena/client';
+
 import type { EncryptedString } from '@kadena/hd-wallet';
 import { kadenaSignWithSeed } from '@kadena/hd-wallet';
 import {
@@ -16,6 +23,8 @@ import type {
   IKeyPair,
   IUnsignedCommand,
 } from '@kadena/types';
+
+import type { INetworkCreateOptions } from '../../networks/utils/networkHelpers.js';
 
 import path, { isAbsolute, join } from 'node:path';
 import { z } from 'zod';
@@ -41,6 +50,23 @@ export interface ICommandData {
 export interface IWalletWithKey {
   wallet: IWallet;
   relevantKeyPairs: IWalletKey[];
+}
+
+export interface INetworkDetails extends INetworkCreateOptions {
+  chainId: ChainId;
+}
+
+export interface ITransactionWithDetails {
+  command: ICommand | IUnsignedCommand;
+  details: INetworkDetails;
+}
+
+export interface ISubmitResponse {
+  transaction: IUnsignedCommand | ICommand;
+  details: INetworkDetails;
+  requestKey: string;
+  clientKey: string;
+  response?: ICommandResult;
 }
 
 /**
@@ -686,3 +712,41 @@ export const getTxTemplateDirectory = (): string | null => {
   const kadenaDir = services.config.getDirectory();
   return notEmpty(kadenaDir) ? path.join(kadenaDir, TX_TEMPLATE_FOLDER) : null;
 };
+
+/**
+ * Generates a unique key for the client based on the network details.
+ * @param {INetworkDetails} details - The network details.
+ * @returns {string} The generated client key.
+ */
+function generateClientKey(details: INetworkDetails): string {
+  return `${details.networkHost}-${details.networkId}-${details.chainId}`;
+}
+
+/**
+ * Creates a URL for the client based on the network details.
+ * @param {INetworkDetails} details - The network details.
+ * @returns {string} The client URL.
+ */
+function generateClientUrl(details: INetworkDetails): string {
+  return `${details.networkHost}/chainweb/0.0/${details.networkId}/chain/${details.chainId}/pact`;
+}
+
+/**
+ * Retrieves or creates a client instance based on network details.
+ * @param {Map<string, IClient>} clientInstances - Map of client instances.
+ * @param {INetworkDetails} details - The network details to identify the client.
+ * @returns {IClient} The client instance.
+ */
+export function getClient(
+  clientInstances: Map<string, IClient>,
+  details: INetworkDetails,
+): IClient {
+  const clientKey = generateClientKey(details);
+
+  if (!clientInstances.has(clientKey)) {
+    const client = createClient(generateClientUrl(details));
+    clientInstances.set(clientKey, client);
+  }
+
+  return clientInstances.get(clientKey)!;
+}
