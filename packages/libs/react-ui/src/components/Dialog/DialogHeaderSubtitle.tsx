@@ -11,8 +11,6 @@ export const DialogHeaderSubtitle: FC<IDialogHeaderProps> = ({
   className,
 }) => {
   const { titleProps } = useContext(DialogContext);
-  console.log(titleProps);
-
   return (
     <div className={cn(subtitleWrapperClass, className)} {...titleProps}>
       {typeof children === 'string' ? (
