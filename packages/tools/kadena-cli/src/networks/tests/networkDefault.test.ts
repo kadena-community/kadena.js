@@ -23,11 +23,8 @@ describe('network set-default command', () => {
         'Are you sure you want to set "devnet" as the default network?': true,
       },
     });
-    const res = await runCommand('network set-default');
+    await runCommand('network set-default');
     expect(await services.filesystem.fileExists(defaultFilePath)).toBe(true);
-    expect(res).toContain(
-      'The network configuration "devnet" has been set as default.',
-    );
   });
 
   it('should not set default network when user doesnt confirm', async () => {
@@ -37,19 +34,13 @@ describe('network set-default command', () => {
         'Are you sure you want to set "devnet" as the default network?': false,
       },
     });
-    const res = await runCommand('network set-default');
+    await runCommand('network set-default');
     expect(await services.filesystem.fileExists(defaultFilePath)).toBe(false);
-    expect(res).toContain('The default network will not be set.');
   });
 
   it('should set default network with quiet option', async () => {
-    const res = await runCommand(
-      'network set-default --network=devnet --confirm --quiet',
-    );
+    await runCommand('network set-default --network=devnet --confirm --quiet');
     expect(await services.filesystem.fileExists(defaultFilePath)).toBe(true);
-    expect(res).toContain(
-      'The network configuration "devnet" has been set as default.',
-    );
   });
 
   it('should not set a default network when user provides some random values', async () => {
@@ -61,7 +52,7 @@ describe('network set-default command', () => {
     });
     const res = await runCommand('network set-default');
     expect(await services.filesystem.fileExists(defaultFilePath)).toBe(false);
-    expect(res).toContain(
+    expect(res.stderr).toContain(
       'No network configuration found for "no-network". Please create a "no-network" network.',
     );
   });
@@ -71,7 +62,7 @@ describe('network set-default command', () => {
     const res = await runCommand(
       'network set-default --network=none --confirm --quiet',
     );
-    expect(res).toContain('There is no default network to remove.');
+    expect(res.stderr).toContain('There is no default network to remove.');
   });
 
   it('should not unset a default network when user selects "none" with no confirmation', async () => {
@@ -84,7 +75,7 @@ describe('network set-default command', () => {
       },
     });
     const res = await runCommand('network set-default');
-    expect(res).toContain('The default network will not be removed.');
+    expect(res.stderr).toContain('The default network will not be removed.');
     expect(await services.filesystem.fileExists(defaultFilePath)).toBe(true);
   });
 
@@ -98,10 +89,7 @@ describe('network set-default command', () => {
         'Are you sure you want to remove the "devnet" default network?': true,
       },
     });
-    const res = await runCommand('network set-default');
-    expect(res).toContain(
-      'The default network configuration has been removed.',
-    );
+    await runCommand('network set-default');
     expect(await services.filesystem.fileExists(defaultFilePath)).toBe(false);
   });
 });

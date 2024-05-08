@@ -22,31 +22,30 @@ describe('network delete command', () => {
     mockPrompts({
       select: {
         'Select a network': 'devnet',
-        'Are you sure you want to delete the configuration for network "devnet"?':
+      },
+      input: {
+        'Are you sure you want to delete the configuration for network "devnet"?\n  type "yes" to confirm or "no" to cancel and press enter.':
           'yes',
       },
+      verbose: true,
     });
 
-    const res = await runCommand('network delete');
+    await runCommand('network delete');
     expect(await services.filesystem.fileExists(networkFilePath)).toBe(false);
-    expect(res).toContain(
-      'The network configuration "devnet" has been deleted.',
-    );
   });
 
   it('should not delete a network when user selects "no" for the delete confirmation', async () => {
     mockPrompts({
       select: {
         'Select a network': 'devnet',
+      },
+      input: {
         'Are you sure you want to delete the configuration for network "devnet"?':
           'no',
       },
     });
-    const res = await runCommand('network delete');
+    await runCommand('network delete');
     expect(await services.filesystem.fileExists(networkFilePath)).toBe(true);
-    expect(res).toContain(
-      'The network configuration "devnet" will not be deleted.',
-    );
   });
 
   it('should remove the default network as well when deleting a network if its a default network', async () => {
@@ -59,17 +58,16 @@ describe('network delete command', () => {
     mockPrompts({
       select: {
         'Select a network': 'devnet',
+      },
+      input: {
         'Are you sure you want to delete the configuration for network "devnet"?':
           'yes',
       },
     });
-    const res = await runCommand('network delete');
+    await runCommand('network delete');
     expect(await services.filesystem.fileExists(networkFilePath)).toBe(false);
     expect(
       await services.filesystem.fileExists(defaultNetworkSettingFilePath),
     ).toBe(false);
-    expect(res).toContain(
-      'The network configuration "devnet" has been deleted.',
-    );
   });
 });

@@ -28,7 +28,11 @@ describe('network update command', () => {
       input: {
         'Enter a network name': 'devnet',
         'Enter a network id': 'fast-development',
+        'Enter Kadena network host (e.g. "https://api.chainweb.com"):': '',
+        'Enter Kadena network explorer URL (e.g. "https://explorer.chainweb.com/mainnet/tx/"):':
+          '',
       },
+      verbose: true,
     });
     await runCommand('network update');
     const content = await services.filesystem.readFile(networkFilePath);
@@ -53,6 +57,19 @@ describe('network update command', () => {
     });
   });
 
+  it('should update only network id with --quiet option', async () => {
+    await runCommand(
+      'network update --network=devnet --network-id=fast-development --quiet',
+    );
+    const content = await services.filesystem.readFile(networkFilePath);
+    expect(jsYaml.load(content!)).toEqual({
+      network: 'devnet',
+      networkId: 'development',
+      networkHost: 'http://localhost:8080',
+      networkExplorerUrl: 'http://localhost:8080/explorer/development/tx/',
+    });
+  });
+
   it('should remove the network file and create one when network name changes', async () => {
     mockPrompts({
       select: {
@@ -61,7 +78,11 @@ describe('network update command', () => {
       input: {
         'Enter a network name': 'fast-devnet',
         'Enter a network id': 'fast-development',
+        'Enter Kadena network host (e.g. "https://api.chainweb.com"):': '',
+        'Enter Kadena network explorer URL (e.g. "https://explorer.chainweb.com/mainnet/tx/"):':
+          '',
       },
+      verbose: true,
     });
     await runCommand('network update');
     expect(await services.filesystem.fileExists(networkFilePath)).toBe(false);

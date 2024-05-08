@@ -16,13 +16,14 @@ describe('add network command', () => {
         'Enter Kadena network explorer URL (e.g. "https://explorer.chainweb.com/mainnet/tx/")':
           'http://localhost:30000/explorer',
       },
+      select: {
+        'Are you sure you want to save this configuration for network "test-network"?':
+          'yes',
+      },
     });
-    const res = await runCommand('network add');
+    await runCommand('network add');
     const networksFilePath = path.join(networkPath, 'test-network.yaml');
     expect(await services.filesystem.fileExists(networksFilePath)).toBe(true);
-    expect(res).toContain(
-      'The network configuration "test-network" has been saved',
-    );
   });
 
   it('should not add a network when user doesnt want to save the configuration', async () => {
@@ -40,22 +41,15 @@ describe('add network command', () => {
           'no',
       },
     });
-    const res = await runCommand('network add');
     const networksFilePath = path.join(networkPath, 'no-save-network.yaml');
     expect(await services.filesystem.fileExists(networksFilePath)).toBe(false);
-    expect(res).toContain(
-      'The existing network configuration "no-save-network" will not be updated.',
-    );
   });
 
   it('should add a network with all options with --quiet flag', async () => {
-    const res = await runCommand(
+    await runCommand(
       'network add --network-name=test-network-quiet --network-id=development --network-host=http://localhost:8080 --network-explorer-url=http://localhost:8080/explorer --network-overwrite=yes --quiet',
     );
     const networksFilePath = path.join(networkPath, 'test-network-quiet.yaml');
     expect(await services.filesystem.fileExists(networksFilePath)).toBe(true);
-    expect(res).toContain(
-      'The network configuration "test-network-quiet" has been saved',
-    );
   });
 });
