@@ -8,6 +8,7 @@ import { createTransaction } from '../commands/txCreateTransaction.js';
 import { signTransactionFileWithKeyPairAction } from '../utils/txSignWithKeypair.js';
 
 describe('tx send', () => {
+  // skipped because usage of live chainweb-api (only used for manual testing)
   it.skip('Prompts relevant values and sends transaction to chain', async () => {
     const publicKey =
       '2619fafe33b3128f38a4e4aefe6a5559371b18b6c25ac897aff165ce14b241b3';
