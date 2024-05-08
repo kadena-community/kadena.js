@@ -54,11 +54,7 @@ const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
       <DialogContext.Provider value={{ titleProps, state }}>
         <div
           ref={dialogRef}
-          className={cn(
-            overlayClass,
-            className,
-            classMap[props.size ?? 'base'],
-          )}
+          className={cn(overlayClass, className, classMap[size])}
           {...mergeProps(rest, dialogProps)}
         >
           {typeof children === 'function' ? children(state) : children}
