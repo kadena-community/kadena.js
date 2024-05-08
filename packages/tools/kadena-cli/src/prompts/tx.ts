@@ -9,6 +9,7 @@ import {
   requestKeyValidation,
 } from '../tx/utils/txHelpers.js';
 
+import { basename } from 'node:path';
 import { getAllAccounts } from '../account/utils/accountHelpers.js';
 import { MULTI_SELECT_INSTRUCTIONS } from '../constants/global.js';
 import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
@@ -201,8 +202,9 @@ const promptVariableValue = async (
         ...accounts.map((account) => ({
           value: account.name,
           name: [
-            account.fungible,
+            basename(account.alias, '.yaml'),
             maskStringPreservingStartAndEnd(account.name, 20),
+            account.fungible,
             account.publicKeys
               .map((x) => maskStringPreservingStartAndEnd(x))
               .join(','),
@@ -347,10 +349,14 @@ const promptVariableValue = async (
         // Purposely did not auto-select if 1 key for transparency
         value = await select({
           message: `Select public key from wallet ${wallet.alias}:`,
-          choices: wallet.keys.map((wallet) => ({
-            value: wallet.publicKey,
-            name: wallet.publicKey,
-          })),
+          choices: [
+            ...tableFormatPrompt([
+              ...wallet.keys.map((key) => ({
+                value: key.publicKey,
+                name: [key.index.toString(), key.alias ?? '', key.publicKey],
+              })),
+            ]),
+          ],
         });
       } else if (target === '_plain_') {
         // Purposely did not auto-select if 1 key for transparency
@@ -373,8 +379,9 @@ const promptVariableValue = async (
             ...accounts.map((account) => ({
               value: account.name,
               name: [
-                account.fungible,
+                basename(account.alias, '.yaml'),
                 maskStringPreservingStartAndEnd(account.name, 20),
+                account.fungible,
                 account.publicKeys
                   .map((x) => maskStringPreservingStartAndEnd(x))
                   .join(','),
