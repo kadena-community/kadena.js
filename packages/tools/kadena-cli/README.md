@@ -614,7 +614,7 @@ Common Options
 
 | **Options**     | **Description**                                        | **Required** |
 | --------------- | ------------------------------------------------------ | ------------ |
-| ----type        | Method to add account details (`manual` or `wallet`)   |              |
+| --type        | Method to add account details (`manual` or `wallet`)   |              |
 | --account-alias | Alias for the account                                  |              |
 | --account-name  | Provide account name                                   |              |
 | --fungible      | Fungible module name (default: coin)                   |              |
