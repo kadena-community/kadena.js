@@ -1,4 +1,4 @@
-import { RefObject } from 'react';
+import type { RefObject } from 'react';
 import { getMinimalChildWidth } from './getMinimalChildWidth';
 
 export const calculateScroll = (

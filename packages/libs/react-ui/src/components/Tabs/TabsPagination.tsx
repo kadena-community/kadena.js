@@ -3,7 +3,8 @@ import {
   MonoArrowForwardIos,
 } from '@kadena/react-icons/system';
 import classNames from 'classnames';
-import React, { ReactElement, RefObject, useEffect, useState } from 'react';
+import type { ReactElement, RefObject } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '../Button';
 import { hiddenClass, paginationButton, tabListControls } from './Tabs.css';
 import { calculateScroll } from './utils/calculateScroll';
