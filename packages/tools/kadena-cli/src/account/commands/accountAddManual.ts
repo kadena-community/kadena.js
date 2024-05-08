@@ -23,7 +23,7 @@ export const addAccountManual = async (
   let accountDetailsFromChain: IAccountDetailsResult | undefined;
   if (isNotEmptyString(accountName)) {
     const confirmAccountVerification = (await option.verify()).verify;
-    if (confirmAccountVerification === 'true') {
+    if (confirmAccountVerification === true) {
       const { networkConfig } = await option.network();
 
       const chainId = (await option.chainId()).chainId;
