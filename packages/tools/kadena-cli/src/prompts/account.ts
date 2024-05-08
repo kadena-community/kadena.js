@@ -1,5 +1,5 @@
 import type { ChainId } from '@kadena/types';
-import { parse } from 'node:path';
+import { basename, parse } from 'node:path';
 import {
   chainIdRangeValidation,
   fundAmountValidation,
@@ -46,13 +46,21 @@ export const publicKeysPrompt: IPrompt<string> = async (
 export const accountAliasPrompt: IPrompt<string> = async () =>
   await input({
     message: 'Enter an alias for an account:',
-    validate: function (value: string) {
+    validate: async function (value: string) {
       if (!value || value.trim().length < 3) {
         return 'Alias must be minimum at least 3 characters long.';
       }
 
       if (!isValidFilename(value)) {
         return `Alias is used as a filename. ${INVALID_FILE_NAME_ERROR_MSG}`;
+      }
+
+      const allAccountAliases = (await getAllAccountNames()).map((account) =>
+        basename(account.alias, '.yaml'),
+      );
+
+      if (allAccountAliases.includes(value)) {
+        return `Alias "${value}" already exists. Please enter a different alias.`;
       }
 
       return true;
