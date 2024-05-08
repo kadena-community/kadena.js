@@ -39,6 +39,9 @@ describe('account add manual type', () => {
         'Enter the name of a fungible:': 'coin',
         'Enter one or more public keys (comma separated):': 'pubkey1,pubkey2',
       },
+      checkbox: {
+        'Select public keys to add to account(alias - publickey):': [0],
+      },
     });
 
     await runCommand('account add');
@@ -95,6 +98,9 @@ describe('account add manual type', () => {
         'Enter an account name (optional):': '',
         'Enter the name of a fungible:': 'coin',
         'Enter one or more public keys (comma separated):': 'pubkey1,pubkey2',
+      },
+      checkbox: {
+        'Select public keys to add to account(alias - publickey):': [0],
       },
     });
 

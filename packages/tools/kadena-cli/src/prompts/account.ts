@@ -12,6 +12,7 @@ import {
   INVALID_FILE_NAME_ERROR_MSG,
   MULTI_SELECT_INSTRUCTIONS,
 } from '../constants/global.js';
+import { services } from '../services/index.js';
 import type { IWallet } from '../services/wallet/wallet.types.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
@@ -318,13 +319,65 @@ export const chainIdPrompt: IPrompt<string> = async (
   })) as ChainId;
 };
 
+export const addManualPublicKeysPrompt: IPrompt<string> = async (
+  previousQuestions,
+  args,
+  isOptional,
+) => {
+  const plainKeys = await services.plainKey.list(process.cwd());
+  const selectedKeys = await checkbox({
+    message: 'Select public keys to add to account(alias - publickey):',
+    choices: [
+      {
+        value: '_manual_',
+        name: 'Enter public key manually:',
+      },
+      ...tableFormatPrompt([
+        ...plainKeys.map((key) => {
+          const { alias, publicKey } = key;
+          return {
+            value: publicKey,
+            name: [
+              isNotEmptyString(alias) ? truncateText(alias, 24) : '',
+              maskStringPreservingStartAndEnd(publicKey, 24),
+            ],
+          };
+        }),
+      ]),
+    ],
+    pageSize: 10,
+    instructions: MULTI_SELECT_INSTRUCTIONS,
+    validate: (input) => {
+      if (input.length === 0) {
+        return 'Please select at least one public key';
+      }
+      return true;
+    },
+  });
+
+  if (selectedKeys.includes('_manual_')) {
+    const keys = selectedKeys.filter((key) => key !== '_manual_');
+    const customPublicKey = await publicKeysPrompt(
+      previousQuestions,
+      args,
+      isOptional,
+    );
+
+    keys.push(customPublicKey);
+
+    return keys.join(',');
+  }
+
+  return selectedKeys.join(',');
+};
+
 export const publicKeysForAccountAddPrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,
 ) => {
   if (previousQuestions.type === 'manual') {
-    return publicKeysPrompt(previousQuestions, args, isOptional);
+    return addManualPublicKeysPrompt(previousQuestions, args, isOptional);
   }
 
   if (!notEmpty(previousQuestions.walletNameConfig)) {

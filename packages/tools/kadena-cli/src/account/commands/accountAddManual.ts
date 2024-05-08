@@ -69,7 +69,7 @@ export const addAccountManual = async (
 
   // when --quiet is passed and account details are not in chain
   // public keys are required to add account
-  if (!hasAccountDetails && !publicKeysConfig?.length) {
+  if (!hasAccountDetails && publicKeysConfig.length === 0) {
     throw new Error(
       'Missing required argument PublicKeys: "-k, --public-keys <publicKeys>"',
     );
