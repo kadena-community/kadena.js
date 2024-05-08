@@ -1,6 +1,7 @@
 import type { ChainId } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
+import { IPactInt } from '@kadena/types';
 import { describe, expect, it } from 'vitest';
 import {
   buyToken,
@@ -20,7 +21,7 @@ import {
   addDaysToDate,
   addSecondsToDate,
   dateToPactInt,
-  waitFor,
+  waitForBlockTime,
   withStepFactory,
 } from './support/helpers';
 import { secondaryTargetAccount, sourceAccount } from './test-data/accounts';
@@ -28,6 +29,8 @@ import { secondaryTargetAccount, sourceAccount } from './test-data/accounts';
 let tokenId: string | undefined;
 let saleId: string | undefined;
 const timeout = dateToPactInt(addDaysToDate(new Date(), 1));
+let auctionStartDate: IPactInt;
+let auctionEndDate: IPactInt;
 const chainId = '0' as ChainId;
 const inputs = {
   chainId,
@@ -398,6 +401,9 @@ describe('updateAuction', () => {
   it('should be able to update dutch auction', async () => {
     const withStep = withStepFactory();
 
+    auctionStartDate = dateToPactInt(addSecondsToDate(new Date(), 10));
+    auctionEndDate = dateToPactInt(addDaysToDate(new Date(), 10));
+
     const result = await updateAuction(
       {
         auctionConfig: {
@@ -405,8 +411,8 @@ describe('updateAuction', () => {
         },
         saleId: saleId as string,
         tokenId: tokenId as string,
-        startDate: dateToPactInt(addSecondsToDate(new Date(), 10)),
-        endDate: dateToPactInt(addSecondsToDate(new Date(), 100)),
+        startDate: auctionStartDate,
+        endDate: auctionEndDate,
         startPrice: { decimal: '10.0' },
         reservedPrice: { decimal: '1.0' },
         priceIntervalInSeconds: { int: '10' },
@@ -513,7 +519,7 @@ describe('getCurrentPrice', () => {
   });
 
   it('should return start price after the auction have started', async () => {
-    await waitFor(10000);
+    await waitForBlockTime((Number(auctionStartDate.int) + 2) * 1000);
 
     const result = await getCurrentPrice(
       {
@@ -544,6 +550,9 @@ describe('buyToken', () => {
       },
     },
   };
+
+  let auctionStartDate: IPactInt;
+  let auctionEndDate: IPactInt;
 
   it('should create token id', async () => {
     tokenId = await createTokenId(inputs, config).execute();
@@ -673,6 +682,9 @@ describe('buyToken', () => {
   });
 
   it('should create dutch auction', async () => {
+    auctionStartDate = dateToPactInt(addSecondsToDate(new Date(), 10));
+    auctionEndDate = dateToPactInt(addDaysToDate(new Date(), 10));
+
     const result = await createAuction(
       {
         auctionConfig: {
@@ -680,8 +692,8 @@ describe('buyToken', () => {
         },
         saleId: saleId as string,
         tokenId: tokenId as string,
-        startDate: dateToPactInt(addSecondsToDate(new Date(), 10)),
-        endDate: dateToPactInt(addDaysToDate(new Date(), 10)),
+        startDate: auctionStartDate,
+        endDate: auctionEndDate,
         startPrice: { decimal: '5.0' },
         reservedPrice: { decimal: '1.0' },
         priceIntervalInSeconds: { int: '3600' },
@@ -701,7 +713,7 @@ describe('buyToken', () => {
   });
 
   it('should buy a token', async () => {
-    await waitFor(15000);
+    await waitForBlockTime((Number(auctionStartDate.int) + 2) * 1000);
 
     const withStep = withStepFactory();
 

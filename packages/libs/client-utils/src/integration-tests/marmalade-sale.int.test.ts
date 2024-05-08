@@ -1,6 +1,7 @@
 import type { ChainId } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
+import type { IPactInt } from '@kadena/types';
 import { describe, expect, it } from 'vitest';
 import {
   buyToken,
@@ -16,7 +17,7 @@ import {
   addMinutesToDate,
   addSecondsToDate,
   dateToPactInt,
-  waitFor,
+  waitForBlockTime,
   withStepFactory,
 } from './support/helpers';
 import { secondaryTargetAccount, sourceAccount } from './test-data/accounts';
@@ -24,7 +25,7 @@ import { secondaryTargetAccount, sourceAccount } from './test-data/accounts';
 let tokenId: string | undefined;
 let saleId: string | undefined;
 let escrowAccount: string | undefined;
-let timeout = dateToPactInt(addSecondsToDate(new Date(), 30));
+let timeout: IPactInt;
 const chainId = '0' as ChainId;
 const inputs = {
   chainId,
@@ -199,6 +200,8 @@ describe('offerToken - default', () => {
       },
       sign: createSignWithKeypair([sourceAccount]),
     };
+
+    timeout = dateToPactInt(addSecondsToDate(new Date(), 30));
 
     const result = await offerToken(
       {
@@ -384,7 +387,7 @@ describe('withdrawToken', () => {
 
   it('should withdraw a token from the sale after the timeout have passed', async () => {
     // wait for the sale timeout to pass
-    await waitFor(25000);
+    await waitForBlockTime((Number(timeout.int) + 2) * 1000);
 
     const withStep = withStepFactory();
 
@@ -527,7 +530,7 @@ describe('buyToken', () => {
       sign: createSignWithKeypair([sourceAccount]),
     };
 
-    timeout = dateToPactInt(addSecondsToDate(new Date(), 45));
+    timeout = dateToPactInt(addSecondsToDate(new Date(), 30));
 
     const result = await offerToken(
       {
@@ -561,7 +564,7 @@ describe('buyToken', () => {
 
   it('should buy a token', async () => {
     // wait for the sale timeout to pass
-    await waitFor(15000);
+    await waitForBlockTime((Number(timeout.int) + 2) * 1000);
 
     const withStep = withStepFactory();
 

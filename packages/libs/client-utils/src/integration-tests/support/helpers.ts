@@ -9,7 +9,7 @@ import {
 import type { IGeneralCapability } from '@kadena/client/lib/interfaces/type-utilities';
 import type { ChainId, ICap, IPactInt } from '@kadena/types';
 import { expect } from 'vitest';
-import { submitClient } from '../../core';
+import { dirtyReadClient, submitClient } from '../../core';
 import type { Any } from '../../core/utils/types';
 import type { CommonProps } from '../../marmalade/config';
 import { sourceAccount } from '../test-data/accounts';
@@ -32,11 +32,49 @@ export const withStepFactory = () => {
 export const waitFor = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
+export const getBlockTime = async (props?: { chainId?: ChainId }) => {
+  const { chainId } = props || { chainId: '0' };
+
+  const config = {
+    host: 'http://127.0.0.1:8080',
+    defaults: {
+      networkId: 'development',
+    },
+    sign: createSignWithKeypair([sourceAccount]),
+  };
+
+  const time = await dirtyReadClient(config)(
+    composePactCommand(
+      execution(
+        `(floor (diff-time (at 'block-time (chain-data)) (time "1970-01-01T00:00:00Z")))`,
+      ),
+      setMeta({
+        senderAccount: sourceAccount.account,
+        chainId,
+      }),
+    ),
+  ).execute();
+
+  return new Date(Number(time) * 1000);
+};
+
+export const waitForBlockTime = async (timeMs: number) => {
+  while (true) {
+    const time = await getBlockTime();
+
+    if (time.getTime() >= timeMs) {
+      break;
+    }
+
+    await waitFor(1000);
+  }
+};
+
 export const addDaysToDate = (originalDate: Date, daysToAdd: number) =>
   new Date(originalDate.getTime() + daysToAdd * 86400000);
 
 export const addMinutesToDate = (originalDate: Date, minutesToAdd: number) =>
-  new Date(originalDate.getTime() + minutesToAdd * 3600000);
+  new Date(originalDate.getTime() + minutesToAdd * 60000);
 
 export const addSecondsToDate = (originalDate: Date, secondsToAdd: number) =>
   new Date(originalDate.getTime() + secondsToAdd * 1000);
