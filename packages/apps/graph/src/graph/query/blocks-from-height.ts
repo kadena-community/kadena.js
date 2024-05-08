@@ -35,12 +35,12 @@ builder.queryField('blocksFromHeight', (t) =>
         last: args.last,
       }),
     }),
-    async resolve(query, __parent, { startHeight, chainIds }) {
+    async resolve(
+      query,
+      __parent,
+      { startHeight, chainIds = networkData.chainIds },
+    ) {
       try {
-        if (!chainIds?.length) {
-          chainIds = networkData.chainIds;
-        }
-
         return await prismaClient.block.findMany({
           ...query,
           where: {
