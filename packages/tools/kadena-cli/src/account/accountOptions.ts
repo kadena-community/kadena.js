@@ -227,11 +227,8 @@ export const accountOptions = {
   }),
   confirmAccountVerification: createOption({
     key: 'verify' as const,
-    validation: z.string(),
+    validation: z.boolean(),
     prompt: account.confirmAccountVerificationPrompt,
-    option: new Option(
-      '-v, --verify <verify>',
-      'Verify account details on chain',
-    ),
+    option: new Option('-v, --verify', 'Verify account details on chain'),
   }),
 };
