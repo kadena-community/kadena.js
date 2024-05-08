@@ -35,7 +35,6 @@ export const globalClass = style({
     },
   },
 });
-
 const bodyFont = 'globalNeuHaasGrotesk';
 globalFontFace(bodyFont, {
   src: `url("/fonts/neuhaas_grotesk_pro55.woff2?#iefix format('woff2')")`,
