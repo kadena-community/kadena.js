@@ -7,7 +7,7 @@ import { remark } from 'remark';
 import type { Root } from 'remark-gfm';
 import { getUrlofImageFile } from '../fixLocalLinks/utils/getUrlofImageFile';
 import { loadConfigPages } from '../movePages/utils/loadConfigPages';
-import { crawlPage } from '../utils/crawlPage';
+import { blogCrawl, crawlPage } from '../utils/crawlPage';
 import type { IScriptResult } from './../types';
 import { getTypes } from './../utils';
 import { getFileNameOfPageFile } from './../utils/getFileNameOfPageFile';
@@ -17,6 +17,20 @@ const success: string[] = [];
 
 export const isLocalImageLink = ({ url }: Image): boolean => {
   return !url.startsWith('http') && url.includes('assets');
+};
+
+const checkImagesContent = (content: string, fileName) => {
+  const md: Root = remark.parse(content);
+  const images = getTypes<Image>(md, 'image');
+
+  images.forEach((image) => {
+    if (isLocalImageLink(image)) {
+      image.url = getUrlofImageFile(image.url);
+      if (!fs.existsSync(`./public${image.url}`)) {
+        errors.push(`${image.url} does not exist (page: ${fileName})`);
+      }
+    }
+  });
 };
 
 const checkImages = async (
@@ -31,17 +45,12 @@ const checkImages = async (
     'utf-8',
   );
 
-  const md: Root = remark.parse(content);
-  const images = getTypes<Image>(md, 'image');
+  checkImagesContent(content, page.file);
+};
 
-  images.forEach((image) => {
-    if (isLocalImageLink(image)) {
-      image.url = getUrlofImageFile(image.url);
-      if (!fs.existsSync(`./public${image.url}`)) {
-        errors.push(`${image.url} does not exist (page: ${page.file})`);
-      }
-    }
-  });
+const checkBlogImages = async (path: string): Promise<void> => {
+  const content = fs.readFileSync(path, 'utf-8');
+  checkImagesContent(content, path);
 };
 
 export const checkDeadImages = async (): Promise<IScriptResult> => {
@@ -54,9 +63,10 @@ export const checkDeadImages = async (): Promise<IScriptResult> => {
     const page = pages[i];
     await crawlPage(page, [], checkImages);
   }
+  await blogCrawl(checkBlogImages);
 
   if (!errors.length) {
-    success.push('Locallinks are fixed');
+    success.push('No dead images found');
   } else {
     errors.push(`${errors.length} dead images found`);
   }
