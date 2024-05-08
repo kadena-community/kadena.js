@@ -1,7 +1,6 @@
 import { darkThemeClass } from '@kadena/react-ui/styles';
 import {
   createVar,
-  fontFace,
   globalFontFace,
   globalStyle,
   style,
