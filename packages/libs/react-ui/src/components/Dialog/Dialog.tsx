@@ -18,7 +18,7 @@ import {
   smClass,
 } from './Dialog.css';
 
-const classMap = {
+const sizeMap = {
   sm: smClass,
   md: mdClass,
   lg: lgClass,
@@ -28,7 +28,7 @@ interface IBaseDialogProps
     AriaDialogProps {
   children?: ((state: OverlayTriggerState) => ReactNode) | ReactNode;
   className?: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: keyof typeof sizeMap;
 }
 
 const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
@@ -54,7 +54,7 @@ const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
       <DialogContext.Provider value={{ titleProps, state }}>
         <div
           ref={dialogRef}
-          className={cn(overlayClass, className, classMap[size])}
+          className={cn(overlayClass, className, sizeMap[size])}
           {...mergeProps(rest, dialogProps)}
         >
           {typeof children === 'function' ? children(state) : children}
