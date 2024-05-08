@@ -1,0 +1,9 @@
+overwrite: true
+schema: ./node_modules/@kadena/graph/generated-schema.graphql
+generates:
+  ./src/__generated__/sdk.ts:
+    documents: 'src/**/*.graph.(ts|tsx)'
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo

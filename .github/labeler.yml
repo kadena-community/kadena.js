@@ -46,6 +46,9 @@ Github Config & Actions:
 '@kadena/docs-tools':
   - changed-files:
       - any-glob-to-any-file: packages/tools/docs-tools/*
+'@kadena/explorer':
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/explorer/*
 '@kadena/graph':
   - changed-files:
       - any-glob-to-any-file: packages/apps/graph/*
