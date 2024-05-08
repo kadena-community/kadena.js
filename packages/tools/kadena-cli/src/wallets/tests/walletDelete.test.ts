@@ -34,6 +34,9 @@ describe('delete wallet', () => {
 
   it('Should delete a specific wallet with prompts', async () => {
     mockPrompts({
+      input: {
+        'Are you sure you want to delete the wallet': 'yes',
+      },
       select: {
         'Select a wallet': 'test',
         'Are you sure': true,
