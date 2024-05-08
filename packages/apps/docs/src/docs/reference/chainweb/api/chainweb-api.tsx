@@ -21,7 +21,7 @@ export const getStaticProps: GetStaticProps = async () => {
       })),
       frontmatter: {
         title: 'Intro to Chainweb',
-        menu: 'Chainweb',
+        menu: 'Chainweb API',
         subTitle: 'Build the future on Kadena',
         label: 'Introduction',
         order: 5,
