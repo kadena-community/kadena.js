@@ -1,10 +1,10 @@
 import React from 'react';
 
-interface ChainActivityGraphProps {
+interface IChainActivityGraphProps {
   data: number[];
 }
 
-const ChainActivityGraph: React.FC<ChainActivityGraphProps> = ({ data }) => {
+const ChainActivityGraph: React.FC<IChainActivityGraphProps> = ({ data }) => {
   const height = 50;
   const width = 100;
   const padding = 5;
@@ -20,7 +20,12 @@ const ChainActivityGraph: React.FC<ChainActivityGraphProps> = ({ data }) => {
   const controlPoints = (
     p0: { x: number; y: number },
     p1: { x: number; y: number },
-  ) => {
+  ): {
+    cp1x: number;
+    cp1y: number;
+    cp2x: number;
+    cp2y: number;
+  } => {
     const dx = (p1.x - p0.x) * 0.6; // tension factor
     const cp1x = p0.x + dx;
     const cp2x = p1.x - dx;
