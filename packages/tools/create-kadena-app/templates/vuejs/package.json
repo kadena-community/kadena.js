@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@kadena/client": "^1.6.2",
-    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/jest-dom": "~6.1.4",
     "epic-spinners": "^2.0.0",
     "vue": "^3.3.8",
     "vue-router": "^4.2.5"
@@ -46,4 +46,3 @@
     "vue-tsc": "^1.8.22"
   }
 }
-

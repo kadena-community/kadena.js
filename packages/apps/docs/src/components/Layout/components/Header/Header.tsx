@@ -1,12 +1,12 @@
 import { useMenu } from '@/hooks/useMenu/useMenu';
 import type { IMenuItem, LayoutType } from '@kadena/docs-tools';
+import { MonoLogoGithub, MonoLogoX } from '@kadena/react-icons';
 import {
   NavHeader,
   NavHeaderButtonLink,
   NavHeaderLink,
   NavHeaderLinkList,
   Stack,
-  SystemIcon,
 } from '@kadena/react-ui';
 import classNames from 'classnames';
 import Link from 'next/link';
@@ -65,7 +65,7 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
             href="https://twitter.com/kadena_io"
             title="Go to our X"
           >
-            <SystemIcon.Twitter />
+            <MonoLogoX />
           </NavHeaderButtonLink>
 
           <NavHeaderButtonLink
@@ -73,9 +73,8 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
             href="https://github.com/kadena-community"
             title="Go to our Github"
           >
-            <SystemIcon.Github />
+            <MonoLogoGithub />
           </NavHeaderButtonLink>
-
           <ThemeToggle />
 
           <div className={hideOnTabletClass}>

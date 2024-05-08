@@ -14,8 +14,8 @@ const targetAccount =
   'k:00b34067644479c769b48b4cc9b2c732e48fc9aeb82d06ecd52dc783550de54d';
 
 describe('template to live test', () => {
-  // NOTE: this tests uses live testnet04 meaning it is not isolated!!!
-  it('creates, signs and tests the transaction', async () => {
+  // skipped because usage of live chainweb-api (only used for manual testing)
+  it.skip('creates, signs and tests the transaction', async () => {
     const variables = {
       'account:from': `k:${publicKey}`,
       'account:to': targetAccount,
@@ -38,9 +38,6 @@ describe('template to live test', () => {
       keyPairs: [{ publicKey, secretKey }],
     });
     assertCommandError(signed);
-
-    // console.dir(JSON.parse(signed.data.commasnds[0].cmd), { depth: Infinity });
-    // console.log(signed.data.commands[0]);
 
     const test = await testTransactions(
       {

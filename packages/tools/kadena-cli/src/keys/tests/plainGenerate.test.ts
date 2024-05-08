@@ -7,8 +7,8 @@ const root = path.join(__dirname, '../../..');
 
 describe('create wallet', () => {
   it('Should create a encrypted seed and store it', async () => {
-    const result = await runCommand('key generate -a test -n 1'.split(' '));
-    const lines = result.split('\n');
+    const { stderr } = await runCommand('key generate -a test -n 1'.split(' '));
+    const lines = stderr.split('\n');
     expect(lines.at(-1)).toEqual('test.yaml');
 
     const filePath = path.join(root, 'test.yaml');

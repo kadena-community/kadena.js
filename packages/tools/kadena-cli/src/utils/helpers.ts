@@ -91,17 +91,18 @@ export async function getExistingDevnets(): Promise<ICustomDevnetsChoice[]> {
 export const passwordPromptTransform =
   (
     flag: string,
-    useStdin?: boolean,
+    useStdin = true,
   ): ((
     passwordFile: string | { _password: string },
     args: Record<string, unknown>,
   ) => Promise<string>) =>
   async (passwordFile, args) => {
+    // passwordFile will be undefined if `--quiet` flag is used
     const password =
-      typeof passwordFile === 'string'
-        ? useStdin === true && passwordFile === '-'
-          ? (args.stdin as string | null)
-          : await services.filesystem.readFile(passwordFile)
+      useStdin === true && (passwordFile === '-' || passwordFile === undefined)
+        ? (args.stdin as string | null)
+        : typeof passwordFile === 'string'
+        ? await services.filesystem.readFile(passwordFile)
         : passwordFile._password;
 
     if (password === null) {
@@ -138,10 +139,10 @@ export const mnemonicPromptTransform =
   ) => Promise<string>) =>
   async (filepath, args) => {
     const content =
-      typeof filepath === 'string'
-        ? filepath === '-'
-          ? (args.stdin as string | null)
-          : await services.filesystem.readFile(filepath)
+      filepath === '-' || filepath === undefined
+        ? (args.stdin as string | null)
+        : typeof filepath === 'string'
+        ? await services.filesystem.readFile(filepath)
         : filepath._secret;
 
     if (content === null) {

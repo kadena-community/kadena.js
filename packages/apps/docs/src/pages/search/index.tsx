@@ -11,7 +11,7 @@ import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import type { FC, FormEvent } from 'react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface IQuery {
   q?: string;
@@ -22,14 +22,14 @@ const SearchPage: FC = () => {
   const { q } = router.query as IQuery;
   const [query, setQuery] = useState<string | undefined>(q);
 
-  const searchInputRef = useRef<HTMLInputElement>(null);
-
   const handleSubmit = async (
     evt: FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     evt.preventDefault();
 
-    const value = searchInputRef.current?.value ?? '';
+    const data = new FormData(evt.currentTarget);
+    const value = `${data.get('search')}`;
+
     setQuery(value);
   };
 
@@ -42,7 +42,7 @@ const SearchPage: FC = () => {
   return (
     <>
       <SearchHeader>
-        <SearchBar ref={searchInputRef} onSubmit={handleSubmit} query={query} />
+        <SearchBar onSubmit={handleSubmit} query={query} />
       </SearchHeader>
       <div
         className={classNames(contentClass, contentClassVariants.home)}

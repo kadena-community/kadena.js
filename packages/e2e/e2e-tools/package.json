@@ -6,7 +6,7 @@
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:src": "prettier . --cache --write",
-    "install:chromium": "npx playwright install chromium",
+    "install:chromium": "npx playwright install chromium --with-deps",
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@kadena/tools": "workspace:*",
-    "@playwright/test": "^1.41.1"
+    "@playwright/test": "^1.43.1"
   },
   "devDependencies": {
     "@kadena-dev/e2e-base": "workspace:*",
@@ -30,7 +30,7 @@
     "@types/node": "^20.12.7",
     "eslint": "^8.45.0",
     "eslint-import-resolver-typescript": "3.5.5",
-    "eslint-plugin-playwright": "0.16.0",
+    "eslint-plugin-playwright": "1.6.0",
     "playwright-i18next-fixture": "^1.0.0",
     "prettier": "~3.2.5"
   }

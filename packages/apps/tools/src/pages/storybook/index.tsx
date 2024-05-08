@@ -130,7 +130,7 @@ const Storybook = () => {
             <Stack gap="md">
               <Combobox
                 allowsCustomValue
-                startIcon={<MonoKey />}
+                startVisual={<MonoKey />}
                 label="Key ID"
                 onInputChange={async (value) => {
                   console.log('onInputChange', value);

@@ -1,6 +1,7 @@
 import { style } from '@vanilla-extract/css';
 
 export const ellipsis = style({
+  fontFamily: 'unset',
   display: 'inline-block',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
@@ -18,7 +19,7 @@ export const ellipsis = style({
 
 export const rotate180Transition = style({
   transitionProperty: 'transform',
-  transitionDuration: '100ms',
+  transitionDuration: '400ms',
   transitionTimingFunction: 'ease-in-out',
   transform: 'rotate(0deg)',
 

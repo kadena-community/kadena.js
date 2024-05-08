@@ -125,6 +125,55 @@ kadena [command] --legacy
 
 ---
 
+# Interactive Mode
+
+Interactive Mode is designed to make command execution more intuitive and
+user-friendly. When you run a command in the Kadena CLI without specifying all
+required options, the CLI automatically prompts you to provide the missing
+inputs. This guided approach helps streamline your workflow and ensures that you
+provide all necessary information to successfully execute a command.
+
+## How It Works
+
+To use Interactive Mode, simply type a command without its options:
+
+```
+kadena [command] [argument]
+```
+
+If the CLI is not running in Quiet Mode (`--quiet`), it will detect the missing
+elements needed for the command to run and will prompt you interactively to
+input them. This means you can start a command with minimal initial input and
+fill in the details as prompted by the CLI.
+
+## Benefits
+
+- **Ease of Use**: Reduces the need to remember all command arguments and
+  options upfront.
+- **Guided Execution**: Ensures that all required inputs are collected before
+  executing a command.
+- **Flexibility**: Allows for a more conversational and less rigid interaction
+  with the CLI.
+
+## Example
+
+If you want to add a new wallet but aren't sure of all the required flags and
+arguments, simply start with:
+
+```
+kadena wallet add
+```
+
+The CLI will then guide you through the necessary steps, asking for each
+required piece of information to complete the wallet addition.
+
+Interactive Mode is especially useful for new users or those who prefer a more
+guided approach when using command-line tools. It also serves as a learning tool
+by demonstrating the required inputs for various commands, enhancing your
+familiarity with the CLI's functionalities.
+
+---
+
 ### Command specific help
 
 To get help on a `subject` use `kadena <subject> --help`
@@ -178,6 +227,7 @@ kadena config init [options]
 | --wallet-name    | Name for the new wallet                                                                            |              |
 | --password-file  | Path to a file containing the wallet's password, alternatively, passwords can be passed via stdin. |              |
 | --create-account | Enable the creation of an account using the first wallet key.                                      |              |
+| --account-alias  | Alias to store your account details            |              |
 
 ---
 
@@ -186,7 +236,7 @@ Examples
 Setup in a Specific Directory with a New Wallet and Account:
 
 ```
-kadena config init --location="/my-app/.kadena" --create-wallet="true" --wallet-name="my_first_wallet" --create-account="true"
+kadena config init --location="/my-app/.kadena" --create-wallet="true" --wallet-name="my_first_wallet" --create-account="true" --account-alias="dev_account"
 ```
 
 Setup Without Creating a Wallet or Account:
@@ -313,19 +363,22 @@ kadena wallet add [options]
 | **Options**                | **Description**                                | **Required** |
 | -------------------------- | ---------------------------------------------- | ------------ |
 | --wallet-name              | Set the name of the wallet                     |              |
-| --security-password        | Set the password for the wallet                |              |
-| --security-verify-password | Set the password for the wallet (verification) |              |
+| --password-file            | File path to the password file                 |              |
 | --legacy                   | Generate legacy wallet                         |              |
+| --create-account           | Create an account using the first wallet key   |              |
+| --account-alias            | Alias to store your account details            |              |
 
 example:
 
 ```
-kadena wallet add --wallet-name="kadenawallet" --security-password=1245678 --security-verify-password=1245678
+kadena wallet add --wallet-name="kadena_wallet" --password-file="./kadenawallet-pw.txt"
 ```
 
-password will be hidden after entry: --security-password=\*
-\--security-verify-password=\*
+example using wallet with account creation:
 
+```
+kadena wallet add --wallet-name="kadena_wallet" --password-file="./kadenawallet-pw.txt" --create-account=true --account-alias="dev_account"
+```
 ---
 
 ```
@@ -343,7 +396,7 @@ kadena wallet import [options]
 example:
 
 ```
-kadena wallet import-wallet --key-mnemonic="male more sugar violin accuse panel kick nose sign alarm stool inmate" --security-new-password=12345678 --security-verify-password=12345678 --key-wallet="mywalletname"
+kadena wallet import --key-mnemonic="male more sugar violin accuse panel kick nose sign alarm stool inmate" --security-new-password=12345678 --security-verify-password=12345678 --key-wallet="mywalletname"
 ```
 
 password will be hidden after entry: --security-new-password=\*
@@ -862,12 +915,55 @@ chains and access patterns. This feature is designed to work with user-supplied
 values, filling out predefined templates to generate transactions ready for
 signing and submission.
 
-### Available Templates
+## Default Templates in `kadena tx add`
 
-Currently, two default templates are provided: `transfer` and `safe-transfer`.
-(Default templates are stored at `.kadena/transaction-templates`) These
-templates cover the most common transaction types, allowing for straightforward
-transfers of tokens between accounts.
+The `kadena tx add` command in the Kadena CLI includes a set of default
+templates that are designed to facilitate the quick and efficient creation of
+transactions. These templates are integral to the command's functionality and
+enhance user experience by providing predefined frameworks for common
+transaction types.
+
+### Location of Default Templates
+
+When you use the `kadena tx add` command for the first time, the CLI
+automatically creates and stores default templates in the
+`.kadena/transaction-templates` directory on your local machine. This directory
+serves as the central repository for these templates, allowing easy access and
+customization.
+
+### Available Default Templates
+
+Currently, the CLI comes with two primary default templates:
+
+- **`transfer`**: Simplifies the process of transferring tokens between
+  accounts.
+- **`safe-transfer`**: Ensures a safer transfer with checks and validations to
+  prevent common mistakes like sending to incorrect addresses.
+
+These templates are designed to cover the most common types of transactions,
+making it easier for users to execute these operations without the need to write
+or customize code.
+
+### Benefits of Using Default Templates
+
+1. **Ease of Use**: The templates make it straightforward to create transactions
+   without needing detailed blockchain scripting knowledge.
+2. **Efficiency**: Speeds up the transaction creation process by providing
+   ready-to-use frameworks that only require filling in specific details.
+3. **Error Reduction**: The structured format of the templates, combined with
+   interactive prompts, significantly reduces the potential for mistakes.
+
+### Customizing and Extending Templates
+
+While default templates offer convenience and speed, you might sometimes need to
+customize or extend these templates to fit specific needs or to handle unique
+transaction types. The CLI allows you to either modify existing templates or
+create new ones from scratch and save them in the
+`.kadena/transaction-templates` directory.
+
+By understanding and utilizing these default templates, you can significantly
+streamline your transaction creation processes with the Kadena CLI, making it a
+powerful tool for managing blockchain transactions efficiently.
 
 ### Command Usage
 
@@ -925,33 +1021,15 @@ networkId: '{{network:networkId}}'
 type: exec
 ```
 
-`account`: This prefix is used for variables that should be filled with an
-account name, guiding users to input valid Kadena account identifiers. `key`:
-Variables with this prefix expect a public key, ensuring that users provide
-cryptographic keys in the correct format. `network`: This prefix is used for
-specifying the network ID, helping users to select the appropriate network for
-their transaction. `decimal`: For variables that involve numerical values with
-decimal points, this prefix ensures the format and precision of the input.
+This template exemplifies how variables and prefixes guide users in providing
+the correct types of input values, significantly reducing the potential for
+errors when the CLI is operated in its interactive mode. In this mode, the
+prefixes play a crucial role in prompting users for the specific type of
+information required, ensuring the accuracy and validity of the transaction
+data. This interactive guidance simplifies the transaction creation process,
+enhancing the security and reliability of the transactions constructed.
 
-This template exemplifies how prefixes guide users in providing the correct
-types of input values, significantly reducing the potential for errors when the
-CLI is operated in its interactive mode. In this mode, the prefixes play a
-crucial role in prompting users for the specific type of information required,
-ensuring the accuracy and validity of the transaction data. This interactive
-guidance simplifies the transaction creation process, enhancing the security and
-reliability of the transactions constructed.
-
-In contrast, when operating in non-interactive mode, the system relies on
-options passed directly via the command line. In this scenario, the values for
-the transaction are provided as options, and the prefixes are ignored. This
-means that the responsibility for ensuring the correctness and appropriateness
-of the input values shifts entirely to the user. It's crucial for users to be
-mindful of the data types and formats expected by the template to avoid errors.
-This method allows for a more streamlined and automated approach to transaction
-creation, suitable for users who prefer script-based automation or who are
-running the CLI in environments where interactive prompts are not feasible.
-
-### Template Variables
+### Using template variables and prefixes
 
 Variables are a critical part of transaction templates, defining the data
 required to construct a transaction. Users can be prompted for variables missing
@@ -963,6 +1041,30 @@ Variables support specific prefixes (`account:`, `key:`, `network:`, `decimal:`)
 to facilitate the correct selection or validation of input values in interactive
 mode.
 
+`account`: This prefix is used for variables that should be filled with an
+account name, guiding users to input valid Kadena account identifiers.
+
+`key`: Variables with this prefix expect a public key, ensuring that users
+provide cryptographic keys in the correct format.
+
+`network`: This prefix is used for specifying the network ID, helping users to
+select the appropriate network for their transaction.
+
+`decimal`: For variables that involve numerical values with decimal points, this
+prefix ensures the format and precision of the input.
+
+In contrast, when operating in non-interactive mode, the system relies on
+options passed directly via the command line. In this scenario, the values for
+the transaction are provided as options, and the prefixes are ignored. This
+means that the responsibility for ensuring the correctness and appropriateness
+of the input values shifts entirely to the user. It's crucial for users to be
+mindful of the data types and formats expected by the template to avoid errors.
+This method allows for a more streamlined and automated approach to transaction
+creation, suitable for users who prefer script-based automation or who are
+running the CLI in environments where interactive prompts are not feasible.
+
+### Using data files as template data sources.
+
 Below is a YAML example `data.yaml` for `transfer.yaml` that outlines the
 structure for a template data file.
 
@@ -973,6 +1075,12 @@ decimal-amount: ''
 chain-id: ''
 pk-from: ''
 network-id: ''
+```
+
+### Example Command
+
+```
+kadena tx add  --template-data="data.yaml"
 ```
 
 ---

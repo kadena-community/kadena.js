@@ -100,7 +100,7 @@ globalStyle('button, input, select, textarea, label', {
 /*
     8. Avoid text overflows
 */
-globalStyle('p, h1, h2, h3, h4, h5, h6, span', {
+globalStyle('p, h1, h2, h3, h4, h5, h6, span, li', {
   overflowWrap: 'break-word',
   fontFamily: vars.fonts.$main,
 });

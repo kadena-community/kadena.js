@@ -2,7 +2,7 @@ import { input } from '../utils/prompts.js';
 
 export async function numberOfAccountsPrompt(): Promise<number> {
   const noAccounts = await input({
-    message: 'Enter the amount of accounts to be created in the simulation.',
+    message: 'Enter the amount of accounts to be created in the simulation:',
     default: '6',
     validate: (value) => {
       const valid = !isNaN(parseInt(value));
@@ -15,7 +15,7 @@ export async function numberOfAccountsPrompt(): Promise<number> {
 
 export async function transferIntervalPrompt(): Promise<number> {
   const transferInterval = await input({
-    message: 'Enter the transfer interval in milliseconds.',
+    message: 'Enter the transfer interval in milliseconds:',
     default: '100',
     validate: (value) => {
       const valid = !isNaN(parseInt(value));
@@ -28,7 +28,7 @@ export async function transferIntervalPrompt(): Promise<number> {
 
 export async function maxTransferAmountPrompt(): Promise<number> {
   const maxAmount = await input({
-    message: 'Enter the max transfer amount per single transaction (coin).',
+    message: 'Enter the max transfer amount per single transaction (coin):',
     default: '25',
     validate: (value) => {
       const valid = !isNaN(parseInt(value));
@@ -41,7 +41,7 @@ export async function maxTransferAmountPrompt(): Promise<number> {
 
 export async function tokenPoolPrompt(): Promise<number> {
   const tokenPool = await input({
-    message: 'Enter the total token pool (coin).',
+    message: 'Enter the total token pool (coin):',
     default: '1000000',
     validate: (value) => {
       const valid = !isNaN(parseInt(value));
@@ -54,14 +54,14 @@ export async function tokenPoolPrompt(): Promise<number> {
 
 export function seedPrompt(): Promise<string> {
   return input({
-    message: 'Enter the seed for the simulation.',
+    message: 'Enter the seed for the simulation:',
     default: Date.now().toString(),
   });
 }
 
 export function defaultChainIdPrompt(): Promise<string> {
   return input({
-    message: 'Specify the default chain for the simulation (0-19)',
+    message: 'Specify the default chain for the simulation (0-19):',
     default: '0',
     validate: (value) => {
       const valid =
@@ -75,7 +75,7 @@ export function defaultChainIdPrompt(): Promise<string> {
 
 export async function maxTimePrompt(): Promise<number> {
   const maxTime = await input({
-    message: 'Specify the maximum time in miliseconds for the simulation',
+    message: 'Specify the maximum time in miliseconds for the simulation:',
     default: (86400000 * 7).toString(), // 7 days
     validate: (value) => {
       if (value === null || value === '') return true;

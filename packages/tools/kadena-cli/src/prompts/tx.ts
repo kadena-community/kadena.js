@@ -10,6 +10,7 @@ import {
 } from '../tx/utils/txHelpers.js';
 
 import { getAllAccounts } from '../account/utils/accountHelpers.js';
+import { MULTI_SELECT_INSTRUCTIONS } from '../constants/global.js';
 import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
 import { services } from '../services/index.js';
 import { getTemplates } from '../tx/commands/templates/templates.js';
@@ -93,7 +94,7 @@ export const transactionSelectPrompt: IPrompt<string> = async (args) => {
   }));
 
   const selectedTransaction = await select({
-    message: 'Select a transaction file',
+    message: 'Select a transaction file:',
     choices: choices,
   });
 
@@ -122,10 +123,11 @@ export const transactionsSelectPrompt: IPrompt<string[]> = async (args) => {
   }));
 
   const selectedTransaction = await checkbox({
-    message: 'Select a transaction file',
+    message: 'Select a transaction file:',
     choices: choices,
     pageSize: 10,
     required: true,
+    instructions: MULTI_SELECT_INSTRUCTIONS,
   });
 
   return selectedTransaction;
@@ -499,7 +501,7 @@ export const templateDataPrompt: IPrompt<string | null> = async () => {
 
 export async function selectSignMethodPrompt(): Promise<'wallet' | 'keyPair'> {
   return await select({
-    message: 'Select an action',
+    message: 'Select an action:',
     choices: [
       {
         value: 'wallet',

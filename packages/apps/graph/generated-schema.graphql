@@ -226,6 +226,30 @@ type MinerKey implements Node {
   key: String!
 }
 
+"""Information about the network."""
+type NetworkInfo {
+  """The version of the API."""
+  apiVersion: String!
+
+  """The number of circulating coins."""
+  coinsInCirculation: Float!
+
+  """The network hash rate."""
+  networkHashRate: Float!
+
+  """The host of the network."""
+  networkHost: String!
+
+  """The ID of the network."""
+  networkId: String!
+
+  """The total difficulty."""
+  totalDifficulty: Float!
+
+  """The total number of transactions."""
+  transactionCount: Int!
+}
+
 interface Node {
   id: ID!
 }
@@ -384,10 +408,16 @@ type Query {
   """
   fungibleAccount(accountName: String!, fungibleName: String): FungibleAccount
 
+  """Retrieve an account by public key."""
+  fungibleAccountsByPublicKey(fungibleName: String, publicKey: String!): [FungibleAccount!]!
+
   """
   Retrieve an account by its name and fungible, such as coin, on a specific chain.
   """
   fungibleChainAccount(accountName: String!, chainId: String!, fungibleName: String): FungibleChainAccount
+
+  """Retrieve a chain account by public key."""
+  fungibleChainAccountsByPublicKey(chainId: String!, fungibleName: String, publicKey: String!): [FungibleChainAccount!]!
 
   """
   Estimate the gas limit for one or more transactions. Throws an error when the transaction fails or is invalid. The input accepts a JSON object and based on the parameters passed it will determine what type of format it is and return the gas limit estimation. The following types are supported:
@@ -410,6 +440,9 @@ type Query {
 
   """Get the height of the block with the highest height."""
   lastBlockHeight: BigInt
+
+  """Get information about the network."""
+  networkInfo: NetworkInfo
   node(id: ID!): Node
   nodes(ids: [ID!]!): [Node]!
 

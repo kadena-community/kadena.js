@@ -1,15 +1,17 @@
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import type { IMenuItem } from '@kadena/docs-tools';
-import { Box, SystemIcon, TextField } from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
+import { MonoSearch } from '@kadena/react-icons';
+import { Box, TextField } from '@kadena/react-ui';
+
 import { useRouter } from 'next/router';
-import type { FC, KeyboardEvent } from 'react';
-import React from 'react';
+import type { FC, FormEvent } from 'react';
+import React, { useRef } from 'react';
 import { MainTreeItem } from '../TreeMenu/MainTreeItem';
 import { TreeList } from '../TreeMenu/TreeList';
 import { MenuCard } from './MenuCard';
 import { ShowOnMobile } from './components/ShowOnMobile';
-import { sideMenuClass } from './sideMenu.css';
+
+import { searchButtonClass, sideMenuClass } from './sideMenu.css';
 import { useSideMenu } from './useSideMenu';
 
 interface IProps {
@@ -18,22 +20,21 @@ interface IProps {
 }
 
 export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
-  const { active, clickSubMenu, treeRef } = useSideMenu(closeMenu, menuItems);
+  const { clickSubMenu, treeRef } = useSideMenu(closeMenu, menuItems);
   const router = useRouter();
-  const MagnifierIcon = SystemIcon.Magnify;
+  const searchRef = useRef<HTMLInputElement>(null);
 
-  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>): void => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    const value = e.currentTarget.value;
-    if (e.key === 'Enter') {
-      analyticsEvent(EVENT_NAMES['click:mobile_search'], {
-        query: value,
-      });
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push(`/search?q=${value}`);
-      closeMenu();
-      e.currentTarget.value = '';
-    }
+    const data = new FormData(e.currentTarget);
+    const value = `${data.get('search')}`;
+
+    analyticsEvent(EVENT_NAMES['click:mobile_search'], {
+      query: value,
+    });
+    e.currentTarget.value = '';
+    await router.push(`/search?q=${value}`);
+    closeMenu();
   };
 
   return (
@@ -41,22 +42,27 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
       <ShowOnMobile>
         <Box marginInline="md" marginBlockStart="md" marginBlockEnd="xl">
           {/* TODO: Replace with SearchField */}
-          <TextField
-            id="search"
-            onKeyUp={handleKeyPress}
-            placeholder="Search"
-            type="text"
-            aria-label="Search"
-            endAddon={
-              <MagnifierIcon className={atoms({ paddingInline: 'n2' })} />
-            }
-          />
+          <form onSubmit={handleSubmit}>
+            <TextField
+              id="search"
+              ref={searchRef}
+              name="search"
+              placeholder="Search"
+              type="text"
+              aria-label="Search"
+              endAddon={
+                <button type="submit" className={searchButtonClass}>
+                  <MonoSearch />
+                </button>
+              }
+            />
+          </form>
         </Box>
       </ShowOnMobile>
 
       <MenuCard
         cyTestId="sidemenu-submenu"
-        active={active}
+        active={1}
         idx={1}
         onClick={clickSubMenu}
       >

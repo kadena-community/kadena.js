@@ -1,4 +1,4 @@
-import { INVALID_FILE_NAME_ERROR_MSG } from '../constants/config.js';
+import { INVALID_FILE_NAME_ERROR_MSG } from '../constants/global.js';
 import { services } from '../services/index.js';
 import type { IWallet } from '../services/wallet/wallet.types.js';
 import { CommandError } from '../utils/command.util.js';
@@ -51,7 +51,7 @@ async function walletSelectionPrompt(
   }
 
   const selectedWallet = await select({
-    message: 'Select a wallet',
+    message: 'Select a wallet:',
     choices: choices,
   });
 
@@ -70,7 +70,7 @@ export async function walletSelectAllPrompt(): Promise<string> {
   if (wallets.length === 0) return 'all';
 
   return await select({
-    message: 'Select a wallet',
+    message: 'Select a wallet:',
     choices: [
       {
         value: 'all',

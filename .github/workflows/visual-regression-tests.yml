@@ -2,7 +2,8 @@ name: Visual Regression Tests
 #Rationale for not including it in default CI workflow, Chromatic requires 'on push' vs 'on pull request'
 on:
   push:
-
+    paths:
+      - 'packages/libs/react-ui/**'
 env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
@@ -13,44 +14,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 #Required to retrieve git history, needed to determine diffs.
-          show-progress: false
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        show-progress: false
 
-      - uses: dorny/paths-filter@v2
-        id: changed
-        with:
-          filters: |
-            pathFilter:
-                - 'packages/libs/react-ui/**'
+    - name: Runner setup
+      uses: ./.github/actions/runner-setup
 
-      - uses: pnpm/action-setup@v2
-        if: steps.changed.outputs.pathFilter == 'true'
-        with:
-          version: 8
+    - name: Build
+      run: pnpm run build --filter @kadena/react-ui...
 
-      - uses: actions/setup-node@v3
-        if: steps.changed.outputs.pathFilter == 'true'
-        with:
-          node-version: 18
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        if: steps.changed.outputs.pathFilter == 'true'
-        run: pnpm install
-
-      - name: Build
-        if: steps.changed.outputs.pathFilter == 'true'
-        run: pnpm run build
-
-      - name: Publish Storybook
-        if: steps.changed.outputs.pathFilter == 'true'
-        uses: chromaui/action@latest
-        with:
-          exitOnceUploaded: true
-          buildScriptName: 'build:storybook'
-          projectToken: ${{ secrets.REACT_UI_CHROMATIC_TOKEN }}
-          workingDir: packages/libs/react-ui
-          autoAcceptChanges: 'main'
-          onlyChanged: true # Required option to enable TurboSnap
+    - name: Publish Storybook
+      uses: chromaui/action@latest
+      with:
+        exitOnceUploaded: true
+        buildScriptName: 'build:storybook'
+        projectToken: ${{ secrets.REACT_UI_CHROMATIC_TOKEN }}
+        workingDir: packages/libs/react-ui
+        autoAcceptChanges: 'main'
+        onlyChanged: true # Required option to enable TurboSnap

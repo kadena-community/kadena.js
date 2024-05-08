@@ -43,7 +43,6 @@ export const initFunc = async (
       console.warn(chalk.red('⨯'), error);
     });
     setGlobalError(true);
-    return;
   } else {
     success.map((succes) => {
       console.log(chalk.green('✓'), succes);
