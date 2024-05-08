@@ -58,11 +58,7 @@ export const BlogItem: FC<IProps> = ({ item, size = 'default' }) => {
                 name={item.authorInfo?.name}
                 avatar={item.authorInfo?.avatar}
               />
-              <Heading
-                as="h4"
-                variant={size === 'large' ? 'h5' : 'h6'}
-                transform="uppercase"
-              >
+              <Heading as="h4" variant={size === 'large' ? 'h5' : 'h6'}>
                 {item.authorInfo?.name}{' '}
                 {item.authorInfo?.description && (
                   <span className={authorTitleClass}>
@@ -73,11 +69,7 @@ export const BlogItem: FC<IProps> = ({ item, size = 'default' }) => {
               </Heading>
             </Stack>
             <Box marginBlockStart="md" className={headingWrapperClass}>
-              <Heading
-                as="h3"
-                variant={size === 'large' ? 'h5' : 'h6'}
-                transform="uppercase"
-              >
+              <Heading as="h3" variant={size === 'large' ? 'h5' : 'h6'}>
                 {item.title}
               </Heading>
 
