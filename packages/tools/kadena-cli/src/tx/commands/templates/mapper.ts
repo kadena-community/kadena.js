@@ -33,6 +33,17 @@ const legacy2CapSchema = z
     clist: sig.caps,
   }));
 
+const verifierSchema = z.object({
+  name: z.string(),
+  proof: z.any(),
+  clist: z.array(
+    z.object({
+      name: z.string(),
+      args: z.array(z.any()),
+    }),
+  ),
+});
+
 const capSchema = z.object({
   pubKey: z.string(),
   clist: z.array(
@@ -65,6 +76,7 @@ const templatePartialSchema = z
       }),
     }),
     signers: z.array(z.union([capSchema, legacy2CapSchema, legacyCapSchema])),
+    verifiers: z.array(verifierSchema).optional(),
     meta: templatePartialMetaSchema.optional(),
     publicMeta: templatePartialMetaSchema.optional(),
     nonce: z.string().optional().default(''),
