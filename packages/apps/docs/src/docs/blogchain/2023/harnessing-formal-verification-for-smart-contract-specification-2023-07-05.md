@@ -22,7 +22,7 @@ layout: blog
 
 ## What is Formal Verification?
 
-Kadena’s smart contract language, [Pact](/pact/reference), is a powerful tool at
+Kadena’s smart contract language, [Pact](/build/pact), is a powerful tool at
 our disposal. Pact assists developers in creating smart contracts on
 the[ Kadena blockchain](https://kadena.io/), called Formal Verification. So what
 is Formal Verification?
@@ -194,7 +194,7 @@ understand and address any issues or inconsistencies in the smart contract.
 
 Now we can specify win, lose and draw conditions. For simplicity’s sake, I will
 be specifying from player one’s perspective.
-The`[result](/pact/reference/properties-and-invariants)` keyword refers to a
+The`result` keyword refers to a
 value that the function will output. Note that we have defined 3 different
 possible outcomes: `Player 1 wins`,` Player 2 wins` or `Draw`.
 

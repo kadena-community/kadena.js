@@ -83,7 +83,7 @@ export const PageHelpful: FC<IProps> = ({ editLink }) => {
                   </Text>
                 </Stack>
               ) : null}
-              <Text>
+              <Text variant="body">
                 If you have any specific feedback about this page. <br />
                 Please provide a comment.
               </Text>
