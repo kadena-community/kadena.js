@@ -367,11 +367,27 @@ export const accountTypeSelectionPrompt: IPrompt<string> = async () => {
     choices: [
       {
         value: 'manual',
-        name: 'Manually - Enter public keys and account details manually',
+        name: 'Manually - Provide public keys to add to account manually',
       },
       {
         value: 'wallet',
-        name: 'From Wallet - Select public keys from a wallet',
+        name: 'Wallet - Provide public keys to add to account by selecting from a wallet',
+      },
+    ],
+  });
+};
+
+export const confirmAccountVerificationPrompt: IPrompt<boolean> = async () => {
+  return await select({
+    message: 'Do you want to verify the account on chain?',
+    choices: [
+      {
+        value: true,
+        name: 'Yes, verify the account on chain before adding',
+      },
+      {
+        value: false,
+        name: 'No, add the account without verifying on chain',
       },
     ],
   });
