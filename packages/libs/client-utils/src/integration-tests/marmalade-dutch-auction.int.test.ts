@@ -1,7 +1,7 @@
 import type { ChainId } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
-import { IPactInt } from '@kadena/types';
+import type { IPactInt } from '@kadena/types';
 import { describe, expect, it } from 'vitest';
 import {
   buyToken,
