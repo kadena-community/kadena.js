@@ -1,8 +1,7 @@
 import { prismaClient } from '@db/prisma-client';
 import { COMPLEXITY } from '@services/complexity';
-import { chainIds as defaultChainIds } from '@utils/chains';
-import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
+import { networkData } from '@utils/network';
 import { builder } from '../builder';
 import Block from '../objects/block';
 
@@ -24,7 +23,6 @@ builder.queryField('completedBlockHeights', (t) =>
       }),
       chainIds: t.arg.stringList({
         required: false,
-        defaultValue: defaultChainIds,
         description: 'Default: all chains',
         validate: {
           minLength: 1,
@@ -49,11 +47,15 @@ builder.queryField('completedBlockHeights', (t) =>
             SELECT height
             FROM blocks b
             GROUP BY height
-            HAVING COUNT(*) >= ${dotenv.CHAIN_COUNT} AND
+            HAVING COUNT(*) >= ${networkData.chainIds} AND
             COUNT(CASE WHEN height = height THEN 1 ELSE NULL END) > 0
             ORDER BY height DESC
             LIMIT ${args.heightCount}
           `) as { height: number }[];
+
+          if (!args.chainIds?.length) {
+            args.chainIds = networkData.chainIds;
+          }
 
           if (completedHeights.length > 0) {
             return prismaClient.block.findMany({

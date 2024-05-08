@@ -4,6 +4,7 @@ import { getBalance } from '@kadena/client-utils/coin';
 import { genKeyPair } from '@kadena/cryptography-utils';
 import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
+import { networkData } from '@utils/network';
 import seedrandom from 'seedrandom';
 
 export const generateAccount = async (
@@ -20,7 +21,7 @@ export const generateAccount = async (
     {
       host: dotenv.NETWORK_HOST,
       defaults: {
-        networkId: dotenv.NETWORK_ID,
+        networkId: networkData.networkId,
         meta: { chainId },
       },
     },
@@ -101,7 +102,7 @@ export const getAccountBalance = async ({
 }): Promise<string> => {
   const result = await getBalance(
     account,
-    dotenv.NETWORK_ID,
+    networkData.networkId,
     chainId || dotenv.SIMULATE_DEFAULT_CHAIN_ID,
     dotenv.NETWORK_HOST,
   );

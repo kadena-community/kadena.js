@@ -1,5 +1,6 @@
 import { sender00 } from '@devnet/utils';
 import { dotenv } from '@utils/dotenv';
+import { networkData } from '@utils/network';
 
 /* Define the arguments for the marmalade contracts: these values are going
 to be replaced in the marmalade templates and code files  */
@@ -11,7 +12,7 @@ export const argumentConfig = {
   is_upgrade: 'false',
   // eslint-disable-next-line @typescript-eslint/naming-convention
   upgrade_version_1: 'false',
-  network: dotenv.NETWORK_ID,
+  network: networkData.networkId,
   chain: dotenv.SIMULATE_DEFAULT_CHAIN_ID,
   sender: sender00.account,
   kip_namespace: 'kip',

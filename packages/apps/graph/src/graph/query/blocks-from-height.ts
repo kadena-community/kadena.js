@@ -1,7 +1,7 @@
 import { prismaClient } from '@db/prisma-client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
-import { chainIds as defaultChainIds } from '@utils/chains';
 import { normalizeError } from '@utils/errors';
+import { networkData } from '@utils/network';
 import { builder } from '../builder';
 import Block from '../objects/block';
 
@@ -35,12 +35,12 @@ builder.queryField('blocksFromHeight', (t) =>
         last: args.last,
       }),
     }),
-    async resolve(
-      query,
-      __parent,
-      { startHeight, chainIds = defaultChainIds },
-    ) {
+    async resolve(query, __parent, { startHeight, chainIds }) {
       try {
+        if (!chainIds?.length) {
+          chainIds = networkData.chainIds;
+        }
+
         return await prismaClient.block.findMany({
           ...query,
           where: {

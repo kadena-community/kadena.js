@@ -22,6 +22,7 @@ type Block implements Node {
   height: BigInt!
   id: ID!
   minerAccount: FungibleChainAccount!
+  neighbours: [BlockNeighbor!]!
   parent: Block
   payloadHash: String!
 
@@ -41,6 +42,12 @@ type BlockEventsConnection {
 type BlockEventsConnectionEdge {
   cursor: String!
   node: Event!
+}
+
+"""The neighbor of a block."""
+type BlockNeighbor {
+  blockHash: String!
+  chainId: String!
 }
 
 type BlockTransactionsConnection {
@@ -390,7 +397,7 @@ type Query {
     before: String
 
     """Default: all chains"""
-    chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]
+    chainIds: [String!]
     completedHeights: Boolean = false
     first: Int
     heightCount: Int = 3

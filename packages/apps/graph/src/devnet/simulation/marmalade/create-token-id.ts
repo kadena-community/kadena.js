@@ -8,6 +8,7 @@ import {
   setMeta,
 } from '@kadena/client/fp';
 import { dotenv } from '@utils/dotenv';
+import { networkData } from '@utils/network';
 
 interface ICreateTokenIdInput {
   policies?: string[];
@@ -25,7 +26,7 @@ export async function createTokenId({
   return (await dirtyReadClient({
     host: dotenv.NETWORK_HOST,
     defaults: {
-      networkId: dotenv.NETWORK_ID,
+      networkId: networkData.networkId,
     },
   })(
     composePactCommand(
