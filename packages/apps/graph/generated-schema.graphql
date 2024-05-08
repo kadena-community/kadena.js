@@ -235,6 +235,12 @@ type MinerKey implements Node {
   key: String!
 }
 
+"""A reference to a module."""
+type ModuleReference {
+  name: String!
+  namespace: String!
+}
+
 """Information about the network."""
 type NetworkInfo {
   """The version of the API."""
