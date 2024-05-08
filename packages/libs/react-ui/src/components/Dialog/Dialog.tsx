@@ -11,24 +11,24 @@ import type { IModalProps } from '../Modal/Modal';
 import { Modal } from '../Modal/Modal';
 import { DialogContext } from './Dialog.context';
 import {
-  baseClass,
   closeButtonClass,
-  compactClass,
-  largeClass,
+  lgClass,
+  mdClass,
   overlayClass,
+  smClass,
 } from './Dialog.css';
 
 const classMap = {
-  compact: compactClass,
-  base: baseClass,
-  large: largeClass,
+  sm: smClass,
+  md: mdClass,
+  lg: lgClass,
 };
 interface IBaseDialogProps
   extends Omit<IModalProps, 'children'>,
     AriaDialogProps {
   children?: ((state: OverlayTriggerState) => ReactNode) | ReactNode;
   className?: string;
-  size?: 'compact' | 'base' | 'large';
+  size?: 'sm' | 'md' | 'lg';
 }
 
 const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
@@ -37,7 +37,7 @@ const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
       className,
       children,
       isDismissable = true,
-      size = 'base',
+      size = 'md',
       state,
       ...rest
     } = props;

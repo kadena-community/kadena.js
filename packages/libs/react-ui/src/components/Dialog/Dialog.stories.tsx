@@ -49,7 +49,7 @@ A Dialog is a type of modal that is used to display information or prompt the us
       control: {
         type: 'radio',
       },
-      options: ['compact', 'base', 'large'],
+      options: ['sm', 'md', 'lg'],
       defaultValue: 'base',
     },
   },

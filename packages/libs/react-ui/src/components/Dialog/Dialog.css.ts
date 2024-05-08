@@ -75,7 +75,7 @@ export const contentClass = style([
   },
 ]);
 
-export const compactClass = style([
+export const smClass = style([
   responsiveStyle({
     xs: {
       maxHeight: '100svh',
@@ -102,7 +102,7 @@ const smallSizes = {
     maxWidth: '100vw',
   },
 };
-export const baseClass = style([
+export const mdClass = style([
   responsiveStyle({
     ...smallSizes,
     md: {
@@ -112,7 +112,7 @@ export const baseClass = style([
   }),
 ]);
 
-export const largeClass = style([
+export const lgClass = style([
   responsiveStyle({
     ...smallSizes,
     md: {
