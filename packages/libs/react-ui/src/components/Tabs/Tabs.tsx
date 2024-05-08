@@ -1,22 +1,18 @@
-import { MonoArrowBackIosNew, MonoArrowForwardIos } from '@kadena/react-icons';
 import classNames from 'classnames';
 import type { ReactNode } from 'react';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import type { AriaTabListProps } from 'react-aria';
 import { mergeProps, useFocusRing, useTabList } from 'react-aria';
 import { Item as TabItem, useTabListState } from 'react-stately';
-import { Button } from '../Button';
 import { Tab } from './Tab';
 import { TabPanel } from './TabPanel';
 import {
-  hiddenClass,
-  paginationButton,
   selectorLine,
   tabListClass,
-  tabListControls,
   tabListWrapperClass,
   tabsContainerClass,
 } from './Tabs.css';
+import { TabsPagination } from './TabsPagination';
 
 export { TabItem };
 
@@ -26,22 +22,22 @@ export interface ITabsProps
   extends Omit<AriaTabListProps<object>, 'orientation' | 'items'> {
   className?: string;
   inverse?: boolean;
+  paginated?: boolean;
   borderPosition?: 'top' | 'bottom';
 }
 
 export const Tabs = ({
   className,
   borderPosition = 'bottom',
+  inverse = false,
+  paginated = false,
   ...props
 }: ITabsProps): ReactNode => {
   const state = useTabListState(props);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [visibleButtons, setVisibleButtons] = useState({
-    left: false,
-    right: false,
-  });
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const { focusProps, isFocusVisible } = useFocusRing({
+
+  const { focusProps } = useFocusRing({
     within: true,
   });
 
@@ -52,28 +48,6 @@ export const Tabs = ({
   );
 
   const selectedUnderlineRef = useRef<HTMLSpanElement | null>(null);
-
-  // on resize determine the button visibility
-
-  const determineButtonVisibility = () => {
-    if (!scrollRef.current || !containerRef.current) return;
-    const viewWidth = containerRef.current.offsetWidth;
-    const maxWidth = containerRef.current.scrollWidth;
-    const scrollPosition = scrollRef.current.scrollLeft;
-
-    if (scrollPosition === 0 && visibleButtons.left) {
-      setVisibleButtons((prev) => ({ ...prev, left: false }));
-    }
-    if (scrollPosition > 0) {
-      setVisibleButtons((prev) => ({ ...prev, left: true }));
-    }
-    // 20 is a margin to prevent having a very small last bit to scroll
-    if (viewWidth + scrollPosition >= maxWidth - 20) {
-      setVisibleButtons((prev) => ({ ...prev, right: false }));
-    } else {
-      setVisibleButtons((prev) => ({ ...prev, right: true }));
-    }
-  };
 
   useEffect(() => {
     if (!containerRef.current || !scrollRef.current) return;
@@ -87,7 +61,6 @@ export const Tabs = ({
       containerRef.current.offsetWidth
     ) {
       scrollRef.current.scrollLeft = selected.offsetLeft;
-      determineButtonVisibility();
     }
   }, []);
 
@@ -116,104 +89,41 @@ export const Tabs = ({
     );
   }, [containerRef, state.selectedItem?.key, selectedUnderlineRef]);
 
-  const getMinimalChildWidth = useCallback(() => {
-    const children = containerRef.current?.children;
-
-    if (!children) {
-      return 0;
-    }
-
-    let minimalWidth = 0;
-
-    for (let i = 0; i < children.length; i++) {
-      const child = children[i] as HTMLElement;
-
-      if (child.offsetWidth > minimalWidth) {
-        minimalWidth = child.offsetWidth;
-      }
-    }
-
-    return minimalWidth;
-  }, [containerRef]);
-
-  const handlePagination = (direction: 'back' | 'forward') => {
-    if (!containerRef.current || !scrollRef.current) return;
-    const maxWidth = containerRef.current?.scrollWidth || 0;
-    const viewWidth = containerRef.current?.offsetWidth || 0;
-    const offset = getMinimalChildWidth();
-    const currentValue = scrollRef.current.scrollLeft;
-
-    let nextValue = 0;
-
-    if (direction === 'forward') {
-      nextValue = Math.abs(currentValue + offset);
-
-      if (nextValue > maxWidth - viewWidth) {
-        nextValue = maxWidth - viewWidth;
-      }
-
-      if (nextValue > maxWidth) {
-        return;
-      }
-
-      scrollRef.current.scrollLeft = nextValue;
-      determineButtonVisibility();
-    } else {
-      nextValue = currentValue - offset;
-
-      if (Math.abs(currentValue) < offset) {
-        nextValue = 0;
-      }
-
-      scrollRef.current.scrollLeft = nextValue;
-      determineButtonVisibility();
-    }
-  };
+  const tablist = (
+    <div className={tabListWrapperClass} ref={scrollRef}>
+      <div
+        className={tabListClass}
+        {...mergeProps(tabListProps, focusProps)}
+        ref={containerRef}
+      >
+        {[...state.collection].map((item) => (
+          <Tab
+            key={item.key}
+            item={item}
+            state={state}
+            inverse={inverse}
+            borderPosition={borderPosition}
+          />
+        ))}
+        {borderPosition === 'bottom' && (
+          <span ref={selectedUnderlineRef} className={selectorLine}></span>
+        )}
+      </div>
+    </div>
+  );
 
   return (
     <div className={classNames(tabsContainerClass, className)}>
-      <div className={tabListControls}>
-        <Button
-          variant="transparent"
-          className={classNames(paginationButton, {
-            [hiddenClass]: !visibleButtons.left,
-          })}
-          onPress={() => handlePagination('back')}
+      {paginated ? (
+        <TabsPagination
+          wrapperContainerRef={containerRef}
+          scrollContainerRef={scrollRef}
         >
-          <MonoArrowBackIosNew />
-        </Button>
-        <div className={tabListWrapperClass} ref={scrollRef}>
-          <div
-            className={classNames(tabListClass, {
-              pfocusVisible: isFocusVisible,
-            })}
-            {...mergeProps(tabListProps, focusProps)}
-            ref={containerRef}
-          >
-            {[...state.collection].map((item) => (
-              <Tab
-                key={item.key}
-                item={item}
-                state={state}
-                inverse={props.inverse}
-                borderPosition={borderPosition}
-              />
-            ))}
-            {borderPosition === 'bottom' && (
-              <span ref={selectedUnderlineRef} className={selectorLine}></span>
-            )}
-          </div>
-        </div>
-        <Button
-          variant="transparent"
-          className={classNames(paginationButton, {
-            [hiddenClass]: !visibleButtons.right,
-          })}
-          onPress={() => handlePagination('forward')}
-        >
-          <MonoArrowForwardIos />
-        </Button>
-      </div>
+          {tablist}
+        </TabsPagination>
+      ) : (
+        tablist
+      )}
       <TabPanel key={state.selectedItem?.key} state={state} />
     </div>
   );

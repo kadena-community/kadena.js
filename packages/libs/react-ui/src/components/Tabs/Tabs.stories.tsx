@@ -44,7 +44,7 @@ const meta: Meta<ITabsProps> = {
   component: Tabs,
   decorators: [onLayer2],
   parameters: {
-    status: { type: 'releaseCandidate' },
+    status: { type: 'beta' },
     docs: {
       description: {
         component:
@@ -100,9 +100,13 @@ const meta: Meta<ITabsProps> = {
     },
     inverse: {
       control: {
-        type: 'radio',
+        type: 'boolean',
       },
-      options: ['true', 'false'],
+    },
+    paginated: {
+      control: {
+        type: 'boolean',
+      },
     },
   },
 };

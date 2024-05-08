@@ -1,4 +1,4 @@
-import { style, styleVariants } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { token } from '../../styles';
 import { atoms } from '../../styles/atoms.css';
@@ -155,8 +155,7 @@ export const tabContentClass = style([
 export const paginationButton = style({
   zIndex: 3,
   opacity: 1,
-  transition: 'opacity 0.4s ease',
-  backgroundColor: token('color.background.base.default'),
+  transition: 'opacity 0.4s ease, background 0.4s ease',
 });
 
 export const hiddenClass = style({
