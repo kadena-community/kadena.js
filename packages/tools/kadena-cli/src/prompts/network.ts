@@ -66,7 +66,8 @@ export const networkIdPrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  const defaultValue = args.defaultValue as string;
+  const defaultValue = (args.defaultValue ??
+    previousQuestions.defaultValue) as string;
   const validate = function (input: string): string | boolean {
     if (isOptional) return true;
 
@@ -87,7 +88,8 @@ export const networkHostPrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  const defaultValue = args.defaultValue as string;
+  const defaultValue = (args.defaultValue ??
+    previousQuestions.defaultValue) as string;
   const validate = function (input: string): string | boolean {
     if (isOptional && !isNotEmptyString(input.trim())) return true;
 
@@ -111,7 +113,8 @@ export const networkExplorerUrlPrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  const defaultValue = args.defaultValue as string;
+  const defaultValue = (args.defaultValue ??
+    previousQuestions.defaultValue) as string;
   return await getInputPrompt(
     'Enter Kadena network explorer URL (e.g. "https://explorer.chainweb.com/mainnet/tx/"):',
     defaultValue,
