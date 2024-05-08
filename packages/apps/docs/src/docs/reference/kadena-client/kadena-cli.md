@@ -603,9 +603,7 @@ Use the following actions to specify the operation you want to perform.
 
 | Use this action | To do this
 | --------------- | -----------
-| create [options] | Create an account on the Kadena public blockchain network (mainnet).
-| add-manual [options] | Add an existing account locally to the CLI.
-| add-from-wallet [options] | Add a local account from a key wallet.
+| add [options] | Add an existing key or a new wallet to create a local account.
 | delete [options] | Delete a local account.
 | details [options] | Get details for a specified account.
 | fund [options] | Fund a specified new or existing account.
