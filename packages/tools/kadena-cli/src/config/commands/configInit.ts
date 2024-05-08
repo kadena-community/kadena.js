@@ -1,11 +1,17 @@
 import type { Command } from 'commander';
 import path from 'path';
-import { ACCOUNT_DIR } from '../../constants/config.js';
+import { accountOptions } from '../../account/accountOptions.js';
+import {
+  ACCOUNT_DIR,
+  CWD_KADENA_DIR,
+  HOME_KADENA_DIR,
+} from '../../constants/config.js';
 import { getNetworkFiles } from '../../constants/networks.js';
 import { ensureNetworksConfiguration } from '../../networks/utils/networkHelpers.js';
 import { Services } from '../../services/index.js';
 import { KadenaError } from '../../services/service-error.js';
 import { createCommand } from '../../utils/createCommand.js';
+import { notEmpty } from '../../utils/globalHelpers.js';
 import { globalOptions, securityOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import {
@@ -23,7 +29,7 @@ export const createConfigInitCommand: (
   'init',
   'Initialize default configuration of the Kadena CLI',
   [
-    configOptions.location(),
+    configOptions.global(),
     walletOptions.createWalletConfirmation(),
     walletOptions.walletName({ isOptional: false }),
     securityOptions.createPasswordOption({
@@ -32,10 +38,13 @@ export const createConfigInitCommand: (
     }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
     walletOptions.createAccount(),
+    accountOptions.accountAlias({ isOptional: true }),
   ],
   async (option) => {
-    const { location } = await option.location();
-    log.debug('config init', { location });
+    const { global } = await option.global();
+    const location = global === true ? HOME_KADENA_DIR : CWD_KADENA_DIR;
+    log.debug('config init', { global, location });
+
     const services = new Services({
       configDirectory: location,
     });
@@ -69,6 +78,11 @@ export const createConfigInitCommand: (
     const { legacy } = await option.legacy();
     const { createAccount } = await option.createAccount();
 
+    let accountAlias = null;
+    if (createAccount === 'true') {
+      accountAlias = (await option.accountAlias()).accountAlias;
+    }
+
     const created = await services.wallet.create({
       alias: walletName,
       legacy: legacy,
@@ -87,6 +101,15 @@ export const createConfigInitCommand: (
     logWalletInfo(created.words, wallet.filepath, key.publicKey);
 
     if (createAccount === 'true') {
+      // when --quiet is passed and account alias is not provided
+      // we will not create an account
+      if (!notEmpty(accountAlias) || accountAlias.trim().length === 0) {
+        log.warning(
+          'Account alias is required when creating an account: -l, --account-alias <accountAlias>',
+        );
+        return;
+      }
+
       const directory = services.config.getDirectory();
       if (directory === null) {
         throw new KadenaError('no_kadena_directory');
@@ -95,7 +118,7 @@ export const createConfigInitCommand: (
       const accountDir = path.join(directory, ACCOUNT_DIR);
       const { accountName, accountFilepath } =
         await createAccountAliasByPublicKey(
-          wallet.alias,
+          accountAlias,
           wallet.keys[0].publicKey,
           accountDir,
         );

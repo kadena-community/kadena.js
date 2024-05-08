@@ -1,6 +1,5 @@
 // add all new prompts to this file
 export * as account from './account.js';
-export * as config from './config.js';
 export * as devnet from './devnet.js';
 export * as generic from './generic.js';
 export * as genericActionsPrompts from './genericActionPrompts.js';

@@ -11,7 +11,7 @@ export const IS_TEST = process.env.VITEST === 'true';
 export const WORKING_DIRECTORY = process.cwd();
 const HOME_DIRECTORY = homedir();
 export const CWD_KADENA_DIR = join(WORKING_DIRECTORY, '.kadena');
-export const HOME_KADENA_DIR = join(HOME_DIRECTORY, '.kadena');
+export const HOME_KADENA_DIR = join(HOME_DIRECTORY, '.config/kadena');
 
 // wallet path
 export const WALLET_DIR = 'wallets';

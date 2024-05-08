@@ -96,6 +96,8 @@ export const createTestSignedTransactionCommand: (
       true,
     );
 
+    log.output(null, result);
+
     assertCommandError(result);
     return txDisplayTransaction(
       result.data,

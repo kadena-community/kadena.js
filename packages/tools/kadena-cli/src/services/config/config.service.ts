@@ -4,11 +4,11 @@ import { statSync } from 'node:fs';
 import path from 'node:path';
 import sanitize from 'sanitize-filename';
 import {
-  CWD_KADENA_DIR,
   ENV_KADENA_DIR,
   HOME_KADENA_DIR,
   IS_TEST,
   WALLET_DIR,
+  WORKING_DIRECTORY,
   YAML_EXT,
 } from '../../constants/config.js';
 import {
@@ -46,6 +46,15 @@ const directoryExists = (path?: string): boolean => {
   }
 };
 
+// recursively look for `.kadena` directory in parent folders
+const findKadenaDirectory = (searchDir: string): string | null => {
+  const dir = path.join(searchDir, '.kadena');
+  if (directoryExists(dir)) return dir;
+  const parent = path.join(searchDir, '..');
+  if (parent !== searchDir) return findKadenaDirectory(parent);
+  return null;
+};
+
 export interface IConfigService {
   getDirectory(): string | null;
   // Key
@@ -62,11 +71,11 @@ export interface IConfigService {
 export class ConfigService implements IConfigService {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   private directory: string | null = null;
-  public constructor(
-    // eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/parameter-properties
-    private services: Services,
-    directory?: string,
-  ) {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  private services: Services;
+
+  public constructor(services: Services, directory?: string) {
+    this.services = services;
     this.setDirectory(directory);
   }
 
@@ -77,26 +86,32 @@ export class ConfigService implements IConfigService {
       this.directory = directory;
       return;
     }
+
     // Priority 2: ENV KADENA_DIR
-    if (ENV_KADENA_DIR !== undefined && directoryExists(ENV_KADENA_DIR)) {
-      this.directory = ENV_KADENA_DIR!;
-      return;
-    } else if (ENV_KADENA_DIR !== undefined) {
-      log.warning(
-        `Warning: 'KADENA_DIR' environment variable is set to a non-existent directory: ${ENV_KADENA_DIR}`,
-      );
-      log.warning();
+    if (ENV_KADENA_DIR !== undefined) {
+      if (directoryExists(ENV_KADENA_DIR)) {
+        this.directory = ENV_KADENA_DIR;
+        return;
+      } else {
+        log.warning(
+          `Warning: 'KADENA_DIR' environment variable is set to a non-existent directory: ${ENV_KADENA_DIR}\n`,
+        );
+      }
     }
-    // Priority 3: CWD .kadena dir
-    if (directoryExists(CWD_KADENA_DIR)) {
-      this.directory = CWD_KADENA_DIR;
+
+    // Priority 3: CWD .kadena dir in recursive parent search
+    const kadenaDirectory = findKadenaDirectory(WORKING_DIRECTORY);
+    if (kadenaDirectory !== null) {
+      this.directory = kadenaDirectory;
       return;
     }
+
     // Priority 4: HOME .kadena dir
     if (directoryExists(HOME_KADENA_DIR)) {
       this.directory = HOME_KADENA_DIR;
       return;
     }
+
     // No directory found, instruct the user to run `kadena config init`
     this.directory = null;
   }
