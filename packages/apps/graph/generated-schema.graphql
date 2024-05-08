@@ -8,6 +8,9 @@ type Block implements Node {
   chainId: BigInt!
   creationTime: DateTime!
 
+  """The difficulty of the block."""
+  difficulty: BigInt!
+
   """
   The moment the difficulty is adjusted to maintain a block validation time of 30 seconds.
   """
