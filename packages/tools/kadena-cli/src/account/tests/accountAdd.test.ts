@@ -1,4 +1,3 @@
-import { kadenaEncrypt } from '@kadena/hd-wallet';
 import jsYaml from 'js-yaml';
 import { HttpResponse, http } from 'msw';
 import path from 'node:path';
@@ -7,7 +6,6 @@ import { ACCOUNT_DIR } from '../../constants/config.js';
 import { createPrincipalSuccessData } from '../../mocks/data/accountDetails.js';
 import { server } from '../../mocks/server.js';
 import { services } from '../../services/index.js';
-import { IWallet } from '../../services/wallet/wallet.types.js';
 import { mockPrompts, runCommand } from '../../utils/test.util.js';
 
 describe('account add manual type', () => {
