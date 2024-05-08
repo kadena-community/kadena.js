@@ -61,6 +61,14 @@ export const titleWrapperClass = style([
   }),
 ]);
 
+export const subtitleWrapperClass = style([
+  atoms({
+    marginBlockEnd: 'sm',
+    fontWeight: 'primaryFont.light',
+    color: 'text.gray.default',
+  }),
+]);
+
 export const footerClass = style([atoms({ flexShrink: 0 })]);
 
 export const contentClass = style([

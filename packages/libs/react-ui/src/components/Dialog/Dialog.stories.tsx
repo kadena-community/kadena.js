@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 import { Button } from '../Button';
 import type { IDialogProps } from '../Dialog';
 import { Dialog, DialogContent, DialogFooter, DialogHeader } from '../Dialog';
+import { DialogHeaderSubtitle } from './DialogHeaderSubtitle';
 import { ModalContent } from './StoryComponents';
 
-type DialogStoryProps = IDialogProps & { title: string };
+type DialogStoryProps = IDialogProps & { title: string; subtitle: string };
 
 const meta: Meta<DialogStoryProps> = {
   title: 'Overlays/Dialog',
@@ -62,8 +63,9 @@ export const DialogStory: Story = {
   name: 'Dialog',
   args: {
     title: 'Dialog Title',
+    subtitle: 'Dialog subtitle',
   },
-  render: ({ title, size }) => {
+  render: ({ title, subtitle, size }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -76,6 +78,7 @@ export const DialogStory: Story = {
         >
           {(state) => (
             <>
+              <DialogHeaderSubtitle>{subtitle}</DialogHeaderSubtitle>
               <DialogHeader>{title}</DialogHeader>
               <DialogContent>
                 <ModalContent />
