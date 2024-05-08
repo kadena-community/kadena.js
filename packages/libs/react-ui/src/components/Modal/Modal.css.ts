@@ -8,9 +8,9 @@ export const underlayClass = style([
     justifyContent: 'center',
     position: 'fixed',
     inset: 0,
+    backgroundColor: 'base.default',
   }),
   {
     backdropFilter: 'blur(12px)',
-    backgroundColor: 'background.base.default',
   },
 ]);
