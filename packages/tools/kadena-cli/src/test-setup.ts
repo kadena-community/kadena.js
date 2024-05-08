@@ -8,7 +8,15 @@ import { afterAll, afterEach, beforeAll } from 'vitest';
 import { server } from './mocks/server.js';
 
 beforeAll(async () => {
+  const { ensureNetworksConfiguration } = await import(
+    './networks/utils/networkHelpers.js'
+  );
+  const { writeTemplatesToDisk } = await import(
+    './tx/commands/templates/templates.js'
+  );
+  await ensureNetworksConfiguration(process.env.KADENA_DIR!);
+  await writeTemplatesToDisk();
   server.listen({ onUnhandledRequest: 'warn' });
 });
-afterAll(() => server.close());
-afterEach(() => server.resetHandlers());
+afterAll(() => server?.close());
+afterEach(() => server?.resetHandlers());
