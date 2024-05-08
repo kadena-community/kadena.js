@@ -49,7 +49,7 @@ describe('account add manual type', () => {
     mockPrompts({
       select: {
         'How would you like to add the account locally?': 'manual',
-        'Do you want to verify the account on chain?': 'true',
+        'Do you want to verify the account on chain?': true,
         'Select a network:': 'testnet',
       },
       input: {
@@ -118,7 +118,7 @@ describe('account add manual type', () => {
     expect(jsYaml.load(content!)).toEqual({
       name: 'k:pubkey1',
       fungible: 'coin',
-      publicKeys: ['pubkey1', 'pubkey2'],
+      publicKeys: ['publicKey1', 'publicKey2'],
       predicate: 'keys-all',
     });
   });
