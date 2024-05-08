@@ -28,7 +28,7 @@ const getClient = (): IClient => {
   if (!client) {
     client = createClient(
       ({ chainId }) =>
-        `${dotenv.NETWORK_HOST}/chainweb/0.0/${networkData.networkId}/chain/${chainId}/pact`,
+        `${dotenv.NETWORK_HOST}/chainweb/${networkData.apiVersion}/${networkData.networkId}/chain/${chainId}/pact`,
     );
   }
   return client;
