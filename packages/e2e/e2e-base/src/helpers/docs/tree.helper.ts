@@ -85,7 +85,6 @@ export default class TreeHelper {
     const locator = this._levelZero.locator(
       `[data-testid="l0-button"]:text-is("${label}")`,
     );
-    //.getByRole('button', { name: `${label} +` , exact: true});
     await expect(locator).toBeAttached();
     return locator;
   }
