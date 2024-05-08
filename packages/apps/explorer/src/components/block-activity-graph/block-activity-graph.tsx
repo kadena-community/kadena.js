@@ -1,10 +1,10 @@
 import React from 'react';
 
-interface BlockActivityChartProps {
+interface IBlockActivityChartProps {
   data: number[];
 }
 
-const BlockActivityChart: React.FC<BlockActivityChartProps> = ({ data }) => {
+const BlockActivityChart: React.FC<IBlockActivityChartProps> = ({ data }) => {
   const barWidth = 15;
   const gap = 4;
   const totalWidth = data.length * (barWidth + gap) * 2; // Calculate total width with padding
