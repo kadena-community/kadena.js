@@ -451,7 +451,7 @@ const promptVariableValue = async (
     validate: (value) => {
       if (value === '') return `${key} cannot be empty`;
       if (key.startsWith('decimal:') && !/^\d+\.\d+$/.test(value)) {
-        return 'Decimal value must be in the format "123.456"';
+        return 'Decimal value must be in the format 1.0';
       }
       return true;
     },
