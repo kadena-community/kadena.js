@@ -23,6 +23,7 @@ import { SelectProfile } from '../pages/select-profile/select-profile';
 import { UnlockProfile } from '../pages/unlock-profile/unlock-profile';
 import { getScriptType } from '../utils/window';
 import { Layout } from './layout';
+import { LayoutMini } from './layout-mini';
 
 const ProtectedRoute: FC<
   PropsWithChildren<{
@@ -41,33 +42,37 @@ const ProtectedRoute: FC<
 export const Routes: FC = () => {
   const { isUnlocked } = useWallet();
   const routes = createRoutesFromElements(
-    <Route element={<Layout />}>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/select-profile" element={<SelectProfile />} />
-      <Route path="/networks" element={<Networks />} />
-      <Route path="/networks/create" element={<CreateNetwork />} />
-      <Route path="/create-profile" element={<CreateProfile />} />
-      <Route path="/import-wallet" element={<ImportWallet />} />
-      <Route path="/unlock-profile/:profileId" element={<UnlockProfile />} />
-      <Route element={<ProtectedRoute isAllowed={isUnlocked} />}>
-        <Route
-          path="/backup-recovery-phrase/:keySourceId"
-          element={<BackupRecoveryPhrase />}
-        />
-        <Route
-          path="/backup-recovery-phrase/:keySourceId/write-down"
-          element={<WriteDownRecoveryPhrase />}
-        />
-        <Route
-          path="/account-discovery/:keySourceId"
-          element={<AccountDiscovery />}
-        />
-        ,
-        <Route path="/accounts/:account" element={<p>Account</p>} />,
-        <Route path="/sig-builder" element={<SignatureBuilder />} />,
+    <>
+      <Route element={<LayoutMini />}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/select-profile" element={<SelectProfile />} />
+        <Route path="/create-profile" element={<CreateProfile />} />
+        <Route path="/unlock-profile/:profileId" element={<UnlockProfile />} />
+        <Route path="/import-wallet" element={<ImportWallet />} />
+        <Route element={<ProtectedRoute isAllowed={isUnlocked} />}>
+          <Route
+            path="/backup-recovery-phrase/:keySourceId"
+            element={<BackupRecoveryPhrase />}
+          />
+          <Route
+            path="/backup-recovery-phrase/:keySourceId/write-down"
+            element={<WriteDownRecoveryPhrase />}
+          />
+          <Route
+            path="/account-discovery/:keySourceId"
+            element={<AccountDiscovery />}
+          />
+          ,
+          <Route path="/accounts/:account" element={<p>Account</p>} />,
+          <Route path="/sig-builder" element={<SignatureBuilder />} />,
+        </Route>
+        <Route path="*" element={<p>Not found!</p>} />
       </Route>
-      <Route path="*" element={<p>Not found!</p>} />
-    </Route>,
+      <Route element={<Layout />}>
+        <Route path="/networks" element={<Networks />} />
+        <Route path="/networks/create" element={<CreateNetwork />} />
+      </Route>,
+    </>
   );
 
   const handler =
