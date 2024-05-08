@@ -1,4 +1,3 @@
-import '@kadena/react-ui/global';
 import { darkThemeClass } from '@kadena/react-ui/styles';
 import { ThemeProvider } from 'next-themes';
 import { WalletProvider } from '@/modules/wallet/wallet.provider';

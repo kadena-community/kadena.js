@@ -1,10 +1,5 @@
-import { atoms, tokens, vars } from '@kadena/react-ui/styles';
+import { atoms, vars } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
-import { globalStyle } from '@vanilla-extract/css';
-
-globalStyle('body', {
-  backgroundColor: tokens.kda.foundation.color.neutral.n1,
-});
 
 const minHeaderHeight = '90px';
 
