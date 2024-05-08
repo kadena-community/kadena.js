@@ -2,7 +2,7 @@ import jsYaml from 'js-yaml';
 import { HttpResponse, http } from 'msw';
 import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { ACCOUNT_DIR } from '../../constants/config.js';
+import { ACCOUNT_DIR, WALLET_DIR } from '../../constants/config.js';
 import { createPrincipalSuccessData } from '../../mocks/data/accountDetails.js';
 import { server } from '../../mocks/server.js';
 import { services } from '../../services/index.js';
@@ -134,12 +134,18 @@ describe('account add type wallet', () => {
   const root = path.join(__dirname, '../../../');
   const configPath = path.join(root, '.kadena');
   const accountPath = path.join(configPath, ACCOUNT_DIR);
+  const walletFilePath = path.join(configPath, WALLET_DIR, 'test-wallet.yaml');
   const accountAliasFile = path.join(
     accountPath,
     'account-add-test-manual.yaml',
   );
   let publicKey: string;
+  let generatedKey: string;
   beforeEach(async () => {
+    if (await services.filesystem.fileExists(walletFilePath)) {
+      await services.filesystem.deleteFile(walletFilePath);
+    }
+
     const created = await services.wallet.create({
       alias: 'test-wallet',
       legacy: false,
@@ -152,8 +158,18 @@ describe('account add type wallet', () => {
       password: 'test-wallet',
       index: 0,
     });
+
+    // generated key
+    const indexOneKey = await services.wallet.generateKey({
+      seed: wallet.seed,
+      legacy: wallet.legacy,
+      password: 'test-wallet',
+      index: 1,
+    });
+
     wallet = await services.wallet.storeKey(wallet, key);
     publicKey = wallet.keys[0].publicKey;
+    generatedKey = indexOneKey.publicKey;
     if (await services.filesystem.fileExists(accountAliasFile)) {
       await services.filesystem.deleteFile(accountAliasFile);
     }
@@ -163,7 +179,7 @@ describe('account add type wallet', () => {
     server.resetHandlers();
   });
 
-  it('should add an account alias using manual type without on chain verification', async () => {
+  it('should add an account alias without on chain verification', async () => {
     server.use(
       http.post(
         'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact/api/v1/local',
@@ -185,7 +201,6 @@ describe('account add type wallet', () => {
       checkbox: {
         'Select public keys to add to account(index - alias - publickey):': [0],
       },
-      verbose: true,
     });
 
     await runCommand('account add');
@@ -195,6 +210,46 @@ describe('account add type wallet', () => {
       name: 'w:FxlQEvb6qHb50NClEnpwbT2uoJHuAu39GTSwXmASH2k:keys-all',
       fungible: 'coin',
       publicKeys: [publicKey],
+      predicate: 'keys-all',
+    });
+  });
+
+  it('should add an account alias without on chain verification with newly generated keys', async () => {
+    server.use(
+      http.post(
+        'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact/api/v1/local',
+        async (): Promise<HttpResponse> => {
+          return HttpResponse.json(createPrincipalSuccessData, { status: 200 });
+        },
+      ),
+    );
+    mockPrompts({
+      select: {
+        'How would you like to add the account locally?': 'wallet',
+        'Select a wallet:': 'test-wallet',
+        'Select a keyset predicate:': 'keys-all',
+      },
+      input: {
+        'Enter an alias for an account:': 'account-add-test-manual',
+        'Enter the name of a fungible:': 'coin',
+      },
+      checkbox: {
+        'Select public keys to add to account(index - alias - publickey):': [
+          0, 1,
+        ],
+      },
+      password: {
+        'Enter the wallet password:': 'test-wallet',
+      },
+    });
+
+    await runCommand('account add');
+    expect(await services.filesystem.fileExists(accountAliasFile)).toBe(true);
+    const content = await services.filesystem.readFile(accountAliasFile);
+    expect(jsYaml.load(content!)).toEqual({
+      name: 'w:FxlQEvb6qHb50NClEnpwbT2uoJHuAu39GTSwXmASH2k:keys-all',
+      fungible: 'coin',
+      publicKeys: [publicKey, generatedKey],
       predicate: 'keys-all',
     });
   });

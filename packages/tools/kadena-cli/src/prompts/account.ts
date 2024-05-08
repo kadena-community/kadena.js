@@ -388,19 +388,25 @@ export const publicKeysForAccountAddPrompt: IPrompt<string> = async (
   const keysList = [wallet].flatMap((wallet) => wallet.keys.map((key) => key));
   const selectedKeys = await checkbox({
     message: 'Select public keys to add to account(index - alias - publickey):',
-    choices: tableFormatPrompt([
-      ...keysList.map((key) => {
-        const { index, alias, publicKey } = key;
-        return {
-          value: publicKey,
-          name: [
-            index.toString(),
-            isNotEmptyString(alias) ? truncateText(alias, 24) : '',
-            maskStringPreservingStartAndEnd(publicKey, 24),
-          ],
-        };
-      }),
-    ]),
+    choices: [
+      ...tableFormatPrompt([
+        ...keysList.map((key) => {
+          const { index, alias, publicKey } = key;
+          return {
+            value: publicKey,
+            name: [
+              index.toString(),
+              isNotEmptyString(alias) ? truncateText(alias, 24) : '',
+              maskStringPreservingStartAndEnd(publicKey, 24),
+            ],
+          };
+        }),
+      ]),
+      {
+        value: '_generate_',
+        name: 'Generate new public key',
+      },
+    ],
     pageSize: 10,
     instructions: MULTI_SELECT_INSTRUCTIONS,
     validate: (input) => {
