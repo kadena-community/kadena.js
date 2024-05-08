@@ -8,9 +8,9 @@ export const underlayClass = style([
     justifyContent: 'center',
     position: 'fixed',
     inset: 0,
-    backgroundColor: 'base.default',
   }),
   {
-    backdropFilter: 'blur(12px)',
+    // TODO: Update to use token: please check docs search dialog to align
+    backgroundColor: 'rgba(34, 33, 33, 0.8)',
   },
 ]);
