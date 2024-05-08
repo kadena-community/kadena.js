@@ -38,8 +38,6 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                 <DocsCard
                   label="Engage"
                   description="Start here to learn the basics, including blockchain fundamentals and the core concepts of the Kadena network."
-                  schema="info"
-                  background="whitepapers"
                 >
                   <BrowseSection marker="none">
                     <Link
@@ -67,8 +65,6 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                 <DocsCard
                   label="Onboard"
                   description="Try Kadena as a first time user or start your journey as a developer with a guided tour."
-                  schema="warning"
-                  background="marmalade"
                 >
                   <BrowseSection marker="none">
                     <Link className={docsCardLink} href="/build/onboard">
@@ -87,8 +83,6 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                 <DocsCard
                   label="Coach"
                   description="Take your game to the next level with tools, sample code, and how-to guides."
-                  schema="success"
-                  background="quickstart"
                 >
                   <BrowseSection marker="none">
                     <Link className={docsCardLink} href="/build/pact">
@@ -110,8 +104,6 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                 <DocsCard
                   label="Propel"
                   description="Deploy your smart contracts on the network or support the infrastructure by deploying a Chainweb node."
-                  schema="info"
-                  background="contribute"
                 >
                   <BrowseSection marker="none">
                     <Link className={docsCardLink} href="/deploy">
@@ -139,8 +131,6 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   label="Embrace"
                   description="Find out about community programs, grants, partnerships, and business development opportunities,
               to grow the Kadena ecosystem and how you can contribute."
-                  schema="warning"
-                  background="react"
                 >
                   <BrowseSection marker="none">
                     <Link className={docsCardLink} href="/participate">
@@ -164,8 +154,6 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                 <DocsCard
                   label="Explore beyond"
                   description="Explore videos, whitepapers, discussion forums, and other sites and tools that are outside the scope of documentation."
-                  schema="success"
-                  background="smartwallet"
                 >
                   <BrowseSection marker="none">
                     <Link
