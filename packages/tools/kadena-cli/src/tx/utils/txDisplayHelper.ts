@@ -115,26 +115,28 @@ function printObject(
   obj: any,
   indentLevel: number,
 ): void {
+  const indentString = ' '.repeat(indentLevel);
+
   if (typeof obj !== 'object' || obj === null) {
-    log.info(`${' '.repeat(indentLevel)}${obj}`);
+    log.info(`${indentString}${obj}`);
     return;
   }
 
   if (Array.isArray(obj)) {
     obj.forEach((item, index) => {
-      log.info(`${' '.repeat(indentLevel)}[${index}]:`);
+      log.info(`${indentString}[${index}]:`);
       printObject(item, indentLevel + 2);
     });
   } else {
     Object.entries(obj).forEach(([key, value]) => {
-      const formattedKey = `${' '.repeat(indentLevel)}${key}:`;
+      const formattedKey = `${key}:`.padStart(key.length + indentLevel + 2);
       if (typeof value === 'object' && value !== null) {
         log.info(log.color.black(formattedKey));
         printObject(value, indentLevel + 2);
       } else {
         const formattedValue =
           value !== null && value !== undefined ? value.toString() : 'null';
-        let color = log.color.green; // Default color
+        let color = log.color.green;
 
         if (key === 'status') {
           color = value === 'failure' ? log.color.red : log.color.green;

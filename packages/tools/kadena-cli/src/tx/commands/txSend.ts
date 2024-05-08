@@ -151,7 +151,7 @@ export const createSendTransactionCommand: (
     globalOptions.directory({ disableQuestion: true }),
     txOptions.txSignedTransactionFiles(),
     txOptions.txTransactionNetwork(),
-    txOptions.txPoll(),
+    txOptions.poll(),
   ],
   async (option, { stdin }) => {
     const commands: (IUnsignedCommand | ICommand)[] = [];
@@ -196,9 +196,9 @@ export const createSendTransactionCommand: (
         );
       }
 
-      const poll = await option.txPoll();
+      const txPoll = await option.poll();
 
-      if (poll.txPoll === true) {
+      if (txPoll.poll === true) {
         await pollRequests(result.data.transactions);
       }
     } else {
