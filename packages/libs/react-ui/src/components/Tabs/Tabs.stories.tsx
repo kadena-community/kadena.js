@@ -91,6 +91,19 @@ const meta: Meta<ITabsProps> = {
       description: 'Handler that is called when the selection changes.',
       action: 'clicked',
     },
+    borderPosition: {
+      description: 'Position of the border, top or bottom.',
+      control: {
+        type: 'radio',
+      },
+      options: ['top', 'bottom'],
+    },
+    inverse: {
+      control: {
+        type: 'radio',
+      },
+      options: ['true', 'false'],
+    },
   },
 };
 
@@ -104,7 +117,7 @@ export const TabsStory: Story = {
   },
   render: (props) => {
     return (
-      <Tabs aria-label={props['aria-label']}>
+      <Tabs {...props} aria-label={props['aria-label']}>
         {ExampleTabs.map((tab) => (
           <TabItem key={tab.title} title={tab.title}>
             {tab.content}

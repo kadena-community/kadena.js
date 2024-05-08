@@ -1,7 +1,7 @@
 import { MonoArrowBackIosNew, MonoArrowForwardIos } from '@kadena/react-icons';
-import { default as classNames, default as cn } from 'classnames';
+import classNames from 'classnames';
 import type { ReactNode } from 'react';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import type { AriaTabListProps } from 'react-aria';
 import { mergeProps, useFocusRing, useTabList } from 'react-aria';
 import { Item as TabItem, useTabListState } from 'react-stately';
@@ -9,7 +9,7 @@ import { Button } from '../Button';
 import { Tab } from './Tab';
 import { TabPanel } from './TabPanel';
 import {
-  fade,
+  hiddenClass,
   paginationButton,
   selectorLine,
   tabListClass,
@@ -25,11 +25,21 @@ export type ITabItemProps = React.ComponentProps<typeof TabItem>;
 export interface ITabsProps
   extends Omit<AriaTabListProps<object>, 'orientation' | 'items'> {
   className?: string;
+  inverse?: boolean;
+  borderPosition?: 'top' | 'bottom';
 }
 
-export const Tabs = ({ className, ...props }: ITabsProps): ReactNode => {
+export const Tabs = ({
+  className,
+  borderPosition = 'bottom',
+  ...props
+}: ITabsProps): ReactNode => {
   const state = useTabListState(props);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const [visibleButtons, setVisibleButtons] = useState({
+    left: false,
+    right: false,
+  });
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const { focusProps, isFocusVisible } = useFocusRing({
     within: true,
@@ -43,6 +53,28 @@ export const Tabs = ({ className, ...props }: ITabsProps): ReactNode => {
 
   const selectedUnderlineRef = useRef<HTMLSpanElement | null>(null);
 
+  // on resize determine the button visibility
+
+  const determineButtonVisibility = () => {
+    if (!scrollRef.current || !containerRef.current) return;
+    const viewWidth = containerRef.current.offsetWidth;
+    const maxWidth = containerRef.current.scrollWidth;
+    const scrollPosition = scrollRef.current.scrollLeft;
+
+    if (scrollPosition === 0 && visibleButtons.left) {
+      setVisibleButtons((prev) => ({ ...prev, left: false }));
+    }
+    if (scrollPosition > 0) {
+      setVisibleButtons((prev) => ({ ...prev, left: true }));
+    }
+    // 20 is a margin to prevent having a very small last bit to scroll
+    if (viewWidth + scrollPosition >= maxWidth - 20) {
+      setVisibleButtons((prev) => ({ ...prev, right: false }));
+    } else {
+      setVisibleButtons((prev) => ({ ...prev, right: true }));
+    }
+  };
+
   useEffect(() => {
     if (!containerRef.current || !scrollRef.current) return;
 
@@ -51,10 +83,11 @@ export const Tabs = ({ className, ...props }: ITabsProps): ReactNode => {
     ) as HTMLElement;
     // set Selected as first tab if the tab isn't fully visible
     if (
-      selected.offsetLeft + selected.offsetWidth >
+      selected?.offsetLeft + selected?.offsetWidth >
       containerRef.current.offsetWidth
     ) {
       scrollRef.current.scrollLeft = selected.offsetLeft;
+      determineButtonVisibility();
     }
   }, []);
 
@@ -124,6 +157,7 @@ export const Tabs = ({ className, ...props }: ITabsProps): ReactNode => {
       }
 
       scrollRef.current.scrollLeft = nextValue;
+      determineButtonVisibility();
     } else {
       nextValue = currentValue - offset;
 
@@ -132,34 +166,49 @@ export const Tabs = ({ className, ...props }: ITabsProps): ReactNode => {
       }
 
       scrollRef.current.scrollLeft = nextValue;
+      determineButtonVisibility();
     }
   };
 
   return (
-    <div className={cn(tabsContainerClass, className)}>
+    <div className={classNames(tabsContainerClass, className)}>
       <div className={tabListControls}>
         <Button
           variant="transparent"
-          className={classNames(paginationButton, fade['back'])}
+          className={classNames(paginationButton, {
+            [hiddenClass]: !visibleButtons.left,
+          })}
           onPress={() => handlePagination('back')}
         >
           <MonoArrowBackIosNew />
         </Button>
         <div className={tabListWrapperClass} ref={scrollRef}>
           <div
-            className={cn(tabListClass, { focusVisible: isFocusVisible })}
+            className={classNames(tabListClass, {
+              pfocusVisible: isFocusVisible,
+            })}
             {...mergeProps(tabListProps, focusProps)}
             ref={containerRef}
           >
             {[...state.collection].map((item) => (
-              <Tab key={item.key} item={item} state={state} />
+              <Tab
+                key={item.key}
+                item={item}
+                state={state}
+                inverse={props.inverse}
+                borderPosition={borderPosition}
+              />
             ))}
-            <span ref={selectedUnderlineRef} className={selectorLine}></span>
+            {borderPosition === 'bottom' && (
+              <span ref={selectedUnderlineRef} className={selectorLine}></span>
+            )}
           </div>
         </div>
         <Button
           variant="transparent"
-          className={classNames(paginationButton, fade['forward'])}
+          className={classNames(paginationButton, {
+            [hiddenClass]: !visibleButtons.right,
+          })}
           onPress={() => handlePagination('forward')}
         >
           <MonoArrowForwardIos />

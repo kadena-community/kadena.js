@@ -1,7 +1,7 @@
 import { style, styleVariants } from '@vanilla-extract/css';
+import { recipe } from '@vanilla-extract/recipes';
 import { token } from '../../styles';
 import { atoms } from '../../styles/atoms.css';
-import { tokens } from '../../styles/tokens/contract.css';
 
 export const tabsContainerClass = style([
   atoms({
@@ -31,7 +31,10 @@ export const tabListControls = style([
     flexDirection: 'row',
     position: 'relative',
   }),
-  { width: 'fit-content', maxWidth: '100%' },
+  {
+    width: 'fit-content',
+    maxWidth: '100%',
+  },
 ]);
 
 export const tabListClass = style([
@@ -63,52 +66,78 @@ export const selectorLine = style([
   },
 ]);
 
-export const tabItemClass = style([
-  atoms({
-    display: 'flex',
-    alignItems: 'center',
-    cursor: 'pointer',
-    paddingBlock: 'n2',
-    paddingInline: 'md',
-    fontSize: 'md',
-    fontWeight: 'secondaryFont.bold',
-    backgroundColor: 'transparent',
-    color: 'text.base.default',
-    outline: 'none',
-    borderRadius: 'xs',
-  }),
-  {
-    transition:
-      'background-color .4s ease, color .4s, border-bottom .4s ease-in-out',
-    borderBottom: `2px solid ${token('color.border.base.subtle')}`,
-    whiteSpace: 'nowrap',
-    selectors: {
-      '&[data-selected="true"]': {
-        backgroundColor: token('color.background.base.@active'),
-        color: token('color.text.base.@active'),
-      },
-      '&[data-hovered="true"]': {
-        backgroundColor: token('color.background.base.@hover'),
-        color: token('color.text.base.@hover'),
-      },
-      '&[data-hovered="true"]:not(&[data-selected="true"])': {
-        borderBottom: `2px solid ${token('color.border.tint.outline')}`,
-      },
-      '.focusVisible &:focus-visible': {
-        outline: `2px solid ${tokens.kda.foundation.color.accent.brand.primary}`,
+export const tabItemClass = recipe({
+  base: [
+    atoms({
+      display: 'flex',
+      alignItems: 'center',
+      cursor: 'pointer',
+      paddingBlock: 'n2',
+      paddingInline: 'md',
+      fontSize: 'md',
+      fontWeight: 'secondaryFont.bold',
+      backgroundColor: 'transparent',
+      color: 'text.base.default',
+      outline: 'none',
+      borderRadius: 'xs',
+    }),
+    {
+      transition:
+        'background-color .4s ease, color .4s, border-bottom .4s ease-in-out',
+      whiteSpace: 'nowrap',
+      selectors: {
+        '&[data-selected="true"]': {
+          backgroundColor: token('color.background.base.@active'),
+          color: token('color.text.base.@active'),
+        },
+        '&[data-hovered="true"]': {
+          color: token('color.text.base.@hover'),
+        },
       },
     },
-  },
-]);
-
-export const tabItemIconClass = style({
-  transition: 'color .4s ease',
-  selectors: {
-    [`${tabItemClass}[data-selected="true"] &`]: {
-      color: token('color.icon.base.@active'),
+  ],
+  variants: {
+    inverse: {
+      true: {
+        selectors: {
+          '&[data-hovered="true"]': {
+            backgroundColor: token('color.background.base.@hover'),
+          },
+          '&[data-selected="true"]': {
+            backgroundColor: token('color.background.base.default'),
+          },
+        },
+      },
+      false: {
+        selectors: {
+          '&[data-hovered="true"]': {
+            backgroundColor: token('color.background.base.@hover'),
+          },
+          '&[data-selected="true"]': {
+            backgroundColor: token('color.background.base.@active'),
+          },
+        },
+      },
     },
-    [`${tabItemClass}[data-hovered="true"] &`]: {
-      color: token('color.icon.base.@hover'),
+    borderPosition: {
+      top: {
+        selectors: {
+          '&[data-selected="true"]': {
+            borderTop: `2px solid ${token('color.border.tint.@focus')}`,
+          },
+          '&[data-hovered="true"]:not(&[data-selected="true"])': {
+            borderTop: `2px solid ${token('color.border.tint.outline')}`,
+          },
+        },
+      },
+      bottom: {
+        borderBottom: `2px solid ${token('color.border.base.subtle')}`,
+        selectors: {
+          '&[data-hovered="true"]:not(&[data-selected="true"])': {
+            borderBottom: `2px solid ${token('color.border.tint.outline')}`,
+          },
+        },
+      },
     },
   },
 });
@@ -125,47 +154,13 @@ export const tabContentClass = style([
 
 export const paginationButton = style({
   zIndex: 3,
+  opacity: 1,
+  transition: 'opacity 0.4s ease',
   backgroundColor: token('color.background.base.default'),
 });
 
-export const hiddenClass = style({ visibility: 'hidden' });
-
-const baseFade = style({
-  position: 'relative',
-  selectors: {
-    '&::before': {
-      zIndex: 2,
-      content: '""',
-      position: 'absolute',
-      top: 0,
-      width: '4rem',
-      height: '100%',
-      pointerEvents: 'none',
-    },
-  },
-});
-
-export const fade = styleVariants({
-  back: [
-    baseFade,
-    {
-      selectors: {
-        '&::before': {
-          left: '100%',
-          background: `linear-gradient(90deg, ${token('color.background.base.default')}, ${token('color.neutral.n1@alpha0')})`,
-        },
-      },
-    },
-  ],
-  forward: [
-    baseFade,
-    {
-      selectors: {
-        '&::before': {
-          right: '100%',
-          background: `linear-gradient(90deg, ${token('color.neutral.n1@alpha0')}, ${token('color.background.base.default')})`,
-        },
-      },
-    },
-  ],
+export const hiddenClass = style({
+  opacity: 0,
+  transition: 'opacity 0.4s ease',
+  pointerEvents: 'none',
 });
