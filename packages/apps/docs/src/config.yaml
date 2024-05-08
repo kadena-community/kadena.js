@@ -448,7 +448,7 @@ pages:
                 file: /reference/marmalade/dutch-auction-ref.md
       chainwebref:
         url: /chainweb-ref
-        file: /reference/chainweb/chainweb.md
+        file: /reference/chainweb/api/chainweb-api.tsx
         children:
           nodeclient:
             url: /node-client

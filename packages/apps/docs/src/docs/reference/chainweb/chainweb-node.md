@@ -11,15 +11,16 @@ tags: ['TypeScript', 'Kadena client', 'frontend']
 
 # Chainweb node client
 
-The Chainweb node client `@kadena/chainweb-node-client` is a typed JavaScript wrapper with fetch to call
-`chainweb-node` API endpoints. 
-These endpoints are broken down into the following categories:
+Kadena Chainweb clients are application programming interfaces that provide TypeScript-based calls for interacting with Chainweb nodes on the Kadena network.
 
-1. blockchain - wrapper around chainweb-node p2p api endpoints
-2. pact - [https://api.chainweb.com/openapi/pact.html][2]
-3. rosetta - [https://api.chainweb.com/openapi/#tag/rosetta][3]
+The **Chainweb node client**—`@kadena/chainweb-node-client`—is a typed JavaScript wrapper with fetch to call `chainweb-node` API endpoints. 
+For the Chainweb node client, `chainweb-node` endpoints are broken down into the following categories:
 
-API Reference can be found here [chainweb-node-client.api.md][1]
+- blockchain - wrapper around chainweb-node [peer-to-peer endpoints](https://api.chainweb.com/openapi/#tag/p2p_api).
+- pact - wrapper for [Pact endpoints](https://api.chainweb.com/openapi/pact.html).
+- rosetta - wrapper for [Rosetta endpoints](https://api.chainweb.com/openapi/#tag/rosetta).
+
+For generated API reference information, see [chainweb-node-client.api.md][1]
 
 ## Pact
 
@@ -37,7 +38,7 @@ The Pact API will contain the following functions:
 
 ### listen
 
-Listen for result of Pact command on a Pact server and retrieves raw response.
+Listens for result of a Pact command on a Chainweb node server and retrieves a raw response.
 
 ```ts
 const requestKey: IListenRequestBody = {
@@ -49,9 +50,9 @@ const response: ICommandResult | Response = await listen(requestKey, '');
 
 ### local
 
-Blocking/sync call to submit a command for non-transactional execution. In a
-blockchain environment this would be a node-local “dirty read”. Any database
-writes or changes to the environment are rolled back.
+Synchronous call to submit a command for non-transactional execution. 
+In a blockchain environment, this would be a node-local “dirty read”. 
+Any database writes or changes to the environment are rolled back.
 
 ```ts
 const signedCommand: LocalRequestBody = {
@@ -147,5 +148,3 @@ stringifyAndMakePOSTRequest(body);
 
 [1]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/chainweb-node-client/etc/chainweb-node-client.api.md
-[2]: https://api.chainweb.com/openapi/pact.html
-[3]: https://api.chainweb.com/openapi/#tag/rosetta
