@@ -1,9 +1,9 @@
 ---
-title: Node client API
+title: Node client
 description:
   The Chainweb node client API provides a TypeScript based application programming interface API for calling Chainweb node endpoints.
-menu: Chainweb REST API
-label: Node client API
+menu: Chainweb API
+label: Node client
 order: 1
 layout: full
 tags: ['TypeScript', 'Kadena client', 'frontend']
@@ -38,7 +38,7 @@ The Pact API will contain the following functions:
 
 ### listen
 
-Listens for result of a Pact command on a Chainweb node server and retrieves a raw response.
+Listens for the result of a Pact command on a Chainweb node server and retrieves a raw response.
 
 ```ts
 const requestKey: IListenRequestBody = {
@@ -50,7 +50,7 @@ const response: ICommandResult | Response = await listen(requestKey, '');
 
 ### local
 
-Synchronous call to submit a command for non-transactional execution. 
+Calls the `/local` endpoint on a Chainweb node to submit a synchronous command for non-transactional execution. 
 In a blockchain environment, this would be a node-local “dirty read”. 
 Any database writes or changes to the environment are rolled back.
 
@@ -66,8 +66,8 @@ const response: ICommandResult | Response = await local(signedCommand, '');
 
 ### mkCap
 
-Helper function for creating a pact capability object. Output can be used with
-the `mkSignerCList` function.
+Creates a Pact capability object. 
+You can use the output from this helper function with the `mkSignerCList` function.
 
 ```ts
 mkCap('coin.TRANSFER', ['fromAcctName', 'toAcctName', 0.1]);
@@ -75,13 +75,15 @@ mkCap('coin.TRANSFER', ['fromAcctName', 'toAcctName', 0.1]);
 
 ### parseResponse
 
-Parses raw `fetch` response into a typed JSON value.
+Parses a raw `fetch` response into a typed JSON value.
 
 ```ts
 const parsedResponse = await parseResponse(response as Response);
 ```
 
 ### parseResponseTEXT
+
+Parses a raw `fetch` response into a typed JSON value.
 
 ```ts
 const parsedResponse = await parseResponseTEXT(response as Response);
@@ -101,7 +103,7 @@ const response: Response | IPollResponse = await poll(signedCommand, '');
 
 ### send
 
-Asynchronous submission of one or more public (unencrypted) commands to the
+Submits asynchronous transaction with one or more public (unencrypted) commands to the
 blockchain for execution.
 
 ```ts
@@ -127,7 +129,7 @@ const response: Response | ISendResponse = await send(sendRequest, '');
 
 ### spv
 
-Sends request to /spv and retrieves spv proof of a cross chain transaction.
+Sends a request to the `/spv` endpoint and retrieves a simple payment verification proof of a cross chain transaction.
 
 ```ts
 const spvResponse: string | Response = await spv(spv_request, '');
