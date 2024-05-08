@@ -39,7 +39,7 @@ export const createGenerateHdKeysCommand: (
   [
     globalOptions.walletSelect(),
     securityOptions.createPasswordOption({
-      message: 'Enter the wallet password',
+      message: 'Enter the wallet password:',
     }),
     walletOptions.amount(),
     walletOptions.startIndex({ disableQuestion: true }),

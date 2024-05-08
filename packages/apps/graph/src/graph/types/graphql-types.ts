@@ -174,3 +174,12 @@ export interface IJsonString {
   type: string;
   value: string;
 }
+export interface INetworkInfo {
+  networkHost: string;
+  networkId: string;
+  apiVersion: string;
+  coinsInCirculation: number;
+  transactionCount: number;
+  networkHashRate: number;
+  totalDifficulty: number;
+}

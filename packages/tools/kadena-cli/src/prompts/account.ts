@@ -1,5 +1,5 @@
 import type { ChainId } from '@kadena/types';
-import { parse } from 'node:path';
+import { basename, parse } from 'node:path';
 import {
   chainIdRangeValidation,
   fundAmountValidation,
@@ -7,18 +7,23 @@ import {
   parseChainIdRange,
 } from '../account/utils/accountHelpers.js';
 import { CHAIN_ID_RANGE_ERROR_MESSAGE } from '../constants/account.js';
+import { MAX_CHAIN_VALUE } from '../constants/config.js';
 import {
   INVALID_FILE_NAME_ERROR_MSG,
-  MAX_CHAIN_VALUE,
-} from '../constants/config.js';
+  MULTI_SELECT_INSTRUCTIONS,
+} from '../constants/global.js';
+import type { IWallet } from '../services/wallet/wallet.types.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   formatZodError,
+  isNotEmptyString,
   isValidFilename,
   maskStringPreservingStartAndEnd,
+  notEmpty,
   truncateText,
 } from '../utils/globalHelpers.js';
 import { checkbox, input, select } from '../utils/prompts.js';
+import { tableFormatPrompt } from '../utils/tableDisplay.js';
 
 export const publicKeysPrompt: IPrompt<string> = async (
   previousQuestions,
@@ -26,7 +31,7 @@ export const publicKeysPrompt: IPrompt<string> = async (
   isOptional,
 ) =>
   await input({
-    message: 'Enter one or more public keys (comma separated).',
+    message: 'Enter one or more public keys (comma separated):',
     validate: function (value: string) {
       if (isOptional && !value) return true;
 
@@ -40,14 +45,22 @@ export const publicKeysPrompt: IPrompt<string> = async (
 
 export const accountAliasPrompt: IPrompt<string> = async () =>
   await input({
-    message: 'Enter an alias for an account.',
-    validate: function (value: string) {
+    message: 'Enter an alias for an account:',
+    validate: async function (value: string) {
       if (!value || value.trim().length < 3) {
         return 'Alias must be minimum at least 3 characters long.';
       }
 
       if (!isValidFilename(value)) {
         return `Alias is used as a filename. ${INVALID_FILE_NAME_ERROR_MSG}`;
+      }
+
+      const allAccountAliases = (await getAllAccountNames()).map((account) =>
+        basename(account.alias, '.yaml'),
+      );
+
+      if (allAccountAliases.includes(value)) {
+        return `Alias "${value}" already exists. Please enter a different alias.`;
       }
 
       return true;
@@ -81,7 +94,7 @@ export const fundAmountPrompt: IPrompt<string> = async () =>
       }
       return true;
     },
-    message: 'Enter an amount.',
+    message: 'Enter an amount:',
   });
 
 export const fungiblePrompt: IPrompt<string> = async () =>
@@ -122,13 +135,13 @@ export const predicatePrompt: IPrompt<string> = async (previousQuestions) => {
   );
 
   const selectedPredicate = await select({
-    message: 'Select a keyset predicate.',
+    message: 'Select a keyset predicate:',
     choices: filteredChoices,
   });
 
   if (selectedPredicate === 'custom') {
     const customPredicate = await input({
-      message: 'Enter your own predicate',
+      message: 'Enter your own predicate:',
       validate: function (value: string) {
         if (!value || !value.trim().length) {
           return 'Predicate cannot be empty.';
@@ -199,7 +212,7 @@ export const accountSelectionPrompt = async (
   }
 
   const selectedAlias = await select({
-    message: 'Select an account:(alias - account name)',
+    message: 'Select an account (alias - account name):',
     choices: allAccountChoices,
   });
 
@@ -241,8 +254,9 @@ export const accountSelectMultiplePrompt: IPrompt<string> = async (
 ) => {
   const allAccountChoices = await getAllAccountChoices();
   const selectedAliases = await checkbox({
-    message: 'Select an account:(alias - account name)',
+    message: 'Select an account (alias - account name):',
     choices: allAccountChoices,
+    instructions: MULTI_SELECT_INSTRUCTIONS,
   });
 
   return selectedAliases.join(',');
@@ -264,19 +278,16 @@ export const accountDeleteConfirmationPrompt: IPrompt<boolean> = async (
         ? 'all the selected aliases accounts'
         : `the ${selectedAccounts} alias account`;
 
-  return await select({
-    message: `Are you sure you want to delete ${selectedAccountMessage}?`,
-    choices: [
-      {
-        value: true,
-        name: 'Yes',
-      },
-      {
-        value: false,
-        name: 'No',
-      },
-    ],
+  const answer = await input({
+    message: `Are you sure you want to delete ${selectedAccountMessage}? '\n  type "yes" to confirm or "no" to cancel and press enter. \n`,
+    validate: (input) => {
+      if (input === 'yes' || input === 'no') {
+        return true;
+      }
+      return 'Please type "yes" to confirm or "no" to cancel.';
+    },
   });
+  return answer === 'yes';
 };
 
 export const chainIdPrompt: IPrompt<string> = async (
@@ -305,4 +316,63 @@ export const chainIdPrompt: IPrompt<string> = async (
       return true;
     },
   })) as ChainId;
+};
+
+export const publicKeysForAccountAddPrompt: IPrompt<string> = async (
+  previousQuestions,
+  args,
+  isOptional,
+) => {
+  if (previousQuestions.type === 'manual') {
+    return publicKeysPrompt(previousQuestions, args, isOptional);
+  }
+
+  if (!notEmpty(previousQuestions.walletNameConfig)) {
+    throw new Error('Wallet config is not provided');
+  }
+
+  const wallet = previousQuestions.walletNameConfig as IWallet;
+  const keysList = [wallet].flatMap((wallet) => wallet.keys.map((key) => key));
+  const selectedKeys = await checkbox({
+    message: 'Select public keys to add to account(index - alias - publickey):',
+    choices: tableFormatPrompt([
+      ...keysList.map((key) => {
+        const { index, alias, publicKey } = key;
+        return {
+          value: publicKey,
+          name: [
+            index.toString(),
+            isNotEmptyString(alias) ? truncateText(alias, 24) : '',
+            maskStringPreservingStartAndEnd(publicKey, 24),
+          ],
+        };
+      }),
+    ]),
+    pageSize: 10,
+    instructions: MULTI_SELECT_INSTRUCTIONS,
+    validate: (input) => {
+      if (input.length === 0) {
+        return 'Please select at least one public key';
+      }
+
+      return true;
+    },
+  });
+  return selectedKeys.join(',');
+};
+
+export const accountTypeSelectionPrompt: IPrompt<string> = async () => {
+  return await select({
+    message: `How would you like to add the account locally?`,
+    choices: [
+      {
+        value: 'manual',
+        name: 'Manually - Enter public keys and account details manually',
+      },
+      {
+        value: 'wallet',
+        name: 'From Wallet - Select public keys from a wallet',
+      },
+    ],
+  });
 };

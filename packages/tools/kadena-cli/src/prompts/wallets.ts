@@ -1,4 +1,4 @@
-import { INVALID_FILE_NAME_ERROR_MSG } from '../constants/config.js';
+import { INVALID_FILE_NAME_ERROR_MSG } from '../constants/global.js';
 import { services } from '../services/index.js';
 import type { IWallet } from '../services/wallet/wallet.types.js';
 import { CommandError } from '../utils/command.util.js';
@@ -9,10 +9,19 @@ import { input, select } from '../utils/prompts.js';
 export async function walletNamePrompt(): Promise<string> {
   return await input({
     message: `Enter your wallet name:`,
-    validate: function (input) {
+    validate: async function (input) {
       if (!isValidFilename(input)) {
         return `Name is used as a filename. ${INVALID_FILE_NAME_ERROR_MSG}`;
       }
+
+      const allWalletNames = (await services.config.getWallets()).map(
+        (wallet) => wallet.alias,
+      );
+
+      if (allWalletNames.includes(input)) {
+        return `Wallet name "${input}" already exists. Please enter a different wallet name.`;
+      }
+
       return true;
     },
   });
@@ -51,7 +60,7 @@ async function walletSelectionPrompt(
   }
 
   const selectedWallet = await select({
-    message: 'Select a wallet',
+    message: 'Select a wallet:',
     choices: choices,
   });
 
@@ -70,7 +79,7 @@ export async function walletSelectAllPrompt(): Promise<string> {
   if (wallets.length === 0) return 'all';
 
   return await select({
-    message: 'Select a wallet',
+    message: 'Select a wallet:',
     choices: [
       {
         value: 'all',

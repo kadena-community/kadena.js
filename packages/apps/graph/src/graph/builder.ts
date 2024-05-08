@@ -28,6 +28,7 @@ import type {
   IJsonString,
   IKeyset,
   IModuleReference,
+  INetworkInfo,
   INonFungibleAccount,
   INonFungibleChainAccount,
   INonFungibleTokenBalance,
@@ -99,6 +100,7 @@ export const builder = new SchemaBuilder<
       Policy: IPolicy;
       ModuleReference: IModuleReference;
       JsonString: IJsonString;
+      NetworkInfo: INetworkInfo;
     };
   }
 >({

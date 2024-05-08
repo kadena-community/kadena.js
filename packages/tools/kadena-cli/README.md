@@ -227,6 +227,7 @@ kadena config init [options]
 | --wallet-name    | Name for the new wallet                                                                            |              |
 | --password-file  | Path to a file containing the wallet's password, alternatively, passwords can be passed via stdin. |              |
 | --create-account | Enable the creation of an account using the first wallet key.                                      |              |
+| --account-alias  | Alias to store your account details            |              |
 
 ---
 
@@ -235,7 +236,7 @@ Examples
 Setup in a Specific Directory with a New Wallet and Account:
 
 ```
-kadena config init --location="/my-app/.kadena" --create-wallet="true" --wallet-name="my_first_wallet" --create-account="true"
+kadena config init --location="/my-app/.kadena" --create-wallet="true" --wallet-name="my_first_wallet" --create-account="true" --account-alias="dev_account"
 ```
 
 Setup Without Creating a Wallet or Account:
@@ -362,19 +363,22 @@ kadena wallet add [options]
 | **Options**                | **Description**                                | **Required** |
 | -------------------------- | ---------------------------------------------- | ------------ |
 | --wallet-name              | Set the name of the wallet                     |              |
-| --security-password        | Set the password for the wallet                |              |
-| --security-verify-password | Set the password for the wallet (verification) |              |
+| --password-file            | File path to the password file                 |              |
 | --legacy                   | Generate legacy wallet                         |              |
+| --create-account           | Create an account using the first wallet key   |              |
+| --account-alias            | Alias to store your account details            |              |
 
 example:
 
 ```
-kadena wallet add --wallet-name="kadenawallet" --security-password=1245678 --security-verify-password=1245678
+kadena wallet add --wallet-name="kadena_wallet" --password-file="./kadenawallet-pw.txt"
 ```
 
-password will be hidden after entry: --security-password=\*
-\--security-verify-password=\*
+example using wallet with account creation:
 
+```
+kadena wallet add --wallet-name="kadena_wallet" --password-file="./kadenawallet-pw.txt" --create-account=true --account-alias="dev_account"
+```
 ---
 
 ```
