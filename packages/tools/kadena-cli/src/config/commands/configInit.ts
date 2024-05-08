@@ -1,5 +1,6 @@
 import type { Command } from 'commander';
 import path from 'path';
+import { accountOptions } from '../../account/accountOptions.js';
 import {
   ACCOUNT_DIR,
   CWD_KADENA_DIR,
@@ -10,6 +11,7 @@ import { ensureNetworksConfiguration } from '../../networks/utils/networkHelpers
 import { Services } from '../../services/index.js';
 import { KadenaError } from '../../services/service-error.js';
 import { createCommand } from '../../utils/createCommand.js';
+import { notEmpty } from '../../utils/globalHelpers.js';
 import { globalOptions, securityOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import {
@@ -36,6 +38,7 @@ export const createConfigInitCommand: (
     }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
     walletOptions.createAccount(),
+    accountOptions.accountAlias({ isOptional: true }),
   ],
   async (option) => {
     const { global } = await option.global();
@@ -75,6 +78,11 @@ export const createConfigInitCommand: (
     const { legacy } = await option.legacy();
     const { createAccount } = await option.createAccount();
 
+    let accountAlias = null;
+    if (createAccount === 'true') {
+      accountAlias = (await option.accountAlias()).accountAlias;
+    }
+
     const created = await services.wallet.create({
       alias: walletName,
       legacy: legacy,
@@ -93,6 +101,15 @@ export const createConfigInitCommand: (
     logWalletInfo(created.words, wallet.filepath, key.publicKey);
 
     if (createAccount === 'true') {
+      // when --quiet is passed and account alias is not provided
+      // we will not create an account
+      if (!notEmpty(accountAlias) || accountAlias.trim().length === 0) {
+        log.warning(
+          'Account alias is required when creating an account: -l, --account-alias <accountAlias>',
+        );
+        return;
+      }
+
       const directory = services.config.getDirectory();
       if (directory === null) {
         throw new KadenaError('no_kadena_directory');
@@ -101,7 +118,7 @@ export const createConfigInitCommand: (
       const accountDir = path.join(directory, ACCOUNT_DIR);
       const { accountName, accountFilepath } =
         await createAccountAliasByPublicKey(
-          wallet.alias,
+          accountAlias,
           wallet.keys[0].publicKey,
           accountDir,
         );

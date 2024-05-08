@@ -15,6 +15,7 @@ import {
   parseChainIdRange,
   readAccountFromFile,
 } from './utils/accountHelpers.js';
+import { isEmpty } from './utils/addHelpers.js';
 
 export const accountOptions = {
   accountAlias: createOption({
@@ -196,6 +197,22 @@ export const accountOptions = {
     option: new Option(
       '-d, --deploy-faucet',
       'Deploy faucet on devnet if not available on chain.',
+    ),
+  }),
+  selectPublicKeys: createOption({
+    key: 'publicKeys' as const,
+    defaultIsOptional: false,
+    prompt: account.selectPublicKeysFromWalletPrompt,
+    expand: async (publicKeys: string): Promise<string[]> => {
+      const keys = publicKeys.split(',');
+      return keys
+        .map((key: string) => key.trim())
+        .filter((key: string) => !isEmpty(key));
+    },
+    validation: z.string(),
+    option: new Option(
+      '-k, --public-keys <publicKeys>',
+      'Public keys to add to account',
     ),
   }),
 };
