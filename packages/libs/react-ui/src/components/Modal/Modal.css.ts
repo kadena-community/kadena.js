@@ -8,9 +8,9 @@ export const underlayClass = style([
     justifyContent: 'center',
     position: 'fixed',
     inset: 0,
+    backgroundColor: 'base.default',
   }),
   {
-    // TODO: Update to use token
-    backgroundColor: 'rgba(26, 26, 26, 0.8)',
+    backdropFilter: 'blur(12px)',
   },
 ]);
