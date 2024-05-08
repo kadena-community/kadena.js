@@ -178,7 +178,9 @@ export const SearchResults: FC<IProps> = ({
                 <div key={`${interaction.input}-${idx}`}>
                   <ReactMarkdown>{interaction?.output}</ReactMarkdown>
                   <Box marginBlockEnd="xxl">
-                    <Heading variant="h4">Sources:</Heading>
+                    <Heading variant="h4" transform="uppercase">
+                      Sources:
+                    </Heading>
                     {metadata.length > 1 && (
                       <BrowseSection>
                         {metadata.map((item, innerIdx) => {

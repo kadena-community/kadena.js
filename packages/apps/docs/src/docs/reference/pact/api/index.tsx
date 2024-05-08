@@ -13,7 +13,9 @@ const Home: FC<ILayout> = () => {
   const specs = apiSpecs as unknown as OpenAPIV3.Document;
   return (
     <>
-      <Heading as="h1">Pact OpenAPI</Heading>
+      <Heading as="h1" transform="uppercase">
+        Pact OpenAPI
+      </Heading>
       <Specs specs={specs} options={options} />;
     </>
   );

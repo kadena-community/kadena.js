@@ -38,7 +38,7 @@ export const DocsCard: FC<IProps> = ({
         backgroundVariant[background],
       )}
     >
-      <Heading as="h3" variant="h5">
+      <Heading as="h3" variant="h5" transform="uppercase">
         {label}
       </Heading>
       <Box marginBlock="md" className={descriptionWrapperClass}>
