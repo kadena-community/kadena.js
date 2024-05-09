@@ -174,13 +174,20 @@ export async function signWithWallet(
 
   assertCommandError(results);
 
+  log.output(
+    null,
+    results.data.commands.map((tx) => ({
+      filePath: tx.path,
+      command: tx.command,
+    })),
+  );
+
   results.data.commands?.forEach((tx, i) => {
     const cmd = JSON.parse(results.data.commands[i]?.command?.cmd ?? '{}');
     const code = JSON.stringify(cmd?.payload?.exec?.code, null, 2);
-    const codeMinified = JSON.stringify(cmd?.payload?.exec?.code);
 
     log.info(log.color.green(`Transaction executed code: `));
-    log.output(code, codeMinified);
+    log.info(code);
 
     const hash = results.data.commands[i]?.command?.hash;
     if (hash) {

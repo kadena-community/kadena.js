@@ -6,6 +6,7 @@ import {
   kadenaGenKeypair,
   kadenaGenMnemonic,
   kadenaMnemonicToRootKeypair,
+  kadenaSign,
   kadenaSignFromRootKey,
 } from '../index.js';
 
@@ -135,7 +136,17 @@ describe('kadenaGenKeypair', () => {
 
     expect(signature).toBeTruthy();
     expect(Buffer.from(signature).toString('hex')).toBe(
-      '4a9a35634ca8b1efd0d84053bf73d78dda4e59223d230869ea7abbee8f923b723538f9a3ed13de31c8d629c97205a3becb15f5fdc71dc1dc4e42596b9a10d906',
+      'e3d3ffe85877a181487ef66acd4e2b5968fa4d055d81efcce812cfcee855d42547a962dc6a28a445f9da696ad2270b046b27a462d1f1ced6c7408b65a1a7fa0c',
+    );
+  });
+  it('should generate a valid signature with keypair', async () => {
+    const rootKey = await kadenaMnemonicToRootKeypair(PASSWORD, MNEMONIC);
+    const keypair = await kadenaGenKeypair(PASSWORD, rootKey, 1);
+    const signature = await kadenaSign(PASSWORD, 'hello', keypair.secretKey);
+
+    expect(signature).toBeTruthy();
+    expect(Buffer.from(signature).toString('hex')).toBe(
+      'e3d3ffe85877a181487ef66acd4e2b5968fa4d055d81efcce812cfcee855d42547a962dc6a28a445f9da696ad2270b046b27a462d1f1ced6c7408b65a1a7fa0c',
     );
   });
 });

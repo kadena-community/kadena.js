@@ -37,6 +37,6 @@ export const linkClass = style([
 
 export const descriptionClass = style([
   atoms({
-    color: 'text.subtlest.inverse.default',
+    color: 'text.subtlest.default',
   }),
 ]);

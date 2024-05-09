@@ -10,7 +10,7 @@ import {
 } from '../prompts/index.js';
 
 import type { ChainId } from '@kadena/types';
-import { join } from 'node:path';
+import { isAbsolute, join } from 'node:path';
 
 import {
   chainIdValidation,
@@ -196,7 +196,7 @@ export const globalOptions = {
     transform(value: string) {
       if (!value) return null;
       const file = value.endsWith('.json') ? value : `${value}.json`;
-      return join(process.cwd(), file);
+      return isAbsolute(file) ? file : join(process.cwd(), file);
     },
   }),
   directory: createOption({
@@ -225,7 +225,7 @@ export const securityOptions = {
     return createOption({
       key: 'passwordFile' as const,
       prompt: security.passwordPrompt(args),
-      validation: z.literal('-').or(z.object({ _password: z.string() })),
+      validation: z.string().or(z.object({ _password: z.string() })),
       option: new Option(
         '--password-file <passwordFile>',
         'Filepath to the password file',
@@ -240,7 +240,7 @@ export const securityOptions = {
     return createOption({
       key: 'newPasswordFile' as const,
       prompt: security.passwordPrompt(args),
-      validation: z.literal('-').or(z.object({ _password: z.string() })),
+      validation: z.string().or(z.object({ _password: z.string() })),
       option: new Option(
         '--new-password-file <newPasswordFile>',
         'Filepath to the new password file',

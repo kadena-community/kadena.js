@@ -50,14 +50,15 @@ export async function keyMnemonicPrompt(
 
 export async function keyAmountPrompt(): Promise<string> {
   return await input({
-    message: `Enter the amount of keys you want to generate. (alias-{amount} will increment) (default: 1)`,
+    message: `Enter the amount of keys you want to generate (alias-{amount} will increment) (default: 1):`,
     default: '1',
   });
 }
 
 export async function keyPairsPrompt(): Promise<string> {
   return await input({
-    message: 'Enter key pairs as a string publicKey=xxx,secretKey=xxx;...',
+    message:
+      'Enter key pairs as a string (e.g: publicKey=xxx,secretKey=xxx;...):',
     validate: function (input) {
       try {
         parseKeyPairsInput(input);

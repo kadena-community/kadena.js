@@ -5,6 +5,7 @@ import {
 } from '@prisma/client/runtime/library';
 import { GasLimitEstimationError } from '@services/chainweb-node/estimate-gas-limit';
 import { PactCommandError } from '@services/chainweb-node/utils';
+import { NetworkError } from '@services/network';
 import { GraphQLError } from 'graphql';
 import { ZodError } from 'zod';
 import { PrismaJsonColumnParsingError } from './prisma-json-columns';
@@ -130,6 +131,18 @@ export function normalizeError(error: unknown): GraphQLError {
           ? error.message
           : 'Chainweb Node was unable to estimate the gas limit for the transaction. Please check your input and try again.',
         ...(error.originalError && { data: error.originalError.stack }),
+      },
+    });
+  }
+
+  if (error instanceof NetworkError) {
+    return new GraphQLError('Network Error', {
+      extensions: {
+        type: error.name,
+        message: error.message,
+        description:
+          'The network request failed or it gave an unexpected response. Check the network and try again.',
+        data: error.stack,
       },
     });
   }

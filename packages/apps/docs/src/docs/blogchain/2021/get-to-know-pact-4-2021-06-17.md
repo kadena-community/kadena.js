@@ -137,7 +137,7 @@ action.
 It’s never been a better time to start learning Pact than now as the Kadena
 blockchain continues its rapid growth as the “home of DeFi” with every major
 use-case on its way to production before 2021 is out. Check out
-[the docs](/pact/reference), and upgrade by
+[docs.kadena.io](https://docs.kadena.io), and upgrade by
 [downloading it](https://github.com/kadena-io/pact/releases/tag/v4.0.1) or using
 brew upgrade kadena-io/pact/pact.
 

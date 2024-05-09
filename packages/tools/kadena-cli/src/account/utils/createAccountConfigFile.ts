@@ -1,10 +1,10 @@
 import yaml from 'js-yaml';
 import { services } from '../../services/index.js';
-import type { IAddAccountConfig } from '../types.js';
+import type { IAccountAliasFileConfig, IAddAccountConfig } from '../types.js';
 import { accountAliasFileSchema, formatZodErrors } from './accountHelpers.js';
 
 export async function writeAccountAlias(
-  config: IAddAccountConfig,
+  config: IAccountAliasFileConfig,
   filePath: string,
 ): Promise<void> {
   const { publicKeysConfig, predicate, accountName, fungible } = config;
@@ -50,7 +50,7 @@ export async function writeAccountAliasMinimal(
 
 export async function createAccountConfigFile(
   filePath: string,
-  config: IAddAccountConfig,
+  config: IAccountAliasFileConfig,
 ): Promise<string> {
   if (await services.filesystem.fileExists(filePath)) {
     throw new Error(`The account configuration "${filePath}" already exists.`);
