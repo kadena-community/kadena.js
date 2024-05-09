@@ -179,7 +179,6 @@ describe('account add type wallet', () => {
       checkbox: {
         'Select public keys to add to account(index - alias - publickey):': [0],
       },
-      verbose: true,
     });
 
     await runCommand('account add');

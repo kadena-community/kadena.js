@@ -10,6 +10,7 @@ import { getNetworkFiles } from '../../constants/networks.js';
 import { ensureNetworksConfiguration } from '../../networks/utils/networkHelpers.js';
 import { services } from '../../services/index.js';
 import { KadenaError } from '../../services/service-error.js';
+import { writeTemplatesToDisk } from '../../tx/commands/templates/templates.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { notEmpty } from '../../utils/globalHelpers.js';
 import { globalOptions, securityOptions } from '../../utils/globalOptions.js';
@@ -55,6 +56,7 @@ export const createConfigInitCommand: (
     services.config.setDirectory(location);
 
     await ensureNetworksConfiguration(location);
+    await writeTemplatesToDisk();
 
     log.info(log.color.green('Created configuration directory:\n'));
     log.info(`  ${location}\n`);

@@ -1,4 +1,5 @@
 import yaml from 'js-yaml';
+import path from 'node:path';
 import { services } from '../../services/index.js';
 import type { IAccountAliasFileConfig, IAddAccountConfig } from '../types.js';
 import { accountAliasFileSchema, formatZodErrors } from './accountHelpers.js';
@@ -8,7 +9,7 @@ export async function writeAccountAlias(
   filePath: string,
 ): Promise<void> {
   const { publicKeysConfig, predicate, accountName, fungible } = config;
-  await services.filesystem.ensureDirectoryExists(filePath);
+  await services.filesystem.ensureDirectoryExists(path.dirname(filePath));
   try {
     const aliasData = {
       name: accountName,
@@ -32,7 +33,7 @@ export async function writeAccountAliasMinimal(
   filePath: string,
 ): Promise<void> {
   const { publicKeysConfig, predicate, accountName, fungible } = config;
-  await services.filesystem.ensureDirectoryExists(filePath);
+  await services.filesystem.ensureDirectoryExists(path.dirname(filePath));
   try {
     const aliasData = {
       name: accountName,
