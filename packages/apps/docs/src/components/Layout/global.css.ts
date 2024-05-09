@@ -1,5 +1,10 @@
 import { darkThemeClass } from '@kadena/react-ui/styles';
-import { createVar, style } from '@vanilla-extract/css';
+import {
+  createVar,
+  globalFontFace,
+  globalStyle,
+  style,
+} from '@vanilla-extract/css';
 
 export const $$navMenu = createVar();
 export const $$footerMenu = createVar();
@@ -29,4 +34,12 @@ export const globalClass = style({
       },
     },
   },
+});
+const bodyFont = 'globalNeuHaasGrotesk';
+globalFontFace(bodyFont, {
+  src: `url("/fonts/neuhaas_grotesk_pro55.woff2?#iefix format('woff2')")`,
+});
+
+globalStyle('*:not(h1,h2,h3,h4,h5,h6,h7,h8)', {
+  fontFamily: `${bodyFont}!important`,
 });

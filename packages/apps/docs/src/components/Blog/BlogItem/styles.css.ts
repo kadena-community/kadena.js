@@ -42,7 +42,7 @@ export const link = style([
 
 export const footer = style([
   atoms({
-    color: 'text.subtlest.inverse.default',
+    color: 'text.subtlest.default',
   }),
   {
     marginBlockStart: tokens.kda.foundation.size.n3,
@@ -119,7 +119,7 @@ export const authorTitleClass = style([
   atoms({
     fontSize: 'md',
     fontWeight: 'secondaryFont.regular',
-    color: 'text.subtlest.inverse.default',
+    color: 'text.subtlest.default',
   }),
 ]);
 
