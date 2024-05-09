@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createTransaction } from '../commands/txCreateTransaction.js';
-import { testTransactions } from '../commands/txTestSignedTransaction.js';
+import { testTransactionAction } from '../commands/txTestSignedTransaction.js';
 import { signTransactionFileWithKeyPairAction } from '../utils/txSignWithKeypair.js';
 
 const publicKey =
@@ -53,17 +53,23 @@ describe('tx add', () => {
     });
     assertCommandError(signed);
 
-    const test = await testTransactions(
-      {
-        networkHost: 'https://api.testnet.chainweb.com',
-        networkId: 'testnet04',
-      },
-      '1',
-      [signed.data.commands[0].path],
-      true,
-    );
+    // TODO: not hardcode network details here
+    const test = await testTransactionAction({
+      transactionsWithDetails: [
+        {
+          command: signed.data.commands[0].command,
+          details: {
+            chainId: '1',
+            network: 'testnet',
+            networkId: 'testnet04',
+            networkHost: 'https://api.testnet.chainweb.com',
+            networkExplorerUrl: ' https://explorer.chainweb.com/testnet/tx/',
+          },
+        },
+      ],
+    });
     assertCommandError(test);
-    expect(test.data[0].result).toEqual({
+    expect(test.data.transactions[0].response?.result).toEqual({
       status: 'success',
       data: 'Write succeeded',
     });
