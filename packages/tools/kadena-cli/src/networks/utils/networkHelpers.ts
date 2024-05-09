@@ -76,7 +76,9 @@ export async function writeNetworks(
     );
   }
 
-  await services.filesystem.ensureDirectoryExists(networkFilePath);
+  await services.filesystem.ensureDirectoryExists(
+    path.dirname(networkFilePath),
+  );
   await services.filesystem.writeFile(networkFilePath, yaml.dump(options));
 }
 

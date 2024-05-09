@@ -57,6 +57,7 @@ const findKadenaDirectory = (searchDir: string): string | null => {
 
 export interface IConfigService {
   getDirectory(): string | null;
+  setDirectory(directory: string): void;
   // Key
   getPlainKey(filepath: string): Promise<IPlainKey | null>;
   getPlainKeys(directory?: string): Promise<IPlainKey[]>;
@@ -76,11 +77,20 @@ export class ConfigService implements IConfigService {
 
   public constructor(services: Services, directory?: string) {
     this.services = services;
-    this.setDirectory(directory);
+    this.discoverDirectory(directory);
+  }
+
+  public setDirectory(directory: string): void {
+    if (!directoryExists(directory)) {
+      log.warning(
+        `Config service initialized with directory that does not exist: ${directory}`,
+      );
+    }
+    this.directory = directory;
   }
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  private setDirectory(directory?: string): void {
+  private discoverDirectory(directory?: string): void {
     // Priority 1: directory passed in constructor
     if (directory !== undefined) {
       this.directory = directory;

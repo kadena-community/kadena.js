@@ -1,6 +1,5 @@
 import type { Dirent } from 'node:fs';
 import fs from 'node:fs/promises';
-import { dirname } from 'path';
 
 export interface IFileSystemService {
   readFile: (path: string) => Promise<string | null>;
@@ -48,14 +47,10 @@ export const fileSystemService: IFileSystemService = {
       return false;
     }
   },
-  async ensureDirectoryExists(path: string) {
-    if (await fileSystemService.directoryExists(path)) return;
+  async ensureDirectoryExists(directory: string) {
+    if (await fileSystemService.directoryExists(directory)) return;
 
-    // TODO: this is not very reliable, preferably `path` always is a directory
-    // directories can also have . in their name
-    const isFile = path.split('/').pop()?.includes('.') ?? false;
-
-    await fs.mkdir(isFile ? dirname(path) : path, {
+    await fs.mkdir(directory, {
       recursive: true,
     });
   },

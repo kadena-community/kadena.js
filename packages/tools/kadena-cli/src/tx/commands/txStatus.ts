@@ -16,12 +16,12 @@ export const getTxStatus = async ({
   requestKey,
   chainId,
   networkConfig,
-  txPoll,
+  poll,
 }: {
   requestKey: string;
   chainId: ChainId;
   networkConfig: Omit<INetworkCreateOptions, 'networkExplorerUrl'>;
-  txPoll: boolean;
+  poll: boolean;
 }): Promise<CommandResult<ICommandResult>> => {
   const notFoundErrorMessage = `No Transaction found for requestkey "${requestKey}" on network "${networkConfig.networkId}" and chain "${chainId}".`;
   try {
@@ -34,7 +34,7 @@ export const getTxStatus = async ({
       chainId: chainId,
       networkId: networkConfig.networkId,
     };
-    if (txPoll) {
+    if (poll) {
       result = await pollStatus(payload, {
         timeout: 60000,
       });
@@ -112,13 +112,13 @@ export const createTxStatusCommand: (
     txOptions.requestKey(),
     globalOptions.networkSelect({ isOptional: false }),
     globalOptions.chainId(),
-    txOptions.txPoll(),
+    txOptions.poll(),
   ],
   async (option, { collect }) => {
     const config = await collect(option);
     log.debug('status-tx:action', config);
 
-    const loader = config.txPoll
+    const loader = config.poll
       ? ora('Getting transaction...\n').start()
       : undefined;
     const result = await getTxStatus(config);

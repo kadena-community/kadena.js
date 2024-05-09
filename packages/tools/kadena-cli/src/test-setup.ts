@@ -16,7 +16,8 @@ beforeAll(async () => {
   );
   await ensureNetworksConfiguration(process.env.KADENA_DIR!);
   await writeTemplatesToDisk();
+
   server.listen({ onUnhandledRequest: 'warn' });
 });
-afterAll(() => server?.close());
-afterEach(() => server?.resetHandlers());
+afterAll(() => server.close());
+afterEach(() => server.resetHandlers());
