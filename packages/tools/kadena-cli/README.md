@@ -232,16 +232,6 @@ account, setting the stage for your transactions on the Kadena network.
 kadena config init [options]
 ```
 
-**Options** | **Description** | **Required** | 
-| ----------| --------------- | ------------ | 
-| --location | Path for the .kadena directory creation (e.g.,
-home directory or current working directory). | | 
-| --create-wallet | Confirm the creation of a new wallet. Set to true to enable. | | 
-| --wallet-name | Name for the new wallet | | 
-| --password-file | Path to a file containing the wallet's password, alternatively, passwords can be passed via stdin. | | 
-| --create-account | Enable the creation of an account using the first wallet key.| | 
-| --account-alias | Alias to store your account details | | 
-
 |**Options** | **Description** | **Required** | 
 | ---------- | --------------- | ------------ | 
 | --global | Initialize the .kadena directory in the current user's home directory. (~/.config/kadena) | | 
