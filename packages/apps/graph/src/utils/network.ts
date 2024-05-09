@@ -8,13 +8,13 @@ interface INetworkData {
 export let networkData: INetworkData;
 
 export async function getNetworkConfig(
-  newtorkHost = dotenv.NETWORK_HOST,
+  networkHost = dotenv.NETWORK_HOST,
 ): Promise<INetworkData> {
   if (networkData) {
     return networkData;
   }
 
-  const res = await fetch(`${newtorkHost}/info`);
+  const res = await fetch(`${networkHost}/info`);
   const data: { nodeVersion?: string; nodeApiVersion?: string } =
     await res.json();
 

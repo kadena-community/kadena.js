@@ -86,6 +86,15 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
       },
     }),
 
+    difficulty: t.field({
+      type: 'BigInt',
+      select: {
+        target: true,
+      },
+      description: 'The difficulty of the block.',
+      resolve: (parent) => 2n ** 256n / BigInt(parent.target.round().toFixed()),
+    }),
+
     // relations
     transactions: t.prismaConnection({
       type: Prisma.ModelName.Transaction,

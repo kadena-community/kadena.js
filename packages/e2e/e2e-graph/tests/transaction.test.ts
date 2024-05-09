@@ -17,7 +17,7 @@ import { base64Encode } from '../helpers/cryptography.helper';
 import { sendQuery } from '../helpers/request.helper';
 import { getTransactionsQuery } from '../queries/getTransactions';
 
-test.describe('Query: getTransactions', async () => {
+test.describe('Query: getTransactions', () => {
   test('Query: getTransactions - Same Chain Transfer', async ({ request }) => {
     // declare testcase scoped variables.
     let query: any;

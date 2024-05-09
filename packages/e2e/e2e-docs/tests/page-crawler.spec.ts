@@ -6,12 +6,12 @@ import TreeHelper from '@kadena-dev/e2e-base/src/helpers/docs/tree.helper';
 import { test } from '@playwright/test';
 
 const pages = [
-  'kadena',
+  'learn',
   'build',
-  'pact',
-  'chainweb',
-  'marmalade',
-  'contribute',
+  'deploy',
+  'participate',
+  'tutorials',
+  'reference',
 ];
 
 for (const pageToCheck of pages) {

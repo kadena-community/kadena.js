@@ -70,7 +70,7 @@ define constructs: **define-namespace**, and **namespace**. Upon defining a
 namespace, a user and admin governance protocol (a keyset or more generally, a
 guard) must be supplied in order to define the namespace and who may upload to
 it. For a more in-depth discussion, see the
-[Pact Language ReadTheDocs](/pact/reference/concepts#namespace-declarationh-1576233451).
+[Pact Language ReadTheDocs](/build/pact/advanced#namespace-declarationh-1576233451).
 
 All in all, the process is fairly simple. To define a namespace one must only
 issue the following:

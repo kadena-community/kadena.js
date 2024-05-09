@@ -1,5 +1,5 @@
 import type { Command } from 'commander';
-import { CLINAME } from '../constants/config.js';
+import { CLINAME, IS_TEST } from '../constants/config.js';
 import { CommandError, printCommandError } from './command.util.js';
 import type { OptionType, createOption } from './createOption.js';
 import { notEmpty } from './globalHelpers.js';
@@ -187,8 +187,8 @@ export const createCommand =
           log.debug(`Command ${name} allows unknown options`);
         }
 
-        // Automatically enable quiet mode if not in interactive environment
-        if (!process.stderr.isTTY) args.quiet = true;
+        // Automatically enable quiet mode if not in interactive and test environment
+        if (!process.stderr.isTTY && !IS_TEST) args.quiet = true;
 
         handleQuietOption(args, options);
 
@@ -274,13 +274,17 @@ export const createCommand =
           return;
         }
         log.error(`\nAn error occurred: ${error.message}\n`);
-        log.debug(error.stack);
-        log.info(
-          `Is this a bug? Let us know:\n${generateBugReportLink(
-            getCommandExecution(`${program.name()} ${name}`, args, values),
-            error.stack ?? error.message,
-          )}`,
-        );
+        if (IS_TEST) {
+          log.error(error.stack);
+        } else {
+          log.debug(error.stack);
+          log.info(
+            `Is this a bug? Let us know:\n${generateBugReportLink(
+              getCommandExecution(`${program.name()} ${name}`, args, values),
+              error.stack ?? error.message,
+            )}`,
+          );
+        }
         process.exitCode = 1;
       }
     });

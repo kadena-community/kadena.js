@@ -11,7 +11,7 @@ export const IS_TEST = process.env.VITEST === 'true';
 export const WORKING_DIRECTORY = process.cwd();
 const HOME_DIRECTORY = homedir();
 export const CWD_KADENA_DIR = join(WORKING_DIRECTORY, '.kadena');
-export const HOME_KADENA_DIR = join(HOME_DIRECTORY, '.kadena');
+export const HOME_KADENA_DIR = join(HOME_DIRECTORY, '.config/kadena');
 
 // wallet path
 export const WALLET_DIR = 'wallets';
@@ -42,6 +42,3 @@ export const MAX_CHARACTERS_LENGTH = 80;
 
 export const MAX_CHAIN_IDS: number = 20;
 export const MAX_CHAIN_VALUE: number = MAX_CHAIN_IDS - 1;
-
-export const INVALID_FILE_NAME_ERROR_MSG =
-  'Do not use these characters: \\ / : * ? " < > |. Please choose a different name without these characters';

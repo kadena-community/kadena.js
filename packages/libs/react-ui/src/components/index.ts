@@ -66,6 +66,7 @@ export {
   DialogContent,
   DialogFooter,
   DialogHeader,
+  DialogHeaderSubtitle,
   useDialog,
 } from './Dialog';
 export { Divider } from './Divider/Divider';
