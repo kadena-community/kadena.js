@@ -90,7 +90,7 @@ won’t _actually_ try to acquire it, which is an important way to protect
 functions from improper access.
 
 For a deeper dive, check out the
-[Pact Reference Docs for Capabilities](/pact/reference/concepts#guards-vs-capabilitiesh100483783).
+[Pact Reference Docs for Capabilities](/build/pact/advanced#guards-vs-capabilitiesh100483783).
 
 ## Generalized Module Governance
 

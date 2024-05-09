@@ -227,6 +227,7 @@ kadena config init [options]
 | --wallet-name    | Name for the new wallet                                                                            |              |
 | --password-file  | Path to a file containing the wallet's password, alternatively, passwords can be passed via stdin. |              |
 | --create-account | Enable the creation of an account using the first wallet key.                                      |              |
+| --account-alias  | Alias to store your account details            |              |
 
 ---
 
@@ -235,7 +236,7 @@ Examples
 Setup in a Specific Directory with a New Wallet and Account:
 
 ```
-kadena config init --location="/my-app/.kadena" --create-wallet="true" --wallet-name="my_first_wallet" --create-account="true"
+kadena config init --location="/my-app/.kadena" --create-wallet="true" --wallet-name="my_first_wallet" --create-account="true" --account-alias="dev_account"
 ```
 
 Setup Without Creating a Wallet or Account:
@@ -362,19 +363,22 @@ kadena wallet add [options]
 | **Options**                | **Description**                                | **Required** |
 | -------------------------- | ---------------------------------------------- | ------------ |
 | --wallet-name              | Set the name of the wallet                     |              |
-| --security-password        | Set the password for the wallet                |              |
-| --security-verify-password | Set the password for the wallet (verification) |              |
+| --password-file            | File path to the password file                 |              |
 | --legacy                   | Generate legacy wallet                         |              |
+| --create-account           | Create an account using the first wallet key   |              |
+| --account-alias            | Alias to store your account details            |              |
 
 example:
 
 ```
-kadena wallet add --wallet-name="kadenawallet" --security-password=1245678 --security-verify-password=1245678
+kadena wallet add --wallet-name="kadena_wallet" --password-file="./kadenawallet-pw.txt"
 ```
 
-password will be hidden after entry: --security-password=\*
-\--security-verify-password=\*
+example using wallet with account creation:
 
+```
+kadena wallet add --wallet-name="kadena_wallet" --password-file="./kadenawallet-pw.txt" --create-account=true --account-alias="dev_account"
+```
 ---
 
 ```
@@ -590,7 +594,6 @@ Tool to manage / fund accounts of fungibles (e.g. coin')
 | --------------- | --------------------------------------------------- | ----------------- |
 | add-manual      | Add an existing account to the CLI                  |                   |
 | add-from-wallet | Add an account from a key wallet                    |                   |
-| create          | create an account in mainnet on chain(nr) for token |                   |
 | details         | Get details of an account                           |                   |
 | fund            | Fund an existing/new account                        |                   |
 | name-to-address | Resolve a .kda name to a k:address (kadena names)   |                   |
@@ -640,43 +643,6 @@ example:
 
 ```
 kadena account add-from-wallet --account-alias="myalias" --wallet-name="mywallet" --fungible="coin" --network="mainnet" --chain-id="1" --public-keys="publickey" --predicate="keys-all"
-```
-
----
-
-### Creating an account on mainnet
-
-The kadena account create command allows you to create a new account on the
-mainnet network. This command is restricted to mainnet use and it doesn't
-support on other networks.
-
-If you would like to create an account on [testnet][16], please use the
-`kadena account fund` command.
-
-```
-kadena account create [options]
-```
-
-| **Options**    | **Description**                              | **Required** |
-| -------------- | -------------------------------------------- | ------------ |
-| --account-name | Provide an account name                      | No           |
-| --fungible     | Fungible e.g coin                            | No           |
-| --chain-id     | Chain to be used                             |              |
-| --public-keys  | Comma separated list of public keys          |              |
-| --predicate    | keys-all, keys-any, keys-2, Custom predicate |              |
-
-example:
-
-Create an account without specifying a name:
-
-```
-kadena account create --account-name="" --public-keys="YOUR_PUBLIC_KEY" --predicate="keys-any" --chain-id="0"
-```
-
-Create an account with a name
-
-```
-kadena account create --account-name="mainnet_test_account" --public-keys="YOUR_PUBLIC_KEY" --predicate="keys-any" --chain-id="0" --fungible="coin
 ```
 
 ---

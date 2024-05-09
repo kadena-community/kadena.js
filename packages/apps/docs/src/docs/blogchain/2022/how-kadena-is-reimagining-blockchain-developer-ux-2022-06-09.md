@@ -76,7 +76,7 @@ development. Here are some major reasons why:
   which makes it the most advanced and fastest blockchain platform in the world.
   Kadena is currently the only proof of work platform capable of scaling to
   settle the 9+ million trades executed daily on the New York Stock Exchange.
-  Kadena is also built on [Pact](/pact/beginner) — the first truly human
+  Kadena is also built on [Pact](/build/pact) — the first truly human
   readable smart contract language.
 
 - Second, we’ve brought together a passionate community of 100s of builders,

@@ -43,11 +43,13 @@ export const TitleHeader: FC<IProps> = ({ title, subTitle, avatar }) => {
                 alt={`avatar: ${title}`}
               />
             )}
-            <Heading as="h1">{title}</Heading>
+            <Heading as="h1" transform="uppercase">
+              {title}
+            </Heading>
           </Stack>
           {subTitle !== undefined && (
             <span className={subheaderClass}>
-              <Heading as="h2" variant="h6">
+              <Heading as="h2" variant="h6" transform="uppercase">
                 {subTitle}
               </Heading>
             </span>

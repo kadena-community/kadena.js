@@ -16,7 +16,7 @@ export const createExportCommand: (program: Command, version: string) => void =
       securityOptions.createPasswordOption({
         message: 'Enter the wallet password:',
       }),
-      walletOptions.keyIndex(),
+      walletOptions.keyIndex({ isOptional: false }),
     ],
     async (option) => {
       const { walletNameConfig: wallet } = await option.walletName();
