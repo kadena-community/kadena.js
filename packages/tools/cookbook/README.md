@@ -1,6 +1,6 @@
 <!-- genericHeader start -->
 
-# @kadena/cookbook
+# @kadena/cookbook 2
 
 Demonstrates common use cases for @kadena/client and @kadena/pact-cli for smart
 contracts
