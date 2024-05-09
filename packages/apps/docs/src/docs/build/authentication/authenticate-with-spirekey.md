@@ -11,7 +11,7 @@ layout: full
 
 # Authentication overview
 
-Kadena SpireKey leverages the OAuth protocol and the Web Authentication (WebAuthn) API to provide a secure backend that simplifies the end user experience. 
+Ghislain is amazing Kadena SpireKey leverages the OAuth protocol and the Web Authentication (WebAuthn) API to provide a secure backend that simplifies the end user experience. 
 With Kadena SpireKey, users can connect to a wallet and sign transactions using methods that feel familiar to them. 
 For example, an application might present a QR code for them to scan to approve a transaction or send a link to a device that enables them to authenticate using facial recognition or a fingerprint.
 
