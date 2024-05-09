@@ -81,9 +81,10 @@ prefill a question by filling the flag
 
 ### list of global commands and flags
 
-|         | description                                       |
-| ------- | ------------------------------------------------- |
-| --quiet | Eliminating interactive prompts and confirmations |
+|         | description                                                |
+| ------- | ---------------------------------------------------------- |
+| --quiet | Eliminating interactive prompts and confirmations          |
+| --json  | Adds relevant result data in json format to stdout stream. |
 
 ## Quiet Mode
 
@@ -97,6 +98,22 @@ can run smoothly and efficiently, without the need for manual intervention.
 ```
 kadena [command] --quiet
 kadena [command] -q
+```
+
+## JSON output
+
+Using `--json` or `--yaml` will output relevant command result data in json or
+yaml format on stdout. This can be used to pipe into a file or other programs.
+Do be aware that this does not remove the regular logging which happens on
+stderr. It will not get in the way of piping since that only uses stdout by
+default. You can disable the other logging by using the `KADENA_LOG=output`
+environment variable. This does still print warnings or errors if they are
+present.
+
+Example usage
+
+```
+kadena wallet list --wallet-name="all" --json
 ```
 
 ---
@@ -201,9 +218,10 @@ Available subjects
 
 Tool for setting up and managing the CLI configuration
 
-| **Subcommand** | **Description**            | **Default value** |
-| -------------- | -------------------------- | ----------------- |
-| init           | initialize default project |                   |
+| **Subcommand** | **Description**                       |
+| -------------- | ------------------------------------- |
+| init           | initialize project configuration      |
+| path           | Print current used configuration path |
 
 ### Initializing the CLI configuration
 
@@ -220,29 +238,50 @@ account, setting the stage for your transactions on the Kadena network.
 kadena config init [options]
 ```
 
-| **Options**      | **Description**                                                                                    | **Required** |
-| ---------------- | -------------------------------------------------------------------------------------------------- | ------------ |
-| --location       | Path for the .kadena directory creation (e.g., home directory or current working directory).       |              |
-| --create-wallet  | Confirm the creation of a new wallet. Set to true to enable.                                       |              |
-| --wallet-name    | Name for the new wallet                                                                            |              |
-| --password-file  | Path to a file containing the wallet's password, alternatively, passwords can be passed via stdin. |              |
-| --create-account | Enable the creation of an account using the first wallet key.                                      |              |
-| --account-alias  | Alias to store your account details            |              |
+| **Options**      | **Description**                                                                                   | **Required** |
+| ---------------- | ------------------------------------------------------------------------------------------------- | ------------ |
+| --global         | Initialize the .kadena directory in the current user's home directory. (~/.config/kadena)         |              |
+| --create-wallet  | Confirm the creation of a new wallet. Set to true to enable.                                      |              |
+| --wallet-name    | Name for the new wallet.                                                                          |              |
+| --password-file  | Path to a file containing the wallet's password, alternatively, password can be passed via stdin. |              |
+| --legacy         | Use ChainWeaver based key derivation when creating a wallet.                                      |              |
+| --create-account | Enable the creation of an account using the first wallet key.                                     |              |
+| --account-alias  | Alias to store your account details, if creating an account.                                      |              |
 
 ---
 
-Examples
+### Working directory and home directory
 
-Setup in a Specific Directory with a New Wallet and Account:
+**Local:** by default the config is written to `.kadena` and this is accessible
+from anywhere in this directory. For example running `kadena config init` in
+`/home/user/projects/my-kadena-project` will allow you to access this
+configuration from anywhere inside that project directory.
+
+**Global:** if passing the `--global` (or `-g`) flag the configuration is stored
+in your home directory in `.config/kadena`. This will allow you to use this
+configuration from anywhere on your system. Do be aware local configurations
+have priority. You can use `kadena config path` to validate which path is being
+used when in a certain directory.
+
+**Examples**
+
+Setup in a the current working directory with a new Wallet and Account:
 
 ```
-kadena config init --location="/my-app/.kadena" --create-wallet="true" --wallet-name="my_first_wallet" --create-account="true" --account-alias="dev_account"
+kadena config init --create-wallet="true" --wallet-name="my_first_wallet" --create-account="true" --account-alias="dev_account"
 ```
 
-Setup Without Creating a Wallet or Account:
+Setup in the home user directory (~/.config/kadena). This will allow you to use
+the cli from anywhere and use this configuration.
 
 ```
-kadena config init --location="/my-app/.kadena" --create-wallet="false"
+kadena config init --global
+```
+
+Setup without creating a Wallet or Account:
+
+```
+kadena config init --create-wallet="false"
 ```
 
 Note: All configurations will be stored within the specified .kadena/ folder,
@@ -252,13 +291,13 @@ ensuring your settings are organized and easily accessible.
 
 Tool to add and manage networks
 
-| **Subcommand** | **Description**             | **Default value** |
-| -------------- | --------------------------- | ----------------- |
-| list           | List all available networks |                   |
-| update         | Manage networks             |                   |
-| add            | Add new network             |                   |
-| set-default    | Set default network         |                   |
-| delete         | Delete existing network     |                   |
+| **Subcommand** | **Description**                                             | **Default value** |
+| -------------- | ----------------------------------------------------------- | ----------------- |
+| list           | List all available networks                                 |                   |
+| update         | Update properties of an existing network                    |                   |
+| add            | Add new network                                             |                   |
+| set-default    | Set a network to be the default choice in selection prompts |                   |
+| delete         | Delete existing network                                     |                   |
 
 ---
 
@@ -268,6 +307,7 @@ kadena network update [options]
 
 | **Options**            | **Description**                         | **Required** |
 | ---------------------- | --------------------------------------- | ------------ |
+| --network              | The network to update                   |              |
 | --network-name         | Update the name of the network          |              |
 | --network-id           | Update the id of the network            |              |
 | --network-host         | Update the host for the network         |              |
@@ -276,7 +316,7 @@ kadena network update [options]
 example:
 
 ```
-kadena network update --network-name="mainnet" --network-id="mainnet01" --network-host="https://api.chainweb.com" --network-explorer-url="https://explorer.chainweb.com/mainnet/tx/
+kadena network update --network="mainnet" --network-id="mainnet01" --network-host="https://api.chainweb.com" --network-explorer-url="https://explorer.chainweb.com/mainnet/tx/
 ```
 
 ---
@@ -360,13 +400,13 @@ Tool to generate and manage wallets
 kadena wallet add [options]
 ```
 
-| **Options**                | **Description**                                | **Required** |
-| -------------------------- | ---------------------------------------------- | ------------ |
-| --wallet-name              | Set the name of the wallet                     |              |
-| --password-file            | File path to the password file                 |              |
-| --legacy                   | Generate legacy wallet                         |              |
-| --create-account           | Create an account using the first wallet key   |              |
-| --account-alias            | Alias to store your account details            |              |
+| **Options**      | **Description**                              | **Required** |
+| ---------------- | -------------------------------------------- | ------------ |
+| --wallet-name    | Set the name of the wallet                   |              |
+| --password-file  | File path to the password file               |              |
+| --legacy         | Generate legacy wallet                       |              |
+| --create-account | Create an account using the first wallet key |              |
+| --account-alias  | Alias to store your account details          |              |
 
 example:
 
@@ -379,6 +419,7 @@ example using wallet with account creation:
 ```
 kadena wallet add --wallet-name="kadena_wallet" --password-file="./kadenawallet-pw.txt" --create-account=true --account-alias="dev_account"
 ```
+
 ---
 
 ```
@@ -590,21 +631,22 @@ kadena key list"
 
 Tool to manage / fund accounts of fungibles (e.g. coin')
 
-| **Subcommand**  | **Description**                                     | **Default value** |
-| --------------- | --------------------------------------------------- | ----------------- |
-| add             | Add an account alias to the CLI                     |                   |
-| details         | Get details of an account                           |                   |
-| fund            | Fund an existing/new account                        |                   |
-| name-to-address | Resolve a .kda name to a k:address (kadena names)   |                   |
-| address-to-name | Resolve a k:address to a .kda name (kadena names)   |                   |
-| list            | List available account(s)                           |                   |
-| delete          | Delete existing account(s)                          |                   |
+| **Subcommand**  | **Description**                                   | **Default value** |
+| --------------- | ------------------------------------------------- | ----------------- |
+| add             | Add an account alias to the CLI                   |                   |
+| details         | Get details of an account                         |                   |
+| fund            | Fund an existing/new account                      |                   |
+| name-to-address | Resolve a .kda name to a k:address (kadena names) |                   |
+| address-to-name | Resolve a k:address to a .kda name (kadena names) |                   |
+| list            | List available account(s)                         |                   |
+| delete          | Delete existing account(s)                        |                   |
 
 ---
 
 ### Account add command
 
-Adds a new account with customizable parameters based on the specified type(wallet or manual).
+Adds a new account with customizable parameters based on the specified
+type(wallet or manual).
 
 ```
 kadena account add [options]
@@ -612,15 +654,14 @@ kadena account add [options]
 
 Common Options
 
-| **Options**     | **Description**                                        | **Required** |
-| --------------- | ------------------------------------------------------ | ------------ |
-| --type        | Method to add account details (`manual` or `wallet`)   |              |
-| --account-alias | Alias for the account                                  |              |
-| --account-name  | Provide account name                                   |              |
-| --fungible      | Fungible module name (default: coin)                   |              |
-| --public-keys   | Comma separated list of public keys                    |              |
-| --predicate     | keys-all, keys-any, keys-2, Custom predicate           |              |
-
+| **Options**     | **Description**                                      | **Required** |
+| --------------- | ---------------------------------------------------- | ------------ |
+| --type          | Method to add account details (`manual` or `wallet`) |              |
+| --account-alias | Alias for the account                                |              |
+| --account-name  | Provide account name                                 |              |
+| --fungible      | Fungible module name (default: coin)                 |              |
+| --public-keys   | Comma separated list of public keys                  |              |
+| --predicate     | keys-all, keys-any, keys-2, Custom predicate         |              |
 
 #### Options for Type "wallet"
 
@@ -628,11 +669,11 @@ These options are required when the account type is set to `wallet`:
 
 | **Options**     | **Description**                                                                                    | **Required** |
 | --------------- | -------------------------------------------------------------------------------------------------- | ------------ |
-| --wallet-name   | Provide the name of the wallet                                                                   |              |
+| --wallet-name   | Provide the name of the wallet                                                                     |              |
 | --password-file | Path to a file containing the wallet's password, alternatively, passwords can be passed via stdin. |
 
-
-`--password-file` option is required only when you choose auto generate keys from wallet.
+`--password-file` option is required only when you choose auto generate keys
+from wallet.
 
 example for adding an account with wallet type:
 
@@ -648,17 +689,19 @@ kadena account add --type="wallet" --wallet-name="wallet-name" --account-alias="
 
 #### Options for Type "manual"
 
-| **Options**     | **Description**                              | **Required** |
-| --------------- | -------------------------------------------- | ------------ |
-| --verify        | Verify account details on the blockchain.    |              |
-| --network       | Name of the network to be used               |              |
-| --chain-id      | Chain to be used                             |              |
+| **Options** | **Description**                           | **Required** |
+| ----------- | ----------------------------------------- | ------------ |
+| --verify    | Verify account details on the blockchain. |              |
+| --network   | Name of the network to be used            |              |
+| --chain-id  | Chain to be used                          |              |
 
-As part of manual option only if you want to verify the account details on the blockchain, you need to provide the network and chain-id.
+As part of manual option only if you want to verify the account details on the
+blockchain, you need to provide the network and chain-id.
 
 ---
 
-example for adding an account with manual type and verifying on chain(assume if account already exists on chain):
+example for adding an account with manual type and verifying on chain(assume if
+account already exists on chain):
 
 ```
 kadena account add --type=manual --account-alias=account-add-test-manual --account-name=k:account-name --fungible=coin --verify --network=testnet --chain-id=1

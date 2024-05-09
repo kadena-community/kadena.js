@@ -58,7 +58,7 @@ export async function printWalletKeys(
 
   if (table.length > 0) {
     log.info(`\nWallet: ${wallet.alias}${wallet.legacy ? ' (legacy)' : ''}`);
-    log.info(table.toString(), wallet.keys);
+    log.info(table.toString());
   } else {
     log.info(`\nWallet: ${wallet.alias}${wallet.legacy ? ' (legacy)' : ''}`);
     log.info('No valid keys found');
