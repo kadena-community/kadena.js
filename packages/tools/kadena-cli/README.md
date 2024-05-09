@@ -291,13 +291,13 @@ ensuring your settings are organized and easily accessible.
 
 Tool to add and manage networks
 
-| **Subcommand** | **Description**             | **Default value** |
-| -------------- | --------------------------- | ----------------- |
-| list           | List all available networks |                   |
-| update         | Manage networks             |                   |
-| add            | Add new network             |                   |
-| set-default    | Set default network         |                   |
-| delete         | Delete existing network     |                   |
+| **Subcommand** | **Description**                                             | **Default value** |
+| -------------- | ----------------------------------------------------------- | ----------------- |
+| list           | List all available networks                                 |                   |
+| update         | Update properties of an existing network                    |                   |
+| add            | Add new network                                             |                   |
+| set-default    | Set a network to be the default choice in selection prompts |                   |
+| delete         | Delete existing network                                     |                   |
 
 ---
 
@@ -307,6 +307,7 @@ kadena network update [options]
 
 | **Options**            | **Description**                         | **Required** |
 | ---------------------- | --------------------------------------- | ------------ |
+| --network              | The network to update                   |              |
 | --network-name         | Update the name of the network          |              |
 | --network-id           | Update the id of the network            |              |
 | --network-host         | Update the host for the network         |              |
@@ -315,7 +316,7 @@ kadena network update [options]
 example:
 
 ```
-kadena network update --network-name="mainnet" --network-id="mainnet01" --network-host="https://api.chainweb.com" --network-explorer-url="https://explorer.chainweb.com/mainnet/tx/
+kadena network update --network="mainnet" --network-id="mainnet01" --network-host="https://api.chainweb.com" --network-explorer-url="https://explorer.chainweb.com/mainnet/tx/
 ```
 
 ---
