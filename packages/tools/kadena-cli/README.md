@@ -10,8 +10,6 @@ transactions, etc.)
   <img src="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
 </picture>
 
-<!-- genericHeader end -->
-
 - [@kadena/kadena-cli][1]
 - [KADENA CLI][2]
   - [installation from npm][3]
@@ -28,7 +26,7 @@ transactions, etc.)
   - [kadena dapp][14]
   - [Supported Templates][15]
 
-<hr>
+<!-- genericHeader end -->
 
 # KADENA CLI
 

@@ -403,7 +403,8 @@ pages:
             file: /reference/kadena-client/client-utils.md
           kadena-cli:
             url: /kadena-cli
-            file: /reference/kadena-client/kadena-cli.md
+            file: /packages/tools/kadena-cli/README.md
+            repo: https://github.com/kadena-community/kadena.js
           pactjs-old:
             url: /pactjs-old
             file: /reference/kadena-client/pactjs-api.md
