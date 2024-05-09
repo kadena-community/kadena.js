@@ -580,22 +580,15 @@ kadena key list"
 
 Tool to manage / fund accounts of fungibles (e.g. coin')
 
-<<<<<<< HEAD | **Subcommand** | **Description** | | --------------- |
-------------------------------------------------- | | add | Add an existing
-account locally to the CLI | | delete | Delete existing account(s) | | details |
-Get details of an account | | fund | Fund an existing/new account | | list |
-List available account(s) | | name-to-address | Resolve a .kda name to a
-k:address (kadena names) | | address-to-name | Resolve a k:address to a .kda
-name (kadena names) | ======= | **Subcommand** | **Description** | **Default
-value** | | --------------- |
---------------------------------------------------- | ----------------- | | add
-| Add an account alias to the CLI | | | details | Get details of an account | |
-| fund | Fund an existing/new account | | | name-to-address | Resolve a .kda
-name to a k:address (kadena names) | | | address-to-name | Resolve a k:address
-to a .kda name (kadena names) | | | list | List available account(s) | | |
-delete | Delete existing account(s) | |
-
-> > > > > > > main
+| **Subcommand**  | **Description**                                   |
+| --------------- | ------------------------------------------------- |
+| add             | Add an existing account locally to the CLI        |
+| delete          | Delete existing account(s)                        |
+| details         | Get details of an account                         |
+| fund            | Fund an existing/new account                      |
+| list            | List available account(s)                         |
+| name-to-address | Resolve a .kda name to a k:address (kadena names) |
+| address-to-name | Resolve a k:address to a .kda name (kadena names) |
 
 ---
 
