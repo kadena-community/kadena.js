@@ -176,8 +176,8 @@ export const txOptions = {
       'Select a signing method',
     ),
   }),
-  txPoll: createOption({
-    key: 'txPoll' as const,
+  poll: createOption({
+    key: 'poll' as const,
     prompt: ({ poll }): boolean => {
       return poll === true || poll === 'true' || false;
     },
@@ -189,6 +189,9 @@ export const txOptions = {
     prompt: txRequestKeyPrompt,
     defaultIsOptional: false,
     validation: requestKeyValidation,
+    transform: (value: string) => {
+      return value.trim();
+    },
     option: new Option(
       '-k, --request-key <requestKey>',
       'Request key of the transaction',

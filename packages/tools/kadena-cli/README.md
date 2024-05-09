@@ -580,38 +580,93 @@ kadena key list"
 
 Tool to manage / fund accounts of fungibles (e.g. coin')
 
-| **Subcommand**  | **Description**                                   |
-| --------------- | ------------------------------------------------- |
-| add             | Add an existing account locally to the CLI        |
-| delete          | Delete existing account(s)                        |
-| details         | Get details of an account                         |
-| fund            | Fund an existing/new account                      |
-| list            | List available account(s)                         |
-| name-to-address | Resolve a .kda name to a k:address (kadena names) |
-| address-to-name | Resolve a k:address to a .kda name (kadena names) |
+<<<<<<< HEAD | **Subcommand** | **Description** | | --------------- |
+------------------------------------------------- | | add | Add an existing
+account locally to the CLI | | delete | Delete existing account(s) | | details |
+Get details of an account | | fund | Fund an existing/new account | | list |
+List available account(s) | | name-to-address | Resolve a .kda name to a
+k:address (kadena names) | | address-to-name | Resolve a k:address to a .kda
+name (kadena names) | ======= | **Subcommand** | **Description** | **Default
+value** | | --------------- |
+--------------------------------------------------- | ----------------- | | add
+| Add an account alias to the CLI | | | details | Get details of an account | |
+| fund | Fund an existing/new account | | | name-to-address | Resolve a .kda
+name to a k:address (kadena names) | | | address-to-name | Resolve a k:address
+to a .kda name (kadena names) | | | list | List available account(s) | | |
+delete | Delete existing account(s) | |
+
+> > > > > > > main
 
 ---
+
+### Account add command
+
+Adds a new account with customizable parameters based on the specified
+type(wallet or manual).
 
 ```
 kadena account add [options]
 ```
 
-| **Options**     | **Description**                                                         | **Required** |
-| --------------- | ----------------------------------------------------------------------- | ------------ |
-| --type          | Specify the method to add account details: "manual or wallet"           | Yes          |
-| --account-alias | Alias to store your account details                                     | Yes          |
-| --fungible      | Fungible module name (default: coin)                                    | Yes          |
-| --predicate     | Account keyset predicate (keys-all, keys-any, keys-2, Custom predicate) | Yes          |
-| --public-keys   | Public keys to add to account                                           | Yes          |
-| --verify        | Verify account details on chain                                         |              |
-| --network       | Kadena network (e.g. "mainnet")                                         | Yes          |
-| --chain-id      | Chain id (e.g. 0)                                                       | Yes          |
-| --account-name  | Account name                                                            | Yes          |
+Common Options
 
-example: (wallet)
+| **Options**     | **Description**                                      | **Required** |
+| --------------- | ---------------------------------------------------- | ------------ |
+| --type          | Method to add account details (`manual` or `wallet`) |              |
+| --account-alias | Alias for the account                                |              |
+| --account-name  | Provide account name                                 |              |
+| --fungible      | Fungible module name (default: coin)                 |              |
+| --public-keys   | Comma separated list of public keys                  |              |
+| --predicate     | keys-all, keys-any, keys-2, Custom predicate         |              |
+
+#### Options for Type "wallet"
+
+These options are required when the account type is set to `wallet`:
+
+| **Options**     | **Description**                                                                                    | **Required** |
+| --------------- | -------------------------------------------------------------------------------------------------- | ------------ |
+| --wallet-name   | Provide the name of the wallet                                                                     |              |
+| --password-file | Path to a file containing the wallet's password, alternatively, passwords can be passed via stdin. |
+
+`--password-file` option is required only when you choose auto generate keys
+from wallet.
+
+example for adding an account with wallet type:
 
 ```
-kadena account add --type="wallet" --wallet-name="mywalletname" --account-alias="myaccountalias" --fungible="coin" --public-keys="mypublickey" --predicate="keys-all"
+kadena account add --type="wallet" --wallet-name="wallet_name" --account-alias="account_alias" --fungible="coin" --public-keys="7c8939951b61614c30f837d7b02fe4982565962b5665d0e0f836b79720747cb2" --predicate="keys-all"
+```
+
+example for adding an account with wallet type and auto generate keys:
+
+```
+kadena account add --type="wallet" --wallet-name="wallet-name" --account-alias="account_alias_testing" --fungible="coin" --public-keys="your_public_key,_generate_" --predicate="keys-all" --password-file="./kadenawallet-pw.txt"
+```
+
+#### Options for Type "manual"
+
+| **Options** | **Description**                           | **Required** |
+| ----------- | ----------------------------------------- | ------------ |
+| --verify    | Verify account details on the blockchain. |              |
+| --network   | Name of the network to be used            |              |
+| --chain-id  | Chain to be used                          |              |
+
+As part of manual option only if you want to verify the account details on the
+blockchain, you need to provide the network and chain-id.
+
+---
+
+example for adding an account with manual type and verifying on chain(assume if
+account already exists on chain):
+
+```
+kadena account add --type=manual --account-alias=account-add-test-manual --account-name=k:account-name --fungible=coin --verify --network=testnet --chain-id=1
+```
+
+example for adding an account with manual type and not verifying on chain:
+
+```
+kadena account add --type="manual" --account-alias="account-add-test-manual-no-verify" --account-name="k:account-name" --fungible="coin" --public-keys="your_key_1, your_key_2" --predicate="keys-all"
 ```
 
 ---
