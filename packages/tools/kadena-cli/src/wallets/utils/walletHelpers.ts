@@ -61,3 +61,22 @@ export const createAccountAliasByPublicKey = async (
     accountFilepath,
   };
 };
+
+/** find `amount` of free indexes starting at a `startIndex` while excluding indexes already in use by `existingIndexes` */
+export function findFreeIndexes(
+  amount: number,
+  startIndex: number,
+  existingIndexes: number[],
+): number[] {
+  const freeNumbers = [];
+  let currentNumber = startIndex;
+
+  while (freeNumbers.length < amount) {
+    if (!existingIndexes.includes(currentNumber)) {
+      freeNumbers.push(currentNumber);
+    }
+    currentNumber++;
+  }
+
+  return freeNumbers;
+}
