@@ -40,9 +40,7 @@ complexity. Our philosophy centers on empowering developers with the tools they
 need to unlock the full potential of the kadena blockchain, in a clear and
 concise manner.
 
-# KADENA GUIDE
-
-Command Line Interface
+## KADENA CLI GUIDE
 
 Welcome to the Kadena CLI guide, your all-encompassing manual for mastering the
 Kadena command-line interface. This document is designed to unveil the full
@@ -53,19 +51,19 @@ Kadena CLI has one primary entry-point command: kadena, dedicated to application
 development, offering tools and commands tailored for building and managing
 Kadena-based applications.
 
-## installation from npm
+## Installation from npm
 
 ```npm
 npm install -g @kadena/kadena-cli
 ```
 
-## installation from pnpm
+## Installation from pnpm
 
 ```pnpm
 pnpm install -g @kadena/kadena-cli
 ```
 
-## list of commands
+## List of commands
 
 Each command can be made interactive by not filling in the flags. You can
 prefill a question by filling the flag
@@ -113,8 +111,6 @@ Example usage
 ```
 kadena wallet list --wallet-name="all" --json
 ```
-
----
 
 ## Legacy Mode
 
