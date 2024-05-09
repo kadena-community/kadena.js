@@ -1,5 +1,5 @@
 import type { ChainId } from '@kadena/types';
-import { parse } from 'node:path';
+import { basename, parse } from 'node:path';
 import {
   chainIdRangeValidation,
   fundAmountValidation,
@@ -19,6 +19,7 @@ import {
   isNotEmptyString,
   isValidFilename,
   maskStringPreservingStartAndEnd,
+  notEmpty,
   truncateText,
 } from '../utils/globalHelpers.js';
 import { checkbox, input, select } from '../utils/prompts.js';
@@ -45,13 +46,21 @@ export const publicKeysPrompt: IPrompt<string> = async (
 export const accountAliasPrompt: IPrompt<string> = async () =>
   await input({
     message: 'Enter an alias for an account:',
-    validate: function (value: string) {
+    validate: async function (value: string) {
       if (!value || value.trim().length < 3) {
         return 'Alias must be minimum at least 3 characters long.';
       }
 
       if (!isValidFilename(value)) {
         return `Alias is used as a filename. ${INVALID_FILE_NAME_ERROR_MSG}`;
+      }
+
+      const allAccountAliases = (await getAllAccountNames()).map((account) =>
+        basename(account.alias, '.yaml'),
+      );
+
+      if (allAccountAliases.includes(value)) {
+        return `Alias "${value}" already exists. Please enter a different alias.`;
       }
 
       return true;
@@ -269,19 +278,16 @@ export const accountDeleteConfirmationPrompt: IPrompt<boolean> = async (
         ? 'all the selected aliases accounts'
         : `the ${selectedAccounts} alias account`;
 
-  return await select({
-    message: `Are you sure you want to delete ${selectedAccountMessage}?`,
-    choices: [
-      {
-        value: true,
-        name: 'Yes',
-      },
-      {
-        value: false,
-        name: 'No',
-      },
-    ],
+  const answer = await input({
+    message: `Are you sure you want to delete ${selectedAccountMessage}? '\n  type "yes" to confirm or "no" to cancel and press enter. \n`,
+    validate: (input) => {
+      if (input === 'yes' || input === 'no') {
+        return true;
+      }
+      return 'Please type "yes" to confirm or "no" to cancel.';
+    },
   });
+  return answer === 'yes';
 };
 
 export const chainIdPrompt: IPrompt<string> = async (
@@ -312,11 +318,19 @@ export const chainIdPrompt: IPrompt<string> = async (
   })) as ChainId;
 };
 
-export const selectPublicKeysFromWalletPrompt: IPrompt<string> = async (
+export const publicKeysForAccountAddPrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,
 ) => {
+  if (previousQuestions.type === 'manual') {
+    return publicKeysPrompt(previousQuestions, args, isOptional);
+  }
+
+  if (!notEmpty(previousQuestions.walletNameConfig)) {
+    throw new Error('Wallet config is not provided');
+  }
+
   const wallet = previousQuestions.walletNameConfig as IWallet;
   const keysList = [wallet].flatMap((wallet) => wallet.keys.map((key) => key));
   const selectedKeys = await checkbox({
@@ -345,4 +359,36 @@ export const selectPublicKeysFromWalletPrompt: IPrompt<string> = async (
     },
   });
   return selectedKeys.join(',');
+};
+
+export const accountTypeSelectionPrompt: IPrompt<string> = async () => {
+  return await select({
+    message: `How would you like to add the account locally?`,
+    choices: [
+      {
+        value: 'manual',
+        name: 'Manually - Provide public keys to add to account manually',
+      },
+      {
+        value: 'wallet',
+        name: 'Wallet - Provide public keys to add to account by selecting from a wallet',
+      },
+    ],
+  });
+};
+
+export const confirmAccountVerificationPrompt: IPrompt<boolean> = async () => {
+  return await select({
+    message: 'Do you want to verify the account on chain?',
+    choices: [
+      {
+        value: true,
+        name: 'Yes, verify the account on chain before adding',
+      },
+      {
+        value: false,
+        name: 'No, add the account without verifying on chain',
+      },
+    ],
+  });
 };

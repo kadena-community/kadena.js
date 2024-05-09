@@ -36,7 +36,9 @@ describe('delete wallet', () => {
     mockPrompts({
       select: {
         'Select a wallet': 'test',
-        'Are you sure': true,
+      },
+      input: {
+        'Are you sure you want to delete the wallet:': 'yes',
       },
     });
 

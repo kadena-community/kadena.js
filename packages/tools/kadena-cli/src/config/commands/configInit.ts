@@ -1,11 +1,16 @@
 import type { Command } from 'commander';
 import path from 'path';
 import { accountOptions } from '../../account/accountOptions.js';
-import { ACCOUNT_DIR } from '../../constants/config.js';
+import {
+  ACCOUNT_DIR,
+  CWD_KADENA_DIR,
+  HOME_KADENA_DIR,
+} from '../../constants/config.js';
 import { getNetworkFiles } from '../../constants/networks.js';
 import { ensureNetworksConfiguration } from '../../networks/utils/networkHelpers.js';
 import { Services } from '../../services/index.js';
 import { KadenaError } from '../../services/service-error.js';
+import { writeTemplatesToDisk } from '../../tx/commands/templates/templates.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { notEmpty } from '../../utils/globalHelpers.js';
 import { globalOptions, securityOptions } from '../../utils/globalOptions.js';
@@ -25,7 +30,7 @@ export const createConfigInitCommand: (
   'init',
   'Initialize default configuration of the Kadena CLI',
   [
-    configOptions.location(),
+    configOptions.global(),
     walletOptions.createWalletConfirmation(),
     walletOptions.walletName({ isOptional: false }),
     securityOptions.createPasswordOption({
@@ -37,8 +42,10 @@ export const createConfigInitCommand: (
     accountOptions.accountAlias({ isOptional: true }),
   ],
   async (option) => {
-    const { location } = await option.location();
-    log.debug('config init', { location });
+    const { global } = await option.global();
+    const location = global === true ? HOME_KADENA_DIR : CWD_KADENA_DIR;
+    log.debug('config init', { global, location });
+
     const services = new Services({
       configDirectory: location,
     });
@@ -51,6 +58,7 @@ export const createConfigInitCommand: (
     await services.filesystem.ensureDirectoryExists(location);
 
     await ensureNetworksConfiguration(location);
+    await writeTemplatesToDisk();
 
     log.info(log.color.green('Created configuration directory:\n'));
     log.info(`  ${location}\n`);

@@ -27,7 +27,7 @@ extraordinary achievements would not be possible without the hard work, visions
 and talent of its team members.
 
 Today, we will be taking a deep dive with Emily Pillmore, Kadena
-[Pact](/pact/beginner) Lead. We will be exploring her past experience, her
+[Pact](/build/pact) Lead. We will be exploring her past experience, her
 hobbies and interests, and her journey with Kadena.
 
 ### Tell us about a bit of yourself and what you do at Kadena

@@ -61,6 +61,6 @@ describe('createAccountName', () => {
         predicate: defaultConfigMock.predicate,
         networkConfig: defaultConfigMock.networkConfig,
       });
-    }).rejects.toThrow('There was an error creating the account name.');
+    }).rejects.toThrow('There was an error creating the account name:');
   });
 });

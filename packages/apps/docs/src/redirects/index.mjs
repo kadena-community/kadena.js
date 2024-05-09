@@ -7,8 +7,10 @@ import { marmaladePathUrlRedirects } from './paths/marmalade.mjs';
 import { pactPathUrlRedirects } from './paths/pact.mjs';
 import { rootPathUrlRedirects } from './paths/root.mjs';
 import { tagsPathUrlRedirects } from './paths/tags.mjs';
+import { version2PathUrlRedirects } from './paths/version2.mjs';
 
 const redirects = [
+  version2PathUrlRedirects,
   basicsPathUrlRedirects,
   contributePathUrlRedirects,
   marmaladePathUrlRedirects,

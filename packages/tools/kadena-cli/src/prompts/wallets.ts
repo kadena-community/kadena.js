@@ -9,10 +9,19 @@ import { input, select } from '../utils/prompts.js';
 export async function walletNamePrompt(): Promise<string> {
   return await input({
     message: `Enter your wallet name:`,
-    validate: function (input) {
+    validate: async function (input) {
       if (!isValidFilename(input)) {
         return `Name is used as a filename. ${INVALID_FILE_NAME_ERROR_MSG}`;
       }
+
+      const allWalletNames = (await services.config.getWallets()).map(
+        (wallet) => wallet.alias,
+      );
+
+      if (allWalletNames.includes(input)) {
+        return `Wallet name "${input}" already exists. Please enter a different wallet name.`;
+      }
+
       return true;
     },
   });

@@ -199,9 +199,8 @@ way to implement secure and bug-free smart contracts. Pact ships with a
 feature-rich REPL which allows for rapid, iterative development, incremental
 transaction execution, and environment and database inspection. Developing with
 Pact code is meant to be fun and productive; please visit our
-[Github](http://Github.com/kadena-io) and [Read The Docs](/pact/reference) page
-to learn more and
-[try Pact out immediately using your browser](http://pact.kadena.io).
+[Github](http://Github.com/kadena-io) and [docs.kadena.io](https://docs.kadena.io)
+to learn more.
 
 Developers can now create next-generation smart contracts that open the door for
 tangible uses that require representing real value and assets on a blockchain.

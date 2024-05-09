@@ -66,7 +66,8 @@ export const networkIdPrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  const defaultValue = args.defaultValue as string;
+  const defaultValue = (args.defaultValue ??
+    previousQuestions.defaultValue) as string;
   const validate = function (input: string): string | boolean {
     if (isOptional) return true;
 
@@ -87,7 +88,8 @@ export const networkHostPrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  const defaultValue = args.defaultValue as string;
+  const defaultValue = (args.defaultValue ??
+    previousQuestions.defaultValue) as string;
   const validate = function (input: string): string | boolean {
     if (isOptional && !isNotEmptyString(input.trim())) return true;
 
@@ -111,7 +113,8 @@ export const networkExplorerUrlPrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  const defaultValue = args.defaultValue as string;
+  const defaultValue = (args.defaultValue ??
+    previousQuestions.defaultValue) as string;
   return await getInputPrompt(
     'Enter Kadena network explorer URL (e.g. "https://explorer.chainweb.com/mainnet/tx/"):',
     defaultValue,
@@ -296,14 +299,17 @@ export const networkDeletePrompt: IPrompt<string> = async (
   if (previousQuestions.isDefaultNetwork === true) {
     message += `\nYou have currently set this as your "default network". If you delete it, then the default network settings will also be deleted.`;
   }
-
-  return await select({
-    message,
-    choices: [
-      { value: 'yes', name: 'Yes' },
-      { value: 'no', name: 'No' },
-    ],
+  message += '\n  type "yes" to confirm or "no" to cancel and press enter. \n';
+  const answer = await input({
+    message: message,
+    validate: (input) => {
+      if (input === 'yes' || input === 'no') {
+        return true;
+      }
+      return 'Please type "yes" to confirm or "no" to cancel.';
+    },
   });
+  return answer;
 };
 
 export const networkDefaultConfirmationPrompt: IPrompt<boolean> = async (

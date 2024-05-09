@@ -10,13 +10,8 @@ import {
   createSignWithKeypair,
   isSignedTransaction,
 } from '@kadena/client';
-
-import type { EncryptedString } from '@kadena/hd-wallet';
 import { kadenaSignWithSeed } from '@kadena/hd-wallet';
-import {
-  kadenaSign as legacyKadenaSign,
-  kadenaSignFromRootKey as legacyKadenaSignWithSeed,
-} from '@kadena/hd-wallet/chainweaver';
+import { kadenaSignFromRootKey as legacyKadenaSignWithSeed } from '@kadena/hd-wallet/chainweaver';
 import type {
   ICommand,
   ICommandPayload,
@@ -196,7 +191,7 @@ export async function signTransactionWithWallet(
         if (wallet.legacy === true) {
           const sigUint8Array = await legacyKadenaSignWithSeed(
             password,
-            unsignedTransaction.cmd,
+            unsignedTransaction.hash,
             wallet.seed,
             key.index,
           );
@@ -243,7 +238,6 @@ export async function signTransactionWithWallet(
 export async function signTransactionWithKeyPair(
   keys: IWalletKeyPair[],
   unsignedTransactions: IUnsignedCommand[],
-  legacy?: boolean,
 ): Promise<(ICommand | IUnsignedCommand)[]> {
   try {
     const signedTransactions: (ICommand | IUnsignedCommand)[] = [];
@@ -260,30 +254,13 @@ export async function signTransactionWithKeyPair(
         continue;
       }
 
-      if (legacy === true) {
-        const signatures = await Promise.all(
-          relevantKeyPairs.map(async (key) => {
-            const sigUint8Array = await legacyKadenaSign(
-              '',
-              unsignedCommand.cmd,
-              key.secretKey as EncryptedString,
-            );
-
-            const sig = Buffer.from(sigUint8Array).toString('hex');
-            return { sig, pubKey: key.publicKey };
-          }),
-        );
-
-        const command = addSignatures(unsignedCommand, ...signatures);
-        signedTransactions.push(command);
-      } else {
-        const signWithKeypair = createSignWithKeypair(
-          relevantKeyPairs as IKeyPair[],
-        );
-        const command = await signWithKeypair(unsignedCommand);
-        signedTransactions.push(command);
-      }
+      const signWithKeypair = createSignWithKeypair(
+        relevantKeyPairs as IKeyPair[],
+      );
+      const command = await signWithKeypair(unsignedCommand);
+      signedTransactions.push(command);
     }
+
     return signedTransactions;
   } catch (error) {
     throw new Error(`Error signing transaction: ${error.message}`);
@@ -683,7 +660,7 @@ export function displaySignersFromUnsignedCommands(
         unsignedCommand.hash
       }) will now be signed with the following signers:`,
     );
-    log.output(table.toString(), command.signers);
+    log.info(table.toString());
   });
 }
 

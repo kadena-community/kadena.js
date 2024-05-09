@@ -1,86 +1,89 @@
+import type { ChainId } from '@kadena/client';
+import { networkDefaults } from '../../constants/networks.js';
 import { assertCommandError } from '../../utils/command.util.js';
-import { createCommand } from '../../utils/createCommand.js';
-import { globalOptions } from '../../utils/globalOptions.js';
+import type { CommandOption } from '../../utils/createCommand.js';
+import { notEmpty } from '../../utils/globalHelpers.js';
 import { log } from '../../utils/logger.js';
-import { accountOptions } from '../accountOptions.js';
+import type { options } from '../accountAddOptions.js';
 import { addAccount } from '../utils/addAccount.js';
 import { displayAddAccountSuccess } from '../utils/addHelpers.js';
-import { validateAndRetrieveAccountDetails } from '../utils/validateAndRetrieveAccountDetails.js';
+import { createAccountName } from '../utils/createAccountName.js';
 
-export const createAddAccountFromWalletCommand = createCommand(
-  'add-from-wallet',
-  'Add an account from a key wallet',
-  [
-    globalOptions.walletSelect(),
-    accountOptions.accountAlias(),
-    accountOptions.fungible(),
-    globalOptions.networkSelect(),
-    globalOptions.chainId(),
-    accountOptions.selectPublicKeys(),
-    accountOptions.predicate(),
-    accountOptions.accountOverwrite(),
-  ],
+export const addAccountFromWallet = async (
+  option: CommandOption<typeof options>,
+): Promise<void> => {
+  const wallet = await option.walletName();
+  if (!notEmpty(wallet.walletName)) {
+    log.error(
+      'Wallet name is required. Please check "--wallet-name" argument.',
+    );
+    return;
+  }
 
-  async (option, values) => {
-    const wallet = await option.walletName();
-    const accountAlias = (await option.accountAlias()).accountAlias;
-    if (!wallet.walletNameConfig) {
-      log.error(`Wallet ${wallet.walletName} does not exist.`);
-      return;
-    }
+  if (!wallet.walletNameConfig) {
+    log.error(
+      `Wallet :${wallet.walletName}"" does not exist. Please check the wallet name.`,
+    );
+    return;
+  }
 
-    if (wallet.walletNameConfig.keys.length === 0) {
-      log.error(
-        `Wallet ${wallet.walletName} does not contain any public keys. Please use "kadena wallet generate-keys" command to generate keys.`,
-      );
-      return;
-    }
+  if (wallet.walletNameConfig.keys.length === 0) {
+    log.error(
+      `Wallet ${wallet.walletName} does not contain any public keys. Please use "kadena wallet generate-key" command to generate keys.`,
+    );
+    return;
+  }
 
-    const fungible = (await option.fungible()).fungible || 'coin';
-    const { network, networkConfig } = await option.network();
-    const chainId = (await option.chainId()).chainId;
-    const { publicKeys, publicKeysConfig } = await option.publicKeys({
-      values,
-      walletNameConfig: wallet.walletNameConfig,
-    });
-    const predicate = (await option.predicate()).predicate || 'keys-all';
-    const config = {
-      accountAlias,
-      wallet,
-      fungible,
-      network,
-      networkConfig,
-      chainId,
-      predicate,
-      publicKeys,
-      publicKeysConfig,
-      accountOverwrite: false,
-    };
+  const accountAlias = (await option.accountAlias()).accountAlias;
+  const fungible = (await option.fungible()).fungible || 'coin';
+  const { publicKeys, publicKeysConfig } = await option.publicKeys({
+    walletNameConfig: wallet.walletNameConfig,
+  });
 
-    // Account name is not available in the wallet,
-    // so we need to create it from the public keys
-    // and check if account already exists on chain
-    const { accountName, accountDetails, isConfigAreSame } =
-      await validateAndRetrieveAccountDetails(config);
+  // when --quiet is passed and public keys are not provided
+  if (!notEmpty(publicKeysConfig) || publicKeysConfig?.length === 0) {
+    throw new Error(
+      'Missing required argument PublicKeys: "-k, --public-keys <publicKeys>"',
+    );
+  }
 
-    let accountOverwrite = false;
-    if (!isConfigAreSame) {
-      accountOverwrite = (await option.accountOverwrite()).accountOverwrite;
-    }
+  const predicate = (await option.predicate()).predicate || 'keys-all';
+  const config = {
+    wallet,
+    accountAlias,
+    fungible,
+    predicate,
+    publicKeys,
+    publicKeysConfig,
+  };
 
-    const updatedConfig = {
-      ...config,
-      accountName,
-      accountDetailsFromChain: accountDetails,
-      accountOverwrite,
-    };
+  // Account name is not available in the wallet,
+  // so we need to create it from the public keys and predicate.
+  const accountName = await createAccountName({
+    publicKeys: publicKeysConfig,
+    predicate,
+    // we're creating a principal account based on the public keys
+    // so we're just using the hardcoded chainId and networkConfig
+    chainId: '0' as ChainId,
+    networkConfig: networkDefaults.testnet,
+  });
 
-    log.debug('create-account-add-from-wallet:action', updatedConfig);
+  const addAccountConfig = {
+    accountName,
+    accountAlias,
+    fungible,
+    publicKeysConfig,
+    predicate,
+  };
 
-    const result = await addAccount(updatedConfig);
+  log.debug('create-account-add-from-wallet:action', {
+    ...config,
+    accountName,
+  });
 
-    assertCommandError(result);
+  const result = await addAccount(addAccountConfig);
 
-    displayAddAccountSuccess(config.accountAlias, result.data);
-  },
-);
+  assertCommandError(result);
+
+  displayAddAccountSuccess(config.accountAlias, result.data);
+};
