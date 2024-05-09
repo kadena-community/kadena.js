@@ -9,7 +9,7 @@ layout: full
 tags: ['TypeScript', 'Kadena client', 'frontend']
 ---
 
-# Kadena command-line reference
+# Kadena command-line development environment
 
 The Kadena command-line interface (`kadena`) provides direct access to the Kadena blockchain and to commands that help you create, deploy, and manage applications for the Kadena network.
 You can use the Kadena command-line interface to perform tasks interactively or in scripts and automated workflows that don't allow interactive input.
@@ -52,6 +52,12 @@ To verify the package is installed and display usage information, type `kadena` 
 kadena
 ```
 
+To see the version of the package you have installed, run the following command:
+
+```bash
+kadena version
+```
+
 ## Get started
 
 You can use the `kadena` parent command with different flags and subcommands to perform different types of operations.
@@ -69,13 +75,13 @@ For example, to see all of the options available for adding a new wallet, you ca
 kadena wallet add --help
 ```
 
-The following diagram provides an overview of the kadena command-line interface:
+The following diagram provides an overview of the `kadena` command-line interface:
 
 ![Kadena command-line interface at a glance](/assets/docs/kadena-cli-overview.png)
 
-## kadena
+## Prepare a development workspace
 
-Use the `kadena` parent as the primary entry point for commands used to create, test, deploy, and managed decentralized applications you develop for the Kadena network.
+You can use `kadena` subcommands to set up a local development environment ac as the primary entry point for commands used to create, test, deploy, and managed decentralized applications you develop for the Kadena network.
 Use the flags, subcommands, actions, and arguments to specify the operations you want to perform interactively or quiet mode.
 
 ### Basic usage
