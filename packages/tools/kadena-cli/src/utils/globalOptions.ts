@@ -62,7 +62,10 @@ export const globalOptions = {
       return legacy === true || legacy === 'true' || false;
     },
     validation: z.boolean().optional(),
-    option: new Option('-l, --legacy', 'Output legacy format'),
+    option: new Option(
+      '-l, --legacy',
+      'Use ChainWeaver key derivation methods',
+    ),
   }),
   // Logs
   logFolder: createOption({
