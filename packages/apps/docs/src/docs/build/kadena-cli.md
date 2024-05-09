@@ -81,15 +81,47 @@ The following diagram provides an overview of the `kadena` command-line interfac
 
 ## Prepare a development workspace
 
-You can use `kadena` subcommands to set up a local development environment ac as the primary entry point for commands used to create, test, deploy, and managed decentralized applications you develop for the Kadena network.
-Use the flags, subcommands, actions, and arguments to specify the operations you want to perform interactively or quiet mode.
+You can use `kadena` subcommands to set up a local development environment with keys, wallets, account, and network connections to create, test, deploy, and manage decentralized applications for the Kadena network.
+The `kadena-cli` package is designed to streamline the development workflow with commands that provide direct
+access to everything you need to build on and interact with the Kadena blockchain development, test, and main networks.
+
+## Start in interactive mode
+
+The `kadena-cli` package is designed to simplify setting up a development environment.
+Its intuitive commands prompt you for all of the information required to complete tasks, like creating accounts or managing keys.
+Responding to prompts interactively is typically the best approach when getting started, eliminating the need to look up or remember the arguments required for the action you want to perform.
+
+To start using the CLI in interactive Mode, you simply type a command without any options.
+For example if you want to add a new wallet but aren't sure of all the required flags and
+arguments, you can start by entering the following command:
+
+```
+kadena wallet add
+```
+
+The CLI then displays interactive prompts to guide you through the necessary steps, asking for the information
+required to successfully add the wallet to your local development environment.
+
+Interactive mode is especially useful for new users or those who prefer a more guided approach when using command-line tools. 
+It also serves as a learning tool by demonstrating the required inputs for various commands, enhancing your
+familiarity with the CLI's functionalities.
+As you gain experience, you can reduce interactive prompting by specifying some or all of the arguments as part of the command. 
+If you run any command without specifying all of its required parameters, the CLI prompts you to provide the missing information. 
+
+For most commands, responding to interactive prompts and confirmation messages help to ensure that you provide all of the information necessary to successfully execute each command.
+However, if you want to disable all interactive prompts and confirmation messages, you can use the `--quiet `flag.
+The `--quiet` flag enables you to automate tasks in environments where interactive input is impractical, such as continuous integration (CI) pipelines. 
+
+If you include the  `--quiet` flag in a command, the command suppresses **all interactive prompts** and **skips all confirmations**, so that the command executes uninterrupted without human intervention. 
+Running commands using the  `--quiet` flag ensures that automated processes can run smoothly and efficiently, without manual input.
+If you use the  `--quiet` flag for a command, you must include all required arguments in the command line.
 
 ### Basic usage
 
 The basic syntax for running `kadena` commands is:
 
 ```bash
-kadena <subcommand> <action> [arguments] [flag]
+kadena <subcommand> <action> [arguments] [flags]
 ```
 
 ### Flags
@@ -101,6 +133,7 @@ You can use the following optional flags with the `kadena` parent command or wit
 | `-h`, `--help` |	Display usage information.
 | `-q`, `--quiet` | Eliminate interactive prompts and confirmations to enable automation of tasks.
 | `--json` | Display command output in JSON format.
+| `--yaml` | Display command output in YAML format.
 | `-V`, `--version`	| Display version information.
 
 ### Subcommands
@@ -121,30 +154,64 @@ Use the following subcommands to select the category of information for the oper
 | `help` | Display usage information for a specified command.
 | `version` | Display version information.
 
-For reference information and examples, select an appropriate subcommand.
-	
-### Interactive and quiet modes
+For reference and usage information—including the arguments and options for specific subcommands and actions—use the `--help` flag on the command-line or review the information in [Command-line reference](/reference/kadena-client/kadena-cli).
 
-If you want to minimize the information you enter on the command-line, you can enter arguments by responding to interactive prompts. 
-Responding to prompts interactively is typically the best approach when getting started, eliminating the need to look up or remember the argument required for the action you want to perform.
-As you gain experience, you can reduce interactive prompting by specifying the arguments as part of the command. 
+## Configure initial settings
 
-If you want to disable all interactive prompts and confirmation messages, you can use the `--quiet `flag.
-The `--quiet` flag enables you to automate tasks in environments where interactive input is impractical, such as continuous integration (CI) pipelines. 
-If you include the  `--quiet` flag in a command, the command suppresses all interactive prompts and skips confirmations, so that the command executes uninterrupted. 
-This mode ensures that automated processes can run smoothly and efficiently, without the need for manual intervention.
+Use `kadena config init` to create an initial `.kadena` folder for configuration settings in your current working directory or in your home directory.
+For example, if you enter `kadena config init` on the command line, you are prompted to select a location:
 
-### Legacy mode
+```bash
+? Location of kadena config directory (Use arrow keys)
+❯ Working directory:   /Users/pistolas/MY-KADENA/.kadena
+  User home directory: /Users/pistolas/.kadena
+```
 
-The `--legacy` flag ensures that the output format for commands related to wallets, keys, and transactions aligns with earlier cryptographic standards and with existing workflows and tools, such as Chainweaver. 
-This flag is especially useful if you need to interact with tools that rely on a legacy format for processing transactions or if you need to maintain backwards compatibility for a wallet or other application.
+### Working directory
 
-## kadena config
+If you select the current working directory, the `.kadena` folder is accessible
+from anywhere in that directory. For example, if you run `kadena config init` with
+`$HOME/projects/my-kadena-project` as your current working folder, you can access the `.kadena`
+configuration settings from anywhere inside that project folder.
 
-Use `kadena config` to set up and manage the Kadena CLI environment.
-Use `kadena config init` to create a `.kadena` folder with the default configuration for the development, test, and main Kadena networks.
+### Home directory
 
-### Basic usage
+If you select your home directory, the `.kadena` folder is added to your home directory and accessible from anywhere on your computer. 
+
+Configuration settings that are defined in a local working directory take precedence over configuration settings defined in the home directory. You add more than one .kadena folder to your development environment, you can use `kadena config path` to see which path is being used in a specific directory.
+
+### Default network settings
+
+After you select a directory location, your selected folder location is confirmed and default network configuration settings are added to a `networks` subfolder in the `.kadena` folder.
+For example:
+
+```bash
+? Location of kadena config directory User home directory: 
+/Users/pistolas/.kadena
+Created configuration directory:
+
+  /Users/pistolas/.kadena
+
+Added default networks:
+
+  - mainnet
+  - testnet
+  - devnet
+```
+
+To continue setting up your local development environment, you are then prompted to create a wallet.
+For example:
+
+```bash
+? Would you like to create a wallet? (Use arrow keys)
+❯ Yes
+  No
+```
+
+If you already have keys and an account or an existing wallet you want to use, you can select `No` to end the interactive session.
+However, wallets are an important part of interacting with any blockchain, so you have the option to create one as part of your initial configuration steps.
+
+### Create a local wallet
 
 The basic syntax for the `kadena config` command is:
 
