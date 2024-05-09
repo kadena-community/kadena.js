@@ -1,7 +1,10 @@
 import z from 'zod';
 
 import type { ChainId, IPactCommand } from '@kadena/client';
+import { PactValue } from '@kadena/types';
 import { formatZodError } from '../../../utils/globalHelpers.js';
+
+const pactValueSchema = z.any().transform((x) => x as PactValue);
 
 const legacyCapSchema = z
   .object({
@@ -9,7 +12,7 @@ const legacyCapSchema = z
     caps: z.array(
       z.object({
         name: z.string(),
-        args: z.array(z.any()),
+        args: z.array(pactValueSchema),
       }),
     ),
   })
@@ -24,7 +27,7 @@ const legacy2CapSchema = z
     caps: z.array(
       z.object({
         name: z.string(),
-        args: z.array(z.any()),
+        args: z.array(pactValueSchema),
       }),
     ),
   })
@@ -35,11 +38,11 @@ const legacy2CapSchema = z
 
 const verifierSchema = z.object({
   name: z.string(),
-  proof: z.any(),
+  proof: pactValueSchema,
   clist: z.array(
     z.object({
       name: z.string(),
-      args: z.array(z.any()),
+      args: z.array(pactValueSchema),
     }),
   ),
 });
@@ -49,7 +52,7 @@ const capSchema = z.object({
   clist: z.array(
     z.object({
       name: z.string(),
-      args: z.array(z.any()),
+      args: z.array(pactValueSchema),
     }),
   ),
 });
