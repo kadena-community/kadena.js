@@ -7,6 +7,7 @@ describe('config init', () => {
   const root = path.join(__dirname, '../../../');
   const configPath = path.join(root, '.kadena');
   const networkPath = path.join(configPath, 'networks');
+
   beforeEach(async () => {
     if (await services.filesystem.directoryExists(configPath)) {
       await services.filesystem.deleteDirectory(configPath);
@@ -16,7 +17,6 @@ describe('config init', () => {
   it('should create a network config', async () => {
     mockPrompts({
       select: {
-        'Location of kadena config directory': configPath,
         'Would you like to create a wallet?': 'false',
       },
     });
@@ -42,7 +42,6 @@ describe('config init', () => {
   it('should create a network config along with wallet', async () => {
     mockPrompts({
       select: {
-        'Location of kadena config directory': configPath,
         'Would you like to create a wallet?': 'true',
         'Create an account using the first wallet key?': 'false',
       },
@@ -67,7 +66,6 @@ describe('config init', () => {
   it('should create a wallet and account alias', async () => {
     mockPrompts({
       select: {
-        'Location of kadena config directory': configPath,
         'Would you like to create a wallet?': 'true',
         'Create an account using the first wallet key?': 'true',
       },
@@ -97,7 +95,6 @@ describe('config init', () => {
   it('should not create an account alias when input string is empty', async () => {
     mockPrompts({
       select: {
-        'Location of kadena config directory': configPath,
         'Would you like to create a wallet?': 'true',
         'Create an account using the first wallet key?': 'true',
       },
