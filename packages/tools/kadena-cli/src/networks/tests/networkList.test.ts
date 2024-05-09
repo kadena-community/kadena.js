@@ -1,7 +1,14 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { CWD_KADENA_DIR } from '../../constants/config.js';
+import { services } from '../../services/index.js';
 import { runCommand, runCommandJson } from '../../utils/test.util.js';
 
 describe('network list command', () => {
+  beforeEach(async () => {
+    if (await services.filesystem.directoryExists(CWD_KADENA_DIR)) {
+      await services.filesystem.deleteDirectory(CWD_KADENA_DIR);
+    }
+  });
   it('should return empty networks list', async () => {
     const res = await runCommandJson('network list');
     expect(res.networks).toEqual([]);
