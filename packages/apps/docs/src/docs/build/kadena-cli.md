@@ -176,7 +176,7 @@ configuration settings from anywhere inside that project folder.
 
 ### Home directory
 
-If you select your home directory, the `.kadena` folder is added to your home directory and accessible from anywhere on your computer. 
+If you select your home directory—which is equivalent to running the `kadena config init --global` command—the `kadena` folder is added to the `.config` folder in your home directory and accessible from anywhere on your computer. 
 
 Configuration settings that are defined in a local working directory take precedence over configuration settings defined in the home directory. You add more than one .kadena folder to your development environment, you can use `kadena config path` to see which path is being used in a specific directory.
 
@@ -213,41 +213,46 @@ However, wallets are an important part of interacting with any blockchain, so yo
 
 ### Create a local wallet
 
-The basic syntax for the `kadena config` command is:
+If you select Yes to create a new wallet as part of your initial configuration, you are prompted to provide a wallet name and password and to generate a public and secret key pair.
+For example:
 
 ```bash
-kadena config <action> [flag]
+? Would you like to create a wallet? Yes
+? Enter your wallet name: pistolas
+? Enter the new wallet password ********
+? Re-enter the password ********
+You can use the --password-file flag to provide a password.
+? Create an account using the first wallet key? Yes
+
+Mnemonic Phrase
+stairs small flag festival slogan another gravity busy rotate fence quiz share
+
+Please store the mnemonic phrase in a safe place. You will need it to recover your wallet.
+
+First keypair generated
+publicKey: 5926764fb5813ed1618299e5a3e0401b328a4ac637b4ded13e81a566fee2c4b5
+
+Wallet Storage Location
+.kadena/wallets/pistolas.yaml
+
+Account created
+accountName: k:5926764fb5813ed1618299e5a3e0401b328a4ac637b4ded13e81a566fee2c4b5
+
+Account Storage Location
+.kadena/accounts/pistolas.yaml
+
+Executed:
+kadena config init --location="/Users/pistolas/MY-KADENA/.kadena" --create-wallet="true" --wallet-name="pistolas" --create-account="true" 
 ```
 
-### Flags
+Be sure to copy and store the mnemonic phrase in a safe place. 
+This 12-word secret phrase is required if you ever need to recover your wallet.
+You now have a public key that you can use to sign transactions and authorize certain activity.
+In this example, the public key for the wallet is 5926764fb5813ed1618299e5a3e0401b328a4ac637b4ded13e81a566fee2c4b5 and the principal account associated with the key is k:5926764fb5813ed1618299e5a3e0401b328a4ac637b4ded13e81a566fee2c4b5.
 
-You can use the following optional flags with the `kadena config` command.
+For more information about accounts names, keys, and principal accounts, see [Accounts, keys, and principals](/learn/accounts).
 
-| Use this flag | To do this
-| ------------- | -----------
-| `-h`, `--help` |	Display usage information.
-| `-q`, `--quiet` | Eliminate interactive prompts and confirmations to enable automation of tasks.
-| `-V`, `--version`	| Display version information.
-
-### Actions
-
-Use the following action to specify the operation you want to perform.
-
-| Use this action | To do this
-| --------------- | -----------
-| `init` | Initialize the `.kadena` folder with default networks.
-
-### Examples
-
-To initialize your project with the default Kadena networks, run the following command:
-
-```bash
-kadena config init
-```
-
-This command creates the `.kadena` folder in your current working directory and the `devnets` and `networks` subfolders with default settings for the network name, identifier, host, and block explorer for each network.
-
-## kadena dapp
+## Create a project
 
 Use `kadena dapp` to create a new decentralized application project from a frontend framework template.
 
