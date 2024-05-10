@@ -405,6 +405,7 @@ Tool to generate and manage wallets
 | import          | Import ( restore ) wallet from mnemonic phrase      |                   |
 | generate-key    | Generate public/secret key pair(s) from your wallet |                   |
 | change-password | Update the password for your wallet                 |                   |
+| export          | Export unencrypted keypair(s) from a wallet         |                   |
 | delete          | Delete existing wallet from local filesystem        |                   |
 | list            | List wallet(s)                                      |                   |
 
