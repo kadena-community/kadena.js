@@ -375,8 +375,9 @@ example for removing default network:
 ```
 kadena network set-default --network="none" --confirm
 ```
+Passing a network as "none" will remove the default network.
 
-## Passing a network as "none" will remove the default network
+---
 
 ```
 kadena network delete [options]
