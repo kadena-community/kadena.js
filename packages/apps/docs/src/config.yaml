@@ -394,6 +394,31 @@ pages:
       restapi:
         url: /rest-api
         file: /reference/pact/rest-api.md
+      kadena-cli:
+        url: /kadena-cli
+        file: /reference/cli-ref.md
+        children:
+          account:
+            url: /account
+            file: /reference/cli/cli-account.md
+          config:
+            url: /config
+            file: /reference/cli/cli-config.md
+          dapp:
+            url: /dapp
+            file: /reference/cli/cli-dapp.md
+          key:
+            url: /key
+            file: /reference/cli/cli-key.md
+          network:
+            url: /network
+            file: /reference/cli/cli-network.md
+          tx:
+            url: /tx
+            file: /reference/cli/cli-tx.md
+          wallet:
+            url: /wallet
+            file: /reference/cli/cli-wallet.md
       frontend:
         url: /kadena-client
         file: /reference/kadena-client/kadena-js.md
@@ -401,9 +426,6 @@ pages:
           client-utils:
             url: /client-utils
             file: /reference/kadena-client/client-utils.md
-          kadena-cli:
-            url: /kadena-cli
-            file: /reference/kadena-client/kadena-cli.md
           pactjs-old:
             url: /pactjs-old
             file: /reference/kadena-client/pactjs-api.md
