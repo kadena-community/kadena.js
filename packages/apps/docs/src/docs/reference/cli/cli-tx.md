@@ -1,9 +1,9 @@
 ---
-title: kadena dapp
+title: kadena tx
 description:
   The `@kadena/kadena-cli` library provides a complete set of commands for creating applications and interacting with the Kadena network interactively or by using scripts from the command-line.
 menu: Command-line interface
-label: kadena dapp
+label: kadena tx
 order: 2
 layout: full
 tags: ['TypeScript', 'Kadena client', 'frontend']
@@ -24,7 +24,7 @@ Tool for creating and managing transactions
 | status         | Get the status of a transaction         |
 | list           | List transaction(s)                     |
 
-### kadena tx add [options]
+## kadena tx add
 
 `kadena tx add` is a powerful command that leverages transaction templates to
 facilitate the quick and efficient creation of transactions across multiple
@@ -32,7 +32,7 @@ chains and access patterns. This feature is designed to work with user-supplied
 values, filling out predefined templates to generate transactions ready for
 signing and submission.
 
-#### Command Usage
+### Command Usage
 
 ```plaintext
 kadena tx add [options] [options]
@@ -51,7 +51,7 @@ options available:
 | `--holes`         | Displays a list of required template variables.           | No       |
 | Custom options    | Generated based on the chosen template's required fields. | Varies   |
 
-#### Example Command
+### Example Command
 
 ```
 kadena tx add --template="transfer.yaml" --template-data="data.yaml" --network-id="testnet04" --out-file="transaction.json"
@@ -200,7 +200,7 @@ network-id: ''
 kadena tx add  --template-data="data.yaml"
 ```
 
-### kadena tx sign [options]
+## kadena tx sign
 
 | **Options**                     | **Description**                                                               | **Required** |
 | ------------------------------- | ----------------------------------------------------------------------------- | ------------ |
