@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { CWD_KADENA_DIR } from '../../constants/config.js';
+import { NO_NETWORKS_FOUND_ERROR_MESSAGE } from '../../constants/networks.js';
 import { services } from '../../services/index.js';
 import { runCommand, runCommandJson } from '../../utils/test.util.js';
 
@@ -10,8 +11,8 @@ describe('network list command', () => {
     }
   });
   it('should return empty networks list', async () => {
-    const res = await runCommandJson('network list');
-    expect(res.networks).toEqual([]);
+    const res = await runCommand('network list');
+    expect(res.stderr).toContain(NO_NETWORKS_FOUND_ERROR_MESSAGE);
   });
 
   it('should return networks list', async () => {
