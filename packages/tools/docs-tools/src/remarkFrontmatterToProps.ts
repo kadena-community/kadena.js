@@ -1,5 +1,3 @@
-import { compareDesc } from 'date-fns';
-import { readFile } from 'fs/promises';
 import yaml from 'js-yaml';
 import type {
   DocsRootContent,
@@ -16,7 +14,6 @@ import { getUrlFromFilePath } from './utils/getUrlFromFilePath';
 import { getReadTime } from './utils/index';
 import { getPathName } from './utils/staticGeneration/checkSubTreeForActive';
 import { getFlatData } from './utils/staticGeneration/flatPosts';
-import { getData } from './utils/staticGeneration/getData';
 
 const getCurrentPostFromJson = async (
   root: string,

@@ -1,6 +1,5 @@
 import type { IScriptResult } from '@kadena/docs-tools';
 import * as fs from 'fs';
-
 import redirects from './../../redirects/redirects.mjs';
 import { getSitemapLinkstoArray } from './utils';
 
@@ -124,8 +123,5 @@ export const checkRedirects = async (): Promise<IScriptResult> => {
     success.push('There were no redirect issues found');
   }
 
-  console.log(22, errors);
   return { success, errors };
 };
-
-checkRedirects();
