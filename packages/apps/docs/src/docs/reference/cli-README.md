@@ -103,7 +103,7 @@ such as Chainweaver. It's especially useful when interacting with systems that
 rely on the legacy format for processing or when maintaining backward
 compatibility is critical.
 
-Legacy mode is available for the following actions and options:
+Legacy mode is available for the following commands:
 
 ```bash
 kadena wallet add
@@ -203,9 +203,7 @@ directory or a global directory such as your home directory.
 Additionally, this command assists in the creation of your initial wallet and
 account, setting the stage for your transactions on the Kadena network.
 
-```
-kadena config init [options]
-```
+### kadena config init [options]
 
 |**Options** | **Description** | **Required** | 
 | ---------- | --------------- | ------------ | 
@@ -217,7 +215,7 @@ kadena config init [options]
 | --create-account | Enable the creation of an account using the first wallet key. | | 
 | --account-alias | Alias to store your account details, if creating an account. | |
 
-### Working directory and home directory
+#### Working directory and home directory
 
 **Local:** by default the config is written to `.kadena` and this is accessible
 from anywhere in this directory. For example running `kadena config init` in
@@ -230,7 +228,7 @@ configuration from anywhere on your system. Do be aware local configurations
 have priority. You can use `kadena config path` to validate which path is being
 used when in a certain directory.
 
-**Examples**
+#### Examples
 
 Setup in a the current working directory with a new Wallet and Account:
 
@@ -266,9 +264,7 @@ Tool to add and manage networks
 | set-default    | Set a network to be the default choice in selection prompts |                   |
 | delete         | Delete existing network                                     |                   |
 
-```
-kadena network update [options]
-```
+### kadena network update [options]
 
 | **Options**            | **Description**                         | **Required** |
 | ---------------------- | --------------------------------------- | ------------ |
@@ -278,17 +274,13 @@ kadena network update [options]
 | --network-host         | Update the host for the network         |              |
 | --network-explorer-url | Update the explorer url for the network |              |
 
-example:
+#### Examples
 
 ```
 kadena network update --network="mainnet" --network-id="mainnet01" --network-host="https://api.chainweb.com" --network-explorer-url="https://explorer.chainweb.com/mainnet/tx/
 ```
 
-<hr>
-
-```
-kadena network add [options]
-```
+### kadena network add [options]
 
 | **Options**            | **Description**                      | **Required** |
 | ---------------------- | ------------------------------------ | ------------ |
@@ -298,47 +290,43 @@ kadena network add [options]
 | --network-explorer-url | Set the explorer url for the network |              |
 | --network-overwrite    | Confirm overwrite configuration      |              |
 
-example:
+#### Examples
 
 ```
 kadena network add --network-name="mainnet" --network-id="mainnet01" --network-host="https://api.chainweb.com" --network-explorer-url="https://explorer.chainweb.com/mainnet/tx/ --network-overwrite="yes"
 ```
 
-<hr>
-
-```
-kadena network set-default [options]
-```
+### kadena network set-default [options]
 
 | **Options** | **Description**                               | **Required** |
 | ----------- | --------------------------------------------- | ------------ |
 | --network   | Select name of network to set default         |              |
 | --confirm   | Confirmation for default network to set/unset |              |
 
-example for setting default network:
+#### Examples
+
+Example for setting default network:
 
 ```
 kadena network set-default --network="testnet" --confirm
 ```
 
-example for removing default network:
+Example for removing default network:
 
 ```
 kadena network set-default --network="none" --confirm
 ```
 
-## Passing a network as "none" will remove the default network
+### kadena network delete [options]
 
-```
-kadena network delete [options]
-```
+Passing a network as "none" will remove the default network.
 
 | **Options**      | **Description**                  | **Required** |
 | ---------------- | -------------------------------- | ------------ |
 | --network        | Select name of network to delete |              |
 | --network-delete | Confirm deletion of network      |              |
 
-example:
+#### Examples
 
 ```
 kadena network delete --network="mainnet" --network-delete="yes"
@@ -357,11 +345,7 @@ Tool to generate and manage wallets
 | delete          | Delete existing wallet from local filesystem        |                   |
 | list            | List wallet(s)                                      |                   |
 
-<hr>
-
-```
-kadena wallet add [options]
-```
+### kadena wallet add [options]
 
 | **Options**      | **Description**                              | **Required** |
 | ---------------- | -------------------------------------------- | ------------ |
@@ -371,7 +355,7 @@ kadena wallet add [options]
 | --create-account | Create an account using the first wallet key |              |
 | --account-alias  | Alias to store your account details          |              |
 
-example:
+#### Examples
 
 ```
 kadena wallet add --wallet-name="kadena_wallet" --password-file="./kadenawallet-pw.txt"
@@ -383,11 +367,7 @@ example using wallet with account creation:
 kadena wallet add --wallet-name="kadena_wallet" --password-file="./kadenawallet-pw.txt" --create-account=true --account-alias="dev_account"
 ```
 
-<hr>
-
-```
-kadena wallet import [options]
-```
+### kadena wallet import [options]
 
 | **Options**     | **Description** | **Required** |
 | --------------- | --------------- | ------------ |
@@ -396,19 +376,15 @@ kadena wallet import [options]
 | --wallet-name   | Enter you wallet name                                                                         | Yes          |
 | --legacy        | Use Chainweaver's key derivation                                                              |              |
 
-example:
+#### Examples
 
 ```
 kadena wallet import --wallet-name="myWallet"
 ```
 
-<hr>
+### kadena wallet generate-key [options]
 
-```
-kadena wallet generate-key [options]
-```
-
-Generate a keypair from a wallet mnemonic
+Generate a key pair from a wallet mnemonic.
 
 | **Options**     | **Description**                         | **Required** |
 | --------------- | --------------------------------------- | ------------ |
@@ -418,35 +394,33 @@ Generate a keypair from a wallet mnemonic
 | --password-file | Filepath to the password filein         | Yes          |
 | --key-alias     | Optional alias for generated key(s)     | Yes          |
 
-example generating public keys using a range (you will be prompted for password)
+#### Examples
+
+Example generating public keys using a range (you will be prompted for password):
 
 ```
 kadena wallet generate-key --wallet-name="" --amount="1" --key-alias=""
 ```
 
-Example passing password via a file
+Example passing password from a file:
 
 ```
 kadena wallet generate-key --wallet-name="kadenawallet" --amount="1" --key-alias="" --password-file=./kadenawallet-pw.txt
 ```
 
-Example passing password via a stdin
+Example passing password from a standard input (stdin):
 
 ```
 echo "supersecret" | kadena wallet generate-key --wallet-name="kadenawallet" --amount="1" --key-alias=""
 ```
 
-example generating a key at a specific starting index index
+Example generating a key at a specific starting index index:
 
 ```
 kadena wallet generate-key --wallet-name="kadenawallet" --amount="1" --start-index="100" --key-alias=""
 ```
 
-<hr>
-
-```
-kadena wallet change-password [options]
-```
+### kadena wallet change-password [options]
 
 | **Options**         | **Description**                   | **Required** |
 | ------------------- | --------------------------------- | ------------ |
@@ -455,62 +429,55 @@ kadena wallet change-password [options]
 | --new-password-file | Filepath to the new password file | Yes          |
 | --confirm           | Confirm changing wallet password  | Yes          |
 
-example:
+#### Examples
 
 ```
 kadena wallet change-password --wallet-name="mywalletname" --confirm
 ```
 
-<hr>
-
-```
-kadena wallet delete [options]
-```
+### kadena wallet delete [options]
 
 | **Options**   | **Description**               |
 | ------------- | ----------------------------- |
 | --wallet-name | Select the name of the wallet |
 | --confirm     | Confirm deletion of wallet    |
 
-example single wallet deletion:
+#### Examples:
+
+Example single wallet deletion:
 
 ```
 kadena wallet delete --wallet-name="mywalletname" --confirm
 ```
 
-example deletion of all wallets:
+Example deletion of all wallets:
 
 ```
 kadena wallet delete --wallet-name="all" --confirm
 ```
 
-<hr>
-
-```
-kadena wallet list [options]
-```
+### kadena wallet list [options]
 
 | **Options**   | **Description**            |
 | ------------- | -------------------------- |
 | --wallet-name | Set the name of the wallet |
 
-example for listing specific wallet:
+
+#### Examples
+
+Example for listing specific wallet:
 
 ```
 kadena wallet list --wallet-name="walletname"
 ```
 
-example for listing all wallets:
+Example for listing all wallets:
 
 ```
 kadena wallet list --wallet-name="all"
 ```
 
-<hr>
-
-```
-kadena wallet export [options]
-```
+### kadena wallet export [options]
 
 Export a KeyPair from a wallet unencrypted. Prints to stdout as yaml by default
 
@@ -520,13 +487,15 @@ Export a KeyPair from a wallet unencrypted. Prints to stdout as yaml by default
 | --key-index     | The index of the key to export                           |
 | --password-file | Filepath to the wallet password, can be passed via stdin |
 
-example (password will be prompted):
+#### Examples
+
+Example (password will be prompted):
 
 ```
 kadena wallet export --wallet-name="kadenawallet" --key-index="0" > mykey.yaml
 ```
 
-print as json (password will be prompted):
+Print as json (password will be prompted):
 
 ```
 kadena wallet export --wallet-name="kadenawallet" --key-index="0" --json > mykey.json
@@ -541,13 +510,10 @@ Tool to generate and manage keys
 | generate       | Generate random public/secret key pair(s) |
 | list           | List available key(s)                     |
 
-<hr>
 
-```
-kadena key generate [options]
-```
+### kadena key generate [options]
 
-Generate a plain keypair using a random mnemonic
+Generate a plain keypair using a random mnemonic.
 
 | **Options**  | **Description**                             |
 | ------------ | ------------------------------------------- |
@@ -555,7 +521,7 @@ Generate a plain keypair using a random mnemonic
 | --key-amount | Set the amount of keys to generate          |
 | --legacy     | Generate legacy keys                        |
 
-example
+### Examples
 
 ```
 kadena key generate --key-alias="myalias" --key-amount="5"
@@ -565,16 +531,12 @@ kadena key generate --key-alias="myalias" --key-amount="5"
 kadena key generate --key-alias="myalias" --key-amount="5" --legacy
 ```
 
-<hr>
+### kadena key list
+
+Example for listing all keys:
 
 ```
 kadena key list
-```
-
-example for listing all keys:
-
-```
-kadena key list"
 ```
 
 ## kadena account
@@ -590,8 +552,6 @@ Tool to manage / fund accounts of fungibles (e.g. coin')
 | list            | List available account(s)                         |
 | name-to-address | Resolve a .kda name to a k:address (kadena names) |
 | address-to-name | Resolve a k:address to a .kda name (kadena names) |
-
-<hr>
 
 ### Account add command
 
@@ -625,13 +585,13 @@ These options are required when the account type is set to `wallet`:
 `--password-file` option is required only when you choose auto generate keys
 from wallet.
 
-example for adding an account with wallet type:
+Example for adding an account with wallet type:
 
 ```
 kadena account add --type="wallet" --wallet-name="wallet_name" --account-alias="account_alias" --fungible="coin" --public-keys="7c8939951b61614c30f837d7b02fe4982565962b5665d0e0f836b79720747cb2" --predicate="keys-all"
 ```
 
-example for adding an account with wallet type and auto generate keys:
+Example for adding an account with wallet type and auto generate keys:
 
 ```
 kadena account add --type="wallet" --wallet-name="wallet-name" --account-alias="account_alias_testing" --fungible="coin" --public-keys="your_public_key,_generate_" --predicate="keys-all" --password-file="./kadenawallet-pw.txt"
@@ -648,22 +608,18 @@ kadena account add --type="wallet" --wallet-name="wallet-name" --account-alias="
 As part of manual option only if you want to verify the account details on the
 blockchain, you need to provide the network and chain-id.
 
-<hr>
-
-example for adding an account with manual type and verifying on chain(assume if
+Example for adding an account with manual type and verifying on chain(assume if
 account already exists on chain):
 
 ```
 kadena account add --type=manual --account-alias=account-add-test-manual --account-name=k:account-name --fungible=coin --verify --network=testnet --chain-id=1
 ```
 
-example for adding an account with manual type and not verifying on chain:
+Example for adding an account with manual type and not verifying on chain:
 
 ```
 kadena account add --type="manual" --account-alias="account-add-test-manual-no-verify" --account-name="k:account-name" --fungible="coin" --public-keys="your_key_1, your_key_2" --predicate="keys-all"
 ```
-
-<hr>
 
 ### Getting an account details / balance
 
@@ -682,9 +638,9 @@ kadena account details [options]
 | --fungible  | Type of fungible asset (e.g., "coin").             | Yes          |
 | --chain-ids | Kadena chain id range (e.g: 1 / 0-3 / 0,1,5 / all) | Yes          |
 
-Example: **Single Chain ID:**
+### Examples
 
-using account alias:
+Single chain ID using an account alias:
 
 ```
 kadena account details --account="k:PUBLIC_KEY" --network="testnet" --chain-ids="0"
@@ -692,7 +648,7 @@ kadena account details --account="k:PUBLIC_KEY" --network="testnet" --chain-ids=
 
 Note: Fungible type is retrieved from the account alias file.
 
-using account name:
+Single chain ID using account name:
 
 ```
 kadena account details --account="k:PUBLIC_KEY" --network="mainnet" --chain-ids="1"
@@ -700,8 +656,6 @@ kadena account details --account="k:PUBLIC_KEY" --network="mainnet" --chain-ids=
 
 Note: Specify `--fungible` if using an account name. Defaults to "coin" if not
 provided.
-
-**Chain ID Range:**
 
 You can specify a range of chain IDs to query multiple chains at once. Use a
 comma for discrete values or a hyphen for a continuous range.
@@ -723,8 +677,6 @@ All Chains: Use "all" to query details across all chains.
 ```
 kadena account details --account="k:PUBLIC_KEY" --network="mainnet" --chain-ids="all"
 ```
-
-<hr>
 
 ### Funding an account on testnet/devnet
 
@@ -749,7 +701,7 @@ kadena account fund [options]
 | --fungible      | Type of fungible asset (e.g., "coin") Defaults to "coin" if not provided                                                                  | Yes          |
 | --deploy-faucet | Deploy a coin faucet contract to fund the account on devnet (development)                                                                 |              |
 
-Example: **Single Chain ID:**
+#### Examples
 
 Fund an account on a specific chain:
 
@@ -765,8 +717,6 @@ kadena account fund --account="myalias" --amount="20" --network="devnet" --chain
 
 **Note**: To deploy a faucet on the development network, please make sure devnet
 is running and accessible. To setup devnet, please refer [here][17]
-
-**Chain ID Range:**
 
 You can specify a range of chain IDs to fund an account across multiple chains.
 Use a comma for discrete values or a hyphen for a continuous range.
@@ -789,80 +739,63 @@ All Chains: Use "all" to fund an account across all chains on the testnet.
 kadena account fund --account="myalias" --amount="10" --network="testnet" --chain-ids="all"
 ```
 
-<hr>
-
-```
-kadena account account name-to-address [options]
-```
+### kadena account account name-to-address [options]
 
 | **Options**        | **Description**                           | **Required** |
 | ------------------ | ----------------------------------------- | ------------ |
 | --network          | Name of the network to be used            | Yes          |
 | --account-kdn-name | Provide .kda name to resolve to k:account | Yes          |
 
-example:
+#### Examples
 
 ```
 kadena account name-to-address --network="mainnet" --account-kdn-name="kadena.kda"
 ```
-
-<hr>
-
-```
-kadena account address-to-name [options]
-```
+#### kadena account address-to-name [options]
 
 | **Options**           | **Description**                           | **Required** |
 | --------------------- | ----------------------------------------- | ------------ |
 | --network             | Name of the network to be used            | Yes          |
 | --account-kdn-address | Provide k:account to resolve to .kda name | Yes          |
 
-example:
+#### Examples
 
 ```
 kadena account address-to-name --network="mainnet" --account-kdn-address="k:account"
 ```
 
-<hr>
-
-```
-kadena account list [options]
-```
+### kadena account list [options]
 
 | **Options**     | **Description**                  |
 | --------------- | -------------------------------- |
 | --account-alias | Provide the alias of the account |
 
-example for listing specific account:
+Example for listing specific account:
 
 ```
 kadena account list --account-alias="accountAlias"
 ```
 
-example for listing all accounts:
+Example for listing all accounts:
 
 ```
 kadena account list --account-alias="all"
 ```
 
-<hr>
-
-```
-kadena account delete [options]
-```
+### kadena account delete [options]
 
 | **Options**     | **Description**                  |
 | --------------- | -------------------------------- |
 | --account-alias | Provide the alias of the account |
 | --confirm       | Confirm deletion of account      |
 
-example for delete a specific account:
+Example for delete a specific account:
 
 ```
 kadena account delete --account-alias="accountAlias" --confirm
 ```
 
-example for delete all accounts:
+Example for delete all accounts:
 
 ```
 kadena account delete --account-alias="all" --confirm
@@ -883,11 +816,7 @@ Tool for creating and managing transactions
 | status         | Get the status of a transaction         |
 | list           | List transaction(s)                     |
 
-<hr>
-
-```
-kadena tx add [options]
-```
+### kadena tx add [options]
 
 `kadena tx add` is a powerful command that leverages transaction templates to
 facilitate the quick and efficient creation of transactions across multiple
@@ -895,7 +824,7 @@ chains and access patterns. This feature is designed to work with user-supplied
 values, filling out predefined templates to generate transactions ready for
 signing and submission.
 
-### Command Usage
+#### Command Usage
 
 ```plaintext
 kadena tx add [options] [options]
@@ -914,7 +843,7 @@ options available:
 | `--holes`         | Displays a list of required template variables.           | No       |
 | Custom options    | Generated based on the chosen template's required fields. | Varies   |
 
-### Example Command
+#### Example Command
 
 ```
 kadena tx add --template="transfer.yaml" --template-data="data.yaml" --network-id="testnet04" --out-file="transaction.json"
@@ -926,7 +855,7 @@ variables. The `--network-id` specifies which network the transaction is
 intended for, and `--out-file` determines where the generated transaction file
 will be saved.
 
-## Default Templates in `kadena tx add`
+### Default Templates in `kadena tx add`
 
 The `kadena tx add` command in the Kadena CLI includes a set of default
 templates that are designed to facilitate the quick and efficient creation of
@@ -980,7 +909,7 @@ Below is a YAML template `transfer.yaml` that outlines the structure for a coin
 transfer operation on Kadena. Notice the use of placeholders with prefixes to
 define expected data types for each field:
 
-```
+```yaml
 code: |-
   (coin.transfer "{{{account:from}}}" "{{{account:to}}}" {{decimal:amount}})
 data:
@@ -1063,11 +992,7 @@ network-id: ''
 kadena tx add  --template-data="data.yaml"
 ```
 
-<hr>
-
-```
-kadena tx sign [options]
-```
+### kadena tx sign [options]
 
 | **Options**                     | **Description**                                                               | **Required** |
 | ------------------------------- | ----------------------------------------------------------------------------- | ------------ |
@@ -1078,7 +1003,7 @@ kadena tx sign [options]
 | --tx-unsigned-transaction-files | Provided unsigned transaction file(s) to sign (or comma separated list)       | Yes          |
 | --legacy                        | Output legacy format                                                          |              |
 
-example:
+#### Examples
 
 ```
 kadena tx sign --tx-sign-with="wallett" --wallet-name="testwallet" --tx-unsigned-transaction-files="transaction-(request-key)-signed.json"
@@ -1086,11 +1011,8 @@ kadena tx sign --tx-sign-with="wallett" --wallet-name="testwallet" --tx-unsigned
 
 password will be hidden after entry: --security-password=\*
 
-<hr>
 
-```
-kadena tx test-signed-transaction [options]
-```
+### kadena tx test-signed-transaction [options]
 
 Testing a signed transaction for its viability against a specified network by
 making a Local call. Using the local API endpoints, you can dry-run Pact smart
@@ -1104,17 +1026,13 @@ check account data without necessarily having to spend tokens.
 | --directory                   | Provide the directory for the signed transaction (defaults to working directory) |              |
 | --tx-signed-transaction-files | Provided signed transaction file(s) to sign (or comma separated list)            | Yes          |
 
-example:
+#### Examples
 
 ```
 kadena tx test-signed-transaction --tx-signed-transaction-files="transaction-(request-key)-signed.json"
 ```
 
-<hr>
-
-```
-kadena tx send [options]
-```
+### kadena tx send [options]
 
 | **Options**                   | **Description**                                                       | **Required** |
 | ----------------------------- | --------------------------------------------------------------------- | ------------ |
@@ -1123,17 +1041,13 @@ kadena tx send [options]
 | --tx-transaction-network      | Kadena network (overwrites network choice in transactions)            |              |
 | --poll                        | Poll status of sent transactions                                      |              |
 
-example:
+#### Examples
 
 ```
 kadena tx send --tx-signed-transaction-files="transaction-I4WaMUwQZDxhaf2r2FZj0TQf7Zv1J5v45Yc2MYxPURU-signed.json"  --poll
 ```
 
-<hr>
-
-```
-kadena tx status [options]
-```
+### kadena tx status [options]
 
 The kadena tx status command is used to retrieve the status of a transaction on
 the Kadena blockchain. By providing a transaction request key and specifying the
@@ -1171,19 +1085,14 @@ the transaction is confirmed.
 The default timeout for polling is 60 seconds, but it will attempt to keep
 polling until confirmation is achieved.
 
-<hr>
+
+### kadena tx list
+
+Example:
 
 ```
 kadena tx list
 ```
-
-example:
-
-```
-kadena tx list
-```
-
-<hr>
 
 ## kadena dapp
 
@@ -1193,9 +1102,8 @@ Tool for creating dapp projects
 | -------------- | ---------------------- |
 | add            | add a new Dapp project |
 
-```
-kadena dapp add <arguments> [options]
-```
+
+### kadena dapp add <arguments> [options]
 
 | **Arguments**     | **Description**                           | **Required** |
 | ----------------- | ----------------------------------------- | ------------ |
@@ -1205,15 +1113,13 @@ kadena dapp add <arguments> [options]
 | --------------- | --------------------------------------- | ------------ |
 | --dapp-template | Select template: vuejs, nextjs, angular | Yes          |
 
-example:
+#### Examples
 
 ```
 kadena dapp add --dapp-template="vuejs" kadena-dapp
 ```
 
-<hr>
-
-### Supported Templates
+### Supported templates
 
 It supports a number of well known and widely used frameworks to choose from
 when starting a new project. The following project templates are currently
