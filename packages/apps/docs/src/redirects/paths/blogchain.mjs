@@ -523,6 +523,382 @@ export const blogchainPathUrlRedirects = [
   },
 
   {
+    source: '/blogchain/2018/the-evm-is-fundamentally-unsafe-2018-02-07',
+    destination:
+      'https://medium.com/kadena-io/the-evm-is-fundamentally-unsafe-ba486cb17f1f',
+    permanent: true,
+  },
+
+  {
+    source: '/blogchain/2018/pact-2-3-8-is-out-2018-04-09',
+    destination: 'https://medium.com/kadena-io/pact-2-3-8-is-out-46211c8da996',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2018/kadena-raises-12m-for-public-blockchain-2018-04-12',
+    destination:
+      'https://medium.com/kadena-io/kadena-raises-12m-for-public-blockchain-860040d678bd',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2018/why-we-open-sourced-our-blockchains-smart-contract-language-2018-05-04',
+    destination:
+      'https://medium.com/kadena-io/https-medium-com-kadena-io-why-we-open-sourced-our-blockchains-smart-contract-language-fe143c6c4df',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2018/consensus2018-5-lessons-from-your-first-crypto-conference-day-1-2018-04-15',
+    destination:
+      'https://medium.com/kadena-io/consensus2018-5-lessons-from-your-first-crypto-conference-day-1-904629d008d9',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11',
+    destination:
+      'https://medium.com/kadena-io/pact-formal-verification-for-blockchain-smart-contracts-done-right-889058bd8c3f',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2018/pact-2-4-is-out-2018-06-04',
+    destination: 'https://medium.com/kadena-io/pact-2-4-is-out-dd88a3e7ca31',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2018/kadena-san-francisco-blockchain-week-2018-09-28',
+    destination:
+      'https://medium.com/kadena-io/kadena-san-francisco-blockchain-week-391152658d79',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2018/security-kadena-chainweb-blockchain-2018-11-01',
+    destination:
+      'https://medium.com/kadena-io/security-kadena-chainweb-blockchain-97e5bdf88c29',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2018/the-evm-is-fundamentally-unsafe-2018-12-13',
+    destination:
+      'https://medium.com/kadena-io/the-evm-is-fundamentally-unsafe-ba486cb17f1f',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2018/blockchain-future-smart-contract-sharing-economy-2018-12-17',
+    destination:
+      'https://medium.com/kadena-io/blockchain-future-smart-contract-sharing-economy-134a318fef55',
+    permanent: true,
+  },
+
+  {
+    source: '/blogchain/2019/conference-community-events-schedule-2019-01-18',
+    destination:
+      'https://medium.com/kadena-io/conference-community-events-schedule-f672896b4cbd',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/kadena-private-blockchain-launches-on-amazon-aws-marketplace-2019-01-23',
+    destination:
+      'https://medium.com/kadena-io/kadena-private-blockchain-launches-on-amazon-aws-marketplace-9d859cc84d30',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2019/all-about-chainweb-101-and-faqs-2019-02-01',
+    destination:
+      'https://medium.com/kadena-io/all-about-chainweb-101-and-faqs-6bd88c325b45',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2019/kadena-engineering-updates-jan-2019-2019-02-05',
+    destination:
+      'https://medium.com/kadena-io/kadena-engineering-updates-jan-2019-d98f9b30c433',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/why-mining-private-blockchains-dont-mix-2019-02-06',
+    destination:
+      'https://medium.com/kadena-io/why-mining-private-blockchains-dont-mix-9a471fb99cfa',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/turing-completeness-and-smart-contract-security-2019-02-11',
+    destination:
+      'https://medium.com/kadena-io/turing-completeness-and-smart-contract-security-67e4c41704c',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2019/safer-smarter-contracts-with-pact-2019-02-20',
+    destination:
+      'https://medium.com/kadena-io/safer-smarter-contracts-with-pact-e86b9ccaca9f',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2019/nyc-crypto-blockchain-events-2019-03-01',
+    destination:
+      'https://medium.com/kadena-io/nyc-crypto-blockchain-events-7107304920ad',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/scalablebft-kadenas-private-blockchain-101-2019-03-09',
+    destination:
+      'https://medium.com/kadena-io/scalablebft-kadenas-private-blockchain-101-c99895c0fd50',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/kadenas-roadmap-to-a-hybrid-blockchain-platform-2019-03-14',
+    destination:
+      'https://medium.com/kadena-io/kadenas-roadmap-to-a-hybrid-blockchain-platform-dc0ff7c178a6',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2019/kadena-ama-with-kyle-samani-209-03-14',
+    destination:
+      'https://medium.com/kadena-io/kadena-ama-with-kyle-samani-d14b8295de22',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2019/kadena-new-look-same-mission-2019-03-19',
+    destination:
+      'https://medium.com/kadena-io/kadena-new-look-same-mission-b0010e377a10',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/announcement-kadena-public-blockchain-testnet-live-2019-03-26',
+    destination:
+      'https://medium.com/kadena-io/announcement-kadena-public-blockchain-testnet-live-dbfb8a6477c5',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/pact-solving-smart-contract-governance-and-upgradeability-2019-04-05',
+    destination:
+      'https://medium.com/kadena-io/pact-solving-smart-contract-governance-and-upgradeability-976aac3bbb31',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2019/kadena-ama-with-ronghui-gu-2019-04-17',
+    destination:
+      'https://medium.com/kadena-io/kadena-ama-with-ronghui-gu-ceb803079b2',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2019/kadena-at-consensus-2019-2019-05-01',
+    destination:
+      'https://medium.com/kadena-io/kadena-at-consensus-2019-7786d7655423',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/uscf-collaborates-with-kadena-on-use-of-blockchain-in-the-investment-space-2019-05-13',
+    destination:
+      'https://medium.com/kadena-io/uscf-collaborates-with-kadena-on-use-of-blockchain-in-the-investment-space-f8b16f7a38bb',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/kadena-announces-chainweb-blockchain-mainnet-launch-date-testnet-miner-whitelist-2019-05-13',
+    destination:
+      'https://medium.com/kadena-io/kadena-announces-chainweb-blockchain-mainnet-launch-date-testnet-miner-whitelist-df423e23f34d',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2019/announcing-pact-3-0-2019-06-06',
+    destination:
+      'https://medium.com/kadena-io/announcing-pact-3-0-4b0a8f35e6a0',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/kadena-bloomberg-tv-monica-quaintance-future-of-blockchain-2019-06-17',
+    destination:
+      'https://medium.com/kadena-io/kadena-bloomberg-tv-monica-quaintance-future-of-blockchain-df8e56527c0',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/blockchain-summer-the-road-to-mainstream-adoption-2019-07-29',
+    destination:
+      'https://medium.com/kadena-io/blockchain-summer-the-road-to-mainstream-adoption-b249cf5a223',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/blockchain-is-finally-becoming-the-next-gen-database-of-choice-2019-07-30',
+    destination:
+      'https://medium.com/kadena-io/blockchain-is-finally-becoming-the-next-gen-database-of-choice-2fa7d56f6a11',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2019/kadena-blockchain-summer-highlights-2019-08-06',
+    destination:
+      'https://medium.com/kadena-io/kadena-blockchain-summer-highlights-5d07eadf2482',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/introducing-kadenamint-and-chainweb-testnet-v2-2019-08-06',
+    destination:
+      'https://medium.com/kadena-io/introducing-kadenamint-and-chainweb-testnet-v2-cde077c02ebc',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/introducing-kips-kadena-improvement-proposals-2019-08-14',
+    destination:
+      'https://medium.com/kadena-io/introducing-kips-kadena-improvement-proposals-5533e507c7af',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2019/pact-3-1-is-unleashed-2019-08-22',
+    destination:
+      'https://medium.com/kadena-io/pact-3-1-is-unleashed-ebfddfb648ce',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/kadena-launches-blockchain-as-a-service-baas-on-azure-marketplace-2019-08-27',
+    destination:
+      'https://medium.com/kadena-io/kadena-launches-blockchain-as-a-service-baas-on-azure-marketplace-7030ec35f56c',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/gauntlet-study-finds-kadena-public-blockchain-is-secure-and-scalable-2019-09-06',
+    destination:
+      'https://medium.com/kadena-io/gauntlet-study-finds-kadena-public-blockchain-is-secure-and-scalable-b3de45ed4657',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/kadena-public-blockchain-releases-fully-public-testnet-v3-hashing-algorithm-and-mining-api-2019-09-18',
+    destination:
+      'https://medium.com/kadena-io/kadena-public-blockchain-releases-fully-public-testnet-v3-hashing-algorithm-and-mining-api-e230a51c7b26',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/kadenas-stuart-popejoy-and-will-martino-speak-at-world-blockchain-forum-2019-10-11',
+    destination:
+      'https://medium.com/kadena-io/kadenas-stuart-popejoy-and-will-martino-speak-at-world-blockchain-forum-22cfe5dc65fa',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/meet-the-kadena-team-founder-president-stuart-popejoy-2019-10-17',
+    destination:
+      'https://medium.com/kadena-io/meet-the-kadena-team-founder-president-stuart-popejoy-523406e86a51',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2019/hybrid-blockchain-101-2019-10-23',
+    destination:
+      'https://medium.com/kadena-io/hybrid-blockchain-101-714827d0e77b',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2019/the-kadena-token-economic-model-2019-10-30',
+    destination:
+      'https://medium.com/kadena-io/the-kadena-token-economic-model-8090d7545eef',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/meet-the-kadena-team-founder-ceo-will-martino-2019-10-31',
+    destination:
+      'https://medium.com/kadena-io/meet-the-kadena-team-founder-ceo-will-martino-3d209aa433f2',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/kadena-releases-mainnet-mining-and-announces-token-sale-2019-11-04',
+    destination:
+      'https://medium.com/kadena-io/kadena-releases-mainnet-mining-and-announces-token-sale-e4a8866da56',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/kadena-to-explore-implementation-of-pact-for-polkadot-ecosystem-2019-11-12',
+    destination:
+      'https://medium.com/kadena-io/kadena-to-explore-implementation-of-pact-for-polkadot-ecosystem-be2253d84a6c',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/the-future-of-blockchain-is-both-public-and-private-2019-11-18',
+    destination:
+      'https://medium.com/kadena-io/the-future-of-blockchain-is-both-public-and-private-2043de4c02a7',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2019/the-complete-crypto-wallet-user-guide-2019-11-20',
+    destination:
+      'https://medium.com/kadena-io/the-complete-crypto-wallet-user-guide-fca88e56a31b',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/kadena-1-1-release-schedule-chainweb-transfers-roadmap-2019-11-25',
+    destination:
+      'https://medium.com/kadena-io/kadena-1-1-release-schedule-chainweb-transfers-roadmap-97f29dd5dd33',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2019/faq-for-kadenas-public-blockchain-2019-12-02',
+    destination:
+      'https://medium.com/kadena-io/faq-for-kadenas-public-blockchain-173a41fb560b',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/roadmap-for-kadenas-hybrid-blockchain-launch-in-january-2020-2019-12-04',
+    destination:
+      'https://medium.com/kadena-io/roadmap-for-kadenas-hybrid-blockchain-launch-in-january-2020-3f93d8d2a6e0',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/kadena-and-rymedi-validate-quality-of-medicinal-products-on-blockchain-2019-12-06',
+    destination:
+      'https://medium.com/kadena-io/kadena-and-rymedi-validate-quality-of-medicinal-products-on-blockchain-244d5fb8d699',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2019/kadena-token-transfers-go-live-2019-12-17',
+    destination:
+      'https://medium.com/kadena-io/kadena-token-transfers-go-live-94d4a464d9ca',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2019/users-shouldnt-pay-for-gas-2019-12-19',
+    destination:
+      'https://medium.com/kadena-io/users-shouldnt-pay-for-gas-4df989ec8236',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/kadena-public-blockchain-getting-started-with-transfers-2019-12-19',
+    destination:
+      'https://medium.com/kadena-io/kadena-public-blockchain-getting-started-with-transfers-153bf87d6824',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2019/will-martino-explores-the-security-of-smart-contracts-2019-12-23',
+    destination:
+      'https://medium.com/kadena-io/will-martino-explores-the-security-of-smart-contracts-90d30fd9e56f',
+    permanent: true,
+  },
+
+  {
     source: '/blogchain/:slug1/:slug2',
     destination: 'https://www.kadena.io/blog/:slug2',
     permanent: true,
