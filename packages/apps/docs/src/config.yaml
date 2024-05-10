@@ -459,25 +459,3 @@ pages:
           jsbindings:
             file: /reference/chainweb/chainwebjs.md
             url: /js-bindings
-  blogchain:
-    url: /blogchain
-    file: /blogchain/index.tsx
-    children:
-      blog2023:
-        url: /2023
-        file: /blogchain/2023/index.tsx
-      blog2022:
-        url: /2022
-        file: /blogchain/2022/index.tsx
-      blog2021:
-        url: /2021
-        file: /blogchain/2021/index.tsx
-      blog2020:
-        url: /2020
-        file: /blogchain/2020/index.tsx
-      blog2019:
-        url: /2019
-        file: /blogchain/2019/index.tsx
-      blog2018:
-        url: /2018
-        file: /blogchain/2018/index.tsx

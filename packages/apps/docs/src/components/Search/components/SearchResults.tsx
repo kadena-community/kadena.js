@@ -143,7 +143,7 @@ export const SearchResults: FC<IProps> = ({
                 instant answers to your queries.
                 <br />
                 These responses are generated using information extracted from
-                all the documentation and blog posts available on our website.
+                all the documentation available on our website.
                 <br />
                 Please be aware that, as we are in the process of training our
                 model, the answers provided may not always be accurate.

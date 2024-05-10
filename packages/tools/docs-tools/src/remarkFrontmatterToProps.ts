@@ -1,10 +1,8 @@
 import { compareDesc } from 'date-fns';
 import { readFile } from 'fs/promises';
 import yaml from 'js-yaml';
-import { join } from 'path';
 import type {
   DocsRootContent,
-  IAuthorInfo,
   IFile,
   IFrontMatterYaml,
   IMenuData,
@@ -38,54 +36,6 @@ const getFrontMatter = (
   if (type === 'yaml') {
     return yaml.load(node.value) as IFrontMatterYaml;
   }
-};
-
-const getLatestBlogPostsOfAuthor = async (
-  author: IAuthorInfo,
-): Promise<IMenuData[]> => {
-  const data = await getData();
-
-  const START_BRANCH = '/blogchain';
-
-  const startBranch = data.find((item) => item.root === START_BRANCH);
-
-  const posts =
-    startBranch?.children.flatMap((item) => {
-      return item.children;
-    }) ?? [];
-
-  return posts
-    .filter((post) => post.authorId === author.id)
-    .sort((a, b) =>
-      compareDesc(
-        new Date(a.publishDate as unknown as Date),
-        new Date(b.publishDate as unknown as Date),
-      ),
-    )
-    .slice(0, 5);
-};
-
-const getBlogAuthorInfo = async (
-  data: IFrontMatterYaml,
-): Promise<IAuthorInfo | undefined> => {
-  const authorId = data.authorId;
-  if (!authorId) return;
-
-  const authorFilePath = join(process.cwd(), 'src/data/authors.json');
-
-  const fileData = await readFile(authorFilePath, 'utf-8');
-
-  const authors = JSON.parse(fileData);
-
-  const author = (authors as IAuthorInfo[]).find(
-    (author) => author.id === authorId,
-  );
-
-  if (!author) return;
-
-  author.posts = await getLatestBlogPostsOfAuthor(author);
-
-  return author;
 };
 
 const getFileName = (file: IFile): string => {
@@ -152,8 +102,6 @@ const remarkFrontmatterToProps = (): Plugin => {
         );
 
         const navigation = await createNavigation(file);
-        const authorInfo = await getBlogAuthorInfo(frontMatterData);
-
         const editLink = await createEditLink(file);
         return {
           type: 'props',
@@ -165,7 +113,6 @@ const remarkFrontmatterToProps = (): Plugin => {
 
               navigation,
               ...frontMatterData,
-              authorInfo,
             },
           },
         } as unknown as IPropsType;

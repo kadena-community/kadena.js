@@ -1,8 +1,6 @@
 ---
 title: Kadena resources
-description:
-  Official links for Kadena whitepapers, blog articles, videos, developer
-  program, and social media.
+description: Official links for Kadena whitepapers, videos, developer program, and social media.
 menu: Resources
 label: Resources
 order: 7
@@ -11,17 +9,11 @@ layout: full
 
 # Kadena resources
 
-This page provides official links to help you find information about Kadena,
-including where you can find whitepapers, blog pos article, press releases, and
-brand guidelines. For information about the Kadena team, see
-[About Kadena](https://www.kadena.io/about) on the main Kadena website.
+This page provides official links to help you find information about Kadena, including where you can find whitepapers, blog pos article, press releases, and brand guidelines. For information about the Kadena team, see [About Kadena](https://www.kadena.io/about) on the main Kadena website.
 
 ## Whitepapers
 
-Kadena has published several whitepapers detailing important aspects of the
-Chainweb protocol, the Pact smart contract language, and the Kadena public
-blockchain. You can download these white papers from the main
-[Kadena](https://www.kadena.io/whitepapers) website.
+Kadena has published several whitepapers detailing important aspects of the Chainweb protocol, the Pact smart contract language, and the Kadena public blockchain. You can download these white papers from the main [Kadena](https://www.kadena.io/whitepapers) website.
 
 For more information about Chainweb, see the following resources:
 
@@ -37,48 +29,35 @@ For more information about Pact, see the following resources:
 - [Pact GitHub](https://github.com/kadena-io/pact)
 - [Pact Language Reference](/reference)
 
-Note that the links to older articles or whitepapers are provided for
-convenience and historical context, but might contain information that is
-out-of-date.
+Note that the links to older articles or whitepapers are provided for convenience and historical context, but might contain information that is out-of-date.
 
 ## Articles
 
-To browse recent articles, see the Kadena [Blog](https://www.kadena.io/blog) on
-the main Kadena site.
+To browse recent articles, see the Kadena [Blog](https://www.kadena.io/blog) on the main Kadena site.
 
 ## Videos
 
-To view video presentations, live streamed sessions, and playlists, subscribe to
-the [Kadena YouTube](https://www.youtube.com/kadenablockchain) channel.
+To view video presentations, live streamed sessions, and playlists, subscribe to the [Kadena YouTube](https://www.youtube.com/kadenablockchain) channel.
 
 ## Developer program
 
-Kadena's Developer Program is designed to help committed developers build
-high-impact applications for deployment on the Kadena network. The program is
-open to professional developers and organizations, blockchain enthusiasts, and
-students. The program offers:
+Kadena's Developer Program is designed to help committed developers build high-impact applications for deployment on the Kadena network. The program is open to professional developers and organizations, blockchain enthusiasts, and students. The program offers:
 
-- Dedicated technical support with access to live support channels with Kadena
-  core developers and Pact smart contract authors.
+- Dedicated technical support with access to live support channels with Kadena core developers and Pact smart contract authors.
 
-- 10,000 free transactions with gas station funding to cover transaction fees
-  and streamline user onboarding.
+- 10,000 free transactions with gas station funding to cover transaction fees and streamline user onboarding.
 
-- Application launch support to leverage the Kadena brand, community, and
-  network to amplify awareness of your project.
+- Application launch support to leverage the Kadena brand, community, and network to amplify awareness of your project.
 
-To apply, contact Jeffrey on Discord (Jef_f#2495) or Telegram (@SpaceJeff) to
-start your enrollment.
+To apply, contact Jeffrey on Discord (Jef_f#2495) or Telegram (@SpaceJeff) to start your enrollment.
 
 ## Media kit
 
-To view press releases and download branding assets, see the
-[Media kit](https://www.kadena.io/media-kit) on the main Kadena website.
+To view press releases and download branding assets, see the [Media kit](https://www.kadena.io/media-kit) on the main Kadena website.
 
 ## Technical grants
 
-To view information about or apply for a technical grant, see the
-[Kadena Grants Program](https://kadena.io/grants/) on the main Kadena website.
+To view information about or apply for a technical grant, see the [Kadena Grants Program](https://kadena.io/grants/) on the main Kadena website.
 
 ## Social media
 
