@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 import type { DocumentNode } from 'graphql';
 
-export const transaction: DocumentNode = gql`
-  query transaction(
+export const transactions: DocumentNode = gql`
+  query transactions(
     $fungibleName: String
     $accountName: String
     $chainId: String
