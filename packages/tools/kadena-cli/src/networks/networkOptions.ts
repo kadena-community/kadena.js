@@ -78,6 +78,7 @@ export const networkOptions = {
   networkDelete: createOption({
     key: 'networkDelete' as const,
     prompt: networks.networkDeletePrompt,
+    defaultIsOptional: false,
     validation: z.string(),
     option: new Option(
       '-d, --network-delete <networkDelete>',
