@@ -394,6 +394,10 @@ pages:
       restapi:
         url: /rest-api
         file: /reference/pact/rest-api.md
+      kadena-cli:
+        url: /kadena-cli
+        file: /packages/tools/kadena-cli/README.md
+        repo: https://github.com/kadena-community/kadena.js
       frontend:
         url: /kadena-client
         file: /reference/kadena-client/kadena-js.md
@@ -401,10 +405,6 @@ pages:
           client-utils:
             url: /client-utils
             file: /reference/kadena-client/client-utils.md
-          kadena-cli:
-            url: /kadena-cli
-            file: /packages/tools/kadena-cli/README.md
-            repo: https://github.com/kadena-community/kadena.js
           pactjs-old:
             url: /pactjs-old
             file: /reference/kadena-client/pactjs-api.md
