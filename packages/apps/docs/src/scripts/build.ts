@@ -1,6 +1,7 @@
 import { checkDeadImages } from './checkDeadImages';
 import { checkForHeaders } from './checkForHeaders';
 import { checkRedirects } from './checkRedirects';
+import { checkUnusedImages } from './checkUnusedImages';
 import { copyFavIcons } from './copyFavIcons';
 import { checkAuthors } from './createBlogAuthors';
 import { createSitemap } from './createSitemap';
@@ -41,6 +42,7 @@ const runPrettier = async (): Promise<IScriptResult> => {
   await initFunc(createSpecs, 'Create specs files');
   await initFunc(validateLinks, 'Validate Links');
   await initFunc(checkDeadImages, 'Check dead images');
+  await initFunc(checkUnusedImages, 'Check unused assets');
   await initFunc(checkForHeaders, 'Detect missing H1 headers');
   await initFunc(checkAuthors, 'Check author data for blog');
   await initFunc(createSitemap, 'Create the sitemap');
