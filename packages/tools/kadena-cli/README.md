@@ -1277,7 +1277,7 @@ available:
 [15]: #supported-templates
 [16]: #funding-an-account-on-testnet
 [17]:
-  https://docs.kadena.io/pact/beginner/web-editor#start-the-development-networkh2097912892
+  https://docs.kadena.io/build/pact/dev-network#start-the-development-networkh2097912892
 [18]: https://nextjs.org/
 [19]: https://vuejs.org/
 [20]: https://angular.io/
