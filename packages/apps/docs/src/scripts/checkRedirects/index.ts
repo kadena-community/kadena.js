@@ -13,6 +13,8 @@ interface IRedirect {
   permanent: boolean;
 }
 
+const httpRegExp = new RegExp(/^https?:/);
+
 const typedRedirects = redirects as IRedirect[];
 
 const getProductionSitemapLinks = async (): Promise<string[]> => {
@@ -35,6 +37,7 @@ export const checkUrlAgainstList = (
   urlList: IRedirect[],
 ): string[] => {
   const matchingUrls: string[] = [];
+
   for (const listItem of urlList) {
     if (listItem.source) {
       const listItemRegex = new RegExp(
@@ -81,6 +84,9 @@ const checkImportedRedirectsSlugs = (
   }
 
   return matches.reduce((acc, val) => {
+    if (httpRegExp.test(val)) {
+      return true;
+    }
     if (!sitemapUrls.find((r) => r === val) && val && val !== url) {
       return !!checkImportedRedirectsSlugs(val, redirects, sitemapUrls);
     }
@@ -96,7 +102,6 @@ const checkUrlCreator =
   (sitemapUrls: string[]) =>
   (url: string, idx: number): void => {
     const found = sitemapUrls.find((r) => r === url);
-
     if (found) return;
     if (
       !found &&
@@ -119,5 +124,8 @@ export const checkRedirects = async (): Promise<IScriptResult> => {
     success.push('There were no redirect issues found');
   }
 
+  console.log(22, errors);
   return { success, errors };
 };
+
+checkRedirects();
