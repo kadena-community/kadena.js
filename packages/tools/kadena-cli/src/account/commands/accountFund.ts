@@ -96,7 +96,10 @@ export const createAccountFundCommand = createCommand(
 
         const { deployFaucet } = await option.deployFaucet();
 
-        if (deployFaucet === false) {
+        if (!deployFaucet) {
+          log.info(
+            'Skipping faucet deployment... If you would like to deploy the faucet, please re-run the command with the "--deploy-faucet" flag.',
+          );
           return;
         }
 
