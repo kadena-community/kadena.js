@@ -18,13 +18,13 @@ Kadena has published several whitepapers detailing important aspects of the Chai
 For more information about Chainweb, see the following resources:
 
 - [How Chainweb Works: A Simple Animation](https://www.youtube.com/watch?v=hYvXxFbsN6I)
-- [Kadena’s Public Blockchain 101](/blogchain/2019/all-about-chainweb-101-and-faqs-2019-02-01)
+- [Kadena’s Public Blockchain 101](https://medium.com/kadena-io/all-about-chainweb-101-and-faqs-6bd88c325b45)
 - [Original Chainweb whitepapers](https://www.kadena.io/whitepapers)
-- [How to scale a Proof of Work Blockchain](/blogchain/2021/how-to-scale-a-proof-of-work-blockchain-2021-03-07)
+- [How to scale a Proof of Work Blockchain](https://medium.com/kadena-io/how-to-scale-a-proof-of-work-blockchain-9233e5b4b62)
 
 For more information about Pact, see the following resources:
 
-- [Safer, Smarter Contracts with Pact](/blogchain/2019/safer-smarter-contracts-with-pact-2019-02-20)
+- [Safer, Smarter Contracts with Pact](https://medium.com/kadena-io/safer-smarter-contracts-with-pact-e86b9ccaca9f)
 - [Pact Smart Contract Language](https://www.kadena.io/whitepapers)
 - [Pact GitHub](https://github.com/kadena-io/pact)
 - [Pact Language Reference](/reference)
