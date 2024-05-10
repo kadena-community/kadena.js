@@ -152,6 +152,3 @@ language that solves the problems that Pact can.
   with
   [Formal Verification](/blogchain/2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11)
   tools baked-in
-
-- Additional [Resources](https://kadena.io/resources/) and
-  [Read the Docs](/pact/reference)

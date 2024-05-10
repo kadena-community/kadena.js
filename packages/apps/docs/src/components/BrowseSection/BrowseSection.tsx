@@ -51,7 +51,11 @@ const BrowseSection: BrowseSectionType = ({
 
   return (
     <section className={containerClass}>
-      {Boolean(title) && <Heading as={titleAs}>{title}</Heading>}
+      {Boolean(title) && (
+        <Heading as={titleAs} transform="uppercase">
+          {title}
+        </Heading>
+      )}
       <ul
         className={classNames(
           directionVariants[direction],

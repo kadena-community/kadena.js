@@ -2,23 +2,22 @@ import { getPageFromPath } from '../getPageFromPath';
 
 describe('utils getPageFromPath', () => {
   it('should return IConfigTreeItem for given file path', async () => {
-    const filepath =
-      'src/docs/contribute/ambassadors/community-channel-leader.md';
+    const filepath = 'src/docs/build/frontend/kadena-graph.md';
     const result = await getPageFromPath(filepath);
     expect(result).toEqual({
-      file: '/contribute/ambassadors/community-channel-leader.md',
-      id: 'leader',
-      url: '/community-channel-leader',
+      file: '/build/frontend/kadena-graph.md',
+      id: 'kadena-graph',
+      url: '/kadena-graph',
     });
   });
 
   it('should return IConfigTreeItem for given file path when it does not start with src/docs', async () => {
-    const filepath = '/contribute/ambassadors/community-channel-leader.md';
+    const filepath = '/build/frontend/kadena-graph.md';
     const result = await getPageFromPath(filepath);
     expect(result).toEqual({
-      file: '/contribute/ambassadors/community-channel-leader.md',
-      id: 'leader',
-      url: '/community-channel-leader',
+      file: '/build/frontend/kadena-graph.md',
+      id: 'kadena-graph',
+      url: '/kadena-graph',
     });
   });
 

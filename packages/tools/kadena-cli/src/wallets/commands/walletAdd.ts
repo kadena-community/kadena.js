@@ -85,7 +85,10 @@ export const createGenerateWalletCommand: (
       if (config.createAccount === 'true') {
         // when --quiet is passed and account alias is not provided
         // we will not create an account
-        if (!notEmpty(config.accountAlias)) {
+        if (
+          !notEmpty(config.accountAlias) ||
+          config.accountAlias.trim().length === 0
+        ) {
           log.error(
             'Account alias is required when creating an account: -l, --account-alias <accountAlias>',
           );

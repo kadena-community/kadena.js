@@ -85,7 +85,7 @@ This brings us to the notion of Keysets in Kadena.
 ## What Is a Keyset?
 
 Kadena natively supports multiple keys governing the same account (multi-sig),
-so [keysets](/pact/reference/concepts#keysets-and-authorizationh960403648) are,
+so [keysets](/build/pact/advanced#keysets-and-authorizationh960403648) are,
 to some degree, exactly what they sound like: a set of keys. In addition to a
 set of keys, every keyset contains something called a ‘predicate function’ that
 determines which keys are allowed to make choices for the account when it comes
@@ -119,8 +119,8 @@ There are 3 out-of-the-box predicate functions that are available:
 
 Smart contract authors are free to write their own predicate functions if they
 need more fine-grained functionality, but that is beyond the scope of this
-article. Feel free to read up more on predicates in the Pact
-[readthedocs](/pact/reference/concepts#keysets-and-authorizationh960403648).
+article. Feel free to read up more on predicates in
+[Keysets and authorization](/build/pact/advanced#keysets-and-authorizationh960403648).
 
 **When Are Two Keysets the Same?**
 
@@ -157,7 +157,7 @@ notion of what an account is. Even the
 network! It turns out that in the Kadena blockchain, every smart contract can
 define their own tables and interact with them in a robust way, defining their
 own data structures, called
-[\*schema](/pact/reference/syntax#defschemah-1003560474). These schemas\* are
+[\*schema](/reference/syntax#defschemah-1003560474). These schemas\* are
 used inside the contract to define the table structure, and therefore the way
 the contract will store data. It just so happens that this is exactly what the
 KDA coin contract does — it defines a table called coin-table along with a
