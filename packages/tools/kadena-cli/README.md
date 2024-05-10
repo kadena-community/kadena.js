@@ -446,7 +446,7 @@ kadena wallet import [options]
 | --------------- | --------------------------------------------------------------------------------------------- | ------------ |
 | --mnemonic-file | Filepath to your 12-word mnemonic phrase file to generate keys from (can be passed via stdin) | Yes          |
 | --password-file | Filepath to the password file                                                                 | Yes          |
-| --wallet-name   | Enter you wallet name                                                                         | Yes          |
+| --wallet-name   | Enter your wallet name                                                                        | Yes          |
 | --legacy        | Use Chainweaver's key derivation                                                              |              |
 
 example:
@@ -629,7 +629,7 @@ kadena key list
 example for listing all keys:
 
 ```
-kadena key list"
+kadena key list
 ```
 
 ## kadena account
