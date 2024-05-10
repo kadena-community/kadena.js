@@ -899,6 +899,54 @@ export const blogchainPathUrlRedirects = [
   },
 
   {
+    source:
+      '/blogchain/2020/kadena-collaborates-with-chainlink-in-industrys-first-hybrid-blockchain-oracle-integration-2020-05-19',
+    destination:
+      'https://medium.com/kadena-io/kadena-collaborates-with-chainlink-in-industrys-first-hybrid-blockchain-oracle-integration-a405086b6535',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2020/experience-hybrid-blockchain-2020-05-01',
+    destination:
+      'https://medium.com/kadena-io/experience-hybrid-blockchain-e19699b1c468',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2020/kadena-roadmap-for-q1-q2-2020-2020-04-08',
+    destination:
+      'https://medium.com/kadena-io/kadena-roadmap-for-q1-q2-2020-d0a533193d80',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2020/do-anything-on-the-kadena-blockchain-with-a-single-tool-2020-02-21',
+    destination:
+      'https://medium.com/kadena-io/do-anything-on-the-kadena-blockchain-with-a-single-tool-cf22986a81af',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2020/kadena-introduces-chainweaver-to-the-cosmos-ecosystem-2020-01-17',
+    destination:
+      'https://medium.com/kadena-io/kadena-introduces-chainweaver-to-the-cosmos-ecosystem-cde6f77875ec',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2020/kadena-launches-public-chain-with-smart-contract-transactions-2020-01-15',
+    destination:
+      'https://medium.com/kadena-io/kadena-launches-public-chain-with-smart-contract-transactions-aa858c5da5b2',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2020/beginners-guide-to-kadena-accounts-keysets-2020-01-14',
+    destination:
+      'https://medium.com/kadena-io/beginners-guide-to-kadena-accounts-keysets-fb7f32104291',
+    permanent: true,
+  },
+
+  {
     source: '/blogchain/:slug1/:slug2',
     destination: 'https://www.kadena.io/blog/:slug2',
     permanent: true,
