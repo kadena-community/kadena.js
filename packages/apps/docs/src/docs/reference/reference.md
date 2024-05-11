@@ -25,7 +25,7 @@ The reference information for the Pact programming language covers the following
 
 For information about the design of the Pact programming language, see the [Pact white paper](https://cdn.sanity.io/files/agrhq0bu/production/70f01649395af96655ca94d331fb1bd01af9fc8a.pdf) or the [Pact home page](https://www.kadena.io/pact).
 
-## FKadena command-line interface
+## Kadena command-line interface
 
 [Command-line interface](/reference/kadena-cli) provides a complete set of commands and command-line options for setting up and managing a local development environment using a command-line workflow.
 

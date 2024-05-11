@@ -1,8 +1,8 @@
 ---
-title: Command-line interface
+title: Build with Command-line interface
 description:
   The `@kadena/kadena-cli` library provides a complete set of commands for creating applications and interacting with the Kadena network interactively or by using scripts from the command-line.
-menu: Frontend frameworks
+menu: Build with kadena-cli
 label: Build with kadena-cli
 order: 2
 layout: full
@@ -60,20 +60,9 @@ kadena version
 
 ## Get started
 
-You can use the `kadena` parent command with different flags and subcommands to perform different types of operations.
-
-The basic syntax for running `kadena` commands is:
-
-```bash
-kadena <subcommand> <action>
-```
-
-Depending on the subcommand you select, the arguments, options, and flags you specify might apply to the parent command or to a specific subcommand. You can use the `--help` flag to display usage information for the `kadena` parent command, for a specified subcommand, or for a subcommand action.
-For example, to see all of the options available for adding a new wallet, you can run the following command:
-
-```bash
-kadena wallet add --help
-```
+The `kadena-cli` package is designed to streamline the development workflow with commands that provide direct
+access to everything you need to build on and interact with Kadena networks.
+Whether you're doing local development, deploying an application on the test network, or managing your accounts and keys on the Kadena main network, you can use the `kadena-cli` commands to complete tasks without leaving your development environment.
 
 The following diagram provides an overview of the `kadena` command-line interface:
 
@@ -81,9 +70,9 @@ The following diagram provides an overview of the `kadena` command-line interfac
 
 ## Prepare a development workspace
 
-You can use `kadena` subcommands to set up a local development environment with keys, wallets, accounts, and network connections to create, test, deploy, and manage decentralized applications for the Kadena network.
-The `kadena-cli` package is designed to streamline the development workflow with commands that provide direct
-access to everything you need to build on and interact with the Kadena development, test, and main blockchain networks.
+You can use the `kadena` entry point to run commands to help you set up a complete local development environment.
+You can use the command-line interface to generate random keys, create local wallets, add accounts, customize network connections, and construct and send transactions.
+After you prepare a development workspace, you can use the kadena commands in combination with other tools—like Pact and Kadena client—to create, test, deploy, and manage decentralized applications for the Kadena network.
 
 ## Start with interactive prompting
 
@@ -154,7 +143,7 @@ Use the following subcommands to select the category of information for the oper
 | `help` | Display usage information for a specified command.
 | `version` | Display version information.
 
-For reference and usage information—including the arguments and options for specific subcommands and actions—use the `--help` flag on the command-line or review the information in [Command-line reference](/reference/kadena-client/kadena-cli).
+For reference and usage information—including the arguments and options for specific subcommands and actions—use the `--help` flag on the command-line or review the information in [Command-line reference](/reference/kadena-cli).
 
 ## Configure initial settings
 
