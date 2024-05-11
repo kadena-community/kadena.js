@@ -3,15 +3,15 @@ title: Command-line interface
 description:
   The `@kadena/kadena-cli` library provides a complete set of commands for creating applications and interacting with the Kadena network interactively or by using scripts from the command-line.
 menu: Frontend frameworks
-label: Command-line interface
+label: Build with kadena-cli
 order: 2
 layout: full
-tags: ['TypeScript', 'Kadena client', 'frontend']
+tags: ['TypeScript', 'Kadena command-line interface', 'frontend frameworks']
 ---
 
-# Kadena command-line development environment
+# Build with kadena-cli
 
-The Kadena command-line interface (`kadena`) provides direct access to the Kadena blockchain and to commands that help you create, deploy, and manage applications for the Kadena network.
+The Kadena command-line interface (`kadena-cli`) provides direct access to the Kadena blockchain and to commands that help you create, test, deploy, and manage applications for the Kadena network.
 You can use the Kadena command-line interface to perform tasks interactively or in scripts and automated workflows that don't allow interactive input.
 
 The Kadena CLI has one primary entry point—the `kadena` parent command. 
@@ -34,13 +34,13 @@ Before you use the Kadena command-line interface, verify the following basic req
 
 The Kadena CLI is packaged in a TypeScript library that you can install using a package manager such as `npm` or `pnpm`.
 
-For example, run the following command to install globally using `npm`:
+To install globally using `npm` package manager, run the following command:
 
 ```bash
 npm install -g @kadena/kadena-cli
 ```
 
-Run the following command to install globally using `pnpm`:
+To install globally using `pnpm` package manager, run the following command:
 
 ```bash
 pnpm install -g @kadena/kadena-cli
@@ -81,11 +81,11 @@ The following diagram provides an overview of the `kadena` command-line interfac
 
 ## Prepare a development workspace
 
-You can use `kadena` subcommands to set up a local development environment with keys, wallets, account, and network connections to create, test, deploy, and manage decentralized applications for the Kadena network.
+You can use `kadena` subcommands to set up a local development environment with keys, wallets, accounts, and network connections to create, test, deploy, and manage decentralized applications for the Kadena network.
 The `kadena-cli` package is designed to streamline the development workflow with commands that provide direct
-access to everything you need to build on and interact with the Kadena blockchain development, test, and main networks.
+access to everything you need to build on and interact with the Kadena development, test, and main blockchain networks.
 
-## Start in interactive mode
+## Start with interactive prompting
 
 The `kadena-cli` package is designed to simplify setting up a development environment.
 Its intuitive commands prompt you for all of the information required to complete tasks, like creating accounts or managing keys.
@@ -158,14 +158,8 @@ For reference and usage information—including the arguments and options for sp
 
 ## Configure initial settings
 
-Use `kadena config init` to create an initial `.kadena` folder for configuration settings in your current working directory or in your home directory.
-For example, if you enter `kadena config init` on the command line, you are prompted to select a location:
-
-```bash
-? Location of kadena config directory (Use arrow keys)
-❯ Working directory:   /Users/pistolas/MY-KADENA/.kadena
-  User home directory: /Users/pistolas/.kadena
-```
+Use `kadena config init` to create an initial configuration folder for settings for the Kadena command-line interface to use. 
+Depending on where you want the configuration settings available, you can create this folder in your current working directory or in your home directory.
 
 ### Working directory
 
@@ -180,23 +174,42 @@ If you select your home directory—which is equivalent to running the `kadena c
 
 Configuration settings that are defined in a local working directory take precedence over configuration settings defined in the home directory. You add more than one .kadena folder to your development environment, you can use `kadena config path` to see which path is being used in a specific directory.
 
-### Default network settings
+To configure initial settings:
+
+1. Open a terminal shell on the computer where you've installed the `kadena-cli` package.
+2. Enter `kadena config init` on the command line to create the configuration folder interactively:
+   
+   ```shell
+   kadena config init
+   ```
+   
+   Because you're running the command interactively, you are prompted to select a location.
+   For example:
+
+   ```shell
+   ? Location of kadena config directory (Use arrow keys)
+   ❯ Working directory:   /Users/pistolas/MY-KADENA/.kadena
+     User home directory: /Users/pistolas/.kadena
+   ```
+1. Use the up and down arrow keys to select the location for the configuration folder, then press Return.
+
+### Default network configuration
 
 After you select a directory location, your selected folder location is confirmed and default network configuration settings are added to a `networks` subfolder in the `.kadena` folder.
 For example:
 
-```bash
+```shell
 ? Location of kadena config directory User home directory: 
-/Users/pistolas/.kadena
-Created configuration directory:
-
   /Users/pistolas/.kadena
+  Created configuration directory:
 
-Added default networks:
+    /Users/pistolas/.kadena
 
-  - mainnet
-  - testnet
-  - devnet
+  Added default networks:
+
+    - mainnet
+    - testnet
+    - devnet
 ```
 
 To continue setting up your local development environment, you are then prompted to create a wallet.
@@ -208,12 +221,12 @@ For example:
   No
 ```
 
-If you already have keys and an account or an existing wallet you want to use, you can select `No` to end the interactive session.
+If you already have keys and an account or an existing wallet you want to use, you can select **No** to end the interactive session.
 However, wallets are an important part of interacting with any blockchain, so you have the option to create one as part of your initial configuration steps.
 
 ### Create a local wallet
 
-If you select Yes to create a new wallet as part of your initial configuration, you are prompted to provide a wallet name and password and to generate a public and secret key pair.
+If you select **Yes** to create a new wallet as part of your initial configuration, you are prompted to provide a wallet name and password and to generate a public and secret key pair.
 For example:
 
 ```bash
@@ -252,62 +265,123 @@ In this example, the public key for the wallet is 5926764fb5813ed1618299e5a3e040
 
 For more information about accounts names, keys, and principal accounts, see [Accounts, keys, and principals](/learn/accounts).
 
+At this point, you have a wallet and an account, but this information isn't associated with a specific network—devnet, testnet, or mainnet—or with any chain identifier (0-19).
+The account has a private and secret key, but no predicate—the guard that defines the condition that must be satisfied for a transaction to be valid.
+You need to add the account to a network and one or more chains and specify a predicate for it to use before the account is ready to send and receive funds or sign transactions.
+
+## Add your account to a network
+
+To create an account on the Kadena main network, you need to either have KDA already or have someone who can transfer funds to your account for you.
+However, for local development or development on the Kadena test network, you can fund your account using `kadena account` commands, a faucet application, or publicly available private keys.
+
+If you created a local wallet and an account using the wallet key, you can use that information to add your account to the development or test network and one or more chains.
+
+To add your account to the test network:
+
+1. Open a terminal shell on the computer where you've installed the `kadena-cli` package.
+2. Enter `kadena account add` on the command line to enter account information interactively:
+   
+   ```shell
+   kadena account add
+   ```
+   
+
+
+
+## Transfer funds to the new account
+
+## Fund the account
+
+## Get account details
+
+kadena account details
+? Select an account:(alias - account name)
+  Enter an account name manually:
+❯ pistolas      - k:592676....fee2c4b5
+
+Select a network (Use arrow keys)
+❯ devnet
+  mainnet
+  testnet
+
+? Enter a ChainId (0-19) (comma or hyphen separated e.g 0,1,2 or 1-5 or all):
+
+## Set a default network
+
+Many commands require you to specify the network you want to work with.
+You can streamline command execution by setting a default network.
+For example, if you are just getting started, you might want to set the default network to `devnet` to save time as you iterate on your application.
+Later, you might want to unset the default, so you can specify the network to use on a command-by-command basis.
+As your application matures, you might want change the default network from `devnet` to `testnet` so you can deploy updates for broader testing.
+
+To set the default network:
+
+1. Open a terminal shell on the computer where you've installed the `kadena-cli` package.
+2. Enter `kadena network set-default` on the command line to set the default network interactively:
+
+   ```shell
+   kadena network set-default
+   ```
+   
+   Because you're running the command interactively, you are prompted to select a network.
+   For example:
+
+   ? Select a network (Use arrow keys)
+   ❯ devnet
+     mainnet
+     testnet
+
+3. Use the up and down arrow keys to select the network you want to use as your default network, then press Return.
+   For example, select **devnet**, then press Return.
+
+4. Select **Yes** to confirm your default network, then press Return.
+   
 ## Create a project
 
-Use `kadena dapp` to create a new decentralized application project from a frontend framework template.
+You can use the `kadena dapp`command to create a new project directory for the decentralized application you want to build.
+This command allows you to create an empty project directory or to create a new project from one of the frontend framework templates that are currently supported.
+You can create the new project using templates for the following frontend frameworks:
 
-### Basic usage
+- [Nextjs][18]
+- [Vuejs][19]
+- [Angular][20]
 
-The basic syntax for the `kadena dapp` command is:
+To create a new project from a template:
 
-```bash
-kadena dapp <action> <argument> [flag]
-```
+1. Open a terminal shell on the computer where you've installed the `kadena-cli` package.
+2. Enter `kadena dapp create <app-name>` on the command line to create a new project directory with the name you specify.
+   For example, to create a project names my-to-do:
 
-### Flags
+   ```shell
+   kadena dapp add my-to-do
+   ```
+   
+   Because you're running the command interactively, you are prompted to select a template.
+   For example:
 
-You can use the following optional flags with the `kadena dapp` command.
+   ```shell
+   ? What template do you want to use? (Use arrow keys)
+   ❯ Angular
+     Next JS
+     Vue JS
+   ```
+1. Use the up and down arrow keys to select the template to use for your project, then press Return.
 
-| Use this flag | To do this
-| ------------- | -----------
-| `-h`, `--help` |	Display usage information.
-| `-q`, `--quiet` | Eliminate interactive prompts and confirmations to enable automation of tasks.
-| `-V`, `--version`	| Display version information.
+   If you are missing required dependencies for the template you select, you are prompted to install them.
 
-### Actions
-
-Use the following action to specify the operation you want to perform.
-
-| Use this action | To do this
-| --------------- | -----------
-| `add` | Create a new project directory using a frontend framework template.
-| `help` | Display usage information for a specified command.
-
-### Arguments
-
-The following table summarizes all of the options you can specify.
-
-| Use this argument | To do this
-| ----------------- | -----------
-| `project-directory` | Specify the name of the project directory. This argument is required.
-| `--dapp-template`	| Select the framework template to use for the new project. The valid framework templates are `vuejs`, `nextjs`, and `angular`.
-
-### Examples
-
-To create a new project using a Vue.js template, you can run a command similar to the following:
-
-```bash
-kadena dapp add my-vuejs --dapp-template="vuejs"
-```
-
-If you are missing required dependencies for the template you select, you are prompted to install them.
-After running the command, you can change to your project directory by running a command similar to the following:
+2. Confirm that you want to install missing dependencies.
+   
+1. Change to your project directory by running a command similar to the following:
 
 ```bash
 cd my-vuejs
 ```
 
-## kadena wallet
+## Add a second set of keys
+
+## Add a new account
+
+## Add a transaction
 
 Use `kadena wallet` to generate, import, and manage a local wallet.
 
