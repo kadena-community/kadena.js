@@ -155,13 +155,13 @@ pages:
               createauction:
                 url: /create-an-auction
                 file: /build/nft-marmalade/create-an-auction.md
+      buildcli:
+        url: /dev-with-cli
+        file: /build/dev-with-cli.md
       frontend:
         url: /frontend
-        file: /build/kadena-cli.md
+        file: /build/frontend/kadena-client.md
         children:
-          kadena-client:
-            url: /kadena-client
-            file: /build/frontend/kadena-client.md
           kadena-graph:
             url: /kadena-graph
             file: /build/frontend/kadena-graph.md
@@ -395,9 +395,8 @@ pages:
         url: /rest-api
         file: /reference/pact/rest-api.md
       kadena-cli:
-        url: /dev-with-cli
-        file: /reference/kadena-client/dev-with-cli.md
-
+        url: /kadena-cli
+        file: /reference/kadena-cli.md
       frontend:
         url: /kadena-client
         file: /reference/kadena-client/kadena-js.md
