@@ -176,6 +176,7 @@ const createExpression = (
       let functionName = getFunctionName(callExpression);
       let args = callExpression.arguments.map(createExpression);
       const { tables, methods } = useContext();
+      console.log('tables', tables);
       if (tables) {
         const parts = functionName.split('.');
         const table = tables.find(
@@ -529,7 +530,7 @@ const extractTables = (member: ts.ClassElement): TableInterface | undefined => {
     member as ts.PropertyDeclaration,
   );
   if (
-    (decorator && decorator.name === 'deftable') ||
+    (decorator && decorator.name === 'table') ||
     (!decorator && initializer.class === 'Table')
   ) {
     if (args.length !== 1) {

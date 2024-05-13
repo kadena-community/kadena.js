@@ -22,7 +22,7 @@
   (deftable coin-table:{coin-schema} )
 
   (capability DEBIT (sender:string)
-    (enforce-guard (at "guard" (coinTable.read sender) ))
+    (enforce-guard (at "guard" (read "coin-table" sender) ))
     (enforce (!= sender "") "valid sender")
   )
 
@@ -52,7 +52,8 @@
     (enforce (> amount 0) "debit amount must be positive")
     (enforce-unit amount)
     (require-capability (DEBIT account))
-    (let ((balance (at "balance" (coinTable.read account))))
+    (with-read coin-table account
+      { "balance" := balance }
       (enforce (<= amount balance) "Insufficient funds")
       (update "coin-table" account { balance: (- balance amount) })
     )
@@ -64,13 +65,13 @@
     (enforce (> amount 0) "credit amount must be positive")
     (enforce-unit amount)
     (require-capability (CREDIT account))
-    (let (( temp_variable (coinTable.read account)))
-      (let ((retg (at "guard" temp_variable)))
-        (let ((balance (at "balance" temp_variable)))
-          (enforce (= retg guard) "account guards do not match")
-          (let ((is_new (if (= balance -1) (enforce-reserved account guard) false)))
-            (coinTable.write account { balance: (if is_new amount (+ balance amount)),guard: retg })
-    ))))
+    (with-default-read coin-table account
+      { "balance" : -1, "guard" : guard }
+      { "balance" := balance, "guard" := retg }
+      (enforce (= retg guard) "account guards do not match")
+      (let ((is_new (if (= balance -1) (enforce-reserved account guard) false)))
+        (write "coin-table" account { balance: (if is_new amount (+ balance amount)),guard: retg })
+    ))
   )
 
   (defun transfer:string (sender:string receiver:string amount:decimal)
@@ -83,7 +84,8 @@
       (with-capability (PRIVATE-METHOD)
         (debit sender amount)
       )
-      (let ((guard (at "guard" (coinTable.read receiver))))
+      (with-read coin-table receiver
+        { "guard" := guard }
         (with-capability (PRIVATE-METHOD)
           (credit receiver guard amount)
         )

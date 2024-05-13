@@ -46,6 +46,8 @@ class coin implements fungibleV2, fungibleXChainV1 {
     enforce(amount > 0.0);
     compose_capability(this.DEBIT(sender));
     compose_capability(this.CREDIT(receiver));
+    // this.DEBIT(sender);
+    // this.CREDIT(sender);
   }
 
   private debit(account: string, amount: decimal): string {
