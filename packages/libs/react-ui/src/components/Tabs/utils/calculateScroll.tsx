@@ -6,29 +6,25 @@ export const calculateScroll = (
   wrapperContainerRef: RefObject<HTMLDivElement>,
   scrollContainerRef: RefObject<HTMLDivElement>,
 ) => {
-  const maxWidth = wrapperContainerRef.current?.scrollWidth || 0;
-  const viewWidth = wrapperContainerRef.current?.offsetWidth || 0;
-  const offset = getMinimalChildWidth(scrollContainerRef);
-  const currentValue = scrollContainerRef.current?.scrollLeft || 0;
-
-  let nextValue = 0;
+  if (!wrapperContainerRef.current || !scrollContainerRef.current) return 0;
+  const maxWidth = wrapperContainerRef.current.scrollWidth;
+  const viewWidth = wrapperContainerRef.current.offsetWidth;
+  const offset = getMinimalChildWidth(wrapperContainerRef);
+  const currentValue = scrollContainerRef.current.scrollLeft;
 
   if (direction === 'forward') {
-    nextValue = Math.abs(currentValue + offset);
-
-    if (nextValue > maxWidth - viewWidth) {
-      nextValue = maxWidth - viewWidth;
-    }
+    const nextValue = currentValue + offset;
 
     if (nextValue > maxWidth) {
-      return currentValue;
+      return maxWidth - viewWidth;
     }
-  } else {
-    nextValue = currentValue - offset;
 
+    return nextValue;
+  } else {
     if (Math.abs(currentValue) < offset) {
-      nextValue = 0;
+      return 0;
     }
+
+    return currentValue - offset;
   }
-  return nextValue;
 };

@@ -142,6 +142,7 @@ export const DefaultSelectedTabsStory: Story = {
     return (
       <Tabs
         aria-label={props['aria-label']}
+        paginated
         defaultSelectedKey={props.defaultSelectedKey}
       >
         {ExampleManyTabs.map((tab) => (

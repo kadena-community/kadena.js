@@ -7,15 +7,9 @@ export const getMinimalChildWidth = (ref: RefObject<HTMLElement>) => {
     return 0;
   }
 
-  let minimalWidth = 0;
+  const widths = Array.from(children).map(
+    (child) => (child as HTMLElement)?.offsetWidth || 0,
+  );
 
-  for (let i = 0; i < children.length; i++) {
-    const child = children[i] as HTMLElement;
-
-    if (child.offsetWidth > minimalWidth) {
-      minimalWidth = child.offsetWidth;
-    }
-  }
-
-  return minimalWidth;
+  return Math.min(...widths.filter((width) => width === 0));
 };
