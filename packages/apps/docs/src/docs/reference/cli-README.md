@@ -277,7 +277,7 @@ Tool to add and manage networks
 #### Examples
 
 ```
-kadena network update --network="mainnet" --network-id="mainnet01" --network-host="https://api.chainweb.com" --network-explorer-url="https://explorer.chainweb.com/mainnet/tx/
+kadena network update --network="mainnet" --network-id="mainnet01" --network-host="https://api.chainweb.com" --network-explorer-url="https://explorer.chainweb.com/mainnet/tx/"
 ```
 
 ### kadena network add [options]
@@ -293,7 +293,7 @@ kadena network update --network="mainnet" --network-id="mainnet01" --network-hos
 #### Examples
 
 ```
-kadena network add --network-name="mainnet" --network-id="mainnet01" --network-host="https://api.chainweb.com" --network-explorer-url="https://explorer.chainweb.com/mainnet/tx/ --network-overwrite="yes"
+kadena network add --network-name="mainnet" --network-id="mainnet01" --network-host="https://api.chainweb.com" --network-explorer-url="https://explorer.chainweb.com/mainnet/tx/" --network-overwrite="yes"
 ```
 
 ### kadena network set-default [options]
@@ -316,6 +316,8 @@ Example for removing default network:
 ```
 kadena network set-default --network="none" --confirm
 ```
+
+Passing a network as "none" will remove the default network.
 
 ### kadena network delete [options]
 
@@ -342,6 +344,7 @@ Tool to generate and manage wallets
 | import          | Import ( restore ) wallet from mnemonic phrase      |                   |
 | generate-key    | Generate public/secret key pair(s) from your wallet |                   |
 | change-password | Update the password for your wallet                 |                   |
+| export          | Export unencrypted keypair(s) from a wallet         |                   |
 | delete          | Delete existing wallet from local filesystem        |                   |
 | list            | List wallet(s)                                      |                   |
 
@@ -373,7 +376,7 @@ kadena wallet add --wallet-name="kadena_wallet" --password-file="./kadenawallet-
 | --------------- | --------------- | ------------ |
 | --mnemonic-file | Filepath to your 12-word mnemonic phrase file to generate keys from (can be passed via stdin) | Yes          |
 | --password-file | Filepath to the password file                                                                 | Yes          |
-| --wallet-name   | Enter you wallet name                                                                         | Yes          |
+| --wallet-name   | Enter your wallet name                                                                        | Yes          |
 | --legacy        | Use Chainweaver's key derivation                                                              |              |
 
 #### Examples
