@@ -16,7 +16,6 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       ...(await getPageConfig({
-        blogPosts: false,
         filename: __filename,
       })),
       frontmatter: {
