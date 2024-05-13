@@ -25,6 +25,30 @@ export interface CommonProps {
   }[];
 }
 
+export interface KeysetGuard {
+  keys: string[];
+  pred: BuiltInPredicate;
+}
+
+export interface FunctionGuard {
+  args: string[];
+  fun: string;
+}
+
+export const GUARD_POLICY = 'marmalade-v2.guard-policy-v1';
+export const NON_FUNGIBLE_POLICY = 'marmalade-v2.non-fungible-policy-v1';
+export const ROYALTY_POLICY = 'marmalade-v2.royalty-policy-v1';
+export const COLLECTION_POLICY = 'marmalade-v2.collection-policy-v1';
+
+export const GUARD_POLICY_SUCCESS_GUARD: FunctionGuard = {
+  args: [],
+  fun: `${GUARD_POLICY}.success`,
+};
+export const GUARD_POLICY_FAILURE_GUARD: FunctionGuard = {
+  args: [],
+  fun: `${GUARD_POLICY}.failure`,
+};
+
 /** -----------COMMON----------- */
 
 /** -----------CREATE----------- */
@@ -53,26 +77,11 @@ export interface IRoyaltyInfoInput {
 }
 
 export interface IGuardInfoInput {
-  mintGuard?: {
-    keys: string[];
-    pred: BuiltInPredicate;
-  };
-  uriGuard?: {
-    keys: string[];
-    pred: BuiltInPredicate;
-  };
-  saleGuard?: {
-    keys: string[];
-    pred: BuiltInPredicate;
-  };
-  burnGuard?: {
-    keys: string[];
-    pred: BuiltInPredicate;
-  };
-  transferGuard?: {
-    keys: string[];
-    pred: BuiltInPredicate;
-  };
+  mintGuard?: KeysetGuard | FunctionGuard;
+  uriGuard?: KeysetGuard | FunctionGuard;
+  saleGuard?: KeysetGuard | FunctionGuard;
+  burnGuard?: KeysetGuard | FunctionGuard;
+  transferGuard?: KeysetGuard | FunctionGuard;
 }
 
 export interface ICollectionInfoInput {
@@ -87,11 +96,6 @@ export interface ICreateTokenPolicyConfig {
   hasRoyalty?: boolean;
   collection?: boolean;
 }
-
-export const GUARD_POLICY = 'guard-policy-v1';
-export const NON_FUNGIBLE_POLICY = 'non-fungible-policy-v1';
-export const ROYALTY_POLICY = 'royalty-policy-v1';
-export const COLLECTION_POLICY = 'collection-policy-v1';
 
 interface ConfigToDataMap {
   customPolicies: { customPolicyData: Record<string, any> };
@@ -158,10 +162,7 @@ export interface ISaleAuctionInfoInput {
 }
 
 export interface ISaleGuardInfoInput {
-  saleGuard?: {
-    keys: string[];
-    pred: BuiltInPredicate;
-  };
+  saleGuard?: KeysetGuard | FunctionGuard;
 }
 
 export interface ISaleTokenPolicyConfig {
@@ -197,10 +198,7 @@ export type WithSaleTokenPolicy<C extends ISaleTokenPolicyConfig, Base> = Base &
 /** -----------WITHDRAW----------- */
 
 export interface IWithdrawSaleGuardInfoInput {
-  saleGuard?: {
-    keys: string[];
-    pred: BuiltInPredicate;
-  };
+  saleGuard?: KeysetGuard | FunctionGuard;
 }
 
 export interface IWithdrawSaleTokenPolicyConfig {

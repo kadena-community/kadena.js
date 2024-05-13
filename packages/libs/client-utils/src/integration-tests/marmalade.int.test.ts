@@ -14,6 +14,7 @@ import {
   transferCreateToken,
   updateUri,
 } from '../marmalade';
+import { GUARD_POLICY_FAILURE_GUARD } from '../marmalade/config';
 import { NetworkIds } from './support/NetworkIds';
 import { withStepFactory } from './support/helpers';
 import { secondaryTargetAccount, sourceAccount } from './test-data/accounts';
@@ -56,6 +57,75 @@ describe('createToken', () => {
 
     const result = await createToken(
       { ...inputs, tokenId: tokenId as string },
+      config,
+    )
+      .on(
+        'sign',
+        withStep((step, tx) => {
+          expect(step).toBe(1);
+          expect(tx.sigs).toHaveLength(1);
+          expect(tx.sigs[0].sig).toBeTruthy();
+        }),
+      )
+      .on(
+        'preflight',
+        withStep((step, prResult) => {
+          expect(step).toBe(2);
+          if (prResult.result.status === 'failure') {
+            expect(prResult.result.status).toBe('success');
+          } else {
+            expect(prResult.result.data).toBe(true);
+          }
+        }),
+      )
+      .on(
+        'submit',
+        withStep((step, trDesc) => {
+          expect(step).toBe(3);
+          expect(trDesc.networkId).toBe(NetworkIds.development);
+          expect(trDesc.chainId).toBe(chainId);
+          expect(trDesc.requestKey).toBeTruthy();
+        }),
+      )
+      .on(
+        'listen',
+        withStep((step, sbResult) => {
+          expect(step).toBe(4);
+          if (sbResult.result.status === 'failure') {
+            expect(sbResult.result.status).toBe('success');
+          } else {
+            expect(sbResult.result.data).toBe(true);
+          }
+        }),
+      )
+      .execute();
+
+    expect(result).toBe(true);
+  });
+
+  it('should create a token with policy', async () => {
+    const withStep = withStepFactory();
+
+    const _inputs = {
+      ...inputs,
+      policies: ['marmalade-v2.guard-policy-v1'],
+    };
+
+    const tokenId = await createTokenId(_inputs, config).execute();
+
+    expect(tokenId).toBeDefined();
+    expect(tokenId).toMatch(/^t:.{43}$/);
+
+    const result = await createToken(
+      {
+        ..._inputs,
+        policyConfig: {
+          guarded: true,
+          upgradeableURI: true,
+        },
+        guards: {},
+        tokenId: tokenId as string,
+      },
       config,
     )
       .on(

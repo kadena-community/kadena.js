@@ -46,7 +46,12 @@ const createTokenIdCommand = ({
   return composePactCommand(
     execution(
       Pact.modules['marmalade-v2.ledger']['create-token-id'](
-        { precision, uri, policies },
+        {
+          precision,
+          uri,
+          policies: () =>
+            policies.length > 0 ? `[${policies.join(' ')}]` : '[]',
+        },
         readKeyset('creation-guard'),
       ),
     ),

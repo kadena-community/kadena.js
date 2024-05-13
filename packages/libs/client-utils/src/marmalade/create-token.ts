@@ -16,6 +16,7 @@ import {
   execution,
   setMeta,
 } from '@kadena/client/fp';
+import type { ValidDataTypes } from '@kadena/client/lib/composePactCommand/utils/addData';
 import type { IGeneralCapability } from '@kadena/client/lib/interfaces/type-utilities';
 import type { IPactInt } from '@kadena/types';
 import { submitClient } from '../core/client-helpers';
@@ -26,10 +27,12 @@ import {
 } from '../integration-tests/support/helpers';
 import type {
   CommonProps,
+  FunctionGuard,
   ICreateTokenPolicyConfig,
   PolicyProps,
   WithCreateTokenPolicy,
 } from './config';
+import { GUARD_POLICY } from './config';
 import { validatePolicies } from './helpers';
 
 interface ICreateTokenInput extends CommonProps {
@@ -79,15 +82,40 @@ const generatePolicyTransactionData = (
 
   if (policyConfig?.guarded) {
     if (props.guards.mintGuard)
-      data.push(addData('mint_guard', props.guards.mintGuard));
+      data.push(
+        addData(
+          'mint_guard',
+          props.guards.mintGuard as unknown as ValidDataTypes,
+        ),
+      );
     if (props.guards.burnGuard)
-      data.push(addData('burn_guard', props.guards.burnGuard));
+      data.push(
+        addData(
+          'burn_guard',
+          props.guards.burnGuard as unknown as ValidDataTypes,
+        ),
+      );
     if (props.guards.saleGuard)
-      data.push(addData('sale_guard', props.guards.saleGuard));
+      data.push(
+        addData(
+          'sale_guard',
+          props.guards.saleGuard as unknown as ValidDataTypes,
+        ),
+      );
     if (props.guards.transferGuard)
-      data.push(addData('transfer_guard', props.guards.transferGuard));
+      data.push(
+        addData(
+          'transfer_guard',
+          props.guards.transferGuard as unknown as ValidDataTypes,
+        ),
+      );
     if (props.guards.uriGuard)
-      data.push(addData('uri_guard', props.guards.uriGuard));
+      data.push(
+        addData(
+          'uri_guard',
+          props.guards.uriGuard as unknown as ValidDataTypes,
+        ),
+      );
   }
 
   if (policyConfig?.hasRoyalty) {
@@ -97,9 +125,28 @@ const generatePolicyTransactionData = (
     data.push(addData('royalty-rate', props.royalty.royaltyRate.decimal));
   }
 
-  if (policyConfig?.upgradeableURI && !policyConfig?.guarded) {
+  if (!policyConfig?.guarded && policyConfig?.upgradeableURI) {
     if (props.guards.uriGuard)
-      data.push(addData('uri_guard', props.guards.uriGuard));
+      data.push(
+        addData(
+          'uri_guard',
+          props.guards.uriGuard as unknown as ValidDataTypes,
+        ),
+      );
+  }
+
+  if (policyConfig?.guarded && !policyConfig?.upgradeableURI) {
+    if (!props.guards.uriGuard) {
+      throw new Error('Non-updatable tokens require "uriGuard"');
+    }
+    if (!(props.guards.uriGuard as FunctionGuard)?.fun) {
+      throw new Error('Non-updatable tokens require function guard');
+    }
+    if (
+      (props.guards.uriGuard as FunctionGuard).fun !== `${GUARD_POLICY}.failure`
+    ) {
+      throw new Error('Non-updatable tokens require failure guard');
+    }
   }
 
   if (policyConfig?.customPolicies) {
@@ -131,9 +178,7 @@ const createTokenCommand = <C extends ICreateTokenPolicyConfig>({
         tokenId,
         precision,
         uri,
-        policies.length > 0
-          ? ([policies.join(' ')] as unknown as PactReference)
-          : ([] as unknown as PactReference),
+        () => (policies.length > 0 ? `[${policies.join(' ')}]` : '[]'),
         readKeyset('creation-guard'),
       ),
     ),
