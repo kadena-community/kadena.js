@@ -1,5 +1,15 @@
 # @kadena/create-kadena-app
 
+## 0.2.0
+
+### Minor Changes
+
+- a349290b0: Fix test-library jest dom pacakage version for vue template
+
+### Patch Changes
+
+- 93bf55b07: Package updates
+
 ## 0.1.2
 
 ### Patch Changes

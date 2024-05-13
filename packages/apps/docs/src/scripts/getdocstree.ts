@@ -4,7 +4,6 @@ import type {
   LayoutType,
 } from '@kadena/docs-tools';
 import {
-  getFileExtension,
   getFrontmatterFromTsx,
   getPages,
   getReadTime,
@@ -22,7 +21,6 @@ const errors: string[] = [];
 const success: string[] = [];
 
 const INITIAL_PATH = './src/pages';
-const blogchainReg = new RegExp(/^\.\/src\/pages\/blogchain\/\d{4}$/, 'g');
 const MENU_FILE_DIR = './src/_generated';
 const MENU_FILE = 'menu.json';
 const TREE: IParent[] = [];
@@ -162,7 +160,7 @@ const createTree = async (
 ): Promise<IParent[]> => {
   const files = fs.readdirSync(rootDir);
 
-  let newFiles: string[] = [];
+  const newFiles: string[] = [];
   //set the files in the right order
 
   for (let i = 0; i < files.length; i++) {
@@ -178,18 +176,9 @@ const createTree = async (
     }
   }
 
-  if (rootDir.match(blogchainReg)) {
-    newFiles = files.filter(
-      (file) =>
-        getFileExtension(file) === 'md' || getFileExtension(file) === 'mdx',
-    );
-  }
-
   for (let i = 0; i < newFiles.length; i++) {
     /* eslint-disable-next-line @typescript-eslint/no-use-before-define*/
-    const pageChildren = rootDir.match(blogchainReg)
-      ? []
-      : pages[i].children ?? [];
+    const pageChildren = pages[i].children ?? [];
 
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     await getFile(rootDir, parent, newFiles[i], pageChildren, i);

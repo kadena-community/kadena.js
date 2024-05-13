@@ -1,55 +1,65 @@
 # Change Log - @kadena/pactjs-cli
 
+## 1.11.1
+
+### Patch Changes
+
+- 93bf55b07: Package updates
+- Updated dependencies \[93bf55b07]
+- Updated dependencies \[b3a50b49a]
+  - @kadena/pactjs-generator\@1.11.1
+  - @kadena/client\@1.11.1
+
 ## 1.11.0
 
 ### Patch Changes
 
-- Updated dependencies [3bbfeaaa9]
-  - @kadena/client@1.11.0
-  - @kadena/pactjs-generator@1.11.0
+- Updated dependencies \[3bbfeaaa9]
+  - @kadena/client\@1.11.0
+  - @kadena/pactjs-generator\@1.11.0
 
 ## 1.10.1
 
 ### Patch Changes
 
-- Updated dependencies [d67b52906]
-  - @kadena/pactjs-generator@1.10.1
-  - @kadena/client@1.10.1
+- Updated dependencies \[d67b52906]
+  - @kadena/pactjs-generator\@1.10.1
+  - @kadena/client\@1.10.1
 
 ## 1.10.0
 
 ### Patch Changes
 
-- Updated dependencies [016b9dbfc]
-  - @kadena/client@1.10.0
-  - @kadena/pactjs-generator@1.10.0
+- Updated dependencies \[016b9dbfc]
+  - @kadena/client\@1.10.0
+  - @kadena/pactjs-generator\@1.10.0
 
 ## 1.9.0
 
 ### Patch Changes
 
-- Updated dependencies [b53c2600c]
-- Updated dependencies [6ddf094d8]
-- Updated dependencies [6ddf094d8]
-- Updated dependencies [be9129381]
-  - @kadena/client@1.9.0
-  - @kadena/pactjs-generator@1.9.0
+- Updated dependencies \[b53c2600c]
+- Updated dependencies \[6ddf094d8]
+- Updated dependencies \[6ddf094d8]
+- Updated dependencies \[be9129381]
+  - @kadena/client\@1.9.0
+  - @kadena/pactjs-generator\@1.9.0
 
 ## 1.8.1
 
 ### Patch Changes
 
-- @kadena/client@1.8.1
-- @kadena/pactjs-generator@1.8.1
+- @kadena/client\@1.8.1
+- @kadena/pactjs-generator\@1.8.1
 
 ## 1.8.0
 
 ### Patch Changes
 
-- Updated dependencies [3ed72cddf]
-- Updated dependencies [0540b213b]
-  - @kadena/pactjs-generator@1.8.0
-  - @kadena/client@1.8.0
+- Updated dependencies \[3ed72cddf]
+- Updated dependencies \[0540b213b]
+  - @kadena/pactjs-generator\@1.8.0
+  - @kadena/client\@1.8.0
 
 ## 1.7.0
 
@@ -62,13 +72,13 @@
 
 - 735aeb38f: Fixed dependency resolution in pactjs-cli
 - 74880bb51: Extract networkId and chainId from the api
-- Updated dependencies [9bec1fb8e]
-- Updated dependencies [735aeb38f]
-- Updated dependencies [c126ca38c]
-- Updated dependencies [c637a9596]
-- Updated dependencies [a3bb20737]
-  - @kadena/pactjs-generator@1.7.0
-  - @kadena/client@1.7.0
+- Updated dependencies \[9bec1fb8e]
+- Updated dependencies \[735aeb38f]
+- Updated dependencies \[c126ca38c]
+- Updated dependencies \[c637a9596]
+- Updated dependencies \[a3bb20737]
+  - @kadena/pactjs-generator\@1.7.0
+  - @kadena/client\@1.7.0
 
 ## 1.6.4
 
@@ -76,21 +86,21 @@
 
 - 21a0d1530: Fix pactjs-cli to send hash with txs; fixed the issue after
   chainweb-node update
-- Updated dependencies [21a0d1530]
-  - @kadena/client@1.6.4
-  - @kadena/pactjs-generator@1.6.4
+- Updated dependencies \[21a0d1530]
+  - @kadena/client\@1.6.4
+  - @kadena/pactjs-generator\@1.6.4
 
 ## 1.6.3
 
 ### Patch Changes
 
-- @kadena/pactjs-generator@1.6.3
+- @kadena/pactjs-generator\@1.6.3
 
 ## 1.6.1
 
 ### Patch Changes
 
-- @kadena/pactjs-generator@1.6.1
+- @kadena/pactjs-generator\@1.6.1
 
 ## 1.6.0
 
@@ -101,9 +111,9 @@
 ### Patch Changes
 
 - fa6b84e22: No auto-globals for vitest specs
-- Updated dependencies [1d7d88081]
-- Updated dependencies [fa6b84e22]
-  - @kadena/pactjs-generator@1.6.0
+- Updated dependencies \[1d7d88081]
+- Updated dependencies \[fa6b84e22]
+  - @kadena/pactjs-generator\@1.6.0
 
 ## 1.5.0
 
@@ -113,44 +123,44 @@
   interface merging for types
 - c8bbec395: Fix `types` in package.json
 - fec8dfafd: Upgrade `typescript` and `@types/node` dependencies
-- Updated dependencies [3873e73c4]
-- Updated dependencies [badc7c2a3]
-- Updated dependencies [831c022c8]
-- Updated dependencies [3e00cf2ac]
-- Updated dependencies [99ce19b47]
-- Updated dependencies [a664a9535]
-- Updated dependencies [d62a23ffe]
-- Updated dependencies [fec8dfafd]
-- Updated dependencies [a664a9535]
-- Updated dependencies [c375cb124]
-  - @kadena/pactjs-generator@1.5.0
+- Updated dependencies \[3873e73c4]
+- Updated dependencies \[badc7c2a3]
+- Updated dependencies \[831c022c8]
+- Updated dependencies \[3e00cf2ac]
+- Updated dependencies \[99ce19b47]
+- Updated dependencies \[a664a9535]
+- Updated dependencies \[d62a23ffe]
+- Updated dependencies \[fec8dfafd]
+- Updated dependencies \[a664a9535]
+- Updated dependencies \[c375cb124]
+  - @kadena/pactjs-generator\@1.5.0
 
 ## 1.4.0
 
 ### Patch Changes
 
-- Updated dependencies [5068b099]
-- Updated dependencies [143d0bef]
-  - @kadena/pactjs-generator@1.4.0
+- Updated dependencies \[5068b099]
+- Updated dependencies \[143d0bef]
+  - @kadena/pactjs-generator\@1.4.0
 
 ## 1.3.0
 
 ### Patch Changes
 
 - e8d0e92a: fix issue where shebang was missing in the executable file
-- Updated dependencies [8adef240]
-- Updated dependencies [17230731]
-- Updated dependencies [242b5687]
-- Updated dependencies [17230731]
-- Updated dependencies [0afa85d8]
-- Updated dependencies [f148002c]
-  - @kadena/pactjs-generator@1.3.0
+- Updated dependencies \[8adef240]
+- Updated dependencies \[17230731]
+- Updated dependencies \[242b5687]
+- Updated dependencies \[17230731]
+- Updated dependencies \[0afa85d8]
+- Updated dependencies \[f148002c]
+  - @kadena/pactjs-generator\@1.3.0
 
 ## 1.2.0
 
 ### Patch Changes
 
-- @kadena/pactjs-generator@1.2.0
+- @kadena/pactjs-generator\@1.2.0
 
 This log was last generated on Fri, 04 Aug 2023 16:10:02 GMT and should not be
 manually modified.

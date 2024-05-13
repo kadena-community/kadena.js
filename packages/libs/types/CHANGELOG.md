@@ -1,10 +1,16 @@
 # Change Log - @kadena/types
 
+## 0.6.2
+
+### Patch Changes
+
+- 93bf55b07: Package updates
+
 ## 0.6.1
 
 ### Patch Changes
 
-- 6ddf094d8: Add Record<string,any> to PactValue type
+- 6ddf094d8: Add Record\<string,any> to PactValue type
 
 ## 0.6.0
 

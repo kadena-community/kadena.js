@@ -21,7 +21,6 @@ const data = [
   },
   {
     children: [],
-    root: '/blogchain',
   },
 ] as unknown as IMenuData[];
 

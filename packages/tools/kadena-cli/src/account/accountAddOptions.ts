@@ -1,4 +1,4 @@
-import { globalOptions } from '../utils/globalOptions.js';
+import { globalOptions, securityOptions } from '../utils/globalOptions.js';
 import { accountOptions } from './accountOptions.js';
 
 export const options = [
@@ -15,4 +15,7 @@ export const options = [
   accountOptions.accountName(),
   // account wallet options
   globalOptions.walletSelect({ isOptional: true }),
+  securityOptions.createPasswordOption({
+    message: 'Enter the wallet password:',
+  }),
 ];

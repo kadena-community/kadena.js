@@ -1,5 +1,11 @@
 # Change Log - @kadena-dev/eslint-plugin
 
+## 0.0.9
+
+### Patch Changes
+
+- 93bf55b07: Package updates
+
 ## 0.0.8
 
 ### Patch Changes

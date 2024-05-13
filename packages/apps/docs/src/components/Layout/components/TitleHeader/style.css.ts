@@ -96,7 +96,3 @@ export const subheaderClass = style([
     textAlign: 'center',
   }),
 ]);
-
-export const avatarClass = style({
-  borderRadius: '50%',
-});
