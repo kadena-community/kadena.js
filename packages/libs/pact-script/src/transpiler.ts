@@ -707,7 +707,15 @@ ${usedInterfaces
   .map(indent(2))
   .join('\n')}
   \n
-${hasPrivateMethod ? indent(2)('(defcap PRIVATE-METHOD() true)\n') : ''}
+${
+  hasPrivateMethod
+    ? indent(2)(
+        `(defcap PRIVATE-METHOD()${indent(2)(
+          '\n"Magic capability for private methods"\ntrue',
+        )}\n)\n`,
+      )
+    : ''
+}
 ${classObject.members
   .map(classMember)
   .filter(Boolean)

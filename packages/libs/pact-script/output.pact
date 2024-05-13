@@ -8,7 +8,10 @@
   (implements fungibleXChainV1)
   
 
-  (defcap PRIVATE-METHOD() true)
+  (defcap PRIVATE-METHOD()  
+    "Magic capability for private methods"
+    true
+  )
   
   (defcap GOVERNANCE ()
     (enforce false "Enforce non-upgradeability")
