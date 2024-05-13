@@ -45,14 +45,11 @@ export default async function validateMarkdownLinks(
           `${cleanedLink}/index.md`,
         );
 
-        const blogPageLink = path.join(path.dirname(file), `${cleanedLink}.md`);
-
         return (
           !fs.existsSync(expectedPath) &&
           !fs.existsSync(expectedTSIndexPath) &&
           !fs.existsSync(expectedMdPath) &&
-          !fs.existsSync(expectedMdIndexPath) &&
-          !fs.existsSync(blogPageLink)
+          !fs.existsSync(expectedMdIndexPath)
         );
       }) as string[];
 

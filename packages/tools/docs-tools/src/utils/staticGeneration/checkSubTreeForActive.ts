@@ -63,7 +63,6 @@ const mapSubTree =
       'order',
       'lastModifiedDate',
       'publishDate',
-      'author',
       'wordCount',
       'readingTimeInMinutes',
     ]) as unknown as IMenuItem;
@@ -99,6 +98,5 @@ export const checkSubTreeForActive = async (
     throw new Error('no path');
   }
 
-  const newTree = tree.filter((item) => !item.root.includes('blogchain'));
-  return newTree.map(mapSubTree(path, noChildren, true));
+  return tree.map(mapSubTree(path, noChildren, true));
 };
