@@ -13,7 +13,8 @@ The Marmalade token standard provides interfaces that enable you to define, mint
 As discussed in [Contract architecture](/build/nft-marmalade/architecture), the Marmalade ledger contract provides the core functionality to create, manage, and transfer tokens minted using the Marmalade token standard.
 The ledger contract records and manages all token-related activity to ensure every transaction is accurate, every policy is enforced, and every account is up-to-date.
 
-This part of the documentation describes the functions and capabilities defined in the Marmalade ledger contract.
+This part of the documentation describes the functions and capabilities defined in the Marmalade ledger contract in the `marmalade-v2` namespace.
+The  `marmalade-v2` namespace is available on all twenty chains (0-19) in the Kadena test network and the Kadena main network.
 
 Source code: [ledger.pact](https://github.com/kadena-io/marmalade/blob/main/pact/ledger/ledger.pact)
 
@@ -70,6 +71,8 @@ To create a token with this function:
   
   The `create-token` transaction must include the `TOKEN` capability signed with the keyset `creation-guard` that you used to generate the token identifier.
 
+When you submit the `create-token` transaction, the `policy-manager.enforce-init` function calls the `policy:enforce-init` function in the stored token policies and the function is executed.
+
 ## mint
 
 Use `mint` to mint the specified token amount to the specified account.
@@ -81,15 +84,15 @@ Use the following arguments to mint a token.
 | Argument | Type | Description
 | -------- | ---- | -----------
 | `id` | string | Specifies the unique token identifier generated using `create-token-id` function and formatted as `t:{token-detail-hash}`. 
-|  `account` | string | Specifies the account that will receive the minted token.
+| `account` | string | Specifies the account that will receive the minted token.
 | `guard` | guard | Specifies the guard for the minted token account.
 | `amount` | decimal | Specifies the number of tokens to be minted.
 
-When you submit the `mint` transaction, the `policy-manager.enforce-mint` function calls the `policy:enforce-mint` function in the stored token policies and the function is executed at `ledger.mint`.
+When you submit the `mint` transaction, the `policy-manager.enforce-mint` function calls the `policy:enforce-mint` function in the stored token policies and the function is executed.
 
 ## burn
 
-Use `burn` to destroy the specified token amount from the specified account.
+Use `burn` to destroy the specified token amount from the specified token owner account.
 
 ### Arguments
 
@@ -98,10 +101,10 @@ Use the following arguments to burn a token.
 | Argument | Type | Description
 | -------- | ---- | -----------
 | `id` | string | Specifies the unique token identifier generated using `create-token-id` function and formatted as `t:{token-detail-hash}`. 
-|  `account` | string | Specifies the account where the token will be destroyed.
+|  `account` | string | Specifies the token owner account for the token amount to be burned.
 | `amount` | decimal | Specifies the number of tokens to be burned.
 
-When you submit the `burn` transaction, the `policy-manager.enforce-burn` function calls the `policy:enforce-burn` function in the stored token policies and the function is executed at `ledger.burn`.
+When you submit the `burn` transaction, the `policy-manager.enforce-burn` function calls the `policy:enforce-burn` function in the stored token policies and the function is executed.
 
 ## transfer
 
@@ -118,7 +121,7 @@ Use the following arguments to transfer a token.
 | `receiver` | string | Specifies the receiver account that the token will be transferred to.
 | `amount` | decimal | Specifies the number of tokens to be transferred.
 
-When you submit the `transfer` transaction, the `policy-manager.enforce-transfer` function calls the `policy:enforce-transfer` function in the stored token policies and the function is executed at `ledger.transfer`.
+When you submit the `transfer` transaction, the `policy-manager.enforce-transfer` function calls the `policy:enforce-transfer` function in the stored token policies and the function is executed.
 
 ## sale
 
@@ -136,7 +139,7 @@ Use the following arguments to initiate the sale of a token.
 | `id` | string | Specifies the unique token identifier generated using `create-token-id` function and formatted as `t:{token-detail-hash}`. 
 | `seller` | string | Specifies the seller account that the token will be offered from.
 | `amount` | decimal | Specifies the number of tokens to be offered for sale.
-| `timeout` | integer | Specifies when the offer is set to expire in the number of blocks that must be mined before the offer can be withdrawn. The `timeout` argument is optional. If not specified, an offer can be withdrawn at any time by the token owner.
+| `timeout` | integer | Specifies when the offer is set to expire using a timestamp for the number of seconds from UNIX epoch before the offer can be withdrawn. For example, if you want an offer to expire at midnight on 30 June 2024, you specify the timeout as 1719705600. You can set the `timeout` argument to zero (0) to allow an offer to be withdrawn at any time by the token owner.
 
 ### offer
 

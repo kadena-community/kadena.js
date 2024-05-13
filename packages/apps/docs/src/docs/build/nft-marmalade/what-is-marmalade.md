@@ -137,10 +137,9 @@ Any other transaction requirements are handled by token policies.
 
 ### Withdraw
 
-Sellers can configure sale contracts to allow them to withdraw from the sale if there are no interested buyers for a token.
-Alternatively, sellers can specify a **timeout** as part of the **offer** step. 
-The timeout is measured in blocks.
-If a seller sets the timeout to 30 blocks, he can't pull out of the sale until 30 blocks have been mined on-chain.
+Sellers can specify a **timeout** as part of the **offer** step. 
+If they set the timeout to zero (0) for a sale contract, they can withdraw from the sale at any time if there are no interested buyers for a token.
+If they set a specific timeout value—for example, to have an offer expire at midnight on 30 June 2024 with a timeout value of 1719705600—they can't pull out of the sale until after the specified timestamp.
 
 After the timeout, the seller can send a **rollback** continuation transaction for the identifier assigned to the SALE event. 
 The **withdraw** operation then transfers the token out of the escrow account and returns it to the seller.
