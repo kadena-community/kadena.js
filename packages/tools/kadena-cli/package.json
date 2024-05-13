@@ -38,6 +38,7 @@
   ],
   "scripts": {
     "build": "pnpm run generate:all && tsc",
+    "bundle": "rollup -c rollup.config.mjs",
     "dev": "NODE_ENV=development KADENA_LOG=debug node --import @swc-node/register/esm-register src/index.ts",
     "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
@@ -78,6 +79,10 @@
     "@kadena-dev/markdown": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
     "@kadena/types": "workspace:*",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.6",
     "@rushstack/eslint-config": "~3.6.9",
     "@rushstack/heft": "~0.50.6",
     "@swc-node/register": "^1.8.0",
@@ -87,9 +92,11 @@
     "@types/seedrandom": "~3.0.8",
     "@vitest/coverage-v8": "^1.1.0",
     "cache-sh": "^1.2.1",
+    "esbuild": "^0.21.2",
     "eslint": "^8.45.0",
     "msw": "^2.2.14",
     "prettier": "~3.2.5",
+    "rollup": "^4.17.2",
     "typescript": "5.4.5",
     "vitest": "^1.1.0"
   }
