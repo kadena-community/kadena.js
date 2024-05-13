@@ -28,7 +28,6 @@ const cleanPath = (path: string): string => {
 
 const isIgnoredImage = (ignoredAssets: string[], path: string): boolean => {
   return !!ignoredAssets.find((asset) => {
-    console.log(cleanPath(asset) === cleanPath(path));
     return cleanPath(asset) === cleanPath(path);
   });
 };
@@ -107,8 +106,5 @@ export const checkUnusedImages = async (): Promise<IScriptResult> => {
     errors.push(`${errors.length} unused assets found`);
   }
 
-  console.log(errors);
   return { errors, success };
 };
-
-checkUnusedImages();
