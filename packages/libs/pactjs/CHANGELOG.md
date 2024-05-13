@@ -1,5 +1,11 @@
 # Change Log - @kadena/pactjs
 
+## 0.4.3
+
+### Patch Changes
+
+- 93bf55b07: Package updates
+
 ## 0.4.1
 
 ### Patch Changes

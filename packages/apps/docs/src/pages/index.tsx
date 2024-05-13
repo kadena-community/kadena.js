@@ -10,7 +10,6 @@ import {
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
 import { getPageConfig } from '@/utils/config';
-import type { IMenuData } from '@kadena/docs-tools';
 import { Box, Grid, GridItem, Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
@@ -20,10 +19,9 @@ import React from 'react';
 
 interface IProps {
   popularPages: IMostPopularPage[];
-  blogPosts: IMenuData[];
 }
 
-const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
+const Home: FC<IProps> = ({ popularPages }) => {
   return (
     <>
       <HomeHeader popularPages={popularPages} />
@@ -237,7 +235,6 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       ...(await getPageConfig({
-        blogPosts: true,
         popularPages: '/',
         filename: __filename,
       })),

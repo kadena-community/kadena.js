@@ -1,5 +1,11 @@
 # Change Log - @kadena/chainwebjs
 
+## 0.1.3
+
+### Patch Changes
+
+- 93bf55b07: Package updates
+
 ## 0.1.1
 
 ### Patch Changes
