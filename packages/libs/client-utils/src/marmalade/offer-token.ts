@@ -11,6 +11,7 @@ import {
   execution,
   setMeta,
 } from '@kadena/client/fp';
+import type { ValidDataTypes } from '@kadena/client/lib/composePactCommand/utils/addData';
 import type { ChainId, IPactDecimal, IPactInt } from '@kadena/types';
 import { submitClient } from '../core';
 import type { IClientConfig } from '../core/utils/helpers';
@@ -47,7 +48,12 @@ const generatePolicyTransactionData = (
 
   if (policyConfig?.guarded) {
     if (props.guards.saleGuard)
-      data.push(addData('sale_guard', props.guards.saleGuard));
+      data.push(
+        addData(
+          'sale_guard',
+          props.guards.saleGuard as unknown as ValidDataTypes,
+        ),
+      );
   }
 
   if (policyConfig?.hasRoyalty) {
