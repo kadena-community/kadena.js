@@ -9,6 +9,7 @@
     "format": "pnpm run /^format:.*/",
     "format:labels": "tsx packages/tools/scripts/generate-labels.ts",
     "format:md": "remark *.md docs/*.md -o --use @kadena-dev/markdown",
+    "format:packages": "turbo run format",
     "format:pkgs": "tsx packages/tools/scripts/generate-packages-json.ts",
     "format:src": "prettier . \"!packages\" --cache --write",
     "format:packages": "turbo run format",
