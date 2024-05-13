@@ -8,13 +8,24 @@
     "start": "next start"
   },
   "dependencies": {
+    "@kadena-dev/shared-config": "workspace:^",
+    "@kadena/client": "workspace:*",
+    "@kadena/client-utils": "workspace:*",
+    "@kadena/pactjs": "workspace:^",
+    "@kadena/react-ui": "workspace:^",
     "next": "latest",
     "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "@kadena/client": "workspace:*",
-    "@kadena/client-utils": "workspace:*"
+    "react-aria-components": "^1.0.1",
+    "react-dom": "18.2.0"
   },
   "engines": {
     "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/css-modules": "^1.0.5",
+    "@types/react": "^18.2.79",
+    "@types/webpack-env": "^1.18.5",
+    "@vanilla-extract/css": "1.14.2",
+    "@vanilla-extract/next-plugin": "^2.4.0"
   }
 }
