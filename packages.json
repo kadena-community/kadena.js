@@ -84,6 +84,12 @@
     "path": "packages/tools/docs-tools"
   },
   {
+    "name": "@kadena/explorer",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/apps/explorer"
+  },
+  {
     "name": "@kadena/graph",
     "version": "1.0.1",
     "private": false,

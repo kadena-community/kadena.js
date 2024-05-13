@@ -13,6 +13,7 @@ import {
   Stack,
   TabItem,
   Tabs,
+  Text,
   useDialog,
 } from '@kadena/react-ui';
 import Link from 'next/link';
@@ -137,20 +138,22 @@ export const SearchResults: FC<IProps> = ({
           <Box marginBlockEnd="xxl">
             <Notification icon={<MonoWarning />} role="none">
               <NotificationHeading>QA search is in beta</NotificationHeading>
-              QA search our latest AI vector-based search, designed to provide
-              instant answers to your queries.
-              <br />
-              These responses are generated using information extracted from all
-              the documentation and blog posts available on our website.
-              <br />
-              Please be aware that, as we are in the process of training our
-              model, the answers provided may not always be accurate.
-              <p>
+              <Text as="p" variant="body">
+                QA search our latest AI vector-based search, designed to provide
+                instant answers to your queries.
+                <br />
+                These responses are generated using information extracted from
+                all the documentation available on our website.
+                <br />
+                Please be aware that, as we are in the process of training our
+                model, the answers provided may not always be accurate.
+              </Text>
+              <Text as="p" variant="body">
                 <strong>But why launch it now?</strong>
                 By making this alpha version accessible online, we aim to
                 collect valuable data that will aid us in refining and enhancing
                 the accuracy of our model’s responses in the future.
-              </p>
+              </Text>
             </Notification>
           </Box>
           <Box position="relative">
@@ -178,7 +181,9 @@ export const SearchResults: FC<IProps> = ({
                 <div key={`${interaction.input}-${idx}`}>
                   <ReactMarkdown>{interaction?.output}</ReactMarkdown>
                   <Box marginBlockEnd="xxl">
-                    <Heading variant="h4">Sources:</Heading>
+                    <Heading variant="h4" transform="uppercase">
+                      Sources:
+                    </Heading>
                     {metadata.length > 1 && (
                       <BrowseSection>
                         {metadata.map((item, innerIdx) => {

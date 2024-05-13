@@ -1,9 +1,11 @@
 import type { Command } from 'commander';
 import { services } from '../../services/index.js';
 
+import { accountOptions } from '../../account/accountOptions.js';
 import { getAccountDirectory } from '../../account/utils/accountHelpers.js';
 import { KadenaError } from '../../services/service-error.js';
 import { createCommand } from '../../utils/createCommand.js';
+import { notEmpty } from '../../utils/globalHelpers.js';
 import { globalOptions, securityOptions } from '../../utils/globalOptions.js';
 import { handleNoKadenaDirectory } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
@@ -34,14 +36,32 @@ export const createGenerateWalletCommand: (
     }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
     walletOptions.createAccount(),
+    accountOptions.accountAlias({ isOptional: true }),
   ],
-  async (option, { collect }) => {
+  async (option) => {
     const accountDir = getAccountDirectory();
     if (accountDir === null) {
       throw new KadenaError('no_kadena_directory');
     }
 
-    const config = await collect(option);
+    const walletName = await option.walletName();
+    const passwordFile = await option.passwordFile();
+    const legacy = await option.legacy();
+    const createAccount = await option.createAccount();
+
+    let accountAlias = null;
+    if (createAccount.createAccount === 'true') {
+      accountAlias = await option.accountAlias();
+    }
+
+    const config = {
+      walletName: walletName.walletName,
+      passwordFile: passwordFile.passwordFile,
+      legacy: legacy.legacy,
+      createAccount: createAccount.createAccount,
+      accountAlias: accountAlias?.accountAlias,
+    };
+
     log.debug('create-wallet:action', config);
 
     try {
@@ -63,15 +83,27 @@ export const createGenerateWalletCommand: (
 
       log.info();
       if (config.createAccount === 'true') {
+        // when --quiet is passed and account alias is not provided
+        // we will not create an account
+        if (
+          !notEmpty(config.accountAlias) ||
+          config.accountAlias.trim().length === 0
+        ) {
+          log.error(
+            'Account alias is required when creating an account: -l, --account-alias <accountAlias>',
+          );
+          return;
+        }
+
         const { accountName, accountFilepath } =
           await createAccountAliasByPublicKey(
-            wallet.alias,
+            config.accountAlias,
             wallet.keys[0].publicKey,
             accountDir,
           );
         logAccountCreation(accountName, accountFilepath);
         log.info(`\nTo fund the account, use the following command:`);
-        log.info(`kadena account fund --account ${accountName}`);
+        log.info(`kadena account fund --account ${config.accountAlias}`);
       }
 
       log.output(null, {

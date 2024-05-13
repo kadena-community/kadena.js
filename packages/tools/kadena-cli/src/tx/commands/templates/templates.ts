@@ -26,7 +26,7 @@ type: exec
 
 const safeTransferTemplate = `
 code: |-
-  (coin.transfer "{{{account:from}}}" "{{{account:to}}}" {{decimal:amount}}))
+  (coin.transfer "{{{account:from}}}" "{{{account:to}}}" {{decimal:amount}})
   (coin.transfer "{{{account:to}}}" "{{{account:from}}}" 0.000000000001)
 data:
 meta:

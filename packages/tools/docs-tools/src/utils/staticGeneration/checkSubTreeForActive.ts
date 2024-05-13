@@ -63,7 +63,6 @@ const mapSubTree =
       'order',
       'lastModifiedDate',
       'publishDate',
-      'author',
       'wordCount',
       'readingTimeInMinutes',
     ]) as unknown as IMenuItem;
