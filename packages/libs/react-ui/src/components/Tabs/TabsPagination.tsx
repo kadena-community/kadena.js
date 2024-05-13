@@ -60,8 +60,14 @@ export const TabsPagination = ({
   };
 
   useEffect(() => {
+    // Initial check
     determineButtonVisibility();
-  }, [scrollContainerRef.current?.scrollLeft]);
+
+    window.addEventListener('resize', () => determineButtonVisibility());
+
+    return () =>
+      window.removeEventListener('resize', () => determineButtonVisibility());
+  }, []);
 
   return (
     <div className={tabListControls}>
