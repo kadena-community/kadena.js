@@ -14,11 +14,24 @@ interface IASSET {
 const errors: string[] = [];
 const success: string[] = [];
 
+const IGNOREASSETS: string[] = [];
+
 const ASSETSDIR = [
   './public/assets/blog',
   './public/assets/docs',
   './public/assets/marmalade',
 ];
+
+const cleanPath = (path: string): string => {
+  return path.replace('./public', '').toLowerCase();
+};
+
+const isIgnoredImage = (ignoredAssets: string[], path: string): boolean => {
+  return !!ignoredAssets.find((asset) => {
+    console.log(cleanPath(asset) === cleanPath(path));
+    return cleanPath(asset) === cleanPath(path);
+  });
+};
 
 const isImage = (path: string) => {
   const imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'webp'];
@@ -26,17 +39,15 @@ const isImage = (path: string) => {
   return imageExtensions.includes(extension);
 };
 
-const cleanPath = (path: string): string => {
-  return path.replace('./public', '');
-};
-
 const crawlAssets = (assets: IASSET[]) => (path: string) => {
+  if (!fs.existsSync(path)) return;
+
   const files = fs.readdirSync(path);
   files.forEach((file) => {
     const filePath = `${path}/${file}`;
     if (isImage(file)) {
       assets.push({
-        path: cleanPath(filePath).toLowerCase(),
+        path: cleanPath(filePath),
         isUsed: false,
       });
     } else if (fs.lstatSync(filePath).isDirectory()) {
@@ -51,11 +62,7 @@ const getAllAssets = (): IASSET[] => {
   return assets;
 };
 
-const checkImagesContent = (
-  path: string,
-  content: string,
-  assets: IASSET[],
-) => {
+const checkImagesContent = (content: string, assets: IASSET[]) => {
   assets.forEach((asset) => {
     if (content.toLowerCase().includes(asset.path)) {
       asset.isUsed = true;
@@ -72,7 +79,7 @@ const checkImages =
     const path = `./src/pages${getFileNameOfPageFile(page, parentTree)}`;
     const content = fs.readFileSync(path, 'utf-8');
 
-    checkImagesContent(path, content, assets);
+    checkImagesContent(content, assets);
   };
 
 export const checkUnusedImages = async (): Promise<IScriptResult> => {
@@ -89,7 +96,7 @@ export const checkUnusedImages = async (): Promise<IScriptResult> => {
   }
 
   assets.forEach((asset) => {
-    if (!asset.isUsed) {
+    if (!asset.isUsed && !isIgnoredImage(IGNOREASSETS, asset.path)) {
       errors.push(`${asset.path} image is not used anywhere`);
     }
   });
@@ -100,5 +107,8 @@ export const checkUnusedImages = async (): Promise<IScriptResult> => {
     errors.push(`${errors.length} unused assets found`);
   }
 
+  console.log(errors);
   return { errors, success };
 };
+
+checkUnusedImages();
