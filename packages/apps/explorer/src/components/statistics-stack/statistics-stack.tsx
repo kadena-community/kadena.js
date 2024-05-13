@@ -1,25 +1,57 @@
-import { Button, Select, SelectItem, Stack } from '@kadena/react-ui';
-import React from 'react';
+import { MonoHub } from '@kadena/react-icons/system';
+import { Button, Select, SelectItem, Stack, Text } from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
+import React, { useState } from 'react';
 
 interface IStatisticsStackProps {
-  data: { label: string; value: number }[];
+  data: { label: string; value: string }[];
 }
 
 const StatisticsStack: React.FC<IStatisticsStackProps> = ({ data }) => {
+  const [selectedNetwork, setSelectedNetwork] = useState('Mainnet');
+
+  const borderStyle = atoms({
+    borderStyle: 'solid',
+    borderWidth: 'hairline',
+    display: 'flex',
+  });
+
   return (
-    <Stack flexDirection={'row'} gap={'md'} alignItems={'center'}>
+    <Stack flexDirection={'row'}>
       {data.map((item) => (
-        <Stack flexDirection={'column'}>
-          <div>{item.value}</div>
-          <div>{item.label}</div>
+        <Stack
+          flexDirection={'column'}
+          alignItems={'center'}
+          padding={'sm'}
+          borderStyle="solid"
+          borderWidth="hairline"
+        >
+          <Text variant="code">{item.value}</Text>
+          <Text variant="code">{item.label}</Text>
         </Stack>
       ))}
 
-      <Button variant="transparent">Graph</Button>
-      <Select variant="default">
-        <SelectItem>'Mainnet'</SelectItem>
-        <SelectItem>'Testnet'</SelectItem>
-      </Select>
+      <div className={borderStyle}>
+        <Button variant="transparent" endVisual={<MonoHub />}>
+          Graph
+        </Button>
+      </div>
+
+      <div className={borderStyle}>
+        <Select
+          defaultSelectedKey={selectedNetwork}
+          fontType="code"
+          size="lg"
+          className={atoms({ height: '100%' })}
+        >
+          <SelectItem key={'Mainnet'} textValue="Mainnet">
+            Mainnet
+          </SelectItem>
+          <SelectItem key={'Testnet'} textValue="Testnet">
+            Testnet
+          </SelectItem>
+        </Select>
+      </div>
     </Stack>
   );
 };
