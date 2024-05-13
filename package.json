@@ -11,6 +11,7 @@
     "format:md": "remark *.md docs/*.md -o --use @kadena-dev/markdown",
     "format:pkgs": "tsx packages/tools/scripts/generate-packages-json.ts",
     "format:src": "prettier . \"!packages\" --cache --write",
+    "format:packages": "turbo run format",
     "preinstall": "npx --no-install only-allow pnpm",
     "knip": "knip",
     "lint": "pnpm run /^lint:.*/",
@@ -22,7 +23,7 @@
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
     "test:integration": "turbo run test:integration",
-    "version": "changeset version && pnpm run format:pkgs"
+    "version": "changeset version && pnpm run format"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.2",

@@ -23,7 +23,7 @@
       "outputMode": "new-only"
     },
     "lint": {
-      "dependsOn": ["build"],
+      "dependsOn": [],
       "outputMode": "new-only",
       "inputs": [
         "**/*.css",
@@ -36,7 +36,7 @@
       ]
     },
     "format": {
-      "dependsOn": ["build"],
+      "dependsOn": [],
       "outputMode": "new-only"
     }
   }
