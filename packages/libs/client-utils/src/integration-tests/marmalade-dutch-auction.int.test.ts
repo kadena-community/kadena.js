@@ -182,9 +182,6 @@ describe('mintToken', () => {
       {
         accountName: sourceAccount.account,
         chainId,
-        guard: {
-          account: sourceAccount.account,
-        },
         tokenId: tokenId as string,
       },
       config,
@@ -481,9 +478,6 @@ describe('getAuctionDetails', () => {
         },
         saleId: saleId as string,
         chainId,
-        guard: {
-          account: sourceAccount.account,
-        },
       },
       config,
     ).execute();
@@ -508,9 +502,6 @@ describe('getCurrentPrice', () => {
       {
         saleId: saleId as string,
         chainId,
-        guard: {
-          account: sourceAccount.account,
-        },
       },
       config,
     ).execute();
@@ -525,9 +516,6 @@ describe('getCurrentPrice', () => {
       {
         saleId: saleId as string,
         chainId,
-        guard: {
-          account: sourceAccount.account,
-        },
       },
       config,
     ).execute();
@@ -729,9 +717,6 @@ describe('buyToken', () => {
       {
         saleId: saleId as string,
         chainId,
-        guard: {
-          account: secondaryTargetAccount.account,
-        },
       },
       config,
     ).execute();
@@ -742,9 +727,6 @@ describe('buyToken', () => {
       {
         saleId: saleId as string,
         chainId,
-        guard: {
-          account: secondaryTargetAccount.account,
-        },
       },
       config,
     ).execute();
@@ -825,9 +807,6 @@ describe('buyToken', () => {
       {
         accountName: secondaryTargetAccount.account,
         chainId,
-        guard: {
-          account: sourceAccount.account,
-        },
         tokenId: tokenId as string,
       },
       config,

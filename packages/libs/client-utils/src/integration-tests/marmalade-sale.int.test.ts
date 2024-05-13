@@ -177,9 +177,6 @@ describe('mintToken', () => {
       {
         accountName: sourceAccount.account,
         chainId,
-        guard: {
-          account: sourceAccount.account,
-        },
         tokenId: tokenId as string,
       },
       config,
@@ -274,9 +271,6 @@ describe('offerToken - default', () => {
       {
         accountName: sourceAccount.account,
         chainId,
-        guard: {
-          account: sourceAccount.account,
-        },
         tokenId: tokenId as string,
       },
       saleConfig,
@@ -288,9 +282,6 @@ describe('offerToken - default', () => {
       {
         accountName: escrowAccount as string,
         chainId,
-        guard: {
-          account: sourceAccount.account,
-        },
         tokenId: tokenId as string,
       },
       saleConfig,
@@ -455,9 +446,6 @@ describe('withdrawToken', () => {
       {
         accountName: sourceAccount.account,
         chainId,
-        guard: {
-          account: sourceAccount.account,
-        },
         tokenId: tokenId as string,
       },
       config,
@@ -643,9 +631,6 @@ describe('buyToken', () => {
       {
         accountName: secondaryTargetAccount.account,
         chainId,
-        guard: {
-          account: sourceAccount.account,
-        },
         tokenId: tokenId as string,
       },
       config,

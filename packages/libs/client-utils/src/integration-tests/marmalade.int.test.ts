@@ -239,9 +239,6 @@ describe('mintToken', () => {
       {
         accountName: sourceAccount.account,
         chainId,
-        guard: {
-          account: sourceAccount.account,
-        },
         tokenId: tokenId as string,
       },
       config,
@@ -280,9 +277,6 @@ describe('getTokenBalance', () => {
       {
         accountName: sourceAccount.account,
         chainId,
-        guard: {
-          account: sourceAccount.account,
-        },
         tokenId: tokenId as string,
       },
       config,
@@ -296,9 +290,6 @@ describe('getTokenBalance', () => {
       {
         accountName: sourceAccount.account,
         chainId,
-        guard: {
-          account: sourceAccount.account,
-        },
         tokenId: nonExistingTokenId,
       },
       config,
@@ -318,9 +309,6 @@ describe('getAccountDetails', () => {
       {
         chainId,
         accountName: sourceAccount.account,
-        guard: {
-          account: sourceAccount.account,
-        },
         tokenId: tokenId as string,
       },
       config,
@@ -342,9 +330,6 @@ describe('getAccountDetails', () => {
       {
         chainId,
         accountName: sourceAccount.account,
-        guard: {
-          account: sourceAccount.account,
-        },
         tokenId: nonExistingTokenId,
       },
       config,
@@ -363,9 +348,6 @@ describe('getTokenInfo', () => {
     const result = await getTokenInfo(
       {
         chainId,
-        guard: {
-          account: sourceAccount.account,
-        },
         tokenId: tokenId as string,
       },
       config,
@@ -384,9 +366,6 @@ describe('getTokenInfo', () => {
     const task = getTokenInfo(
       {
         chainId,
-        guard: {
-          account: sourceAccount.account,
-        },
         tokenId: nonExistingTokenId,
       },
       config,
@@ -403,9 +382,6 @@ describe('getTokenUri', () => {
     const result = await getUri(
       {
         chainId,
-        guard: {
-          account: sourceAccount.account,
-        },
         tokenId: tokenId as string,
       },
       config,
@@ -418,9 +394,6 @@ describe('getTokenUri', () => {
     const task = getUri(
       {
         chainId,
-        guard: {
-          account: sourceAccount.account,
-        },
         tokenId: nonExistingTokenId,
       },
       config,
@@ -549,9 +522,6 @@ describe('transferCreateToken', () => {
       {
         accountName: secondaryTargetAccount.account,
         chainId: chainId,
-        guard: {
-          account: secondaryTargetAccount.account,
-        },
         tokenId: tokenId as string,
       },
       { ...config, sign: createSignWithKeypair([secondaryTargetAccount]) },
@@ -664,9 +634,6 @@ describe('burnToken', () => {
       {
         accountName: secondaryTargetAccount.account,
         chainId,
-        guard: {
-          account: secondaryTargetAccount.account,
-        },
         tokenId: tokenId as string,
       },
       burnConfig,

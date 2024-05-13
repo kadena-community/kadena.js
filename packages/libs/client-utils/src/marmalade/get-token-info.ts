@@ -8,16 +8,12 @@ import type { IClientConfig } from '../core/utils/helpers';
 interface IGetTokenInfoInput {
   tokenId: string;
   chainId: ChainId;
-  guard: {
-    account: string;
-  };
 }
 
-const getTokenInfoCommand = ({ tokenId, chainId, guard }: IGetTokenInfoInput) =>
+const getTokenInfoCommand = ({ tokenId, chainId }: IGetTokenInfoInput) =>
   composePactCommand(
     execution(Pact.modules['marmalade-v2.ledger']['get-token-info'](tokenId)),
     setMeta({
-      senderAccount: guard.account,
       chainId,
     }),
   );

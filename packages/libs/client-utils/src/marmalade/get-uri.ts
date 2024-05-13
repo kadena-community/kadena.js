@@ -8,16 +8,12 @@ import type { IClientConfig } from '../core/utils/helpers';
 interface IGetUriInput {
   tokenId: string;
   chainId: ChainId;
-  guard: {
-    account: string;
-  };
 }
 
-const getUriCommand = ({ tokenId, chainId, guard }: IGetUriInput) =>
+const getUriCommand = ({ tokenId, chainId }: IGetUriInput) =>
   composePactCommand(
     execution(Pact.modules['marmalade-v2.ledger']['get-uri'](tokenId)),
     setMeta({
-      senderAccount: guard.account,
       chainId,
     }),
   );

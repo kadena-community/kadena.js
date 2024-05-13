@@ -9,23 +9,18 @@ interface IGetAccountBalanceInput {
   tokenId: string;
   accountName: string;
   chainId: ChainId;
-  guard: {
-    account: string;
-  };
 }
 
 const getAccountDetailsCommand = ({
   tokenId,
   accountName,
   chainId,
-  guard,
 }: IGetAccountBalanceInput) =>
   composePactCommand(
     execution(
       Pact.modules['marmalade-v2.ledger'].details(tokenId, accountName),
     ),
     setMeta({
-      senderAccount: guard.account,
       chainId,
     }),
   );

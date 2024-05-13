@@ -25,7 +25,6 @@ interface ICreateTokenIdInput {
   precision: IPactInt | PactReference;
   chainId: ChainId;
   creator: {
-    account: string;
     keyset: {
       keys: string[];
       pred: BuiltInPredicate;
@@ -56,7 +55,7 @@ const createTokenIdCommand = ({
       ),
     ),
     addKeyset('creation-guard', creator.keyset.pred, ...creator.keyset.keys),
-    setMeta({ senderAccount: creator.account, chainId }),
+    setMeta({ chainId }),
   );
 };
 

@@ -8,16 +8,12 @@ interface ICreateBidIdInput {
   saleId: string;
   bidderAccount: string;
   chainId: ChainId;
-  guard: {
-    account: string;
-  };
 }
 
 const createBidIdCommand = ({
   saleId,
   bidderAccount,
   chainId,
-  guard,
 }: ICreateBidIdInput) =>
   composePactCommand(
     execution(
@@ -26,7 +22,7 @@ const createBidIdCommand = ({
         bidderAccount,
       ),
     ),
-    setMeta({ senderAccount: guard.account, chainId }),
+    setMeta({ chainId }),
   );
 
 export const createBidId = (

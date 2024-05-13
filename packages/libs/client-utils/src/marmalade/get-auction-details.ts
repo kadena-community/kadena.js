@@ -10,16 +10,12 @@ interface IGetAuctionDetailsInput {
   auctionConfig: IAuctionConfig;
   saleId: string;
   chainId: ChainId;
-  guard: {
-    account: string;
-  };
 }
 
 const getAuctionDetailsCommand = ({
   auctionConfig,
   saleId,
   chainId,
-  guard,
 }: IGetAuctionDetailsInput) =>
   composePactCommand(
     execution(
@@ -32,7 +28,6 @@ const getAuctionDetailsCommand = ({
           ),
     ),
     setMeta({
-      senderAccount: guard.account,
       chainId,
     }),
   );

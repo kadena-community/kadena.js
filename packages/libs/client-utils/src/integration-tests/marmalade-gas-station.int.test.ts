@@ -237,9 +237,6 @@ describe('mintToken', () => {
       {
         accountName: sourceAccount.account,
         chainId,
-        guard: {
-          account: sourceAccount.account,
-        },
         tokenId: tokenId as string,
       },
       config,

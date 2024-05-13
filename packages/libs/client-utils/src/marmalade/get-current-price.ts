@@ -8,22 +8,14 @@ import type { IClientConfig } from '../core/utils/helpers';
 interface IGetCurrentPriceInput {
   saleId: string;
   chainId: ChainId;
-  guard: {
-    account: string;
-  };
 }
 
-const getCurrentPriceCommand = ({
-  saleId,
-  chainId,
-  guard,
-}: IGetCurrentPriceInput) =>
+const getCurrentPriceCommand = ({ saleId, chainId }: IGetCurrentPriceInput) =>
   composePactCommand(
     execution(
       Pact.modules['marmalade-sale.dutch-auction']['get-current-price'](saleId),
     ),
     setMeta({
-      senderAccount: guard.account,
       chainId,
     }),
   );

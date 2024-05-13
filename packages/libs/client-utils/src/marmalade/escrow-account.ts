@@ -8,16 +8,9 @@ import type { IClientConfig } from '../core/utils/helpers';
 interface IEscrowAccountInput {
   saleId: string;
   chainId: ChainId;
-  guard: {
-    account: string;
-  };
 }
 
-const escrowAccountCommand = ({
-  saleId,
-  chainId,
-  guard,
-}: IEscrowAccountInput) =>
+const escrowAccountCommand = ({ saleId, chainId }: IEscrowAccountInput) =>
   composePactCommand(
     execution(
       Pact.modules['marmalade-sale.conventional-auction']['escrow-account'](
@@ -25,7 +18,6 @@ const escrowAccountCommand = ({
       ),
     ),
     setMeta({
-      senderAccount: guard.account,
       chainId,
     }),
   );

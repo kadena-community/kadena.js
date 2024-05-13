@@ -8,18 +8,14 @@ import type { IClientConfig } from '../core/utils/helpers';
 interface IGetEscrowInput {
   saleId: string;
   chainId: ChainId;
-  guard: {
-    account: string;
-  };
 }
 
-const getEscrowAccountCommand = ({ saleId, chainId, guard }: IGetEscrowInput) =>
+const getEscrowAccountCommand = ({ saleId, chainId }: IGetEscrowInput) =>
   composePactCommand(
     execution(
       Pact.modules['marmalade-v2.policy-manager']['get-escrow-account'](saleId),
     ),
     setMeta({
-      senderAccount: guard.account,
       chainId,
     }),
   );

@@ -8,12 +8,9 @@ import type { IClientConfig } from '../core/utils/helpers';
 interface IGetBidInput {
   bidId: string;
   chainId: ChainId;
-  guard: {
-    account: string;
-  };
 }
 
-const getBidCommand = ({ bidId, chainId, guard }: IGetBidInput) =>
+const getBidCommand = ({ bidId, chainId }: IGetBidInput) =>
   composePactCommand(
     execution(
       Pact.modules['marmalade-sale.conventional-auction']['retrieve-bid'](
@@ -21,7 +18,6 @@ const getBidCommand = ({ bidId, chainId, guard }: IGetBidInput) =>
       ),
     ),
     setMeta({
-      senderAccount: guard.account,
       chainId,
     }),
   );
