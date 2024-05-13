@@ -7,7 +7,6 @@ export default {
   input: 'src/index.ts',
   output: {
     dir: './lib',
-    intro: 'const navigator = {};',
     format: 'es',
   },
   plugins: [
