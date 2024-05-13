@@ -1,6 +1,6 @@
 {
   "name": "@kadena/docs-tools",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "description": "Helper utils to docs generation and adding extra context to markdown files",
   "repository": {

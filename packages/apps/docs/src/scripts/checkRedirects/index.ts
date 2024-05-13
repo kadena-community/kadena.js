@@ -1,6 +1,5 @@
 import type { IScriptResult } from '@kadena/docs-tools';
 import * as fs from 'fs';
-
 import redirects from './../../redirects/redirects.mjs';
 import { getSitemapLinkstoArray } from './utils';
 
@@ -12,6 +11,8 @@ interface IRedirect {
   destination: string;
   permanent: boolean;
 }
+
+const httpRegExp = new RegExp(/^https?:/);
 
 const typedRedirects = redirects as IRedirect[];
 
@@ -35,6 +36,7 @@ export const checkUrlAgainstList = (
   urlList: IRedirect[],
 ): string[] => {
   const matchingUrls: string[] = [];
+
   for (const listItem of urlList) {
     if (listItem.source) {
       const listItemRegex = new RegExp(
@@ -81,6 +83,9 @@ const checkImportedRedirectsSlugs = (
   }
 
   return matches.reduce((acc, val) => {
+    if (httpRegExp.test(val)) {
+      return true;
+    }
     if (!sitemapUrls.find((r) => r === val) && val && val !== url) {
       return !!checkImportedRedirectsSlugs(val, redirects, sitemapUrls);
     }
@@ -96,7 +101,6 @@ const checkUrlCreator =
   (sitemapUrls: string[]) =>
   (url: string, idx: number): void => {
     const found = sitemapUrls.find((r) => r === url);
-
     if (found) return;
     if (
       !found &&
