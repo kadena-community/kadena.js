@@ -13,7 +13,7 @@ tags: ['TypeScript', 'Kadena client', 'frontend']
 
 Tool to generate and manage wallets
 
-# Basic usage
+## Basic usage
 
 The basic syntax for the `kadena wallet` command is:
 
@@ -25,7 +25,7 @@ kadena wallet <action> [flag]
 
 Use the following actions to specify the operation you want to perform.
 
-| **Subcommand**  | **Description**                                     | 
+| **Use this action**  | **TO do this**                                 | 
 | --------------- | --------------------------------------------------- | 
 | add             | Add a new local wallet                              | 
 | import          | Import ( restore ) wallet from mnemonic phrase      | 
