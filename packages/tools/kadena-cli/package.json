@@ -92,7 +92,6 @@
     "@types/seedrandom": "~3.0.8",
     "@vitest/coverage-v8": "^1.1.0",
     "cache-sh": "^1.2.1",
-    "esbuild": "^0.21.2",
     "eslint": "^8.45.0",
     "msw": "^2.2.14",
     "prettier": "~3.2.5",
