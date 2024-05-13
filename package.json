@@ -12,7 +12,6 @@
     "format:packages": "turbo run format",
     "format:pkgs": "tsx packages/tools/scripts/generate-packages-json.ts",
     "format:src": "prettier . \"!packages\" --cache --write",
-    "format:packages": "turbo run format",
     "preinstall": "npx --no-install only-allow pnpm",
     "knip": "knip",
     "lint": "pnpm run /^lint:.*/",
