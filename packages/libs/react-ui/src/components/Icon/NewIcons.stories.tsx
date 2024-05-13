@@ -1,6 +1,6 @@
 /* eslint-disable @kadena-dev/no-eslint-disable */
 /* eslint-disable @typescript-eslint/naming-convention */
-import * as BranchIcons from '@kadena/react-icons/brand';
+import * as BrandIcons from '@kadena/react-icons/brand';
 import * as SystemIcons from '@kadena/react-icons/system';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -62,12 +62,11 @@ type Story = StoryObj<{
 }>;
 const system = Object.entries(SystemIcons);
 export const System: Story = {
-  name: 'System',
+  name: 'New System Icons',
   args: {
-    fontSize: 'base',
     fill: 'base',
   },
-  render: ({ fontSize, fill }) => {
+  render: ({ fill }) => {
     const { contains } = useFilter({ sensitivity: 'base', usage: 'search' });
     const [search, setSearch] = useState('');
     return (
@@ -97,14 +96,6 @@ export const System: Story = {
             xxl: 6,
           }}
         >
-          {/* <div
-            className={atoms({
-              display: 'flex',
-              flexWrap: 'wrap',
-              flex: 1,
-              gap: 'sm',
-            })}
-          > */}
           {system
             .filter(([key]) =>
               contains(key.toLowerCase(), search.toLowerCase()),
@@ -112,26 +103,20 @@ export const System: Story = {
             .map(([key, Icon]) => (
               <>
                 <GridItem>
-                  <Icon
-                    key={key}
-                    fontSize={icoSizes[fontSize]}
-                    fill={iconColors[fill]}
-                    title={key}
-                  />
+                  <Icon key={key} fill={iconColors[fill]} title={key} />
                   {key}
                 </GridItem>
               </>
             ))}
-          {/* </div> */}
         </Grid>
       </div>
     );
   },
 };
 
-const brand = Object.entries(BranchIcons);
+const brand = Object.entries(BrandIcons);
 export const Brand: Story = {
-  name: 'Brand',
+  name: 'Brand Icons',
   args: {
     fontSize: 'xxl',
     fill: 'base',
