@@ -556,7 +556,7 @@ const classMember = (member: ts.ClassElement) => {
         decorator?.name === 'capability' ||
         decorator?.name === 'governance'
       ) {
-        fun = `capability`;
+        fun = `defcap`;
       }
       if (decorator?.name === 'defpact') {
         fun = `defpact`;

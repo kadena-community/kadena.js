@@ -10,7 +10,7 @@
 
   (defcap PRIVATE-METHOD() true)
   
-  (capability GOVERNANCE ()
+  (defcap GOVERNANCE ()
     (enforce false "Enforce non-upgradeability")
   )
 
@@ -21,23 +21,23 @@
 
   (deftable coin-table:{coin-schema} )
 
-  (capability DEBIT (sender:string)
+  (defcap DEBIT (sender:string)
     (enforce-guard (at "guard" (read "coin-table" sender) ))
     (enforce (!= sender "") "valid sender")
   )
 
-  (capability CREDIT (receiver:string)
+  (defcap CREDIT (receiver:string)
     (enforce (!= receiver "") "valid receiver")
   )
 
-  (capability TRANSFER-mgr:decimal (managed:decimal requested:decimal)
+  (defcap TRANSFER-mgr:decimal (managed:decimal requested:decimal)
     (let ((newbal (- managed requested)))
       (enforce (>= newbal 0) (format "TRANSFER exceeded for balance {}" [managed]))
       newbal
     )
   )
 
-  (capability TRANSFER (sender:string receiver:string amount:decimal)
+  (defcap TRANSFER (sender:string receiver:string amount:decimal)
     (managed amount TRANSFER_mgr)
     (enforce (!= sender receiver) "same sender and receiver")
     (enforce-unit amount)
