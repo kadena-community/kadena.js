@@ -61,7 +61,7 @@ prefill a question by filling the flag
 |         | description                                                |
 | ------- | ---------------------------------------------------------- |
 | --quiet | Eliminating interactive prompts and confirmations          |
-| --json  | Adds relevant result data in json format to stdout stream. |
+| --json  | Adds relevant result data in json format to stdout stream  |
 
 ## Quiet mode
 
