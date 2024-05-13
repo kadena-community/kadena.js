@@ -1,10 +1,13 @@
-import { NetworkInfo, useNetworkInfoQuery } from '@/__generated__/sdk';
+import type { NetworkInfo } from '@/__generated__/sdk';
+import { useNetworkInfoQuery } from '@/__generated__/sdk';
 import StatisticsStack from '@/components/statistics-stack/statistics-stack';
 import { LogoKdacolorLight } from '@kadena/react-icons/brand';
 import { Stack } from '@kadena/react-ui';
 import React from 'react';
 
-const formatStatisticsData = (networkInfo: NetworkInfo | null | undefined) => {
+const formatStatisticsData = (
+  networkInfo: NetworkInfo | null | undefined,
+): { label: string; value: string }[] => {
   if (!networkInfo) {
     return [
       { label: 'Est. Network Hash', value: '0 PH/s' },
@@ -26,8 +29,7 @@ const formatStatisticsData = (networkInfo: NetworkInfo | null | undefined) => {
 };
 
 const Home: React.FC = () => {
-  const { data: statisticsData, error: statisticsError } =
-    useNetworkInfoQuery();
+  const { data: statisticsData } = useNetworkInfoQuery();
 
   const statisticsGridData = formatStatisticsData(statisticsData?.networkInfo);
 
