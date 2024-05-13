@@ -13,21 +13,21 @@ class coin implements fungibleV2, fungibleXChainV1 {
     enforce(false, 'Enforce non-upgradeability');
   }
 
-  @defschema('coin-schema') coinSchema =
+  @schema('coin-schema') coinSchema =
     new Schema<CoinSchema>(/** we can pass model as schema validator */);
 
-  @deftable('coin-table') coinTable = new Table(this.coinSchema);
+  @table('coin-table') coinTable = new Table(this.coinSchema);
 
-  @defcap DEBIT(sender: string) {
+  @capability DEBIT(sender: string) {
     enforce_guard(this.coinTable.read(sender).guard);
     enforce(sender !== '', 'valid sender');
   }
 
-  @defcap CREDIT(receiver: string) {
+  @capability CREDIT(receiver: string) {
     enforce(receiver !== '', 'valid receiver');
   }
 
-  @defcap('TRANSFER-mgr') TRANSFER_mgr(
+  @capability('TRANSFER-mgr') TRANSFER_mgr(
     managed: decimal,
     requested: decimal,
   ): decimal {
@@ -39,7 +39,7 @@ class coin implements fungibleV2, fungibleXChainV1 {
     return newbal;
   }
 
-  @defcap TRANSFER(sender: string, receiver: string, amount: number) {
+  @capability TRANSFER(sender: string, receiver: string, amount: number) {
     managed(amount, this.TRANSFER_mgr);
     enforce(sender !== receiver, 'same sender and receiver');
     enforce_unit(amount);

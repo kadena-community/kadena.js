@@ -499,7 +499,7 @@ const extractSchema =
       member as ts.PropertyDeclaration,
     );
     if (
-      (decorator && decorator.name === 'defschema') ||
+      (decorator && decorator.name === 'schema') ||
       (!decorator && initializer.class === 'Schema')
     ) {
       if (initializer.typeArguments.length !== 1) {
@@ -551,8 +551,11 @@ const classMember = (member: ts.ClassElement) => {
         .map(({ name, type }) => `${name}${type ? `:${type}` : ''}`)
         .join(' ');
       let fun = '';
-      if (decorator?.name === 'defcap' || decorator?.name === 'governance') {
-        fun = `defcap`;
+      if (
+        decorator?.name === 'capability' ||
+        decorator?.name === 'governance'
+      ) {
+        fun = `capability`;
       }
       if (decorator?.name === 'defpact') {
         fun = `defpact`;
@@ -574,7 +577,7 @@ const classMember = (member: ts.ClassElement) => {
       const property = member as ts.PropertyDeclaration;
       const { decorator, name, initializer } = extractProperty(property);
       if (
-        (decorator && decorator.name === 'defschema') ||
+        (decorator && decorator.name === 'schema') ||
         initializer.class === 'Schema'
       ) {
         const { schemas } = useContext();
@@ -590,7 +593,7 @@ const classMember = (member: ts.ClassElement) => {
       }
 
       if (
-        (decorator && decorator.name === 'deftable') ||
+        (decorator && decorator.name === 'table') ||
         initializer.class === 'Table'
       ) {
         const { decorator, name, initializer, args } =
