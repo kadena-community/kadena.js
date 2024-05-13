@@ -40,7 +40,7 @@ export interface ICollectionInfoInput {
 
 export interface ICreateTokenPolicyConfig {
   customPolicies?: boolean;
-  upgradeableURI?: boolean;
+  updatableURI?: boolean;
   guarded?: boolean;
   nonFungible?: boolean;
   hasRoyalty?: boolean;
@@ -54,7 +54,7 @@ export const COLLECTION_POLICY = 'collection-policy-v1';
 
 interface ConfigToDataMap {
   customPolicies: { customPolicyData: Record<string, any> };
-  upgradeableURI: {};
+  updatableURI: {};
   guarded: { guards: IGuardInfoInput };
   nonFungible: {};
   hasRoyalty: { royalty: IRoyaltyInfoInput };
@@ -70,9 +70,7 @@ export interface PolicyProps {
 
 type PolicyDataForConfig<C extends ICreateTokenPolicyConfig> =
   (C['customPolicies'] extends true ? ConfigToDataMap['customPolicies'] : {}) &
-    (C['upgradeableURI'] extends true
-      ? ConfigToDataMap['upgradeableURI']
-      : {}) &
+    (C['updatableURI'] extends true ? ConfigToDataMap['updatableURI'] : {}) &
     (C['guarded'] extends true ? ConfigToDataMap['guarded'] : {}) &
     (C['nonFungible'] extends true ? ConfigToDataMap['nonFungible'] : {}) &
     (C['hasRoyalty'] extends true ? ConfigToDataMap['hasRoyalty'] : {}) &
@@ -96,7 +94,7 @@ export const validatePolicies = (
     }
   }
 
-  if (policyConfig?.guarded || policyConfig?.upgradeableURI) {
+  if (policyConfig?.guarded || policyConfig?.updatableURI) {
     if (!policies.includes(GUARD_POLICY)) {
       throw new Error('Guard policy is required');
     }

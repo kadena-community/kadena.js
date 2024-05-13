@@ -14,7 +14,6 @@ import {
   transferCreateToken,
   updateUri,
 } from '../marmalade';
-import { GUARD_POLICY_FAILURE_GUARD } from '../marmalade/config';
 import { NetworkIds } from './support/NetworkIds';
 import { withStepFactory } from './support/helpers';
 import { secondaryTargetAccount, sourceAccount } from './test-data/accounts';
@@ -121,7 +120,7 @@ describe('createToken', () => {
         ..._inputs,
         policyConfig: {
           guarded: true,
-          upgradeableURI: true,
+          updatableURI: true,
         },
         guards: {},
         tokenId: tokenId as string,

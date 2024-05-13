@@ -16,7 +16,7 @@ export const validatePolicies = (
     }
   }
 
-  if (policyConfig?.guarded || policyConfig?.upgradeableURI) {
+  if (policyConfig?.guarded || policyConfig?.updatableURI) {
     if (!policies.includes(GUARD_POLICY)) {
       throw new Error('Guard policy is required');
     }

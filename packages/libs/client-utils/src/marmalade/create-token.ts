@@ -125,7 +125,7 @@ const generatePolicyTransactionData = (
     data.push(addData('royalty-rate', props.royalty.royaltyRate.decimal));
   }
 
-  if (!policyConfig?.guarded && policyConfig?.upgradeableURI) {
+  if (!policyConfig?.guarded && policyConfig?.updatableURI) {
     if (props.guards.uriGuard)
       data.push(
         addData(
@@ -135,7 +135,7 @@ const generatePolicyTransactionData = (
       );
   }
 
-  if (policyConfig?.guarded && !policyConfig?.upgradeableURI) {
+  if (policyConfig?.guarded && !policyConfig?.updatableURI) {
     if (!props.guards.uriGuard) {
       throw new Error('Non-updatable tokens require "uriGuard"');
     }
