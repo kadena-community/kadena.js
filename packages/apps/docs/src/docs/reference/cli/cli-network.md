@@ -27,8 +27,8 @@ kadena network <action> [flag]
 
 Use the following actions to specify the operation you want to perform.
 
-| **Subcommand** | **Description**                                             |
-| -------------- | ----------------------------------------------------------- |
+| **Use this action** | **To do this**                                         |
+| ------------------- | ------------------------------------------------------ |
 | add            | Add a new network.                                          |
 | set-default    | Set a network to be the default choice in selection prompts.|
 | list           | List all available networks.                                |
