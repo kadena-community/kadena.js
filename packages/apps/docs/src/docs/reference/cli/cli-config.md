@@ -12,7 +12,7 @@ tags: ['TypeScript', 'Kadena client', 'frontend']
 # kadena config
 
 Use `kadena config` to set up and manage configuration settings for the Kadena CLI environment.
-To get started with the CLI, use `kadena config init` to create a configuration settings folder.
+To get started with the CLI, use `kadena config init` to create a `.kadena` configuration folder.
 The configuration folder stores information about your development environment, including:
 
 - Default network settings for the Kadena development, test, and main networks.
@@ -43,29 +43,24 @@ You can use the following optional flags with `kadena config` commands.
 
 | Use this flag | To do this
 | ------------- | -----------
-| `-h`, `--help` |	Display usage information.
-| `-q`, `--quiet` | Eliminate interactive prompts and confirmations to enable automation of tasks.
-| `-V`, `--version`	| Display version information.
+| -h, --help |	Display usage information.
+| -q, --quiet | Eliminate interactive prompts and confirmations to enable automation of tasks.
+| -V, --version	| Display version information.
 | --json | Format command results sent to standard output (stdout) using JSON format.
 | --yaml | Format command results sent to standard output (stdout) using YAML format.
 
 ## kadena config init
 
 Use `kadena config init` to create a configuration folder in the directory of your choice.
-The command automatically creates files with the default network settings for the Kadena development, test, and main networks.
-You can specify the location of the `.kadena` folder to organize configuration settings.
-For example, you can add the folder to one or more working directories or to a global directory such as your home directory.
+The command automatically initializes the configuration folder with default network settings for the Kadena development, test, and main networks and adds transaction templates to your development environment.
+You can also use this command to create your first wallet and account, so you can sign transactions locally for development and testing.
 
-You can also use this command to create your first wallet and account, setting the stage for you to sign transactions on the Kadena network.
-
-By default, the initial configuration settings are written to a `.kadena` folder in your current working directory and the settings can be used from within anywhere the directory. 
+By default, the initial configuration settings are written to a `.kadena` folder in your current working directory and the settings can be used from anywhere within that directory. 
 For example, if you run `kadena config init` in the `/home/user/projects/my-kadena-project` folder, the configuration settings are available from anywhere inside that project directory.
 By using a working directory for the configuration folder, you can use different configuration settings in different folders.
 
-Alternatively, you can run `kadena config init` with the `--global` command-line option to add the configuration folder as a global directory—`.config/kadena`—inside of your home directory. This option enables you to use the
-configuration settings from anywhere on your computer. Do be aware local configurations
-have priority. You can use `kadena config path` to validate which path is being
-used when in a certain directory.
+Alternatively, you can run `kadena config init` with the `--global` command-line option to add the configuration folder as a global directory inside of your home directory. 
+This option enables you to use the same configuration settings from any folder on your computer. 
 
 Configuration settings that are defined in a local working directory take precedence over configuration settings defined in the home directory. 
 If you add more than one configuration folder to your development environment, you can use the `kadena config path` commands to see which path is being used in a specific directory.
@@ -74,33 +69,42 @@ If you add more than one configuration folder to your development environment, y
 
 You can use the following command-line arguments with the `kadena config init` command:
 
-| **Argument** | **Description** | **Required** | 
-| ----------- | --------------- | ------------ | 
-| --global | Initialize the configuration folder in the current user's home directory. For example, this option creates the `~/.config/kadena` directory.| | 
-| --create-wallet | Confirm the creation of a new wallet. Set to true to enable. | | 
-| --wallet-name | Name for the new wallet. | | 
-| --password-file | Path to a file containing the password for the wallet being created. Alternatively, you can specify the password from standard input (stdin). | | 
-| --legacy | Use ChainWeaver based key derivation when creating a wallet. | | 
-| --create-account | Create an account using the first wallet key. | | 
-| --account-alias | Create an account alias to store your account details, if creating an account. | |
+| **Argument** | **Description** |
+| ----------- | --------------- |
+| -g, --global | Initialize the configuration folder in the current user's home directory. For example, this option creates the `~/.config/kadena` directory.| | 
+| -c, --create-wallet true | false | Confirm the creation of a new wallet. Set to true to enable. |
+| -w, --wallet-name <walletName>| Specify a name for the new wallet. |
+| --password-file <passwordFile> | Specify the path to a file containing the password for the wallet being created. Alternatively, you can specify the password from standard input (stdin). |
+| -L, --legacy | Use the ChainWeaver ED25519 signature scheme to generate keys when creating a wallet. |
+| -a, --create-account true | false| Create an account using the first wallet key. |
+| -l, --account-alias | Create an account alias to store your account details, if creating an account. |
 
 ### Examples
 
-To initialize the Kadena CLI configuration settings with a new wallet and account in the current working directory, run a command similar to the following:
+To create the Kadena CLI configuration folder and initial settings interactively, run the following command:
 
 ```bash
-kadena config init --create-wallet="true" --wallet-name="my_first_wallet" --create-account="true" --account-alias="dev_account"
+kadena config init
 ```
 
-To initialize the Kadena CLI configuration settings globally in your home directory, run the following command:
+This command creates the `.kadena `configuration folder in your current working directory and prompts you to create a new wallet.
+
+To make the Kadena CLI configuration folder and initial settings available globally from your home directory, run the following command:
 
 ```bash
 kadena config init --global
 ```
 
-This command creates the `kadena` folder in your home directory—for example, as `~/.config/kadena`, so you can use the configuration settings from anywhere. 
+This command creates a global `kadena` folder in your home directory—for example, as `~/.config/kadena`—so you can use the configuration settings from any folder. 
+The command then prompts you to create a new wallet.
 
-To initialize the Kadena CLI configuration settings without creating a new wallet or account, run the following command:
+To create the Kadena CLI configuration folder with a new wallet and account in the current working directory, run a command similar to the following:
+
+```bash
+kadena config init --create-wallet="true" --wallet-name="my_first_wallet" --create-account="true" --account-alias="dev_account"
+```
+
+To create the Kadena CLI configuration folder without creating a new wallet or account, run the following command:
 
 ```bash
 kadena config init --create-wallet="false"
@@ -109,7 +113,7 @@ kadena config init --create-wallet="false"
 ## kadena config path
 
 Use `kadena config path` to display the location of the configuration folder currently being used.
-If you add more than one configuration folder to your development environment, you can use the `kadena config path` commands to see which path is being used for your current directory.
+If you add more than one configuration folder to your development environment, you can use the `kadena config path` command to see the location of the configuration folder that's used for your current directory.
 
 To display the location of the configuration folder currently being used, run the following command:
 
