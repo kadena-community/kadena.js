@@ -10,5 +10,13 @@ export default {
     intro: 'const navigator = {};',
     format: 'es',
   },
-  plugins: [resolve(), commonjs(), typescript(), json()],
+  plugins: [
+    resolve(),
+    commonjs(),
+    typescript({
+      declaration: false,
+      declarationMap: false,
+    }),
+    json(),
+  ],
 };
