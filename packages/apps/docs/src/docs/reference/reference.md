@@ -25,6 +25,10 @@ The reference information for the Pact programming language covers the following
 
 For information about the design of the Pact programming language, see the [Pact white paper](https://cdn.sanity.io/files/agrhq0bu/production/70f01649395af96655ca94d331fb1bd01af9fc8a.pdf) or the [Pact home page](https://www.kadena.io/pact).
 
+## Kadena command-line interface
+
+[Command-line interface](/reference/kadena-cli) provides a complete set of commands and command-line options for setting up and managing a local development environment using a command-line workflow.
+
 ## Frontend libraries: Kadena client
 
 The Kadena client is a collection`of libraries, functions, and utilities written in TypeScript to provide a familiar application programming interface (API) for interacting with smart contracts and the Kadena network. 
@@ -34,8 +38,6 @@ The Kadena client includes the following packages:
 - [Kadena client](/reference/kadena-client) is the primary TypeScript library that provides a frontend application programming interface (API) for performing common tasks such as calling functions in Pact smart contracts and submitting transactions to the Kadena network.
 
 - [Client utilities](reference/kadena-client/client-utils) is a TypeScript library with a simplified application programming interface (API) for helper utilities.
-
-- [Command-line interface](/reference/kadena-client/kadena-cli) provides a complete set of commands and command-line options for setting up and managing a local development environment using a command-line workflow.
 
 - [Cryptographic utilities](/reference/kadena-client/cryptographic-utils) provides a collection of utility functions to perform common cryptographic operations.
 
