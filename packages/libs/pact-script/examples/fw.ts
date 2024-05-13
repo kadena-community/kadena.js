@@ -30,6 +30,7 @@ declare class Table<T> {
   constructor(schema: Schema<T>);
   read(key: string): any;
   write(key: string, value: any);
+  update(key: string, value: any);
 }
 @module('fungible-v2')
 class fungibleV2 {}

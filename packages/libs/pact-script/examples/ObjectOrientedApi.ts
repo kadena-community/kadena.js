@@ -55,7 +55,7 @@ class coin implements fungibleV2, fungibleXChainV1 {
     require_capability(this.DEBIT(account));
     const { balance } = this.coinTable.read(account);
     enforce(amount <= balance, 'Insufficient funds');
-    return update('coin-table', account, { balance: balance - amount });
+    return this.coinTable.update(account, { balance: balance - amount });
   }
 
   private credit(account: string, guard: guard, amount: decimal): string {

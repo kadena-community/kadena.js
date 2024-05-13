@@ -183,7 +183,7 @@ const createExpression = (
           ({ propertyName }) => propertyName === parts[0],
         );
         if (table) {
-          args = [`"${table.tableName}"`, ...args];
+          args = [`${table.tableName}`, ...args];
           functionName = parts[1];
         }
       }
@@ -309,9 +309,9 @@ const createExpression = (
         name: (prop.name! as ts.Identifier).escapedText,
         value: createExpression((prop as ts.PropertyAssignment).initializer),
       }));
-      return `{ ${props
-        .map(({ name, value }) => `${name}: ${value}`)
-        .join(',')} }`;
+      return `{\n${indent(2)(
+        props.map(({ name, value }) => `"${name}": ${value}`).join(', \n'),
+      )} \n}`;
     }
 
     case ts.SyntaxKind.ArrowFunction: {

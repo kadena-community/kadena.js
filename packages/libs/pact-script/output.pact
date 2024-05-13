@@ -25,7 +25,7 @@
   (deftable coin-table:{coin-schema} )
 
   (defcap DEBIT (sender:string)
-    (enforce-guard (at "guard" (read "coin-table" sender) ))
+    (enforce-guard (at "guard" (read coin-table sender) ))
     (enforce (!= sender "") "valid sender")
   )
 
@@ -58,7 +58,9 @@
     (with-read coin-table account
       { "balance" := balance }
       (enforce (<= amount balance) "Insufficient funds")
-      (update "coin-table" account { balance: (- balance amount) })
+      (update coin-table account {
+        "balance": (- balance amount) 
+      })
     )
   )
 
@@ -73,7 +75,10 @@
       { "balance" := balance, "guard" := retg }
       (enforce (= retg guard) "account guards do not match")
       (let ((is_new (if (= balance -1) (enforce-reserved account guard) false)))
-        (write "coin-table" account { balance: (if is_new amount (+ balance amount)),guard: retg })
+        (write coin-table account {
+          "balance": (if is_new amount (+ balance amount)), 
+          "guard": retg 
+        })
     ))
   )
 
