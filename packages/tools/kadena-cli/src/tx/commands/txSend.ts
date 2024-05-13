@@ -2,63 +2,33 @@ import type { Command } from 'commander';
 import path from 'node:path';
 
 import type {
-  ChainId,
   IClient,
   ICommand,
   IPollOptions,
   ITransactionDescriptor,
   IUnsignedCommand,
 } from '@kadena/client';
-import { createClient, isSignedTransaction } from '@kadena/client';
+import { isSignedTransaction } from '@kadena/client';
 import ora from 'ora';
 import { IS_TEST } from '../../constants/config.js';
-import type {
-  ICustomNetworkChoice,
-  INetworkCreateOptions,
-} from '../../networks/utils/networkHelpers.js';
-import { loadNetworkConfig } from '../../networks/utils/networkHelpers.js';
+
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import { getExistingNetworks } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { txOptions } from '../txOptions.js';
 import { parseTransactionsFromStdin } from '../utils/input.js';
+import { displayTransactionResponse } from '../utils/txDisplayHelper.js';
+import type { INetworkDetails, ISubmitResponse } from '../utils/txHelpers.js';
 import {
-  extractCommandData,
+  createTransactionWithDetails,
+  getClient,
   getTransactionsFromFile,
   logTransactionDetails,
 } from '../utils/txHelpers.js';
 
-interface INetworkDetails extends INetworkCreateOptions {
-  chainId: ChainId;
-}
-
-interface ITransactionWithDetails {
-  command: ICommand | IUnsignedCommand;
-  details: INetworkDetails;
-}
-
-interface ISubmitResponse {
-  transaction: IUnsignedCommand | ICommand;
-  details: INetworkDetails;
-  requestKey: string;
-  clientKey: string;
-}
-
 const clientInstances: Map<string, IClient> = new Map();
-
-function getClient(details: INetworkDetails): IClient {
-  const clientKey = `${details.networkHost}-${details.networkId}-${details.chainId}`;
-  if (!clientInstances.has(clientKey)) {
-    const client: IClient = createClient(
-      `${details.networkHost}/chainweb/0.0/${details.networkId}/chain/${details.chainId}/pact`,
-    );
-    clientInstances.set(clientKey, client);
-  }
-  return clientInstances.get(clientKey)!;
-}
 
 export async function pollRequests(
   requestKeys: ISubmitResponse[],
@@ -102,10 +72,8 @@ export async function pollRequests(
       const { requestKey, status } = value;
 
       if (status === 'success' && 'data' in value) {
-        log.info(
-          `Polling success for requestKey: ${requestKey}, result:`,
-          value.data,
-        );
+        log.info(`Polling success for requestKey: ${requestKey}`);
+        displayTransactionResponse(value.data[requestKey], 2);
       } else if (status === 'error' && 'error' in value) {
         log.error(
           `Polling error for requestKey: ${requestKey}, error:`,
@@ -140,7 +108,7 @@ export const sendTransactionAction = async ({
         continue;
       }
 
-      const client = getClient(details);
+      const client = getClient(clientInstances, details);
 
       await logTransactionDetails(command);
       const localResponse = await client.local(command);
@@ -183,7 +151,7 @@ export const createSendTransactionCommand: (
     globalOptions.directory({ disableQuestion: true }),
     txOptions.txSignedTransactionFiles(),
     txOptions.txTransactionNetwork(),
-    txOptions.txPoll(),
+    txOptions.poll(),
   ],
   async (option, { stdin }) => {
     const commands: (IUnsignedCommand | ICommand)[] = [];
@@ -203,47 +171,11 @@ export const createSendTransactionCommand: (
     const networkForTransactions = await option.txTransactionNetwork({
       commands,
     });
-    const transactionsWithDetails: ITransactionWithDetails[] = [];
 
-    const existingNetworks: ICustomNetworkChoice[] =
-      await getExistingNetworks();
-
-    for (let index = 0; index < commands.length; index++) {
-      const command = commands[index];
-      const network = networkForTransactions.txTransactionNetwork[index];
-
-      if (!existingNetworks.some((item) => item.value === network)) {
-        log.error(
-          `Network "${network}" does not exist. Please create it using "kadena network create" command, the transaction "${
-            index + 1
-          }" with hash "${command.hash}" will not be sent.`,
-        );
-        continue;
-      }
-
-      const networkDetails = await loadNetworkConfig(network);
-      const commandData = extractCommandData(command);
-
-      if (commandData.networkId === networkDetails.networkId) {
-        transactionsWithDetails.push({
-          command,
-          details: {
-            chainId: commandData.chainId as ChainId,
-            ...networkDetails,
-          },
-        });
-      } else {
-        log.error(
-          `Network ID: "${commandData.networkId}" in transaction command ${
-            index + 1
-          } does not match the Network ID: "${
-            networkDetails.networkId
-          }" from the provided network "${network}", transaction with hash "${
-            command.hash
-          }" will not be sent.`,
-        );
-      }
-    }
+    const transactionsWithDetails = await createTransactionWithDetails(
+      commands,
+      networkForTransactions,
+    );
 
     if (transactionsWithDetails.length > 0) {
       const loader = ora({
@@ -264,9 +196,9 @@ export const createSendTransactionCommand: (
         );
       }
 
-      const poll = await option.txPoll();
+      const txPoll = await option.poll();
 
-      if (poll.txPoll === true) {
+      if (txPoll.poll === true) {
         await pollRequests(result.data.transactions);
       }
     } else {

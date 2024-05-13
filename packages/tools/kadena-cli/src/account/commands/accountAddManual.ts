@@ -50,6 +50,14 @@ export const addAccountManual = async (
   // If the user choose not to overwrite the account, we need to ask for the public keys and predicate
   if (!hasAccountDetails) {
     publicKeysPrompt = await option.publicKeys();
+    // when --quiet is passed and account details are not in chain
+    // public keys are required to add account
+    if (!isNotEmptyString(publicKeysPrompt.publicKeys)) {
+      throw new Error(
+        'Missing required argument PublicKeys: "-k, --public-keys <publicKeys>"',
+      );
+    }
+
     isKeysAllPredicate = isNotEmptyString(accountName)
       ? isValidForOnlyKeysAllPredicate(
           accountName,
@@ -66,14 +74,6 @@ export const addAccountManual = async (
   }
 
   const { publicKeys, publicKeysConfig = [] } = publicKeysPrompt ?? {};
-
-  // when --quiet is passed and account details are not in chain
-  // public keys are required to add account
-  if (!hasAccountDetails && !publicKeysConfig?.length) {
-    throw new Error(
-      'Missing required argument PublicKeys: "-k, --public-keys <publicKeys>"',
-    );
-  }
 
   if (isKeysAllPredicate && predicate !== 'keys-all') {
     throw new Error(KEYS_ALL_PRED_ERROR_MESSAGE);

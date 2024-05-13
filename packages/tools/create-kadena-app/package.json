@@ -1,6 +1,6 @@
 {
   "name": "@kadena/create-kadena-app",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "CLI tool to create a starter project with @kadena/client integration",
   "repository": {
     "type": "git",

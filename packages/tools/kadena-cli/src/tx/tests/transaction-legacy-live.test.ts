@@ -81,7 +81,6 @@ describe('template to legacy live test', () => {
       expect(signed?.[0]?.filePath).toBeTruthy();
 
       mockPrompts({
-        verbose: true,
         input: {
           'Enter ChainId': '0',
         },
