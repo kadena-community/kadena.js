@@ -74,8 +74,5 @@ export const contentClassVariants: Record<LayoutType, string> = styleVariants({
       },
     }),
   },
-  blog: {
-    paddingBlockStart: 0,
-  },
   redocly: {},
 });

@@ -19,10 +19,6 @@ const data = [
       },
     ],
   },
-  {
-    children: [],
-    root: '/blogchain',
-  },
 ] as unknown as IMenuData[];
 
 describe('utils flattenData', () => {
@@ -33,7 +29,6 @@ describe('utils flattenData', () => {
       { root: '/kadena/whitepapers' },
       { root: '/kadena/whitepapers/chainweb-layer-1' },
       { root: '/kadena/whitepapers/pact-smart-contract-language' },
-      { root: '/blogchain' },
     ];
 
     expect(result).toStrictEqual(expectedResult);
@@ -62,7 +57,6 @@ describe('utils getFlatData', () => {
       { root: '/kadena/whitepapers' },
       { root: '/kadena/whitepapers/chainweb-layer-1' },
       { root: '/kadena/whitepapers/pact-smart-contract-language' },
-      { root: '/blogchain' },
     ];
 
     expect(result).toStrictEqual(expectedResult);

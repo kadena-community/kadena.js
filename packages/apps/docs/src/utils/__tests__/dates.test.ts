@@ -1,9 +1,4 @@
-import {
-  compareDesc,
-  formatDateDistance,
-  formatISODate,
-  getOneMonthAgo,
-} from '../dates';
+import { formatDateDistance, formatISODate, getOneMonthAgo } from '../dates';
 
 describe('utils dates', () => {
   describe('formatDateDistance', () => {
@@ -45,36 +40,6 @@ describe('utils dates', () => {
       expect(formatDateDistance(new Date(1975, 9, 11))).toEqual(
         'about 2 years ago',
       );
-    });
-  });
-  describe('compareDesc', () => {
-    it('should throw when either left or right date is missing', () => {
-      expect(() => compareDesc()).toThrowError(
-        'invalid date compare with undefined dates',
-      );
-      expect(() => compareDesc('1977-10-13')).toThrowError(
-        'invalid date compare with undefined dates',
-      );
-      expect(() => compareDesc(undefined, '1977-10-13')).toThrowError(
-        'invalid date compare with undefined dates',
-      );
-    });
-
-    it('should throw when either left or right date are invalid', () => {
-      expect(() => compareDesc('no date', '1977-10-13')).toThrowError(
-        'invalid date compare: no date : 1977-10-13 ',
-      );
-      expect(() => compareDesc('1977-10-13', 'no date')).toThrowError(
-        'invalid date compare: 1977-10-13 : no date',
-      );
-    });
-
-    it('should return -1 when left is later than right', () => {
-      expect(compareDesc('2013-06-04', '1977-10-13')).toEqual(-1);
-    });
-
-    it('should return 1 when left is earlier than right', () => {
-      expect(compareDesc('1977-10-13', '2013-06-04')).toEqual(1);
     });
   });
   describe('getOneMonthAgo', () => {
