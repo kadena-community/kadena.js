@@ -396,7 +396,7 @@ pages:
         file: /reference/pact/rest-api.md
       kadena-cli:
         url: /kadena-cli
-        file: /reference/cli-README.md
+        file: /reference/cli-ref.md
       frontend:
         url: /kadena-client
         file: /reference/kadena-client/kadena-js.md
