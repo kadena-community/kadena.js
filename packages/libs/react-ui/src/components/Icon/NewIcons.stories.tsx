@@ -8,6 +8,7 @@ import React, { useState } from 'react';
 import { useFilter } from 'react-aria';
 import { atoms, tokens } from '../../styles';
 import { TextField } from '../Form/TextField';
+import { Grid, GridItem } from '../Layout';
 
 const iconColors = {
   primary: tokens.kda.foundation.color.icon.brand.primary.default,
@@ -85,27 +86,44 @@ export const System: Story = {
             setSearch(e.target.value);
           }}
         />
-        <div
-          className={atoms({
-            display: 'flex',
-            flexWrap: 'wrap',
-            flex: 1,
-            gap: 'sm',
-          })}
+        <Grid
+          gap="xl"
+          columns={{
+            xs: 3,
+            sm: 3,
+            md: 4,
+            lg: 5,
+            xl: 5,
+            xxl: 6,
+          }}
         >
+          {/* <div
+            className={atoms({
+              display: 'flex',
+              flexWrap: 'wrap',
+              flex: 1,
+              gap: 'sm',
+            })}
+          > */}
           {system
             .filter(([key]) =>
               contains(key.toLowerCase(), search.toLowerCase()),
             )
             .map(([key, Icon]) => (
-              <Icon
-                key={key}
-                fontSize={icoSizes[fontSize]}
-                fill={iconColors[fill]}
-                title={key}
-              />
+              <>
+                <GridItem>
+                  <Icon
+                    key={key}
+                    fontSize={icoSizes[fontSize]}
+                    fill={iconColors[fill]}
+                    title={key}
+                  />
+                  {key}
+                </GridItem>
+              </>
             ))}
-        </div>
+          {/* </div> */}
+        </Grid>
       </div>
     );
   },
