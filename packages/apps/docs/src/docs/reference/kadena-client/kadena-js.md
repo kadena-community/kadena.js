@@ -1527,6 +1527,7 @@ composePactCommand(
   setMeta({ chainId: '02', senderAccount: 'bob' }),
 );
 ```
+
 Set a custom nonce:
 
 ```typescript
@@ -1536,7 +1537,8 @@ composePactCommand(
   setNonce('a-custom-nonce'),
 );
 ```
-Set the network identifier for the transaction
+
+Set the network identifier for the transaction:
 
 ```typescript
 composePactCommand(
@@ -1545,6 +1547,7 @@ composePactCommand(
   setNetworkId('testnet04'),
 );
 ```
+
 Create the transaction object to be signed:
 
 ```typescript
