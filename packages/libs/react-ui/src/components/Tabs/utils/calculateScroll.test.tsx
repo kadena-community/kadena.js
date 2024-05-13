@@ -1,4 +1,4 @@
-import { RefObject } from 'react';
+import type { RefObject } from 'react';
 import { describe, expect, it } from 'vitest';
 import { calculateScroll } from './calculateScroll';
 import { mockChildElementsRef } from './getMinimalChildWidth.test';
