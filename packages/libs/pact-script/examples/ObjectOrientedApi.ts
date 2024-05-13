@@ -48,7 +48,7 @@ class coin implements fungibleV2, fungibleXChainV1 {
     compose_capability(this.CREDIT(receiver));
   }
 
-  debit(account: string, amount: decimal): string {
+  private debit(account: string, amount: decimal): string {
     validate_account(account);
     enforce(amount > 0.0, 'debit amount must be positive');
     enforce_unit(amount);
@@ -58,7 +58,7 @@ class coin implements fungibleV2, fungibleXChainV1 {
     return update('coin-table', account, { balance: balance - amount });
   }
 
-  credit(account: string, guard: guard, amount: decimal): string {
+  private credit(account: string, guard: guard, amount: decimal): string {
     validate_account(account);
     enforce(amount > 0.0, 'credit amount must be positive');
     enforce_unit(amount);

@@ -26,6 +26,7 @@ const createContext = <T extends Record<string, unknown>>() => {
 const { setContext, useContext } = createContext<{
   tables: TableInterface[];
   schemas: SchemaInterface[];
+  methods: Array<{ method: string; isPrivate: boolean }>;
 }>();
 
 const indent =
@@ -173,10 +174,10 @@ const createExpression = (
     case ts.SyntaxKind.CallExpression: {
       const callExpression = statement as ts.CallExpression;
       let functionName = getFunctionName(callExpression);
-      const parts = functionName.split('.');
       let args = callExpression.arguments.map(createExpression);
-      const { tables } = useContext();
+      const { tables, methods } = useContext();
       if (tables) {
+        const parts = functionName.split('.');
         const table = tables.find(
           ({ propertyName }) => propertyName === parts[0],
         );
@@ -185,7 +186,14 @@ const createExpression = (
           functionName = parts[1];
         }
       }
-      return `(${functionName} ${args.join(' ')})`;
+      const isPrivate = methods?.find(
+        ({ method, isPrivate }) => method === functionName && isPrivate,
+      );
+      const callSyntax = `(${functionName} ${args.join(' ')})`;
+      if (!isPrivate) {
+        return callSyntax;
+      }
+      return `(with-capability (PRIVATE-METHOD)\n${indent(2)(callSyntax)}\n)`;
     }
     case ts.SyntaxKind.PropertyAccessExpression: {
       const propertyAccessExpression = statement as ts.PropertyAccessExpression;
@@ -392,6 +400,7 @@ const extractDecorator = (decorator: ts.ModifierLike) => {
           }),
         };
       }
+
       case ts.SyntaxKind.Identifier: {
         return {
           isCall: false as const,
@@ -400,26 +409,40 @@ const extractDecorator = (decorator: ts.ModifierLike) => {
       }
     }
   }
+  if (decorator.kind === ts.SyntaxKind.PrivateKeyword) {
+    return {
+      isCall: false as const,
+      name: 'private',
+    };
+  }
+  return { name: undefined };
 };
 
-const extractMethod = (method: ts.MethodDeclaration) => {
+const extractMethod = (method: ts.MethodDeclaration, withBody = true) => {
   const parameters = method.parameters.map((parameter) => ({
     name: (parameter.name as ts.Identifier).escapedText,
     type: parameter.type ? asPactType(parameter.type) : undefined,
   }));
+  const methodName = (method.name as ts.Identifier).escapedText;
 
-  const statements = method.body ? createBlock(method.body) : [];
+  let statements = method.body && withBody ? createBlock(method.body) : [];
   const decorators = method.modifiers?.map(extractDecorator) ?? [];
-  if (decorators.length > 1) {
+  const annotations = decorators.filter(({ name }) => name !== 'private');
+  const isPrivate = Boolean(decorators.find(({ name }) => name === 'private'));
+  if (annotations.length > 1) {
     throw new Error('only one decorator is valid');
+  }
+  if (isPrivate) {
+    statements = ['(require-capability (PRIVATE-METHOD))', ...statements];
   }
 
   return {
-    decorator: decorators[0],
-    method: (method.name as ts.Identifier).escapedText,
+    decorator: annotations[0],
+    method: methodName,
     returnType: method.type ? asPactType(method.type) : undefined,
     parameters,
     statements,
+    isPrivate,
   };
 };
 
@@ -657,6 +680,18 @@ function convertClass(
 
   setContext({ tables });
 
+  const methods = classObject.members
+    .map((member) =>
+      member.kind === ts.SyntaxKind.MethodDeclaration
+        ? extractMethod(member as ts.MethodDeclaration, false)
+        : undefined,
+    )
+    .filter(Boolean) as Array<{ method: string; isPrivate: boolean }>;
+
+  setContext({ methods });
+
+  const hasPrivateMethod = Boolean(methods.find(({ isPrivate }) => isPrivate));
+
   const moduleName = moduleNameDecorator?.length
     ? moduleNameDecorator[0]
     : classObject.name?.escapedText ?? 'no-name';
@@ -668,6 +703,7 @@ ${usedInterfaces
   .map(indent(2))
   .join('\n')}
   \n
+${hasPrivateMethod ? indent(2)('(defcap PRIVATE-METHOD() true)\n') : ''}
 ${classObject.members
   .map(classMember)
   .filter(Boolean)
@@ -746,7 +782,7 @@ const pact = convertFile(sourceFile).join('\n\n\n');
 if (output) {
   writeFileSync(output, pact);
 }
-// console.log(pact);
+console.log(pact);
 
 export function extractWithComment(
   fileNames: string[],

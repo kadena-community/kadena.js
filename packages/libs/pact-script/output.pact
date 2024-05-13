@@ -8,6 +8,8 @@
   (implements fungibleXChainV1)
   
 
+  (defcap PRIVATE-METHOD() true)
+  
   (defcap GOVERNANCE ()
     (enforce false "Enforce non-upgradeability")
   )
@@ -45,6 +47,7 @@
   )
 
   (defun debit:string (account:string amount:decimal)
+    (require-capability (PRIVATE-METHOD))
     (validate-account account)
     (enforce (> amount 0) "debit amount must be positive")
     (enforce-unit amount)
@@ -57,6 +60,7 @@
   )
 
   (defun credit:string (account:string guard:guard amount:decimal)
+    (require-capability (PRIVATE-METHOD))
     (validate-account account)
     (enforce (> amount 0) "credit amount must be positive")
     (enforce-unit amount)
@@ -77,10 +81,14 @@
     (enforce (> amount 0))
     (enforce-unit amount)
     (with-capability (TRANSFER sender receiver amount) 
-      (debit sender amount)
+      (with-capability (PRIVATE-METHOD)
+        (debit sender amount)
+      )
       (with-read coin-table receiver
         { "guard" := guard }
-        (credit receiver guard amount)
+        (with-capability (PRIVATE-METHOD)
+          (credit receiver guard amount)
+        )
       )
     )
   )
