@@ -1,6 +1,6 @@
 import { recipe } from '@vanilla-extract/recipes';
+import { token } from '../../styles';
 import { atoms } from '../../styles/atoms.css';
-import { tokens } from '../../styles/index';
 
 export const dividerClass = recipe({
   base: [
@@ -10,24 +10,25 @@ export const dividerClass = recipe({
       border: 'none',
     }),
     {
-      height: tokens.kda.foundation.border.width.hairline,
+      height: token('border.width.hairline'),
     },
   ],
   variants: {
     variant: {
       subtle: {
-        backgroundColor: tokens.kda.foundation.color.border.base.subtle,
+        backgroundColor: token('color.border.base.subtle'),
       },
       base: {
-        backgroundColor: tokens.kda.foundation.color.border.base.default,
+        backgroundColor: token('color.border.base.default'),
       },
-      bold: { backgroundColor: tokens.kda.foundation.color.border.base.bold },
-      boldest: {
-        backgroundColor: tokens.kda.foundation.color.border.base.boldest,
-      },
-      highContrast: {
-        backgroundColor:
-          tokens.kda.foundation.color.border.base['high-contrast'],
+      bold: {
+        backgroundColor: token('color.border.base.bold'),
+        boldest: {
+          backgroundColor: token('color.border.base.boldest'),
+        },
+        highContrast: {
+          backgroundColor: token('color.border.base.high-contrast'),
+        },
       },
     },
   },
