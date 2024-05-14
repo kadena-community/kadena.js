@@ -415,6 +415,11 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
+    source: '/reference/kadena-client/kadena-cli',
+    destination: '/reference/kadena-cli',
+    permanent: true,
+  },
+  {
     source: '/pact/cli/api',
     destination: '/reference/kadena-client/pactjs-cli',
     permanent: true,

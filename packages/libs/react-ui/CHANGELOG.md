@@ -1,5 +1,32 @@
 # @kadena/react-ui
 
+## 0.9.0
+
+### Minor Changes
+
+- 07c2e666c: Adds base text link component
+- 0d18ab81c: Replace old icons for new branding
+
+### Patch Changes
+
+- b06929dcc: Added proper sizes for the dialog
+- f3b72d63d: Update the textfield and numberfield components to the new branding
+- 93bf55b07: Package updates
+- 2be7eaedc: Use new brand icons
+- eafc7b0b1: feat: update textarea component to new styling
+- 1cd747fdd: Refactor button component to match new styles and replace component
+  throughout the mono repo
+- 134666df3: update style notification
+- 9865ea759: In this PR the combobox is using the internal field component which
+  will update the styles to the new standard
+- 145268647: added extra color variants to the badge'
+- 5cf752eed: feat: updated the select component with the new styling updates.
+  These include new size variants, font variants and consistent states like the
+  other form elements. Breaking change: startIcon has been renamed to
+  startVisual to be consistent with other components.
+- Updated dependencies \[93bf55b07]
+  - @kadena/react-icons\@0.0.3
+
 ## 0.8.4
 
 ### Patch Changes
@@ -74,21 +101,33 @@
 
 - 803668c21: Updated the Breadcrumbs component to use `useBreadcrumbs` from
   react-aria
+
 - 3e940f62e: New form fields
+
 - b8f8fb55e: Fix logo sizes
+
 - bc071367c: Cleanup old Button and Link components
+
 - fc92629b5: Updated the Box, Stack, and Grid components props to map to the new
   atom utility classes
+
 - 5516b2467: New brand logos
+
 - 0dc7a52b7: Updated the Box, Stack, and Grid components to accept refs
+
 - 5e63b76a6: Updated input props for SelectField, TextareaField and TextField
   components and deprecated Input Select and Textarea in favour of the updated
   ones
+
 - db097d39b: Breadcrumbs accepts an icon element to be rendered and exposed the
   components in order to compose.
+
 - 90227d348: Use new button tokens and add small tokens utils
+
 - e10423358: updated NavHeader glow initial position and scroll
+
 - 9d3aab7c8: Add LinkButton component
+
 - 58ed2adfa: Improve react ui build system and remove ts path aliases
 
 ### Patch Changes
@@ -110,9 +149,9 @@
 - 52664959c: New aria complete button without new tokens
   1. Use react aria which come with one major change is `onPress` instead of
      `onClick` read more about why
-     https://react-spectrum.adobe.com/blog/building-a-button-part-1.html. we
-     added `onClick` to allow easy migration but it is deprecated and we should
-     not use it for new code.
+     [https://react-spectrum.adobe.com/blog/building-a-button-part-1.html][1].
+     we added `onClick` to allow easy migration but it is deprecated and we
+     should not use it for new code.
   2. Unify the `IconButton` and `Button` components using
      `<Button icon={<SomeIcon/>} />` instead of `IconButton`.
   3. Change some props names to be consistent with react-aria naming `compact`
@@ -239,3 +278,5 @@
   new convention we are using for cases when we need to support external links
   like next/link
 - 3e53006e: Added SelectField component
+
+[1]: https://react-spectrum.adobe.com/blog/building-a-button-part-1.html

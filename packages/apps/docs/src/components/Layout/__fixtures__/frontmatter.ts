@@ -22,8 +22,7 @@ export const blogFrontMatter: IPageMeta = {
   menu: 'Kadena The Next Generation Blockchain',
   label: 'Kadena The Next Generation Blockchain',
   publishDate: '2018-02-07T00:00:00.000Z',
-  author: 'Vivienne Chen',
-  layout: 'blog',
+  layout: 'full',
   order: 6,
 };
 

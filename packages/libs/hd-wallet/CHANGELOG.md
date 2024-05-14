@@ -1,5 +1,17 @@
 # @kadena/hd-wallet
 
+## 0.4.0
+
+### Minor Changes
+
+- 0b3018734: Fixed bug in chainweaver signing
+
+### Patch Changes
+
+- 93bf55b07: Package updates
+- Updated dependencies \[93bf55b07]
+  - @kadena/cryptography-utils\@0.4.3
+
 ## 0.3.0
 
 ### Minor Changes
@@ -17,12 +29,12 @@
 
 ### Patch Changes
 
-- Updated dependencies [9bec1fb8e]
-- Updated dependencies [c126ca38c]
-- Updated dependencies [c637a9596]
-- Updated dependencies [a3bb20737]
-  - @kadena/client@1.7.0
-  - @kadena/cryptography-utils@0.4.2
+- Updated dependencies \[9bec1fb8e]
+- Updated dependencies \[c126ca38c]
+- Updated dependencies \[c637a9596]
+- Updated dependencies \[a3bb20737]
+  - @kadena/client\@1.7.0
+  - @kadena/cryptography-utils\@0.4.2
 
 ## 0.1.0
 
@@ -32,5 +44,5 @@
 
 ### Patch Changes
 
-- Updated dependencies [21a0d1530]
-  - @kadena/client@1.6.4
+- Updated dependencies \[21a0d1530]
+  - @kadena/client\@1.6.4

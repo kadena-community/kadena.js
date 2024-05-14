@@ -1,5 +1,11 @@
 # @kadena-dev/lint-package
 
+## 0.1.3
+
+### Patch Changes
+
+- 93bf55b07: Package updates
+
 ## 0.1.2
 
 ### Patch Changes
@@ -17,4 +23,4 @@
 
 ### Minor Changes
 
-- d1ed4f43: Add check for bin shebang and [pre|post]install scripts
+- d1ed4f43: Add check for bin shebang and \[pre|post]install scripts

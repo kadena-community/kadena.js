@@ -14,13 +14,6 @@ import { loadConfigPages } from './utils/loadConfigPages';
 const errors: string[] = [];
 const success: string[] = [];
 
-const copyBlogchain = (): void => {
-  fs.mkdirSync(`./src/pages/blogchain`, { recursive: true });
-  fs.cpSync(`./src/docs/blogchain`, `./src/pages/blogchain`, {
-    recursive: true,
-  });
-};
-
 export const copyPage = (parentDir: string, page: IConfigTreeItem): void => {
   const dir = `${parentDir}${page.url}`;
   const file = `${dir}/index.${getFileExtension(page.file)}`;
@@ -81,9 +74,6 @@ export const movePages = async (): Promise<IScriptResult> => {
 
   const pages = loadConfigPages();
   await copyPages(pages);
-
-  //copy the blogchain files
-  copyBlogchain();
 
   success.push('There were no issues with copying the pages');
   return { errors, success };

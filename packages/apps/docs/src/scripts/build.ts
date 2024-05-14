@@ -2,7 +2,6 @@ import { checkDeadImages } from './checkDeadImages';
 import { checkForHeaders } from './checkForHeaders';
 import { checkRedirects } from './checkRedirects';
 import { copyFavIcons } from './copyFavIcons';
-import { checkAuthors } from './createBlogAuthors';
 import { createSitemap } from './createSitemap';
 import { createSpecs } from './createSpec';
 import { fixLocalLinks } from './fixLocalLinks';
@@ -42,7 +41,6 @@ const runPrettier = async (): Promise<IScriptResult> => {
   await initFunc(validateLinks, 'Validate Links');
   await initFunc(checkDeadImages, 'Check dead images');
   await initFunc(checkForHeaders, 'Detect missing H1 headers');
-  await initFunc(checkAuthors, 'Check author data for blog');
   await initFunc(createSitemap, 'Create the sitemap');
   await initFunc(checkRedirects, 'Check if all the old routes have a redirect');
   await initFunc(copyFavIcons, 'Copy favicons');
