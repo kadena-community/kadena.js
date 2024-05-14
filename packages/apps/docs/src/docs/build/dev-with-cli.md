@@ -70,9 +70,9 @@ The following diagram provides an overview of the `kadena` command-line interfac
 
 ## Prepare a development workspace
 
-You can use the `kadena` entry point to run commands to help you set up a complete local development environment.
+You can use the `kadena` entry point to run commands that help you set up a complete local development environment.
 You can use the command-line interface to generate random keys, create local wallets, add accounts, customize network connections, and construct and send transactions.
-After you prepare a development workspace, you can use the kadena commands in combination with other tools—like Pact and Kadena client—to create, test, deploy, and manage decentralized applications for the Kadena network.
+After you prepare a development workspace, you can use `kadena` CLI commands in combination with other tools—like Pact and Kadena client—to create, test, deploy, and manage decentralized applications for the Kadena network.
 
 ## Start with interactive prompting
 
@@ -80,187 +80,369 @@ The `kadena-cli` package is designed to simplify setting up a development enviro
 Its intuitive commands prompt you for all of the information required to complete tasks, like creating accounts or managing keys.
 Responding to prompts interactively is typically the best approach when getting started, eliminating the need to look up or remember the arguments required for the action you want to perform.
 
-To start using the CLI in interactive Mode, you simply type a command without any options.
-For example if you want to add a new wallet but aren't sure of all the required flags and
+To start using the CLI in interactive Mode, you simply type _kadena_ followed by a _subject_ that describes the type of information you want to work with and a _verb_ to describe what you want to do.
+You don't need to specify any additional arguments or options.
+
+For example, if you want to add a new wallet but aren't sure of all the required flags and
 arguments, you can start by entering the following command:
 
 ```
 kadena wallet add
 ```
 
-The CLI then displays interactive prompts to guide you through the necessary steps, asking for the information
-required to successfully add the wallet to your local development environment.
-
-Interactive mode is especially useful for new users or those who prefer a more guided approach when using command-line tools. 
-It also serves as a learning tool by demonstrating the required inputs for various commands, enhancing your
-familiarity with the CLI's functionalities.
+The CLI then displays interactive prompts, asking for the information required to successfully complete the task at hand—in this example, adding the wallet to your local development environment.
 As you gain experience, you can reduce interactive prompting by specifying some or all of the arguments as part of the command. 
 If you run any command without specifying all of its required parameters, the CLI prompts you to provide the missing information. 
 
-For most commands, responding to interactive prompts and confirmation messages help to ensure that you provide all of the information necessary to successfully execute each command.
-However, if you want to disable all interactive prompts and confirmation messages, you can use the `--quiet `flag.
-The `--quiet` flag enables you to automate tasks in environments where interactive input is impractical, such as continuous integration (CI) pipelines. 
-
-If you include the  `--quiet` flag in a command, the command suppresses **all interactive prompts** and **skips all confirmations**, so that the command executes uninterrupted without human intervention. 
-Running commands using the  `--quiet` flag ensures that automated processes can run smoothly and efficiently, without manual input.
-If you use the  `--quiet` flag for a command, you must include all required arguments in the command line.
-
-### Basic usage
-
-The basic syntax for running `kadena` commands is:
-
-```bash
-kadena <subcommand> <action> [arguments] [flags]
-```
-
-### Flags
-
-You can use the following optional flags with the `kadena` parent command or with any of the `kadena` subcommands.
-
-| Use this flag | To do this
-| ------------- | -----------
-| `-h`, `--help` |	Display usage information.
-| `-q`, `--quiet` | Eliminate interactive prompts and confirmations to enable automation of tasks.
-| `--json` | Display command output in JSON format.
-| `--yaml` | Display command output in YAML format.
-| `-V`, `--version`	| Display version information.
-
-### Subcommands
-
-Subcommands to perform actions or organized into categories that describe the subject of the action you want to perform. 
-For example, you can create and manage all wallet-related information using the `wallet` subcommand.
-Use the following subcommands to select the category of information for the operation you want to perform.
-
-| Use this subcommand | To do this
-| ------------------- | -----------
-| `config` | Configure the initial context and properties for working with the `kadena` command-line interface.
-| `dapp` | Create and manage an application project using a frontend framework template.
-| `wallet` | Generate keys and manage wallets.
-| `key` | Generate and manage public and secret keys.
-| `account` | Create, fund, and manage accounts that contain fungibles assets.
-| `network` | Create and manage network information.
-| `tx` | Create and manage transactions.
-| `help` | Display usage information for a specified command.
-| `version` | Display version information.
-
-For reference and usage information—including the arguments and options for specific subcommands and actions—use the `--help` flag on the command-line or review the information in [Command-line reference](/reference/kadena-cli).
-
 ## Configure initial settings
 
-Use `kadena config init` to create an initial configuration folder for settings for the Kadena command-line interface to use. 
-Depending on where you want the configuration settings available, you can create this folder in your current working directory or in your home directory.
+After installing the `kadena-cli` package, the first step for working with the Kadena command-line interface is to use `kadena config init` to create a configuration folder to store information about your development environment and connecting to Kadena networks. 
+Depending on where you want the configuration settings available for your projects to use, you can create the configuration folder in a **working directory** or in your **home directory**.
 
-### Working directory
+By default, a Kadena configuration folder named `.kadena` is created in your current working directory.
+The settings in the folder are then available to projects within that directory. 
+For example, if you run `kadena config init` with `$HOME/projects/my-kadena-project` as your current working folder, you can access the `.kadena`
+configuration settings from anywhere inside the `my-kadena-project` project folder.
+Creating the configuration folder in a working directory enables you to have different configuration settings for different projects.
 
-If you select the current working directory, the `.kadena` folder is accessible
-from anywhere in that directory. For example, if you run `kadena config init` with
-`$HOME/projects/my-kadena-project` as your current working folder, you can access the `.kadena`
-configuration settings from anywhere inside that project folder.
+If you want to use the same configuration settings from any folder on your computer, you can create a global configuration folder in your home directory by running the `kadena config init --global` command. The `--global` command-line option adds the `kadena` configuration folder to the `.config` folder in your home directory so that the settings are available globally on your computer. 
 
-### Home directory
-
-If you select your home directory—which is equivalent to running the `kadena config init --global` command—the `kadena` folder is added to the `.config` folder in your home directory and accessible from anywhere on your computer. 
-
-Configuration settings that are defined in a local working directory take precedence over configuration settings defined in the home directory. You add more than one .kadena folder to your development environment, you can use `kadena config path` to see which path is being used in a specific directory.
+Configuration settings that are defined in a local working directory take precedence over configuration settings defined in the home directory. 
+If you add more than one configuration folder to your development environment, you can use `kadena config path` to see which path is being used in a specific directory.
 
 To configure initial settings:
 
 1. Open a terminal shell on the computer where you've installed the `kadena-cli` package.
 2. Enter `kadena config init` on the command line to create the configuration folder interactively:
    
-   ```shell
+   ```bash
    kadena config init
    ```
    
-   Because you're running the command interactively, you are prompted to select a location.
+   This command creates the `.kadena` configuration folder location is your current working directory confirmed and adds default network settings to a `networks` subfolder, then prompts you to create a wallet.
+   For example:
+   
+   ```bash
+   Created configuration directory:
+   
+   /Users/pistolas/MY-KADENA/.kadena
+   
+   Added default networks:
+     
+     - mainnet
+     - testnet
+     - devnet
+     ? Would you like to create a wallet? (Use arrow keys)
+     ❯ Yes
+       No
+   ```
+
+   If you already have keys and an account or an existing wallet that you want to use, you can select **No** to end the interactive session.
+   However, wallets are an important part of interacting with any blockchain, so you can create one now as part of your initial configuration steps.
+
+1. Select **Yes** and press Return to continue setting up your local development environment.
+1. Enter a wallet name and press Return.
    For example:
 
-   ```shell
-   ? Location of kadena config directory (Use arrow keys)
-   ❯ Working directory:   /Users/pistolas/MY-KADENA/.kadena
-     User home directory: /Users/pistolas/.kadena
+   ```bash
+   ? Enter your wallet name: pistolas
    ```
-1. Use the up and down arrow keys to select the location for the configuration folder, then press Return.
 
-### Default network configuration
+2. Enter and confirm a password for the wallet to generate a public and secret key pair.
+   For example:
 
-After you select a directory location, your selected folder location is confirmed and default network configuration settings are added to a `networks` subfolder in the `.kadena` folder.
-For example:
+   ```bash
+   ? Enter the new wallet password: ********
+   ? Re-enter the password: ********
+   ```
 
-```shell
-? Location of kadena config directory User home directory: 
-  /Users/pistolas/.kadena
-  Created configuration directory:
+   After entering the password, you are prompted to create an account using the wallet key generated for your first wallet.
+   For example:
 
-    /Users/pistolas/.kadena
+   ```bash
+   ? Create an account using the first wallet key? (Use arrow keys)
+   ❯ Yes
+     No
+   ```
 
-  Added default networks:
+3. Select **Yes** to continue setting up your local development environment with a local account.
+4. Enter an alias for the local account and press Return.
+   For example:
 
-    - mainnet
-    - testnet
-    - devnet
-```
+   ```bash
+   ? Enter an alias for an account: pistolas-kda
+   ```
 
-To continue setting up your local development environment, you are then prompted to create a wallet.
-For example:
+   The command automatically creates a local Kadena principal account and displays information about your account and wallet.
+   For example:
 
-```bash
-? Would you like to create a wallet? (Use arrow keys)
-❯ Yes
-  No
-```
+   ```bash
+   ====================================================
+   == 🚨 IMPORTANT: Mnemonic Phrase 🚨 ==
+   ====================================================
+   Mnemonic Phrase:
+   upset crater alien galaxy humble appear prize all glove globe music number
+   
+   Please store the mnemonic phrase in a SAFE and SECURE place. 
+   This phrase is the KEY to recover your wallet. Losing it means losing access to your assets.
+   
+   ====================================================
+   
+   First keypair generated
+   publicKey: 61cf22aa8f209b1a5549242601b4a217f034e3d931b6522ccb7743bf6c355546
+   
+   Wallet Storage Location
+   .kadena/wallets/pistolas.yaml
+   
+   Account created
+   accountName: k:61cf22aa8f209b1a5549242601b4a217f034e3d931b6522ccb7743bf6c355546
+   
+   Account Storage Location
+   .kadena/accounts/pistolas-kda.yaml
+   
+   Executed:
+   kadena config init --create-wallet="true" --wallet-name="pistolas" --create-account="true" --account-alias="pistolas-kda" 
+   ```
 
-If you already have keys and an account or an existing wallet you want to use, you can select **No** to end the interactive session.
-However, wallets are an important part of interacting with any blockchain, so you have the option to create one as part of your initial configuration steps.
+   Be sure to copy and store the mnemonic phrase in a safe place. 
+   This 12-word secret phrase is required if you ever need to recover your wallet.
 
-### Create a local wallet
-
-If you select **Yes** to create a new wallet as part of your initial configuration, you are prompted to provide a wallet name and password and to generate a public and secret key pair.
-For example:
-
-```bash
-? Would you like to create a wallet? Yes
-? Enter your wallet name: pistolas
-? Enter the new wallet password ********
-? Re-enter the password ********
-You can use the --password-file flag to provide a password.
-? Create an account using the first wallet key? Yes
-
-Mnemonic Phrase
-stairs small flag festival slogan another gravity busy rotate fence quiz share
-
-Please store the mnemonic phrase in a safe place. You will need it to recover your wallet.
-
-First keypair generated
-publicKey: 5926764fb5813ed1618299e5a3e0401b328a4ac637b4ded13e81a566fee2c4b5
-
-Wallet Storage Location
-.kadena/wallets/pistolas.yaml
-
-Account created
-accountName: k:5926764fb5813ed1618299e5a3e0401b328a4ac637b4ded13e81a566fee2c4b5
-
-Account Storage Location
-.kadena/accounts/pistolas.yaml
-
-Executed:
-kadena config init --location="/Users/pistolas/MY-KADENA/.kadena" --create-wallet="true" --wallet-name="pistolas" --create-account="true" 
-```
-
-Be sure to copy and store the mnemonic phrase in a safe place. 
-This 12-word secret phrase is required if you ever need to recover your wallet.
 You now have a public key that you can use to sign transactions and authorize certain activity.
-In this example, the public key for the wallet is 5926764fb5813ed1618299e5a3e0401b328a4ac637b4ded13e81a566fee2c4b5 and the principal account associated with the key is k:5926764fb5813ed1618299e5a3e0401b328a4ac637b4ded13e81a566fee2c4b5.
+In this example, the public key for the wallet is 61cf22aa8f209b1a5549242601b4a217f034e3d931b6522ccb7743bf6c355546.
+You also have the principal account associated with the key.
+In this example, the principal **account name** is k:61cf22aa8f209b1a5549242601b4a217f034e3d931b6522ccb7743bf6c355546.
 
 For more information about accounts names, keys, and principal accounts, see [Accounts, keys, and principals](/learn/accounts).
 
-At this point, you have a wallet and an account, but this information isn't associated with a specific network—devnet, testnet, or mainnet—or with any chain identifier (0-19).
-The account has a private and secret key, but no predicate—the guard that defines the condition that must be satisfied for a transaction to be valid.
-You need to add the account to a network and one or more chains and specify a predicate for it to use before the account is ready to send and receive funds or sign transactions.
+## View wallet and account information
+
+At this point, you have one public and secret key pair, a local wallet, and a local account.
+However, this information isn't associated with a specific network—devnet, testnet, or mainnet—or with any chain identifier (0-19).
+Before you add the account to a specific network and chain, you might want to verify the information you have defined so far to understand the current state of your development environment.
+
+### View wallet information
+
+To view information about the wallet:
+
+1. Open a terminal shell on the computer where you've installed the `kadena-cli` package.
+2. Enter `kadena wallet list` on the command line to list wallet information interactively:
+   
+   ```bash
+   kadena wallet list
+   ```
+
+  This command prompts you to select a wallet.
+  For example:
+
+  ```bash
+  ? Select a wallet: (Use arrow keys)
+  ❯ All Wallets
+    pistolas
+  ```
+
+1. Select **All Wallets**, then press Return.
+
+   If have only one wallet, you should see output similar to the following:
+   
+   ```bash
+   Wallet: pistolas
+   Alias Index Public key                                                      
+   N/A   0     61cf22aa8f209b1a5549242601b4a217f034e3d931b6522ccb7743bf6c355546
+
+   Executed:
+   kadena wallet list --wallet-name="all" 
+   ```
+
+### View account information
+
+To view information about the account:
+
+1. Open a terminal shell on the computer where you've installed the `kadena-cli` package.
+2. Enter `kadena account list` on the command line to list account information interactively:
+   
+   ```bash
+   kadena account list
+   ```
+
+  This command prompts you to select an account.
+  For example:
+
+  ```bash
+  ? Select an account (alias - account name): (Use arrow keys)
+  ❯ All accounts
+    pistolas-kda      - k:61cf22....6c355546
+  ```
+
+1. Select **All accounts**, then press Return.
+
+   If have only one account, you should see output similar to the following:
+   
+   ```bash
+   Alias        Name                             Public Key(s)            Predicate Fungible
+   pistolas-kda k:61cf22aa8f20....7743bf6c355546 61cf22aa8f....bf6c355546 keys-all  coin    
+   
+   Executed:
+   kadena account list --account-alias="all" 
+   ```
+
+   Note that the account name k:61cf22aa8f209b1a5549242601b4a217f034e3d931b6522ccb7743bf6c355546, shortened to k:61cf22aa8f20....7743bf6c355546 uses the default **keys-all** predicate and the fungible for the account is **coin**.
+   The **keys-all** predicate is a **guard**.
+   Guards define the condition that must be satisfied for an operation to proceed. 
+   In this case, all public keys associated with the k:61cf22aa8f209b1a5549242601b4a217f034e3d931b6522ccb7743bf6c355546 account must sign transactions.
+
+   The first wallet and default account information provide you with the basics for signing transactions: a public key, an account name, and a predicate.
+   However, there aren't many practical applications that involve signing transactions using a local account. 
+   Before you can use an account to send and receive funds and sign the most common types of transactions, it must exist on a network and have funds on one or more chains.
+
+## Fund your first onchain account
+
+To create an account on the Kadena main network, you need to either have KDA already or know someone who can transfer funds to your account for you.
+However, for local development or development on the Kadena test network, you can fund your account using `kadena account` commands, a faucet application, or publicly available private keys.
+
+If you created a local wallet and an account using the wallet key, you can use that information to add your account to the development or test network on one or more chains.
+
+To fund an onchain account:
+
+1. Open a terminal shell on the computer where you've installed the `kadena-cli` package.
+2. Enter `kadena account fund` on the command line to fund an account interactively:
+   
+   ```bash
+   kadena account fund
+   ```
+
+1. Select the account alias you used for your first account.
+   For example:
+
+   ```bash
+   ? Select an account (alias - account name): (Use arrow keys)
+   ❯ pistolas-kda      - k:61cf22....6c355546
+   ```
+
+1. Enter an amount, then press Return.
+2. For example:
+
+   ```bash
+   ? Enter an amount: 2
+   ```
+
+1. Select a network, then press Return.
+   For example, enter **devnet** to make this account available on the local development network:
+
+   ```bash
+   ? Select a network: (Use arrow keys)
+   ❯ devnet
+     testnet
+   ```
+
+2. Select one or more chain identifiers, then press Return.
+   For example, enter **all**:
+
+   ```bash
+   ? Enter a ChainId (0-19) (comma or hyphen separated e.g 0,1,2 or 1-5 or all): all
+   ```
+
+   If prompted to deploy the faucet module on the network, select **Yes**.
+   For example:
+
+   ```bash
+   ? Do you wish to deploy faucet module? (Use arrow keys)
+   ❯ Yes
+     No
+   ```
+   
+   If you selected all chains and are deploying the faucet module, you should see output similar to the following:
+
+   ```bash
+   Deployed faucet module on chain "18, 0, 7, 12, 4, 3, 1, 6, 11, 10, 13, 9, 14, 5, 16, 15, 2, 8, 19, 17" in "devnet" network.
+   
+   Success with Warnings:
+   Account "k:61cf22aa8f209b1a5549242601b4a217f034e3d931b6522ccb7743bf6c355546" does not exist on Chain ID(s) 3, 8, 6, 11, 1, 16, 5, 10, 2, 4, 9, 13, 0, 7, 18, 19, 15, 12, 14, 17. So the account will be created on these Chain ID(s).
+   
+   Transaction explorer URL for 
+   Chain ID "0" : http://localhost:8080/explorer/development/tx/7vkKlYWDDyM8Ceau1gEG_8G6UfwZsahYgsafEd5ak74
+   ...
+   Chain ID "19" : http://localhost:8080/explorer/development/tx/JbQ4KlPGxTEfeirvDd7HOj4uwFG8HVipmmNfP4YnmLM
+   ✔ Funding account successful.
+   
+   Account "k:61cf22aa8f209b1a5549242601b4a217f034e3d931b6522ccb7743bf6c355546" funded with 2 coin(s) on Chain ID(s) "0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19" in development network.
+   Use "kadena account details" command to check the balance.
+   
+   Executed:
+   kadena account fund --account="pistolas-kda" --amount="2" --network="devnet" --chain-ids="all" --deployFaucet 
+   ```
+
+1. Verify account information for the account for a subset of by chains.
+   For example, to see account details for chains 1, 2, and 3 formatted as JSON output, you can specify command-line options similar to the following:
+   
+   ```bash
+   kadena account details --account="pistolas-kda" --network="devnet" --chain-ids="1-3" --json
+   ```
+
+   This command displays output similar to the following:
+
+   ```bash
+   Details of account "pistolas-kda" on network "development"
+   [
+     {
+       "1": {
+         "guard": {
+           "pred": "keys-all",
+           "keys": [
+             "61cf22aa8f209b1a5549242601b4a217f034e3d931b6522ccb7743bf6c355546"
+           ]
+         },
+         "balance": 2,
+         "account": "k:61cf22aa8f209b1a5549242601b4a217f034e3d931b6522ccb7743bf6c355546"
+       }
+     },
+     {
+       "2": {
+         "guard": {
+           "pred": "keys-all",
+           "keys": [
+             "61cf22aa8f209b1a5549242601b4a217f034e3d931b6522ccb7743bf6c355546"
+           ]
+         },
+         "balance": 2,
+         "account": "k:61cf22aa8f209b1a5549242601b4a217f034e3d931b6522ccb7743bf6c355546"
+       }
+     },
+     {
+       "3": {
+         "guard": {
+           "pred": "keys-all",
+           "keys": [
+             "61cf22aa8f209b1a5549242601b4a217f034e3d931b6522ccb7743bf6c355546"
+           ]
+         },
+         "balance": 2,
+         "account": "k:61cf22aa8f209b1a5549242601b4a217f034e3d931b6522ccb7743bf6c355546"
+       }
+     },
+   ]   
+   ```
+
+2. Select the account alias you used for your first account.
+   For example:
+
+   ```bash
+   ? Select an account (alias - account name):
+     Enter an account name manually:
+   ❯ pistolas-kda      - k:61cf22....6c355546
+   ```
+
+3. Select a network, then press Return.
+   For example, enter **devnet** to make this account available on the local development network:
+
+   ```bash
+   ? Select a network: (Use arrow keys)
+   ❯ devnet
+     testnet
+   ```
 
 ## Add your account to a network
 
-To create an account on the Kadena main network, you need to either have KDA already or have someone who can transfer funds to your account for you.
+To create an account on the Kadena main network, you need to either have KDA already or know someone who can transfer funds to your account for you.
 However, for local development or development on the Kadena test network, you can fund your account using `kadena account` commands, a faucet application, or publicly available private keys.
 
 If you created a local wallet and an account using the wallet key, you can use that information to add your account to the development or test network and one or more chains.
@@ -273,9 +455,24 @@ To add your account to the test network:
    ```shell
    kadena account add
    ```
+
+   You can add an account to the network by specifying one or more public keys manually or you can use the information from your wallet to add your first account to a network.
+   For example:
+
+   ```bash
+   ? How would you like to add the account locally? (Use arrow keys)
+   ❯ Manually - Provide public keys to add to account manually
+     Wallet - Provide public keys to add to account by selecting from a wallet
+   ```
+
+1. Select **Wallet**, then press Return.
+2. Select a wallet name, then press Return.
+   For example:
    
-
-
+   ```bash
+   ? Select a wallet: (Use arrow keys)
+   ❯ Wallet: pistolas
+   ```
 
 ## Transfer funds to the new account
 
@@ -997,3 +1194,14 @@ This command checks the transaction status and continues to run until
 the transaction is confirmed.
 The default timeout for polling is 60 seconds, but it will attempt to keep
 polling until confirmation is achieved.
+
+## Run commands in automated scripts 
+
+For most commands, responding to interactive prompts and confirmation messages helps to ensure that you provide all of the information necessary to successfully execute each command.
+However, if you want to disable all interactive prompts and confirmation messages, you can use the `--quiet `flag.
+The `--quiet` flag enables you to run commands in environments where interactive input is impractical, such as automated test suites and continuous integration (CI) pipelines. 
+
+If you include the  `--quiet` flag in a command, the command suppresses all interactive prompts and skips all confirmation messages, so that each command can run uninterrupted without human intervention. 
+Running commands using the  `--quiet` flag ensures that automated processes can run smoothly and efficiently, without manual input.
+If you use the  `--quiet` flag for a command, you must include all required arguments in the command line.
+

@@ -52,6 +52,9 @@ pages:
       quickstart:
         url: /quickstart
         file: /quick-start.md
+      buildcli:
+        url: /dev-with-cli
+        file: /build/dev-with-cli.md
       pact:
         url: /pact
         file: /build/pact/get-started-with-pact.md
@@ -155,9 +158,6 @@ pages:
               createauction:
                 url: /create-an-auction
                 file: /build/nft-marmalade/create-an-auction.md
-      buildcli:
-        url: /dev-with-cli
-        file: /build/dev-with-cli.md
       frontend:
         url: /frontend
         file: /build/frontend/kadena-client.md
