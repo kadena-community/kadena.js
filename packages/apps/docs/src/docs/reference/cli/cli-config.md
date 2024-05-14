@@ -69,15 +69,15 @@ If you add more than one configuration folder to your development environment, y
 
 You can use the following command-line arguments with the `kadena config init` command:
 
-| **Argument** | **Description** |
-| ----------- | --------------- |
-| -g, --global | Initialize the configuration folder in the current user's home directory. For example, this option creates the `~/.config/kadena` directory.| | 
-| -c, --create-wallet true | false | Confirm the creation of a new wallet. Set to true to enable. |
-| -w, --wallet-name <walletName>| Specify a name for the new wallet. |
-| --password-file <passwordFile> | Specify the path to a file containing the password for the wallet being created. Alternatively, you can specify the password from standard input (stdin). |
+| Use this argument | To do this |
+| ----------------- | --------------- |
+| -g, --global | Initialize the configuration folder in the current user's home directory, so that it's available globally. For example, this option creates the `~/.config/kadena` directory.|
+| -c, --create&#8209;wallet | Create a new wallet. Set to `true` to generate keys and create a new wallet. |
+| &#8209;w,&nbsp;&#8209;&#8209;wallet&#8209;name&nbsp;_walletName_ | Specify a name for the new wallet. |
+| &#8209;&#8209;password&#8209;file&nbsp;_passwordFile_ | Specify the path to a file containing the password for the wallet being created. Alternatively, you can specify the password from standard input (stdin). |
 | -L, --legacy | Use the ChainWeaver ED25519 signature scheme to generate keys when creating a wallet. |
-| -a, --create-account true | false| Create an account using the first wallet key. |
-| -l, --account-alias | Create an account alias to store your account details, if creating an account. |
+| -a, --create&#8209;account | Create an account using the first wallet key. Set to `true` to use the first wallet key to create a new local account.|
+| -l, --account&#8209;alias&nbsp;_aliasName_ | Create an account alias to store your account details, if creating an account. |
 
 ### Examples
 
