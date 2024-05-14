@@ -1,0 +1,2785 @@
+{
+  "Pact 4": {
+    "name": "Pact 4",
+    "repo": "https://github.com/kadena-io/pact.git",
+    "directory": "/",
+    "fileName": "CHANGELOG.md",
+    "owner": "kadena-io",
+    "repoName": "pact",
+    "content": {
+      "4.11.0": {
+        "label": "4.11.0",
+        "patches": [
+          {
+            "label": "Fix bug in enforce-pact-version parser",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1334",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Fix pact CLI usage output to use correct naming",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1331",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Fix step for defpacts in typechecker",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1333",
+                "tries": 0
+              }
+            ]
+          }
+        ],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Support for verifier plugins",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1324",
+                "tries": 3
+              },
+              {
+                "id": "1336",
+                "tries": 3
+              }
+            ]
+          },
+          {
+            "label": "Support for hyperlane-message-id",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1335",
+                "tries": 3
+              }
+            ]
+          },
+          {
+            "label": "Support for decoding a hyperlane TokenMessage",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1344",
+                "tries": 1
+              }
+            ]
+          },
+          {
+            "label": "List-modules moved to local-only",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1326",
+                "tries": 1
+              }
+            ]
+          },
+          {
+            "label": "Update pact server typo",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1328",
+                "tries": 1
+              }
+            ]
+          },
+          {
+            "label": "Deprecate readthedocs",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1341",
+                "tries": 0
+              }
+            ]
+          }
+        ]
+      },
+      "4.10.0": {
+        "label": "4.10.0",
+        "patches": [
+          {
+            "label": "Gas model fix for concat",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1317",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Fix FV str-to-int",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1304",
+                "tries": 0
+              }
+            ]
+          }
+        ],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Webauthn support in key formats",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1318",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "New poseidon-hack-a-chain native for the \"Poseidon\" hashing function",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1313",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Vendor webauthn dependency",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "4.9.0": {
+        "label": "4.9.0",
+        "patches": [
+          {
+            "label": "Pact value infos fixed",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1287",
+                "tries": 0
+              }
+            ]
+          }
+        ],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Webauthn support",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1193",
+                "tries": 0
+              }
+            ]
+          }
+        ]
+      },
+      "4.8.0": {
+        "label": "4.8.0",
+        "patches": [
+          {
+            "label": "Fix name resolution within module redeploy",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1235",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Fixed issue with the hash of cap guards, hash native and principals",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1273",
+                "tries": 0
+              },
+              {
+                "id": "1278",
+                "tries": 0
+              },
+              {
+                "id": "1287",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Fixed error message for calling a non-function value",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1268",
+                "tries": 0
+              }
+            ]
+          }
+        ],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Tweaked the gas of concat , reverse and format",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1269",
+                "tries": 0
+              },
+              {
+                "id": "1271",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Allow computation on integers less than 10^80 without gas penalty",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1272",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "More granular gas units",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1245",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Remove GHCJS support",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1280",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "GHC 9.6+ version support",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1242",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Package docs in nix flake",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1258",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Vendor sources of prettyprinter-1.6.0",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1263",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Use MTL 2.3+",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1261",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "replace cryptonite by crypton",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1240",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Support lambdas in static typechecker",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1232",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Fix swapped type assignment in fold symeval",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1253",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Improve modref docs",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1256",
+                "tries": 0
+              }
+            ]
+          }
+        ]
+      },
+      "4.7.1": {
+        "label": "4.7.1",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Add feature flag FlagDisableRuntimeTypeChecking for disabling runtime typechecking\nintroduced in Pact 4.7",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1231",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Fixed empty list type defaulting to any",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1224",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Fixed partial biniding",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1127",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Refactored test to avoid runIO within tests",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1129",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Add CoverageSpec",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1228",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Fix ReplSpec tests",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1216",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Cleanup PactContinuationSpec",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1222",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Cleanup README.md",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1225",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Bump Z3 versions in GH actions",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1126",
+                "tries": 0
+              }
+            ]
+          }
+        ]
+      },
+      "4.7.0": {
+        "label": "4.7.0",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Improve advice implementation",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1187",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Fix inconsistent trace output",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1153",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Fix coverage, restore defun advice",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1151",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Create persistence dirs if missing",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1148",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Differentiate between errors on-chain and off-chain",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1185",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Don't display function documentation in non-repl context",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1185",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Runtime type checking on return types now enforced",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1209",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Allow native function versioning in eval",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1195",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Add new native dec for integer to decimal conversion",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1150",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Implement shift in terms of other natives for better gas costing",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1208",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Intialize body of env-data to an empty object instead of Null",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1188",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "read-* functions are now recoverable if the key doesn't exist. That is, a call such as (read-string 'key is recoverable if 'key does not exist in the data payload by surrounding it with try. As an example, (try \"string if key isn't present\" (read-string \"key\". This applies to\nread-integer, read-string, read-decimal, read-keyset and read-msg (as long as read-msg has a key supplied as an argument.",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Fix Typechecker treatment of special binding forms",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1212",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Enable warnings during symbolic eval",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1175",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Remove emit-event shim",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1168",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Remove hash shims",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1158",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Remove enumerate shim",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1155",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Remove distinct shim",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1154",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Remove describe-namespace shim",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1156",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Remove is-principal, typeof-principal, create-principal, and validate-principal shims",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1160",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Remove format shim",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1159",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Remove mention of private defpacts from the reference manual",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1207",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Add documentation for enumerate",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1176",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "New PR and Issue templates introduced.",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "4.6.0": {
+        "label": "4.6.0",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Add DisablePact46 execution flag",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1138",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Add Zero Knowledge native operations",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1052",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Add deprecation warning system",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1127",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Build support for Nix flakes",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1083",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Passage of time simulation in local pact server build",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1082",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Fixed parsing failure message for Public Keys",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1097",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "print native now pretty prints output using term pretty printing",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1106",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Typechecker:now handles all const value types inlines mock dynamic references",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1116",
+                "tries": 0
+              },
+              {
+                "id": "1120",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Formal Verification:Prevent usage of result fixed binding in defpact verification. Warning added for invaliding models when decimals are too high a\nprecision Typechecker now correctly infers function type arguments Added debug flag to verify native, allowing outputs to be directed to\nSMTLib file on a per-module basis. Add shim for select in FV",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1113",
+                "tries": 0
+              },
+              {
+                "id": "1113",
+                "tries": 0
+              },
+              {
+                "id": "1112",
+                "tries": 0
+              },
+              {
+                "id": "1122",
+                "tries": 0
+              },
+              {
+                "id": "1090",
+                "tries": 0
+              }
+            ]
+          }
+        ]
+      },
+      "4.4.1": {
+        "label": "4.4.1",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Export ApiReq constituent data structures",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1055",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Fix test tree creation to allow tests to run faster, safer to run on a single core,\nand prevents test servers from being exposed to public environs",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1060",
+                "tries": 0
+              },
+              {
+                "id": "1062",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Added capability guards",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1057",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Lazily evaluate enforce to reduce gas usage on evaluation",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1069",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Gas adjustment for various natives",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1071",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Fix FV regression that disallowed the verification of unary operators like abs",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1079",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Documentation link fixes (thanks @przemeklach!",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1075",
+                "tries": 0
+              }
+            ]
+          }
+        ]
+      },
+      "4.4": {
+        "label": "4.4",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Document VSCode support - thanks JeremeyJS!",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "965",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Documentation fixes - thanks JCM00N and Luzzotica!",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1003",
+                "tries": 0
+              },
+              {
+                "id": "1021",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Gas-related bug fixes and adjustments to format and try",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1020",
+                "tries": 0
+              },
+              {
+                "id": "1019",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Defined keysets are now required to be namespaced",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1011",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Consolidated Pact 4.4 execution config flag (removes need for DisablePreserveNamespaceUpgrade flag",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "1026",
+                "tries": 0
+              }
+            ]
+          }
+        ]
+      },
+      "4.3": {
+        "label": "4.3",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Interpreter improvements",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "970",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "New create-principal and validate-principal natives",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "969",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Fixes to name resolution",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "987",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "New nested defpacts + continue native",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "980",
+                "tries": 0
+              }
+            ]
+          }
+        ]
+      },
+      "4.2.1": {
+        "label": "4.2.1",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Backport chainweb gasmodel",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "978",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Memory improvements",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "964",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Force eof in parseExprs",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "963",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Fix pact add-sig",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "981",
+                "tries": 0
+              }
+            ]
+          }
+        ]
+      },
+      "4.2.0": {
+        "label": "4.2.0",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Language features:Lambdas: let-bound function definitions In-line lambdas @ application use sites: Provide equality for modrefs",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "915",
+                "tries": 0
+              },
+              {
+                "id": "954",
+                "tries": 0
+              },
+              {
+                "id": "951",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Bug FixesFixed formal verification for take/drop functions Internal native fix Fix schema unification on module upgrades Docs expression evaluation fixed Allow self modrefs",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "921",
+                "tries": 0
+              },
+              {
+                "id": "945",
+                "tries": 0
+              },
+              {
+                "id": "948",
+                "tries": 0
+              },
+              {
+                "id": "946",
+                "tries": 0
+              },
+              {
+                "id": "950",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "New Nativeszip native cond syntactic form fold-db native",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "922",
+                "tries": 0
+              },
+              {
+                "id": "938",
+                "tries": 0
+              },
+              {
+                "id": "941",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Persistence improvementsVersoned PactValue persistence Fix modref payload serialization, decouple from persistence backcompat Run Repls with Sqlite backend",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "926",
+                "tries": 0
+              },
+              {
+                "id": "949",
+                "tries": 0
+              },
+              {
+                "id": "934",
+                "tries": 0
+              }
+            ]
+          }
+        ]
+      },
+      "4.1.2": {
+        "label": "4.1.2",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Enforce key format in keyset creation",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "918",
+                "tries": 0
+              }
+            ]
+          }
+        ]
+      },
+      "4.1.1": {
+        "label": "4.1.1",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Guard for recursion at runtime on user apps",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "913",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "FV and TC give real errors (and warnings, improve model failure output",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "904",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Fix nested capability acquisition",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "910",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Add support for empty import lists when module hashes are present",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "901",
+                "tries": 0
+              }
+            ]
+          }
+        ]
+      },
+      "4.1": {
+        "label": "4.1",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "[Typechecking/FV] Support dynamic refs in TC/analyze adds 'env-dynref' REPL builtin for mocking interfacesimproved/automatic shimming of natives in TC",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "894",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "[Code Coverage] Write coverage/lcov.info relative to loaded file",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "883",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "[Build Tooling]Add build-tool flag to shrink library build Build-related CI-related",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "882",
+                "tries": 0
+              },
+              {
+                "id": "892",
+                "tries": 0
+              },
+              {
+                "id": "891",
+                "tries": 0
+              },
+              {
+                "id": "889",
+                "tries": 0
+              },
+              {
+                "id": "895",
+                "tries": 0
+              },
+              {
+                "id": "885",
+                "tries": 0
+              },
+              {
+                "id": "877",
+                "tries": 0
+              },
+              {
+                "id": "880",
+                "tries": 0
+              },
+              {
+                "id": "890",
+                "tries": 0
+              },
+              {
+                "id": "881",
+                "tries": 0
+              },
+              {
+                "id": "884",
+                "tries": 0
+              }
+            ]
+          }
+        ]
+      },
+      "4.0.1": {
+        "label": "4.0.1",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Add \"advice\" plus LCOV code coverage General advice mechanism for e.g. instrumenting performance bracketing-c in pact tool outputs coverage to coverage/lcov.info relative to loaded file",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "861",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Emit synthetic cross-chain events Emits X_YIELD on cross-chain initiation and X_RESUME on cross chain resumption\nfor any defpact:(pact.X_YIELD targetChain:string continuationName:string continuationArgs:[*](pact.X_RESUME sourceChain:string continuationName:string continuationArgs:[*]Thus a cross-chain transfer send from 0 to 1 would be (pact.X_YIELD \"1\" \"coin.transfer-crosschain\" [\"Bob\" \"Alice\" 10.0]\non chain 0 then (pact.X_RESUME \"0\" \"coin.transfer-crosschain\" [\"Bob\" \"Alice\" 10.0] on chain 1.",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "875",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Support blessed modules and add source chain in crosschain Blessed modules are now supported for resuming cross-chains initiated pre-upgrade.Initiation of cross-chain captures/transmits source chain in output in field .continuation.yield.sourceChain",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "862",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "New natives enumerate to build sequenced listsstr-to-list and concat to transform strings to arrays and backdistinct to de-dupe listsemit-event to not fire event defcaps when emitting, and allowing arbitrary parameter values",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "859",
+                "tries": 0
+              },
+              {
+                "id": "874",
+                "tries": 0
+              },
+              {
+                "id": "860",
+                "tries": 0
+              },
+              {
+                "id": "862",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "MiscellaneousElide info from Modref JSON Move SigData and related types into library More robust TH and avoid deprecated use of star Enable benchmarks in nix ghc build Remove thyme dependency Remove swagger support Add time benchmarks Remove setup from gas results Improve gas golden output Conditional z3 and servant",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "856",
+                "tries": 0
+              },
+              {
+                "id": "852",
+                "tries": 0
+              },
+              {
+                "id": "870",
+                "tries": 0
+              },
+              {
+                "id": "869",
+                "tries": 0
+              },
+              {
+                "id": "867",
+                "tries": 0
+              },
+              {
+                "id": "866",
+                "tries": 0
+              },
+              {
+                "id": "868",
+                "tries": 0
+              },
+              {
+                "id": "865",
+                "tries": 0
+              },
+              {
+                "id": "864",
+                "tries": 0
+              },
+              {
+                "id": "850",
+                "tries": 0
+              }
+            ]
+          }
+        ]
+      },
+      "3.7": {
+        "label": "3.7",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Module References",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "817",
+                "tries": 0
+              },
+              {
+                "id": "839",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Pact Events:Backward compatible JSON @event tag for capabilities env-events for testing",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "820",
+                "tries": 0
+              },
+              {
+                "id": "830",
+                "tries": 0
+              },
+              {
+                "id": "827",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Fix runtime typechecker for lists",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "825",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "with-applied-env, expect-that testing tools",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "3.6": {
+        "label": "3.6",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Pact events",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "819",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Type-only module reference support",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "814",
+                "tries": 0
+              },
+              {
+                "id": "816",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Update SBV and other deps",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "812",
+                "tries": 0
+              }
+            ]
+          }
+        ]
+      },
+      "3.5.2": {
+        "label": "3.5.2",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "ApiReq: expose builder, migrate String -> Text",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "805",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Fix install module governance issue",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "3.5.1": {
+        "label": "3.5.1",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "NFData instances for common Pact Service types",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "800",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Analysis :Soft support for is-charset (analysis does not choke on this primitiveFix column delta calculationStatic Cap tracingUpgraded to SBV 8.6",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "798",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Additional benchmarks for 10x operations/tx",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "795",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Fix bad commandline rendering from tool on load failure",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "793",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Better sanitization of sqlite db names",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "787",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Bugfix for base64 primitives",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "788",
+                "tries": 0
+              }
+            ]
+          }
+        ]
+      },
+      "3.5.0": {
+        "label": "3.5.0",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Add the commands sign, add-sig, and combine-sigs for working with signatures",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "759",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Decode StackFrame in JSON output",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "755",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "CommandResult golden coverage",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "754",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Use CFFI for aeson (upstreamed from chainweb",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "749",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Add gas logs to eval result",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "748",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Add missing case in Eval",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "764",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Misc updates to docs",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Add \"Literate Flags\" in execution config",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "722",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Add flag to allow reads in local",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "777",
+                "tries": 0
+              }
+            ]
+          }
+        ]
+      },
+      "3.4.0": {
+        "label": "3.4.0",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Improve ApiReq for creationTime, TTL, haddocks for PublicMeta and friends",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "753",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Allow for flexible interface manager spec, and \"auto-managed\" caps",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "746",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Cover module persistence with golden test",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "745",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Execution config",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "741",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Fail define-namespace on bad atom structure",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "737",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Finalize gas model",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "734",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Use ByteString readFile and explicit UTF8 decoding",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "735",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "Enable autonomous managed capabilities",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "733",
+                "tries": 0
+              }
+            ]
+          },
+          {
+            "label": "benchmark and improve rounding",
+            "commits": [],
+            "prIds": [
+              {
+                "id": "732",
+                "tries": 0
+              }
+            ]
+          }
+        ]
+      },
+      "3.3.1": {
+        "label": "3.3.1",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "base64-(encode|decode natives",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Bugfix: you can now declare user guards as constants",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "keysets are now set-based so that keyset equality works regardless of key order",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Bugfix: module guards with managed caps on demand installs works properly",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Signature checks only consider acquired and pending caps",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Better docs all around",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "3.3.0": {
+        "label": "3.3.0",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Managed capabilities (see documentation",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Production Gas model v1",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Added signing utilities",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Interfaces now admit defcap, defschema, and defpact declarations",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Add explicit import system. Users may now import function, constant and schema symbols",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Enforce unique names for in-module declarations",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Typechecking interfaces now succeeds",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Previous block hashes added to public data",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "TTL + creation time added to public data",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Added new natives:is-charset: provides support for testing string conformity with a given charset.CHARSET_LATIN1: built-in constant defining the latin1-charsetCHARSET_ASCII: built-in constant defining the ascii-charsettest-capability overload for granted capabilitiesexpect-failure overload allowing users to match on substrings of errors\nCurrently suppported charsets include: ASCII and ISO 8859-1 (latin1 supplement character sets",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Bug fix disallowing access to Capabilities via FQN",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Steps with rollbacks now disallowed w/ cross-chain yields",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Network-id requirement in payloads",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Analysis:list and object length analysiswith-default-read analysis bugs fixedUnbound column invariantsvacuous property detection and report",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "3.2.1": {
+        "label": "3.2.1",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "New native function try has been added",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Bug fixes to the typechecker",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Improved documentation",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "3.2.0": {
+        "label": "3.2.0",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "All non key-related data for decrypt-cc20p1305 is now required to be base64-encoded",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Improved documentation",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Analysis:bitwise operators are now supported",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "3.1.0": {
+        "label": "3.1.0",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Add SPV endorsement functionality to defpacts",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "'=' now compares only like terms",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "User guards can now be created as closures of boolean-valued functions",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Improved swagger documentation",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Improved error messages",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Added new decryption and keypair validation primitives for CHACHA20-POLY1305 Authenticated Encryption with Associated Data (AEAD",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Added bitwise integer native functions &, ~, shift, xor, and |",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Add user-facing chain-data native schema type",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Documentation for namespaces and interfaces",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Add base-64 case to str-to-int and improve error messages",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Add int-to-str native",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Analysis:traces now render on same lineadded support pact step signatures, and governance analysisadded support for chain-data pact nativeupgrade z3 version support to 4.8.5Scope checking for interfaces",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "3.0.1": {
+        "label": "3.0.1",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Check for module in stack when enforcing module guard",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Output test failures on error",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "fix describe table output and meta pretty instance",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "3.0.0": {
+        "label": "3.0.0",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Guards and capabilities, with full model-checking support",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Scoped namespaces for modules and keysets",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Adds module governance function",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Migrate all runtime pact state to DB backend: modules, pacts, transaction ID management",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Improved transaction non-malleability: signatories and chain version in payload",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Adds SPV support with configurable backend",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Multiple Cryptographic signature schemes: ED25519, ECDSA",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Adds Table-based Gas model",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Standardize on CommandResult in all API endpoints",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "CommandResult adds gas consumed, logs, and metadata fields",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "CommandResult's \"result\" field changed to output reliable, user-friendly Terms and errors.",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Adds continuation proof field to ContMsg",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Adds public metadata to Pact Command API",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Format all hashes in Base64url",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Adds typechecking for lists, yield, and resume",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Typechecker and analysis support for partial schemas",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Removes support for non-string keys in objects",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Rejects decimal literals with too many digits",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "defpact can run in local mode",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Disallow rollback on the last step of a pact",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Replaces REPL's env-step and env-pactid with continue-pact and pact-state",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Adds REPL functions chain-data and env-chain-data",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Better compile and typecheck errors",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Pretty printing",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Working Windows build",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Analysis:Adds analysis for non-literal constantsAdds pact analysis tools developer guideAdds analysis for pact-id, defpact, yield, and resumeImproves output from verificationSupports analysis of (bounded-size lists and nested objectsPins z3 to a specific version (4.8.3Uses timeout of 1 second for all z3 queries",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Swagger for API",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "2.6.1": {
+        "label": "2.6.1",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Korean readthedocs",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Interfaces copy models onto implementing modules",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Better/tighter compile phase, remove TBless, TImplements",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Fix bug preventing correct reporting of argument values in falsifying models\nfrom the property checker",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "2.6.0": {
+        "label": "2.6.0",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Pact Interfaces",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Localized docs in JP, EN",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Add configurable gas limit for pact -s",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Remove file server from pact -s",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Fix empty list runtime type enforcement bug",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Enforce top-level only for builtins pact-version, enforce-pact-version, etc",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Various changes to support web repl",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "use cryptonite for Blake2 implementation",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "new str-to-int builtin",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Numerous fixes to pact reference docs",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "New compiler using megaparsec",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "analysis supports str-to-int and read-integer built-ins",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "new row-exists, read, column-of, column-written properties",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "@model now always takes a list when applied on modules, functions, or schemas.",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "properties can now be applied to an entire module",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Fix bug in analysis impl of decimal arithmetic",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Model falsifications are now presented as execution traces with example values",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "2.5.1": {
+        "label": "2.5.1",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Fix keyset enforce of old keyset",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "2.5.0": {
+        "label": "2.5.0",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Pluggable gas model with simple fixed-rate implementation",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "\"Pact\" continuation API support",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Allow qualified keyset predicate function names",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Allow commas to delimit list literals",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Improve cp example: authorization, load scripts",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Accept keyset name as string",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Document Pact database backend format",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Nix build support",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Break up Lang and Runtime type files\nAnalysis:New @model / @doc syntax.We now display all the argument and variable values, reads, writes,\nkeysets, and function result for invalidating models.Introduced row-read-count and row-write-count, specifying the number of\ntimes a row is read or written.Table quantification: it's now possible to quantify over tables, though in\nthis release you can't yet quantify over columns.Object literals and at now work in properties. Object comparison with =\nand != also now works.Analysis now typechecks references to tables (ie it knows table schemas and\nthe types you can read and write to them and return types.verify now typechecks defconsts, so it now checks a superset of\ntypecheck.We now check each invariant individually and give a separate invalidating\nmodel for each invariant.Property parse errors are now less confusing and include location info.read-decimal and enforce-one are now supported.Bug fix: Analysis of and and or now (correctly short-circuits.The property checking system is now included in the documentation.defproperty: New properties can now be defined at the module level.",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "2.4.1": {
+        "label": "2.4.1",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Fix support for property checker in Atom",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "2.4.0": {
+        "label": "2.4.0",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Preview support of of property-based formal verification",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Fix fold type signature",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Refactor ghcjs code into external project",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Various bug fixes in typechecker",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "GHC 8.4 support (semigroup instances, statistics-0.14",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "\"No-Leftpad\" dependency management implementation",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Nested schema support",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "2.3.8": {
+        "label": "2.3.8",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Pact tool improvements: auto-complete, readline support, better multiline",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Fix documentation for format form",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Internal changes: TableName in AST, expose evalRepl', token parsing",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "build improvements: weeder, hlint enforcement",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "2.3.7": {
+        "label": "2.3.7",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "keylog returns rows indexed by txid",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "2.3.6": {
+        "label": "2.3.6",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Support for reading JSON arrays/objects to pact lists/objects",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Microsecond support in time objects",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "new keylog function for obtaining logs by key",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "2.3.5": {
+        "label": "2.3.5",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Fix issue where extra parens silently ignored in repl scripts/prompt",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "2.3.4": {
+        "label": "2.3.4",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "pact tool improvements: better stdin support, '-d' for debug output of load",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "2.3.3": {
+        "label": "2.3.3",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Bugfix for and regression",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "2.3.2": {
+        "label": "2.3.2",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "ghcjs build working, typechecking not supported in browser yet",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "native blake2 support, only for ghcjs",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Restore callstack, better rendering, runtime errors at top callsite",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "2.3.1": {
+        "label": "2.3.1",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "contains added",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "drop, take for objects",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "allow empty objects",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "short-circuiting and,or",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "constantly, identity added",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "2.3.0": {
+        "label": "2.3.0",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "\"Pure\" execution capability, used in keyset enforcement",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "enforce-one added",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Pact tests counted in HUnit results",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "defpact overhaul to support public/escrow",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "New query model: select, where, and?/or?/not?",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "reverse and sort added",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Better typechecking on partial application, TC bugfixes",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "BREAKING: format takes list instead of var args",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "BREAKING: pact-id replaces pact-txid",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Consts memoized at load",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "enforce-version added",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "2.2.3": {
+        "label": "2.2.3",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Pact tool now supports '-a' to format API requests and '-g' to generate ED25519 keypairs",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Fixed error output (was breaking Atom parsing",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Changelog removed from reference docs",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "2.2.2": {
+        "label": "2.2.2",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Module Hashes: use support",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "use accepts barewords",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "better output in describe-module",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "list-modules added",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "print REPL command",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "\"transactional awareness\" in Persist",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "2.2.1": {
+        "label": "2.2.1",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "yield and resume added for use in defpacts",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "yielded, sig-keyset repl functions",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "JSON defaults for keysets, better dispatch of builtin preds",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "pact-version function added.",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "2.2.0": {
+        "label": "2.2.0",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Privacy API: private endpoint, address fields in command",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Typechecker support for at,filter,map,fold,compose",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Persist layer standardized for easier extension",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Library features: Interpreter module, NFData all the things, Eval uses exceptions",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Types module breakup",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "2.1.0": {
+        "label": "2.1.0",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "\"pact -serve\": new REST API server for app development",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "pact-lang-api.js javascript package",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "json repl function, read-msg can take zero args to get entire data payload",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "2.0.0": {
+        "label": "2.0.0",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "Support for types: inference, runtime enforcement, typechecking",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "Numeric negation literals",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "deftable, defschema in module definitions",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "with-keyset now enforce-keyset with no body",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      },
+      "1.0.1": {
+        "label": "1.0.1",
+        "patches": [],
+        "minors": [],
+        "miscs": [
+          {
+            "label": "New function listModules, improved describeModule",
+            "commits": [],
+            "prIds": []
+          },
+          {
+            "label": "REPL function load with optional reset arg",
+            "commits": [],
+            "prIds": []
+          }
+        ]
+      }
+    }
+  }
+}
