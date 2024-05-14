@@ -11,17 +11,28 @@ export const headerStyle = style({
 export const mainStyle = style([
   atoms({
     width: '100%',
+    color: 'text.base.default',
+    display: 'flex',
+    alignItems: 'center',
   }),
   {
-    minHeight: `calc(100vh - ${minHeaderHeight})`,  
+    minHeight: `calc(100vh - ${minHeaderHeight})`,
     background: 'transparent', // fallback in case radial-gradient is not working
-    backgroundImage: 'radial-gradient(circle farthest-side at 50% 170%, #42CEA0, transparent 75%)',
+    backgroundImage:
+      'radial-gradient(circle farthest-side at 50% 170%, #42CEA0, transparent 75%)',
     backgroundRepeat: 'no-repeat',
   },
 ]);
 
 export const containerStyle = style({
-  maxWidth: '500px',
+  width: '474px',
+  maxWidth: '100%',
   margin: '0 auto',
   textAlign: 'center',
+  padding: '10px',
+  '@media': {
+    'screen and (min-height: 48rem)': {
+      margin: '-100px auto 0',
+    },
+  },
 });

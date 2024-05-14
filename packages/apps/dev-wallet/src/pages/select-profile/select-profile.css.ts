@@ -1,18 +1,34 @@
-import { atoms, token } from '@kadena/react-ui/styles';
+import { atoms, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
-const borderColor = token('color.accent.brand.secondary');
+// const borderColor = token('color.accent.brand.secondary');
+const cardColor = 'rgba(255, 255, 255, 0.03)';
+
+export const titleClass = style([
+  atoms({
+    fontSize: '5xl',
+    lineHeight: '7xl',
+    marginBlockEnd: 'sm',
+  }),
+]);
+
+export const subtitleClass = style([
+  atoms({
+    fontWeight: 'primaryFont.regular',
+  }),
+]);
 
 export const cardClass = style([
   atoms({
-    borderRadius: 'md',
+    borderRadius: 'xs',
     padding: 'md',
     textAlign: 'center',
     fontFamily: 'secondaryFont',
+    width: '100%',
   }),
   {
-    border: `2px solid ${borderColor}`,
-    boxShadow: `0px 4px 8px 0 ${token('color.border.base.default')}`,
+    backgroundColor: cardColor,
+    border: `1px solid ${cardColor}`,
   },
 ]);
 
@@ -23,19 +39,19 @@ export const imgClass = style([
     alignItems: 'center',
     overflow: 'hidden',
     borderRadius: 'xxl',
-    marginBlockEnd: 'md',
   }),
   {
-    width: '100px',
-    height: '100px',
-    border: `2px solid ${borderColor}`,
+    width: '40px',
+    height: '40px',
+    borderRadius: '2px',
+    backgroundColor: cardColor,
   },
 ]);
 export const aliasClass = style([
   atoms({
-    fontSize: 'lg',
-    color: 'text.brand.primary.default',
+    fontSize: 'sm',
   }),
+  { color: '#ffffff' },
 ]);
 
 export const initialsClass = style([
@@ -52,3 +68,44 @@ export const formField = atoms({
   alignItems: 'stretch',
   gap: 'sm',
 });
+
+export const linkClass = style([
+  // atoms({
+  //   fontSize: 'md',
+  // }),
+  {
+    textDecoration: 'none',
+  },
+]);
+
+export const linkTextClass = style([
+  atoms({
+    fontSize: 'sm',
+    lineHeight: 'sm',
+    // color: tokens.kda.foundation.color.palette.aqua.n50,
+  }),
+  {
+    color: tokens.kda.foundation.color.palette.aqua.n50,
+    // color: '#42CEA0 !important',
+  },
+]);
+// //styleName: kda/foundation/typography/font/ui/base/regular/@lg;
+// font-family: Kadena Space Grotesk;
+// font-size: 16px;
+// font-weight: 400;
+// line-height: 20px;
+// text-align: center;
+//
+// //styleName: kda/foundation/typography/font/ui/small/regular/@lg;
+// font-family: Kadena Space Grotesk;
+// font-size: 14px;
+// font-weight: 400;
+// line-height: 16px;
+// text-align: left;
+//
+// //styleName: kda/foundation/typography/font/ui/base/regular/@lg;
+// font-family: Kadena Space Grotesk;
+// font-size: 16px;
+// font-weight: 400;
+// line-height: 20px;
+// text-align: center;

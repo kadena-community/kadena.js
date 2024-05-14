@@ -1,11 +1,18 @@
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.hook';
 import { useNetwork } from '@/modules/network/network.hook';
 import { IKeySource } from '@/modules/wallet/wallet.repository';
+import {
+  authCard,
+  backBtnClass,
+  iconStyle,
+  inputClass,
+} from '@/pages/create-profile/create-profile.css.ts';
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
-import { Box, Button, Heading, Text, TextField } from '@kadena/react-ui';
+import { MonoArrowBackIosNew } from '@kadena/react-icons';
+import { Box, Button, Heading, Stack, Text, TextField } from '@kadena/react-ui';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
 
 export function CreateProfile() {
@@ -17,6 +24,7 @@ export function CreateProfile() {
   const { activeNetwork } = useNetwork();
   const [createdKeySource, setCreatedKeySource] = useState<IKeySource>();
   const { createHDWallet } = useHDWallet();
+
   async function create({
     profileName,
     password,
@@ -44,6 +52,7 @@ export function CreateProfile() {
     console.log('wallet created');
     setCreatedKeySource(keySource);
   }
+
   if (isUnlocked && createdKeySource) {
     return (
       <Navigate
@@ -54,19 +63,38 @@ export function CreateProfile() {
   }
   return (
     <>
-      <Box margin="md">
-        <Heading variant="h5">Create wallet</Heading>
-        <Text>Enter a password to encrypt the wallet data with that</Text>
+      <Box className={authCard}>
+        <Link to="/select-profile" className={backBtnClass}>
+          <Stack alignItems="center" gap="xs" paddingBlockEnd="md">
+            <MonoArrowBackIosNew className={iconStyle} /> Back
+          </Stack>
+        </Link>
+
+        <Heading variant="h4">Create wallet</Heading>
+        <Text>
+          Carefully select your password as this will be your main security of
+          your wallet
+        </Text>
+
         <form onSubmit={handleSubmit(create)}>
-          <label htmlFor="profileName">Profile name</label>
-          <TextField
-            id="profileName"
-            type="text"
-            {...register('profileName')}
-          />
-          <label htmlFor="password">Password</label>
-          <TextField id="password" type="password" {...register('password')} />
-          <Button type="submit">Create</Button>
+          <Stack flexDirection="column" marginBlock="md" gap="sm">
+            <label htmlFor="profileName">Profile name</label>
+            <TextField
+              id="profileName"
+              type="text"
+              {...register('profileName')}
+              className={inputClass}
+            />
+            <label htmlFor="password">Password</label>
+            <TextField
+              id="password"
+              type="password"
+              {...register('password')}
+            />
+          </Stack>
+          <Stack flexDirection="column">
+            <Button type="submit">Continue</Button>
+          </Stack>
         </form>
       </Box>
     </>
