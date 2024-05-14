@@ -2,4 +2,4 @@
 "@kadena/react-ui": minor
 ---
 
-Add variant option for different colors
+Added a new variant to apply different colors to the Divider component

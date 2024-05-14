@@ -23,12 +23,12 @@ export const dividerClass = recipe({
       },
       bold: {
         backgroundColor: token('color.border.base.bold'),
-        boldest: {
-          backgroundColor: token('color.border.base.boldest'),
-        },
-        highContrast: {
-          backgroundColor: token('color.border.base.high-contrast'),
-        },
+      },
+      boldest: {
+        backgroundColor: token('color.border.base.boldest'),
+      },
+      highContrast: {
+        backgroundColor: token('color.border.base.high-contrast'),
       },
     },
   },
