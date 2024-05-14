@@ -37,7 +37,7 @@ export const Tabs = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
-  const { focusProps } = useFocusRing({
+  const { focusProps, isFocusVisible } = useFocusRing({
     within: true,
   });
 
@@ -92,7 +92,7 @@ export const Tabs = ({
   const tablist = (
     <div className={tabListWrapperClass} ref={scrollRef}>
       <div
-        className={tabListClass}
+        className={classNames(tabListClass, { focusVisible: isFocusVisible })}
         {...mergeProps(tabListProps, focusProps)}
         ref={containerRef}
       >

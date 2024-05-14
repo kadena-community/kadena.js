@@ -93,6 +93,9 @@ export const tabItemClass = recipe({
         '&[data-hovered="true"]': {
           color: token('color.text.base.@hover'),
         },
+        '.focusVisible &:focus-visible': {
+          outline: `2px solid ${token('color.border.tint.@focus')}`,
+        },
       },
     },
   ],
