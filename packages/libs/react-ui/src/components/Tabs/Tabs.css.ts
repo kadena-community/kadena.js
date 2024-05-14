@@ -1,4 +1,4 @@
-import { style } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { token } from '../../styles';
 import { atoms } from '../../styles/atoms.css';
@@ -66,6 +66,11 @@ export const selectorLine = style([
   },
 ]);
 
+// To prevent overlapping with the focus ring, we hide the line when the tab is focused
+globalStyle(`${tabListClass}.focusVisible ${selectorLine}`, {
+  opacity: 0,
+});
+
 export const tabItemClass = recipe({
   base: [
     atoms({
@@ -96,6 +101,8 @@ export const tabItemClass = recipe({
         },
         '.focusVisible &:focus-visible': {
           outline: `2px solid ${token('color.border.tint.@focus')}`,
+          outlineOffset: '-2px',
+          zIndex: 4,
         },
       },
     },
@@ -159,6 +166,7 @@ export const tabContentClass = style([
 export const paginationButton = style({
   zIndex: 3,
   opacity: 1,
+  position: 'relative',
   transition: 'opacity 0.4s ease, background 0.4s ease',
 });
 

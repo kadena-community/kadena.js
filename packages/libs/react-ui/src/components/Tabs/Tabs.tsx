@@ -52,7 +52,7 @@ export const Tabs = ({
   useEffect(() => {
     if (!containerRef.current || !scrollRef.current) return;
 
-    let selected = containerRef.current.querySelector(
+    const selected = containerRef.current.querySelector(
       '[data-selected="true"]',
     ) as HTMLElement;
     // set Selected as first tab if the tab isn't fully visible
