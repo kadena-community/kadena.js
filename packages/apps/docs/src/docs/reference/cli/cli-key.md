@@ -26,7 +26,7 @@ kadena key <action> <argument> [flag]
 
 You can use the following optional flags with the `kadena key` command.
 
-| **Use this flag** | **To do this**
+| Use this flag | To do this
 | ------------- | -----------
 | -h, --help |	Display usage information.
 | -q, --quiet | Eliminate interactive prompts and confirmations to enable automation of tasks.
@@ -38,8 +38,8 @@ You can use the following optional flags with the `kadena key` command.
 
 Use the following actions to specify the operation you want to perform.
 
-| **Use this action** | **To do this**                       |
-| -------------- | --------------------------------------|
+| Use this action | To do this                      |
+| --------------- | ---------------------------------|
 | generate | Generate random public and secret key pairs. |
 | list | List available keys.  |
 
@@ -51,8 +51,8 @@ Use `kadena key generate` to generate a random public and secret key.
 
 You can use the following command-line arguments with the `kadena key generate` command:
 
-| **Argument**  | **Description**                            |
-| ------------ | ------------------------------------------- |
+| Use this argument | To do this                           |
+| ----------------- | ------------------------------------------- |
 | -a, --key-alias <keyAlias> | Set an alias for the key to store on the local filesystem. |
 | -n, --key-amount <keyAmount> | Specify the number of key pairs to generate. The default is one key pair.|
 | -l, --legacy | Generate keys using ChainWeaver key derivation methods (ED25519 signature scheme). |
@@ -118,8 +118,8 @@ Use `kadena key list` to list available keys.
 
 You can use the following command-line arguments with the `kadena key list` command:
 
-| **Argument**  | **Description**                            |
-| ------------ | ------------------------------------------- |
+| Use this argument | To do this                           |
+| ----------------- | ------------------------------------ |
 | -d, --directory <directory> | Specify the path to the configuration folder on the local filesystem. The default is the current working directory. |
 
 ### Examples

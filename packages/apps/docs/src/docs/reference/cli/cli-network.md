@@ -27,8 +27,8 @@ kadena network <action> [flag]
 
 Use the following actions to specify the operation you want to perform.
 
-| **Use this action** | **To do this**                                         |
-| ------------------- | ------------------------------------------------------ |
+| Use this action | To do this                                        |
+| --------------- | ------------------------------------------------- |
 | add            | Add a new network.                                          |
 | set-default    | Set a network to be the default choice in selection prompts.|
 | list           | List all available networks.                                |
@@ -55,8 +55,8 @@ Use `kadena network add` to add a new set of network settings to your developmen
 
 You can use the following command-line arguments with the `kadena network add` command:
 
-| **Argument**            | **Description**                     |
-| ---------------------- | ------------------------------------ |
+| Use this argument | To do this                    |
+| ----------------- | ----------------------------- |
 | -a, --network-name <networkName> | Set the name of the network. The valid values are devnet, testnet, and mainnet. |
 | -i, --network-id <networkId> | Set the identifier for the network. The network identifier is a combination of network name and a chain identifier.For example, valid values include testnet04 and mainnet01. |
 | -s, --network-host <networkHost> | Set the host for the network. |
@@ -86,8 +86,8 @@ You can specify the network as `none` to remove a previously-set default network
 
 You can use the following command-line arguments with the `kadena network set-default` command:
 
-| **Argument**            | **Description** |
-| ----------- | --------------------------------------------- | 
+| Use this argument | To do this |
+| ----------------- | --------------------------------------------- | 
 | -n, --network <networkName> | Specify the name of network you want to set as the default. The valid values are devnet, testnet, and mainnet. |
 | --confirm   | Confirm the change you are making to set or remove the default network. |
 
@@ -119,8 +119,8 @@ Use `kadena network update` to update properties for an existing network.
 
 You can use the following command-line arguments with the `kadena network update` command:
 
-| **Argument**            | **Description**                       
-| ---------------------- | --------------------------------------- |
+| Use this argument | To do this                       
+| ----------------- | --------------------------------------- |
 | -n, --network <networkName> | Specify the network you want to update. The valid values are `devnet`, `testnet`, and `mainnet`. |
 | -a, --network-name <networkName> | Update the name of the specified network. |
 | -i, --network-id <networkId> | Update the identifier for the network. The network identifier is a combination of network name and a chain identifier.For example, valid values include testnet04 and mainnet01. |
@@ -173,7 +173,7 @@ Use `kadena network delete` to remove a network and its configuration settings f
 
 You can use the following command-line arguments with the `kadena network delete` command:
 
-| **Argument**            | **Description** |
+| Use this argument | To do this |
 | ---------------- | -------------------------------- | 
 | -n, --network <networkName> | Specify the name of the network you want to delete. The valid values are `devnet`, `testnet`, and `mainnet`. |
 | -d, --network-delete yes | no| Confirm that you want to delete the network. | 

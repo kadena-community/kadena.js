@@ -11,16 +11,22 @@ tags: ['TypeScript', 'Kadena client', 'frontend']
 
 # kadena dapp
 
-Tool for creating dapp projects
+Use `kadena dapp` to create new application project directories.
 
-| **Subcommand** | **Description**        |
-| -------------- | ---------------------- |
+## Basic usage
+
+## Actions
+
+| Use this action | To do this    |
+| --------------- | ------------- |
 | add            | add a new Dapp project |
 
 
 ## kadena dapp add
 
-| **Arguments**     | **Description**                           | **Required** |
+### Arguments
+
+| Use this argument | To do this  | **Required** |
 | ----------------- | ----------------------------------------- | ------------ |
 | project-directory | Specify the project directory \[Required] | yes          |
 
@@ -34,7 +40,7 @@ Tool for creating dapp projects
 kadena dapp add --dapp-template="vuejs" kadena-dapp
 ```
 
-## Supported templates
+### Supported templates
 
 It supports a number of well known and widely used frameworks to choose from
 when starting a new project. The following project templates are currently
