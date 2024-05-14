@@ -79,9 +79,10 @@ export const tabItemClass = recipe({
       backgroundColor: 'transparent',
       color: 'text.base.default',
       outline: 'none',
-      borderRadius: 'xs',
     }),
     {
+      borderTopLeftRadius: token('radius.xs'),
+      borderTopRightRadius: token('radius.xs'),
       transition:
         'background-color .4s ease, color .4s, border-bottom .4s ease-in-out',
       whiteSpace: 'nowrap',

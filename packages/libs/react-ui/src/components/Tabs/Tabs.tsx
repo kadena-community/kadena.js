@@ -85,7 +85,7 @@ export const Tabs = ({
     );
     selectedUnderlineRef.current.style.setProperty(
       'width',
-      `${selected.offsetWidth}px`,
+      `${selected.getBoundingClientRect().width}px`,
     );
   }, [containerRef, state.selectedItem?.key, selectedUnderlineRef]);
 
