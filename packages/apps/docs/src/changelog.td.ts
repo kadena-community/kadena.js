@@ -62,7 +62,7 @@ interface IGHCommitData {
     'x-accepted-oauth-scopes': string;
     'x-content-type-options': string;
     'x-frame-options': string;
-    'x-github-api-version-selected': string;
+    'x-github-api-version-selected': '2022-11-28';
     'x-github-media-type': 'github.v3; format=json';
     'x-github-request-id': string;
     'x-oauth-scopes': string;
@@ -122,10 +122,56 @@ interface IGHCommitData {
   };
 }
 
+interface IGHPRData {
+  url: string;
+  id: number;
+  node_id: string;
+  html_url: string;
+  diff_url: string;
+  patch_url: string;
+  issue_url: string;
+  number: number;
+  state: string;
+  locked: boolean;
+  title: string;
+  user: IGHUser;
+  body: string;
+  created_at: string;
+  updated_at: string;
+  closed_at: string;
+  merged_at: string;
+  merge_commit_sha: string;
+  assignee: null | IGHUser;
+  assignees: IGHUser[];
+  requested_reviewers: IGHUser[];
+  labels: string[];
+  draft: boolean;
+  commits_url: string;
+  review_comments_url: string;
+  review_comment_url: string;
+  comments_url: string;
+  statuses_url: string;
+  author_association: string;
+  auto_merge: null | string;
+  active_lock_reason: null | string;
+  merged: boolean;
+  mergeable: null;
+  rebaseable: null;
+  mergeable_state: 'unknown';
+  merged_by: IGHUser[];
+  comments: number;
+  review_comments: number;
+  maintainer_can_modify: boolean;
+  commits: number;
+  additions: number;
+  deletions: number;
+  changed_files: number;
+}
+
 interface IGHPR {
-  id: string;
+  id: number;
   tries: number; //the amount of tries to get the data
-  data?: IGHCommitData;
+  data?: IGHPRData;
 }
 
 interface IGHCommit {
@@ -142,6 +188,7 @@ interface IChangelogRecord {
 
 interface IChanglogContent {
   label: string;
+  date?: Date;
   patches: IChangelogRecord[];
   minors: IChangelogRecord[];
   miscs: IChangelogRecord[];
