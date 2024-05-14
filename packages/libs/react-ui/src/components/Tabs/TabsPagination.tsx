@@ -78,6 +78,7 @@ export const TabsPagination = ({
       <Button
         aria-label="Scroll left"
         variant="transparent"
+        isDisabled={!visibleButtons.left}
         className={classNames(paginationButton, {
           [hiddenClass]: !visibleButtons.left,
         })}
@@ -89,6 +90,7 @@ export const TabsPagination = ({
       <Button
         aria-label="Scroll right"
         variant="transparent"
+        isDisabled={!visibleButtons.right}
         className={classNames(paginationButton, {
           [hiddenClass]: !visibleButtons.right,
         })}
