@@ -16,6 +16,12 @@ builder.queryField('blocksFromHeight', (t) =>
           nonnegative: true,
         },
       }),
+      endHeight: t.arg.int({
+        required: false,
+        validate: {
+          positive: true,
+        },
+      }),
       chainIds: t.arg.stringList({
         required: false,
         description: 'Default: all chains',
@@ -26,6 +32,12 @@ builder.queryField('blocksFromHeight', (t) =>
           },
         },
       }),
+    },
+    validate(args) {
+      if (args.endHeight && args.startHeight > args.endHeight) {
+        return false;
+      }
+      return true;
     },
     cursor: 'hash',
     type: Block,
@@ -38,7 +50,7 @@ builder.queryField('blocksFromHeight', (t) =>
     async resolve(
       query,
       __parent,
-      { startHeight, chainIds = defaultChainIds },
+      { startHeight, chainIds = defaultChainIds, endHeight },
     ) {
       try {
         return await prismaClient.block.findMany({
@@ -46,6 +58,9 @@ builder.queryField('blocksFromHeight', (t) =>
           where: {
             height: {
               gte: startHeight,
+              ...(endHeight && {
+                lte: endHeight,
+              }),
             },
             ...(chainIds?.length && {
               chainId: {
