@@ -76,6 +76,12 @@ If you want to verify the account details on the blockchain, you must provide th
 
 ### Examples
 
+To add account information interactively, run the following command:
+
+```bash
+kadena account add
+```
+
 To add an account locally from an account that exists on the Kadena test network and chain identifier 1, run a command similar to the following:
 
 ```bash

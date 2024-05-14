@@ -20,7 +20,7 @@ You can use the `kadena network` subcommands to view and modify the network sett
 The basic syntax for the `kadena network` command is:
 
 ```bash
-kadena network <action> [flag]
+kadena network <action> [arguments] [flags]
 ```
 
 ## Actions
@@ -57,11 +57,11 @@ You can use the following command-line arguments with the `kadena network add` c
 
 | Use this argument | To do this                    |
 | ----------------- | ----------------------------- |
-| -a, --network-name <networkName> | Set the name of the network. The valid values are devnet, testnet, and mainnet. |
-| -i, --network-id <networkId> | Set the identifier for the network. The network identifier is a combination of network name and a chain identifier.For example, valid values include testnet04 and mainnet01. |
-| -s, --network-host <networkHost> | Set the host for the network. |
-| -e, --network-explorer-url <networkExplorerUrl> | Set the block explorer URL for the network. |
-| -o, --network-overwrite yes | no   | Confirm that you want to overwrite existing network configuration settings. |
+| -a, --network-name _networkName_ | Set the name of the network. The valid values are devnet, testnet, and mainnet. |
+| -i, --network-id _networkId_ | Set the identifier for the network. The network identifier is a combination of network name and a chain identifier.For example, valid values include testnet04 and mainnet01. |
+| -s, --network-host _networkHost_ | Set the host for the network. |
+| -e, --network-explorer-url _networkExplorerUrl_ | Set the block explorer URL for the network. |
+| -o, --network-overwrite  | Confirm that you want to overwrite existing network configuration settings. |
 
 ### Examples
 
@@ -73,7 +73,7 @@ kadena network add
 
 To add network settings for the Kadena test network, run a command similar to the following:
 
-```
+```bash
 kadena network add --network-name="testnet" --network-id="testnet08" --network-host="https://api.testnet.chainweb.com" --network-explorer-url="https://explorer.chainweb.com/testnet/tx/ --network-overwrite="yes"
 ```
 
@@ -88,8 +88,8 @@ You can use the following command-line arguments with the `kadena network set-de
 
 | Use this argument | To do this |
 | ----------------- | --------------------------------------------- | 
-| -n, --network <networkName> | Specify the name of network you want to set as the default. The valid values are devnet, testnet, and mainnet. |
-| --confirm   | Confirm the change you are making to set or remove the default network. |
+| -n, --network _networkName_ | Specify the name of network you want to set as the default. The valid values are devnet, testnet, and mainnet. |
+| --confirm  | Confirm the change you are making to set or remove the default network. |
 
 ### Examples
 
@@ -107,7 +107,7 @@ kadena network set-default --network="testnet" --confirm
 
 To remove the default network setting, run the following command:
 
-```
+```bash
 kadena network set-default --network="none" --confirm
 ```
 
@@ -121,11 +121,11 @@ You can use the following command-line arguments with the `kadena network update
 
 | Use this argument | To do this                       
 | ----------------- | --------------------------------------- |
-| -n, --network <networkName> | Specify the network you want to update. The valid values are `devnet`, `testnet`, and `mainnet`. |
-| -a, --network-name <networkName> | Update the name of the specified network. |
-| -i, --network-id <networkId> | Update the identifier for the network. The network identifier is a combination of network name and a chain identifier.For example, valid values include testnet04 and mainnet01. |
-| -s, --network-host <networkHost> | Update the host for the specified network. |
-| -e, --network-explorer-url | Update the block explorer URL for the specified network |
+| -n, --network _networkName_ | Specify the network you want to update. The valid values are `devnet`, `testnet`, and `mainnet`. |
+| -a, --network-name _networkName_ | Update the name of the specified network. |
+| -i, --network-id _networkId_ | Update the identifier for the network. The network identifier is a combination of network name and a chain identifier. For example, valid values include `testnet04` and `mainnet01`. |
+| -s, --network-host _networkHost_ | Update the host for the specified network. |
+| -e, --network-explorer-url _networkExplorerUrl_ | Update the block explorer URL for the specified network |
 
 ### Examples
 
@@ -175,8 +175,8 @@ You can use the following command-line arguments with the `kadena network delete
 
 | Use this argument | To do this |
 | ---------------- | -------------------------------- | 
-| -n, --network <networkName> | Specify the name of the network you want to delete. The valid values are `devnet`, `testnet`, and `mainnet`. |
-| -d, --network-delete yes | no| Confirm that you want to delete the network. | 
+| -n, --network _networkName_ | Specify the name of the network you want to delete. The valid values are `devnet`, `testnet`, and `mainnet`. |
+| -d, --network-delete | Confirm that you want to delete the network. | 
 
 ### Examples
 
@@ -188,6 +188,6 @@ kadena network delete
 
 To delete the `mainnet` network information from your development environment, run the following command:
 
-```
+```bash
 kadena network delete --network="mainnet" --network-delete="yes"
 ```

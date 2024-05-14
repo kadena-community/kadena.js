@@ -11,18 +11,41 @@ tags: ['TypeScript', 'Kadena client', 'frontend']
 
 # kadena tx
 
-Tool for creating and managing transactions
+Use `kadena tx` and transaction templates to create, sign, test, send, and manage transactions.
 
-| **Subcommand** | **Description**                         |
-| -------------- | --------------------------------------- |
-| add            | Select a template and add a transaction |
-| sign           | Sign a transaction using your wallet,   |
-|                | Sign a transaction using a key pair     |
-|                |                                         |
-| test           | Test a signed transaction               |
-| send           | Send a transaction to the network       |
-| status         | Get the status of a transaction         |
-| list           | List transaction(s)                     |
+
+## Basic usage
+
+The basic syntax for the `kadena network` command is:
+
+```bash
+kadena tx <action> [arguments] [flags]
+```
+
+## Actions
+
+Use the following actions to specify the operation you want to perform.
+
+| Use this action | To do this                       |
+| --------------- | -------------------------------- |
+| add            | Select a template and add a transaction. |
+| sign           | Sign a transaction using your wallet or using a key pair. |
+| test           | Test a signed transaction without submitting it to the blockchain. |
+| send           | Send a transaction to the network.|
+| status         | Get the status of a transaction.|
+| list           | List transactions.|
+
+## Flags
+
+You can use the following optional flags with `kadena tx` commands.
+
+| Use this flag | To do this
+| ------------- | -----------
+| -h, --help |	Display usage information.
+| -q, --quiet | Eliminate interactive prompts and confirmations to enable automation of tasks.
+| -V, --version | Display version information.
+| --json | Format command results sent to standard output (stdout) using JSON format.
+| --yaml | Format command results sent to standard output (stdout) using YAML format.
 
 ## kadena tx add
 
@@ -32,9 +55,9 @@ chains and access patterns. This feature is designed to work with user-supplied
 values, filling out predefined templates to generate transactions ready for
 signing and submission.
 
-### Command Usage
+### Basic usage
 
-```plaintext
+```bash
 kadena tx add [options] [options]
 ```
 
@@ -51,9 +74,9 @@ options available:
 | `--holes`         | Displays a list of required template variables.           | No       |
 | Custom options    | Generated based on the chosen template's required fields. | Varies   |
 
-### Example Command
+### Examples
 
-```
+```bash
 kadena tx add --template="transfer.yaml" --template-data="data.yaml" --network-id="testnet04" --out-file="transaction.json"
 ```
 

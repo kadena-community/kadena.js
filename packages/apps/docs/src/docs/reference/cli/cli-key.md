@@ -19,8 +19,17 @@ Use `kadena key` to generate and manage public and secret keys.
 The basic syntax for the `kadena key` command is:
 
 ```bash
-kadena key <action> <argument> [flag]
+kadena key <action> [arguments] [flags]
 ```
+
+## Actions
+
+Use the following actions to specify the operation you want to perform.
+
+| Use this action | To do this                      |
+| --------------- | ---------------------------------|
+| generate | Generate random public and secret key pairs. |
+| list | List available keys. |
 
 ### Flags
 
@@ -34,15 +43,6 @@ You can use the following optional flags with the `kadena key` command.
 | --json | Format command results sent to standard output (stdout) using JSON format.
 | --yaml | Format command results sent to standard output (stdout) using YAML format.
 
-## Actions
-
-Use the following actions to specify the operation you want to perform.
-
-| Use this action | To do this                      |
-| --------------- | ---------------------------------|
-| generate | Generate random public and secret key pairs. |
-| list | List available keys.  |
-
 ## kadena key generate
 
 Use `kadena key generate` to generate a random public and secret key.
@@ -53,22 +53,22 @@ You can use the following command-line arguments with the `kadena key generate` 
 
 | Use this argument | To do this                           |
 | ----------------- | ------------------------------------------- |
-| -a, --key-alias <keyAlias> | Set an alias for the key to store on the local filesystem. |
-| -n, --key-amount <keyAmount> | Specify the number of key pairs to generate. The default is one key pair.|
+| -a, --key-alias _keyAlias_ | Set an alias for the key to store on the local filesystem. |
+| -n, --key-amount _keyAmount_ | Specify the number of key pairs to generate. The default is one key pair.|
 | -l, --legacy | Generate keys using ChainWeaver key derivation methods (ED25519 signature scheme). |
 
 ### Examples
 
 To generate one random public and secret key pair interactively, run the following command:
 
-```shell
+```bash
 kadena key generate
 ```
 
 This command prompts you to enter the alias you want to use for the key and the number of keys to generate.
 For example:
 
-```shell
+```bash
 ? Enter an alias for your key: bob-dev
 ? Enter the amount of keys you want to generate (alias-{amount} will increment) (default: 1): 1
 ```
@@ -76,7 +76,7 @@ For example:
 After you respond to the prompts, the command displays confirmation that the keys were generated and where the key is stored on the local filesystem.
 For example:
 
-```shell
+```bash
 Generated Plain Key Pair(s):
 Public key
 277ca529e0871cc277c84728ce3486947768cc8ff2c2894801f4d13a4b1fe4b7
@@ -90,14 +90,14 @@ kadena key generate --key-alias="bob-dev" --key-amount="1"
 
 To generate three random public and secret key pairs that are compatible with Chainweaver, run a command similar to the following:
 
-```shell
+```bash
 kadena key generate --key-alias="chainweaver-keys" --key-amount="3" --legacy
 ```
 
 The confirmation message displays the public keys and the files created on the local filesystem for the keys.
 For example:
 
-```shell
+```bash
 Generated Legacy Plain Key Pair(s):
 Public key
 0f4d6ddea36e22a9eb7e7f16bdff359d2027b3be08ccd206f27eba357ef6da9f
@@ -126,13 +126,13 @@ You can use the following command-line arguments with the `kadena key list` comm
 
 To list all keys in the current working directory, run the following command:
 
-```shell
+```bash
 kadena key list
 ```
 
 The command displays output similar to the following:
 
-```shell
+```bash
 Listing keys in the working directory:
 Filename                Public Key                                                       Legacy
 bob-dev.yaml            277ca529e0871cc277c84728ce3486947768cc8ff2c2894801f4d13a4b1fe4b7 No    
@@ -145,14 +145,14 @@ myalias-1.yaml          62b03fce0d58d67949f6fd2ec64cfb676deee57a809f5e5bc5cece81
 
 To list keys in a directory other than your current working directory and format the output as JSON, run a command similar to the following:
 
-```shell
+```bash
 kadena key list --directory ~/My-Kadena --json
 ```
 
 The command returns the output using JSON format.
 For example:
 
-```shell
+```bash
 [
   {
     "alias": "bob-dev.yaml",
