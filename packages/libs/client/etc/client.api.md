@@ -14,6 +14,8 @@ import type { IExecPayload } from '@kadena/types';
 import { IKeyPair } from '@kadena/types';
 import type { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import type { ILocalOptions } from '@kadena/chainweb-node-client';
+import { IPactDecimal } from '@kadena/types';
+import { IPactInt } from '@kadena/types';
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { IPreflightResult } from '@kadena/chainweb-node-client';
 import type { ISigningCap } from '@kadena/types';
@@ -438,6 +440,12 @@ export interface ISingleSignFunction {
     // (undocumented)
     (transaction: IUnsignedCommand): Promise<ICommand | IUnsignedCommand>;
 }
+
+// @public (undocumented)
+export const isIPactDecimal: (arg: unknown) => arg is IPactDecimal;
+
+// @public (undocumented)
+export const isIPactInt: (arg: unknown) => arg is IPactInt;
 
 // @public
 export function isSignedTransaction(command: IUnsignedCommand | ICommand): command is ICommand;
