@@ -42,11 +42,11 @@ export const Layout: FC = () => {
         }
       >
         <NavHeaderLinkList>
-          <NavHeaderLink href="/">
-            DX Wallet
+          <NavHeaderLink asChild>
+            <Link to="/">DX Wallet</Link>
           </NavHeaderLink>
-          <NavHeaderLink href="/networks">
-            Network
+          <NavHeaderLink asChild>
+            <Link to="/networks">Network</Link>
           </NavHeaderLink>
         </NavHeaderLinkList>
 
