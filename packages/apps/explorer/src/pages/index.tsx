@@ -1,5 +1,6 @@
 import type { NetworkInfo } from '@/__generated__/sdk';
 import { useNetworkInfoQuery } from '@/__generated__/sdk';
+import SearchDropdown from '@/components/search-dropdown/search-dropdown';
 import StatisticsStack from '@/components/statistics-stack/statistics-stack';
 import { LogoKdacolorLight } from '@kadena/react-icons/brand';
 import { Stack } from '@kadena/react-ui';
@@ -35,11 +36,9 @@ const Home: React.FC = () => {
 
   return (
     <Stack flexDirection={'column'} gap={'lg'} alignItems={'center'}>
-      <div>
-        <StatisticsStack data={statisticsGridData}></StatisticsStack>
-      </div>
-
+      <StatisticsStack data={statisticsGridData}></StatisticsStack>
       <LogoKdacolorLight />
+      <SearchDropdown />
     </Stack>
   );
 };
