@@ -6,6 +6,7 @@ import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import {
   isNotEmptyObject,
+  isNotEmptyString,
   maskStringPreservingStartAndEnd,
   notEmpty,
 } from '../../utils/globalHelpers.js';
@@ -37,7 +38,7 @@ const formatWarnings = (warnings: string[]): string | null => {
 
 export async function accountDetails(
   config: IAccountDetailsConfig,
-): Promise<CommandResult<IAccountDetails[]>> {
+): Promise<CommandResult<IAccountDetails>> {
   let status: 'success' | 'error' | 'partial' = 'success';
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -50,6 +51,7 @@ export async function accountDetails(
             ...config,
             chainId,
           });
+
           return {
             [chainId]: accountDetails,
           };
@@ -75,24 +77,23 @@ export async function accountDetails(
     status = 'error';
     errors.push(error.message);
   }
+
   const nonEmptyAccountDetails = accountDetailsList.filter(notEmpty);
   status = nonEmptyAccountDetails.length === 0 ? 'error' : status;
   return {
     status,
-    data: nonEmptyAccountDetails,
+    data: Object.assign({}, ...nonEmptyAccountDetails),
     errors,
     warnings: [formatWarnings(warnings)].filter(notEmpty),
   };
 }
 
-function generateTableForAccountDetails(accounts: IAccountDetails[]): Table {
+function generateTableForAccountDetails(accounts: IAccountDetails): Table {
   const table = createTable({
     head: ['Name', 'ChainID', 'Public Keys', 'Predicate', 'Balance'],
   });
 
-  const data = accounts.map((acc) => {
-    const chainId = Object.keys(acc)[0];
-    const account = acc[chainId];
+  const data = Object.entries(accounts).map(([chainId, account]) => {
     const balance =
       typeof account.balance === 'object' && 'decimal' in account.balance
         ? account.balance.decimal.toString()
@@ -138,6 +139,12 @@ export const createAccountDetailsCommand = createCommand(
     if (chainIds === undefined || chainIds.length === 0) {
       log.error(CHAIN_ID_ACTION_ERROR_MESSAGE);
       return;
+    }
+
+    if (!isNotEmptyString(fungible)) {
+      return log.error(
+        'Fungible is required. Please provide a valid fungible option.',
+      );
     }
 
     log.debug('account-details:action', {

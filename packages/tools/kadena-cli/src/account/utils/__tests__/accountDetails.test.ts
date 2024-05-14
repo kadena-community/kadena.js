@@ -20,18 +20,16 @@ describe('accountDetails', () => {
       fungible: 'coin',
     });
     assert(result.status === 'success');
-    expect(result.data).toEqual([
-      {
-        ['1']: {
-          account: 'accountName',
-          guard: {
-            pred: 'keys-all',
-            keys: ['publicKey1', 'publicKey2'],
-          },
-          balance: 0,
+    expect(result.data).toEqual({
+      ['1']: {
+        account: 'accountName',
+        guard: {
+          pred: 'keys-all',
+          keys: ['publicKey1', 'publicKey2'],
         },
+        balance: 0,
       },
-    ]);
+    });
   });
 
   it('should return error if account does not exist', async () => {
