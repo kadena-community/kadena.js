@@ -1,9 +1,10 @@
 import type { NetworkInfo } from '@/__generated__/sdk';
 import { useNetworkInfoQuery } from '@/__generated__/sdk';
-import SearchDropdown from '@/components/search-dropdown/search-dropdown';
+import SearchCombobox from '@/components/search-dropdown/search-combobox';
 import StatisticsStack from '@/components/statistics-stack/statistics-stack';
 import { LogoKdacolorLight } from '@kadena/react-icons/brand';
-import { Stack } from '@kadena/react-ui';
+import { Stack, Text } from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 import React from 'react';
 
 const formatStatisticsData = (
@@ -38,7 +39,7 @@ const Home: React.FC = () => {
     <Stack flexDirection={'column'} gap={'lg'} alignItems={'center'}>
       <StatisticsStack data={statisticsGridData}></StatisticsStack>
       <LogoKdacolorLight />
-      <SearchDropdown />
+      <SearchCombobox />
     </Stack>
   );
 };
