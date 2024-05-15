@@ -18,7 +18,7 @@ export const ThemeToggle: FC = () => {
 
   useEffect(() => {
     rotateIcon(!isRotated);
-  }, [theme]);
+  }, [theme, rotateIcon]);
 
   const toggleTheme = useCallback((): void => {
     const newTheme = theme === 'dark' ? 'light' : 'dark';
@@ -27,7 +27,7 @@ export const ThemeToggle: FC = () => {
     analyticsEvent(EVENT_NAMES['click:change_theme'], {
       theme: newTheme,
     });
-  }, [setTheme]);
+  }, [setTheme, theme]);
 
   if (!isMounted) return null;
 
