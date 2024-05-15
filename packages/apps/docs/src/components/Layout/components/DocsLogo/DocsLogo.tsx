@@ -1,27 +1,15 @@
-import { useTheme } from 'next-themes';
+import { useTheme } from '@/hooks/useTheme';
 import type { ComponentPropsWithRef, FC } from 'react';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 interface IProps extends ComponentPropsWithRef<'svg'> {
   overwriteTheme?: 'light' | 'dark';
 }
 
 export const DocsLogo: FC<IProps> = ({ overwriteTheme, ...props }) => {
-  const { theme } = useTheme() ?? 'dark';
-  const [innerTheme, setInnerTheme] = useState<string | undefined>(
-    overwriteTheme,
-  );
+  const { theme } = useTheme({ overwriteTheme });
 
-  //fixes the logo color when the theme is loaded
-  useEffect(() => {
-    if (overwriteTheme) {
-      setInnerTheme(overwriteTheme);
-    } else {
-      setInnerTheme(theme);
-    }
-  }, [theme, overwriteTheme]);
-
-  if (innerTheme === 'dark') {
+  if (theme === 'dark') {
     return (
       <svg
         width="216"

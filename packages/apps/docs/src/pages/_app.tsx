@@ -107,25 +107,15 @@ export const MyApp = ({
         <link rel="apple-touch-icon" href="/assets/favicons/icon@192.png?1" />
       </Head>
       <MDXProvider components={markDownComponents}>
-        <ThemeProvider
-          attribute="class"
-          enableSystem={true}
-          defaultTheme="light"
-          value={{
-            light: 'light',
-            dark: darkThemeClass,
-          }}
-        >
-          <RouterProvider navigate={router.push}>
-            <MenuProvider>
-              <Header menuItems={props.headerMenuItems} />
-              <CookieConsent />
-              <Layout {...props}>
-                <Component {...props} />
-              </Layout>
-            </MenuProvider>
-          </RouterProvider>
-        </ThemeProvider>
+        <RouterProvider navigate={router.push}>
+          <MenuProvider>
+            <Header menuItems={props.headerMenuItems} />
+            <CookieConsent />
+            <Layout {...props}>
+              <Component {...props} />
+            </Layout>
+          </MenuProvider>
+        </RouterProvider>
       </MDXProvider>
       <Analytics />
     </>
