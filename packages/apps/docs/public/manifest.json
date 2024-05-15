@@ -5,7 +5,21 @@
   "display": "standalone",
   "background_color": "#020E1B",
   "theme_color": "#020E1B",
-  "description": "Welcome to the Kadena documentation site! This site provides documentation for all things Kadena, including general topics for learning about blockchain technology, technical references for developing smart contracts using, and guides for becoming a ChainWeb node operator, investing and holding KDA, and creating tokens and token collections with Marmalade.",
+  "description": "This site provides documentation for all things Kadena, including general topics for learning about blockchain technology, technical references for developing smart contracts, guides for becoming a ChainWeb node operator, and creating tokens and token collections with Marmalade.",
+  "screenshots": [
+    {
+      "src": "/assets/manifest/narrow.png",
+      "type": "image/png",
+      "sizes": "328x703",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/assets/manifest/wide.png",
+      "type": "image/png",
+      "sizes": "1280x763",
+      "form_factor": "wide"
+    }
+  ],
   "icons": [
     {
       "src": "/assets/favicons/icon@48.png?1",
