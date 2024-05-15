@@ -1,11 +1,8 @@
-import { atoms } from '@kadena/react-ui/styles';
+import { atoms, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const authCard = style([
   atoms({
-    // fontSize: '5xl',
-    // lineHeight: '7xl',
-
     padding: 'xxl',
   }),
   {
@@ -17,37 +14,39 @@ export const authCard = style([
 ]);
 
 export const inputClass = style([
-  // atoms({
-  //   fontSize: '5xl',
-  //   lineHeight: '7xl',
-  //   marginBlockEnd: 'sm',
-  // }),
   {
-    border:
-      '1px solid var(--kda-foundation-color-background-layer10-default, #F5F5F51A)',
+    color: tokens.kda.foundation.color.text.gray.default,
+    backgroundColor: tokens.kda.foundation.color.background.layer.default,
+    border: `1px solid ${tokens.kda.foundation.color.background.layer.default}`,
   },
+  {},
 ]);
 
 export const iconStyle = style([
   atoms({
     fontSize: 'sm',
-    //   lineHeight: '7xl',
-    //   marginBlockEnd: 'sm',
+    color: 'text.base.default',
   }),
-  {
-    // border:
-    //   '1px solid var(--kda-foundation-color-background-layer10-default, #F5F5F51A)',
-  },
 ]);
 
 export const backBtnClass = style([
   atoms({
     textDecoration: 'none',
-    //   lineHeight: '7xl',
-    //   marginBlockEnd: 'sm',
+    color: 'text.base.default',
+  }),
+]);
+
+export const buttonClass = style([
+  atoms({
+    textDecoration: 'none',
   }),
   {
-    // border:
-    //   '1px solid var(--kda-foundation-color-background-layer10-default, #F5F5F51A)',
+    backgroundColor: tokens.kda.foundation.color.palette.aqua.n50,
+    color: tokens.kda.foundation.color.neutral.n0,
+
+    //TODO: Add active styles
+    selectors: {
+      [`&:hover`]: {},
+    },
   },
 ]);

@@ -4,13 +4,14 @@ import { IKeySource } from '@/modules/wallet/wallet.repository';
 import {
   authCard,
   backBtnClass,
+  buttonClass,
   iconStyle,
   inputClass,
 } from '@/pages/create-profile/create-profile.css.ts';
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
 import { MonoArrowBackIosNew } from '@kadena/react-icons';
 import { Box, Button, Heading, Stack, Text, TextField } from '@kadena/react-ui';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, Navigate } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
@@ -19,24 +20,39 @@ export function CreateProfile() {
   const { register, handleSubmit } = useForm<{
     password: string;
     profileName: string;
+    confirmation: string;
   }>();
   const { createProfile, isUnlocked, createKey, createKAccount } = useWallet();
   const { activeNetwork } = useNetwork();
   const [createdKeySource, setCreatedKeySource] = useState<IKeySource>();
   const { createHDWallet } = useHDWallet();
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState<boolean>(true);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const passwordConfirmationRef = useRef<HTMLInputElement>(null);
+  const validate = (value: string) => {
+    if (
+      value.length < 16 ||
+      passwordRef.current?.value !== passwordConfirmationRef.current?.value
+    ) {
+      setIsSubmitDisabled(true);
+      return;
+    }
+
+    setIsSubmitDisabled(false);
+  };
 
   async function create({
     profileName,
     password,
   }: {
-    profileName: string;
+    profileName?: string;
     password: string;
   }) {
     if (!activeNetwork) {
       return;
     }
     const mnemonic = kadenaGenMnemonic();
-    const profile = await createProfile(profileName, password);
+    const profile = await createProfile(profileName || 'default', password);
     // for now we only support slip10 so we just create the keySource and the first account by default for it
     // later we should change this flow to be more flexible
     const keySource = await createHDWallet(
@@ -78,22 +94,45 @@ export function CreateProfile() {
 
         <form onSubmit={handleSubmit(create)}>
           <Stack flexDirection="column" marginBlock="md" gap="sm">
-            <label htmlFor="profileName">Profile name</label>
-            <TextField
-              id="profileName"
-              type="text"
-              {...register('profileName')}
-              className={inputClass}
-            />
-            <label htmlFor="password">Password</label>
+            {/* TODO: Use for several accounts */}
+            {/*<TextField*/}
+            {/*  id="profileName"*/}
+            {/*  type="text"*/}
+            {/*  label="Profile name"*/}
+            {/*  {...register('profileName')}*/}
+            {/*  className={inputClass}*/}
+            {/*/>*/}
             <TextField
               id="password"
               type="password"
+              label="Password"
+              minLength={16}
+              onValueChange={validate}
               {...register('password')}
+              className={inputClass}
+              isRequired
+              ref={passwordRef}
+            />
+            <TextField
+              id="confirmation"
+              type="password"
+              label="Confirmation password"
+              minLength={16}
+              {...register('confirmation')}
+              onValueChange={validate}
+              className={inputClass}
+              isRequired
+              ref={passwordConfirmationRef}
             />
           </Stack>
           <Stack flexDirection="column">
-            <Button type="submit">Continue</Button>
+            <Button
+              type="submit"
+              className={buttonClass}
+              isDisabled={isSubmitDisabled}
+            >
+              Continue
+            </Button>
           </Stack>
         </form>
       </Box>

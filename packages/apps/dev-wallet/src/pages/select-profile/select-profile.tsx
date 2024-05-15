@@ -42,12 +42,12 @@ export function SelectProfile() {
               style={{ textDecoration: 'none' }}
               className={cardClass}
             >
-              <div>
+              <Stack alignItems="center" gap="md">
                 <div className={imgClass}>
                   <InitialsAvatar name={profile.name} />
                 </div>
                 <div className={aliasClass}> {profile.name}</div>
-              </div>
+              </Stack>
             </Link>
           ))}
           <Link

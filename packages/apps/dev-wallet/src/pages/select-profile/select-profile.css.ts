@@ -1,8 +1,9 @@
 import { atoms, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
-// const borderColor = token('color.accent.brand.secondary');
 const cardColor = 'rgba(255, 255, 255, 0.03)';
+const cardBackgroundColorHover = 'rgba(255, 255, 255, 0.07)';
+const cardColorHover = 'rgba(255, 255, 255, 0.2)';
 
 export const titleClass = style([
   atoms({
@@ -29,6 +30,12 @@ export const cardClass = style([
   {
     backgroundColor: cardColor,
     border: `1px solid ${cardColor}`,
+    selectors: {
+      [`&:hover`]: {
+        backgroundColor: cardBackgroundColorHover,
+        borderColor: cardColorHover,
+      },
+    },
   },
 ]);
 
@@ -70,11 +77,14 @@ export const formField = atoms({
 });
 
 export const linkClass = style([
-  // atoms({
-  //   fontSize: 'md',
-  // }),
   {
     textDecoration: 'none',
+    color: tokens.kda.foundation.color.palette.aqua.n50,
+    selectors: {
+      [`&:hover`]: {
+        textDecoration: 'underline',
+      },
+    },
   },
 ]);
 
@@ -82,30 +92,8 @@ export const linkTextClass = style([
   atoms({
     fontSize: 'sm',
     lineHeight: 'sm',
-    // color: tokens.kda.foundation.color.palette.aqua.n50,
   }),
   {
     color: tokens.kda.foundation.color.palette.aqua.n50,
-    // color: '#42CEA0 !important',
   },
 ]);
-// //styleName: kda/foundation/typography/font/ui/base/regular/@lg;
-// font-family: Kadena Space Grotesk;
-// font-size: 16px;
-// font-weight: 400;
-// line-height: 20px;
-// text-align: center;
-//
-// //styleName: kda/foundation/typography/font/ui/small/regular/@lg;
-// font-family: Kadena Space Grotesk;
-// font-size: 14px;
-// font-weight: 400;
-// line-height: 16px;
-// text-align: left;
-//
-// //styleName: kda/foundation/typography/font/ui/base/regular/@lg;
-// font-family: Kadena Space Grotesk;
-// font-size: 16px;
-// font-weight: 400;
-// line-height: 20px;
-// text-align: center;
