@@ -46,7 +46,7 @@ export function AccountDiscovery() {
   }
 
   return (
-    <main>
+    <>
       <Box margin="md">
         <Heading variant="h5">Account Discovery</Heading>
 
@@ -105,6 +105,6 @@ export function AccountDiscovery() {
           </ul>
         )}
       </Box>
-    </main>
+    </>
   );
 }

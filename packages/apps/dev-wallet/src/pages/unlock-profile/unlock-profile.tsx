@@ -39,7 +39,7 @@ export function UnlockProfile() {
     return <Navigate to="/" replace />;
   }
   return (
-    <main>
+    <>
       <Box margin="md">
         <Heading variant="h5">Unlock your wallet</Heading>
         <Text>Profile: {profile.name}</Text>
@@ -51,6 +51,6 @@ export function UnlockProfile() {
         {error && <Text>{error}</Text>}
         <Link to="/create-profile">Create profile</Link>
       </Box>
-    </main>
+    </>
   );
 }
