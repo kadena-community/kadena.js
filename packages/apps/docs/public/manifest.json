@@ -1,0 +1,48 @@
+{
+  "name": "Kadena Documentation",
+  "short_name": "Kadena Docs",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#020E1B",
+  "theme_color": "#020E1B",
+  "description": "Welcome to the Kadena documentation site! This site provides documentation for all things Kadena, including general topics for learning about blockchain technology, technical references for developing smart contracts using, and guides for becoming a ChainWeb node operator, investing and holding KDA, and creating tokens and token collections with Marmalade.",
+  "icons": [
+    {
+      "src": "/assets/favicons/icon@48.png?1",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/favicons/icon@72.png?1",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/favicons/icon@96.png?1",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/favicons/icon@144.png?1",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/favicons/icon@168.png?1",
+      "sizes": "168x168",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/favicons/icon@192.png?1",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "purpose": "maskable",
+      "src": "/assets/favicons/icon@512.png?1",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "related_applications": []
+}
