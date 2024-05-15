@@ -47,7 +47,6 @@ export const useTheme = ({
     }
 
     const name = resolved;
-
     const d = document.documentElement;
 
     d.classList.remove('light');
@@ -55,20 +54,20 @@ export const useTheme = ({
     d.classList.add(name === 'dark' ? darkThemeClass : 'light');
   }, []);
 
-  const setTheme = useCallback((value: ITheme): void => {
+  const setTheme = (value: ITheme): void => {
     setThemeState(value);
     applyTheme(value);
 
     window.localStorage.setItem(storageKey, value);
     window.dispatchEvent(new Event(storageKey));
-  }, []);
+  };
 
   const handleMediaQuery = useCallback(
     (e: MediaQueryListEvent | MediaQueryList) => {
       const resolved = getSystemTheme(e);
       setTheme(resolved);
     },
-    [setTheme],
+    [],
   );
 
   // Always listen to System preference
@@ -96,7 +95,7 @@ export const useTheme = ({
   useEffect(() => {
     window.addEventListener(storageKey, storageListener);
     return () => window.removeEventListener(storageKey, storageListener);
-  }, [setThemeState, theme, storageListener]);
+  }, [storageListener]);
 
   return {
     theme: overwriteTheme ? overwriteTheme : theme,
