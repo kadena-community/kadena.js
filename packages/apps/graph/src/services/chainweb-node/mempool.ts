@@ -1,5 +1,4 @@
 import type { Signer } from '@prisma/client';
-import { chainIds } from '@utils/chains';
 import { dotenv } from '@utils/dotenv';
 import { networkData } from '@utils/network';
 import { request } from 'https';
@@ -67,7 +66,7 @@ export async function mempoolLookup(
   chainId?: string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
-  let chainsToCheck = chainIds;
+  let chainsToCheck = networkData.chainIds;
 
   if (chainId) {
     chainsToCheck = [chainId];

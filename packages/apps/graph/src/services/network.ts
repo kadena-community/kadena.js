@@ -1,6 +1,6 @@
 import { prismaClient } from '@db/prisma-client';
-import { chainIds } from '@utils/chains';
 import { dotenv } from '@utils/dotenv';
+import { networkData } from '@utils/network';
 
 interface IBlockWithDifficulty {
   creationTime: Date;
@@ -125,7 +125,7 @@ function calculateTotalDiffulty(
   for (let i = currentHeight; i > currentHeight - 3n; i--) {
     const blocksOfThisHeight = blocks.filter((block) => block.height === i);
 
-    if (blocksOfThisHeight.length === chainIds.length) {
+    if (blocksOfThisHeight.length === networkData.chainIds.length) {
       return blocksOfThisHeight.reduce(
         (acc, block) => acc + block.difficulty,
         0n,

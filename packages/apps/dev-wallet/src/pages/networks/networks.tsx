@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 export function Networks() {
   const { networks } = useNetwork();
   return (
-    <main>
+    <>
       <Box margin="md">
         <Heading variant="h5">Networks Page</Heading>
         <Text>Networks</Text>
@@ -25,6 +25,6 @@ export function Networks() {
         </ul>
         <Link to="/networks/create">Create network</Link>
       </Box>
-    </main>
+    </>
   );
 }

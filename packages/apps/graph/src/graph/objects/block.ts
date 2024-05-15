@@ -6,10 +6,19 @@ import {
   getDefaultConnectionComplexity,
 } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
+import { networkData } from '@utils/network';
 import { builder } from '../builder';
 import type { IGuard } from '../types/graphql-types';
 import { FungibleChainAccountName } from '../types/graphql-types';
 import FungibleChainAccount from './fungible-chain-account';
+
+const BlockNeighbor = builder.objectType('BlockNeighbor', {
+  description: 'The neighbor of a block.',
+  fields: (t) => ({
+    chainId: t.exposeString('chainId'),
+    blockHash: t.exposeString('blockHash'),
+  }),
+});
 
 export default builder.prismaNode(Prisma.ModelName.Block, {
   description:
@@ -80,6 +89,37 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
               hash: parent.parentBlockHash,
             },
           });
+        } catch (error) {
+          throw normalizeError(error);
+        }
+      },
+    }),
+
+    neighbours: t.field({
+      type: [BlockNeighbor],
+      select: {
+        chainId: true,
+        height: true,
+      },
+      async resolve(parent) {
+        try {
+          const neighbours = networkData.chainNeighbours.get(
+            parent.chainId.toString(),
+          ) as string[];
+
+          const blocks = await prismaClient.block.findMany({
+            where: {
+              chainId: {
+                in: neighbours.map((x) => BigInt(x)),
+              },
+              height: parent.height - 1n,
+            },
+          });
+
+          return blocks.map((block) => ({
+            chainId: block.chainId.toString(),
+            blockHash: block.hash,
+          }));
         } catch (error) {
           throw normalizeError(error);
         }

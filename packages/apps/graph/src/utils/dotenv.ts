@@ -4,7 +4,6 @@ import * as _dotenv from 'dotenv';
 _dotenv.config();
 
 export const dotenv: {
-  CHAIN_COUNT: number;
   CHAINWEB_NODE_RETRY_ATTEMPTS: number;
   CHAINWEB_NODE_RETRY_DELAY: number;
   COMPLEXITY_ENABLED: boolean;
@@ -24,7 +23,6 @@ export const dotenv: {
   MARMALADE_LOCAL_TEMPLATE_PATH: string;
   MEMPOOL_HOST: string;
   NETWORK_HOST: string;
-  NETWORK_ID: string;
   NETWORK_STATISTICS_URL: string;
   NODE_ENV: string;
   PORT: number;
@@ -38,7 +36,6 @@ export const dotenv: {
   SIMULATE_LOG_FOLDER_NAME: string;
   TIMEOUT_PACT_QUERY: number;
 } = {
-  CHAIN_COUNT: parseInt(or(process.env.CHAIN_COUNT, '20'), 10),
   CHAINWEB_NODE_RETRY_ATTEMPTS: parseInt(
     or(process.env.CHAINWEB_NODE_RETRY_ATTEMPTS, '5'),
     10,
@@ -100,7 +97,6 @@ export const dotenv: {
   ),
   MEMPOOL_HOST: or(process.env.MEMPOOL_HOST, 'localhost:1789'),
   NETWORK_HOST: or(process.env.NETWORK_HOST, 'http://localhost:8080'),
-  NETWORK_ID: or(process.env.NETWORK_ID, 'development'),
   NETWORK_STATISTICS_URL: or(
     process.env.NETWORK_STATISTICS_URL,
     'http://localhost:8080/stats',

@@ -1,8 +1,7 @@
 import { prismaClient } from '@db/prisma-client';
 import { COMPLEXITY } from '@services/complexity';
-import { chainIds as defaultChainIds } from '@utils/chains';
-import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
+import { networkData } from '@utils/network';
 import { builder } from '../builder';
 import Block from '../objects/block';
 
@@ -24,7 +23,6 @@ builder.queryField('completedBlockHeights', (t) =>
       }),
       chainIds: t.arg.stringList({
         required: false,
-        defaultValue: defaultChainIds,
         description: 'Default: all chains',
         validate: {
           minLength: 1,
@@ -42,17 +40,25 @@ builder.queryField('completedBlockHeights', (t) =>
         (args.heightCount as number) * // heightCount has a default value so cannot be null. Bug in pothos.
         4, // In the worst case resolve scenario, it executes 4 queries.
     }),
-    async resolve(query, __parent, args) {
+    async resolve(
+      query,
+      __parent,
+      {
+        completedHeights: completedHeightsArg,
+        heightCount,
+        chainIds = networkData.chainIds,
+      },
+    ) {
       try {
-        if (args.completedHeights) {
+        if (completedHeightsArg) {
           const completedHeights = (await prismaClient.$queryRaw`
             SELECT height
             FROM blocks b
             GROUP BY height
-            HAVING COUNT(*) >= ${dotenv.CHAIN_COUNT} AND
+            HAVING COUNT(*) >= ${networkData.chainIds} AND
             COUNT(CASE WHEN height = height THEN 1 ELSE NULL END) > 0
             ORDER BY height DESC
-            LIMIT ${args.heightCount}
+            LIMIT ${heightCount}
           `) as { height: number }[];
 
           if (completedHeights.length > 0) {
@@ -62,7 +68,7 @@ builder.queryField('completedBlockHeights', (t) =>
                 AND: [
                   {
                     chainId: {
-                      in: args.chainIds?.map((x) => parseInt(x)),
+                      in: chainIds?.map((x) => parseInt(x)),
                     },
                   },
                   {
@@ -92,7 +98,7 @@ builder.queryField('completedBlockHeights', (t) =>
           HAVING COUNT(*) > 1 AND
           COUNT(CASE WHEN height = height THEN 1 ELSE NULL END) > 0
           ORDER BY height DESC
-          LIMIT ${args.heightCount}
+          LIMIT ${heightCount}
         `) as { height: number }[];
 
         return await prismaClient.block.findMany({
@@ -104,7 +110,7 @@ builder.queryField('completedBlockHeights', (t) =>
             AND: [
               {
                 chainId: {
-                  in: args.chainIds?.map((x) => parseInt(x)),
+                  in: chainIds?.map((x) => parseInt(x)),
                 },
               },
               {

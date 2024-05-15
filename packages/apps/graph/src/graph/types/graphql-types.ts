@@ -170,3 +170,8 @@ export interface INetworkInfo {
   networkHashRate: number;
   totalDifficulty: number;
 }
+
+export interface IBlockNeighbor {
+  chainId: string;
+  blockHash: string;
+}
