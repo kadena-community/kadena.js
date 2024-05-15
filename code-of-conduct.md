@@ -121,4 +121,4 @@ This code of conduct document draws from the following projects:
 - [Friends with Benefits Code of Conduct](https://github.com/friends-with-benefits/codeofconduct/blob/main/code.md) 
 - [Rust's Code of Conduct](https://foundation.rust-lang.org/policies/code-of-conduct/)
 - [Stumptown Syndicate's Code of Conduct](https://github.com/stumpsyn/policies/blob/master/citizen_code_of_conduct.md)
-[Python's Discord Code of Conduct](https://www.pythondiscord.com/pages/code-of-conduct/)
+- [Python's Discord Code of Conduct](https://www.pythondiscord.com/pages/code-of-conduct/)
