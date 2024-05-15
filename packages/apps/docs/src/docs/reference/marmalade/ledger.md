@@ -50,7 +50,9 @@ Generate a unique `token-id` by calling the following function:
 
 ## create-token
 
-Use `create-token` to create a token with the specified token identifier. 
+Use `create-token` to create a token with the specified token identifier.
+You can apply one or more policies to a token when you create it.
+Depending on the policies you apply, you might need to grant additional capabilities or pass environment data to execute the function.
 
 ### Arguments
 
@@ -61,7 +63,7 @@ Use the following arguments to create a token.
 | `id` | string | Specifies the unique token identifier generated using the `create-token-id` function and formatted as `t:{token-detail-hash}`. 
 | `precision` | integer | Specifies the number of decimals allowed for the token supply amount. For non-fungible tokens, the precision must be 0, and should be enforced in the policy's `enforce-init`.
 | `uri` | string | Specifies the uniform resource identifier (uri) to an external JSON file containing token metadata.
-| `policies` | list| Specifies one or more policy contracts with custom functions to execute at marmalade functions
+| `policies` | list| Specifies one or more policy contracts with custom functions to execute at marmalade functions.
 | `creation-guard` | guard | Specifies the temporary guard—for example, a keyset—used to generate the token identifier. This guard isn't stored and ensure that only the  owner of the creation key can create a specific token identifier.
 
 When you submit the `create-token` transaction, the `policy-manager.enforce-init` function calls the `policy:enforce-init` function in the stored token policies and the function is executed.
@@ -82,6 +84,28 @@ Required capabilities and parameters for the `create-token` function:
 - marmalade-v2.collection-policy-v1.TOKEN-COLLECTION
   - collection-id
   - token-id
+
+### Environment data
+
+If you apply the guard-policy to create a token, you can add the following information as raw data:
+
+- mint_guard [guard] (optional)
+- burn_guard [guard] (optional)
+- sale_guard [guard] (optional)
+- transfer_guard [guard] (optional)
+- uri_guard [guard] (optional)
+
+If you apply the collection-policy to create a token, you can add the following information as raw data:
+- collection_id [string]
+
+If you apply the royalty-policy to create a token, you can add the following information as raw data:
+- royalty_spec [object]
+
+The royalty_spec object includes the following properties:
+- fungible [string]
+- creator [string]
+- creator-guard [guard]
+- royalty-rate [decimal]
 
 ## mint
 
@@ -106,6 +130,7 @@ The `mint` transaction must include the `MINT` capability signed with the `accou
 The `mint` transaction also requires the `marmalade-v2.guard-policy-v1.MINT` capability if you apply the guard-policy and define a mint guard for the token.
 
 Required capabilities and parameters for the `mint` function:
+
 - marmalade-v2.ledger.MINT
   - id
   - account (receiver of the token)
@@ -167,14 +192,52 @@ When you submit the `transfer` transaction, the `policy-manager.enforce-transfer
 ### Capabilities
   
 The `transfer` transaction must include the `TRANSFER` capability signed with the `sender` that owns the token.
-The `burn` transaction also requires the `marmalade-v2.guard-policy-v1.TRANSFER` capability if you apply the guard-policy and define a transfer guard for the token.
+The `transfer` transaction also requires the `marmalade-v2.guard-policy-v1.TRANSFER` capability if you apply the guard-policy and define a transfer guard for the token.
 
 Required capabilities and parameters for the `transfer` function:
+
 - marmalade-v2.ledger.TRANSFER
   - id
   - sender
   - receiver
   - amount
+
+- marmalade-v2.guard-policy-v1.TRANSFER
+  - token-id
+  - sender
+  - receiver
+  - amount
+
+## transfer-create
+
+Use `transfer-create` to transfer the specified token amount from the specified sender to the specified receiver.
+
+### Arguments
+
+Use the following arguments to transfer a token.
+
+| Argument | Type | Description
+| -------- | ---- | -----------
+| `id` | string | Specifies the unique token identifier generated using `create-token-id` function and formatted as `t:{token-detail-hash}`. 
+| `sender` | string | Specifies the sender account that the token will be transferred from.
+| `receiver` | string | Specifies the receiver account that the token will be transferred to.
+| `amount` | decimal | Specifies the number of tokens to be transferred.
+
+When you submit the `transfer-create` transaction, the `policy-manager.enforce-transfer` function calls the `policy:enforce-transfer` function in the stored token policies and the function is executed.
+
+### Capabilities
+  
+The `transfer-create` transaction must include the `TRANSFER` capability signed with the `sender` that owns the token.
+The `transfer-create` transaction also requires the `marmalade-v2.guard-policy-v1.TRANSFER` capability if you apply the guard-policy and define a transfer guard for the token.
+
+Required capabilities and parameters for the `transfer-create` function:
+
+- marmalade-v2.ledger.TRANSFER
+  - id
+  - sender
+  - receiver
+  - amount
+
 - marmalade-v2.guard-policy-v1.TRANSFER
   - token-id
   - sender
@@ -224,6 +287,19 @@ Required capabilities and parameters for the `offer` function:
   - seller
   - amount
 
+### Environment data
+
+If the offer is a dutch or conventional auction, you can add the following information as raw data:
+- quote [object]
+
+The quote object includes the following properties:
+- fungible [string]
+- sale-price [decimal]
+- seller-fungible-account [object]
+  - account [string]
+  - guard [guard]
+- sale-type [string] (optional)
+
 ### withdraw (cont)
 
 The `sale` pact includes a rollback step (step 0-rollback). 
@@ -242,7 +318,6 @@ For more information about formatting continuation commands, see
 [YAML Continuation command request](/reference/rest-api#yaml-continuation-command-requesth-2127282742)
 
 The `policy-manager.enforce-withdraw` function calls the `policy:enforce-withdraw` function in the stored token policies and the function is executed at step 0-rollback of `sale`.
-
 
 #### Capabilities
   
@@ -277,3 +352,62 @@ rollback: false
 ```
 
 The `policy-manager.enforce-buy` function calls the `policy:enforce-buy` function in the stored token policies and the function is executed at step 1 of `sale`.
+
+#### Capabilities
+  
+The `buy` transaction must include the `BUY` capability signed with the `buyer` that is buying the token.
+The `buy` transaction also requires the `marmalade-v2.guard-policy-v1.SALE` capability if you apply the guard-policy and define a sales guard for the token.
+
+Required capabilities and parameters for the `buy` function:
+
+- marmalade-v2.ledger.BUY
+  - id
+  - seller
+  - buyer
+  - amount
+  - sale-id
+
+- marmalade-v2.guard-policy-v1.SALE
+  - token-id
+  - seller
+  - amount
+
+### Environment data
+
+If the sale is a dutch or conventional auction, you can add the following information as raw data:
+- buyer [string]
+- buyer-guard [guard]
+- buyer_fungible_account [string] (optional)
+- dutch-auction
+  - buyer_fungible_account [string]
+  - updated_price [decimal]
+- conventional-auction
+  - buyer_fungible_account [string]
+  - updated_price [decimal]
+
+## update-uri
+
+Use `update-uri` to
+
+### Arguments
+
+Use the following arguments to update a token.
+
+| Argument | Type | Description
+| -------- | ---- | -----------
+|
+
+### Capabilities
+  
+The `update-uri` transaction must include the `UPDATE-URI` capability signed with the `buyer` that is buying the token.
+The `update-uri` transaction also requires the `marmalade-v2.guard-policy-v1.UPDATE-URI` capability if you apply the guard-policy and define a uri guard for the token.
+
+Required capabilities and parameters for the `update-uri` function:
+
+- marmalade-v2.ledger.UPDATE-URI
+  - token-id
+  - new-uri
+
+- marmalade-v2.guard-policy-v1.UPDATE-URI
+  - token-id
+  - new-uri
