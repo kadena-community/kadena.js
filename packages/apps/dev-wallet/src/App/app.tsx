@@ -4,7 +4,6 @@ import { darkThemeClass } from '@kadena/react-ui/styles';
 import { ThemeProvider } from 'next-themes';
 import { Routes } from './routes';
 
-// on click set to 'light'
 function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider
