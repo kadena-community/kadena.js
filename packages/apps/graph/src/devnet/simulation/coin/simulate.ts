@@ -3,6 +3,7 @@ import { sender00 } from '@devnet/utils';
 import type { ChainId } from '@kadena/client';
 import { dotenv } from '@utils/dotenv';
 import { logger } from '@utils/logger';
+import { initializeNetworkConfig, networkData } from '@utils/network';
 import type { TransferType } from '../file';
 import { appendToFile, createFile } from '../file';
 import {
@@ -40,6 +41,8 @@ export async function simulateCoin({
   seed = Date.now().toString(),
 }: ISimulationOptions): Promise<void> {
   const accounts: IAccount[] = [];
+
+  await initializeNetworkConfig();
 
   // Parameters validation
   if (tokenPool < maxAmount) {
@@ -172,13 +175,16 @@ export async function simulateCoin({
         let result;
 
         // This is to simulate cross chain transfers
-        if (transferType === 'cross-chain-transfer' && dotenv.CHAIN_COUNT > 1) {
+        if (
+          transferType === 'cross-chain-transfer' &&
+          networkData.chainIds.length > 1
+        ) {
           if (account.chainId === nextAccount.chainId) {
             nextAccount = {
               ...nextAccount,
               chainId: `${getRandomNumber(
                 seededRandomNo,
-                dotenv.CHAIN_COUNT,
+                networkData.chainIds.length,
               )}` as ChainId,
             };
           }

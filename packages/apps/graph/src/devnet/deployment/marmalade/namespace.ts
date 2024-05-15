@@ -2,8 +2,8 @@ import type { IAccount } from '@devnet/utils';
 import { sender00 } from '@devnet/utils';
 import type { ChainId, ICommand, IKeyPair } from '@kadena/client';
 import { Pact } from '@kadena/client';
-import { dotenv } from '@utils/dotenv';
 import { logger } from '@utils/logger';
+import { networkData } from '@utils/network';
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 import { inspect, listen, signAndAssertTransaction, submit } from '../helper';
@@ -106,7 +106,7 @@ export async function createPactCommandFromFile(
   filepath: string,
   {
     chainId,
-    networkId = dotenv.NETWORK_ID,
+    networkId = networkData.networkId,
     signers = sender00.keys,
     meta = {
       gasLimit: 70000,

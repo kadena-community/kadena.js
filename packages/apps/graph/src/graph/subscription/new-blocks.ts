@@ -1,6 +1,6 @@
 import { prismaClient } from '@db/prisma-client';
 import type { Block } from '@prisma/client';
-import { chainIds as defaultChainIds } from '@utils/chains';
+import { networkData } from '@utils/network';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
@@ -22,9 +22,9 @@ builder.subscriptionField('newBlocks', (t) =>
     },
     type: [GQLBlock],
     nullable: true,
-    subscribe: (__root, args, context) =>
+    subscribe: async (__root, args, context) =>
       iteratorFn(
-        args.chainIds?.length ? args.chainIds : defaultChainIds,
+        args.chainIds?.length ? args.chainIds : networkData.chainIds,
         context,
       ),
     resolve: (parent) => parent,
