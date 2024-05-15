@@ -62,13 +62,12 @@ export const Routes: FC = () => {
             path="/account-discovery/:keySourceId"
             element={<AccountDiscovery />}
           />
-          ,
-          <Route path="/accounts/:account" element={<p>Account</p>} />,
-          <Route path="/sig-builder" element={<SignatureBuilder />} />,
         </Route>
         <Route path="*" element={<p>Not found!</p>} />
       </Route>
       <Route element={<Layout />}>
+        <Route path="/accounts/:account" element={<p>Account</p>} />,
+        <Route path="/sig-builder" element={<SignatureBuilder />} />,
         <Route path="/networks" element={<Networks />} />
         <Route path="/networks/create" element={<CreateNetwork />} />
       </Route>,
