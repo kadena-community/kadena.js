@@ -55,7 +55,7 @@ export const SearchBar: ForwardRefExoticComponent<
             <button
               type="submit"
               className={buttonClass}
-              aria-label="Click to Seach"
+              aria-label="Click to Search"
             >
               <MonoSearch />
             </button>

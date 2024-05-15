@@ -54,7 +54,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
                 <button
                   type="submit"
                   className={searchButtonClass}
-                  aria-label="Click to Seach"
+                  aria-label="Click to Search"
                 >
                   <MonoSearch />
                 </button>
