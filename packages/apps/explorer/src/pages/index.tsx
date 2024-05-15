@@ -1,6 +1,7 @@
 import type { NetworkInfo } from '@/__generated__/sdk';
 import { useNetworkInfoQuery } from '@/__generated__/sdk';
 import StatisticsStack from '@/components/statistics-stack/statistics-stack';
+import { formatNumberWithUnit } from '@/services/format';
 import { LogoKdacolorLight } from '@kadena/react-icons/brand';
 import { Stack } from '@kadena/react-ui';
 import React from 'react';
@@ -10,8 +11,8 @@ const formatStatisticsData = (
 ): { label: string; value: string }[] => {
   if (!networkInfo) {
     return [
-      { label: 'Est. Network Hash', value: '0 PH/s' },
-      { label: 'Total Difficulty', value: '0 EH' },
+      { label: 'Est. Network Hash', value: '0 H/s' },
+      { label: 'Total Difficulty', value: '0  H' },
       { label: 'Transactions', value: '0' },
       { label: 'Circulating Coins', value: '0' },
     ];
@@ -20,11 +21,20 @@ const formatStatisticsData = (
   return [
     {
       label: 'Est. Network Hash',
-      value: `${networkInfo.networkHashRate} PH/s`,
+      value: formatNumberWithUnit(networkInfo.networkHashRate, 'H/s'),
     },
-    { label: 'Total Difficulty', value: `${networkInfo.totalDifficulty} EH` },
-    { label: 'Transactions', value: `${networkInfo.transactionCount}` },
-    { label: 'Circulating Coins', value: `${networkInfo.coinsInCirculation}` },
+    {
+      label: 'Total Difficulty',
+      value: formatNumberWithUnit(networkInfo.totalDifficulty, 'H'),
+    },
+    {
+      label: 'Transactions',
+      value: formatNumberWithUnit(networkInfo.transactionCount),
+    },
+    {
+      label: 'Circulating Coins',
+      value: formatNumberWithUnit(networkInfo.coinsInCirculation),
+    },
   ];
 };
 
