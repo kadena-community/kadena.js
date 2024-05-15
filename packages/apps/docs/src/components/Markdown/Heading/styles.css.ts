@@ -32,6 +32,7 @@ export const headerClass = style([
     marginBlockStart: 'xl',
   }),
   {
+    color: tokens.kda.foundation.color.text.base.default,
     selectors: {
       '&:hover': {
         vars: {

@@ -81,20 +81,30 @@ export const useTheme = ({
   }, []);
 
   const storageListener = useCallback(
-    (event: Event) => {
-      if (event.type !== storageKey) return;
+    (event: StorageEvent | Event) => {
+      if (
+        event.type !== storageKey &&
+        'key' in event &&
+        event.key !== storageKey
+      )
+        return;
 
       // If default theme set, use it if localstorage === null (happens on local storage manual deletion)
       const theme =
         (window.localStorage.getItem(storageKey) as ITheme) || defaultTheme;
       setThemeState(theme);
+      applyTheme(theme);
     },
     [setThemeState],
   );
 
   useEffect(() => {
     window.addEventListener(storageKey, storageListener);
-    return () => window.removeEventListener(storageKey, storageListener);
+    window.addEventListener('storage', storageListener);
+    return () => {
+      window.removeEventListener(storageKey, storageListener);
+      window.removeEventListener('storage', storageListener);
+    };
   }, [storageListener]);
 
   return {
