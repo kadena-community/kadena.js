@@ -266,6 +266,13 @@ export const okCopiedClass = style([
   atoms({
     color: 'icon.semantic.positive.inverse.default',
   }),
+  {
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        color: tokens.kda.foundation.color.icon.semantic.positive.default,
+      },
+    },
+  },
 ]);
 
 export const mermaidClass = style({});
@@ -274,6 +281,9 @@ export const copyButtonClass = style({
   color: tokens.kda.foundation.color.neutral.n0,
   opacity: '.8',
   selectors: {
+    [`${darkThemeClass} &`]: {
+      color: tokens.kda.foundation.color.neutral.n100,
+    },
     '&:hover': {
       opacity: '.6',
       background: 'transparent',
