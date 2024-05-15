@@ -87,7 +87,9 @@ Before you can mint a token on the blockchain, you must create the digital item 
 
 After you have a uniform resource identifier (URI) for locating the digital item, you must also create a metadata file using the JSON schema to record the name, location, and other properties about the item to be minted.
 You can then create and mint the token for the digital item, generating an on-chain token identifier with a `t:` prefix. 
-The token identifier includes the hash for the metadata that describes the token to ensure that a digital item can be cryptographically verified to be the actual NFT. 
+The token identifier includes the hash for the metadata that describes the token to ensure that a digital item can be cryptographically verified to be the original NFT. 
+However, if you upgrade the policies used to create a token, the hash for the metadata will be different from the original hash and you are, in essence, creating a new token.
+Optionally, you can use a policy to prevent a token from being updated.
 
 Depending on how you apply or configure token policies, you might be the sole owner of the token you mint or share ownership with others. 
 If you're the owner of a token, you have the option to offer the token for sale or transfer the token to another owner. 

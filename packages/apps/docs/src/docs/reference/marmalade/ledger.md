@@ -64,14 +64,24 @@ Use the following arguments to create a token.
 | `policies` | list| Specifies one or more policy contracts with custom functions to execute at marmalade functions
 | `creation-guard` | guard | Specifies the temporary guard—for example, a keyset—used to generate the token identifier. This guard isn't stored and ensure that only the  owner of the creation key can create a specific token identifier.
 
+When you submit the `create-token` transaction, the `policy-manager.enforce-init` function calls the `policy:enforce-init` function in the stored token policies and the function is executed.
+
 To create a token with this function:
 
 - Generate a unique `token-id` by calling `(ledger.create-token-id details creation-guard)`
 - Create the token by calling `(ledger.create-token ... creation-guard)`
-  
-  The `create-token` transaction must include the `TOKEN` capability signed with the keyset `creation-guard` that you used to generate the token identifier.
 
-When you submit the `create-token` transaction, the `policy-manager.enforce-init` function calls the `policy:enforce-init` function in the stored token policies and the function is executed.
+### Capabilities
+  
+The `create-token` transaction must include the `CREATE-TOKEN` capability signed with the keyset `creation-guard` that you used to generate the token identifier.
+The `create-token` transaction also requires the `marmalade-v2.collection-policy-v1.TOKEN-COLLECTION` capability if you apply the collection-policy to create token.
+
+Required capabilities and parameters for the `create-token` function:
+- marmalade-v2.ledger.CREATE-TOKEN
+  - id
+- marmalade-v2.collection-policy-v1.TOKEN-COLLECTION
+  - collection-id
+  - token-id
 
 ## mint
 
@@ -90,6 +100,22 @@ Use the following arguments to mint a token.
 
 When you submit the `mint` transaction, the `policy-manager.enforce-mint` function calls the `policy:enforce-mint` function in the stored token policies and the function is executed.
 
+### Capabilities
+  
+The `mint` transaction must include the `MINT` capability signed with the `account` that receives the token.
+The `mint` transaction also requires the `marmalade-v2.guard-policy-v1.MINT` capability if you apply the guard-policy and define a mint guard for the token.
+
+Required capabilities and parameters for the `mint` function:
+- marmalade-v2.ledger.MINT
+  - id
+  - account (receiver of the token)
+  - amount
+
+- marmalade-v2.guard-policy-v1.MINT
+  - token-id
+  - account (receiver of the token)
+  - amount 
+
 ## burn
 
 Use `burn` to destroy the specified token amount from the specified token owner account.
@@ -105,6 +131,21 @@ Use the following arguments to burn a token.
 | `amount` | decimal | Specifies the number of tokens to be burned.
 
 When you submit the `burn` transaction, the `policy-manager.enforce-burn` function calls the `policy:enforce-burn` function in the stored token policies and the function is executed.
+
+### Capabilities
+  
+The `burn` transaction must include the `BURN` capability signed with the `account` that owns the token.
+The `burn` transaction also requires the `marmalade-v2.guard-policy-v1.BURN` capability if you apply the guard-policy and define a burn guard for the token.
+
+Required capabilities and parameters for the `burn` function:
+- marmalade-v2.ledger.BURN
+  - id
+  - account (owner of the token)
+  - amount
+- marmalade-v2.guard-policy-v1.BURN
+  - token-id
+  - account (owner of the token)
+  - amount
 
 ## transfer
 
@@ -122,6 +163,23 @@ Use the following arguments to transfer a token.
 | `amount` | decimal | Specifies the number of tokens to be transferred.
 
 When you submit the `transfer` transaction, the `policy-manager.enforce-transfer` function calls the `policy:enforce-transfer` function in the stored token policies and the function is executed.
+
+### Capabilities
+  
+The `transfer` transaction must include the `TRANSFER` capability signed with the `sender` that owns the token.
+The `burn` transaction also requires the `marmalade-v2.guard-policy-v1.TRANSFER` capability if you apply the guard-policy and define a transfer guard for the token.
+
+Required capabilities and parameters for the `transfer` function:
+- marmalade-v2.ledger.TRANSFER
+  - id
+  - sender
+  - receiver
+  - amount
+- marmalade-v2.guard-policy-v1.TRANSFER
+  - token-id
+  - sender
+  - receiver
+  - amount
 
 ## sale
 
@@ -148,6 +206,24 @@ The `offer` function transfers the token from the seller's account to the escrow
 
 The `policy-manager.enforce-offer` function calls the `policy:enforce-offer` function in the stored token policies and the function is executed at step 0 of the `sale`.
 
+#### Capabilities
+  
+The `offer` transaction must include the `OFFER` capability signed with the `seller` that owns the token.
+The `offer` transaction also requires the `marmalade-v2.guard-policy-v1.SALE` capability if you apply the guard-policy and define a sales guard for the token.
+
+Required capabilities and parameters for the `offer` function:
+
+- marmalade-v2.ledger.OFFER
+  - id
+  - seller
+  - amount
+  - timeout
+
+- marmalade-v2.guard-policy-v1.SALE
+  - token-id
+  - seller
+  - amount
+
 ### withdraw (cont)
 
 The `sale` pact includes a rollback step (step 0-rollback). 
@@ -166,6 +242,26 @@ For more information about formatting continuation commands, see
 [YAML Continuation command request](/reference/rest-api#yaml-continuation-command-requesth-2127282742)
 
 The `policy-manager.enforce-withdraw` function calls the `policy:enforce-withdraw` function in the stored token policies and the function is executed at step 0-rollback of `sale`.
+
+
+#### Capabilities
+  
+The `withdraw` transaction must include the `WITHDRAW` capability signed with the `seller` that owns the token.
+The `withdraw` transaction also requires the `marmalade-v2.guard-policy-v1.SALE` capability if you apply the guard-policy and define a sales guard for the token.
+
+Required capabilities and parameters for the `withdraw` function:
+
+- marmalade-v2.ledger.WITHDRAW
+  - id
+  - seller
+  - amount
+  - timeout
+  - sale-id
+
+- marmalade-v2.guard-policy-v1.SALE
+  - token-id
+  - seller
+  - amount
 
 ### buy (cont)
 
