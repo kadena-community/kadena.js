@@ -23,7 +23,9 @@ const StatisticsStack: React.FC<IStatisticsStackProps> = ({ data }) => {
           key={`statistic-stack-${item.label}`}
         >
           <Text variant="code">{item.value}</Text>
-          <Text variant="code">{item.label}</Text>
+          <Text variant="code" bold size="smallest">
+            {item.label}
+          </Text>
         </Stack>
       ))}
 
@@ -38,7 +40,6 @@ const StatisticsStack: React.FC<IStatisticsStackProps> = ({ data }) => {
           defaultSelectedKey={selectedNetwork}
           fontType="code"
           size="lg"
-          className={atoms({ height: '100%' })}
           onSelectionChange={(value) => setSelectedNetwork(value.toString())}
         >
           <SelectItem key={'Mainnet'} textValue="Mainnet">

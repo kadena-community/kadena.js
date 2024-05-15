@@ -46,7 +46,7 @@ const Home: React.FC = () => {
   const statisticsGridData = formatStatisticsData(statisticsData?.networkInfo);
 
   return (
-    <Stack flexDirection={'column'} gap={'lg'} alignItems={'center'}>
+    <Stack flexDirection={'column'} gap={'xxl'} alignItems={'center'}>
       <StatisticsStack data={statisticsGridData}></StatisticsStack>
       <LogoKdacolorLight />
       <SearchCombobox />
