@@ -1,9 +1,10 @@
+import type { ITheme } from '@/hooks/useTheme';
 import { useTheme } from '@/hooks/useTheme';
 import type { ComponentPropsWithRef, FC } from 'react';
 import React from 'react';
 
 interface IProps extends ComponentPropsWithRef<'svg'> {
-  overwriteTheme?: 'light' | 'dark';
+  overwriteTheme?: ITheme;
 }
 
 export const DocsLogo: FC<IProps> = ({ overwriteTheme, ...props }) => {

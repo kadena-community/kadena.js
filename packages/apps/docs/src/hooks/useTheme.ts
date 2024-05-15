@@ -5,20 +5,20 @@ const storageKey = 'theme';
 const isServer = typeof window === 'undefined';
 const defaultTheme = 'system';
 
-type ITheme = 'dark' | 'light' | 'system';
+export type ITheme = 'dark' | 'light' | 'system';
 interface IUseThemeProps {
   overwriteTheme?: ITheme;
 }
 interface IUseThemeReturnProps {
-  theme: ITheme;
+  theme: ITheme | undefined;
   setTheme: (value: ITheme) => void;
 }
 
 const getTheme = (key: string) => {
   if (isServer) return undefined;
-  let theme;
+  let theme: ITheme | undefined = undefined;
   try {
-    theme = localStorage.getItem(key) || undefined;
+    theme = (localStorage.getItem(key) as ITheme) || undefined;
   } catch (e) {
     // Unsupported
   }
@@ -55,13 +55,13 @@ export const useTheme = ({
     d.classList.add(name === 'dark' ? darkThemeClass : 'light');
   }, []);
 
-  const setTheme = (value: ITheme): void => {
+  const setTheme = useCallback((value: ITheme): void => {
     setThemeState(value);
     applyTheme(value);
 
     window.localStorage.setItem(storageKey, value);
     window.dispatchEvent(new Event(storageKey));
-  };
+  }, []);
 
   const handleMediaQuery = useCallback(
     (e: MediaQueryListEvent | MediaQueryList) => {
@@ -86,7 +86,8 @@ export const useTheme = ({
       if (event.type !== storageKey) return;
 
       // If default theme set, use it if localstorage === null (happens on local storage manual deletion)
-      const theme = window.localStorage.getItem(storageKey) || defaultTheme;
+      const theme =
+        (window.localStorage.getItem(storageKey) as ITheme) || defaultTheme;
       setThemeState(theme);
     },
     [setThemeState],
