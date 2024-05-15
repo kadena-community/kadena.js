@@ -128,10 +128,8 @@ To contribute to documentation, you typically only need to work in the `/package
 
 The `/src/docs` folder includes the files and subfolders that define the structure of the content and the operation of the application. For example:
 
-- `/blogchain` maintains the archive of blog post articles.
 - `/build` contains information about Kadena tools—such as the Pact smart contract language and the Marmalade token standard—for builders and application developers.
 - `/deploy` contains information about deploying and managing Kadena network infrastructure and smart contracts. Information in this section is primarily intended for node operators and smart contract authors.
-- `/invest` contains information about Kadena tokens, including where you can get them and how you can hold them.
 - `/learn` contains foundational information about blockchains, cryptography, consensus, and Kadena core concepts and terminology.
 - `/participate` contains information about community programs and how you can get involved.
 - `/reference` provides a central hub for technical reference information about Pact, Marmalade, and other tools.
