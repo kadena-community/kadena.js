@@ -1,4 +1,3 @@
-import fetch from 'cross-fetch';
 import type { ICommandResult, IListenRequestBody } from './interfaces/PactAPI';
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';

@@ -1,4 +1,3 @@
-import fetch from 'cross-fetch';
 import type { IPollRequestBody, IPollResponse } from './interfaces/PactAPI';
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';

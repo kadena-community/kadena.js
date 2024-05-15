@@ -46,8 +46,7 @@
   },
   "dependencies": {
     "@kadena/cryptography-utils": "workspace:*",
-    "@kadena/pactjs": "workspace:*",
-    "cross-fetch": "~3.1.5"
+    "@kadena/pactjs": "workspace:*"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
