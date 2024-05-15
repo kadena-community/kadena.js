@@ -1,9 +1,12 @@
+import path from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { ensureNetworksConfiguration } from '../../networks/utils/networkHelpers.js';
 import { services } from '../../services/index.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { defaultTemplates } from '../commands/templates/templates.js';
 import { createTransaction } from '../commands/txCreateTransaction.js';
-import { testTransactions } from '../commands/txTestSignedTransaction.js';
+import { testTransactionAction } from '../commands/txTestSignedTransaction.js';
+import { createTransactionWithDetails } from '../utils/txHelpers.js';
 import { signTransactionFileWithKeyPairAction } from '../utils/txSignWithKeypair.js';
 
 const publicKey =
@@ -14,8 +17,12 @@ const targetAccount =
   'k:00b34067644479c769b48b4cc9b2c732e48fc9aeb82d06ecd52dc783550de54d';
 
 describe('template to live test', () => {
-  // skipped because usage of live chainweb-api (only used for manual testing)
-  it.skip('creates, signs and tests the transaction', async () => {
+  // NOTE: this tests uses live testnet04 meaning it is not isolated!!!
+  it('creates, signs and tests the transaction', async () => {
+    const root = path.join(__dirname, '../../../');
+    const kadenaDir = path.join(root, '.kadena');
+    await ensureNetworksConfiguration(kadenaDir);
+
     const variables = {
       'account:from': `k:${publicKey}`,
       'account:to': targetAccount,
@@ -39,17 +46,17 @@ describe('template to live test', () => {
     });
     assertCommandError(signed);
 
-    const test = await testTransactions(
-      {
-        networkHost: 'https://api.testnet.chainweb.com',
-        networkId: 'testnet04',
-      },
-      '1',
-      [signed.data.commands[0].path],
-      true,
+    const transactionsWithDetails = await createTransactionWithDetails(
+      signed.data.commands.map((c) => c.command),
+      { txTransactionNetwork: ['testnet'] },
     );
+
+    const test = await testTransactionAction({
+      transactionsWithDetails,
+    });
     assertCommandError(test);
-    expect(test.data[0].result).toEqual({
+
+    expect(test.data.transactions[0].response?.result).toEqual({
       status: 'success',
       data: 'Write succeeded',
     });

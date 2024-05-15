@@ -28,11 +28,11 @@ export const SearchHeader: FC<IProps> = ({ children }) => {
   return (
     <header className={loaderHeaderClass}>
       <div className={wrapperClass}>
-        <Heading as="h1" variant="h2">
+        <Heading as="h1" variant="h2" transform="uppercase">
           Search spaces
         </Heading>
         <Stack flexDirection="column" gap="xxs">
-          <Heading as="h2" variant="h4">
+          <Heading as="h2" variant="h4" transform="uppercase">
             Traditional or the <GradientText>new</GradientText> way
           </Heading>
           <span className={subheaderClass}>

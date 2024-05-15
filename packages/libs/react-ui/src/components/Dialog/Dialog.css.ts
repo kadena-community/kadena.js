@@ -34,10 +34,6 @@ export const overlayClass = style([
       maxHeight: '75vh',
     },
   }),
-  {
-    backdropFilter: 'blur(12px)',
-    cursor: 'default',
-  },
 ]);
 
 export const closeButtonClass = style([
@@ -65,6 +61,14 @@ export const titleWrapperClass = style([
   }),
 ]);
 
+export const subtitleWrapperClass = style([
+  atoms({
+    marginBlockEnd: 'sm',
+    fontWeight: 'primaryFont.light',
+    color: 'text.gray.default',
+  }),
+]);
+
 export const footerClass = style([atoms({ flexShrink: 0 })]);
 
 export const contentClass = style([
@@ -77,4 +81,51 @@ export const contentClass = style([
     marginLeft: calc(tokens.kda.foundation.spacing.xxl).negate().toString(),
     marginRight: calc(tokens.kda.foundation.spacing.xxl).negate().toString(),
   },
+]);
+
+export const smClass = style([
+  responsiveStyle({
+    xs: {
+      maxHeight: '100svh',
+      maxWidth: '100vw',
+    },
+    sm: {
+      maxHeight: '100svh',
+      maxWidth: '100vw',
+    },
+    md: {
+      maxWidth: tokens.kda.foundation.layout.content.maxWidth,
+      maxHeight: '75vh',
+    },
+  }),
+]);
+
+const smallSizes = {
+  xs: {
+    height: '100svh',
+    maxWidth: '100vw',
+  },
+  sm: {
+    height: '100svh',
+    maxWidth: '100vw',
+  },
+};
+export const mdClass = style([
+  responsiveStyle({
+    ...smallSizes,
+    md: {
+      maxHeight: '84svh',
+      maxWidth: '60vw',
+    },
+  }),
+]);
+
+export const lgClass = style([
+  responsiveStyle({
+    ...smallSizes,
+    md: {
+      maxHeight: '96svh',
+      maxWidth: '84vw',
+    },
+  }),
 ]);

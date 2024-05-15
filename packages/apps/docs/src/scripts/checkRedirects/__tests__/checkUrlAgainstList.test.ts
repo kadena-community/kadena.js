@@ -74,4 +74,18 @@ describe('checkUrlAgainstList', () => {
     const result = checkUrlAgainstList(url, urlList);
     expect(result).toEqual([]);
   });
+
+  it('should say that the redirec when its outgoing to different url', async () => {
+    const url = '/kadena/he-man/skeletor';
+    const urlList = [
+      {
+        source: '/kadena/:slug/:test',
+        destination: 'https://kadena.io/blog/',
+        permanent: true,
+      },
+    ];
+
+    const result = checkUrlAgainstList(url, urlList);
+    expect(result).toEqual(['https://kadena.io/blog/']);
+  });
 });

@@ -32,13 +32,13 @@ export function HomePage() {
   };
   console.log('keySources', keySources);
   return (
-    <main>
+    <>
       <Box margin="md">
-        <Heading variant="h5">Home Page</Heading>
-        <Heading variant="h6">Available key sources</Heading>
+        <Heading as="h1">Welcome to Chainweaver 3.0</Heading>
+        <Heading as="h3">Available key sources</Heading>
         {keySources.map((ks) => (
           <Card>
-            <Heading variant="h6">{ks.source}</Heading>
+            <Heading as="h6">{ks.source}</Heading>
             <Button onPress={() => createAccount(ks)}>Add k account</Button>
             <br />
             <Link to={`/backup-recovery-phrase/${ks.uuid}`}>
@@ -46,7 +46,7 @@ export function HomePage() {
             </Link>
           </Card>
         ))}
-        <Heading variant="h6">Accounts</Heading>
+        <Heading as="h6">Accounts</Heading>
         {accounts.length ? (
           <ul>
             {' '}
@@ -63,6 +63,6 @@ export function HomePage() {
       <Box>
         <Link to="/sig-builder">Sig Builder</Link>
       </Box>
-    </main>
+    </>
   );
 }

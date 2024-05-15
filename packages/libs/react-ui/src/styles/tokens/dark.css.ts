@@ -87,6 +87,19 @@ export const darkThemeValues = {
         n9: tokens.kda.foundation.size.n9,
         n10: tokens.kda.foundation.size.n10,
       },
+      transition: {
+        delay: {
+          none: '0ms',
+        },
+        duration: {
+          base: '400ms',
+          d200: '200ms',
+        },
+        animation: {
+          easeOutSine: `${tokens.kda.foundation.transition.duration.d200} ${tokens.kda.foundation.transition.delay.none} cubic-bezier(0.61, 1, 0.88, 1)`,
+          easeOutCubic: `${tokens.kda.foundation.transition.duration.d200} ${tokens.kda.foundation.transition.delay.none} cubic-bezier(0.33, 1, 0.68, 1)`,
+        },
+      },
       zIndex: {
         deepdive: '-99999',
         default: '1',
@@ -482,6 +495,11 @@ export const darkThemeValues = {
             black: tokens.kda.foundation.color.neutral.n1,
           },
         },
+        gradient: {
+          base: {
+            subtle: `${tokens.kda.foundation.color.background.base.default} 0.25%, ${tokens.kda.foundation.color.neutral['n1@alpha0']} 1%`,
+          },
+        },
         icon: {
           base: {
             default: tokens.kda.foundation.color.neutral.n95,
@@ -664,6 +682,7 @@ export const darkThemeValues = {
           n95: '#e4e5e5',
           n99: '#f5f5f5',
           n100: '#ffffff',
+          'n0@alpha0': '#00000000',
           'n0@alpha10': '#0000001a',
           'n0@alpha20': '#00000033',
           'n0@alpha40': '#00000066',
@@ -671,6 +690,7 @@ export const darkThemeValues = {
           'n0@alpha80': '#000000cc',
           'n0@alpha90': '#000000e6',
           'n0@alpha95': '#000000f2',
+          'n1@alpha0': '#020e1b00',
           'n1@alpha1': '#020e1b03',
           'n1@alpha3': '#020e1b08',
           'n1@alpha6': '#020e1b0f',
@@ -688,6 +708,7 @@ export const darkThemeValues = {
           'n90@alpha20': '#d2d4d633',
           'n90@alpha25': '#d2d4d640',
           'n95@alpha80': '#e4e5e5cc',
+          'n99@alpha0': '#f5f5f500',
           'n99@alpha1': '#f5f5f503',
           'n99@alpha3': '#f5f5f508',
           'n99@alpha6': '#f5f5f50f',
@@ -698,6 +719,7 @@ export const darkThemeValues = {
           'n99@alpha50': '#f5f5f580',
           'n99@alpha80': '#f5f5f5cc',
           'n99@alpha90': '#f5f5f5e6',
+          'n100@alpha0': '#ffffff00',
           'n100@alpha10': '#ffffff1a',
           'n100@alpha20': '#ffffff33',
           'n100@alpha40': '#ffffff66',
@@ -1144,13 +1166,6 @@ export const darkThemeValues = {
           },
         },
       },
-      effect: {
-        shadow: {
-          level1: `4px 0.5rem ${tokens.kda.foundation.size.n2} 4px #000000`,
-          level2: `4rem 4rem ${tokens.kda.foundation.size.n2} 2rem #000000`,
-          level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
-        },
-      },
       icon: {
         size: {
           xxs: tokens.kda.foundation.size.n3,
@@ -1166,6 +1181,13 @@ export const darkThemeValues = {
         content: {
           minWidth: '33.75rem',
           maxWidth: '42.5rem',
+        },
+      },
+      effect: {
+        shadow: {
+          level1: `4px 0.5rem ${tokens.kda.foundation.size.n2} 4px #000000`,
+          level2: `4rem 4rem ${tokens.kda.foundation.size.n2} 2rem #000000`,
+          level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
         },
       },
       typography: {
