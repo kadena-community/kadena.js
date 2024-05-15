@@ -2,6 +2,7 @@ import { prismaClient } from '@db/prisma-client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
 import { chainIds as defaultChainIds } from '@utils/chains';
 import { normalizeError } from '@utils/errors';
+import { ZodError } from 'zod';
 import { builder } from '../builder';
 import Block from '../objects/block';
 
@@ -33,12 +34,7 @@ builder.queryField('blocksFromHeight', (t) =>
         },
       }),
     },
-    validate(args) {
-      if (args.endHeight && args.startHeight > args.endHeight) {
-        return false;
-      }
-      return true;
-    },
+
     cursor: 'hash',
     type: Block,
     complexity: (args) => ({
@@ -53,6 +49,16 @@ builder.queryField('blocksFromHeight', (t) =>
       { startHeight, chainIds = defaultChainIds, endHeight },
     ) {
       try {
+        if (endHeight && startHeight > endHeight) {
+          throw new ZodError([
+            {
+              code: 'custom',
+              message: 'startHeight must be lower than endHeight',
+              path: ['blocksFromHeight'],
+            },
+          ]);
+        }
+
         return await prismaClient.block.findMany({
           ...query,
           where: {
