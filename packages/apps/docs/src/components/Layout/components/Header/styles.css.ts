@@ -149,7 +149,7 @@ export const navLinkClass = style([
 
 export const socialsClass = style([
   responsiveStyle({
-    xs: { display: 'none' },
+    xs: { display: 'flex' },
     xl: { display: 'flex' },
   }),
 ]);

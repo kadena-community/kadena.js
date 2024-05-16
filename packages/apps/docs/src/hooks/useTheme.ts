@@ -31,12 +31,12 @@ const getTheme = (key: string) => {
   try {
     theme = (localStorage.getItem(key) as ITheme) || undefined;
   } catch (e) {
-    // Unsupported
+    console.error('localStorage is not suported in this browser');
   }
   return theme || defaultTheme;
 };
 
-const getSystemTheme = (e?: MediaQueryList | MediaQueryListEvent) => {
+const getSystemTheme = (e?: MediaQueryList | MediaQueryListEvent): ITheme => {
   if (!e) e = window.matchMedia(MEDIA);
   const isDark = e.matches;
   const systemTheme = isDark ? 'dark' : 'light';
