@@ -210,7 +210,7 @@ Required capabilities and parameters for the `transfer` function:
 
 ## transfer-create
 
-Use `transfer-create` to transfer the specified token amount from the specified sender to the specified receiver.
+Use `transfer-create` to transfer the specified token amount from the specified sender to the specified receiver and creates the receiver account, if the account doesn't exist.
 
 ### Arguments
 
@@ -218,12 +218,14 @@ Use the following arguments to transfer a token.
 
 | Argument | Type | Description
 | -------- | ---- | -----------
-| `id` | string | Specifies the unique token identifier generated using `create-token-id` function and formatted as `t:{token-detail-hash}`. 
+| `id` | string | Specifies the unique token identifier generated using `create-token-id` function and formatted as `t:{token-detail-hash}`.
 | `sender` | string | Specifies the sender account that the token will be transferred from.
 | `receiver` | string | Specifies the receiver account that the token will be transferred to.
+| `receiver-guard` | guard | Specifies the guard for the receiver account that the token will be transferred to.
 | `amount` | decimal | Specifies the number of tokens to be transferred.
 
-When you submit the `transfer-create` transaction, the `policy-manager.enforce-transfer` function calls the `policy:enforce-transfer` function in the stored token policies and the function is executed.
+When you submit the `transfer-create` transaction, the `policy-manager.enforce-transfer` function calls the `policy:enforce-transfer` function in the stored token policies and the function is executed at `ledger.transfer-create`. The difference between `transfer` and `transfer-create` is that `transfer-create` can be used for both non-existent and existing receiver accounts, with an additional check for the receiver guard if already exists.
+The `transfer` can only be used for existing `receiver`account.
 
 ### Capabilities
   
@@ -374,28 +376,25 @@ Required capabilities and parameters for the `buy` function:
 
 ### Environment data
 
-If the sale is a dutch or conventional auction, you can add the following information as raw data:
+If the sale is a dutch or conventional auction, you need to add the following information as raw data:
 - buyer [string]
 - buyer-guard [guard]
-- buyer_fungible_account [string] (optional)
-- dutch-auction
-  - buyer_fungible_account [string]
-  - updated_price [decimal]
-- conventional-auction
-  - buyer_fungible_account [string]
-  - updated_price [decimal]
+- buyer_fungible_account [string]
+- updated_price [decimal]
 
 ## update-uri
 
-Use `update-uri` to
+Use `update-uri` to update the `uri` for an existing token.
 
 ### Arguments
 
-Use the following arguments to update a token.
-
 | Argument | Type | Description
 | -------- | ---- | -----------
-|
+| `id` | string | Specifies the unique token identifier generated using `create-token-id` function and formatted as `t:{token-detail-hash}`.
+| `new-uri` | string | Specifies the new `uri`.
+
+When you submit the `update-uri` transaction, the `policy-manager.enforce-update-uri` function calls the `policy:enforce-update-uri` function in the stored token policies and the function is executed at `ledger.update-uri`. 
+Token creators should configure the entity that will be authorized to update the uri's in the `guard-policy-v1`, or in their custom policies. 
 
 ### Capabilities
   
