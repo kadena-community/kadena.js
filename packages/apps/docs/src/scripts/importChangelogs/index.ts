@@ -200,4 +200,5 @@ export const importChangelogs = async (): Promise<IScriptResult> => {
   return { success, errors };
 };
 
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
 importChangelogs();

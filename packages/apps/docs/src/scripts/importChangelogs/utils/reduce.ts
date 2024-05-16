@@ -17,29 +17,34 @@ export const reduceUserData = (user: IGHUser): IGHUserReduced => {
   return reduced;
 };
 
+export const getAuthor = (
+  commit: IGHCommitDataCommit,
+): IGHUserReduced | undefined => {
+  if (commit.author) return reduceUserData(commit.author);
+  if (commit.committer) return reduceUserData(commit.committer);
+  if (commit.commit.author) {
+    return { login: commit.commit.author } as unknown as IGHUserReduced;
+  }
+  if (commit.commit.committer) {
+    return { login: commit.commit.committer } as unknown as IGHUserReduced;
+  }
+};
+
 export const reduceCommitDataCommit = (
   commit: IGHCommitDataCommit,
 ): IGHCommitDataCommitReduced => {
-  try {
-    const reduced: IGHCommitDataCommitReduced = {
-      sha: commit.sha,
-      url: commit.url,
-      author: commit.author
-        ? reduceUserData(commit.author)
-        : commit.committer
-          ? reduceUserData(commit.committer)
-          : { login: commit.commit.author },
-      comments_url: commit.comments_url,
-      commit: {
-        message: commit.commit.message,
-        comment_count: commit.commit.comment_count,
-      },
-    };
+  const reduced: IGHCommitDataCommitReduced = {
+    sha: commit.sha,
+    url: commit.url,
+    author: getAuthor(commit),
+    comments_url: commit.comments_url,
+    commit: {
+      message: commit.commit.message,
+      comment_count: commit.commit.comment_count,
+    },
+  };
 
-    return reduced;
-  } catch (e) {
-    console.log(commit);
-  }
+  return reduced;
 };
 
 export const reduceCommitData = (

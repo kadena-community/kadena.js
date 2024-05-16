@@ -7,7 +7,7 @@ const getAuthors = (version: IChanglogContent): IGHUserReduced[] => {
   if (version.authors.length) return version.authors;
 
   const commitAuhtors = getVersionCommits(version).reduce(
-    (acc: IGHUser[], val: IGHCommit): IGHUser[] => {
+    (acc: IGHUserReduced[], val: IGHCommit): IGHUserReduced[] => {
       if (!val?.data?.data?.author) return acc;
       const author = val.data.data.author;
       if (acc.find((v) => v.id === author.id)) return acc;
@@ -26,7 +26,6 @@ const getAuthors = (version: IChanglogContent): IGHUserReduced[] => {
         acc: IGHUserReduced[],
         val: IGHCommitDataCommitReduced,
       ): IGHUserReduced[] => {
-        val.author;
         if (!val.author) return acc;
         const author = val.author;
         if (acc.find((v) => v.id === author.id)) return acc;

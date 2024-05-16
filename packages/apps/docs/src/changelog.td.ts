@@ -79,7 +79,7 @@ interface IGHHeader extends IGHHeaderReduced {
 interface IGHCommitDataCommitReduced {
   sha: string;
   url: string;
-  author: IGHUserReduced;
+  author?: IGHUserReduced;
   comments_url: string;
   commit: {
     message: string;
