@@ -130,7 +130,7 @@ export const createAccountDetailsCommand = createCommand(
     const accountName = accountConfig?.name ?? account;
 
     if (!isNotEmptyObject(accountConfig)) {
-      fungible = (await option.fungible()).fungible;
+      fungible = (await option.fungible()).fungible?.trim() ?? 'coin';
     }
 
     const { networkConfig } = await option.network();
