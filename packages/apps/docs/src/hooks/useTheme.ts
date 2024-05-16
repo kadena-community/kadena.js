@@ -7,6 +7,17 @@ const defaultTheme = 'system';
 
 export type ITheme = 'dark' | 'light' | 'system';
 interface IUseThemeProps {
+  /**
+   * lockedTheme will lock the theme for the whole application.
+   * It will overwrite the localstorage and even the switching of themes in your system will not update the theme
+   * IMPORTANT: using the useTheme twice in a application can lead to unexpected race conditions
+   * You would need to lock the theme on all the uses of this hook with the same ITheme
+   */
+  lockedTheme?: ITheme;
+  /**
+   * overwriteTheme can be used when you want 1 particular component to have a fixed theme
+   * IMPORTANT: this will also overwrite the lockedTheme for that component
+   */
   overwriteTheme?: ITheme;
 }
 interface IUseThemeReturnProps {
@@ -34,8 +45,11 @@ const getSystemTheme = (e?: MediaQueryList | MediaQueryListEvent) => {
 
 export const useTheme = ({
   overwriteTheme,
+  lockedTheme,
 }: IUseThemeProps = {}): IUseThemeReturnProps => {
-  const [theme, setThemeState] = useState(() => getTheme(storageKey));
+  const [theme, setThemeState] = useState(() =>
+    lockedTheme ? lockedTheme : getTheme(storageKey),
+  );
 
   const applyTheme = useCallback((theme: ITheme) => {
     let resolved = theme;
@@ -44,6 +58,9 @@ export const useTheme = ({
     // If theme is system, resolve it before setting theme
     if (theme === 'system') {
       resolved = getSystemTheme();
+    }
+    if (lockedTheme) {
+      resolved = lockedTheme;
     }
 
     const name = resolved;
@@ -55,16 +72,17 @@ export const useTheme = ({
   }, []);
 
   const setTheme = (value: ITheme): void => {
-    setThemeState(value);
-    applyTheme(value);
+    const resolved = lockedTheme ? lockedTheme : value;
+    setThemeState(resolved);
+    applyTheme(resolved);
 
-    window.localStorage.setItem(storageKey, value);
+    window.localStorage.setItem(storageKey, resolved);
     window.dispatchEvent(new Event(storageKey));
   };
 
   const handleMediaQuery = useCallback(
     (e: MediaQueryListEvent | MediaQueryList) => {
-      const resolved = getSystemTheme(e);
+      const resolved = lockedTheme ? lockedTheme : getSystemTheme(e);
       setTheme(resolved);
     },
     [],
@@ -72,6 +90,9 @@ export const useTheme = ({
 
   // Always listen to System preference
   useEffect(() => {
+    if (lockedTheme) {
+      setTheme(lockedTheme);
+    }
     const media = window.matchMedia(MEDIA);
     // Intentionally use deprecated listener methods to support iOS & old browsers
     media.addEventListener('change', handleMediaQuery);
@@ -90,8 +111,9 @@ export const useTheme = ({
         return;
 
       // If default theme set, use it if localstorage === null (happens on local storage manual deletion)
-      const theme =
-        (window.localStorage.getItem(storageKey) as ITheme) || defaultTheme;
+      const theme = lockedTheme
+        ? lockedTheme
+        : (window.localStorage.getItem(storageKey) as ITheme) || defaultTheme;
       setThemeState(theme);
       applyTheme(theme);
     },
