@@ -71,13 +71,18 @@ export const useTheme = ({
     d.classList.add(name === 'dark' ? darkThemeClass : 'light');
   }, []);
 
-  const setTheme = (value: ITheme): void => {
+  const setTheme = (
+    value: ITheme,
+    updateLocalStorage: boolean = true,
+  ): void => {
     const resolved = lockedTheme ? lockedTheme : value;
     setThemeState(resolved);
     applyTheme(resolved);
 
-    window.localStorage.setItem(storageKey, resolved);
-    window.dispatchEvent(new Event(storageKey));
+    if (updateLocalStorage) {
+      window.localStorage.setItem(storageKey, resolved);
+      window.dispatchEvent(new Event(storageKey));
+    }
   };
 
   const handleMediaQuery = useCallback(
@@ -108,24 +113,16 @@ export const useTheme = ({
     return () => media.removeEventListener('change', handleMediaQuery);
   }, []);
 
-  const storageListener = useCallback(
-    (event: StorageEvent | Event) => {
-      if (
-        event.type !== storageKey &&
-        'key' in event &&
-        event.key !== storageKey
-      )
-        return;
+  const storageListener = useCallback((event: StorageEvent | Event) => {
+    if (event.type !== storageKey && 'key' in event && event.key !== storageKey)
+      return;
 
-      // If default theme set, use it if localstorage === null (happens on local storage manual deletion)
-      const theme = lockedTheme
-        ? lockedTheme
-        : (window.localStorage.getItem(storageKey) as ITheme) || defaultTheme;
-      setThemeState(theme);
-      applyTheme(theme);
-    },
-    [setThemeState],
-  );
+    // If default theme set, use it if localstorage === null (happens on local storage manual deletion)
+    const theme = lockedTheme
+      ? lockedTheme
+      : (window.localStorage.getItem(storageKey) as ITheme) || defaultTheme;
+    setTheme(theme, false);
+  }, []);
 
   useEffect(() => {
     window.addEventListener(storageKey, storageListener);

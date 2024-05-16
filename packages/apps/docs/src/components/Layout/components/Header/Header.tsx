@@ -60,6 +60,21 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
         </NavHeaderLinkList>
 
         <Stack justifyContent="flex-end" gap="md" flex={1}>
+          <NavHeaderButtonLink
+            className={socialsClass}
+            href="https://twitter.com/kadena_io"
+            title="Go to our X"
+          >
+            <MonoLogoX />
+          </NavHeaderButtonLink>
+
+          <NavHeaderButtonLink
+            className={socialsClass}
+            href="https://github.com/kadena-community"
+            title="Go to our Github"
+          >
+            <MonoLogoGithub />
+          </NavHeaderButtonLink>
           <ThemeToggle />
 
           <div className={hideOnTabletClass}>
