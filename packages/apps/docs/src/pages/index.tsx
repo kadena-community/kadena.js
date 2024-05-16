@@ -244,7 +244,7 @@ export const getStaticProps: GetStaticProps = async () => {
         label: 'Pact Test',
         order: 1,
         description:
-          'Welcome to the Kadena documentation site! This site provides documentation for all things Kadena, including general topics for learning about blockchain technology, technical references for developing smart contracts using, and guides for becoming a ChainWeb node operator, investing and holding KDA, and creating tokens and token collections with Marmalade.',
+          'Welcome to the Kadena documentation site! This site provides documentation for all things Kadena, including general topics for learning about blockchain technology, technical references for developing smart contracts, and guides for becoming a ChainWeb node operator, using wallet applications, and creating tokens and token collections with Marmalade.',
         layout: 'home',
       },
     },
