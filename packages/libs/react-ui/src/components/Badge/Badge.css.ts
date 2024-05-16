@@ -11,7 +11,7 @@ export const badge = recipe({
       justifyContent: 'center',
       alignItems: 'center',
       lineHeight: 'base',
-      fontWeight: 'primaryFont.bold'
+      fontWeight: 'primaryFont.bold',
     }),
     {
       borderColor: token('color.neutral.n1@alpha20'),
