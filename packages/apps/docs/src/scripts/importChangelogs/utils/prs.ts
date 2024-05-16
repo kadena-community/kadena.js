@@ -4,26 +4,25 @@ import { getVersions } from './misc';
 export const filterPRsWithoutData = (pr: IGHPR): boolean =>
   pr.tries < MAX_TRIES && !pr.data;
 
-export const getPrs = (library: IChangelog): IGHPR[] => {
-  return getVersions(library)
-    .map((version) => {
-      const patchCommits =
-        version.patches.map((val) => {
-          return val.prIds;
-        }) ?? [];
-      const minorCommits =
-        version.minors.map((val) => {
-          return val.prIds;
-        }) ?? [];
-      const miscCommits =
-        version.miscs.map((val) => {
-          return val.prIds;
-        }) ?? [];
+export const getVersionPRs = (version: IChanglogContent): IGHPR[] => {
+  const patchCommits =
+    version.patches.map((val) => {
+      return val.prIds;
+    }) ?? [];
+  const minorCommits =
+    version.minors.map((val) => {
+      return val.prIds;
+    }) ?? [];
+  const miscCommits =
+    version.miscs.map((val) => {
+      return val.prIds;
+    }) ?? [];
 
-      return [...miscCommits, ...patchCommits, ...minorCommits];
-    })
-    .flat()
-    .flat();
+  return [...miscCommits, ...patchCommits, ...minorCommits].flat().flat();
+};
+
+export const getPrs = (library: IChangelog): IGHPR[] => {
+  return getVersions(library).map(getVersionPRs).flat().flat();
 };
 
 export const getPrId = (content: string): IChangelogRecord => {
@@ -33,7 +32,7 @@ export const getPrId = (content: string): IChangelogRecord => {
 
   matches?.forEach((match: string, idx: number) => {
     content = content.replace(match, '');
-    prIds.push({ id: parseInt(match.substring(1)), tries: 0 });
+    prIds.push({ id: parseInt(match.substring(1)), tries: 0, commits: [] });
   });
 
   content = content

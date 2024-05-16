@@ -4,26 +4,25 @@ import { getVersions } from './misc';
 export const filterCommitsWithoutData = (commit: IGHCommit): boolean =>
   commit.tries < MAX_TRIES && !commit.data;
 
-export const getCommits = (library: IChangelog): IGHCommit[] => {
-  return getVersions(library)
-    .map((version) => {
-      const patchCommits =
-        version.patches.map((val) => {
-          return val.commits;
-        }) ?? [];
-      const minorCommits =
-        version.minors.map((val) => {
-          return val.commits;
-        }) ?? [];
-      const miscCommits =
-        version.miscs.map((val) => {
-          return val.commits;
-        }) ?? [];
+export const getVersionCommits = (version: IChanglogContent): IGHCommit[] => {
+  const patchCommits =
+    version.patches.map((val) => {
+      return val.commits;
+    }) ?? [];
+  const minorCommits =
+    version.minors.map((val) => {
+      return val.commits;
+    }) ?? [];
+  const miscCommits =
+    version.miscs.map((val) => {
+      return val.commits;
+    }) ?? [];
 
-      return [...miscCommits, ...patchCommits, ...minorCommits];
-    })
-    .flat()
-    .flat();
+  return [...miscCommits, ...patchCommits, ...minorCommits].flat().flat();
+};
+
+export const getCommits = (library: IChangelog): IGHCommit[] => {
+  return getVersions(library).map(getVersionCommits).flat().flat();
 };
 
 export const getCommitId = (content: string): IChangelogRecord => {

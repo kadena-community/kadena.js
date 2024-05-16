@@ -13,6 +13,7 @@ import {
   success,
 } from './constants';
 import { getCommitId } from './utils/commits';
+import { enrichContent } from './utils/enrichContent';
 import { getGitHubData } from './utils/github';
 import { getChangelog, writeContent } from './utils/misc';
 import { getPrId } from './utils/prs';
@@ -24,7 +25,7 @@ const getCurrentContentCreator = () => {
     if (content) return content;
     const result = fs.readFileSync(CHANGELOGFILENAME, 'utf-8');
     content = JSON.parse(result.trim());
-    return content;
+    return content ?? {};
   };
 };
 
@@ -34,6 +35,8 @@ const getCurrentContent = getCurrentContentCreator();
 const createVersion = (branch: Node): IChanglogContent => {
   return {
     label: (branch as any).children[0].value ?? '',
+    isLocked: false,
+    authors: [],
     patches: [],
     minors: [],
     miscs: [],
@@ -87,7 +90,7 @@ const crawl = (repo: IRepo): ((tree: Node) => IChangelog) => {
       tree.children.forEach((branch, idx) => {
         if (branch.type === 'heading' && branch.depth === 2) {
           version = createVersion(branch);
-          if (!currentContent[repo.name]?.content[version.label]) {
+          if (!currentContent[repo.name]?.content[version.label].isLocked) {
             content[version.label] = version;
             currentPosition = VersionPosition.VERSION;
           } else {
@@ -150,7 +153,8 @@ const getContent = async (repos: IRepo[]): Promise<IChangelogComplete> => {
 
   const results = await Promise.allSettled(promises);
 
-  const content: IChangelogComplete = {};
+  const content: IChangelogComplete = getCurrentContent();
+
   results.forEach((result, idx) => {
     if (result.status === 'rejected') {
       errors.push(`${repos[idx].repo} had issues with creating content`);

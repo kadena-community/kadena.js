@@ -34,11 +34,15 @@ export const getGitHubData = async (
     const commitCount = getCommits(library).filter(filterCommitsWithoutData);
     const prCount = getPrs(library).filter(filterPRsWithoutData);
 
-    errors.push(
-      `${library.repo}: ${library.directory} ${library.fileName} still has ${commitCount.length} commits without data`,
-    );
-    errors.push(
-      `${library.repo}: ${library.directory} ${library.fileName} still has ${prCount.length} prs without data`,
-    );
+    if (commitCount.length) {
+      errors.push(
+        `${library.repo}: ${library.directory} ${library.fileName} still has ${commitCount.length} commits without data`,
+      );
+    }
+    if (prCount.length) {
+      errors.push(
+        `${library.repo}: ${library.directory} ${library.fileName} still has ${prCount.length} prs without data`,
+      );
+    }
   }
 };
