@@ -36,9 +36,27 @@ const formatWarnings = (warnings: string[]): string | null => {
   return `${prefix} ${sortedChainIds.join(',')} ${suffix}`;
 };
 
+function transformData(
+  data: IAccountDetails[],
+): IAccountDetails | IAccountDetailsResult {
+  if (data.length === 1) {
+    // Return the single object data directly
+    const singleKey = Object.keys(data[0])[0];
+    return data[0][singleKey];
+  } else {
+    // Merge objects into a single object
+    const result: IAccountDetails = {};
+    data.forEach((obj) => {
+      const key = Object.keys(obj)[0];
+      result[key] = obj[key];
+    });
+    return result;
+  }
+}
+
 export async function accountDetails(
   config: IAccountDetailsConfig,
-): Promise<CommandResult<IAccountDetails>> {
+): Promise<CommandResult<IAccountDetails[]>> {
   let status: 'success' | 'error' | 'partial' = 'success';
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -82,18 +100,20 @@ export async function accountDetails(
   status = nonEmptyAccountDetails.length === 0 ? 'error' : status;
   return {
     status,
-    data: Object.assign({}, ...nonEmptyAccountDetails),
+    data: nonEmptyAccountDetails,
     errors,
     warnings: [formatWarnings(warnings)].filter(notEmpty),
   };
 }
 
-function generateTableForAccountDetails(accounts: IAccountDetails): Table {
+function generateTableForAccountDetails(accounts: IAccountDetails[]): Table {
   const table = createTable({
     head: ['Name', 'ChainID', 'Public Keys', 'Predicate', 'Balance'],
   });
 
-  const data = Object.entries(accounts).map(([chainId, account]) => {
+  const data = accounts.map((acc) => {
+    const chainId = Object.keys(acc)[0];
+    const account = acc[chainId];
     const balance =
       typeof account.balance === 'object' && 'decimal' in account.balance
         ? account.balance.decimal.toString()
@@ -169,7 +189,7 @@ export const createAccountDetailsCommand = createCommand(
         ),
       );
       const table = generateTableForAccountDetails(result.data);
-      log.output(table.toString(), result.data);
+      log.output(table.toString(), transformData(result.data));
     }
     assertCommandError(result);
   },

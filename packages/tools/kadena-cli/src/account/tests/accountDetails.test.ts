@@ -41,9 +41,7 @@ describe('account details', () => {
       },
     });
     const res = await runCommandJson('account details');
-    expect(res).toEqual({
-      ['0']: accountDetailsSuccessData.result.data,
-    });
+    expect(res).toEqual(accountDetailsSuccessData.result.data);
   });
 
   it('should fetch account details when user input account name manually', async () => {
@@ -61,18 +59,14 @@ describe('account details', () => {
       verbose: true,
     });
     const res = await runCommandJson('account details');
-    expect(res).toEqual({
-      ['0']: accountDetailsSuccessData.result.data,
-    });
+    expect(res).toEqual(accountDetailsSuccessData.result.data);
   });
 
   it('should fetch account details when user pass all options in cli with --quiet flag', async () => {
     const res = await runCommandJson(
       'account details --account=account1 --fungible=coin --network=testnet --chain-ids=0 --quiet',
     );
-    expect(res).toEqual({
-      ['0']: accountDetailsSuccessData.result.data,
-    });
+    expect(res).toEqual(accountDetailsSuccessData.result.data);
   });
 
   it('should return account not available error message when account not found on chain', async () => {
@@ -160,9 +154,7 @@ describe('account details', () => {
     const res = await runCommandJson(
       'account details --account=account1 --fungible=coin --network=testnet --chain-ids=0-2',
     );
-    expect(res).toEqual({
-      ['0']: accountDetailsSuccessData.result.data,
-    });
+    expect(res).toEqual(accountDetailsSuccessData.result.data);
   });
 
   it('should return error message when api fails', async () => {
