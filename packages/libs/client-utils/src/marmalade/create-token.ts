@@ -119,10 +119,14 @@ const generatePolicyTransactionData = (
   }
 
   if (policyConfig?.hasRoyalty) {
-    data.push(addData('fungible', props.royalty.fungible));
-    data.push(addData('creator', props.royalty.creator));
-    data.push(addData('creator-guard', props.royalty.creator.keyset));
-    data.push(addData('royalty-rate', props.royalty.royaltyRate.decimal));
+    data.push(
+      addData('royalty_specs', {
+        fungible: props.royalty.fungible,
+        creator: props.royalty.creator,
+        'creator-guard': props.royalty.creator.keyset,
+        'royalty-rate': props.royalty.royaltyRate.decimal,
+      }),
+    );
   }
 
   if (!policyConfig?.guarded && policyConfig?.updatableURI) {

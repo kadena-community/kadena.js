@@ -11,7 +11,6 @@ import {
   execution,
   setMeta,
 } from '@kadena/client/fp';
-import type { ValidDataTypes } from '@kadena/client/lib/composePactCommand/utils/addData';
 import type { ChainId, IPactDecimal, IPactInt } from '@kadena/types';
 import { submitClient } from '../core';
 import type { IClientConfig } from '../core/utils/helpers';
@@ -45,27 +44,6 @@ const generatePolicyTransactionData = (
   props: SalePolicyProps,
 ): ((cmd: IPartialPactCommand) => IPartialPactCommand)[] => {
   const data = [];
-
-  if (policyConfig?.guarded) {
-    if (props.guards.saleGuard)
-      data.push(
-        addData(
-          'sale_guard',
-          props.guards.saleGuard as unknown as ValidDataTypes,
-        ),
-      );
-  }
-
-  if (policyConfig?.hasRoyalty) {
-    data.push(
-      addData('royalty_spec', {
-        creator: props.royalty.creator.account,
-        'creator-guard': props.royalty.creator.keyset,
-        'royalty-rate': props.royalty.royaltyRate,
-        fungible: props.royalty.fungible,
-      }),
-    );
-  }
 
   if (policyConfig?.auction) {
     data.push(

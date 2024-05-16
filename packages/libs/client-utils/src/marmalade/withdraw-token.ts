@@ -1,16 +1,10 @@
-import type {
-  IPactModules,
-  IPartialPactCommand,
-  PactReturnType,
-} from '@kadena/client';
+import type { IPactModules, PactReturnType } from '@kadena/client';
 import {
-  addData,
   addSigner,
   composePactCommand,
   continuation,
   setMeta,
 } from '@kadena/client/fp';
-import type { ValidDataTypes } from '@kadena/client/lib/composePactCommand/utils/addData';
 import type { ChainId, IPactDecimal, IPactInt } from '@kadena/types';
 import { submitClient } from '../core';
 import type { IClientConfig } from '../core/utils/helpers';
@@ -22,7 +16,6 @@ import type {
   CommonProps,
   IWithdrawSaleTokenPolicyConfig,
   WithWithdrawSaleTokenPolicy,
-  WithdrawSalePolicyProps,
 } from './config';
 
 interface IWithdrawTokenInput extends CommonProps {
@@ -40,25 +33,6 @@ interface IWithdrawTokenInput extends CommonProps {
   };
 }
 
-const generatePolicyTransactionData = (
-  policyConfig: IWithdrawSaleTokenPolicyConfig,
-  props: WithdrawSalePolicyProps,
-): ((cmd: IPartialPactCommand) => IPartialPactCommand)[] => {
-  const data = [];
-
-  if (policyConfig?.guarded) {
-    if (props.guards.saleGuard)
-      data.push(
-        addData(
-          'sale_guard',
-          props.guards.saleGuard as unknown as ValidDataTypes,
-        ),
-      );
-  }
-
-  return data;
-};
-
 const withdrawTokenCommand = <C extends IWithdrawSaleTokenPolicyConfig>({
   tokenId,
   saleId,
@@ -70,7 +44,6 @@ const withdrawTokenCommand = <C extends IWithdrawSaleTokenPolicyConfig>({
   meta,
   capabilities,
   additionalSigners,
-  ...policyProps
 }: WithWithdrawSaleTokenPolicy<C, IWithdrawTokenInput>) =>
   composePactCommand(
     continuation({
@@ -107,10 +80,6 @@ const withdrawTokenCommand = <C extends IWithdrawSaleTokenPolicyConfig>({
         : []),
       ...formatCapabilities(capabilities, signFor),
     ]),
-    ...generatePolicyTransactionData(
-      policyConfig as IWithdrawSaleTokenPolicyConfig,
-      policyProps as unknown as WithdrawSalePolicyProps,
-    ),
     ...formatAdditionalSigners(additionalSigners),
     setMeta({ senderAccount: seller.account, chainId, ...meta }),
   );

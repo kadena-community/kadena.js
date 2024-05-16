@@ -872,7 +872,7 @@ describe('buyToken', () => {
   });
 
   it('should buy a token', async () => {
-    await waitForBlockTime((Number(auctionEndDate.int) + 2) * 1000);
+    await waitForBlockTime((Number(auctionEndDate.int) + 7) * 1000);
 
     const withStep = withStepFactory();
 
