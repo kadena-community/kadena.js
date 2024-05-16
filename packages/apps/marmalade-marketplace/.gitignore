@@ -28,3 +28,13 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+
+# local cron job responses
+.cron
+
+# local graphql generated files
+/src/graphql/generated
+
+# firebase files
+.firebaserc
+firestore.indexes.json

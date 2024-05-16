@@ -26,6 +26,12 @@
     ],
     "strictNullChecks": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", ".next/types/**/*.ts", "css.d.ts"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    ".next/types/**/*.ts",
+    "css.d.ts",
+    "scripts"
+  ],
   "exclude": ["node_modules", "src/__generated__/**"]
 }
