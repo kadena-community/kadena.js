@@ -4,6 +4,7 @@ import type { Node, Text } from 'mdast';
 import { remark } from 'remark';
 import type { Root } from 'remark-gfm';
 import { clone } from '../importReadme';
+import { deleteTempDir } from '../importReadme/importRepo';
 import { runPrettier } from '../runPrettier';
 import { isParent } from '../utils';
 import {
@@ -79,6 +80,17 @@ const createRecord = (content: Node): IChangelogRecord => {
   };
 };
 
+const checkPatchNames = (value: string): boolean => {
+  const names = ['patch changes', 'bugfixes', 'tests'];
+
+  return names.includes(value.toLowerCase());
+};
+const checkMinorNames = (value: string): boolean => {
+  const names = ['minor changes', 'features'];
+
+  return names.includes(value.toLowerCase());
+};
+
 //create a json
 const crawl = (repo: IRepo): ((tree: Node) => IChangelog) => {
   const content: Record<string, IChanglogContent> = {};
@@ -104,10 +116,10 @@ const crawl = (repo: IRepo): ((tree: Node) => IChangelog) => {
         if (branch.type === 'heading' && branch.depth === 3) {
           const value = (branch.children[0] as Text).value;
           switch (true) {
-            case value === 'Patch Changes' || value === 'Bugfixes':
+            case checkPatchNames(value):
               currentPosition = VersionPosition.PATCH;
               break;
-            case value === 'Minor Changes':
+            case checkMinorNames(value):
               currentPosition = VersionPosition.MINOR;
               break;
             default:
@@ -189,7 +201,6 @@ export const importChangelogs = async (): Promise<IScriptResult> => {
   const content = await getContent(REPOS);
 
   await getGitHubData(content);
-
   enrichContent(content);
 
   if (!errors.length) {
@@ -199,6 +210,9 @@ export const importChangelogs = async (): Promise<IScriptResult> => {
 
   await runPrettier();
   console.log({ errors });
+
+  deleteTempDir();
+
   return { success, errors };
 };
 
