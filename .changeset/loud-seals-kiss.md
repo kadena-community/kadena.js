@@ -2,4 +2,4 @@
 "@kadena/react-ui": patch
 ---
 
-update style notification
+Adds story for new System icons

@@ -5,6 +5,11 @@ export const pactPathUrlRedirects = [
     permanent: true,
   },
   {
+    source: '/learn-pact/beginner/atom-sdk',
+    destination: '/build/pact/atom-sdk',
+    permanent: true,
+  },
+  {
     source: '/learn-pact/beginner/:slug',
     destination: '/pact/beginner/:slug',
     permanent: true,

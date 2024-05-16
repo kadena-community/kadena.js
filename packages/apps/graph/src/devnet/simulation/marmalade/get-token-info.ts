@@ -3,6 +3,7 @@ import { Pact } from '@kadena/client';
 import { dirtyReadClient } from '@kadena/client-utils/core';
 import { composePactCommand, execution, setMeta } from '@kadena/client/fp';
 import { dotenv } from '@utils/dotenv';
+import { networkData } from '@utils/network';
 
 interface ITokenInfo {
   supply: number;
@@ -67,7 +68,7 @@ export const getTokenInfo = async (
   const config = {
     host: dotenv.NETWORK_HOST,
     defaults: {
-      networkId: dotenv.NETWORK_ID,
+      networkId: networkData.networkId,
     },
   };
 

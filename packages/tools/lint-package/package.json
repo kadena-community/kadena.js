@@ -1,6 +1,6 @@
 {
   "name": "@kadena-dev/lint-package",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "private": true,
   "description": "Linter for monorepo packages",
   "repository": {

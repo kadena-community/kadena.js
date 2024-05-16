@@ -5,6 +5,7 @@ import { createSignWithKeypair } from '@kadena/client';
 import { transferCrossChain } from '@kadena/client-utils/coin';
 import { dotenv } from '@utils/dotenv';
 import { logger } from '@utils/logger';
+import { networkData } from '@utils/network';
 
 export async function crossChainTransfer({
   sender,
@@ -60,7 +61,7 @@ export async function crossChainTransfer({
     {
       host: dotenv.NETWORK_HOST,
       defaults: {
-        networkId: dotenv.NETWORK_ID,
+        networkId: networkData.networkId,
       },
       sign: createSignWithKeypair([...sender.keys, ...gasPayer.keys]),
     },

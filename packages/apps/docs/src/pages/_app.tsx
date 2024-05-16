@@ -67,10 +67,12 @@ export const MyApp = ({
   return (
     <>
       <Head>
-        <title>{title}</title>
-        <meta name="title" content={title} />
+        <title>{`${title} | Kadena Docs`}</title>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="title" content={`${title} | Kadena Docs`} />
         <meta name="description" content={description} />
         <meta content="text/html; charset=UTF-8" name="Content-Type" />
+        <meta content="#020E1B" name="theme-color" />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1"

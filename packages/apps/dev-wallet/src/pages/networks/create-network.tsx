@@ -31,7 +31,7 @@ export function CreateNetwork() {
   }
 
   return (
-    <main>
+    <>
       <Box margin="md">
         <Heading variant="h5">Create network</Heading>
         <form onSubmit={handleSubmit(create)}>
@@ -88,6 +88,6 @@ export function CreateNetwork() {
           <Button type="submit">Create</Button>
         </form>
       </Box>
-    </main>
+    </>
   );
 }

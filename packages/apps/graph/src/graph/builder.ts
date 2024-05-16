@@ -19,6 +19,7 @@ import {
 import type { IncomingMessage } from 'http';
 import { prismaClient } from '../db/prisma-client';
 import type {
+  IBlockNeighbor,
   IContinuationPayload,
   IExecutionPayload,
   IFungibleAccount,
@@ -95,6 +96,7 @@ export const builder = new SchemaBuilder<
       TransactionSignature: ITransactionSignature;
       PactQueryResponse: IPactQueryResponse;
       NetworkInfo: INetworkInfo;
+      BlockNeighbor: IBlockNeighbor;
     };
   }
 >({
