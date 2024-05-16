@@ -147,12 +147,7 @@ export const navLinkClass = style([
   },
 ]);
 
-export const socialsClass = style([
-  responsiveStyle({
-    xs: { display: 'flex' },
-    xl: { display: 'flex' },
-  }),
-]);
+export const socialsClass = style([responsiveStyle({})]);
 
 export const baseIcon = style([
   {
