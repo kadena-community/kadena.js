@@ -1,5 +1,13 @@
 # Change Log - @kadena-dev/eslint-config
 
+## 1.0.4
+
+### Patch Changes
+
+- 93bf55b07: Package updates
+- Updated dependencies \[93bf55b07]
+  - @kadena-dev/eslint-plugin\@0.0.9
+
 ## 1.0.3
 
 ### Patch Changes
@@ -12,20 +20,20 @@
 ### Patch Changes
 
 - fa6b84e22: No auto-globals for vitest specs
-- Updated dependencies [1907e5ef2]
-- Updated dependencies [fa6b84e22]
-  - @kadena-dev/eslint-plugin@0.0.8
+- Updated dependencies \[1907e5ef2]
+- Updated dependencies \[fa6b84e22]
+  - @kadena-dev/eslint-plugin\@0.0.8
 
 ## 1.0.1
 
 ### Patch Changes
 
 - fec8dfafd: Upgrade `typescript` and `@types/node` dependencies
-- Updated dependencies [831c022c8]
-- Updated dependencies [a664a9535]
-- Updated dependencies [fec8dfafd]
-- Updated dependencies [a664a9535]
-  - @kadena-dev/eslint-plugin@0.0.7
+- Updated dependencies \[831c022c8]
+- Updated dependencies \[a664a9535]
+- Updated dependencies \[fec8dfafd]
+- Updated dependencies \[a664a9535]
+  - @kadena-dev/eslint-plugin\@0.0.7
 
 ## 1.0.0
 
@@ -44,9 +52,9 @@
 
 ### Patch Changes
 
-- Updated dependencies [242b5687]
-- Updated dependencies [4d525832]
-  - @kadena-dev/eslint-plugin@0.0.6
+- Updated dependencies \[242b5687]
+- Updated dependencies \[4d525832]
+  - @kadena-dev/eslint-plugin\@0.0.6
 
 This log was last generated on Fri, 04 Aug 2023 16:10:02 GMT and should not be
 manually modified.

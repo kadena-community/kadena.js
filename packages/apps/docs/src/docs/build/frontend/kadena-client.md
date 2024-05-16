@@ -257,7 +257,7 @@ The `coin.cross-chain` function is a `defpact` multi-step transaction that burns
 the source chain and mints tokens in the destination chain. 
 After the first step completes successfully, you can call the second step by using the `continuation` command object.
 
-```TS
+```typescript
 
 const builder: IBuilder = Pact.builder.continuation({
   pactId,
@@ -1024,7 +1024,7 @@ However, the Kadena client library also provides functions to make these call mo
 
 To use the helper functions for communicating with Chainweb nodes, you must first use the `createClient` function to return the `IClient` interface.
 
-```TS
+```typescript
 createClient(
   host?: string | (options: {chainId: ChainId; networkId: string}) => string,
   options?: { confirmationDepth?: number }
@@ -1057,7 +1057,7 @@ interface IClient {
 
 You can use object destructuring to extract specific functions.
 
-```TS
+```typescript
 const { submit, local, pollCreateSpv } = createClient();
 ```
 
@@ -1076,14 +1076,14 @@ The `networkId` and `chainId` parameters are read from the command object and pa
 
 To create a client for the development network and a specific chain identifier (1):
 
-```TS
+```typescript
 const client = createClient("http://127.0.0.1:8080/chainweb/0.0/development/chain/1/pact");
 ```
 
 To create a client for the development network that covers multi-chain and uses
  the URL generator function for more flexibility:
 
-```TS
+```typescript
 const devNetClient = createClient(({chainId, networkId})=>
    `http://127.0.0.1:8080/chainweb/0.0/${networkId}/chain/${chainId ?? '1'}/pact`
 );
@@ -1091,7 +1091,7 @@ const devNetClient = createClient(({chainId, networkId})=>
 
 To create a client that uses `mainnet` but not Kadena main network nodes:
 
-```TS
+```typescript
 const client = createClient(({ chainId, networkId }) => {
   switch (networkId) {
     case 'mainnet01':
@@ -1106,7 +1106,7 @@ const client = createClient(({ chainId, networkId }) => {
 
 To create a client with a `confirmationDepth` of `5` that waits for five new blocks to be added to the chain before reading the result of a transaction:
 
-```TS
+```typescript
 const { submit, pollStatus } = createClient(undefined, { confirmationDepth: 5 });
 ```
 
@@ -1118,7 +1118,7 @@ These functions use the Pact `/send` endpoint.
 The client `send` function is a deprecated alias for the `submit` function with the same interface.
 To submit one transaction using the `submit` function:
 
-```TS
+```typescript
 const { submit } = createClient();
 
 submit(tx): Promise<ITransactionDescriptor>;
@@ -1137,7 +1137,7 @@ interface ITransactionDescriptor {
 
 To submit a list of transactions using the `submit` function:
 
-```TS
+```typescript
 const { submit } = createClient();
 
 submit(txList): Promise<ITransactionDescriptor[]>;
@@ -1152,7 +1152,7 @@ In most cases, you should store the result of this function so you can fetch the
 The `submitOne` function is the same as submitting one transaction using the `submit` function.
 For example:
 
-```TS
+```typescript
 const { submitOne } = createClient();
 
 submitOne(tx): Promise<ITransactionDescriptor>;
@@ -1178,7 +1178,7 @@ The Kadena client library exposes the following functions to use the /listen or 
 
 These functions all return the result of a transaction with the following `ICommandResult` interface:
 
-```TS
+```typescript
 interface ICommandResult {
   reqKey: string;
   txId: number | null;
@@ -1235,7 +1235,7 @@ interface ICommandResult {
 
 This function calls `/poll` and returns the result of requests.
 
-```TS
+```typescript
 const { getStatus } = createClient();
 
 getStatus(transactionDescriptor: TransactionDescriptor[] | ITransactionDescriptor): Promise<{
@@ -1252,7 +1252,7 @@ getStatus(transactionDescriptor: TransactionDescriptor[] | ITransactionDescripto
 This function calls `/poll` in intervals and returns the result of all requests
 when all are ready.
 
-```TS
+```typescript
 const { pollStatus } = createClient();
 
 pollStatus(
@@ -1286,13 +1286,13 @@ via the `requests` property.
 
 Poll the status of a request:
 
-```TS
+```typescript
 const result = await pollStatus(request, {});
 ```
 
 Poll the status of several requests and get the result for each one immediately:
 
-```TS
+```typescript
 const resultPromise = pollStatus([firstRequest, secondRequest, thirdRequest]);
 // Notify the UI from the result of each request as soon as it's available
 resultPromise.requests["first-request-key"].then(res => {UI.notify(res)});
@@ -1310,7 +1310,7 @@ network/firewall configuration doesn't allow keeping HTTP connections open for a
 long time, then it's better to use `pollOne` which has the same interface but
 uses `/poll` under the hood.
 
-```TS
+```typescript
 const { listen } = createClient();
 
 listen(transactionDescriptor: TransactionDescriptor[] | ITransactionDescriptor): Promise<ICommandResult>
@@ -1325,7 +1325,7 @@ listen(transactionDescriptor: TransactionDescriptor[] | ITransactionDescriptor):
 The `pollOne` function fetches the result of only one request via the `/poll`
 endpoint.
 
-```TS
+```typescript
 const { pollOne } = createClient();
 
 pollOne(transactionDescriptor: TransactionDescriptor[] | ITransactionDescriptor): Promise<ICommandResult>
@@ -1357,7 +1357,7 @@ The following functions all utilize the `/local` endpoint:
 The `local` function is the most generic function that utilizes the `/local`
 endpoint.
 
-```TS
+```typescript
 local(
   transaction: ICommand | IUnsignedCommand,
   options?: { preflight?: boolean; signatureVerification?: boolean; }
@@ -1376,7 +1376,7 @@ true.
 
 Use local call to avoid submitting an incorrect transaction:
 
-```TS
+```typescript
 // Check if the transaction and signatures are correct
 const response = await client.local(signedTx);
 
@@ -1389,7 +1389,7 @@ const request = await client.submit(signedTx);
 
 Use local call for gas estimation:
 
-```TS
+```typescript
 // We don't need to send signatures to check gas estimation;
 const response = await client.local(unsignedTx, { preflight:true , signatureVerification: false });
 
@@ -1405,7 +1405,7 @@ const gasEstimation =  response.gas;
 Alias for local where both preflight and signatureVerification are false; useful
 when your code only includes reading data from the node.
 
-```TS
+```typescript
 dirtyRead(transaction: ICommand | IUnsignedCommand): Promise<ICommandResult>;
 ```
 
@@ -1417,7 +1417,7 @@ dirtyRead(transaction: ICommand | IUnsignedCommand): Promise<ICommandResult>;
 
 Get account balance
 
-```TS
+```typescript
 const tr = Pact.builder
   .execution(Pact.modules.coin['get-balance'](account))
   .setMeta({ chainId: '0' })
@@ -1439,7 +1439,7 @@ const balance = res.result.data;
 
 Alias for local where preflight is true but signatureVerification is false.
 
-```TS
+```typescript
 preflight(transaction: ICommand | IUnsignedCommand): Promise<ICommandResult>;
 ```
 
@@ -1451,7 +1451,7 @@ preflight(transaction: ICommand | IUnsignedCommand): Promise<ICommandResult>;
 
 Alias for local where preflight is false but signatureVerification is true.
 
-```TS
+```typescript
 signatureVerification(transaction: ICommand | IUnsignedCommand): Promise<ICommandResult & { preflightWarnings?: string[] }>;
 ```
 
@@ -1465,7 +1465,7 @@ If you just want to see the result of a pact code and don't want to create a
 command object, you can use the `runPact` function. This function creates a
 command object internally.
 
-```TS
+```typescript
 runPact(code: string, data?: Record<string, unknown>, options?: { chainId: ChainId; networkId: string }): Promise<ICommandResult>;
 ```
 
@@ -1477,7 +1477,7 @@ runPact(code: string, data?: Record<string, unknown>, options?: { chainId: Chain
 
 #### Examples
 
-```TS
+```typescript
 const { runPact } = createClient()
 
 const result = await runPact(`(coin.getBalance "alice")`, { }, { networkId:"mainnet01", chainId:"1" })
@@ -1498,7 +1498,7 @@ There are two functions for this purpose, both of which use the `/spv` endpoint:
 
 Request SPV proof if it's ready.
 
-```TS
+```typescript
 createSpv(transactionDescriptor: ITransactionDescriptor, targetChainId: ChainId): Promise<string>;
 ```
 
@@ -1511,7 +1511,7 @@ createSpv(transactionDescriptor: ITransactionDescriptor, targetChainId: ChainId)
 
 Poll for the SPV proof and await until it's ready.
 
-```TS
+```typescript
 pollCreateSpv(
   transactionDescriptor: ITransactionDescriptor,
   targetChainId: ChainId,
@@ -1527,7 +1527,7 @@ pollCreateSpv(
 
 #### Examples
 
-```TS
+```typescript
 const request = await submit(crossChainTx)
 const response = await pollOne(request)
 // create spv proof for the transaction
@@ -1660,7 +1660,7 @@ continuation(contData: {
 
 For example:
 
-```TS
+```typescript
 const command: IPactCommand = composePactCommand(
   continuation({
     pactId,
@@ -1831,7 +1831,7 @@ composePactCommand(
 
 ### etNonce
 
-TO manually set `IPactCommand.nonce`:
+To manually set `IPactCommand.nonce`:
 
 ```typescript
 setNonce(nonce): { nonce: string };
@@ -1866,12 +1866,13 @@ composePactCommand(
 
 ### createTransaction
 
-TO create the transaction object:
+To create the transaction object:
 
 ```typescript
 createTransaction(pactCommand:IPactCommand): IUnsignedCommand
 ```
- For example:
+
+For example:
 
 ```typescript
 const pactCommand = composePactCommand(

@@ -1,9 +1,9 @@
 ---
-title: Node client API
+title: Node client
 description:
   The Chainweb node client API provides a TypeScript based application programming interface API for calling Chainweb node endpoints.
-menu: Chainweb REST API
-label: Node client API
+menu: Chainweb API
+label: Node client
 order: 1
 layout: full
 tags: ['TypeScript', 'Kadena client', 'frontend']
@@ -11,15 +11,16 @@ tags: ['TypeScript', 'Kadena client', 'frontend']
 
 # Chainweb node client
 
-The Chainweb node client `@kadena/chainweb-node-client` is a typed JavaScript wrapper with fetch to call
-`chainweb-node` API endpoints. 
-These endpoints are broken down into the following categories:
+Kadena Chainweb clients are application programming interfaces that provide TypeScript-based calls for interacting with Chainweb nodes on the Kadena network.
 
-1. blockchain - wrapper around chainweb-node p2p api endpoints
-2. pact - [https://api.chainweb.com/openapi/pact.html][2]
-3. rosetta - [https://api.chainweb.com/openapi/#tag/rosetta][3]
+The **Chainweb node client**—`@kadena/chainweb-node-client`—is a typed JavaScript wrapper with fetch to call `chainweb-node` API endpoints. 
+For the Chainweb node client, `chainweb-node` endpoints are broken down into the following categories:
 
-API Reference can be found here [chainweb-node-client.api.md][1]
+- blockchain - wrapper around chainweb-node [peer-to-peer endpoints](https://api.chainweb.com/openapi/#tag/p2p_api).
+- pact - wrapper for [Pact endpoints](https://api.chainweb.com/openapi/pact.html).
+- rosetta - wrapper for [Rosetta endpoints](https://api.chainweb.com/openapi/#tag/rosetta).
+
+For generated API reference information, see [chainweb-node-client.api.md][1]
 
 ## Pact
 
@@ -37,7 +38,7 @@ The Pact API will contain the following functions:
 
 ### listen
 
-Listen for result of Pact command on a Pact server and retrieves raw response.
+Listens for the result of a Pact command on a Chainweb node server and retrieves a raw response.
 
 ```ts
 const requestKey: IListenRequestBody = {
@@ -49,9 +50,9 @@ const response: ICommandResult | Response = await listen(requestKey, '');
 
 ### local
 
-Blocking/sync call to submit a command for non-transactional execution. In a
-blockchain environment this would be a node-local “dirty read”. Any database
-writes or changes to the environment are rolled back.
+Calls the `/local` endpoint on a Chainweb node to submit a synchronous command for non-transactional execution. 
+In a blockchain environment, this would be a node-local “dirty read”. 
+Any database writes or changes to the environment are rolled back.
 
 ```ts
 const signedCommand: LocalRequestBody = {
@@ -65,8 +66,8 @@ const response: ICommandResult | Response = await local(signedCommand, '');
 
 ### mkCap
 
-Helper function for creating a pact capability object. Output can be used with
-the `mkSignerCList` function.
+Creates a Pact capability object. 
+You can use the output from this helper function with the `mkSignerCList` function.
 
 ```ts
 mkCap('coin.TRANSFER', ['fromAcctName', 'toAcctName', 0.1]);
@@ -74,13 +75,15 @@ mkCap('coin.TRANSFER', ['fromAcctName', 'toAcctName', 0.1]);
 
 ### parseResponse
 
-Parses raw `fetch` response into a typed JSON value.
+Parses a raw `fetch` response into a typed JSON value.
 
 ```ts
 const parsedResponse = await parseResponse(response as Response);
 ```
 
 ### parseResponseTEXT
+
+Parses a raw `fetch` response into a typed JSON value.
 
 ```ts
 const parsedResponse = await parseResponseTEXT(response as Response);
@@ -100,7 +103,7 @@ const response: Response | IPollResponse = await poll(signedCommand, '');
 
 ### send
 
-Asynchronous submission of one or more public (unencrypted) commands to the
+Submits asynchronous transaction with one or more public (unencrypted) commands to the
 blockchain for execution.
 
 ```ts
@@ -126,7 +129,7 @@ const response: Response | ISendResponse = await send(sendRequest, '');
 
 ### spv
 
-Sends request to /spv and retrieves spv proof of a cross chain transaction.
+Sends a request to the `/spv` endpoint and retrieves a simple payment verification proof of a cross chain transaction.
 
 ```ts
 const spvResponse: string | Response = await spv(spv_request, '');
@@ -147,5 +150,3 @@ stringifyAndMakePOSTRequest(body);
 
 [1]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/chainweb-node-client/etc/chainweb-node-client.api.md
-[2]: https://api.chainweb.com/openapi/pact.html
-[3]: https://api.chainweb.com/openapi/#tag/rosetta

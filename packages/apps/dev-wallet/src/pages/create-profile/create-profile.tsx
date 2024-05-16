@@ -53,7 +53,7 @@ export function CreateProfile() {
     );
   }
   return (
-    <main>
+    <>
       <Box margin="md">
         <Heading variant="h5">Create wallet</Heading>
         <Text>Enter a password to encrypt the wallet data with that</Text>
@@ -69,6 +69,6 @@ export function CreateProfile() {
           <Button type="submit">Create</Button>
         </form>
       </Box>
-    </main>
+    </>
   );
 }

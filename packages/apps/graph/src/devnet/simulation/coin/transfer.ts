@@ -6,6 +6,7 @@ import { transferCreate } from '@kadena/client-utils/coin';
 import { PactNumber } from '@kadena/pactjs';
 import { dotenv } from '@utils/dotenv';
 import { logger } from '@utils/logger';
+import { networkData } from '@utils/network';
 import { stringifyProperty } from '../helper';
 
 export async function transfer({
@@ -48,7 +49,7 @@ export async function transfer({
     {
       host: dotenv.NETWORK_HOST,
       defaults: {
-        networkId: dotenv.NETWORK_ID,
+        networkId: networkData.networkId,
       },
       sign: createSignWithKeypair(sender.keys),
     },

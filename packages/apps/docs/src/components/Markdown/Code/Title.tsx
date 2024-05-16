@@ -49,6 +49,7 @@ export const TitleWrapper: FC<IProp> = ({ children, ...props }) => {
           className={copyButtonClass}
           onClick={handleCopy}
           variant="transparent"
+          aria-label="Copy code"
         >
           {isCopied ? (
             <MonoCheck className={okCopiedClass} />

@@ -128,7 +128,7 @@ export function SignatureBuilder() {
   }
 
   return (
-    <main>
+    <>
       <Wizard>
         <Wizard.Render>
           {({ step, goTo }) => (
@@ -303,6 +303,6 @@ export function SignatureBuilder() {
           )}
         </Wizard.Step>
       </Wizard>
-    </main>
+    </>
   );
 }

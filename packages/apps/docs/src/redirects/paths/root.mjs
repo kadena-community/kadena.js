@@ -46,12 +46,12 @@ export const rootPathUrlRedirects = [
   },
   {
     source: '/contribute/code-of-conduct',
-    destination: '/kadena/code-of-conduct',
+    destination: 'https://www.kadena.io/community-guidelines',
     permanent: true,
   },
   {
     source: '/:slug/contribute/code-of-conduct',
-    destination: '/kadena/code-of-conduct',
+    destination: 'https://www.kadena.io/community-guidelines',
     permanent: true,
   },
   {
@@ -116,7 +116,7 @@ export const rootPathUrlRedirects = [
   },
   {
     source: '/kadena-docs/readme/code-of-conduct',
-    destination: '/kadena/code-of-conduct',
+    destination: 'https://www.kadena.io/community-guidelines',
     permanent: true,
   },
   {

@@ -87,6 +87,19 @@ export const lightThemeValues = {
         n9: tokens.kda.foundation.size.n9,
         n10: tokens.kda.foundation.size.n10,
       },
+      transition: {
+        delay: {
+          none: '0ms',
+        },
+        duration: {
+          base: '400ms',
+          d200: '200ms',
+        },
+        animation: {
+          easeOutSine: `${tokens.kda.foundation.transition.duration.d200} ${tokens.kda.foundation.transition.delay.none} cubic-bezier(0.61, 1, 0.88, 1)`,
+          easeOutCubic: `${tokens.kda.foundation.transition.duration.d200} ${tokens.kda.foundation.transition.delay.none} cubic-bezier(0.33, 1, 0.68, 1)`,
+        },
+      },
       zIndex: {
         deepdive: '-99999',
         default: '1',
@@ -482,6 +495,11 @@ export const lightThemeValues = {
             black: tokens.kda.foundation.color.neutral.n99,
           },
         },
+        gradient: {
+          base: {
+            subtle: `${tokens.kda.foundation.color.background.base.default} 0.25%, ${tokens.kda.foundation.color.neutral['n1@alpha0']} 1%`,
+          },
+        },
         icon: {
           base: {
             default: tokens.kda.foundation.color.neutral.n95,
@@ -664,6 +682,7 @@ export const lightThemeValues = {
           n95: '#131e2b',
           n99: '#020e1b',
           n100: '#000000',
+          'n0@alpha0': '#ffffff00',
           'n0@alpha10': '#ffffff1a',
           'n0@alpha20': '#ffffff33',
           'n0@alpha40': '#ffffff66',
@@ -671,6 +690,7 @@ export const lightThemeValues = {
           'n0@alpha80': '#ffffffcc',
           'n0@alpha90': '#ffffffe6',
           'n0@alpha95': '#fffffff2',
+          'n1@alpha0': '#f5f5f500',
           'n1@alpha1': '#f5f5f503',
           'n1@alpha3': '#f5f5f508',
           'n1@alpha6': '#f5f5f50f',
@@ -688,6 +708,7 @@ export const lightThemeValues = {
           'n90@alpha20': '#252f3a33',
           'n90@alpha25': '#252f3a40',
           'n95@alpha80': '#131e2bcc',
+          'n99@alpha0': '#020e1b00',
           'n99@alpha1': '#020e1b03',
           'n99@alpha3': '#020e1b08',
           'n99@alpha6': '#020e1b0f',
@@ -698,6 +719,7 @@ export const lightThemeValues = {
           'n99@alpha50': '#020e1b80',
           'n99@alpha80': '#020e1bcc',
           'n99@alpha90': '#020e1be6',
+          'n100@alpha0': '#00000000',
           'n100@alpha10': '#0000001a',
           'n100@alpha20': '#00000033',
           'n100@alpha40': '#00000066',
@@ -1144,13 +1166,6 @@ export const lightThemeValues = {
           },
         },
       },
-      effect: {
-        shadow: {
-          level1: `4px 0.5rem ${tokens.kda.foundation.size.n2} 4px #000000`,
-          level2: `4rem 4rem ${tokens.kda.foundation.size.n2} 2rem #000000`,
-          level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
-        },
-      },
       icon: {
         size: {
           xxs: tokens.kda.foundation.size.n3,
@@ -1166,6 +1181,13 @@ export const lightThemeValues = {
         content: {
           minWidth: '33.75rem',
           maxWidth: '42.5rem',
+        },
+      },
+      effect: {
+        shadow: {
+          level1: `4px 0.5rem ${tokens.kda.foundation.size.n2} 4px #000000`,
+          level2: `4rem 4rem ${tokens.kda.foundation.size.n2} 2rem #000000`,
+          level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
         },
       },
       typography: {

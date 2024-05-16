@@ -11,12 +11,11 @@ tags: ['TypeScript', 'Kadena client', 'frontend']
 
 # Chainweb streaming client
 
-[Chainweb-stream][1] client for browsers and node.js
+Kadena Chainweb clients are application programming interfaces that provide TypeScript-based calls for interacting with Chainweb nodes on the Kadena network.
 
-Stream account or module/event transactions from chainweb-stream, including
-their confirmation depth.
+The **chainweb-stream** client for browsers and node.js enables you to stream account, module, and event transactions, including their confirmation depth.
 
-Introduces and normalizes the following features across environments:
+The [chainweb-stream][1] client introduces and normalizes the following features across environments:
 
 - Reconnect with exponential backoff
 - Initial connection timeout
@@ -61,7 +60,7 @@ client.connect();
 
 Find more detailed examples under `src/examples`.
 
-## Constructor Options
+## Constructor options
 
 | Key               | Required | Description                                                     | Example Values              |
 | ----------------- | :------: | --------------------------------------------------------------- | --------------------------- |

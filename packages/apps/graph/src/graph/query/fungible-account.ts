@@ -1,6 +1,6 @@
 import { getFungibleChainAccount } from '@services/account-service';
-import { chainIds } from '@utils/chains';
 import { dotenv } from '@utils/dotenv';
+import { networkData } from '@utils/network';
 import { builder } from '../builder';
 import FungibleAccount from '../objects/fungible-account';
 import type { IFungibleChainAccount } from '../types/graphql-types';
@@ -29,7 +29,7 @@ builder.queryField('fungibleAccount', (t) =>
     async resolve(__parent, args) {
       const chainAccounts = (
         await Promise.all(
-          chainIds.map(async (chainId) => {
+          networkData.chainIds.map(async (chainId) => {
             return getFungibleChainAccount({
               chainId: chainId,
               fungibleName: args.fungibleName || dotenv.DEFAULT_FUNGIBLE_NAME,

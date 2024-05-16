@@ -1,14 +1,12 @@
 import { style, styleVariants } from '@vanilla-extract/css';
 import { atoms } from '../../styles/atoms.css';
-import { tokens } from '../../styles/index';
+import { token } from '../../styles/index';
 
 export const base = style([
   atoms({
     position: 'absolute',
     fontSize: 'sm',
-    paddingBlock: 'sm',
-    paddingInline: 'md',
-    borderRadius: 'md',
+    borderRadius: 'xs',
     color: 'text.base.inverse.default',
     pointerEvents: 'none',
     backgroundColor: 'base.inverse.default',
@@ -21,10 +19,10 @@ export const base = style([
       position: 'absolute',
       borderTop: '6px solid transparent',
       borderRight: '6px solid transparent',
-      borderBottom: `6px solid ${tokens.kda.foundation.color.background.layer.default}`,
+      borderBottom: `6px solid ${token('color.background.base.inverse.default')}`,
       borderLeft: '6px solid transparent',
     },
-    zIndex: tokens.kda.foundation.zIndex.overlay,
+    zIndex: token('zIndex.overlay'),
   },
 ]);
 
@@ -32,7 +30,7 @@ export const tooltipPositionVariants = styleVariants({
   bottom: [
     base,
     {
-      marginTop: tokens.kda.foundation.spacing.md,
+      marginTop: token('spacing.md'),
       top: '100%',
       left: '50%',
       transform: 'translateX(-50%)',
@@ -46,7 +44,7 @@ export const tooltipPositionVariants = styleVariants({
   top: [
     base,
     {
-      marginBottom: tokens.kda.foundation.spacing.md,
+      marginBottom: token('spacing.md'),
       bottom: '100%',
       left: '50%',
       transform: 'translateX(-50%)',
@@ -60,7 +58,7 @@ export const tooltipPositionVariants = styleVariants({
   right: [
     base,
     {
-      marginLeft: tokens.kda.foundation.spacing.md,
+      marginLeft: token('spacing.md'),
       left: '100%',
       top: '50%',
       transform: 'translateY(-50%)',
@@ -74,7 +72,7 @@ export const tooltipPositionVariants = styleVariants({
   left: [
     base,
     {
-      marginRight: tokens.kda.foundation.spacing.md,
+      marginRight: token('spacing.md'),
       right: '100%',
       top: '50%',
       transform: 'translateY(-50%)',
@@ -85,4 +83,15 @@ export const tooltipPositionVariants = styleVariants({
       },
     },
   ],
+});
+
+export const tooltipSizes = styleVariants({
+  default: {
+    paddingInline: token('spacing.n4'),
+    paddingBlock: token('spacing.n3'),
+  },
+  compact: {
+    paddingInline: token('spacing.n3'),
+    paddingBlock: token('spacing.n1'),
+  },
 });

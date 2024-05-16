@@ -58,7 +58,7 @@ export const MyApp = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
-  const { title, description, headerImage, authorInfo } = props.frontmatter;
+  const { title, description, headerImage } = props.frontmatter;
   const defaultImagePath = '/assets/og_banner.jpeg';
   const ogImage = headerImage
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}${headerImage}`
@@ -67,10 +67,12 @@ export const MyApp = ({
   return (
     <>
       <Head>
-        <title>{title}</title>
-        <meta name="title" content={title} />
+        <title>{`${title} | Kadena Docs`}</title>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="title" content={`${title} | Kadena Docs`} />
         <meta name="description" content={description} />
         <meta content="text/html; charset=UTF-8" name="Content-Type" />
+        <meta content="#020E1B" name="theme-color" />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1"
@@ -87,15 +89,6 @@ export const MyApp = ({
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={ogImage} />
-        {authorInfo && (
-          <>
-            <meta
-              property="article:author"
-              content={`/authors/${authorInfo.id}`}
-            />
-            <meta name="author" content={authorInfo.name} />
-          </>
-        )}
 
         <link rel="icon" href="/assets/favicons/icon@32.png?1" sizes="32x32" />
         <link

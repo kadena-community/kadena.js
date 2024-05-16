@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 import { readStdin } from './utils/stdin.js';
 
+/** mock for navigator which a dependency includes in the rollup bundle */
+globalThis.navigator = {} as Navigator;
+
 async function main(): Promise<void> {
   // stdin must be read before the "commander" or "chalk" packages are loaded
   await readStdin();
