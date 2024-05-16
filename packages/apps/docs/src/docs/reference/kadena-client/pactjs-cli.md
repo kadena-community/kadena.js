@@ -1,9 +1,10 @@
 ---
 title: pactjs-cli
 description:
-  The `@kadena/pactjs-cli` library provides a TypeScript based application programming interface API for interacting with smart contracts and the Kadena network. The library includes helper functions for the `coin` module that you can import using `@kadena/client-utils/coin` and `core` functions that you can use to develop interfaces for custom contracts.
+  The `@kadena/pactjs-cli` library provides a TypeScript based application programming interface API for interacting with smart contracts and the Kadena network. This library enables you to generate TypeScript definitions for Pact modules to work with Kadena client libraries.
+
 menu: Frontend libraries
-label: Client libraries
+label: Pactjs-cli
 order: 4
 layout: full
 tags: ['TypeScript', 'Kadena client', 'frontend']
@@ -11,7 +12,8 @@ tags: ['TypeScript', 'Kadena client', 'frontend']
 
 # @kadena/pactjs-cli
 
-CThe `@kadena/pactjs-cli` library provides a TypeScript-based API for the `@kadena/pactjs-core` and `@kadena/pactjs-client` packages to generate TypeScript definitions for Pact modules and Kadena client libraries.
+The `@kadena/pactjs-cli` library provides a TypeScript-based API for the `@kadena/pactjs-core` and `@kadena/pactjs-client` packages.
+This library enables you to generate TypeScript definitions for Pact modules to work with Kadena client libraries.
 
 ## contract-generate
 
