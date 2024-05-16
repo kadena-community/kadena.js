@@ -3,9 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "next build",
-    "dev": "next dev",
-    "start": "next start"
+    "build": "pnpm generate && next build",
+    "dev": "pnpm generate && next dev",
+    "firebase:setup": "ts-node scripts/setup-firebase-indexes.ts",
+    "generate": "npx graphql-codegen",
+    "start": "next start",
+    "start:cron": "ts-node scripts/cron.ts"
   },
   "dependencies": {
     "@kadena-dev/shared-config": "workspace:^",
@@ -13,19 +16,28 @@
     "@kadena/client-utils": "workspace:*",
     "@kadena/pactjs": "workspace:^",
     "@kadena/react-ui": "workspace:^",
+    "firebase": "^10.8.0",
     "next": "latest",
     "react": "18.2.0",
     "react-aria-components": "^1.0.1",
     "react-dom": "18.2.0"
   },
-  "engines": {
-    "node": ">=18"
-  },
   "devDependencies": {
+    "@graphql-codegen/cli": "5.0.2",
+    "@graphql-codegen/typescript": "^4.0.6",
+    "@graphql-codegen/typescript-operations": "~4.2.0",
     "@types/css-modules": "^1.0.5",
+    "@types/node-cron": "^3.0.11",
     "@types/react": "^18.2.79",
     "@types/webpack-env": "^1.18.5",
     "@vanilla-extract/css": "1.14.2",
-    "@vanilla-extract/next-plugin": "^2.4.0"
+    "@vanilla-extract/next-plugin": "^2.4.0",
+    "axios": "^1.6.8",
+    "dotenv": "~16.4.5",
+    "node-cron": "^3.0.3",
+    "ts-node": "~10.9.2"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
