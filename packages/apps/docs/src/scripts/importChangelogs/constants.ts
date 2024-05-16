@@ -16,22 +16,22 @@ export enum VersionPosition {
 
 // TODO: we should add this to the config.yaml
 export const REPOS: IRepo[] = [
-  {
-    name: 'React UI',
-    repo: 'https://github.com/kadena-community/kadena.js.git',
-    directory: '/packages/libs/react-ui',
-    fileName: 'CHANGELOG.md',
-    owner: 'kadena-community',
-    repoName: 'kadena.js',
-  },
-  {
-    name: 'KadenaJS',
-    repo: 'https://github.com/kadena-community/kadena.js.git',
-    directory: '/packages/libs/kadena.js',
-    fileName: 'CHANGELOG.md',
-    owner: 'kadena-community',
-    repoName: 'kadena.js',
-  },
+  // {
+  //   name: 'React UI',
+  //   repo: 'https://github.com/kadena-community/kadena.js.git',
+  //   directory: '/packages/libs/react-ui',
+  //   fileName: 'CHANGELOG.md',
+  //   owner: 'kadena-community',
+  //   repoName: 'kadena.js',
+  // },
+  // {
+  //   name: 'KadenaJS',
+  //   repo: 'https://github.com/kadena-community/kadena.js.git',
+  //   directory: '/packages/libs/kadena.js',
+  //   fileName: 'CHANGELOG.md',
+  //   owner: 'kadena-community',
+  //   repoName: 'kadena.js',
+  // },
   {
     name: 'Pact 4',
     repo: 'https://github.com/kadena-io/pact.git',

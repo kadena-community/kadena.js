@@ -4,6 +4,7 @@ import type { Node, Text } from 'mdast';
 import { remark } from 'remark';
 import type { Root } from 'remark-gfm';
 import { clone } from '../importReadme';
+import { runPrettier } from '../runPrettier';
 import { isParent } from '../utils';
 import {
   CHANGELOGFILENAME,
@@ -196,6 +197,7 @@ export const importChangelogs = async (): Promise<IScriptResult> => {
     success.push('Changelogs imported');
   }
 
+  await runPrettier();
   console.log({ errors });
   return { success, errors };
 };

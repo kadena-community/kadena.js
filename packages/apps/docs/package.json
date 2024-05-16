@@ -24,6 +24,7 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts,.jsx,.tsx,.mjs",
+    "prettier": "prettier",
     "start": "next start",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
