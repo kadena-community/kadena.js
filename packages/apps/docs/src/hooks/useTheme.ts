@@ -92,11 +92,18 @@ export const useTheme = ({
   useEffect(() => {
     if (lockedTheme) {
       setTheme(lockedTheme);
+      return;
     }
+
     const media = window.matchMedia(MEDIA);
-    // Intentionally use deprecated listener methods to support iOS & old browsers
+    const theme = window.localStorage.getItem(storageKey) as ITheme;
+    if (theme) {
+      setTheme(theme);
+    } else {
+      handleMediaQuery(media);
+    }
+
     media.addEventListener('change', handleMediaQuery);
-    handleMediaQuery(media);
 
     return () => media.removeEventListener('change', handleMediaQuery);
   }, []);
