@@ -1,6 +1,7 @@
 import ora from 'ora';
 import {
   CHAIN_ID_ACTION_ERROR_MESSAGE,
+  MAX_FUND_AMOUNT,
   NO_ACCOUNTS_FOUND_ERROR_MESSAGE,
 } from '../../constants/account.js';
 import { FAUCET_MODULE_NAME } from '../../constants/devnets.js';
@@ -11,7 +12,10 @@ import { notEmpty } from '../../utils/globalHelpers.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
-import { ensureAccountAliasFilesExists } from '../utils/accountHelpers.js';
+import {
+  ensureAccountAliasFilesExists,
+  sortChainIds,
+} from '../utils/accountHelpers.js';
 import { fund } from '../utils/fund.js';
 import {
   deployFaucetsToChains,
@@ -26,9 +30,9 @@ export const createAccountFundCommand = createCommand(
   'Fund an existing/new account',
   [
     accountOptions.accountSelect(),
-    accountOptions.fundAmount(),
     globalOptions.networkSelect(),
     accountOptions.chainIdRange(),
+    accountOptions.fundAmount(),
     accountOptions.deployFaucet(),
   ],
   async (option) => {
@@ -39,15 +43,19 @@ export const createAccountFundCommand = createCommand(
     }
 
     const { account, accountConfig } = await option.account();
-    const { amount } = await option.amount();
     const { network, networkConfig } = await option.network({
       allowedNetworkIds: ['testnet', 'development'],
     });
     const { chainIds } = await option.chainIds();
-
     if (!notEmpty(chainIds)) {
       return log.error(CHAIN_ID_ACTION_ERROR_MESSAGE);
     }
+
+    const maxAmount = Math.floor(MAX_FUND_AMOUNT / chainIds.length);
+    const { amount } = await option.amount({
+      maxAmount: maxAmount,
+      numberOfChains: chainIds.length,
+    });
 
     if (!notEmpty(accountConfig)) {
       return log.error(
@@ -87,7 +95,7 @@ export const createAccountFundCommand = createCommand(
         chainIds,
       );
 
-      const undeployedChainIdsStr = undeployedChainIds.join(', ');
+      const undeployedChainIdsStr = sortChainIds(undeployedChainIds).join(', ');
 
       if (undeployedChainIds.length > 0) {
         log.warning(

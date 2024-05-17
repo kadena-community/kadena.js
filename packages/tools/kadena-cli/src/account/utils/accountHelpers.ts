@@ -9,6 +9,8 @@ import type {
 import { z } from 'zod';
 import type { IAliasAccountData } from './../types.js';
 
+import type { ChainId } from '@kadena/types';
+import { MAX_FUND_AMOUNT } from '../../constants/account.js';
 import { ACCOUNT_DIR, MAX_CHAIN_VALUE } from '../../constants/config.js';
 import { services } from '../../services/index.js';
 import { KadenaError } from '../../services/service-error.js';
@@ -162,28 +164,32 @@ export const chainIdRangeValidation = z
   )
   .nonempty();
 
-export const fundAmountValidation = z
-  .number({
-    errorMap: (error) => {
-      if (error.code === 'too_small') {
-        return {
-          message: 'must be greater than or equal to 1',
-        };
-      }
+export const createFundAmountValidation = (
+  numberOfChains: number,
+  maxValue = MAX_FUND_AMOUNT,
+): z.ZodNumber =>
+  z
+    .number({
+      errorMap: (error) => {
+        if (error.code === 'too_small') {
+          return {
+            message: 'must be greater than or equal to 1',
+          };
+        }
 
-      if (error.code === 'too_big') {
-        return {
-          message: 'must be less than or equal to 100',
-        };
-      }
+        if (error.code === 'too_big') {
+          return {
+            message: `With ${numberOfChains} chains to fund, the max amount per chain is ${maxValue} coin(s).`,
+          };
+        }
 
-      return {
-        message: 'must be a positive number (1 - 100)',
-      };
-    },
-  })
-  .min(1)
-  .max(100);
+        return {
+          message: `must be a positive number (1 - ${maxValue}})`,
+        };
+      },
+    })
+    .min(1)
+    .max(maxValue);
 
 export const getChainIdRangeSeparator = (
   input: string,
@@ -237,3 +243,6 @@ export const isValidForOnlyKeysAllPredicate = (
   accountName: string,
   publicKeys: string[],
 ): boolean => isKAccount(accountName) && publicKeys.length === 1;
+
+export const sortChainIds = (chainIds: ChainId[]): ChainId[] =>
+  chainIds.sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
