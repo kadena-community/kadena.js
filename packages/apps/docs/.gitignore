@@ -4,7 +4,6 @@ src/_generated/specs
 public/sitemap.xml
 
 .tempimport
-src/pages/docs
 
 next-env.d.ts
 .env.local
