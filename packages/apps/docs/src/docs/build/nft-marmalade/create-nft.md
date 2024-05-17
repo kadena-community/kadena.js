@@ -156,7 +156,7 @@ However, the token owner can still offer the token for sale.
 
 The offer can include a specific fixed quoted price or be configured with a variable quoted price that is adjusted according to the rules in a reference sale-specific contract.
 If an offer doesn't have a fixed quoted price, you can be configure to use either a **conventional auction** or a **dutch auction** contract to attract buyers to bid on the work.
-You can find an introduction to sales-specific contracts like these auction contracts in [Layered contract architecture](/build/nft-marmalade/architecture#sales-specific-contracts).
+You can find an introduction to sales-specific contracts like these auction contracts in [Contract architecture](/build/nft-marmalade/architecture#sales-specific-contracts).
 Regardless of the sales model you choose, you enter the token marketplace by submitting the offer transaction.
 
 ## Next steps

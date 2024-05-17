@@ -11,7 +11,7 @@ export const argumentConfig = {
   is_upgrade: 'false',
   // eslint-disable-next-line @typescript-eslint/naming-convention
   upgrade_version_1: 'false',
-  network: dotenv.NETWORK_ID,
+  network: 'development', // Gets overwritten with the actual network id when called
   chain: dotenv.SIMULATE_DEFAULT_CHAIN_ID,
   sender: sender00.account,
   kip_namespace: 'kip',

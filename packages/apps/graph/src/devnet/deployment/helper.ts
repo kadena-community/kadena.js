@@ -14,6 +14,7 @@ import {
 } from '@kadena/client';
 import { dotenv } from '@utils/dotenv';
 import { logger } from '@utils/logger';
+import { networkData } from '@utils/network';
 
 export interface IAccount {
   account: string;
@@ -27,7 +28,7 @@ const getClient = (): IClient => {
   if (!client) {
     client = createClient(
       ({ chainId }) =>
-        `${dotenv.NETWORK_HOST}/chainweb/0.0/${dotenv.NETWORK_ID}/chain/${chainId}/pact`,
+        `${dotenv.NETWORK_HOST}/chainweb/${networkData.apiVersion}/${networkData.networkId}/chain/${chainId}/pact`,
     );
   }
   return client;

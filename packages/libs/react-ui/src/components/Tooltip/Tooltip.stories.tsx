@@ -14,7 +14,7 @@ const meta: Meta<ITooltipProps> = {
   decorators: [onLayer1],
   parameters: {
     status: {
-      type: ['releaseCandidate'],
+      type: ['stable'],
     },
     docs: {
       description: {
@@ -34,6 +34,10 @@ const meta: Meta<ITooltipProps> = {
     position: {
       description:
         'The position of the tooltip relative to the element that triggers it.',
+      control: {
+        type: 'select',
+      },
+      options: ['top', 'right', 'bottom', 'left'],
       table: {
         defaultValue: { summary: 'right' },
       },
@@ -60,6 +64,18 @@ const meta: Meta<ITooltipProps> = {
     },
     isOpen: {
       description: 'Allows the user to control the open state of the tooltip.',
+      control: {
+        type: 'boolean',
+      },
+      table: {
+        defaultValue: { summary: false },
+      },
+    },
+    isCompact: {
+      description: 'Shows a more compact version of the tooltip',
+      control: {
+        type: 'boolean',
+      },
       table: {
         defaultValue: { summary: false },
       },
@@ -84,16 +100,11 @@ export const Dynamic: Story = {
     isDisabled: false,
     delay: 500,
     closeDelay: 300,
+    defaultOpen: true,
   },
-  render: ({ content, position, isDisabled, delay, closeDelay }) => {
+  render: (props) => {
     return (
-      <Tooltip
-        content={content}
-        position={position}
-        isDisabled={isDisabled}
-        delay={delay}
-        closeDelay={closeDelay}
-      >
+      <Tooltip {...props}>
         <Button>Trigger</Button>
       </Tooltip>
     );
@@ -128,11 +139,86 @@ export const TooltipReactNode: Story = {
   },
 };
 
-export const DefaultOpen: Story = {
+export const DefaultOpenRight: Story = {
   name: 'Tooltip that is set to defaultOpen',
   args: {
     content: "I'm a tooltip, look at me!",
     position: 'right',
+    isDisabled: false,
+    delay: 500,
+    closeDelay: 300,
+  },
+  render: ({ content, position, isDisabled, delay, closeDelay }) => {
+    return (
+      <Tooltip
+        content={content}
+        position={position}
+        isDisabled={isDisabled}
+        delay={delay}
+        closeDelay={closeDelay}
+        defaultOpen={true}
+      >
+        <Button>Trigger</Button>
+      </Tooltip>
+    );
+  },
+};
+
+export const DefaultOpenLeft: Story = {
+  name: 'Tooltip that is set to defaultOpen',
+  args: {
+    content: "I'm a tooltip, look at me!",
+    position: 'left',
+    isDisabled: false,
+    delay: 500,
+    closeDelay: 300,
+  },
+  render: ({ content, position, isDisabled, delay, closeDelay }) => {
+    return (
+      <Tooltip
+        content={content}
+        position={position}
+        isDisabled={isDisabled}
+        delay={delay}
+        closeDelay={closeDelay}
+        defaultOpen={true}
+      >
+        <Button>Trigger</Button>
+      </Tooltip>
+    );
+  },
+};
+
+export const DefaultOpenTop: Story = {
+  name: 'Tooltip that is set to defaultOpen',
+  args: {
+    content: "I'm a tooltip, look at me!",
+    position: 'top',
+    isDisabled: false,
+    delay: 500,
+    closeDelay: 300,
+  },
+  render: ({ content, position, isDisabled, delay, closeDelay }) => {
+    return (
+      <Tooltip
+        content={content}
+        position={position}
+        isDisabled={isDisabled}
+        delay={delay}
+        closeDelay={closeDelay}
+        defaultOpen={true}
+      >
+        <Button>Trigger</Button>
+      </Tooltip>
+    );
+  },
+};
+
+export const DefaultOpenBottom: Story = {
+  name: 'Tooltip that is set to defaultOpen',
+  args: {
+    content: "I'm a tooltip, look at me!",
+    position: 'bottom',
     isDisabled: false,
     delay: 500,
     closeDelay: 300,
