@@ -1,5 +1,5 @@
 import type { IScriptResult } from '@kadena/docs-tools';
-import fs, { write } from 'fs';
+import fs from 'fs';
 import type { Node, Text } from 'mdast';
 import { remark } from 'remark';
 import type { Root } from 'remark-gfm';
