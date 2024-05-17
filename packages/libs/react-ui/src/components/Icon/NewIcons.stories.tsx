@@ -1,13 +1,14 @@
 /* eslint-disable @kadena-dev/no-eslint-disable */
 /* eslint-disable @typescript-eslint/naming-convention */
-import * as BranchIcons from '@kadena/react-icons/brand';
-import * as ProductIcons from '@kadena/react-icons/product';
+import * as BrandIcons from '@kadena/react-icons/brand';
+import * as SystemIcons from '@kadena/react-icons/system';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { useFilter } from 'react-aria';
 import { atoms, tokens } from '../../styles';
 import { TextField } from '../Form/TextField';
+import { Grid, GridItem } from '../Layout';
 
 const iconColors = {
   primary: tokens.kda.foundation.color.icon.brand.primary.default,
@@ -59,12 +60,63 @@ type Story = StoryObj<{
   fontSize: IconSize;
   fill: IconColor;
 }>;
+const system = Object.entries(SystemIcons);
+export const System: Story = {
+  name: 'New System Icons',
+  args: {
+    fill: 'base',
+  },
+  render: ({ fill }) => {
+    const { contains } = useFilter({ sensitivity: 'base', usage: 'search' });
+    const [search, setSearch] = useState('');
+    return (
+      <div
+        className={atoms({
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'md',
+          width: '100%',
+        })}
+      >
+        <TextField
+          label="Search"
+          placeholder="Search for an icon by name"
+          onChange={(e) => {
+            setSearch(e.target.value);
+          }}
+        />
+        <Grid
+          gap="xl"
+          columns={{
+            xs: 3,
+            sm: 3,
+            md: 4,
+            lg: 5,
+            xl: 5,
+            xxl: 6,
+          }}
+        >
+          {system
+            .filter(([key]) =>
+              contains(key.toLowerCase(), search.toLowerCase()),
+            )
+            .map(([key, Icon]) => (
+              <>
+                <GridItem>
+                  <Icon key={key} fill={iconColors[fill]} title={key} />
+                  {key}
+                </GridItem>
+              </>
+            ))}
+        </Grid>
+      </div>
+    );
+  },
+};
 
-const product = Object.entries(ProductIcons);
-const brand = Object.entries(BranchIcons);
-
+const brand = Object.entries(BrandIcons);
 export const Brand: Story = {
-  name: 'Brand',
+  name: 'Brand Icons',
   args: {
     fontSize: 'xxl',
     fill: 'base',
@@ -97,57 +149,6 @@ export const Brand: Story = {
           })}
         >
           {brand
-            .filter(([key]) =>
-              contains(key.toLowerCase(), search.toLowerCase()),
-            )
-            .map(([key, Icon]) => (
-              <Icon
-                key={key}
-                fontSize={icoSizes[fontSize]}
-                fill={iconColors[fill]}
-                title={key}
-              />
-            ))}
-        </div>
-      </div>
-    );
-  },
-};
-
-export const Product: Story = {
-  name: 'Product',
-  args: {
-    fontSize: 'xxl',
-    fill: 'base',
-  },
-  render: ({ fontSize, fill }) => {
-    const { contains } = useFilter({ sensitivity: 'base', usage: 'search' });
-    const [search, setSearch] = useState('');
-    return (
-      <div
-        className={atoms({
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 'md',
-          width: '100%',
-        })}
-      >
-        <TextField
-          label="Search"
-          placeholder="Search for an icon by name"
-          onChange={(e) => {
-            setSearch(e.target.value);
-          }}
-        />
-        <div
-          className={atoms({
-            display: 'flex',
-            flexWrap: 'wrap',
-            flex: 1,
-            gap: 'sm',
-          })}
-        >
-          {product
             .filter(([key]) =>
               contains(key.toLowerCase(), search.toLowerCase()),
             )

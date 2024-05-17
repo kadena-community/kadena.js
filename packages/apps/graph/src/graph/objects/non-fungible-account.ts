@@ -5,7 +5,6 @@ import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
 } from '@services/complexity';
-import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { nonFungibleChainCheck } from '../data-loaders/non-fungible-chain-check';
@@ -49,10 +48,11 @@ export default builder.node(
       accountName: t.exposeString('accountName'),
       chainAccounts: t.field({
         type: [NonFungibleChainAccountName],
-        complexity:
-          (COMPLEXITY.FIELD.CHAINWEB_NODE +
-            COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS) *
-          dotenv.CHAIN_COUNT,
+        complexity: {
+          field:
+            COMPLEXITY.FIELD.CHAINWEB_NODE +
+            COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
+        },
         async resolve(parent) {
           try {
             const chainIds = await nonFungibleChainCheck.load({

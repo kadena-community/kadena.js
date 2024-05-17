@@ -8,6 +8,7 @@ import { join, relative } from 'path';
 import { downloadGitFiles } from '@services/git/download-git-files';
 import { flattenFolder } from '@services/git/path';
 import { logger } from '@utils/logger';
+import { initializeNetworkConfig, networkData } from '@utils/network';
 import { validateObjectProperties } from '@utils/validate-object';
 import type { IAccount } from '../helper';
 import { inspect, listen, signAndAssertTransaction, submit } from '../helper';
@@ -36,6 +37,10 @@ export async function deployMarmaladeContracts(
   codeFileDestinationPath: string = marmaladeLocalConfig.codeFilesPath,
   nsDestinationPath: string = marmaladeLocalConfig.namespacePath,
 ): Promise<void> {
+  await initializeNetworkConfig();
+
+  argumentConfig.network = networkData.networkId;
+
   logger.info('Validating repository data...');
   validateConfig(
     marmaladeRepository,

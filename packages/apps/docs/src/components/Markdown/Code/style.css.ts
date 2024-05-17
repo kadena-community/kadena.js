@@ -7,13 +7,13 @@ import { paragraphWrapperClass } from '../Paragraph/styles.css';
 export const inlineCode = style([
   atoms({
     borderRadius: 'sm',
-    backgroundColor: 'semantic.info.default',
-    color: 'text.semantic.info.default',
+    color: 'text.brand.secondary.default',
     marginInlineStart: 'xs',
     marginInlineEnd: 'xs',
     fontFamily: 'monospaceFont',
   }),
   {
+    backgroundColor: tokens.kda.foundation.color.neutral['n99@alpha10'],
     padding: `calc(${tokens.kda.foundation.spacing.xs} / 4) ${tokens.kda.foundation.spacing.xs}`,
     fontSize: 'smaller',
     fontWeight: 'bolder',
@@ -266,6 +266,13 @@ export const okCopiedClass = style([
   atoms({
     color: 'icon.semantic.positive.inverse.default',
   }),
+  {
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        color: tokens.kda.foundation.color.icon.semantic.positive.default,
+      },
+    },
+  },
 ]);
 
 export const mermaidClass = style({});
@@ -274,6 +281,9 @@ export const copyButtonClass = style({
   color: tokens.kda.foundation.color.neutral.n0,
   opacity: '.8',
   selectors: {
+    [`${darkThemeClass} &`]: {
+      color: tokens.kda.foundation.color.neutral.n100,
+    },
     '&:hover': {
       opacity: '.6',
       background: 'transparent',
