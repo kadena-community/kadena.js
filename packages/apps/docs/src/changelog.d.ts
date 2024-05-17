@@ -28,7 +28,8 @@ interface IChangelogVersionRecord {
   prIds: IChangelogPR[];
 }
 
-type IChangelogUser = Pick<IGitHubUser, 'login' | 'id' | 'avatar_url' | 'url'>;
+type IChangelogUser = Pick<IGitHubUser, 'login'> &
+  Partial<Pick<IGitHubUser, 'id' | 'avatar_url' | 'url'>>;
 
 type IChangelogHeader = Pick<IGitHubHeader, 'last-modified' | 'date'>;
 
