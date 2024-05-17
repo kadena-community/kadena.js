@@ -72,7 +72,7 @@ Commands in the Kadena CLI are organized into categories that describe the **sub
 The commands are structured using the following basic format:
 
 ```shell
-kadena <subject> [...<subject>] <verb> [--flags] [args]
+kadena <subject> [...<subject>] <action> [--flags] [args]
 ```
 
 For example, you can create and manage all wallet-related information by specifying `wallet` as the command subject.
@@ -115,44 +115,34 @@ kadena <subject> --help
 
 You can run all commands without any arguments by responding to prompts interactively from the command line. 
 You can skip prompting for any argument by passing your response as part of the command you want to run.
-Interactive prompting is designed to make command execution more intuitive and user-friendly. 
+Interactive prompting is designed to make command execution more intuitive and easy to follow with a guided user experience. 
 
 If you run a command in the Kadena CLI without specifying all of the required options, the CLI automatically prompts you to provide the missing information. 
 This guided approach ensures that you provide all necessary information to successfully execute every command.
 
 To run commands with interactive prompting, type the `kadena` entry point, the command **subject**, and the **action** you want to take without any arguments.
 
-For example, if you want to add a new wallet but aren't sure of all the required flags and
-arguments, you can run the following command:
+For example, if you want to add a new wallet but aren't sure of all the required flags and arguments, you can run the following command:
 
-```
+```shell
 kadena wallet add
 ```
 
 The CLI then guides you through the necessary steps, asking for the information required to add the new wallet.
 
-Interactive prompting is especially useful for new users or those who unfamiliar with using command-line tools.
-It also serves as a learning tool by demonstrating the required inputs for various commands, enhancing your
-familiarity with the CLI's functionalities.
+Interactive prompting is especially useful for new users or for users who are less familiar with using command-line tools.
+It also helps you learn about the arguments required to run different commands, so over time you can reduce or skip interactive prompting by entering arguments directly on the command line.
 
 By allowing you to run commands interactively, the Kadena CLI provides the following key benefits:
 
-- **Ease of use**: Reduces the need to remember all command arguments and
-  options upfront.
-- **Guided execution**: Ensures that all required inputs are collected before
-  executing a command.
-- **Flexibility**: Allows for a more conversational and less rigid interaction
-  with the CLI.
+- **Ease of use**: Reduces the need to remember all command arguments and options upfront.
+- **Guided execution**: Ensures that all required inputs are collected before executing a command.
+- **Flexibility**: Allows for a more conversational and less rigid interaction with the CLI.
 
 If you want to disable all interactive prompts and confirmation messages, you can use the `--quiet `flag.
 The `--quiet` flag enables you to automate tasks in environments where interactive input is impractical, such as continuous integration (CI) pipelines. 
 If you include the  `--quiet` flag in a command, the command suppresses all interactive prompts and skips confirmations, so that the command executes uninterrupted. 
 This mode ensures that automated processes can run smoothly and efficiently, without the need for manual intervention.
-
-```shell
-kadena [command] --quiet
-kadena [command] -q
-```
 
 ## JSON or YAML output
 
@@ -192,9 +182,9 @@ The command then displays the results in JSON format:
 }
 ```
 
-These options don't affect regular logging because log messages are sent to standard error (stderr). 
-You can disable the other logging by using the `KADENA_LOG=output` environment variable. 
-However, warnings or errors are still logged, if detected.
+The `--json` and `--yaml` options don't affect logging of informational messages, warnings, or errors.
+Log messages are sent to standard error (stderr) instead of standard output (stdout). 
+You can disable the logging of informational messages by setting the `KADENA_LOG=output` environment variable. 
 
 ## Legacy mode
 

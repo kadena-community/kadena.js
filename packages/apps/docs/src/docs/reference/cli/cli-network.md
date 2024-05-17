@@ -58,7 +58,7 @@ You can use the following command-line arguments with the `kadena network add` c
 | Use this argument | To do this                    |
 | ----------------- | ----------------------------- |
 | -a, --network-name _networkName_ | Set the name of the network. The valid values are devnet, testnet, and mainnet. |
-| -i, --network-id _networkId_ | Set the identifier for the network. The network identifier is a combination of network name and a chain identifier.For example, valid values include testnet04 and mainnet01. |
+| -i, --network-id _networkId_ | Set the identifier for the network. The network identifier is a similar to the network name but uniquely identifies the network. For example, valid values include development, testnet04, and mainnet01. |
 | -s, --network-host _networkHost_ | Set the host for the network. |
 | -e, --network-explorer-url _networkExplorerUrl_ | Set the block explorer URL for the network. |
 | -o, --network-overwrite  | Confirm that you want to overwrite existing network configuration settings. |
@@ -123,7 +123,7 @@ You can use the following command-line arguments with the `kadena network update
 | ----------------- | --------------------------------------- |
 | -n, --network _networkName_ | Specify the network you want to update. The valid values are `devnet`, `testnet`, and `mainnet`. |
 | -a, --network-name _networkName_ | Update the name of the specified network. |
-| -i, --network-id _networkId_ | Update the identifier for the network. The network identifier is a combination of network name and a chain identifier. For example, valid values include `testnet04` and `mainnet01`. |
+| -i, --network-id _networkId_ | Update the identifier for the network. The network identifier is a similar to the network name but uniquely identifies the network. For example, valid values include development, testnet04, and mainnet01.  |
 | -s, --network-host _networkHost_ | Update the host for the specified network. |
 | -e, --network-explorer-url _networkExplorerUrl_ | Update the block explorer URL for the specified network |
 
