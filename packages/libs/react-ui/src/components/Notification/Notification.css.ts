@@ -90,9 +90,10 @@ export const closeButtonClass = style([
 export const borderClass = style([
   atoms({
     borderRadius: 'sm',
+    borderStyle: 'solid',
   }),
   {
-    borderLeft: `${token('border.width.thick')} solid`,
+    borderLeftWidth: token('border.width.thick'),
   },
 ]);
 
