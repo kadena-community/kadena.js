@@ -11,7 +11,7 @@ interface IProps {
 export const Commits: FC<IProps> = ({ label }) => {
   return (
     <Stack width="100%" flexDirection="column" gap="sm">
-      <Heading as="h3" variant="h5">
+      <Heading as="h4" variant="h5">
         {label}
       </Heading>
       <Stack as="ul" className={commitListClass} flexDirection="column">

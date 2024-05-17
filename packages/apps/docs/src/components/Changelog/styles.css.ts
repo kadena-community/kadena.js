@@ -1,10 +1,17 @@
 import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
-export const commitsSectionClass = style([
-  atoms({
-    backgroundColor: 'surface.default',
-  }),
+export const backgroundClass = style([
+  {
+    backgroundColor: tokens.kda.foundation.color.neutral['n99@alpha10'],
+  },
+]);
+
+export const versionsSectionClass = style([
+  atoms({}),
+  {
+    backgroundColor: tokens.kda.foundation.color.neutral['n99@alpha10'],
+  },
 ]);
 
 export const commitListClass = style([

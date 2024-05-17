@@ -459,3 +459,6 @@ pages:
           jsbindings:
             file: /reference/chainweb/chainwebjs.md
             url: /js-bindings
+  changelogs:
+    url: /changelogs
+    file: /changelogs/index.tsx

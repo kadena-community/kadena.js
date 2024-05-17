@@ -17,9 +17,9 @@ export const getStaticProps: GetStaticProps = async () => {
       frontmatter: {
         title: 'Changelogs',
         menu: 'Changelogs',
-        subTitle: 'Changelogs of all packages',
+        subTitle: 'Changelogs',
         label: 'Changelogs',
-        order: 5,
+        order: 0,
         description: 'Changelogs',
         layout: 'landing',
       },
