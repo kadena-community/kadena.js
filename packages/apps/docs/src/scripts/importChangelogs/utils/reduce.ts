@@ -23,10 +23,10 @@ export const getAuthor = (
   if (commit.author) return reduceUserData(commit.author);
   if (commit.committer) return reduceUserData(commit.committer);
   if (commit.commit?.author) {
-    return { login: commit.commit.author.name } as unknown as IChangelogUser;
+    return { login: commit.commit.author.name };
   }
   if (commit.commit?.committer) {
-    return { login: commit.commit.committer.name } as unknown as IChangelogUser;
+    return { login: commit.commit.committer.name };
   }
 };
 
