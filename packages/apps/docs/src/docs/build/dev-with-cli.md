@@ -23,6 +23,9 @@ With commands designed specifically for building, testing, and managing Kadena-b
 Before you use the Kadena command-line interface, verify the following basic requirements:
 
 - You have `node`, version 18 or later, installed.
+  
+  Run `node --version` to verify the version you are running.
+
 
 - You have the `pnpm` package manager installed.
   
@@ -231,24 +234,24 @@ To view information about the wallet:
    kadena wallet list
    ```
 
-  This command prompts you to select a wallet.
-  For example:
-
-  ```bash
-  ? Select a wallet: (Use arrow keys)
-  ❯ All Wallets
-    pistolas
-  ```
+   This command prompts you to select a wallet.
+   For example:
+   
+   ```bash
+   ? Select a wallet: (Use arrow keys)
+   ❯ All Wallets
+     pistolas
+   ```
 
 1. Select **All Wallets**, then press Return.
 
-   If have only one wallet, you should see output similar to the following:
+   If you have only one wallet, you should see output similar to the following:
    
    ```bash
    Wallet: pistolas
    Alias Index Public key                                                      
    N/A   0     61cf22aa8f209b1a5549242601b4a217f034e3d931b6522ccb7743bf6c355546
-
+   
    Executed:
    kadena wallet list --wallet-name="all" 
    ```
@@ -264,18 +267,18 @@ To view information about the account:
    kadena account list
    ```
 
-  This command prompts you to select an account.
-  For example:
-
-  ```bash
-  ? Select an account (alias - account name): (Use arrow keys)
-  ❯ All accounts
-    pistolas-kda      - k:61cf22....6c355546
-  ```
+   This command prompts you to select an account.
+   For example:
+   
+   ```bash
+   ? Select an account (alias - account name): (Use arrow keys)
+   ❯ All accounts
+     pistolas-kda      - k:61cf22....6c355546
+   ```
 
 1. Select **All accounts**, then press Return.
 
-   If have only one account, you should see output similar to the following:
+   If you have only one account, you should see output similar to the following:
    
    ```bash
    Alias        Name                             Public Key(s)            Predicate Fungible
@@ -285,7 +288,7 @@ To view information about the account:
    kadena account list --account-alias="all" 
    ```
 
-   Note that the account name k:61cf22aa8f209b1a5549242601b4a217f034e3d931b6522ccb7743bf6c355546, shortened to k:61cf22aa8f20....7743bf6c355546 uses the default **keys-all** predicate and the fungible for the account is **coin**.
+   Note that the account name k:61cf22aa8f209b1a5549242601b4a217f034e3d931b6522ccb7743bf6c355546, shortened to k:61cf22aa8f20....7743bf6c355546, uses the default **keys-all** predicate and the fungible for the account is **coin**.
    The **keys-all** predicate is a **guard**.
    Guards define the condition that must be satisfied for an operation to proceed. 
    In this case, all public keys associated with the k:61cf22aa8f209b1a5549242601b4a217f034e3d931b6522ccb7743bf6c355546 account must sign transactions.
@@ -433,8 +436,8 @@ For example, you can:
 
 - Add another wallet with a completely new public and secret key pair (kadena wallet add).
 - Generate new random keys for a completely independent account (kadena key generate).
-- Import keys from a wallet you've previously generated for a new account (kadena wallet import).
-- Add new keys for your first wallet to create a new account (kadena account add).
+- Import keys from a wallet you've previously created for a new account (kadena wallet import).
+- Add new keys from your first wallet to create a new account (kadena account add).
   
 The following example illustrates how to use `kadena account add` to create a new local account.
 
@@ -461,7 +464,7 @@ To add a new local account:
    ❯ Wallet - Provide public keys to add to account by selecting from a wallet
    ```
 
-1. Select the wallet alias you set for the first wallet, then press Return.
+4. Select the wallet alias you set for the first wallet, then press Return.
    For example:
    
    ```bash
@@ -469,7 +472,7 @@ To add a new local account:
    ❯ Wallet: pistolas
    ```
 
-1. Enter a new alias for this account, then press Return.
+5. Enter a new alias for this account, then press Return.
 
    Because you're adding a new account for this wallet, you must give it a new alias.
    For example:
@@ -478,7 +481,7 @@ To add a new local account:
    ? Enter an alias for an account: pistolas-local
    ```
 
-1. Enter the name of a fungible for the account, then press Return.
+6. Enter the name of a fungible for the account, then press Return.
    
    You can specify coin or nft as the fungible for an account.
    For most accounts, the default—coin—is appropriate.
@@ -488,7 +491,7 @@ To add a new local account:
    ? Enter the name of a fungible: coin
    ```
 
-1. Select the public keys that should be used for the account.
+7. Select the public keys that should be used for the account.
 
    You can select **Generate new public key** to generate a new random public key from the original wallet key pair.
    This key can be recovered using the same 12-word secret phrase you saved for your first wallet.
@@ -500,9 +503,9 @@ To add a new local account:
    ❯◉ Generate new public key
    ```
 
-1. Enter the wallet password, then press Return.
+8. Enter the wallet password, then press Return.
 
-1. Select a keyset predicate for the account, then press Return.
+9. Select a keyset predicate for the account, then press Return.
    
    If this account is only going to have one owner and one public key, select the default **keys-all** predicate.
    If an account has more than one owner and public key, select an appropriate predicate.
@@ -517,7 +520,16 @@ To add a new local account:
    kadena account add --type="wallet" --wallet-name="pistolas" --account-alias="pistolas-local" --fungible="coin" --public-keys="ad833b6bbfc72fb7d18b88cd5b4349f82b2f015be8e4b5e7ad28f3249fd5e105" --predicate="keys-all" 
    ```
 
-1. Verify account information by running the following command:
+You now have one onchain account and one local account.
+
+### View updated account information
+
+After you've added a second account, you might want to check your updated information with a simple command-line option instead of interactive prompting.
+
+To verify your updated account information:
+
+1. Open a terminal shell in your working or home directory.
+1. Verify the information for all accounts by running the following command:
 
    ```bash
    kadena account list --account-alias="all"
@@ -530,16 +542,26 @@ To add a new local account:
    pistolas-kda   k:61cf22aa8f20....7743bf6c355546 61cf22aa8f....bf6c355546 keys-all  coin    
    pistolas-local k:ad833b6bbfc7....28f3249fd5e105 ad833b6bbf....249fd5e105 keys-all  coin  
    ```
+
+### Format command output
+
+In some cases, you might want to format the output from a command, so it can be used as input to another command or easier to parse.
+You can use the `--json` or `--yaml` flag to convert the output from virtually any CLI command to JSON or YAML format.
+
+To format the output using JSON:
+
+1. Open a terminal shell in your working or home directory.
+2. Add the `--json` flag to the command line.
    
-   If you want to format the output using JSON or YAML, you can add the `--json` or `--yaml` flag to the command line.
    For example:
 
    ```bash
    kadena account list --account-alias="all" --json
    ```
    
-   With the --json flag, the command displays account information in JSO format similar to the following:
-
+   With the `--json` flag, the command displays account information in JSON format similar to the following:
+   
+   ```bash
    [
      {
        "name": "k:61cf22aa8f209b1a5549242601b4a217f034e3d931b6522ccb7743bf6c355546",
@@ -560,19 +582,20 @@ To add a new local account:
        "alias": "pistolas-local.yaml"
      }
    ]
-
-You now have one onchain account and one local account.
+   ```
 
 ## Add a simple transaction
 
 You must have an onchain account to sign and submit transactions that transfer funds.
-However, you can use local accounts for transactions that read information from the chain or that execute simple commands with local calls.
-The following example illustrates how to create and execute a simple transaction using a local account.
+However, you can use local accounts for transactions that read information from the blockchain or that execute commands with local calls.
+The following example illustrates how to create and execute a simple transaction using a **transaction template** and a local account.
 
-To create and test a transaction:
+### Create a transaction template
 
-1. Open a terminal shell on the computer where you've installed the `kadena-cli` package.
-1. Create a YAML API request file to execute a simple command similar to the following:
+To create a transaction template:
+
+1. Open a terminal shell in your working or home directory..
+2. Create a YAML API request file to execute a simple command similar to the following:
    
    ```yaml
    code: (* 5 5)
@@ -588,9 +611,13 @@ To create and test a transaction:
    This transaction uses template variables to construct a transaction. You can learn more about transaction templates and variables in [Construct a transaction](/build/templates#construct-a-transactionh-767926026) and [Template prefixes and input values](/build/templates#template-prefixes-and-input-valuesh1392140091).
    For more information about using YAML request files for transactions, see [Request YAML file format](/reference/rest-api#request-yaml-file-formath1595040947).
 
-1. Save the file as a transaction template by giving it a name with the `.ktpl` file extension and moving the file to the `.kadena/transaction-templates` folder.
+3. Save the file as a transaction template by giving it a name with the `.ktpl` file extension and moving the file to the `.kadena/transaction-templates` folder.
    
    For example, save the file as `.kadena/transaction-templates/simple-code.ktpl` in your working directory.
+
+### Create the transaction
+
+To create a transaction from the template:
 
 1. Create a transaction from the template by running the following command:
    
@@ -610,9 +637,9 @@ To create and test a transaction:
      transfer.ktpl
    ```
 
-1. Press Return to skip using a data fil.
-2. Specify any chain identifier, then press Return.
-1. Select your local account alias as the transaction sender, then press Return.
+6. Press Return to skip using a data file.
+7. Specify any chain identifier, then press Return.
+8. Select your local account alias as the transaction sender, then press Return.
    
    For example:
 
@@ -623,7 +650,7 @@ To create and test a transaction:
    ❯ pistolas-local k:ad833b....9fd5e105 coin ad833....d5e105 keys-all
    ```
 
-1. Select the network for the transaction, then press Return.
+9. Select the network for the transaction, then press Return.
    
    ```bash
    ? Select network id for template value networkId: (Use arrow keys)
@@ -632,24 +659,28 @@ To create and test a transaction:
      testnet
    ```
 
-1. Type a name for the transaction request JSON file, then press Return.
+10. Type a name for the transaction request JSON file, then press Return.
    
-   In this example, the transaction request is named `my-code`.
-   After you press Return the command displays the JSON object, the location of the file, and the command executed to create the transaction.
-   For example:
+    In this example, the transaction request is named `my-code`.
+    After you press Return the command displays the JSON object, the location of the file, and the command executed to create the transaction.
+    For example:
+   
+    ```bash
+    {
+      "cmd": "{\"payload\":{\"exec\":{\"code\":\"(* 5 5)\",\"data\":{}}},\"nonce\":\"\",\"networkId\":\"development\",\"meta\":{\"sender\":\"k:ad833b6bbfc72fb7d18b88cd5b4349f82b2f015be8e4b5e7ad28f3249fd5e105\",\"chainId\":\"3\",\"creationTime\":1715888245,\"gasLimit\":600,\"gasPrice\":0.000001,\"ttl\":600},\"signers\":[]}",
+      "hash": "hyu6NGeQybOGOdJtnuZZ5SJoxurzTyTE2q5yd9OX-ic",
+      "sigs": []
+    }
+    
+    transaction saved to: ./my-code.json
+    
+    Executed:
+    kadena tx add --template="simple-code.ktpl" --template-data="" --chain-id="3" --account:from="k:ad833b6bbfc72fb7d18b88cd5b4349f82b2f015be8e4b5e7ad28f3249fd5e105" --network:networkId="development" --out-file="my-code.json" 
+    ```
 
-   ```bash
-   {
-     "cmd": "{\"payload\":{\"exec\":{\"code\":\"(* 5 5)\",\"data\":{}}},\"nonce\":\"\",\"networkId\":\"development\",\"meta\":{\"sender\":\"k:ad833b6bbfc72fb7d18b88cd5b4349f82b2f015be8e4b5e7ad28f3249fd5e105\",\"chainId\":\"3\",\"creationTime\":1715888245,\"gasLimit\":600,\"gasPrice\":0.000001,\"ttl\":600},\"signers\":[]}",
-     "hash": "hyu6NGeQybOGOdJtnuZZ5SJoxurzTyTE2q5yd9OX-ic",
-     "sigs": []
-   }
-   
-   transaction saved to: ./my-code.json
-   
-   Executed:
-   kadena tx add --template="simple-code.ktpl" --template-data="" --chain-id="3" --account:from="k:ad833b6bbfc72fb7d18b88cd5b4349f82b2f015be8e4b5e7ad28f3249fd5e105" --network:networkId="development" --out-file="my-code.json" 
-   ```
+### Test the transaction
+
+To test the transaction:
 
 1. Submit the transaction on the local endpoint by running the following command:
    
@@ -657,7 +688,7 @@ To create and test a transaction:
    kadena tx test
    ```
 
-1. Select the transaction you created from the template, then press Return.
+2. Select the transaction you created from the template, then press Return.
    For example:
 
    ```bash
@@ -730,22 +761,48 @@ To set the default network:
 1. Open a terminal shell on the computer where you've installed the `kadena-cli` package.
 2. Enter `kadena network set-default` on the command line to set the default network interactively:
 
-   ```shell
+   ```bash
    kadena network set-default
    ```
    
    Because you're running the command interactively, you are prompted to select a network.
    For example:
-
+   
+   ```bash
    ? Select a network (Use arrow keys)
    ❯ devnet
      mainnet
      testnet
+   ```
 
 3. Use the up and down arrow keys to select the network you want to use as your default network, then press Return.
    For example, select **devnet**, then press Return.
 
 4. Select **Yes** to confirm your default network, then press Return.
+   
+   The command displays confirmation of your default network.
+   For example:
+
+   ```bash
+   The network configuration "devnet" has been set as default.
+
+   Executed:
+   kadena network set-default --network="devnet" --confirm 
+   ```
+
+   After settings default network, you won't be prompting to select a network when running other commands. 
+   If you want to remove the default network from your configuration, run the following command:
+   
+   ```bash
+   kadena network set-default --network none --confirm
+   ```
+
+   The command displays confirmation of your change.
+   For example:
+
+   ```bash
+   The default network configuration has been removed.
+   ```
 
 ## Run commands in automated scripts 
 
@@ -802,6 +859,6 @@ To create a new project from a template:
 
 ## Next steps
 
-Learn more about the Kadena command-line interface commands and the actions you can perform using CLI commands in [Command-line reference](/reference/kadena-cli) section.
+Learn more about the Kadena command-line interface and the actions you can perform using CLI commands in the [Command-line reference](/reference/kadena-cli) section.
 To get started with building a smart contract backend for your application, see [Smart contracts](/build/pact).
-For information about using the Kadena client libraries and packages, see [Frontend frameworks].
+For information about using the Kadena client libraries and packages, see [Frontend frameworks](/build/frontend).
