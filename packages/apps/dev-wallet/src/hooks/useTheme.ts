@@ -1,4 +1,3 @@
-// Duplicated from docs until this gets exported from react-ui
 import { darkThemeClass } from '@kadena/react-ui/styles';
 import { useCallback, useEffect, useState } from 'react';
 const MEDIA = '(prefers-color-scheme: dark)';
@@ -54,8 +53,6 @@ export const useTheme = ({
 
   const applyTheme = useCallback((theme: ITheme) => {
     let resolved = theme;
-    console.log('applying');
-
     if (!resolved) return;
 
     // If theme is system, resolve it before setting theme
@@ -72,6 +69,7 @@ export const useTheme = ({
     d.classList.remove('light');
     d.classList.remove(darkThemeClass);
     d.classList.add(name === 'dark' ? darkThemeClass : 'light');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setTheme = (
@@ -93,6 +91,7 @@ export const useTheme = ({
       const resolved = lockedTheme ? lockedTheme : getSystemTheme(e);
       setTheme(resolved);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 
@@ -114,7 +113,7 @@ export const useTheme = ({
     media.addEventListener('change', handleMediaQuery);
 
     return () => media.removeEventListener('change', handleMediaQuery);
-  }, []);
+  });
 
   const storageListener = useCallback((event: StorageEvent | Event) => {
     if (event.type !== storageKey && 'key' in event && event.key !== storageKey)
@@ -125,6 +124,7 @@ export const useTheme = ({
       ? lockedTheme
       : (window.localStorage.getItem(storageKey) as ITheme) || defaultTheme;
     setTheme(theme, false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
