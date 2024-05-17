@@ -63,7 +63,6 @@ interface IGitHubUser {
   site_admin: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface IGitHubPRData {
   status: number;
   headers: IGitHubHeader;
@@ -115,7 +114,6 @@ interface IGitHubPRData {
   };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface IGitHubCommitData {
   status: number;
   url: string;
