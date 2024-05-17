@@ -5,7 +5,7 @@
 !_error.tsx
 !_document.tsx
 !_app.tsx
-!/tags/*
 !/search/*
-!/authors/*
 !/api/*
+!/changelogs/*
+!/changelog/*
