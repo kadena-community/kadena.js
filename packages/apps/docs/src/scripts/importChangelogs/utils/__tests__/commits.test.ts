@@ -1,10 +1,40 @@
 import {
   filterCommitsWithoutData,
+  getCommitId,
   getCommits,
   getVersionCommits,
 } from '../commits';
 
 describe('commits utils', () => {
+  describe('getCommitId', () => {
+    it('should return the commitId from the content with at start and label cleaned', () => {
+      const content = 'b06929dcc: Added proper sizes for the dialog';
+      const result = getCommitId(content);
+
+      expect(result.label).toEqual('Added proper sizes for the dialog');
+      expect(result.commits[0].tries).toEqual(0);
+      expect(result.commits[0].hash).toEqual('b06929dcc');
+      expect(result.prIds.length).toEqual(0);
+    });
+
+    it('should return the commitId from the content with brackets and label cleaned', () => {
+      const content = 'update style notification [134666df3]';
+      const result = getCommitId(content);
+
+      expect(result.label).toEqual('update style notification');
+      expect(result.commits[0].tries).toEqual(0);
+      expect(result.commits[0].hash).toEqual('134666df3');
+    });
+
+    it('should return when there is no commit found', () => {
+      const content = 'I have the powerrrrr';
+      const result = getCommitId(content);
+
+      expect(result.label).toEqual('I have the powerrrrr');
+      expect(result.commits.length).toEqual(0);
+    });
+  });
+
   describe('getCommits', () => {
     it('should return an array with all commits', async () => {
       const changelog = await import('./mock/changelog.json', {
