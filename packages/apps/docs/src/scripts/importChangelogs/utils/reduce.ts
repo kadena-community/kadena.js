@@ -22,11 +22,11 @@ export const getAuthor = (
 ): IChangelogUser | undefined => {
   if (commit.author) return reduceUserData(commit.author);
   if (commit.committer) return reduceUserData(commit.committer);
-  if (commit.commit.author) {
-    return { login: commit.commit.author } as unknown as IChangelogUser;
+  if (commit.commit?.author) {
+    return { login: commit.commit.author.name } as unknown as IChangelogUser;
   }
-  if (commit.commit.committer) {
-    return { login: commit.commit.committer } as unknown as IChangelogUser;
+  if (commit.commit?.committer) {
+    return { login: commit.commit.committer.name } as unknown as IChangelogUser;
   }
 };
 
@@ -39,8 +39,8 @@ export const reduceCommitDataCommit = (
     author: getAuthor(commit),
     comments_url: commit.comments_url,
     commit: {
-      message: commit.commit.message,
-      comment_count: commit.commit.comment_count,
+      message: commit.commit?.message,
+      comment_count: commit.commit?.comment_count ?? 0,
     },
   };
 
