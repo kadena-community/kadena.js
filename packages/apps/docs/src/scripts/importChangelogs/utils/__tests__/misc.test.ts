@@ -2,20 +2,24 @@ import fs from 'fs';
 import { getChangelog, getPackages, getVersions, writeContent } from '../misc';
 
 describe('misc utils', () => {
-  describe('getChangelog', () => {
-    beforeEach(() => {
-      vi.mock('fs', async () => {
-        const actual = (await vi.importActual('fs')) as {};
-        return {
-          default: {
-            ...actual,
-            readFileSync: (file: string) => {
-              return 'By the power of Grayskull...I have the power!';
-            },
+  beforeEach(() => {
+    vi.mock('fs', async () => {
+      const actual = (await vi.importActual('fs')) as {};
+      return {
+        default: {
+          ...actual,
+          writeFileSync: (file: string) => {},
+          readFileSync: (file: string) => {
+            return 'By the power of Grayskull...I have the power!';
           },
-        };
-      });
+        },
+      };
     });
+  });
+  afterEach(() => {
+    vi.resetAllMocks();
+  });
+  describe('getChangelog', () => {
     it('should read the content of a changelog', () => {
       const spy = vi.spyOn(fs, 'readFileSync');
 
