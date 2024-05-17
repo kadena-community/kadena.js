@@ -1,10 +1,12 @@
+import { MonoClose } from '@kadena/react-icons/system';
 import classNames from 'classnames';
 import type { ReactNode } from 'react';
 import React, { useRef } from 'react';
 import type { AriaTabProps } from 'react-aria';
 import { mergeProps, useHover, useTab } from 'react-aria';
 import type { Node, TabListState } from 'react-stately';
-import { tabItemClass } from './Tabs.css';
+import { Button } from '../Button';
+import { closeButtonClass, tabItemClass } from './Tabs.css';
 
 interface ITabProps extends AriaTabProps {
   item: Node<object>;
@@ -12,6 +14,8 @@ interface ITabProps extends AriaTabProps {
   inverse?: boolean;
   className?: string;
   borderPosition: 'top' | 'bottom';
+  onClose?: (item: Node<object>) => void;
+  isCompact?: boolean;
 }
 
 /**
@@ -23,6 +27,8 @@ export const Tab = ({
   className,
   inverse = false,
   borderPosition = 'bottom',
+  isCompact,
+  onClose,
 }: ITabProps): ReactNode => {
   const { key, rendered } = item;
   const ref = useRef(null);
@@ -36,7 +42,11 @@ export const Tab = ({
         tabItemClass({
           inverse,
           borderPosition,
+          size: isCompact ? 'compact' : 'default',
         }),
+        {
+          closeable: typeof onClose === 'function',
+        },
       )}
       {...mergeProps(tabProps, hoverProps)}
       ref={ref}
@@ -45,6 +55,20 @@ export const Tab = ({
       data-hovered={isHovered || undefined}
     >
       {rendered}
+      {onClose && (
+        <Button
+          className={closeButtonClass}
+          type="button"
+          onPress={() => onClose(item)}
+          aria-label="Close"
+          variant="transparent"
+          isCompact
+          data-parent-selected={state.selectedKey === key || undefined}
+          data-parent-hovered={isHovered || undefined}
+        >
+          <MonoClose aria-hidden="true" />
+        </Button>
+      )}
     </div>
   );
 };

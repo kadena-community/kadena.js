@@ -1,6 +1,6 @@
-import { globalStyle, style } from '@vanilla-extract/css';
+import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
-import { token } from '../../styles';
+import { token, uiBaseBold, uiSmallestBold } from '../../styles';
 import { atoms } from '../../styles/atoms.css';
 
 export const tabsContainerClass = style([
@@ -8,20 +8,34 @@ export const tabsContainerClass = style([
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
+    position: 'relative',
   }),
 ]);
 
-export const tabListWrapperClass = style([
+export const scrollContainer = style([
   atoms({
     overflowX: 'auto',
     display: 'flex',
     flexDirection: 'row',
-    position: 'relative',
   }),
   {
     scrollbarWidth: 'none',
-    paddingLeft: '2px',
+    position: 'relative',
     paddingTop: '2px', // For focus ring
+    selectors: {
+      '&.paginationLeft:not(.paginationRight)': {
+        maskImage:
+          'linear-gradient(90deg,rgba(255,255,255,0) 32px, rgba(255,255,255,1) 64px)',
+      },
+      '&.paginationRight:not(.paginationLeft)': {
+        maskImage:
+          'linear-gradient(90deg,rgba(255,255,255,1) calc(100% - 32px),transparent)',
+      },
+      '&.paginationLeft.paginationRight': {
+        maskImage:
+          'linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0) 32px,rgba(255,255,255,1) 96px,rgba(255,255,255,1) calc(100% - 32px), transparent)',
+      },
+    },
   },
 ]);
 
@@ -30,10 +44,18 @@ export const tabListControls = style([
     display: 'flex',
     flexDirection: 'row',
     position: 'relative',
+    width: '100%',
   }),
   {
-    width: 'fit-content',
     maxWidth: '100%',
+    ':before': {
+      content: '""',
+      position: 'absolute',
+      bottom: 0,
+      right: 0,
+      left: 0,
+      borderBottom: `2px solid ${token('color.border.base.subtle')}`,
+    },
   },
 ]);
 
@@ -52,12 +74,13 @@ export const selectorLine = style([
   atoms({
     position: 'absolute',
     display: 'block',
-    height: '100%',
     bottom: 0,
     borderStyle: 'solid',
   }),
   {
     width: 0,
+    height: 0,
+    zIndex: 4,
     borderWidth: 0,
     borderBottomWidth: token('border.width.normal'),
     borderColor: token('color.border.tint.@focus'),
@@ -78,7 +101,8 @@ export const tabItemClass = recipe({
       alignItems: 'center',
       cursor: 'pointer',
       paddingBlock: 'n2',
-      paddingInline: 'md',
+      paddingInline: 'n4',
+      gap: 'n2',
       fontSize: 'md',
       fontWeight: 'secondaryFont.bold',
       backgroundColor: 'transparent',
@@ -86,6 +110,8 @@ export const tabItemClass = recipe({
       outline: 'none',
     }),
     {
+      zIndex: 3,
+      borderBlock: `2px solid transparent`,
       borderTopLeftRadius: token('radius.xs'),
       borderTopRightRadius: token('radius.xs'),
       transition:
@@ -100,10 +126,11 @@ export const tabItemClass = recipe({
           color: token('color.text.base.@hover'),
         },
         '.focusVisible &:focus-visible': {
-          outline: `2px solid ${token('color.border.tint.@focus')}`,
+          outline: `2px solid ${token('color.border.tint.outline')}`,
+          borderRadius: token('radius.xs'),
           outlineOffset: '-2px',
-          zIndex: 4,
         },
+        '&.closeable': { paddingInlineEnd: token('size.n2') },
       },
     },
   ],
@@ -142,13 +169,16 @@ export const tabItemClass = recipe({
         },
       },
       bottom: {
-        borderBottom: `2px solid ${token('color.border.base.subtle')}`,
         selectors: {
           '&[data-hovered="true"]:not(&[data-selected="true"])': {
             borderBottom: `2px solid ${token('color.border.tint.outline')}`,
           },
         },
       },
+    },
+    size: {
+      default: uiBaseBold,
+      compact: uiSmallestBold,
     },
   },
 });
@@ -163,15 +193,40 @@ export const tabContentClass = style([
   }),
 ]);
 
-export const paginationButton = style({
+const paginationButtonBase = style({
   zIndex: 3,
   opacity: 1,
-  position: 'relative',
   transition: 'opacity 0.4s ease, background 0.4s ease',
+  backgroundColor: 'inherit',
+});
+
+export const paginationButton = styleVariants({
+  left: [
+    paginationButtonBase,
+    atoms({ position: 'absolute', left: 0, top: 0, bottom: 0 }),
+  ],
+  right: [paginationButtonBase],
 });
 
 export const hiddenClass = style({
   opacity: 0,
   transition: 'opacity 0.4s ease',
   pointerEvents: 'none',
+});
+
+export const closeButtonClass = style({
+  paddingBlock: token('size.n1'),
+  opacity: 0,
+  outlineOffset: '-2px',
+  cursor: 'pointer',
+  selectors: {
+    '&[data-parent-hovered="true"]': {
+      transition: 'opacity 0.4s ease',
+      opacity: 1,
+    },
+    '&[data-parent-selected="true"]': {
+      transition: 'opacity 0.4s ease',
+      opacity: 1,
+    },
+  },
 });

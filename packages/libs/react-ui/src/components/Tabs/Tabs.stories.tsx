@@ -103,11 +103,6 @@ const meta: Meta<ITabsProps> = {
         type: 'boolean',
       },
     },
-    paginated: {
-      control: {
-        type: 'boolean',
-      },
-    },
   },
 };
 
@@ -121,7 +116,11 @@ export const TabsStory: Story = {
   },
   render: (props) => {
     return (
-      <Tabs {...props} aria-label={props['aria-label']}>
+      <Tabs
+        {...props}
+        aria-label={props['aria-label']}
+        onClose={(item) => console.log('closed', item.key)}
+      >
         {ExampleTabs.map((tab) => (
           <TabItem key={tab.title} title={tab.title}>
             {tab.content}
@@ -136,13 +135,12 @@ export const DefaultSelectedTabsStory: Story = {
   name: 'Scrollable Tabs with defaultSelectedTab',
   args: {
     ['aria-label']: 'generic tabs story',
-    defaultSelectedKey: ExampleManyTabs[2].title,
+    defaultSelectedKey: ExampleManyTabs[5].title,
   },
   render: (props) => {
     return (
       <Tabs
         aria-label={props['aria-label']}
-        paginated
         defaultSelectedKey={props.defaultSelectedKey}
       >
         {ExampleManyTabs.map((tab) => (

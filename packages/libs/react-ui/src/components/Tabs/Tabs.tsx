@@ -1,15 +1,17 @@
+'use client';
 import classNames from 'classnames';
 import type { ReactNode } from 'react';
 import React, { useEffect, useRef } from 'react';
 import type { AriaTabListProps } from 'react-aria';
 import { mergeProps, useFocusRing, useTabList } from 'react-aria';
+import type { Node } from 'react-stately';
 import { Item as TabItem, useTabListState } from 'react-stately';
 import { Tab } from './Tab';
 import { TabPanel } from './TabPanel';
 import {
+  scrollContainer,
   selectorLine,
   tabListClass,
-  tabListWrapperClass,
   tabsContainerClass,
 } from './Tabs.css';
 import { TabsPagination } from './TabsPagination';
@@ -22,15 +24,17 @@ export interface ITabsProps
   extends Omit<AriaTabListProps<object>, 'orientation' | 'items'> {
   className?: string;
   inverse?: boolean;
-  paginated?: boolean;
   borderPosition?: 'top' | 'bottom';
+  onClose?: (item: Node<object>) => void;
+  isCompact?: boolean;
 }
 
 export const Tabs = ({
   className,
   borderPosition = 'bottom',
   inverse = false,
-  paginated = false,
+  onClose,
+  isCompact,
   ...props
 }: ITabsProps): ReactNode => {
   const state = useTabListState(props);
@@ -49,13 +53,13 @@ export const Tabs = ({
 
   const selectedUnderlineRef = useRef<HTMLSpanElement | null>(null);
 
+  // set Selected as first tab if the tab isn't visible
   useEffect(() => {
     if (!containerRef.current || !scrollRef.current) return;
 
     const selected = containerRef.current.querySelector(
       '[data-selected="true"]',
     ) as HTMLElement;
-    // set Selected as first tab if the tab isn't fully visible
     if (
       selected?.offsetLeft + selected?.offsetWidth >
       containerRef.current.offsetWidth
@@ -64,6 +68,7 @@ export const Tabs = ({
     }
   }, []);
 
+  // handle underline animation
   useEffect(() => {
     if (!containerRef.current || !selectedUnderlineRef.current) {
       return;
@@ -89,41 +94,37 @@ export const Tabs = ({
     );
   }, [containerRef, state.selectedItem?.key, selectedUnderlineRef]);
 
-  const tablist = (
-    <div className={tabListWrapperClass} ref={scrollRef}>
-      <div
-        className={classNames(tabListClass, { focusVisible: isFocusVisible })}
-        {...mergeProps(tabListProps, focusProps)}
-        ref={containerRef}
-      >
-        {[...state.collection].map((item) => (
-          <Tab
-            key={item.key}
-            item={item}
-            state={state}
-            inverse={inverse}
-            borderPosition={borderPosition}
-          />
-        ))}
-        {borderPosition === 'bottom' && (
-          <span ref={selectedUnderlineRef} className={selectorLine}></span>
-        )}
-      </div>
-    </div>
-  );
-
   return (
     <div className={classNames(tabsContainerClass, className)}>
-      {paginated ? (
-        <TabsPagination
-          wrapperContainerRef={containerRef}
-          scrollContainerRef={scrollRef}
-        >
-          {tablist}
-        </TabsPagination>
-      ) : (
-        tablist
-      )}
+      <TabsPagination
+        wrapperContainerRef={containerRef}
+        scrollContainerRef={scrollRef}
+      >
+        <div className={scrollContainer} ref={scrollRef}>
+          <div
+            className={classNames(tabListClass, {
+              focusVisible: isFocusVisible,
+            })}
+            {...mergeProps(tabListProps, focusProps)}
+            ref={containerRef}
+          >
+            {[...state.collection].map((item) => (
+              <Tab
+                key={item.key}
+                item={item}
+                state={state}
+                inverse={inverse}
+                borderPosition={borderPosition}
+                onClose={onClose}
+                isCompact={isCompact}
+              />
+            ))}
+            {borderPosition === 'bottom' && (
+              <span ref={selectedUnderlineRef} className={selectorLine}></span>
+            )}
+          </div>
+        </div>
+      </TabsPagination>
       <TabPanel key={state.selectedItem?.key} state={state} />
     </div>
   );

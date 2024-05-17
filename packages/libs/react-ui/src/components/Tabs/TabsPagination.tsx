@@ -1,3 +1,4 @@
+'use client';
 import {
   MonoArrowBackIosNew,
   MonoArrowForwardIos,
@@ -5,6 +6,7 @@ import {
 import classNames from 'classnames';
 import type { ReactElement, RefObject } from 'react';
 import React, { useEffect, useState } from 'react';
+import { debounce } from '../../utils';
 import { Button } from '../Button';
 import { hiddenClass, paginationButton, tabListControls } from './Tabs.css';
 import { calculateScroll } from './utils/calculateScroll';
@@ -33,15 +35,23 @@ export const TabsPagination = ({
     const scrollPosition = scrollContainerRef.current.scrollLeft;
 
     if (scrollPosition === 0) {
+      scrollContainerRef.current.classList.remove('paginationLeft');
+
       setVisibleButtons((prev) => ({ ...prev, left: false }));
     }
     if (scrollPosition > 0) {
+      scrollContainerRef.current.classList.add('paginationLeft');
+
       setVisibleButtons((prev) => ({ ...prev, left: true }));
     }
     // 20 is a margin to prevent having a very small last bit to scroll
     if (viewWidth + scrollPosition >= maxWidth - 20) {
+      scrollContainerRef.current.classList.remove('paginationRight');
+
       setVisibleButtons((prev) => ({ ...prev, right: false }));
     } else {
+      scrollContainerRef.current.classList.add('paginationRight');
+
       setVisibleButtons((prev) => ({ ...prev, right: true }));
     }
   };
@@ -56,7 +66,6 @@ export const TabsPagination = ({
     );
 
     scrollContainerRef.current.scrollLeft = nextValue;
-    determineButtonVisibility();
   };
 
   useEffect(() => {
@@ -64,22 +73,26 @@ export const TabsPagination = ({
     determineButtonVisibility();
 
     window.addEventListener('resize', () => determineButtonVisibility());
+    scrollContainerRef.current?.addEventListener(
+      'scroll',
+      debounce(() => determineButtonVisibility(), 100),
+    );
 
-    return () =>
+    return () => {
       window.removeEventListener('resize', () => determineButtonVisibility());
+      scrollContainerRef.current?.removeEventListener('scroll', () =>
+        determineButtonVisibility(),
+      );
+    };
   }, []);
 
-  useEffect(() => {
-    determineButtonVisibility();
-  }, [scrollContainerRef.current?.scrollLeft]);
-
   return (
-    <div className={tabListControls}>
+    <div className={classNames(tabListControls)}>
       <Button
         aria-label="Scroll left"
         variant="transparent"
         isDisabled={!visibleButtons.left}
-        className={classNames(paginationButton, {
+        className={classNames(paginationButton['left'], {
           [hiddenClass]: !visibleButtons.left,
         })}
         onPress={() => handlePagination('back')}
@@ -91,7 +104,7 @@ export const TabsPagination = ({
         aria-label="Scroll right"
         variant="transparent"
         isDisabled={!visibleButtons.right}
-        className={classNames(paginationButton, {
+        className={classNames(paginationButton['right'], {
           [hiddenClass]: !visibleButtons.right,
         })}
         onPress={() => handlePagination('forward')}
