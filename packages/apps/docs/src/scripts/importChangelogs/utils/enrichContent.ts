@@ -3,7 +3,9 @@ import { getVersionCommits } from './commits';
 import { getPackages, getVersions, writeContent } from './misc';
 import { getVersionPRs } from './prs';
 
-const getAuthors = (version: IChangelogPackageVersion): IChangelogUser[] => {
+export const getAuthors = (
+  version: IChangelogPackageVersion,
+): IChangelogUser[] => {
   if (version.authors.length) return version.authors;
 
   const commitAuhtors = getVersionCommits(version).reduce(
@@ -39,7 +41,7 @@ const getAuthors = (version: IChangelogPackageVersion): IChangelogUser[] => {
   return [...commitAuhtors, ...prAuhtors];
 };
 
-const getLastModifiedDate = (
+export const getLastModifiedDate = (
   version: IChangelogPackageVersion,
 ): Date | undefined => {
   if (version.date) return version.date;
