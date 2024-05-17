@@ -64,7 +64,7 @@ export const createAccountListCommand: (
     const isAccountAliasesExist = await ensureAccountAliasFilesExists();
 
     if (!isAccountAliasesExist) {
-      return log.error(NO_ACCOUNTS_FOUND_ERROR_MESSAGE);
+      return log.warning(NO_ACCOUNTS_FOUND_ERROR_MESSAGE);
     }
 
     const { accountAlias } = await option.accountAlias();
