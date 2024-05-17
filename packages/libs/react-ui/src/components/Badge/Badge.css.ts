@@ -23,6 +23,7 @@ export const badge = recipe({
       lg: {
         height: token('size.n8'),
         minWidth: token('size.n8'),
+        paddingInline: token('size.n2'),
         fontSize: token('typography.fontSize.sm'),
       },
       sm: {
@@ -39,6 +40,9 @@ export const badge = recipe({
       },
       inverse: {
         backgroundColor: token('color.neutral.n1@alpha10'),
+      },
+      highContrast: {
+        backgroundColor: token('color.background.base.inverse.default'),
       },
       info: {
         backgroundColor: token(
