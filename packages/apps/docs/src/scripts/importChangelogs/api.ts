@@ -10,7 +10,7 @@ const octokit = new Octokit({
 });
 
 export const getCommitData = async (
-  library: IChangelogPackage,
+  pkg: IChangelogPackage,
   commit: IChangelogCommit,
 ): Promise<void> => {
   try {
@@ -19,8 +19,8 @@ export const getCommitData = async (
     const data = await octokit.request(
       'GET /repos/{owner}/{repo}/commits/{commit_sha}',
       {
-        owner: library.owner,
-        repo: library.repoName,
+        owner: pkg.owner,
+        repo: pkg.repoName,
         commit_sha: commit.hash,
       },
     );
@@ -33,14 +33,14 @@ export const getCommitData = async (
 };
 
 export const getPRCommitData = async (
-  library: IChangelogPackage,
+  pkg: IChangelogPackage,
   pr: IChangelogPR,
 ): Promise<IChangelogCommitDataCommit[]> => {
   const data = (await octokit.request(
     'GET /repos/{owner}/{repo}/pulls/{pull_number}/commits',
     {
-      owner: library.owner,
-      repo: library.repoName,
+      owner: pkg.owner,
+      repo: pkg.repoName,
       pull_number: pr.id,
     },
   )) as any;
@@ -53,7 +53,7 @@ export const getPRCommitData = async (
 };
 
 export const getPRData = async (
-  library: IChangelogPackage,
+  pkg: IChangelogPackage,
   pr: IChangelogPR,
 ): Promise<void> => {
   try {
@@ -62,13 +62,13 @@ export const getPRData = async (
     const data = await octokit.request(
       'GET /repos/{owner}/{repo}/pulls/{pull_number}',
       {
-        owner: library.owner,
-        repo: library.repoName,
+        owner: pkg.owner,
+        repo: pkg.repoName,
         pull_number: pr.id,
       },
     );
 
-    const commits = await getPRCommitData(library, pr);
+    const commits = await getPRCommitData(pkg, pr);
 
     // eslint-disable-next-line require-atomic-updates
     pr.data = reducePRData(data as unknown as IGitHubPRData);

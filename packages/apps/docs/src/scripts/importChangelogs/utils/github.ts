@@ -1,47 +1,47 @@
 import { getCommitData, getPRData } from '../api';
 import { MAXCALLS, errors } from '../constants';
 import { filterCommitsWithoutData, getCommits } from './commits';
-import { getLibraries, writeContent } from './misc';
+import { getPackages, writeContent } from './misc';
 import { filterPRsWithoutData, getPrs } from './prs';
 
 export const getGitHubData = async (
   content: IChangelogComplete,
 ): Promise<void> => {
-  const libraries = getLibraries(content);
-  for (let i = 0; i < libraries.length; i++) {
-    const library = libraries[i];
-    const commits = getCommits(library)
+  const pkgs = getPackages(content);
+  for (let i = 0; i < pkgs.length; i++) {
+    const pkg = pkgs[i];
+    const commits = getCommits(pkg)
       .filter(filterCommitsWithoutData)
       .slice(0, MAXCALLS);
 
-    const prs = getPrs(library).filter(filterPRsWithoutData).slice(0, MAXCALLS);
+    const prs = getPrs(pkg).filter(filterPRsWithoutData).slice(0, MAXCALLS);
 
     for (let i = 0; i < commits.length; i++) {
       const commit = commits[i];
 
-      await getCommitData(library, commit);
+      await getCommitData(pkg, commit);
       writeContent(content);
     }
 
     for (let i = 0; i < prs.length; i++) {
       const pr = prs[i];
 
-      await getPRData(library, pr);
+      await getPRData(pkg, pr);
       writeContent(content);
     }
 
     //check how many commits and prs do not have data
-    const commitCount = getCommits(library).filter(filterCommitsWithoutData);
-    const prCount = getPrs(library).filter(filterPRsWithoutData);
+    const commitCount = getCommits(pkg).filter(filterCommitsWithoutData);
+    const prCount = getPrs(pkg).filter(filterPRsWithoutData);
 
     if (commitCount.length) {
       errors.push(
-        `${library.repo}: ${library.directory} ${library.fileName} still has ${commitCount.length} commits without data`,
+        `${pkg.repo}: ${pkg.directory} ${pkg.fileName} still has ${commitCount.length} commits without data`,
       );
     }
     if (prCount.length) {
       errors.push(
-        `${library.repo}: ${library.directory} ${library.fileName} still has ${prCount.length} prs without data`,
+        `${pkg.repo}: ${pkg.directory} ${pkg.fileName} still has ${prCount.length} prs without data`,
       );
     }
   }

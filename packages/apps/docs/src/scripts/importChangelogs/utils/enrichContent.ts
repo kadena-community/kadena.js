@@ -1,6 +1,6 @@
 import { isAfter } from 'date-fns';
 import { getVersionCommits } from './commits';
-import { getLibraries, getVersions, writeContent } from './misc';
+import { getPackages, getVersions, writeContent } from './misc';
 import { getVersionPRs } from './prs';
 
 const getAuthors = (version: IChangelogPackageVersion): IChangelogUser[] => {
@@ -81,8 +81,8 @@ const getLastModifiedDate = (
 };
 
 export const enrichContent = (content: IChangelogComplete) => {
-  getLibraries(content).forEach((library) => {
-    getVersions(library).forEach((version) => {
+  getPackages(content).forEach((pkg) => {
+    getVersions(pkg).forEach((version) => {
       if (version.isLocked) return;
       version.date = getLastModifiedDate(version);
       version.authors = getAuthors(version);

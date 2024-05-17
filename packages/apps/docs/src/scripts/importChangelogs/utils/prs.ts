@@ -23,8 +23,8 @@ export const getVersionPRs = (
   return [...miscCommits, ...patchCommits, ...minorCommits].flat().flat();
 };
 
-export const getPrs = (library: IChangelogPackage): IChangelogPR[] => {
-  return getVersions(library).map(getVersionPRs).flat().flat();
+export const getPrs = (pkg: IChangelogPackage): IChangelogPR[] => {
+  return getVersions(pkg).map(getVersionPRs).flat().flat();
 };
 
 export const getPrId = (content: string): IChangelogVersionRecord => {
