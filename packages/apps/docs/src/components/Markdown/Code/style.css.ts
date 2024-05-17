@@ -7,13 +7,13 @@ import { paragraphWrapperClass } from '../Paragraph/styles.css';
 export const inlineCode = style([
   atoms({
     borderRadius: 'sm',
-    color: 'text.subtle.default',
+    color: 'text.brand.secondary.default',
     marginInlineStart: 'xs',
     marginInlineEnd: 'xs',
     fontFamily: 'monospaceFont',
   }),
   {
-    backgroundColor: tokens.kda.foundation.color.neutral['n99@alpha20'],
+    backgroundColor: tokens.kda.foundation.color.neutral['n99@alpha10'],
     padding: `calc(${tokens.kda.foundation.spacing.xs} / 4) ${tokens.kda.foundation.spacing.xs}`,
     fontSize: 'smaller',
     fontWeight: 'bolder',
