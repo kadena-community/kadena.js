@@ -3,11 +3,11 @@ import { getVersionCommits } from './commits';
 import { getLibraries, getVersions, writeContent } from './misc';
 import { getVersionPRs } from './prs';
 
-const getAuthors = (version: IChanglogContent): IGHUserReduced[] => {
+const getAuthors = (version: IChanglogPackageVersion): IChangelogUser[] => {
   if (version.authors.length) return version.authors;
 
   const commitAuhtors = getVersionCommits(version).reduce(
-    (acc: IGHUserReduced[], val: IGHCommit): IGHUserReduced[] => {
+    (acc: IChangelogUser[], val: IChangelogCommit): IChangelogUser[] => {
       if (!val?.data?.data?.author) return acc;
       const author = val.data.data.author;
       if (acc.find((v) => v.id === author.id)) return acc;
@@ -23,9 +23,9 @@ const getAuthors = (version: IChanglogContent): IGHUserReduced[] => {
     .flat()
     .reduce(
       (
-        acc: IGHUserReduced[],
-        val: IGHCommitDataCommitReduced,
-      ): IGHUserReduced[] => {
+        acc: IChangelogUser[],
+        val: IChangelogCommitDataCommit,
+      ): IChangelogUser[] => {
         if (!val.author) return acc;
         const author = val.author;
         if (acc.find((v) => v.id === author.id)) return acc;
@@ -39,11 +39,13 @@ const getAuthors = (version: IChanglogContent): IGHUserReduced[] => {
   return [...commitAuhtors, ...prAuhtors];
 };
 
-const getLastModifiedDate = (version: IChanglogContent): Date | undefined => {
+const getLastModifiedDate = (
+  version: IChanglogPackageVersion,
+): Date | undefined => {
   if (version.date) return version.date;
 
   const commitsDate = getVersionCommits(version).reduce(
-    (acc: Date | undefined, val: IGHCommit): Date | undefined => {
+    (acc: Date | undefined, val: IChangelogCommit): Date | undefined => {
       const lastModifiedDate = val.data?.headers['last-modified']
         ? new Date(val.data?.headers['last-modified'])
         : undefined;
@@ -58,7 +60,7 @@ const getLastModifiedDate = (version: IChanglogContent): Date | undefined => {
   );
 
   const prssDate = getVersionPRs(version).reduce(
-    (acc: Date | undefined, val: IGHPR): Date | undefined => {
+    (acc: Date | undefined, val: IChangelogPR): Date | undefined => {
       const lastModifiedDate = val.data?.headers['last-modified']
         ? new Date(val.data?.headers['last-modified'])
         : undefined;

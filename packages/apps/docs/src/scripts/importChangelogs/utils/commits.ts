@@ -1,10 +1,12 @@
 import { MAX_TRIES } from '../constants';
 import { getVersions } from './misc';
 
-export const filterCommitsWithoutData = (commit: IGHCommit): boolean =>
+export const filterCommitsWithoutData = (commit: IChangelogCommit): boolean =>
   commit.tries < MAX_TRIES && !commit.data;
 
-export const getVersionCommits = (version: IChanglogContent): IGHCommit[] => {
+export const getVersionCommits = (
+  version: IChanglogPackageVersion,
+): IChangelogCommit[] => {
   const patchCommits =
     version.patches.map((val) => {
       return val.commits;
@@ -21,11 +23,11 @@ export const getVersionCommits = (version: IChanglogContent): IGHCommit[] => {
   return [...miscCommits, ...patchCommits, ...minorCommits].flat().flat();
 };
 
-export const getCommits = (library: IChangelog): IGHCommit[] => {
+export const getCommits = (library: IChangelogPackage): IChangelogCommit[] => {
   return getVersions(library).map(getVersionCommits).flat().flat();
 };
 
-export const getCommitId = (content: string): IChangelogRecord => {
+export const getCommitId = (content: string): IChangelogVersionRecord => {
   const regex = /\b[0-9a-f]{7,10}\b/;
   const match = content.match(regex);
 

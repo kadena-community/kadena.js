@@ -10,8 +10,8 @@ const octokit = new Octokit({
 });
 
 export const getCommitData = async (
-  library: IChangelog,
-  commit: IGHCommit,
+  library: IChangelogPackage,
+  commit: IChangelogCommit,
 ): Promise<void> => {
   try {
     commit.tries = commit.tries + 1;
@@ -26,16 +26,16 @@ export const getCommitData = async (
     );
 
     // eslint-disable-next-line require-atomic-updates
-    commit.data = reduceCommitData(data as unknown as IGHCommitData);
+    commit.data = reduceCommitData(data as unknown as IGitHubCommitData);
   } catch (e) {
     console.log({ e });
   }
 };
 
 export const getPRCommitData = async (
-  library: IChangelog,
-  pr: IGHPR,
-): Promise<IGHCommitDataCommitReduced[]> => {
+  library: IChangelogPackage,
+  pr: IChangelogPR,
+): Promise<IChangelogCommitDataCommit[]> => {
   const data = (await octokit.request(
     'GET /repos/{owner}/{repo}/pulls/{pull_number}/commits',
     {
@@ -45,7 +45,7 @@ export const getPRCommitData = async (
     },
   )) as any;
 
-  const reducedData = (data.data as IGHCommitDataCommit[]).map(
+  const reducedData = (data.data as IGithubCommitDataCommit[]).map(
     reduceCommitDataCommit,
   );
 
@@ -53,8 +53,8 @@ export const getPRCommitData = async (
 };
 
 export const getPRData = async (
-  library: IChangelog,
-  pr: IGHPR,
+  library: IChangelogPackage,
+  pr: IChangelogPR,
 ): Promise<void> => {
   try {
     pr.tries = pr.tries + 1;
@@ -71,7 +71,7 @@ export const getPRData = async (
     const commits = await getPRCommitData(library, pr);
 
     // eslint-disable-next-line require-atomic-updates
-    pr.data = reducePRData(data as unknown as IGHPRData);
+    pr.data = reducePRData(data as unknown as IGitHubPRData);
     // eslint-disable-next-line require-atomic-updates
     pr.commits = commits;
   } catch (e) {

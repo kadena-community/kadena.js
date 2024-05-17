@@ -14,11 +14,15 @@ export const getChangelog = (repo: IRepo): string => {
   );
 };
 
-export const getLibraries = (content: IChangelogComplete): IChangelog[] => {
+export const getLibraries = (
+  content: IChangelogComplete,
+): IChangelogPackage[] => {
   return Object.entries(content).map(([, library]) => library);
 };
 
-export const getVersions = (library: IChangelog): IChanglogContent[] => {
+export const getVersions = (
+  library: IChangelogPackage,
+): IChanglogPackageVersion[] => {
   if (!library.content) return [];
   return Object.entries(library.content).map(([, version]) => version);
 };

@@ -1,10 +1,12 @@
 import { MAX_TRIES } from '../constants';
 import { getVersions } from './misc';
 
-export const filterPRsWithoutData = (pr: IGHPR): boolean =>
+export const filterPRsWithoutData = (pr: IChangelogPR): boolean =>
   pr.tries < MAX_TRIES && !pr.data;
 
-export const getVersionPRs = (version: IChanglogContent): IGHPR[] => {
+export const getVersionPRs = (
+  version: IChanglogPackageVersion,
+): IChangelogPR[] => {
   const patchCommits =
     version.patches.map((val) => {
       return val.prIds;
@@ -21,13 +23,13 @@ export const getVersionPRs = (version: IChanglogContent): IGHPR[] => {
   return [...miscCommits, ...patchCommits, ...minorCommits].flat().flat();
 };
 
-export const getPrs = (library: IChangelog): IGHPR[] => {
+export const getPrs = (library: IChangelogPackage): IChangelogPR[] => {
   return getVersions(library).map(getVersionPRs).flat().flat();
 };
 
-export const getPrId = (content: string): IChangelogRecord => {
+export const getPrId = (content: string): IChangelogVersionRecord => {
   const regex = /#(\d+)/g;
-  const prIds: IGHPR[] = [];
+  const prIds: IChangelogPR[] = [];
   const matches = content.match(regex);
 
   matches?.forEach((match: string, idx: number) => {

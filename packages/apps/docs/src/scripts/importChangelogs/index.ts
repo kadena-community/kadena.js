@@ -34,7 +34,7 @@ const getCurrentContentCreator = () => {
 const getCurrentContent = getCurrentContentCreator();
 
 //TESTABLE
-const createVersion = (branch: Node): IChanglogContent => {
+const createVersion = (branch: Node): IChanglogPackageVersion => {
   return {
     label: (branch as any).children[0].value ?? '',
     isLocked: false,
@@ -67,7 +67,7 @@ const crawlContent = (tree: Node): string => {
   return content;
 };
 
-const createRecord = (content: Node): IChangelogRecord => {
+const createRecord = (content: Node): IChangelogVersionRecord => {
   const contentString = crawlContent(content);
 
   const { commits, label: tempLabel } = getCommitId(contentString);
@@ -92,13 +92,13 @@ const checkMinorNames = (value: string): boolean => {
 };
 
 //create a json
-const crawl = (repo: IRepo): ((tree: Node) => IChangelog) => {
-  const content: Record<string, IChanglogContent> = {};
+const crawl = (repo: IRepo): ((tree: Node) => IChangelogPackage) => {
+  const content: Record<string, IChanglogPackageVersion> = {};
   let currentPosition: VersionPosition;
-  let version: IChanglogContent | undefined;
+  let version: IChanglogPackageVersion | undefined;
   const currentContent = getCurrentContent();
 
-  const innerCrawl = (tree: Node): IChangelog => {
+  const innerCrawl = (tree: Node): IChangelogPackage => {
     if (isParent(tree)) {
       tree.children.forEach((branch, idx) => {
         if (branch.type === 'heading' && branch.depth === 2) {

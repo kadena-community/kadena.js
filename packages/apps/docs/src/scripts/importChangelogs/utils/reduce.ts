@@ -1,13 +1,13 @@
-export const reduceHeaderData = (header: IGHHeader): IGHHeaderReduced => {
-  const reduced: IGHHeaderReduced = {
+export const reduceHeaderData = (header: IGitHubHeader): IChangelogHeader => {
+  const reduced: IChangelogHeader = {
     'last-modified': header['last-modified'],
     date: header.date,
   };
 
   return reduced;
 };
-export const reduceUserData = (user: IGHUser): IGHUserReduced => {
-  const reduced: IGHUserReduced = {
+export const reduceUserData = (user: IGitHubUser): IChangelogUser => {
+  const reduced: IChangelogUser = {
     login: user.login,
     id: user.id,
     avatar_url: user.avatar_url,
@@ -18,22 +18,22 @@ export const reduceUserData = (user: IGHUser): IGHUserReduced => {
 };
 
 export const getAuthor = (
-  commit: IGHCommitDataCommit,
-): IGHUserReduced | undefined => {
+  commit: IGithubCommitDataCommit,
+): IChangelogUser | undefined => {
   if (commit.author) return reduceUserData(commit.author);
   if (commit.committer) return reduceUserData(commit.committer);
   if (commit.commit.author) {
-    return { login: commit.commit.author } as unknown as IGHUserReduced;
+    return { login: commit.commit.author } as unknown as IChangelogUser;
   }
   if (commit.commit.committer) {
-    return { login: commit.commit.committer } as unknown as IGHUserReduced;
+    return { login: commit.commit.committer } as unknown as IChangelogUser;
   }
 };
 
 export const reduceCommitDataCommit = (
-  commit: IGHCommitDataCommit,
-): IGHCommitDataCommitReduced => {
-  const reduced: IGHCommitDataCommitReduced = {
+  commit: IGithubCommitDataCommit,
+): IChangelogCommitDataCommit => {
+  const reduced: IChangelogCommitDataCommit = {
     sha: commit.sha,
     url: commit.url,
     author: getAuthor(commit),
@@ -48,9 +48,9 @@ export const reduceCommitDataCommit = (
 };
 
 export const reduceCommitData = (
-  commit: IGHCommitData,
-): IGHCommitDataReduced => {
-  const reduced: IGHCommitDataReduced = {
+  commit: IGitHubCommitData,
+): IChangelogCommitData => {
+  const reduced: IChangelogCommitData = {
     status: commit.status,
     headers: reduceHeaderData(commit.headers),
     data: reduceCommitDataCommit(commit.data),
@@ -59,8 +59,8 @@ export const reduceCommitData = (
   return reduced;
 };
 
-export const reducePRData = (pr: IGHPRData): IGHPRDataReduced => {
-  const reduced: IGHPRDataReduced = {
+export const reducePRData = (pr: IGitHubPRData): IChangelogPRData => {
+  const reduced: IChangelogPRData = {
     url: pr.url,
     headers: reduceHeaderData(pr.headers),
     data: {
