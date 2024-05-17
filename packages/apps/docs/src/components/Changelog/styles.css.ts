@@ -25,6 +25,7 @@ export const commitListItemClass = style([
     display: 'flex',
   }),
   {
+    lineBreak: 'anywhere',
     flexDirection: 'column',
     ...responsiveStyle({
       sm: {
@@ -54,8 +55,7 @@ export const commitTagClass = style([
   atoms({
     borderRadius: 'sm',
     color: 'text.base.inverse.default',
-    marginInlineStart: 'xs',
-    marginInlineEnd: 'xs',
+
     fontFamily: 'monospaceFont',
     backgroundColor: 'semantic.positive.inverse.default',
   }),
@@ -63,5 +63,28 @@ export const commitTagClass = style([
     padding: `calc(${tokens.kda.foundation.spacing.xs} / 4) ${tokens.kda.foundation.spacing.xs}`,
     fontSize: 'smaller',
     fontWeight: 'bolder',
+    alignSelf: 'baseline',
+  },
+]);
+
+export const tagContainerClass = style([
+  atoms({
+    justifyContent: 'flex-start',
+    gap: 'xs',
+    width: '100%',
+    paddingInlineStart: 'md',
+    paddingBlockStart: 'xs',
+    paddingBlockEnd: 'md',
+  }),
+  {
+    ...responsiveStyle({
+      lg: {
+        paddingInlineStart: 0,
+        paddingBlockStart: 0,
+        paddingBlockEnd: 0,
+        width: '100px',
+        justifyContent: 'flex-end',
+      },
+    }),
   },
 ]);

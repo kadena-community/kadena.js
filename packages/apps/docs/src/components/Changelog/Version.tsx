@@ -4,18 +4,19 @@ import React from 'react';
 import { Commits } from './Commits';
 
 interface IProps {
-  label: string;
+  version: IChangelogPackageVersion;
 }
 
-export const Version: FC<IProps> = ({ label }) => {
+export const Version: FC<IProps> = ({ version }) => {
   return (
     <Stack flexDirection="column" gap="lg">
       <Heading as="h3" variant="h3">
-        4.11.0
+        {version.label}
       </Heading>
-      <Commits label="Features" />
-      <Commits label="Bugfixes" />
-      <Commits label="Misc" />
+
+      <Commits label="Minors" commits={version.minors} />
+      <Commits label="Patches" commits={version.patches} />
+      <Commits label="Misc" commits={version.miscs} />
     </Stack>
   );
 };

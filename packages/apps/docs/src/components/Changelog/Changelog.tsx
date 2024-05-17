@@ -1,13 +1,23 @@
+import { getPackages } from '@/scripts/importChangelogs/utils/misc';
 import { Stack } from '@kadena/react-ui';
 import type { FC } from 'react';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Package } from './Package';
 
-export const Changelog: FC = () => {
+interface IProps {
+  changelogs: IChangelogComplete;
+}
+
+export const Changelog: FC<IProps> = ({ changelogs }) => {
+  const packages = useMemo(() => {
+    return getPackages(changelogs);
+  }, [changelogs]);
+
   return (
     <Stack flexDirection="column" gap="xxxl">
-      <Package />
-      <Package />
+      {packages.map((pkg) => (
+        <Package key={pkg.repoName} pkg={pkg} />
+      ))}
     </Stack>
   );
 };

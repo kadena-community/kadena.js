@@ -6,19 +6,20 @@ import { commitListClass } from './styles.css';
 
 interface IProps {
   label: string;
+  commits: IChangelogVersionRecord[];
 }
 
-export const Commits: FC<IProps> = ({ label }) => {
+export const Commits: FC<IProps> = ({ label, commits }) => {
+  if (!commits.length) return;
   return (
     <Stack width="100%" flexDirection="column" gap="sm">
       <Heading as="h4" variant="h5">
         {label}
       </Heading>
       <Stack as="ul" className={commitListClass} flexDirection="column">
-        <CommitItem commitCount={1} />
-        <CommitItem commitCount={1} />
-        <CommitItem commitCount={4} />
-        <CommitItem commitCount={2} />
+        {commits.map((commit) => (
+          <CommitItem key={commit.label} commit={commit} />
+        ))}
       </Stack>
     </Stack>
   );
