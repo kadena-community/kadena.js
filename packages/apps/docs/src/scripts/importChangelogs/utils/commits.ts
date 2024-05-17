@@ -5,7 +5,7 @@ export const filterCommitsWithoutData = (commit: IChangelogCommit): boolean =>
   commit.tries < MAX_TRIES && !commit.data;
 
 export const getVersionCommits = (
-  version: IChanglogPackageVersion,
+  version: IChangelogPackageVersion,
 ): IChangelogCommit[] => {
   const patchCommits =
     version.patches.map((val) => {
@@ -20,11 +20,11 @@ export const getVersionCommits = (
       return val.commits;
     }) ?? [];
 
-  return [...miscCommits, ...patchCommits, ...minorCommits].flat().flat();
+  return [...miscCommits, ...patchCommits, ...minorCommits].flat();
 };
 
-export const getCommits = (library: IChangelogPackage): IChangelogCommit[] => {
-  return getVersions(library).map(getVersionCommits).flat().flat();
+export const getCommits = (pkg: IChangelogPackage): IChangelogCommit[] => {
+  return getVersions(pkg).map(getVersionCommits).flat().flat();
 };
 
 export const getCommitId = (content: string): IChangelogVersionRecord => {

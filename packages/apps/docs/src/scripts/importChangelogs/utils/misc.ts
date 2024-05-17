@@ -22,7 +22,7 @@ export const getLibraries = (
 
 export const getVersions = (
   library: IChangelogPackage,
-): IChanglogPackageVersion[] => {
+): IChangelogPackageVersion[] => {
   if (!library.content) return [];
   return Object.entries(library.content).map(([, version]) => version);
 };

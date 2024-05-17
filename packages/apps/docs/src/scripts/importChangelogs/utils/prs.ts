@@ -5,7 +5,7 @@ export const filterPRsWithoutData = (pr: IChangelogPR): boolean =>
   pr.tries < MAX_TRIES && !pr.data;
 
 export const getVersionPRs = (
-  version: IChanglogPackageVersion,
+  version: IChangelogPackageVersion,
 ): IChangelogPR[] => {
   const patchCommits =
     version.patches.map((val) => {

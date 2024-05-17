@@ -10,10 +10,10 @@ interface IRepo {
   repoName: string;
 }
 interface IChangelogPackage extends IRepo {
-  content: Record<string, IChanglogPackageVersion>;
+  content: Record<string, IChangelogPackageVersion>;
 }
 
-interface IChanglogPackageVersion {
+interface IChangelogPackageVersion {
   label: string;
   isLocked: boolean;
   date?: Date;
