@@ -184,7 +184,7 @@ export const createFundAmountValidation = (
         }
 
         return {
-          message: `must be a positive number (1 - ${maxValue}})`,
+          message: `must be a positive number (1 - ${maxValue})`,
         };
       },
     })
