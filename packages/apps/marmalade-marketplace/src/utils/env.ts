@@ -5,6 +5,7 @@ const TESTNUMBER = Number(process.env.NEXT_PUBLIC_TESTNUMBER);
 const WALLET_URL = process.env.NEXT_PUBLIC_WALLET_URL;
 const URL = process.env.NEXT_PUBLIC_URL;
 const START_BLOCK = process.env.NEXT_PUBLIC_START_BLOCK;
+const CHAINID = process.env.NEXT_PUBLIC_CHAINID;
 const CHAIN_IDS = process.env.NEXT_PUBLIC_CHAIN_IDS;
 const EVENTS = process.env.NEXT_PUBLIC_EVENTS;
 const NETWORKID = process.env.NEXT_PUBLIC_NETWORKID;
@@ -18,6 +19,7 @@ if (!TRACKING_ID) console.error('NEXT_PUBLIC_TRACKING_ID is not set');
 if (!TESTNUMBER) console.error('NEXT_PUBLIC_TESTNUMBER is not set');
 if (!WALLET_URL) console.error('NEXT_PUBLIC_WALLET_URL is not set');
 if (!URL) console.error('NEXT_PUBLIC_URL is not set');
+if (!CHAINID) console.error('NEXT_PUBLIC_CHAINID is not set');
 if (!CHAIN_IDS) console.error('NEXT_PUBLIC_CHAINID is not set');
 if (!EVENTS) console.error('NEXT_PUBLIC_EVENTS is not set');
 if (!NETWORKID) console.error('NEXT_PUBLIC_NETWORKID is not set');
@@ -32,6 +34,7 @@ export const env = {
   TESTNUMBER,
   WALLET_URL,
   URL,
+  CHAINID: (CHAINID ?? '1') as ChainId,
   START_BLOCK: START_BLOCK ? Number(START_BLOCK) : 0,
   CHAIN_IDS: CHAIN_IDS?.split(',') as ChainId[],
   EVENTS: EVENTS?.split(',') || [],
