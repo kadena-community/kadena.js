@@ -8,7 +8,7 @@
     "prebuild": "npm run generate-coin-type",
     "build": "pnpm run prebuild && tsc && vite build",
     "build-dev": "vite build --mode development --watch",
-    "dev": "vite --config vite-dev.config.js",
+    "dev": "vite",
     "generate-coin-type": "pactjs contract-generate --contract \"coin\" --api \"https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/14/pact\"",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
