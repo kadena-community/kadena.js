@@ -1,7 +1,7 @@
 ---
 title: kadena tx
 description:
-  The `@kadena/kadena-cli` library provides a complete set of commands for creating applications and interacting with the Kadena network interactively or by using scripts from the command-line.
+  The `@kadena/kadena-cli` package provides a complete set of commands for creating applications and interacting with the Kadena network interactively or by using scripts from the command-line.
 menu: Command-line interface
 label: kadena tx
 order: 2
@@ -58,7 +58,7 @@ signing and submission.
 ### Basic usage
 
 ```bash
-kadena tx add [options] [options]
+kadena tx add [arguments] [flags]
 ```
 
 This command accepts various arguments and options, allowing for detailed

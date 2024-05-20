@@ -1,7 +1,7 @@
 ---
 title: kadena key
 description:
-  The `@kadena/kadena-cli` library provides a complete set of commands for creating applications and interacting with the Kadena network interactively or by using scripts from the command-line.
+  The `@kadena/kadena-cli` package provides a complete set of commands for creating applications and interacting with the Kadena network interactively or by using scripts from the command-line.
 menu: Command-line interface
 label: kadena key
 order: 2
@@ -10,7 +10,6 @@ tags: ['TypeScript', 'Kadena client', 'frontend']
 ---
 
 # kadena key
-
 
 Use `kadena key` to generate and manage public and secret keys.
 
@@ -46,6 +45,14 @@ You can use the following optional flags with the `kadena key` command.
 ## kadena key generate
 
 Use `kadena key generate` to generate a random public and secret key.
+
+### Basic usage
+
+The basic syntax for the `kadena key generate` command is:
+
+```bash
+kadena key generate [arguments] [flags]
+```
 
 ### Arguments
 
@@ -113,6 +120,14 @@ chainweaver-keys-2.yaml
 ## kadena key list
 
 Use `kadena key list` to list available keys.
+
+### Basic usage
+
+The basic syntax for the `kadena key list` command is:
+
+```bash
+kadena key list [arguments] [flags]
+```
 
 ### Arguments
 

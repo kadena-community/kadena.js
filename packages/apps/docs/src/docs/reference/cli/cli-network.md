@@ -1,7 +1,7 @@
 ---
 title: kadena network
 description:
-  The `@kadena/kadena-cli` library provides a complete set of commands for creating applications and interacting with the Kadena network interactively or by using scripts from the command-line.
+  The `@kadena/kadena-cli` pacakge provides a complete set of commands for creating applications and interacting with the Kadena network interactively or by using scripts from the command-line.
 menu: Command-line interface
 label: kadena network
 order: 2
@@ -51,6 +51,14 @@ You can use the following optional flags with `kadena network` commands.
 
 Use `kadena network add` to add a new set of network settings to your development environment.
 
+### Basic usage
+
+The basic syntax for the `kadena network add` command is:
+
+```bash
+kadena network add [arguments] [flags]
+```
+
 ### Arguments
 
 You can use the following command-line arguments with the `kadena network add` command:
@@ -81,6 +89,14 @@ kadena network add --network-name="testnet" --network-id="testnet08" --network-h
 
 Use `kadena network set-default` to specify the network to use as your default network in your development environment.
 You can specify the network as `none` to remove a previously-set default network.
+
+## Basic usage
+
+The basic syntax for the `kadena network set-default` command is:
+
+```bash
+kadena network set-default [arguments] [flags]
+```
 
 ### Arguments
 
@@ -114,6 +130,14 @@ kadena network set-default --network="none" --confirm
 ## kadena network update 
 
 Use `kadena network update` to update properties for an existing network.   
+
+## Basic usage
+
+The basic syntax for the `kadena network update` command is:
+
+```bash
+kadena network update [arguments] [flags]
+```
 
 ### Arguments
 
@@ -150,6 +174,17 @@ kadena network update --network="mainnet" --network-id="mainnet01" --network-hos
 ## kadena network list
 
 Use `kadena network list` to list all available networks.
+
+## Basic usage
+
+The basic syntax for the `kadena network list` command is:
+
+```bash
+kadena network list [flags]
+```
+
+### Examples
+
 To display information about all available networks, run the following command:
 
 ```bash
@@ -165,9 +200,42 @@ mainnet mainnet01   https://api.chainweb.com         https://explorer.chainweb.c
 testnet testnet04   https://api.testnet.chainweb.com https://explorer.chainweb.com/testnet/tx/      No  
 ```
 
+To display the output for this command using YAML format, you can run the following command:
+
+```bash
+kadena network list --yaml
+```
+
+The command displays network information in YAML format similar to the following:
+
+```bash
+networks:
+  - network: devnet
+    networkId: development
+    networkHost: http://localhost:8080
+    networkExplorerUrl: http://localhost:8080/explorer/development/tx/
+  - network: mainnet
+    networkId: mainnet01
+    networkHost: https://api.chainweb.com
+    networkExplorerUrl: https://explorer.chainweb.com/mainnet/tx/
+  - network: testnet
+    networkId: testnet04
+    networkHost: https://api.testnet.chainweb.com
+    networkExplorerUrl: https://explorer.chainweb.com/testnet/tx/
+
+```
+
 ## kadena network delete
 
 Use `kadena network delete` to remove a network and its configuration settings from your development environment.
+
+## Basic usage
+
+The basic syntax for the `kadena network delete` command is:
+
+```bash
+kadena network delete [arguments] [flags]
+```
 
 ### Arguments
 

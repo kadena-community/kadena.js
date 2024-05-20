@@ -1,7 +1,7 @@
 ---
 title: kadena config
 description:
-  The `@kadena/kadena-cli` library provides a complete set of commands for creating applications and interacting with the Kadena network interactively or by using scripts from the command-line.
+  The `@kadena/kadena-cli` package provides a complete set of commands for creating applications and interacting with the Kadena network interactively or by using scripts from the command-line.
 menu: Command-line interface
 label: kadena config
 order: 2
@@ -25,7 +25,7 @@ The configuration folder stores information about your development environment, 
 The basic syntax for the `kadena config` command is:
 
 ```bash
-kadena config <action> [flag]
+kadena config <action> [arguments] [flags]
 ```
 
 ## Actions
@@ -64,6 +64,14 @@ This option enables you to use the same configuration settings from any folder o
 
 Configuration settings that are defined in a local working directory take precedence over configuration settings defined in the home directory. 
 If you add more than one configuration folder to your development environment, you can use the `kadena config path` commands to see which path is being used in a specific directory.
+
+### Basic usage
+
+The basic syntax for the `kadena config` command is:
+
+```bash
+kadena config init [arguments] [flags]
+```
 
 ### Arguments
 
