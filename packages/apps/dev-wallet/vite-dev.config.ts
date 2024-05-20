@@ -48,6 +48,9 @@ export const config: UserConfig = {
   optimizeDeps: {
     // add all monorepo packages to optimizeDeps since they are commonjs
     include: [...monorepoPackages],
+    esbuildOptions: {
+      plugins: [vanillaExtractEsbuildPlugin({ runtime: true })],
+    },
   },
 
   build: {
