@@ -1,14 +1,14 @@
-import { Heading, TextField, Button, Tabs, TabItem } from '@kadena/react-ui';
+import { Heading, TextField, Button, Tabs, TabItem, Stack } from '@kadena/react-ui';
 import * as styles from "@/styles/create-token.css"
 import Layout from '@/components/Layout';
 
 export default function CreateToken() {
   return (
-    <div className={styles.mainWrapperClass}>
+  <Layout>
     <Heading>
       <title>Create Token</title>
     </Heading>
-    <Layout> 
+    <Stack flex={1} flexDirection="column">
       <h1>Create Token</h1>
       <div className={styles.twoColumnRow}>
         <div className={styles.formSection}>
@@ -53,12 +53,12 @@ export default function CreateToken() {
                 </div>
               </div>
             </form>
-        
+
         </div>
-        
+
     <div className={styles.oneColumnRow}>
     <div className={styles.formSection}>
-      <Tabs> 
+      <Tabs>
         <TabItem title="Guards">
           <form className={styles.verticalForm} title="Guards">
             <TextField label = "URI Guard"/>
@@ -81,13 +81,12 @@ export default function CreateToken() {
             <TextField label = "Royalty Rate"/>
             <TextField label = "Royalty Fungible"/>
           </form>
-        
         </TabItem>
       </Tabs>
       </div>
       </div>
       </div>
-    </Layout>
-  </div>
+    </Stack>
+  </Layout>
   );
 }

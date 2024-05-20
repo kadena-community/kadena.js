@@ -27,8 +27,7 @@ globalStyle('a:has(button)', {
 });
 
 export const mainWrapperClass = style({
-  display: "grid",
-  padding: "120px",
+  display: "grid"
 });
 
 export const twoColumnRow = style({
