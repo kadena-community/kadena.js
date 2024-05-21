@@ -70,7 +70,7 @@ describe('account list', () => {
     );
   });
 
-  it('should display only the specified account information via CL', async () => {
+  it('should display only the specified account information via CLI', async () => {
     const res = await runCommandJson(
       'account list --account-alias=account-two --quiet',
     );
