@@ -179,6 +179,7 @@ globalStyle(
     opacity: 1,
     backgroundColor:
       tokens.kda.foundation.color.background.semantic.positive.default,
+    color: tokens.kda.foundation.color.text.base.inverse['@hover'],
   },
 );
 globalStyle(
@@ -187,6 +188,6 @@ globalStyle(
     opacity: 1,
     backgroundColor:
       tokens.kda.foundation.color.background.semantic.positive.inverse.default,
-    color: tokens.kda.foundation.color.text.base.default,
+    color: tokens.kda.foundation.color.text.base['@hover'],
   },
 );
