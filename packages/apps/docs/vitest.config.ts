@@ -10,7 +10,6 @@ export default mergeConfig(
       globals: true,
       setupFiles: ['vitest.setup.ts'],
       environment: 'happy-dom',
-      threads: false,
       coverage: {
         provider: 'v8',
         thresholds: {
@@ -19,6 +18,15 @@ export default mergeConfig(
           branches: 0,
           statements: 0,
         },
+        exclude: [
+          'src/**/*.tsx',
+          'src/**/*.d.ts',
+          'src/**/__fixtures__/**/*.ts',
+          'src/components/**/index.ts',
+          'src/**/*.css.ts',
+          'src/**/*.md',
+          'src/**/*.mdx',
+        ],
       },
     },
   }),
