@@ -901,6 +901,8 @@ describe('reduce utils', () => {
         data: {
           sha: 'b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
           url: 'https://api.github.com/repos/kadena-community/kadena.js/commits/b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
+          html_url:
+            'https://github.com/kadena-community/kadena.js/commit/b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
           author: {
             login: 'ferreroltd',
             id: 73488793,
@@ -1174,6 +1176,8 @@ describe('reduce utils', () => {
       const expetedResult = {
         sha: 'b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
         url: 'https://api.github.com/repos/kadena-community/kadena.js/commits/b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
+        html_url:
+          'https://github.com/kadena-community/kadena.js/commit/b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
         author: {
           login: 'ferreroltd',
           id: 73488793,

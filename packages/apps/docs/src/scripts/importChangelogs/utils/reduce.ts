@@ -39,6 +39,7 @@ export const reduceCommitDataCommit = (
     url: commit.url,
     author: getAuthor(commit),
     comments_url: commit.comments_url,
+    html_url: commit.html_url,
     commit: {
       message: commit.commit?.message,
       comment_count: commit.commit?.comment_count ?? 0,

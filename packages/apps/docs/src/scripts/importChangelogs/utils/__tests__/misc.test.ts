@@ -66,7 +66,7 @@ describe('misc utils', () => {
       });
 
       const result = getPackages(changelog as unknown as IChangelogComplete);
-      expect(result.length).toEqual(6);
+      expect(result.length).toEqual(7);
       expect(result[0].name).toEqual('Greyskull');
     });
   });

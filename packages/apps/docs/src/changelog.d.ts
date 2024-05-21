@@ -58,7 +58,7 @@ type IChangelogCommitData = Pick<IGitHubCommitData, 'status'> & {
 
 type IChangelogCommitDataCommit = Pick<
   IGithubCommitDataCommit,
-  'sha' | 'url' | 'comments_url'
+  'sha' | 'url' | 'comments_url' | 'html_url'
 > & {
   author?: IChangelogUser;
   commit: {
