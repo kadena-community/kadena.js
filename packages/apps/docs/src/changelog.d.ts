@@ -29,7 +29,7 @@ interface IChangelogVersionRecord {
 }
 
 type IChangelogUser = Pick<IGitHubUser, 'login'> &
-  Partial<Pick<IGitHubUser, 'id' | 'avatar_url' | 'url'>>;
+  Partial<Pick<IGitHubUser, 'id' | 'avatar_url' | 'url' | 'html_url'>>;
 
 type IChangelogHeader = Pick<IGitHubHeader, 'last-modified' | 'date'>;
 

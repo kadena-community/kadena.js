@@ -1,5 +1,6 @@
 import { Heading, Stack } from '@kadena/react-ui';
 import { format } from 'date-fns';
+import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
 import { Avatar } from '../Avatar/Avatar';
@@ -36,11 +37,14 @@ export const VersionMeta: FC<IProps> = ({ version }) => {
           </Heading>
           <Stack as="ul" className={contributorListClass} gap="xs">
             {version.authors.map((author) => (
-              <Avatar
+              <Link
+                rel="noreferrer"
+                target="_blank"
                 key={author.login}
-                avatar={author.avatar_url}
-                name={author.login}
-              />
+                href={author.html_url ?? '#'}
+              >
+                <Avatar avatar={author.avatar_url} name={author.login} />
+              </Link>
             ))}
           </Stack>
         </Stack>
