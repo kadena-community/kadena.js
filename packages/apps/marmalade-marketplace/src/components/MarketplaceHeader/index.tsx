@@ -1,4 +1,6 @@
-import { NavHeader, KadenaLogo, NavHeaderLinkList, NavHeaderLink, Button } from '@kadena/react-ui';
+import { env } from '@/utils/env';
+import { NavHeader, KadenaLogo, NavHeaderLinkList, NavHeaderLink, Button, NavHeaderButton, Tooltip } from '@kadena/react-ui';
+import { MonoAccountCircle } from '@kadena/react-icons';
 import { useAccount } from '@/hooks/account';
 
 export const MarketplaceHeader= () => {
@@ -27,7 +29,15 @@ export const MarketplaceHeader= () => {
         </NavHeaderLink>
       </NavHeaderLinkList>
       {account
-        ? <Button onClick={logout} variant="primary" isCompact={false}>{account.alias}</Button>
+        ? (
+            <>
+              <Tooltip delay={0} content={account.accountName} position="left">
+                <a href={env.WALLET_URL} target="_blank"><NavHeaderButton endVisual={<MonoAccountCircle />}/></a>
+              </Tooltip>
+              <p>{account.alias}</p>
+              <Button onClick={logout} variant="primary" isCompact={false}>Disconnect</Button>
+            </>
+          )
         : <Button onClick={login} variant="primary" isCompact={false}>Connect Wallet</Button>
       }
     </NavHeader>
