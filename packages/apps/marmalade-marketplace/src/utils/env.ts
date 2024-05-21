@@ -34,7 +34,7 @@ export const env = {
   URL,
   START_BLOCK: START_BLOCK ? Number(START_BLOCK) : 0,
   CHAIN_IDS: CHAIN_IDS?.split(',') as ChainId[],
-  EVENTS: EVENTS?.split(',') || [],
+  EVENTS: EVENTS?.replaceAll('\n', '').replaceAll(' ', '')?.split(',') || [],
   NETWORKID: NETWORKID ?? 'testnet04',
   NAMESPACE,
   NETWORKNAME,
