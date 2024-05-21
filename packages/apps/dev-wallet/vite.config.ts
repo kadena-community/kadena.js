@@ -1,4 +1,5 @@
-import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
+import { vanillaExtractPlugin as vanillaExtractVitePlugin } from "@vanilla-extract/vite-plugin";
+import { vanillaExtractPlugin as vanillaExtractEsbuildPlugin } from "@vanilla-extract/esbuild-plugin";
 import react from '@vitejs/plugin-react-swc';
 import fs from 'fs';
 import path from 'path';
@@ -33,7 +34,7 @@ export const config: UserConfig = {
   plugins: [
     react(),
     tsconfigPaths({ root: './' }),
-    vanillaExtractPlugin(),
+    vanillaExtractVitePlugin(),
     viteStaticCopy({
       targets: [
         {
@@ -47,6 +48,9 @@ export const config: UserConfig = {
   optimizeDeps: {
     // add all monorepo packages to optimizeDeps since they are commonjs
     include: [...monorepoPackages],
+    esbuildOptions: {
+      plugins: [vanillaExtractEsbuildPlugin({ runtime: true })],
+    },
   },
 
   build: {
