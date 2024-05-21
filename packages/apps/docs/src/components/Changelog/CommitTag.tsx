@@ -1,8 +1,22 @@
 import { Stack } from '@kadena/react-ui';
+import Link from 'next/link';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 import { commitTagClass } from './styles.css';
 
-export const CommitTag: FC<PropsWithChildren> = ({ children }) => {
-  return <Stack className={commitTagClass}>{children}</Stack>;
+interface IProps extends PropsWithChildren {
+  url?: string;
+}
+
+export const CommitTag: FC<IProps> = ({ children, url }) => {
+  return (
+    <Link
+      className={commitTagClass}
+      rel="noreferrer"
+      target="_blank"
+      href={url ?? '#'}
+    >
+      {children}
+    </Link>
+  );
 };

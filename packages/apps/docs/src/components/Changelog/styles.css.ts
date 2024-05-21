@@ -1,4 +1,9 @@
-import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/styles';
+import {
+  atoms,
+  darkThemeClass,
+  responsiveStyle,
+  tokens,
+} from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const backgroundClass = style([
@@ -89,17 +94,31 @@ export const commitListItemTitleClass = style([
 
 export const commitTagClass = style([
   atoms({
-    borderRadius: 'sm',
-    color: 'text.base.inverse.default',
-
     fontFamily: 'monospaceFont',
-    backgroundColor: 'semantic.positive.inverse.default',
+    borderRadius: 'sm',
+    textDecoration: 'none',
   }),
   {
+    color: tokens.kda.foundation.color.brand.primary.n0,
+    backgroundColor:
+      tokens.kda.foundation.color.semantic.positive['n80@alpha20'],
     padding: `calc(${tokens.kda.foundation.spacing.xs} / 4) ${tokens.kda.foundation.spacing.xs}`,
     fontSize: 'smaller',
     fontWeight: 'bolder',
     alignSelf: 'baseline',
+
+    selectors: {
+      '&:hover': {
+        backgroundColor: tokens.kda.foundation.color.semantic.positive.n80,
+        color: tokens.kda.foundation.color.brand.primary.n0,
+      },
+      [`${darkThemeClass} &`]: {
+        color: tokens.kda.foundation.color.brand.primary.n100,
+      },
+      [`${darkThemeClass} &:hover`]: {
+        color: tokens.kda.foundation.color.brand.primary.n100,
+      },
+    },
   },
 ]);
 
