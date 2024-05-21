@@ -1,4 +1,5 @@
 import React, { Children, FC, useState } from 'react';
+import { wizardContainer } from './Wizard.css';
 
 export function Wizard({
   children,
@@ -36,7 +37,7 @@ export function Wizard({
     }
     return child;
   });
-  return <>{children}</>;
+  return <div className={wizardContainer}>{children}</div>;
 }
 
 type WizardRenderProp = (actions: {
