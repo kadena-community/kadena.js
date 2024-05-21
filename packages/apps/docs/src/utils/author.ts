@@ -7,5 +7,5 @@ export const getInitials = (name: string): string => {
   if (firstName !== undefined) str += firstName.charAt(0);
   if (lastName !== undefined) str += lastName.charAt(0);
 
-  return str;
+  return str.toUpperCase();
 };

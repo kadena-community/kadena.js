@@ -11,6 +11,42 @@ export const versionsSectionClass = style([
   atoms({}),
   {
     backgroundColor: tokens.kda.foundation.color.neutral['n99@alpha10'],
+    width: '100%',
+
+    ...responsiveStyle({
+      md: {
+        width: '100%',
+      },
+      lg: {
+        width: '75%',
+      },
+    }),
+  },
+]);
+export const versionsSectionMetaClass = style([
+  atoms({}),
+  {
+    width: '100%',
+    maxWidth: 'initial',
+    ...responsiveStyle({
+      lg: {
+        width: '25%',
+        maxWidth: '150px',
+      },
+    }),
+  },
+]);
+export const versionMetaWrapperClass = style([
+  atoms({
+    paddingBlockStart: 'sm',
+  }),
+  {
+    width: '100%',
+    ...responsiveStyle({
+      lg: {
+        width: 'initial',
+      },
+    }),
   },
 ]);
 
@@ -71,7 +107,6 @@ export const tagContainerClass = style([
   atoms({
     justifyContent: 'flex-start',
     gap: 'xs',
-    width: '100%',
     paddingInlineStart: 'md',
     paddingBlockStart: 'xs',
     paddingBlockEnd: 'md',
@@ -84,6 +119,36 @@ export const tagContainerClass = style([
         paddingBlockEnd: 0,
         width: '100px',
         justifyContent: 'flex-end',
+      },
+    }),
+  },
+]);
+
+export const contributorsHeaderClass = style([
+  atoms({
+    display: 'none',
+  }),
+  {
+    ...responsiveStyle({
+      lg: {
+        display: 'flex',
+      },
+    }),
+  },
+]);
+
+export const contributorListClass = style([
+  atoms({
+    paddingInlineStart: 'no',
+    flexWrap: 'wrap',
+  }),
+  {
+    listStyle: 'none',
+    alignSelf: 'flex-end',
+
+    ...responsiveStyle({
+      lg: {
+        alignSelf: 'flex-start',
       },
     }),
   },
