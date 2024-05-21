@@ -1,5 +1,10 @@
 export const basicsPathUrlRedirects = [
   {
+    source: '/help',
+    destination: '/',
+    permanent: true,
+  },
+  {
     source: '/basics/overview',
     destination: '/kadena',
     permanent: true,
