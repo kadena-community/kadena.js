@@ -4,7 +4,7 @@ import {
   responsiveStyle,
   tokens,
 } from '@kadena/react-ui/styles';
-import { style } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 export const backgroundClass = style([
   {
@@ -58,6 +58,7 @@ export const versionMetaWrapperClass = style([
 export const commitListClass = style([
   atoms({
     paddingInlineStart: 'sm',
+    gap: 'sm',
   }),
 ]);
 export const commitListItemClass = style([
@@ -99,26 +100,14 @@ export const commitTagClass = style([
     textDecoration: 'none',
   }),
   {
-    color: tokens.kda.foundation.color.brand.primary.n0,
+    color: tokens.kda.foundation.color.text.base.inverse.default,
     backgroundColor:
-      tokens.kda.foundation.color.semantic.positive['n80@alpha20'],
+      tokens.kda.foundation.color.background.semantic.positive.inverse.default,
+    opacity: 0.4,
     padding: `calc(${tokens.kda.foundation.spacing.xs} / 4) ${tokens.kda.foundation.spacing.xs}`,
     fontSize: 'smaller',
     fontWeight: 'bolder',
     alignSelf: 'baseline',
-
-    selectors: {
-      '&:hover': {
-        backgroundColor: tokens.kda.foundation.color.semantic.positive.n80,
-        color: tokens.kda.foundation.color.brand.primary.n0,
-      },
-      [`${darkThemeClass} &`]: {
-        color: tokens.kda.foundation.color.brand.primary.n100,
-      },
-      [`${darkThemeClass} &:hover`]: {
-        color: tokens.kda.foundation.color.brand.primary.n100,
-      },
-    },
   },
 ]);
 
@@ -172,3 +161,14 @@ export const contributorListClass = style([
     }),
   },
 ]);
+
+globalStyle(`${commitListItemClass}:hover ${commitTagClass}`, {
+  opacity: 1,
+  backgroundColor:
+    tokens.kda.foundation.color.background.semantic.positive.inverse.default,
+});
+globalStyle(`${commitListItemClass}:hover ${commitTagClass}:hover`, {
+  opacity: 1,
+  backgroundColor:
+    tokens.kda.foundation.color.background.semantic.positive.default,
+});
