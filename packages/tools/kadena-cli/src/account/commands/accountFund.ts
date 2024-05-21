@@ -97,7 +97,9 @@ export const createAccountFundCommand = createCommand(
         const { deployFaucet } = await option.deployFaucet();
 
         if (deployFaucet === false) {
-          return;
+          return log.warning(
+            `To fund your account on chain "${undeployedChainIdsStr}" in the "${networkConfig.network}" network, deploy the faucet using the --deploy-faucet option.`,
+          );
         }
 
         const loader = ora(
