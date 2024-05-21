@@ -167,8 +167,26 @@ globalStyle(`${commitListItemClass}:hover ${commitTagClass}`, {
   backgroundColor:
     tokens.kda.foundation.color.background.semantic.positive.inverse.default,
 });
-globalStyle(`${commitListItemClass}:hover ${commitTagClass}:hover`, {
+globalStyle(`${commitListItemClass} ${commitTagClass}:hover`, {
   opacity: 1,
   backgroundColor:
     tokens.kda.foundation.color.background.semantic.positive.default,
 });
+
+globalStyle(
+  `${darkThemeClass} ${commitListItemClass}:hover ${commitTagClass}`,
+  {
+    opacity: 1,
+    backgroundColor:
+      tokens.kda.foundation.color.background.semantic.positive.default,
+  },
+);
+globalStyle(
+  `${darkThemeClass} ${commitListItemClass} ${commitTagClass}:hover`,
+  {
+    opacity: 1,
+    backgroundColor:
+      tokens.kda.foundation.color.background.semantic.positive.inverse.default,
+    color: tokens.kda.foundation.color.text.base.default,
+  },
+);
