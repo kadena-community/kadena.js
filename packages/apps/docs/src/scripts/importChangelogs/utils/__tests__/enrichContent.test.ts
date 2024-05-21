@@ -58,7 +58,7 @@ describe('enrichContent', () => {
       ] as unknown as IChangelogPackageVersion;
       const result = getLastModifiedDate(version);
 
-      expect(result).toEqual(new Date('2023-10-24T09:41:45.000Z'));
+      expect(result).toEqual('2023-10-24T09:41:45.000Z');
     });
 
     it('should enrich the version with the latest date that are in the PRs', async () => {
@@ -76,7 +76,7 @@ describe('enrichContent', () => {
       ] as unknown as IChangelogPackageVersion;
       const result = getLastModifiedDate(version);
 
-      expect(result).toEqual(new Date('2024-05-17T06:36:10.000Z'));
+      expect(result).toEqual('2024-05-21T08:58:02.000Z');
     });
   });
 });

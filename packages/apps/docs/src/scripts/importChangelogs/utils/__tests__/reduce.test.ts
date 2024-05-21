@@ -574,6 +574,7 @@ describe('reduce utils', () => {
             login: 'jmcardon',
             id: 15273652,
             avatar_url: 'https://avatars.githubusercontent.com/u/15273652?v=4',
+            html_url: 'https://github.com/jmcardon',
             url: 'https://api.github.com/users/jmcardon',
           },
           body:
@@ -904,6 +905,7 @@ describe('reduce utils', () => {
             login: 'ferreroltd',
             id: 73488793,
             avatar_url: 'https://avatars.githubusercontent.com/u/73488793?v=4',
+            html_url: 'https://github.com/ferreroltd',
             url: 'https://api.github.com/users/ferreroltd',
           },
           comments_url:
@@ -1176,6 +1178,7 @@ describe('reduce utils', () => {
           login: 'ferreroltd',
           id: 73488793,
           avatar_url: 'https://avatars.githubusercontent.com/u/73488793?v=4',
+          html_url: 'https://github.com/ferreroltd',
           url: 'https://api.github.com/users/ferreroltd',
         },
         comments_url:
@@ -1346,6 +1349,7 @@ describe('reduce utils', () => {
         login: 'Skeletor',
         id: 6686385,
         avatar_url: 'https://avatars.githubusercontent.com/u/11111?v=4',
+        html_url: 'https://github.com/Skeletor',
         url: 'https://api.github.com/users/Skeletor',
       };
 

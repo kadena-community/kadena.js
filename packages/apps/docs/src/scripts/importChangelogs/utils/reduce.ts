@@ -11,6 +11,7 @@ export const reduceUserData = (user: IGitHubUser): IChangelogUser => {
     login: user.login,
     id: user.id,
     avatar_url: user.avatar_url,
+    html_url: user.html_url,
     url: user.url,
   };
 
