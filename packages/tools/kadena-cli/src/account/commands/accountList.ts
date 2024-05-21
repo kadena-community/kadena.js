@@ -3,11 +3,7 @@ import type { Command } from 'commander';
 import { parse } from 'node:path';
 import { NO_ACCOUNTS_FOUND_ERROR_MESSAGE } from '../../constants/account.js';
 import { createCommand } from '../../utils/createCommand.js';
-import {
-  isNotEmptyString,
-  maskStringPreservingStartAndEnd,
-  truncateText,
-} from '../../utils/globalHelpers.js';
+import { isNotEmptyString } from '../../utils/globalHelpers.js';
 import { log } from '../../utils/logger.js';
 import { createTable } from '../../utils/table.js';
 import { accountOptions } from '../accountOptions.js';
@@ -19,21 +15,28 @@ import {
 } from '../utils/accountHelpers.js';
 
 function generateTabularData(accounts: IAliasAccountData[]): Table {
-  const table = createTable({
-    head: ['Alias', 'Name', 'Public Key(s)', 'Predicate', 'Fungible'],
+  const table = createTable({});
+  const header: Record<string, string> = {
+    publicKeys: 'Public Keys',
+    name: 'Account Name',
+    fungible: 'Fungible',
+    predicate: 'Predicate',
+  };
+
+  accounts.map((account) => {
+    table.push([
+      { colSpan: 2, content: `Account Alias: ${parse(account.alias).name}` },
+    ]);
+    Object.entries(account).forEach(([key, val]) => {
+      if (key === 'alias') return;
+      const value = key === 'publicKeys' ? val.join('\n') : val;
+      const headerKey = header[key] || key;
+      table.push({
+        [log.color.green(headerKey)]: value,
+      });
+    });
+    table.push([{ colSpan: 2, content: '' }]);
   });
-
-  const data = accounts.map((account) => [
-    truncateText(parse(account.alias).name, 32),
-    maskStringPreservingStartAndEnd(account.name, 32),
-    account.publicKeys
-      .map((key) => maskStringPreservingStartAndEnd(key, 24))
-      .join('\n'),
-    account.predicate,
-    account.fungible,
-  ]);
-
-  table.push(...data);
 
   return table;
 }
@@ -81,8 +84,9 @@ export const createAccountListCommand: (
       return log.error(`Selected account alias "${accountAlias}" not found.`);
     }
 
-    const tabularData = generateTabularData(accountsDetails);
-
-    log.output(tabularData.toString(), accountsDetails);
+    const data = generateTabularData(accountsDetails);
+    const accountsListJSONOutput =
+      accountsDetails.length === 1 ? accountsDetails[0] : accountsDetails;
+    log.output(data.toString(), accountsListJSONOutput);
   },
 );

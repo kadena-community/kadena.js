@@ -49,7 +49,7 @@ describe('account list', () => {
     );
   });
 
-  it('should display only selected account information', async () => {
+  it('should display information for the specified account only', async () => {
     mockPrompts({
       select: {
         'Select an account (alias - account name):': 'account-one',
@@ -58,41 +58,37 @@ describe('account list', () => {
 
     const res = await runCommandJson('account list');
     expect(res).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          alias: 'account-one.yaml',
-          fungible: 'coin',
-          name: 'k:55e10019549e047e68efaa18489ed785eca271642e2d0ce41d56ced2a30ccb84',
-          predicate: 'keys-all',
-          publicKeys: [
-            '55e10019549e047e68efaa18489ed785eca271642e2d0ce41d56ced2a30ccb84',
-          ],
-        }),
-      ]),
+      expect.objectContaining({
+        alias: 'account-one.yaml',
+        fungible: 'coin',
+        name: 'k:55e10019549e047e68efaa18489ed785eca271642e2d0ce41d56ced2a30ccb84',
+        predicate: 'keys-all',
+        publicKeys: [
+          '55e10019549e047e68efaa18489ed785eca271642e2d0ce41d56ced2a30ccb84',
+        ],
+      }),
     );
   });
 
-  it('should display only passed account information through cli', async () => {
+  it('should display only the specified account information via CL', async () => {
     const res = await runCommandJson(
-      'account list --account-alias=account-two',
+      'account list --account-alias=account-two --quiet',
     );
     expect(res).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          alias: 'account-two.yaml',
-          fungible: 'coin',
-          name: 'w:yCvUbeS6RqdKsY3WBDB3cgK-6q790xkj4Hb-ABpu3gg:keys-all',
-          predicate: 'keys-all',
-          publicKeys: [
-            '39710afef15243ba36007ae7aa210ab0e09682b2d963928be350e3424b5a420b',
-            '0f745a7773cbaffedcc7303b0638ffb34516aa3af98605f39dda3aeb730318c9',
-          ],
-        }),
-      ]),
+      expect.objectContaining({
+        alias: 'account-two.yaml',
+        fungible: 'coin',
+        name: 'w:yCvUbeS6RqdKsY3WBDB3cgK-6q790xkj4Hb-ABpu3gg:keys-all',
+        predicate: 'keys-all',
+        publicKeys: [
+          '39710afef15243ba36007ae7aa210ab0e09682b2d963928be350e3424b5a420b',
+          '0f745a7773cbaffedcc7303b0638ffb34516aa3af98605f39dda3aeb730318c9',
+        ],
+      }),
     );
   });
 
-  it('should return account alias not found when user passes any random account alias', async () => {
+  it('should return "account alias not found" when a random account alias is provided', async () => {
     const res = await runCommand(
       'account list --account-alias=some-random-account-alias',
     );
