@@ -8,7 +8,10 @@ import { Stack } from '@kadena/react-ui';
 import React from 'react';
 
 const Home: React.FC = () => {
-  const { data: statisticsData } = useNetworkInfoQuery();
+  // Ideally we would pull this data once and then make calcs client-side
+  const { data: statisticsData } = useNetworkInfoQuery({
+    pollInterval: 5000,
+  });
 
   const statisticsGridData = formatStatisticsData(statisticsData?.networkInfo);
   const searchData = getSearchData();
