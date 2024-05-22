@@ -127,3 +127,6 @@ export type {
 
 // re-exports from 'react-aria'
 export { RouterProvider } from 'react-aria';
+
+export { useTheme } from './utils';
+export type { ITheme } from './utils';

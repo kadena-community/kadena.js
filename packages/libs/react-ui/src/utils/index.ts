@@ -5,3 +5,4 @@ export * from './object';
 export * from './testId';
 export * from './useAsyncFn';
 export * from './useMountedState';
+export * from './useTheme';

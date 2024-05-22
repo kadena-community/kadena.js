@@ -1,7 +1,6 @@
-import { useTheme } from '@/hooks/useTheme';
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import { MonoContrast } from '@kadena/react-icons';
-import { NavHeaderButton } from '@kadena/react-ui';
+import { NavHeaderButton, useTheme } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';

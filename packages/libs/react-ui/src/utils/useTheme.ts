@@ -1,5 +1,5 @@
-import { darkThemeClass } from '@kadena/react-ui/styles';
 import { useCallback, useEffect, useState } from 'react';
+import { darkThemeClass } from '../styles';
 const MEDIA = '(prefers-color-scheme: dark)';
 const storageKey = 'theme';
 const isServer = typeof window === 'undefined';
