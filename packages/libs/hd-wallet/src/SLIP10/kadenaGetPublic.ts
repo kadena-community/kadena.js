@@ -1,5 +1,6 @@
 import type { BinaryLike } from '../utils/crypto.js';
 import { kadenaDecrypt } from '../utils/kadenaEncryption.js';
+import { isDerivationPathTemplateValid } from './utils/isDerivationPathTemplateValid.js';
 import { deriveKeyPair } from './utils/sign.js';
 
 function genPublicKeyFromSeed(
@@ -7,6 +8,10 @@ function genPublicKeyFromSeed(
   index: number,
   derivationPathTemplate: string,
 ): string {
+  if (!isDerivationPathTemplateValid(derivationPathTemplate)) {
+    throw new Error('Invalid derivation path template.');
+  }
+
   const derivationPath = derivationPathTemplate.replace(
     '<index>',
     index.toString(),
