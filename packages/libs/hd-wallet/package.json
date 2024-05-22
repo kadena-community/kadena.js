@@ -47,7 +47,9 @@
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
     "start": "ts-node --transpile-only src/index.ts",
-    "test": "vitest run"
+    "test:chainweaver": "vitest run -c ./vitest.chainweaver.config.js",
+    "test:hd-wallet": "vitest run",
+    "test": "pnpm run /^test:.*/"
   },
   "dependencies": {
     "@kadena/cryptography-utils": "workspace:*",
