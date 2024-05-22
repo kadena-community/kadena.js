@@ -1,11 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
-import { darkThemeClass } from '../styles';
-const MEDIA = '(prefers-color-scheme: dark)';
-const storageKey = 'theme';
-const isServer = typeof window === 'undefined';
-const defaultTheme = 'system';
+import { darkThemeClass } from '../../styles';
+import { MEDIA, defaultTheme, isServer, storageKey } from './utils/constants';
+import { getSystemTheme } from './utils/getSystemTheme';
 
-export type ITheme = 'dark' | 'light' | 'system';
 interface IUseThemeProps {
   /**
    * lockedTheme will lock the theme for the whole application.
@@ -36,13 +33,6 @@ const getTheme = (key: string) => {
   return theme || defaultTheme;
 };
 
-const getSystemTheme = (e?: MediaQueryList | MediaQueryListEvent): ITheme => {
-  if (!e) e = window.matchMedia(MEDIA);
-  const isDark = e.matches;
-  const systemTheme = isDark ? 'dark' : 'light';
-  return systemTheme;
-};
-
 export const useTheme = ({
   overwriteTheme,
   lockedTheme,
@@ -51,12 +41,12 @@ export const useTheme = ({
     lockedTheme ? lockedTheme : getTheme(storageKey),
   );
 
-  const applyTheme = useCallback((theme: ITheme) => {
-    let resolved = theme;
+  const applyTheme = useCallback((innerTheme: ITheme) => {
+    let resolved = innerTheme;
     if (!resolved) return;
 
     // If theme is system, resolve it before setting theme
-    if (theme === 'system') {
+    if (innerTheme === 'system') {
       resolved = getSystemTheme();
     }
     if (lockedTheme) {
@@ -76,6 +66,7 @@ export const useTheme = ({
     updateLocalStorage: boolean = true,
   ): void => {
     const resolved = lockedTheme ? lockedTheme : value;
+
     setThemeState(resolved);
     applyTheme(resolved);
 
