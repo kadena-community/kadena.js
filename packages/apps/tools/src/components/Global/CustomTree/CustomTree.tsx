@@ -1,5 +1,13 @@
+import {
+  MonoArrowDropDown,
+  MonoArrowRight,
+  MonoCached,
+} from '@kadena/react-icons/system';
+import { Badge, Button, Stack, Text } from '@kadena/react-ui';
 import React from 'react';
+import type { ICustomAccordionProps } from '../CustomAccordion/CustomAccordion';
 import CustomAccordion from '../CustomAccordion/CustomAccordion';
+import { itemContainerStyle, itemTitleStyle } from './CustomTree.css';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type TreeItem = {
@@ -8,86 +16,54 @@ export type TreeItem = {
   children: TreeItem[];
 };
 
-const data: TreeItem[] = [
-  {
-    title: 'Explorer',
-    children: [
-      {
-        title: 'mainnet',
-        key: 'mainnet',
-        children: [
-          {
-            title: 'arcade',
-            key: 'arcade',
-            children: [{ title: '0', key: 'arcade-0', children: [] }],
-          },
-        ],
-      },
-      {
-        title: 'testnet',
-        key: 'testnet',
-        children: [
-          {
-            title: 'coin',
-            key: 'arcade',
-            children: [{ title: '0', key: 'coin-0', children: [] }],
-          },
-        ],
-      },
-    ],
-    key: 'explorer',
-  },
-  {
-    title: 'Outline',
-    children: [
-      {
-        title: 'Interfaces',
-        key: 'coin',
-        children: [{ title: 'fungible-v2', key: 'fungible-v2', children: [] }],
-      },
-      {
-        title: 'Capabilities',
-        key: 'capabilities',
-        children: [
-          {
-            title: 'GOVERNANCE',
-            key: 'GOVERNANCE',
-            children: [],
-          },
-        ],
-      },
-    ],
-    key: 'outline',
-  },
-];
+export interface ICustomTreeProps<T>
+  extends Omit<ICustomAccordionProps<T>, 'children' | 'data'> {
+  data: TreeItem[];
+}
 
-const CustomTree = () => {
-  console.log('rerender CustomTree');
+// eslint-disable-next-line react/function-component-definition
+function CustomTree<T>({ data }: ICustomTreeProps<T>) {
   return (
-    <CustomAccordion<TreeItem>
+    <CustomAccordion
       data={data}
-      defaultExpandedKey={'explorer'}
       style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
       itemProps={{ fillHeight: true }}
     >
       {(item) => {
         return (
           <>
-            <button
-              onClick={() => {
-                console.log('onClick', item);
-                item.onExpandCollapse();
-              }}
+            <Stack
+              alignItems={'center'}
+              justifyContent={'space-between'}
+              onClick={item.onExpandCollapse}
+              role="button"
+              className={itemContainerStyle}
             >
-              {item.data.title}
-            </button>
-            {item.isExpanded ? <Node data={item.data.children} /> : null}
+              <Button
+                variant="transparent"
+                onClick={() => {
+                  item.onExpandCollapse();
+                }}
+              >
+                {item.isExpanded ? <MonoArrowDropDown /> : <MonoArrowRight />}
+              </Button>
+              <Text className={itemTitleStyle}>{item.data.title}</Text>
+              <Button variant="transparent" isCompact>
+                <MonoCached />
+              </Button>
+              {item.data.children.length ? (
+                <Badge size="sm">{item.data.children.length}</Badge>
+              ) : null}
+            </Stack>
+            {item.isExpanded ? (
+              <Node data={item.data.children} level={0} />
+            ) : null}
           </>
         );
       }}
     </CustomAccordion>
   );
-};
+}
 
 // eslint-disable-next-line react/function-component-definition
 function Node<
@@ -95,14 +71,15 @@ function Node<
     string,
     unknown
   >,
->({ data }: { data: T[] }) {
-  console.log('rerender Node');
+>({ data, level }: { data: T[]; level: number }) {
   return (
     <CustomAccordion data={data}>
       {(child) => {
         return (
           <>
-            <button
+            <Stack
+              alignItems={'center'}
+              justifyContent={'space-between'}
               onClick={() => {
                 console.log('onClick', child);
                 if (child.data.children.length) {
@@ -111,11 +88,25 @@ function Node<
                   console.log('I aint got no kids!');
                 }
               }}
+              role="button"
+              className={itemContainerStyle}
             >
-              {child.data.title}
-            </button>
+              {child.data.children.length ? (
+                <Button variant="transparent" onClick={child.onExpandCollapse}>
+                  {child.isExpanded ? (
+                    <MonoArrowDropDown />
+                  ) : (
+                    <MonoArrowRight />
+                  )}
+                </Button>
+              ) : null}
+              <Text className={itemTitleStyle}>{child.data.title}</Text>
+              {child.data.children.length ? (
+                <Badge size="sm">{child.data.children.length}</Badge>
+              ) : null}
+            </Stack>
             {child.isExpanded && child.data.children.length ? (
-              <Node data={child.data.children} />
+              <Node data={child.data.children} level={level + 1} />
             ) : null}
           </>
         );
