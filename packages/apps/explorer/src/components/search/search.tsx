@@ -1,7 +1,8 @@
+import { truncateValues } from '@/services/format';
 import { MonoSearch } from '@kadena/react-icons/system';
 import { Badge, Box } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 export type SearchItemTitle =
   | 'Account'
@@ -10,13 +11,13 @@ export type SearchItemTitle =
   | 'Block Hash'
   | 'Events';
 
-export interface SearchItem {
+export interface ISearchItem {
   title: SearchItemTitle;
   disabled?: boolean;
 }
 interface ISearchComponentProps {
   placeholder: string;
-  searchItems: SearchItem[];
+  searchItems: ISearchItem[];
 }
 
 const SearchCombobox: React.FC<ISearchComponentProps> = ({
@@ -29,7 +30,7 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
   const [optionClicked, setOptionClicked] = useState(false);
   const [escapePressed, setEscapePressed] = useState(false);
 
-  const setOptionsDisabledExcept = (exceptIndex: number) => {
+  const setOptionsDisabledExcept = (exceptIndex: number): void => {
     searchItems.forEach((item, index) => {
       if (index !== exceptIndex) {
         item.disabled = true;
@@ -37,13 +38,34 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
     });
   };
 
-  const enableAllOptions = () => {
+  const inferOption = (value: string): SearchItemTitle | undefined => {
+    if (
+      value.toLocaleLowerCase().startsWith('k:') ||
+      value.toLocaleLowerCase().startsWith('w:')
+    ) {
+      return 'Account';
+    } else if (value.includes('.')) {
+      return 'Events';
+    } else if (value.length === 43) {
+      return 'Request Key';
+    } else if (/^\d+$/.test(value)) {
+      return 'Block Height';
+    }
+
+    return undefined;
+  };
+
+  const enableAllOptions = (): void => {
     searchItems.forEach((item) => {
       item.disabled = false;
     });
   };
 
-  const handleSearchValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = (value: string, option: number | null): void => {};
+
+  const handleSearchValueChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
     setSearchValue(e.target.value);
 
     if (escapePressed || optionClicked) return;
@@ -69,7 +91,9 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
     }
   };
 
-  const handleSearchValueKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleSearchValueKeyDown = (
+    e: React.KeyboardEvent<HTMLDivElement>,
+  ): void => {
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       setSearchOption((prev) =>
@@ -90,32 +114,6 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
       enableAllOptions();
     }
   };
-
-  const displaySearchValue = (value: string) => {
-    if (value.length > 15) {
-      return `${value.slice(0, 5)}...${value.slice(-4)}`;
-    }
-    return value;
-  };
-
-  const inferOption = (value: string) => {
-    if (
-      value.toLocaleLowerCase().startsWith('k:') ||
-      value.toLocaleLowerCase().startsWith('w:')
-    ) {
-      return 'Account';
-    } else if (value.includes('.')) {
-      return 'Events';
-    } else if (value.length === 43) {
-      return 'Request Key';
-    } else if (/^\d+$/.test(value)) {
-      return 'Block Height';
-    }
-
-    return undefined;
-  };
-
-  const handleSearch = (value: string, option: number | null) => {};
 
   return (
     <>
@@ -221,7 +219,7 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
                     alignItems: 'flex-end',
                   })}
                 >
-                  {displaySearchValue(searchValue)}
+                  {truncateValues(searchValue)}
                 </div>
               </Box>
             ))}

@@ -1,6 +1,5 @@
 import { MonoHub } from '@kadena/react-icons/system';
 import { Button, Select, SelectItem, Stack, Text } from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
 import React, { useState } from 'react';
 import { borderStyleClass } from './style.css';
 

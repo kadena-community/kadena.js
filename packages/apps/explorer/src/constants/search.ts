@@ -1,7 +1,10 @@
-import { SearchItem } from '@/components/search/search';
+import type { ISearchItem } from '@/components/search/search';
 
-export const getSearchData = () => {
-  const searchItems: SearchItem[] = [
+export const getSearchData = (): {
+  searchItems: ISearchItem[];
+  placeholder: string;
+} => {
+  const searchItems: ISearchItem[] = [
     { title: 'Account' },
     { title: 'Request Key' },
     { title: 'Block Height' },

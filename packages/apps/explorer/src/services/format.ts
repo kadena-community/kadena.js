@@ -1,4 +1,4 @@
-import { NetworkInfo } from '@/__generated__/sdk';
+import type { NetworkInfo } from '@/__generated__/sdk';
 
 export function formatNumberWithUnit(number: number, unit?: string): string {
   if (number === 0) {
@@ -10,9 +10,9 @@ export function formatNumberWithUnit(number: number, unit?: string): string {
   return `${formattedNumber} ${units[unitIndex]}${unit ? unit : ''}`;
 }
 
-export const formatStatisticsData = (
+export function formatStatisticsData(
   networkInfo: NetworkInfo | null | undefined,
-): { label: string; value: string }[] => {
+): { label: string; value: string }[] {
   if (!networkInfo) {
     return [
       { label: 'Est. Network Hash', value: '0 H/s' },
@@ -40,4 +40,16 @@ export const formatStatisticsData = (
       value: formatNumberWithUnit(networkInfo.coinsInCirculation),
     },
   ];
-};
+}
+
+export function truncateValues(
+  value: string,
+  minLeght: number = 15,
+  startChars: number = 5,
+  endChars: number = 4,
+): string {
+  if (value.length > minLeght) {
+    return `${value.slice(0, startChars)}...${value.slice(-endChars)}`;
+  }
+  return value;
+}
