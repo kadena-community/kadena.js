@@ -1,16 +1,15 @@
-import { Text, Heading } from '@kadena/react-ui';
-import { MarketplaceHeader } from '@/components/MarketplaceHeader';
-import * as styles from "@/styles/global.css"
+import { Heading, Stack } from '@kadena/react-ui';
+import { Providers } from '@/providers/Providers';
+import Layout from '@/components/Layout';
 
 export default function Home() {
   return (
-    <div className={styles.mainWrapperClass}>
-      <MarketplaceHeader />
-      <main>
-        <h1 className={styles.mainWrapperClass}>
-          Marmalade Example Application
-        </h1>
-      </main>
-    </div>
+    <Providers>
+      <Layout>
+        <Stack justifyContent={"center"} alignItems={"center"}>
+          <Heading>Marmalade Example Application</Heading>
+        </Stack>
+      </Layout>
+    </Providers>
   );
 }

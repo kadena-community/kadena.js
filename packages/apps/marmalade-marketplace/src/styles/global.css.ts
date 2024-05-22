@@ -27,7 +27,7 @@ export const mainWrapperClass = style({
   height: '100dvh',
   margin: '0 auto',
 
-  overflowY: 'scroll',
+  overflowY: 'auto',
   overflowX: 'hidden',
 });
 
