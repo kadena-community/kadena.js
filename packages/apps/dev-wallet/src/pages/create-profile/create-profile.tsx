@@ -98,8 +98,6 @@ export function CreateProfile() {
               type="password"
               label="Confirm password"
               validationBehavior="aria"
-              isRequired
-              minLength={'6'}
               validate={(value: string) =>
                 getValues('password') === value || 'Passwords do not match'
               }
