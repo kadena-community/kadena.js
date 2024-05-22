@@ -32,7 +32,6 @@ describe('network update command', () => {
         'Enter Kadena network explorer URL (e.g. "https://explorer.chainweb.com/mainnet/tx/"):':
           '',
       },
-      verbose: true,
     });
     await runCommand('network update');
     const content = await services.filesystem.readFile(networkFilePath);
@@ -82,7 +81,6 @@ describe('network update command', () => {
         'Enter Kadena network explorer URL (e.g. "https://explorer.chainweb.com/mainnet/tx/"):':
           '',
       },
-      verbose: true,
     });
     await runCommand('network update');
     expect(await services.filesystem.fileExists(networkFilePath)).toBe(false);
