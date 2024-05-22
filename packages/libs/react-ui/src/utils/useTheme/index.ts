@@ -1,3 +1,4 @@
+'use client';
 import { useCallback, useEffect, useState } from 'react';
 import { darkThemeClass } from '../../styles';
 import type { ITheme } from './utils/constants';
