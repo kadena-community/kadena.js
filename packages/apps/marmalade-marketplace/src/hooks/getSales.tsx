@@ -1,14 +1,14 @@
 import { database } from "@/utils/firebase";
-import { BuiltInPredicate } from "@kadena/client";
+import { BuiltInPredicate, ChainId } from "@kadena/client";
 import { OrderByDirection, collection, getDocs, limit, orderBy, query, where } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export type Sale = {
   status: 'CREATED' | 'WITHDRAWN' | 'SOLD';
   requestKeys: Record<string, string>;
   saleId: string;
   tokenId: string;
-  chainId: number;
+  chainId: ChainId;
   block: number;
   amount: number;
   timeoutAt: number;
@@ -49,49 +49,49 @@ export const getSales = (props?: GetSalesProps) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-      try {
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
 
-        const constraints = [];
+      const constraints = [];
 
-        if (props?.chainIds) constraints.push(where("chainId", "in", props.chainIds));
+      if (props?.chainIds) constraints.push(where("chainId", "in", props.chainIds));
 
-        if (props?.block) constraints.push(where("block", "==", props.block));
+      if (props?.block) constraints.push(where("block", "==", props.block));
 
-        if (props?.status) constraints.push(where("status", "==", props.status));
+      if (props?.status) constraints.push(where("status", "==", props.status));
 
-        if (props?.saleType) constraints.push(where("saleType", "==", props.saleType));
+      if (props?.saleType) constraints.push(where("saleType", "==", props.saleType));
 
-        if (props?.sort?.length) props.sort.forEach(sort =>
-          constraints.push(orderBy(sort.field, sort.direction || "asc"))
+      if (props?.sort?.length) props.sort.forEach(sort =>
+        constraints.push(orderBy(sort.field, sort.direction || "asc"))
+      )
+
+      if (props?.limit) constraints.push(limit(props.limit));
+
+      const querySnapshot = await getDocs(
+        query(
+          collection(database, "sales"),
+          ...constraints
         )
+      );
+      const docs: Sale[] = [];
+      querySnapshot.forEach((doc) => {
+        docs.push(doc.data() as Sale);
+      });
+      setData(docs);
+    } catch (err) {
+      console.log(err)
+      setError(err as Error);
+    } finally {
+      setLoading(false);
+    }
+  }, [props]);
 
-        if (props?.limit) constraints.push(limit(props.limit));
-
-        const querySnapshot = await getDocs(
-          query(
-            collection(database, "sales"),
-            ...constraints
-          )
-        );
-        const docs: Sale[] = [];
-        querySnapshot.forEach((doc) => {
-          docs.push(doc.data() as Sale);
-        });
-        setData(docs);
-      } catch (err) {
-        console.log(err)
-        setError(err as Error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
+  useEffect(() => {
     fetchData();
   }, []);
 
-  return { data, loading, error };
+  return { data, loading, error, refetch: fetchData };
 };

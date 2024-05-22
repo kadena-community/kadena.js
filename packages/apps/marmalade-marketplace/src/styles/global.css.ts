@@ -1,6 +1,6 @@
+import { deviceColors } from '@/styles/tokens.css';
 import '@kadena/react-ui/global';
 import { globalStyle, style } from '@vanilla-extract/css';
-import { deviceColors } from '@/styles/tokens.css';
 
 globalStyle('body', {
   color: 'white',
@@ -26,6 +26,7 @@ export const mainWrapperClass = style({
   width: '100%',
   height: '100dvh',
   margin: '0 auto',
+  paddingBottom: '50px',
 
   overflowY: 'auto',
   overflowX: 'hidden',

@@ -4,42 +4,34 @@ import type {
   PactReturnType,
 } from '@kadena/client';
 import { Pact } from '@kadena/client';
-import {
-  addSigner,
-  composePactCommand,
-  execution,
-  setMeta,
-} from '@kadena/client/fp';
-import type { ChainId } from '@kadena/types';
-import { submitClient } from '../core/client-helpers';
+import { composePactCommand, execution, setMeta } from '@kadena/client/fp';
+import type { ChainId, IPactDecimal } from '@kadena/types';
+import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
 interface IGetTokenInfoInput {
   tokenId: string;
   chainId: ChainId;
-  guard: {
-    account: string;
-    keyset: {
-      keys: string[];
-      pred: BuiltInPredicate;
-    };
-  };
 }
 
-const getTokenInfoCommand = ({ tokenId, chainId, guard }: IGetTokenInfoInput) =>
+export interface TokenInfo {
+  id: string;
+  policies: string[];
+  precision: IPactDecimal;
+  supply: number;
+  uri: string;
+}
+
+const getTokenInfoCommand = ({ tokenId, chainId }: IGetTokenInfoInput) =>
   composePactCommand(
     execution(Pact.modules['marmalade-v2.ledger']['get-token-info'](tokenId)),
-    addSigner(guard.keyset.keys, (signFor) => [signFor('coin.GAS')]),
-    setMeta({
-      senderAccount: guard.account,
-      chainId,
-    }),
+    setMeta({ chainId }),
   );
 
 export const getTokenInfo = (
   inputs: IGetTokenInfoInput,
   config: IClientConfig,
 ) =>
-  submitClient<
+  dirtyReadClient<
     PactReturnType<IPactModules['marmalade-v2.ledger']['get-token-info']>
   >(config)(getTokenInfoCommand(inputs));

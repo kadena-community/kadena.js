@@ -338,13 +338,6 @@ describe('getTokenInfo', () => {
     const result = await getTokenInfo(
       {
         chainId,
-        guard: {
-          account: sourceAccount.account,
-          keyset: {
-            keys: [sourceAccount.publicKey],
-            pred: 'keys-all' as const,
-          },
-        },
         tokenId: tokenId as string,
       },
       config,
@@ -363,13 +356,6 @@ describe('getTokenInfo', () => {
     const task = getTokenInfo(
       {
         chainId,
-        guard: {
-          account: sourceAccount.account,
-          keyset: {
-            keys: [sourceAccount.publicKey],
-            pred: 'keys-all' as const,
-          },
-        },
         tokenId: nonExistingTokenId,
       },
       config,
