@@ -84,23 +84,17 @@ export function CreateProfile() {
               id="password"
               type="password"
               label="Password"
-              validationBehavior="native"
-              isRequired
-              minLength={'6'}
               {...register('password', {
                 required: { value: true, message: 'This field is required' },
                 minLength: { value: 6, message: 'Minimum 6 symbols' },
               })}
+              isInvalid={!isValid && !!errors.password}
               errorMessage={errors.password && errors.password.message}
             />
             <TextField
               id="confirmation"
               type="password"
               label="Confirm password"
-              validationBehavior="aria"
-              validate={(value: string) =>
-                getValues('password') === value || 'Passwords do not match'
-              }
               {...register('confirmation', {
                 validate: (value) => {
                   return (
@@ -108,6 +102,7 @@ export function CreateProfile() {
                   );
                 },
               })}
+              isInvalid={!isValid && !!errors.confirmation}
               errorMessage={errors.confirmation && errors.confirmation.message}
             />
           </Stack>
