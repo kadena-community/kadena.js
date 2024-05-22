@@ -10,7 +10,12 @@ import { Navigate } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
 
 export function CreateProfile() {
-  const { register, handleSubmit } = useForm<{
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm<{
     password: string;
     profileName: string;
     confirmation: string;
@@ -85,8 +90,15 @@ export function CreateProfile() {
               id="confirmation"
               type="password"
               label="Confirm password"
-              {...register('confirmation')}
+              {...register('confirmation', {
+                validate: (value) => {
+                  return (
+                    getValues('password') === value || 'Passwords do not match'
+                  );
+                },
+              })}
             />
+            <Text>{errors.confirmation && errors.confirmation.message}</Text>
           </Stack>
           <Stack flexDirection="column">
             <Button type="submit">Continue</Button>
