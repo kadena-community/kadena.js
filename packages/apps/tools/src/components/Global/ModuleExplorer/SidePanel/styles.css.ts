@@ -28,3 +28,7 @@ export const outlineStyle = style([
     overflow: 'scroll',
   },
 ]);
+
+export const headingStyles = style({
+  flex: 1,
+});
