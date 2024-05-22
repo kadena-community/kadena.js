@@ -125,7 +125,7 @@
     "@kadena/pactjs": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/types": "workspace:*",
-    "debug": "~4.3.4",
+    "debug": "4.3.4",
     "js-yaml": "~4.1.0",
     "ramda": "^0.29.0"
   },

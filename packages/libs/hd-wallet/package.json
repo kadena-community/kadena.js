@@ -53,11 +53,11 @@
   },
   "dependencies": {
     "@kadena/cryptography-utils": "workspace:*",
-    "@scure/bip39": "^1.2.1",
-    "buffer": "^6.0.3",
-    "buffer-from": "^1.1.2",
-    "debug": "~4.3.4",
-    "ed25519-keygen": "^0.4.8"
+    "@scure/bip39": "1.2.1",
+    "buffer": "6.0.3",
+    "buffer-from": "1.1.2",
+    "debug": "4.3.4",
+    "ed25519-keygen": "0.4.8"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",

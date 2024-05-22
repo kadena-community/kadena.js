@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "blakejs": "^1.2.1",
-    "buffer": "^6.0.3",
+    "buffer": "6.0.3",
     "tweetnacl": "^1.0.3"
   },
   "devDependencies": {

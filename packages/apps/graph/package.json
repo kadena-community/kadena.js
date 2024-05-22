@@ -64,7 +64,7 @@
     "cli-highlight": "^2.1.11",
     "commander": "^11.0.0",
     "dataloader": "^2.2.2",
-    "debug": "~4.3.4",
+    "debug": "4.3.4",
     "dotenv": "~16.4.5",
     "eslint": "^8.45.0",
     "graphql": "~16.8.1",
