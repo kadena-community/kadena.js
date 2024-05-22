@@ -1,4 +1,6 @@
+import classNames from 'classnames';
 import React from 'react';
+import { listStyle } from './CustomAccordion.css';
 
 type RenderFunction<T> = (x: {
   onExpandCollapse: () => void;
@@ -40,7 +42,7 @@ function Item<T>({
   );
 }
 
-interface ICustomAccordionProps<T>
+export interface ICustomAccordionProps<T>
   extends Omit<React.HTMLProps<HTMLUListElement>, 'data' | 'children'> {
   data: T[];
   children: RenderFunction<T>;
@@ -56,10 +58,11 @@ function CustomAccordion<
   children,
   itemProps,
   defaultExpandedKey,
+  className,
   ...rest
 }: ICustomAccordionProps<T>) {
   return (
-    <ul {...rest}>
+    <ul {...rest} className={classNames(listStyle, className)}>
       {data.map((item, index) => (
         <Item<T>
           key={item.key}
@@ -75,4 +78,3 @@ function CustomAccordion<
 }
 
 export default CustomAccordion;
-
