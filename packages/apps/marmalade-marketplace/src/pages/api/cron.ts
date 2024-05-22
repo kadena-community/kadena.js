@@ -9,7 +9,7 @@ import {
 import { Sale } from '@/hooks/getSales';
 import { env } from '@/utils/env';
 import { database } from '@/utils/firebase';
-import { KeysetGuard } from '@kadena/client-utils/lib/esm/marmalade/config';
+import { BuiltInPredicate } from '@kadena/client';
 import {
   DocumentSnapshot,
   collection,
@@ -48,7 +48,10 @@ type Bid = {
   bid: number;
   bidder: {
     account: string;
-    guard: KeysetGuard;
+    guard: {
+      keys: string[];
+      pred: BuiltInPredicate;
+    };
   };
   requestKey: string;
 };
@@ -325,16 +328,6 @@ async function getSettings(): Promise<Settings> {
   }
 }
 
-async function storeEventsInFirebase(events: Event[]) {
-  const batch = writeBatch(database);
-
-  for (const event of events) {
-    const eventRef = doc(collection(database, 'events'));
-    batch.set(eventRef, event);
-  }
-  await batch.commit();
-}
-
 async function storeSalesInFirebase(sales: Sale[]) {
   const batch = writeBatch(database);
 
@@ -361,8 +354,6 @@ const sync = async (fromBlock: number, toBlock: number) => {
   try {
     for (let i = fromBlock; i <= toBlock; i++) {
       const events = await getAllEventsFromBlock(i);
-
-      await storeEventsInFirebase(events);
 
       const { sales, bids } = parseEvents(events);
 
@@ -416,7 +407,6 @@ export default async function handler(
     }
 
     if (latestProcessedBlockNumber >= latestBlockNumber) {
-      console.log('IN SYNC');
       res.status(200).json({ message: 'IN SYNC' });
       return;
     }

@@ -1,15 +1,15 @@
 {
   "indexes": [
     {
-      "collectionGroup": "events",
+      "collectionGroup": "sales",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "event",
+          "fieldPath": "status",
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "occurredAt",
+          "fieldPath": "block",
           "order": "DESCENDING"
         }
       ]

@@ -1,5 +1,5 @@
 import { database } from "@/utils/firebase";
-import { KeysetGuard } from "@kadena/client-utils/lib/esm/marmalade/config";
+import { BuiltInPredicate } from "@kadena/client";
 import { OrderByDirection, collection, getDocs, limit, orderBy, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
@@ -14,11 +14,17 @@ export type Sale = {
   timeoutAt: number;
   seller: {
     account: string;
-    guard?: KeysetGuard;
+    guard?: {
+      keys: string[];
+      pred: BuiltInPredicate;
+    };
   };
   buyer?: {
     account: string;
-    guard?: KeysetGuard;
+    guard?: {
+      keys: string[];
+      pred: BuiltInPredicate;
+    };
   };
   saleType?: string;
   escrow?: string;
