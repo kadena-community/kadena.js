@@ -3,6 +3,9 @@ import { getVersionCommits } from './commits';
 import { getPackages, getVersions, writeContent } from './misc';
 import { getVersionPRs } from './prs';
 
+/**
+ * get all author data from a version and return them as an array
+ */
 export const getAuthors = (
   version: IChangelogPackageVersion,
 ): IChangelogUser[] => {
@@ -41,6 +44,11 @@ export const getAuthors = (
   return [...commitAuhtors, ...prAuhtors];
 };
 
+/**
+ * get the newest date from the version commits and return;
+ * this will be the last date that the version was modified.
+ * as we have no actual date when the version was released, this is the closest we get
+ */
 export const getLastModifiedDate = (
   version: IChangelogPackageVersion,
 ): Date | undefined => {
@@ -61,7 +69,7 @@ export const getLastModifiedDate = (
     undefined,
   );
 
-  const prssDate = getVersionPRs(version).reduce(
+  const prsDate = getVersionPRs(version).reduce(
     (acc: Date | undefined, val: IChangelogPR): Date | undefined => {
       const lastModifiedDate = val.data?.headers['last-modified']
         ? new Date(val.data?.headers['last-modified'])
@@ -76,10 +84,10 @@ export const getLastModifiedDate = (
     undefined,
   );
 
-  if (!prssDate) return commitsDate;
-  if (!commitsDate) return prssDate;
+  if (!prsDate) return commitsDate;
+  if (!commitsDate) return prsDate;
 
-  return prssDate > commitsDate ? prssDate : commitsDate;
+  return prsDate > commitsDate ? prsDate : commitsDate;
 };
 
 /**

@@ -36,7 +36,7 @@ describe('commits utils', () => {
   });
 
   describe('getCommits', () => {
-    it('should return an array with all commits', async () => {
+    it('should return an array with all commits of the given package', async () => {
       const changelog = await import('./mock/changelog.json', {
         assert: {
           type: 'json',
@@ -47,7 +47,7 @@ describe('commits utils', () => {
       const result = getCommits(pkg);
       expect(result.length).toEqual(26);
     });
-    it('should return an array of commits', async () => {
+    it('should return an array of commits of the given package first version', async () => {
       const changelog = await import('./mock/changelog.json', {
         assert: {
           type: 'json',
@@ -61,7 +61,7 @@ describe('commits utils', () => {
     });
   });
   describe('getVersionCommits', () => {
-    it('should return an array with all commits', async () => {
+    it('should return an array with all commits of the given version', async () => {
       const changelog = await import('./mock/changelog.json', {
         assert: {
           type: 'json',
@@ -107,7 +107,7 @@ describe('commits utils', () => {
       expect(filterCommitsWithoutData(commit)).toEqual(false);
     });
 
-    it('should return false if the commit has tried 2 times already, but there is data data', () => {
+    it('should return false if the commit has tried 2 times already, but there is data', () => {
       const commit = {
         hash: '93bf55b07',
         tries: 2,
@@ -117,7 +117,7 @@ describe('commits utils', () => {
       expect(filterCommitsWithoutData(commit)).toEqual(false);
     });
 
-    it('should return true if the commit has tried 1 times and there is no data ', () => {
+    it('should return true if the commit has tried 1 time and there is no data ', () => {
       const commit = {
         hash: '93bf55b07',
         tries: 1,

@@ -1,3 +1,6 @@
+/**
+ * only return data from the header, that is needed in the results
+ */
 export const reduceHeaderData = (header: IGitHubHeader): IChangelogHeader => {
   const reduced: IChangelogHeader = {
     'last-modified': header['last-modified'],
@@ -6,6 +9,10 @@ export const reduceHeaderData = (header: IGitHubHeader): IChangelogHeader => {
 
   return reduced;
 };
+
+/**
+ * only return data from a user, that is needed in the results
+ */
 export const reduceUserData = (user: IGitHubUser): IChangelogUser => {
   const reduced: IChangelogUser = {
     login: user.login,
@@ -18,6 +25,12 @@ export const reduceUserData = (user: IGitHubUser): IChangelogUser => {
   return reduced;
 };
 
+/**
+ * return author data from a commit.
+ * there are a couple of places where there is user data of a commit
+ * we first try a couple of places in a particular order
+ * If at the end there is no data we return undefined
+ */
 export const getAuthor = (
   commit: IGithubCommitDataCommit,
 ): IChangelogUser | undefined => {
@@ -31,6 +44,9 @@ export const getAuthor = (
   }
 };
 
+/**
+ * only return data from commit data, that is needed in the results
+ */
 export const reduceCommitDataCommit = (
   commit: IGithubCommitDataCommit,
 ): IChangelogCommitDataCommit => {
@@ -49,6 +65,9 @@ export const reduceCommitDataCommit = (
   return reduced;
 };
 
+/**
+ * only return data from a commit, that is needed in the results
+ */
 export const reduceCommitData = (
   commit: IGitHubCommitData,
 ): IChangelogCommitData => {
@@ -61,6 +80,9 @@ export const reduceCommitData = (
   return reduced;
 };
 
+/**
+ * only return data from a pr, that is needed in the results
+ */
 export const reducePRData = (pr: IGitHubPRData): IChangelogPRData => {
   const reduced: IChangelogPRData = {
     url: pr.url,

@@ -48,7 +48,7 @@ describe('pr utils', () => {
   });
 
   describe('getPrs', () => {
-    it('should return an array with all commits', async () => {
+    it('should return an array with all prs of given package', async () => {
       const { default: changelog } = await import('./mock/changelog.json', {
         assert: {
           type: 'json',
@@ -60,7 +60,7 @@ describe('pr utils', () => {
       const result = getPrs(pkg);
       expect(result.length).toEqual(185);
     });
-    it('should return an array of commits', async () => {
+    it('should return an array of prs of given package first version', async () => {
       const { default: changelog } = await import('./mock/changelog.json', {
         assert: {
           type: 'json',
@@ -75,7 +75,7 @@ describe('pr utils', () => {
   });
 
   describe('getVersionPRs', () => {
-    it('should return an array with all commits', async () => {
+    it('should return an array with all commits of given version', async () => {
       const { default: changelog } = await import('./mock/changelog.json', {
         assert: {
           type: 'json',
@@ -122,7 +122,7 @@ describe('pr utils', () => {
       expect(filterPRsWithoutData(pr)).toEqual(false);
     });
 
-    it('should return false if the commit has tried 2 times already, but there is data data', () => {
+    it('should return false if the commit has tried 2 times already, but there is data', () => {
       const pr = {
         id: 1337,
         tries: 2,
@@ -133,7 +133,7 @@ describe('pr utils', () => {
       expect(filterPRsWithoutData(pr)).toEqual(false);
     });
 
-    it('should return true if the commit has tried 1 times and there is no data ', () => {
+    it('should return true if the commit has tried 1 time and there is no data ', () => {
       const pr = {
         id: 1337,
         tries: 1,

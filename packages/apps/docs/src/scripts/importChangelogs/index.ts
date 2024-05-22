@@ -168,7 +168,7 @@ const crawl = (repo: IRepo): ((tree: Node) => IChangelogPackage) => {
   return innerCrawl;
 };
 
-const createContent = async (repo: IRepo) => {
+const createRepoContent = async (repo: IRepo) => {
   const md: Root = remark.parse(getChangelog(repo));
 
   const repoCrawler = await crawl(repo);
@@ -176,7 +176,7 @@ const createContent = async (repo: IRepo) => {
 };
 
 const getReposContent = async (repos: IRepo[]): Promise<IChangelogComplete> => {
-  const promises = repos.map(createContent);
+  const promises = repos.map(createRepoContent);
 
   const results = await Promise.allSettled(promises);
 

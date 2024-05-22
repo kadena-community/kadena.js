@@ -4,6 +4,9 @@ import { filterCommitsWithoutData, getCommits } from './commits';
 import { getPackages, writeContent } from './misc';
 import { filterPRsWithoutData, getPrs } from './prs';
 
+/**
+ * do all the github api calls for the commits and prs without data
+ */
 export const getGitHubData = async (
   content: IChangelogComplete,
 ): Promise<void> => {
