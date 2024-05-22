@@ -41,15 +41,16 @@ export function UnlockProfile() {
   return (
     <>
       <Box margin="md">
-        <Heading variant="h5">Unlock your wallet</Heading>
         <Text>Profile: {profile.name}</Text>
+        <Heading variant="h5">Unlock your profile</Heading>
+        <Text>Enter your password to unlock access</Text>
         <form onSubmit={handleSubmit(unlock)}>
           <label htmlFor="password">Password</label>
           <TextField id="password" type="password" {...register('password')} />
-          <Button type="submit">Unlock</Button>
+          {error && <Text as="p">{error}</Text>}
+          <Button type="submit">Continue</Button>
         </form>
-        {error && <Text>{error}</Text>}
-        <Link to="/create-profile">Create profile</Link>
+        <Text as="p">Forgot password? <Link to="/import-wallet">Recover your profile</Link></Text>
       </Box>
     </>
   );
