@@ -14,12 +14,12 @@ export function CreateProfile() {
     register,
     handleSubmit,
     getValues,
-    formState: { errors },
+    formState: { isValid, errors },
   } = useForm<{
     password: string;
     profileName: string;
     confirmation: string;
-  }>();
+  }>({ mode: 'all' });
   const { createProfile, isUnlocked, createKey, createKAccount } = useWallet();
   const { activeNetwork } = useNetwork();
   const [createdKeySource, setCreatedKeySource] = useState<IKeySource>();
@@ -84,12 +84,25 @@ export function CreateProfile() {
               id="password"
               type="password"
               label="Password"
-              {...register('password')}
+              validationBehavior="native"
+              isRequired
+              minLength={'6'}
+              {...register('password', {
+                required: { value: true, message: 'This field is required' },
+                minLength: { value: 6, message: 'Minimum 6 symbols' },
+              })}
+              errorMessage={errors.password && errors.password.message}
             />
             <TextField
               id="confirmation"
               type="password"
               label="Confirm password"
+              validationBehavior="aria"
+              isRequired
+              minLength={'6'}
+              validate={(value: string) =>
+                getValues('password') === value || 'Passwords do not match'
+              }
               {...register('confirmation', {
                 validate: (value) => {
                   return (
@@ -97,11 +110,13 @@ export function CreateProfile() {
                   );
                 },
               })}
+              errorMessage={errors.confirmation && errors.confirmation.message}
             />
-            <Text>{errors.confirmation && errors.confirmation.message}</Text>
           </Stack>
           <Stack flexDirection="column">
-            <Button type="submit">Continue</Button>
+            <Button type="submit" isDisabled={!isValid}>
+              Continue
+            </Button>
           </Stack>
         </form>
       </AuthCard>
