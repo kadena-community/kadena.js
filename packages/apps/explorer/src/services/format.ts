@@ -44,11 +44,11 @@ export function formatStatisticsData(
 
 export function truncateValues(
   value: string,
-  minLeght: number = 15,
+  minLength: number = 15,
   startChars: number = 5,
   endChars: number = 4,
 ): string {
-  if (value.length > minLeght) {
+  if (value.length > minLength) {
     return `${value.slice(0, startChars)}...${value.slice(-endChars)}`;
   }
   return value;
