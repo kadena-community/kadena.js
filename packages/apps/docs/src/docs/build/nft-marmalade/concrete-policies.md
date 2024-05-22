@@ -9,7 +9,7 @@ layout: full
 
 # Policies
 
-As noted in [Layered contract architecture](/build/nft-marmalade), policies and the policy manager play an important role in defining and enforcing rules related to token attributes and token activity. 
+As noted in [Contract architecture](/build/nft-marmalade), policies and the policy manager play an important role in defining and enforcing rules related to token attributes and token activity. 
 Individual policies give you granular control over specific token properties or specific token activity, including minting, burning, transferring, and buying tokens.
 
 Token policies are implemented as smart contracts based on the interfaces defined in the [`kip.token-policy-v2`](https://github.com/kadena-io/marmalade/blob/main/pact/kip/token-policy-v2.pact) standard.

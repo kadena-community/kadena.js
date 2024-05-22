@@ -1,7 +1,7 @@
 import z from 'zod';
 
 import type { ChainId, IPactCommand } from '@kadena/client';
-import { PactValue } from '@kadena/types';
+import type { PactValue } from '@kadena/types';
 import { formatZodError } from '../../../utils/globalHelpers.js';
 
 const pactValueSchema = z.any().transform((x) => x as PactValue);

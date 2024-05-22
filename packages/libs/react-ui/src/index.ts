@@ -54,6 +54,7 @@ export {
   Accordion,
   AccordionItem,
   Avatar,
+  Badge,
   Box,
   Breadcrumbs,
   BreadcrumbsItem,

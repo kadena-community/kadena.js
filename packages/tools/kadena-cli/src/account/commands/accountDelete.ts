@@ -76,7 +76,7 @@ export const createAccountDeleteCommand = createCommand(
     const { accountAlias } = await option.accountAlias();
 
     if (!isNotEmptyString(accountAlias.trim())) {
-      return log.error('\nAccount alias is not provided or invalid.\n');
+      return log.error('Account alias is not provided or invalid.');
     }
 
     const { confirm } = await option.confirm({
@@ -89,8 +89,7 @@ export const createAccountDeleteCommand = createCommand(
     });
 
     if (confirm === false) {
-      log.info(log.color.yellow(`\nThe account alias will not be deleted.`));
-      return;
+      return log.warning('The account alias will not be deleted.');
     }
 
     const result = await removeAccount(accountAlias);

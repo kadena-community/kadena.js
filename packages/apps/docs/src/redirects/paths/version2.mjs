@@ -5,13 +5,23 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
-    source: '/kadena/:slug',
-    destination: '/learn/:slug',
+    source: '/kadena/kda',
+    destination: '/participate',
     permanent: true,
   },
   {
-    source: '/kadena/kda',
-    destination: '/participate',
+    source: '/kadena/exchanges',
+    destination: '/participate/exchanges',
+    permanent: true,
+  },
+  {
+    source: '/kadena/wallets',
+    destination: '/participate/wallets',
+    permanent: true,
+  },
+  {
+    source: '/kadena/:slug',
+    destination: '/learn/:slug',
     permanent: true,
   },
   {
@@ -25,18 +35,8 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
-    source: '/kadena/exchanges',
-    destination: '/participate/exchanges',
-    permanent: true,
-  },
-  {
     source: '/kadena/exchanges/:slug',
     destination: '/participate/exchanges',
-    permanent: true,
-  },
-  {
-    source: '/kadena/wallets',
-    destination: '/participate/wallets',
     permanent: true,
   },
   {
@@ -81,7 +81,7 @@ export const version2PathUrlRedirects = [
   },
   {
     source: '/kadena/code-of-conduct',
-    destination: '/',
+    destination: 'https://www.kadena.io/community-guidelines',
     permanent: true,
   },
   {
@@ -240,16 +240,6 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
-    source: '/pact/:slug1',
-    destination: '/build/pact',
-    permanent: true,
-  },
-  {
-    source: '/pact/:slug1/:slug2',
-    destination: '/build/pact/:slug1/:slug2',
-    permanent: true,
-  },
-  {
     source: '/pact/beginner/:slug1',
     destination: '/build/pact/:slug1',
     permanent: true,
@@ -290,8 +280,23 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
+    source: '/pact/intermediate/pact-and-javascript',
+    destination: '/tutorials/pact-and-javascript',
+    permanent: true,
+  },
+  {
     source: '/pact/intermediate/:slug',
     destination: '/build/pact/:slug',
+    permanent: true,
+  },
+  {
+    source: '/pact/:slug1',
+    destination: '/build/pact',
+    permanent: true,
+  },
+  {
+    source: '/pact/:slug1/:slug2',
+    destination: '/build/pact/:slug1/:slug2',
     permanent: true,
   },
   {
