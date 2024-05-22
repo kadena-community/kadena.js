@@ -27,6 +27,21 @@ const redirectsConfig = [
           destination: '/:slug/:slug1/:slug2',
           permanent: true,
         },
+        {
+          source: `/kadena-docs/:slug/:slug1/:slug2`,
+          destination: '/:slug/:slug1/:slug2',
+          permanent: true,
+        },
+        {
+          source: `/kadena-docs/:slug/:slug1`,
+          destination: '/:slug/:slug1',
+          permanent: true,
+        },
+        {
+          source: `/kadena-docs/:slug`,
+          destination: '/:slug',
+          permanent: true,
+        },
       ];
     })
     .flat(),
