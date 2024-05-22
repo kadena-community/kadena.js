@@ -82,7 +82,12 @@ export const getLastModifiedDate = (
   return prssDate > commitsDate ? prssDate : commitsDate;
 };
 
-export const enrichContent = (content: IChangelogComplete) => {
+/**
+ * this will go through all versions and get some data from all its commits and PRs
+ * and store that data for more easy access.
+ * This way we dont have to go through all commits and PRs in the frontend.
+ */
+export const enrichPackageContent = (content: IChangelogComplete) => {
   getPackages(content).forEach((pkg) => {
     getVersions(pkg).forEach((version) => {
       if (version.isLocked) return;

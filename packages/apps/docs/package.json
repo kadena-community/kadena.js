@@ -28,7 +28,7 @@
     "start": "next start",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "test:watch": "vitest",
+    "test:watch": "vitest  --coverage",
     "verify": "tsc --noEmit"
   },
   "dependencies": {

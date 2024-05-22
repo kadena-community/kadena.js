@@ -1,6 +1,6 @@
-import { getAuthors, getLastModifiedDate } from '../enrichContent';
+import { getAuthors, getLastModifiedDate } from '../enrichPackageContent';
 
-describe('enrichContent', () => {
+describe('enrichPackageContent', () => {
   describe('getAuthors', () => {
     it('should enrich the version with all authors from the commits', async () => {
       const { default: changelog } = await import(

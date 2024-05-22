@@ -560,7 +560,6 @@ describe('reduce utils', () => {
 
       const result = reducePRData(data);
 
-      console.log(result);
       const expetedResult = {
         url: 'https://api.github.com/repos/kadena-io/pact/pulls/1326',
         headers: {

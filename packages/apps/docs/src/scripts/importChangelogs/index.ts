@@ -15,10 +15,24 @@ import {
   success,
 } from './constants';
 import { getCommitId } from './utils/commits';
-import { enrichContent } from './utils/enrichContent';
+import { enrichPackageContent } from './utils/enrichPackageContent';
 import { getGitHubData } from './utils/github';
 import { getChangelog, writeContent } from './utils/misc';
 import { getPrId } from './utils/prs';
+
+/**
+ * Script that will check all the given packages their CHANGELOG file
+ * It will import all the changelog lines and put them in 1 large JSON,
+ * that we can use in the frontend to show the data
+ * It will check for PR Ids and Commit hashes and put them in an array
+ * For all hashes and PRIds it will try to collect extra data from github via the github API
+ * and save that as well in the JSON
+ *
+ * The script will run and write the data after every time it has fetched an API call.
+ * Once the github data is fetched and saved the version record will be locked, so that we don't have to
+ * fetch that data everytime the script runs
+ * This way we save time and we can go in and manually fix typos, without them being overwritten everytime we run the script
+ */
 
 const getCurrentContentCreator = () => {
   let content: IChangelogComplete;
@@ -67,7 +81,7 @@ const crawlContent = (tree: Node): string => {
   return content;
 };
 
-const createRecord = (content: Node): IChangelogVersionRecord => {
+const createVersionRecord = (content: Node): IChangelogVersionRecord => {
   const contentString = crawlContent(content);
 
   const { commits, label: tempLabel } = getCommitId(contentString);
@@ -129,7 +143,7 @@ const crawl = (repo: IRepo): ((tree: Node) => IChangelogPackage) => {
         }
 
         if (branch.type === 'listItem' && version) {
-          const record = createRecord(branch);
+          const record = createVersionRecord(branch);
 
           switch (currentPosition) {
             case VersionPosition.MINOR:
@@ -161,7 +175,7 @@ const createContent = async (repo: IRepo) => {
   return await repoCrawler(md);
 };
 
-const getContent = async (repos: IRepo[]): Promise<IChangelogComplete> => {
+const getReposContent = async (repos: IRepo[]): Promise<IChangelogComplete> => {
   const promises = repos.map(createContent);
 
   const results = await Promise.allSettled(promises);
@@ -198,10 +212,10 @@ export const importChangelogs = async (): Promise<IScriptResult> => {
   success.length = 0;
 
   await getRepos(REPOS);
-  const content = await getContent(REPOS);
+  const content = await getReposContent(REPOS);
 
   await getGitHubData(content);
-  enrichContent(content);
+  enrichPackageContent(content);
 
   if (!errors.length) {
     writeContent(content);

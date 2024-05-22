@@ -30,7 +30,12 @@ export const getGitHubData = async (
       writeContent(content);
     }
 
-    //check how many commits and prs do not have data
+    /**
+     * check how many commits and prs do not have data
+     * there is a maximum amount of github API calls that can be done before the rate limit is reached
+     * this function will check if all commits and PRs have data and are locked.
+     * if not, there will be an error. and we need to run the function by hand
+     */
     const commitCount = getCommits(pkg).filter(filterCommitsWithoutData);
     const prCount = getPrs(pkg).filter(filterPRsWithoutData);
 
