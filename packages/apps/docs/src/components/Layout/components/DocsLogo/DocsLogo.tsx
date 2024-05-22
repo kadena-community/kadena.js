@@ -1,5 +1,5 @@
 import type { ITheme } from '@kadena/react-ui';
-import { useTheme } from '@kadena/react-ui';
+import { Themes, useTheme } from '@kadena/react-ui';
 import type { ComponentPropsWithRef, FC } from 'react';
 import React from 'react';
 
@@ -10,7 +10,7 @@ interface IProps extends ComponentPropsWithRef<'svg'> {
 export const DocsLogo: FC<IProps> = ({ overwriteTheme, ...props }) => {
   const { theme } = useTheme({ overwriteTheme });
 
-  if (theme === 'dark') {
+  if (theme === Themes.dark) {
     return (
       <svg
         width="216"

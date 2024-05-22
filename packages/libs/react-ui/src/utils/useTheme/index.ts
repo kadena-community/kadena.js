@@ -2,7 +2,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import { darkThemeClass } from '../../styles';
 import type { ITheme } from './utils/constants';
-import { MEDIA, defaultTheme, isServer, storageKey } from './utils/constants';
+import {
+  MEDIA,
+  Themes,
+  defaultTheme,
+  isServer,
+  storageKey,
+} from './utils/constants';
 import { getSystemTheme } from './utils/getSystemTheme';
 
 interface IUseThemeProps {
@@ -56,11 +62,13 @@ export const useTheme = ({
     }
 
     const name = resolved;
-    const d = document.documentElement;
+    const documentElement = document.documentElement;
 
-    d.classList.remove('light');
-    d.classList.remove(darkThemeClass);
-    d.classList.add(name === 'dark' ? darkThemeClass : 'light');
+    documentElement.classList.remove(Themes.light);
+    documentElement.classList.remove(darkThemeClass);
+    documentElement.classList.add(
+      name === Themes.dark ? darkThemeClass : Themes.light,
+    );
   }, []);
 
   const setTheme = (

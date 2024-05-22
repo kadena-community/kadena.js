@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useTheme } from '../useTheme';
-import { storageKey } from '../useTheme/utils/constants';
+import { Themes, storageKey } from '../useTheme/utils/constants';
 
 const mocks = vi.hoisted(() => {
   return {
@@ -21,83 +21,83 @@ describe('useTheme', () => {
   });
 
   it('should set the state of the system (dark) when there is no localstorage set', () => {
-    mocks.getSystemTheme.mockReturnValue('dark');
+    mocks.getSystemTheme.mockReturnValue(Themes.dark);
     const { result } = renderHook(() => useTheme());
-    expect(result.current.theme).toEqual('dark');
+    expect(result.current.theme).toEqual(Themes.dark);
   });
 
   it('should set the state of the system (light) when there is no localstorage set', () => {
-    mocks.getSystemTheme.mockReturnValue('light');
+    mocks.getSystemTheme.mockReturnValue(Themes.light);
     const { result } = renderHook(() => useTheme());
-    expect(result.current.theme).toEqual('light');
+    expect(result.current.theme).toEqual(Themes.light);
   });
 
   it('should set the state of the localstorage value (light), if available', () => {
-    window.localStorage.setItem(storageKey, 'light');
+    window.localStorage.setItem(storageKey, Themes.light);
 
     const { result } = renderHook(() => useTheme());
-    expect(result.current.theme).toEqual('light');
+    expect(result.current.theme).toEqual(Themes.light);
   });
 
   it('should set the state of the localstorage value (light), if available', () => {
-    window.localStorage.setItem(storageKey, 'dark');
+    window.localStorage.setItem(storageKey, Themes.dark);
 
     const { result } = renderHook(() => useTheme());
-    expect(result.current.theme).toEqual('dark');
+    expect(result.current.theme).toEqual(Themes.dark);
   });
 
   it('should lock the theme when it is given as a prop (dark)', () => {
-    window.localStorage.setItem(storageKey, 'light');
+    window.localStorage.setItem(storageKey, Themes.light);
 
-    expect(localStorage.getItem(storageKey)).toEqual('light');
+    expect(localStorage.getItem(storageKey)).toEqual(Themes.light);
 
-    const { result } = renderHook(() => useTheme({ lockedTheme: 'dark' }));
-    expect(result.current.theme).toEqual('dark');
-    expect(localStorage.getItem(storageKey)).toEqual('dark');
+    const { result } = renderHook(() => useTheme({ lockedTheme: Themes.dark }));
+    expect(result.current.theme).toEqual(Themes.dark);
+    expect(localStorage.getItem(storageKey)).toEqual(Themes.dark);
   });
 
   it('should overwrite the theme when given as prop', () => {
-    window.localStorage.setItem(storageKey, 'light');
+    window.localStorage.setItem(storageKey, Themes.light);
 
     const { result } = renderHook(() => useTheme());
 
-    expect(result.current.theme).toEqual('light');
+    expect(result.current.theme).toEqual(Themes.light);
 
     const { result: result2 } = renderHook(() =>
-      useTheme({ overwriteTheme: 'dark' }),
+      useTheme({ overwriteTheme: Themes.dark }),
     );
 
-    expect(result2.current.theme).toEqual('dark');
+    expect(result2.current.theme).toEqual(Themes.dark);
   });
   it('should overwrite the theme when given as prop and the overwrite is set as well', () => {
     expect(localStorage.getItem(storageKey)).toEqual(null);
 
     const { result } = renderHook(() =>
-      useTheme({ overwriteTheme: 'light', lockedTheme: 'dark' }),
+      useTheme({ overwriteTheme: Themes.light, lockedTheme: Themes.dark }),
     );
 
-    expect(localStorage.getItem(storageKey)).toEqual('dark');
-    expect(result.current.theme).toEqual('light');
+    expect(localStorage.getItem(storageKey)).toEqual(Themes.dark);
+    expect(result.current.theme).toEqual(Themes.light);
   });
   it('should switch state when the setTheme is called', () => {
-    window.localStorage.setItem(storageKey, 'light');
+    window.localStorage.setItem(storageKey, Themes.light);
     const { result, rerender } = renderHook(() => useTheme());
-    expect(result.current.theme).toEqual('light');
+    expect(result.current.theme).toEqual(Themes.light);
 
-    result.current.setTheme('dark');
+    result.current.setTheme(Themes.dark);
     rerender();
-    expect(result.current.theme).toEqual('dark');
+    expect(result.current.theme).toEqual(Themes.dark);
   });
 
   it('should switch state when the setTheme is called, but the overwrite should still hold', () => {
-    window.localStorage.setItem(storageKey, 'light');
+    window.localStorage.setItem(storageKey, Themes.light);
     const { result, rerender } = renderHook(() =>
-      useTheme({ overwriteTheme: 'light' }),
+      useTheme({ overwriteTheme: Themes.light }),
     );
-    expect(result.current.theme).toEqual('light');
+    expect(result.current.theme).toEqual(Themes.light);
 
-    result.current.setTheme('dark');
+    result.current.setTheme(Themes.dark);
     rerender();
-    expect(result.current.theme).toEqual('light');
+    expect(result.current.theme).toEqual(Themes.light);
   });
 });

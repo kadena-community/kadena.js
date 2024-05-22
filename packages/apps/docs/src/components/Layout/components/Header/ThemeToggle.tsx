@@ -1,6 +1,6 @@
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import { MonoContrast } from '@kadena/react-icons';
-import { NavHeaderButton, useTheme } from '@kadena/react-ui';
+import { NavHeaderButton, Themes, useTheme } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -20,7 +20,7 @@ export const ThemeToggle: FC = () => {
   }, [theme, rotateIcon]);
 
   const toggleTheme = useCallback((): void => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
 
     setTheme(newTheme);
     analyticsEvent(EVENT_NAMES['click:change_theme'], {
