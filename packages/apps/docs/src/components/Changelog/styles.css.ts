@@ -8,14 +8,14 @@ import { globalStyle, style } from '@vanilla-extract/css';
 
 export const backgroundClass = style([
   {
-    backgroundColor: tokens.kda.foundation.color.neutral['n99@alpha10'],
+    backgroundColor: tokens.kda.foundation.color.background.surface.default,
   },
 ]);
 
 export const versionsSectionClass = style([
   atoms({}),
   {
-    backgroundColor: tokens.kda.foundation.color.neutral['n99@alpha10'],
+    backgroundColor: tokens.kda.foundation.color.background.surface.default,
     width: '100%',
 
     ...responsiveStyle({

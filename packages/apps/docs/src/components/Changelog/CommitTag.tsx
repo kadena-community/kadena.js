@@ -1,4 +1,3 @@
-import { Stack } from '@kadena/react-ui';
 import Link from 'next/link';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';

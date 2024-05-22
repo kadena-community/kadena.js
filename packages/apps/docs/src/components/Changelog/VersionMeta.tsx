@@ -31,6 +31,7 @@ export const VersionMeta: FC<IProps> = ({ version }) => {
           flexDirection="column"
           flex={1}
           paddingInlineEnd={{ xs: 'xs', lg: 'no' }}
+          gap="sm"
         >
           <Heading as="h4" variant="h6" className={contributorsHeaderClass}>
             Contributors
