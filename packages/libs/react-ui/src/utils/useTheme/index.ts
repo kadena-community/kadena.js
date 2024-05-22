@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { darkThemeClass } from '../../styles';
+import type { ITheme } from './utils/constants';
 import { MEDIA, defaultTheme, isServer, storageKey } from './utils/constants';
 import { getSystemTheme } from './utils/getSystemTheme';
 

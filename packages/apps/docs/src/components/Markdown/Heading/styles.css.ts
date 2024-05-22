@@ -30,9 +30,9 @@ export const headerClass = style([
     display: 'flex',
     alignItems: 'center',
     marginBlockStart: 'xl',
+    color: 'text.base.default',
   }),
   {
-    color: tokens.kda.foundation.color.text.base.default,
     selectors: {
       '&:hover': {
         vars: {
