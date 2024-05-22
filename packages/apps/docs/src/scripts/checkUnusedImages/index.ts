@@ -27,7 +27,6 @@ const checkImages =
   ): Promise<void> => {
     const path = `./src/pages${getFileNameOfPageFile(page, parentTree)}`;
     const content = fs.readFileSync(path, 'utf-8');
-    console.log(content);
     checkImagesContent(content, assets);
   };
 
