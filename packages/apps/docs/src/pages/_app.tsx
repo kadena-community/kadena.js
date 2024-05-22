@@ -11,9 +11,7 @@ import { MenuProvider } from '@/hooks/useMenu/MenuProvider';
 import { getLayout } from '@/utils/getLayout';
 import type { IPageMeta, IPageProps } from '@kadena/docs-tools';
 import { RouterProvider } from '@kadena/react-ui';
-import { darkThemeClass } from '@kadena/react-ui/styles';
 import { MDXProvider } from '@mdx-js/react';
-import { ThemeProvider } from 'next-themes';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -67,10 +65,12 @@ export const MyApp = ({
   return (
     <>
       <Head>
-        <title>{title}</title>
-        <meta name="title" content={title} />
+        <title>{`${title} | Kadena Docs`}</title>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="title" content={`${title} | Kadena Docs`} />
         <meta name="description" content={description} />
         <meta content="text/html; charset=UTF-8" name="Content-Type" />
+        <meta content="#020E1B" name="theme-color" />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1"
@@ -105,25 +105,15 @@ export const MyApp = ({
         <link rel="apple-touch-icon" href="/assets/favicons/icon@192.png?1" />
       </Head>
       <MDXProvider components={markDownComponents}>
-        <ThemeProvider
-          attribute="class"
-          enableSystem={true}
-          defaultTheme="light"
-          value={{
-            light: 'light',
-            dark: darkThemeClass,
-          }}
-        >
-          <RouterProvider navigate={router.push}>
-            <MenuProvider>
-              <Header menuItems={props.headerMenuItems} />
-              <CookieConsent />
-              <Layout {...props}>
-                <Component {...props} />
-              </Layout>
-            </MenuProvider>
-          </RouterProvider>
-        </ThemeProvider>
+        <RouterProvider navigate={router.push}>
+          <MenuProvider>
+            <Header menuItems={props.headerMenuItems} />
+            <CookieConsent />
+            <Layout {...props}>
+              <Component {...props} />
+            </Layout>
+          </MenuProvider>
+        </RouterProvider>
       </MDXProvider>
       <Analytics />
     </>

@@ -280,7 +280,7 @@ export const accountDeleteConfirmationPrompt: IPrompt<boolean> = async (
         : `the ${selectedAccounts} alias account`;
 
   const answer = await input({
-    message: `Are you sure you want to delete ${selectedAccountMessage}? '\n  type "yes" to confirm or "no" to cancel and press enter. \n`,
+    message: `Are you sure you want to delete ${selectedAccountMessage}?\n  type "yes" to confirm or "no" to cancel and press enter. \n`,
     validate: (input) => {
       if (input === 'yes' || input === 'no') {
         return true;

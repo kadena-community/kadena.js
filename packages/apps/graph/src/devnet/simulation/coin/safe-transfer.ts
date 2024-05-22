@@ -7,6 +7,7 @@ import { PactNumber } from '@kadena/pactjs';
 import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
 import { logger } from '@utils/logger';
+import { networkData } from '@utils/network';
 import { stringifyProperty } from '../helper';
 
 export async function safeTransfer({
@@ -37,7 +38,7 @@ export async function safeTransfer({
     host: dotenv.NETWORK_HOST,
     sign: createSignWithKeypair([...sender.keys, ...receiver.keys]),
     defaults: {
-      networkId: dotenv.NETWORK_ID,
+      networkId: networkData.networkId,
     },
   })(
     Pact.builder
@@ -87,7 +88,7 @@ export async function safeTransfer({
         senderAccount: sender.account,
         ttl: 8 * 60 * 60, //8 hours
       })
-      .setNetworkId(dotenv.NETWORK_ID)
+      .setNetworkId(networkData.networkId)
       .getCommand(),
   ).executeTo('listen');
 }

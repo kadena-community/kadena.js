@@ -24,7 +24,7 @@ export function BackupRecoveryPhrase() {
     }
   };
   return (
-    <main>
+    <>
       <Box margin="md">
         <Heading variant="h5">Backup the recovery phrase</Heading>
         <Text>
@@ -50,6 +50,6 @@ export function BackupRecoveryPhrase() {
         )}
         <Link to="/">Skip for now</Link>
       </Box>
-    </main>
+    </>
   );
 }

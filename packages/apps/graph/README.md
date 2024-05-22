@@ -13,13 +13,21 @@
   - [Method 1: Using the published npm package](#method-1-using-the-published-npm-package)
   - [Method 2: Building and running from source](#method-2-building-and-running-from-source)
   - [Running your first query](#running-your-first-query)
+  - [Example queries per use case](#example-queries-per-use-case)
+    - [Wallet related](#wallet-related)
+    - [Explorer related](#explorer-related)
+    - [Event related](#event-related)
+    - [Fungible related](#fungible-related)
+    - [Non-fungible related](#non-fungible-related)
 - [Features](#features)
   - [Tracing and trace analysis](#tracing-and-trace-analysis)
   - [Query Complexity](#query-complexity)
   - [Prisma JSON field queries](#prisma-json-field-queries)
   - [Paginated results](#paginated-results)
 - [Useful extra's](#useful-extras)
+  - [Network Information](#network-information)
   - [Running devnet](#running-devnet)
+    - [GraphQL](#graphql)
   - [Connecting to the database](#connecting-to-the-database)
   - [Simulating traffic on the devnet](#simulating-traffic-on-the-devnet)
     - [Coin simulation](#coin-simulation)
@@ -99,25 +107,26 @@ We've curated a list of useful queries and subscriptions tailored for different 
 
 To get started, ensure you have a local instance of the graph service running on `localhost:4000`.
 
+#### Wallet related
 
-
-##### Wallet related
 - [Get account balance](http://localhost:4000/graphql?query=query+GetAccountBalance+%7B%0A++fungibleAccount%28accountName%3A+%22k%3A123456789...%22%29%7B%0A++++accountName%0A++++totalBalance%0A++++fungibleName%0A++++chainAccounts%7B%0A++++++chainId%0A++++++balance%0A++++%7D%0A++%7D%0A%7D)
 - [Getting account transactions](http://localhost:4000/graphql?query=query+GetAccountBalance%7B%0A++fungibleAccount%28accountName%3A+%22k%3A123456789...%22%29+%7B%0A++++transactions%28first%3A+10%29+%7B%0A++++++edges+%7B%0A++++++++node+%7B%0A++++++++++hash%0A++++++++++cmd+%7B%0A++++++++++++meta+%7B%0A++++++++++++++chainId%0A++++++++++++++creationTime%0A++++++++++++++gasLimit%0A++++++++++++++gasPrice%0A++++++++++++++sender%0A++++++++++++++ttl%0A++++++++++++%7D%0A++++++++++++payload+%7B%0A++++++++++++++...+on+ContinuationPayload+%7B%0A++++++++++++++++data%0A++++++++++++++++pactId%0A++++++++++++++++proof%0A++++++++++++++++rollback%0A++++++++++++++++step%0A++++++++++++++%7D%0A++++++++++++++...+on+ExecutionPayload+%7B%0A++++++++++++++++code%0A++++++++++++++++data%0A++++++++++++++%7D%0A++++++++++++%7D%0A++++++++++%7D%0A++++++++%7D%0A++++++%7D%0A++++%7D%0A++%7D%0A%7D)
 
-##### Explorer related
+#### Explorer related
+
 - [Listen for a transaction](http://localhost:4000/graphql?query=subscription+ListenTransaction%7B%0A++transaction%28requestKey%3A+%22EBS5rExXr7ndvMp6nK_ie-372oIXWVX5JmmKMXkiD4Q%22%29%7B%0A++++sigs%7B%0A++++++sig%0A++++%7D%0A++++cmd%7B%0A++++++meta%7B%0A++++++++chainId%0A++++++++creationTime%0A++++++++gasLimit%0A++++++++gasPrice%0A++++++++sender%0A++++++++ttl%0A++++++%7D%0A++++++networkId%0A++++++nonce%0A++++++payload%7B%0A++++++++...on+ContinuationPayload%7B%0A++++++++++data%0A++++++++++pactId%0A++++++++++proof%0A++++++++++rollback%0A++++++++++step%0A++++++++%7D%0A++++++++...on+ExecutionPayload%7B%0A++++++++++code%0A++++++++++data%0A++++++++%7D%0A++++++%7D%0A++++++signers%7B%0A++++++++address%0A++++++++clist%7B%0A++++++++++args%0A++++++++++name%0A++++++++%7D%0A++++++++id%0A++++++++orderIndex%0A++++++++pubkey%0A++++++++scheme%0A++++++%7D%0A++++%7D%0A++++hash%0A++++id%0A++++result%7B%0A++++++...on+TransactionMempoolInfo%7B%0A++++++++status%0A++++++%7D%0A++++%7D%0A++%7D%0A%7D)
 - [Get the 5 latest confirmed blocks on chain 0 and 1](http://localhost:4000/graphql?query=query+GetLatestConfirmedBlocks+%7B%0A++blocksFromDepth%28first%3A+5%2C+minimumDepth%3A+6%2C+chainIds%3A+%5B%220%22%2C+%221%22%5D%29+%7B%0A++++edges+%7B%0A++++++node+%7B%0A++++++++height%0A++++++++hash%0A++++++%7D%0A++++%7D%0A++%7D%0A%7D)
 
+#### Event related
 
-##### Event related
 - [Listen to events](http://localhost:4000/graphql?query=subscription+GetLatestEvents%7B%0A++events%28qualifiedEventName%3A+%22coin.TRANSFER%22%29%7B%0A++++name%0A++++requestKey%0A++++parameters%0A++++orderIndex%0A++%7D%0A%7D)
 
-##### Fungible related
+#### Fungible related
+
 - [Get data on a given account for a given fungible](http://localhost:4000/graphql?query=query+GetAccountInfoOnFungible%7B%0A++fungibleAccount%28accountName%3A%22test-coin-account%22%2C+fungibleName%3A+%22test-coin%22%29%7B%0A++++accountName%0A++++fungibleName%0A++++totalBalance%0A++++transactions%7B%0A++++++totalCount%0A++++%7D%0A++%7D%0A%7D)
 
+#### Non-fungible related
 
-##### Non-fungible related
 - [Get token balances for a given account](http://localhost:4000/graphql?query=query+GetNFTBalances+%7B%0A++nonFungibleAccount%28accountName%3A+%22k%3A123456789...%22%29%7B%0A++++accountName%0A++++nonFungibleTokenBalances%7B%0A++++++balance%0A++++++chainId%0A++++++id%0A++++++info%7B%0A++++++++precision%0A++++++++supply%0A++++++++uri%0A++++++%7D%0A++++++version%0A++++%7D%0A++++transactions%7B%0A++++++totalCount%0A++++%7D%0A++%7D%0A%7D)
 
 Remember, the GraphiQL Explorer is a powerful tool for understanding and interacting with our GraphQL API. Don't hesitate to experiment and learn!
@@ -178,6 +187,12 @@ Note that `first` can only be used with `after`, and `last` can only be used wit
 
 ## Useful extra's
 
+### Network Information
+
+On startup, the GraphQL server will fetch the network information from the Chainweb node. This will store it in memory and contains information about the chain ids, the network id, the network version and the neighbours of each chain.
+
+> ⚠️ **Note:** The network information is only fetched once on startup. If you want to update the network information, you will need to restart the server.
+
 ### Running devnet
 
 Prerequisites:
@@ -204,8 +219,8 @@ pnpm run fund -- -k <key> -a <amount>
 
 An alternative is to run a full simulation of traffic on the devnet, see [Simulating traffic on the devnet](#simulating-traffic-on-the-devnet).
 
+#### GraphQL
 
-#### GraphQL 
 The devnet includes a built-in GraphQL server operating on port `4000`. For convenience, the HTTP API proxies the GraphQL endpoint via the `/graphql` route. Additional information and resources can be accessed on the splash page at port `8080`.
 
 Please note: This built-in version is intended for consumption when not actively developing. If you're making changes to your project, be aware that the built-in GraphQL server will not reflect these updates. In a development scenario, you should set up your own instance of the GraphQL server to test your changes.

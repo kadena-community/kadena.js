@@ -1,6 +1,6 @@
 {
   "name": "@kadena/dev-wallet",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "private": true,
   "description": "Kadena developer wallet",
   "type": "module",
@@ -49,13 +49,14 @@
     "@types/react-dom": "^18.2.25",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
+    "@vanilla-extract/esbuild-plugin": "^2.3.5",
     "@vanilla-extract/vite-plugin": "4.0.7",
     "@vitejs/plugin-react-swc": "^3.3.2",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "typescript": "5.4.5",
-    "vite": "^4.4.5",
+    "vite": "^5.2.11",
     "vite-plugin-static-copy": "^1.0.0",
     "vite-tsconfig-paths": "^4.2.1",
     "vitest": "^1.1.0"

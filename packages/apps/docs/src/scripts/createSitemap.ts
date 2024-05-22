@@ -51,9 +51,6 @@ export const createSitemap = async (): Promise<IScriptResult> => {
     <url>
       <loc>${URL}/search</loc>
     </url>
-    <url>
-      <loc>${URL}/help</loc>
-    </url>
     ${getPosts(URL, posts)}
     </urlset>`;
 

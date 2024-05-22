@@ -1,6 +1,7 @@
 import { DatabaseProvider } from '@/modules/db/db.provider';
+import { WalletProvider } from '@/modules/wallet/wallet.provider';
+import { darkThemeClass } from '@kadena/react-ui/styles';
 import { ThemeProvider } from 'next-themes';
-import { WalletProvider } from '../modules/wallet/wallet.provider';
 import { Routes } from './routes';
 
 function Providers({ children }: { children: React.ReactNode }) {
@@ -8,9 +9,10 @@ function Providers({ children }: { children: React.ReactNode }) {
     <ThemeProvider
       attribute="class"
       enableSystem={true}
-      defaultTheme="light"
+      defaultTheme="dark"
       value={{
         light: 'light',
+        dark: darkThemeClass,
       }}
     >
       <DatabaseProvider>
