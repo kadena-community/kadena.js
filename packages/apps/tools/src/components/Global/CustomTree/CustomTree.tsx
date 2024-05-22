@@ -10,23 +10,38 @@ import CustomAccordion from '../CustomAccordion/CustomAccordion';
 import { itemContainerStyle, itemTitleStyle } from './CustomTree.css';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type TreeItem = {
+export type TreeItem<T> = {
   title: string;
   key: React.Key;
-  children: TreeItem[];
+  children: TreeItem<T>[];
+  data: T;
+  isLoading?: boolean;
+  label: string | number;
 };
 
 export interface ICustomTreeProps<T>
   extends Omit<ICustomAccordionProps<T>, 'children' | 'data'> {
-  data: TreeItem[];
+  data: TreeItem<T>[];
+  onReload: (data: T) => void;
 }
 
 // eslint-disable-next-line react/function-component-definition
-function CustomTree<T>({ data }: ICustomTreeProps<T>) {
+function CustomTree<T>({
+  data,
+  onReload,
+  style,
+  ...rest
+}: ICustomTreeProps<T>) {
   return (
     <CustomAccordion
+      {...rest}
       data={data}
-      style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
+      style={{
+        ...style,
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+      }}
       itemProps={{ fillHeight: true }}
     >
       {(item) => {
@@ -48,15 +63,24 @@ function CustomTree<T>({ data }: ICustomTreeProps<T>) {
                 {item.isExpanded ? <MonoArrowDropDown /> : <MonoArrowRight />}
               </Button>
               <Text className={itemTitleStyle}>{item.data.title}</Text>
-              <Button variant="transparent" isCompact>
-                <MonoCached />
-              </Button>
-              {item.data.children.length ? (
-                <Badge size="sm">{item.data.children.length}</Badge>
+              {!item.data.isLoading ? (
+                <Button
+                  variant="transparent"
+                  isCompact
+                  onPress={() => {
+                    onReload(item.data.data);
+                  }}
+                >
+                  <MonoCached />
+                </Button>
               ) : null}
+              {!item.data.isLoading ? (
+                <Badge size="sm">{item.data.label}</Badge>
+              ) : null}
+              {item.data.isLoading ? <Badge size="sm">Loading</Badge> : null}
             </Stack>
             {item.isExpanded ? (
-              <Node data={item.data.children} level={0} />
+              <Node data={item.data.children} level={1} />
             ) : null}
           </>
         );
@@ -65,15 +89,21 @@ function CustomTree<T>({ data }: ICustomTreeProps<T>) {
   );
 }
 
+interface INodeProps<T>
+  extends Omit<ICustomAccordionProps<T>, 'data' | 'children'> {
+  data: T[];
+  level: number;
+}
+
 // eslint-disable-next-line react/function-component-definition
 function Node<
   T extends { key: React.Key; children: T[]; title: string } & Record<
     string,
     unknown
   >,
->({ data, level }: { data: T[]; level: number }) {
+>({ data, level, ...rest }: INodeProps<T>) {
   return (
-    <CustomAccordion data={data}>
+    <CustomAccordion {...rest} data={data}>
       {(child) => {
         return (
           <>
@@ -90,6 +120,7 @@ function Node<
               }}
               role="button"
               className={itemContainerStyle}
+              style={{ paddingInlineStart: `${level * 20}px` }}
             >
               {child.data.children.length ? (
                 <Button variant="transparent" onClick={child.onExpandCollapse}>
