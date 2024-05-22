@@ -1,7 +1,7 @@
 import { MonoHub } from '@kadena/react-icons/system';
 import { Button, Select, SelectItem, Stack, Text } from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
 import React, { useState } from 'react';
+import { borderStyleClass } from './style.css';
 
 interface IStatisticsStackProps {
   data: { label: string; value: string }[];
@@ -9,12 +9,6 @@ interface IStatisticsStackProps {
 
 const StatisticsStack: React.FC<IStatisticsStackProps> = ({ data }) => {
   const [selectedNetwork, setSelectedNetwork] = useState('Mainnet');
-
-  const borderStyle = atoms({
-    borderStyle: 'solid',
-    borderWidth: 'hairline',
-    display: 'flex',
-  });
 
   return (
     <Stack flexDirection={'row'}>
@@ -28,22 +22,23 @@ const StatisticsStack: React.FC<IStatisticsStackProps> = ({ data }) => {
           key={`statistic-stack-${item.label}`}
         >
           <Text variant="code">{item.value}</Text>
-          <Text variant="code">{item.label}</Text>
+          <Text variant="code" bold size="smallest">
+            {item.label}
+          </Text>
         </Stack>
       ))}
 
-      <div className={borderStyle}>
+      <div className={borderStyleClass}>
         <Button variant="transparent" endVisual={<MonoHub />}>
           Graph
         </Button>
       </div>
 
-      <div className={borderStyle}>
+      <div className={borderStyleClass}>
         <Select
           defaultSelectedKey={selectedNetwork}
           fontType="code"
           size="lg"
-          className={atoms({ height: '100%' })}
           onSelectionChange={(value) => setSelectedNetwork(value.toString())}
         >
           <SelectItem key={'Mainnet'} textValue="Mainnet">
