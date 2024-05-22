@@ -30,6 +30,7 @@ export const headerClass = style([
     display: 'flex',
     alignItems: 'center',
     marginBlockStart: 'xl',
+    color: 'text.base.default',
   }),
   {
     selectors: {

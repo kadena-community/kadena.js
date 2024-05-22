@@ -129,4 +129,7 @@ export type {
 // re-exports from 'react-aria'
 export { RouterProvider } from 'react-aria';
 
+export { useTheme } from './utils';
 export { useIphoneInputFix } from './utils/useIphoneInputFix';
+export { Themes } from './utils/useTheme/utils/constants';
+export type { ITheme } from './utils/useTheme/utils/constants';

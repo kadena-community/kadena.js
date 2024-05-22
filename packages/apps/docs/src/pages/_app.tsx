@@ -10,9 +10,7 @@ import { MenuProvider } from '@/hooks/useMenu/MenuProvider';
 import { getLayout } from '@/utils/getLayout';
 import type { IPageMeta, IPageProps } from '@kadena/docs-tools';
 import { RouterProvider, useIphoneInputFix } from '@kadena/react-ui';
-import { darkThemeClass } from '@kadena/react-ui/styles';
 import { MDXProvider } from '@mdx-js/react';
-import { ThemeProvider } from 'next-themes';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -106,25 +104,15 @@ export const MyApp = ({
         <link rel="apple-touch-icon" href="/assets/favicons/icon@192.png?1" />
       </Head>
       <MDXProvider components={markDownComponents}>
-        <ThemeProvider
-          attribute="class"
-          enableSystem={true}
-          defaultTheme="light"
-          value={{
-            light: 'light',
-            dark: darkThemeClass,
-          }}
-        >
-          <RouterProvider navigate={router.push}>
-            <MenuProvider>
-              <Header menuItems={props.headerMenuItems} />
-              <CookieConsent />
-              <Layout {...props}>
-                <Component {...props} />
-              </Layout>
-            </MenuProvider>
-          </RouterProvider>
-        </ThemeProvider>
+        <RouterProvider navigate={router.push}>
+          <MenuProvider>
+            <Header menuItems={props.headerMenuItems} />
+            <CookieConsent />
+            <Layout {...props}>
+              <Component {...props} />
+            </Layout>
+          </MenuProvider>
+        </RouterProvider>
       </MDXProvider>
       <Analytics />
     </>
