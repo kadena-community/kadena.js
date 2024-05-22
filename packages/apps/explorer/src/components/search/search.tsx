@@ -103,6 +103,7 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
       e.preventDefault();
       setSearchOption((prev) => (prev === null ? 0 : Math.max(prev - 1, 0)));
     } else if (e.key === 'Enter') {
+      e.preventDefault();
       setIsEditing(false);
       setEscapePressed(false);
       setOptionClicked(false);
@@ -197,7 +198,10 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
                     setIsEditing(false);
                   }
                 }}
-                style={{ gridTemplateColumns: '1fr 3fr' }}
+                style={{
+                  gridTemplateColumns: '1fr 3fr',
+                  borderLeft: index === searchOption ? 'solid' : 'none',
+                }}
                 className={atoms({
                   display: 'grid',
                   alignItems: 'flex-start',
