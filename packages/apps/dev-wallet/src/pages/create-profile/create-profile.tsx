@@ -1,19 +1,12 @@
+import { AuthCard } from '@/Components/AuthCard/AuthCard.tsx';
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.hook';
 import { useNetwork } from '@/modules/network/network.hook';
 import { IKeySource } from '@/modules/wallet/wallet.repository';
-import {
-  authCard,
-  backBtnClass,
-  buttonClass,
-  iconStyle,
-  inputClass,
-} from '@/pages/create-profile/create-profile.css.ts';
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
-import { MonoArrowBackIosNew } from '@kadena/react-icons';
-import { Box, Button, Heading, Stack, Text, TextField } from '@kadena/react-ui';
-import { useRef, useState } from 'react';
+import { Button, Heading, Stack, Text, TextField } from '@kadena/react-ui';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
 
 export function CreateProfile() {
@@ -26,20 +19,6 @@ export function CreateProfile() {
   const { activeNetwork } = useNetwork();
   const [createdKeySource, setCreatedKeySource] = useState<IKeySource>();
   const { createHDWallet } = useHDWallet();
-  const [isSubmitDisabled, setIsSubmitDisabled] = useState<boolean>(true);
-  const passwordRef = useRef<HTMLInputElement>(null);
-  const passwordConfirmationRef = useRef<HTMLInputElement>(null);
-  const validate = (value: string) => {
-    if (
-      value.length < 16 ||
-      passwordRef.current?.value !== passwordConfirmationRef.current?.value
-    ) {
-      setIsSubmitDisabled(true);
-      return;
-    }
-
-    setIsSubmitDisabled(false);
-  };
 
   async function create({
     profileName,
@@ -79,14 +58,8 @@ export function CreateProfile() {
   }
   return (
     <>
-      <Box className={authCard}>
-        <Link to="/select-profile" className={backBtnClass}>
-          <Stack alignItems="center" gap="xs" paddingBlockEnd="md">
-            <MonoArrowBackIosNew className={iconStyle} /> Back
-          </Stack>
-        </Link>
-
-        <Heading variant="h4">Create wallet</Heading>
+      <AuthCard>
+        <Heading variant="h4">Choose a password</Heading>
         <Text>
           Carefully select your password as this will be your main security of
           your wallet
@@ -106,36 +79,20 @@ export function CreateProfile() {
               id="password"
               type="password"
               label="Password"
-              minLength={16}
-              onValueChange={validate}
               {...register('password')}
-              className={inputClass}
-              isRequired
-              ref={passwordRef}
             />
             <TextField
               id="confirmation"
               type="password"
-              label="Confirmation password"
-              minLength={16}
+              label="Confirm password"
               {...register('confirmation')}
-              onValueChange={validate}
-              className={inputClass}
-              isRequired
-              ref={passwordConfirmationRef}
             />
           </Stack>
           <Stack flexDirection="column">
-            <Button
-              type="submit"
-              className={buttonClass}
-              isDisabled={isSubmitDisabled}
-            >
-              Continue
-            </Button>
+            <Button type="submit">Continue</Button>
           </Stack>
         </form>
-      </Box>
+      </AuthCard>
     </>
   );
 }

@@ -24,15 +24,14 @@ export const mainStyle = style([
   },
 ]);
 
-export const containerStyle = style({
-  width: '474px',
-  maxWidth: '100%',
-  margin: '0 auto',
-  textAlign: 'center',
-  padding: '10px',
-  '@media': {
-    'screen and (min-height: 48rem)': {
-      margin: '-100px auto 0',
-    },
+export const containerStyle = style([
+  atoms({
+    padding: 'sm',
+  }),
+  {
+    width: '474px',
+    maxWidth: '100%',
+    margin: '0 auto',
+    textAlign: 'center',
   },
-});
+]);

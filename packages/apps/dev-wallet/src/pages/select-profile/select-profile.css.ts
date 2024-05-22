@@ -4,6 +4,7 @@ import { style } from '@vanilla-extract/css';
 const cardColor = 'rgba(255, 255, 255, 0.03)';
 const cardBackgroundColorHover = 'rgba(255, 255, 255, 0.07)';
 const cardColorHover = 'rgba(255, 255, 255, 0.2)';
+const linkBlockColor = 'rgba(255, 255, 255, 0.6)';
 
 export const titleClass = style([
   atoms({
@@ -50,15 +51,15 @@ export const imgClass = style([
   {
     width: '40px',
     height: '40px',
-    borderRadius: '2px',
     backgroundColor: cardColor,
   },
 ]);
 export const aliasClass = style([
   atoms({
     fontSize: 'sm',
+    fontFamily: 'primaryFont',
   }),
-  { color: '#ffffff' },
+  { color: tokens.kda.foundation.color.neutral.n100 },
 ]);
 
 export const initialsClass = style([
@@ -76,6 +77,14 @@ export const formField = atoms({
   gap: 'sm',
 });
 
+export const linkBlockClass = style([
+  {
+    color: linkBlockColor,
+    fontSize: tokens.kda.foundation.size.n4,
+    lineHeight: tokens.kda.foundation.size.n5,
+  },
+]);
+
 export const linkClass = style([
   {
     textDecoration: 'none',
@@ -85,15 +94,5 @@ export const linkClass = style([
         textDecoration: 'underline',
       },
     },
-  },
-]);
-
-export const linkTextClass = style([
-  atoms({
-    fontSize: 'sm',
-    lineHeight: 'sm',
-  }),
-  {
-    color: tokens.kda.foundation.color.palette.aqua.n50,
   },
 ]);
