@@ -128,3 +128,5 @@ export type {
 
 // re-exports from 'react-aria'
 export { RouterProvider } from 'react-aria';
+
+export { useIphoneInputFix } from './utils/useIphoneInputFix';
