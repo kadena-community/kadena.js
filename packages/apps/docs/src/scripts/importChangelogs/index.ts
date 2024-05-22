@@ -14,11 +14,12 @@ import {
   errors,
   success,
 } from './constants';
-import { getCommitId } from './utils/commits';
+import { checkVersionPosition } from './utils/checkNames';
+import { createVersion } from './utils/createVersion';
+import { createVersionRecord } from './utils/createVersionRecord';
 import { enrichPackageContent } from './utils/enrichPackageContent';
 import { getGitHubData } from './utils/github';
 import { getChangelog, writeContent } from './utils/misc';
-import { getPrId } from './utils/prs';
 
 /**
  * Script that will check all the given packages their CHANGELOG file
@@ -47,64 +48,6 @@ const getCurrentContentCreator = () => {
 
 const getCurrentContent = getCurrentContentCreator();
 
-//TESTABLE
-const createVersion = (branch: Node): IChangelogPackageVersion => {
-  return {
-    label: (branch as any).children[0].value ?? '',
-    isLocked: false,
-    authors: [],
-    patches: [],
-    minors: [],
-    miscs: [],
-  };
-};
-
-const crawlContent = (tree: Node): string => {
-  let content = '';
-
-  const innerCrawl = (tree: Node): string => {
-    if (isParent(tree)) {
-      tree.children?.forEach((branch) => {
-        const text = (branch as Text).value;
-        if (text) {
-          content = `${content}${text}`;
-          return content;
-        }
-        return innerCrawl(branch);
-      });
-    }
-    return content;
-  };
-
-  innerCrawl(tree);
-
-  return content;
-};
-
-const createVersionRecord = (content: Node): IChangelogVersionRecord => {
-  const contentString = crawlContent(content);
-
-  const { commits, label: tempLabel } = getCommitId(contentString);
-  const { prIds, label } = getPrId(tempLabel);
-
-  return {
-    label,
-    commits,
-    prIds,
-  };
-};
-
-const checkPatchNames = (value: string): boolean => {
-  const names = ['patch changes', 'bugfixes', 'tests'];
-
-  return names.includes(value.toLowerCase());
-};
-const checkMinorNames = (value: string): boolean => {
-  const names = ['minor changes', 'features'];
-
-  return names.includes(value.toLowerCase());
-};
-
 //create a json
 const crawl = (repo: IRepo): ((tree: Node) => IChangelogPackage) => {
   const content: Record<string, IChangelogPackageVersion> = {};
@@ -128,18 +71,9 @@ const crawl = (repo: IRepo): ((tree: Node) => IChangelogPackage) => {
         }
 
         if (branch.type === 'heading' && branch.depth === 3) {
-          const value = (branch.children[0] as Text).value;
-          switch (true) {
-            case checkPatchNames(value):
-              currentPosition = VersionPosition.PATCH;
-              break;
-            case checkMinorNames(value):
-              currentPosition = VersionPosition.MINOR;
-              break;
-            default:
-              currentPosition = VersionPosition.MISC;
-              break;
-          }
+          currentPosition = checkVersionPosition(
+            (branch.children[0] as Text).value,
+          );
         }
 
         if (branch.type === 'listItem' && version) {
