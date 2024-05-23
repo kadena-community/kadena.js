@@ -757,7 +757,7 @@ describe('buyToken', () => {
 
   it('should create conventional auction', async () => {
     auctionStartDate = dateToPactInt(addSecondsToDate(new Date(), 10));
-    auctionEndDate = dateToPactInt(addSecondsToDate(new Date(), 35));
+    auctionEndDate = dateToPactInt(addSecondsToDate(new Date(), 80));
 
     const result = await createAuction(
       {
