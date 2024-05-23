@@ -385,7 +385,7 @@ export const publicKeysForAccountAddPrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  if (previousQuestions.type === 'manual') {
+  if (previousQuestions.from === 'key') {
     return addManualPublicKeysPrompt(previousQuestions, args, isOptional);
   }
 
@@ -429,17 +429,17 @@ export const publicKeysForAccountAddPrompt: IPrompt<string> = async (
   return selectedKeys.join(',');
 };
 
-export const accountTypeSelectionPrompt: IPrompt<string> = async () => {
+export const accountFromSelectionPrompt: IPrompt<string> = async () => {
   return await select({
     message: `How would you like to add the account locally?`,
     choices: [
       {
-        value: 'manual',
-        name: 'Manually - Provide public keys to add to account manually',
+        value: 'key',
+        name: 'Key - Add an account by by providing public keys from a key file or entering key details manually',
       },
       {
         value: 'wallet',
-        name: 'Wallet - Provide public keys to add to account by selecting from a wallet',
+        name: 'Wallet - Add an account by by providing public keys from a list of available wallets',
       },
     ],
   });

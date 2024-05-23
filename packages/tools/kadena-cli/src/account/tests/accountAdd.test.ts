@@ -12,10 +12,7 @@ describe('account add manual type', () => {
   const root = path.join(__dirname, '../../../');
   const configPath = path.join(root, '.kadena');
   const accountPath = path.join(configPath, ACCOUNT_DIR);
-  const accountAliasFile = path.join(
-    accountPath,
-    'account-add-test-manual.yaml',
-  );
+  const accountAliasFile = path.join(accountPath, 'account-add-test.yaml');
   beforeEach(async () => {
     if (await services.filesystem.fileExists(accountAliasFile)) {
       await services.filesystem.deleteFile(accountAliasFile);
@@ -29,12 +26,12 @@ describe('account add manual type', () => {
   it('should add an account alias using manual type without on chain verification', async () => {
     mockPrompts({
       select: {
-        'How would you like to add the account locally?': 'manual',
+        'How would you like to add the account locally?': 'key',
         'Select a keyset predicate:': 'keys-all',
         'Do you want to verify the account on chain?': false,
       },
       input: {
-        'Enter an alias for an account:': 'account-add-test-manual',
+        'Enter an alias for an account:': 'account-add-test',
         'Enter an account name (optional):': 'k:pubkey1',
         'Enter the name of a fungible:': 'coin',
         'Enter one or more public keys (comma separated):': 'pubkey1,pubkey2',
@@ -51,12 +48,12 @@ describe('account add manual type', () => {
   it('should add an account alias using manual type with on chain verification', async () => {
     mockPrompts({
       select: {
-        'How would you like to add the account locally?': 'manual',
+        'How would you like to add the account locally?': 'key',
         'Do you want to verify the account on chain?': true,
         'Select a network:': 'testnet',
       },
       input: {
-        'Enter an alias for an account:': 'account-add-test-manual-chain',
+        'Enter an alias for an account:': 'account-add-test-chain',
         'Enter an account name (optional):': 'k:pubkey1',
         'Enter the name of a fungible:': 'coin',
         'Enter ChainId (0-19):': '1',
@@ -64,10 +61,7 @@ describe('account add manual type', () => {
     });
 
     await runCommand('account add');
-    const aliasFile = path.join(
-      accountPath,
-      'account-add-test-manual-chain.yaml',
-    );
+    const aliasFile = path.join(accountPath, 'account-add-test-chain.yaml');
     expect(await services.filesystem.fileExists(aliasFile)).toBe(true);
     const content = await services.filesystem.readFile(aliasFile);
     expect(jsYaml.load(content!)).toEqual({
@@ -89,12 +83,12 @@ describe('account add manual type', () => {
     );
     mockPrompts({
       select: {
-        'How would you like to add the account locally?': 'manual',
+        'How would you like to add the account locally?': 'key',
         'Select a keyset predicate:': 'keys-all',
         'Do you want to verify the account on chain?': false,
       },
       input: {
-        'Enter an alias for an account:': 'account-add-test-manual',
+        'Enter an alias for an account:': 'account-add-test',
         'Enter an account name (optional):': '',
         'Enter the name of a fungible:': 'coin',
         'Enter one or more public keys (comma separated):': 'pubkey1,pubkey2',
@@ -117,7 +111,7 @@ describe('account add manual type', () => {
 
   it('should add an account alias manual with quiet flag', async () => {
     await runCommand(
-      'account add --type=manual --account-alias=account-add-test-manual --account-name=k:pubkey1 --fungible=coin --verify --network=testnet --chain-id=1',
+      'account add --from=key --account-alias=account-add-test --account-name=k:pubkey1 --fungible=coin --verify --network=testnet --chain-id=1',
     );
     expect(await services.filesystem.fileExists(accountAliasFile)).toBe(true);
     const content = await services.filesystem.readFile(accountAliasFile);
@@ -135,10 +129,7 @@ describe('account add type wallet', () => {
   const configPath = path.join(root, '.kadena');
   const accountPath = path.join(configPath, ACCOUNT_DIR);
   const walletFilePath = path.join(configPath, WALLET_DIR, 'test-wallet.yaml');
-  const accountAliasFile = path.join(
-    accountPath,
-    'account-add-test-manual.yaml',
-  );
+  const accountAliasFile = path.join(accountPath, 'account-add-test.yaml');
   let publicKey: string;
   let generatedKey: string;
   beforeEach(async () => {
@@ -195,7 +186,7 @@ describe('account add type wallet', () => {
         'Select a keyset predicate:': 'keys-all',
       },
       input: {
-        'Enter an alias for an account:': 'account-add-test-manual',
+        'Enter an alias for an account:': 'account-add-test',
         'Enter the name of a fungible:': 'coin',
       },
       checkbox: {
@@ -230,7 +221,7 @@ describe('account add type wallet', () => {
         'Select a keyset predicate:': 'keys-all',
       },
       input: {
-        'Enter an alias for an account:': 'account-add-test-manual',
+        'Enter an alias for an account:': 'account-add-test',
         'Enter the name of a fungible:': 'coin',
       },
       checkbox: {

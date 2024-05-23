@@ -2,7 +2,7 @@ import { globalOptions, securityOptions } from '../utils/globalOptions.js';
 import { accountOptions } from './accountOptions.js';
 
 export const options = [
-  accountOptions.accountTypeSelection({ isOptional: false }),
+  accountOptions.accountFromSelection({ isOptional: false }),
   // common options
   accountOptions.accountAlias(),
   accountOptions.fungible(),

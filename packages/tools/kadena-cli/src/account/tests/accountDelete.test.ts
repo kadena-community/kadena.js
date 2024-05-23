@@ -18,7 +18,7 @@ describe('account delete', () => {
   beforeEach(async () => {
     // Add account alias file
     await runCommand(
-      'account add --type=manual --account-alias=account-add-test-manual --account-name=accountName --fungible=coin --network=testnet --chain-id=1 --public-keys=publicKey1 --quiet',
+      'account add --from=key --account-alias=account-add-test-manual --account-name=accountName --fungible=coin --network=testnet --chain-id=1 --public-keys=publicKey1 --quiet',
     );
 
     await services.filesystem.fileExists(accountAliasFile);
@@ -77,7 +77,7 @@ describe('account delete', () => {
     // Add one more account alias
     // Add account alias file
     await runCommand(
-      'account add --type=manual --account-alias=another-account-alias --account-name=accountName --fungible=coin --network=testnet --chain-id=1 --public-keys=publicKey1 --quiet',
+      'account add --from=key --account-alias=another-account-alias --account-name=accountName --fungible=coin --network=testnet --chain-id=1 --public-keys=publicKey1 --quiet',
     );
     mockPrompts({
       select: {
