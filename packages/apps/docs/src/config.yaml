@@ -309,38 +309,58 @@ pages:
           general:
             url: /general
             file: /reference/pact/functions/general-functions.md
+            repo: https://github.com/kadena-io/pact-5
+            dir: /docs/builtins/General
           database:
             url: /database
             file: /reference/pact/functions/database-functions.md
+            repo: https://github.com/kadena-io/pact-5
+            dir: /docs/builtins/Database
           time:
             url: /time
             file: /reference/pact/functions/time.md
+            repo: https://github.com/kadena-io/pact-5
+            dir: /docs/builtins/Time
           operators:
             url: /operators
             file: /reference/pact/functions/operators.md
             repo: https://github.com/kadena-io/pact-5
-            dir: /docs/builtins
+            dir: /docs/builtins/Operators
           keysets:
             url: /keysets
             file: /reference/pact/functions/keysets.md
+            repo: https://github.com/kadena-io/pact-5
+            dir: /docs/builtins/Keysets
           capabilities:
             url: /capabilities
             file: /reference/pact/functions/capabilities.md
+            repo: https://github.com/kadena-io/pact-5
+            dir: /docs/builtins/Capabilities
           spv:
             url: /spv
             file: /reference/pact/functions/spv.md
+            repo: https://github.com/kadena-io/pact-5
+            dir: /docs/builtins/SPV
           commitments:
             url: /commitments
             file: /reference/pact/functions/commitments.md
+            repo: https://github.com/kadena-io/pact-5
+            dir: /docs/builtins/Commitments
           guards:
             url: /guards
             file: /reference/pact/functions/guards.md
+            repo: https://github.com/kadena-io/pact-5
+            dir: /docs/builtins/Guards
           zk:
             url: /zk
             file: /reference/pact/functions/zk.md
+            repo: https://github.com/kadena-io/pact-5
+            dir: /docs/builtins/ZK
           replonlyfunctions:
             url: /repl-only-functions
             file: /reference/pact/functions/repl-only-functions.md
+            repo: https://github.com/kadena-io/pact-5
+            dir: /docs/builtins/Repl
       propertychecking:
         url: /property-checking
         file: /reference/pact/property-checking.md

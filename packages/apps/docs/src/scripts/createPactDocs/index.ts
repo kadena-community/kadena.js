@@ -9,12 +9,12 @@ import { noImportRepo } from '../importReadme/importRepo';
 import { loadConfigPages } from '../movePages/utils/loadConfigPages';
 import type { IImportReadMeItem } from '../utils';
 import { TEMP_DIR, promiseExec } from '../utils/build';
-
-const errors: string[] = [];
-const success: string[] = [];
-
-const PACTREPO = 'https://github.com/kadena-io/pact-5';
-const CONTENTPLACEHOLDER = '========== CONTENT ==========';
+import {
+  CONTENTPLACEHOLDER,
+  PACTREPO,
+  errors,
+  success,
+} from './utils/constants';
 
 const completeContentCreator = () => {
   let content = '';
@@ -58,6 +58,7 @@ export const clone = async (repo: string): Promise<void> => {
     await Promise.resolve();
   }
 
+  //TODO: remove the PR info
   await promiseExec(
     `cd ${TEMP_DIR}/${removeRepoDomain(repo)} && git checkout rsoeldner/docs`,
   );

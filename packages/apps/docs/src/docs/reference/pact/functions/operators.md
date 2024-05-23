@@ -6,10 +6,9 @@ label: Operators
 order: 4
 layout: full
 tags: ['pact', 'language reference', 'operators']
+editLink: https://github.com/kadena-io/pact-5/pull/122/files
 ---
 
 # Operators
 
 ========== CONTENT ==========
-
-more content
