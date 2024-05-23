@@ -1,11 +1,7 @@
-import {
-  KadenaLogo,
-  Stack,
-  Text,
-} from '@kadena/react-ui';
+import { KadenaLogo, Stack, Text } from '@kadena/react-ui';
 import { FC } from 'react';
 import { Link, Outlet } from 'react-router-dom';
-import { headerStyle, mainStyle, containerStyle } from './layout-mini.css';
+import { containerStyle, headerStyle, mainStyle } from './layout-mini.css';
 
 export const LayoutMini: FC = () => {
   return (
@@ -22,7 +18,12 @@ export const LayoutMini: FC = () => {
         <Link to="/">
           <KadenaLogo height={40} />
         </Link>
-        <Text>Go to <Link to="https://www.kadena.io/" target="_blank">kadena.io</Link></Text>
+        <Text>
+          Go to{' '}
+          <Link to="https://www.kadena.io/" target="_blank">
+            kadena.io
+          </Link>
+        </Text>
       </Stack>
       <main className={mainStyle}>
         <div className={containerStyle}>
