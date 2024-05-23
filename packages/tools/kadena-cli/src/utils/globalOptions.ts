@@ -88,6 +88,7 @@ export const globalOptions = {
       'Kadena network (e.g. "mainnet")',
     ),
     expand: async (network: string) => {
+      if (network === undefined) return null;
       try {
         return await loadNetworkConfig(network);
       } catch (e) {
