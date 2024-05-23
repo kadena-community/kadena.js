@@ -33,6 +33,10 @@ export const Menu: FC = () => {
 
   if (!isMenuOpen) return null;
 
+  if (activeMenu?.items && activeMenu.items.length <= 1) {
+    setIsMenuOpen(false);
+  }
+
   return (
     <div className={gridItemMenuStyle}>
       <>
