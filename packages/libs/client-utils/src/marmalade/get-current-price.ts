@@ -6,27 +6,27 @@ import { pipe } from 'ramda';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
-interface IGetBalanceInput {
-  tokenId: string;
-  accountName: string;
+interface IGetCurrentPriceInput {
+  saleId: string;
   chainId: ChainId;
   networkId: NetworkId;
   host?: IClientConfig['host'];
 }
 
-export const getTokenBalance = ({
-  tokenId,
-  accountName,
+export const getCurrentPrice = ({
+  saleId,
   chainId,
   networkId,
   host,
-}: IGetBalanceInput) =>
+}: IGetCurrentPriceInput) =>
   pipe(
     () =>
-      Pact.modules['marmalade-v2.ledger']['get-balance'](tokenId, accountName),
+      Pact.modules['marmalade-sale.dutch-auction']['get-current-price'](saleId),
     execution,
     dirtyReadClient<
-      PactReturnType<IPactModules['marmalade-v2.ledger']['get-balance']>
+      PactReturnType<
+        IPactModules['marmalade-sale.dutch-auction']['get-current-price']
+      >
     >({
       host,
       defaults: {

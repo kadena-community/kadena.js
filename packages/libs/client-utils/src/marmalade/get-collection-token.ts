@@ -6,27 +6,27 @@ import { pipe } from 'ramda';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
-interface IGetBalanceInput {
+interface IGetCollectionTokenInput {
   tokenId: string;
-  accountName: string;
   chainId: ChainId;
   networkId: NetworkId;
   host?: IClientConfig['host'];
 }
 
-export const getTokenBalance = ({
+export const getCollectionToken = ({
   tokenId,
-  accountName,
   chainId,
   networkId,
   host,
-}: IGetBalanceInput) =>
+}: IGetCollectionTokenInput) =>
   pipe(
     () =>
-      Pact.modules['marmalade-v2.ledger']['get-balance'](tokenId, accountName),
+      Pact.modules['marmalade-v2.collection-policy-v1']['get-token'](tokenId),
     execution,
     dirtyReadClient<
-      PactReturnType<IPactModules['marmalade-v2.ledger']['get-balance']>
+      PactReturnType<
+        IPactModules['marmalade-v2.collection-policy-v1']['get-token']
+      >
     >({
       host,
       defaults: {

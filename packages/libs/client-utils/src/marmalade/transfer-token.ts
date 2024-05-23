@@ -9,8 +9,13 @@ import {
 import type { ChainId, IPactDecimal } from '@kadena/types';
 import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
+import {
+  formatAdditionalSigners,
+  formatCapabilities,
+} from '../integration-tests/support/helpers';
+import type { CommonProps } from './config';
 
-interface ITransferTokenInput {
+interface ITransferTokenInput extends CommonProps {
   policyConfig?: {
     guarded?: boolean;
     hasRoyalty?: boolean;
@@ -37,6 +42,9 @@ const transferTokenCommand = ({
   receiver,
   amount,
   policyConfig,
+  meta,
+  capabilities,
+  additionalSigners,
 }: ITransferTokenInput) => {
   if (policyConfig?.hasRoyalty) {
     throw new Error('Royalty tokens cannot be transferred.');
@@ -71,8 +79,10 @@ const transferTokenCommand = ({
             ),
           ]
         : []),
+      ...formatCapabilities(capabilities, signFor),
     ]),
-    setMeta({ senderAccount: sender.account, chainId }),
+    ...formatAdditionalSigners(additionalSigners),
+    setMeta({ senderAccount: sender.account, chainId, ...meta }),
   );
 };
 

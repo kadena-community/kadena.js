@@ -10,8 +10,13 @@ import {
 import type { ChainId, IPactDecimal } from '@kadena/types';
 import { submitClient } from '../core';
 import type { IClientConfig } from '../core/utils/helpers';
+import {
+  formatAdditionalSigners,
+  formatCapabilities,
+} from '../integration-tests/support/helpers';
+import type { CommonProps } from './config';
 
-interface IMintTokenInput {
+interface IMintTokenInput extends CommonProps {
   policyConfig?: {
     guarded?: boolean;
     nonFungible?: boolean;
@@ -36,6 +41,9 @@ const mintTokenCommand = ({
   guard,
   amount,
   policyConfig,
+  meta,
+  capabilities,
+  additionalSigners,
 }: IMintTokenInput) => {
   if (policyConfig?.nonFungible && amount.decimal !== '1') {
     throw new Error(
@@ -66,8 +74,10 @@ const mintTokenCommand = ({
             ),
           ]
         : []),
+      ...formatCapabilities(capabilities, signFor),
     ]),
-    setMeta({ senderAccount: guard.account, chainId }),
+    ...formatAdditionalSigners(additionalSigners),
+    setMeta({ senderAccount: guard.account, chainId, ...meta }),
   );
 };
 

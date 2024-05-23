@@ -16,18 +16,26 @@ import {
   execution,
   setMeta,
 } from '@kadena/client/fp';
+import type { ValidDataTypes } from '@kadena/client/lib/composePactCommand/utils/addData';
 import type { IGeneralCapability } from '@kadena/client/lib/interfaces/type-utilities';
 import type { IPactInt } from '@kadena/types';
 import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
+import {
+  formatAdditionalSigners,
+  formatCapabilities,
+} from '../integration-tests/support/helpers';
 import type {
+  CommonProps,
+  FunctionGuard,
   ICreateTokenPolicyConfig,
   PolicyProps,
   WithCreateTokenPolicy,
-} from './policy-config';
-import { validatePolicies } from './policy-config';
+} from './config';
+import { GUARD_POLICY } from './config';
+import { validatePolicies } from './helpers';
 
-interface ICreateTokenInput {
+interface ICreateTokenInput extends CommonProps {
   policies?: string[];
   uri: string;
   tokenId: string;
@@ -74,27 +82,75 @@ const generatePolicyTransactionData = (
 
   if (policyConfig?.guarded) {
     if (props.guards.mintGuard)
-      data.push(addData('mint_guard', props.guards.mintGuard));
+      data.push(
+        addData(
+          'mint_guard',
+          props.guards.mintGuard as unknown as ValidDataTypes,
+        ),
+      );
     if (props.guards.burnGuard)
-      data.push(addData('burn_guard', props.guards.burnGuard));
+      data.push(
+        addData(
+          'burn_guard',
+          props.guards.burnGuard as unknown as ValidDataTypes,
+        ),
+      );
     if (props.guards.saleGuard)
-      data.push(addData('sale_guard', props.guards.saleGuard));
+      data.push(
+        addData(
+          'sale_guard',
+          props.guards.saleGuard as unknown as ValidDataTypes,
+        ),
+      );
     if (props.guards.transferGuard)
-      data.push(addData('transfer_guard', props.guards.transferGuard));
+      data.push(
+        addData(
+          'transfer_guard',
+          props.guards.transferGuard as unknown as ValidDataTypes,
+        ),
+      );
     if (props.guards.uriGuard)
-      data.push(addData('uri_guard', props.guards.uriGuard));
+      data.push(
+        addData(
+          'uri_guard',
+          props.guards.uriGuard as unknown as ValidDataTypes,
+        ),
+      );
   }
 
   if (policyConfig?.hasRoyalty) {
-    data.push(addData('fungible', props.royalty.fungible));
-    data.push(addData('creator', props.royalty.creator));
-    data.push(addData('creator-guard', props.royalty.creatorGuard));
-    data.push(addData('royalty-rate', props.royalty.royaltyRate.decimal));
+    data.push(
+      addData('royalty_specs', {
+        fungible: props.royalty.fungible,
+        creator: props.royalty.creator,
+        'creator-guard': props.royalty.creator.keyset,
+        'royalty-rate': props.royalty.royaltyRate.decimal,
+      }),
+    );
   }
 
-  if (policyConfig?.upgradeableURI && !policyConfig?.guarded) {
+  if (!policyConfig?.guarded && policyConfig?.updatableURI) {
     if (props.guards.uriGuard)
-      data.push(addData('uri_guard', props.guards.uriGuard));
+      data.push(
+        addData(
+          'uri_guard',
+          props.guards.uriGuard as unknown as ValidDataTypes,
+        ),
+      );
+  }
+
+  if (policyConfig?.guarded && !policyConfig?.updatableURI) {
+    if (!props.guards.uriGuard) {
+      throw new Error('Non-updatable tokens require "uriGuard"');
+    }
+    if (!(props.guards.uriGuard as FunctionGuard)?.fun) {
+      throw new Error('Non-updatable tokens require function guard');
+    }
+    if (
+      (props.guards.uriGuard as FunctionGuard).fun !== `${GUARD_POLICY}.failure`
+    ) {
+      throw new Error('Non-updatable tokens require failure guard');
+    }
   }
 
   if (policyConfig?.customPolicies) {
@@ -114,6 +170,9 @@ const createTokenCommand = <C extends ICreateTokenPolicyConfig>({
   creator,
   chainId,
   policyConfig,
+  meta,
+  capabilities,
+  additionalSigners,
   ...policyProps
 }: WithCreateTokenPolicy<C, ICreateTokenInput>) => {
   validatePolicies(policyConfig as ICreateTokenPolicyConfig, policies);
@@ -123,9 +182,7 @@ const createTokenCommand = <C extends ICreateTokenPolicyConfig>({
         tokenId,
         precision,
         uri,
-        policies.length > 0
-          ? ([policies.join(' ')] as unknown as PactReference)
-          : ([] as unknown as PactReference),
+        () => (policies.length > 0 ? `[${policies.join(' ')}]` : '[]'),
         readKeyset('creation-guard'),
       ),
     ),
@@ -142,11 +199,14 @@ const createTokenCommand = <C extends ICreateTokenPolicyConfig>({
         },
         signFor,
       ),
+      ...formatCapabilities(capabilities, signFor),
     ]),
     ...generatePolicyTransactionData(
       policyConfig as ICreateTokenPolicyConfig,
       policyProps as unknown as PolicyProps,
     ),
+    ...formatAdditionalSigners(additionalSigners),
+    setMeta({ senderAccount: creator.account, chainId, ...meta }),
   );
 };
 

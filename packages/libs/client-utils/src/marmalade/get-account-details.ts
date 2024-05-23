@@ -1,53 +1,39 @@
-import type {
-  BuiltInPredicate,
-  IPactModules,
-  PactReturnType,
-} from '@kadena/client';
+import type { IPactModules, PactReturnType } from '@kadena/client';
 import { Pact } from '@kadena/client';
-import {
-  addSigner,
-  composePactCommand,
-  execution,
-  setMeta,
-} from '@kadena/client/fp';
-import type { ChainId } from '@kadena/types';
-import { submitClient } from '../core/client-helpers';
+import { execution } from '@kadena/client/fp';
+import type { ChainId, NetworkId } from '@kadena/types';
+import { pipe } from 'ramda';
+import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
 interface IGetAccountBalanceInput {
   tokenId: string;
   accountName: string;
   chainId: ChainId;
-  guard: {
-    account: string;
-    keyset: {
-      keys: string[];
-      pred: BuiltInPredicate;
-    };
-  };
+  networkId: NetworkId;
+  host?: IClientConfig['host'];
 }
 
-const getAccountDetailsCommand = ({
+export const getAccountDetails = async ({
   tokenId,
   accountName,
   chainId,
-  guard,
-}: IGetAccountBalanceInput) =>
-  composePactCommand(
-    execution(
-      Pact.modules['marmalade-v2.ledger'].details(tokenId, accountName),
-    ),
-    addSigner(guard.keyset.keys, (signFor) => [signFor('coin.GAS')]),
-    setMeta({
-      senderAccount: guard.account,
-      chainId,
+  networkId,
+  host,
+}: IGetAccountBalanceInput) => {
+  const result = await pipe(
+    () => Pact.modules['marmalade-v2.ledger'].details(tokenId, accountName),
+    execution,
+    dirtyReadClient<
+      PactReturnType<IPactModules['marmalade-v2.ledger']['details']>
+    >({
+      host,
+      defaults: {
+        networkId,
+        meta: { chainId },
+      },
     }),
-  );
+  )().execute();
 
-export const getAccountDetails = (
-  inputs: IGetAccountBalanceInput,
-  config: IClientConfig,
-) =>
-  submitClient<PactReturnType<IPactModules['marmalade-v2.ledger']['details']>>(
-    config,
-  )(getAccountDetailsCommand(inputs));
+  return result;
+};
