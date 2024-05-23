@@ -1,4 +1,4 @@
-import { atoms } from '@kadena/react-ui/styles';
+import { atoms, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 // TODO: Define this somewhere, or make this dynamic.
@@ -19,10 +19,8 @@ export const headingClass = style([
 ]);
 
 export const descriptionListClass = style([
-  atoms({
-    gap: 'sm',
-  }),
   {
+    gap: `${tokens.kda.foundation.spacing.sm} ${tokens.kda.foundation.spacing.lg}`,
     display: 'grid',
     justifyContent: 'start',
   },
@@ -55,4 +53,23 @@ export const descriptionDetailsClass = style({
       gridColumnStart: 2,
     },
   },
+});
+
+export const descriptionDetailsLinkClass = style({
+  margin: 0,
+  display: 'flex',
+  flexDirection: 'row',
+  '@media': {
+    [`(min-width: ${mobileBreakpoint}px)`]: {
+      gridColumnStart: 2,
+    },
+  },
+});
+
+export const linkClass = style({
+  margin: 0,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  maxWidth: '100%',
 });

@@ -4,10 +4,12 @@ import classNames from 'classnames';
 import React, { Fragment } from 'react';
 import {
   descriptionDetailsClass,
+  descriptionDetailsLinkClass,
   descriptionListClass,
   descriptionListIndentClass,
   descriptionTermClass,
   headingClass,
+  linkClass,
   sectionClass,
 } from './styles.css';
 
@@ -39,19 +41,24 @@ const DataRenderComponent: React.FC<IDynamicComponentProps> = ({
         {fields.map((field, index) => (
           <Fragment key={index}>
             <dt className={descriptionTermClass}>{field.key}</dt>
-            <dd className={descriptionDetailsClass}>
-              {field.link ? (
-                <a href={field.link}>
+            {field.link ? (
+              <dd className={descriptionDetailsLinkClass}>
+                <a href={field.link} className={linkClass}>
                   <Text variant="code">{field.value}</Text>
                 </a>
-              ) : field.type === 'code' ? (
+                <MonoArrowOutward style={{ minWidth: 'fit-content' }} />
+              </dd>
+            ) : field.type === 'code' ? (
+              <dd className={descriptionDetailsClass}>
                 <Text variant="code">
                   <pre>{field.value}</pre>
                 </Text>
-              ) : (
+              </dd>
+            ) : (
+              <dd className={descriptionDetailsClass}>
                 <Text variant="code">{field.value}</Text>
-              )}
-            </dd>
+              </dd>
+            )}
           </Fragment>
         ))}
       </dl>
