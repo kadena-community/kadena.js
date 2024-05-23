@@ -1,48 +1,61 @@
-import React from 'react';
+import { MonoArrowOutward, MonoArrowRight } from '@kadena/react-icons/system';
+import { Link, Text, TextLink } from '@kadena/react-ui';
+import classNames from 'classnames';
+import React, { Fragment } from 'react';
+import {
+  descriptionDetailsClass,
+  descriptionListClass,
+  descriptionListIndentClass,
+  descriptionTermClass,
+  headingClass,
+  sectionClass,
+} from './styles.css';
 
-interface IDynamicComponentBlockField {
-  type: 'text' | 'code';
+interface IDynamicComponentField {
+  type?: 'text' | 'code';
   key: string;
   value: string;
   link?: string;
 }
 
-interface IDynamicComponentBlock {
+interface IDynamicComponentProps {
   title?: string;
-  fields: IDynamicComponentBlockField[];
+  fields: IDynamicComponentField[];
+  block?: IDynamicComponentProps;
 }
 
-interface IDataRenderComponentProps {
-  data: IDynamicComponentBlock[];
-}
+const DataRenderComponent: React.FC<IDynamicComponentProps> = ({
+  title,
+  fields,
+}) => {
+  const descriptionListClassNames = title
+    ? classNames(descriptionListClass, descriptionListIndentClass)
+    : descriptionListClass;
 
-const DataRenderComponent: React.FC<IDataRenderComponentProps> = ({ data }) => {
   return (
-    <>
-      {data.map((block, index) => (
-        <div key={index}>
-          {block.title && <h3>{block.title}</h3>}
-          <table>
-            <tbody>
-              {block.fields.map((field, index) => (
-                <tr key={index}>
-                  <td>{field.key}</td>
-                  <td>
-                    {field.type === 'code' ? (
-                      <pre>{field.value}</pre>
-                    ) : field.link ? (
-                      <a href={field.link}>{field.value}</a>
-                    ) : (
-                      field.value
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ))}
-    </>
+    <section className={sectionClass}>
+      {title && <h4 className={headingClass}>{title}</h4>}
+      <dl className={descriptionListClassNames}>
+        {fields.map((field, index) => (
+          <Fragment key={index}>
+            <dt className={descriptionTermClass}>{field.key}</dt>
+            <dd className={descriptionDetailsClass}>
+              {field.link ? (
+                <a href={field.link}>
+                  <Text variant="code">{field.value}</Text>
+                </a>
+              ) : field.type === 'code' ? (
+                <Text variant="code">
+                  <pre>{field.value}</pre>
+                </Text>
+              ) : (
+                <Text variant="code">{field.value}</Text>
+              )}
+            </dd>
+          </Fragment>
+        ))}
+      </dl>
+    </section>
   );
 };
 

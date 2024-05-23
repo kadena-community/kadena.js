@@ -20,5 +20,6 @@ export const ALL_BLOCK_FIELDS: DocumentNode = gql`
     id
     payloadHash
     powHash
+    target
   }
 `;
