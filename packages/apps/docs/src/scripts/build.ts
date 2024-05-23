@@ -10,27 +10,10 @@ import { fixLocalLinks } from './fixLocalLinks';
 import { createDocsTree } from './getdocstree';
 import { deleteTempDir } from './importReadme/importRepo';
 import { movePages } from './movePages';
-import type { IScriptResult } from './types';
-import { initFunc, promiseExec } from './utils/build';
+import { runPrettier } from './runPrettier';
+import { initFunc } from './utils/build';
 import { getGlobalError } from './utils/globalError';
 import { validateLinks } from './validateLinks';
-
-const runPrettier = async (): Promise<IScriptResult> => {
-  const success: string[] = [];
-  const errors: string[] = [];
-
-  const { stderr } = await promiseExec(
-    `prettier ./src/pages --write  && prettier ./src/_generated/**/*.json --write`,
-  );
-
-  if (stderr) {
-    errors.push(`Prettier had issues: ${stderr}`);
-  } else {
-    success.push('Prettier done!!');
-  }
-
-  return { errors, success };
-};
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
 (async function (): Promise<void> {
