@@ -88,6 +88,28 @@ export const globalOptions = {
       'Kadena network (e.g. "mainnet")',
     ),
     expand: async (network: string) => {
+      try {
+        return await loadNetworkConfig(network);
+      } catch (e) {
+        log.info(
+          `\nNo configuration for network "${network}" found. Please configure the network.\n`,
+        );
+        await program.parseAsync(['', '', 'networks', 'create']);
+        return await loadNetworkConfig(network);
+      }
+    },
+  }),
+  networkOptional: createOption({
+    key: 'network' as const,
+    prompt: () => {},
+    defaultValue: await getDefaultNetworkName(),
+    validation: z.string(),
+    defaultIsOptional: true,
+    option: new Option(
+      '-n, --network <network>',
+      'Kadena network (e.g. "mainnet")',
+    ),
+    expand: async (network: string) => {
       if (network === undefined) return null;
       try {
         return await loadNetworkConfig(network);
@@ -130,6 +152,27 @@ export const globalOptions = {
     }),
     option: new Option('-c, --chain-id <chainId>', 'Kadena chain id (e.g. 0)'),
     transform: (chainId: string) => {
+      const parsedChainId = Number(chainId.trim());
+      try {
+        chainIdValidation.parse(parsedChainId);
+        return parsedChainId.toString() as ChainId;
+      } catch (error) {
+        const errorMessage = formatZodFieldErrors(error);
+        throw new Error(`Error: -c --chain-id ${errorMessage}`);
+      }
+    },
+  }),
+  chainIdOptional: createOption({
+    key: 'chainId' as const,
+    prompt: networks.chainIdPrompt,
+    defaultIsOptional: true,
+    validation: z.string({
+      /* eslint-disable-next-line @typescript-eslint/naming-convention */
+      invalid_type_error: 'Error: -c, --chain-id must be a number',
+    }),
+    option: new Option('-c, --chain-id <chainId>', 'Kadena chain id (e.g. 0)'),
+    transform: (chainId: string) => {
+      if (!chainId) return null;
       const parsedChainId = Number(chainId.trim());
       try {
         chainIdValidation.parse(parsedChainId);

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { assertCommandError } from '../../utils/command.util.js';
-import { createTransaction } from '../commands/txCreateTransaction.js';
+import { createAndWriteTransaction } from '../commands/txCreateTransaction.js';
 import { testTransactionAction } from '../commands/txTestSignedTransaction.js';
 import { signTransactionFileWithKeyPairAction } from '../utils/txSignWithKeypair.js';
 
@@ -36,7 +36,7 @@ verifiers:
 
 describe('tx add', () => {
   it('Prompts values and writes the transaction file', async () => {
-    const transaction = await createTransaction(template, {}, null);
+    const transaction = await createAndWriteTransaction(template, {}, null);
     assertCommandError(transaction);
 
     const cmd = JSON.parse(transaction.data.transaction.cmd);

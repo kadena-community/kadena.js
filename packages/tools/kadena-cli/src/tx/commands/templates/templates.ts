@@ -50,6 +50,24 @@ networkId: "{{network:networkId}}"
 type: exec
 `;
 
+export const arbitraryCodeTemplate = (
+  code: string,
+  chainId: string,
+  network: string,
+): string => `
+code: |-
+  ${code}
+data:
+meta:
+  chainId: "${chainId}"
+  gasLimit: 2300
+  gasPrice: 0.000001
+  ttl: 600
+  sender: "local"
+networkId: "${network}"
+type: exec
+`;
+
 /** Only exported to be used in tests, otherwise use getTemplate() */
 export const defaultTemplates = {
   transfer: transferTemplate,
