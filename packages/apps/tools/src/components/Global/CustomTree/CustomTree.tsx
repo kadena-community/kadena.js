@@ -4,6 +4,7 @@ import {
   MonoCached,
 } from '@kadena/react-icons/system';
 import { Badge, Button, Stack, Text } from '@kadena/react-ui';
+import { monospaceSmallestRegular } from '@kadena/react-ui/styles';
 import React from 'react';
 import type { ICustomAccordionProps } from '../CustomAccordion/CustomAccordion';
 import CustomAccordion from '../CustomAccordion/CustomAccordion';
@@ -99,10 +100,12 @@ interface INodeProps<T>
 
 // eslint-disable-next-line react/function-component-definition
 function Node<
-  T extends { key: React.Key; children: T[]; title: string } & Record<
-    string,
-    unknown
-  >,
+  T extends {
+    key: React.Key;
+    children: T[];
+    title: string;
+    label?: string;
+  } & Record<string, unknown>,
 >({ data, level, ...rest }: INodeProps<T>) {
   return (
     <CustomAccordion {...rest} data={data}>
@@ -134,6 +137,11 @@ function Node<
                 </Button>
               ) : null}
               <Text className={itemTitleStyle}>{child.data.title}</Text>
+              {child.data.label ? (
+                <Badge size="sm" className={monospaceSmallestRegular}>
+                  {child.data.label}
+                </Badge>
+              ) : null}
               {child.data.children.length ? (
                 <Badge size="sm">{child.data.children.length}</Badge>
               ) : null}
