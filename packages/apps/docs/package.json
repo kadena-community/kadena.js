@@ -91,7 +91,7 @@
     "@vanilla-extract/next-plugin": "2.4.0",
     "@vanilla-extract/vite-plugin": "4.0.7",
     "@vanilla-extract/webpack-plugin": "2.3.7",
-    "@vitest/coverage-v8": "^1.1.0",
+    "@vitest/coverage-v8": "^1.6.0",
     "chalk": "^5.2.0",
     "chokidar": "^3.5.3",
     "chromatic": "6.20.0",
@@ -115,7 +115,7 @@
     "remark-validate-links": "^13.0.0",
     "tsx": "^3.12.10",
     "typescript": "5.4.5",
-    "vitest": "^1.1.0",
+    "vitest": "^1.6.0",
     "vitest-dom": "^0.1.1",
     "xml2js": "^0.6.2"
   }
