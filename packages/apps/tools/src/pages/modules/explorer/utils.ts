@@ -62,6 +62,7 @@ export type ModulesMap = Map<
 
 const mapToTreeItems = (
   modulesMap: Map<Namespace, ModuleData | Map<ModuleName, ModuleData>>,
+  parent?: Namespace,
 ): TreeItem<string>[] => {
   return [...modulesMap]
     .sort(([nameA], [nameB]) => nameA.localeCompare(nameB))
@@ -69,19 +70,33 @@ const mapToTreeItems = (
       let children;
 
       if (value instanceof Map) {
-        const mapped = mapToTreeItems(value);
+        const mapped = mapToTreeItems(
+          value,
+          `${typeof parent === 'string' ? `${parent}.` : ''}${name}`,
+        );
         children = mapped;
       } else {
         children = value.map((chain) => {
-          return { data: chain, key: chain, title: chain, children: [] };
+          return {
+            data: chain,
+            key: `${typeof parent === 'string' ? `${parent}.` : ''}${name}.${chain}`,
+            title: chain,
+            children: [],
+            label: 'something',
+          };
         });
       }
 
-      return { data: name, key: name, title: name, children };
+      return {
+        data: name,
+        key: `${typeof parent === 'string' ? `${parent}.` : ''}${name}`,
+        title: name,
+        children,
+      };
     });
 };
 
-export const xToY = (x: string[][]): TreeItem<string>[] => {
+export const xToY = (x: string[][], key: string): TreeItem<string>[] => {
   const modulesMap: ModulesMap = new Map();
 
   x.forEach((modules, index) => {
@@ -115,7 +130,7 @@ export const xToY = (x: string[][]): TreeItem<string>[] => {
     });
   });
 
-  const treeItems: TreeItem<string>[] = mapToTreeItems(modulesMap);
+  const treeItems: TreeItem<string>[] = mapToTreeItems(modulesMap, key);
 
   return treeItems;
 };

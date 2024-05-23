@@ -274,7 +274,7 @@ const ModuleExplorerPage = (
   let amountOfMainnetModules = 0;
 
   if (mainnetModulesQuery.isSuccess) {
-    mappedMainnet = xToY(mainnetModulesQuery.data);
+    mappedMainnet = xToY(mainnetModulesQuery.data, 'mainnet');
     amountOfMainnetModules = mainnetModulesQuery.data.reduce((prev, acc) => {
       return prev + acc.length;
     }, 0);
@@ -285,7 +285,7 @@ const ModuleExplorerPage = (
   let amountOfTestnetModules = 0;
 
   if (testnetModulesQuery.isSuccess) {
-    mappedTestnet = xToY(testnetModulesQuery.data);
+    mappedTestnet = xToY(testnetModulesQuery.data, 'testnet');
     amountOfTestnetModules = testnetModulesQuery.data.reduce((prev, acc) => {
       return prev + acc.length;
     }, 0);
