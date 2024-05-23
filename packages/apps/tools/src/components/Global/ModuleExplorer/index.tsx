@@ -24,18 +24,39 @@ export interface IModuleExplorerProps<T> {
 // eslint-disable-next-line react/function-component-definition
 function ModuleExplorer<T>({ data, items, onReload }: IModuleExplorerProps<T>) {
   return (
-    <SidePanel
-      data={[
-        {
-          children: items,
-          title: 'Explorer',
-          key: 'explorer',
-          label: 'Explorer',
-          data,
-        },
-      ]}
-      onReload={onReload}
-    />
+    <div className={containerStyle}>
+      <SidePanel
+        data={[
+          {
+            children: items,
+            title: 'Explorer',
+            key: 'explorer',
+            label: 'Explorer',
+            data,
+          },
+        ]}
+        onReload={onReload}
+      />
+      <Editor
+        openedModules={[]}
+        activeModule={undefined}
+        onActiveModuleChange={(module) => {
+          // onActiveModuleChange(module);
+          // setActiveModule(module);
+        }}
+        onTabClose={(module) => {
+          // setOpenedModules(
+          //   openedModules.filter((openedModule) => {
+          //     return (
+          //       `${openedModule.moduleName}-${openedModule.chainId}-${openedModule.network}` !==
+          //       `${module.moduleName}-${module.chainId}-${module.network}`
+          //     );
+          //   }),
+          // );
+          // onTabClose(module);
+        }}
+      />
+    </div>
   );
 }
 
