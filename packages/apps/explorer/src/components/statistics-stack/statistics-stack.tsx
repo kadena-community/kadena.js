@@ -1,5 +1,6 @@
 import { MonoHub } from '@kadena/react-icons/system';
 import { Button, Select, SelectItem, Stack, Text } from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 import React, { useState } from 'react';
 import { borderStyleClass } from './style.css';
 
@@ -39,6 +40,9 @@ const StatisticsStack: React.FC<IStatisticsStackProps> = ({ data }) => {
           defaultSelectedKey={selectedNetwork}
           fontType="code"
           size="lg"
+          className={atoms({
+            border: 'none',
+          })}
           onSelectionChange={(value) => setSelectedNetwork(value.toString())}
         >
           <SelectItem key={'Mainnet'} textValue="Mainnet">
