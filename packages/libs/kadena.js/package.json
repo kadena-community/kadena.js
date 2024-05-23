@@ -61,7 +61,7 @@
     "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/pactjs": "workspace:*",
-    "vitest": "^1.1.0",
+    "vitest": "^1.6.0",
     "webpack": "~5.88.2"
   },
   "devDependencies": {
@@ -71,7 +71,7 @@
     "@kadena-dev/shared-config": "workspace:*",
     "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~3.6.9",
-    "@vitest/coverage-v8": "^1.1.0",
+    "@vitest/coverage-v8": "^1.6.0",
     "eslint": "^8.45.0",
     "prettier": "~3.2.5",
     "serve": "^13.0.2",
