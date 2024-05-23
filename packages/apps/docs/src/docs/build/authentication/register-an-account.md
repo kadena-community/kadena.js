@@ -25,7 +25,14 @@ To register for a new Kadena SpireKey account:
 1. Open [Kadena SpireKey](https://spirekey.kadena.io) in a web browser on your
    phone, tablet, or desktop.
 2. Click **Register** to start entering your account information.
-3. If you don't want to create
+3. Type an **Alias** to use for your account, then click **Next**.
+
+   The alias is typically a short and distinguishable name that helps you
+   recognize your account in Kadena SpireKey and to distinguish
+   between accounts if you add more than one account.
+
+   The **Alias** you specify is only stored in the browser on the device you use
+   to register and cannot been seen by anyone else. If you don't want to create
    an account, click **Cancel** to exit the registration flow.
 
 4. Create a private **Passkey** to be stored in encrypted form on the device you
@@ -58,7 +65,7 @@ From the Accounts page, you can also view, send, or request transfers.
 
 ## Select a network
 
-The Kadena SpireKey wallet is currently configured to create all new accounts on
+Kadena SpireKey is currently configured to create all new accounts on
 the Kadena test network (Testnet). The network information is always displayed
 on the account preview card, so you know the network you are creating an account
 on. In the future, you'll be able to select a specific network when registering
@@ -105,8 +112,8 @@ The following example illustrates an application running locally on
 https://spirekey.kadena.io/connect?returnUrl=http://localhost:3000&networkId=testnet04
 
 As you see in this example, the `returnUrl` is a URL-encoded **query parameter**
-that the Kadena SpireKey wallet uses to redirect users after they connect. When
-users are redirecting to the `/connect` endpoint, the Kadena SpireKey wallet
+that Kadena SpireKey uses to redirect users after they connect. When
+users are redirected to the `/connect` endpoint, Kadena SpireKey
 checks whether they have a Kadena SpireKey account. Users who don't have a
 Kadena SpireKey account are automatically redirected to the `/register` endpoint
 so they can follow the steps to register an account. After completing the
@@ -124,7 +131,7 @@ transactions in an application running on Testnet with an account they created
 on the development network, the transaction will fail.
 
 To prevent this type of transaction failure, you can specify the `networkId` as
-a query parameter for connecting to the Kadena SpireKey wallet URL. The
+a query parameter for connecting to the Kadena SpireKey URL. The
 networkId limits the accounts that users can select from to accounts created on
 the specified network. In the example URL above, the value of this query
 parameter is set to `testnet04`. You can change the value to `mainnet01` or
@@ -153,9 +160,9 @@ You can optimize onboarding of users to your application for speed by allowing
 users to connect their account to your application before the account creation
 transaction is confirmed on the blockchain. If you wan to allow this
 **optimistic** onboarding, you can adding the `optimistic=true` query parameter
-to the Kadena SpireKey wallet URL.
+to the Kadena SpireKey URL.
 
-With the `optimistic=true` query parameter, the Kadena SpireKey wallet URL would
+With the `optimistic=true` query parameter, the Kadena SpireKey URL would
 look like this:
 
 https://spirekey.kadena.io/connect?returnUrl=http://localhost:3000&networkId=development&reason=Your%20reason&optimistic=true
@@ -176,7 +183,7 @@ signed transaction after all signer accounts exist on blockchain.
 If you use the `optimistic=true` query parameter, the `requestKeys` are
 URL-encoded and appended to the URL for your application. For example, the URL
 in the previous example redirects the user to the following URL after connecting
-to the account in the Kadena SpireKey wallet:
+to the account in the Kadena SpireKey:
 
 https://localhost:3000?user=eyJhY2NvdW50TmFtZSI6ImM6NjhmbyI2bk5BWV9hNk51X0NORUdpS3lWREpseUd4S0MwZE9aTEJxNlp1IiwiYWxpYXMiOiJBbGljZSIsImNyZWRlbnRpYWxzIjpbeyJpZCI6ImQyZVlUM3pBa2xNZ1paSk5qUTN6SnhaNmt1VDR0a2RfbmRlUElFV0szTmQiLCJwdWJsaWNQb2ludCI6IldFQkFVVEhOLWE1MDEwMjMyNjIwMDEyMTU4MjA5YTRlODNiNmQ3MzQ4ODBiOTI2YzBlNzRiY2U4ZTg0OWFjMDNmMDk5OGNiMjI0OTk5ZDUwMzk2NTFjMjQ1MzQxZDIyNTgyMDYwZjI4MDRmM2M0MjQ5MTg3ODZhOTc4YzU2OTU2MjhkYzkzZDQzMjE4MjkyNzNkYjE4NzA4NDU3OTUwM2NlYTNhM2MifV19XQ==&pendingTxIds=%5B%22Z3psaElUT1U4aE1hT1hIS2NTSkd4TGwwSXJoMmNyVW5GaDIwY0djOHhzUg%3D%3D%22%5D
 
@@ -227,7 +234,7 @@ these are beyond the scope of this guide.
 
 ## Register for an account workflow
 
-If you add the `/connect` endpoint for the Kadena SpireKey wallet to your
+If you add the `/connect` endpoint for Kadena SpireKey to your
 application, Kadena SpireKey handles the workflow for adding WebAuthn
 credentials and connecting to Kadena SpireKey accounts for your users. The
 following diagram illustrates the basic workflow for registering an account

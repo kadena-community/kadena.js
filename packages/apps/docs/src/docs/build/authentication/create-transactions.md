@@ -12,7 +12,7 @@ layout: full
 
 # Create transactions for Kadena SpireKey
 
-If you enable your application to connect to a Kadena SpireKey wallet as
+If you enable your application to connect to Kadena SpireKey as
 described in [Integrate with Kadena SpireKey](/build/authentication/integrate),
 you can construct transactions for users to sign using their Kadena SpireKey
 account.
@@ -22,8 +22,8 @@ In this guide you'll learn:
 - How to construct an unsigned transaction to support signing using a Kadena
   SpireKey account.
 - How to send unsigned transactions to the SpireKey wallet.
-- How to process the data you receive in signed transaction returned from the
-  Kadena SpireKey wallet.
+- How to process the data you receive in signed transaction returned from
+  Kadena SpireKey.
 
 ## Construct an unsigned transaction
 
@@ -79,7 +79,7 @@ The `webauthn-wallet` contract implements these functions and capabilities for y
 Other contracts should be compatible with `webauthn-wallet` accounts by default.
 
 The following is an example of what an unsigned transfer transaction from
-a Kadena SpireKey wallet might look like for the `n_eef68e581f767dd66c4d4c39ed922be944ede505` principal namespace:
+a Kadena SpireKey account might look like for the `n_eef68e581f767dd66c4d4c39ed922be944ede505` principal namespace:
 
 ```json
 {
@@ -134,14 +134,14 @@ a Kadena SpireKey wallet might look like for the `n_eef68e581f767dd66c4d4c39ed92
 }
 ```
 
-In this example, the `n_eef68e581f767dd66c4d4c39ed922be944ede505` namespace is the namespace for the Kadena SpireKey wallet deployed on the Kadena test and main networks.
+In this example, the `n_eef68e581f767dd66c4d4c39ed922be944ede505` namespace is the namespace for Kadena SpireKey deployed on the Kadena test and main networks.
 If you deploy your own versions of the `webauthn-wallet` and `webauthn-guard` contracts, you'll use a different namespace. 
-To construct a transaction similar to this example in your application, you can use the `c:` account and `WEBAUTHN` public key returned by the Kadena SpireKey wallet in the `accountName` and `credentials` properties from the account details for a user object.
+To construct a transaction similar to this example in your application, you can use the `c:` account and `WEBAUTHN` public key returned by Kadena SpireKey in the `accountName` and `credentials` properties from the account details for a user object.
 
 ## Send data to the SpireKey wallet
 
 After you construct the unsigned transaction in your application, you can send
-that data along with a `returnUrl` to the Kadena SpireKey wallet. Kadena
+that data along with a `returnUrl` to Kadena SpireKey. Kadena
 SpireKey handles the signing process and redirects users back to your
 application. As with registration and authentication, the information is passed
 using URL parameters.
