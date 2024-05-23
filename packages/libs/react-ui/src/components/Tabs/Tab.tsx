@@ -27,7 +27,7 @@ export const Tab = ({
   className,
   inverse = false,
   borderPosition = 'bottom',
-  isCompact,
+  isCompact = false,
   onClose,
 }: ITabProps): ReactNode => {
   const { key, rendered } = item;
@@ -55,7 +55,7 @@ export const Tab = ({
       data-hovered={isHovered || undefined}
     >
       {rendered}
-      {onClose && (
+      {typeof onClose === 'function' && (
         <Button
           className={closeButtonClass}
           type="button"

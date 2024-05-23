@@ -1,7 +1,7 @@
 'use client';
 import classNames from 'classnames';
 import type { ReactNode } from 'react';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import type { AriaTabListProps } from 'react-aria';
 import { mergeProps, useFocusRing, useTabList } from 'react-aria';
 import type { Node } from 'react-stately';
@@ -40,6 +40,7 @@ export const Tabs = ({
   const state = useTabListState(props);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const selectedUnderlineRef = useRef<HTMLSpanElement | null>(null);
 
   const { focusProps, isFocusVisible } = useFocusRing({
     within: true,
@@ -51,48 +52,54 @@ export const Tabs = ({
     containerRef,
   );
 
-  const selectedUnderlineRef = useRef<HTMLSpanElement | null>(null);
+  const getSelectedTab = () => {
+    let selected = containerRef.current?.querySelector(
+      '[data-selected="true"]',
+    );
+
+    if (selected === undefined || selected === null) {
+      selected = containerRef.current?.querySelectorAll('div[role="tab"]')[0];
+    }
+
+    return selected as HTMLElement | undefined;
+  };
 
   // set Selected as first tab if the tab isn't visible
   useEffect(() => {
-    if (!containerRef.current || !scrollRef.current) return;
+    let selected = getSelectedTab();
 
-    const selected = containerRef.current.querySelector(
-      '[data-selected="true"]',
-    ) as HTMLElement;
     if (
-      selected?.offsetLeft + selected?.offsetWidth >
-      containerRef.current.offsetWidth
+      selected &&
+      scrollRef.current &&
+      selected.offsetLeft + selected.offsetWidth >
+        (containerRef.current?.offsetWidth || 0)
     ) {
       scrollRef.current.scrollLeft = selected.offsetLeft;
     }
   }, []);
 
   // handle underline animation
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!containerRef.current || !selectedUnderlineRef.current) {
       return;
     }
 
-    let selected = containerRef.current.querySelector(
-      '[data-selected="true"]',
-    ) as HTMLElement;
+    const selected = getSelectedTab();
 
-    if (selected === undefined || selected === null) {
-      selected = containerRef.current.querySelectorAll(
-        'div[role="tab"]',
-      )[0] as HTMLElement;
+    if (!selected) {
+      return;
     }
 
     selectedUnderlineRef.current.style.setProperty(
       'transform',
       `translateX(${selected.offsetLeft}px)`,
     );
+
     selectedUnderlineRef.current.style.setProperty(
       'width',
       `${selected.getBoundingClientRect().width}px`,
     );
-  }, [containerRef, state.selectedItem?.key, selectedUnderlineRef]);
+  }, [state.selectedItem?.key]);
 
   return (
     <div className={classNames(tabsContainerClass, className)}>

@@ -17,10 +17,10 @@ export const scrollContainer = style([
     overflowX: 'auto',
     display: 'flex',
     flexDirection: 'row',
+    position: 'relative',
   }),
   {
     scrollbarWidth: 'none',
-    position: 'relative',
     paddingTop: '2px', // For focus ring
     selectors: {
       '&.paginationLeft:not(.paginationRight)': {
@@ -63,7 +63,6 @@ export const tabListClass = style([
   atoms({
     display: 'inline-flex',
     flexDirection: 'row',
-    position: 'relative',
   }),
   {
     minWidth: '100%',
@@ -73,7 +72,6 @@ export const tabListClass = style([
 export const selectorLine = style([
   atoms({
     position: 'absolute',
-    display: 'block',
     bottom: 0,
     borderStyle: 'solid',
   }),
@@ -103,14 +101,13 @@ export const tabItemClass = recipe({
       paddingBlock: 'n2',
       paddingInline: 'n4',
       gap: 'n2',
-      fontSize: 'md',
-      fontWeight: 'secondaryFont.bold',
       backgroundColor: 'transparent',
       color: 'text.base.default',
       outline: 'none',
     }),
     {
       zIndex: 3,
+      minWidth: 'fit-content',
       borderBlock: `2px solid transparent`,
       borderTopLeftRadius: token('radius.xs'),
       borderTopRightRadius: token('radius.xs'),

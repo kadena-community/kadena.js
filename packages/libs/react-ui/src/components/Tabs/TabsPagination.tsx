@@ -38,8 +38,7 @@ export const TabsPagination = ({
       scrollContainerRef.current.classList.remove('paginationLeft');
 
       setVisibleButtons((prev) => ({ ...prev, left: false }));
-    }
-    if (scrollPosition > 0) {
+    } else {
       scrollContainerRef.current.classList.add('paginationLeft');
 
       setVisibleButtons((prev) => ({ ...prev, left: true }));
@@ -87,7 +86,7 @@ export const TabsPagination = ({
   }, []);
 
   return (
-    <div className={classNames(tabListControls)}>
+    <div className={tabListControls}>
       <Button
         aria-label="Scroll left"
         variant="transparent"
