@@ -62,7 +62,9 @@ function CustomTree<T>({
               >
                 {item.isExpanded ? <MonoArrowDropDown /> : <MonoArrowRight />}
               </Button>
-              <Text className={itemTitleStyle}>{item.data.title}</Text>
+              <Text className={itemTitleStyle} bold>
+                {item.data.title}
+              </Text>
               {!item.data.isLoading ? (
                 <Button
                   variant="transparent"
