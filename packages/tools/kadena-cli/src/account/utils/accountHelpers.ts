@@ -246,3 +246,21 @@ export const isValidForOnlyKeysAllPredicate = (
 
 export const sortChainIds = (chainIds: ChainId[]): ChainId[] =>
   chainIds.sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
+
+interface IMaxAccountFundParams {
+  maxAmount: number;
+  numberOfChains: number;
+}
+
+export const isValidMaxAccountFundParams = (
+  param: unknown,
+): param is IMaxAccountFundParams => {
+  if (typeof param !== 'object' || param === null) {
+    return false;
+  }
+
+  const obj = param as Record<string, unknown>;
+  return (
+    typeof obj.maxAmount === 'number' && typeof obj.numberOfChains === 'number'
+  );
+};
