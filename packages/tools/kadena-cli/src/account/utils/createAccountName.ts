@@ -40,6 +40,8 @@ export async function createAccountName({
     );
     return accountName;
   } catch (e) {
-    throw new Error('There was an error creating the account name.');
+    throw new Error(
+      `There was an error creating the account name: ${e.message}`,
+    );
   }
 }

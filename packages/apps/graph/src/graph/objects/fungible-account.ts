@@ -5,9 +5,8 @@ import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
 } from '@services/complexity';
-import { chainIds } from '@utils/chains';
-import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
+import { networkData } from '@utils/network';
 import { builder } from '../builder';
 import { fungibleAccountDetailsLoader } from '../data-loaders/fungible-account-details';
 import type {
@@ -55,12 +54,14 @@ export default builder.node(
       fungibleName: t.exposeString('fungibleName'),
       chainAccounts: t.field({
         type: [FungibleChainAccountName],
-        complexity: COMPLEXITY.FIELD.CHAINWEB_NODE * dotenv.CHAIN_COUNT,
+        complexity: {
+          field: COMPLEXITY.FIELD.CHAINWEB_NODE,
+        },
         async resolve(parent) {
           try {
             return (
               await Promise.all(
-                chainIds.map((chainId) => {
+                networkData.chainIds.map((chainId) => {
                   return getFungibleChainAccount({
                     chainId,
                     fungibleName: parent.fungibleName,
@@ -78,12 +79,14 @@ export default builder.node(
       }),
       totalBalance: t.field({
         type: 'Decimal',
-        complexity: COMPLEXITY.FIELD.CHAINWEB_NODE * dotenv.CHAIN_COUNT,
+        complexity: {
+          field: COMPLEXITY.FIELD.CHAINWEB_NODE,
+        },
         async resolve(parent) {
           try {
             return (
               await Promise.all(
-                chainIds.map(async (chainId) => {
+                networkData.chainIds.map(async (chainId) => {
                   return fungibleAccountDetailsLoader.load({
                     fungibleName: parent.fungibleName,
                     accountName: parent.accountName,

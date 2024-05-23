@@ -11,7 +11,7 @@ export const networkOptions = {
     prompt: networks.networkNamePrompt,
     validation: z.string(),
     option: new Option(
-      '-n, --network-name <networkName>',
+      '-a, --network-name <networkName>',
       'Kadena network (e.g. "mainnet")',
     ),
     transform: (networkName: string) => {
@@ -32,7 +32,7 @@ export const networkOptions = {
       'Kadena network Id (e.g. "mainnet01")',
     ),
     transform: (networkId: string) => {
-      return networkId.trim();
+      return networkId?.trim();
     },
   }),
   networkHost: createOption({

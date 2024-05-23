@@ -26,13 +26,7 @@ export interface IStartArray {
   title?: string;
 }
 
-export type LayoutType =
-  | 'full'
-  | 'landing'
-  | 'home'
-  | 'redocly'
-  | 'blog'
-  | 'code';
+export type LayoutType = 'full' | 'landing' | 'home' | 'redocly' | 'code';
 
 export interface ISubHeaderElement {
   tag: TagNameType;
@@ -64,29 +58,14 @@ export interface IBasePageMeta {
 
 export interface IFrontMatterYaml extends IBasePageMeta {
   publishDate?: string;
-  tags?: string[];
-  author?: string;
-  authorId?: string;
 }
 
-export interface IAuthorInfo {
-  id: string;
-  name: string;
-  avatar: string;
-  description?: string;
-  twitter?: string;
-  linkedin?: string;
-  posts?: IMenuData[];
-}
 export interface IPageMeta extends IBasePageMeta {
   editLink: string;
   navigation: INavigation;
   publishDate?: string;
   headerImage?: string;
   tags?: string[];
-  author?: string;
-  authorId?: string;
-  authorInfo?: IAuthorInfo;
   readingTimeInMinutes?: number;
   wordCount?: number;
 }
@@ -109,7 +88,6 @@ export interface ILayout {
   editLink?: string;
   navigation?: INavigation;
   publishDate?: string;
-  author?: string;
 }
 
 export type LevelType = 0 | 1 | 2 | 3;
@@ -142,9 +120,6 @@ export interface IMenuData {
   publishDate?: string;
   headerImage?: string;
   tags?: string[];
-  author?: string;
-  authorId?: string;
-  authorInfo?: IAuthorInfo;
   wordCount?: number;
   readingTimeInMinutes?: number;
   lastModifiedDate?: Date;

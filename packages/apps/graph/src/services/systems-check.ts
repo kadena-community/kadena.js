@@ -3,7 +3,7 @@ import { createClient, createTransaction } from '@kadena/client';
 import { composePactCommand } from '@kadena/client/fp';
 import { Prisma } from '@prisma/client';
 import { dotenv } from '@utils/dotenv';
-import { getNetworkConfig } from '@utils/network';
+import { initializeNetworkConfig } from '@utils/network';
 import { readdir } from 'fs/promises';
 import { Listr } from 'listr2';
 import path from 'path';
@@ -64,7 +64,8 @@ export async function runSystemsCheck(): Promise<void> {
               {
                 title: 'Checking if chainweb node is running and reachable.',
                 task: async () => {
-                  const { apiVersion, networkId } = await getNetworkConfig();
+                  const { apiVersion, networkId } =
+                    await initializeNetworkConfig();
 
                   await createClient(
                     ({ chainId }) =>

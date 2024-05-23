@@ -15,8 +15,19 @@ import {
   parseChainIdRange,
   readAccountFromFile,
 } from './utils/accountHelpers.js';
+import { isEmpty } from './utils/addHelpers.js';
 
 export const accountOptions = {
+  accountTypeSelection: createOption({
+    key: 'type' as const,
+    defaultIsOptional: false,
+    prompt: account.accountTypeSelectionPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-t, --type <type>',
+      'Specify the method to add account details: "manual or wallet"',
+    ),
+  }),
   accountAlias: createOption({
     key: 'accountAlias' as const,
     defaultIsOptional: false,
@@ -197,5 +208,27 @@ export const accountOptions = {
       '-d, --deploy-faucet',
       'Deploy faucet on devnet if not available on chain.',
     ),
+  }),
+  selectPublicKeys: createOption({
+    key: 'publicKeys' as const,
+    defaultIsOptional: false,
+    prompt: account.publicKeysForAccountAddPrompt,
+    expand: async (publicKeys: string): Promise<string[]> => {
+      const keys = publicKeys?.split(',');
+      return keys
+        ?.map((key: string) => key.trim())
+        .filter((key: string) => !isEmpty(key));
+    },
+    validation: z.string(),
+    option: new Option(
+      '-k, --public-keys <publicKeys>',
+      'Public keys to add to account',
+    ),
+  }),
+  confirmAccountVerification: createOption({
+    key: 'verify' as const,
+    validation: z.boolean(),
+    prompt: account.confirmAccountVerificationPrompt,
+    option: new Option('-v, --verify', 'Verify account details on chain'),
   }),
 };

@@ -35,11 +35,11 @@ export const ErrorHeader: FC<IProps> = ({
   return (
     <header className={loaderHeaderClass}>
       <div className={wrapperClass}>
-        <Heading as="h1" variant="h2">
+        <Heading as="h1" variant="h2" transform="uppercase">
           {title}
         </Heading>
         <Stack flexDirection="column" gap="xxs">
-          <Heading as="h2" variant="h4">
+          <Heading as="h2" variant="h4" transform="uppercase">
             {subTitle}
           </Heading>
           <span className={subheaderClass}>{body}</span>

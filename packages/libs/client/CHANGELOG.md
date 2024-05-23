@@ -1,5 +1,15 @@
 # Change Log - @kadena/client
 
+## 1.11.1
+
+### Patch Changes
+
+- 93bf55b07: Package updates
+- Updated dependencies \[93bf55b07]
+  - @kadena/chainweb-node-client\@0.6.1
+  - @kadena/cryptography-utils\@0.4.3
+  - @kadena/pactjs\@0.4.3
+
 ## 1.11.0
 
 ### Minor Changes
@@ -9,8 +19,8 @@
 
 ### Patch Changes
 
-- Updated dependencies [3bbfeaaa9]
-  - @kadena/chainweb-node-client@0.6.0
+- Updated dependencies \[3bbfeaaa9]
+  - @kadena/chainweb-node-client\@0.6.0
 
 ## 1.10.1
 
@@ -33,17 +43,17 @@
 ### Patch Changes
 
 - 6ddf094d8: Fix parse objects and arrays to pact values
-- 6ddf094d8: Add Record<string,any> to PactValue type
-  - @kadena/chainweb-node-client@0.5.3
-  - @kadena/cryptography-utils@0.4.2
-  - @kadena/pactjs@0.4.2
+- 6ddf094d8: Add Record\<string,any> to PactValue type
+  - @kadena/chainweb-node-client\@0.5.3
+  - @kadena/cryptography-utils\@0.4.2
+  - @kadena/pactjs\@0.4.2
 
 ## 1.8.1
 
 ### Patch Changes
 
-- Updated dependencies [5b1d8334e]
-  - @kadena/chainweb-node-client@0.5.3
+- Updated dependencies \[5b1d8334e]
+  - @kadena/chainweb-node-client\@0.5.3
 
 ## 1.8.0
 
@@ -64,9 +74,9 @@
 
 - a3bb20737: let users pass Literal or ()=>string as function inputs to cover
   more advanced usecases.
-  - @kadena/chainweb-node-client@0.5.2
-  - @kadena/cryptography-utils@0.4.2
-  - @kadena/pactjs@0.4.2
+  - @kadena/chainweb-node-client\@0.5.2
+  - @kadena/cryptography-utils\@0.4.2
+  - @kadena/pactjs\@0.4.2
 
 ## 1.6.4
 
@@ -92,12 +102,12 @@
 ### Patch Changes
 
 - fa6b84e22: No auto-globals for vitest specs
-- Updated dependencies [1d7d88081]
-- Updated dependencies [d15a6231f]
-- Updated dependencies [fa6b84e22]
-  - @kadena/chainweb-node-client@0.5.1
-  - @kadena/cryptography-utils@0.4.1
-  - @kadena/pactjs@0.4.1
+- Updated dependencies \[1d7d88081]
+- Updated dependencies \[d15a6231f]
+- Updated dependencies \[fa6b84e22]
+  - @kadena/chainweb-node-client\@0.5.1
+  - @kadena/cryptography-utils\@0.4.1
+  - @kadena/pactjs\@0.4.1
 
 ## 1.5.0
 

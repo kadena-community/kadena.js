@@ -6,7 +6,9 @@ import { useEffect } from 'react';
  */
 export const useIphoneInputFix = () => {
   useEffect(() => {
+    console.log(111);
     if (navigator.userAgent.indexOf('iPhone') === -1) {
+      console.log(22);
       document
         ?.querySelector('[name=viewport]')
         ?.setAttribute('content', 'width=device-width, initial-scale=1');

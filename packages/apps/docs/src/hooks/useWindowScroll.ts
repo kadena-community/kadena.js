@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react';
 
+/**
+ * Saves the scroll location of the document
+ */
 export function useWindowScroll(): [
   {
     x: number;
@@ -13,6 +16,7 @@ export function useWindowScroll(): [
 
   useEffect((): (() => void) => {
     const handleScroll = (): void => {
+      console.log(3333, window.scrollY);
       setState({ x: window.scrollX, y: window.scrollY });
     };
 

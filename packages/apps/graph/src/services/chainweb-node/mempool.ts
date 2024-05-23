@@ -1,8 +1,7 @@
 import type { Signer } from '@prisma/client';
-import { chainIds } from '@utils/chains';
 import { dotenv } from '@utils/dotenv';
 import { networkData } from '@utils/network';
-import https from 'https';
+import { request } from 'https';
 
 export class MempoolError extends Error {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -17,28 +16,36 @@ export class MempoolError extends Error {
 
 export async function mempoolGetPending(): Promise<unknown> {
   return new Promise((resolve, reject) => {
-    const options = {
-      hostname: dotenv.MEMPOOL_HOSTNAME,
-      port: dotenv.MEMPOOL_PORT,
-      path: `/chainweb/${networkData.apiVersion}/${networkData.networkId}/chain/0/mempool/getPending`,
-      method: 'POST',
-      rejectUnauthorized: false, // This disables certificate verification
-      headers: {
-        'Content-Type': 'application/json',
+    let host = dotenv.MEMPOOL_HOST;
+    let port;
+
+    if (host.includes(':')) {
+      [host, port] = host.split(':');
+    }
+
+    const req = request(
+      {
+        host,
+        port,
+        path: `/chainweb/${networkData.apiVersion}/${networkData.networkId}/chain/0/mempool/getPending`,
+        method: 'POST',
+        rejectUnauthorized: false, // This disables certificate verification
+        headers: {
+          'Content-Type': 'application/json',
+        },
       },
-    };
+      (res) => {
+        let data = '';
 
-    const req = https.request(options, (res) => {
-      let data = '';
+        res.on('data', (chunk) => {
+          data += chunk;
+        });
 
-      res.on('data', (chunk) => {
-        data += chunk;
-      });
-
-      res.on('end', () => {
-        resolve(JSON.parse(data));
-      });
-    });
+        res.on('end', () => {
+          resolve(JSON.parse(data));
+        });
+      },
+    );
 
     req.on('error', (error) => {
       reject(
@@ -59,7 +66,7 @@ export async function mempoolLookup(
   chainId?: string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
-  let chainsToCheck = chainIds;
+  let chainsToCheck = networkData.chainIds;
 
   if (chainId) {
     chainsToCheck = [chainId];
@@ -67,28 +74,36 @@ export async function mempoolLookup(
 
   for (const chainId of chainsToCheck) {
     const result = await new Promise((resolve, reject) => {
-      const options = {
-        hostname: dotenv.MEMPOOL_HOSTNAME,
-        port: dotenv.MEMPOOL_PORT,
-        path: `/chainweb/${networkData.apiVersion}/${networkData.networkId}/chain/${chainId}/mempool/lookup`,
-        method: 'POST',
-        rejectUnauthorized: false, // This disables certificate verification
-        headers: {
-          'Content-Type': 'application/json',
+      let host = dotenv.MEMPOOL_HOST;
+      let port;
+
+      if (host.includes(':')) {
+        [host, port] = host.split(':');
+      }
+
+      const req = request(
+        {
+          host,
+          port,
+          path: `/chainweb/${networkData.apiVersion}/${networkData.networkId}/chain/${chainId}/mempool/lookup`,
+          method: 'POST',
+          rejectUnauthorized: false, // This disables certificate verification
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
-      };
+        (res) => {
+          let data = '';
 
-      const req = https.request(options, (res) => {
-        let data = '';
+          res.on('data', (chunk) => {
+            data += chunk;
+          });
 
-        res.on('data', (chunk) => {
-          data += chunk;
-        });
-
-        res.on('end', () => {
-          resolve(JSON.parse(data));
-        });
-      });
+          res.on('end', () => {
+            resolve(JSON.parse(data));
+          });
+        },
+      );
 
       req.on('error', (error) => {
         reject(

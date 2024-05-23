@@ -54,6 +54,7 @@ export {
   Accordion,
   AccordionItem,
   Avatar,
+  Badge,
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
@@ -69,6 +70,7 @@ export {
   DialogContent,
   DialogFooter,
   DialogHeader,
+  DialogHeaderSubtitle,
   Divider,
   Form,
   FormFieldHeader,
@@ -126,3 +128,7 @@ export type {
 
 // re-exports from 'react-aria'
 export { RouterProvider } from 'react-aria';
+
+export { useTheme } from './utils';
+export { Themes } from './utils/useTheme/utils/constants';
+export type { ITheme } from './utils/useTheme/utils/constants';

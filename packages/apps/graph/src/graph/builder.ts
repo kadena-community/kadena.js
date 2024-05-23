@@ -19,6 +19,7 @@ import {
 import type { IncomingMessage } from 'http';
 import { prismaClient } from '../db/prisma-client';
 import type {
+  IBlockNeighbor,
   IContinuationPayload,
   IExecutionPayload,
   IFungibleAccount,
@@ -26,6 +27,7 @@ import type {
   IGasLimitEstimation,
   IGraphConfiguration,
   IGuard,
+  INetworkInfo,
   INonFungibleAccount,
   INonFungibleChainAccount,
   INonFungibleToken,
@@ -93,6 +95,8 @@ export const builder = new SchemaBuilder<
       TransactionCapability: ITransactionCapability;
       TransactionSignature: ITransactionSignature;
       PactQueryResponse: IPactQueryResponse;
+      NetworkInfo: INetworkInfo;
+      BlockNeighbor: IBlockNeighbor;
     };
   }
 >({

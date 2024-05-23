@@ -1,7 +1,10 @@
 import z from 'zod';
 
 import type { ChainId, IPactCommand } from '@kadena/client';
+import type { PactValue } from '@kadena/types';
 import { formatZodError } from '../../../utils/globalHelpers.js';
+
+const pactValueSchema = z.any().transform((x) => x as PactValue);
 
 const legacyCapSchema = z
   .object({
@@ -9,7 +12,7 @@ const legacyCapSchema = z
     caps: z.array(
       z.object({
         name: z.string(),
-        args: z.array(z.any()),
+        args: z.array(pactValueSchema),
       }),
     ),
   })
@@ -24,7 +27,7 @@ const legacy2CapSchema = z
     caps: z.array(
       z.object({
         name: z.string(),
-        args: z.array(z.any()),
+        args: z.array(pactValueSchema),
       }),
     ),
   })
@@ -33,12 +36,23 @@ const legacy2CapSchema = z
     clist: sig.caps,
   }));
 
+const verifierSchema = z.object({
+  name: z.string(),
+  proof: pactValueSchema,
+  clist: z.array(
+    z.object({
+      name: z.string(),
+      args: z.array(pactValueSchema),
+    }),
+  ),
+});
+
 const capSchema = z.object({
   pubKey: z.string(),
   clist: z.array(
     z.object({
       name: z.string(),
-      args: z.array(z.any()),
+      args: z.array(pactValueSchema),
     }),
   ),
 });
@@ -65,6 +79,7 @@ const templatePartialSchema = z
       }),
     }),
     signers: z.array(z.union([capSchema, legacy2CapSchema, legacyCapSchema])),
+    verifiers: z.array(verifierSchema).optional(),
     meta: templatePartialMetaSchema.optional(),
     publicMeta: templatePartialMetaSchema.optional(),
     nonce: z.string().optional().default(''),

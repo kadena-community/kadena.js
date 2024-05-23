@@ -1,10 +1,8 @@
 import type { ChainId } from '@kadena/types';
 import { z } from 'zod';
 import { chainIdValidation } from '../account/utils/accountHelpers.js';
-import {
-  INVALID_FILE_NAME_ERROR_MSG,
-  MAX_CHAIN_VALUE,
-} from '../constants/config.js';
+import { MAX_CHAIN_VALUE } from '../constants/config.js';
+import { INVALID_FILE_NAME_ERROR_MSG } from '../constants/global.js';
 import { NO_NETWORKS_FOUND_ERROR_MESSAGE } from '../constants/networks.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import {
@@ -28,7 +26,7 @@ export const chainIdPrompt: IPrompt<string> = async (
 ) => {
   const defaultValue = (args.defaultValue as string) || '0';
   return (await input({
-    message: `Enter ChainId (0-${MAX_CHAIN_VALUE})`,
+    message: `Enter ChainId (0-${MAX_CHAIN_VALUE}):`,
     default: defaultValue,
     validate: function (input) {
       const chainId = parseInt(input.trim(), 10);
@@ -49,7 +47,7 @@ export const networkNamePrompt: IPrompt<string> = async (
 ) => {
   const defaultValue = (previousQuestions.network as string) || undefined;
   return await input({
-    message: 'Enter a network name (e.g. "mainnet")',
+    message: 'Enter a network name (e.g. "mainnet"):',
     default: defaultValue,
     validate: function (input) {
       if (!isNotEmptyString(input.trim())) return 'Network name is required.';
@@ -68,7 +66,8 @@ export const networkIdPrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  const defaultValue = args.defaultValue as string;
+  const defaultValue = (args.defaultValue ??
+    previousQuestions.defaultValue) as string;
   const validate = function (input: string): string | boolean {
     if (isOptional) return true;
 
@@ -78,7 +77,7 @@ export const networkIdPrompt: IPrompt<string> = async (
   };
 
   return await getInputPrompt(
-    'Enter a network id (e.g. "mainnet01")',
+    'Enter a network id (e.g. "mainnet01"):',
     defaultValue,
     validate,
   );
@@ -89,7 +88,8 @@ export const networkHostPrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  const defaultValue = args.defaultValue as string;
+  const defaultValue = (args.defaultValue ??
+    previousQuestions.defaultValue) as string;
   const validate = function (input: string): string | boolean {
     if (isOptional && !isNotEmptyString(input.trim())) return true;
 
@@ -102,7 +102,7 @@ export const networkHostPrompt: IPrompt<string> = async (
   };
 
   return await getInputPrompt(
-    'Enter Kadena network host (e.g. "https://api.chainweb.com")',
+    'Enter Kadena network host (e.g. "https://api.chainweb.com"):',
     defaultValue,
     validate,
   );
@@ -113,9 +113,10 @@ export const networkExplorerUrlPrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  const defaultValue = args.defaultValue as string;
+  const defaultValue = (args.defaultValue ??
+    previousQuestions.defaultValue) as string;
   return await getInputPrompt(
-    'Enter Kadena network explorer URL (e.g. "https://explorer.chainweb.com/mainnet/tx/")',
+    'Enter Kadena network explorer URL (e.g. "https://explorer.chainweb.com/mainnet/tx/"):',
     defaultValue,
   );
 };
@@ -148,7 +149,7 @@ export const networkSelectPrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  const networkText = (args.networkText as string) ?? 'Select a network';
+  const networkText = (args.networkText as string) ?? 'Select a network:';
   const existingNetworks: ICustomNetworkChoice[] = await getExistingNetworks();
 
   const allowedNetworks =
@@ -249,7 +250,7 @@ export const networkSelectOnlyPrompt: IPrompt<string> = async (
   }));
 
   const selectedNetwork = await select({
-    message: 'Select a network',
+    message: 'Select a network:',
     choices: choices,
   });
 
@@ -277,7 +278,7 @@ export const networkSelectWithNonePrompt: IPrompt<string> = async (
   }
 
   const selectedNetwork = await select({
-    message: 'Select a network',
+    message: 'Select a network:',
     choices: choices,
   });
 
@@ -298,14 +299,17 @@ export const networkDeletePrompt: IPrompt<string> = async (
   if (previousQuestions.isDefaultNetwork === true) {
     message += `\nYou have currently set this as your "default network". If you delete it, then the default network settings will also be deleted.`;
   }
-
-  return await select({
-    message,
-    choices: [
-      { value: 'yes', name: 'Yes' },
-      { value: 'no', name: 'No' },
-    ],
+  message += '\n  type "yes" to confirm or "no" to cancel and press enter. \n';
+  const answer = await input({
+    message: message,
+    validate: (input) => {
+      if (input === 'yes' || input === 'no') {
+        return true;
+      }
+      return 'Please type "yes" to confirm or "no" to cancel.';
+    },
   });
+  return answer;
 };
 
 export const networkDefaultConfirmationPrompt: IPrompt<boolean> = async (

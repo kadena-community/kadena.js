@@ -1,6 +1,6 @@
 {
   "name": "@kadena/chainweb-stream-client",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Chainweb-stream client for browsers and node.js",
   "keywords": [],
   "repository": {

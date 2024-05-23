@@ -20,13 +20,11 @@ import {
 export const signTransactionWithKeyPairAction = async ({
   commands: unsignedTransactions,
   keyPairs,
-  legacy,
   directory,
 }: {
   keyPairs: IWalletKeyPair[];
   commands: IUnsignedCommand[];
   directory?: string;
-  legacy?: boolean;
 }): Promise<
   CommandResult<{ commands: { command: ICommand; path: string }[] }>
 > => {
@@ -41,7 +39,6 @@ export const signTransactionWithKeyPairAction = async ({
     const signedCommands = await signTransactionWithKeyPair(
       keyPairs,
       unsignedTransactions,
-      legacy,
     );
 
     const savedTransactions = await saveSignedTransactions(
@@ -63,7 +60,6 @@ export const signTransactionWithKeyPairAction = async ({
 export const signTransactionFileWithKeyPairAction = async (data: {
   keyPairs: IWalletKeyPair[];
   files: string[];
-  legacy?: boolean;
 }): Promise<
   CommandResult<{ commands: { command: ICommand; path: string }[] }>
 > => {
@@ -85,14 +81,12 @@ export async function signWithKeypair(
   stdin?: string,
 ): Promise<void> {
   const key = await option.keyPairs();
-  const mode = await option.legacy();
 
   const result = await (async () => {
     if (stdin !== undefined) {
       const command = await parseTransactionsFromStdin(stdin);
       log.debug('sign-with-keypair:action', {
         ...key,
-        ...mode,
         command,
       });
 
@@ -102,7 +96,6 @@ export async function signWithKeypair(
           publicKey: x.publicKey,
           secretKey: x.secretKey!,
         })),
-        legacy: mode.legacy,
       });
     } else {
       const { directory } = await option.directory();
@@ -117,7 +110,6 @@ export async function signWithKeypair(
         ...key,
         directory,
         ...files,
-        ...mode,
       });
       return await signTransactionFileWithKeyPairAction({
         files: absolutePaths,
@@ -125,7 +117,6 @@ export async function signWithKeypair(
           publicKey: x.publicKey,
           secretKey: x.secretKey!,
         })),
-        legacy: mode.legacy,
       });
     }
   })();

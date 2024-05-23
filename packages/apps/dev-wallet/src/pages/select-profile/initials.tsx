@@ -18,7 +18,7 @@ const InitialsAvatar = (props: { name: string }) => {
     return initials;
   };
 
-  const initials = getInitials(props.name);
+  const initials = getInitials(props.name || 'default');
 
   return <div className={initialsClass}>{initials}</div>;
 };

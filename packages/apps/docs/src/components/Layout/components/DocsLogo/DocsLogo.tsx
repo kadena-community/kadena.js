@@ -1,27 +1,16 @@
-import { useTheme } from 'next-themes';
+import type { ITheme } from '@kadena/react-ui';
+import { Themes, useTheme } from '@kadena/react-ui';
 import type { ComponentPropsWithRef, FC } from 'react';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 interface IProps extends ComponentPropsWithRef<'svg'> {
-  overwriteTheme?: 'light' | 'dark';
+  overwriteTheme?: ITheme;
 }
 
 export const DocsLogo: FC<IProps> = ({ overwriteTheme, ...props }) => {
-  const { theme } = useTheme() ?? 'dark';
-  const [innerTheme, setInnerTheme] = useState<string | undefined>(
-    overwriteTheme,
-  );
+  const { theme } = useTheme({ overwriteTheme });
 
-  //fixes the logo color when the theme is loaded
-  useEffect(() => {
-    if (overwriteTheme) {
-      setInnerTheme(overwriteTheme);
-    } else {
-      setInnerTheme(theme);
-    }
-  }, [theme, overwriteTheme]);
-
-  if (innerTheme === 'dark') {
+  if (theme === Themes.dark) {
     return (
       <svg
         width="216"
