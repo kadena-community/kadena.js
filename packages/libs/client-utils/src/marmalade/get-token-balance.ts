@@ -1,34 +1,37 @@
 import type { IPactModules, PactReturnType } from '@kadena/client';
 import { Pact } from '@kadena/client';
-import { composePactCommand, execution, setMeta } from '@kadena/client/fp';
-import type { ChainId } from '@kadena/types';
+import { execution } from '@kadena/client/fp';
+import type { ChainId, NetworkId } from '@kadena/types';
+import { pipe } from 'ramda';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
 interface IGetBalanceInput {
   tokenId: string;
-  chainId: ChainId;
   accountName: string;
+  chainId: ChainId;
+  networkId: NetworkId;
+  host?: IClientConfig['host'];
 }
 
-const getTokenBalanceCommand = ({
+export const getTokenBalance = ({
   tokenId,
-  chainId,
   accountName,
+  chainId,
+  networkId,
+  host,
 }: IGetBalanceInput) =>
-  composePactCommand(
-    execution(
+  pipe(
+    () =>
       Pact.modules['marmalade-v2.ledger']['get-balance'](tokenId, accountName),
-    ),
-    setMeta({
-      chainId,
+    execution,
+    dirtyReadClient<
+      PactReturnType<IPactModules['marmalade-v2.ledger']['get-balance']>
+    >({
+      host,
+      defaults: {
+        networkId,
+        meta: { chainId },
+      },
     }),
-  );
-
-export const getTokenBalance = (
-  inputs: IGetBalanceInput,
-  config: IClientConfig,
-) =>
-  dirtyReadClient<
-    PactReturnType<IPactModules['marmalade-v2.ledger']['get-balance']>
-  >(config)(getTokenBalanceCommand(inputs));
+  )().execute();

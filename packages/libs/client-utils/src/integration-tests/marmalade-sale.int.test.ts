@@ -50,7 +50,11 @@ const config = {
 
 describe('createTokenId', () => {
   it('should return a token id', async () => {
-    tokenId = await createTokenId(inputs, config).execute();
+    tokenId = await createTokenId({
+      ...inputs,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(tokenId).toBeDefined();
     expect(tokenId).toMatch(/^t:.{43}$/);
@@ -173,14 +177,13 @@ describe('mintToken', () => {
 
     expect(result).toBe(true);
 
-    const balance = await getTokenBalance(
-      {
-        accountName: sourceAccount.account,
-        chainId,
-        tokenId: tokenId as string,
-      },
-      config,
-    ).execute();
+    const balance = await getTokenBalance({
+      accountName: sourceAccount.account,
+      chainId,
+      tokenId: tokenId as string,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(balance).toBe(1);
   });
@@ -267,25 +270,23 @@ describe('offerToken - default', () => {
 
     expect(result).toBe(saleId);
 
-    const sellerBalance = await getTokenBalance(
-      {
-        accountName: sourceAccount.account,
-        chainId,
-        tokenId: tokenId as string,
-      },
-      saleConfig,
-    ).execute();
+    const sellerBalance = await getTokenBalance({
+      accountName: sourceAccount.account,
+      tokenId: tokenId as string,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(sellerBalance).toBe(0);
 
-    const escrowBalance = await getTokenBalance(
-      {
-        accountName: escrowAccount as string,
-        chainId,
-        tokenId: tokenId as string,
-      },
-      saleConfig,
-    ).execute();
+    const escrowBalance = await getTokenBalance({
+      accountName: escrowAccount as string,
+      tokenId: tokenId as string,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(escrowBalance).toBe(1);
   });
@@ -442,14 +443,13 @@ describe('withdrawToken', () => {
 
     expect(result).toBe(saleId);
 
-    const balance = await getTokenBalance(
-      {
-        accountName: sourceAccount.account,
-        chainId,
-        tokenId: tokenId as string,
-      },
-      config,
-    ).execute();
+    const balance = await getTokenBalance({
+      accountName: sourceAccount.account,
+      tokenId: tokenId as string,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(balance).toBe(1);
   });
@@ -471,7 +471,11 @@ describe('buyToken', () => {
   };
 
   it('should create token id', async () => {
-    tokenId = await createTokenId(inputs, config).execute();
+    tokenId = await createTokenId({
+      ...inputs,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(tokenId).toBeDefined();
     expect(tokenId).toMatch(/^t:.{43}$/);
@@ -627,14 +631,13 @@ describe('buyToken', () => {
 
     expect(result).toBe(saleId);
 
-    const balance = await getTokenBalance(
-      {
-        accountName: secondaryTargetAccount.account,
-        chainId,
-        tokenId: tokenId as string,
-      },
-      config,
-    ).execute();
+    const balance = await getTokenBalance({
+      accountName: secondaryTargetAccount.account,
+      chainId,
+      tokenId: tokenId as string,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(balance).toBe(1);
   });

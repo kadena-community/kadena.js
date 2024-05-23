@@ -1,7 +1,8 @@
 import type { IPactModules, PactReturnType } from '@kadena/client';
 import { Pact } from '@kadena/client';
-import { composePactCommand, execution, setMeta } from '@kadena/client/fp';
-import type { ChainId } from '@kadena/types';
+import { execution } from '@kadena/client/fp';
+import type { ChainId, NetworkId } from '@kadena/types';
+import { pipe } from 'ramda';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 import type { IAuctionConfig } from './config';
@@ -10,45 +11,52 @@ interface IGetAuctionDetailsInput {
   auctionConfig: IAuctionConfig;
   saleId: string;
   chainId: ChainId;
+  networkId: NetworkId;
+  host?: IClientConfig['host'];
 }
 
-const getAuctionDetailsCommand = ({
+export const getAuctionDetails = async ({
   auctionConfig,
   saleId,
   chainId,
-}: IGetAuctionDetailsInput) =>
-  composePactCommand(
-    execution(
-      auctionConfig.conventional
-        ? Pact.modules['marmalade-sale.conventional-auction'][
-            'retrieve-auction'
-          ](saleId)
-        : Pact.modules['marmalade-sale.dutch-auction']['retrieve-auction'](
-            saleId,
-          ),
-    ),
-    setMeta({
-      chainId,
-    }),
-  );
+  host,
+  networkId,
+}: IGetAuctionDetailsInput) => {
+  const config = {
+    host,
+    defaults: {
+      networkId,
+      meta: { chainId },
+    },
+  };
 
-export const getAuctionDetails = (
-  inputs: IGetAuctionDetailsInput,
-  config: IClientConfig,
-) => {
-  if (inputs.auctionConfig?.conventional)
-    return dirtyReadClient<
-      PactReturnType<
-        IPactModules['marmalade-sale.conventional-auction']['retrieve-auction']
-      >
-    >(config)(getAuctionDetailsCommand(inputs));
+  if (auctionConfig?.conventional)
+    return pipe(
+      () =>
+        Pact.modules['marmalade-sale.conventional-auction']['retrieve-auction'](
+          saleId,
+        ),
+      execution,
+      dirtyReadClient<
+        PactReturnType<
+          IPactModules['marmalade-sale.conventional-auction']['retrieve-auction']
+        >
+      >(config),
+    )().execute();
 
-  if (inputs.auctionConfig?.dutch)
-    return dirtyReadClient<
-      PactReturnType<
-        IPactModules['marmalade-sale.dutch-auction']['retrieve-auction']
-      >
-    >(config)(getAuctionDetailsCommand(inputs));
+  if (auctionConfig?.dutch)
+    return pipe(
+      () =>
+        Pact.modules['marmalade-sale.dutch-auction']['retrieve-auction'](
+          saleId,
+        ),
+      execution,
+      dirtyReadClient<
+        PactReturnType<
+          IPactModules['marmalade-sale.dutch-auction']['retrieve-auction']
+        >
+      >(config),
+    )().execute();
 
   throw new Error('Invalid sale type');
 };

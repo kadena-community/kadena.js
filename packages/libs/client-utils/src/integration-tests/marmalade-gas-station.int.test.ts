@@ -90,7 +90,11 @@ beforeAll(async () => {
 
 describe('createTokenId', () => {
   it('should return a token id', async () => {
-    tokenId = await createTokenId(inputs, config).execute();
+    tokenId = await createTokenId({
+      ...inputs,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(tokenId).toBeDefined();
     expect(tokenId).toMatch(/^t:.{43}$/);
@@ -233,14 +237,13 @@ describe('mintToken', () => {
 
     expect(result).toBe(true);
 
-    const balance = await getTokenBalance(
-      {
-        accountName: sourceAccount.account,
-        chainId,
-        tokenId: tokenId as string,
-      },
-      config,
-    ).execute();
+    const balance = await getTokenBalance({
+      accountName: sourceAccount.account,
+      tokenId: tokenId as string,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(balance).toBe(1);
   });

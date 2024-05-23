@@ -6,13 +6,9 @@ import type {
   PactReturnType,
 } from '@kadena/client';
 import { Pact, readKeyset } from '@kadena/client';
-import {
-  addKeyset,
-  composePactCommand,
-  execution,
-  setMeta,
-} from '@kadena/client/fp';
-import type { IPactInt } from '@kadena/types';
+import { addKeyset, execution } from '@kadena/client/fp';
+import type { IPactInt, NetworkId } from '@kadena/types';
+import { pipe } from 'ramda';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 import type { ICreateTokenPolicyConfig } from './config';
@@ -23,27 +19,31 @@ interface ICreateTokenIdInput {
   policies?: string[];
   uri: string;
   precision: IPactInt | PactReference;
-  chainId: ChainId;
   creator: {
     keyset: {
       keys: string[];
       pred: BuiltInPredicate;
     };
   };
+  chainId: ChainId;
+  networkId: NetworkId;
+  host?: IClientConfig['host'];
 }
 
-const createTokenIdCommand = ({
+export const createTokenId = ({
   policies = [],
   uri,
   precision,
   creator,
-  chainId,
   policyConfig,
+  chainId,
+  networkId,
+  host,
 }: ICreateTokenIdInput) => {
   validatePolicies(policyConfig, policies);
 
-  return composePactCommand(
-    execution(
+  return pipe(
+    () =>
       Pact.modules['marmalade-v2.ledger']['create-token-id'](
         {
           precision,
@@ -53,16 +53,16 @@ const createTokenIdCommand = ({
         },
         readKeyset('creation-guard'),
       ),
-    ),
+    execution,
     addKeyset('creation-guard', creator.keyset.pred, ...creator.keyset.keys),
-    setMeta({ chainId }),
-  );
+    dirtyReadClient<
+      PactReturnType<IPactModules['marmalade-v2.ledger']['create-token-id']>
+    >({
+      host,
+      defaults: {
+        networkId,
+        meta: { chainId },
+      },
+    }),
+  )().execute();
 };
-
-export const createTokenId = (
-  inputs: ICreateTokenIdInput,
-  config: Omit<IClientConfig, 'sign'>,
-) =>
-  dirtyReadClient<
-    PactReturnType<IPactModules['marmalade-v2.ledger']['create-token-id']>
-  >(config)(createTokenIdCommand(inputs));

@@ -1,6 +1,8 @@
 import type { ChainId, IPactModules, PactReturnType } from '@kadena/client';
 import { Pact } from '@kadena/client';
-import { composePactCommand, execution, setMeta } from '@kadena/client/fp';
+import { execution } from '@kadena/client/fp';
+import { NetworkId } from '@kadena/types';
+import { pipe } from 'ramda';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
@@ -8,29 +10,33 @@ interface ICreateBidIdInput {
   saleId: string;
   bidderAccount: string;
   chainId: ChainId;
+  networkId: NetworkId;
+  host?: IClientConfig['host'];
 }
 
-const createBidIdCommand = ({
+export const createBidId = ({
   saleId,
   bidderAccount,
   chainId,
+  networkId,
+  host,
 }: ICreateBidIdInput) =>
-  composePactCommand(
-    execution(
+  pipe(
+    () =>
       Pact.modules['marmalade-sale.conventional-auction']['create-bid-id'](
         saleId,
         bidderAccount,
       ),
-    ),
-    setMeta({ chainId }),
-  );
-
-export const createBidId = (
-  inputs: ICreateBidIdInput,
-  config: Omit<IClientConfig, 'sign'>,
-) =>
-  dirtyReadClient<
-    PactReturnType<
-      IPactModules['marmalade-sale.conventional-auction']['create-bid-id']
-    >
-  >(config)(createBidIdCommand(inputs));
+    execution,
+    dirtyReadClient<
+      PactReturnType<
+        IPactModules['marmalade-sale.conventional-auction']['create-bid-id']
+      >
+    >({
+      host,
+      defaults: {
+        networkId,
+        meta: { chainId },
+      },
+    }),
+  )().execute();

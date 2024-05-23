@@ -43,7 +43,11 @@ const config = {
 
 describe('createTokenId', () => {
   it('should return a token id', async () => {
-    tokenId = await createTokenId(inputs, config).execute();
+    tokenId = await createTokenId({
+      ...inputs,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(tokenId).toBeDefined();
     expect(tokenId).toMatch(/^t:.{43}$/);
@@ -108,9 +112,11 @@ describe('createToken', () => {
     const _inputs = {
       ...inputs,
       policies: ['marmalade-v2.guard-policy-v1'],
+      networkId: config.defaults.networkId,
+      host: config.host,
     };
 
-    const tokenId = await createTokenId(_inputs, config).execute();
+    const tokenId = await createTokenId(_inputs);
 
     expect(tokenId).toBeDefined();
     expect(tokenId).toMatch(/^t:.{43}$/);
@@ -235,14 +241,13 @@ describe('mintToken', () => {
 
     expect(result).toBe(true);
 
-    const balance = await getTokenBalance(
-      {
-        accountName: sourceAccount.account,
-        chainId,
-        tokenId: tokenId as string,
-      },
-      config,
-    ).execute();
+    const balance = await getTokenBalance({
+      accountName: sourceAccount.account,
+      tokenId: tokenId as string,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(balance).toBe(1);
   });
@@ -273,29 +278,27 @@ describe('mintToken', () => {
 
 describe('getTokenBalance', () => {
   it('should get a balance', async () => {
-    const result = await getTokenBalance(
-      {
-        accountName: sourceAccount.account,
-        chainId,
-        tokenId: tokenId as string,
-      },
-      config,
-    ).execute();
+    const result = await getTokenBalance({
+      accountName: sourceAccount.account,
+      tokenId: tokenId as string,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(result).toBeGreaterThan(0);
   });
   it('should throw an error if token does not exist', async () => {
     const nonExistingTokenId = 'non-existing-token';
-    const task = getTokenBalance(
-      {
-        accountName: sourceAccount.account,
-        chainId,
-        tokenId: nonExistingTokenId,
-      },
-      config,
-    );
+    const task = getTokenBalance({
+      accountName: sourceAccount.account,
+      tokenId: nonExistingTokenId,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
-    await expect(() => task.execute()).rejects.toThrowError(
+    await expect(() => Promise.resolve(task)).rejects.toThrowError(
       new Error(
         `read: row not found: ${nonExistingTokenId}:${sourceAccount.account}`,
       ),
@@ -305,14 +308,13 @@ describe('getTokenBalance', () => {
 
 describe('getAccountDetails', () => {
   it('should get the account details', async () => {
-    const result = await getAccountDetails(
-      {
-        chainId,
-        accountName: sourceAccount.account,
-        tokenId: tokenId as string,
-      },
-      config,
-    ).execute();
+    const result = await getAccountDetails({
+      chainId,
+      accountName: sourceAccount.account,
+      tokenId: tokenId as string,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(result).toStrictEqual({
       account: sourceAccount.account,
@@ -326,16 +328,15 @@ describe('getAccountDetails', () => {
   });
   it('should throw an error if token does not exist', async () => {
     const nonExistingTokenId = 'non-existing-token';
-    const task = getAccountDetails(
-      {
-        chainId,
-        accountName: sourceAccount.account,
-        tokenId: nonExistingTokenId,
-      },
-      config,
-    );
+    const task = getAccountDetails({
+      chainId,
+      accountName: sourceAccount.account,
+      tokenId: nonExistingTokenId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
-    await expect(() => task.execute()).rejects.toThrowError(
+    await expect(() => Promise.resolve(task)).rejects.toThrowError(
       new Error(
         `read: row not found: ${nonExistingTokenId}:${sourceAccount.account}`,
       ),
@@ -345,13 +346,12 @@ describe('getAccountDetails', () => {
 
 describe('getTokenInfo', () => {
   it('should get the info', async () => {
-    const result = await getTokenInfo(
-      {
-        chainId,
-        tokenId: tokenId as string,
-      },
-      config,
-    ).execute();
+    const result = await getTokenInfo({
+      tokenId: tokenId as string,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(result).toStrictEqual({
       supply: 1,
@@ -363,15 +363,14 @@ describe('getTokenInfo', () => {
   });
   it('should throw an error if token does not exist', async () => {
     const nonExistingTokenId = 'non-existing-token';
-    const task = getTokenInfo(
-      {
-        chainId,
-        tokenId: nonExistingTokenId,
-      },
-      config,
-    );
+    const task = getTokenInfo({
+      chainId,
+      tokenId: nonExistingTokenId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
-    await expect(() => task.execute()).rejects.toThrowError(
+    await expect(() => Promise.resolve(task)).rejects.toThrowError(
       new Error(`with-read: row not found: ${nonExistingTokenId}`),
     );
   });
@@ -379,27 +378,25 @@ describe('getTokenInfo', () => {
 
 describe('getTokenUri', () => {
   it('should get the uri', async () => {
-    const result = await getUri(
-      {
-        chainId,
-        tokenId: tokenId as string,
-      },
-      config,
-    ).execute();
+    const result = await getUri({
+      tokenId: tokenId as string,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(result).toBe(inputs.uri);
   });
   it('should throw an error if token does not exist', async () => {
     const nonExistingTokenId = 'non-existing-token';
-    const task = getUri(
-      {
-        chainId,
-        tokenId: nonExistingTokenId,
-      },
-      config,
-    );
+    const task = getUri({
+      chainId,
+      tokenId: nonExistingTokenId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
-    await expect(() => task.execute()).rejects.toThrowError(
+    await expect(() => Promise.resolve(task)).rejects.toThrowError(
       new Error(`with-read: row not found: ${nonExistingTokenId}`),
     );
   });
@@ -518,14 +515,13 @@ describe('transferCreateToken', () => {
 
     expect(result).toBe(true);
 
-    const balance = await getTokenBalance(
-      {
-        accountName: secondaryTargetAccount.account,
-        chainId: chainId,
-        tokenId: tokenId as string,
-      },
-      { ...config, sign: createSignWithKeypair([secondaryTargetAccount]) },
-    ).execute();
+    const balance = await getTokenBalance({
+      accountName: secondaryTargetAccount.account,
+      chainId: chainId,
+      tokenId: tokenId as string,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(balance).toBe(1);
   });
@@ -630,14 +626,13 @@ describe('burnToken', () => {
 
     expect(result).toBe(true);
 
-    const balance = await getTokenBalance(
-      {
-        accountName: secondaryTargetAccount.account,
-        chainId,
-        tokenId: tokenId as string,
-      },
-      burnConfig,
-    ).execute();
+    const balance = await getTokenBalance({
+      accountName: secondaryTargetAccount.account,
+      tokenId: tokenId as string,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(balance).toBe(0);
   });

@@ -55,7 +55,11 @@ const config = {
 
 describe('createTokenId', () => {
   it('should return a token id', async () => {
-    tokenId = await createTokenId(inputs, config).execute();
+    tokenId = await createTokenId({
+      ...inputs,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(tokenId).toBeDefined();
     expect(tokenId).toMatch(/^t:.{43}$/);
@@ -178,14 +182,13 @@ describe('mintToken', () => {
 
     expect(result).toBe(true);
 
-    const balance = await getTokenBalance(
-      {
-        accountName: sourceAccount.account,
-        chainId,
-        tokenId: tokenId as string,
-      },
-      config,
-    ).execute();
+    const balance = await getTokenBalance({
+      accountName: sourceAccount.account,
+      chainId,
+      tokenId: tokenId as string,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(balance).toBe(1);
   });
@@ -471,16 +474,15 @@ describe('updateAuction', () => {
 
 describe('getAuctionDetails', () => {
   it('should get the auction details', async () => {
-    const result = await getAuctionDetails(
-      {
-        auctionConfig: {
-          dutch: true,
-        },
-        saleId: saleId as string,
-        chainId,
+    const result = await getAuctionDetails({
+      auctionConfig: {
+        dutch: true,
       },
-      config,
-    ).execute();
+      saleId: saleId as string,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(result).toStrictEqual(
       expect.objectContaining({
@@ -498,13 +500,12 @@ describe('getAuctionDetails', () => {
 
 describe('getCurrentPrice', () => {
   it('should return 0 if the auction has not started yet', async () => {
-    const result = await getCurrentPrice(
-      {
-        saleId: saleId as string,
-        chainId,
-      },
-      config,
-    ).execute();
+    const result = await getCurrentPrice({
+      saleId: saleId as string,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(result).toBe(0);
   });
@@ -512,13 +513,12 @@ describe('getCurrentPrice', () => {
   it('should return start price after the auction have started', async () => {
     await waitForBlockTime((Number(auctionStartDate.int) + 2) * 1000);
 
-    const result = await getCurrentPrice(
-      {
-        saleId: saleId as string,
-        chainId,
-      },
-      config,
-    ).execute();
+    const result = await getCurrentPrice({
+      saleId: saleId as string,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(result).toBe(10);
   });
@@ -543,7 +543,11 @@ describe('buyToken', () => {
   let auctionEndDate: IPactInt;
 
   it('should create token id', async () => {
-    tokenId = await createTokenId(inputs, config).execute();
+    tokenId = await createTokenId({
+      ...inputs,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(tokenId).toBeDefined();
     expect(tokenId).toMatch(/^t:.{43}$/);
@@ -713,23 +717,21 @@ describe('buyToken', () => {
       sign: createSignWithKeypair([secondaryTargetAccount]),
     };
 
-    const escrowAccount = await getEscrowAccount(
-      {
-        saleId: saleId as string,
-        chainId,
-      },
-      config,
-    ).execute();
+    const escrowAccount = await getEscrowAccount({
+      saleId: saleId as string,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(escrowAccount).toBeDefined();
 
-    const latestPrice = await getCurrentPrice(
-      {
-        saleId: saleId as string,
-        chainId,
-      },
-      config,
-    ).execute();
+    const latestPrice = await getCurrentPrice({
+      saleId: saleId as string,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(latestPrice).toBeDefined();
 
@@ -803,14 +805,13 @@ describe('buyToken', () => {
 
     expect(result).toBe(saleId);
 
-    const balance = await getTokenBalance(
-      {
-        accountName: secondaryTargetAccount.account,
-        chainId,
-        tokenId: tokenId as string,
-      },
-      config,
-    ).execute();
+    const balance = await getTokenBalance({
+      accountName: secondaryTargetAccount.account,
+      tokenId: tokenId as string,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(balance).toBe(1);
   });

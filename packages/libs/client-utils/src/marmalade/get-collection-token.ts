@@ -1,34 +1,37 @@
 import type { IPactModules, PactReturnType } from '@kadena/client';
 import { Pact } from '@kadena/client';
-import { composePactCommand, execution, setMeta } from '@kadena/client/fp';
-import type { ChainId } from '@kadena/types';
+import { execution } from '@kadena/client/fp';
+import type { ChainId, NetworkId } from '@kadena/types';
+import { pipe } from 'ramda';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
 interface IGetCollectionTokenInput {
   tokenId: string;
   chainId: ChainId;
+  networkId: NetworkId;
+  host?: IClientConfig['host'];
 }
 
-const getCollectionTokenCommand = ({
+export const getCollectionToken = ({
   tokenId,
   chainId,
+  networkId,
+  host,
 }: IGetCollectionTokenInput) =>
-  composePactCommand(
-    execution(
+  pipe(
+    () =>
       Pact.modules['marmalade-v2.collection-policy-v1']['get-token'](tokenId),
-    ),
-    setMeta({
-      chainId,
+    execution,
+    dirtyReadClient<
+      PactReturnType<
+        IPactModules['marmalade-v2.collection-policy-v1']['get-token']
+      >
+    >({
+      host,
+      defaults: {
+        networkId,
+        meta: { chainId },
+      },
     }),
-  );
-
-export const getCollectionToken = (
-  inputs: IGetCollectionTokenInput,
-  config: IClientConfig,
-) =>
-  dirtyReadClient<
-    PactReturnType<
-      IPactModules['marmalade-v2.collection-policy-v1']['get-token']
-    >
-  >(config)(getCollectionTokenCommand(inputs));
+  )().execute();

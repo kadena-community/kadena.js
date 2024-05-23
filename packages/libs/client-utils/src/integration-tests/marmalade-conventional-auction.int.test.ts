@@ -59,7 +59,11 @@ const config = {
 
 describe('createTokenId', () => {
   it('should return a token id', async () => {
-    tokenId = await createTokenId(inputs, config).execute();
+    tokenId = await createTokenId({
+      ...inputs,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(tokenId).toBeDefined();
     expect(tokenId).toMatch(/^t:.{43}$/);
@@ -182,14 +186,13 @@ describe('mintToken', () => {
 
     expect(result).toBe(true);
 
-    const balance = await getTokenBalance(
-      {
-        accountName: sourceAccount.account,
-        chainId,
-        tokenId: tokenId as string,
-      },
-      config,
-    ).execute();
+    const balance = await getTokenBalance({
+      accountName: sourceAccount.account,
+      tokenId: tokenId as string,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(balance).toBe(1);
   });
@@ -473,16 +476,15 @@ describe('updateAuction', () => {
 
 describe('getAuctionDetails', () => {
   it('should get the auction details', async () => {
-    const result = await getAuctionDetails(
-      {
-        auctionConfig: {
-          conventional: true,
-        },
-        saleId: saleId as string,
-        chainId,
+    const result = await getAuctionDetails({
+      auctionConfig: {
+        conventional: true,
       },
-      config,
-    ).execute();
+      saleId: saleId as string,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(result).toStrictEqual(
       expect.objectContaining({
@@ -501,13 +503,12 @@ describe('placeBid', () => {
 
     const withStep = withStepFactory();
 
-    const _escrowAccount = await escrowAccount(
-      {
-        saleId: saleId as string,
-        chainId,
-      },
-      config,
-    ).execute();
+    const _escrowAccount = await escrowAccount({
+      saleId: saleId as string,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
     const result = await placeBid(
       {
         bid: { decimal: '2.0' },
@@ -577,14 +578,13 @@ describe('placeBid', () => {
 
 describe('createBidId', () => {
   it('should return a bid id', async () => {
-    const bidId = await createBidId(
-      {
-        saleId: saleId as string,
-        bidderAccount: sourceAccount.account,
-        chainId,
-      },
-      config,
-    ).execute();
+    const bidId = await createBidId({
+      saleId: saleId as string,
+      bidderAccount: sourceAccount.account,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(bidId).toBeDefined();
   });
@@ -592,13 +592,12 @@ describe('createBidId', () => {
 
 describe('getBid', () => {
   it('should get the bid', async () => {
-    const result = await getBid(
-      {
-        bidId: bidId as string,
-        chainId,
-      },
-      config,
-    ).execute();
+    const result = await getBid({
+      bidId: bidId as string,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(result).toStrictEqual({
       bid: 2,
@@ -629,7 +628,11 @@ describe('buyToken', () => {
   let auctionEndDate: IPactInt;
 
   it('should create token id', async () => {
-    tokenId = await createTokenId(inputs, config).execute();
+    tokenId = await createTokenId({
+      ...inputs,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(tokenId).toBeDefined();
     expect(tokenId).toMatch(/^t:.{43}$/);
@@ -797,13 +800,12 @@ describe('buyToken', () => {
       sign: createSignWithKeypair([secondaryTargetAccount]),
     };
 
-    const _escrowAccount = await escrowAccount(
-      {
-        saleId: saleId as string,
-        chainId,
-      },
-      config,
-    ).execute();
+    const _escrowAccount = await escrowAccount({
+      saleId: saleId as string,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     const result = await placeBid(
       {
@@ -884,13 +886,12 @@ describe('buyToken', () => {
       sign: createSignWithKeypair([secondaryTargetAccount]),
     };
 
-    const _escrowAccount = await escrowAccount(
-      {
-        saleId: saleId as string,
-        chainId,
-      },
-      config,
-    ).execute();
+    const _escrowAccount = await escrowAccount({
+      saleId: saleId as string,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(_escrowAccount).toBeDefined();
 
@@ -962,15 +963,13 @@ describe('buyToken', () => {
 
     expect(result).toBe(saleId);
 
-    const balance = await getTokenBalance(
-      {
-        accountName: secondaryTargetAccount.account,
-        chainId,
-
-        tokenId: tokenId as string,
-      },
-      config,
-    ).execute();
+    const balance = await getTokenBalance({
+      accountName: secondaryTargetAccount.account,
+      tokenId: tokenId as string,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(balance).toBe(1);
   });

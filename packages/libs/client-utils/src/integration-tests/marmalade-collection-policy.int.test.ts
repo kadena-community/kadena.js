@@ -55,19 +55,18 @@ describe('createCollectionId', () => {
   it('should return a collection id', async () => {
     collectionName = `Test Collection #${Math.random().toString()}`;
 
-    collectionId = await createCollectionId(
-      {
-        collectionName,
-        chainId,
-        operator: {
-          keyset: {
-            keys: [sourceAccount.publicKey],
-            pred: 'keys-all' as const,
-          },
+    collectionId = await createCollectionId({
+      collectionName,
+      chainId,
+      operator: {
+        keyset: {
+          keys: [sourceAccount.publicKey],
+          pred: 'keys-all' as const,
         },
       },
-      config,
-    ).execute();
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(collectionId).toBeDefined();
     expect(collectionId).toMatch(/^collection:.{43}$/);
@@ -137,7 +136,11 @@ describe('createCollection', () => {
 
 describe('createTokenId', () => {
   it('should return a token id', async () => {
-    tokenId = await createTokenId(inputs, config).execute();
+    tokenId = await createTokenId({
+      ...inputs,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(tokenId).toBeDefined();
     expect(tokenId).toMatch(/^t:.{43}$/);
@@ -148,7 +151,11 @@ describe('createToken', () => {
   it('should create a token with policy', async () => {
     const withStep = withStepFactory();
 
-    const tokenId = await createTokenId(inputs, config).execute();
+    const tokenId = await createTokenId({
+      ...inputs,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(tokenId).toBeDefined();
     expect(tokenId).toMatch(/^t:.{43}$/);
@@ -268,14 +275,13 @@ describe('mintToken', () => {
 
     expect(result).toBe(true);
 
-    const balance = await getTokenBalance(
-      {
-        accountName: sourceAccount.account,
-        chainId,
-        tokenId: tokenId as string,
-      },
-      config,
-    ).execute();
+    const balance = await getTokenBalance({
+      accountName: sourceAccount.account,
+      chainId,
+      tokenId: tokenId as string,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(balance).toBe(1);
   });
@@ -306,13 +312,12 @@ describe('mintToken', () => {
 
 describe('getCollection', () => {
   it('should get the collection details', async () => {
-    const result = await getCollection(
-      {
-        chainId,
-        collectionId: collectionId as string,
-      },
-      config,
-    ).execute();
+    const result = await getCollection({
+      chainId,
+      collectionId: collectionId as string,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(result).toStrictEqual({
       id: collectionId,
@@ -328,15 +333,14 @@ describe('getCollection', () => {
   });
   it('should throw an error if token does not exist', async () => {
     const nonExistingTokenId = 'non-existing-collection';
-    const task = getCollection(
-      {
-        chainId,
-        collectionId: nonExistingTokenId,
-      },
-      config,
-    );
+    const task = getCollection({
+      collectionId: nonExistingTokenId,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
-    await expect(() => task.execute()).rejects.toThrowError(
+    await expect(() => Promise.resolve(task)).rejects.toThrowError(
       new Error(`read: row not found: non-existing-collection`),
     );
   });
@@ -344,13 +348,12 @@ describe('getCollection', () => {
 
 describe('getCollectionToken', () => {
   it('should get the collection token details', async () => {
-    const result = await getCollectionToken(
-      {
-        chainId,
-        tokenId: tokenId as string,
-      },
-      config,
-    ).execute();
+    const result = await getCollectionToken({
+      chainId,
+      tokenId: tokenId as string,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
     expect(result).toStrictEqual({
       id: tokenId,
@@ -359,15 +362,14 @@ describe('getCollectionToken', () => {
   });
   it('should throw an error if token does not exist', async () => {
     const nonExistingTokenId = 'non-existing-token';
-    const task = getCollectionToken(
-      {
-        chainId,
-        tokenId: nonExistingTokenId,
-      },
-      config,
-    );
+    const task = getCollectionToken({
+      chainId,
+      tokenId: nonExistingTokenId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
 
-    await expect(() => task.execute()).rejects.toThrowError(
+    await expect(() => Promise.resolve(task)).rejects.toThrowError(
       new Error(`read: row not found: non-existing-token`),
     );
   });

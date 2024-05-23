@@ -5,48 +5,49 @@ import type {
   PactReturnType,
 } from '@kadena/client';
 import { Pact, readKeyset } from '@kadena/client';
-import {
-  addKeyset,
-  composePactCommand,
-  execution,
-  setMeta,
-} from '@kadena/client/fp';
+import { addKeyset, execution } from '@kadena/client/fp';
+import { NetworkId } from '@kadena/types';
+import { pipe } from 'ramda';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
 interface ICreateCollectionIdInput {
   collectionName: string;
-  chainId: ChainId;
   operator: {
     keyset: {
       keys: string[];
       pred: BuiltInPredicate;
     };
   };
+  chainId: ChainId;
+  networkId: NetworkId;
+  host?: IClientConfig['host'];
 }
 
-const createCollectionIdCommand = ({
+export const createCollectionId = ({
   collectionName,
   operator,
   chainId,
+  networkId,
+  host,
 }: ICreateCollectionIdInput) =>
-  composePactCommand(
-    execution(
+  pipe(
+    () =>
       Pact.modules['marmalade-v2.collection-policy-v1']['create-collection-id'](
         collectionName,
         readKeyset('operator-guard'),
       ),
-    ),
+    execution,
     addKeyset('operator-guard', operator.keyset.pred, ...operator.keyset.keys),
-    setMeta({ chainId }),
-  );
-
-export const createCollectionId = (
-  inputs: ICreateCollectionIdInput,
-  config: Omit<IClientConfig, 'sign'>,
-) =>
-  dirtyReadClient<
-    PactReturnType<
-      IPactModules['marmalade-v2.collection-policy-v1']['create-collection-id']
-    >
-  >(config)(createCollectionIdCommand(inputs));
+    dirtyReadClient<
+      PactReturnType<
+        IPactModules['marmalade-v2.collection-policy-v1']['create-collection-id']
+      >
+    >({
+      host,
+      defaults: {
+        networkId,
+        meta: { chainId },
+      },
+    }),
+  )().execute();

@@ -1,33 +1,39 @@
 import type { IPactModules, PactReturnType } from '@kadena/client';
 import { Pact } from '@kadena/client';
-import { composePactCommand, execution, setMeta } from '@kadena/client/fp';
-import type { ChainId } from '@kadena/types';
+import { execution } from '@kadena/client/fp';
+import type { ChainId, NetworkId } from '@kadena/types';
+import { pipe } from 'ramda';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
 interface IEscrowAccountInput {
   saleId: string;
   chainId: ChainId;
+  networkId: NetworkId;
+  host?: IClientConfig['host'];
 }
 
-const escrowAccountCommand = ({ saleId, chainId }: IEscrowAccountInput) =>
-  composePactCommand(
-    execution(
+export const escrowAccount = ({
+  saleId,
+  chainId,
+  networkId,
+  host,
+}: IEscrowAccountInput) =>
+  pipe(
+    () =>
       Pact.modules['marmalade-sale.conventional-auction']['escrow-account'](
         saleId,
       ),
-    ),
-    setMeta({
-      chainId,
+    execution,
+    dirtyReadClient<
+      PactReturnType<
+        IPactModules['marmalade-sale.conventional-auction']['escrow-account']
+      >
+    >({
+      host,
+      defaults: {
+        networkId,
+        meta: { chainId },
+      },
     }),
-  );
-
-export const escrowAccount = (
-  inputs: IEscrowAccountInput,
-  config: IClientConfig,
-) =>
-  dirtyReadClient<
-    PactReturnType<
-      IPactModules['marmalade-sale.conventional-auction']['escrow-account']
-    >
-  >(config)(escrowAccountCommand(inputs));
+  )().execute();

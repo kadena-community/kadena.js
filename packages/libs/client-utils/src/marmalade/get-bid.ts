@@ -1,30 +1,34 @@
 import type { IPactModules, PactReturnType } from '@kadena/client';
 import { Pact } from '@kadena/client';
-import { composePactCommand, execution, setMeta } from '@kadena/client/fp';
-import type { ChainId } from '@kadena/types';
+import { execution } from '@kadena/client/fp';
+import type { ChainId, NetworkId } from '@kadena/types';
+import { pipe } from 'ramda';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
 interface IGetBidInput {
   bidId: string;
   chainId: ChainId;
+  networkId: NetworkId;
+  host?: IClientConfig['host'];
 }
 
-const getBidCommand = ({ bidId, chainId }: IGetBidInput) =>
-  composePactCommand(
-    execution(
+export const getBid = ({ bidId, chainId, networkId, host }: IGetBidInput) =>
+  pipe(
+    () =>
       Pact.modules['marmalade-sale.conventional-auction']['retrieve-bid'](
         bidId,
       ),
-    ),
-    setMeta({
-      chainId,
+    execution,
+    dirtyReadClient<
+      PactReturnType<
+        IPactModules['marmalade-sale.conventional-auction']['retrieve-bid']
+      >
+    >({
+      host,
+      defaults: {
+        networkId,
+        meta: { chainId },
+      },
     }),
-  );
-
-export const getBid = (inputs: IGetBidInput, config: IClientConfig) =>
-  dirtyReadClient<
-    PactReturnType<
-      IPactModules['marmalade-sale.conventional-auction']['retrieve-bid']
-    >
-  >(config)(getBidCommand(inputs));
+  )().execute();
