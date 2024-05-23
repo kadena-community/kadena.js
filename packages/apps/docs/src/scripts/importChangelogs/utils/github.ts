@@ -1,7 +1,8 @@
 import { getCommitData, getPRData } from '../api';
 import { MAXCALLS, errors } from '../constants';
 import { filterCommitsWithoutData, getCommits } from './commits';
-import { getPackages, writeContent } from './misc';
+import { writeContent } from './content';
+import { getPackages } from './misc';
 import { filterPRsWithoutData, getPrs } from './prs';
 
 /**

@@ -1,6 +1,7 @@
 import { isAfter } from 'date-fns';
 import { getVersionCommits } from './commits';
-import { getPackages, getVersions, writeContent } from './misc';
+import { writeContent } from './content';
+import { getPackages, getVersions } from './misc';
 import { getVersionPRs } from './prs';
 
 /**

@@ -15,11 +15,11 @@ import {
   success,
 } from './constants';
 import { checkVersionPosition } from './utils/checkNames';
+import { getChangelog, writeContent } from './utils/content';
 import { createVersion } from './utils/createVersion';
 import { createVersionRecord } from './utils/createVersionRecord';
 import { enrichPackageContent } from './utils/enrichPackageContent';
 import { getGitHubData } from './utils/github';
-import { getChangelog, writeContent } from './utils/misc';
 
 /**
  * Script that will check all the given packages their CHANGELOG file
