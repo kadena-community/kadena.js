@@ -66,7 +66,7 @@ From the Accounts page, you can also view, send, or request transfers.
 
 ## Select a network
 
-The Kadena SpireKey wallet is currently configured to create all new accounts on
+Kadena SpireKey is currently configured to create all new accounts on
 the Kadena test network (Testnet). The network information is always displayed
 on the account preview card, so you know the network you are creating an account
 on. In the future, you'll be able to select a specific network when registering
