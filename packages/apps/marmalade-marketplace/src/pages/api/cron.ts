@@ -6,16 +6,18 @@ import {
   getBlocksFromHeight,
   getLastBlockHeight,
 } from '@/graphql/queries/client';
+import { Sale } from '@/hooks/getSales';
 import { env } from '@/utils/env';
 import { database } from '@/utils/firebase';
+import { BuiltInPredicate } from '@kadena/client';
 import {
   DocumentSnapshot,
-  addDoc,
   collection,
   doc,
   getDoc,
   setDoc,
   updateDoc,
+  writeBatch,
 } from 'firebase/firestore';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -24,7 +26,35 @@ type ResponseData = {
   message: string;
 };
 
-type EventMap = { [chainId: number]: any[] };
+type Settings = {
+  isProcessing: boolean;
+  latestProcessedBlockNumber: number;
+};
+
+type Event = {
+  event: string;
+  chainId: number;
+  block: number;
+  occurredAt: number;
+  parameters: any[];
+  requestKey: string;
+};
+
+type Bid = {
+  bidId: string;
+  tokenId: string;
+  chainId: number;
+  block: number;
+  bid: number;
+  bidder: {
+    account: string;
+    guard: {
+      keys: string[];
+      pred: BuiltInPredicate;
+    };
+  };
+  requestKey: string;
+};
 
 const isChainEnabled: Record<string, boolean> = env.CHAIN_IDS.reduce(
   (acc, chainId) => ({ ...acc, [chainId]: true }),
@@ -37,7 +67,7 @@ const isEventEnabled: Record<string, boolean> = env.EVENTS.reduce(
 
 const getAllEventsFromBlock = async (blockNumber: number) => {
   console.log('Getting all events from block', blockNumber);
-  const events: EventMap = {};
+  const events: Event[] = [];
 
   let response: BlocksFromHeightQuery['blocksFromHeight'] | null = null;
   let shouldFetchMore = false;
@@ -74,23 +104,19 @@ const getAllEventsFromBlock = async (blockNumber: number) => {
         for (const event of txResult.events.edges) {
           if (!event || !isEventEnabled[event.node.qualifiedName]) continue;
 
-          if (!events[block.node.chainId]) events[block.node.chainId] = [];
-
-          events[block.node.chainId].push({
-            ...event.node,
+          const data = {
+            event: event.node.qualifiedName,
+            block: blockNumber,
+            chainId: block.node.chainId,
+            requestKey: event.node.requestKey,
             occurredAt: new Date(block.node.creationTime).getTime(),
             parameters: event.node.parameters
               ? JSON.parse(event.node.parameters)
               : [],
-          });
+          };
+          console.log(data);
 
-          console.log({
-            ...event.node,
-            occurredAt: new Date(block.node.creationTime).getTime(),
-            parameters: event.node.parameters
-              ? JSON.parse(event.node.parameters)
-              : [],
-          });
+          events.push(data);
         }
       }
     }
@@ -99,10 +125,187 @@ const getAllEventsFromBlock = async (blockNumber: number) => {
   return events;
 };
 
-type Settings = {
-  isProcessing: boolean;
-  latestProcessedBlockNumber: number;
-};
+function parseEvents(events: Event[]): {
+  sales: Sale[];
+  bids: Bid[];
+} {
+  const saleRecords: Record<string, Sale> = {};
+  const bidRecords: Record<string, Bid> = {};
+
+  for (const event of events) {
+    if (event.event === 'marmalade-v2.policy-manager.QUOTE') {
+      const [saleId, tokenId, data] = event.parameters;
+
+      saleRecords[saleId] = {
+        ...saleRecords[saleId],
+        requestKeys: {
+          ...(saleRecords[saleId]?.requestKeys || {}),
+          QUOTE: event.requestKey,
+        },
+        chainId: event.chainId,
+        block: event.block,
+        saleId,
+        tokenId,
+        seller: data['seller-fungible-account'],
+        saleType: data['sale-type'],
+        startPrice: data['sale-price'],
+      };
+      continue;
+    }
+
+    if (event.event === 'marmalade-v2.ledger.SALE') {
+      const [tokenId, sellerAccount, amount, timeout, saleId] =
+        event.parameters;
+
+      saleRecords[saleId] = {
+        ...saleRecords[saleId],
+        requestKeys: {
+          ...(saleRecords[saleId]?.requestKeys || {}),
+          SALE: event.requestKey,
+        },
+        seller: {
+          ...(saleRecords[saleId]?.seller || {}),
+          account: sellerAccount,
+        },
+        chainId: event.chainId,
+        block: event.block,
+        status: 'CREATED',
+        saleId,
+        tokenId,
+        amount,
+        timeoutAt: Number(timeout.int) * 1000,
+      };
+      continue;
+    }
+
+    if (event.event === 'marmalade-v2.ledger.WITHDRAW') {
+      const [tokenId, sellerAccount, amount, timeout, saleId] =
+        event.parameters;
+
+      saleRecords[saleId] = {
+        ...saleRecords[saleId],
+        requestKeys: {
+          ...(saleRecords[saleId]?.requestKeys || {}),
+          WITHDRAW: event.requestKey,
+        },
+        seller: {
+          ...(saleRecords[saleId]?.seller || {}),
+          account: sellerAccount,
+        },
+        chainId: event.chainId,
+        block: event.block,
+        status: 'WITHDRAWN',
+        tokenId,
+        saleId,
+        amount,
+        timeoutAt: Number(timeout.int) * 1000,
+      };
+      continue;
+    }
+
+    if (event.event === 'marmalade-v2.ledger.BUY') {
+      const [tokenId, seller, buyer, amount, saleId] = event.parameters;
+
+      saleRecords[saleId] = {
+        ...saleRecords[saleId],
+        requestKeys: {
+          ...(saleRecords[saleId]?.requestKeys || {}),
+          BUY: event.requestKey,
+        },
+        chainId: event.chainId,
+        block: event.block,
+        status: 'SOLD',
+        saleId,
+        tokenId,
+        buyer: { account: buyer },
+      };
+      continue;
+    }
+
+    if (event.event === 'marmalade-sale.dutch-auction.AUCTION_CREATED') {
+      const [saleId, tokenId] = event.parameters;
+
+      saleRecords[saleId] = {
+        ...saleRecords[saleId],
+        requestKeys: {
+          ...(saleRecords[saleId]?.requestKeys || {}),
+          AUCTION_CREATED: event.requestKey,
+        },
+        chainId: event.chainId,
+        block: event.block,
+        saleId,
+        tokenId,
+        saleType: 'marmalade-sale.dutch-auction',
+      };
+      continue;
+    }
+
+    if (event.event === 'marmalade-sale.dutch-auction.PRICE_ACCEPTED') {
+      const [saleId, buyer, buyerGuard, price, tokenId] = event.parameters;
+
+      saleRecords[saleId] = {
+        ...saleRecords[saleId],
+        requestKeys: {
+          ...(saleRecords[saleId]?.requestKeys || {}),
+          PRICE_ACCEPTED: event.requestKey,
+        },
+        chainId: event.chainId,
+        block: event.block,
+        buyer: {
+          account: buyer,
+          guard: buyerGuard,
+        },
+        price,
+        saleId,
+        tokenId,
+      };
+      continue;
+    }
+
+    if (event.event === 'marmalade-sale.conventional-auction.AUCTION_CREATED') {
+      const [saleId, tokenId, escrow] = event.parameters;
+
+      saleRecords[saleId] = {
+        ...saleRecords[saleId],
+        requestKeys: {
+          ...(saleRecords[saleId]?.requestKeys || {}),
+          AUCTION_CREATED: event.requestKey,
+        },
+        chainId: event.chainId,
+        block: event.block,
+        saleId,
+        tokenId,
+        escrow,
+        saleType: 'marmalade-sale.conventional-auction',
+      };
+      continue;
+    }
+
+    if (event.event === 'marmalade-sale.conventional-auction.BID_PLACED') {
+      const [bidId, bidder, bidderGuard, bid, tokenId] = event.parameters;
+
+      bidRecords[bidId] = {
+        ...bidRecords[bidId],
+        chainId: event.chainId,
+        block: event.block,
+        bidId,
+        tokenId,
+        bid,
+        bidder: {
+          account: bidder,
+          guard: bidderGuard,
+        },
+        requestKey: event.requestKey,
+      };
+      continue;
+    }
+  }
+
+  return {
+    sales: Object.values(saleRecords),
+    bids: Object.values(bidRecords),
+  };
+}
 
 async function saveSettings(settings: Partial<Settings>): Promise<void> {
   const settingsRef = doc(database, 'settings', 'default');
@@ -125,21 +328,24 @@ async function getSettings(): Promise<Settings> {
   }
 }
 
-async function storeEventsInFirebase(allEvents: EventMap, block: number) {
-  const chainIds = Object.keys(allEvents).map(Number);
+async function storeSalesInFirebase(sales: Sale[]) {
+  const batch = writeBatch(database);
 
-  for (const chainId of chainIds) {
-    const events = allEvents[chainId];
-    for (const event of events) {
-      await addDoc(collection(database, `events:${chainId}`), {
-        event: event.qualifiedName,
-        block,
-        occurredAt: event.occurredAt,
-        parameters: event.parameters,
-        requestKey: event.requestKey,
-      });
-    }
+  for (const sale of sales) {
+    const saleRef = doc(collection(database, 'sales'), sale.saleId);
+    batch.set(saleRef, sale, { merge: true });
   }
+  await batch.commit();
+}
+
+async function storeBidsInFirebase(bids: Bid[]) {
+  const batch = writeBatch(database);
+
+  for (const bid of bids) {
+    const bidRef = doc(collection(database, 'bids'), bid.bidId);
+    batch.set(bidRef, bid, { merge: true });
+  }
+  await batch.commit();
 }
 
 const sync = async (fromBlock: number, toBlock: number) => {
@@ -149,7 +355,15 @@ const sync = async (fromBlock: number, toBlock: number) => {
     for (let i = fromBlock; i <= toBlock; i++) {
       const events = await getAllEventsFromBlock(i);
 
-      await storeEventsInFirebase(events, i);
+      const { sales, bids } = parseEvents(events);
+
+      if (sales.length > 0) {
+        await storeSalesInFirebase(sales);
+      }
+
+      if (bids.length > 0) {
+        await storeBidsInFirebase(bids);
+      }
 
       await saveSettings({ latestProcessedBlockNumber: i });
     }
@@ -193,7 +407,6 @@ export default async function handler(
     }
 
     if (latestProcessedBlockNumber >= latestBlockNumber) {
-      console.log('IN SYNC');
       res.status(200).json({ message: 'IN SYNC' });
       return;
     }
