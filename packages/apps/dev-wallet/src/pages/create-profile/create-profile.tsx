@@ -1,34 +1,42 @@
+import { AuthCard } from '@/Components/AuthCard/AuthCard.tsx';
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.hook';
 import { useNetwork } from '@/modules/network/network.hook';
 import { IKeySource } from '@/modules/wallet/wallet.repository';
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
-import { Box, Button, Heading, Text, TextField } from '@kadena/react-ui';
+import { Button, Heading, Stack, Text, TextField } from '@kadena/react-ui';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Navigate } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
 
 export function CreateProfile() {
-  const { register, handleSubmit } = useForm<{
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { isValid, errors },
+  } = useForm<{
     password: string;
     profileName: string;
-  }>();
+    confirmation: string;
+  }>({ mode: 'all' });
   const { createProfile, isUnlocked, createKey, createKAccount } = useWallet();
   const { activeNetwork } = useNetwork();
   const [createdKeySource, setCreatedKeySource] = useState<IKeySource>();
   const { createHDWallet } = useHDWallet();
+
   async function create({
     profileName,
     password,
   }: {
-    profileName: string;
+    profileName?: string;
     password: string;
   }) {
     if (!activeNetwork) {
       return;
     }
     const mnemonic = kadenaGenMnemonic();
-    const profile = await createProfile(profileName, password);
+    const profile = await createProfile(profileName || 'default', password);
     // for now we only support slip10 so we just create the keySource and the first account by default for it
     // later we should change this flow to be more flexible
     const keySource = await createHDWallet(
@@ -44,6 +52,7 @@ export function CreateProfile() {
     console.log('wallet created');
     setCreatedKeySource(keySource);
   }
+
   if (isUnlocked && createdKeySource) {
     return (
       <Navigate
@@ -54,21 +63,56 @@ export function CreateProfile() {
   }
   return (
     <>
-      <Box margin="md">
-        <Heading variant="h5">Create wallet</Heading>
-        <Text>Enter a password to encrypt the wallet data with that</Text>
+      <AuthCard>
+        <Heading variant="h4">Choose a password</Heading>
+        <Text>
+          Carefully select your password as this will be your main security of
+          your wallet
+        </Text>
+
         <form onSubmit={handleSubmit(create)}>
-          <label htmlFor="profileName">Profile name</label>
-          <TextField
-            id="profileName"
-            type="text"
-            {...register('profileName')}
-          />
-          <label htmlFor="password">Password</label>
-          <TextField id="password" type="password" {...register('password')} />
-          <Button type="submit">Create</Button>
+          <Stack flexDirection="column" marginBlock="md" gap="sm">
+            {/* TODO: Use for several accounts */}
+            {/*<TextField*/}
+            {/*  id="profileName"*/}
+            {/*  type="text"*/}
+            {/*  label="Profile name"*/}
+            {/*  {...register('profileName')}*/}
+            {/*  className={inputClass}*/}
+            {/*/>*/}
+            <TextField
+              id="password"
+              type="password"
+              label="Password"
+              {...register('password', {
+                required: { value: true, message: 'This field is required' },
+                minLength: { value: 6, message: 'Minimum 6 symbols' },
+              })}
+              isInvalid={!isValid && !!errors.password}
+              errorMessage={errors.password && errors.password.message}
+            />
+            <TextField
+              id="confirmation"
+              type="password"
+              label="Confirm password"
+              {...register('confirmation', {
+                validate: (value) => {
+                  return (
+                    getValues('password') === value || 'Passwords do not match'
+                  );
+                },
+              })}
+              isInvalid={!isValid && !!errors.confirmation}
+              errorMessage={errors.confirmation && errors.confirmation.message}
+            />
+          </Stack>
+          <Stack flexDirection="column">
+            <Button type="submit" isDisabled={!isValid}>
+              Continue
+            </Button>
+          </Stack>
         </form>
-      </Box>
+      </AuthCard>
     </>
   );
 }
