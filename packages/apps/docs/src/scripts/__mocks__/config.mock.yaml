@@ -1,0 +1,505 @@
+menu:
+  - learn
+  - build
+  - deploy
+  - participate
+  - tutorials
+  - reference
+
+pages:
+  learn:
+    url: /learn
+    file: /learn/learn.md
+    children:
+      blockchain:
+        url: /what-is-a-blockchain
+        file: /learn/what-is-a-blockchain.md
+      whybuild:
+        url: /why-build
+        file: /learn/why-build.md
+      cryptography:
+        url: /cryptography
+        file: /learn/cryptography.md
+      whykadena:
+        url: /why-kadena
+        file: /learn/why-kadena.md
+      consensus:
+        url: /consensus
+        file: /learn/consensus.md
+      chainweb:
+        url: /chainweb
+        file: /learn/chainweb-simplified.md
+      accounts:
+        url: /accounts
+        file: /learn/accounts-keys.md
+      glossary:
+        url: /glossary
+        file: /learn/glossary.md
+      kadena-faq:
+        url: /kadena-faq
+        file: /learn/kadena-faq.md
+      resources:
+        url: /resources
+        file: /learn/resources.md
+
+  build:
+    url: /build
+    file: /build/build.md
+    children:
+      onboard:
+        url: /onboard
+        file: /explore-on-chain.md
+      quickstart:
+        url: /quickstart
+        file: /quick-start.md
+      pact:
+        url: /pact
+        file: /build/pact/get-started-with-pact.md
+        children:
+          devnet:
+            url: /dev-network
+            file: /build/pact/beginner/dev-network.md
+          helloworld:
+            url: /hello-world
+            file: /build/pact/beginner/hello-world.md
+          languagebasics:
+            url: /language-basics
+            file: /build/pact/beginner/language-basics.md
+          modules:
+            url: /modules
+            file: /build/pact/beginner/modules.md
+          keysets:
+            url: /keysets
+            file: /build/pact/beginner/keysets.md
+          schemastables:
+            url: /schemas-and-tables
+            file: /build/pact/beginner/schemas-and-tables.md
+          atomsdk:
+            url: /atom-sdk
+            file: /build/pact/beginner/atom-sdk.md
+          accountstransfers:
+            url: /accounts-and-transfers
+            file: /build/pact/beginner/accounts-and-transfers.md
+          contractinteraction:
+            url: /contract-interaction
+            file: /build/pact/beginner/contract-interaction.md
+          rotatablewallet:
+            url: /rotatable-wallet
+            file: /build/pact/beginner/rotatable-wallet.md
+          loans:
+            url: /loans
+            file: /build/pact/beginner/loans.md
+          testsdk:
+            url: /test-in-the-sdk
+            file: /build/pact/beginner/test-in-the-sdk.md
+          localserver:
+            url: /local-server
+            file: /build/pact/intermediate/deploy-local-server.md
+          pactjavascript:
+            url: /pact-and-javascript
+            file: /build/pact/intermediate/pact-and-javascript.md
+          safetyflow:
+            url: /safety-using-control-flow
+            file: /build/pact/intermediate/safety-using-control-flow.md
+          interfacespact:
+            url: /interfaces-with-pact
+            file: /build/pact/intermediate/interfaces-with-pact.md
+          builtinfunctions:
+            url: /built-in-functions
+            file: /build/pact/intermediate/built-in-functions.md
+          advanced:
+            url: /advanced
+            file: /build/pact/concepts.md
+      nft-marmalade:
+        url: /nft-marmalade
+        file: /build/nft-marmalade/what-is-marmalade.md
+        children:
+          qetstarted:
+            url: /get-started
+            file: /build/nft-marmalade/get-started.md
+          architecture:
+            url: /architecture
+            file: /build/nft-marmalade/contract-architecture.md
+          metadata:
+            url: /metadata
+            file: /build/nft-marmalade/metadata.md
+          storage:
+            url: /storage
+            file: /build/nft-marmalade/storage.md
+          nft:
+            url: /create-nft
+            file: /build/nft-marmalade/create-nft.md
+          collection:
+            url: /create-a-collection
+            file: /build/nft-marmalade/create-a-collection.md
+          concretepolicies:
+            url: /concrete-policies
+            file: /build/nft-marmalade/concrete-policies.md
+            children:
+              examplepolicies:
+                url: /example-policies
+                file: /build/nft-marmalade/example-policies.md
+              custompolicies:
+                url: /custom-policies
+                file: /build/nft-marmalade/custom-policies.md
+          sales:
+            url: /sales
+            file: /build/nft-marmalade/sale-contracts.md
+            children:
+              auctions:
+                url: /auctions
+                file: /build/nft-marmalade/auctions.md
+              startsale:
+                url: /start-a-sale
+                file: /build/nft-marmalade/start-a-sale.md
+              createauction:
+                url: /create-an-auction
+                file: /build/nft-marmalade/create-an-auction.md
+      frontend:
+        url: /frontend
+        file: /build/kadena-cli.md
+        children:
+          kadena-client:
+            url: /kadena-client
+            file: /build/frontend/kadena-client.md
+          kadena-graph:
+            url: /kadena-graph
+            file: /build/frontend/kadena-graph.md
+      templates:
+        url: /templates
+        file: /build/code-templates.md
+      election:
+        url: /election
+        file: /build/election-app/index.md
+        children:
+          prepare:
+            url: /prepare-your-workspace
+            file: /build/election-app/prepare-your-workspace.md
+          start:
+            url: /start-a-local-blockchain
+            file: /build/election-app/start-a-local-blockchain.md
+          admin:
+            url: /add-admin-account
+            file: /build/election-app/add-admin-account.md
+          namespace:
+            url: /define-a-namespace
+            file: /build/election-app/define-a-namespace.md
+          keysets:
+            url: /define-keysets
+            file: /build/election-app/define-keysets.md
+          smartcontract:
+            url: /write-a-smart-contract
+            file: /build/election-app/write-a-smart-contract.md
+          candidates:
+            url: /nominate-candidates
+            file: /build/election-app/nominate-candidates.md
+          voting:
+            url: /add-vote-management
+            file: /build/election-app/add-vote-management.md
+          gasstation:
+            url: /add-a-gas-station
+            file: /build/election-app/add-a-gas-station.md
+      faucet:
+        url: /faucet
+        file: /faucet-app.md
+      nft-workshop:
+        url: /nft-workshop
+        file: /build/nft-workshop/index.md
+        children:
+          prepare:
+            url: /prepare-your-workspace
+            file: /build/nft-workshop/prepare-your-workspace.md
+          deploylocally:
+            url: /deploy-locally
+            file: /build/nft-workshop/deploy-locally.md
+          definecollection:
+            url: /define-collection
+            file: /build/nft-workshop/define-collection.md
+          uploadassets:
+            url: /upload-assets
+            file: /build/nft-workshop/upload-assets.md
+          uploadmetadata:
+            url: /upload-metadata
+            file: /build/nft-workshop/upload-metadata.md
+          minttokens:
+            url: /mint-tokens
+            file: /build/nft-workshop/mint-tokens.md
+          configureoffer:
+            url: /configure-offer
+            file: /build/nft-workshop/configure-offer.md
+          bidandbuy:
+            url: /bid-and-buy
+            file: /build/nft-workshop/bid-and-buy.md
+          receivefunds:
+            url: /receive-funds
+            file: /build/nft-workshop/receive-funds.md
+  deploy:
+    url: /deploy
+    file: /deploy/deploy.md
+    children:
+      getstarted:
+        url: /chainweb-get-started
+        file: /deploy/chainweb/chainweb-get-started.md
+      compactdb:
+        url: /compact-database
+        file: /deploy/chainweb/compact-a-database.md
+      troubleshoot:
+        url: /troubleshoot-chainweb
+        file: /deploy/chainweb/troubleshoot-chainweb.md
+      mining:
+        url: /start-mining
+        file: /deploy/chainweb/start-mining.md
+  participate:
+    url: /participate
+    file: /participate/participate.md
+    children:
+      nodeoperators:
+        url: /run-node
+        file: /participate/run-node.md
+      query:
+        url: /query-nodes
+        file: /participate/query-blockchain-nodes.md
+      docs:
+        url: /docs
+        file: /participate/docs.md
+      exchanges:
+        url: /exchanges
+        file: /participate/exchanges.md
+      wallets:
+        url: /wallets
+        file: /participate/wallets.md
+        children:
+          spirekey:
+            url: /spirekey
+            file: /participate/spirekey.md
+          chainweaver:
+            url: /chainweaver
+            file: /participate/chainweaver.md
+          ledger:
+            url: /ledger
+            file: /participate/ledger.md
+
+  tutorials:
+    url: /tutorials
+    file: /tutorials/tutorials.md
+    children:
+      devnet:
+        url: /dev-network
+        file: /tutorials/dev-network.md
+      helloworld:
+        url: /hello-world
+        file: /tutorials/hello-world.md
+      languagebasics:
+        url: /language-basics
+        file: /tutorials/language-basics.md
+      pactjavascript:
+        url: /pact-and-javascript
+        file: /tutorials/pact-and-javascript.md
+  reference:
+    url: /reference
+    file: /reference/reference.md
+    children:
+      pactsyntax:
+        url: /syntax
+        file: /reference/pact/syntax.md
+      functions:
+        url: /functions
+        file: /reference/pact/pact-ref.md
+        children:
+          general:
+            url: /general
+            file: /reference/pact/functions/general-functions.md
+            repo: https://github.com/kadena-io/pact-5
+            dir: /docs/builtins/General
+          database:
+            url: /database
+            file: /reference/pact/functions/database-functions.md
+            repo: https://github.com/kadena-io/pact-5
+            dir: /docs/builtins/Database
+          time:
+            url: /time
+            file: /reference/pact/functions/time.md
+            repo: https://github.com/kadena-io/pact-5
+            dir: /docs/builtins/Time
+          operators:
+            url: /operators
+            file: /reference/pact/functions/operators.md
+            repo: https://github.com/kadena-io/pact-5
+            dir: /docs/builtins/Operators
+          keysets:
+            url: /keysets
+            file: /reference/pact/functions/keysets.md
+            repo: https://github.com/kadena-io/pact-5
+            dir: /docs/builtins/Keysets
+          capabilities:
+            url: /capabilities
+            file: /reference/pact/functions/capabilities.md
+            repo: https://github.com/kadena-io/pact-5
+            dir: /docs/builtins/Capabilities
+          spv:
+            url: /spv
+            file: /reference/pact/functions/spv.md
+            repo: https://github.com/kadena-io/pact-5
+            dir: /docs/builtins/SPV
+          commitments:
+            url: /commitments
+            file: /reference/pact/functions/commitments.md
+            repo: https://github.com/kadena-io/pact-5
+            dir: /docs/builtins/Commitments
+          guards:
+            url: /guards
+            file: /reference/pact/functions/guards.md
+            repo: https://github.com/kadena-io/pact-5
+            dir: /docs/builtins/Guards
+          zk:
+            url: /zk
+            file: /reference/pact/functions/zk.md
+            repo: https://github.com/kadena-io/pact-5
+            dir: /docs/builtins/ZK
+          replonlyfunctions:
+            url: /repl-only-functions
+            file: /reference/pact/functions/repl-only-functions.md
+            repo: https://github.com/kadena-io/pact-5
+            dir: /docs/builtins/Repl
+      propertychecking:
+        url: /property-checking
+        file: /reference/pact/property-checking.md
+        children:
+          properties-and-invariants:
+            url: /properties-and-invariants
+            file: /reference/pact/properties-and-invariants.md
+          numerical:
+            url: /numerical
+            file: /reference/pact/properties-and-invariants/numerical.md
+          bitwise:
+            url: /bitwise
+            file: /reference/pact/properties-and-invariants/bitwise.md
+          objectoperators:
+            url: /object
+            file: /reference/pact/properties-and-invariants/object.md
+          logicaloperators:
+            url: /logical
+            file: /reference/pact/properties-and-invariants/logical.md
+          listoperators:
+            url: /list
+            file: /reference/pact/properties-and-invariants/list.md
+          string:
+            url: /string
+            file: /reference/pact/properties-and-invariants/string.md
+          temporal:
+            url: /temporal
+            file: /reference/pact/properties-and-invariants/temporal.md
+          quantification:
+            url: /quantification
+            file: /reference/pact/properties-and-invariants/quantification.md
+          transactional:
+            url: /transactional
+            file: /reference/pact/properties-and-invariants/transactional.md
+          database:
+            url: /database
+            file: /reference/pact/properties-and-invariants/database.md
+          authorization:
+            url: /authorization
+            file: /reference/pact/properties-and-invariants/authorization.md
+          function:
+            url: /function
+            file: /reference/pact/properties-and-invariants/function.md
+          other:
+            url: /other
+            file: /reference/pact/properties-and-invariants/other.md
+      pacts:
+        url: /pacts
+        file: /reference/pact/pacts.md
+      pactrepl:
+        url: /pact-repl
+        file: /reference/pact/pact-repl-cli.md
+      restapi:
+        url: /rest-api
+        file: /reference/pact/rest-api.md
+      kadena-cli:
+        url: /kadena-cli
+        file: /reference/cli-ref.md
+        children:
+          account:
+            url: /account
+            file: /reference/cli/cli-account.md
+          config:
+            url: /config
+            file: /reference/cli/cli-config.md
+          dapp:
+            url: /dapp
+            file: /reference/cli/cli-dapp.md
+          key:
+            url: /key
+            file: /reference/cli/cli-key.md
+          network:
+            url: /network
+            file: /reference/cli/cli-network.md
+          tx:
+            url: /tx
+            file: /reference/cli/cli-tx.md
+          wallet:
+            url: /wallet
+            file: /reference/cli/cli-wallet.md
+      frontend:
+        url: /kadena-client
+        file: /reference/kadena-client/kadena-js.md
+        children:
+          client-utils:
+            url: /client-utils
+            file: /reference/kadena-client/client-utils.md
+          pactjs-old:
+            url: /pactjs-old
+            file: /reference/kadena-client/pactjs-api.md
+          pactjscli:
+            url: /pactjs-cli
+            file: /reference/kadena-client/pactjs-cli.md
+          pactjsgenerator:
+            url: /pactjs-generator
+            file: /reference/kadena-client/pactjs-generator.md
+          cryptographyutils:
+            url: /cryptographic-utils
+            file: /reference/kadena-client/cryptographic-utils.md
+      nftreference:
+        url: /nft-ref
+        file: /reference/marmalade/ledger.md
+        children:
+          policymanager:
+            url: /policy-manager
+            file: /reference/marmalade/policy-manager.md
+            children:
+              collection:
+                url: /collection-policy
+                file: /reference/marmalade/collection-policy.md
+              guard:
+                url: /guard-policy
+                file: /reference/marmalade/guard-policy.md
+              nftpolicy:
+                url: /nft-policy
+                file: /reference/marmalade/non-fungible-policy.md
+              royalty:
+                url: /royalty-policy
+                file: /reference/marmalade/royalty-policy.md
+          salecontract:
+            url: /sale-contracts
+            file: /reference/marmalade/sale-contracts.md
+            children:
+              conventional:
+                url: /conventional-auction
+                file: /reference/marmalade/conventional-auction-ref.md
+              dutch:
+                url: /dutch-auction
+                file: /reference/marmalade/dutch-auction-ref.md
+      chainwebref:
+        url: /chainweb-ref
+        file: /reference/chainweb/api/chainweb-api.tsx
+        children:
+          nodeclient:
+            url: /node-client
+            file: /reference/chainweb/chainweb-node.md
+          streamclient:
+            file: /reference/chainweb/chainweb-stream.md
+            url: /stream-client
+          jsbindings:
+            file: /reference/chainweb/chainwebjs.md
+            url: /js-bindings
