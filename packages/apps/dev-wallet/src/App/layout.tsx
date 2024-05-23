@@ -1,23 +1,24 @@
 import { useNetwork } from '@/modules/network/network.hook';
-import { MonoPublic, MonoContrast } from '@kadena/react-icons';
+import { MonoContrast, MonoPublic } from '@kadena/react-icons';
 import {
   KadenaLogo,
   NavHeader,
+  NavHeaderButton,
+  NavHeaderLink,
   NavHeaderLinkList,
   NavHeaderSelect,
-  NavHeaderLink,
-  NavHeaderButton,
   SelectItem,
+  Themes,
+  useTheme,
 } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
 import { FC } from 'react';
 import { Link, Outlet } from 'react-router-dom';
-import { useTheme } from 'next-themes';
 
 export const Layout: FC = () => {
   const { networks, activeNetwork, setActiveNetwork } = useNetwork();
 
-  const { systemTheme, theme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   const handleNetworkUpdate = (value: string) => {
     const network = networks.find((network) => network.networkId === value);
@@ -26,9 +27,8 @@ export const Layout: FC = () => {
     }
   };
 
-  const currentTheme = theme === 'system' ? systemTheme : theme;
   const toggleTheme = (): void => {
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
     setTheme(newTheme);
   };
 
