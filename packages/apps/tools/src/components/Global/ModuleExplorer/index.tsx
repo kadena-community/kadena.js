@@ -16,15 +16,24 @@ export interface IModuleExplorerProps<T> {
   // onModuleExpand: ISidePanelProps['onModuleExpand'];
   // onActiveModuleChange: IEditorProps['onActiveModuleChange'];
   // onTabClose: IEditorProps['onTabClose'];
-  data: ISidePanelProps<T>['data'];
+  items: ISidePanelProps<T>['data'];
   onReload: ISidePanelProps<T>['onReload'];
+  data: T;
 }
 
 // eslint-disable-next-line react/function-component-definition
-function ModuleExplorer<T>({ data, onReload }: IModuleExplorerProps<T>) {
+function ModuleExplorer<T>({ data, items, onReload }: IModuleExplorerProps<T>) {
   return (
     <SidePanel
-      data={[{ children: data, title: 'Explorer', key: 'explorer', data: {} }]}
+      data={[
+        {
+          children: items,
+          title: 'Explorer',
+          key: 'explorer',
+          label: 'Explorer',
+          data,
+        },
+      ]}
       onReload={onReload}
     />
   );

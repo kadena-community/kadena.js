@@ -354,7 +354,8 @@ const ModuleExplorerPage = (
         //   console.log('closing', module);
         // }}
         // openedModules={props.openedModules}
-        data={[
+        data={'something'}
+        items={[
           {
             title: 'Mainnet',
             key: 'mainnet',

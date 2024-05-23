@@ -16,7 +16,7 @@ export type TreeItem<T> = {
   children: TreeItem<T>[];
   data: T;
   isLoading?: boolean;
-  label: string | number;
+  label?: string | number;
 };
 
 export interface ICustomTreeProps<T>
@@ -74,7 +74,7 @@ function CustomTree<T>({
                   <MonoCached />
                 </Button>
               ) : null}
-              {!item.data.isLoading ? (
+              {!item.data.isLoading && item.data.label ? (
                 <Badge size="sm">{item.data.label}</Badge>
               ) : null}
               {item.data.isLoading ? <Badge size="sm">Loading</Badge> : null}
