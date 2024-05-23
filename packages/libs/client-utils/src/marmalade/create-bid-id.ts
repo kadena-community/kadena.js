@@ -1,7 +1,7 @@
 import type { ChainId, IPactModules, PactReturnType } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { execution } from '@kadena/client/fp';
-import { NetworkId } from '@kadena/types';
+import type { NetworkId } from '@kadena/types';
 import { pipe } from 'ramda';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';

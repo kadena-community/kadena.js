@@ -6,7 +6,7 @@ import type {
 } from '@kadena/client';
 import { Pact, readKeyset } from '@kadena/client';
 import { addKeyset, execution } from '@kadena/client/fp';
-import { NetworkId } from '@kadena/types';
+import type { NetworkId } from '@kadena/types';
 import { pipe } from 'ramda';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
