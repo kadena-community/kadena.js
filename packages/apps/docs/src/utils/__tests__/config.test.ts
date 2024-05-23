@@ -70,7 +70,6 @@ describe('config', () => {
     it('should return all pages flattened', async () => {
       mocks.getMenuData.mockResolvedValue(leftMenuTree);
       const result = await getAllPages();
-      console.log(result);
 
       const expectedResult = [
         {
