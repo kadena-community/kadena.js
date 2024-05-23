@@ -1,5 +1,35 @@
 export const basicsPathUrlRedirects = [
   {
+    source: '/:slug/:slug2/:slug3%7D',
+    destination: '/:slug/:slug2/:slug3',
+    permanent: true,
+  },
+  {
+    source: '/:slug/:slug2%7D',
+    destination: '/:slug/:slug2',
+    permanent: true,
+  },
+  {
+    source: '/:slug%7D',
+    destination: '/:slug',
+    permanent: true,
+  },
+  {
+    source: '/:slug/:slug2/:slug3.html',
+    destination: '/:slug/:slug2/:slug3',
+    permanent: true,
+  },
+  {
+    source: '/:slug/:slug2.html',
+    destination: '/:slug/:slug2',
+    permanent: true,
+  },
+  {
+    source: '/:slug.html',
+    destination: '/:slug',
+    permanent: true,
+  },
+  {
     source: '/help',
     destination: '/',
     permanent: true,

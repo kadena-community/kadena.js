@@ -1,5 +1,10 @@
 export const version2PathUrlRedirects = [
   {
+    source: '/kadena/client',
+    destination: '/learn',
+    permanent: true,
+  },
+  {
     source: '/kadena',
     destination: '/learn',
     permanent: true,
@@ -19,6 +24,12 @@ export const version2PathUrlRedirects = [
     destination: '/participate/wallets',
     permanent: true,
   },
+  {
+    source: '/kadena/whitepapers',
+    destination: '/learn/resources',
+    permanent: true,
+  },
+
   {
     source: '/kadena/:slug',
     destination: '/learn/:slug',
@@ -407,6 +418,11 @@ export const version2PathUrlRedirects = [
   {
     source: '/pact/reference/pact-repl-cli',
     destination: '/reference/pact-repl',
+    permanent: true,
+  },
+  {
+    source: '/reference/kadena-client/kadena-cli',
+    destination: '/reference/kadena-cli',
     permanent: true,
   },
   {

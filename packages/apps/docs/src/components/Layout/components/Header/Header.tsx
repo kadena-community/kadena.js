@@ -7,6 +7,7 @@ import {
   NavHeaderLink,
   NavHeaderLinkList,
   Stack,
+  Themes,
 } from '@kadena/react-ui';
 import classNames from 'classnames';
 import Link from 'next/link';
@@ -44,7 +45,7 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
       <NavHeader
         logo={
           <Link href="/" aria-label="Go to the home page">
-            <DocsLogo overwriteTheme="dark" height={32} />
+            <DocsLogo overwriteTheme={Themes.dark} height={32} />
           </Link>
         }
         activeHref={pathname}

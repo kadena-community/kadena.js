@@ -29,7 +29,7 @@ export const circle = style({
   width: '24px',
   height: '24px',
   borderRadius: '50%',
-  backgroundColor: '#ffffff',
+  backgroundColor: '#ffffff', // palette.aqua.n50
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',

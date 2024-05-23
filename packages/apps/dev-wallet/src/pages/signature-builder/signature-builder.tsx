@@ -7,6 +7,8 @@ import {
 
 import { PactCodeView } from '@/Components/PactCodeView/PactCodeView';
 import { Wizard } from '@/Components/Wizard/Wizard';
+import { WizardStep } from '@/Components/Wizard/components/Wizard-step';
+import { WizardStepProps } from '@/Components/Wizard/model';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { execCodeParser } from '@kadena/pactjs-generator';
 import { Box, Button, Card, Heading, Text } from '@kadena/react-ui';
@@ -158,7 +160,7 @@ export function SignatureBuilder() {
             </Box>
           )}
         </Wizard.Render>
-        <Wizard.Step>
+        <WizardStep>
           {({ goTo }) => (
             <>
               <Heading variant="h5">
@@ -189,8 +191,8 @@ export function SignatureBuilder() {
               </Box>
             </>
           )}
-        </Wizard.Step>
-        <Wizard.Step>
+        </WizardStep>
+        <WizardStep>
           {({ back, next }) => (
             <>
               <Heading variant="h5">Edit Transaction</Heading>
@@ -204,8 +206,8 @@ export function SignatureBuilder() {
               <Button onPress={() => next()}>Review Transaction</Button>
             </>
           )}
-        </Wizard.Step>
-        <Wizard.Step>
+        </WizardStep>
+        <WizardStep>
           {({ back, next, goTo }) => (
             <>
               <Heading variant="h5">Review Transaction</Heading>
@@ -286,8 +288,8 @@ export function SignatureBuilder() {
               </Button>
             </>
           )}
-        </Wizard.Step>
-        <Wizard.Step>
+        </WizardStep>
+        <WizardStep>
           {({ back }) => (
             <>
               <Heading variant="h5">Signed Transaction</Heading>
@@ -301,7 +303,7 @@ export function SignatureBuilder() {
               </Button>
             </>
           )}
-        </Wizard.Step>
+        </WizardStep>
       </Wizard>
     </>
   );

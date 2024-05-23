@@ -1,5 +1,13 @@
-import React, { Children, FC, useState } from 'react';
+import React, {
+  Children,
+  FC,
+  ReactElement,
+  cloneElement,
+  useState,
+} from 'react';
 import { wizardContainer } from './Wizard.css';
+import { WizardStep } from './components/Wizard-step';
+import { WizardRenderProp, WizardStepProps } from './model';
 
 export function Wizard({
   children,
@@ -10,23 +18,33 @@ export function Wizard({
 }) {
   const [currentStep, setCurrentStep] = useState(initialStep);
   let stepIndex = -1;
+
   const goTo = (step: number) => {
     step >= 0 && step <= stepIndex && setCurrentStep(step);
   };
-  children = Children.map(children, (child) => {
+
+  const modifiedChildren = Children.map(children, (child) => {
     if (
       !React.isValidElement(child) ||
-      (child.type !== Wizard.Step && child.type !== Wizard.Render)
+      (child.type !== WizardStep && child.type !== Wizard.Render)
     ) {
       // return null if child is not a valid Wizard element
       return null;
     }
 
-    if (child.type === Wizard.Step) {
+    if (child.type === WizardStep) {
       stepIndex++;
       // do not render the step if it is not the current step
       if (stepIndex !== currentStep) return null;
+
+      return cloneElement(child as ReactElement<WizardStepProps>, {
+        step: currentStep,
+        next: () => goTo(currentStep + 1),
+        back: () => goTo(currentStep - 1),
+        goTo,
+      });
     }
+
     if (typeof child.props.children === 'function') {
       return child.props.children({
         step: currentStep,
@@ -35,17 +53,12 @@ export function Wizard({
         goTo,
       });
     }
+
     return child;
   });
-  return <div className={wizardContainer}>{children}</div>;
-}
 
-type WizardRenderProp = (actions: {
-  step: number;
-  next: () => void;
-  back: () => void;
-  goTo: (step: number) => void;
-}) => React.ReactNode;
+  return <div className={wizardContainer}>{modifiedChildren}</div>;
+}
 
 type Render = FC<{
   children: React.ReactNode | WizardRenderProp;
@@ -53,8 +66,4 @@ type Render = FC<{
 
 Wizard.Render = function WizardRender() {
   throw new Error('Wizard.Render should be used inside Wizard');
-} as Render;
-
-Wizard.Step = function WizardStep() {
-  throw new Error('Wizard.Step should be used inside Wizard');
 } as Render;
