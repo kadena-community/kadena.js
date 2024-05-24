@@ -21,13 +21,14 @@ Kadena SpireKey returns information about the account to your application.
 Your application parses the information to provide services to the user and to prepare a transaction and bundle it into signing request.
 Your application then connects to the Kadena SpireKey URL to request the account signatures required to complete the transaction.
 If the user approves and successfully signs the transaction, Kadena SpireKey returns the signature to your application.
-The application constructs the transaction with the proper signatures and submits the transaction for processing on the blockchain.
+If only one signer is required, the transaction is ready for processing on the blockchain.
+If a transaction requires multiple signatures from different accounts, the application is responsible for collecting the signatures required to construct the transaction before submitting the transaction for processing on the blockchain.
 
 In summary, the application is responsible for:
 
 - Connecting to the Kadena SpireKey URL to get account information.
 - Preparing transactions and requesting signatures from Kadena SpireKey.
-- Constructing transactions that use signatures from Kadena SpireKey.
+- Collecting all of the signatures required to construct transactions.
 - Submitting signed transactions for execution.
 
 ## Connect to Kadena SpireKey
@@ -42,24 +43,20 @@ https://spirekey.kadena.io/connect?returnUrl=http://localhost:3000&networkId=tes
 As you see in this example, the `returnUrl` is a URL-encoded **query parameter** that Kadena SpireKey uses to redirect users after they connect. 
 When users are redirected to the `/connect` endpoint, Kadena SpireKey checks whether they have an account. 
 Users who don't have an account are automatically redirected to the `/register` endpoint to register a passkey. 
-After registering a passkey for the account, users are automatically returned to your application by default.
+After registering a passkey for the account, users can select the new account and return to your application.
 
 ## Specify the network and chain
 
 In many cases, applications are only deployed on a specific network and chain. 
-For example, your application might only allow transactions on the Kadena
-You can specify the `networkId` and `chainId` parameters to only connect to accounts in the specified network and chain.
-
-
-In many cases, applications are only deployed on a specific chain in the network.
-For example, your application might only allow transactions on chain 7 of the
-Kadena test network. 
-The chain you use for your applications might be different from the chain that Kadena SpireKey creates accounts on by default. 
-If users attempt to connect an account that exists on a different chain than the one your application runs on, they won't be able to sign and complete transactions in your application.
+For example, your application might only run on the Kadena test network and only allow transactions on chain 7 of the test network. 
+You must specify the `networkId` parameter in the `returnUrl`. 
+The `chainId` parameter is optional.
+However, if users attempt to connect using an account that exists on a different chain than the chain your application runs on, they won't be able to sign and complete transactions in your application.
 
 To prevent this type of transaction failure, you can specify the `chainId` as a query parameter when connecting to the Kadena SpireKey URL. 
 The `chainId` parameter limits the accounts that users can select from to accounts created on the specified chain. 
-In the following example URL, the `chainId` parameter is set to `7`. 
+
+In the following example URL, the `networkId` is `testnet04` and the `chainId` parameter is set to `7`:
 
 https://spirekey.kadena.io/connect?returnUrl=http://localhost:3000&networkId=testnet04&chainId=7
 

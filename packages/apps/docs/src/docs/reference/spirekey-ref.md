@@ -43,8 +43,8 @@ If you want to require an account to be created before users can interact with y
 
 ### Return value
 
-After connecting to an account in SpireKey, users are redirected to the `returnUrl` you specify for your application. As part of the redirection, SpireKey appends a `user` object in the `searchParameters`. This object describes
-information you can use to address the user or to prepare a transaction.
+After connecting to an account in SpireKey, users are redirected to the `returnUrl` you specify for your application. 
+As part of the redirection, SpireKey appends a `user` object in the `searchParameters`. This object describes information you can use to address the user or to prepare a transaction.
 
 #### User
 
@@ -71,8 +71,7 @@ should prepare the transaction with all credentials signing for the same relevan
 
 ## Request a signature
 
-When you prepare a transaction for the user to sign, use the public keys from the credentials included in the
-[connect response](#connect-to-a-spirekey-account) to construct the transaction. 
+When you prepare a transaction for the user to sign, you use the public keys from the credentials included in the response from the Kadena SpireKey `/connect` endpoint to construct the transaction. 
 When your transaction is ready to be signed, you need to `base64` encode the stringified JSON of the transaction.
 
 Transactions can grow in size well beyond what is accepted in

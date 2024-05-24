@@ -11,7 +11,7 @@ layout: full
 
 # Authentication overview
 
-Kadena SpireKey leverages open authentication (OAuth) and web authentication (WebAuthn) standards to provide a secure backend that enables end users to securely generate and store key pairs directly on their hardware devices. 
+Kadena SpireKey leverages web authentication (WebAuthn) standards to provide a secure backend that enables end users to securely generate and store key pairs directly on their hardware devices. 
 Users can then authenticate by accessing their stored keys through Touch ID, Face ID, QR codes, or other password-free methods.
 By ensuring the private key is stored securely on the
 user's hardware device and eliminating the need for password storage, Kadena SpireKey provides a more secure way to access account information, connect to applications, and sign transactions with a familiar user experience similar to Apple Pay or Google Pay.

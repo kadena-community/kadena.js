@@ -2,7 +2,7 @@
 title: Register a Kadena SpireKey account
 description:
   Whether you're a user or developer, creating a Kadena SpireKey account is the
-  first step to using simplified WebAuthN authentication and authorization
+  first step to using simplified WebAuthn authentication and authorization
   services.
 menu: Authenticate accounts
 label: Register an account
@@ -13,12 +13,12 @@ layout: full
 # Register an account with Kadena SpireKey
 
 Whether you're a user or developer, creating a Kadena SpireKey account is the
-first step to using simplified WebAuthN authentication and authorization
+first step to using simplified WebAuthn authentication and authorization
 services. Registering for an account stores the account information you provide
 on the blockchain after registration is complete. Your secret information is
 encrypted and stored on the device you use to register. 
 
-No secret information is not stored on the blockchain or in Kadena SpireKey.
+No secret information is stored on the blockchain or in Kadena SpireKey.
 
 To register for a new Kadena SpireKey account:
 
@@ -35,9 +35,11 @@ To register for a new Kadena SpireKey account:
    to register and cannot been seen by anyone else. If you don't want to create
    an account, click **Cancel** to exit the registration flow.
 
-4. Click in the **Passkey** field to generate a private key to be stored in encrypted form on the device you're using to register an account.
+4. Click in the **Passkey** field to generate a public and secret key pair.
+   
+   The secret key is encrypted and stored on the device you're using to register an account.
 
-   The encrypted **passkey** is a WebAuthN credential that's protected with
+   The encrypted **passkey** is a WebAuthn credential that's protected with
    biometric data—such as a fingerprint or facial recognition—or a security key
    depending on the options available on the device you're using to register.
    Only the public key and credential identifier associated with the private

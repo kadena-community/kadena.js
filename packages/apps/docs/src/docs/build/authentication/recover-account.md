@@ -2,7 +2,7 @@
 title: Recover Kadena SpireKey accounts
 description:
   If you're an application developer and have integrated Kadena SpireKey
-  accounts and WebAuthN authentication and authorization services into your
+  accounts and WebAuthn authentication and authorization services into your
   application, you can also implement account recovery using a Kadena SpireKey
   passkey.
 menu: Authenticate and authorize
@@ -21,13 +21,8 @@ For example, if you used a smart phone to register a Kadena SpireKey account, yo
 
 ## Identify the passkey for an account
 
-When you register an account as described in
-[Register an account](/build/authentication/register), Kadena SpireKey creates a
-passkey for the device you are using with the name you use for the account
-**Alias** and a selected **Network**. For example, if you access Kadena SpireKey
-deployed on the Kadena test network and specify Lola as the alias for the new
-account, the passkey created for the device and account combination would be
-Lola (Testnet).
+When you register an account as described in [Register an account](/build/authentication/register), Kadena SpireKey creates a passkey for the device you are using with the default name **SpireKey Account 1** and a selected **Network**. 
+For example, if you access Kadena SpireKey deployed on the Kadena test network, the passkey created for the device and account combination would be SpireKey Account 1 (Testnet).
 
 If you used a laptop to register this account, your passkey might be based on a
 fingerprint stored in a secure enclave on the device or recorded on a security
@@ -107,7 +102,7 @@ should verify the following basic requirements:
 - You have a code editor, access to an interactive terminal shell, and are
   generally familiar with using command-line programs.
 
-- You are developing an application for WebAuthN authentication using TypeScript
+- You are developing an application for WebAuthn authentication using TypeScript
   to run on the Kadena test network (Testnet).
 
 ### Select a passkey
