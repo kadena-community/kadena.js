@@ -74,9 +74,7 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
       type: TransactonInfo,
       resolve: async (parent) => {
         try {
-          // This check is important because a transaction can be completed, yet we can still be
-          // able to fetch a status from the mempool
-
+          //This check is important because a transaction can be completed, yet we can still be able to fetch a status from the mempool
           if (nullishOrEmpty(parent.blockHash)) {
             const status = await getMempoolTransactionStatus(
               parent.requestKey,
