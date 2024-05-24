@@ -87,7 +87,9 @@ Before you can mint a token on the blockchain, you must create the digital item 
 
 After you have a uniform resource identifier (URI) for locating the digital item, you must also create a metadata file using the JSON schema to record the name, location, and other properties about the item to be minted.
 You can then create and mint the token for the digital item, generating an on-chain token identifier with a `t:` prefix. 
-The token identifier includes the hash for the metadata that describes the token to ensure that a digital item can be cryptographically verified to be the actual NFT. 
+The token identifier includes the hash for the metadata that describes the token to ensure that a digital item can be cryptographically verified to be the original NFT. 
+However, if you update the properties used to create a token—for example, to change a token that represents a character in a game each time the character completes a quest—the hash for the metadata will be different from the original hash and you are, in essence, creating a new token.
+Optionally, you can use a policy to prevent a token from being updated.
 
 Depending on how you apply or configure token policies, you might be the sole owner of the token you mint or share ownership with others. 
 If you're the owner of a token, you have the option to offer the token for sale or transfer the token to another owner. 
@@ -137,10 +139,9 @@ Any other transaction requirements are handled by token policies.
 
 ### Withdraw
 
-Sellers can configure sale contracts to allow them to withdraw from the sale if there are no interested buyers for a token.
-Alternatively, sellers can specify a **timeout** as part of the **offer** step. 
-The timeout is measured in blocks.
-If a seller sets the timeout to 30 blocks, he can't pull out of the sale until 30 blocks have been mined on-chain.
+Sellers can specify a **timeout** as part of the **offer** step. 
+If they set the timeout to zero (0) for a sale contract, they can withdraw from the sale at any time if there are no interested buyers for a token.
+If they set a specific timeout value—for example, to have an offer expire at midnight on 30 June 2024 with a timeout value of 1719705600—they can't pull out of the sale until after the specified timestamp.
 
 After the timeout, the seller can send a **rollback** continuation transaction for the identifier assigned to the SALE event. 
 The **withdraw** operation then transfers the token out of the escrow account and returns it to the seller.

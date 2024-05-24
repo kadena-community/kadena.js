@@ -49,11 +49,11 @@
     "@rushstack/eslint-config": "~3.6.9",
     "@types/eventsource": "1.1.11",
     "@types/node": "^20.12.7",
-    "@vitest/coverage-v8": "^1.1.0",
+    "@vitest/coverage-v8": "^1.6.0",
     "eslint": "^8.45.0",
     "prettier": "~3.2.5",
     "typescript": "5.4.5",
-    "vitest": "^1.1.0"
+    "vitest": "^1.6.0"
   },
   "publishConfig": {
     "provenance": true

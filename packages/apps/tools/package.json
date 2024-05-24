@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "pnpm run generate:contracts && next build",
+    "build:e2e": "pnpm run generate:contracts && NODE_ENV=test next build",
     "dev": "next dev",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
@@ -76,7 +77,7 @@
     "@typescript-eslint/parser": "^6.0.0",
     "@vanilla-extract/next-plugin": "2.1.2",
     "@vanilla-extract/vite-plugin": "4.0.7",
-    "@vitest/coverage-v8": "^1.1.0",
+    "@vitest/coverage-v8": "^1.6.0",
     "@walletconnect/types": "~2.8.1",
     "@webpro/next-translate-plugin": "^2.6.3",
     "debug": "~4.3.4",
@@ -86,7 +87,7 @@
     "next-router-mock": "^0.9.10",
     "prettier": "~3.2.5",
     "typescript": "5.4.5",
-    "vitest": "^1.1.0",
+    "vitest": "^1.6.0",
     "vitest-dom": "^0.1.1"
   },
   "volta": {

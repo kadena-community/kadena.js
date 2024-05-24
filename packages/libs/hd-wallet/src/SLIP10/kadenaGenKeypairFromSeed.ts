@@ -1,6 +1,7 @@
 import type { BinaryLike } from '../utils/crypto.js';
 import type { EncryptedString } from '../utils/kadenaEncryption.js';
 import { kadenaDecrypt, kadenaEncrypt } from '../utils/kadenaEncryption.js';
+import { isDerivationPathTemplateValid } from './utils/isDerivationPathTemplateValid.js';
 import { deriveKeyPair } from './utils/sign.js';
 
 async function genKeypairFromSeed(
@@ -9,6 +10,9 @@ async function genKeypairFromSeed(
   index: number,
   derivationPathTemplate: string,
 ): Promise<[string, EncryptedString]> {
+  if (!isDerivationPathTemplateValid(derivationPathTemplate)) {
+    throw new Error('Invalid derivation path template.');
+  }
   const derivationPath = derivationPathTemplate.replace(
     '<index>',
     index.toString(),
@@ -64,6 +68,10 @@ export async function kadenaGenKeypairFromSeed(
 ): Promise<[string, EncryptedString] | Array<[string, EncryptedString]>> {
   if (seed === undefined || seed === '') {
     throw new Error('NO_SEED: No seed provided.');
+  }
+
+  if (!isDerivationPathTemplateValid(derivationPathTemplate)) {
+    throw new Error('Invalid derivation path template.');
   }
 
   const seedBuffer = await kadenaDecrypt(password, seed);
