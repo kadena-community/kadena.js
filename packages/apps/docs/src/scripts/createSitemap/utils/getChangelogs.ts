@@ -8,7 +8,7 @@ export const getChangelogs = (
   innerChangelogs: IChangelogComplete,
 ): string => {
   return REPOS.map((repo: IRepo) => {
-    const pkg = innerChangelogs[repo.name];
+    const pkg = innerChangelogs[repo.slug];
     const versions = getVersions(pkg);
     const lastModifiedDate = getLastModifiedDate(versions[0]);
 

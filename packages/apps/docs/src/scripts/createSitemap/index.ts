@@ -29,7 +29,6 @@ export const createSitemap = async (): Promise<IScriptResult> => {
       </urlset>`;
 
     fs.writeFileSync(MENU_FILE, fileStr);
-    console.log(999);
     success.push('sitemap successfully created');
   } catch (e) {
     errors.push('Something went wrong');
