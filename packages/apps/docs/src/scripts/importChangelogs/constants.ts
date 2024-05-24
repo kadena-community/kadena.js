@@ -18,6 +18,7 @@ export enum VersionPosition {
 export const REPOS: IRepo[] = [
   {
     name: 'React UI',
+    slug: 'react-ui',
     repo: 'https://github.com/kadena-community/kadena.js.git',
     directory: '/packages/libs/react-ui',
     fileName: 'CHANGELOG.md',
@@ -26,6 +27,7 @@ export const REPOS: IRepo[] = [
   },
   {
     name: 'React Icons',
+    slug: 'react-icons',
     repo: 'https://github.com/kadena-community/kadena.js.git',
     directory: '/packages/libs/react-icons',
     fileName: 'CHANGELOG.md',
@@ -34,6 +36,7 @@ export const REPOS: IRepo[] = [
   },
   {
     name: 'Kadena Cli',
+    slug: 'kadena-cli',
     repo: 'https://github.com/kadena-community/kadena.js.git',
     directory: '/packages/tools/kadena-cli',
     fileName: 'CHANGELOG.md',
@@ -42,6 +45,7 @@ export const REPOS: IRepo[] = [
   },
   {
     name: 'KadenaJS',
+    slug: 'kadenajs',
     repo: 'https://github.com/kadena-community/kadena.js.git',
     directory: '/packages/libs/kadena.js',
     fileName: 'CHANGELOG.md',
@@ -50,6 +54,7 @@ export const REPOS: IRepo[] = [
   },
   {
     name: 'Pact 4',
+    slug: 'pact',
     repo: 'https://github.com/kadena-io/pact.git',
     directory: '/',
     fileName: 'CHANGELOG.md',
