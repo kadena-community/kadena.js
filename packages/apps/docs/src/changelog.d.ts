@@ -10,6 +10,7 @@ interface IRepo {
   repoName: string;
 }
 interface IChangelogPackage extends IRepo {
+  versionCount?: number;
   content: Record<string, IChangelogPackageVersion>;
 }
 

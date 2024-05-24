@@ -2,8 +2,9 @@ import { getVersions } from '@/scripts/importChangelogs/utils/misc';
 import { MonoAdd, MonoList } from '@kadena/react-icons/system';
 import { Heading, Stack, Link as UILink } from '@kadena/react-ui';
 import classNames from 'classnames';
+import Link from 'next/link';
 import type { FC } from 'react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Version } from './Version';
 import { VersionMeta } from './VersionMeta';
 import {
@@ -33,6 +34,10 @@ export const Package: FC<IProps> = ({ pkg, isFullPage = true }) => {
       ? `${ref.current.scrollHeight + 1000}px`
       : '0';
   }, [ref.current, isOpen, isFullPage]);
+
+  const versions = useMemo(() => {
+    return getVersions(pkg);
+  }, [pkg.content]);
 
   const handleOpen = (): void => {
     if (isFullPage) return;
@@ -68,13 +73,11 @@ export const Package: FC<IProps> = ({ pkg, isFullPage = true }) => {
         </Stack>
 
         {!isFullPage && (
-          <UILink
-            href={`/changelogs/${pkg.slug}`}
-            variant="transparent"
-            endVisual={<MonoList />}
-          >
-            See all logs
-          </UILink>
+          <Link href={`/changelogs/${pkg.slug}`} passHref legacyBehavior>
+            <UILink variant="transparent" endVisual={<MonoList />}>
+              See all logs
+            </UILink>
+          </Link>
         )}
       </Stack>
       <Stack
@@ -85,7 +88,7 @@ export const Package: FC<IProps> = ({ pkg, isFullPage = true }) => {
           [versionWrapperOpenClass]: !isOpen,
         })}
       >
-        {getVersions(pkg).map((version) => (
+        {versions.map((version) => (
           <Stack
             key={version.label}
             flexDirection={{ xs: 'column', lg: 'row' }}
@@ -110,6 +113,15 @@ export const Package: FC<IProps> = ({ pkg, isFullPage = true }) => {
             </Stack>
           </Stack>
         ))}
+        {!isFullPage && (pkg.versionCount ?? 0) > versions.length && (
+          <Stack width="100%" justifyContent="center">
+            <Link href={`/changelogs/${pkg.slug}`} passHref legacyBehavior>
+              <UILink variant="transparent" endVisual={<MonoList />}>
+                See all logs
+              </UILink>
+            </Link>
+          </Stack>
+        )}
       </Stack>
     </Stack>
   );

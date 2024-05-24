@@ -21,7 +21,12 @@ export const getStaticProps: GetStaticProps = async () => {
   const newChangelogs = getPackages(
     changelogs as unknown as IChangelogComplete,
   ).map((pkg) => {
-    return { ...pkg, content: getVersions(pkg).slice(0, 4) };
+    const versions = getVersions(pkg);
+    return {
+      ...pkg,
+      versionCount: versions.length,
+      content: versions.slice(0, 4),
+    };
   });
 
   return {
