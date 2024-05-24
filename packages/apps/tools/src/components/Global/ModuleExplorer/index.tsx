@@ -34,6 +34,13 @@ function ModuleExplorer<T>({ data, items, onReload }: IModuleExplorerProps<T>) {
             label: 'Explorer',
             data,
           },
+          {
+            title: 'Outline',
+            key: 'outline',
+            label: 'Outline',
+            children: [],
+            data: {},
+          },
         ]}
         onReload={onReload}
       />

@@ -37,7 +37,12 @@ export interface ISidePanelProps<T> {
 // eslint-disable-next-line react/function-component-definition
 function SidePanel<T>({ data, onReload }: ISidePanelProps<T>) {
   return (
-    <CustomAccordion data={data} defaultExpandedKey="explorer">
+    <CustomAccordion
+      data={data}
+      defaultExpandedKey="explorer"
+      className={containerStyle}
+      itemProps={{ fillHeight: true }}
+    >
       {(item) => (
         <>
           <Stack

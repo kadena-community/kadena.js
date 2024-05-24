@@ -6,9 +6,9 @@ export const containerStyle = style([
     display: 'flex',
     flexDirection: 'column',
   }),
-  {
-    height: `calc(${tokens.kda.foundation.size.n64} * 3 + ${tokens.kda.foundation.size.n16})`, // 52rem
-  },
+  // {
+  //   height: `calc(${tokens.kda.foundation.size.n64} * 3 + ${tokens.kda.foundation.size.n16})`, // 52rem
+  // },
 ]);
 
 export const modulesContainerStyle = style([
