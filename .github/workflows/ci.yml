@@ -87,15 +87,11 @@ jobs:
       
       -  name: Setup Kadena sandbox
          uses: ./.github/actions/sandbox
-
-      # Due to how docs is built, we need to explicitly rebuild to generate the correct menu structure.
-      - name: build dApps
-        if: matrix.app == 'docs'
-        run: pnpm turbo build --filter @kadena/${{ matrix.app }} --force
-
-      - name: build dApps
-        if: matrix.app != 'docs'
-        run: pnpm turbo build --filter @kadena/${{ matrix.app }}
+      
+      - name: Build App with NODE_ENV=test    
+        uses: ./.github/actions/build-app-e2e
+        with:
+          app: ${{ matrix.app }}
 
       - name: Run end-to-end tests    
         uses: ./.github/actions/end-to-end-tests

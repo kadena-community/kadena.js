@@ -11,7 +11,7 @@ export class NotificationContainerComponent {
       .filter({ has: this._page.locator(`h5:text-is("${title}")`) });
   }
 
-  public async getComponent(): Promise<Locator> {
+  public async getNotification(): Promise<Locator> {
     return this.container;
   }
 
