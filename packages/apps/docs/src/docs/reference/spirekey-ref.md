@@ -44,7 +44,11 @@ If you want to require an account to be created before users can interact with y
 ### Return value
 
 After connecting to an account in SpireKey, users are redirected to the `returnUrl` you specify for your application. 
+<<<<<<< HEAD
 As part of the redirection, SpireKey appends a `user` object in the `searchParameters`. This object contains information you can use to address the user or to prepare a transaction.
+=======
+As part of the redirection, SpireKey appends a `user` object in the `searchParameters`. This object describes information you can use to address the user or to prepare a transaction.
+>>>>>>> d313957d2 (Updates from Jesse, fix links)
 
 #### User
 

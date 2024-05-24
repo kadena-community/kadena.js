@@ -157,9 +157,15 @@ The following table describes the parameters that you can include in your signin
 | Parameter | Type | Required | Description |
 | --------- | ---- | -------- | ----------- |
 | `transaction` | string  | Required | A base64 encoded string of the unsigned transaction. |
+<<<<<<< HEAD
 | `returnUrl` | string  | Required | The url, encoded as a uriComponent, that the Kadena SpireKey should redirect users to after they have signed the transaction. |
 | `translations` | string  | Optional | Custom descriptions that explain what capabilities or operations that the user is signing for. |
 | `optimistic` | boolean | Optional | Allows applications to continue transaction workflows without having to wait for the transaction to be confirmed on the blockchain. When this parameter is included, `pendingTxIds` are returned so that the application can keep track of the status of the submitted transactions and update the UI accordingly. For more information about the optimistic transaction flow, see [Optimistic account onboarding](/build/authentication/integrate#optimistic-account-onboardingh-416162207). |
+=======
+| `returnUrl` | string  | Required | The url, encoded as a uriComponent, that the wallet should redirect users to after they have signed the transaction. |
+| `translations` | string  | Optional | Custom descriptions that explain what capabilities or operations that the user is user signing for. |
+| `optimistic` | boolean | Optional | Allows applications to continue the transaction flows without having to wait for the transaction to be confirmed on the blockchain. When this parameter is included, `pendingTxIds` are returned so that the application can keep track of the status of the submitted transactions and update the UI accordingly. For more information about the optimistic transaction flow, see [Optimistic account onboarding](/build/authentication/integrate#optimistic-account-onboardingh-416162207). |
+>>>>>>> d313957d2 (Updates from Jesse, fix links)
 
 After you construct the request with the required parameters, you can navigate to Kadena SpireKey to enable the user to sign the transaction.
 
