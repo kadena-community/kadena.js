@@ -57,6 +57,13 @@ const ModuleExplorer = ({
             children: outlineItems,
             data: 'outline',
           },
+          {
+            title: 'Outline',
+            key: 'outline',
+            label: 'Outline',
+            children: [],
+            data: {},
+          },
         ]}
         onReload={onReload}
         onModuleClick={({ data }) => {
