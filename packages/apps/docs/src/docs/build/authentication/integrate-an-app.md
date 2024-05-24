@@ -50,6 +50,21 @@ In many cases, applications are only deployed on a specific network and chain.
 For example, your application might only allow transactions on the Kadena
 You can specify the `networkId` and `chainId` parameters to only connect to accounts in the specified network and chain.
 
+
+In many cases, applications are only deployed on a specific chain in the network.
+For example, your application might only allow transactions on chain 7 of the
+Kadena test network. 
+The chain you use for your applications might be different from the chain that Kadena SpireKey creates accounts on by default. 
+If users attempt to connect an account that exists on a different chain than the one your application runs on, they won't be able to sign and complete transactions in your application.
+
+To prevent this type of transaction failure, you can specify the `chainId` as a query parameter when connecting to the Kadena SpireKey URL. 
+The `chainId` parameter limits the accounts that users can select from to accounts created on the specified chain. 
+In the following example URL, the `chainId` parameter is set to `7`. 
+
+https://spirekey.kadena.io/connect?returnUrl=http://localhost:3000&networkId=testnet04&chainId=7
+
+You can change the value to any of the twenty available chains on the Kadena network, as needed. Note that the chains are zero-indexed, so the first chain is 0 and the last one is 19.
+
 ## Specify a reason 
 
 In addition to the application URL, the network identifier, and the chain identifier, you can
