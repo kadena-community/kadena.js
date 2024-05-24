@@ -26,7 +26,6 @@ export const copyPages = async (
         content = await importRepo(page as unknown as IImportReadMeItem);
       }
 
-      console.log({ content });
       const destination = `./src/pages${page.destination}/index.md`;
       const pageContent = fs.readFileSync(destination, 'utf8');
 

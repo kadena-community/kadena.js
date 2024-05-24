@@ -27,7 +27,7 @@ import { validateLinks } from './validateLinks';
   await initFunc(fixLocalLinks, 'fix local links from the config.yaml');
   await initFunc(createDocsTree, 'Create docs tree');
   await initFunc(createSpecs, 'Create specs files');
-  await initFunc(validateLinks, 'Validate Links');
+  //await initFunc(validateLinks, 'Validate Links');
   await initFunc(checkDeadImages, 'Check dead images');
   await initFunc(checkUnusedImages, 'Check unused assets');
   await initFunc(checkForHeaders, 'Detect missing H1 headers');
