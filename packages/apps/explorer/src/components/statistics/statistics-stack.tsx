@@ -1,8 +1,9 @@
+import { SpireKeyKdacolorLogoWhite } from '@kadena/react-icons/product';
 import { MonoHub } from '@kadena/react-icons/system';
 import { Button, Select, SelectItem, Stack, Text } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
 import React, { useState } from 'react';
-import { borderStyleClass } from './style.css';
+import { borderStyleClass, statisticsSpireKeyClass } from './statistics.css';
 
 interface IStatisticsStackProps {
   data: { label: string; value: string }[];
@@ -41,7 +42,7 @@ const StatisticsStack: React.FC<IStatisticsStackProps> = ({ data }) => {
           fontType="code"
           size="lg"
           className={atoms({
-            border: 'none',
+            height: '100%',
           })}
           onSelectionChange={(value) => setSelectedNetwork(value.toString())}
         >
@@ -52,6 +53,12 @@ const StatisticsStack: React.FC<IStatisticsStackProps> = ({ data }) => {
             Testnet
           </SelectItem>
         </Select>
+      </div>
+      <div className={statisticsSpireKeyClass}>
+        <Button
+          variant="transparent"
+          startVisual={<SpireKeyKdacolorLogoWhite />}
+        />
       </div>
     </Stack>
   );
