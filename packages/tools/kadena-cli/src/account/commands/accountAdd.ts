@@ -16,7 +16,7 @@ export const createAddAccountCommand = createCommand(
       return addAccountFromWallet(option);
     } else {
       throw new Error(
-        `Invalid account type : ${accountFromSelection}. Supported types are 'key' and 'wallet'`,
+        `Invalid account from value: ${accountFromSelection}. Supported values are "key" and "wallet".`,
       );
     }
   },

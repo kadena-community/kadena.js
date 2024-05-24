@@ -122,6 +122,16 @@ describe('account add manual type', () => {
       predicate: 'keys-all',
     });
   });
+
+  it('should throw an error when user tries to add an account with unsupported "from" value', async () => {
+    const res = await runCommand(
+      'account add --from=test --account-alias=account-add-test --account-name=k:pubkey1 --fungible=coin --verify --network=testnet --chain-id=1',
+    );
+    expect(res.stderr).toContain(
+      'Invalid account from value: test. Supported values are "key" and "wallet".',
+    );
+    expect(await services.filesystem.fileExists(accountAliasFile)).toBe(false);
+  });
 });
 
 describe('account add type wallet', () => {
