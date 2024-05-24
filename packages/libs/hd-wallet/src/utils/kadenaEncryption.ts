@@ -1,13 +1,17 @@
 import type { BinaryLike } from './crypto.js';
 import { decrypt, encrypt, randomBytes } from './crypto.js';
 
+/**
+ * @public
+ */
 export type EncryptedString = string & { _brand: 'EncryptedString' };
 
 /**
  * Encrypts the message with a password .
- * @param {BinaryLike} message - The message to be encrypted.
- * @param {BinaryLike} password - password used for encryption.
- * @returns {string} The encrypted string
+ * @param message - The message to be encrypted.
+ * @param password - password used for encryption.
+ * @returns The encrypted string
+ * @public
  */
 export async function kadenaEncrypt<
   TEncode extends 'base64' | 'buffer' = 'base64',
@@ -41,11 +45,11 @@ export async function kadenaEncrypt<
  * This function is a wrapper for the internal decryption logic, intended
  * for public-facing API usage where the private key encryption follows
  *
- * @param {string} encryptedData - The encrypted data as a Base64 encoded string.
- * @param {BinaryLike} password - The password used to encrypt the private key.
- * @returns {Uint8Array} The decrypted private key.
- * @throws {Error} Throws an error if decryption fails.
- * @alpha
+ * @param encryptedData - The encrypted data as a Base64 encoded string.
+ * @param password - The password used to encrypt the private key.
+ * @returns The decrypted private key.
+ * @throws Throws an error if decryption fails.
+ * @public
  */
 export async function kadenaDecrypt(
   password: BinaryLike,
@@ -78,11 +82,12 @@ export async function kadenaDecrypt(
 /**
  * Changes the password of an encrypted data.
  *
- * @param {string} privateKey - The encrypted private key as a Base64 encoded string.
- * @param {BinaryLike} password - The current password used to encrypt the private key.
- * @param {string} newPassword - The new password to encrypt the private key with.
- * @returns {string} - The newly encrypted private key as a Base64 encoded string.
- * @throws {Error} - Throws an error if the old password is empty, new password is incorrect empty passwords are empty, or if encryption with the new password fails.
+ * @param privateKey - The encrypted private key as a Base64 encoded string.
+ * @param password - The current password used to encrypt the private key.
+ * @param newPassword - The new password to encrypt the private key with.
+ * @returns The newly encrypted private key as a Base64 encoded string.
+ * @throws Throws an error if the old password is empty, new password is incorrect empty passwords are empty, or if encryption with the new password fails.
+ * @public
  */
 export async function kadenaChangePassword(
   password: BinaryLike,
