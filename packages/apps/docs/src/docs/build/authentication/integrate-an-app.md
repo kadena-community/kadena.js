@@ -84,7 +84,7 @@ Depending on the network and other factors that affect network activity—such a
 the number of requests and available nodes—confirming that an account has been created on the blockchain can take some time.
 Because most applications don't need accounts to be created onchain before preparing transaction, Kadena SpireKey supports **optimistic** onboarding by default.
 
-Withn optimistic onboarding, users are immediately redirected back to your application without waiting for the account creation transaction to be confirmed on the blockchain.
+With optimistic onboarding, users are immediately redirected back to your application without waiting for the account creation transaction to be confirmed on the blockchain.
 In most cases, creating user accounts in a background process is safe. 
 However, you must ensure that your application only submits signed transactions after all signer accounts exist on the blockchain.
 
