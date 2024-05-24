@@ -7,6 +7,7 @@ import { formatStatisticsData } from '@/services/format';
 import { LogoKdacolorLight } from '@kadena/react-icons/brand';
 import { Stack } from '@kadena/react-ui';
 import React from 'react';
+import { useMediaQuery } from 'react-responsive';
 
 const Home: React.FC = () => {
   // Ideally we would pull this data once and then make calcs client-side
@@ -17,12 +18,18 @@ const Home: React.FC = () => {
   const statisticsGridData = formatStatisticsData(statisticsData?.networkInfo);
   const searchData = getSearchData();
 
+  const isMobile = useMediaQuery({ query: '(max-width: 380px)' });
+
   return (
     <Stack flexDirection={'column'} gap={'xxl'} alignItems={'center'}>
-      <StatisticsStack data={statisticsGridData}></StatisticsStack>
-      <StatisticsGrid data={statisticsGridData}></StatisticsGrid>
+      {!isMobile && (
+        <StatisticsStack data={statisticsGridData}></StatisticsStack>
+      )}
+
       <LogoKdacolorLight />
       <Search {...searchData} />
+
+      {isMobile && <StatisticsGrid data={statisticsGridData}></StatisticsGrid>}
     </Stack>
   );
 };
