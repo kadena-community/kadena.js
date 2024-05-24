@@ -1,8 +1,10 @@
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.hook';
-import { Box, Button, Heading, Text, TextField } from '@kadena/react-ui';
+import { Button, Heading, Text, TextField, Stack, Avatar } from '@kadena/react-ui';
 import { useForm } from 'react-hook-form';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
+import { AuthCard } from '@/Components/AuthCard/AuthCard';
+import { passwordContainer, profileContainer } from './styles.css.ts';
 
 export function UnlockProfile() {
   const {
@@ -45,27 +47,33 @@ export function UnlockProfile() {
   }
   return (
     <>
-      <Box margin="md">
-        <Text>Profile: {profile.name}</Text>
+      <AuthCard backButtonLink="/select-profile">
+        <Stack gap="md" padding="sm" display="inline-flex" className={profileContainer}>
+          <Avatar size="md" name={profile.name} /> {profile.name}
+        </Stack>
         <Heading variant="h5">Unlock your profile</Heading>
-        <Text>Enter your password to unlock access</Text>
+        <Text as="p">Enter your password to unlock access</Text>
         <form onSubmit={handleSubmit(unlock)}>
-          <TextField
-            id="password"
-            type="password"
-            placeholder="Password"
-            aria-label="Password"
-            isRequired
-            {...register('password', {
-              required: { value: true, message: 'This field is required' },
-            })}
-            isInvalid={!isValid && !!errors.password}
-            errorMessage={errors.password?.message}
-          />
-          <Button type="submit" isDisabled={!isValid} >Continue</Button>
+          <div className={passwordContainer}>
+            <TextField
+              id="password"
+              type="password"
+              placeholder="Password"
+              aria-label="Password"
+              isRequired
+              {...register('password', {
+                required: { value: true, message: 'This field is required' },
+              })}
+              isInvalid={!isValid && !!errors.password}
+              errorMessage={errors.password?.message}
+            />
+          </div>
+          <Stack flexDirection="column" gap="md">
+            <Button type="submit" isDisabled={!isValid} >Continue</Button>
+            <Text as="p" size="small">Forgot password? <Link to="/import-wallet">Recover your profile</Link></Text>
+          </Stack>
         </form>
-        <Text as="p">Forgot password? <Link to="/import-wallet">Recover your profile</Link></Text>
-      </Box>
+      </AuthCard>
     </>
   );
 }
