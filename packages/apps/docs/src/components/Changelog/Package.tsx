@@ -1,10 +1,9 @@
 import { getVersions } from '@/scripts/importChangelogs/utils/misc';
 import { MonoAdd, MonoList } from '@kadena/react-icons/system';
-import { Button, Heading, Stack } from '@kadena/react-ui';
+import { Heading, Stack, Link as UILink } from '@kadena/react-ui';
 import classNames from 'classnames';
-import Link from 'next/link';
 import type { FC } from 'react';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Version } from './Version';
 import { VersionMeta } from './VersionMeta';
 import {
@@ -12,18 +11,31 @@ import {
   togglePackageButtonClass,
   togglePackageIconClass,
   togglePackageIconOpenClass,
+  versionWrapperClass,
+  versionWrapperOpenClass,
   versionsSectionClass,
   versionsSectionMetaClass,
 } from './styles.css';
 
 interface IProps {
   pkg: IChangelogPackage;
+  isFullPage?: boolean;
 }
 
-export const Package: FC<IProps> = ({ pkg }) => {
+export const Package: FC<IProps> = ({ pkg, isFullPage = true }) => {
   const [isOpen, setIsOpen] = useState(true);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!ref.current || isFullPage) return;
+
+    ref.current.style.maxHeight = isOpen
+      ? `${ref.current.scrollHeight + 1000}px`
+      : '0';
+  }, [ref.current, isOpen, isFullPage]);
 
   const handleOpen = (): void => {
+    if (isFullPage) return;
     setIsOpen((v) => !v);
   };
   return (
@@ -38,46 +50,67 @@ export const Package: FC<IProps> = ({ pkg }) => {
     >
       <Stack alignItems="center" width="100%" justifyContent="space-between">
         <Stack>
-          <button onClick={handleOpen} className={togglePackageButtonClass}>
-            <span
-              className={classNames(togglePackageIconClass, {
-                [togglePackageIconOpenClass]: isOpen,
-              })}
-            >
-              <MonoAdd />
-            </span>
+          {!isFullPage ? (
+            <button onClick={handleOpen} className={togglePackageButtonClass}>
+              <span
+                className={classNames(togglePackageIconClass, {
+                  [togglePackageIconOpenClass]: isOpen,
+                })}
+              >
+                <MonoAdd />
+              </span>
+
+              <Heading as="h2">{pkg.name}</Heading>
+            </button>
+          ) : (
             <Heading as="h2">{pkg.name}</Heading>
-          </button>
+          )}
         </Stack>
 
-        <Link href={`/changelogs/${pkg.slug}`}>
-          <Button variant="transparent" endVisual={<MonoList />}>
+        {!isFullPage && (
+          <UILink
+            href={`/changelogs/${pkg.slug}`}
+            variant="transparent"
+            endVisual={<MonoList />}
+          >
             See all logs
-          </Button>
-        </Link>
+          </UILink>
+        )}
       </Stack>
-      {getVersions(pkg).map((version) => (
-        <Stack key={version.label} flexDirection={{ xs: 'column', lg: 'row' }}>
+      <Stack
+        ref={ref}
+        flexDirection="column"
+        gap="lg"
+        className={classNames(versionWrapperClass, {
+          [versionWrapperOpenClass]: !isOpen,
+        })}
+      >
+        {getVersions(pkg).map((version) => (
           <Stack
-            paddingBlock="lg"
-            className={versionsSectionMetaClass}
-            paddingInlineEnd={{ xs: 'no', lg: 'xl' }}
+            key={version.label}
+            flexDirection={{ xs: 'column', lg: 'row' }}
           >
-            <VersionMeta version={version} />
+            <Stack
+              paddingBlock="lg"
+              className={versionsSectionMetaClass}
+              paddingInlineEnd={{ xs: 'no', lg: 'xl' }}
+            >
+              <VersionMeta version={version} />
+            </Stack>
+            <Stack
+              flex={1}
+              className={versionsSectionClass}
+              paddingInlineStart={{ xs: 'md', xl: 'xxxl' }}
+              paddingInlineEnd="md"
+              paddingBlock="lg"
+              flexDirection="column"
+              gap="lg"
+            >
+              <Version version={version} />
+            </Stack>
           </Stack>
-          <Stack
-            flex={1}
-            className={versionsSectionClass}
-            paddingInlineStart={{ xs: 'md', xl: 'xxxl' }}
-            paddingInlineEnd="md"
-            paddingBlock="lg"
-            flexDirection="column"
-            gap="lg"
-          >
-            <Version version={version} />
-          </Stack>
-        </Stack>
-      ))}
+        ))}
+      </Stack>
     </Stack>
   );
 };

@@ -1,5 +1,9 @@
 import { Changelog } from '@/components/Changelog/Changelog';
 import changelogs from '@/data/changelogs.json';
+import {
+  getPackages,
+  getVersions,
+} from '@/scripts/importChangelogs/utils/misc';
 import { getPageConfig } from '@/utils/config';
 import type { GetStaticProps } from 'next';
 import type { FC } from 'react';
@@ -14,9 +18,15 @@ const Home: FC<IProps> = ({ changelogs }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
+  const newChangelogs = getPackages(
+    changelogs as unknown as IChangelogComplete,
+  ).map((pkg) => {
+    return { ...pkg, content: getVersions(pkg).slice(0, 4) };
+  });
+
   return {
     props: {
-      changelogs,
+      changelogs: newChangelogs,
       ...(await getPageConfig({
         filename: __filename,
       })),

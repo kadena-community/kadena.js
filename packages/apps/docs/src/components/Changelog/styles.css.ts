@@ -201,6 +201,7 @@ export const togglePackageButtonClass = style([
     border: 'none',
     marginInline: 'no',
     paddingInlineStart: 'no',
+    cursor: 'pointer',
   }),
 ]);
 
@@ -210,3 +211,10 @@ export const togglePackageIconClass = style({
 export const togglePackageIconOpenClass = style({
   transform: 'rotate(-45deg)',
 });
+
+export const versionWrapperClass = style({
+  overflow: 'hidden',
+  willChange: 'maxHeight',
+  transition: 'max-height 1s ease-in-out',
+});
+export const versionWrapperOpenClass = style({});
