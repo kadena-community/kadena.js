@@ -1,4 +1,4 @@
-*
+
 !index.tsx
 !404.tsx
 !.gitignore
@@ -8,4 +8,5 @@
 !/search/*
 !/api/*
 !/changelogs/*
+
 

@@ -481,13 +481,3 @@ pages:
           jsbindings:
             file: /reference/chainweb/chainwebjs.md
             url: /js-bindings
-  changelogs:
-    url: /changelogs
-    file: /changelogs/index.tsx
-    children:
-      pact:
-        url: /pact
-        file: /changelogs/index.tsx
-      react-ui:
-        url: /react-ui
-        file: /changelogs/index.tsx
