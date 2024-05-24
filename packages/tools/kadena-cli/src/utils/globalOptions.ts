@@ -1,4 +1,4 @@
-import { Option, program } from 'commander';
+import { Option } from 'commander';
 import { z } from 'zod';
 import {
   generic,
@@ -21,7 +21,6 @@ import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
 import { services } from '../services/index.js';
 import { createOption } from './createOption.js';
 import { getDefaultNetworkName, passwordPromptTransform } from './helpers.js';
-import { log } from './logger.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalOptions = {
@@ -91,11 +90,9 @@ export const globalOptions = {
       try {
         return await loadNetworkConfig(network);
       } catch (e) {
-        log.info(
+        throw new Error(
           `\nNo configuration for network "${network}" found. Please configure the network.\n`,
         );
-        await program.parseAsync(['', '', 'networks', 'create']);
-        return await loadNetworkConfig(network);
       }
     },
   }),
@@ -114,11 +111,9 @@ export const globalOptions = {
       try {
         return await loadNetworkConfig(network);
       } catch (e) {
-        log.info(
+        throw new Error(
           `\nNo configuration for network "${network}" found. Please configure the network.\n`,
         );
-        await program.parseAsync(['', '', 'networks', 'create']);
-        return await loadNetworkConfig(network);
       }
     },
   }),

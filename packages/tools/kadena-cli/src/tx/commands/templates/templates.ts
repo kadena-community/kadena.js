@@ -50,21 +50,17 @@ networkId: "{{network:networkId}}"
 type: exec
 `;
 
-export const arbitraryCodeTemplate = (
-  code: string,
-  chainId: string,
-  network: string,
-): string => `
+export const arbitraryCodeTemplate = `
 code: |-
-  ${code}
+  {{{code}}}
 data:
 meta:
-  chainId: "${chainId}"
-  gasLimit: 2300
+  chainId: "{{chain-id}}"
+  gasLimit: 99999
   gasPrice: 0.000001
   ttl: 600
   sender: "local"
-networkId: "${network}"
+networkId: "{{network:networkId}}"
 type: exec
 `;
 
