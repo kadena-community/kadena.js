@@ -84,7 +84,6 @@ async function checkMempoolForTransaction(
 
     return null;
   } catch (error) {
-    console.log(error);
     return null;
   }
 }
