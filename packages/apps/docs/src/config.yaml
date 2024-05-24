@@ -484,6 +484,9 @@ pages:
               dutch:
                 url: /dutch-auction
                 file: /reference/marmalade/dutch-auction-ref.md
+      spirekey:
+        url: /spirekey
+        file: /reference/spirekey.md
       chainwebref:
         url: /chainweb-ref
         file: /reference/chainweb/api/chainweb-api.tsx
