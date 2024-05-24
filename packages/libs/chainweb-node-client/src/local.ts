@@ -1,5 +1,6 @@
 import { ensureSignedCommand } from '@kadena/pactjs';
 import type { ICommand, ISignatureJson, IUnsignedCommand } from '@kadena/types';
+import { fetch } from 'node-fetch-native';
 import type {
   ICommandResult,
   ILocalCommandResult,

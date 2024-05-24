@@ -1,3 +1,4 @@
+import { fetch } from 'node-fetch-native';
 import type { ISendRequestBody, SendResponse } from './interfaces/PactAPI';
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';

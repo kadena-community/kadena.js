@@ -1,3 +1,4 @@
+import { fetch } from 'node-fetch-native';
 import type { ISPVRequestBody, SPVResponse } from './interfaces/PactAPI';
 import { parseResponseTEXT } from './parseResponseTEXT';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
