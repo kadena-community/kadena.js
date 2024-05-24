@@ -87,6 +87,7 @@ export const commitListItemTitleClass = style([
     selectors: {
       '&::before': {
         content: '•',
+        color: tokens.kda.foundation.color.text.base.default,
         paddingInlineEnd: tokens.kda.foundation.spacing.sm,
       },
     },

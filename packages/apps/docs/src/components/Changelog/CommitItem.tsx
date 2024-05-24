@@ -1,4 +1,4 @@
-import { Stack } from '@kadena/react-ui';
+import { Stack, Text } from '@kadena/react-ui';
 import type { FC } from 'react';
 import React, { useMemo } from 'react';
 import { CommitTag } from './CommitTag';
@@ -29,7 +29,7 @@ export const CommitItem: FC<IProps> = ({ commit }) => {
   return (
     <Stack as="li" className={commitListItemClass}>
       <Stack flex={1} className={commitListItemTitleClass}>
-        {commit.label}
+        <Text>{commit.label}</Text>
       </Stack>
       {ids.length > 0 && (
         <Stack flexWrap="wrap" className={tagContainerClass}>

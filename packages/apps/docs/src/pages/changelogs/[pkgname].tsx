@@ -35,7 +35,7 @@ export const getStaticProps: GetStaticProps<{}, { pkgname: string }> = async (
         filename: __filename,
       })),
       frontmatter: {
-        title: 'Changelogsd',
+        title: 'Changelogs',
         menu: 'Changelogs',
         subTitle: 'Changelogs',
         label: 'Changelogs',
