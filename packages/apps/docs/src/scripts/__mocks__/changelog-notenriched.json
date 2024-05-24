@@ -1,6 +1,7 @@
 {
-  "React UI": {
+  "react-ui": {
     "name": "React UI",
+    "slug": "react-ui",
     "repo": "https://github.com/kadena-community/kadena.js.git",
     "directory": "/packages/libs/react-ui",
     "fileName": "CHANGELOG.md",
@@ -3458,8 +3459,9 @@
       }
     }
   },
-  "React Icons": {
+  "react-icons": {
     "name": "React Icons",
+    "slug": "react-icons",
     "repo": "https://github.com/kadena-community/kadena.js.git",
     "directory": "/packages/libs/react-icons",
     "fileName": "CHANGELOG.md",
@@ -3554,8 +3556,9 @@
       }
     }
   },
-  "Kadena Cli": {
+  "kadena-cli": {
     "name": "Kadena Cli",
+    "slug": "kadena-cli",
     "repo": "https://github.com/kadena-community/kadena.js.git",
     "directory": "/packages/tools/kadena-cli",
     "fileName": "CHANGELOG.md",
@@ -4535,8 +4538,9 @@
       }
     }
   },
-  "KadenaJS": {
+  "kadenajs": {
     "name": "KadenaJS",
+    "slug": "kadenajs",
     "repo": "https://github.com/kadena-community/kadena.js.git",
     "directory": "/packages/libs/kadena.js",
     "fileName": "CHANGELOG.md",
@@ -5533,8 +5537,9 @@
       }
     }
   },
-  "Pact 4": {
+  "pact": {
     "name": "Pact 4",
+    "slug": "pact",
     "repo": "https://github.com/kadena-io/pact.git",
     "directory": "/",
     "fileName": "CHANGELOG.md",

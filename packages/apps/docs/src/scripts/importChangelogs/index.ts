@@ -60,12 +60,12 @@ const crawl = (repo: IRepo): ((tree: Node) => IChangelogPackage) => {
       tree.children.forEach((branch, idx) => {
         if (branch.type === 'heading' && branch.depth === 2) {
           version = createVersion(branch);
-          if (!currentContent[repo.name]?.content[version.label].isLocked) {
+          if (!currentContent[repo.slug]?.content[version.label].isLocked) {
             content[version.label] = version;
             currentPosition = VersionPosition.VERSION;
           } else {
             content[version.label] =
-              currentContent[repo.name].content[version.label];
+              currentContent[repo.slug].content[version.label];
             version = undefined;
           }
         }
@@ -120,7 +120,7 @@ const getReposContent = async (repos: IRepo[]): Promise<IChangelogComplete> => {
     if (result.status === 'rejected') {
       errors.push(`${repos[idx].repo} had issues with creating content`);
     } else {
-      content[result.value.name] = result.value;
+      content[result.value.slug] = result.value;
     }
   });
 

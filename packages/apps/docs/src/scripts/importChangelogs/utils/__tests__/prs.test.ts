@@ -91,7 +91,7 @@ describe('pr utils', () => {
         }
       );
 
-      const version = changelog['Pact 4'].content[
+      const version = changelog.pact.content[
         '4.11.0'
       ] as unknown as IChangelogPackageVersion;
 
@@ -107,7 +107,7 @@ describe('pr utils', () => {
           },
         }
       );
-      const version = changelog['Pact 4'].content[
+      const version = changelog.pact.content[
         '4.11.0'
       ] as unknown as IChangelogPackageVersion;
 

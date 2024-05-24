@@ -12,7 +12,7 @@ describe('enrichPackageContent', () => {
         }
       );
 
-      const version = changelog['React UI'].content[
+      const version = changelog['react-ui'].content[
         '0.2.0'
       ] as unknown as IChangelogPackageVersion;
 
@@ -32,7 +32,7 @@ describe('enrichPackageContent', () => {
         }
       );
 
-      const version = changelog['Pact 4'].content[
+      const version = changelog.pact.content[
         '4.6.0'
       ] as unknown as IChangelogPackageVersion;
 
@@ -53,7 +53,7 @@ describe('enrichPackageContent', () => {
         }
       );
 
-      const version = changelog['React UI'].content[
+      const version = changelog['react-ui'].content[
         '0.2.0'
       ] as unknown as IChangelogPackageVersion;
       const result = getLastModifiedDate(version);
@@ -71,7 +71,7 @@ describe('enrichPackageContent', () => {
         }
       );
 
-      const version = changelog['Pact 4'].content[
+      const version = changelog.pact.content[
         '4.6.0'
       ] as unknown as IChangelogPackageVersion;
       const result = getLastModifiedDate(version);

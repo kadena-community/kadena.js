@@ -191,3 +191,22 @@ globalStyle(
     color: tokens.kda.foundation.color.text.base.inverse['@init'],
   },
 );
+
+export const togglePackageButtonClass = style([
+  atoms({
+    display: 'flex',
+    gap: 'sm',
+    alignItems: 'center',
+    background: 'none',
+    border: 'none',
+    marginInline: 'no',
+    paddingInlineStart: 'no',
+  }),
+]);
+
+export const togglePackageIconClass = style({
+  transition: 'transform .5s ease',
+});
+export const togglePackageIconOpenClass = style({
+  transform: 'rotate(-45deg)',
+});
