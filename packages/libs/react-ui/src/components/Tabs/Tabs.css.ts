@@ -69,27 +69,13 @@ export const tabListClass = style([
   },
 ]);
 
-export const selectorLine = style([
-  atoms({
-    position: 'absolute',
-    bottom: 0,
-    borderStyle: 'solid',
-  }),
-  {
-    width: 0,
-    height: 0,
-    zIndex: 4,
-    borderWidth: 0,
-    borderBottomWidth: token('border.width.normal'),
-    borderColor: token('color.border.tint.@focus'),
-    transition: 'transform .4s ease, width .4s ease',
-    transform: `translateX(0)`,
-  },
-]);
+// Prevent button from increasing the tab size and having the outline conflict with label
+globalStyle(`${tabListClass} button`, {
+  paddingBlock: 0,
+});
 
-// To prevent overlapping with the focus ring, we hide the line when the tab is focused
-globalStyle(`${tabListClass}.focusVisible ${selectorLine}`, {
-  opacity: 0,
+globalStyle(`${tabListClass} span`, {
+  paddingInline: 0,
 });
 
 export const tabItemClass = recipe({
@@ -167,6 +153,9 @@ export const tabItemClass = recipe({
       },
       bottom: {
         selectors: {
+          '&[data-selected="true"]': {
+            borderBottom: `2px solid ${token('color.border.tint.@focus')}`,
+          },
           '&[data-hovered="true"]:not(&[data-selected="true"])': {
             borderBottom: `2px solid ${token('color.border.tint.outline')}`,
           },
