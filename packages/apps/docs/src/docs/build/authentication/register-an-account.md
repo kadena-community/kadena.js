@@ -130,6 +130,24 @@ the specified network. In the example URL above, the value of this query
 parameter is set to `testnet04`. You can change the value to `mainnet01` or
 `development`, as needed.
 
+### Specify the chain in the query parameter
+
+In many cases, applications are only deployed on a specific chain in the network.
+For example, your application might only allow transactions on chain 7 of the
+Kadena test network. This chain may be different from the default chain that
+Kadena SpireKey creates accounts on by default. If users attempt to connect an
+account that exists on a different chain than the one your application runs on
+they will not be able to and complete transactions in your application.
+
+To prevent this type of transaction failure, you can specify the `chainId` as
+a query parameter for connecting to the Kadena SpireKey wallet URL. The
+chainId limits the accounts that users can select from to accounts created on
+the specified chain. In the example URL below, the value of this query
+parameter is set to `7`. You can change the value to any of the twenty available
+chains on the Kadena network, as needed.
+
+https://spirekey.kadena.io/connect?returnUrl=http://localhost:3000&networkId=testnet04&chainId=7
+
 ### Specify a reason as a query parameter
 
 In addition to your application URL and the network identifier, you can
