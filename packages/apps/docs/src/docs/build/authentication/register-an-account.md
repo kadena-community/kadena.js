@@ -35,11 +35,17 @@ To register for a new Kadena SpireKey account:
    to register and cannot been seen by anyone else. If you don't want to create
    an account, click **Cancel** to exit the registration flow.
 
+<<<<<<< HEAD
 4. Click in the **Passkey** field to generate a public and secret key pair.
    
    The secret key is encrypted and stored on the device you're using to register an account.
 
    The encrypted **passkey** is a WebAuthn credential that's protected with
+=======
+4. Click in the **Passkey** field to generate a private key to be stored in encrypted form on the device you're using to register an account.
+
+   The encrypted **passkey** is a WebAuthN credential that's protected with
+>>>>>>> a9bc91d51 (Tidy up register, and placeholder for specs)
    biometric data—such as a fingerprint or facial recognition—or a security key
    depending on the options available on the device you're using to register.
    Only the public key and credential identifier associated with the private
