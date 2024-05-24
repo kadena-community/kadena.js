@@ -58,7 +58,7 @@ describe('pr utils', () => {
         }
       );
 
-      const pkg = changelog['Pact 4'] as unknown as IChangelogPackage;
+      const pkg = changelog.pact as unknown as IChangelogPackage;
 
       const result = getPrs(pkg);
       expect(result.length).toEqual(185);
@@ -73,7 +73,7 @@ describe('pr utils', () => {
         }
       );
 
-      const pkg = changelog['Pact 4'] as unknown as IChangelogPackage;
+      const pkg = changelog.pact as unknown as IChangelogPackage;
       const result = getPrs(pkg);
 
       expect(result[0].id).toEqual(1326);
