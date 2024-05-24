@@ -1,9 +1,9 @@
 import { Changelog } from '@/components/Changelog/Changelog';
+import changelogs from '@/data/changelogs.json';
 import { getPageConfig } from '@/utils/config';
 import type { GetStaticProps } from 'next';
 import type { FC } from 'react';
 import React from 'react';
-import changelogs from './../../data/changelogs.json';
 
 interface IProps {
   changelogs: IChangelogComplete;
