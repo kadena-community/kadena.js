@@ -1,4 +1,7 @@
-import type { ICreateTokenPolicyConfig } from './config';
+import { addSigner } from '@kadena/client/fp';
+import type { IGeneralCapability } from '@kadena/client/lib/interfaces/type-utilities';
+import type { ICap } from '@kadena/types';
+import type { CommonProps, ICreateTokenPolicyConfig } from './config';
 import {
   COLLECTION_POLICY,
   GUARD_POLICY,
@@ -38,3 +41,20 @@ export const validatePolicies = (
     throw new Error('Duplicate policies are not allowed');
   }
 };
+
+export const formatCapabilities = (
+  capabilities: CommonProps['capabilities'] = [],
+  signFor: IGeneralCapability,
+): ICap[] =>
+  capabilities.map((capability) =>
+    signFor(capability.name, ...capability.props),
+  );
+
+export const formatAdditionalSigners = (
+  additionalSigners: CommonProps['additionalSigners'] = [],
+): any[] =>
+  additionalSigners.map((signer) =>
+    addSigner(signer.keyset.keys, (signFor) =>
+      formatCapabilities(signer.capabilities, signFor),
+    ),
+  );

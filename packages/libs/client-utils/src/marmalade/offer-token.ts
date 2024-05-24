@@ -14,16 +14,13 @@ import {
 import type { ChainId, IPactDecimal, IPactInt } from '@kadena/types';
 import { submitClient } from '../core';
 import type { IClientConfig } from '../core/utils/helpers';
-import {
-  formatAdditionalSigners,
-  formatCapabilities,
-} from '../integration-tests/support/helpers';
 import type {
   CommonProps,
   ISaleTokenPolicyConfig,
   SalePolicyProps,
   WithSaleTokenPolicy,
 } from './config';
+import { formatAdditionalSigners, formatCapabilities } from './helpers';
 
 interface IOfferTokenInput extends CommonProps {
   tokenId: string;
