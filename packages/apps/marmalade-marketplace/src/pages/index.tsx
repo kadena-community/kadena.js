@@ -1,4 +1,3 @@
-import * as styles from "@/styles/global.css"
 import Layout from '@/components/Layout';
 import { getSales } from "@/hooks/getSales";
 import { Button, Grid, GridItem, Link } from "@kadena/react-ui";
@@ -27,48 +26,46 @@ export default function Example() {
   }, [saleStatus]);
 
   return (
-    <div className={styles.mainWrapperClass}>
-      <Providers>
-        <Layout>
-          <div style={{ marginTop: "100px" }}>
-            <div className={actionBarClass}>
-              <div className={actionBarSaleClass}>
-                <Button
-                  className={saleStatus === "CREATED" ? actionBarSaleActiveClass : ""}
-                  onClick={() => setSaleStatus("CREATED")}>Active sales</Button>
-                <Button
-                  className={saleStatus === "SOLD" ? actionBarSaleActiveClass : ""}
-                  onClick={() => setSaleStatus("SOLD")}>Past sales</Button>
-              </div>
-              <Link variant="primary">
-                Sell Token
-              </Link>
+    <Providers>
+      <Layout>
+        <div style={{ marginTop: "100px" }}>
+          <div className={actionBarClass}>
+            <div className={actionBarSaleClass}>
+              <Button
+                className={saleStatus === "CREATED" ? actionBarSaleActiveClass : ""}
+                onClick={() => setSaleStatus("CREATED")}>Active sales</Button>
+              <Button
+                className={saleStatus === "SOLD" ? actionBarSaleActiveClass : ""}
+                onClick={() => setSaleStatus("SOLD")}>Past sales</Button>
             </div>
-
-            {error && <div>Error: <pre>{JSON.stringify(error, null, 2)}</pre></div>}
-            {loading && <h2>Loading..</h2>}
-
-            <div>
-              <Grid
-                columns={{
-                  lg: 4,
-                  md: 3,
-                  sm: 2,
-                  xs: 1,
-                }}
-                gap="xl">
-                {data.map((sale, index) => (
-                  <GridItem key={index}>
-                    <a href={`/tokens/${sale.tokenId}`}>
-                      <Token tokenId={sale.tokenId} chainId={sale.chainId} sale={sale} />
-                    </a>
-                  </GridItem>
-                ))}
-              </Grid>
-            </div>
+            <Link variant="primary">
+              Sell Token
+            </Link>
           </div>
-        </Layout>
-      </Providers>
-    </div>
+
+          {error && <div>Error: <pre>{JSON.stringify(error, null, 2)}</pre></div>}
+          {loading && <h2>Loading..</h2>}
+
+          <div>
+            <Grid
+              columns={{
+                lg: 4,
+                md: 3,
+                sm: 2,
+                xs: 1,
+              }}
+              gap="xl">
+              {data.map((sale, index) => (
+                <GridItem key={index}>
+                  <a href={`/tokens/${sale.tokenId}`}>
+                    <Token tokenId={sale.tokenId} chainId={sale.chainId} sale={sale} />
+                  </a>
+                </GridItem>
+              ))}
+            </Grid>
+          </div>
+        </div>
+      </Layout>
+    </Providers>
   );
 }
