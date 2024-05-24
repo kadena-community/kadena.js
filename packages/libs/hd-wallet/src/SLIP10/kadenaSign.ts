@@ -2,6 +2,7 @@ import { verifySig } from '@kadena/cryptography-utils';
 import type { BinaryLike } from '../utils/crypto.js';
 import type { EncryptedString } from '../utils/kadenaEncryption.js';
 import { kadenaDecrypt } from '../utils/kadenaEncryption.js';
+import { isDerivationPathTemplateValid } from './utils/isDerivationPathTemplateValid.js';
 import type { ISignatureWithPublicKey } from './utils/sign.js';
 import { signWithKeyPair, signWithSeed } from './utils/sign.js';
 
@@ -63,6 +64,9 @@ export function kadenaSignWithSeed(
   decryptedSeed.catch(() => {
     console.error('Could not decrypt private key');
   });
+  if (!isDerivationPathTemplateValid(derivationPathTemplate)) {
+    throw new Error('Invalid derivation path template.');
+  }
   if (typeof index === 'number') {
     return async (hash: string) =>
       signWithSeed(
