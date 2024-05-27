@@ -7,8 +7,8 @@ import {
 
 import { PactCodeView } from '@/Components/PactCodeView/PactCodeView';
 import { Wizard } from '@/Components/Wizard/Wizard';
+import { WizardRender } from '@/Components/Wizard/components/Wizard-render';
 import { WizardStep } from '@/Components/Wizard/components/Wizard-step';
-import { WizardStepProps } from '@/Components/Wizard/model';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { execCodeParser } from '@kadena/pactjs-generator';
 import { Box, Button, Card, Heading, Text } from '@kadena/react-ui';
@@ -132,7 +132,7 @@ export function SignatureBuilder() {
   return (
     <>
       <Wizard>
-        <Wizard.Render>
+        <WizardRender>
           {({ step, goTo }) => (
             <Box>
               <Button
@@ -159,7 +159,7 @@ export function SignatureBuilder() {
               >{`Sign Transaction`}</Button>
             </Box>
           )}
-        </Wizard.Render>
+        </WizardRender>
         <WizardStep>
           {({ goTo }) => (
             <>
@@ -217,8 +217,8 @@ export function SignatureBuilder() {
               </Box>
               <Heading variant="h6">Code</Heading>
               {parsedCode &&
-                parsedCode.map((pc) => (
-                  <Card>
+                parsedCode.map((pc, index) => (
+                  <Card key={index}>
                     <PactCodeView parsedCode={pc} />
                   </Card>
                 ))}

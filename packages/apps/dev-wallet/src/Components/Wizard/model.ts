@@ -1,12 +1,14 @@
-export type WizardRenderProp = (actions: WizardStepActions) => React.ReactNode;
+export type WizardRenderProp = (
+  actions: WizardElementActions,
+) => React.ReactNode;
 
-export interface WizardStepActions {
+export interface WizardElementActions {
   step: number;
   next: () => void;
   back: () => void;
   goTo: (step: number) => void;
 }
 
-export interface WizardStepProps extends Partial<WizardStepActions> {
+export interface WizardElementProps extends Partial<WizardElementActions> {
   children: WizardRenderProp;
 }

@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { wizardStep } from '../Wizard.css';
+import { wizardRender } from '../Wizard.css';
 import { WizardElementProps } from '../model';
 
-export const WizardStep: FC<WizardElementProps> = ({
+export const WizardRender: FC<WizardElementProps> = ({
   children,
   step = 0,
   next = () => {},
@@ -10,6 +10,6 @@ export const WizardStep: FC<WizardElementProps> = ({
   goTo = () => {},
 }) => {
   return (
-    <div className={wizardStep}>{children({ step, next, back, goTo })}</div>
+    <div className={wizardRender}>{children({ step, next, back, goTo })}</div>
   );
 };
