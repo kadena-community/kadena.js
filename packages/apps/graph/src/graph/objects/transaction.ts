@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, Signer } from '@prisma/client';
 import { getMempoolTransactionStatus } from '@services/chainweb-node/mempool';
 import { normalizeError } from '@utils/errors';
 import { networkData } from '@utils/network';
@@ -22,27 +22,33 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
     sigs: t.field({
       type: [TransactionSigs],
       async resolve(parent) {
-        const signers = await signersLoader.load({
-          blockHash: parent.blockHash,
-          requestKey: parent.requestKey,
-          chainId: parent.chainId.toString(),
-        });
-
-        return signers.map((signer) => ({
-          sig: signer.signature,
-        }));
-      },
-    }),
-    cmd: t.field({
-      type: TransactionCommand,
-
-      async resolve(parent, __args, context) {
-        try {
+        if (!nullishOrEmpty(parent.blockHash)) {
           const signers = await signersLoader.load({
             blockHash: parent.blockHash,
             requestKey: parent.requestKey,
             chainId: parent.chainId.toString(),
           });
+
+          return signers.map((signer) => ({
+            sig: signer.signature,
+          }));
+        }
+        return [];
+      },
+    }),
+    cmd: t.field({
+      type: TransactionCommand,
+
+      async resolve(parent, __args) {
+        try {
+          let signers: Signer[] = [];
+          if (!nullishOrEmpty(parent.blockHash)) {
+            signers = await signersLoader.load({
+              blockHash: parent.blockHash,
+              requestKey: parent.requestKey,
+              chainId: parent.chainId.toString(),
+            });
+          }
 
           return {
             nonce: parent.nonce,
