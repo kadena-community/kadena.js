@@ -1,3 +1,4 @@
+import type { Signer } from '@prisma/client';
 import { Prisma } from '@prisma/client';
 import { getMempoolTransactionStatus } from '@services/chainweb-node/mempool';
 import { normalizeError } from '@utils/errors';
@@ -22,27 +23,33 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
     sigs: t.field({
       type: [TransactionSigs],
       async resolve(parent) {
-        const signers = await signersLoader.load({
-          blockHash: parent.blockHash,
-          requestKey: parent.requestKey,
-          chainId: parent.chainId.toString(),
-        });
-
-        return signers.map((signer) => ({
-          sig: signer.signature,
-        }));
-      },
-    }),
-    cmd: t.field({
-      type: TransactionCommand,
-
-      async resolve(parent, __args, context) {
-        try {
+        if (!nullishOrEmpty(parent.blockHash)) {
           const signers = await signersLoader.load({
             blockHash: parent.blockHash,
             requestKey: parent.requestKey,
             chainId: parent.chainId.toString(),
           });
+
+          return signers.map((signer) => ({
+            sig: signer.signature,
+          }));
+        }
+        return [];
+      },
+    }),
+    cmd: t.field({
+      type: TransactionCommand,
+
+      async resolve(parent, __args) {
+        try {
+          let signers: Signer[] = [];
+          if (!nullishOrEmpty(parent.blockHash)) {
+            signers = await signersLoader.load({
+              blockHash: parent.blockHash,
+              requestKey: parent.requestKey,
+              chainId: parent.chainId.toString(),
+            });
+          }
 
           return {
             nonce: parent.nonce,
@@ -74,15 +81,18 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
       type: TransactonInfo,
       resolve: async (parent) => {
         try {
-          const status = await getMempoolTransactionStatus(
-            parent.requestKey,
-            parent.chainId.toString(),
-          );
+          //This check is important because a transaction can be completed, yet we can still be able to fetch a status from the mempool
+          if (nullishOrEmpty(parent.blockHash)) {
+            const status = await getMempoolTransactionStatus(
+              parent.requestKey,
+              parent.chainId.toString(),
+            );
 
-          if (!nullishOrEmpty(status) && status) {
-            return {
-              status,
-            };
+            if (!nullishOrEmpty(status) && status) {
+              return {
+                status,
+              };
+            }
           }
 
           return {

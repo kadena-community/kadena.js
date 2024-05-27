@@ -80,7 +80,7 @@
     "@vitest/coverage-v8": "^1.6.0",
     "@walletconnect/types": "~2.8.1",
     "@webpro/next-translate-plugin": "^2.6.3",
-    "debug": "~4.3.4",
+    "debug": "4.3.4",
     "eslint": "^8.45.0",
     "eslint-config-next": "13.4.5",
     "happy-dom": "^12.9.1",

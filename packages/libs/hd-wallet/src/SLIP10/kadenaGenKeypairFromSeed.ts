@@ -30,11 +30,11 @@ async function genKeypairFromSeed(
 
 /**
  *
- * @param password
- * @param seed
- * @param index
- * @param derivationPathTemplate
- * @alpha
+ * @param password - password for decrypting the seed
+ * @param seed - encrypted seed to generate keypair
+ * @param index - index to generate keypair
+ * @param derivationPathTemplate - derivation path template
+ * @public
  */
 export function kadenaGenKeypairFromSeed(
   password: BinaryLike,
@@ -43,6 +43,14 @@ export function kadenaGenKeypairFromSeed(
   derivationPathTemplate?: string,
 ): Promise<[string, EncryptedString]>;
 
+/**
+ *
+ * @param password - password for decrypting the seed
+ * @param seed - encrypted seed to generate keypair
+ * @param indexRange - range of indices to generate keypair
+ * @param derivationPathTemplate - derivation path template
+ * @public
+ */
 export function kadenaGenKeypairFromSeed(
   password: BinaryLike,
   seed: EncryptedString,
