@@ -56,14 +56,14 @@ function CustomTree<T>({
             <Stack
               alignItems={'center'}
               justifyContent={'space-between'}
-              onClick={item.onExpandCollapse}
+              onClick={item.toggleExpandCollapse}
               role="button"
               className={itemContainerStyle}
             >
               <Button
                 variant="transparent"
                 onClick={() => {
-                  item.onExpandCollapse();
+                  item.toggleExpandCollapse();
                 }}
               >
                 {item.isExpanded ? <MonoArrowDropDown /> : <MonoArrowRight />}
@@ -123,7 +123,7 @@ function Node<
               onClick={() => {
                 console.log('onClick', child);
                 if (child.data.children.length) {
-                  child.onExpandCollapse();
+                  child.toggleExpandCollapse();
                 } else {
                   console.log('I aint got no kids!');
                 }
@@ -133,7 +133,11 @@ function Node<
               style={{ paddingInlineStart: `${level * 20}px` }}
             >
               {child.data.children.length ? (
-                <Button variant="transparent" onClick={child.onExpandCollapse}>
+                <Button
+                  variant="transparent"
+                  onClick={() => {
+                    child.toggleExpandCollapse();
+                >
                   {child.isExpanded ? (
                     <MonoArrowDropDown />
                   ) : (

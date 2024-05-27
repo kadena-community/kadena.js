@@ -68,7 +68,7 @@ function SidePanel<T>({ data, onReload }: ISidePanelProps<T>) {
             <Button
               isCompact
               variant="transparent"
-              onPress={item.onExpandCollapse}
+              onPress={item.toggleExpandCollapse}
             >
               {item.isExpanded ? <MonoArrowDropDown /> : <MonoArrowRight />}
             </Button>
