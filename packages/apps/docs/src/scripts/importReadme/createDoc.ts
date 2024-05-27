@@ -16,7 +16,7 @@ import { toMarkdown } from 'mdast-util-to-markdown';
 import { toString } from 'mdast-util-to-string';
 import { remark } from 'remark';
 import type { Root } from 'remark-gfm';
-import { getLastModifiedDate } from '../getdocstree';
+import { getLastModifiedDate } from '../getdocstree/utils/getLastModifiedDate';
 import type { IImportReadMeItem } from '../utils';
 import { getTypes } from '../utils';
 import { removeRepoDomain } from './index';

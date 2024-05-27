@@ -20,6 +20,7 @@ import {
 
 import { findPath } from './utils/findPath';
 import { getFrontMatter } from './utils/getFrontMatter';
+import { getLastModifiedDate } from './utils/getLastModifiedDate';
 import { isIndex } from './utils/isIndex';
 import { pushToParent } from './utils/pushToParent';
 
@@ -176,5 +177,3 @@ export const createDocsTree = async (): Promise<IScriptResult> => {
 
   return { errors, success };
 };
-
-createDocsTree();
