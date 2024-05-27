@@ -160,3 +160,18 @@ export interface IPactQueryResponse {
   chainId: string;
   code: string;
 }
+
+export interface INetworkInfo {
+  networkHost: string;
+  networkId: string;
+  apiVersion: string;
+  coinsInCirculation: number;
+  transactionCount: number;
+  networkHashRate: number;
+  totalDifficulty: number;
+}
+
+export interface IBlockNeighbor {
+  chainId: string;
+  blockHash: string;
+}

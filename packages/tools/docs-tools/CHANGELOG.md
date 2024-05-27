@@ -1,5 +1,11 @@
 # @kadena/docs-tools
 
+## 0.2.1
+
+### Patch Changes
+
+- 93bf55b07: Package updates
+
 ## 0.2.0
 
 ### Minor Changes

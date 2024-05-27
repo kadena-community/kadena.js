@@ -1,11 +1,11 @@
-import { sender00Account } from '@constants/accounts.constants';
-import { devnetHost, networkId } from '@constants/network.constants';
 import type { ChainId, ICommandResult, IKeyPair } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { createPrincipal } from '@kadena/client-utils/built-in';
 import { transferCreate } from '@kadena/client-utils/coin';
 import { genKeyPair } from '@kadena/cryptography-utils';
-import type { IAccount } from '@test-types/account.types';
+import { sender00Account } from '../../constants/accounts.constants';
+import { devnetHost, networkId } from '../../constants/network.constants';
+import type { IAccount } from '../../types/account.types';
 
 export const generateAccount = async (
   keys: number = 1,

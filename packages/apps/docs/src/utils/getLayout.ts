@@ -1,4 +1,3 @@
-import { Blog } from '@/components/Layout/Blog/Blog';
 import { Full } from '@/components/Layout/Full/Full';
 import { Home } from '@/components/Layout/Home/Home';
 import { Landing } from '@/components/Layout/Landing/Landing';
@@ -12,8 +11,6 @@ export const getLayout = (layout: string): FC<IProps> => {
   switch (layout.toLowerCase()) {
     case 'full':
       return Full as unknown as FC<IProps>;
-    case 'blog':
-      return Blog as unknown as FC<IProps>;
     case 'home':
       return Home as unknown as FC<IProps>;
     case 'redocly':

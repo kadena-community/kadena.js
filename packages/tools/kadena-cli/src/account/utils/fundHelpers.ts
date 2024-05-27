@@ -138,19 +138,21 @@ export async function findMissingModuleDeployments(
 ): Promise<ChainId[]> {
   const undeployedChainIds: ChainId[] = [];
 
-  for (const chainId of targetChainIds) {
-    const moduleDeployed = await describeModule(moduleName, {
-      host: network.networkHost,
-      defaults: {
-        networkId: network.networkId,
-        meta: { chainId },
-      },
-    }).catch(() => false);
+  await Promise.all(
+    targetChainIds.map(async (chainId) => {
+      const moduleDeployed = await describeModule(moduleName, {
+        host: network.networkHost,
+        defaults: {
+          networkId: network.networkId,
+          meta: { chainId },
+        },
+      }).catch(() => false);
 
-    if (moduleDeployed === false) {
-      undeployedChainIds.push(chainId);
-    }
-  }
+      if (moduleDeployed === false) {
+        undeployedChainIds.push(chainId);
+      }
+    }),
+  );
 
   return undeployedChainIds;
 }

@@ -1,29 +1,26 @@
-import { ListBoxComponent } from '@page-objects/react-ui/listBox.component';
-import { NavHeaderComponent } from '@page-objects/react-ui/navHeader.component';
 import type { Page } from '@playwright/test';
-import { getI18nInstance } from 'playwright-i18next-fixture';
+import { ListBoxComponent } from '../../react-ui/listBox.component';
+import { NavHeaderComponent } from '../../react-ui/navHeader.component';
 
 export class ToolsHeaderComponent extends NavHeaderComponent {
-  private readonly _i18n = getI18nInstance();
   public networkListBox: ListBoxComponent;
 
   public constructor(page: Page) {
     super(page);
     this._page = page;
-    this.networkListBox = new ListBoxComponent(this._page);
+    this._component = this._page.locator('header');
+    this.networkListBox = new ListBoxComponent(
+      this._page,
+      'Testnet Select Network',
+      'Select Network',
+    );
   }
 
-  public async goToPage(translationKey: string): Promise<void> {
-    return this._component
-      .getByRole('link', { name: this._i18n.t(translationKey) })
-      .click();
+  public async goToPage(label: string): Promise<void> {
+    return this._component.getByRole('link', { name: label }).click();
   }
 
   public async setNetwork(networkLabel: string): Promise<void> {
-    await this.networkListBox.setValueForListBox(
-      'Testnet Select Network',
-      'Select Network',
-      networkLabel,
-    );
+    await this.networkListBox.setValue(networkLabel);
   }
 }

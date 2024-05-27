@@ -8,6 +8,9 @@ type Block implements Node {
   chainId: BigInt!
   creationTime: DateTime!
 
+  """The difficulty of the block."""
+  difficulty: BigInt!
+
   """
   The moment the difficulty is adjusted to maintain a block validation time of 30 seconds.
   """
@@ -19,6 +22,7 @@ type Block implements Node {
   height: BigInt!
   id: ID!
   minerAccount: FungibleChainAccount!
+  neighbours: [BlockNeighbor!]!
   parent: Block
   payloadHash: String!
 
@@ -38,6 +42,12 @@ type BlockEventsConnection {
 type BlockEventsConnectionEdge {
   cursor: String!
   node: Event!
+}
+
+"""The neighbor of a block."""
+type BlockNeighbor {
+  blockHash: String!
+  chainId: String!
 }
 
 type BlockTransactionsConnection {
@@ -226,6 +236,30 @@ type MinerKey implements Node {
   key: String!
 }
 
+"""Information about the network."""
+type NetworkInfo {
+  """The version of the API."""
+  apiVersion: String!
+
+  """The number of circulating coins."""
+  coinsInCirculation: Float!
+
+  """The network hash rate."""
+  networkHashRate: Float!
+
+  """The host of the network."""
+  networkHost: String!
+
+  """The ID of the network."""
+  networkId: String!
+
+  """The total difficulty."""
+  totalDifficulty: Float!
+
+  """The total number of transactions."""
+  transactionCount: Int!
+}
+
 interface Node {
   id: ID!
 }
@@ -350,6 +384,7 @@ type Query {
 
     """Default: all chains"""
     chainIds: [String!]
+    endHeight: Int
     first: Int
     last: Int
     startHeight: Int!
@@ -363,7 +398,7 @@ type Query {
     before: String
 
     """Default: all chains"""
-    chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]
+    chainIds: [String!]
     completedHeights: Boolean = false
     first: Int
     heightCount: Int = 3
@@ -416,6 +451,9 @@ type Query {
 
   """Get the height of the block with the highest height."""
   lastBlockHeight: BigInt
+
+  """Get information about the network."""
+  networkInfo: NetworkInfo
   node(id: ID!): Node
   nodes(ids: [ID!]!): [Node]!
 

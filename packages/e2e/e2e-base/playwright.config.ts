@@ -9,10 +9,8 @@ export const baseConfig: PlaywrightTestConfig = {
   forbidOnly: process.env.CI !== undefined,
   retries: process.env.CI !== undefined ? 1 : 0,
   workers: 1,
-  reporter:
-    process.env.CI !== undefined
-      ? [['github'], ['list'], ['html', { open: 'never' }]]
-      : [['list'], ['html', { open: 'never' }]],
+  reportSlowTests: null,
+  reporter: [['list'], ['html', { open: 'never' }]],
   use: {
     headless: process.env.CI !== undefined,
     baseURL: 'http://localhost:3000/',
@@ -20,9 +18,7 @@ export const baseConfig: PlaywrightTestConfig = {
     trace: 'retain-on-failure',
     viewport: { width: 1920, height: 1080 },
   },
-  timeout: 100000,
-
   expect: {
-    timeout: 2 * 30000,
+    timeout: 15000,
   },
 };

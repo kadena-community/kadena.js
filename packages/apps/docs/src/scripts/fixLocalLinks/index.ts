@@ -23,7 +23,6 @@ import { getLinkHash } from './utils/getLinkHash';
 import { getPageFromPath } from './utils/getPageFromPath';
 import { getUrlofImageFile } from './utils/getUrlofImageFile';
 import { isLocalImageLink, isLocalPageLink } from './utils/isLocalPageLink';
-import { removeFileExtenion } from './utils/removeFileExtenion';
 
 const errors: string[] = [];
 const success: string[] = [];
@@ -99,12 +98,6 @@ const getUrlofPageFile = (link: string): string => {
     .replace(/\.\.\//g, '')
     .replace(/\.\//g, '')
     .replace(`#${fileHash}`, '');
-
-  // the blogchain is not in the config.
-  // so do not check to change
-  if (cleanLink.startsWith('/blogchain')) return removeFileExtenion(cleanLink);
-  if (cleanLink.startsWith('blogchain'))
-    return `/${removeFileExtenion(cleanLink)}`;
 
   const result = findPageByFile(cleanLink, pages);
   if (!result) {

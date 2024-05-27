@@ -33,7 +33,6 @@ describe('utils getHeaderMenuItems', () => {
             
             interface IProps {
               popularPages: IMostPopularPage[];
-              blogPosts: IMenuData[];
             }
             
             const Home: FC<IProps> = () => {
@@ -48,7 +47,6 @@ describe('utils getHeaderMenuItems', () => {
               return {
                 props: {
                   ...(await getPageConfig({
-                    blogPosts: ['kadenajs', 'cli'],
                     popularPages: '/build',
                     filename: __filename,
                   })),

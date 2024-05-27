@@ -45,7 +45,9 @@ export const InfiniteScroll: FC<IProps> = ({
         {isLoading && <Loading />}
         {error && (
           <>
-            <Heading as="h5">{error}</Heading>
+            <Heading as="h5" transform="uppercase">
+              {error}
+            </Heading>
 
             <Button
               onPress={() => handleLoad(true)}

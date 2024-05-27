@@ -5,7 +5,7 @@ export const dialogClass = style([
   responsiveStyle({
     xs: {
       height: '100svh',
-      width: '100vw',
+      width: '100vw !important',
     },
     md: {
       height: '75vh',

@@ -10,18 +10,37 @@ import { useOverlayTriggerState } from 'react-stately';
 import type { IModalProps } from '../Modal/Modal';
 import { Modal } from '../Modal/Modal';
 import { DialogContext } from './Dialog.context';
-import { closeButtonClass, overlayClass } from './Dialog.css';
+import {
+  closeButtonClass,
+  lgClass,
+  mdClass,
+  overlayClass,
+  smClass,
+} from './Dialog.css';
 
+const sizeMap = {
+  sm: smClass,
+  md: mdClass,
+  lg: lgClass,
+};
 interface IBaseDialogProps
   extends Omit<IModalProps, 'children'>,
     AriaDialogProps {
   children?: ((state: OverlayTriggerState) => ReactNode) | ReactNode;
   className?: string;
+  size?: keyof typeof sizeMap;
 }
 
 const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
   (props, ref) => {
-    const { className, children, isDismissable = true, state, ...rest } = props;
+    const {
+      className,
+      children,
+      isDismissable = true,
+      size = 'md',
+      state,
+      ...rest
+    } = props;
     const dialogRef = useObjectRef<HTMLDivElement | null>(ref);
     const { dialogProps, titleProps } = useDialog(
       {
@@ -35,7 +54,7 @@ const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
       <DialogContext.Provider value={{ titleProps, state }}>
         <div
           ref={dialogRef}
-          className={cn(overlayClass, className)}
+          className={cn(overlayClass, className, sizeMap[size])}
           {...mergeProps(rest, dialogProps)}
         >
           {typeof children === 'function' ? children(state) : children}

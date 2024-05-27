@@ -3,8 +3,9 @@ import { deriveKeyPair } from './utils/sign.js';
 /**
  * Generates random key pairs without updating the internal state.
  *
- * @param {number} [count=1] - The number of key pairs to generate.
- * @returns {{ publicKey: string; secretKey: string }[]} An array of generated key pairs.
+ * @param count - The number of key pairs to generate default is `1`.
+ * @returns An array of generated key pairs.
+ * @public
  */
 export function kadenaKeyPairsFromRandom(
   count: number = 1,

@@ -1,14 +1,15 @@
 import yaml from 'js-yaml';
+import path from 'node:path';
 import { services } from '../../services/index.js';
-import type { IAddAccountConfig } from '../types.js';
+import type { IAccountAliasFileConfig, IAddAccountConfig } from '../types.js';
 import { accountAliasFileSchema, formatZodErrors } from './accountHelpers.js';
 
 export async function writeAccountAlias(
-  config: IAddAccountConfig,
+  config: IAccountAliasFileConfig,
   filePath: string,
 ): Promise<void> {
   const { publicKeysConfig, predicate, accountName, fungible } = config;
-  await services.filesystem.ensureDirectoryExists(filePath);
+  await services.filesystem.ensureDirectoryExists(path.dirname(filePath));
   try {
     const aliasData = {
       name: accountName,
@@ -32,7 +33,7 @@ export async function writeAccountAliasMinimal(
   filePath: string,
 ): Promise<void> {
   const { publicKeysConfig, predicate, accountName, fungible } = config;
-  await services.filesystem.ensureDirectoryExists(filePath);
+  await services.filesystem.ensureDirectoryExists(path.dirname(filePath));
   try {
     const aliasData = {
       name: accountName,
@@ -50,7 +51,7 @@ export async function writeAccountAliasMinimal(
 
 export async function createAccountConfigFile(
   filePath: string,
-  config: IAddAccountConfig,
+  config: IAccountAliasFileConfig,
 ): Promise<string> {
   if (await services.filesystem.fileExists(filePath)) {
     throw new Error(`The account configuration "${filePath}" already exists.`);

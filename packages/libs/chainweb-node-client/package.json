@@ -1,6 +1,6 @@
 {
   "name": "@kadena/chainweb-node-client",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Typed JavaScript wrapper with fetch to call chainweb-node API endpoints",
   "keywords": [],
   "repository": {
@@ -58,12 +58,12 @@
     "@microsoft/api-extractor": "^7.43.1",
     "@rushstack/eslint-config": "~3.6.9",
     "@types/node": "^20.12.7",
-    "@vitest/coverage-v8": "^1.1.0",
+    "@vitest/coverage-v8": "^1.6.0",
     "eslint": "^8.45.0",
     "msw": "^2.2.14",
     "prettier": "~3.2.5",
     "typescript": "5.4.5",
-    "vitest": "^1.1.0"
+    "vitest": "^1.6.0"
   },
   "publishConfig": {
     "provenance": true

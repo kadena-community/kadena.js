@@ -13,23 +13,23 @@ export const typescriptClean: IPrompt<boolean> = async () =>
 export const typescriptCapsInterface: IPrompt<string> = async () =>
   await input({
     default: '',
-    message: 'Enter a custom name for the interface of the capabilities.',
+    message: 'Enter a custom name for the interface of the capabilities:',
   });
 
 export const typescriptFile: IPrompt<string> = async () =>
   await input({
-    message: 'Enter zero or more local Pact contract files (comma separated).',
+    message: 'Enter zero or more local Pact contract files (comma separated):',
   });
 
 export const typescriptContract: IPrompt<string> = async () =>
   await input({
     message:
-      'Enter zero or more contracts that exist on the blockchain (comma separated).',
+      'Enter zero or more contracts that exist on the blockchain (comma separated):',
   });
 
 export const typescriptNamespace: IPrompt<string> = async () =>
   await input({
     default: '',
     message:
-      'Enter the namespace of the contract if its not clear in the contract.',
+      'Enter the namespace of the contract if its not clear in the contract:',
   });

@@ -52,7 +52,7 @@ export function WriteDownRecoveryPhrase() {
     );
   }
   return (
-    <main>
+    <>
       <Box margin="md">
         <Heading variant="h5">Write your recovery phrase down</Heading>
         <Text>
@@ -80,6 +80,6 @@ export function WriteDownRecoveryPhrase() {
           Confirm
         </Button>
       </Box>
-    </main>
+    </>
   );
 }

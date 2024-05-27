@@ -91,18 +91,19 @@ export async function getExistingDevnets(): Promise<ICustomDevnetsChoice[]> {
 export const passwordPromptTransform =
   (
     flag: string,
-    useStdin?: boolean,
+    useStdin = true,
   ): ((
     passwordFile: string | { _password: string },
     args: Record<string, unknown>,
   ) => Promise<string>) =>
   async (passwordFile, args) => {
+    // passwordFile will be undefined if `--quiet` flag is used
     const password =
-      typeof passwordFile === 'string'
-        ? useStdin === true && passwordFile === '-'
-          ? (args.stdin as string | null)
-          : await services.filesystem.readFile(passwordFile)
-        : passwordFile._password;
+      useStdin === true && (passwordFile === '-' || passwordFile === undefined)
+        ? (args.stdin as string | null)
+        : typeof passwordFile === 'string'
+          ? await services.filesystem.readFile(passwordFile)
+          : passwordFile._password;
 
     if (password === null) {
       throw new CommandError({
@@ -112,10 +113,6 @@ export const passwordPromptTransform =
     }
 
     const trimmedPassword = password.trim();
-
-    if (typeof passwordFile !== 'string' && trimmedPassword !== '') {
-      log.info(`You can use the ${flag} flag to provide a password.`);
-    }
 
     if (trimmedPassword.length < 8 && trimmedPassword !== '') {
       throw new CommandError({
@@ -142,11 +139,11 @@ export const mnemonicPromptTransform =
   ) => Promise<string>) =>
   async (filepath, args) => {
     const content =
-      typeof filepath === 'string'
-        ? filepath === '-'
-          ? (args.stdin as string | null)
-          : await services.filesystem.readFile(filepath)
-        : filepath._secret;
+      filepath === '-' || filepath === undefined
+        ? (args.stdin as string | null)
+        : typeof filepath === 'string'
+          ? await services.filesystem.readFile(filepath)
+          : filepath._secret;
 
     if (content === null) {
       throw new CommandError({
@@ -156,10 +153,6 @@ export const mnemonicPromptTransform =
     }
 
     const trimmedContent = content.trim();
-
-    if (typeof filepath !== 'string') {
-      log.info(`You can use the ${flag} flag to provide a mnemonic.`);
-    }
 
     if (trimmedContent.includes('\n')) {
       log.warning(

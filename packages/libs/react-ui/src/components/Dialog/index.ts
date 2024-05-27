@@ -6,4 +6,5 @@ export { DialogFooter } from './DialogFooter';
 export type { IDialogFooterProps } from './DialogFooter';
 export { DialogHeader } from './DialogHeader';
 export type { IDialogHeaderProps } from './DialogHeader';
+export { DialogHeaderSubtitle } from './DialogHeaderSubtitle';
 export { useDialog } from './useDialog';

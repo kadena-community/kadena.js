@@ -37,7 +37,7 @@ describe('accountDetails', () => {
   it('should return error if account does not exist', async () => {
     server.use(
       http.post(
-        'https://localhost:8080/chainweb/0.0/development/chain/1/pact/api/v1/local',
+        'http://localhost:8080/chainweb/0.0/development/chain/1/pact/api/v1/local',
         () => {
           return HttpResponse.json({ error: 'row not found' }, { status: 404 });
         },

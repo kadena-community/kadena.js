@@ -1,5 +1,13 @@
 # Change Log - @kadena/pactjs-generator
 
+## 1.11.1
+
+### Patch Changes
+
+- 93bf55b07: Package updates
+- b3a50b49a: fix the build issue by removing prebuild script since we dont need
+  it anymore
+
 ## 1.11.0
 
 ## 1.10.1

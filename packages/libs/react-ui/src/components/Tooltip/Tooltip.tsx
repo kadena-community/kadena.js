@@ -1,15 +1,17 @@
 import { FocusableProvider } from '@react-aria/focus';
+import classNames from 'classnames';
 import type { FC, ReactElement, ReactNode } from 'react';
 import React, { cloneElement, useRef } from 'react';
 import { useTooltip, useTooltipTrigger } from 'react-aria';
 import type { TooltipTriggerProps } from 'react-stately';
 import { useTooltipTriggerState } from 'react-stately';
 import { Box } from '../Layout';
-import { tooltipPositionVariants } from './Tooltip.css';
+import { tooltipPositionVariants, tooltipSizes } from './Tooltip.css';
 export interface ITooltipProps
   extends Omit<TooltipTriggerProps, 'trigger' | 'onOpenChange'> {
   children: ReactElement;
   content: ReactNode;
+  isCompact?: boolean;
   position?: keyof typeof tooltipPositionVariants;
 }
 
@@ -17,6 +19,7 @@ export const Tooltip: FC<ITooltipProps> = ({
   children,
   content,
   position = 'right',
+  isCompact = false,
   ...props
 }) => {
   const config = {
@@ -44,7 +47,13 @@ export const Tooltip: FC<ITooltipProps> = ({
       </FocusableProvider>
 
       {state.isOpen && (
-        <span className={tooltipPositionVariants[position]} {...tooltipProps}>
+        <span
+          className={classNames(
+            tooltipPositionVariants[position],
+            tooltipSizes[isCompact ? 'compact' : 'default'],
+          )}
+          {...tooltipProps}
+        >
           {content}
         </span>
       )}

@@ -1,11 +1,9 @@
 import { Heading, Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import {
-  avatarClass,
   headerClass,
   headerLoadedClass,
   headerWrapperClass,
@@ -16,10 +14,9 @@ import {
 interface IProps {
   title: string;
   subTitle?: string;
-  avatar?: string;
 }
 
-export const TitleHeader: FC<IProps> = ({ title, subTitle, avatar }) => {
+export const TitleHeader: FC<IProps> = ({ title, subTitle }) => {
   const router = useRouter();
   const [loaderHeaderClass, setLoaderHeaderClass] =
     useState<string>(headerWrapperClass);
@@ -34,20 +31,13 @@ export const TitleHeader: FC<IProps> = ({ title, subTitle, avatar }) => {
       <header className={headerClass}>
         <div className={wrapperClass}>
           <Stack alignItems="center" gap="md">
-            {avatar && (
-              <Image
-                className={avatarClass}
-                src={avatar}
-                width={48}
-                height={48}
-                alt={`avatar: ${title}`}
-              />
-            )}
-            <Heading as="h1">{title}</Heading>
+            <Heading as="h1" transform="uppercase">
+              {title}
+            </Heading>
           </Stack>
           {subTitle !== undefined && (
             <span className={subheaderClass}>
-              <Heading as="h2" variant="h6">
+              <Heading as="h2" variant="h6" transform="uppercase">
                 {subTitle}
               </Heading>
             </span>

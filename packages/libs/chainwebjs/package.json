@@ -1,6 +1,6 @@
 {
   "name": "@kadena/chainwebjs",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Javascript (Typescript) bindings for the Kadena Chainweb API",
   "keywords": [
     "chainweb",
@@ -75,12 +75,12 @@
     "@rushstack/eslint-config": "~3.6.9",
     "@types/eventsource": "1.1.11",
     "@types/node": "^20.12.7",
-    "@vitest/coverage-v8": "^1.1.0",
+    "@vitest/coverage-v8": "^1.6.0",
     "eslint": "^8.45.0",
     "msw": "^2.2.14",
     "prettier": "~3.2.5",
     "typescript": "5.4.5",
-    "vitest": "^1.1.0"
+    "vitest": "^1.6.0"
   },
   "publishConfig": {
     "provenance": true
