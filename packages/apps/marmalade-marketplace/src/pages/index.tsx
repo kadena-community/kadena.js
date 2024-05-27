@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { actionBarClass, actionBarSaleActiveClass, actionBarSaleClass } from "@/styles/home.css";
 import { Providers } from "@/providers/Providers";
 
-export default function Example() {
+export default function Home() {
 
   const [saleStatus, setSaleStatus] = useState<'CREATED' | 'SOLD'>("CREATED");
 
