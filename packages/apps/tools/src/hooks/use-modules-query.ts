@@ -5,11 +5,6 @@ import type {
 import { CHAINS } from '@kadena/chainweb-node-client';
 import { listModules } from '@kadena/client-utils';
 import { useQuery } from '@tanstack/react-query';
-import { z } from 'zod';
-
-export const schema = z.array(z.string());
-
-export type Modules = z.infer<typeof schema>;
 
 const transformModules = (data: string[][], chainIds?: ChainwebChainId[]) => {
   const chains = chainIds ?? CHAINS;

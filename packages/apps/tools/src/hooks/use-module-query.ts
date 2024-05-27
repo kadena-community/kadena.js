@@ -20,6 +20,8 @@ const fetchModule = async (
   };
 };
 
+export type ModuleModel = ReturnType<typeof fetchModule>;
+
 const QUERY_KEY = 'module';
 
 const useModuleQuery = () => {
