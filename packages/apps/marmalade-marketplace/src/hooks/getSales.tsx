@@ -54,19 +54,19 @@ export const getSales = (props?: GetSalesProps) => {
     setError(null);
     try {
 
-      const constraints = [];
+      const constraints:any = [];
 
-      if (props?.chainIds) constraints.push(where("chainId", "in", props.chainIds));
+      // if (props?.chainIds) constraints.push(where("chainId", "in", props.chainIds));
 
-      if (props?.block) constraints.push(where("block", "==", props.block));
+      // if (props?.block) constraints.push(where("block", "==", props.block));
 
-      if (props?.status) constraints.push(where("status", "==", props.status));
+      // if (props?.status) constraints.push(where("status", "==", props.status));
 
-      if (props?.saleType) constraints.push(where("saleType", "==", props.saleType));
+      // if (props?.saleType) constraints.push(where("saleType", "==", props.saleType));
 
-      if (props?.sort?.length) props.sort.forEach(sort =>
-        constraints.push(orderBy(sort.field, sort.direction || "asc"))
-      )
+      // if (props?.sort?.length) props.sort.forEach(sort =>
+      //   constraints.push(orderBy(sort.field, sort.direction || "asc"))
+      // )
 
       if (props?.limit) constraints.push(limit(props.limit));
 
