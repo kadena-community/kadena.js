@@ -42,7 +42,7 @@ export const CookieConsent: FC = () => {
       <div className={notificationWrapperClass}>
         <Notification
           intent="info"
-          displayStyle="borderless"
+          type="inlineStacked"
           icon={<MonoCookie />}
           role="none"
         >

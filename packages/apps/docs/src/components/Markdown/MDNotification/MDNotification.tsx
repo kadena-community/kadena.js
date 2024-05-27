@@ -19,7 +19,7 @@ export const MDNotification: FC<IProps> = ({ children, title = '', label }) => {
       <Notification
         intent={getColor(label)}
         icon={getIcon(label)}
-        displayStyle="borderless"
+        type="inlineStacked"
         role="none"
       >
         <NotificationHeading>{title}</NotificationHeading>
