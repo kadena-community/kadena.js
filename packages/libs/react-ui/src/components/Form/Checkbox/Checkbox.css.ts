@@ -18,10 +18,11 @@ export const textWrapper = style([
 export const labelClass = style([
   atoms({
     display: 'flex',
-    alignItems: 'center',
     color: 'text.base.default',
   }),
   {
+    alignItems: 'flex-start',
+    lineHeight: token('size.n4'),
     cursor: 'pointer',
     gap: token('size.n2'),
     transition: 'color 0.2s ease',
@@ -116,14 +117,14 @@ export const iconClass = style([
       },
       // disabled
       [`${labelClass}[data-disabled="true"] ${boxClass}[data-selected="true"] &`]:
-      {
-        color: token('color.icon.base.@disabled'),
-      },
+        {
+          color: token('color.icon.base.@disabled'),
+        },
       // readonly
       [`${labelClass}[data-readonly="true"] ${boxClass}[data-selected="true"] &`]:
-      {
-        color: token('color.icon.base.default'),
-      },
+        {
+          color: token('color.icon.base.default'),
+        },
     },
   },
 ]);
