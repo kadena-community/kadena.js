@@ -32,10 +32,17 @@ export interface ISidePanelProps<T> {
   data: ICustomTreeProps<T>['data'];
   isLoading?: boolean;
   onReload: ICustomTreeProps<T>['onReload'];
+  onModuleClick: (module: T) => void;
+  onExpandCollapse: (item: T, expanded: boolean) => void;
 }
 
 // eslint-disable-next-line react/function-component-definition
-function SidePanel<T>({ data, onReload }: ISidePanelProps<T>) {
+function SidePanel<T>({
+  data,
+  onReload,
+  onModuleClick,
+  onExpandCollapse,
+}: ISidePanelProps<T>) {
   return (
     <CustomAccordion
       data={data}
@@ -74,7 +81,12 @@ function SidePanel<T>({ data, onReload }: ISidePanelProps<T>) {
             </Button>
           </Stack>
           {item.isExpanded ? (
-            <CustomTree data={item.data.children} onReload={onReload} />
+            <CustomTree
+              data={item.data.children}
+              onReload={onReload}
+              onItemClick={onModuleClick}
+              onExpandCollapse={onExpandCollapse}
+            />
           ) : null}
         </>
       )}

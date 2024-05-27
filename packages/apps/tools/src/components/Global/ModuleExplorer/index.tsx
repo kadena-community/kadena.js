@@ -19,10 +19,16 @@ export interface IModuleExplorerProps<T> {
   items: ISidePanelProps<T>['data'];
   onReload: ISidePanelProps<T>['onReload'];
   data: T;
+  onExpandCollapse: ISidePanelProps<T>['onExpandCollapse'];
 }
 
 // eslint-disable-next-line react/function-component-definition
-function ModuleExplorer<T>({ data, items, onReload }: IModuleExplorerProps<T>) {
+function ModuleExplorer<T>({
+  data,
+  items,
+  onReload,
+  onExpandCollapse,
+}: IModuleExplorerProps<T>) {
   return (
     <div className={containerStyle}>
       <SidePanel
@@ -43,6 +49,10 @@ function ModuleExplorer<T>({ data, items, onReload }: IModuleExplorerProps<T>) {
           },
         ]}
         onReload={onReload}
+        onModuleClick={(x) => {
+          console.log('onModuleClick', x);
+        }}
+        onExpandCollapse={onExpandCollapse}
       />
       <Editor
         openedModules={[]}
