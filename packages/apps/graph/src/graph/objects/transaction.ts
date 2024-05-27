@@ -1,4 +1,5 @@
-import { Prisma, Signer } from '@prisma/client';
+import type { Signer } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { getMempoolTransactionStatus } from '@services/chainweb-node/mempool';
 import { normalizeError } from '@utils/errors';
 import { networkData } from '@utils/network';
