@@ -1,20 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import { atoms, token, uiBaseRegular } from '../../../styles';
 
-export const textWrapper = style([
-  atoms({
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-  }),
-  {
-    gap: token('spacing.n2'),
-    textOverflow: 'ellipsis',
-  },
-]);
-
 export const labelClass = style([
   atoms({
     display: 'flex',
@@ -37,11 +23,6 @@ export const labelClass = style([
     },
   },
   uiBaseRegular,
-]);
-
-export const wrapperClass = style([
-  atoms({ display: 'flex' }),
-  { gap: token('spacing.n2') },
 ]);
 
 export const boxClass = style([
