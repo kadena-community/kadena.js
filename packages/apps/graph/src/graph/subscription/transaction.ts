@@ -40,6 +40,12 @@ async function* iteratorFn(
   context: IContext,
   chainId?: string,
 ): AsyncGenerator<Transaction | undefined, void, unknown> {
+  /**
+   * we yield undefined to notify the client that the subscription has started
+   * as soon as data is available, we will yield the transaction object
+   */
+  yield undefined;
+
   while (!context.req.socket.destroyed) {
     const transaction = await prismaClient.transaction.findFirst({
       where: {
@@ -59,8 +65,6 @@ async function* iteratorFn(
 
       if (mempoolResponse) {
         yield mempoolResponse;
-      } else {
-        yield undefined;
       }
     }
 
