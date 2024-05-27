@@ -1,6 +1,14 @@
-import { devnetMiner } from '@kadena-dev/e2e-base/src/constants/accounts.constants';
+import {
+  devnetMiner,
+  sender00Account,
+} from '@kadena-dev/e2e-base/src/constants/accounts.constants';
 import { transferAmount } from '@kadena-dev/e2e-base/src/constants/amounts.constants';
 import { coinModuleHash } from '@kadena-dev/e2e-base/src/constants/coin.constants';
+import {
+  devnetHost,
+  networkId,
+  wsHost,
+} from '@kadena-dev/e2e-base/src/constants/network.constants';
 import {
   createAccount,
   generateAccount,
@@ -10,12 +18,24 @@ import {
   transferFundsCrossChain,
 } from '@kadena-dev/e2e-base/src/helpers/client-utils/transfer.helper';
 import type { IAccount } from '@kadena-dev/e2e-base/src/types/account.types';
-import type { ICommandResult } from '@kadena/client';
+import type { ICommandResult, IKeyPair } from '@kadena/client';
+import { createSignWithKeypair } from '@kadena/client';
+import { transferCreate } from '@kadena/client-utils/coin';
 import { expect, test } from '@playwright/test';
+import { createClient } from 'graphql-ws';
+import WebSocket from 'ws';
 import { getBlockHash } from '../helpers/block.helper';
 import { base64Encode } from '../helpers/cryptography.helper';
 import { sendQuery } from '../helpers/request.helper';
-import { getTransactionsQuery } from '../queries/getTransactions';
+import {
+  getTransactionsByRequestKeySubscription,
+  getTransactionsQuery,
+} from '../queries/getTransactions';
+
+const wsClient = createClient({
+  url: wsHost,
+  webSocketImpl: WebSocket,
+});
 
 test.describe('Query: getTransactions', () => {
   test('Query: getTransactions - Same Chain Transfer', async ({ request }) => {
@@ -458,6 +478,70 @@ test.describe('Query: getTransactions', () => {
       }).toPass({
         intervals: [20],
         timeout: 500,
+      });
+    });
+  });
+});
+
+test.describe('Subscription: getTransactions', () => {
+  test('Subscriptions: getTransactions - Subscribe to transactions by requestKey', async ({}) => {
+    let account: IAccount;
+
+    await test.step('create a source account on chains 0 and 1 and a target account on chain 1.', async () => {
+      account = await generateAccount(1, ['0', '1']);
+
+      const txTask = transferCreate(
+        {
+          sender: {
+            account: sender00Account.account,
+            publicKeys: sender00Account.keys.map(
+              (keyPair: IKeyPair) => keyPair.publicKey,
+            ),
+          },
+          receiver: {
+            account: account.account,
+            keyset: {
+              keys: account.keys.map((keyPair) => keyPair.publicKey),
+              pred: 'keys-all',
+            },
+          },
+          amount: '100',
+          chainId: account.chains[0],
+        },
+        {
+          host: devnetHost,
+          defaults: {
+            networkId: networkId,
+          },
+          sign: createSignWithKeypair(sender00Account.keys),
+        },
+      );
+      const preflightResponse = await txTask.executeTo('preflight');
+      const query = getTransactionsByRequestKeySubscription(
+        preflightResponse.reqKey,
+        account.chains[0],
+      );
+      const subscription = wsClient.iterate(query);
+      txTask.executeTo();
+      const firstEvent = (await subscription.next()).value.data;
+      expect(firstEvent).toEqual({
+        transaction: {
+          result: {
+            __typename: 'TransactionMempoolInfo',
+            status: 'Pending',
+          },
+        },
+      });
+
+      const secondEvent = (await subscription.next()).value.data;
+      expect(secondEvent).toEqual({
+        transaction: {
+          result: {
+            __typename: 'TransactionResult',
+            badResult: null,
+            goodResult: JSON.stringify('Write succeeded'),
+          },
+        },
       });
     });
   });
