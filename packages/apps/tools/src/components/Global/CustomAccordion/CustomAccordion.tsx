@@ -3,7 +3,7 @@ import React from 'react';
 import { listStyle } from './CustomAccordion.css';
 
 type RenderFunction<T> = (x: {
-  onExpandCollapse: () => void;
+  toggleExpandCollapse: () => void;
   isExpanded: boolean;
   data: T;
 }) => React.ReactNode;
@@ -34,7 +34,7 @@ function Item<T>({
   return (
     <li {...rest} style={{ flex: fillHeight && isExpanded ? 1 : undefined }}>
       {children({
-        onExpandCollapse: () => setIsExpanded((prev) => !prev),
+        toggleExpandCollapse: () => setIsExpanded(!isExpanded),
         isExpanded,
         data,
       })}
