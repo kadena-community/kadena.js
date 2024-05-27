@@ -29,7 +29,12 @@ const getNumberOfFiles = async (directory: string): Promise<number> => {
 const calculateDirectoryFileCounts = async (
   config: Record<string, string>,
 ): Promise<Record<string, number>> => {
-  const [numberOfWallets, numberOfTemplates, numberOfNetworks, numberOfAccounts] = await Promise.all([
+  const [
+    numberOfWallets,
+    numberOfTemplates,
+    numberOfNetworks,
+    numberOfAccounts,
+  ] = await Promise.all([
     getNumberOfFiles(config.walletDirectory),
     getNumberOfFiles(config.defaultTemplateDirectory),
     getNumberOfFiles(config.networkDirectory),
