@@ -99,8 +99,6 @@ export async function mempoolLookup(
             data += chunk;
           });
 
-          console.log(data);
-
           res.on('end', () => {
             try {
               resolve(JSON.parse(data));
