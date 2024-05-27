@@ -14,6 +14,7 @@ import {
   useWalletConnectClient,
 } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
+import { useModuleQuery } from '@/hooks/use-module-query';
 import { QUERY_KEY, useModulesQuery } from '@/hooks/use-modules-query';
 import { describeModule } from '@/services/modules/describe-module';
 import type { IModulesResult } from '@/services/modules/list-module';
@@ -317,6 +318,8 @@ const ModuleExplorerPage = (
     [setDeepLink],
   );
 
+  const mutation = useModuleQuery();
+
   return (
     <>
       <Head>
@@ -377,6 +380,47 @@ const ModuleExplorerPage = (
               data === 'mainnet' ? 'mainnet01' : 'testnet04',
             ],
           });
+        }}
+        onExpandCollapse={async (data, expanded) => {
+          const isLowestLevel = !data.children[0].children.length;
+
+          if (expanded && isLowestLevel) {
+            const [network, namespacePart1, namespacePart2] =
+              data.key.split('.');
+            const networkId = network === 'mainnet' ? 'mainnet01' : 'testnet04';
+            const promises = data.children.map(({ data: chainId }) => {
+              return mutation.mutateAsync({
+                module: `${namespacePart1}${namespacePart2 ? `.${namespacePart2}` : ''}`,
+                networkId,
+                chainId,
+              });
+            });
+
+            const results = await Promise.all(promises);
+
+            queryClient.setQueryData<Array<{ name: string }>>(
+              [QUERY_KEY, networkId, undefined],
+              (oldData) => {
+                return oldData!.map((old) => {
+                  const newModule = results.find((newM) => {
+                    return (
+                      newM.name === old.name && newM.chainId === old.chainId
+                    );
+                  });
+
+                  if (!newModule) {
+                    return old;
+                  }
+
+                  return {
+                    ...old,
+                    hash: newModule.hash,
+                    code: newModule.code,
+                  };
+                });
+              },
+            );
+          }
         }}
       />
     </>
