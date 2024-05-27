@@ -132,6 +132,9 @@ async function getTopPages(
         // Not including search pages
         if (value.startsWith('/search')) return result;
 
+        // Not including old blogchain
+        if (value.startsWith('/blogchain')) return result;
+
         // Not including `__tests` pages
         if (value.includes('/__tests')) return result;
 

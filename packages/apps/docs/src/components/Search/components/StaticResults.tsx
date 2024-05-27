@@ -56,7 +56,7 @@ const Item: FC<IResultProps> = ({ item }) => {
           <Heading as="h5">{item.title}</Heading>
           <ItemBreadCrumb url={url} />
 
-          <Text as="p">
+          <Text as="p" variant="body">
             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             <ReactMarkdown rehypePlugins={[rehypeRaw] as any}>
               {content}

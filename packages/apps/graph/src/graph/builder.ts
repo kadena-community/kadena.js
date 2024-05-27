@@ -26,6 +26,7 @@ import type {
   IGasLimitEstimation,
   IGraphConfiguration,
   IGuard,
+  INetworkInfo,
   INonFungibleAccount,
   INonFungibleChainAccount,
   INonFungibleToken,
@@ -93,6 +94,7 @@ export const builder = new SchemaBuilder<
       TransactionCapability: ITransactionCapability;
       TransactionSignature: ITransactionSignature;
       PactQueryResponse: IPactQueryResponse;
+      NetworkInfo: INetworkInfo;
     };
   }
 >({

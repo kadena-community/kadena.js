@@ -10,6 +10,10 @@ runs:
         shell: bash
         run: pnpm --filter e2e-${{ inputs.app }} run install:chromium
 
+      - name: Build dependencies for e2e tests
+        shell: bash
+        run: pnpm turbo build --filter e2e-base^...
+
       - name: Run end-to-end tests
         shell: bash
         run: pnpm turbo test:e2e --filter e2e-${{ inputs.app }}

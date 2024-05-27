@@ -9,26 +9,8 @@ import { globalOptions, securityOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { relativeToCwd } from '../../utils/path.util.js';
 import { createTable } from '../../utils/table.js';
+import { findFreeIndexes } from '../utils/walletHelpers.js';
 import { walletOptions } from '../walletOptions.js';
-
-/** find `amount` of free indexes starting at a `startIndex` while excluding indexes already in use by `existingIndexes` */
-function findFreeIndexes(
-  amount: number,
-  startIndex: number,
-  existingIndexes: number[],
-): number[] {
-  const freeNumbers = [];
-  let currentNumber = startIndex;
-
-  while (freeNumbers.length < amount) {
-    if (!existingIndexes.includes(currentNumber)) {
-      freeNumbers.push(currentNumber);
-    }
-    currentNumber++;
-  }
-
-  return freeNumbers;
-}
 
 export const createGenerateHdKeysCommand: (
   program: Command,
@@ -39,7 +21,7 @@ export const createGenerateHdKeysCommand: (
   [
     globalOptions.walletSelect(),
     securityOptions.createPasswordOption({
-      message: 'Enter the wallet password',
+      message: 'Enter the wallet password:',
     }),
     walletOptions.amount(),
     walletOptions.startIndex({ disableQuestion: true }),

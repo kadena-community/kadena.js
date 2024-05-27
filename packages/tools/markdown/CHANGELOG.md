@@ -1,5 +1,11 @@
 # @kadena-dev/markdown
 
+## 1.0.3
+
+### Patch Changes
+
+- 93bf55b07: Package updates
+
 ## 1.0.2
 
 ### Patch Changes

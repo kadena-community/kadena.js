@@ -3,7 +3,7 @@ name: Visual Regression Tests
 on:
   push:
     paths:
-      - packages/libs/react-ui/**
+      - 'packages/libs/react-ui/**'
 env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}

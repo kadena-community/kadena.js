@@ -87,7 +87,7 @@ export async function accountDetails(
 
 function generateTableForAccountDetails(accounts: IAccountDetails[]): Table {
   const table = createTable({
-    head: ['Account Name', 'ChainID', 'Public Keys', 'Predicate', 'Balance'],
+    head: ['Name', 'ChainID', 'Public Keys', 'Predicate', 'Balance'],
   });
 
   const data = accounts.map((acc) => {

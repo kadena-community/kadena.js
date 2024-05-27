@@ -28,7 +28,7 @@ export const devnetNamePrompt: IPrompt<string> = async (
   isOptional,
 ) => {
   const containerName = await input({
-    message: 'Enter a devnet name (e.g. "devnet")',
+    message: 'Enter a devnet name (e.g. "devnet"):',
     validate: function (input) {
       if (input.trim().length === 0) {
         return 'Please specify a name for your devnet.';
@@ -59,7 +59,7 @@ export const devnetPortPrompt: IPrompt<number> = async (
 ) => {
   const port = await input({
     default: '8080',
-    message: 'Enter a port number to forward to the Chainweb node API',
+    message: 'Enter a port number to forward to the Chainweb node API:',
     validate: function (input) {
       const port = parseInt(input);
       if (isNaN(port)) {
@@ -92,7 +92,7 @@ export const devnetMountPactFolderPrompt: IPrompt<string> = async (
   await input({
     default: '',
     message:
-      'Enter the relative path to a folder containing your Pact files to mount (e.g. ./pact) or leave empty to skip.',
+      'Enter the relative path to a folder containing your Pact files to mount (e.g. ./pact) or leave empty to skip:',
   });
 
 export const devnetVersionPrompt: IPrompt<string> = async (
@@ -103,7 +103,7 @@ export const devnetVersionPrompt: IPrompt<string> = async (
   await input({
     default: 'latest',
     message:
-      'Enter the version of the kadena/devnet image you would like to use.',
+      'Enter the version of the kadena/devnet image you would like to use:',
   });
 
 export const devnetSelectPrompt: IPrompt<string> = async (
@@ -115,7 +115,7 @@ export const devnetSelectPrompt: IPrompt<string> = async (
 
   if (existingDevnets.length > 0) {
     return await select({
-      message: 'Select a devnet',
+      message: 'Select a devnet:',
       choices: existingDevnets,
     });
   }
@@ -149,7 +149,7 @@ export const devnetPrompt: IPrompt<string> = async (
 
   if (existingDevnets.length > 0) {
     const selectedDevnet = await select({
-      message: 'Select a devnet',
+      message: 'Select a devnet:',
       choices: [
         ...existingDevnets,
         { value: undefined, name: 'Create a new devnet' },

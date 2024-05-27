@@ -69,6 +69,7 @@ export {
   DialogContent,
   DialogFooter,
   DialogHeader,
+  DialogHeaderSubtitle,
   Divider,
   Form,
   FormFieldHeader,

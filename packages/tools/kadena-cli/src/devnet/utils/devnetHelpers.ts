@@ -59,7 +59,7 @@ export async function writeDevnet(
 
   const devnetConfig = mergeConfigs(existingConfig, options);
 
-  await services.filesystem.ensureDirectoryExists(devnetFilePath);
+  await services.filesystem.ensureDirectoryExists(path.dirname(devnetFilePath));
   await services.filesystem.writeFile(devnetFilePath, yaml.dump(devnetConfig));
 }
 

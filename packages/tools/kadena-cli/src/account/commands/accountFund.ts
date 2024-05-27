@@ -4,7 +4,7 @@ import {
   NO_ACCOUNTS_FOUND_ERROR_MESSAGE,
 } from '../../constants/account.js';
 import { FAUCET_MODULE_NAME } from '../../constants/devnets.js';
-import { networkIsAlive } from '../../devnet/utils/network.js';
+import { checkHealth } from '../../devnet/utils/network.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { notEmpty } from '../../utils/globalHelpers.js';
@@ -75,7 +75,7 @@ export const createAccountFundCommand = createCommand(
     }
 
     if (networkConfig.networkId.includes('development') === true) {
-      if (!(await networkIsAlive(networkConfig.networkHost))) {
+      if (!(await checkHealth(networkConfig.networkHost))) {
         return log.error(
           `Devnet host "${networkConfig.networkHost}" is not running.`,
         );

@@ -38,9 +38,15 @@ export const manageNetworksCommand: (
 
     const networkData = await option.network();
     const networkName = await option.networkName();
-    const networkId = await option.networkId();
-    const networkHost = await option.networkHost();
-    const networkExplorerUrl = await option.networkExplorerUrl();
+    const networkId = await option.networkId({
+      defaultValue: networkData.networkConfig.networkId,
+    });
+    const networkHost = await option.networkHost({
+      defaultValue: networkData.networkConfig.networkHost,
+    });
+    const networkExplorerUrl = await option.networkExplorerUrl({
+      defaultValue: networkData.networkConfig.networkExplorerUrl,
+    });
 
     log.debug('update-network:action', {
       networkExplorerUrl,
