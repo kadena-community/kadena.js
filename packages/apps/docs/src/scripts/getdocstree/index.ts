@@ -1,94 +1,27 @@
-import type {
-  IConfigTreeItem,
-  IScriptResult,
-  LayoutType,
-} from '@kadena/docs-tools';
+import type { IConfigTreeItem, IScriptResult } from '@kadena/docs-tools';
 import {
   getFrontmatterFromTsx,
   getPages,
   getReadTime,
   isMarkDownFile,
 } from '@kadena/docs-tools';
-import { isValid } from 'date-fns';
+
 import * as fs from 'fs';
-import yaml from 'js-yaml';
-import { fromMarkdown } from 'mdast-util-from-markdown';
-import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
-import { frontmatter } from 'micromark-extension-frontmatter';
-import { TEMP_DIR, promiseExec } from './utils/build';
 
-const errors: string[] = [];
-const success: string[] = [];
+import {
+  INITIAL_PATH,
+  MENU_FILE,
+  MENU_FILE_DIR,
+  SEARCHABLE_DIRS,
+  TREE,
+  errors,
+  success,
+} from './constants';
 
-const INITIAL_PATH = './src/pages';
-const MENU_FILE_DIR = './src/_generated';
-const MENU_FILE = 'menu.json';
-const TREE: IParent[] = [];
-
-const SEARCHABLE_DIRS: string[] = [];
-
-export const getLastModifiedDate = async (
-  root: string,
-): Promise<string | undefined> => {
-  const rootArray = root.split('/');
-  const filename = rootArray.pop();
-  const newRoot = rootArray.join('/');
-
-  try {
-    const { stdout } = await promiseExec(
-      `cd ${TEMP_DIR} && cd ${newRoot} && git log -1 --pretty="format:%ci" ${filename}`,
-    );
-    const date = new Date(stdout);
-    if (!isValid(date)) return;
-
-    return date.toUTCString();
-  } catch (e) {
-    const date = new Date();
-    if (!isValid(date)) return;
-
-    return date.toUTCString();
-  }
-};
-
-const isIndex = (file: string): boolean => {
-  return file.includes('/index');
-};
-
-interface IConvertFileResult {
-  lastModifiedDate: string | undefined;
-  title: string;
-  description: string;
-  menu: string;
-  label: string;
-  order: number;
-  layout: LayoutType;
-  tags: string[];
-  wordCount: number;
-  readingTimeInMinutes: number;
-  isMenuOpen: boolean;
-  isActive: boolean;
-  isIndex: boolean;
-}
-
-interface IParent extends IConvertFileResult {
-  children: IParent[];
-  root: string;
-  subtitle: string;
-}
-
-const getFrontMatter = (doc: string, file: string): unknown => {
-  const tree = fromMarkdown(doc.toString(), {
-    extensions: [frontmatter()],
-    mdastExtensions: [frontmatterFromMarkdown()],
-  });
-
-  if (!tree.children[0] || tree.children[0].type !== 'yaml') {
-    errors.push(`${file}: there is no frontmatter found`);
-    return;
-  }
-
-  return yaml.load(tree.children[0].value);
-};
+import { findPath } from './utils/findPath';
+import { getFrontMatter } from './utils/getFrontMatter';
+import { isIndex } from './utils/isIndex';
+import { pushToParent } from './utils/pushToParent';
 
 const convertFile = async (
   file: string,
@@ -131,26 +64,6 @@ const convertFile = async (
     isActive: false,
     isIndex: isIndex(file),
   };
-};
-
-const pushToParent = (
-  parent: IParent[],
-  child: IParent,
-  rootIdx: number,
-): IParent[] => {
-  parent[rootIdx] = child;
-  return parent;
-};
-
-const findPath = (dir: string): string | undefined => {
-  const [, ...dirArray] = dir.split('/');
-  const file = dirArray.pop();
-  const path = dirArray.splice(2, dir.length - 1).join('/');
-
-  const fileName = file?.split('.').at(0);
-  if (fileName === 'index') return;
-  if (!path) return `/${fileName}`;
-  return `/${path}/${fileName}`;
 };
 
 const createTree = async (
@@ -251,15 +164,17 @@ export const createDocsTree = async (): Promise<IScriptResult> => {
 
   const result = await createTree(INITIAL_PATH, TREE, pages);
 
-  //
-
   fs.mkdirSync(MENU_FILE_DIR, { recursive: true });
   fs.writeFileSync(
     `${MENU_FILE_DIR}/${MENU_FILE}`,
     JSON.stringify(result, null, 2),
   );
 
-  success.push('Docs imported from monorepo');
+  if (!errors.length) {
+    success.push('Docs imported from monorepo');
+  }
 
   return { errors, success };
 };
+
+createDocsTree();

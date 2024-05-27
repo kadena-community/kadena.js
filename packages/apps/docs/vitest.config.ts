@@ -13,10 +13,10 @@ export default mergeConfig(
       coverage: {
         provider: 'v8',
         thresholds: {
-          lines: 54.78,
-          functions: 44.97,
-          branches: 78.22,
-          statements: 54.78,
+          lines: 56,
+          functions: 47.9,
+          branches: 78.9,
+          statements: 56,
         },
         exclude: [
           'src/**/*.tsx',
