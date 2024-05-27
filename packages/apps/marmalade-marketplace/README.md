@@ -84,15 +84,13 @@ And if this is your first time setting up, run the following command to link you
 firebase init
 ```
 
-Then, run the following commands to set up and deploy the Firebase indexes:
+Then, run the following command to deploy Firestore indexes:
 
 ```bash
-pnpm firebase:setup
-
 firebase deploy --only firestore:indexes
 ```
 
-These commands will ensure that your Firestore indexes are configured correctly.
+This command will ensure that your Firestore indexes are configured correctly.
 
 8. **Set Up and Run Graph Project (If Working with devnet)**
 

@@ -5,7 +5,6 @@
   "scripts": {
     "build": "pnpm generate && next build",
     "dev": "pnpm generate && next dev",
-    "firebase:setup": "ts-node scripts/setup-firebase-indexes.ts",
     "generate": "npx graphql-codegen",
     "start": "next start",
     "start:cron": "ts-node scripts/cron.ts"
