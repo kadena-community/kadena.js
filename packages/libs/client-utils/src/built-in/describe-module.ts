@@ -8,10 +8,10 @@ import type { IClientConfig } from '../core/utils/helpers';
  * @alpha
  */
 export const describeModuleSchema = z.object({
-  hash: z.string(),
-  blessed: z.array(z.string()),
-  keyset: z.string(),
-  interfaces: z.array(z.string()),
+  hash: z.string().optional(),
+  blessed: z.array(z.string()).optional(),
+  keyset: z.string().optional(),
+  interfaces: z.array(z.string()).optional(),
   name: z.string(),
   code: z.string(),
 });

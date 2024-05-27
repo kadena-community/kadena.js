@@ -51,26 +51,26 @@ export type DescribeModuleOutput = z.infer<typeof describeModuleSchema>;
 
 // @alpha (undocumented)
 export const describeModuleSchema: z.ZodObject<{
-    hash: z.ZodString;
-    blessed: z.ZodArray<z.ZodString, "many">;
-    keyset: z.ZodString;
-    interfaces: z.ZodArray<z.ZodString, "many">;
+    hash: z.ZodOptional<z.ZodString>;
+    blessed: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    keyset: z.ZodOptional<z.ZodString>;
+    interfaces: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
     name: z.ZodString;
     code: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    hash: string;
     code: string;
-    blessed: string[];
-    keyset: string;
-    interfaces: string[];
     name: string;
+    hash?: string | undefined;
+    blessed?: string[] | undefined;
+    keyset?: string | undefined;
+    interfaces?: string[] | undefined;
 }, {
-    hash: string;
     code: string;
-    blessed: string[];
-    keyset: string;
-    interfaces: string[];
     name: string;
+    hash?: string | undefined;
+    blessed?: string[] | undefined;
+    keyset?: string | undefined;
+    interfaces?: string[] | undefined;
 }>;
 
 // @alpha (undocumented)
