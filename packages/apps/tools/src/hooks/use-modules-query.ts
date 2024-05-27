@@ -11,7 +11,20 @@ export const schema = z.array(z.string());
 
 export type Modules = z.infer<typeof schema>;
 
-const fetchModules = (
+const transformModules = (data: string[][], chainIds?: ChainwebChainId[]) => {
+  const chains = chainIds ?? CHAINS;
+
+  return data.flatMap((x, index) => {
+    return x.map((y) => {
+      return {
+        name: y,
+        chainId: chains[index],
+      };
+    });
+  });
+};
+
+const fetchModules = async (
   networkId: ChainwebNetworkId,
   chainIds?: ChainwebChainId[],
 ) => {
@@ -23,7 +36,9 @@ const fetchModules = (
     }),
   );
 
-  return Promise.all(promises);
+  const results = await Promise.all(promises);
+
+  return transformModules(results, chainIds);
 };
 
 const QUERY_KEY = 'modules';
