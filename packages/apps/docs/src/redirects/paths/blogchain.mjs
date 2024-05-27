@@ -54,7 +54,7 @@ export const blogchainPathUrlRedirects = [
   },
   {
     source: '/blogchain',
-    destination: 'https://www.kadena.io/bloddg',
+    destination: 'https://www.kadena.io/blog',
     permanent: true,
   },
 
@@ -983,6 +983,11 @@ export const blogchainPathUrlRedirects = [
   },
   {
     source: '/assets/blog/:slug/:slug2',
+    destination: '/assets/og_banner.jpeg',
+    permanent: true,
+  },
+  {
+    source: '/assets/docs/1_ioGNdm7WNixtlNPLKwo9eQ.webp',
     destination: '/assets/og_banner.jpeg',
     permanent: true,
   },
