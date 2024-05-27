@@ -99,16 +99,20 @@ export async function mempoolLookup(
             data += chunk;
           });
 
-          try {
-            resolve(JSON.parse(data));
-          } catch (error) {
-            reject(
-              new MempoolError(
-                'Error occurred while processing response data.',
-                error,
-              ),
-            );
-          }
+          console.log(data);
+
+          res.on('end', () => {
+            try {
+              resolve(JSON.parse(data));
+            } catch (error) {
+              reject(
+                new MempoolError(
+                  'Error occurred while processing response data.',
+                  error,
+                ),
+              );
+            }
+          });
         },
       );
       req.on('error', (error) => {
