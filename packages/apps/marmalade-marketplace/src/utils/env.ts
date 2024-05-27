@@ -7,9 +7,10 @@ const URL = process.env.NEXT_PUBLIC_URL;
 const START_BLOCK = process.env.NEXT_PUBLIC_START_BLOCK;
 const CHAIN_IDS = process.env.NEXT_PUBLIC_CHAIN_IDS;
 const NETWORKID = process.env.NEXT_PUBLIC_NETWORKID;
-const NETWORKNAME = process.env.NEXT_PUBLIC_NETWORKNAME;
+const NETWORK_NAME = process.env.NEXT_PUBLIC_NETWORK_NAME;
 const NAMESPACE = process.env.NEXT_PUBLIC_CONTRACT_NAMESPACE;
 const GRAHQLURL = process.env.NEXT_PUBLIC_GRAHQLURL;
+const CHAINWEB_API_HOST = process.env.NEXT_PUBLIC_CHAINWEB_API_HOST;
 const CHAINWEBAPIURL = process.env.NEXT_PUBLIC_CHAINWEBAPIURL;
 const MAXSIGNERS = Number(process.env.NEXT_PUBLIC_MAXSIGNERS);
 
@@ -19,8 +20,10 @@ if (!WALLET_URL) console.error('NEXT_PUBLIC_WALLET_URL is not set');
 if (!URL) console.error('NEXT_PUBLIC_URL is not set');
 if (!CHAIN_IDS) console.error('NEXT_PUBLIC_CHAINID is not set');
 if (!NETWORKID) console.error('NEXT_PUBLIC_NETWORKID is not set');
-if (!NETWORKNAME) console.error('NEXT_PUBLIC_NETWORKNAME is not set');
+if (!NETWORK_NAME) console.error('NEXT_PUBLIC_NETWORKNAME is not set');
 if (!GRAHQLURL) console.error('NEXT_PUBLIC_GRAHQLURL is not set');
+if (!CHAINWEB_API_HOST)
+  console.error('NEXT_PUBLIC_CHAINWEB_API_HOST is not set');
 if (!CHAINWEBAPIURL) console.error('NEXT_PUBLIC_CHAINWEBAPIURL is not set');
 if (!MAXSIGNERS) console.error('NEXT_PUBLIC_MAXSIGNERS is not set');
 
@@ -48,8 +51,9 @@ export const env = {
     EVENTS_TO_INDEX?.replaceAll('\n', '').replaceAll(' ', '')?.split(',') || [],
   NETWORKID: NETWORKID ?? 'testnet04',
   NAMESPACE,
-  NETWORKNAME,
+  NETWORK_NAME,
   GRAHQLURL: GRAHQLURL ?? 'https://graph.testnet.kadena.network/graphql',
+  CHAINWEB_API_HOST,
   CHAINWEBAPIURL:
     CHAINWEBAPIURL ??
     `https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact`,

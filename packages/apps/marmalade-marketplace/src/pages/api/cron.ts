@@ -9,7 +9,7 @@ import {
 import { Sale } from '@/hooks/getSales';
 import { env } from '@/utils/env';
 import { database } from '@/utils/firebase';
-import { BuiltInPredicate } from '@kadena/client';
+import { BuiltInPredicate, ChainId } from '@kadena/client';
 import {
   DocumentSnapshot,
   collection,
@@ -33,7 +33,7 @@ type Settings = {
 
 type Event = {
   event: string;
-  chainId: number;
+  chainId: ChainId;
   block: number;
   occurredAt: number;
   parameters: any[];
@@ -43,7 +43,7 @@ type Event = {
 type Bid = {
   bidId: string;
   tokenId: string;
-  chainId: number;
+  chainId: ChainId;
   block: number;
   bid: number;
   bidder: {
@@ -107,7 +107,7 @@ const getAllEventsFromBlock = async (blockNumber: number) => {
           const data = {
             event: event.node.qualifiedName,
             block: blockNumber,
-            chainId: block.node.chainId,
+            chainId: String(block.node.chainId) as ChainId,
             requestKey: event.node.requestKey,
             occurredAt: new Date(block.node.creationTime).getTime(),
             parameters: event.node.parameters
