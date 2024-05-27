@@ -25,7 +25,7 @@ export const getStaticProps: GetStaticProps = async () => {
     return {
       ...pkg,
       versionCount: versions.length,
-      content: versions.slice(0, 4),
+      content: versions.slice(0, 2),
     };
   });
 

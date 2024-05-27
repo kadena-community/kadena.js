@@ -1,6 +1,6 @@
 import { getVersions } from '@/scripts/importChangelogs/utils/misc';
-import { MonoAdd, MonoList } from '@kadena/react-icons/system';
-import { Heading, Stack, Link as UILink } from '@kadena/react-ui';
+import { MonoKeyboardArrowRight, MonoList } from '@kadena/react-icons/system';
+import { Button, Heading, Stack, Text } from '@kadena/react-ui';
 import classNames from 'classnames';
 import Link from 'next/link';
 import type { FC } from 'react';
@@ -51,33 +51,22 @@ export const Package: FC<IProps> = ({ pkg, isFullPage = true }) => {
       flexDirection="column"
       paddingBlock="xxxl"
       paddingInline={{ xs: 'md', md: 'xl', lg: 'xxxl' }}
-      gap="lg"
     >
       <Stack alignItems="center" width="100%" justifyContent="space-between">
-        <Stack>
-          {!isFullPage ? (
-            <button onClick={handleOpen} className={togglePackageButtonClass}>
-              <span
-                className={classNames(togglePackageIconClass, {
-                  [togglePackageIconOpenClass]: isOpen,
-                })}
-              >
-                <MonoAdd />
-              </span>
-
-              <Heading as="h2">{pkg.name}</Heading>
-            </button>
-          ) : (
+        {!isFullPage ? (
+          <button onClick={handleOpen} className={togglePackageButtonClass}>
             <Heading as="h2">{pkg.name}</Heading>
-          )}
-        </Stack>
 
-        {!isFullPage && (
-          <Link href={`/changelogs/${pkg.slug}`} passHref legacyBehavior>
-            <UILink variant="transparent" endVisual={<MonoList />}>
-              See all logs
-            </UILink>
-          </Link>
+            <Text
+              className={classNames(togglePackageIconClass, {
+                [togglePackageIconOpenClass]: isOpen,
+              })}
+            >
+              <MonoKeyboardArrowRight />
+            </Text>
+          </button>
+        ) : (
+          <Heading as="h2">{pkg.name}</Heading>
         )}
       </Stack>
       <Stack
@@ -92,6 +81,7 @@ export const Package: FC<IProps> = ({ pkg, isFullPage = true }) => {
           <Stack
             key={version.label}
             flexDirection={{ xs: 'column', lg: 'row' }}
+            paddingBlockStart="lg"
           >
             <Stack
               paddingBlock="lg"
@@ -114,11 +104,11 @@ export const Package: FC<IProps> = ({ pkg, isFullPage = true }) => {
           </Stack>
         ))}
         {!isFullPage && (pkg.versionCount ?? 0) > versions.length && (
-          <Stack width="100%" justifyContent="center">
+          <Stack width="100%" justifyContent="flex-start">
             <Link href={`/changelogs/${pkg.slug}`} passHref legacyBehavior>
-              <UILink variant="transparent" endVisual={<MonoList />}>
+              <Button variant="info" endVisual={<MonoList />}>
                 See all logs
-              </UILink>
+              </Button>
             </Link>
           </Stack>
         )}

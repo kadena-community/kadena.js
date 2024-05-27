@@ -196,6 +196,8 @@ globalStyle(
 export const togglePackageButtonClass = style([
   atoms({
     display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
     gap: 'sm',
     alignItems: 'center',
     background: 'none',
@@ -210,7 +212,7 @@ export const togglePackageIconClass = style({
   transition: 'transform .5s ease',
 });
 export const togglePackageIconOpenClass = style({
-  transform: 'rotate(-45deg)',
+  transform: 'rotate(90deg)',
 });
 
 export const versionWrapperClass = style({
