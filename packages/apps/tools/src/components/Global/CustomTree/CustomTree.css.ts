@@ -19,5 +19,10 @@ export const itemBadgeStyle = style({
 });
 
 export const itemContainerStyle = style({
+  height: '40px',
   // cursor: 'pointer',
+  ':hover': {
+    backgroundColor: token('color.background.semantic.info.subtlest'), //kda/foundation/color/background/semantic/info/subtlest
+  },
+  borderBlockEnd: '1px solid rgba(0, 0, 0, 0.25)',
 });
