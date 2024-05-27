@@ -59,6 +59,8 @@ async function* iteratorFn(
 
       if (mempoolResponse) {
         yield mempoolResponse;
+      } else {
+        yield undefined;
       }
     }
 
