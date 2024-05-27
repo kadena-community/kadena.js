@@ -14,6 +14,7 @@ export * from './get-collection';
 export * from './get-collection-token';
 export * from './get-current-price';
 export * from './get-escrow-account';
+export * from './get-quote-info';
 export * from './get-token-balance';
 export * from './get-token-info';
 export * from './get-uri';

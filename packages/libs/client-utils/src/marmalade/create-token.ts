@@ -21,10 +21,6 @@ import type { IGeneralCapability } from '@kadena/client/lib/interfaces/type-util
 import type { IPactInt } from '@kadena/types';
 import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
-import {
-  formatAdditionalSigners,
-  formatCapabilities,
-} from '../integration-tests/support/helpers';
 import type {
   CommonProps,
   FunctionGuard,
@@ -33,7 +29,11 @@ import type {
   WithCreateTokenPolicy,
 } from './config';
 import { GUARD_POLICY } from './config';
-import { validatePolicies } from './helpers';
+import {
+  formatAdditionalSigners,
+  formatCapabilities,
+  validatePolicies,
+} from './helpers';
 
 interface ICreateTokenInput extends CommonProps {
   policies?: string[];

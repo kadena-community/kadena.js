@@ -6,12 +6,10 @@ import {
   execution,
   setMeta,
 } from '@kadena/client/fp';
-import type { IGeneralCapability } from '@kadena/client/lib/interfaces/type-utilities';
-import type { ChainId, ICap, IPactInt } from '@kadena/types';
+import type { ChainId, IPactInt } from '@kadena/types';
 import { expect } from 'vitest';
 import { dirtyReadClient, submitClient } from '../../core';
 import type { Any } from '../../core/utils/types';
-import type { CommonProps } from '../../marmalade/config';
 import { sourceAccount } from '../test-data/accounts';
 
 export const withStepFactory = () => {
@@ -82,23 +80,6 @@ export const addSecondsToDate = (originalDate: Date, secondsToAdd: number) =>
 export const dateToPactInt = (date: Date): IPactInt => ({
   int: Math.floor(date.getTime() / 1000).toString(),
 });
-
-export const formatCapabilities = (
-  capabilities: CommonProps['capabilities'] = [],
-  signFor: IGeneralCapability,
-): ICap[] =>
-  capabilities.map((capability) =>
-    signFor(capability.name, ...capability.props),
-  );
-
-export const formatAdditionalSigners = (
-  additionalSigners: CommonProps['additionalSigners'] = [],
-): any[] =>
-  additionalSigners.map((signer) =>
-    addSigner(signer.keyset.keys, (signFor) =>
-      formatCapabilities(signer.capabilities, signFor),
-    ),
-  );
 
 export const deployGasStation = async ({ chainId }: { chainId: ChainId }) => {
   const config = {
