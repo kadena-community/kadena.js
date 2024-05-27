@@ -1,6 +1,6 @@
 import { TreeItem } from '@/components/Global/CustomTree/CustomTree';
 import { getName, parse } from '@/utils/persist';
-import { CHAINS } from '@kadena/chainweb-node-client';
+import { CHAINS, ChainwebChainId } from '@kadena/chainweb-node-client';
 import type { NextApiRequestCookies } from 'next/dist/server/api-utils';
 import type { ParsedUrlQuery } from 'querystring';
 
@@ -53,7 +53,7 @@ export function getCookieValue<Expected>(
 
 export type Namespace = string;
 export type ModuleName = string;
-export type ModuleData = string[];
+export type ModuleData = Array<{ title: string; hash?: string }>; //string[];
 
 export type ModulesMap = Map<
   Namespace,
@@ -78,11 +78,12 @@ const mapToTreeItems = (
       } else {
         children = value.map((chain) => {
           return {
-            data: chain,
-            key: `${typeof parent === 'string' ? `${parent}.` : ''}${name}.${chain}`,
-            title: chain,
+            data: chain.title,
+            key: `${typeof parent === 'string' ? `${parent}.` : ''}${name}.${chain.title}`,
+            // title: `some even longer long title ${chain.title}`,
+            title: chain.title,
             children: [],
-            label: 'something',
+            label: chain.hash ?? 'something',
           };
         });
       }
@@ -96,38 +97,46 @@ const mapToTreeItems = (
     });
 };
 
-export const xToY = (x: string[][], key: string): TreeItem<string>[] => {
+export const xToY = (
+  x: Array<{
+    name: string;
+    chainId: ChainwebChainId;
+    code?: string;
+    hash?: string;
+  }>,
+  key: string,
+): TreeItem<string>[] => {
   const modulesMap: ModulesMap = new Map();
 
-  x.forEach((modules, index) => {
-    const chain = CHAINS[index];
-    modules.forEach((module) => {
-      const [namespace, moduleName] = module.split('.');
+  x.forEach((module) => {
+    const [namespace, moduleName] = module.name.split('.');
 
-      if (moduleName) {
-        if (!modulesMap.has(namespace)) {
-          modulesMap.set(namespace, new Map());
-        }
-
-        const map = modulesMap.get(namespace)! as Map<ModuleName, ModuleData>;
-
-        if (!map.has(moduleName)) {
-          map.set(moduleName, []);
-        }
-
-        const moduleList = map.get(moduleName)!;
-
-        moduleList.push(chain);
-      } else {
-        if (!modulesMap.has(namespace)) {
-          modulesMap.set(namespace, []);
-        }
-
-        const moduleList = modulesMap.get(namespace)! as string[];
-
-        moduleList.push(chain);
+    if (moduleName) {
+      if (!modulesMap.has(namespace)) {
+        modulesMap.set(namespace, new Map());
       }
-    });
+
+      const map = modulesMap.get(namespace)! as Map<ModuleName, ModuleData>;
+
+      if (!map.has(moduleName)) {
+        map.set(moduleName, []);
+      }
+
+      const moduleList = map.get(moduleName)!;
+
+      moduleList.push({ title: module.chainId, hash: module.hash });
+    } else {
+      if (!modulesMap.has(namespace)) {
+        modulesMap.set(namespace, []);
+      }
+
+      const moduleList = modulesMap.get(namespace)! as Array<{
+        title: string;
+        hash?: string;
+      }>;
+
+      moduleList.push({ title: module.chainId, hash: module.hash });
+    }
   });
 
   const treeItems: TreeItem<string>[] = mapToTreeItems(modulesMap, key);
