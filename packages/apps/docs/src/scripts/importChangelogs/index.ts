@@ -60,7 +60,7 @@ const crawl = (repo: IRepo): ((tree: Node) => IChangelogPackage) => {
       tree.children.forEach((branch, idx) => {
         if (branch.type === 'heading' && branch.depth === 2) {
           version = createVersion(branch);
-          if (!currentContent[repo.slug]?.content[version.label].isLocked) {
+          if (!currentContent[repo.slug]?.content[version.label]?.isLocked) {
             content[version.label] = version;
             currentPosition = VersionPosition.VERSION;
           } else {
