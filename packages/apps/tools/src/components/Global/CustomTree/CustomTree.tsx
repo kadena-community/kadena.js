@@ -4,11 +4,16 @@ import {
   MonoCached,
 } from '@kadena/react-icons/system';
 import { Badge, Button, Stack, Text } from '@kadena/react-ui';
-import { monospaceSmallestRegular } from '@kadena/react-ui/styles';
+import { ellipsis, monospaceSmallestRegular } from '@kadena/react-ui/styles';
+import classnames from 'classnames';
 import React from 'react';
 import type { ICustomAccordionProps } from '../CustomAccordion/CustomAccordion';
 import CustomAccordion from '../CustomAccordion/CustomAccordion';
-import { itemContainerStyle, itemTitleStyle } from './CustomTree.css';
+import {
+  itemBadgeStyle,
+  itemContainerStyle,
+  itemTitleStyle,
+} from './CustomTree.css';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type TreeItem<T> = {
@@ -138,7 +143,14 @@ function Node<
               ) : null}
               <Text className={itemTitleStyle}>{child.data.title}</Text>
               {child.data.label ? (
-                <Badge size="sm" className={monospaceSmallestRegular}>
+                <Badge
+                  size="sm"
+                  className={classnames(
+                    monospaceSmallestRegular,
+                    ellipsis,
+                    itemBadgeStyle,
+                  )}
+                >
                   {child.data.label}
                 </Badge>
               ) : null}
