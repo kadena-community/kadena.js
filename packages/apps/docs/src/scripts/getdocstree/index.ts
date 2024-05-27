@@ -1,13 +1,6 @@
 import type { IConfigTreeItem, IScriptResult } from '@kadena/docs-tools';
-import {
-  getFrontmatterFromTsx,
-  getPages,
-  getReadTime,
-  isMarkDownFile,
-} from '@kadena/docs-tools';
-
+import { getPages } from '@kadena/docs-tools';
 import * as fs from 'fs';
-
 import {
   INITIAL_PATH,
   MENU_FILE,
@@ -19,53 +12,9 @@ import {
 } from './constants';
 
 import { findPath } from './utils/findPath';
-import { getFrontMatter } from './utils/getFrontMatter';
-import { getLastModifiedDate } from './utils/getLastModifiedDate';
-import { isIndex } from './utils/isIndex';
+
+import { convertFile } from './utils/convertFile';
 import { pushToParent } from './utils/pushToParent';
-
-const convertFile = async (
-  file: string,
-): Promise<IConvertFileResult | undefined> => {
-  const doc = fs.readFileSync(`${file}`, 'utf-8');
-  let data;
-  if (isMarkDownFile(file)) {
-    data = getFrontMatter(doc, file);
-  } else {
-    data = getFrontmatterFromTsx(doc);
-    const regex = /frontmatter\s*:\s*{[^}]+}/;
-    const match = doc.match(regex);
-    if (!match) return;
-
-    const metaString = match[0]
-      .replace(/frontmatter:/, '')
-      .replace(/(\w+):/g, '"$1":')
-      .replace(/'/g, '"')
-      .replace(/,(\s*[}\]])/g, '$1');
-
-    data = JSON.parse(metaString);
-  }
-  if (!data) return;
-
-  const readTime = getReadTime(doc);
-  const lastModifiedDate = data.lastModifiedDate
-    ? data.lastModifiedDate
-    : await getLastModifiedDate(
-        `./kadena-community/kadena.js/packages/apps/docs/${file.substr(
-          2,
-          file.length - 1,
-        )}`,
-      );
-
-  return {
-    lastModifiedDate,
-    ...data,
-    ...readTime,
-    isMenuOpen: false,
-    isActive: false,
-    isIndex: isIndex(file),
-  };
-};
 
 const createTree = async (
   rootDir: string,

@@ -16,7 +16,6 @@ export function useWindowScroll(): [
 
   useEffect((): (() => void) => {
     const handleScroll = (): void => {
-      console.log(3333, window.scrollY);
       setState({ x: window.scrollX, y: window.scrollY });
     };
 
