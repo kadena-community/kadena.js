@@ -83,7 +83,7 @@ const mapToTreeItems = (
             // title: `some even longer long title ${chain.title}`,
             title: chain.title,
             children: [],
-            label: chain.hash ?? 'something',
+            label: chain.hash,
           };
         });
       }
