@@ -3,30 +3,36 @@ import type {
   ChainwebNetworkId,
 } from '@kadena/chainweb-node-client';
 import { describeModule } from '@kadena/client-utils';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 
-const fetchModule = (
+const fetchModule = async (
   module: string,
   networkId: ChainwebNetworkId,
   chainId: ChainwebChainId,
 ) => {
-  const describedModule = describeModule(module, {
+  const describedModule = await describeModule(module, {
     defaults: { networkId, meta: { chainId } },
   });
 
-  return describedModule;
+  return {
+    ...describedModule,
+    chainId,
+  };
 };
 
 const QUERY_KEY = 'module';
 
-const useModuleQuery = (
-  module: string,
-  networkId: ChainwebNetworkId,
-  chainId: ChainwebChainId,
-) => {
-  return useQuery({
-    queryKey: [QUERY_KEY, module, networkId, chainId],
-    queryFn: () => fetchModule(module, networkId, chainId),
+const useModuleQuery = () => {
+  return useMutation({
+    mutationFn: ({
+      module,
+      networkId,
+      chainId,
+    }: {
+      module: string;
+      networkId: ChainwebNetworkId;
+      chainId: ChainwebChainId;
+    }) => fetchModule(module, networkId, chainId),
   });
 };
 
