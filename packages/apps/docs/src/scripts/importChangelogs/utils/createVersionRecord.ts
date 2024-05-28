@@ -1,6 +1,7 @@
 import type { Node } from 'mdast';
+import { toMarkdown } from 'mdast-util-to-markdown';
+import type { Root } from 'remark-gfm';
 import { getCommitId } from './commits';
-import { crawlContent } from './crawlContent';
 import { getPrId } from './prs';
 
 /**
@@ -8,7 +9,8 @@ import { getPrId } from './prs';
  * with an array of commits and prs
  */
 export const createVersionRecord = (content: Node): IChangelogVersionRecord => {
-  const contentString = crawlContent(content);
+  content.type = 'root';
+  const contentString = toMarkdown(content as Root);
 
   const { commits, label: tempLabel } = getCommitId(contentString);
   const { prIds, label } = getPrId(tempLabel);

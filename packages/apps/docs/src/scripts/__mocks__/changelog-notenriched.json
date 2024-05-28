@@ -3461,7 +3461,7 @@
   },
   "react-icons": {
     "name": "React Icons",
-    "slug": "react-ui",
+    "slug": "react-icons",
     "repo": "https://github.com/kadena-community/kadena.js.git",
     "directory": "/packages/libs/react-icons",
     "fileName": "CHANGELOG.md",
@@ -4540,7 +4540,7 @@
   },
   "kadenajs": {
     "name": "KadenaJS",
-    "slug": "kadena-js",
+    "slug": "kadenajs",
     "repo": "https://github.com/kadena-community/kadena.js.git",
     "directory": "/packages/libs/kadena.js",
     "fileName": "CHANGELOG.md",
