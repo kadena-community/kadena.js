@@ -1,4 +1,4 @@
-import { createVar, style } from '@vanilla-extract/css';
+import { ComplexStyleRule, createVar, style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { atoms, token } from '../../styles';
 
@@ -87,7 +87,13 @@ export const closeButtonClass = style([
   },
 ]);
 
-export const borderClass = style([
+const customStyle = (rule: ComplexStyleRule, debugId?: string) => {
+  const flattenedRule = Array.isArray(rule) ? Object.assign({}, ...rule) : rule;
+
+  return style({ '@layer': { default: flattenedRule } }, debugId);
+};
+
+export const borderClass = customStyle([
   atoms({
     borderRadius: 'sm',
     borderStyle: 'solid',
