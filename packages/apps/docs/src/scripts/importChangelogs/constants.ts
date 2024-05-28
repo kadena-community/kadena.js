@@ -5,6 +5,7 @@ export const success: string[] = [];
 export const CHANGELOGFILENAME = './src/data/changelogs.json';
 export const MAX_TRIES = 1;
 export const MAXCALLS = 300;
+export const CURRENTPACKAGE = 'kadena.js';
 
 export enum VersionPosition {
   PACKAGE = 0,
