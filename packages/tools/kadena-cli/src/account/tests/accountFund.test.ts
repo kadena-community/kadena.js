@@ -103,6 +103,15 @@ describe('account fund', () => {
     );
   });
 
+  it('should throw max amount error when user tries to enter more than max amount split for multi chains', async () => {
+    const res = await runCommand(
+      'account fund --account=account-add-test-manual --amount=20 --network=testnet --chain-ids=0,1,2 --quiet',
+    );
+    expect(res.stderr).toContain(
+      'Error: -m, --amount "With 3 chains to fund, the max amount per chain is 6 coin(s)."',
+    );
+  });
+
   it('should exit with invalid chain id error message when user passes invalid chain id with quiet flag', async () => {
     const res = await runCommand(
       'account fund --account=account-add-test-manual --amount=1 --network=testnet --chain-ids=-1 --quiet',
