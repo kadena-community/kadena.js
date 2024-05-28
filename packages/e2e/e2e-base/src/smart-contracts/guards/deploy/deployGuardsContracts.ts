@@ -3,14 +3,14 @@ import type { ICommand } from '@kadena/client';
 import { Pact, createClient, createSignWithKeypair } from '@kadena/client';
 import { retrieveContractFromChain } from '@kadena/pactjs-cli/src/utils/retrieveContractFromChain';
 
-import { sender00Account } from '@constants/accounts.constants';
+import fs from 'fs';
+import path from 'path';
+import { sender00Account } from '../../../constants/accounts.constants';
 import {
   devnetUrl,
   mainNetHost,
   networkId,
-} from '@constants/network.constants';
-import fs from 'fs';
-import path from 'path';
+} from '../../../constants/network.constants';
 
 export const deployGaurdsContract = async ({
   chainId,

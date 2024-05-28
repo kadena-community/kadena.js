@@ -125,7 +125,7 @@
     "@kadena/pactjs": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/types": "workspace:*",
-    "debug": "~4.3.4",
+    "debug": "4.3.4",
     "js-yaml": "~4.1.0",
     "ramda": "^0.29.0"
   },
@@ -141,12 +141,12 @@
     "@types/js-yaml": "4.0.9",
     "@types/node": "^20.12.7",
     "@types/ramda": "^0.29.5",
-    "@vitest/coverage-v8": "^1.1.0",
+    "@vitest/coverage-v8": "^1.6.0",
     "eslint": "^8.45.0",
     "prettier": "~3.2.5",
     "ts-node": "~10.9.2",
     "typescript": "5.4.5",
     "unbuild": "^2.0.0",
-    "vitest": "^1.1.0"
+    "vitest": "^1.6.0"
   }
 }

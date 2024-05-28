@@ -6,6 +6,7 @@
   "license": "BSD-3-Clause",
   "scripts": {
     "build": "turbo run build",
+    "build:e2e": "turbo run build:e2e",
     "format": "pnpm run /^format:.*/",
     "format:labels": "tsx packages/tools/scripts/generate-labels.ts",
     "format:md": "remark **/CHANGELOG.md *.md docs/*.md -o --use @kadena-dev/markdown",

@@ -48,14 +48,14 @@
     "@types/moo": "~0.5.5",
     "@types/nearley": "~2.11.2",
     "@types/node": "^20.12.7",
-    "@vitest/coverage-v8": "^1.1.0",
+    "@vitest/coverage-v8": "^1.6.0",
     "chokidar": "^3.5.3",
     "concurrently": "^8.2.2",
     "eslint": "^8.45.0",
     "prettier": "~3.2.5",
     "ts-node": "~10.9.2",
     "typescript": "5.4.5",
-    "vitest": "^1.1.0"
+    "vitest": "^1.6.0"
   },
   "publishConfig": {
     "provenance": true

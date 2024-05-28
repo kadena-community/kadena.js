@@ -1,5 +1,10 @@
 export const contributePathUrlRedirects = [
   {
+    source: '/ambassador-program',
+    destination: '/contribute/ambassadors',
+    permanent: true,
+  },
+  {
     source: '/contribute/ambassadors/ambassador-overview',
     destination: '/contribute/ambassadors',
     permanent: true,

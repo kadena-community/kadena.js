@@ -1,20 +1,8 @@
 {
-  "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {
+    "esModuleInterop": true,
     "strictNullChecks": true,
-    "rootDir": ".",
-    "baseUrl": ".",
     "types": ["node"],
-    "resolveJsonModule": true,
-    "moduleResolution": "node",
-    "paths": {
-      "@fixtures/*": ["./src/fixtures/*"],
-      "@constants/*": ["./src/constants/*"],
-      "@helpers/*": ["src/helpers/*"],
-      "@page-objects/*": ["./src/page-objects/*"],
-      "@devnet/*": ["./src/smart-contracts/*"],
-      "@test-types/*": ["./src/types/*"]
-    }
-  },
-  "include": ["**/*.ts", "/**/*.tsx"]
+    "resolveJsonModule": true
+  }
 }

@@ -28,7 +28,7 @@ export function mempoolTransactionMapper(mempoolData: any): Transaction {
   // Convert creationTime to milliseconds (mempool has it in epoch format in seconds)
   mempoolTx.cmd.meta.creationTime = mempoolTx.cmd.meta.creationTime * 1000;
 
-  const transaction = {
+  const transaction: Transaction = {
     requestKey: mempoolTx.hash,
     badResult: null,
     continuation: null,
@@ -51,7 +51,9 @@ export function mempoolTransactionMapper(mempoolData: any): Transaction {
     rollback: mempoolTx.cmd.payload.rollback,
     proof: mempoolTx.cmd.payload.proof,
     senderAccount: mempoolTx.cmd.meta.sender,
-    step: BigInt(mempoolTx.cmd.payload.step),
+    step: mempoolTx.cmd.payload.step
+      ? BigInt(mempoolTx.cmd.payload.step)
+      : mempoolTx.cmd.payload.step,
     ttl: BigInt(mempoolTx.cmd.meta.ttl),
   };
 

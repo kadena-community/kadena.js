@@ -10,8 +10,9 @@ import { log } from '../utils/logger.js';
 import type { IAliasAccountData } from './types.js';
 import {
   chainIdRangeValidation,
+  createFundAmountValidation,
   formatZodFieldErrors,
-  fundAmountValidation,
+  isValidMaxAccountFundParams,
   parseChainIdRange,
   readAccountFromFile,
 } from './utils/accountHelpers.js';
@@ -149,14 +150,31 @@ export const accountOptions = {
       invalid_type_error: 'Error: -m, --amount must be a positive number',
     }),
     option: new Option('-m, --amount <amount>', 'Amount to fund your account'),
-    transform: (amount: string) => {
+    transform: (amount: string, ...rest) => {
+      if (
+        !(
+          Array.isArray(rest) &&
+          rest.length > 0 &&
+          isValidMaxAccountFundParams(rest[0])
+        )
+      ) {
+        throw new Error(
+          'Invalid rest parameters. Ensure that maxAmount and numberOfChains are provided and are numbers',
+        );
+      }
+
+      const maxAmount = rest[0].maxAmount;
+      const numberOfChains = rest[0].numberOfChains;
+
       try {
         const parsedAmount = Number(amount);
-        fundAmountValidation.parse(parsedAmount);
+        createFundAmountValidation(numberOfChains, maxAmount).parse(
+          parsedAmount,
+        );
         return amount;
       } catch (error) {
         const errorMessage = formatZodFieldErrors(error);
-        throw new Error(`Error: -m, --amount ${errorMessage}`);
+        throw new Error(`Error: -m, --amount "${errorMessage}"`);
       }
     },
   }),

@@ -40,6 +40,9 @@ async function* iteratorFn(
   context: IContext,
   chainId?: string,
 ): AsyncGenerator<Transaction | undefined, void, unknown> {
+  let previousTransaction: Transaction | undefined;
+  let eventYielded: boolean = false;
+
   while (!context.req.socket.destroyed) {
     const transaction = await prismaClient.transaction.findFirst({
       where: {
@@ -57,8 +60,17 @@ async function* iteratorFn(
         chainId,
       );
 
-      if (mempoolResponse) {
+      if (
+        mempoolResponse &&
+        JSON.stringify(mempoolResponse) !== JSON.stringify(previousTransaction)
+      ) {
+        previousTransaction = { ...mempoolResponse };
         yield mempoolResponse;
+      } else {
+        if (!eventYielded) {
+          yield undefined;
+          eventYielded = true;
+        }
       }
     }
 

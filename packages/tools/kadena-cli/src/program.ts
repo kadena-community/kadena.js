@@ -33,16 +33,14 @@ export function loadProgram(program: Command): Command {
     // typescriptCommandFactory,
     dappCommandFactory,
     versionCommand,
-  ]
-    .flat()
-    .forEach(async (fn) => {
-      fn(program, packageJson.version);
-    });
+  ].forEach((fn) => {
+    fn(program, packageJson.version);
+  });
 
   program
     .name(CLINAME)
-    .description('CLI to interact with Kadena and its ecosystem')
-    .version(packageJson.version);
+    .description("CLI to interact with Kadena and it's ecosystem")
+    .version(packageJson.version, '-v, --version');
 
   program.addHelpText(
     'after',

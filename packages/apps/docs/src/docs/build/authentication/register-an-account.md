@@ -25,14 +25,7 @@ To register for a new Kadena SpireKey account:
 1. Open [Kadena SpireKey](https://spirekey.kadena.io) in a web browser on your
    phone, tablet, or desktop.
 2. Click **Register** to start entering your account information.
-3. Type an **Alias** to use for your account, then click **Next**.
-
-   The alias is typically a short and distinguishable name that helps you
-   recognize your account in the Kadena SpireKey wallet and to distinguish
-   between accounts if you add more than one account to your wallet.
-
-   The **Alias** you specify is only stored in the browser on the device you use
-   to register and cannot been seen by anyone else. If you don't want to create
+3. If you don't want to create
    an account, click **Cancel** to exit the registration flow.
 
 4. Create a private **Passkey** to be stored in encrypted form on the device you
@@ -46,35 +39,9 @@ To register for a new Kadena SpireKey account:
    registration. No sensitive information is transferred to or stored on the
    Kadena blockchain or visible to the public.
 
-5. Select a **Device Type** for this device and passkey combination to help you
-   distinguish this device and passkey combination for the account from other
-   devices and passkeys you might add to the account in the future.
-
-   For example, you might use a laptop with a security key to register your
-   account initially, then add a phone with a QR code to your account. The
-   devices are associated with the same account but have different passkeys. You
-   can use the device type to help you distinguish between the different devices
-   associated with your account.
-
-   Depending on the device and passkey combination, you can select from the
-   following device types:
-
-   - Security key
-   - Phone
-   - Desktop
-
-   After you select the device type, click **Next**.
-
-6. Select a **Color** for this device and passkey combination to help you
-   distinguish this device and passkey combination from other devices and
-   passkeys you might add to the account in the future.
-
-7. Click **Complete** to send a transaction to the blockchain and create your
-   new account.
-
 ## Complete registration
 
-After you click Complete, Kadena SpireKey displays your Accounts page with a
+After you create a **Passkey**, Kadena SpireKey displays your Accounts page with a
 card representing your account information. While the registration transaction
 is processed, the account name—a string with the c: prefix—is presented in an
 animated state. After the registration transaction is successfully mined into a
