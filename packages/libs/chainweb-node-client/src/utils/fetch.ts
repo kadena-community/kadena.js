@@ -1,5 +1,3 @@
-import { fetch as nodeFetch } from 'node-fetch-native';
-
 export const fetch: typeof globalThis.fetch = ((
   ...args: Parameters<typeof globalThis.fetch>
 ) => {
@@ -9,5 +7,7 @@ export const fetch: typeof globalThis.fetch = ((
   if (typeof globalThis.fetch !== 'undefined') {
     return globalThis.fetch(...args);
   }
-  return nodeFetch(...(args as unknown as Parameters<typeof nodeFetch>));
+  return import('node-fetch-native').then(({ fetch }) => {
+    return fetch(...args);
+  });
 }) as unknown as typeof globalThis.fetch;
