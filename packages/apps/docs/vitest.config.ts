@@ -8,6 +8,7 @@ export default mergeConfig(
     plugins: [vanillaExtractPlugin({ emitCssInSsr: true })],
     test: {
       globals: true,
+      globalSetup: './vitest-globals.ts',
       setupFiles: ['vitest.setup.ts'],
       environment: 'happy-dom',
       coverage: {

@@ -34,7 +34,7 @@ describe('getLastModifiedDate', () => {
     mocks.promiseExec.mockReturnValue({ stdout: 'I have the Power' });
     const result = await getLastModifiedDate('./src/he-man.md');
 
-    expect(result).toEqual('Tue, 04 Jun 2013 11:00:00 GMT');
+    expect(result).toEqual('Tue, 04 Jun 2013 13:00:00 GMT');
   });
 
   it('should return currentdate date if github fails', async () => {
@@ -43,6 +43,6 @@ describe('getLastModifiedDate', () => {
     mocks.promiseExec.mockRejectedValue({});
     const result = await getLastModifiedDate('./src/he-man.md');
 
-    expect(result).toEqual('Tue, 04 Jun 2013 11:00:00 GMT');
+    expect(result).toEqual('Tue, 04 Jun 2013 13:00:00 GMT');
   });
 });
