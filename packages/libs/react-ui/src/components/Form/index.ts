@@ -1,6 +1,7 @@
 export { CopyButton } from './ActionButtons/CopyButton';
 export { Form, type IFormProps } from './Form';
 
+export { Checkbox, type ICheckboxProps } from './Checkbox/Checkbox';
 export {
   Combobox,
   ComboboxItem,

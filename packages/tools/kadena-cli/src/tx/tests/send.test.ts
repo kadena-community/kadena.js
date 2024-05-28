@@ -4,7 +4,7 @@ import { services } from '../../services/index.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { mockPrompts, runCommand } from '../../utils/test.util.js';
 import { defaultTemplates } from '../commands/templates/templates.js';
-import { createTransaction } from '../commands/txCreateTransaction.js';
+import { createAndWriteTransaction } from '../commands/txCreateTransaction.js';
 import { signTransactionFileWithKeyPairAction } from '../utils/txSignWithKeypair.js';
 
 describe('tx send', () => {
@@ -20,7 +20,7 @@ describe('tx send', () => {
     await services.filesystem.ensureDirectoryExists(WORKING_DIRECTORY);
     await runCommand(['config', 'init']);
 
-    const transaction = await createTransaction(
+    const transaction = await createAndWriteTransaction(
       defaultTemplates.transfer,
       {
         'account:from': `k:${publicKey}`,

@@ -63,7 +63,7 @@ export function CreateProfile() {
   }
   return (
     <>
-      <AuthCard>
+      <AuthCard backButtonLink="/select-profile">
         <Heading variant="h4">Choose a password</Heading>
         <Text>
           Carefully select your password as this will be your main security of
@@ -89,7 +89,7 @@ export function CreateProfile() {
                 minLength: { value: 6, message: 'Minimum 6 symbols' },
               })}
               isInvalid={!isValid && !!errors.password}
-              errorMessage={errors.password && errors.password.message}
+              errorMessage={errors.password?.message}
             />
             <TextField
               id="confirmation"
@@ -103,7 +103,7 @@ export function CreateProfile() {
                 },
               })}
               isInvalid={!isValid && !!errors.confirmation}
-              errorMessage={errors.confirmation && errors.confirmation.message}
+              errorMessage={errors.confirmation?.message}
             />
           </Stack>
           <Stack flexDirection="column">

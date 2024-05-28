@@ -68,23 +68,9 @@ export const notificationRecipe = recipe({
         },
       ],
     },
-    displayStyle: {
-      bordered: [
-        atoms({
-          borderStyle: 'solid',
-          borderWidth: 'hairline',
-          borderRadius: 'sm',
-        }),
-        {
-          borderLeftWidth: token('border.width.thick'),
-        },
-      ],
-      borderless: [],
-    },
   },
   defaultVariants: {
     intent: 'info',
-    displayStyle: 'bordered',
   },
 });
 
@@ -98,6 +84,16 @@ export const closeButtonClass = style([
   }),
   {
     color: iconColorVar,
+  },
+]);
+
+export const borderClass = style([
+  atoms({
+    borderRadius: 'sm',
+    borderStyle: 'solid',
+  }),
+  {
+    borderLeftWidth: token('border.width.thick'),
   },
 ]);
 

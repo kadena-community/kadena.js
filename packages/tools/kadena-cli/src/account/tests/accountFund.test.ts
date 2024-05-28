@@ -103,6 +103,15 @@ describe('account fund', () => {
     );
   });
 
+  it('should throw max amount error when user tries to enter more than max amount split for multi chains', async () => {
+    const res = await runCommand(
+      'account fund --account=account-add-test-manual --amount=20 --network=testnet --chain-ids=0,1,2 --quiet',
+    );
+    expect(res.stderr).toContain(
+      'Error: -m, --amount "With 3 chains to fund, the max amount per chain is 6 coin(s)."',
+    );
+  });
+
   it('should exit with invalid chain id error message when user passes invalid chain id with quiet flag', async () => {
     const res = await runCommand(
       'account fund --account=account-add-test-manual --amount=1 --network=testnet --chain-ids=-1 --quiet',
@@ -174,7 +183,7 @@ describe('account fund', () => {
     mockCheckHealth.mockRestore();
   });
 
-  it('should exit and not fund when user select no for deploy faucet prompt', async () => {
+  it('should exit without funding when user select "no" for deploy faucet prompt', async () => {
     mockPrompts({
       select: {
         'Do you wish to deploy faucet module?': 'no',
@@ -197,6 +206,9 @@ describe('account fund', () => {
       'Faucet module unavailable on chain "1" in the "devnet" network.',
     );
     expect(mockdeployFaucetsToChains).not.toHaveBeenCalled();
+    expect(res.stderr).toContain(
+      'To fund your account on chain "1" in the "devnet" network, deploy the faucet using the --deploy-faucet option.',
+    );
     expect(res.stderr).not.toContain(
       'Account "accountName" funded with 5 coin(s) on Chain ID(s) "1" in development network.',
     );
@@ -205,7 +217,7 @@ describe('account fund', () => {
     mockdeployFaucetsToChains.mockRestore();
   });
 
-  it('should deploy faucets when user select yes to deploy faucet', async () => {
+  it('should deploy faucet and fund account when user select "yes" to deploy faucet', async () => {
     mockPrompts({
       select: {
         'Do you wish to deploy faucet module?': 'yes',

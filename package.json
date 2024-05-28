@@ -7,6 +7,7 @@
   "scripts": {
     "build": "turbo run build",
     "build:e2e": "turbo run build:e2e",
+    "docs:changelogs": "cd ./packages/apps/docs && pnpm run build:changelogs",
     "format": "pnpm run /^format:.*/",
     "format:labels": "tsx packages/tools/scripts/generate-labels.ts",
     "format:md": "remark **/CHANGELOG.md *.md docs/*.md -o --use @kadena-dev/markdown",
@@ -23,7 +24,7 @@
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
     "test:integration": "turbo run test:integration",
-    "version": "changeset version && pnpm run format:pkgs && pnpm run format:md"
+    "version": "changeset version && pnpm run docs:changelogs && pnpm run format:pkgs && pnpm run format:md"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.2",

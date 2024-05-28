@@ -4,6 +4,7 @@ import type { INetworkCreateOptions } from '../../networks/utils/networkHelpers.
 import type { CommandResult } from '../../utils/command.util.js';
 import { isNotEmptyString, notEmpty } from '../../utils/globalHelpers.js';
 import type { IAliasAccountData } from '../types.js';
+import { sortChainIds } from './accountHelpers.js';
 import { createAndTransferFund } from './createAndTransferFunds.js';
 import { getAccountDetails } from './getAccountDetails.js';
 import { transferFund } from './transferFund.js';
@@ -11,7 +12,8 @@ import { transferFund } from './transferFund.js';
 const formatAccountCreatedMsgs = (msgs: string[]): string | null => {
   if (msgs.length === 0) return null;
   const [pre, ...chainIds] = msgs;
-  return `${pre} ${chainIds.join(
+  const sortedChainIds = sortChainIds(chainIds as ChainId[]);
+  return `${pre} ${sortedChainIds.join(
     ', ',
   )}. So the account will be created on these Chain ID(s).`;
 };

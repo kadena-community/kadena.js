@@ -13,9 +13,9 @@ export async function printPlainKeys(plainKeys: IPlainKey[]): Promise<void> {
   });
 
   if (plainKeys.length === 0) {
-    log.info('There are no key files in your working directory.');
-    log.info('You can add one using:\n');
-    log.info('  kadena key generate');
+    log.warning('There are no key files in your working directory.');
+    log.warning('You can add one using:\n');
+    log.warning('  kadena key generate');
     return;
   }
   for (const key of plainKeys) {
