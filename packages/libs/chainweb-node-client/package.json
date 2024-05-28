@@ -47,7 +47,7 @@
   "dependencies": {
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/pactjs": "workspace:*",
-    "node-fetch-native": "^1.6.4"
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",

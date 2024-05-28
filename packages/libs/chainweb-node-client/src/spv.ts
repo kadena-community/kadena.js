@@ -1,7 +1,7 @@
-import { fetch } from 'node-fetch-native';
 import type { ISPVRequestBody, SPVResponse } from './interfaces/PactAPI';
 import { parseResponseTEXT } from './parseResponseTEXT';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
+import { fetch } from './utils/fetch';
 
 /**
  * Blocking request to fetch spv proof of a cross chain transaction.

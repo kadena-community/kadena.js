@@ -1,7 +1,7 @@
-import { fetch } from 'node-fetch-native';
 import type { ISendRequestBody, SendResponse } from './interfaces/PactAPI';
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
+import { fetch } from './utils/fetch';
 /**
  * Asynchronous submission of one or more public (unencrypted) commands to the blockchain for execution.
  *

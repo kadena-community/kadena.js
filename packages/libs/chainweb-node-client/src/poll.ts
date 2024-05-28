@@ -1,7 +1,7 @@
-import { fetch } from 'node-fetch-native';
 import type { IPollRequestBody, IPollResponse } from './interfaces/PactAPI';
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
+import { fetch } from './utils/fetch';
 /**
  * Allows polling for one or more transaction results by request key.
  * Returns an Array of the transaction results we polled for.

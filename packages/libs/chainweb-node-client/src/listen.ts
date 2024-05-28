@@ -1,7 +1,7 @@
-import { fetch } from 'node-fetch-native';
 import type { ICommandResult, IListenRequestBody } from './interfaces/PactAPI';
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
+import { fetch } from './utils/fetch';
 
 /**
  * Blocking request for single command result.
