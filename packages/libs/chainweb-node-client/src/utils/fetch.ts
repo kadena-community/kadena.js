@@ -1,4 +1,4 @@
-import nodeFetch from 'node-fetch';
+import { fetch as nodeFetch } from 'node-fetch-native';
 
 export const fetch: typeof globalThis.fetch = ((
   ...args: Parameters<typeof globalThis.fetch>
