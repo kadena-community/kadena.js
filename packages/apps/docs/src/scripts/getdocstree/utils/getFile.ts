@@ -20,7 +20,6 @@ export const getFile = async (
   };
   child.root = findPath(currentFile);
 
-  console.log(currentFile, child);
   if (!child.root) return;
 
   if (
@@ -54,10 +53,12 @@ export const getFile = async (
 
     // add the child to the parent array
     parent = pushToParent(parent, child as IParent, idx);
+    console.log(45646, parent);
 
     if (fs.statSync(currentFile).isDirectory()) {
+      console.log(111, child.children);
       child.children = await createTree(currentFile, child.children, pages);
-
+      console.log(222, child.children);
       return child.children;
     }
   }

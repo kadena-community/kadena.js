@@ -8,8 +8,6 @@ import { getFrontMatter } from './getFrontMatter';
 import { getLastModifiedDate } from './getLastModifiedDate';
 import { isIndex } from './isIndex';
 
-console.log(getFrontMatter);
-
 export const convertFile = async (
   file: string,
 ): Promise<IConvertFileResult | undefined> => {
