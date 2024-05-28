@@ -58,7 +58,6 @@ describe('createSitemap', () => {
 
     expect(mocks.writeFileSync).toBeCalledTimes(0);
     expect(errors.length).toEqual(1);
-    console.log(success);
     expect(success.length).toEqual(0);
     expect(errors[0]).toEqual('Something went wrong');
   });
