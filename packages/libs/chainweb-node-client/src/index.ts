@@ -1,5 +1,3 @@
-// Since the library uses fetch, we need to make sure it works in older versions of Node.js.
-
 export * from './createListenRequest';
 export * from './createPollRequest';
 export * from './createSendRequest';
