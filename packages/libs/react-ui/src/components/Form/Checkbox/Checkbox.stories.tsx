@@ -44,7 +44,7 @@ const meta: Meta<ICheckboxProps> = {
 
 type CheckboxStoryType = StoryObj<ICheckboxProps>;
 
-export const _Base: CheckboxStoryType = {
+export const Base: CheckboxStoryType = {
   args: {
     children: 'Check this box',
   },
@@ -53,7 +53,7 @@ export const _Base: CheckboxStoryType = {
   },
 };
 
-export const _Determinate: CheckboxStoryType = {
+export const Determinate: CheckboxStoryType = {
   args: {
     children: 'Check this box',
     isDeterminate: true,
@@ -63,7 +63,7 @@ export const _Determinate: CheckboxStoryType = {
   },
 };
 
-export const _Disabled: CheckboxStoryType = {
+export const Disabled: CheckboxStoryType = {
   args: {
     children: 'Check this box',
     isDisabled: true,
@@ -73,7 +73,7 @@ export const _Disabled: CheckboxStoryType = {
   },
 };
 
-export const _DisabledChecked: CheckboxStoryType = {
+export const DisabledChecked: CheckboxStoryType = {
   args: {
     children: 'Check this box',
     isDisabled: true,
@@ -84,7 +84,7 @@ export const _DisabledChecked: CheckboxStoryType = {
   },
 };
 
-export const _ReadOnly: CheckboxStoryType = {
+export const ReadOnly: CheckboxStoryType = {
   args: {
     children: 'Check this box',
     isReadOnly: true,
@@ -94,7 +94,7 @@ export const _ReadOnly: CheckboxStoryType = {
   },
 };
 
-export const _ReadOnlyChecked: CheckboxStoryType = {
+export const ReadOnlyChecked: CheckboxStoryType = {
   args: {
     children: 'Check this box',
     isReadOnly: true,
