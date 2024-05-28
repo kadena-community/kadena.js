@@ -38,7 +38,7 @@ You can connect to Kadena SpireKey and request account information from an appli
 The following example illustrates an application running locally on
 `http://localhost:3000` that's deployed on the `testnet04` network:
 
-https://spirekey.kadena.io/connect?returnUrl=http://localhost:3000&networkId=testnet04
+https://spirekey.kadena.io/connect?returnUrl=http:/localhost:3000&networkId=testnet04
 
 As you see in this example, the `returnUrl` is a URL-encoded **query parameter** that Kadena SpireKey uses to redirect users after they connect. 
 When users are redirected to the `/connect` endpoint, Kadena SpireKey checks whether they have an account. 
@@ -109,10 +109,10 @@ details, you should see the following properties:
 
 | Property | Description |
 | ------------- | ------------------------- |
-| alias         | Specifies an alias to use as the display name for the account. |
+| alias | Specifies an alias to use as the display name for the account. |
 | accountName   | Specifies the full public name of the account on the blockchain. It is a string consisting of a `c:` prefix followed by a hash. |
-| credentials   | Contains an array of credential objects. For Kadena SpireKey accounts, there is always at least one credential in the array. The `publicKey` in the `credential` property holds the public key of the user's WebAuthn credential. The private key is never included in the `user` object. The private key is encrypted and stored in a security enclave on the user's device. |
-| pendingTxIds  | Specifies the transaction identifier for users who registered to create a new account from your application. You can use the chainweb-data API to poll the status of this transaction to ensure that you don't create transactions for the user to sign before the account is confirmed on the blockchain. If the `pendingTxIds` property is empty, the account creation transaction completed before the user returned to your application. |
+| credentials | Contains an array of credential objects. For Kadena SpireKey accounts, there is always at least one credential in the array. The `publicKey` in the `credential` property holds the public key of the user's WebAuthn credential. The private key is never included in the `user` object. The private key is encrypted and stored in a security enclave on the user's device. |
+| pendingTxIds | Specifies the transaction identifier for users who registered to create a new account from your application. You can use the chainweb-data API to poll the status of this transaction to ensure that you don't create transactions for the user to sign before the account is confirmed on the blockchain. If the `pendingTxIds` property is empty, the account creation transaction completed before the user returned to your application. |
 
 ### Poll for pending account creation
 
@@ -134,4 +134,33 @@ If you add the `/connect` endpoint for Kadena SpireKey to your application, Kade
 The following diagram illustrates the basic workflow for registering an account
 using Kadena SpireKey.
 
-![Kadena SpireKey registration workflow](/assets/docs/register-spirekey-account.png)
+```mermaid
+---
+title:  Registration workflow
+---
+flowchart TD
+    user --Create account request--> a
+    a --Request public key--> b
+    b --- c
+    b --Return public key--> a
+    a --Create account using the public key--> d
+    d --- e
+    e -. Invalid transaction .-> h
+    e --yes--> f
+    f --- i
+    i --> h
+  
+    user["User 👤"]
+    a["Kadena SpireKey 👛"]
+    b["WebAuthn API 🔑"]
+    c(["Generate public and secret key pair"])
+    d["Kadena blockchain ⛓️"]
+    e{"Validated
+        by
+        blockchain?"}
+    f(["Transaction executed,
+        mined into a block ⛓️"])
+    i(["Return account created 
+           c:my-account"])
+    h["Kadena SpireKey 👛"]
+```

@@ -159,10 +159,10 @@ credential identifier retrieved to find the event that was emitted when the
 user's device was added to an account. You can find the event by calling the
 chainweb-data API endpoint `/txs/events` with the following query parameters.
 
-| Parameter  | Description                                                                                                                                                                                                                                                                                         |
-| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| param      | Specifies the credential identifier for the passkey selected by the user.                                                                                                                                                                                                                           |
-| name       | Specifies the name of the event. In this case, the REGISTER_DEVICE event.                                                                                                                                                                                                                           |
+| Parameter | Description |
+| :-------- | :---------- |
+| param | Specifies the credential identifier for the passkey selected by the user. |
+| name | Specifies the name of the event. In this case, the REGISTER_DEVICE event. |
 | modulename | Specifies the name of the module that emitted the event. In this case, the module `webauthn-guard` prefixed with the module namespace. For example, the namespace and module for Kadena SpireKey running on the Kadena test network is `n_eef68e581f767dd66c4d4c39ed922be944ede505.webauthn-guard`. |
 
 The following code example extends the previous example with the code for

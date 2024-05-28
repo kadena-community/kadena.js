@@ -44,7 +44,7 @@ If you want to require an account to be created before users can interact with y
 ### Return value
 
 After connecting to an account in SpireKey, users are redirected to the `returnUrl` you specify for your application. 
-As part of the redirection, SpireKey appends a `user` object in the `searchParameters`. This object describes information you can use to address the user or to prepare a transaction.
+As part of the redirection, SpireKey appends a `user` object in the `searchParameters`. This object contains information you can use to address the user or to prepare a transaction.
 
 #### User
 
@@ -76,19 +76,19 @@ When your transaction is ready to be signed, you need to `base64` encode the str
 
 Transactions can grow in size well beyond what is accepted in
 `searchParameters`. To enable users to sign these transactions, you should send
-the transaction parameters to the SpireKey endpoint using the anchor hashtag (#) instead of the searchParameter question mark (?). For example, a signature request might look like this:
+the transaction parameters to the SpireKey `/sign` endpoint using the anchor hashtag (#) instead of the searchParameter question mark (?). For example, a signature request might look like this:
 `https://spirekey.kadena.io/sign#transaction=encodedTx&returnUrl=www.mydapp.com`
 
-| Parameter   | Type   | Description                                              |
-| :---------- | :----- | :------------------------------------------------------- |
-| transaction | string | Specifies the `base64` encoded JSON stringified transaction object.    |
-| returnUrl   | string |  Specifies the URL the user needs to be redirected to after signing. |
+| Parameter | Type | Description |
+| :-------- | :--- | :---------- |
+| transaction | string | Specifies the `base64` encoded JSON stringified transaction object. |
+| returnUrl | string | Specifies the URL the user needs to be redirected to after signing. |
 
 Signature requests can include an explanation of what the user is signing for. 
 If the explanation is accepted and the user consents by signing the transaction, the signed transaction is returned to the application as a parameter in the return URL following an anchor hashtag (#).
 
 You can then collect or combine additional signatures, as required, to finalize the transaction for execution. 
 
-| Parameter   | Type   | Description                                          |
-| :---------- | :----- | :--------------------------------------------------- |
+| Parameter | Type | Description |
+| :-------- | :--- | :---------- |
 | transaction | string | Specifies the `base64` encoded JSON stringified transaction object. |
