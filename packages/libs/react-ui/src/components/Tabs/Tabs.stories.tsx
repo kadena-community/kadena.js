@@ -1,18 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import type { Key } from 'react-aria';
+import type { Node } from 'react-stately';
 import { onLayer2 } from '../../storyDecorators';
 import { Stack } from '../Layout';
 import type { ITabsProps } from '../Tabs';
 import { TabItem, Tabs } from '../Tabs';
 import { Text } from '../Typography';
 
-interface IExampleTab {
-  title: string;
-  content: string;
-}
-
-const ExampleTabs: IExampleTab[] = [
+const ExampleTabs = [
   {
     title: 'Title 1',
     content:
@@ -29,7 +25,8 @@ const ExampleTabs: IExampleTab[] = [
       "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.  ",
   },
 ];
-const ExampleManyTabs: IExampleTab[] = [
+
+const ExampleManyTabs = [
   { title: 'Really Long Title', content: 'Content for tab 1' },
   { title: 'Really Long Title 2', content: 'Content for tab 2' },
   { title: 'Really Long Title 3', content: 'Content for tab 3' },
@@ -115,13 +112,15 @@ export const TabsStory: Story = {
     ['aria-label']: 'generic tabs story',
   },
   render: (props) => {
+    const [items, setItems] = useState(ExampleTabs);
+
+    const handleClose = (item: Node<object>) => {
+      setItems((prev) => prev.filter((i) => i.title !== item.key));
+    };
+
     return (
-      <Tabs
-        {...props}
-        aria-label={props['aria-label']}
-        onClose={(item) => console.log('closed', item.key)}
-      >
-        {ExampleTabs.map((tab) => (
+      <Tabs {...props} aria-label={props['aria-label']} onClose={handleClose}>
+        {items.map((tab) => (
           <TabItem key={tab.title} title={tab.title}>
             {tab.content}
           </TabItem>
