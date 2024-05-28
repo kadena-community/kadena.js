@@ -1,15 +1,19 @@
 version: '3'
 services:
   devnet:
-    image: kadena/devnet@sha256:b63feb2de2a46c77199569845f9dc5e44609260dcf1e874b5fb04907d1426e64
+    image: kadena/devnet@sha256:b4af222fc8c2f1e1164cbfb63164d5fe2f19a5840720b63d0f18c44e6125569d
     ports:
-      - 8080:8080 # HTTP
+      - 1848:1848 # Node Service Port
+      - 1789:1789 # Chainweb node’s p2p API port
+      - 1790:1790 # On-Demand Mining API
       - 5432:5432 # Postgres
+      - 8080:8080 # HTTP
       - 9999:9999 # Info
-      - 1789:1789 
     environment:
       - MINING_BATCH_PERIOD=0.05
       - MINING_CONFIRMATION_PERIOD=1
+      - MINING_CONFIRMATION_COUNT=1
+      - MINIG_IDLE_PERIOD=10
     volumes:
       - ../../../packages/apps/graph/cwd-extra-migrations:/cwd-extra-migrations:ro
       - sandbox:/data
