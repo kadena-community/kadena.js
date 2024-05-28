@@ -208,4 +208,13 @@ export const txOptions = {
       'Get a list of all the values this template needs',
     ),
   }),
+  gasLimit: createOption({
+    key: 'gasLimit' as const,
+    prompt: () => undefined as string | undefined,
+    validation: z.string().optional(),
+    option: new Option(
+      '-g --gas-limit <gasLimit>',
+      'Gas limit for the local transaction',
+    ),
+  }),
 };

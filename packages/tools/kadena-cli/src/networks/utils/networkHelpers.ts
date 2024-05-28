@@ -3,6 +3,7 @@ import { getNetworkFiles, networkDefaults } from '../../constants/networks.js';
 import {
   formatZodError,
   mergeConfigs,
+  notEmpty,
   sanitizeFilename,
 } from '../../utils/globalHelpers.js';
 import { getDefaultNetworkName } from '../../utils/helpers.js';
@@ -128,6 +129,27 @@ export async function loadNetworkConfig(
   }
 
   return yaml.load(file) as INetworksCreateOptions;
+}
+
+export async function getNetworks(): Promise<z.output<typeof networkSchema>[]> {
+  const networkDir = getNetworkDirectory();
+  if (networkDir === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
+  const files = await services.filesystem.readDir(networkDir);
+  const networks = (
+    await Promise.all(
+      files.map(async (file) => {
+        const networkFilePath = path.join(networkDir, file);
+        const content = await services.filesystem.readFile(networkFilePath);
+        if (content === null) return null;
+        const parsed = networkSchema.safeParse(yaml.load(content));
+        return parsed.success ? parsed.data : null;
+      }),
+    )
+  ).filter(notEmpty);
+
+  return networks;
 }
 
 export async function ensureNetworksConfiguration(
