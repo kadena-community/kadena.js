@@ -59,6 +59,10 @@ describe('content utils', () => {
       getChangelog(repo);
 
       expect(spy).toBeCalledTimes(1);
+      expect(spy).toBeCalledWith(
+        `${process.cwd()}/../../../packages/libs/react-ui/CHANGELOG.md`,
+        'utf-8',
+      );
     });
   });
   describe('writeContent', () => {
