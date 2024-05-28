@@ -121,7 +121,17 @@ export const tagContainerClass = style([
     paddingBlockEnd: 'md',
   }),
   {
+    alignSelf: 'flex-start',
     ...responsiveStyle({
+      xs: {
+        width: '100%',
+      },
+      sm: {
+        width: '100px',
+      },
+      md: {
+        width: '100%',
+      },
       lg: {
         paddingInlineStart: 0,
         paddingBlockStart: 0,
