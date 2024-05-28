@@ -28,6 +28,9 @@ function ModuleExplorer({
   onReload,
   onExpandCollapse,
 }: IModuleExplorerProps) {
+  const [activeModule, setActiveModule] = useState<IChainModule>();
+  const [openedModules, setOpenedModules] = useState<IChainModule[]>([]);
+
   return (
     <div className={containerStyle}>
       <SidePanel
@@ -56,12 +59,26 @@ function ModuleExplorer({
         onReload={onReload}
         onModuleClick={(x) => {
           console.log('onModuleClick', x);
+          const [network, moduleName] = (x.key as string).split('.');
+          const chainModule = {
+            code: x.data.code,
+            chainId: x.data.chainId,
+            moduleName,
+            hash: x.data.hash,
+            network,
+          };
+          setActiveModule(chainModule);
+          setOpenedModules([chainModule]);
         }}
         onExpandCollapse={onExpandCollapse}
       />
+      {/* <SidePanel>
+        <Item></Item>
+        <Item></Item>
+      </SidePanel> */}
       <Editor
-        openedModules={[]}
-        activeModule={undefined}
+        openedModules={openedModules}
+        activeModule={activeModule}
         onActiveModuleChange={(module) => {
           // onActiveModuleChange(module);
           // setActiveModule(module);
