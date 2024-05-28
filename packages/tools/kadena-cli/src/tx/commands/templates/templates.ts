@@ -56,7 +56,7 @@ code: |-
 data:
 meta:
   chainId: "{{chain-id}}"
-  gasLimit: 99999
+  gasLimit: {{gasLimit}}
   gasPrice: 0.000001
   ttl: 600
   sender: "local"

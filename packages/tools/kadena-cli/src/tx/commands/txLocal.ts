@@ -9,6 +9,7 @@ import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { getDefaultNetworkName } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
+import { txOptions } from '../txOptions.js';
 import { generateClientUrl } from '../utils/txHelpers.js';
 import { arbitraryCodeTemplate } from './templates/templates.js';
 import { createTransaction } from './txCreateTransaction.js';
@@ -24,7 +25,7 @@ async function getNetworkConfig(flagConfig: INetworksCreateOptions | null) {
       : undefined;
   if (defaultNetwork) return defaultNetwork;
   const mainNetwork = networks.find(
-    (network) => network.networkId === 'mainnet01',
+    (network) => network.networkId === 'testnet04',
   );
   if (mainNetwork) return mainNetwork;
   return null;
@@ -37,11 +38,13 @@ export const createTxLocalCommand: (program: Command, version: string) => void =
     [
       globalOptions.networkOptional({ disableQuestion: true }),
       globalOptions.chainIdOptional({ disableQuestion: true }),
+      txOptions.gasLimit({ disableQuestion: true }),
     ],
     async (option, { values }) => {
       const { networkConfig } = await option.network();
       const { chainId } = await option.chainId();
-      log.debug('tx:local', { networkConfig, chainId, values });
+      const { gasLimit } = await option.gasLimit();
+      log.debug('tx:local', { networkConfig, chainId, gasLimit, values });
 
       const network = await getNetworkConfig(networkConfig);
       if (!network) {
@@ -63,6 +66,7 @@ export const createTxLocalCommand: (program: Command, version: string) => void =
         code,
         'chain-id': templateChainId,
         'network:networkId': network.networkId,
+        gasLimit: gasLimit || '3000',
       });
 
       const client = createClient(
@@ -87,6 +91,11 @@ export const createTxLocalCommand: (program: Command, version: string) => void =
           } as ICommandResult;
         });
 
+      log.info(
+        log.color.green(
+          `Local transaction on network ${network.network} chain ${templateChainId}:`,
+        ),
+      );
       if (response.result.status === 'success') {
         log.output(JSON.stringify(response.result.data), response.result.data);
       } else {
