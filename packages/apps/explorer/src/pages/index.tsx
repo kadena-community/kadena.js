@@ -18,7 +18,7 @@ const Home: React.FC = () => {
   const statisticsGridData = formatStatisticsData(statisticsData?.networkInfo);
   const searchData = getSearchData();
 
-  const isMobile = useMediaQuery({ query: '(max-width: 380px)' });
+  const isMobile = useMediaQuery({ query: '(max-width: 769px)' });
 
   return (
     <Stack flexDirection={'column'} gap={'xxl'} alignItems={'center'}>

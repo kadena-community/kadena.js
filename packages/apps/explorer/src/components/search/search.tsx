@@ -3,6 +3,11 @@ import { MonoSearch } from '@kadena/react-icons/system';
 import { Badge, Box } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
 import React, { useState } from 'react';
+import {
+  searchBadgeBoxClass,
+  searchBoxClass,
+  searchInputClass,
+} from './search.css';
 
 export type SearchItemTitle =
   | 'Account'
@@ -139,9 +144,7 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
           gap={'sm'}
           paddingInlineStart={'sm'}
           paddingInlineEnd={'sm'}
-          style={{
-            width: 515,
-          }}
+          className={searchBoxClass}
         >
           <MonoSearch />
 
@@ -151,26 +154,14 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
             value={searchValue}
             onChange={(e) => handleSearchValueChange(e)}
             onFocus={() => setIsEditing(true)}
-            className={atoms({
-              backgroundColor: 'base.default',
-              fontSize: 'md',
-              fontFamily: 'primaryFont',
-              outline: 'none',
-            })}
-            style={{
-              width: 350,
-              height: 50,
-              border: 'none',
-            }}
+            className={searchInputClass}
           />
 
           {searchOption !== null && (
             <Box
               display={'flex'}
               justifyContent={'flex-end'}
-              style={{
-                width: 120,
-              }}
+              className={searchBadgeBoxClass}
             >
               <Badge size="lg">{searchItems[searchOption].title}</Badge>
             </Box>
@@ -209,6 +200,7 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
                   cursor: item.disabled ? 'not-allowed' : 'pointer',
                   backgroundColor:
                     index === searchOption ? 'base.@active' : 'base.default',
+                  width: '100%',
                 })}
               >
                 <div
