@@ -1,6 +1,8 @@
 import { Stack, Text } from '@kadena/react-ui';
 import type { FC } from 'react';
 import React, { useMemo } from 'react';
+import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
 import { CommitTag } from './CommitTag';
 import {
   commitListItemClass,
@@ -29,7 +31,11 @@ export const CommitItem: FC<IProps> = ({ commit }) => {
   return (
     <Stack as="li" className={commitListItemClass}>
       <Stack flex={1} className={commitListItemTitleClass}>
-        <Text>{commit.label}</Text>
+        <Text as="span">
+          <ReactMarkdown rehypePlugins={[rehypeRaw] as any}>
+            {commit.label}
+          </ReactMarkdown>
+        </Text>
       </Stack>
       {ids.length > 0 && (
         <Stack flexWrap="wrap" className={tagContainerClass}>
