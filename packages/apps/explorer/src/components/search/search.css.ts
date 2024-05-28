@@ -7,11 +7,17 @@ export const searchBoxClass = style({
       width: 525,
     },
     sm: {
-      width: 450,
+      width: 475,
     },
     xs: {
-      width: 375,
+      width: 325,
     },
+    // md: {
+    //   width: '60vh',
+    // },
+    // sm: {
+    //   width: '75vh',
+    // },
   }),
 });
 
@@ -23,32 +29,12 @@ export const searchInputClass = style([
     outline: 'none',
   }),
   {
-    height: 50,
+    height: 55,
     border: 'none',
-    ...responsiveStyle({
-      md: {
-        width: 375,
-      },
-      sm: {
-        width: 300,
-      },
-      xs: {
-        width: 250,
-      },
-    }),
+    width: '75%',
   },
 ]);
 
 export const searchBadgeBoxClass = style({
-  ...responsiveStyle({
-    md: {
-      width: 150,
-    },
-    sm: {
-      width: 100,
-    },
-    xs: {
-      width: 75,
-    },
-  }),
+  width: '20%',
 });

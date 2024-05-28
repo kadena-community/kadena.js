@@ -18,12 +18,16 @@ const Home: React.FC = () => {
   const statisticsGridData = formatStatisticsData(statisticsData?.networkInfo);
   const searchData = getSearchData();
 
-  const isMobile = useMediaQuery({ query: '(max-width: 769px)' });
+  const isTablet = useMediaQuery({ query: '(max-width: 768px)' });
+  const isMobile = useMediaQuery({ query: '(max-width: 480px)' });
 
   return (
     <Stack flexDirection={'column'} gap={'xxl'} alignItems={'center'}>
       {!isMobile && (
-        <StatisticsStack data={statisticsGridData}></StatisticsStack>
+        <StatisticsStack
+          data={statisticsGridData}
+          isTablet={isTablet}
+        ></StatisticsStack>
       )}
 
       <LogoKdacolorLight />

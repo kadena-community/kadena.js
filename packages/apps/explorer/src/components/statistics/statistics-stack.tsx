@@ -7,9 +7,13 @@ import { borderStyleClass, statisticsSpireKeyClass } from './statistics.css';
 
 interface IStatisticsStackProps {
   data: { label: string; value: string }[];
+  isTablet?: boolean;
 }
 
-const StatisticsStack: React.FC<IStatisticsStackProps> = ({ data }) => {
+const StatisticsStack: React.FC<IStatisticsStackProps> = ({
+  data,
+  isTablet,
+}) => {
   const [selectedNetwork, setSelectedNetwork] = useState('Mainnet');
 
   return (
@@ -32,7 +36,7 @@ const StatisticsStack: React.FC<IStatisticsStackProps> = ({ data }) => {
 
       <div className={borderStyleClass}>
         <Button variant="transparent" endVisual={<MonoHub />}>
-          Graph
+          {isTablet ? '' : 'Graph'}
         </Button>
       </div>
 
