@@ -4,9 +4,12 @@ import { useNetwork } from '@/modules/network/network.hook';
 import { IKeySource } from '@/modules/wallet/wallet.repository';
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
 import { Button, Heading, Stack, Text, TextField } from '@kadena/react-ui';
+import { Link, Navigate } from 'react-router-dom';
+
+import { buttonLinkClass } from '@/pages/create-profile/create-profile.css.ts';
+import cn from 'classnames';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Navigate } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
 
 export function CreateProfile() {
@@ -17,10 +20,10 @@ export function CreateProfile() {
     formState: { isValid, errors },
   } = useForm<{
     password: string;
-    profileName: string;
     confirmation: string;
   }>({ mode: 'all' });
-  const { createProfile, isUnlocked, createKey, createKAccount } = useWallet();
+  const { createProfile, isUnlocked, createKey, createKAccount, profileList } =
+    useWallet();
   const { activeNetwork } = useNetwork();
   const [createdKeySource, setCreatedKeySource] = useState<IKeySource>();
   const { createHDWallet } = useHDWallet();
@@ -61,25 +64,20 @@ export function CreateProfile() {
       />
     );
   }
+
   return (
     <>
       <AuthCard backButtonLink="/select-profile">
         <Heading variant="h4">Choose a password</Heading>
-        <Text>
-          Carefully select your password as this will be your main security of
-          your wallet
-        </Text>
+        <Stack marginBlockStart="sm">
+          <Text>
+            Carefully select your password as this will be your main security of
+            your wallet
+          </Text>
+        </Stack>
 
         <form onSubmit={handleSubmit(create)}>
           <Stack flexDirection="column" marginBlock="md" gap="sm">
-            {/* TODO: Use for several accounts */}
-            {/*<TextField*/}
-            {/*  id="profileName"*/}
-            {/*  type="text"*/}
-            {/*  label="Profile name"*/}
-            {/*  {...register('profileName')}*/}
-            {/*  className={inputClass}*/}
-            {/*/>*/}
             <TextField
               id="password"
               type="password"
@@ -107,9 +105,23 @@ export function CreateProfile() {
             />
           </Stack>
           <Stack flexDirection="column">
-            <Button type="submit" isDisabled={!isValid}>
-              Continue
-            </Button>
+            {profileList.length ? (
+              <Button isDisabled={!isValid}>
+                <Link
+                  to={'/personalize-profile'}
+                  state={{
+                    password: getValues('password'),
+                  }}
+                  className={cn(buttonLinkClass, !isValid && 'isDisabled')}
+                >
+                  Continue
+                </Link>
+              </Button>
+            ) : (
+              <Button type="submit" isDisabled={!isValid}>
+                Continue
+              </Button>
+            )}
           </Stack>
         </form>
       </AuthCard>
