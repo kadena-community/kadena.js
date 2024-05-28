@@ -1,58 +1,42 @@
-import type { Page } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { getI18nInstance } from 'playwright-i18next-fixture';
 import type { IAccount } from '../../../../types/account.types';
-import { CardComponent } from '../../../react-ui/card.component';
-import { NotificationContainerComponent } from '../../../react-ui/notificationContainer.component';
-import { AsideComponent } from '../../components/aside.component';
-
+import { ListBoxComponent } from '../../../react-ui/listBox.component';
 export class FundNewAccountPage {
   private readonly _page: Page;
-  public asidePanel: AsideComponent;
-  private readonly _i18n = getI18nInstance();
-  private _accountCard: CardComponent;
-  private _publicKeysCard: CardComponent;
-  public processingNotification: NotificationContainerComponent;
-  public transactionFinishedNotification: NotificationContainerComponent;
+  private _publicKey: Locator;
+  private _addPubKey: Locator;
+  private _chainId: ListBoxComponent;
+  private _accountNameInput: Locator;
+  private _createAndFundBtn: Locator;
 
   public constructor(page: Page) {
     this._page = page;
-    this._accountCard = new CardComponent(this._page, 'Account');
-    this._publicKeysCard = new CardComponent(this._page, 'Public Keys');
-    this.processingNotification = new NotificationContainerComponent(
+    this._publicKey = this._page.getByRole('textbox', { name: 'Public Key' });
+    this._addPubKey = this._page.getByRole('button', {
+      name: 'Add Public Key',
+    });
+    this._chainId = new ListBoxComponent(
       this._page,
-      'Transaction is being processed...',
+      'Select Chain ID',
+      'Select Chain ID Chain ID',
     );
-    this.transactionFinishedNotification = new NotificationContainerComponent(
-      this._page,
-      'Transaction successfully completed',
-    );
-    this.asidePanel = new AsideComponent(this._page);
+    this._accountNameInput = this._page.getByRole('textbox', {
+      name: 'The account name to fund coins to',
+    });
+    this._createAndFundBtn = this._page.getByRole('button', {
+      name: 'Create and Fund Account',
+    });
   }
 
   public async CreateFundAccount(account: IAccount): Promise<void> {
     for (const keyPair of account.keys) {
-      await this._publicKeysCard.setValueForTextbox(
-        'Public Key',
-        keyPair.publicKey,
-      );
-      await this._publicKeysCard.clickButton('Add Public Key');
+      await this._publicKey.fill(keyPair.publicKey);
+      await this._addPubKey.click();
     }
-    await this._accountCard.setValueForListBox(
-      'Select Chain ID',
-      'Select Chain ID Chain ID',
-      account.chains[0],
-    );
-
-    await expect(
-      this._page.getByRole('textbox', {
-        name: 'The account name to fund coins to',
-      }),
-    ).toHaveValue(account.account);
+    await this._chainId.setValue(account.chains[0]);
     //Form validation is retriggered after setting the chain. Explicitly wait for the Account Name to be visible before pressing fund.
-
-    await this._page
-      .getByRole('button', { name: this._i18n.t(`Create and Fund Account`) })
-      .click();
+    await expect(this._accountNameInput).toHaveValue(account.account);
+    await this._createAndFundBtn.click();
   }
 }

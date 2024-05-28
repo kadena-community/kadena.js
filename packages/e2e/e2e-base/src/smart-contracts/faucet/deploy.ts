@@ -3,7 +3,7 @@ import type {
   ICommandResult,
 } from '@kadena/chainweb-node-client';
 
-import { faucetNamespace } from '@constants/network.constants';
+import { faucetNamespace } from '../../constants/network.constants';
 import { createNamespace } from './deploy/createNamespace';
 import { deployFaucet } from './deploy/deployFaucet';
 import { fundGasStation } from './deploy/fundGasStation';

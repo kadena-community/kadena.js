@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@kadena/docs": "workspace:*",
-    "@playwright/test": "^1.43.1"
+    "@playwright/test": "^1.44.0"
   },
   "devDependencies": {
     "@kadena-dev/e2e-base": "workspace:*",
@@ -28,7 +28,7 @@
     "@rushstack/eslint-config": "~3.6.9",
     "@types/node": "^20.12.7",
     "eslint": "^8.45.0",
-    "eslint-plugin-playwright": "1.6.0",
+    "eslint-plugin-playwright": "1.6.1",
     "prettier": "~3.2.5"
   }
 }

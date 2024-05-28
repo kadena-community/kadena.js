@@ -1,5 +1,11 @@
 export type BinaryLike = string | ArrayBuffer | Uint8Array;
 
+/**
+ *
+ * @param size - size of random bytes
+ * @returns Uint8Array of random bytes
+ * @public
+ */
 export const randomBytes = (size: number) =>
   crypto.getRandomValues(new Uint8Array(size));
 

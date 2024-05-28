@@ -2,7 +2,7 @@ import type { ChainId } from '@kadena/types';
 import { basename, parse } from 'node:path';
 import {
   chainIdRangeValidation,
-  fundAmountValidation,
+  createFundAmountValidation,
   getAllAccountNames,
   parseChainIdRange,
 } from '../account/utils/accountHelpers.js';
@@ -83,12 +83,20 @@ export const accountKdnNamePrompt: IPrompt<string> = async () =>
     message: 'Enter an .kda name:',
   });
 
-export const fundAmountPrompt: IPrompt<string> = async () =>
+export const fundAmountPrompt: IPrompt<string> = async (
+  previousQuestions,
+  args,
+  isOptional,
+) =>
   await input({
     validate(value: string) {
       const parsedValue = parseFloat(value.trim().replace(',', '.'));
-
-      const parseResult = fundAmountValidation.safeParse(parsedValue);
+      const maxAmountString = Number(previousQuestions.maxAmount as string);
+      const numberOfChains = previousQuestions.numberOfChains as number;
+      const parseResult = createFundAmountValidation(
+        numberOfChains,
+        maxAmountString,
+      ).safeParse(parsedValue);
       if (!parseResult.success) {
         const formatted = parseResult.error.format();
         return `Amount: ${formatted._errors[0]}`;
@@ -96,6 +104,7 @@ export const fundAmountPrompt: IPrompt<string> = async () =>
       return true;
     },
     message: 'Enter an amount:',
+    default: previousQuestions?.maxAmount as string,
   });
 
 export const fungiblePrompt: IPrompt<string> = async () =>

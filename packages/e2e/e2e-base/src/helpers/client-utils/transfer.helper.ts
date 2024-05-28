@@ -1,9 +1,9 @@
-import { devnetHost, networkId } from '@constants/network.constants';
 import type { ICommandResult } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transfer, transferCrossChain } from '@kadena/client-utils/coin';
 import type { ChainId } from '@kadena/types';
-import type { IAccount } from '@test-types/account.types';
+import { devnetHost, networkId } from '../../constants/network.constants';
+import type { IAccount } from '../../types/account.types';
 
 export async function transferFunds(
   source: IAccount,

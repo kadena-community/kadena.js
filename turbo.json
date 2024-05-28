@@ -6,6 +6,11 @@
       "outputs": ["dist/**", "lib/**"],
       "outputMode": "new-only"
     },
+    "build:e2e": {
+      "cache": false,
+      "dependsOn": ["^build"],
+      "outputMode": "new-only"
+    },
     "test": {
       "dependsOn": ["build"],
       "inputs": ["src/**/*.ts", "src/**/*.tsx"],

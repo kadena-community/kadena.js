@@ -1,69 +1,87 @@
-import { generateAccount } from '@helpers/client-utils/accounts.helper';
-import { CardComponent } from '@page-objects/react-ui/card.component';
-import { NotificationContainerComponent } from '@page-objects/react-ui/notificationContainer.component';
-import type { Page } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
+import { generateAccount } from '../../../../helpers/client-utils/accounts.helper';
+import { ListBoxComponent } from '../../../react-ui/listBox.component';
 
 export class TransferPage {
   private readonly _page: Page;
-  public senderCard: CardComponent;
-  public receiverCard: CardComponent;
-  succesNotification: NotificationContainerComponent;
+  private _fromDevice: ListBoxComponent;
+  private _keyIndex: Locator;
+  private _amount: Locator;
+  private _accountName: Locator;
+  private _connectLedgerBtn: Locator;
+  private _signOnLedger: Locator;
+  private _senderChainId: ListBoxComponent;
+  private _receiverChainId: ListBoxComponent;
+  private _receiverPubKey: Locator;
+  private _addPubKeyBtn: Locator;
+  private _receiverAccount: Locator;
 
   public constructor(page: Page) {
     this._page = page;
-    this.senderCard = new CardComponent(this._page, 'Sender');
-    this.receiverCard = new CardComponent(this._page, 'Receiver');
-    this.succesNotification = new NotificationContainerComponent(
+    this._fromDevice = new ListBoxComponent(this._page, 'Ledger From', 'From');
+    this._keyIndex = this._page.getByRole('textbox', {
+      name: 'Ledger Key Index',
+    });
+    this._amount = this._page.getByRole('textbox', { name: 'Amount' });
+    this._accountName = this._page.getByRole('textbox', {
+      name: 'Account Name',
+    });
+    this._connectLedgerBtn = this._page.getByRole('button', {
+      name: 'Connect Ledger',
+    });
+    this._signOnLedger = this._page.getByRole('button', {
+      name: 'Sign on Ledger',
+      exact: true,
+    });
+    this._senderChainId = new ListBoxComponent(
       this._page,
-      'Transaction successfully completed',
+      'senderChainId',
+      'Select Chain ID Chain ID',
     );
+    this._receiverChainId = new ListBoxComponent(
+      this._page,
+      'receiverChainId',
+      'Select Chain ID Chain ID',
+    );
+    this._receiverPubKey = this._page.getByRole('textbox', {
+      name: 'Enter Public Key',
+    });
+    this._addPubKeyBtn = this._page.getByRole('button', {
+      name: 'Add public key',
+    });
+    this._receiverAccount = this._page.locator('#receiver-account-name');
   }
 
   public async setSender(valueToSelect = 'Ledger'): Promise<void> {
-    await this.senderCard.setValueForListBox(
-      'Ledger From',
-      'From',
-      valueToSelect,
-    );
-  }
-
-  public async setSenderAccount(account: string): Promise<void> {
-    await this.senderCard.setValueForTextbox('Account Name', account);
+    await this._fromDevice.setValue(valueToSelect);
   }
 
   public async setKeyIndex(value: string): Promise<void> {
-    await this.senderCard.setValueForTextbox('Key Index', value);
+    await this._keyIndex.fill(value);
   }
 
   public async setAmount(value: string): Promise<void> {
-    await this.senderCard.setValueForTextbox('Amount', value);
+    await this._amount.fill(value);
   }
 
   public async setReceiver(value: string): Promise<void> {
-    await this.receiverCard.setValueForTextbox('Account Name', value);
+    await this._accountName.fill(value);
   }
+
   public async setSenderChainId(value: string): Promise<void> {
     const regExp = new RegExp(`${value} \\(\\d{0,4}(\\.|\\,)\\d{0,4} KDA\\)`);
-    await this.senderCard.setValueForListBox(
-      'Select Chain ID',
-      'Select Chain ID Chain ID',
-      regExp,
-    );
+    await this._senderChainId.setValueByTestId(regExp);
   }
 
   public async setReceiverChainId(
     value: string,
     newOrExisting: 'new' | 'existing',
   ): Promise<void> {
-    await this.receiverCard.setValueForListBox(
-      'Select Chain ID',
-      'Select Chain ID Chain ID',
-      `${value} (${newOrExisting})`,
-    );
+    await this._receiverChainId.setValueByTestId(`${value} (${newOrExisting})`);
   }
 
   public async setReceiverTab(value: 'existing' | 'new'): Promise<void> {
-    await this.receiverCard.setTab(value);
+    await this._page.getByRole('tab', { name: value }).click();
   }
 
   public async setPublicKey(
@@ -72,24 +90,19 @@ export class TransferPage {
   ): Promise<void> {
     if (newOrExisting === 'new') {
       const account = await generateAccount(1, ['0']);
-      await this.receiverCard.setValueForTextbox(
-        'Enter Public Key',
-        account.keys[0].publicKey,
-      );
-      await this.receiverCard.clickButton('Add public key');
+      await this._receiverPubKey.fill(account.keys[0].publicKey);
+      await this._addPubKeyBtn.click();
     } else if (newOrExisting === 'existing') {
-      await this.receiverCard.setValueForTextbox('Account Name', `k:${value}`);
+      await this._receiverAccount.fill(`k:${value}`);
     }
   }
 
-  public async connectLedger(): Promise<void> {
-    await this._page.getByRole('button', { name: 'Connect Ledger' }).click();
+  public async signTransaction(): Promise<void> {
+    await this._signOnLedger.click();
   }
 
-  public async signTransaction(): Promise<void> {
-    await this._page
-      .getByRole('button', { name: 'Sign on Ledger', exact: true })
-      .click();
+  public async connectLedger(): Promise<void> {
+    await this._connectLedgerBtn.click();
   }
 
   public async transfer(): Promise<void> {
