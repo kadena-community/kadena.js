@@ -28,9 +28,9 @@ export type TreeItem<T> = {
 export interface ICustomTreeProps<T>
   extends Omit<ICustomAccordionProps<T>, 'children' | 'data'> {
   data: TreeItem<T>[];
-  onReload: (data: T) => void;
-  onItemClick: (item: T) => void;
-  onExpandCollapse: (item: T, expanded: boolean) => void;
+  onReload: (item: TreeItem<T>) => void;
+  onItemClick: (item: TreeItem<T>) => void;
+  onExpandCollapse: (item: TreeItem<T>, expanded: boolean) => void;
 }
 
 // eslint-disable-next-line react/function-component-definition
@@ -80,7 +80,7 @@ function CustomTree<T>({
                   variant="transparent"
                   isCompact
                   onPress={() => {
-                    onReload(item.data.data);
+                    onReload(item.data);
                   }}
                 >
                   <MonoCached />
@@ -108,21 +108,20 @@ function CustomTree<T>({
 
 interface INodeProps<T>
   extends Omit<ICustomAccordionProps<T>, 'data' | 'children'> {
-  data: T[];
+  data: TreeItem<T>[];
   level: number;
-  onItemClick: (item: T) => void;
-  onExpandCollapse: (item: T, expanded: boolean) => void;
+  onItemClick: (item: TreeItem<T>) => void;
+  onExpandCollapse: (item: TreeItem<T>, expanded: boolean) => void;
 }
 
 // eslint-disable-next-line react/function-component-definition
-function Node<
-  T extends {
-    key: React.Key;
-    children: T[];
-    title: string;
-    label?: string;
-  } & Record<string, unknown>,
->({ data, level, onItemClick, onExpandCollapse, ...rest }: INodeProps<T>) {
+function Node<T>({
+  data,
+  level,
+  onItemClick,
+  onExpandCollapse,
+  ...rest
+}: INodeProps<T>) {
   return (
     <CustomAccordion {...rest} data={data}>
       {(child) => {

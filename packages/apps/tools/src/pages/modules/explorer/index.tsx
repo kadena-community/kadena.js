@@ -36,7 +36,12 @@ import type {
   InferGetServerSidePropsType,
 } from 'next/types';
 import React, { useCallback } from 'react';
-import { getCookieValue, getQueryValue, xToY } from './utils';
+import {
+  IncompleteModuleModel,
+  getCookieValue,
+  getQueryValue,
+  xToY,
+} from './utils';
 
 const QueryParams = {
   MODULE: 'module',
@@ -271,7 +276,7 @@ const ModuleExplorerPage = (
 
   console.log({ mainnetModulesQuery, testnetModulesQuery });
 
-  let mappedMainnet: TreeItem<string>[] = [];
+  let mappedMainnet: TreeItem<IncompleteModuleModel>[] = [];
   let amountOfMainnetModules = 0;
 
   if (mainnetModulesQuery.isSuccess) {
@@ -280,7 +285,7 @@ const ModuleExplorerPage = (
     console.log(mappedMainnet);
   }
 
-  let mappedTestnet: TreeItem<string>[] = [];
+  let mappedTestnet: TreeItem<IncompleteModuleModel>[] = [];
   let amountOfTestnetModules = 0;
 
   if (testnetModulesQuery.isSuccess) {
@@ -353,13 +358,13 @@ const ModuleExplorerPage = (
         //   console.log('closing', module);
         // }}
         // openedModules={props.openedModules}
-        data={'something'}
+        // data={'something'}
         items={[
           {
             title: 'Mainnet',
             key: 'mainnet',
             children: mappedMainnet,
-            data: 'mainnet',
+            data: { name: 'mainnet', chainId: '0' },
             isLoading: mainnetModulesQuery.isFetching,
             label: amountOfMainnetModules,
           },
@@ -367,7 +372,7 @@ const ModuleExplorerPage = (
             title: 'Testnet',
             key: 'testnet',
             children: mappedTestnet,
-            data: 'testnet',
+            data: { name: 'testnet', chainId: '0' },
             isLoading: testnetModulesQuery.isFetching,
             label: amountOfTestnetModules,
           },
@@ -377,7 +382,7 @@ const ModuleExplorerPage = (
           void queryClient.invalidateQueries({
             queryKey: [
               QUERY_KEY,
-              data === 'mainnet' ? 'mainnet01' : 'testnet04',
+              data.key === 'mainnet' ? 'mainnet01' : 'testnet04',
             ],
           });
         }}
@@ -385,20 +390,21 @@ const ModuleExplorerPage = (
           const isLowestLevel = !data.children[0].children.length;
 
           if (expanded && isLowestLevel) {
-            const [network, namespacePart1, namespacePart2] =
-              data.key.split('.');
+            const [network, namespacePart1, namespacePart2] = (
+              data.key as string
+            ).split('.');
             const networkId = network === 'mainnet' ? 'mainnet01' : 'testnet04';
-            const promises = data.children.map(({ data: chainId }) => {
+            const promises = data.children.map(({ data }) => {
               return mutation.mutateAsync({
                 module: `${namespacePart1}${namespacePart2 ? `.${namespacePart2}` : ''}`,
                 networkId,
-                chainId,
+                chainId: data.chainId,
               });
             });
 
             const results = await Promise.all(promises);
 
-            queryClient.setQueryData<Array<{ name: string }>>(
+            queryClient.setQueryData<Array<IncompleteModuleModel>>(
               [QUERY_KEY, networkId, undefined],
               (oldData) => {
                 return oldData!.map((old) => {

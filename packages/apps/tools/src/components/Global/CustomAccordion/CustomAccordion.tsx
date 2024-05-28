@@ -63,8 +63,8 @@ function CustomAccordion<
 }: ICustomAccordionProps<T>) {
   return (
     <ul {...rest} className={classNames(listStyle, className)}>
-      {data.map((item, index) => (
-        <Item<T>
+      {data.map((item) => (
+        <Item
           key={item.key}
           isExpanded={item.key === defaultExpandedKey}
           data={item}

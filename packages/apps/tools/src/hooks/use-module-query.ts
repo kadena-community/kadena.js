@@ -20,7 +20,7 @@ const fetchModule = async (
   };
 };
 
-export type ModuleModel = ReturnType<typeof fetchModule>;
+export type ModuleModel = Awaited<ReturnType<typeof fetchModule>>;
 
 const QUERY_KEY = 'module';
 

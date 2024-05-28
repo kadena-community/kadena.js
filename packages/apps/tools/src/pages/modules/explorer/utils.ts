@@ -1,4 +1,5 @@
 import { TreeItem } from '@/components/Global/CustomTree/CustomTree';
+import { ModuleModel } from '@/hooks/use-module-query';
 import { getName, parse } from '@/utils/persist';
 import { CHAINS, ChainwebChainId } from '@kadena/chainweb-node-client';
 import type { NextApiRequestCookies } from 'next/dist/server/api-utils';
@@ -53,17 +54,21 @@ export function getCookieValue<Expected>(
 
 export type Namespace = string;
 export type ModuleName = string;
-export type ModuleData = Array<{ title: string; hash?: string }>; //string[];
+export type ModuleData = Array<IncompleteModuleModel>; //string[];
 
 export type ModulesMap = Map<
   Namespace,
   ModuleData | Map<ModuleName, ModuleData>
 >;
 
+export type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
+
+export type IncompleteModuleModel = Optional<ModuleModel, 'code'>;
+
 const mapToTreeItems = (
   modulesMap: Map<Namespace, ModuleData | Map<ModuleName, ModuleData>>,
   parent?: Namespace,
-): TreeItem<string>[] => {
+): TreeItem<IncompleteModuleModel>[] => {
   return [...modulesMap]
     .sort(([nameA], [nameB]) => nameA.localeCompare(nameB))
     .map(([name, value]) => {
@@ -78,18 +83,20 @@ const mapToTreeItems = (
       } else {
         children = value.map((chain) => {
           return {
-            data: chain.title,
-            key: `${typeof parent === 'string' ? `${parent}.` : ''}${name}.${chain.title}`,
+            data: chain,
+            key: `${typeof parent === 'string' ? `${parent}.` : ''}${name}.${chain}`,
             // title: `some even longer long title ${chain.title}`,
-            title: chain.title,
+            title: chain.chainId,
             children: [],
             label: chain.hash,
           };
         });
       }
 
+      const aux: IncompleteModuleModel = { name, chainId: '0' };
+
       return {
-        data: name,
+        data: aux,
         key: `${typeof parent === 'string' ? `${parent}.` : ''}${name}`,
         title: name,
         children,
@@ -98,14 +105,9 @@ const mapToTreeItems = (
 };
 
 export const xToY = (
-  x: Array<{
-    name: string;
-    chainId: ChainwebChainId;
-    code?: string;
-    hash?: string;
-  }>,
+  x: Array<IncompleteModuleModel>,
   key: string,
-): TreeItem<string>[] => {
+): TreeItem<IncompleteModuleModel>[] => {
   const modulesMap: ModulesMap = new Map();
 
   x.forEach((module) => {
@@ -124,22 +126,24 @@ export const xToY = (
 
       const moduleList = map.get(moduleName)!;
 
-      moduleList.push({ title: module.chainId, hash: module.hash });
+      moduleList.push(module);
     } else {
       if (!modulesMap.has(namespace)) {
         modulesMap.set(namespace, []);
       }
 
-      const moduleList = modulesMap.get(namespace)! as Array<{
-        title: string;
-        hash?: string;
-      }>;
+      const moduleList = modulesMap.get(
+        namespace,
+      )! as Array<IncompleteModuleModel>;
 
-      moduleList.push({ title: module.chainId, hash: module.hash });
+      moduleList.push(module);
     }
   });
 
-  const treeItems: TreeItem<string>[] = mapToTreeItems(modulesMap, key);
+  const treeItems: TreeItem<IncompleteModuleModel>[] = mapToTreeItems(
+    modulesMap,
+    key,
+  );
 
   return treeItems;
 };

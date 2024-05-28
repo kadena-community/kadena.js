@@ -9,7 +9,10 @@ import { Button, Heading, Stack, Text, TextField } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import React, { useState, useTransition } from 'react';
 import CustomAccordion from '../../CustomAccordion/CustomAccordion';
-import CustomTree, { ICustomTreeProps } from '../../CustomTree/CustomTree';
+import CustomTree, {
+  ICustomTreeProps,
+  TreeItem,
+} from '../../CustomTree/CustomTree';
 import type { IChainModule } from '../types';
 import type { IOutlineProps } from './outline';
 import Outline from './outline';
@@ -32,8 +35,8 @@ export interface ISidePanelProps<T> {
   data: ICustomTreeProps<T>['data'];
   isLoading?: boolean;
   onReload: ICustomTreeProps<T>['onReload'];
-  onModuleClick: (module: T) => void;
-  onExpandCollapse: (item: T, expanded: boolean) => void;
+  onModuleClick: (module: TreeItem<T>) => void;
+  onExpandCollapse: (item: TreeItem<T>, expanded: boolean) => void;
 }
 
 // eslint-disable-next-line react/function-component-definition

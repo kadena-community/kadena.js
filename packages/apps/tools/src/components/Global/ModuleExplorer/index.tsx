@@ -1,3 +1,4 @@
+import type { IncompleteModuleModel } from '@/pages/modules/explorer/utils';
 import React, { useCallback, useState } from 'react';
 import type { ISidePanelProps } from './SidePanel';
 import SidePanel from './SidePanel';
@@ -7,7 +8,7 @@ import { containerStyle } from './styles.css';
 import type { IChainModule } from './types';
 import { getModulesMap } from './utils';
 
-export interface IModuleExplorerProps<T> {
+export interface IModuleExplorerProps {
   // modules: IChainModule[];
   // openedModules: IEditorProps['openedModules'];
   // onModuleClick: ISidePanelProps['onResultClick'];
@@ -16,19 +17,17 @@ export interface IModuleExplorerProps<T> {
   // onModuleExpand: ISidePanelProps['onModuleExpand'];
   // onActiveModuleChange: IEditorProps['onActiveModuleChange'];
   // onTabClose: IEditorProps['onTabClose'];
-  items: ISidePanelProps<T>['data'];
-  onReload: ISidePanelProps<T>['onReload'];
-  data: T;
-  onExpandCollapse: ISidePanelProps<T>['onExpandCollapse'];
+  items: ISidePanelProps<IncompleteModuleModel>['data'];
+  onReload: ISidePanelProps<IncompleteModuleModel>['onReload'];
+  onExpandCollapse: ISidePanelProps<IncompleteModuleModel>['onExpandCollapse'];
 }
 
 // eslint-disable-next-line react/function-component-definition
-function ModuleExplorer<T>({
-  data,
+function ModuleExplorer({
   items,
   onReload,
   onExpandCollapse,
-}: IModuleExplorerProps<T>) {
+}: IModuleExplorerProps) {
   return (
     <div className={containerStyle}>
       <SidePanel
@@ -38,14 +37,20 @@ function ModuleExplorer<T>({
             title: 'Explorer',
             key: 'explorer',
             label: 'Explorer',
-            data,
+            data: {
+              name: 'Explorer',
+              chainId: '0',
+            },
           },
           {
             title: 'Outline',
             key: 'outline',
             label: 'Outline',
             children: [],
-            data: {},
+            data: {
+              name: 'Outline',
+              chainId: '0',
+            },
           },
         ]}
         onReload={onReload}
