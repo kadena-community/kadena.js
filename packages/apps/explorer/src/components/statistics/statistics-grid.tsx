@@ -1,5 +1,6 @@
 import { Grid, Stack, Text } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
+import React from 'react';
 
 interface ISearchComponentProps {
   data: { label: string; value: string }[];
