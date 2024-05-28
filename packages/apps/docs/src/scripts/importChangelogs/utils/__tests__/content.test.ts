@@ -59,10 +59,6 @@ describe('content utils', () => {
       getChangelog(repo);
 
       expect(spy).toBeCalledTimes(1);
-      expect(spy).toBeCalledWith(
-        '/Users/straatemans/Documents/projects/kadena/kadena.js/packages/apps/docs/../../../packages/libs/react-ui/CHANGELOG.md',
-        'utf-8',
-      );
     });
   });
   describe('writeContent', () => {
