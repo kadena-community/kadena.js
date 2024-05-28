@@ -4,7 +4,12 @@ import {
   MonoCached,
 } from '@kadena/react-icons/system';
 import { Badge, Button, Stack, Text } from '@kadena/react-ui';
-import { ellipsis, monospaceSmallestRegular } from '@kadena/react-ui/styles';
+import {
+  ellipsis,
+  monospaceSmallestRegular,
+  token,
+  tokens,
+} from '@kadena/react-ui/styles';
 import classnames from 'classnames';
 import React from 'react';
 import type { ICustomAccordionProps } from '../CustomAccordion/CustomAccordion';
@@ -63,6 +68,7 @@ function CustomTree<T>({
               onClick={item.toggleExpandCollapse}
               role="button"
               className={itemContainerStyle}
+              style={{ borderBlockEnd: '1px solid rgba(0, 0, 0, 0.25)' }}
             >
               <Button
                 variant="transparent"
@@ -82,8 +88,11 @@ function CustomTree<T>({
                   onPress={() => {
                     onReload(item.data);
                   }}
+                  style={{ marginInlineEnd: '8px' }}
                 >
-                  <MonoCached />
+                  <MonoCached
+                    color={token('color.icon.semantic.positive.default')}
+                  />
                 </Button>
               ) : null}
               {!item.data.isLoading && item.data.label ? (
@@ -123,7 +132,16 @@ function Node<T>({
   ...rest
 }: INodeProps<T>) {
   return (
-    <CustomAccordion {...rest} data={data}>
+    <CustomAccordion
+      {...rest}
+      data={data}
+      itemProps={{
+        style: {
+          borderBlockEnd:
+            level === 1 ? '1px solid rgba(0, 0, 0, 0.25)' : 'initial',
+        },
+      }}
+    >
       {(child) => {
         const hasChildren = !!child.data.children.length;
         return (
@@ -132,7 +150,6 @@ function Node<T>({
               alignItems={'center'}
               justifyContent={'space-between'}
               onClick={() => {
-                console.log('onClick', child);
                 if (child.data.children.length) {
                   child.toggleExpandCollapse();
 
@@ -140,14 +157,13 @@ function Node<T>({
                   onExpandCollapse(child.data, !child.isExpanded);
                 } else {
                   onItemClick(child.data);
-                  console.log('I aint got no kids!');
                 }
               }}
               role="button"
               className={itemContainerStyle}
               style={{
                 paddingInlineStart: `${level * 20 + (!hasChildren ? 20 : 0)}px`,
-                paddingInlineEnd: '16px',
+                cursor: hasChildren ? 'default' : 'pointer',
               }}
             >
               {hasChildren ? (

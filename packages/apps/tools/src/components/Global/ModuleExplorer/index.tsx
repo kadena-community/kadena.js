@@ -58,9 +58,8 @@ function ModuleExplorer({
         ]}
         onReload={onReload}
         onModuleClick={(x) => {
-          console.log('onModuleClick', x);
           const [network, moduleName] = (x.key as string).split('.');
-          const chainModule = {
+          const chainModule: IChainModule = {
             code: x.data.code,
             chainId: x.data.chainId,
             moduleName,

@@ -274,15 +274,12 @@ const ModuleExplorerPage = (
   const mainnetModulesQuery = useModulesQuery('mainnet01');
   const testnetModulesQuery = useModulesQuery('testnet04');
 
-  console.log({ mainnetModulesQuery, testnetModulesQuery });
-
   let mappedMainnet: TreeItem<IncompleteModuleModel>[] = [];
   let amountOfMainnetModules = 0;
 
   if (mainnetModulesQuery.isSuccess) {
     mappedMainnet = xToY(mainnetModulesQuery.data, 'mainnet');
     amountOfMainnetModules = mainnetModulesQuery.data.length;
-    console.log(mappedMainnet);
   }
 
   let mappedTestnet: TreeItem<IncompleteModuleModel>[] = [];
@@ -291,7 +288,6 @@ const ModuleExplorerPage = (
   if (testnetModulesQuery.isSuccess) {
     mappedTestnet = xToY(testnetModulesQuery.data, 'testnet');
     amountOfTestnetModules = testnetModulesQuery.data.length;
-    console.log(mappedTestnet);
   }
 
   // const customNetworks = networksData.filter(
@@ -378,7 +374,6 @@ const ModuleExplorerPage = (
           },
         ]}
         onReload={(data) => {
-          console.log('reload', data);
           void queryClient.invalidateQueries({
             queryKey: [
               QUERY_KEY,

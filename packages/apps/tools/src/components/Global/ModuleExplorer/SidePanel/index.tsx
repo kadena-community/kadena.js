@@ -60,6 +60,8 @@ function SidePanel<T>({
             justifyContent="space-between"
             alignItems={'center'}
             gap={'xxs'}
+            role="button"
+            onClick={item.toggleExpandCollapse}
           >
             {item.data.title === 'Explorer' ? (
               <MonoVerticalSplit

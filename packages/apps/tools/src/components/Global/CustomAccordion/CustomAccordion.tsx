@@ -23,6 +23,7 @@ function Item<T>({
   data,
   children,
   fillHeight,
+  style,
   ...rest
 }: IItemProps<T>) {
   const [isExpanded, setIsExpanded] = React.useState(_isExpanded);
@@ -32,7 +33,10 @@ function Item<T>({
   // }
 
   return (
-    <li {...rest} style={{ flex: fillHeight && isExpanded ? 1 : undefined }}>
+    <li
+      {...rest}
+      style={{ ...style, flex: fillHeight && isExpanded ? 1 : undefined }}
+    >
       {children({
         toggleExpandCollapse: () => setIsExpanded(!isExpanded),
         isExpanded,
