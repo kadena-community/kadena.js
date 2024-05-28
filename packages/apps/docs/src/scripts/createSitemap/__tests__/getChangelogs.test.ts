@@ -1,7 +1,7 @@
 import { getChangelogs } from '../utils/getChangelogs';
 
 describe('getChangelogs', () => {
-  it.only('should return an string of url strings for all repos', async () => {
+  it('should return an string of url strings for all repos', async () => {
     const { default: changelog } = await import(
       './../../__mocks__/changelog.json',
       {
