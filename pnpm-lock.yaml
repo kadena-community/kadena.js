@@ -477,6 +477,9 @@ importers:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
     devDependencies:
+      '@artsy/fresnel':
+        specifier: 7.1.4
+        version: 7.1.4(react@18.2.0)
       '@graphql-codegen/cli':
         specifier: 5.0.2
         version: 5.0.2(@parcel/watcher@2.4.1)(@types/node@20.12.7)(graphql@16.8.1)
@@ -3511,6 +3514,15 @@ packages:
       node-fetch: 2.6.12
     transitivePeerDependencies:
       - encoding
+    dev: true
+
+  /@artsy/fresnel@7.1.4(react@18.2.0):
+    resolution: {integrity: sha512-qbUdxzlcI9Q9Ez+HfYDq7hlLoeFKC8EKcCckW+EltWu9SWL3px4QZIkr7NwYEz13q/nLvAlHMnbJ3TpSEEZ1zg==}
+    engines: {node: '>=12.20.2', yarn: 1.x.x}
+    peerDependencies:
+      react: '>=18.0.0'
+    dependencies:
+      react: 18.2.0
     dev: true
 
   /@assemblyscript/loader@0.9.4:
@@ -16521,7 +16533,7 @@ packages:
       chalk: 4.1.2
       debug: 4.3.4(supports-color@5.5.0)
       loader-utils: 2.0.4
-      webpack: 5.88.2(webpack-cli@4.9.2)
+      webpack: 5.88.2(@swc/core@1.3.80)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -28515,9 +28527,6 @@ packages:
     resolution: {integrity: sha512-W+gxAq7aQ9dJIg/XLKGcRT0cvnStFAQHPaI0pvD0U2l6IVLueUAm3nwN7lkY62zZNmlvNx6jNtE4wlbS+CyqSg==}
     engines: {node: '>= 12.0.0'}
     hasBin: true
-    peerDependenciesMeta:
-      '@parcel/core':
-        optional: true
     dependencies:
       '@parcel/config-default': 2.12.0(@parcel/core@2.12.0)
       '@parcel/core': 2.12.0
