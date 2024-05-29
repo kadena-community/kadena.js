@@ -1,9 +1,9 @@
-import { Media } from '@/media';
 import { SpireKeyKdacolorLogoWhite } from '@kadena/react-icons/product';
 import { MonoHub } from '@kadena/react-icons/system';
 import { Button, Select, SelectItem, Stack, Text } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
 import React, { useState } from 'react';
+import { Media } from '../layout/media';
 import { borderStyleClass, statisticsSpireKeyClass } from './statistics.css';
 
 interface IStatisticsStackProps {
@@ -34,12 +34,12 @@ const StatisticsStack: React.FC<IStatisticsStackProps> = ({ data }) => {
 
         <Stack flexDirection={'row'}>
           <div className={borderStyleClass}>
-            <Media greaterThanOrEqual="sm">
+            <Media greaterThanOrEqual="md">
               <Button variant="transparent" endVisual={<MonoHub />}>
                 Graph
               </Button>
             </Media>
-            <Media lessThan="sm">
+            <Media lessThan="md">
               <Button variant="transparent" endVisual={<MonoHub />} />
             </Media>
           </div>

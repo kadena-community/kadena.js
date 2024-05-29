@@ -12,12 +12,6 @@ export const searchBoxClass = style({
     xs: {
       width: 325,
     },
-    // md: {
-    //   width: '60vh',
-    // },
-    // sm: {
-    //   width: '75vh',
-    // },
   }),
 });
 

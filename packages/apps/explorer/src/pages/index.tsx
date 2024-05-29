@@ -1,8 +1,8 @@
 import { useNetworkInfoQuery } from '@/__generated__/sdk';
+import { Media } from '@/components/layout/media';
 import Search from '@/components/search/search';
 import Statistics from '@/components/statistics/statistics';
 import { getSearchData } from '@/constants/search';
-import { Media } from '@/media';
 import { formatStatisticsData } from '@/services/format';
 import { LogoKdacolorLight } from '@kadena/react-icons/brand';
 import { Stack } from '@kadena/react-ui';
@@ -19,7 +19,7 @@ const Home: React.FC = () => {
   const searchData = getSearchData();
   return (
     <>
-      <Media greaterThan="none">
+      <Media greaterThanOrEqual="sm">
         <Stack
           className={atoms({ flexDirection: 'column' })}
           gap={'xxl'}
@@ -31,7 +31,7 @@ const Home: React.FC = () => {
         </Stack>
       </Media>
 
-      <Media lessThan="xs">
+      <Media lessThan="sm">
         <Stack
           className={atoms({ flexDirection: 'column-reverse' })}
           gap={'xxl'}

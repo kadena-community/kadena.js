@@ -1,5 +1,5 @@
-import { Media } from '@/media';
 import React from 'react';
+import { Media } from '../layout/media';
 import StatisticsGrid from './statistics-grid';
 import StatisticsStack from './statistics-stack';
 
@@ -10,11 +10,11 @@ interface IStatisticsProps {
 const Statistics: React.FC<IStatisticsProps> = ({ data }) => {
   return (
     <>
-      <Media greaterThanOrEqual="xs">
+      <Media greaterThanOrEqual="sm">
         <StatisticsStack data={data} />
       </Media>
 
-      <Media lessThan="xs">
+      <Media lessThan="sm">
         <StatisticsGrid data={data} />
       </Media>
     </>
