@@ -23,7 +23,7 @@ const meta: Meta<StoryType> = {
   decorators: [withContentWidth],
   parameters: {
     status: {
-      type: ['releaseCandidate'],
+      type: ['stable'],
     },
     docs: {
       description: {
