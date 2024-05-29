@@ -9,10 +9,10 @@ describe('account list', () => {
   beforeEach(async () => {
     // Pre add the account alias file to make sure account alias exists
     await runCommand(
-      'account add --type=manual --account-alias=account-one --account-name=k:55e10019549e047e68efaa18489ed785eca271642e2d0ce41d56ced2a30ccb84 --fungible=coin --network=testnet --chain-id=1 --public-keys=55e10019549e047e68efaa18489ed785eca271642e2d0ce41d56ced2a30ccb84 --quiet',
+      'account add --from=key --account-alias=account-one --account-name=k:55e10019549e047e68efaa18489ed785eca271642e2d0ce41d56ced2a30ccb84 --fungible=coin --network=testnet --chain-id=1 --public-keys=55e10019549e047e68efaa18489ed785eca271642e2d0ce41d56ced2a30ccb84 --quiet',
     );
     await runCommand(
-      'account add --type=manual --account-alias=account-two --account-name=w:yCvUbeS6RqdKsY3WBDB3cgK-6q790xkj4Hb-ABpu3gg:keys-all --fungible=coin --network=testnet --chain-id=1 --public-keys=39710afef15243ba36007ae7aa210ab0e09682b2d963928be350e3424b5a420b,0f745a7773cbaffedcc7303b0638ffb34516aa3af98605f39dda3aeb730318c9 --quiet',
+      'account add --from=key --account-alias=account-two --account-name=w:yCvUbeS6RqdKsY3WBDB3cgK-6q790xkj4Hb-ABpu3gg:keys-all --fungible=coin --network=testnet --chain-id=1 --public-keys=39710afef15243ba36007ae7aa210ab0e09682b2d963928be350e3424b5a420b,0f745a7773cbaffedcc7303b0638ffb34516aa3af98605f39dda3aeb730318c9 --quiet',
     );
   });
 

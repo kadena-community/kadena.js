@@ -19,14 +19,14 @@ import {
 import { isEmpty } from './utils/addHelpers.js';
 
 export const accountOptions = {
-  accountTypeSelection: createOption({
-    key: 'type' as const,
+  accountFromSelection: createOption({
+    key: 'from' as const,
     defaultIsOptional: false,
-    prompt: account.accountTypeSelectionPrompt,
+    prompt: account.accountFromSelectionPrompt,
     validation: z.string(),
     option: new Option(
-      '-t, --type <type>',
-      'Specify the method to add account details: "manual or wallet"',
+      '-f, --from <from>',
+      'Specify the method to add account details: "key or wallet".',
     ),
   }),
   accountAlias: createOption({

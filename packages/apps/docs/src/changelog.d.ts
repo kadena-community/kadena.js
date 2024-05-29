@@ -2,6 +2,7 @@ type IChangelogComplete = Record<string, IChangelogPackage>;
 
 interface IRepo {
   name: string;
+  slug: string;
   repo: string;
   directory: string;
   fileName: string;
@@ -9,6 +10,7 @@ interface IRepo {
   repoName: string;
 }
 interface IChangelogPackage extends IRepo {
+  versionCount?: number;
   content: Record<string, IChangelogPackageVersion>;
 }
 

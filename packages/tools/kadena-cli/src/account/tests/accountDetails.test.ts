@@ -27,7 +27,7 @@ describe('account details', () => {
   it('should fetch account details based on the account alias file', async () => {
     // Pre add the account alias file to make sure account alias exists
     await runCommand(
-      'account add --type=manual --account-alias=account-add-test-manual --account-name=accountName --fungible=coin --network=testnet --chain-id=1 --public-keys=publicKey1 --quiet',
+      'account add --from=key --account-alias=account-add-test-manual --account-name=accountName --fungible=coin --network=testnet --chain-id=1 --public-keys=publicKey1 --quiet',
     );
 
     mockPrompts({
