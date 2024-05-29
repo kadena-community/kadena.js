@@ -715,7 +715,9 @@ function generateClientKey(details: INetworkDetails): string {
  * @param {INetworkDetails} details - The network details.
  * @returns {string} The client URL.
  */
-export function generateClientUrl(details: INetworkDetails): string {
+export function generateClientUrl(
+  details: Pick<INetworkDetails, 'networkHost' | 'networkId' | 'chainId'>,
+): string {
   return `${details.networkHost}/chainweb/0.0/${details.networkId}/chain/${details.chainId}/pact`;
 }
 
@@ -800,15 +802,16 @@ export interface IUpdateTransactionsLogPayload {
   data?: Partial<ICommandResult>;
 }
 
-interface ITransactionLogDetails
-  extends Partial<Pick<ICommandResult, 'txId' | 'logs' | 'gas'>> {
+export interface ITransactionLogEntry
+  extends Partial<Pick<ICommandResult, 'txId'>> {
   chainId: ChainId;
   networkId: string;
+  networkHost: string;
   status?: 'success' | 'failure';
 }
 
-interface ITransactionLog {
-  [key: string]: ITransactionLogDetails;
+export interface ITransactionLog {
+  [requestKey: string]: ITransactionLogEntry;
 }
 
 export const readTransactionLog = async (
@@ -844,24 +847,49 @@ export const saveTransactionsToFile = async (
       TRANSACTIONS_LOG_FILE,
     );
 
-    const transactionLog =
+    const currentTransactionLog =
       (await readTransactionLog(transactionFilePath)) || {};
 
-    transactions.forEach(({ requestKey, details: { networkId, chainId } }) => {
-      transactionLog[requestKey] = {
-        networkId,
-        chainId,
-      };
-    });
+    transactions.forEach(
+      ({ requestKey, details: { networkId, networkHost, chainId } }) => {
+        currentTransactionLog[requestKey] = {
+          networkId,
+          chainId,
+          networkHost,
+        };
+      },
+    );
 
-    await writeTransactionLog(transactionFilePath, transactionLog);
+    await writeTransactionLog(transactionFilePath, currentTransactionLog);
   } catch (error) {
     log.error(`Failed to save transactions: ${error.message}`);
   }
 };
 
+export const mergePayloadsWithTransactionLog = (
+  transactionLog: ITransactionLog,
+  updatePayloads: IUpdateTransactionsLogPayload[],
+): ITransactionLog => {
+  const updatedLog = {
+    ...transactionLog,
+  };
+  updatePayloads.forEach(({ requestKey, status, data = {} }) => {
+    if (isNotEmptyObject(updatedLog[requestKey])) {
+      updatedLog[requestKey] = {
+        ...updatedLog[requestKey],
+        status,
+        txId: notEmpty(data.txId) ? data.txId : null,
+      };
+    } else {
+      log.error(`No transaction found for request key: ${requestKey}`);
+    }
+  });
+
+  return updatedLog;
+};
+
 export const updateTransactionStatus = async (
-  payloads: IUpdateTransactionsLogPayload[],
+  updatePayloads: IUpdateTransactionsLogPayload[],
 ): Promise<void> => {
   try {
     const transactionDir = getTransactionDirectory();
@@ -871,22 +899,15 @@ export const updateTransactionStatus = async (
       transactionDir,
       TRANSACTIONS_LOG_FILE,
     );
-    const transactionLog = await readTransactionLog(transactionFilePath);
-    if (!transactionLog) throw new Error('no_transaction_data');
+    const currentTransactionLog = await readTransactionLog(transactionFilePath);
+    if (!currentTransactionLog) throw new Error('no_transaction_data');
 
-    payloads.forEach(({ requestKey, status, data = {} }) => {
-      if (isNotEmptyObject(transactionLog[requestKey])) {
-        transactionLog[requestKey] = {
-          ...transactionLog[requestKey],
-          status,
-          txId: notEmpty(data.txId) ? data.txId : null,
-        };
-      } else {
-        log.error(`No transaction found for request key: ${requestKey}`);
-      }
-    });
+    const updatedTransactionLog = mergePayloadsWithTransactionLog(
+      currentTransactionLog,
+      updatePayloads,
+    );
 
-    await writeTransactionLog(transactionFilePath, transactionLog);
+    await writeTransactionLog(transactionFilePath, updatedTransactionLog);
   } catch (error) {
     log.error(`Failed to update transaction status: ${error.message}`);
   }

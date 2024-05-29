@@ -73,7 +73,6 @@ export const createTxLocalCommand: (program: Command, version: string) => void =
         generateClientUrl({
           chainId: templateChainId,
           ...network,
-          networkExplorerUrl: network.networkExplorerUrl ?? '',
         }),
       );
 
