@@ -8,9 +8,15 @@ import { FC, useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { colorOptionClass, listClass } from './styles.css.ts';
 
+interface ICreate {
+  profileName: string;
+  password: string;
+  accentColor: string;
+}
+
 interface IProps {
   password: string;
-  create: ({ profileName, password, accentColor }) => void;
+  create: (params: ICreate) => void;
 }
 
 export const PersonalizeProfile: FC<IProps> = ({ create, password }) => {
