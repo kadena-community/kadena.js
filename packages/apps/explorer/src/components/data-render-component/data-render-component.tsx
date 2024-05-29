@@ -9,21 +9,23 @@ import {
   descriptionListIndentClass,
   descriptionTermClass,
   headingClass,
+  iconLinkClass,
   linkClass,
+  linkIconClass,
   sectionClass,
+  textClass,
 } from './styles.css';
 
 interface IDynamicComponentField {
   type?: 'text' | 'code';
   key: string;
-  value: string;
+  value: string | string[];
   link?: string;
 }
 
 interface IDynamicComponentProps {
   title?: string;
   fields: IDynamicComponentField[];
-  block?: IDynamicComponentProps;
 }
 
 const DataRenderComponent: React.FC<IDynamicComponentProps> = ({
@@ -44,19 +46,33 @@ const DataRenderComponent: React.FC<IDynamicComponentProps> = ({
             {field.link ? (
               <dd className={descriptionDetailsLinkClass}>
                 <a href={field.link} className={linkClass}>
-                  <Text variant="code">{field.value}</Text>
+                  <Text variant="code" className={textClass}>
+                    {field.value}
+                  </Text>
                 </a>
-                <MonoArrowOutward style={{ minWidth: 'fit-content' }} />
+                <a href={field.link} className={iconLinkClass}>
+                  <MonoArrowOutward className={linkIconClass} />
+                </a>
               </dd>
             ) : field.type === 'code' ? (
               <dd className={descriptionDetailsClass}>
-                <Text variant="code">
+                <Text variant="code" className={textClass}>
                   <pre>{field.value}</pre>
                 </Text>
               </dd>
+            ) : Array.isArray(field.value) ? (
+              field.value.map((value, index) => (
+                <dd className={descriptionDetailsClass} key={index}>
+                  <Text variant="code" className={textClass}>
+                    {value}
+                  </Text>
+                </dd>
+              ))
             ) : (
               <dd className={descriptionDetailsClass}>
-                <Text variant="code">{field.value}</Text>
+                <Text variant="code" className={textClass}>
+                  {field.value}
+                </Text>
               </dd>
             )}
           </Fragment>

@@ -23,7 +23,7 @@ type Block implements Node {
   height: BigInt!
   id: ID!
   minerAccount: FungibleChainAccount!
-  neighbours: [BlockNeighbor!]!
+  neighbors: [BlockNeighbor!]!
   nonce: Decimal!
   parent: Block
   payloadHash: String!
@@ -50,8 +50,8 @@ type BlockEventsConnectionEdge {
 
 """The neighbor of a block."""
 type BlockNeighbor {
-  blockHash: String!
   chainId: String!
+  hash: String!
 }
 
 type BlockTransactionsConnection {

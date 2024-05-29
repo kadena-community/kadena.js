@@ -16,7 +16,7 @@ const BlockNeighbor = builder.objectType('BlockNeighbor', {
   description: 'The neighbor of a block.',
   fields: (t) => ({
     chainId: t.exposeString('chainId'),
-    blockHash: t.exposeString('blockHash'),
+    hash: t.exposeString('hash'),
   }),
 });
 
@@ -99,7 +99,7 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
       },
     }),
 
-    neighbours: t.field({
+    neighbors: t.field({
       type: [BlockNeighbor],
       select: {
         chainId: true,
@@ -107,14 +107,14 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
       },
       async resolve(parent) {
         try {
-          const neighbours = networkData.chainNeighbours.get(
+          const neighbors = networkData.chainNeighbors.get(
             parent.chainId.toString(),
           ) as string[];
 
           const blocks = await prismaClient.block.findMany({
             where: {
               chainId: {
-                in: neighbours.map((x) => BigInt(x)),
+                in: neighbors.map((x) => BigInt(x)),
               },
               height: parent.height - 1n,
             },
@@ -122,7 +122,7 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
 
           return blocks.map((block) => ({
             chainId: block.chainId.toString(),
-            blockHash: block.hash,
+            hash: block.hash,
           }));
         } catch (error) {
           throw normalizeError(error);

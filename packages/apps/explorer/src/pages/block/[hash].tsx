@@ -40,6 +40,7 @@ const Block: React.FC = () => {
               ]}
             />
             <DataRenderComponent
+              title="Details"
               fields={[
                 {
                   key: 'Parent',
@@ -51,13 +52,65 @@ const Block: React.FC = () => {
                   value: data.block.powHash,
                 },
                 {
+                  key: 'Payload Hash',
+                  value: data.block.payloadHash,
+                },
+                {
                   key: 'Target',
                   value: data.block.target,
+                },
+                {
+                  key: 'Hash',
+                  value: data.block.hash,
+                },
+                {
+                  key: 'Weight',
+                  value: data.block.weight,
+                },
+                {
+                  key: 'Epoch Start',
+                  value: new Date(data.block.epoch).toLocaleString(),
+                },
+                {
+                  key: 'Target',
+                  value: data.block.target,
+                },
+                {
+                  key: 'Flags',
+                  value: data.block.flags,
+                },
+                {
+                  key: 'Nonce',
+                  value: data.block.nonce,
+                },
+              ]}
+            />
+            <DataRenderComponent
+              title="Neighbors"
+              fields={data.block.neighbors.map((neighbor) => ({
+                key: `Chain ${neighbor.chainId}`,
+                value: neighbor.hash,
+                link: `/block/${neighbor.hash}`,
+              }))}
+            />
+            <DataRenderComponent
+              title="Miner"
+              fields={[
+                {
+                  key: 'Account',
+                  value: data.block.minerAccount.accountName,
+                },
+                {
+                  key: 'Public Keys',
+                  value: data.block.minerAccount.guard.keys,
+                },
+                {
+                  key: 'Predicate',
+                  value: data.block.minerAccount.guard.predicate,
                 },
               ]}
             />
           </TabItem>
-          <TabItem title="Payload">Payload Data</TabItem>
           <TabItem
             title={
               <>

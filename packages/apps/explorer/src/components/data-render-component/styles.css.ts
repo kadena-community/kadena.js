@@ -1,8 +1,5 @@
-import { atoms, tokens } from '@kadena/react-ui/styles';
+import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
-
-// TODO: Define this somewhere, or make this dynamic.
-const mobileBreakpoint = 380;
 
 export const sectionClass = style([
   atoms({
@@ -30,46 +27,65 @@ export const descriptionListIndentClass = style([
   atoms({
     marginInlineStart: 'md',
   }),
-  {
-    '@media': {
-      [`(max-width: ${mobileBreakpoint - 1}px)`]: {
-        marginBlockEnd: '0',
-      },
-    },
-  },
 ]);
 
 export const descriptionTermClass = style({
   fontWeight: 'bold',
+  gridColumnStart: 1,
 });
 
 export const descriptionDetailsClass = style({
-  margin: 0,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
-  '@media': {
-    [`(min-width: ${mobileBreakpoint}px)`]: {
+  ...responsiveStyle({
+    xs: {
+      gridColumnStart: 1,
+    },
+    sm: {
       gridColumnStart: 2,
     },
-  },
+  }),
 });
 
 export const descriptionDetailsLinkClass = style({
-  margin: 0,
   display: 'flex',
-  flexDirection: 'row',
-  '@media': {
-    [`(min-width: ${mobileBreakpoint}px)`]: {
+  alignItems: 'center',
+  gap: tokens.kda.foundation.spacing.sm,
+  minWidth: 0,
+  ...responsiveStyle({
+    xs: {
+      gridColumnStart: 1,
+    },
+    sm: {
       gridColumnStart: 2,
     },
-  },
+  }),
 });
 
 export const linkClass = style({
-  margin: 0,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
-  maxWidth: '100%',
+  textDecoration: 'none',
+});
+
+export const iconLinkClass = style([
+  atoms({
+    color: 'text.base.default',
+  }),
+]);
+
+export const linkIconClass = style([
+  atoms({
+    fontSize: 'xs',
+  }),
+  {
+    minWidth: 'fit-content',
+  },
+]);
+
+export const textClass = style({
+  // If we use atoms it will be overridden by the Text component.
+  color: tokens.kda.foundation.color.text.base.default,
 });
