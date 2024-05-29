@@ -9,10 +9,11 @@ export interface ISignatureWithPublicKey {
 }
 
 /**
- * Derive a key pair using a seed and an index.
- * @param {Uint8Array} seed - The seed for key derivation.
- * @param {number} index - The index for key derivation.
- * @returns {{ privateKey: string; publicKey: string }} - Returns the derived private and public keys.
+ * Derive a key pair using a seed and an index. the seed need to be decrypted before using this function.
+ * @param seed - The seed for key derivation.
+ * @param index - The index for key derivation.
+ * @returns Returns the derived private and public keys.
+ * @internal
  */
 export const deriveKeyPair = (
   seed: Uint8Array,

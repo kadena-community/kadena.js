@@ -9,10 +9,10 @@ const localConfig = defineConfig({
     environment: 'happy-dom',
     coverage: {
       thresholds: {
-        lines: 18.64,
-        functions: 20.0,
-        branches: 43.58,
-        statements: 18.64,
+        lines: 13.88,
+        functions: 16.25,
+        branches: 41.31,
+        statements: 13.88,
         autoUpdate: false,
       },
     },

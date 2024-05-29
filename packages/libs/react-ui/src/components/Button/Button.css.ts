@@ -1,7 +1,9 @@
-import { createVar, style } from '@vanilla-extract/css';
+import { createVar, layer, style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { token, tokens, uiBaseBold, uiSmallestBold } from '../../styles';
 import { atoms } from '../../styles/atoms.css';
+
+const defaults = layer('defaults');
 
 export const hoverBackgroundColor = createVar();
 export const disabledBackgroundColor = createVar();
@@ -141,39 +143,43 @@ const inverseSelectors = {
 };
 
 export const buttonReset = style({
-  position: 'relative',
-  appearance: 'button',
-  WebkitAppearance: 'button',
-  paddingInline: 0,
-  /* Remove the inheritance of text transform on button in Edge, Firefox, and IE. */
-  textTransform: 'none',
-  WebkitFontSmoothing: 'antialiased',
-  /* Font smoothing for Firefox */
-  MozOsxFontSmoothing: 'grayscale',
-  verticalAlign: 'top',
-  /* prevent touch scrolling on buttons */
-  touchAction: 'none',
-  userSelect: 'none',
-  cursor: 'pointer',
-  textDecoration: 'none',
-  isolation: 'isolate',
-  border: 'none',
-  ':focus': {
-    outline: 'none',
-  },
-  ':focus-visible': {
-    zIndex: 3,
-  },
-  selectors: {
-    /* Fix Firefox */
-    '&::-moz-focus-inner': {
-      border: 0,
-      /* Remove the inner border and padding for button in Firefox. */
-      borderStyle: 'none',
-      padding: 0,
-      /* Use uppercase PX so values don't get converted to rem */
-      marginBlockStart: '-2PX',
-      marginBlockEnd: '-2PX',
+  '@layer': {
+    [defaults]: {
+      position: 'relative',
+      appearance: 'button',
+      WebkitAppearance: 'button',
+      paddingInline: 0,
+      /* Remove the inheritance of text transform on button in Edge, Firefox, and IE. */
+      textTransform: 'none',
+      WebkitFontSmoothing: 'antialiased',
+      /* Font smoothing for Firefox */
+      MozOsxFontSmoothing: 'grayscale',
+      verticalAlign: 'top',
+      /* prevent touch scrolling on buttons */
+      touchAction: 'none',
+      userSelect: 'none',
+      cursor: 'pointer',
+      textDecoration: 'none',
+      isolation: 'isolate',
+      border: 'none',
+      ':focus': {
+        outline: 'none',
+      },
+      ':focus-visible': {
+        zIndex: 3,
+      },
+      selectors: {
+        /* Fix Firefox */
+        '&::-moz-focus-inner': {
+          border: 0,
+          /* Remove the inner border and padding for button in Firefox. */
+          borderStyle: 'none',
+          padding: 0,
+          /* Use uppercase PX so values don't get converted to rem */
+          marginBlockStart: '-2PX',
+          marginBlockEnd: '-2PX',
+        },
+      },
     },
   },
 });
@@ -190,6 +196,7 @@ export const button = recipe({
       paddingBlock: 'sm',
     }),
     {
+      minWidth: 'fit-content',
       color: textColor,
       backgroundColor: backgroundColor,
       transition:

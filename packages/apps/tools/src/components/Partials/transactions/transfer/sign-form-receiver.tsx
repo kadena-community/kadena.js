@@ -169,6 +169,7 @@ export const SignFormReceiver = ({
             <ChainSelect
               {...rest}
               id="receiverChainId"
+              data-testid="receiverChainId"
               selectedKey={value}
               onSelectionChange={(chainId) => {
                 onChange(chainId);

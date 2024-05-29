@@ -1,52 +1,36 @@
-import { CardComponent } from '@page-objects/react-ui/card.component';
-import { NotificationContainerComponent } from '@page-objects/react-ui/notificationContainer.component';
-import { AsideComponent } from '@page-objects/tools-app/components/aside.component';
-import type { Page } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { getI18nInstance } from 'playwright-i18next-fixture';
+import { ListBoxComponent } from '../../../react-ui/listBox.component';
 
 export class FundExistingAccountPage {
   private readonly _page: Page;
-  public asidePanel: AsideComponent;
-  private readonly _i18n = getI18nInstance();
-  private _accountCard: CardComponent;
-  public processingNotification: NotificationContainerComponent;
-  public transactionFinishedNotification: NotificationContainerComponent;
+  private _chainId: ListBoxComponent;
+  private _accountNameInput: Locator;
+  private _fundAccount: Locator;
 
   public constructor(page: Page) {
     this._page = page;
-    this._accountCard = new CardComponent(this._page, 'Account');
-    this.processingNotification = new NotificationContainerComponent(
+    //this._accountCard = new CardComponent(this._page, 'Account');
+    this._chainId = new ListBoxComponent(
       this._page,
-      'Transaction is being processed...',
+      'Select Chain ID',
+      'Select Chain ID Chain ID',
     );
-    this.transactionFinishedNotification = new NotificationContainerComponent(
-      this._page,
-      'Transaction successfully completed',
-    );
-    this.asidePanel = new AsideComponent(this._page);
+    this._accountNameInput = this._page.getByRole('textbox', {
+      name: 'The account name to fund coins to',
+    });
+    this._fundAccount = this._page.getByRole('button', {
+      name: 'Fund 20 Coins',
+    });
   }
 
   public async fundExistingAccount(
     account: string,
     chainId: string,
   ): Promise<void> {
-    await this._accountCard.setValueForListBox(
-      'Select Chain ID',
-      'Select Chain ID Chain ID',
-      chainId,
-    );
-
-    await this._accountCard.setValueForTextbox(
-      'The account name to fund coins to',
-      account,
-    );
-    await expect(
-      this._page.getByRole('textbox', {
-        name: 'The account name to fund coins to',
-      }),
-    ).toHaveValue(account);
-
-    await this._page.getByRole('button', { name: 'Fund 20 Coins' }).click();
+    await this._chainId.setValue(chainId);
+    await this._accountNameInput.fill(account);
+    await expect(this._accountNameInput).toHaveValue(account);
+    await this._fundAccount.click();
   }
 }

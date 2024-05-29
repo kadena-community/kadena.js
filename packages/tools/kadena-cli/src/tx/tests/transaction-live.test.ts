@@ -4,7 +4,7 @@ import { ensureNetworksConfiguration } from '../../networks/utils/networkHelpers
 import { services } from '../../services/index.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { defaultTemplates } from '../commands/templates/templates.js';
-import { createTransaction } from '../commands/txCreateTransaction.js';
+import { createAndWriteTransaction } from '../commands/txCreateTransaction.js';
 import { testTransactionAction } from '../commands/txTestSignedTransaction.js';
 import { createTransactionWithDetails } from '../utils/txHelpers.js';
 import { signTransactionFileWithKeyPairAction } from '../utils/txSignWithKeypair.js';
@@ -33,7 +33,7 @@ describe('template to live test', () => {
     };
 
     await services.filesystem.ensureDirectoryExists(process.cwd());
-    const transaction = await createTransaction(
+    const transaction = await createAndWriteTransaction(
       defaultTemplates.transfer,
       variables,
       'transaction-test.json',

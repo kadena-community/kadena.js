@@ -8,8 +8,7 @@ import { expect } from '@playwright/test';
 test.beforeEach(async ({ page, toolsApp }) => {
   await test.step('Open Tools and navigate to Faucet', async () => {
     await page.goto('/');
-    //await toolsApp.homePage.header.setNetwork('devnet');
-    await toolsApp.homePage.header.goToPage('Faucet');
+    await toolsApp.header.goToPage('Faucet');
   });
 });
 
@@ -22,17 +21,15 @@ for (const accountType of accountTypes) {
   test(`Create and fund ${accountType.type} account`, async ({ toolsApp }) => {
     const account = await generateAccount(accountType.NumberOfKeys, ['0']);
     await test.step('Create account on chain 0.', async () => {
-      await toolsApp.fundNewAccountPage.asidePanel.navigateTo(
-        'Fund New Account',
-      );
+      await toolsApp.asidePanel.navigateTo('Fund New Account');
       await toolsApp.fundNewAccountPage.CreateFundAccount(account);
       await expect(
-        await toolsApp.fundNewAccountPage.processingNotification.getComponent(),
+        await toolsApp.txProcessingNotification.getNotification(),
       ).toBeVisible();
     });
     await test.step('Account has been created', async () => {
       await expect(
-        await toolsApp.fundNewAccountPage.transactionFinishedNotification.getComponent(),
+        await toolsApp.txFinishedNotifcation.getNotification(),
       ).toBeVisible();
     });
   });
@@ -48,12 +45,12 @@ for (const accountType of accountTypes) {
       );
 
       await expect(
-        await toolsApp.fundNewAccountPage.processingNotification.getComponent(),
+        await toolsApp.txProcessingNotification.getNotification(),
       ).toBeVisible();
     });
     await test.step('Account has been funded', async () => {
       await expect(
-        await toolsApp.fundNewAccountPage.transactionFinishedNotification.getComponent(),
+        await toolsApp.txFinishedNotifcation.getNotification(),
       ).toBeVisible();
     });
   });

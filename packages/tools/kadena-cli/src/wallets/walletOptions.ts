@@ -40,7 +40,7 @@ export const walletOptions = {
   mnemonicFile: createOption({
     key: 'mnemonicFile' as const,
     prompt: keys.keyMnemonicPrompt,
-    validation: z.literal('-').or(z.object({ _secret: z.string() })),
+    validation: z.string().or(z.object({ _secret: z.string() })),
     option: new Option(
       '-m, --mnemonic-file <mnemonicFile>',
       'Filepath to your 12-word mnemonic phrase file to generate keys from (can be passed via stdin)',

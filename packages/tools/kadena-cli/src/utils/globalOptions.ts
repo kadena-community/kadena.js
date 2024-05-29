@@ -1,4 +1,4 @@
-import { Option, program } from 'commander';
+import { Option } from 'commander';
 import { z } from 'zod';
 import {
   generic,
@@ -21,7 +21,6 @@ import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
 import { services } from '../services/index.js';
 import { createOption } from './createOption.js';
 import { getDefaultNetworkName, passwordPromptTransform } from './helpers.js';
-import { log } from './logger.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalOptions = {
@@ -91,11 +90,30 @@ export const globalOptions = {
       try {
         return await loadNetworkConfig(network);
       } catch (e) {
-        log.info(
+        throw new Error(
           `\nNo configuration for network "${network}" found. Please configure the network.\n`,
         );
-        await program.parseAsync(['', '', 'networks', 'create']);
+      }
+    },
+  }),
+  networkOptional: createOption({
+    key: 'network' as const,
+    prompt: () => {},
+    defaultValue: await getDefaultNetworkName(),
+    validation: z.string(),
+    defaultIsOptional: true,
+    option: new Option(
+      '-n, --network <network>',
+      'Kadena network (e.g. "mainnet")',
+    ),
+    expand: async (network: string) => {
+      if (network === undefined) return null;
+      try {
         return await loadNetworkConfig(network);
+      } catch (e) {
+        throw new Error(
+          `\nNo configuration for network "${network}" found. Please configure the network.\n`,
+        );
       }
     },
   }),
@@ -129,6 +147,27 @@ export const globalOptions = {
     }),
     option: new Option('-c, --chain-id <chainId>', 'Kadena chain id (e.g. 0)'),
     transform: (chainId: string) => {
+      const parsedChainId = Number(chainId.trim());
+      try {
+        chainIdValidation.parse(parsedChainId);
+        return parsedChainId.toString() as ChainId;
+      } catch (error) {
+        const errorMessage = formatZodFieldErrors(error);
+        throw new Error(`Error: -c --chain-id ${errorMessage}`);
+      }
+    },
+  }),
+  chainIdOptional: createOption({
+    key: 'chainId' as const,
+    prompt: networks.chainIdPrompt,
+    defaultIsOptional: true,
+    validation: z.string({
+      /* eslint-disable-next-line @typescript-eslint/naming-convention */
+      invalid_type_error: 'Error: -c, --chain-id must be a number',
+    }),
+    option: new Option('-c, --chain-id <chainId>', 'Kadena chain id (e.g. 0)'),
+    transform: (chainId: string) => {
+      if (!chainId) return null;
       const parsedChainId = Number(chainId.trim());
       try {
         chainIdValidation.parse(parsedChainId);

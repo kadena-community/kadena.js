@@ -18,9 +18,7 @@ export const baseConfig: PlaywrightTestConfig = {
     trace: 'retain-on-failure',
     viewport: { width: 1920, height: 1080 },
   },
-  timeout: 100000,
-
   expect: {
-    timeout: 2 * 30000,
+    timeout: 15000,
   },
 };

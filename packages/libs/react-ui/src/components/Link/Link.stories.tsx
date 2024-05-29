@@ -68,7 +68,6 @@ type LinkStory = StoryObj<ILinkProps>;
 export const _Button: LinkStory = {
   args: {
     children: 'Hello world',
-    variant: 'primary',
   },
   render: (props: ILinkProps) => {
     return <Link {...props}>{props.children}</Link>;
@@ -78,7 +77,6 @@ export const _Button: LinkStory = {
 export const StartIcon: LinkStory = {
   args: {
     children: 'Hello world',
-    variant: 'primary',
     startVisual: <MonoChevronLeft />,
   },
   render: (props: ILinkProps) => {
@@ -89,7 +87,6 @@ export const StartIcon: LinkStory = {
 export const EndIcon: LinkStory = {
   args: {
     children: 'Hello world',
-    variant: 'primary',
     endVisual: <MonoChevronRight />,
   },
   render: (props: ILinkProps) => {
@@ -100,7 +97,6 @@ export const EndIcon: LinkStory = {
 export const WithAvatar: LinkStory = {
   args: {
     children: 'Hello world',
-    variant: 'primary',
     startVisual: <Avatar name="Robin Mulder" color="category3" />,
   },
   render: (props: ILinkProps) => {
@@ -111,7 +107,6 @@ export const WithAvatar: LinkStory = {
 export const BadgeOnly: LinkStory = {
   args: {
     children: 'Hello world',
-    variant: 'primary',
     endVisual: (
       <Badge size="sm" style="inverse">
         6
@@ -126,7 +121,6 @@ export const BadgeOnly: LinkStory = {
 export const BadgeAndEndIcon: LinkStory = {
   args: {
     children: 'Hello world',
-    variant: 'primary',
     endVisual: (
       <>
         <Badge size="sm" style="inverse">
@@ -144,7 +138,6 @@ export const BadgeAndEndIcon: LinkStory = {
 export const BadgeAndStartIcon: LinkStory = {
   args: {
     children: 'Hello world',
-    variant: 'primary',
     startVisual: <MonoChevronLeft />,
     endVisual: (
       <Badge size="sm" style="inverse">
@@ -159,7 +152,6 @@ export const BadgeAndStartIcon: LinkStory = {
 
 export const IconOnly: LinkStory = {
   args: {
-    variant: 'primary',
     children: <MonoChevronRight />,
   },
   render: (props: ILinkProps) => {
@@ -169,7 +161,6 @@ export const IconOnly: LinkStory = {
 
 export const StartVisualLoading: LinkStory = {
   args: {
-    variant: 'primary',
     startVisual: <MonoChevronRight />,
     children: 'Hello world',
     isLoading: true,
@@ -181,7 +172,6 @@ export const StartVisualLoading: LinkStory = {
 
 export const EndVisualLoading: LinkStory = {
   args: {
-    variant: 'primary',
     endVisual: <MonoChevronRight />,
     children: 'Hello world',
     isLoading: true,
@@ -193,7 +183,6 @@ export const EndVisualLoading: LinkStory = {
 
 export const IconOnlyLoadingWithLabel: LinkStory = {
   args: {
-    variant: 'primary',
     children: <MonoChevronRight />,
     isLoading: true,
     loadingLabel: 'Loading...',
@@ -205,7 +194,6 @@ export const IconOnlyLoadingWithLabel: LinkStory = {
 
 export const IconOnlyLoading: LinkStory = {
   args: {
-    variant: 'primary',
     children: <MonoChevronRight />,
     isLoading: true,
     loadingLabel: '',

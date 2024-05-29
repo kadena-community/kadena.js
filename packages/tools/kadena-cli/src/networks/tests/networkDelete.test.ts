@@ -27,7 +27,6 @@ describe('network delete command', () => {
         'Are you sure you want to delete the configuration for network "devnet"?\n  type "yes" to confirm or "no" to cancel and press enter.':
           'yes',
       },
-      verbose: true,
     });
 
     await runCommand('network delete');
