@@ -1,25 +1,8 @@
-import {
-  ExecutionPayload,
-  Transaction,
-  TransactionResult,
-} from '@/__generated__/sdk';
-import {
-  MonoArrowOutward,
-  MonoCheck,
-  MonoClear,
-} from '@kadena/react-icons/system';
-import { Badge, Text } from '@kadena/react-ui';
+import { Transaction } from '@/__generated__/sdk';
+import { Media } from '@/components/layout/media';
 import React from 'react';
-import {
-  badgeClass,
-  dataFieldClass,
-  dataFieldLinkClass,
-  headerClass,
-  iconLinkClass,
-  linkClass,
-  linkIconClass,
-  sectionClass,
-} from './styles.css';
+import CompactTransactionsTableDesktop from './compact-transactions-table-desktop/compact-transactions-table-desktop';
+import CompactTransactionsTableMobile from './compact-transactions-table-mobile/compact-transactions-table-mobile';
 
 interface ICompactTransactionsTableProps {
   transactions: Transaction[];
@@ -29,44 +12,14 @@ const CompactTransactionsTable: React.FC<ICompactTransactionsTableProps> = ({
   transactions,
 }) => {
   return (
-    <section className={sectionClass}>
-      <span>
-        <Badge className={badgeClass} size="sm">
-          Status
-        </Badge>
-      </span>
-      <span className={headerClass}>Sender</span>
-      <span className={headerClass}>Request Key</span>
-      <span className={headerClass}>Code Preview</span>
-      {transactions.map((transaction) => (
-        <>
-          {(transaction.result as TransactionResult).goodResult ? (
-            <MonoCheck />
-          ) : (
-            <MonoClear />
-          )}
-          <Text variant="code" className={dataFieldClass}>
-            {transaction.cmd.meta.sender}
-          </Text>
-          <span className={dataFieldLinkClass}>
-            <a href={`/transaction/${transaction.hash}`} className={linkClass}>
-              <Text variant="code" className={dataFieldClass}>
-                {transaction.hash}
-              </Text>
-            </a>
-            <a
-              href={`/transaction/${transaction.hash}`}
-              className={iconLinkClass}
-            >
-              <MonoArrowOutward className={linkIconClass} />
-            </a>
-          </span>
-          <Text variant="code" className={dataFieldClass}>
-            {(transaction.cmd.payload as ExecutionPayload).code}
-          </Text>
-        </>
-      ))}
-    </section>
+    <>
+      <Media lessThan="sm">
+        <CompactTransactionsTableMobile transactions={transactions} />
+      </Media>
+      <Media greaterThanOrEqual="sm">
+        <CompactTransactionsTableDesktop transactions={transactions} />
+      </Media>
+    </>
   );
 };
 export default CompactTransactionsTable;
