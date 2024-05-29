@@ -1,5 +1,6 @@
 import type { IMostPopularPage } from '@/MostPopularData';
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
+import { ChangelogTable } from '@/components/ChangelogTable/ChangelogTable';
 import { DocsCard } from '@/components/DocsCard/DocsCard';
 import { docsCardLink } from '@/components/DocsCard/styles.css';
 import { HomeHeader } from '@/components/Layout/Landing/components';
@@ -9,8 +10,13 @@ import {
   contentClass,
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
+import changelogs from '@/data/changelogs.json';
+import {
+  getPackages,
+  getVersions,
+} from '@/scripts/importChangelogs/utils/misc';
 import { getPageConfig } from '@/utils/config';
-import { Box, Grid, GridItem, Stack } from '@kadena/react-ui';
+import { Box, Grid, GridItem, Heading, Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
@@ -19,9 +25,10 @@ import React from 'react';
 
 interface IProps {
   popularPages: IMostPopularPage[];
+  changelogs: IChangelogPackage[];
 }
 
-const Home: FC<IProps> = ({ popularPages }) => {
+const Home: FC<IProps> = ({ popularPages, changelogs }) => {
   return (
     <>
       <HomeHeader popularPages={popularPages} />
@@ -183,10 +190,9 @@ const Home: FC<IProps> = ({ popularPages }) => {
               </GridItem>
             </Grid>
           </Box>
-
           <Stack flexDirection="column" gap="xxxl">
             <BrowseSection
-              title="GET STARTED WITH KADENA TODAY"
+              title="Get started with Kadena today"
               direction="row"
             >
               <BrowseSection.LinkBlock
@@ -224,6 +230,13 @@ const Home: FC<IProps> = ({ popularPages }) => {
                 href="https://kadena.io"
               />
             </BrowseSection>
+
+            <Stack flexDirection="column" gap="md">
+              <Heading as="h5" transform="uppercase">
+                Changelogs
+              </Heading>
+              <ChangelogTable changelogs={changelogs} />
+            </Stack>
           </Stack>
         </article>
       </div>
@@ -232,8 +245,20 @@ const Home: FC<IProps> = ({ popularPages }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
+  const newChangelogs = getPackages(
+    changelogs as unknown as IChangelogComplete,
+  ).map((pkg) => {
+    const versions = getVersions(pkg);
+    return {
+      ...pkg,
+      versionCount: versions.length,
+      content: versions.slice(0, 1),
+    };
+  });
+
   return {
     props: {
+      changelogs: newChangelogs,
       ...(await getPageConfig({
         popularPages: '/',
         filename: __filename,
