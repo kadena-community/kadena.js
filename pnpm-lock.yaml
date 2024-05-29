@@ -810,6 +810,9 @@ importers:
       '@types/css-modules':
         specifier: ^1.0.5
         version: 1.0.5
+      '@types/node':
+        specifier: ^20.12.7
+        version: 20.12.7
       '@types/node-cron':
         specifier: ^3.0.11
         version: 3.0.11

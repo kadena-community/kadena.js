@@ -37,17 +37,12 @@ export const Token: React.FC<TokenProps> = ({
 
   useEffect(() => {
     async function fetch() {
-      const config = {
-        host: env.CHAINWEB_API_HOST,
-        defaults: {
-          networkId: env.NETWORK_NAME
-        },
-        sign: (args: any) => args
-      };
       const tokenInfo = await getTokenInfo({
         tokenId,
-        chainId
-      }, config).execute();
+        chainId,
+        networkId: env.NETWORK_NAME,
+        host: env.CHAINWEB_API_HOST
+      }).execute();
 
       const tokenMetadata = await getTokenMetadata(tokenInfo.uri);
 
