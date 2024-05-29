@@ -104,9 +104,15 @@ function CustomTree<T>({
                 </Button>
               ) : null}
               {!item.data.isLoading && item.data.label ? (
-                <Badge size="sm">{item.data.label}</Badge>
+                <Badge size="sm" style={'highContrast'}>
+                  {item.data.label}
+                </Badge>
               ) : null}
-              {item.data.isLoading ? <Badge size="sm">Loading</Badge> : null}
+              {item.data.isLoading ? (
+                <Badge size="sm" style={'highContrast'}>
+                  Loading
+                </Badge>
+              ) : null}
             </Stack>
             {item.isExpanded ? (
               <Node
@@ -205,7 +211,9 @@ function Node<T>({
                 </Badge>
               ) : null}
               {hasChildren ? (
-                <Badge size="sm">{child.data.children.length}</Badge>
+                <Badge size="sm" style={'highContrast'}>
+                  {child.data.children.length}
+                </Badge>
               ) : null}
             </Stack>
             {child.isExpanded && hasChildren ? (
