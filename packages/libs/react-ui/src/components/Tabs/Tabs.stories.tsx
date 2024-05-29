@@ -41,7 +41,7 @@ const meta: Meta<ITabsProps> = {
   component: Tabs,
   decorators: [onLayer2],
   parameters: {
-    status: { type: 'beta' },
+    status: { type: 'stable' },
     docs: {
       description: {
         component:
