@@ -2,7 +2,6 @@ import { RecipeVariants } from '@vanilla-extract/recipes';
 import React, { ReactElement, createContext } from 'react';
 import { AriaRadioGroupProps, useRadioGroup } from 'react-aria';
 import { RadioGroupState, useRadioGroupState } from 'react-stately';
-import { Field } from '../Field/Field';
 import { groupClass } from './Radio.css';
 
 type Direction = NonNullable<RecipeVariants<typeof groupClass>>['direction'];

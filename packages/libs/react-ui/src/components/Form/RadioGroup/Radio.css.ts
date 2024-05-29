@@ -92,14 +92,14 @@ export const iconClass = style([
       },
       // disabled
       [`${labelClass}[data-disabled="true"] ${boxClass}[data-selected="true"] &`]:
-      {
-        fill: token('color.background.input.@disabled'),
-      },
+        {
+          fill: token('color.background.input.@disabled'),
+        },
       // readonly
       [`${labelClass}[data-readonly="true"] ${boxClass}[data-selected="true"] &`]:
-      {
-        fill: token('color.background.input.inverse.default'),
-      },
+        {
+          fill: token('color.background.input.inverse.default'),
+        },
     },
   },
 ]);
@@ -118,14 +118,14 @@ export const groupClass = recipe({
         gap: `${token('spacing.n2')} ${token('spacing.n4')}`,
         vars: {
           [maxWidth]: '32%',
-        }
+        },
       },
       column: {
         flexDirection: 'column',
         gap: token('spacing.n2'),
         vars: {
           [maxWidth]: '100%',
-        }
+        },
       },
     },
   },
