@@ -40,7 +40,7 @@
     "parse-md": "2.0.5",
     "playwright-i18next-fixture": "^1.0.0",
     "prettier": "~3.2.5",
-    "graphql-ws": "5.16.0",
-    "ws": "8.17.0"
+    "graphql-ws": "^5.16.0",
+    "ws": "8.16.0"
   }
 }

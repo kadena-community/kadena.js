@@ -1,4 +1,5 @@
 import type { APIRequestContext } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { devnetHost } from '../../e2e-base/src/constants/network.constants';
 
 export async function triggerMining(
@@ -12,5 +13,5 @@ export async function triggerMining(
     },
   });
 
-  console.log(response);
+  expect(response.status()).toBe(200);
 }
