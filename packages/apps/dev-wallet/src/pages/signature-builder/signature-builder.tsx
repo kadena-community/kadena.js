@@ -139,6 +139,7 @@ export function SignatureBuilder() {
           { title: 'Sign Transaction' },
         ]}
       >
+        {/* delete this WizardRender in favour of the steps above*/}
         <WizardRender>
           {({ step, goTo }) => (
             <Box>
