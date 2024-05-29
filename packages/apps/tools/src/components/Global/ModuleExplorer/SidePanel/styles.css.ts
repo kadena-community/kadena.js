@@ -5,6 +5,7 @@ export const containerStyle = style([
   atoms({
     display: 'flex',
     flexDirection: 'column',
+    overflow: 'scroll',
   }),
   // {
   //   height: `calc(${tokens.kda.foundation.size.n64} * 3 + ${tokens.kda.foundation.size.n16})`, // 52rem
