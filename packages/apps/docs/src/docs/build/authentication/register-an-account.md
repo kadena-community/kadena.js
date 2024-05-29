@@ -13,7 +13,7 @@ layout: full
 # Register an account with Kadena SpireKey
 
 Whether you're a user or developer, creating a Kadena SpireKey account is the
-first step to using simplified WebAuthn authentication and authorization
+first step to using WebAuthn authentication and authorization
 services. Registering for an account stores the account information you provide
 on the blockchain after registration is complete. Your secret information—biometric or otherwise—is
 encrypted and stored on the device you use to register. 

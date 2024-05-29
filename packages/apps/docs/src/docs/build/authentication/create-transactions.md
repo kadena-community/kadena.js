@@ -57,7 +57,7 @@ As mentioned in [Account, keys, and principals](/learn/accounts), there are diff
 Kadena SpireKey accounts are different in that they use a **capability** defined in the `webauthn-wallet` contract instead of a keyset to enforce the rules for signing transactions. 
 Because the `coin` contract can't bring this capability into scope when trying to debit an account, the `webauthn-wallet` contract implements its own `webauthn-wallet.transfer` function and custom `webauthn-wallet.GAS_PAYER` and `webauthn-wallet.TRANSFER` capabilities. 
 
-The `webauthn-wallet`  contract wraps the `coin` contract to bring the required capabilities into scope before calling the wrapped functions.
+The `webauthn-wallet` contract wraps the `coin` contract to bring the required capabilities into scope before calling the wrapped functions.
 You can use the `webauthn-wallet.GAS_PAYER` and `webauthn-wallet.TRANSFER` capabilities
 in place of the corresponding `coin.GAS` and `coin.TRANSFER` capabilities to satisfy the guard required to debit an account.
 
@@ -161,11 +161,11 @@ The following table describes the parameters that you can include in your signin
 | `translations` | string  | Optional | Custom descriptions that explain what capabilities or operations that the user is signing for. |
 | `optimistic` | boolean | Optional | Allows applications to continue transaction workflows without having to wait for the transaction to be confirmed on the blockchain. When this parameter is included, `pendingTxIds` are returned so that the application can keep track of the status of the submitted transactions and update the UI accordingly. For more information about the optimistic transaction flow, see [Optimistic account onboarding](/build/authentication/integrate#optimistic-account-onboardingh-416162207). |
 
-After you construct the request with the required parameters, you can connect to Kadena SpireKey to enable the user to sign the transaction.
+After you construct the request with the required parameters, you can navigate to Kadena SpireKey to enable the user to sign the transaction.
 
 ## Verify the signed transaction
 
-After all of the signatures for a transaction have been successfully collected, the user is redirected to the `returnUrl` you provided. 
+After signing the transaction, the user is redirected to the `returnUrl` you provided. 
 The signed transaction and optional parameters are returned as parameters using the anchor hashtag (`#`). 
 
 If the transaction was not successfully signed, the unsigned transaction is returned.
@@ -178,7 +178,7 @@ If the transaction was not successfully signed, the unsigned transaction is retu
 To verify that a transaction has been successfully signed, you can check the `sigs` field in the transaction. 
 If the field has undefined signatures, you won't be able to submit the transaction.
 
-If the transaction has been successfully signed, it is valid for a limited period of time as specified in the `ttl` value in the transaction `publicMeta` data.
+If the transaction has been successfully signed, it is valid for the period of time set in the `ttl` value in the transaction `publicMeta` data.
 During this period of time, the application can call the `local/preflight=true` endpoint to check whether the transaction is valid, then send it to the blockchain to be executed.
 
 After the transaction is submitted to the blockchain, you can check the transaction status using the request key and chainweb-data API or the Kadena client. 
