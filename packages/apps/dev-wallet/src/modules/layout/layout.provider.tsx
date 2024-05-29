@@ -1,9 +1,11 @@
+import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
 import {
   createContext,
   Dispatch,
   FC,
   PropsWithChildren,
   SetStateAction,
+  useEffect,
   useState,
 } from 'react';
 
@@ -25,9 +27,16 @@ export const LayoutContext = createContext<ILayoutContext>({
 });
 
 export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
+  const { profile } = useWallet();
   const [layoutContext, setLayoutContext] = useState<LayoutContextType>({
     accentColor: defaultAccentColor,
   });
+
+  useEffect(() => {
+    setLayoutContext({
+      accentColor: profile?.accentColor ?? defaultAccentColor,
+    });
+  }, [profile]);
 
   return (
     <LayoutContext.Provider value={{ layoutContext, setLayoutContext }}>

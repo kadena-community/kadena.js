@@ -13,7 +13,6 @@ import { AccountDiscovery } from '@/pages/account-discovery/account-dsicovery';
 import { ImportWallet } from '@/pages/import-wallet/import-wallet';
 import { CreateNetwork } from '@/pages/networks/create-network';
 import { Networks } from '@/pages/networks/networks';
-import { PersonalizeProfile } from '@/pages/personalize-profile/personalize-profile.tsx';
 import { SignatureBuilder } from '@/pages/signature-builder/signature-builder';
 import { useWallet } from '../modules/wallet/wallet.hook';
 import { BackupRecoveryPhrase } from '../pages/backup-recovery-phrase/backup-recovery-phrase';
@@ -48,7 +47,6 @@ export const Routes: FC = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/select-profile" element={<SelectProfile />} />
         <Route path="/create-profile" element={<CreateProfile />} />
-        <Route path="/personalize-profile" element={<PersonalizeProfile />} />
         <Route path="/unlock-profile/:profileId" element={<UnlockProfile />} />
         <Route path="/import-wallet" element={<ImportWallet />} />
         <Route element={<ProtectedRoute isAllowed={isUnlocked} />}>

@@ -1,4 +1,4 @@
-import { atoms, tokens } from '@kadena/react-ui/styles';
+import { atoms } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const listClass = style([
@@ -17,15 +17,13 @@ export const colorOptionClass = style([
   atoms({
     borderRadius: 'xs',
     cursor: 'pointer',
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   }),
   {
     width: '68px',
     maxWidth: '100%',
     aspectRatio: '1 / 1',
-    selectors: {
-      '&.active': {
-        border: `2px solid ${tokens.kda.foundation.color.palette.red.n50}`,
-      },
-    },
   },
 ]);

@@ -59,7 +59,7 @@ export const useWallet = () => {
 
   const createProfile = useCallback(
     async (
-      profileName: string,
+      profileName: string = 'default',
       password: string,
       accentColor: string = defaultAccentColor,
     ) => {
