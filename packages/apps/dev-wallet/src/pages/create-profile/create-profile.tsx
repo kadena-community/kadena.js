@@ -1,8 +1,8 @@
 import { AuthCard } from '@/Components/AuthCard/AuthCard.tsx';
-import { PersonalizeProfile } from '@/Components/PersonalizeProfile/PersonalizeProfile.tsx';
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.hook';
 import { useNetwork } from '@/modules/network/network.hook';
 import { IKeySource } from '@/modules/wallet/wallet.repository';
+import { PersonalizeProfile } from '@/pages/create-profile/personalize-profile/personalize-profile.tsx';
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
 import { Button, Heading, Stack, Text, TextField } from '@kadena/react-ui';
 import { useState } from 'react';
@@ -40,7 +40,7 @@ export function CreateProfile() {
     if (profileList.length) {
       setShowPersonalizeProfile(true);
     }
-    console.log(password, profileName, accentColor);
+
     if (!activeNetwork) {
       return;
     }
