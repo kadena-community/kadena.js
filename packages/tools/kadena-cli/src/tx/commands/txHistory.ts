@@ -22,19 +22,16 @@ import {
 } from '../utils/txHelpers.js';
 
 const header: Record<string, string> = {
-  hash: 'Hash',
-  network: 'Network',
+  networkHost: 'Network Host',
   networkId: 'Network ID',
   chainId: 'Chain ID',
   status: 'Status',
-  gas: 'Gas',
   txId: 'Transaction ID',
-  logs: 'Logs',
 };
 
-const filterLogsWithoutSuccess = (log: ITransactionLog): ITransactionLog[] => {
+const filterLogsWithoutStatus = (log: ITransactionLog): ITransactionLog[] => {
   return Object.entries(log)
-    .filter(([, logData]) => logData.status !== 'success')
+    .filter(([, logData]) => !logData.status)
     .map(([key, value]) => ({ [key]: value }));
 };
 
@@ -102,7 +99,7 @@ export const printTxLogs = (transactionLog: ITransactionLog): void => {
   log.output(table.toString(), transactionLog);
 };
 
-export const printTxHistory = async (): Promise<void> => {
+export const txHistory = async (): Promise<void> => {
   try {
     const transactionDir = getTransactionDirectory();
     if (!notEmpty(transactionDir)) throw new KadenaError('no_kadena_directory');
@@ -112,16 +109,16 @@ export const printTxHistory = async (): Promise<void> => {
       TRANSACTIONS_LOG_FILE,
     );
     let transactionLog = await readTransactionLog(transactionFilePath);
-    if (!transactionLog) throw new Error('no_transaction_data');
+    if (!transactionLog) throw new Error('No transaction logs available.');
 
-    const filteredLogs = filterLogsWithoutSuccess(transactionLog);
+    const filteredLogs = filterLogsWithoutStatus(transactionLog);
 
     if (filteredLogs.length > 0) {
-      const updatedLogs = await fetchTransactionStatuses(filteredLogs);
-      await updateTransactionStatus(updatedLogs);
+      const txResultsData = await fetchTransactionStatuses(filteredLogs);
+      await updateTransactionStatus(txResultsData);
       transactionLog = mergePayloadsWithTransactionLog(
         transactionLog,
-        updatedLogs,
+        txResultsData,
       );
     }
 
@@ -140,6 +137,6 @@ export const createTxHistoryCommand: (
   [globalOptions.directory({ disableQuestion: true })],
   async () => {
     log.debug('tx-history:action');
-    await printTxHistory();
+    await txHistory();
   },
 );

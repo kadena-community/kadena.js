@@ -900,7 +900,8 @@ export const updateTransactionStatus = async (
       TRANSACTIONS_LOG_FILE,
     );
     const currentTransactionLog = await readTransactionLog(transactionFilePath);
-    if (!currentTransactionLog) throw new Error('no_transaction_data');
+    if (!currentTransactionLog)
+      throw new Error('No transaction logs available.');
 
     const updatedTransactionLog = mergePayloadsWithTransactionLog(
       currentTransactionLog,
