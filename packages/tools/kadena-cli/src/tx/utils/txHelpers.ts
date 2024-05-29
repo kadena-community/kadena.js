@@ -803,9 +803,7 @@ export interface IUpdateTransactionsLogPayload {
 interface ITransactionLogDetails
   extends Partial<Pick<ICommandResult, 'txId' | 'logs' | 'gas'>> {
   chainId: ChainId;
-  network: string;
   networkId: string;
-  hash: string;
   status?: 'success' | 'failure';
 }
 
@@ -849,20 +847,12 @@ export const saveTransactionsToFile = async (
     const transactionLog =
       (await readTransactionLog(transactionFilePath)) || {};
 
-    transactions.forEach(
-      ({
-        transaction,
-        requestKey,
-        details: { networkId, network, chainId },
-      }) => {
-        transactionLog[requestKey] = {
-          hash: transaction.hash,
-          networkId,
-          network,
-          chainId,
-        };
-      },
-    );
+    transactions.forEach(({ requestKey, details: { networkId, chainId } }) => {
+      transactionLog[requestKey] = {
+        networkId,
+        chainId,
+      };
+    });
 
     await writeTransactionLog(transactionFilePath, transactionLog);
   } catch (error) {
@@ -889,9 +879,7 @@ export const updateTransactionStatus = async (
         transactionLog[requestKey] = {
           ...transactionLog[requestKey],
           status,
-          gas: data.gas,
           txId: notEmpty(data.txId) ? data.txId : null,
-          logs: notEmpty(data.logs) ? data.logs : null,
         };
       } else {
         log.error(`No transaction found for request key: ${requestKey}`);

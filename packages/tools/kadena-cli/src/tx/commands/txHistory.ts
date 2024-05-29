@@ -23,7 +23,7 @@ const header: Record<string, string> = {
   logs: 'Logs',
 };
 
-export const txHistory = async (): Promise<void> => {
+export const printTxHistory = async (): Promise<void> => {
   try {
     const transactionDir = getTransactionDirectory();
     if (!notEmpty(transactionDir)) throw new KadenaError('no_kadena_directory');
@@ -62,6 +62,6 @@ export const createTxHistoryCommand: (
   [globalOptions.directory({ disableQuestion: true })],
   async () => {
     log.debug('tx-history:action');
-    await txHistory();
+    await printTxHistory();
   },
 );
