@@ -5,7 +5,7 @@ import React, {
   cloneElement,
   useState,
 } from 'react';
-import { wizardContainer, wizardStep } from './Wizard.css';
+import { wizardContainer, wizardRender } from './Wizard.css';
 import { WizardRender } from './components/Wizard-render';
 import { WizardStep } from './components/Wizard-step';
 
@@ -67,7 +67,7 @@ export const Wizard: FC<WizardProps> = ({
   return (
     <>
       {steps.map((step, index) => (
-        <div key={index} className={wizardStep}>
+        <div key={index} className={wizardRender}>
           {step.title}
         </div>
       ))}
