@@ -2,13 +2,16 @@ import type { IConfigTreeItem } from '@kadena/docs-tools';
 import * as fs from 'fs';
 import { getFile } from './getFile';
 
+/**
+ * Get the files from a particular directory
+ * and
+ */
 export const createTree = async (
   rootDir: string,
   parent: IParent[] = [],
   pages: IConfigTreeItem[],
 ): Promise<IParent[]> => {
   const files = fs.readdirSync(rootDir);
-
   const newFiles: string[] = [];
   //set the files in the right order
 
@@ -33,6 +36,5 @@ export const createTree = async (
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     await getFile(rootDir, parent, newFiles[i], pageChildren, i);
   }
-
   return parent;
 };
