@@ -91,7 +91,6 @@ describe('account fund', () => {
           '1',
         'Enter an amount:': '5',
       },
-      verbose: true,
     });
 
     const res = await runCommand('account fund');

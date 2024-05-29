@@ -56,7 +56,6 @@ describe('account details', () => {
         'Enter a ChainId (0-19) (comma or hyphen separated e.g 0,1,2 or 1-5 or all):':
           '0',
       },
-      verbose: true,
     });
     const res = await runCommandJson('account details');
     expect(res).toEqual(accountDetailsSuccessData.result.data);
