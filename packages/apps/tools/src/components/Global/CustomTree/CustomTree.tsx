@@ -65,7 +65,12 @@ function CustomTree<T>({
             <Stack
               alignItems={'center'}
               justifyContent={'space-between'}
-              onClick={item.toggleExpandCollapse}
+              onClick={() => {
+                item.toggleExpandCollapse();
+
+                // We "toggle" the expanded state ourselves since this is still the previous state
+                onExpandCollapse(item.data, !item.isExpanded);
+              }}
               role="button"
               className={itemContainerStyle}
               style={{ borderBlockEnd: '1px solid rgba(0, 0, 0, 0.25)' }}
@@ -74,6 +79,9 @@ function CustomTree<T>({
                 variant="transparent"
                 onClick={() => {
                   item.toggleExpandCollapse();
+
+                  // We "toggle" the expanded state ourselves since this is still the previous state
+                  onExpandCollapse(item.data, !item.isExpanded);
                 }}
               >
                 {item.isExpanded ? <MonoArrowDropDown /> : <MonoArrowRight />}
