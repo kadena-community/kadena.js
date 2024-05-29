@@ -16,7 +16,8 @@ import {
   getVersions,
 } from '@/scripts/importChangelogs/utils/misc';
 import { getPageConfig } from '@/utils/config';
-import { Box, Grid, GridItem, Heading, Stack } from '@kadena/react-ui';
+import { MonoList } from '@kadena/react-icons';
+import { Box, Button, Grid, GridItem, Heading, Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
@@ -236,6 +237,13 @@ const Home: FC<IProps> = ({ popularPages, changelogs }) => {
                 Changelogs
               </Heading>
               <ChangelogTable changelogs={changelogs} />
+              <Stack>
+                <Link href={`/changelogs`} passHref legacyBehavior>
+                  <Button variant="info" endVisual={<MonoList />}>
+                    See all logs
+                  </Button>
+                </Link>
+              </Stack>
             </Stack>
           </Stack>
         </article>
