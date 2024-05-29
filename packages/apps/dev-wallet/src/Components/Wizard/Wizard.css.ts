@@ -85,6 +85,7 @@
 // });
 
 // Wizard.css.ts
+import { token } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const wizardContainer = style({
@@ -100,7 +101,7 @@ export const wizardStep = style({
 export const wizardRender = style({
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'space-between',
+  justifyContent: 'center',
   width: '100%',
   padding: '1rem 0',
 });
@@ -126,18 +127,18 @@ export const stepNotLastChild = style({
 
 export const activeStep = style({
   fontWeight: 'bold',
-  color: '#00ffae',
+  color: token('color.palette.aqua.n50'),
 });
 
 export const completedStep = style({
   '::after': {
-    backgroundColor: '#00ffae',
+    backgroundColor: token('color.palette.aqua.n50'),
   },
-  color: '#00ffae',
+  color: token('color.palette.aqua.n50'),
 });
 
 export const icon = style({
-  backgroundColor: '#00ffae',
+  backgroundColor: token('color.palette.aqua.n50'),
   borderRadius: '50%',
   width: '12px',
   height: '12px',

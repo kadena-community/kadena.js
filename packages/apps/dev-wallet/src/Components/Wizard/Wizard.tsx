@@ -12,6 +12,7 @@ import { WizardStep } from './components/Wizard-step';
 interface WizardProps {
   children: React.ReactNode;
   initialStep?: number;
+  steps: { title: string }[];
 }
 
 export const Wizard: FC<WizardProps> = ({ children, initialStep = 0 }) => {

@@ -131,7 +131,14 @@ export function SignatureBuilder() {
 
   return (
     <>
-      <Wizard>
+      <Wizard
+        steps={[
+          { title: 'Paste Data' },
+          { title: 'Add Signers' },
+          { title: 'Review Transaction' },
+          { title: 'Sign Transaction' },
+        ]}
+      >
         <WizardRender>
           {({ step, goTo }) => (
             <Box>

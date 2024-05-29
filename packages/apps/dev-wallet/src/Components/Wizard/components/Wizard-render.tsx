@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { wizardRender } from '../Wizard.css';
 import { WizardElementProps } from '../model';
-
+// this will be dleted
 export const WizardRender: FC<WizardElementProps> = ({
   children,
   step = 0,
