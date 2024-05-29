@@ -78,6 +78,8 @@ export const createTransaction = async (
     // output suggestion
     // ./{templateName}-{timestamp}-{hash}.json
 
+    console.log('filePath', filePath);
+
     await services.filesystem.writeFile(
       filePath,
       JSON.stringify(transaction, null, 2),
