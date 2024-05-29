@@ -12,8 +12,8 @@ services:
     environment:
       - MINING_BATCH_PERIOD=0.05
       - MINING_CONFIRMATION_PERIOD=1
-      - MINING_CONFIRMATION_COUNT=1
-      - MINIG_IDLE_PERIOD=10
+      # - MINING_CONFIRMATION_COUNT=1
+      # - MINIG_IDLE_PERIOD=10
     volumes:
       - ../../../packages/apps/graph/cwd-extra-migrations:/cwd-extra-migrations:ro
       - sandbox:/data

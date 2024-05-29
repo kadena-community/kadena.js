@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  node-fetch: 2.6.13
+
 importers:
 
   .:
@@ -917,7 +920,7 @@ importers:
         version: 0.2.1(next@14.2.2)(react-dom@18.2.0)(react@18.2.0)
       nft.storage:
         specifier: ^7.1.1
-        version: 7.1.1(node-fetch@3.3.2)
+        version: 7.1.1(node-fetch@2.6.13)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1509,7 +1512,7 @@ importers:
         version: link:../pactjs
       cross-fetch:
         specifier: ~3.1.5
-        version: 3.1.5
+        version: 3.1.8
     devDependencies:
       '@kadena-dev/eslint-config':
         specifier: workspace:*
@@ -1561,7 +1564,7 @@ importers:
         version: link:../pactjs
       cross-fetch:
         specifier: ~3.1.5
-        version: 3.1.5
+        version: 3.1.8
     devDependencies:
       '@kadena-dev/eslint-config':
         specifier: workspace:*
@@ -1662,7 +1665,7 @@ importers:
         version: 3.0.1
       cross-fetch:
         specifier: ~3.1.5
-        version: 3.1.5
+        version: 3.1.8
       eventsource:
         specifier: ~2.0.2
         version: 2.0.2
@@ -1729,7 +1732,7 @@ importers:
         version: 2.8.1
       cross-fetch:
         specifier: ~3.1.5
-        version: 3.1.5
+        version: 3.1.8
       debug:
         specifier: 4.3.4
         version: 4.3.4(supports-color@5.5.0)
@@ -2698,7 +2701,7 @@ importers:
         version: 11.1.0
       cross-fetch:
         specifier: ~3.1.5
-        version: 3.1.5
+        version: 3.1.8
       cross-spawn:
         specifier: ~7.0.3
         version: 7.0.3
@@ -3289,7 +3292,7 @@ importers:
         version: 11.1.0
       cross-fetch:
         specifier: ~3.1.5
-        version: 3.1.5
+        version: 3.1.8
       debug:
         specifier: 4.3.4
         version: 4.3.4(supports-color@5.5.0)
@@ -3599,7 +3602,7 @@ packages:
     resolution: {integrity: sha512-xhlTqH0m31mnsG0tIP4ETgfSB6gXDaYYsUWTrlUV93fFQPI9dd8hE0Ot6MHLCtqgB32hwJAC3YZMWlXZw7AleA==}
     engines: {node: '>=14'}
     dependencies:
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
     transitivePeerDependencies:
       - encoding
     dev: true
@@ -8297,7 +8300,7 @@ packages:
       detect-libc: 2.0.2
       https-proxy-agent: 5.0.1
       make-dir: 3.1.0
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
       nopt: 5.0.0
       npmlog: 5.0.1
       rimraf: 3.0.2
@@ -10161,9 +10164,9 @@ packages:
     engines: {node: '>=16.14'}
     dependencies:
       '@zkochan/retry': 0.2.0
-      node-fetch: 3.0.0-beta.9
+      node-fetch: 2.6.13
     transitivePeerDependencies:
-      - domexception
+      - encoding
     dev: true
 
   /@pnpm/graceful-fs@3.2.0:
@@ -10219,7 +10222,7 @@ packages:
       ssri: 10.0.5
       version-selector-type: 3.0.0
     transitivePeerDependencies:
-      - domexception
+      - encoding
     dev: true
 
   /@pnpm/ramda@0.28.1:
@@ -10255,7 +10258,7 @@ packages:
       ramda: /@pnpm/ramda@0.28.1
     transitivePeerDependencies:
       - '@pnpm/logger'
-      - domexception
+      - encoding
     dev: true
 
   /@polka/url@1.0.0-next.25:
@@ -12278,7 +12281,7 @@ packages:
       js-yaml: 4.1.0
       lodash.isequal: 4.5.0
       minimatch: 5.1.6
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
       pluralize: 8.0.0
       yaml-ast-parser: 0.0.43
     transitivePeerDependencies:
@@ -13505,7 +13508,7 @@ packages:
       glob: 10.3.10
       handlebars: 4.7.8
       lazy-universal-dotenv: 4.0.0
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
       picomatch: 2.3.1
       pkg-dir: 5.0.0
       pretty-hrtime: 1.0.3
@@ -19297,10 +19300,10 @@ packages:
       cross-spawn: 7.0.3
     dev: true
 
-  /cross-fetch@3.1.5:
-    resolution: {integrity: sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==}
+  /cross-fetch@3.1.8:
+    resolution: {integrity: sha512-cvA+JwZoU0Xq+h6WkMvAUqPEYy92Obet6UdKLfW60qn99ftItKjB5T+BkyWOFWe2pUyfQ+IJHmpOTznqk1M6Kg==}
     dependencies:
-      node-fetch: 2.6.7
+      node-fetch: 2.6.13
     transitivePeerDependencies:
       - encoding
 
@@ -19872,10 +19875,7 @@ packages:
   /data-uri-to-buffer@3.0.1:
     resolution: {integrity: sha512-WboRycPNsVw3B3TL559F7kuBUM4d8CgMEvk6xEJlOp7OBPjt6G7z8WMWlD2rOFZLk6OYfFIUGsCOWzcQH9K2og==}
     engines: {node: '>= 6'}
-
-  /data-uri-to-buffer@4.0.1:
-    resolution: {integrity: sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==}
-    engines: {node: '>= 12'}
+    dev: false
 
   /data-urls@4.0.0:
     resolution: {integrity: sha512-/mMTei/JXPqvFqQtfyTowxmJVwr2PVAeCcDxyFf6LhoOu/09TX2OX3kb2wzi4DMXcfj4OItwDOnhl5oziPnT6g==}
@@ -20303,11 +20303,11 @@ packages:
     resolution: {integrity: sha512-+HlytyjlPKnIG8XuRG8WvmBP8xs8P71y+SKKS6ZXWoEgLuePxtDoUEiH7WkdePWrQ5JBpE6aoVqfZfJUQkjXwA==}
     dev: false
 
-  /dns-over-http-resolver@1.2.3(node-fetch@3.3.2):
+  /dns-over-http-resolver@1.2.3(node-fetch@2.6.13):
     resolution: {integrity: sha512-miDiVSI6KSNbi4SVifzO/reD8rMnxgrlnkrlkugOLQpWQTe2qMdHsZp5DmfKjxNE+/T3VAAYLQUZMv9SMr6+AA==}
     dependencies:
       debug: 4.3.4(supports-color@5.5.0)
-      native-fetch: 3.0.0(node-fetch@3.3.2)
+      native-fetch: 3.0.0(node-fetch@2.6.13)
       receptacle: 1.3.2
     transitivePeerDependencies:
       - node-fetch
@@ -21986,7 +21986,7 @@ packages:
   /fbjs@3.0.5:
     resolution: {integrity: sha512-ztsSx77JBtkuMrEypfhgc3cI0+0h+svqeie7xHbh1k/IKdcydnvadp/mUaGgjAOXQmQSxsqgaRhS3q9fy+1kxg==}
     dependencies:
-      cross-fetch: 3.1.5
+      cross-fetch: 3.1.8
       fbjs-css-vars: 1.0.2
       loose-envify: 1.4.0
       object-assign: 4.1.1
@@ -22002,23 +22002,6 @@ packages:
     dependencies:
       pend: 1.2.0
     dev: true
-
-  /fetch-blob@2.1.2:
-    resolution: {integrity: sha512-YKqtUDwqLyfyMnmbw8XD6Q8j9i/HggKtPEI+pZ1+8bvheBu78biSmNaXWusx1TauGqtUUGx/cBb1mKdq2rLYow==}
-    engines: {node: ^10.17.0 || >=12.3.0}
-    peerDependencies:
-      domexception: '*'
-    peerDependenciesMeta:
-      domexception:
-        optional: true
-    dev: true
-
-  /fetch-blob@3.2.0:
-    resolution: {integrity: sha512-7yAQpD2UMJzLi1Dqv7qFYnPbaPx7ZfFK6PiIxQ4PfkGPyNyl2Ugx+a/umUonmKqjhM4DnfbMvdX6otXq83soQQ==}
-    engines: {node: ^12.20 || >= 14.13}
-    dependencies:
-      node-domexception: 1.0.0
-      web-streams-polyfill: 3.2.1
 
   /fetch-retry@5.0.6:
     resolution: {integrity: sha512-3yurQZ2hD9VISAhJJP9bpYFNQrHHBXE2JxxjY5aLEcDi46RmAzJE2OC9FAde0yis5ElW0jTTzs0zfg/Cca4XqQ==}
@@ -22189,7 +22172,7 @@ packages:
       cors: 2.8.5
       express: 4.18.2
       firebase-admin: 12.0.0
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
       protobufjs: 7.2.4
     transitivePeerDependencies:
       - encoding
@@ -22320,12 +22303,6 @@ packages:
   /format@0.2.2:
     resolution: {integrity: sha512-wzsgA6WOq+09wrU1tsJ09udeR/YZRaeArL9e1wPbFg3GG2yDnC2ldKpxs4xunpFF9DgqCqOIra3bc1HWrJ37Ww==}
     engines: {node: '>=0.4.x'}
-
-  /formdata-polyfill@4.0.10:
-    resolution: {integrity: sha512-buewHzMvYL29jdeQTVILecSaZKnt/RJWjoZCF5OW60Z67/GmSLBkOFM7qh1PI3zFNtJbaZL5eQu1vLfazOwj4g==}
-    engines: {node: '>=12.20.0'}
-    dependencies:
-      fetch-blob: 3.2.0
 
   /formidable@1.2.6:
     resolution: {integrity: sha512-KcpbcpuLNOwrEjnbpMC0gS+X8ciDoZE1kkqzat4a8vrprf+s9pKNQ/QIwWfbfs4ltgmFl3MD177SNTkve3BwGQ==}
@@ -22512,7 +22489,7 @@ packages:
       extend: 3.0.2
       https-proxy-agent: 5.0.1
       is-stream: 2.0.1
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -22526,7 +22503,7 @@ packages:
       extend: 3.0.2
       https-proxy-agent: 7.0.2
       is-stream: 2.0.1
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -22868,7 +22845,7 @@ packages:
       fast-text-encoding: 1.0.6
       google-auth-library: 8.9.0
       is-stream-ended: 0.1.4
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
       object-hash: 3.0.0
       proto3-json-serializer: 1.1.1
       protobufjs: 7.2.4
@@ -22890,7 +22867,7 @@ packages:
       abort-controller: 3.0.0
       duplexify: 4.1.2
       google-auth-library: 9.10.0
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
       object-hash: 3.0.0
       proto3-json-serializer: 2.0.1
       protobufjs: 7.2.6
@@ -22963,7 +22940,7 @@ packages:
       graphql: 14 - 16
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.8.1)
-      cross-fetch: 3.1.5
+      cross-fetch: 3.1.8
       graphql: 16.8.1
     transitivePeerDependencies:
       - encoding
@@ -23878,7 +23855,7 @@ packages:
     resolution: {integrity: sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==}
     engines: {node: '>= 0.10'}
 
-  /ipfs-car@0.6.2(node-fetch@3.3.2):
+  /ipfs-car@0.6.2(node-fetch@2.6.13):
     resolution: {integrity: sha512-tliuakkKKtCa4TTnFT3zJKjq/aD8EGKX8Y0ybCyrAW0fo/n2koZpxiLjBvtTs47Rqyji6ggXo+atPbJJ60hJmg==}
     hasBin: true
     dependencies:
@@ -23889,8 +23866,8 @@ packages:
       browser-readablestream-to-it: 1.0.3
       idb-keyval: 6.2.1
       interface-blockstore: 2.0.3
-      ipfs-core-types: 0.8.4(node-fetch@3.3.2)
-      ipfs-core-utils: 0.12.2(node-fetch@3.3.2)
+      ipfs-core-types: 0.8.4(node-fetch@2.6.13)
+      ipfs-core-utils: 0.12.2(node-fetch@2.6.13)
       ipfs-unixfs-exporter: 7.0.11
       ipfs-unixfs-importer: 9.0.10
       ipfs-utils: 9.0.14
@@ -23909,19 +23886,19 @@ packages:
       - supports-color
     dev: false
 
-  /ipfs-core-types@0.8.4(node-fetch@3.3.2):
+  /ipfs-core-types@0.8.4(node-fetch@2.6.13):
     resolution: {integrity: sha512-sbRZA1QX3xJ6ywTiVQZMOxhlhp4osAZX2SXx3azOLxAtxmGWDMkHYt722VV4nZ2GyJy8qyk5GHQIZ0uvQnpaTg==}
     deprecated: js-IPFS has been deprecated in favour of Helia - please see https://github.com/ipfs/js-ipfs/issues/4336 for details
     dependencies:
       interface-datastore: 6.1.1
-      multiaddr: 10.0.1(node-fetch@3.3.2)
+      multiaddr: 10.0.1(node-fetch@2.6.13)
       multiformats: 9.9.0
     transitivePeerDependencies:
       - node-fetch
       - supports-color
     dev: false
 
-  /ipfs-core-utils@0.12.2(node-fetch@3.3.2):
+  /ipfs-core-utils@0.12.2(node-fetch@2.6.13):
     resolution: {integrity: sha512-RfxP3rPhXuqKIUmTAUhmee6fmaV3A7LMnjOUikRKpSyqESz/DR7aGK7tbttMxkZdkSEr0rFXlqbyb0vVwmn0wQ==}
     deprecated: js-IPFS has been deprecated in favour of Helia - please see https://github.com/ipfs/js-ipfs/issues/4336 for details
     dependencies:
@@ -23930,7 +23907,7 @@ packages:
       browser-readablestream-to-it: 1.0.3
       debug: 4.3.4(supports-color@5.5.0)
       err-code: 3.0.1
-      ipfs-core-types: 0.8.4(node-fetch@3.3.2)
+      ipfs-core-types: 0.8.4(node-fetch@2.6.13)
       ipfs-unixfs: 6.0.9
       ipfs-utils: 9.0.14
       it-all: 1.0.6
@@ -23938,8 +23915,8 @@ packages:
       it-peekable: 1.0.3
       it-to-stream: 1.0.0
       merge-options: 3.0.4
-      multiaddr: 10.0.1(node-fetch@3.3.2)
-      multiaddr-to-uri: 8.0.0(node-fetch@3.3.2)
+      multiaddr: 10.0.1(node-fetch@2.6.13)
+      multiaddr-to-uri: 8.0.0(node-fetch@2.6.13)
       multiformats: 9.9.0
       nanoid: 3.3.7
       parse-duration: 1.1.0
@@ -24015,8 +23992,8 @@ packages:
       it-to-stream: 1.0.0
       merge-options: 3.0.4
       nanoid: 3.3.7
-      native-fetch: 3.0.0(node-fetch@2.6.12)
-      node-fetch: 2.6.12
+      native-fetch: 3.0.0(node-fetch@2.6.13)
+      node-fetch: 2.6.13
       react-native-fetch-api: 3.0.0
       stream-to-it: 0.2.4
     transitivePeerDependencies:
@@ -24532,8 +24509,10 @@ packages:
   /isomorphic-unfetch@4.0.2:
     resolution: {integrity: sha512-1Yd+CF/7al18/N2BDbsLBcp6RO3tucSW+jcLq24dqdX5MNbCNTw1z4BsGsp4zNmjr/Izm2cs/cEqZPp4kvWSCA==}
     dependencies:
-      node-fetch: 3.3.2
+      node-fetch: 2.6.13
       unfetch: 5.0.0
+    transitivePeerDependencies:
+      - encoding
     dev: true
 
   /isomorphic-ws@5.0.0(ws@8.17.0):
@@ -25172,7 +25151,7 @@ packages:
       zod: 3.22.4
       zod-validation-error: 2.0.0(zod@3.22.4)
     transitivePeerDependencies:
-      - domexception
+      - encoding
     dev: true
 
   /language-subtag-registry@0.3.22:
@@ -27365,21 +27344,21 @@ packages:
       yargs: 17.7.2
     dev: true
 
-  /multiaddr-to-uri@8.0.0(node-fetch@3.3.2):
+  /multiaddr-to-uri@8.0.0(node-fetch@2.6.13):
     resolution: {integrity: sha512-dq4p/vsOOUdVEd1J1gl+R2GFrXJQH8yjLtz4hodqdVbieg39LvBOdMQRdQnfbg5LSM/q1BYNVf5CBbwZFFqBgA==}
     deprecated: This module is deprecated, please upgrade to @multiformats/multiaddr-to-uri
     dependencies:
-      multiaddr: 10.0.1(node-fetch@3.3.2)
+      multiaddr: 10.0.1(node-fetch@2.6.13)
     transitivePeerDependencies:
       - node-fetch
       - supports-color
     dev: false
 
-  /multiaddr@10.0.1(node-fetch@3.3.2):
+  /multiaddr@10.0.1(node-fetch@2.6.13):
     resolution: {integrity: sha512-G5upNcGzEGuTHkzxezPrrD6CaIHR9uo+7MwqhNVcXTs33IInon4y7nMiGxl2CY5hG7chvYQUQhz5V52/Qe3cbg==}
     deprecated: This module is deprecated, please upgrade to @multiformats/multiaddr
     dependencies:
-      dns-over-http-resolver: 1.2.3(node-fetch@3.3.2)
+      dns-over-http-resolver: 1.2.3(node-fetch@2.6.13)
       err-code: 3.0.1
       is-ip: 3.1.0
       multiformats: 9.9.0
@@ -27471,20 +27450,12 @@ packages:
       abort-controller: 3.0.0
     dev: false
 
-  /native-fetch@3.0.0(node-fetch@2.6.12):
+  /native-fetch@3.0.0(node-fetch@2.6.13):
     resolution: {integrity: sha512-G3Z7vx0IFb/FQ4JxvtqGABsOTIqRWvgQz6e+erkB+JJD6LrszQtMozEHI4EkmgZQvnGHrpLVzUWk7t4sJCIkVw==}
     peerDependencies:
-      node-fetch: '*'
+      node-fetch: 2.6.13
     dependencies:
-      node-fetch: 2.6.12
-    dev: false
-
-  /native-fetch@3.0.0(node-fetch@3.3.2):
-    resolution: {integrity: sha512-G3Z7vx0IFb/FQ4JxvtqGABsOTIqRWvgQz6e+erkB+JJD6LrszQtMozEHI4EkmgZQvnGHrpLVzUWk7t4sJCIkVw==}
-    peerDependencies:
-      node-fetch: '*'
-    dependencies:
-      node-fetch: 3.3.2
+      node-fetch: 2.6.13
     dev: false
 
   /natural-compare@1.4.0:
@@ -27606,7 +27577,7 @@ packages:
       - '@babel/core'
       - babel-plugin-macros
 
-  /nft.storage@7.1.1(node-fetch@3.3.2):
+  /nft.storage@7.1.1(node-fetch@2.6.13):
     resolution: {integrity: sha512-OHFeRiWLcGCWHX8Kx3yvSt7qGbHwEROl0kcN2xaHWBaR0ApYH5DnjlqczXSwP9WwBDtjhyDk4IHReXSwuZkB7Q==}
     dependencies:
       '@ipld/car': 3.2.4
@@ -27616,7 +27587,7 @@ packages:
       '@web-std/file': 3.0.3
       '@web-std/form-data': 3.1.0
       carbites: 1.0.6
-      ipfs-car: 0.6.2(node-fetch@3.3.2)
+      ipfs-car: 0.6.2(node-fetch@2.6.13)
       it-pipe: 1.1.0
       multiformats: 9.9.0
       p-retry: 4.6.2
@@ -27664,10 +27635,6 @@ packages:
       minimatch: 3.1.2
     dev: true
 
-  /node-domexception@1.0.0:
-    resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
-    engines: {node: '>=10.5.0'}
-
   /node-fetch-h2@2.3.0:
     resolution: {integrity: sha512-ofRW94Ab0T4AOh5Fk8t0h8OBWrmjb0SSB20xh1H8YnPV9EJ+f5AMoYSUQ2zgJ4Iq2HAK0I2l5/Nequ8YzFS3Hg==}
     engines: {node: 4.x || >=6.0.0}
@@ -27678,8 +27645,8 @@ packages:
   /node-fetch-native@1.6.2:
     resolution: {integrity: sha512-69mtXOFZ6hSkYiXAVB5SqaRvrbITC/NPyqv7yuu/qw0nmgPyYbIMYYNIDhNtwPrzk0ptrimrLz/hhjvm4w5Z+w==}
 
-  /node-fetch@2.6.12:
-    resolution: {integrity: sha512-C/fGU2E8ToujUivIO0H+tpQ6HWo4eEmchoPIoXtxCrVghxdKq+QOHqEZW7tuP3KlV3bC8FRMO5nMCC7Zm1VP6g==}
+  /node-fetch@2.6.13:
+    resolution: {integrity: sha512-StxNAxh15zr77QvvkmveSQ8uCQ4+v5FkvNTj0OESmiHu+VRi/gXArXtkWMElOsOUNLtUEvI4yS+rdtOHZTwlQA==}
     engines: {node: 4.x || >=6.0.0}
     peerDependencies:
       encoding: ^0.1.0
@@ -27688,35 +27655,6 @@ packages:
         optional: true
     dependencies:
       whatwg-url: 5.0.0
-
-  /node-fetch@2.6.7:
-    resolution: {integrity: sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==}
-    engines: {node: 4.x || >=6.0.0}
-    peerDependencies:
-      encoding: ^0.1.0
-    peerDependenciesMeta:
-      encoding:
-        optional: true
-    dependencies:
-      whatwg-url: 5.0.0
-
-  /node-fetch@3.0.0-beta.9:
-    resolution: {integrity: sha512-RdbZCEynH2tH46+tj0ua9caUHVWrd/RHnRfvly2EVdqGmI3ndS1Vn/xjm5KuGejDt2RNDQsVRLPNd2QPwcewVg==}
-    engines: {node: ^10.17 || >=12.3}
-    dependencies:
-      data-uri-to-buffer: 3.0.1
-      fetch-blob: 2.1.2
-    transitivePeerDependencies:
-      - domexception
-    dev: true
-
-  /node-fetch@3.3.2:
-    resolution: {integrity: sha512-dRB78srN/l6gqWulah9SrxeYnxeddIG30+GOqK/9OlLVyLg3HPnr6SqOWTWOXKRwC2eGYCkZ59NNuSgvSrpgOA==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-    dependencies:
-      data-uri-to-buffer: 4.0.1
-      fetch-blob: 3.2.0
-      formdata-polyfill: 4.0.10
 
   /node-forge@1.3.1:
     resolution: {integrity: sha512-dPEtOeMvF9VMcYV/1Wb8CPoVAXtp6MKMlcbAt4ddqmGqUJ6fQZFXkNZNkNlfevtNkGtaSoXf/vNNNSvgrdXwtA==}
@@ -29733,7 +29671,7 @@ packages:
       bl: 5.1.0
       debug: 4.3.4(supports-color@5.5.0)
       minimist: 1.2.8
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
       readable-stream: 3.6.2
     transitivePeerDependencies:
       - encoding
@@ -32330,7 +32268,7 @@ packages:
     hasBin: true
     dependencies:
       call-me-maybe: 1.0.2
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
       node-fetch-h2: 2.3.0
       node-readfiles: 0.2.0
       oas-kit-common: 1.0.8
@@ -32490,7 +32428,7 @@ packages:
     dependencies:
       http-proxy-agent: 5.0.0
       https-proxy-agent: 5.0.1
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
       stream-events: 1.0.5
       uuid: 9.0.1
     transitivePeerDependencies:
