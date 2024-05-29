@@ -362,6 +362,7 @@ const ModuleExplorerPage = (
             children: mappedMainnet,
             data: { name: 'mainnet', chainId: '0' },
             isLoading: mainnetModulesQuery.isFetching,
+            supportsReload: true,
             label: amountOfMainnetModules,
           },
           {
@@ -370,6 +371,7 @@ const ModuleExplorerPage = (
             children: mappedTestnet,
             data: { name: 'testnet', chainId: '0' },
             isLoading: testnetModulesQuery.isFetching,
+            supportsReload: true,
             label: amountOfTestnetModules,
           },
         ]}

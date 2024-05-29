@@ -27,6 +27,7 @@ export type TreeItem<T> = {
   children: TreeItem<T>[];
   data: T;
   isLoading?: boolean;
+  supportsReload?: boolean;
   label?: string | number;
 };
 
@@ -80,7 +81,7 @@ function CustomTree<T>({
               <Text className={itemTitleStyle} bold>
                 {item.data.title}
               </Text>
-              {!item.data.isLoading ? (
+              {!item.data.isLoading && item.data.supportsReload ? (
                 <Button
                   variant="transparent"
                   isCompact
