@@ -12,7 +12,7 @@ const meta: Meta<DialogStoryProps> = {
   title: 'Overlays/Dialog',
   parameters: {
     status: {
-      type: ['releaseCandidate'],
+      type: ['stable'],
     },
     docs: {
       description: {

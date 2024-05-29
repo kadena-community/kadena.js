@@ -5,6 +5,7 @@ import {
   globalStyle,
   style,
 } from '@vanilla-extract/css';
+import { commitTagClass } from '../Changelog/styles.css';
 
 export const $$navMenu = createVar();
 export const $$footerMenu = createVar();
@@ -40,6 +41,9 @@ globalFontFace(bodyFont, {
   src: `url("/fonts/neuhaas_grotesk_pro55.woff2?#iefix format('woff2')")`,
 });
 
-globalStyle('*:not(h1,h2,h3,h4,h5,h6,h7,h8, pre > code span, code)', {
-  fontFamily: `${bodyFont}!important`,
-});
+globalStyle(
+  `*:not(h1,h2,h3,h4,h5,h6,h7,h8, pre > code span, code, ${commitTagClass})`,
+  {
+    fontFamily: `${bodyFont}!important`,
+  },
+);

@@ -1,5 +1,25 @@
 export const blogchainPathUrlRedirects = [
   {
+    source:
+      '/blogchain/2020/kadena-completes-hybrid-blockchain-scaling-to-480-000-transactions-per-second-on-20-chains-2020-08-20',
+    destination:
+      'https://medium.com/kadena-io/kadena-completes-hybrid-blockchain-scaling-to-480-000-transactions-per-second-on-20-chains-5a652295533c',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2020/kadena-roadmap-for-q4-2020-2020-10-28',
+    destination:
+      'https://medium.com/kadena-io/kadena-roadmap-for-q4-2020-d8ac7491b0ff',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2022/from-haskell-to-pact-my-journey-in-code-toward-a-more-stable-and-secure-environment-for-blockchain-builders-2022-07-01',
+    destination:
+      'https://medium.com/kadena-io/from-haskell-to-pact-my-journey-in-code-toward-a-more-stable-and-secure-environment-for-b06e9e3916fb',
+    permanent: true,
+  },
+  {
     source: '/blogchain/:slug/announcing-kadena-technical-grants.2020-11-25',
     destination:
       '/blogchain/:slug/announcing-kadena-technical-grants-2020-11-25',
@@ -34,7 +54,7 @@ export const blogchainPathUrlRedirects = [
   },
   {
     source: '/blogchain',
-    destination: 'https://www.kadena.io/bloddg',
+    destination: 'https://www.kadena.io/blog',
     permanent: true,
   },
 
@@ -954,6 +974,21 @@ export const blogchainPathUrlRedirects = [
   {
     source: '/blogchain/:slug',
     destination: 'https://www.kadena.io/blog/',
+    permanent: true,
+  },
+  {
+    source: '/assets/blog/:slug',
+    destination: '/assets/og_banner.jpeg',
+    permanent: true,
+  },
+  {
+    source: '/assets/blog/:slug/:slug2',
+    destination: '/assets/og_banner.jpeg',
+    permanent: true,
+  },
+  {
+    source: '/assets/docs/1_ioGNdm7WNixtlNPLKwo9eQ.webp',
+    destination: '/assets/og_banner.jpeg',
     permanent: true,
   },
 ];

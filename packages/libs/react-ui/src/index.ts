@@ -6,6 +6,7 @@ export type {
   IBreadcrumbsProps,
   IButtonProps,
   ICardProps,
+  ICheckboxProps,
   IComboboxProps,
   IContentHeaderProps,
   IDialogContentProps,
@@ -61,6 +62,7 @@ export {
   Button,
   Card,
   Cell,
+  Checkbox,
   Column,
   Combobox,
   ComboboxItem,
@@ -128,3 +130,7 @@ export type {
 
 // re-exports from 'react-aria'
 export { RouterProvider } from 'react-aria';
+
+export { useTheme } from './utils';
+export { Themes } from './utils/useTheme/utils/constants';
+export type { ITheme } from './utils/useTheme/utils/constants';

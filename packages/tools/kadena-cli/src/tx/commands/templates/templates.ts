@@ -50,10 +50,50 @@ networkId: "{{network:networkId}}"
 type: exec
 `;
 
+const transferCreateTemplate = `
+code: |-
+  (coin.transfer-create "{{{account:from}}}" "{{{account:to}}}" (read-keyset "account-guard") {{{decimal:amount}}})
+data:
+  account-guard:
+    keys:
+      - {{{key:to}}}
+    pred: {{{predicate}}}
+meta:
+  chainId: "{{chain-id}}"
+  sender: {{{account:from}}}
+  gasLimit: 2000
+  gasPrice: 0.00000001
+  ttl: 7200
+signers:
+  - public: {{key:from}}
+    caps:
+      - name: "coin.TRANSFER"
+        args: [{{{account:from}}}, {{{account:to}}}, {{decimal:amount}}]
+      - name: "coin.GAS"
+        args: []
+networkId: "{{network:networkId}}"
+type: exec
+`;
+
+export const arbitraryCodeTemplate = `
+code: |-
+  {{{code}}}
+data:
+meta:
+  chainId: "{{chain-id}}"
+  gasLimit: {{gasLimit}}
+  gasPrice: 0.000001
+  ttl: 600
+  sender: "local"
+networkId: "{{network:networkId}}"
+type: exec
+`;
+
 /** Only exported to be used in tests, otherwise use getTemplate() */
 export const defaultTemplates = {
   transfer: transferTemplate,
   'safe-transfer': safeTransferTemplate,
+  'transfer-create': transferCreateTemplate,
 } as Record<string, string>;
 
 export const writeTemplatesToDisk = async (): Promise<string[]> => {

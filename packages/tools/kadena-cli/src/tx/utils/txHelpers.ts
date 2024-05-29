@@ -709,7 +709,7 @@ function generateClientKey(details: INetworkDetails): string {
  * @param {INetworkDetails} details - The network details.
  * @returns {string} The client URL.
  */
-function generateClientUrl(details: INetworkDetails): string {
+export function generateClientUrl(details: INetworkDetails): string {
   return `${details.networkHost}/chainweb/0.0/${details.networkId}/chain/${details.chainId}/pact`;
 }
 

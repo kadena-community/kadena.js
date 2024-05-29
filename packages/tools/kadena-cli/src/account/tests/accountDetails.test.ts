@@ -27,7 +27,7 @@ describe('account details', () => {
   it('should fetch account details based on the account alias file', async () => {
     // Pre add the account alias file to make sure account alias exists
     await runCommand(
-      'account add --type=manual --account-alias=account-add-test-manual --account-name=accountName --fungible=coin --network=testnet --chain-id=1 --public-keys=publicKey1 --quiet',
+      'account add --from=key --account-alias=account-add-test-manual --account-name=accountName --fungible=coin --network=testnet --chain-id=1 --public-keys=publicKey1 --quiet',
     );
 
     mockPrompts({
@@ -56,7 +56,6 @@ describe('account details', () => {
         'Enter a ChainId (0-19) (comma or hyphen separated e.g 0,1,2 or 1-5 or all):':
           '0',
       },
-      verbose: true,
     });
     const res = await runCommandJson('account details');
     expect(res).toEqual(accountDetailsSuccessData.result.data);

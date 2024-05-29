@@ -1,4 +1,7 @@
-import { networkDefaults } from '../../constants/networks.js';
+import {
+  NO_NETWORKS_FOUND_ERROR_MESSAGE,
+  networkDefaults,
+} from '../../constants/networks.js';
 
 import { log } from '../../utils/logger.js';
 
@@ -36,6 +39,10 @@ export async function displayNetworksConfig(): Promise<void> {
 
   const defaultNetworkName = await getDefaultNetworkName();
   const existingNetworks: ICustomNetworkChoice[] = await getExistingNetworks();
+
+  if (existingNetworks.length === 0) {
+    return log.warning(NO_NETWORKS_FOUND_ERROR_MESSAGE);
+  }
 
   const networks = await Promise.all(
     existingNetworks.map(async (network) => {

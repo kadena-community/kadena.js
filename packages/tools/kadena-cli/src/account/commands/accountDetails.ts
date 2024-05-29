@@ -15,6 +15,7 @@ import { log } from '../../utils/logger.js';
 import { createTable } from '../../utils/table.js';
 import { accountOptions } from '../accountOptions.js';
 import type { IAccountDetailsResult } from '../types.js';
+import { sortChainIds } from '../utils/accountHelpers.js';
 import type { IGetAccountDetailsParams } from '../utils/getAccountDetails.js';
 import { getAccountDetailsFromChain } from '../utils/getAccountDetails.js';
 
@@ -30,9 +31,7 @@ interface IAccountDetails {
 const formatWarnings = (warnings: string[]): string | null => {
   if (warnings.length === 0) return null;
   const [prefix, suffix, ...chainIds] = warnings;
-  const sortedChainIds = chainIds.sort(
-    (a, b) => parseInt(a, 10) - parseInt(b, 10),
-  );
+  const sortedChainIds = sortChainIds(chainIds as ChainId[]);
   return `${prefix} ${sortedChainIds.join(',')} ${suffix}`;
 };
 

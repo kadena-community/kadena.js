@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react';
 
+/**
+ * Saves the scroll location of the document
+ */
 export function useWindowScroll(): [
   {
     x: number;

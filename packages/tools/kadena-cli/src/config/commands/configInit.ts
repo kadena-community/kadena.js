@@ -32,7 +32,7 @@ export const createConfigInitCommand: (
   [
     configOptions.global(),
     walletOptions.createWalletConfirmation(),
-    walletOptions.walletName({ isOptional: false }),
+    walletOptions.walletName({ isOptional: true }),
     securityOptions.createPasswordOption({
       message: 'Enter the new wallet password:',
       confirmPasswordMessage: 'Re-enter the password:',
@@ -66,6 +66,9 @@ export const createConfigInitCommand: (
         .map((x) => `  - ${x}`)
         .join('\n')}`,
     );
+    log.output(null, {
+      path: location,
+    });
 
     const { createWallet } = await option.createWallet();
     if (createWallet === 'false') {
@@ -74,6 +77,12 @@ export const createConfigInitCommand: (
     }
 
     const { walletName } = await option.walletName();
+    if (!walletName) {
+      log.error(
+        `Wallet name (-w, --wallet-name <walletName>) is required when creating a wallet.`,
+      );
+      return;
+    }
     const { passwordFile } = await option.passwordFile();
     const { legacy } = await option.legacy();
     const { createAccount } = await option.createAccount();

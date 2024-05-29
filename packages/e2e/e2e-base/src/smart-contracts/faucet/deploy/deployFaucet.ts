@@ -5,10 +5,10 @@ import type {
 import type { ICommand } from '@kadena/client';
 import { Pact, createClient, createSignWithKeypair } from '@kadena/client';
 
-import { sender00Account } from '@constants/accounts.constants';
-import { devnetUrl, networkId } from '@constants/network.constants';
 import fs from 'fs';
 import path from 'path';
+import { sender00Account } from '../../../constants/accounts.constants';
+import { devnetUrl, networkId } from '../../../constants/network.constants';
 
 export const deployFaucet = async ({
   chainId,

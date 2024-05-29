@@ -100,11 +100,19 @@ export async function mempoolLookup(
           });
 
           res.on('end', () => {
-            resolve(JSON.parse(data));
+            try {
+              resolve(JSON.parse(data));
+            } catch (error) {
+              reject(
+                new MempoolError(
+                  'Error occurred while processing response data.',
+                  error,
+                ),
+              );
+            }
           });
         },
       );
-
       req.on('error', (error) => {
         reject(
           new MempoolError(

@@ -2,9 +2,8 @@
 src/_generated
 src/_generated/specs
 public/sitemap.xml
-
+!/src/pages
 .tempimport
-src/pages/docs
 
 next-env.d.ts
 .env.local

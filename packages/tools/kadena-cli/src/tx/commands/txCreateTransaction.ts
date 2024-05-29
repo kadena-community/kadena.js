@@ -24,33 +24,40 @@ import { writeTemplatesToDisk } from './templates/templates.js';
 export const createTransaction = async (
   template: string,
   variables: Record<string, string>,
+): Promise<IUnsignedCommand> => {
+  // convert decimal-amount to pact decimal
+  const updatedVariables = variables['decimal-amount']
+    ? {
+        ...variables,
+        'decimal-amount': new PactNumber(
+          variables['decimal-amount'],
+        ).toPactDecimal().decimal,
+      }
+    : variables;
+
+  // create transaction
+  const command = await createPactCommandFromStringTemplate(
+    template,
+    updatedVariables,
+  );
+
+  // Map from legacy or partial template to full IPactCommand
+  // This method could throw an error
+  const fixed = fixTemplatePactCommand(command);
+
+  return kadenaCreateTransaction(fixed);
+};
+
+export const createAndWriteTransaction = async (
+  template: string,
+  variables: Record<string, string>,
   // eslint-disable-next-line @rushstack/no-new-null
   outFilePath: string | null,
 ): Promise<
   CommandResult<{ transaction: IUnsignedCommand; filePath: string }>
 > => {
   try {
-    // convert decimal-amount to pact decimal
-    const updatedVariables = variables['decimal-amount']
-      ? {
-          ...variables,
-          'decimal-amount': new PactNumber(
-            variables['decimal-amount'],
-          ).toPactDecimal().decimal,
-        }
-      : variables;
-
-    // create transaction
-    const command = await createPactCommandFromStringTemplate(
-      template,
-      updatedVariables,
-    );
-
-    // Map from legacy or partial template to full IPactCommand
-    // This method could throw an error
-    const fixed = fixTemplatePactCommand(command);
-
-    const transaction = kadenaCreateTransaction(fixed);
+    const transaction = await createTransaction(template, variables);
 
     let filePath: string | null = null;
     if (outFilePath === null) {
@@ -148,7 +155,7 @@ export const createTransactionCommandNew = createCommand(
       return log.error('template not found');
     }
 
-    const result = await createTransaction(
+    const result = await createAndWriteTransaction(
       template.templateConfig.template,
       templateVariables.templateVariables,
       outputFile.outFile,

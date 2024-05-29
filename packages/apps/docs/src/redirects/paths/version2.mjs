@@ -1,5 +1,10 @@
 export const version2PathUrlRedirects = [
   {
+    source: '/kadena/client',
+    destination: '/learn',
+    permanent: true,
+  },
+  {
     source: '/kadena',
     destination: '/learn',
     permanent: true,
@@ -19,6 +24,12 @@ export const version2PathUrlRedirects = [
     destination: '/participate/wallets',
     permanent: true,
   },
+  {
+    source: '/kadena/whitepapers',
+    destination: '/learn/resources',
+    permanent: true,
+  },
+
   {
     source: '/kadena/:slug',
     destination: '/learn/:slug',
@@ -127,6 +138,16 @@ export const version2PathUrlRedirects = [
   {
     source: '/build/guides',
     destination: '/build',
+    permanent: true,
+  },
+  {
+    source: '/build/guides/election-dapp-tutorial',
+    destination: '/build/election',
+    permanent: true,
+  },
+  {
+    source: '/build/guides/election-dapp-tutorial/02-running-devnet',
+    destination: '/build/election',
     permanent: true,
   },
   {
@@ -242,6 +263,11 @@ export const version2PathUrlRedirects = [
   {
     source: '/pact/beginner/:slug1',
     destination: '/build/pact/:slug1',
+    permanent: true,
+  },
+  {
+    source: '/pact/reference/pact-repl-cli',
+    destination: '/reference/pact-repl',
     permanent: true,
   },
   {
@@ -405,8 +431,8 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
-    source: '/pact/reference/pact-repl-cli',
-    destination: '/reference/pact-repl',
+    source: '/reference/kadena-client/kadena-cli',
+    destination: '/reference/kadena-cli',
     permanent: true,
   },
   {

@@ -25,3 +25,11 @@ export const targetAccount: IAccount = {
   chainId: '1',
   guard: '5a2afbc4564b76b2c27ce5a644cab643c43663835ea0be22433b209d3351f937',
 };
+export const secondaryTargetAccount: IAccountWithSecretKey = {
+  account: 'k:5f6f02565cf70fe29a43eb251028673ceb43263707a2d6eee929a97690223b87',
+  publicKey: '5f6f02565cf70fe29a43eb251028673ceb43263707a2d6eee929a97690223b87',
+  chainId: '0',
+  guard: '5f6f02565cf70fe29a43eb251028673ceb43263707a2d6eee929a97690223b87',
+  // this is here only for testing purposes. in a real world scenario, the secret key should never be exposed
+  secretKey: 'a3c949df6ff96f4b82a9c7f2e44f5adccaf0e4278eef2000164383912b6fd8b4',
+};

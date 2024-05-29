@@ -102,8 +102,8 @@ export const passwordPromptTransform =
       useStdin === true && (passwordFile === '-' || passwordFile === undefined)
         ? (args.stdin as string | null)
         : typeof passwordFile === 'string'
-        ? await services.filesystem.readFile(passwordFile)
-        : passwordFile._password;
+          ? await services.filesystem.readFile(passwordFile)
+          : passwordFile._password;
 
     if (password === null) {
       throw new CommandError({
@@ -142,8 +142,8 @@ export const mnemonicPromptTransform =
       filepath === '-' || filepath === undefined
         ? (args.stdin as string | null)
         : typeof filepath === 'string'
-        ? await services.filesystem.readFile(filepath)
-        : filepath._secret;
+          ? await services.filesystem.readFile(filepath)
+          : filepath._secret;
 
     if (content === null) {
       throw new CommandError({

@@ -1,7 +1,11 @@
-import type { Node, Parent } from 'mdast';
+import type { Node, Parent, Text } from 'mdast';
 
-function isParent(node: Node): node is Parent {
+export function isParent(node: Node): node is Parent {
   return 'children' in node;
+}
+
+export function hasValue(node: Node): node is Text {
+  return 'value' in node;
 }
 
 export function getTypes<T>(tree: Node, type: string, arr: T[] = []): T[] {

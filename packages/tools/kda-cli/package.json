@@ -56,13 +56,13 @@
     "@types/cross-spawn": "~6.0.2",
     "@types/node": "^20.12.7",
     "@types/react": "^18.2.79",
-    "@vitest/coverage-v8": "^1.1.0",
+    "@vitest/coverage-v8": "^1.6.0",
     "chalk": "^5.2.0",
     "eslint": "^8.45.0",
     "ink-testing-library": "^3.0.0",
     "prettier": "~3.2.5",
     "typescript": "5.4.5",
-    "vitest": "^1.1.0"
+    "vitest": "^1.6.0"
   },
   "engines": {
     "node": ">=18"
