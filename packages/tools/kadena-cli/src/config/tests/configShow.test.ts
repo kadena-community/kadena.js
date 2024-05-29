@@ -22,7 +22,7 @@ describe('config show', () => {
       networkDirectory: path.join(configDirectory, NETWORKS_DIR),
       accountDirectory: path.join(configDirectory, ACCOUNT_DIR),
       numberOfWallets: 0,
-      numberOfTemplates: 2,
+      numberOfTemplates: 3,
       numberOfNetworks: 3,
       numberOfAccounts: 0,
       defaultNetwork: 'N/A',
@@ -36,7 +36,7 @@ describe('config show', () => {
     });
     // creating an account
     await runCommand(
-      'account add --type=manual --account-alias=account-one --account-name=k:55e10019549e047e68efaa18489ed785eca271642e2d0ce41d56ced2a30ccb84 --fungible=coin --network=testnet --chain-id=1 --public-keys=55e10019549e047e68efaa18489ed785eca271642e2d0ce41d56ced2a30ccb84 --quiet',
+      'account add --from=key --account-alias=account-one --account-name=k:55e10019549e047e68efaa18489ed785eca271642e2d0ce41d56ced2a30ccb84 --fungible=coin --network=testnet --chain-id=1 --public-keys=55e10019549e047e68efaa18489ed785eca271642e2d0ce41d56ced2a30ccb84 --quiet',
     );
     const output = await runCommandJson('config show');
     expect(output).toEqual({
@@ -46,7 +46,7 @@ describe('config show', () => {
       networkDirectory: path.join(configDirectory, NETWORKS_DIR),
       accountDirectory: path.join(configDirectory, ACCOUNT_DIR),
       numberOfWallets: 1,
-      numberOfTemplates: 2,
+      numberOfTemplates: 3,
       numberOfNetworks: 3,
       numberOfAccounts: 1,
       defaultNetwork: 'N/A',
