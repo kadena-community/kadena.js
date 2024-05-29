@@ -1,7 +1,7 @@
-import { TreeItem } from '@/components/Global/CustomTree/CustomTree';
-import { ModuleModel } from '@/hooks/use-module-query';
+import type { TreeItem } from '@/components/Global/CustomTree/CustomTree';
+import type { Outline } from '@/components/Global/ModuleExplorer';
+import type { ModuleModel } from '@/hooks/use-module-query';
 import { getName, parse } from '@/utils/persist';
-import { CHAINS, ChainwebChainId } from '@kadena/chainweb-node-client';
 import type { NextApiRequestCookies } from 'next/dist/server/api-utils';
 import type { ParsedUrlQuery } from 'querystring';
 
@@ -102,6 +102,16 @@ const mapToTreeItems = (
         children,
       };
     });
+};
+
+export const isModule = (
+  item: IncompleteModuleModel | Outline,
+): item is IncompleteModuleModel => {
+  return (
+    typeof item !== 'string' &&
+    (item as IncompleteModuleModel).chainId !== undefined &&
+    (item as IncompleteModuleModel).name !== undefined
+  );
 };
 
 export const xToY = (
