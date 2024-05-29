@@ -57,7 +57,6 @@ function CustomTree<T>({
         flexDirection: 'column',
         height: '100%',
       }}
-      itemProps={{ fillHeight: true }}
     >
       {(item) => {
         return (
