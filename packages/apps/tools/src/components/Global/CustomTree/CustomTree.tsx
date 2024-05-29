@@ -81,7 +81,7 @@ function CustomTree<T>({
               <Text className={itemTitleStyle} bold>
                 {item.data.title}
               </Text>
-              {!item.data.isLoading && item.data.supportsReload ? (
+              {item.data.supportsReload && !item.data.isLoading ? (
                 <Button
                   variant="transparent"
                   isCompact
