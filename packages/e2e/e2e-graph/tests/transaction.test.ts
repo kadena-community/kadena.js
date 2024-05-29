@@ -1,27 +1,27 @@
 import {
-devnetMiner,
-sender00Account,
+  devnetMiner,
+  sender00Account,
 } from '@kadena-dev/e2e-base/src/constants/accounts.constants';
 import { transferAmount } from '@kadena-dev/e2e-base/src/constants/amounts.constants';
 import { coinModuleHash } from '@kadena-dev/e2e-base/src/constants/coin.constants';
 import {
-networkId,
-nodeHost,
-wsHost,
+  networkId,
+  nodeHost,
+  wsHost,
 } from '@kadena-dev/e2e-base/src/constants/network.constants';
 import {
-createAccount,
-generateAccount,
+  createAccount,
+  generateAccount,
 } from '@kadena-dev/e2e-base/src/helpers/client-utils/accounts.helper';
 import {
-transferFunds,
-transferFundsCrossChain,
+  transferFunds,
+  transferFundsCrossChain,
 } from '@kadena-dev/e2e-base/src/helpers/client-utils/transfer.helper';
 import type { IAccount } from '@kadena-dev/e2e-base/src/types/account.types';
-import type { ICommandResult,IKeyPair } from '@kadena/client';
+import type { ICommandResult, IKeyPair } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transferCreate } from '@kadena/client-utils/coin';
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import type { SubscribePayload } from 'graphql-ws';
 import { createClient } from 'graphql-ws';
 import WebSocket from 'ws';
@@ -30,8 +30,8 @@ import { base64Encode } from '../helpers/cryptography.helper';
 import { triggerMining } from '../helpers/miner.helper';
 import { sendQuery } from '../helpers/request.helper';
 import {
-getTransactionsByRequestKeySubscription,
-getTransactionsQuery,
+  getTransactionsByRequestKeySubscription,
+  getTransactionsQuery,
 } from '../queries/getTransactions';
 
 test.describe('Query: getTransactions', () => {
