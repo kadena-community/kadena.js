@@ -1,4 +1,5 @@
 import { Media } from '@/media';
+import React from 'react';
 import StatisticsGrid from './statistics-grid';
 import StatisticsStack from './statistics-stack';
 
