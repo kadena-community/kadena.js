@@ -1,5 +1,5 @@
-import { MonoArrowOutward, MonoArrowRight } from '@kadena/react-icons/system';
-import { Link, Text, TextLink } from '@kadena/react-ui';
+import { MonoArrowOutward } from '@kadena/react-icons/system';
+import { Text } from '@kadena/react-ui';
 import classNames from 'classnames';
 import React, { Fragment } from 'react';
 import {
@@ -16,19 +16,19 @@ import {
   textClass,
 } from './styles.css';
 
-interface IDynamicComponentField {
+interface IDataRenderComponentField {
   type?: 'text' | 'code';
   key: string;
   value: string | string[];
   link?: string;
 }
 
-interface IDynamicComponentProps {
+interface IDataRenderComponentProps {
   title?: string;
-  fields: IDynamicComponentField[];
+  fields: IDataRenderComponentField[];
 }
 
-const DataRenderComponent: React.FC<IDynamicComponentProps> = ({
+const DataRenderComponent: React.FC<IDataRenderComponentProps> = ({
   title,
   fields,
 }) => {

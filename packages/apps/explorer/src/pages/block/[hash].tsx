@@ -1,4 +1,5 @@
-import { useBlockQuery } from '@/__generated__/sdk';
+import { Transaction, useBlockQuery } from '@/__generated__/sdk';
+import CompactTransactionsTable from '@/components/compact-transactions-table/compact-transactions-table';
 import DataRenderComponent from '@/components/data-render-component/data-render-component';
 import { Badge, TabItem, Tabs } from '@kadena/react-ui';
 
@@ -119,7 +120,28 @@ const Block: React.FC = () => {
               </>
             }
           >
-            Transactions Data
+            <CompactTransactionsTable
+              // transactions={data.block.transactions.edges.map(
+              //   (edge) => edge.node as Transaction,
+              // )}
+              transactions={[
+                ...data.block.transactions.edges.map(
+                  (edge) => edge.node as Transaction,
+                ),
+                ...data.block.transactions.edges.map(
+                  (edge) => edge.node as Transaction,
+                ),
+                ...data.block.transactions.edges.map(
+                  (edge) => edge.node as Transaction,
+                ),
+                ...data.block.transactions.edges.map(
+                  (edge) => edge.node as Transaction,
+                ),
+                ...data.block.transactions.edges.map(
+                  (edge) => edge.node as Transaction,
+                ),
+              ]}
+            />
           </TabItem>
         </Tabs>
       )}

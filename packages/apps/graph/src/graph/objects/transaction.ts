@@ -35,8 +35,7 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
     }),
     cmd: t.field({
       type: TransactionCommand,
-
-      async resolve(parent, __args, context) {
+      async resolve(parent) {
         try {
           const signers = await signersLoader.load({
             blockHash: parent.blockHash,
@@ -72,7 +71,7 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
     }),
     result: t.field({
       type: TransactonInfo,
-      resolve: async (parent) => {
+      async resolve(parent) {
         try {
           const status = await getMempoolTransactionStatus(
             parent.requestKey,
