@@ -195,19 +195,11 @@ export const getServerSideProps: GetServerSideProps<{
   // data: IChainModule[];
   openedModules: IEditorProps['openedModules'];
 }> = async (context) => {
-  // const network = getCookieValue(
-  //   StorageKeys.NETWORK,
-  //   context.req.cookies,
-  //   DefaultValues.NETWORK,
-  // );
-
   const networksData = getCookieValue(
     StorageKeys.NETWORKS_DATA,
     context.req.cookies,
     getAllNetworks([]),
   );
-
-  // const modules = await getModules(network, networksData);
 
   const openedModules: IEditorProps['openedModules'] = [];
   const moduleQueryValue = getQueryValue(QueryParams.MODULE, context.query);
@@ -244,33 +236,12 @@ export const getServerSideProps: GetServerSideProps<{
 const ModuleExplorerPage = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) => {
-  const { selectedNetwork: network, networksData } = useWalletConnectClient();
-
   const queryClient = useQueryClient();
 
   const router = useRouter();
 
   useToolbar(menuData, router.pathname);
 
-  // const { data: modules } = useQuery({
-  //   queryKey: ['modules', network, networksData],
-  //   queryFn: () => getModules(network, networksData),
-  //   initialData: props.data,
-  //   staleTime: 1500, // We need to set this in combination with initialData, otherwise the query will immediately refetch when it mounts
-  //   refetchOnWindowFocus: false,
-  // });
-  const modules = [];
-
-  // const mainnetModulesQuery = useQuery({
-  //   queryKey: ['modules-mainnet'],
-  //   queryFn: () => {},
-  //   staleTime: Infinity,
-  // });
-  // const testnetModulesQuery = useQuery({
-  //   queryKey: ['modules-testnet'],
-  //   queryFn: () => {},
-  //   staleTime: Infinity,
-  // });
   const mainnetModulesQuery = useModulesQuery('mainnet01');
   const testnetModulesQuery = useModulesQuery('testnet04');
 
