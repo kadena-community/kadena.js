@@ -87,6 +87,7 @@ export const commitListItemTitleClass = style([
     selectors: {
       '&::before': {
         content: '•',
+        color: tokens.kda.foundation.color.text.base.default,
         paddingInlineEnd: tokens.kda.foundation.spacing.sm,
       },
     },
@@ -120,7 +121,17 @@ export const tagContainerClass = style([
     paddingBlockEnd: 'md',
   }),
   {
+    alignSelf: 'flex-start',
     ...responsiveStyle({
+      xs: {
+        width: '100%',
+      },
+      sm: {
+        width: '100px',
+      },
+      md: {
+        width: '100%',
+      },
       lg: {
         paddingInlineStart: 0,
         paddingBlockStart: 0,
@@ -191,3 +202,32 @@ globalStyle(
     color: tokens.kda.foundation.color.text.base.inverse['@init'],
   },
 );
+
+export const togglePackageButtonClass = style([
+  atoms({
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+    gap: 'sm',
+    alignItems: 'center',
+    background: 'none',
+    border: 'none',
+    marginInline: 'no',
+    paddingInlineStart: 'no',
+    cursor: 'pointer',
+  }),
+]);
+
+export const togglePackageIconClass = style({
+  transition: 'transform .5s ease',
+});
+export const togglePackageIconOpenClass = style({
+  transform: 'rotate(90deg)',
+});
+
+export const versionWrapperClass = style({
+  overflow: 'hidden',
+  willChange: 'maxHeight',
+  transition: 'max-height 1s ease-in-out',
+});
+export const versionWrapperOpenClass = style({});

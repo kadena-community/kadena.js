@@ -13,8 +13,10 @@ import {
 import type { ChainId, IPactDecimal } from '@kadena/types';
 import { submitClient } from '../core';
 import type { IClientConfig } from '../core/utils/helpers';
+import type { CommonProps } from './config';
+import { formatAdditionalSigners, formatCapabilities } from './helpers';
 
-interface IBurnTokenInput {
+interface IBurnTokenInput extends CommonProps {
   policyConfig?: {
     guarded?: boolean;
     nonFungible?: boolean;
@@ -40,6 +42,9 @@ const burnTokenCommand = ({
   guard,
   amount,
   policyConfig,
+  meta,
+  capabilities,
+  additionalSigners,
 }: IBurnTokenInput) => {
   if (policyConfig?.nonFungible) {
     throw new Error('Non-fungible tokens cannot be burned');
@@ -66,8 +71,10 @@ const burnTokenCommand = ({
             ),
           ]
         : []),
+      ...formatCapabilities(capabilities, signFor),
     ]),
-    setMeta({ senderAccount: guard.account, chainId }),
+    ...formatAdditionalSigners(additionalSigners),
+    setMeta({ senderAccount: guard.account, chainId, ...meta }),
   );
 };
 

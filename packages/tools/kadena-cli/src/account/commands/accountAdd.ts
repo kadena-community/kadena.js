@@ -1,22 +1,22 @@
 import { createCommand } from '../../utils/createCommand.js';
 import { options } from '../accountAddOptions.js';
+import { addAccountFromKey } from './accountAddFromKey.js';
 import { addAccountFromWallet } from './accountAddFromWallet.js';
-import { addAccountManual } from './accountAddManual.js';
 
 export const createAddAccountCommand = createCommand(
   'add',
-  'Add an existing account locally to the CLI',
+  'Add an existing account locally to the CLI. Use --from=key to select a key file or enter key details manually. Use --from=wallet to select from available wallets.',
   options,
   async (option) => {
-    const typeSelection = (await option.type()).type;
+    const accountFromSelection = (await option.from()).from;
 
-    if (typeSelection === 'manual') {
-      return addAccountManual(option);
-    } else if (typeSelection === 'wallet') {
+    if (accountFromSelection === 'key') {
+      return addAccountFromKey(option);
+    } else if (accountFromSelection === 'wallet') {
       return addAccountFromWallet(option);
     } else {
       throw new Error(
-        `Invalid account type : ${typeSelection}. Supported types are 'manual' and 'wallet'`,
+        `Invalid account from value: ${accountFromSelection}. Supported values are "key" and "wallet".`,
       );
     }
   },

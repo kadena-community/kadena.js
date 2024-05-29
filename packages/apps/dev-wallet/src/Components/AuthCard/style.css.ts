@@ -13,7 +13,7 @@ export const authCard = style([
   },
 ]);
 
-export const backBtnClass = style([
+export const backButtonClass = style([
   atoms({
     textDecoration: 'none',
     color: 'text.base.default',

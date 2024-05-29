@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { CURRENTPACKAGE } from '../../constants';
 import { getChangelog, writeContent } from '../content';
 
 describe('content utils', () => {
@@ -20,11 +21,12 @@ describe('content utils', () => {
     vi.resetAllMocks();
   });
   describe('getChangelog', () => {
-    it('should read the content of a changelog', () => {
+    it('should read the content of a changelog from a repo', () => {
       const spy = vi.spyOn(fs, 'readFileSync');
 
       const repo: IRepo = {
         name: 'Pact 4',
+        slug: 'pact',
         repo: 'https://github.com/kadena-io/pact.git',
         directory: '/',
         fileName: 'CHANGELOG.md',
@@ -37,6 +39,28 @@ describe('content utils', () => {
       expect(spy).toBeCalledTimes(1);
       expect(spy).toBeCalledWith(
         './.tempimport/kadena-io/pact.git//CHANGELOG.md',
+        'utf-8',
+      );
+    });
+
+    it('should read the content of a changelog from the branch if repo name is same as branch', () => {
+      const spy = vi.spyOn(fs, 'readFileSync');
+
+      const repo: IRepo = {
+        name: 'React UI',
+        slug: 'react-ui',
+        repo: 'https://github.com/kadena-community/kadena.js.git',
+        directory: '/packages/libs/react-ui',
+        fileName: 'CHANGELOG.md',
+        owner: 'kadena-community',
+        repoName: CURRENTPACKAGE,
+      };
+
+      getChangelog(repo);
+
+      expect(spy).toBeCalledTimes(1);
+      expect(spy).toBeCalledWith(
+        `${process.cwd()}/../../../packages/libs/react-ui/CHANGELOG.md`,
         'utf-8',
       );
     });

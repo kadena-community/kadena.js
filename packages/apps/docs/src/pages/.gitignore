@@ -7,4 +7,6 @@
 !_app.tsx
 !/search/*
 !/api/*
+!/changelogs/*
+
 

@@ -1,7 +1,7 @@
 import { createConfigInitCommand } from './commands/configInit.js';
 
 import type { Command } from 'commander';
-import { createConfigPathCommand } from './commands/configPath.js';
+import { createConfigShowCommand } from './commands/configShow.js';
 
 /**
  * Represents the root command for the configuration CLI.
@@ -26,5 +26,5 @@ export function configCommandFactory(program: Command, version: string): void {
       all projects bootstrap comes from this configuration
   */
   createConfigInitCommand(configProgram, version);
-  createConfigPathCommand(configProgram, version);
+  createConfigShowCommand(configProgram, version);
 }
