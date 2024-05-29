@@ -43,6 +43,9 @@ export const Footer: FC = () => {
               Code of Conduct
             </FooterLink>
           </Link>
+          <Link href="/changelogs" passHref legacyBehavior>
+            <FooterLink href="/changelogs">Changelogs</FooterLink>
+          </Link>
         </Stack>
         <Stack
           justifyContent="space-around"

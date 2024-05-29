@@ -1,8 +1,10 @@
 import { MonoClose, MonoInfo } from '@kadena/react-icons/system';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
+import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { useState } from 'react';
 import {
+  borderClass,
   closeButtonClass,
   contentClassRecipe,
   iconClass,
@@ -25,7 +27,6 @@ export const Notification: FC<INotificationProps> = ({
   children,
   isDismissable = false,
   intent,
-  displayStyle,
   onDismiss,
   icon,
   role,
@@ -37,10 +38,12 @@ export const Notification: FC<INotificationProps> = ({
 
   return (
     <div
-      className={notificationRecipe({
-        intent,
-        displayStyle: type === 'inlineStacked' ? 'borderless' : displayStyle,
-      })}
+      className={classNames(
+        notificationRecipe({
+          intent,
+        }),
+        { [borderClass]: type === 'stacked' },
+      )}
       role={role}
     >
       <span className={iconClass}>{icon ? icon : <MonoInfo />}</span>

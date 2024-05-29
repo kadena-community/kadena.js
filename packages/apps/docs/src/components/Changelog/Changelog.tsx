@@ -16,7 +16,7 @@ export const Changelog: FC<IProps> = ({ changelogs }) => {
   return (
     <Stack flexDirection="column" gap="xxxl">
       {packages.map((pkg) => (
-        <Package key={pkg.repoName} pkg={pkg} />
+        <Package key={pkg.repoName} pkg={pkg} isFullPage={false} />
       ))}
     </Stack>
   );

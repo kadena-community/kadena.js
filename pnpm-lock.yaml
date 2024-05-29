@@ -443,6 +443,9 @@ importers:
       '@apollo/client':
         specifier: ~3.9.11
         version: 3.9.11(@types/react@18.2.79)(graphql-ws@5.16.0)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
+      '@artsy/fresnel':
+        specifier: ^7.1.4
+        version: 7.1.4(react@18.2.0)
       '@graphql-yoga/apollo-link':
         specifier: ~3.3.0
         version: 3.3.0(@apollo/client@3.9.11)(@types/node@20.12.7)(graphql@16.8.1)
@@ -3521,7 +3524,7 @@ packages:
     dependencies:
       react: 18.2.0
     dev: true
-
+S
   /@assemblyscript/loader@0.9.4:
     resolution: {integrity: sha512-HazVq9zwTVwGmqdwYzu7WyQ6FQVZ7SwET0KKQuKm55jD0IfUpZgN0OPIiZG3zV1iSrVYcN0bdwLRXI/VNCYsUA==}
     dev: false
@@ -16530,7 +16533,7 @@ packages:
       chalk: 4.1.2
       debug: 4.3.4(supports-color@5.5.0)
       loader-utils: 2.0.4
-      webpack: 5.88.2(@swc/core@1.3.80)
+      webpack: 5.88.2(webpack-cli@4.9.2)
     transitivePeerDependencies:
       - '@types/node'
       - less

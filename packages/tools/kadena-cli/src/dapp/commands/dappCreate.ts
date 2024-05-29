@@ -15,13 +15,11 @@ export const createDappCommand: (program: Command, version: string) => void =
     [dappOptions.dappTemplate()],
     async (option, { values }) => {
       const config = await option.dappTemplate();
-      log.debug('dapp-create-command', config);
+      log.debug('dapp-add-command', config);
 
       if (values[0] === undefined) {
         throw new CommandError({
-          errors: [
-            'Project name is required, e.g. `kadena dapp create my-dapp`',
-          ],
+          errors: ['Project name is required, e.g. `kadena dapp add my-dapp`'],
           exitCode: 1,
         });
       }

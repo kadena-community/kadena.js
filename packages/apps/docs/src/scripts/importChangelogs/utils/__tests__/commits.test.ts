@@ -37,7 +37,7 @@ describe('commits utils', () => {
 
   describe('getCommits', () => {
     it('should return an array with all commits of the given package', async () => {
-      const changelog = await import('./mock/changelog.json', {
+      const changelog = await import('./../../../__mocks__/changelog.json', {
         assert: {
           type: 'json',
         },
@@ -48,7 +48,7 @@ describe('commits utils', () => {
       expect(result.length).toEqual(26);
     });
     it('should return an array of commits of the given package first version', async () => {
-      const changelog = await import('./mock/changelog.json', {
+      const changelog = await import('./../../../__mocks__/changelog.json', {
         assert: {
           type: 'json',
         },
@@ -62,7 +62,7 @@ describe('commits utils', () => {
   });
   describe('getVersionCommits', () => {
     it('should return an array with all commits of the given version', async () => {
-      const changelog = await import('./mock/changelog.json', {
+      const changelog = await import('./../../../__mocks__/changelog.json', {
         assert: {
           type: 'json',
         },
@@ -75,7 +75,7 @@ describe('commits utils', () => {
       expect(result.length).toEqual(6);
     });
     it('should return an array of commits', async () => {
-      const changelog = await import('./mock/changelog.json', {
+      const changelog = await import('./../../../__mocks__/changelog.json', {
         assert: {
           type: 'json',
         },

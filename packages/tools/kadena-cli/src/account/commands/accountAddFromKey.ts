@@ -13,7 +13,7 @@ import { displayAddAccountSuccess } from '../utils/addHelpers.js';
 import { createAccountName } from '../utils/createAccountName.js';
 import { getAccountDetails } from '../utils/getAccountDetails.js';
 
-export const addAccountManual = async (
+export const addAccountFromKey = async (
   option: CommandOption<typeof options>,
 ): Promise<void> => {
   const accountAlias = (await option.accountAlias()).accountAlias;

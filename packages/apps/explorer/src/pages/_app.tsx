@@ -1,7 +1,7 @@
 // load global styles from @kadena/react-ui
 import '@kadena/react-ui/global';
 
-import { MediaContextProvider } from '@/media';
+import { MediaContextProvider } from '@/components/layout/media';
 import type { NormalizedCacheObject } from '@apollo/client';
 import {
   ApolloClient,

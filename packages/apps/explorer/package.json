@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@apollo/client": "~3.9.11",
+    "@artsy/fresnel": "^7.1.4",
     "@graphql-yoga/apollo-link": "~3.3.0",
     "@kadena/graph": "workspace:*",
     "@kadena/react-icons": "workspace:*",
