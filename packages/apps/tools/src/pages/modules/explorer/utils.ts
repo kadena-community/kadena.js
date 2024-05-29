@@ -84,7 +84,7 @@ const mapToTreeItems = (
         children = value.map((chain) => {
           return {
             data: chain,
-            key: `${typeof parent === 'string' ? `${parent}.` : ''}${name}.${chain}`,
+            key: `${typeof parent === 'string' ? `${parent}.` : ''}${name}.${chain.chainId}`,
             // title: `some even longer long title ${chain.title}`,
             title: chain.chainId,
             children: [],
