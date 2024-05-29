@@ -17,7 +17,7 @@ export const RadioContext = createContext<RadioGroupState | null>(null);
 export function RadioGroup(props: IRadioGroupProps) {
   const { children, direction = 'row', isReadOnly } = props;
   const state = useRadioGroupState(props);
-  const { radioGroupProps, ...fieldprops } = useRadioGroup(props, state);
+  const { radioGroupProps } = useRadioGroup(props, state);
 
   return (
     <div {...radioGroupProps}>
