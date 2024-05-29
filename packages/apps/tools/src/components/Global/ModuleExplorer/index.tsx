@@ -1,9 +1,11 @@
 import type { IncompleteModuleModel } from '@/pages/modules/explorer/utils';
+import { contractParser, IModule } from '@kadena/pactjs-generator';
 import React, { useCallback, useState } from 'react';
-import type { ISidePanelProps } from './SidePanel';
-import SidePanel from './SidePanel';
+import { TreeItem } from '../CustomTree/CustomTree';
 import type { IEditorProps } from './editor';
 import Editor from './editor';
+import type { ISidePanelProps } from './SidePanel';
+import SidePanel from './SidePanel';
 import { containerStyle } from './styles.css';
 import type { IChainModule } from './types';
 import { getModulesMap } from './utils';
@@ -18,9 +20,75 @@ export interface IModuleExplorerProps {
   // onActiveModuleChange: IEditorProps['onActiveModuleChange'];
   // onTabClose: IEditorProps['onTabClose'];
   items: ISidePanelProps<IncompleteModuleModel>['data'];
-  onReload: ISidePanelProps<IncompleteModuleModel>['onReload'];
-  onExpandCollapse: ISidePanelProps<IncompleteModuleModel>['onExpandCollapse'];
+  onReload: ISidePanelProps<IncompleteModuleModel | Outline>['onReload'];
+  onExpandCollapse: ISidePanelProps<
+    IncompleteModuleModel | Outline
+  >['onExpandCollapse'];
 }
+
+type ElementType<T> = T extends (infer U)[] ? U : never;
+
+export type Contract = ReturnType<typeof contractParser>[0][0]; // TODO: Should we improve this because it's a bit hacky?
+type Interface = ElementType<Contract['usedInterface']>;
+type Capability = ElementType<Contract['capabilities']>;
+type ContractFunction = ElementType<Contract['functions']>;
+
+type Outline = string | Interface | Capability | ContractFunction;
+
+const chainModuleToOutlineTreeItems = (
+  chainModule: IChainModule,
+): TreeItem<Outline>[] => {
+  const [, namespace] = chainModule.moduleName.split('.');
+  const [[parsedContract]] = contractParser(chainModule.code!, namespace);
+
+  const { usedInterface: interfaces, capabilities, functions } = parsedContract;
+
+  const treeItems: TreeItem<Outline>[] = [];
+
+  if (interfaces?.length) {
+    treeItems.push({
+      title: 'Interfaces',
+      key: 'interfaces',
+      data: 'interfaces',
+      children: interfaces.map((i) => ({
+        title: i.name,
+        key: i.name,
+        data: i,
+        children: [],
+      })),
+    });
+  }
+
+  if (capabilities?.length) {
+    treeItems.push({
+      title: 'Capabilities',
+      key: 'capabilities',
+      data: 'capabilities',
+      children: capabilities.map((c) => ({
+        title: c.name,
+        key: c.name,
+        data: c,
+        children: [],
+      })),
+    });
+  }
+
+  if (functions?.length) {
+    treeItems.push({
+      title: 'Functions',
+      key: 'functions',
+      data: 'functions',
+      children: functions.map((f) => ({
+        title: f.name,
+        key: f.name,
+        data: f,
+        children: [],
+      })),
+    });
+  }
+
+  return treeItems;
+};
 
 // eslint-disable-next-line react/function-component-definition
 function ModuleExplorer({
@@ -30,10 +98,15 @@ function ModuleExplorer({
 }: IModuleExplorerProps) {
   const [activeModule, setActiveModule] = useState<IChainModule>();
   const [openedModules, setOpenedModules] = useState<IChainModule[]>([]);
+  let outlineItems: TreeItem<Outline>[] = [];
+
+  if (activeModule) {
+    outlineItems = chainModuleToOutlineTreeItems(activeModule);
+  }
 
   return (
     <div className={containerStyle}>
-      <SidePanel
+      <SidePanel<IncompleteModuleModel | Outline>
         data={[
           {
             children: items,
@@ -49,7 +122,7 @@ function ModuleExplorer({
             title: 'Outline',
             key: 'outline',
             label: 'Outline',
-            children: [],
+            children: outlineItems,
             data: {
               name: 'Outline',
               chainId: '0',
