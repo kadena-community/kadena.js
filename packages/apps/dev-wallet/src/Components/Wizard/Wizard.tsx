@@ -5,7 +5,7 @@ import React, {
   cloneElement,
   useState,
 } from 'react';
-import { wizardContainer } from './Wizard.css';
+import { wizardContainer, wizardStep } from './Wizard.css';
 import { WizardRender } from './components/Wizard-render';
 import { WizardStep } from './components/Wizard-step';
 
@@ -15,7 +15,11 @@ interface WizardProps {
   steps: { title: string }[];
 }
 
-export const Wizard: FC<WizardProps> = ({ children, initialStep = 0 }) => {
+export const Wizard: FC<WizardProps> = ({
+  children,
+  steps,
+  initialStep = 0,
+}) => {
   const [currentStep, setCurrentStep] = useState(initialStep);
   let stepIndex = -1;
 
@@ -59,6 +63,15 @@ export const Wizard: FC<WizardProps> = ({ children, initialStep = 0 }) => {
 
     return cloneElement(child, { key: index });
   });
-
-  return <div className={wizardContainer}>{modifiedChildren}</div>;
+  // compare the steps to the current step and add the styles
+  return (
+    <>
+      {steps.map((step, index) => (
+        <div key={index} className={wizardStep}>
+          {step.title}
+        </div>
+      ))}
+      <div className={wizardContainer}>{modifiedChildren}</div>
+    </>
+  );
 };
