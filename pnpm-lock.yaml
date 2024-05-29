@@ -1447,7 +1447,7 @@ importers:
         specifier: ~3.2.5
         version: 3.2.5
       ws:
-        specifier: 8.16.0
+        specifier: ^8.16.0
         version: 8.16.0
 
   packages/e2e/e2e-tools:
