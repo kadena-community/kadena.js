@@ -13,7 +13,7 @@ describe('account fund', () => {
   beforeEach(async () => {
     // Pre add the account alias file to make sure account alias exists
     await runCommand(
-      'account add --type=manual --account-alias=account-add-test-manual --account-name=accountName --fungible=coin --network=testnet --chain-id=1 --public-keys=publicKey1 --quiet',
+      'account add --from=key --account-alias=account-add-test-manual --account-name=accountName --fungible=coin --network=testnet --chain-id=1 --public-keys=publicKey1 --quiet',
     );
   });
 
@@ -140,7 +140,7 @@ describe('account fund', () => {
 
   it('should not fund an account when user tries to fund other than coin fungible with quiet flag', async () => {
     await runCommand(
-      'account add --type=manual --account-alias=kdx-account --account-name=accountName --fungible=kdx --network=testnet --chain-id=1 --public-keys=publicKey1 --quiet',
+      'account add --from=key --account-alias=kdx-account --account-name=accountName --fungible=kdx --network=testnet --chain-id=1 --public-keys=publicKey1 --quiet',
     );
     const res = await runCommand(
       'account fund --account=kdx-account --amount=1 --network=testnet --chain-ids=1',
