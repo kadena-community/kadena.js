@@ -149,7 +149,7 @@ describe('tx send', () => {
   it('Sends transaction fails for not beeing signed', async () => {
     await services.filesystem.ensureDirectoryExists(WORKING_DIRECTORY);
 
-    const transaction = await createTransaction(
+    const transaction = await createAndWriteTransaction(
       defaultTemplates.transfer,
       {
         'account:from': `from`,
