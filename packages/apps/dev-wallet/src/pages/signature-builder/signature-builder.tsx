@@ -6,7 +6,7 @@ import {
 } from '@kadena/client';
 
 import { PactCodeView } from '@/Components/PactCodeView/PactCodeView';
-import { Wizard } from '@/Components/Wizard/Wizard';
+import { StepManager } from '@/Components/StepManager/StepManager';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { execCodeParser } from '@kadena/pactjs-generator';
 import { Box, Button, Card, Heading, Text } from '@kadena/react-ui';
@@ -61,6 +61,13 @@ const signingRequestToPactCommand = (
     nonce: signingRequest.nonce,
   };
 };
+
+enum Steps {
+  Input,
+  EditTransaction,
+  ReviewTransaction,
+  SignTransaction,
+}
 
 export function SignatureBuilder() {
   const [schema, setSchema] = useState<requestScheme>();
@@ -129,36 +136,36 @@ export function SignatureBuilder() {
 
   return (
     <>
-      <Wizard>
-        <Wizard.Render>
+      <StepManager>
+        <StepManager.Render>
           {({ step, goTo }) => (
             <Box>
               <Button
                 variant="transparent"
-                isDisabled={step < 0}
-                onPress={() => goTo(0)}
+                isDisabled={step < Steps.Input}
+                onPress={() => goTo(Steps.Input)}
               >{`Paste Data`}</Button>
               {schema === 'signingRequest' && (
                 <Button
                   variant="transparent"
-                  isDisabled={step < 1}
-                  onPress={() => goTo(1)}
+                  isDisabled={step < Steps.EditTransaction}
+                  onPress={() => goTo(Steps.EditTransaction)}
                 >{`Add Signers`}</Button>
               )}
               <Button
                 variant="transparent"
-                isDisabled={step < 2}
-                onPress={() => goTo(2)}
+                isDisabled={step < Steps.ReviewTransaction}
+                onPress={() => goTo(Steps.ReviewTransaction)}
               >{`Review Transaction`}</Button>
               <Button
                 variant="transparent"
-                isDisabled={step < 3}
-                onPress={() => goTo(3)}
+                isDisabled={step < Steps.SignTransaction}
+                onPress={() => goTo(Steps.SignTransaction)}
               >{`Sign Transaction`}</Button>
             </Box>
           )}
-        </Wizard.Render>
-        <Wizard.Step>
+        </StepManager.Render>
+        <StepManager.Step id={Steps.Input}>
           {({ goTo }) => (
             <>
               <Heading variant="h5">
@@ -177,20 +184,22 @@ export function SignatureBuilder() {
                 <Box>
                   {['PactCommand', 'quickSignRequest'].includes(schema!) && (
                     <>
-                      <Button onPress={() => goTo(2)}>
+                      <Button onPress={() => goTo(Steps.ReviewTransaction)}>
                         Review Transaction
                       </Button>
                     </>
                   )}
                   {schema === 'signingRequest' && (
-                    <Button onPress={() => goTo(1)}>Add Signers</Button>
+                    <Button onPress={() => goTo(Steps.EditTransaction)}>
+                      Add Signers
+                    </Button>
                   )}
                 </Box>
               </Box>
             </>
           )}
-        </Wizard.Step>
-        <Wizard.Step>
+        </StepManager.Step>
+        <StepManager.Step id={Steps.EditTransaction}>
           {({ back, next }) => (
             <>
               <Heading variant="h5">Edit Transaction</Heading>
@@ -204,8 +213,8 @@ export function SignatureBuilder() {
               <Button onPress={() => next()}>Review Transaction</Button>
             </>
           )}
-        </Wizard.Step>
-        <Wizard.Step>
+        </StepManager.Step>
+        <StepManager.Step id={Steps.ReviewTransaction}>
           {({ back, next, goTo }) => (
             <>
               <Heading variant="h5">Review Transaction</Heading>
@@ -272,7 +281,7 @@ export function SignatureBuilder() {
                   Back to Edit Transaction
                 </Button>
               ) : (
-                <Button onPress={() => goTo(0)} variant="transparent">
+                <Button onPress={() => goTo(Steps.Input)} variant="transparent">
                   Back to Input
                 </Button>
               )}
@@ -286,8 +295,8 @@ export function SignatureBuilder() {
               </Button>
             </>
           )}
-        </Wizard.Step>
-        <Wizard.Step>
+        </StepManager.Step>
+        <StepManager.Step id={Steps.SignTransaction}>
           {({ back }) => (
             <>
               <Heading variant="h5">Signed Transaction</Heading>
@@ -301,8 +310,8 @@ export function SignatureBuilder() {
               </Button>
             </>
           )}
-        </Wizard.Step>
-      </Wizard>
+        </StepManager.Step>
+      </StepManager>
     </>
   );
 }

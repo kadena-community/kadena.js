@@ -1,6 +1,6 @@
 import React, { Children, FC, useState } from 'react';
 
-export function Wizard({
+export function StepManager({
   children,
   initialStep = 0,
 }: {
@@ -15,14 +15,19 @@ export function Wizard({
   children = Children.map(children, (child) => {
     if (
       !React.isValidElement(child) ||
-      (child.type !== Wizard.Step && child.type !== Wizard.Render)
+      (child.type !== StepManager.Step && child.type !== StepManager.Render)
     ) {
       // return null if child is not a valid Wizard element
       return null;
     }
 
-    if (child.type === Wizard.Step) {
+    if (child.type === StepManager.Step) {
       stepIndex++;
+      if (stepIndex !== child.props.id) {
+        throw new Error(
+          `Step index is out of order. Expected ${stepIndex} but got ${child.props.id}`,
+        );
+      }
       // do not render the step if it is not the current step
       if (stepIndex !== currentStep) return null;
     }
@@ -50,10 +55,15 @@ type Render = FC<{
   children: React.ReactNode | WizardRenderProp;
 }>;
 
-Wizard.Render = function WizardRender() {
+type Step = FC<{
+  id: number;
+  children: React.ReactNode | WizardRenderProp;
+}>;
+
+StepManager.Render = function WizardRender() {
   throw new Error('Wizard.Render should be used inside Wizard');
 } as Render;
 
-Wizard.Step = function WizardStep() {
+StepManager.Step = function WizardStep() {
   throw new Error('Wizard.Step should be used inside Wizard');
-} as Render;
+} as Step;
