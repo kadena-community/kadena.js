@@ -355,9 +355,48 @@ const ModuleExplorerPage = (
           });
         }}
         onExpandCollapse={async (data, expanded) => {
+          if (!expanded) return;
+
           const isLowestLevel = !data.children[0].children.length;
 
-          if (expanded && isLowestLevel) {
+          if (data.key === 'interfaces') {
+            const network = (data.children[0].data as ContractInterface)
+              .network;
+            const networkId = network === 'mainnet' ? 'mainnet01' : 'testnet04';
+
+            const promises = data.children.map(({ data }) => {
+              return mutation.mutateAsync({
+                module: (data as ContractInterface).name,
+                networkId,
+                chainId: (data as ContractInterface).chainId,
+              });
+            });
+
+            const results = await Promise.all(promises);
+
+            queryClient.setQueryData<Array<IncompleteModuleModel>>(
+              [QUERY_KEY, networkId, undefined],
+              (oldData) => {
+                return oldData!.map((old) => {
+                  const newModule = results.find((newM) => {
+                    return (
+                      newM.name === old.name && newM.chainId === old.chainId
+                    );
+                  });
+
+                  if (!newModule) {
+                    return old;
+                  }
+
+                  return {
+                    ...old,
+                    hash: newModule.hash,
+                    code: newModule.code,
+                  };
+                });
+              },
+            );
+          } else if (isModule(data.data) && isLowestLevel) {
             const [network, namespacePart1, namespacePart2] = (
               data.key as string
             ).split('.');
