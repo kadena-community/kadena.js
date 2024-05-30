@@ -11,12 +11,14 @@ export const tableClass = style([
 export const trClass = style([
   atoms({ width: '100%', padding: 'md' }),
   {
+    color: tokens.kda.foundation.color.text.base.default,
     selectors: {
       ' &:hover': {
-        background: tokens.kda.foundation.color.palette.blue.n10,
-      },
-      [`${darkThemeClass} &:hover`]: {
-        background: tokens.kda.foundation.color.palette.blue.n100,
+        color: tokens.kda.foundation.color.text.base.inverse['@active'],
+        background:
+          tokens.kda.foundation.color.background.accent.primary.inverse[
+            '@active'
+          ],
       },
     },
   },
@@ -30,7 +32,7 @@ export const listClass = style([
 ]);
 export const dateClass = style([
   {
-    color: tokens.kda.foundation.color.neutral.n40,
+    opacity: '.6',
   },
 ]);
 
@@ -38,5 +40,5 @@ globalStyle(`${tableClass} > a`, {
   textDecoration: 'none',
 });
 globalStyle(`${tableClass} > a:nth-child(even)`, {
-  background: tokens.kda.foundation.color.neutral.n1,
+  background: tokens.kda.foundation.color.background.surface.default,
 });

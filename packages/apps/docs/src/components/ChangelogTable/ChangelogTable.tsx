@@ -1,11 +1,4 @@
-import {
-  Badge,
-  Grid,
-  GridItem,
-  Heading,
-  Stack,
-  Tooltip,
-} from '@kadena/react-ui';
+import { Badge, Grid, GridItem, Stack, Tooltip } from '@kadena/react-ui';
 import { formatDistanceToNow, isAfter } from 'date-fns';
 import Link from 'next/link';
 import type { FC } from 'react';
@@ -55,11 +48,7 @@ export const ChangelogTable: FC<IProps> = ({ changelogs }) => {
               className={trClass}
             >
               <GridItem>
-                <Stack marginBlockEnd="md">
-                  <Heading as="h6" variant="h5">
-                    {pkg.name}
-                  </Heading>
-                </Stack>
+                <Stack marginBlockEnd="md">{pkg.name}</Stack>
               </GridItem>
               <GridItem>
                 <Stack
