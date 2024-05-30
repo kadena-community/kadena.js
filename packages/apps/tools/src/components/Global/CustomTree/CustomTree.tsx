@@ -14,9 +14,11 @@ import React from 'react';
 import type { ICustomAccordionProps } from '../CustomAccordion/CustomAccordion';
 import CustomAccordion from '../CustomAccordion/CustomAccordion';
 import {
+  containerStyle,
   itemBadgeStyle,
   itemContainerStyle,
   itemTitleStyle,
+  reloadButtonStyles,
 } from './CustomTree.css';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
@@ -44,20 +46,10 @@ function CustomTree<T>({
   onReload,
   onItemClick,
   onExpandCollapse,
-  style,
   ...rest
 }: ICustomTreeProps<T>) {
   return (
-    <CustomAccordion
-      {...rest}
-      data={data}
-      style={{
-        ...style,
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-      }}
-    >
+    <CustomAccordion {...rest} data={data} className={containerStyle}>
       {(item) => {
         return (
           <>
@@ -72,7 +64,6 @@ function CustomTree<T>({
               }}
               role="button"
               className={itemContainerStyle}
-              style={{ borderBlockEnd: '1px solid rgba(0, 0, 0, 0.25)' }}
             >
               <Button
                 variant="transparent"
@@ -95,7 +86,7 @@ function CustomTree<T>({
                   onPress={() => {
                     onReload(item.data);
                   }}
-                  style={{ marginInlineEnd: '8px' }}
+                  className={reloadButtonStyles}
                 >
                   <MonoCached
                     color={token('color.icon.semantic.positive.default')}

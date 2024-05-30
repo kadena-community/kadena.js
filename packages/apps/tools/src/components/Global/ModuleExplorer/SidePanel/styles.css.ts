@@ -12,3 +12,5 @@ export const containerStyle = style([
 export const headingStyles = style({
   flex: 1,
 });
+
+export const iconStyles = style({ paddingInlineStart: '8px' });

@@ -9,7 +9,7 @@ import React from 'react';
 import CustomAccordion from '../../CustomAccordion/CustomAccordion';
 import type { ICustomTreeProps, TreeItem } from '../../CustomTree/CustomTree';
 import CustomTree from '../../CustomTree/CustomTree';
-import { containerStyle, headingStyles } from './styles.css';
+import { containerStyle, headingStyles, iconStyles } from './styles.css';
 
 export interface ISidePanelProps<T> {
   data: ICustomTreeProps<T>['data'];
@@ -44,15 +44,9 @@ function SidePanel<T>({
             onClick={item.toggleExpandCollapse}
           >
             {item.data.title === 'Explorer' ? (
-              <MonoVerticalSplit
-                style={{ paddingInlineStart: '8px' }}
-                // color={
-                //   tokens.kda.foundation.color.background.base.default
-                // }
-                // color={token('color.text.subtle.default')}
-              />
+              <MonoVerticalSplit className={iconStyles} />
             ) : (
-              <MonoMenuOpen style={{ paddingInlineStart: '8px' }} />
+              <MonoMenuOpen className={iconStyles} />
             )}
             <Heading variant="h6" className={headingStyles}>
               {item.data.title}
