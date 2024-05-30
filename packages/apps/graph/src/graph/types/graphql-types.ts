@@ -173,5 +173,5 @@ export interface INetworkInfo {
 
 export interface IBlockNeighbor {
   chainId: string;
-  blockHash: string;
+  hash: string;
 }
