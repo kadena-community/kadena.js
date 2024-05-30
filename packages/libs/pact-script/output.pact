@@ -41,7 +41,7 @@
   )
 
   (defcap TRANSFER (sender:string receiver:string amount:decimal)
-    (managed amount TRANSFER_mgr)
+    (@managed amount TRANSFER_mgr)
     (enforce (!= sender receiver) "same sender and receiver")
     (enforce-unit amount)
     (enforce (> amount 0))

@@ -13,8 +13,7 @@ class coin implements fungibleV2, fungibleXChainV1 {
     enforce(false, 'Enforce non-upgradeability');
   }
 
-  @schema('coin-schema') coinSchema =
-    new Schema<CoinSchema>(/** we can pass model as schema validator */);
+  @schema('coin-schema') coinSchema = new Schema<CoinSchema>();
 
   @table('coin-table') coinTable = new Table(this.coinSchema);
 

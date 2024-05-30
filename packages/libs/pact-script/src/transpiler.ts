@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import * as ts from 'typescript';
 
 const nameMap = {
+  managed: '@managed',
   with_capability: 'with-capability',
   enforce_guard: 'enforce-guard',
   enforce_unit: 'enforce-unit',
