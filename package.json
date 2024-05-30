@@ -27,16 +27,16 @@
     "version": "changeset version && pnpm run docs:changelogs && pnpm run format:pkgs && pnpm run format:md"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.26.2",
+    "@changesets/cli": "^2.27.5",
     "@kadena-dev/markdown": "workspace:*",
-    "knip": "^2.38.1",
+    "knip": "^5.17.3",
     "only-allow": "^1.2.1",
     "prettier": "~3.2.5",
-    "prettier-plugin-organize-imports": "^3.2.3",
-    "prettier-plugin-packagejson": "^2.4.6",
-    "syncpack": "^11.2.1",
-    "tsx": "^3.12.10",
-    "turbo": "^1.10.15"
+    "prettier-plugin-organize-imports": "^3.2.4",
+    "prettier-plugin-packagejson": "^2.5.0",
+    "syncpack": "^12.3.2",
+    "tsx": "^4.11.0",
+    "turbo": "^1.13.3"
   },
   "engines": {
     "node": ">=18 <21",
