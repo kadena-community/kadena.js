@@ -44,7 +44,7 @@ export const ChangelogTable: FC<IProps> = ({ changelogs }) => {
       <TableHeader>
         <Column>Package</Column>
         <Column>Release date</Column>
-        <Column />
+        <Column>{''}</Column>
         <Column>
           <Stack width="100%" justifyContent="flex-end">
             Contributors
