@@ -90,3 +90,16 @@ export const chainModuleToOutlineTreeItems = (
 
   return treeItems;
 };
+
+export const moduleModelToChainModule = (
+  module: IncompleteModuleModel,
+): IChainModule => {
+  const chainModule: IChainModule = {
+    code: module.code,
+    chainId: module.chainId,
+    moduleName: module.name,
+    hash: module.hash,
+    network: module.networkId,
+  };
+  return chainModule;
+};

@@ -4,6 +4,7 @@ import type { IEditorProps } from '@/components/Global/ModuleExplorer/editor';
 import type { IChainModule } from '@/components/Global/ModuleExplorer/types';
 import { isModule } from '@/components/Global/ModuleExplorer/types';
 import type { ContractInterface } from '@/components/Global/ModuleExplorer/utils';
+import { moduleModelToChainModule } from '@/components/Global/ModuleExplorer/utils';
 import { kadenaConstants } from '@/constants/kadena';
 import { menuData } from '@/constants/side-menu-items';
 import { StorageKeys } from '@/context/connect-wallet-context';
@@ -141,11 +142,7 @@ const ModuleExplorerPage = (
       </Head>
       <ModuleExplorer
         onModuleClick={(x) => {
-          onModuleOpen({
-            chainId: x.data.chainId,
-            moduleName: x.data.name,
-            network: x.data.networkId,
-          });
+          onModuleOpen(moduleModelToChainModule(x.data));
         }}
         onActiveModuleChange={(x) => {
           setDeepLink(x);
