@@ -54,7 +54,7 @@ pages:
         file: /quick-start.md
       buildcli:
         url: /dev-with-cli
-        file: /build/dev-with-cli.md      
+        file: /build/dev-with-cli.md
       pact:
         url: /pact
         file: /build/pact/get-started-with-pact.md
