@@ -1,7 +1,7 @@
 {
-  "kode-components": {
-    "name": "Kode Components",
-    "slug": "kode-components",
+  "kode-ui-components": {
+    "name": "Kode UI Components",
+    "slug": "kode-ui-components",
     "repo": "https://github.com/kadena-community/kadena.js.git",
     "directory": "/packages/libs/react-ui",
     "fileName": "CHANGELOG.md",

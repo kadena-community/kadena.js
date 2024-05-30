@@ -47,7 +47,9 @@ describe('misc utils', () => {
         }
       );
 
-      const pkg = changelog['kode-components'] as unknown as IChangelogPackage;
+      const pkg = changelog[
+        'kode-ui-components'
+      ] as unknown as IChangelogPackage;
       const result = getVersions(pkg);
 
       expect(result.length).toEqual(16);

@@ -18,7 +18,7 @@ describe('getChangelogs', () => {
 
     expect(result).toEqual(`
     <url>
-        <loc>/changelogs/kode-components</loc>
+        <loc>/changelogs/kode-ui-components</loc>
         <lastmod>2024-05-08</lastmod>
         <changefreq>monthly</changefreq>
         <priority>1</priority>

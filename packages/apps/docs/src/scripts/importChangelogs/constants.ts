@@ -18,8 +18,8 @@ export enum VersionPosition {
 // TODO: we should add this to the config.yaml
 export const REPOS: IRepo[] = [
   {
-    name: 'Kode Components',
-    slug: 'kode-components',
+    name: 'Kode UI Components',
+    slug: 'kode-ui-components',
     repo: 'https://github.com/kadena-community/kadena.js.git',
     directory: '/packages/libs/react-ui',
     fileName: 'CHANGELOG.md',
