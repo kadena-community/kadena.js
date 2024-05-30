@@ -17,6 +17,7 @@ const fetchModule = async (
   return {
     ...describedModule,
     chainId,
+    networkId,
   };
 };
 

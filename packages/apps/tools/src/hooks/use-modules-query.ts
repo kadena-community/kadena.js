@@ -6,7 +6,11 @@ import { CHAINS } from '@kadena/chainweb-node-client';
 import { listModules } from '@kadena/client-utils';
 import { useQuery } from '@tanstack/react-query';
 
-const transformModules = (data: string[][], chainIds?: ChainwebChainId[]) => {
+const transformModules = (
+  data: string[][],
+  networkId: ChainwebNetworkId,
+  chainIds?: ChainwebChainId[],
+) => {
   const chains = chainIds ?? CHAINS;
 
   return data.flatMap((x, index) => {
@@ -14,6 +18,7 @@ const transformModules = (data: string[][], chainIds?: ChainwebChainId[]) => {
       return {
         name: y,
         chainId: chains[index],
+        networkId,
       };
     });
   });
@@ -33,7 +38,7 @@ const fetchModules = async (
 
   const results = await Promise.all(promises);
 
-  return transformModules(results, chainIds);
+  return transformModules(results, networkId, chainIds);
 };
 
 const QUERY_KEY = 'modules';
