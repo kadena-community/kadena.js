@@ -41,10 +41,5 @@
   "engines": {
     "node": ">=18 <21",
     "pnpm": ">=8 <9"
-  },
-  "pnpm": {
-    "overrides": {
-      "cross-fetch@>node-fetch": "2.6.13"
-    }
   }
 }

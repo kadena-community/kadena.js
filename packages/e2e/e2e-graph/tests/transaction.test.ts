@@ -489,7 +489,6 @@ test.describe('Subscription: getTransactions', () => {
   test('Subscriptions: getTransactions - Subscribe to transactions by requestKey', async ({
     request,
   }) => {
-    test.slow();
     let txTask;
     let account: IAccount;
     let preflightResponse: ICommandResult;
@@ -553,7 +552,8 @@ test.describe('Subscription: getTransactions', () => {
           },
         },
       });
-      await triggerMining(request);
+
+      await triggerMining(request, account.chains[0], 2);
       const listenResult = await txTask.executeTo('listen');
       expect(listenResult.result).toEqual({
         status: 'success',
@@ -562,6 +562,7 @@ test.describe('Subscription: getTransactions', () => {
     });
 
     await test.step('Assert the third event to contain the successful transaction', async () => {});
+
     const thirdEvent = (await subscription.next()).value.data;
     expect(thirdEvent).toEqual({
       transaction: {
