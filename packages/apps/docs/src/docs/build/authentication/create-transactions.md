@@ -150,7 +150,7 @@ Because transaction strings can be longer than what is accepted in `searchParame
 
 For example, a signature request might look similar to this:
 
-https://spirekey.kadena.io/sign#transaction=encodedTx&returnUrl=www.mydapp.com
+https://spirekey.kadena.io/sign#transaction=encodedTx?returnUrl=www.mydapp.com
 
 The following table describes the parameters that you can include in your signing request:
 
