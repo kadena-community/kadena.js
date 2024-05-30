@@ -179,16 +179,12 @@ To verify that a transaction has been successfully signed, you can check the `si
 If the field has undefined signatures, you won't be able to submit the transaction.
 
 If the transaction has been successfully signed, it is valid for the period of time set in the `ttl` value in the transaction `publicMeta` data.
-During this period of time, the application can call the `local/preflight=true` endpoint to check whether the transaction is valid, then send it to the blockchain to be executed.
+During this period of time, the application can call the `local?preflight=true` endpoint to check whether the transaction is valid, then send it to the blockchain to be executed.
 
-After the transaction is submitted to the blockchain, you can check the transaction status using the request key and chainweb-data API or the Kadena client. 
-For example, to check the status of a transaction sent to the Kadena test network using the request key `uOyDol7dZTd96kzUhGz_ZPURIRYOEocR8IGZKuO6T6Y`:
+After the transaction is submitted to the blockchain, you can check the transaction status using the request key and the Kadena client. 
+For example, you can poll for the transaction status using Kadena client:
 
-https://estats.testnet.chainweb.com/txs/tx?requestkey=uOyDol7dZTd96kzUhGz_ZPURIRYOEocR8IGZKuO6T6Y
-
-Alternatively, you can poll for the transaction status using Kadena client:
-
-```ts
+```typescript
 const results = pollStatus(transactionDescriptors, {
     onPoll: (requestKey) => {
       console.log('polling status of', requestKey);
