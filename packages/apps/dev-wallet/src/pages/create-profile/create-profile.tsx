@@ -1,11 +1,12 @@
 import { AuthCard } from '@/Components/AuthCard/AuthCard.tsx';
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.hook';
+import { LayoutContext } from '@/modules/layout/layout.provider';
 import { useNetwork } from '@/modules/network/network.hook';
 import { IKeySource } from '@/modules/wallet/wallet.repository';
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
 import { MonoCheck } from '@kadena/react-icons/system';
 import { Button, Heading, Stack, Text, TextField } from '@kadena/react-ui';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
@@ -43,6 +44,7 @@ export function CreateProfile() {
   const { activeNetwork } = useNetwork();
   const [createdKeySource, setCreatedKeySource] = useState<IKeySource>();
   const { createHDWallet } = useHDWallet();
+  const { setLayoutContext } = useContext(LayoutContext);
 
   async function create({
     profileName,
@@ -205,7 +207,10 @@ export function CreateProfile() {
                                 key={color}
                                 style={{ background: color }}
                                 className={colorOptionClass}
-                                onClick={() => onChange(color)}
+                                onClick={() => {
+                                  setLayoutContext({ accentColor: color });
+                                  onChange(color);
+                                }}
                               >
                                 {value === color && <MonoCheck />}
                               </li>
