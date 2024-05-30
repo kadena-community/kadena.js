@@ -25,37 +25,14 @@ To register for a new Kadena SpireKey account:
 1. Open [Kadena SpireKey](https://spirekey.kadena.io) in a web browser on your
    phone, tablet, or desktop.
 2. Click **Register** to start entering your account information.
-3. Type an **Alias** to use for your account, then click **Next**.
-
-   The alias is typically a short and distinguishable name that helps you
-   recognize your account in Kadena SpireKey and to distinguish
-   between accounts if you add more than one account.
-
-   The **Alias** you specify is only stored in the browser on the device you use
-   to register and cannot been seen by anyone else. If you don't want to create
-   an account, click **Cancel** to exit the registration flow.
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-4. Click in the **Passkey** field to generate a public and secret key pair.
+3. Click in the **Passkey** field to generate a public and secret key pair.
    
    The secret key is encrypted and stored on the device you're using to register an account.
 
    The encrypted **passkey** is a WebAuthn credential that's protected with
-=======
-4. Click in the **Passkey** field to generate a private key to be stored in encrypted form on the device you're using to register an account.
-
-   The encrypted **passkey** is a WebAuthN credential that's protected with
->>>>>>> a9bc91d51 (Tidy up register, and placeholder for specs)
-=======
-4. Click in the **Passkey** field to generate a public and secret key pair.
-   
-   The secret key is encrypted and stored on the device you're using to register an account.
-
-   The encrypted **passkey** is a WebAuthn credential that's protected with
->>>>>>> d313957d2 (Updates from Jesse, fix links)
    biometric data—such as a fingerprint or facial recognition—or a security key
    depending on the options available on the device you're using to register.
+
    Only the public key and credential identifier associated with the private
    passkey are stored on the blockchain after completing the account
    registration. No sensitive information is transferred to or stored on the
