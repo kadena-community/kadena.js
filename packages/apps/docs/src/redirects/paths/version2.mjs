@@ -171,6 +171,17 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
+    source: '/build/frontend/kadena-client',
+    destination: '/build/frontend',
+    permanent: true,
+  },
+  {
+    source: '/reference/kadena-client/kadena-cli',
+    destination: '/reference/kadena-cli',
+    permanent: true,
+  },
+
+  {
     source: '/marmalade',
     destination: '/build/nft-marmalade',
     permanent: true,
