@@ -69,14 +69,6 @@ export const initialsClass = style([
   }),
 ]);
 
-export const formField = atoms({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'flex-start',
-  alignItems: 'stretch',
-  gap: 'sm',
-});
-
 export const linkBlockClass = style([
   {
     color: linkBlockColor,

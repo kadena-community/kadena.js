@@ -1,6 +1,7 @@
 // load global styles from @kadena/react-ui
 import '@kadena/react-ui/global';
 
+import { MediaContextProvider } from '@/components/layout/media';
 import type { NormalizedCacheObject } from '@apollo/client';
 import {
   ApolloClient,
@@ -58,17 +59,19 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <ApolloProvider client={client}>
       <RouterProvider navigate={router.push}>
-        <Head>
-          <title>K:Explorer</title>
-          <link
-            rel="icon"
-            href="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/icons/internal/default/icon%40128.png"
-          />
-        </Head>
+        <MediaContextProvider>
+          <Head>
+            <title>K:Explorer</title>
+            <link
+              rel="icon"
+              href="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/icons/internal/default/icon%40128.png"
+            />
+          </Head>
 
-        <main>
-          <ReactComponent {...pageProps} />
-        </main>
+          <main>
+            <ReactComponent {...pageProps} />
+          </main>
+        </MediaContextProvider>
       </RouterProvider>
     </ApolloProvider>
   );

@@ -8,15 +8,16 @@ export default mergeConfig(
     plugins: [vanillaExtractPlugin({ emitCssInSsr: true })],
     test: {
       globals: true,
+      globalSetup: './vitest-globals.ts',
       setupFiles: ['vitest.setup.ts'],
       environment: 'happy-dom',
       coverage: {
         provider: 'v8',
         thresholds: {
-          lines: 57.43,
-          functions: 49.7,
-          branches: 80.75,
-          statements: 57.43,
+          lines: 61.33,
+          functions: 58.57,
+          branches: 84.17,
+          statements: 61.33,
         },
         exclude: [
           'src/**/*.tsx',
