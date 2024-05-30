@@ -1,8 +1,9 @@
 import type { IncompleteModuleModel } from '@/pages/modules/explorer/utils';
+import type { ElementType } from '@/types/utils';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { contractParser } from '@kadena/pactjs-generator';
 import type { TreeItem } from '../CustomTree/CustomTree';
-import type { ElementType, IChainModule, Outline } from './types';
+import type { IChainModule, Outline } from './types';
 
 export type Contract = ReturnType<typeof contractParser>[0][0]; // TODO: Should we improve this because it's a bit hacky?
 export type ContractInterface = ElementType<Contract['usedInterface']> & {

@@ -14,8 +14,6 @@ export interface IChainModule {
   network: Network;
 }
 
-export type ElementType<T> = T extends (infer U)[] ? U : never;
-
 export type Outline =
   | string
   | ContractInterface

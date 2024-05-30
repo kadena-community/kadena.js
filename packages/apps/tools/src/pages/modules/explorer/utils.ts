@@ -1,6 +1,7 @@
 import type { TreeItem } from '@/components/Global/CustomTree/CustomTree';
 import type { Outline } from '@/components/Global/ModuleExplorer/types';
 import type { ModuleModel } from '@/hooks/use-module-query';
+import type { Optional } from '@/types/utils';
 import { getName, parse } from '@/utils/persist';
 import type { NextApiRequestCookies } from 'next/dist/server/api-utils';
 import type { ParsedUrlQuery } from 'querystring';
@@ -60,8 +61,6 @@ export type ModulesMap = Map<
   Namespace,
   ModuleData | Map<ModuleName, ModuleData>
 >;
-
-export type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
 export type IncompleteModuleModel = Optional<ModuleModel, 'code'>;
 
