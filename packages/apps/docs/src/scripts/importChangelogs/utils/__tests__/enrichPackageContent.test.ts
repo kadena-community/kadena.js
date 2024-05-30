@@ -12,7 +12,7 @@ describe('enrichPackageContent', () => {
         }
       );
 
-      const version = changelog['react-ui'].content[
+      const version = changelog['kode-components'].content[
         '0.2.0'
       ] as unknown as IChangelogPackageVersion;
 
@@ -53,7 +53,7 @@ describe('enrichPackageContent', () => {
         }
       );
 
-      const version = changelog['react-ui'].content[
+      const version = changelog['kode-components'].content[
         '0.2.0'
       ] as unknown as IChangelogPackageVersion;
       const result = getLastModifiedDate(version);
