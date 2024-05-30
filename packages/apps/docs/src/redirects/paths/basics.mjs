@@ -1,5 +1,15 @@
 export const basicsPathUrlRedirects = [
   {
+    source: '/changelogs/react-ui',
+    destination: '/changelogs/kode-components',
+    permanent: true,
+  },
+  {
+    source: '/changelogs/react-icons',
+    destination: '/changelogs/kode-icons',
+    permanent: true,
+  },
+  {
     source: '/:slug/:slug2/:slug3%7D',
     destination: '/:slug/:slug2/:slug3',
     permanent: true,
