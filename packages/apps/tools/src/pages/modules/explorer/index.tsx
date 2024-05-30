@@ -141,11 +141,11 @@ const ModuleExplorerPage = (
         <title>Kadena Developer Tools - Modules</title>
       </Head>
       <ModuleExplorer
-        onModuleClick={(x) => {
-          onModuleOpen(moduleModelToChainModule(x.data));
+        onModuleClick={(treeItem) => {
+          onModuleOpen(moduleModelToChainModule(treeItem.data));
         }}
-        onActiveModuleChange={(x) => {
-          setDeepLink(x);
+        onActiveModuleChange={(module) => {
+          setDeepLink(module);
         }}
         // onTabClose={(module) => {
         //   console.log('closing', module);
@@ -171,26 +171,26 @@ const ModuleExplorerPage = (
             label: amountOfTestnetModules,
           },
         ]}
-        onReload={(data) => {
+        onReload={(treeItem) => {
           void queryClient.invalidateQueries({
             queryKey: [
               QUERY_KEY,
-              data.key === 'mainnet' ? 'mainnet01' : 'testnet04',
+              treeItem.key === 'mainnet' ? 'mainnet01' : 'testnet04',
             ],
           });
         }}
-        onExpandCollapse={async (data, expanded) => {
+        onExpandCollapse={async (treeItem, expanded) => {
           if (!expanded) return;
 
-          const isLowestLevel = !data.children[0].children.length;
+          const isLowestLevel = !treeItem.children[0].children.length;
 
-          if (data.key === 'interfaces') {
-            const network = (data.children[0].data as ContractInterface)
+          if (treeItem.key === 'interfaces') {
+            const network = (treeItem.children[0].data as ContractInterface)
               .networkId;
             const networkId =
               network === 'mainnet01' ? 'mainnet01' : 'testnet04';
 
-            const promises = data.children.map(({ data }) => {
+            const promises = treeItem.children.map(({ data }) => {
               return mutation.mutateAsync({
                 module: (data as ContractInterface).name,
                 networkId,
@@ -222,12 +222,12 @@ const ModuleExplorerPage = (
                 });
               },
             );
-          } else if (isModule(data.data) && isLowestLevel) {
+          } else if (isModule(treeItem.data) && isLowestLevel) {
             const [network, namespacePart1, namespacePart2] = (
-              data.key as string
+              treeItem.key as string
             ).split('.');
             const networkId = network === 'mainnet' ? 'mainnet01' : 'testnet04';
-            const promises = data.children.map(({ data }) => {
+            const promises = treeItem.children.map(({ data }) => {
               return mutation.mutateAsync({
                 module: `${namespacePart1}${namespacePart2 ? `.${namespacePart2}` : ''}`,
                 networkId,
