@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { listStyle } from './CustomAccordion.css';
 
-type RenderFunction<T> = (x: {
+type RenderFunction<T> = (params: {
   toggleExpandCollapse: () => void;
   isExpanded: boolean;
   data: T;
@@ -14,7 +14,6 @@ export interface IItemProps<T>
   data: T;
   fillHeight?: boolean;
   children: RenderFunction<T>;
-  // key: React.Key;
 }
 
 // eslint-disable-next-line react/function-component-definition
@@ -27,10 +26,6 @@ function Item<T>({
   ...rest
 }: IItemProps<T>) {
   const [isExpanded, setIsExpanded] = React.useState(_isExpanded);
-
-  // if (!isExpanded) {
-  //   return null;
-  // }
 
   return (
     <li
