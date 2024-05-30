@@ -2,11 +2,13 @@ import type { TreeItem } from '@/components/Global/CustomTree/CustomTree';
 import ModuleExplorer from '@/components/Global/ModuleExplorer';
 import type { IEditorProps } from '@/components/Global/ModuleExplorer/editor';
 import type { IChainModule } from '@/components/Global/ModuleExplorer/types';
+import { isModule } from '@/components/Global/ModuleExplorer/types';
 import type { ContractInterface } from '@/components/Global/ModuleExplorer/utils';
 import { kadenaConstants } from '@/constants/kadena';
 import { menuData } from '@/constants/side-menu-items';
 import { StorageKeys } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
+import type { IncompleteModuleModel } from '@/hooks/use-module-query';
 import { useModuleQuery } from '@/hooks/use-module-query';
 import { QUERY_KEY, useModulesQuery } from '@/hooks/use-modules-query';
 import { describeModule } from '@/services/modules/describe-module';
@@ -24,13 +26,7 @@ import type {
   InferGetServerSidePropsType,
 } from 'next/types';
 import React, { useCallback } from 'react';
-import type { IncompleteModuleModel } from './utils';
-import {
-  getCookieValue,
-  getQueryValue,
-  isModule,
-  modelsToTreeItems,
-} from './utils';
+import { getCookieValue, getQueryValue, modelsToTreeItems } from './utils';
 
 const QueryParams = {
   MODULE: 'module',

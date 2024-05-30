@@ -1,3 +1,4 @@
+import type { Optional } from '@/types/utils';
 import type {
   ChainwebChainId,
   ChainwebNetworkId,
@@ -22,6 +23,8 @@ const fetchModule = async (
 };
 
 export type ModuleModel = Awaited<ReturnType<typeof fetchModule>>;
+
+export type IncompleteModuleModel = Optional<ModuleModel, 'code'>;
 
 const QUERY_KEY = 'module';
 

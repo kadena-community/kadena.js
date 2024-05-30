@@ -1,5 +1,4 @@
-import type { IncompleteModuleModel } from '@/pages/modules/explorer/utils';
-import { isModule } from '@/pages/modules/explorer/utils';
+import type { IncompleteModuleModel } from '@/hooks/use-module-query';
 import React, { useState } from 'react';
 import type { TreeItem } from '../CustomTree/CustomTree';
 import type { ISidePanelProps } from './SidePanel';
@@ -8,6 +7,7 @@ import type { IEditorProps } from './editor';
 import Editor from './editor';
 import { containerStyle } from './styles.css';
 import type { IChainModule, Outline } from './types';
+import { isModule } from './types';
 import { chainModuleToOutlineTreeItems } from './utils';
 
 export interface IModuleExplorerProps {

@@ -1,7 +1,5 @@
 import type { TreeItem } from '@/components/Global/CustomTree/CustomTree';
-import type { Outline } from '@/components/Global/ModuleExplorer/types';
-import type { ModuleModel } from '@/hooks/use-module-query';
-import type { Optional } from '@/types/utils';
+import type { IncompleteModuleModel } from '@/hooks/use-module-query';
 import { getName, parse } from '@/utils/persist';
 import type { NextApiRequestCookies } from 'next/dist/server/api-utils';
 import type { ParsedUrlQuery } from 'querystring';
@@ -62,8 +60,6 @@ export type ModulesMap = Map<
   ModuleData | Map<ModuleName, ModuleData>
 >;
 
-export type IncompleteModuleModel = Optional<ModuleModel, 'code'>;
-
 const mapToTreeItems = (
   modulesMap: Map<Namespace, ModuleData | Map<ModuleName, ModuleData>>,
   parent?: Namespace,
@@ -104,17 +100,6 @@ const mapToTreeItems = (
         children,
       };
     });
-};
-
-export const isModule = (
-  item: IncompleteModuleModel | Outline,
-): item is IncompleteModuleModel => {
-  return (
-    typeof item !== 'string' &&
-    (item as IncompleteModuleModel).chainId !== undefined &&
-    (item as IncompleteModuleModel).name !== undefined &&
-    (item as IncompleteModuleModel).networkId !== undefined
-  );
 };
 
 export const modelsToTreeItems = (

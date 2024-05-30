@@ -1,4 +1,4 @@
-import type { IncompleteModuleModel } from '@/pages/modules/explorer/utils';
+import type { IncompleteModuleModel } from '@/hooks/use-module-query';
 import type { ElementType } from '@/types/utils';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { contractParser } from '@kadena/pactjs-generator';
