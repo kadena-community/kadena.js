@@ -1,4 +1,4 @@
-import { atoms, darkThemeClass, tokens } from '@kadena/react-ui/styles';
+import { atoms, tokens } from '@kadena/react-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 
 export const tableClass = style([
@@ -7,18 +7,17 @@ export const tableClass = style([
     border: `1px solid ${tokens.kda.foundation.color.border.base.default}`,
   },
 ]);
+export const cellClass = style([
+  atoms({ display: 'flex', alignItems: 'center' }),
+]);
 
 export const trClass = style([
-  atoms({ width: '100%', padding: 'md' }),
+  atoms({ width: '100%', padding: 'sm' }),
   {
     color: tokens.kda.foundation.color.text.base.default,
     selectors: {
       ' &:hover': {
-        color: tokens.kda.foundation.color.text.base.inverse['@active'],
-        background:
-          tokens.kda.foundation.color.background.accent.primary.inverse[
-            '@active'
-          ],
+        background: tokens.kda.foundation.color.background.base['@hover'],
       },
     },
   },
