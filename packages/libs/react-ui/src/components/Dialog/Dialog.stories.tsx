@@ -3,15 +3,16 @@ import React, { useState } from 'react';
 import { Button } from '../Button';
 import type { IDialogProps } from '../Dialog';
 import { Dialog, DialogContent, DialogFooter, DialogHeader } from '../Dialog';
+import { DialogHeaderSubtitle } from './DialogHeaderSubtitle';
 import { ModalContent } from './StoryComponents';
 
-type DialogStoryProps = IDialogProps & { title: string };
+type DialogStoryProps = IDialogProps & { title: string; subtitle: string };
 
 const meta: Meta<DialogStoryProps> = {
   title: 'Overlays/Dialog',
   parameters: {
     status: {
-      type: ['releaseCandidate'],
+      type: ['stable'],
     },
     docs: {
       description: {
@@ -45,6 +46,13 @@ A Dialog is a type of modal that is used to display information or prompt the us
         type: { summary: 'string' },
       },
     },
+    size: {
+      control: {
+        type: 'radio',
+      },
+      options: ['sm', 'md', 'lg'],
+      defaultValue: 'md',
+    },
   },
 };
 
@@ -55,8 +63,9 @@ export const DialogStory: Story = {
   name: 'Dialog',
   args: {
     title: 'Dialog Title',
+    subtitle: 'Dialog subtitle',
   },
-  render: ({ title }) => {
+  render: ({ title, subtitle, size }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -64,10 +73,12 @@ export const DialogStory: Story = {
         <Button onClick={() => setIsOpen(true)}>Modal Trigger</Button>
         <Dialog
           isOpen={isOpen}
+          size={size}
           onOpenChange={(isOpen: boolean) => setIsOpen(isOpen)}
         >
           {(state) => (
             <>
+              <DialogHeaderSubtitle>{subtitle}</DialogHeaderSubtitle>
               <DialogHeader>{title}</DialogHeader>
               <DialogContent>
                 <ModalContent />

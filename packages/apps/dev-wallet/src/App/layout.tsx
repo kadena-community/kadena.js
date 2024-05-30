@@ -1,24 +1,35 @@
 import { useNetwork } from '@/modules/network/network.hook';
-import { MonoPublic } from '@kadena/react-icons';
+import { MonoContrast, MonoPublic } from '@kadena/react-icons';
 import {
   KadenaLogo,
   NavHeader,
+  NavHeaderButton,
+  NavHeaderLink,
   NavHeaderLinkList,
   NavHeaderSelect,
   SelectItem,
-  Text,
+  Themes,
+  useTheme,
 } from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 import { FC } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
 export const Layout: FC = () => {
   const { networks, activeNetwork, setActiveNetwork } = useNetwork();
 
+  const { theme, setTheme } = useTheme();
+
   const handleNetworkUpdate = (value: string) => {
     const network = networks.find((network) => network.networkId === value);
     if (network) {
       setActiveNetwork(network);
     }
+  };
+
+  const toggleTheme = (): void => {
+    const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
+    setTheme(newTheme);
   };
 
   return (
@@ -31,13 +42,25 @@ export const Layout: FC = () => {
         }
       >
         <NavHeaderLinkList>
-          <Link to="/">
-            <Text bold>DX-Wallet</Text>
-          </Link>
-          <Link to="/networks">
-            <Text bold>Network</Text>
-          </Link>
+          <NavHeaderLink asChild>
+            <Link to="/">DX Wallet</Link>
+          </NavHeaderLink>
+          <NavHeaderLink asChild>
+            <Link to="/networks">Network</Link>
+          </NavHeaderLink>
         </NavHeaderLinkList>
+
+        <NavHeaderButton
+          aria-label="Toggle theme"
+          onPress={() => toggleTheme()}
+          className={atoms({ marginInlineEnd: 'sm' })}
+        >
+          <MonoContrast
+            className={atoms({
+              color: 'text.base.default',
+            })}
+          />
+        </NavHeaderButton>
 
         <NavHeaderSelect
           aria-label="Select Network"
@@ -52,7 +75,9 @@ export const Layout: FC = () => {
           ))}
         </NavHeaderSelect>
       </NavHeader>
-      <Outlet />
+      <main>
+        <Outlet />
+      </main>
       <div id="modalportal"></div>
     </>
   );

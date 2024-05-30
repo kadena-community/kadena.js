@@ -9,7 +9,7 @@ export const kadenaSign = async (
 ): Promise<Uint8Array> => {
   return await originalKadenaSign(
     password,
-    message,
+    Buffer.from(message, 'base64'),
     await kadenaDecrypt(password, secretKey),
   );
 };

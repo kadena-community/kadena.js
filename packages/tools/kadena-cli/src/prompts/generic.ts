@@ -4,7 +4,7 @@ import { input } from '../utils/prompts.js';
 
 export async function genericFileNamePrompt(type?: string): Promise<string> {
   return await input({
-    message: `Enter a filename${type !== '' ? ` for your ${type}` : ''}`,
+    message: `Enter a filename${type !== '' ? ` for your ${type}` : ''}:`,
     validate: function (input) {
       if (!isValidFilename(input)) {
         return 'Filenames must be alphabetic! Please enter a valid name.';
@@ -77,7 +77,7 @@ export function createExternalPrompt<T extends Record<string, IPrompt<any>>>(
 
 export function logFolderPrompt(): Promise<string> {
   return input({
-    message: 'Specify the directory where the log file will be generated',
+    message: 'Specify the directory where the log file will be generated:',
     default: `${process.cwd()}/logs/simulate`,
   });
 }

@@ -1,7 +1,7 @@
 import { prismaClient } from '@db/prisma-client';
 import { getFungibleChainAccount } from '@services/account-service';
-import { chainIds } from '@utils/chains';
 import { normalizeError } from '@utils/errors';
+import { networkData } from '@utils/network';
 import { builder } from '../builder';
 import FungibleAccount from '../objects/fungible-account';
 import type { IFungibleChainAccount } from '../types/graphql-types';
@@ -41,7 +41,7 @@ builder.queryField('fungibleAccountsByPublicKey', (t) =>
           accountAndFungibleNames.map(async (accountAndFungibleName) => {
             const chainAccounts = (
               await Promise.all(
-                chainIds.map((chainId) =>
+                networkData.chainIds.map((chainId) =>
                   getFungibleChainAccount({
                     chainId: chainId,
                     fungibleName: accountAndFungibleName.fungiblename,

@@ -1,6 +1,6 @@
 {
   "name": "@kadena/client",
-  "version": "1.11.0",
+  "version": "1.11.1",
   "description": "Core library for building Pact expressions to send to the blockchain in js. Makes use of .kadena/pactjs-generated",
   "repository": {
     "type": "git",
@@ -45,7 +45,7 @@
     "@kadena/pactjs": "workspace:*",
     "@walletconnect/sign-client": "~2.8.1",
     "cross-fetch": "~3.1.5",
-    "debug": "~4.3.4"
+    "debug": "4.3.4"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
@@ -57,7 +57,7 @@
     "@rushstack/eslint-config": "~3.6.9",
     "@types/debug": "~4.1.12",
     "@types/node": "^20.12.7",
-    "@vitest/coverage-v8": "^1.1.0",
+    "@vitest/coverage-v8": "^1.6.0",
     "@walletconnect/types": "~2.8.1",
     "eslint": "^8.45.0",
     "jsdom": "^22.1.0",
@@ -65,7 +65,7 @@
     "prettier": "~3.2.5",
     "ts-node": "~10.9.2",
     "typescript": "5.4.5",
-    "vitest": "^1.1.0"
+    "vitest": "^1.6.0"
   },
   "publishConfig": {
     "provenance": true

@@ -5,8 +5,9 @@ import { kadenaEncrypt } from '../utils/kadenaEncryption.js';
 /**
  * Generates a mnemonic phrase using the BIP39 protocol with a specified wordlist.
  *
- * @returns {string} A valid BIP39 mnemonic phrase.
- * @throws {Error} If the generated mnemonic is invalid.
+ * @returns A valid BIP39 mnemonic phrase.
+ * @throws If the generated mnemonic is invalid.
+ * @public
  */
 export function kadenaGenMnemonic(): string {
   return bip39.generateMnemonic(wordlist);
@@ -15,10 +16,11 @@ export function kadenaGenMnemonic(): string {
 /**
  * Convert a given mnemonic phrase into a seed buffer.
  *
- * @param {string} mnemonic - A mnemonic seed phrase to be converted into a seed buffer.
- * @param {string} [password] - Optional password for encrypting the seed.
- * @throws {Error} Throws an error if the provided mnemonic is not valid.
- * @returns {Promise<{ seedBuffer: Uint8Array, seed: string }>} - Returns the seed buffer and processed seed.
+ * @param mnemonic - A mnemonic seed phrase to be converted into a seed buffer.
+ * @param password - Optional password for encrypting the seed.
+ * @throws Throws an error if the provided mnemonic is not valid.
+ * @returns Returns the seed buffer and processed seed.
+ * @public
  */
 export async function kadenaMnemonicToSeed<
   TEncode extends 'base64' | 'buffer' = 'base64',

@@ -1,4 +1,4 @@
-import { Option, program } from 'commander';
+import { Option } from 'commander';
 import { z } from 'zod';
 import {
   generic,
@@ -10,7 +10,7 @@ import {
 } from '../prompts/index.js';
 
 import type { ChainId } from '@kadena/types';
-import { join } from 'node:path';
+import { isAbsolute, join } from 'node:path';
 
 import {
   chainIdValidation,
@@ -21,7 +21,6 @@ import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
 import { services } from '../services/index.js';
 import { createOption } from './createOption.js';
 import { getDefaultNetworkName, passwordPromptTransform } from './helpers.js';
-import { log } from './logger.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalOptions = {
@@ -62,7 +61,10 @@ export const globalOptions = {
       return legacy === true || legacy === 'true' || false;
     },
     validation: z.boolean().optional(),
-    option: new Option('-l, --legacy', 'Output legacy format'),
+    option: new Option(
+      '-l, --legacy',
+      'Use ChainWeaver key derivation methods',
+    ),
   }),
   // Logs
   logFolder: createOption({
@@ -88,11 +90,30 @@ export const globalOptions = {
       try {
         return await loadNetworkConfig(network);
       } catch (e) {
-        log.info(
+        throw new Error(
           `\nNo configuration for network "${network}" found. Please configure the network.\n`,
         );
-        await program.parseAsync(['', '', 'networks', 'create']);
+      }
+    },
+  }),
+  networkOptional: createOption({
+    key: 'network' as const,
+    prompt: () => {},
+    defaultValue: await getDefaultNetworkName(),
+    validation: z.string(),
+    defaultIsOptional: true,
+    option: new Option(
+      '-n, --network <network>',
+      'Kadena network (e.g. "mainnet")',
+    ),
+    expand: async (network: string) => {
+      if (network === undefined) return null;
+      try {
         return await loadNetworkConfig(network);
+      } catch (e) {
+        throw new Error(
+          `\nNo configuration for network "${network}" found. Please configure the network.\n`,
+        );
       }
     },
   }),
@@ -126,6 +147,27 @@ export const globalOptions = {
     }),
     option: new Option('-c, --chain-id <chainId>', 'Kadena chain id (e.g. 0)'),
     transform: (chainId: string) => {
+      const parsedChainId = Number(chainId.trim());
+      try {
+        chainIdValidation.parse(parsedChainId);
+        return parsedChainId.toString() as ChainId;
+      } catch (error) {
+        const errorMessage = formatZodFieldErrors(error);
+        throw new Error(`Error: -c --chain-id ${errorMessage}`);
+      }
+    },
+  }),
+  chainIdOptional: createOption({
+    key: 'chainId' as const,
+    prompt: networks.chainIdPrompt,
+    defaultIsOptional: true,
+    validation: z.string({
+      /* eslint-disable-next-line @typescript-eslint/naming-convention */
+      invalid_type_error: 'Error: -c, --chain-id must be a number',
+    }),
+    option: new Option('-c, --chain-id <chainId>', 'Kadena chain id (e.g. 0)'),
+    transform: (chainId: string) => {
+      if (!chainId) return null;
       const parsedChainId = Number(chainId.trim());
       try {
         chainIdValidation.parse(parsedChainId);
@@ -196,7 +238,7 @@ export const globalOptions = {
     transform(value: string) {
       if (!value) return null;
       const file = value.endsWith('.json') ? value : `${value}.json`;
-      return join(process.cwd(), file);
+      return isAbsolute(file) ? file : join(process.cwd(), file);
     },
   }),
   directory: createOption({
@@ -225,7 +267,7 @@ export const securityOptions = {
     return createOption({
       key: 'passwordFile' as const,
       prompt: security.passwordPrompt(args),
-      validation: z.literal('-').or(z.object({ _password: z.string() })),
+      validation: z.string().or(z.object({ _password: z.string() })),
       option: new Option(
         '--password-file <passwordFile>',
         'Filepath to the password file',
@@ -240,7 +282,7 @@ export const securityOptions = {
     return createOption({
       key: 'newPasswordFile' as const,
       prompt: security.passwordPrompt(args),
-      validation: z.literal('-').or(z.object({ _password: z.string() })),
+      validation: z.string().or(z.object({ _password: z.string() })),
       option: new Option(
         '--new-password-file <newPasswordFile>',
         'Filepath to the new password file',

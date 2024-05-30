@@ -1,9 +1,12 @@
+import path from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { ensureNetworksConfiguration } from '../../networks/utils/networkHelpers.js';
 import { services } from '../../services/index.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { defaultTemplates } from '../commands/templates/templates.js';
-import { createTransaction } from '../commands/txCreateTransaction.js';
-import { testTransactions } from '../commands/txTestSignedTransaction.js';
+import { createAndWriteTransaction } from '../commands/txCreateTransaction.js';
+import { testTransactionAction } from '../commands/txTestSignedTransaction.js';
+import { createTransactionWithDetails } from '../utils/txHelpers.js';
 import { signTransactionFileWithKeyPairAction } from '../utils/txSignWithKeypair.js';
 
 const publicKey =
@@ -16,6 +19,10 @@ const targetAccount =
 describe('template to live test', () => {
   // NOTE: this tests uses live testnet04 meaning it is not isolated!!!
   it('creates, signs and tests the transaction', async () => {
+    const root = path.join(__dirname, '../../../');
+    const kadenaDir = path.join(root, '.kadena');
+    await ensureNetworksConfiguration(kadenaDir);
+
     const variables = {
       'account:from': `k:${publicKey}`,
       'account:to': targetAccount,
@@ -26,7 +33,7 @@ describe('template to live test', () => {
     };
 
     await services.filesystem.ensureDirectoryExists(process.cwd());
-    const transaction = await createTransaction(
+    const transaction = await createAndWriteTransaction(
       defaultTemplates.transfer,
       variables,
       'transaction-test.json',
@@ -39,20 +46,17 @@ describe('template to live test', () => {
     });
     assertCommandError(signed);
 
-    // console.dir(JSON.parse(signed.data.commasnds[0].cmd), { depth: Infinity });
-    // console.log(signed.data.commands[0]);
-
-    const test = await testTransactions(
-      {
-        networkHost: 'https://api.testnet.chainweb.com',
-        networkId: 'testnet04',
-      },
-      '1',
-      [signed.data.commands[0].path],
-      true,
+    const transactionsWithDetails = await createTransactionWithDetails(
+      signed.data.commands.map((c) => c.command),
+      { txTransactionNetwork: ['testnet'] },
     );
+
+    const test = await testTransactionAction({
+      transactionsWithDetails,
+    });
     assertCommandError(test);
-    expect(test.data[0].result).toEqual({
+
+    expect(test.data.transactions[0].response?.result).toEqual({
       status: 'success',
       data: 'Write succeeded',
     });

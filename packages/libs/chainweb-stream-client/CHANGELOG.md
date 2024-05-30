@@ -1,5 +1,11 @@
 # Change Log - @kadena/chainweb-stream-client
 
+## 0.2.3
+
+### Patch Changes
+
+- 93bf55b07: Package updates
+
 ## 0.2.1
 
 ### Patch Changes

@@ -4,6 +4,7 @@ import type { PlaywrightTestConfig } from '@playwright/test';
 const config: PlaywrightTestConfig = {
   ...baseConfig,
   webServer: {
+    timeout: 90000,
     command: `pnpm --filter @kadena/graph start:generate`,
     url: 'http://localhost:4000/graphql',
     reuseExistingServer: process.env.CI === undefined,

@@ -1,6 +1,6 @@
 {
   "name": "@kadena-dev/markdown",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "description": "Kadena monorepo Remark plugins",
   "license": "BSD-3-Clause",

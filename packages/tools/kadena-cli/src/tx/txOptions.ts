@@ -176,8 +176,8 @@ export const txOptions = {
       'Select a signing method',
     ),
   }),
-  txPoll: createOption({
-    key: 'txPoll' as const,
+  poll: createOption({
+    key: 'poll' as const,
     prompt: ({ poll }): boolean => {
       return poll === true || poll === 'true' || false;
     },
@@ -189,6 +189,9 @@ export const txOptions = {
     prompt: txRequestKeyPrompt,
     defaultIsOptional: false,
     validation: requestKeyValidation,
+    transform: (value: string) => {
+      return value.trim();
+    },
     option: new Option(
       '-k, --request-key <requestKey>',
       'Request key of the transaction',
@@ -203,6 +206,15 @@ export const txOptions = {
     option: new Option(
       '-l --holes',
       'Get a list of all the values this template needs',
+    ),
+  }),
+  gasLimit: createOption({
+    key: 'gasLimit' as const,
+    prompt: () => undefined as string | undefined,
+    validation: z.string().optional(),
+    option: new Option(
+      '-g --gas-limit <gasLimit>',
+      'Gas limit for the local transaction',
     ),
   }),
 };

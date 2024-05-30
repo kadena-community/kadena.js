@@ -1,5 +1,4 @@
 import type { IMostPopularPage } from '@/MostPopularData';
-import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
 import { DocsCard } from '@/components/DocsCard/DocsCard';
 import { docsCardLink } from '@/components/DocsCard/styles.css';
@@ -11,16 +10,7 @@ import {
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
 import { getPageConfig } from '@/utils/config';
-import type { IMenuData } from '@kadena/docs-tools';
-import { MonoChevronRight } from '@kadena/react-icons';
-import {
-  Box,
-  Grid,
-  GridItem,
-  Heading,
-  Link as KandenaLink,
-  Stack,
-} from '@kadena/react-ui';
+import { Box, Grid, GridItem, Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
@@ -29,10 +19,9 @@ import React from 'react';
 
 interface IProps {
   popularPages: IMostPopularPage[];
-  blogPosts: IMenuData[];
 }
 
-const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
+const Home: FC<IProps> = ({ popularPages }) => {
   return (
     <>
       <HomeHeader popularPages={popularPages} />
@@ -43,87 +32,151 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
         <article className={articleClass}>
           <Box className={containerClass}>
             <Grid gap="lg" columns={{ sm: 1, md: 2 }}>
-              <GridItem rowSpan={2}>
+              <GridItem>
                 <DocsCard
-                  label="Start with core concepts"
-                  description="Kadena is a secure and decentralized public blockchain with a revolutionary chain architecture and the tools designed for builders to get the results they expect, faster. If you want to build better user experiences and more diverse applications for blockchain adoption, explore Kadena. From core concepts to developer tooling, Kadena provides everything you need to develop blockchain applications—from concept to launch—in days or weeks instead of months or years."
-                  schema="info"
-                  background="whitepapers"
+                  label="Engage"
+                  description="Start here to learn the basics, including blockchain fundamentals and the core concepts of the Kadena network."
                 >
                   <BrowseSection marker="none">
-                    <Link className={docsCardLink} href="/kadena/why-kadena">
-                      What is Kadena?
+                    <Link
+                      className={docsCardLink}
+                      href="/learn/what-is-a-blockchain"
+                    >
+                      What is a blockchain?
                     </Link>
-                    <Link className={docsCardLink} href="/kadena/kda">
-                      What is the KDA token?
+
+                    <Link className={docsCardLink} href="/learn/why-build">
+                      Why build on a blockchain?
                     </Link>
-                    <Link className={docsCardLink} href="/pact">
-                      What are Pact smart contracts?
+
+                    <Link className={docsCardLink} href="/learn/why-kadena">
+                      Why Kadena?
+                    </Link>
+
+                    <Link className={docsCardLink} href="/learn/accounts">
+                      Accounts, keys, and principals
                     </Link>
                   </BrowseSection>
                 </DocsCard>
               </GridItem>
               <GridItem>
                 <DocsCard
-                  label="Learn step-by-step in tutorials"
-                  description="Get hands-on experience and step-by-step instructions to start your journey from Hello, World! to smart contracts and full stack applications. Whether you are just starting out or an experienced professional, follow simple tutorials and in-depth workshops to reach your goals at your own pace."
-                  schema="warning"
-                  background="contribute"
+                  label="Onboard"
+                  description="Try Kadena as a first time user or start your journey as a developer with a guided tour."
                 >
-                  <Box marginBlock="md">
-                    <KandenaLink
-                      href="/build/guides/election-dapp-tutorial"
-                      endVisual={<MonoChevronRight />}
-                      variant="negative"
-                    >
-                      Build your first dApp
-                    </KandenaLink>
-                  </Box>
                   <BrowseSection marker="none">
+                    <Link className={docsCardLink} href="/build/onboard">
+                      Explore the blockchain
+                    </Link>
                     <Link className={docsCardLink} href="/build/quickstart">
-                      Quick start
+                      Deploy your first contract
+                    </Link>
+                    <Link className={docsCardLink} href="/build/pact">
+                      Get started with Pact smart contract language
+                    </Link>
+                  </BrowseSection>
+                </DocsCard>
+              </GridItem>
+              <GridItem>
+                <DocsCard
+                  label="Coach"
+                  description="Take your game to the next level with tools, sample code, and how-to guides."
+                >
+                  <BrowseSection marker="none">
+                    <Link className={docsCardLink} href="/build/pact">
+                      Smart contracts
+                    </Link>
+                    <Link className={docsCardLink} href="/build/nft-marmalade">
+                      Non-fungible tokens
+                    </Link>
+                    <Link className={docsCardLink} href="/build/templates">
+                      Code templates
+                    </Link>
+                    <Link className={docsCardLink} href="/build/frontend">
+                      Command-line interface
+                    </Link>
+                  </BrowseSection>
+                </DocsCard>
+              </GridItem>
+              <GridItem>
+                <DocsCard
+                  label="Propel"
+                  description="Deploy your smart contracts on the network or support the infrastructure by deploying a Chainweb node."
+                >
+                  <BrowseSection marker="none">
+                    <Link className={docsCardLink} href="/deploy">
+                      Prepare to deploy
+                    </Link>
+                    <Link
+                      className={docsCardLink}
+                      href="/deploy/chainweb-get-started"
+                    >
+                      Manage a Chainweb node
                     </Link>
 
-                    <a
+                    <Link className={docsCardLink} href="/learn/chainweb">
+                      Chainweb consensus protocol
+                    </Link>
+                    <Link className={docsCardLink} href="/reference/syntax">
+                      Pact smart contract language
+                    </Link>
+                  </BrowseSection>
+                </DocsCard>
+              </GridItem>
+
+              <GridItem rowSpan={1}>
+                <DocsCard
+                  label="Embrace"
+                  description="Find out about community programs, grants, partnerships, and business development opportunities,
+              to grow the Kadena ecosystem and how you can contribute."
+                >
+                  <BrowseSection marker="none">
+                    <Link className={docsCardLink} href="/participate">
+                      How to get involved
+                    </Link>
+                    <Link className={docsCardLink} href="/participate/docs">
+                      Contribute to doc
+                    </Link>
+
+                    <Link
+                      className={docsCardLink}
+                      href="https://kadena.io/grants/"
+                    >
+                      Grants
+                    </Link>
+                  </BrowseSection>
+                </DocsCard>
+              </GridItem>
+
+              <GridItem>
+                <DocsCard
+                  label="Explore beyond"
+                  description="Explore videos, whitepapers, discussion forums, and other sites and tools that are outside the scope of documentation."
+                >
+                  <BrowseSection marker="none">
+                    <Link
+                      className={docsCardLink}
+                      href="https://tools.kadena.io"
+                    >
+                      Get KDA and developer tools
+                    </Link>
+                    <Link
                       className={docsCardLink}
                       href="https://academy.kadena.io"
                     >
-                      Explore courses in the Kadena Academy
-                    </a>
-                    <Link className={docsCardLink} href="/build/guides">
-                      Create a smart contract
-                    </Link>
-                  </BrowseSection>
-                </DocsCard>
-              </GridItem>
-              <GridItem>
-                <DocsCard
-                  label="Set up your development environment"
-                  description="If you're ready to start coding, you'll want to set up a local development environment with the tools and resources you'll need to build decentralized applications."
-                  schema="success"
-                  background="quickstart"
-                >
-                  <BrowseSection marker="none">
-                    <Link
-                      className={docsCardLink}
-                      href="/kadena/wallets/chainweaver"
-                    >
-                      Development wallet
+                      Sign up for the Kadena Academy
                     </Link>
                     <Link
                       className={docsCardLink}
-                      href="/contribute/ambassadors"
+                      href="https://www.youtube.com/kadenablockchain"
                     >
-                      Local development network
+                      Visit the Kadena video library
                     </Link>
                     <Link
                       className={docsCardLink}
-                      href="/pact/beginner/test-in-the-sdk"
+                      href="https://www.kadena.io/blog"
                     >
-                      Pact REPL
-                    </Link>
-                    <Link className={docsCardLink} href="/pact/vscode">
-                      Visual Studio Code
+                      Read recent articles
                     </Link>
                   </BrowseSection>
                 </DocsCard>
@@ -132,7 +185,10 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
           </Box>
 
           <Stack flexDirection="column" gap="xxxl">
-            <BrowseSection title="Download useful tools" direction="row">
+            <BrowseSection
+              title="GET STARTED WITH KADENA TODAY"
+              direction="row"
+            >
               <BrowseSection.LinkBlock
                 title="Bootstrap Kadena dApp"
                 subtitle="Quickstart your Kadena app"
@@ -162,67 +218,12 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                 subtitle="Install Pact for yourself"
                 href="https://github.com/kadena-io/pact#installing-pact"
               />
-            </BrowseSection>
-
-            <BrowseSection title="Explore core components" direction="row">
-              <BrowseSection.LinkBlock
-                title="Overview of Kadena"
-                subtitle="Find out what we are about"
-                href="/kadena"
-              />
-              <BrowseSection.LinkBlock
-                title="Manage your KDA"
-                subtitle="Wallets & platforms"
-                href="/kadena/kda/manage-kda"
-              />
               <BrowseSection.LinkBlock
                 title="Kadena.io"
                 subtitle="Home is where the heart is"
                 href="https://kadena.io"
               />
-              <BrowseSection.LinkBlock
-                title="Overview of Pact"
-                subtitle="Learn the basics of Pact to create a smart contract"
-                href="/pact"
-              />
-              <BrowseSection.LinkBlock
-                title="Chainweb"
-                subtitle="Chainweb is our scalable Proof-Of-Work (PoW) consensus algorithm"
-                href="/chainweb"
-              />
-              <BrowseSection.LinkBlock
-                title="Marmalade"
-                subtitle="Marmalade provides the complete NFT infrastructure."
-                href="/marmalade"
-              />
             </BrowseSection>
-
-            <BrowseSection title="Participate in programs" direction="row">
-              <BrowseSection.LinkBlock
-                title="Ambassador program"
-                subtitle="Apply for some Ambassador privileges"
-                href="/contribute/ambassadors"
-              />
-              <BrowseSection.LinkBlock
-                title="Technical grants"
-                subtitle="Empowering builders for innovation"
-                href="https://kadena.io/grants/"
-              />
-              <BrowseSection.LinkBlock
-                title="Docs"
-                subtitle="Help to improve our docs"
-                href="/contribute/docs"
-              />
-            </BrowseSection>
-
-            <Box>
-              <Heading as="h5">Stay up-to-date</Heading>
-              <BlogPostsStrip
-                data={blogPosts}
-                link="/blogchain"
-                linkLabel="More Blogchain posts"
-              />
-            </Box>
           </Stack>
         </article>
       </div>
@@ -234,7 +235,6 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       ...(await getPageConfig({
-        blogPosts: true,
         popularPages: '/',
         filename: __filename,
       })),
@@ -244,7 +244,7 @@ export const getStaticProps: GetStaticProps = async () => {
         label: 'Pact Test',
         order: 1,
         description:
-          "Welcome to Kadena's documentation! All our Documentation in 1 place. Pact, ChainWeb, KDA, Marmalade etc",
+          'Welcome to the Kadena documentation site! This site provides documentation for all things Kadena, including general topics for learning about blockchain technology, technical references for developing smart contracts, and guides for becoming a ChainWeb node operator, using wallet applications, and creating tokens and token collections with Marmalade.',
         layout: 'home',
       },
     },

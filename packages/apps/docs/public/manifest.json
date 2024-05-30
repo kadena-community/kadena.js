@@ -1,0 +1,62 @@
+{
+  "name": "Kadena Documentation",
+  "short_name": "Kadena Docs",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#020E1B",
+  "theme_color": "#020E1B",
+  "description": "This site provides documentation for all things Kadena, including general topics for learning about blockchain technology, technical references for developing smart contracts, guides for becoming a ChainWeb node operator, and creating tokens and token collections with Marmalade.",
+  "screenshots": [
+    {
+      "src": "/assets/manifest/narrow.png",
+      "type": "image/png",
+      "sizes": "328x703",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/assets/manifest/wide.png",
+      "type": "image/png",
+      "sizes": "1280x763",
+      "form_factor": "wide"
+    }
+  ],
+  "icons": [
+    {
+      "src": "/assets/favicons/icon@48.png?1",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/favicons/icon@72.png?1",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/favicons/icon@96.png?1",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/favicons/icon@144.png?1",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/favicons/icon@168.png?1",
+      "sizes": "168x168",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/favicons/icon@192.png?1",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "purpose": "maskable",
+      "src": "/assets/favicons/icon@512.png?1",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "related_applications": []
+}

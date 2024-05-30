@@ -1,0 +1,31 @@
+{
+  "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "target": "ES2020",
+    "allowJs": false,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "incremental": true,
+    "moduleResolution": "Bundler",
+    "module": "ESNext",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "declaration": false, // fixes pnpm issue: https://github.com/microsoft/TypeScript/issues/42873
+    "declarationMap": false,
+    "jsx": "preserve",
+    "paths": {
+      "react": ["./node_modules/@types/react"],
+      "@/*": ["./src/*"],
+      "@components/*": ["./src/components/*"],
+      "@constants/*": ["./src/constants/*"],
+      "@context/*": ["./src/context/*"],
+      "@graphql/*": ["./src/graphql/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@utils/*": ["./src/utils/*"]
+    }
+  },
+
+  "exclude": ["node_modules"]
+}

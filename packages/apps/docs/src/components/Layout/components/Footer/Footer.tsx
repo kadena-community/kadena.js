@@ -28,12 +28,23 @@ export const Footer: FC = () => {
           marginBlock="sm"
         >
           <FooterLink href="https://kadena.io">Kadena.io</FooterLink>
-          <FooterLink href="https://kadena.io">Privacy Policy</FooterLink>
-          <FooterLink href="https://kadena.io">Terms of Service</FooterLink>
-          <Link href="/kadena/code-of-conduct" passHref legacyBehavior>
+          <FooterLink href="https://kadena.io/privacy-policy">
+            Privacy Policy
+          </FooterLink>
+          <FooterLink href="https://www.kadena.io/terms-and-conditions">
+            Terms and Conditions
+          </FooterLink>
+          <Link
+            href="https://www.kadena.io/community-guidelines"
+            passHref
+            legacyBehavior
+          >
             <FooterLink href="/kadena/code-of-conduct">
               Code of Conduct
             </FooterLink>
+          </Link>
+          <Link href="/changelogs" passHref legacyBehavior>
+            <FooterLink href="/changelogs">Changelogs</FooterLink>
           </Link>
         </Stack>
         <Stack

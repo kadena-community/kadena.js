@@ -1,17 +1,24 @@
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.hook';
-import { Box, Button, Heading, Text, TextField } from '@kadena/react-ui';
-import { useState } from 'react';
+import { Button, Heading, Text, TextField, Stack, Avatar } from '@kadena/react-ui';
 import { useForm } from 'react-hook-form';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
+import { AuthCard } from '@/Components/AuthCard/AuthCard';
+import { passwordContainer, profileContainer } from './styles.css.ts';
 
 export function UnlockProfile() {
-  const { register, handleSubmit } = useForm<{ password: string }>();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { isValid, errors }
+  } = useForm<{ password: string }>();
   const { profileId } = useParams();
-  const [error, setError] = useState('');
   const { isUnlocked, profileList, unlockProfile } = useWallet();
   const { unlockHDWallet } = useHDWallet();
   const profile = profileList.find((p) => p.uuid === profileId);
+  const incorrectPasswordMsg = 'Password is incorrect';
+
   async function unlock({ password }: { password: string }) {
     try {
       if (!profileId) {
@@ -19,7 +26,7 @@ export function UnlockProfile() {
       }
       const result = await unlockProfile(profileId, password);
       if (!result) {
-        throw new Error("Password doesn't match");
+        throw new Error(incorrectPasswordMsg);
       }
       // for now we just pick the first key source later we should have a way to select the key source
       const keySource = result.keySources[0];
@@ -29,7 +36,7 @@ export function UnlockProfile() {
       await unlockHDWallet(keySource.source, password, keySource);
     } catch (e) {
       console.log(e);
-      setError("Password doesn't match");
+      setError('password', { type: 'manual', message: incorrectPasswordMsg });
     }
   }
   if (!profile) {
@@ -39,18 +46,34 @@ export function UnlockProfile() {
     return <Navigate to="/" replace />;
   }
   return (
-    <main>
-      <Box margin="md">
-        <Heading variant="h5">Unlock your wallet</Heading>
-        <Text>Profile: {profile.name}</Text>
+    <>
+      <AuthCard backButtonLink="/select-profile">
+        <Stack gap="md" padding="sm" display="inline-flex" className={profileContainer}>
+          <Avatar size="md" name={profile.name} /> {profile.name}
+        </Stack>
+        <Heading variant="h5">Unlock your profile</Heading>
+        <Text as="p">Enter your password to unlock access</Text>
         <form onSubmit={handleSubmit(unlock)}>
-          <label htmlFor="password">Password</label>
-          <TextField id="password" type="password" {...register('password')} />
-          <Button type="submit">Unlock</Button>
+          <div className={passwordContainer}>
+            <TextField
+              id="password"
+              type="password"
+              placeholder="Password"
+              aria-label="Password"
+              isRequired
+              {...register('password', {
+                required: { value: true, message: 'This field is required' },
+              })}
+              isInvalid={!isValid && !!errors.password}
+              errorMessage={errors.password?.message}
+            />
+          </div>
+          <Stack flexDirection="column" gap="md">
+            <Button type="submit" isDisabled={!isValid} >Continue</Button>
+            <Text as="p" size="small">Forgot password? <Link to="/import-wallet">Recover your profile</Link></Text>
+          </Stack>
         </form>
-        {error && <Text>{error}</Text>}
-        <Link to="/create-profile">Create profile</Link>
-      </Box>
-    </main>
+      </AuthCard>
+    </>
   );
 }

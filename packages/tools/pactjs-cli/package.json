@@ -1,6 +1,6 @@
 {
   "name": "@kadena/pactjs-cli",
-  "version": "1.11.0",
+  "version": "1.11.1",
   "description": "CLI tool accompanying @kadena/pactjs-core and @kadena/pactjs-client to generate TypeScript definitions and Pact client",
   "repository": {
     "type": "git",
@@ -39,7 +39,7 @@
     "@kadena/pactjs-generator": "workspace:*",
     "commander": "^11.0.0",
     "cross-fetch": "~3.1.5",
-    "debug": "~4.3.4",
+    "debug": "4.3.4",
     "mkdirp": "~1.0.4",
     "prettier": "~3.2.5",
     "rimraf": "~5.0.1",
@@ -56,10 +56,10 @@
     "@types/mkdirp": "~1.0.2",
     "@types/node": "^20.12.7",
     "@types/rimraf": "~3.0.2",
-    "@vitest/coverage-v8": "^1.1.0",
+    "@vitest/coverage-v8": "^1.6.0",
     "eslint": "^8.45.0",
     "msw": "^2.2.14",
     "typescript": "5.4.5",
-    "vitest": "^1.1.0"
+    "vitest": "^1.6.0"
   }
 }

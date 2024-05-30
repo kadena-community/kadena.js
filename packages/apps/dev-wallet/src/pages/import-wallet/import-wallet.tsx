@@ -54,7 +54,7 @@ export function ImportWallet() {
     );
   }
   return (
-    <main>
+    <>
       <Box margin="md">
         <Heading variant="h5">Import mnemonic</Heading>
         <form onSubmit={handleSubmit(confirm)}>
@@ -88,6 +88,6 @@ export function ImportWallet() {
         </form>
         {error && <Text>{error}</Text>}
       </Box>
-    </main>
+    </>
   );
 }

@@ -4,10 +4,11 @@ import { services } from '../../services/index.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { mockPrompts, runCommand } from '../../utils/test.util.js';
 import { defaultTemplates } from '../commands/templates/templates.js';
-import { createTransaction } from '../commands/txCreateTransaction.js';
+import { createAndWriteTransaction } from '../commands/txCreateTransaction.js';
 import { signTransactionFileWithKeyPairAction } from '../utils/txSignWithKeypair.js';
 
 describe('tx send', () => {
+  // skipped because usage of live chainweb-api (only used for manual testing)
   it.skip('Prompts relevant values and sends transaction to chain', async () => {
     const publicKey =
       '2619fafe33b3128f38a4e4aefe6a5559371b18b6c25ac897aff165ce14b241b3';
@@ -19,7 +20,7 @@ describe('tx send', () => {
     await services.filesystem.ensureDirectoryExists(WORKING_DIRECTORY);
     await runCommand(['config', 'init']);
 
-    const transaction = await createTransaction(
+    const transaction = await createAndWriteTransaction(
       defaultTemplates.transfer,
       {
         'account:from': `k:${publicKey}`,
@@ -50,7 +51,7 @@ describe('tx send', () => {
       },
     });
 
-    const logs = await runCommand(['tx', 'send']);
-    expect(logs.includes('submitted with request key')).toEqual(true);
+    const { stderr } = await runCommand(['tx', 'send']);
+    expect(stderr.includes('submitted with request key')).toEqual(true);
   });
 });

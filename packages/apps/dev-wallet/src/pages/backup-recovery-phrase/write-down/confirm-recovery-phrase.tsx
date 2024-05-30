@@ -24,7 +24,7 @@ export function ConfirmRecoveryPhrase({
   console.log(mnemonic);
   console.log(wallet);
   return (
-    <main>
+    <>
       <Box margin="md">
         <Heading variant="h5">Confirm you wrote it down</Heading>
         <form onSubmit={handleSubmit(confirm)}>
@@ -34,6 +34,6 @@ export function ConfirmRecoveryPhrase({
         </form>
         {error && <Text>{error}</Text>}
       </Box>
-    </main>
+    </>
   );
 }

@@ -1,21 +1,30 @@
-import type { IPactCommand } from '@kadena/client';
+import type {
+  ChainId,
+  IClient,
+  ICommandResult,
+  IPactCommand,
+} from '@kadena/client';
 import {
   addSignatures,
+  createClient,
   createSignWithKeypair,
   isSignedTransaction,
 } from '@kadena/client';
-import type { EncryptedString } from '@kadena/hd-wallet';
 import { kadenaSignWithSeed } from '@kadena/hd-wallet';
-import {
-  kadenaSign as legacyKadenaSign,
-  kadenaSignFromRootKey as legacyKadenaSignWithSeed,
-} from '@kadena/hd-wallet/chainweaver';
+import { kadenaSignFromRootKey as legacyKadenaSignWithSeed } from '@kadena/hd-wallet/chainweaver';
 import type {
   ICommand,
   ICommandPayload,
   IKeyPair,
   IUnsignedCommand,
 } from '@kadena/types';
+import { loadNetworkConfig } from '../../networks/utils/networkHelpers.js';
+import { getExistingNetworks } from '../../utils/helpers.js';
+
+import type {
+  ICustomNetworkChoice,
+  INetworkCreateOptions,
+} from '../../networks/utils/networkHelpers.js';
 
 import path, { isAbsolute, join } from 'node:path';
 import { z } from 'zod';
@@ -41,6 +50,23 @@ export interface ICommandData {
 export interface IWalletWithKey {
   wallet: IWallet;
   relevantKeyPairs: IWalletKey[];
+}
+
+export interface INetworkDetails extends INetworkCreateOptions {
+  chainId: ChainId;
+}
+
+export interface ITransactionWithDetails {
+  command: ICommand | IUnsignedCommand;
+  details: INetworkDetails;
+}
+
+export interface ISubmitResponse {
+  transaction: IUnsignedCommand | ICommand;
+  details: INetworkDetails;
+  requestKey: string;
+  clientKey: string;
+  response?: ICommandResult;
 }
 
 /**
@@ -165,7 +191,7 @@ export async function signTransactionWithWallet(
         if (wallet.legacy === true) {
           const sigUint8Array = await legacyKadenaSignWithSeed(
             password,
-            unsignedTransaction.cmd,
+            unsignedTransaction.hash,
             wallet.seed,
             key.index,
           );
@@ -212,7 +238,6 @@ export async function signTransactionWithWallet(
 export async function signTransactionWithKeyPair(
   keys: IWalletKeyPair[],
   unsignedTransactions: IUnsignedCommand[],
-  legacy?: boolean,
 ): Promise<(ICommand | IUnsignedCommand)[]> {
   try {
     const signedTransactions: (ICommand | IUnsignedCommand)[] = [];
@@ -229,30 +254,13 @@ export async function signTransactionWithKeyPair(
         continue;
       }
 
-      if (legacy === true) {
-        const signatures = await Promise.all(
-          relevantKeyPairs.map(async (key) => {
-            const sigUint8Array = await legacyKadenaSign(
-              '',
-              unsignedCommand.cmd,
-              key.secretKey as EncryptedString,
-            );
-
-            const sig = Buffer.from(sigUint8Array).toString('hex');
-            return { sig, pubKey: key.publicKey };
-          }),
-        );
-
-        const command = addSignatures(unsignedCommand, ...signatures);
-        signedTransactions.push(command);
-      } else {
-        const signWithKeypair = createSignWithKeypair(
-          relevantKeyPairs as IKeyPair[],
-        );
-        const command = await signWithKeypair(unsignedCommand);
-        signedTransactions.push(command);
-      }
+      const signWithKeypair = createSignWithKeypair(
+        relevantKeyPairs as IKeyPair[],
+      );
+      const command = await signWithKeypair(unsignedCommand);
+      signedTransactions.push(command);
     }
+
     return signedTransactions;
   } catch (error) {
     throw new Error(`Error signing transaction: ${error.message}`);
@@ -652,7 +660,7 @@ export function displaySignersFromUnsignedCommands(
         unsignedCommand.hash
       }) will now be signed with the following signers:`,
     );
-    log.output(table.toString(), command.signers);
+    log.info(table.toString());
   });
 }
 
@@ -685,4 +693,90 @@ export async function logTransactionDetails(command: ICommand): Promise<void> {
 export const getTxTemplateDirectory = (): string | null => {
   const kadenaDir = services.config.getDirectory();
   return notEmpty(kadenaDir) ? path.join(kadenaDir, TX_TEMPLATE_FOLDER) : null;
+};
+
+/**
+ * Generates a unique key for the client based on the network details.
+ * @param {INetworkDetails} details - The network details.
+ * @returns {string} The generated client key.
+ */
+function generateClientKey(details: INetworkDetails): string {
+  return `${details.networkHost}-${details.networkId}-${details.chainId}`;
+}
+
+/**
+ * Creates a URL for the client based on the network details.
+ * @param {INetworkDetails} details - The network details.
+ * @returns {string} The client URL.
+ */
+export function generateClientUrl(details: INetworkDetails): string {
+  return `${details.networkHost}/chainweb/0.0/${details.networkId}/chain/${details.chainId}/pact`;
+}
+
+/**
+ * Retrieves or creates a client instance based on network details.
+ * @param {Map<string, IClient>} clientInstances - Map of client instances.
+ * @param {INetworkDetails} details - The network details to identify the client.
+ * @returns {IClient} The client instance.
+ */
+export function getClient(
+  clientInstances: Map<string, IClient>,
+  details: INetworkDetails,
+): IClient {
+  const clientKey = generateClientKey(details);
+
+  if (!clientInstances.has(clientKey)) {
+    const client = createClient(generateClientUrl(details));
+    clientInstances.set(clientKey, client);
+  }
+
+  return clientInstances.get(clientKey)!;
+}
+
+export const createTransactionWithDetails = async (
+  commands: (ICommand | IUnsignedCommand)[],
+  networkForTransactions: {
+    txTransactionNetwork: string[];
+  },
+): Promise<ITransactionWithDetails[]> => {
+  const transactionsWithDetails: ITransactionWithDetails[] = [];
+  const existingNetworks: ICustomNetworkChoice[] = await getExistingNetworks();
+
+  for (let index = 0; index < commands.length; index++) {
+    const command = commands[index];
+    const network = networkForTransactions.txTransactionNetwork[index];
+
+    if (!existingNetworks.some((item) => item.value === network)) {
+      log.error(
+        `Network "${network}" does not exist. Please create it using "kadena network create" command, the transaction "${
+          index + 1
+        }" with hash "${command.hash}" will not be sent.`,
+      );
+      continue;
+    }
+
+    const networkDetails = await loadNetworkConfig(network);
+    const commandData = extractCommandData(command);
+
+    if (commandData.networkId === networkDetails.networkId) {
+      transactionsWithDetails.push({
+        command,
+        details: {
+          chainId: commandData.chainId as ChainId,
+          ...networkDetails,
+        },
+      });
+    } else {
+      log.error(
+        `Network ID: "${commandData.networkId}" in transaction command ${
+          index + 1
+        } does not match the Network ID: "${
+          networkDetails.networkId
+        }" from the provided network "${network}", transaction with hash "${
+          command.hash
+        }" will not be sent.`,
+      );
+    }
+  }
+  return transactionsWithDetails;
 };

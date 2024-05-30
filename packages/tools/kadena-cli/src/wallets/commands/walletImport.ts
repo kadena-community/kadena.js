@@ -17,11 +17,11 @@ export const createImportWalletCommand: (
   [
     walletOptions.mnemonicFile(),
     securityOptions.createPasswordOption({
-      message: 'Enter the new wallet password',
-      confirmPasswordMessage: 'Re-enter the password',
+      message: 'Enter the new wallet password:',
+      confirmPasswordMessage: 'Re-enter the password:',
       useStdin: false,
     }),
-    walletOptions.walletName(),
+    walletOptions.walletName({ isOptional: false }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (option, { collect }) => {
@@ -44,16 +44,20 @@ export const createImportWalletCommand: (
       });
       wallet = await services.wallet.storeKey(wallet, key);
 
-      loading.succeed('Wallet imported successfully');
+      loading.succeed('Wallet imported successfully\n');
 
-      log.info(log.color.green('Mnemonic Phrase'));
+      log.info('====================================================');
+      log.info('== 🚨 IMPORTANT: Mnemonic Phrase 🚨 ==');
+      log.info('====================================================');
+      log.info(log.color.green('Mnemonic Phrase:'));
       log.info(config.mnemonicFile);
-
       log.info(
         log.color.yellow(
-          `\nPlease store the mnemonic phrase in a safe place. You will need it to recover your wallet.\n`,
+          `\nPlease store the mnemonic phrase in a SAFE and SECURE place. \n` +
+            `This phrase is the KEY to recover your wallet. Losing it means losing access to your assets.\n`,
         ),
       );
+      log.info('====================================================\n');
 
       log.info(log.color.green('Wallet Storage Location'));
       log.info(relativeToCwd(wallet.filepath));

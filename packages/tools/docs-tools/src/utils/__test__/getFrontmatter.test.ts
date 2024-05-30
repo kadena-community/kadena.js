@@ -35,9 +35,8 @@ and more content
 describe('utils getFrontmatterFromTsx', () => {
   it('should return json of frontmatter from TSX content', async () => {
     const content = `import type { IMostPopularPage } from '@/MostPopularData';
-    import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
      
-    const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
+    const Home: FC<IProps> = ({ popularPages }) => {
       return (
         <div>
           content
@@ -49,7 +48,6 @@ describe('utils getFrontmatterFromTsx', () => {
       return {
         props: {
           ...(await getPageConfig({
-            blogPosts: ['kadenajs', 'cli'],
             popularPages: '/build',
             filename: __filename,
           })),
@@ -74,9 +72,8 @@ describe('utils getFrontmatterFromTsx', () => {
   });
   it('should return undefined if there is no frontmatter in TSX content', async () => {
     const content = `import type { IMostPopularPage } from '@/MostPopularData';
-      import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
        
-      const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
+      const Home: FC<IProps> = ({ popularPages }) => {
         return (
           <div>
             content
@@ -88,7 +85,6 @@ describe('utils getFrontmatterFromTsx', () => {
         return {
           props: {
             ...(await getPageConfig({
-              blogPosts: ['kadenajs', 'cli'],
               popularPages: '/build',
               filename: __filename,
             })),

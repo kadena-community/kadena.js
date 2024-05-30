@@ -6,6 +6,7 @@ import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import {
   isNotEmptyObject,
+  isNotEmptyString,
   maskStringPreservingStartAndEnd,
   notEmpty,
 } from '../../utils/globalHelpers.js';
@@ -14,6 +15,7 @@ import { log } from '../../utils/logger.js';
 import { createTable } from '../../utils/table.js';
 import { accountOptions } from '../accountOptions.js';
 import type { IAccountDetailsResult } from '../types.js';
+import { sortChainIds } from '../utils/accountHelpers.js';
 import type { IGetAccountDetailsParams } from '../utils/getAccountDetails.js';
 import { getAccountDetailsFromChain } from '../utils/getAccountDetails.js';
 
@@ -29,11 +31,27 @@ interface IAccountDetails {
 const formatWarnings = (warnings: string[]): string | null => {
   if (warnings.length === 0) return null;
   const [prefix, suffix, ...chainIds] = warnings;
-  const sortedChainIds = chainIds.sort(
-    (a, b) => parseInt(a, 10) - parseInt(b, 10),
-  );
+  const sortedChainIds = sortChainIds(chainIds as ChainId[]);
   return `${prefix} ${sortedChainIds.join(',')} ${suffix}`;
 };
+
+function transformData(
+  data: IAccountDetails[],
+): IAccountDetails | IAccountDetailsResult {
+  if (data.length === 1) {
+    // Return the single object data directly
+    const singleKey = Object.keys(data[0])[0];
+    return data[0][singleKey];
+  } else {
+    // Merge objects into a single object
+    const result: IAccountDetails = {};
+    data.forEach((obj) => {
+      const key = Object.keys(obj)[0];
+      result[key] = obj[key];
+    });
+    return result;
+  }
+}
 
 export async function accountDetails(
   config: IAccountDetailsConfig,
@@ -50,6 +68,7 @@ export async function accountDetails(
             ...config,
             chainId,
           });
+
           return {
             [chainId]: accountDetails,
           };
@@ -75,6 +94,7 @@ export async function accountDetails(
     status = 'error';
     errors.push(error.message);
   }
+
   const nonEmptyAccountDetails = accountDetailsList.filter(notEmpty);
   status = nonEmptyAccountDetails.length === 0 ? 'error' : status;
   return {
@@ -87,7 +107,7 @@ export async function accountDetails(
 
 function generateTableForAccountDetails(accounts: IAccountDetails[]): Table {
   const table = createTable({
-    head: ['Account Name', 'ChainID', 'Public Keys', 'Predicate', 'Balance'],
+    head: ['Name', 'ChainID', 'Public Keys', 'Predicate', 'Balance'],
   });
 
   const data = accounts.map((acc) => {
@@ -129,7 +149,7 @@ export const createAccountDetailsCommand = createCommand(
     const accountName = accountConfig?.name ?? account;
 
     if (!isNotEmptyObject(accountConfig)) {
-      fungible = (await option.fungible()).fungible;
+      fungible = (await option.fungible()).fungible?.trim() ?? 'coin';
     }
 
     const { networkConfig } = await option.network();
@@ -138,6 +158,12 @@ export const createAccountDetailsCommand = createCommand(
     if (chainIds === undefined || chainIds.length === 0) {
       log.error(CHAIN_ID_ACTION_ERROR_MESSAGE);
       return;
+    }
+
+    if (!isNotEmptyString(fungible)) {
+      return log.error(
+        'Fungible is required. Please provide a valid fungible option.',
+      );
     }
 
     log.debug('account-details:action', {
@@ -162,7 +188,7 @@ export const createAccountDetailsCommand = createCommand(
         ),
       );
       const table = generateTableForAccountDetails(result.data);
-      log.output(table.toString(), result.data);
+      log.output(table.toString(), transformData(result.data));
     }
     assertCommandError(result);
   },

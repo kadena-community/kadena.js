@@ -1,5 +1,40 @@
 export const basicsPathUrlRedirects = [
   {
+    source: '/:slug/:slug2/:slug3%7D',
+    destination: '/:slug/:slug2/:slug3',
+    permanent: true,
+  },
+  {
+    source: '/:slug/:slug2%7D',
+    destination: '/:slug/:slug2',
+    permanent: true,
+  },
+  {
+    source: '/:slug%7D',
+    destination: '/:slug',
+    permanent: true,
+  },
+  {
+    source: '/:slug/:slug2/:slug3.html',
+    destination: '/:slug/:slug2/:slug3',
+    permanent: true,
+  },
+  {
+    source: '/:slug/:slug2.html',
+    destination: '/:slug/:slug2',
+    permanent: true,
+  },
+  {
+    source: '/:slug.html',
+    destination: '/:slug',
+    permanent: true,
+  },
+  {
+    source: '/help',
+    destination: '/',
+    permanent: true,
+  },
+  {
     source: '/basics/overview',
     destination: '/kadena',
     permanent: true,
@@ -11,7 +46,12 @@ export const basicsPathUrlRedirects = [
   },
   {
     source: '/basics/wallets',
-    destination: '/kadena/wallets',
+    destination: '/participate/wallets',
+    permanent: true,
+  },
+  {
+    source: '/basics/wallets/1000',
+    destination: '/participate/wallets',
     permanent: true,
   },
   {
@@ -121,7 +161,7 @@ export const basicsPathUrlRedirects = [
   },
   {
     source: '/basics/code-of-conduct',
-    destination: '/kadena/code-of-conduct',
+    destination: 'https://www.kadena.io/community-guidelines',
     permanent: true,
   },
 ];

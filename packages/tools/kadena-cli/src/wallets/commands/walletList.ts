@@ -1,7 +1,7 @@
 import type { Command } from 'commander';
 
 import { printWalletKeys } from '../../keys/utils/keysDisplay.js';
-import type { IWalletKey } from '../../services/wallet/wallet.types.js';
+import type { IWallet } from '../../services/wallet/wallet.types.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { log } from '../../utils/logger.js';
 import { walletOptions } from '../walletOptions.js';
@@ -21,8 +21,8 @@ export const createListWalletsCommand: (
       return log.error(`Selected wallet not found.`);
     } else if (Array.isArray(config.walletNameConfig)) {
       if (config.walletNameConfig.length === 0) {
-        log.info('There are no wallets created. You can add one with:\n');
-        log.info('  kadena wallet add');
+        log.warning('There are no wallets created. You can add one with:\n');
+        log.warning('  kadena wallet add');
       }
       for (const wallet of config.walletNameConfig) {
         await printWalletKeys(wallet);
@@ -30,16 +30,20 @@ export const createListWalletsCommand: (
       log.output(
         null,
         config.walletNameConfig.reduce(
-          (acc, { alias, keys }) => {
-            acc[alias] = keys;
+          (acc, wallet) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { seed, ...rest } = wallet;
+            acc[wallet.alias] = rest;
             return acc;
           },
-          {} as Record<string, IWalletKey[]>,
+          {} as Record<string, Omit<IWallet, 'seed'>>,
         ),
       );
     } else {
       await printWalletKeys(config.walletNameConfig);
-      log.output(null, config.walletNameConfig.keys);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { seed, ...rest } = config.walletNameConfig;
+      log.output(null, rest);
     }
   },
 );

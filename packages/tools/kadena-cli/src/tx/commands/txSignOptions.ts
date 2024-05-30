@@ -6,7 +6,7 @@ export const options = [
   // sign with wallet
   globalOptions.walletsSelectByWallet(),
   securityOptions.createPasswordOption({
-    message: 'Enter the wallet password',
+    message: 'Enter the wallet password:',
   }),
   globalOptions.directory({ disableQuestion: true }),
   txOptions.txUnsignedTransactionFiles(),

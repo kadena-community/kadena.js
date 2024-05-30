@@ -11,6 +11,7 @@ import {
 } from '@kadena/client/fp';
 import type { IPactDecimal } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
+import { networkData } from '@utils/network';
 
 export interface ICreateTokenInput {
   tokenId: string;
@@ -48,7 +49,7 @@ export async function mintToken({
   const config = {
     host: dotenv.NETWORK_HOST,
     defaults: {
-      networkId: dotenv.NETWORK_ID,
+      networkId: networkData.networkId,
     },
     sign: createSignWithKeypair(guard.keys),
   };

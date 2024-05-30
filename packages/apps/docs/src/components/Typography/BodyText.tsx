@@ -11,7 +11,7 @@ export interface IBodyTextProps {
 
 export const BodyText: FC<IBodyTextProps> = ({ children, as, bold }) => {
   return (
-    <Text as={as} bold={bold}>
+    <Text as={as} bold={bold} variant="body">
       {children}
     </Text>
   );

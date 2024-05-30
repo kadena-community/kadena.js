@@ -42,14 +42,14 @@ export const CookieConsent: FC = () => {
       <div className={notificationWrapperClass}>
         <Notification
           intent="info"
-          displayStyle="borderless"
+          type="inlineStacked"
           icon={<MonoCookie />}
           role="none"
         >
           <NotificationHeading id="cookie-heading">
             Cookie Consent
           </NotificationHeading>
-          <Text>
+          <Text variant="ui">
             This notification concerns the cookie policy requirement to ask
             users for their consent to use <strong>Google Analytics</strong> or
             other tracking tools for better optimizations/performances.

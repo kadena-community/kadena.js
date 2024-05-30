@@ -10,11 +10,6 @@ export const kadenaPathUrlRedirects = [
     permanent: true,
   },
   {
-    source: '/kadena/whitepapers',
-    destination: '/kadena/resources#whitepapersh1562907056',
-    permanent: true,
-  },
-  {
     source: '/kadena/resources/:slug',
     destination: '/kadena/resources',
     permanent: true,
