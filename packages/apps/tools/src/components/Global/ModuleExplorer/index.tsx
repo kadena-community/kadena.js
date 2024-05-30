@@ -29,7 +29,7 @@ export type Contract = ReturnType<typeof contractParser>[0][0]; // TODO: Should 
 export type ContractInterface = ElementType<Contract['usedInterface']> & {
   code?: string;
   chainId: ChainwebChainId;
-  network: string;
+  networkId: string;
 };
 export type ContractCapability = ElementType<Contract['capabilities']>;
 export type ContractFunction = ElementType<Contract['functions']>;
@@ -77,7 +77,7 @@ const chainModuleToOutlineTreeItems = (
           data: {
             ...i,
             chainId: chainModule.chainId,
-            network: chainModule.network,
+            networkId: chainModule.network,
             code: thirdFind?.data.code,
           },
           children: [],

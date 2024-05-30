@@ -158,7 +158,7 @@ const ModuleExplorerPage = (
             title: 'Mainnet',
             key: 'mainnet',
             children: mappedMainnet,
-            data: { name: 'mainnet', chainId: '0', networkId: 'mainnet01' },
+            data: { name: 'mainnet01', chainId: '0', networkId: 'mainnet01' },
             isLoading: mainnetModulesQuery.isFetching,
             supportsReload: true,
             label: amountOfMainnetModules,
@@ -167,7 +167,7 @@ const ModuleExplorerPage = (
             title: 'Testnet',
             key: 'testnet',
             children: mappedTestnet,
-            data: { name: 'testnet', chainId: '0', networkId: 'testnet04' },
+            data: { name: 'testnet04', chainId: '0', networkId: 'testnet04' },
             isLoading: testnetModulesQuery.isFetching,
             supportsReload: true,
             label: amountOfTestnetModules,
@@ -188,8 +188,9 @@ const ModuleExplorerPage = (
 
           if (data.key === 'interfaces') {
             const network = (data.children[0].data as ContractInterface)
-              .network;
-            const networkId = network === 'mainnet' ? 'mainnet01' : 'testnet04';
+              .networkId;
+            const networkId =
+              network === 'mainnet01' ? 'mainnet01' : 'testnet04';
 
             const promises = data.children.map(({ data }) => {
               return mutation.mutateAsync({

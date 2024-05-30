@@ -114,7 +114,8 @@ export const isModule = (
   return (
     typeof item !== 'string' &&
     (item as IncompleteModuleModel).chainId !== undefined &&
-    (item as IncompleteModuleModel).name !== undefined
+    (item as IncompleteModuleModel).name !== undefined &&
+    (item as IncompleteModuleModel).networkId !== undefined
   );
 };
 
