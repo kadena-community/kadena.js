@@ -26,7 +26,6 @@ Before you use the Kadena command-line interface, verify the following basic req
   
   Run `node --version` to verify the version you are running.
 
-
 - You have the `pnpm` package manager installed.
   
   Depending on your development environment, you can install pnpm using a standalone script or using a package manager. For example, you can run the command `brew install pnpm` or `npm install --global pnpm` to install pnpm on your local computer. For more information about installing pnpm on different operating systems, see Installation.

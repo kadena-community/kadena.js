@@ -165,6 +165,22 @@ pages:
           kadena-graph:
             url: /kadena-graph
             file: /build/frontend/kadena-graph.md
+      authentication:
+        url: /authentication
+        file: /build/authentication/authenticate-overview.md
+        children:
+          register:
+            url: /register
+            file: /build/authentication/register-an-account.md
+          integrate:
+            url: /integrate
+            file: /build/authentication/integrate-an-app.md
+          createtx:
+            url: /transactions
+            file: /build/authentication/create-transactions.md
+          recover:
+            url: /recover
+            file: /build/authentication/recover-account.md
       templates:
         url: /templates
         file: /build/code-templates.md
@@ -468,6 +484,9 @@ pages:
               dutch:
                 url: /dutch-auction
                 file: /reference/marmalade/dutch-auction-ref.md
+      spirekey:
+        url: /spirekey
+        file: /reference/spirekey-ref.md
       chainwebref:
         url: /chainweb-ref
         file: /reference/chainweb/api/chainweb-api.tsx
