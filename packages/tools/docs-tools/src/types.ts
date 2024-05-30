@@ -24,6 +24,8 @@ export interface IStartArray {
   depth: 1 | 2 | 3 | 4 | 5 | 6;
   children: IStartArray[];
   title?: string;
+  slug: string;
+  parentTitles?: string[];
 }
 
 export type LayoutType = 'full' | 'landing' | 'home' | 'redocly' | 'code';
@@ -31,6 +33,7 @@ export type LayoutType = 'full' | 'landing' | 'home' | 'redocly' | 'code';
 export interface ISubHeaderElement {
   tag: TagNameType;
   title?: string;
+  parentTitles?: string[];
   slug?: string;
   children: ISubHeaderElement[];
 }

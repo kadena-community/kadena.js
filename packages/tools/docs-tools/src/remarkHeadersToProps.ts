@@ -9,6 +9,7 @@ import type {
   Plugin,
   TagNameType,
 } from './types';
+import { createSlug } from './utils/createSlug';
 
 const getTagName = (depth = 1): TagNameType => `h${depth}` as TagNameType;
 
@@ -58,6 +59,7 @@ const remarkHeadersToProps = (): Plugin => {
         tag: 'h1',
         depth: 1,
         children: [],
+        slug: '',
       },
     ];
 
@@ -71,11 +73,21 @@ const remarkHeadersToProps = (): Plugin => {
         return;
       }
 
+      const parentTitles = [...(parent.parentTitles ?? []), parent.title ?? ''];
+      const slug = createSlug(toString(item), parentTitles);
+      item.data = {
+        hProperties: {
+          slug,
+        },
+      };
+
       const elm: IStartArray = {
         type: item.type,
         depth: item.depth,
         tag: getTagName(item.depth),
         title: toString(item) ?? '',
+        parentTitles: [...(parent.parentTitles ?? []), parent.title ?? ''],
+        slug,
         children: [],
       };
       parent.children.push(elm);

@@ -13,7 +13,10 @@ export const createSlugHash = (str: string): string => {
   return `h${hash}`;
 };
 
-export const createSlug = (str?: string): string => {
+export const createSlug = (
+  str: string,
+  parentTitles: string[] = [],
+): string => {
   if (str === undefined) return '';
 
   const normalizedSlug = str
@@ -25,5 +28,5 @@ export const createSlug = (str?: string): string => {
     .toLowerCase()
     .replace(/^-+|-+$/g, '');
 
-  return `${normalizedSlug}${createSlugHash(str)}`;
+  return `${normalizedSlug}${createSlugHash(str + parentTitles.join())}`;
 };

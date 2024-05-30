@@ -9,31 +9,16 @@ interface IProp {
   as: TagType;
   variant?: TagType;
   children: ReactNode;
+  slug: string;
 }
 
 export interface IHeader {
   children: string;
 }
 
-export const TaggedHeading: FC<IProp> = ({ children, as, variant }) => {
-  let slugInputStr = '';
+export const TaggedHeading: FC<IProp> = ({ children, as, variant, slug }) => {
+  console.log(slug);
 
-  if (Array.isArray(children)) {
-    slugInputStr = [children]
-      .flat()
-      .map((child) => {
-        if (typeof child === 'string') return child.trim();
-        if (typeof child.props.children === 'string')
-          return child.props.children.trim();
-        return '';
-      })
-      .filter((child) => child !== '') // remove empty strings to avoid join adding extra spaces
-      .join(' ');
-  } else if (typeof children === 'string') {
-    slugInputStr = children;
-  }
-
-  const slug = createSlug(slugInputStr);
   const outerSlug = `header${slug}`;
 
   const content = (

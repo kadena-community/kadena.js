@@ -1,6 +1,5 @@
 import menuData from '@/_generated/menu.json';
 import type { IFrontmatterData } from '@/types';
-import { createSlug } from '@/utils/createSlug';
 import { removeImageInfoFromMarkdown } from '@/utils/removeImageInfoFromMarkdown';
 import type { StreamMetaData } from '@7-docs/edge';
 import type { IMenuData } from '@kadena/docs-tools';
@@ -40,7 +39,7 @@ export const filePathToRoute = (filename?: string, header?: string): string => {
   }
 
   if (header) {
-    route = `${route}#${createSlug(header)}`;
+    //route = `${route}#${createSlug(header)}`;
   }
 
   return route;
