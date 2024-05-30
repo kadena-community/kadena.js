@@ -14,11 +14,6 @@ export interface IChainModule {
   network: Network;
 }
 
-export interface IModule {
-  moduleName: string;
-  chains: ChainwebChainId[];
-}
-
 export type ElementType<T> = T extends (infer U)[] ? U : never;
 
 export type Outline =
