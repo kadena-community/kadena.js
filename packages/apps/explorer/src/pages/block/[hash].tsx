@@ -1,4 +1,5 @@
-import { Transaction, useBlockQuery } from '@/__generated__/sdk';
+import type { Transaction } from '@/__generated__/sdk';
+import { useBlockQuery } from '@/__generated__/sdk';
 import CompactTransactionsTable from '@/components/compact-transactions-table/compact-transactions-table';
 import DataRenderComponent from '@/components/data-render-component/data-render-component';
 import { Badge, TabItem, Tabs } from '@kadena/react-ui';
@@ -24,7 +25,7 @@ const Block: React.FC = () => {
         <Tabs>
           <TabItem title="Header">
             <DataRenderComponent
-              title="Main"
+              type="horizontal"
               fields={[
                 {
                   key: 'Block Height',
@@ -41,7 +42,6 @@ const Block: React.FC = () => {
               ]}
             />
             <DataRenderComponent
-              title="Details"
               fields={[
                 {
                   key: 'Parent',
@@ -121,26 +121,9 @@ const Block: React.FC = () => {
             }
           >
             <CompactTransactionsTable
-              // transactions={data.block.transactions.edges.map(
-              //   (edge) => edge.node as Transaction,
-              // )}
-              transactions={[
-                ...data.block.transactions.edges.map(
-                  (edge) => edge.node as Transaction,
-                ),
-                ...data.block.transactions.edges.map(
-                  (edge) => edge.node as Transaction,
-                ),
-                ...data.block.transactions.edges.map(
-                  (edge) => edge.node as Transaction,
-                ),
-                ...data.block.transactions.edges.map(
-                  (edge) => edge.node as Transaction,
-                ),
-                ...data.block.transactions.edges.map(
-                  (edge) => edge.node as Transaction,
-                ),
-              ]}
+              transactions={data.block.transactions.edges.map(
+                (edge) => edge.node as Transaction,
+              )}
             />
           </TabItem>
         </Tabs>

@@ -1,20 +1,7 @@
-import { MonoArrowOutward } from '@kadena/react-icons/system';
-import { Text } from '@kadena/react-ui';
-import classNames from 'classnames';
-import React, { Fragment } from 'react';
-import {
-  descriptionDetailsClass,
-  descriptionDetailsLinkClass,
-  descriptionListClass,
-  descriptionListIndentClass,
-  descriptionTermClass,
-  headingClass,
-  iconLinkClass,
-  linkClass,
-  linkIconClass,
-  sectionClass,
-  textClass,
-} from './styles.css';
+import React from 'react';
+import DataRenderComponentHorizontal from './data-render-component-horizontal/data-render-component-horizontal';
+import DataRenderComponentVertical from './data-render-component-vertical/data-render-component-vertical';
+import { headingClass, sectionClass } from './styles.css';
 
 interface IDataRenderComponentField {
   type?: 'text' | 'code';
@@ -25,59 +12,24 @@ interface IDataRenderComponentField {
 
 interface IDataRenderComponentProps {
   title?: string;
+  type?: 'vertical' | 'horizontal';
   fields: IDataRenderComponentField[];
 }
 
 const DataRenderComponent: React.FC<IDataRenderComponentProps> = ({
   title,
+  type,
   fields,
 }) => {
-  const descriptionListClassNames = title
-    ? classNames(descriptionListClass, descriptionListIndentClass)
-    : descriptionListClass;
-
   return (
     <section className={sectionClass}>
       {title && <h4 className={headingClass}>{title}</h4>}
-      <dl className={descriptionListClassNames}>
-        {fields.map((field, index) => (
-          <Fragment key={index}>
-            <dt className={descriptionTermClass}>{field.key}</dt>
-            {field.link ? (
-              <dd className={descriptionDetailsLinkClass}>
-                <a href={field.link} className={linkClass}>
-                  <Text variant="code" className={textClass}>
-                    {field.value}
-                  </Text>
-                </a>
-                <a href={field.link} className={iconLinkClass}>
-                  <MonoArrowOutward className={linkIconClass} />
-                </a>
-              </dd>
-            ) : field.type === 'code' ? (
-              <dd className={descriptionDetailsClass}>
-                <Text variant="code" className={textClass}>
-                  <pre>{field.value}</pre>
-                </Text>
-              </dd>
-            ) : Array.isArray(field.value) ? (
-              field.value.map((value, index) => (
-                <dd className={descriptionDetailsClass} key={index}>
-                  <Text variant="code" className={textClass}>
-                    {value}
-                  </Text>
-                </dd>
-              ))
-            ) : (
-              <dd className={descriptionDetailsClass}>
-                <Text variant="code" className={textClass}>
-                  {field.value}
-                </Text>
-              </dd>
-            )}
-          </Fragment>
-        ))}
-      </dl>
+      {(!type || type === 'vertical') && (
+        <DataRenderComponentVertical fields={fields} title={!!title} />
+      )}
+      {type === 'horizontal' && (
+        <DataRenderComponentHorizontal fields={fields} />
+      )}
     </section>
   );
 };

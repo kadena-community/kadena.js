@@ -1,4 +1,4 @@
-import { Transaction } from '@/__generated__/sdk';
+import type { Transaction } from '@/__generated__/sdk';
 import { Media } from '@/components/layout/media';
 import React from 'react';
 import CompactTransactionsTableDesktop from './compact-transactions-table-desktop/compact-transactions-table-desktop';

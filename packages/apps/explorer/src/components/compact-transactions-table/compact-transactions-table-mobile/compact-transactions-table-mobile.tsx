@@ -1,4 +1,4 @@
-import {
+import type {
   ExecutionPayload,
   Transaction,
   TransactionResult,
@@ -52,7 +52,7 @@ const CompactTransactionsTableMobile: React.FC<
             </Text>
           </div>
           <div className={rowClass}>
-            <span className={headerClass}>Request Key</span>
+            <span className={headerClass}>RequestKey</span>
             <span className={dataFieldLinkClass}>
               <a
                 href={`/transaction/${transaction.hash}`}
