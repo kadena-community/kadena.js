@@ -4,6 +4,7 @@ import {
 } from '@/modules/layout/layout.provider.tsx';
 import { MonoCheck } from '@kadena/react-icons';
 import { Button, Heading, Stack, Text, TextField } from '@kadena/react-ui';
+import { tokens } from '@kadena/react-ui/styles';
 import { FC, useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { colorOptionClass, listClass } from './styles.css.ts';
@@ -72,7 +73,9 @@ export const PersonalizeProfile: FC<IProps> = ({ create, password }) => {
                 className={colorOptionClass}
                 onClick={() => handleChooseColor(color)}
               >
-                {activeColor === color && <MonoCheck />}
+                {activeColor === color && (
+                  <MonoCheck color={tokens.kda.foundation.color.neutral.n1} />
+                )}
               </li>
             ))}
           </ul>
