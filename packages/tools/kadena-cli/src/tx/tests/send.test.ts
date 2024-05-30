@@ -178,6 +178,7 @@ describe('tx send', () => {
     );
 
     assertCommandError(transaction);
+
     const result = await signTransactionFileWithKeyPairAction({
       files: [transaction.data.filePath],
       keyPairs: [{ publicKey, secretKey }],
