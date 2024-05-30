@@ -29,33 +29,63 @@ export interface IModuleExplorerProps {
 type ElementType<T> = T extends (infer U)[] ? U : never;
 
 export type Contract = ReturnType<typeof contractParser>[0][0]; // TODO: Should we improve this because it's a bit hacky?
-type Interface = ElementType<Contract['usedInterface']>;
-type Capability = ElementType<Contract['capabilities']>;
-type ContractFunction = ElementType<Contract['functions']>;
+export type ContractInterface = ElementType<Contract['usedInterface']> & {
+  code?: string;
+  chainId: ChainwebChainId;
+  network: string;
+};
+export type ContractCapability = ElementType<Contract['capabilities']>;
+export type ContractFunction = ElementType<Contract['functions']>;
 
-type Outline = string | Interface | Capability | ContractFunction;
+export type Outline =
+  | string
+  | ContractInterface
+  | ContractCapability
+  | ContractFunction;
 
 const chainModuleToOutlineTreeItems = (
   chainModule: IChainModule,
+  items: TreeItem<IncompleteModuleModel>[],
 ): TreeItem<Outline>[] => {
+  const treeItems: TreeItem<Outline>[] = [];
+
+  if (!chainModule.code) {
+    return treeItems;
+  }
+
   const [, namespace] = chainModule.moduleName.split('.');
-  const [[parsedContract]] = contractParser(chainModule.code!, namespace);
+  const [[parsedContract]] = contractParser(chainModule.code, namespace);
 
   const { usedInterface: interfaces, capabilities, functions } = parsedContract;
-
-  const treeItems: TreeItem<Outline>[] = [];
 
   if (interfaces?.length) {
     treeItems.push({
       title: 'Interfaces',
       key: 'interfaces',
       data: 'interfaces',
-      children: interfaces.map((i) => ({
-        title: i.name,
-        key: i.name,
-        data: i,
-        children: [],
-      })),
+      children: interfaces.map((i) => {
+        const firstFind = items.find((item) => {
+          return item.data.name === chainModule.network;
+        });
+        const secondFind = firstFind?.children.find((child) => {
+          return child.data.name === i.name;
+        });
+        const thirdFind = secondFind?.children.find((child) => {
+          return child.data.chainId === chainModule.chainId;
+        });
+        return {
+          title: i.name,
+          key: `${chainModule.network}.${i.name}`,
+          label: thirdFind?.data.hash,
+          data: {
+            ...i,
+            chainId: chainModule.chainId,
+            network: chainModule.network,
+            code: thirdFind?.data.code,
+          },
+          children: [],
+        };
+      }),
     });
   }
 
@@ -101,7 +131,7 @@ function ModuleExplorer({
   let outlineItems: TreeItem<Outline>[] = [];
 
   if (activeModule) {
-    outlineItems = chainModuleToOutlineTreeItems(activeModule);
+    outlineItems = chainModuleToOutlineTreeItems(activeModule, items);
   }
 
   return (
