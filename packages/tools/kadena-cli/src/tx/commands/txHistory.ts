@@ -109,7 +109,10 @@ export const txHistory = async (): Promise<void> => {
       TRANSACTIONS_LOG_FILE,
     );
     let transactionLog = await readTransactionLog(transactionFilePath);
-    if (!transactionLog) throw new Error('No transaction logs available.');
+    if (!transactionLog)
+      throw new Error(
+        'No transaction logs are available. Please ensure that transaction logs are present and try again.',
+      );
 
     const filteredLogs = filterLogsWithoutStatus(transactionLog);
 
@@ -124,7 +127,7 @@ export const txHistory = async (): Promise<void> => {
 
     printTxLogs(transactionLog);
   } catch (error) {
-    log.error(`Failed to read transaction history: ${error.message}`);
+    log.error(`Unable to read transaction history: ${error.message}`);
   }
 };
 
