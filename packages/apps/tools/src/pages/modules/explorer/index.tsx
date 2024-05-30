@@ -1,8 +1,8 @@
 import type { TreeItem } from '@/components/Global/CustomTree/CustomTree';
-import type { ContractInterface } from '@/components/Global/ModuleExplorer';
 import ModuleExplorer from '@/components/Global/ModuleExplorer';
 import type { IEditorProps } from '@/components/Global/ModuleExplorer/editor';
 import type { IChainModule } from '@/components/Global/ModuleExplorer/types';
+import type { ContractInterface } from '@/components/Global/ModuleExplorer/utils';
 import { kadenaConstants } from '@/constants/kadena';
 import { menuData } from '@/constants/side-menu-items';
 import { StorageKeys } from '@/context/connect-wallet-context';

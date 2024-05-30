@@ -1,5 +1,5 @@
 import type { TreeItem } from '@/components/Global/CustomTree/CustomTree';
-import type { Outline } from '@/components/Global/ModuleExplorer';
+import type { Outline } from '@/components/Global/ModuleExplorer/types';
 import type { ModuleModel } from '@/hooks/use-module-query';
 import { getName, parse } from '@/utils/persist';
 import type { NextApiRequestCookies } from 'next/dist/server/api-utils';
