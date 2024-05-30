@@ -93,7 +93,11 @@ const mapToTreeItems = (
         });
       }
 
-      const aux: IncompleteModuleModel = { name, chainId: '0' };
+      const aux: IncompleteModuleModel = {
+        name,
+        chainId: '0',
+        networkId: 'mainnet01',
+      };
 
       return {
         data: aux,
