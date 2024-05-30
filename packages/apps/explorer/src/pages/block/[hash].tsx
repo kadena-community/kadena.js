@@ -5,7 +5,8 @@ import DataRenderComponent from '@/components/data-render-component/data-render-
 import { Badge, TabItem, Tabs } from '@kadena/react-ui';
 
 import { useRouter } from 'next/router';
-import React, { Key, useEffect, useState } from 'react';
+import type { Key } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Block: React.FC = () => {
   const router = useRouter();
@@ -19,8 +20,9 @@ const Block: React.FC = () => {
     }
   }, [router.asPath]);
 
-  const handleSelectedTab = (tab: Key) => {
+  const handleSelectedTab = (tab: Key): void => {
     setSelectedTab(tab as string);
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     router.replace(`#${tab}`);
   };
 
