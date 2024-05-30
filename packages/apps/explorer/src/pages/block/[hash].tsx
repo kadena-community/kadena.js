@@ -5,10 +5,24 @@ import DataRenderComponent from '@/components/data-render-component/data-render-
 import { Badge, TabItem, Tabs } from '@kadena/react-ui';
 
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { Key, useEffect, useState } from 'react';
 
 const Block: React.FC = () => {
   const router = useRouter();
+  const [selectedTab, setSelectedTab] = useState<string>('Header');
+
+  useEffect(() => {
+    const hash = router.asPath.split('#')[1];
+
+    if (hash) {
+      setSelectedTab(hash);
+    }
+  }, [router.asPath]);
+
+  const handleSelectedTab = (tab: Key) => {
+    setSelectedTab(tab as string);
+    router.replace(`#${tab}`);
+  };
 
   const { loading, data, error } = useBlockQuery({
     variables: {
@@ -22,8 +36,8 @@ const Block: React.FC = () => {
       {loading && <div>Loading...</div>}
       {error && <div>Error: {error.message}</div>}
       {data && data.block && (
-        <Tabs>
-          <TabItem title="Header">
+        <Tabs selectedKey={selectedTab} onSelectionChange={handleSelectedTab}>
+          <TabItem title="Header" key="Header">
             <DataRenderComponent
               type="horizontal"
               fields={[
@@ -119,6 +133,7 @@ const Block: React.FC = () => {
                 <Badge size="sm">{data.block.transactions.edges.length}</Badge>
               </>
             }
+            key="Transactions"
           >
             <CompactTransactionsTable
               transactions={data.block.transactions.edges.map(
