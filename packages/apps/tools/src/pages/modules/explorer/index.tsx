@@ -25,7 +25,12 @@ import type {
 } from 'next/types';
 import React, { useCallback } from 'react';
 import type { IncompleteModuleModel } from './utils';
-import { getCookieValue, getQueryValue, isModule, xToY } from './utils';
+import {
+  getCookieValue,
+  getQueryValue,
+  isModule,
+  modelsToTreeItems,
+} from './utils';
 
 const QueryParams = {
   MODULE: 'module',
@@ -90,7 +95,7 @@ const ModuleExplorerPage = (
   let amountOfMainnetModules = 0;
 
   if (mainnetModulesQuery.isSuccess) {
-    mappedMainnet = xToY(mainnetModulesQuery.data, 'mainnet');
+    mappedMainnet = modelsToTreeItems(mainnetModulesQuery.data, 'mainnet');
     amountOfMainnetModules = mainnetModulesQuery.data.length;
   }
 
@@ -98,7 +103,7 @@ const ModuleExplorerPage = (
   let amountOfTestnetModules = 0;
 
   if (testnetModulesQuery.isSuccess) {
-    mappedTestnet = xToY(testnetModulesQuery.data, 'testnet');
+    mappedTestnet = modelsToTreeItems(testnetModulesQuery.data, 'testnet');
     amountOfTestnetModules = testnetModulesQuery.data.length;
   }
 

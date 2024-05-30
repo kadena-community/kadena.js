@@ -54,7 +54,7 @@ export function getCookieValue<Expected>(
 
 export type Namespace = string;
 export type ModuleName = string;
-export type ModuleData = Array<IncompleteModuleModel>; //string[];
+export type ModuleData = Array<IncompleteModuleModel>;
 
 export type ModulesMap = Map<
   Namespace,
@@ -85,7 +85,6 @@ const mapToTreeItems = (
           return {
             data: chain,
             key: `${typeof parent === 'string' ? `${parent}.` : ''}${name}.${chain.chainId}`,
-            // title: `some even longer long title ${chain.title}`,
             title: chain.chainId,
             children: [],
             label: chain.hash,
@@ -119,13 +118,13 @@ export const isModule = (
   );
 };
 
-export const xToY = (
-  x: Array<IncompleteModuleModel>,
+export const modelsToTreeItems = (
+  models: Array<IncompleteModuleModel>,
   key: string,
 ): TreeItem<IncompleteModuleModel>[] => {
   const modulesMap: ModulesMap = new Map();
 
-  x.forEach((module) => {
+  models.forEach((module) => {
     const [namespace, moduleName] = module.name.split('.');
 
     if (moduleName) {
