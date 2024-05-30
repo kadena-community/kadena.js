@@ -1,13 +1,13 @@
 import React, { useContext, useRef } from 'react';
+import type { AriaRadioProps } from 'react-aria';
 import {
-  AriaRadioProps,
   VisuallyHidden,
   mergeProps,
   useFocusRing,
   useHover,
   useRadio,
 } from 'react-aria';
-import { RadioGroupState } from 'react-stately';
+import type { RadioGroupState } from 'react-stately';
 import { boxClass, iconClass, labelClass } from './Radio.css';
 import { RadioContext } from './RadioGroup';
 

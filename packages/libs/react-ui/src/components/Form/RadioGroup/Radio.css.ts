@@ -130,3 +130,9 @@ export const groupClass = recipe({
     },
   },
 });
+
+export const layoutClass = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: token('spacing.n2'),
+});

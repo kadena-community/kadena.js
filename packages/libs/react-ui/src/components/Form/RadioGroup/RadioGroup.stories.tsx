@@ -40,18 +40,61 @@ const meta: Meta<IRadioGroupProps> = {
         type: 'boolean',
       },
     },
+    isInvalid: {
+      control: {
+        type: 'boolean',
+      },
+    },
+    label: {
+      control: {
+        type: 'text',
+      },
+    },
+    errorMessage: {
+      control: {
+        type: 'text',
+      },
+    },
+    description: {
+      control: {
+        type: 'text',
+      },
+    },
+    tag: {
+      control: {
+        type: 'text',
+      },
+    },
+    info: {
+      control: {
+        type: 'text',
+      },
+    },
   },
 };
 
 type RadioGroupStoryType = StoryObj<IRadioGroupProps>;
 
 const radios = Array.from(Array(10).keys()).map((key) => {
-  return <Radio value={`value:${key}`}>{`Option: ${key}`}</Radio>;
+  return <Radio key={key} value={`value:${key}`}>{`Option: ${key}`}</Radio>;
 });
+
+export const Base: RadioGroupStoryType = {
+  args: {
+    direction: 'row',
+  },
+  render: (props: IRadioGroupProps) => {
+    return <RadioGroup {...props}>{radios}</RadioGroup>;
+  },
+};
 
 export const _Horizontal: RadioGroupStoryType = {
   args: {
     direction: 'row',
+    label: 'Label',
+    tag: 'tag',
+    info: 'info',
+    description: 'description',
   },
   render: (props: IRadioGroupProps) => {
     return <RadioGroup {...props}>{radios}</RadioGroup>;
@@ -61,6 +104,9 @@ export const _Horizontal: RadioGroupStoryType = {
 export const _Vertical: RadioGroupStoryType = {
   args: {
     direction: 'column',
+    label: 'Label',
+    tag: 'tag',
+    description: 'description',
   },
   render: (props: IRadioGroupProps) => {
     return <RadioGroup {...props}>{radios}</RadioGroup>;
@@ -70,6 +116,10 @@ export const _Vertical: RadioGroupStoryType = {
 export const MultilineLabel: RadioGroupStoryType = {
   args: {
     direction: 'row',
+    label: 'Label',
+    tag: 'tag',
+    info: 'info',
+    description: 'description',
   },
   render: (props: IRadioGroupProps) => {
     return (
