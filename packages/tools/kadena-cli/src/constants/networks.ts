@@ -1,5 +1,5 @@
 import { join } from 'path';
-import type { INetworkCreateOptions } from '../networks/utils/networkHelpers.js';
+import type { INetworkCreateOptions } from '../commands/networks/utils/networkHelpers.js';
 
 export interface IDefaultNetworkOptions {
   [key: string]: INetworkCreateOptions;

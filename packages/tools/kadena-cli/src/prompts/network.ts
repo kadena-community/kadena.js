@@ -1,16 +1,16 @@
 import type { ChainId } from '@kadena/types';
 import { z } from 'zod';
-import { chainIdValidation } from '../account/utils/accountHelpers.js';
-import { MAX_CHAIN_VALUE } from '../constants/config.js';
-import { INVALID_FILE_NAME_ERROR_MSG } from '../constants/global.js';
-import { NO_NETWORKS_FOUND_ERROR_MESSAGE } from '../constants/networks.js';
-import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
+import { chainIdValidation } from '../commands/account/utils/accountHelpers.js';
+import type { ICustomNetworkChoice } from '../commands/networks/utils/networkHelpers.js';
 import {
   ensureNetworksConfiguration,
   getNetworksInOrder,
   loadNetworkConfig,
-} from '../networks/utils/networkHelpers.js';
-import { getNetworkDirectory } from '../networks/utils/networkPath.js';
+} from '../commands/networks/utils/networkHelpers.js';
+import { getNetworkDirectory } from '../commands/networks/utils/networkPath.js';
+import { MAX_CHAIN_VALUE } from '../constants/config.js';
+import { INVALID_FILE_NAME_ERROR_MSG } from '../constants/global.js';
+import { NO_NETWORKS_FOUND_ERROR_MESSAGE } from '../constants/networks.js';
 import { services } from '../services/index.js';
 import { KadenaError } from '../services/service-error.js';
 import type { IPrompt } from '../utils/createOption.js';

@@ -1,7 +1,7 @@
 import { program } from 'commander';
 import path from 'path';
+import type { ICustomDevnetsChoice } from '../commands/devnet/utils/devnetHelpers.js';
 import { defaultDevnetsPath } from '../constants/devnets.js';
-import type { ICustomDevnetsChoice } from '../devnet/utils/devnetHelpers.js';
 import { services } from '../services/index.js';
 import type { IPrompt } from '../utils/createOption.js';
 import { getExistingDevnets } from '../utils/helpers.js';
