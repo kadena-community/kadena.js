@@ -40,23 +40,25 @@ export const LayoutMini: FC = () => {
         <Link to="/">
           <KadenaLogo height={40} />
         </Link>
-        <NavHeaderButton
-          aria-label="Toggle theme"
-          onPress={() => toggleTheme()}
-          className={atoms({ marginInlineEnd: 'sm' })}
-        >
-          <MonoContrast
-            className={atoms({
-              color: 'text.base.default',
-            })}
-          />
-        </NavHeaderButton>
-        <Text>
-          Go to{' '}
-          <Link to="https://www.kadena.io/" target="_blank">
-            kadena.io
-          </Link>
-        </Text>
+        <Stack alignItems="center">
+          <NavHeaderButton
+            aria-label="Toggle theme"
+            onPress={() => toggleTheme()}
+            className={atoms({ marginInlineEnd: 'sm' })}
+          >
+            <MonoContrast
+              className={atoms({
+                color: 'text.base.default',
+              })}
+            />
+          </NavHeaderButton>
+          <Text>
+            Go to{' '}
+            <Link to="https://www.kadena.io/" target="_blank">
+              kadena.io
+            </Link>
+          </Text>
+        </Stack>
       </Stack>
       <main
         className={mainStyle}
