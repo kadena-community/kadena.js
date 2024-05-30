@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Marmalade Marketplace
 
 Marmalade Marketplace is a showcase app for @kadena/client-utils
@@ -131,6 +130,4 @@ This will emulate vercel cron job. It will read from the `vercel.json` file and 
 
 Note: If you get `permissions denied` while running the cron job, make sure that you allowed access to your firestore database
 
-=======
->>>>>>> 30217ff8ec9c62a179b77a6afde2fdbb740a97e3
 
