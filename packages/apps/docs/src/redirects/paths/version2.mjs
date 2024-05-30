@@ -115,7 +115,6 @@ export const version2PathUrlRedirects = [
     destination: '/learn',
     permanent: true,
   },
-
   {
     source: '/build/quickstart/:slug',
     destination: '/build/onboard',
