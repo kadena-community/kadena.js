@@ -1,4 +1,4 @@
-import { checkUrlAgainstList } from '../';
+import { checkUrlAgainstList } from '../utils/checkUrlAgainstList';
 
 describe('checkUrlAgainstList', () => {
   it('should return the correct url when there is no :slug', async () => {

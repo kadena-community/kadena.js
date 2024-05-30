@@ -18,19 +18,23 @@ type Block implements Node {
 
   """Default page size is 20."""
   events(after: String, before: String, first: Int, last: Int): BlockEventsConnection!
+  flags: Decimal!
   hash: String!
   height: BigInt!
   id: ID!
   minerAccount: FungibleChainAccount!
-  neighbours: [BlockNeighbor!]!
+  neighbors: [BlockNeighbor!]!
+  nonce: Decimal!
   parent: Block
   payloadHash: String!
 
   """The proof of work hash."""
   powHash: String!
+  target: Decimal!
 
   """Default page size is 20."""
   transactions(after: String, before: String, first: Int, last: Int): BlockTransactionsConnection!
+  weight: Decimal!
 }
 
 type BlockEventsConnection {
@@ -46,8 +50,8 @@ type BlockEventsConnectionEdge {
 
 """The neighbor of a block."""
 type BlockNeighbor {
-  blockHash: String!
   chainId: String!
+  hash: String!
 }
 
 type BlockTransactionsConnection {

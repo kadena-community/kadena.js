@@ -8,7 +8,11 @@ import {
   useTheme,
 } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
-import { FC } from 'react';
+import {
+  defaultAccentColor,
+  LayoutContext,
+} from '@/modules/layout/layout.provider.tsx';
+import { FC, useContext } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { containerStyle, headerStyle, mainStyle } from './layout-mini.css';
 
@@ -20,6 +24,8 @@ export const LayoutMini: FC = () => {
     setTheme(newTheme);
   };
 
+  const { layoutContext } = useContext(LayoutContext) ?? [];
+  const accentColor = layoutContext?.accentColor || defaultAccentColor;
   return (
     <>
       <Stack
@@ -52,7 +58,12 @@ export const LayoutMini: FC = () => {
           </Link>
         </Text>
       </Stack>
-      <main className={mainStyle}>
+      <main
+        className={mainStyle}
+        style={{
+          backgroundImage: `radial-gradient(circle farthest-side at 50% 170%, ${accentColor}, transparent 75%)`,
+        }}
+      >
         <div className={containerStyle}>
           <Outlet />
         </div>
