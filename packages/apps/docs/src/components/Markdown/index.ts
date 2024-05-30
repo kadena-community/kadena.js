@@ -1,4 +1,3 @@
-import { TableV1 as TableChildren } from '@kadena/react-ui';
 import { BlockQuote } from './BlockQuote/BlockQuote';
 import { Code } from './Code/Code';
 import { TitleWrapper } from './Code/Title';
@@ -12,7 +11,13 @@ import { Link } from './Link/Link';
 import { MDNotification } from './MDNotification/MDNotification';
 import { OrderedList } from './OrderedList/OrderedList';
 import { Paragraph } from './Paragraph/Paragraph';
+import { Cell } from './Table/Cell';
+
+import { Column } from './Table/Column';
+import { Row } from './Table/Row';
 import { Table } from './Table/Table';
+import { TableBody } from './Table/TableBody';
+import { TableHeader } from './Table/TableHeader';
 import { Tweet } from './Tweet/Tweet';
 import { UnorderedList } from './UnorderedList/UnorderedList';
 import { Youtube } from './Youtube/Youtube';
@@ -56,15 +61,11 @@ export const markDownComponents: MDXComponents = {
   div: TitleWrapper as FunctionComponent<ExtendedIntrinsicElements['div']>,
   img: Figure as FunctionComponent<ExtendedIntrinsicElements['img']>,
   table: Table as FunctionComponent<ExtendedIntrinsicElements['table']>,
-  tbody: TableChildren.Body as FunctionComponent<
-    ExtendedIntrinsicElements['tbody']
-  >,
-  thead: TableChildren.Head as FunctionComponent<
-    ExtendedIntrinsicElements['thead']
-  >,
-  tr: TableChildren.Tr as FunctionComponent<ExtendedIntrinsicElements['tr']>,
-  td: TableChildren.Td as FunctionComponent<ExtendedIntrinsicElements['td']>,
-  th: TableChildren.Th as FunctionComponent<ExtendedIntrinsicElements['th']>,
+  tbody: TableBody as FunctionComponent<ExtendedIntrinsicElements['tbody']>,
+  thead: TableHeader as FunctionComponent<ExtendedIntrinsicElements['thead']>,
+  tr: Row as FunctionComponent<ExtendedIntrinsicElements['tr']>,
+  td: Cell as FunctionComponent<ExtendedIntrinsicElements['td']>,
+  th: Column as FunctionComponent<ExtendedIntrinsicElements['th']>,
   'kda-notification': MDNotification as FunctionComponent<
     ExtendedIntrinsicElements['kda-notification']
   >,

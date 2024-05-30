@@ -1,13 +1,15 @@
-import type { ITableV1Props } from '@kadena/react-ui';
-import { TableV1 as StyledTable } from '@kadena/react-ui';
+import type { ITableProps } from '@kadena/react-ui';
+import { Table as UITable } from '@kadena/react-ui';
 import type { FC } from 'react';
 import React from 'react';
 import { wrapperClass } from '../styles.css';
 
-export const Table: FC<ITableV1Props> = ({ children }) => {
+export const Table: FC<ITableProps> = ({ children }) => {
   return (
     <div className={wrapperClass}>
-      <StyledTable.Root striped>{children}</StyledTable.Root>
+      <UITable type="table" isStriped>
+        {children}
+      </UITable>
     </div>
   );
 };

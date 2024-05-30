@@ -47,7 +47,14 @@ export type {
 } from './Notification';
 export type { IPaginationProps } from './Pagination';
 export type { IProgressCircleProps } from './ProgressCircle';
-export type { ITableProps } from './Table';
+export type {
+  ITableBodyProps,
+  ITableCellProps,
+  ITableColumnProps,
+  ITableHeaderProps,
+  ITableProps,
+  ITableRowProps,
+} from './Table';
 export type { ITabItemProps, ITabsProps } from './Tabs';
 export type { ITagGroupProps, ITagItemProps, ITagProps } from './Tag';
 export type { ITextLinkProps } from './TextLink';
