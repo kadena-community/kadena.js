@@ -8,7 +8,6 @@ import {
   ellipsis,
   monospaceSmallestRegular,
   token,
-  tokens,
 } from '@kadena/react-ui/styles';
 import classnames from 'classnames';
 import React from 'react';
