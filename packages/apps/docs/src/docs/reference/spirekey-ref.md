@@ -77,7 +77,7 @@ When your transaction is ready to be signed, you need to `base64` encode the str
 Transactions can grow in size well beyond what is accepted in
 `searchParameters`. To enable users to sign these transactions, you should send
 the transaction parameters to the SpireKey `/sign` endpoint using the anchor hashtag (#) instead of the searchParameter question mark (?). For example, a signature request might look like this:
-`https://spirekey.kadena.io/sign#transaction=encodedTx?returnUrl=www.mydapp.com`
+`https://spirekey.kadena.io/sign#transaction=encodedTx&returnUrl=www.mydapp.com`
 
 | Parameter | Type | Description |
 | :-------- | :--- | :---------- |

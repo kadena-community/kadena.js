@@ -143,14 +143,14 @@ To construct the route:
 1. Construct the request URL using the `encodedTx` and `encodedReturnUrl` to send the transaction to Kadena SpireKey:
    
    ```typescript
-   const sendTransactionUrl = `https://spirekey.kadena.io/sign#transaction=${encodedTx}?returnUrl=${encodedReturnUrl}`;
+   const sendTransactionUrl = `https://spirekey.kadena.io/sign#transaction=${encodedTx}&returnUrl=${encodedReturnUrl}`;
    ```
 
 Because transaction strings can be longer than what is accepted in `searchParameters`, you should send transactions to the `/sign` endpoint using the anchor hashtag (`#`) instead of the `searchParameters` question mark (`?`). 
 
 For example, a signature request might look similar to this:
 
-https://spirekey.kadena.io/sign#transaction=encodedTx?returnUrl=www.mydapp.com
+https://spirekey.kadena.io/sign#transaction=encodedTx&returnUrl=www.mydapp.com
 
 The following table describes the parameters that you can include in your signing request:
 
