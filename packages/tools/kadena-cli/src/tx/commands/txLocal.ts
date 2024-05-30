@@ -66,7 +66,7 @@ export const createTxLocalCommand: (program: Command, version: string) => void =
         code,
         'chain-id': templateChainId,
         'network:networkId': network.networkId,
-        gasLimit: gasLimit || '3000',
+        gasLimit: gasLimit !== undefined ? gasLimit : '3000',
       });
 
       const client = createClient(

@@ -28,7 +28,7 @@ import {
   logTransactionDetails,
 } from '../utils/txHelpers.js';
 
-const clientInstances: Map<string, IClient> = new Map();
+export const clientInstances: Map<string, IClient> = new Map();
 
 export async function pollRequests(
   requestKeys: ISubmitResponse[],
