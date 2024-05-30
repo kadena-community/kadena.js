@@ -10,4 +10,5 @@ tags: [pact, smart contract, typescript, tutorial]
 
 # Bid and buy
 
-The NFT marketplace workshop is in early stages of development. To contribute to this tutorial series, open a pull request in the [kadena.js](https://github.com/kadena-community/kadena.js) repository and add the **documentation** label to the pull request.
+The NFT marketplace workshop is in early stages of development.  
+To contribute to this tutorial series, open a pull request in the [kadena.js](https://github.com/kadena-community/kadena.js) repository and add the **documentation** label to the pull request.
