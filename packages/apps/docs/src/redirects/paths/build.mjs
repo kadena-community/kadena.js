@@ -125,8 +125,13 @@ export const buildPathUrlRedirects = [
     permanent: true,
   },
   {
+    source: '/resources/press-kit',
+    destination: 'https://www.kadena.io/media-kit',
+    permanent: true,
+  },
+  {
     source: '/build/resources/press-kit',
-    destination: '/kadena/resources#press-kith-152098694',
+    destination: 'https://www.kadena.io/media-kit',
     permanent: true,
   },
   {
@@ -152,12 +157,6 @@ export const buildPathUrlRedirects = [
   {
     source: '/build/real-world-pact',
     destination: '/pact',
-    permanent: true,
-  },
-  {
-    source: '/build/guides/election-dapp-tutorial/02-running-devnet',
-    destination:
-      '/build/guides/election-dapp-tutorial/start-a-local-blockchain',
     permanent: true,
   },
 ];
