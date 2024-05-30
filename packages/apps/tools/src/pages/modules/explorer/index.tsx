@@ -1,34 +1,22 @@
 import type { TreeItem } from '@/components/Global/CustomTree/CustomTree';
+import type { ContractInterface } from '@/components/Global/ModuleExplorer';
 import ModuleExplorer from '@/components/Global/ModuleExplorer';
 import type { IEditorProps } from '@/components/Global/ModuleExplorer/editor';
-import type {
-  IChainModule,
-  IModule,
-} from '@/components/Global/ModuleExplorer/types';
-import type { Network } from '@/constants/kadena';
+import type { IChainModule } from '@/components/Global/ModuleExplorer/types';
 import { kadenaConstants } from '@/constants/kadena';
 import { menuData } from '@/constants/side-menu-items';
-import {
-  DefaultValues,
-  StorageKeys,
-  useWalletConnectClient,
-} from '@/context/connect-wallet-context';
+import { StorageKeys } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { useModuleQuery } from '@/hooks/use-module-query';
 import { QUERY_KEY, useModulesQuery } from '@/hooks/use-modules-query';
 import { describeModule } from '@/services/modules/describe-module';
-import type { IModulesResult } from '@/services/modules/list-module';
-import { listModules } from '@/services/modules/list-module';
-import { transformModulesRequest } from '@/services/utils/transform';
-import type { INetworkData } from '@/utils/network';
 import { getAllNetworks } from '@/utils/network';
 import type {
   ChainwebChainId,
   ILocalCommandResult,
 } from '@kadena/chainweb-node-client';
 import { CHAINS } from '@kadena/chainweb-node-client';
-import type { QueryClient } from '@tanstack/react-query';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import type {
@@ -36,12 +24,8 @@ import type {
   InferGetServerSidePropsType,
 } from 'next/types';
 import React, { useCallback } from 'react';
-import {
-  IncompleteModuleModel,
-  getCookieValue,
-  getQueryValue,
-  xToY,
-} from './utils';
+import type { IncompleteModuleModel } from './utils';
+import { getCookieValue, getQueryValue, isModule, xToY } from './utils';
 
 const QueryParams = {
   MODULE: 'module',
@@ -49,150 +33,7 @@ const QueryParams = {
   NETWORK: 'network',
 };
 
-export const getModules = async (
-  network: Network,
-  networksData: INetworkData[],
-): Promise<IChainModule[]> => {
-  const promises = CHAINS.map((chain) => {
-    return listModules(
-      chain,
-      network,
-      networksData,
-      kadenaConstants.DEFAULT_SENDER,
-      kadenaConstants.GAS_PRICE,
-      1000,
-    );
-  });
-
-  const results = await Promise.all(promises);
-
-  const transformed = results.map((result) =>
-    transformModulesRequest(result as IModulesResult),
-  );
-  const flattened = transformed.flat();
-  const sorted = flattened.sort((a, b) => {
-    if (a.moduleName === b.moduleName) {
-      return parseInt(a.chainId, 10) - parseInt(b.chainId, 10);
-    }
-    return a.moduleName.localeCompare(b.moduleName);
-  });
-
-  return sorted;
-};
-
-export const getCompleteModule = async (
-  { moduleName, chainId }: IChainModule,
-  network: Network,
-  networksData: INetworkData[],
-): Promise<IChainModule> => {
-  const request = (await describeModule(
-    moduleName,
-    chainId,
-    network,
-    networksData,
-    kadenaConstants.DEFAULT_SENDER,
-    kadenaConstants.GAS_PRICE,
-    1000,
-  )) as ILocalCommandResult;
-
-  if (request.result.status === 'failure') {
-    throw new Error('Something went wrong');
-  }
-
-  const { code, hash } = request.result.data as unknown as {
-    code: string;
-    hash: string;
-  };
-
-  return {
-    code,
-    moduleName,
-    chainId,
-    hash,
-    network,
-  };
-};
-
-const replaceOldWithNew = (
-  oldData: IChainModule[],
-  newData: IChainModule[],
-): IChainModule[] => {
-  return oldData.map((old) => {
-    const newModule = newData.find((newM) => {
-      return newM.moduleName === old.moduleName && newM.chainId === old.chainId;
-    });
-
-    if (!newModule) {
-      return old;
-    }
-
-    return {
-      ...old,
-      hash: newModule.hash,
-      code: newModule.code,
-    };
-  });
-};
-
-/*
- * In this function we'll add the `hash` and `code` property to the module, so that, in the list of
- * modules, you can see if there are any differences in the module on certain chains.
- */
-export const enrichModule = async (
-  module: IModule,
-  network: Network,
-  networksData: INetworkData[],
-  queryClient: QueryClient,
-) => {
-  const promises = module.chains.map((chain) => {
-    return getCompleteModule(
-      { moduleName: module.moduleName, chainId: chain, network },
-      network,
-      networksData,
-    );
-  });
-
-  const moduleOnAllChains = await Promise.all(promises);
-
-  queryClient.setQueryData<IChainModule[]>(
-    ['modules', network, networksData],
-    (oldData) => replaceOldWithNew(oldData!, moduleOnAllChains),
-  );
-};
-
-/*
- * In this function we'll add the `hash` and `code` property to the modules, so that, in the list of
- * modules, you can see if there are any differences in the module on certain chains.
- */
-export const enrichModules = async (
-  modules: IModule[],
-  network: Network,
-  networksData: INetworkData[],
-  queryClient: QueryClient,
-) => {
-  const promises = modules.reduce<Promise<IChainModule>[]>((acc, module) => {
-    module.chains.forEach((chain) => {
-      acc.push(
-        getCompleteModule(
-          { moduleName: module.moduleName, chainId: chain, network },
-          network,
-          networksData,
-        ),
-      );
-    });
-    return acc;
-  }, []);
-
-  const moduleOnAllChains = await Promise.all(promises);
-
-  queryClient.setQueryData<IChainModule[]>(
-    ['modules', network, networksData],
-    (oldData) => replaceOldWithNew(oldData!, moduleOnAllChains),
-  );
-};
-
 export const getServerSideProps: GetServerSideProps<{
-  // data: IChainModule[];
   openedModules: IEditorProps['openedModules'];
 }> = async (context) => {
   const networksData = getCookieValue(
@@ -298,40 +139,26 @@ const ModuleExplorerPage = (
         <title>Kadena Developer Tools - Modules</title>
       </Head>
       <ModuleExplorer
-        // modules={modules}
-        // onModuleClick={onModuleOpen}
-        // onInterfaceClick={onModuleOpen}
-        // onModuleExpand={({ moduleName, chains }) => {
-        //   void enrichModule(
-        //     { moduleName, chains },
-        //     network,
-        //     networksData,
-        //     queryClient,
-        //   );
-        // }}
-        // onInterfacesExpand={(interfaces) => {
-        //   void enrichModules(
-        //     interfaces.map((i) => ({
-        //       chains: [i.chainId],
-        //       moduleName: i.moduleName,
-        //     })),
-        //     network,
-        //     networksData,
-        //     queryClient,
-        //   );
-        // }}
-        // onActiveModuleChange={setDeepLink}
+        onModuleClick={(x) => {
+          onModuleOpen({
+            chainId: x.data.chainId,
+            moduleName: x.data.name,
+            network: x.data.networkId,
+          });
+        }}
+        onActiveModuleChange={(x) => {
+          setDeepLink(x);
+        }}
         // onTabClose={(module) => {
         //   console.log('closing', module);
         // }}
-        // openedModules={props.openedModules}
-        // data={'something'}
+        openedModules={props.openedModules}
         items={[
           {
             title: 'Mainnet',
             key: 'mainnet',
             children: mappedMainnet,
-            data: { name: 'mainnet', chainId: '0' },
+            data: { name: 'mainnet', chainId: '0', networkId: 'mainnet01' },
             isLoading: mainnetModulesQuery.isFetching,
             supportsReload: true,
             label: amountOfMainnetModules,
@@ -340,7 +167,7 @@ const ModuleExplorerPage = (
             title: 'Testnet',
             key: 'testnet',
             children: mappedTestnet,
-            data: { name: 'testnet', chainId: '0' },
+            data: { name: 'testnet', chainId: '0', networkId: 'testnet04' },
             isLoading: testnetModulesQuery.isFetching,
             supportsReload: true,
             label: amountOfTestnetModules,
@@ -405,7 +232,7 @@ const ModuleExplorerPage = (
               return mutation.mutateAsync({
                 module: `${namespacePart1}${namespacePart2 ? `.${namespacePart2}` : ''}`,
                 networkId,
-                chainId: data.chainId,
+                chainId: (data as IncompleteModuleModel).chainId,
               });
             });
 
