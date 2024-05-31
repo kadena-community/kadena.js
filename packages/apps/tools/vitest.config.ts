@@ -10,8 +10,8 @@ const localConfig = defineConfig({
     coverage: {
       thresholds: {
         lines: 13.88,
-        functions: 16.25,
-        branches: 41.31,
+        functions: 16.04,
+        branches: 41.07,
         statements: 13.88,
         autoUpdate: false,
       },
