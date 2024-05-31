@@ -12,7 +12,6 @@ import { Search } from '../Search/Search';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { contentClass, dialogClass } from './styles.css';
 
-export type ITabs = 'docs' | 'qa' | null;
 export const SearchDialog: FC<IDialogProps> = (props) => {
   const [query, setQuery] = useState<string | undefined>();
 
