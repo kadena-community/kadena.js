@@ -88,6 +88,10 @@ export const wrapperClass = style([
   },
 ]);
 
+export const searchWrapperClass = style({
+  paddingBlockEnd: 0,
+});
+
 export const subheaderClass = style([
   atoms({
     color: 'text.base.default',
