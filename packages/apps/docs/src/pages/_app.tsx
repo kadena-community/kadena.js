@@ -56,7 +56,7 @@ export const MyApp = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
-  const { title, description, headerImage } = props.frontmatter;
+  const { title, description, headerImage, canonicalURL } = props.frontmatter;
   const defaultImagePath = '/assets/og_banner.jpeg';
   const ogImage = headerImage
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}${headerImage}`
@@ -66,6 +66,7 @@ export const MyApp = ({
     <>
       <Head>
         <title>{`${title} | Kadena Docs`}</title>
+        {canonicalURL && <link rel="canonical" href={canonicalURL} />}
         <link rel="manifest" href="/manifest.json" />
         <meta name="title" content={`${title} | Kadena Docs`} />
         <meta name="description" content={description} />
