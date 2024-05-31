@@ -27,12 +27,6 @@ export const MarketplaceHeader= () => {
         >
           Transfer
         </NavHeaderLink>
-        {account ? (<NavHeaderLink
-          href="/mytokens"
-          onClick={() => {}}
-        >
-          My Tokens
-        </NavHeaderLink>) : <></>}
       </NavHeaderLinkList>
       {account
         ? (

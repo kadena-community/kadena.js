@@ -16,7 +16,7 @@ if (
     appId: process.env.NEXT_PUBLIC_FB_APPID,
   };
 
-  const app = initializeApp(firebaseConfig);
+  const app = initializeApp(firebaseConfig, 'marketplace3');
   database = getFirestore(app);
 }
 
