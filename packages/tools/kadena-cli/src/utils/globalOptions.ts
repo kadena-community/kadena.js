@@ -15,9 +15,9 @@ import { isAbsolute, join } from 'node:path';
 import {
   chainIdValidation,
   formatZodFieldErrors,
-} from '../account/utils/accountHelpers.js';
-import { parseKeyPairsInput } from '../keys/utils/keysHelpers.js';
-import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
+} from '../commands/account/utils/accountHelpers.js';
+import { parseKeyPairsInput } from '../commands/keys/utils/keysHelpers.js';
+import { loadNetworkConfig } from '../commands/networks/utils/networkHelpers.js';
 import { services } from '../services/index.js';
 import { createOption } from './createOption.js';
 import { getDefaultNetworkName, passwordPromptTransform } from './helpers.js';

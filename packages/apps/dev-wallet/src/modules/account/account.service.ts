@@ -3,7 +3,7 @@ import { WithEmitter, withEmitter } from '@kadena/client-utils/core';
 import { PactNumber } from '@kadena/pactjs';
 
 import { keySourceManager } from '../key-source/key-source-manager';
-import { IAccount, accountRepository } from './account.repository';
+import { IAccount, IKeySet, accountRepository } from './account.repository';
 
 import type { BuiltInPredicate, ChainId } from '@kadena/client';
 import type { IKeyItem, IKeySource } from '../wallet/wallet.repository';
@@ -29,21 +29,24 @@ export async function createKAccount(
   contract: string = 'coin',
   chains: Array<{ chainId: string; balance: string }> = [],
 ) {
-  const account: IAccount = {
+  const keyset: IKeySet = {
+    principal: `k:${publicKey}`,
     uuid: crypto.randomUUID(),
+    profileId,
     alias: '',
-    profileId: profileId,
-    address: `k:${publicKey}`,
-    initialGuard: {
+    guard: {
       pred: 'keys-any',
       keys: [publicKey],
     },
+  };
+  const account: IAccount = {
+    uuid: crypto.randomUUID(),
+    profileId: profileId,
+    address: `k:${publicKey}`,
+    keysetId: keyset.uuid,
     networkId,
     contract,
-    chains: chains.map((chain) => ({
-      ...chain,
-      guard: { pred: 'keys-any', keys: [publicKey] },
-    })),
+    chains,
     overallBalance: chains.reduce(
       (acc, { balance }) => new PactNumber(balance).plus(acc).toDecimal(),
       '0',
@@ -51,6 +54,7 @@ export async function createKAccount(
   };
 
   await accountRepository.addAccount(account);
+  await accountRepository.addKeyset(keyset);
   return account;
 }
 
@@ -81,6 +85,7 @@ export const accountDiscovery = (
     ) => {
       const keySourceService = await keySourceManager.get(keySource.source);
       const accounts: IAccount[] = [];
+      const keysets: IKeySet[] = [];
       const usedKeys: IKeyItem[] = [];
       for (let i = 0; i < numberOfKeys; i++) {
         const key = await keySourceService.getPublicKey(keySource, i);
@@ -102,22 +107,29 @@ export const accountDiscovery = (
 
         if (chainResult.filter(({ result }) => Boolean(result)).length > 0) {
           usedKeys.push(key);
+          const keyset: IKeySet = {
+            uuid: crypto.randomUUID(),
+            principal: `k:${key.publicKey}`,
+            profileId,
+            guard: {
+              keys: [key.publicKey],
+              pred: 'keys-all',
+            },
+            alias: '',
+          };
+          keysets.push(keyset);
           accounts.push({
             uuid: crypto.randomUUID(),
             profileId,
             networkId,
             contract,
-            initialGuard: {
-              keys: [key.publicKey],
-              pred: 'keys-all',
-            },
+            keysetId: keyset.uuid,
             address: `k:${key.publicKey}`,
             chains: chainResult
               .filter(({ result }) => Boolean(result))
               .map(({ chainId, result }) => ({
                 chainId,
                 balance: result!.balance || '0',
-                guard: result!.guard,
               })),
             overallBalance: chainResult.reduce(
               (acc, { result }) =>
@@ -140,9 +152,14 @@ export const accountDiscovery = (
       }
 
       // store accounts
-      await Promise.all(
-        accounts.map(async (account) => accountRepository.addAccount(account)),
-      );
+      await Promise.all([
+        ...accounts.map(async (account) =>
+          accountRepository.addAccount(account),
+        ),
+        ...keysets.map(async (keyset) =>
+          accountRepository.addKeyset(keyset).catch(console.log),
+        ),
+      ]);
 
       keySourceService.clearCache();
       await emit('accounts-saved')(accounts);
@@ -166,7 +183,6 @@ export const syncAccount = async (account: IAccount) => {
     .map(({ chainId, result }) => ({
       chainId,
       balance: result!.balance || '0',
-      guard: result!.guard,
     }));
 
   updatedAccount.overallBalance = chainResult.reduce(
