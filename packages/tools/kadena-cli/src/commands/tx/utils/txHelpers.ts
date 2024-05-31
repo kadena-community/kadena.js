@@ -172,14 +172,16 @@ export async function getTransactions(
  * Formats the current date and time into a string with the format 'YYYY-MM-DD-HH:MM'.
  * @returns {string} Formatted date and time string.
  */
-export function formatDate(): string {
-  const now = new Date();
+export function formatDate(date?: Date): string {
+  const now = date ?? new Date();
+  // @ts-expect-error
+  if (isNaN(now)) return 'N/A';
   const year = now.getFullYear();
   const month = (now.getMonth() + 1).toString().padStart(2, '0');
   const day = now.getDate().toString().padStart(2, '0');
   const hours = now.getHours().toString().padStart(2, '0');
   const minutes = now.getMinutes().toString().padStart(2, '0');
-  return `${year}-${month}-${day}-${hours}:${minutes}`;
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 
 export async function signTransactionWithWallet(
@@ -804,6 +806,8 @@ export interface IUpdateTransactionsLogPayload {
 
 export interface ITransactionLogEntry
   extends Partial<Pick<ICommandResult, 'txId'>> {
+  dateTime: string;
+  cmd: string;
   chainId: ChainId;
   networkId: string;
   networkHost: string;
@@ -828,7 +832,10 @@ const writeTransactionLog = async (
   data: ITransactionLog,
 ): Promise<void> => {
   try {
-    await services.filesystem.writeFile(filePath, jsYaml.dump(data));
+    await services.filesystem.writeFile(
+      filePath,
+      jsYaml.dump(data, { lineWidth: -1 }),
+    );
   } catch (error) {
     log.error(`Failed to write transaction log: ${error.message}`);
   }
@@ -851,8 +858,14 @@ export const saveTransactionsToFile = async (
       (await readTransactionLog(transactionFilePath)) || {};
 
     transactions.forEach(
-      ({ requestKey, details: { networkId, networkHost, chainId } }) => {
+      ({
+        requestKey,
+        transaction,
+        details: { networkId, networkHost, chainId },
+      }) => {
         currentTransactionLog[requestKey] = {
+          dateTime: new Date().toISOString(),
+          cmd: transaction.cmd,
           networkId,
           chainId,
           networkHost,

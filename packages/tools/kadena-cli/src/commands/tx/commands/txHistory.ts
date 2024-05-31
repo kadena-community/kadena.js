@@ -14,6 +14,7 @@ import type {
   IUpdateTransactionsLogPayload,
 } from '../utils/txHelpers.js';
 import {
+  formatDate,
   generateClientUrl,
   getTransactionDirectory,
   mergePayloadsWithTransactionLog,
@@ -21,10 +22,12 @@ import {
   updateTransactionStatus,
 } from '../utils/txHelpers.js';
 
-const header: Record<string, string> = {
+const header = {
+  requestKey: 'Request Key',
   networkHost: 'Network Host',
   networkId: 'Network ID',
   chainId: 'Chain ID',
+  dateTime: 'Time',
   status: 'Status',
   txId: 'Transaction ID',
 };
@@ -86,12 +89,23 @@ const fetchTransactionStatuses = async (
 export const printTxLogs = (transactionLog: ITransactionLog): void => {
   const table = createTable({});
   Object.entries(transactionLog).forEach(([requestKey, data]) => {
-    table.push([{ colSpan: 2, content: `Request Key: ${requestKey}` }]);
-    Object.entries(data).forEach(([key, value]) => {
-      const headerKey = header[key] || key;
-      table.push({
-        [log.color.green(headerKey)]: value?.toString() ?? 'N/A',
-      });
+    const tableData: Record<keyof typeof header, string | undefined> = {
+      requestKey,
+      networkHost: data.networkHost,
+      networkId: data.networkId,
+      chainId: data.chainId,
+      dateTime: formatDate(new Date(data.dateTime)),
+      status: data.status,
+      txId: data.txId?.toString() ?? undefined,
+    };
+
+    Object.entries(tableData).forEach(([key, value]) => {
+      if (value !== undefined) {
+        const headerKey = header[key as keyof typeof header];
+        table.push({
+          [log.color.green(headerKey)]: value,
+        });
+      }
     });
     table.push([{ colSpan: 2, content: '' }]);
   });
