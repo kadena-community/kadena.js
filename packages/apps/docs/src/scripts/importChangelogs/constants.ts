@@ -62,4 +62,13 @@ export const REPOS: IRepo[] = [
     owner: 'kadena-io',
     repoName: 'pact',
   },
+  {
+    name: 'Chainweb Node',
+    slug: 'chainweb-node',
+    repo: 'https://github.com/kadena-io/chainweb-node.git',
+    directory: '/',
+    fileName: 'CHANGELOG.md',
+    owner: 'kadena-io',
+    repoName: 'chainweb-node',
+  },
 ];
