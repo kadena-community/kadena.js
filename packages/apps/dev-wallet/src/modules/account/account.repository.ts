@@ -2,33 +2,37 @@ import { IDBService, dbService } from '@/modules/db/db.service';
 import { BuiltInPredicate, ChainId } from '@kadena/client';
 
 export interface Fungible {
+  contract: string; // unique identifier
   title: string;
   symbol: string;
   interface: 'fungible-v2';
-  contract: string;
   chainIds: ChainId[];
   wrappedFungibleId?: string; // if it's a wrapped token
 }
 
-export interface IKeysetGuard {
-  keys: string[];
-  pred: BuiltInPredicate;
+export interface IKeySet {
+  uuid: string; // principal of the keyset
+  principal: string; // principal of the keyset
+  profileId: string;
+  alias?: string;
+  guard: {
+    keys: string[];
+    pred: BuiltInPredicate;
+  };
 }
 
 export interface IAccount {
   uuid: string;
-  profileId: string;
-  alias?: string;
-  address: string;
-  initialGuard: IKeysetGuard;
   networkId: string;
+  profileId: string;
   contract: string;
+  keysetId: string;
+  address: string;
+  overallBalance: string;
   chains: Array<{
     chainId: string;
     balance: string;
-    guard: IKeysetGuard;
   }>;
-  overallBalance: string;
 }
 
 const createAccountRepository = ({
@@ -38,6 +42,15 @@ const createAccountRepository = ({
   update,
 }: IDBService) => {
   return {
+    addKeyset: async (keyset: IKeySet): Promise<void> => {
+      return add('keyset', keyset);
+    },
+    updateKeyset: async (keyset: IKeySet): Promise<void> => {
+      return update('keyset', keyset);
+    },
+    getKeyset: async (id: string): Promise<IKeySet> => {
+      return getOne('keyset', id);
+    },
     addAccount: async (account: IAccount): Promise<void> => {
       return add('account', account);
     },
