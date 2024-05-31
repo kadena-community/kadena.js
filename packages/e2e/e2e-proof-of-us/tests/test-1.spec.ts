@@ -13,9 +13,7 @@ test('1 Initiator, 1 signers. all participants sign -> Should be able to mint th
   signer1,
 }) => {
   await test.step('Create account in SpireKey and initiate a connection in Proof of Us.', async () => {
-    await initiator.goto(
-      'https://proof-of-us-git-feat-pouinitiatordeletesigners-kadena-js.vercel.app/',
-    );
+    await initiator.goto('https://devworld.kadena.io/');
     // Initiator: Create a SpireKey account
     await initiator.getByRole('button', { name: 'Login to mint' }).click();
     await spireKey.createSpireKeyAccountFor(initiator, 'initiator');
