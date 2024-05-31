@@ -3,10 +3,15 @@ import { getFileFromNameOfUrl } from './../../utils/getFileFromNameOfUrl';
 import { getUrlFromFilePath } from './../../utils/getUrlFromFilePath';
 import { getFileNameInPackage } from './getFileNameInPackage';
 
+/**
+ * creates a github edit link to the correct path in the docs
+ */
 export const createEditLink = async (file: IFile): Promise<string> => {
   const filePath = getFileNameInPackage(file);
+  console.log({ filePath, file });
 
   const pageItem = await getFileFromNameOfUrl(getUrlFromFilePath(filePath));
+  console.log({ pageItem });
   if (!pageItem) return '';
 
   if (pageItem.repo) {
