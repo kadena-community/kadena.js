@@ -26,18 +26,24 @@ import type {
   INetworkCreateOptions,
 } from '../../networks/utils/networkHelpers.js';
 
+import jsYaml from 'js-yaml';
 import path, { isAbsolute, join } from 'node:path';
 import { z } from 'zod';
-import { TX_TEMPLATE_FOLDER } from '../../../constants/config.js';
+import {
+  TRANSACTIONS_LOG_FILE,
+  TRANSACTIONS_PATH,
+  TX_TEMPLATE_FOLDER,
+} from '../../../constants/config.js';
 import { ICommandSchema } from '../../../prompts/tx.js';
 import { services } from '../../../services/index.js';
+import { KadenaError } from '../../../services/service-error.js';
 import type {
   IWallet,
   IWalletKey,
   IWalletKeyPair,
 } from '../../../services/wallet/wallet.types.js';
 import type { CommandResult } from '../../../utils/command.util.js';
-import { notEmpty } from '../../../utils/globalHelpers.js';
+import { isNotEmptyObject, notEmpty } from '../../../utils/globalHelpers.js';
 import { log } from '../../../utils/logger.js';
 import { createTable } from '../../../utils/table.js';
 import type { ISavedTransaction } from './storage.js';
@@ -709,7 +715,9 @@ function generateClientKey(details: INetworkDetails): string {
  * @param {INetworkDetails} details - The network details.
  * @returns {string} The client URL.
  */
-export function generateClientUrl(details: INetworkDetails): string {
+export function generateClientUrl(
+  details: Pick<INetworkDetails, 'networkHost' | 'networkId' | 'chainId'>,
+): string {
   return `${details.networkHost}/chainweb/0.0/${details.networkId}/chain/${details.chainId}/pact`;
 }
 
@@ -779,4 +787,131 @@ export const createTransactionWithDetails = async (
     }
   }
   return transactionsWithDetails;
+};
+
+export const getTransactionDirectory = (): string | null => {
+  const kadenaDirectory = services.config.getDirectory();
+  return notEmpty(kadenaDirectory)
+    ? path.join(kadenaDirectory, TRANSACTIONS_PATH)
+    : null;
+};
+
+export interface IUpdateTransactionsLogPayload {
+  requestKey: string;
+  status: 'success' | 'failure';
+  data?: Partial<ICommandResult>;
+}
+
+export interface ITransactionLogEntry
+  extends Partial<Pick<ICommandResult, 'txId'>> {
+  chainId: ChainId;
+  networkId: string;
+  networkHost: string;
+  status?: 'success' | 'failure';
+}
+
+export interface ITransactionLog {
+  [requestKey: string]: ITransactionLogEntry;
+}
+
+export const readTransactionLog = async (
+  filePath: string,
+): Promise<ITransactionLog | null> => {
+  const fileContent = await services.filesystem.readFile(filePath);
+  return notEmpty(fileContent)
+    ? (jsYaml.load(fileContent) as ITransactionLog)
+    : null;
+};
+
+const writeTransactionLog = async (
+  filePath: string,
+  data: ITransactionLog,
+): Promise<void> => {
+  try {
+    await services.filesystem.writeFile(filePath, jsYaml.dump(data));
+  } catch (error) {
+    log.error(`Failed to write transaction log: ${error.message}`);
+  }
+};
+
+export const saveTransactionsToFile = async (
+  transactions: ISubmitResponse[],
+): Promise<void> => {
+  try {
+    const transactionDir = getTransactionDirectory();
+    if (!notEmpty(transactionDir)) throw new KadenaError('no_kadena_directory');
+
+    await services.filesystem.ensureDirectoryExists(transactionDir);
+    const transactionFilePath = path.join(
+      transactionDir,
+      TRANSACTIONS_LOG_FILE,
+    );
+
+    const currentTransactionLog =
+      (await readTransactionLog(transactionFilePath)) || {};
+
+    transactions.forEach(
+      ({ requestKey, details: { networkId, networkHost, chainId } }) => {
+        currentTransactionLog[requestKey] = {
+          networkId,
+          chainId,
+          networkHost,
+        };
+      },
+    );
+
+    await writeTransactionLog(transactionFilePath, currentTransactionLog);
+  } catch (error) {
+    log.error(`Failed to save transactions: ${error.message}`);
+  }
+};
+
+export const mergePayloadsWithTransactionLog = (
+  transactionLog: ITransactionLog,
+  updatePayloads: IUpdateTransactionsLogPayload[],
+): ITransactionLog => {
+  const updatedLog = {
+    ...transactionLog,
+  };
+  updatePayloads.forEach(({ requestKey, status, data = {} }) => {
+    if (isNotEmptyObject(updatedLog[requestKey])) {
+      updatedLog[requestKey] = {
+        ...updatedLog[requestKey],
+        status,
+        txId: notEmpty(data.txId) ? data.txId : null,
+      };
+    } else {
+      log.error(`No transaction found for request key: ${requestKey}`);
+    }
+  });
+
+  return updatedLog;
+};
+
+export const updateTransactionStatus = async (
+  updatePayloads: IUpdateTransactionsLogPayload[],
+): Promise<void> => {
+  try {
+    const transactionDir = getTransactionDirectory();
+    if (!notEmpty(transactionDir)) throw new KadenaError('no_kadena_directory');
+
+    const transactionFilePath = path.join(
+      transactionDir,
+      TRANSACTIONS_LOG_FILE,
+    );
+    const currentTransactionLog = await readTransactionLog(transactionFilePath);
+    if (!currentTransactionLog)
+      throw new Error(
+        'No transaction logs are available. Please ensure that transaction logs are present and try again.',
+      );
+
+    const updatedTransactionLog = mergePayloadsWithTransactionLog(
+      currentTransactionLog,
+      updatePayloads,
+    );
+
+    await writeTransactionLog(transactionFilePath, updatedTransactionLog);
+  } catch (error) {
+    log.error(`Failed to update transaction status: ${error.message}`);
+  }
 };
