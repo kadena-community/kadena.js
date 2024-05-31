@@ -1,11 +1,5 @@
 import type { IDialogProps } from '@kadena/react-ui';
-import {
-  Box,
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  Text,
-} from '@kadena/react-ui';
+import { Box, Dialog, DialogContent, DialogHeader } from '@kadena/react-ui';
 import type { FC, FormEvent } from 'react';
 import React, { useState } from 'react';
 import { Search } from '../Search/Search';
