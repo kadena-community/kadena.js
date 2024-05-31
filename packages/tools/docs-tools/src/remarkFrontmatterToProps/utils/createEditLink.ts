@@ -8,10 +8,8 @@ import { getFileNameInPackage } from './getFileNameInPackage';
  */
 export const createEditLink = async (file: IFile): Promise<string> => {
   const filePath = getFileNameInPackage(file);
-  console.log({ filePath, file });
-
   const pageItem = await getFileFromNameOfUrl(getUrlFromFilePath(filePath));
-  console.log({ pageItem });
+
   if (!pageItem) return '';
 
   if (pageItem.repo) {
