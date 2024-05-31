@@ -42,24 +42,28 @@ export const chainModuleToOutlineTreeItems = (
         networkId: chainModule.network as ChainwebNetworkId,
       },
       children: interfaces.map((i) => {
-        const firstFind = items.find((item) => {
-          return item.data.name === chainModule.network;
+        // Top level, one of the networks
+        const networkItems = items.find((item) => {
+          return item.data.networkId === chainModule.network;
         });
-        const secondFind = firstFind?.children.find((child) => {
+        // The second level, the module on certain chains
+        const chainModules = networkItems?.children.find((child) => {
           return child.data.name === i.name;
         });
-        const thirdFind = secondFind?.children.find((child) => {
+        // And now the final search, the module on the specific chain
+        const moduleTreeItem = chainModules?.children.find((child) => {
           return child.data.chainId === chainModule.chainId;
         });
+
         return {
           title: i.name,
           key: `${chainModule.network}.${i.name}`,
-          label: thirdFind?.data.hash,
+          label: moduleTreeItem?.data.hash,
           data: {
             ...i,
             chainId: chainModule.chainId,
             networkId: chainModule.network as ChainwebNetworkId,
-            code: thirdFind?.data.code,
+            code: moduleTreeItem?.data.code,
           },
           children: [],
         };
