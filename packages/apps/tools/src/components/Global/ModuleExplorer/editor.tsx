@@ -8,6 +8,7 @@ import {
   Stack,
   TabItem,
   Tabs,
+  Text,
 } from '@kadena/react-ui';
 
 import type { IChainModule } from './types';
@@ -29,6 +30,7 @@ import { MonoClose } from '@kadena/react-icons/system';
 import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
 import React, { useEffect, useState } from 'react';
+import { placeholderBodyStyles } from './styles.css';
 
 const AceViewer = dynamic(import('@/components/Global/Ace'), {
   ssr: false,
@@ -75,14 +77,17 @@ const Editor = ({
 
   if (!openedModules.length) {
     return (
-      <section>
-        <Heading variant="h4">{t('No code to be shown yet')}</Heading>
-        <p>
-          {t(
-            'Click on a module from the left panel to see its code in this panel',
-          )}
-        </p>
-      </section>
+      <Stack
+        as="section"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Heading>{t('no-selected-module-header')}</Heading>
+        <Text className={placeholderBodyStyles}>
+          {t('no-selected-module-body')}
+        </Text>
+      </Stack>
     );
   }
   return (

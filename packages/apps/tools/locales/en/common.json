@@ -196,7 +196,6 @@
   "Duplicate public key": "Duplicate public key",
   "Create and Fund Account": "Create and Fund Account",
   "Please provide one or more public keys": "Please provide one or more public keys",
-  "No code to be shown yet": "No code to be shown yet",
   "Click on a module from the left panel to see its code in this panel": "Click on a module from the left panel to see its code in this panel.",
   "Select/open a module to see the outline of the contract/module": "Select/open a module to see the outline of the contract/module",
   "Faucet": "Faucet",
@@ -275,5 +274,7 @@
   "Transaction": "Transaction",
   "Reset": "Reset",
   "Hide raw transaction details": "Hide raw transaction details",
-  "Show raw transaction details": "Show raw transaction details"
+  "Show raw transaction details": "Show raw transaction details",
+  "no-selected-module-header": "Select a module",
+  "no-selected-module-body": "To display the contract, select one of the modules listed."
 }
