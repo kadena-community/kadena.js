@@ -4,7 +4,62 @@ import {
   kadenaMnemonicToRootKeypair,
   kadenaSign as legacyKadenaSign,
 } from '@kadena/hd-wallet/chainweaver';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { mockPrompts, runCommand } from '../../../utils/test.util.js';
+
+vi.mock('../utils/txSignWithKeypair.js', () => ({
+  signWithKeypair: vi.fn().mockResolvedValue('Signed with keypair'),
+}));
+
+vi.mock('../utils/txSignWithWallet.js', () => ({
+  signWithWallet: vi.fn().mockResolvedValue('Signed with wallet'),
+}));
+
+import { signWithKeypair } from '../utils/txSignWithKeypair.js';
+import { signWithWallet } from '../utils/txSignWithWallet.js';
+
+describe('tx sign', () => {
+  const sampleTransaction = {
+    cmd: '{"payload":{"exec":{"code":"(coin.transfer \\"k:from\\" \\"k:to\\" 0.01)","data":{}}},"nonce":"","networkId":"testnet04","meta":{"sender":"k:from","chainId":"1","creationTime":1717069253,"gasLimit":2300,"gasPrice":0.000001,"ttl":600},"signers":[]}',
+  };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('Signs a transaction using wallet', async () => {
+    mockPrompts({
+      select: {
+        'Select an action:': 'wallet',
+      },
+    });
+
+    const { stderr } = await runCommand(['tx', 'sign'], {
+      stdin: JSON.stringify(sampleTransaction),
+    });
+
+    expect(stderr.includes('wallet')).toEqual(true);
+    expect(signWithWallet).toHaveBeenCalled();
+    expect(signWithKeypair).not.toHaveBeenCalled();
+  });
+
+  it('Signs a transaction using keypair', async () => {
+    mockPrompts({
+      select: {
+        'Select an action:': 'keyPair',
+      },
+    });
+
+    const { stderr } = await runCommand(['tx', 'sign'], {
+      stdin: JSON.stringify(sampleTransaction),
+    });
+
+    expect(stderr.includes('keyPair')).toEqual(true);
+    expect(signWithKeypair).toHaveBeenCalled();
+    expect(signWithWallet).not.toHaveBeenCalled();
+  });
+});
 
 const publicKey =
   'ff9b64a61902024870a59775624ca594ab14054c97eb6fae97105b88674b5edd';
