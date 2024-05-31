@@ -12,6 +12,7 @@ const remarkFrontmatterToProps = (): Plugin => {
     const newChildren = await Promise.all(
       tree.children.map(async (node) => {
         const frontMatterData = getFrontMatter(node);
+
         if (!frontMatterData) return node;
         const menuData = await getCurrentPostFromJson(
           getPathName(getFileName(file)),
@@ -35,6 +36,7 @@ const remarkFrontmatterToProps = (): Plugin => {
         } as unknown as IPropsType;
       }),
     );
+
     // eslint-disable-next-line require-atomic-updates
     tree.children = newChildren;
   };
