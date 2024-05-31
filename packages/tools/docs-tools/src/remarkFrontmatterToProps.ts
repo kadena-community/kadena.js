@@ -104,6 +104,7 @@ const remarkFrontmatterToProps = (): Plugin => {
           type: 'props',
           data: {
             frontmatter: {
+              canonicalURL: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}${menuData?.root}`,
               lastModifiedDate: menuData?.lastModifiedDate,
               ...getReadTime(file.value),
               editLink,
