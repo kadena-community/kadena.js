@@ -1,7 +1,7 @@
 import {
   GAS_STATIONS,
   NAMESPACES,
-} from './../devnet/faucet/deploy/constants.js';
+} from '../commands/devnet/faucet/deploy/constants.js';
 import { MAX_CHAIN_VALUE } from './config.js';
 
 export const GAS_STATIONS_MAP: { [key: string]: string } = {

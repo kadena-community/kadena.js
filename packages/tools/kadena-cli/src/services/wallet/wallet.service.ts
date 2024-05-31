@@ -13,7 +13,7 @@ import {
   kadenaMnemonicToRootKeypair as legacykadenaMnemonicToRootKeypair,
 } from '@kadena/hd-wallet/chainweaver';
 
-import { toHexStr } from '../../keys/utils/keysHelpers.js';
+import { toHexStr } from '../../commands/keys/utils/keysHelpers.js';
 import { log } from '../../utils/logger.js';
 import { decryptMessage } from '../../utils/wrappers.js';
 import type { Services } from '../index.js';
