@@ -39,7 +39,10 @@ export const queryAllChains =
               command,
               setMeta({ chainId }),
             );
-            return query<T>({ host }, client)(emit)(chainCommand);
+            return query<T>(
+              { host, defaults: { meta: { chainId } } },
+              client,
+            )(emit)(chainCommand);
           }),
         );
       },
