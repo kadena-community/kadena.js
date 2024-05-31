@@ -1,6 +1,9 @@
 import type { IncompleteModuleModel } from '@/hooks/use-module-query';
 import type { ElementType } from '@/types/utils';
-import type { ChainwebChainId } from '@kadena/chainweb-node-client';
+import type {
+  ChainwebChainId,
+  ChainwebNetworkId,
+} from '@kadena/chainweb-node-client';
 import { contractParser } from '@kadena/pactjs-generator';
 import type { TreeItem } from '../CustomTree/CustomTree';
 import type { IChainModule, Outline } from './types';
@@ -9,7 +12,7 @@ export type Contract = ReturnType<typeof contractParser>[0][0]; // TODO: Should 
 export type ContractInterface = ElementType<Contract['usedInterface']> & {
   code?: string;
   chainId: ChainwebChainId;
-  networkId: string;
+  networkId: ChainwebNetworkId;
 };
 export type ContractCapability = ElementType<Contract['capabilities']>;
 export type ContractFunction = ElementType<Contract['functions']>;
@@ -33,7 +36,11 @@ export const chainModuleToOutlineTreeItems = (
     treeItems.push({
       title: 'Interfaces',
       key: 'interfaces',
-      data: 'interfaces',
+      data: {
+        name: 'interfaces',
+        chainId: chainModule.chainId,
+        networkId: chainModule.network as ChainwebNetworkId,
+      },
       children: interfaces.map((i) => {
         const firstFind = items.find((item) => {
           return item.data.name === chainModule.network;
@@ -51,7 +58,7 @@ export const chainModuleToOutlineTreeItems = (
           data: {
             ...i,
             chainId: chainModule.chainId,
-            networkId: chainModule.network,
+            networkId: chainModule.network as ChainwebNetworkId,
             code: thirdFind?.data.code,
           },
           children: [],

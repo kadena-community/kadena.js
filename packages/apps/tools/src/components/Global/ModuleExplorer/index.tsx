@@ -7,7 +7,7 @@ import type { IEditorProps } from './editor';
 import Editor from './editor';
 import { containerStyle } from './styles.css';
 import type { IChainModule, Outline } from './types';
-import { isModule } from './types';
+import { isModuleLike } from './types';
 import {
   chainModuleToOutlineTreeItems,
   moduleModelToChainModule,
@@ -62,7 +62,7 @@ const ModuleExplorer = ({
         ]}
         onReload={onReload}
         onModuleClick={({ data }) => {
-          if (isModule(data)) {
+          if (isModuleLike(data)) {
             const chainModule: IChainModule = moduleModelToChainModule(data);
             setActiveModule(chainModule);
             setOpenedModules((prev) => {

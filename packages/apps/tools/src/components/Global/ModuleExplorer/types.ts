@@ -21,7 +21,7 @@ export type Outline =
   | ContractCapability
   | ContractFunction;
 
-export const isModule = (
+export const isModuleLike = (
   item: IncompleteModuleModel | Outline,
 ): item is IncompleteModuleModel => {
   return (

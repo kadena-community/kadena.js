@@ -87,10 +87,11 @@ export const mapToTreeItems = (
         });
       }
 
+      // Let's take the info from the first child as our data
       const aux: IncompleteModuleModel = {
-        name,
-        chainId: '0',
-        networkId: 'mainnet01',
+        name: children[0].data.name,
+        chainId: children[0].data.chainId,
+        networkId: children[0].data.networkId,
       };
 
       return {

@@ -2,8 +2,7 @@ import type { TreeItem } from '@/components/Global/CustomTree/CustomTree';
 import ModuleExplorer from '@/components/Global/ModuleExplorer';
 import type { IEditorProps } from '@/components/Global/ModuleExplorer/editor';
 import type { IChainModule } from '@/components/Global/ModuleExplorer/types';
-import { isModule } from '@/components/Global/ModuleExplorer/types';
-import type { ContractInterface } from '@/components/Global/ModuleExplorer/utils';
+import { isModuleLike } from '@/components/Global/ModuleExplorer/types';
 import { moduleModelToChainModule } from '@/components/Global/ModuleExplorer/utils';
 import { kadenaConstants } from '@/constants/kadena';
 import { menuData } from '@/constants/side-menu-items';
@@ -195,81 +194,41 @@ const ModuleExplorerPage = (
 
           const isLowestLevel = !treeItem.children[0].children.length;
 
-          if (treeItem.key === 'interfaces') {
-            const network = (treeItem.children[0].data as ContractInterface)
-              .networkId;
-            const networkId =
-              network === 'mainnet01' ? 'mainnet01' : 'testnet04';
-
-            const promises = treeItem.children.map(({ data }) => {
-              return mutation.mutateAsync({
-                module: (data as ContractInterface).name,
-                networkId,
-                chainId: (data as ContractInterface).chainId,
-              });
-            });
-
-            const results = await Promise.all(promises);
-
-            queryClient.setQueryData<Array<IncompleteModuleModel>>(
-              [QUERY_KEY, networkId, undefined],
-              (oldData) => {
-                return oldData!.map((old) => {
-                  const newModule = results.find((newM) => {
-                    return (
-                      newM.name === old.name && newM.chainId === old.chainId
-                    );
-                  });
-
-                  if (!newModule) {
-                    return old;
-                  }
-
-                  return {
-                    ...old,
-                    hash: newModule.hash,
-                    code: newModule.code,
-                  };
+          if (isModuleLike(treeItem.data)) {
+            if (treeItem.key === 'interfaces' || isLowestLevel) {
+              const promises = treeItem.children.map(({ data }) => {
+                return mutation.mutateAsync({
+                  module: (data as IncompleteModuleModel).name,
+                  networkId: (data as IncompleteModuleModel).networkId,
+                  chainId: (data as IncompleteModuleModel).chainId,
                 });
-              },
-            );
-          } else if (isModule(treeItem.data) && isLowestLevel) {
-            const [network, namespacePart1, namespacePart2] = (
-              treeItem.key as string
-            ).split('.');
-            const networkId = network === 'mainnet' ? 'mainnet01' : 'testnet04';
-            const promises = treeItem.children.map(({ data }) => {
-              return mutation.mutateAsync({
-                module: `${namespacePart1}${namespacePart2 ? `.${namespacePart2}` : ''}`,
-                networkId,
-                chainId: (data as IncompleteModuleModel).chainId,
               });
-            });
 
-            const results = await Promise.all(promises);
+              const results = await Promise.all(promises);
 
-            queryClient.setQueryData<Array<IncompleteModuleModel>>(
-              [QUERY_KEY, networkId, undefined],
-              (oldData) => {
-                return oldData!.map((old) => {
-                  const newModule = results.find((newM) => {
-                    return (
-                      newM.name === old.name && newM.chainId === old.chainId
-                    );
+              queryClient.setQueryData<Array<IncompleteModuleModel>>(
+                [QUERY_KEY, treeItem.data.networkId, undefined],
+                (oldData) => {
+                  return oldData!.map((old) => {
+                    const newModule = results.find((newM) => {
+                      return (
+                        newM.name === old.name && newM.chainId === old.chainId
+                      );
+                    });
+
+                    if (!newModule) {
+                      return old;
+                    }
+
+                    return {
+                      ...old,
+                      hash: newModule.hash,
+                      code: newModule.code,
+                    };
                   });
-
-                  if (!newModule) {
-                    return old;
-                  }
-
-                  return {
-                    ...old,
-                    hash: newModule.hash,
-                    code: newModule.code,
-                  };
-                });
-              },
-            );
+                },
+              );
+            }
           }
         }}
       />
