@@ -60,7 +60,7 @@ export type ModulesMap = Map<
   ModuleData | Map<ModuleName, ModuleData>
 >;
 
-const mapToTreeItems = (
+export const mapToTreeItems = (
   modulesMap: Map<Namespace, ModuleData | Map<ModuleName, ModuleData>>,
   parent?: Namespace,
 ): TreeItem<IncompleteModuleModel>[] => {
@@ -102,10 +102,9 @@ const mapToTreeItems = (
     });
 };
 
-export const modelsToTreeItems = (
+export const modelsToTreeMap = (
   models: Array<IncompleteModuleModel>,
-  key: string,
-): TreeItem<IncompleteModuleModel>[] => {
+): ModulesMap => {
   const modulesMap: ModulesMap = new Map();
 
   models.forEach((module) => {
@@ -138,10 +137,5 @@ export const modelsToTreeItems = (
     }
   });
 
-  const treeItems: TreeItem<IncompleteModuleModel>[] = mapToTreeItems(
-    modulesMap,
-    key,
-  );
-
-  return treeItems;
+  return modulesMap;
 };

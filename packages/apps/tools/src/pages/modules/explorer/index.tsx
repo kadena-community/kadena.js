@@ -27,7 +27,12 @@ import type {
   InferGetServerSidePropsType,
 } from 'next/types';
 import React, { useCallback } from 'react';
-import { getCookieValue, getQueryValue, modelsToTreeItems } from './utils';
+import {
+  getCookieValue,
+  getQueryValue,
+  mapToTreeItems,
+  modelsToTreeMap,
+} from './utils';
 
 const QueryParams = {
   MODULE: 'module',
@@ -92,7 +97,10 @@ const ModuleExplorerPage = (
   let amountOfMainnetModules = 0;
 
   if (mainnetModulesQuery.isSuccess) {
-    mappedMainnet = modelsToTreeItems(mainnetModulesQuery.data, 'mainnet');
+    mappedMainnet = mapToTreeItems(
+      modelsToTreeMap(mainnetModulesQuery.data),
+      'mainnet',
+    );
     amountOfMainnetModules = mainnetModulesQuery.data.length;
   }
 
@@ -100,7 +108,10 @@ const ModuleExplorerPage = (
   let amountOfTestnetModules = 0;
 
   if (testnetModulesQuery.isSuccess) {
-    mappedTestnet = modelsToTreeItems(testnetModulesQuery.data, 'testnet');
+    mappedTestnet = mapToTreeItems(
+      modelsToTreeMap(testnetModulesQuery.data),
+      'testnet',
+    );
     amountOfTestnetModules = testnetModulesQuery.data.length;
   }
 
