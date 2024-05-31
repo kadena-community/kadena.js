@@ -89,7 +89,7 @@ export const wrapperClass = style([
 ]);
 
 export const searchWrapperClass = style({
-  paddingBlockEnd: 0,
+  paddingBlockEnd: tokens.kda.foundation.size.n5,
 });
 
 export const subheaderClass = style([

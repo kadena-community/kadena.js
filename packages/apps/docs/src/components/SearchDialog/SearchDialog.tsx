@@ -27,8 +27,9 @@ export const SearchDialog: FC<IDialogProps> = (props) => {
   return (
     <Dialog {...props} className={dialogClass}>
       <DialogHeader>
-        <h2>Search Spaces</h2>
-        <Text>Search the classic way, or just ask a question</Text>
+        <h2>
+          <Search></Search>
+        </h2>
       </DialogHeader>
       <DialogContent className={contentClass}>
         <Box marginBlock="md">
