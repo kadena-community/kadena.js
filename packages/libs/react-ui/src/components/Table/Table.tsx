@@ -22,6 +22,7 @@ export interface ITableProps<T>
 export function Table<T extends object>(props: ITableProps<T>) {
   const scrollRef = useRef(null);
 
+  console.log({ props });
   const state = useTableState({
     ...props,
   });
