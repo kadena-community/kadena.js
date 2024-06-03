@@ -1447,6 +1447,55 @@ importers:
         specifier: ^8.16.0
         version: 8.16.0
 
+  packages/e2e/e2e-proof-of-us:
+    dependencies:
+      '@kadena/tools':
+        specifier: workspace:*
+        version: link:../../apps/tools
+      '@playwright/test':
+        specifier: ^1.44.0
+        version: 1.44.1
+    devDependencies:
+      '@kadena-dev/e2e-base':
+        specifier: workspace:*
+        version: link:../e2e-base
+      '@kadena-dev/eslint-config':
+        specifier: workspace:*
+        version: link:../../tools/eslint-config
+      '@kadena-dev/eslint-plugin':
+        specifier: workspace:*
+        version: link:../../tools/eslint-plugin
+      '@kadena-dev/lint-package':
+        specifier: workspace:*
+        version: link:../../tools/lint-package
+      '@kadena-dev/markdown':
+        specifier: workspace:*
+        version: link:../../tools/markdown
+      '@kadena-dev/shared-config':
+        specifier: workspace:*
+        version: link:../../tools/shared-config
+      '@kadena/types':
+        specifier: workspace:*
+        version: link:../../libs/types
+      '@rushstack/eslint-config':
+        specifier: ~3.6.9
+        version: 3.6.9(eslint@8.57.0)(typescript@5.4.5)
+      '@types/node':
+        specifier: ^20.12.7
+        version: 20.12.7
+      eslint:
+        specifier: ^8.45.0
+        version: 8.57.0
+      eslint-import-resolver-typescript:
+        specifier: 3.5.5
+        version: 3.5.5(@typescript-eslint/parser@6.19.1)(eslint-plugin-import@2.27.5)(eslint@8.57.0)
+      eslint-plugin-playwright:
+        specifier: 1.6.1
+        version: 1.6.1(eslint@8.57.0)
+      prettier:
+        specifier: ~3.2.5
+        version: 3.2.5
+
   packages/e2e/e2e-tools:
     dependencies:
       '@kadena/tools':
@@ -6132,7 +6181,7 @@ packages:
       ajv: 6.12.6
       debug: 4.3.4(supports-color@5.5.0)
       espree: 7.3.1
-      globals: 13.21.0
+      globals: 13.24.0
       ignore: 4.0.6
       import-fresh: 3.3.0
       js-yaml: 3.14.1
@@ -9412,7 +9461,7 @@ packages:
       '@parcel/source-map': 2.1.1
       '@parcel/types': 2.12.0(@parcel/core@2.12.0)
       '@parcel/utils': 2.12.0
-      globals: 13.21.0
+      globals: 13.24.0
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
@@ -21490,7 +21539,7 @@ packages:
       file-entry-cache: 6.0.1
       functional-red-black-tree: 1.0.1
       glob-parent: 5.1.2
-      globals: 13.21.0
+      globals: 13.24.0
       ignore: 4.0.6
       import-fresh: 3.3.0
       imurmurhash: 0.1.4
@@ -22773,7 +22822,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       type-fest: 0.20.2
-    dev: true
 
   /globalthis@1.0.3:
     resolution: {integrity: sha512-sFdI5LyBiNTHjRd7cGPWapiHWMOXKyuBNX/cWJ3NfzrZQVa8GI/8cofCl74AOVqq9W5kNmguTIzJ/1s2gyI9wA==}
