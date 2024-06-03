@@ -320,4 +320,45 @@ describe('mapToTreeItems', () => {
       },
     ]);
   });
+
+  it('should correctly accept an additional (parent) "prefix" key', () => {
+    const modulesMap = new Map([
+      [
+        'coin',
+        [
+          {
+            name: 'coin',
+            chainId: '1' as ChainwebChainId,
+            networkId: 'testnet04' as ChainwebNetworkId,
+          },
+        ],
+      ],
+    ]);
+
+    const result = mapToTreeItems(modulesMap, 'some-parent-key');
+    expect(result).toEqual([
+      {
+        data: {
+          name: 'coin',
+          chainId: '1',
+          networkId: 'testnet04',
+        },
+        key: 'some-parent-key.coin',
+        title: 'coin',
+        children: [
+          {
+            data: {
+              name: 'coin',
+              chainId: '1' as ChainwebChainId,
+              networkId: 'testnet04' as ChainwebNetworkId,
+            },
+            key: 'some-parent-key.coin.1',
+            title: '1',
+            children: [],
+            label: undefined,
+          },
+        ],
+      },
+    ]);
+  });
 });
