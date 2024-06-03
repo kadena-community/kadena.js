@@ -51,6 +51,5 @@ export class SpireKeyIndex {
       actor.getByRole('heading', { name: 'Sign', exact: true }),
     ).toBeVisible();
     await actor.getByRole('button', { name: 'Sign' }).click();
-    
   }
 }

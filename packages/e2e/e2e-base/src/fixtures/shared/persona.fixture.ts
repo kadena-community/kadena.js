@@ -1,77 +1,75 @@
-import type { Page} from '@playwright/test';
+import type { Page } from '@playwright/test';
 import { test as baseTest } from '@playwright/test';
 
-
 export const test = baseTest.extend<{
-    initiator: Page
-    signer1: Page
-    signer2: Page
-    signer3: Page
-    signer4: Page
-    signer5: Page
-    signer6: Page
-    signer7: Page
-    signer8: Page
-    signer9: Page
-    signer10: Page
-    signer11: Page
-    signer12: Page
-    signer13: Page
-    signer14: Page
-    signer15: Page
-    signer16: Page
-    signer17: Page
-    signer18: Page
-    signer19: Page
-    signer20: Page
-    signer21: Page
-    signer22: Page
-    signer23: Page
-    signer24: Page
-    signer25: Page
-    signer26: Page
-    signer27: Page
-    signer28: Page
-    signer29: Page
-    signer30: Page
-    signer31: Page
-    signer32: Page
-    signer33: Page
-    signer34: Page
-    signer35: Page
-    signer36: Page
-    signer37: Page
-    signer38: Page
-    signer39: Page
-    signer40: Page
-    signer41: Page
-    signer42: Page
-    signer43: Page
-    signer44: Page
-    signer45: Page
-    signer46: Page
-    signer47: Page
-    signer48: Page
-    signer49: Page
-    signer50: Page
-    signer51: Page
-    signer52: Page
-    signer53: Page
-    signer54: Page
-    signer55: Page
-    signer56: Page
-    signer57: Page
-    signer58: Page
-    signer59: Page
-    signer60: Page
-    signer61: Page
-    signer62: Page
-    signer63: Page
-    signer64: Page
-    signer65: Page
-
+  initiator: Page;
+  signer1: Page;
+  signer2: Page;
+  signer3: Page;
+  signer4: Page;
+  signer5: Page;
+  signer6: Page;
+  signer7: Page;
+  signer8: Page;
+  signer9: Page;
+  signer10: Page;
+  signer11: Page;
+  signer12: Page;
+  signer13: Page;
+  signer14: Page;
+  signer15: Page;
+  signer16: Page;
+  signer17: Page;
+  signer18: Page;
+  signer19: Page;
+  signer20: Page;
+  signer21: Page;
+  signer22: Page;
+  signer23: Page;
+  signer24: Page;
+  signer25: Page;
+  signer26: Page;
+  signer27: Page;
+  signer28: Page;
+  signer29: Page;
+  signer30: Page;
+  signer31: Page;
+  signer32: Page;
+  signer33: Page;
+  signer34: Page;
+  signer35: Page;
+  signer36: Page;
+  signer37: Page;
+  signer38: Page;
+  signer39: Page;
+  signer40: Page;
+  signer41: Page;
+  signer42: Page;
+  signer43: Page;
+  signer44: Page;
+  signer45: Page;
+  signer46: Page;
+  signer47: Page;
+  signer48: Page;
+  signer49: Page;
+  signer50: Page;
+  signer51: Page;
+  signer52: Page;
+  signer53: Page;
+  signer54: Page;
+  signer55: Page;
+  signer56: Page;
+  signer57: Page;
+  signer58: Page;
+  signer59: Page;
+  signer60: Page;
+  signer61: Page;
+  signer62: Page;
+  signer63: Page;
+  signer64: Page;
+  signer65: Page;
 }>({
-    initiator: async ({ browser }, use) => {
+  initiator: async ({ browser }, use) => {
     const context = await browser.newContext();
     const customPage = await context.newPage();
     await use(customPage);
@@ -281,7 +279,7 @@ export const test = baseTest.extend<{
     await use(customPage);
     await context.close();
   },
-  signer35:  async ({ browser }, use) => {
+  signer35: async ({ browser }, use) => {
     const context = await browser.newContext();
     const customPage = await context.newPage();
     await use(customPage);
@@ -466,5 +464,5 @@ export const test = baseTest.extend<{
     const customPage = await context.newPage();
     await use(customPage);
     await context.close();
-  }
+  },
 });

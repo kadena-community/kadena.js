@@ -24,24 +24,31 @@ export class ProofOfUsAppIndex {
     return shareUrl;
   }
 
-  public async disableSigningFor(actor: Page, targetSignee: string): Promise<void> {
-  await actor.locator(`span:text-is("${targetSignee}")`).dragTo(actor.locator(`span:text-is("${targetSignee}") + span`)) 
-  const listItem = actor.locator(`.swipeable-list-item`).filter({ has: actor.locator(`span:text-is("${targetSignee}")`) })
-  await actor.waitForTimeout(1000);
-  //await listItem.locator('data-testid="leading-actions" > span > div > svg').click()
-  await listItem.getByTestId('leading-actions').locator('span > div').click()
+  public async disableSigningFor(
+    actor: Page,
+    targetSignee: string,
+  ): Promise<void> {
+    await actor
+      .locator(`span:text-is("${targetSignee}")`)
+      .dragTo(actor.locator(`span:text-is("${targetSignee}") + span`));
+    const listItem = actor
+      .locator(`.swipeable-list-item`)
+      .filter({ has: actor.locator(`span:text-is("${targetSignee}")`) });
+    await actor.waitForTimeout(1000);
+    //await listItem.locator('data-testid="leading-actions" > span > div > svg').click()
+    await listItem.getByTestId('leading-actions').locator('span > div').click();
   }
   public async startSigningProcessWith(actor: Page): Promise<void> {
     await actor.getByRole('button', { name: 'START SIGNING' }).click();
   }
 
   public async signProofWith(actor: Page): Promise<void> {
-  await actor.waitForTimeout(1000);
-  await actor.getByRole('button', { name: 'SIGN' }).click();
+    await actor.waitForTimeout(1000);
+    await actor.getByRole('button', { name: 'SIGN' }).click();
   }
 
   public async uploadProofWith(actor: Page): Promise<void> {
-  await actor.getByRole('button', { name: 'SIGN & UPLOAD' }).waitFor();
-  await actor.getByRole('button', { name: 'SIGN & UPLOAD' }).click()
+    await actor.getByRole('button', { name: 'SIGN & UPLOAD' }).waitFor();
+    await actor.getByRole('button', { name: 'SIGN & UPLOAD' }).click();
   }
-};
+}
