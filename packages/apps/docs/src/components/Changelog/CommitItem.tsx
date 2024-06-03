@@ -31,7 +31,7 @@ export const CommitItem: FC<IProps> = ({ commit }) => {
   return (
     <Stack as="li" className={commitListItemClass}>
       <Stack flex={1} className={commitListItemTitleClass}>
-        <Text as="span">
+        <Text as="span" variant="body">
           <ReactMarkdown rehypePlugins={[rehypeRaw] as any}>
             {commit.label}
           </ReactMarkdown>

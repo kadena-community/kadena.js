@@ -1,6 +1,7 @@
 import type { IScriptResult } from '@kadena/docs-tools';
 import fs from 'fs';
 import type { Node, Text } from 'mdast';
+import { toMarkdown } from 'mdast-util-to-markdown';
 import { remark } from 'remark';
 import type { Root } from 'remark-gfm';
 import { clone } from '../importReadme';
@@ -68,15 +69,11 @@ const crawl = (repo: IRepo): ((tree: Node) => IChangelogPackage) => {
               currentContent[repo.slug].content[version.label];
             version = undefined;
           }
-        }
-
-        if (branch.type === 'heading' && branch.depth === 3) {
+        } else if (branch.type === 'heading' && branch.depth === 3) {
           currentPosition = checkVersionPosition(
             (branch.children[0] as Text).value,
           );
-        }
-
-        if (branch.type === 'listItem' && version) {
+        } else if (branch.type === 'listItem' && version) {
           const record = createVersionRecord(branch);
 
           switch (currentPosition) {
@@ -89,6 +86,15 @@ const crawl = (repo: IRepo): ((tree: Node) => IChangelogPackage) => {
             default:
               content[version.label].miscs.push(record);
               break;
+          }
+        } else if (currentPosition === VersionPosition.VERSION) {
+          if (toMarkdown(branch as any) && version) {
+            content[version.label].descriptionTemp.children.push(
+              branch as never,
+            );
+            content[version.label].description = toMarkdown(
+              content[version.label].descriptionTemp as any,
+            );
           }
         } else {
           innerCrawl(branch);

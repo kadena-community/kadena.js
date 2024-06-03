@@ -1,4 +1,4 @@
-# 2.24 (2024-05-23)
+## 2.24 (2024-05-23)
 
 This version replaces all previous versions. Any prior version will stop working
 on **2024-05-29T00:00:00Z**. Node administrators must upgrade to this version
@@ -10,7 +10,7 @@ This version will expire on **2024-08-21T00:00:00Z**.
 To upgrade, pull the latest docker image or download the binary and restart the
 node.
 
-Changes:
+### Changes:
 
 - Transactions with expired TTLs and transactions with creation times in the
   future now yield different errors (#1868)
@@ -37,7 +37,7 @@ Changes:
 - Add "allow" verifier to devnet, to allow testing verifier plugin integrations
   in third-party tools (#1896)
 
-Internal changes:
+### Internal changes:
 
 - Add a CLI flag for executing non-destructive replays of Pact history, to
   augment the already existing config file field (#1915)
@@ -65,11 +65,11 @@ This is a minor point release. Upgrading is recommended.
 To upgrade, pull the latest docker image or download the binary and restart the
 node.
 
-Changes:
+### Changes:
 
 - Fix catchup for nodes started at blocks before the service date (#1860)
 
-Internal changes:
+### Internal changes:
 
 - Fix a small internal bug in the new read-only checkpointer (#1857)
 - Fix a small bug in compaction tests, causing flakiness (#1855)
@@ -82,14 +82,14 @@ possible; for other nodes, upgrading is recommended.
 To upgrade, pull the latest docker image or download the binary and restart the
 node.
 
-Changes:
+### Changes:
 
 - The mining loop will more persistently attempt to create new block payloads.
   (#1851)
 - The service date for `chainweb-node` is now only respected on Mainnet and
   Testnet. (#1843)
 
-Internal changes:
+### Internal changes:
 
 - The pact `/listen` endpoint should take less memory and CPU time. (#1844)
 - Fix some invalid log messages. (#1850, #1852)
@@ -108,7 +108,7 @@ This version will expire on **2024-05-29T00:00:00Z**.
 To upgrade, pull the latest docker image or download the binary and restart the
 node.
 
-Changes:
+### Changes:
 
 - Updated to Pact 4.11: https://github.com/kadena-io/pact/releases/tag/v4.11.0
 - The `coin` contract was updated to version 6, implementing KIP-0022 (#1807)
@@ -157,7 +157,7 @@ Changes:
       See the Chainweb OpenAPI specification for more information on how to use
       this feature. This parameter will become mandatory in the future.
 
-Upcoming features:
+### Upcoming features:
 
 - Internal reworks to support a new, more efficient storage format for block
   payloads (#1800)
@@ -170,7 +170,7 @@ Upcoming features:
   - **Compaction IS NOT STABLE**
   - Usage of "compacted nodes" or tools is **NOT** currently supported
 
-Internal Changes:
+### Internal Changes:
 
 - Major scalability improvements to core "checkpointing" infrastructure,
   allowing faster full-chain replays and other operations (#1803, #1804)
@@ -193,7 +193,7 @@ This version will expire on **2023-03-06T:00:00Z**.
 To upgrade, pull the latest docker image or download the binary and restart the
 node.
 
-Changes:
+### Changes:
 
 - Updated to Pact 4.10 (numerous, see
   [Pact changelog](https://github.com/kadena-io/pact/releases/tag/v4.10))
@@ -208,7 +208,7 @@ Changes:
   (#1740)
 - Fix Mac M2 compatibility with older blocks (#1782)
 
-Internal Changes:
+### Internal Changes:
 
 - Support aeson-2.2 (#1750)
 - Fix benchmarks for block creation and validation (#1767)
@@ -224,14 +224,14 @@ This version will expire on **2023-12-13T:00:00Z**.
 To upgrade, pull the latest docker image or download the binary and restart the
 node.
 
-Changes:
+### Changes:
 
 - Support for WebAuthN signatures in Pact keyset guards. (#1729, see
   [https://github.com/kadena-io/pact](Pact) #1139)
 - Updated to Pact 4.9. (numerous, see
   [Pact changelog](https://github.com/kadena-io/pact/releases/tag/v4.9))
 
-Internal Changes:
+### Internal Changes:
 
 - Updated from tls package version 1.7.1 to 1.9. (#1734)
 - Updated from base64-bytestring package version 1.0.0.3 to 1.2.1.0. (#1729)
@@ -247,7 +247,7 @@ This version will expire on **2023-10-19T00:00:00Z**.
 To upgrade, pull the latest docker image or download the binary and restart the
 node.
 
-Changes:
+### Changes:
 
 - A new chainwebVersion called fast-development, intended for use by Pact
   developers. See #1627 for more details.
@@ -256,7 +256,7 @@ Changes:
 - Fixed an issue where /local calls that rewind to a previous block could have
   the wrong behavior or gas usage if rewinding crosses fork boundaries. (#1700)
 
-Internal Changes:
+### Internal Changes:
 
 - Updated from GHC 8.10.7 to GHC 9.6.2. (#1565)
 - PactService now emits significantly more structured logs. (#1699)
@@ -272,7 +272,7 @@ This version will expire on 2023-09-07.
 To upgrade, pull the latest docker image or download the binary and restart the
 node.
 
-Changes:
+### Changes:
 
 - Add rewind support to /poll and /local. (#1653, #1686)
 - Add some leniency to mempool creation time checks. (#1255)
@@ -291,7 +291,7 @@ This version will expire on 2023-09-07.
 To upgrade, pull the latest docker image or download the binary and restart the
 node.
 
-Changes:
+### Changes:
 
 - Disable user function return value typechecking (#1661)
 - Add typechecking option to tx-sim. (#1656)
@@ -310,13 +310,13 @@ This version will expire on 2023-09-07.
 To upgrade, pull the latest docker image or download the binary and restart the
 node.
 
-Changes:
+### Changes:
 
 - Support for Pact 4.7 (#1649, #1645, #1633, #1639):
   - Pact errors are now displayed to users of the Pact /poll endpoint. Some Pact
     errors have changed and been made shorter.
 
-Bug fixes:
+### Bug fixes:
 
 - API endpoints now more strictly comply to the API specification at
   api.chainweb.com. (#1434)
@@ -333,12 +333,12 @@ All 2.18.\* versions will expire on **2023-06-01T00:00:00Z**.
 
 [Changes](https://github.com/kadena-io/chainweb-node/compare/2.18...2.18.1):
 
-Performance Improvements:
+### Performance Improvements:
 
 - Optimize JSON+base64 encoding. (#1611)
 - Use `application/octet-stream` encoding for P2P header queries. (#1619)
 
-Miscellaneous:
+### Miscellaneous:
 
 - Remove unused rate limiting configuration settings. (#1616)
 - Remove CORS support from the P2P API. (#1616)
@@ -361,6 +361,8 @@ node.
 
 [Changes](https://github.com/kadena-io/chainweb-node/compare/2.17.2...2.18):
 
+### Changes
+
 - New /local endpoint preflight simulation API. (#1585, #1600)
 - Support for Pact 4.6: (#1602)
   - New ZK native function support.
@@ -372,7 +374,7 @@ node.
 - Internal changes to support future chain database schema changes.
 - Remove libtbb as a dependency.
 
-Bug fixes:
+### Bug fixes:
 
 - Filter Module Cache for just `coin` contract. (#1548)
 - Prevent table name clashes in module. (#1556)
@@ -391,7 +393,7 @@ All 2.17\* versions expire on **2023-03-02T00:00:00Z**.
 
 [Changes](https://github.com/kadena-io/chainweb-node/compare/2.17.1...2.17.2):
 
-Logging and Telemetry Changes:
+### Logging and Telemetry Changes:
 
 - Add telemetry logging for Database size. (#1330)
 - Make Pact service log asynchronous exceptions with log-level `warn` and not
@@ -399,16 +401,16 @@ Logging and Telemetry Changes:
 - Log replay height based on time, not blocks. (#1563)
 - Add telemetry logging for node top-level status. (#1561)
 
-Performance Improvements:
+### Performance Improvements:
 
 - Add module cache to checkpointer. (#1577)
 
-Bug Fixes:
+### Bug Fixes:
 
 - `withSavepoint` now catches `SomeAsyncException`. (#1576)
 - Fix transfer cost for Rosetta transaction generator. (#1579)
 
-Miscellaneous:
+### Miscellaneous:
 
 - Censor `BackupConfig` from `config` endpoint. (#1569)
 - Simulate whole block(s) in transaction simulator. (#1573)
@@ -425,13 +427,13 @@ All 2.17\* versions expire on **2023-03-02T00:00:00Z**.
 
 [Changes](https://github.com/kadena-io/chainweb-node/compare/2.17...2.17.1):
 
-Bug fixes:
+### Bug fixes:
 
 - Fix `initialHeightLimit` CLI argument parsing to not override config file.
   (#1566)
 - Fix cut GET endpoint height limiting. (#1571)
 
-Miscellaneous:
+### Miscellaneous:
 
 - Add transaction simulator to cwtools. (#1558)
 
@@ -448,13 +450,15 @@ node.
 
 [Changes](https://github.com/kadena-io/chainweb-node/compare/2.16.1...2.17):
 
+### Changes:
+
 - Remove error messages from pact output for on-chain transactions. Dapps can
   still retrieve transaction error messages from the `local` endpoint. (#1543)
 - Implement a per-tx timeout during creation of new blocks to prevent mining
   nodes from stalling when block creation takes too long. (#1546)
 - Miscellaneous changes for fine tuning of the gas model. (#1554)
 
-Bug fixes:
+### Bug fixes:
 
 - Filter Module Cache for just `coin` contract. (#1548)
 - Prevent table name clashes in module. (#1556)
@@ -472,7 +476,7 @@ database. Additionally, when using the ubuntu binaries the set of required
 system dependencies changes. For details please see the
 [release nodes](https://github.com/kadena-io/chainweb-node/releases/tag/2.16.1).
 
-Changes:
+### Changes:
 
 - Upgrade RocksDB version (#1394)
 - Support for partial replays (#1524)
@@ -493,6 +497,8 @@ node.
 
 [Changes](https://github.com/kadena-io/chainweb-node/compare/2.15...2.16):
 
+### Changes:
+
 - Upgrade to Pact 4.4. This release brings namespaced keysets. For further
   changes check the
   [Pact Changelog](https://github.com/kadena-io/pact/blob/master/CHANGELOG.md).
@@ -501,7 +507,7 @@ node.
 - Improve TLS session management. (#1489)
 - Faster and safer binary serialization across the board. (#1494)
 
-Bug Fixes:
+### Bug Fixes:
 
 - Fix some potential race conditions in SQLite interface code. (#1477)
 
@@ -516,7 +522,7 @@ This version will expire on **2022-09-01T00:00:00Z**.
 To upgrade, pull the latest docker image or download the binary and restart the
 node.
 
-Changes:
+### Changes:
 
 - Upgrade to Pact 4.3.1. The release contains miscellaneous performance
   improvements and bug fixes. (#1448)
@@ -525,7 +531,7 @@ Changes:
   chain. (#1444)
 - Support resetting chainweb-node to a lower block height at startup. (#1344)
 
-Bug Fixes:
+### Bug Fixes:
 
 - Fix a pact module cache issue that could occasionally result in corrupted
   databases. (#1430)
@@ -541,7 +547,7 @@ early integration and testing of new chainweb-node versions.
 To upgrade, pull the latest docker image or download the binary and restart the
 node.
 
-Changes:
+### Changes:
 
 - Improve performance of branch queries in some cases (#1431)
 - Make upper and lower bounds in branch APIs optional (#1432)
@@ -560,7 +566,7 @@ This version will stop working on **2022-06-16T00:00:00Z**.
 To upgrade, pull the latest docker image or download the binary and restart the
 node.
 
-Changes:
+### Changes:
 
 - Improve Mempool to fill blocks more efficiently (#1399)
 
@@ -592,7 +598,7 @@ early integration and testing of new chainweb-node versions.
 To upgrade, pull the latest docker image or download the binary and restart the
 node.
 
-Changes:
+### Changes:
 
 - Restrict HTTP request body sizes for all API endpoints to 2MB. (#1385)
 - Periodically prune old cuts from the RocksDb database and store current cuts
@@ -604,7 +610,7 @@ Changes:
   backups of the chainweb-node databases. Further details can be found in the
   [Chainweb API documentation](https://api.chainweb.com). (#1359, #1387)
 
-Bug fixes:
+### Bug fixes:
 
 - Remove spurious warning when the hostname is configured as `0.0.0.0`. (#1389)
 - Fix typo in list of reserved IP addresses. (#1398)
@@ -620,7 +626,7 @@ This version will stop working on **2022-04-21T00:00:00Z**.
 To upgrade, pull the latest docker image or download the binary and restart the
 node.
 
-Changes:
+### Changes:
 
 - [Pact] Enforce miner keyset formats. (#1314)
 - [Pact] Fix Pact parser to always consume all input. (#1358)
@@ -651,12 +657,14 @@ This is a new feature and bug fix release for the `Chainweb Rosetta API 1.0.0`
 To upgrade, pull the latest docker image or download the binary and restart the
 node.
 
-[Rosetta] Bug Fixes
+[Rosetta]
+
+### Bug Fixes
 
 - After the fork to Pact 4.2.0, the rosetta /block and /account/balance
 - endpoints returned `TxLogs not parsable`. This version fixes this.
 
-[Rosetta] Backwards Incompatibility
+### Backwards Incompatibility
 
 - Adds related transaction (continuations) information to the /block endpoints.
 - Adds related operation information to /block endpoints. Gas operations are now
@@ -669,7 +677,7 @@ node.
 - Re-enabled metadatas. Rosetta testing tooling used to error out when
   submitting unstructured JSON. This bug has seen been fixed.
 
-[Rosetta] Minor Improvments
+### Minor Improvments
 
 - Introduces the `rosettaImplementationVersion` value to denote changes in the
   internal implementation of the Rosetta API.
@@ -687,7 +695,7 @@ node.
 
 This version will expire on 2022-02-24T00:00:00Z.
 
-Changes:
+### Changes:
 
 - Correct mempool tx persistence, check tx details in validate (#1348)
 
@@ -701,7 +709,7 @@ before that date.
 
 This version will stop working on **2022-02-24T00:00:00Z**.
 
-Changes:
+### Changes:
 
 - Upgrade Pact version to 4.2.0. (#1323)
 
@@ -723,7 +731,7 @@ Changes:
 This is a minor feature release. It is compatible with version 2.11. Upgrading
 optional. Please, check the list of changes before upgrading.
 
-Changes:
+### Changes:
 
 - New command line options for configuring mining coordination. The options
   `--enable-mining-coordination --mining-public-key=<PUBLIC_KEY>` enable the
@@ -755,7 +763,7 @@ before that date.
 
 This version will stop working on **2022-01-13T00:00:00Z**.
 
-Changes:
+### Changes:
 
 - Add priorities to the pact services queue. This gives consensus and new block
   requests priority over requests from the service APIs and the mempool. It
@@ -794,7 +802,7 @@ nodes.
 
 This version is fully compatible with previous versions.
 
-Changes:
+### Changes:
 
 - Fix a bug where API requests return result pages with more than the upper
   limit of items. (#1271)
@@ -806,7 +814,7 @@ nodes.
 
 This version is fully compatible with previous versions.
 
-Changes:
+### Changes:
 
 - Fix a bug that causes mempools to ignore new transactions after receiving
   10000 transactions on a chain. (#1267)
@@ -819,7 +827,7 @@ before that date.
 
 This version will stop working on **2021-10-14T00:00:00Z**.
 
-Changes:
+### Changes:
 
 This is a maintenance release without breaking changes.
 
@@ -837,7 +845,7 @@ before that date.
 
 This version will stop working on **2021-08-19T00:00:00Z**.
 
-Changes:
+### Changes:
 
 - `coin` v3 and Pact 4.0 upgrade (#1218, #1237, #1236, #1234)
 
@@ -867,7 +875,7 @@ before that date.
 
 This version will stop working on **2021-06-17T00:00:00Z**.
 
-Changes:
+### Changes:
 
 - Improve P2P networking configuration. (#1174)
 
@@ -907,7 +915,7 @@ before that date.
 
 This version will stop working on **2021-05-06T00:00:00Z**.
 
-Changes:
+### Changes:
 
 - Increase default listen timeout to 3 minutes (#1208)
 - Additional verification for coin contract (#1200)
@@ -927,7 +935,7 @@ If chainweb-node-2.5 is started with existing configuration files, the P2P API
 remains unchanged. The service API endpoints will be available via HTTP on
 port 1848. Please read the description below for details about this change.
 
-Breaking changes:
+### Breaking changes:
 
 - Publish service APIs on separate HTTP port (#1063)
 
@@ -960,7 +968,7 @@ Breaking changes:
   and the related certificate options got removed. Please, use the new variants
   instead which are prefixed with the respective API as described above.
 
-New features:
+### New features:
 
 - New command line option `--print-config-as=[full|minimal|diff]`. `full` prints
   a complete configuration file with all options; `minimal` prints a file that
@@ -969,7 +977,7 @@ New features:
   (#1193)
 - Add payload batch APIs (#1192)
 
-Miscellaneous changes:
+### Miscellaneous changes:
 
 - Use TLS session manager (#1173)
 - Upgrade to a new version 0.7.5 of the http-client library (#1191)
@@ -982,6 +990,8 @@ on **2021-01-14T00:00:00Z**. Node administrators must upgrade to this version
 before that date.
 
 This version will stop working on **2021-02-25T00:00:00Z**.
+
+### Changes
 
 - Ethereum bridge support
 - add endpoint for creating eth-receipt-proofs (#1181)
@@ -997,6 +1007,8 @@ before that date.
 
 This version will stop working on **2021-01-14T00:00:00Z**.
 
+### Changes
+
 - Support for Pact Events (#1157)
 - **Upgrade to Pact 3.7.** This includes an API change to the `pact` endpoints
   for events. For further information see the
@@ -1011,6 +1023,8 @@ before that date.
 
 This version will stop working on **2020-11-19T00:00:00Z**.
 
+### Changes
+
 - Upgrade to Rosetta version 1.4.4 (#1149)
 
 - Adjust the default API request rate limits to better match the expected
@@ -1020,6 +1034,8 @@ This version will stop working on **2020-11-19T00:00:00Z**.
 ## 2.1.1 (2020-09-17)
 
 This release provides performance improvements and bug fixes.
+
+### Changes
 
 - More rigorously check the correct length of request keys, transactions ids,
   and hashes in API requests. (#1139, #1140)
@@ -1061,6 +1077,8 @@ _Forks:_
 This version includes the fork that adds 10 additional chains to Chainweb
 resulting in 20 chains in total. The fork will occur on
 
+### Changes
+
 - Mainnet at block height 852,054, which is expected to happen around 2020-08-20
   16:55:14 UTC.
 
@@ -1091,7 +1109,7 @@ _Possibly Breaking Changes:_
   doesn't include the node-id any more and just defaults to `0/rocksDb` and
   `0/sqlitedb`.
 
-_Other Changes_:
+### Misc
 
 - Fix a bug where Chainweb node would fail to start when it stopped after the
   last block that pact evaluated got orphaned. (#1123)
@@ -1109,6 +1127,8 @@ This version will stop working on **2020-08-13T00:00:00Z**.
 This version includes the fork that adds 10 additional chains to Chainweb
 resulting in 20 chains in total. The fork will occur on
 
+### Changes
+
 - Testnet at block height 332,604, which is expect to happen around 2020-07-28
   16:00:00 UTC, and
 - Mainnet at block height 852,054, which is expected to happen around 2020-08-20
@@ -1122,7 +1142,7 @@ time block rates may be slightly higher or lower than usual. Node operators and
 miners are encouraged to participate in the transition of Testnet as a dress
 rehearsal for the mainnet transition.
 
-Other changes:
+### Other changes:
 
 - Full support for [Rosetta](https://www.rosetta-api.org). (#1050, #1077, #1079,
   #1093)
@@ -1152,6 +1172,8 @@ along with some performance and stability improvements. It also introduces some
 larger behind the scenes changes in preparation of upcoming major new
 functionality. User-facing bug fixes and improvements are listed below.
 
+### Changes
+
 - Improve reliability of `local` API calls by using cached header data instead
   of a potentially failing lookup causing spurious `TreeDbKeyNotFoundException`
   failures (#1062)
@@ -1164,6 +1186,8 @@ on **2020-04-30T00:00:00Z**. Node administrators must upgrade to this version
 before that date.
 
 This version will stop working on **2020-06-11T00:00:00Z**.
+
+### Changes
 
 - Starting with block height 530500 the first eight bytes of each block must be
   set to zero. (#974)
@@ -1193,6 +1217,8 @@ The use of the first eight bytes of the mining jobs bytes as nonce is now
 considered deprecated. Those bytes should be set to 0x0. Only the last eight
 bytes must be used as nonce. Miners and pools should start upgrading to the new
 behavior. The new behavior will be enforced in a future version.
+
+### Changes
 
 - Compute epoch time based on parent header. This change won't affect any any
   users of Chainweb. The change will become effective at block height 452820.
@@ -1234,6 +1260,8 @@ before that date.
 
 This version will stop working on **2020-04-02T00:00:00Z**.
 
+### Changes
+
 - Adds enriched message body to gas payer execution (#912)
 
 - Pact fix for enforce-one, guards runtime TC (#916)
@@ -1263,6 +1291,8 @@ before that date.
 
 This version will stop working on **2020-02-20T00:00:00Z**.
 
+### Changes
+
 - Full launch of Pact smart contract functionality (begins at
   2020-01-15T16:00:00Z)
 
@@ -1285,6 +1315,8 @@ before that date.
 
 This version will stop working on **2020-01-15T00:00:00Z**.
 
+### Changes
+
 - All nodes in the miners list in the configuration file are served cached work
   [#819]
 
@@ -1297,6 +1329,8 @@ This version will stop working on **2020-01-15T00:00:00Z**.
 
 ## 1.3.1 (2019-12-09)
 
+### Changes:
+
 - [SECURITY] fix issue with date comparison triggering block validation of fix
   for #797 [#810]
 
@@ -1306,6 +1340,8 @@ This version will stop working on **2020-01-15T00:00:00Z**.
 
 CRITICAL SECURITY UPDATE [2 of 3]: addressing vulnerability #797. All node
 operators need to update no later than 2019-12-10T20:00:00.
+
+### Changes:
 
 - [SECURITY] Address vulnerability 797 via precompiled statements [#798]
 
@@ -1347,6 +1383,8 @@ CRITICAL SECURITY UPDATE [1 of 3]: postponing transfers in order to address a
 late-breaking vulnerability #797. All node operators need to update by
 2019-12-05T00:00:00.
 
+### Changes:
+
 - [SECURITY] Postpone transfers to 2019-12-17T01:00:00:00 UTC [#789]
 
 ## 1.1 (2019-12-02)
@@ -1354,6 +1392,8 @@ late-breaking vulnerability #797. All node operators need to update by
 This is a major release that activates coin transfers on December 5 2019 16:00
 UTC. All node operators should upgrade ASAP. 1.0.x nodes will stop mining and
 fail to launch after December 5 2019 00:00 UTC.
+
+### Changes:
 
 - Improve logging for orphan blocks. [#752]
 
@@ -1393,6 +1433,8 @@ also upgrades the testnet version.
 Miners are advised to also upgrade to the most recent version of the mining
 application. Older versions of `chainweb-miner` may experience occasional delays
 of work update notifications when used with this `chainweb-node` version.
+
+### Changes
 
 - Improves the stability of Chainweb nodes, by closing a TCP connection leak on
   nodes that had mining coordination enabled. [#735]
