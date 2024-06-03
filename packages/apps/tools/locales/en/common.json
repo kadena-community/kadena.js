@@ -276,5 +276,7 @@
   "Hide raw transaction details": "Hide raw transaction details",
   "Show raw transaction details": "Show raw transaction details",
   "no-selected-module-header": "Select a module",
-  "no-selected-module-body": "To display the contract, select one of the modules listed."
+  "no-selected-module-body": "To display the contract, select one of the modules listed.",
+  "namespace": "Namespace:",
+  "module": "Module:"
 }

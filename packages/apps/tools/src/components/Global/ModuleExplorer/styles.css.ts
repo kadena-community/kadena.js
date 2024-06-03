@@ -12,3 +12,5 @@ export const placeholderBodyStyles = style([
   atoms({ textAlign: 'center' }),
   { width: token('size.n64') },
 ]);
+
+export const statusbarStyles = style({ borderBlock: token('border.hairline') });
