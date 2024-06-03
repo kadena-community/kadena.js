@@ -1112,9 +1112,9 @@
       }
     }
   },
-  "react-ui": {
-    "name": "React UI",
-    "slug": "react-ui",
+  "kode-ui-components": {
+    "name": "Kode UI Components",
+    "slug": "kode-ui-components",
     "repo": "https://github.com/kadena-community/kadena.js.git",
     "directory": "/packages/libs/react-ui",
     "fileName": "CHANGELOG.md",
@@ -4933,9 +4933,9 @@
       }
     }
   },
-  "react-icons": {
-    "name": "React Icons",
-    "slug": "react-icons",
+  "kode-icons": {
+    "name": "Kode Icons",
+    "slug": "kode-icons",
     "repo": "https://github.com/kadena-community/kadena.js.git",
     "directory": "/packages/libs/react-icons",
     "fileName": "CHANGELOG.md",

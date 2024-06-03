@@ -18,7 +18,11 @@ export const ALL_BLOCK_FIELDS: DocumentNode = gql`
     ...CoreBlockFields
     epoch
     id
+    weight
     payloadHash
     powHash
+    target
+    flags
+    nonce
   }
 `;

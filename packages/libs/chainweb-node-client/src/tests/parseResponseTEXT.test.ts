@@ -1,4 +1,3 @@
-import { Response } from 'cross-fetch';
 import { expect, test } from 'vitest';
 import { parseResponseTEXT } from '../parseResponseTEXT';
 

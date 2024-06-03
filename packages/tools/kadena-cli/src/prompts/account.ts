@@ -5,7 +5,7 @@ import {
   createFundAmountValidation,
   getAllAccountNames,
   parseChainIdRange,
-} from '../account/utils/accountHelpers.js';
+} from '../commands/account/utils/accountHelpers.js';
 import { CHAIN_ID_RANGE_ERROR_MESSAGE } from '../constants/account.js';
 import { MAX_CHAIN_VALUE } from '../constants/config.js';
 import {

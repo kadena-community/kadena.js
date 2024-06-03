@@ -8,6 +8,11 @@ interface IProp {
   href: string;
 }
 
+//this is a fix for the remark plugin remarkGfm, that adds an extra "\" in params of a link
+const fixLink = (url: string): string => {
+  return url.replace(/(\\|%5c)&/gim, '&');
+};
+
 export const Link: FC<IProp> = ({ children, href, ...props }) => {
   if (typeof children === 'string' && !href.includes('http')) {
     return (
@@ -17,9 +22,11 @@ export const Link: FC<IProp> = ({ children, href, ...props }) => {
     );
   }
 
+  const newChildren =
+    typeof children === 'string' ? fixLink(children) : children;
   return (
-    <a className={linkClass} {...props} href={href}>
-      {children}
+    <a className={linkClass} {...props} href={fixLink(href)}>
+      {newChildren}
     </a>
   );
 };

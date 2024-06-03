@@ -88,6 +88,10 @@ export const wrapperClass = style([
   },
 ]);
 
+export const searchWrapperClass = style({
+  paddingBlockEnd: tokens.kda.foundation.size.n5,
+});
+
 export const subheaderClass = style([
   atoms({
     color: 'text.base.default',

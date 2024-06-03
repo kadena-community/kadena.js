@@ -32,15 +32,17 @@ export const queryAllChains =
   (emit: IEmit) =>
     asyncPipe(
       composeWithDefaults(defaults),
-      (command) =>
-        composePactCommand(command, setMeta({ chainId: undefined }))({}),
       (command: IPartialPactCommand) => {
         return Promise.all(
           chainIds.map((chainId) => {
+            const chainCommand = composePactCommand(
+              command,
+              setMeta({ chainId }),
+            );
             return query<T>(
               { host, defaults: { meta: { chainId } } },
               client,
-            )(emit)(command);
+            )(emit)(chainCommand);
           }),
         );
       },
