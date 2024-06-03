@@ -60,6 +60,13 @@ export type ModulesMap = Map<
   ModuleData | Map<ModuleName, ModuleData>
 >;
 
+/**
+ * This function takes a mapped structure of Modules and recursively turns it into a list of TreeItems.
+ *
+ * @param modulesMap
+ * @param parent - Optional extra key (e.g. the namespace) to prefix the key of the tree item
+ * @returns List of TreeItems
+ */
 export const mapToTreeItems = (
   modulesMap: ModulesMap,
   parent?: Namespace,
@@ -103,6 +110,18 @@ export const mapToTreeItems = (
     });
 };
 
+/**
+ * This function takes a list of Modules and turn it into a mapped structure. If the module has a
+ * namespace ("<namespace>.<module_name>"), it will be nested inside the namespace.
+ *
+ * E.g. it will a return a structure like this;
+ *
+ * Map<'arkade', Map<'airdrp[', [{}]>>
+ * Map<'coin, [{}]>
+ *
+ * @param models List of Module models.
+ * @returns Mapped structure of the modules.
+ */
 export const modelsToTreeMap = (
   models: Array<IncompleteModuleModel>,
 ): ModulesMap => {
