@@ -29,9 +29,6 @@ importers:
       prettier-plugin-packagejson:
         specifier: ^2.5.0
         version: 2.5.0(prettier@3.2.5)
-      process:
-        specifier: ^0.11.10
-        version: 0.11.10
       syncpack:
         specifier: ^12.3.2
         version: 12.3.2(typescript@5.4.5)
