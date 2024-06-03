@@ -49,7 +49,7 @@ const createConnectionPool = (
 };
 
 const DB_NAME = 'dev-wallet';
-const DB_VERSION = 28;
+const DB_VERSION = 31;
 
 export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
   const result = await connect(DB_NAME, DB_VERSION);
@@ -72,9 +72,14 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
     create('profile', 'uuid', [{ index: 'name', unique: true }]);
     create('encryptedValue');
     create('keySource', 'uuid', [{ index: 'profileId' }]);
-    create('account', 'uuid', [{ index: 'address' }, { index: 'profileId' }]);
+    create('account', 'uuid', [
+      { index: 'address' },
+      { index: 'keysetId' },
+      { index: 'profileId' },
+    ]);
     create('network', 'uuid', [{ index: 'networkId', unique: true }]);
     create('fungible', 'contract', [{ index: 'symbol', unique: true }]);
+    create('keyset', 'uuid', [{ index: 'profileId' }, { index: 'principal' }]);
   }
   return db;
 });

@@ -11,7 +11,7 @@ tags: ['TypeScript', 'Kadena client', 'frontend']
 
 # Kadena client libraries
 
-The [kadena.js](https://github.com/kadena-community/kadena.js) repository provides a collection`of libraries, functions, utilities, and sample applications that are written in TypeScript. 
+The [kadena.js](https://github.com/kadena-community/kadena.js) repository provides a collection of libraries, functions, utilities, and sample applications that are written in TypeScript. 
 The libraries are designed to provide a familiar application programming interface (API) for interacting with smart contracts and the Kadena network. 
 For a complete list of released packages and release notes for each package, see the [kadena.js README](https://github.com/kadena-community/kadena.js/blob/main/README.md) repository.
 This section provides basic reference information for the `@kadena/client` library.
@@ -1135,15 +1135,18 @@ interface IPollRequestPromise extends Promise {
 
 | Parameter | Type | Description  |
 | --------- | ---- | ------------ |
-| transactionDescriptor | TransactionDescriptor \| TransactionDescriptor[] | One or list of requests to be queried. |
-| pollOptions | { onPoll?: (id: string) => void; timeout?: Milliseconds; interval?: Milliseconds; confirmationDepth?: number; } | onPoll: Callback is called when the request is polling; this might be called several times if the request is not ready yet. Timeout: Timeout if the result is not ready (default `180000` // 3 minutes). Interval: Delay between retries (default is `5000` // 5 seconds). ConfirmationDepth: Set the confirmationDepth for getting the response; this overrides the one you set in createClient function |
+| transactionDescriptor | TransactionDescriptor[list] | One or more request keys to be queried. |
+| pollOptions | object | Optional poll configuration settings.|
+| onPoll | string | Identifier for the callback that is called each time the node is polled for the status of a request key. This callback might be called several times if the request is not ready yet.|
+| timeout | time | Specifies a timeout in milliseconds to stop polling if the result is not ready. The default is `180000` milliseconds (3 minutes).|
+| interval | time | Specifies the delay between retry attempts. The default is `5000` milliseconds (5 seconds).|
+| confirmationDepth | number | Sets the confirmationDepth for getting the response. This setting overrides the one you set in the `createClient` function. |
 
 ### Return value
 
-The return value is a special type of promise. Though you can
-just await for the result just like a normal promise - which is the case for
-most of the typical use cases - you can still listen for each individual request
-via the `requests` property.
+The return value is a special type of promise that enables you to listen for each individual request
+through the `requests` property.
+Alternatively, you can `await` the result without using the `requests` property to handle most use cases.
 
 ### Examples
 

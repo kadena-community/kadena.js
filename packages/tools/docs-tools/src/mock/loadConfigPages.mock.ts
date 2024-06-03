@@ -4,7 +4,7 @@ import type { IConfig, IConfigTreeItem } from 'src/types';
 
 export const loadConfigPages = (): IConfigTreeItem[] => {
   const data = fs.readFileSync(
-    `${process.cwd()}/src/scripts/fixLocalLinks/utils/__tests__/config.mock.yaml`,
+    `${process.cwd()}/src/mock/config.mock.yaml`,
     'utf-8',
   );
   const { pages } = yaml.load(data) as IConfig;

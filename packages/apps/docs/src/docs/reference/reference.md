@@ -57,9 +57,11 @@ The reference information for the Marmalade standard covers the following topics
 
 ## Queries and indexing: Kadena GraphQL
 
+Documentation for the Kadena GraphQL schema is embedded in the GraphQL Explorer.
 
-## Authentication and authorization: WebAuthN
+## Authentication and authorization: Kadena SpireKey
 
+[Kadena SpireKey technical specifications](/reference/spirekey) describes the Kadena SpireKey endpoints and required parameters that you use to integrate Kadena SpireKey account management with decentralized applications.
 
 ## Consensus protocol: Chainweb API
 

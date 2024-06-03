@@ -10,6 +10,14 @@ export const block: DocumentNode = gql`
       }
       minerAccount {
         accountName
+        guard {
+          keys
+          predicate
+        }
+      }
+      neighbors {
+        chainId
+        hash
       }
       transactions {
         edges {

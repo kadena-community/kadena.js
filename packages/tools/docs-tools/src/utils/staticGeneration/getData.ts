@@ -23,18 +23,18 @@ const getDataCreator = () => {
 
 export const getData = getDataCreator();
 
+export const cleanupPages = (pages: IConfigTreeItem[]): IConfigTreeItem[] => {
+  const innerPages = Object.entries(pages);
+
+  return innerPages.map(([key, page]: [string, IConfigTreeItem]) => {
+    if (page.children) page.children = cleanupPages(page.children);
+
+    return { ...page, id: key } as IConfigTreeItem;
+  });
+};
+
 export const getPages = async (): Promise<IConfigTreeItem[]> => {
   const { pages } = await getConfig();
 
-  const cleanup = (pages: IConfigTreeItem[]): IConfigTreeItem[] => {
-    const innerPages = Object.entries(pages);
-
-    return innerPages.map(([key, page]: [string, IConfigTreeItem]) => {
-      if (page.children) page.children = cleanup(page.children);
-
-      return { ...page, id: key } as IConfigTreeItem;
-    });
-  };
-
-  return cleanup(pages);
+  return cleanupPages(pages);
 };
