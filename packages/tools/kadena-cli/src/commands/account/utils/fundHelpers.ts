@@ -36,7 +36,7 @@ export function logTransactionExplorerUrls(
   }
 }
 
-async function fetchTransactionDetails(
+export async function fetchTransactionDetails(
   transaction: ITransactionDescriptor,
   networkHost: string,
   networkId: string,

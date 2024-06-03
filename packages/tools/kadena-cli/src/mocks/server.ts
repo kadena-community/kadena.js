@@ -2,51 +2,53 @@ import { HttpResponse, http } from 'msw';
 import { setupServer } from 'msw/node';
 
 interface IHandlerOptions {
-  network: string;
-  chainId: string;
-  endpoint: string;
+  networkUrl?: string;
+  networkId?: string;
+  chainId?: string;
+  endpoint?: string;
   response: unknown;
-  status: number;
+  status?: number;
   method?: 'post' | 'get';
-  httpProtocol?: 'http' | 'https';
 }
 
-interface IDynamicHandlerOptions extends IHandlerOptions {
+interface IDynamicHandlerOptions extends Omit<IHandlerOptions, 'response'> {
   getResponse: (req: Request) => Promise<unknown>;
 }
 
 const createHandler = ({
-  network,
-  chainId,
-  response,
-  status,
+  networkUrl = 'https://api.testnet.chainweb.com',
+  chainId = '1',
+  status = 200,
   endpoint = 'local',
   method = 'post',
-  httpProtocol = 'https',
+  networkId = 'testnet04',
+  response,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }: IHandlerOptions): any => {
-  const url = `${httpProtocol}://${network}.chainweb.com/chainweb/0.0/${network}/${chainId}/pact/api/v1/${endpoint}`;
+  const url = `${networkUrl}/chainweb/0.0/${networkId}/chain/${chainId}/pact/api/v1/${endpoint}`;
   return http[method](url, async () => {
+    if (typeof response === 'string') {
+      return new HttpResponse(response, { status });
+    }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return HttpResponse.json(response as any, { status });
   });
 };
 
 const createDynamicHandler = ({
-  network,
-  chainId,
-  status,
+  networkUrl = 'https://api.testnet.chainweb.com',
+  chainId = '1',
   endpoint = 'local',
   method = 'post',
-  httpProtocol = 'https',
+  networkId = 'testnet04',
   getResponse,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }: IDynamicHandlerOptions): any => {
-  const url = `${httpProtocol}://${network}.chainweb.com/chainweb/0.0/${network}/${chainId}/pact/api/v1/${endpoint}`;
+  const url = `${networkUrl}/chainweb/0.0/${networkId}/chain/${chainId}/pact/api/v1/${endpoint}`;
   return http[method](url, async ({ request }) => {
-    const response = await getResponse(request);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return HttpResponse.json(response as any, { status });
+    const response = (await getResponse(request)) as any[];
+    return HttpResponse.json(...response);
   });
 };
 

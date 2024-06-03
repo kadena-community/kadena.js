@@ -1,29 +1,41 @@
 import jsYaml from 'js-yaml';
-import { HttpResponse, http } from 'msw';
 import path from 'node:path';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import type { Mock } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   ACCOUNT_DIR,
   WALLET_DIR,
   WORKING_DIRECTORY,
 } from '../../../constants/config.js';
-import { createPrincipalSuccessData } from '../../../mocks/data/accountDetails.js';
-import { server } from '../../../mocks/server.js';
+import { accountDetailsSuccessData } from '../../../mocks/data/accountDetails.js';
 import { services } from '../../../services/index.js';
 import { mockPrompts, runCommand } from '../../../utils/test.util.js';
+import type { IAccountDetailsResult } from '../types.js';
+import { createAccountName } from '../utils/createAccountName.js';
+import * as getAccountDetailsHelpers from '../utils/getAccountDetails.js';
+
+vi.mock('../utils/createAccountName.js', () => ({
+  createAccountName: vi.fn(),
+}));
 
 describe('account add manual type', () => {
   const configPath = path.join(WORKING_DIRECTORY, '.kadena');
   const accountPath = path.join(configPath, ACCOUNT_DIR);
   const accountAliasFile = path.join(accountPath, 'account-add-test.yaml');
   beforeEach(async () => {
+    vi.spyOn(getAccountDetailsHelpers, 'getAccountDetails').mockImplementation(
+      (): Promise<IAccountDetailsResult> => {
+        return Promise.resolve(accountDetailsSuccessData.result.data);
+      },
+    );
+
     if (await services.filesystem.fileExists(accountAliasFile)) {
       await services.filesystem.deleteFile(accountAliasFile);
     }
   });
 
   afterEach(() => {
-    server.resetHandlers();
+    vi.resetAllMocks();
   });
 
   it('should add an account alias using manual type without on chain verification', async () => {
@@ -76,13 +88,8 @@ describe('account add manual type', () => {
   });
 
   it('should add an account alias from create principal when account name is empty', async () => {
-    server.use(
-      http.post(
-        'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact/api/v1/local',
-        async (): Promise<HttpResponse> => {
-          return HttpResponse.json(createPrincipalSuccessData, { status: 200 });
-        },
-      ),
+    (createAccountName as Mock).mockResolvedValue(
+      'w:FxlQEvb6qHb50NClEnpwbT2uoJHuAu39GTSwXmASH2k:keys-all',
     );
     mockPrompts({
       select: {
@@ -110,6 +117,7 @@ describe('account add manual type', () => {
       publicKeys: ['pubkey1', 'pubkey2'],
       predicate: 'keys-all',
     });
+    // mock.mockClear();
   });
 
   it('should add an account alias manual with quiet flag', async () => {
@@ -149,6 +157,16 @@ describe('account add type wallet', () => {
       await services.filesystem.deleteFile(walletFilePath);
     }
 
+    vi.spyOn(getAccountDetailsHelpers, 'getAccountDetails').mockImplementation(
+      (): Promise<IAccountDetailsResult> => {
+        return Promise.resolve(accountDetailsSuccessData.result.data);
+      },
+    );
+
+    (createAccountName as Mock).mockResolvedValue(
+      'w:FxlQEvb6qHb50NClEnpwbT2uoJHuAu39GTSwXmASH2k:keys-all',
+    );
+
     const created = await services.wallet.create({
       alias: 'test-wallet',
       legacy: false,
@@ -178,19 +196,11 @@ describe('account add type wallet', () => {
     }
   });
 
-  afterEach(() => {
-    server.resetHandlers();
+  afterEach(async () => {
+    vi.resetAllMocks();
   });
 
   it('should add an account alias without on chain verification', async () => {
-    server.use(
-      http.post(
-        'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact/api/v1/local',
-        async (): Promise<HttpResponse> => {
-          return HttpResponse.json(createPrincipalSuccessData, { status: 200 });
-        },
-      ),
-    );
     mockPrompts({
       select: {
         'How would you like to add the account locally?': 'wallet',
@@ -218,13 +228,8 @@ describe('account add type wallet', () => {
   });
 
   it('should add an account alias without on chain verification with newly generated keys', async () => {
-    server.use(
-      http.post(
-        'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact/api/v1/local',
-        async (): Promise<HttpResponse> => {
-          return HttpResponse.json(createPrincipalSuccessData, { status: 200 });
-        },
-      ),
+    (createAccountName as Mock).mockResolvedValue(
+      'w:FxlQEvb6qHb50NClEnpwbT2uoJHuAu39GTSwXmASH2k:keys-all',
     );
     mockPrompts({
       select: {
@@ -241,12 +246,9 @@ describe('account add type wallet', () => {
           0, 1,
         ],
       },
-      password: {
-        'Enter the wallet password:': 'test-wallet',
-      },
     });
 
-    await runCommand('account add');
+    await runCommand('account add', { stdin: 'test-wallet' });
     expect(await services.filesystem.fileExists(accountAliasFile)).toBe(true);
     const content = await services.filesystem.readFile(accountAliasFile);
     expect(jsYaml.load(content!)).toEqual({

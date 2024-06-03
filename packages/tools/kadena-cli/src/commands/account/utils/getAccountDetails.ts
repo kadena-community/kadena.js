@@ -25,7 +25,6 @@ export async function getAccountDetailsFromChain({
       networkHost,
       fungible,
     );
-
     if (accountDetails === undefined) {
       throw new Error(`Account ${accountName}: row not found.`);
     }
@@ -41,7 +40,6 @@ export const getAccountDetails = async (
 ): Promise<IAccountDetailsResult | undefined> => {
   try {
     const accountDetails = await getAccountDetailsFromChain(config);
-
     return accountDetails;
   } catch (error) {
     if (error.message.includes('row not found') === true) {
