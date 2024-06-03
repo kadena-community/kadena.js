@@ -1,4 +1,3 @@
-import { createSlug } from '@/utils/createSlug';
 import { MonoLink } from '@kadena/react-icons';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
@@ -14,11 +13,10 @@ interface IProp {
 
 export interface IHeader {
   children: string;
+  slug: string;
 }
 
 export const TaggedHeading: FC<IProp> = ({ children, as, variant, slug }) => {
-  console.log(slug);
-
   const outerSlug = `header${slug}`;
 
   const content = (
