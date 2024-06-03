@@ -1431,6 +1431,9 @@ importers:
       eslint-plugin-playwright:
         specifier: 1.6.1
         version: 1.6.1(eslint@8.57.0)
+      graphql-ws:
+        specifier: ^5.16.0
+        version: 5.16.0(graphql@16.8.1)
       parse-md:
         specifier: 2.0.5
         version: 2.0.5
@@ -1440,6 +1443,9 @@ importers:
       prettier:
         specifier: ~3.2.5
         version: 3.2.5
+      ws:
+        specifier: ^8.16.0
+        version: 8.16.0
 
   packages/e2e/e2e-tools:
     dependencies:
@@ -1503,7 +1509,7 @@ importers:
         version: link:../pactjs
       cross-fetch:
         specifier: ~3.1.5
-        version: 3.1.5
+        version: 3.1.8
     devDependencies:
       '@kadena-dev/eslint-config':
         specifier: workspace:*
@@ -1555,7 +1561,7 @@ importers:
         version: link:../pactjs
       cross-fetch:
         specifier: ~3.1.5
-        version: 3.1.5
+        version: 3.1.8
     devDependencies:
       '@kadena-dev/eslint-config':
         specifier: workspace:*
@@ -1656,7 +1662,7 @@ importers:
         version: 3.0.1
       cross-fetch:
         specifier: ~3.1.5
-        version: 3.1.5
+        version: 3.1.8
       eventsource:
         specifier: ~2.0.2
         version: 2.0.2
@@ -1723,7 +1729,7 @@ importers:
         version: 2.8.1
       cross-fetch:
         specifier: ~3.1.5
-        version: 3.1.5
+        version: 3.1.8
       debug:
         specifier: 4.3.4
         version: 4.3.4(supports-color@5.5.0)
@@ -2692,7 +2698,7 @@ importers:
         version: 11.1.0
       cross-fetch:
         specifier: ~3.1.5
-        version: 3.1.5
+        version: 3.1.8
       cross-spawn:
         specifier: ~7.0.3
         version: 7.0.3
@@ -3283,7 +3289,7 @@ importers:
         version: 11.1.0
       cross-fetch:
         specifier: ~3.1.5
-        version: 3.1.5
+        version: 3.1.8
       debug:
         specifier: 4.3.4
         version: 4.3.4(supports-color@5.5.0)
@@ -3593,7 +3599,7 @@ packages:
     resolution: {integrity: sha512-xhlTqH0m31mnsG0tIP4ETgfSB6gXDaYYsUWTrlUV93fFQPI9dd8hE0Ot6MHLCtqgB32hwJAC3YZMWlXZw7AleA==}
     engines: {node: '>=14'}
     dependencies:
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
     transitivePeerDependencies:
       - encoding
     dev: true
@@ -8291,7 +8297,7 @@ packages:
       detect-libc: 2.0.2
       https-proxy-agent: 5.0.1
       make-dir: 3.1.0
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
       nopt: 5.0.0
       npmlog: 5.0.1
       rimraf: 3.0.2
@@ -12272,7 +12278,7 @@ packages:
       js-yaml: 4.1.0
       lodash.isequal: 4.5.0
       minimatch: 5.1.6
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
       pluralize: 8.0.0
       yaml-ast-parser: 0.0.43
     transitivePeerDependencies:
@@ -13499,7 +13505,7 @@ packages:
       glob: 10.3.10
       handlebars: 4.7.8
       lazy-universal-dotenv: 4.0.0
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
       picomatch: 2.3.1
       pkg-dir: 5.0.0
       pretty-hrtime: 1.0.3
@@ -19291,10 +19297,10 @@ packages:
       cross-spawn: 7.0.3
     dev: true
 
-  /cross-fetch@3.1.5:
-    resolution: {integrity: sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==}
+  /cross-fetch@3.1.8:
+    resolution: {integrity: sha512-cvA+JwZoU0Xq+h6WkMvAUqPEYy92Obet6UdKLfW60qn99ftItKjB5T+BkyWOFWe2pUyfQ+IJHmpOTznqk1M6Kg==}
     dependencies:
-      node-fetch: 2.6.7
+      node-fetch: 2.6.13
     transitivePeerDependencies:
       - encoding
 
@@ -21980,7 +21986,7 @@ packages:
   /fbjs@3.0.5:
     resolution: {integrity: sha512-ztsSx77JBtkuMrEypfhgc3cI0+0h+svqeie7xHbh1k/IKdcydnvadp/mUaGgjAOXQmQSxsqgaRhS3q9fy+1kxg==}
     dependencies:
-      cross-fetch: 3.1.5
+      cross-fetch: 3.1.8
       fbjs-css-vars: 1.0.2
       loose-envify: 1.4.0
       object-assign: 4.1.1
@@ -22183,7 +22189,7 @@ packages:
       cors: 2.8.5
       express: 4.18.2
       firebase-admin: 12.0.0
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
       protobufjs: 7.2.4
     transitivePeerDependencies:
       - encoding
@@ -22506,7 +22512,7 @@ packages:
       extend: 3.0.2
       https-proxy-agent: 5.0.1
       is-stream: 2.0.1
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -22520,7 +22526,7 @@ packages:
       extend: 3.0.2
       https-proxy-agent: 7.0.2
       is-stream: 2.0.1
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -22862,7 +22868,7 @@ packages:
       fast-text-encoding: 1.0.6
       google-auth-library: 8.9.0
       is-stream-ended: 0.1.4
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
       object-hash: 3.0.0
       proto3-json-serializer: 1.1.1
       protobufjs: 7.2.4
@@ -22884,7 +22890,7 @@ packages:
       abort-controller: 3.0.0
       duplexify: 4.1.2
       google-auth-library: 9.10.0
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
       object-hash: 3.0.0
       proto3-json-serializer: 2.0.1
       protobufjs: 7.2.6
@@ -22957,7 +22963,7 @@ packages:
       graphql: 14 - 16
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.8.1)
-      cross-fetch: 3.1.5
+      cross-fetch: 3.1.8
       graphql: 16.8.1
     transitivePeerDependencies:
       - encoding
@@ -23758,7 +23764,7 @@ packages:
       type-fest: 0.12.0
       widest-line: 4.0.1
       wrap-ansi: 8.1.0
-      ws: 8.13.0
+      ws: 8.16.0
       yoga-wasm-web: 0.3.3
     transitivePeerDependencies:
       - bufferutil
@@ -24009,8 +24015,8 @@ packages:
       it-to-stream: 1.0.0
       merge-options: 3.0.4
       nanoid: 3.3.7
-      native-fetch: 3.0.0(node-fetch@2.6.12)
-      node-fetch: 2.6.12
+      native-fetch: 3.0.0(node-fetch@2.6.13)
+      node-fetch: 2.6.13
       react-native-fetch-api: 3.0.0
       stream-to-it: 0.2.4
     transitivePeerDependencies:
@@ -24890,7 +24896,7 @@ packages:
       whatwg-encoding: 2.0.0
       whatwg-mimetype: 3.0.0
       whatwg-url: 12.0.1
-      ws: 8.13.0
+      ws: 8.16.0
       xml-name-validator: 4.0.0
     transitivePeerDependencies:
       - bufferutil
@@ -27465,12 +27471,12 @@ packages:
       abort-controller: 3.0.0
     dev: false
 
-  /native-fetch@3.0.0(node-fetch@2.6.12):
+  /native-fetch@3.0.0(node-fetch@2.6.13):
     resolution: {integrity: sha512-G3Z7vx0IFb/FQ4JxvtqGABsOTIqRWvgQz6e+erkB+JJD6LrszQtMozEHI4EkmgZQvnGHrpLVzUWk7t4sJCIkVw==}
     peerDependencies:
       node-fetch: '*'
     dependencies:
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
     dev: false
 
   /native-fetch@3.0.0(node-fetch@3.3.2):
@@ -27672,19 +27678,8 @@ packages:
   /node-fetch-native@1.6.2:
     resolution: {integrity: sha512-69mtXOFZ6hSkYiXAVB5SqaRvrbITC/NPyqv7yuu/qw0nmgPyYbIMYYNIDhNtwPrzk0ptrimrLz/hhjvm4w5Z+w==}
 
-  /node-fetch@2.6.12:
-    resolution: {integrity: sha512-C/fGU2E8ToujUivIO0H+tpQ6HWo4eEmchoPIoXtxCrVghxdKq+QOHqEZW7tuP3KlV3bC8FRMO5nMCC7Zm1VP6g==}
-    engines: {node: 4.x || >=6.0.0}
-    peerDependencies:
-      encoding: ^0.1.0
-    peerDependenciesMeta:
-      encoding:
-        optional: true
-    dependencies:
-      whatwg-url: 5.0.0
-
-  /node-fetch@2.6.7:
-    resolution: {integrity: sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==}
+  /node-fetch@2.6.13:
+    resolution: {integrity: sha512-StxNAxh15zr77QvvkmveSQ8uCQ4+v5FkvNTj0OESmiHu+VRi/gXArXtkWMElOsOUNLtUEvI4yS+rdtOHZTwlQA==}
     engines: {node: 4.x || >=6.0.0}
     peerDependencies:
       encoding: ^0.1.0
@@ -29727,7 +29722,7 @@ packages:
       bl: 5.1.0
       debug: 4.3.4(supports-color@5.5.0)
       minimist: 1.2.8
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
       readable-stream: 3.6.2
     transitivePeerDependencies:
       - encoding
@@ -32324,7 +32319,7 @@ packages:
     hasBin: true
     dependencies:
       call-me-maybe: 1.0.2
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
       node-fetch-h2: 2.3.0
       node-readfiles: 0.2.0
       oas-kit-common: 1.0.8
@@ -32484,7 +32479,7 @@ packages:
     dependencies:
       http-proxy-agent: 5.0.0
       https-proxy-agent: 5.0.1
-      node-fetch: 2.6.12
+      node-fetch: 2.6.13
       stream-events: 1.0.5
       uuid: 9.0.1
     transitivePeerDependencies:
@@ -34917,18 +34912,6 @@ packages:
       utf-8-validate:
         optional: true
     dev: false
-
-  /ws@8.13.0:
-    resolution: {integrity: sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: '>=5.0.2'
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
 
   /ws@8.16.0:
     resolution: {integrity: sha512-HS0c//TP7Ina87TfiPUz1rQzMhHrl/SG2guqRcTOIUYD2q8uhUdNHZYJUaQ8aTGPzCh+c6oawMKW35nFl1dxyQ==}
