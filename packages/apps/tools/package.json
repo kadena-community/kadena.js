@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "pnpm run generate:contracts && next build",
+    "build:e2e": "pnpm run generate:contracts && NODE_ENV=test next build",
     "dev": "next dev",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
@@ -79,7 +80,7 @@
     "@vitest/coverage-v8": "^1.6.0",
     "@walletconnect/types": "~2.8.1",
     "@webpro/next-translate-plugin": "^2.6.3",
-    "debug": "~4.3.4",
+    "debug": "4.3.4",
     "eslint": "^8.45.0",
     "eslint-config-next": "13.4.5",
     "happy-dom": "^12.9.1",

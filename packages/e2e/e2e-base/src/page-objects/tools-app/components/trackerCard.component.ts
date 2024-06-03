@@ -1,8 +1,6 @@
 import type { Locator, Page } from '@playwright/test';
-import { getI18nInstance } from 'playwright-i18next-fixture';
 
 export class TrackerCardComponent {
-  private readonly _i18n = getI18nInstance();
   private _page: Page;
   private _component: Locator;
   private _account: Locator;

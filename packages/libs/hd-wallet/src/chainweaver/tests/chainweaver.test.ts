@@ -127,26 +127,28 @@ describe('kadenaGenKeypair', () => {
 
   it('should generate a valid signature', async () => {
     const rootKey = await kadenaMnemonicToRootKeypair(PASSWORD, MNEMONIC);
+    const base64hash = 'abc';
     const signature = await kadenaSignFromRootKey(
       PASSWORD,
-      'hello',
+      base64hash,
       rootKey,
       1,
     );
 
     expect(signature).toBeTruthy();
     expect(Buffer.from(signature).toString('hex')).toBe(
-      'e3d3ffe85877a181487ef66acd4e2b5968fa4d055d81efcce812cfcee855d42547a962dc6a28a445f9da696ad2270b046b27a462d1f1ced6c7408b65a1a7fa0c',
+      'bedd0722d330f063266b4b72b2987856c9c7bc0f5f894eb490541441c59bf4c21dba3d35e5214050c90e727b16617c885cb74b2d3fbcd0ebb723f524c8679805',
     );
   });
   it('should generate a valid signature with keypair', async () => {
     const rootKey = await kadenaMnemonicToRootKeypair(PASSWORD, MNEMONIC);
     const keypair = await kadenaGenKeypair(PASSWORD, rootKey, 1);
-    const signature = await kadenaSign(PASSWORD, 'hello', keypair.secretKey);
+    const base64hash = 'abc';
+    const signature = await kadenaSign(PASSWORD, base64hash, keypair.secretKey);
 
     expect(signature).toBeTruthy();
     expect(Buffer.from(signature).toString('hex')).toBe(
-      'e3d3ffe85877a181487ef66acd4e2b5968fa4d055d81efcce812cfcee855d42547a962dc6a28a445f9da696ad2270b046b27a462d1f1ced6c7408b65a1a7fa0c',
+      'bedd0722d330f063266b4b72b2987856c9c7bc0f5f894eb490541441c59bf4c21dba3d35e5214050c90e727b16617c885cb74b2d3fbcd0ebb723f524c8679805',
     );
   });
 });

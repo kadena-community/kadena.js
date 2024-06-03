@@ -2,6 +2,7 @@ import { AuthCard } from '@/Components/AuthCard/AuthCard.tsx';
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.hook';
 import { useNetwork } from '@/modules/network/network.hook';
 import { IKeySource } from '@/modules/wallet/wallet.repository';
+import { PersonalizeProfile } from '@/pages/create-profile/personalize-profile/personalize-profile.tsx';
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
 import { Button, Heading, Stack, Text, TextField } from '@kadena/react-ui';
 import { useState } from 'react';
@@ -17,26 +18,34 @@ export function CreateProfile() {
     formState: { isValid, errors },
   } = useForm<{
     password: string;
-    profileName: string;
     confirmation: string;
   }>({ mode: 'all' });
-  const { createProfile, isUnlocked, createKey, createKAccount } = useWallet();
+  const { createProfile, isUnlocked, createKey, createKAccount, profileList } =
+    useWallet();
   const { activeNetwork } = useNetwork();
   const [createdKeySource, setCreatedKeySource] = useState<IKeySource>();
   const { createHDWallet } = useHDWallet();
+  const [showPersonalizeProfile, setShowPersonalizeProfile] =
+    useState<boolean>(false);
 
   async function create({
     profileName,
     password,
+    accentColor,
   }: {
     profileName?: string;
     password: string;
+    accentColor?: string;
   }) {
+    if (profileList.length) {
+      setShowPersonalizeProfile(true);
+    }
+
     if (!activeNetwork) {
       return;
     }
     const mnemonic = kadenaGenMnemonic();
-    const profile = await createProfile(profileName || 'default', password);
+    const profile = await createProfile(profileName, password, accentColor);
     // for now we only support slip10 so we just create the keySource and the first account by default for it
     // later we should change this flow to be more flexible
     const keySource = await createHDWallet(
@@ -61,57 +70,64 @@ export function CreateProfile() {
       />
     );
   }
+
   return (
     <>
-      <AuthCard>
-        <Heading variant="h4">Choose a password</Heading>
-        <Text>
-          Carefully select your password as this will be your main security of
-          your wallet
-        </Text>
-
-        <form onSubmit={handleSubmit(create)}>
-          <Stack flexDirection="column" marginBlock="md" gap="sm">
-            {/* TODO: Use for several accounts */}
-            {/*<TextField*/}
-            {/*  id="profileName"*/}
-            {/*  type="text"*/}
-            {/*  label="Profile name"*/}
-            {/*  {...register('profileName')}*/}
-            {/*  className={inputClass}*/}
-            {/*/>*/}
-            <TextField
-              id="password"
-              type="password"
-              label="Password"
-              {...register('password', {
-                required: { value: true, message: 'This field is required' },
-                minLength: { value: 6, message: 'Minimum 6 symbols' },
-              })}
-              isInvalid={!isValid && !!errors.password}
-              errorMessage={errors.password && errors.password.message}
-            />
-            <TextField
-              id="confirmation"
-              type="password"
-              label="Confirm password"
-              {...register('confirmation', {
-                validate: (value) => {
-                  return (
-                    getValues('password') === value || 'Passwords do not match'
-                  );
-                },
-              })}
-              isInvalid={!isValid && !!errors.confirmation}
-              errorMessage={errors.confirmation && errors.confirmation.message}
-            />
-          </Stack>
-          <Stack flexDirection="column">
-            <Button type="submit" isDisabled={!isValid}>
-              Continue
-            </Button>
-          </Stack>
-        </form>
+      <AuthCard backButtonLink="/select-profile">
+        {showPersonalizeProfile ? (
+          <PersonalizeProfile
+            create={create}
+            password={getValues('password')}
+          ></PersonalizeProfile>
+        ) : (
+          <>
+            <Heading variant="h4">Choose a password</Heading>
+            <Stack marginBlockStart="sm">
+              <Text>
+                Carefully select your password as this will be your main
+                security of your wallet
+              </Text>
+            </Stack>
+            <form onSubmit={handleSubmit(create)}>
+              <Stack flexDirection="column" marginBlock="md" gap="sm">
+                <TextField
+                  id="password"
+                  type="password"
+                  label="Password"
+                  {...register('password', {
+                    required: {
+                      value: true,
+                      message: 'This field is required',
+                    },
+                    minLength: { value: 6, message: 'Minimum 6 symbols' },
+                  })}
+                  isInvalid={!isValid && !!errors.password}
+                  errorMessage={errors.password?.message}
+                />
+                <TextField
+                  id="confirmation"
+                  type="password"
+                  label="Confirm password"
+                  {...register('confirmation', {
+                    validate: (value) => {
+                      return (
+                        getValues('password') === value ||
+                        'Passwords do not match'
+                      );
+                    },
+                  })}
+                  isInvalid={!isValid && !!errors.confirmation}
+                  errorMessage={errors.confirmation?.message}
+                />
+              </Stack>
+              <Stack flexDirection="column">
+                <Button type="submit" isDisabled={!isValid}>
+                  Continue
+                </Button>
+              </Stack>
+            </form>
+          </>
+        )}
       </AuthCard>
     </>
   );

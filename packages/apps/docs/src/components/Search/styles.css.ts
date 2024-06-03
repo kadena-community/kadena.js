@@ -17,9 +17,9 @@ export const tabContainerClass = style([
 export const tabClass = style([
   atoms({
     display: 'flex',
-    flexDirection: 'column',
     height: '100%',
-    overflowY: 'hidden',
+    flexDirection: 'column',
+    overflowY: 'scroll',
     overflowX: 'visible',
   }),
 ]);

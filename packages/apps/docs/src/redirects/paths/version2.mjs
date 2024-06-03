@@ -1,5 +1,10 @@
 export const version2PathUrlRedirects = [
   {
+    source: '/pact/beginner/web-editor',
+    destination: '/build/pact/dev-network',
+    permanent: true,
+  },
+  {
     source: '/kadena/client',
     destination: '/learn',
     permanent: true,
@@ -30,6 +35,11 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
 
+  {
+    source: '/kadena/overview-of-kadena',
+    destination: '/learn/why-kadena',
+    permanent: true,
+  },
   {
     source: '/kadena/:slug',
     destination: '/learn/:slug',
@@ -72,6 +82,11 @@ export const version2PathUrlRedirects = [
   },
   {
     source: '/kadena/client/:slug',
+    destination: '/reference/kadena-client',
+    permanent: true,
+  },
+  {
+    source: '/kadena/client-examples/transfer-kda',
     destination: '/reference/kadena-client',
     permanent: true,
   },
@@ -141,6 +156,56 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
+    source: '/build/guides/election-dapp-tutorial',
+    destination: '/build/election',
+    permanent: true,
+  },
+  {
+    source: '/build/guides/election-dapp-tutorial/01-getting-started',
+    destination: '/build/election/prepare-your-workspace',
+    permanent: true,
+  },
+  {
+    source: '/build/guides/election-dapp-tutorial/02-running-devnet',
+    destination: '/build/election/start-a-local-blockchain',
+    permanent: true,
+  },
+  {
+    source: '/build/guides/election-dapp-tutorial/03-admin-account',
+    destination: '/build/election/add-admin-account',
+    permanent: true,
+  },
+  {
+    source: '/build/guides/election-dapp-tutorial/04-namespaces',
+    destination: '/build/election/define-a-namespace',
+    permanent: true,
+  },
+  {
+    source: '/build/guides/election-dapp-tutorial/05-keysets',
+    destination: '/build/election/define-keysets',
+    permanent: true,
+  },
+  {
+    source: '/build/guides/election-dapp-tutorial/06-smart-contract',
+    destination: '/build/election/write-a-smart-contract',
+    permanent: true,
+  },
+  {
+    source: '/build/guides/election-dapp-tutorial/07-nominate-candidates',
+    destination: '/build/election/nominate-candidates',
+    permanent: true,
+  },
+  {
+    source: '/build/guides/election-dapp-tutorial/08-voting',
+    destination: '/build/election/add-vote-management',
+    permanent: true,
+  },
+  {
+    source: '/build/guides/election-dapp-tutorial/09-gas-station',
+    destination: '/build/election/add-a-gas-station',
+    permanent: true,
+  },
+  {
     source: '/build/guides/:slug',
     destination: '/build',
     permanent: true,
@@ -160,6 +225,17 @@ export const version2PathUrlRedirects = [
     destination: '/build/election/:slug',
     permanent: true,
   },
+  {
+    source: '/build/frontend/kadena-client',
+    destination: '/build/frontend',
+    permanent: true,
+  },
+  {
+    source: '/reference/kadena-client/kadena-cli',
+    destination: '/reference/kadena-cli',
+    permanent: true,
+  },
+
   {
     source: '/marmalade',
     destination: '/build/nft-marmalade',
@@ -256,6 +332,11 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
+    source: '/pact/reference/pact-repl-cli',
+    destination: '/reference/pact-repl',
+    permanent: true,
+  },
+  {
     source: '/pact/reference/rest-api',
     destination: '/reference/rest-api',
     permanent: true,
@@ -296,6 +377,16 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
+    source: '/pact/pactjs/api',
+    destination: '/reference/kadena-client/pactjs-old',
+    permanent: true,
+  },
+  {
+    source: '/pact/pactjs/utils',
+    destination: '/reference/kadena-client/client-utils',
+    permanent: true,
+  },
+  {
     source: '/pact/intermediate/:slug',
     destination: '/build/pact/:slug',
     permanent: true,
@@ -313,6 +404,11 @@ export const version2PathUrlRedirects = [
   {
     source: '/chainweb',
     destination: '/deploy',
+    permanent: true,
+  },
+  {
+    source: '/chainweb/stream-client/events',
+    destination: '/reference/chainweb-ref/stream-client',
     permanent: true,
   },
   {
@@ -416,23 +512,8 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
-    source: '/pact/reference/pact-repl-cli',
-    destination: '/reference/pact-repl',
-    permanent: true,
-  },
-  {
     source: '/reference/kadena-client/kadena-cli',
     destination: '/reference/kadena-cli',
-    permanent: true,
-  },
-  {
-    source: '/pact/pactjs/api',
-    destination: '/reference/kadena-client/pactjs-old',
-    permanent: true,
-  },
-  {
-    source: '/pact/pactjs/utils',
-    destination: '/reference/kadena-client/client-utils',
     permanent: true,
   },
   {
@@ -468,11 +549,6 @@ export const version2PathUrlRedirects = [
   {
     source: '/pact/reference/properties-and-invariants/list-operators',
     destination: '/reference/property-checking/list',
-    permanent: true,
-  },
-  {
-    source: '/pact/beginner/web-editor',
-    destination: '/build/pact/dev-network',
     permanent: true,
   },
 ];

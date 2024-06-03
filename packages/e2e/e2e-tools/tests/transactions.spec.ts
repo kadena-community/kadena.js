@@ -26,7 +26,7 @@ test(`Tracking and Finishing a Cross Chain Transfer`, async ({
 
   await test.step('Enable Devnet and navigate to the Cross Chain Transfer Tracker', async () => {
     await page.goto('/');
-    await toolsApp.homePage.header.goToPage('Transactions');
+    await toolsApp.header.goToPage('Transactions');
     await toolsApp.asidePanel.navigateTo('Cross Chain Transfer Tracker');
   });
 
@@ -76,7 +76,7 @@ test(`Tracking and Finishing a Cross Chain Transfer`, async ({
     await toolsApp.crossChainTrackerPage.navToFinishTransaction();
     await toolsApp.crossChainFinisherPage.finishTransaction();
     await expect(
-      await toolsApp.crossChainFinisherPage.succesNotification.getComponent(),
+      await toolsApp.txFinishedNotifcation.getNotification(),
     ).toBeVisible();
   });
 });
@@ -87,7 +87,7 @@ test(`Ledger: Transfer to new account on the same chain`, async ({
 }) => {
   await test.step('Enable Devnet and navigate to the Transfer Page', async () => {
     await page.goto('/');
-    await toolsApp.homePage.header.goToPage('Transactions');
+    await toolsApp.header.goToPage('Transactions');
     await toolsApp.asidePanel.navigateTo('Transfer');
   });
 
@@ -118,7 +118,7 @@ test(`Ledger: Transfer to new account on the same chain`, async ({
   });
 
   await expect(
-    await toolsApp.transferPage.succesNotification.getComponent(),
+    await toolsApp.txFinishedNotifcation.getNotification(),
   ).toBeVisible();
 });
 
@@ -128,7 +128,7 @@ test(`Ledger: Transfer to existing account on the same chain`, async ({
 }) => {
   await test.step('Enable Devnet and navigate to the Transfer Page', async () => {
     await page.goto('/');
-    await toolsApp.homePage.header.goToPage('Transactions');
+    await toolsApp.header.goToPage('Transactions');
     await toolsApp.asidePanel.navigateTo('Transfer');
   });
 
@@ -160,7 +160,7 @@ test(`Ledger: Transfer to existing account on the same chain`, async ({
   });
 
   await expect(
-    await toolsApp.transferPage.succesNotification.getComponent(),
+    await toolsApp.txFinishedNotifcation.getNotification(),
   ).toBeVisible();
 });
 
@@ -170,7 +170,7 @@ test(`Ledger: Transfer to new account on a different chain`, async ({
 }) => {
   await test.step('Enable Devnet and navigate to the Transfer Page', async () => {
     await page.goto('/');
-    await toolsApp.homePage.header.goToPage('Transactions');
+    await toolsApp.header.goToPage('Transactions');
     await toolsApp.asidePanel.navigateTo('Transfer');
   });
 
@@ -201,7 +201,7 @@ test(`Ledger: Transfer to new account on a different chain`, async ({
   });
 
   await expect(
-    await toolsApp.transferPage.succesNotification.getComponent(),
+    await toolsApp.txFinishedNotifcation.getNotification(),
   ).toBeVisible();
 });
 
@@ -211,7 +211,7 @@ test(`Ledger: Transfer to existing account on a different chain`, async ({
 }) => {
   await test.step('Enable Devnet and navigate to the Transfer Page', async () => {
     await page.goto('/');
-    await toolsApp.homePage.header.goToPage('Transactions');
+    await toolsApp.header.goToPage('Transactions');
     await toolsApp.asidePanel.navigateTo('Transfer');
   });
 
@@ -244,6 +244,6 @@ test(`Ledger: Transfer to existing account on a different chain`, async ({
   });
 
   await expect(
-    await toolsApp.transferPage.succesNotification.getComponent(),
+    await toolsApp.txFinishedNotifcation.getNotification(),
   ).toBeVisible();
 });

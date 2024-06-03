@@ -129,6 +129,7 @@ export const SenderDetails: FC<ISenderDetailsProps> = ({
             {...register('senderChainId')}
             defaultSelectedKey={defaultValues.senderChainId}
             id="senderChainId"
+            data-testid="senderChainId"
             onSelectionChange={(chainId) => {
               setValue('senderChainId', chainId);
               onChainUpdate(chainId);

@@ -37,7 +37,7 @@
     "chainweaver"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.cjs.json && tsc && api-extractor run || true && cpy ./src/chainweaver/vendor/**/* ./lib/cjs/chainweaver/vendor/ && cpy ./src/chainweaver/vendor/**/* ./lib/esm/chainweaver/vendor/ && cp ./package.cjs.json ./lib/cjs/package.json",
+    "build": "tsc -p tsconfig.cjs.json && tsc && api-extractor run && cpy ./src/chainweaver/vendor/**/* ./lib/cjs/chainweaver/vendor/ && cpy ./src/chainweaver/vendor/**/* ./lib/esm/chainweaver/vendor/ && cp ./package.cjs.json ./lib/cjs/package.json",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
@@ -47,15 +47,17 @@
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
     "start": "ts-node --transpile-only src/index.ts",
-    "test": "vitest run"
+    "test": "pnpm run /^test:.*/",
+    "test:chainweaver": "vitest run -c ./vitest.chainweaver.config.js",
+    "test:hd-wallet": "vitest run"
   },
   "dependencies": {
     "@kadena/cryptography-utils": "workspace:*",
-    "@scure/bip39": "^1.2.1",
-    "buffer": "^6.0.3",
-    "buffer-from": "^1.1.2",
-    "debug": "~4.3.4",
-    "ed25519-keygen": "^0.4.8"
+    "@scure/bip39": "1.2.1",
+    "buffer": "6.0.3",
+    "buffer-from": "1.1.2",
+    "debug": "4.3.4",
+    "ed25519-keygen": "0.4.8"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",

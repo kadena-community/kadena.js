@@ -1,14 +1,75 @@
 export const blogchainPathUrlRedirects = [
   {
+    source:
+      '/blogchain/2022/3-reasons-kadena-is-the-right-choice-for-crypto-builders-and-miners-2022-07-08',
+    destination:
+      'https://medium.com/kadena-io/3-reasons-kadena-is-the-right-choice-for-crypto-builders-and-miners-fe1eb02941a6',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2022/introducing-kadena-ecos-inaugural-grant-cohort-2022-07-26',
+    destination:
+      'https://medium.com/kadena-io/introducing-kadena-ecos-inaugural-grant-cohort-78df87755f1f',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2020/polkadot-collaboration-update-researching-pact-core-for-wasm-and-exploring-kadenadot-2020-08-12',
+    destination:
+      'https://medium.com/kadena-io/polkadot-collaboration-update-researching-pact-core-for-wasm-and-exploring-kadenadot-dbad5c120e26',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2022/kadenas-community-powered-developer-documentation-2022-02-11',
+    destination:
+      'https://www.kadena.io/blog/kadena-s-community-powered-developer-documentation',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2022/calling-web2-builders-kadena-eases-transition-to-web3-2022-03-09',
+    destination:
+      'https://medium.com/kadena-io/calling-web2-builders-kadena-eases-transition-to-web3-2ebf1657a23e',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2021/kadenaswap-update-december-2020-2021-01-01',
+    destination:
+      'https://medium.com/kadena-io/kadenaswap-update-december-2020-2b79aca14b60',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2020/kadena-completes-hybrid-blockchain-scaling-to-480-000-transactions-per-second-on-20-chains-2020-08-20',
+    destination:
+      'https://medium.com/kadena-io/kadena-completes-hybrid-blockchain-scaling-to-480-000-transactions-per-second-on-20-chains-5a652295533c',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2020/kadena-roadmap-for-q4-2020-2020-10-28',
+    destination:
+      'https://medium.com/kadena-io/kadena-roadmap-for-q4-2020-d8ac7491b0ff',
+    permanent: true,
+  },
+  {
+    source:
+      '/blogchain/2022/from-haskell-to-pact-my-journey-in-code-toward-a-more-stable-and-secure-environment-for-blockchain-builders-2022-07-01',
+    destination:
+      'https://medium.com/kadena-io/from-haskell-to-pact-my-journey-in-code-toward-a-more-stable-and-secure-environment-for-b06e9e3916fb',
+    permanent: true,
+  },
+  {
     source: '/blogchain/:slug/announcing-kadena-technical-grants.2020-11-25',
     destination:
-      '/blogchain/:slug/announcing-kadena-technical-grants-2020-11-25',
+      'https://medium.com/kadena-io/announcing-kadena-technical-grants-31c4a88284f9',
     permanent: true,
   },
   {
     source: '/blogchain/2020/announcing-kadena-technical-grants',
     destination:
-      '/blogchain/2020/announcing-kadena-technical-grants-2020-11-25',
+      'https://medium.com/kadena-io/announcing-kadena-technical-grants-31c4a88284f9',
     permanent: true,
   },
 
@@ -34,7 +95,7 @@ export const blogchainPathUrlRedirects = [
   },
   {
     source: '/blogchain',
-    destination: 'https://www.kadena.io/bloddg',
+    destination: 'https://www.kadena.io/blog',
     permanent: true,
   },
 
@@ -157,7 +218,7 @@ export const blogchainPathUrlRedirects = [
   },
   {
     source:
-      '/blogchain/2022/a-step-by-step-guide-to-writing-pact-smart-contract-goliath-faucet-2022-10-04/blogchain/2022/catching-up-with-cryptographer-computer-scientist-and-kadena-advisor-stuart-haber-2022-10-27',
+      '/blogchain/2022/catching-up-with-cryptographer-computer-scientist-and-kadena-advisor-stuart-haber-2022-10-27',
     destination:
       'https://www.kadena.io/blog/catching-up-with-cryptographer-computer-scientist-and-kadena-advisor-stuart-haber',
     permanent: true,
@@ -963,6 +1024,11 @@ export const blogchainPathUrlRedirects = [
   },
   {
     source: '/assets/blog/:slug/:slug2',
+    destination: '/assets/og_banner.jpeg',
+    permanent: true,
+  },
+  {
+    source: '/assets/docs/1_ioGNdm7WNixtlNPLKwo9eQ.webp',
     destination: '/assets/og_banner.jpeg',
     permanent: true,
   },

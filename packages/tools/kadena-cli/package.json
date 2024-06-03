@@ -62,7 +62,7 @@
     "@kadena/pactjs": "workspace:*",
     "@kadena/pactjs-cli": "workspace:^",
     "@kadena/pactjs-generator": "workspace:*",
-    "@scure/bip39": "^1.2.1",
+    "@scure/bip39": "1.2.1",
     "chalk": "^5.2.0",
     "cli-table3": "0.6.4",
     "commander": "^11.0.0",
@@ -98,5 +98,8 @@
     "rollup": "^4.17.2",
     "typescript": "5.4.5",
     "vitest": "^1.6.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }

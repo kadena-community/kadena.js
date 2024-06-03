@@ -5,6 +5,7 @@ export const success: string[] = [];
 export const CHANGELOGFILENAME = './src/data/changelogs.json';
 export const MAX_TRIES = 1;
 export const MAXCALLS = 300;
+export const CURRENTPACKAGE = 'kadena.js';
 
 export enum VersionPosition {
   PACKAGE = 0,
@@ -17,7 +18,8 @@ export enum VersionPosition {
 // TODO: we should add this to the config.yaml
 export const REPOS: IRepo[] = [
   {
-    name: 'React UI',
+    name: 'Kode UI Components',
+    slug: 'kode-ui-components',
     repo: 'https://github.com/kadena-community/kadena.js.git',
     directory: '/packages/libs/react-ui',
     fileName: 'CHANGELOG.md',
@@ -25,7 +27,8 @@ export const REPOS: IRepo[] = [
     repoName: 'kadena.js',
   },
   {
-    name: 'React Icons',
+    name: 'Kode Icons',
+    slug: 'kode-icons',
     repo: 'https://github.com/kadena-community/kadena.js.git',
     directory: '/packages/libs/react-icons',
     fileName: 'CHANGELOG.md',
@@ -34,6 +37,7 @@ export const REPOS: IRepo[] = [
   },
   {
     name: 'Kadena Cli',
+    slug: 'kadena-cli',
     repo: 'https://github.com/kadena-community/kadena.js.git',
     directory: '/packages/tools/kadena-cli',
     fileName: 'CHANGELOG.md',
@@ -42,6 +46,7 @@ export const REPOS: IRepo[] = [
   },
   {
     name: 'KadenaJS',
+    slug: 'kadenajs',
     repo: 'https://github.com/kadena-community/kadena.js.git',
     directory: '/packages/libs/kadena.js',
     fileName: 'CHANGELOG.md',
@@ -50,6 +55,7 @@ export const REPOS: IRepo[] = [
   },
   {
     name: 'Pact 4',
+    slug: 'pact',
     repo: 'https://github.com/kadena-io/pact.git',
     directory: '/',
     fileName: 'CHANGELOG.md',

@@ -1,11 +1,11 @@
+import { Pact, createClient, createSignWithKeypair } from '@kadena/client';
+import type { ChainId, ICommand } from '@kadena/types';
 import {
   sender00Account,
   xChainGasStation,
-} from '@constants/accounts.constants';
-import { fundAmount } from '@constants/amounts.constants';
-import { devnetUrl, networkId } from '@constants/network.constants';
-import { Pact, createClient, createSignWithKeypair } from '@kadena/client';
-import type { ChainId, ICommand } from '@kadena/types';
+} from '../../constants/accounts.constants';
+import { fundAmount } from '../../constants/amounts.constants';
+import { devnetUrl, networkId } from '../../constants/network.constants';
 
 export const deployGasStation = async (chainId: ChainId) => {
   const pactCommand = `

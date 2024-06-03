@@ -23,7 +23,7 @@ const meta: Meta<StoryType> = {
   decorators: [withContentWidth],
   parameters: {
     status: {
-      type: ['releaseCandidate'],
+      type: ['stable'],
     },
     docs: {
       description: {
@@ -33,18 +33,6 @@ const meta: Meta<StoryType> = {
     },
   },
   argTypes: {
-    displayStyle: {
-      options: notificationVariants.displayStyle,
-      control: {
-        type: 'select',
-      },
-      description:
-        'The Notification component has bordered and borderless variants. The borderless variant is used for notifications that located within a card or content body, while the bordered variant can be used in all other cases. ',
-      table: {
-        type: { summary: notificationVariants.displayStyle.join(' | ') },
-        defaultValue: { summary: 'default' },
-      },
-    },
     intent: {
       options: notificationVariants.intent,
       control: {
@@ -102,16 +90,8 @@ export const Primary: Story = {
     intent: undefined,
     children:
       'Notification children to inform users about the event that occurred!',
-    displayStyle: 'bordered',
   },
-  render: ({
-    heading,
-    isDismissable,
-    intent,
-    children,
-    displayStyle,
-    type,
-  }) => {
+  render: ({ heading, isDismissable, intent, children, type }) => {
     return (
       <Notification
         intent={intent}
@@ -120,7 +100,6 @@ export const Primary: Story = {
         onDismiss={() => {
           alert('Close button clicked');
         }}
-        displayStyle={displayStyle}
         role="none"
       >
         <NotificationHeading>{heading}</NotificationHeading>

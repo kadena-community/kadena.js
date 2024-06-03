@@ -1,7 +1,7 @@
 import {
   GAS_STATIONS,
   NAMESPACES,
-} from './../devnet/faucet/deploy/constants.js';
+} from '../commands/devnet/faucet/deploy/constants.js';
 import { MAX_CHAIN_VALUE } from './config.js';
 
 export const GAS_STATIONS_MAP: { [key: string]: string } = {
@@ -23,3 +23,5 @@ export const KEYS_ALL_PRED_ERROR_MESSAGE =
   'Only "keys-all" predicate is allowed for the given public keys and account name';
 export const MAINNET_FUND_TRANSFER_ERROR_MESSAGE =
   'Funding operations are not allowed on mainnet network with network ID:';
+
+export const MAX_FUND_AMOUNT = 20;

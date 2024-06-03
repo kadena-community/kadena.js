@@ -24,6 +24,8 @@ export const blogFrontMatter: IPageMeta = {
   publishDate: '2018-02-07T00:00:00.000Z',
   layout: 'full',
   order: 6,
+  canonicalURL:
+    'https://docs.kadena.io/blogchain/2018/the-evm-is-fundamentally-unsafe-2018-02-07',
 };
 
 export const fullLayoutFrontMatter: IPageMeta = {
@@ -47,6 +49,7 @@ export const fullLayoutFrontMatter: IPageMeta = {
   label: 'Overview',
   order: 1,
   layout: 'full',
+  canonicalURL: 'https://docs.kadena.io/kadena/overview',
 };
 
 export const landingFrontMatter: IBasePageMeta = {
@@ -78,4 +81,5 @@ export const redoclyFrontMatter: IPageMeta = {
       title: 'What is KDA?',
     },
   },
+  canonicalURL: 'https://docs.kadena.io/kadena/overview',
 };

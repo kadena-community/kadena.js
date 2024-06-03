@@ -3,8 +3,6 @@
   "version": "0.8.0",
   "private": true,
   "scripts": {
-    "7d": "npx 7d pinecone-create-index --index kda-docs --environment asia-northeast1-gcp",
-    "7d:clear": "npx 7d pinecone-clear-namespace --namespace kda-docs",
     "7d:ingest": "npx 7d ingest --files 'src/pages/**/*.md' --files 'src/pages/**/*.mdx'  --files 'src/specs/**/*.json' --namespace kda-docs",
     "7d:ingest-algolia-dev": "pnpm run build:scripts && pnpm run algolia-dev",
     "7d:ingest-algolia-prod": "pnpm run build:scripts && pnpm run algolia-prod",
@@ -12,6 +10,8 @@
     "algolia-dev": "ALGOLIA_INDEX_NAME=docs_website_dev OPENAI_API_KEY=dummy-key121 npx 7d ingest --files 'src/pages/**/*.md' --files 'src/pages/**/*.mdx' --files 'src/specs/**/*.json' --db algolia --skip-embeddings",
     "algolia-prod": "ALGOLIA_INDEX_NAME=docs_website_prod OPENAI_API_KEY=dummy-key121 npx 7d ingest --files 'src/pages/**/*.md' --files 'src/pages/**/*.mdx'  --files 'src/specs/**/*.json' --db algolia --skip-embeddings",
     "build": "pnpm run build:scripts && pnpm run build:next",
+    "build:changelogs": "tsx ./src/scripts/importChangelogs/index.ts",
+    "build:e2e": "pnpm run build:scripts && NODE_ENV=test pnpm run build:next",
     "build:next": "NODE_OPTIONS=--max-old-space-size=8192 next build",
     "build:scripts": "tsx ./src/scripts/build.ts",
     "dev": "NODE_OPTIONS=--max-old-space-size=8192 IGNOREREPO=true NODE_ENV=development pnpm run build:scripts && concurrently \"next dev\" \"pnpm run dev:docswatch\"",

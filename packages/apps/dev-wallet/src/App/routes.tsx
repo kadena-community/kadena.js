@@ -70,8 +70,9 @@ export const Routes: FC = () => {
         <Route path="/sig-builder" element={<SignatureBuilder />} />,
         <Route path="/networks" element={<Networks />} />
         <Route path="/networks/create" element={<CreateNetwork />} />
-      </Route>,
-    </>
+      </Route>
+      ,
+    </>,
   );
 
   const handler =

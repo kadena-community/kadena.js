@@ -4,7 +4,7 @@ describe('enrichPackageContent', () => {
   describe('getAuthors', () => {
     it('should enrich the version with all authors from the commits', async () => {
       const { default: changelog } = await import(
-        './mock/changelog-notenriched.json',
+        './../../../__mocks__/changelog-notenriched.json',
         {
           assert: {
             type: 'json',
@@ -12,7 +12,7 @@ describe('enrichPackageContent', () => {
         }
       );
 
-      const version = changelog['React UI'].content[
+      const version = changelog['kode-ui-components'].content[
         '0.2.0'
       ] as unknown as IChangelogPackageVersion;
 
@@ -24,7 +24,7 @@ describe('enrichPackageContent', () => {
 
     it('should enrich the version with all authors from the prs', async () => {
       const { default: changelog } = await import(
-        './mock/changelog-notenriched.json',
+        './../../../__mocks__/changelog-notenriched.json',
         {
           assert: {
             type: 'json',
@@ -32,7 +32,7 @@ describe('enrichPackageContent', () => {
         }
       );
 
-      const version = changelog['Pact 4'].content[
+      const version = changelog.pact.content[
         '4.6.0'
       ] as unknown as IChangelogPackageVersion;
 
@@ -45,7 +45,7 @@ describe('enrichPackageContent', () => {
   describe('getLastModifiedDate', () => {
     it('should enrich the version with the latest date that are in the commits', async () => {
       const { default: changelog } = await import(
-        './mock/changelog-notenriched.json',
+        './../../../__mocks__/changelog-notenriched.json',
         {
           assert: {
             type: 'json',
@@ -53,7 +53,7 @@ describe('enrichPackageContent', () => {
         }
       );
 
-      const version = changelog['React UI'].content[
+      const version = changelog['kode-ui-components'].content[
         '0.2.0'
       ] as unknown as IChangelogPackageVersion;
       const result = getLastModifiedDate(version);
@@ -63,7 +63,7 @@ describe('enrichPackageContent', () => {
 
     it('should enrich the version with the latest date that are in the PRs', async () => {
       const { default: changelog } = await import(
-        './mock/changelog-notenriched.json',
+        './../../../__mocks__/changelog-notenriched.json',
         {
           assert: {
             type: 'json',
@@ -71,7 +71,7 @@ describe('enrichPackageContent', () => {
         }
       );
 
-      const version = changelog['Pact 4'].content[
+      const version = changelog.pact.content[
         '4.6.0'
       ] as unknown as IChangelogPackageVersion;
       const result = getLastModifiedDate(version);

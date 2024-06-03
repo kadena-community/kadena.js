@@ -21,11 +21,14 @@ describe('misc utils', () => {
 
   describe('getPackages', () => {
     it('should return all the packages of the complete json', async () => {
-      const { default: changelog } = await import('./mock/changelog.json', {
-        assert: {
-          type: 'json',
-        },
-      });
+      const { default: changelog } = await import(
+        './../../../__mocks__/changelog.json',
+        {
+          assert: {
+            type: 'json',
+          },
+        }
+      );
 
       const result = getPackages(changelog as unknown as IChangelogComplete);
       expect(result.length).toEqual(7);
@@ -35,13 +38,18 @@ describe('misc utils', () => {
 
   describe('getVersions', () => {
     it('should return all the versions of a package', async () => {
-      const { default: changelog } = await import('./mock/changelog.json', {
-        assert: {
-          type: 'json',
-        },
-      });
+      const { default: changelog } = await import(
+        './../../../__mocks__/changelog.json',
+        {
+          assert: {
+            type: 'json',
+          },
+        }
+      );
 
-      const pkg = changelog['React UI'] as unknown as IChangelogPackage;
+      const pkg = changelog[
+        'kode-ui-components'
+      ] as unknown as IChangelogPackage;
       const result = getVersions(pkg);
 
       expect(result.length).toEqual(16);
@@ -49,11 +57,14 @@ describe('misc utils', () => {
     });
 
     it('should return an empty array if there are no versions', async () => {
-      const { default: changelog } = await import('./mock/changelog.json', {
-        assert: {
-          type: 'json',
-        },
-      });
+      const { default: changelog } = await import(
+        './../../../__mocks__/changelog.json',
+        {
+          assert: {
+            type: 'json',
+          },
+        }
+      );
 
       const pkg = changelog['No versions'] as unknown as IChangelogPackage;
       const result = getVersions(pkg);

@@ -49,25 +49,31 @@ describe('pr utils', () => {
 
   describe('getPrs', () => {
     it('should return an array with all prs of given package', async () => {
-      const { default: changelog } = await import('./mock/changelog.json', {
-        assert: {
-          type: 'json',
-        },
-      });
+      const { default: changelog } = await import(
+        './../../../__mocks__/changelog.json',
+        {
+          assert: {
+            type: 'json',
+          },
+        }
+      );
 
-      const pkg = changelog['Pact 4'] as unknown as IChangelogPackage;
+      const pkg = changelog.pact as unknown as IChangelogPackage;
 
       const result = getPrs(pkg);
       expect(result.length).toEqual(185);
     });
     it('should return an array of prs of given package first version', async () => {
-      const { default: changelog } = await import('./mock/changelog.json', {
-        assert: {
-          type: 'json',
-        },
-      });
+      const { default: changelog } = await import(
+        './../../../__mocks__/changelog.json',
+        {
+          assert: {
+            type: 'json',
+          },
+        }
+      );
 
-      const pkg = changelog['Pact 4'] as unknown as IChangelogPackage;
+      const pkg = changelog.pact as unknown as IChangelogPackage;
       const result = getPrs(pkg);
 
       expect(result[0].id).toEqual(1326);
@@ -76,13 +82,16 @@ describe('pr utils', () => {
 
   describe('getVersionPRs', () => {
     it('should return an array with all commits of given version', async () => {
-      const { default: changelog } = await import('./mock/changelog.json', {
-        assert: {
-          type: 'json',
-        },
-      });
+      const { default: changelog } = await import(
+        './../../../__mocks__/changelog.json',
+        {
+          assert: {
+            type: 'json',
+          },
+        }
+      );
 
-      const version = changelog['Pact 4'].content[
+      const version = changelog.pact.content[
         '4.11.0'
       ] as unknown as IChangelogPackageVersion;
 
@@ -90,12 +99,15 @@ describe('pr utils', () => {
       expect(result.length).toEqual(10);
     });
     it('should return an array of commits', async () => {
-      const { default: changelog } = await import('./mock/changelog.json', {
-        assert: {
-          type: 'json',
-        },
-      });
-      const version = changelog['Pact 4'].content[
+      const { default: changelog } = await import(
+        './../../../__mocks__/changelog.json',
+        {
+          assert: {
+            type: 'json',
+          },
+        }
+      );
+      const version = changelog.pact.content[
         '4.11.0'
       ] as unknown as IChangelogPackageVersion;
 

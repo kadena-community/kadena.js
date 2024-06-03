@@ -113,9 +113,11 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
-    "pactjs:generate:contract": "pactjs contract-generate --contract coin --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact",
+    "pactjs:generate:contract": "pactjs contract-generate --contract coin --contract marmalade-v2.ledger --contract marmalade-v2.collection-policy-v1 --contract marmalade-v2.policy-manager --contract marmalade-sale.conventional-auction --contract marmalade-sale.dutch-auction --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact",
     "test": "vitest run",
-    "test:integration": "vitest run -c ./vitest.integration.config.ts",
+    "test:integration": "pnpm run test:integration:setup && vitest run -c ./vitest.integration.config.ts",
+    "test:integration:local": "vitest run -c ./vitest.integration.config.ts",
+    "test:integration:setup": "pnpm run build && ts-node src/scripts/setup-marmalade-test-env.ts",
     "test:watch": "vitest"
   },
   "dependencies": {
@@ -125,7 +127,7 @@
     "@kadena/pactjs": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/types": "workspace:*",
-    "debug": "~4.3.4",
+    "debug": "4.3.4",
     "js-yaml": "~4.1.0",
     "ramda": "^0.29.0"
   },

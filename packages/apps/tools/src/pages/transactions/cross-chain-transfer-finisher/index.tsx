@@ -338,7 +338,7 @@ const CrossChainTransferFinisher: FC = () => {
     txError.toString() === '' && receiverRequestKey ? (
       <FormStatusNotification
         status="successful"
-        title={t('Notification title success')}
+        title={t('form-status-title-successful')}
         body={t('XChain transfer has been successfully finalized!')}
       >
         {renderLinkToExplorer}

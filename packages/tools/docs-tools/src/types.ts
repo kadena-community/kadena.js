@@ -68,6 +68,7 @@ export interface IPageMeta extends IBasePageMeta {
   tags?: string[];
   readingTimeInMinutes?: number;
   wordCount?: number;
+  canonicalURL: string;
 }
 
 export interface IMenuItem {

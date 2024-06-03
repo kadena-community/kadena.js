@@ -21,10 +21,14 @@ export const avatarSizeVariant = styleVariants({
     fontSize: tokens.kda.foundation.typography.fontSize.sm,
     width: tokens.kda.foundation.spacing.xl,
     height: tokens.kda.foundation.spacing.xl,
+    minWidth: tokens.kda.foundation.spacing.xl,
+    minHeight: tokens.kda.foundation.spacing.xl,
   },
   large: {
     fontSize: tokens.kda.foundation.typography.fontSize.xl,
     width: tokens.kda.foundation.size.n15,
     height: tokens.kda.foundation.size.n15,
+    minWidth: tokens.kda.foundation.size.n15,
+    minHeight: tokens.kda.foundation.size.n15,
   },
 });
