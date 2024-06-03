@@ -32,7 +32,9 @@ const ModuleExplorer = ({
   onActiveModuleChange,
   openedModules: _openedModules,
 }: IModuleExplorerProps) => {
-  const [activeModule, setActiveModule] = useState<IChainModule>();
+  const [activeModule, setActiveModule] = useState<IChainModule>(
+    _openedModules[0],
+  );
   const [openedModules, setOpenedModules] =
     useState<IChainModule[]>(_openedModules);
   let outlineItems: TreeItem<Outline>[] = [];
