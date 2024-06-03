@@ -13,14 +13,14 @@ const config: PlaywrightTestConfig = {
         ...devices['iPhone 14 Pro Max'],
         defaultBrowserType: 'chromium',
         hasTouch: true,
-        permissions: ["clipboard-read", "clipboard-write"],
+        permissions: ['clipboard-read', 'clipboard-write'],
         launchOptions: {
           slowMo: 1000,
           args: [
             '--disable-web-security',
             '--use-fake-ui-for-media-stream',
             '--use-fake-device-for-media-stream',
-            '--use-file-for-fake-video-capture=./video.y4m'
+            '--use-file-for-fake-video-capture=./video.y4m',
           ],
         },
       },
