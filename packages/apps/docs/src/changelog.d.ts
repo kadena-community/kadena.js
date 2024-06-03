@@ -17,7 +17,7 @@ interface IChangelogPackage extends IRepo {
 interface IChangelogPackageVersion {
   label: string;
   description: string;
-  descriptionTemp: {
+  descriptionTemp?: {
     type: string;
     children: [];
   };

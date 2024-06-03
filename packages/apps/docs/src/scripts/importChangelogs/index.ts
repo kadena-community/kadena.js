@@ -89,7 +89,7 @@ const crawl = (repo: IRepo): ((tree: Node) => IChangelogPackage) => {
           }
         } else if (currentPosition === VersionPosition.VERSION) {
           if (toMarkdown(branch as any) && version) {
-            content[version.label].descriptionTemp.children.push(
+            content[version.label].descriptionTemp?.children.push(
               branch as never,
             );
             content[version.label].description = toMarkdown(
@@ -100,6 +100,14 @@ const crawl = (repo: IRepo): ((tree: Node) => IChangelogPackage) => {
           innerCrawl(branch);
         }
       });
+    }
+
+    // remove the tempdescriptions from versions
+    for (const key in content) {
+      if ({}.hasOwnProperty.call(content, key)) {
+        const version = content[key];
+        delete version.descriptionTemp;
+      }
     }
 
     return { ...repo, content };
@@ -154,8 +162,8 @@ export const importChangelogs = async (): Promise<IScriptResult> => {
   await getRepos(REPOS);
   const content = await getReposContent(REPOS);
 
-  await getGitHubData(content);
-  enrichPackageContent(content);
+  // await getGitHubData(content);
+  // enrichPackageContent(content);
 
   if (!errors.length) {
     writeContent(content);
