@@ -1,4 +1,4 @@
-import type { ISearchItem } from '@/components/search/search';
+import type { ISearchItem } from '@/components/search-component/search-component';
 
 export const getSearchData = (): {
   searchItems: ISearchItem[];

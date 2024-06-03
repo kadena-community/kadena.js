@@ -1,7 +1,7 @@
 import { useNetworkInfoQuery } from '@/__generated__/sdk';
 import { Media } from '@/components/layout/media';
-import Search from '@/components/search/search';
-import Statistics from '@/components/statistics/statistics';
+import SearchComponent from '@/components/search-component/search-component';
+import StatisticsComponent from '@/components/statistics-component/statistics-component';
 import { getSearchData } from '@/constants/search';
 import { formatStatisticsData } from '@/services/format';
 import { LogoKdacolorLight } from '@kadena/react-icons/brand';
@@ -25,9 +25,9 @@ const Home: React.FC = () => {
           gap={'xxl'}
           alignItems={'center'}
         >
-          <Statistics data={statisticsGridData} />
+          <StatisticsComponent data={statisticsGridData} />
           <LogoKdacolorLight />
-          <Search {...searchData} />
+          <SearchComponent {...searchData} />
         </Stack>
       </Media>
 
@@ -38,10 +38,10 @@ const Home: React.FC = () => {
           alignItems={'center'}
           paddingBlockStart={'xxl'}
         >
-          <Statistics data={statisticsGridData} />
+          <StatisticsComponent data={statisticsGridData} />
 
           <LogoKdacolorLight />
-          <Search {...searchData} />
+          <SearchComponent {...searchData} />
         </Stack>
       </Media>
     </>

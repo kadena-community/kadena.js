@@ -3,14 +3,14 @@ import { MonoHub } from '@kadena/react-icons/system';
 import { Button, Select, SelectItem, Stack, Text } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
 import React, { useState } from 'react';
-import { Media } from '../layout/media';
-import { borderStyleClass, statisticsSpireKeyClass } from './statistics.css';
+import { Media } from '../../layout/media';
+import type { IStatisticsComponentProps } from '../statistics-component';
+import {
+  borderStyleClass,
+  statisticsSpireKeyClass,
+} from './statistics-stack.css';
 
-interface IStatisticsStackProps {
-  data: { label: string; value: string }[];
-}
-
-const StatisticsStack: React.FC<IStatisticsStackProps> = ({ data }) => {
+const StatisticsStack: React.FC<IStatisticsComponentProps> = ({ data }) => {
   const [selectedNetwork, setSelectedNetwork] = useState('Mainnet');
 
   return (
