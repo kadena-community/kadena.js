@@ -133,3 +133,9 @@ e2e-tools:
 kadena.js:
   - changed-files:
       - any-glob-to-any-file: packages/libs/kadena.js/*
+'@kadena/marmalade-marketplace':
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/marmalade-marketplace/*
+e2e-proof-of-us:
+  - changed-files:
+      - any-glob-to-any-file: packages/e2e/e2e-proof-of-us/*
