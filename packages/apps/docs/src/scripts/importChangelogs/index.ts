@@ -162,8 +162,8 @@ export const importChangelogs = async (): Promise<IScriptResult> => {
   await getRepos(REPOS);
   const content = await getReposContent(REPOS);
 
-  // await getGitHubData(content);
-  // enrichPackageContent(content);
+  await getGitHubData(content);
+  enrichPackageContent(content);
 
   if (!errors.length) {
     writeContent(content);
