@@ -116,7 +116,7 @@ export const mapToTreeItems = (
  *
  * E.g. it will a return a structure like this;
  *
- * Map<'arkade', Map<'airdrp[', [{}]>>
+ * Map<'arkade', Map<'airdrop', [{}]>>
  * Map<'coin, [{}]>
  *
  * @param models List of Module models.
