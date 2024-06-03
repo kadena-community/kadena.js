@@ -1,12 +1,33 @@
-import { HttpResponse, http } from 'msw';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { MAINNET_FUND_TRANSFER_ERROR_MESSAGE } from '../../../../constants/account.js';
-import { server } from '../../../../mocks/server.js';
+import { server, useHandler } from '../../../../mocks/server.js';
 import { createAndTransferFund } from '../createAndTransferFunds.js';
 import { testNetworkConfigMock } from './mocks.js';
 
 describe('createAndTransferFunds', () => {
   beforeEach(() => {
+    useHandler({
+      networkId: testNetworkConfigMock.networkId,
+      networkUrl: testNetworkConfigMock.networkHost,
+      response: {
+        result: {
+          data: 'Write succeeded',
+          status: 'success',
+        },
+      },
+    });
+
+    useHandler({
+      networkId: testNetworkConfigMock.networkId,
+      networkUrl: testNetworkConfigMock.networkHost,
+      endpoint: 'send',
+      response: {
+        requestKeys: ['requestKey-1'],
+      },
+    });
+  });
+
+  afterEach(() => {
     server.resetHandlers();
   });
 
@@ -58,14 +79,13 @@ describe('createAndTransferFunds', () => {
   });
 
   it('should throw an error when any sort of error happens', async () => {
-    server.use(
-      http.post(
-        'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/send',
-        () => {
-          return new HttpResponse('gas failure', { status: 500 });
-        },
-      ),
-    );
+    useHandler({
+      networkId: testNetworkConfigMock.networkId,
+      networkUrl: testNetworkConfigMock.networkHost,
+      response: 'gas failure',
+      status: 500,
+      endpoint: 'send',
+    });
 
     await expect(async () => {
       await createAndTransferFund({

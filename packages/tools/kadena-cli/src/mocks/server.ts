@@ -27,7 +27,11 @@ const createHandler = ({
 }: IHandlerOptions): any => {
   const url = `${networkUrl}/chainweb/0.0/${networkId}/chain/${chainId}/pact/api/v1/${endpoint}`;
   return http[method](url, async () => {
-    if (typeof response === 'string') {
+    if (
+      typeof response === 'string' ||
+      response === undefined ||
+      response === null
+    ) {
       return new HttpResponse(response, { status });
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -117,8 +117,8 @@ describe('account fund', () => {
 
   it('should create an account and fund when account does not exist on chain', async () => {
     vi.spyOn(getAccountDetailsHelpers, 'getAccountDetails').mockImplementation(
-      (): Promise<any> => {
-        return Promise.resolve();
+      (): Promise<undefined> => {
+        return Promise.resolve(undefined);
       },
     );
     useDynamicHandler({
