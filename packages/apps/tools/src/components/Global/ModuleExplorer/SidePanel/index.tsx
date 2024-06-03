@@ -19,7 +19,6 @@ export interface ISidePanelProps<T> {
   onExpandCollapse: (item: TreeItem<T>, expanded: boolean) => void;
 }
 
-// eslint-disable-next-line react/function-component-definition
 function SidePanel<T>({
   data,
   onReload,

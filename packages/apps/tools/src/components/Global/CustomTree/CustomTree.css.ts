@@ -43,4 +43,8 @@ export const itemContainerStyle = style([
   },
 ]);
 
-export const reloadButtonStyles = style([atoms({ marginInlineEnd: 'sm' })]);
+export const reloadButtonStyles = atoms({ marginInlineEnd: 'sm' });
+
+export const firstLevelTreeNodeStyles = style({
+  borderBlockEnd: '1px solid rgba(0, 0, 0, 0.25)',
+});

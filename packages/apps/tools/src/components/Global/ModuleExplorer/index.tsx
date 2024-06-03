@@ -46,16 +46,14 @@ const ModuleExplorer = ({
       <SidePanel<IncompleteModuleModel | Outline>
         data={[
           {
-            children: items,
             title: 'Explorer',
             key: 'explorer',
-            label: 'Explorer',
+            children: items,
             data: 'explorer',
           },
           {
             title: 'Outline',
             key: 'outline',
-            label: 'Outline',
             children: outlineItems,
             data: 'outline',
           },

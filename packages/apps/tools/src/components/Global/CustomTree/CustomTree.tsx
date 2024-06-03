@@ -4,22 +4,17 @@ import {
   MonoCached,
 } from '@kadena/react-icons/system';
 import { Badge, Button, Stack, Text } from '@kadena/react-ui';
-import {
-  ellipsis,
-  monospaceSmallestRegular,
-  token,
-} from '@kadena/react-ui/styles';
-import classnames from 'classnames';
-import React from 'react';
+import { token } from '@kadena/react-ui/styles';
+import React, { useCallback } from 'react';
 import type { ICustomAccordionProps } from '../CustomAccordion/CustomAccordion';
 import CustomAccordion from '../CustomAccordion/CustomAccordion';
 import {
   containerStyle,
-  itemBadgeStyle,
   itemContainerStyle,
   itemTitleStyle,
   reloadButtonStyles,
 } from './CustomTree.css';
+import CustomTreeNode from './CustomTreeNode';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type TreeItem<T> = {
@@ -40,7 +35,6 @@ export interface ICustomTreeProps<T>
   onExpandCollapse: (item: TreeItem<T>, expanded: boolean) => void;
 }
 
-// eslint-disable-next-line react/function-component-definition
 function CustomTree<T>({
   data,
   onReload,
@@ -51,29 +45,29 @@ function CustomTree<T>({
   return (
     <CustomAccordion {...rest} data={data} className={containerStyle}>
       {(item) => {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const toggleHandler = useCallback(() => {
+          item.toggleExpandCollapse();
+
+          // We "toggle" the expanded state ourselves since this is still the previous state
+          onExpandCollapse(item.data, !item.isExpanded);
+        }, [item]);
+
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const onReloadCallback = useCallback(() => {
+          onReload(item.data);
+        }, [item]);
+
         return (
           <>
             <Stack
               alignItems={'center'}
               justifyContent={'space-between'}
-              onClick={() => {
-                item.toggleExpandCollapse();
-
-                // We "toggle" the expanded state ourselves since this is still the previous state
-                onExpandCollapse(item.data, !item.isExpanded);
-              }}
+              onClick={toggleHandler}
               role="button"
               className={itemContainerStyle}
             >
-              <Button
-                variant="transparent"
-                onClick={() => {
-                  item.toggleExpandCollapse();
-
-                  // We "toggle" the expanded state ourselves since this is still the previous state
-                  onExpandCollapse(item.data, !item.isExpanded);
-                }}
-              >
+              <Button variant="transparent" onPress={toggleHandler}>
                 {item.isExpanded ? <MonoArrowDropDown /> : <MonoArrowRight />}
               </Button>
               <Text className={itemTitleStyle} bold>
@@ -83,9 +77,7 @@ function CustomTree<T>({
                 <Button
                   variant="transparent"
                   isCompact
-                  onPress={() => {
-                    onReload(item.data);
-                  }}
+                  onPress={onReloadCallback}
                   className={reloadButtonStyles}
                 >
                   <MonoCached
@@ -105,111 +97,9 @@ function CustomTree<T>({
               ) : null}
             </Stack>
             {item.isExpanded ? (
-              <Node
+              <CustomTreeNode
                 data={item.data.children}
                 level={1}
-                onItemClick={onItemClick}
-                onExpandCollapse={onExpandCollapse}
-              />
-            ) : null}
-          </>
-        );
-      }}
-    </CustomAccordion>
-  );
-}
-
-interface INodeProps<T>
-  extends Omit<ICustomAccordionProps<T>, 'data' | 'children'> {
-  data: TreeItem<T>[];
-  level: number;
-  onItemClick: (item: TreeItem<T>) => void;
-  onExpandCollapse: (item: TreeItem<T>, expanded: boolean) => void;
-}
-
-// eslint-disable-next-line react/function-component-definition
-function Node<T>({
-  data,
-  level,
-  onItemClick,
-  onExpandCollapse,
-  ...rest
-}: INodeProps<T>) {
-  return (
-    <CustomAccordion
-      {...rest}
-      data={data}
-      itemProps={{
-        style: {
-          borderBlockEnd:
-            level === 1 ? '1px solid rgba(0, 0, 0, 0.25)' : 'initial',
-        },
-      }}
-    >
-      {(child) => {
-        const hasChildren = !!child.data.children.length;
-        return (
-          <>
-            <Stack
-              alignItems={'center'}
-              justifyContent={'space-between'}
-              onClick={() => {
-                if (child.data.children.length) {
-                  child.toggleExpandCollapse();
-
-                  // We "toggle" the expanded state ourselves since this is still the previous state
-                  onExpandCollapse(child.data, !child.isExpanded);
-                } else {
-                  onItemClick(child.data);
-                }
-              }}
-              role="button"
-              className={itemContainerStyle}
-              style={{
-                paddingInlineStart: `${level * 20 + (!hasChildren ? 20 : 0)}px`,
-                cursor: hasChildren ? 'default' : 'pointer',
-              }}
-            >
-              {hasChildren ? (
-                <Button
-                  variant="transparent"
-                  onClick={() => {
-                    child.toggleExpandCollapse();
-
-                    // We "toggle" the expanded state ourselves since this is still the previous state
-                    onExpandCollapse(child.data, !child.isExpanded);
-                  }}
-                >
-                  {child.isExpanded ? (
-                    <MonoArrowDropDown />
-                  ) : (
-                    <MonoArrowRight />
-                  )}
-                </Button>
-              ) : null}
-              <Text className={itemTitleStyle}>{child.data.title}</Text>
-              {child.data.label ? (
-                <Badge
-                  size="sm"
-                  className={classnames(
-                    monospaceSmallestRegular,
-                    ellipsis,
-                    itemBadgeStyle,
-                  )}
-                >
-                  {child.data.label}
-                </Badge>
-              ) : null}
-              {hasChildren ? (
-                <Badge size="sm" style={'highContrast'}>
-                  {child.data.children.length}
-                </Badge>
-              ) : null}
-            </Stack>
-            {child.isExpanded && hasChildren ? (
-              <Node
-                data={child.data.children}
-                level={level + 1}
                 onItemClick={onItemClick}
                 onExpandCollapse={onExpandCollapse}
               />

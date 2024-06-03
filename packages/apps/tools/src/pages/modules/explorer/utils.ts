@@ -61,7 +61,7 @@ export type ModulesMap = Map<
 >;
 
 export const mapToTreeItems = (
-  modulesMap: Map<Namespace, ModuleData | Map<ModuleName, ModuleData>>,
+  modulesMap: ModulesMap,
   parent?: Namespace,
 ): TreeItem<IncompleteModuleModel>[] => {
   return [...modulesMap]

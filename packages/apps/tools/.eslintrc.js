@@ -14,6 +14,7 @@ module.exports = {
     '@rushstack/no-new-null': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
     'no-void': 'off',
+    'react/function-component-definition': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': [
       'error',
