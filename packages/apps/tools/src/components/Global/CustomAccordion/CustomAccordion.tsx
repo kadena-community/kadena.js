@@ -23,7 +23,7 @@ function CustomAccordion<
   ...rest
 }: ICustomAccordionProps<T>) {
   return (
-    <ul {...rest} className={classNames(listStyle, className)}>
+    <ul {...rest} className={classNames(listStyle, className)} role="menu">
       {data.map((item) => (
         <Item
           key={item.key}

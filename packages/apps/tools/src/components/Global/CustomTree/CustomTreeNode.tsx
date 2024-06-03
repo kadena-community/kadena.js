@@ -102,6 +102,7 @@ function Node<T>({
                 level={level + 1}
                 onItemClick={onItemClick}
                 onExpandCollapse={onExpandCollapse}
+                {...child.accessibilityProps}
               />
             ) : null}
           </>

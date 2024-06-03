@@ -64,6 +64,7 @@ function SidePanel<T>({
               onReload={onReload}
               onItemClick={onModuleClick}
               onExpandCollapse={onExpandCollapse}
+              {...item.accessibilityProps}
             />
           ) : null}
         </>
