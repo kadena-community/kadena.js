@@ -398,18 +398,25 @@ const CrossChainTransferFinisher: FC = () => {
       <Heading as="h4">{t('Finish transaction')}</Heading>
 
       <div className={notificationContainerStyle}>
-        <Notification intent="warning" role="status" isDismissable>
+        <Notification
+          intent="warning"
+          role="status"
+          type="inlineStacked"
+          isDismissable
+        >
           <NotificationHeading>{t('Application Settings')}</NotificationHeading>
-          <Trans
-            i18nKey="common:application-settings-warning"
-            components={[
-              <a
-                className={notificationLinkStyle}
-                key="link-open-settings"
-                onClick={handleDevOptionsClick}
-              />,
-            ]}
-          />
+          <div>
+            <Trans
+              i18nKey="common:application-settings-warning"
+              components={[
+                <a
+                  className={notificationLinkStyle}
+                  key="link-open-settings"
+                  onClick={handleDevOptionsClick}
+                />,
+              ]}
+            />
+          </div>
         </Notification>
       </div>
 
