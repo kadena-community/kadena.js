@@ -4,18 +4,16 @@ import type { IEditorProps } from '@/components/Global/ModuleExplorer/editor';
 import type { IChainModule } from '@/components/Global/ModuleExplorer/types';
 import { isModuleLike } from '@/components/Global/ModuleExplorer/types';
 import { moduleModelToChainModule } from '@/components/Global/ModuleExplorer/utils';
-import { kadenaConstants } from '@/constants/kadena';
 import { menuData } from '@/constants/side-menu-items';
 import { StorageKeys } from '@/context/connect-wallet-context';
 import { useLayoutContext, useToolbar } from '@/context/layout-context';
 import type { IncompleteModuleModel } from '@/hooks/use-module-query';
-import { useModuleQuery } from '@/hooks/use-module-query';
+import { fetchModule, useModuleQuery } from '@/hooks/use-module-query';
 import { QUERY_KEY, useModulesQuery } from '@/hooks/use-modules-query';
-import { describeModule } from '@/services/modules/describe-module';
 import { getAllNetworks } from '@/utils/network';
 import type {
   ChainwebChainId,
-  ILocalCommandResult,
+  ChainwebNetworkId,
 } from '@kadena/chainweb-node-client';
 import { CHAINS } from '@kadena/chainweb-node-client';
 import { useQueryClient } from '@tanstack/react-query';
@@ -57,23 +55,17 @@ export const getServerSideProps: GetServerSideProps<{
   );
   const networkQueryValue = getQueryValue(QueryParams.NETWORK, context.query);
   if (moduleQueryValue && chainQueryValue && networkQueryValue) {
-    const moduleResponse = (await describeModule(
-      moduleQueryValue,
-      chainQueryValue as ChainwebChainId,
-      networkQueryValue,
-      networksData,
-      kadenaConstants.DEFAULT_SENDER,
-      kadenaConstants.GAS_PRICE,
-      1000,
-    )) as ILocalCommandResult;
 
-    if (moduleResponse.result.status !== 'failure') {
-      openedModules.push({
-        code: (moduleResponse.result.data as unknown as { code: string }).code,
-        moduleName: moduleQueryValue,
-        chainId: chainQueryValue as ChainwebChainId,
-        network: networkQueryValue,
-      });
+    try {
+      const fetchedModule = await fetchModule(
+        moduleQueryValue,
+        networkQueryValue as ChainwebNetworkId,
+        chainQueryValue as ChainwebChainId,
+      );
+
+      openedModules.push(fetchedModule);
+    } catch (e) {
+      console.error('Something went wrong while fetching the module', e);
     }
   }
 
