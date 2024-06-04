@@ -21,3 +21,11 @@ export const hashBadgeStyles = atoms({
 });
 
 export const chainBadgeStyles = style({ whiteSpace: 'nowrap' });
+
+export const tabsLabelStyles = style({ whiteSpace: 'nowrap' });
+
+export const firstLevelTabPanelStyles = atoms({
+  backgroundColor: 'surface.default',
+});
+
+export const secondLevelTabPanelStyles = style({ marginBlock: 0 });

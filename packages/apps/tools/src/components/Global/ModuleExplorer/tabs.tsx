@@ -10,6 +10,12 @@ import type { TabNode } from '@kadena/react-ui';
 import { Stack, TabItem, Tabs, Text } from '@kadena/react-ui';
 import type { FC, Key } from 'react';
 import React, { useCallback, useMemo } from 'react';
+import {
+  firstLevelTabPanelStyles,
+  secondLevelTabPanelStyles,
+  tabPanelStyles,
+  tabsLabelStyles,
+} from './styles.css';
 
 export interface ITabsProps {
   openedModules: ModuleModel[];
@@ -122,16 +128,18 @@ const Tabsss: FC<ITabsProps> = ({
         selectedKey={activeModule.name}
         onSelectionChange={onParentChange}
         onClose={onParentClose}
+        tabPanelClassName={firstLevelTabPanelStyles}
       >
         {(item) => {
           return (
             <TabItem key={item.title} title={item.title}>
-              <Stack>
-                <Text>Module on chain:</Text>
+              <Stack alignItems="center">
+                <Text className={tabsLabelStyles}>Module on chain:</Text>
                 <Tabs
                   items={item.children}
                   onSelectionChange={onModuleChangeInternal}
                   onClose={onModuleClose}
+                  tabPanelClassName={secondLevelTabPanelStyles}
                 >
                   {(item) => {
                     return (
