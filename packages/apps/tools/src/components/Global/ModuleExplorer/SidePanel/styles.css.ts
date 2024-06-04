@@ -12,6 +12,12 @@ export const containerStyle = style([
   }),
 ]);
 
+export const itemStyle = style({
+  height: token('size.n12'),
+  borderBlockEnd: `${token('border.width.hairline')} solid ${token('color.border.base.default')}`,
+  boxSizing: 'content-box',
+});
+
 export const headingStyles = style({
   flex: 1,
 });
