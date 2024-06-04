@@ -1,12 +1,16 @@
 import { useTransactionsQuery } from '@/__generated__/sdk';
+import Balance from '@/components/balance/balance';
 import ChainOverview from '@/components/chain-overview/chain-overview';
 import { Stack } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
-import React from 'react';
+import React, { useState } from 'react';
 
 const Account: FC = () => {
   const router = useRouter();
+  const [selectedChain, setSelectedChain] = useState<number | undefined>(
+    undefined,
+  );
   const { loading, data, error } = useTransactionsQuery({
     variables: {
       accountName: router.query.accountName as string,
@@ -14,14 +18,16 @@ const Account: FC = () => {
     skip: !router.query.accountName,
   });
 
-  console.log({ data });
+  const handleChainHover = (chainId: number) => {
+    setSelectedChain(chainId);
+  };
 
   return (
     <>
       {loading && <div>Loading...</div>}
       {error && <div>Error: {error.message}</div>}
 
-      <ChainOverview />
+      <ChainOverview onHover={handleChainHover} />
       <Stack
         width="100%"
         gap="md"
@@ -29,8 +35,12 @@ const Account: FC = () => {
       >
         <Stack flex={1}>1</Stack>
         <Stack flexDirection="column" gap="md">
-          <Stack>2</Stack>
-          <Stack>3</Stack>
+          <Stack>
+            <Balance chainId={selectedChain} />
+          </Stack>
+          <Stack>
+            <Balance />
+          </Stack>
         </Stack>
       </Stack>
     </>

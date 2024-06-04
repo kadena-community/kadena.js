@@ -6,12 +6,16 @@ import { chainOverviewClass } from './styles.css';
 
 const CHAINSCOUNT = 20;
 
-const ChainOverview: FC = () => {
+interface IProps {
+  onHover: (chainId: number) => void;
+}
+
+const ChainOverview: FC<IProps> = ({ onHover }) => {
   return (
     <section>
       <Stack width="100%" as="ul" className={chainOverviewClass}>
-        {Array.from(Array(CHAINSCOUNT).keys()).map((label, idx) => (
-          <Chain key={idx} label={`${label}`} />
+        {Array.from(Array(CHAINSCOUNT).keys()).map((chainId, idx) => (
+          <Chain key={idx} chainId={chainId} onHover={onHover} />
         ))}
       </Stack>
     </section>
