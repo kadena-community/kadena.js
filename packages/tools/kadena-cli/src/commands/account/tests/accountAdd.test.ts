@@ -117,7 +117,6 @@ describe('account add manual type', () => {
       publicKeys: ['pubkey1', 'pubkey2'],
       predicate: 'keys-all',
     });
-    // mock.mockClear();
   });
 
   it('should add an account alias manual with quiet flag', async () => {
@@ -196,7 +195,7 @@ describe('account add type wallet', () => {
     }
   });
 
-  afterEach(async () => {
+  afterEach(() => {
     vi.resetAllMocks();
   });
 
