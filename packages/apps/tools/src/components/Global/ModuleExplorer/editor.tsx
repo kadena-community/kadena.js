@@ -95,7 +95,6 @@ const Editor = ({
       <div style={{ flex: 1 }}>
         <AceViewer
           code={activeModule.code}
-          width="100%"
           readOnly={editingMode === 'disabled'}
           keyboardHandler={keyboardHandler}
           theme={theme}

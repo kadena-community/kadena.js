@@ -34,7 +34,7 @@ const AceViewerComponent: FC<IEditorProps> = ({
   <div className={containerStyle}>
     <AceEditor
       value={code}
-      width={width || '94%'}
+      width={width || '100%'}
       height={height || '100%'}
       readOnly={readOnly !== false}
       onChange={onChange}
