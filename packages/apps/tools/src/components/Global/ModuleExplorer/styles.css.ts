@@ -14,3 +14,10 @@ export const placeholderBodyStyles = style([
 ]);
 
 export const statusbarStyles = style({ borderBlock: token('border.hairline') });
+
+export const hashBadgeStyles = atoms({
+  paddingInline: 'xs',
+  paddingBlock: 'n0',
+});
+
+export const chainBadgeStyles = style({ whiteSpace: 'nowrap' });
