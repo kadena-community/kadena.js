@@ -249,7 +249,6 @@ const ExistingAccountFaucetPage: FC = () => {
               {t('The Faucet is not available on Mainnet')}
             </NotificationHeading>
             <div>
-              {' '}
               <Trans
                 i18nKey="common:faucet-unavailable-warning"
                 components={[
