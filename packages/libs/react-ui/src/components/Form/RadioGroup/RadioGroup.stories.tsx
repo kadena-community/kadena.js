@@ -19,7 +19,8 @@ const meta: Meta<IRadioGroupProps> = {
     },
     docs: {
       description: {
-        component: 'The checkbox component',
+        component:
+          "The RadioGroup component is a wrapper around [react-aria's](https://react-spectrum.adobe.com/react-aria/useRadioGroup.html) useRadioGroup hook. Here are just a couple of examples but you can check their docs for more.",
       },
     },
   },
