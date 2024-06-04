@@ -1,27 +1,32 @@
 import yaml from 'js-yaml';
 import path from 'path';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { ACCOUNT_DIR, CWD_KADENA_DIR } from '../../../../constants/config.js';
 import { services } from '../../../../services/index.js';
+import { IAccountAliasFileConfig } from '../../types.js';
 import { createAccountConfigFile } from '../createAccountConfigFile.js';
 import { defaultConfigMock } from './mocks.js';
 
 describe('createAccountConfigFile', () => {
   const accountDir = path.join(CWD_KADENA_DIR, ACCOUNT_DIR);
-  it('should write "config" in config file', async () => {
-    const config = {
-      ...defaultConfigMock,
-      accountAlias: 'unit-test-alias',
-      accountName: 'accountName',
-    };
-
-    const filePath = path.join(accountDir, `${config.accountAlias}.yaml`);
-    const fs = services.filesystem;
+  const accountAlias = 'unit-test-alias';
+  const filePath = path.join(accountDir, `${accountAlias}.yaml`);
+  const fs = services.filesystem;
+  beforeEach(async () => {
     // To start fresh delete the file if it already exists
     if (await fs.fileExists(filePath)) {
       await fs.deleteFile(filePath);
     }
+  });
+  it('should write "config" in config file', async () => {
+    const config = {
+      ...defaultConfigMock,
+      publicKeysConfig: ['key1', 'key2'],
+      accountName: 'accountName',
+      accountAlias,
+    };
+
     expect(await fs.fileExists(filePath)).toBe(false);
 
     await createAccountConfigFile(filePath, config);
@@ -36,15 +41,14 @@ describe('createAccountConfigFile', () => {
       }),
     );
     expect(await fs.fileExists(filePath)).toBe(true);
-    // Cleanup the file after test
-    await fs.deleteFile(filePath);
   });
 
   it('should return false with errors message', async () => {
     const config = {
       ...defaultConfigMock,
-      accountAlias: 'unit-test-alias',
+      publicKeysConfig: ['key1', 'key2'],
       accountName: 'accountName',
+      accountAlias,
     };
     const filePath = path.join(accountDir, `${config.accountAlias}.yaml`);
     const fs = services.filesystem;
@@ -57,7 +61,26 @@ describe('createAccountConfigFile', () => {
     }).rejects.toThrow(
       `The account configuration "${filePath}" already exists.`,
     );
-    // Cleanup the file after test
-    await fs.deleteFile(filePath);
+  });
+
+  it('should thrown an error when zod validation account alias schema fails', async () => {
+    const config = {
+      accountAlias: 'unit-test-alias',
+      accountName: 'accountName',
+      predicate: 'keys-all',
+      publicKeysConfig: [],
+    };
+    const filePath = path.join(accountDir, `${config.accountAlias}.yaml`);
+    const fs = services.filesystem;
+    expect(await fs.fileExists(filePath)).toBe(false);
+
+    await expect(async () => {
+      await createAccountConfigFile(
+        filePath,
+        config as unknown as IAccountAliasFileConfig,
+      );
+    }).rejects.toThrow(
+      `Error writing alias file: ${filePath}\n "fungible": expected string, received undefined\n"publicKeys": Array must contain at least 1 element(s)`,
+    );
   });
 });

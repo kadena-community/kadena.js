@@ -56,9 +56,10 @@ export async function fetchTransactionDetails(
     }
     return transactionResult;
   } catch (e) {
-    throw new Error(
-      `ChainID: "${chainId}" - requestKey: ${requestKey} - ${e.message}`,
-    );
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error(e);
   }
 }
 

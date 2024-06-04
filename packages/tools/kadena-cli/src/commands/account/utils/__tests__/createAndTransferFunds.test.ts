@@ -105,4 +105,37 @@ describe('createAndTransferFunds', () => {
       Error(`Failed to create an account and transfer fund: gas failure`),
     );
   });
+
+  it('should throw an error when status is failure', async () => {
+    useHandler({
+      networkId: testNetworkConfigMock.networkId,
+      networkUrl: testNetworkConfigMock.networkHost,
+      response: {
+        result: {
+          error: {
+            message: 'gas failure',
+          },
+          status: 'failure',
+        },
+      },
+    });
+
+    await expect(async () => {
+      await createAndTransferFund({
+        account: {
+          name: 'accountName',
+          publicKeys: ['publicKey'],
+          predicate: 'predicate',
+        },
+        config: {
+          amount: '100',
+          contract: 'coin',
+          chainId: '1',
+          networkConfig: testNetworkConfigMock,
+        },
+      });
+    }).rejects.toEqual(
+      Error(`Failed to create an account and transfer fund: gas failure`),
+    );
+  });
 });
