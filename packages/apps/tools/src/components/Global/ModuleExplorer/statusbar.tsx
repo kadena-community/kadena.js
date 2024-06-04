@@ -1,6 +1,6 @@
 import type { ModuleModel } from '@/hooks/use-module-query';
 import { Badge, Stack, Text } from '@kadena/react-ui';
-import { ellipsis } from '@kadena/react-ui/styles';
+import { ellipsis, monospaceSmallestRegular } from '@kadena/react-ui/styles';
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
@@ -17,20 +17,31 @@ const StatusBar: FC<{ module: ModuleModel }> = ({ module }) => {
   const [namespace, moduleName] = module.name.split('.');
 
   return (
-    <Stack gap="sm" alignItems={'center'} className={statusbarStyles}>
-      <Text bold>{t('namespace')}</Text>
-      <Text>{moduleName ? namespace : t('N/A')}</Text>
-      <Text bold>{t('module')}</Text>
-      <Text>{moduleName ?? module.name}</Text>
+    <Stack
+      gap="sm"
+      alignItems={'center'}
+      className={statusbarStyles}
+      paddingInline="sm"
+      paddingBlock="xs"
+    >
+      <Text bold size="smallest">
+        {t('namespace')}
+      </Text>
+      <Text size="smallest">{moduleName ? namespace : t('N/A')}</Text>
+      <Text bold size="smallest">
+        {t('module')}
+      </Text>
+      <Text size="smallest">{moduleName ?? module.name}</Text>
       <Badge
         size="sm"
         style="highContrast"
         className={chainBadgeStyles}
       >{`Chain ${module.chainId}`}</Badge>
-      <Text>#</Text>
+      <Text size="smallest">#</Text>
       <Badge
         size="sm"
         style="warning"
+        className={monospaceSmallestRegular}
         // className={classNames(ellipsis, hashBadgeStyles)}
       >
         {module.hash!}
