@@ -6,7 +6,7 @@ import type {
 } from '@kadena/chainweb-node-client';
 import { contractParser } from '@kadena/pactjs-generator';
 import type { TreeItem } from '../CustomTree/CustomTree';
-import type { IChainModule, Outline } from './types';
+import type { Outline } from './types';
 
 export type Contract = ReturnType<typeof contractParser>[0][0]; // TODO: Should we improve this because it's a bit hacky?
 export type ContractInterface = ElementType<Contract['usedInterface']> & {
@@ -17,18 +17,18 @@ export type ContractInterface = ElementType<Contract['usedInterface']> & {
 export type ContractCapability = ElementType<Contract['capabilities']>;
 export type ContractFunction = ElementType<Contract['functions']>;
 
-export const chainModuleToOutlineTreeItems = (
-  chainModule: IChainModule,
+export const moduleToOutlineTreeItems = (
+  module: IncompleteModuleModel,
   items: TreeItem<IncompleteModuleModel>[],
 ): TreeItem<Outline>[] => {
   const treeItems: TreeItem<Outline>[] = [];
 
-  if (!chainModule.code) {
+  if (!module.code) {
     return treeItems;
   }
 
-  const [, namespace] = chainModule.moduleName.split('.');
-  const [[parsedContract]] = contractParser(chainModule.code, namespace);
+  const [, namespace] = module.name.split('.');
+  const [[parsedContract]] = contractParser(module.code, namespace);
 
   const { usedInterface: interfaces, capabilities, functions } = parsedContract;
 
@@ -38,13 +38,13 @@ export const chainModuleToOutlineTreeItems = (
       key: 'interfaces',
       data: {
         name: 'interfaces',
-        chainId: chainModule.chainId,
-        networkId: chainModule.network as ChainwebNetworkId,
+        chainId: module.chainId,
+        networkId: module.networkId,
       },
       children: interfaces.map((i) => {
         // Top level, one of the networks
         const networkItems = items.find((item) => {
-          return item.data.networkId === chainModule.network;
+          return item.data.networkId === module.networkId;
         });
         // The second level, the module on certain chains
         const chainModules = networkItems?.children.find((child) => {
@@ -52,17 +52,17 @@ export const chainModuleToOutlineTreeItems = (
         });
         // And now the final search, the module on the specific chain
         const moduleTreeItem = chainModules?.children.find((child) => {
-          return child.data.chainId === chainModule.chainId;
+          return child.data.chainId === module.chainId;
         });
 
         return {
           title: i.name,
-          key: `${chainModule.network}.${i.name}`,
+          key: `${module.networkId}.${i.name}`,
           label: moduleTreeItem?.data.hash,
           data: {
             ...i,
-            chainId: chainModule.chainId,
-            networkId: chainModule.network as ChainwebNetworkId,
+            chainId: module.chainId,
+            networkId: module.networkId,
             code: moduleTreeItem?.data.code,
           },
           children: [],
@@ -100,17 +100,4 @@ export const chainModuleToOutlineTreeItems = (
   }
 
   return treeItems;
-};
-
-export const moduleModelToChainModule = (
-  module: IncompleteModuleModel,
-): IChainModule => {
-  const chainModule: IChainModule = {
-    code: module.code,
-    chainId: module.chainId,
-    moduleName: module.name,
-    hash: module.hash,
-    network: module.networkId,
-  };
-  return chainModule;
 };

@@ -1,13 +1,14 @@
 import type { TreeItem } from '@/components/Global/CustomTree/CustomTree';
 import ModuleExplorer from '@/components/Global/ModuleExplorer';
 import type { IEditorProps } from '@/components/Global/ModuleExplorer/editor';
-import type { IChainModule } from '@/components/Global/ModuleExplorer/types';
 import { isModuleLike } from '@/components/Global/ModuleExplorer/types';
-import { moduleModelToChainModule } from '@/components/Global/ModuleExplorer/utils';
 import { menuData } from '@/constants/side-menu-items';
 import { StorageKeys } from '@/context/connect-wallet-context';
 import { useLayoutContext, useToolbar } from '@/context/layout-context';
-import type { IncompleteModuleModel } from '@/hooks/use-module-query';
+import type {
+  IncompleteModuleModel,
+  ModuleModel,
+} from '@/hooks/use-module-query';
 import { fetchModule, useModuleQuery } from '@/hooks/use-module-query';
 import { QUERY_KEY, useModulesQuery } from '@/hooks/use-modules-query';
 import { getAllNetworks } from '@/utils/network';
@@ -55,7 +56,6 @@ export const getServerSideProps: GetServerSideProps<{
   );
   const networkQueryValue = getQueryValue(QueryParams.NETWORK, context.query);
   if (moduleQueryValue && chainQueryValue && networkQueryValue) {
-
     try {
       const fetchedModule = await fetchModule(
         moduleQueryValue,
@@ -130,9 +130,9 @@ const ModuleExplorerPage = (
   // });
 
   const setDeepLink = useCallback(
-    (module: IChainModule) => {
+    (module: ModuleModel) => {
       void router.replace(
-        `?${QueryParams.MODULE}=${module.moduleName}&${QueryParams.CHAIN}=${module.chainId}&${QueryParams.NETWORK}=${module.network}`,
+        `?${QueryParams.MODULE}=${module.name}&${QueryParams.CHAIN}=${module.chainId}&${QueryParams.NETWORK}=${module.networkId}`,
         undefined,
         { shallow: true },
       );
@@ -140,7 +140,7 @@ const ModuleExplorerPage = (
     [router],
   );
 
-  const onModuleOpen = useCallback<(module: IChainModule) => void>(
+  const onModuleOpen = useCallback<(module: ModuleModel) => void>(
     (module) => {
       setDeepLink(module);
     },
@@ -156,7 +156,7 @@ const ModuleExplorerPage = (
       </Head>
       <ModuleExplorer
         onModuleClick={(treeItem) => {
-          onModuleOpen(moduleModelToChainModule(treeItem.data));
+          onModuleOpen(treeItem.data);
         }}
         onActiveModuleChange={(module) => {
           setDeepLink(module);

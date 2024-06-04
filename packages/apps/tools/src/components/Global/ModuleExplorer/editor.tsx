@@ -25,6 +25,7 @@ import {
   modes,
   themes,
 } from '@/components/Global/Ace/helper';
+import type { ModuleModel } from '@/hooks/use-module-query';
 import { usePersistentState } from '@/hooks/use-persistent-state';
 import { MonoClose } from '@kadena/react-icons/system';
 import useTranslation from 'next-translate/useTranslation';
@@ -37,10 +38,10 @@ const AceViewer = dynamic(import('@/components/Global/Ace'), {
 });
 
 export interface IEditorProps {
-  openedModules: IChainModule[];
-  onActiveModuleChange: (module: IChainModule) => void;
-  onTabClose: (module: IChainModule) => void;
-  activeModule?: IChainModule;
+  openedModules: ModuleModel[];
+  onActiveModuleChange: (module: ModuleModel) => void;
+  onTabClose: (module: ModuleModel) => void;
+  activeModule?: ModuleModel;
 }
 
 const moduleToTabId = ({

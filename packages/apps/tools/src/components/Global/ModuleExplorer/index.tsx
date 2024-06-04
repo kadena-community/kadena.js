@@ -6,12 +6,9 @@ import SidePanel from './SidePanel';
 import type { IEditorProps } from './editor';
 import Editor from './editor';
 import { containerStyle } from './styles.css';
-import type { IChainModule, Outline } from './types';
+import type { Outline } from './types';
 import { isModuleLike } from './types';
-import {
-  chainModuleToOutlineTreeItems,
-  moduleModelToChainModule,
-} from './utils';
+import { moduleToOutlineTreeItems } from './utils';
 
 export interface IModuleExplorerProps {
   openedModules: IEditorProps['openedModules'];
@@ -32,15 +29,17 @@ const ModuleExplorer = ({
   onActiveModuleChange,
   openedModules: _openedModules,
 }: IModuleExplorerProps) => {
-  const [activeModule, setActiveModule] = useState<IChainModule>(
+  const [activeModule, setActiveModule] = useState<IncompleteModuleModel>(
     _openedModules[0],
   );
+
   const [openedModules, setOpenedModules] =
-    useState<IChainModule[]>(_openedModules);
+    useState<IncompleteModuleModel[]>(_openedModules);
+
   let outlineItems: TreeItem<Outline>[] = [];
 
   if (activeModule) {
-    outlineItems = chainModuleToOutlineTreeItems(activeModule, items);
+    outlineItems = moduleToOutlineTreeItems(activeModule, items);
   }
 
   return (
@@ -63,14 +62,13 @@ const ModuleExplorer = ({
         onReload={onReload}
         onModuleClick={({ data }) => {
           if (isModuleLike(data)) {
-            const chainModule: IChainModule = moduleModelToChainModule(data);
-            setActiveModule(chainModule);
+            setActiveModule(data);
             setOpenedModules((prev) => {
               const alreadyOpened = prev.find((openedModule) => {
                 return (
-                  openedModule.moduleName === chainModule.moduleName &&
-                  openedModule.chainId === chainModule.chainId &&
-                  openedModule.network === chainModule.network
+                  openedModule.name === data.name &&
+                  openedModule.chainId === data.chainId &&
+                  openedModule.networkId === data.networkId
                 );
               });
 
@@ -78,7 +76,7 @@ const ModuleExplorer = ({
                 return prev;
               }
 
-              return [...prev, chainModule];
+              return [...prev, data];
             });
           }
         }}
@@ -95,8 +93,8 @@ const ModuleExplorer = ({
           setOpenedModules(
             openedModules.filter((openedModule) => {
               return (
-                `${openedModule.moduleName}-${openedModule.chainId}-${openedModule.network}` !==
-                `${module.moduleName}-${module.chainId}-${module.network}`
+                `${openedModule.name}-${openedModule.chainId}-${openedModule.networkId}` !==
+                `${module.name}-${module.chainId}-${module.networkId}`
               );
             }),
           );
