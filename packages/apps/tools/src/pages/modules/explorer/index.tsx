@@ -7,7 +7,7 @@ import { moduleModelToChainModule } from '@/components/Global/ModuleExplorer/uti
 import { kadenaConstants } from '@/constants/kadena';
 import { menuData } from '@/constants/side-menu-items';
 import { StorageKeys } from '@/context/connect-wallet-context';
-import { useToolbar } from '@/context/layout-context';
+import { useLayoutContext, useToolbar } from '@/context/layout-context';
 import type { IncompleteModuleModel } from '@/hooks/use-module-query';
 import { useModuleQuery } from '@/hooks/use-module-query';
 import { QUERY_KEY, useModulesQuery } from '@/hooks/use-modules-query';
@@ -25,7 +25,7 @@ import type {
   GetServerSideProps,
   InferGetServerSidePropsType,
 } from 'next/types';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
   getCookieValue,
   getQueryValue,
@@ -83,6 +83,18 @@ export const getServerSideProps: GetServerSideProps<{
 const ModuleExplorerPage = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) => {
+  const { setIsMenuOpen } = useLayoutContext();
+
+  useEffect(() => {
+    // For this page we don't want the menu to be open (we only have one menu item)
+    setIsMenuOpen(false);
+
+    return () => {
+      // Reopen the menu when the user navigates away
+      setIsMenuOpen(true);
+    };
+  }, [setIsMenuOpen]);
+
   const queryClient = useQueryClient();
 
   const router = useRouter();
