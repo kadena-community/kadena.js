@@ -10,6 +10,8 @@ import {
   Text,
 } from '@kadena/react-ui';
 
+import { useTheme } from 'next-themes';
+
 import type { IChainModule } from './types';
 
 import type {
@@ -62,12 +64,18 @@ const Editor = ({
   const { t } = useTranslation('common');
   const [keyboardHandler, setKeyboardHandler] =
     usePersistentState<KeyboardHandler>('keyboard-handler', keyboards[0]);
-  const [theme, setTheme] = usePersistentState<Theme>('theme', 'monokai');
+  // const [theme, setTheme] = usePersistentState<Theme>('theme', 'monokai');
   const [mode, setMode] = usePersistentState<Mode>('mode', 'lisp');
   const [editingMode, setEditingMode] = usePersistentState<EditingMode>(
     'editing-mode',
     'disabled',
   );
+
+  const { systemTheme, theme, setTheme } = useTheme();
+
+  const currentTheme = theme === 'system' ? systemTheme : theme;
+
+  const aceTheme = currentTheme === 'dark' ? 'github_dark' : 'github';
 
   if (!openedModules.length || !activeModule) {
     return (
@@ -97,7 +105,7 @@ const Editor = ({
           code={activeModule.code}
           readOnly={editingMode === 'disabled'}
           keyboardHandler={keyboardHandler}
-          theme={theme}
+          theme={aceTheme}
           mode={mode}
         />
       </div>
