@@ -7,7 +7,6 @@ import {
   SelectItem,
   Stack,
   TabItem,
-  Tabs,
   Text,
 } from '@kadena/react-ui';
 
@@ -30,8 +29,10 @@ import { usePersistentState } from '@/hooks/use-persistent-state';
 import { MonoClose } from '@kadena/react-icons/system';
 import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import StatusBar from './statusbar';
 import { placeholderBodyStyles } from './styles.css';
+import Tabs from './tabs';
 
 const AceViewer = dynamic(import('@/components/Global/Ace'), {
   ssr: false,
@@ -67,16 +68,8 @@ const Editor = ({
     'editing-mode',
     'disabled',
   );
-  const [selectedKey, setSelectedKey] = useState(
-    activeModule ? moduleToTabId(activeModule) : null,
-  );
-  useEffect(() => {
-    if (activeModule) {
-      setSelectedKey(moduleToTabId(activeModule));
-    }
-  }, [activeModule]);
 
-  if (!openedModules.length) {
+  if (!openedModules.length || !activeModule) {
     return (
       <Stack
         as="section"
@@ -91,6 +84,28 @@ const Editor = ({
       </Stack>
     );
   }
+
+  return (
+    <Stack flexDirection={'column'} justifyContent={'space-between'}>
+      <Tabs
+        openedModules={openedModules}
+        activeModule={activeModule}
+        onModuleChange={onActiveModuleChange}
+      />
+      <div style={{ flex: 1 }}>
+        <AceViewer
+          code={activeModule.code}
+          width="100%"
+          readOnly={editingMode === 'disabled'}
+          keyboardHandler={keyboardHandler}
+          theme={theme}
+          mode={mode}
+        />
+      </div>
+      <StatusBar module={activeModule} />
+    </Stack>
+  );
+
   return (
     <Stack flexDirection={'column'}>
       <Grid columns={4}>
