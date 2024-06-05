@@ -78,11 +78,14 @@ export default builder.prismaNode(Prisma.ModelName.Transfer, {
           // Filter the transactions to find the counterTransaction
           let counterTransaction = transactions.find(
             (transaction) =>
-              transaction.pactId === parent.requestKey ||
-              (transaction.blockHash === parent.blockHash &&
-                transaction.requestKey === parent.requestKey &&
-                transaction.pactId !== null &&
-                transaction.pactId !== undefined),
+              (transaction.pactId === parent.requestKey ||
+                (transaction.blockHash === parent.blockHash &&
+                  transaction.requestKey === parent.requestKey &&
+                  transaction.pactId !== null &&
+                  transaction.pactId !== undefined)) &&
+              transaction.transfers.find((transfer) =>
+                transfer.amount.equals(new Decimal(parent.amount)),
+              ),
           );
 
           if (!counterTransaction) {
