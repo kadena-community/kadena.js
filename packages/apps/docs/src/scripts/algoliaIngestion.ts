@@ -15,7 +15,6 @@ import { initFunc } from './utils/build';
         db: 'Algolia',
         isDryRun: false,
         ignore: [],
-        isSkipEmbeddings: true,
         namespace,
       });
       success.push(`Ingestion successful for ${namespace} index`);

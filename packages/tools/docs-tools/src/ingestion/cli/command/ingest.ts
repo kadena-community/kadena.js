@@ -20,7 +20,6 @@ interface IOptions {
   db?: string;
   namespace: string;
   isDryRun: boolean;
-  isSkipEmbeddings: boolean;
 }
 
 const isValidSource = (source?: string): source is keyof typeof sources =>
