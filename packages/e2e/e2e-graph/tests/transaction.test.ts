@@ -1,6 +1,14 @@
-import { devnetMiner } from '@kadena-dev/e2e-base/src/constants/accounts.constants';
+import {
+  devnetMiner,
+  sender00Account,
+} from '@kadena-dev/e2e-base/src/constants/accounts.constants';
 import { transferAmount } from '@kadena-dev/e2e-base/src/constants/amounts.constants';
 import { coinModuleHash } from '@kadena-dev/e2e-base/src/constants/coin.constants';
+import {
+  networkId,
+  nodeHost,
+  wsHost,
+} from '@kadena-dev/e2e-base/src/constants/network.constants';
 import {
   createAccount,
   generateAccount,
@@ -10,12 +18,21 @@ import {
   transferFundsCrossChain,
 } from '@kadena-dev/e2e-base/src/helpers/client-utils/transfer.helper';
 import type { IAccount } from '@kadena-dev/e2e-base/src/types/account.types';
-import type { ICommandResult } from '@kadena/client';
+import type { ICommandResult, IKeyPair } from '@kadena/client';
+import { createSignWithKeypair } from '@kadena/client';
+import { transferCreate } from '@kadena/client-utils/coin';
 import { expect, test } from '@playwright/test';
+import type { SubscribePayload } from 'graphql-ws';
+import { createClient } from 'graphql-ws';
+import WebSocket from 'ws';
 import { getBlockHash } from '../helpers/block.helper';
 import { base64Encode } from '../helpers/cryptography.helper';
+import { triggerMining } from '../helpers/miner.helper';
 import { sendQuery } from '../helpers/request.helper';
-import { getTransactionsQuery } from '../queries/getTransactions';
+import {
+  getTransactionsByRequestKeySubscription,
+  getTransactionsQuery,
+} from '../queries/getTransactions';
 
 test.describe('Query: getTransactions', () => {
   test('Query: getTransactions - Same Chain Transfer', async ({ request }) => {
@@ -460,5 +477,104 @@ test.describe('Query: getTransactions', () => {
         timeout: 500,
       });
     });
+  });
+});
+
+const wsClient = createClient({
+  url: wsHost,
+  webSocketImpl: WebSocket,
+});
+
+test.describe('Subscription: getTransactions', () => {
+  test('Subscriptions: getTransactions - Subscribe to transactions by requestKey', async ({
+    request,
+  }) => {
+    let txTask;
+    let account: IAccount;
+    let preflightResponse: ICommandResult;
+    let query: SubscribePayload;
+    let subscription;
+
+    await test.step('Create Transfer Task and execute preflight', async () => {
+      account = await generateAccount(1, ['0', '1']);
+      txTask = transferCreate(
+        {
+          sender: {
+            account: sender00Account.account,
+            publicKeys: sender00Account.keys.map(
+              (keyPair: IKeyPair) => keyPair.publicKey,
+            ),
+          },
+          receiver: {
+            account: account.account,
+            keyset: {
+              keys: account.keys.map((keyPair) => keyPair.publicKey),
+              pred: 'keys-all',
+            },
+          },
+          amount: '100',
+          chainId: account.chains[0],
+        },
+        {
+          host: nodeHost,
+          defaults: {
+            networkId: networkId,
+          },
+          sign: createSignWithKeypair(sender00Account.keys),
+        },
+      );
+      preflightResponse = await txTask.executeTo('preflight');
+    });
+
+    await test.step('Subscribe to events', async () => {
+      query = getTransactionsByRequestKeySubscription(
+        preflightResponse.reqKey,
+        account.chains[0],
+      );
+      subscription = wsClient.iterate(query);
+    });
+
+    await test.step('Assert the first event to not contain any transactions and then submit the transaction', async () => {
+      const emptyEvent = (await subscription.next()).value.data;
+      expect(emptyEvent).toEqual({
+        transaction: null,
+      });
+      await txTask.executeTo('submit');
+    });
+
+    await test.step('Assert the second event to contain the pending transaction and then trigger mining', async () => {
+      const secondEvent = (await subscription.next()).value.data;
+      expect(secondEvent).toEqual({
+        transaction: {
+          result: {
+            __typename: 'TransactionMempoolInfo',
+            status: 'Pending',
+          },
+        },
+      });
+
+      await triggerMining(request, account.chains[0], 2);
+      const listenResult = await txTask.executeTo('listen');
+      expect(listenResult.result).toEqual({
+        status: 'success',
+        data: 'Write succeeded',
+      });
+    });
+
+    await test.step('Assert the third event to contain the successful transaction', async () => {});
+
+    const thirdEvent = (await subscription.next()).value.data;
+    expect(thirdEvent).toEqual({
+      transaction: {
+        result: {
+          __typename: 'TransactionResult',
+          badResult: null,
+          goodResult: JSON.stringify('Write succeeded'),
+        },
+      },
+    });
+  });
+  test.afterEach(async () => {
+    wsClient.terminate();
   });
 });

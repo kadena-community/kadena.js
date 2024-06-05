@@ -28,10 +28,8 @@ By making transactions easier and more secure, Kadena SpireKey can improve how
 people interact with digital services and make Web3 more accessible and
 practical for everyday use.
 
-<!--
 For more information about using Kadena SpireKey or connecting to Kadena SpireKey from a decentralized application, see the following topics:
 
 - [Register a Kadena SpireKey account](/build/authentication/register)
 - [Integrate decentralized apps](/build/authentication/integrate)
 - [Create transactions](/build/authentication/transactions)
--->

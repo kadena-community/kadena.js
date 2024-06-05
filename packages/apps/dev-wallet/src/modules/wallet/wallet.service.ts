@@ -1,7 +1,6 @@
-import { IPactCommand, IUnsignedCommand, addSignatures } from '@kadena/client';
+import { defaultAccentColor } from '@/modules/layout/layout.provider.tsx';
+import { addSignatures, IPactCommand, IUnsignedCommand } from '@kadena/client';
 import { kadenaDecrypt, kadenaEncrypt } from '@kadena/hd-wallet';
-
-import { idToColor } from '@/utils/id-to-color';
 import { accountRepository } from '../account/account.repository';
 import { keySourceManager } from '../key-source/key-source-manager';
 import { INetwork } from '../network/network.repository';
@@ -85,6 +84,7 @@ export async function createProfile(
   profileName: string,
   password: string,
   networks: INetwork[],
+  accentColor: string,
 ) {
   const secretId = crypto.randomUUID();
   // create this in order to verify the password later
@@ -101,7 +101,7 @@ export async function createProfile(
     name: profileName,
     networks,
     secretId,
-    accentColor: idToColor(uuid),
+    accentColor: accentColor || defaultAccentColor,
   };
 
   await walletRepository.addProfile(profile);

@@ -108,3 +108,28 @@ export function getTransactionsByRequestKeyQuery(
     extensions: {},
   };
 }
+
+export function getTransactionsByRequestKeySubscription(
+  requestKey: string | undefined,
+  chainId: string,
+) {
+  return {
+    query: `subscription tx($requestKey: String! $chainId: String!) {
+                transaction(requestKey: $requestKey chainId: $chainId){
+                  result {
+                    __typename
+                    ... on TransactionMempoolInfo {
+                      status
+                    }
+			              ...on TransactionResult {
+                    badResult
+                    goodResult 
+                    }
+                  }
+                }
+              }`,
+    variables: { requestKey: requestKey, chainId: chainId },
+    operationName: 'tx',
+    extensions: {},
+  };
+}

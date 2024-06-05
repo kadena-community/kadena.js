@@ -126,6 +126,12 @@
     "path": "packages/tools/kda-cli"
   },
   {
+    "name": "@kadena/marmalade-marketplace",
+    "version": "0.0.0",
+    "private": true,
+    "path": "packages/apps/marmalade-marketplace"
+  },
+  {
     "name": "@kadena/pactjs",
     "version": "0.4.3",
     "private": false,
@@ -244,6 +250,12 @@
     "version": "0.0.2",
     "private": true,
     "path": "packages/e2e/e2e-graph"
+  },
+  {
+    "name": "e2e-proof-of-us",
+    "version": "0.0.2",
+    "private": true,
+    "path": "packages/e2e/e2e-proof-of-us"
   },
   {
     "name": "e2e-tools",

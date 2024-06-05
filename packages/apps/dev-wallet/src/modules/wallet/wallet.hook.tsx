@@ -1,6 +1,7 @@
 import { IUnsignedCommand } from '@kadena/client';
 import { useCallback, useContext, useEffect } from 'react';
 
+import { defaultAccentColor } from '@/modules/layout/layout.provider.tsx';
 import { IAccount } from '../account/account.repository';
 import * as AccountService from '../account/account.service';
 import { dbService } from '../db/db.service';
@@ -57,11 +58,16 @@ export const useWallet = () => {
   );
 
   const createProfile = useCallback(
-    async (profileName: string, password: string) => {
+    async (
+      profileName: string = 'default',
+      password: string,
+      accentColor: string = defaultAccentColor,
+    ) => {
       const profile = await WalletService.createProfile(
         profileName,
         password,
         [],
+        accentColor,
       );
       setContext((ctx) => ({
         ...ctx,

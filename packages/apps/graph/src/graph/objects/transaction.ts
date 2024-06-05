@@ -39,8 +39,7 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
     }),
     cmd: t.field({
       type: TransactionCommand,
-
-      async resolve(parent, __args) {
+      async resolve(parent) {
         try {
           let signers: Signer[] = [];
           if (!nullishOrEmpty(parent.blockHash)) {
@@ -79,7 +78,7 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
     }),
     result: t.field({
       type: TransactonInfo,
-      resolve: async (parent) => {
+      async resolve(parent) {
         try {
           //This check is important because a transaction can be completed, yet we can still be able to fetch a status from the mempool
           if (nullishOrEmpty(parent.blockHash)) {
