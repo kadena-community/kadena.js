@@ -16,5 +16,6 @@
   "e2e-docs", 
   "e2e-tools", 
   "e2e-graph", 
+  "e2e-proof-of-us", 
   "@kadena/docs"]
 }
