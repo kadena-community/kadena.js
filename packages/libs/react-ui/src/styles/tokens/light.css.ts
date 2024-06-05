@@ -33,6 +33,78 @@ export const lightThemeValues = {
         xxl: '24px',
         round: '999rem',
       },
+      screen: {
+        resolutions: {
+          width: {
+            mobile: {
+              apple: {
+                iphone_se: '320px',
+                iphone_8: '375px',
+                iphone_11: '375px',
+                iphone_11_pro: '414px',
+              },
+              samsung: {
+                galaxy_s9: '360px',
+              },
+            },
+            tablet: {
+              apple: {
+                ipad_mini: '768px',
+                ipad: '810px',
+                ipad_pro: '1024px',
+              },
+            },
+            laptop: {
+              macBook_air: '1440px',
+              macBook_pro_13: '1280px',
+              macBook_pro_16: '3072px',
+            },
+            desktop: {
+              small: '1024px',
+              widescreen: '1280px',
+              hd: '1366px',
+              full_hd: '1920px',
+              '2k': '2560px',
+              ultra_wide: '3440px',
+              '4k': '3840px',
+            },
+          },
+          height: {
+            mobile: {
+              apple: {
+                iphone_se: '568px',
+                iphone_8: '667px',
+                iphone_11: '812px',
+                iphone_11_pro: '896px',
+              },
+              samsung: {
+                galaxy_s9: '740px',
+              },
+            },
+            tablet: {
+              apple: {
+                ipad_mini: '1024px',
+                ipad: '1080px',
+                ipad_pro: '1366px',
+              },
+            },
+            laptop: {
+              macBook_air: '900px',
+              macBook_pro_13: '800px',
+              macBook_pro_16: '1920px',
+            },
+            desktop: {
+              small: '768px',
+              widescreen: '800px',
+              hd: '768px',
+              full_hd: '1080px',
+              '2k': '1440px',
+              ultra_wide: '1440px',
+              '4k': '2160px',
+            },
+          },
+        },
+      },
       size: {
         n0: '0px',
         n1: '0.25rem',
@@ -615,6 +687,17 @@ export const lightThemeValues = {
               },
             },
           },
+          product: {
+            spirekey: {
+              animation: {
+                start: tokens.kda.foundation.color.brand.primary.n50,
+                step1: '#4aa688',
+                step2: '#4bbd97',
+                step3: '#4bd3a6',
+                end: tokens.kda.foundation.color.palette.aqua.n30,
+              },
+            },
+          },
         },
         link: {
           base: {
@@ -1166,6 +1249,13 @@ export const lightThemeValues = {
           },
         },
       },
+      effect: {
+        shadow: {
+          level1: `4px 0.5rem ${tokens.kda.foundation.size.n2} 4px #000000`,
+          level2: `4rem 4rem ${tokens.kda.foundation.size.n2} 2rem #000000`,
+          level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
+        },
+      },
       icon: {
         size: {
           xxs: tokens.kda.foundation.size.n3,
@@ -1181,13 +1271,6 @@ export const lightThemeValues = {
         content: {
           minWidth: '33.75rem',
           maxWidth: '42.5rem',
-        },
-      },
-      effect: {
-        shadow: {
-          level1: `4px 0.5rem ${tokens.kda.foundation.size.n2} 4px #000000`,
-          level2: `4rem 4rem ${tokens.kda.foundation.size.n2} 2rem #000000`,
-          level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
         },
       },
       typography: {
