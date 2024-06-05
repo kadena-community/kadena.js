@@ -12,8 +12,9 @@ export function Stepper({
     goTo: (step: number) => void;
   }) => ReactNode;
   initialStep?: string;
-  steps: { title: string; id: string }[];
+  steps: { id: string; route: string; title?: string; elements: ReactNode }[];
 }) {
+  // on refresh navigate to first step / route
   const [currentStep, setCurrentStep] = useState(initialStep || steps[0].id);
   let stepIndex = -1;
   const goTo = (step: number) => {
@@ -22,7 +23,6 @@ export function Stepper({
 
   return (
     <>
-      {/* or */}
       {children({
         currentStep,
         next: () => {
