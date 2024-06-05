@@ -144,7 +144,7 @@
     "@types/node": "^20.12.7",
     "@types/tar": "^6.1.11",
     "@vitest/coverage-v8": "^1.6.0",
-    "tsx": "^3.12.10",
+    "tsx": "^4.11.2",
     "typescript": "5.4.5",
     "unbuild": "^2.0.0",
     "vitest": "^1.6.0"
