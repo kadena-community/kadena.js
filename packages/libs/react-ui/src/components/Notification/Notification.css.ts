@@ -4,6 +4,12 @@ import { atoms, token } from '../../styles';
 
 const iconColorVar = createVar();
 
+const customStyle = (rule: ComplexStyleRule, debugId?: string) => {
+  const flattenedRule = Array.isArray(rule) ? Object.assign({}, ...rule) : rule;
+
+  return style({ '@layer': { default: flattenedRule } }, debugId);
+};
+
 export const notificationRecipe = recipe({
   base: [
     atoms({
@@ -74,7 +80,7 @@ export const notificationRecipe = recipe({
   },
 });
 
-export const closeButtonClass = style([
+export const closeButtonClass = customStyle([
   atoms({
     marginInlineStart: 'auto',
     padding: 'no',
@@ -87,11 +93,7 @@ export const closeButtonClass = style([
   },
 ]);
 
-const customStyle = (rule: ComplexStyleRule, debugId?: string) => {
-  const flattenedRule = Array.isArray(rule) ? Object.assign({}, ...rule) : rule;
 
-  return style({ '@layer': { default: flattenedRule } }, debugId);
-};
 
 export const borderClass = customStyle([
   atoms({
