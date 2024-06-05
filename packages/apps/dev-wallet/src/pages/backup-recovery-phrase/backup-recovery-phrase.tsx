@@ -1,29 +1,27 @@
 import { AuthCard } from '@/Components/AuthCard/AuthCard';
-import { useWallet } from '@/modules/wallet/wallet.hook';
-import { Button, Heading, MaskedValue, Stack, Text } from '@kadena/react-ui';
-import { Link, useParams } from 'react-router-dom';
-
-declare const PasswordCredential: {
-  new (passwordCredentialInit: { id: string; password: string }): Credential;
-};
+import {
+  Text,
+  Button,
+  Heading,
+  Notification,
+  NotificationFooter,
+  NotificationHeading,
+  Stack,
+  Dialog
+} from '@kadena/react-ui';
+import { useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 export function BackupRecoveryPhrase() {
-  const supportPasswordCredential = 'PasswordCredential' in window;
-  const wallet = useWallet();
   const { keySourceId } = useParams();
-  const storeRecoveryPhrase: React.MouseEventHandler<HTMLAnchorElement> = (
-    e,
-  ) => {
-    e.preventDefault();
-    if (supportPasswordCredential) {
-      const passwordCredential = new PasswordCredential({
-        id: `${wallet.profile}-dev-wallet-secret`,
-        password: 'my recovery phrase',
-      });
+  const navigate = useNavigate();
 
-      navigator.credentials.store(passwordCredential);
-    }
-  };
+  const [modalOpen, setModalOpen] = useState(false);
+  const acceptWarning = (): void => {
+    setModalOpen(false);
+    navigate(`/backup-recovery-phrase/${keySourceId}/write-down`);
+  }
+
   return (
     <>
       <AuthCard backButtonLink="/create-profile">
@@ -34,36 +32,63 @@ export function BackupRecoveryPhrase() {
           your assets if this wallet is deleted.
         </Text>
         <Heading as="h6">Recovery phrase</Heading>
-        <Link to={`/backup-recovery-phrase/${keySourceId}/write-down`}>
-          Write down the phrase
-        </Link>
-        <br />
-        <Link to={`/backup-recovery-phrase/${keySourceId}/export-encrypted`}>
-          Export encrypted phrase
-        </Link>
-        <br />
-        {supportPasswordCredential && (
-          <>
-            <a onClick={storeRecoveryPhrase} href="#">
-              Store encrypted in password storage
-            </a>
-            <br />
-          </>
-        )}
-        <MaskedValue
-          maskCharacter="*"
-          maskLength={5}
-          title="1"
-          value="wordfd"
-          startUnmaskedValues={0}
-          endUnmaskedValues={0}
-        />
+        <Stack gap="md" flexWrap="wrap">
+          {[...Array(12)].map((e, index) => {
+            return (
+              <span key={index}>
+                {index + 1} *****
+              </span>
+            )
+          })}
+        </Stack>
         <Stack flexDirection="column" gap="md">
-          <Button variant="outlined">Export encrypted file</Button>
-          <Button variant="primary">Write it down</Button>
+          <Button
+            variant="outlined"
+            onPress={() => navigate(`/backup-recovery-phrase/${keySourceId}/write-down`)}
+          >
+            Export encrypted file
+          </Button>
+          <Button
+            variant="primary"
+            onPress={() => setModalOpen(true)}
+          >
+            Write it down
+          </Button>
         </Stack>
       </AuthCard>
       <Link to="/">Skip step</Link>
+
+      <Dialog
+        onOpenChange={() => setModalOpen(false)}
+        isOpen={modalOpen}
+        size="sm"
+        className="dialog-warning"
+      >
+        <Notification
+          intent="warning"
+          // isDismissable
+          // onDismiss={() => {}}
+          role="alert"
+          type="inlineStacked"
+        >
+          <NotificationHeading>
+            Warning
+          </NotificationHeading>
+          <Text>
+            Your Secret Recovery Phrase provides full access to your wallet and funds. 
+            Please be aware that malicious softwares can monitor the clipboard, 
+            your keyboard or record the screen.
+          </Text>
+          <NotificationFooter>
+            <Button
+              variant="warning"
+              onPress={() => acceptWarning()}
+            >
+              Understood
+            </Button>
+          </NotificationFooter> 
+        </Notification>
+      </Dialog>
     </>
   );
 }
