@@ -33,7 +33,6 @@
     "@types/webpack-env": "^1.18.5",
     "@vanilla-extract/css": "1.14.2",
     "@vanilla-extract/next-plugin": "2.4.0",
-    "axios": "^1.6.8",
     "dotenv": "~16.4.5",
     "node-cron": "^3.0.3",
     "ts-node": "~10.9.2"

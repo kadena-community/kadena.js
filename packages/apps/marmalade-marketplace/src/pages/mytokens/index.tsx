@@ -1,56 +1,46 @@
-import * as styles from "@/styles/global.css"
-import Layout from '@/components/Layout';
-import { Button, Grid, GridItem, Link, Heading, Stack } from "@kadena/react-ui";
-import { Token } from "@/components/Token";
 import { useEffect, useState } from "react";
-import { getTokens } from '@/graphql/queries/client';
-import { actionBarClass, actionBarSaleActiveClass, actionBarSaleClass } from "@/styles/home.css";
+import { ChainId } from '@kadena/client';
+import { getTokens, NonFungibleTokenBalance } from '@/graphql/queries/client';
+import { useAccount } from '@/hooks/account';
+import { Token } from "@/components/Token";
+import { Grid, GridItem, Stack } from "@kadena/react-ui";
 
 export default function MyTokens() {
+  const [tokens, setTokens] = useState<Array<NonFungibleTokenBalance>>([]);
+  const { account } = useAccount();
 
-  const [tokens, setTokens] = useState<Array<any>>([]);
+  console.log(tokens)
 
-  const fetchTokens = async () => {
-    const tokens = await getTokens('');
-    // setTokens(tokens);
+  const fetchTokens = async (accountName?:string) => {
+    if (!accountName) return;
+    const tokens = await getTokens(accountName);
+    setTokens(tokens);
   };
 
   useEffect(() => {
-    fetchTokens();
-  }, []);
+    fetchTokens(account?.accountName);
+  }, [account?.accountName]);
 
   return (
-    <Layout>
-      <Heading>
-        <title>My Tokens</title>
-      </Heading>
-      <Stack flex={1} flexDirection="column">
-        {/* <div style={{ marginTop: "100px" }}>
-          {error && <div>Error: <pre>{JSON.stringify(error, null, 2)}</pre></div>}
-          {loading && <h2>Loading..</h2>}
-        </div> */}
-      </Stack>
-
-
-      <div>
-        <Grid
-          columns={{
-            lg: 4,
-            md: 3,
-            sm: 2,
-            xs: 1,
-          }}
-          gap="xl">
-          {/* {data.map((sale, index) => (
-            <GridItem key={index}>
-              <a href={`/tokens/${sale.tokenId}`}>
-                <Token tokenId={sale.tokenId} chainId={sale.chainId} sale={sale} />
-              </a>
-            </GridItem>
-          ))} */}
-        </Grid>
-      </div>
-
-      </Layout>
+    <Stack flex={1} flexDirection="column">
+      <h1>My Tokens</h1>
+      <Grid
+        columns={{
+          lg: 4,
+          md: 3,
+          sm: 2,
+          xs: 1,
+        }}
+        gap="xl">
+        {tokens.map((token) => (
+          <GridItem key={token.tokenId}>
+            <a href={`/tokens/${token.tokenId}`}>
+              <Token tokenId={token.tokenId} chainId={token.chainId as ChainId} />
+            </a>
+          </GridItem>
+        ))}
+        {tokens.length === 0 && <h3>No tokens found</h3>}
+      </Grid>
+    </Stack>
   );
 }
