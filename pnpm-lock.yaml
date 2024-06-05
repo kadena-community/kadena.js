@@ -1919,9 +1919,6 @@ importers:
       ramda:
         specifier: ^0.29.0
         version: 0.29.0
-      zod:
-        specifier: ~3.23.0
-        version: 3.23.0
     devDependencies:
       '@kadena-dev/eslint-config':
         specifier: workspace:*
@@ -28427,6 +28424,9 @@ packages:
     resolution: {integrity: sha512-W+gxAq7aQ9dJIg/XLKGcRT0cvnStFAQHPaI0pvD0U2l6IVLueUAm3nwN7lkY62zZNmlvNx6jNtE4wlbS+CyqSg==}
     engines: {node: '>= 12.0.0'}
     hasBin: true
+    peerDependenciesMeta:
+      '@parcel/core':
+        optional: true
     dependencies:
       '@parcel/config-default': 2.12.0(@parcel/core@2.12.0)
       '@parcel/core': 2.12.0

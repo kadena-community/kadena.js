@@ -14,7 +14,6 @@ import { IPactInt } from '@kadena/types';
 import type { ISignFunction } from '@kadena/client';
 import { ITransactionDescriptor } from '@kadena/client';
 import { PactValue } from '@kadena/types';
-import { z } from 'zod';
 
 // Warning: (ae-forgotten-export) The symbol "IDeployContractInput" needs to be exported by the entry point index.d.ts
 //
@@ -44,34 +43,7 @@ data: ICommandResult;
 }], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]> | Promise<Record<string, any>>>;
 
 // @alpha (undocumented)
-export const describeModule: (module: string, config: Omit<IClientConfig, 'sign'>) => Promise<DescribeModuleOutput>;
-
-// @alpha (undocumented)
-export type DescribeModuleOutput = z.infer<typeof describeModuleSchema>;
-
-// @alpha (undocumented)
-export const describeModuleSchema: z.ZodObject<{
-    hash: z.ZodOptional<z.ZodString>;
-    blessed: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
-    keyset: z.ZodOptional<z.ZodString>;
-    interfaces: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
-    name: z.ZodString;
-    code: z.ZodString;
-}, "strip", z.ZodTypeAny, {
-    code: string;
-    name: string;
-    hash?: string | undefined;
-    blessed?: string[] | undefined;
-    keyset?: string | undefined;
-    interfaces?: string[] | undefined;
-}, {
-    code: string;
-    name: string;
-    hash?: string | undefined;
-    blessed?: string[] | undefined;
-    keyset?: string | undefined;
-    interfaces?: string[] | undefined;
-}>;
+export const describeModule: (module: string, config: Omit<IClientConfig, 'sign'>) => Promise<IDescribeModuleOutput>;
 
 // @alpha (undocumented)
 export interface ICreatePrincipalInput {
@@ -80,6 +52,22 @@ export interface ICreatePrincipalInput {
         keys: string[];
         pred?: 'keys-all' | 'keys-2' | 'keys-any';
     };
+}
+
+// @alpha (undocumented)
+export interface IDescribeModuleOutput {
+    // (undocumented)
+    blessed: string[];
+    // (undocumented)
+    code: string;
+    // (undocumented)
+    hash: string;
+    // (undocumented)
+    interfaces: string[];
+    // (undocumented)
+    keyset: string;
+    // (undocumented)
+    name: string;
 }
 
 // @alpha (undocumented)
@@ -114,10 +102,7 @@ export interface ITransactionBody {
 export const listModules: (config: Omit<IClientConfig, 'sign'>) => Promise<ListModulesOutput>;
 
 // @alpha (undocumented)
-export type ListModulesOutput = z.infer<typeof listModulesSchema>;
-
-// @alpha (undocumented)
-export const listModulesSchema: z.ZodArray<z.ZodString, "many">;
+export type ListModulesOutput = string[];
 
 // (No @packageDocumentation comment for this package)
 

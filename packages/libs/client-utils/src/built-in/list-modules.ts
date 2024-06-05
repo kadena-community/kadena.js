@@ -1,18 +1,12 @@
 import { execution } from '@kadena/client/fp';
 import { pipe } from 'ramda';
-import { z } from 'zod';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
 /**
  * @alpha
  */
-export const listModulesSchema = z.array(z.string());
-
-/**
- * @alpha
- */
-export type ListModulesOutput = z.infer<typeof listModulesSchema>;
+export type ListModulesOutput = string[];
 
 /**
  * @alpha
@@ -26,9 +20,5 @@ export const listModules = async (
     dirtyReadClient(config),
   );
 
-  const executed = await command().execute();
-
-  const parsed = listModulesSchema.parse(executed);
-
-  return parsed;
+  return command().execute() as unknown as ListModulesOutput;
 };

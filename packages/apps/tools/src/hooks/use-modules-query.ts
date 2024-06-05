@@ -5,6 +5,7 @@ import type {
 import { CHAINS } from '@kadena/chainweb-node-client';
 import { listModules } from '@kadena/client-utils';
 import { useQuery } from '@tanstack/react-query';
+import { z } from 'zod';
 
 const transformModules = (
   data: string[][],
@@ -24,6 +25,12 @@ const transformModules = (
   });
 };
 
+export const listModulesSchema = z.array(z.string());
+export type ListModulesOutput = z.infer<typeof listModulesSchema>;
+
+export const listsModulesSchema = z.array(listModulesSchema);
+export type ListsModulesOutput = z.infer<typeof listsModulesSchema>;
+
 const fetchModules = async (
   networkId: ChainwebNetworkId,
   chainIds?: ChainwebChainId[],
@@ -38,7 +45,9 @@ const fetchModules = async (
 
   const results = await Promise.all(promises);
 
-  return transformModules(results, networkId, chainIds);
+  const parsed = listsModulesSchema.parse(results);
+
+  return transformModules(parsed, networkId, chainIds);
 };
 
 const QUERY_KEY = 'modules';

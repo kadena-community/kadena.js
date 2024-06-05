@@ -5,6 +5,18 @@ import type {
 } from '@kadena/chainweb-node-client';
 import { describeModule } from '@kadena/client-utils';
 import { useMutation } from '@tanstack/react-query';
+import { z } from 'zod';
+
+export const describeModuleSchema = z.object({
+  hash: z.string().optional(),
+  blessed: z.array(z.string()).optional(),
+  keyset: z.string().optional(),
+  interfaces: z.array(z.string()).optional(),
+  name: z.string(),
+  code: z.string(),
+});
+
+export type DescribeModuleOutput = z.infer<typeof describeModuleSchema>;
 
 const fetchModule = async (
   module: string,
@@ -15,8 +27,10 @@ const fetchModule = async (
     defaults: { networkId, meta: { chainId } },
   });
 
+  const parsed = describeModuleSchema.parse(describedModule);
+
   return {
-    ...describedModule,
+    ...parsed,
     chainId,
     networkId,
   };
