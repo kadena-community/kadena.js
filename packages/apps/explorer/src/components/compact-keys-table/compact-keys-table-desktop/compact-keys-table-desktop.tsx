@@ -5,31 +5,34 @@ import {
   Table,
   TableBody,
   TableHeader,
-  Text,
 } from '@kadena/react-ui';
 import type { FC } from 'react';
 import React from 'react';
 import type { ICompactKeyTableProps } from '../types';
-import { dataFieldClass } from './styles.css';
+import { tableClass } from './styles.css';
 
 const CompactTransactionsTableDesktop: FC<ICompactKeyTableProps> = ({
   keys,
 }) => {
   return (
-    <Table aria-label="Keys table" isStriped>
+    <Table aria-label="Keys table" isStriped className={tableClass}>
       <TableHeader>
-        <Column width="20%">ChainId</Column>
-        <Column width="50%">Key</Column>
-        <Column width="30%">Predicate</Column>
+        <Column width="10%">ChainId</Column>
+        <Column width="60%">Key</Column>
+        <Column width="20%">Predicate</Column>
       </TableHeader>
       <TableBody>
-        {keys.map((key, index) => (
-          <Row key={key.key}>
-            <Cell>{key.chainId}</Cell>
+        {keys.map((key) => (
+          <Row key={key.key + key.chainId}>
             <Cell>
-              <Text className={dataFieldClass}>{key.key}</Text>
+              <span>{key.chainId}</span>
             </Cell>
-            <Cell>{key.predicate}</Cell>
+            <Cell>
+              <span>{key.key}</span>
+            </Cell>
+            <Cell>
+              <span>{key.predicate}</span>
+            </Cell>
           </Row>
         ))}
       </TableBody>

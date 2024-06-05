@@ -1,65 +1,13 @@
-import { atoms, tokens } from '@kadena/react-ui/styles';
-import { style } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 
-export const sectionClass = style([
-  atoms({
-    padding: 'n6',
-    backgroundColor: 'base.default',
-    marginBlockEnd: 'md',
-    display: 'grid',
-  }),
-  {
-    justifyContent: 'start',
-    gridTemplateColumns: `auto repeat(2, minmax(${tokens.kda.foundation.size.n64}, 1fr))`,
-    gap: `${tokens.kda.foundation.spacing.sm} ${tokens.kda.foundation.spacing.xl}`,
-  },
-]);
-
-export const headerClass = style([
-  atoms({
-    fontWeight: 'primaryFont.bold',
-  }),
-]);
-
-export const badgeClass = style({
-  backgroundColor: tokens.kda.foundation.color.neutral.n100,
-  color: tokens.kda.foundation.color.neutral.n0,
+export const tableClass = style({
+  width: '100%',
 });
 
-export const dataFieldLinkClass = style({
-  display: 'flex',
-  alignItems: 'center',
-  gap: tokens.kda.foundation.spacing.sm,
-  minWidth: 0,
-});
-
-export const linkClass = style({
+globalStyle(`${tableClass} td span`, {
+  display: 'block',
+  contain: 'inline-size',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
-  textDecoration: 'none',
-});
-
-export const iconLinkClass = style([
-  atoms({
-    color: 'text.base.default',
-  }),
-]);
-
-export const linkIconClass = style([
-  atoms({
-    fontSize: 'xs',
-  }),
-  {
-    minWidth: 'fit-content',
-  },
-]);
-
-export const dataFieldClass = style({
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
-  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
-  // If we use atoms it will be overridden by the Text component.
-  color: tokens.kda.foundation.color.text.base.default,
 });

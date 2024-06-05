@@ -1,14 +1,14 @@
-import { Text } from '@kadena/react-ui';
-import type { FC } from 'react';
-import React from 'react';
-import type { ICompactKeyTableProps } from '../types';
 import {
   dataFieldClass,
   dataFieldLinkClass,
   headerClass,
   rowClass,
   sectionClass,
-} from './styles.css';
+} from '@/components/compact-transactions-table/compact-transactions-table-mobile/styles.css';
+import { Text } from '@kadena/react-ui';
+import type { FC } from 'react';
+import React from 'react';
+import type { ICompactKeyTableProps } from '../types';
 
 const CompactTransactionsTableMobile: FC<ICompactKeyTableProps> = ({
   keys,
