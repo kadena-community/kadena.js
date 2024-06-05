@@ -18,8 +18,8 @@ const CompactTransactionsTableDesktop: FC<ICompactKeyTableProps> = ({
     <Table aria-label="Keys table" isStriped className={tableClass}>
       <TableHeader>
         <Column width="10%">ChainId</Column>
-        <Column width="60%">Key</Column>
-        <Column width="20%">Predicate</Column>
+        <Column width="50%">Key</Column>
+        <Column width="40%">Predicate</Column>
       </TableHeader>
       <TableBody>
         {keys.map((key) => (
