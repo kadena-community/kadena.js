@@ -10,10 +10,7 @@ import { initFunc } from './utils/build';
     console.log(`\nINGESTING DATA TO "${namespace}" INDEX\n`);
     try {
       await ingest({
-        sourceIdentifiers: [
-          'src/pages/build/index.md',
-          'src/pages/reference/spirekey/index.md',
-        ],
+        sourceIdentifiers: ['src/pages/**/*.md', 'src/specs/**/*.json'],
         source: 'fs',
         db: 'Algolia',
         isDryRun: false,
