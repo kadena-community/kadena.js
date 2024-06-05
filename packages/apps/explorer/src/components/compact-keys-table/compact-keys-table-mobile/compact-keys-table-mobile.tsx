@@ -8,7 +8,7 @@ import {
 import { Text } from '@kadena/react-ui';
 import type { FC } from 'react';
 import React from 'react';
-import type { ICompactKeyTableProps } from '../types';
+import type { ICompactKeyTableProps } from '../compact-keys-table';
 
 const CompactTransactionsTableMobile: FC<ICompactKeyTableProps> = ({
   keys,
