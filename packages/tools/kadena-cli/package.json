@@ -98,5 +98,8 @@
     "rollup": "^4.17.2",
     "typescript": "5.4.5",
     "vitest": "^1.6.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }

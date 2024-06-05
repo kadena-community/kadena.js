@@ -95,10 +95,10 @@ const customStyle = (rule: ComplexStyleRule, debugId?: string) => {
 
 export const borderClass = customStyle([
   atoms({
-    borderRadius: 'sm',
     borderStyle: 'solid',
   }),
   {
+    borderWidth: '0',
     borderLeftWidth: token('border.width.thick'),
   },
 ]);

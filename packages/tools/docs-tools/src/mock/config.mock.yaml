@@ -47,6 +47,7 @@ pages:
       build:
         url: /build
         file: /index.tsx
+        repo: https://github.com/kadena-community/kadena.js
       build2:
         url: /build2
         file: /test.md

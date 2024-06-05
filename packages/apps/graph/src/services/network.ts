@@ -28,6 +28,8 @@ export async function getNetworkStatistics(): Promise<INetworkStatistics> {
       await fetch(`${dotenv.NETWORK_STATISTICS_URL}`)
     ).json();
 
+    if (stats.transactionCount < 0) stats.transactionCount = 0;
+
     return stats;
   } catch (error) {
     throw new NetworkError('Unable to parse response data.', error);

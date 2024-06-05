@@ -46,7 +46,7 @@ import { useRouter } from 'next/router';
 import type { ChangeEventHandler, FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import * as z from 'zod';
+import { z } from 'zod';
 import { containerClass, notificationContainerStyle } from '../styles.css';
 import {
   footerBarStyle,

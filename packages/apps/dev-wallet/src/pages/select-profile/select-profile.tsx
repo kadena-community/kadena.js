@@ -65,7 +65,7 @@ export function SelectProfile() {
         </Link>
       </Stack>
       <Stack flexDirection="column" className={linkBlockClass}>
-        <span>Own a wallet?</span>
+        <Heading as="h6">Own a wallet?</Heading>
         <Link to="/import-wallet" className={linkClass}>
           Setup a profile by wallet recovery
         </Link>

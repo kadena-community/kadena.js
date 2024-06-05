@@ -14,6 +14,7 @@ export function HomePage() {
     profile,
   } = useWallet();
   const { activeNetwork } = useNetwork();
+
   if (!isUnlocked) {
     return <Navigate to="/select-profile" replace />;
   }

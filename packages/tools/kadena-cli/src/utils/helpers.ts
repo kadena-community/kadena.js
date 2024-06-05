@@ -1,14 +1,14 @@
 import { load } from 'js-yaml';
 import path from 'path';
 import z from 'zod';
-import { defaultDevnetsPath, devnetDefaults } from '../constants/devnets.js';
-import type { ICustomDevnetsChoice } from '../devnet/utils/devnetHelpers.js';
-import { writeDevnet } from '../devnet/utils/devnetHelpers.js';
-import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
+import type { ICustomDevnetsChoice } from '../commands/devnet/utils/devnetHelpers.js';
+import { writeDevnet } from '../commands/devnet/utils/devnetHelpers.js';
+import type { ICustomNetworkChoice } from '../commands/networks/utils/networkHelpers.js';
 import {
   getNetworkDirectory,
   getNetworksSettingsFilePath,
-} from '../networks/utils/networkPath.js';
+} from '../commands/networks/utils/networkPath.js';
+import { defaultDevnetsPath, devnetDefaults } from '../constants/devnets.js';
 import { services } from '../services/index.js';
 import { KadenaError } from '../services/service-error.js';
 import { CommandError, printCommandError } from './command.util.js';
