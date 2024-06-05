@@ -30,7 +30,7 @@ import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useCallback, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import * as z from 'zod';
+import { z } from 'zod';
 
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
