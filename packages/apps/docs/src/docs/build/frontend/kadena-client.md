@@ -1243,9 +1243,9 @@ getStatus(transactionDescriptor: TransactionDescriptor[] | ITransactionDescripto
 }>
 ```
 
-| Parameter             | Type                                             | Description                           |
-| --------------------- | ------------------------------------------------ | ------------------------------------- |
-| transactionDescriptor | TransactionDescriptor \| TransactionDescriptor[] | One or list of requests to be queried |
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| transactionDescriptor | TransactionDescriptor[list] | One or more request keys to be queried |
 
 ### pollStatus
 
@@ -1274,13 +1274,18 @@ interface IPollRequestPromise extends Promise {
 
 | Parameter | Type  | Description   |
 | --------- | ----- | ------------- |
-| transactionDescriptor | TransactionDescriptor \| TransactionDescriptor[] | One or list of requests to be queried  |
-| pollOptions           | { onPoll?: (id: string) => void; timeout?: Milliseconds; interval?: Milliseconds; confirmationDepth?: number; } | onPoll: Callback is called when the request is polling; this might be called several times if the request is not ready yet. Timeout: Timeout if the result is not ready (default `180000` // 3 minutes). Interval: Delay between retries (default is `5000` // 5 seconds). ConfirmationDepth: Set the confirmationDepth for getting the response; this overrides the one you set in createClient function |
+| transactionDescriptor | TransactionDescriptor[list] | One or more request keys to be queried. |
+| pollOptions | object | Optional poll configuration settings.|
+| onPoll | string | Identifier for the callback that is called each time the node is polled for the status of a request key. This callback might be called several times if the request is not ready yet.|
+| timeout | time | Specifies a timeout in milliseconds to stop polling if the result is not ready. The default is `180000` milliseconds (3 minutes).|
+| interval | time | Specifies the delay between retry attempts. The default is `5000` milliseconds (5 seconds).|
+| confirmationDepth | number | Sets the confirmationDepth for getting the response. This setting overrides the one you set in the `createClient` function. |
 
-**Return value:** The return value is a special type of promise. Though you can
-just await for the result just like a normal promise - which is the case for
-most of the typical use cases - you can still listen for each individual request
-via the `requests` property.
+#### Return value
+
+The return value is a special type of promise that enables you to listen for each individual request
+through the `requests` property.
+Alternatively, you can `await` the result without using the `requests` property to handle most use cases.
 
 #### Examples
 
@@ -1306,7 +1311,7 @@ const finalResult = await resultPromise;
 
 `listen` is another function for fetching the result of one request. It uses the
 `/listen` endpoint, which is a blocking endpoint. **Note**: If your
-network/firewall configuration doesn't allow keeping HTTP connections open for a
+network or firewall configuration doesn't allow keeping HTTP connections open for a
 long time, then it's better to use `pollOne` which has the same interface but
 uses `/poll` under the hood.
 
@@ -1318,11 +1323,11 @@ listen(transactionDescriptor: TransactionDescriptor[] | ITransactionDescriptor):
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| transactionDescriptor | TransactionDescriptor | The request object including `requestKet`, `networkId`, `chainId` |
+| transactionDescriptor | TransactionDescriptor | The request object including `requestKey`, `networkId`, and `chainId`. |
 
 ### pollOne
 
-The `pollOne` function fetches the result of only one request via the `/poll`
+The `pollOne` function fetches the result of only one request using the `/poll`
 endpoint.
 
 ```typescript
@@ -1333,7 +1338,7 @@ pollOne(transactionDescriptor: TransactionDescriptor[] | ITransactionDescriptor)
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| transactionDescriptor | TransactionDescriptor | The request object including `requestKet`, `networkId`, `chainId` |
+| transactionDescriptor | TransactionDescriptor | The request object including `requestKey`, `networkId`, and `chainId`. |
 
 ## Reading data
 
@@ -1344,7 +1349,7 @@ functions to validate your transaction before calling the `/send` endpoint to
 avoid transaction failure, as in some scenarios you need to pay gas even for
 failed transactions.
 
-The following functions all utilize the `/local` endpoint:
+The following functions all use the `/local` endpoint:
 
 - `local`
 - `dirtyRead`
@@ -1367,14 +1372,16 @@ local(
 The return type is `ICommandResult` with `preflightWarnings` when it is set to
 true.
 
-| Parameter   | Type                                                      | Description                                                                                                                                                                                                                                                                                                            |
-| ----------- | --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| transaction | ICommand \| IUnsignedCommand                              | The signed or unsigned command object                                                                                                                                                                                                                                                                                  |
-| option      | { preflight?: boolean; signatureVerification?: boolean; } | preflight: Runs the code in the preflight mode which simulates submitting the transaction so you can also have the gas consumption result (default = `true`). SignatureVerification: Run the signature verification in the node as well; then the transaction should have the transactions as well (default = `true`). |
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| transaction | ICommand or IUnsignedCommand  | The signed or unsigned command object. |
+| options | object | Optional configuration settings. |
+| preflight | boolean | Runs the code in the `preflight` mode to simulate submitting the transaction. You can also use this option to preview the estimated gas that the transaction would consume. The default is `true`. |
+| signatureVerification | boolean | Runs the signature verification in the node for the transaction. The default is `true`. |
 
 #### Examples
 
-Use local call to avoid submitting an incorrect transaction:
+Use a local call to avoid submitting an incorrect transaction:
 
 ```typescript
 // Check if the transaction and signatures are correct
@@ -1402,8 +1409,8 @@ const gasEstimation =  response.gas;
 
 ### dirtyRead
 
-Alias for local where both preflight and signatureVerification are false; useful
-when your code only includes reading data from the node.
+Alias for local where both preflight and signatureVerification are false. This function is useful
+when your code only needs to read data from the node.
 
 ```typescript
 dirtyRead(transaction: ICommand | IUnsignedCommand): Promise<ICommandResult>;
@@ -1411,7 +1418,7 @@ dirtyRead(transaction: ICommand | IUnsignedCommand): Promise<ICommandResult>;
 
 | Parameter   | Type                         | Description                           |
 | ----------- | ---------------------------- | ------------------------------------- |
-| transaction | ICommand \| IUnsignedCommand | The signed or unsigned command object |
+| transaction | ICommand or IUnsignedCommand | The signed or unsigned command object |
 
 #### Examples
 
@@ -1445,7 +1452,7 @@ preflight(transaction: ICommand | IUnsignedCommand): Promise<ICommandResult>;
 
 | Parameter   | Type                         | Description                           |
 | ----------- | ---------------------------- | ------------------------------------- |
-| transaction | ICommand \| IUnsignedCommand | The signed or unsigned command object |
+| transaction | ICommand or IUnsignedCommand | The signed or unsigned command object |
 
 ### signatureVerification
 
@@ -1457,7 +1464,7 @@ signatureVerification(transaction: ICommand | IUnsignedCommand): Promise<IComman
 
 | Parameter   | Type                         | Description                           |
 | ----------- | ---------------------------- | ------------------------------------- |
-| transaction | ICommand \| IUnsignedCommand | The signed or unsigned command object |
+| transaction | ICommand or IUnsignedCommand | The signed or unsigned command object |
 
 ### runPact
 
@@ -1471,9 +1478,11 @@ runPact(code: string, data?: Record<string, unknown>, options?: { chainId: Chain
 
 | Parameter | Type | Description                                                    |
 | --------- | -----| -------------------------------------------------------------- |
-| code      | string                                  | Pact code                                                      |
-| data      | Record<string, unknown>                 | Data to be sent with the transaction                           |
-| options   | { chainId: ChainId; networkId: string } | ChainId and networkId that you want to send the transaction to |
+| code | string | Pact code                                                      |
+| data | Record<string, unknown> | Data to be sent with the transaction                           |
+| options | object | 
+| chainId | string | Specifies the chain identifier that you want to send the transaction to. The valid values are "0" to "19". |
+| networkId | string | Specifies the network identifier that you want to send the transaction to. |
 
 #### Examples
 
@@ -1502,10 +1511,10 @@ Request SPV proof if it's ready.
 createSpv(transactionDescriptor: ITransactionDescriptor, targetChainId: ChainId): Promise<string>;
 ```
 
-| Parameter             | Type                                                        | Description                                               |
-| --------------------- | ----------------------------------------------------------- | --------------------------------------------------------- |
-| transactionDescriptor | { requestKey: string; networkId: string; chainId: ChainId } | The transaction for which you want to create an SPV proof |
-| targetChainId         | ChainId                                                     | The chain that consumes this proof                        |
+| Parameter | Type  | Description |
+| ----------| ------| ----------- |
+| transactionDescriptor | object | Specifies the request key, network identifier, and chain identifier for the transaction that you want to create a simple payment verification (spv) proof for. |
+| targetChainId | string | Specifies the chain identifier that consumes this proof. |
 
 ### pollCreateSPV
 
@@ -1521,9 +1530,12 @@ pollCreateSpv(
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| transactionDescriptor | { requestKey: string; networkId: string; chainId: ChainId } | The transaction for which you want to create an SPV proof. |
-| targetChainId | ChainId | The chain that consumes this proof. |
-| pollOptions | { onPoll?: (id: string) => void; timeout?: Milliseconds; interval?: Milliseconds; } | onPoll: Callback is called when the request is polling; this might be called several times if the request is not ready yet. Timeout: Timeout if the result is not ready (default `180000` // 3 minutes). Interval: Delay between retries (default is `5000` // 5 seconds) |
+| transactionDescriptor | object | Specifies the request key, network identifier, and chain identifier for the transaction that you want to create a simple payment verification (spv) proof for. |
+| targetChainId | string | Specifies the chain identifier that consumes this proof. |
+| pollOptions | object | Optional poll configuration settings.|
+| onPoll | string | Identifier for the callback that is called each time the node is polled for the status of a request key. This callback might be called several times if the request is not ready yet.|
+| timeout | time | Specifies a timeout in milliseconds to stop polling if the result is not ready. The default is `180000` milliseconds (3 minutes).|
+| interval | time | Specifies the delay between retry attempts. The default is `5000` milliseconds (5 seconds).|
 
 #### Examples
 

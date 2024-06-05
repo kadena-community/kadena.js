@@ -4,7 +4,7 @@ interface INetworkData {
   networkId: string;
   apiVersion: string;
   chainIds: string[];
-  chainNeighbours: Map<string, string[]>;
+  chainNeighbors: Map<string, string[]>;
 }
 
 export let networkData: INetworkData;
@@ -29,10 +29,10 @@ export async function initializeNetworkConfig(
   if (!data.nodeChains) throw new Error('ChainIDs not found');
   if (!data.nodeGraphHistory) throw new Error('Graph History not found');
 
-  const chainNeighbours = new Map<string, string[]>();
+  const chainNeighbors = new Map<string, string[]>();
 
   for (const chain of data.nodeGraphHistory[0][1].sort((a, b) => a[0] - b[0])) {
-    chainNeighbours.set(
+    chainNeighbors.set(
       chain[0].toString(),
       chain[1].map((n) => n.toString()),
     );
@@ -43,7 +43,7 @@ export async function initializeNetworkConfig(
     networkId: data.nodeVersion,
     apiVersion: data.nodeApiVersion,
     chainIds: data.nodeChains.sort(),
-    chainNeighbours,
+    chainNeighbors,
   };
 
   return networkData;

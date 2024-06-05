@@ -9,10 +9,10 @@ import { server } from './mocks/server.js';
 
 beforeAll(async () => {
   const { ensureNetworksConfiguration } = await import(
-    './networks/utils/networkHelpers.js'
+    './commands/networks/utils/networkHelpers.js'
   );
   const { writeTemplatesToDisk } = await import(
-    './tx/commands/templates/templates.js'
+    './commands/tx/commands/templates/templates.js'
   );
   await ensureNetworksConfiguration(process.env.KADENA_DIR!);
   await writeTemplatesToDisk();

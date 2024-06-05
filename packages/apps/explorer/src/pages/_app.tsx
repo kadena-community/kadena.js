@@ -1,6 +1,7 @@
 // load global styles from @kadena/react-ui
 import '@kadena/react-ui/global';
 
+import { MediaContextProvider } from '@/components/layout/media';
 import type { NormalizedCacheObject } from '@apollo/client';
 import {
   ApolloClient,
@@ -8,16 +9,15 @@ import {
   InMemoryCache,
   split,
 } from '@apollo/client';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { getMainDefinition } from '@apollo/client/utilities';
 import { RouterProvider } from '@kadena/react-ui';
+import { createClient } from 'graphql-ws';
 import type { AppProps } from 'next/app';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import type { ComponentType } from 'react';
 import React from 'react';
-
-import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
-import { getMainDefinition } from '@apollo/client/utilities';
-import { createClient } from 'graphql-ws';
-import Head from 'next/head';
 
 // next/apollo-link bug: https://github.com/dotansimha/graphql-yoga/issues/2194
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -58,17 +58,19 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <ApolloProvider client={client}>
       <RouterProvider navigate={router.push}>
-        <Head>
-          <title>K:Explorer</title>
-          <link
-            rel="icon"
-            href="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/icons/internal/default/icon%40128.png"
-          />
-        </Head>
+        <MediaContextProvider>
+          <Head>
+            <title>K:Explorer</title>
+            <link
+              rel="icon"
+              href="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/icons/internal/default/icon%40128.png"
+            />
+          </Head>
 
-        <main>
-          <ReactComponent {...pageProps} />
-        </main>
+          <main>
+            <ReactComponent {...pageProps} />
+          </main>
+        </MediaContextProvider>
       </RouterProvider>
     </ApolloProvider>
   );

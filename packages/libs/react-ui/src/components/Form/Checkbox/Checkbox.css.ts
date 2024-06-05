@@ -1,5 +1,8 @@
-import { style } from '@vanilla-extract/css';
-import { token, uiBaseRegular } from '../../../styles';
+import { fallbackVar, style } from '@vanilla-extract/css';
+import { recipe } from '@vanilla-extract/recipes';
+import { token, uiSmallRegular } from '../../../styles';
+
+const maxWidth = fallbackVar('100%');
 
 export const labelClass = style([
   {
@@ -10,6 +13,7 @@ export const labelClass = style([
     cursor: 'pointer',
     gap: token('size.n2'),
     transition: 'color 0.2s ease',
+    maxWidth: maxWidth,
     selectors: {
       '&[data-disabled="true"]': {
         cursor: 'not-allowed',
@@ -20,7 +24,7 @@ export const labelClass = style([
       },
     },
   },
-  uiBaseRegular,
+  uiSmallRegular,
 ]);
 
 export const boxClass = style({
@@ -98,4 +102,37 @@ export const iconClass = style({
         color: token('color.icon.base.default'),
       },
   },
+});
+
+export const groupClass = recipe({
+  base: [
+    {
+      flexWrap: 'wrap',
+      display: 'flex',
+    },
+  ],
+  variants: {
+    direction: {
+      row: {
+        flexDirection: 'row',
+        gap: `${token('spacing.n2')} ${token('spacing.n4')}`,
+        vars: {
+          [maxWidth]: '32%',
+        },
+      },
+      column: {
+        flexDirection: 'column',
+        gap: token('spacing.n2'),
+        vars: {
+          [maxWidth]: '100%',
+        },
+      },
+    },
+  },
+});
+
+export const layoutClass = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: token('spacing.n2'),
 });

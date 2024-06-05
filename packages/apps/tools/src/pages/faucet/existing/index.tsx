@@ -30,7 +30,7 @@ import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useCallback, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import * as z from 'zod';
+import { z } from 'zod';
 
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
@@ -244,22 +244,24 @@ const ExistingAccountFaucetPage: FC = () => {
       <Heading as="h4">{t('Add Funds to Existing Account')}</Heading>
       <div className={notificationContainerStyle}>
         {mainnetSelected ? (
-          <Notification intent="warning" role="status">
+          <Notification intent="warning" role="status" type="inlineStacked">
             <NotificationHeading>
               {t('The Faucet is not available on Mainnet')}
             </NotificationHeading>
-            <Trans
-              i18nKey="common:faucet-unavailable-warning"
-              components={[
-                <a
-                  className={notificationLinkStyle}
-                  target={'_blank'}
-                  href="https://chainweaver.kadena.network/contracts"
-                  rel="noreferrer"
-                  key="link-to-module"
-                />,
-              ]}
-            />
+            <div>
+              <Trans
+                i18nKey="common:faucet-unavailable-warning"
+                components={[
+                  <a
+                    className={notificationLinkStyle}
+                    target={'_blank'}
+                    href="https://chainweaver.kadena.network/contracts"
+                    rel="noreferrer"
+                    key="link-to-module"
+                  />,
+                ]}
+              />
+            </div>
           </Notification>
         ) : null}
       </div>

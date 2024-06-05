@@ -25,12 +25,14 @@ import {
   getFlatData,
 } from './utils/staticGeneration/flatPosts';
 import {
+  cleanupPages,
   getData as getMenuData,
   getPages,
 } from './utils/staticGeneration/getData';
 
 export {
   checkSubTreeForActive,
+  cleanupPages,
   flatPosts,
   flattenData,
   getFileExtension,

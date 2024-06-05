@@ -3,7 +3,7 @@ import { prefixApi } from '@/utils/network';
 import { details } from '@kadena/client-utils/coin';
 import type { ChainId } from '@kadena/types';
 import { useQuery } from '@tanstack/react-query';
-import * as z from 'zod';
+import { z } from 'zod';
 
 interface IParams {
   account: string;

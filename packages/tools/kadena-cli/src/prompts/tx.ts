@@ -7,14 +7,14 @@ import { z } from 'zod';
 import {
   getTransactions,
   requestKeyValidation,
-} from '../tx/utils/txHelpers.js';
+} from '../commands/tx/utils/txHelpers.js';
 
 import { basename } from 'node:path';
-import { getAllAccounts } from '../account/utils/accountHelpers.js';
+import { getAllAccounts } from '../commands/account/utils/accountHelpers.js';
+import { loadNetworkConfig } from '../commands/networks/utils/networkHelpers.js';
+import { getTemplates } from '../commands/tx/commands/templates/templates.js';
 import { MULTI_SELECT_INSTRUCTIONS } from '../constants/global.js';
-import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
 import { services } from '../services/index.js';
-import { getTemplates } from '../tx/commands/templates/templates.js';
 import { CommandError } from '../utils/command.util.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
