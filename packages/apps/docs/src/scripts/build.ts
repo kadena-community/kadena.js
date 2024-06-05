@@ -16,7 +16,7 @@ import { validateLinks } from './validateLinks';
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
 (async function (): Promise<void> {
-  //starting with a cleanslate, removing the tempdir.
+  // starting with a cleanslate, removing the tempdir.
   deleteTempDir();
   await initFunc(movePages, 'Move all pages from docs with config.yaml');
   await initFunc(fixLocalLinks, 'fix local links from the config.yaml');
