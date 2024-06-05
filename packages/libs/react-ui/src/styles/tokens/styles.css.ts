@@ -99,31 +99,6 @@ export const monospaceSmallestBold = style({
 });
 
 /**
- * Code @xs Description
- */
-export const monospaceBaseRegular = style({
-  fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
-  fontSize: tokens.kda.foundation.typography.fontSize.sm,
-  fontWeight: tokens.kda.foundation.typography.weight.monospaceFont.regular,
-  lineHeight: '1.125rem',
-  letterSpacing: tokens.kda.foundation.spacing.n0,
-  '@media': {
-    '(width >= 64rem)': {
-      fontSize: tokens.kda.foundation.typography.fontSize.base,
-      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
-    },
-    '(width >= 80rem)': {
-      fontSize: tokens.kda.foundation.typography.fontSize.base,
-      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
-    },
-    '(width >= 96rem)': {
-      fontSize: tokens.kda.foundation.typography.fontSize.base,
-      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
-    },
-  },
-});
-
-/**
  * Code Bold @ xs Description
  */
 export const monospaceBaseBold = style({
@@ -626,31 +601,6 @@ export const uiSmallestBold = style({
     '(width >= 96rem)': {
       fontSize: tokens.kda.foundation.typography.fontSize.xs,
       lineHeight: tokens.kda.foundation.typography.lineHeight.md,
-    },
-  },
-});
-
-/**
- * P @xs Description
- */
-export const uiBaseRegular = style({
-  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
-  fontSize: tokens.kda.foundation.typography.fontSize.sm,
-  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.regular,
-  lineHeight: '1.125rem',
-  letterSpacing: tokens.kda.foundation.spacing.n0,
-  '@media': {
-    '(width >= 64rem)': {
-      fontSize: tokens.kda.foundation.typography.fontSize.base,
-      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
-    },
-    '(width >= 80rem)': {
-      fontSize: tokens.kda.foundation.typography.fontSize.base,
-      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
-    },
-    '(width >= 96rem)': {
-      fontSize: tokens.kda.foundation.typography.fontSize.base,
-      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
     },
   },
 });
