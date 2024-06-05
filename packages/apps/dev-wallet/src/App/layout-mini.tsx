@@ -1,3 +1,7 @@
+import {
+  LayoutContext,
+  defaultAccentColor,
+} from '@/modules/layout/layout.provider.tsx';
 import { MonoContrast } from '@kadena/react-icons/system';
 import {
   KadenaLogo,
@@ -8,10 +12,6 @@ import {
   useTheme,
 } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
-import {
-  defaultAccentColor,
-  LayoutContext,
-} from '@/modules/layout/layout.provider.tsx';
 import { FC, useContext } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { containerStyle, headerStyle, mainStyle } from './layout-mini.css';
