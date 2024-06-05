@@ -14,6 +14,7 @@ import {
   Cell,
   Column,
   Row,
+  Stack,
   Table,
   TableBody,
   TableHeader,
@@ -27,6 +28,7 @@ import {
   iconLinkClass,
   linkClass,
   linkIconClass,
+  linkWrapperClass,
 } from './styles.css';
 
 interface ICompactTransactionsTableDesktopProps {
@@ -65,20 +67,22 @@ const CompactTransactionsTableDesktop: React.FC<
             </Cell>
             <Cell>
               <span>
-                <Link
-                  href={`/transaction/${transaction.hash}`}
-                  className={linkClass}
-                >
-                  <Text variant="code" className={dataFieldClass}>
-                    {transaction.hash}
-                  </Text>
-                </Link>
-                <Link
-                  href={`/transaction/${transaction.hash}`}
-                  className={iconLinkClass}
-                >
-                  <MonoArrowOutward className={linkIconClass} />
-                </Link>
+                <Stack alignItems="center" className={linkWrapperClass}>
+                  <Link
+                    href={`/transaction/${transaction.hash}`}
+                    className={linkClass}
+                  >
+                    <Text variant="code" className={dataFieldClass}>
+                      {transaction.hash}
+                    </Text>
+                  </Link>
+                  <Link
+                    href={`/transaction/${transaction.hash}`}
+                    className={iconLinkClass}
+                  >
+                    <MonoArrowOutward className={linkIconClass} />
+                  </Link>
+                </Stack>
               </span>
             </Cell>
             <Cell>

@@ -40,6 +40,9 @@ export const linkClass = style({
   textDecoration: 'none',
 });
 
+export const linkWrapperClass = style({
+  width: `calc(100% - 15px)`,
+});
 export const iconLinkClass = style([
   atoms({
     color: 'text.base.default',
