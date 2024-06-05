@@ -3,7 +3,8 @@ import { useAccountQuery } from '@/__generated__/sdk';
 import CompactKeysTable from '@/components/compact-keys-table/compact-keys-table';
 import type { IKeyProps } from '@/components/compact-keys-table/types';
 import CompactTransactionsTable from '@/components/compact-transactions-table/compact-transactions-table';
-import { Stack } from '@kadena/react-ui';
+import MaskedAccountName from '@/components/mask-accountname/mask-accountname';
+import { Heading, Stack } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useMemo } from 'react';
@@ -18,9 +19,11 @@ const Account: FC = () => {
     skip: !router.query.accountName,
   });
 
+  const { fungibleAccount } = data ?? {};
+
   const keys: IKeyProps[] = useMemo(() => {
     const innerKeys: IKeyProps[] =
-      data?.fungibleAccount?.chainAccounts.reduce((acc: IKeyProps[], val) => {
+      fungibleAccount?.chainAccounts.reduce((acc: IKeyProps[], val) => {
         const guardKeys: IKeyProps[] = val.guard.keys.map((key) => {
           return {
             key: key,
@@ -36,13 +39,20 @@ const Account: FC = () => {
       if (parseInt(a.chainId, 10) > parseInt(b.chainId, 10)) return 1;
       return 0;
     });
-  }, [data?.fungibleAccount?.chainAccounts]);
+  }, [fungibleAccount?.chainAccounts]);
 
   return (
     <>
       {loading && <div>Loading...</div>}
       {error && <div>Error: {error.message}</div>}
 
+      <Stack margin="md">
+        <Heading as="h5">
+          {parseFloat(fungibleAccount?.totalBalance).toFixed(2)} KDA spread
+          across {fungibleAccount?.chainAccounts.length} Chains for account{' '}
+          <MaskedAccountName value={fungibleAccount?.accountName ?? ''} />
+        </Heading>
+      </Stack>
       {keys && <CompactKeysTable keys={keys} />}
       <Stack
         width="100%"
@@ -50,9 +60,9 @@ const Account: FC = () => {
         flexDirection={{ xs: 'column-reverse', md: 'row' }}
       >
         <Stack flex={1} flexDirection="column">
-          {data?.fungibleAccount?.transactions && (
+          {fungibleAccount?.transactions && (
             <CompactTransactionsTable
-              transactions={data?.fungibleAccount?.transactions.edges.map(
+              transactions={fungibleAccount?.transactions.edges.map(
                 (edge) => edge.node as Transaction,
               )}
             />

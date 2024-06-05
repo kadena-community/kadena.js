@@ -6,6 +6,7 @@ export const tableClass = style({
 
 globalStyle(`${tableClass} td span`, {
   display: 'block',
+  alignItems: 'center',
   contain: 'inline-size',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
