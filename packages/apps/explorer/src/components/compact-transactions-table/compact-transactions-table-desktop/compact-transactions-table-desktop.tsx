@@ -20,16 +20,13 @@ import {
   Text,
 } from '@kadena/react-ui';
 import Link from 'next/link';
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
   badgeClass,
   dataFieldClass,
-  dataFieldLinkClass,
-  headerClass,
   iconLinkClass,
   linkClass,
   linkIconClass,
-  sectionClass,
 } from './styles.css';
 
 interface ICompactTransactionsTableDesktopProps {
