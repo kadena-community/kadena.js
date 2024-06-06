@@ -1,23 +1,11 @@
-import type {
-  ExecutionPayload,
-  TransactionResult,
-  Transfer,
-} from '@/__generated__/sdk';
+import type { Transfer } from '@/__generated__/sdk';
+
+import { Text } from '@kadena/react-ui';
+import React from 'react';
 import {
-  MonoArrowOutward,
-  MonoCheck,
-  MonoClear,
-} from '@kadena/react-icons/system';
-import { Badge, Text } from '@kadena/react-ui';
-import React, { Fragment } from 'react';
-import {
-  badgeClass,
   dataFieldClass,
   dataFieldLinkClass,
   headerClass,
-  iconLinkClass,
-  linkClass,
-  linkIconClass,
   rowClass,
   sectionClass,
 } from './styles.css';
