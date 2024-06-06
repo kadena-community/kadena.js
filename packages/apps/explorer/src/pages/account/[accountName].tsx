@@ -3,6 +3,11 @@ import { useAccountQuery } from '@/__generated__/sdk';
 import type { IKeyProps } from '@/components/compact-keys-table/compact-keys-table';
 import CompactKeysTable from '@/components/compact-keys-table/compact-keys-table';
 import CompactTable from '@/components/compact-table/compact-table';
+import { FormatAccount } from '@/components/compact-table/utils/format-account';
+import { FormatAmount } from '@/components/compact-table/utils/format-amount';
+import { FormatDefault } from '@/components/compact-table/utils/format-default';
+import { FormatLink } from '@/components/compact-table/utils/format-link';
+import { FormatStatus } from '@/components/compact-table/utils/format-status';
 import CompactTransfersTable from '@/components/compact-transfers-table/compact-transfers-table';
 import MaskedAccountName from '@/components/mask-accountname/mask-accountname';
 import { MonoArrowOutward } from '@kadena/react-icons';
@@ -65,33 +70,28 @@ const Account: FC = () => {
               label: 'ChainId',
               key: 'chainId',
               width: '10%',
-              value: ({ str }: { str: string }) => str,
             },
             {
               variant: 'code',
               label: 'Key',
               key: 'key',
               width: '50%',
-              value: ({ str }: { str: string }) => str,
             },
             {
               label: 'Predicate',
               key: 'predicate',
               width: '40%',
-              value: ({ str }: { str: string }) => str,
             },
           ]}
           data={keys}
         />
       )}
-
-      {keys && <CompactKeysTable keys={keys} />}
       <Stack
         width="100%"
         gap="md"
         flexDirection={{ xs: 'column-reverse', md: 'row' }}
       >
-        <Stack flex={1} flexDirection="column">
+        <Stack flex={1} flexDirection="column" marginBlockStart="lg">
           <Tabs>
             <TabItem
               title={`Transactions (${fungibleAccount?.transactions.edges.length ?? 0})`}
@@ -102,17 +102,30 @@ const Account: FC = () => {
                   label="Keys table"
                   fields={[
                     {
+                      label: 'Status',
+                      key: 'result.goodResult',
+                      variant: 'code',
+                      width: '10%',
+                      render: FormatStatus,
+                    },
+                    {
+                      label: 'Sender',
+                      key: 'cmd.meta.sender',
+                      variant: 'code',
+                      width: '25%',
+                    },
+                    {
                       label: 'RequestKey',
                       key: 'hash',
-                      width: '10%',
-                      value: ({ str }: { str: string }) => (
-                        <>
-                          <Link href={`/transaction/${str}`}>{str}</Link>
-                          <Link href={`/transaction/${str}`}>
-                            <MonoArrowOutward />
-                          </Link>
-                        </>
-                      ),
+                      variant: 'code',
+                      width: '25%',
+                      render: FormatLink,
+                    },
+                    {
+                      label: 'Code Preview',
+                      key: 'cmd.payload.code',
+                      variant: 'code',
+                      width: '40%',
                     },
                   ]}
                   data={fungibleAccount?.transactions.edges.map(
@@ -126,8 +139,45 @@ const Account: FC = () => {
               key="Transfers"
             >
               {fungibleAccount?.transfers && (
-                <CompactTransfersTable
-                  transfers={fungibleAccount?.transfers.edges.map(
+                <CompactTable
+                  fields={[
+                    {
+                      label: 'Height',
+                      key: 'height',
+                      variant: 'code',
+                      width: '10%',
+                    },
+                    {
+                      label: 'ChainId',
+                      key: 'chainId',
+                      variant: 'code',
+                      width: '10%',
+                    },
+                    {
+                      label: 'Amount',
+                      key: 'amount',
+                      width: '20%',
+                      render: FormatAmount,
+                    },
+                    {
+                      label: 'Sender',
+                      key: 'senderAccount',
+                      width: '20%',
+                      render: FormatAccount,
+                    },
+                    {
+                      label: 'Receiver',
+                      key: 'receiverAccount',
+                      width: '20%',
+                      render: FormatAccount,
+                    },
+                    {
+                      label: 'RequestKey',
+                      key: 'requestKey',
+                      width: '20%',
+                    },
+                  ]}
+                  data={fungibleAccount?.transfers.edges.map(
                     (edge) => edge.node as Transfer,
                   )}
                 />

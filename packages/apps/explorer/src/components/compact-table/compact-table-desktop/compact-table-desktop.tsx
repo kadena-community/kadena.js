@@ -33,7 +33,7 @@ const CompactTableDesktop: FC<ICompactTableProps> = ({
           <Row key={idx}>
             {fields.map((field) => (
               <Cell key={field.key}>
-                <FieldCell field={field} value={item[field.key]} />
+                <FieldCell field={field} item={item} />
               </Cell>
             ))}
           </Row>

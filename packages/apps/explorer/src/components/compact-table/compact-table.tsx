@@ -15,7 +15,7 @@ export interface ITableField {
   variant?: 'body' | 'code';
   label: string;
   key: string;
-  value: FC<{ str: string }>;
+  render?: FC<{ value: string }>;
 }
 
 const CompactTable: React.FC<ICompactTableProps> = ({
