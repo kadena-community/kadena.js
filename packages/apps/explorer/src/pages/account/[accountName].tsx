@@ -1,7 +1,7 @@
 import type { Transaction } from '@/__generated__/sdk';
 import { useAccountQuery } from '@/__generated__/sdk';
+import type { IKeyProps } from '@/components/compact-keys-table/compact-keys-table';
 import CompactKeysTable from '@/components/compact-keys-table/compact-keys-table';
-import type { IKeyProps } from '@/components/compact-keys-table/types';
 import CompactTransactionsTable from '@/components/compact-transactions-table/compact-transactions-table';
 import MaskedAccountName from '@/components/mask-accountname/mask-accountname';
 import { Heading, Stack } from '@kadena/react-ui';
