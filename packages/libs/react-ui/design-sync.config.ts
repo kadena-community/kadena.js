@@ -1,4 +1,8 @@
-import { defineConfig, responsiveExtension } from '@design-sync/cli';
+import {
+  defineConfig,
+  pathToStyleName,
+  responsiveExtension,
+} from '@design-sync/cli';
 import { vanillaExtractPlugin } from '@design-sync/vanilla-extract-plugin';
 
 const breakpoints = {
@@ -22,6 +26,13 @@ export default defineConfig({
     vanillaExtractPlugin({
       contractName: 'tokens',
       onlyValues: true,
+      styleName: ({ path }) => {
+        const fontPath = path.split('font.')[1];
+        if (fontPath.split('.').length > 3) {
+          return pathToStyleName(fontPath, { count: 4 });
+        }
+        return pathToStyleName(path);
+      },
     }),
   ],
   schemaExtensions: [
