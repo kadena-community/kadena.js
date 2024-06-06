@@ -98,7 +98,9 @@ const Tabsss: FC<ITabsProps> = ({
       const modulesToClose = map.get(item.key as string);
 
       if (modulesToClose) {
-        const activeModuleToSet = map.get(item.prevKey as string);
+        const activeModuleToSet = map.get(
+          (item.prevKey ?? item.nextKey) as string,
+        );
 
         if (activeModuleToSet) {
           onModuleChange(activeModuleToSet[0]);
