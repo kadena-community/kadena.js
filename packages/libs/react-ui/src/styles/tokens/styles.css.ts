@@ -151,7 +151,7 @@ export const monospaceBaseBold = style({
 /**
  * H1 Description
  */
-export const typographyFontH1 = style({
+export const h1 = style({
   fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize['3xl'],
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
@@ -176,7 +176,7 @@ export const typographyFontH1 = style({
 /**
  * H2 Description
  */
-export const typographyFontH2 = style({
+export const h2 = style({
   fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize['2xl'],
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
@@ -201,7 +201,7 @@ export const typographyFontH2 = style({
 /**
  * H3 Description
  */
-export const typographyFontH3 = style({
+export const h3 = style({
   fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xl,
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
@@ -226,7 +226,7 @@ export const typographyFontH3 = style({
 /**
  * H4 Description
  */
-export const typographyFontH4 = style({
+export const h4 = style({
   fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.lg,
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
@@ -251,7 +251,7 @@ export const typographyFontH4 = style({
 /**
  * H5 Description
  */
-export const typographyFontH5 = style({
+export const h5 = style({
   fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.base,
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
@@ -276,7 +276,7 @@ export const typographyFontH5 = style({
 /**
  * H6 Description
  */
-export const typographyFontH6 = style({
+export const h6 = style({
   fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.sm,
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
@@ -296,6 +296,94 @@ export const typographyFontH6 = style({
       lineHeight: tokens.kda.foundation.typography.lineHeight.base,
     },
   },
+});
+
+/**
+ * Input Element Code @xs Description
+ */
+export const inputMonospaceBaseRegular = style({
+  fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.xs,
+  fontWeight: tokens.kda.foundation.typography.weight.monospaceFont.regular,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.md,
+  letterSpacing: tokens.kda.foundation.spacing.n0,
+  '@media': {
+    '(width >= 40rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.sm,
+      lineHeight: '1.125rem',
+    },
+    '(width >= 48rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+  },
+});
+
+/**
+ * Input Element Code @xs Description
+ */
+export const inputMonospaceMobileRegular = style({
+  fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.base,
+  fontWeight: tokens.kda.foundation.typography.weight.monospaceFont.regular,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+  letterSpacing: tokens.kda.foundation.spacing.n0,
+});
+
+/**
+ * Input Element @xs Description
+ */
+export const inputUiBaseRegular = style({
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.xs,
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.regular,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.md,
+  letterSpacing: tokens.kda.foundation.spacing.n0,
+  '@media': {
+    '(width >= 40rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.sm,
+      lineHeight: '1.375rem',
+    },
+    '(width >= 48rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+  },
+});
+
+/**
+ * Input Element @xs Description
+ */
+export const inputUiMobileRegular = style({
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.base,
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.regular,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+  letterSpacing: tokens.kda.foundation.spacing.n0,
 });
 
 /**

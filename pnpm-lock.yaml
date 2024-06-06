@@ -2402,11 +2402,11 @@ importers:
         specifier: ^0.15.1
         version: 0.15.2(@types/node@20.12.7)(typescript@5.4.5)(webpack@5.88.2)
       '@design-sync/cli':
-        specifier: ^0.11.1
-        version: 0.11.1(prettier@3.2.5)
+        specifier: ^0.11.3
+        version: 0.11.3(prettier@3.2.5)
       '@design-sync/vanilla-extract-plugin':
-        specifier: ^0.7.0
-        version: 0.7.0(prettier@3.2.5)
+        specifier: ^0.7.3
+        version: 0.7.3(prettier@3.2.5)
       '@etchteam/storybook-addon-status':
         specifier: ^4.2.4
         version: 4.2.4(@types/react-dom@18.2.25)(@types/react@18.2.79)
@@ -5368,35 +5368,35 @@ packages:
       '@jridgewell/trace-mapping': 0.3.9
     dev: true
 
-  /@design-sync/cli@0.11.1(prettier@3.2.5):
-    resolution: {integrity: sha512-e5SzZL+qI61zT1xN/bbsdqv6h5quZtr6y9Yel5QgRY+ayJolAZBU1Gxoe4qRQc5tKpnCl/frrPmCCpM1fKQx7A==}
+  /@design-sync/cli@0.11.3(prettier@3.2.5):
+    resolution: {integrity: sha512-TV/KzVX5qF8ziVTzRcqd9Yhf7C44WydCYc1vG3bi2F1xbAW/juG1Yhrp50HQbhOXh11K7ZpFmCETCNVFt3mxJw==}
     hasBin: true
     dependencies:
-      '@design-sync/manager': 0.6.1(prettier@3.2.5)
-      '@design-sync/utils': 0.5.0
-      '@design-sync/w3c-dtfm': 0.11.0
-      citty: 0.1.5
-      nypm: 0.3.3
+      '@design-sync/manager': 0.6.3(prettier@3.2.5)
+      '@design-sync/utils': 0.5.1
+      '@design-sync/w3c-dtfm': 0.11.2
+      citty: 0.1.6
+      nypm: 0.3.8
     transitivePeerDependencies:
       - prettier
     dev: true
 
-  /@design-sync/manager@0.6.1(prettier@3.2.5):
-    resolution: {integrity: sha512-PbCUJzotQ6lJnStcgUhRoZGJSkPzkZBd5tAk2923bCnQYp1nzvHevnMQd0WkhXixwUBMJNPAWx5XAWjP/f9E4A==}
+  /@design-sync/manager@0.6.3(prettier@3.2.5):
+    resolution: {integrity: sha512-VE4T2TlD5emGfmfj7A/3IvzketVrJGqyggdizjVhyszvUxvQi7P6mgJzanrNCY0pLeJDmOosGj2mubv3aimZbw==}
     peerDependencies:
-      prettier: ^3.0.0
+      prettier: ^3.1.1
     dependencies:
-      '@design-sync/utils': 0.5.0
-      '@design-sync/w3c-dtfm': 0.11.0
-      c12: 1.9.0
+      '@design-sync/utils': 0.5.1
+      '@design-sync/w3c-dtfm': 0.11.2
+      c12: 1.10.0
       consola: 3.2.3
       fast-glob: 3.3.2
-      giget: 1.2.1
+      giget: 1.2.3
       prettier: 3.2.5
     dev: true
 
-  /@design-sync/utils@0.5.0:
-    resolution: {integrity: sha512-lP7mCY01KI684stv5SdBxDpJoJlOSrZgsDBRdUpUvCooxNusKGjOocigkb/R38Gv2bobMXjxlAwtPTXOUvZYPQ==}
+  /@design-sync/utils@0.5.1:
+    resolution: {integrity: sha512-1x3tkb9/nvAQtPn9lITLBXXeDE3iMuCP1hT6ghMHijE/FF6MXraI791WtGj6bDsRF33S1E/S18F9GhHvaj0/uA==}
     dependencies:
       deepmerge: 4.3.1
       fast-memoize: 2.5.2
@@ -5406,20 +5406,20 @@ packages:
       scule: 1.3.0
     dev: true
 
-  /@design-sync/vanilla-extract-plugin@0.7.0(prettier@3.2.5):
-    resolution: {integrity: sha512-IdTsaXdWAQZzyIk/9xn3wb9T9+ecUhilITqfdSIboKH3hicbN+HWF8ECsJLvVXf+o0DTKaBauw5Zpy7zhUF8/A==}
+  /@design-sync/vanilla-extract-plugin@0.7.3(prettier@3.2.5):
+    resolution: {integrity: sha512-9b7VjC3Td74RivqSPxO7+QV+HFbWnwl96CQqWPntbJB6XPWJkIfUxnXOYXCZVYmF2A/6Typzt+vMkPyXze0I/g==}
     dependencies:
-      '@design-sync/manager': 0.6.1(prettier@3.2.5)
-      '@design-sync/utils': 0.5.0
-      '@design-sync/w3c-dtfm': 0.11.0
+      '@design-sync/manager': 0.6.3(prettier@3.2.5)
+      '@design-sync/utils': 0.5.1
+      '@design-sync/w3c-dtfm': 0.11.2
     transitivePeerDependencies:
       - prettier
     dev: true
 
-  /@design-sync/w3c-dtfm@0.11.0:
-    resolution: {integrity: sha512-444/sdufQ1pJJmljnYtBC3a7k2qZnqcj42WVVWyVdZhbWz1kAkQYC0y6MUCdTiuliPgciojv2imT2HC+HjX4eg==}
+  /@design-sync/w3c-dtfm@0.11.2:
+    resolution: {integrity: sha512-2tlimzsY53+kL6KcdGe7QF44yPZDfZJGyCPmdcIUPq5DnTiCx+PjRCsdmCRKP1tZGD0dMIvsqE3Ybnf5KXelog==}
     dependencies:
-      '@design-sync/utils': 0.5.0
+      '@design-sync/utils': 0.5.1
       culori: 3.3.0
     dev: true
 
@@ -18309,6 +18309,23 @@ packages:
     resolution: {integrity: sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==}
     engines: {node: '>= 0.8'}
 
+  /c12@1.10.0:
+    resolution: {integrity: sha512-0SsG7UDhoRWcuSvKWHaXmu5uNjDCDN3nkQLRL4Q42IlFy+ze58FcCoI3uPwINXinkz7ZinbhEgyzYFw9u9ZV8g==}
+    dependencies:
+      chokidar: 3.6.0
+      confbox: 0.1.3
+      defu: 6.1.4
+      dotenv: 16.4.5
+      giget: 1.2.3
+      jiti: 1.21.0
+      mlly: 1.6.1
+      ohash: 1.1.3
+      pathe: 1.1.2
+      perfect-debounce: 1.0.0
+      pkg-types: 1.0.3
+      rc9: 2.1.1
+    dev: true
+
   /c12@1.9.0:
     resolution: {integrity: sha512-7KTCZXdIbOA2hLRQ+1KzJ15Qp9Wn58one74dkihMVp2H6EzKTa3OYBy0BSfS1CCcmxYyqeX8L02m40zjQ+dstg==}
     dependencies:
@@ -18677,6 +18694,21 @@ packages:
       readdirp: 3.6.0
     optionalDependencies:
       fsevents: 2.3.3
+
+  /chokidar@3.6.0:
+    resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
+    engines: {node: '>= 8.10.0'}
+    dependencies:
+      anymatch: 3.1.3
+      braces: 3.0.2
+      glob-parent: 5.1.2
+      is-binary-path: 2.1.0
+      is-glob: 4.0.3
+      normalize-path: 3.0.0
+      readdirp: 3.6.0
+    optionalDependencies:
+      fsevents: 2.3.3
+    dev: true
 
   /chownr@1.1.4:
     resolution: {integrity: sha512-jJ0bqzaylmJtVnNgzTeSOs8DPavpbYgEr/b0YL8/2GO3xJEhInFmhKMUnEJQjZumK7KXGFhUy89PrsJWlakBVg==}
@@ -22717,6 +22749,20 @@ packages:
       ohash: 1.1.3
       pathe: 1.1.2
       tar: 6.2.0
+
+  /giget@1.2.3:
+    resolution: {integrity: sha512-8EHPljDvs7qKykr6uw8b+lqLiUc/vUg+KVTI0uND4s63TdsZM2Xus3mflvF0DDG9SiM4RlCkFGL+7aAjRmV7KA==}
+    hasBin: true
+    dependencies:
+      citty: 0.1.6
+      consola: 3.2.3
+      defu: 6.1.4
+      node-fetch-native: 1.6.4
+      nypm: 0.3.8
+      ohash: 1.1.3
+      pathe: 1.1.2
+      tar: 6.2.0
+    dev: true
 
   /git-hooks-list@1.0.3:
     resolution: {integrity: sha512-Y7wLWcrLUXwk2noSka166byGCvhMtDRpgHdzCno1UQv/n/Hegp++a2xBWJL1lJarnKD3SWaljD+0z1ztqxuKyQ==}
@@ -27721,6 +27767,10 @@ packages:
   /node-fetch-native@1.6.2:
     resolution: {integrity: sha512-69mtXOFZ6hSkYiXAVB5SqaRvrbITC/NPyqv7yuu/qw0nmgPyYbIMYYNIDhNtwPrzk0ptrimrLz/hhjvm4w5Z+w==}
 
+  /node-fetch-native@1.6.4:
+    resolution: {integrity: sha512-IhOigYzAKHd244OC0JIMIUrjzctirCmPkaIfhDeGcEETWof5zKYUW7e7MYvChGWh/4CJeXEgsRyGzuF334rOOQ==}
+    dev: true
+
   /node-fetch@2.6.13:
     resolution: {integrity: sha512-StxNAxh15zr77QvvkmveSQ8uCQ4+v5FkvNTj0OESmiHu+VRi/gXArXtkWMElOsOUNLtUEvI4yS+rdtOHZTwlQA==}
     engines: {node: 4.x || >=6.0.0}
@@ -27957,6 +28007,18 @@ packages:
       execa: 8.0.1
       pathe: 1.1.2
       ufo: 1.4.0
+
+  /nypm@0.3.8:
+    resolution: {integrity: sha512-IGWlC6So2xv6V4cIDmoV0SwwWx7zLG086gyqkyumteH2fIgCAM4nDVFB2iDRszDvmdSVW9xb1N+2KjQ6C7d4og==}
+    engines: {node: ^14.16.0 || >=16.10.0}
+    hasBin: true
+    dependencies:
+      citty: 0.1.6
+      consola: 3.2.3
+      execa: 8.0.1
+      pathe: 1.1.2
+      ufo: 1.4.0
+    dev: true
 
   /oas-kit-common@1.0.8:
     resolution: {integrity: sha512-pJTS2+T0oGIwgjGpw7sIRU8RQMcUoKCDWFLdBqKB2BNmGpbBMH2sdqAaOXUg8OzonZHU0L7vfJu1mJFEiYDWOQ==}
@@ -28424,6 +28486,9 @@ packages:
     resolution: {integrity: sha512-W+gxAq7aQ9dJIg/XLKGcRT0cvnStFAQHPaI0pvD0U2l6IVLueUAm3nwN7lkY62zZNmlvNx6jNtE4wlbS+CyqSg==}
     engines: {node: '>= 12.0.0'}
     hasBin: true
+    peerDependenciesMeta:
+      '@parcel/core':
+        optional: true
     dependencies:
       '@parcel/config-default': 2.12.0(@parcel/core@2.12.0)
       '@parcel/core': 2.12.0
