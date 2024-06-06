@@ -8,6 +8,522 @@
     "owner": "kadena-community",
     "repoName": "kadena.js",
     "content": {
+      "0.10.0": {
+        "label": "0.10.0",
+        "isLocked": true,
+        "authors": [
+          {
+            "login": "r-mulder",
+            "id": 116208434,
+            "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+            "html_url": "https://github.com/r-mulder",
+            "url": "https://api.github.com/users/r-mulder"
+          },
+          {
+            "login": "ferreroltd",
+            "id": 73488793,
+            "avatar_url": "https://avatars.githubusercontent.com/u/73488793?v=4",
+            "html_url": "https://github.com/ferreroltd",
+            "url": "https://api.github.com/users/ferreroltd"
+          },
+          {
+            "login": "isaozler",
+            "id": 1378630,
+            "avatar_url": "https://avatars.githubusercontent.com/u/1378630?v=4",
+            "html_url": "https://github.com/isaozler",
+            "url": "https://api.github.com/users/isaozler"
+          },
+          {
+            "login": "sstraatemans",
+            "id": 4015521,
+            "avatar_url": "https://avatars.githubusercontent.com/u/4015521?v=4",
+            "html_url": "https://github.com/sstraatemans",
+            "url": "https://api.github.com/users/sstraatemans"
+          }
+        ],
+        "patches": [
+          {
+            "label": "Add checkboxgroup component",
+            "commits": [
+              {
+                "hash": "020be02d7",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Tue, 04 Jun 2024 12:07:03 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:33 GMT"
+                  },
+                  "data": {
+                    "sha": "020be02d7c85d6bc8d4e2bb1ef7a925800e10917",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/020be02d7c85d6bc8d4e2bb1ef7a925800e10917",
+                    "author": {
+                      "login": "r-mulder",
+                      "id": 116208434,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+                      "html_url": "https://github.com/r-mulder",
+                      "url": "https://api.github.com/users/r-mulder"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/020be02d7c85d6bc8d4e2bb1ef7a925800e10917/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/020be02d7c85d6bc8d4e2bb1ef7a925800e10917",
+                    "commit": {
+                      "message": "feat: add checkboxgroup component with story and extended the checkbox type (#2213)",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Add indication arrow and add an compact version of the tooltip",
+            "commits": [
+              {
+                "hash": "9d7545ae0",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Thu, 16 May 2024 13:43:07 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:33 GMT"
+                  },
+                  "data": {
+                    "sha": "9d7545ae0a2536862a70e542b47a83aa6e56bc1d",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/9d7545ae0a2536862a70e542b47a83aa6e56bc1d",
+                    "author": {
+                      "login": "r-mulder",
+                      "id": 116208434,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+                      "html_url": "https://github.com/r-mulder",
+                      "url": "https://api.github.com/users/r-mulder"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/9d7545ae0a2536862a70e542b47a83aa6e56bc1d/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/9d7545ae0a2536862a70e542b47a83aa6e56bc1d",
+                    "commit": {
+                      "message": "feat: add arrows towards the trigger and add isCompact prop for a sma… (#2134)\n\nfeat: add compact version and fix arrow color",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Update border and radius based on layout",
+            "commits": [
+              {
+                "hash": "f045afe82",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Wed, 29 May 2024 09:41:02 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:34 GMT"
+                  },
+                  "data": {
+                    "sha": "f045afe82371d6cd88b95ed713d2515bd494ca26",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/f045afe82371d6cd88b95ed713d2515bd494ca26",
+                    "author": {
+                      "login": "ferreroltd",
+                      "id": 73488793,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/73488793?v=4",
+                      "html_url": "https://github.com/ferreroltd",
+                      "url": "https://api.github.com/users/ferreroltd"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/f045afe82371d6cd88b95ed713d2515bd494ca26/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/f045afe82371d6cd88b95ed713d2515bd494ca26",
+                    "commit": {
+                      "message": "chore: border radius (#2202)",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Update border styles for the Notification component",
+            "commits": [
+              {
+                "hash": "dac1b28ca",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Mon, 27 May 2024 14:57:14 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:34 GMT"
+                  },
+                  "data": {
+                    "sha": "dac1b28ca78d35e03eb48113d423030d4b0c6cdb",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/dac1b28ca78d35e03eb48113d423030d4b0c6cdb",
+                    "author": {
+                      "login": "ferreroltd",
+                      "id": 73488793,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/73488793?v=4",
+                      "html_url": "https://github.com/ferreroltd",
+                      "url": "https://api.github.com/users/ferreroltd"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/dac1b28ca78d35e03eb48113d423030d4b0c6cdb/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/dac1b28ca78d35e03eb48113d423030d4b0c6cdb",
+                    "commit": {
+                      "message": "Fix/notification borders (#2149)",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Added stable status to ui components",
+            "commits": [
+              {
+                "hash": "3805b414e",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Wed, 29 May 2024 10:52:32 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:34 GMT"
+                  },
+                  "data": {
+                    "sha": "3805b414e8da8d39fb54b061f8dbbb9751842a25",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/3805b414e8da8d39fb54b061f8dbbb9751842a25",
+                    "author": {
+                      "login": "ferreroltd",
+                      "id": 73488793,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/73488793?v=4",
+                      "html_url": "https://github.com/ferreroltd",
+                      "url": "https://api.github.com/users/ferreroltd"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/3805b414e8da8d39fb54b061f8dbbb9751842a25/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/3805b414e8da8d39fb54b061f8dbbb9751842a25",
+                    "commit": {
+                      "message": "stable status to ui components (#2203)",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Token sync",
+            "commits": [
+              {
+                "hash": "8e2a29721",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Tue, 14 May 2024 13:51:24 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:34 GMT"
+                  },
+                  "data": {
+                    "sha": "8e2a297210497b0455d64b0fa6a44852c50c46a0",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/8e2a297210497b0455d64b0fa6a44852c50c46a0",
+                    "author": {
+                      "login": "ferreroltd",
+                      "id": 73488793,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/73488793?v=4",
+                      "html_url": "https://github.com/ferreroltd",
+                      "url": "https://api.github.com/users/ferreroltd"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/8e2a297210497b0455d64b0fa6a44852c50c46a0/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/8e2a297210497b0455d64b0fa6a44852c50c46a0",
+                    "commit": {
+                      "message": "chore: token sync (#2131)",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Adds story for new System icons",
+            "commits": [
+              {
+                "hash": "864329d3e",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Mon, 13 May 2024 18:00:41 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:35 GMT"
+                  },
+                  "data": {
+                    "sha": "864329d3ea9f42efe51bc5e99417a5ad93d98158",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/864329d3ea9f42efe51bc5e99417a5ad93d98158",
+                    "author": {
+                      "login": "ferreroltd",
+                      "id": 73488793,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/73488793?v=4",
+                      "html_url": "https://github.com/ferreroltd",
+                      "url": "https://api.github.com/users/ferreroltd"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/864329d3ea9f42efe51bc5e99417a5ad93d98158/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/864329d3ea9f42efe51bc5e99417a5ad93d98158",
+                    "commit": {
+                      "message": "Feat/story system icons (#2123)",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Fixed the accessibility issues (font-weight and color related to the badge",
+            "commits": [
+              {
+                "hash": "076f0980f",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Fri, 17 May 2024 09:56:34 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:35 GMT"
+                  },
+                  "data": {
+                    "sha": "076f0980fc5611ca3116f98a9520d23028c673ed",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/076f0980fc5611ca3116f98a9520d23028c673ed",
+                    "author": {
+                      "login": "isaozler",
+                      "id": 1378630,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/1378630?v=4",
+                      "html_url": "https://github.com/isaozler",
+                      "url": "https://api.github.com/users/isaozler"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/076f0980fc5611ca3116f98a9520d23028c673ed/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/076f0980fc5611ca3116f98a9520d23028c673ed",
+                    "commit": {
+                      "message": "Fixed the accessibility issues (font-weight and color) related to the… (#2145)\n\n* Fixed the accessibility issues (font-weight and color) related to the badge\r\n\r\n* lint issue fix",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "added the high contrast variant and fixed the inline spacing for the large variant",
+            "commits": [
+              {
+                "hash": "9cb50ea42",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Fri, 17 May 2024 10:55:02 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:35 GMT"
+                  },
+                  "data": {
+                    "sha": "9cb50ea42fadfa6249ccc326a04edd3ae4e2a6e1",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/9cb50ea42fadfa6249ccc326a04edd3ae4e2a6e1",
+                    "author": {
+                      "login": "isaozler",
+                      "id": 1378630,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/1378630?v=4",
+                      "html_url": "https://github.com/isaozler",
+                      "url": "https://api.github.com/users/isaozler"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/9cb50ea42fadfa6249ccc326a04edd3ae4e2a6e1/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/9cb50ea42fadfa6249ccc326a04edd3ae4e2a6e1",
+                    "commit": {
+                      "message": "added the high contrast variant (#2147)\n\n* added the high contrast variant and fixed the inline spacing for the large variant\r\n\r\n* exported the Badge component",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Add new checkbox component",
+            "commits": [
+              {
+                "hash": "49fb38853",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Tue, 28 May 2024 12:20:14 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:35 GMT"
+                  },
+                  "data": {
+                    "sha": "49fb388534865170085235586916c7e2272a683f",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/49fb388534865170085235586916c7e2272a683f",
+                    "author": {
+                      "login": "r-mulder",
+                      "id": 116208434,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+                      "html_url": "https://github.com/r-mulder",
+                      "url": "https://api.github.com/users/r-mulder"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/49fb388534865170085235586916c7e2272a683f/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/49fb388534865170085235586916c7e2272a683f",
+                    "commit": {
+                      "message": "Feat/UI checkbox component (#2191)\n\nfeat: add new checkbox component",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Add new tabs component style and added the pagination option",
+            "commits": [
+              {
+                "hash": "07ec9691c",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Wed, 29 May 2024 08:19:58 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:36 GMT"
+                  },
+                  "data": {
+                    "sha": "07ec9691c8d60c06480308becc60ab466cde6493",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/07ec9691c8d60c06480308becc60ab466cde6493",
+                    "author": {
+                      "login": "r-mulder",
+                      "id": 116208434,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+                      "html_url": "https://github.com/r-mulder",
+                      "url": "https://api.github.com/users/r-mulder"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/07ec9691c8d60c06480308becc60ab466cde6493/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/07ec9691c8d60c06480308becc60ab466cde6493",
+                    "commit": {
+                      "message": "feat: initial rebranding and added pagination for tabs component (#2061)\n\nThis PR will conclude the initial rebranding update for the tabs component. \r\n\r\nNew features of this component:\r\n- Pagination/scroll feature on overflow.\r\n- Optional onClose handler.\r\n\r\nall other changes are styling related and are based on the new designs made for the rebranding.",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Updated sync plugin and tokens",
+            "commits": [
+              {
+                "hash": "b0b05ca86",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Thu, 06 Jun 2024 14:10:07 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:36 GMT"
+                  },
+                  "data": {
+                    "sha": "b0b05ca864aed569a3367b4721b8e074e40d4839",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/b0b05ca864aed569a3367b4721b8e074e40d4839",
+                    "author": {
+                      "login": "ferreroltd",
+                      "id": 73488793,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/73488793?v=4",
+                      "html_url": "https://github.com/ferreroltd",
+                      "url": "https://api.github.com/users/ferreroltd"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/b0b05ca864aed569a3367b4721b8e074e40d4839/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/b0b05ca864aed569a3367b4721b8e074e40d4839",
+                    "commit": {
+                      "message": "Feat/sync tool upgrade and token update (#2245)",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          }
+        ],
+        "minors": [
+          {
+            "label": "Added a hook to toggle and keep theme state, removing the necessity of a theme provider context",
+            "commits": [
+              {
+                "hash": "cfb7c5bab",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Wed, 22 May 2024 15:35:17 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:36 GMT"
+                  },
+                  "data": {
+                    "sha": "cfb7c5bab29290f6601f6e6bddeaf17e18332db4",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/cfb7c5bab29290f6601f6e6bddeaf17e18332db4",
+                    "author": {
+                      "login": "sstraatemans",
+                      "id": 4015521,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/4015521?v=4",
+                      "html_url": "https://github.com/sstraatemans",
+                      "url": "https://api.github.com/users/sstraatemans"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/cfb7c5bab29290f6601f6e6bddeaf17e18332db4/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/cfb7c5bab29290f6601f6e6bddeaf17e18332db4",
+                    "commit": {
+                      "message": "fix(docs): remove the theme provider (#2137)",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Added a new variant to apply different colors to the Divider component",
+            "commits": [
+              {
+                "hash": "a415d7995",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Thu, 16 May 2024 12:38:02 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:36 GMT"
+                  },
+                  "data": {
+                    "sha": "a415d79950c68ff8781f05cc902797aeafec7804",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/a415d79950c68ff8781f05cc902797aeafec7804",
+                    "author": {
+                      "login": "r-mulder",
+                      "id": 116208434,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+                      "html_url": "https://github.com/r-mulder",
+                      "url": "https://api.github.com/users/r-mulder"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/a415d79950c68ff8781f05cc902797aeafec7804/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/a415d79950c68ff8781f05cc902797aeafec7804",
+                    "commit": {
+                      "message": "feat: add variant options with new colors (#2121)\n\nIn this PR I've updated the divider to support the new colors and have the options to choose which one to use.\r\n\r\nDifferent colors are being used when using the new variant prop.",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          }
+        ],
+        "miscs": [],
+        "date": "2024-06-06T14:10:07.000Z"
+      },
       "0.9.0": {
         "label": "0.9.0",
         "isLocked": true,
@@ -3944,6 +4460,529 @@
     "owner": "kadena-community",
     "repoName": "kadena.js",
     "content": {
+      "1.1.0": {
+        "label": "1.1.0",
+        "isLocked": true,
+        "authors": [
+          {
+            "login": "javadkh2",
+            "id": 18360508,
+            "avatar_url": "https://avatars.githubusercontent.com/u/18360508?v=4",
+            "html_url": "https://github.com/javadkh2",
+            "url": "https://api.github.com/users/javadkh2"
+          },
+          {
+            "login": "sanderlooijenga",
+            "id": 5989212,
+            "avatar_url": "https://avatars.githubusercontent.com/u/5989212?v=4",
+            "html_url": "https://github.com/sanderlooijenga",
+            "url": "https://api.github.com/users/sanderlooijenga"
+          },
+          {
+            "login": "nil-amrutlal-dept",
+            "id": 112877112,
+            "avatar_url": "https://avatars.githubusercontent.com/u/112877112?v=4",
+            "html_url": "https://github.com/nil-amrutlal-dept",
+            "url": "https://api.github.com/users/nil-amrutlal-dept"
+          },
+          {
+            "login": "realdreamer",
+            "id": 7163943,
+            "avatar_url": "https://avatars.githubusercontent.com/u/7163943?v=4",
+            "html_url": "https://github.com/realdreamer",
+            "url": "https://api.github.com/users/realdreamer"
+          },
+          {
+            "login": "barthuijgen",
+            "id": 45095973,
+            "avatar_url": "https://avatars.githubusercontent.com/u/45095973?v=4",
+            "html_url": "https://github.com/barthuijgen",
+            "url": "https://api.github.com/users/barthuijgen"
+          }
+        ],
+        "patches": [
+          {
+            "label": "Pin sensitive dependencies to specific versions",
+            "commits": [
+              {
+                "hash": "c9fe555df",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Fri, 24 May 2024 14:15:11 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:37 GMT"
+                  },
+                  "data": {
+                    "sha": "c9fe555df34f51377adfa6ed7249a45c0c82a2d9",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/c9fe555df34f51377adfa6ed7249a45c0c82a2d9",
+                    "author": {
+                      "login": "javadkh2",
+                      "id": 18360508,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/18360508?v=4",
+                      "html_url": "https://github.com/javadkh2",
+                      "url": "https://api.github.com/users/javadkh2"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/c9fe555df34f51377adfa6ed7249a45c0c82a2d9/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/c9fe555df34f51377adfa6ed7249a45c0c82a2d9",
+                    "commit": {
+                      "message": "chore: Pin sensitive dependencies to specific versions (#2169)\n\n* chore: Pin sensitive dependencies to specific versions\r\n\r\n* chore: format\r\n\r\n* chore: format",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Updated dependencies \\",
+            "commits": [
+              {
+                "hash": "1d1f1dcaf",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Fri, 24 May 2024 14:14:52 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:37 GMT"
+                  },
+                  "data": {
+                    "sha": "1d1f1dcaf27941fc05440e4da96e9788887a4c15",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/1d1f1dcaf27941fc05440e4da96e9788887a4c15",
+                    "author": {
+                      "login": "javadkh2",
+                      "id": 18360508,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/18360508?v=4",
+                      "html_url": "https://github.com/javadkh2",
+                      "url": "https://api.github.com/users/javadkh2"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/1d1f1dcaf27941fc05440e4da96e9788887a4c15/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/1d1f1dcaf27941fc05440e4da96e9788887a4c15",
+                    "commit": {
+                      "message": "doc(hd-wallet): expose api doc (#2186)\n\n* doc(hd-wallet): expose api doc\r\n\r\n* chore(hd-wallet): format",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Updated dependencies \\",
+            "commits": [
+              {
+                "hash": "c9fe555df",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Fri, 24 May 2024 14:15:11 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:37 GMT"
+                  },
+                  "data": {
+                    "sha": "c9fe555df34f51377adfa6ed7249a45c0c82a2d9",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/c9fe555df34f51377adfa6ed7249a45c0c82a2d9",
+                    "author": {
+                      "login": "javadkh2",
+                      "id": 18360508,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/18360508?v=4",
+                      "html_url": "https://github.com/javadkh2",
+                      "url": "https://api.github.com/users/javadkh2"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/c9fe555df34f51377adfa6ed7249a45c0c82a2d9/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/c9fe555df34f51377adfa6ed7249a45c0c82a2d9",
+                    "commit": {
+                      "message": "chore: Pin sensitive dependencies to specific versions (#2169)\n\n* chore: Pin sensitive dependencies to specific versions\r\n\r\n* chore: format\r\n\r\n* chore: format",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Updated dependencies \\",
+            "commits": [
+              {
+                "hash": "aa1aae60c",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Wed, 05 Jun 2024 09:55:01 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:37 GMT"
+                  },
+                  "data": {
+                    "sha": "aa1aae60c6a640610e17f52904a940f65b819e68",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/aa1aae60c6a640610e17f52904a940f65b819e68",
+                    "author": {
+                      "login": "sanderlooijenga",
+                      "id": 5989212,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/5989212?v=4",
+                      "html_url": "https://github.com/sanderlooijenga",
+                      "url": "https://api.github.com/users/sanderlooijenga"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/aa1aae60c6a640610e17f52904a940f65b819e68/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/aa1aae60c6a640610e17f52904a940f65b819e68",
+                    "commit": {
+                      "message": "Add missing Changeset for added client-utils functionality (#2235)\n\n* Add `e2e-proof-of-us` to changeset ignore list\r\n\r\n* Add forgotten changeset entry for client-utils",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Updated dependencies \\",
+            "commits": [
+              {
+                "hash": "b916ea42b",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Fri, 24 May 2024 11:58:08 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:37 GMT"
+                  },
+                  "data": {
+                    "sha": "b916ea42b49e6300dd68cefc397c243e0f2083c5",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/b916ea42b49e6300dd68cefc397c243e0f2083c5",
+                    "author": {
+                      "login": "javadkh2",
+                      "id": 18360508,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/18360508?v=4",
+                      "html_url": "https://github.com/javadkh2",
+                      "url": "https://api.github.com/users/javadkh2"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/b916ea42b49e6300dd68cefc397c243e0f2083c5/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/b916ea42b49e6300dd68cefc397c243e0f2083c5",
+                    "commit": {
+                      "message": "improve(hd-wallet): verify that the derivation path template includes <index> (#2168)",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Updated dependencies \\",
+            "commits": [
+              {
+                "hash": "381a766e8",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Wed, 29 May 2024 09:26:53 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:38 GMT"
+                  },
+                  "data": {
+                    "sha": "381a766e88ca3b2372884fb3323dff15a19e84eb",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/381a766e88ca3b2372884fb3323dff15a19e84eb",
+                    "author": {
+                      "login": "nil-amrutlal-dept",
+                      "id": 112877112,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/112877112?v=4",
+                      "html_url": "https://github.com/nil-amrutlal-dept",
+                      "url": "https://api.github.com/users/nil-amrutlal-dept"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/381a766e88ca3b2372884fb3323dff15a19e84eb/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/381a766e88ca3b2372884fb3323dff15a19e84eb",
+                    "commit": {
+                      "message": "[@kadena/client-utils] Implement Marmalade functions (Feat) (#1484)\n\n* add marmalade generate contract script\r\n\r\n* create token and create token id functions\r\n\r\n* small refactor to create token id and create token\r\n\r\n* mint token functionality\r\n\r\n* transfer-create function\r\n\r\n* get balance function\r\n\r\n* refactor createToken\r\n\r\n* index file\r\n\r\n* added unit testing for createId, create and mint tokens\r\n\r\n* integration testing; lint and style fixes; index file for marmalade\r\n\r\n* removed unecessary exports\r\n\r\n* omit sign in dirty reads\r\n\r\n* changeset file\r\n\r\n* marmalade integration testing init\r\n\r\n* make chain argument declared at top;\r\n\r\n* ci changes: add apt-get update\r\n\r\n* default chain 0\r\n\r\n* unit testing to meet threshold\r\n\r\n* lint fixes\r\n\r\n* fix: minor fixes and comments resolutions\r\n\r\n* fix: adjusted precision type from number to Pact Int\r\n\r\n* fix: lint fixes\r\n\r\n* chore: update the create token capability signature\r\n\r\n* [@kadena/client-utils] Implement Marmalade functions - additions (#1945)\r\n\r\n* chore: added more maramalade util functions\r\n\r\n* chore: align create-token with other functions\r\n\r\n* fix: linting issues\r\n\r\n* chore: add update-uri function\r\n\r\n* chore: format files\r\n\r\n* [@kadena/client-utils] Implement Marmalade functions - Sale functions (#2055)\r\n\r\n* chore: added more maramalade util functions\r\n\r\n* chore: align create-token with other functions\r\n\r\n* fix: linting issues\r\n\r\n* feat: added sale functions and tests; chore: updated and cleaned read functions\r\n\r\n* chore: linting\r\n\r\n* chore: added script to setup test environment before executing integration tests\r\n\r\n* chore: lint setup marmalade test env file\r\n\r\n* chore: gnerate marmalade-v2.policy-manager types\r\n\r\n* chore: check if conventional and dutch auction have been whitelisted\r\n\r\n* chore: remove whitelisting sale from test setup script\r\n\r\n* chore: wait for block time helper function\r\n\r\n* chore: fix lint issue\r\n\r\n* chore: enforce failure uri guard if not updatable when using guard policy\r\n\r\n* chore: rename config to updatableURI\r\n\r\n* chore: remove guard on local calls\r\n\r\n* feat: added collection-policy functions\r\n\r\n* chore: adjust the auction end date in tests\r\n\r\n* chore: cleanup and stability improvements\r\n\r\n* fix: more time\r\n\r\n* chore: simplify local call functions\r\n\r\n* chore: linting\r\n\r\n* chore: get quote function and reorganize imports (#2187)\r\n\r\n---------\r\n\r\nCo-authored-by: Ivan Magaš <imagas96@gmail.com>",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Updated dependencies \\\n*   @kadena/hd-wallet@0.4.1\n*   @kadena/cryptography-utils@0.4.4\n*   @kadena/client-utils@0.6.0\n*   @kadena/pactjs-cli@1.11.2\n*   @kadena/client@1.11.2\n*   @kadena/pactjs-generator@1.11.2",
+            "commits": [
+              {
+                "hash": "4b8c2bc0e",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Fri, 24 May 2024 08:28:53 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:38 GMT"
+                  },
+                  "data": {
+                    "sha": "4b8c2bc0e7249f3a9fbdabbf85aaedf07cb255d6",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/4b8c2bc0e7249f3a9fbdabbf85aaedf07cb255d6",
+                    "author": {
+                      "login": "javadkh2",
+                      "id": 18360508,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/18360508?v=4",
+                      "html_url": "https://github.com/javadkh2",
+                      "url": "https://api.github.com/users/javadkh2"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/4b8c2bc0e7249f3a9fbdabbf85aaedf07cb255d6/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/4b8c2bc0e7249f3a9fbdabbf85aaedf07cb255d6",
+                    "commit": {
+                      "message": "chore(hd-wallet): Separated test config for Chainweaver to avoid long… (#2170)\n\n* chore(hd-wallet): Separated test config for Chainweaver to avoid long timeout for all newly developed functions.\r\n\r\n* chore(hd-wallet): format",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          }
+        ],
+        "minors": [
+          {
+            "label": "Updated table generation and json output format to improve account information display",
+            "commits": [
+              {
+                "hash": "e26cc1f21",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Tue, 28 May 2024 08:10:26 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:38 GMT"
+                  },
+                  "data": {
+                    "sha": "e26cc1f21c1f0d8a056de76a91bc63ae00ef28fb",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/e26cc1f21c1f0d8a056de76a91bc63ae00ef28fb",
+                    "author": {
+                      "login": "realdreamer",
+                      "id": 7163943,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/7163943?v=4",
+                      "html_url": "https://github.com/realdreamer",
+                      "url": "https://api.github.com/users/realdreamer"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/e26cc1f21c1f0d8a056de76a91bc63ae00ef28fb/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/e26cc1f21c1f0d8a056de76a91bc63ae00ef28fb",
+                    "commit": {
+                      "message": "fix(kadena-cli): Improved account list display formatting in account list command (#2160)\n\n* fix(kadena-cli): Improved account list display formatting in accountList command\r\n\r\n* test: fix typo in test case",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "- Updated \"tx send\" command to include transaction logging functionality. Transactions are now saved in a log file, capturing network details, transaction ID, and status.\n\n*   Implemented the tx history command to display a formatted transaction history. This command provides a user-friendly way to view detailed transaction logs, including network host, network ID, chain ID, status, and transaction ID.",
+            "commits": [
+              {
+                "hash": "e79c1800e",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Wed, 05 Jun 2024 14:10:37 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:38 GMT"
+                  },
+                  "data": {
+                    "sha": "e79c1800eaec5602fda7ac54dbc9a9c9fdbff2a7",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/e79c1800eaec5602fda7ac54dbc9a9c9fdbff2a7",
+                    "author": {
+                      "login": "barthuijgen",
+                      "id": 45095973,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/45095973?v=4",
+                      "html_url": "https://github.com/barthuijgen",
+                      "url": "https://api.github.com/users/barthuijgen"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/e79c1800eaec5602fda7ac54dbc9a9c9fdbff2a7/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/e79c1800eaec5602fda7ac54dbc9a9c9fdbff2a7",
+                    "commit": {
+                      "message": "feat(tx-logs): add tx history command (#2222)\n\n* feat(tx-logs): add tx history command\r\n\r\n* feat(kadena-cli): add cmd and time to tx log\r\n\r\n---------\r\n\r\nCo-authored-by: Bart Huijgen <barthuijgen@users.noreply.github.com>",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Rename config path command to config show command\nConfig show command to include all commands directory paths and counts of different resources like wallets, accounts, networks etc.",
+            "commits": [
+              {
+                "hash": "e1c80f695",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Wed, 29 May 2024 09:29:35 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:39 GMT"
+                  },
+                  "data": {
+                    "sha": "e1c80f69580193df1d4a5603dab9bfb8eef4bd8c",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/e1c80f69580193df1d4a5603dab9bfb8eef4bd8c",
+                    "author": {
+                      "login": "realdreamer",
+                      "id": 7163943,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/7163943?v=4",
+                      "html_url": "https://github.com/realdreamer",
+                      "url": "https://api.github.com/users/realdreamer"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/e1c80f69580193df1d4a5603dab9bfb8eef4bd8c/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/e1c80f69580193df1d4a5603dab9bfb8eef4bd8c",
+                    "commit": {
+                      "message": "feat(kadena-cli): improve config show command to include all command paths and counts of wallets, accounts, networks, templates (#2167)\n\n* feat(kadena-cli): improve config show command to include all command paths and number of files\r\n\r\n* test: add tests for config show command\r\n\r\n* test: cleanup verbose option from tests\r\n\r\n* chore: review feedback\r\n\r\n* chore: prettier format\r\n\r\n* test: update tests after transfer create template changes",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Add empty state warning message for network list command\nAll empty state log level to warning for consistency",
+            "commits": [
+              {
+                "hash": "7e1eb308b",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Tue, 28 May 2024 08:10:59 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:39 GMT"
+                  },
+                  "data": {
+                    "sha": "7e1eb308b0aaa4d500b1e3c68e145b1a8a3c4cf9",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/7e1eb308b0aaa4d500b1e3c68e145b1a8a3c4cf9",
+                    "author": {
+                      "login": "realdreamer",
+                      "id": 7163943,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/7163943?v=4",
+                      "html_url": "https://github.com/realdreamer",
+                      "url": "https://api.github.com/users/realdreamer"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/7e1eb308b0aaa4d500b1e3c68e145b1a8a3c4cf9/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/7e1eb308b0aaa4d500b1e3c68e145b1a8a3c4cf9",
+                    "commit": {
+                      "message": "fix(kadena-cli): add empty log message for networks + empty state level to warning (#2152)",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Fixed reducing the overall maximum fund amount to 20 and dynamically split the max amount per chain when funding multiple chains.\n\nFixed sorting of chain ids in the log.",
+            "commits": [
+              {
+                "hash": "6b940f9ce",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Tue, 28 May 2024 08:11:50 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:39 GMT"
+                  },
+                  "data": {
+                    "sha": "6b940f9ce857b1b5ce6d6165df3f6b159487bcdd",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/6b940f9ce857b1b5ce6d6165df3f6b159487bcdd",
+                    "author": {
+                      "login": "realdreamer",
+                      "id": 7163943,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/7163943?v=4",
+                      "html_url": "https://github.com/realdreamer",
+                      "url": "https://api.github.com/users/realdreamer"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/6b940f9ce857b1b5ce6d6165df3f6b159487bcdd/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/6b940f9ce857b1b5ce6d6165df3f6b159487bcdd",
+                    "commit": {
+                      "message": "feat(kadena-cli): dynamically split max amount based on number of chain ids to fund account (#2148)\n\n* feat(kadena-cli): dynamically split max amount based on number of chain ids to fund account\r\n\r\n* chore: add changeset\r\n\r\n* fix(kadena-cli): fix typo in the fund amount validation error message\r\n\r\n* feat(account): add additional check on rest params type",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Add warning log message when user selects \"no\" for deploying the faucet.",
+            "commits": [
+              {
+                "hash": "f385a62fb",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Tue, 28 May 2024 08:10:37 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:39 GMT"
+                  },
+                  "data": {
+                    "sha": "f385a62fb3ad14bf420f3f8ce878d09c9137b220",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/f385a62fb3ad14bf420f3f8ce878d09c9137b220",
+                    "author": {
+                      "login": "realdreamer",
+                      "id": 7163943,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/7163943?v=4",
+                      "html_url": "https://github.com/realdreamer",
+                      "url": "https://api.github.com/users/realdreamer"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/f385a62fb3ad14bf420f3f8ce878d09c9137b220/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/f385a62fb3ad14bf420f3f8ce878d09c9137b220",
+                    "commit": {
+                      "message": "fix(kadena-cli): add warning message for not deploying faucet + update test case descriptions (#2158)",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "- Renamed `--type` option to `--from` in the `account add` command.\n*   Updated `--type=manual` to `--from=key` for specifying account addition via key file or manual entry.\n*   Improved descriptions in account from selection prompts for better clarity on available options.",
+            "commits": [
+              {
+                "hash": "9a5d89c74",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Wed, 29 May 2024 06:35:07 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:40 GMT"
+                  },
+                  "data": {
+                    "sha": "9a5d89c746179af71e5e61b5274212a072c22549",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/9a5d89c746179af71e5e61b5274212a072c22549",
+                    "author": {
+                      "login": "realdreamer",
+                      "id": 7163943,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/7163943?v=4",
+                      "html_url": "https://github.com/realdreamer",
+                      "url": "https://api.github.com/users/realdreamer"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/9a5d89c746179af71e5e61b5274212a072c22549/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/9a5d89c746179af71e5e61b5274212a072c22549",
+                    "commit": {
+                      "message": "feat(add-account): rename account type to from option and manual to key value (#2177)\n\n* feat(add-account): rename account type to from option and manual to key value\r\n\r\n* feat(account): update copy + add test",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          }
+        ],
+        "miscs": [],
+        "date": "2024-06-05T14:10:37.000Z"
+      },
       "1.0.0": {
         "label": "1.0.0",
         "isLocked": true,
@@ -5057,6 +6096,92 @@
     "owner": "kadena-community",
     "repoName": "kadena.js",
     "content": {
+      "0.1.4": {
+        "label": "0.1.4",
+        "isLocked": true,
+        "authors": [
+          {
+            "login": "javadkh2",
+            "id": 18360508,
+            "avatar_url": "https://avatars.githubusercontent.com/u/18360508?v=4",
+            "html_url": "https://github.com/javadkh2",
+            "url": "https://api.github.com/users/javadkh2"
+          }
+        ],
+        "patches": [
+          {
+            "label": "Updated dependencies \\",
+            "commits": [
+              {
+                "hash": "c9fe555df",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Fri, 24 May 2024 14:15:11 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:37 GMT"
+                  },
+                  "data": {
+                    "sha": "c9fe555df34f51377adfa6ed7249a45c0c82a2d9",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/c9fe555df34f51377adfa6ed7249a45c0c82a2d9",
+                    "author": {
+                      "login": "javadkh2",
+                      "id": 18360508,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/18360508?v=4",
+                      "html_url": "https://github.com/javadkh2",
+                      "url": "https://api.github.com/users/javadkh2"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/c9fe555df34f51377adfa6ed7249a45c0c82a2d9/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/c9fe555df34f51377adfa6ed7249a45c0c82a2d9",
+                    "commit": {
+                      "message": "chore: Pin sensitive dependencies to specific versions (#2169)\n\n* chore: Pin sensitive dependencies to specific versions\r\n\r\n* chore: format\r\n\r\n* chore: format",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Updated dependencies \\\n*   @kadena/cryptography-utils@0.4.4\n*   @kadena/chainweb-node-client@0.6.2",
+            "commits": [
+              {
+                "hash": "9c4145cb7",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Mon, 03 Jun 2024 07:07:53 GMT",
+                    "date": "Thu, 06 Jun 2024 14:21:40 GMT"
+                  },
+                  "data": {
+                    "sha": "9c4145cb73f1c22f2fa86e90a00ebd0d0daf8567",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/9c4145cb73f1c22f2fa86e90a00ebd0d0daf8567",
+                    "author": {
+                      "login": "javadkh2",
+                      "id": 18360508,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/18360508?v=4",
+                      "html_url": "https://github.com/javadkh2",
+                      "url": "https://api.github.com/users/javadkh2"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/9c4145cb73f1c22f2fa86e90a00ebd0d0daf8567/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/9c4145cb73f1c22f2fa86e90a00ebd0d0daf8567",
+                    "commit": {
+                      "message": "chore(chainweb-node-client): use cross fetch only if native fetch is not available  (#2136)\n\n* chore(chainweb-node-client): removed cross-fetch since we only support node >=18\r\n\r\n* chore: format\r\n\r\n* refactor(chainweb-node-client): use node-fetch-native\r\n\r\n* fix(chainweb-node-client)\r\n\r\n* chore: format\r\n\r\n* fix(chainweb-node-client): try node-fetch-native\r\n\r\n* cleanup\r\n\r\n* test something else\r\n\r\n* fix test\r\n\r\n* trying something else",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          }
+        ],
+        "minors": [],
+        "miscs": [],
+        "date": "2024-06-03T07:07:53.000Z"
+      },
       "0.1.3": {
         "label": "0.1.3",
         "isLocked": true,

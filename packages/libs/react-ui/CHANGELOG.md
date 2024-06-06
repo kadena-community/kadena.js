@@ -1,5 +1,31 @@
 # @kadena/react-ui
 
+## 0.10.0
+
+### Minor Changes
+
+- cfb7c5bab: Added a hook to toggle and keep theme state, removing the necessity
+  of a theme provider context
+- a415d7995: Added a new variant to apply different colors to the Divider
+  component
+
+### Patch Changes
+
+- 020be02d7: Add checkboxgroup component
+- 9d7545ae0: Add indication arrow and add an compact version of the tooltip
+- f045afe82: Update border and radius based on layout
+- dac1b28ca: Update border styles for the Notification component
+- 3805b414e: Added stable status to ui components
+- 8e2a29721: Token sync
+- 864329d3e: Adds story for new System icons
+- 076f0980f: Fixed the accessibility issues (font-weight and color) related to
+  the badge
+- 9cb50ea42: added the high contrast variant and fixed the inline spacing for
+  the large variant
+- 49fb38853: Add new checkbox component
+- 07ec9691c: Add new tabs component style and added the pagination option
+- b0b05ca86: Updated sync plugin and tokens
+
 ## 0.9.0
 
 ### Minor Changes
