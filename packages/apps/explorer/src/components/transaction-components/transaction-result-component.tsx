@@ -122,13 +122,17 @@ function mapParameters(
   try {
     return (
       <>
-        {(JSON.parse(parameters) as any[]).map((param) => {
+        {(JSON.parse(parameters) as unknown[]).map((param) => {
           if (typeof param === 'object') {
             // eslint-disable-next-line react/jsx-key
             return <p>{JSON.stringify(param)}</p>;
           }
+          if (typeof param === 'string') {
+            // eslint-disable-next-line react/jsx-key
+            return <p>{param}</p>;
+          }
           // eslint-disable-next-line react/jsx-key
-          return <p>{param}</p>;
+          return <p>{JSON.stringify(param)}</p>;
         })}
       </>
     );
@@ -138,7 +142,7 @@ function mapParameters(
 }
 
 function objectToDataRenderComponentFields(
-  obj: Record<string, any>,
+  obj: Record<string, unknown>,
 ): { key: string; value: string }[] {
   return Object.entries(obj).map(([key, value]) => ({
     key,
