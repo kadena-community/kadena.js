@@ -21,29 +21,28 @@ export interface ITabsProps {
   openedModules: ModuleModel[];
   activeModule: ModuleModel;
   onModuleChange: (module: ModuleModel) => void;
+  onModuleTabClose: (modules: ModuleModel[]) => void;
+  onChainTabClose: (module: ModuleModel) => void;
 }
 
 const modulesToMap = (modules: ModuleModel[]): Map<string, ModuleModel[]> => {
-  return modules.reduce(
-    (acc, module) => {
-      const { name } = module;
+  return modules.reduce<Map<string, ModuleModel[]>>((acc, module) => {
+    const { name } = module;
 
-      if (!acc.has(name)) {
-        acc.set(name, []);
-      }
-      const chains = acc.get(name)!;
+    if (!acc.has(name)) {
+      acc.set(name, []);
+    }
+    const chains = acc.get(name)!;
 
-      if (!chains.includes(module)) {
-        chains.push(module);
-      }
+    if (!chains.includes(module)) {
+      chains.push(module);
+    }
 
-      return acc;
-    },
-    new Map() as Map<string, ModuleModel[]>,
-  );
+    return acc;
+  }, new Map());
 };
 
-const KEY_DELIMITER = '-';
+const KEY_DELIMITER = '!_&_!';
 const moduleToTabId = (module: ModuleModel): string => {
   return [module.networkId, module.name, module.chainId].join(KEY_DELIMITER);
 };
@@ -71,6 +70,8 @@ const Tabsss: FC<ITabsProps> = ({
   openedModules,
   activeModule,
   onModuleChange,
+  onModuleTabClose,
+  onChainTabClose,
 }) => {
   const map = useMemo(() => modulesToMap(openedModules), [openedModules]);
 
@@ -94,9 +95,18 @@ const Tabsss: FC<ITabsProps> = ({
         children: ModuleModel[];
       }>,
     ) => {
-      console.log('onParentClose', item);
+      const modulesToClose = map.get(item.key as string);
+
+      if (modulesToClose) {
+        const activeModuleToSet = map.get(item.prevKey as string);
+
+        if (activeModuleToSet) {
+          onModuleChange(activeModuleToSet[0]);
+        }
+        onModuleTabClose(modulesToClose);
+      }
     },
-    [],
+    [map, onModuleTabClose, onModuleChange],
   );
 
   const onModuleChangeInternal = useCallback(
@@ -117,9 +127,24 @@ const Tabsss: FC<ITabsProps> = ({
     [map, onModuleChange],
   );
 
-  const onModuleClose = useCallback((item: TabNode<ModuleModel>) => {
-    console.log('onModuleClose', item);
-  }, []);
+  const onModuleClose = useCallback(
+    (item: TabNode<ModuleModel>) => {
+      if (map.get(item.value!.name)?.length === 1) {
+        const currIndex = [...map].findIndex(([key, value]) => {
+          return value.includes(item.value!);
+        });
+
+        const previousEntry = [...map][currIndex - 1];
+
+        if (previousEntry) {
+          onModuleChange(previousEntry[1][0]);
+        }
+      }
+
+      onChainTabClose(item.value!);
+    },
+    [map, onChainTabClose, onModuleChange],
+  );
 
   return (
     <>
@@ -130,31 +155,30 @@ const Tabsss: FC<ITabsProps> = ({
         onClose={onParentClose}
         tabPanelClassName={firstLevelTabPanelStyles}
       >
-        {(item) => {
-          return (
-            <TabItem key={item.title} title={item.title}>
-              <Stack alignItems="center">
-                <Text className={tabsLabelStyles}>Module on chain:</Text>
-                <Tabs
-                  items={item.children}
-                  onSelectionChange={onModuleChangeInternal}
-                  onClose={onModuleClose}
-                  tabPanelClassName={secondLevelTabPanelStyles}
-                >
-                  {(item) => {
-                    return (
-                      <TabItem key={moduleToTabId(item)} title={item.chainId}>
-                        {/* We render nothing, since we don't want to rerender the entire editor component every single time. */}
-                        {null}
-                      </TabItem>
-                    );
-                  }}
-                </Tabs>
-              </Stack>
-            </TabItem>
-          );
-        }}
+        {(item) => (
+          <TabItem key={item.title} title={item.title}>
+            {/* We render nothing, since we don't want to rerender the sub tabs below every single time. */}
+            {null}
+          </TabItem>
+        )}
       </Tabs>
+      <Stack alignItems="center">
+        <Text className={tabsLabelStyles}>Module on chain:</Text>
+        <Tabs
+          items={map.get(activeModule.name)}
+          onSelectionChange={onModuleChangeInternal}
+          onClose={onModuleClose}
+          tabPanelClassName={secondLevelTabPanelStyles}
+          selectedKey={moduleToTabId(activeModule)}
+        >
+          {(item) => (
+            <TabItem key={moduleToTabId(item)} title={item.chainId}>
+              {/* We render nothing, since we don't want to rerender the entire editor component every single time. */}
+              {null}
+            </TabItem>
+          )}
+        </Tabs>
+      </Stack>
     </>
   );
 };
