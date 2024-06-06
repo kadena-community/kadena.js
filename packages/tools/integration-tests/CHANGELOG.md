@@ -1,5 +1,16 @@
 # @kadena-dev/integration-tests
 
+## 0.0.10
+
+### Patch Changes
+
+- Updated dependencies \[c9fe555df]
+- Updated dependencies \[aa1aae60c]
+- Updated dependencies \[381a766e8]
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/client-utils\@0.6.0
+  - @kadena/client\@1.11.2
+
 ## 0.0.9
 
 ### Patch Changes
