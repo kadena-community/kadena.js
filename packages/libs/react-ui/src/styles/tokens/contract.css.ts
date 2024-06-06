@@ -4805,6 +4805,20 @@ export const tokens = createThemeContract({
           level3: '',
         },
       },
+      layout: {
+        content: {
+          /**
+           * @light  `"33.75rem"`
+           * @dark  `"33.75rem"`
+           */
+          minWidth: '',
+          /**
+           * @light  `"42.5rem"`
+           * @dark  `"42.5rem"`
+           */
+          maxWidth: '',
+        },
+      },
       icon: {
         size: {
           /**
@@ -4842,20 +4856,6 @@ export const tokens = createThemeContract({
            * @dark {@link tokens.kda.foundation.size.n16}
            */
           xxl: '',
-        },
-      },
-      layout: {
-        content: {
-          /**
-           * @light  `"33.75rem"`
-           * @dark  `"33.75rem"`
-           */
-          minWidth: '',
-          /**
-           * @light  `"42.5rem"`
-           * @dark  `"42.5rem"`
-           */
-          maxWidth: '',
         },
       },
       typography: {
