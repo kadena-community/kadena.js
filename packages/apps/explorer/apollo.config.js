@@ -5,6 +5,6 @@ module.exports = {
       localSchemaFile: __dirname + '/../graph/generated-schema.graphql',
     },
     includes: ['src/**/*.ts', 'src/**/*.tsx'],
-    excludes: ['**/node_modulues/**/*', 'src/__generated__/**/*'],
+    excludes: ['**/node_modules/**/*', 'src/__generated__/**/*'],
   },
 };
