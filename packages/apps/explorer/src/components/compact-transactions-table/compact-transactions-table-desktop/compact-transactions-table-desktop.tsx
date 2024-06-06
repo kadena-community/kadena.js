@@ -3,7 +3,7 @@ import type {
   Transaction,
   TransactionResult,
 } from '@/__generated__/sdk';
-import { tableClass } from '@/components/compact-keys-table/compact-keys-table-desktop/styles.css';
+import { tableClass } from '@/components/compact-table/compact-table-desktop/styles.css';
 import {
   MonoArrowOutward,
   MonoCheck,

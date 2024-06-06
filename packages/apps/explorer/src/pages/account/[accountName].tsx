@@ -1,21 +1,21 @@
 import type { Transaction, Transfer } from '@/__generated__/sdk';
 import { useAccountQuery } from '@/__generated__/sdk';
-import type { IKeyProps } from '@/components/compact-keys-table/compact-keys-table';
-import CompactKeysTable from '@/components/compact-keys-table/compact-keys-table';
 import CompactTable from '@/components/compact-table/compact-table';
 import { FormatAccount } from '@/components/compact-table/utils/format-account';
 import { FormatAmount } from '@/components/compact-table/utils/format-amount';
-import { FormatDefault } from '@/components/compact-table/utils/format-default';
 import { FormatLink } from '@/components/compact-table/utils/format-link';
 import { FormatStatus } from '@/components/compact-table/utils/format-status';
-import CompactTransfersTable from '@/components/compact-transfers-table/compact-transfers-table';
 import MaskedAccountName from '@/components/mask-accountname/mask-accountname';
-import { MonoArrowOutward } from '@kadena/react-icons';
 import { Heading, Stack, TabItem, Tabs } from '@kadena/react-ui';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useMemo } from 'react';
+
+export interface IKeyProps {
+  chainId: string;
+  key: string;
+  predicate: string;
+}
 
 const Account: FC = () => {
   const router = useRouter();
