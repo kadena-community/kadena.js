@@ -62,6 +62,7 @@ const ModuleExplorer = ({
         onReload={onReload}
         onModuleClick={({ data }) => {
           if (isModuleLike(data)) {
+            onActiveModuleChange(data);
             setActiveModule(data);
             setOpenedModules((prev) => {
               const alreadyOpened = prev.find((openedModule) => {
