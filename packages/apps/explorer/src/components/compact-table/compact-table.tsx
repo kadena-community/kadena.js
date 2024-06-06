@@ -10,7 +10,7 @@ export interface ICompactTableProps {
   fields: ITableField[];
 }
 
-interface ITableField {
+export interface ITableField {
   width: any;
   variant?: 'body' | 'code';
   label: string;

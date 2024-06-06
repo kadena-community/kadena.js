@@ -3,10 +3,11 @@ import { useAccountQuery } from '@/__generated__/sdk';
 import type { IKeyProps } from '@/components/compact-keys-table/compact-keys-table';
 import CompactKeysTable from '@/components/compact-keys-table/compact-keys-table';
 import CompactTable from '@/components/compact-table/compact-table';
-import CompactTransactionsTable from '@/components/compact-transactions-table/compact-transactions-table';
 import CompactTransfersTable from '@/components/compact-transfers-table/compact-transfers-table';
 import MaskedAccountName from '@/components/mask-accountname/mask-accountname';
+import { MonoArrowOutward } from '@kadena/react-icons';
 import { Heading, Stack, TabItem, Tabs } from '@kadena/react-ui';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useMemo } from 'react';
@@ -97,8 +98,24 @@ const Account: FC = () => {
               key="Transactions"
             >
               {fungibleAccount?.transactions && (
-                <CompactTransactionsTable
-                  transactions={fungibleAccount?.transactions.edges.map(
+                <CompactTable
+                  label="Keys table"
+                  fields={[
+                    {
+                      label: 'RequestKey',
+                      key: 'hash',
+                      width: '10%',
+                      value: ({ str }: { str: string }) => (
+                        <>
+                          <Link href={`/transaction/${str}`}>{str}</Link>
+                          <Link href={`/transaction/${str}`}>
+                            <MonoArrowOutward />
+                          </Link>
+                        </>
+                      ),
+                    },
+                  ]}
+                  data={fungibleAccount?.transactions.edges.map(
                     (edge) => edge.node as Transaction,
                   )}
                 />

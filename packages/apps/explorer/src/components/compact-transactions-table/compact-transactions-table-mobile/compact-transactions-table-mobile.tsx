@@ -9,6 +9,7 @@ import {
   MonoClear,
 } from '@kadena/react-icons/system';
 import { Badge, Text } from '@kadena/react-ui';
+import Link from 'next/link';
 import React from 'react';
 import {
   badgeClass,
@@ -54,20 +55,20 @@ const CompactTransactionsTableMobile: React.FC<
           <div className={rowClass}>
             <span className={headerClass}>RequestKey</span>
             <span className={dataFieldLinkClass}>
-              <a
+              <Link
                 href={`/transaction/${transaction.hash}`}
                 className={linkClass}
               >
                 <Text variant="code" className={dataFieldClass}>
                   {transaction.hash}
                 </Text>
-              </a>
-              <a
+              </Link>
+              <Link
                 href={`/transaction/${transaction.hash}`}
                 className={iconLinkClass}
               >
                 <MonoArrowOutward className={linkIconClass} />
-              </a>
+              </Link>
             </span>
           </div>
           <div className={rowClass}>
