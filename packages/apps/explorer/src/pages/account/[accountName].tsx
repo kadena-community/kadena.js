@@ -1,10 +1,11 @@
-import type { Transaction } from '@/__generated__/sdk';
+import type { Transaction, Transfer } from '@/__generated__/sdk';
 import { useAccountQuery } from '@/__generated__/sdk';
 import type { IKeyProps } from '@/components/compact-keys-table/compact-keys-table';
 import CompactKeysTable from '@/components/compact-keys-table/compact-keys-table';
 import CompactTransactionsTable from '@/components/compact-transactions-table/compact-transactions-table';
+import CompactTransfersTable from '@/components/compact-transfers-table/compact-transfers-table';
 import MaskedAccountName from '@/components/mask-accountname/mask-accountname';
-import { Heading, Stack } from '@kadena/react-ui';
+import { Heading, Stack, TabItem, Tabs } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useMemo } from 'react';
@@ -60,13 +61,32 @@ const Account: FC = () => {
         flexDirection={{ xs: 'column-reverse', md: 'row' }}
       >
         <Stack flex={1} flexDirection="column">
-          {fungibleAccount?.transactions && (
-            <CompactTransactionsTable
-              transactions={fungibleAccount?.transactions.edges.map(
-                (edge) => edge.node as Transaction,
+          <Tabs>
+            <TabItem
+              title={`Transactions (${fungibleAccount?.transactions.edges.length ?? 0})`}
+              key="Transactions"
+            >
+              {fungibleAccount?.transactions && (
+                <CompactTransactionsTable
+                  transactions={fungibleAccount?.transactions.edges.map(
+                    (edge) => edge.node as Transaction,
+                  )}
+                />
               )}
-            />
-          )}
+            </TabItem>
+            <TabItem
+              title={`Transfers (${fungibleAccount?.transfers.edges.length ?? 0})`}
+              key="Transfers"
+            >
+              {fungibleAccount?.transfers && (
+                <CompactTransfersTable
+                  transfers={fungibleAccount?.transfers.edges.map(
+                    (edge) => edge.node as Transfer,
+                  )}
+                />
+              )}
+            </TabItem>
+          </Tabs>
         </Stack>
       </Stack>
     </>

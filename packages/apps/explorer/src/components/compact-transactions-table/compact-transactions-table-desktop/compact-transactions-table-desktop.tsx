@@ -52,7 +52,7 @@ const CompactTransactionsTableDesktop: React.FC<
       </TableHeader>
       <TableBody>
         {transactions.map((transaction) => (
-          <Row key={transaction.id}>
+          <Row key={transaction.hash}>
             <Cell>
               {(transaction.result as TransactionResult).goodResult ? (
                 <MonoCheck />

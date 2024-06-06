@@ -9,7 +9,7 @@ import {
   MonoClear,
 } from '@kadena/react-icons/system';
 import { Badge, Text } from '@kadena/react-ui';
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
   badgeClass,
   dataFieldClass,
