@@ -15,6 +15,7 @@ export const TransactionRequestComponent: React.FC<{
     <>
       {transaction.cmd.payload.__typename === 'ExecutionPayload' ? (
         // Execution transaction
+
         <DataRenderComponent
           fields={[
             { key: 'Request Key (hash)', value: transaction.hash },
@@ -34,6 +35,7 @@ export const TransactionRequestComponent: React.FC<{
         />
       ) : transaction.cmd.payload.__typename === 'ContinuationPayload' ? (
         // Continuation
+
         <DataRenderComponent
           fields={[
             { key: 'Request Key (hash)', value: transaction.hash },

@@ -1,4 +1,4 @@
-import { useTransactionQuery } from '@/__generated__/sdk';
+import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
 
 import { TransactionRequestComponent } from '@/components/transaction-components/transaction-request-component';
 import { TransactionResultComponent } from '@/components/transaction-components/transaction-result-component';
@@ -8,7 +8,7 @@ import React from 'react';
 const Transaction: React.FC = () => {
   const router = useRouter();
 
-  const { loading, data, error } = useTransactionQuery({
+  const { loading, data, error } = useTransactionRequestKeyQuery({
     variables: {
       requestKey: router.query.requestKey as string,
     },
@@ -19,18 +19,15 @@ const Transaction: React.FC = () => {
     <>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error.message}</p>}
+      {!loading && (!data || !data.transaction) ? (
+        <p>Transaction not found</p>
+      ) : null}
       {data && data.transaction && (
         <>
           <h1>Transaction {data.transaction.hash}</h1>
 
           <h2>Request</h2>
-          <TransactionRequestComponent
-            transaction={{
-              id: data.transaction.id,
-              hash: data.transaction.hash,
-              cmd: data.transaction.cmd,
-            }}
-          />
+          <TransactionRequestComponent transaction={data.transaction} />
 
           <hr />
 
