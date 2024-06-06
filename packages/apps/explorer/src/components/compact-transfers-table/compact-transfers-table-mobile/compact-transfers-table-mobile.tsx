@@ -1,14 +1,14 @@
 import type { Transfer } from '@/__generated__/sdk';
-
-import { Text } from '@kadena/react-ui';
-import React from 'react';
 import {
   dataFieldClass,
   dataFieldLinkClass,
   headerClass,
   rowClass,
   sectionClass,
-} from './styles.css';
+} from '@/components/compact-transactions-table/compact-transactions-table-mobile/styles.css';
+
+import { Text } from '@kadena/react-ui';
+import React from 'react';
 
 interface ICompacTransfersTableMobileProps {
   transfers: Transfer[];
