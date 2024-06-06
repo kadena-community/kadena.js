@@ -2,6 +2,7 @@ import type { Transaction, Transfer } from '@/__generated__/sdk';
 import { useAccountQuery } from '@/__generated__/sdk';
 import type { IKeyProps } from '@/components/compact-keys-table/compact-keys-table';
 import CompactKeysTable from '@/components/compact-keys-table/compact-keys-table';
+import CompactTable from '@/components/compact-table/compact-table';
 import CompactTransactionsTable from '@/components/compact-transactions-table/compact-transactions-table';
 import CompactTransfersTable from '@/components/compact-transfers-table/compact-transfers-table';
 import MaskedAccountName from '@/components/mask-accountname/mask-accountname';
@@ -54,6 +55,35 @@ const Account: FC = () => {
           <MaskedAccountName value={fungibleAccount?.accountName ?? ''} />
         </Heading>
       </Stack>
+
+      {keys && (
+        <CompactTable
+          label="Keys table"
+          fields={[
+            {
+              label: 'ChainId',
+              key: 'chainId',
+              width: '10%',
+              value: ({ str }: { str: string }) => str,
+            },
+            {
+              variant: 'code',
+              label: 'Key',
+              key: 'key',
+              width: '50%',
+              value: ({ str }: { str: string }) => str,
+            },
+            {
+              label: 'Predicate',
+              key: 'predicate',
+              width: '40%',
+              value: ({ str }: { str: string }) => str,
+            },
+          ]}
+          data={keys}
+        />
+      )}
+
       {keys && <CompactKeysTable keys={keys} />}
       <Stack
         width="100%"
