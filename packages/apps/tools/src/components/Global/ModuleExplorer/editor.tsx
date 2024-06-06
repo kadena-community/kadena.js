@@ -34,6 +34,7 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 import StatusBar from './statusbar';
 import { placeholderBodyStyles } from './styles.css';
+import type { ITabsProps } from './tabs';
 import Tabs from './tabs';
 
 const AceViewer = dynamic(import('@/components/Global/Ace'), {
@@ -45,6 +46,8 @@ export interface IEditorProps {
   onActiveModuleChange: (module: ModuleModel) => void;
   onTabClose: (module: ModuleModel) => void;
   activeModule?: ModuleModel;
+  onModuleTabClose: ITabsProps['onModuleTabClose'];
+  onChainTabClose: ITabsProps['onChainTabClose'];
 }
 
 const moduleToTabId = ({
@@ -60,6 +63,8 @@ const Editor = ({
   onActiveModuleChange,
   onTabClose,
   activeModule,
+  onModuleTabClose,
+  onChainTabClose,
 }: IEditorProps): React.JSX.Element => {
   const { t } = useTranslation('common');
   const [keyboardHandler, setKeyboardHandler] =
@@ -96,6 +101,8 @@ const Editor = ({
   return (
     <Stack flexDirection={'column'} justifyContent={'space-between'}>
       <Tabs
+        onChainTabClose={onChainTabClose}
+        onModuleTabClose={onModuleTabClose}
         openedModules={openedModules}
         activeModule={activeModule}
         onModuleChange={onActiveModuleChange}

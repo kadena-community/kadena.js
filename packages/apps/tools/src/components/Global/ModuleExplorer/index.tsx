@@ -83,6 +83,28 @@ const ModuleExplorer = ({
         onExpandCollapse={onExpandCollapse}
       />
       <Editor
+        onChainTabClose={(module) => {
+          setOpenedModules(
+            openedModules.filter((openedModule) => {
+              return (
+                `${openedModule.name}-${openedModule.chainId}-${openedModule.networkId}` !==
+                `${module.name}-${module.chainId}-${module.networkId}`
+              );
+            }),
+          );
+        }}
+        onModuleTabClose={(modules) => {
+          setOpenedModules(
+            openedModules.filter((openedModule) => {
+              return !modules.find((module) => {
+                return (
+                  `${openedModule.name}-${openedModule.chainId}-${openedModule.networkId}` ===
+                  `${module.name}-${module.chainId}-${module.networkId}`
+                );
+              });
+            }),
+          );
+        }}
         openedModules={openedModules}
         activeModule={activeModule}
         onActiveModuleChange={(module) => {
