@@ -7,7 +7,7 @@ import { tokens } from './contract.css';
 /**
  * Small Code @xs Description
  */
-export const monospaceSmallRegular = style({
+export const fontMonospaceSmallRegular = style({
   fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xs,
   fontWeight: tokens.kda.foundation.typography.weight.monospaceFont.regular,
@@ -29,7 +29,7 @@ export const monospaceSmallRegular = style({
 /**
  * Small Code Bold @ xs Description
  */
-export const monospaceSmallBold = style({
+export const fontMonospaceSmallBold = style({
   fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xs,
   fontWeight: tokens.kda.foundation.typography.weight.monospaceFont.bold,
@@ -51,7 +51,7 @@ export const monospaceSmallBold = style({
 /**
  * Smallest Code @xs Description
  */
-export const monospaceSmallestRegular = style({
+export const fontMonospaceSmallestRegular = style({
   fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xxs,
   fontWeight: tokens.kda.foundation.typography.weight.monospaceFont.regular,
@@ -76,7 +76,7 @@ export const monospaceSmallestRegular = style({
 /**
  * Smallest Code Bold @ xs Description
  */
-export const monospaceSmallestBold = style({
+export const fontMonospaceSmallestBold = style({
   fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xxs,
   fontWeight: tokens.kda.foundation.typography.weight.monospaceFont.bold,
@@ -101,7 +101,7 @@ export const monospaceSmallestBold = style({
 /**
  * Code @xs Description
  */
-export const monospaceBaseRegular = style({
+export const fontMonospaceBaseRegular = style({
   fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
   fontSize: tokens.kda.foundation.typography.fontSize.sm,
   fontWeight: tokens.kda.foundation.typography.weight.monospaceFont.regular,
@@ -126,7 +126,7 @@ export const monospaceBaseRegular = style({
 /**
  * Code Bold @ xs Description
  */
-export const monospaceBaseBold = style({
+export const fontMonospaceBaseBold = style({
   fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
   fontSize: tokens.kda.foundation.typography.fontSize.sm,
   fontWeight: tokens.kda.foundation.typography.weight.monospaceFont.bold,
@@ -151,7 +151,7 @@ export const monospaceBaseBold = style({
 /**
  * H1 Description
  */
-export const h1 = style({
+export const foundationTypographyFontH1 = style({
   fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize['3xl'],
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
@@ -176,7 +176,7 @@ export const h1 = style({
 /**
  * H2 Description
  */
-export const h2 = style({
+export const foundationTypographyFontH2 = style({
   fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize['2xl'],
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
@@ -201,7 +201,7 @@ export const h2 = style({
 /**
  * H3 Description
  */
-export const h3 = style({
+export const foundationTypographyFontH3 = style({
   fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xl,
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
@@ -226,7 +226,7 @@ export const h3 = style({
 /**
  * H4 Description
  */
-export const h4 = style({
+export const foundationTypographyFontH4 = style({
   fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.lg,
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
@@ -251,7 +251,7 @@ export const h4 = style({
 /**
  * H5 Description
  */
-export const h5 = style({
+export const foundationTypographyFontH5 = style({
   fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.base,
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
@@ -276,7 +276,7 @@ export const h5 = style({
 /**
  * H6 Description
  */
-export const h6 = style({
+export const foundationTypographyFontH6 = style({
   fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.sm,
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
@@ -389,7 +389,7 @@ export const inputUiMobileRegular = style({
 /**
  * Small P @xs Description
  */
-export const bodySmallRegular = style({
+export const fontBodySmallRegular = style({
   fontFamily: tokens.kda.foundation.typography.family.secondaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xs,
   fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.regular,
@@ -414,7 +414,7 @@ export const bodySmallRegular = style({
 /**
  * Small P Bold @ xs Description
  */
-export const bodySmallBold = style({
+export const fontBodySmallBold = style({
   fontFamily: tokens.kda.foundation.typography.family.secondaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xs,
   fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.medium,
@@ -439,7 +439,7 @@ export const bodySmallBold = style({
 /**
  * Smallest P @xs Description
  */
-export const bodySmallestRegular = style({
+export const fontBodySmallestRegular = style({
   fontFamily: tokens.kda.foundation.typography.family.secondaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xxs,
   fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.regular,
@@ -464,7 +464,7 @@ export const bodySmallestRegular = style({
 /**
  * Smallest P Bold @ xs Description
  */
-export const bodySmallestBold = style({
+export const fontBodySmallestBold = style({
   fontFamily: tokens.kda.foundation.typography.family.secondaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xxs,
   fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.medium,
@@ -489,7 +489,7 @@ export const bodySmallestBold = style({
 /**
  * P @xs Description
  */
-export const bodyBaseRegular = style({
+export const fontBodyBaseRegular = style({
   fontFamily: tokens.kda.foundation.typography.family.secondaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.sm,
   fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.regular,
@@ -514,7 +514,7 @@ export const bodyBaseRegular = style({
 /**
  * P Bold @ xs Description
  */
-export const bodyBaseBold = style({
+export const fontBodyBaseBold = style({
   fontFamily: tokens.kda.foundation.typography.family.secondaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.sm,
   fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.medium,
@@ -539,7 +539,7 @@ export const bodyBaseBold = style({
 /**
  * Small P @xs Description
  */
-export const uiSmallRegular = style({
+export const fontUiSmallRegular = style({
   fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xs,
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.regular,
@@ -561,7 +561,7 @@ export const uiSmallRegular = style({
 /**
  * Small P Bold @ xs Description
  */
-export const uiSmallBold = style({
+export const fontUiSmallBold = style({
   fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xs,
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
@@ -583,7 +583,7 @@ export const uiSmallBold = style({
 /**
  * Smallest P @xs Description
  */
-export const uiSmallestRegular = style({
+export const fontUiSmallestRegular = style({
   fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xxs,
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.regular,
@@ -608,7 +608,7 @@ export const uiSmallestRegular = style({
 /**
  * Smallest P Bold @ xs Description
  */
-export const uiSmallestBold = style({
+export const fontUiSmallestBold = style({
   fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xxs,
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
@@ -633,7 +633,7 @@ export const uiSmallestBold = style({
 /**
  * P @xs Description
  */
-export const uiBaseRegular = style({
+export const fontUiBaseRegular = style({
   fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.sm,
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.regular,
@@ -658,7 +658,7 @@ export const uiBaseRegular = style({
 /**
  * P Bold @ xs Description
  */
-export const uiBaseBold = style({
+export const fontUiBaseBold = style({
   fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.sm,
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,

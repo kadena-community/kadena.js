@@ -27,10 +27,9 @@ export default defineConfig({
       contractName: 'tokens',
       onlyValues: true,
       styleName: ({ path }) => {
-        const cleanPath = path.split('font')[1];
-        console.log(pathToStyleName(cleanPath, { count: 4 }));
-        // cleanPath.shift();
-        return pathToStyleName(cleanPath, { count: 4 });
+        // const cleanPath = path.split('font')[1];
+        // console.log(pathToStyleName(cleanPath, { count: 4 }));
+        return pathToStyleName(path, { count: 4 });
       },
     }),
   ],
