@@ -22,10 +22,17 @@ export const hashBadgeStyles = atoms({
 
 export const chainBadgeStyles = style({ whiteSpace: 'nowrap' });
 
-export const tabsLabelStyles = style({ whiteSpace: 'nowrap' });
+export const tabsLabelStyles = style([
+  atoms({ marginInlineEnd: 'sm' }),
+  { whiteSpace: 'nowrap' },
+]);
 
 export const firstLevelTabPanelStyles = atoms({
-  backgroundColor: 'surface.default',
+  marginBlock: 'n0',
+});
+
+export const secondLevelTabContainerStyles = style({
+  borderBlockEnd: `${token('border.width.normal')} solid ${token('color.border.base.subtle')}`,
 });
 
 export const secondLevelTabPanelStyles = style({ marginBlock: 0 });

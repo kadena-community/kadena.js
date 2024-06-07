@@ -7,11 +7,12 @@ import type {
   ChainwebNetworkId,
 } from '@kadena/chainweb-node-client';
 import type { TabNode } from '@kadena/react-ui';
-import { Stack, TabItem, Tabs, Text } from '@kadena/react-ui';
+import { Box, Stack, TabItem, Tabs, Text } from '@kadena/react-ui';
 import type { FC, Key } from 'react';
 import React, { useCallback, useMemo } from 'react';
 import {
   firstLevelTabPanelStyles,
+  secondLevelTabContainerStyles,
   secondLevelTabPanelStyles,
   tabPanelStyles,
   tabsLabelStyles,
@@ -150,23 +151,37 @@ const Tabsss: FC<ITabsProps> = ({
 
   return (
     <>
-      <Tabs
-        items={tabs}
-        selectedKey={activeModule.name}
-        onSelectionChange={onParentChange}
-        onClose={onParentClose}
-        tabPanelClassName={firstLevelTabPanelStyles}
+      <Box
+        paddingBlockStart={'md'}
+        backgroundColor="surfaceHighContrast.default"
       >
-        {(item) => (
-          <TabItem key={item.title} title={item.title}>
-            {/* We render nothing, since we don't want to rerender the sub tabs below every single time. */}
-            {null}
-          </TabItem>
-        )}
-      </Tabs>
-      <Stack alignItems="center">
-        <Text className={tabsLabelStyles}>Module on chain:</Text>
         <Tabs
+          items={tabs}
+          selectedKey={activeModule.name}
+          onSelectionChange={onParentChange}
+          onClose={onParentClose}
+          tabPanelClassName={firstLevelTabPanelStyles}
+        >
+          {(item) => (
+            <TabItem key={item.title} title={item.title}>
+              {/* We render nothing, since we don't want to rerender the sub tabs below every single time. */}
+              {null}
+            </TabItem>
+          )}
+        </Tabs>
+      </Box>
+      <Stack
+        alignItems="center"
+        paddingInlineStart={'md'}
+        paddingBlockStart={'md'}
+        backgroundColor="surface.default"
+        className={secondLevelTabContainerStyles}
+      >
+        <Text className={tabsLabelStyles} size="smallest" bold>
+          Module on chain:
+        </Text>
+        <Tabs
+          inverse
           items={map.get(activeModule.name)}
           onSelectionChange={onModuleChangeInternal}
           onClose={onModuleClose}
