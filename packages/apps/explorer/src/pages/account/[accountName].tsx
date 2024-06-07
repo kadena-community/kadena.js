@@ -106,7 +106,7 @@ const Account: FC = () => {
                       key: 'result.goodResult',
                       variant: 'code',
                       width: '10%',
-                      render: FormatStatus,
+                      render: FormatStatus(),
                     },
                     {
                       label: 'Sender',
@@ -119,7 +119,7 @@ const Account: FC = () => {
                       key: 'hash',
                       variant: 'code',
                       width: '25%',
-                      render: FormatLink,
+                      render: FormatLink({ appendUrl: '/transaction' }),
                     },
                     {
                       label: 'Code Preview',
@@ -157,19 +157,19 @@ const Account: FC = () => {
                       label: 'Amount',
                       key: 'amount',
                       width: '20%',
-                      render: FormatAmount,
+                      render: FormatAmount(),
                     },
                     {
                       label: 'Sender',
                       key: 'senderAccount',
                       width: '20%',
-                      render: FormatAccount,
+                      render: FormatAccount(),
                     },
                     {
                       label: 'Receiver',
                       key: 'receiverAccount',
                       width: '20%',
-                      render: FormatAccount,
+                      render: FormatAccount(),
                     },
                     {
                       label: 'RequestKey',

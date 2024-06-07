@@ -14,15 +14,23 @@ interface IProps {
   value: string;
 }
 
-export const FormatLink: FC<IProps> = ({ value }) => (
-  <Stack alignItems="center" className={linkWrapperClass}>
-    <Link href={`/transaction/${value}`} className={linkClass}>
-      <Text variant="code" className={dataFieldClass}>
-        {value}
-      </Text>
-    </Link>
-    <Link href={`/transaction/${value}`} className={value}>
-      <MonoArrowOutward className={linkIconClass} />
-    </Link>
-  </Stack>
-);
+interface IOptions {
+  appendUrl: string;
+}
+
+export const FormatLink = ({ appendUrl }: IOptions): FC<IProps> => {
+  const Component: FC<IProps> = ({ value }) => (
+    <Stack alignItems="center" className={linkWrapperClass}>
+      <Link href={`${appendUrl}/${value}`} className={linkClass}>
+        <Text variant="code" className={dataFieldClass}>
+          {value}
+        </Text>
+      </Link>
+      <Link href={`${appendUrl}/${value}`} className={value}>
+        <MonoArrowOutward className={linkIconClass} />
+      </Link>
+    </Stack>
+  );
+
+  return Component;
+};

@@ -5,4 +5,7 @@ interface IProps {
   value: string;
 }
 
-export const FormatAmount: FC<IProps> = ({ value }) => <>{value} KDA</>;
+export const FormatAmount = (): FC<IProps> => {
+  const Component: FC<IProps> = ({ value }) => <>{value} KDA</>;
+  return Component;
+};

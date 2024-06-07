@@ -5,5 +5,7 @@ interface IProps {
   value: string;
 }
 
-export const FormatAccount: FC<IProps> = ({ value }) =>
-  value && maskValue(value);
+export const FormatAccount: () => FC<IProps> =
+  () =>
+  ({ value }) =>
+    value && maskValue(value);

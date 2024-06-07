@@ -6,5 +6,8 @@ interface IProps {
   value: string;
 }
 
-export const FormatStatus: FC<IProps> = ({ value }) =>
-  value ? <MonoCheck /> : <MonoClear />;
+export const FormatStatus = (): FC<IProps> => {
+  const Component: FC<IProps> = ({ value }) =>
+    value ? <MonoCheck /> : <MonoClear />;
+  return Component;
+};
