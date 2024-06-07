@@ -30,7 +30,6 @@ export const Stepper = ({
           data-completed={isCompleted(index)}
           data-active={location.pathname === step.route}
         >
-          {' '}
           {step.title}
         </span>
       ))}
