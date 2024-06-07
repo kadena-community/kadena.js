@@ -22,6 +22,7 @@ export interface ITabsProps<T>
   borderPosition?: 'top' | 'bottom';
   onClose?: (item: Node<object>) => void;
   isCompact?: boolean;
+  tabPanelClassName?: string;
 }
 
 export function Tabs<T extends object>({
@@ -30,6 +31,7 @@ export function Tabs<T extends object>({
   inverse = false,
   onClose,
   isCompact,
+  tabPanelClassName,
   ...props
 }: ITabsProps<T>) {
   const state = useTabListState(props);
@@ -96,7 +98,7 @@ export function Tabs<T extends object>({
           </div>
         </div>
       </TabsPagination>
-      <TabPanel key={state.selectedItem?.key} state={state} />
+      <TabPanel key={state.selectedItem?.key} state={state} className={tabPanelClassName} />
     </div>
   );
 }
