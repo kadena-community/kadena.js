@@ -21,10 +21,10 @@ jobs:
        run: pnpm add --global vercel@34.2.5
 
      - name: Pull Vercel Environment Information
-       run: vercel pull --cwd packages/apps/docs --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+       run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
 
      - name: Build App for Vercel Deployment
-       run: vercel build --cwd packages/apps/docs --token=${{ secrets.VERCEL_TOKEN }} --debug
+       run: vercel build --token=${{ secrets.VERCEL_TOKEN }} --debug
 
      - name: Deploy Project Artifacts to Vercel
        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --archive=tgz
