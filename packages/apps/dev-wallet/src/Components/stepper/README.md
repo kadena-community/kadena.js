@@ -1,23 +1,25 @@
 ```tsx
-<Stepper>
-  {(
-    currentStep,
-    next: () => void,
-    back: () => void,
-    setStep: (newStep: number) => void,
-  ) => (
-    <>
-      <CustomStepComponent next={next} back={back} />
-      <LastStepComponent back={back} />
+  const steps = [
+    {
+      id: 'someId1',
+      route: '/',
+      title: 'this is a main step',
+      elements: <CuscomComponent1 />,
+    },
+    {
+      id: 'someId2',
+      route: 'route2',
+      elements: <CuscomComponent2 />,
+    },
+    {
+      id: 'someId3',
+      route: 'route3',
+      elements: <CuscomComponent3 />,
+    },
+  ];
 
-      {/* OR */}
-      <Button disabled={currentStep === 0} onClick={() => next()}>
-        Back
-      </Button>
-      <Button disabled={currentStep === 1} onClick={() => back()}>
-        Next
-      </Button>
-    </>
-  )}
-</Stepper>
+  ....
+
+   // i want to skip step1 for some reason
+   <Stepper steps={steps} initialPath='route2'/>
 ```

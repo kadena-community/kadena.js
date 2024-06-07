@@ -14,6 +14,7 @@ export const Stepper = ({
   }
   return (
     <>
+      {/* style this steps, if they have a title it will render bellow otherwise its just a line to show some progress */}
       {steps.map((step, index) => (
         <span key={index}> {step.title}</span>
       ))}
