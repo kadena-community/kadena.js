@@ -12,7 +12,6 @@ interface IProps {
 
 const getItem = (item: IProps['item'], key: ITableField['key']) => {
   const keyArr = key.split('.');
-  console.log(keyArr);
   const value = keyArr.reduce((acc, val) => {
     if (!acc) return;
     const newItem = acc[val];

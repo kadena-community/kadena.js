@@ -18,7 +18,6 @@ const CompactTableDesktop: FC<ICompactTableProps> = ({
   fields,
   label,
 }) => {
-  console.log(data);
   return (
     <Table aria-label={label} isStriped className={tableClass}>
       <TableHeader>
