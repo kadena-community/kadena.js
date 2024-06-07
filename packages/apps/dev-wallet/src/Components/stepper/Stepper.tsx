@@ -1,46 +1,27 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 
-export function Stepper({
-  children,
+export const Stepper = ({
   steps,
-  initialStep,
+  initialPath,
 }: {
-  children: (props: {
-    currentStep: string;
-    next: () => void;
-    back: () => void;
-    goTo: (step: number) => void;
-  }) => ReactNode;
-  initialStep?: string;
+  initialPath?: string;
   steps: { id: string; route: string; title?: string; elements: ReactNode }[];
-}) {
-  // on refresh navigate to first step / route
-  const [currentStep, setCurrentStep] = useState(initialStep || steps[0].id);
-  let stepIndex = -1;
-  const goTo = (step: number) => {
-    step >= 0 && step <= stepIndex && setCurrentStep(steps[step].id);
-  };
-
+}) => {
+  const navigate = useNavigate();
+  if (initialPath) {
+    navigate(initialPath);
+  }
   return (
     <>
-      {children({
-        currentStep,
-        next: () => {
-          const currentIndex = steps.findIndex(
-            (step) => step.id === currentStep,
-          );
-          stepIndex++;
-          goTo(currentIndex + 1);
-        },
-        back: () => {
-          const currentIndex = steps.findIndex(
-            (step) => step.id === currentStep,
-          );
-          stepIndex--;
-          goTo(currentIndex - 1);
-        },
-        goTo,
-      })}
+      {steps.map((step) => (
+        <span> {step.title}</span>
+      ))}
+      <Routes>
+        {steps.map((step) => (
+          <Route key={step.id} path={step.route} element={step.elements} />
+        ))}
+      </Routes>
     </>
   );
-}
+};

@@ -37,8 +37,8 @@ export function HomePage() {
       <Box margin="md">
         <Heading as="h1">Welcome to Chainweaver 3.0</Heading>
         <Heading as="h3">Available key sources</Heading>
-        {keySources.map((ks) => (
-          <Card>
+        {keySources.map((ks, index) => (
+          <Card key={index}>
             <Heading as="h6">{ks.source}</Heading>
             <Button onPress={() => createAccount(ks)}>Add k account</Button>
             <br />
@@ -50,9 +50,8 @@ export function HomePage() {
         <Heading as="h6">Accounts</Heading>
         {accounts.length ? (
           <ul>
-            {' '}
-            {accounts.map(({ address, overallBalance }) => (
-              <li>
+            {accounts.map(({ address, overallBalance }, index) => (
+              <li key={index}>
                 <Box>
                   {address ?? 'No Address ;(!'} : {overallBalance}
                 </Box>
