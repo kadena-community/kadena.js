@@ -8,8 +8,8 @@ import { FormatStatus } from '@/components/compact-table/utils/format-status';
 import MaskedAccountName from '@/components/mask-accountname/mask-accountname';
 import { Heading, Stack, TabItem, Tabs } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
-import type { FC } from 'react';
-import React, { useMemo } from 'react';
+import type { FC, Key } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 export interface IKeyProps {
   chainId: string;
@@ -19,13 +19,27 @@ export interface IKeyProps {
 
 const Account: FC = () => {
   const router = useRouter();
-
+  const [selectedTab, setSelectedTab] = useState<string>('Transactions');
   const { loading, data, error } = useAccountQuery({
     variables: {
       accountName: router.query.accountName as string,
     },
     skip: !router.query.accountName,
   });
+
+  useEffect(() => {
+    const hash = router.asPath.split('#')[1];
+
+    if (hash) {
+      setSelectedTab(hash);
+    }
+  }, [router.asPath]);
+
+  const handleSelectedTab = (tab: Key): void => {
+    setSelectedTab(tab as string);
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    router.replace(`#${tab}`);
+  };
 
   const { fungibleAccount } = data ?? {};
 
@@ -92,7 +106,7 @@ const Account: FC = () => {
         flexDirection={{ xs: 'column-reverse', md: 'row' }}
       >
         <Stack flex={1} flexDirection="column" marginBlockStart="lg">
-          <Tabs>
+          <Tabs selectedKey={selectedTab} onSelectionChange={handleSelectedTab}>
             <TabItem
               title={`Transactions (${fungibleAccount?.transactions.edges.length ?? 0})`}
               key="Transactions"
