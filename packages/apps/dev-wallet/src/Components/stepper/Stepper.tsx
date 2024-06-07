@@ -19,7 +19,7 @@ export const Stepper = ({
   return (
     <>
       {/* style this steps, if they have a title it will render bellow otherwise its just a line to show some progress
-      we can use the selectors like
+      we can use the selectors like (we may have some examples in react ui on how this work)
       selectors: {
         '&[data-active="true"]': css
       }
