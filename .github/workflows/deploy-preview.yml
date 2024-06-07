@@ -20,9 +20,6 @@ jobs:
      - name: Install Vercel CLI
        run: pnpm add --global vercel@34.2.5
 
-     - name: Link reop to Vercel
-       run: vercel link --repo --yes --scope Kadena --token=${{ secrets.VERCEL_TOKEN }}
-
      - name: Pull Vercel Environment Information
        run: vercel pull --cwd packages/apps/docs --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
 
