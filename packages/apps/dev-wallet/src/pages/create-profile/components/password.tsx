@@ -12,7 +12,7 @@ export const Password = ({ isShortFlow }: { isShortFlow: boolean }) => {
 
   return (
     <>
-      here 2<Heading variant="h4">Choose a password</Heading>
+      <Heading variant="h4">Choose a password</Heading>
       <Stack marginBlockStart="sm">
         <Text>
           Carefully select your password as this will be your main security of

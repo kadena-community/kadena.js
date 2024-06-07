@@ -14,8 +14,8 @@ export const Stepper = ({
   }
   return (
     <>
-      {steps.map((step) => (
-        <span> {step.title}</span>
+      {steps.map((step, index) => (
+        <span key={index}> {step.title}</span>
       ))}
       <Routes>
         {steps.map((step) => (
