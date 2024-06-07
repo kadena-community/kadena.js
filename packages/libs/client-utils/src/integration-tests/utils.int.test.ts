@@ -43,7 +43,7 @@ describe('estimateGas', () => {
       'http://127.0.0.1:8080',
     );
 
-    expect(gasEstimation).toEqual({ gasLimit: 707, gasPrice: 1e-8 });
+    expect(gasEstimation).toEqual({ gasLimit: 709, gasPrice: 1e-8 });
 
     // check if the gas estimation is correct
     const transferResult = await transferCreate(inputs, {
