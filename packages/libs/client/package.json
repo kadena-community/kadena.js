@@ -1,6 +1,6 @@
 {
   "name": "@kadena/client",
-  "version": "1.11.1",
+  "version": "1.11.2",
   "description": "Core library for building Pact expressions to send to the blockchain in js. Makes use of .kadena/pactjs-generated",
   "repository": {
     "type": "git",
