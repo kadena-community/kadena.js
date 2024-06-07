@@ -24,7 +24,7 @@ const getItem = (item: IProps['item'], key: ITableField['key']) => {
 };
 
 const FieldCell: FC<IProps> = ({ field, item }) => {
-  const Render = field.render ? field.render : FormatDefault;
+  const Render = field.render ? field.render : FormatDefault();
   return (
     <Text as="span" variant={field.variant} className={dataFieldClass}>
       <Render value={getItem(item, field.key)} />
