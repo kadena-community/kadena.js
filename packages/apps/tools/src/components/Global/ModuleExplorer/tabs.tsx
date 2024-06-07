@@ -161,6 +161,7 @@ const Tabsss: FC<ITabsProps> = ({
           onSelectionChange={onParentChange}
           onClose={onParentClose}
           tabPanelClassName={firstLevelTabPanelStyles}
+          isCompact
         >
           {(item) => (
             <TabItem key={item.title} title={item.title}>
@@ -182,6 +183,7 @@ const Tabsss: FC<ITabsProps> = ({
         </Text>
         <Tabs
           inverse
+          isCompact
           items={map.get(activeModule.name)}
           onSelectionChange={onModuleChangeInternal}
           onClose={onModuleClose}
