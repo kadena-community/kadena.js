@@ -49,6 +49,7 @@ export type {
   ITrackerCardProps,
   MaskOptions,
   PressEvent,
+  TabNode,
 } from './components';
 
 export {
