@@ -23,7 +23,7 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import type { AccountDetails } from '@/hooks/use-account-details-query';
 import { useAccountDetailsQuery } from '@/hooks/use-account-details-query';
 import { stripAccountPrefix } from '@/utils/string';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import useTranslation from 'next-translate/useTranslation';
 import type { FormData } from './sign-form';
 
@@ -207,8 +207,7 @@ export const SignFormReceiver = ({
     ],
     queryFn: () => createPrincipal(pubKeys, watchReceiverChainId, pred),
     enabled: pubKeys.length > 0,
-    placeholderData: '',
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   });
 
   useEffect(() => {

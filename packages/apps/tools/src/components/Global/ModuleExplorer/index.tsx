@@ -1,89 +1,86 @@
-import React, { useCallback, useState } from 'react';
+import type { IncompleteModuleModel } from '@/hooks/use-module-query';
+import React, { useState } from 'react';
+import type { TreeItem } from '../CustomTree/CustomTree';
 import type { ISidePanelProps } from './SidePanel';
 import SidePanel from './SidePanel';
 import type { IEditorProps } from './editor';
 import Editor from './editor';
 import { containerStyle } from './styles.css';
-import type { IChainModule } from './types';
-import { getModulesMap } from './utils';
+import type { IChainModule, Outline } from './types';
+import { isModuleLike } from './types';
+import {
+  chainModuleToOutlineTreeItems,
+  moduleModelToChainModule,
+} from './utils';
 
 export interface IModuleExplorerProps {
-  modules: IChainModule[];
   openedModules: IEditorProps['openedModules'];
-  onModuleClick: ISidePanelProps['onResultClick'];
-  onInterfaceClick: ISidePanelProps['onInterfaceClick'];
-  onInterfacesExpand: ISidePanelProps['onInterfacesExpand'];
-  onModuleExpand: ISidePanelProps['onModuleExpand'];
+  onModuleClick: ISidePanelProps<IncompleteModuleModel>['onModuleClick'];
   onActiveModuleChange: IEditorProps['onActiveModuleChange'];
-  onTabClose: IEditorProps['onTabClose'];
+  // onTabClose: IEditorProps['onTabClose'];
+  items: ISidePanelProps<IncompleteModuleModel>['data'];
+  onReload: ISidePanelProps<IncompleteModuleModel | Outline>['onReload'];
+  onExpandCollapse: ISidePanelProps<
+    IncompleteModuleModel | Outline
+  >['onExpandCollapse'];
 }
 
 const ModuleExplorer = ({
-  modules,
-  openedModules: fetchedModules,
-  onModuleClick,
-  onInterfaceClick,
-  onInterfacesExpand,
-  onModuleExpand,
+  items,
+  onReload,
+  onExpandCollapse,
   onActiveModuleChange,
-  onTabClose,
-}: IModuleExplorerProps): React.JSX.Element => {
+  openedModules: _openedModules,
+}: IModuleExplorerProps) => {
   const [activeModule, setActiveModule] = useState<IChainModule>();
-  const results = getModulesMap(modules);
   const [openedModules, setOpenedModules] =
-    useState<IChainModule[]>(fetchedModules);
+    useState<IChainModule[]>(_openedModules);
+  let outlineItems: TreeItem<Outline>[] = [];
 
-  const updateOpenedModules = useCallback(
-    (result: IChainModule) => {
-      setOpenedModules((prev) => {
-        const alreadyOpened = prev.find((openedModule) => {
-          return (
-            openedModule.moduleName === result.moduleName &&
-            openedModule.chainId === result.chainId &&
-            openedModule.network === result.network
-          );
-        });
-
-        if (alreadyOpened) {
-          return prev;
-        }
-
-        let add = result;
-
-        const enhanced = modules.find((module) => {
-          return (
-            module.moduleName === result.moduleName &&
-            module.chainId === result.chainId
-          );
-        });
-
-        if (enhanced) {
-          add = enhanced;
-        }
-
-        return [...prev, add];
-      });
-    },
-    [modules],
-  );
+  if (activeModule) {
+    outlineItems = chainModuleToOutlineTreeItems(activeModule, items);
+  }
 
   return (
     <div className={containerStyle}>
-      <SidePanel
-        results={results}
-        onResultClick={(result) => {
-          updateOpenedModules(result);
-          onModuleClick(result);
-          setActiveModule(result);
+      <SidePanel<IncompleteModuleModel | Outline>
+        data={[
+          {
+            title: 'Explorer',
+            key: 'explorer',
+            children: items,
+            data: 'explorer',
+          },
+          {
+            title: 'Outline',
+            key: 'outline',
+            children: outlineItems,
+            data: 'outline',
+          },
+        ]}
+        onReload={onReload}
+        onModuleClick={({ data }) => {
+          if (isModuleLike(data)) {
+            const chainModule: IChainModule = moduleModelToChainModule(data);
+            setActiveModule(chainModule);
+            setOpenedModules((prev) => {
+              const alreadyOpened = prev.find((openedModule) => {
+                return (
+                  openedModule.moduleName === chainModule.moduleName &&
+                  openedModule.chainId === chainModule.chainId &&
+                  openedModule.network === chainModule.network
+                );
+              });
+
+              if (alreadyOpened) {
+                return prev;
+              }
+
+              return [...prev, chainModule];
+            });
+          }
         }}
-        onInterfaceClick={(result) => {
-          updateOpenedModules(result);
-          onInterfaceClick(result);
-          setActiveModule(result);
-        }}
-        onInterfacesExpand={onInterfacesExpand}
-        onModuleExpand={onModuleExpand}
-        selectedModule={activeModule}
+        onExpandCollapse={onExpandCollapse}
       />
       <Editor
         openedModules={openedModules}
@@ -101,7 +98,7 @@ const ModuleExplorer = ({
               );
             }),
           );
-          onTabClose(module);
+          // onTabClose(module);
         }}
       />
     </div>

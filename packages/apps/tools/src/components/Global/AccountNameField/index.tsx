@@ -3,7 +3,7 @@ import { TextField } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { ForwardedRef } from 'react';
 import React, { forwardRef } from 'react';
-import * as z from 'zod';
+import { z } from 'zod';
 import { accountInputWrapperStyle } from './styles.css';
 
 export const NAME_VALIDATION = z.string().trim().min(3).max(256);
