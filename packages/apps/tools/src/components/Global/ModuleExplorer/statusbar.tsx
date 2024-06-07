@@ -1,15 +1,10 @@
 import type { ModuleModel } from '@/hooks/use-module-query';
 import { Badge, Stack, Text } from '@kadena/react-ui';
-import { ellipsis, monospaceSmallestRegular } from '@kadena/react-ui/styles';
-import classNames from 'classnames';
+import { monospaceSmallestRegular } from '@kadena/react-ui/styles';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React from 'react';
-import {
-  chainBadgeStyles,
-  hashBadgeStyles,
-  statusbarStyles,
-} from './styles.css';
+import { chainBadgeStyles, statusbarStyles } from './styles.css';
 
 const StatusBar: FC<{ module: ModuleModel }> = ({ module }) => {
   const { t } = useTranslation('common');

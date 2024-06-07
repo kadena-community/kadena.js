@@ -3,7 +3,6 @@ import ModuleExplorer from '@/components/Global/ModuleExplorer';
 import type { IEditorProps } from '@/components/Global/ModuleExplorer/editor';
 import { isModuleLike } from '@/components/Global/ModuleExplorer/types';
 import { menuData } from '@/constants/side-menu-items';
-import { StorageKeys } from '@/context/connect-wallet-context';
 import { useLayoutContext, useToolbar } from '@/context/layout-context';
 import type {
   IncompleteModuleModel,
@@ -11,7 +10,6 @@ import type {
 } from '@/hooks/use-module-query';
 import { fetchModule, useModuleQuery } from '@/hooks/use-module-query';
 import { QUERY_KEY, useModulesQuery } from '@/hooks/use-modules-query';
-import { getAllNetworks } from '@/utils/network';
 import type {
   ChainwebChainId,
   ChainwebNetworkId,
@@ -25,12 +23,7 @@ import type {
   InferGetServerSidePropsType,
 } from 'next/types';
 import React, { useCallback, useEffect } from 'react';
-import {
-  getCookieValue,
-  getQueryValue,
-  mapToTreeItems,
-  modelsToTreeMap,
-} from './utils';
+import { getQueryValue, mapToTreeItems, modelsToTreeMap } from './utils';
 
 const QueryParams = {
   MODULE: 'module',
@@ -41,12 +34,6 @@ const QueryParams = {
 export const getServerSideProps: GetServerSideProps<{
   openedModules: IEditorProps['openedModules'];
 }> = async (context) => {
-  const networksData = getCookieValue(
-    StorageKeys.NETWORKS_DATA,
-    context.req.cookies,
-    getAllNetworks([]),
-  );
-
   const openedModules: IEditorProps['openedModules'] = [];
   const moduleQueryValue = getQueryValue(QueryParams.MODULE, context.query);
   const chainQueryValue = getQueryValue(

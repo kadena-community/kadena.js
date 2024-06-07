@@ -14,7 +14,6 @@ import {
   firstLevelTabPanelStyles,
   secondLevelTabContainerStyles,
   secondLevelTabPanelStyles,
-  tabPanelStyles,
   tabsLabelStyles,
 } from './styles.css';
 
