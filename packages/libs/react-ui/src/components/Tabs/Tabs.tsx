@@ -33,7 +33,7 @@ export function Tabs<T extends object>({
   isCompact,
   tabPanelClassName,
   ...props
-}: ITabsProps<T>) {
+}: ITabsProps<T>): ReactNode {
   const state = useTabListState(props);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -98,7 +98,11 @@ export function Tabs<T extends object>({
           </div>
         </div>
       </TabsPagination>
-      <TabPanel key={state.selectedItem?.key} state={state} className={tabPanelClassName} />
+      <TabPanel
+        key={state.selectedItem?.key}
+        state={state}
+        className={tabPanelClassName}
+      />
     </div>
   );
 }

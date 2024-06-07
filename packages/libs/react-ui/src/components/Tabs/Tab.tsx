@@ -29,7 +29,7 @@ export function Tab<T>({
   borderPosition = 'bottom',
   isCompact = false,
   onClose,
-}: ITabProps<T>) {
+}: ITabProps<T>): ReactNode {
   const { key, rendered } = item;
   const ref = useRef(null);
   const { tabProps } = useTab({ key }, state, ref);
