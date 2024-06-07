@@ -1,6 +1,5 @@
 import type { Transaction, Transfer } from '@/__generated__/sdk';
 import { useAccountQuery } from '@/__generated__/sdk';
-import type { IKeyProps } from '@/components/compact-keys-table/compact-keys-table';
 import CompactTable from '@/components/compact-table/compact-table';
 import { FormatAccount } from '@/components/compact-table/utils/format-account';
 import { FormatAmount } from '@/components/compact-table/utils/format-amount';
