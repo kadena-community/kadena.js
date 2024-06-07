@@ -10,5 +10,6 @@ export const documentStyle = style({
 });
 
 export const layoutWrapperClass = style({
+  marginInline: 'auto',
   maxWidth: $$pageWidth,
 });

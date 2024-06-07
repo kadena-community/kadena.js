@@ -3,7 +3,7 @@ import { useAccountQuery } from '@/__generated__/sdk';
 import type { IKeyProps } from '@/components/compact-keys-table/compact-keys-table';
 import CompactKeysTable from '@/components/compact-keys-table/compact-keys-table';
 import CompactTransactionsTable from '@/components/compact-transactions-table/compact-transactions-table';
-import Layout from '@/components/layout';
+import DetailLayout from '@/components/layout/detail-layout/detail-layout';
 import MaskedAccountName from '@/components/mask-accountname/mask-accountname';
 import { Heading, Stack } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
@@ -43,7 +43,7 @@ const Account: FC = () => {
   }, [fungibleAccount?.chainAccounts]);
 
   return (
-    <Layout>
+    <DetailLayout>
       {loading && <div>Loading...</div>}
       {error && <div>Error: {error.message}</div>}
 
@@ -70,7 +70,7 @@ const Account: FC = () => {
           )}
         </Stack>
       </Stack>
-    </Layout>
+    </DetailLayout>
   );
 };
 

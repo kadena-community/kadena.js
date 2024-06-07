@@ -3,6 +3,8 @@ import {
   KadenaLogo,
   NavHeader,
   NavHeaderButton,
+  NavHeaderLink,
+  NavHeaderLinkList,
   NavHeaderSelect,
   SelectItem,
   Stack,
@@ -23,13 +25,19 @@ export const NavBar: FC = () => {
           </Link>
         }
       >
+        <NavHeaderLinkList>
+          <NavHeaderLink>{''}</NavHeaderLink>
+          <NavHeaderLink>{''}</NavHeaderLink>
+        </NavHeaderLinkList>
         <NavHeaderButton variant="transparent" endVisual={<MonoHub />}>
           Graph
         </NavHeaderButton>
         <NavHeaderSelect
           aria-label="Select Network"
           defaultSelectedKey={selectedNetwork}
-          onSelectionChange={(value: string) => setSelectedNetwork(value)}
+          onSelectionChange={(value: any) =>
+            setSelectedNetwork(value.toString())
+          }
         >
           <SelectItem key={'Mainnet'} textValue="Mainnet">
             Mainnet
