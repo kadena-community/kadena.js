@@ -21,7 +21,7 @@ jobs:
        run: pnpm add --global vercel@34.2.5
 
      - name: Link reop to Vercel
-       run: vercel link --repo --yes --token=${{ secrets.VERCEL_TOKEN }}
+       run: vercel link --repo --yes -S Kadena --token=${{ secrets.VERCEL_TOKEN }}
 
      - name: Pull Vercel Environment Information
        run: vercel pull --cwd packages/apps/docs --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
