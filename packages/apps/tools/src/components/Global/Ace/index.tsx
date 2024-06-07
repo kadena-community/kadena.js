@@ -9,6 +9,7 @@ import 'ace-builds/src-noconflict/theme-github_dark';
 import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/theme-one_dark';
 
+import { token } from '@kadena/react-ui/styles';
 import type { FC } from 'react';
 import React from 'react';
 import type { IAceEditorProps } from 'react-ace';
@@ -50,6 +51,7 @@ const AceViewerComponent: FC<IEditorProps> = ({
         enableSnippets: true,
         showLineNumbers: true,
         tabSize: 2,
+        fontFamily: token('typography.family.monospaceFont'),
       }}
       fontSize={14}
     />
