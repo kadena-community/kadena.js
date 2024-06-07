@@ -27967,6 +27967,252 @@
       }
     }
   },
+  "marmalade-v2": {
+    "name": "Marmalade V2",
+    "slug": "marmalade-v2",
+    "repo": "https://github.com/kadena-io/marmalade.git",
+    "directory": "/",
+    "fileName": "CHANGELOG.md",
+    "owner": "kadena-io",
+    "repoName": "marmalade",
+    "content": {
+      "1.1.0": {
+        "label": "1.1.0",
+        "isLocked": true,
+        "authors": [
+          {
+            "login": "ggobugi27"
+          },
+          {
+            "login": "daplcor",
+            "id": 95604731,
+            "avatar_url": "https://avatars.githubusercontent.com/u/95604731?v=4",
+            "html_url": "https://github.com/daplcor",
+            "url": "https://api.github.com/users/daplcor"
+          }
+        ],
+        "patches": [],
+        "minors": [
+          {
+            "label": "Added new concrete policy: `marmalade-v2.non-updatable-uri-policy-v1`",
+            "commits": [
+              {
+                "hash": "5e3cb53",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Tue, 14 May 2024 06:52:26 GMT",
+                    "date": "Fri, 07 Jun 2024 10:51:15 GMT"
+                  },
+                  "data": {
+                    "sha": "5e3cb5362483c4c114aea92c025901950fe1b54b",
+                    "url": "https://api.github.com/repos/kadena-io/marmalade/commits/5e3cb5362483c4c114aea92c025901950fe1b54b",
+                    "author": {
+                      "login": "ggobugi27"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-io/marmalade/commits/5e3cb5362483c4c114aea92c025901950fe1b54b/comments",
+                    "html_url": "https://github.com/kadena-io/marmalade/commit/5e3cb5362483c4c114aea92c025901950fe1b54b",
+                    "commit": {
+                      "message": "add non-updatable-uri-policy",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Added rotate creator information feature in Royalty Policy",
+            "commits": [
+              {
+                "hash": "75b29d3",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Tue, 30 Apr 2024 16:59:44 GMT",
+                    "date": "Fri, 07 Jun 2024 10:51:16 GMT"
+                  },
+                  "data": {
+                    "sha": "75b29d32afef930c72b1303b9c16c344f458006c",
+                    "url": "https://api.github.com/repos/kadena-io/marmalade/commits/75b29d32afef930c72b1303b9c16c344f458006c",
+                    "author": {
+                      "login": "daplcor",
+                      "id": 95604731,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/95604731?v=4",
+                      "html_url": "https://github.com/daplcor",
+                      "url": "https://api.github.com/users/daplcor"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-io/marmalade/commits/75b29d32afef930c72b1303b9c16c344f458006c/comments",
+                    "html_url": "https://github.com/kadena-io/marmalade/commit/75b29d32afef930c72b1303b9c16c344f458006c",
+                    "commit": {
+                      "message": "Rotate Royalty\n\nAdded 2 functions and a defcap to make retrieving the royalty address easier, rotating the account and guard for receiving royalties, and prove current keyset is the owner.  Repl tests included for royalty-policy-v1.",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Reintroduced creator-guard in the `marmalade-v2.ledger.CREATE-TOKEN` capability, and removed `marmalade-v2.util-v1.UTIL-SIGN`",
+            "commits": [
+              {
+                "hash": "a534ac0",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Thu, 23 May 2024 01:52:02 GMT",
+                    "date": "Fri, 07 Jun 2024 10:51:16 GMT"
+                  },
+                  "data": {
+                    "sha": "a534ac0ba3a7b8dcff9b3d5f6a406d58a8005168",
+                    "url": "https://api.github.com/repos/kadena-io/marmalade/commits/a534ac0ba3a7b8dcff9b3d5f6a406d58a8005168",
+                    "author": {
+                      "login": "ggobugi27"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-io/marmalade/commits/a534ac0ba3a7b8dcff9b3d5f6a406d58a8005168/comments",
+                    "html_url": "https://github.com/kadena-io/marmalade/commit/a534ac0ba3a7b8dcff9b3d5f6a406d58a8005168",
+                    "commit": {
+                      "message": "improve caps",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Allow dutch-auction and conventional-auction that did not create auction to bypass enforce-withdrawal check.",
+            "commits": [
+              {
+                "hash": "60c9ee7",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Thu, 23 May 2024 10:42:48 GMT",
+                    "date": "Fri, 07 Jun 2024 10:51:16 GMT"
+                  },
+                  "data": {
+                    "sha": "60c9ee7904679247f649fc2e1ff8c7883dc542f7",
+                    "url": "https://api.github.com/repos/kadena-io/marmalade/commits/60c9ee7904679247f649fc2e1ff8c7883dc542f7",
+                    "author": {
+                      "login": "ggobugi27"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-io/marmalade/commits/60c9ee7904679247f649fc2e1ff8c7883dc542f7/comments",
+                    "html_url": "https://github.com/kadena-io/marmalade/commit/60c9ee7904679247f649fc2e1ff8c7883dc542f7",
+                    "commit": {
+                      "message": "allow withdraw for non-created sales in auction contracts",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Change in event emissions sale-contracts to minimize event arguments",
+            "commits": [
+              {
+                "hash": "915cd41",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Thu, 23 May 2024 08:24:40 GMT",
+                    "date": "Fri, 07 Jun 2024 10:51:17 GMT"
+                  },
+                  "data": {
+                    "sha": "915cd41b3c26b7bf2711706463e2d818bc377f9f",
+                    "url": "https://api.github.com/repos/kadena-io/marmalade/commits/915cd41b3c26b7bf2711706463e2d818bc377f9f",
+                    "author": {
+                      "login": "ggobugi27"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-io/marmalade/commits/915cd41b3c26b7bf2711706463e2d818bc377f9f/comments",
+                    "html_url": "https://github.com/kadena-io/marmalade/commit/915cd41b3c26b7bf2711706463e2d818bc377f9f",
+                    "commit": {
+                      "message": "remove retrieve-able information from the events",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Adjustment of `marmalade-v2.util-v1` to support non-updatable-uri-policy",
+            "commits": [
+              {
+                "hash": "fab68d1",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Thu, 16 May 2024 10:25:06 GMT",
+                    "date": "Fri, 07 Jun 2024 10:51:17 GMT"
+                  },
+                  "data": {
+                    "sha": "fab68d119f49bd6b7ed5c550c7915cfa7b1bcded",
+                    "url": "https://api.github.com/repos/kadena-io/marmalade/commits/fab68d119f49bd6b7ed5c550c7915cfa7b1bcded",
+                    "author": {
+                      "login": "ggobugi27"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-io/marmalade/commits/fab68d119f49bd6b7ed5c550c7915cfa7b1bcded/comments",
+                    "html_url": "https://github.com/kadena-io/marmalade/commit/fab68d119f49bd6b7ed5c550c7915cfa7b1bcded",
+                    "commit": {
+                      "message": "add non-updatable-uri-policy into util-v1",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Update outdated docs on `guard-policy-v1.enforce-init`",
+            "commits": [
+              {
+                "hash": "e13be7f",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Mon, 20 May 2024 01:04:01 GMT",
+                    "date": "Fri, 07 Jun 2024 10:51:18 GMT"
+                  },
+                  "data": {
+                    "sha": "e13be7f4dadb10dc689fbbb3116ad35032662707",
+                    "url": "https://api.github.com/repos/kadena-io/marmalade/commits/e13be7f4dadb10dc689fbbb3116ad35032662707",
+                    "author": {
+                      "login": "ggobugi27"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-io/marmalade/commits/e13be7f4dadb10dc689fbbb3116ad35032662707/comments",
+                    "html_url": "https://github.com/kadena-io/marmalade/commit/e13be7f4dadb10dc689fbbb3116ad35032662707",
+                    "commit": {
+                      "message": "fix outdated comments",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          }
+        ],
+        "miscs": [],
+        "date": "2024-05-23T10:42:48.000Z"
+      }
+    }
+  },
   "kadena-cli": {
     "name": "Kadena Cli",
     "slug": "kadena-cli",

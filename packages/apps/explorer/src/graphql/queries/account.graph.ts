@@ -20,6 +20,19 @@ export const block: DocumentNode = gql`
           }
         }
       }
+      transfers {
+        edges {
+          node {
+            requestKey
+            blockHash
+            amount
+            chainId
+            receiverAccount
+            senderAccount
+            height
+          }
+        }
+      }
     }
   }
 `;

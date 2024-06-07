@@ -27,6 +27,15 @@ export const REPOS: IRepo[] = [
     repoName: 'pact',
   },
   {
+    name: 'Marmalade V2',
+    slug: 'marmalade-v2',
+    repo: 'https://github.com/kadena-io/marmalade.git',
+    directory: '/',
+    fileName: 'CHANGELOG.md',
+    owner: 'kadena-io',
+    repoName: 'marmalade',
+  },
+  {
     name: 'Kadena Cli',
     slug: 'kadena-cli',
     repo: 'https://github.com/kadena-community/kadena.js.git',
