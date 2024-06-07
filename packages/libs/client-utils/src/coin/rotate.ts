@@ -1,4 +1,9 @@
-import type { ChainId, IPactModules, PactReturnType } from '@kadena/client';
+import type {
+  ChainId,
+  IPactModules,
+  ISigner,
+  PactReturnType,
+} from '@kadena/client';
 import { Pact, readKeyset } from '@kadena/client';
 import {
   addKeyset,
@@ -12,12 +17,12 @@ import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
 interface IRotateCommandInput {
-  account: { account: string; publicKeys: string[] };
+  account: { account: string; publicKeys: ISigner[] };
   newguard: {
     keys: string[];
     pred: 'keys-all' | 'keys-2' | 'keys-any';
   };
-  gasPayer: { account: string; publicKeys: string[] };
+  gasPayer: { account: string; publicKeys: ISigner[] };
   chainId: ChainId;
   /**
    * compatible contract with fungible-v2; default is "coin"
