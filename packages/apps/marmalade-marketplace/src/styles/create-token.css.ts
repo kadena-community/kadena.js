@@ -1,5 +1,3 @@
-// styles.css.ts
-
 import { style, globalStyle } from '@vanilla-extract/css';
 import { deviceColors } from '@/styles/tokens.css';
 
@@ -41,6 +39,7 @@ export const oneColumnRow = style({
   display: "grid",
   gridTemplateColumns: "1fr",
   gap: "20px",
+  marginTop: "20px"
 });
 
 export const formSection = style({
@@ -104,4 +103,10 @@ export const checkboxLabel = style({
 export const checkboxInput = style({
   width: '16px',
   height: '16px',
+});
+
+export const buttonRow = style({
+  display: 'flex',
+  justifyContent: 'flex-end', // align button to the right
+  marginTop: '20px', // add some space above the button
 });
