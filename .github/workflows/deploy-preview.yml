@@ -24,7 +24,7 @@ jobs:
        run: vercel pull --cwd packages/apps/docs --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
 
      - name: Build App for Vercel Deployment
-       run: vercel build --cwd packages/apps/docs --token=${{ secrets.VERCEL_TOKEN }}
+       run: vercel build --cwd packages/apps/docs --token=${{ secrets.VERCEL_TOKEN }} --debug
 
      - name: Deploy Project Artifacts to Vercel
        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --archive=tgz
