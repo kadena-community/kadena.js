@@ -15,8 +15,8 @@ export { TabItem };
 
 export type ITabItemProps = ComponentProps<typeof TabItem>;
 
-export interface ITabsProps
-  extends Omit<AriaTabListProps<object>, 'orientation' | 'items'> {
+export interface ITabsProps<T>
+  extends Omit<AriaTabListProps<T>, 'orientation'> {
   className?: string;
   inverse?: boolean;
   borderPosition?: 'top' | 'bottom';
@@ -24,14 +24,14 @@ export interface ITabsProps
   isCompact?: boolean;
 }
 
-export const Tabs = ({
+export function Tabs<T extends object>({
   className,
   borderPosition = 'bottom',
   inverse = false,
   onClose,
   isCompact,
   ...props
-}: ITabsProps): ReactNode => {
+}: ITabsProps<T>) {
   const state = useTabListState(props);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -99,4 +99,4 @@ export const Tabs = ({
       <TabPanel key={state.selectedItem?.key} state={state} />
     </div>
   );
-};
+}
