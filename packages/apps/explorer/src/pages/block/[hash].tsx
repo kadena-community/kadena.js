@@ -1,6 +1,8 @@
 import type { Transaction } from '@/__generated__/sdk';
 import { useBlockQuery } from '@/__generated__/sdk';
-import CompactTransactionsTable from '@/components/compact-transactions-table/compact-transactions-table';
+import CompactTable from '@/components/compact-table/compact-table';
+import { FormatLink } from '@/components/compact-table/utils/format-link';
+import { FormatStatus } from '@/components/compact-table/utils/format-status';
 import DataRenderComponent from '@/components/data-render-component/data-render-component';
 import { Badge, TabItem, Tabs } from '@kadena/react-ui';
 
@@ -137,8 +139,36 @@ const Block: React.FC = () => {
             }
             key="Transactions"
           >
-            <CompactTransactionsTable
-              transactions={data.block.transactions.edges.map(
+            <CompactTable
+              fields={[
+                {
+                  label: 'Status',
+                  key: 'result.goodResult',
+                  variant: 'code',
+                  width: '10%',
+                  render: FormatStatus(),
+                },
+                {
+                  label: 'Sender',
+                  key: 'cmd.meta.sender',
+                  variant: 'code',
+                  width: '25%',
+                },
+                {
+                  label: 'RequestKey',
+                  key: 'hash',
+                  variant: 'code',
+                  width: '25%',
+                  render: FormatLink({ appendUrl: '/transaction' }),
+                },
+                {
+                  label: 'Code Preview',
+                  key: 'cmd.payload.code',
+                  variant: 'code',
+                  width: '40%',
+                },
+              ]}
+              data={data.block.transactions.edges.map(
                 (edge) => edge.node as Transaction,
               )}
             />
