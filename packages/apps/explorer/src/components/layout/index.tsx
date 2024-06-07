@@ -1,7 +1,8 @@
 import Head from 'next/head';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
-import { documentStyle } from './styles.css';
+import { NavBar } from './navbar/navbar';
+import { documentStyle, layoutWrapperClass } from './styles.css';
 
 interface IProps {
   children?: ReactNode;
@@ -20,7 +21,8 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
         />
       </Head>
 
-      <main>{children}</main>
+      <NavBar />
+      <main className={layoutWrapperClass}>{children}</main>
     </div>
   );
 };

@@ -1,6 +1,14 @@
-import { style } from '@vanilla-extract/css';
+import { tokens } from '@kadena/react-ui/styles';
+import { createVar, style } from '@vanilla-extract/css';
+
+export const $$pageWidth = createVar();
 
 export const documentStyle = style({
-  padding: '30px 50px 50px 50px',
-  fontSize: '14px',
+  vars: {
+    [$$pageWidth]: tokens.kda.foundation.breakpoint.xxl, // '1440px',
+  },
+});
+
+export const layoutWrapperClass = style({
+  maxWidth: $$pageWidth,
 });
