@@ -1,8 +1,6 @@
-import {
-  BlockQueryResult,
-  NewBlocksSubscriptionResult,
-} from '@/__generated__/sdk';
+import type { NewBlocksSubscriptionResult } from '@/__generated__/sdk';
 import { blockHeightColumnDescription } from '@/constants/block-table';
+import { BlockData, IChainBlock } from '@/services/block';
 import { Grid, GridItem, Stack, Text } from '@kadena/react-ui';
 import React from 'react';
 import { Media } from '../layout/media';
@@ -11,7 +9,7 @@ import { blockGridStyle, gridItemClass } from './block-table.css';
 interface IBlockTableProps {
   headerColumns: Array<{ title: string; subtitle?: string }>;
   blockHeightColumns: Array<number>;
-  blockData: NewBlocksSubscriptionResult['data'];
+  blockData: IChainBlock;
 }
 
 const BlockTable: React.FC<IBlockTableProps> = ({
@@ -19,6 +17,7 @@ const BlockTable: React.FC<IBlockTableProps> = ({
   blockHeightColumns,
   blockData,
 }) => {
+  console.log(blockData);
   return (
     <Stack display="flex" flexDirection={'column'} gap={'sm'} padding={'md'}>
       <Grid columns={4} className={blockGridStyle}>
@@ -64,10 +63,25 @@ const BlockTable: React.FC<IBlockTableProps> = ({
           ))}
         </Stack>
 
-        <GridItem className={gridItemClass}>sd</GridItem>
-        <GridItem className={gridItemClass}>sd</GridItem>
-        <GridItem className={gridItemClass}>sd</GridItem>
-        <GridItem className={gridItemClass}>sd</GridItem>
+        {Object.keys(blockData).map((chainId) => (
+          <>
+            <GridItem key={`${chainId}-number`} className={gridItemClass}>
+              {chainId}
+            </GridItem>
+            <GridItem key={`${chainId}-number1`} className={gridItemClass}>
+              {
+                (blockData[Number(chainId)][blockHeightColumns[0]] as BlockData)
+                  ?.difficulty
+              }
+            </GridItem>
+            <GridItem key={`${chainId}-number2`} className={gridItemClass}>
+              {chainId}
+            </GridItem>
+            <GridItem key={`${chainId}-number3`} className={gridItemClass}>
+              {chainId}
+            </GridItem>
+          </>
+        ))}
       </Grid>
     </Stack>
   );

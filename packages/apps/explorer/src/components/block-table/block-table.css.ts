@@ -1,4 +1,3 @@
-import { KadenaLogo } from '@kadena/react-ui';
 import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 

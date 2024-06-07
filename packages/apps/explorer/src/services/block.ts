@@ -1,26 +1,34 @@
-import { NewBlocksSubscriptionResult } from '@/__generated__/sdk';
+import type { NewBlocksSubscriptionResult } from '@/__generated__/sdk';
 
-interface IHeightBlock {
-  height: number;
-  data: NewBlocksSubscriptionResult['data'];
+export type BlockData = Omit<NewBlocksSubscriptionResult['data'], '__typename'>;
+
+export interface IHeightBlock {
+  [height: number]: BlockData;
 }
 
-interface IChainBlock {
-  chainId: number;
-  blocks: IHeightBlock[];
+export interface IChainBlock {
+  [chainId: number]: IHeightBlock;
 }
 
-export function formatBlockRows(dataStructure: ): {
-  chainId: number;
-  blocks: { height: number; data: NewBlocksSubscriptionResult['data'] }[];
-} {
-  const blocks: {
-    chainId: number;
-    blocks: { height: number; data: NewBlocksSubscriptionResult['data'] }[];
-  } = {
-    chainId: 0,
-    blocks: [],
-  };
+export function addBlockData(
+  existingData: IChainBlock,
+  newData: NewBlocksSubscriptionResult['data'],
+): IChainBlock {
+  const data = { ...existingData };
 
-  return blocks;
+  if (!newData?.newBlocks) return data;
+
+  for (const block of newData.newBlocks) {
+    if (!block) {
+      continue;
+    }
+
+    if (!data[block.chainId]) {
+      data[block.chainId] = {};
+    }
+
+    data[block.chainId][block.height] = block;
+  }
+
+  return data;
 }
