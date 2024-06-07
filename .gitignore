@@ -102,3 +102,4 @@ temp
 
 # parcel
 .parcel-cache
+.vercel
