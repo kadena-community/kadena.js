@@ -1,4 +1,7 @@
-import type { IncompleteModuleModel } from '@/hooks/use-module-query';
+import type {
+  IncompleteModuleModel,
+  ModuleModel,
+} from '@/hooks/use-module-query';
 import React, { useState } from 'react';
 import type { TreeItem } from '../CustomTree/CustomTree';
 import type { ISidePanelProps } from './SidePanel';
@@ -7,7 +10,7 @@ import type { IEditorProps } from './editor';
 import Editor from './editor';
 import { containerStyle } from './styles.css';
 import type { Outline } from './types';
-import { isModuleLike } from './types';
+import { isCompleteModule } from './types';
 import { moduleToOutlineTreeItems } from './utils';
 
 export interface IModuleExplorerProps {
@@ -29,12 +32,12 @@ const ModuleExplorer = ({
   onActiveModuleChange,
   openedModules: _openedModules,
 }: IModuleExplorerProps) => {
-  const [activeModule, setActiveModule] = useState<IncompleteModuleModel>(
+  const [activeModule, setActiveModule] = useState<ModuleModel>(
     _openedModules[0],
   );
 
   const [openedModules, setOpenedModules] =
-    useState<IncompleteModuleModel[]>(_openedModules);
+    useState<ModuleModel[]>(_openedModules);
 
   let outlineItems: TreeItem<Outline>[] = [];
 
@@ -61,7 +64,7 @@ const ModuleExplorer = ({
         ]}
         onReload={onReload}
         onModuleClick={({ data }) => {
-          if (isModuleLike(data)) {
+          if (isCompleteModule(data)) {
             onActiveModuleChange(data);
             setActiveModule(data);
             setOpenedModules((prev) => {
@@ -111,17 +114,6 @@ const ModuleExplorer = ({
         onActiveModuleChange={(module) => {
           onActiveModuleChange(module);
           setActiveModule(module);
-        }}
-        onTabClose={(module) => {
-          setOpenedModules(
-            openedModules.filter((openedModule) => {
-              return (
-                `${openedModule.name}-${openedModule.chainId}-${openedModule.networkId}` !==
-                `${module.name}-${module.chainId}-${module.networkId}`
-              );
-            }),
-          );
-          // onTabClose(module);
         }}
       />
     </div>

@@ -4,10 +4,7 @@ import type { IEditorProps } from '@/components/Global/ModuleExplorer/editor';
 import { isModuleLike } from '@/components/Global/ModuleExplorer/types';
 import { menuData } from '@/constants/side-menu-items';
 import { useLayoutContext, useToolbar } from '@/context/layout-context';
-import type {
-  IncompleteModuleModel,
-  ModuleModel,
-} from '@/hooks/use-module-query';
+import type { IncompleteModuleModel } from '@/hooks/use-module-query';
 import { fetchModule, useModuleQuery } from '@/hooks/use-module-query';
 import { QUERY_KEY, useModulesQuery } from '@/hooks/use-modules-query';
 import type {
@@ -117,7 +114,7 @@ const ModuleExplorerPage = (
   // });
 
   const setDeepLink = useCallback(
-    (module: ModuleModel) => {
+    (module: IncompleteModuleModel) => {
       void router.replace(
         `?${QueryParams.MODULE}=${module.name}&${QueryParams.CHAIN}=${module.chainId}&${QueryParams.NETWORK}=${module.networkId}`,
         undefined,
@@ -127,7 +124,7 @@ const ModuleExplorerPage = (
     [router],
   );
 
-  const onModuleOpen = useCallback<(module: ModuleModel) => void>(
+  const onModuleOpen = useCallback<(module: IncompleteModuleModel) => void>(
     (module) => {
       setDeepLink(module);
     },
