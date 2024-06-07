@@ -36,7 +36,7 @@ const ExampleManyTabs = [
   { title: 'Really Long Title 7', content: 'Content for tab 7' },
 ];
 
-const meta: Meta<ITabsProps> = {
+const meta: Meta<ITabsProps<object>> = {
   title: 'Layout/Tabs',
   component: Tabs,
   decorators: [onLayer2],
@@ -104,7 +104,7 @@ const meta: Meta<ITabsProps> = {
 };
 
 export default meta;
-type Story = StoryObj<ITabsProps>;
+type Story = StoryObj<ITabsProps<object>>;
 
 export const TabsStory: Story = {
   name: 'Tabs',
