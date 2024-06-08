@@ -4,7 +4,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { PROFILE_COLOR_LIST } from '@/constants/color-list';
 import { LayoutContext } from '@/modules/layout/layout.provider';
 import { MonoCheck } from '@kadena/react-icons/system';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { colorOptionClass, listClass } from '../styles.css';
 
 export const PersonalizeProfileCreation = () => {
@@ -40,7 +40,8 @@ export const PersonalizeProfileCreation = () => {
           })}
           isInvalid={!isValid && !!errors.profileName}
           errorMessage={
-            errors.profileName && (errors.profileName?.message as any)
+            errors.profileName &&
+            (errors.profileName?.message as React.ReactNode)
           }
         />
       </Stack>

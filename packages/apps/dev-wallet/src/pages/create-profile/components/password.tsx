@@ -36,7 +36,7 @@ export const Password = ({ isShortFlow }: { isShortFlow: boolean }) => {
             minLength: { value: 6, message: 'Minimum 6 symbols' },
           })}
           isInvalid={!isValid && !!errors.password}
-          errorMessage={errors.password?.message as any}
+          errorMessage={errors.password?.message as React.ReactNode}
         />
         <TextField
           id="confirmation"
@@ -52,7 +52,7 @@ export const Password = ({ isShortFlow }: { isShortFlow: boolean }) => {
             },
           })}
           isInvalid={!isValid && !!errors.confirmation}
-          errorMessage={errors.confirmation?.message as any}
+          errorMessage={errors.confirmation?.message as React.ReactNode}
         />
       </Stack>
       <Stack flexDirection="column">
