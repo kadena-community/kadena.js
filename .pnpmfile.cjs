@@ -9,7 +9,8 @@ const ALLOWED_ROOT_DEPENDENCIES = [
   'syncpack',
   'tsx',
   'turbo',
-  'vercel'
+  'vercel',
+  'turbo-ignore'
 ];
 
 function readPackage(pkg, context) {

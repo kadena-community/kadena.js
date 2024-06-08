@@ -17,8 +17,15 @@ jobs:
      - name: Runner Setup  
        uses: ./.github/actions/runner-setup
     
+     - name: package-a changed in last commit?
+       id: changedAction
+       uses: Trampoline-CX/action-turbo-changed@v1
+       with:
+        workspace: "@kadena/docs"
+        from: origin/${{ github.base_ref }}
+    
      - name: Install Vercel CLI
-       run: pnpm add --global vercel@34.2.5
+       run: pnpm add --global vercel@34.2.5 
 
      - name: Pull Vercel Environment Information
        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}

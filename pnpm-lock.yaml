@@ -38,6 +38,9 @@ importers:
       turbo:
         specifier: ^1.10.15
         version: 1.10.16
+      turbo-ignore:
+        specifier: ^2.0.3
+        version: 2.0.3
       vercel:
         specifier: 34.2.5
         version: 34.2.5
@@ -34394,6 +34397,13 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /turbo-ignore@2.0.3:
+    resolution: {integrity: sha512-LUmHM7EsQLAa+NVZwzsU8NIcDhHI9dPyGrAeeP6Wwmrr9KNz1fIcWr5o8RdK+EKENhg101TXMrGBGXLqWSsaBQ==}
+    hasBin: true
+    dependencies:
+      json5: 2.2.3
+    dev: true
 
   /turbo-linux-64@1.10.16:
     resolution: {integrity: sha512-PpqEZHwLoizQ6sTUvmImcRmACyRk9EWLXGlqceogPZsJ1jTRK3sfcF9fC2W56zkSIzuLEP07k5kl+ZxJd8JMcg==}

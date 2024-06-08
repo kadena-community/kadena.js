@@ -37,6 +37,7 @@
     "syncpack": "^11.2.1",
     "tsx": "^3.12.10",
     "turbo": "^1.10.15",
+    "turbo-ignore": "^2.0.3",
     "vercel": "34.2.5"
   },
   "engines": {
