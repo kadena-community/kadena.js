@@ -17,12 +17,16 @@ jobs:
      - name: Runner Setup  
        uses: ./.github/actions/runner-setup
     
-     - name: package-a changed in last commit?
+     - name: Detecting App Changes
        id: changedAction
        uses: Trampoline-CX/action-turbo-changed@v1
        with:
         workspace: "@kadena/docs"
         from: origin/${{ github.base_ref }}
+
+     - name: Validate Action Output
+       if: steps.changedAction.outputs.changed == 'true' 
+       run: echo 'Change detected in the workspace. Proceeding with the deployment.'
     
      - name: Install Vercel CLI
        run: pnpm add --global vercel@34.2.5 
