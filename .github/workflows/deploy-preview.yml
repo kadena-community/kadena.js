@@ -23,19 +23,19 @@ jobs:
        with:
         workspace: "@kadena/docs"
         from: origin/${{ github.base_ref }}
-
-     - name: Validate Action Output
-       if: steps.changedAction.outputs.changed == 'true' 
-       run: echo 'Change detected in the workspace. Proceeding with the deployment.'
     
      - name: Install Vercel CLI
+       if: steps.changedAction.outputs.changed == 'true' 
        run: pnpm add --global vercel@34.2.5 
 
      - name: Pull Vercel Environment Information
+       if: steps.changedAction.outputs.changed == 'true' 
        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
 
      - name: Build App for Vercel Deployment
+       if: steps.changedAction.outputs.changed == 'true' 
        run: vercel build --token=${{ secrets.VERCEL_TOKEN }} --debug
 
      - name: Deploy Project Artifacts to Vercel
+       if: steps.changedAction.outputs.changed == 'true' 
        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --archive=tgz
