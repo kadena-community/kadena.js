@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 export const Stepper = ({
@@ -6,7 +6,12 @@ export const Stepper = ({
   initialPath,
 }: {
   initialPath?: string;
-  steps: { id: string; route: string; title?: string; elements: ReactNode }[];
+  steps: {
+    id: string;
+    route: string;
+    title?: string;
+    elements: React.ReactNode;
+  }[];
 }) => {
   const navigate = useNavigate();
   const location = useLocation();

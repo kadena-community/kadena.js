@@ -8,7 +8,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { Stepper } from '@/Components/stepper/Stepper';
 import { PROFILE_COLOR_LIST } from '@/constants/color-list';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
 import { Password } from './components/password';
 import { PersonalizeProfileCreation } from './components/personalize-profile-creation';
