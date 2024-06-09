@@ -10,7 +10,7 @@ const ALLOWED_ROOT_DEPENDENCIES = [
   'tsx',
   'turbo',
   'vercel',
-  'turbo-ignore'
+  'turbo-ignore',
 ];
 
 function readPackage(pkg, context) {
