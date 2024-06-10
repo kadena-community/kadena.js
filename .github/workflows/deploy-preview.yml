@@ -40,17 +40,17 @@ jobs:
       
         
      - name: Install Vercel CLI
-       if: steps.detectChanges.outputs.changed == 'blub' 
+       if: steps.detectChanges.outputs.changed == 'true' 
        run: pnpm add --global vercel@34.2.5 
 
      - name: Pull Vercel Environment Information
-       if: steps.detectChanges.outputs.changed == 'blub' 
+       if: steps.detectChanges.outputs.changed == 'true' 
        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
 
      - name: Build App for Vercel Deployment
-       if: steps.detectChanges.outputs.changed == 'blub' 
+       if: steps.detectChanges.outputs.changed == 'true' 
        run: vercel build --token=${{ secrets.VERCEL_TOKEN }} --debug
 
      - name: Deploy Project Artifacts to Vercel
-       if: steps.detectChanges.outputs.changed == 'blub' 
+       if: steps.detectChanges.outputs.changed == 'true' 
        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --archive=tgz
