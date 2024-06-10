@@ -4,14 +4,14 @@ import type { ComponentProps, ReactNode } from 'react';
 import React, { useEffect, useRef } from 'react';
 import type { AriaTabListProps } from 'react-aria';
 import { mergeProps, useFocusRing, useTabList } from 'react-aria';
-import type { Node as TabNode } from 'react-stately';
+import type { Node as ITabNode } from 'react-stately';
 import { Item as TabItem, useTabListState } from 'react-stately';
 import { Tab } from './Tab';
 import { TabPanel } from './TabPanel';
 import { scrollContainer, tabListClass, tabsContainerClass } from './Tabs.css';
 import { TabsPagination } from './TabsPagination';
 
-export { TabItem, TabNode };
+export { ITabNode, TabItem };
 
 export type ITabItemProps = ComponentProps<typeof TabItem>;
 
@@ -20,7 +20,7 @@ export interface ITabsProps<T>
   className?: string;
   inverse?: boolean;
   borderPosition?: 'top' | 'bottom';
-  onClose?: (item: TabNode<T>) => void;
+  onClose?: (item: ITabNode<T>) => void;
   isCompact?: boolean;
   tabPanelClassName?: string;
 }

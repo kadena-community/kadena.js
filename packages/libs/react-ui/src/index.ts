@@ -35,6 +35,7 @@ export type {
   ISelectProps,
   IStackProps,
   ITabItemProps,
+  ITabNode,
   ITableProps,
   ITabsProps,
   ITagGroupProps,
@@ -49,7 +50,6 @@ export type {
   ITrackerCardProps,
   MaskOptions,
   PressEvent,
-  TabNode,
 } from './components';
 
 export {

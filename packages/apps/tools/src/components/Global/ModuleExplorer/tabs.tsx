@@ -6,7 +6,7 @@ import type {
   ChainwebChainId,
   ChainwebNetworkId,
 } from '@kadena/chainweb-node-client';
-import type { TabNode } from '@kadena/react-ui';
+import type { ITabNode } from '@kadena/react-ui';
 import { Box, Stack, TabItem, Tabs, Text } from '@kadena/react-ui';
 import type { FC, Key } from 'react';
 import React, { useCallback, useMemo } from 'react';
@@ -91,7 +91,7 @@ const EditorTabs: FC<ITabsProps> = ({
 
   const onParentClose = useCallback(
     (
-      item: TabNode<{
+      item: ITabNode<{
         title: string;
         children: ModuleModel[];
       }>,
@@ -131,7 +131,7 @@ const EditorTabs: FC<ITabsProps> = ({
   );
 
   const onModuleClose = useCallback(
-    (item: TabNode<ModuleModel>) => {
+    (item: ITabNode<ModuleModel>) => {
       if (map.get(item.value!.name)?.length === 1) {
         const currIndex = [...map].findIndex(([key, value]) => {
           return value.includes(item.value!);
