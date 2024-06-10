@@ -1,6 +1,6 @@
-import type { Block, NewBlocksSubscriptionResult } from '@/__generated__/sdk';
+import type { NewBlocksSubscriptionResult } from '@/__generated__/sdk';
 
-interface BlockData {
+interface IBlockData {
   hash: string;
   height: number;
   chainId: number;
@@ -9,7 +9,7 @@ interface BlockData {
 }
 
 export interface IHeightBlock {
-  [height: number]: BlockData;
+  [height: number]: IBlockData;
 }
 
 export interface IChainBlock {

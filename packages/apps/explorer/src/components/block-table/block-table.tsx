@@ -1,4 +1,4 @@
-import { IChainBlock } from '@/services/block';
+import type { IChainBlock } from '@/services/block';
 import { Stack } from '@kadena/react-ui';
 import React from 'react';
 import { Media } from '../layout/media';

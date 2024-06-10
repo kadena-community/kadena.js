@@ -1,6 +1,5 @@
 import { Media } from '@/components/layout/media';
 import { blockHeightColumnDescription } from '@/constants/block-table';
-import { IChainBlock } from '@/services/block';
 import { Grid, Stack, Text } from '@kadena/react-ui';
 import React from 'react';
 import {
