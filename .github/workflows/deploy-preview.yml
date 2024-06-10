@@ -57,7 +57,7 @@ jobs:
 
      - name: Deploy Project Artifacts to Vercel
        if: steps.detectChanges.outputs.changed == 'true' 
-       run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --archive=tgz | tee tee deploy.log
+       run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --archive=tgz | tee deploy.log
       
      - name: Set preview url
        id: deployment
