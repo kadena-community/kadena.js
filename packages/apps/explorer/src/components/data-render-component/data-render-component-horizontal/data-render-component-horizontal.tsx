@@ -14,7 +14,7 @@ import {
 interface IDataRenderComponentField {
   type?: 'text' | 'code';
   key: string;
-  value: string | string[];
+  value: string | string[] | JSX.Element | JSX.Element[];
   link?: string;
 }
 

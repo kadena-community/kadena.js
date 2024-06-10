@@ -1,27 +1,17 @@
 import {
   useLastBlockHeightQuery,
-  useNetworkInfoQuery,
   useNewBlocksSubscription,
 } from '@/__generated__/sdk';
-import BlockTable from '@/components/block-table/block-table';
-import { Media } from '@/components/layout/media';
+import SearchLayout from '@/components/layout/search-layout/search-layout';
 import SearchComponent from '@/components/search-component/search-component';
-import StatisticsComponent from '@/components/statistics-component/statistics-component';
 import { getSearchData } from '@/constants/search';
-import type { IChainBlock } from '@/services/block';
-import { addBlockData } from '@/services/block';
-import { formatStatisticsData } from '@/services/format';
+import { IChainBlock, addBlockData } from '@/services/block';
 import { LogoKdacolorLight } from '@kadena/react-icons/brand';
-import { Box, Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
 import React, { useEffect, useState } from 'react';
 
 const Home: React.FC = () => {
-  // Ideally we would pull this data once and then make calcs client-side
-  const { data: statisticsData } = useNetworkInfoQuery({
-    pollInterval: 5000,
-  });
-
   const { data: newBlocksData } = useNewBlocksSubscription();
   const { data: lastBlockHeight } = useLastBlockHeightQuery();
 
@@ -60,48 +50,19 @@ const Home: React.FC = () => {
     }
   }, [newBlocksData]);
 
-  const statisticsGridData = formatStatisticsData(statisticsData?.networkInfo);
   const searchData = getSearchData();
+
   return (
-    <Stack flexDirection={'column'} gap={'xxl'}>
-      <Media greaterThanOrEqual="sm">
-        <Stack
-          className={atoms({ flexDirection: 'column' })}
-          gap={'lg'}
-          alignItems={'center'}
-        >
-          <StatisticsComponent data={statisticsGridData} />
-          <LogoKdacolorLight />
-          <SearchComponent {...searchData} />
-        </Stack>
-      </Media>
-      <Media lessThan="sm">
-        <Stack
-          className={atoms({ flexDirection: 'column-reverse' })}
-          gap={'lg'}
-          alignItems={'center'}
-          paddingBlockStart={'xl'}
-        >
-          <StatisticsComponent data={statisticsGridData} />
-
-          <LogoKdacolorLight />
-          <SearchComponent {...searchData} />
-        </Stack>
-      </Media>
-      <Box display={'flex'} justifyContent={'center'}>
-        <Media greaterThanOrEqual="sm">
-          <BlockTable heightColumns={blockHeights} blockData={blockData} />
-        </Media>
-
-        <Media lessThan="sm">
-          <BlockTable
-            heightColumns={blockHeights}
-            blockData={blockData}
-            isCompact
-          />
-        </Media>
-      </Box>
-    </Stack>
+    <SearchLayout>
+      <Stack
+        className={atoms({ flexDirection: 'column' })}
+        gap={'xxl'}
+        alignItems={'center'}
+      >
+        <LogoKdacolorLight />
+        <SearchComponent {...searchData} />
+      </Stack>
+    </SearchLayout>
   );
 };
 

@@ -1,5 +1,12 @@
 # @kadena/kda-cli
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies \[c9fe555df]
+  - @kadena/cryptography-utils\@0.4.4
+
 ## 0.0.4
 
 ### Patch Changes
