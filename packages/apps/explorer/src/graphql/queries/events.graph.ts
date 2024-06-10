@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import { DocumentNode } from 'graphql';
+import type { DocumentNode } from 'graphql';
 
 export const coreEvents: DocumentNode = gql`
   query events($qualifiedName: String!) {
