@@ -1,5 +1,5 @@
 import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
-
+import DetailLayout from '@/components/layout/detail-layout/detail-layout';
 import { TransactionRequestComponent } from '@/components/transaction-components/transaction-request-component';
 import { TransactionResultComponent } from '@/components/transaction-components/transaction-result-component';
 import { useRouter } from 'next/router';
@@ -16,7 +16,7 @@ const Transaction: React.FC = () => {
   });
 
   return (
-    <>
+    <DetailLayout>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error.message}</p>}
       {!loading && (!data || !data.transaction) ? (
@@ -37,7 +37,7 @@ const Transaction: React.FC = () => {
           />
         </>
       )}
-    </>
+    </DetailLayout>
   );
 };
 
