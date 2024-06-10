@@ -1,9 +1,4 @@
 name: Deploy to Vercel Preview
-
-env: 
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  
 on:
   workflow_call:
     # Introduced 'inputs' to define parameters that can be passed when calling this workflow
@@ -16,6 +11,17 @@ on:
       VERCEL_PROJECT_ID:
         description: "Vercel Project ID"
         required: true
+      VERCEL_ORG_ID:
+        description: "Vercel Organization ID"
+        required: true
+      VERCEL_TOKEN:
+        description: "Vercel Token"
+        required: true
+
+env: 
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  
 
 jobs:
   deploy:
