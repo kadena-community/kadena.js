@@ -67,15 +67,15 @@ jobs:
        if: steps.detectChanges.outputs.changed == 'true' 
        run: pnpm add --global vercel@34.2.5 
 
-     - name: Pull Vercel Environment Information
+     - name: Pull environment variables
        if: steps.detectChanges.outputs.changed == 'true' 
        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
 
-     - name: Build App for Vercel Deployment
+     - name: Build App
        if: steps.detectChanges.outputs.changed == 'true' 
-       run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+       run: vercel build --token=${{ secrets.VERCEL_TOKEN }} --debug
 
-     - name: Deploy Project Artifacts to Vercel
+     - name: Deploy App
        if: steps.detectChanges.outputs.changed == 'true' 
        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --archive=tgz --meta pr_data=${{ github.event.repository.name }}-${{ github.event.number }} | tee deploy.log
       
