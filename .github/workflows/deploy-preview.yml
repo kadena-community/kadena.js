@@ -1,11 +1,25 @@
 name: Deploy to Vercel Preview
+
+env: 
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   
 on:
- pull_request:
+  workflow_call:
+    # Introduced 'inputs' to define parameters that can be passed when calling this workflow
+    inputs:
+      app:
+        description: "App to Deploy"
+        required: true
+        type: string
+    secrets:
+      VERCEL_PROJECT_ID:
+        description: "Vercel Project ID"
+        required: true
 
 jobs:
   deploy:
-    name: ${{ matrix.app }}
+    name: ${{ inputs.app }}
     if: ${{ github.repository_owner == 'kadena-community' }} // Prevents auto deploying forks.
 
     strategy:
@@ -13,14 +27,9 @@ jobs:
       matrix:
         include:
           - app: 'Docs'
-            projectToken: VERCEL_DOCS_ID
-  
-    env: 
-      VERCEL_PROJECT_ID: ${{ secrets[matrix.projectToken] }}
-      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
 
     environment:
-      name: ${{ matrix.app }} - Preview
+      name: ${{ inputs.app }} - Preview
       url: ${{ steps.deployment.outputs.url }}
     
     runs-on: ubuntu-latest
@@ -41,7 +50,7 @@ jobs:
         # Enable Error Handling
         set +e
 
-        npx turbo-ignore @kadena/docs -f ${{ github.base_ref }}
+        npx turbo-ignore @kadena/${{ inputs.app }} -f ${{ github.base_ref }}
         exit_code=$?
 
         # Disable Error Handling
