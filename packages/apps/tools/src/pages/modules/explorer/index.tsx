@@ -7,6 +7,7 @@ import { useLayoutContext, useToolbar } from '@/context/layout-context';
 import type { IncompleteModuleModel } from '@/hooks/use-module-query';
 import { fetchModule, useModuleQuery } from '@/hooks/use-module-query';
 import { QUERY_KEY, useModulesQuery } from '@/hooks/use-modules-query';
+import type { IPageProps } from '@/pages/_app';
 import type {
   ChainwebChainId,
   ChainwebNetworkId,
@@ -28,9 +29,11 @@ const QueryParams = {
   NETWORK: 'network',
 };
 
-export const getServerSideProps: GetServerSideProps<{
-  openedModules: IEditorProps['openedModules'];
-}> = async (context) => {
+export const getServerSideProps: GetServerSideProps<
+  IPageProps & {
+    openedModules: IEditorProps['openedModules'];
+  }
+> = async (context) => {
   const openedModules: IEditorProps['openedModules'] = [];
   const moduleQueryValue = getQueryValue(QueryParams.MODULE, context.query);
   const chainQueryValue = getQueryValue(
@@ -53,7 +56,13 @@ export const getServerSideProps: GetServerSideProps<{
     }
   }
 
-  return { props: { openedModules } };
+  return {
+    props: {
+      openedModules,
+      menuInitiallyOpened: false,
+      useFullPageWidth: true,
+    },
+  };
 };
 
 const ModuleExplorerPage = (

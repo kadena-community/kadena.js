@@ -33,14 +33,20 @@ export const gridItemMainStyle = style([
   {
     height: '100vh',
     width: '100vw',
-    // paddingTop: tokens.kda.foundation.size.n20,
-    paddingTop: tokens.kda.foundation.size.n16, // Same as the height of `headerStyle`
-    // paddingInline: `calc(${tokens.kda.foundation.size.n20} + ${tokens.kda.foundation.size.n2})`,
-    paddingInlineStart: tokens.kda.foundation.size.n12, // Same as the width of `sidebarStyle`
+    paddingTop: tokens.kda.foundation.size.n20,
+    paddingInline: `calc(${tokens.kda.foundation.size.n20} + ${tokens.kda.foundation.size.n2})`,
     borderRight: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
     selectors: {
       '&.isMenuOpen': {
         paddingInlineStart: `calc(${tokens.kda.foundation.size.n64} + ${tokens.kda.foundation.size.n20} + ${tokens.kda.foundation.size.n2})`,
+      },
+      '&.useFullWidth': {
+        paddingTop: tokens.kda.foundation.size.n16, // Same as the height of `headerStyle`
+        paddingInlineStart: tokens.kda.foundation.size.n12, // Same as the width of `sidebarStyle`
+        paddingInlineEnd: 0,
+      },
+      '&.useFullWidth.isMenuOpen': {
+        paddingInlineStart: `calc(${tokens.kda.foundation.size.n64} + ${tokens.kda.foundation.size.n10})`, // Same as the width of `sidebarStyle` (when menu is opened)
       },
     },
   },
