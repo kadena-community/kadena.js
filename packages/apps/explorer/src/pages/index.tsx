@@ -1,8 +1,10 @@
 import { useNetworkInfoQuery } from '@/__generated__/sdk';
 import { Media } from '@/components/layout/media';
-import Search from '@/components/search/search';
+import SearchBox from '@/components/search/search';
+import SearchResults from '@/components/search/search-results/search-results';
 import Statistics from '@/components/statistics/statistics';
 import { getSearchData } from '@/constants/search';
+import { useSearch } from '@/hooks/search';
 import { formatStatisticsData } from '@/services/format';
 import { LogoKdacolorLight } from '@kadena/react-icons/brand';
 import { Stack } from '@kadena/react-ui';
@@ -16,7 +18,8 @@ const Home: React.FC = () => {
   });
 
   const statisticsGridData = formatStatisticsData(statisticsData?.networkInfo);
-  const searchData = getSearchData();
+  const { setSearchQuery, searchQuery, data: searchData } = useSearch();
+
   return (
     <>
       <Media greaterThanOrEqual="sm">
@@ -27,7 +30,12 @@ const Home: React.FC = () => {
         >
           <Statistics data={statisticsGridData} />
           <LogoKdacolorLight />
-          <Search {...searchData} />
+          <SearchBox
+            {...searchData}
+            setSearchQuery={setSearchQuery}
+            searchQuery={searchQuery}
+          />
+          {searchData && <SearchResults {...searchData} />}
         </Stack>
       </Media>
 
@@ -41,7 +49,12 @@ const Home: React.FC = () => {
           <Statistics data={statisticsGridData} />
 
           <LogoKdacolorLight />
-          <Search {...searchData} />
+          <SearchBox
+            {...searchData}
+            setSearchQuery={setSearchQuery}
+            searchQuery={searchQuery}
+          />
+          {searchData && <SearchResults {...searchData} />}
         </Stack>
       </Media>
     </>

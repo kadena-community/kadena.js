@@ -46,6 +46,7 @@ const StatisticsStack: React.FC<IStatisticsStackProps> = ({ data }) => {
 
           <div className={borderStyleClass}>
             <Select
+              aria-label="Select network"
               defaultSelectedKey={selectedNetwork}
               fontType="code"
               size="lg"

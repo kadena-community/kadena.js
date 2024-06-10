@@ -2,7 +2,6 @@ import type { ISearchItem } from '@/components/search/search';
 
 export const getSearchData = (): {
   searchItems: ISearchItem[];
-  placeholder: string;
 } => {
   const searchItems: ISearchItem[] = [
     { title: 'Account' },
@@ -11,7 +10,6 @@ export const getSearchData = (): {
     { title: 'Block Hash' },
     { title: 'Events' },
   ];
-  const placeholder = 'Search the Kadena Blockchain on';
 
-  return { searchItems, placeholder };
+  return { searchItems };
 };
