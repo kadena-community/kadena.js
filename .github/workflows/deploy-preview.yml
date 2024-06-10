@@ -9,7 +9,7 @@ jobs:
   deploy:
 
     environment:
-      name: Docs
+      name: Docs - Preview
       url: ${{ steps.deployment.outputs.url }}
     
     runs-on: ubuntu-latest
