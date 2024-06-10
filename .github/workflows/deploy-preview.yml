@@ -37,8 +37,7 @@ jobs:
         else
           echo "changed=true" >> $GITHUB_OUTPUT
         fi
-      
-        
+                
      - name: Install Vercel CLI
        if: steps.detectChanges.outputs.changed == 'true' 
        run: pnpm add --global vercel@34.2.5 
