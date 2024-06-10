@@ -18,24 +18,39 @@ jobs:
        uses: ./.github/actions/runner-setup
     
      - name: Detecting App Changes
-       id: changedAction
-       uses: Trampoline-CX/action-turbo-changed@v1
-       with:
-        workspace: "@kadena/docs"
-        from: origin/${{ github.base_ref }}
-    
+       id: detectChanges
+       run: | 
+        echo "Detecting Changes"
+
+        # Enable Error Handling
+        set +e
+
+        npx turbo-ignore @kadena/docs -f origin/main
+        exit_code=$?
+
+        #Disable Error Handling
+        set -e
+
+        echo "exit_code: $exit_code"
+        if [ $exit_code -eq 0 ]; then
+          echo "changed=false" >> $GITHUB_OUTPUT
+        else
+          echo "changed=true" >> $GITHUB_OUTPUT
+        fi
+      
+        
      - name: Install Vercel CLI
-       if: steps.changedAction.outputs.changed == 'true' 
+       if: steps.detectChanges.outputs.changed == 'blub' 
        run: pnpm add --global vercel@34.2.5 
 
      - name: Pull Vercel Environment Information
-       if: steps.changedAction.outputs.changed == 'true' 
+       if: steps.detectChanges.outputs.changed == 'blub' 
        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
 
      - name: Build App for Vercel Deployment
-       if: steps.changedAction.outputs.changed == 'true' 
+       if: steps.detectChanges.outputs.changed == 'blub' 
        run: vercel build --token=${{ secrets.VERCEL_TOKEN }} --debug
 
      - name: Deploy Project Artifacts to Vercel
-       if: steps.changedAction.outputs.changed == 'true' 
+       if: steps.detectChanges.outputs.changed == 'blub' 
        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --archive=tgz
