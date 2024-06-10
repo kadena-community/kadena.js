@@ -1,21 +1,60 @@
+import { block } from '@/graphql/queries/block.graph';
 import { IHeightBlock } from '@/services/block';
-import { GridItem } from '@kadena/react-ui';
+import { Grid, Link, Stack, Text } from '@kadena/react-ui';
 import React from 'react';
-import { gridItemClass } from '../block-table.css';
+import {
+  blockGridStyle,
+  blockHeightColumnHeaderStyle,
+} from '../block-table.css';
+import {
+  rowLinkElementStyle,
+  rowTextElementStyle,
+  textStyle,
+} from './block-row.css';
 interface IBlockRowProps {
   blockRowData: IHeightBlock;
   heights: number[];
+  chainId: number;
 }
 
-const BlockRow: React.FC<IBlockRowProps> = ({ blockRowData, heights }) => {
+const BlockRow: React.FC<IBlockRowProps> = ({
+  blockRowData,
+  heights,
+  chainId,
+}) => {
+  const blockDifficulty =
+    blockRowData[heights[0]]?.difficulty ||
+    blockRowData[heights[1]]?.difficulty ||
+    blockRowData[heights[2]]?.difficulty ||
+    blockRowData[heights[3]]?.difficulty ||
+    'N/A';
+
   return (
     <>
-      <GridItem className={gridItemClass}>
-        {blockRowData[heights[0]]?}
-      </GridItem>
-      <GridItem className={gridItemClass}></GridItem>
-      <GridItem className={gridItemClass}>{chainId}</GridItem>
-      <GridItem className={gridItemClass}>{chainId}</GridItem>
+      <Grid columns={3} className={blockGridStyle}>
+        <Stack className={rowTextElementStyle}>
+          <Text className={textStyle}>{chainId}</Text>
+        </Stack>
+
+        <Stack className={rowTextElementStyle}>
+          <Text>{blockDifficulty}</Text>
+        </Stack>
+        <Stack>
+          {heights.map((height) =>
+            blockRowData[height] ? (
+              <Link className={rowLinkElementStyle}>
+                <Text className={blockHeightColumnHeaderStyle}>
+                  {blockRowData[height]?.txCount}
+                </Text>
+              </Link>
+            ) : (
+              <Stack className={rowTextElementStyle} width="100%">
+                <Text>N/A</Text>
+              </Stack>
+            ),
+          )}
+        </Stack>
+      </Grid>
     </>
   );
 };
