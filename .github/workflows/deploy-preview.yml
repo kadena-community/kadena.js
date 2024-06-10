@@ -7,6 +7,11 @@ on:
 
 jobs:
   deploy:
+
+    environment:
+      name: preview
+      url: ${{ steps.seturl.outputs.url }}
+    
     runs-on: ubuntu-latest
     steps:
      - uses: actions/checkout@v4
@@ -37,7 +42,7 @@ jobs:
         else
           echo "changed=true" >> $GITHUB_OUTPUT
         fi
-                
+
      - name: Install Vercel CLI
        if: steps.detectChanges.outputs.changed == 'true' 
        run: pnpm add --global vercel@34.2.5 
@@ -53,3 +58,9 @@ jobs:
      - name: Deploy Project Artifacts to Vercel
        if: steps.detectChanges.outputs.changed == 'true' 
        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --archive=tgz
+    
+     - id: seturl
+       name: Set preview url
+       run: echo "url=$(tail -1 deploy.log)">> $GITHUB_OUTPUT
+    
+     - run: echo "${{ steps.seturl.outputs.url }}"
