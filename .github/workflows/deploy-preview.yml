@@ -10,7 +10,7 @@ jobs:
 
     environment:
       name: preview
-      url: ${{ steps.deploy.outputs.url }}
+      url: ${{ steps.deployment.outputs.url }}
     
     runs-on: ubuntu-latest
     steps:
@@ -33,7 +33,7 @@ jobs:
         npx turbo-ignore @kadena/docs -f ${{ github.base_ref }}
         exit_code=$?
 
-        #Disable Error Handling
+        # Disable Error Handling
         set -e
 
         echo "exit_code: $exit_code"
@@ -53,9 +53,12 @@ jobs:
 
      - name: Build App for Vercel Deployment
        if: steps.detectChanges.outputs.changed == 'true' 
-       run: vercel build --token=${{ secrets.VERCEL_TOKEN }} --debug
+       run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
 
      - name: Deploy Project Artifacts to Vercel
-       id: deploy
        if: steps.detectChanges.outputs.changed == 'true' 
-       run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --archive=tgz >> $GITHUB_OUTPUT
+       run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --archive=tgz | tee tee deploy.log
+      
+     - name: Set preview url
+       id: deployment
+       run: echo "url=$(tail -1 deploy.log)">> $GITHUB_OUTPUT
