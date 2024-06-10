@@ -8,6 +8,8 @@ import type { IConfigService } from './config/config.service.js';
 import { ConfigService } from './config/config.service.js';
 export * from './config/config.types.js';
 
+import type { IPactJSService } from './pactjs/pactjs.service.js';
+import { PactJSService } from './pactjs/pactjs.service.js';
 import type { IPlainKeyService } from './plain-key/plainkey.service.js';
 import { PlainKeyService } from './plain-key/plainkey.service.js';
 import type { IWalletService } from './wallet/wallet.service.js';
@@ -22,6 +24,7 @@ export class Services {
   public config: IConfigService;
   public plainKey: IPlainKeyService;
   public wallet: IWalletService;
+  public pactjs: IPactJSService;
   public location?: string;
 
   public constructor(options?: IServiceOptions) {
@@ -29,6 +32,7 @@ export class Services {
     this.config = new ConfigService(this, options?.configDirectory);
     this.plainKey = new PlainKeyService(this);
     this.wallet = new WalletService(this);
+    this.pactjs = new PactJSService(this);
   }
 }
 
