@@ -181,3 +181,21 @@ export const ControlledTabsStory: Story = {
     );
   },
 };
+
+export const DynamicTabsStory: Story = {
+  name: 'Tabs with Dynamic Items',
+  args: {
+    ['aria-label']: 'dynamic tabs story',
+  },
+  render: (props) => {
+    return (
+      <Tabs {...props} aria-label={props['aria-label']} items={ExampleManyTabs}>
+        {(item) => (
+          <TabItem key={item.title} title={item.title}>
+            {item.content}
+          </TabItem>
+        )}
+      </Tabs>
+    );
+  },
+};
