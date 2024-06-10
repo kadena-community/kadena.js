@@ -60,5 +60,6 @@ jobs:
        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --archive=tgz | tee deploy.log
       
      - name: Set preview url
+       if: steps.detectChanges.outputs.changed == 'true' 
        id: deployment
        run: echo "url=$(tail -1 deploy.log)">> $GITHUB_OUTPUT
