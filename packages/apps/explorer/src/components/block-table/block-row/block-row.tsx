@@ -1,4 +1,5 @@
 import BlockActivityChart from '@/components/block-activity-graph/block-activity-graph';
+import routes from '@/constants/routes';
 import type { IHeightBlock } from '@/services/block';
 import { Grid, Link, Stack, Text } from '@kadena/react-ui';
 import React from 'react';
@@ -50,9 +51,10 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
             <Link
               key={`block-${chainId}-${height}`}
               className={rowLinkElementStyle}
+              href={`${routes.BLOCK_DETAILS}/${blockRowData[height].hash}`}
             >
               <Text className={blockHeightColumnHeaderStyle}>
-                {blockRowData[height]?.txCount}
+                {blockRowData[height].txCount}
               </Text>
             </Link>
           ) : (
@@ -71,7 +73,6 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
         <Stack className={rowChartElementStyle}>
           <BlockActivityChart
             data={heights.map((height) => blockRowData[height]?.txCount || 0)}
-            // data={[1, 2, 3, 4]}
           />
         </Stack>
       )}

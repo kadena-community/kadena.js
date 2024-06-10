@@ -1,7 +1,6 @@
 import type { IChainBlock } from '@/services/block';
 import { Stack } from '@kadena/react-ui';
 import React from 'react';
-import { Media } from '../layout/media';
 import BlockTableHeader from './block-header/block-header';
 import BlockRow from './block-row/block-row';
 
@@ -33,6 +32,7 @@ const BlockTable: React.FC<IBlockTableProps> = ({
       />
       {Object.keys(blockData).map((chainId) => (
         <BlockRow
+          key={chainId}
           blockRowData={blockData[Number(chainId)]}
           heights={heightColumns}
           chainId={Number(chainId)}
