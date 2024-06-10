@@ -11,11 +11,15 @@ import type { ISearchComponentProps } from '../search';
  *
  * */
 
-const SearchResults: FC<ISearchComponentProps> = ({ searchItems }) => {
-  console.log({ searchItems });
+const SearchResults: FC<ISearchComponentProps> = ({
+  searchItems,
+  ...props
+}) => {
+  console.log({ props });
   const data = useMemo(() => {
     return searchItems;
   }, [searchItems]);
+
   return (
     <section style={{ width: '100%' }}>
       {searchItems && (
