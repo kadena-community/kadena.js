@@ -5,6 +5,7 @@ import { FormatAccount } from '@/components/compact-table/utils/format-account';
 import { FormatAmount } from '@/components/compact-table/utils/format-amount';
 import { FormatLink } from '@/components/compact-table/utils/format-link';
 import { FormatStatus } from '@/components/compact-table/utils/format-status';
+import DetailLayout from '@/components/layout/detail-layout/detail-layout';
 import MaskedAccountName from '@/components/mask-accountname/mask-accountname';
 import { Heading, Stack, TabItem, Tabs } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
@@ -64,7 +65,7 @@ const Account: FC = () => {
   }, [fungibleAccount?.chainAccounts]);
 
   return (
-    <>
+    <DetailLayout>
       {loading && <div>Loading...</div>}
       {error && <div>Error: {error.message}</div>}
 
@@ -200,7 +201,7 @@ const Account: FC = () => {
           </Tabs>
         </Stack>
       </Stack>
-    </>
+    </DetailLayout>
   );
 };
 

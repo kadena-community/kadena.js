@@ -4,6 +4,7 @@ import CompactTable from '@/components/compact-table/compact-table';
 import { FormatLink } from '@/components/compact-table/utils/format-link';
 import { FormatStatus } from '@/components/compact-table/utils/format-status';
 import DataRenderComponent from '@/components/data-render-component/data-render-component';
+import SearchLayout from '@/components/layout/search-layout/search-layout';
 import { Badge, TabItem, Tabs } from '@kadena/react-ui';
 
 import { useRouter } from 'next/router';
@@ -36,7 +37,7 @@ const Block: React.FC = () => {
   });
 
   return (
-    <>
+    <SearchLayout>
       {loading && <div>Loading...</div>}
       {error && <div>Error: {error.message}</div>}
       {data && data.block && (
@@ -175,7 +176,7 @@ const Block: React.FC = () => {
           </TabItem>
         </Tabs>
       )}
-    </>
+    </SearchLayout>
   );
 };
 

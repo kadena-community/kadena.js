@@ -1,6 +1,6 @@
 import { truncateValues } from '@/services/format';
 import { MonoSearch } from '@kadena/react-icons/system';
-import { Badge, Box } from '@kadena/react-ui';
+import { Box } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
 import type { Dispatch, SetStateAction } from 'react';
 import React, { useState } from 'react';
@@ -23,7 +23,7 @@ export interface ISearchItem {
 }
 export interface ISearchComponentProps {
   searchItems: ISearchItem[];
-  setSearchQuery?: Dispatch<SetStateAction<string | undefined>>;
+  setSearchQuery?: Dispatch<SetStateAction<string>>;
   searchQuery?: string;
 }
 
