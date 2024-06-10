@@ -1,4 +1,4 @@
-import { block } from '@/graphql/queries/block.graph';
+import BlockActivityChart from '@/components/block-activity-graph/block-activity-graph';
 import { IHeightBlock } from '@/services/block';
 import { Grid, Link, Stack, Text } from '@kadena/react-ui';
 import React from 'react';
@@ -7,20 +7,23 @@ import {
   blockHeightColumnHeaderStyle,
 } from '../block-table.css';
 import {
+  rowChartElementStyle,
   rowLinkElementStyle,
   rowTextElementStyle,
   textStyle,
 } from './block-row.css';
-interface IBlockRowProps {
+interface IBlockTableRowProps {
   blockRowData: IHeightBlock;
   heights: number[];
   chainId: number;
+  compact?: boolean;
 }
 
-const BlockRow: React.FC<IBlockRowProps> = ({
+const BlockTableRow: React.FC<IBlockTableRowProps> = ({
   blockRowData,
   heights,
   chainId,
+  compact,
 }) => {
   const blockDifficulty =
     blockRowData[heights[0]]?.difficulty ||
@@ -30,33 +33,43 @@ const BlockRow: React.FC<IBlockRowProps> = ({
     'N/A';
 
   return (
-    <>
-      <Grid columns={3} className={blockGridStyle}>
-        <Stack className={rowTextElementStyle}>
-          <Text className={textStyle}>{chainId}</Text>
-        </Stack>
+    <Grid columns={3} className={blockGridStyle}>
+      <Stack className={rowTextElementStyle}>
+        <Text className={textStyle}>{chainId}</Text>
+      </Stack>
 
+      {!compact && (
         <Stack className={rowTextElementStyle}>
           <Text>{blockDifficulty}</Text>
         </Stack>
-        <Stack>
-          {heights.map((height) =>
-            blockRowData[height] ? (
-              <Link className={rowLinkElementStyle}>
-                <Text className={blockHeightColumnHeaderStyle}>
-                  {blockRowData[height]?.txCount}
-                </Text>
-              </Link>
-            ) : (
-              <Stack className={rowTextElementStyle} width="100%">
-                <Text>N/A</Text>
-              </Stack>
-            ),
-          )}
+      )}
+
+      <Stack>
+        {heights.map((height) =>
+          blockRowData[height] ? (
+            <Link className={rowLinkElementStyle}>
+              <Text className={blockHeightColumnHeaderStyle}>
+                {blockRowData[height]?.txCount}
+              </Text>
+            </Link>
+          ) : (
+            <Stack className={rowTextElementStyle} width="100%">
+              <Text>-</Text>
+            </Stack>
+          ),
+        )}
+      </Stack>
+
+      {!compact && (
+        <Stack className={rowChartElementStyle}>
+          <BlockActivityChart
+            data={heights.map((height) => blockRowData[height]?.txCount || 0)}
+            // data={[1, 2, 3, 4]}
+          />
         </Stack>
-      </Grid>
-    </>
+      )}
+    </Grid>
   );
 };
 
-export default BlockRow;
+export default BlockTableRow;

@@ -1,4 +1,4 @@
-import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/styles';
+import { responsiveStyle } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const blockHeightColumnHeaderStyle = style({
@@ -15,19 +15,7 @@ export const blockGridStyle = style([
     },
   }),
   {
-    rowGap: tokens.kda.foundation.spacing.md,
     outline: 'solid',
     outlineWidth: 'thin',
   },
 ]);
-
-export const spacingGridItem = style({
-  paddingTop: 'md',
-});
-
-// export const gridItemClass = style([
-//   atoms({
-//     borderStyle: 'solid',
-//     borderWidth: 'hairline',
-//   }),
-// ]);

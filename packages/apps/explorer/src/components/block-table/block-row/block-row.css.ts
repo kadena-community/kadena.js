@@ -14,6 +14,15 @@ export const rowLinkElementStyle = style([
 export const rowTextElementStyle = style([
   atoms({
     justifyContent: 'center',
+    alignItems: 'center',
     padding: 'sm',
+  }),
+]);
+
+export const rowChartElementStyle = style([
+  atoms({
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    paddingBlockStart: 'sm',
   }),
 ]);

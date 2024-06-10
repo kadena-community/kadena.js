@@ -1,13 +1,9 @@
-import { blockHeightColumnDescription } from '@/constants/block-table';
 import { IChainBlock } from '@/services/block';
-import { Grid, GridItem, Stack, Text } from '@kadena/react-ui';
+import { Stack } from '@kadena/react-ui';
 import React from 'react';
 import { Media } from '../layout/media';
+import BlockTableHeader from './block-header/block-header';
 import BlockRow from './block-row/block-row';
-import {
-  blockGridStyle,
-  blockHeightColumnHeaderStyle,
-} from './block-table.css';
 
 interface IBlockTableProps {
   headerColumns: Array<{ title: string; subtitle?: string }>;
@@ -24,73 +20,29 @@ const BlockTable: React.FC<IBlockTableProps> = ({
 }) => {
   return (
     <Stack display="flex" flexDirection={'column'} gap={'sm'} padding={'md'}>
-      <Grid columns={4} className={blockGridStyle}>
-        {headerColumns.map((column, index) => (
-          <Stack
-            key={index}
-            flexDirection={'column'}
-            alignItems={'center'}
-            justifyContent={'center'}
-            borderStyle="solid"
-            borderWidth="hairline"
-            padding={'sm'}
-          >
-            <Text variant="body" size="small">
-              {column.title}
-            </Text>
-            <Media greaterThanOrEqual="sm">
-              <Text variant="body" size="small" bold>
-                {column.subtitle}
-              </Text>
-            </Media>
-          </Stack>
-        ))}
-        <Stack borderStyle="solid" borderWidth="hairline">
-          {blockHeightColumns.map((height, index) => (
-            <Stack
-              key={index}
-              flexDirection={'column'}
-              alignItems={'center'}
-              padding={'sm'}
-              justifyContent={'center'}
-              className={blockHeightColumnHeaderStyle}
-            >
-              <Media greaterThanOrEqual="sm">
-                <Text variant="body" size="small">
-                  {blockHeightColumnDescription}
-                </Text>
-              </Media>
-
-              <Text variant="body" size="small" bold>
-                {height}
-              </Text>
-            </Stack>
-          ))}
-        </Stack>
-        {headerLastColumn && (
-          <Stack
-            flexDirection={'column'}
-            alignItems={'center'}
-            justifyContent={'center'}
-            borderStyle="solid"
-            borderWidth="hairline"
-            padding={'sm'}
-          >
-            <Text variant="body" size="small">
-              {headerLastColumn?.title}
-            </Text>
-            <Text variant="body" size="small" bold>
-              {headerLastColumn?.subtitle}
-            </Text>
-          </Stack>
-        )}
-      </Grid>
+      <BlockTableHeader
+        headerColumns={headerColumns}
+        blockHeightColumns={blockHeightColumns}
+        headerLastColumn={headerLastColumn}
+      />
       {Object.keys(blockData).map((chainId) => (
-        <BlockRow
-          blockRowData={blockData[Number(chainId)]}
-          heights={blockHeightColumns}
-          chainId={Number(chainId)}
-        />
+        <>
+          <Media lessThan="sm">
+            <BlockRow
+              blockRowData={blockData[Number(chainId)]}
+              heights={blockHeightColumns}
+              chainId={Number(chainId)}
+              compact
+            />
+          </Media>
+          <Media greaterThanOrEqual="sm">
+            <BlockRow
+              blockRowData={blockData[Number(chainId)]}
+              heights={blockHeightColumns}
+              chainId={Number(chainId)}
+            />
+          </Media>
+        </>
       ))}
     </Stack>
   );
