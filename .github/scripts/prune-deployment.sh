@@ -7,10 +7,10 @@ GET_DEPLOYMENTS_ENDPOINT="https://api.vercel.com/v6/deployments"
 DELETE_DEPLOYMENTS_ENDPOINT="https://api.vercel.com/v13/deployments"
 
 # Create a list of deployments.
-deployments=$(curl -s -X GET "$GET_DEPLOYMENTS_ENDPOINT/?projectId=$VERCEL_PROJECT_ID&teamId=$VERCEL_ORG_ID" -H "Authorization: Bearer $VERCEL_TOKEN ")
+deployments=$(curl -s -X GET "$GET_DEPLOYMENTS_ENDPOINT/?teamId=$VERCEL_ORG_ID" -H "Authorization: Bearer $VERCEL_TOKEN ")
 
-# Filter the deployments list by meta.base_hash === meta tag.
-filtered_deployments=$(echo $deployments | jq --arg META_TAG "$META_TAG" '[.deployments[] | select(.meta.pr_number | type == "string" and contains($META_TAG)) | .uid] | join(",")')
+# Filter the deployments list by meta.pr_data === meta tag.
+filtered_deployments=$(echo $deployments | jq --arg META_TAG "$META_TAG" '[.deployments[] | select(.meta.pr_data | type == "string" and contains($META_TAG)) | .uid] | join(",")')
 filtered_deployments="${filtered_deployments//\"/}" # Remove double quotes
 
 # Clears the values from filtered_deployments
