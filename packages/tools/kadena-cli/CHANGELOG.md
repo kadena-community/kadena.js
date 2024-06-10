@@ -1,5 +1,58 @@
 # @kadena/kadena-cli
 
+## 1.1.0
+
+### Minor Changes
+
+- e26cc1f21: Updated table generation and json output format to improve account
+  information display
+
+- e79c1800e: - Updated "tx send" command to include transaction logging
+  functionality. Transactions are now saved in a log file, capturing network
+  details, transaction ID, and status.
+
+  - Implemented the tx history command to display a formatted transaction
+    history. This command provides a user-friendly way to view detailed
+    transaction logs, including network host, network ID, chain ID, status, and
+    transaction ID.
+
+- e1c80f695: Rename config path command to config show command Config show
+  command to include all commands directory paths and counts of different
+  resources like wallets, accounts, networks etc.
+
+- 7e1eb308b: Add empty state warning message for network list command All empty
+  state log level to warning for consistency
+
+- 6b940f9ce: Fixed reducing the overall maximum fund amount to 20 and
+  dynamically split the max amount per chain when funding multiple chains.
+
+  Fixed sorting of chain ids in the log.
+
+- f385a62fb: Add warning log message when user selects "no" for deploying the
+  faucet.
+
+- 9a5d89c74: - Renamed `--type` option to `--from` in the `account add` command.
+  - Updated `--type=manual` to `--from=key` for specifying account addition via
+    key file or manual entry.
+  - Improved descriptions in account from selection prompts for better clarity
+    on available options.
+
+### Patch Changes
+
+- c9fe555df: Pin sensitive dependencies to specific versions
+- Updated dependencies \[1d1f1dcaf]
+- Updated dependencies \[c9fe555df]
+- Updated dependencies \[aa1aae60c]
+- Updated dependencies \[b916ea42b]
+- Updated dependencies \[381a766e8]
+- Updated dependencies \[4b8c2bc0e]
+  - @kadena/hd-wallet\@0.4.1
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/client-utils\@0.6.0
+  - @kadena/pactjs-cli\@1.11.2
+  - @kadena/client\@1.11.2
+  - @kadena/pactjs-generator\@1.11.2
+
 ## 1.0.0
 
 ### Major Changes
