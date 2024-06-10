@@ -10,6 +10,7 @@ import StatisticsComponent from '@/components/statistics-component/statistics-co
 import {
   headerColumnsDesktop,
   headerColumnsMobile,
+  lastColumnDesktop,
 } from '@/constants/block-table';
 import { getSearchData } from '@/constants/search';
 import type { IChainBlock } from '@/services/block';
@@ -98,6 +99,7 @@ const Home: React.FC = () => {
             blockHeightColumns={blockHeights}
             headerColumns={headerColumnsDesktop}
             blockData={blockData}
+            headerLastColumn={lastColumnDesktop}
           />
         </Media>
 

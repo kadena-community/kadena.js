@@ -1,23 +1,27 @@
-import type { NewBlocksSubscriptionResult } from '@/__generated__/sdk';
 import { blockHeightColumnDescription } from '@/constants/block-table';
-import { BlockData, IChainBlock } from '@/services/block';
+import { IChainBlock } from '@/services/block';
 import { Grid, GridItem, Stack, Text } from '@kadena/react-ui';
 import React from 'react';
 import { Media } from '../layout/media';
-import { blockGridStyle, gridItemClass } from './block-table.css';
+import BlockRow from './block-row/block-row';
+import {
+  blockGridStyle,
+  blockHeightColumnHeaderStyle,
+} from './block-table.css';
 
 interface IBlockTableProps {
   headerColumns: Array<{ title: string; subtitle?: string }>;
   blockHeightColumns: Array<number>;
   blockData: IChainBlock;
+  headerLastColumn?: { title: string; subtitle?: string };
 }
 
 const BlockTable: React.FC<IBlockTableProps> = ({
   headerColumns,
   blockHeightColumns,
   blockData,
+  headerLastColumn,
 }) => {
-  console.log(blockData);
   return (
     <Stack display="flex" flexDirection={'column'} gap={'sm'} padding={'md'}>
       <Grid columns={4} className={blockGridStyle}>
@@ -49,6 +53,7 @@ const BlockTable: React.FC<IBlockTableProps> = ({
               alignItems={'center'}
               padding={'sm'}
               justifyContent={'center'}
+              className={blockHeightColumnHeaderStyle}
             >
               <Media greaterThanOrEqual="sm">
                 <Text variant="body" size="small">
@@ -62,27 +67,31 @@ const BlockTable: React.FC<IBlockTableProps> = ({
             </Stack>
           ))}
         </Stack>
-
-        {Object.keys(blockData).map((chainId) => (
-          <>
-            <GridItem key={`${chainId}-number`} className={gridItemClass}>
-              {chainId}
-            </GridItem>
-            <GridItem key={`${chainId}-number1`} className={gridItemClass}>
-              {
-                (blockData[Number(chainId)][blockHeightColumns[0]] as BlockData)
-                  ?.difficulty
-              }
-            </GridItem>
-            <GridItem key={`${chainId}-number2`} className={gridItemClass}>
-              {chainId}
-            </GridItem>
-            <GridItem key={`${chainId}-number3`} className={gridItemClass}>
-              {chainId}
-            </GridItem>
-          </>
-        ))}
+        {headerLastColumn && (
+          <Stack
+            flexDirection={'column'}
+            alignItems={'center'}
+            justifyContent={'center'}
+            borderStyle="solid"
+            borderWidth="hairline"
+            padding={'sm'}
+          >
+            <Text variant="body" size="small">
+              {headerLastColumn?.title}
+            </Text>
+            <Text variant="body" size="small" bold>
+              {headerLastColumn?.subtitle}
+            </Text>
+          </Stack>
+        )}
       </Grid>
+      {Object.keys(blockData).map((chainId) => (
+        <BlockRow
+          blockRowData={blockData[Number(chainId)]}
+          heights={blockHeightColumns}
+          chainId={Number(chainId)}
+        />
+      ))}
     </Stack>
   );
 };

@@ -1,6 +1,12 @@
-import type { NewBlocksSubscriptionResult } from '@/__generated__/sdk';
+import type { Block, NewBlocksSubscriptionResult } from '@/__generated__/sdk';
 
-export type BlockData = Omit<NewBlocksSubscriptionResult['data'], '__typename'>;
+interface BlockData {
+  hash: string;
+  height: number;
+  chainId: number;
+  difficulty: string;
+  txCount: number;
+}
 
 export interface IHeightBlock {
   [height: number]: BlockData;
@@ -27,7 +33,10 @@ export function addBlockData(
       data[block.chainId] = {};
     }
 
-    data[block.chainId][block.height] = block;
+    data[block.chainId][block.height] = {
+      ...block,
+      txCount: block.transactions.totalCount,
+    };
   }
 
   return data;
