@@ -33,12 +33,7 @@ const StatusBar: FC<{ module: ModuleModel }> = ({ module }) => {
         className={chainBadgeStyles}
       >{`Chain ${module.chainId}`}</Badge>
       <Text size="smallest">#</Text>
-      <Badge
-        size="sm"
-        style="warning"
-        className={monospaceSmallestRegular}
-        // className={classNames(ellipsis, hashBadgeStyles)}
-      >
+      <Badge size="sm" style="warning" className={monospaceSmallestRegular}>
         {module.hash!}
       </Badge>
       <Badge size="sm" style="info">

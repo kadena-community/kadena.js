@@ -42,6 +42,7 @@ const Editor = ({
     'keyboard-handler',
     keyboards[0],
   );
+  // @TODO: This will be re-enabled again in the near future
   // const [theme, setTheme] = usePersistentState<Theme>('theme', 'monokai');
   const [mode] = usePersistentState<Mode>('mode', 'lisp');
   const [editingMode] = usePersistentState<EditingMode>(

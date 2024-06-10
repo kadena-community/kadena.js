@@ -42,7 +42,8 @@ const modulesToMap = (modules: ModuleModel[]): Map<string, ModuleModel[]> => {
   }, new Map());
 };
 
-const KEY_DELIMITER = '!_&_!';
+const KEY_DELIMITER = '!_&_!'; // A character sequence that is unlikely to appear in a module name.
+
 const moduleToTabId = (module: ModuleModel): string => {
   return [module.networkId, module.name, module.chainId].join(KEY_DELIMITER);
 };
@@ -66,7 +67,7 @@ const mapToTabs = (map: Map<string, ModuleModel[]>) => {
   });
 };
 
-const Tabsss: FC<ITabsProps> = ({
+const EditorTabs: FC<ITabsProps> = ({
   openedModules,
   activeModule,
   onModuleChange,
@@ -201,4 +202,4 @@ const Tabsss: FC<ITabsProps> = ({
   );
 };
 
-export default Tabsss;
+export default EditorTabs;
