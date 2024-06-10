@@ -93,14 +93,14 @@ export const iconClass = style({
     },
     // disabled
     [`${labelClass}[data-disabled="true"] ${boxClass}[data-selected="true"] &`]:
-    {
-      color: token('color.icon.base.@disabled'),
-    },
+      {
+        color: token('color.icon.base.@disabled'),
+      },
     // readonly
     [`${labelClass}[data-readonly="true"] ${boxClass}[data-selected="true"] &`]:
-    {
-      color: token('color.icon.base.default'),
-    },
+      {
+        color: token('color.icon.base.default'),
+      },
   },
 });
 
