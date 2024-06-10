@@ -28,12 +28,6 @@ jobs:
     name: ${{ inputs.app }}
     if: ${{ github.repository_owner == 'kadena-community' }} // Prevents auto deploying forks.
 
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - app: 'Docs'
-
     environment:
       name: ${{ inputs.app }} - Preview
       url: ${{ steps.deployment.outputs.url }}
