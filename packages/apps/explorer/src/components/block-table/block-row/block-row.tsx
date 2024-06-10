@@ -16,14 +16,14 @@ interface IBlockTableRowProps {
   blockRowData: IHeightBlock;
   heights: number[];
   chainId: number;
-  compact?: boolean;
+  isCompact?: boolean;
 }
 
 const BlockTableRow: React.FC<IBlockTableRowProps> = ({
   blockRowData,
   heights,
   chainId,
-  compact,
+  isCompact,
 }) => {
   const blockDifficulty =
     blockRowData[heights[0]]?.difficulty ||
@@ -38,7 +38,7 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
         <Text className={textStyle}>{chainId}</Text>
       </Stack>
 
-      {!compact && (
+      {!isCompact && (
         <Stack className={rowTextElementStyle}>
           <Text>{blockDifficulty}</Text>
         </Stack>
@@ -67,7 +67,7 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
         )}
       </Stack>
 
-      {!compact && (
+      {!isCompact && (
         <Stack className={rowChartElementStyle}>
           <BlockActivityChart
             data={heights.map((height) => blockRowData[height]?.txCount || 0)}

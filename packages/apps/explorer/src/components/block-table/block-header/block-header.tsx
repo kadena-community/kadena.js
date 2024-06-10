@@ -1,5 +1,4 @@
 import { Media } from '@/components/layout/media';
-import { blockHeightColumnDescription } from '@/constants/block-table';
 import { Grid, Stack, Text } from '@kadena/react-ui';
 import React from 'react';
 import {
@@ -8,40 +7,63 @@ import {
 } from '../block-table.css';
 
 interface IBlockTableHeaderProps {
-  headerColumns: Array<{ title: string; subtitle?: string }>;
-  blockHeightColumns: Array<number>;
-  headerLastColumn?: { title: string; subtitle?: string };
+  startColumns: Array<{ title: string; subtitle?: string }>;
+  heightColumns: Array<number>;
+  endColumn: { title: string; subtitle?: string };
+  isCompact?: boolean;
 }
 
+const blockHeightColumnDescription = 'Block Height';
+
 const BlockTableHeader: React.FC<IBlockTableHeaderProps> = ({
-  headerColumns,
-  blockHeightColumns,
-  headerLastColumn,
+  startColumns,
+  heightColumns,
+  endColumn,
+  isCompact,
 }) => {
   return (
     <Grid columns={4} className={blockGridStyle}>
-      {headerColumns.map((column, index) => (
+      {isCompact ? (
         <Stack
-          key={index}
+          key={0}
           flexDirection={'column'}
           alignItems={'center'}
           justifyContent={'center'}
           borderStyle="solid"
           borderWidth="hairline"
-          padding={'sm'}
+          padding={'md'}
         >
           <Text variant="body" size="small">
-            {column.title}
+            {startColumns[0].title}
           </Text>
-          <Media greaterThanOrEqual="sm">
-            <Text variant="body" size="small" bold>
-              {column.subtitle}
-            </Text>
-          </Media>
+          <Text variant="body" size="small" bold>
+            {startColumns[0].subtitle}
+          </Text>
         </Stack>
-      ))}
+      ) : (
+        startColumns.map((column, index) => (
+          <Stack
+            key={index}
+            flexDirection={'column'}
+            alignItems={'center'}
+            justifyContent={'center'}
+            borderStyle="solid"
+            borderWidth="hairline"
+            padding={'md'}
+          >
+            <Text variant="body" size="small">
+              {column.title}
+            </Text>
+            {isCompact ?? (
+              <Text variant="body" size="small" bold>
+                {column.subtitle}
+              </Text>
+            )}
+          </Stack>
+        ))
+      )}
       <Stack borderStyle="solid" borderWidth="hairline">
-        {blockHeightColumns.map((height, index) => (
+        {heightColumns.map((height, index) => (
           <Stack
             key={index}
             flexDirection={'column'}
@@ -62,7 +84,7 @@ const BlockTableHeader: React.FC<IBlockTableHeaderProps> = ({
           </Stack>
         ))}
       </Stack>
-      {headerLastColumn && (
+      {!isCompact && (
         <Stack
           flexDirection={'column'}
           alignItems={'center'}
@@ -72,10 +94,10 @@ const BlockTableHeader: React.FC<IBlockTableHeaderProps> = ({
           padding={'sm'}
         >
           <Text variant="body" size="small">
-            {headerLastColumn?.title}
+            {endColumn.title}
           </Text>
           <Text variant="body" size="small" bold>
-            {headerLastColumn?.subtitle}
+            {endColumn.subtitle}
           </Text>
         </Stack>
       )}

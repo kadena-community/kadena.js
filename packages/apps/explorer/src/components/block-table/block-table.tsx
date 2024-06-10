@@ -6,43 +6,38 @@ import BlockTableHeader from './block-header/block-header';
 import BlockRow from './block-row/block-row';
 
 interface IBlockTableProps {
-  headerColumns: Array<{ title: string; subtitle?: string }>;
-  blockHeightColumns: Array<number>;
+  heightColumns: Array<number>;
   blockData: IChainBlock;
-  headerLastColumn?: { title: string; subtitle?: string };
+  isCompact?: boolean;
 }
 
+export const startColumns = [
+  { title: 'Chain', subtitle: 'Number' },
+  { title: 'Chain', subtitle: 'Difficulty' },
+];
+
+const endColumn = { title: 'Block', subtitle: 'Activity' };
+
 const BlockTable: React.FC<IBlockTableProps> = ({
-  headerColumns,
-  blockHeightColumns,
+  heightColumns,
   blockData,
-  headerLastColumn,
+  isCompact,
 }) => {
   return (
-    <Stack display="flex" flexDirection={'column'} gap={'sm'} padding={'md'}>
+    <Stack display="flex" flexDirection={'column'} gap={'md'} padding={'md'}>
       <BlockTableHeader
-        headerColumns={headerColumns}
-        blockHeightColumns={blockHeightColumns}
-        headerLastColumn={headerLastColumn}
+        startColumns={startColumns}
+        heightColumns={heightColumns}
+        endColumn={endColumn}
+        isCompact={isCompact}
       />
       {Object.keys(blockData).map((chainId) => (
-        <>
-          <Media lessThan="sm">
-            <BlockRow
-              blockRowData={blockData[Number(chainId)]}
-              heights={blockHeightColumns}
-              chainId={Number(chainId)}
-              compact
-            />
-          </Media>
-          <Media greaterThanOrEqual="sm">
-            <BlockRow
-              blockRowData={blockData[Number(chainId)]}
-              heights={blockHeightColumns}
-              chainId={Number(chainId)}
-            />
-          </Media>
-        </>
+        <BlockRow
+          blockRowData={blockData[Number(chainId)]}
+          heights={heightColumns}
+          chainId={Number(chainId)}
+          isCompact={isCompact}
+        />
       ))}
     </Stack>
   );

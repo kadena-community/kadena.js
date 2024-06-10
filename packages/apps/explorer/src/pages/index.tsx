@@ -7,11 +7,6 @@ import BlockTable from '@/components/block-table/block-table';
 import { Media } from '@/components/layout/media';
 import SearchComponent from '@/components/search-component/search-component';
 import StatisticsComponent from '@/components/statistics-component/statistics-component';
-import {
-  headerColumnsDesktop,
-  headerColumnsMobile,
-  lastColumnDesktop,
-} from '@/constants/block-table';
 import { getSearchData } from '@/constants/search';
 import type { IChainBlock } from '@/services/block';
 import { addBlockData } from '@/services/block';
@@ -95,19 +90,14 @@ const Home: React.FC = () => {
       </Media>
       <Box display={'flex'} justifyContent={'center'}>
         <Media greaterThanOrEqual="sm">
-          <BlockTable
-            blockHeightColumns={blockHeights}
-            headerColumns={headerColumnsDesktop}
-            blockData={blockData}
-            headerLastColumn={lastColumnDesktop}
-          />
+          <BlockTable heightColumns={blockHeights} blockData={blockData} />
         </Media>
 
         <Media lessThan="sm">
           <BlockTable
-            blockHeightColumns={blockHeights}
-            headerColumns={headerColumnsMobile}
+            heightColumns={blockHeights}
             blockData={blockData}
+            isCompact
           />
         </Media>
       </Box>
