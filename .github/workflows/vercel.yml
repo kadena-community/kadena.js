@@ -2,7 +2,7 @@ name: Creating Preview environments
 on: 
     pull_request:
 jobs:
-  docs-preview:
+  create-preview-env:
     strategy:
       fail-fast: false
       matrix:
@@ -11,7 +11,7 @@ jobs:
               projectToken: VERCEL_DOCS_ID
             - app: 'Tools'
               projectToken: VERCEL_TOOLS_ID
-    name: Preview Deploymnt
+    name: Preview Deployment
     uses: ./.github/workflows/deploy-preview.yml
     with:
       app: ${{ matrix.app}}
