@@ -10,7 +10,7 @@ jobs:
 
     environment:
       name: preview
-      url: ${{ steps.seturl.outputs.url }}
+      url: ${{ steps.deploy.outputs.url }}
     
     runs-on: ubuntu-latest
     steps:
@@ -56,11 +56,6 @@ jobs:
        run: vercel build --token=${{ secrets.VERCEL_TOKEN }} --debug
 
      - name: Deploy Project Artifacts to Vercel
+       id: deploy
        if: steps.detectChanges.outputs.changed == 'true' 
-       run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --archive=tgz
-    
-     - id: seturl
-       name: Set preview url
-       run: echo "url=$(tail -1 deploy.log)">> $GITHUB_OUTPUT
-    
-     - run: echo "${{ steps.seturl.outputs.url }}"
+       run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --archive=tgz >> $GITHUB_OUTPUT
