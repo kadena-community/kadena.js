@@ -37,8 +37,8 @@ jobs:
           input: ${{ steps.extract_branch.outputs.branch }}
           method: MD5
 
-      - name: Call the delete-deployment-preview.sh script
+      - name: Prune preview deployments associated with merged PR
         env:
           META_TAG: ${{ steps.hash_branch.outputs.digest }}
         run: |
-          bash ./scripts/delete-deployment-preview.sh
+          bash .github/scripts/prune-deployment.sh
