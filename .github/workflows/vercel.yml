@@ -3,20 +3,19 @@ on:
     pull_request:
 jobs:
   docs-preview:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+            - app: 'Docs'
+              projectToken: VERCEL_DOCS_ID
+            - app: 'Tools'
+              projectToken: VERCEL_TOOLS_ID
     name: Preview Deploymnt
     uses: ./.github/workflows/deploy-preview.yml
     with:
       app: 'docs'
     secrets:
-        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_DOCS_ID }}
-        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-  tools-preview:
-    name: Preview Deploymnt
-    uses: ./.github/workflows/deploy-preview.yml
-    with:
-      app: 'docs'
-    secrets:
-        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_TOOLS_ID }}
+        VERCEL_PROJECT_ID: ${{ secrets[matrix.projectToken] }}
         VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
         VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
