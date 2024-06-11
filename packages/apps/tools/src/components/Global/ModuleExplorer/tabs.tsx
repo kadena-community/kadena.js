@@ -8,6 +8,7 @@ import type {
 } from '@kadena/chainweb-node-client';
 import type { ITabNode } from '@kadena/react-ui';
 import { Box, Stack, TabItem, Tabs, Text } from '@kadena/react-ui';
+import useTranslation from 'next-translate/useTranslation';
 import type { FC, Key } from 'react';
 import React, { useCallback, useMemo } from 'react';
 import {
@@ -74,6 +75,7 @@ const EditorTabs: FC<ITabsProps> = ({
   onModuleTabClose,
   onChainTabClose,
 }) => {
+  const { t } = useTranslation('common');
   const map = useMemo(() => modulesToMap(openedModules), [openedModules]);
 
   const tabs = useMemo(() => mapToTabs(map), [map]);
@@ -179,7 +181,7 @@ const EditorTabs: FC<ITabsProps> = ({
         className={secondLevelTabContainerStyles}
       >
         <Text className={tabsLabelStyles} size="smallest" bold>
-          Module on chain:
+          {t('module-on-chain')}
         </Text>
         <Tabs
           inverse

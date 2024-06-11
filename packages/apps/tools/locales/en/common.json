@@ -279,5 +279,6 @@
   "no-selected-module-body": "To display the contract, select one of the modules listed.",
   "namespace": "Namespace:",
   "module": "Module:",
-  "n/a": "N/A"
+  "n/a": "N/A",
+  "module-on-chain": "Module on chain:"
 }
