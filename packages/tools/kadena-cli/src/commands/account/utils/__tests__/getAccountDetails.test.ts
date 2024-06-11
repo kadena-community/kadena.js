@@ -1,17 +1,19 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { accountDetailsSuccessData } from '../../../../mocks/data/accountDetails.js';
-import { server, useHandler } from '../../../../mocks/server.js';
+import {
+  devNetConfigMock,
+  testNetworkConfigMock,
+} from '../../../../mocks/network.js';
+import { server, useMswHandler } from '../../../../mocks/server.js';
 import {
   getAccountDetails,
   getAccountDetailsFromChain,
 } from '../getAccountDetails.js';
-import { devNetConfigMock, testNetworkConfigMock } from './mocks.js';
 
 describe('getAccountDetailsFromChain', () => {
   beforeEach(() => {
-    useHandler({
-      networkId: devNetConfigMock.networkId,
-      networkUrl: devNetConfigMock.networkHost,
+    useMswHandler({
+      network: devNetConfigMock,
       response: accountDetailsSuccessData,
     });
   });
@@ -41,9 +43,8 @@ describe('getAccountDetailsFromChain', () => {
   });
 
   it('should throw an error when account details are undefined from chain', async () => {
-    useHandler({
-      networkId: devNetConfigMock.networkId,
-      networkUrl: devNetConfigMock.networkHost,
+    useMswHandler({
+      network: devNetConfigMock,
       response: {
         result: {
           data: undefined,
@@ -64,9 +65,8 @@ describe('getAccountDetailsFromChain', () => {
   });
 
   it('should throw an error when account is not available on chain', async () => {
-    useHandler({
-      networkId: devNetConfigMock.networkId,
-      networkUrl: devNetConfigMock.networkHost,
+    useMswHandler({
+      network: devNetConfigMock,
       response: { error: 'row not found' },
       chainId: '2',
       status: 404,
@@ -85,9 +85,8 @@ describe('getAccountDetailsFromChain', () => {
 
 describe('getAccountDetails', () => {
   beforeEach(() => {
-    useHandler({
-      networkId: devNetConfigMock.networkId,
-      networkUrl: devNetConfigMock.networkHost,
+    useMswHandler({
+      network: devNetConfigMock,
       response: accountDetailsSuccessData,
     });
   });
@@ -117,9 +116,8 @@ describe('getAccountDetails', () => {
   });
 
   it('should return undefined when account details throws an error with row not found', async () => {
-    useHandler({
-      networkId: testNetworkConfigMock.networkId,
-      networkUrl: testNetworkConfigMock.networkHost,
+    useMswHandler({
+      network: testNetworkConfigMock,
       response: { error: 'row not found' },
       chainId: '10',
       status: 404,
@@ -136,9 +134,8 @@ describe('getAccountDetails', () => {
   });
 
   it('should throw an error when account details throws an error', async () => {
-    useHandler({
-      networkId: devNetConfigMock.networkId,
-      networkUrl: devNetConfigMock.networkHost,
+    useMswHandler({
+      network: devNetConfigMock,
       response: { error: 'something went wrong' },
       status: 500,
     });

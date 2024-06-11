@@ -1,14 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { MAINNET_FUND_TRANSFER_ERROR_MESSAGE } from '../../../../constants/account.js';
-import { server, useHandler } from '../../../../mocks/server.js';
+import { testNetworkConfigMock } from '../../../../mocks/network.js';
+import { server, useMswHandler } from '../../../../mocks/server.js';
 import { createAndTransferFund } from '../createAndTransferFunds.js';
-import { testNetworkConfigMock } from './mocks.js';
 
 describe('createAndTransferFunds', () => {
   beforeEach(() => {
-    useHandler({
-      networkId: testNetworkConfigMock.networkId,
-      networkUrl: testNetworkConfigMock.networkHost,
+    useMswHandler({
+      network: testNetworkConfigMock,
       response: {
         result: {
           data: 'Write succeeded',
@@ -17,9 +16,8 @@ describe('createAndTransferFunds', () => {
       },
     });
 
-    useHandler({
-      networkId: testNetworkConfigMock.networkId,
-      networkUrl: testNetworkConfigMock.networkHost,
+    useMswHandler({
+      network: testNetworkConfigMock,
       endpoint: 'send',
       response: {
         requestKeys: ['requestKey-1'],
@@ -79,9 +77,8 @@ describe('createAndTransferFunds', () => {
   });
 
   it('should throw an error when any sort of error happens', async () => {
-    useHandler({
-      networkId: testNetworkConfigMock.networkId,
-      networkUrl: testNetworkConfigMock.networkHost,
+    useMswHandler({
+      network: testNetworkConfigMock,
       response: 'gas failure',
       status: 500,
       endpoint: 'send',
@@ -107,9 +104,8 @@ describe('createAndTransferFunds', () => {
   });
 
   it('should throw an error when status is failure', async () => {
-    useHandler({
-      networkId: testNetworkConfigMock.networkId,
-      networkUrl: testNetworkConfigMock.networkHost,
+    useMswHandler({
+      network: testNetworkConfigMock,
       response: {
         result: {
           error: {

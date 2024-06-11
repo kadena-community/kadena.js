@@ -1,11 +1,13 @@
+import type { RequestHandler } from 'msw';
 import { HttpResponse, http } from 'msw';
 import { setupServer } from 'msw/node';
+import type { INetworkCreateOptions } from '../commands/networks/utils/networkHelpers.js';
+import { testNetworkConfigMock } from './network.js';
 
 interface IHandlerOptions {
-  networkUrl?: string;
-  networkId?: string;
-  chainId?: string;
+  network?: INetworkCreateOptions;
   endpoint?: string;
+  chainId?: string;
   response: unknown;
   status?: number;
   method?: 'post' | 'get';
@@ -16,16 +18,14 @@ interface IDynamicHandlerOptions extends Omit<IHandlerOptions, 'response'> {
 }
 
 const createHandler = ({
-  networkUrl = 'https://api.testnet.chainweb.com',
+  network = testNetworkConfigMock,
+  endpoint = 'local',
   chainId = '1',
   status = 200,
-  endpoint = 'local',
   method = 'post',
-  networkId = 'testnet04',
   response,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-}: IHandlerOptions): any => {
-  const url = `${networkUrl}/chainweb/0.0/${networkId}/chain/${chainId}/pact/api/v1/${endpoint}`;
+}: IHandlerOptions): RequestHandler => {
+  const url = `${network.networkHost}/chainweb/0.0/${network.networkId}/chain/${chainId}/pact/api/v1/${endpoint}`;
   return http[method](url, async () => {
     if (
       typeof response === 'string' ||
@@ -40,15 +40,13 @@ const createHandler = ({
 };
 
 const createDynamicHandler = ({
-  networkUrl = 'https://api.testnet.chainweb.com',
+  network = testNetworkConfigMock,
   chainId = '1',
   endpoint = 'local',
   method = 'post',
-  networkId = 'testnet04',
   getResponse,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-}: IDynamicHandlerOptions): any => {
-  const url = `${networkUrl}/chainweb/0.0/${networkId}/chain/${chainId}/pact/api/v1/${endpoint}`;
+}: IDynamicHandlerOptions): RequestHandler => {
+  const url = `${network.networkHost}/chainweb/0.0/${network.networkId}/chain/${chainId}/pact/api/v1/${endpoint}`;
   return http[method](url, async ({ request }) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response = (await getResponse(request)) as any[];
@@ -58,12 +56,12 @@ const createDynamicHandler = ({
 
 const server = setupServer();
 
-const useHandler = (options: IHandlerOptions): void => {
+const useMswHandler = (options: IHandlerOptions): void => {
   const handler = createHandler(options);
   server.use(handler);
 };
 
-const useDynamicHandler = (options: IDynamicHandlerOptions): void => {
+const useMswDynamicHandler = (options: IDynamicHandlerOptions): void => {
   const handler = createDynamicHandler(options);
   server.use(handler);
 };
@@ -72,6 +70,6 @@ export {
   createDynamicHandler,
   createHandler,
   server,
-  useDynamicHandler,
-  useHandler,
+  useMswDynamicHandler,
+  useMswHandler,
 };

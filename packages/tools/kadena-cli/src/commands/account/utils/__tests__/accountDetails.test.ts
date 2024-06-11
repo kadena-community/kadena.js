@@ -2,15 +2,14 @@ import { assert, beforeEach, describe, expect, it } from 'vitest';
 
 import { afterEach } from 'node:test';
 import { accountDetailsSuccessData } from '../../../../mocks/data/accountDetails.js';
-import { server, useHandler } from '../../../../mocks/server.js';
+import { devNetConfigMock } from '../../../../mocks/network.js';
+import { server, useMswHandler } from '../../../../mocks/server.js';
 import { accountDetails } from '../../commands/accountDetails.js';
-import { devNetConfigMock } from './mocks.js';
 
 describe('accountDetails', () => {
   beforeEach(() => {
-    useHandler({
-      networkId: devNetConfigMock.networkId,
-      networkUrl: 'http://localhost:8080',
+    useMswHandler({
+      network: devNetConfigMock,
       response: accountDetailsSuccessData,
     });
   });
@@ -43,9 +42,8 @@ describe('accountDetails', () => {
   });
 
   it('should return error if account does not exist', async () => {
-    useHandler({
-      networkId: devNetConfigMock.networkId,
-      networkUrl: 'http://localhost:8080',
+    useMswHandler({
+      network: devNetConfigMock,
       response: {
         error: 'row not found',
       },

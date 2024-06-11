@@ -1,12 +1,12 @@
 import type { Mock } from 'vitest';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { accountDetailsSuccessData } from '../../../../mocks/data/accountDetails.js';
+import { testNetworkConfigMock } from '../../../../mocks/network.js';
 import { server } from '../../../../mocks/server.js';
 import { createAndTransferFund } from '../createAndTransferFunds.js';
 import { fund } from '../fund.js';
 import { getAccountDetails } from '../getAccountDetails.js';
 import { transferFund } from '../transferFund.js';
-import { testNetworkConfigMock } from './mocks.js';
 
 vi.mock('../getAccountDetails.js', () => ({
   getAccountDetails: vi.fn(),

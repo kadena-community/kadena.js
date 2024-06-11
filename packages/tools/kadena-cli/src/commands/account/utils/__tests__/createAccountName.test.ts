@@ -4,15 +4,15 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { createPrincipalSuccessData } from '../../../../mocks/data/accountDetails.js';
 import {
   server,
-  useDynamicHandler,
-  useHandler,
+  useMswDynamicHandler,
+  useMswHandler,
 } from '../../../../mocks/server.js';
 import { createAccountName } from '../createAccountName.js';
 import { defaultConfigMock } from './mocks.js';
 
 describe('createAccountName', () => {
   beforeEach(() => {
-    useDynamicHandler({
+    useMswDynamicHandler({
       getResponse: async (request) => {
         const data = (await request.json()) as { cmd: string };
         const parsedCMD = JSON.parse(data.cmd as string);
@@ -71,7 +71,7 @@ describe('createAccountName', () => {
   });
 
   it('should throw an error when createPrincipal method throws an error', async () => {
-    useHandler({
+    useMswHandler({
       response: null,
       status: 500,
     });

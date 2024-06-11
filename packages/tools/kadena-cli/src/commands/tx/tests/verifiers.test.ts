@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { useHandler } from '../../../mocks/server.js';
+import { useMswHandler } from '../../../mocks/server.js';
 import { assertCommandError } from '../../../utils/command.util.js';
 import { createAndWriteTransaction } from '../commands/txCreateTransaction.js';
 import { testTransactionAction } from '../commands/txTestSignedTransaction.js';
@@ -37,7 +37,7 @@ verifiers:
 
 describe('tx add', () => {
   beforeEach(() => {
-    useHandler({
+    useMswHandler({
       response: {
         result: {
           status: 'success',

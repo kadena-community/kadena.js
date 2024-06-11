@@ -7,10 +7,11 @@ import {
   accountDetailsSuccessData,
   pollTxResponseMock,
 } from '../../../mocks/data/accountDetails.js';
+import { devNetConfigMock } from '../../../mocks/network.js';
 import {
   server,
-  useDynamicHandler,
-  useHandler,
+  useMswDynamicHandler,
+  useMswHandler,
 } from '../../../mocks/server.js';
 import { mockPrompts, runCommand } from '../../../utils/test.util.js';
 import type { IAccountDetailsResult } from '../types.js';
@@ -30,7 +31,7 @@ describe('account fund', () => {
       'account add --from=key --account-alias=account-add-test-manual --account-name=accountName --fungible=coin --network=testnet --chain-id=1 --public-keys=publicKey1 --quiet',
     );
 
-    useHandler({
+    useMswHandler({
       response: {
         result: {
           data: 'Write succeeded',
@@ -38,20 +39,19 @@ describe('account fund', () => {
         },
       },
     });
-    useHandler({
+    useMswHandler({
       endpoint: 'poll',
       response: pollTxResponseMock,
     });
-    useHandler({
+    useMswHandler({
       endpoint: 'send',
       response: {
         requestKeys: ['requestKey-1', 'requestKey-2'],
       },
     });
 
-    useHandler({
-      networkUrl: 'http://localhost:8080',
-      networkId: 'development',
+    useMswHandler({
+      network: devNetConfigMock,
       endpoint: 'local',
       response: {
         result: {
@@ -61,16 +61,14 @@ describe('account fund', () => {
       },
     });
 
-    useHandler({
-      networkUrl: 'http://localhost:8080',
-      networkId: 'development',
+    useMswHandler({
+      network: devNetConfigMock,
       endpoint: 'poll',
       response: pollTxResponseMock,
     });
 
-    useHandler({
-      networkUrl: 'http://localhost:8080',
-      networkId: 'development',
+    useMswHandler({
+      network: devNetConfigMock,
       endpoint: 'send',
       response: {
         requestKeys: ['requestKey-1', 'requestKey-2'],
@@ -121,7 +119,7 @@ describe('account fund', () => {
         return Promise.resolve(undefined);
       },
     );
-    useDynamicHandler({
+    useMswDynamicHandler({
       method: 'post',
       getResponse: async (request) => {
         const data = (await request.json()) as { cmd: string };

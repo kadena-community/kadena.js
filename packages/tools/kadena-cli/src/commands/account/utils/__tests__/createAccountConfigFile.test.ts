@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 import { ACCOUNT_DIR, CWD_KADENA_DIR } from '../../../../constants/config.js';
 import { services } from '../../../../services/index.js';
-import { IAccountAliasFileConfig } from '../../types.js';
+import type { IAccountAliasFileConfig } from '../../types.js';
 import { createAccountConfigFile } from '../createAccountConfigFile.js';
 import { defaultConfigMock } from './mocks.js';
 

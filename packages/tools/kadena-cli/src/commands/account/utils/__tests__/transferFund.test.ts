@@ -1,14 +1,13 @@
 import { afterAll, afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { MAINNET_FUND_TRANSFER_ERROR_MESSAGE } from '../../../../constants/account.js';
-import { server, useHandler } from '../../../../mocks/server.js';
+import { devNetConfigMock } from '../../../../mocks/network.js';
+import { server, useMswHandler } from '../../../../mocks/server.js';
 import { transferFund } from '../transferFund.js';
-import { devNetConfigMock } from './mocks.js';
 
 describe('transferFund', () => {
   beforeEach(() => {
-    useHandler({
-      networkId: devNetConfigMock.networkId,
-      networkUrl: devNetConfigMock.networkHost,
+    useMswHandler({
+      network: devNetConfigMock,
       response: {
         result: {
           data: 'Write succeeded',
@@ -16,9 +15,8 @@ describe('transferFund', () => {
         },
       },
     });
-    useHandler({
-      networkId: devNetConfigMock.networkId,
-      networkUrl: devNetConfigMock.networkHost,
+    useMswHandler({
+      network: devNetConfigMock,
       endpoint: 'send',
       response: {
         requestKeys: ['requestKey-1', 'requestKey-2'],
@@ -73,9 +71,8 @@ describe('transferFund', () => {
   });
 
   it('should throw an error when local api transaction failure', async () => {
-    useHandler({
-      networkId: devNetConfigMock.networkId,
-      networkUrl: devNetConfigMock.networkHost,
+    useMswHandler({
+      network: devNetConfigMock,
       endpoint: 'local',
       response: {
         result: {
@@ -101,9 +98,8 @@ describe('transferFund', () => {
   });
 
   it('should throw an error when any sort of error happens', async () => {
-    useHandler({
-      networkId: devNetConfigMock.networkId,
-      networkUrl: devNetConfigMock.networkHost,
+    useMswHandler({
+      network: devNetConfigMock,
       endpoint: 'send',
       response: 'Something went wrong',
       status: 500,
