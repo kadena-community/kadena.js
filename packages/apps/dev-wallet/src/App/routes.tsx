@@ -46,7 +46,7 @@ export const Routes: FC = () => {
       <Route element={<LayoutMini />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/select-profile" element={<SelectProfile />} />
-        <Route path="/create-profile" element={<CreateProfile />} />
+        <Route path="/create-profile/*" element={<CreateProfile />} />
         <Route path="/unlock-profile/:profileId" element={<UnlockProfile />} />
         <Route path="/import-wallet" element={<ImportWallet />} />
         <Route element={<ProtectedRoute isAllowed={isUnlocked} />}>

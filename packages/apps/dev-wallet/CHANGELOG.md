@@ -1,5 +1,37 @@
 # @kadena/dev-wallet
 
+## 0.1.1
+
+### Patch Changes
+
+- c9fe555df: Pin sensitive dependencies to specific versions
+- Updated dependencies \[020be02d7]
+- Updated dependencies \[9d7545ae0]
+- Updated dependencies \[f045afe82]
+- Updated dependencies \[dac1b28ca]
+- Updated dependencies \[1d1f1dcaf]
+- Updated dependencies \[3805b414e]
+- Updated dependencies \[c9fe555df]
+- Updated dependencies \[8e2a29721]
+- Updated dependencies \[cfb7c5bab]
+- Updated dependencies \[aa1aae60c]
+- Updated dependencies \[864329d3e]
+- Updated dependencies \[076f0980f]
+- Updated dependencies \[9cb50ea42]
+- Updated dependencies \[b916ea42b]
+- Updated dependencies \[49fb38853]
+- Updated dependencies \[a415d7995]
+- Updated dependencies \[07ec9691c]
+- Updated dependencies \[381a766e8]
+- Updated dependencies \[4b8c2bc0e]
+- Updated dependencies \[b0b05ca86]
+  - @kadena/react-ui\@0.10.0
+  - @kadena/hd-wallet\@0.4.1
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/client-utils\@0.6.0
+  - @kadena/client\@1.11.2
+  - @kadena/pactjs-generator\@1.11.2
+
 ## 0.1.0
 
 ### Minor Changes

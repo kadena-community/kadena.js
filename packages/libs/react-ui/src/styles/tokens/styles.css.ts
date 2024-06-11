@@ -299,6 +299,94 @@ export const typographyFontH6 = style({
 });
 
 /**
+ * Input Element Code @xs Description
+ */
+export const inputMonospaceBaseRegular = style({
+  fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.xs,
+  fontWeight: tokens.kda.foundation.typography.weight.monospaceFont.regular,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.md,
+  letterSpacing: tokens.kda.foundation.spacing.n0,
+  '@media': {
+    '(width >= 40rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.sm,
+      lineHeight: '1.125rem',
+    },
+    '(width >= 48rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+  },
+});
+
+/**
+ * Input Element Code @xs Description
+ */
+export const inputMonospaceMobileRegular = style({
+  fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.base,
+  fontWeight: tokens.kda.foundation.typography.weight.monospaceFont.regular,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+  letterSpacing: tokens.kda.foundation.spacing.n0,
+});
+
+/**
+ * Input Element @xs Description
+ */
+export const inputUiBaseRegular = style({
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.xs,
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.regular,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.md,
+  letterSpacing: tokens.kda.foundation.spacing.n0,
+  '@media': {
+    '(width >= 40rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.sm,
+      lineHeight: '1.375rem',
+    },
+    '(width >= 48rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+  },
+});
+
+/**
+ * Input Element @xs Description
+ */
+export const inputUiMobileRegular = style({
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.base,
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.regular,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+  letterSpacing: tokens.kda.foundation.spacing.n0,
+});
+
+/**
  * Small P @xs Description
  */
 export const bodySmallRegular = style({

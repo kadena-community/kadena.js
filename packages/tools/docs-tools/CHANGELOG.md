@@ -1,5 +1,11 @@
 # @kadena/docs-tools
 
+## 0.2.2
+
+### Patch Changes
+
+- b45db66d4: Inline code styling fix according to the badge designs
+
 ## 0.2.1
 
 ### Patch Changes
