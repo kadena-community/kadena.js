@@ -12,6 +12,16 @@ export default mergeConfig(
       globalSetup: './vitest-globals.ts',
       setupFiles: ['vitest.setup.ts'],
       environment: 'jsdom',
+      coverage: {
+        provider: 'v8',
+        thresholds: {
+          lines: 1,
+          functions: 3,
+          branches: 3,
+          statements: 1,
+          autoUpdate: false
+        },
+      },
     },
     resolve: {
       alias: {
