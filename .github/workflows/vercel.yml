@@ -11,6 +11,8 @@ jobs:
               projectToken: VERCEL_DOCS_ID
             - app: 'Tools'
               projectToken: VERCEL_TOOLS_ID
+            - app: 'dev-wallet'
+              projectToken: VERCEL_DEV_WALLET_ID
     name: Preview Deployment
     uses: ./.github/workflows/deploy-preview.yml
     with:

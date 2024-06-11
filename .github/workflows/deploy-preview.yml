@@ -50,7 +50,7 @@ jobs:
         # Enable Error Handling
         set +e
 
-        npx turbo-ignore @kadena/${{ inputs.app }} -f ${{ github.base_ref }}
+        npx turbo-ignore @kadena/${{ inputs.app }} -f origin/main
         exit_code=$?
 
         # Disable Error Handling
