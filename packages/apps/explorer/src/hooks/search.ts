@@ -143,7 +143,6 @@ export const useSearch = () => {
   const searchData: ISearchItem[] = [
     { title: 'Account', data: accountData },
     { title: 'Request Key', data: requestKeyData },
-    { title: 'Block Height' },
     { title: 'Block Hash', data: blockData },
     { title: 'Events', data: eventData },
   ];
