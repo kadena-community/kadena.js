@@ -13,11 +13,14 @@ const debug: Debugger = _debug('@kadena/client:signing:addSignature');
  */
 export const addSignatures: (
   transaction: IUnsignedCommand,
-  ...signatures: { sig: string; pubKey?: string }[]
+  ...signatures: { sig: string; pubKey: string }[] | { sig: string }[]
 ) => IUnsignedCommand | ICommand = (transaction, ...signatures) => {
-  debug(`Adding signatures to transaction
-  transaction: ${JSON.stringify(transaction)}
-  signatures: ${JSON.stringify(signatures)}`);
+  debug(
+    () =>
+      `Adding signatures to transaction\n` +
+      `transaction: ${JSON.stringify(transaction)}\n` +
+      `signatures: ${JSON.stringify(signatures)}`,
+  );
 
   const { cmd, hash, sigs } = transaction;
   const parsedTransaction = parseTransactionCommand(transaction);

@@ -222,4 +222,76 @@ describe('quicksignWithWalletConnect', () => {
       'Hash of the transaction signed by the wallet does not match. Our hash',
     );
   });
+
+  it('prefix networkId with kadena: if its not presented', async () => {
+    const client = {
+      request: vi.fn(() =>
+        Promise.resolve({
+          responses: [
+            {
+              outcome: {
+                result: 'success',
+                hash: 'test-hash',
+              },
+              commandSigData: {
+                cmd: 'test-cmd',
+                sigs: [
+                  {
+                    caps: [
+                      {
+                        args: ['test-cap-arg'],
+                        name: 'test-cap-name',
+                      },
+                    ],
+                    pubKey: 'test-pub-key',
+                    sig: 'test-sig',
+                  },
+                ],
+              },
+            },
+          ],
+          catch: vi.fn(),
+        }),
+      ),
+    };
+
+    quicksignWithWalletConnect = createWalletConnectQuicksign(
+      client as unknown as Client,
+      session,
+      'testnet04',
+    );
+
+    const unsignedTransaction = createTransaction(transaction);
+    unsignedTransaction.hash = 'test-hash';
+    const result = await quicksignWithWalletConnect(unsignedTransaction);
+
+    expect(client.request).toHaveBeenCalledWith({
+      topic: session.topic,
+      chainId: 'kadena:testnet04',
+      request: {
+        id: 1,
+        jsonrpc: '2.0',
+        method: 'kadena_quicksign_v1',
+        params: {
+          commandSigDatas: [
+            {
+              cmd: '{"payload":{"exec":{"code":"(coin.transfer \\"bonnie\\" \\"clyde\\" 1)","data":{"test-data":"test-data"}}},"meta":{"chainId":"1","gasLimit":10000,"gasPrice":1e-8,"sender":"test-sender","ttl":180,"creationTime":1234},"signers":[{"clist":[{"name":"test-cap-name","args":["test-cap-arg"]}],"pubKey":"test-pub-key"}],"networkId":"testnet-id","nonce":""}',
+              sigs: [
+                {
+                  pubKey: 'test-pub-key',
+                  sig: null,
+                },
+              ],
+            },
+          ],
+        },
+      },
+    });
+
+    expect(result).toEqual({
+      cmd: '{"payload":{"exec":{"code":"(coin.transfer \\"bonnie\\" \\"clyde\\" 1)","data":{"test-data":"test-data"}}},"meta":{"chainId":"1","gasLimit":10000,"gasPrice":1e-8,"sender":"test-sender","ttl":180,"creationTime":1234},"signers":[{"clist":[{"name":"test-cap-name","args":["test-cap-arg"]}],"pubKey":"test-pub-key"}],"networkId":"testnet-id","nonce":""}',
+      hash: 'test-hash',
+      sigs: [{ sig: 'test-sig' }],
+    });
+  });
 });
