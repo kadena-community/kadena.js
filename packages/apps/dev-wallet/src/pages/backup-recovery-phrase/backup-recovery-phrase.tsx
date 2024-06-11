@@ -10,13 +10,15 @@ import {
   Dialog
 } from '@kadena/react-ui';
 import { useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { warningDialog } from './styles.css.ts';
 
 export function BackupRecoveryPhrase() {
   const { keySourceId } = useParams();
   const navigate = useNavigate();
 
   const [modalOpen, setModalOpen] = useState(false);
+  const location = useLocation();
   const acceptWarning = (): void => {
     setModalOpen(false);
     navigate(`/backup-recovery-phrase/${keySourceId}/write-down`);
@@ -24,7 +26,7 @@ export function BackupRecoveryPhrase() {
 
   return (
     <>
-      <AuthCard backButtonLink="/create-profile">
+      <AuthCard>
         <Heading variant="h5">Save your recovery key</Heading>
         <Text>
           Secure your assets by writing down or exporting 
@@ -62,12 +64,10 @@ export function BackupRecoveryPhrase() {
         onOpenChange={() => setModalOpen(false)}
         isOpen={modalOpen}
         size="sm"
-        className="dialog-warning"
+        className={warningDialog}
       >
         <Notification
           intent="warning"
-          // isDismissable
-          // onDismiss={() => {}}
           role="alert"
           type="inlineStacked"
         >
@@ -82,6 +82,7 @@ export function BackupRecoveryPhrase() {
           <NotificationFooter>
             <Button
               variant="warning"
+              className="acceptWarningButton"
               onPress={() => acceptWarning()}
             >
               Understood

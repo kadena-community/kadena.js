@@ -55,7 +55,6 @@ export function CreateProfile() {
     password: string;
     accentColor?: string;
   }) {
-    console.log(password, profileName, accentColor);
     if (!activeNetwork) {
       return;
     }
@@ -148,7 +147,7 @@ export function CreateProfile() {
                     {!isShortFlow && (
                       <Button
                         type="button"
-                        onClick={() => navigate('personalize-profile')}
+                        onPress={() => navigate('personalize-profile')}
                         isDisabled={Boolean(
                           errors.confirmation?.message ||
                             errors.password?.message ||

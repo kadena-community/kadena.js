@@ -60,13 +60,12 @@ export function WriteDownRecoveryPhrase() {
   }
   return (
     <>
-      <AuthCard backButtonLink="/backup-recovery-phrase">
+      <AuthCard>
         <Heading variant="h5">Write down your phrase</Heading>
         <Text>
           Secure your assets by writing down or exporting your recovery phrase. 
           Otherwise you will lose your assets if this wallet is deleted.
         </Text>
-        {/* todo: check if password needed */}
         <form onSubmit={handleSubmit(decryptMnemonic)}>
           <label htmlFor="password">Password</label>
           <TextField id="password" type="password" {...register('password')} />
