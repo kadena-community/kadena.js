@@ -30,6 +30,7 @@ interface IImportReadMeItemOptions {
 export interface IImportReadMeItem {
   file: string;
   repo: string;
+  repoBranch?: string;
   dir?: string;
   destination: string;
   title: string;

@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import type { IImportReadMeItem } from '../utils';
 import { TEMP_DIR } from '../utils/build';
 import { DOCS_ROOT, createDir, importDocs } from './createDoc';
-import { clone, removeRepoDomain } from './index';
+import { checkoutClone, clone, removeRepoDomain } from './index';
 
 /**
  * Removes the tempdir.
@@ -31,6 +31,8 @@ export const noImportRepo = async (
   You are doing a quick import. This does not import external Repo READMEs.  
   But creates this temporary empty files.
 
+  branch: ${page.repoBranch ?? 'main'}
+
   :::warning Warning  
   This is NOT the actual content that will go to production.
   To have this content, please run
@@ -54,6 +56,7 @@ export const noImportRepo = async (
 
 export const importRepo = async (item: IImportReadMeItem): Promise<void> => {
   await clone(item.repo);
+  await checkoutClone(item);
   await importDocs(
     `${TEMP_DIR}${removeRepoDomain(item.repo)}${item.file}`,
     item,
