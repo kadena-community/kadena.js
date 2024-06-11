@@ -24,14 +24,10 @@ env:
   
 
 jobs:
-  deploy:
+  shouldDeploy:
     name: ${{ inputs.app }}
     if: ${{ github.repository_owner == 'kadena-community' }} // Prevents auto deploying forks.
-
-    environment:
-      name: ${{ inputs.app }} - Preview
-      url: ${{ steps.deployment.outputs.url }}
-    
+  
     runs-on: ubuntu-latest
     steps:
      - uses: actions/checkout@v4
@@ -62,7 +58,26 @@ jobs:
         else
           echo "changed=true" >> $GITHUB_OUTPUT
         fi
+    outputs:
+      changed: ${{ steps.detectChanges.outputs.changed }} 
+  deploy:
+    name: ${{ inputs.app }}
+    needs: shouldDeploy
+    if: ${{ needs.shouldDeploy.outputs.changed == 'true' }}
+    environment:
+      name: ${{ inputs.app }} - Preview
+      url: ${{ steps.deployment.outputs.url }}
+    
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@v4
+       with:
+          fetch-depth: 0
+          show-progress: false
 
+     - name: Runner Setup  
+       uses: ./.github/actions/runner-setup
+    
      - name: Install Vercel CLI
        if: steps.detectChanges.outputs.changed == 'true' 
        run: pnpm add --global vercel@34.2.5 
