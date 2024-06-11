@@ -5,6 +5,7 @@ import {
   useTransactionRequestKeyQuery,
 } from '@/__generated__/sdk';
 import type { ISearchItem } from '@/components/search/search';
+import { SearchOptionEnum } from '@/components/search/search';
 import type { ApolloError } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -13,11 +14,31 @@ const checkLoading = (...attrs: boolean[]): boolean => {
   return attrs.find((v: boolean) => v === false) ?? false;
 };
 
+const isSearchRequested = (
+  searchOption: SearchOptionEnum | null,
+  requestedSearchOption: SearchOptionEnum,
+): boolean => requestedSearchOption === searchOption;
+
+const returnSearchQuery = (
+  searchQuery: string,
+  searchOption: SearchOptionEnum | null,
+  requestedSearchOption: SearchOptionEnum,
+): string => {
+  if (isSearchRequested(searchOption, requestedSearchOption))
+    return searchQuery ?? '';
+  console.log(requestedSearchOption, searchOption);
+
+  return '';
+};
+
 export const useSearch = () => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<ApolloError[]>([]);
+  const [searchOption, setSearchOption] = useState<SearchOptionEnum | null>(
+    null,
+  );
 
   const {
     loading: accountLoading,
@@ -25,9 +46,15 @@ export const useSearch = () => {
     error: accountError,
   } = useCoreAccountQuery({
     variables: {
-      accountName: searchQuery ?? '',
+      accountName: returnSearchQuery(
+        searchQuery,
+        searchOption,
+        SearchOptionEnum.ACCOUNT,
+      ),
     },
-    skip: !searchQuery,
+    skip:
+      !searchQuery ||
+      !isSearchRequested(searchOption, SearchOptionEnum.ACCOUNT),
   });
 
   const {
@@ -36,9 +63,15 @@ export const useSearch = () => {
     error: blockError,
   } = useBlockQuery({
     variables: {
-      hash: searchQuery ?? '',
+      hash: returnSearchQuery(
+        searchQuery,
+        searchOption,
+        SearchOptionEnum.BLOCKHEIGHT,
+      ),
     },
-    skip: !searchQuery,
+    skip:
+      !searchQuery ||
+      !isSearchRequested(searchOption, SearchOptionEnum.BLOCKHEIGHT),
   });
 
   const {
@@ -47,9 +80,14 @@ export const useSearch = () => {
     error: eventError,
   } = useEventsQuery({
     variables: {
-      qualifiedName: searchQuery ?? '',
+      qualifiedName: returnSearchQuery(
+        searchQuery,
+        searchOption,
+        SearchOptionEnum.EVENT,
+      ),
     },
-    skip: !searchQuery,
+    skip:
+      !searchQuery || !isSearchRequested(searchOption, SearchOptionEnum.EVENT),
   });
   const {
     loading: requestKeyLoading,
@@ -57,9 +95,15 @@ export const useSearch = () => {
     error: requestKeyError,
   } = useTransactionRequestKeyQuery({
     variables: {
-      requestKey: searchQuery ?? '',
+      requestKey: returnSearchQuery(
+        searchQuery,
+        searchOption,
+        SearchOptionEnum.REQUESTKEY,
+      ),
     },
-    skip: !searchQuery,
+    skip:
+      !searchQuery ||
+      !isSearchRequested(searchOption, SearchOptionEnum.REQUESTKEY),
   });
 
   useEffect(() => {
@@ -104,6 +148,8 @@ export const useSearch = () => {
     { title: 'Events', data: eventData },
   ];
   return {
+    searchOption,
+    setSearchOption,
     setSearchQuery,
     data: searchData,
     searchQuery,

@@ -12,6 +12,8 @@ const Home: React.FC = () => {
   const {
     setSearchQuery,
     searchQuery,
+    searchOption,
+    setSearchOption,
     data: searchData,
     loading,
     errors,
@@ -27,6 +29,8 @@ const Home: React.FC = () => {
         >
           <LogoKdacolorLight />
           <SearchBox
+            searchOption={searchOption}
+            setSearchOption={setSearchOption}
             searchData={searchData}
             setSearchQuery={setSearchQuery}
             searchQuery={searchQuery}

@@ -17,36 +17,35 @@ export type SearchItemTitle =
   | 'Block Hash'
   | 'Events';
 
+export enum SearchOptionEnum {
+  ACCOUNT,
+  REQUESTKEY,
+  BLOCKHEIGHT,
+  EVENT,
+}
 export interface ISearchItem {
   title: SearchItemTitle;
-  disabled?: boolean;
   data?: any;
 }
 export interface ISearchComponentProps {
   searchData: ISearchItem[];
   setSearchQuery?: Dispatch<SetStateAction<string>>;
   searchQuery?: string;
+  searchOption: number;
+  setSearchOption: Dispatch<SetStateAction<SearchOptionEnum | null>>;
 }
 
 const SearchCombobox: React.FC<ISearchComponentProps> = ({
   searchData,
   setSearchQuery,
   searchQuery,
+  searchOption,
+  setSearchOption,
 }) => {
-  console.log({ searchQuery });
   const [isEditing, setIsEditing] = useState(false);
-  const [searchOption, setSearchOption] = useState<number | null>(null);
   const [searchValue, setSearchValue] = useState<string>('');
   const [optionClicked, setOptionClicked] = useState(false);
   const [escapePressed, setEscapePressed] = useState(false);
-
-  const setOptionsDisabledExcept = (exceptIndex: number): void => {
-    searchData.forEach((item, index) => {
-      if (index !== exceptIndex) {
-        item.disabled = true;
-      }
-    });
-  };
 
   const inferOption = (value: string): SearchItemTitle | undefined => {
     if (
@@ -65,12 +64,6 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
     return undefined;
   };
 
-  const enableAllOptions = (): void => {
-    searchData.forEach((item) => {
-      item.disabled = false;
-    });
-  };
-
   const handleSearch = (value: string, option: number | null): void => {
     if (setSearchQuery) setSearchQuery(value);
   };
@@ -84,22 +77,18 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
 
     const inferedOption = inferOption(e.target.value);
     if (inferedOption === 'Account') {
-      setSearchOption(0);
-      setOptionsDisabledExcept(0);
+      setSearchOption(SearchOptionEnum.ACCOUNT);
     }
     if (inferedOption === 'Request Key') {
-      setSearchOption(1);
-      setOptionsDisabledExcept(1);
+      setSearchOption(SearchOptionEnum.REQUESTKEY);
     }
 
     if (inferedOption === 'Block Height') {
-      setSearchOption(2);
-      setOptionsDisabledExcept(2);
+      setSearchOption(SearchOptionEnum.BLOCKHEIGHT);
     }
 
     if (!inferedOption || inferedOption === undefined) {
       setSearchOption(null);
-      enableAllOptions();
     }
   };
 
@@ -124,7 +113,10 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
       setOptionClicked(false);
       setSearchOption(null);
       setEscapePressed(true);
-      enableAllOptions();
+      setIsEditing(false);
+    } else {
+      setEscapePressed(false);
+      setOptionClicked(false);
     }
   };
 
@@ -193,10 +185,8 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
                 key={index}
                 onMouseDown={() => setOptionClicked(true)}
                 onClick={() => {
-                  if (!item.disabled) {
-                    setSearchOption(index);
-                    setIsEditing(false);
-                  }
+                  setSearchOption(index);
+                  setIsEditing(false);
                 }}
                 style={{
                   gridTemplateColumns: '1fr 3fr',
@@ -206,7 +196,7 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
                   display: 'grid',
                   alignItems: 'flex-start',
                   paddingInlineStart: 'md',
-                  cursor: item.disabled ? 'not-allowed' : 'pointer',
+                  cursor: 'pointer',
                   backgroundColor:
                     index === searchOption ? 'base.@active' : 'base.default',
                   width: '100%',
