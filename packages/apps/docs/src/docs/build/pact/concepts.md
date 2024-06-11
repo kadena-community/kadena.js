@@ -160,7 +160,7 @@ Any types declared in code are enforced at runtime. For table schemas, this mean
 
 ### Static Type Inference on Modules
 
-With the [typecheck](/reference/functions/repl-only-functions#typecheckh522701326) repl command, the Pact interpreter will analyze a module and attempt to infer types on every variable, function application or const definition. Using this in project repl scripts is helpful to aid the developer in adding "just enough types" to make the typecheck succeed. Successful typechecking is usually a matter of providing schemas for all tables, and argument types for ancillary functions that call ambiguous or overloaded native functions.
+With the [typecheck](/reference/functions/repl-only-functions) repl command, the Pact interpreter will analyze a module and attempt to infer types on every variable, function application or const definition. Using this in project repl scripts is helpful to aid the developer in adding "just enough types" to make the typecheck succeed. Successful typechecking is usually a matter of providing schemas for all tables, and argument types for ancillary functions that call ambiguous or overloaded native functions.
 
 ### Formal Verification
 
@@ -205,7 +205,7 @@ A keyset predicate references a function by its (optionally qualified) name, and
 
 Support for multiple signatures is the responsibility of the blockchain layer, and is a powerful feature for Bitcoin-style "multisig" contracts (i.e. requiring at least two signatures to release funds).
 
-Pact comes with built-in keyset predicates: [keys-all](/reference/functions/keysets#keys-allh517472840), [keys-any](/reference/functions/keysets#keys-anyh517472915), [keys-2](/reference/functions/keysets#keys-2h-1134655847). Module authors are free to define additional predicates.
+Pact comes with built-in keyset predicates: [keys-all](/reference/functions/keysets#keys-allh517472840), [keys-any](/reference/functions/keysets), [keys-2](/reference/functions/keysets#keys-2h-1134655847). Module authors are free to define additional predicates.
 
 If a keyset predicate is not specified, [keys-all](/reference/functions/keysets#keys-allh517472840) is used by default.
 
@@ -1093,7 +1093,7 @@ The latter will execute slightly faster, as there is less code to interpret at t
 
 #### Types as necessary
 
-With table schemas, Pact will be strongly typed for most use cases, but functions that do not use the database might still need types. Use the [typecheck](/reference/functions/repl-only-functions#typecheckh522701326) REPL function to add the necessary types. There is a small cost for type enforcement at runtime, and too many type signatures can harm readability. However types can help document an API, so this is a judgement call.
+With table schemas, Pact will be strongly typed for most use cases, but functions that do not use the database might still need types. Use the [typecheck](/reference/functions/repl-only-functions) REPL function to add the necessary types. There is a small cost for type enforcement at runtime, and too many type signatures can harm readability. However types can help document an API, so this is a judgement call.
 
 ### Control Flow
 
@@ -1109,7 +1109,7 @@ Note that [enforce-one](/reference/functions/general#enforce-oneh281764347) (add
 
 #### Use built-in keyset predicates
 
-The built-in keyset functions [keys-all](/reference/functions/keysets#keys-allh517472840), [keys-any](/reference/functions/keysets#keys-anyh517472915), [keys-2](/reference/functions/keysets#keys-2h-1134655847) are hardcoded in the interpreter to execute quickly. Custom keysets require runtime resolution which is slower.
+The built-in keyset functions [keys-all](/reference/functions/keysets#keys-allh517472840), [keys-any](/reference/functions/keysets), [keys-2](/reference/functions/keysets#keys-2h-1134655847) are hardcoded in the interpreter to execute quickly. Custom keysets require runtime resolution which is slower.
 
 ### Functional Concepts
 
@@ -1190,7 +1190,7 @@ Every time a pact is initiated, it is given a unique ID which is retrievable usi
 
 ### Testing pacts
 
-Pacts can be tested in repl scripts using the [env-entity](/reference/functions/repl-only-functions#env-entityh-146648893), [env-step](/reference/functions) and [pact-state](/reference/functions/repl-only-functions#pact-stateh-2050254554) repl functions to simulate pact executions.
+Pacts can be tested in repl scripts using the [env-entity](/reference/functions/repl-only-functions), [env-step](/reference/functions) and [pact-state](/reference/functions/repl-only-functions) repl functions to simulate pact executions.
 
 It is also possible to simulate pact execution in the pact server API by formatting [continuation Request](/reference/functions) yaml files into API requests with a `cont` payload.
 

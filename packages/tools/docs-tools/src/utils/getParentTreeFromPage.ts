@@ -19,6 +19,10 @@ export const getParentTreeFromPage = async (
       const innerVal = { ...val };
       delete innerVal.children;
 
+      if (innerVal.url === '/repl-only-functions') {
+        console.log({ innerVal, targetPage });
+      }
+
       if (JSON.stringify(innerVal) === JSON.stringify(targetPage)) {
         if (parent) delete parent.children;
         return innerSearch(parent, pages, [...acc, innerVal]);

@@ -20,3 +20,4 @@ export const createPactDocs = async (): Promise<IScriptResult> => {
   }
   return { errors, success };
 };
+createPactDocs();
