@@ -8,6 +8,7 @@ import { ChainId, BuiltInPredicate, createSignWithKeypair } from "@kadena/client
 import * as styles from '@/styles/create-token.css';
 import Layout from '@/components/Layout';
 import { env } from '@/utils/env';
+import {createImageUrl , createMetaDataUrl} from '@/utils/upload';
 
 const sender00Account =     {
   publicKey:
@@ -21,6 +22,17 @@ export default function CreateToken() {
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [base64Image, setBase64Image] = useState('');
+  const [metadata, setMetadata] = useState(JSON.stringify({
+    "name": "",
+    "description": "",
+    "image": "",
+    "authors": [],
+    "properties": {},
+    "collection": {
+      "name": '',
+      "family": ''
+    }}))
 
   const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -28,7 +40,8 @@ export default function CreateToken() {
     if (file) {
       setFile(file);
       setImagePreview(URL.createObjectURL(file));
-    }
+      convertToBase64(file);
+;    }
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,12 +49,22 @@ export default function CreateToken() {
     if (file) {
       setFile(file);
       setImagePreview(URL.createObjectURL(file));
+      convertToBase64(file);
     }
   };
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
   };
+
+  const convertToBase64 = (file) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setBase64Image(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
 
   const [policyConfig, setPolicyConfig] = useState<ICreateTokenPolicyConfig>({
     customPolicies: false,
@@ -199,8 +222,36 @@ export default function CreateToken() {
     const { name, value } = e.target;
     setTokenInput((prev) => ({ ...prev, [name]: value }));
   };
+  const handleMetadataChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setMetadata((prev) => ( value ));
+  };
 
+  const handleCreateImageUrl = async () => {
+    if (base64Image) {
+      const imageData = await createImageUrl(base64Image);
+      setMetadata(JSON.stringify({...JSON.parse(metadata), "image": imageData.url}) )
+      if (!imageData) {
+        console.log('ERROR!  no imagedata');
+        return;
+      }
+    } else {
+      console.error('No image to process');
+    }
+  };
 
+  const handleCreateMetaDataUrl = async () => {
+    if (base64Image) {
+      const metaDataValue = await createMetaDataUrl(metadata);
+      setTokenInput({...tokenInput, "uri": metaDataValue.url} )
+      if (!metaDataValue) {
+        console.log('ERROR!  no metadata');
+        return;
+      }
+    } else {
+      console.error('No metadata to process');
+    }
+  };
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -304,11 +355,17 @@ export default function CreateToken() {
                 <TextField label="Creator Key (to be replaced by wallet)" name="creatorKey" value={tokenInput.creatorGuard} onChange={handleTokenInputChange} />
               </div>
             </div>
+            <div className={styles.buttonRow}>
+              <Button type="button" onClick={handleCreateImageUrl}>Create Image URL</Button>
+            </div>
           </div>
 
           <div className={styles.oneColumnRow}>
             <div className={styles.formSection}>
-              <TextareaField label="Metadata" name="metadata" />
+              <TextareaField label="Metadata" name="metadata" value={metadata} onChange={handleMetadataChange} />
+            </div>
+            <div className={styles.buttonRow}>
+              <Button type="button" onClick={handleCreateMetaDataUrl}>Create URI</Button>
             </div>
           </div>
 
@@ -394,8 +451,8 @@ export default function CreateToken() {
             </div>
           )}
             <div className={styles.buttonRow}>
-            <Button type="submit" isLoading={isLoading}>Create Token</Button>
-          </div>
+              <Button type="submit" isLoading={isLoading}>Create Token</Button>
+            </div>
         </form>
         {policyConfig.collection && (
           <div className={styles.oneColumnRow}>
