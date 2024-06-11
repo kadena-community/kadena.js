@@ -6,7 +6,7 @@ label: General
 order: 1
 layout: full
 tags: ['pact', 'language reference', 'built-in functions']
-editLink: https://github.com/kadena-io/pact-5/pull/122/files
+editLink: https://github.com/kadena-io/pact-5/tree/master/docs/builtins/General
 ---
 
 # General purpose functions

@@ -6,7 +6,7 @@ label: Database
 order: 2
 layout: full
 tags: ['pact', 'language reference', 'database']
-editLink: https://github.com/kadena-io/pact-5/pull/122/files
+editLink: https://github.com/kadena-io/pact-5/tree/master/docs/builtins/Database
 ---
 
 # Database

@@ -6,7 +6,7 @@ label: Time
 order: 3
 layout: full
 tags: ['pact', 'language reference', 'time']
-editLink: https://github.com/kadena-io/pact-5/pull/122/files
+editLink: https://github.com/kadena-io/pact-5/tree/master/docs/builtins/Time
 ---
 
 # Time

@@ -6,7 +6,7 @@ label: Keysets
 order: 5
 layout: full
 tags: ['pact', 'language reference', 'keysets']
-editLink: https://github.com/kadena-io/pact-5/pull/122/files
+editLink: https://github.com/kadena-io/pact-5/tree/master/docs/builtins/Keysets
 ---
 
 # Keysets

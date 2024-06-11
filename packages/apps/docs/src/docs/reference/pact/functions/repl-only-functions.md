@@ -6,7 +6,7 @@ label: REPL-only functions
 order: 11
 layout: full
 tags: ['pact', 'language reference', 'repl-only functions', 'repl functions']
-editLink: https://github.com/kadena-io/pact-5/pull/122/files
+editLink: https://github.com/kadena-io/pact-5/tree/master/docs/builtins/Repl
 ---
 
 # REPL-only functions

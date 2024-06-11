@@ -6,7 +6,7 @@ label: Commitments
 order: 8
 layout: full
 tags: ['pact', 'language reference', 'commitments']
-editLink: https://github.com/kadena-io/pact-5/pull/122/files
+editLink: https://github.com/kadena-io/pact-5/tree/master/docs/builtins/Commitments
 ---
 
 # Commitments
