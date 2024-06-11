@@ -1,5 +1,15 @@
 # Change Log - @kadena/client
 
+## 1.11.2
+
+### Patch Changes
+
+- c9fe555df: Pin sensitive dependencies to specific versions
+- Updated dependencies \[c9fe555df]
+- Updated dependencies \[9c4145cb7]
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/chainweb-node-client\@0.6.2
+
 ## 1.11.1
 
 ### Patch Changes

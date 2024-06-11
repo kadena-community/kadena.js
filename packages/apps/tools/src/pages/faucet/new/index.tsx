@@ -65,7 +65,7 @@ import {
   MonoKeyboardArrowRight,
   MonoLink,
 } from '@kadena/react-icons/system';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
@@ -74,7 +74,7 @@ import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import * as z from 'zod';
+import { z } from 'zod';
 
 interface IFundExistingAccountResponseBody {
   result: {
@@ -127,8 +127,7 @@ const NewAccountFaucetPage: FC = () => {
     ],
     queryFn: () => createPrincipal(pubKeys, chainID, pred),
     enabled: pubKeys.length > 0,
-    placeholderData: '',
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   });
 
   const {
@@ -345,53 +344,57 @@ const NewAccountFaucetPage: FC = () => {
       <Heading as="h4">{t('Create and Fund New Account')}</Heading>
       <div className={notificationContainerStyle}>
         {mainnetSelected ? (
-          <Notification intent="warning" role="status">
+          <Notification intent="warning" role="status" type="inlineStacked">
             <NotificationHeading>
               {t('The Faucet is not available on Mainnet')}
             </NotificationHeading>
-            <Trans
-              i18nKey="common:faucet-unavailable-warning"
-              components={[
-                <a
-                  className={notificationLinkStyle}
-                  target={'_blank'}
-                  href="https://chainweaver.kadena.network/contracts"
-                  rel="noreferrer"
-                  key="link-to-module"
-                />,
-              ]}
-            />
+            <div>
+              <Trans
+                i18nKey="common:faucet-unavailable-warning"
+                components={[
+                  <a
+                    className={notificationLinkStyle}
+                    target={'_blank'}
+                    href="https://chainweaver.kadena.network/contracts"
+                    rel="noreferrer"
+                    key="link-to-module"
+                  />,
+                ]}
+              />
+            </div>
           </Notification>
         ) : null}
       </div>
       <div className={notificationContainerStyle}>
-        <Notification intent="warning" role="none">
+        <Notification intent="warning" role="none" type="inlineStacked">
           <NotificationHeading>{t(`Before you start`)}</NotificationHeading>
-          <Trans
-            i18nKey="common:faucet-how-to-start"
-            components={[
-              <a
-                className={notificationLinkStyle}
-                target={'_blank'}
-                href={'https://transfer.chainweb.com/'}
-                rel="noreferrer"
-                key="chainweb-transfer-link"
-              />,
-              <a
-                className={notificationLinkStyle}
-                target={'_blank'}
-                href={'https://chainweaver.kadena.network/'}
-                rel="noreferrer"
-                key="chainweaver-link"
-              />,
-              <p key="text-wrapper" />,
-              <Link
-                className={notificationLinkStyle}
-                href={'/faucet/existing'}
-                key="faucet-existing-link"
-              />,
-            ]}
-          />
+          <div>
+            <Trans
+              i18nKey="common:faucet-how-to-start"
+              components={[
+                <a
+                  className={notificationLinkStyle}
+                  target={'_blank'}
+                  href={'https://transfer.chainweb.com/'}
+                  rel="noreferrer"
+                  key="chainweb-transfer-link"
+                />,
+                <a
+                  className={notificationLinkStyle}
+                  target={'_blank'}
+                  href={'https://chainweaver.kadena.network/'}
+                  rel="noreferrer"
+                  key="chainweaver-link"
+                />,
+                <p key="text-wrapper" />,
+                <Link
+                  className={notificationLinkStyle}
+                  href={'/faucet/existing'}
+                  key="faucet-existing-link"
+                />,
+              ]}
+            />
+          </div>
         </Notification>
       </div>
       <form onSubmit={handleSubmit(onFormSubmit)}>

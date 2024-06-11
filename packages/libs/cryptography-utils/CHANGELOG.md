@@ -1,5 +1,11 @@
 # Change Log - @kadena/cryptography-utils
 
+## 0.4.4
+
+### Patch Changes
+
+- c9fe555df: Pin sensitive dependencies to specific versions
+
 ## 0.4.3
 
 ### Patch Changes

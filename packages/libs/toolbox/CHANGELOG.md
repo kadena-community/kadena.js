@@ -1,5 +1,13 @@
 # @kadena/toolbox
 
+## 0.0.7
+
+### Patch Changes
+
+- Updated dependencies \[c9fe555df]
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/client\@1.11.2
+
 ## 0.0.6
 
 ### Patch Changes

@@ -45,7 +45,7 @@ To differentiate Kadena SpireKey account public keys from other public
 keys, transactions must include both the public key and the `scheme` attribute
 set to `WebAuthn` as its value when signing transactions.
 
-```ts
+```typescript
 { pubKey: webAuthnPublicKey, scheme: 'WebAuthn' }
 ```
 
@@ -55,11 +55,12 @@ When users create an account for the `coin` contract or for other `fungible-v2` 
 As mentioned in [Account, keys, and principals](/learn/accounts), there are different types of guards, but **keysets** are the most commonly-used for accounts that hold assets. 
 
 Kadena SpireKey accounts are different in that they use a **capability** defined in the `webauthn-wallet` contract instead of a keyset to enforce the rules for signing transactions. 
-Because the `coin` contract can't bring this capability into scope when trying to debit an account, the `webauthn-wallet` contract implements its own `webauthn-wallet.transfer` function and custom `webauthn-wallet.GAS_PAYER` and `webauthn-wallet.TRANSFER` capabilities. 
+Because the `coin` contract can't bring this capability into scope when trying to debit an account, the `webauthn-wallet` contract implements its own `webauthn-wallet.transfer` function and custom `webauthn-wallet.GAS`, `webauthn-wallet.GAS_PAYER`, and `webauthn-wallet.TRANSFER` capabilities. 
 
 The `webauthn-wallet` contract wraps the `coin` contract to bring the required capabilities into scope before calling the wrapped functions.
-You can use the `webauthn-wallet.GAS_PAYER` and `webauthn-wallet.TRANSFER` capabilities
-in place of the corresponding `coin.GAS` and `coin.TRANSFER` capabilities to satisfy the guard required to debit an account.
+You can use the `webauthn-wallet.GAS`, `webauthn-wallet.GAS_PAYER`, and `webauthn-wallet.TRANSFER` capabilities in place of the corresponding `coin.GAS` and `coin.TRANSFER` capabilities to satisfy the guard required to debit an account.
+
+Because Chainweb node requires signatures for the capabilities brought into scope, Kadena SpireKey accounts need to sign for both the `webauthn-wallet.GAS` capability and the `webauthn-wallet.GAS_PAYER` capability to pay for gas.
 
 The following is a simplified example of what an unsigned transfer transaction from
 a Kadena SpireKey account might look like with the `cmd` field in non-stringified JSON format for readability:

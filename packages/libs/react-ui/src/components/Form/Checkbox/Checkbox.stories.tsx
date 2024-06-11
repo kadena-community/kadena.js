@@ -14,7 +14,8 @@ const meta: Meta<ICheckboxProps> = {
     },
     docs: {
       description: {
-        component: 'The checkbox component',
+        component:
+          "The Checkbox component is a wrapper around [react-aria's](https://react-spectrum.adobe.com/react-aria/useCheckbox.html) useCheckbox hook. Here are just a couple of examples but you can check their docs for more.",
       },
     },
   },

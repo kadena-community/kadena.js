@@ -89,34 +89,48 @@ const TransferPage = () => {
         gap={'lg'}
       >
         {showNotSupported ? (
-          <Notification intent={'negative'} role={'alert'} isDismissable>
+          <Notification
+            intent={'negative'}
+            role={'alert'}
+            type="inlineStacked"
+            isDismissable
+          >
+            <div>
+              <Trans
+                i18nKey="common:ledger-error-notification"
+                components={[
+                  <a
+                    className={notificationLinkStyle}
+                    target={'_blank'}
+                    href="https://caniuse.com/?search=webhid"
+                    rel="noreferrer"
+                    key="link-to-ledger-docs"
+                  />,
+                ]}
+              />
+            </div>
+          </Notification>
+        ) : null}
+        <Notification
+          intent="info"
+          role="alert"
+          type="inlineStacked"
+          isDismissable
+        >
+          <div>
             <Trans
-              i18nKey="common:ledger-error-notification"
+              i18nKey="common:ledger-info-notification"
               components={[
                 <a
                   className={notificationLinkStyle}
                   target={'_blank'}
-                  href="https://caniuse.com/?search=webhid"
+                  href="https://support.ledger.com/hc/en-us/articles/7415959614109?docs=true"
                   rel="noreferrer"
                   key="link-to-ledger-docs"
                 />,
               ]}
             />
-          </Notification>
-        ) : null}
-        <Notification intent="info" role="alert" isDismissable>
-          <Trans
-            i18nKey="common:ledger-info-notification"
-            components={[
-              <a
-                className={notificationLinkStyle}
-                target={'_blank'}
-                href="https://support.ledger.com/hc/en-us/articles/7415959614109?docs=true"
-                rel="noreferrer"
-                key="link-to-ledger-docs"
-              />,
-            ]}
-          />
+          </div>
         </Notification>
 
         <SignForm

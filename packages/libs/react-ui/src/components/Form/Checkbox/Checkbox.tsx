@@ -1,5 +1,6 @@
 import { MonoCheck, MonoRemove } from '@kadena/react-icons';
 import React, { useRef } from 'react';
+import type { AriaCheckboxProps } from 'react-aria';
 import {
   VisuallyHidden,
   mergeProps,
@@ -10,7 +11,7 @@ import {
 import { useToggleState } from 'react-stately';
 import { boxClass, iconClass, labelClass } from './Checkbox.css';
 
-export interface ICheckboxProps {
+export interface ICheckboxProps extends AriaCheckboxProps {
   children: string;
   isDisabled?: boolean;
   isSelected?: boolean;

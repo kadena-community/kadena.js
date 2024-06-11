@@ -113,6 +113,222 @@ export const tokens = createThemeContract({
          */
         round: '',
       },
+      screen: {
+        resolutions: {
+          width: {
+            mobile: {
+              apple: {
+                /**
+                 * @light  `"320px"`
+                 * @dark  `"320px"`
+                 */
+                iphone_se: '',
+                /**
+                 * @light  `"375px"`
+                 * @dark  `"375px"`
+                 */
+                iphone_8: '',
+                /**
+                 * @light  `"375px"`
+                 * @dark  `"375px"`
+                 */
+                iphone_11: '',
+                /**
+                 * @light  `"414px"`
+                 * @dark  `"414px"`
+                 */
+                iphone_11_pro: '',
+              },
+              samsung: {
+                /**
+                 * @light  `"360px"`
+                 * @dark  `"360px"`
+                 */
+                galaxy_s9: '',
+              },
+            },
+            tablet: {
+              apple: {
+                /**
+                 * @light  `"768px"`
+                 * @dark  `"768px"`
+                 */
+                ipad_mini: '',
+                /**
+                 * @light  `"810px"`
+                 * @dark  `"810px"`
+                 */
+                ipad: '',
+                /**
+                 * @light  `"1024px"`
+                 * @dark  `"1024px"`
+                 */
+                ipad_pro: '',
+              },
+            },
+            laptop: {
+              /**
+               * @light  `"1440px"`
+               * @dark  `"1440px"`
+               */
+              macBook_air: '',
+              /**
+               * @light  `"1280px"`
+               * @dark  `"1280px"`
+               */
+              macBook_pro_13: '',
+              /**
+               * @light  `"3072px"`
+               * @dark  `"3072px"`
+               */
+              macBook_pro_16: '',
+            },
+            desktop: {
+              /**
+               * @light  `"1024px"`
+               * @dark  `"1024px"`
+               */
+              small: '',
+              /**
+               * @light  `"1280px"`
+               * @dark  `"1280px"`
+               */
+              widescreen: '',
+              /**
+               * @light  `"1366px"`
+               * @dark  `"1366px"`
+               */
+              hd: '',
+              /**
+               * @light  `"1920px"`
+               * @dark  `"1920px"`
+               */
+              full_hd: '',
+              /**
+               * @light  `"2560px"`
+               * @dark  `"2560px"`
+               */
+              '2k': '',
+              /**
+               * @light  `"3440px"`
+               * @dark  `"3440px"`
+               */
+              ultra_wide: '',
+              /**
+               * @light  `"3840px"`
+               * @dark  `"3840px"`
+               */
+              '4k': '',
+            },
+          },
+          height: {
+            mobile: {
+              apple: {
+                /**
+                 * @light  `"568px"`
+                 * @dark  `"568px"`
+                 */
+                iphone_se: '',
+                /**
+                 * @light  `"667px"`
+                 * @dark  `"667px"`
+                 */
+                iphone_8: '',
+                /**
+                 * @light  `"812px"`
+                 * @dark  `"812px"`
+                 */
+                iphone_11: '',
+                /**
+                 * @light  `"896px"`
+                 * @dark  `"896px"`
+                 */
+                iphone_11_pro: '',
+              },
+              samsung: {
+                /**
+                 * @light  `"740px"`
+                 * @dark  `"740px"`
+                 */
+                galaxy_s9: '',
+              },
+            },
+            tablet: {
+              apple: {
+                /**
+                 * @light  `"1024px"`
+                 * @dark  `"1024px"`
+                 */
+                ipad_mini: '',
+                /**
+                 * @light  `"1080px"`
+                 * @dark  `"1080px"`
+                 */
+                ipad: '',
+                /**
+                 * @light  `"1366px"`
+                 * @dark  `"1366px"`
+                 */
+                ipad_pro: '',
+              },
+            },
+            laptop: {
+              /**
+               * @light  `"900px"`
+               * @dark  `"900px"`
+               */
+              macBook_air: '',
+              /**
+               * @light  `"800px"`
+               * @dark  `"800px"`
+               */
+              macBook_pro_13: '',
+              /**
+               * @light  `"1920px"`
+               * @dark  `"1920px"`
+               */
+              macBook_pro_16: '',
+            },
+            desktop: {
+              /**
+               * @light  `"768px"`
+               * @dark  `"768px"`
+               */
+              small: '',
+              /**
+               * @light  `"800px"`
+               * @dark  `"800px"`
+               */
+              widescreen: '',
+              /**
+               * @light  `"768px"`
+               * @dark  `"768px"`
+               */
+              hd: '',
+              /**
+               * @light  `"1080px"`
+               * @dark  `"1080px"`
+               */
+              full_hd: '',
+              /**
+               * @light  `"1440px"`
+               * @dark  `"1440px"`
+               */
+              '2k': '',
+              /**
+               * @light  `"1440px"`
+               * @dark  `"1440px"`
+               */
+              ultra_wide: '',
+              /**
+               * @light  `"2160px"`
+               * @dark  `"2160px"`
+               */
+              '4k': '',
+            },
+          },
+        },
+      },
       size: {
         /**
          * @light  `"0px"`
@@ -1822,8 +2038,8 @@ export const tokens = createThemeContract({
         gradient: {
           base: {
             /**
-             * @light  `"tokens.kda.foundation.color.background.base.default 0.25%, tokens.kda.foundation.color.neutral.n1@alpha0 1%"`
-             * @dark  `"tokens.kda.foundation.color.background.base.default 0.25%, tokens.kda.foundation.color.neutral.n1@alpha0 1%"`
+             * @light  `"tokens.kda.foundation.color.background.base.default 25%, tokens.kda.foundation.color.neutral.n1@alpha0 100%"`
+             * @dark  `"tokens.kda.foundation.color.background.base.default 25%, tokens.kda.foundation.color.neutral.n1@alpha0 100%"`
              */
             subtle: '',
           },
@@ -2252,6 +2468,37 @@ export const tokens = createThemeContract({
                  * @dark {@link tokens.kda.foundation.color.neutral.n30}
                  */
                 '@disabled': '',
+              },
+            },
+          },
+          product: {
+            spirekey: {
+              animation: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.primary.n50}
+                 * @dark {@link tokens.kda.foundation.color.brand.primary.n50}
+                 */
+                start: '',
+                /**
+                 * @light  `"#4aa688"`
+                 * @dark  `"#4aa688"`
+                 */
+                step1: '',
+                /**
+                 * @light  `"#4bbd97"`
+                 * @dark  `"#4bbd97"`
+                 */
+                step2: '',
+                /**
+                 * @light  `"#4bd3a6"`
+                 * @dark  `"#4bd3a6"`
+                 */
+                step3: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.palette.aqua.n30}
+                 * @dark {@link tokens.kda.foundation.color.palette.aqua.n70}
+                 */
+                end: '',
               },
             },
           },
@@ -4536,6 +4783,42 @@ export const tokens = createThemeContract({
           },
         },
       },
+      effect: {
+        shadow: {
+          /**
+           * This is the shadow 1 description
+           * @light  `"4px 0.5rem tokens.kda.foundation.size.n2 4px #000000"`
+           * @dark  `"4px 0.5rem tokens.kda.foundation.size.n2 4px #000000"`
+           */
+          level1: '',
+          /**
+           * This is the shadow 2 description
+           * @light  `"4rem 4rem tokens.kda.foundation.size.n2 2rem #000000"`
+           * @dark  `"4rem 4rem tokens.kda.foundation.size.n2 2rem #000000"`
+           */
+          level2: '',
+          /**
+           * This is the shadow 3 description updated
+           * @light  `"0px 0px tokens.kda.foundation.size.n2 24px #000000"`
+           * @dark  `"0px 0px tokens.kda.foundation.size.n2 24px #000000"`
+           */
+          level3: '',
+        },
+      },
+      layout: {
+        content: {
+          /**
+           * @light  `"33.75rem"`
+           * @dark  `"33.75rem"`
+           */
+          minWidth: '',
+          /**
+           * @light  `"42.5rem"`
+           * @dark  `"42.5rem"`
+           */
+          maxWidth: '',
+        },
+      },
       icon: {
         size: {
           /**
@@ -4573,42 +4856,6 @@ export const tokens = createThemeContract({
            * @dark {@link tokens.kda.foundation.size.n16}
            */
           xxl: '',
-        },
-      },
-      layout: {
-        content: {
-          /**
-           * @light  `"33.75rem"`
-           * @dark  `"33.75rem"`
-           */
-          minWidth: '',
-          /**
-           * @light  `"42.5rem"`
-           * @dark  `"42.5rem"`
-           */
-          maxWidth: '',
-        },
-      },
-      effect: {
-        shadow: {
-          /**
-           * This is the shadow 1 description
-           * @light  `"4px 0.5rem tokens.kda.foundation.size.n2 4px #000000"`
-           * @dark  `"4px 0.5rem tokens.kda.foundation.size.n2 4px #000000"`
-           */
-          level1: '',
-          /**
-           * This is the shadow 2 description
-           * @light  `"4rem 4rem tokens.kda.foundation.size.n2 2rem #000000"`
-           * @dark  `"4rem 4rem tokens.kda.foundation.size.n2 2rem #000000"`
-           */
-          level2: '',
-          /**
-           * This is the shadow 3 description updated
-           * @light  `"0px 0px tokens.kda.foundation.size.n2 24px #000000"`
-           * @dark  `"0px 0px tokens.kda.foundation.size.n2 24px #000000"`
-           */
-          level3: '',
         },
       },
       typography: {

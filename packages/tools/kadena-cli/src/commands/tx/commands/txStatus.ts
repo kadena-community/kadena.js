@@ -11,6 +11,7 @@ import { log } from '../../../utils/logger.js';
 import { createTable } from '../../../utils/table.js';
 import type { INetworkCreateOptions } from '../../networks/utils/networkHelpers.js';
 import { txOptions } from '../txOptions.js';
+import { updateTransactionStatus } from '../utils/txHelpers.js';
 
 export const getTxStatus = async ({
   requestKey,
@@ -55,6 +56,15 @@ export const getTxStatus = async ({
         ],
       };
     }
+
+    // To update the log file with the transaction status when requestKey is found
+    await updateTransactionStatus([
+      {
+        requestKey,
+        status: result[trimmedRequestKey].result.status,
+        data: result[trimmedRequestKey],
+      },
+    ]);
 
     return {
       status: 'success',
