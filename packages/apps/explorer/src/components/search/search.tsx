@@ -1,6 +1,6 @@
 import { truncateValues } from '@/services/format';
 import { MonoSearch } from '@kadena/react-icons/system';
-import { Box } from '@kadena/react-ui';
+import { Badge, Box } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
 import type { Dispatch, SetStateAction } from 'react';
 import React, { useState } from 'react';
@@ -20,18 +20,20 @@ export type SearchItemTitle =
 export interface ISearchItem {
   title: SearchItemTitle;
   disabled?: boolean;
+  data?: any;
 }
 export interface ISearchComponentProps {
-  searchItems: ISearchItem[];
+  searchData: ISearchItem[];
   setSearchQuery?: Dispatch<SetStateAction<string>>;
   searchQuery?: string;
 }
 
 const SearchCombobox: React.FC<ISearchComponentProps> = ({
-  searchItems,
+  searchData,
   setSearchQuery,
   searchQuery,
 }) => {
+  console.log({ searchQuery });
   const [isEditing, setIsEditing] = useState(false);
   const [searchOption, setSearchOption] = useState<number | null>(null);
   const [searchValue, setSearchValue] = useState<string>('');
@@ -39,11 +41,11 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
   const [escapePressed, setEscapePressed] = useState(false);
 
   const setOptionsDisabledExcept = (exceptIndex: number): void => {
-    // searchItems.forEach((item, index) => {
-    //   if (index !== exceptIndex) {
-    //     item.disabled = true;
-    //   }
-    // });
+    searchData.forEach((item, index) => {
+      if (index !== exceptIndex) {
+        item.disabled = true;
+      }
+    });
   };
 
   const inferOption = (value: string): SearchItemTitle | undefined => {
@@ -64,9 +66,9 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
   };
 
   const enableAllOptions = (): void => {
-    // searchItems.forEach((item) => {
-    //   item.disabled = false;
-    // });
+    searchData.forEach((item) => {
+      item.disabled = false;
+    });
   };
 
   const handleSearch = (value: string, option: number | null): void => {
@@ -107,7 +109,7 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       setSearchOption((prev) =>
-        prev === null ? 0 : Math.min(prev + 1, searchItems.length - 1),
+        prev === null ? 0 : Math.min(prev + 1, searchData.length - 1),
       );
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
@@ -156,7 +158,7 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
           <input
             type="text"
             placeholder="Search the Kadena Blockchain on"
-            value={searchValue}
+            value={searchValue ? searchValue : searchQuery}
             onChange={(e) => handleSearchValueChange(e)}
             onFocus={() => setIsEditing(true)}
             className={searchInputClass}
@@ -168,9 +170,9 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
               justifyContent={'flex-end'}
               className={searchBadgeBoxClass}
             >
-              {/* {searchItems[searchOption] && (
-                <Badge size="lg">{searchItems[searchOption].title}</Badge>
-              )} */}
+              {searchData[searchOption] && (
+                <Badge size="lg">{searchData[searchOption].title}</Badge>
+              )}
             </Box>
           )}
         </Box>
@@ -186,7 +188,7 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
               fontFamily: 'primaryFont',
             })}
           >
-            {searchItems?.map((item, index) => (
+            {searchData?.map((item, index) => (
               <Box
                 key={index}
                 onMouseDown={() => setOptionClicked(true)}

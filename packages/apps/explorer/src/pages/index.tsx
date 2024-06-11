@@ -9,7 +9,13 @@ import { atoms } from '@kadena/react-ui/styles';
 import React from 'react';
 
 const Home: React.FC = () => {
-  const { setSearchQuery, searchQuery, data: searchData } = useSearch();
+  const {
+    setSearchQuery,
+    searchQuery,
+    data: searchData,
+    loading,
+    errors,
+  } = useSearch();
 
   return (
     <SearchLayout>
@@ -21,11 +27,17 @@ const Home: React.FC = () => {
         >
           <LogoKdacolorLight />
           <SearchBox
-            {...searchData}
+            searchData={searchData}
             setSearchQuery={setSearchQuery}
             searchQuery={searchQuery}
           />
-          {searchData && <SearchResults {...searchData} />}
+          {searchData && (
+            <SearchResults
+              searchData={searchData}
+              loading={loading}
+              errors={errors}
+            />
+          )}
         </Stack>
       </Media>
 
@@ -38,11 +50,11 @@ const Home: React.FC = () => {
         >
           <LogoKdacolorLight />
           <SearchBox
-            {...searchData}
+            searchData={searchData}
             setSearchQuery={setSearchQuery}
             searchQuery={searchQuery}
           />
-          {searchData && <SearchResults {...searchData} />}
+          {searchData && <SearchResults searchData={searchData} />}
         </Stack>
       </Media>
     </SearchLayout>
