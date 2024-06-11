@@ -101,3 +101,14 @@ export const moduleToOutlineTreeItems = (
 
   return treeItems;
 };
+
+export const checkModuleEquality = (
+  module1: IncompleteModuleModel,
+  module2: IncompleteModuleModel,
+) => {
+  return (
+    module1.name === module2.name &&
+    module1.chainId === module2.chainId &&
+    module1.networkId === module2.networkId
+  );
+};

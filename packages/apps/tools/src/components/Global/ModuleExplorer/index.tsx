@@ -11,7 +11,7 @@ import Editor from './editor';
 import { containerStyle } from './styles.css';
 import type { Outline } from './types';
 import { isCompleteModule } from './types';
-import { moduleToOutlineTreeItems } from './utils';
+import { checkModuleEquality, moduleToOutlineTreeItems } from './utils';
 
 export interface IModuleExplorerProps {
   openedModules: IEditorProps['openedModules'];
@@ -69,11 +69,7 @@ const ModuleExplorer = ({
             setActiveModule(data);
             setOpenedModules((prev) => {
               const alreadyOpened = prev.find((openedModule) => {
-                return (
-                  openedModule.name === data.name &&
-                  openedModule.chainId === data.chainId &&
-                  openedModule.networkId === data.networkId
-                );
+                return checkModuleEquality(openedModule, data);
               });
 
               if (alreadyOpened) {
@@ -90,10 +86,7 @@ const ModuleExplorer = ({
         onChainTabClose={(module) => {
           setOpenedModules(
             openedModules.filter((openedModule) => {
-              return (
-                `${openedModule.name}-${openedModule.chainId}-${openedModule.networkId}` !==
-                `${module.name}-${module.chainId}-${module.networkId}`
-              );
+              return !checkModuleEquality(openedModule, module);
             }),
           );
         }}
@@ -101,10 +94,7 @@ const ModuleExplorer = ({
           setOpenedModules(
             openedModules.filter((openedModule) => {
               return !modules.find((module) => {
-                return (
-                  `${openedModule.name}-${openedModule.chainId}-${openedModule.networkId}` ===
-                  `${module.name}-${module.chainId}-${module.networkId}`
-                );
+                return checkModuleEquality(openedModule, module);
               });
             }),
           );
