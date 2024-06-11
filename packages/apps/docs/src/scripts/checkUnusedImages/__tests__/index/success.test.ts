@@ -70,7 +70,6 @@ describe('checkUnusedImages success', () => {
 
   it('should return a success line when image is not in the content', async () => {
     const result = await checkUnusedImages();
-    console.log(result);
     expect(result.errors.length).toEqual(0);
     expect(result.success.length).toEqual(1);
   });
