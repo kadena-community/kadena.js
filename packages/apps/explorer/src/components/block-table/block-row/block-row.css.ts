@@ -16,6 +16,7 @@ export const rowTextElementStyle = style([
     justifyContent: 'center',
     alignItems: 'center',
     padding: 'sm',
+    width: '100%',
   }),
 ]);
 
