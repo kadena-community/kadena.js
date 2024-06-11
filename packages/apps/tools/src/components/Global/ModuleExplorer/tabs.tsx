@@ -1,11 +1,4 @@
-import type {
-  IncompleteModuleModel,
-  ModuleModel,
-} from '@/hooks/use-module-query';
-import type {
-  ChainwebChainId,
-  ChainwebNetworkId,
-} from '@kadena/chainweb-node-client';
+import type { ModuleModel } from '@/hooks/use-module-query';
 import type { ITabNode } from '@kadena/react-ui';
 import { Box, Stack, TabItem, Tabs, Text } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
@@ -17,6 +10,7 @@ import {
   secondLevelTabPanelStyles,
   tabsLabelStyles,
 } from './styles.css';
+import { mapToTabs, moduleToTabId, modulesToMap, tabIdToModule } from './utils';
 
 export interface ITabsProps {
   openedModules: ModuleModel[];
@@ -25,48 +19,6 @@ export interface ITabsProps {
   onModuleTabClose: (modules: ModuleModel[]) => void;
   onChainTabClose: (module: ModuleModel) => void;
 }
-
-const modulesToMap = (modules: ModuleModel[]): Map<string, ModuleModel[]> => {
-  return modules.reduce<Map<string, ModuleModel[]>>((acc, module) => {
-    const { name } = module;
-
-    if (!acc.has(name)) {
-      acc.set(name, []);
-    }
-    const chains = acc.get(name)!;
-
-    if (!chains.includes(module)) {
-      chains.push(module);
-    }
-
-    return acc;
-  }, new Map());
-};
-
-const KEY_DELIMITER = '!_&_!'; // A character sequence that is unlikely to appear in a module name.
-
-const moduleToTabId = (module: ModuleModel): string => {
-  return [module.networkId, module.name, module.chainId].join(KEY_DELIMITER);
-};
-
-const tabIdToModule = (tabId: string): IncompleteModuleModel => {
-  const [networkId, name, chainId] = tabId.split(KEY_DELIMITER);
-
-  return {
-    networkId: networkId as ChainwebNetworkId,
-    name,
-    chainId: chainId as ChainwebChainId,
-  };
-};
-
-const mapToTabs = (map: Map<string, ModuleModel[]>) => {
-  return Array.from(map.entries()).map(([name, modules]) => {
-    return {
-      title: name,
-      children: modules,
-    };
-  });
-};
 
 const EditorTabs: FC<ITabsProps> = ({
   openedModules,

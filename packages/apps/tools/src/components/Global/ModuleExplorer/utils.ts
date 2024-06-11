@@ -1,4 +1,7 @@
-import type { IncompleteModuleModel } from '@/hooks/use-module-query';
+import type {
+  IncompleteModuleModel,
+  ModuleModel,
+} from '@/hooks/use-module-query';
 import type { ElementType } from '@/types/utils';
 import type {
   ChainwebChainId,
@@ -111,4 +114,48 @@ export const checkModuleEquality = (
     module1.chainId === module2.chainId &&
     module1.networkId === module2.networkId
   );
+};
+
+export const modulesToMap = (
+  modules: ModuleModel[],
+): Map<string, ModuleModel[]> => {
+  return modules.reduce<Map<string, ModuleModel[]>>((acc, module) => {
+    const { name } = module;
+
+    if (!acc.has(name)) {
+      acc.set(name, []);
+    }
+    const chains = acc.get(name)!;
+
+    if (!chains.includes(module)) {
+      chains.push(module);
+    }
+
+    return acc;
+  }, new Map());
+};
+
+export const KEY_DELIMITER = '!_&_!'; // A character sequence that is unlikely to appear in a module name.
+
+export const moduleToTabId = (module: ModuleModel): string => {
+  return [module.networkId, module.name, module.chainId].join(KEY_DELIMITER);
+};
+
+export const tabIdToModule = (tabId: string): IncompleteModuleModel => {
+  const [networkId, name, chainId] = tabId.split(KEY_DELIMITER);
+
+  return {
+    networkId: networkId as ChainwebNetworkId,
+    name,
+    chainId: chainId as ChainwebChainId,
+  };
+};
+
+export const mapToTabs = (map: Map<string, ModuleModel[]>) => {
+  return Array.from(map.entries()).map(([name, modules]) => {
+    return {
+      title: name,
+      children: modules,
+    };
+  });
 };
