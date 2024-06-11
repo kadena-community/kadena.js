@@ -11,6 +11,12 @@ import { env } from '@/utils/env';
 import { database } from '@/utils/firebase';
 import { BuiltInPredicate, ChainId } from '@kadena/client';
 import {
+  escrowAccount,
+  getAuctionDetails,
+  getBid,
+  getQuoteInfo,
+} from '@kadena/client-utils/marmalade';
+import {
   DocumentSnapshot,
   collection,
   doc,
@@ -125,10 +131,9 @@ const getAllEventsFromBlock = async (blockNumber: number) => {
   return events;
 };
 
-function parseEvents(events: Event[]): {
-  sales: Sale[];
-  bids: Bid[];
-} {
+async function parseEvents(
+  events: Event[],
+): Promise<{ sales: Sale[]; bids: Bid[] }> {
   const saleRecords: Record<string, Sale> = {};
   const bidRecords: Record<string, Bid> = {};
 
@@ -157,6 +162,24 @@ function parseEvents(events: Event[]): {
       const [tokenId, sellerAccount, amount, timeout, saleId] =
         event.parameters;
 
+      let quoteInfo = {};
+
+      try {
+        const data = await getQuoteInfo({
+          saleId: saleId as string,
+          chainId: event.chainId,
+          networkId: env.NETWORK_NAME,
+          host: env.CHAINWEB_API_HOST,
+        });
+
+        quoteInfo = {
+          startPrice: data['sale-price'],
+          saleType: data['sale-type'],
+        };
+      } catch {
+        // sale does not have quote
+      }
+
       saleRecords[saleId] = {
         ...saleRecords[saleId],
         requestKeys: {
@@ -174,6 +197,7 @@ function parseEvents(events: Event[]): {
         tokenId,
         amount,
         timeoutAt: Number(timeout.int) * 1000,
+        ...quoteInfo,
       };
       continue;
     }
@@ -222,8 +246,21 @@ function parseEvents(events: Event[]): {
       continue;
     }
 
-    if (event.event === 'marmalade-sale.dutch-auction.AUCTION_CREATED') {
+    if (
+      event.event === 'marmalade-sale.dutch-auction.AUCTION_CREATED' ||
+      event.event === 'marmalade-sale.dutch-auction.MANAGE_AUCTION'
+    ) {
       const [saleId, tokenId] = event.parameters;
+
+      const data = await getAuctionDetails({
+        auctionConfig: {
+          dutch: true,
+        },
+        saleId: saleId as string,
+        chainId: event.chainId,
+        networkId: env.NETWORK_NAME,
+        host: env.CHAINWEB_API_HOST,
+      });
 
       saleRecords[saleId] = {
         ...saleRecords[saleId],
@@ -236,12 +273,28 @@ function parseEvents(events: Event[]): {
         saleId,
         tokenId,
         saleType: 'marmalade-sale.dutch-auction',
+        startsAt: Number(data['start-date'].int) * 1000,
+        endsAt: Number(data['end-date'].int) * 1000,
+        startPrice: data['start-price'],
+        reservePrice: data['reserve-price'],
+        sellPrice: data['sell-price'],
+        priceInterval: data['price-interval-seconds'],
       };
       continue;
     }
 
     if (event.event === 'marmalade-sale.dutch-auction.PRICE_ACCEPTED') {
-      const [saleId, buyer, buyerGuard, price, tokenId] = event.parameters;
+      const [saleId, tokenId] = event.parameters;
+
+      const auctionDetails = await getAuctionDetails({
+        auctionConfig: {
+          dutch: true,
+        },
+        saleId: saleId as string,
+        chainId: event.chainId,
+        networkId: env.NETWORK_NAME,
+        host: env.CHAINWEB_API_HOST,
+      });
 
       saleRecords[saleId] = {
         ...saleRecords[saleId],
@@ -252,18 +305,39 @@ function parseEvents(events: Event[]): {
         chainId: event.chainId,
         block: event.block,
         buyer: {
-          account: buyer,
-          guard: buyerGuard,
+          account: auctionDetails['buyer'],
+          guard: auctionDetails['buyer-guard'],
         },
-        price,
+        sellPrice: auctionDetails['sell-price'],
         saleId,
         tokenId,
       };
       continue;
     }
 
-    if (event.event === 'marmalade-sale.conventional-auction.AUCTION_CREATED') {
-      const [saleId, tokenId, escrow] = event.parameters;
+    if (
+      event.event === 'marmalade-sale.conventional-auction.AUCTION_CREATED' ||
+      event.event === 'marmalade-sale.conventional-auction.MANAGE_AUCTION'
+    ) {
+      const [saleId, tokenId] = event.parameters;
+
+      const [data, escrow] = await Promise.all([
+        getAuctionDetails({
+          auctionConfig: {
+            conventional: true,
+          },
+          saleId: saleId as string,
+          chainId: event.chainId,
+          networkId: env.NETWORK_NAME,
+          host: env.CHAINWEB_API_HOST,
+        }),
+        escrowAccount({
+          saleId: saleId as string,
+          chainId: event.chainId,
+          networkId: env.NETWORK_NAME,
+          host: env.CHAINWEB_API_HOST,
+        }),
+      ]);
 
       saleRecords[saleId] = {
         ...saleRecords[saleId],
@@ -275,14 +349,29 @@ function parseEvents(events: Event[]): {
         block: event.block,
         saleId,
         tokenId,
-        escrow,
         saleType: 'marmalade-sale.conventional-auction',
+        startsAt: Number(data['start-date'].int) * 1000,
+        endsAt: Number(data['end-date'].int) * 1000,
+        reservePrice: data['reserve-price'],
+        highestBid: data['highest-bid'],
+        highestBidId: data['highest-bid-id'],
       };
+
+      if (event.event === 'marmalade-sale.conventional-auction.AUCTION_CREATED')
+        saleRecords[saleId].escrow = escrow;
+
       continue;
     }
 
     if (event.event === 'marmalade-sale.conventional-auction.BID_PLACED') {
-      const [bidId, bidder, bidderGuard, bid, tokenId] = event.parameters;
+      const [bidId, tokenId] = event.parameters;
+
+      const bidDetails = await getBid({
+        bidId: bidId as string,
+        chainId: event.chainId,
+        networkId: env.NETWORK_NAME,
+        host: env.CHAINWEB_API_HOST,
+      });
 
       bidRecords[bidId] = {
         ...bidRecords[bidId],
@@ -290,10 +379,10 @@ function parseEvents(events: Event[]): {
         block: event.block,
         bidId,
         tokenId,
-        bid,
+        bid: bidDetails['bid'],
         bidder: {
-          account: bidder,
-          guard: bidderGuard,
+          account: bidDetails['bidder'],
+          guard: bidDetails['bidder-guard'],
         },
         requestKey: event.requestKey,
       };
@@ -301,10 +390,10 @@ function parseEvents(events: Event[]): {
     }
   }
 
-  return {
+  return Promise.resolve({
     sales: Object.values(saleRecords),
     bids: Object.values(bidRecords),
-  };
+  });
 }
 
 async function saveSettings(settings: Partial<Settings>): Promise<void> {
@@ -355,7 +444,7 @@ const sync = async (fromBlock: number, toBlock: number) => {
     for (let i = fromBlock; i <= toBlock; i++) {
       const events = await getAllEventsFromBlock(i);
 
-      const { sales, bids } = parseEvents(events);
+      const { sales, bids } = await parseEvents(events);
 
       if (sales.length > 0) {
         await storeSalesInFirebase(sales);
