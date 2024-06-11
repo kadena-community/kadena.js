@@ -124,8 +124,6 @@ function calculateTotalDiffulty(
   currentHeight: bigint,
   blocks: IBlockWithDifficulty[],
 ): bigint | undefined {
-  console.log(currentHeight, blocks.length);
-
   for (let i = currentHeight; i > currentHeight - 3n; i--) {
     const blocksOfThisHeight = blocks.filter((block) => block.height === i);
 

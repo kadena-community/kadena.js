@@ -24,8 +24,6 @@ builder.queryField('networkInfo', (t) =>
           getHashRateAndTotalDifficulty(),
         ]);
 
-        console.log(totalDifficulty);
-
         return {
           networkHost: dotenv.NETWORK_HOST,
           networkId,
