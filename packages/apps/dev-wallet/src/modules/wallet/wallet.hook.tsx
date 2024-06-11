@@ -1,25 +1,73 @@
-import { IUnsignedCommand } from '@kadena/client';
+import { ICommand, IUnsignedCommand } from '@kadena/client';
 import { useCallback, useContext, useEffect } from 'react';
 
 import { defaultAccentColor } from '@/modules/layout/layout.provider.tsx';
+import {
+  getLocalData,
+  removeLocalData,
+  setLocalData,
+} from '@/utils/storage.ts';
 import { IAccount } from '../account/account.repository';
 import * as AccountService from '../account/account.service';
 import { dbService } from '../db/db.service';
 import { keySourceManager } from '../key-source/key-source-manager';
 import { ExtWalletContextType, WalletContext } from './wallet.provider';
-import { IKeySource, walletRepository } from './wallet.repository';
+import {
+  IKeyItem,
+  IKeySource,
+  IProfile,
+  walletRepository,
+} from './wallet.repository';
 import * as WalletService from './wallet.service';
+
+interface IWallet {
+  accounts: IAccount[];
+  profile: IProfile;
+  keySources: IKeySource[];
+  createProfile: (
+    profileName: string | undefined,
+    password: string,
+    accentColor?: string,
+  ) => Promise<IProfile>;
+  unlockProfile: (
+    profileId: string,
+    password: string,
+  ) => Promise<{
+    profile: IProfile;
+    keySources: IKeySource[];
+  } | null>;
+  createKey: (keySource: IKeySource) => Promise<IKeyItem>;
+  createKAccount: (
+    profileId: string,
+    networkId: string,
+    publicKey: string,
+    contract?: string,
+  ) => Promise<IAccount>;
+  sign: (
+    TXs: IUnsignedCommand[],
+    onConnect?: (keySource: IKeySource) => Promise<void>,
+  ) => Promise<(IUnsignedCommand | ICommand)[]>;
+  decryptSecret: (password: string, secretId: string) => Promise<string>;
+  lockProfile: () => void;
+  retrieveKeySources: (profileId: string) => Promise<IKeySource[]>;
+  retrieveAccounts: (profileId: string) => Promise<void>;
+  isUnlocked: boolean;
+  profileList: Pick<IProfile, 'name' | 'uuid' | 'accentColor'>[];
+}
 
 const isUnlocked = (
   ctx: ExtWalletContextType,
 ): ctx is Required<ExtWalletContextType> => {
-  if (!ctx || !ctx.profile || !ctx.profileList || !ctx.keySources) {
+  if (
+    (!ctx || !ctx.profile || !ctx.profileList || !ctx.keySources) &&
+    (!getLocalData('profile') || !getLocalData('keySources'))
+  ) {
     return false;
   }
   return true;
 };
 
-export const useWallet = () => {
+export const useWallet = (): IWallet => {
   const [context, setContext] = useContext(WalletContext) ?? [];
   if (!context || !setContext) {
     throw new Error('useWallet must be used within a WalletProvider');
@@ -41,6 +89,7 @@ export const useWallet = () => {
     async (profileId: string) => {
       const keySources = await walletRepository.getProfileKeySources(profileId);
       setContext((ctx) => ({ ...ctx, keySources }));
+      setLocalData({ keySources });
       return keySources;
     },
     [setContext],
@@ -53,6 +102,7 @@ export const useWallet = () => {
         ...ctx,
         accounts,
       }));
+      setLocalData({ accounts });
     },
     [setContext],
   );
@@ -73,6 +123,7 @@ export const useWallet = () => {
         ...ctx,
         profile,
       }));
+      setLocalData({ profile });
       keySourceManager.reset();
       return profile;
     },
@@ -93,6 +144,7 @@ export const useWallet = () => {
           accounts,
           keySources,
         }));
+        setLocalData({ profile, keySources, accounts });
         keySourceManager.reset();
         // we sync all accounts when the profile is unlocked;
         // no need to wait for the result the data will be updated in the db
@@ -107,6 +159,7 @@ export const useWallet = () => {
   const lockProfile = useCallback(() => {
     keySourceManager.reset();
     setContext(({ profileList }) => ({ profileList }));
+    removeLocalData();
   }, [setContext]);
 
   const sign = useCallback(
@@ -193,9 +246,9 @@ export const useWallet = () => {
     retrieveKeySources,
     retrieveAccounts,
     isUnlocked: isUnlocked(context),
-    profile: context.profile,
+    profile: context.profile || getLocalData('profile'),
     profileList: context.profileList ?? [],
-    accounts: context.accounts ?? [],
-    keySources: context.keySources ?? [],
+    accounts: context.accounts || getLocalData('accounts') || [],
+    keySources: context.keySources || getLocalData('keySources') || [],
   };
 };

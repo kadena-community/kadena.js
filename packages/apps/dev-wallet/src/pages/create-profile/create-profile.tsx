@@ -55,7 +55,6 @@ export function CreateProfile() {
     password: string;
     accentColor?: string;
   }) {
-    console.log(password, profileName, accentColor);
     if (!activeNetwork) {
       return;
     }
@@ -84,6 +83,10 @@ export function CreateProfile() {
         replace
       />
     );
+  }
+
+  if (isUnlocked) {
+    return <Navigate to="/" replace />;
   }
 
   return (
