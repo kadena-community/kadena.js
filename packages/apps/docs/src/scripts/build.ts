@@ -20,7 +20,6 @@ import { validateLinks } from './validateLinks';
   //starting with a cleanslate, removing the tempdir.
   deleteTempDir();
   await initFunc(movePages, 'Move all pages from docs with config.yaml');
-  deleteTempDir();
   await initFunc(
     createPactDocs,
     'Get info from pact repo and build pages with config.yaml',
