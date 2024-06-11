@@ -34,6 +34,8 @@ const Home: React.FC = () => {
             searchData={searchData}
             setSearchQuery={setSearchQuery}
             searchQuery={searchQuery}
+            loading={loading}
+            errors={errors}
           />
           {searchData && (
             <SearchResults
@@ -54,11 +56,21 @@ const Home: React.FC = () => {
         >
           <LogoKdacolorLight />
           <SearchBox
+            searchOption={searchOption}
+            setSearchOption={setSearchOption}
             searchData={searchData}
             setSearchQuery={setSearchQuery}
             searchQuery={searchQuery}
+            loading={loading}
+            errors={errors}
           />
-          {searchData && <SearchResults searchData={searchData} />}
+          {searchData && (
+            <SearchResults
+              searchData={searchData}
+              loading={loading}
+              errors={errors}
+            />
+          )}
         </Stack>
       </Media>
     </SearchLayout>

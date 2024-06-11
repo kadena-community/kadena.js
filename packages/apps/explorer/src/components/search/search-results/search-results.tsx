@@ -1,17 +1,16 @@
 import CompactTable from '@/components/compact-table/compact-table';
+import type { ApolloError } from '@apollo/client';
 import type { FC } from 'react';
 import React, { useMemo } from 'react';
-import type { ISearchComponentProps } from '../search';
+import type { ISearchItem } from '../search';
 
-/**
- * because there are multiple row types.
- * we can either map the types to the same properties and use a compact table
- *
- * or we can use a normal table. check the row type and use the compactable field cell for that cell.
- *
- * */
+export interface ISearchResultsProps {
+  searchData: ISearchItem[];
+  loading: boolean;
+  errors: ApolloError[];
+}
 
-const SearchResults: FC<ISearchComponentProps> = ({
+const SearchResults: FC<ISearchResultsProps> = ({
   searchData,
   loading,
   errors,

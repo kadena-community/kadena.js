@@ -1,4 +1,5 @@
 import { truncateValues } from '@/services/format';
+import type { ApolloError } from '@apollo/client';
 import { MonoSearch } from '@kadena/react-icons/system';
 import { Badge, Box } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
@@ -31,8 +32,10 @@ export interface ISearchComponentProps {
   searchData: ISearchItem[];
   setSearchQuery?: Dispatch<SetStateAction<string>>;
   searchQuery?: string;
-  searchOption: number;
+  searchOption: SearchOptionEnum | null;
   setSearchOption: Dispatch<SetStateAction<SearchOptionEnum | null>>;
+  loading: boolean;
+  errors: ApolloError[];
 }
 
 const SearchCombobox: React.FC<ISearchComponentProps> = ({

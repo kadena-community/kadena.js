@@ -116,7 +116,7 @@ export const useSearch = () => {
 
   useEffect(() => {
     const { q } = router.query;
-    setSearchQuery(q);
+    setSearchQuery(q as string);
   }, [router.isReady]);
 
   useEffect(() => {
