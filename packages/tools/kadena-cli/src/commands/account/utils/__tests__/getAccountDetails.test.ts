@@ -1,13 +1,23 @@
-import { HttpResponse, http } from 'msw';
-import { afterEach, describe, expect, it } from 'vitest';
-import { server } from '../../../../mocks/server.js';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { accountDetailsSuccessData } from '../../../../mocks/data/accountDetails.js';
+import {
+  devNetConfigMock,
+  testNetworkConfigMock,
+} from '../../../../mocks/network.js';
+import { server, useMswHandler } from '../../../../mocks/server.js';
 import {
   getAccountDetails,
   getAccountDetailsFromChain,
 } from '../getAccountDetails.js';
-import { devNetConfigMock, testNetworkConfigMock } from './mocks.js';
 
 describe('getAccountDetailsFromChain', () => {
+  beforeEach(() => {
+    useMswHandler({
+      network: devNetConfigMock,
+      response: accountDetailsSuccessData,
+    });
+  });
+
   afterEach(() => {
     server.resetHandlers();
   });
@@ -33,22 +43,16 @@ describe('getAccountDetailsFromChain', () => {
   });
 
   it('should throw an error when account details are undefined from chain', async () => {
-    server.use(
-      http.post(
-        'http://localhost:8080/chainweb/0.0/development/chain/2/pact/api/v1/local',
-        () => {
-          return HttpResponse.json(
-            {
-              result: {
-                data: undefined,
-                status: 'success',
-              },
-            },
-            { status: 200 },
-          );
+    useMswHandler({
+      network: devNetConfigMock,
+      response: {
+        result: {
+          data: undefined,
+          status: 'success',
         },
-      ),
-    );
+      },
+      chainId: '2',
+    });
     await expect(async () => {
       await getAccountDetailsFromChain({
         accountName: 'k:accountName',
@@ -61,14 +65,12 @@ describe('getAccountDetailsFromChain', () => {
   });
 
   it('should throw an error when account is not available on chain', async () => {
-    server.use(
-      http.post(
-        'http://localhost:8080/chainweb/0.0/development/chain/2/pact/api/v1/local',
-        () => {
-          return HttpResponse.json({ error: 'row not found' }, { status: 404 });
-        },
-      ),
-    );
+    useMswHandler({
+      network: devNetConfigMock,
+      response: { error: 'row not found' },
+      chainId: '2',
+      status: 404,
+    });
     await expect(async () => {
       await getAccountDetailsFromChain({
         accountName: 'k:accountName',
@@ -82,6 +84,13 @@ describe('getAccountDetailsFromChain', () => {
 });
 
 describe('getAccountDetails', () => {
+  beforeEach(() => {
+    useMswHandler({
+      network: devNetConfigMock,
+      response: accountDetailsSuccessData,
+    });
+  });
+
   afterEach(() => {
     server.resetHandlers();
   });
@@ -107,14 +116,13 @@ describe('getAccountDetails', () => {
   });
 
   it('should return undefined when account details throws an error with row not found', async () => {
-    server.use(
-      http.post(
-        'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/10/pact/api/v1/local',
-        () => {
-          return HttpResponse.json({ error: 'row not found' }, { status: 404 });
-        },
-      ),
-    );
+    useMswHandler({
+      network: testNetworkConfigMock,
+      response: { error: 'row not found' },
+      chainId: '10',
+      status: 404,
+    });
+
     const result = await getAccountDetails({
       accountName: 'k:accountName',
       chainId: '10',
@@ -126,17 +134,11 @@ describe('getAccountDetails', () => {
   });
 
   it('should throw an error when account details throws an error', async () => {
-    server.use(
-      http.post(
-        'http://localhost:8080/chainweb/0.0/development/chain/1/pact/api/v1/local',
-        () => {
-          return HttpResponse.json(
-            { error: 'something went wrong' },
-            { status: 500 },
-          );
-        },
-      ),
-    );
+    useMswHandler({
+      network: devNetConfigMock,
+      response: { error: 'something went wrong' },
+      status: 500,
+    });
     await expect(async () => {
       await getAccountDetails({
         accountName: 'k:accountName',

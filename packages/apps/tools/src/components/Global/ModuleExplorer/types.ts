@@ -1,5 +1,8 @@
 import type { Network } from '@/constants/kadena';
-import type { IncompleteModuleModel } from '@/hooks/use-module-query';
+import type {
+  IncompleteModuleModel,
+  ModuleModel,
+} from '@/hooks/use-module-query';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import type {
   ContractCapability,
@@ -30,4 +33,10 @@ export const isModuleLike = (
     (item as IncompleteModuleModel).name !== undefined &&
     (item as IncompleteModuleModel).networkId !== undefined
   );
+};
+
+export const isCompleteModule = (
+  item: IncompleteModuleModel | Outline,
+): item is ModuleModel => {
+  return isModuleLike(item) && item.code !== undefined;
 };

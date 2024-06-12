@@ -9,7 +9,12 @@ import React from 'react';
 import CustomAccordion from '../../CustomAccordion/CustomAccordion';
 import type { ICustomTreeProps, TreeItem } from '../../CustomTree/CustomTree';
 import CustomTree from '../../CustomTree/CustomTree';
-import { containerStyle, headingStyles, iconStyles } from './styles.css';
+import {
+  containerStyle,
+  headingStyles,
+  iconStyles,
+  itemStyle,
+} from './styles.css';
 
 export interface ISidePanelProps<T> {
   data: ICustomTreeProps<T>['data'];
@@ -41,6 +46,7 @@ function SidePanel<T>({
             gap={'xxs'}
             role="button"
             onClick={item.toggleExpandCollapse}
+            className={itemStyle}
           >
             {item.data.title === 'Explorer' ? (
               <MonoVerticalSplit className={iconStyles} />

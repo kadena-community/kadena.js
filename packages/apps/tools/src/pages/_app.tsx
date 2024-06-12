@@ -18,8 +18,15 @@ const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false } },
 });
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-const App: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
+export interface IPageProps {
+  useFullPageWidth?: boolean;
+}
+
+const App: FC<AppProps<IPageProps>> = ({
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  Component,
+  pageProps,
+}: AppProps<IPageProps>) => {
   const router = useRouter();
 
   return (
@@ -35,7 +42,7 @@ const App: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
           <WalletConnectClientContextProvider>
             <AppContextProvider>
               <LayoutContextProvider>
-                <Layout>
+                <Layout useFullWidth={pageProps.useFullPageWidth}>
                   <Component {...pageProps} />
                 </Layout>
               </LayoutContextProvider>
