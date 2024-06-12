@@ -13,10 +13,11 @@
     "@kadena/client": "workspace:*",
     "@kadena/client-utils": "workspace:*",
     "@kadena/pactjs": "workspace:*",
-    "@kadena/react-ui": "workspace:*",
     "@kadena/react-icons": "workspace:*",
+    "@kadena/react-ui": "workspace:*",
     "firebase": "^10.8.0",
     "next": "14.2.2",
+    "nft.storage": "^7.1.1",
     "react": "^18.2.0",
     "react-aria-components": "^1.0.1",
     "react-dom": "^18.2.0"

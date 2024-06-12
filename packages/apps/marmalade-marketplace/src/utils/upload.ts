@@ -67,3 +67,4 @@ export const createMetaDataUrl = async (
 
   return { data: metadata, url: metadataUrl };
 };
+

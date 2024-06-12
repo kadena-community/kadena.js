@@ -2,7 +2,7 @@
 import React, { useState, FormEvent } from 'react';
 import { Heading, TextField, TextareaField, Button, Tabs, TabItem, Stack, Checkbox } from '@kadena/react-ui';
 import { createTokenId, createToken, createCollection, createCollectionId } from "@kadena/client-utils/marmalade";
-import { ICreateTokenPolicyConfig } from "@kadena/client-utils/marmalade/config";
+import { ICreateTokenPolicyConfig } from '@kadena/client-utils/lib/esm/marmalade/config';
 import { PactNumber } from "@kadena/pactjs";
 import { ChainId, BuiltInPredicate, createSignWithKeypair } from "@kadena/client";
 import * as styles from '@/styles/create-token.css';
@@ -36,20 +36,23 @@ export default function CreateToken() {
 
   const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    const file = event.dataTransfer.files[0];
-    if (file) {
+    const dataTransfer = event.dataTransfer;
+    if (dataTransfer && dataTransfer.files) {
+      const file = dataTransfer.files[0];
       setFile(file);
       setImagePreview(URL.createObjectURL(file));
-      convertToBase64(file);
-;    }
+      convertToBase64(file);    }
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files[0];
-    if (file) {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      const file = input.files[0];
       setFile(file);
       setImagePreview(URL.createObjectURL(file));
       convertToBase64(file);
+    } else {
+      console.log('No files selected');
     }
   };
 
@@ -57,14 +60,18 @@ export default function CreateToken() {
     event.preventDefault();
   };
 
-  const convertToBase64 = (file) => {
+  const convertToBase64 = (file:File) => {
     const reader = new FileReader();
     reader.onloadend = () => {
-      setBase64Image(reader.result);
+      setBase64Image(reader.result as string);
     };
     reader.readAsDataURL(file);
   };
 
+
+  type PolicyMapType = {
+    [key: string]: string;
+  };
 
   const [policyConfig, setPolicyConfig] = useState<ICreateTokenPolicyConfig>({
     customPolicies: false,
@@ -76,7 +83,7 @@ export default function CreateToken() {
   });
 
   const getPolicies = (policyConfig: ICreateTokenPolicyConfig) => {
-    const policyMap = {
+    const policyMap: { [key: string]: string } = { 
       updatableURI: "marmalade-v2.non-updatable-uri-policy-v1",
       customPolicies: "",
       guarded: "marmalade-v2.guard-policy-v1",
@@ -86,7 +93,7 @@ export default function CreateToken() {
     };
 
     return Object.entries(policyConfig)
-      .filter(([key, value]) => value && policyMap[key])
+      .filter(([key, value]) => value && policyMap[key] )
       .map(([key]) => policyMap[key]);
   };
 
@@ -95,7 +102,17 @@ export default function CreateToken() {
   };
 
   const createKeyset = (key: string) => {
-    return { "keyset": {
+    return { 
+      "keyset": {
+        "keys": [key],
+        "pred": "keys-all" as BuiltInPredicate
+      }}
+  };
+
+  const createAccountKeyset = (key: string) => {
+    return { 
+      "account": "k:" + key ,
+      "keyset": {
         "keys": [key],
         "pred": "keys-all" as BuiltInPredicate
       }}
@@ -157,7 +174,7 @@ export default function CreateToken() {
     royaltyFungible: "coin",
     royaltyCreator: "k:" + tokenInput.creatorGuard,
     royaltyGuard: tokenInput.creatorGuard,
-    royaltyRate: 0.05
+    royaltyRate: "0.05"
   });
 
   const [collectionInput, setCollectionInput] = useState({
@@ -197,7 +214,7 @@ export default function CreateToken() {
       ...input,
       chainId: input.chainId as ChainId,
       precision: createPrecision(input.precision),
-      creator: createKeyset(input.creatorGuard)
+      creator: createAccountKeyset(input.creatorGuard)
     };
   };
 
@@ -222,7 +239,8 @@ export default function CreateToken() {
     const { name, value } = e.target;
     setTokenInput((prev) => ({ ...prev, [name]: value }));
   };
-  const handleMetadataChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleMetadataChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setMetadata((prev) => ( value ));
   };
@@ -230,8 +248,9 @@ export default function CreateToken() {
   const handleCreateImageUrl = async () => {
     if (base64Image) {
       const imageData = await createImageUrl(base64Image);
-      setMetadata(JSON.stringify({...JSON.parse(metadata), "image": imageData.url}) )
-      if (!imageData) {
+      if (imageData) {
+        setMetadata(JSON.stringify({...JSON.parse(metadata), "image": imageData.url}) );
+      } else {
         console.log('ERROR!  no imagedata');
         return;
       }
@@ -243,8 +262,9 @@ export default function CreateToken() {
   const handleCreateMetaDataUrl = async () => {
     if (base64Image) {
       const metaDataValue = await createMetaDataUrl(metadata);
-      setTokenInput({...tokenInput, "uri": metaDataValue.url} )
-      if (!metaDataValue) {
+      if (metaDataValue) {
+        setTokenInput({...tokenInput, "uri": metaDataValue.url} );
+      } else {
         console.log('ERROR!  no metadata');
         return;
       }
@@ -255,7 +275,14 @@ export default function CreateToken() {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    const inputs = formatInput(tokenInput);
+    const inputs = {...formatInput(tokenInput), 
+      policyConfig: policyConfig as ICreateTokenPolicyConfig , 
+      policies: getPolicies(policyConfig),
+      guards:createGuardInfo(guardInput), 
+      royalty: createRoyaltyInfo(royaltyInput), 
+      collection:collectionInput, 
+      customPolicyData: {},
+    };
 
     if (policyConfig.hasRoyalty && (!royaltyInput.royaltyFungible || !royaltyInput.royaltyCreator || !royaltyInput.royaltyGuard || !royaltyInput.royaltyRate)) {
       alert('Please provide all Royalty inputs');
@@ -275,7 +302,8 @@ export default function CreateToken() {
       const tokenIdCreated = await createTokenId({ ...inputs, "networkId": config.networkId, "host": config.host, "policyConfig": policyConfig, "policies": getPolicies(policyConfig) });
       setIsLoading(true)
       const result = await createToken({
-        ...inputs, "policyConfig": policyConfig, "policies": getPolicies(policyConfig),  "tokenId": tokenIdCreated as string, guards:createGuardInfo(guardInput), royalty: createRoyaltyInfo(royaltyInput), collection:collectionInput,
+        ...inputs, 
+        "tokenId": tokenIdCreated as string, 
         },
         { ...config,
           "defaults": { "networkId": config.networkId, meta: { "chainId": inputs.chainId } }
@@ -295,10 +323,10 @@ export default function CreateToken() {
     event.preventDefault();
 
     try {
-      const collectionId = await createCollectionId({ "collectionName":createCollectionInput.collectionName, "operator":createKeyset(createCollectionInput.collectionOperatorGuard), "chainId": createCollectionInput.collectionChainId as ChainId ,"networkId": config.networkId, "host": config.host,});
+      const collectionId = await createCollectionId({ "collectionName":createCollectionInput.collectionName, "operator":createAccountKeyset(createCollectionInput.collectionOperatorGuard), "chainId": createCollectionInput.collectionChainId as ChainId ,"networkId": config.networkId, "host": config.host,});
 
       const result = await createCollection(
-        { "name":createCollectionInput.collectionName as string, "id": collectionId as string, "operator": createKeyset(createCollectionInput.collectionOperatorGuard), "size": {"int": createCollectionInput.collectionSize.toString()}, "chainId": createCollectionInput.collectionChainId},
+        { "name":createCollectionInput.collectionName as string, "id": collectionId as string, "operator": createAccountKeyset(createCollectionInput.collectionOperatorGuard), "size": {"int": createCollectionInput.collectionSize.toString()}, "chainId": createCollectionInput.collectionChainId},
         { ...config,
           "defaults": { "networkId": config.networkId, meta: { "chainId": createCollectionInput.collectionChainId } }
         },
@@ -410,7 +438,7 @@ export default function CreateToken() {
             <div className={styles.oneColumnRow}>
               <div className={styles.formSection}>
                 <Tabs>
-                  {policyConfig.guarded && (
+                  {policyConfig.guarded ? (
                     <TabItem title="Guards">
                       <div className={styles.verticalForm}>
                         <TextField label="URI Guard" name="uriGuard" value={guardInput.uriGuard} onChange={handleGuardInputChange} />
@@ -420,32 +448,32 @@ export default function CreateToken() {
                         <TextField label="Transfer Guard" name="transferGuard" value={guardInput.transferGuard} onChange={handleGuardInputChange} />
                       </div>
                     </TabItem>
-                  )}
-                  {policyConfig.collection && (
+                  ) : <></>}
+                  {policyConfig.collection ? (
                     <TabItem title="Collection">
                       <div className={styles.verticalForm}>
                         <TextField label="Collection ID" name="collectionId" value={collectionInput.collectionId} onChange={handleCollectionInputChange}/>
                       </div>
                     </TabItem>
-                  )}
-                  {policyConfig.hasRoyalty && (
+                  ): <></>}
+                  {policyConfig.hasRoyalty ? (
                     <TabItem title="Royalty">
                       <div className={styles.verticalForm}>
                         <TextField label="Royalty Fungible" name="royaltyFungible" value={royaltyInput.royaltyFungible} onChange={handleRoyaltyInputChange} disabled />
                         <TextField label="Royalty Creator" name="royaltyCreator" value={royaltyInput.royaltyCreator} onChange={handleRoyaltyInputChange} />
                         <TextField label="Royalty Guard" name="royaltyGuard" value={royaltyInput.royaltyGuard} onChange={handleRoyaltyInputChange} />
-                        <TextField label="Royalty Rate" name="royaltyRate" value={royaltyInput.royaltyRate} onChange={handleRoyaltyInputChange} />
+                        <TextField label="Royalty Rate" name="royaltyRate" value={royaltyInput.royaltyRate.toString()} onChange={handleRoyaltyInputChange} />
                       </div>
                     </TabItem>
-                  )}
-                  {policyConfig.customPolicies && (
+                  ): <></>}
+                  {policyConfig.customPolicies ? (
                     <TabItem title="Custom Policies">
                       <div className={styles.verticalForm}>
                         <TextField label="Custom Policy Name" name="customPolicyName" value=""  />
                         <TextareaField label="Custom Policy Data" name="customPolicyData" />
                       </div>
                     </TabItem>
-                  )}
+                  ): <></>}
                 </Tabs>
               </div>
             </div>
@@ -460,7 +488,7 @@ export default function CreateToken() {
             <form onSubmit={handleSubmitCollection}>
               <TextField label="Collection Name" name="collectionName" value={createCollectionInput.collectionName} onChange={handleCreateCollectionInputChange}  />
               <TextField label="Collection Operator Guard" name="collectionOperatorGuard" value={createCollectionInput.collectionOperatorGuard} onChange={handleCreateCollectionInputChange} />
-              <TextField label="Collection Size" name="collectionSize" value={createCollectionInput.collectionSize} onChange={handleCreateCollectionInputChange} />
+              <TextField label="Collection Size" name="collectionSize" value={createCollectionInput.collectionSize.toString()} onChange={handleCreateCollectionInputChange} />
               <TextField label="Collection Chain Id" name="collectionChainId" value={createCollectionInput.collectionChainId} onChange={handleCreateCollectionInputChange} />
               <Button type="submit">Create Collection</Button>
             </form>
