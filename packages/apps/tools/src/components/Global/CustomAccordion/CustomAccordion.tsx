@@ -5,8 +5,8 @@ import type { IItemProps, RenderFunction } from './CustomAccordionItem';
 import Item from './CustomAccordionItem';
 
 export interface ICustomAccordionProps<T>
-  extends Omit<React.HTMLProps<HTMLUListElement>, 'data' | 'children'> {
-  data: T[];
+  extends Omit<React.HTMLProps<HTMLUListElement>, 'children'> {
+  items: T[];
   children: RenderFunction<T>;
   defaultExpandedKey?: IItemProps<T>['key'];
   itemProps?: Omit<IItemProps<T>, 'data' | 'children'>;
@@ -15,7 +15,7 @@ export interface ICustomAccordionProps<T>
 function CustomAccordion<
   T extends { key: React.Key } & Record<string, unknown>,
 >({
-  data,
+  items,
   children,
   itemProps,
   defaultExpandedKey,
@@ -24,7 +24,7 @@ function CustomAccordion<
 }: ICustomAccordionProps<T>) {
   return (
     <ul {...rest} className={classNames(listStyle, className)} role="menu">
-      {data.map((item) => (
+      {items.map((item) => (
         <Item
           key={item.key}
           isExpanded={item.key === defaultExpandedKey}
