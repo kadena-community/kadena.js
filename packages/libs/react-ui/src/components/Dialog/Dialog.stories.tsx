@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
+import { onLayer1 } from '../../storyDecorators';
 import { Button } from '../Button';
 import type { IDialogProps } from '../Dialog';
 import { Dialog, DialogContent, DialogFooter, DialogHeader } from '../Dialog';
@@ -10,6 +11,7 @@ type DialogStoryProps = IDialogProps & { title: string; subtitle: string };
 
 const meta: Meta<DialogStoryProps> = {
   title: 'Overlays/Dialog',
+  decorators: [onLayer1],
   parameters: {
     status: {
       type: ['stable'],

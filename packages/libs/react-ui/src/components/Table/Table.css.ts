@@ -1,70 +1,53 @@
-import { style } from '@vanilla-extract/css';
-import { atoms, token } from '../../styles';
+import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
+import { token, uiSmallBold, uiSmallRegular } from '../../styles';
 
-export const tableWrapper = style([
-  atoms({
-    width: '100%',
-    overflowX: 'auto',
-  }),
-]);
+export const tableWrapper = style({
+  width: 'fit-content',
+  overflowX: 'auto',
+});
 
 export const table = style([
-  atoms({
-    borderRadius: 'sm',
-    border: 'hairline',
-    color: 'text.base.default',
-  }),
   {
+    color: token('color.text.base.default'),
+    borderCollapse: 'collapse',
     borderSpacing: 0,
-    borderColor: token('color.background.base.default'),
   },
 ]);
 
 export const headerRow = style([
-  atoms({
-    backgroundColor: 'base.default',
-  }),
+  {
+    borderRadius: token('radius.sm'),
+    borderBlockEnd: token('color.border.base.default'),
+    backgroundColor: token('color.background.base.inverse.default'),
+    color: token('color.text.base.inverse.default'),
+  },
+  uiSmallBold,
 ]);
 
 export const tableRow = style([
   {
-    backgroundColor: token('color.neutral.n0'),
-    ':hover': {
-      backgroundColor: token('color.background.brand.primary.@hover'),
-    },
     selectors: {
-      '.striped &:nth-child(even)': {
-        backgroundColor: token('color.background.base.default'),
-      },
-      '.striped &:nth-child(even):hover': {
-        backgroundColor: token('color.background.brand.primary.@hover'),
-      },
       '&[data-href]': {
         cursor: 'pointer',
       },
       '&[data-focused]': {
-        outline: `solid 2px ${token('color.border.semantic.info.@focus')}`,
+        outline: `solid 2px ${token('color.border.tint.outline')}`,
       },
     },
   },
 ]);
 
 export const baseCell = style([
-  atoms({
-    paddingInline: 'md',
-    paddingBlock: 'sm',
-    outline: 'none',
-  }),
+  uiSmallRegular,
   {
+    backgroundClip: 'padding-box',
+    paddingBlock: token('spacing.sm'),
+    paddingInline: token('spacing.md'),
+    outline: 'none',
     selectors: {
       '.compact &': {
         paddingInline: token('spacing.sm'),
         paddingBlock: token('spacing.xs'),
-      },
-      '&[data-focused]': {
-        boxShadow: `inset 0 0 0 2px ${token(
-          'color.border.semantic.info.@focus',
-        )}`,
       },
     },
   },
@@ -72,10 +55,8 @@ export const baseCell = style([
 
 export const columnHeader = style([
   baseCell,
-  atoms({
-    textAlign: 'left',
-  }),
   {
+    textAlign: 'left',
     selectors: {
       '&[data-multi-column]': {
         textAlign: 'center',
@@ -87,4 +68,59 @@ export const columnHeader = style([
   },
 ]);
 
-export const tableDataCell = style([baseCell]);
+globalStyle(`${headerRow} th:first-of-type `, {
+  borderTopLeftRadius: token('radius.sm'),
+  borderBottomLeftRadius: token('radius.sm'),
+});
+
+globalStyle(`${headerRow} th:last-of-type`, {
+  borderTopRightRadius: token('radius.sm'),
+  borderBottomRightRadius: token('radius.sm'),
+});
+
+globalStyle(`${tableRow} td:first-of-type`, {
+  borderInlineStart: '4px solid transparent',
+  borderTopLeftRadius: token('size.n2'),
+  borderBottomLeftRadius: token('size.n2'),
+});
+
+globalStyle(`${tableRow} td:last-of-type`, {
+  borderInlineEnd: '4px solid transparent',
+  borderTopRightRadius: token('size.n2'),
+  borderBottomRightRadius: token('size.n2'),
+});
+
+globalStyle(`tbody ${tableRow} td`, {
+  borderRadius: '4px',
+  borderBlock: '4px solid transparent',
+});
+
+export const tableRowContent = style({
+  display: 'flex',
+  flex: 1,
+  minWidth: '100%',
+  padding: token('spacing.n1'),
+});
+
+export const selectorCell = styleVariants({
+  header: {
+    paddingInline: '10px',
+  },
+  body: {
+    paddingInline: token('size.n2'),
+  },
+});
+
+const dataCell = style({
+  selectors: {
+    [`${tableRow}[data-hovered] &`]: {
+      backgroundColor: token('color.background.base.@hover'),
+    },
+    [`${tableRow}[data-selected] &`]: {
+      backgroundColor: token('color.background.accent.primary.inverse.@active'),
+      color: token('color.text.base.inverse.@active'),
+    },
+  },
+});
+
+export const tableDataCell = style([baseCell, dataCell]);

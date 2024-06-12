@@ -71,6 +71,11 @@ const meta: Meta<IRadioGroupProps> = {
         type: 'text',
       },
     },
+    inverse: {
+      control: {
+        type: 'boolean',
+      },
+    },
   },
 };
 

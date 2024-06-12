@@ -40,6 +40,11 @@ const meta: Meta<ICheckboxProps> = {
         type: 'boolean',
       },
     },
+    inverse: {
+      control: {
+        type: 'boolean',
+      },
+    },
   },
 };
 

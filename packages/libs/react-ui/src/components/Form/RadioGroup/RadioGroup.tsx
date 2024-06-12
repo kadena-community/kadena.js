@@ -14,10 +14,11 @@ type Direction = NonNullable<RecipeVariants<typeof groupClass>>['direction'];
 export interface IRadioGroupProps extends AriaRadioGroupProps {
   children: ReactElement[] | ReactElement;
   direction: Direction;
+  info?: string;
+  inverse?: boolean;
   isReadOnly?: boolean;
   label?: string;
   tag?: string;
-  info?: string;
 }
 
 export const RadioContext = createContext<RadioGroupState | null>(null);
@@ -28,10 +29,11 @@ export function RadioGroup(props: IRadioGroupProps) {
     description,
     direction = 'row',
     errorMessage,
+    info,
+    inverse,
     isDisabled,
     isInvalid = false,
     isReadOnly,
-    info,
     label,
     tag,
   } = props;
@@ -64,7 +66,7 @@ export function RadioGroup(props: IRadioGroupProps) {
       <div className={groupClass({ direction })}>
         <RadioContext.Provider value={state}>
           {React.Children.map(children, (child) =>
-            React.cloneElement(child, { isReadOnly }),
+            React.cloneElement(child, { isReadOnly, inverse }),
           )}
         </RadioContext.Provider>
       </div>

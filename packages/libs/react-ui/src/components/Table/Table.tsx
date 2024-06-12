@@ -9,21 +9,24 @@ import { table, tableWrapper } from './Table.css';
 import classNames from 'classnames';
 import { TableCell, TableRow } from './Body';
 import { TableColumnHeader, TableHeaderRow } from './Header';
+import { TableSelectAllCell } from './TableSelectAllCell';
+import { TableSelectionCell } from './TableSelectionCell';
 
 export interface ITableProps<T>
   extends AriaTableProps<T>,
-    Omit<TableProps<T>, 'selectionMode' | 'draggable'>,
+    TableProps<T>,
     Omit<ComponentProps<'table'>, 'children'> {
   isStriped?: boolean;
   isCompact?: boolean;
 }
 
-// TODO: Implement Selection Cell
 export function Table<T extends object>(props: ITableProps<T>) {
   const scrollRef = useRef(null);
 
   const state = useTableState({
     ...props,
+    showSelectionCheckboxes:
+      props.selectionMode === 'multiple' || props.selectionMode === 'single',
   });
 
   const ref = useRef(null);
@@ -43,22 +46,44 @@ export function Table<T extends object>(props: ITableProps<T>) {
         <TableRowGroup type="thead">
           {collection.headerRows.map((headerRow) => (
             <TableHeaderRow key={headerRow.key} item={headerRow} state={state}>
-              {[...headerRow.childNodes].map((column) => (
-                <TableColumnHeader
-                  key={column.key}
-                  column={column}
-                  state={state}
-                />
-              ))}
+              {[...headerRow.childNodes].map((column) =>
+                column.props.isSelectionCell ? (
+                  <TableSelectAllCell
+                    key={column.key}
+                    column={column}
+                    state={state}
+                  />
+                ) : (
+                  <TableColumnHeader
+                    key={column.key}
+                    column={column}
+                    state={state}
+                  />
+                ),
+              )}
             </TableHeaderRow>
           ))}
         </TableRowGroup>
         <TableRowGroup type="tbody">
           {[...collection.body.childNodes].map((row) => (
-            <TableRow key={row.key} item={row} state={state}>
-              {[...row.childNodes].map((cell) => (
-                <TableCell key={cell.key} cell={cell} state={state} />
-              ))}
+            <TableRow
+              key={row.key}
+              item={row}
+              state={state}
+              selectionMode={props.selectionMode}
+            >
+              {[...row.childNodes].map((cell) =>
+                cell.props.isSelectionCell ? (
+                  <TableSelectionCell
+                    key={cell.key}
+                    cell={cell}
+                    state={state}
+                    selectionMode={props.selectionMode}
+                  />
+                ) : (
+                  <TableCell key={cell.key} cell={cell} state={state} />
+                ),
+              )}
             </TableRow>
           ))}
         </TableRowGroup>
