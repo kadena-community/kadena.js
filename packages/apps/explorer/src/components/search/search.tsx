@@ -5,7 +5,7 @@ import { MonoSearch } from '@kadena/react-icons/system';
 import { Badge, Box } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
 import type { Dispatch, SetStateAction } from 'react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   searchBadgeBoxClass,
   searchBoxClass,
@@ -62,7 +62,7 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
     return undefined;
   };
 
-  const handleSearch = (value: string, option: number | null): void => {
+  const handleSearch = (value: string): void => {
     if (setSearchQuery) setSearchQuery(value);
   };
 
@@ -106,7 +106,7 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
       setIsEditing(false);
       setEscapePressed(false);
       setOptionClicked(false);
-      handleSearch(searchValue, searchOption);
+      handleSearch(searchValue);
     } else if (e.key === 'Escape') {
       setOptionClicked(false);
       setSearchOption(null);
@@ -117,6 +117,10 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
       setOptionClicked(false);
     }
   };
+
+  useEffect(() => {
+    setSearchValue(searchQuery ?? '');
+  }, [searchQuery]);
 
   return (
     <>
@@ -148,7 +152,7 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
           <input
             type="text"
             placeholder="Search the Kadena Blockchain on"
-            value={searchValue ? searchValue : searchQuery}
+            value={searchValue}
             onChange={(e) => handleSearchValueChange(e)}
             onFocus={() => setIsEditing(true)}
             className={searchInputClass}

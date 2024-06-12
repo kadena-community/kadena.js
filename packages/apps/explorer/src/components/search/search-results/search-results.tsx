@@ -16,7 +16,6 @@ const SearchResults: FC<ISearchResultsProps> = ({
   loading,
   errors,
 }) => {
-  console.log(searchData);
   return (
     <>
       {loading && <div>Loading...</div>}
