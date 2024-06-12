@@ -31,7 +31,7 @@
     "@kadena-dev/markdown": "workspace:*",
     "knip": "^5.18.2",
     "only-allow": "^1.2.1",
-    "prettier": "~3.3.2",
+    "prettier": "~3.2.5",
     "prettier-plugin-organize-imports": "^3.2.4",
     "prettier-plugin-packagejson": "^2.5.0",
     "syncpack": "^12.3.2",

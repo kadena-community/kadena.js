@@ -21,14 +21,14 @@ importers:
         specifier: ^1.2.1
         version: 1.2.1
       prettier:
-        specifier: ~3.3.2
-        version: 3.3.2
+        specifier: ~3.2.5
+        version: 3.2.5
       prettier-plugin-organize-imports:
         specifier: ^3.2.4
-        version: 3.2.4(prettier@3.3.2)(typescript@5.4.5)
+        version: 3.2.4(prettier@3.2.5)(typescript@5.4.5)
       prettier-plugin-packagejson:
         specifier: ^2.5.0
-        version: 2.5.0(prettier@3.3.2)
+        version: 2.5.0(prettier@3.2.5)
       syncpack:
         specifier: ^12.3.2
         version: 12.3.2(typescript@5.4.5)
@@ -29415,9 +29415,6 @@ packages:
     resolution: {integrity: sha512-W+gxAq7aQ9dJIg/XLKGcRT0cvnStFAQHPaI0pvD0U2l6IVLueUAm3nwN7lkY62zZNmlvNx6jNtE4wlbS+CyqSg==}
     engines: {node: '>= 12.0.0'}
     hasBin: true
-    peerDependenciesMeta:
-      '@parcel/core':
-        optional: true
     dependencies:
       '@parcel/config-default': 2.12.0(@parcel/core@2.12.0)
       '@parcel/core': 2.12.0
@@ -30359,7 +30356,7 @@ packages:
       - supports-color
     dev: false
 
-  /prettier-plugin-organize-imports@3.2.4(prettier@3.3.2)(typescript@5.4.5):
+  /prettier-plugin-organize-imports@3.2.4(prettier@3.2.5)(typescript@5.4.5):
     resolution: {integrity: sha512-6m8WBhIp0dfwu0SkgfOxJqh+HpdyfqSSLfKKRZSFbDuEQXDDndb8fTpRWkUrX/uBenkex3MgnVk0J3b3Y5byog==}
     peerDependencies:
       '@volar/vue-language-plugin-pug': ^1.0.4
@@ -30372,11 +30369,11 @@ packages:
       '@volar/vue-typescript':
         optional: true
     dependencies:
-      prettier: 3.3.2
+      prettier: 3.2.5
       typescript: 5.4.5
     dev: true
 
-  /prettier-plugin-packagejson@2.5.0(prettier@3.3.2):
+  /prettier-plugin-packagejson@2.5.0(prettier@3.2.5):
     resolution: {integrity: sha512-6XkH3rpin5QEQodBSVNg+rBo4r91g/1mCaRwS1YGdQJZ6jwqrg2UchBsIG9tpS1yK1kNBvOt84OILsX8uHzBGg==}
     peerDependencies:
       prettier: '>= 1.16.0'
@@ -30384,7 +30381,7 @@ packages:
       prettier:
         optional: true
     dependencies:
-      prettier: 3.3.2
+      prettier: 3.2.5
       sort-package-json: 2.10.0
       synckit: 0.9.0
     dev: true
@@ -30404,12 +30401,6 @@ packages:
     resolution: {integrity: sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A==}
     engines: {node: '>=14'}
     hasBin: true
-
-  /prettier@3.3.2:
-    resolution: {integrity: sha512-rAVeHYMcv8ATV5d508CFdn+8/pHPpXeIid1DdrPwXnaAdH7cqjVbpJaT5eq4yRAFU/lsbwYwSF/n5iNrdJHPQA==}
-    engines: {node: '>=14'}
-    hasBin: true
-    dev: true
 
   /pretty-bytes@6.1.1:
     resolution: {integrity: sha512-mQUvGU6aUFQ+rNvTIAcZuWGRT9a6f6Yrg9bHs4ImKF+HZCEK+plBvnAZYSIQztknZF2qnzNtr6F8s0+IuptdlQ==}
