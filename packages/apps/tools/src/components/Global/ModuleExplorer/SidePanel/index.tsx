@@ -17,7 +17,7 @@ import {
 } from './styles.css';
 
 export interface ISidePanelProps<T> {
-  data: ICustomTreeProps<T>['data'];
+  items: ICustomTreeProps<T>['items'];
   isLoading?: boolean;
   onReload: ICustomTreeProps<T>['onReload'];
   onModuleClick: (module: TreeItem<T>) => void;
@@ -25,14 +25,14 @@ export interface ISidePanelProps<T> {
 }
 
 function SidePanel<T>({
-  data,
+  items,
   onReload,
   onModuleClick,
   onExpandCollapse,
 }: ISidePanelProps<T>) {
   return (
     <CustomAccordion
-      data={data}
+      items={items}
       defaultExpandedKey="explorer"
       className={containerStyle}
       itemProps={{ fillHeight: true }}

@@ -48,7 +48,7 @@ const ModuleExplorer = ({
   return (
     <div className={containerStyle}>
       <SidePanel<IncompleteModuleModel | Outline>
-        data={[
+        items={[
           {
             title: 'Explorer',
             key: 'explorer',
