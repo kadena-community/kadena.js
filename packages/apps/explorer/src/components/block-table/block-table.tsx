@@ -46,7 +46,6 @@ const BlockTable: React.FC = () => {
   }, [lastBlockHeight]);
 
   useEffect(() => {
-    console.log('triggered');
     if (oldBlocksData) {
       const updatedBlockData = addBlockData(blockData, oldBlocksData);
       setBlockData(updatedBlockData);
