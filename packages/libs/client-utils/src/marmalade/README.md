@@ -1,16 +1,16 @@
 ---
-title: kadena marmalade client-utils
+title: Marmalade client-utils
 description:
   The @kadena/client-utils library provides a TypeScript-based API for interacting
   with marmalade smart contracts on the Kadena network.
 menu: Reference
-label: Kadena Marmalade Client Utils
+label: Marmalade client utilities
 order: 5
 layout: full
 tags: ['TypeScript', 'Kadena', 'Kadena client utils', 'frontend', 'backend', 'marmalade', 'client-utils', 'utils']
 ---
 
-# Kadena Marmalade Client Utils
+# Marmalade client utilities
 
 The `@kadena/client-utils/marmalade` library provides a TypeScript-based API for interacting with marmalade smart contracts on the Kadena network. This library is designed to facilitate the creation, management, and utilization of NFTs, leveraging Marmalade’s advanced features such as enforceable royalties, secure escrow accounts, and flexible token policies.
 
