@@ -25,45 +25,38 @@ export function addBlockData(
     | NewBlocksSubscriptionResult['data']
     | BlocksFromHeightsQueryResult['data'],
 ): IChainBlock {
-  const data = { ...existingData };
+  const updatedData = { ...existingData };
 
-  if (!newData) return data;
+  if (!newData) return updatedData;
+
+  const addBlock = (block: any) => {
+    if (!updatedData[block.chainId]) {
+      updatedData[block.chainId] = {};
+    }
+
+    updatedData[block.chainId][block.height] = {
+      ...block,
+      txCount: block.transactions.totalCount,
+    };
+  };
 
   if ('newBlocks' in newData) {
-    if (!newData?.newBlocks) return data;
+    if (!newData.newBlocks) return updatedData;
 
     for (const block of newData.newBlocks) {
-      if (!block) {
-        continue;
-      }
-
-      if (!data[block.chainId]) {
-        data[block.chainId] = {};
-      }
-
-      data[block.chainId][block.height] = {
-        ...block,
-        txCount: block.transactions.totalCount,
-      };
+      addBlock(block);
     }
   } else if ('blocksFromHeight' in newData) {
-    if (!newData?.blocksFromHeight) return data;
+    if (!newData.blocksFromHeight) return updatedData;
 
     for (const block of newData.blocksFromHeight.edges) {
       if (!block?.node) {
         continue;
       }
 
-      if (!data[block.node.chainId]) {
-        data[block.node.chainId] = {};
-      }
-
-      data[block.node.chainId][block.node.height] = {
-        ...block.node,
-        txCount: block.node.transactions.totalCount,
-      };
+      addBlock(block.node);
     }
   }
 
-  return data;
+  return updatedData;
 }
