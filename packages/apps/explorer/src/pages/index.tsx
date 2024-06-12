@@ -1,5 +1,6 @@
+import BlockTable from '@/components/block-table/block-table';
 import SearchLayout from '@/components/layout/search-layout/search-layout';
-import Search from '@/components/search/search';
+import SearchComponent from '@/components/search/search-component/search-component';
 import { getSearchData } from '@/constants/search';
 import { LogoKdacolorLight } from '@kadena/react-icons/brand';
 import { Stack } from '@kadena/react-ui';
@@ -17,7 +18,8 @@ const Home: React.FC = () => {
         alignItems={'center'}
       >
         <LogoKdacolorLight />
-        <Search {...searchData} />
+        <SearchComponent {...searchData} />
+        <BlockTable />
       </Stack>
     </SearchLayout>
   );

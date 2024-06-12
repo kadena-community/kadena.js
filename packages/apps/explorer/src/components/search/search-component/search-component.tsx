@@ -7,7 +7,7 @@ import {
   searchBadgeBoxClass,
   searchBoxClass,
   searchInputClass,
-} from './search.css';
+} from './search-component.css';
 
 export type SearchItemTitle =
   | 'Account'
@@ -25,7 +25,7 @@ interface ISearchComponentProps {
   searchItems: ISearchItem[];
 }
 
-const SearchCombobox: React.FC<ISearchComponentProps> = ({
+const SearchComponent: React.FC<ISearchComponentProps> = ({
   placeholder,
   searchItems,
 }) => {
@@ -226,4 +226,4 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
   );
 };
 
-export default SearchCombobox;
+export default SearchComponent;

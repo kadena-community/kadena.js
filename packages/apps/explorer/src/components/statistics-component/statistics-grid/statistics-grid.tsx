@@ -1,12 +1,9 @@
 import { Grid, Stack, Text } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
 import React from 'react';
+import type { IStatisticsComponentProps } from '../statistics-component';
 
-interface ISearchComponentProps {
-  data: { label: string; value: string }[];
-}
-
-const StatisticsGrid: React.FC<ISearchComponentProps> = ({ data }) => {
+const StatisticsGrid: React.FC<IStatisticsComponentProps> = ({ data }) => {
   return (
     <Grid columns={2} borderStyle="solid" borderWidth="hairline">
       {data.map((item) => (
