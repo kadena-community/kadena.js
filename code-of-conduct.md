@@ -10,8 +10,8 @@ layout: normal
 
 Kadena is committed to fostering a friendly, safe, and inclusive environment for
 all, regardless of sex, gender identity and expression, sexual orientation,
-disability, mental illness, physical appearance, race, ethnicity, religion, nationality, 
-age, or level of experience.
+disability, mental illness, physical appearance, race, ethnicity, religion,
+nationality, age, or level of experience.
 
 Kadena upholds these values within its own workplace and when it engages with
 third parties. Community members are expected to abide by the same standards.
@@ -97,8 +97,8 @@ intent and forgive as long as you earn their trust.
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
 reported to the community leaders responsible for enforcement at
-[report@kadena.io](mailto:report@kadena.io). 
-All complaints will be reviewed and investigated promptly and fairly.
+[report@kadena.io][1]. All complaints will be reviewed and investigated promptly
+and fairly.
 
 All community leaders are obligated to respect the privacy and security of the
 reporter of any incident.
@@ -118,7 +118,13 @@ including staff.
 
 This code of conduct document draws from the following projects:
 
-- [Friends with Benefits Code of Conduct](https://github.com/friends-with-benefits/codeofconduct/blob/main/code.md) 
-- [Rust's Code of Conduct](https://foundation.rust-lang.org/policies/code-of-conduct/)
-- [Stumptown Syndicate's Code of Conduct](https://github.com/stumpsyn/policies/blob/master/citizen_code_of_conduct.md)
-- [Python's Discord Code of Conduct](https://www.pythondiscord.com/pages/code-of-conduct/)
+- [Friends with Benefits Code of Conduct][2]
+- [Rust's Code of Conduct][3]
+- [Stumptown Syndicate's Code of Conduct][4]
+- [Python's Discord Code of Conduct][5]
+
+[1]: mailto:report@kadena.io
+[2]: https://github.com/friends-with-benefits/codeofconduct/blob/main/code.md
+[3]: https://foundation.rust-lang.org/policies/code-of-conduct/
+[4]: https://github.com/stumpsyn/policies/blob/master/citizen_code_of_conduct.md
+[5]: https://www.pythondiscord.com/pages/code-of-conduct/
