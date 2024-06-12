@@ -28,10 +28,10 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
   isCompact,
 }) => {
   const blockDifficulty =
-    blockRowData[heights[0]]?.difficulty ||
-    blockRowData[heights[1]]?.difficulty ||
-    blockRowData[heights[2]]?.difficulty ||
     blockRowData[heights[3]]?.difficulty ||
+    blockRowData[heights[2]]?.difficulty ||
+    blockRowData[heights[1]]?.difficulty ||
+    blockRowData[heights[0]]?.difficulty ||
     'N/A';
 
   return (

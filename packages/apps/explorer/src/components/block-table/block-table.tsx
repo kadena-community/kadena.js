@@ -1,4 +1,5 @@
 import {
+  useBlocksFromHeightsQuery,
   useLastBlockHeightQuery,
   useNewBlocksSubscription,
 } from '@/__generated__/sdk';
@@ -22,17 +23,36 @@ const BlockTable: React.FC = () => {
   const { data: lastBlockHeight } = useLastBlockHeightQuery();
 
   const [blockData, setBlockData] = useState<IChainBlock>({});
-  const [blockHeights, updateBlockHeights] = useState<number[]>([4, 3, 2, 1]);
+  const [blockHeights, updateBlockHeights] = useState<number[]>([1, 2, 3, 4]);
+
+  const { data: oldBlocksData } = useBlocksFromHeightsQuery({
+    variables: {
+      startHeight: lastBlockHeight?.lastBlockHeight - 4,
+      endHeight: lastBlockHeight?.lastBlockHeight,
+      first: 80,
+    },
+    skip: !lastBlockHeight?.lastBlockHeight,
+  });
 
   useEffect(() => {
     if (lastBlockHeight?.lastBlockHeight) {
       const newBlockHeights = Array.from(
         { length: 4 },
         (_, i) => lastBlockHeight.lastBlockHeight - i,
-      );
+      ).reverse();
+
       updateBlockHeights(newBlockHeights);
     }
   }, [lastBlockHeight]);
+
+  useEffect(() => {
+    if (oldBlocksData) {
+      console.log(oldBlocksData.blocksFromHeight.edges.length);
+      const updatedBlockData = addBlockData(blockData, oldBlocksData);
+      console.log('updated block data', updatedBlockData);
+      setBlockData(updatedBlockData);
+    }
+  }, [oldBlocksData]);
 
   useEffect(() => {
     if (newBlocksData) {
@@ -45,11 +65,11 @@ const BlockTable: React.FC = () => {
         ...newBlocksData.newBlocks.map((block) => block.height),
       );
 
-      if (newMaxHeight > blockHeights[0]) {
+      if (newMaxHeight > blockHeights[3]) {
         const newBlockHeights = Array.from(
           { length: 4 },
           (_, i) => newMaxHeight - i,
-        );
+        ).reverse();
 
         updateBlockHeights(newBlockHeights);
       }

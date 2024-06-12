@@ -1,4 +1,7 @@
-import type { NewBlocksSubscriptionResult } from '@/__generated__/sdk';
+import type {
+  BlocksFromHeightsQueryResult,
+  NewBlocksSubscriptionResult,
+} from '@/__generated__/sdk';
 
 interface IBlockData {
   hash: string;
@@ -18,25 +21,48 @@ export interface IChainBlock {
 
 export function addBlockData(
   existingData: IChainBlock,
-  newData: NewBlocksSubscriptionResult['data'],
+  newData:
+    | NewBlocksSubscriptionResult['data']
+    | BlocksFromHeightsQueryResult['data'],
 ): IChainBlock {
   const data = { ...existingData };
 
-  if (!newData?.newBlocks) return data;
+  if (!newData) return data;
 
-  for (const block of newData.newBlocks) {
-    if (!block) {
-      continue;
+  if ('newBlocks' in newData) {
+    if (!newData?.newBlocks) return data;
+
+    for (const block of newData.newBlocks) {
+      if (!block) {
+        continue;
+      }
+
+      if (!data[block.chainId]) {
+        data[block.chainId] = {};
+      }
+
+      data[block.chainId][block.height] = {
+        ...block,
+        txCount: block.transactions.totalCount,
+      };
     }
+  } else if ('blocksFromHeight' in newData) {
+    if (!newData?.blocksFromHeight) return data;
 
-    if (!data[block.chainId]) {
-      data[block.chainId] = {};
+    for (const block of newData.blocksFromHeight.edges) {
+      if (!block?.node) {
+        continue;
+      }
+
+      if (!data[block.node.chainId]) {
+        data[block.node.chainId] = {};
+      }
+
+      data[block.node.chainId][block.node.height] = {
+        ...block.node,
+        txCount: block.node.transactions.totalCount,
+      };
     }
-
-    data[block.chainId][block.height] = {
-      ...block,
-      txCount: block.transactions.totalCount,
-    };
   }
 
   return data;
