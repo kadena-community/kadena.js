@@ -2,22 +2,12 @@ import { useNetwork } from '@/modules/network/network.hook';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IKeySource } from '@/modules/wallet/wallet.repository';
 import { Box, Button, Card, Heading } from '@kadena/react-ui';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export function HomePage() {
-  const {
-    accounts,
-    isUnlocked,
-    createKey,
-    createKAccount,
-    keySources,
-    profile,
-  } = useWallet();
+  const { accounts, createKey, createKAccount, keySources, profile } =
+    useWallet();
   const { activeNetwork } = useNetwork();
-
-  if (!isUnlocked) {
-    return <Navigate to="/select-profile" replace />;
-  }
   const createAccount = async (keySource: IKeySource) => {
     if (!profile || !activeNetwork) {
       throw new Error('Profile or activeNetwork not found!!');

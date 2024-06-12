@@ -4,12 +4,15 @@ import {
   Outlet,
   Route,
   RouterProvider,
+  Routes as RouterRoutes,
   createBrowserRouter,
   createMemoryRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
 
+import { CommunicationProvider } from '@/modules/communication/communication.provider';
 import { AccountDiscovery } from '@/pages/account-discovery/account-dsicovery';
+import { Connect } from '@/pages/connect/connect';
 import { ImportWallet } from '@/pages/import-wallet/import-wallet';
 import { CreateNetwork } from '@/pages/networks/create-network';
 import { Networks } from '@/pages/networks/networks';
@@ -28,9 +31,9 @@ import { LayoutMini } from './layout-mini';
 const ProtectedRoute: FC<
   PropsWithChildren<{
     isAllowed: boolean;
-    redirectPath?: string;
+    redirectPath: string;
   }>
-> = ({ isAllowed, redirectPath = '/select-profile', children }) => {
+> = ({ isAllowed, redirectPath, children }) => {
   if (!isAllowed) {
     console.log('not allowed, redirecting to', redirectPath);
     return <Navigate to={redirectPath} replace />;
@@ -41,15 +44,32 @@ const ProtectedRoute: FC<
 
 export const Routes: FC = () => {
   const { isUnlocked } = useWallet();
+
   const routes = createRoutesFromElements(
-    <>
+    <Route element={<CommunicationProvider children={<Outlet />} />}>
       <Route element={<LayoutMini />}>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/select-profile" element={<SelectProfile />} />
-        <Route path="/create-profile/*" element={<CreateProfile />} />
-        <Route path="/unlock-profile/:profileId" element={<UnlockProfile />} />
-        <Route path="/import-wallet" element={<ImportWallet />} />
-        <Route element={<ProtectedRoute isAllowed={isUnlocked} />}>
+        <Route
+          element={<ProtectedRoute isAllowed={!isUnlocked} redirectPath="/" />}
+        >
+          <Route path="/select-profile" element={<SelectProfile />} />
+          <Route path="/create-profile/*" element={<CreateProfile />} />
+          <Route
+            path="/unlock-profile/:profileId"
+            element={<UnlockProfile />}
+          />
+          <Route path="/import-wallet" element={<ImportWallet />} />
+        </Route>
+      </Route>
+      <Route
+        element={
+          <ProtectedRoute
+            isAllowed={isUnlocked}
+            redirectPath="/select-profile"
+          />
+        }
+      >
+        <Route element={<LayoutMini />}>
+          <Route path="/" element={<HomePage />} />
           <Route
             path="/backup-recovery-phrase/:keySourceId"
             element={<BackupRecoveryPhrase />}
@@ -63,20 +83,20 @@ export const Routes: FC = () => {
             element={<AccountDiscovery />}
           />
         </Route>
-        <Route path="*" element={<p>Not found!</p>} />
+        <Route element={<Layout />}>
+          <Route path="/accounts/:account" element={<p>Account</p>} />
+          <Route path="/sig-builder" element={<SignatureBuilder />} />
+          <Route path="/networks" element={<Networks />} />
+          <Route path="/networks/create" element={<CreateNetwork />} />
+          <Route path="/connect" element={<Connect />} />
+        </Route>
       </Route>
-      <Route element={<Layout />}>
-        <Route path="/accounts/:account" element={<p>Account</p>} />,
-        <Route path="/sig-builder" element={<SignatureBuilder />} />,
-        <Route path="/networks" element={<Networks />} />
-        <Route path="/networks/create" element={<CreateNetwork />} />
-      </Route>
-      ,
-    </>,
+      <Route path="*" element={<p>Not found!</p>} />
+    </Route>,
   );
 
   const handler =
     getScriptType() === 'POPUP' ? createMemoryRouter : createBrowserRouter;
 
-  return <RouterProvider router={handler(routes)} />;
+  return <RouterProvider router={handler(routes)}></RouterProvider>;
 };
