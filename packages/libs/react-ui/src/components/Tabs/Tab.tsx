@@ -8,20 +8,20 @@ import type { Node, TabListState } from 'react-stately';
 import { Button } from '../Button';
 import { closeButtonClass, tabItemClass } from './Tabs.css';
 
-interface ITabProps extends AriaTabProps {
-  item: Node<object>;
-  state: TabListState<object>;
+interface ITabProps<T> extends AriaTabProps {
+  item: Node<T>;
+  state: TabListState<T>;
   inverse?: boolean;
   className?: string;
   borderPosition: 'top' | 'bottom';
-  onClose?: (item: Node<object>) => void;
+  onClose?: (item: Node<T>) => void;
   isCompact?: boolean;
 }
 
 /**
  * @internal this should not be used, check the Tabs.stories
  */
-export const Tab = ({
+export function Tab<T>({
   item,
   state,
   className,
@@ -29,7 +29,7 @@ export const Tab = ({
   borderPosition = 'bottom',
   isCompact = false,
   onClose,
-}: ITabProps): ReactNode => {
+}: ITabProps<T>): ReactNode {
   const { key, rendered } = item;
   const ref = useRef(null);
   const { tabProps } = useTab({ key }, state, ref);
@@ -71,4 +71,4 @@ export const Tab = ({
       )}
     </div>
   );
-};
+}
