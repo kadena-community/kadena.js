@@ -1,3 +1,4 @@
+import { SearchOptionEnum } from '@/hooks/search/utils/utils';
 import { truncateValues } from '@/services/format';
 import type { ApolloError } from '@apollo/client';
 import { MonoSearch } from '@kadena/react-icons/system';
@@ -18,12 +19,6 @@ export type SearchItemTitle =
   | 'Block Hash'
   | 'Events';
 
-export enum SearchOptionEnum {
-  ACCOUNT,
-  REQUESTKEY,
-  BLOCKHEIGHT,
-  EVENT,
-}
 export interface ISearchItem {
   title: SearchItemTitle;
   data?: any;
