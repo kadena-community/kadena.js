@@ -37,3 +37,11 @@ export const transactions: DocumentNode = gql`
     }
   }
 `;
+
+export const coreTransaction: DocumentNode = gql`
+  query transaction($requestKey: String!) {
+    transaction(requestKey: $requestKey) {
+      ...CoreTransactionFields
+    }
+  }
+`;

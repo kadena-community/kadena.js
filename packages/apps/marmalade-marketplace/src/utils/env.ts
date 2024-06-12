@@ -34,8 +34,10 @@ marmalade-v2.ledger.BUY,
 marmalade-v2.ledger.WITHDRAW,
 marmalade-v2.policy-manager.QUOTE,
 marmalade-sale.conventional-auction.AUCTION_CREATED,
+marmalade-sale.conventional-auction.MANAGE_AUCTION,
 marmalade-sale.conventional-auction.BID_PLACED,
 marmalade-sale.dutch-auction.AUCTION_CREATED,
+marmalade-sale.dutch-auction.MANAGE_AUCTION,
 marmalade-sale.dutch-auction.PRICE_ACCEPTED
 `;
 

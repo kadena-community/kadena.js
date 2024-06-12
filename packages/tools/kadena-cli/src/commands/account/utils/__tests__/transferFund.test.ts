@@ -1,13 +1,35 @@
-import { HttpResponse, http } from 'msw';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterAll, afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { MAINNET_FUND_TRANSFER_ERROR_MESSAGE } from '../../../../constants/account.js';
-import { server } from '../../../../mocks/server.js';
+import { devNetConfigMock } from '../../../../mocks/network.js';
+import { server, useMswHandler } from '../../../../mocks/server.js';
 import { transferFund } from '../transferFund.js';
-import { devNetConfigMock } from './mocks.js';
 
 describe('transferFund', () => {
   beforeEach(() => {
+    useMswHandler({
+      network: devNetConfigMock,
+      response: {
+        result: {
+          data: 'Write succeeded',
+          status: 'success',
+        },
+      },
+    });
+    useMswHandler({
+      network: devNetConfigMock,
+      endpoint: 'send',
+      response: {
+        requestKeys: ['requestKey-1', 'requestKey-2'],
+      },
+    });
+  });
+
+  afterEach(() => {
     server.resetHandlers();
+  });
+
+  afterAll(() => {
+    server.close();
   });
 
   it('should throw an error when trying to transfer fund on mainnet', async () => {
@@ -49,24 +71,18 @@ describe('transferFund', () => {
   });
 
   it('should throw an error when local api transaction failure', async () => {
-    server.use(
-      http.post(
-        'http://localhost:8080/chainweb/0.0/development/chain/1/pact/api/v1/local',
-        () => {
-          return HttpResponse.json(
-            {
-              result: {
-                status: 'failure',
-                error: {
-                  message: 'shit hit the fan',
-                },
-              },
-            },
-            { status: 200 },
-          );
+    useMswHandler({
+      network: devNetConfigMock,
+      endpoint: 'local',
+      response: {
+        result: {
+          status: 'failure',
+          error: {
+            message: 'shit hit the fan',
+          },
         },
-      ),
-    );
+      },
+    });
 
     await expect(async () => {
       await transferFund({
@@ -82,14 +98,12 @@ describe('transferFund', () => {
   });
 
   it('should throw an error when any sort of error happens', async () => {
-    server.use(
-      http.post(
-        'http://localhost:8080/chainweb/0.0/development/chain/1/pact/api/v1/send',
-        () => {
-          return new HttpResponse('Something went wrong', { status: 500 });
-        },
-      ),
-    );
+    useMswHandler({
+      network: devNetConfigMock,
+      endpoint: 'send',
+      response: 'Something went wrong',
+      status: 500,
+    });
 
     await expect(async () => {
       await transferFund({
