@@ -5,6 +5,7 @@ import {
   blockGridStyle,
   blockHeightColumnHeaderStyle,
 } from '../block-table.css';
+import { headerColumnStyle } from './block-header.css';
 
 interface IBlockTableHeaderProps {
   startColumns: Array<{ title: string; subtitle?: string }>;
@@ -24,15 +25,7 @@ const BlockTableHeader: React.FC<IBlockTableHeaderProps> = ({
   return (
     <Grid columns={4} className={blockGridStyle}>
       {isCompact ? (
-        <Stack
-          key={0}
-          flexDirection={'column'}
-          alignItems={'center'}
-          justifyContent={'center'}
-          borderStyle="solid"
-          borderWidth="hairline"
-          padding={'md'}
-        >
+        <Stack key={0} className={headerColumnStyle}>
           <Text variant="body" size="small">
             {startColumns[0].title}
           </Text>
@@ -42,15 +35,7 @@ const BlockTableHeader: React.FC<IBlockTableHeaderProps> = ({
         </Stack>
       ) : (
         startColumns.map((column, index) => (
-          <Stack
-            key={index}
-            flexDirection={'column'}
-            alignItems={'center'}
-            justifyContent={'center'}
-            borderStyle="solid"
-            borderWidth="hairline"
-            padding={'md'}
-          >
+          <Stack key={index} className={headerColumnStyle}>
             <Text variant="body" size="small">
               {column.title}
             </Text>
@@ -64,14 +49,7 @@ const BlockTableHeader: React.FC<IBlockTableHeaderProps> = ({
       )}
       <Stack borderStyle="solid" borderWidth="hairline">
         {heightColumns.map((height, index) => (
-          <Stack
-            key={index}
-            flexDirection={'column'}
-            alignItems={'center'}
-            padding={'sm'}
-            justifyContent={'center'}
-            className={blockHeightColumnHeaderStyle}
-          >
+          <Stack key={index} className={blockHeightColumnHeaderStyle}>
             <Media greaterThanOrEqual="sm">
               <Text variant="body" size="small">
                 {blockHeightColumnDescription}
@@ -85,14 +63,7 @@ const BlockTableHeader: React.FC<IBlockTableHeaderProps> = ({
         ))}
       </Stack>
       {!isCompact && (
-        <Stack
-          flexDirection={'column'}
-          alignItems={'center'}
-          justifyContent={'center'}
-          borderStyle="solid"
-          borderWidth="hairline"
-          padding={'sm'}
-        >
+        <Stack className={headerColumnStyle}>
           <Text variant="body" size="small">
             {endColumn.title}
           </Text>

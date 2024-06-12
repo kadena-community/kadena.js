@@ -1,9 +1,17 @@
-import { responsiveStyle } from '@kadena/react-ui/styles';
+import { atoms, responsiveStyle } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
-export const blockHeightColumnHeaderStyle = style({
-  width: '25%',
-});
+export const blockHeightColumnHeaderStyle = style([
+  atoms({
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: 'sm',
+    justifyContent: 'center',
+  }),
+  {
+    width: '25%',
+  },
+]);
 
 export const blockGridStyle = style([
   responsiveStyle({

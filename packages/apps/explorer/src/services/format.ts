@@ -1,10 +1,9 @@
 import type { NetworkInfo } from '@/__generated__/sdk';
 
 /**
- * this function gets your numeric value and returns a string with the value and the unit (e.g. 1023 will be formatted to 1.23 K)
+ * This function gets your numeric value and returns a string with the value and the unit (e.g. 1023 will be formatted to 1.02 K)
  * @param number Value to be formatted
  * @returns string value with unit
- *
  */
 export function formatNumberWithUnit(number: number): string {
   if (number === 0) {
@@ -13,7 +12,8 @@ export function formatNumberWithUnit(number: number): string {
   const units = ['', 'K', 'M', 'B', 'T', 'P', 'E'];
   const unitIndex = Math.floor(Math.log10(Math.abs(number)) / 3);
   const formattedNumber = (number / Math.pow(1000, unitIndex)).toFixed(2);
-  const returnString = `${formattedNumber} ${units[unitIndex]}`;
+  const unit = units[unitIndex] || '';
+  const returnString = `${formattedNumber} ${unit}`;
 
   return returnString;
 }
