@@ -1,20 +1,24 @@
-import {
-  useBlockQuery,
-  useBlocksFromHeightsQuery,
-  useEventsQuery,
-  useTransactionRequestKeyQuery,
-} from '@/__generated__/sdk';
+import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
 import type { ISearchItem } from '@/components/search/search';
 import type { ApolloError } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useAccount } from './utils/account';
+import { useBlockHash } from './utils/block-hash';
+import { useBlockHeight } from './utils/block-height';
+import { useEvent } from './utils/event';
 import {
   SearchOptionEnum,
   checkLoading,
   isSearchRequested,
   returnSearchQuery,
 } from './utils/utils';
+
+export interface IHookReturnValue<T> {
+  loading: boolean;
+  error?: ApolloError;
+  data?: T;
+}
 
 export const useSearch = () => {
   const router = useRouter();
@@ -35,61 +39,19 @@ export const useSearch = () => {
     loading: blockLoading,
     data: blockData,
     error: blockError,
-  } = useBlockQuery({
-    variables: {
-      hash: returnSearchQuery(
-        searchQuery,
-        searchOption,
-        SearchOptionEnum.BLOCKHASH,
-      ),
-    },
-    skip:
-      !searchQuery ||
-      !isSearchRequested(searchOption, SearchOptionEnum.BLOCKHASH),
-  });
+  } = useBlockHash(searchQuery, searchOption);
 
   const {
     loading: blockHeightLoading,
     data: blockHeightData,
     error: blockHeightError,
-  } = useBlocksFromHeightsQuery({
-    variables: {
-      startHeight: parseInt(
-        returnSearchQuery(
-          searchQuery,
-          searchOption,
-          SearchOptionEnum.BLOCKHEIGHT,
-        ),
-      ),
-      endHeight: parseInt(
-        returnSearchQuery(
-          searchQuery,
-          searchOption,
-          SearchOptionEnum.BLOCKHEIGHT,
-        ),
-      ),
-    },
-    skip:
-      !searchQuery ||
-      isNaN(parseInt(searchQuery)) ||
-      !isSearchRequested(searchOption, SearchOptionEnum.BLOCKHEIGHT),
-  });
+  } = useBlockHeight(searchQuery, searchOption);
 
   const {
     loading: eventLoading,
     data: eventData,
     error: eventError,
-  } = useEventsQuery({
-    variables: {
-      qualifiedName: returnSearchQuery(
-        searchQuery,
-        searchOption,
-        SearchOptionEnum.EVENT,
-      ),
-    },
-    skip:
-      !searchQuery || !isSearchRequested(searchOption, SearchOptionEnum.EVENT),
-  });
+  } = useEvent(searchQuery, searchOption);
   const {
     loading: requestKeyLoading,
     data: requestKeyData,
@@ -108,6 +70,7 @@ export const useSearch = () => {
   });
 
   useEffect(() => {
+    console.log(1);
     if (!searchQuery) return;
     const { q } = router.query;
     if (q === searchQuery) return;
@@ -118,12 +81,12 @@ export const useSearch = () => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       router.replace(`${router.route}?q=${searchQuery}`);
     }
-  }, [searchQuery, router]);
+  }, [searchQuery, router, searchOption]);
 
   useEffect(() => {
     const { q } = router.query;
     setSearchQuery(q as string);
-  }, [router.isReady]);
+  }, [router.isReady, setSearchQuery, router.query]);
 
   useEffect(() => {
     setLoading(
@@ -145,11 +108,11 @@ export const useSearch = () => {
 
   useEffect(() => {
     const errors: ApolloError[] = [];
-    accountError && errors.push(accountError);
-    blockError && errors.push(blockError);
-    eventError && errors.push(eventError);
-    blockHeightError && errors.push(blockHeightError);
-    requestKeyError && errors.push(requestKeyError);
+    if (accountError) errors.push(accountError);
+    if (blockError) errors.push(blockError);
+    if (eventError) errors.push(eventError);
+    if (blockHeightError) errors.push(blockHeightError);
+    if (requestKeyError) errors.push(requestKeyError);
 
     setErrors(errors);
   }, [accountError, blockError, blockHeightError, eventError, requestKeyError]);
