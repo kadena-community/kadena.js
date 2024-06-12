@@ -111,8 +111,13 @@ export const useSearch = () => {
     if (!searchQuery) return;
     const { q } = router.query;
     if (q === searchQuery) return;
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    router.replace(`${router.route}?q=${searchQuery}`);
+    if (searchOption === SearchOptionEnum.ACCOUNT) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      router.replace(`${router.route}?q=${searchQuery}&fungible=coin`);
+    } else {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      router.replace(`${router.route}?q=${searchQuery}`);
+    }
   }, [searchQuery, router]);
 
   useEffect(() => {

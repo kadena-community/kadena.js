@@ -1,4 +1,5 @@
 import CompactTable from '@/components/compact-table/compact-table';
+import { FormatAmount } from '@/components/compact-table/utils/format-amount';
 import { SearchOptionEnum } from '@/hooks/search/utils/utils';
 import type { ApolloError } from '@apollo/client';
 import type { FC } from 'react';
@@ -47,6 +48,7 @@ const SearchResults: FC<ISearchResultsProps> = ({
                 label: 'Balance',
                 key: 'balance',
                 width: '20%',
+                render: FormatAmount(),
               },
             ]}
             data={Object.values(searchData[SearchOptionEnum.ACCOUNT].data)}

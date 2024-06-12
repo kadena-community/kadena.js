@@ -5,7 +5,7 @@ import { MonoSearch } from '@kadena/react-icons/system';
 import { Badge, Box } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
 import type { Dispatch, SetStateAction } from 'react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   searchBadgeBoxClass,
   searchBoxClass,
@@ -44,6 +44,26 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
   const [searchValue, setSearchValue] = useState<string>('');
   const [optionClicked, setOptionClicked] = useState(false);
   const [escapePressed, setEscapePressed] = useState(false);
+  const ref = useRef<HTMLInputElement>(null);
+
+  const handleSearchOption = (
+    inferedOption: SearchItemTitle | undefined,
+  ): void => {
+    if (inferedOption === 'Account') {
+      setSearchOption(SearchOptionEnum.ACCOUNT);
+    }
+    if (inferedOption === 'Request Key') {
+      setSearchOption(SearchOptionEnum.REQUESTKEY);
+    }
+
+    if (inferedOption === 'Block Height') {
+      setSearchOption(SearchOptionEnum.BLOCKHEIGHT);
+    }
+
+    if (!inferedOption || inferedOption === undefined) {
+      setSearchOption(null);
+    }
+  };
 
   const inferOption = (value: string): SearchItemTitle | undefined => {
     if (
@@ -62,7 +82,8 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
     return undefined;
   };
 
-  const handleSearch = (value: string): void => {
+  const handleSearch = (): void => {
+    const value = ref.current?.value ?? '';
     if (setSearchQuery) setSearchQuery(value);
   };
 
@@ -74,20 +95,7 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
     if (escapePressed || optionClicked) return;
 
     const inferedOption = inferOption(e.target.value);
-    if (inferedOption === 'Account') {
-      setSearchOption(SearchOptionEnum.ACCOUNT);
-    }
-    if (inferedOption === 'Request Key') {
-      setSearchOption(SearchOptionEnum.REQUESTKEY);
-    }
-
-    if (inferedOption === 'Block Height') {
-      setSearchOption(SearchOptionEnum.BLOCKHEIGHT);
-    }
-
-    if (!inferedOption || inferedOption === undefined) {
-      setSearchOption(null);
-    }
+    handleSearchOption(inferedOption);
   };
 
   const handleSearchValueKeyDown = (
@@ -106,7 +114,7 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
       setIsEditing(false);
       setEscapePressed(false);
       setOptionClicked(false);
-      handleSearch(searchValue);
+      handleSearch();
     } else if (e.key === 'Escape') {
       setOptionClicked(false);
       setSearchOption(null);
@@ -120,6 +128,7 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
 
   useEffect(() => {
     setSearchValue(searchQuery ?? '');
+    handleSearchOption(inferOption(searchQuery ?? ''));
   }, [searchQuery]);
 
   return (
@@ -150,11 +159,12 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
           <MonoSearch />
 
           <input
+            ref={ref}
             type="text"
             placeholder="Search the Kadena Blockchain on"
             value={searchValue}
             onChange={(e) => handleSearchValueChange(e)}
-            onFocus={() => setIsEditing(true)}
+            onClick={() => setIsEditing((v) => !v)}
             className={searchInputClass}
           />
 
@@ -187,6 +197,7 @@ const SearchCombobox: React.FC<ISearchComponentProps> = ({
                 key={index}
                 onMouseDown={() => setOptionClicked(true)}
                 onClick={() => {
+                  handleSearch();
                   setSearchOption(index);
                   setIsEditing(false);
                 }}
