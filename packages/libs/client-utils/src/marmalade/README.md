@@ -66,11 +66,9 @@ You can import Marmalade functions into TypeScript program with the following st
 import { mintToken } from '@kadena/client-utils/marmalade';
 ```
 
-## Common Things
+## CommonProps
 
-### CommonProps
-
-This interface provides common properties used across various functions, including metadata for transaction control, additional capabilities or additional signers for granular control.
+Use the `CommomProps` interface to access common properties—including metadata for transaction control, additional capabilities, or additional signers—that are used by other functions.
 
 ```typescript
 export interface CommonProps {
@@ -96,9 +94,9 @@ export interface CommonProps {
 }
 ```
 
-### IClientConfig
+## IClientConfig
 
-Every function accepts `IClientConfig` to know where to send the transaction.
+Use the `IClientConfig` interface to specify the network location to send the transactions to.
 
 ```typescript
 export interface IClientConfig {
@@ -117,33 +115,31 @@ const config: IClientConfig = {
 };
 ```
 
-## Functions
+## burnToken
 
-### Burn Token
-
-The `burnToken` function allows you to burn (destroy) a specified amount of a token. This operation reduces the total supply of the token.
+Use `burnToken` function to eliminate a specified amount of a token. This operation reduces the total supply of the token.
 
 ```typescript
 burnToken(inputs, config): IEmitterWrapper
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter    | Type         | Description                  |
 | ------------ | ------------ | ---------------------------- |
-| policyConfig | object       | concrete policies used       |
-| tokenId      | string       | token to burn                |
-| accountName  | string       | owner of the token           |
-| chainId      | ChainId      | token origin                 |
-| guard        | object       | owner/burner guard           |
-| amount       | IPactDecimal | amount to burn               |
+| policyConfig | object       | Concrete policies used when the token was created. |
+| tokenId      | string       | Token identifier for the token you want to burn. |
+| accountName  | string       | Owner of the token you want to burn. |
+| chainId      | ChainId      | Chain identifier for the chain where the token was created. Valid values are 0 to 19. |
+| guard        | object       | Token owner or the burn guard, if applicable. |
+| amount       | IPactDecimal | Amount to burn. |
 
-#### Output
+### Output
 ```typescript
 boolean
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await burnToken({
@@ -164,15 +160,14 @@ const result = await burnToken({
 ```
 
 
-### Buy Token
+## buyToken
 
-The `buyToken` function enables the purchase of a specified token within a defined sale configuration. This function handles the transaction between the seller and buyer, including any applicable auction logic.
-
+Use `buyToken` to enable the purchase of a specified token within a defined sale configuration. This function handles the transaction between the seller and buyer, including any applicable auction logic.
 ```typescript
 buyToken(inputs, config): IEmitterWrapper
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter             | Type                   | Description                                  |
 | --------------------- | ---------------------- | -------------------------------------------- |
@@ -201,7 +196,7 @@ buyToken(inputs, config): IEmitterWrapper
 | updatedPrice | IPactDecimal | current auction price |
 | escrow       | object       | escrow sale account   |
 
-#### Output
+### Output
 ```typescript
 string // sale-id
 ```
@@ -231,15 +226,15 @@ const result = await buyToken({
 ```
 
 
-### Create Auction
+## createAuction
 
-The `createAuction` function facilitates the creation of an auction for a specified token. It supports both conventional and Dutch auction types, allowing the seller to define start and end dates, prices, and other relevant parameters.
+Use `createAuction` to create an auction for a specified token. This function supports both conventional and dutch auction types, allowing the seller to define start and end dates, prices, and other relevant parameters.
 
 ```typescript
 createAuction(inputs, config): IEmitterWrapper
 ```
 
-#### Common inputs
+### Common inputs
 
 | Parameter              | Type                   | Description                                  |
 | ---------------------- | ---------------------- | -------------------------------------------- |
@@ -247,7 +242,7 @@ createAuction(inputs, config): IEmitterWrapper
 | chainId                | ChainId                | token origin                                 |
 | seller                 | object                 | seller account                               |
 
-#### Conventional Auction specific inputs
+#### Conventional auction specific inputs
 
 | Parameter              | Type                   | Description                                  |
 | ---------------------- | ---------------------- | -------------------------------------------- |
@@ -257,7 +252,7 @@ createAuction(inputs, config): IEmitterWrapper
 | endDate                | IPactInt               | when auction ends                            |
 | reservedPrice          | IPactDecimal           | reserved price of the sale                   |
 
-#### Dutch Auction specific inputs
+#### Dutch auction specific inputs
 
 | Parameter              | Type                   | Description                                  |
 | ---------------------- | ---------------------- | -------------------------------------------- |
@@ -269,12 +264,13 @@ createAuction(inputs, config): IEmitterWrapper
 | reservedPrice          | IPactDecimal           | reserved price of the sale                   |
 | priceIntervalInSeconds | IPactInt               | price change interval                        |
 
-#### Output
+### Output
+
 ```typescript
 boolean
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await createAuction({
@@ -300,15 +296,15 @@ const result = await createAuction({
 ```
 
 
-### Update Auction
+## updateAuction
 
-The `updateAuction` function allows the modification of an existing auction's details. It supports updates to both conventional and Dutch auction types, enabling changes to start and end dates, prices, and other relevant parameters.
+Use `updateAuction` to modify an existing auction's details. This function supports updates to both conventional and dutch auction types, enabling changes to start and end dates, prices, and other relevant parameters.
 
 ```typescript
 updateAuction(inputs, config): IEmitterWrapper
 ```
 
-#### Common inputs
+### Common inputs
 
 | Parameter              | Type                   | Description                                  |
 | ---------------------- | ---------------------- | -------------------------------------------- |
@@ -316,7 +312,7 @@ updateAuction(inputs, config): IEmitterWrapper
 | chainId                | ChainId                | token origin                                 |
 | seller                 | object                 | seller account                               |
 
-#### Conventional Auction specific inputs
+#### Conventional auction specific inputs
 
 | Parameter              | Type                   | Description                                  |
 | ---------------------- | ---------------------- | -------------------------------------------- |
@@ -326,7 +322,7 @@ updateAuction(inputs, config): IEmitterWrapper
 | endDate                | IPactInt               | when auction ends                            |
 | reservedPrice          | IPactDecimal           | reserved price of the sale                   |
 
-#### Dutch Auction specific inputs
+#### Dutch auction specific inputs
 
 | Parameter              | Type                   | Description                                  |
 | ---------------------- | ---------------------- | -------------------------------------------- |
@@ -338,7 +334,7 @@ updateAuction(inputs, config): IEmitterWrapper
 | reservedPrice          | IPactDecimal           | reserved price of the sale                   |
 | priceIntervalInSeconds | IPactInt               | price change interval                        |
 
-#### Output
+### Output
 ```typescript
 boolean
 ```
@@ -369,15 +365,15 @@ const result = await updateAuction({
 ```
 
 
-### Create Bid Id
+## createBidId
 
-The `createBidId` function generates a unique bid ID for a specified auction.
+Use `createBidId` to generate a unique bid identifier for a specified auction.
 
 ```typescript
 createBidId(inputs): string
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter              | Type                   | Description                                  |
 | ---------------------- | ---------------------- | -------------------------------------------- |
@@ -387,12 +383,12 @@ createBidId(inputs): string
 | networkId              | NetworkId              | target network                               |
 | host                   | IClientConfig['host']  | target node                                  |
 
-#### Output
+### Output
 ```typescript
 string // bid-id
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await createBidId({
@@ -407,15 +403,15 @@ const result = await createBidId({
 
 
 
-### Create Collection Id
+## createCollectionId
 
-The `createCollectionId` function generates a unique collection ID.
+Use `createCollectionId` to generate a unique collection identifier.
 
 ```typescript
 createCollectionId(inputs): string
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter              | Type           | Description            |
 | -------------- | ---------------------- | ---------------------- |
@@ -425,12 +421,12 @@ createCollectionId(inputs): string
 | networkId      | NetworkId              | target network         |
 | host           | IClientConfig['host']  | target node            |
 
-#### Output
+### Output
 ```typescript
 string // collection-id
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await createCollectionId({
@@ -448,15 +444,15 @@ const result = await createCollectionId({
 ```
 
 
-### Create Collection
+## createCollection
 
-The `createCollection` function initiates the creation of a new collection, specifying its name, size, operator, and other relevant metadata.
+Use `createCollection` to initiate the creation of a new collection, specifying its name, size, operator, and other relevant metadata.
 
 ```typescript
 createCollection(inputs, config): IEmitterWrapper
 ```
 
-#### Common inputs
+### Common inputs
 
 | Parameter              | Type                      | Description                 |
 | ---------------------- | ------------------------- | --------------------------- |
@@ -467,12 +463,12 @@ createCollection(inputs, config): IEmitterWrapper
 | operator               | object                    | operator account with guard |
 | meta                   | object                    | transaction metadata        |
 
-#### Output
+### Output
 ```typescript
 boolean
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await createCollection({
@@ -493,15 +489,14 @@ const result = await createCollection({
 ```
 
 
-### Create Token Id
+## createTokenId
 
-The `createTokenId` function generates a unique token ID.
-
+Use `createTokenId` to generate a unique token identifier.
 ```typescript
 createTokenId(inputs): string
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter      | Type                      | Description            |
 | -------------- | ------------------------- | ---------------------- |
@@ -515,12 +510,12 @@ createTokenId(inputs): string
 | networkId      | NetworkId                 | target network         |
 | host           | IClientConfig['host']     | target node            |
 
-#### Output
+### Output
 ```typescript
 string // token-id
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await createTokenId({
@@ -540,15 +535,15 @@ const result = await createTokenId({
 ```
 
 
-### Create Token
+## createToken
 
-The `createToken` function enables the creation of a new token applying relevant policies.
+Use `createToken` to create a new token with all relevant policies applied.
 
 ```typescript
 createToken(inputs, config): IEmitterWrapper
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter      | Type                      | Description                |
 | -------------- | ------------------------- | -------------------------- |
@@ -587,12 +582,12 @@ createToken(inputs, config): IEmitterWrapper
 | -------------- | ------------ | ------------------------------ |
 | collectionId   | string       | collection to add the token to |
 
-#### Output
+### Output
 ```typescript
 boolean
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await createToken({
@@ -612,15 +607,15 @@ const result = await createToken({
 ```
 
 
-### Escrow Account
+## escrowAccount
 
-The `escrowAccount` function retrieves the details of an escrow account.
+Use `escrowAccount` to retrieve the details for a specified escrow account.
 
 ```typescript
 escrowAccount(inputs): string
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter      | Type                      | Description            |
 | -------------- | ------------------------- | ---------------------- |
@@ -629,12 +624,12 @@ escrowAccount(inputs): string
 | networkId      | NetworkId                 | target network         |
 | host           | IClientConfig['host']     | target node            |
 
-#### Output
+### Output
 ```typescript
 string // escrow-account
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await escrowAccount({
@@ -646,15 +641,15 @@ const result = await escrowAccount({
 ```
 
 
-### Get Account Details
+## getAccountDetails
 
-The `getAccountDetails` function retrieves detailed information about a specified account, including token balance.
+Use `getAccountDetails` to retrieve detailed information, including the token balance, for a specified account.
 
 ```typescript
 getAccountDetails(inputs): object
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter      | Type                      | Description    |
 | -------------- | ------------------------- | -------------- |
@@ -664,12 +659,12 @@ getAccountDetails(inputs): object
 | networkId      | NetworkId                 | target network |
 | host           | IClientConfig['host']     | target node    |
 
-#### Output
+### Output
 ```typescript
 object // account details
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await getAccountDetails({
@@ -682,15 +677,15 @@ const result = await getAccountDetails({
 ```
 
 
-### Get Auction Details
+## getAuctionDetails
 
-The `getAuctionDetails` function fetches details about a specified auction.
+Use `getAuctionDetails` to retrieve detailed information for a specified auction.
 
 ```typescript
 getAuctionDetails(inputs): object
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter      | Type                      | Description         |
 | -------------- | ------------------------- | ------------------- |
@@ -700,12 +695,12 @@ getAuctionDetails(inputs): object
 | networkId      | NetworkId                 | target network      |
 | host           | IClientConfig['host']     | target node         |
 
-#### Output
+### Output
 ```typescript
 object // auction details
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await getAuctionDetails({
@@ -717,15 +712,15 @@ const result = await getAuctionDetails({
 ```
 
 
-### Get Bid
+## getBid
 
-The `getBid` function retrieves the details of a specific bid within an auction, providing information on the bidder and bid amount.
+Use `getBid` to retrieve detailed information, including the bidder and bid amount, for a specific bid placed in the context of a specific auction.
 
 ```typescript
 getBid(inputs): object
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter      | Type                      | Description    |
 | -------------- | ------------------------- | -------------- |
@@ -734,12 +729,12 @@ getBid(inputs): object
 | networkId      | NetworkId                 | target network |
 | host           | IClientConfig['host']     | target node    |
 
-#### Output
+### Output
 ```typescript
 object // bid details
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await getBid({
@@ -751,15 +746,15 @@ const result = await getBid({
 ```
 
 
-### Get Collection Token
+## getCollectionToken
 
-The `getCollectionToken` function retrieves information about a specific token within a collection.
+Use `getCollectionToken` to retrieve information about a specific token within a collection.
 
 ```typescript
 getCollectionToken(inputs): object
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter      | Type                      | Description    |
 | -------------- | ------------------------- | -------------- |
@@ -768,12 +763,13 @@ getCollectionToken(inputs): object
 | networkId      | NetworkId                 | target network |
 | host           | IClientConfig['host']     | target node    |
 
-#### Output
+### Output
+
 ```typescript
 object // collection token details
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await getCollectionToken({
@@ -785,15 +781,15 @@ const result = await getCollectionToken({
 ```
 
 
-### Get Collection
+## getCollection
 
-The `getCollection` function fetches details about a specified collection.
+Use `getCollection` to retrieve detailed information about a specified collection.
 
 ```typescript
 getCollection(inputs): object
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter      | Type                      | Description       |
 | -------------- | ------------------------- | ----------------- |
@@ -802,12 +798,12 @@ getCollection(inputs): object
 | networkId      | NetworkId                 | target network    |
 | host           | IClientConfig['host']     | target node       |
 
-#### Output
+### Output
 ```typescript
 object // collection details
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await getCollection({
@@ -819,15 +815,15 @@ const result = await getCollection({
 ```
 
 
-### Get Current Price
+## getCurrentPrice
 
-The `getCurrentPrice` function retrieves the current price of a token in auction, reflecting any price adjustments due to auction rules.
+Use `getCurrentPrice` to retrieve the current price of a token in auction, reflecting any price adjustments due to auction rules.
 
 ```typescript
 getCurrentPrice(inputs): IPactDecimal
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter | Type                  | Description    |
 | --------- | --------------------- | -------------- |
@@ -836,12 +832,13 @@ getCurrentPrice(inputs): IPactDecimal
 | networkId | NetworkId             | target network |
 | host      | IClientConfig['host'] | target node    |
 
-#### Output
+### Output
+
 ```typescript
 IPactDecimal // current price
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await getCurrentPrice({
@@ -853,15 +850,15 @@ const result = await getCurrentPrice({
 ```
 
 
-### Get Escrow Account
+## getEscrowAccount
 
-The `getEscrowAccount` function fetches information about an escrow account.
+Use `getEscrowAccount` to retrieve information about an escrow account.
 
 ```typescript
 getEscrowAccount(inputs): object
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter | Type                  | Description    |
 | --------- | --------------------- | -------------- |
@@ -870,12 +867,13 @@ getEscrowAccount(inputs): object
 | networkId | NetworkId             | target network |
 | host      | IClientConfig['host'] | target node    |
 
-#### Output
+### Output
+
 ```typescript
 object // escrow account
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await getEscrowAccount({
@@ -886,16 +884,15 @@ const result = await getEscrowAccount({
 });
 ```
 
+## getQuoteInfo
 
-### Get Quote Info
-
-The `getQuoteInfo` function retrieves information about a specific sale quote.
+Use `getQuoteInfo` to retrieve information about a specific sale quote.
 
 ```typescript
 getQuoteInfo(inputs): object
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter | Type                  | Description    |
 | --------- | --------------------- | -------------- |
@@ -904,12 +901,13 @@ getQuoteInfo(inputs): object
 | networkId | NetworkId             | target network |
 | host      | IClientConfig['host'] | target node    |
 
-#### Output
+### Output
+
 ```typescript
 object // quote info
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await getQuoteInfo({
@@ -920,16 +918,15 @@ const result = await getQuoteInfo({
 });
 ```
 
+## getTokenBalance
 
-### Get Token Balance
-
-The `getTokenBalance` function fetches the balance of a specified token within a given account.
+Use `getTokenBalance` to retrieve the balance recorded in the ledger for a specified token within a specified account.
 
 ```typescript
 getTokenBalance(inputs): IPactDecimal
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter   | Type                  | Description        |
 | ----------- | --------------------- | ------------------ |
@@ -939,12 +936,13 @@ getTokenBalance(inputs): IPactDecimal
 | networkId   | NetworkId             | target network     |
 | host        | IClientConfig['host'] | target node        |
 
-#### Output
+### Output
+
 ```typescript
 IPactDecimal // balance
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await getTokenBalance({
@@ -956,16 +954,15 @@ const result = await getTokenBalance({
 });
 ```
 
+## getTokenInfo
 
-### Get Token Info
-
-The `getTokenInfo` function retrieves details about a specific token.
+Use `getTokenInfo` to retrieve detailed information about a specific token.
 
 ```typescript
 getTokenInfo(inputs): object
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter   | Type                  | Description        |
 | ----------- | --------------------- | ------------------ |
@@ -974,12 +971,12 @@ getTokenInfo(inputs): object
 | networkId   | NetworkId             | target network     |
 | host        | IClientConfig['host'] | target node        |
 
-#### Output
+### Output
 ```typescript
 object // token info
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await getTokenInfo({
@@ -990,16 +987,15 @@ const result = await getTokenInfo({
 });
 ```
 
+## getUri
 
-### Get URI
-
-The `getUri` function fetches the URI associated with a specific token.
+Use `getUri` to retrieve the URI associated with a specific token.
 
 ```typescript
 getUri(inputs): string
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter   | Type                  | Description        |
 | ----------- | --------------------- | ------------------ |
@@ -1008,12 +1004,13 @@ getUri(inputs): string
 | networkId   | NetworkId             | target network     |
 | host        | IClientConfig['host'] | target node        |
 
-#### Output
+### Output
+
 ```typescript
 string // token URI
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await getUri({
@@ -1024,16 +1021,16 @@ const result = await getUri({
 });
 ```
 
+## mintToken
 
-### Mint Token
-
-The `mintToken` function allows the minting of a specified amount of a token, increasing its total supply and assigning it to a target account.
+Use `mintToken` function to mint a specified amount of a specified token.
+Minting a token increases its total supply and assigns ownerhip of the token to a target account.
 
 ```typescript
 mintToken(inputs, config): IEmitterWrapper
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter      | Type                      | Description               |
 | -------------- | ------------------------- | ------------------------- |
@@ -1044,12 +1041,13 @@ mintToken(inputs, config): IEmitterWrapper
 | guard          | string                    | minter account with guard |
 | chainId        | ChainId                   | origin                    |
 
-#### Output
+### Output
+
 ```typescript
 boolean
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await mintToken({
@@ -1070,16 +1068,16 @@ const result = await mintToken({
 ```
 
 
+## Offer Token
 
-### Offer Token
-
-The `offerToken` function enables a token owner to put a token up for sale.
+Use `offerToken` to put a specified token up for sale.
+Note that you must be the token owner to offer the specified token for sale.
 
 ```typescript
 offerToken(inputs, config): IEmitterWrapper
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter      | Type                      | Description               |
 | -------------- | ------------------------- | ------------------------- |
@@ -1116,12 +1114,13 @@ offerToken(inputs, config): IEmitterWrapper
 | creator        | object       | creator account with guard  |
 | royaltyRate    | IPactDecimal | creators cut when selling   |
 
-#### Output
+### Output
+
 ```typescript
 boolean
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await offerToken({
@@ -1141,16 +1140,15 @@ const result = await offerToken({
 );
 ```
 
+## placeBid
 
-### Place Bid
-
-The `placeBid` function allows a user to place a bid on a token in an active auction.
+Use `placeBid` to place a bid on a specified token in an active auction.
 
 ```typescript
 placeBid(inputs, config): IEmitterWrapper
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter         | Type                      | Description               |
 | ----------------- | ------------------------- | ------------------------- |
@@ -1169,12 +1167,13 @@ placeBid(inputs, config): IEmitterWrapper
 | mkAccount       | string       | guard for selling token |
 | mkFeePercentage | IPactDecimal | guard for selling token |
 
-#### Output
+### Output
+
 ```typescript
 boolean
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await placeBid({
@@ -1194,16 +1193,15 @@ const result = await placeBid({
 );
 ```
 
+## transferCreateToken
 
-### Transfer Create Token
-
-The `transferCreateToken` function allows the transfer of a specified amount of a token from one account to another.
+Use `transferCreateToken` to transfer a specified amount of a specified token from one account to another.
 
 ```typescript
 transferCreateToken(inputs, config): IEmitterWrapper
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter    | Type                      | Description                 |
 | ------------ | ------------------------- | --------------------------- |
@@ -1214,12 +1212,13 @@ transferCreateToken(inputs, config): IEmitterWrapper
 | amount       | IPactDecimal              | amount to send              |
 | chainId      | ChainId                   | origin                      |
 
-#### Output
+### Output
+
 ```typescript
 boolean
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await transferCreateToken({
@@ -1245,16 +1244,15 @@ const result = await transferCreateToken({
 );
 ```
 
+## transferToken
 
-### Transfer Token
-
-The `transferToken` function allows the transfer of a specified amount of a token from one account to another.
+Use `transferToken` to transfer a specified amount of a specified token from one account to another.
 
 ```typescript
 transferToken(inputs, config): IEmitterWrapper
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter    | Type                      | Description                 |
 | ------------ | ------------------------- | --------------------------- |
@@ -1265,12 +1263,13 @@ transferToken(inputs, config): IEmitterWrapper
 | amount       | IPactDecimal              | amount to send              |
 | chainId      | ChainId                   | origin                      |
 
-#### Output
+### Output
+
 ```typescript
 boolean
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await transferToken({
@@ -1292,16 +1291,18 @@ const result = await transferToken({
 );
 ```
 
+## updateUri
 
-### Update URI
-
-The `updateUri` function enables the updating of a token's URI, modifying its associated metadata.
+Use `updateUri` to update the URI associated with a specified token.
+You can use this function to modify the metadata associated with the specified token. 
+Note that modifying the metadata for a token also updates the token identifier.
+You can prevent a token from being upgradeable by applying the `non-updatable-uri-policy` to the token.
 
 ```typescript
 updateUri(inputs, config): IEmitterWrapper
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter    | Type                      | Description                 |
 | ------------ | ------------------------- | --------------------------- |
@@ -1311,12 +1312,13 @@ updateUri(inputs, config): IEmitterWrapper
 | guard        | object                    | uriGuard account and guard  |
 | chainId      | ChainId                   | origin                      |
 
-#### Output
+### Output
+
 ```typescript
 boolean
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await updateUri({
@@ -1335,16 +1337,15 @@ const result = await updateUri({
 );
 ```
 
+## withdrawToken
 
-### Withdraw Token
-
-The `withdrawToken` function allows a seller to withdraw a token from a sale.
+Use `withdrawToken` to withdraw a specified token from a sale.
 
 ```typescript
 withdrawToken(inputs, config): IEmitterWrapper
 ```
 
-#### Inputs
+### Inputs
 
 | Parameter    | Type         | Description                 |
 | ------------ | ------------ | --------------------------- |
@@ -1356,12 +1357,13 @@ withdrawToken(inputs, config): IEmitterWrapper
 | seller       | object       | seller account with guard   |
 | chainId      | ChainId      | origin                      |
 
-#### Output
+### Output
+
 ```typescript
 boolean
 ```
 
-#### Example
+### Example
 
 ```typescript
 const result = await withdrawToken({
