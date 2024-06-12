@@ -1,18 +1,10 @@
 import { gql } from '@apollo/client';
 import type { DocumentNode } from 'graphql';
 
-export const block: DocumentNode = gql`
+export const account: DocumentNode = gql`
   query account($accountName: String!) {
     fungibleAccount(accountName: $accountName) {
-      accountName
-      totalBalance
-      chainAccounts {
-        chainId
-        guard {
-          keys
-          predicate
-        }
-      }
+      ...CoreAccountFields
       transactions {
         edges {
           node {
@@ -20,6 +12,27 @@ export const block: DocumentNode = gql`
           }
         }
       }
+      transfers {
+        edges {
+          node {
+            requestKey
+            blockHash
+            amount
+            chainId
+            receiverAccount
+            senderAccount
+            height
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const coreAccount: DocumentNode = gql`
+  query coreAccount($accountName: String!) {
+    fungibleAccount(accountName: $accountName) {
+      ...CoreAccountFields
     }
   }
 `;

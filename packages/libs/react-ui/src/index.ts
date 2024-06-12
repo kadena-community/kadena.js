@@ -35,6 +35,7 @@ export type {
   ISelectProps,
   IStackProps,
   ITabItemProps,
+  ITabNode,
   ITableProps,
   ITabsProps,
   ITagGroupProps,
