@@ -1,12 +1,19 @@
-import { HttpResponse, http } from 'msw';
-import { assert, describe, expect, it } from 'vitest';
+import { assert, beforeEach, describe, expect, it } from 'vitest';
 
 import { afterEach } from 'node:test';
-import { server } from '../../../../mocks/server.js';
+import { accountDetailsSuccessData } from '../../../../mocks/data/accountDetails.js';
+import { devNetConfigMock } from '../../../../mocks/network.js';
+import { server, useMswHandler } from '../../../../mocks/server.js';
 import { accountDetails } from '../../commands/accountDetails.js';
-import { devNetConfigMock } from './mocks.js';
 
 describe('accountDetails', () => {
+  beforeEach(() => {
+    useMswHandler({
+      network: devNetConfigMock,
+      response: accountDetailsSuccessData,
+    });
+  });
+
   afterEach(() => {
     server.resetHandlers();
   });
@@ -35,14 +42,13 @@ describe('accountDetails', () => {
   });
 
   it('should return error if account does not exist', async () => {
-    server.use(
-      http.post(
-        'http://localhost:8080/chainweb/0.0/development/chain/1/pact/api/v1/local',
-        () => {
-          return HttpResponse.json({ error: 'row not found' }, { status: 404 });
-        },
-      ),
-    );
+    useMswHandler({
+      network: devNetConfigMock,
+      response: {
+        error: 'row not found',
+      },
+      status: 404,
+    });
     const result = await accountDetails({
       accountName: 'k:accountName',
       chainIds: ['1'],
