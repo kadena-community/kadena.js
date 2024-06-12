@@ -12,9 +12,10 @@ import {
 
 interface IProps {
   children?: ReactNode;
+  useFullWidth?: boolean;
 }
 
-export const Layout: FC<IProps> = ({ children }: IProps) => {
+export const Layout: FC<IProps> = ({ children, useFullWidth }: IProps) => {
   const { isMenuOpen, setActiveMenuIndex, setIsMenuOpen } = useLayoutContext();
 
   useEffect(() => {
@@ -34,7 +35,12 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
         <Sidebar />
       </aside>
       <main className={mainStyle}>
-        <div className={classNames(gridItemMainStyle, { isMenuOpen })}>
+        <div
+          className={classNames(gridItemMainStyle, {
+            isMenuOpen,
+            useFullWidth,
+          })}
+        >
           {children}
         </div>
       </main>

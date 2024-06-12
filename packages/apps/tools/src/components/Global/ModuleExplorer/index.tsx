@@ -1,4 +1,7 @@
-import type { IncompleteModuleModel } from '@/hooks/use-module-query';
+import type {
+  IncompleteModuleModel,
+  ModuleModel,
+} from '@/hooks/use-module-query';
 import React, { useState } from 'react';
 import type { TreeItem } from '../CustomTree/CustomTree';
 import type { ISidePanelProps } from './SidePanel';
@@ -6,12 +9,9 @@ import SidePanel from './SidePanel';
 import type { IEditorProps } from './editor';
 import Editor from './editor';
 import { containerStyle } from './styles.css';
-import type { IChainModule, Outline } from './types';
-import { isModuleLike } from './types';
-import {
-  chainModuleToOutlineTreeItems,
-  moduleModelToChainModule,
-} from './utils';
+import type { Outline } from './types';
+import { isCompleteModule } from './types';
+import { checkModuleEquality, moduleToOutlineTreeItems } from './utils';
 
 export interface IModuleExplorerProps {
   openedModules: IEditorProps['openedModules'];
@@ -32,13 +32,17 @@ const ModuleExplorer = ({
   onActiveModuleChange,
   openedModules: _openedModules,
 }: IModuleExplorerProps) => {
-  const [activeModule, setActiveModule] = useState<IChainModule>();
+  const [activeModule, setActiveModule] = useState<ModuleModel>(
+    _openedModules[0],
+  );
+
   const [openedModules, setOpenedModules] =
-    useState<IChainModule[]>(_openedModules);
+    useState<ModuleModel[]>(_openedModules);
+
   let outlineItems: TreeItem<Outline>[] = [];
 
   if (activeModule) {
-    outlineItems = chainModuleToOutlineTreeItems(activeModule, items);
+    outlineItems = moduleToOutlineTreeItems(activeModule, items);
   }
 
   return (
@@ -60,45 +64,46 @@ const ModuleExplorer = ({
         ]}
         onReload={onReload}
         onModuleClick={({ data }) => {
-          if (isModuleLike(data)) {
-            const chainModule: IChainModule = moduleModelToChainModule(data);
-            setActiveModule(chainModule);
+          if (isCompleteModule(data)) {
+            onActiveModuleChange(data);
+            setActiveModule(data);
             setOpenedModules((prev) => {
               const alreadyOpened = prev.find((openedModule) => {
-                return (
-                  openedModule.moduleName === chainModule.moduleName &&
-                  openedModule.chainId === chainModule.chainId &&
-                  openedModule.network === chainModule.network
-                );
+                return checkModuleEquality(openedModule, data);
               });
 
               if (alreadyOpened) {
                 return prev;
               }
 
-              return [...prev, chainModule];
+              return [...prev, data];
             });
           }
         }}
         onExpandCollapse={onExpandCollapse}
       />
       <Editor
+        onChainTabClose={(module) => {
+          setOpenedModules(
+            openedModules.filter((openedModule) => {
+              return !checkModuleEquality(openedModule, module);
+            }),
+          );
+        }}
+        onModuleTabClose={(modules) => {
+          setOpenedModules(
+            openedModules.filter((openedModule) => {
+              return !modules.find((module) => {
+                return checkModuleEquality(openedModule, module);
+              });
+            }),
+          );
+        }}
         openedModules={openedModules}
         activeModule={activeModule}
         onActiveModuleChange={(module) => {
           onActiveModuleChange(module);
           setActiveModule(module);
-        }}
-        onTabClose={(module) => {
-          setOpenedModules(
-            openedModules.filter((openedModule) => {
-              return (
-                `${openedModule.moduleName}-${openedModule.chainId}-${openedModule.network}` !==
-                `${module.moduleName}-${module.chainId}-${module.network}`
-              );
-            }),
-          );
-          // onTabClose(module);
         }}
       />
     </div>

@@ -34,7 +34,7 @@ export const boxClass = style({
   alignItems: 'center',
   borderRadius: token('radius.xs'),
   borderStyle: 'solid',
-  borderWidth: token('border.hairline'),
+  borderWidth: '1px',
   borderColor: token('color.border.base.bold'),
   backgroundColor: token('color.background.input.default'),
   transition: 'background-color 0.2s, border-color 0.2s',
