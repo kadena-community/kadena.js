@@ -13,7 +13,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <div className={styles.stickyHeader}>
             <MarketplaceHeader />
           </div>
-          <main className={styles.mainContainer}>{children}</main>
+          <div className={styles.mainContainer}>{children}</div>
       </div>
   );
 };
