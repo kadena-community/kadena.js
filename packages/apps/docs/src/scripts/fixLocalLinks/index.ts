@@ -1,6 +1,5 @@
 import type { IConfigTreeItem } from '@kadena/docs-tools';
 import {
-  createSlug,
   getFileExtension,
   getFileFromNameOfUrl,
   getParentTreeFromPage,
@@ -11,6 +10,7 @@ import type { Definition, Heading, Image, Link, Text } from 'mdast';
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { remark } from 'remark';
 import type { Root } from 'remark-gfm';
+import { createSlug } from '../createSlug';
 import { loadConfigPages } from '../movePages/utils/loadConfigPages';
 import { crawlPage } from '../utils/crawlPage';
 import type { IScriptResult } from './../types';

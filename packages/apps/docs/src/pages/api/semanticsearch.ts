@@ -1,9 +1,9 @@
 import menuData from '@/_generated/menu.json';
+import { createSlug } from '@/scripts/createSlug';
 import type { IFrontmatterData } from '@/types';
 import { removeImageInfoFromMarkdown } from '@/utils/removeImageInfoFromMarkdown';
 import type { StreamMetaData } from '@7-docs/edge';
 import type { IMenuData } from '@kadena/docs-tools';
-import { createSlug } from '@kadena/docs-tools';
 import algoliasearch from 'algoliasearch';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
