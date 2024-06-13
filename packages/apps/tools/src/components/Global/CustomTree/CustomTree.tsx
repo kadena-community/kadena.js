@@ -24,6 +24,7 @@ export type TreeItem<T> = {
   data: T;
   isLoading?: boolean;
   supportsReload?: boolean;
+  supportsSearch?: boolean;
   label?: string | number;
 };
 
