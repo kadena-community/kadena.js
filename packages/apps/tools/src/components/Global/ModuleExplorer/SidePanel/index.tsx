@@ -1,76 +1,82 @@
-import { useWalletConnectClient } from '@/context/connect-wallet-context';
-import { Text, TextField } from '@kadena/react-ui';
-import useTranslation from 'next-translate/useTranslation';
-import React, { useState, useTransition } from 'react';
-import type { IChainModule } from '../types';
-import type { IOutlineProps } from './outline';
-import Outline from './outline';
-import type { IResultsProps } from './results';
-import Results from './results';
+import {
+  MonoArrowDropDown,
+  MonoArrowRight,
+  MonoMenuOpen,
+  MonoVerticalSplit,
+} from '@kadena/react-icons/system';
+import { Button, Heading, Stack } from '@kadena/react-ui';
+import React from 'react';
+import CustomAccordion from '../../CustomAccordion/CustomAccordion';
+import type { ICustomTreeProps, TreeItem } from '../../CustomTree/CustomTree';
+import CustomTree from '../../CustomTree/CustomTree';
 import {
   containerStyle,
-  modulesContainerStyle,
-  outlineStyle,
+  headingStyles,
+  iconStyles,
+  itemStyle,
 } from './styles.css';
 
-export interface ISidePanelProps {
-  results: IResultsProps['data'];
-  onResultClick: IResultsProps['onItemClick'];
-  onModuleExpand: IResultsProps['onModuleExpand'];
-  onInterfaceClick: IOutlineProps['onInterfaceClick'];
-  onInterfacesExpand: IOutlineProps['onInterfacesExpand'];
-  selectedModule?: IChainModule;
+export interface ISidePanelProps<T> {
+  data: ICustomTreeProps<T>['data'];
+  isLoading?: boolean;
+  onReload: ICustomTreeProps<T>['onReload'];
+  onModuleClick: (module: TreeItem<T>) => void;
+  onExpandCollapse: (item: TreeItem<T>, expanded: boolean) => void;
 }
 
-const SidePanel = ({
-  results,
-  onResultClick,
-  onInterfaceClick,
-  onInterfacesExpand,
-  onModuleExpand,
-  selectedModule,
-}: ISidePanelProps): React.JSX.Element => {
-  const [text, setText] = useState('');
-  const [searchQuery, setSearchQuery] = useState<string>();
-  const [isPending, startTransition] = useTransition();
-  const { t } = useTranslation('common');
-  const { selectedNetwork } = useWalletConnectClient();
-
-  const onChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    setText(e.target.value);
-    startTransition(() => {
-      setSearchQuery(e.target.value);
-    });
-  };
-
+function SidePanel<T>({
+  data,
+  onReload,
+  onModuleClick,
+  onExpandCollapse,
+}: ISidePanelProps<T>) {
   return (
-    <div className={containerStyle}>
-      <div>
-        <TextField
-          label="Search"
-          id="module-explorer-search"
-          placeholder={t('Module name')}
-          onChange={onChange}
-          value={text}
-        />
-      </div>
-      {isPending && <Text>Loading...</Text>}
-      <Results
-        key={`results-${selectedNetwork}`}
-        data={results}
-        filter={searchQuery}
-        onItemClick={onResultClick}
-        onModuleExpand={onModuleExpand}
-        className={modulesContainerStyle}
-      />
-      <Outline
-        selectedModule={selectedModule}
-        className={outlineStyle}
-        onInterfaceClick={onInterfaceClick}
-        onInterfacesExpand={onInterfacesExpand}
-      />
-    </div>
+    <CustomAccordion
+      data={data}
+      defaultExpandedKey="explorer"
+      className={containerStyle}
+      itemProps={{ fillHeight: true }}
+    >
+      {(item) => (
+        <>
+          <Stack
+            backgroundColor="surface.default"
+            justifyContent="space-between"
+            alignItems={'center'}
+            gap={'xxs'}
+            role="button"
+            onClick={item.toggleExpandCollapse}
+            className={itemStyle}
+          >
+            {item.data.title === 'Explorer' ? (
+              <MonoVerticalSplit className={iconStyles} />
+            ) : (
+              <MonoMenuOpen className={iconStyles} />
+            )}
+            <Heading variant="h6" className={headingStyles}>
+              {item.data.title}
+            </Heading>
+            <Button
+              isCompact
+              variant="transparent"
+              onPress={item.toggleExpandCollapse}
+            >
+              {item.isExpanded ? <MonoArrowDropDown /> : <MonoArrowRight />}
+            </Button>
+          </Stack>
+          {item.isExpanded ? (
+            <CustomTree
+              data={item.data.children}
+              onReload={onReload}
+              onItemClick={onModuleClick}
+              onExpandCollapse={onExpandCollapse}
+              {...item.accessibilityProps}
+            />
+          ) : null}
+        </>
+      )}
+    </CustomAccordion>
   );
-};
+}
 
 export default SidePanel;

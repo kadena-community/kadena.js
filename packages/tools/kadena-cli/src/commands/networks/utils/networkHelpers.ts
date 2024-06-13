@@ -35,13 +35,6 @@ export interface INetworkCreateOptions {
   networkExplorerUrl: string;
 }
 
-export interface INetworksCreateOptions {
-  network: string;
-  networkId: string;
-  networkHost: string;
-  networkExplorerUrl: string;
-}
-
 const networkSchema = z.object({
   network: z.string(),
   networkId: z.string(),
@@ -119,7 +112,7 @@ export async function removeDefaultNetwork(): Promise<void> {
 
 export async function loadNetworkConfig(
   network: string,
-): Promise<INetworksCreateOptions> {
+): Promise<INetworkCreateOptions> {
   const networkDir = getNetworkDirectory();
   if (networkDir === null) {
     throw new KadenaError('no_kadena_directory');
@@ -131,7 +124,7 @@ export async function loadNetworkConfig(
     throw new Error('Network configuration file not found.');
   }
 
-  return yaml.load(file) as INetworksCreateOptions;
+  return yaml.load(file) as INetworkCreateOptions;
 }
 
 export async function getNetworks(): Promise<z.output<typeof networkSchema>[]> {

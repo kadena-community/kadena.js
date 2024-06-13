@@ -48,7 +48,7 @@ export type {
 export type { IPaginationProps } from './Pagination';
 export type { IProgressCircleProps } from './ProgressCircle';
 export type { ITableProps } from './Table';
-export type { ITabItemProps, ITabsProps } from './Tabs';
+export type { ITabItemProps, ITabNode, ITabsProps } from './Tabs';
 export type { ITagGroupProps, ITagItemProps, ITagProps } from './Tag';
 export type { ITextLinkProps } from './TextLink';
 export type { ITooltipProps } from './Tooltip';

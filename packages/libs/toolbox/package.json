@@ -1,6 +1,6 @@
 {
   "name": "@kadena/toolbox",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "private": true,
   "description": "A collection of utilities designed to assist in developing, testing, and deploying Pact smart contracts.",
   "repository": {

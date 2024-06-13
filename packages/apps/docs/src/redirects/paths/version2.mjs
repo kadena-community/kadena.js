@@ -111,6 +111,11 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
+    source: '/learn/cryptography',
+    destination: '/learn',
+    permanent: true,
+  },
+  {
     source: '/build/quickstart/:slug',
     destination: '/build/onboard',
     permanent: true,

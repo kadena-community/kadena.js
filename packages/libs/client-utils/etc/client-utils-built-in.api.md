@@ -98,6 +98,12 @@ export interface ITransactionBody {
     signers: string[];
 }
 
+// @alpha (undocumented)
+export const listModules: (config: Omit<IClientConfig, 'sign'>) => Promise<ListModulesOutput>;
+
+// @alpha (undocumented)
+export type ListModulesOutput = string[];
+
 // (No @packageDocumentation comment for this package)
 
 ```
