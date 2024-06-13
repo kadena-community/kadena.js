@@ -1,4 +1,3 @@
-import type { TreeItem } from '@/components/Global/CustomTree/CustomTree';
 import ModuleExplorer from '@/components/Global/ModuleExplorer';
 import type { IEditorProps } from '@/components/Global/ModuleExplorer/editor';
 import { isModuleLike } from '@/components/Global/ModuleExplorer/types';
@@ -21,7 +20,7 @@ import type {
   InferGetServerSidePropsType,
 } from 'next/types';
 import React, { useCallback, useEffect } from 'react';
-import { getQueryValue, mapToTreeItems, modelsToTreeMap } from './utils';
+import { getQueryValue } from './utils';
 
 const QueryParams = {
   MODULE: 'module',
@@ -89,27 +88,36 @@ const ModuleExplorerPage = (
   const mainnetModulesQuery = useModulesQuery('mainnet01');
   const testnetModulesQuery = useModulesQuery('testnet04');
 
-  let mappedMainnet: TreeItem<IncompleteModuleModel>[] = [];
-  let amountOfMainnetModules = 0;
+  // let mappedMainnet: TreeItem<IncompleteModuleModel>[] = [];
+  // let amountOfMainnetModules = 0;
 
-  if (mainnetModulesQuery.isSuccess) {
-    mappedMainnet = mapToTreeItems(
-      modelsToTreeMap(mainnetModulesQuery.data),
-      'mainnet',
-    );
-    amountOfMainnetModules = mainnetModulesQuery.data.length;
-  }
+  // if (mainnetModulesQuery.isSuccess) {
+  //   mappedMainnet = mapToTreeItems(
+  //     modelsToTreeMap(mainnetModulesQuery.data),
+  //     'mainnet',
+  //   );
+  //   amountOfMainnetModules = mainnetModulesQuery.data.length;
+  // }
 
-  let mappedTestnet: TreeItem<IncompleteModuleModel>[] = [];
-  let amountOfTestnetModules = 0;
+  // let mappedTestnet: TreeItem<IncompleteModuleModel>[] = [];
+  // let amountOfTestnetModules = 0;
 
-  if (testnetModulesQuery.isSuccess) {
-    mappedTestnet = mapToTreeItems(
-      modelsToTreeMap(testnetModulesQuery.data),
-      'testnet',
-    );
-    amountOfTestnetModules = testnetModulesQuery.data.length;
-  }
+  // if (testnetModulesQuery.isSuccess) {
+  //   console.log(
+  //     'lets search',
+  //     new Fuse(testnetModulesQuery.data, {
+  //       keys: ['name'],
+  //       includeScore: true,
+  //       // findAllMatches: true,
+  //     }).search('fuacet'),
+  //   );
+
+  //   mappedTestnet = mapToTreeItems(
+  //     modelsToTreeMap(testnetModulesQuery.data),
+  //     'testnet',
+  //   );
+  //   amountOfTestnetModules = testnetModulesQuery.data.length;
+  // }
 
   // const customNetworks = networksData.filter(
   //   (n) => n.networkId !== 'mainnet01' && n.networkId !== 'testnet04',
@@ -161,21 +169,23 @@ const ModuleExplorerPage = (
         items={[
           {
             title: 'Mainnet',
-            key: 'mainnet',
-            children: mappedMainnet,
-            data: { name: 'mainnet01', chainId: '0', networkId: 'mainnet01' },
+            key: 'mainnet01',
+            // children: mappedMainnet,
+            // data: { name: 'mainnet01', chainId: '0', networkId: 'mainnet01' },
+            data: mainnetModulesQuery.data!,
             isLoading: mainnetModulesQuery.isFetching,
             supportsReload: true,
-            label: amountOfMainnetModules,
+            label: mainnetModulesQuery.data?.length ?? 0,
           },
           {
             title: 'Testnet',
-            key: 'testnet',
-            children: mappedTestnet,
-            data: { name: 'testnet04', chainId: '0', networkId: 'testnet04' },
+            key: 'testnet04',
+            // children: mappedTestnet,
+            // data: { name: 'testnet04', chainId: '0', networkId: 'testnet04' },
+            data: testnetModulesQuery.data!,
             isLoading: testnetModulesQuery.isFetching,
             supportsReload: true,
-            label: amountOfTestnetModules,
+            label: testnetModulesQuery.data?.length ?? 0,
           },
         ]}
         onReload={(treeItem) => {
