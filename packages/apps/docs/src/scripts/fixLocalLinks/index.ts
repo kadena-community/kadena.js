@@ -32,7 +32,6 @@ const getContent = (filePath: string): string => {
 };
 
 const fixHashLinks = async (link: string): Promise<string> => {
-  console.log(link);
   // check if the link has a hashdeeplink
   const arr = link.split('#');
 
@@ -43,10 +42,6 @@ const fixHashLinks = async (link: string): Promise<string> => {
 
   // get the page to the hashlink
   const file = await getFileFromNameOfUrl(cleanedLink);
-
-  console.log(link);
-  console.log(cleanedHashUrl);
-  console.log(file);
 
   if (!file) return `#${createSlug(cleanedHashUrl)}`;
 
@@ -59,7 +54,6 @@ const fixHashLinks = async (link: string): Promise<string> => {
   const md: Root = remark.parse(content);
   const headers = getTypes<Heading>(md, 'heading');
 
-  console.log(headers);
   const foundHeader = headers
     .map((header) => {
       return (header.children[0] as Text).value;
@@ -72,7 +66,7 @@ const fixHashLinks = async (link: string): Promise<string> => {
     errors.push(`${link} deeplink was not found in config`);
   }
 
-  return `${cleanedLink}#${createSlug(foundHeader ?? '')}`;
+  return `${cleanedLink}#${createSlug(foundHeader)}`;
 };
 
 const findPageByFile = (

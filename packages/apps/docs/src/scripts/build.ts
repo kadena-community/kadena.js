@@ -1,10 +1,12 @@
 //import { checkDeadImages } from './checkDeadImages';
+import { checkDeadImages } from './checkDeadImages';
 import { checkForHeaders } from './checkForHeaders';
 import { checkRedirects } from './checkRedirects';
 import { checkUnusedImages } from './checkUnusedImages';
 import { copyFavIcons } from './copyFavIcons';
 import { createSitemap } from './createSitemap';
 import { createSpecs } from './createSpec';
+import { fixLocalLinks } from './fixLocalLinks';
 //import { fixLocalLinks } from './fixLocalLinks';
 import { createDocsTree } from './getdocstree';
 import { deleteTempDir } from './importReadme/importRepo';
@@ -19,11 +21,11 @@ import { validateLinks } from './validateLinks';
   //starting with a cleanslate, removing the tempdir.
   deleteTempDir();
   await initFunc(movePages, 'Move all pages from docs with config.yaml');
-  // await initFunc(fixLocalLinks, 'fix local links from the config.yaml');
+  await initFunc(fixLocalLinks, 'fix local links from the config.yaml');
   await initFunc(createDocsTree, 'Create docs tree');
   await initFunc(createSpecs, 'Create specs files');
   await initFunc(validateLinks, 'Validate Links');
-  //await initFunc(checkDeadImages, 'Check dead images');
+  await initFunc(checkDeadImages, 'Check dead images');
   await initFunc(checkUnusedImages, 'Check unused assets');
   await initFunc(checkForHeaders, 'Detect missing H1 headers');
   await initFunc(createSitemap, 'Create the sitemap');
