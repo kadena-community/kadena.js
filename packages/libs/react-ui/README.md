@@ -4,7 +4,7 @@
 basic React components for reuse in Kadena applications. It uses
 [vanilla-extract/css][1] (will be referred to as VE) to establish a system of
 utility classes (defined as [sprinkles][2]) and CSS variables (defined in the
-theme) that align with [Kadena's Design System][3] and exposes them so that they
+theme) that align with Kadena's [Kode Design System][3] and exposes them so that they
 can be used with any project or framework. A basic [Storybook][4] integration
 has been implemented so that users can preview components visually and interact
 with their configuration options.
