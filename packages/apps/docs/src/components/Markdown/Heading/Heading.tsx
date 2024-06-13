@@ -1,6 +1,6 @@
 import { MonoLink } from '@kadena/react-icons';
 import type { FC, ReactNode } from 'react';
-import React from 'react';
+import React, { useState } from 'react';
 import { headerClassVariants, headerIconLinkClass } from './styles.css';
 
 type TagType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
@@ -18,6 +18,17 @@ export interface IHeader {
 
 export const TaggedHeading: FC<IProp> = ({ children, as, variant, slug }) => {
   const outerSlug = `header${slug}`;
+  const [copySuccess, setCopySuccess] = useState(false);
+
+  const handleCopy = async () => {
+    const elm = document.querySelector(slug) as HTMLElement;
+    if (!elm) return;
+    await navigator.clipboard.writeText(elm.innerText);
+    setCopySuccess(true);
+    setTimeout(() => {
+      setCopySuccess(false);
+    }, 3000);
+  };
 
   const content = (
     <>
@@ -27,8 +38,9 @@ export const TaggedHeading: FC<IProp> = ({ children, as, variant, slug }) => {
         className={headerIconLinkClass}
         href={`#${slug}`}
         aria-labelledby={outerSlug}
+        onClick={handleCopy}
       >
-        <MonoLink />
+        {copySuccess ? <MonoCheck /> : <MonoLink />}
       </a>
     </>
   );

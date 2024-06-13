@@ -1,4 +1,3 @@
-//import { checkDeadImages } from './checkDeadImages';
 import { checkDeadImages } from './checkDeadImages';
 import { checkForHeaders } from './checkForHeaders';
 import { checkRedirects } from './checkRedirects';
@@ -7,7 +6,6 @@ import { copyFavIcons } from './copyFavIcons';
 import { createSitemap } from './createSitemap';
 import { createSpecs } from './createSpec';
 import { fixLocalLinks } from './fixLocalLinks';
-//import { fixLocalLinks } from './fixLocalLinks';
 import { createDocsTree } from './getdocstree';
 import { deleteTempDir } from './importReadme/importRepo';
 import { movePages } from './movePages';
