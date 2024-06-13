@@ -69,12 +69,11 @@ const remarkHeadersToProps = (): Plugin => {
       cleanupHeading(item);
 
       // we dont want h1 tags in the aside menu
-      if (item.depth === 1) {
+      if (item.depth !== 2) {
         return;
       }
 
-      const parentTitles = [...(parent.parentTitles ?? []), parent.title ?? ''];
-      const slug = createSlug(toString(item), parentTitles);
+      const slug = createSlug(toString(item));
       item.data = {
         hProperties: {
           slug,
@@ -86,7 +85,6 @@ const remarkHeadersToProps = (): Plugin => {
         depth: item.depth,
         tag: getTagName(item.depth),
         title: toString(item) ?? '',
-        parentTitles: [...(parent.parentTitles ?? []), parent.title ?? ''],
         slug,
         children: [],
       };

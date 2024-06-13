@@ -48,7 +48,7 @@ const fixHashLinks = async (link: string): Promise<string> => {
   console.log(cleanedHashUrl);
   console.log(file);
 
-  if (!file) return `#${createSlug(cleanedHashUrl, [])}`;
+  if (!file) return `#${createSlug(cleanedHashUrl)}`;
 
   const parentTree = await getParentTreeFromPage(file);
   const pagesLocation = getUrlNameOfPageFile(file, parentTree ?? []);
@@ -210,5 +210,3 @@ export const fixLocalLinksSingle =
 
     return { errors, success };
   };
-
-fixLocalLinksSingle('./src/page/build/faucet/index.md')();

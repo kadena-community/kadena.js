@@ -1,3 +1,4 @@
+import { createSlug } from '@kadena/docs-tools';
 import 'dotenv/config';
 import * as fs from 'fs';
 import type {
@@ -45,17 +46,6 @@ lastModifiedDate: ${lastModifiedDate}
 
 const createEditOverwrite = (item: IImportReadMeItem): string => {
   return `${item.repo}/edit/main${item.file}`;
-};
-
-export const createSlug = (str: string): string | undefined => {
-  if (!str) return '';
-  return str
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^\w\s]+/g, '')
-    .replace(/ /g, '-')
-    .toLowerCase()
-    .replace(/^-+|-+$/g, '');
 };
 
 const getTitle = (pageAST: Root): string => {

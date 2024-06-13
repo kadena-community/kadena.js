@@ -1,10 +1,7 @@
-export const createSlug = (
-  str: string,
-  parentTitles: string[] = [],
-): string => {
+export const createSlug = (str: string): string => {
   if (str === undefined) return '';
 
-  const normalizedSlug = (parentTitles.join('') + '-' + str)
+  const normalizedSlug = str
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/[^\w\-\s]+/g, '')

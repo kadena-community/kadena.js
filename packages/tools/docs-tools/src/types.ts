@@ -25,7 +25,6 @@ export interface IStartArray {
   children: IStartArray[];
   title?: string;
   slug: string;
-  parentTitles?: string[];
 }
 
 export type LayoutType = 'full' | 'landing' | 'home' | 'redocly' | 'code';
