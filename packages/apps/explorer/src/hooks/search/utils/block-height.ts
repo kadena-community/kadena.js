@@ -13,6 +13,7 @@ export const useBlockHeight = (
 ): IHookReturnValue<BlocksFromHeightsQuery> => {
   const { loading, data, error } = useBlocksFromHeightsQuery({
     variables: {
+      first: 200,
       startHeight: parseInt(
         returnSearchQuery(
           searchQuery,

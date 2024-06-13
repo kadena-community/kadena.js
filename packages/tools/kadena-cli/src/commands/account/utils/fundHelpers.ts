@@ -36,7 +36,7 @@ export function logTransactionExplorerUrls(
   }
 }
 
-async function fetchTransactionDetails(
+export async function fetchTransactionDetails(
   transaction: ITransactionDescriptor,
   networkHost: string,
   networkId: string,
@@ -56,9 +56,10 @@ async function fetchTransactionDetails(
     }
     return transactionResult;
   } catch (e) {
-    throw new Error(
-      `ChainID: "${chainId}" - requestKey: ${requestKey} - ${e.message}`,
-    );
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error(e);
   }
 }
 

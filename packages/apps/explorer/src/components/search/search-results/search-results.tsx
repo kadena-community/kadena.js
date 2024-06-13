@@ -1,10 +1,11 @@
 import CompactTable from '@/components/compact-table/compact-table';
 import { FormatAmount } from '@/components/compact-table/utils/format-amount';
+import { FormatLink } from '@/components/compact-table/utils/format-link';
 import { SearchOptionEnum } from '@/hooks/search/utils/utils';
 import type { ApolloError } from '@apollo/client';
 import type { FC } from 'react';
 import React from 'react';
-import type { ISearchItem } from '../search';
+import type { ISearchItem } from '../search-component/search-component';
 
 export interface ISearchResultsProps {
   searchData: ISearchItem[];
@@ -72,6 +73,7 @@ const SearchResults: FC<ISearchResultsProps> = ({
                 label: 'Hash',
                 key: 'node.hash',
                 width: '60%',
+                render: FormatLink({ appendUrl: '/block' }),
               },
             ]}
             data={

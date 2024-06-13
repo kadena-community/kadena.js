@@ -1,5 +1,5 @@
 import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
-import type { ISearchItem } from '@/components/search/search';
+import type { ISearchItem } from '@/components/search/search-component/search-component';
 import type { ApolloError } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -23,6 +23,7 @@ export interface IHookReturnValue<T> {
 export const useSearch = () => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [isMounted, setIsMounted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<ApolloError[]>([]);
   const [searchOption, setSearchOption] = useState<SearchOptionEnum | null>(
@@ -70,10 +71,18 @@ export const useSearch = () => {
   });
 
   useEffect(() => {
-    console.log(1);
-    if (!searchQuery) return;
+    if (!isMounted) return;
+
+    if (!searchQuery) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      router.replace(`${router.route}`);
+      return;
+    }
+
     const { q } = router.query;
+
     if (q === searchQuery) return;
+
     if (searchOption === SearchOptionEnum.ACCOUNT) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       router.replace(`${router.route}?q=${searchQuery}&fungible=coin`);
@@ -81,12 +90,15 @@ export const useSearch = () => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       router.replace(`${router.route}?q=${searchQuery}`);
     }
-  }, [searchQuery, router, searchOption]);
+  }, [searchQuery, searchOption, isMounted]);
 
   useEffect(() => {
+    if (!router.isReady) return;
+
     const { q } = router.query;
     setSearchQuery(q as string);
-  }, [router.isReady, setSearchQuery, router.query]);
+    setIsMounted(true);
+  }, [router.isReady]);
 
   useEffect(() => {
     setLoading(

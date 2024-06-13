@@ -17,9 +17,6 @@ pages:
       whybuild:
         url: /why-build
         file: /learn/why-build.md
-      cryptography:
-        url: /cryptography
-        file: /learn/cryptography.md
       whykadena:
         url: /why-kadena
         file: /learn/why-kadena.md

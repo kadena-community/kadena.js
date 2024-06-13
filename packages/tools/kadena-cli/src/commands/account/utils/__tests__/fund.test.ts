@@ -1,12 +1,43 @@
-import { HttpResponse, http } from 'msw';
-import { beforeEach, describe, expect, it } from 'vitest';
+import type { Mock } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { accountDetailsSuccessData } from '../../../../mocks/data/accountDetails.js';
+import { testNetworkConfigMock } from '../../../../mocks/network.js';
 import { server } from '../../../../mocks/server.js';
+import { createAndTransferFund } from '../createAndTransferFunds.js';
 import { fund } from '../fund.js';
-import { testNetworkConfigMock } from './mocks.js';
+import { getAccountDetails } from '../getAccountDetails.js';
+import { transferFund } from '../transferFund.js';
+
+vi.mock('../getAccountDetails.js', () => ({
+  getAccountDetails: vi.fn(),
+}));
+
+vi.mock('../transferFund.js', () => ({
+  transferFund: vi.fn(),
+}));
+
+vi.mock('../createAndTransferFunds.js', () => ({
+  createAndTransferFund: vi.fn(),
+}));
 
 describe('fund', () => {
   beforeEach(() => {
     server.resetHandlers();
+    (getAccountDetails as Mock).mockResolvedValue(
+      accountDetailsSuccessData.result.data,
+    );
+
+    (transferFund as Mock).mockResolvedValue({
+      requestKey: 'requestKey-1',
+      chainId: '1',
+      networkId: 'testnet04',
+    });
+
+    (createAndTransferFund as Mock).mockResolvedValue({
+      requestKey: 'requestKey-1',
+      chainId: '1',
+      networkId: 'testnet04',
+    });
   });
 
   it('should fund an account when account already exists', async () => {
@@ -36,23 +67,7 @@ describe('fund', () => {
   });
 
   it('should create and fund an account when account does not exist', async () => {
-    // Mock the account details as unavailable in the chain
-    server.use(
-      http.post(
-        'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/local',
-        () => {
-          return HttpResponse.json(
-            {
-              result: {
-                data: undefined,
-                status: 'success',
-              },
-            },
-            { status: 200 },
-          );
-        },
-      ),
-    );
+    (getAccountDetails as Mock).mockResolvedValue(undefined);
 
     const result = await fund({
       accountConfig: {
@@ -82,17 +97,8 @@ describe('fund', () => {
   });
 
   it('should return success false and error message when account details api throws an error', async () => {
-    server.use(
-      http.post(
-        'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/local',
-        () => {
-          return HttpResponse.json(
-            { error: 'something went wrong' },
-            { status: 500 },
-          );
-        },
-      ),
-    );
+    const error = new Error('{"error":"something went wrong"}');
+    (getAccountDetails as Mock).mockRejectedValue(error);
 
     const result = await fund({
       accountConfig: {
@@ -115,18 +121,9 @@ describe('fund', () => {
   });
 
   it('should return success false and error message when api call fails', async () => {
-    server.use(
-      http.post(
-        'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/send',
-        () => {
-          return HttpResponse.json(
-            { error: 'something went wrong' },
-            { status: 500 },
-          );
-        },
-      ),
+    (transferFund as Mock).mockRejectedValue(
+      new Error('Failed to transfer fund : "{"error":"something went wrong"}"'),
     );
-
     const result = await fund({
       accountConfig: {
         name: 'accountName',
