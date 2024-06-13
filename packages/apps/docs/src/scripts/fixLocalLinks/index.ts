@@ -66,7 +66,7 @@ const fixHashLinks = async (link: string): Promise<string> => {
     errors.push(`${link} deeplink was not found in config`);
   }
 
-  return `${cleanedLink}#${createSlug(foundHeader)}`;
+  return `${cleanedLink}#${createSlug(foundHeader ?? '')}`;
 };
 
 const findPageByFile = (

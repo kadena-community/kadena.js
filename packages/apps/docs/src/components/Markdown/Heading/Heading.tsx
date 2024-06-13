@@ -1,4 +1,4 @@
-import { MonoLink } from '@kadena/react-icons';
+import { MonoCheck, MonoLink } from '@kadena/react-icons';
 import type { FC, ReactNode } from 'react';
 import React, { useState } from 'react';
 import { headerClassVariants, headerIconLinkClass } from './styles.css';
