@@ -87,7 +87,7 @@ from **@kadena/react-ui** and components within your application.
 ### Usage
 
 As mentioned earlier, **@kadena/react-ui** provides components and styling
-utilities that align with the [Kadena Design System][3].
+utilities that align with the [Kode Design System][3].
 
 Example for importing and using components:
 
@@ -184,7 +184,7 @@ CSS-in-JS library that is framework agnostic.
 
 _Theming_
 
-We have defined a theme using elements of the [Kadena Design System][3] and
+We have defined a theme using elements of the [Kode Design System][3] and
 these tokens should be used as property values in most cases to ensure
 consistency and alignment with the design. With VE, we are also able to override
 this theme within projects to add additional CSS variables or update colors for
@@ -205,7 +205,7 @@ In our tokens we have color scales that represent a set of different shades for
 a color as well as theme specific tokens that return different colors depending
 on whether we are in light/dark theme.
 
-The [Kadena Design System][3] setup the color tokens to have naming based on
+The [Kode Design System][3] setup the color tokens to have naming based on
 application rather than the underlying color. Since not all colors are
 applicable for different CSS properties, the `atoms` utility only provides a
 subset of color options that would most commonly be used with the associated
