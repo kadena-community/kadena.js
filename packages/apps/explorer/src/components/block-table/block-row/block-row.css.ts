@@ -1,7 +1,16 @@
 import { atoms } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
-export const textStyle = style([atoms({ alignItems: 'center' })]);
+export const textStyle = style([atoms({ alignItems: 'flex-end' })]);
+
+export const rowChainElementStyle = style([
+  atoms({
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 'sm',
+  }),
+]);
 
 export const rowLinkElementStyle = style([
   atoms({
