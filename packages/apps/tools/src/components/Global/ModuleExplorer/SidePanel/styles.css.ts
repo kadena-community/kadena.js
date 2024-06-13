@@ -23,3 +23,13 @@ export const headingStyles = style({
 });
 
 export const iconStyles = atoms({ paddingInlineStart: 'sm' });
+
+export const searchResultsStyles = atoms({
+  paddingBlock: 'sm',
+  paddingInline: 'n3',
+  backgroundColor: 'base.warm',
+});
+
+export const searchResultQueryStyles = style({
+  fontWeight: token('typography.weight.primaryFont.bold'),
+});
