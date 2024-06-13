@@ -6,13 +6,13 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   transpilePackages: ['@kadena/react-ui'],
-  async rewrites() {
-    return [
-      {
-        source: '/graph',
-        destination: 'http://localhost:4000/graphql',
-      },
-    ];
+    env: {
+    GRAPH_HOST: process.env.GRAPH_HOST,
+    
+    // Preperation for when the dropdown actually does something.
+    KADENA_DEVNET_GRAPH: process.env.KADENA_DEVNET_GRAPH,
+    KADENA_TESTNET_GRAPH: process.env.KADENA_TESTNET_GRAPH,
+    KADENA_MAINNET_GRAPH: process.env.KADENA_MAINNET_GRAPH,
   },
 };
 

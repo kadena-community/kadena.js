@@ -18,18 +18,22 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import type { ComponentType } from 'react';
 import React from 'react';
+import { getGraphHost } from '@/utils/getGraphHost';
 
 // next/apollo-link bug: https://github.com/dotansimha/graphql-yoga/issues/2194
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { YogaLink } = require('@graphql-yoga/apollo-link');
 
+const graphHost = getGraphHost('testnet');
+
 const httpLink = new YogaLink({
-  endpoint: '/graph',
+  endpoint: `https://${graphHost}`,
 });
 
+console.log(graphHost)
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: 'ws://localhost:4000/graphql',
+    url: `ws://${graphHost}`,
   }),
 );
 

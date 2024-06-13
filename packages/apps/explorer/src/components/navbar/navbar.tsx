@@ -45,6 +45,9 @@ export const NavBar: FC = () => {
           <SelectItem key={'Testnet'} textValue="Testnet">
             Testnet
           </SelectItem>
+          <SelectItem key={'Devnet'} textValue="Devnet">
+            Testnet
+          </SelectItem>
         </NavHeaderSelect>
       </NavHeader>
     </Stack>
