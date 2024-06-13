@@ -471,9 +471,6 @@ pages:
               royalty:
                 url: /royalty-policy
                 file: /reference/marmalade/royalty-policy.md
-              client:
-                url: /client-utils
-                file: /reference/marmalade/marmalade-client-utils.md
           salecontract:
             url: /sale-contracts
             file: /reference/marmalade/sale-contracts.md
@@ -484,6 +481,9 @@ pages:
               dutch:
                 url: /dutch-auction
                 file: /reference/marmalade/dutch-auction-ref.md
+          client:
+            url: /client-utils
+            file: /reference/marmalade/marmalade-client-utils.md
       spirekey:
         url: /spirekey
         file: /reference/spirekey-ref.md

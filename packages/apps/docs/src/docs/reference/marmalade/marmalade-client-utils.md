@@ -139,7 +139,7 @@ buyToken(inputs, config): IEmitterWrapper
 | policyConfig | object | Concrete policies used when the token was created, if applicable. |
 | tokenId | string | Token identifier for the token you want to buy. |
 | saleId | string | Pact identifier for the token sale. |
-| amount | IPactDecimal | Purchase amount being offered to buy the token. |
+| amount | IPactDecimal | Number of tokens you want to buy. |
 | timeout | IPactDecimal | Time the sale is set to expire. |
 | chainId | ChainId | Chain identifier for the chain where the token is offered for sale. Valid values are 0 to 19. |
 | seller | object | Account information for the token seller. |
@@ -1247,7 +1247,7 @@ updateUri(inputs, config): IEmitterWrapper
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
 | policyConfig | object | Concrete policies specified when the token was created, if applicable. |
-| tokenId | string | Token identifier for the token that you want to transfer. |
+| tokenId | string | Token identifier for the token that you want to update. |
 | uri | string |  Location of the token metadata JSON file in the form of uniform resource identifier (URI) that you want to update. |
 | guard | object | Update URI (uriGuard) account information and guard. |
 | chainId | ChainId | Chain identifier for the chain where the token is being updated. Valid values are 0 to 19. |
