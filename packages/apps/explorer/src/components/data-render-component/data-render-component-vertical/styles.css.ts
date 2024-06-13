@@ -1,5 +1,5 @@
 import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/styles';
-import { style } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 export const descriptionListClass = style([
   atoms({
@@ -28,6 +28,8 @@ export const descriptionTermClass = style([
 ]);
 
 export const descriptionDetailsClass = style({
+  display: 'inline',
+  position: 'relative',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
@@ -81,4 +83,13 @@ export const linkIconClass = style([
 export const textClass = style({
   // If we use atoms it will be overridden by the Text component.
   color: tokens.kda.foundation.color.text.base.default,
+});
+export const textCopyClass = style([]);
+
+globalStyle(`${textCopyClass} + svg`, {
+  position: 'absolute',
+  marginInlineStart: '5px',
+  width: '18px',
+  aspectRatio: '1/1',
+  display: 'inline',
 });

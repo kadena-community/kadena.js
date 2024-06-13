@@ -1,11 +1,7 @@
-import {
-  MonoArrowOutward,
-  MonoCopyAll,
-  MonoDoDisturbAlt,
-} from '@kadena/react-icons/system';
+import CopyButton from '@/components/copy-button/copy-button';
+import { MonoArrowOutward } from '@kadena/react-icons/system';
 import { Stack, Text } from '@kadena/react-ui';
 import classNames from 'classnames';
-import type { MouseEventHandler } from 'react';
 import React, { Fragment } from 'react';
 import {
   descriptionDetailsClass,
@@ -17,6 +13,7 @@ import {
   linkClass,
   linkIconClass,
   textClass,
+  textCopyClass,
 } from './styles.css';
 
 interface IDataRenderComponentField {
@@ -39,13 +36,6 @@ const DataRenderComponentVertical: React.FC<IDataRenderComponentProps> = ({
   const descriptionListClassNames = title
     ? classNames(descriptionListClass, descriptionListIndentClass)
     : descriptionListClass;
-
-  const handleCopy: MouseEventHandler<SVGSVGElement> = async (e) => {
-    e.preventDefault();
-    await navigator.clipboard.writeText(
-      e.currentTarget.parentElement?.innerText ?? '',
-    );
-  };
 
   return (
     <dl className={descriptionListClassNames}>
@@ -78,12 +68,22 @@ const DataRenderComponentVertical: React.FC<IDataRenderComponentProps> = ({
               </dd>
             ))
           ) : (
-            <dd className={descriptionDetailsClass}>
-              <Text variant="code" className={textClass}>
-                {field.value}
-                {field.canCopy && <MonoCopyAll onClick={handleCopy} />}
+            <Stack
+              as="dd"
+              gap="xs"
+              className={descriptionDetailsClass}
+              alignItems="center"
+            >
+              <Text
+                variant="code"
+                className={classNames(textClass, {
+                  [textCopyClass]: field.canCopy,
+                })}
+              >
+                <span id="requestkey">{field.value}</span>
               </Text>
-            </dd>
+              {field.canCopy && <CopyButton id="requestkey" />}
+            </Stack>
           )}
         </Fragment>
       ))}

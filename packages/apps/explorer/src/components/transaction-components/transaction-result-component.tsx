@@ -4,6 +4,7 @@ import type {
   Transfer,
 } from '@/__generated__/sdk';
 import DataRenderComponent from '@/components/data-render-component/data-render-component';
+import { Text } from '@kadena/react-ui';
 import React, { useEffect } from 'react';
 import { ifNill } from '../../utils/ifNill';
 
@@ -125,14 +126,14 @@ function mapParameters(
         {(JSON.parse(parameters) as unknown[]).map((param) => {
           if (typeof param === 'object') {
             // eslint-disable-next-line react/jsx-key
-            return <p>{JSON.stringify(param)}</p>;
+            return <Text variant="code">{JSON.stringify(param)}</Text>;
           }
           if (typeof param === 'string') {
             // eslint-disable-next-line react/jsx-key
-            return <p>{param}</p>;
+            return <Text variant="code">{param}</Text>;
           }
           // eslint-disable-next-line react/jsx-key
-          return <p>{JSON.stringify(param)}</p>;
+          return <Text variant="code">{JSON.stringify(param)}</Text>;
         })}
       </>
     );
