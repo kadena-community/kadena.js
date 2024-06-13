@@ -42,12 +42,6 @@
     "path": "packages/libs/client-utils"
   },
   {
-    "name": "@kadena/cookbook",
-    "version": "0.0.17",
-    "private": true,
-    "path": "packages/tools/cookbook"
-  },
-  {
     "name": "@kadena/create-kadena-app",
     "version": "0.2.0",
     "private": false,
@@ -174,12 +168,6 @@
     "path": "packages/apps/spirekey-example"
   },
   {
-    "name": "@kadena/toolbox",
-    "version": "0.0.7",
-    "private": true,
-    "path": "packages/libs/toolbox"
-  },
-  {
     "name": "@kadena/tools",
     "version": "1.2.0",
     "private": true,
@@ -208,12 +196,6 @@
     "version": "0.0.9",
     "private": false,
     "path": "packages/tools/eslint-plugin"
-  },
-  {
-    "name": "@kadena-dev/integration-tests",
-    "version": "0.0.10",
-    "private": true,
-    "path": "packages/tools/integration-tests"
   },
   {
     "name": "@kadena-dev/lint-package",

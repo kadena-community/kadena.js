@@ -8,7 +8,7 @@
     "generate": "npx graphql-codegen",
     "start": "next start",
     "start:cron": "ts-node scripts/cron.ts",
-    "test": "vitest",
+    "test": "vitest run",
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
