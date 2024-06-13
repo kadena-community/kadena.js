@@ -88,7 +88,7 @@ export const TransactionResultComponent: React.FC<{
             value: (
               <DataRenderComponent
                 fields={objectToDataRenderComponentFields({
-                  ...JSON.parse(transactionResult.continuation ?? ''),
+                  ...JSON.parse(transactionResult.continuation ?? '[]'),
                 })}
               />
             ),

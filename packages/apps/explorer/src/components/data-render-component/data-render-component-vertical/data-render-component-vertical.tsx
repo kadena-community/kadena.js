@@ -1,6 +1,11 @@
-import { MonoArrowOutward } from '@kadena/react-icons/system';
-import { Text } from '@kadena/react-ui';
+import {
+  MonoArrowOutward,
+  MonoCopyAll,
+  MonoDoDisturbAlt,
+} from '@kadena/react-icons/system';
+import { Stack, Text } from '@kadena/react-ui';
 import classNames from 'classnames';
+import type { MouseEventHandler } from 'react';
 import React, { Fragment } from 'react';
 import {
   descriptionDetailsClass,
@@ -17,6 +22,7 @@ import {
 interface IDataRenderComponentField {
   type?: 'text' | 'code';
   key: string;
+  canCopy?: boolean;
   value: string | string[] | JSX.Element | JSX.Element[];
   link?: string;
 }
@@ -33,6 +39,13 @@ const DataRenderComponentVertical: React.FC<IDataRenderComponentProps> = ({
   const descriptionListClassNames = title
     ? classNames(descriptionListClass, descriptionListIndentClass)
     : descriptionListClass;
+
+  const handleCopy: MouseEventHandler<SVGSVGElement> = async (e) => {
+    e.preventDefault();
+    await navigator.clipboard.writeText(
+      e.currentTarget.parentElement?.innerText ?? '',
+    );
+  };
 
   return (
     <dl className={descriptionListClassNames}>
@@ -68,6 +81,7 @@ const DataRenderComponentVertical: React.FC<IDataRenderComponentProps> = ({
             <dd className={descriptionDetailsClass}>
               <Text variant="code" className={textClass}>
                 {field.value}
+                {field.canCopy && <MonoCopyAll onClick={handleCopy} />}
               </Text>
             </dd>
           )}

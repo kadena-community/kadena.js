@@ -2,9 +2,11 @@ import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const descriptionListClass = style([
+  atoms({
+    display: 'grid',
+  }),
   {
     gap: `${tokens.kda.foundation.spacing.sm} ${tokens.kda.foundation.spacing.lg}`,
-    display: 'grid',
     justifyContent: 'start',
   },
 ]);
@@ -15,10 +17,15 @@ export const descriptionListIndentClass = style([
   }),
 ]);
 
-export const descriptionTermClass = style({
-  fontWeight: 'bold',
-  gridColumnStart: 1,
-});
+export const descriptionTermClass = style([
+  atoms({
+    fontFamily: 'primaryFont',
+    fontWeight: 'primaryFont.bold',
+  }),
+  {
+    gridColumnStart: 1,
+  },
+]);
 
 export const descriptionDetailsClass = style({
   overflow: 'hidden',

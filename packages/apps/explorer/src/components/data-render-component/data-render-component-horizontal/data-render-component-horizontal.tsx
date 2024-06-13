@@ -1,5 +1,5 @@
-import { MonoArrowOutward } from '@kadena/react-icons/system';
-import { Text } from '@kadena/react-ui';
+import { MonoArrowOutward, MonoCopyAll } from '@kadena/react-icons';
+import { Stack, Text } from '@kadena/react-ui';
 import React from 'react';
 import {
   dataFieldClass,
@@ -13,6 +13,7 @@ import {
 
 interface IDataRenderComponentField {
   type?: 'text' | 'code';
+  canCopy?: boolean;
   key: string;
   value: string | string[] | JSX.Element | JSX.Element[];
   link?: string;
@@ -52,9 +53,12 @@ const DataRenderComponentHorizontal: React.FC<IDataRenderComponentProps> = ({
               </Text>
             ))
           ) : (
-            <Text variant="code" className={dataFieldClass}>
-              {field.value}
-            </Text>
+            <Stack gap="md">
+              <Text variant="code" className={dataFieldClass}>
+                {field.value}
+              </Text>
+              {field.canCopy && <MonoCopyAll />}
+            </Stack>
           )}
         </div>
       ))}

@@ -2,6 +2,7 @@ import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
 import DetailLayout from '@/components/layout/detail-layout/detail-layout';
 import { TransactionRequestComponent } from '@/components/transaction-components/transaction-request-component';
 import { TransactionResultComponent } from '@/components/transaction-components/transaction-result-component';
+import { TabItem, Tabs, maskValue } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -24,17 +25,18 @@ const Transaction: React.FC = () => {
       ) : null}
       {data && data.transaction && (
         <>
-          <h1>Transaction {data.transaction.hash}</h1>
+          <h1>Transaction {maskValue(data.transaction.hash)}</h1>
 
-          <h2>Request</h2>
-          <TransactionRequestComponent transaction={data.transaction} />
-
-          <hr />
-
-          <h2>Result</h2>
-          <TransactionResultComponent
-            transactionResult={data.transaction.result}
-          />
+          <Tabs>
+            <TabItem title="Request" key="Request">
+              <TransactionRequestComponent transaction={data.transaction} />
+            </TabItem>
+            <TabItem title="Result" key="Result">
+              <TransactionResultComponent
+                transactionResult={data.transaction.result}
+              />
+            </TabItem>
+          </Tabs>
         </>
       )}
     </DetailLayout>
