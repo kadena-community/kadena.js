@@ -193,7 +193,6 @@ export const fixLocalLinksSingle =
     success.length = 0;
     const page = await getPageFromPath(path);
 
-    console.log(page);
     if (!page) {
       errors.push('page not found in config');
     } else {
