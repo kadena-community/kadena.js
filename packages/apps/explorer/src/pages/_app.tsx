@@ -24,16 +24,16 @@ import { getGraphHost } from '@/utils/getGraphHost';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { YogaLink } = require('@graphql-yoga/apollo-link');
 
-const graphHost = getGraphHost('testnet');
+const graphHost = getGraphHost();
 
 const httpLink = new YogaLink({
-  endpoint: `https://${graphHost}`,
+  endpoint: `https://${graphHost}/graphql`,
 });
 
 console.log(graphHost)
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: `ws://${graphHost}`,
+    url: `ws://${graphHost}/graphql`,
   }),
 );
 
