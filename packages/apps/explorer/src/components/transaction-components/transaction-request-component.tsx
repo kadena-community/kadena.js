@@ -1,6 +1,7 @@
 import type { TransactionRequestKeyQuery } from '@/__generated__/sdk';
 import DataRenderComponent from '@/components/data-render-component/data-render-component';
 import { ifNill } from '@/utils/ifNill';
+import { Text } from '@kadena/react-ui';
 import React from 'react';
 
 type Transaction = Omit<
@@ -18,7 +19,11 @@ export const TransactionRequestComponent: React.FC<{
 
         <DataRenderComponent
           fields={[
-            { key: 'Request Key (hash)', value: transaction.hash },
+            {
+              key: 'Request Key (hash)',
+              value: transaction.hash,
+              canCopy: true,
+            },
             {
               key: 'Env Data',
               value: JSON.stringify(
@@ -38,9 +43,13 @@ export const TransactionRequestComponent: React.FC<{
 
         <DataRenderComponent
           fields={[
-            { key: 'Request Key (hash)', value: transaction.hash },
+            {
+              key: 'Request Key (hash)',
+              value: transaction.hash,
+            },
             {
               key: 'Data',
+
               value: JSON.stringify(
                 JSON.parse(transaction.cmd.payload.data),
                 null,
@@ -103,7 +112,11 @@ export const TransactionRequestComponent: React.FC<{
                     value: (
                       <>
                         {(JSON.parse(capability.args) as string[])
-                          .map((n, i) => <p key={i}>{JSON.stringify(n)}</p>)
+                          .map((n, i) => (
+                            <Text as="p" variant="code" key={i}>
+                              {JSON.stringify(n)}
+                            </Text>
+                          ))
                           .flat()}
                       </>
                     ),
