@@ -1,4 +1,7 @@
 import BlockActivityChart from '@/components/block-activity-graph/block-activity-graph';
+import CompactTable from '@/components/compact-table/compact-table';
+import { FormatLink } from '@/components/compact-table/utils/format-link';
+import { FormatStatus } from '@/components/compact-table/utils/format-status';
 import routes from '@/constants/routes';
 import type { IHeightBlock } from '@/services/block';
 import { formatNumberWithUnit } from '@/services/format';
@@ -38,8 +41,21 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
     blockRowData[heights[0]]?.difficulty ||
     'N/A';
 
+  let latestBlockData;
+  for (let i = heights.length - 1; i >= 0; i--) {
+    const height = heights[i];
+    if (blockRowData[height]?.transactions.edges.length > 0) {
+      latestBlockData = blockRowData[height].transactions.edges;
+      break;
+    }
+  }
+
+  // if (latestBlockData.length > 0) {
+  //   console.log('latestBlockData', latestBlockData);
+  // }
+
   return (
-    <>
+    <div>
       <Grid columns={4} className={blockGridStyle}>
         <Stack className={rowChainElementStyle}>
           <Button
@@ -72,7 +88,7 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
                 href={`${routes.BLOCK_DETAILS}/${blockRowData[height].hash}`}
               >
                 <Text className={blockHeightColumnHeaderStyle} variant="code">
-                  {blockRowData[height].txCount}
+                  {blockRowData[height].transactions.totalCount}
                 </Text>
               </Link>
             ) : (
@@ -90,12 +106,53 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
         {!isCompact && (
           <Stack className={rowChartElementStyle}>
             <BlockActivityChart
-              data={heights.map((height) => blockRowData[height]?.txCount || 0)}
+              data={heights.map(
+                (height) => blockRowData[height]?.transactions.totalCount || 0,
+              )}
             />
           </Stack>
         )}
       </Grid>
-    </>
+      {expandedRow && (
+        <div
+          style={{
+            height: '10px',
+          }}
+        >
+          <CompactTable
+            fields={[
+              {
+                label: 'Status',
+                key: 'result.goodResult',
+                variant: 'code',
+                width: '10%',
+                render: FormatStatus(),
+              },
+              {
+                label: 'Sender',
+                key: 'cmd.meta.sender',
+                variant: 'code',
+                width: '25%',
+              },
+              {
+                label: 'RequestKey',
+                key: 'hash',
+                variant: 'code',
+                width: '25%',
+                render: FormatLink({ appendUrl: '/transaction' }),
+              },
+              {
+                label: 'Code Preview',
+                key: 'cmd.payload.code',
+                variant: 'code',
+                width: '40%',
+              },
+            ]}
+            data={latestBlockData.map((edge) => edge.node)}
+          />
+        </div>
+      )}
+    </div>
   );
 };
 
