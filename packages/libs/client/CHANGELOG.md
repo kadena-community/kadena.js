@@ -1,5 +1,11 @@
 # Change Log - @kadena/client
 
+## 1.12.0
+
+### Minor Changes
+
+- 9c145f196: Export ISigner interface
+
 ## 1.11.2
 
 ### Patch Changes

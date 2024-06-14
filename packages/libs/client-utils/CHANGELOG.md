@@ -1,5 +1,17 @@
 # @kadena/client-utils
 
+## 0.7.0
+
+### Minor Changes
+
+- 9c145f196: Add support for public key scheme
+
+### Patch Changes
+
+- Updated dependencies \[9c145f196]
+  - @kadena/client\@1.12.0
+  - @kadena/pactjs-cli\@1.12.0
+
 ## 0.6.0
 
 ### Minor Changes
