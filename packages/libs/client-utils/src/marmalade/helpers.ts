@@ -26,9 +26,15 @@ export const validatePolicies = (
     }
   }
 
-  if (policyConfig?.nonUpdatableURI) {
+  if (policyConfig?.nonUpdatableURI === true) {
     if (!policies.includes(NON_UPDATABLE_URI_POLICY)) {
       throw new Error('Non-updatable URI policy is required');
+    }
+  }
+
+  if (policyConfig?.nonUpdatableURI === false) {
+    if (!policies.includes(GUARD_POLICY)) {
+      throw new Error('Guard policy is required for updatable URI');
     }
   }
 
