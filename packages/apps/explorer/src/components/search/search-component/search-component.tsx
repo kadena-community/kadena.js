@@ -128,7 +128,6 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
 
   useEffect(() => {
     setSearchValue(searchQuery ?? '');
-    handleSearchOption(inferOption(searchQuery ?? ''));
   }, [searchQuery]);
 
   return (

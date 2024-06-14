@@ -79,24 +79,29 @@ export const useSearch = () => {
       return;
     }
 
-    const { q } = router.query;
+    const { q, so } = router.query;
+    const soInt: SearchOptionEnum = parseInt(so as any);
 
-    if (q === searchQuery) return;
+    if (q === searchQuery && soInt === searchOption) return;
 
     if (searchOption === SearchOptionEnum.ACCOUNT) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.replace(`${router.route}?q=${searchQuery}&fungible=coin`);
+      router.push(
+        `${router.route}?q=${searchQuery}&so=${searchOption}&fungible=coin`,
+      );
     } else {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.replace(`${router.route}?q=${searchQuery}`);
+      router.push(`${router.route}?q=${searchQuery}&so=${searchOption}`);
     }
   }, [searchQuery, searchOption, isMounted]);
 
   useEffect(() => {
     if (!router.isReady) return;
 
-    const { q } = router.query;
+    const { q, so } = router.query;
+    const soInt: SearchOptionEnum = parseInt(so as any);
     setSearchQuery(q as string);
+    setSearchOption(soInt);
     setIsMounted(true);
   }, [router.isReady]);
 

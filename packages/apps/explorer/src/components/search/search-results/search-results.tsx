@@ -1,4 +1,5 @@
 import CompactTable from '@/components/compact-table/compact-table';
+import { FormatAccount } from '@/components/compact-table/utils/format-account';
 import { FormatAmount } from '@/components/compact-table/utils/format-amount';
 import { FormatLink } from '@/components/compact-table/utils/format-link';
 import { SearchOptionEnum } from '@/hooks/search/utils/utils';
@@ -99,6 +100,7 @@ const SearchResults: FC<ISearchResultsProps> = ({
                 label: 'Hash',
                 key: 'hash',
                 width: '60%',
+                render: FormatLink({ appendUrl: '/block' }),
               },
             ]}
             data={[searchData[SearchOptionEnum.BLOCKHASH].data?.block]}
