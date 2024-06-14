@@ -47,12 +47,6 @@ export interface ICreateTokenPolicyConfig {
   collection?: boolean;
 }
 
-export const GUARD_POLICY = 'guard-policy-v1';
-export const NON_FUNGIBLE_POLICY = 'non-fungible-policy-v1';
-export const NON_UPDATABLE_URI_POLICY = 'non-updatable-uri-policy-v1';
-export const ROYALTY_POLICY = 'royalty-policy-v1';
-export const COLLECTION_POLICY = 'collection-policy-v1';
-
 interface ConfigToDataMap {
   customPolicies: { customPolicyData: Record<string, any> };
   nonUpdatableURI: {};
@@ -86,42 +80,3 @@ export type WithCreateTokenPolicy<
   (PolicyDataForConfig<C> | undefined) & {
     policyConfig?: C;
   };
-
-export const validatePolicies = (
-  policyConfig?: ICreateTokenPolicyConfig,
-  policies: string[] = [],
-) => {
-  if (policyConfig?.collection) {
-    if (!policies.includes(COLLECTION_POLICY)) {
-      throw new Error('Collection policy is required');
-    }
-  }
-
-  if (policyConfig?.guarded) {
-    if (!policies.includes(GUARD_POLICY)) {
-      throw new Error('Guard policy is required');
-    }
-  }
-
-  if (policyConfig?.nonUpdatableURI) {
-    if (!policies.includes(NON_UPDATABLE_URI_POLICY)) {
-      throw new Error('Non-updatable URI policy is required');
-    }
-  }
-
-  if (policyConfig?.hasRoyalty) {
-    if (!policies.includes(ROYALTY_POLICY)) {
-      throw new Error('Royalty policy is required');
-    }
-  }
-
-  if (policyConfig?.nonFungible) {
-    if (!policies.includes(NON_FUNGIBLE_POLICY)) {
-      throw new Error('Non-fungible policy is required');
-    }
-  }
-
-  if (new Set(policies).size !== policies.length) {
-    throw new Error('Duplicate policies are not allowed');
-  }
-};

@@ -11,7 +11,7 @@ import type { ChainId } from '@kadena/types';
 import { submitClient } from '../core';
 import type { IClientConfig } from '../core/utils/helpers';
 
-interface IMintTokenInput {
+interface IUpdateUriInput {
   policyConfig?: {
     guarded?: boolean;
   };
@@ -33,7 +33,7 @@ const updateUriCommand = ({
   chainId,
   guard,
   policyConfig,
-}: IMintTokenInput) =>
+}: IUpdateUriInput) =>
   composePactCommand(
     execution(Pact.modules['marmalade-v2.ledger']['update-uri'](tokenId, uri)),
     addKeyset('guard', guard.keyset.pred, ...guard.keyset.keys),
@@ -47,7 +47,7 @@ const updateUriCommand = ({
     setMeta({ senderAccount: guard.account, chainId }),
   );
 
-export const updateUri = (inputs: IMintTokenInput, config: IClientConfig) =>
+export const updateUri = (inputs: IUpdateUriInput, config: IClientConfig) =>
   submitClient<
     PactReturnType<IPactModules['marmalade-v2.ledger']['update-uri']>
   >(config)(updateUriCommand(inputs));

@@ -10,7 +10,7 @@ import {
   continuation,
   setMeta,
 } from '@kadena/client/fp';
-import type { ChainId, IPactDecimal, IPactInt } from '@kadena/types';
+import type { ChainId, IPactDecimal } from '@kadena/types';
 import { submitClient } from '../core';
 import type { IClientConfig } from '../core/utils/helpers';
 import type {
@@ -27,7 +27,6 @@ interface IBuyTokenInput extends CommonProps {
   tokenId: string;
   saleId: string;
   amount: IPactDecimal;
-  timeout: IPactInt;
   chainId: ChainId;
   seller: {
     account: string;
@@ -90,7 +89,6 @@ const buyTokenCommand = <C extends IAuctionPurchaseConfig>({
   buyer,
   buyerFungibleAccount,
   amount,
-  timeout,
   gasLimit = 3000,
   policyConfig,
   meta,
@@ -104,12 +102,7 @@ const buyTokenCommand = <C extends IAuctionPurchaseConfig>({
       step: 1,
       rollback: false,
       proof: null,
-      data: {
-        id: tokenId,
-        seller: seller.account,
-        amount,
-        timeout,
-      },
+      data: {},
     }),
     addSigner(buyer.keyset.keys, (signFor) => [
       signFor('coin.GAS'),

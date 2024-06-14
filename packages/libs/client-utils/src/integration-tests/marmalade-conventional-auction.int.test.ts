@@ -916,7 +916,6 @@ describe('buyToken', () => {
           },
         },
         amount: new PactNumber(1).toPactDecimal(),
-        timeout,
       },
       config,
     )
