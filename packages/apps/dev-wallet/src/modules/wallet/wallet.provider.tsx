@@ -98,13 +98,13 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   ) => {
     if (!profile) {
       keySourceManager.reset();
-      sessionStorage.clear();
+      localStorage.clear();
       setContextValue(({ profileList }) => ({ profileList }));
       return null;
     }
     if (!noSession) {
-      sessionStorage.clear();
-      sessionStorage.setItem('profile', JSON.stringify(profile));
+      localStorage.clear();
+      localStorage.setItem('profile', JSON.stringify(profile));
     }
     const accounts = await WalletService.getAccounts(profile.uuid);
     const keySources = await walletRepository.getProfileKeySources(
@@ -135,7 +135,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     retrieveProfileList();
-    const profile = JSON.parse(sessionStorage.getItem('profile') ?? 'null');
+    const profile = JSON.parse(localStorage.getItem('profile') ?? 'null');
     if (profile) {
       console.log('retrieving profile from session', profile);
       setProfile(profile, true);

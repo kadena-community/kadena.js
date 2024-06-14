@@ -1,5 +1,6 @@
 import { kadenaDecrypt, kadenaEncrypt } from '@kadena/hd-wallet';
 
+// add expiration to the session
 export async function setSession(
   sessionKey: string,
   sessionValue: Record<string, Uint8Array> | null,
@@ -12,11 +13,11 @@ export async function setSession(
       value: await kadenaEncrypt(key, value),
     });
   }
-  sessionStorage.setItem(sessionKey, JSON.stringify(encrypted));
+  localStorage.setItem(sessionKey, JSON.stringify(encrypted));
 }
 
 export async function getSession(sessionKey: string) {
-  const data = sessionStorage.getItem(sessionKey);
+  const data = localStorage.getItem(sessionKey);
   if (!data) return null;
   const encrypted = JSON.parse(data);
   const decrypted: Record<string, Uint8Array> = {};
