@@ -128,7 +128,12 @@ describe('createToken', () => {
           guarded: true,
           nonUpdatableURI: false,
         },
-        guards: {},
+        guards: {
+          uriGuard: {
+            keys: [sourceAccount.publicKey],
+            pred: 'keys-all' as const,
+          },
+        },
         tokenId: tokenId as string,
       },
       config,

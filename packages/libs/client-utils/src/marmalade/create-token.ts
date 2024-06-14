@@ -130,26 +130,12 @@ const generatePolicyTransactionData = (
   }
 
   if (!policyConfig?.guarded && policyConfig?.nonUpdatableURI === false) {
-    if (props.guards.uriGuard)
-      data.push(
-        addData(
-          'uri_guard',
-          props.guards.uriGuard as unknown as ValidDataTypes,
-        ),
-      );
+    throw new Error('Guard policy must be used with updatable URI tokens');
   }
 
-  if (policyConfig?.guarded && policyConfig?.nonUpdatableURI) {
+  if (policyConfig?.guarded && policyConfig?.nonUpdatableURI === false) {
     if (!props.guards.uriGuard) {
-      throw new Error('Non-updatable tokens require "uriGuard"');
-    }
-    if (!(props.guards.uriGuard as FunctionGuard)?.fun) {
-      throw new Error('Non-updatable tokens require function guard');
-    }
-    if (
-      (props.guards.uriGuard as FunctionGuard).fun !== `${GUARD_POLICY}.failure`
-    ) {
-      throw new Error('Non-updatable tokens require failure guard');
+      throw new Error('Updatable tokens require "uriGuard"');
     }
   }
 
