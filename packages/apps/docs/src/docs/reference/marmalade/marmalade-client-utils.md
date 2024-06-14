@@ -80,7 +80,8 @@ const config: IClientConfig = {
 
 ## burnToken
 
-Use `burnToken` function to eliminate a specified amount of a token. This operation reduces the total supply of the token.
+Use `burnToken` function to eliminate a specified amount of a token. 
+This operation reduces the total supply of the token.
 
 ```typescript
 burnToken(inputs, config): IEmitterWrapper
@@ -89,18 +90,48 @@ burnToken(inputs, config): IEmitterWrapper
 ### Inputs
 
 | Parameter | Type | Description |
-| ------------ | ------------ | ---------------------------- |
-| policyConfig | object | Concrete policies used when the token was created, if applicable. |
-| tokenId | string | Token identifier for the token you want to burn. |
-| accountName | string | Account that owns the token you want to burn. |
-| chainId | ChainId | Chain identifier for the chain where the token was created. Valid values are 0 to 19. |
-| guard | object | Token owner or the burn guard, if applicable. |
-| amount | IPactDecimal | Amount to burn. |
+| --------- | ---- | ----------- |
+| policyConfig | object | Specifies which types of policies are configured for the specified token. This object is used to validate that you have expected types defined for the all of the policies you have selected for a token.|
+| tokenId | string | Specifies the token identifier for the token you want to burn. |
+| accountName | string | Specifies the account that owns the token you want to burn. |
+| chainId | ChainId | Specifies the chain identifier for the chain where you want to burn the specified token. Valid values are 0 to 19. |
+| guard | object | Specifies the token owner or the burn guard, if you've configured a burn guard. |
+| amount | IPactDecimal | Specifies the amount to burn. |
 
-### Output
-```typescript
-boolean
+#### Policy configuration object
+
+The `ICreateTokenPolicyConfig` interface identifies the types of policies that are configured for a token as boolean values.
+The resulting `policyConfig` object contains properties similar to the following:
+
+```json
+{
+  "customPolicies": false,
+  "nonUpdatableURI": false,
+  "guarded": true,
+  "nonFungible": true,
+  "hasRoyalty": true,
+  "collection": true
+}
 ```
+
+#### Guard object
+
+Depending on whether a token has the guard policy applied and a burn guard defined, the `guard` object account information might be required to be the token owner or the account specified for the burn guard.
+For either account, the `guard` object contains properties similar to the following:
+
+```json
+{
+  "account": "k:5a2afbc4564b76b2c27ce5a644cab643c43663835ea0be22433b209d3351f937",
+  "keyset": {
+     "keys": ["5a2afbc4564b76b2c27ce5a644cab643c43663835ea0be22433b209d3351f937"],
+     "pred": "keys-all"
+  }
+}
+```
+
+### Return value
+
+This function returns a `boolean` value to indicate whether the burn operation was successful or failed.
 
 ### Example
 
@@ -135,30 +166,50 @@ buyToken(inputs, config): IEmitterWrapper
 
 | Parameter | Type | Description |
 | ----------| ---- | ----------- |
-| auctionConfig | IAuctionPurchaseConfig | Type of auction if the token is offered for sale using a conventional or dutch auction.|
-| policyConfig | object | Concrete policies used when the token was created, if applicable. |
-| tokenId | string | Token identifier for the token you want to buy. |
-| saleId | string | Pact identifier for the token sale. |
-| amount | IPactDecimal | Number of tokens you want to buy. |
-| timeout | IPactDecimal | Time the sale is set to expire. |
-| chainId | ChainId | Chain identifier for the chain where the token is offered for sale. Valid values are 0 to 19. |
-| seller | object | Account information for the token seller. |
-| buyer | object| Buyer account information and guard. |
-| buyerFungibleAccount? | string | Fungible name if the fungible for the sale is not using the coin contract. |
+| auctionConfig | IAuctionPurchaseConfig | Specifies the type of auction if the token is offered for sale using a conventional or dutch auction.|
+| policyConfig | object | Specifies which types of policies are configured for the specified token. This object is used to validate that you have expected types defined for the all of the policies you have selected for a token.|
+| tokenId | string | Specifies the token identifier for the token you want to buy. |
+| saleId | string | Specifies the Pact identifier for the token sale. |
+| amount | IPactDecimal | Specifies the number of tokens you want to buy. |
+| chainId | ChainId | Specifies the chain identifier for the chain where the token is offered for sale. Valid values are 0 to 19. |
+| seller | object | Specifies account information for the token seller. |
+| buyer | object| Specifies the buyer account information and guard. |
+| buyerFungibleAccount? | string | Specifies the fungible name if the fungible for the sale is not using the coin contract. |
+
+#### Policy configuration object
+
+The `ICreateTokenPolicyConfig` interface identifies the types of policies that are configured for a token as boolean values.
+The resulting `policyConfig` object contains properties similar to the following:
+
+```json
+{
+  "customPolicies": false,
+  "nonUpdatableURI": false,
+  "guarded": true,
+  "nonFungible": true,
+  "hasRoyalty": true,
+  "collection": true
+}
+```
+
+#### Account information objects
+
+Depending on the function, account information objects might consist of different properties.
+For example, in the context of the `buyToken` function, the `seller` object only contains the account name, but the `buyer` object includes the account information and a keyset guard.
+
+#### Auction-specific parameters
 
 There are additional inputs for auctions. 
 The interface for conventional auctions (IConventionalAuctionPurchaseInput) and the interface for dutch auctions (IDutchAuctionPurchaseInput) have the following additional inputs:
 
 | Parameter    | Type         | Description           |
 | ------------ | ------------ | --------------------- |
-| updatedPrice | IPactDecimal | Current auction price. |
-| escrow       | object       | Escrow sale account. |
+| updatedPrice | IPactDecimal | Specifies the current auction price. |
+| escrow       | object       | Specifies the escrow sale account in the Marmalade ledger. |
 
-### Output
+### Return value
 
-```typescript
-string // sale-id
-```
+This function returns the `sale-id` as a `string` value.
 
 ### Example
 
@@ -199,94 +250,30 @@ Both conventional auctions and dutch auctions use the following parameters:
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| auctionConfig | IAuctionPurchaseConfig | Type of auction to create. Valid vales are conventional and dutch.|
-| chainId | ChainId | Chain identifier for the chain where where you want to create the auction. Valid values are 0 to 19. |
-| seller | object | Account information for the token seller. |
-| saleId | string | Pact identifier for the token sale. |
-| tokenId | string | Token identifier for the token you want to list. |
-| startDate | IPactInt | Time when auction starts. |
-| endDate | IPactInt | Time when auction ends. |
-| reservedPrice | IPactDecimal | Reserved price for the sale.|
+| auctionConfig | IAuctionPurchaseConfig | Specifies the type of auction to create. Valid vales are conventional and dutch.|
+| chainId | ChainId | Specifies the chain identifier for the chain where where you want to create the auction. Valid values are 0 to 19. |
+| seller | object | Specifies the account information for the token seller. |
+| saleId | string | Specifies the Pact identifier for the token sale. |
+| tokenId | string | Specifies the token identifier for the token you want to list. |
+| startDate | IPactInt | Specifies the time when auction starts. |
+| endDate | IPactInt | Specifies the time when auction ends. |
+| reservedPrice | IPactDecimal | Specifies the reserved price for the sale.|
 
 The following parameters are only used for creating a dutch auction:
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| startPrice | IPactDecimal | Initial asking price for the token auction. |
-| priceIntervalInSeconds | IPactInt | Interval for lowering the asking price for the token. |
+| startPrice | IPactDecimal | Specifies the initial asking price for the token auction. |
+| priceIntervalInSeconds | IPactInt | Specifies the interval for lowering the asking price for the token. |
 
-### Output
+### Return value
 
-```typescript
-boolean
-```
+This function returns a `boolean` value to indicate whether creating the auction was successful or failed.
 
 ### Example
 
 ```typescript
 const result = await createAuction({
-    auctionConfig: {
-      conventional: true,
-    },
-    saleId: "",
-    tokenId: "t:...",
-    startDate: { int: "" },
-    endDate: { int: "" },
-    reservedPrice: new PactNumber(1).toPactDecimal(),
-    chainId,
-    seller: {
-      account: "k:5a2afbc4564b76b2c27ce5a644cab643c43663835ea0be22433b209d3351f937",
-      keyset: {
-        keys: ["5a2afbc4564b76b2c27ce5a644cab643c43663835ea0be22433b209d3351f937"],
-        pred: 'keys-all',
-      },
-    },
-  },
-  config,
-)
-```
-
-## updateAuction
-
-Use `updateAuction` to modify an existing auction's details. 
-This function supports updates to both conventional and dutch auction types, enabling changes to start and end dates, prices, and other relevant parameters.
-
-```typescript
-updateAuction(inputs, config): IEmitterWrapper
-```
-
-### Inputs
-
-Both conventional auctions and dutch auctions use the following parameters:
-
-| Parameter | Type | Description |
-| --------- | ---- | ----------- |
-| auctionConfig | IAuctionPurchaseConfig | Type of auction to update. Valid vales are conventional and dutch.|
-| chainId | ChainId | Chain identifier for the chain where where you want to create the auction. Valid values are 0 to 19. |
-| seller | object | Account information for the token seller. |
-| saleId | string | Pact identifier for the token sale. |
-| tokenId | string | Token identifier for the token you want to list. |
-| startDate | IPactInt | Time when auction starts. |
-| endDate | IPactInt | Time when auction ends. |
-| reservedPrice | IPactDecimal | Reserved price for the sale.|
-
-The following parameters are only used for updating a dutch auction:
-
-| Parameter | Type | Description |
-| --------- | ---- | ----------- |
-| startPrice | IPactDecimal | Initial asking price for the token auction. |
-| priceIntervalInSeconds | IPactInt | Interval for lowering the asking price for the token. |
-
-### Output
-
-```typescript
-boolean
-```
-
-#### Example
-
-```typescript
-const result = await updateAuction({
     auctionConfig: {
       conventional: true,
     },
@@ -320,17 +307,15 @@ createBidId(inputs): string
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| saleId | string | Pact identifier for the token sale. |
-| bidderAccount | string | Bidder account information. |
-| chainId | ChainId | Chain identifier for the chain where where you want to create a bid identifier. Valid values are 0 to 19.|
-| networkId | NetworkId | Target network for the bid. Valid values are development, testnet04, and mainnet01. |
-| host | IClientConfig['host'] | Target node for the bid. |
+| saleId | string | Specifies the Pact identifier for the token sale. |
+| bidderAccount | string | Specifies the bidder account information. |
+| chainId | ChainId | Specifies the chain identifier for the chain where where you want to create a bid identifier. Valid values are 0 to 19.|
+| networkId | NetworkId | Specifies the target network for the bid. Valid values are development, testnet04, and mainnet01. |
+| host | IClientConfig['host'] | Specifies the target node for the bid. |
 
-### Output
+### Return value
 
-```typescript
-string // bid-id
-```
+This function returns the `bid-id` as a `string` value.
 
 ### Example
 
@@ -356,17 +341,15 @@ createCollectionId(inputs): string
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| collectionName | string | Name of the collection. |
-| operator | string | Collection operator. |
-| chainId | ChainId | Chain identifier for the chain where where you want to create the collection identifier. Valid values are 0 to 19.|
-| networkId | NetworkId | Target network for the collection identifier. Valid values are development, testnet04, and mainnet01. |
-| host | IClientConfig['host'] | Target node for the collection identifier. |
+| collectionName | string | Specifies the name of the collection. |
+| operator | string | Specifies the collection operator. |
+| chainId | ChainId | Specifies the chain identifier for the chain where where you want to create the collection identifier. Valid values are 0 to 19.|
+| networkId | NetworkId | Specifies the target network for the collection identifier. Valid values are development, testnet04, and mainnet01. |
+| host | IClientConfig['host'] | Specifies the target node for the collection identifier. |
 
-### Output
+### Return value
 
-```typescript
-string // collection-id
-```
+This function returns the `collection-id` as a `string` value.
 
 ### Example
 
@@ -397,18 +380,16 @@ createCollection(inputs, config): IEmitterWrapper
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| id | string | Collection identifier. |
-| name | string | Collection name. |
-| size | IPactInt or PactReference | Number of tokens in the collection. |
-| chainId | ChainId | Chain identifier for the chain where where you want to create the collection. Valid values are 0 to 19. |
-| operator | object | Operator account and guard. |
-| meta | object | Transaction metadata. |
+| id | string | Specifies the collection identifier. |
+| name | string | Specifies the collection name. |
+| size | IPactInt or PactReference | Specifies the number of tokens in the collection. |
+| chainId | ChainId | Specifies the chain identifier for the chain where where you want to create the collection. Valid values are 0 to 19. |
+| operator | object | Specifies the operator account and guard. |
+| meta | object | Specifies the transaction metadata. |
 
-### Output
+### Return value
 
-```typescript
-boolean
-```
+This function returns a `boolean` value to indicate whether creating the collection was successful or failed.
 
 ### Example
 
@@ -441,21 +422,35 @@ createTokenId(inputs): string
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| policyConfig | object | Concrete policies used to create the token identifier, if applicable. |
-| policies | Array<string> | List of policies applied to the token.|
-| uri | string | Location of the token metadata JSON file in the form of uniform resource identifier (URI). |
-| precision | IPactInt or PactReference | Token precision.        |
-| collectionName | string | Name of the token collection, if applicable. |
-| creator | string | Token creator account information.|
-| chainId | ChainId | Chain identifier for the chain where where you want to create the token identifier. Valid values are 0 to 19.|
-| networkId | NetworkId | Target network for the token identifier. Valid values are development, testnet04, and mainnet01. |
-| host | IClientConfig['host'] | Target node for the token identifier. |
+| policyConfig | object | Specifies which types of policies are configured for the specified token. This object is used to validate that you have expected types defined for the all of the policies you have selected for a token.|
+| policies | Array<string> | Specifies the list of policy names applied to the token.|
+| uri | string | Specifies the location of the token metadata JSON file in the form of uniform resource identifier (URI). |
+| precision | IPactInt or PactReference | Specifies the token precision.        |
+| collectionName | string | Specifies the name of the token collection, if applicable. |
+| creator | string | Specifies the token creator account information.|
+| chainId | ChainId | Specifies the chain identifier for the chain where where you want to create the token identifier. Valid values are 0 to 19.|
+| networkId | NetworkId | Specifies the target network for the token identifier. Valid values are development, testnet04, and mainnet01. |
+| host | IClientConfig['host'] | Specifies the target node for the token identifier. |
 
-### Output
+#### Policy configuration object
 
-```typescript
-string // token-id
+The `ICreateTokenPolicyConfig` interface identifies the types of policies that are configured for a token as boolean values.
+The resulting `policyConfig` object contains properties similar to the following:
+
+```json
+{
+  "customPolicies": false,
+  "nonUpdatableURI": false,
+  "guarded": true,
+  "nonFungible": true,
+  "hasRoyalty": true,
+  "collection": true
+}
 ```
+
+### Return value
+
+This function returns the `token-id` as a `string` value.
 
 ### Example
 
@@ -488,46 +483,66 @@ createToken(inputs, config): IEmitterWrapper
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| policyConfig | object | Concrete policies used to create the token, if applicable. |
-| policies | Array<string> | List of policies applied to the token. |
-| uri | string | Location of the token metadata JSON file in the form of uniform resource identifier (URI). |
-| precision | IPactInt or PactReference | Token precision.        |
-| collectionName | string | Name of the token collection, if applicable. |
-| creator | string | Token creator account information.|
-| chainId | ChainId | Chain identifier for the chain where where you want to create the token identifier. Valid values are 0 to 19. |
-| guards | IGuardInfoInput | Parameters for the guard policy, if applicable. |
-| royalty | IRoyaltyInfoInput | Parameters for the royalty policy, if applicable. |
-| collection | ICollectionInfoInput | Parameters for the collection policy, if applicable. |
+| policyConfig | object | Specifies which types of policies are configured for the specified token. This object is used to validate that you have expected types defined for the all of the policies you have selected for a token.|
+| policies | Array<string> | Specifies the list of policy names applied to the token. |
+| uri | string | Specifies the location of the token metadata JSON file in the form of uniform resource identifier (URI). |
+| precision | IPactInt or PactReference | Specifies the token precision.        |
+| collectionName | string | Specifies the name of the token collection, if applicable. |
+| creator | string | Specifies the token creator account information.|
+| chainId | ChainId | Specifies the chain identifier for the chain where where you want to create the token. Valid values are 0 to 19. |
+| guards | IGuardInfoInput | Specifies the parameters for the guard policy, if applicable. |
+| royalty | IRoyaltyInfoInput | Specifies the parameters for the royalty policy, if applicable. |
+| collection | ICollectionInfoInput | Specifies the parameters for the collection policy, if applicable. |
 
 #### Additional inputs for guard policy (IGuardInfoInput)
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| mintGuard | KeysetGuard or FunctionGuard | Guard for minting tokens.|
-| uriGuard | KeysetGuard or FunctionGuard | Guard for updating the token metadata and uri. |
-| saleGuard | KeysetGuard or FunctionGuard | Guard for selling tokens. |
-| burnGuard | KeysetGuard or FunctionGuard | Guard for burning tokens.|
-| transferGuard | KeysetGuard or FunctionGuard | Guard for transferring tokens. |
+| mintGuard | KeysetGuard or FunctionGuard | Specifies the guard for minting tokens.|
+| uriGuard | KeysetGuard or FunctionGuard | Specifies the guard for updating the token metadata and uri. |
+| saleGuard | KeysetGuard or FunctionGuard | Specifies the guard for selling tokens. |
+| burnGuard | KeysetGuard or FunctionGuard | Specifies the guard for burning tokens.|
+| transferGuard | KeysetGuard or FunctionGuard | Specifies the guard for transferring tokens. |
 
 #### Additional inputs for royalty policy (IRoyaltyInfoInput)
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| fungible | object | Reference to a fungible token. |
-| creator | object | Creator account information and guard. |
-| royaltyRate | IPactDecimal | Royalty percentage to be paid to the creator's account each time a token with this policy applied is sold. |
+| fungible | object | Specifies the module reference where a fungible token is defined, for example, in the `coin` contract for KDA. |
+| creator | object | Specifies the creator account information and guard. |
+| royaltyRate | IPactDecimal | Specifies the royalty percentage to be paid to the creator's account each time a token with this policy applied is sold. |
+
+The fungible module object identifies the contracts where specified fungible tokens are defined.
+For Marmalade and KDA tokens, the fungible object contains the following reference specifications:
+
+```json
+{
+  "refSpec":[
+    {
+      "namespace":null,
+      "name":"fungible-xchain-v1"
+    },
+    {
+      "namespace":null,
+      "name":"fungible-v2"
+    }],
+  "refName":
+    {
+      "namespace":null,
+      "name":"coin"
+    }
+},
+```
 
 #### Additional inputs for collection policy (ICollectionInfoInput)
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| collectionId | string | Collection to add the token to. |
+| collectionId | string | Specifies the collection to add the token to. |
 
-### Output
+### Return value
 
-```typescript
-boolean
-```
+This function returns a `boolean` value to indicate whether creating the token was successful or failed.
 
 ### Example
 
@@ -560,16 +575,14 @@ escrowAccount(inputs): string
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| saleId | string | Pact identifier for the token sale. |
-| chainId | ChainId | Chain identifier for the chain where the escrow account is created. Valid values are 0 to 19.|
-| networkId | NetworkId | Target network for the escrow account. Valid values are development, testnet04, and mainnet01. |
-| host | IClientConfig['host'] | Target node for the escrow account. |
+| saleId | string | Specifies the Pact identifier for the token sale. |
+| chainId | ChainId | Specifies the chain identifier for the chain where the escrow account is created. Valid values are 0 to 19.|
+| networkId | NetworkId | Specifies the target network for the escrow account. Valid values are development, testnet04, and mainnet01. |
+| host | IClientConfig['host'] | Specifies the target node for the escrow account. |
 
-### Output
+### Return value
 
-```typescript
-string // escrow-account
-```
+This function returns the `escrow-account` as a `string` value.
 
 ### Example
 
@@ -594,17 +607,15 @@ getAccountDetails(inputs): object
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| tokenId | string | Token identifier for the token that you want to retrieve information for. |
-| accountName | string | Account name that you want to retrieve information for. |
-| chainId | ChainId | Chain identifier for the chain from which you want to get account details. Valid values are 0 to 19.|
-| networkId | NetworkId | Target network for retrieving account details. Valid values are development, testnet04, and mainnet01. |
-| host | IClientConfig['host'] | Target node for retrieving account details.|
+| tokenId | string | Specifies the token identifier for the token that you want to retrieve information for. |
+| accountName | string | Specifies the account name that you want to retrieve information for. |
+| chainId | ChainId | Specifies the chain identifier for the chain from which you want to get account details. Valid values are 0 to 19.|
+| networkId | NetworkId | Specifies the target network for retrieving account details. Valid values are development, testnet04, and mainnet01. |
+| host | IClientConfig['host'] | Specifies the target node for retrieving account details.|
 
-### Output
+### Return value
 
-```typescript
-object // account details
-```
+This functions returns an object with account details.
 
 ### Example
 
@@ -630,17 +641,15 @@ getAuctionDetails(inputs): object
 
 | Parameter | Type | Description |
 | ----------| ---- | ----------- |
-| auctionConfig | IAuctionConfig | type of the auction |
-| saleId | string | Pact identifier for the sale you want to retrieve information for. |
-| chainId | ChainId | Chain identifier for the chain from which you want to get auction details. Valid values are 0 to 19.|
-| networkId | NetworkId | Target network for retrieving auction details. Valid values are development, testnet04, and mainnet01. |
-| host | IClientConfig['host'] | Target node for retrieving auction details.|
+| auctionConfig | IAuctionConfig | Specifies the type of the auction. |
+| saleId | string | Specifies the Pact identifier for the sale you want to retrieve information for. |
+| chainId | ChainId | Specifies the chain identifier for the chain from which you want to get auction details. Valid values are 0 to 19.|
+| networkId | NetworkId | Specifies the target network for retrieving auction details. Valid values are development, testnet04, and mainnet01. |
+| host | IClientConfig['host'] | Specifies the target node for retrieving auction details.|
 
-### Output
+### Return value
 
-```typescript
-object // auction details
-```
+This functions returns an object with auction details.
 
 ### Example
 
@@ -665,16 +674,14 @@ getBid(inputs): object
 
 | Parameter | Type | Description |
 | --------- | ---- | ------------|
-| bidId | string | Identifier for the bid you want to retrieve information for. |
-| chainId | ChainId | Chain identifier for the chain from which you want to get bid details. Valid values are 0 to 19.|
-| networkId | NetworkId | Target network for retrieving bid details. Valid values are development, testnet04, and mainnet01. |
-| host | IClientConfig['host'] | Target node for retrieving bid details.|
+| bidId | string | Specifies the identifier for the bid you want to retrieve information for. |
+| chainId | ChainId | Specifies the chain identifier for the chain from which you want to get bid details. Valid values are 0 to 19.|
+| networkId | NetworkId | Specifies the target network for retrieving bid details. Valid values are development, testnet04, and mainnet01. |
+| host | IClientConfig['host'] | Specifies the target node for retrieving bid details.|
 
-### Output
+### Return value
 
-```typescript
-object // bid details
-```
+This functions returns an object with bid details.
 
 ### Example
 
@@ -699,16 +706,14 @@ getCollectionToken(inputs): object
 
 | Parameter | Type | Description |
 | ----------| ---- | ----------- |
-| tokenId | string | Token identifier for the token that you want to retrieve information for. |
-| chainId | ChainId | Chain identifier for the chain from which you want to get information about a token in a collection. Valid values are 0 to 19.|
-| networkId | NetworkId | Target network for retrieving information about a token in a collection. Valid values are development, testnet04, and mainnet01. |
-| host | IClientConfig['host'] | Target node for retrieving information about a token in a collection.|
+| tokenId | string | Specifies the token identifier for the token that you want to retrieve information for. |
+| chainId | ChainId | Specifies the chain identifier for the chain from which you want to get information about a token in a collection. Valid values are 0 to 19.|
+| networkId | NetworkId | Specifies the target network for retrieving information about a token in a collection. Valid values are development, testnet04, and mainnet01. |
+| host | IClientConfig['host'] | Specifies the target node for retrieving information about a token in a collection.|
 
-### Output
+### Return value
 
-```typescript
-object // collection token details
-```
+This functions returns an object with details about a token in a collection.
 
 ### Example
 
@@ -733,16 +738,14 @@ getCollection(inputs): object
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| collectionId | string | Collection identifier for the collection that you want to retrieve information for. |
-| chainId | ChainId | Chain identifier for the chain from which you want to get information about a collection. Valid values are 0 to 19.|
-| networkId | NetworkId | Target network for retrieving information about a collection. Valid values are development, testnet04, and mainnet01. |
-| host | IClientConfig['host'] | Target node for retrieving information about a collection.|
+| collectionId | string | Specifies the collection identifier for the collection that you want to retrieve information for. |
+| chainId | ChainId | Specifies the chain identifier for the chain from which you want to get information about a collection. Valid values are 0 to 19.|
+| networkId | NetworkId | Specifies the target network for retrieving information about a collection. Valid values are development, testnet04, and mainnet01. |
+| host | IClientConfig['host'] | Specifies the target node for retrieving information about a collection.|
 
-### Output
+### Return value
 
-```typescript
-object // collection details
-```
+This functions returns an object with collection details.
 
 ### Example
 
@@ -767,16 +770,14 @@ getCurrentPrice(inputs): IPactDecimal
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| saleId | string | Pact identifier for the sale you want to retrieve information for. |
-| chainId | ChainId | Chain identifier for the chain from which you want to get information about the current price for a token. Valid values are 0 to 19.|
-| networkId | NetworkId | Target network for retrieving information about the current price for a token. Valid values are development, testnet04, and mainnet01. |
-| host | IClientConfig['host'] | Target node for retrieving information about the current price for a token.|
+| saleId | string | Specifies the Pact identifier for the sale you want to retrieve information for. |
+| chainId | ChainId | Specifies the chain identifier for the chain from which you want to get information about the current price for a token. Valid values are 0 to 19.|
+| networkId | NetworkId | Specifies the target network for retrieving information about the current price for a token. Valid values are development, testnet04, and mainnet01. |
+| host | IClientConfig['host'] | Specifies the target node for retrieving information about the current price for a token.|
 
-### Output
+### Return value
 
-```typescript
-IPactDecimal // current price
-```
+This functions returns an object with the current price.
 
 ### Example
 
@@ -801,16 +802,14 @@ getEscrowAccount(inputs): object
 
 | Parameter | Type                  | Description    |
 | --------- | --------------------- | -------------- |
-| saleId | string | Pact identifier for the sale you want to retrieve information for. |
-| chainId | ChainId | Chain identifier for the chain from which you want to get information about an escrow account. Valid values are 0 to 19.|
-| networkId | NetworkId | Target network for retrieving information about an escrow account. Valid values are development, testnet04, and mainnet01. |
-| host | IClientConfig['host'] | Target node for retrieving information about an escrow account.|
+| saleId | string | Specifies the Pact identifier for the sale you want to retrieve information for. |
+| chainId | ChainId | Specifies the chain identifier for the chain from which you want to get information about an escrow account. Valid values are 0 to 19.|
+| networkId | NetworkId | Specifies the target network for retrieving information about an escrow account. Valid values are development, testnet04, and mainnet01. |
+| host | IClientConfig['host'] | Specifies the target node for retrieving information about an escrow account.|
 
-### Output
+### Return value
 
-```typescript
-object // escrow account
-```
+This functions returns an object with details about an escrow account.
 
 ### Example
 
@@ -835,16 +834,14 @@ getQuoteInfo(inputs): object
 
 | Parameter | Type                  | Description    |
 | --------- | --------------------- | -------------- |
-| saleId | string | Pact identifier for the sale you want to retrieve information for. |
-| chainId | ChainId | Chain identifier for the chain from which you want to get information about a quote. Valid values are 0 to 19.|
-| networkId | NetworkId | Target network for retrieving information about a quote. Valid values are development, testnet04, and mainnet01. |
-| host | IClientConfig['host'] | Target node for retrieving information about a quote.|
+| saleId | string | Specifies the Pact identifier for the sale you want to retrieve information for. |
+| chainId | ChainId | Specifies the chain identifier for the chain from which you want to get information about a quote. Valid values are 0 to 19.|
+| networkId | NetworkId | Specifies the target network for retrieving information about a quote. Valid values are development, testnet04, and mainnet01. |
+| host | IClientConfig['host'] | Specifies the target node for retrieving information about a quote.|
 
-### Output
+### Return value
 
-```typescript
-object // quote info
-```
+This functions returns an object with quote details.
 
 ### Example
 
@@ -869,17 +866,15 @@ getTokenBalance(inputs): IPactDecimal
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| tokenId | string | Token identifier for the token that you want to retrieve information for. |
-| accountName | string | Account name that you want to retrieve information for. |
-| chainId | ChainId | Chain identifier for the chain from which you want to get balance information for a token. Valid values are 0 to 19.|
-| networkId | NetworkId | Target network for retrieving information about the balance for a token. Valid values are development, testnet04, and mainnet01. |
-| host | IClientConfig['host'] | Target node for retrieving information about the balance for a token.|
+| tokenId | string | Specifies the token identifier for the token that you want to retrieve information for. |
+| accountName | string | Specifies the account name that you want to retrieve information for. |
+| chainId | ChainId | Specifies the chain identifier for the chain from which you want to get balance information for a token. Valid values are 0 to 19.|
+| networkId | NetworkId | Specifies the target network for retrieving information about the balance for a token. Valid values are development, testnet04, and mainnet01. |
+| host | IClientConfig['host'] | Specifies the target node for retrieving information about the balance for a token.|
 
-### Output
+### Return value
 
-```typescript
-IPactDecimal // balance
-```
+This functions returns an IPactDecimal value representing the token balance.
 
 ### Example
 
@@ -905,16 +900,14 @@ getTokenInfo(inputs): object
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| tokenId | string | Token identifier for the token that you want to retrieve information for. |
-| chainId | ChainId | Chain identifier for the chain from which you want to get information for the token. Valid values are 0 to 19.|
-| networkId | NetworkId | Target network for retrieving information about the token. Valid values are development, testnet04, and mainnet01. |
-| host | IClientConfig['host'] | Target node for retrieving information about the token.|
+| tokenId | string | Specifies the token identifier for the token that you want to retrieve information for. |
+| chainId | ChainId | Specifies the chain identifier for the chain from which you want to get information for the token. Valid values are 0 to 19.|
+| networkId | NetworkId | Specifies the target network for retrieving information about the token. Valid values are development, testnet04, and mainnet01. |
+| host | IClientConfig['host'] | Specifies the target node for retrieving information about the token.|
 
-### Output
+### Return value
 
-```typescript
-object // token info
-```
+This functions returns an object with token details.
 
 ### Example
 
@@ -939,16 +932,14 @@ getUri(inputs): string
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| tokenId | string | Token identifier for the token that you want to retrieve information for. |
-| chainId | ChainId | Chain identifier for the chain from which you want to get the URI for the token. Valid values are 0 to 19.|
-| networkId | NetworkId | Target network for retrieving the URI for the token. Valid values are development, testnet04, and mainnet01. |
-| host | IClientConfig['host'] | Target node for retrieving the URI for the token.|
+| tokenId | string | Specifies the token identifier for the token that you want to retrieve information for. |
+| chainId | ChainId | Specifies the chain identifier for the chain from which you want to get the URI for the token. Valid values are 0 to 19.|
+| networkId | NetworkId | Specifies the target network for retrieving the URI for the token. Valid values are development, testnet04, and mainnet01. |
+| host | IClientConfig['host'] | Specifies the target node for retrieving the URI for the token.|
 
-### Output
+### Return value
 
-```typescript
-string // token URI
-```
+This function returns the token uRI as a `string` value.
 
 ### Example
 
@@ -974,18 +965,16 @@ mintToken(inputs, config): IEmitterWrapper
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| policyConfig | object | Concrete policies specified when the token was created, if applicable. |
-| tokenId | string | Token identifier for the token you want to mint. |
-| accountName | string | Account that you want to assign ownership of the token to. |
-| chainId | ChainId | Chain identifier for the chain where the token is being minted. Valid values are 0 to 19. |
-| guard | object | Token owner or the mint guard, if applicable. |
-| amount | IPactDecimal | Amount to mint. |
+| policyConfig | object | Specifies which types of policies are configured for the specified token. This object is used to validate that you have expected types defined for the all of the policies you have selected for a token.|
+| tokenId | string | Specifies the token identifier for the token you want to mint. |
+| accountName | string | Specifies the account that you want to assign ownership of the token to. |
+| chainId | ChainId | Specifies the chain identifier for the chain where the token is being minted. Valid values are 0 to 19. |
+| guard | object | Specifies the token owner or the mint guard, if applicable. |
+| amount | IPactDecimal | Specifies the amount to mint. |
 
-### Output
+### Return value
 
-```typescript
-boolean
-```
+This function returns a `boolean` value to indicate whether minting the token was successful or failed.
 
 ### Example
 
@@ -1007,7 +996,6 @@ const result = await mintToken({
 );
 ```
 
-
 ## offerToken
 
 Use `offerToken` to put a specified token up for sale.
@@ -1021,12 +1009,12 @@ offerToken(inputs, config): IEmitterWrapper
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| policyConfig | object | Concrete policies specified when the token was created, if applicable. |
-| tokenId | string | Token identifier for the token that you want to offer for sale. |
-| amount | IPactDecimal | Amount that you want to offer for sale. |
-| timeout | IPactInt | Timeout for when the offer can be withdrawn. You can set this value using the number of seconds from the start of the UNIX epoch or set the timeout to zero (0) to allow an offer to be withdrawn at any time.|
-| chainId | ChainId | Chain identifier for the chain where the token is being offered. Valid values are 0 to 19. |
-| seller | object | Seller account information and guard. |
+| policyConfig | object | Specifies which types of policies are configured for the specified token. This object is used to validate that you have expected types defined for the all of the policies you have selected for a token.|
+| tokenId | string | Specifies the token identifier for the token that you want to offer for sale. |
+| amount | IPactDecimal | Specifies the amount that you want to offer for sale. |
+| timeout | IPactInt | Specifies the timeout for when the offer can be withdrawn. You can set this value using the number of seconds from the start of the UNIX epoch or set the timeout to zero (0) to allow an offer to be withdrawn at any time.|
+| chainId | ChainId | Specifies the chain identifier for the chain where the token is being offered. Valid values are 0 to 19. |
+| seller | object | Specifies the seller account information and guard. |
 | auction | ISaleAuctionInfoInput | Additional parameters if you are offering the token using an auction contract. |
 | guards | ISaleGuardInfoInput | Additional parameters if you are offering a token that has the guard policy applied. |
 | royalty | IRoyaltyInfoInput | Additional parameters if you are offering a token that has the royalty policy applied. |
@@ -1035,30 +1023,28 @@ offerToken(inputs, config): IEmitterWrapper
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| fungible | object | Identifier to specify a fungible token, such as coin or a custom fungible token. |
-| price | IPactDecimal | Price that the token is being offered at. For auction contracts, this setting should be zero (0).|
-| sellerFungibleAccount | IPactDecimal | Seller account information if you are using a custom fungible. |
-| saleType | string | Auction contract type. Valid values are conventional and dutch. |
+| fungible | object | Specifies the identifier to specify a fungible token, such as coin or a custom fungible token. |
+| price | IPactDecimal | Specifies the price that the token is being offered at. For auction contracts, this setting should be zero (0).|
+| sellerFungibleAccount | IPactDecimal | Specifies the seller account information if you are using a custom fungible. |
+| saleType | string | Specifies the auction contract type. Valid values are conventional and dutch. |
 
 #### Additional inputs for guard policy (ISaleGuardInfoInput)
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| saleGuard | KeysetGuard or FunctionGuard | Guard for selling tokens. |
+| saleGuard | KeysetGuard or FunctionGuard | Specifies the guard for selling tokens. |
 
 #### Additional inputs for royalty policy (IRoyaltyInfoInput)
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| fungible | object | Identifier to specify a fungible token, such as coin or a custom fungible token.  |
-| creator | object | Creator account information and guard. |
-| royaltyRate | IPactDecimal | Royalty percentage to be paid to the creator's account each time a token with this policy applied is sold. |
+| fungible | object | Specifies the identifier to specify a fungible token, such as coin or a custom fungible token.  |
+| creator | object | Specifies the creator account information and guard. |
+| royaltyRate | IPactDecimal | Specifies the royalty percentage to be paid to the creator's account each time a token with this policy applied is sold. |
 
-### Output
+### Return value
 
-```typescript
-boolean
-```
+This function returns a `boolean` value to indicate whether creating the offer was successful or failed.
 
 ### Example
 
@@ -1092,26 +1078,35 @@ placeBid(inputs, config): IEmitterWrapper
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| marketplaceConfig | object | Configuration to collect marketplace fees. |
-| saleId | string | Pact identifier for the sale. |
-| bid | IPactDecimal | Amount to bid on the token. |
-| bidder | object | Bidder account information and guard. |
-| escrowAccount | string | Escrow account for the bid. |
-| chainId | ChainId | | chainId | ChainId | Chain identifier for the chain where the token is being offered. Valid values are 0 to 19. |
-| marketplaceFee | IPlaceBidInput | Additional parameters if using marketplace fees. |
+| marketplaceConfig | object | Specifies the configuration to collect marketplace fees. |
+| saleId | string | Specifies the Pact identifier for the sale. |
+| bid | IPactDecimal | Specifies the amount to bid on the token. |
+| bidder | object | Specifies the bidder account information and guard. |
+| escrowAccount | string | Specifies the escrow account for the bid. |
+| chainId | ChainId | | chainId | ChainId | Specifies the chain identifier for the chain where the token is being offered. Valid values are 0 to 19. |
+| marketplaceFee | IPlaceBidInput | Additional parameters, if using marketplace fees. |
 
-#### Additional inputs for marketplace policy (IPlaceBidInput)
+#### Marketplace object
+
+The `marketplaceConfig` object specifies whether a marketplace charges fees.
+For example:
+
+```json
+{
+  "marketplaceFee": true
+}
+```
+
+If true, the IPlaceBidInput interface requires the following additional parameters:
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| mkAccount | string | Marketplace account information. |
-| mkFeePercentage | IPactDecimal | Marketplace fee percentage.|
+| mkAccount | string | Specifies the marketplace account information. |
+| mkFeePercentage | IPactDecimal | Specifies the marketplace fee percentage.|
 
-### Output
+### Return value
 
-```typescript
-boolean
-```
+This function returns a `boolean` value to indicate whether placing the bid was successful or failed.
 
 ### Example
 
@@ -1145,18 +1140,16 @@ transferCreateToken(inputs, config): IEmitterWrapper
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| policyConfig | object | Concrete policies specified when the token was created, if applicable. |
-| tokenId | string | Token identifier for the token that you want to transfer. |
-| amount | IPactDecimal | Amount that you want to transfer. |
-| sender | object | Sender account information and guard. |
-| receiver | object | Receiver account information and guard. |
-| chainId | ChainId | Chain identifier for the chain where the transfer takes place. Valid values are 0 to 19. |
+| policyConfig | object | Specifies which types of policies are configured for the specified token. This object is used to validate that you have expected types defined for the all of the policies you have selected for a token.|
+| tokenId | string | Specifies the token identifier for the token that you want to transfer. |
+| amount | IPactDecimal | Specifies the amount that you want to transfer. |
+| sender | object | Specifies the sender account information and guard. |
+| receiver | object | Specifies the receiver account information and guard. |
+| chainId | ChainId | Specifies the chain identifier for the chain where the transfer takes place. Valid values are 0 to 19. |
 
-### Output
+### Return value
 
-```typescript
-boolean
-```
+This function returns a `boolean` value to indicate whether transferring the token was successful or failed.
 
 ### Example
 
@@ -1196,18 +1189,16 @@ transferToken(inputs, config): IEmitterWrapper
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| policyConfig | object | Concrete policies specified when the token was created, if applicable. |
-| tokenId | string | Token identifier for the token that you want to transfer. |
-| amount | IPactDecimal | Amount that you want to transfer. |
-| sender | object | Sender account information and guard. |
-| receiver | object | Receiver account information and guard. |
-| chainId | ChainId | Chain identifier for the chain where the transfer takes place. Valid values are 0 to 19. |
+| policyConfig | object | Specifies which types of policies are configured for the specified token. This object is used to validate that you have expected types defined for the all of the policies you have selected for a token.|
+| tokenId | string | token identifier for the token that you want to transfer. |
+| amount | IPactDecimal | Specifies the amount that you want to transfer. |
+| sender | object | Specifies the sender account information and guard. |
+| receiver | object | Specifies the receiver account information and guard. |
+| chainId | ChainId | Specifies the chain identifier for the chain where the transfer takes place. Valid values are 0 to 19. |
 
-### Output
+### Return value
 
-```typescript
-boolean
-```
+This function returns a `boolean` value to indicate whether transferring the token was successful or failed.
 
 ### Example
 
@@ -1231,6 +1222,66 @@ const result = await transferToken({
 );
 ```
 
+## updateAuction
+
+Use `updateAuction` to modify an existing auction's details. 
+This function supports updates to both conventional and dutch auction types, enabling changes to start and end dates, prices, and other relevant parameters.
+
+```typescript
+updateAuction(inputs, config): IEmitterWrapper
+```
+
+### Inputs
+
+Both conventional auctions and dutch auctions use the following parameters:
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| auctionConfig | IAuctionPurchaseConfig | Specifies the type of auction to update. Valid vales are conventional and dutch.|
+| chainId | ChainId | Specifies the chain identifier for the chain where where you want to update the auction. Valid values are 0 to 19. |
+| seller | object | Specifies the account information for the token seller. |
+| saleId | string | Specifies the Pact identifier for the token sale. |
+| tokenId | string | Specifies the token identifier for the token you want to list. |
+| startDate | IPactInt | Specifies the time when auction starts. |
+| endDate | IPactInt | Specifies the time when auction ends. |
+| reservedPrice | IPactDecimal | Specifies the reserved price for the sale.|
+
+The following parameters are only used for updating a dutch auction:
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| startPrice | IPactDecimal | Specifies the initial asking price for the token auction. |
+| priceIntervalInSeconds | IPactInt | Specifies the interval for lowering the asking price for the token. |
+
+### Return value
+
+This function returns a `boolean` value to indicate whether the update to the auction was successful or failed.
+
+#### Example
+
+```typescript
+const result = await updateAuction({
+    auctionConfig: {
+      conventional: true,
+    },
+    saleId: "",
+    tokenId: "t:...",
+    startDate: { int: "" },
+    endDate: { int: "" },
+    reservedPrice: new PactNumber(1).toPactDecimal(),
+    chainId,
+    seller: {
+      account: "k:5a2afbc4564b76b2c27ce5a644cab643c43663835ea0be22433b209d3351f937",
+      keyset: {
+        keys: ["5a2afbc4564b76b2c27ce5a644cab643c43663835ea0be22433b209d3351f937"],
+        pred: 'keys-all',
+      },
+    },
+  },
+  config,
+)
+```
+
 ## updateUri
 
 Use `updateUri` to update the URI associated with a specified token.
@@ -1246,17 +1297,15 @@ updateUri(inputs, config): IEmitterWrapper
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| policyConfig | object | Concrete policies specified when the token was created, if applicable. |
-| tokenId | string | Token identifier for the token that you want to update. |
-| uri | string |  Location of the token metadata JSON file in the form of uniform resource identifier (URI) that you want to update. |
-| guard | object | Update URI (uriGuard) account information and guard. |
-| chainId | ChainId | Chain identifier for the chain where the token is being updated. Valid values are 0 to 19. |
+| policyConfig | object | Specifies which types of policies are configured for the specified token. This object is used to validate that you have expected types defined for the all of the policies you have selected for a token.|
+| tokenId | string | Specifies the token identifier for the token that you want to update. |
+| uri | string |  Specifies the location of the token metadata JSON file in the form of uniform resource identifier (URI) that you want to update. |
+| guard | object | Specifies the update URI (uriGuard) account information and guard. |
+| chainId | ChainId | Specifies the chain identifier for the chain where the token is being updated. Valid values are 0 to 19. |
 
-### Output
+### Return value
 
-```typescript
-boolean
-```
+This function returns a `boolean` value to indicate whether updating the token URI was successful or failed.
 
 ### Example
 
@@ -1289,19 +1338,17 @@ withdrawToken(inputs, config): IEmitterWrapper
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| policyConfig | object | Concrete policies specified when the token was created, if applicable. |
-| tokenId | string | Token identifier for the token that you want to transfer. |
-| saleId | string | Pact identifier for the sale. |
-| amount | IPactDecimal | Amount to withdraw. |
-| timeout | IPactInt | Timeout for when the offer can be withdrawn. |
-| seller | object | Seller account information and guard. |
-| chainId | ChainId | Chain identifier for the chain where the token is being withdrawn. Valid values are 0 to 19. |
+| policyConfig | object | Specifies which types of policies are configured for the specified token. This object is used to validate that you have expected types defined for the all of the policies you have selected for a token.|
+| tokenId | string | Specifies the token identifier for the token that you want to transfer. |
+| saleId | string | Specifies the Pact identifier for the sale. |
+| amount | IPactDecimal | Specifies the amount to withdraw. |
+| timeout | IPactInt | Specifies the timeout for when the offer can be withdrawn. |
+| seller | object | Specifies the seller account information and guard. |
+| chainId | ChainId | Specifies the chain identifier for the chain where the token is being withdrawn. Valid values are 0 to 19. |
 
-### Output
+### Return value
 
-```typescript
-boolean
-```
+This function returns a `boolean` value to indicate whether withdrawing the token was successful or failed.
 
 ### Example
 
