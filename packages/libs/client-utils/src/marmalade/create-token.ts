@@ -129,7 +129,7 @@ const generatePolicyTransactionData = (
     );
   }
 
-  if (!policyConfig?.guarded && policyConfig?.updatableURI) {
+  if (!policyConfig?.guarded && policyConfig?.nonUpdatableURI === false) {
     if (props.guards.uriGuard)
       data.push(
         addData(
@@ -139,7 +139,7 @@ const generatePolicyTransactionData = (
       );
   }
 
-  if (policyConfig?.guarded && !policyConfig?.updatableURI) {
+  if (policyConfig?.guarded && policyConfig?.nonUpdatableURI) {
     if (!props.guards.uriGuard) {
       throw new Error('Non-updatable tokens require "uriGuard"');
     }

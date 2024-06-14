@@ -126,7 +126,7 @@ describe('createToken', () => {
         ..._inputs,
         policyConfig: {
           guarded: true,
-          updatableURI: true,
+          nonUpdatableURI: false,
         },
         guards: {},
         tokenId: tokenId as string,
