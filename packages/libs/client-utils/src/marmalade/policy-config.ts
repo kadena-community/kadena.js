@@ -40,7 +40,7 @@ export interface ICollectionInfoInput {
 
 export interface ICreateTokenPolicyConfig {
   customPolicies?: boolean;
-  updatableURI?: boolean;
+  nonUpdatableURI?: boolean;
   guarded?: boolean;
   nonFungible?: boolean;
   hasRoyalty?: boolean;
@@ -49,12 +49,13 @@ export interface ICreateTokenPolicyConfig {
 
 export const GUARD_POLICY = 'guard-policy-v1';
 export const NON_FUNGIBLE_POLICY = 'non-fungible-policy-v1';
+export const NON_UPDATABLE_URI_POLICY = 'non-updatable-uri-policy-v1';
 export const ROYALTY_POLICY = 'royalty-policy-v1';
 export const COLLECTION_POLICY = 'collection-policy-v1';
 
 interface ConfigToDataMap {
   customPolicies: { customPolicyData: Record<string, any> };
-  updatableURI: {};
+  nonUpdatableURI: {};
   guarded: { guards: IGuardInfoInput };
   nonFungible: {};
   hasRoyalty: { royalty: IRoyaltyInfoInput };
@@ -70,7 +71,9 @@ export interface PolicyProps {
 
 type PolicyDataForConfig<C extends ICreateTokenPolicyConfig> =
   (C['customPolicies'] extends true ? ConfigToDataMap['customPolicies'] : {}) &
-    (C['updatableURI'] extends true ? ConfigToDataMap['updatableURI'] : {}) &
+    (C['nonUpdatableURI'] extends true
+      ? ConfigToDataMap['nonUpdatableURI']
+      : {}) &
     (C['guarded'] extends true ? ConfigToDataMap['guarded'] : {}) &
     (C['nonFungible'] extends true ? ConfigToDataMap['nonFungible'] : {}) &
     (C['hasRoyalty'] extends true ? ConfigToDataMap['hasRoyalty'] : {}) &
@@ -94,9 +97,15 @@ export const validatePolicies = (
     }
   }
 
-  if (policyConfig?.guarded || policyConfig?.updatableURI) {
+  if (policyConfig?.guarded) {
     if (!policies.includes(GUARD_POLICY)) {
       throw new Error('Guard policy is required');
+    }
+  }
+
+  if (policyConfig?.nonUpdatableURI) {
+    if (!policies.includes(NON_UPDATABLE_URI_POLICY)) {
+      throw new Error('Non-updatable URI policy is required');
     }
   }
 
