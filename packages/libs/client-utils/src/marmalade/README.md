@@ -176,7 +176,6 @@ buyToken(inputs, config): IEmitterWrapper
 | tokenId               | string                 | token to buy                                 |
 | saleId                | string                 | token sale                                   |
 | amount                | IPactDecimal           | amount to buy                                |
-| timeout               | IPactDecimal           | timeout of the sale                          |
 | chainId               | ChainId                | token origin                                 |
 | seller                | object                 | seller account                               |
 | buyer                 | object                 | buyer account with guard                     |
