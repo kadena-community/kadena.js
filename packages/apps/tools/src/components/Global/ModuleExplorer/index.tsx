@@ -99,7 +99,7 @@ const ModuleExplorer = ({
           filteredData.get(networkId) || data.get(networkId) || [],
         ),
         item.key as string,
-        !filteredData.get(networkId),
+        !filteredData.get(networkId), // Don't sort alphabetically for search results
       ),
     };
   });
