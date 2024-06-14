@@ -4,7 +4,6 @@ import {
   Outlet,
   Route,
   RouterProvider,
-  Routes as RouterRoutes,
   createBrowserRouter,
   createMemoryRouter,
   createRoutesFromElements,
@@ -16,7 +15,9 @@ import { Connect } from '@/pages/connect/connect';
 import { ImportWallet } from '@/pages/import-wallet/import-wallet';
 import { CreateNetwork } from '@/pages/networks/create-network';
 import { Networks } from '@/pages/networks/networks';
+import { Ready } from '@/pages/ready/ready';
 import { SignatureBuilder } from '@/pages/signature-builder/signature-builder';
+import { Heading } from '@kadena/react-ui';
 import { useWallet } from '../modules/wallet/wallet.hook';
 import { BackupRecoveryPhrase } from '../pages/backup-recovery-phrase/backup-recovery-phrase';
 import { WriteDownRecoveryPhrase } from '../pages/backup-recovery-phrase/write-down/write-down-recovery-phrase';
@@ -28,14 +29,13 @@ import { getScriptType } from '../utils/window';
 import { Layout } from './layout';
 import { LayoutMini } from './layout-mini';
 
-const ProtectedRoute: FC<
+const RenderIf: FC<
   PropsWithChildren<{
-    isAllowed: boolean;
-    redirectPath: string;
+    condition: boolean;
+    otherwise: string;
   }>
-> = ({ isAllowed, redirectPath, children }) => {
-  if (!isAllowed) {
-    console.log('not allowed, redirecting to', redirectPath);
+> = ({ condition, otherwise: redirectPath, children }) => {
+  if (!condition) {
     return <Navigate to={redirectPath} replace />;
   }
 
@@ -44,13 +44,12 @@ const ProtectedRoute: FC<
 
 export const Routes: FC = () => {
   const { isUnlocked } = useWallet();
+  const isLocked = !isUnlocked;
 
   const routes = createRoutesFromElements(
     <Route element={<CommunicationProvider children={<Outlet />} />}>
       <Route element={<LayoutMini />}>
-        <Route
-          element={<ProtectedRoute isAllowed={!isUnlocked} redirectPath="/" />}
-        >
+        <Route element={<RenderIf condition={isLocked} otherwise="/home" />}>
           <Route path="/select-profile" element={<SelectProfile />} />
           <Route path="/create-profile/*" element={<CreateProfile />} />
           <Route
@@ -61,15 +60,10 @@ export const Routes: FC = () => {
         </Route>
       </Route>
       <Route
-        element={
-          <ProtectedRoute
-            isAllowed={isUnlocked}
-            redirectPath="/select-profile"
-          />
-        }
+        element={<RenderIf condition={!isLocked} otherwise="/select-profile" />}
       >
         <Route element={<LayoutMini />}>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/home" element={<HomePage />} />
           <Route
             path="/backup-recovery-phrase/:keySourceId"
             element={<BackupRecoveryPhrase />}
@@ -88,10 +82,11 @@ export const Routes: FC = () => {
           <Route path="/sig-builder" element={<SignatureBuilder />} />
           <Route path="/networks" element={<Networks />} />
           <Route path="/networks/create" element={<CreateNetwork />} />
-          <Route path="/connect" element={<Connect />} />
+          <Route path="/connect/:requestId" element={<Connect />} />
         </Route>
       </Route>
-      <Route path="*" element={<p>Not found!</p>} />
+      <Route path="/ready" element={<Ready />} />
+      <Route path="*" element={<Heading>Not found!</Heading>} />
     </Route>,
   );
 

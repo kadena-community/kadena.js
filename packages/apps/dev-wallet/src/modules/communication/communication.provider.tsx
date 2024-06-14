@@ -9,9 +9,18 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useWallet } from '../wallet/wallet.hook';
 
-type RequestType = 'CONNECTION_REQUEST' | 'SIGN_REQUEST' | 'PAYMENT_REQUEST';
-type Request = {
+type Message = {
+  id: string;
+  type: RequestType;
   payload: unknown;
+};
+
+type RequestType =
+  | 'CONNECTION_REQUEST'
+  | 'SIGN_REQUEST'
+  | 'PAYMENT_REQUEST'
+  | 'UNLOCK_REQUEST';
+type Request = Message & {
   resolve: (data: unknown) => void;
   reject: (error: unknown) => void;
 };
@@ -19,11 +28,8 @@ type Request = {
 const handle = (
   type: string,
   handler: (
-    message: unknown & {
-      id: string;
-      type: RequestType;
-    },
-  ) => unknown,
+    message: Message,
+  ) => Promise<{ payload: unknown } | { error: unknown }>,
 ) => {
   const cb = async (event: MessageEvent) => {
     if (event.data.type === type && event.source) {
@@ -32,12 +38,13 @@ const handle = (
       console.log('Sending response', {
         id: event.data.id,
         type: event.data.type,
-        payload,
+        ...payload,
       });
       event.source.postMessage(
-        { id: event.data.id, type: event.data.type, payload },
+        { id: event.data.id, type: event.data.type, ...payload },
         { targetOrigin: event.origin },
       );
+      window.opener.focus();
     }
   };
   window.addEventListener('message', cb);
@@ -52,25 +59,16 @@ export const useRequests = () => {
 };
 
 export const CommunicationProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [requests] = useState(
-    new Map<
-      string,
-      {
-        payload: unknown;
-        resolve: (data: unknown) => void;
-        reject: (error: unknown) => void;
-      }
-    >(),
-  );
+  const [requests] = useState(() => new Map<string, Request>());
   const navigate = useNavigate();
-  const wallet = useWallet();
+  const { isUnlocked, accounts, profile } = useWallet();
 
   useEffect(() => {
     console.log('CommunicationProvider mounted');
-    const createRequest = (payload: { id: string }) =>
-      new Promise((resolve) => {
+    const createRequest = (data: Message) =>
+      new Promise<{ payload: unknown } | { error: unknown }>((resolve) => {
         const request = {
-          payload,
+          ...data,
           resolve: (payload: unknown) => {
             resolve({
               payload,
@@ -82,51 +80,61 @@ export const CommunicationProvider: FC<PropsWithChildren> = ({ children }) => {
             });
           },
         };
-        requests.set(payload.id, request);
+        requests.set(data.id, request);
       }).finally(() => {
-        console.log('Removing request', payload.id);
-        requests.delete(payload.id);
+        requests.delete(data.id);
       });
 
     const handleRequest = (type: RequestType, route: string) =>
       handle(type, async (payload) => {
-        if (!wallet.isUnlocked) {
+        const request = createRequest(payload);
+        const next = `${route}/${payload.id}`;
+        if (!isUnlocked) {
           const unlock = {
             id: 'unlock',
-            type: 'UNLOCK_REQUEST',
+            type: 'UNLOCK_REQUEST' as const,
+            payload: next,
           };
           const unlockRequest = createRequest(unlock);
           navigate(`/select-profile`);
           await unlockRequest;
+        } else {
+          navigate(next);
         }
-        const request = createRequest(payload);
-        navigate(`${route}?requestId=${payload.id}`);
         return request;
       });
     const handlers = [
       handleRequest('CONNECTION_REQUEST', '/connect'),
       handleRequest('SIGN_REQUEST', '/sign'),
       handleRequest('PAYMENT_REQUEST', '/payment'),
-      handle('IS_UNLOCKED', () => {
+      handle('GET_STATUS', async () => {
         return {
-          isUnlocked: wallet.isUnlocked,
+          payload: {
+            isUnlocked: isUnlocked,
+            ...(isUnlocked ? { profile, accounts } : {}),
+          },
         };
       }),
     ];
     return () => {
       handlers.forEach((unsubscribe) => unsubscribe());
     };
-  }, [navigate, requests, wallet.isUnlocked]);
+  }, [navigate, requests, isUnlocked]);
 
   useEffect(() => {
     const run = async () => {
-      if (wallet.isUnlocked && requests.has('unlock')) {
-        requests.get('unlock')?.resolve({});
+      if (isUnlocked && requests.has('unlock')) {
+        const req = requests.get('unlock');
+        console.log('Unlocking request', req);
+        req?.resolve({});
         requests.delete('unlock');
+        if (req && typeof req.payload === 'string') {
+          navigate(req.payload);
+        }
       }
     };
     run();
-  }, [requests, wallet.isUnlocked]);
+  }, [navigate, requests, isUnlocked]);
 
   return (
     <communicationContext.Provider value={requests}>
