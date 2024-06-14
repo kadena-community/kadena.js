@@ -120,9 +120,9 @@ const generatePolicyTransactionData = (
 
   if (policyConfig?.hasRoyalty) {
     data.push(
-      addData('royalty_specs', {
+      addData('royalty_spec', {
         fungible: props.royalty.fungible,
-        creator: props.royalty.creator,
+        creator: props.royalty.creator.account,
         'creator-guard': props.royalty.creator.keyset,
         'royalty-rate': props.royalty.royaltyRate.decimal,
       }),
