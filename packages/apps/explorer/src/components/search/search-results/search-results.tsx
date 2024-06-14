@@ -1,7 +1,7 @@
 import CompactTable from '@/components/compact-table/compact-table';
-import { FormatAccount } from '@/components/compact-table/utils/format-account';
 import { FormatAmount } from '@/components/compact-table/utils/format-amount';
 import { FormatLink } from '@/components/compact-table/utils/format-link';
+import { FormatStatus } from '@/components/compact-table/utils/format-status';
 import { SearchOptionEnum } from '@/hooks/search/utils/utils';
 import type { ApolloError } from '@apollo/client';
 import type { FC } from 'react';
@@ -19,6 +19,7 @@ const SearchResults: FC<ISearchResultsProps> = ({
   loading,
   errors,
 }) => {
+  console.log(searchData[SearchOptionEnum.REQUESTKEY]);
   return (
     <>
       {loading && <div>Loading...</div>}
@@ -104,6 +105,41 @@ const SearchResults: FC<ISearchResultsProps> = ({
               },
             ]}
             data={[searchData[SearchOptionEnum.BLOCKHASH].data?.block]}
+          />
+        )}
+
+        {searchData[SearchOptionEnum.REQUESTKEY].data?.transaction && (
+          <CompactTable
+            fields={[
+              {
+                label: 'Status',
+                key: 'result.goodResult',
+                variant: 'code',
+                width: '10%',
+                render: FormatStatus(),
+              },
+              {
+                label: 'Sender',
+                key: 'cmd.meta.sender',
+                variant: 'code',
+                width: '25%',
+                render: FormatLink({ appendUrl: '/account' }),
+              },
+              {
+                label: 'RequestKey',
+                key: 'hash',
+                variant: 'code',
+                width: '25%',
+                render: FormatLink({ appendUrl: '/transaction' }),
+              },
+              {
+                label: 'Code Preview',
+                key: 'cmd.payload.code',
+                variant: 'code',
+                width: '40%',
+              },
+            ]}
+            data={[searchData[SearchOptionEnum.REQUESTKEY].data?.transaction]}
           />
         )}
 
