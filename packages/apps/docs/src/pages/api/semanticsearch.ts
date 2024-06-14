@@ -1,5 +1,5 @@
 import menuData from '@/_generated/menu.json';
-import { createSlug } from '@/scripts/createSlug';
+import { createSlug } from '@/scripts/utils/createSlug';
 import type { IFrontmatterData } from '@/types';
 import { removeImageInfoFromMarkdown } from '@/utils/removeImageInfoFromMarkdown';
 import type { StreamMetaData } from '@7-docs/edge';

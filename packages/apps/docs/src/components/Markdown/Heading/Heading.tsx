@@ -1,3 +1,4 @@
+import { removHashFromLink } from '@/scripts/utils/createSlug';
 import { MonoCheck, MonoLink } from '@kadena/react-icons';
 import type { FC, ReactNode } from 'react';
 import React, { useState } from 'react';
@@ -21,9 +22,8 @@ export const TaggedHeading: FC<IProp> = ({ children, as, variant, slug }) => {
   const [copySuccess, setCopySuccess] = useState(false);
 
   const handleCopy = async () => {
-    const elm = document.querySelector(slug) as HTMLElement;
-    if (!elm) return;
-    await navigator.clipboard.writeText(elm.innerText);
+    const url = removHashFromLink(window.location.href);
+    await navigator.clipboard.writeText(`${url}#${slug}`);
     setCopySuccess(true);
     setTimeout(() => {
       setCopySuccess(false);
@@ -33,15 +33,17 @@ export const TaggedHeading: FC<IProp> = ({ children, as, variant, slug }) => {
   const content = (
     <>
       {children}
-      <a
-        id={slug}
-        className={headerIconLinkClass}
-        href={`#${slug}`}
-        aria-labelledby={outerSlug}
-        onClick={handleCopy}
-      >
-        {copySuccess ? <MonoCheck /> : <MonoLink />}
-      </a>
+
+      {as === 'h2' && (
+        <button
+          id={slug}
+          className={headerIconLinkClass}
+          aria-labelledby={outerSlug}
+          onClick={handleCopy}
+        >
+          {copySuccess ? <MonoCheck /> : <MonoLink />}
+        </button>
+      )}
     </>
   );
 
