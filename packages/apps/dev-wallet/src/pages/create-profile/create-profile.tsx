@@ -1,5 +1,5 @@
 import { AuthCard } from '@/Components/AuthCard/AuthCard.tsx';
-import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.hook';
+import { createHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet';
 import { LayoutContext } from '@/modules/layout/layout.provider';
 import { useNetwork } from '@/modules/network/network.hook';
 import { IKeySource } from '@/modules/wallet/wallet.repository';
@@ -43,7 +43,6 @@ export function CreateProfile() {
   const navigate = useNavigate();
   const { activeNetwork } = useNetwork();
   const [createdKeySource, setCreatedKeySource] = useState<IKeySource>();
-  const { createHDWallet } = useHDWallet();
   const { setLayoutContext } = useContext(LayoutContext);
 
   async function create({

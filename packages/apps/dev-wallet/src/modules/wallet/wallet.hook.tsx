@@ -1,111 +1,26 @@
-import { ICommand, IUnsignedCommand } from '@kadena/client';
-import { useCallback, useContext, useEffect } from 'react';
+import { IUnsignedCommand } from '@kadena/client';
+import { useCallback, useContext } from 'react';
 
 import { defaultAccentColor } from '@/modules/layout/layout.provider.tsx';
-import {
-  getLocalData,
-  removeLocalData,
-  setLocalData,
-} from '@/utils/storage.ts';
-import { IAccount } from '../account/account.repository';
 import * as AccountService from '../account/account.service';
-import { dbService } from '../db/db.service';
-import { keySourceManager } from '../key-source/key-source-manager';
 import { ExtWalletContextType, WalletContext } from './wallet.provider';
-import {
-  IKeyItem,
-  IKeySource,
-  IProfile,
-  walletRepository,
-} from './wallet.repository';
+import { IKeySource } from './wallet.repository';
 import * as WalletService from './wallet.service';
-
-interface IWallet {
-  accounts: IAccount[];
-  profile: IProfile;
-  keySources: IKeySource[];
-  createProfile: (
-    profileName: string | undefined,
-    password: string,
-    accentColor?: string,
-  ) => Promise<IProfile>;
-  unlockProfile: (
-    profileId: string,
-    password: string,
-  ) => Promise<{
-    profile: IProfile;
-    keySources: IKeySource[];
-  } | null>;
-  createKey: (keySource: IKeySource) => Promise<IKeyItem>;
-  createKAccount: (
-    profileId: string,
-    networkId: string,
-    publicKey: string,
-    contract?: string,
-  ) => Promise<IAccount>;
-  sign: (
-    TXs: IUnsignedCommand[],
-    onConnect?: (keySource: IKeySource) => Promise<void>,
-  ) => Promise<(IUnsignedCommand | ICommand)[]>;
-  decryptSecret: (password: string, secretId: string) => Promise<string>;
-  lockProfile: () => void;
-  retrieveKeySources: (profileId: string) => Promise<IKeySource[]>;
-  retrieveAccounts: (profileId: string) => Promise<void>;
-  isUnlocked: boolean;
-  profileList: Pick<IProfile, 'name' | 'uuid' | 'accentColor'>[];
-}
 
 const isUnlocked = (
   ctx: ExtWalletContextType,
 ): ctx is Required<ExtWalletContextType> => {
-  if (
-    (!ctx || !ctx.profile || !ctx.profileList || !ctx.keySources) &&
-    (!getLocalData('profile') || !getLocalData('keySources'))
-  ) {
+  if (!ctx || !ctx.profile || !ctx.profileList || !ctx.keySources) {
     return false;
   }
   return true;
 };
 
-export const useWallet = (): IWallet => {
-  const [context, setContext] = useContext(WalletContext) ?? [];
-  if (!context || !setContext) {
+export const useWallet = () => {
+  const [context, setProfile] = useContext(WalletContext) ?? [];
+  if (!context || !setProfile) {
     throw new Error('useWallet must be used within a WalletProvider');
   }
-
-  const retrieveProfileList = useCallback(async () => {
-    const profileList = (await walletRepository.getAllProfiles()).map(
-      ({ name, uuid, accentColor }) => ({
-        name,
-        uuid,
-        accentColor,
-      }),
-    );
-    setContext((ctx) => ({ ...ctx, profileList }));
-    return profileList;
-  }, [setContext]);
-
-  const retrieveKeySources = useCallback(
-    async (profileId: string) => {
-      const keySources = await walletRepository.getProfileKeySources(profileId);
-      setContext((ctx) => ({ ...ctx, keySources }));
-      setLocalData({ keySources });
-      return keySources;
-    },
-    [setContext],
-  );
-
-  const retrieveAccounts = useCallback(
-    async (profileId: string) => {
-      const accounts = await WalletService.getAccounts(profileId);
-      setContext((ctx) => ({
-        ...ctx,
-        accounts,
-      }));
-      setLocalData({ accounts });
-    },
-    [setContext],
-  );
 
   const createProfile = useCallback(
     async (
@@ -119,48 +34,26 @@ export const useWallet = (): IWallet => {
         [],
         accentColor,
       );
-      setContext((ctx) => ({
-        ...ctx,
-        profile,
-      }));
-      setLocalData({ profile });
-      keySourceManager.reset();
+      await setProfile(profile);
       return profile;
     },
-    [setContext],
+    [setProfile],
   );
 
   const unlockProfile = useCallback(
     async (profileId: string, password: string) => {
       const profile = await WalletService.unlockProfile(profileId, password);
       if (profile) {
-        const accounts = await WalletService.getAccounts(profileId);
-        const keySources =
-          await walletRepository.getProfileKeySources(profileId);
-        // by default unlock the first key source; we can change this approach later
-        setContext(({ profileList }) => ({
-          profileList,
-          profile,
-          accounts,
-          keySources,
-        }));
-        setLocalData({ profile, keySources, accounts });
-        keySourceManager.reset();
-        // we sync all accounts when the profile is unlocked;
-        // no need to wait for the result the data will be updated in the db
-        AccountService.syncAllAccounts(profile.uuid);
-        return { profile, keySources };
+        return setProfile(profile);
       }
       return null;
     },
-    [setContext],
+    [setProfile],
   );
 
   const lockProfile = useCallback(() => {
-    keySourceManager.reset();
-    setContext(({ profileList }) => ({ profileList }));
-    removeLocalData();
-  }, [setContext]);
+    setProfile(undefined);
+  }, [setProfile]);
 
   const sign = useCallback(
     async (
@@ -206,35 +99,6 @@ export const useWallet = (): IWallet => {
     [],
   );
 
-  // subscribe to db changes and update the context
-  useEffect(() => {
-    const unsubscribe = dbService.subscribe((event, storeName, data) => {
-      if (!['add', 'update', 'delete'].includes(event)) return;
-      // update the context when the db changes
-      switch (storeName) {
-        case 'profile': {
-          retrieveProfileList();
-          break;
-        }
-        case 'keySource':
-          if (data && (data as IKeySource).profileId) {
-            retrieveKeySources(data.profileId);
-          }
-          break;
-        case 'account':
-          if (data && (data as IAccount).profileId) {
-            retrieveAccounts(data.profileId);
-          }
-          break;
-        default:
-          break;
-      }
-    });
-    return () => {
-      unsubscribe();
-    };
-  }, [retrieveProfileList, retrieveKeySources, retrieveAccounts]);
-
   return {
     createProfile,
     unlockProfile,
@@ -243,12 +107,10 @@ export const useWallet = (): IWallet => {
     sign,
     decryptSecret,
     lockProfile,
-    retrieveKeySources,
-    retrieveAccounts,
     isUnlocked: isUnlocked(context),
-    profile: context.profile || getLocalData('profile'),
+    profile: context.profile,
     profileList: context.profileList ?? [],
-    accounts: context.accounts || getLocalData('accounts') || [],
-    keySources: context.keySources || getLocalData('keySources') || [],
+    accounts: context.accounts || [],
+    keySources: context.keySources || [],
   };
 };

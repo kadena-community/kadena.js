@@ -30,12 +30,19 @@ const decryptPassword = async (context: {
   encryptedPassword: Uint8Array;
 }) => kadenaDecrypt(context.encryptionKey, context.encryptedPassword);
 
-export function createChainweaverService() {
-  let context: {
-    encryptionKey: Uint8Array;
-    encryptedPassword: Uint8Array;
-    cache: Map<string, IKeyPair>;
-  } | null = null;
+export type ChainweaverContext = {
+  encryptionKey: Uint8Array;
+  encryptedPassword: Uint8Array;
+};
+
+export function createChainweaverService(
+  initialContext: ChainweaverContext | null = null,
+) {
+  let context:
+    | (ChainweaverContext & {
+        cache: Map<string, IKeyPair>;
+      })
+    | null = initialContext ? { ...initialContext, cache: new Map() } : null;
 
   return {
     isConnected: () => Boolean(context),
@@ -184,6 +191,15 @@ export function createChainweaverService() {
       );
 
       return result;
+    },
+
+    getContext: (): ChainweaverContext | null => {
+      return context
+        ? {
+            encryptionKey: context.encryptionKey,
+            encryptedPassword: context.encryptedPassword,
+          }
+        : null;
     },
   };
 }
