@@ -23,12 +23,10 @@ import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 import type {
   CommonProps,
-  FunctionGuard,
   ICreateTokenPolicyConfig,
   PolicyProps,
   WithCreateTokenPolicy,
 } from './config';
-import { GUARD_POLICY } from './config';
 import {
   formatAdditionalSigners,
   formatCapabilities,
