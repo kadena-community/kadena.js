@@ -1,5 +1,6 @@
 // NOTE: Refer to https://www.joshwcomeau.com/css/custom-css-reset/ for more detailed explanation
-import { globalFontFace, globalStyle } from '@vanilla-extract/css';
+import { globalFontFace } from '@vanilla-extract/css';
+import { globalStyle } from '../styles';
 import { breakpoints } from './themeUtils';
 import { monospaceFont, primaryFont, secondaryFont, vars } from './vars.css';
 
