@@ -14,18 +14,29 @@ export const table = style([
   },
 ]);
 
-export const headerRow = style([
+export const headerBase = style([
   {
     borderRadius: token('radius.sm'),
     borderBlockEnd: token('color.border.base.default'),
-    backgroundColor: token('color.background.base.inverse.default'),
     color: token('color.text.base.inverse.default'),
+    backgroundColor: token('color.background.base.inverse.default'),
   },
   uiSmallBold,
 ]);
 
+export const subtleHeader = style({
+  color: token('color.text.base.default'),
+  backgroundColor: token('color.background.base.@hover'),
+});
+
+export const defaultHeader = style({
+  color: token('color.text.base.inverse.default'),
+  backgroundColor: token('color.background.base.inverse.default'),
+});
+
 export const tableRow = style([
   {
+    borderRadius: token('radius.sm'),
     selectors: {
       '&[data-href]': {
         cursor: 'pointer',
@@ -68,12 +79,12 @@ export const columnHeader = style([
   },
 ]);
 
-globalStyle(`${headerRow} th:first-of-type `, {
+globalStyle(`${headerBase} th:first-of-type `, {
   borderTopLeftRadius: token('radius.sm'),
   borderBottomLeftRadius: token('radius.sm'),
 });
 
-globalStyle(`${headerRow} th:last-of-type`, {
+globalStyle(`${headerBase} th:last-of-type`, {
   borderTopRightRadius: token('radius.sm'),
   borderBottomRightRadius: token('radius.sm'),
 });
@@ -91,8 +102,8 @@ globalStyle(`${tableRow} td:last-of-type`, {
 });
 
 globalStyle(`tbody ${tableRow} td`, {
-  borderRadius: '4px',
-  borderBlock: '4px solid transparent',
+  borderRadius: '2px',
+  borderBlock: '2px solid transparent',
 });
 
 export const tableRowContent = style({

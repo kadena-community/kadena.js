@@ -14,19 +14,21 @@ import { selectorCell, tableDataCell } from './Table.css';
 interface ITableSelectAllCellProps<T> {
   column: GridNode<T>;
   state: ITableRowProps<T>['state'];
+  inverse?: boolean;
 }
 
 export function TableSelectAllCell<T>({
   column,
   state,
+  inverse = false,
 }: ITableSelectAllCellProps<T>) {
-  let ref = useRef<HTMLTableCellElement | null>(null);
-  let { columnHeaderProps } = useTableColumnHeader(
+  const ref = useRef<HTMLTableCellElement | null>(null);
+  const { columnHeaderProps } = useTableColumnHeader(
     { node: column },
     state,
     ref,
   );
-  let { checkboxProps } = useTableSelectAllCheckbox(state);
+  const { checkboxProps } = useTableSelectAllCheckbox(state);
 
   return (
     <th
@@ -39,7 +41,7 @@ export function TableSelectAllCell<T>({
       ) : (
         <Checkbox
           {...(checkboxProps as ICheckboxProps)}
-          inverse={checkboxProps.isSelected}
+          inverse={inverse || checkboxProps.isSelected}
         />
       )}
     </th>
