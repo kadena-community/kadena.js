@@ -104,9 +104,3 @@ To compact a Chainweb node database:
 If you encounter errors or warnings, open a new issue for [chainweb-node](https://github.com/kadena-io/chainweb-node#issues) or contact Kadena developers in the [infrastructure](https://discord.com/channels/502858632178958377/1051827506279370802) channel on the Kadena Discord server.
 
 ## Test h2-1
-
-### test
-
-## Test h2-2
-
-### test
