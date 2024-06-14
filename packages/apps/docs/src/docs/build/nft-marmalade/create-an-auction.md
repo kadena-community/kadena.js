@@ -41,7 +41,7 @@ To create a conventional auction for a non-fungible token:
 
    For example:
 
-   ```pact
+   ```text
    (marmalade-sale.conventional-auction.create-auction "M1uFQ7OCI7kw_-93UglWzVMy0DGO1uUllyCnJR5eo6w" "t:jEDZtohdLCkbsbFTlVrgVOQOYckgSLHHWQsXKry8jO0" 1714348800 1714608000 5.0)
    ```  
 
@@ -49,11 +49,11 @@ To create a conventional auction for a non-fungible token:
 
 8. Select the **Transaction Sender** and **Chain ID**, review transaction settings, then click **Next**.
 
-9.  On the Sign tab, click the Grant Capabilities plus (+) to add the MANAGE_AUCTION capability to the transaction and specify the sale identifier and the token identifier.
+9. On the Sign tab, click the Grant Capabilities plus (+) to add the MANAGE_AUCTION capability to the transaction and specify the sale identifier and the token identifier.
    
    In this example, the MANAGE_AUCTION capability looks like this:
    
-   ```pact
+   ```text
    (marmalade-sale.conventional-auction.MANAGE_AUCTION "M1uFQ7OCI7kw_-93UglWzVMy0DGO1uUllyCnJR5eo6w" "t:jEDZtohdLCkbsbFTlVrgVOQOYckgSLHHWQsXKry8jO0")
    ```
 
