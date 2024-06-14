@@ -1,8 +1,11 @@
+import { SearchOptionEnum } from '@/hooks/search/utils/utils';
 import { truncateValues } from '@/services/format';
+import type { ApolloError } from '@apollo/client';
 import { MonoSearch } from '@kadena/react-icons/system';
 import { Badge, Box } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
-import React, { useState } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   searchBadgeBoxClass,
   searchBoxClass,
@@ -18,29 +21,48 @@ export type SearchItemTitle =
 
 export interface ISearchItem {
   title: SearchItemTitle;
-  disabled?: boolean;
+  data?: any;
 }
-interface ISearchComponentProps {
-  placeholder: string;
-  searchItems: ISearchItem[];
+export interface ISearchComponentProps {
+  searchData: ISearchItem[];
+  setSearchQuery?: Dispatch<SetStateAction<string>>;
+  searchQuery?: string;
+  searchOption: SearchOptionEnum | null;
+  setSearchOption: Dispatch<SetStateAction<SearchOptionEnum | null>>;
+  loading: boolean;
+  errors: ApolloError[];
 }
 
 const SearchComponent: React.FC<ISearchComponentProps> = ({
-  placeholder,
-  searchItems,
+  searchData,
+  setSearchQuery,
+  searchQuery,
+  searchOption,
+  setSearchOption,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [searchOption, setSearchOption] = useState<number | null>(null);
   const [searchValue, setSearchValue] = useState<string>('');
   const [optionClicked, setOptionClicked] = useState(false);
   const [escapePressed, setEscapePressed] = useState(false);
+  const ref = useRef<HTMLInputElement>(null);
 
-  const setOptionsDisabledExcept = (exceptIndex: number): void => {
-    searchItems.forEach((item, index) => {
-      if (index !== exceptIndex) {
-        item.disabled = true;
-      }
-    });
+  const handleSearchOption = (
+    inferedOption: SearchItemTitle | undefined,
+  ): void => {
+    if (inferedOption === 'Account') {
+      setSearchOption(SearchOptionEnum.ACCOUNT);
+    }
+    if (inferedOption === 'Request Key') {
+      setSearchOption(SearchOptionEnum.REQUESTKEY);
+    }
+
+    if (inferedOption === 'Block Height') {
+      setSearchOption(SearchOptionEnum.BLOCKHEIGHT);
+    }
+
+    if (!inferedOption || inferedOption === undefined) {
+      setSearchOption(null);
+    }
   };
 
   const inferOption = (value: string): SearchItemTitle | undefined => {
@@ -60,13 +82,10 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
     return undefined;
   };
 
-  const enableAllOptions = (): void => {
-    searchItems.forEach((item) => {
-      item.disabled = false;
-    });
+  const handleSearch = (): void => {
+    const value = ref.current?.value ?? '';
+    if (setSearchQuery) setSearchQuery(value);
   };
-
-  const handleSearch = (value: string, option: number | null): void => {};
 
   const handleSearchValueChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -76,24 +95,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
     if (escapePressed || optionClicked) return;
 
     const inferedOption = inferOption(e.target.value);
-    if (inferedOption === 'Account') {
-      setSearchOption(0);
-      setOptionsDisabledExcept(0);
-    }
-    if (inferedOption === 'Request Key') {
-      setSearchOption(1);
-      setOptionsDisabledExcept(1);
-    }
-
-    if (inferedOption === 'Block Height') {
-      setSearchOption(2);
-      setOptionsDisabledExcept(2);
-    }
-
-    if (!inferedOption || inferedOption === undefined) {
-      setSearchOption(null);
-      enableAllOptions();
-    }
+    handleSearchOption(inferedOption);
   };
 
   const handleSearchValueKeyDown = (
@@ -102,7 +104,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       setSearchOption((prev) =>
-        prev === null ? 0 : Math.min(prev + 1, searchItems.length - 1),
+        prev === null ? 0 : Math.min(prev + 1, searchData.length - 1),
       );
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
@@ -112,14 +114,21 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
       setIsEditing(false);
       setEscapePressed(false);
       setOptionClicked(false);
-      handleSearch(searchValue, searchOption);
+      handleSearch();
     } else if (e.key === 'Escape') {
       setOptionClicked(false);
       setSearchOption(null);
       setEscapePressed(true);
-      enableAllOptions();
+      setIsEditing(false);
+    } else {
+      setEscapePressed(false);
+      setOptionClicked(false);
     }
   };
+
+  useEffect(() => {
+    setSearchValue(searchQuery ?? '');
+  }, [searchQuery]);
 
   return (
     <>
@@ -149,11 +158,12 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
           <MonoSearch />
 
           <input
+            ref={ref}
             type="text"
-            placeholder={placeholder}
+            placeholder="Search the Kadena Blockchain on"
             value={searchValue}
             onChange={(e) => handleSearchValueChange(e)}
-            onFocus={() => setIsEditing(true)}
+            onClick={() => setIsEditing((v) => !v)}
             className={searchInputClass}
           />
 
@@ -163,7 +173,9 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
               justifyContent={'flex-end'}
               className={searchBadgeBoxClass}
             >
-              <Badge size="lg">{searchItems[searchOption].title}</Badge>
+              {searchData[searchOption] && (
+                <Badge size="lg">{searchData[searchOption].title}</Badge>
+              )}
             </Box>
           )}
         </Box>
@@ -179,15 +191,14 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
               fontFamily: 'primaryFont',
             })}
           >
-            {searchItems.map((item, index) => (
+            {searchData?.map((item, index) => (
               <Box
                 key={index}
                 onMouseDown={() => setOptionClicked(true)}
                 onClick={() => {
-                  if (!item.disabled) {
-                    setSearchOption(index);
-                    setIsEditing(false);
-                  }
+                  handleSearch();
+                  setSearchOption(index);
+                  setIsEditing(false);
                 }}
                 style={{
                   gridTemplateColumns: '1fr 3fr',
@@ -197,7 +208,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
                   display: 'grid',
                   alignItems: 'flex-start',
                   paddingInlineStart: 'md',
-                  cursor: item.disabled ? 'not-allowed' : 'pointer',
+                  cursor: 'pointer',
                   backgroundColor:
                     index === searchOption ? 'base.@active' : 'base.default',
                   width: '100%',
