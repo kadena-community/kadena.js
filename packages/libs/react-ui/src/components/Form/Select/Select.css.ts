@@ -1,35 +1,37 @@
-import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
-import { recipe } from '@vanilla-extract/recipes';
-import { atoms, ellipsis, token } from '../../../styles';
+import {
+  atoms,
+  ellipsis,
+  globalStyle,
+  recipe,
+  style,
+  styleVariants,
+  token,
+} from '../../../styles';
 import { inputFontTypeVariants, inputSizeCompoundVariants } from '../Form.css';
 
-export const selectButtonValue = atoms({
+export const selectButtonValue = style({
   display: 'flex',
   flex: 1,
 });
 
-export const selectButtonClass = style([
-  atoms({
-    display: 'flex',
-    backgroundColor: 'input.default',
-    justifyContent: 'space-between',
-    color: 'text.base.default',
-    flex: 1,
-    overflow: 'hidden',
-    position: 'relative',
-    alignItems: 'center',
-  }),
-  {
-    paddingBlock: '0',
-    paddingInlineStart: token('spacing.md'),
-    paddingInlineEnd: '0',
-    selectors: {
-      '&[data-hovered]': {
-        cursor: 'pointer',
-      },
+export const selectButtonClass = style({
+  display: 'flex',
+  backgroundColor: token('color.background.input.default'),
+  justifyContent: 'space-between',
+  color: token('color.text.base.default'),
+  flex: 1,
+  overflow: 'hidden',
+  position: 'relative',
+  alignItems: 'center',
+  paddingBlock: '0',
+  paddingInlineStart: token('spacing.md'),
+  paddingInlineEnd: '0',
+  selectors: {
+    '&[data-hovered]': {
+      cursor: 'pointer',
     },
   },
-]);
+});
 
 globalStyle(`${selectButtonClass} > span`, {
   fontFamily: 'unset',
@@ -49,12 +51,10 @@ export const selectValueClass = style([
   },
 ]);
 
-export const selectIconWrapper = style([
-  atoms({
-    backgroundColor: 'surface.default',
-    padding: 'n2',
-  }),
-]);
+export const selectIconWrapper = style({
+  backgroundColor: token('color.background.surface.default'),
+  padding: token('size.n2'),
+});
 
 export const selectIconClass = styleVariants({
   sm: { height: token('icon.size.xs') },
@@ -63,7 +63,7 @@ export const selectIconClass = styleVariants({
 });
 
 export const selectItemClass = recipe({
-  base: [atoms({ paddingInlineStart: 'md' })],
+  base: { paddingInlineStart: token('spacing.md') },
   variants: {
     size: {
       sm: [],

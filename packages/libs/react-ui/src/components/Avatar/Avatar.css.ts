@@ -1,20 +1,17 @@
-import { style } from '@vanilla-extract/css';
-import { recipe } from '@vanilla-extract/recipes';
-import { atoms, token } from '../../styles';
+import { atoms, recipe, style, token, uiBaseRegular } from '../../styles';
 
 export const circle = recipe({
   base: [
-    atoms({
+    uiBaseRegular,
+    {
       position: 'relative',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      fontWeight: 'secondaryFont.regular',
-      fontFamily: 'primaryFont', // will be updated with latest tokens
-      borderRadius: 'round',
-      color: 'text.base.inverse.default',
+      borderRadius: token('radius.round'),
+      color: token('color.text.base.inverse.default'),
       overflow: 'visible',
-    }),
+    },
   ],
   variants: {
     size: {
@@ -68,15 +65,11 @@ export const circle = recipe({
 });
 
 export const circleStatus = recipe({
-  base: [
-    atoms({
-      position: 'absolute',
-      borderRadius: 'round',
-    }),
-    {
-      transform: 'translate(50%, 50%)',
-    },
-  ],
+  base: {
+    position: 'absolute',
+    borderRadius: token('radius.round'),
+    transform: 'translate(50%, 50%)',
+  },
   variants: {
     status: {
       positive: {

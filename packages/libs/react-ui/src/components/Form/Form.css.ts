@@ -1,18 +1,15 @@
-import {
-  createVar,
-  fallbackVar,
-  globalStyle,
-  style,
-  styleVariants,
-} from '@vanilla-extract/css';
+import { createVar, fallbackVar } from '@vanilla-extract/css';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
-import { recipe } from '@vanilla-extract/recipes';
 import {
   atoms,
+  globalStyle,
   monospaceBaseRegular,
   monospaceSmallRegular,
   monospaceSmallestRegular,
+  recipe,
   responsiveStyle,
+  style,
+  styleVariants,
   token,
   uiBaseRegular,
   uiSmallRegular,
@@ -38,33 +35,29 @@ export const outlineStyles = {
 };
 
 export const baseContainerClass = recipe({
-  base: [
-    atoms({
-      alignItems: 'stretch',
-      display: 'flex',
-      position: 'relative',
-      width: '100%',
-    }),
-    {
-      transition: 'outline-color 0.2s ease-in-out',
-      outlineColor: 'transparent',
-      minWidth: '150px',
-      ...responsiveStyle({
-        sm: {
-          maxWidth: '100%',
-        },
-        md: {
-          maxWidth: '40rem',
-        },
-      }),
-      selectors: {
-        // outline should not be shown if there is a button which is focused
-        '&:focus-within:has(button:not(button:focus))': outlineStyles,
-        '&:focus-within:not(&:has(button))': outlineStyles,
-        [`&:focus-within:has([data-role="select-button"])`]: outlineStyles,
+  base: {
+    alignItems: 'stretch',
+    display: 'flex',
+    position: 'relative',
+    width: '100%',
+    transition: 'outline-color 0.2s ease-in-out',
+    outlineColor: 'transparent',
+    minWidth: '150px',
+    ...responsiveStyle({
+      sm: {
+        maxWidth: '100%',
       },
+      md: {
+        maxWidth: '40rem',
+      },
+    }),
+    selectors: {
+      // outline should not be shown if there is a button which is focused
+      '&:focus-within:has(button:not(button:focus))': outlineStyles,
+      '&:focus-within:not(&:has(button))': outlineStyles,
+      [`&:focus-within:has([data-role="select-button"])`]: outlineStyles,
     },
-  ],
+  },
   variants: {
     variant: {
       default: {
@@ -107,33 +100,29 @@ export const baseContainerClass = recipe({
   },
 });
 
-export const formField = atoms({
+export const formField = style({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'flex-start',
   alignItems: 'stretch',
-  gap: 'sm',
+  gap: token('spacing.sm'),
   flex: 1,
 });
 
 // TODO: remove when all fields are updated
-export const inputContainer = atoms({
+export const inputContainer = style({
   display: 'flex',
   flex: 1,
   position: 'relative',
   alignItems: 'stretch',
 });
 
-const startAddonBase = style([
-  atoms({
-    position: 'absolute',
-  }),
-  {
-    insetInlineStart: token('spacing.n3'),
-    zIndex: 10,
-    color: iconFill,
-  },
-]);
+const startAddonBase = style({
+  position: 'absolute',
+  insetInlineStart: token('spacing.n3'),
+  zIndex: 10,
+  color: iconFill,
+});
 
 export const startAddonStyles = styleVariants({
   inline: [
@@ -158,13 +147,11 @@ export const startAddonSize = styleVariants({
 });
 
 const endAddonBase = style([
-  atoms({
-    display: 'flex',
+  {
     alignItems: 'center',
     justifyContent: 'center',
+    display: 'flex',
     position: 'absolute',
-  }),
-  {
     selectors: {
       [`&:has(button)`]: {
         backgroundColor: token('color.background.surface.default'),
@@ -199,9 +186,9 @@ globalStyle(`${endAddonStyles.fullHeight} button`, {
 
 export const inputSizeVariants = {
   size: {
-    sm: atoms({ paddingBlock: 'n2' }),
-    md: atoms({ paddingBlock: 'n3' }),
-    lg: atoms({ paddingBlock: 'n4' }),
+    sm: { paddingBlock: token('size.n2') },
+    md: { paddingBlock: token('size.n3') },
+    lg: { paddingBlock: token('size.n4') },
   },
 } as const;
 
@@ -219,59 +206,57 @@ export const inputSizeCompoundVariants: {
   };
   style: string;
 }[] = [
-  {
-    variants: {
-      size: 'sm',
-      fontType: 'ui',
+    {
+      variants: {
+        size: 'sm',
+        fontType: 'ui',
+      },
+      style: uiSmallestRegular,
     },
-    style: uiSmallestRegular,
-  },
-  {
-    variants: {
-      size: 'md',
-      fontType: 'ui',
+    {
+      variants: {
+        size: 'md',
+        fontType: 'ui',
+      },
+      style: uiSmallRegular,
     },
-    style: uiSmallRegular,
-  },
-  {
-    variants: {
-      size: 'lg',
-      fontType: 'ui',
+    {
+      variants: {
+        size: 'lg',
+        fontType: 'ui',
+      },
+      style: uiBaseRegular,
     },
-    style: uiBaseRegular,
-  },
-  {
-    variants: {
-      size: 'sm',
-      fontType: 'code',
+    {
+      variants: {
+        size: 'sm',
+        fontType: 'code',
+      },
+      style: monospaceSmallestRegular,
     },
-    style: monospaceSmallestRegular,
-  },
-  {
-    variants: {
-      size: 'md',
-      fontType: 'code',
+    {
+      variants: {
+        size: 'md',
+        fontType: 'code',
+      },
+      style: monospaceSmallRegular,
     },
-    style: monospaceSmallRegular,
-  },
-  {
-    variants: {
-      size: 'lg',
-      fontType: 'code',
+    {
+      variants: {
+        size: 'lg',
+        fontType: 'code',
+      },
+      style: monospaceBaseRegular,
     },
-    style: monospaceBaseRegular,
-  },
-];
+  ];
 
 export const input = recipe({
   base: [
-    atoms({
+    {
       outline: 'none',
       flex: 1,
-      paddingInlineStart: 'n4',
+      paddingInlineStart: token('size.n4'),
       border: 'none',
-    }),
-    {
       backgroundColor: token('color.background.input.default'),
       borderRadius: '0',
       color: textColor,

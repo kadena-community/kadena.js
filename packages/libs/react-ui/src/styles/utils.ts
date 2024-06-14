@@ -129,10 +129,22 @@ export const mapStyleVariants = (
 export const style = (styles: ComplexStyleRule, debugId?: string) =>
   vanillaStyle(layerStyles(styles) as ComplexStyleRule, debugId);
 
-export const styleVariants = (
-  styles: Record<string | number, ComplexStyleRule>,
+export function styleVariants<
+  StyleMap extends Record<string | number, ComplexStyleRule>,
+>(styleMap: StyleMap, debugId?: string): Record<keyof StyleMap, string>;
+
+export function styleVariants<
+  Data extends Record<string | number, unknown>,
+  Key extends keyof Data,
+>(
+  data: Data,
+  mapData: (value: Data[Key], key: Key) => ComplexStyleRule,
   debugId?: string,
-) => vanillaStyleVariants(mapStyleVariants(styles), debugId);
+): Record<keyof Data, string>;
+
+export function styleVariants(styles: any, debugId?: any) {
+  return vanillaStyleVariants(mapStyleVariants(styles), debugId);
+}
 
 export function recipe<Variants extends VariantGroups>(
   styles: PatternOptions<Variants>,

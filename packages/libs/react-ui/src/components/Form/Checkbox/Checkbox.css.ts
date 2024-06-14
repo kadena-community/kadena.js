@@ -1,6 +1,5 @@
-import { fallbackVar, style } from '@vanilla-extract/css';
-import { recipe } from '@vanilla-extract/recipes';
-import { token, uiSmallRegular } from '../../../styles';
+import { fallbackVar } from '@vanilla-extract/css';
+import { recipe, style, token, uiSmallRegular } from '../../../styles';
 
 const maxWidth = fallbackVar('100%');
 
@@ -89,9 +88,9 @@ export const boxClass = style({
       backgroundColor: token('color.background.input.default'),
     },
     [`${labelClass}[data-hovered="true"][data-inversed="true"] &[data-selected="true"]`]:
-      {
-        backgroundColor: token('color.background.input.@hover'),
-      },
+    {
+      backgroundColor: token('color.background.input.@hover'),
+    },
   },
 });
 
@@ -111,14 +110,14 @@ export const iconClass = style({
     },
     // disabled
     [`${labelClass}[data-disabled="true"] ${boxClass}[data-selected="true"] &`]:
-      {
-        color: token('color.icon.base.@disabled'),
-      },
+    {
+      color: token('color.icon.base.@disabled'),
+    },
     // readonly
     [`${labelClass}[data-readonly="true"] ${boxClass}[data-selected="true"] &`]:
-      {
-        color: token('color.icon.base.default'),
-      },
+    {
+      color: token('color.icon.base.default'),
+    },
     // inverted
     [`${labelClass}[data-inversed="true"] &`]: {
       color: token('color.icon.base.@active'),
