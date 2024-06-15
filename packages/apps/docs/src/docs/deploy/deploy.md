@@ -6,11 +6,13 @@ description: "Learn how to deploy Chainweb nodes and Pact smart contract applica
 menu: Deploy
 label: Introduction
 order: 1
-layout: landing
+layout: full
 tags: [pact, chainweb, network, node operator, developer]
 ---
 
 # Deploy infrastructure or smart contracts
+
+## test H2
 
 There are two main deployment scenarios for the Kadena network:
 
