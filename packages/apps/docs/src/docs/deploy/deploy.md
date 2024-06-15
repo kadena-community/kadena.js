@@ -6,7 +6,7 @@ description: "Learn how to deploy Chainweb nodes and Pact smart contract applica
 menu: Deploy
 label: Introduction
 order: 1
-layout: full
+layout: landing
 tags: [pact, chainweb, network, node operator, developer]
 ---
 
