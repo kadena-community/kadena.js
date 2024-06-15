@@ -13,7 +13,6 @@ tags: [pact, chainweb, network, node operator, developer]
 
 ## This feature is unstable. Make sure to back up your database before using this tool.
 
-### test
 Because a healthy blockchain continuously adds new transactions in new blocks that change the state of the database, managing the storage requirements on individual nodes can be challenging.
 
 To address this storage issue, Chainweb provides the `cwtool compact` command.
