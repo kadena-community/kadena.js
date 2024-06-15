@@ -102,5 +102,3 @@ To compact a Chainweb node database:
    As a precaution, you should keep the backup copy of the database available—in a compressed format, if necessary—until you're sure that you won't need to restore from it.
 
 If you encounter errors or warnings, open a new issue for [chainweb-node](https://github.com/kadena-io/chainweb-node#issues) or contact Kadena developers in the [infrastructure](https://discord.com/channels/502858632178958377/1051827506279370802) channel on the Kadena Discord server.
-
-## Test h2-1
