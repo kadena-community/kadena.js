@@ -1,10 +1,7 @@
-import { style } from '@vanilla-extract/css';
-import { atoms } from '../../../styles/atoms.css';
+import { style, token } from '../../../styles';
 
-export const labelClass = style([
-  atoms({
-    fontSize: 'sm',
-    color: 'text.base.default',
-    fontWeight: 'secondaryFont.bold',
-  }),
-]);
+export const labelClass = style({
+  fontSize: token('spacing.sm'),
+  color: token('color.text.base.default'),
+  fontWeight: token('typography.weight.secondaryFont.bold'),
+});

@@ -1,5 +1,5 @@
-import { globalStyle } from '@vanilla-extract/css';
 import {
+  globalStyle,
   recipe,
   style,
   styleVariants,
