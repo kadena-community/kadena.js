@@ -481,6 +481,9 @@ pages:
               dutch:
                 url: /dutch-auction
                 file: /reference/marmalade/dutch-auction-ref.md
+          client:
+            url: /client-utils
+            file: /reference/marmalade/marmalade-client-utils.md
       spirekey:
         url: /spirekey
         file: /reference/spirekey-ref.md
