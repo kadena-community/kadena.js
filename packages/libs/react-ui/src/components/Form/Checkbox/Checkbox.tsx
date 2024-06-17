@@ -17,6 +17,7 @@ export interface ICheckboxProps extends AriaCheckboxProps {
   isSelected?: boolean;
   isReadOnly?: boolean;
   isDeterminate?: boolean;
+  inverse?: boolean;
   onChange?: (isSelected: boolean) => void;
 }
 
@@ -39,6 +40,7 @@ export function Checkbox(props: ICheckboxProps) {
       data-disabled={isDisabled}
       data-focus-visible={isFocusVisible}
       data-readonly={isReadOnly}
+      data-inversed={props.inverse}
     >
       <VisuallyHidden>
         <input {...mergeProps(inputProps, focusProps)} ref={ref} />
