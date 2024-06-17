@@ -13,6 +13,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import type { TreeItem } from '../CustomTree/CustomTree';
 import type { ISidePanelProps } from './SidePanel';
 import SidePanel from './SidePanel';
+import { DEFAULT_ALL_ITEMS_KEY } from './SidePanel/search-bar';
 import type { IEditorProps } from './editor';
 import Editor from './editor';
 import { containerStyle } from './styles.css';
@@ -84,6 +85,9 @@ const ModuleExplorer = ({
     useState<ModuleModel[]>(_openedModules);
 
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchFilter, setSearchFilter] = useState<string>(
+    DEFAULT_ALL_ITEMS_KEY,
+  );
 
   const data = generateDataMap(items);
 
@@ -99,24 +103,33 @@ const ModuleExplorer = ({
 
   console.log('rerender ModuleExplorer', { data, filteredData });
 
-  const mapped = items.map((item) => {
-    const networkId = item.key as ChainwebNetworkId;
-    return {
-      ...item,
-      data: {
-        name: item.key as string,
-        chainId: '0' as const,
-        networkId: networkId,
-      },
-      children: mapToTreeItems(
-        modelsToTreeMap(
-          filteredData.get(networkId) || data.get(networkId) || [],
-        ),
-        item.key as string,
-        !filteredData.get(networkId), // Don't sort alphabetically for search results
-      ),
-    };
-  });
+  const mapped = useMemo(() => {
+    return items
+      .filter((item) => {
+        if (searchFilter === DEFAULT_ALL_ITEMS_KEY) {
+          return true;
+        }
+        return item.key === searchFilter;
+      })
+      .map((item) => {
+        const networkId = item.key as ChainwebNetworkId;
+        return {
+          ...item,
+          data: {
+            name: item.key as string,
+            chainId: '0' as const,
+            networkId: networkId,
+          },
+          children: mapToTreeItems(
+            modelsToTreeMap(
+              filteredData.get(networkId) || data.get(networkId) || [],
+            ),
+            item.key as string,
+            !filteredData.get(networkId), // Don't sort alphabetically for search results
+          ),
+        };
+      });
+  }, [data, filteredData, items, searchFilter]);
 
   let outlineItems: TreeItem<Outline>[] = [];
 
@@ -127,8 +140,9 @@ const ModuleExplorer = ({
   console.log('rerender ModuleExplorer', items);
 
   const onSearch = useCallback(
-    (searchQuery: string) => {
+    (searchQuery: string, searchFilter: string) => {
       setSearchQuery(searchQuery);
+      setSearchFilter(searchFilter);
       return filteredData.size;
     },
     [filteredData.size],
