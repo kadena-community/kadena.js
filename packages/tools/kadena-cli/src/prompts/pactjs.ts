@@ -18,20 +18,56 @@ export const capsInterfacePrompt = async (): Promise<string> => {
     message: 'Enter a custom name for the interface of the caps (optional):',
   });
 };
-/* -- backWCompat -- */
-export const filePrompt = async (): Promise<string[]> => {
+
+export const fileOrDirectoryPrompt = async (
+  previousQuestions: Record<string, unknown>,
+  args: Record<string, unknown>,
+  isOptional: boolean,
+): Promise<string[]> => {
   const response = await input({
-    message: 'Enter the file(s) to generate d.ts from, separated by commas:',
+    message:
+      'Enter the file(s) or directory to generate the client from, separated by commas:',
     validate: (input: string) => {
-      if (input.trim().length === 0) {
+      if (input.trim().length === 0 && !isOptional) {
+        return 'Please enter at least one file path or directory';
+      }
+      return true;
+    },
+  });
+
+  if (response.trim().length === 0 && isOptional) {
+    return [];
+  }
+
+  return response.split(',').map((file: string) => file.trim());
+};
+
+/* -- backWCompat -- */
+export const filePrompt = async (
+  previousQuestions: Record<string, unknown>,
+  args: Record<string, unknown>,
+  isOptional: boolean,
+): Promise<string[]> => {
+  const response = await input({
+    message:
+      'Enter the file(s) to generate d.ts from, separated by commas: (optional)',
+    validate: (input: string) => {
+      if (input.trim().length === 0 && !isOptional) {
         return 'Please enter at least one file path';
       }
       return true;
     },
   });
+
+  // Return an empty array if the input is empty and isOptional is true
+  if (response.trim().length === 0 && isOptional) {
+    return [];
+  }
+
   return response.split(',').map((file: string) => file.trim());
 };
 
+/* -- backWCompat -- */
 export const contractPrompt = async (): Promise<string[]> => {
   const response = await input({
     message:
@@ -46,16 +82,59 @@ export const contractPrompt = async (): Promise<string[]> => {
   return response.split(',').map((contract: string) => contract.trim());
 };
 
+/* -- backWCompat -- */
+export const apiPrompt = async (
+  previousQuestions: Record<string, unknown>,
+  args: Record<string, unknown>,
+  isOptional: boolean,
+): Promise<string> => {
+  const response = await input({
+    message: 'Enter the API to use for retrieving the contract (optional):',
+    validate: (input: string) => {
+      if (input.trim().length === 0 && !isOptional) {
+        return 'Please enter an API';
+      }
+      return true;
+    },
+  });
+
+  // Return an empty string if the input is empty and isOptional is true
+  if (response.trim().length === 0 && isOptional) {
+    return '';
+  }
+
+  return response;
+};
+
+export const modulePrompt = async (): Promise<string> => {
+  const response = await input({
+    message: 'Enter the module you want to retrieve (e.g. "coin"):',
+    validate: (input: string) => {
+      if (input.trim().length === 0) {
+        return 'Please enter the module name';
+      }
+      return true;
+    },
+  });
+  return response.trim();
+};
+
+export const outPrompt = async (): Promise<string> => {
+  const response = await input({
+    message: 'Enter file to write the contract to:',
+    validate: (input: string) => {
+      if (input.trim().length === 0) {
+        return 'Please enter file to write the contract to';
+      }
+      return true;
+    },
+  });
+  return response.trim();
+};
+
 export const namespacePrompt = async (): Promise<string> => {
   return await input({
     message: 'Enter the namespace for the contract (optional):',
-  });
-};
-
-/* -- backWCompat -- */
-export const apiPrompt = async (): Promise<string> => {
-  return await input({
-    message: 'Enter the API to use for retrieving the contract (optional):',
   });
 };
 

@@ -16,16 +16,51 @@ export const createContractGenerateCommand: (
   [
     contractOptions.clean(),
     contractOptions.capsInterface(),
-    contractOptions.file(),
-    contractOptions.contract(),
+    contractOptions.file({ isOptional: true }),
+    contractOptions.contract({ isOptional: true }),
     contractOptions.namespace(),
     globalOptions.networkSelect({ isOptional: false }),
     globalOptions.chainId(),
     contractOptions.api(),
     contractOptions.parseTreePath(),
   ],
-  async (option, { collect }) => {
-    const config = await collect(option);
+  async (option) => {
+    let file: string[] | undefined = undefined;
+    let contract: string[] | undefined = undefined;
+
+    const { clean } = await option.clean();
+    const { capsInterface } = await option.capsInterface();
+    const { namespace } = await option.namespace();
+    const { networkConfig } = await option.network();
+    const { api } = await option.api();
+    const { parseTreePath } = await option.parseTreePath();
+    const { chainId } = await option.chainId();
+    const { file: fileOption } = await option.file();
+
+    if (fileOption.length > 0) {
+      file = fileOption;
+    } else {
+      const { contract: contractOption } = await option.contract();
+      contract = contractOption;
+    }
+
+    const baseConfig = {
+      clean,
+      capsInterface,
+      namespace,
+      networkConfig,
+      api,
+      parseTreePath,
+      chainId,
+      network: networkConfig.network,
+    };
+
+    const config = {
+      ...baseConfig,
+      ...(file !== undefined ? { file } : {}),
+      ...(contract !== undefined ? { contract } : {}),
+    };
+
     log.debug('contract-generate:action', config);
 
     const loading = ora('Generating contract...').start();

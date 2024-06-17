@@ -1,3 +1,5 @@
+import type { INetworkCreateOptions } from '../../commands/networks/utils/networkHelpers.js';
+
 export interface INetworks {
   mainnet: { network: 'mainnet01'; api: 'api.chainweb.com' };
   testnet: {
@@ -25,7 +27,8 @@ export interface IContractGenerateOptions {
   contract?: string[];
   namespace?: string;
   api?: string;
-  chain?: number | string;
+  chainId?: number | string;
   network?: string;
+  networkConfig?: INetworkCreateOptions;
   parseTreePath?: string;
 }

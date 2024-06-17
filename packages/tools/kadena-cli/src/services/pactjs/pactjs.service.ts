@@ -5,12 +5,12 @@ import { EOL } from 'os';
 import { dirname, join } from 'path';
 import * as prettier from 'prettier';
 import { rimraf } from 'rimraf';
+import type { INetworkCreateOptions } from '../../commands/networks/utils/networkHelpers.js';
 import { log } from '../../utils/logger.js';
 import type { Services } from '../index.js';
 import type { IContractGenerateOptions } from './pactjs.types.js';
 import { fetchModule } from './utils/callLocal.js';
 import { extractImportedFiles } from './utils/extractImportedFiles.js';
-import { networkMap } from './utils/networkMap.js';
 import { shallowFindFile } from './utils/shallowFindFile.js';
 import { verifyTsconfigTypings } from './utils/verifyTsconfigTypings.js';
 
@@ -18,10 +18,23 @@ export interface IPactJSService {
   retrieveContractFromChain: (
     module: string,
     apiHost: string,
-    chain: number | string,
+    chainId: number | string,
     network: string,
+    networkConfig: INetworkCreateOptions,
   ) => Promise<string>;
   generate: (args: IContractGenerateOptions) => Promise<void>;
+}
+
+function getAPIUrl(args: IContractGenerateOptions): string | undefined {
+  if (args.api !== undefined && args.api.trim() !== '') {
+    return args.api;
+  }
+
+  if (args.networkConfig?.networkHost !== undefined) {
+    return `${args.networkConfig.networkHost}/chainweb/0.0/${args.networkConfig.networkId}/chain/${args.chainId}/pact`;
+  }
+
+  return undefined;
 }
 
 export class PactJSService implements IPactJSService {
@@ -30,28 +43,36 @@ export class PactJSService implements IPactJSService {
 
   public async retrieveContractFromChain(
     module: string,
-    apiHost: string,
-    chain: number | string,
+    api: string,
+    chainId: number | string,
     network: string,
+    networkConfig: INetworkCreateOptions,
   ): Promise<string> {
+    const apiHost = getAPIUrl({ api, networkConfig, chainId });
+
+    if (apiHost === undefined) {
+      log.error(
+        `Could not retrieve ${module} from network:${network} - chain:${chainId}`,
+      );
+      throw new Error(
+        `Could not retrieve ${module} from network:${network} - chain:${chainId}`,
+      );
+    }
+
     const command = Pact.builder
       .execution(`(describe-module "${module}")`)
-      .setNetworkId(
-        network === 'testnet' || network === 'mainnet'
-          ? networkMap[network].network
-          : network,
-      )
-      .setMeta({ chainId: chain.toString() as ChainId })
+      .setNetworkId(networkConfig.networkId)
+      .setMeta({ chainId: chainId.toString() as ChainId })
       .createTransaction();
 
     const { code, error } = await fetchModule(apiHost, JSON.stringify(command));
 
     if (error !== undefined) {
       log.error(
-        `Could not retrieve ${module} from network:${network} - chain:${chain}\nerror: ${error}`,
+        `Could not retrieve ${module} from network:${network} - chain:${chainId}\nerror: ${error}`,
       );
       throw new Error(
-        `Could not retrieve ${module} from network:${network} - chain:${chain}\nerror: ${error}`,
+        `Could not retrieve ${module} from network:${network} - chain:${chainId}\nerror: ${error}`,
       );
     }
 
@@ -167,20 +188,26 @@ export class PactJSService implements IPactJSService {
 
     const getContract = async (name: string): Promise<string> => {
       log.info('fetching', name);
+      const apiHost = getAPIUrl(args);
+
       if (
-        args.api !== undefined &&
-        args.chain !== undefined &&
-        args.network !== undefined
+        apiHost !== undefined &&
+        args.chainId !== undefined &&
+        args.network !== undefined &&
+        args.networkConfig !== undefined
       ) {
         const content = await this.retrieveContractFromChain(
           name,
-          args.api,
-          args.chain,
+          apiHost,
+          args.chainId,
           args.network,
+          args.networkConfig,
         );
         return content || '';
       }
-      log.info(`Skipping ${name} as API data is not presented.`);
+      log.info(
+        `Skipping ${name} as API data or network config is not provided.`,
+      );
       return '';
     };
 
