@@ -50,12 +50,36 @@ const meta: Meta<ICheckboxProps> = {
 
 type CheckboxStoryType = StoryObj<ICheckboxProps>;
 
+// Just to make the inverse prop visible in the story
+const InverseWrapper = ({
+  children,
+  inversed,
+}: {
+  children: React.ReactNode;
+  inversed?: boolean;
+}) => {
+  return (
+    <div
+      style={{
+        padding: '1rem',
+        backgroundColor: inversed ? 'black' : 'transparent',
+      }}
+    >
+      {children}
+    </div>
+  );
+};
+
 export const Base: CheckboxStoryType = {
   args: {
     children: 'Check this box',
   },
   render: (props: ICheckboxProps) => {
-    return <Checkbox {...props}>{props.children}</Checkbox>;
+    return (
+      <InverseWrapper inversed={props.inverse}>
+        <Checkbox {...props}>{props.children}</Checkbox>
+      </InverseWrapper>
+    );
   },
 };
 
