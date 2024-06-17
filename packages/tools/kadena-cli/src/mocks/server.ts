@@ -1,7 +1,8 @@
 import type { RequestHandler } from 'msw';
-import { HttpResponse, http } from 'msw';
+import { HttpResponse, bypass, http } from 'msw';
 import { setupServer } from 'msw/node';
 import type { INetworkCreateOptions } from '../commands/networks/utils/networkHelpers.js';
+import { log } from '../utils/logger.js';
 import { testNetworkConfigMock } from './network.js';
 
 interface IHandlerOptions {
@@ -11,6 +12,7 @@ interface IHandlerOptions {
   response: unknown;
   status?: number;
   method?: 'post' | 'get';
+  printOriginalResponse?: boolean;
 }
 
 interface IDynamicHandlerOptions extends Omit<IHandlerOptions, 'response'> {
@@ -24,9 +26,14 @@ const createHandler = ({
   status = 200,
   method = 'post',
   response,
+  printOriginalResponse = false,
 }: IHandlerOptions): RequestHandler => {
   const url = `${network.networkHost}/chainweb/0.0/${network.networkId}/chain/${chainId}/pact/api/v1/${endpoint}`;
-  return http[method](url, async () => {
+  return http[method](url, async (info) => {
+    if (printOriginalResponse === true) {
+      const result = await fetch(bypass(info.request));
+      log.info(`MSW bypass response:\n${await result.text()}\n`);
+    }
     if (
       typeof response === 'string' ||
       response === undefined ||
