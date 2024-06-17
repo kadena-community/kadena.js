@@ -55,11 +55,13 @@ const Search: FC<ISearchBarProps> = ({ networks, onSearch }) => {
 
             setQuery(x.target.value);
           }}
+          aria-label="Search for modules"
         />
         <Select
           selectedKey={searchFilter}
           items={selectItems}
           onSelectionChange={(key) => setSearchFilter(key as string)}
+          aria-label="Filter by network"
         >
           {(item) => <SelectItem key={item.key}>{item.label}</SelectItem>}
         </Select>
