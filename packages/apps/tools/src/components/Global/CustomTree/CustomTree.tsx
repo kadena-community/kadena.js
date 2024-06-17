@@ -5,6 +5,7 @@ import {
 } from '@kadena/react-icons/system';
 import { Badge, Button, Stack, Text } from '@kadena/react-ui';
 import { token } from '@kadena/react-ui/styles';
+import classNames from 'classnames';
 import React, { useCallback } from 'react';
 import type { ICustomAccordionProps } from '../CustomAccordion/CustomAccordion';
 import CustomAccordion from '../CustomAccordion/CustomAccordion';
@@ -41,10 +42,15 @@ function CustomTree<T>({
   onReload,
   onItemClick,
   onExpandCollapse,
+  className,
   ...rest
 }: ICustomTreeProps<T>) {
   return (
-    <CustomAccordion {...rest} items={items} className={containerStyle}>
+    <CustomAccordion
+      {...rest}
+      items={items}
+      className={classNames(containerStyle, className)}
+    >
       {(item) => {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         const toggleHandler = useCallback(() => {
