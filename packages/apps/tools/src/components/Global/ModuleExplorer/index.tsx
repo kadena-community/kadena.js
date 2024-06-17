@@ -61,6 +61,14 @@ const searchResultsToDataMap = (
   );
 };
 
+const fuseOptions: IFuseOptions<IncompleteModuleModel> = {
+  ignoreLocation: true,
+  keys: [
+    { name: 'title', getFn: (item) => item.name },
+    { name: 'hash', getFn: (item) => item.hash ?? '' },
+  ],
+};
+
 const ModuleExplorer = ({
   items,
   onReload,
@@ -83,14 +91,6 @@ const ModuleExplorer = ({
     if (!searchQuery) {
       return data;
     }
-
-    const fuseOptions: IFuseOptions<IncompleteModuleModel> = {
-      ignoreLocation: true,
-      keys: [
-        { name: 'title', getFn: (item) => item.name },
-        { name: 'hash', getFn: (item) => item.hash ?? '' },
-      ],
-    };
 
     const fuse = new Fuse([...data.values()].flat(), fuseOptions);
     const results = fuse.search(searchQuery);
