@@ -11,6 +11,7 @@ import type { INetworkOptions } from '@kadena/client';
 import { IPactCommand } from '@kadena/client';
 import { IPactDecimal } from '@kadena/types';
 import { IPactInt } from '@kadena/types';
+import type { ISigner } from '@kadena/client';
 import type { ISignFunction } from '@kadena/client';
 import { ITransactionDescriptor } from '@kadena/client';
 import { PactValue } from '@kadena/types';
@@ -95,8 +96,14 @@ export interface ITransactionBody {
     // (undocumented)
     networkId: string;
     // (undocumented)
-    signers: string[];
+    signers: ISigner[];
 }
+
+// @alpha (undocumented)
+export const listModules: (config: Omit<IClientConfig, 'sign'>) => Promise<ListModulesOutput>;
+
+// @alpha (undocumented)
+export type ListModulesOutput = string[];
 
 // (No @packageDocumentation comment for this package)
 

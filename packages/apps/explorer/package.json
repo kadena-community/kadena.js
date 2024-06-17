@@ -1,6 +1,6 @@
 {
   "name": "@kadena/explorer",
-  "version": "0.0.2",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "build": "pnpm run generate:sdk && next build",
@@ -11,7 +11,7 @@
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier . --cache --write",
-    "generate:sdk": "graphql-codegen --config codegen-sdk.yml",
+    "generate:sdk": "cache-sh -i \"{codegen-sdk.yml,./node_modules/@kadena/graph/generated-schema.graphql,src/**/*.graph.ts,src/__generated__/**}\" -- graphql-codegen --config codegen-sdk.yml",
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
@@ -54,6 +54,7 @@
     "@types/react-dom": "^18.2.25",
     "@vanilla-extract/css": "1.14.2",
     "@vanilla-extract/next-plugin": "2.4.0",
+    "cache-sh": "^1.2.1",
     "concurrently": "^8.2.2",
     "prettier": "~3.2.5",
     "typescript": "5.4.5"

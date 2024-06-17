@@ -1,7 +1,7 @@
 {
   "name": "@kadena/react-ui",
-  "version": "0.9.0",
-  "description": "A react component library built on Kadena's Design System",
+  "version": "0.11.0",
+  "description": "A react component library built on Kadena's Kode Design System",
   "repository": {
     "type": "git",
     "url": "https://github.com/kadena-community/kadena.js.git",
@@ -100,8 +100,8 @@
   },
   "devDependencies": {
     "@crackle/cli": "^0.15.1",
-    "@design-sync/cli": "^0.11.1",
-    "@design-sync/vanilla-extract-plugin": "^0.7.0",
+    "@design-sync/cli": "^0.11.3",
+    "@design-sync/vanilla-extract-plugin": "^0.7.3",
     "@etchteam/storybook-addon-status": "^4.2.4",
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",

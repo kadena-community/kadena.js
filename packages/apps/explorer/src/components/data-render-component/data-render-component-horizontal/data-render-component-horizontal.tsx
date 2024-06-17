@@ -1,5 +1,6 @@
-import { MonoArrowOutward } from '@kadena/react-icons/system';
-import { Text } from '@kadena/react-ui';
+import CopyButton from '@/components/copy-button/copy-button';
+import { MonoArrowOutward } from '@kadena/react-icons';
+import { Stack, Text } from '@kadena/react-ui';
 import React from 'react';
 import {
   dataFieldClass,
@@ -13,8 +14,9 @@ import {
 
 interface IDataRenderComponentField {
   type?: 'text' | 'code';
+  canCopy?: boolean;
   key: string;
-  value: string | string[];
+  value: string | string[] | JSX.Element | JSX.Element[];
   link?: string;
 }
 
@@ -52,9 +54,12 @@ const DataRenderComponentHorizontal: React.FC<IDataRenderComponentProps> = ({
               </Text>
             ))
           ) : (
-            <Text variant="code" className={dataFieldClass}>
-              {field.value}
-            </Text>
+            <Stack gap="md">
+              <Text variant="code" className={dataFieldClass}>
+                <span id="requestkey">{field.value}</span>
+              </Text>
+              {field.canCopy && <CopyButton id="requestkey" />}
+            </Stack>
           )}
         </div>
       ))}

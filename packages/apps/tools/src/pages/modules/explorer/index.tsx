@@ -1,41 +1,27 @@
+import type { TreeItem } from '@/components/Global/CustomTree/CustomTree';
 import ModuleExplorer from '@/components/Global/ModuleExplorer';
 import type { IEditorProps } from '@/components/Global/ModuleExplorer/editor';
-import type {
-  IChainModule,
-  IModule,
-} from '@/components/Global/ModuleExplorer/types';
-import type { Network } from '@/constants/kadena';
-import { kadenaConstants } from '@/constants/kadena';
+import { isModuleLike } from '@/components/Global/ModuleExplorer/types';
 import { menuData } from '@/constants/side-menu-items';
-import {
-  DefaultValues,
-  StorageKeys,
-  useWalletConnectClient,
-} from '@/context/connect-wallet-context';
-import { useToolbar } from '@/context/layout-context';
-import { describeModule } from '@/services/modules/describe-module';
-import type { IModulesResult } from '@/services/modules/list-module';
-import { listModules } from '@/services/modules/list-module';
-import { transformModulesRequest } from '@/services/utils/transform';
-import type { INetworkData } from '@/utils/network';
-import { getAllNetworks } from '@/utils/network';
+import { useLayoutContext, useToolbar } from '@/context/layout-context';
+import type { IncompleteModuleModel } from '@/hooks/use-module-query';
+import { fetchModule, useModuleQuery } from '@/hooks/use-module-query';
+import { QUERY_KEY, useModulesQuery } from '@/hooks/use-modules-query';
+import type { IPageProps } from '@/pages/_app';
 import type {
   ChainwebChainId,
-  ILocalCommandResult,
+  ChainwebNetworkId,
 } from '@kadena/chainweb-node-client';
 import { CHAINS } from '@kadena/chainweb-node-client';
-import { Breadcrumbs, BreadcrumbsItem } from '@kadena/react-ui';
-import type { QueryClient } from '@tanstack/react-query';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import useTranslation from 'next-translate/useTranslation';
+import { useQueryClient } from '@tanstack/react-query';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import type {
   GetServerSideProps,
   InferGetServerSidePropsType,
 } from 'next/types';
-import React, { useCallback } from 'react';
-import { getCookieValue, getQueryValue } from './utils';
+import React, { useCallback, useEffect } from 'react';
+import { getQueryValue, mapToTreeItems, modelsToTreeMap } from './utils';
 
 const QueryParams = {
   MODULE: 'module',
@@ -43,166 +29,11 @@ const QueryParams = {
   NETWORK: 'network',
 };
 
-export const getModules = async (
-  network: Network,
-  networksData: INetworkData[],
-): Promise<IChainModule[]> => {
-  const promises = CHAINS.map((chain) => {
-    return listModules(
-      chain,
-      network,
-      networksData,
-      kadenaConstants.DEFAULT_SENDER,
-      kadenaConstants.GAS_PRICE,
-      1000,
-    );
-  });
-
-  const results = await Promise.all(promises);
-
-  const transformed = results.map((result) =>
-    transformModulesRequest(result as IModulesResult),
-  );
-  const flattened = transformed.flat();
-  const sorted = flattened.sort((a, b) => {
-    if (a.moduleName === b.moduleName) {
-      return parseInt(a.chainId, 10) - parseInt(b.chainId, 10);
-    }
-    return a.moduleName.localeCompare(b.moduleName);
-  });
-
-  return sorted;
-};
-
-export const getCompleteModule = async (
-  { moduleName, chainId }: IChainModule,
-  network: Network,
-  networksData: INetworkData[],
-): Promise<IChainModule> => {
-  const request = (await describeModule(
-    moduleName,
-    chainId,
-    network,
-    networksData,
-    kadenaConstants.DEFAULT_SENDER,
-    kadenaConstants.GAS_PRICE,
-    1000,
-  )) as ILocalCommandResult;
-
-  if (request.result.status === 'failure') {
-    throw new Error('Something went wrong');
+export const getServerSideProps: GetServerSideProps<
+  IPageProps & {
+    openedModules: IEditorProps['openedModules'];
   }
-
-  const { code, hash } = request.result.data as unknown as {
-    code: string;
-    hash: string;
-  };
-
-  return {
-    code,
-    moduleName,
-    chainId,
-    hash,
-    network,
-  };
-};
-
-const replaceOldWithNew = (
-  oldData: IChainModule[],
-  newData: IChainModule[],
-): IChainModule[] => {
-  return oldData.map((old) => {
-    const newModule = newData.find((newM) => {
-      return newM.moduleName === old.moduleName && newM.chainId === old.chainId;
-    });
-
-    if (!newModule) {
-      return old;
-    }
-
-    return {
-      ...old,
-      hash: newModule.hash,
-      code: newModule.code,
-    };
-  });
-};
-
-/*
- * In this function we'll add the `hash` and `code` property to the module, so that, in the list of
- * modules, you can see if there are any differences in the module on certain chains.
- */
-export const enrichModule = async (
-  module: IModule,
-  network: Network,
-  networksData: INetworkData[],
-  queryClient: QueryClient,
-) => {
-  const promises = module.chains.map((chain) => {
-    return getCompleteModule(
-      { moduleName: module.moduleName, chainId: chain, network },
-      network,
-      networksData,
-    );
-  });
-
-  const moduleOnAllChains = await Promise.all(promises);
-
-  queryClient.setQueryData<IChainModule[]>(
-    ['modules', network, networksData],
-    (oldData) => replaceOldWithNew(oldData!, moduleOnAllChains),
-  );
-};
-
-/*
- * In this function we'll add the `hash` and `code` property to the modules, so that, in the list of
- * modules, you can see if there are any differences in the module on certain chains.
- */
-export const enrichModules = async (
-  modules: IModule[],
-  network: Network,
-  networksData: INetworkData[],
-  queryClient: QueryClient,
-) => {
-  const promises = modules.reduce<Promise<IChainModule>[]>((acc, module) => {
-    module.chains.forEach((chain) => {
-      acc.push(
-        getCompleteModule(
-          { moduleName: module.moduleName, chainId: chain, network },
-          network,
-          networksData,
-        ),
-      );
-    });
-    return acc;
-  }, []);
-
-  const moduleOnAllChains = await Promise.all(promises);
-
-  queryClient.setQueryData<IChainModule[]>(
-    ['modules', network, networksData],
-    (oldData) => replaceOldWithNew(oldData!, moduleOnAllChains),
-  );
-};
-
-export const getServerSideProps: GetServerSideProps<{
-  data: IChainModule[];
-  openedModules: IEditorProps['openedModules'];
-}> = async (context) => {
-  const network = getCookieValue(
-    StorageKeys.NETWORK,
-    context.req.cookies,
-    DefaultValues.NETWORK,
-  );
-
-  const networksData = getCookieValue(
-    StorageKeys.NETWORKS_DATA,
-    context.req.cookies,
-    getAllNetworks([]),
-  );
-
-  const modules = await getModules(network, networksData);
-
+> = async (context) => {
   const openedModules: IEditorProps['openedModules'] = [];
   const moduleQueryValue = getQueryValue(QueryParams.MODULE, context.query);
   const chainQueryValue = getQueryValue(
@@ -212,50 +43,89 @@ export const getServerSideProps: GetServerSideProps<{
   );
   const networkQueryValue = getQueryValue(QueryParams.NETWORK, context.query);
   if (moduleQueryValue && chainQueryValue && networkQueryValue) {
-    const moduleResponse = (await describeModule(
-      moduleQueryValue,
-      chainQueryValue as ChainwebChainId,
-      networkQueryValue,
-      networksData,
-      kadenaConstants.DEFAULT_SENDER,
-      kadenaConstants.GAS_PRICE,
-      1000,
-    )) as ILocalCommandResult;
+    try {
+      const fetchedModule = await fetchModule(
+        moduleQueryValue,
+        networkQueryValue as ChainwebNetworkId,
+        chainQueryValue as ChainwebChainId,
+      );
 
-    if (moduleResponse.result.status !== 'failure') {
-      openedModules.push({
-        code: (moduleResponse.result.data as unknown as { code: string }).code,
-        moduleName: moduleQueryValue,
-        chainId: chainQueryValue as ChainwebChainId,
-        network: networkQueryValue,
-      });
+      openedModules.push(fetchedModule);
+    } catch (e) {
+      console.error('Something went wrong while fetching the module', e);
     }
   }
 
-  return { props: { data: modules, openedModules } };
+  return {
+    props: {
+      openedModules,
+      menuInitiallyOpened: false,
+      useFullPageWidth: true,
+    },
+  };
 };
 
 const ModuleExplorerPage = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) => {
-  const { selectedNetwork: network, networksData } = useWalletConnectClient();
+  const { setIsMenuOpen } = useLayoutContext();
 
-  const { data: modules } = useQuery({
-    queryKey: ['modules', network, networksData],
-    queryFn: () => getModules(network, networksData),
-    initialData: props.data,
-    staleTime: 1500, // We need to set this in combination with initialData, otherwise the query will immediately refetch when it mounts
-    refetchOnWindowFocus: false,
-  });
+  useEffect(() => {
+    // For this page we don't want the menu to be open (we only have one menu item)
+    setIsMenuOpen(false);
+
+    return () => {
+      // Reopen the menu when the user navigates away
+      setIsMenuOpen(true);
+    };
+  }, [setIsMenuOpen]);
 
   const queryClient = useQueryClient();
 
   const router = useRouter();
 
+  useToolbar(menuData, router.pathname);
+
+  const mainnetModulesQuery = useModulesQuery('mainnet01');
+  const testnetModulesQuery = useModulesQuery('testnet04');
+
+  let mappedMainnet: TreeItem<IncompleteModuleModel>[] = [];
+  let amountOfMainnetModules = 0;
+
+  if (mainnetModulesQuery.isSuccess) {
+    mappedMainnet = mapToTreeItems(
+      modelsToTreeMap(mainnetModulesQuery.data),
+      'mainnet',
+    );
+    amountOfMainnetModules = mainnetModulesQuery.data.length;
+  }
+
+  let mappedTestnet: TreeItem<IncompleteModuleModel>[] = [];
+  let amountOfTestnetModules = 0;
+
+  if (testnetModulesQuery.isSuccess) {
+    mappedTestnet = mapToTreeItems(
+      modelsToTreeMap(testnetModulesQuery.data),
+      'testnet',
+    );
+    amountOfTestnetModules = testnetModulesQuery.data.length;
+  }
+
+  // const customNetworks = networksData.filter(
+  //   (n) => n.networkId !== 'mainnet01' && n.networkId !== 'testnet04',
+  // );
+  // const customNetworksQueries = useQueries({
+  //   queries: customNetworks.map((customNetwork) => ({
+  //     queryKey: ['modules-custom', customNetwork.networkId],
+  //     queryFn: () => {},
+  //     staleTime: Infinity,
+  //   })),
+  // });
+
   const setDeepLink = useCallback(
-    (module: IChainModule) => {
+    (module: IncompleteModuleModel) => {
       void router.replace(
-        `?${QueryParams.MODULE}=${module.moduleName}&${QueryParams.CHAIN}=${module.chainId}&${QueryParams.NETWORK}=${module.network}`,
+        `?${QueryParams.MODULE}=${module.name}&${QueryParams.CHAIN}=${module.chainId}&${QueryParams.NETWORK}=${module.networkId}`,
         undefined,
         { shallow: true },
       );
@@ -263,54 +133,101 @@ const ModuleExplorerPage = (
     [router],
   );
 
-  const onModuleOpen = useCallback<(module: IChainModule) => void>(
+  const onModuleOpen = useCallback<(module: IncompleteModuleModel) => void>(
     (module) => {
       setDeepLink(module);
     },
     [setDeepLink],
   );
 
-  const { t } = useTranslation('common');
-
-  useToolbar(menuData, router.pathname);
+  const mutation = useModuleQuery();
 
   return (
     <>
       <Head>
         <title>Kadena Developer Tools - Modules</title>
       </Head>
-      <Breadcrumbs>
-        <BreadcrumbsItem>{t('Modules')}</BreadcrumbsItem>
-        <BreadcrumbsItem>{t('Explorer')}</BreadcrumbsItem>
-      </Breadcrumbs>
       <ModuleExplorer
-        modules={modules}
-        onModuleClick={onModuleOpen}
-        onInterfaceClick={onModuleOpen}
-        onModuleExpand={({ moduleName, chains }) => {
-          void enrichModule(
-            { moduleName, chains },
-            network,
-            networksData,
-            queryClient,
-          );
+        onModuleClick={(treeItem) => {
+          onModuleOpen(treeItem.data);
         }}
-        onInterfacesExpand={(interfaces) => {
-          void enrichModules(
-            interfaces.map((i) => ({
-              chains: [i.chainId],
-              moduleName: i.moduleName,
-            })),
-            network,
-            networksData,
-            queryClient,
-          );
+        onActiveModuleChange={(module) => {
+          setDeepLink(module);
         }}
-        onActiveModuleChange={setDeepLink}
-        onTabClose={(module) => {
-          console.log('closing', module);
-        }}
+        // onTabClose={(module) => {
+        //   console.log('closing', module);
+        // }}
         openedModules={props.openedModules}
+        items={[
+          {
+            title: 'Mainnet',
+            key: 'mainnet',
+            children: mappedMainnet,
+            data: { name: 'mainnet01', chainId: '0', networkId: 'mainnet01' },
+            isLoading: mainnetModulesQuery.isFetching,
+            supportsReload: true,
+            label: amountOfMainnetModules,
+          },
+          {
+            title: 'Testnet',
+            key: 'testnet',
+            children: mappedTestnet,
+            data: { name: 'testnet04', chainId: '0', networkId: 'testnet04' },
+            isLoading: testnetModulesQuery.isFetching,
+            supportsReload: true,
+            label: amountOfTestnetModules,
+          },
+        ]}
+        onReload={(treeItem) => {
+          void queryClient.invalidateQueries({
+            queryKey: [
+              QUERY_KEY,
+              treeItem.key === 'mainnet' ? 'mainnet01' : 'testnet04',
+            ],
+          });
+        }}
+        onExpandCollapse={async (treeItem, expanded) => {
+          if (!expanded) return;
+
+          const isLowestLevel = !treeItem.children[0].children.length;
+
+          if (isModuleLike(treeItem.data)) {
+            if (treeItem.key === 'interfaces' || isLowestLevel) {
+              const promises = treeItem.children.map(({ data }) => {
+                return mutation.mutateAsync({
+                  module: (data as IncompleteModuleModel).name,
+                  networkId: (data as IncompleteModuleModel).networkId,
+                  chainId: (data as IncompleteModuleModel).chainId,
+                });
+              });
+
+              const results = await Promise.all(promises);
+
+              queryClient.setQueryData<Array<IncompleteModuleModel>>(
+                [QUERY_KEY, treeItem.data.networkId, undefined],
+                (oldData) => {
+                  return oldData!.map((old) => {
+                    const newModule = results.find((newM) => {
+                      return (
+                        newM.name === old.name && newM.chainId === old.chainId
+                      );
+                    });
+
+                    if (!newModule) {
+                      return old;
+                    }
+
+                    return {
+                      ...old,
+                      hash: newModule.hash,
+                      code: newModule.code,
+                    };
+                  });
+                },
+              );
+            }
+          }
+        }}
       />
     </>
   );

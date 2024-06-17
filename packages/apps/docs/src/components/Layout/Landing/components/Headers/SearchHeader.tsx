@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import {
   headerClass,
   headerLoadedClass,
+  searchWrapperClass,
   subheaderClass,
   wrapperClass,
 } from './style.css';
@@ -27,7 +28,7 @@ export const SearchHeader: FC<IProps> = ({ children }) => {
 
   return (
     <header className={loaderHeaderClass}>
-      <div className={wrapperClass}>
+      <div className={classNames(wrapperClass, searchWrapperClass)}>
         <Heading as="h1" variant="h2" transform="uppercase">
           Search spaces
         </Heading>

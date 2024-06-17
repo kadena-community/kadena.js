@@ -1,5 +1,40 @@
 # @kadena/graph
 
+## 1.0.4
+
+### Patch Changes
+
+- Updated dependencies \[9c145f196]
+- Updated dependencies \[9c145f196]
+  - @kadena/client\@1.12.0
+  - @kadena/client-utils\@0.7.0
+
+## 1.0.3
+
+### Patch Changes
+
+- e5f85728a: Data Render Component, Transactions List and hash tab routing done.
+  Including mobile support.
+- 5a9d2de5e: Fixed transaction subscription issue with mempool and completed
+  transactions
+- c9fe555df: Pin sensitive dependencies to specific versions
+- 7e19fd3f3: Added neighbor info to blocks and phased out CHAIN_COUNT and
+  NETWORK_ID env vars.
+- f4a18faa8: Fixed issue when finding cross chain transfer when original
+  transfer is the starting one
+- 30217ff8e: Added validations to ensure that we do not yield same events on
+  subscriptions
+- 4a5045c52: Added endHeight as an argument for blocksFromHeight query. Also
+  added aditional validation on arguments
+- Updated dependencies \[c9fe555df]
+- Updated dependencies \[aa1aae60c]
+- Updated dependencies \[9c4145cb7]
+- Updated dependencies \[381a766e8]
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/client-utils\@0.6.0
+  - @kadena/client\@1.11.2
+  - @kadena/chainweb-node-client\@0.6.2
+
 ## 1.0.2
 
 ### Patch Changes

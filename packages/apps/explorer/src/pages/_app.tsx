@@ -2,6 +2,7 @@
 import '@kadena/react-ui/global';
 
 import { MediaContextProvider } from '@/components/layout/media';
+import { graphHost, wsGraphHost } from '@/constants/graphHost';
 import type { NormalizedCacheObject } from '@apollo/client';
 import {
   ApolloClient,
@@ -9,28 +10,30 @@ import {
   InMemoryCache,
   split,
 } from '@apollo/client';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { getMainDefinition } from '@apollo/client/utilities';
 import { RouterProvider } from '@kadena/react-ui';
+import { createClient } from 'graphql-ws';
 import type { AppProps } from 'next/app';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import type { ComponentType } from 'react';
 import React from 'react';
-
-import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
-import { getMainDefinition } from '@apollo/client/utilities';
-import { createClient } from 'graphql-ws';
-import Head from 'next/head';
 
 // next/apollo-link bug: https://github.com/dotansimha/graphql-yoga/issues/2194
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { YogaLink } = require('@graphql-yoga/apollo-link');
 
+console.log('graphHost', graphHost);
+console.log('wsGraphHost', wsGraphHost);
+
 const httpLink = new YogaLink({
-  endpoint: '/graph',
+  endpoint: graphHost,
 });
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: 'ws://localhost:4000/graphql',
+    url: wsGraphHost,
   }),
 );
 

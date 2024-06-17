@@ -5,6 +5,7 @@ import type {
   IPactCommand,
   IPartialPactCommand,
   ISignFunction,
+  ISigner,
   IUnsignedCommand,
 } from '@kadena/client';
 import { createClient, getHostUrl, isSignedTransaction } from '@kadena/client';
@@ -27,14 +28,17 @@ export const validateSign = (
   signedTx: ICommand | IUnsignedCommand,
 ): ICommand => {
   const { sigs, hash } = signedTx;
-  const txWidthSigs = { ...tx, sigs };
-  if (txWidthSigs.hash !== hash) {
+  const txWithSigs = { ...tx, sigs };
+  if (!txWithSigs.hash) {
+    throw new Error('Hash is empty');
+  }
+  if (txWithSigs.hash !== hash) {
     throw new Error('Hash mismatch');
   }
-  if (!isSignedTransaction(txWidthSigs)) {
+  if (!isSignedTransaction(txWithSigs)) {
     throw new Error('Signing failed');
   }
-  return txWidthSigs;
+  return txWithSigs;
 };
 
 export const safeSign =
@@ -66,7 +70,7 @@ export interface IClientConfig {
 
 export interface IAccount {
   account: string;
-  publicKeys?: string[];
+  publicKeys?: ISigner[];
 }
 
 export const withInput = <

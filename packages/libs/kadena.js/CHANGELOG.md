@@ -1,5 +1,20 @@
 # kadena.js
 
+## 0.1.5
+
+### Patch Changes
+
+- f0e773291: a
+
+## 0.1.4
+
+### Patch Changes
+
+- Updated dependencies \[c9fe555df]
+- Updated dependencies \[9c4145cb7]
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/chainweb-node-client\@0.6.2
+
 ## 0.1.3
 
 ### Patch Changes

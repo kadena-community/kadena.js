@@ -20,12 +20,18 @@ import { log } from '../../../utils/logger.js';
 import { txOptions } from '../txOptions.js';
 import { parseTransactionsFromStdin } from '../utils/input.js';
 import { displayTransactionResponse } from '../utils/txDisplayHelper.js';
-import type { INetworkDetails, ISubmitResponse } from '../utils/txHelpers.js';
+import type {
+  INetworkDetails,
+  ISubmitResponse,
+  IUpdateTransactionsLogPayload,
+} from '../utils/txHelpers.js';
 import {
   createTransactionWithDetails,
   getClient,
   getTransactionsFromFile,
   logTransactionDetails,
+  saveTransactionsToFile,
+  updateTransactionStatus,
 } from '../utils/txHelpers.js';
 
 export const clientInstances: Map<string, IClient> = new Map();
@@ -66,19 +72,28 @@ export async function pollRequests(
 
   const results = await Promise.allSettled(pollingPromises);
 
+  const txLogsData: IUpdateTransactionsLogPayload[] = [];
   results.forEach((result) => {
     if (result.status === 'fulfilled') {
       const value = result.value;
       const { requestKey, status } = value;
-
       if (status === 'success' && 'data' in value) {
         log.info(`Polling success for requestKey: ${requestKey}`);
         displayTransactionResponse(value.data[requestKey], 2);
+        txLogsData.push({
+          requestKey,
+          status,
+          data: value.data[requestKey],
+        });
       } else if (status === 'error' && 'error' in value) {
         log.error(
           `Polling error for requestKey: ${requestKey}, error:`,
           value.error,
         );
+        txLogsData.push({
+          requestKey,
+          status: 'failure',
+        });
       } else if ('message' in value) {
         log.info(
           `Polling message for requestKey: ${requestKey}: ${value.message}`,
@@ -88,6 +103,7 @@ export async function pollRequests(
       log.error(`Polling failed for a request, error:`, result.reason);
     }
   });
+  await updateTransactionStatus(txLogsData);
 }
 
 export const sendTransactionAction = async ({
@@ -194,6 +210,7 @@ export const createSendTransactionCommand: (
             )
             .join('\n\n'),
         );
+        await saveTransactionsToFile(result.data.transactions);
       }
 
       const txPoll = await option.poll();

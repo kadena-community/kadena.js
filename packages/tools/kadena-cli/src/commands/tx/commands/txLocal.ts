@@ -7,7 +7,7 @@ import { createCommand } from '../../../utils/createCommand.js';
 import { globalOptions } from '../../../utils/globalOptions.js';
 import { getDefaultNetworkName } from '../../../utils/helpers.js';
 import { log } from '../../../utils/logger.js';
-import type { INetworksCreateOptions } from '../../networks/utils/networkHelpers.js';
+import type { INetworkCreateOptions } from '../../networks/utils/networkHelpers.js';
 import { getNetworks } from '../../networks/utils/networkHelpers.js';
 import { txOptions } from '../txOptions.js';
 import { generateClientUrl } from '../utils/txHelpers.js';
@@ -15,7 +15,7 @@ import { arbitraryCodeTemplate } from './templates/templates.js';
 import { createTransaction } from './txCreateTransaction.js';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-async function getNetworkConfig(flagConfig: INetworksCreateOptions | null) {
+async function getNetworkConfig(flagConfig: INetworkCreateOptions | null) {
   if (flagConfig) return flagConfig;
   const networks = await getNetworks();
   const defaultName = await getDefaultNetworkName();
@@ -73,7 +73,6 @@ export const createTxLocalCommand: (program: Command, version: string) => void =
         generateClientUrl({
           chainId: templateChainId,
           ...network,
-          networkExplorerUrl: network.networkExplorerUrl ?? '',
         }),
       );
 

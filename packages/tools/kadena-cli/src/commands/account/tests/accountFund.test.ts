@@ -1,20 +1,79 @@
-import { HttpResponse, http } from 'msw';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   CHAIN_ID_ACTION_ERROR_MESSAGE,
   CHAIN_ID_RANGE_ERROR_MESSAGE,
 } from '../../../constants/account.js';
-import { server } from '../../../mocks/server.js';
+import {
+  accountDetailsSuccessData,
+  pollTxResponseMock,
+} from '../../../mocks/data/accountDetails.js';
+import { devNetConfigMock } from '../../../mocks/network.js';
+import {
+  server,
+  useMswDynamicHandler,
+  useMswHandler,
+} from '../../../mocks/server.js';
 import { mockPrompts, runCommand } from '../../../utils/test.util.js';
+import type { IAccountDetailsResult } from '../types.js';
 import * as fundHelpers from '../utils/fundHelpers.js';
+import * as getAccountDetailsHelpers from '../utils/getAccountDetails.js';
 import * as devnetHelpers from './../../devnet/utils/network.js';
 
 describe('account fund', () => {
   beforeEach(async () => {
+    vi.spyOn(getAccountDetailsHelpers, 'getAccountDetails').mockImplementation(
+      (): Promise<IAccountDetailsResult> => {
+        return Promise.resolve(accountDetailsSuccessData.result.data);
+      },
+    );
     // Pre add the account alias file to make sure account alias exists
     await runCommand(
       'account add --from=key --account-alias=account-add-test-manual --account-name=accountName --fungible=coin --network=testnet --chain-id=1 --public-keys=publicKey1 --quiet',
     );
+
+    useMswHandler({
+      response: {
+        result: {
+          data: 'Write succeeded',
+          status: 'success',
+        },
+      },
+    });
+    useMswHandler({
+      endpoint: 'poll',
+      response: pollTxResponseMock,
+    });
+    useMswHandler({
+      endpoint: 'send',
+      response: {
+        requestKeys: ['requestKey-1', 'requestKey-2'],
+      },
+    });
+
+    useMswHandler({
+      network: devNetConfigMock,
+      endpoint: 'local',
+      response: {
+        result: {
+          data: 'Write succeeded',
+          status: 'success',
+        },
+      },
+    });
+
+    useMswHandler({
+      network: devNetConfigMock,
+      endpoint: 'poll',
+      response: pollTxResponseMock,
+    });
+
+    useMswHandler({
+      network: devNetConfigMock,
+      endpoint: 'send',
+      response: {
+        requestKeys: ['requestKey-1', 'requestKey-2'],
+      },
+    });
   });
 
   afterEach(() => {
@@ -55,31 +114,34 @@ describe('account fund', () => {
   });
 
   it('should create an account and fund when account does not exist on chain', async () => {
-    server.use(
-      http.post(
-        'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/local',
-        async ({ request }) => {
-          const data = (await request.json()) as { cmd: string };
-          const parsedCMD = JSON.parse(data.cmd as string);
-          if (parsedCMD.payload.exec.code.includes('coin.details') === true) {
-            return HttpResponse.json(
-              { error: 'with-read: row not found: qwerty' },
-              { status: 404 },
-            );
-          }
-
-          return HttpResponse.json(
-            {
-              result: {
-                data: 'Write succeeded',
-                status: 'success',
-              },
-            },
-            { status: 200 },
-          );
-        },
-      ),
+    vi.spyOn(getAccountDetailsHelpers, 'getAccountDetails').mockImplementation(
+      (): Promise<undefined> => {
+        return Promise.resolve(undefined);
+      },
     );
+    useMswDynamicHandler({
+      method: 'post',
+      getResponse: async (request) => {
+        const data = (await request.json()) as { cmd: string };
+        const parsedCMD = JSON.parse(data.cmd as string);
+        if (parsedCMD.payload.exec.code.includes('coin.details') === true) {
+          return [
+            { error: 'with-read: row not found: qwerty' },
+            { status: 404 },
+          ];
+        }
+
+        return [
+          {
+            result: {
+              data: 'Write succeeded',
+              status: 'success',
+            },
+          },
+          { status: 200 },
+        ];
+      },
+    });
 
     mockPrompts({
       select: {
