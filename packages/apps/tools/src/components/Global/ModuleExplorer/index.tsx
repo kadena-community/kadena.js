@@ -75,15 +75,29 @@ const ModuleExplorer = ({
   const [openedModules, setOpenedModules] =
     useState<ModuleModel[]>(_openedModules);
 
-  // const [data, setData] = useState<
-  //   Map<ChainwebNetworkId, IncompleteModuleModel[]>
-  // >(generateDataMap(items));
-  const data = generateDataMap(items);
-  const [filteredData, setFilteredData] = useState<
-    Map<ChainwebNetworkId, IncompleteModuleModel[]>
-  >(new Map());
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
-  console.log('rerender ModuleExplorer', data);
+  const data = generateDataMap(items);
+
+  const filteredData = useMemo(() => {
+    if (!searchQuery) {
+      return data;
+    }
+
+    const fuseOptions: IFuseOptions<IncompleteModuleModel> = {
+      ignoreLocation: true,
+      keys: [
+        { name: 'title', getFn: (item) => item.name },
+        { name: 'hash', getFn: (item) => item.hash ?? '' },
+      ],
+    };
+
+    const fuse = new Fuse([...data.values()].flat(), fuseOptions);
+    const results = fuse.search(searchQuery);
+    return searchResultsToDataMap(results);
+  }, [searchQuery, data]);
+
+  console.log('rerender ModuleExplorer', { data, filteredData });
 
   const mapped = items.map((item) => {
     const networkId = item.key as ChainwebNetworkId;
@@ -112,52 +126,12 @@ const ModuleExplorer = ({
 
   console.log('rerender ModuleExplorer', items);
 
-  const allData = useMemo(() => {
-    return items.flatMap((item) => item.data);
-  }, [items]);
-
   const onSearch = useCallback(
     (searchQuery: string) => {
-      console.log('onSearcg', { searchQuery, allData });
-      const fuseOptions: IFuseOptions<IncompleteModuleModel> = {
-        // isCaseSensitive: false,
-        includeScore: true,
-        // shouldSort: true,
-        // includeMatches: false,
-        // findAllMatches: false,
-        // minMatchCharLength: 1,
-        // location: 0,
-        // threshold: 0.6, // 0.4 is the minimum to e.g. match "fuacet" to "faucet"
-        // distance: 100,
-        // useExtendedSearch: false,
-        ignoreLocation: true,
-        // ignoreFieldNorm: false,
-        // fieldNormWeight: 1,
-        keys: [
-          { name: 'title', getFn: (item) => item.name },
-          { name: 'hash', getFn: (item) => item.hash ?? '' },
-        ],
-      };
-
-      const fuse = new Fuse(allData, fuseOptions);
-
-      // const y = fuse.search({
-      //   title: searchQuery,
-      //   // hash: searchQuery,
-      // });
-      const y = fuse.search(searchQuery);
-
-      console.log('searchResultComplete', y);
-      console.log(
-        'searchResult',
-        y.map((x) => x.item.name),
-      );
-
-      setFilteredData(searchResultsToDataMap(y));
-
-      return y.length;
+      setSearchQuery(searchQuery);
+      return filteredData.size;
     },
-    [allData],
+    [filteredData.size],
   );
 
   return (
