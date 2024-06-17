@@ -69,15 +69,17 @@ To authenticate and locate Marmalade contracts:
 
    After you click **View**, you'll see a list of modules, functions, and capabilities that are used in the contract.
 
-## Mint your first token
+## Prepare to mint
 
 For this tutorial, you'll create and mint a single NFT token using the `mint-basic-NFT` helper function defined in the `marmalade-v2.util-v1` contract.
 This function simplifies the minting process by wrapping functions from the  `marmalade-v2.ledger` contract and performing steps for you.
 The `mint-basic-NFT` function creates and mints the most basic type of non-fungible token with no configuration or token policies applied.
 
-To create and mint a basic non-fungible token, you only need to provide the path to the uniform resource identifier (URI) that describes the token and an account guard for paying the transaction fee.
+For this function, you only need to provide the path to the uniform resource identifier (URI) that describes the token and an account guard for paying the transaction fee.
+However, the function requires you to install the MINT capability and grant the use of the capability to a specific account instead of allowing you to use unrestricted signing. 
+You can use the `mint-basic-NFT` helper function to prepare the capability required then apply the code to install the capability to mint the token.
 
-To mint a basic token with no policies:
+To prepare to mint:
 
 1. Under Functions, select **mint-basic-NFT**, then click **Call**. 
 
@@ -104,13 +106,29 @@ To mint a basic token with no policies:
    
    ![Create the keyset and select a public key](/assets/marmalade/mint_advanced-keyset.png)
 
-6. Select your public key under **Unrestricted Signing**, then click **Next**. 
-   
-   The public key you select will sign the transaction and pay the transaction fee.
-   
-   ![Select the key for unrestricted signing](/assets/marmalade/mint_unrestricted_signing.png)
+1. Select your public key under **Unrestricted Signing**, then click **Next**. 
 
-7. Review the information on the Preview tab to verify the Raw Response is **true**, then click **Submit** to submit the transaction.
+1. Scroll to the Raw Response is view the error message, then copy the code to install the MINT capability.
+   For example, you should see the MINT capability with parameters similar to the following, specifying the token identifier, your account name, and the token amount of 1.0:
+
+   ```text
+   (marmalade-v2.ledger.MINT "t:4xhWvnWtJBDqARYvq_1adqcZ3P3zxdGQokrmq8dHyGo" "k:58705e8699678bd15bbda2cf40fa236694895db614aafc82cf1c06c014ca963c" 1.0)
+   ```
+
+   After you copy this line of code, you can continue to the next step.
+
+## Mint your first token
+
+To mint a basic token with no policies:
+
+1. On the Preview tab, click **Back** to return to the Sign tab. 
+
+1. On the Sign tab, click the **Grant Capabilities** plus (+) to add the MINT capability to the transaction and specify the **token identifier**, **minting account**, and **amount** as arguments.   
+
+2. Select the account to sign for the **coin.GAS** and **marmalade-v2.ledger.MINT** capabilities, then click **Next**.
+
+
+2. Review the information on the Preview tab to verify the Raw Response is **true**, then click **Submit** to submit the transaction.
     
    ![Verify the raw response](/assets/marmalade/mint_preview-nft.png)
 
