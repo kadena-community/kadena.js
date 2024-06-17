@@ -1,35 +1,24 @@
 import {
   MonoArrowDropDown,
   MonoArrowRight,
-  MonoManageSearch,
   MonoMenuOpen,
   MonoSearch,
   MonoVerticalSplit,
 } from '@kadena/react-icons/system';
 
 import type { ChainwebNetworkId } from '@kadena/chainweb-node-client';
-import {
-  Box,
-  Button,
-  Heading,
-  Select,
-  SelectItem,
-  Stack,
-  Text,
-  TextField,
-} from '@kadena/react-ui';
+import { Button, Heading, Stack } from '@kadena/react-ui';
 import React, { useState } from 'react';
-import { useDebounce } from 'react-use';
 import CustomAccordion from '../../CustomAccordion/CustomAccordion';
 import type { ICustomTreeProps, TreeItem } from '../../CustomTree/CustomTree';
 import CustomTree from '../../CustomTree/CustomTree';
+import type { ISearchBarProps } from './search-bar';
+import Search from './search-bar';
 import {
   containerStyle,
   headingStyles,
   iconStyles,
   itemStyle,
-  searchResultQueryStyles,
-  searchResultsStyles,
 } from './styles.css';
 
 export interface ISidePanelProps<T> {
@@ -116,57 +105,6 @@ function SidePanel<T>({
         </>
       )}
     </CustomAccordion>
-  );
-}
-
-interface ISearchBarProps {
-  networks: ChainwebNetworkId[];
-  onSearch: (query: string) => number;
-}
-
-function Search({ networks, onSearch }: ISearchBarProps) {
-  console.log('Search render', networks);
-  const [searchHits, setSearchHits] = useState(0);
-  const [query, setQuery] = useState('');
-  // const deferredQuery = useDeferredValue(query);
-  useDebounce(
-    () => {
-      const hits = onSearch(query);
-      setSearchHits(hits);
-    },
-    1000,
-    [query],
-  );
-
-  return (
-    <Box padding="sm">
-      <Stack>
-        <TextField
-          startVisual={<MonoManageSearch />}
-          onChange={(x) => {
-            console.log('onChange', { x });
-            // const hits = onSearch(x.target.value);
-            // console.log('onChange2', { hits });
-
-            // setSearchHits(hits);
-
-            setQuery(x.target.value);
-          }}
-        />
-        <Select>
-          <SelectItem>HI</SelectItem>
-        </Select>
-      </Stack>
-      {query.length ? (
-        <Text className={searchResultsStyles} as="p" size="smallest" bold>
-          {`${searchHits} Modules found for `}
-          <Text
-            size="smallest"
-            className={searchResultQueryStyles}
-          >{`"${query}"`}</Text>
-        </Text>
-      ) : null}
-    </Box>
   );
 }
 
