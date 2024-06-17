@@ -16,6 +16,7 @@ import type { ISearchBarProps } from './search-bar';
 import Search from './search-bar';
 import {
   containerStyle,
+  customAccordionItemStyle,
   headingStyles,
   iconStyles,
   itemStyle,
@@ -43,7 +44,7 @@ function SidePanel<T>({
       items={items}
       defaultExpandedKey="explorer"
       className={containerStyle}
-      itemProps={{ fillHeight: true }}
+      itemProps={{ fillHeight: true, className: customAccordionItemStyle }}
     >
       {(item) => (
         <>

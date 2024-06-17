@@ -5,12 +5,14 @@ export const containerStyle = style([
   atoms({
     display: 'flex',
     flexDirection: 'column',
-    overflow: 'scroll',
+    overflow: 'auto',
   }),
   style({
     borderInlineEnd: `${token('border.width.normal')} solid ${token('color.border.base.default')}`,
   }),
 ]);
+
+export const customAccordionItemStyle = style({ overflow: 'auto' });
 
 export const itemStyle = style({
   height: token('size.n12'),
