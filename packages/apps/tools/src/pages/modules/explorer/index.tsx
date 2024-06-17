@@ -170,22 +170,16 @@ const ModuleExplorerPage = (
           {
             title: 'Mainnet',
             key: 'mainnet01',
-            // children: mappedMainnet,
-            // data: { name: 'mainnet01', chainId: '0', networkId: 'mainnet01' },
             data: mainnetModulesQuery.data!,
             isLoading: mainnetModulesQuery.isFetching,
             supportsReload: true,
-            label: mainnetModulesQuery.data?.length ?? 0,
           },
           {
             title: 'Testnet',
             key: 'testnet04',
-            // children: mappedTestnet,
-            // data: { name: 'testnet04', chainId: '0', networkId: 'testnet04' },
             data: testnetModulesQuery.data!,
             isLoading: testnetModulesQuery.isFetching,
             supportsReload: true,
-            label: testnetModulesQuery.data?.length ?? 0,
           },
         ]}
         onReload={(treeItem) => {

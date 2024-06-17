@@ -115,21 +115,20 @@ const ModuleExplorer = ({
         const networkId = item.key as ChainwebNetworkId;
         return {
           ...item,
+          label: filteredData.get(networkId)?.length ?? 0,
           data: {
             name: item.key as string,
             chainId: '0' as const,
             networkId: networkId,
           },
           children: mapToTreeItems(
-            modelsToTreeMap(
-              filteredData.get(networkId) || data.get(networkId) || [],
-            ),
+            modelsToTreeMap(filteredData.get(networkId) || []),
             item.key as string,
             !filteredData.get(networkId), // Don't sort alphabetically for search results
           ),
         };
       });
-  }, [data, filteredData, items, searchFilter]);
+  }, [filteredData, items, searchFilter]);
 
   let outlineItems: TreeItem<Outline>[] = [];
 
