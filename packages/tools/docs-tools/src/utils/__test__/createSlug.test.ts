@@ -1,4 +1,4 @@
-import { createSlug, createSlugHash } from '../createSlug';
+import { createSlug } from '../createSlug';
 
 describe('utils createSlug', () => {
   it('should return a slug from given string"', () => {
@@ -11,11 +11,5 @@ describe('utils createSlug', () => {
   });
   it('should return empty slug when string is empty', () => {
     expect(createSlug('')).toEqual('');
-  });
-});
-
-describe('utils createSlugHash', () => {
-  it('should return empty string when given string is empty', () => {
-    expect(createSlugHash('')).toEqual('');
   });
 });

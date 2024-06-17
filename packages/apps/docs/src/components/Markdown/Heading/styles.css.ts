@@ -13,7 +13,8 @@ const articleLinkOpacity = createVar();
 
 export const headerIconLinkClass = style([
   atoms({
-    display: 'inline-block',
+    display: 'flex',
+    alignItems: 'center',
   }),
   {
     paddingInlineStart: tokens.kda.foundation.size.n3,
@@ -21,6 +22,8 @@ export const headerIconLinkClass = style([
     scrollSnapMarginTop: `80px`,
     transition: 'opacity .3s ease',
     opacity: fallbackVar(articleLinkOpacity, '0'),
+    background: 'transparent',
+    border: 0,
   },
 ]);
 

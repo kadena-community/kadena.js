@@ -9,6 +9,7 @@ import remarkTwitter from './remarkTwitter';
 import remarkYoutube from './remarkYoutube';
 import { getReadTime } from './utils';
 import { getUrlNameOfPageFile } from './utils/config/getUrlNameOfPageFile';
+import { createSlug } from './utils/createSlug';
 import { getFileExtension } from './utils/getFileExtension';
 import { getFileFromNameOfUrl } from './utils/getFileFromNameOfUrl';
 import { getFrontmatterFromTsx } from './utils/getFrontmatter';
@@ -33,6 +34,7 @@ import {
 export {
   checkSubTreeForActive,
   cleanupPages,
+  createSlug,
   flatPosts,
   flattenData,
   getFileExtension,
