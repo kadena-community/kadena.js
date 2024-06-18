@@ -78,15 +78,16 @@ const Button = forwardRef(
     const iconOnly = Boolean(
       // check if children is a ReactElement
       (typeof children !== 'string' && typeof children !== 'number') ||
-      // check if no visuals are provided
-      (!startVisual && !endVisual && !children) ||
-      // check if only one visual is provided
-      (!children &&
-        ((startVisual && !endVisual) || (endVisual && !startVisual))),
+        // check if no visuals are provided
+        (!startVisual && !endVisual && !children) ||
+        // check if only one visual is provided
+        (!children &&
+          ((startVisual && !endVisual) || (endVisual && !startVisual))),
     );
 
-    const isLoadingAriaLiveLabel = `${typeof children === 'string' ? children : props['aria-label'] ?? 'is'
-      } loading`.trim();
+    const isLoadingAriaLiveLabel = `${
+      typeof children === 'string' ? children : props['aria-label'] ?? 'is'
+    } loading`.trim();
 
     return (
       <button
@@ -116,12 +117,12 @@ const Button = forwardRef(
                 !loadingLabel
                   ? iconOnlyStyle
                   : {
-                    [noEndVisualStyle]: !endVisual && startVisual,
-                    [noStartVisualStyle]: !startVisual || endVisual,
-                    [startVisualStyle]: startVisual && !endVisual,
-                    [endVisualStyle]: endVisual || !startVisual,
-                    [reverseDirectionStyle]: startVisual && !endVisual,
-                  },
+                      [noEndVisualStyle]: !endVisual && startVisual,
+                      [noStartVisualStyle]: !startVisual || endVisual,
+                      [startVisualStyle]: startVisual && !endVisual,
+                      [endVisualStyle]: endVisual || !startVisual,
+                      [reverseDirectionStyle]: startVisual && !endVisual,
+                    },
                 centerContentWrapper,
               )}
             >
@@ -139,12 +140,12 @@ const Button = forwardRef(
                 iconOnly
                   ? iconOnlyStyle
                   : {
-                    [noEndVisualStyle]: !endVisual,
-                    [noStartVisualStyle]: !startVisual,
-                    [startVisualStyle]: startVisual,
-                    [endVisualStyle]: endVisual,
-                    [centerContentWrapper]: true,
-                  },
+                      [noEndVisualStyle]: !endVisual,
+                      [noStartVisualStyle]: !startVisual,
+                      [startVisualStyle]: startVisual,
+                      [endVisualStyle]: endVisual,
+                      [centerContentWrapper]: true,
+                    },
               )}
             >
               {startVisual ?? startVisual}
