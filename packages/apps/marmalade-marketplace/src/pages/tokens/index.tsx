@@ -75,7 +75,7 @@ export default function CreateToken() {
 
   const [policyConfig, setPolicyConfig] = useState<ICreateTokenPolicyConfig>({
     customPolicies: false,
-    updatableURI: false,
+    nonUpdatableURI: false,
     guarded: false,
     nonFungible: false,
     hasRoyalty: false,
@@ -84,7 +84,7 @@ export default function CreateToken() {
 
   const getPolicies = (policyConfig: ICreateTokenPolicyConfig) => {
     const policyMap: { [key: string]: string } = { 
-      updatableURI: "marmalade-v2.non-updatable-uri-policy-v1",
+      nonUpdatableURI: "marmalade-v2.non-updatable-uri-policy-v1",
       customPolicies: "",
       guarded: "marmalade-v2.guard-policy-v1",
       nonFungible: "marmalade-v2.non-fungible-policy-v1",
@@ -407,8 +407,8 @@ export default function CreateToken() {
                       <label className={styles.checkboxLabel} htmlFor="customPolicies">Custom Policies</label>
                     </div>
                     <div className={styles.checkboxContainer}>
-                      <input className={styles.checkboxInput} type="checkbox" id="updatableURI" name="updatableURI" checked={policyConfig.updatableURI} onChange={handleCheckboxChange} />
-                      <label className={styles.checkboxLabel} htmlFor="updatableURI">Updatable URI</label>
+                      <input className={styles.checkboxInput} type="checkbox" id="nonUpdatableURI" name="nonUpdatableURI" checked={policyConfig.nonUpdatableURI} onChange={handleCheckboxChange} />
+                      <label className={styles.checkboxLabel} htmlFor="nonUpdatableURI">Updatable URI</label>
                     </div>
                     <div className={styles.checkboxContainer}>
                       <input className={styles.checkboxInput} type="checkbox" id="guarded" name="guarded" checked={policyConfig.guarded} onChange={handleCheckboxChange} />
