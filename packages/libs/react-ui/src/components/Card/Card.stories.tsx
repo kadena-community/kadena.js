@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { withCenteredStory, withContentWidth } from '../../storyDecorators';
+import {
+  onLayer1,
+  withCenteredStory,
+  withContentWidth,
+} from '../../storyDecorators';
 import { Button } from '../Button';
 import type { ICardProps } from '../Card';
 import { Card } from '../Card';
@@ -9,7 +13,7 @@ import { Heading, Text } from '../Typography';
 
 const meta: Meta<ICardProps> = {
   title: 'Layout/Card',
-  decorators: [withContentWidth, withCenteredStory],
+  decorators: [onLayer1, withContentWidth, withCenteredStory],
   parameters: {
     status: {
       type: ['releaseCandidate'],

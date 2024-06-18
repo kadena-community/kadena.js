@@ -11,24 +11,39 @@ import {
 import { Stack } from '..';
 
 import { MonoExpandLess, MonoExpandMore } from '@kadena/react-icons/system';
-import { columnHeader, headerRow } from './Table.css';
+import classNames from 'classnames';
+import {
+  columnHeader,
+  defaultHeader,
+  headerBase,
+  subtleHeader,
+} from './Table.css';
 
 interface ITableHeaderRowProps<T> {
   item: GridNode<T>;
   state: TableState<T>;
   children: ReactNode;
+  isSubtle?: boolean;
 }
 
 export function TableHeaderRow<T extends object>({
   item,
   state,
   children,
+  isSubtle = false,
 }: ITableHeaderRowProps<T>) {
   const ref = useRef(null);
   const { rowProps } = useTableHeaderRow({ node: item }, state, ref);
 
   return (
-    <tr className={headerRow} {...rowProps} ref={ref}>
+    <tr
+      className={classNames(headerBase, {
+        [subtleHeader]: isSubtle,
+        [defaultHeader]: !isSubtle,
+      })}
+      {...rowProps}
+      ref={ref}
+    >
       {children}
     </tr>
   );
@@ -49,6 +64,7 @@ function getWidthStyle(width: string | number) {
 interface ITableColumnHeaderProps<T> {
   column: GridNode<T>;
   state: TableState<T>;
+  isSubtle?: boolean;
 }
 
 export function TableColumnHeader<T extends object>({

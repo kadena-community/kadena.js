@@ -13,7 +13,7 @@ export const createSlugHash = (str: string): string => {
   return `h${hash}`;
 };
 
-export const createSlug = (str?: string): string => {
+export const createSlug = (str: string): string => {
   if (str === undefined) return '';
 
   const normalizedSlug = str

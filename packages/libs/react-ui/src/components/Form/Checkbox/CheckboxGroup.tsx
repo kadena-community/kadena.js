@@ -14,10 +14,11 @@ type Direction = NonNullable<RecipeVariants<typeof groupClass>>['direction'];
 export interface ICheckboxProps extends AriaCheckboxGroupProps {
   children: ReactElement[] | ReactElement;
   direction: Direction;
+  info?: string;
+  inverse?: boolean;
   isReadOnly?: boolean;
   label?: string;
   tag?: string;
-  info?: string;
 }
 
 export const CheckboxContext = createContext<CheckboxGroupState | null>(null);
@@ -28,18 +29,19 @@ export function CheckboxGroup(props: ICheckboxProps) {
     description,
     direction = 'row',
     errorMessage,
+    info,
+    inverse,
     isDisabled,
     isInvalid = false,
     isReadOnly,
-    info,
     label,
     tag,
   } = props;
   const state = useCheckboxGroupState(props);
   const {
     descriptionProps,
-    groupProps,
     errorMessageProps,
+    groupProps,
     labelProps,
     validationDetails,
     validationErrors,
@@ -64,7 +66,7 @@ export function CheckboxGroup(props: ICheckboxProps) {
       <div className={groupClass({ direction })}>
         <CheckboxContext.Provider value={state}>
           {React.Children.map(children, (child) =>
-            React.cloneElement(child, { isReadOnly }),
+            React.cloneElement(child, { isReadOnly, inverse }),
           )}
         </CheckboxContext.Provider>
       </div>

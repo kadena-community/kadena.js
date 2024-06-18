@@ -50,7 +50,6 @@ describe('getChangelogs', () => {
         '@/scripts/importChangelogs/constants',
       )) as {};
 
-      console.log(mocks.REPOS);
       return {
         ...actual,
         REPOS: mocks.REPOS,
