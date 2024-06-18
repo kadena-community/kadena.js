@@ -130,7 +130,7 @@ To create a token identifier:
 
    You can use **(read-keyset "my-keyset")** for the **creation-guard** to read the keyset from information you configure in the transaction details.
 
-   After configuring the parameters for the **create-token** function, click **Next**.
+   After configuring the parameters for the **create-token-identifier** function, click **Next**.
 
 2. On the Configuration tab, select the **Transaction Sender** and, under Advanced, configure **my-keyset** by selecting a keyset predicate and a key, then click **Next**.
 
@@ -156,19 +156,19 @@ To create the token:
    
    In this example, the **id** is "t:LgMWE4ZKH4H2i6Ri4ZyuWIpHCE5cJDS4HjFEzN7PnQ0", the **precision** is 0, the **uri** is "ipfs://bafkreibtpwfidowlbmxblew2lyghgy2tctvcazsfcjxk3ozgnm5a33uc4m/guitar1.json", the **policies** are [marmalade-v2.non-fungible-policy-v1,marmalade-v2.guard-policy-v1], and the **creation-guard** is specified using (read-keyset "my-keyset").
 
-3. On the Configuration tab, select the Transaction Sender, then click Advanced to select a key a predicate for the creation guard, then click **Next**.
+3. On the Configuration tab, select the Transaction Sender, then click **Advanced** to select a key and a predicate function for the creation guard, then click **Next**.
 
 4. On the Sign tab, select an unrestricted signing key from the available Unrestricted Signing Keys, then click **Next**.
 
 5. On the Preview tab, scroll to see the Raw Response is **true**, then click **Submit**.
    
    After you submit the transaction, it is queued for processing in the memory pool until validated and added to a block.
-   After the transaction is included in a block, your NFT is part of the permanent blockchain record and added to the Marmalade ledger.
+   After the transaction is included in a block, your NFT is part of the permanent blockchain record.
 
 ## Mint the non-fungible token
 
 The `mint` function defined in the `marmalade-v2.ledger` contract is similar to the `mint-basic-NFT` function used in [Get started with Marmalade](/build/nft-marmalade/get-started).
-Like the other function, you can access the `mint` function using the Chainweaver desktop or web application.
+Like the other functions, you can access the `mint` function using the Chainweaver desktop or web application.
 
 To mint the non-fungible token uploaded to IPFS:
 
@@ -178,7 +178,9 @@ To mint the non-fungible token uploaded to IPFS:
    
       In this example, the id is "t:LgMWE4ZKH4H2i6Ri4ZyuWIpHCE5cJDS4HjFEzN7PnQ0", the account is "k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e", the guard is specified using (read-keyset "my-keyset"), and the amount is 1.0.
 
-3. On the Configuration tab, select the **Transaction Sender**, review transaction settings, and select the keyset to use, then click **Next**.
+3. On the Configuration tab, select the **Transaction Sender** and review the General transaction settings, then click **Advanced** to verify the keyset you're using.
+   
+   After you select a key and a predicate function to use, click **Next**.
 
 4. On the Sign tab, click the Grant Capabilities plus (+) to add the MINT capability to the transaction and specify the **token identifier**, **minting account**, and **amount** as arguments.
 
@@ -188,8 +190,8 @@ To mint the non-fungible token uploaded to IPFS:
    (marmalade-v2.ledger.MINT "t:LgMWE4ZKH4H2i6Ri4ZyuWIpHCE5cJDS4HjFEzN7PnQ0" "k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e" 1.0)
    ```
 
-   After you add the capability, and arguments, select an account to sign for the **coin.GAS** and **marmalade-v2.ledger.MINT** capabilities, then click **Next**.
-   
+   After you add the capability and arguments, select an account to sign for the **coin.GAS** and **marmalade-v2.ledger.MINT** capabilities, then click **Next**.
+
 5. On the Preview tab, scroll to see the Raw Response is **true**, then click **Submit**.
    
    After you submit the transaction, it is queued for processing in the memory pool until validated and added to a block.
@@ -213,7 +215,7 @@ To review your transaction results:
 
    ![Events related to minting a non-fungible token](/assets/marmalade/create-nft-events.png)
    
-## Start a sale with an offer
+## Start a sale with an offerfil
 
 Now that your token is recorded in the Marmalade ledger, you can transfer it to another account or offer it for sale.
 In this simple example, there's no royalty policy associated with the token because it isn't intended to generate an ongoing revenue stream.
