@@ -183,9 +183,15 @@ function CreateTokenComponent() {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    // create image data
-    // create metadata url
-    const inputs = {...formatInput(tokenInput), 
+    const imageUrl = await createImageUrl(base64Image); 
+    if (!imageUrl) { 
+      throw new Error("Error creating image URL");
+    }    
+    const metadataUrl = await createMetaDataUrl({ ...metadata, image: imageUrl.url})
+    if (!metadataUrl) { 
+      throw new Error("Error creating metadata URL");
+    }    
+    const inputs = {...formatInput({...tokenInput, "uri": metadataUrl.url}), 
       policyConfig: policyConfig as ICreateTokenPolicyConfig , 
       policies: getPolicies(policyConfig),
       guards:formatGuardInput(guardInput), 
