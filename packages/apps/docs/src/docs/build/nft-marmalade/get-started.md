@@ -76,8 +76,8 @@ This function simplifies the minting process by wrapping functions from the  `ma
 The `mint-basic-NFT` function creates and mints the most basic type of non-fungible token with no configuration or token policies applied.
 
 For this function, you only need to provide the path to the uniform resource identifier (URI) that describes the token and an account guard for paying the transaction fee.
-However, the function requires you to install the MINT capability and grant the use of the capability to a specific account instead of allowing you to use unrestricted signing. 
-You can use the `mint-basic-NFT` helper function to prepare the capability required then apply the code to install the capability to mint the token.
+However, the function requires you to grant and install the CREATE-TOKEN and MINT capabilities to a specific account instead of allowing you to use unrestricted signing. 
+You can use the `mint-basic-NFT` helper function to prepare the capability required then apply the code to install the capabilities to create and mint the token.
 
 To prepare to mint:
 
@@ -95,24 +95,24 @@ To prepare to mint:
 
    ![Mint a basic token with the URI and guard](/assets/marmalade/mint_parameters.png)
 
-1. Click **Next**.
-2. Review the General configuration settings to verify the destination network is Testnet.
-3. Select an account with funds on the Kadena test network as the **Transaction Sender**.
+3. Click **Next**.
+4. Review the General configuration settings to verify the destination network is Testnet.
+5. Select an account with funds on the Kadena test network as the **Transaction Sender**.
    
    ![Verify the destination network and select the Transaction Sender](/assets/marmalade/mint_general-configuration.png)
 
-4. Click **Advanced**, type `my-keyset` as the keyset name, then click **Create**.
-5. Select the public key to use for the `my-keyset` guard, then click **Next**. 
+6. Click **Advanced**, type `my-keyset` as the keyset name, then click **Create**.
+7. Select the public key to use for the `my-keyset` guard, then click **Next**. 
    
    ![Create the keyset and select a public key](/assets/marmalade/mint_advanced-keyset.png)
 
-1. Select your public key under **Unrestricted Signing**, then click **Next**. 
+8. Select your public key under **Unrestricted Signing**, then click **Next**. 
 
-1. Scroll to the Raw Response is view the error message, then copy the code to install the MINT capability.
+9. Scroll to the Raw Response is view the error message, then copy the code to install the MINT capability.
    For example, you should see the MINT capability with parameters similar to the following, specifying the token identifier, your account name, and the token amount of 1.0:
 
    ```text
-   (marmalade-v2.ledger.MINT "t:4xhWvnWtJBDqARYvq_1adqcZ3P3zxdGQokrmq8dHyGo" "k:58705e8699678bd15bbda2cf40fa236694895db614aafc82cf1c06c014ca963c" 1.0)
+   (marmalade-v2.ledger.MINT "t:wzT9Fro45Np_0QMmLgO-1gp09Ofe5MFtVWaiyFe_wUc" "k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e" 1.0)
    ```
 
    After you copy this line of code, you can continue to the next step.
@@ -123,10 +123,23 @@ To mint a basic token with no policies:
 
 1. On the Preview tab, click **Back** to return to the Sign tab. 
 
-1. On the Sign tab, click the **Grant Capabilities** plus (+) to add the MINT capability to the transaction and specify the **token identifier**, **minting account**, and **amount** as arguments.   
+1. On the Sign tab, click the **Grant Capabilities** plus (+) to add the CREATE-TOKEN capability to the transaction and specify the **token identifier** returned from the error message and a creation guard **predicate** and **key** as arguments.
+   
+   In this example, the capability and arguments look lke this:
 
-2. Select the account to sign for the **coin.GAS** and **marmalade-v2.ledger.MINT** capabilities, then click **Next**.
+   ```text
+   (marmalade-v2.ledger.CREATE-TOKEN "t:wzT9Fro45Np_0QMmLgO-1gp09Ofe5MFtVWaiyFe_wUc" {"pred":"keys-all","keys":["bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"]})
+   ```
 
+2. Click the **Grant Capabilities** plus (+) to add the MINT capability to the transaction and specify the **token identifier**, **minting account**, and **amount** as arguments.   
+   
+      In this example, the capability and arguments look lke this:
+
+   ```text
+   (marmalade-v2.ledger.MINT "t:wzT9Fro45Np_0QMmLgO-1gp09Ofe5MFtVWaiyFe_wUc" "k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e" 1.0)
+   ```
+
+3. Select the Signing Key to sign for the **coin.GAS** capability, click **Apply to all** to use the key for the additional capabilities, then click **Next**.
 
 2. Review the information on the Preview tab to verify the Raw Response is **true**, then click **Submit** to submit the transaction.
     
@@ -154,13 +167,13 @@ To review your transaction results:
    
    For example, you should see that the transaction completed successfully:
    
-   ![Mint transaction results](/assets/marmalade/tx-results.png)
+   ![Mint transaction results](/assets/marmalade/tx-basic-nft-result.png)
    
    You should also see a set of events similar to the following:
 
-   ![Events related to minting a non-fungible token](/assets/marmalade/nft-events.png)
+   ![Events related to minting a non-fungible token](/assets/marmalade/nft-basic-events.png)
    
-   With these events, you know you have successfully minted your first NFT using the Marmalade standard on the Kadena test network.
+   If your transaction results include events similar to these events, you know you have successfully minted your first NFT using the Marmalade standard on the Kadena test network.
    
 ## Next steps
 
@@ -170,7 +183,7 @@ In addition, the `mint-basic-NFT` function doesn't provide any policy configurat
 
 The `marmalade-v2.util-v1` contract provides two additional helper functions to simplify minting tokens with policies to prevent unauthorized minting and burning of tokens.
 
-- The `mint-NFT` function enables you to mint a single non-fungible token with a `creation-guard` account to prevent unauthorized minting and burning of tokens and one or more additional token policies.
+- The `mint-NFT` function enables you to mint a single non-fungible token with policies such as the `guard-policy` to authorize specific accounts to perform specific token-related operations.
 - The `create-token-with-mint-guard` function enables you to create a token that can be minted more than once by a registered MINT-GUARD account.
 
 The next steps to take—and whether you should use the helper functions or the underlying functions defined in the `marmalade-v2.ledger` contract—depend on what you are trying to accomplish and where you want to store your digital items and metadata.
