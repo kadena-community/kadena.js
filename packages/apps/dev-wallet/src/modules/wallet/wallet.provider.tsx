@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react';
 
-import { getSession } from '@/utils/session';
+import { useSession } from '@/App/session';
 import { IAccount } from '../account/account.repository';
 import * as AccountService from '../account/account.service';
 import { dbService } from '../db/db.service';
@@ -36,6 +36,7 @@ export const WalletContext = createContext<
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   const [contextValue, setContextValue] = useState<ExtWalletContextType>({});
+  const session = useSession();
 
   const retrieveProfileList = useCallback(async () => {
     const profileList = (await walletRepository.getAllProfiles()).map(
@@ -92,56 +93,55 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     };
   }, [retrieveProfileList, retrieveKeySources, retrieveAccounts]);
 
-  const setProfile = async (
-    profile: IProfile | undefined,
-    noSession = false,
-  ) => {
-    if (!profile) {
+  const setProfile = useCallback(
+    async (profile: IProfile | undefined, noSession = false) => {
+      if (!profile) {
+        keySourceManager.reset();
+        session.clear();
+        setContextValue(({ profileList }) => ({ profileList }));
+        return null;
+      }
+      if (!noSession) {
+        await session.createSession();
+      }
+      await session.set('profileId', profile.uuid);
+      const accounts = await WalletService.getAccounts(profile.uuid);
+      const keySources = await walletRepository.getProfileKeySources(
+        profile.uuid,
+      );
       keySourceManager.reset();
-      localStorage.clear();
-      setContextValue(({ profileList }) => ({ profileList }));
-      return null;
-    }
-    if (!noSession) {
-      localStorage.clear();
-      localStorage.setItem('profile', JSON.stringify(profile));
-    }
-    const accounts = await WalletService.getAccounts(profile.uuid);
-    const keySources = await walletRepository.getProfileKeySources(
-      profile.uuid,
-    );
-    keySourceManager.reset();
-    AccountService.syncAllAccounts(profile.uuid);
-    setContextValue(({ profileList }) => ({
-      profileList,
-      profile,
-      accounts,
-      keySources,
-    }));
-    return { profile, accounts, keySources };
-  };
+      AccountService.syncAllAccounts(profile.uuid);
+      setContextValue(({ profileList }) => ({
+        profileList,
+        profile,
+        accounts,
+        keySources,
+      }));
+      return { profile, accounts, keySources };
+    },
+    [session],
+  );
 
-  const unlockKeySourcesFromSession = async (profileId: string) => {
-    const loadService = async (type: 'HD-BIP44' | 'HD-chainweaver') => {
-      const context = await getSession(`${profileId}-${type}`);
-      if (context) {
-        await keySourceManager.get(type, context);
+  useEffect(() => {
+    const loadSession = async () => {
+      if (!session.isLoaded) return;
+      const profileId = session.get('profileId') as string | undefined;
+      if (profileId) {
+        const profile = await walletRepository.getProfile(profileId);
+        console.log('retrieving profile from session', profile);
+        // Note: this only loads the profile but the keySources are still locked.
+        // So the user needs to enter the password if they need to sign a Tx
+        // or create new keys, this is for security reasons;
+        // I don't want to store the password or the keySource context in the session
+        setProfile(profile, true);
       }
     };
-    await Promise.all(
-      (['HD-BIP44', 'HD-chainweaver'] as const).map(loadService),
-    );
-  };
+    loadSession();
+  }, [retrieveProfileList, session, setProfile]);
 
   useEffect(() => {
     retrieveProfileList();
-    const profile = JSON.parse(localStorage.getItem('profile') ?? 'null');
-    if (profile) {
-      console.log('retrieving profile from session', profile);
-      setProfile(profile, true);
-      unlockKeySourcesFromSession(profile.uuid);
-    }
-  }, [retrieveProfileList]);
+  });
 
   return (
     <WalletContext.Provider value={[contextValue, setProfile]}>

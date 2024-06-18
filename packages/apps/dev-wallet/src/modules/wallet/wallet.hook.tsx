@@ -1,7 +1,6 @@
+import { defaultAccentColor } from '@/modules/layout/layout.provider.tsx';
 import { IUnsignedCommand } from '@kadena/client';
 import { useCallback, useContext } from 'react';
-
-import { defaultAccentColor } from '@/modules/layout/layout.provider.tsx';
 import * as AccountService from '../account/account.service';
 import { ExtWalletContextType, WalletContext } from './wallet.provider';
 import { IKeySource } from './wallet.repository';
