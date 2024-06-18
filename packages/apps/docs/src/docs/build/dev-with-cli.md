@@ -516,7 +516,7 @@ To add a new local account:
    
    
    Executed:
-   kadena account add --type="wallet" --wallet-name="pistolas" --account-alias="pistolas-local" --fungible="coin" --public-keys="ad833b6bbfc72fb7d18b88cd5b4349f82b2f015be8e4b5e7ad28f3249fd5e105" --predicate="keys-all" 
+   kadena account add --from="wallet" --wallet-name="pistolas" --account-alias="pistolas-local" --fungible="coin" --public-keys="ad833b6bbfc72fb7d18b88cd5b4349f82b2f015be8e4b5e7ad28f3249fd5e105" --predicate="keys-all" 
    ```
 
 You now have one onchain account and one local account.
