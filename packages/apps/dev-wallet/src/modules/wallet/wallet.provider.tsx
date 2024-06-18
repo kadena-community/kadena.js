@@ -150,7 +150,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     retrieveProfileList();
-  });
+  }, [retrieveProfileList]);
 
   return (
     <WalletContext.Provider value={[contextValue, setProfile]}>

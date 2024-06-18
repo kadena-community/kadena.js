@@ -119,7 +119,7 @@ export const CommunicationProvider: FC<PropsWithChildren> = ({ children }) => {
     return () => {
       handlers.forEach((unsubscribe) => unsubscribe());
     };
-  }, [requests, isUnlocked]);
+  }, [navigate, requests, isUnlocked]);
 
   useEffect(() => {
     const run = async () => {
