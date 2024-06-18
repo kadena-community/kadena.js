@@ -1,35 +1,35 @@
 {
+  "ui": "stream",
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["dist/**", "lib/**"],
-      "outputMode": "new-only"
+      "outputLogs": "new-only"
     },
     "build:e2e": {
       "cache": false,
       "dependsOn": ["^build"],
-      "outputMode": "new-only"
+      "outputLogs": "new-only"
     },
     "test": {
       "dependsOn": ["build"],
       "inputs": ["src/**/*.ts", "src/**/*.tsx"],
-      "outputMode": "new-only"
+      "outputLogs": "new-only"
     },
     "test:integration": {
       "cache": false,
       "dependsOn": ["build"],
       "inputs": ["src/**/*.ts", "src/**/*.tsx"],
-      "outputMode": "new-only"
+      "outputLogs": "new-only"
     },
     "test:e2e": {
       "cache": false,
       "inputs": ["tests/**/*.ts", "tests/**/*.tsx"],
-      "outputMode": "new-only"
+      "outputLogs": "new-only"
     },
     "lint": {
       "dependsOn": ["build"],
-      "outputMode": "new-only",
       "inputs": [
         "**/*.css",
         "**/*.ts",
@@ -38,11 +38,12 @@
         "**/*.cjs",
         "**/*.mjs",
         "**/*.json"
-      ]
+      ],
+      "outputLogs": "new-only"
     },
     "format": {
       "dependsOn": ["build"],
-      "outputMode": "new-only"
+      "outputLogs": "new-only"
     }
   }
 }
