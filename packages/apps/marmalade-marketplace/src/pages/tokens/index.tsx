@@ -118,7 +118,7 @@ export default function CreateToken() {
       }}
   };
 
-  const createRoyaltyInfo = ( tokenInput: { royaltyFungible: string; royaltyCreator: string; royaltyGuard: string; royaltyRate: number }) => {
+  const createRoyaltyInfo = ( tokenInput: { royaltyFungible: string; royaltyCreator: string; royaltyGuard: string; royaltyRate: string }) => {
     return {
       fungible: {
         refName: {
