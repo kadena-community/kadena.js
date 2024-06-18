@@ -16,7 +16,7 @@ import { tableClass } from './styles.css';
 const CompactTableDesktop: FC<ICompactTableProps> = ({
   data,
   fields,
-  label,
+  label = 'Table',
 }) => {
   return (
     <Table aria-label={label} isStriped className={tableClass}>

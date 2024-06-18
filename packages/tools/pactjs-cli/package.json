@@ -1,6 +1,6 @@
 {
   "name": "@kadena/pactjs-cli",
-  "version": "1.11.2",
+  "version": "1.12.0",
   "description": "CLI tool accompanying @kadena/pactjs-core and @kadena/pactjs-client to generate TypeScript definitions and Pact client",
   "repository": {
     "type": "git",

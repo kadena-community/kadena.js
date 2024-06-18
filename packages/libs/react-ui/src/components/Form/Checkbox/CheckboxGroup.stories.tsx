@@ -70,6 +70,11 @@ const meta: Meta<ICheckboxProps> = {
         type: 'text',
       },
     },
+    inverse: {
+      control: {
+        type: 'boolean',
+      },
+    },
   },
 };
 
@@ -80,13 +85,37 @@ const checkboxes = Array.from(Array(10).keys()).map((key) => {
     <Checkbox key={key} value={`value:${key}`}>{`Option: ${key}`}</Checkbox>
   );
 });
+//
+// Just to make the inverse prop visible in the story
+const InverseWrapper = ({
+  children,
+  inversed,
+}: {
+  children: React.ReactNode;
+  inversed?: boolean;
+}) => {
+  return (
+    <div
+      style={{
+        padding: '1rem',
+        backgroundColor: inversed ? 'black' : 'transparent',
+      }}
+    >
+      {children}
+    </div>
+  );
+};
 
 export const Base: CheckboxGroupStoryType = {
   args: {
     direction: 'row',
   },
   render: (props: ICheckboxProps) => {
-    return <CheckboxGroup {...props}>{checkboxes}</CheckboxGroup>;
+    return (
+      <InverseWrapper inversed={props.inverse}>
+        <CheckboxGroup {...props}>{checkboxes}</CheckboxGroup>
+      </InverseWrapper>
+    );
   },
 };
 

@@ -17,9 +17,6 @@ pages:
       whybuild:
         url: /why-build
         file: /learn/why-build.md
-      cryptography:
-        url: /cryptography
-        file: /learn/cryptography.md
       whykadena:
         url: /why-kadena
         file: /learn/why-kadena.md
@@ -484,6 +481,9 @@ pages:
               dutch:
                 url: /dutch-auction
                 file: /reference/marmalade/dutch-auction-ref.md
+          client:
+            url: /client-utils
+            file: /reference/marmalade/marmalade-client-utils.md
       spirekey:
         url: /spirekey
         file: /reference/spirekey-ref.md

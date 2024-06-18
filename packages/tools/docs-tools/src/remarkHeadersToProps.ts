@@ -9,6 +9,7 @@ import type {
   Plugin,
   TagNameType,
 } from './types';
+import { createSlug } from './utils/createSlug';
 
 const getTagName = (depth = 1): TagNameType => `h${depth}` as TagNameType;
 
@@ -58,6 +59,7 @@ const remarkHeadersToProps = (): Plugin => {
         tag: 'h1',
         depth: 1,
         children: [],
+        slug: '',
       },
     ];
 
@@ -67,15 +69,23 @@ const remarkHeadersToProps = (): Plugin => {
       cleanupHeading(item);
 
       // we dont want h1 tags in the aside menu
-      if (item.depth === 1) {
+      if (item.depth !== 2) {
         return;
       }
+
+      const slug = createSlug(toString(item));
+      item.data = {
+        hProperties: {
+          slug,
+        },
+      };
 
       const elm: IStartArray = {
         type: item.type,
         depth: item.depth,
         tag: getTagName(item.depth),
         title: toString(item) ?? '',
+        slug,
         children: [],
       };
       parent.children.push(elm);

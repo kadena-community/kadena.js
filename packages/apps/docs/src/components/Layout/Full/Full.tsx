@@ -1,8 +1,7 @@
 import { BottomPageSection } from '@/components/BottomPageSection/BottomPageSection';
 import { Breadcrumbs } from '@/components/Breadcrumbs/Breadcrumbs';
 import { TopPageSection } from '@/components/TopPageSection/TopPageSection';
-import { createSlug } from '@/utils/createSlug';
-import type { IPageProps } from '@kadena/docs-tools';
+import type { IPageProps, ISubHeaderElement } from '@kadena/docs-tools';
 import { Heading } from '@kadena/react-ui';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
@@ -104,8 +103,8 @@ export const Full: FC<IPageProps> = ({
                   On this page
                 </Heading>
                 <AsideList ref={menuRef}>
-                  {aSideMenuTree.map((innerItem) => {
-                    const innerSlug = createSlug(innerItem.title);
+                  {aSideMenuTree.map((innerItem: ISubHeaderElement) => {
+                    const innerSlug = innerItem.slug;
                     return (
                       <ListItem
                         key={innerSlug}

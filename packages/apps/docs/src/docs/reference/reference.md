@@ -55,6 +55,8 @@ The reference information for the Marmalade standard covers the following topics
 
 - [Sales-specific contracts](/reference/nft-ref/sale-contracts) provides an overview for creating a custom sale contract and provides reference information for the registered sale contracts.
 
+- [Marmalade client utilities](/reference/nft-ref/client-utils) defined in the `@kadena/client-utils/marmalade` library provide a TypeScript-based API for interacting with Marmalade smart contracts on the Kadena network with functions to help you create, manage, buy, and sell non-fungible tokens (NFTs) or custom fungible tokens.
+
 ## Queries and indexing: Kadena GraphQL
 
 Documentation for the Kadena GraphQL schema is embedded in the GraphQL Explorer.
