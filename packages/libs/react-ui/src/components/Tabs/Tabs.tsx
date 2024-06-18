@@ -6,9 +6,16 @@ import type { AriaTabListProps } from 'react-aria';
 import { mergeProps, useFocusRing, useTabList } from 'react-aria';
 import type { Node as ITabNode } from 'react-stately';
 import { Item as TabItem, useTabListState } from 'react-stately';
+import { i } from 'vitest/dist/reporters-yx5ZTtEV.js';
 import { Tab } from './Tab';
 import { TabPanel } from './TabPanel';
-import { scrollContainer, tabListClass, tabsContainerClass } from './Tabs.css';
+import {
+  containedTabContent,
+  scrollContainer,
+  tabListClass,
+  tabListGap,
+  tabsContainerClass,
+} from './Tabs.css';
 import { TabsPagination } from './TabsPagination';
 
 export { ITabNode, TabItem };
@@ -23,20 +30,23 @@ export interface ITabsProps<T>
   onClose?: (item: ITabNode<T>) => void;
   isCompact?: boolean;
   tabPanelClassName?: string;
+  isContained?: boolean;
 }
 
 export function Tabs<T extends object>({
   className,
-  borderPosition = 'bottom',
+  borderPosition: _borderPosition,
   inverse = false,
   onClose,
   isCompact,
   tabPanelClassName,
+  isContained,
   ...props
 }: ITabsProps<T>): ReactNode {
   const state = useTabListState(props);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const borderPosition = _borderPosition || isContained ? 'bottom' : 'top';
 
   const { focusProps, isFocusVisible } = useFocusRing({
     within: true,
@@ -79,6 +89,7 @@ export function Tabs<T extends object>({
         <div className={scrollContainer} ref={scrollRef}>
           <div
             className={classNames(tabListClass, {
+              [tabListGap]: isContained,
               focusVisible: isFocusVisible,
             })}
             {...mergeProps(tabListProps, focusProps)}
@@ -86,6 +97,7 @@ export function Tabs<T extends object>({
           >
             {[...state.collection].map((item) => (
               <Tab
+                isContained={isContained}
                 key={item.key}
                 item={item}
                 state={state}
@@ -101,7 +113,9 @@ export function Tabs<T extends object>({
       <TabPanel
         key={state.selectedItem?.key}
         state={state}
-        className={tabPanelClassName}
+        className={classNames(tabPanelClassName, {
+          [containedTabContent]: isContained,
+        })}
       />
     </div>
   );

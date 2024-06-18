@@ -61,6 +61,10 @@ export const tabListClass = style({
   minWidth: '100%',
 });
 
+export const tabListGap = style({
+  gap: '2px',
+});
+
 // Prevent button from increasing the tab size and having the outline conflict with label
 globalStyle(`${tabListClass} button`, {
   paddingBlock: 0,
@@ -203,4 +207,10 @@ export const closeButtonClass = style({
       opacity: 1,
     },
   },
+});
+
+export const containedTabContent = style({
+  backgroundColor: token('color.background.base.default'),
+  margin: 0,
+  paddingBlock: token('size.n4'),
 });

@@ -16,6 +16,7 @@ interface ITabProps<T> extends AriaTabProps {
   borderPosition: 'top' | 'bottom';
   onClose?: (item: Node<T>) => void;
   isCompact?: boolean;
+  isContained?: boolean;
 }
 
 /**
@@ -28,6 +29,7 @@ export function Tab<T>({
   inverse = false,
   borderPosition = 'bottom',
   isCompact = false,
+  isContained = false,
   onClose,
 }: ITabProps<T>): ReactNode {
   const { key, rendered } = item;
@@ -52,6 +54,7 @@ export function Tab<T>({
       ref={ref}
       role="tab"
       data-selected={state.selectedKey === key}
+      data-contained={isContained || undefined}
       data-hovered={isHovered || undefined}
     >
       {rendered}
