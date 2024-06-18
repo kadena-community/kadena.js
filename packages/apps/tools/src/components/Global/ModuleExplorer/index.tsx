@@ -102,8 +102,6 @@ const ModuleExplorer = ({
     return searchResultsToDataMap(results);
   }, [searchQuery, data]);
 
-  console.log('rerender ModuleExplorer', { data, filteredData });
-
   const mapped = useMemo(() => {
     return items
       .filter((item) => {
@@ -139,8 +137,6 @@ const ModuleExplorer = ({
     })?.data;
     outlineItems = moduleToOutlineTreeItems(activeModule, data!);
   }
-
-  console.log('rerender ModuleExplorer', items);
 
   const onSearch = useCallback(
     (searchQuery: string, searchFilter: string) => {
