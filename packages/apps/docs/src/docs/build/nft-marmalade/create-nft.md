@@ -158,9 +158,31 @@ To create the token:
 
 3. On the Configuration tab, select the Transaction Sender, then click **Advanced** to select a key and a predicate function for the creation guard, then click **Next**.
 
-4. On the Sign tab, select an unrestricted signing key from the available Unrestricted Signing Keys, then click **Next**.
+4. Click the **Raw** tab to configure any policy settings required for the policies applied to the token—for example, to add guards if you are using the guard policy or royalty information if you using the royalty policy—then click **Next**.
+   
+   For this example, you can use the **Raw** data to register guards for the mint, burn, and URI update operations:
+   
+   ```json
+   {
+       "mint-guard": {
+         "keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], 
+         "pred": "keys-all"},
+       "burn-guard": {
+         "keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], 
+         "pred": "keys-all"},
+       "uri-guard": {
+         "keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], 
+         "pred": "keys-all"}
+   }
+   ```
 
-5. On the Preview tab, scroll to see the Raw Response is **true**, then click **Submit**.
+   In this example, the same account is authorized to perform all three operations.
+   You don't need to specify a guard for any token activity that you don't want to restrict access to.
+   You can also use different guards for any token action if you want to authorize different accounts to perform specific actions. 
+
+5. On the Sign tab, select an unrestricted signing key from the available Unrestricted Signing Keys, then click **Next**.
+
+6. On the Preview tab, scroll to see the Raw Response is **true**, then click **Submit**.
    
    After you submit the transaction, it is queued for processing in the memory pool until validated and added to a block.
    After the transaction is included in a block, your NFT is part of the permanent blockchain record.
@@ -215,7 +237,7 @@ To review your transaction results:
 
    ![Events related to minting a non-fungible token](/assets/marmalade/create-nft-events.png)
    
-## Start a sale with an offerfil
+## Start a sale with an offer
 
 Now that your token is recorded in the Marmalade ledger, you can transfer it to another account or offer it for sale.
 In this simple example, there's no royalty policy associated with the token because it isn't intended to generate an ongoing revenue stream.
