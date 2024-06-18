@@ -6,7 +6,6 @@ import type { AriaTabListProps } from 'react-aria';
 import { mergeProps, useFocusRing, useTabList } from 'react-aria';
 import type { Node as ITabNode } from 'react-stately';
 import { Item as TabItem, useTabListState } from 'react-stately';
-import { i } from 'vitest/dist/reporters-yx5ZTtEV.js';
 import { Tab } from './Tab';
 import { TabPanel } from './TabPanel';
 import {
@@ -97,7 +96,6 @@ export function Tabs<T extends object>({
           >
             {[...state.collection].map((item) => (
               <Tab
-                isContained={isContained}
                 key={item.key}
                 item={item}
                 state={state}

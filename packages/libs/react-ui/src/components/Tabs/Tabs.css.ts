@@ -80,15 +80,16 @@ export const tabItemClass = recipe({
       display: 'flex',
       alignItems: 'center',
       cursor: 'pointer',
+      outline: 'none',
       paddingBlock: token('size.n2'),
       paddingInline: token('size.n4'),
       gap: token('size.n2'),
-      backgroundColor: 'transparent',
+      backgroundColor: token('color.background.base.default'),
       color: token('color.text.base.default'),
-      outline: 'none',
       zIndex: 3,
       minWidth: 'fit-content',
-      borderBlock: `2px solid transparent`,
+      borderBlockStart: `2px solid transparent`,
+      borderBlockEnd: `2px solid ${token('color.border.base.subtle')}`,
       borderTopLeftRadius: token('radius.xs'),
       borderTopRightRadius: token('radius.xs'),
       transition:
@@ -96,7 +97,6 @@ export const tabItemClass = recipe({
       whiteSpace: 'nowrap',
       selectors: {
         '&[data-selected="true"]': {
-          backgroundColor: token('color.background.base.@active'),
           color: token('color.text.base.@active'),
         },
         '&[data-hovered="true"]': {
@@ -210,7 +210,7 @@ export const closeButtonClass = style({
 });
 
 export const containedTabContent = style({
-  backgroundColor: token('color.background.base.default'),
+  backgroundColor: token('color.background.base.@active'),
   margin: 0,
   paddingBlock: token('size.n4'),
 });
