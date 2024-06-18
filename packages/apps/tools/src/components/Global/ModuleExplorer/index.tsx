@@ -64,6 +64,7 @@ const searchResultsToDataMap = (
 
 const fuseOptions: IFuseOptions<IncompleteModuleModel> = {
   ignoreLocation: true,
+  threshold: 0.4,
   keys: [
     { name: 'title', getFn: (item) => item.name },
     { name: 'hash', getFn: (item) => item.hash ?? '' },
