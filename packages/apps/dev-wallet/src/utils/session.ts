@@ -47,7 +47,11 @@ export async function loadSession(
   return session(false, key, password);
 }
 
-const throttle = <T extends (...args: any[]) => any>(fn: T, delay: number) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const throttle = <T extends (...args: unknown[]) => any>(
+  fn: T,
+  delay: number,
+) => {
   let lastCall = 0;
   let lastResult: ReturnType<T>;
   return (...args: Parameters<T>): ReturnType<T> => {
@@ -101,7 +105,7 @@ async function session(
   await renew();
   return {
     renew: throttle(renew, 1000 * 60 * 1), // 5 minutes
-    set: async (key: string, value: any) => {
+    set: async (key: string, value: unknown) => {
       session[key] = value;
       await renew();
     },
