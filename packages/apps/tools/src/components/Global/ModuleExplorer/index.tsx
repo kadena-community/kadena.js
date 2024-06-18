@@ -125,11 +125,11 @@ const ModuleExplorer = ({
           children: mapToTreeItems(
             modelsToTreeMap(filteredData.get(networkId) || []),
             item.key as string,
-            !filteredData.get(networkId), // Don't sort alphabetically for search results
+            !searchQuery, // Don't sort alphabetically for search results
           ),
         };
       });
-  }, [filteredData, items, searchFilter]);
+  }, [filteredData, items, searchFilter, searchQuery]);
 
   let outlineItems: TreeItem<Outline>[] = [];
 
