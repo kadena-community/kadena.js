@@ -1,19 +1,22 @@
 import type { TableState, TreeGridState } from '@react-stately/table';
 import type { GridNode } from '@react-types/grid';
+import type { TableProps } from '@react-types/table';
 import type { ReactNode } from 'react';
 import React, { useRef } from 'react';
 import {
   mergeProps,
   useFocusRing,
+  useHover,
   useTableCell,
   useTableRow,
 } from 'react-aria';
 import { tableDataCell, tableRow } from './Table.css';
 
-interface ITableRowProps<T> {
+export interface ITableRowProps<T> {
   item: GridNode<T>;
   state: TableState<T> | TreeGridState<T>;
   children: ReactNode;
+  selectionMode: TableProps<T>['selectionMode'];
 }
 
 export function TableRow<T extends object>({
@@ -22,7 +25,7 @@ export function TableRow<T extends object>({
   state,
 }: ITableRowProps<T>) {
   const ref = useRef(null);
-  const { rowProps } = useTableRow(
+  const { rowProps, isSelected } = useTableRow(
     {
       node: item,
     },
@@ -30,11 +33,15 @@ export function TableRow<T extends object>({
     ref,
   );
   const { isFocusVisible, focusProps } = useFocusRing();
+  const { isHovered, hoverProps } = useHover({ isDisabled: false });
+
   return (
     <tr
       className={tableRow}
-      {...mergeProps(rowProps, focusProps)}
+      {...mergeProps(rowProps, focusProps, hoverProps)}
       data-focused={isFocusVisible || undefined}
+      data-hovered={isHovered || undefined}
+      data-selected={isSelected || undefined}
       ref={ref}
     >
       {children}

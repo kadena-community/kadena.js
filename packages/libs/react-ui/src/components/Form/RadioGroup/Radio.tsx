@@ -15,6 +15,7 @@ export interface IRadioProps extends AriaRadioProps {
   children: string;
   isSelected?: boolean;
   isReadOnly?: boolean;
+  inverse?: boolean;
 }
 
 export function Radio(props: IRadioProps) {
@@ -51,6 +52,7 @@ export function Radio(props: IRadioProps) {
       data-disabled={isDisabled}
       data-focus-visible={isFocusVisible}
       data-readonly={isReadOnly}
+      data-inversed={props.inverse}
     >
       <VisuallyHidden>
         <input {...inputProps} {...focusProps} ref={ref} />

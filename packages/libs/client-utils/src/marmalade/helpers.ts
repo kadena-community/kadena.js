@@ -6,6 +6,7 @@ import {
   COLLECTION_POLICY,
   GUARD_POLICY,
   NON_FUNGIBLE_POLICY,
+  NON_UPDATABLE_URI_POLICY,
   ROYALTY_POLICY,
 } from './config';
 
@@ -19,9 +20,21 @@ export const validatePolicies = (
     }
   }
 
-  if (policyConfig?.guarded || policyConfig?.updatableURI) {
+  if (policyConfig?.guarded) {
     if (!policies.includes(GUARD_POLICY)) {
       throw new Error('Guard policy is required');
+    }
+  }
+
+  if (policyConfig?.nonUpdatableURI === true) {
+    if (!policies.includes(NON_UPDATABLE_URI_POLICY)) {
+      throw new Error('Non-updatable URI policy is required');
+    }
+  }
+
+  if (policyConfig?.nonUpdatableURI === false) {
+    if (!policies.includes(GUARD_POLICY)) {
+      throw new Error('Guard policy is required for updatable URI');
     }
   }
 

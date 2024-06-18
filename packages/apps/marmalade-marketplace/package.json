@@ -1,6 +1,6 @@
 {
   "name": "@kadena/marmalade-marketplace",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "build": "pnpm generate && next build",
@@ -8,7 +8,7 @@
     "generate": "npx graphql-codegen",
     "start": "next start",
     "start:cron": "ts-node scripts/cron.ts",
-    "test": "vitest",
+    "test": "vitest run",
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
@@ -40,7 +40,6 @@
     "@vanilla-extract/vite-plugin": "4.0.7",
     "@vitejs/plugin-react": "^4.3.1",
     "@vitest/coverage-v8": "^1.6.0",
-    "axios": "^1.6.8",
     "dotenv": "~16.4.5",
     "jsdom": "^22.1.0",
     "next-router-mock": "^0.9.10",

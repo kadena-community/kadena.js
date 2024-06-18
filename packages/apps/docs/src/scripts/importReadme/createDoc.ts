@@ -19,6 +19,7 @@ import type { Root } from 'remark-gfm';
 import { getLastModifiedDate } from '../getdocstree/utils/getLastModifiedDate';
 import type { IImportReadMeItem } from '../utils';
 import { getTypes } from '../utils';
+import { createSlug } from '../utils/createSlug';
 import { removeRepoDomain } from './index';
 
 export const DOCS_ROOT = './src/pages';
@@ -45,17 +46,6 @@ lastModifiedDate: ${lastModifiedDate}
 
 const createEditOverwrite = (item: IImportReadMeItem): string => {
   return `${item.repo}/edit/main${item.file}`;
-};
-
-export const createSlug = (str: string): string | undefined => {
-  if (!str) return '';
-  return str
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^\w\s]+/g, '')
-    .replace(/ /g, '-')
-    .toLowerCase()
-    .replace(/^-+|-+$/g, '');
 };
 
 const getTitle = (pageAST: Root): string => {

@@ -1,5 +1,21 @@
 # @kadena/explorer
 
+## 0.2.0
+
+### Minor Changes
+
+- d5286c2f0: add the navbar to the layout
+
+### Patch Changes
+
+- bf2ac3987: fix of styling in the transaction page
+- 51e34b300: Added queries used by main search
+- Updated dependencies \[6a969ebdc]
+- Updated dependencies \[b541021f4]
+- Updated dependencies \[e648c32fa]
+  - @kadena/react-ui\@0.11.0
+  - @kadena/graph\@1.0.4
+
 ## 0.1.0
 
 ### Minor Changes
