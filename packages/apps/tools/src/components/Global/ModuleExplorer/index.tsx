@@ -143,11 +143,9 @@ const ModuleExplorer = ({
     setSearchFilter(searchFilter);
   }, []);
 
-  const searchHitsCount = useMemo(() => {
-    return [...filteredData.values()].reduce((acc, data) => {
-      return acc + data.length;
-    }, 0);
-  }, [filteredData]);
+  const searchHitsCount = mapped.reduce((acc, item) => {
+    return acc + item.label;
+  }, 0);
 
   return (
     <div className={containerStyle}>
