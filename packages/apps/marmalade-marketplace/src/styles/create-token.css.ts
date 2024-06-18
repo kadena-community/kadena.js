@@ -25,36 +25,23 @@ globalStyle('a:has(button)', {
 });
 
 export const mainWrapperClass = style({
-  display: "grid"
+  display: 'grid',
 });
 
 export const twoColumnRow = style({
-  display: "grid",
-  gridTemplateColumns: "1fr 1fr",
-  gap: "20px",
-  marginBottom: "30px",
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '20px',
+  marginBottom: '30px',
 });
 
 export const oneColumnRow = style({
-  display: "grid",
-  gridTemplateColumns: "1fr",
-  gap: "20px",
-  marginTop: "20px"
+  display: 'grid',
+  gridTemplateColumns: '1fr',
+  gap: '20px',
+  marginTop: '20px',
 });
 
-export const formSection = style({
-  padding: "20px",
-  border: "1px solid #ccc",
-  borderRadius: "8px",
-  backgroundColor: "#f9f9f9",
-  boxShadow: '0 4px 8px rgba(0,0,0,0.1)', // subtle shadow for depth
-});
-
-export const verticalForm = style({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '15px', // increase space for better readability
-});
 
 export const formLabel = style({
   marginBottom: '5px',
@@ -69,8 +56,8 @@ export const formInput = style({
   color: 'black',
   backgroundColor: 'white',
   ':hover': {
-    borderColor: '#aaa' // change border color on hover
-  }
+    borderColor: '#aaa', // change border color on hover
+  },
 });
 
 export const checkboxRow = style({
@@ -89,6 +76,27 @@ export const secondColumn = style({
   paddingLeft: '0%',
 });
 
+export const uploadContainer = style({
+  border: '2px dashed #ccc',
+  padding: '20px',
+  textAlign: 'center',
+  cursor: 'pointer',
+  position: 'relative',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  height: '100%',
+});
+
+export const uploadImage = style({
+  maxWidth: '100%',
+});
+
+export const uploadText = style({
+  margin: '0',
+});
+
 export const checkboxContainer = style({
   display: 'flex',
   alignItems: 'center',
@@ -105,8 +113,52 @@ export const checkboxInput = style({
   height: '16px',
 });
 
+export const responseMessage = style({
+  margin: '20px 0',
+  padding: '10px',
+  borderRadius: '4px',
+  backgroundColor: '#f1f1f1',
+  color: 'black',
+});
+
+export const tabsContainer = style({
+  display: 'flex',
+  flexDirection: 'column',
+  margin: '20px 0',
+  backgroundColor: '#fff',
+  border: '1px solid #ccc',
+  borderRadius: '8px',
+});
+
+export const formSection = style({
+  margin: '20px',
+  padding: '20px',
+  border: '1px solid #ccc',
+  borderRadius: '8px',
+  backgroundColor: '#f9f9f9',
+});
+
+export const verticalForm = style({
+  display: 'flex',
+  flexDirection: 'column',
+});
+
 export const buttonRow = style({
   display: 'flex',
-  justifyContent: 'flex-end', // align button to the right
-  marginTop: '20px', // add some space above the button
+  justifyContent: 'center',
+  marginTop: '20px',
+});
+
+export const buttonRowRight = style({
+  display: 'flex',
+  justifyContent: 'flex-end',
+  marginTop: '20px',
+});
+
+
+export const textareaField = style({
+  width: 100,
+  height: 400,
+  resize: "none",
+  // box-sizing: "border-box"
 });
