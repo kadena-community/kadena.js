@@ -86,7 +86,7 @@ function SidePanel<T>({
           </Stack>
           {item.isExpanded ? (
             <>
-              {showSearch ? (
+              {item.data.supportsSearch && showSearch ? (
                 <Search
                   networks={item.data.children.map(
                     (x) => x.key as ChainwebNetworkId,
