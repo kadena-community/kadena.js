@@ -35,7 +35,7 @@ const Redirect: FC<
     to: string;
   }>
 > = ({ if: condition, to: redirectPath, children }) => {
-  if (!condition) {
+  if (condition) {
     return <Navigate to={redirectPath} replace />;
   }
 
@@ -61,7 +61,6 @@ export const Routes: FC = () => {
       </Route>
       <Route element={<Redirect if={isLocked} to="/select-profile" />}>
         <Route element={<LayoutMini />}>
-          <Route path="/" element={<HomePage />} />
           <Route
             path="/backup-recovery-phrase/:keySourceId"
             element={<BackupRecoveryPhrase />}
@@ -76,6 +75,7 @@ export const Routes: FC = () => {
           />
         </Route>
         <Route element={<Layout />}>
+          <Route path="/" element={<HomePage />} />
           <Route path="/accounts/:account" element={<p>Account</p>} />
           <Route path="/sig-builder" element={<SignatureBuilder />} />
           <Route path="/networks" element={<Networks />} />

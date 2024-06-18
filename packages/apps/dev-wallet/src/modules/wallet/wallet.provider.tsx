@@ -102,7 +102,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
         return null;
       }
       if (!noSession) {
-        await session.createSession();
+        await session.reset();
       }
       await session.set('profileId', profile.uuid);
       const accounts = await WalletService.getAccounts(profile.uuid);
@@ -122,6 +122,18 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     [session],
   );
 
+  const unlockKeySourcesFromSession = useCallback(async () => {
+    const loadService = async (type: 'HD-BIP44' | 'HD-chainweaver') => {
+      const context = await session.get(`keySource:${type}`);
+      if (context) {
+        await keySourceManager.get(type, context);
+      }
+    };
+    await Promise.all(
+      (['HD-BIP44', 'HD-chainweaver'] as const).map(loadService),
+    );
+  }, [session]);
+
   useEffect(() => {
     const loadSession = async () => {
       if (!session.isLoaded) return;
@@ -129,15 +141,12 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       if (profileId) {
         const profile = await walletRepository.getProfile(profileId);
         console.log('retrieving profile from session', profile);
-        // Note: this only loads the profile but the keySources are still locked.
-        // So the user needs to enter the password if they need to sign a Tx
-        // or create new keys, this is for security reasons;
-        // I don't want to store the password or the keySource context in the session
         setProfile(profile, true);
+        unlockKeySourcesFromSession();
       }
     };
     loadSession();
-  }, [retrieveProfileList, session, setProfile]);
+  }, [retrieveProfileList, session, unlockKeySourcesFromSession, setProfile]);
 
   useEffect(() => {
     retrieveProfileList();

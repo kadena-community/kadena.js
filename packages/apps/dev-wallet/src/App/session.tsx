@@ -1,23 +1,13 @@
-import { Session, createSession, loadSession } from '@/utils/session';
+import { Session } from '@/utils/session';
 import {
   FC,
   PropsWithChildren,
   createContext,
-  useCallback,
   useContext,
-  useEffect,
   useLayoutEffect,
-  useMemo,
-  useState,
 } from 'react';
 
-const sessionContext = createContext<
-  | (Session & {
-      createSession: () => Promise<void>;
-      isLoaded: boolean;
-    })
-  | null
->(null);
+const sessionContext = createContext<Session | null>(null);
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useSession = () => {
@@ -29,53 +19,24 @@ export const useSession = () => {
 };
 
 export const SessionProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [session, setSession] = useState<Session | null>(null);
-  const create = useCallback(async () => {
-    const newSession = await createSession();
-    setSession(newSession);
-  }, []);
-
-  useEffect(() => {
-    loadSession().then(setSession);
-  }, []);
-
   useLayoutEffect(() => {
-    if (session) {
-      const events = ['visibilitychange', 'touchstart', 'keydown', 'click'];
+    Session.load();
+    console.log('Session is loaded', Session.get('profileId'));
+    const events = ['visibilitychange', 'touchstart', 'keydown', 'click'];
+    events.forEach((event) => {
+      document.addEventListener(event, Session.renew);
+    });
+    return () => {
+      console.log('Session is unloaded', Session.renew);
       events.forEach((event) => {
-        document.addEventListener(event, session.renew);
+        console.log(`document.removeEventListener("${event}", renew);`);
+        document.removeEventListener(event, Session.renew);
       });
-      return () => {
-        events.forEach((event) => {
-          document.removeEventListener(event, session.renew);
-        });
-      };
-    }
-  }, [session]);
+    };
+  }, []);
 
   return (
-    <sessionContext.Provider
-      value={useMemo(
-        () => ({
-          set: () => {
-            throw new Error('Session is not loaded');
-          },
-          get: () => {
-            throw new Error('Session is not loaded');
-          },
-          renew: () => {
-            throw new Error('Session is not loaded');
-          },
-          clear: () => {
-            throw new Error('Session is not loaded');
-          },
-          ...session,
-          isLoaded: Boolean(session),
-          createSession: create,
-        }),
-        [session, create],
-      )}
-    >
+    <sessionContext.Provider value={Session}>
       {children}
     </sessionContext.Provider>
   );

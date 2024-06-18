@@ -60,6 +60,10 @@ export const useHDWallet = () => {
       case 'HD-BIP44': {
         const service = (await keySourceManager.get(type)) as BIP44Service;
         await service.connect(password, keySource as unknown as IHDBIP44);
+        await session.set(
+          `key-source:${type}`,
+          await encryptRecord(service.getContext()),
+        );
         break;
       }
       case 'HD-chainweaver': {
@@ -67,6 +71,10 @@ export const useHDWallet = () => {
           type,
         )) as ChainweaverService;
         await service.connect(password, keySource as unknown as IHDChainweaver);
+        await session.set(
+          `key-source:${type}`,
+          await encryptRecord(service.getContext()),
+        );
         break;
       }
       default:

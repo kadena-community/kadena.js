@@ -64,7 +64,7 @@ export const CommunicationProvider: FC<PropsWithChildren> = ({ children }) => {
   const { isUnlocked, accounts, profile } = useWallet();
 
   useEffect(() => {
-    console.log('CommunicationProvider mounted');
+    console.log('CommunicationProvider mounted', isUnlocked);
     const createRequest = (data: Message) =>
       new Promise<{ payload: unknown } | { error: unknown }>((resolve) => {
         const request = {
@@ -119,7 +119,7 @@ export const CommunicationProvider: FC<PropsWithChildren> = ({ children }) => {
     return () => {
       handlers.forEach((unsubscribe) => unsubscribe());
     };
-  }, [navigate, requests, isUnlocked]);
+  }, [requests, isUnlocked]);
 
   useEffect(() => {
     const run = async () => {
