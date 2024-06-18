@@ -133,7 +133,10 @@ const ModuleExplorer = ({
   let outlineItems: TreeItem<Outline>[] = [];
 
   if (activeModule) {
-    outlineItems = moduleToOutlineTreeItems(activeModule, mapped);
+    const data = items.find((item) => {
+      return item.key === activeModule.networkId;
+    })?.data;
+    outlineItems = moduleToOutlineTreeItems(activeModule, data!);
   }
 
   console.log('rerender ModuleExplorer', items);
