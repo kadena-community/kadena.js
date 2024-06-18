@@ -1,0 +1,31 @@
+
+name: Remove deploy preview
+
+permissions:
+  contents: read
+  statuses: write
+  pull-requests: write
+
+env:
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  delete-deployments:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          show-progress: false
+
+      - name: Prune preview deployments associated with merged PR
+        env:
+          META_TAG: ${{ github.event.repository.name }}-${{ github.event.number }}
+        run: |
+          bash .github/scripts/prune-deployment.sh

@@ -1,0 +1,23 @@
+name: Creating Preview environments
+on: 
+    pull_request:
+jobs:
+  create-preview-env:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+            - app: 'Docs'
+              projectToken: VERCEL_DOCS_ID
+            - app: 'Tools'
+              projectToken: VERCEL_TOOLS_ID
+            - app: 'dev-wallet'
+              projectToken: VERCEL_DEV_WALLET_ID
+    name: Preview Deployment
+    uses: ./.github/workflows/deploy-preview.yml
+    with:
+      app: ${{ matrix.app}}
+    secrets:
+        VERCEL_PROJECT_ID: ${{ secrets[matrix.projectToken] }}
+        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
