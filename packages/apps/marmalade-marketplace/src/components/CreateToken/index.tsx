@@ -13,7 +13,7 @@ import PolicyForm from '@/components/PolicyForm';
 
 //import client
 import { ChainId, BuiltInPredicate } from "@kadena/client";
-import { createTokenId, createToken, createCollection, createCollectionId, ICreateTokenPolicyConfig } from "@kadena/client-utils/marmalade";
+import { createTokenId, createToken, ICreateTokenPolicyConfig } from "@kadena/client-utils/marmalade";
 
 import { useAccount } from '@/hooks/account';
 import { getPolicies, formatGuardInput, formatRoyaltyInput, createAccountKeyset, createPrecision} from '@/utils/getPolicies';
