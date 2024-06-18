@@ -14,7 +14,11 @@ import type { ChainId, IPactDecimal } from '@kadena/types';
 import { submitClient } from '../core';
 import type { IClientConfig } from '../core/utils/helpers';
 import type { CommonProps } from './config';
-import { formatAdditionalSigners, formatCapabilities, formatWebAuthnSigner } from './helpers';
+import {
+  formatAdditionalSigners,
+  formatCapabilities,
+  formatWebAuthnSigner,
+} from './helpers';
 
 interface IBurnTokenInput extends CommonProps {
   policyConfig?: {

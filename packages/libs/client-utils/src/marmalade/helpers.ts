@@ -73,18 +73,19 @@ export const formatAdditionalSigners = (
     ),
   );
 
-  export const formatWebAuthnSigner = (signer: ISigner | ISigner[]): ISigner | ISigner[] => {
-
-    const formatSingleSigner = (s: ISigner): ISigner => {
-      if (typeof s === "string" && s.startsWith('WEBAUTHN')) {
-        return { pubKey: s, scheme: 'WebAuthn' } as ISigner;
-      }
-      return s;
-    };
-  
-    if (Array.isArray(signer)) {
-      return signer.map(formatSingleSigner);
+export const formatWebAuthnSigner = (
+  signer: ISigner | ISigner[],
+): ISigner | ISigner[] => {
+  const formatSingleSigner = (s: ISigner): ISigner => {
+    if (typeof s === 'string' && s.startsWith('WEBAUTHN')) {
+      return { pubKey: s, scheme: 'WebAuthn' } as ISigner;
     }
-  
-    return formatSingleSigner(signer);
+    return s;
   };
+
+  if (Array.isArray(signer)) {
+    return signer.map(formatSingleSigner);
+  }
+
+  return formatSingleSigner(signer);
+};

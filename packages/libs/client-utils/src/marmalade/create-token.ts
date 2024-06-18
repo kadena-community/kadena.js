@@ -29,8 +29,8 @@ import type {
 } from './config';
 import {
   formatAdditionalSigners,
-  formatWebAuthnSigner,
   formatCapabilities,
+  formatWebAuthnSigner,
   validatePolicies,
 } from './helpers';
 

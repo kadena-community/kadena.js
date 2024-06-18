@@ -19,7 +19,6 @@ import type { IClientConfig } from '../core/utils/helpers';
 import type { CommonProps } from './config';
 import { formatWebAuthnSigner } from './helpers';
 
-
 interface ICreateCollectionInput extends Pick<CommonProps, 'meta'> {
   id: string;
   name: string;

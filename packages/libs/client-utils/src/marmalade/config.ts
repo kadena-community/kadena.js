@@ -37,7 +37,8 @@ export interface FunctionGuard {
 
 export const GUARD_POLICY = 'marmalade-v2.guard-policy-v1';
 export const NON_FUNGIBLE_POLICY = 'marmalade-v2.non-fungible-policy-v1';
-export const NON_UPDATABLE_URI_POLICY = 'marmalade-v2.non-updatable-uri-policy-v1';
+export const NON_UPDATABLE_URI_POLICY =
+  'marmalade-v2.non-updatable-uri-policy-v1';
 export const ROYALTY_POLICY = 'marmalade-v2.royalty-policy-v1';
 export const COLLECTION_POLICY = 'marmalade-v2.collection-policy-v1';
 

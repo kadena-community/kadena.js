@@ -19,7 +19,11 @@ import type {
   IDutchAuctionPurchaseInput,
   WithAuctionPurchase,
 } from './config';
-import { formatAdditionalSigners, formatCapabilities, formatWebAuthnSigner } from './helpers';
+import {
+  formatAdditionalSigners,
+  formatCapabilities,
+  formatWebAuthnSigner,
+} from './helpers';
 
 interface IBuyTokenInput extends CommonProps {
   policyConfig?: { guarded: boolean };
