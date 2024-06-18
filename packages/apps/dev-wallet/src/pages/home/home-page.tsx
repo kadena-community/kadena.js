@@ -10,20 +10,6 @@ import { Box, Heading, Stack, Text } from '@kadena/react-ui';
 export function HomePage() {
   const { accounts, profile } = useWallet();
 
-  // const createAccount = async (keySource: IKeySource) => {
-  //   if (!profile || !activeNetwork) {
-  //     throw new Error('Profile or activeNetwork not found!!');
-  //   }
-  //   const key = await createKey(keySource);
-  //   if (key) {
-  //     await createKAccount(
-  //       profile.uuid,
-  //       activeNetwork.networkId,
-  //       key.publicKey,
-  //     );
-  //   }
-  // };
-
   return (
     <Box>
       <Text>Welcome back</Text>
@@ -34,20 +20,6 @@ export function HomePage() {
           <Text>Tokens</Text>
         </Box>
       </Box>
-      {/*TODO: Move to other pages*/}
-      {/*<div className={panelClass}>*/}
-      {/*  <Heading as="h3">Available key sources</Heading>*/}
-      {/*  {keySources?.map((ks) => (*/}
-      {/*    <div key={ks.source}>*/}
-      {/*      <Heading as="h6">{ks.source}</Heading>*/}
-      {/*      <Button onPress={() => createAccount(ks)}>Add k account</Button>*/}
-      {/*      <br />*/}
-      {/*      <Link to={`/backup-recovery-phrase/${ks.uuid}`}>*/}
-      {/*        Back up recovery phrase*/}
-      {/*      </Link>*/}
-      {/*    </div>*/}
-      {/*  ))}*/}
-      {/*</div>*/}
       <Box className={panelClass} marginBlockStart="xs">
         <Heading as="h4">{accounts.length} accounts</Heading>
         <Box marginBlockStart="md">

@@ -32,21 +32,6 @@ export async function decryptRecord(encrypted: EncryptedRecord) {
 
 const SESSION_PASS = new TextEncoder().encode('7b_ksKD_M4D0jnd7_ZM');
 
-export async function createSession(
-  key: string = 'session',
-  password: Uint8Array = SESSION_PASS,
-) {
-  return session(true, key, password);
-}
-
-export async function loadSession(
-  key: string = 'session',
-  password: Uint8Array = SESSION_PASS,
-) {
-  if (!localStorage.getItem(key)) return null;
-  return session(false, key, password);
-}
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const throttle = <T extends (...args: unknown[]) => any>(
   fn: T,
@@ -64,12 +49,11 @@ const throttle = <T extends (...args: unknown[]) => any>(
   };
 };
 
-async function session(
-  newSession: boolean = false,
+export function createSession(
   key: string = 'session',
   password: Uint8Array = SESSION_PASS,
 ) {
-  const current = newSession ? null : localStorage.getItem(key);
+  let loaded = false;
   let session: { expiration?: string; creationDate?: string } & Record<
     string,
     unknown
@@ -77,34 +61,41 @@ async function session(
     creationDate: `${Date.now()}`,
     expiration: `${Date.now() + 1000 * 60 * 30}`,
   };
-  if (current) {
-    try {
-      session = JSON.parse(
-        new TextDecoder().decode(await kadenaDecrypt(password, current)),
-      );
-      if (Date.now() > Number(session.expiration)) {
-        throw new Error('Session expired!');
-      }
-    } catch (e) {
-      console.log(
-        e && typeof e === 'object' && `message` in e
-          ? e.message
-          : 'Error loading session',
-      );
-      console.log('Creating new session');
-    }
-  }
   const renew = async () => {
-    console.log('Renewing session');
+    console.log('Renewing session', session);
     session.expiration = `${Date.now() + 1000 * 60 * 30}`; // 30 minutes
     localStorage.setItem(
       'session',
       await kadenaEncrypt(password, JSON.stringify(session)),
     );
   };
-  await renew();
   return {
-    renew: throttle(renew, 1000 * 60 * 1), // 5 minutes
+    load: async () => {
+      const current = localStorage.getItem(key);
+
+      if (current) {
+        try {
+          session = JSON.parse(
+            new TextDecoder().decode(await kadenaDecrypt(password, current)),
+          );
+          console.log('Loaded session', session);
+          if (Date.now() > Number(session.expiration)) {
+            throw new Error('Session expired!');
+          }
+        } catch (e) {
+          console.log(
+            e && typeof e === 'object' && `message` in e
+              ? e.message
+              : 'Error loading session',
+          );
+          console.log('Creating new session');
+        }
+      }
+
+      await renew();
+      loaded = true;
+    },
+    renew: throttle(renew, 1000 * 60), // 1 minute
     set: async (key: string, value: unknown) => {
       session[key] = value;
       await renew();
@@ -113,8 +104,18 @@ async function session(
     clear: () => {
       localStorage.removeItem('session');
       session = {};
+      loaded = false;
     },
+    reset: () => {
+      session = {
+        creationDate: `${Date.now()}`,
+      };
+      return renew();
+    },
+    isLoaded: () => loaded,
   };
 }
 
-export type Session = Awaited<ReturnType<typeof loadSession>>;
+export const Session = createSession();
+
+export type Session = typeof Session;
