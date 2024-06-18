@@ -169,7 +169,7 @@ For example:
 - Use the **non-fungible policy** to ensure that a token can only be minted once and never burned.
 - Use the **royalty policy** to specify the account for depositing royalty payments from sales.
 - Use the **collection policy** to create token collections for a marketplace.
-- Use the **non-updateable policy** to prevent a token URI from being updated.
+- Use the **non-updatable policy** to prevent a token URI from being updated.
 
 To illustrate how you can use these policies, assume that you want to offer a non-fungible token.
 You want to ensure that you are the only person authorized to mint the token and that only one token can be minted and owned.
