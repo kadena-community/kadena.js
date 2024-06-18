@@ -8,7 +8,7 @@ export class SpireKeyIndex {
   public async createSpireKeyAccountFor(
     actor: Page,
     alias: string,
-    wait = true,
+    wait = false,
   ): Promise<void> {
     const webAuthNHelper = new WebAuthNHelper();
     await webAuthNHelper.enableWebAuthN(actor);
