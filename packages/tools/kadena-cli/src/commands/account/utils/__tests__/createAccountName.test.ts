@@ -1,12 +1,38 @@
 /// <reference lib="dom" />
 
-import { HttpResponse, http } from 'msw';
-import { afterEach, describe, expect, it } from 'vitest';
-import { server } from '../../../../mocks/server.js';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { createPrincipalSuccessData } from '../../../../mocks/data/accountDetails.js';
+import {
+  server,
+  useMswDynamicHandler,
+  useMswHandler,
+} from '../../../../mocks/server.js';
 import { createAccountName } from '../createAccountName.js';
 import { defaultConfigMock } from './mocks.js';
 
 describe('createAccountName', () => {
+  beforeEach(() => {
+    useMswDynamicHandler({
+      getResponse: async (request) => {
+        const data = (await request.json()) as { cmd: string };
+        const parsedCMD = JSON.parse(data.cmd as string);
+        // create principal with only one key
+        if (parsedCMD.payload.exec.data.ks.keys.length === 1) {
+          return [
+            {
+              result: {
+                data: `k:${parsedCMD.payload.exec.data.ks.keys}`,
+                status: 'success',
+              },
+            },
+            { status: 200 },
+          ];
+        }
+
+        return [createPrincipalSuccessData, { status: 200 }];
+      },
+    });
+  });
   afterEach(() => {
     server.resetHandlers();
   });
@@ -45,14 +71,10 @@ describe('createAccountName', () => {
   });
 
   it('should throw an error when createPrincipal method throws an error', async () => {
-    server.use(
-      http.post(
-        'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/local',
-        () => {
-          return new HttpResponse(null, { status: 500 });
-        },
-      ),
-    );
+    useMswHandler({
+      response: null,
+      status: 500,
+    });
 
     await expect(async () => {
       await createAccountName({

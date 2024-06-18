@@ -29,12 +29,12 @@ import { getScriptType } from '../utils/window';
 import { Layout } from './layout';
 import { LayoutMini } from './layout-mini';
 
-const RenderIf: FC<
+const Redirect: FC<
   PropsWithChildren<{
-    condition: boolean;
-    otherwise: string;
+    if: boolean;
+    to: string;
   }>
-> = ({ condition, otherwise: redirectPath, children }) => {
+> = ({ if: condition, to: redirectPath, children }) => {
   if (!condition) {
     return <Navigate to={redirectPath} replace />;
   }
@@ -49,7 +49,7 @@ export const Routes: FC = () => {
   const routes = createRoutesFromElements(
     <Route element={<CommunicationProvider children={<Outlet />} />}>
       <Route element={<LayoutMini />}>
-        <Route element={<RenderIf condition={isLocked} otherwise="/home" />}>
+        <Route element={<Redirect if={!isLocked} to="/" />}>
           <Route path="/select-profile" element={<SelectProfile />} />
           <Route path="/create-profile/*" element={<CreateProfile />} />
           <Route
@@ -59,11 +59,9 @@ export const Routes: FC = () => {
           <Route path="/import-wallet" element={<ImportWallet />} />
         </Route>
       </Route>
-      <Route
-        element={<RenderIf condition={!isLocked} otherwise="/select-profile" />}
-      >
+      <Route element={<Redirect if={isLocked} to="/select-profile" />}>
         <Route element={<LayoutMini />}>
-          <Route path="/home" element={<HomePage />} />
+          <Route path="/" element={<HomePage />} />
           <Route
             path="/backup-recovery-phrase/:keySourceId"
             element={<BackupRecoveryPhrase />}

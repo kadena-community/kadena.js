@@ -1,59 +1,44 @@
-import { useNetwork } from '@/modules/network/network.hook';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { IKeySource } from '@/modules/wallet/wallet.repository';
-import { Box, Button, Card, Heading } from '@kadena/react-ui';
-import { Link } from 'react-router-dom';
+import {
+  listClass,
+  listItemClass,
+  panelClass,
+} from '@/pages/home/style.css.ts';
+import { getAccountName } from '@/utils/helpers';
+import { Box, Heading, Stack, Text } from '@kadena/react-ui';
 
 export function HomePage() {
-  const { accounts, createKey, createKAccount, keySources, profile } =
-    useWallet();
-  const { activeNetwork } = useNetwork();
-  const createAccount = async (keySource: IKeySource) => {
-    if (!profile || !activeNetwork) {
-      throw new Error('Profile or activeNetwork not found!!');
-    }
-    const key = await createKey(keySource);
-    if (key) {
-      await createKAccount(
-        profile.uuid,
-        activeNetwork.networkId,
-        key.publicKey,
-      );
-    }
-  };
-  console.log('keySources', keySources);
+  const { accounts, profile } = useWallet();
+
   return (
-    <>
-      <Box margin="md">
-        <Heading as="h1">Welcome to Chainweaver 3.0</Heading>
-        <Heading as="h3">Available key sources</Heading>
-        {keySources.map((ks) => (
-          <Card key={ks.uuid}>
-            <Heading as="h6">{ks.source}</Heading>
-            <Button onPress={() => createAccount(ks)}>Add k account</Button>
-            <br />
-            <Link to={`/backup-recovery-phrase/${ks.uuid}`}>
-              Back up recovery phrase
-            </Link>
-          </Card>
-        ))}
-        <Heading as="h6">Accounts</Heading>
-        {accounts.length ? (
-          <ul>
-            {' '}
-            {accounts.map(({ address, overallBalance }) => (
-              <li key={address}>
-                <Box>
-                  {address ?? 'No Address ;(!'} : {overallBalance}
-                </Box>
-              </li>
-            ))}
-          </ul>
-        ) : null}
+    <Box>
+      <Text>Welcome back</Text>
+      <Heading as="h1">{profile?.name}</Heading>
+      <Box className={panelClass} marginBlockStart="xl">
+        <Heading as="h4">Your assets</Heading>
+        <Box marginBlockStart="md">
+          <Text>Tokens</Text>
+        </Box>
       </Box>
-      <Box>
-        <Link to="/sig-builder">Sig Builder</Link>
+      <Box className={panelClass} marginBlockStart="xs">
+        <Heading as="h4">{accounts.length} accounts</Heading>
+        <Box marginBlockStart="md">
+          <Text>Owned ({accounts.length})</Text>
+          {accounts.length ? (
+            <ul className={listClass}>
+              {' '}
+              {accounts.map(({ address, overallBalance }) => (
+                <li key={address} className={listItemClass}>
+                  <Stack justifyContent="space-between">
+                    <Text>{getAccountName(address) ?? 'No Address ;(!'}</Text>
+                    <Text>{overallBalance} KDA</Text>
+                  </Stack>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </Box>
       </Box>
-    </>
+    </Box>
   );
 }

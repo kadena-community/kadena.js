@@ -1,4 +1,9 @@
-import type { ChainId, IPactModules, PactReturnType } from '@kadena/client';
+import type {
+  ChainId,
+  IPactModules,
+  ISigner,
+  PactReturnType,
+} from '@kadena/client';
 import { Pact, readKeyset } from '@kadena/client';
 import {
   addKeyset,
@@ -12,7 +17,7 @@ import { crossChainClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
 interface ICrossChainInput {
-  sender: { account: string; publicKeys: string[] };
+  sender: { account: string; publicKeys: ISigner[] };
   receiver: {
     account: string;
     keyset: {
@@ -22,8 +27,8 @@ interface ICrossChainInput {
   };
   amount: string;
   targetChainId: ChainId;
-  targetChainGasPayer?: { account: string; publicKeys: string[] };
-  gasPayer?: { account: string; publicKeys: string[] };
+  targetChainGasPayer?: { account: string; publicKeys: ISigner[] };
+  gasPayer?: { account: string; publicKeys: ISigner[] };
   chainId: ChainId;
   /**
    * compatible contract with fungible-v2; default is "coin"

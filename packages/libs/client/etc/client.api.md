@@ -356,6 +356,13 @@ export interface ISignBody {
     ttl: number;
 }
 
+// @public (undocumented)
+export type ISigner = string | {
+    pubKey: string;
+    scheme?: SignerScheme;
+    address?: string;
+};
+
 // @public
 export interface ISignFunction extends ISingleSignFunction {
     // (undocumented)

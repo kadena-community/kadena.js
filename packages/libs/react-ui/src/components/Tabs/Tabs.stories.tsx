@@ -36,7 +36,7 @@ const ExampleManyTabs = [
   { title: 'Really Long Title 7', content: 'Content for tab 7' },
 ];
 
-const meta: Meta<ITabsProps> = {
+const meta: Meta<ITabsProps<object>> = {
   title: 'Layout/Tabs',
   component: Tabs,
   decorators: [onLayer2],
@@ -104,7 +104,7 @@ const meta: Meta<ITabsProps> = {
 };
 
 export default meta;
-type Story = StoryObj<ITabsProps>;
+type Story = StoryObj<ITabsProps<object>>;
 
 export const TabsStory: Story = {
   name: 'Tabs',
@@ -178,6 +178,24 @@ export const ControlledTabsStory: Story = {
           </TabItem>
         </Tabs>
       </Stack>
+    );
+  },
+};
+
+export const DynamicTabsStory: Story = {
+  name: 'Tabs with Dynamic Items',
+  args: {
+    ['aria-label']: 'dynamic tabs story',
+  },
+  render: (props) => {
+    return (
+      <Tabs {...props} aria-label={props['aria-label']} items={ExampleManyTabs}>
+        {(item) => (
+          <TabItem key={item.title} title={item.title}>
+            {item.content}
+          </TabItem>
+        )}
+      </Tabs>
     );
   },
 };

@@ -1,5 +1,16 @@
 # @kadena/kadena-cli
 
+## 1.1.1
+
+### Patch Changes
+
+- Updated dependencies \[9c145f196]
+- Updated dependencies \[9c145f196]
+  - @kadena/client\@1.12.0
+  - @kadena/client-utils\@0.7.0
+  - @kadena/pactjs-cli\@1.12.0
+  - @kadena/pactjs-generator\@1.12.0
+
 ## 1.1.0
 
 ### Minor Changes

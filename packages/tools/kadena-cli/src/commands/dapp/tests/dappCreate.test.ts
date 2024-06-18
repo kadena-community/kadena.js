@@ -32,7 +32,6 @@ describe('dapp add command', () => {
       select: {
         'What template do you want to use?': 'vuejs',
       },
-      verbose: true,
     });
 
     await runCommand('dapp add my-first-app');
@@ -56,7 +55,6 @@ describe('dapp add command', () => {
       select: {
         'What template do you want to use?': 'vuejs',
       },
-      verbose: true,
     });
     const { stderr } = await runCommand('dapp add');
     expect(stderr).toContain(

@@ -11,7 +11,6 @@ import {
   setNonce,
 } from '../composePactCommand';
 import type { ValidDataTypes } from '../composePactCommand/utils/addData';
-import type { ISigner } from '../composePactCommand/utils/addSigner';
 import type { IVerifier } from '../composePactCommand/utils/addVerifier';
 import { addVerifier } from '../composePactCommand/utils/addVerifier';
 import { patchCommand } from '../composePactCommand/utils/patchCommand';
@@ -21,6 +20,7 @@ import type {
   IContinuationPayloadObject,
   IPactCommand,
   IPartialPactCommand,
+  ISigner,
 } from '../interfaces/IPactCommand';
 import type {
   ExtractCapabilityType,

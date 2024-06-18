@@ -1,6 +1,6 @@
 import { useNetworkInfoQuery } from '@/__generated__/sdk';
 import { Media } from '@/components/layout/media';
-import Statistics from '@/components/statistics/statistics';
+import StatisticsComponent from '@/components/statistics-component/statistics-component';
 import { formatStatisticsData } from '@/services/format';
 import { Stack } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
@@ -28,7 +28,7 @@ export const SearchLayout: FC<IProps> = ({ children }: IProps) => {
           gap={'xxl'}
           alignItems={'center'}
         >
-          <Statistics data={statisticsGridData} />
+          <StatisticsComponent data={statisticsGridData} />
         </Stack>
       </Media>
 
@@ -39,7 +39,7 @@ export const SearchLayout: FC<IProps> = ({ children }: IProps) => {
           alignItems={'center'}
           paddingBlockStart={'xxl'}
         >
-          <Statistics data={statisticsGridData} />
+          <StatisticsComponent data={statisticsGridData} />
         </Stack>
       </Media>
 

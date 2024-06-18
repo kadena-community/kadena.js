@@ -70,6 +70,7 @@ export async function fund({
                   chainId,
                 },
               });
+
           if (!accountDetailsFromChain) {
             if (accountCreatedMsgs.length === 0) {
               accountCreatedMsgs.push(

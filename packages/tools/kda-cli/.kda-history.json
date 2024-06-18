@@ -1,0 +1,53 @@
+{
+  "task": [],
+  "previous": {
+    "answers": {
+      "task": [
+        "fund"
+      ],
+      "account": "k:bcfa705dd0362b588d47c3ceef2f3a0d962f5c70038c0aa32e083b06fbe304b5",
+      "network": "fast-development",
+      "chainId": "0",
+      "endpoint": "http://devnet:8080",
+      "publicKey": "bcfa705dd0362b588d47c3ceef2f3a0d962f5c70038c0aa32e083b06fbe304b5",
+      "fundDevnet": {
+        "success": true
+      }
+    },
+    "executions": [
+      {
+        "question": {
+          "message": "Funding devnet accounts...",
+          "name": "fundDevnet",
+          "type": "execute"
+        },
+        "answer": {
+          "fundDevnet": {
+            "success": true
+          }
+        }
+      }
+    ]
+  },
+  "account": [
+    "k:bcfa705dd0362b588d47c3ceef2f3a0d962f5c70038c0aa32e083b06fbe304b5"
+  ],
+  "network": [
+    "fast",
+    "fast-development"
+  ],
+  "chainId": [
+    "0"
+  ],
+  "endpoint": [
+    "http://devnet:8080"
+  ],
+  "publicKey": [
+    "bcfa705dd0362b588d47c3ceef2f3a0d962f5c70038c0aa32e083b06fbe304b5"
+  ],
+  "fundDevnet": [
+    {
+      "success": true
+    }
+  ]
+}

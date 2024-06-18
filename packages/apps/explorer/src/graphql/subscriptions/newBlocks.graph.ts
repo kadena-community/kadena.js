@@ -6,6 +6,7 @@ export const newBlocks: DocumentNode = gql`
     newBlocks {
       ...CoreBlockFields
       transactions {
+        totalCount
         edges {
           node {
             ...CoreTransactionFields

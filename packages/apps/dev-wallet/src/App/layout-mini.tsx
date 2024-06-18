@@ -1,7 +1,6 @@
-import {
-  LayoutContext,
-  defaultAccentColor,
-} from '@/modules/layout/layout.provider.tsx';
+import { LayoutContext } from '@/modules/layout/layout.provider.tsx';
+import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
+import { MonoLogout } from '@kadena/react-icons';
 import { MonoContrast } from '@kadena/react-icons/system';
 import {
   KadenaLogo,
@@ -25,7 +24,12 @@ export const LayoutMini: FC = () => {
   };
 
   const { layoutContext } = useContext(LayoutContext) ?? [];
-  const accentColor = layoutContext?.accentColor || defaultAccentColor;
+  const accentColor = layoutContext?.accentColor;
+  const { isUnlocked, lockProfile } = useWallet();
+  const handleLogOut = () => {
+    lockProfile();
+  };
+
   return (
     <>
       <Stack
@@ -43,6 +47,7 @@ export const LayoutMini: FC = () => {
         <Stack alignItems="center">
           <NavHeaderButton
             aria-label="Toggle theme"
+            title="Toggle theme"
             onPress={() => toggleTheme()}
             className={atoms({ marginInlineEnd: 'sm' })}
           >
@@ -52,6 +57,15 @@ export const LayoutMini: FC = () => {
               })}
             />
           </NavHeaderButton>
+          {isUnlocked && (
+            <NavHeaderButton
+              aria-label="Logout"
+              title="Logout"
+              onPress={() => handleLogOut()}
+            >
+              <MonoLogout />
+            </NavHeaderButton>
+          )}
           <Text>
             Go to{' '}
             <Link to="https://www.kadena.io/" target="_blank">

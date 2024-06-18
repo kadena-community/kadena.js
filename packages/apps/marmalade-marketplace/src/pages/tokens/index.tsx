@@ -4,10 +4,6 @@ import Layout from '@/components/Layout';
 
 export default function CreateToken() {
   return (
-  <Layout>
-    <Heading>
-      <title>Create Token</title>
-    </Heading>
     <Stack flex={1} flexDirection="column">
       <h1>Create Token</h1>
       <div className={styles.twoColumnRow}>
@@ -87,6 +83,5 @@ export default function CreateToken() {
       </div>
       </div>
     </Stack>
-  </Layout>
   );
 }
