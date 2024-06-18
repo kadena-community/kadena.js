@@ -15,22 +15,20 @@ import { searchResultQueryStyles, searchResultsStyles } from './styles.css';
 
 export interface ISearchBarProps {
   networks: ChainwebNetworkId[];
-  onSearch: (query: string, filter: string) => number;
+  onSearch: (query: string, filter: string) => void;
+  hitsCount: number;
 }
 
 export const DEFAULT_ALL_ITEMS_KEY = 'All Networks';
 
-const Search: FC<ISearchBarProps> = ({ networks, onSearch }) => {
-  console.log('Search render', networks);
-  const [searchHits, setSearchHits] = useState(0);
+const Search: FC<ISearchBarProps> = ({ networks, onSearch, hitsCount }) => {
   const [query, setQuery] = useState('');
   const [searchFilter, setSearchFilter] = useState(DEFAULT_ALL_ITEMS_KEY);
 
   // const deferredQuery = useDeferredValue(query);
   useDebounce(
     () => {
-      const hits = onSearch(query, searchFilter);
-      setSearchHits(hits);
+      onSearch(query, searchFilter);
     },
     1000,
     [query, searchFilter],
@@ -68,7 +66,7 @@ const Search: FC<ISearchBarProps> = ({ networks, onSearch }) => {
       </Stack>
       {query.length ? (
         <Text className={searchResultsStyles} as="p" size="smallest" bold>
-          {`${searchHits} Modules found for `}
+          {`${hitsCount} Modules found for `}
           <Text
             size="smallest"
             className={searchResultQueryStyles}

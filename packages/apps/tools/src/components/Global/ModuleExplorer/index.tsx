@@ -138,14 +138,16 @@ const ModuleExplorer = ({
     outlineItems = moduleToOutlineTreeItems(activeModule, data!);
   }
 
-  const onSearch = useCallback(
-    (searchQuery: string, searchFilter: string) => {
-      setSearchQuery(searchQuery);
-      setSearchFilter(searchFilter);
-      return filteredData.size;
-    },
-    [filteredData.size],
-  );
+  const onSearch = useCallback((searchQuery: string, searchFilter: string) => {
+    setSearchQuery(searchQuery);
+    setSearchFilter(searchFilter);
+  }, []);
+
+  const searchHitsCount = useMemo(() => {
+    return [...filteredData.values()].reduce((acc, data) => {
+      return acc + data.length;
+    }, 0);
+  }, [filteredData]);
 
   return (
     <div className={containerStyle}>
@@ -166,6 +168,7 @@ const ModuleExplorer = ({
           },
         ]}
         onSearch={onSearch}
+        searchHitsCount={searchHitsCount}
         onReload={onReload}
         onModuleClick={({ data }) => {
           if (isCompleteModule(data)) {

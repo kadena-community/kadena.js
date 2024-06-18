@@ -29,6 +29,7 @@ export interface ISidePanelProps<T> {
   onModuleClick: (module: TreeItem<T>) => void;
   onExpandCollapse: (item: TreeItem<T>, expanded: boolean) => void;
   onSearch: ISearchBarProps['onSearch'];
+  searchHitsCount: number;
 }
 
 function SidePanel<T>({
@@ -37,6 +38,7 @@ function SidePanel<T>({
   onModuleClick,
   onExpandCollapse,
   onSearch,
+  searchHitsCount,
 }: ISidePanelProps<T>) {
   const [showSearch, setShowSearch] = useState(true || false);
   return (
@@ -92,6 +94,7 @@ function SidePanel<T>({
                     (x) => x.key as ChainwebNetworkId,
                   )}
                   onSearch={onSearch}
+                  hitsCount={searchHitsCount}
                 />
               ) : null}
               <CustomTree
