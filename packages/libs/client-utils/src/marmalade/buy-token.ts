@@ -19,7 +19,7 @@ import type {
   IDutchAuctionPurchaseInput,
   WithAuctionPurchase,
 } from './config';
-import { formatAdditionalSigners, formatCapabilities } from './helpers';
+import { formatAdditionalSigners, formatCapabilities, formatWebAuthnSigner } from './helpers';
 
 interface IBuyTokenInput extends CommonProps {
   policyConfig?: { guarded: boolean };
@@ -104,7 +104,7 @@ const buyTokenCommand = <C extends IAuctionPurchaseConfig>({
       proof: null,
       data: {},
     }),
-    addSigner(buyer.keyset.keys, (signFor) => [
+    addSigner(formatWebAuthnSigner(buyer.keyset.keys), (signFor) => [
       signFor('coin.GAS'),
       signFor(
         'marmalade-v2.ledger.BUY',

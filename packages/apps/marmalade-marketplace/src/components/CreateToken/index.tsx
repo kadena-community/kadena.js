@@ -51,7 +51,7 @@ function CreateTokenComponent() {
       ...input,
       chainId: input.chainId as ChainId,
       precision: createPrecision(input.precision),
-      creator: createAccountKeyset(input.creatorGuard)
+      creator: accountKeyset
     };
   };
 
@@ -169,7 +169,7 @@ function CreateTokenComponent() {
     host: env.URL,
     networkId: env.NETWORKID,
     chainId: tokenInput.chainId as ChainId,
-    sign: createSignWithSpireKey(router, {host: env.URL ?? ''}),
+    sign: createSignWithSpireKey(router, {host: env.WALLET_URL ?? ''}),
   };
 
   const [tokenId, setTokenId] = useState<string>("");
@@ -225,6 +225,7 @@ function CreateTokenComponent() {
         { ...config,
           "defaults": { "networkId": config.networkId, meta: { "chainId": inputs.chainId } }
         }).execute();
+
     } catch (error) {
       console.log(error);
     }

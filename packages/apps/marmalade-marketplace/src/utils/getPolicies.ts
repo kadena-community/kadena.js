@@ -4,7 +4,7 @@ import { PactNumber } from "@kadena/pactjs";
 
 export const getPolicies = (policyConfig: ICreateTokenPolicyConfig) => {
     const policyMap: { [key: string]: string } = { 
-      updatableURI: "marmalade-v2.non-updatable-uri-policy-v1",
+      nonUpdatableURI: "marmalade-v2.non-updatable-uri-policy-v1",
       customPolicies: "",
       guarded: "marmalade-v2.guard-policy-v1",
       nonFungible: "marmalade-v2.non-fungible-policy-v1",

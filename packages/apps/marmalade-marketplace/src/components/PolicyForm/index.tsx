@@ -32,7 +32,7 @@ const PolicyForm: FC<PolicyFormProps> = ({ policyConfig, handleCheckboxChange })
                 checked={policyConfig.nonUpdatableURI}
                 onChange={handleCheckboxChange}
               />
-              <label className={styles.checkboxLabel} htmlFor="nonUpdatableURI">Updatable URI</label>
+              <label className={styles.checkboxLabel} htmlFor="nonUpdatableURI">Non-Updatable URI</label>
             </div>
             <div className={styles.checkboxContainer}>
               <input
