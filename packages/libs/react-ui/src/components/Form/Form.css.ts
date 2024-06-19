@@ -1,7 +1,6 @@
 import { createVar, fallbackVar } from '@vanilla-extract/css';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 import {
-  atoms,
   globalStyle,
   monospaceBaseRegular,
   monospaceSmallRegular,
@@ -206,49 +205,49 @@ export const inputSizeCompoundVariants: {
   };
   style: string;
 }[] = [
-  {
-    variants: {
-      size: 'sm',
-      fontType: 'ui',
+    {
+      variants: {
+        size: 'sm',
+        fontType: 'ui',
+      },
+      style: uiSmallestRegular,
     },
-    style: uiSmallestRegular,
-  },
-  {
-    variants: {
-      size: 'md',
-      fontType: 'ui',
+    {
+      variants: {
+        size: 'md',
+        fontType: 'ui',
+      },
+      style: uiSmallRegular,
     },
-    style: uiSmallRegular,
-  },
-  {
-    variants: {
-      size: 'lg',
-      fontType: 'ui',
+    {
+      variants: {
+        size: 'lg',
+        fontType: 'ui',
+      },
+      style: uiBaseRegular,
     },
-    style: uiBaseRegular,
-  },
-  {
-    variants: {
-      size: 'sm',
-      fontType: 'code',
+    {
+      variants: {
+        size: 'sm',
+        fontType: 'code',
+      },
+      style: monospaceSmallestRegular,
     },
-    style: monospaceSmallestRegular,
-  },
-  {
-    variants: {
-      size: 'md',
-      fontType: 'code',
+    {
+      variants: {
+        size: 'md',
+        fontType: 'code',
+      },
+      style: monospaceSmallRegular,
     },
-    style: monospaceSmallRegular,
-  },
-  {
-    variants: {
-      size: 'lg',
-      fontType: 'code',
+    {
+      variants: {
+        size: 'lg',
+        fontType: 'code',
+      },
+      style: monospaceBaseRegular,
     },
-    style: monospaceBaseRegular,
-  },
-];
+  ];
 
 export const input = recipe({
   base: [

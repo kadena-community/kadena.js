@@ -1,5 +1,4 @@
 import {
-  atoms,
   ellipsis,
   globalStyle,
   recipe,

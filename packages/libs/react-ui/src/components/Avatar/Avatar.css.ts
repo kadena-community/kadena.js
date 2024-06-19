@@ -1,4 +1,4 @@
-import { atoms, recipe, style, token, uiBaseRegular } from '../../styles';
+import { recipe, style, token, uiBaseRegular } from '../../styles';
 
 export const circle = recipe({
   base: [

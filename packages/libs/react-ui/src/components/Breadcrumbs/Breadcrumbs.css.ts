@@ -1,4 +1,4 @@
-import { atoms, style, token } from '../../styles';
+import { style, token } from '../../styles';
 import { tokens } from '../../styles/tokens/contract.css';
 
 export const containerClass = style({

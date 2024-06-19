@@ -1,4 +1,4 @@
-import { atoms, bodyBaseBold, style, token } from '../../styles';
+import { bodyBaseBold, style, token } from '../../styles';
 
 export const accordionSectionClass = style([
   {
