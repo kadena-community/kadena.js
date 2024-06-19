@@ -87,6 +87,9 @@ globalStyle('body', {
 */
 globalStyle('img, picture, video, canvas, svg', {
   display: 'block',
+});
+
+globalStyle('img, picture, video, canvas', {
   maxWidth: '100%',
 });
 
