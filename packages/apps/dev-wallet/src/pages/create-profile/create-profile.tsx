@@ -1,5 +1,5 @@
 import { AuthCard } from '@/Components/AuthCard/AuthCard.tsx';
-import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.hook';
+import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet';
 import { LayoutContext } from '@/modules/layout/layout.provider';
 import { useNetwork } from '@/modules/network/network.hook';
 import { IKeySource } from '@/modules/wallet/wallet.repository';
@@ -17,6 +17,7 @@ const colorList = ['#42CEA4', '#42BDCE', '#4269CE', '#B242CE', '#CEA742'];
 export function CreateProfile() {
   const { createProfile, isUnlocked, createKey, createKAccount, profileList } =
     useWallet();
+  const { createHDWallet } = useHDWallet();
   const isShortFlow = profileList.length === 0;
 
   const {
@@ -43,7 +44,6 @@ export function CreateProfile() {
   const navigate = useNavigate();
   const { activeNetwork } = useNetwork();
   const [createdKeySource, setCreatedKeySource] = useState<IKeySource>();
-  const { createHDWallet } = useHDWallet();
   const { setLayoutContext } = useContext(LayoutContext);
 
   async function create({
@@ -55,7 +55,6 @@ export function CreateProfile() {
     password: string;
     accentColor?: string;
   }) {
-    console.log(password, profileName, accentColor);
     if (!activeNetwork) {
       return;
     }
@@ -84,6 +83,10 @@ export function CreateProfile() {
         replace
       />
     );
+  }
+
+  if (isUnlocked) {
+    return <Navigate to="/" replace />;
   }
 
   return (

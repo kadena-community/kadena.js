@@ -96,7 +96,7 @@ export const boxClass = style({
 });
 
 export const iconClass = style({
-  color: token('color.icon.base.inverse.default'),
+  color: token('color.icon.base.inverse.@active'),
   transition: 'opacity 0.2s ease, transform 0.4s ease',
   transformOrigin: 'center',
   transform: 'scale(0)',
@@ -121,7 +121,7 @@ export const iconClass = style({
       },
     // inverted
     [`${labelClass}[data-inversed="true"] &`]: {
-      color: token('color.icon.base.default'),
+      color: token('color.icon.base.@active'),
     },
   },
 });

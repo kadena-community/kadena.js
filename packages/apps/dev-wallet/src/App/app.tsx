@@ -3,16 +3,19 @@ import { LayoutProvider } from '@/modules/layout/layout.provider.tsx';
 import { WalletProvider } from '@/modules/wallet/wallet.provider';
 import { useTheme } from '@kadena/react-ui';
 import { Routes } from './routes';
+import { SessionProvider } from './session';
 
 function Providers({ children }: { children: React.ReactNode }) {
   // initialize the theme
   useTheme();
   return (
-    <DatabaseProvider>
-      <WalletProvider>
-        <LayoutProvider>{children}</LayoutProvider>
-      </WalletProvider>
-    </DatabaseProvider>
+    <SessionProvider>
+      <DatabaseProvider>
+        <WalletProvider>
+          <LayoutProvider>{children}</LayoutProvider>
+        </WalletProvider>
+      </DatabaseProvider>
+    </SessionProvider>
   );
 }
 

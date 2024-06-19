@@ -17,4 +17,5 @@ export interface IKeySourceService {
 
   getPublicKey: (keySource: IKeySource, index: number) => Promise<IKeyItem>;
   clearCache: () => void | Promise<void>;
+  getContext: () => Record<string, unknown> | null;
 }
