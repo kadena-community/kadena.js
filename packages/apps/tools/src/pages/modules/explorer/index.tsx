@@ -144,7 +144,7 @@ const ModuleExplorerPage = (
           void queryClient.invalidateQueries({
             queryKey: [
               QUERY_KEY,
-              treeItem.key === 'mainnet' ? 'mainnet01' : 'testnet04',
+              treeItem.key === 'mainnet01' ? 'mainnet01' : 'testnet04',
             ],
           });
         }}
