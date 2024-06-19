@@ -26,6 +26,14 @@ export interface IProfile {
   networks: INetwork[];
   secretId: string;
   accentColor: string;
+  options:
+    | {
+        authMode: 'PASSWORD';
+      }
+    | {
+        authMode: 'WEB_AUTHN';
+        webAuthnCredential: ArrayBuffer;
+      };
 }
 
 const createWalletRepository = ({

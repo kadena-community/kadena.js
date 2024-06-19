@@ -3,7 +3,7 @@ import { IUnsignedCommand } from '@kadena/client';
 import { useCallback, useContext } from 'react';
 import * as AccountService from '../account/account.service';
 import { ExtWalletContextType, WalletContext } from './wallet.provider';
-import { IKeySource } from './wallet.repository';
+import { IKeySource, IProfile } from './wallet.repository';
 import * as WalletService from './wallet.service';
 
 const isUnlocked = (
@@ -26,17 +26,18 @@ export const useWallet = () => {
       profileName: string = 'default',
       password: string,
       accentColor: string = defaultAccentColor,
+      options: IProfile['options'],
     ) => {
       const profile = await WalletService.createProfile(
         profileName,
         password,
         [],
         accentColor,
+        options,
       );
-      await setProfile(profile);
       return profile;
     },
-    [setProfile],
+    [],
   );
 
   const unlockProfile = useCallback(

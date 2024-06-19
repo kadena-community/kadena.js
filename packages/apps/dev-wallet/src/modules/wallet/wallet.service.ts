@@ -85,6 +85,7 @@ export async function createProfile(
   password: string,
   networks: INetwork[],
   accentColor: string,
+  options: IProfile['options'],
 ) {
   const secretId = crypto.randomUUID();
   // create this in order to verify the password later
@@ -102,6 +103,7 @@ export async function createProfile(
     networks,
     secretId,
     accentColor: accentColor || defaultAccentColor,
+    options,
   };
 
   await walletRepository.addProfile(profile);

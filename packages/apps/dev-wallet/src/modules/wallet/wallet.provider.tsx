@@ -18,7 +18,7 @@ import * as WalletService from './wallet.service';
 export type ExtWalletContextType = {
   profile?: IProfile;
   accounts?: IAccount[];
-  profileList?: Pick<IProfile, 'name' | 'uuid' | 'accentColor'>[];
+  profileList?: Pick<IProfile, 'name' | 'uuid' | 'accentColor' | 'options'>[];
   keySources?: IKeySource[];
 };
 
@@ -40,10 +40,11 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const retrieveProfileList = useCallback(async () => {
     const profileList = (await walletRepository.getAllProfiles()).map(
-      ({ name, uuid, accentColor }) => ({
+      ({ name, uuid, accentColor, options }) => ({
         name,
         uuid,
         accentColor,
+        options,
       }),
     );
     setContextValue((ctx) => ({ ...ctx, profileList }));

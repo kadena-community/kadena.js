@@ -25,7 +25,7 @@ import {
 } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
 import { FC, useContext } from 'react';
-import { Link, Navigate, Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 
 export const Layout: FC = () => {
   const { networks, activeNetwork, setActiveNetwork } = useNetwork();
@@ -51,10 +51,6 @@ export const Layout: FC = () => {
   const handleLogOut = () => {
     lockProfile();
   };
-
-  if (!isUnlocked) {
-    return <Navigate to="/select-profile" replace />;
-  }
 
   return (
     <>

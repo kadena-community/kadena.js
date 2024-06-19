@@ -30,6 +30,7 @@ export const cardClass = style([
     width: '100%',
   }),
   {
+    cursor: 'pointer',
     backgroundColor: cardColor,
     border: `1px solid ${cardColor}`,
     selectors: {
@@ -65,8 +66,9 @@ export const aliasClass = style([
 
 export const initialsClass = style([
   atoms({
-    fontSize: '9xl',
+    fontSize: 'lg',
     fontWeight: 'secondaryFont.bold',
+    color: 'text.base.default',
   }),
 ]);
 
