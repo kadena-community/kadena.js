@@ -44,7 +44,6 @@ export const Routes: FC = () => {
   const routes = createRoutesFromElements(
     <>
       <Route element={<LayoutMini />}>
-        <Route path="/" element={<HomePage />} />
         <Route path="/select-profile" element={<SelectProfile />} />
         <Route path="/create-profile/*" element={<CreateProfile />} />
         <Route path="/unlock-profile/:profileId" element={<UnlockProfile />} />
@@ -66,6 +65,7 @@ export const Routes: FC = () => {
         <Route path="*" element={<p>Not found!</p>} />
       </Route>
       <Route element={<Layout />}>
+        <Route path="/" element={<HomePage />} />
         <Route path="/accounts/:account" element={<p>Account</p>} />,
         <Route path="/sig-builder" element={<SignatureBuilder />} />,
         <Route path="/networks" element={<Networks />} />

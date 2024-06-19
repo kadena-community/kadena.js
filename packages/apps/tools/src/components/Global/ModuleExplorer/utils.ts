@@ -8,6 +8,8 @@ import type {
   ChainwebNetworkId,
 } from '@kadena/chainweb-node-client';
 import { contractParser } from '@kadena/pactjs-generator';
+import type { FuseResult } from 'fuse.js';
+import type { IModuleExplorerProps } from '.';
 import type { TreeItem } from '../CustomTree/CustomTree';
 import type { Outline } from './types';
 
@@ -22,7 +24,7 @@ export type ContractFunction = ElementType<Contract['functions']>;
 
 export const moduleToOutlineTreeItems = (
   module: IncompleteModuleModel,
-  items: TreeItem<IncompleteModuleModel>[],
+  items: IncompleteModuleModel[],
 ): TreeItem<Outline>[] => {
   const treeItems: TreeItem<Outline>[] = [];
 
@@ -45,28 +47,26 @@ export const moduleToOutlineTreeItems = (
         networkId: module.networkId,
       },
       children: interfaces.map((i) => {
-        // Top level, one of the networks
-        const networkItems = items.find((item) => {
-          return item.data.networkId === module.networkId;
-        });
-        // The second level, the module on certain chains
-        const chainModules = networkItems?.children.find((child) => {
-          return child.data.name === i.name;
-        });
-        // And now the final search, the module on the specific chain
-        const moduleTreeItem = chainModules?.children.find((child) => {
-          return child.data.chainId === module.chainId;
+        const name = i.namespace ? `${i.namespace}.${i.name}` : i.name;
+
+        const interfaceModule = items.find((item) => {
+          return (
+            item.networkId === module.networkId &&
+            item.name === name &&
+            item.chainId === module.chainId
+          );
         });
 
         return {
-          title: i.name,
+          title: name,
           key: `${module.networkId}.${i.name}`,
-          label: moduleTreeItem?.data.hash,
+          label: interfaceModule?.hash,
           data: {
             ...i,
+            name,
             chainId: module.chainId,
             networkId: module.networkId,
-            code: moduleTreeItem?.data.code,
+            code: interfaceModule?.code,
           },
           children: [],
         };
@@ -158,4 +158,32 @@ export const mapToTabs = (map: Map<string, ModuleModel[]>) => {
       children: modules,
     };
   });
+};
+
+export const generateDataMap = (
+  items: IModuleExplorerProps['items'],
+): Map<ChainwebNetworkId, IncompleteModuleModel[]> => {
+  const dataMap = new Map<ChainwebNetworkId, IncompleteModuleModel[]>();
+
+  items.forEach((item) => {
+    const networkId = item.key as ChainwebNetworkId;
+    dataMap.set(networkId, item.data);
+  });
+
+  return dataMap;
+};
+
+export const searchResultsToDataMap = (
+  results: FuseResult<IncompleteModuleModel>[],
+): Map<ChainwebNetworkId, IncompleteModuleModel[]> => {
+  return results.reduce<Map<ChainwebNetworkId, IncompleteModuleModel[]>>(
+    (acc, result) => {
+      const networkId = result.item.networkId;
+      const data = acc.get(networkId) || [];
+      data.push(result.item);
+      acc.set(networkId, data);
+      return acc;
+    },
+    new Map(),
+  );
 };

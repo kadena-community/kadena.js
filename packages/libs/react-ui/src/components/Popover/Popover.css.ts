@@ -1,5 +1,4 @@
-import { style } from '@vanilla-extract/css';
-import { atoms, token } from '../../styles';
+import { style, token } from '../../styles';
 
 export const underlayClass = style({
   position: 'fixed',
@@ -7,17 +6,13 @@ export const underlayClass = style({
   zIndex: token('zIndex.overlay'),
 });
 
-export const popoverClass = style([
-  atoms({
-    backgroundColor: 'input.default',
-    overflow: 'auto',
-  }),
-  {
-    backdropFilter: 'blur(32px)',
-    maxHeight: '100%',
-    boxShadow: `0 1px 0 0 ${token('color.border.base.default')}`,
-  },
-]);
+export const popoverClass = style({
+  backgroundColor: token('color.background.input.default'),
+  overflow: 'auto',
+  backdropFilter: 'blur(32px)',
+  maxHeight: '100%',
+  boxShadow: `0 1px 0 0 ${token('color.border.base.default')}`,
+});
 
 export const arrowClass = style({
   width: '12px',

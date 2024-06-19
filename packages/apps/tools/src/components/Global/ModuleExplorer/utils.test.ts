@@ -3,7 +3,6 @@ import type {
   ModuleModel,
 } from '@/hooks/use-module-query';
 import { describe, expect, it } from 'vitest';
-import type { TreeItem } from '../CustomTree/CustomTree';
 import {
   checkModuleEquality,
   mapToTabs,
@@ -907,38 +906,16 @@ describe('moduleToOutlineTreeItems', () => {
       code: codeWithInterfaces,
     } as const;
 
-    const items: TreeItem<IncompleteModuleModel>[] = [
+    const items: IncompleteModuleModel[] = [
       {
-        data: {
-          networkId: 'mainnet01',
-          name: 'whatever',
-          chainId: '8',
-        },
-        title: 'whatever',
-        key: 'whatever',
-        children: [
-          {
-            title: '',
-            key: '',
-            data: {
-              name: 'fungible-v2',
-              chainId: '0',
-              networkId: 'mainnet01',
-            },
-            children: [
-              {
-                title: '',
-                key: '',
-                data: {
-                  chainId: '0',
-                  name: '0',
-                  networkId: 'mainnet01',
-                },
-                children: [],
-              },
-            ],
-          },
-        ],
+        name: 'fungible-v2',
+        chainId: '0',
+        networkId: 'mainnet01',
+      },
+      {
+        chainId: '0',
+        name: '0',
+        networkId: 'mainnet01',
       },
     ];
 

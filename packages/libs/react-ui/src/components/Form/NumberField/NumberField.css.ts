@@ -1,5 +1,4 @@
-import { styleVariants } from '@vanilla-extract/css';
-import { token } from '../../../styles';
+import { styleVariants, token } from '../../../styles';
 
 export const iconSize = styleVariants({
   sm: {

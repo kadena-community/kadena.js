@@ -1,19 +1,13 @@
-import { style } from '@vanilla-extract/css';
-import { sprinkles } from '../../styles/sprinkles.css';
-import { vars } from '../../styles/vars.css';
+import { style, token } from '../../styles';
 
-export const containerClass = style([
-  sprinkles({
-    display: 'grid',
-    gap: '$md',
-    alignItems: 'center',
-    color: '$neutral6',
-  }),
-  {
-    gridRowGap: vars.sizes.$xs,
-    gridTemplateColumns: 'auto 1fr',
-  },
-]);
+export const containerClass = style({
+  display: 'grid',
+  gap: token('spacing.md'),
+  alignItems: 'center',
+  color: token('color.neutral.n60'),
+  gridRowGap: token('size.n1'),
+  gridTemplateColumns: 'auto 1fr',
+});
 
 export const descriptionClass = style({
   gridColumnStart: 2,

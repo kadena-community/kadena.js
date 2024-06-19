@@ -1,5 +1,16 @@
 # @kadena/explorer
 
+## 0.2.1
+
+### Patch Changes
+
+- ed626de: Added graph in local .env variables describing graph host url's
+- Updated dependencies \[1bbf1c6]
+- Updated dependencies \[63bdbcb]
+- Updated dependencies \[15a492c]
+  - @kadena/graph\@1.0.5
+  - @kadena/react-ui\@0.12.0
+
 ## 0.2.0
 
 ### Minor Changes

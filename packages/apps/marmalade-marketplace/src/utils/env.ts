@@ -26,6 +26,7 @@ if (!CHAINWEB_API_HOST)
   console.error('NEXT_PUBLIC_CHAINWEB_API_HOST is not set');
 if (!CHAINWEBAPIURL) console.error('NEXT_PUBLIC_CHAINWEBAPIURL is not set');
 if (!MAXSIGNERS) console.error('NEXT_PUBLIC_MAXSIGNERS is not set');
+if (!MAXSIGNERS) console.error('NEXT_PUBLIC_MAXSIGNERS is not set');
 
 const EVENTS_TO_INDEX = `
 marmalade-v2.ledger.OFFER,

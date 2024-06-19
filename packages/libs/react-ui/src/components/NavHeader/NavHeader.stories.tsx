@@ -122,7 +122,7 @@ export const Dynamic: IStory = {
           aria-label="Select Network"
           selectedKey={value}
           onSelectionChange={(value: any) => setValue(value)}
-          startIcon={<MonoUsb />}
+          startVisual={<MonoUsb />}
         >
           {sampleNetworkItems.map((network) => (
             <SelectItem key={network} textValue={network}>

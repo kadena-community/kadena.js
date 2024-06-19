@@ -1,13 +1,11 @@
-import { createVar, style, styleVariants } from '@vanilla-extract/css';
-import { atoms, token } from '../../styles';
+import { createVar } from '@vanilla-extract/css';
+import { style, styleVariants, token } from '../../styles';
 
 export const iconFill = createVar();
 export const iconContainer = style([
-  atoms({
+  {
     display: 'block',
     flexShrink: 0,
-  }),
-  {
     fill: iconFill,
     // a hack to override the fill color of the svg if it uses currentColor
     color: iconFill,

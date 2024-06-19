@@ -1,23 +1,18 @@
-import { recipe } from '@vanilla-extract/recipes';
-import { atoms, token } from '../../styles';
+import { recipe, token } from '../../styles';
 
 export const badge = recipe({
-  base: [
-    atoms({
-      borderRadius: 'xs',
-      border: 'hairline',
-      padding: 'xs',
-      display: 'inline-flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      lineHeight: 'base',
-      fontWeight: 'primaryFont.bold',
-    }),
-    {
-      borderColor: token('color.neutral.n1@alpha20'),
-      color: token('color.text.base.inverse.@init'),
-    },
-  ],
+  base: {
+    borderRadius: 'xs',
+    border: 'hairline',
+    padding: 'xs',
+    display: 'inline-flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    lineHeight: 'base',
+    fontWeight: 'primaryFont.bold',
+    borderColor: token('color.neutral.n1@alpha20'),
+    color: token('color.text.base.inverse.@init'),
+  },
   variants: {
     size: {
       lg: {

@@ -48,11 +48,15 @@ Therefore, a typical configuration for the guard policy looks similar to the fol
     "transfer_guard": {
         "keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], 
         "pred": "keys-all"
+        },
+    "uri_guard": {
+        "keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], 
+        "pred": "keys-all"
         }
 }
 ```
 
-It's important to note that specify the guards is optional, even if you apply the guard policy to a token.
+It's important to note that specifying a guard for each activity is optional, even if you apply the guard policy to a token.
 For example, you can add a guard for the `mint` and `burn` operations without specifying a guard for the `sale` and `transfer` operations.
 You can also specify different guards for each operation you want to authorize.
 If you don't specify a guard for any operation, there are no restrictions enforced on who can perform any operation.
@@ -116,3 +120,8 @@ For example, a typical configuration for the royalty policy looks similar to the
 
 in this example, the royalty policy ensures that the creator account receives a return of 5% (0.05) for all
 future sales of the token where this policy is applied.
+
+## Non-updatable policy
+
+The non-updatable policy ensures that a token's metadata and URI can't be changed after the token is created. 
+You can use this policy to prevent token properties from ever being changed and to ensure the token identifier generated for token remains the same.

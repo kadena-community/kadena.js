@@ -5,6 +5,7 @@ import {
 } from '@kadena/react-icons/system';
 import { Badge, Button, Stack, Text } from '@kadena/react-ui';
 import { token } from '@kadena/react-ui/styles';
+import classNames from 'classnames';
 import React, { useCallback } from 'react';
 import type { ICustomAccordionProps } from '../CustomAccordion/CustomAccordion';
 import CustomAccordion from '../CustomAccordion/CustomAccordion';
@@ -24,26 +25,32 @@ export type TreeItem<T> = {
   data: T;
   isLoading?: boolean;
   supportsReload?: boolean;
+  supportsSearch?: boolean;
   label?: string | number;
 };
 
 export interface ICustomTreeProps<T>
-  extends Omit<ICustomAccordionProps<T>, 'children' | 'data'> {
-  data: TreeItem<T>[];
+  extends Omit<ICustomAccordionProps<T>, 'children' | 'items'> {
+  items: TreeItem<T>[];
   onReload: (item: TreeItem<T>) => void;
   onItemClick: (item: TreeItem<T>) => void;
   onExpandCollapse: (item: TreeItem<T>, expanded: boolean) => void;
 }
 
 function CustomTree<T>({
-  data,
+  items,
   onReload,
   onItemClick,
   onExpandCollapse,
+  className,
   ...rest
 }: ICustomTreeProps<T>) {
   return (
-    <CustomAccordion {...rest} data={data} className={containerStyle}>
+    <CustomAccordion
+      {...rest}
+      items={items}
+      className={classNames(containerStyle, className)}
+    >
       {(item) => {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         const toggleHandler = useCallback(() => {
@@ -98,7 +105,7 @@ function CustomTree<T>({
             </Stack>
             {item.isExpanded ? (
               <CustomTreeNode
-                data={item.data.children}
+                items={item.data.children}
                 level={1}
                 onItemClick={onItemClick}
                 onExpandCollapse={onExpandCollapse}
