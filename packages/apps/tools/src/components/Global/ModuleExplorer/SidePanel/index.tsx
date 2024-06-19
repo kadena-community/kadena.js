@@ -40,7 +40,7 @@ function SidePanel<T>({
   onSearch,
   searchHitsCount,
 }: ISidePanelProps<T>) {
-  const [showSearch, setShowSearch] = useState(true || false);
+  const [showSearch, setShowSearch] = useState(false);
   return (
     <CustomAccordion
       items={items}
