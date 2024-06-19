@@ -1,6 +1,6 @@
 {
   "name": "@kadena/client-examples",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": true,
   "description": "Test project to verify pactjs-cli and pactjs-generator",
   "repository": {

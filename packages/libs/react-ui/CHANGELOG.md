@@ -1,5 +1,15 @@
 # @kadena/react-ui
 
+## 0.12.0
+
+### Minor Changes
+
+- 63bdbcb: Add: rebranded table and card components
+
+### Patch Changes
+
+- 15a492c: Icon token set
+
 ## 0.11.0
 
 ### Minor Changes
