@@ -7,7 +7,7 @@ import {
   modelsToTreeMap,
 } from '@/pages/modules/explorer/utils';
 import type { ChainwebNetworkId } from '@kadena/chainweb-node-client';
-import type { FuseResult, IFuseOptions } from 'fuse.js';
+import type { IFuseOptions } from 'fuse.js';
 import Fuse from 'fuse.js';
 import React, { useCallback, useDeferredValue, useMemo, useState } from 'react';
 import type { TreeItem } from '../CustomTree/CustomTree';
@@ -19,7 +19,12 @@ import Editor from './editor';
 import { containerStyle } from './styles.css';
 import type { Outline } from './types';
 import { isCompleteModule } from './types';
-import { checkModuleEquality, moduleToOutlineTreeItems } from './utils';
+import {
+  checkModuleEquality,
+  generateDataMap,
+  moduleToOutlineTreeItems,
+  searchResultsToDataMap,
+} from './utils';
 
 export interface IModuleExplorerProps {
   openedModules: IEditorProps['openedModules'];
@@ -32,34 +37,6 @@ export interface IModuleExplorerProps {
     IncompleteModuleModel | Outline
   >['onExpandCollapse'];
 }
-
-const generateDataMap = (
-  items: IModuleExplorerProps['items'],
-): Map<ChainwebNetworkId, IncompleteModuleModel[]> => {
-  const dataMap = new Map<ChainwebNetworkId, IncompleteModuleModel[]>();
-
-  items.forEach((item) => {
-    const networkId = item.key as ChainwebNetworkId;
-    dataMap.set(networkId, item.data);
-  });
-
-  return dataMap;
-};
-
-const searchResultsToDataMap = (
-  results: FuseResult<IncompleteModuleModel>[],
-): Map<ChainwebNetworkId, IncompleteModuleModel[]> => {
-  return results.reduce<Map<ChainwebNetworkId, IncompleteModuleModel[]>>(
-    (acc, result) => {
-      const networkId = result.item.networkId;
-      const data = acc.get(networkId) || [];
-      data.push(result.item);
-      acc.set(networkId, data);
-      return acc;
-    },
-    new Map(),
-  );
-};
 
 const fuseOptions: IFuseOptions<IncompleteModuleModel> = {
   ignoreLocation: true,

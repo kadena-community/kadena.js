@@ -8,6 +8,8 @@ import type {
   ChainwebNetworkId,
 } from '@kadena/chainweb-node-client';
 import { contractParser } from '@kadena/pactjs-generator';
+import type { FuseResult } from 'fuse.js';
+import type { IModuleExplorerProps } from '.';
 import type { TreeItem } from '../CustomTree/CustomTree';
 import type { Outline } from './types';
 
@@ -156,4 +158,32 @@ export const mapToTabs = (map: Map<string, ModuleModel[]>) => {
       children: modules,
     };
   });
+};
+
+export const generateDataMap = (
+  items: IModuleExplorerProps['items'],
+): Map<ChainwebNetworkId, IncompleteModuleModel[]> => {
+  const dataMap = new Map<ChainwebNetworkId, IncompleteModuleModel[]>();
+
+  items.forEach((item) => {
+    const networkId = item.key as ChainwebNetworkId;
+    dataMap.set(networkId, item.data);
+  });
+
+  return dataMap;
+};
+
+export const searchResultsToDataMap = (
+  results: FuseResult<IncompleteModuleModel>[],
+): Map<ChainwebNetworkId, IncompleteModuleModel[]> => {
+  return results.reduce<Map<ChainwebNetworkId, IncompleteModuleModel[]>>(
+    (acc, result) => {
+      const networkId = result.item.networkId;
+      const data = acc.get(networkId) || [];
+      data.push(result.item);
+      acc.set(networkId, data);
+      return acc;
+    },
+    new Map(),
+  );
 };
