@@ -6,13 +6,9 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   transpilePackages: ['@kadena/react-ui'],
-  async rewrites() {
-    return [
-      {
-        source: '/graph',
-        destination: 'http://localhost:4000/graphql',
-      },
-    ];
+  env: {
+    KADENA_GRAPH_HOST: process.env.KADENA_GRAPH_HOST,
+    KADENA_GRAPH_WS_HOST: process.env.KADENA_GRAPH_WS_HOST,
   },
 };
 

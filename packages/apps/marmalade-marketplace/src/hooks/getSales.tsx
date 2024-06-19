@@ -2,6 +2,7 @@ import { database } from "@/utils/firebase";
 import { BuiltInPredicate, ChainId } from "@kadena/client";
 import { OrderByDirection, collection, getDocs, limit, orderBy, query, where } from "firebase/firestore";
 import { useCallback, useEffect, useState } from "react";
+import { IPactDecimal, IPactInt } from "../../../../libs/types/dist/types";
 
 export type Sale = {
   status: 'CREATED' | 'WITHDRAWN' | 'SOLD';
@@ -28,8 +29,15 @@ export type Sale = {
   };
   saleType?: string;
   escrow?: string;
-  price?: number;
-  startPrice?: number;
+
+  startsAt?: number;
+  endsAt?: number;
+  startPrice: IPactDecimal;
+  reservePrice?: IPactDecimal
+  sellPrice?: IPactDecimal;
+  priceInterval?: IPactInt;
+  highestBid?: IPactDecimal
+  highestBidId?: string
 };
 
 interface GetSalesProps {

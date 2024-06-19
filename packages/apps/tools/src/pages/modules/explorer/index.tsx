@@ -1,21 +1,16 @@
 import type { TreeItem } from '@/components/Global/CustomTree/CustomTree';
 import ModuleExplorer from '@/components/Global/ModuleExplorer';
 import type { IEditorProps } from '@/components/Global/ModuleExplorer/editor';
-import type { IChainModule } from '@/components/Global/ModuleExplorer/types';
 import { isModuleLike } from '@/components/Global/ModuleExplorer/types';
-import { moduleModelToChainModule } from '@/components/Global/ModuleExplorer/utils';
-import { kadenaConstants } from '@/constants/kadena';
 import { menuData } from '@/constants/side-menu-items';
-import { StorageKeys } from '@/context/connect-wallet-context';
 import { useLayoutContext, useToolbar } from '@/context/layout-context';
 import type { IncompleteModuleModel } from '@/hooks/use-module-query';
-import { useModuleQuery } from '@/hooks/use-module-query';
+import { fetchModule, useModuleQuery } from '@/hooks/use-module-query';
 import { QUERY_KEY, useModulesQuery } from '@/hooks/use-modules-query';
-import { describeModule } from '@/services/modules/describe-module';
-import { getAllNetworks } from '@/utils/network';
+import type { IPageProps } from '@/pages/_app';
 import type {
   ChainwebChainId,
-  ILocalCommandResult,
+  ChainwebNetworkId,
 } from '@kadena/chainweb-node-client';
 import { CHAINS } from '@kadena/chainweb-node-client';
 import { useQueryClient } from '@tanstack/react-query';
@@ -26,12 +21,7 @@ import type {
   InferGetServerSidePropsType,
 } from 'next/types';
 import React, { useCallback, useEffect } from 'react';
-import {
-  getCookieValue,
-  getQueryValue,
-  mapToTreeItems,
-  modelsToTreeMap,
-} from './utils';
+import { getQueryValue, mapToTreeItems, modelsToTreeMap } from './utils';
 
 const QueryParams = {
   MODULE: 'module',
@@ -39,15 +29,11 @@ const QueryParams = {
   NETWORK: 'network',
 };
 
-export const getServerSideProps: GetServerSideProps<{
-  openedModules: IEditorProps['openedModules'];
-}> = async (context) => {
-  const networksData = getCookieValue(
-    StorageKeys.NETWORKS_DATA,
-    context.req.cookies,
-    getAllNetworks([]),
-  );
-
+export const getServerSideProps: GetServerSideProps<
+  IPageProps & {
+    openedModules: IEditorProps['openedModules'];
+  }
+> = async (context) => {
   const openedModules: IEditorProps['openedModules'] = [];
   const moduleQueryValue = getQueryValue(QueryParams.MODULE, context.query);
   const chainQueryValue = getQueryValue(
@@ -57,27 +43,26 @@ export const getServerSideProps: GetServerSideProps<{
   );
   const networkQueryValue = getQueryValue(QueryParams.NETWORK, context.query);
   if (moduleQueryValue && chainQueryValue && networkQueryValue) {
-    const moduleResponse = (await describeModule(
-      moduleQueryValue,
-      chainQueryValue as ChainwebChainId,
-      networkQueryValue,
-      networksData,
-      kadenaConstants.DEFAULT_SENDER,
-      kadenaConstants.GAS_PRICE,
-      1000,
-    )) as ILocalCommandResult;
+    try {
+      const fetchedModule = await fetchModule(
+        moduleQueryValue,
+        networkQueryValue as ChainwebNetworkId,
+        chainQueryValue as ChainwebChainId,
+      );
 
-    if (moduleResponse.result.status !== 'failure') {
-      openedModules.push({
-        code: (moduleResponse.result.data as unknown as { code: string }).code,
-        moduleName: moduleQueryValue,
-        chainId: chainQueryValue as ChainwebChainId,
-        network: networkQueryValue,
-      });
+      openedModules.push(fetchedModule);
+    } catch (e) {
+      console.error('Something went wrong while fetching the module', e);
     }
   }
 
-  return { props: { openedModules } };
+  return {
+    props: {
+      openedModules,
+      menuInitiallyOpened: false,
+      useFullPageWidth: true,
+    },
+  };
 };
 
 const ModuleExplorerPage = (
@@ -138,9 +123,9 @@ const ModuleExplorerPage = (
   // });
 
   const setDeepLink = useCallback(
-    (module: IChainModule) => {
+    (module: IncompleteModuleModel) => {
       void router.replace(
-        `?${QueryParams.MODULE}=${module.moduleName}&${QueryParams.CHAIN}=${module.chainId}&${QueryParams.NETWORK}=${module.network}`,
+        `?${QueryParams.MODULE}=${module.name}&${QueryParams.CHAIN}=${module.chainId}&${QueryParams.NETWORK}=${module.networkId}`,
         undefined,
         { shallow: true },
       );
@@ -148,7 +133,7 @@ const ModuleExplorerPage = (
     [router],
   );
 
-  const onModuleOpen = useCallback<(module: IChainModule) => void>(
+  const onModuleOpen = useCallback<(module: IncompleteModuleModel) => void>(
     (module) => {
       setDeepLink(module);
     },
@@ -164,7 +149,7 @@ const ModuleExplorerPage = (
       </Head>
       <ModuleExplorer
         onModuleClick={(treeItem) => {
-          onModuleOpen(moduleModelToChainModule(treeItem.data));
+          onModuleOpen(treeItem.data);
         }}
         onActiveModuleChange={(module) => {
           setDeepLink(module);

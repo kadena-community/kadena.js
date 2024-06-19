@@ -1,6 +1,17 @@
-import { useNetwork } from '@/modules/network/network.hook';
-import { MonoContrast, MonoPublic } from '@kadena/react-icons';
 import {
+  backgroundStyle,
+  headerStyle,
+  mainColumnStyle,
+  selectNetworkClass,
+} from '@/App/layout.css.ts';
+import { Sidebar } from '@/Components/Sidebar/Sidebar.tsx';
+import { LayoutContext } from '@/modules/layout/layout.provider.tsx';
+import { useNetwork } from '@/modules/network/network.hook';
+import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
+import { pageClass } from '@/pages/home/style.css.ts';
+import { MonoContrast, MonoLogout, MonoPublic } from '@kadena/react-icons';
+import {
+  Box,
   KadenaLogo,
   NavHeader,
   NavHeaderButton,
@@ -8,12 +19,13 @@ import {
   NavHeaderLinkList,
   NavHeaderSelect,
   SelectItem,
+  Stack,
   Themes,
   useTheme,
 } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
-import { FC } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { FC, useContext } from 'react';
+import { Link, Navigate, Outlet } from 'react-router-dom';
 
 export const Layout: FC = () => {
   const { networks, activeNetwork, setActiveNetwork } = useNetwork();
@@ -32,6 +44,18 @@ export const Layout: FC = () => {
     setTheme(newTheme);
   };
 
+  const { isUnlocked, lockProfile } = useWallet();
+
+  const { layoutContext } = useContext(LayoutContext) ?? [];
+  const accentColor = layoutContext?.accentColor;
+  const handleLogOut = () => {
+    lockProfile();
+  };
+
+  if (!isUnlocked) {
+    return <Navigate to="/select-profile" replace />;
+  }
+
   return (
     <>
       <NavHeader
@@ -40,6 +64,7 @@ export const Layout: FC = () => {
             <KadenaLogo height={40} />
           </Link>
         }
+        className={headerStyle}
       >
         <NavHeaderLinkList>
           <NavHeaderLink asChild>
@@ -50,33 +75,56 @@ export const Layout: FC = () => {
           </NavHeaderLink>
         </NavHeaderLinkList>
 
-        <NavHeaderButton
-          aria-label="Toggle theme"
-          onPress={() => toggleTheme()}
-          className={atoms({ marginInlineEnd: 'sm' })}
-        >
-          <MonoContrast
-            className={atoms({
-              color: 'text.base.default',
-            })}
-          />
-        </NavHeaderButton>
-
-        <NavHeaderSelect
-          aria-label="Select Network"
-          selectedKey={activeNetwork?.networkId}
-          onSelectionChange={(value) => handleNetworkUpdate(value as string)}
-          startVisual={<MonoPublic />}
-        >
-          {networks.map((network) => (
-            <SelectItem key={network.networkId} textValue={network.name}>
-              {network.name}
-            </SelectItem>
-          ))}
-        </NavHeaderSelect>
+        <Stack alignItems="center">
+          <NavHeaderButton
+            aria-label="Toggle theme"
+            title="Toggle theme"
+            onPress={() => toggleTheme()}
+            className={atoms({ marginInlineEnd: 'sm' })}
+          >
+            <MonoContrast
+              className={atoms({
+                color: 'text.base.default',
+              })}
+            />
+          </NavHeaderButton>
+          <NavHeaderSelect
+            aria-label="Select Network"
+            selectedKey={activeNetwork?.networkId}
+            onSelectionChange={(value) => handleNetworkUpdate(value as string)}
+            startVisual={<MonoPublic />}
+            className={selectNetworkClass}
+          >
+            {networks.map((network) => (
+              <SelectItem key={network.networkId} textValue={network.name}>
+                {network.name}
+              </SelectItem>
+            ))}
+          </NavHeaderSelect>
+          {isUnlocked && (
+            <NavHeaderButton
+              aria-label="Logout"
+              title="Logout"
+              onPress={() => handleLogOut()}
+            >
+              <MonoLogout />
+            </NavHeaderButton>
+          )}
+        </Stack>
       </NavHeader>
       <main>
-        <Outlet />
+        <Stack className={pageClass}>
+          <Sidebar></Sidebar>
+          <Box padding="n10" className={mainColumnStyle}>
+            <div
+              className={backgroundStyle}
+              style={{
+                backgroundImage: `radial-gradient(circle farthest-side at 50% 240%, ${accentColor}, transparent 75%)`,
+              }}
+            ></div>
+            <Outlet />
+          </Box>
+        </Stack>
       </main>
       <div id="modalportal"></div>
     </>

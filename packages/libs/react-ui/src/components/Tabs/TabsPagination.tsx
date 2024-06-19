@@ -91,7 +91,7 @@ export const TabsPagination = ({
         aria-label="Scroll left"
         variant="transparent"
         isDisabled={!visibleButtons.left}
-        className={classNames(paginationButton['left'], {
+        className={classNames(paginationButton.left, {
           [hiddenClass]: !visibleButtons.left,
         })}
         onPress={() => handlePagination('back')}
@@ -103,7 +103,7 @@ export const TabsPagination = ({
         aria-label="Scroll right"
         variant="transparent"
         isDisabled={!visibleButtons.right}
-        className={classNames(paginationButton['right'], {
+        className={classNames(paginationButton.right, {
           [hiddenClass]: !visibleButtons.right,
         })}
         onPress={() => handlePagination('forward')}

@@ -15,7 +15,7 @@ const getItem = (item: IProps['item'], key: ITableField['key']) => {
   const value = keyArr.reduce((acc, val) => {
     if (!acc) return;
     const newItem = acc[val];
-    if (!newItem) return;
+    if (newItem === undefined || newItem === null) return;
 
     return newItem;
   }, item);

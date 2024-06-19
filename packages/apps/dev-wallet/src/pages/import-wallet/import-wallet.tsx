@@ -1,4 +1,4 @@
-import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.hook';
+import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IKeySource } from '@/modules/wallet/wallet.repository';
 import { Box, Button, Heading, Stack, Text, TextField } from '@kadena/react-ui';
@@ -22,9 +22,9 @@ const defaultValues: Inputs = {
 
 export function ImportWallet() {
   const { register, handleSubmit } = useForm<Inputs>({ defaultValues });
-  const [error, setError] = useState('');
-  const { createProfile, isUnlocked, retrieveKeySources } = useWallet();
   const { createHDWallet } = useHDWallet();
+  const [error, setError] = useState('');
+  const { createProfile, isUnlocked } = useWallet();
   const [selectedKeySource, setSelectedKeySource] = useState<IKeySource>();
   async function confirm({ phrase, password, name, fromChainweaver }: Inputs) {
     const is12Words = phrase.trim().split(' ').length === 12;
@@ -43,7 +43,6 @@ export function ImportWallet() {
         phrase,
       );
       setSelectedKeySource(keySource);
-      retrieveKeySources(profile.uuid);
     } catch (e) {
       setError((e as Error).message);
     }

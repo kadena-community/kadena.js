@@ -23,12 +23,10 @@ import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 import type {
   CommonProps,
-  FunctionGuard,
   ICreateTokenPolicyConfig,
   PolicyProps,
   WithCreateTokenPolicy,
 } from './config';
-import { GUARD_POLICY } from './config';
 import {
   formatAdditionalSigners,
   formatCapabilities,
@@ -120,36 +118,22 @@ const generatePolicyTransactionData = (
 
   if (policyConfig?.hasRoyalty) {
     data.push(
-      addData('royalty_specs', {
+      addData('royalty_spec', {
         fungible: props.royalty.fungible,
-        creator: props.royalty.creator,
+        creator: props.royalty.creator.account,
         'creator-guard': props.royalty.creator.keyset,
         'royalty-rate': props.royalty.royaltyRate.decimal,
       }),
     );
   }
 
-  if (!policyConfig?.guarded && policyConfig?.updatableURI) {
-    if (props.guards.uriGuard)
-      data.push(
-        addData(
-          'uri_guard',
-          props.guards.uriGuard as unknown as ValidDataTypes,
-        ),
-      );
+  if (!policyConfig?.guarded && policyConfig?.nonUpdatableURI === false) {
+    throw new Error('Guard policy must be used with updatable URI tokens');
   }
 
-  if (policyConfig?.guarded && !policyConfig?.updatableURI) {
+  if (policyConfig?.guarded && policyConfig?.nonUpdatableURI === false) {
     if (!props.guards.uriGuard) {
-      throw new Error('Non-updatable tokens require "uriGuard"');
-    }
-    if (!(props.guards.uriGuard as FunctionGuard)?.fun) {
-      throw new Error('Non-updatable tokens require function guard');
-    }
-    if (
-      (props.guards.uriGuard as FunctionGuard).fun !== `${GUARD_POLICY}.failure`
-    ) {
-      throw new Error('Non-updatable tokens require failure guard');
+      throw new Error('Updatable tokens require "uriGuard"');
     }
   }
 

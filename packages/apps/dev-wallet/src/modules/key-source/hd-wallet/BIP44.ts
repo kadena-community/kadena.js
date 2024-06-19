@@ -23,11 +23,13 @@ const createContext = async (mnemonic: string) => {
   return { encryptionKey, encryptedSeed };
 };
 
-export function createBIP44Service() {
-  let context: {
-    encryptionKey: Uint8Array;
-    encryptedSeed: Uint8Array;
-  } | null = null;
+export type BIP44Context = {
+  encryptionKey: Uint8Array;
+  encryptedSeed: Uint8Array;
+};
+
+export function createBIP44Service(initialContext: BIP44Context | null = null) {
+  let context: BIP44Context | null = initialContext;
 
   const isConnected = () => Boolean(context);
   const disconnect = () => {
@@ -149,6 +151,7 @@ export function createBIP44Service() {
     getPublicKey,
     sign,
     clearCache: () => {},
+    getContext: () => context,
   };
 }
 

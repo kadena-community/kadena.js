@@ -2,6 +2,7 @@
 import '@kadena/react-ui/global';
 
 import { MediaContextProvider } from '@/components/layout/media';
+import { graphHost, wsGraphHost } from '@/constants/graphHost';
 import type { NormalizedCacheObject } from '@apollo/client';
 import {
   ApolloClient,
@@ -23,13 +24,16 @@ import React from 'react';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { YogaLink } = require('@graphql-yoga/apollo-link');
 
+console.log('graphHost', graphHost);
+console.log('wsGraphHost', wsGraphHost);
+
 const httpLink = new YogaLink({
-  endpoint: '/graph',
+  endpoint: graphHost,
 });
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: 'ws://localhost:4000/graphql',
+    url: wsGraphHost,
   }),
 );
 

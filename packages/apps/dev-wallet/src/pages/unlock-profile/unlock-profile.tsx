@@ -1,5 +1,5 @@
 import { AuthCard } from '@/Components/AuthCard/AuthCard';
-import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.hook';
+import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet';
 import {
   Avatar,
   Button,
@@ -20,9 +20,9 @@ export function UnlockProfile() {
     setError,
     formState: { isValid, errors },
   } = useForm<{ password: string }>();
+  const { unlockHDWallet } = useHDWallet();
   const { profileId } = useParams();
   const { isUnlocked, profileList, unlockProfile } = useWallet();
-  const { unlockHDWallet } = useHDWallet();
   const profile = profileList.find((p) => p.uuid === profileId);
   const incorrectPasswordMsg = 'Password is incorrect';
 

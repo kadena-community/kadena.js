@@ -6,6 +6,5 @@
     "module": "NodeNext",
     "types": [".kadena/pactjs-generated", "./src/utils/ttys.d.ts"],
     "resolveJsonModule": true
-  },
-  "exclude": ["./src/mocks"]
+  }
 }

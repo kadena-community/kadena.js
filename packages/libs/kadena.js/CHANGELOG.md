@@ -1,5 +1,11 @@
 # kadena.js
 
+## 0.1.5
+
+### Patch Changes
+
+- f0e773291: a
+
 ## 0.1.4
 
 ### Patch Changes

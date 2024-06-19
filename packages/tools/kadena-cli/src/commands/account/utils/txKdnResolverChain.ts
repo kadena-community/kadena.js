@@ -7,7 +7,7 @@ import {
 
 const chainId: ChainId = '15'; // kadenanames running on chain 15
 
-function ensureKdaExtension(name: string): string {
+export function ensureKdaExtension(name: string): string {
   const lowerCaseName = name.toLowerCase();
   if (!lowerCaseName.endsWith('.kda')) {
     return `${lowerCaseName}.kda`;

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { config } from 'dotenv';
 import fs from 'fs';
 import { schedule } from 'node-cron';
@@ -41,13 +40,14 @@ const startCronJobs = (config: VercelConfig) => {
     schedule(cron.schedule, async () => {
       try {
         console.log(`Executing cron job for ${cron.path}`);
-        const response = await axios.get(`${API_URL}${cron.path}`);
+        const response = await fetch(`${API_URL}${cron.path}`);
+        const responseData = await response.json();
         const filename = `.cron/output${cron.path.replace(/\//g, '_')}.txt`;
         fs.appendFileSync(
           filename,
-          `${new Date().toISOString()} - ${JSON.stringify(response.data)}\n`,
+          `${new Date().toISOString()} - ${JSON.stringify(responseData)}\n`,
         );
-        console.log(`Executed cron job for ${cron.path}:`, response.data);
+        console.log(`Executed cron job for ${cron.path}:`, responseData);
       } catch (error) {
         console.error(`Error making GET request to ${cron.path}:`, error);
       }

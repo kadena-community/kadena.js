@@ -47,7 +47,10 @@ export const deployMarmaladeNamespaces = async ({
     await Promise.all(
       config.namespaces.map(async (namespace) => {
         let keysets;
-        const keys = sender.publicKeys || [];
+        const keys =
+          sender.publicKeys?.map((key) =>
+            typeof key === 'string' ? key : key.pubKey,
+          ) ?? [];
         const pred = 'keys-all';
 
         /* We need to define the keysets for each namespace since
