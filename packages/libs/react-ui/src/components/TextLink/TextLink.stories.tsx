@@ -38,6 +38,12 @@ const meta: Meta<ITextLinkProps> = {
         type: 'text',
       },
     },
+    withIcon: {
+      description: 'optionally show a link icon',
+      control: {
+        type: 'boolean',
+      },
+    },
   },
 };
 
@@ -61,6 +67,9 @@ export const AllOptions: TextLinkStory = {
       <Stack flexDirection={'column'}>
         <TextLink {...props}>{props.children}</TextLink>{' '}
         <TextLink {...props} isCompact={true}>
+          {props.children}
+        </TextLink>
+        <TextLink {...props} withIcon>
           {props.children}
         </TextLink>
       </Stack>
