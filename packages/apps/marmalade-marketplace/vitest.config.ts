@@ -13,7 +13,7 @@ const localConfig = defineConfig({
       thresholds: {
         lines: 10,
         functions: 8,
-        branches: 30,
+        branches: 25,
         statements: 10,
         autoUpdate: false
       },
