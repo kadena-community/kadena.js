@@ -12,7 +12,6 @@ import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
-import { useDebounce } from 'react-use';
 import {
   searchInputStyles,
   searchResultQueryStyles,
@@ -32,15 +31,6 @@ const Search: FC<ISearchBarProps> = ({ networks, onSearch, hitsCount }) => {
   const [query, setQuery] = useState('');
   const [searchFilter, setSearchFilter] = useState(DEFAULT_ALL_ITEMS_KEY);
 
-  // const deferredQuery = useDeferredValue(query);
-  useDebounce(
-    () => {
-      onSearch(query, searchFilter);
-    },
-    1000,
-    [query, searchFilter],
-  );
-
   const selectItems = [DEFAULT_ALL_ITEMS_KEY, ...networks].map((network) => ({
     key: network,
     label: network,
@@ -51,6 +41,7 @@ const Search: FC<ISearchBarProps> = ({ networks, onSearch, hitsCount }) => {
   useEffect(() => {
     // Let's focus the input field when the component mounts
     ref.current?.focus();
+
     return () => {
       onSearch('', DEFAULT_ALL_ITEMS_KEY);
     };
@@ -63,6 +54,7 @@ const Search: FC<ISearchBarProps> = ({ networks, onSearch, hitsCount }) => {
           startVisual={<MonoManageSearch />}
           onChange={(x) => {
             setQuery(x.target.value);
+            onSearch(x.target.value, searchFilter);
           }}
           className={searchInputStyles}
           aria-label={t('search-for-modules')}

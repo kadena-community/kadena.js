@@ -9,7 +9,7 @@ import {
 import type { ChainwebNetworkId } from '@kadena/chainweb-node-client';
 import type { FuseResult, IFuseOptions } from 'fuse.js';
 import Fuse from 'fuse.js';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useDeferredValue, useMemo, useState } from 'react';
 import type { TreeItem } from '../CustomTree/CustomTree';
 import type { ISidePanelProps } from './SidePanel';
 import SidePanel from './SidePanel';
@@ -85,6 +85,7 @@ const ModuleExplorer = ({
     useState<ModuleModel[]>(_openedModules);
 
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const deferredQuery = useDeferredValue(searchQuery);
   const [searchFilter, setSearchFilter] = useState<string>(
     DEFAULT_ALL_ITEMS_KEY,
   );
@@ -92,14 +93,14 @@ const ModuleExplorer = ({
   const data = generateDataMap(items);
 
   const filteredData = useMemo(() => {
-    if (!searchQuery) {
+    if (!deferredQuery) {
       return data;
     }
 
     const fuse = new Fuse([...data.values()].flat(), fuseOptions);
-    const results = fuse.search(searchQuery);
+    const results = fuse.search(deferredQuery);
     return searchResultsToDataMap(results);
-  }, [searchQuery, data]);
+  }, [deferredQuery, data]);
 
   const mapped = useMemo(() => {
     return items
@@ -122,11 +123,11 @@ const ModuleExplorer = ({
           children: mapToTreeItems(
             modelsToTreeMap(filteredData.get(networkId) || []),
             item.key as string,
-            !searchQuery, // Don't sort alphabetically for search results
+            !deferredQuery, // Don't sort alphabetically for search results
           ),
         };
       });
-  }, [filteredData, items, searchFilter, searchQuery]);
+  }, [filteredData, items, searchFilter, deferredQuery]);
 
   let outlineItems: TreeItem<Outline>[] = [];
 
