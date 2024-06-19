@@ -123,44 +123,82 @@ This function requires a token ID as its argument and returns the associated URI
 
 When you call the `get-uri` function and pass in a token ID, the function accesses the `tokens` map, finds the row corresponding to the provided token ID, and returns the value stored in the `'uri` field of that row. 
 
-## Leveraging Arweave with Akord
+## Using Arweave with Akord
 
-Given the immutable characteristic of NFTs, the associated data's long-term
-accessibility and sustainability are critical aspects to consider. 
-Akord has
-emerged as a powerful tool to handle these requirements, and its importance is
-underscored in the context of Marmalade.
+**Arweave** is a data storage blockchain, designed specifically to permanently store data on-chain with one upfront payment. As an on-chain storage solution, data is immutable and timestamped. Its permanence is guaranteed by an on-chain endowment, which ensures miners are incentivized to store data for a minimum of 200 years.
 
-Arweave is a pioneering protocol designed to modernize the internet's
-foundational structures, augmenting its capacity for storing, addressing, and
-accessing data. 
-This technology is central to our approach to dealing with NFT
-data, ensuring its perpetual availability and integrity and thereby
-strengthening the overall dependability of the NFTs hosted on Marmalade.
+**Akord** provides a web app, API, CLI and SDK to easily upload and manage data on Arweave. To use Arweave for storing your NFT assets, take the following steps.
 
-### What is Akord?
+### 1. Upload the image asset to Arweave
 
-Akord is a platform built on the Arweave blockchain that helps NFT projects and creators get the most out of permanent storage and data ownership. 
-Akord facilitates easy uploading to Arweave, caching, reposting, file management, end-to-end encryption, notifications, token-gated access, private messaging, note creation and more. 
+**1a. Upload with the Akord app**
 
-Everything in Akord happens through public or private digital vaults, where you can invite others and set access control. 
+You get 100 MB free on sign up and can easily upload in a few minutes using the web app. [Sign up](https://v2.akord.com/signup), login and follow the instructions to create an “NFT assets” vault. 
 
-### How is Akord different?
-While there are other products that also provide data storage on Arweave, Akord has some key differentiating features.
+![Kadena Docs-1](https://github.com/kadena-community/kadena.js/assets/57722629/075c3c75-2a79-4ffa-b715-435c93b63a0c)
 
-- **The easiest and cheapest way to upload to Arweave**. Akord makes it simple to upload to Arweave via the [API](https://docs.akord.com/api-and-dev-tools/quickest-way-to-upload-to-arweave), [CLI](https://docs.akord.com/api-and-dev-tools/build/cli) or [app](https://v2.akord.com/signup). The only service to offer free Arweave storage, 100 MB on [signup](https://v2.akord.com/signup), their prices are also the [cheapest in the ecosystem](https://akord.com/pricing).
+Upload your file to the vault and wait for it to be successfully committed on the Arweave blockchain, normally 5-15 minutes. 
 
-- **A secure space to manage on-chain data**. Akord’s advanced system of end-to-end encryption not only secures your files and messages, but uses key rotation to facilitate collaboration within private vaults.
-  
-- **A focus on user experience for developers and end users**. Akord’s vision is to make the power of web3 accessible to everyone, a vision shared by Kadena.
 
-### Use Akord
+**1b. Upload with the Akord API**
 
-All users get [100 MB of free permanent storage on Arweave](https://v2.akord.com/signup) when signing up, it literally takes a minute. 
+- [First, create your account in seconds](https://v2.akord.com/signup) (100 MB free to test your workflow)
 
-- [**Storing NFT assets on Arweave**](https://docs.akord.com/nfts/storing-nft-assets-on-arweave-100-mb-free). Learn how to store NFT assets on Arweave using Akord, and how to manage your data by generating a manifest.
-- [**Simple API upload to Arweave**](https://docs.akord.com/api-and-dev-tools/simple-api-upload-to-arweave). A super simple, fast way to upload to Arweave with no tokens or wallets needed.
-- [**Full developer documentation**](https://docs.akord.com/api-and-dev-tools/learn). Developers can learn about Akord protocol, the [API](https://docs.akord.com/api-and-dev-tools/quickest-way-to-upload-to-arweave), and open source [CLI](https://docs.akord.com/api-and-dev-tools/build/cli) and [JavaScript SDK](https://github.com/Akord-com/akord-js), as well as how to publish a website on Arweave.
-- [**Use the intuitive web app**](https://v2.akord.com/signup). The Akord web app abstracts away the complexities of web3 and makes it easy to store any of your data, personal or professional, on Arweave. 
+- [Next, get your API key here](https://v2.akord.com/account/developers)
 
-For any questions, contact the team in their [Discord](https://discord.com/invite/DVkyUtcKGn). 
+```javascript
+const fs = require('fs').promises;
+const data = await fs.readFile('/path/to/your/file.txt', 'utf8'); //nodejs specific
+
+const response = await fetch('https://api.akord.com/files', {
+method: 'POST',
+headers: {
+'Accept': 'application/json',
+'Api-Key': 'your_api_key',
+'Content-Type': 'text/plain'
+},
+body: data
+});
+```
+That's it! You just uploaded the file to Arweave.
+
+For example responses, API uploads with tags, multipart uploads for larger files, and full documentation on the API, please [check out the Akord API docs here](https://docs.akord.com/).
+
+
+**1c. Upload by with Akord CLI**
+
+You can also use the Akord CLI to upload by syncing with S3 or a local directory. 
+
+For a complete guide, [check out the Akord CLI docs here](https://docs.akord.com/nft-projects/upload-with-app-api-or-cli/sync-s3-or-local-directory-using-cli).
+
+### 2. Get the Arweave gateway URL
+
+After your assets are uploaded, you’ll need the Arweave gateway URLs. This will be used for the image field in the metadata JSON.
+
+
+**2a. Single NFT**
+
+You can get the Arweave gateway URL very easily in the Akord app by clicking the info icon on the file row:
+
+![Kadena-Docs-2](https://github.com/kadena-community/kadena.js/assets/57722629/42c4c974-8627-4336-a6dc-a3ea0bff1fb9)
+
+At the top you have two gateway URLs: Akord’s own gateway, akrd.net, and another popular gateway, arweave.net:
+
+![Kadena-Docs-3](https://github.com/kadena-community/kadena.js/assets/57722629/474c44b2-0cb9-4cd8-8f7f-8ac46b4d2ee8)
+
+All gateways follow the same scheme: https://{gateway host}/{tx-id}. On Arweave, the transaction ID is the content identifier. 
+
+
+**2b. NFT Collection**
+
+If you’re uploading multiple assets, it’s best to create an Arweave manifest in your vault to get all the transaction IDs in one JSON. 
+
+_In the app_ you can do this by selecting “Create JSON metadata” and selecting Arweave manifest:
+
+![Kadena-4](https://github.com/kadena-community/kadena.js/assets/57722629/9c15faf1-cc49-4895-9223-895d08e58b9c)
+
+_From the CLI_ you can run: `akord manifest:generate <vault-id>`
+
+For full documentation on creating manifests, [check out the Akord docs on manifests here](https://docs.akord.com/nft-projects/get-the-arweave-urls).
+
+
