@@ -11,7 +11,11 @@ import {
 import type { FC } from 'react';
 import React, { useState } from 'react';
 import { useDebounce } from 'react-use';
-import { searchResultQueryStyles, searchResultsStyles } from './styles.css';
+import {
+  searchInputStyles,
+  searchResultQueryStyles,
+  searchResultsStyles,
+} from './styles.css';
 
 export interface ISearchBarProps {
   networks: ChainwebNetworkId[];
@@ -53,6 +57,7 @@ const Search: FC<ISearchBarProps> = ({ networks, onSearch, hitsCount }) => {
 
             setQuery(x.target.value);
           }}
+          className={searchInputStyles}
           aria-label="Search for modules"
         />
         <Select

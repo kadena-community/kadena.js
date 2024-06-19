@@ -35,3 +35,7 @@ export const searchResultsStyles = atoms({
 export const searchResultQueryStyles = style({
   fontWeight: token('typography.weight.primaryFont.bold'),
 });
+
+export const searchInputStyles = atoms({
+  width: '100%',
+});
