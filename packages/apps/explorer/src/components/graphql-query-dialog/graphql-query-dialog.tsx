@@ -1,4 +1,4 @@
-import { MonoInfo } from '@kadena/react-icons/system';
+import { MonoHub } from '@kadena/react-icons/system';
 import { Box, Button, Dialog, DialogContent, Divider } from '@kadena/react-ui';
 import type { DocumentNode } from 'graphql';
 import { print } from 'graphql';
@@ -21,7 +21,7 @@ export const GraphQLQueryDialog = (
   return (
     <>
       <Button
-        endVisual={<MonoInfo />}
+        endVisual={<MonoHub />}
         title="Show the GraphQL query used."
         isCompact
         variant="transparent"

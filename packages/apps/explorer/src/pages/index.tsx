@@ -1,4 +1,5 @@
 import BlockTable from '@/components/block-table/block-table';
+import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import { Media } from '@/components/layout/media';
 import SearchLayout from '@/components/layout/search-layout/search-layout';
 import SearchComponent from '@/components/search/search-component/search-component';
@@ -21,6 +22,7 @@ const Home: React.FC = () => {
 
   return (
     <SearchLayout>
+      <GraphQLQueryDialog queries={[]} />
       <Media greaterThanOrEqual="sm">
         <Stack flexDirection="column" gap={'xxl'} alignItems={'center'}>
           <LogoKdacolorLight />
