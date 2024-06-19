@@ -88,48 +88,6 @@ const ModuleExplorerPage = (
   const mainnetModulesQuery = useModulesQuery('mainnet01');
   const testnetModulesQuery = useModulesQuery('testnet04');
 
-  // let mappedMainnet: TreeItem<IncompleteModuleModel>[] = [];
-  // let amountOfMainnetModules = 0;
-
-  // if (mainnetModulesQuery.isSuccess) {
-  //   mappedMainnet = mapToTreeItems(
-  //     modelsToTreeMap(mainnetModulesQuery.data),
-  //     'mainnet',
-  //   );
-  //   amountOfMainnetModules = mainnetModulesQuery.data.length;
-  // }
-
-  // let mappedTestnet: TreeItem<IncompleteModuleModel>[] = [];
-  // let amountOfTestnetModules = 0;
-
-  // if (testnetModulesQuery.isSuccess) {
-  //   console.log(
-  //     'lets search',
-  //     new Fuse(testnetModulesQuery.data, {
-  //       keys: ['name'],
-  //       includeScore: true,
-  //       // findAllMatches: true,
-  //     }).search('fuacet'),
-  //   );
-
-  //   mappedTestnet = mapToTreeItems(
-  //     modelsToTreeMap(testnetModulesQuery.data),
-  //     'testnet',
-  //   );
-  //   amountOfTestnetModules = testnetModulesQuery.data.length;
-  // }
-
-  // const customNetworks = networksData.filter(
-  //   (n) => n.networkId !== 'mainnet01' && n.networkId !== 'testnet04',
-  // );
-  // const customNetworksQueries = useQueries({
-  //   queries: customNetworks.map((customNetwork) => ({
-  //     queryKey: ['modules-custom', customNetwork.networkId],
-  //     queryFn: () => {},
-  //     staleTime: Infinity,
-  //   })),
-  // });
-
   const setDeepLink = useCallback(
     (module: IncompleteModuleModel) => {
       void router.replace(
