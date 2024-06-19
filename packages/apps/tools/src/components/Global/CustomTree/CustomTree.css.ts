@@ -44,6 +44,21 @@ export const itemContainerStyle = style([
 
 export const reloadButtonStyles = atoms({ marginInlineEnd: 'sm' });
 
+export const reloadIconStyles = style({
+  selectors: {
+    [`${reloadButtonStyles} &`]: {
+      color: token('color.icon.base.inverse.default'),
+    },
+    [`${reloadButtonStyles}:hover &`]: {
+      color: token('color.icon.base.@hover'),
+    },
+  },
+});
+
+export const reloadLoadingStyles = style({
+  color: token('color.icon.semantic.positive.default'),
+});
+
 export const firstLevelTreeNodeStyles = style({
   borderBlockEnd: '1px solid rgba(0, 0, 0, 0.25)',
 });

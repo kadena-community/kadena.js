@@ -4,7 +4,6 @@ import {
   MonoCached,
 } from '@kadena/react-icons/system';
 import { Badge, Button, Stack, Text } from '@kadena/react-ui';
-import { token } from '@kadena/react-ui/styles';
 import classNames from 'classnames';
 import React, { useCallback } from 'react';
 import type { ICustomAccordionProps } from '../CustomAccordion/CustomAccordion';
@@ -14,6 +13,8 @@ import {
   itemContainerStyle,
   itemTitleStyle,
   reloadButtonStyles,
+  reloadIconStyles,
+  reloadLoadingStyles,
 } from './CustomTree.css';
 import CustomTreeNode from './CustomTreeNode';
 
@@ -88,7 +89,9 @@ function CustomTree<T>({
                   className={reloadButtonStyles}
                 >
                   <MonoCached
-                    color={token('color.icon.semantic.positive.default')}
+                    className={classNames(reloadIconStyles, {
+                      [reloadLoadingStyles]: item.data.isLoading,
+                    })}
                   />
                 </Button>
               ) : null}
