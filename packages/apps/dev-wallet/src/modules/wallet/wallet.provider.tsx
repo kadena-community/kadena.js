@@ -123,18 +123,6 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     [session],
   );
 
-  const unlockKeySourcesFromSession = useCallback(async () => {
-    const loadService = async (type: 'HD-BIP44' | 'HD-chainweaver') => {
-      const context = await session.get(`keySource:${type}`);
-      if (context) {
-        await keySourceManager.get(type, context);
-      }
-    };
-    await Promise.all(
-      (['HD-BIP44', 'HD-chainweaver'] as const).map(loadService),
-    );
-  }, [session]);
-
   useEffect(() => {
     const loadSession = async () => {
       if (!session.isLoaded) return;
@@ -143,11 +131,10 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
         const profile = await walletRepository.getProfile(profileId);
         console.log('retrieving profile from session', profile);
         setProfile(profile, true);
-        unlockKeySourcesFromSession();
       }
     };
     loadSession();
-  }, [retrieveProfileList, session, unlockKeySourcesFromSession, setProfile]);
+  }, [retrieveProfileList, session, setProfile]);
 
   useEffect(() => {
     retrieveProfileList();

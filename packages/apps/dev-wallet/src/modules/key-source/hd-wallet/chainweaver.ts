@@ -35,14 +35,12 @@ export type ChainweaverContext = {
   encryptedPassword: Uint8Array;
 };
 
-export function createChainweaverService(
-  initialContext: ChainweaverContext | null = null,
-) {
+export function createChainweaverService() {
   let context:
     | (ChainweaverContext & {
         cache: Map<string, IKeyPair>;
       })
-    | null = initialContext ? { ...initialContext, cache: new Map() } : null;
+    | null = null;
 
   return {
     isConnected: () => Boolean(context),
@@ -191,15 +189,6 @@ export function createChainweaverService(
       );
 
       return result;
-    },
-
-    getContext: (): ChainweaverContext | null => {
-      return context
-        ? {
-            encryptionKey: context.encryptionKey,
-            encryptedPassword: context.encryptedPassword,
-          }
-        : null;
     },
   };
 }
