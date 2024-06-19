@@ -34,7 +34,7 @@ export interface ITabsProps<T>
 
 export function Tabs<T extends object>({
   className,
-  borderPosition: _borderPosition,
+  borderPosition = 'top',
   inverse = false,
   onClose,
   isCompact,
@@ -45,7 +45,6 @@ export function Tabs<T extends object>({
   const state = useTabListState(props);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const borderPosition = _borderPosition || isContained ? 'bottom' : 'top';
 
   const { focusProps, isFocusVisible } = useFocusRing({
     within: true,

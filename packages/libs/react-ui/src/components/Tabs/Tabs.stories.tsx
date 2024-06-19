@@ -158,7 +158,7 @@ export const DefaultSelectedTabsStory: Story = {
 };
 
 export const ContainedVariant: Story = {
-  name: 'Scrollable Tabs with defaultSelectedTab',
+  name: 'Contained scrollable Tabs with defaultSelectedTab',
   args: {
     ['aria-label']: 'generic tabs story',
     defaultSelectedKey: ExampleManyTabs[5].title,
