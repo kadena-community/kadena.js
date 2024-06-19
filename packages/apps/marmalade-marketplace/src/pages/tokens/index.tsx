@@ -5,13 +5,14 @@ import Layout from '@/components/Layout';
 import CreateToken from '@/components/CreateToken';
 
 export default function TokenPages() {
+
   return (
     <Providers>
       <Layout>
         <Heading>
             <title>Create Token</title>
         </Heading>
-        <CreateToken/>
+         <CreateToken/>
       </Layout>
     </Providers>
 );

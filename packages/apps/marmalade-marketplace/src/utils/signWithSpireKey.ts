@@ -62,17 +62,17 @@ interface ISignResponse {
   pendingTxIds: string[];
 }
 
-function decodeBase64(msg: string) {
+export function decodeBase64(msg: string) {
   return atob(msg);
   // return Buffer.from(msg, 'base64').toString();
 }
 
-function encodeBase64(msg: string) {
+export function encodeBase64(msg: string) {
   return btoa(msg);
   // return Buffer.from(msg).toString('base64');
 }
 
-function tryParse<T>(msg: string): T | typeof ERROR {
+export function tryParse<T>(msg: string): T | typeof ERROR {
   try {
     return JSON.parse(msg);
   } catch (e: any) {
@@ -146,23 +146,3 @@ export const signTransactions = (router: AppRouterInstance, spireKeyUrl: string)
     return signWithSpireKey;
   }
 
-//   export function parseTx () {
-//     const searchParams = new URLSearchParams(location.search);
-//     if (searchParams.has('transaction')) {
-//         const transactionSearch = searchParams.get('transaction');
-//         if (transactionSearch && transactionSearch?.length > 0) {
-//           const parsedTransaction = tryParse<IUnsignedCommand>(
-//             decodeBase64(transactionSearch),
-//           );
-//           if (parsedTransaction === ERROR) {
-//             return;
-//           }
-//           console.log(
-//             'retrieved transaction from querystring parameters',
-//             JSON.stringify(parsedTransaction, null, 2),
-//           );
-  
-//           return parsedTransaction;
-//         } 
-//       }
-//   }
