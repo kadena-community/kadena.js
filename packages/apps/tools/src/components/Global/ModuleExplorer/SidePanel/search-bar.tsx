@@ -63,7 +63,10 @@ const Search: FC<ISearchBarProps> = ({ networks, onSearch, hitsCount }) => {
         <Select
           selectedKey={searchFilter}
           items={selectItems}
-          onSelectionChange={(key) => setSearchFilter(key as string)}
+          onSelectionChange={(key) => {
+            setSearchFilter(key as string);
+            onSearch(query, key as string);
+          }}
           aria-label={t('filter-by-network')}
         >
           {(item) => <SelectItem key={item.key}>{item.label}</SelectItem>}
