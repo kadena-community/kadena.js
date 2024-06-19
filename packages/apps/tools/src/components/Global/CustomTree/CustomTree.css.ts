@@ -42,7 +42,9 @@ export const itemContainerStyle = style([
   },
 ]);
 
-export const reloadButtonStyles = style({ marginInlineEnd: 'sm' });
+export const reloadButtonStyles = style({
+  marginInlineEnd: token('spacing.sm'),
+});
 
 export const reloadIconStyles = style({
   selectors: {
