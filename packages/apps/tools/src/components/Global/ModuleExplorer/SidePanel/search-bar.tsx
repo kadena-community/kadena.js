@@ -62,12 +62,6 @@ const Search: FC<ISearchBarProps> = ({ networks, onSearch, hitsCount }) => {
         <TextField
           startVisual={<MonoManageSearch />}
           onChange={(x) => {
-            console.log('onChange', { x });
-            // const hits = onSearch(x.target.value);
-            // console.log('onChange2', { hits });
-
-            // setSearchHits(hits);
-
             setQuery(x.target.value);
           }}
           className={searchInputStyles}

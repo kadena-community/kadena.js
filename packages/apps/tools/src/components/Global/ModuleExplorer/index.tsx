@@ -26,7 +26,6 @@ export interface IModuleExplorerProps {
   onModuleClick: ISidePanelProps<IncompleteModuleModel>['onModuleClick'];
   onActiveModuleChange: IEditorProps['onActiveModuleChange'];
   // onTabClose: IEditorProps['onTabClose'];
-  // items: Omit<ISidePanelProps<IncompleteModuleModel>['items'], 'children'>;
   items: Omit<TreeItem<IncompleteModuleModel[]>, 'children'>[];
   onReload: ISidePanelProps<IncompleteModuleModel | Outline>['onReload'];
   onExpandCollapse: ISidePanelProps<
