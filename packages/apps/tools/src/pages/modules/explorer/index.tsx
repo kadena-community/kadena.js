@@ -193,7 +193,7 @@ const ModuleExplorerPage = (
         onExpandCollapse={async (treeItem, expanded) => {
           if (!expanded) return;
 
-          const isLowestLevel = !treeItem.children[0].children.length;
+          const isLowestLevel = !treeItem.children[0]?.children.length;
 
           if (isModuleLike(treeItem.data)) {
             if (treeItem.key === 'interfaces' || isLowestLevel) {
