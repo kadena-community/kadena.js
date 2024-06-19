@@ -24,11 +24,15 @@ import { Blob, File, NFTStorage } from 'nft.storage';
 import { createSignWithSpireKey } from '@/utils/signWithSpireKey';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
+import SendTransaction from '@/components/SendTransaction';
+import { useTransaction } from '@/hooks/transaction';
+
 
 function CreateTokenComponent() {
   const router = useRouter() as AppRouterInstance;
   const { account, isMounted, login, logout } = useAccount();
   
+  const {transaction, send, preview} = useTransaction();
   const walletKeyset =  {
     "keys": account ? [account?.credentials[0].publicKey] : [],
     "pred": "keys-all" as BuiltInPredicate
@@ -236,7 +240,8 @@ function CreateTokenComponent() {
   };
 
   return (
-    <Stack flex={1} flexDirection="column">
+    <>
+    {!transaction ?  (<Stack flex={1} flexDirection="column">
       <h1>Create Token</h1>
       <div className={styles.twoColumnRow}>
         <div className={styles.uploadContainer}>
@@ -321,8 +326,12 @@ function CreateTokenComponent() {
             Create Token
         </Button>
       </div>
-    </Stack>
-  );
+    </Stack> 
+    ) : 
+    (<SendTransaction send={send} preview={preview} transaction={transaction}/>) 
+    }
+    </>
+  ) ;
 }
 
 export default function CreateToken() {

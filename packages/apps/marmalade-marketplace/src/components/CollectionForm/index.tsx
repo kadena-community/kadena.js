@@ -10,7 +10,7 @@ interface CollectionFormProps {
 const CollectionForm: FC<CollectionFormProps> = ({ collectionInput, handleCollectionInputChange,  }) => (
   <div className={styles.formSection}>
     <TextField label="Collection ID" name="collectionId" value={collectionInput.collectionId} onChange={handleCollectionInputChange} />
-    </div>
+  </div>
 );
 
 export default CollectionForm;
