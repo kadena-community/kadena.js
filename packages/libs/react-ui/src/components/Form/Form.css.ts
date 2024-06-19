@@ -205,49 +205,49 @@ export const inputSizeCompoundVariants: {
   };
   style: string;
 }[] = [
-    {
-      variants: {
-        size: 'sm',
-        fontType: 'ui',
-      },
-      style: uiSmallestRegular,
+  {
+    variants: {
+      size: 'sm',
+      fontType: 'ui',
     },
-    {
-      variants: {
-        size: 'md',
-        fontType: 'ui',
-      },
-      style: uiSmallRegular,
+    style: uiSmallestRegular,
+  },
+  {
+    variants: {
+      size: 'md',
+      fontType: 'ui',
     },
-    {
-      variants: {
-        size: 'lg',
-        fontType: 'ui',
-      },
-      style: uiBaseRegular,
+    style: uiSmallRegular,
+  },
+  {
+    variants: {
+      size: 'lg',
+      fontType: 'ui',
     },
-    {
-      variants: {
-        size: 'sm',
-        fontType: 'code',
-      },
-      style: monospaceSmallestRegular,
+    style: uiBaseRegular,
+  },
+  {
+    variants: {
+      size: 'sm',
+      fontType: 'code',
     },
-    {
-      variants: {
-        size: 'md',
-        fontType: 'code',
-      },
-      style: monospaceSmallRegular,
+    style: monospaceSmallestRegular,
+  },
+  {
+    variants: {
+      size: 'md',
+      fontType: 'code',
     },
-    {
-      variants: {
-        size: 'lg',
-        fontType: 'code',
-      },
-      style: monospaceBaseRegular,
+    style: monospaceSmallRegular,
+  },
+  {
+    variants: {
+      size: 'lg',
+      fontType: 'code',
     },
-  ];
+    style: monospaceBaseRegular,
+  },
+];
 
 export const input = recipe({
   base: [
