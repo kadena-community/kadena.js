@@ -1,6 +1,5 @@
-import { fallbackVar, style } from '@vanilla-extract/css';
-import { recipe } from '@vanilla-extract/recipes';
-import { token, uiSmallRegular } from '../../../styles';
+import { fallbackVar } from '@vanilla-extract/css';
+import { recipe, style, token, uiSmallRegular } from '../../../styles';
 
 const maxWidth = fallbackVar('100%');
 
