@@ -7,7 +7,6 @@ import type { AriaButtonProps } from 'react-aria';
 import { useButton, useHover } from 'react-aria';
 import type { ComboBoxState } from 'react-stately';
 import { rotate180Transition } from '../../../styles';
-import { comboBoxButtonClass } from './Combobox.css';
 
 export interface IComboboxButtonProps<T extends object>
   extends AriaButtonProps {
@@ -37,7 +36,7 @@ function ComboboxButtonBase<T extends object>(
   return (
     <button
       {...mergeProps(buttonProps, dataProps, hoverProps)}
-      className={classNames(comboBoxButtonClass, props.className)}
+      className={classNames(props.className)}
       ref={ref}
     >
       <MonoExpandMore

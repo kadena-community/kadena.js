@@ -26,25 +26,25 @@ export const notificationRecipe = recipe({
         backgroundColor: token('color.background.semantic.positive.subtle'),
         borderColor: token(`color.border.semantic.positive.default`),
         color: token(`color.text.semantic.positive.default`),
+        vars: {
+          [iconColorVar]: token('color.icon.semantic.positive.default'),
+        },
       },
-      vars: {
-        [iconColorVar]: token('color.icon.semantic.positive.default'),
+      warning: {
+        backgroundColor: token('color.background.semantic.warning.subtle'),
+        borderColor: token(`color.border.semantic.warning.default`),
+        color: token(`color.text.semantic.warning.default`),
+        vars: {
+          [iconColorVar]: token('color.icon.semantic.warning.default'),
+        },
       },
-    },
-    warning: {
-      backgroundColor: token('color.background.semantic.warning.subtle'),
-      borderColor: token(`color.border.semantic.warning.default`),
-      color: token(`color.text.semantic.warning.default`),
-      vars: {
-        [iconColorVar]: token('color.icon.semantic.warning.default'),
-      },
-    },
-    negative: {
-      backgroundColor: token('color.background.semantic.negative.subtle'),
-      borderColor: token(`color.border.semantic.negative.default`),
-      color: token(`color.text.semantic.negative.default`),
-      vars: {
-        [iconColorVar]: token('color.icon.semantic.negative.default'),
+      negative: {
+        backgroundColor: token('color.background.semantic.negative.subtle'),
+        borderColor: token(`color.border.semantic.negative.default`),
+        color: token(`color.text.semantic.negative.default`),
+        vars: {
+          [iconColorVar]: token('color.icon.semantic.negative.default'),
+        },
       },
     },
   },
