@@ -9,7 +9,7 @@ import {
   TextField,
 } from '@kadena/react-ui';
 import type { FC } from 'react';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDebounce } from 'react-use';
 import {
   searchInputStyles,
@@ -43,6 +43,13 @@ const Search: FC<ISearchBarProps> = ({ networks, onSearch, hitsCount }) => {
     label: network,
   }));
 
+  const ref = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    // Let's focus the input field when the component mounts
+    ref.current?.focus();
+  }, []);
+
   return (
     <Box padding="sm">
       <Stack>
@@ -59,6 +66,7 @@ const Search: FC<ISearchBarProps> = ({ networks, onSearch, hitsCount }) => {
           }}
           className={searchInputStyles}
           aria-label="Search for modules"
+          ref={ref}
         />
         <Select
           selectedKey={searchFilter}
