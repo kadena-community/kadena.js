@@ -75,21 +75,6 @@ export const reloadLoadingStyles = style({
   },
 });
 
-export const reloadIconStyles = style({
-  selectors: {
-    [`${reloadButtonStyles} &`]: {
-      color: token('color.icon.base.inverse.default'),
-    },
-    [`${reloadButtonStyles}:hover &`]: {
-      color: token('color.icon.base.@hover'),
-    },
-  },
-});
-
-export const reloadLoadingStyles = style({
-  color: token('color.icon.semantic.positive.default'),
-});
-
 export const firstLevelTreeNodeStyles = style({
   borderBlockEnd: `${token('border.width.hairline')} solid ${token('color.border.base.default')}`,
 });
