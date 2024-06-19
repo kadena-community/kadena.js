@@ -8,6 +8,8 @@ import {
   Text,
   TextField,
 } from '@kadena/react-ui';
+import Trans from 'next-translate/Trans';
+import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDebounce } from 'react-use';
@@ -26,6 +28,7 @@ export interface ISearchBarProps {
 export const DEFAULT_ALL_ITEMS_KEY = 'All Networks';
 
 const Search: FC<ISearchBarProps> = ({ networks, onSearch, hitsCount }) => {
+  const { t } = useTranslation('common');
   const [query, setQuery] = useState('');
   const [searchFilter, setSearchFilter] = useState(DEFAULT_ALL_ITEMS_KEY);
 
@@ -68,25 +71,31 @@ const Search: FC<ISearchBarProps> = ({ networks, onSearch, hitsCount }) => {
             setQuery(x.target.value);
           }}
           className={searchInputStyles}
-          aria-label="Search for modules"
+          aria-label={t('search-for-modules')}
           ref={ref}
         />
         <Select
           selectedKey={searchFilter}
           items={selectItems}
           onSelectionChange={(key) => setSearchFilter(key as string)}
-          aria-label="Filter by network"
+          aria-label={t('filter-by-network')}
         >
           {(item) => <SelectItem key={item.key}>{item.label}</SelectItem>}
         </Select>
       </Stack>
       {query.length ? (
         <Text className={searchResultsStyles} as="p" size="smallest" bold>
-          {`${hitsCount} Modules found for `}
-          <Text
-            size="smallest"
-            className={searchResultQueryStyles}
-          >{`"${query}"`}</Text>
+          <Trans
+            i18nKey="common:search-query-result"
+            components={[
+              <Text
+                key={query}
+                size="smallest"
+                className={searchResultQueryStyles}
+              >{`"${query}"`}</Text>,
+            ]}
+            values={{ count: hitsCount }}
+          />
         </Text>
       ) : null}
     </Box>
