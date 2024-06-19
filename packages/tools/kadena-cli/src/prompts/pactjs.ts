@@ -1,6 +1,6 @@
 import { input } from '../utils/prompts.js';
 
-export const cleanPrompt = async (): Promise<boolean> => {
+export const cleanPrompt = async (): Promise<string> => {
   const response = await input({
     message: 'Would you like to clean existing generated files? (yes/no)',
     validate: (input: string) => {
@@ -10,20 +10,26 @@ export const cleanPrompt = async (): Promise<boolean> => {
       return 'Please enter "yes" or "no"';
     },
   });
-  return response.toLowerCase() === 'yes';
+  return response.toLowerCase().trim();
 };
 
 export const capsInterfacePrompt = async (): Promise<string> => {
-  return await input({
+  const response = await input({
     message: 'Enter a custom name for the interface of the caps (optional):',
   });
+
+  if (response.trim().length === 0) {
+    return '';
+  }
+
+  return response;
 };
 
 export const fileOrDirectoryPrompt = async (
   previousQuestions: Record<string, unknown>,
   args: Record<string, unknown>,
   isOptional: boolean,
-): Promise<string[]> => {
+): Promise<string> => {
   const response = await input({
     message:
       'Enter the file(s) or directory to generate the client from, separated by commas:',
@@ -36,18 +42,23 @@ export const fileOrDirectoryPrompt = async (
   });
 
   if (response.trim().length === 0 && isOptional) {
-    return [];
+    return '';
   }
 
-  return response.split(',').map((file: string) => file.trim());
+  return response;
 };
 
-/* -- backWCompat -- */
 export const filePrompt = async (
   previousQuestions: Record<string, unknown>,
   args: Record<string, unknown>,
   isOptional: boolean,
-): Promise<string[]> => {
+): Promise<string> => {
+  if (
+    Array.isArray(previousQuestions.contract) &&
+    previousQuestions.contract.length === 0
+  ) {
+    return '';
+  }
   const response = await input({
     message:
       'Enter the file(s) to generate d.ts from, separated by commas: (optional)',
@@ -59,16 +70,23 @@ export const filePrompt = async (
     },
   });
 
-  // Return an empty array if the input is empty and isOptional is true
   if (response.trim().length === 0 && isOptional) {
-    return [];
+    return '';
   }
 
-  return response.split(',').map((file: string) => file.trim());
+  return response;
 };
 
-/* -- backWCompat -- */
-export const contractPrompt = async (): Promise<string[]> => {
+export const contractPrompt = async (
+  previousQuestions: Record<string, unknown>,
+  args: Record<string, unknown>,
+): Promise<string> => {
+  if (
+    Array.isArray(previousQuestions.file) &&
+    previousQuestions.file.length === 0
+  ) {
+    return '';
+  }
   const response = await input({
     message:
       'Enter the contract(s) to generate d.ts from the blockchain, separated by commas:',
@@ -79,10 +97,10 @@ export const contractPrompt = async (): Promise<string[]> => {
       return true;
     },
   });
-  return response.split(',').map((contract: string) => contract.trim());
+
+  return response;
 };
 
-/* -- backWCompat -- */
 export const apiPrompt = async (
   previousQuestions: Record<string, unknown>,
   args: Record<string, unknown>,
@@ -98,7 +116,6 @@ export const apiPrompt = async (
     },
   });
 
-  // Return an empty string if the input is empty and isOptional is true
   if (response.trim().length === 0 && isOptional) {
     return '';
   }
@@ -133,12 +150,17 @@ export const outPrompt = async (): Promise<string> => {
 };
 
 export const namespacePrompt = async (): Promise<string> => {
-  return await input({
+  const response = await input({
     message: 'Enter the namespace for the contract (optional):',
   });
+
+  if (response.trim().length === 0) {
+    return '';
+  }
+
+  return response.trim();
 };
 
-/* -- backWCompat -- */
 export const chainPrompt = async (): Promise<number> => {
   const response = await input({
     message: 'Enter the chain ID (optional):',
@@ -153,7 +175,6 @@ export const chainPrompt = async (): Promise<number> => {
   return parseInt(response, 10);
 };
 
-/* -- backWCompat -- */
 export const networkPrompt = async (): Promise<string> => {
   return await input({
     message: 'Enter the network ID (optional):',
@@ -161,7 +182,13 @@ export const networkPrompt = async (): Promise<string> => {
 };
 
 export const parseTreePathPrompt = async (): Promise<string> => {
-  return await input({
+  const response = await input({
     message: 'Enter the path to store the parsed tree (optional):',
   });
+
+  if (response.trim().length === 0) {
+    return '';
+  }
+
+  return response.trim();
 };

@@ -4,7 +4,6 @@ import { services } from '../../../services/index.js';
 import { createCommand } from '../../../utils/createCommand.js';
 import { globalOptions } from '../../../utils/globalOptions.js';
 import { log } from '../../../utils/logger.js';
-// import { relativeToCwd } from '../../../utils/path.util.js';
 import { contractOptions } from '../options/contractOptions.js';
 
 export const createContractGenerateCommand: (
@@ -25,26 +24,25 @@ export const createContractGenerateCommand: (
     contractOptions.parseTreePath(),
   ],
   async (option) => {
-    let file: string[] | undefined = undefined;
-    let contract: string[] | undefined = undefined;
+    const file = (await option.file()).file;
+    const contract =
+      file.length === 0 ? (await option.contract()).contract : undefined;
+    const api = (await option.api()).api || undefined;
+    const chainId = api ?? (await option.chainId()).chainId;
 
-    const { clean } = await option.clean();
-    const { capsInterface } = await option.capsInterface();
     const { namespace } = await option.namespace();
     const { networkConfig } = await option.network();
-    const { api } = await option.api();
-    const { parseTreePath } = await option.parseTreePath();
-    const { chainId } = await option.chainId();
-    const { file: fileOption } = await option.file();
+    const { capsInterface } = await option.capsInterface();
+    const { parseTreePath: parseTreeOption } = await option.parseTreePath();
+    const parseTreePath = parseTreeOption !== '' ? parseTreeOption : undefined;
+    const { clean: cleanOption } = await option.clean();
+    const clean = cleanOption === 'yes';
 
-    if (fileOption.length > 0) {
-      file = fileOption;
-    } else {
-      const { contract: contractOption } = await option.contract();
-      contract = contractOption;
+    if (file?.length === 0 && contract?.length === 0) {
+      throw new Error('Either file or contract must be provided.');
     }
 
-    const baseConfig = {
+    const config = {
       clean,
       capsInterface,
       namespace,
@@ -53,12 +51,7 @@ export const createContractGenerateCommand: (
       parseTreePath,
       chainId,
       network: networkConfig.network,
-    };
-
-    const config = {
-      ...baseConfig,
-      ...(file !== undefined ? { file } : {}),
-      ...(contract !== undefined ? { contract } : {}),
+      ...(file.length > 0 ? { file } : { contract }),
     };
 
     log.debug('contract-generate:action', config);
@@ -66,21 +59,7 @@ export const createContractGenerateCommand: (
     const loading = ora('Generating contract...').start();
     try {
       await services.pactjs.generate(config);
-
       loading.succeed('Contract generated successfully\n');
-
-      log.info('====================================================');
-      log.info('Contract details:');
-      log.info('====================================================');
-      log.info(config);
-      log.info('====================================================\n');
-
-      log.info(log.color.green('Output Location'));
-      // log.info(relativeToCwd(config.outFile));
-
-      log.output(null, {
-        config,
-      });
     } catch (error) {
       loading.fail('Failed to generate contract');
       if (error instanceof Error) {

@@ -3,12 +3,30 @@ import { z } from 'zod';
 import { pactjs } from '../../../prompts/index.js';
 import { createOption } from '../../../utils/createOption.js';
 
+const asList = (value: string | string[]): string[] => {
+  if (typeof value === 'string') {
+    if (value.trim().length === 0) {
+      return [];
+    }
+    value = value
+      .split(',')
+      .map((item: string) => item.trim())
+      .filter((item) => item.length > 0);
+  }
+
+  if (Array.isArray(value) && value.length === 0) {
+    return [];
+  }
+
+  return value;
+};
+
 export const contractOptions = {
   clean: createOption({
     key: 'clean' as const,
     prompt: pactjs.cleanPrompt,
-    validation: z.boolean(),
-    option: new Option('-c, --clean', 'Clean existing generated files'),
+    validation: z.string(),
+    option: new Option('-c, --clean <clean>', 'Clean existing generated files'),
   }),
   capsInterface: createOption({
     key: 'capsInterface' as const,
@@ -22,41 +40,47 @@ export const contractOptions = {
   fileOrDirectory: createOption({
     key: 'fileOrDirectory' as const,
     prompt: pactjs.fileOrDirectoryPrompt,
-    validation: z.string().array().optional(),
+    validation: z.string().optional(),
     option: new Option(
-      '-f, --file-or-directory <fileOrDirectory>',
+      '-d, --file-or-directory <fileOrDirectory>',
       'File or directory to use to generate the client',
     ),
+    transform: asList,
   }),
   file: createOption({
     key: 'file' as const,
     prompt: pactjs.filePrompt,
-    validation: z.string().array().optional(),
+    validation: z.string().optional(),
     option: new Option(
       '-f, --file <file>',
       'Generate d.ts from Pact contract file',
     ),
+    transform: asList,
   }),
   contract: createOption({
     key: 'contract' as const,
     prompt: pactjs.contractPrompt,
-    validation: z.string().array(),
+    validation: z.string().optional(),
     option: new Option(
-      '--contract <contract>',
+      '-c, --contract <contract>',
       'Generate d.ts from Pact contract from the blockchain',
     ),
+    transform: asList,
   }),
   namespace: createOption({
     key: 'namespace' as const,
     prompt: pactjs.namespacePrompt,
     validation: z.string().optional(),
-    option: new Option('--namespace <namespace>', 'Namespace for the contract'),
+    option: new Option(
+      '-n, --namespace <namespace>',
+      'Namespace for the contract',
+    ),
   }),
   api: createOption({
     key: 'api' as const,
     prompt: pactjs.apiPrompt,
     validation: z.string().optional(),
-    option: new Option('--api <api>', 'API to retrieve the contract'),
+    option: new Option('-a, --api <api>', 'API to retrieve the contract'),
   }),
   module: createOption({
     key: 'module' as const,
@@ -78,7 +102,7 @@ export const contractOptions = {
     prompt: pactjs.chainPrompt,
     validation: z.number().optional(),
     option: new Option(
-      '--chain <chain>',
+      '-c, --chain <chain>',
       'Chain ID to retrieve the contract from',
     ),
   }),
@@ -87,7 +111,7 @@ export const contractOptions = {
     prompt: pactjs.networkPrompt,
     validation: z.string().optional(),
     option: new Option(
-      '--network <network>',
+      '-n, --network <network>',
       'Network ID to retrieve the contract from',
     ),
   }),
@@ -96,7 +120,7 @@ export const contractOptions = {
     prompt: pactjs.parseTreePathPrompt,
     validation: z.string().optional(),
     option: new Option(
-      '--parse-tree-path <parseTreePath>',
+      '-t,--parse-tree-path <parseTreePath>',
       'Path to store the parsed tree',
     ),
   }),

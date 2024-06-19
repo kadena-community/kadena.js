@@ -33,7 +33,7 @@ export const createTemplateGenerateCommand: (
       out,
     });
 
-    const loading = ora('Retrieving contract...').start();
+    const loading = ora('Generating template...').start();
     try {
       const filepaths = await Promise.all(
         fileOrDirectory.map(async (path) => await getTemplateFilesPaths(path)),
@@ -77,9 +77,9 @@ export const createTemplateGenerateCommand: (
           generatedTemplateClient,
         );
       }
-      loading.succeed('Contract retrieved successfully');
+      loading.succeed('Template generated successfully\n');
     } catch (error) {
-      loading.fail('Failed to retrieve contract');
+      loading.fail('Template generation failed');
       if (error instanceof Error) {
         log.error(error.message);
       } else {
