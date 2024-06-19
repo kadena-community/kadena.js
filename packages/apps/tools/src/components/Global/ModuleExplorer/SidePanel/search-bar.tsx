@@ -48,7 +48,10 @@ const Search: FC<ISearchBarProps> = ({ networks, onSearch, hitsCount }) => {
   useEffect(() => {
     // Let's focus the input field when the component mounts
     ref.current?.focus();
-  }, []);
+    return () => {
+      onSearch('', DEFAULT_ALL_ITEMS_KEY);
+    };
+  }, [onSearch]);
 
   return (
     <Box padding="sm">
