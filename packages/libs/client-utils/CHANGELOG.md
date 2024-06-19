@@ -1,5 +1,11 @@
 # @kadena/client-utils
 
+## 0.8.0
+
+### Minor Changes
+
+- 83c3d58: Add support for Marmalade utility functions
+
 ## 0.7.0
 
 ### Minor Changes

@@ -1,5 +1,13 @@
 # @kadena/graph
 
+## 1.0.5
+
+### Patch Changes
+
+- 1bbf1c6: Added minHeight and maxHeight arguments to transactions and events
+- Updated dependencies \[83c3d58]
+  - @kadena/client-utils\@0.8.0
+
 ## 1.0.4
 
 ### Patch Changes
