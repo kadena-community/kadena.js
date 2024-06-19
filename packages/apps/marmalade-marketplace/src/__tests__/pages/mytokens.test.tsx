@@ -2,8 +2,7 @@ import { expect, test } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react';
 import { useAccount } from '@/hooks/account';
 import { getTokens } from '@/graphql/queries/client';
-import 'vitest-dom/extend-expect';
-import MyTokens from '../'
+import MyTokens from '@/pages/mytokens'
 
 // Mocking the custom hooks and functions
 vi.mock('@/hooks/account');
