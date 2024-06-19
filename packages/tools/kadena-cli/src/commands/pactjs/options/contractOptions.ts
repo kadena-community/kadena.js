@@ -26,7 +26,7 @@ export const contractOptions = {
     key: 'clean' as const,
     prompt: pactjs.cleanPrompt,
     validation: z.string(),
-    option: new Option('-c, --clean <clean>', 'Clean existing generated files'),
+    option: new Option('-x, --clean <clean>', 'Clean existing generated files'),
   }),
   capsInterface: createOption({
     key: 'capsInterface' as const,
