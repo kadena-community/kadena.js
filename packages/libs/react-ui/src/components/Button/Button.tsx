@@ -21,7 +21,7 @@ import { disableLoadingProps } from './utils';
 type Variants = NonNullable<RecipeVariants<typeof button>>;
 
 export type IButtonProps = Omit<AriaFocusRingProps, 'isTextInput'> &
-  Variants &
+  Omit<Variants, 'icCompact'> &
   Pick<AriaButtonProps<'button'>, 'aria-label' | 'onPress' | 'type'> & {
     className?: string;
     isLoading?: boolean;
@@ -59,9 +59,9 @@ const Button = forwardRef(
       startVisual,
       endVisual,
       children,
-      isCompact = false,
       loadingLabel = 'Loading',
       variant = 'primary',
+      isCompact = false,
       className,
       ...props
     }: IButtonProps,
@@ -95,8 +95,8 @@ const Button = forwardRef(
         className={classNames(
           button({
             variant,
-            isCompact: isCompact.toString(),
-            isLoading: isLoading?.toString(),
+            isCompact,
+            isLoading,
           }),
           className,
         )}

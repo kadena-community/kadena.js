@@ -62,7 +62,7 @@ export const layerStyles = (
 
 export function traverseRecipe<Variants extends VariantGroups>(
   styles: PatternOptions<Variants>,
-) {
+): PatternOptions<Variants> {
   return Object.entries(styles).reduce((result, [key, value]) => {
     if (key === 'base' && styles.base) {
       return { ...result, base: layerStyles(value as RecipeStyleRule) };
@@ -92,7 +92,7 @@ export function traverseRecipe<Variants extends VariantGroups>(
           },
           {},
         ),
-      };
+      } as const;
     }
 
     if (key === 'compoundVariants' && styles.compoundVariants) {
