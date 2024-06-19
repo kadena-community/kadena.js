@@ -1,3 +1,4 @@
+import type { ISigner } from '@kadena/client';
 import { addSigner } from '@kadena/client/fp';
 import type { IGeneralCapability } from '@kadena/client/lib/interfaces/type-utilities';
 import type { ICap } from '@kadena/types';
@@ -71,3 +72,20 @@ export const formatAdditionalSigners = (
       formatCapabilities(signer.capabilities, signFor),
     ),
   );
+
+export const formatWebAuthnSigner = (
+  signer: ISigner | ISigner[],
+): ISigner | ISigner[] => {
+  const formatSingleSigner = (s: ISigner): ISigner => {
+    if (typeof s === 'string' && s.startsWith('WEBAUTHN')) {
+      return { pubKey: s, scheme: 'WebAuthn' } as ISigner;
+    }
+    return s;
+  };
+
+  if (Array.isArray(signer)) {
+    return signer.map(formatSingleSigner);
+  }
+
+  return formatSingleSigner(signer);
+};
