@@ -79,7 +79,9 @@ const ModuleExplorer = ({
     return searchResultsToDataMap(results);
   }, [deferredQuery, data]);
 
-  const mapped = useMemo(() => {
+  const mapped = useMemo<
+    Array<TreeItem<IncompleteModuleModel> & { label: number }>
+  >(() => {
     return items
       .filter((item) => {
         if (searchFilter === DEFAULT_ALL_ITEMS_KEY) {
