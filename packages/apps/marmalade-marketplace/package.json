@@ -1,6 +1,6 @@
 {
   "name": "@kadena/marmalade-marketplace",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "scripts": {
     "build": "pnpm generate && next build",
@@ -19,6 +19,7 @@
     "@kadena/react-ui": "workspace:*",
     "firebase": "^10.8.0",
     "next": "14.2.2",
+    "nft.storage": "^7.1.1",
     "react": "^18.2.0",
     "react-aria-components": "^1.0.1",
     "react-dom": "^18.2.0"

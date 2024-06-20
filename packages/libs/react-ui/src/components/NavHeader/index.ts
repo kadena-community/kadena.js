@@ -1,9 +1,6 @@
 export { NavHeader, type INavHeaderProps } from './NavHeader';
 export { NavHeaderButton, type INavHeaderButtonProps } from './NavHeaderButton';
-export {
-  NavHeaderButtonLink,
-  type INavHeaderButtonLinkProps,
-} from './NavHeaderButtonLink';
+export { NavHeaderButtonLink } from './NavHeaderButtonLink';
 export { NavHeaderLink, type INavHeaderLinkProps } from './NavHeaderLink';
 export {
   NavHeaderLinkList,

@@ -14,15 +14,15 @@ import {
 } from './CustomTree.css';
 
 export interface INodeProps<T>
-  extends Omit<ICustomAccordionProps<T>, 'data' | 'children'> {
-  data: TreeItem<T>[];
+  extends Omit<ICustomAccordionProps<T>, 'items' | 'children'> {
+  items: TreeItem<T>[];
   level: number;
   onItemClick: (item: TreeItem<T>) => void;
   onExpandCollapse: (item: TreeItem<T>, expanded: boolean) => void;
 }
 
 function Node<T>({
-  data,
+  items,
   level,
   onItemClick,
   onExpandCollapse,
@@ -31,7 +31,7 @@ function Node<T>({
   return (
     <CustomAccordion
       {...rest}
-      data={data}
+      items={items}
       itemProps={{
         className: classNames({ [firstLevelTreeNodeStyles]: level === 1 }),
       }}
@@ -98,7 +98,7 @@ function Node<T>({
             </Stack>
             {child.isExpanded && hasChildren ? (
               <Node
-                data={child.data.children}
+                items={child.data.children}
                 level={level + 1}
                 onItemClick={onItemClick}
                 onExpandCollapse={onExpandCollapse}

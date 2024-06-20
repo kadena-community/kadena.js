@@ -280,5 +280,8 @@
   "namespace": "Namespace:",
   "module": "Module:",
   "n/a": "N/A",
-  "module-on-chain": "Module on chain:"
+  "module-on-chain": "Module on chain:",
+  "search-for-modules": "Search for modules",
+  "filter-by-network": "Filter by network",
+  "search-query-result": "{{count}} Modules found for <0/>"
 }

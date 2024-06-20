@@ -22,7 +22,7 @@ const StatusBar: FC<{ module: ModuleModel }> = ({ module }) => {
       <Text bold size="smallest">
         {t('namespace')}
       </Text>
-      <Text size="smallest">{moduleName ? namespace : t('N/A')}</Text>
+      <Text size="smallest">{moduleName ? namespace : '—'}</Text>
       <Text bold size="smallest">
         {t('module')}
       </Text>

@@ -1,48 +1,40 @@
-import { style } from '@vanilla-extract/css';
-import { atoms, bodyBaseBold, token } from '../../styles';
+import { bodyBaseBold, style, token } from '../../styles';
 
 export const accordionSectionClass = style([
-  atoms({
+  {
     display: 'block',
     overflow: 'hidden',
-  }),
-  {
     borderBlockEnd: `1px solid ${token('color.border.base.default')}`,
   },
 ]);
 
 export const accordionButtonClass = style([
   bodyBaseBold,
-  atoms({
+  {
     display: 'flex',
     alignItems: 'center',
     background: 'none',
     border: 'none',
-    color: 'text.subtle.default',
+    color: token('color.text.subtle.default'),
     cursor: 'pointer',
     justifyContent: 'space-between',
-    paddingBlock: 'sm',
+    paddingBlock: token('spacing.sm'),
     textAlign: 'left',
     width: '100%',
     gap: 'sm',
-  }),
-  {
-    color: token('color.text.subtle.default'),
   },
 ]);
 
 export const accordionContentClass = style([
-  atoms({
-    display: 'grid',
-    color: 'text.subtle.default',
-    fontSize: 'base',
-    margin: 'no',
-    overflow: 'hidden',
-    paddingInlineStart: 'sm',
-    height: '100%',
-    paddingBlock: 'no',
-  }),
   {
+    display: 'grid',
+    color: token('color.text.subtle.default'),
+    fontSize: token('typography.fontSize.md'),
+    margin: '0',
+    overflow: 'hidden',
+    paddingInlineStart: token('spacing.sm'),
+    height: '100%',
+    paddingBlock: '0',
     gridTemplateRows: '0fr',
     transition: 'all 300ms ease',
     transitionProperty: 'grid-template-rows, padding',
@@ -50,10 +42,8 @@ export const accordionContentClass = style([
 ]);
 
 export const accordionContentOpenClass = style([
-  atoms({
-    paddingBlock: 'sm',
-  }),
   {
+    paddingBlock: token('spacing.sm'),
     gridTemplateRows: '1fr',
   },
 ]);
