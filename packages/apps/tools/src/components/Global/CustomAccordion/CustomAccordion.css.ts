@@ -1,7 +1,7 @@
 import { style } from '@vanilla-extract/css';
 
 export const listStyle = style({
-  listStyle: 'none',
+  listStyleType: '""',
   paddingInlineStart: 0,
 });
 
