@@ -58,7 +58,7 @@ export const navListClass = style({
 export const linkClass = style({
   alignItems: 'center',
   display: 'flex',
-  fontSize: token('spacing.sm'),
+  fontSize: token('typography.fontSize.sm'),
   fontWeight: token('typography.weight.primaryFont.medium'),
   textDecoration: 'none',
   borderRadius: token('radius.sm'),
