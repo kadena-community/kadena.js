@@ -7,6 +7,8 @@ import {
 
 import { PactCodeView } from '@/Components/PactCodeView/PactCodeView';
 import { Wizard } from '@/Components/Wizard/Wizard';
+import { WizardRender } from '@/Components/Wizard/components/Wizard-render';
+import { WizardStep } from '@/Components/Wizard/components/Wizard-step';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { execCodeParser } from '@kadena/pactjs-generator';
 import { Box, Button, Card, Heading, Text } from '@kadena/react-ui';
@@ -129,8 +131,16 @@ export function SignatureBuilder() {
 
   return (
     <>
-      <Wizard>
-        <Wizard.Render>
+      <Wizard
+        steps={[
+          { title: 'Paste Data' },
+          { title: 'Add Signers' },
+          { title: 'Review Transaction' },
+          { title: 'Sign Transaction' },
+        ]}
+      >
+        {/* delete this WizardRender in favour of the steps above*/}
+        <WizardRender>
           {({ step, goTo }) => (
             <Box>
               <Button
@@ -157,8 +167,8 @@ export function SignatureBuilder() {
               >{`Sign Transaction`}</Button>
             </Box>
           )}
-        </Wizard.Render>
-        <Wizard.Step>
+        </WizardRender>
+        <WizardStep>
           {({ goTo }) => (
             <>
               <Heading variant="h5">
@@ -189,8 +199,8 @@ export function SignatureBuilder() {
               </Box>
             </>
           )}
-        </Wizard.Step>
-        <Wizard.Step>
+        </WizardStep>
+        <WizardStep>
           {({ back, next }) => (
             <>
               <Heading variant="h5">Edit Transaction</Heading>
@@ -204,8 +214,8 @@ export function SignatureBuilder() {
               <Button onPress={() => next()}>Review Transaction</Button>
             </>
           )}
-        </Wizard.Step>
-        <Wizard.Step>
+        </WizardStep>
+        <WizardStep>
           {({ back, next, goTo }) => (
             <>
               <Heading variant="h5">Review Transaction</Heading>
@@ -215,8 +225,8 @@ export function SignatureBuilder() {
               </Box>
               <Heading variant="h6">Code</Heading>
               {parsedCode &&
-                parsedCode.map((pc) => (
-                  <Card>
+                parsedCode.map((pc, index) => (
+                  <Card key={index}>
                     <PactCodeView parsedCode={pc} />
                   </Card>
                 ))}
@@ -286,8 +296,8 @@ export function SignatureBuilder() {
               </Button>
             </>
           )}
-        </Wizard.Step>
-        <Wizard.Step>
+        </WizardStep>
+        <WizardStep>
           {({ back }) => (
             <>
               <Heading variant="h5">Signed Transaction</Heading>
@@ -301,7 +311,7 @@ export function SignatureBuilder() {
               </Button>
             </>
           )}
-        </Wizard.Step>
+        </WizardStep>
       </Wizard>
     </>
   );
