@@ -11,6 +11,14 @@ function i2hex(i: number) {
 
 export const hex = (bytes: Uint8Array) => Array.from(bytes).map(i2hex).join('');
 
+function base64URLencode(utf8Arr: Uint8Array) {
+  const base64Encoded = Buffer.from(utf8Arr).toString('base64');
+  return base64Encoded
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
+}
+
 export async function createCredential() {
   const challenge = new Uint8Array(32);
   window.crypto.getRandomValues(challenge);
@@ -21,12 +29,12 @@ export async function createCredential() {
   const publicKeyOptions: PublicKeyCredentialCreationOptions = {
     challenge: challenge,
     rp: {
-      name: 'Example',
+      name: 'dev-wallet',
     },
     user: {
       id: userId,
-      name: 'localhost:1429',
-      displayName: 'dev-wallet',
+      name: 'user@dev-wallet',
+      displayName: 'user',
     },
     pubKeyCredParams: [
       {
@@ -55,10 +63,10 @@ export interface PublicKeyCredentialRetrieve extends PublicKeyCredential {
   response: AuthenticatorAssertionResponse;
 }
 
-export function retrieveCredential(credentialId: ArrayBuffer) {
+export async function retrieveCredential(credentialId: ArrayBuffer) {
   const challenge = new Uint8Array(32);
   window.crypto.getRandomValues(challenge);
-  return navigator.credentials.get({
+  const credential = (await navigator.credentials.get({
     publicKey: {
       allowCredentials: [
         {
@@ -66,10 +74,32 @@ export function retrieveCredential(credentialId: ArrayBuffer) {
           type: 'public-key',
         },
       ],
-
       challenge,
     },
-  }) as Promise<PublicKeyCredentialRetrieve | null>;
+  })) as PublicKeyCredentialRetrieve | null;
+  if (credential === null) {
+    throw new Error('CREDENTIAL_IS_NULL');
+  }
+  if (credential.response?.clientDataJSON === undefined) {
+    throw new Error('NO_CLIENT_DATA_JSON');
+  }
+  const clientDataJSON = new TextDecoder().decode(
+    credential.response.clientDataJSON,
+  );
+  const json = JSON.parse(clientDataJSON);
+  console.log('ClientDataJSON:', json);
+  if (json.type !== 'webauthn.get') {
+    throw new Error('INVALID_CREDENTIAL_TYPE');
+  }
+  const base64Challenge = base64URLencode(challenge);
+  if (json.challenge !== base64Challenge) {
+    console.error('Challenge:', base64Challenge);
+    throw new Error('INVALID_CHALLENGE');
+  }
+
+  console.log('Challenge:', challenge);
+
+  return credential;
 }
 
 async function convertPublicKeyToCryptoKey(publicKey: ArrayBuffer) {
