@@ -7,6 +7,8 @@ import type { ICustomAccordionProps } from '../CustomAccordion/CustomAccordion';
 import CustomAccordion from '../CustomAccordion/CustomAccordion';
 import type { TreeItem } from './CustomTree';
 import {
+  activeItemContainerStyle,
+  activeItemStyles,
   firstLevelTreeNodeStyles,
   itemBadgeStyle,
   itemContainerStyle,
@@ -19,6 +21,7 @@ export interface INodeProps<T>
   level: number;
   onItemClick: (item: TreeItem<T>) => void;
   onExpandCollapse: (item: TreeItem<T>, expanded: boolean) => void;
+  isActive?: boolean;
 }
 
 function Node<T>({
@@ -26,6 +29,7 @@ function Node<T>({
   level,
   onItemClick,
   onExpandCollapse,
+  isActive,
   ...rest
 }: INodeProps<T>) {
   return (
@@ -33,7 +37,10 @@ function Node<T>({
       {...rest}
       items={items}
       itemProps={{
-        className: classNames({ [firstLevelTreeNodeStyles]: level === 1 }),
+        className: classNames({
+          [firstLevelTreeNodeStyles]: level === 1,
+          [activeItemStyles]: isActive,
+        }),
       }}
     >
       {(child) => {
@@ -54,7 +61,9 @@ function Node<T>({
                 }
               }}
               role="button"
-              className={itemContainerStyle}
+              className={classNames(itemContainerStyle, {
+                [activeItemContainerStyle]: child.data.isActive && hasChildren,
+              })}
               style={{
                 paddingInlineStart: `${level * 20 + (!hasChildren ? 20 : 0)}px`,
                 cursor: hasChildren ? 'default' : 'pointer',
@@ -77,7 +86,12 @@ function Node<T>({
                   )}
                 </Button>
               ) : null}
-              <Text className={itemTitleStyle}>{child.data.title}</Text>
+              <Text
+                className={itemTitleStyle}
+                bold={child.data.isActive && hasChildren}
+              >
+                {child.data.title}
+              </Text>
               {child.data.label ? (
                 <Badge
                   size="sm"
@@ -86,6 +100,7 @@ function Node<T>({
                     ellipsis,
                     itemBadgeStyle,
                   )}
+                  style={child.data.isActive ? 'info' : undefined}
                 >
                   {child.data.label}
                 </Badge>
@@ -102,6 +117,7 @@ function Node<T>({
                 level={level + 1}
                 onItemClick={onItemClick}
                 onExpandCollapse={onExpandCollapse}
+                isActive={child.data.isActive}
                 {...child.accessibilityProps}
               />
             ) : null}

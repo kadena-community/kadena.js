@@ -101,12 +101,13 @@ const ModuleExplorer = ({
           },
           children: mapToTreeItems(
             modelsToTreeMap(filteredData.get(networkId) || []),
+            activeModule,
             item.key as string,
             !deferredQuery, // Don't sort alphabetically for search results
           ),
         };
       });
-  }, [filteredData, items, searchFilter, deferredQuery]);
+  }, [items, searchFilter, filteredData, activeModule, deferredQuery]);
 
   let outlineItems: TreeItem<Outline>[] = [];
 

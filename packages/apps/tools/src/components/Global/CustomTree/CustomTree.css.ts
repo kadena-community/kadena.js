@@ -42,6 +42,11 @@ export const itemContainerStyle = style([
   },
 ]);
 
+export const activeItemContainerStyle = style({
+  backgroundColor: token('color.background.semantic.info.subtle'),
+  borderInlineEnd: `${token('border.width.thick')} solid ${token('color.border.tint.outline')}`,
+});
+
 export const reloadButtonStyles = style({
   marginInlineEnd: token('spacing.sm'),
 });
@@ -67,4 +72,9 @@ export const reloadLoadingStyles = style({
 
 export const firstLevelTreeNodeStyles = style({
   borderBlockEnd: '1px solid rgba(0, 0, 0, 0.25)',
+});
+
+export const activeItemStyles = style({
+  backgroundColor: token('color.background.semantic.info.subtle'),
+  borderInlineEnd: `${token('border.width.thick')} solid ${token('color.border.tint.outline')}`,
 });

@@ -28,6 +28,7 @@ export type TreeItem<T> = {
   supportsReload?: boolean;
   supportsSearch?: boolean;
   label?: string | number;
+  isActive?: boolean;
 };
 
 export interface ICustomTreeProps<T>
@@ -112,6 +113,7 @@ function CustomTree<T>({
                 level={1}
                 onItemClick={onItemClick}
                 onExpandCollapse={onExpandCollapse}
+                isActive={item.data.isActive}
                 {...item.accessibilityProps}
               />
             ) : null}
