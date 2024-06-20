@@ -100,6 +100,11 @@ const meta: Meta<ITabsProps<object>> = {
         type: 'boolean',
       },
     },
+    isContained: {
+      control: {
+        type: 'boolean',
+      },
+    },
   },
 };
 
@@ -139,6 +144,30 @@ export const DefaultSelectedTabsStory: Story = {
   render: (props) => {
     return (
       <Tabs
+        aria-label={props['aria-label']}
+        defaultSelectedKey={props.defaultSelectedKey}
+      >
+        {ExampleManyTabs.map((tab) => (
+          <TabItem key={tab.title} title={tab.title}>
+            {tab.content}
+          </TabItem>
+        ))}
+      </Tabs>
+    );
+  },
+};
+
+export const ContainedVariant: Story = {
+  name: 'Contained scrollable Tabs with defaultSelectedTab',
+  args: {
+    ['aria-label']: 'generic tabs story',
+    defaultSelectedKey: ExampleManyTabs[5].title,
+    isContained: true,
+  },
+  render: (props) => {
+    return (
+      <Tabs
+        {...props}
         aria-label={props['aria-label']}
         defaultSelectedKey={props.defaultSelectedKey}
       >

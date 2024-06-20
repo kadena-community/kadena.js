@@ -40,7 +40,7 @@ export function Tab<T>({
       className={classNames(
         className,
         tabItemClass({
-          inverse,
+          inverse: inverse.toString(),
           borderPosition,
           size: isCompact ? 'compact' : 'default',
         }),

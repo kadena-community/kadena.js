@@ -8,7 +8,13 @@ import type { Node as ITabNode } from 'react-stately';
 import { Item as TabItem, useTabListState } from 'react-stately';
 import { Tab } from './Tab';
 import { TabPanel } from './TabPanel';
-import { scrollContainer, tabListClass, tabsContainerClass } from './Tabs.css';
+import {
+  containedTabContent,
+  scrollContainer,
+  tabListClass,
+  tabListGap,
+  tabsContainerClass,
+} from './Tabs.css';
 import { TabsPagination } from './TabsPagination';
 
 export { ITabNode, TabItem };
@@ -23,15 +29,17 @@ export interface ITabsProps<T>
   onClose?: (item: ITabNode<T>) => void;
   isCompact?: boolean;
   tabPanelClassName?: string;
+  isContained?: boolean;
 }
 
 export function Tabs<T extends object>({
   className,
-  borderPosition = 'bottom',
+  borderPosition = 'top',
   inverse = false,
   onClose,
   isCompact,
   tabPanelClassName,
+  isContained,
   ...props
 }: ITabsProps<T>): ReactNode {
   const state = useTabListState(props);
@@ -79,6 +87,7 @@ export function Tabs<T extends object>({
         <div className={scrollContainer} ref={scrollRef}>
           <div
             className={classNames(tabListClass, {
+              [tabListGap]: isContained,
               focusVisible: isFocusVisible,
             })}
             {...mergeProps(tabListProps, focusProps)}
@@ -101,7 +110,9 @@ export function Tabs<T extends object>({
       <TabPanel
         key={state.selectedItem?.key}
         state={state}
-        className={tabPanelClassName}
+        className={classNames(tabPanelClassName, {
+          [containedTabContent]: isContained,
+        })}
       />
     </div>
   );
