@@ -65,7 +65,7 @@ function Node<T>({
                 [activeItemContainerStyle]: child.data.isActive && hasChildren,
               })}
               style={{
-                paddingInlineStart: `${level * 20 + (!hasChildren ? 20 : 0)}px`,
+                paddingInlineStart: `${level * 20 + (!hasChildren ? 40 : 0)}px`,
                 cursor: hasChildren ? 'default' : 'pointer',
               }}
             >
