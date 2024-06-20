@@ -6,6 +6,7 @@ export * as genericActionsPrompts from './genericActionPrompts.js';
 export * as keys from './keys.js';
 export * as marmalade from './marmalade.js';
 export * as networks from './network.js';
+export * as pactjs from './pactjs.js';
 export * as security from './security.js';
 export * as simulate from './simulate.js';
 export * as tx from './tx.js';
