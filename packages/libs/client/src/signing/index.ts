@@ -1,7 +1,9 @@
 export { IUnsignedCommand } from '@kadena/types';
 export { ISignFunction, ISingleSignFunction } from './ISignFunction';
 export {
+  EckoStatus,
   ICommonEckoFunctions,
+  IEckoConnectOrStatusResponse,
   IEckoSignFunction,
   IEckoSignSingleFunction,
 } from './eckoWallet/eckoTypes';
