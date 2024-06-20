@@ -117,6 +117,7 @@ function CustomTree<T>({
                 level={1}
                 onItemClick={onItemClick}
                 onExpandCollapse={onExpandCollapse}
+                isActive={item.data.isActive}
                 {...item.accessibilityProps}
               />
             ) : null}
