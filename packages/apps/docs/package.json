@@ -115,7 +115,7 @@
     "remark": "~14.0.3",
     "remark-cli": "~12.0.0",
     "remark-validate-links": "^13.0.0",
-    "tsx": "^3.12.10",
+    "tsx": "^4.15.6",
     "typescript": "5.4.5",
     "vitest": "^1.6.0",
     "vitest-dom": "^0.1.1",
