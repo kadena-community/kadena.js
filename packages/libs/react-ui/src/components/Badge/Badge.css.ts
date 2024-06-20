@@ -2,14 +2,14 @@ import { recipe, token } from '../../styles';
 
 export const badge = recipe({
   base: {
-    borderRadius: 'xs',
-    border: 'hairline',
-    padding: 'xs',
+    borderRadius: token('radius.xs'),
+    border: token('border.hairline'),
+    padding: token('spacing.xs'),
     display: 'inline-flex',
     justifyContent: 'center',
     alignItems: 'center',
-    lineHeight: 'base',
-    fontWeight: 'primaryFont.bold',
+    lineHeight: token('typography.lineHeight.base'),
+    fontWeight: token('typography.weight.primaryFont.bold'),
     borderColor: token('color.neutral.n1@alpha20'),
     color: token('color.text.base.inverse.@init'),
   },

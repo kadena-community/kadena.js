@@ -7,7 +7,6 @@ import {
   uiBaseBold,
   uiSmallestBold,
 } from '../../styles';
-import { atoms } from '../../styles/atoms.css';
 
 export const tabsContainerClass = style({
   display: 'flex',
@@ -164,8 +163,8 @@ export const tabItemClass = recipe({
 });
 
 export const tabContentClass = style({
-  marginBlock: 'md',
-  fontSize: 'base',
+  marginBlock: token('spacing.md'),
+  fontSize: token('typography.fontSize.base'),
   color: token('color.text.base.default'),
   flex: 1,
   overflowY: 'auto',
@@ -181,7 +180,7 @@ const paginationButtonBase = style({
 export const paginationButton = styleVariants({
   left: [
     paginationButtonBase,
-    atoms({ position: 'absolute', left: 0, top: 0, bottom: 0 }),
+    { position: 'absolute', left: 0, top: 0, bottom: 0 },
   ],
   right: [paginationButtonBase],
 });

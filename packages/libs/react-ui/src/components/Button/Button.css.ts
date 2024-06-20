@@ -1,5 +1,5 @@
 import { createVar } from '@vanilla-extract/css';
-import { token, tokens, uiBaseBold, uiSmallestBold } from '../../styles';
+import { token, uiBaseBold, uiSmallestBold } from '../../styles';
 import { recipe, style } from '../../styles/utils';
 
 export const hoverBackgroundColor = createVar();
@@ -58,8 +58,8 @@ export const reverseDirectionStyle = style({
 });
 
 const focus = {
-  outline: `${tokens.kda.foundation.color.border.tint.outline} solid ${tokens.kda.foundation.border.width.normal}`,
-  outlineOffset: tokens.kda.foundation.border.width.normal,
+  outline: `${token('color.border.tint.outline')} solid ${token('border.width.normal')}`,
+  outlineOffset: token('border.width.normal'),
   backgroundColor: focusBackgroundColor,
 };
 

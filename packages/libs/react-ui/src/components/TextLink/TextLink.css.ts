@@ -1,5 +1,4 @@
-import { style } from '@vanilla-extract/css';
-import { token } from '../../styles';
+import { style, token } from '../../styles';
 
 export const textLinkClass = style({
   display: 'inline-flex',

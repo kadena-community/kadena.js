@@ -1,5 +1,4 @@
 import { style, token } from '../../styles';
-import { tokens } from '../../styles/tokens/contract.css';
 
 export const containerClass = style({
   display: 'flex',
@@ -15,14 +14,14 @@ export const itemClass = style({
   selectors: {
     '&:not(:first-child):not(:last-child)::before': {
       content: '/',
-      marginInline: tokens.kda.foundation.spacing.sm,
+      marginInline: token('spacing.sm'),
     },
     '&:last-child::before': {
       content: '∙',
-      marginInline: tokens.kda.foundation.spacing.sm,
+      marginInline: token('spacing.sm'),
     },
     '&:first-child': {
-      fontWeight: 'bold',
+      fontWeight: token('typography.weight.primaryFont.bold'),
     },
   },
 });
@@ -34,7 +33,7 @@ export const linkClass = style({
   selectors: {
     '&:hover': {
       textDecoration: 'underline',
-      color: tokens.kda.foundation.color.text.base.default,
+      color: token('color.text.base.default'),
     },
     '&[data-current="true"]': {
       textDecoration: 'none',
@@ -43,7 +42,7 @@ export const linkClass = style({
     "&[data-disabled='true']": {
       textDecoration: 'none',
       cursor: 'default',
-      color: tokens.kda.foundation.color.text.base['@disabled'],
+      color: token('color.text.base.@disabled'),
     },
   },
 });
