@@ -15,6 +15,7 @@ import {
   reloadButtonStyles,
   reloadIconStyles,
   reloadLoadingStyles,
+  topLevelItemContainerStyle,
 } from './CustomTree.css';
 import CustomTreeNode from './CustomTreeNode';
 
@@ -74,7 +75,10 @@ function CustomTree<T>({
               justifyContent={'space-between'}
               onClick={toggleHandler}
               role="button"
-              className={itemContainerStyle}
+              className={classNames(
+                itemContainerStyle,
+                topLevelItemContainerStyle,
+              )}
             >
               <Button variant="transparent" onPress={toggleHandler}>
                 {item.isExpanded ? <MonoArrowDropDown /> : <MonoArrowRight />}

@@ -36,11 +36,16 @@ export const itemContainerStyle = style([
     minHeight: token('size.n10'),
     borderInline: 'none',
     borderBlockStart: 'none',
+    borderBlockEnd: 'none',
     ':hover': {
       backgroundColor: token('color.background.semantic.info.subtlest'),
     },
   },
 ]);
+
+export const topLevelItemContainerStyle = style({
+  borderBlockEnd: `${token('border.width.hairline')} solid ${token('color.border.base.default')}`,
+});
 
 export const activeItemContainerStyle = style({
   backgroundColor: token('color.background.semantic.info.subtle'),
@@ -71,7 +76,7 @@ export const reloadLoadingStyles = style({
 });
 
 export const firstLevelTreeNodeStyles = style({
-  borderBlockEnd: '1px solid rgba(0, 0, 0, 0.25)',
+  borderBlockEnd: `${token('border.width.hairline')} solid ${token('color.border.base.default')}`,
 });
 
 export const activeItemStyles = style({
