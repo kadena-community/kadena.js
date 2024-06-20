@@ -42,9 +42,9 @@ export function TableSelectionCell<T>({
   state,
   selectionMode,
 }: ITableSelectionCell<T>) {
-  let ref = useRef<HTMLTableCellElement | null>(null);
-  let { gridCellProps } = useTableCell({ node: cell }, state, ref);
-  let { checkboxProps } = useTableSelectionCheckbox(
+  const ref = useRef<HTMLTableCellElement | null>(null);
+  const { gridCellProps } = useTableCell({ node: cell }, state, ref);
+  const { checkboxProps } = useTableSelectionCheckbox(
     { key: cell?.parentKey || '' },
     state,
   );

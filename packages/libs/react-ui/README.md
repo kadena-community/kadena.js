@@ -4,10 +4,10 @@
 basic React components for reuse in Kadena applications. It uses
 [vanilla-extract/css][1] (will be referred to as VE) to establish a system of
 utility classes (defined as [sprinkles][2]) and CSS variables (defined in the
-theme) that align with Kadena's [Kode Design System][3] and exposes them so that they
-can be used with any project or framework. A basic [Storybook][4] integration
-has been implemented so that users can preview components visually and interact
-with their configuration options.
+theme) that align with Kadena's [Kode Design System][3] and exposes them so that
+they can be used with any project or framework. A basic [Storybook][4]
+integration has been implemented so that users can preview components visually
+and interact with their configuration options.
 
 > Warning: This library is in its early development stage so elements in the
 > styling environment may change as well as the API for components.
@@ -184,11 +184,11 @@ CSS-in-JS library that is framework agnostic.
 
 _Theming_
 
-We have defined a theme using elements of the [Kode Design System][3] and
-these tokens should be used as property values in most cases to ensure
-consistency and alignment with the design. With VE, we are also able to override
-this theme within projects to add additional CSS variables or update colors for
-a dark theme, for example.
+We have defined a theme using elements of the [Kode Design System][3] and these
+tokens should be used as property values in most cases to ensure consistency and
+alignment with the design. With VE, we are also able to override this theme
+within projects to add additional CSS variables or update colors for a dark
+theme, for example.
 
 _Atoms_
 

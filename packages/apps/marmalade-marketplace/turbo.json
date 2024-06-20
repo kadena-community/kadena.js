@@ -1,11 +1,19 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "extends": ["//"],
-  "pipeline": {
+  "extends": [
+    "//"
+  ],
+  "tasks": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "./src/graphql/generated/**"],
-      "outputMode": "new-only"
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "./src/graphql/generated/**"
+      ],
+      "outputLogs": "new-only"
     }
   }
 }
