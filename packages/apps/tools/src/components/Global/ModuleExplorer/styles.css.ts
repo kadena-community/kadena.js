@@ -36,8 +36,4 @@ export const firstLevelTabPanelStyles = atoms({
   marginBlock: 'n0',
 });
 
-export const secondLevelTabContainerStyles = style({
-  borderBlockEnd: `${token('border.width.normal')} solid ${token('color.border.base.subtle')}`,
-});
-
 export const secondLevelTabPanelStyles = style({ marginBlock: 0 });

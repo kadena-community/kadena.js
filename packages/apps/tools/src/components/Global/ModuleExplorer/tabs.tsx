@@ -14,7 +14,6 @@ import type { FC, Key } from 'react';
 import React, { useCallback, useMemo } from 'react';
 import {
   firstLevelTabPanelStyles,
-  secondLevelTabContainerStyles,
   secondLevelTabPanelStyles,
   tabsBadgeStyles,
   tabsLabelStyles,
@@ -165,7 +164,6 @@ const EditorTabs: FC<ITabsProps> = ({
         paddingInlineStart={'md'}
         paddingBlockStart={'sm'}
         backgroundColor="surface.default"
-        className={secondLevelTabContainerStyles}
       >
         <Text className={tabsLabelStyles} size="smallest" bold>
           {t('module-on-chain')}
