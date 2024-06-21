@@ -18,12 +18,14 @@ export interface ITransactionContext {
   error?: ITransactionError;
   preview: () => void,
   send: () => void,
+  setTransaction: (transaction: IUnsignedCommand | ICommand) => void;
 }
 
 export const TransactionContext = createContext<ITransactionContext>({
   transaction: undefined,
   preview: () => {},
   send: () => {},
+  setTransaction: (transaction) => {},
 });
 
 export const TransactionProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -31,7 +33,6 @@ export const TransactionProvider: FC<PropsWithChildren> = ({ children }) => {
   const [transaction, setTransaction] = useState<IUnsignedCommand | ICommand>();
   const [isMounted, setIsMounted] = useState(false);
   console.log('parsing transaction', transaction)
-  
 
   const parseTx =  (): void =>  {
     console.log("parseTx")
@@ -50,13 +51,13 @@ export const TransactionProvider: FC<PropsWithChildren> = ({ children }) => {
           );
           console.log(parsedTransaction)
           setTransaction(parsedTransaction);
-        } 
+        }
       }
   }
 
   const { local, submitOne } = createClient(({ chainId, networkId }) => `https://${env.CHAINWEB_API_HOST}/chainweb/0.0/${networkId}/chain/${chainId}/pact`);
 
-    
+
   const preview = async () => {
     if (!transaction) return;
     if (isSignedTransaction(transaction)) {
@@ -80,7 +81,7 @@ export const TransactionProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [searchParams]);
 
   return (
-    <TransactionContext.Provider value={{ transaction, preview, send }}>
+    <TransactionContext.Provider value={{ transaction, preview, send, setTransaction }}>
       {children}
     </TransactionContext.Provider>
   );

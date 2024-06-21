@@ -782,6 +782,9 @@ importers:
       '@kadena/client-utils':
         specifier: workspace:*
         version: link:../../libs/client-utils
+      '@kadena/cryptography-utils':
+        specifier: workspace:*
+        version: link:../../libs/cryptography-utils
       '@kadena/pactjs':
         specifier: workspace:*
         version: link:../../libs/pactjs

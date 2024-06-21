@@ -13,6 +13,8 @@ const GRAHQLURL = process.env.NEXT_PUBLIC_GRAHQLURL;
 const CHAINWEB_API_HOST = process.env.NEXT_PUBLIC_CHAINWEB_API_HOST;
 const CHAINWEBAPIURL = process.env.NEXT_PUBLIC_CHAINWEBAPIURL;
 const MAXSIGNERS = Number(process.env.NEXT_PUBLIC_MAXSIGNERS);
+const FAUCET_CONTRACT = process.env.NEXT_PUBLIC_FAUCET_CONTRACT;
+const FAUCET_ACCOUNT = process.env.NEXT_PUBLIC_FAUCET_ACCOUNT;
 
 if (!TRACKING_ID) console.error('NEXT_PUBLIC_TRACKING_ID is not set');
 if (!TESTNUMBER) console.error('NEXT_PUBLIC_TESTNUMBER is not set');
@@ -27,6 +29,8 @@ if (!CHAINWEB_API_HOST)
 if (!CHAINWEBAPIURL) console.error('NEXT_PUBLIC_CHAINWEBAPIURL is not set');
 if (!MAXSIGNERS) console.error('NEXT_PUBLIC_MAXSIGNERS is not set');
 if (!MAXSIGNERS) console.error('NEXT_PUBLIC_MAXSIGNERS is not set');
+if (!FAUCET_CONTRACT) console.error('NEXT_PUBLIC_FAUCET_CONTRACT is not set');
+if (!FAUCET_ACCOUNT) console.error('NEXT_PUBLIC_FAUCET_ACCOUNT is not set');
 
 const EVENTS_TO_INDEX = `
 marmalade-v2.ledger.OFFER,
@@ -60,4 +64,6 @@ export const env = {
   CHAINWEBAPIURL:
     CHAINWEBAPIURL ??
     `https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact`,
+  FAUCET_CONTRACT,
+  FAUCET_ACCOUNT,
 };
