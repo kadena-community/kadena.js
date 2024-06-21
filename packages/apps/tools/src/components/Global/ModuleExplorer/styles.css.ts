@@ -15,9 +15,14 @@ export const placeholderBodyStyles = style([
 
 export const statusbarStyles = style({ borderBlock: token('border.hairline') });
 
+export const statusbarTextStyles = style({
+  whiteSpace: 'nowrap',
+});
+
 export const hashBadgeStyles = atoms({
   paddingInline: 'xs',
   paddingBlock: 'n0',
+  whiteSpace: 'nowrap',
 });
 
 export const chainBadgeStyles = style({ whiteSpace: 'nowrap' });
@@ -27,12 +32,17 @@ export const tabsLabelStyles = style([
   { whiteSpace: 'nowrap' },
 ]);
 
+export const tabsBadgeStyles = style({
+  paddingInline: token('spacing.xs'),
+  backgroundColor: token('color.background.base.default'),
+});
+
 export const firstLevelTabPanelStyles = atoms({
   marginBlock: 'n0',
+  paddingBlock: 'n0',
 });
 
-export const secondLevelTabContainerStyles = style({
-  borderBlockEnd: `${token('border.width.normal')} solid ${token('color.border.base.subtle')}`,
+export const secondLevelTabPanelStyles = style({
+  marginBlock: 0,
+  paddingBlock: 0,
 });
-
-export const secondLevelTabPanelStyles = style({ marginBlock: 0 });

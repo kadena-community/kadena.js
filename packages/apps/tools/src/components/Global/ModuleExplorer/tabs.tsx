@@ -1,13 +1,21 @@
 import type { ModuleModel } from '@/hooks/use-module-query';
 import type { ITabNode } from '@kadena/react-ui';
-import { Box, Stack, TabItem, Tabs, Text } from '@kadena/react-ui';
+import {
+  Badge,
+  Box,
+  Stack,
+  TabItem,
+  Tabs,
+  Text,
+  maskValue,
+} from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC, Key } from 'react';
 import React, { useCallback, useMemo } from 'react';
 import {
   firstLevelTabPanelStyles,
-  secondLevelTabContainerStyles,
   secondLevelTabPanelStyles,
+  tabsBadgeStyles,
   tabsLabelStyles,
 } from './styles.css';
 import { mapToTabs, moduleToTabId, modulesToMap, tabIdToModule } from './utils';
@@ -19,6 +27,33 @@ export interface ITabsProps {
   onModuleTabClose: (modules: ModuleModel[]) => void;
   onChainTabClose: (module: ModuleModel) => void;
 }
+
+const TRUNCATE_THRESHOLD = 12; // More than 12 because of head length (4) + mask length (4) + tail length (4)
+const PRINCIPAL_NAMESPACE_PREFIX = 'n_';
+
+const moduleTitle = (title: string) => {
+  const [namespace, moduleName] = title.split('.');
+
+  if (moduleName) {
+    return (
+      <>
+        <Badge size="sm" className={tabsBadgeStyles}>
+          {namespace.length > TRUNCATE_THRESHOLD
+            ? maskValue(namespace, {
+                character: '.',
+                headLength: namespace.startsWith(PRINCIPAL_NAMESPACE_PREFIX)
+                  ? 6
+                  : 4,
+              })
+            : namespace}
+        </Badge>
+        {moduleName}
+      </>
+    );
+  }
+
+  return namespace;
+};
 
 const EditorTabs: FC<ITabsProps> = ({
   openedModules,
@@ -109,7 +144,7 @@ const EditorTabs: FC<ITabsProps> = ({
   return (
     <>
       <Box
-        paddingBlockStart={'md'}
+        paddingBlockStart={'sm'}
         backgroundColor="surfaceHighContrast.default"
       >
         <Tabs
@@ -118,11 +153,12 @@ const EditorTabs: FC<ITabsProps> = ({
           onSelectionChange={onParentChange}
           onClose={onParentClose}
           tabPanelClassName={firstLevelTabPanelStyles}
-          borderPosition="bottom"
+          borderPosition="top"
           isCompact
+          isContained
         >
           {(item) => (
-            <TabItem key={item.title} title={item.title}>
+            <TabItem key={item.title} title={moduleTitle(item.title)}>
               {/* We render nothing, since we don't want to rerender the sub tabs below every single time. */}
               {null}
             </TabItem>
@@ -132,9 +168,8 @@ const EditorTabs: FC<ITabsProps> = ({
       <Stack
         alignItems="center"
         paddingInlineStart={'md'}
-        paddingBlockStart={'md'}
+        paddingBlockStart={'sm'}
         backgroundColor="surface.default"
-        className={secondLevelTabContainerStyles}
       >
         <Text className={tabsLabelStyles} size="smallest" bold>
           {t('module-on-chain')}
@@ -142,12 +177,13 @@ const EditorTabs: FC<ITabsProps> = ({
         <Tabs
           inverse
           isCompact
+          isContained
           items={map.get(activeModule.name)}
           onSelectionChange={onModuleChangeInternal}
           onClose={onModuleClose}
           tabPanelClassName={secondLevelTabPanelStyles}
           selectedKey={moduleToTabId(activeModule)}
-          borderPosition="bottom"
+          borderPosition="top"
         >
           {(item) => (
             <TabItem key={moduleToTabId(item)} title={item.chainId}>
