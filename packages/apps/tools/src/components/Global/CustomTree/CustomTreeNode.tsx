@@ -45,6 +45,9 @@ function Node<T>({
     >
       {(child) => {
         const hasChildren = !!child.data.children.length;
+        const hasActiveChild = child.data.children.some(
+          (item) => item.isActive,
+        );
         return (
           <>
             <Stack
@@ -62,7 +65,7 @@ function Node<T>({
               }}
               role="button"
               className={classNames(itemContainerStyle, {
-                [activeItemContainerStyle]: child.data.isActive && hasChildren,
+                [activeItemContainerStyle]: hasActiveChild,
               })}
               style={{
                 paddingInlineStart: `${level * 20 + (!hasChildren ? 40 : 0)}px`,
@@ -86,10 +89,7 @@ function Node<T>({
                   )}
                 </Button>
               ) : null}
-              <Text
-                className={itemTitleStyle}
-                bold={child.data.isActive && hasChildren}
-              >
+              <Text className={itemTitleStyle} bold={hasActiveChild}>
                 {child.data.title}
               </Text>
               {child.data.label ? (
@@ -117,7 +117,7 @@ function Node<T>({
                 level={level + 1}
                 onItemClick={onItemClick}
                 onExpandCollapse={onExpandCollapse}
-                isActive={child.data.isActive}
+                isActive={child.data.isActive || hasActiveChild}
                 {...child.accessibilityProps}
               />
             ) : null}

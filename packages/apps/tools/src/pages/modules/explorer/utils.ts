@@ -116,9 +116,6 @@ export const mapToTreeItems = (
       key: `${typeof parent === 'string' ? `${parent}.` : ''}${name}`,
       title: name,
       children,
-      isActive:
-        aux.networkId === activeModule?.networkId &&
-        aux.name === activeModule?.name,
     };
   });
 };
