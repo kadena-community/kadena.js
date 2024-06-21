@@ -27,6 +27,11 @@ export const tabsLabelStyles = style([
   { whiteSpace: 'nowrap' },
 ]);
 
+export const tabsBadgeStyles = style({
+  paddingInline: token('spacing.xs'),
+  backgroundColor: token('color.background.base.default'),
+});
+
 export const firstLevelTabPanelStyles = atoms({
   marginBlock: 'n0',
 });
