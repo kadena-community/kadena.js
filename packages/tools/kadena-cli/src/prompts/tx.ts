@@ -10,7 +10,6 @@ import {
 } from '../commands/tx/utils/txHelpers.js';
 
 import { basename } from 'node:path';
-import { getAllAccounts } from '../commands/account/utils/accountHelpers.js';
 import { loadNetworkConfig } from '../commands/networks/utils/networkHelpers.js';
 import { getTemplates } from '../commands/tx/commands/templates/templates.js';
 import { MULTI_SELECT_INSTRUCTIONS } from '../constants/global.js';
@@ -188,7 +187,7 @@ const promptVariableValue = async (
 ): Promise<string> => {
   if (key.startsWith('account:')) {
     // search for account alias - needs account implementation
-    const accounts = await getAllAccounts().catch(() => []);
+    const accounts = await services.account.list();
 
     const hasAccount = accounts.length > 0;
     let value: string | null = null;
@@ -243,7 +242,7 @@ const promptVariableValue = async (
       0,
     );
     const plainKeys = await services.plainKey.list();
-    const accounts = await getAllAccounts().catch(() => []);
+    const accounts = await services.account.list();
 
     const hasKeys = walletKeysCount > 0 || plainKeys.length > 0;
     const hasAccounts = accounts.length > 0;
@@ -258,7 +257,7 @@ const promptVariableValue = async (
     const accountMatch = variables[`account:${pkName}`];
 
     if (accountMatch) {
-      const accounts = await getAllAccounts().catch(() => []);
+      const accounts = await services.account.list();
       const accountConfig = accounts.find((x) => x.name === accountMatch);
       if (accountConfig) {
         const selection = await select({

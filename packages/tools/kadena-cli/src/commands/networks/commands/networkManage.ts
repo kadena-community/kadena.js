@@ -1,7 +1,6 @@
 import type { Command } from 'commander';
 
 import { services } from '../../../services/index.js';
-import { KadenaError } from '../../../services/service-error.js';
 import { createCommand } from '../../../utils/createCommand.js';
 import { globalOptions } from '../../../utils/globalOptions.js';
 import { log } from '../../../utils/logger.js';
@@ -32,9 +31,6 @@ export const manageNetworksCommand: (
   ],
   async (option) => {
     const kadenaDir = services.config.getDirectory();
-    if (kadenaDir === null) {
-      throw new KadenaError('no_kadena_directory');
-    }
 
     const networkData = await option.network();
     const networkName = await option.networkName();

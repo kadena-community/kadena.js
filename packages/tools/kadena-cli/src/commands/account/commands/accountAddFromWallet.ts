@@ -2,16 +2,12 @@ import type { ChainId } from '@kadena/client';
 import { networkDefaults } from '../../../constants/networks.js';
 import { services } from '../../../services/index.js';
 import type { IWallet } from '../../../services/wallet/wallet.types.js';
-import {
-  CommandError,
-  assertCommandError,
-} from '../../../utils/command.util.js';
+import { CommandError } from '../../../utils/command.util.js';
 import type { CommandOption } from '../../../utils/createCommand.js';
 import { notEmpty } from '../../../utils/globalHelpers.js';
 import { log } from '../../../utils/logger.js';
 import { findFreeIndexes } from '../../wallets/utils/walletHelpers.js';
 import type { options } from '../accountAddOptions.js';
-import { addAccount } from '../utils/addAccount.js';
 import { displayAddAccountSuccess } from '../utils/addHelpers.js';
 import { createAccountName } from '../utils/createAccountName.js';
 
@@ -122,22 +118,18 @@ export const addAccountFromWallet = async (
     networkConfig: networkDefaults.testnet,
   });
 
-  const addAccountConfig = {
-    accountName,
-    accountAlias,
-    fungible,
-    publicKeysConfig: filteredPublicKeys,
-    predicate,
-  };
-
   log.debug('create-account-add-from-wallet:action', {
     ...config,
     accountName,
   });
 
-  const result = await addAccount(addAccountConfig);
+  const result = await services.account.create({
+    alias: accountAlias,
+    name: accountName,
+    fungible: fungible,
+    publicKeys: filteredPublicKeys,
+    predicate,
+  });
 
-  assertCommandError(result);
-
-  displayAddAccountSuccess(config.accountAlias, result.data);
+  displayAddAccountSuccess(result);
 };

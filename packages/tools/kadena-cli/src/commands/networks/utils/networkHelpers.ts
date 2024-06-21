@@ -15,7 +15,6 @@ import yaml from 'js-yaml';
 import path from 'path';
 import { z } from 'zod';
 import { services } from '../../../services/index.js';
-import { KadenaError } from '../../../services/service-error.js';
 import {
   getNetworkDirectory,
   getNetworksSettingsFilePath,
@@ -89,9 +88,6 @@ export async function removeNetwork(
   options: Pick<INetworkCreateOptions, 'network'>,
 ): Promise<void> {
   const networkDir = getNetworkDirectory();
-  if (networkDir === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
   const { network } = options;
   const sanitizedNetwork = sanitizeFilename(network).toLowerCase();
   const networkFilePath = path.join(networkDir, `${sanitizedNetwork}.yaml`);
@@ -101,9 +97,6 @@ export async function removeNetwork(
 
 export async function removeDefaultNetwork(): Promise<void> {
   const defaultNetworksSettingsFilePath = getNetworksSettingsFilePath();
-  if (defaultNetworksSettingsFilePath === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
 
   if (await services.filesystem.fileExists(defaultNetworksSettingsFilePath)) {
     await services.filesystem.deleteFile(defaultNetworksSettingsFilePath);
@@ -114,9 +107,6 @@ export async function loadNetworkConfig(
   network: string,
 ): Promise<INetworkCreateOptions> {
   const networkDir = getNetworkDirectory();
-  if (networkDir === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
   const networkFilePath = path.join(networkDir, `${network}.yaml`);
 
   const file = await services.filesystem.readFile(networkFilePath);
@@ -129,9 +119,6 @@ export async function loadNetworkConfig(
 
 export async function getNetworks(): Promise<z.output<typeof networkSchema>[]> {
   const networkDir = getNetworkDirectory();
-  if (networkDir === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
   const files = await services.filesystem.readDir(networkDir);
   const networks = (
     await Promise.all(

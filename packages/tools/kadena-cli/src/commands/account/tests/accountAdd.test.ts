@@ -80,6 +80,7 @@ describe('account add manual type', () => {
     expect(await services.filesystem.fileExists(aliasFile)).toBe(true);
     const content = await services.filesystem.readFile(aliasFile);
     expect(jsYaml.load(content!)).toEqual({
+      alias: 'account-add-test-chain',
       name: 'k:pubkey1',
       fungible: 'coin',
       publicKeys: ['publicKey1', 'publicKey2'],
@@ -112,6 +113,7 @@ describe('account add manual type', () => {
     expect(await services.filesystem.fileExists(accountAliasFile)).toBe(true);
     const content = await services.filesystem.readFile(accountAliasFile);
     expect(jsYaml.load(content!)).toEqual({
+      alias: 'account-add-test',
       name: 'w:FxlQEvb6qHb50NClEnpwbT2uoJHuAu39GTSwXmASH2k:keys-all',
       fungible: 'coin',
       publicKeys: ['pubkey1', 'pubkey2'],
@@ -126,6 +128,7 @@ describe('account add manual type', () => {
     expect(await services.filesystem.fileExists(accountAliasFile)).toBe(true);
     const content = await services.filesystem.readFile(accountAliasFile);
     expect(jsYaml.load(content!)).toEqual({
+      alias: 'account-add-test',
       name: 'k:pubkey1',
       fungible: 'coin',
       publicKeys: ['publicKey1', 'publicKey2'],
@@ -219,6 +222,7 @@ describe('account add type wallet', () => {
     expect(await services.filesystem.fileExists(accountAliasFile)).toBe(true);
     const content = await services.filesystem.readFile(accountAliasFile);
     expect(jsYaml.load(content!)).toEqual({
+      alias: 'account-add-test',
       name: 'w:FxlQEvb6qHb50NClEnpwbT2uoJHuAu39GTSwXmASH2k:keys-all',
       fungible: 'coin',
       publicKeys: [publicKey],
@@ -251,6 +255,7 @@ describe('account add type wallet', () => {
     expect(await services.filesystem.fileExists(accountAliasFile)).toBe(true);
     const content = await services.filesystem.readFile(accountAliasFile);
     expect(jsYaml.load(content!)).toEqual({
+      alias: 'account-add-test',
       name: 'w:FxlQEvb6qHb50NClEnpwbT2uoJHuAu39GTSwXmASH2k:keys-all',
       fungible: 'coin',
       publicKeys: [publicKey, generatedKey],

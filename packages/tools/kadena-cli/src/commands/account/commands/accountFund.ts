@@ -2,7 +2,6 @@ import ora from 'ora';
 import {
   CHAIN_ID_ACTION_ERROR_MESSAGE,
   MAX_FUND_AMOUNT,
-  NO_ACCOUNTS_FOUND_ERROR_MESSAGE,
 } from '../../../constants/account.js';
 import { FAUCET_MODULE_NAME } from '../../../constants/devnets.js';
 import { assertCommandError } from '../../../utils/command.util.js';
@@ -12,10 +11,7 @@ import { globalOptions } from '../../../utils/globalOptions.js';
 import { log } from '../../../utils/logger.js';
 import { checkHealth } from '../../devnet/utils/network.js';
 import { accountOptions } from '../accountOptions.js';
-import {
-  ensureAccountAliasFilesExists,
-  sortChainIds,
-} from '../utils/accountHelpers.js';
+import { sortChainIds } from '../utils/accountHelpers.js';
 import { fund } from '../utils/fund.js';
 import {
   deployFaucetsToChains,
@@ -36,12 +32,6 @@ export const createAccountFundCommand = createCommand(
     accountOptions.deployFaucet(),
   ],
   async (option) => {
-    const isAccountAliasesExist = await ensureAccountAliasFilesExists();
-
-    if (!isAccountAliasesExist) {
-      return log.error(NO_ACCOUNTS_FOUND_ERROR_MESSAGE);
-    }
-
     const { account, accountConfig } = await option.account();
     const { network, networkConfig } = await option.network({
       allowedNetworkIds: ['testnet', 'development'],

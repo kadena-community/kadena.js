@@ -1,13 +1,7 @@
 import type { Command } from 'commander';
-import path from 'path';
-import {
-  ACCOUNT_DIR,
-  CWD_KADENA_DIR,
-  HOME_KADENA_DIR,
-} from '../../../constants/config.js';
+import { CWD_KADENA_DIR, HOME_KADENA_DIR } from '../../../constants/config.js';
 import { getNetworkFiles } from '../../../constants/networks.js';
 import { services } from '../../../services/index.js';
-import { KadenaError } from '../../../services/service-error.js';
 import { createCommand } from '../../../utils/createCommand.js';
 import { notEmpty } from '../../../utils/globalHelpers.js';
 import {
@@ -122,19 +116,13 @@ export const createConfigInitCommand: (
         return;
       }
 
-      const directory = services.config.getDirectory();
-      if (directory === null) {
-        throw new KadenaError('no_kadena_directory');
-      }
+      services.config.getDirectory();
 
-      const accountDir = path.join(directory, ACCOUNT_DIR);
-      const { accountName, accountFilepath } =
-        await createAccountAliasByPublicKey(
-          accountAlias,
-          wallet.keys[0].publicKey,
-          accountDir,
-        );
-      logAccountCreation(accountName, accountFilepath);
+      const account = await createAccountAliasByPublicKey(
+        accountAlias,
+        wallet.keys[0].publicKey,
+      );
+      logAccountCreation(account.name, account.filepath);
     }
   },
 );

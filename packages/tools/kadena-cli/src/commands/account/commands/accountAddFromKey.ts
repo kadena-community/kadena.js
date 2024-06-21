@@ -1,14 +1,13 @@
 import type { ChainId } from '@kadena/types';
 import { KEYS_ALL_PRED_ERROR_MESSAGE } from '../../../constants/account.js';
 import { networkDefaults } from '../../../constants/networks.js';
-import { assertCommandError } from '../../../utils/command.util.js';
+import { services } from '../../../services/index.js';
 import type { CommandOption } from '../../../utils/createCommand.js';
 import { isNotEmptyString } from '../../../utils/globalHelpers.js';
 import { log } from '../../../utils/logger.js';
 import type { options } from '../accountAddOptions.js';
 import type { IAccountDetailsResult, Predicate } from '../types.js';
 import { isValidForOnlyKeysAllPredicate } from '../utils/accountHelpers.js';
-import { addAccount } from '../utils/addAccount.js';
 import { displayAddAccountSuccess } from '../utils/addHelpers.js';
 import { createAccountName } from '../utils/createAccountName.js';
 import { getAccountDetails } from '../utils/getAccountDetails.js';
@@ -112,14 +111,13 @@ export const addAccountFromKey = async (
       : predicate,
   };
 
-  const result = await addAccount({
-    accountAlias,
-    accountName,
+  const result = await services.account.create({
+    alias: accountAlias,
+    name: accountName,
     fungible,
-    ...accountGuard,
+    predicate,
+    publicKeys: accountGuard.publicKeysConfig,
   });
 
-  assertCommandError(result);
-
-  displayAddAccountSuccess(accountAlias, result.data);
+  displayAddAccountSuccess(result);
 };

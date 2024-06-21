@@ -4,6 +4,7 @@ import { statSync } from 'node:fs';
 import path from 'node:path';
 import sanitize from 'sanitize-filename';
 import {
+  ACCOUNT_DIR,
   ENV_KADENA_DIR,
   HOME_KADENA_DIR,
   IS_TEST,
@@ -13,12 +14,20 @@ import {
 } from '../../constants/config.js';
 import {
   detectArrayFileParseType,
+  formatZodError,
   getFileParser,
   notEmpty,
   safeYamlParse,
 } from '../../utils/globalHelpers.js';
+import { arrayNotEmpty } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { relativeToCwd } from '../../utils/path.util.js';
+import { accountSchema } from '../account/account.schemas.js';
+import type {
+  IAccount,
+  IAccountCreate,
+  IAccountFile,
+} from '../account/account.types.js';
 import type { Services } from '../index.js';
 import { KadenaError } from '../service-error.js';
 import {
@@ -56,7 +65,7 @@ const findKadenaDirectory = (searchDir: string): string | null => {
 };
 
 export interface IConfigService {
-  getDirectory(): string | null;
+  getDirectory(): string;
   setDirectory(directory: string): void;
   // Key
   getPlainKey(filepath: string): Promise<IPlainKey | null>;
@@ -67,6 +76,11 @@ export interface IConfigService {
   setWallet: (wallet: IWalletCreate, update?: boolean) => Promise<string>;
   getWallets: () => Promise<IWallet[]>;
   deleteWallet: (filepath: string) => Promise<void>;
+  // account
+  setAccount: (account: IAccountCreate, update?: boolean) => Promise<string>;
+  getAccount: (filepath: string) => Promise<IAccount | null>;
+  getAccounts: () => Promise<IAccount[]>;
+  deleteAccount: (filepath: string) => Promise<void>;
 }
 
 export class ConfigService implements IConfigService {
@@ -77,7 +91,7 @@ export class ConfigService implements IConfigService {
 
   public constructor(services: Services, directory?: string) {
     this.services = services;
-    this.discoverDirectory(directory);
+    this._discoverDirectory(directory);
   }
 
   public setDirectory(directory: string): void {
@@ -89,8 +103,7 @@ export class ConfigService implements IConfigService {
     this.directory = directory;
   }
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  private discoverDirectory(directory?: string): void {
+  private _discoverDirectory(directory?: string): void {
     // Priority 1: directory passed in constructor
     if (directory !== undefined) {
       this.directory = directory;
@@ -126,7 +139,9 @@ export class ConfigService implements IConfigService {
     this.directory = null;
   }
 
-  public getDirectory(): string | null {
+  public getDirectory(): string {
+    if (this.directory === null) throw new KadenaError('no_kadena_directory');
+    // console.log({ directory: this.directory });
     return this.directory;
   }
 
@@ -210,8 +225,7 @@ export class ConfigService implements IConfigService {
     wallet: IWalletCreate,
     update?: boolean,
   ): ReturnType<IConfigService['setWallet']> {
-    const directory = await this.getDirectory();
-    if (directory === null) throw new KadenaError('no_kadena_directory');
+    const directory = this.getDirectory();
     const filename = sanitize(wallet.alias);
     const filepath = path.join(directory, WALLET_DIR, `${filename}${YAML_EXT}`);
     const exists = await this.services.filesystem.fileExists(filepath);
@@ -237,8 +251,7 @@ export class ConfigService implements IConfigService {
   }
 
   public async getWallets(): ReturnType<IConfigService['getWallets']> {
-    const directory = await this.getDirectory();
-    if (directory === null) throw new KadenaError('no_kadena_directory');
+    const directory = this.getDirectory();
     const walletPath = path.join(directory, WALLET_DIR);
     if (!(await this.services.filesystem.directoryExists(walletPath))) {
       return [];
@@ -257,6 +270,97 @@ export class ConfigService implements IConfigService {
   public async deleteWallet(
     filepath: string,
   ): ReturnType<IConfigService['deleteWallet']> {
+    await this.services.filesystem.deleteFile(filepath);
+  }
+
+  // Account
+  public async setAccount(
+    account: IAccountCreate,
+    update?: boolean,
+  ): ReturnType<IConfigService['setAccount']> {
+    const directory = this.getDirectory();
+    const filename = sanitize(account.alias);
+    const filepath = path.join(
+      directory,
+      ACCOUNT_DIR,
+      `${filename}${YAML_EXT}`,
+    );
+    const exists = await this.services.filesystem.fileExists(filepath);
+    if (exists && update !== true) {
+      throw new Error(`Account "${relativeToCwd(filepath)}" already exists.`);
+    }
+    if (!arrayNotEmpty(account.publicKeys)) {
+      throw new Error('No public keys provided');
+    }
+
+    const data: IAccountFile = {
+      alias: account.alias,
+      name: account.name,
+      fungible: account.fungible,
+      predicate: account.predicate,
+      publicKeys: account.publicKeys,
+    };
+
+    await this.services.filesystem.ensureDirectoryExists(
+      path.join(directory, ACCOUNT_DIR),
+    );
+    await this.services.filesystem.writeFile(
+      filepath,
+      yaml.dump(data, { lineWidth: -1 }),
+    );
+    return filepath;
+  }
+
+  public async getAccount(
+    filepath: string,
+  ): ReturnType<IConfigService['getAccount']> {
+    const file = await this.services.filesystem.readFile(filepath);
+    if (file === null) {
+      throw new Error(`Account file "${relativeToCwd(filepath)}" not found.`);
+    }
+    const parsedYaml = safeYamlParse<IAccountFile>(file);
+    // Alias was added later, insert here for backwards compatibility
+    if (parsedYaml && parsedYaml.alias === undefined) {
+      parsedYaml.alias = path.basename(filepath, YAML_EXT);
+    }
+
+    const parsed = accountSchema.safeParse(parsedYaml);
+    if (!parsed.success) {
+      throw new Error(
+        `Error parsing account file: ${formatZodError(parsed.error)}`,
+      );
+    }
+    return {
+      alias: parsed.data.alias,
+      name: parsed.data.name,
+      fungible: parsed.data.fungible,
+      predicate: parsed.data.predicate,
+      publicKeys: parsed.data.publicKeys,
+      filepath,
+    };
+  }
+
+  public async getAccounts(): ReturnType<IConfigService['getAccounts']> {
+    const directory = this.getDirectory();
+    const accountDir = path.join(directory, ACCOUNT_DIR);
+    if (!(await this.services.filesystem.directoryExists(accountDir))) {
+      return [];
+    }
+    const files = await this.services.filesystem.readDir(accountDir);
+    const filepaths = files.map((file) => path.join(accountDir, file));
+
+    const accounts = await Promise.all(
+      filepaths.map(async (filepath) =>
+        this.getAccount(filepath).catch(() => null),
+      ),
+    );
+
+    return accounts.filter(notEmpty);
+  }
+
+  public async deleteAccount(
+    filepath: string,
+  ): ReturnType<IConfigService['deleteAccount']> {
     await this.services.filesystem.deleteFile(filepath);
   }
 }

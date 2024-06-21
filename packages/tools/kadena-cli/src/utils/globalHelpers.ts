@@ -163,7 +163,12 @@ export const formatZodError = (error: ZodError): string => {
   const format = error.format() as any;
   const formatted = Object.keys(format)
     .map((key) => {
-      if (key === '_errors') return null;
+      if (key === '_errors') {
+        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+        return Array.isArray(format[key]) && format[key].includes('Required')
+          ? 'Can not be empty'
+          : null;
+      }
       return `${key}: ${format[key]?._errors.join(', ')}`;
     })
     .filter(notEmpty);

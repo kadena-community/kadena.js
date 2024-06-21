@@ -1,7 +1,6 @@
 import type { Command } from 'commander';
 import { services } from '../../../services/index.js';
 
-import { KadenaError } from '../../../services/service-error.js';
 import { createCommand } from '../../../utils/createCommand.js';
 import { notEmpty } from '../../../utils/globalHelpers.js';
 import {
@@ -11,7 +10,6 @@ import {
 import { handleNoKadenaDirectory } from '../../../utils/helpers.js';
 import { log } from '../../../utils/logger.js';
 import { accountOptions } from '../../account/accountOptions.js';
-import { getAccountDirectory } from '../../account/utils/accountHelpers.js';
 import {
   createAccountAliasByPublicKey,
   logAccountCreation,
@@ -42,20 +40,17 @@ export const createGenerateWalletCommand: (
     accountOptions.accountAlias({ isOptional: true }),
   ],
   async (option) => {
-    const accountDir = getAccountDirectory();
-    if (accountDir === null) {
-      throw new KadenaError('no_kadena_directory');
-    }
+    services.config.getDirectory();
 
     const walletName = await option.walletName();
     const passwordFile = await option.passwordFile();
     const legacy = await option.legacy();
     const createAccount = await option.createAccount();
 
-    let accountAlias = null;
-    if (createAccount.createAccount === 'true') {
-      accountAlias = await option.accountAlias();
-    }
+    const accountAlias =
+      createAccount.createAccount === 'true'
+        ? await option.accountAlias()
+        : null;
 
     const config = {
       walletName: walletName.walletName,
@@ -98,13 +93,11 @@ export const createGenerateWalletCommand: (
           return;
         }
 
-        const { accountName, accountFilepath } =
-          await createAccountAliasByPublicKey(
-            config.accountAlias,
-            wallet.keys[0].publicKey,
-            accountDir,
-          );
-        logAccountCreation(accountName, accountFilepath);
+        const account = await createAccountAliasByPublicKey(
+          config.accountAlias,
+          wallet.keys[0].publicKey,
+        );
+        logAccountCreation(account.name, account.filepath);
         log.info(`\nTo fund the account, use the following command:`);
         log.info(`kadena account fund --account ${config.accountAlias}`);
       }
