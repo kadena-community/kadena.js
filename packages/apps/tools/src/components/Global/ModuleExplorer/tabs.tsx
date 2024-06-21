@@ -29,6 +29,7 @@ export interface ITabsProps {
 }
 
 const TRUNCATE_THRESHOLD = 12; // More than 12 because of head length (4) + mask length (4) + tail length (4)
+const PRINCIPAL_NAMESPACE_PREFIX = 'n_';
 
 const moduleTitle = (title: string) => {
   const [namespace, moduleName] = title.split('.');
@@ -40,7 +41,9 @@ const moduleTitle = (title: string) => {
           {namespace.length > TRUNCATE_THRESHOLD
             ? maskValue(namespace, {
                 character: '.',
-                headLength: namespace.startsWith('n_') ? 6 : 4,
+                headLength: namespace.startsWith(PRINCIPAL_NAMESPACE_PREFIX)
+                  ? 6
+                  : 4,
               })
             : namespace}
         </Badge>
