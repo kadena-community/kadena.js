@@ -118,7 +118,7 @@ const EditorTabs: FC<ITabsProps> = ({
           onSelectionChange={onParentChange}
           onClose={onParentClose}
           tabPanelClassName={firstLevelTabPanelStyles}
-          borderPosition="bottom"
+          borderPosition="top"
           isCompact
         >
           {(item) => (
@@ -147,7 +147,7 @@ const EditorTabs: FC<ITabsProps> = ({
           onClose={onModuleClose}
           tabPanelClassName={secondLevelTabPanelStyles}
           selectedKey={moduleToTabId(activeModule)}
-          borderPosition="bottom"
+          borderPosition="top"
         >
           {(item) => (
             <TabItem key={moduleToTabId(item)} title={item.chainId}>
