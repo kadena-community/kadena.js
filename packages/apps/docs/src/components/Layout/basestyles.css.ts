@@ -8,10 +8,11 @@ globalStyle('html, body', {
   overscrollBehaviorY: 'none',
 });
 
-globalStyle('a', {
+globalStyle('a:not(nav a)', {
   color: tokens.kda.foundation.color.link.brand.primary.default,
   textDecoration: 'underline',
 });
+
 globalStyle('a:hover', {
   color: tokens.kda.foundation.color.link.brand.primary['@hover'],
   textDecoration: 'none',
