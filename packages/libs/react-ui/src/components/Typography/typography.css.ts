@@ -1,4 +1,4 @@
-import { style } from '../../styles';
+import { style, token } from '../../styles';
 
 export const transformVariants = {
   uppercase: style({ textTransform: 'uppercase' }),
@@ -8,6 +8,6 @@ export const transformVariants = {
 };
 
 export const colorVariants = {
-  default: style({ color: 'text.subtlest.default' }),
-  emphasize: style({ color: 'text.base.default' }),
+  default: style({ color: token('color.text.subtlest.default') }),
+  emphasize: style({ color: token('color.text.base.default') }),
 };

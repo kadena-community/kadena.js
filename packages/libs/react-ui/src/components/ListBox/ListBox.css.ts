@@ -1,35 +1,33 @@
 import { style, token } from '../../styles';
 
 // applied on ul
-export const listBoxClass = style([
-  {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    margin: 0,
-    padding: 0,
-    listStyleType: 'none',
-    overflowX: 'hidden',
-    boxShadow: `0px 1px 0 0 ${token('color.border.base.default')}`,
-    selectors: {
-      "&[data-scrollable='true']": {
-        maxHeight: '500px',
-        overflowY: 'auto',
-      },
-      "&[data-submenu='true']": {
-        padding: '0',
-        borderRadius: '0',
-        boxShadow: 'none',
-      },
-      '&[data-focus-visible="true"]': {
-        outlineColor: token('color.border.tint.outline'),
-      },
-      '&[data-focused="true"]': {
-        outlineColor: token('color.border.tint.outline'),
-      },
+export const listBoxClass = style({
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  margin: 0,
+  padding: 0,
+  listStyleType: 'none',
+  overflowX: 'hidden',
+  boxShadow: `0px 1px 0 0 ${token('color.border.base.default')}`,
+  selectors: {
+    "&[data-scrollable='true']": {
+      maxHeight: '500px',
+      overflowY: 'auto',
+    },
+    "&[data-submenu='true']": {
+      padding: 0,
+      borderRadius: 0,
+      boxShadow: 'none',
+    },
+    '&[data-focus-visible="true"]': {
+      outlineColor: token('color.border.tint.outline'),
+    },
+    '&[data-focused="true"]': {
+      outlineColor: token('color.border.tint.outline'),
     },
   },
-]);
+});
 
 // applied on li
 export const listItemClass = style({

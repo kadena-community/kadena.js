@@ -1,7 +1,6 @@
 import { calc } from '@vanilla-extract/css-utils';
 import { style, token } from '../../styles';
 import { responsiveStyle } from '../../styles/themeUtils';
-import { tokens } from '../../styles/tokens/contract.css';
 import { containerClass as cardContainerClass } from '../Card/Card.css';
 
 export const openModal = style({
@@ -24,10 +23,10 @@ export const overlayClass = style([
       inset: 0,
     },
     sm: {
-      minWidth: tokens.kda.foundation.layout.content.minWidth,
+      minWidth: token('layout.content.minWidth'),
     },
     md: {
-      maxWidth: tokens.kda.foundation.layout.content.maxWidth,
+      maxWidth: token('layout.content.maxWidth'),
       maxHeight: '75vh',
     },
   }),
@@ -79,7 +78,7 @@ export const smClass = style([
       maxWidth: '100vw',
     },
     md: {
-      maxWidth: tokens.kda.foundation.layout.content.maxWidth,
+      maxWidth: token('layout.content.maxWidth'),
       maxHeight: '75vh',
     },
   }),
