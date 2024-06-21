@@ -92,9 +92,12 @@ const EditorTabs: FC<ITabsProps> = ({
         });
 
         const previousEntry = [...map][currIndex - 1];
+        const nextEntry = [...map][currIndex + 1];
 
         if (previousEntry) {
           onModuleChange(previousEntry[1][0]);
+        } else if (nextEntry) {
+          onModuleChange(nextEntry[1][0]);
         }
       }
 
@@ -115,6 +118,7 @@ const EditorTabs: FC<ITabsProps> = ({
           onSelectionChange={onParentChange}
           onClose={onParentClose}
           tabPanelClassName={firstLevelTabPanelStyles}
+          borderPosition="bottom"
           isCompact
         >
           {(item) => (
@@ -143,6 +147,7 @@ const EditorTabs: FC<ITabsProps> = ({
           onClose={onModuleClose}
           tabPanelClassName={secondLevelTabPanelStyles}
           selectedKey={moduleToTabId(activeModule)}
+          borderPosition="bottom"
         >
           {(item) => (
             <TabItem key={moduleToTabId(item)} title={item.chainId}>
