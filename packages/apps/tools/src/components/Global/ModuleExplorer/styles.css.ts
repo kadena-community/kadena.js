@@ -39,6 +39,10 @@ export const tabsBadgeStyles = style({
 
 export const firstLevelTabPanelStyles = atoms({
   marginBlock: 'n0',
+  paddingBlock: 'n0',
 });
 
-export const secondLevelTabPanelStyles = style({ marginBlock: 0 });
+export const secondLevelTabPanelStyles = style({
+  marginBlock: 0,
+  paddingBlock: 0,
+});

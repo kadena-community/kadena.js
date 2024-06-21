@@ -150,6 +150,7 @@ const EditorTabs: FC<ITabsProps> = ({
           tabPanelClassName={firstLevelTabPanelStyles}
           borderPosition="top"
           isCompact
+          isContained
         >
           {(item) => (
             <TabItem key={item.title} title={moduleTitle(item.title)}>
@@ -171,6 +172,7 @@ const EditorTabs: FC<ITabsProps> = ({
         <Tabs
           inverse
           isCompact
+          isContained
           items={map.get(activeModule.name)}
           onSelectionChange={onModuleChangeInternal}
           onClose={onModuleClose}

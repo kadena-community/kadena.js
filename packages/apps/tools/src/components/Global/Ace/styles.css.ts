@@ -3,7 +3,6 @@ import { globalStyle, style } from '@vanilla-extract/css';
 
 export const containerStyle = style({
   height: '100%',
-  paddingBlockStart: token('spacing.sm'),
 });
 
 /*
