@@ -246,7 +246,6 @@ describe('mapToTreeItems', () => {
         },
         key: 'coin',
         title: 'coin',
-        isActive: false,
         children: [
           {
             data: {
@@ -294,7 +293,6 @@ describe('mapToTreeItems', () => {
         },
         key: 'namespace1',
         title: 'namespace1',
-        isActive: false,
         children: [
           {
             data: {
@@ -304,7 +302,6 @@ describe('mapToTreeItems', () => {
             },
             key: 'namespace1.module1',
             title: 'module1',
-            isActive: false,
             children: [
               {
                 data: {
@@ -349,7 +346,6 @@ describe('mapToTreeItems', () => {
         },
         key: 'some-parent-key.coin',
         title: 'coin',
-        isActive: false,
         children: [
           {
             data: {
