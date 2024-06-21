@@ -4,7 +4,6 @@ import {
   MonoCached,
 } from '@kadena/react-icons/system';
 import { Badge, Button, Stack, Text } from '@kadena/react-ui';
-import { token } from '@kadena/react-ui/styles';
 import classNames from 'classnames';
 import React, { useCallback } from 'react';
 import type { ICustomAccordionProps } from '../CustomAccordion/CustomAccordion';
@@ -14,6 +13,9 @@ import {
   itemContainerStyle,
   itemTitleStyle,
   reloadButtonStyles,
+  reloadIconStyles,
+  reloadLoadingStyles,
+  topLevelItemContainerStyle,
 } from './CustomTree.css';
 import CustomTreeNode from './CustomTreeNode';
 
@@ -27,6 +29,7 @@ export type TreeItem<T> = {
   supportsReload?: boolean;
   supportsSearch?: boolean;
   label?: string | number;
+  isActive?: boolean;
 };
 
 export interface ICustomTreeProps<T>
@@ -72,7 +75,10 @@ function CustomTree<T>({
               justifyContent={'space-between'}
               onClick={toggleHandler}
               role="button"
-              className={itemContainerStyle}
+              className={classNames(
+                itemContainerStyle,
+                topLevelItemContainerStyle,
+              )}
             >
               <Button variant="transparent" onPress={toggleHandler}>
                 {item.isExpanded ? <MonoArrowDropDown /> : <MonoArrowRight />}
@@ -88,7 +94,9 @@ function CustomTree<T>({
                   className={reloadButtonStyles}
                 >
                   <MonoCached
-                    color={token('color.icon.semantic.positive.default')}
+                    className={classNames(reloadIconStyles, {
+                      [reloadLoadingStyles]: item.data.isLoading,
+                    })}
                   />
                 </Button>
               ) : null}

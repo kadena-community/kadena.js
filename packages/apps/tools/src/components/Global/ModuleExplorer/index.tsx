@@ -79,7 +79,9 @@ const ModuleExplorer = ({
     return searchResultsToDataMap(results);
   }, [deferredQuery, data]);
 
-  const mapped = useMemo(() => {
+  const mapped = useMemo<
+    Array<TreeItem<IncompleteModuleModel> & { label: number }>
+  >(() => {
     return items
       .filter((item) => {
         if (searchFilter === DEFAULT_ALL_ITEMS_KEY) {
@@ -99,12 +101,13 @@ const ModuleExplorer = ({
           },
           children: mapToTreeItems(
             modelsToTreeMap(filteredData.get(networkId) || []),
+            activeModule,
             item.key as string,
             !deferredQuery, // Don't sort alphabetically for search results
           ),
         };
       });
-  }, [filteredData, items, searchFilter, deferredQuery]);
+  }, [items, searchFilter, filteredData, activeModule, deferredQuery]);
 
   let outlineItems: TreeItem<Outline>[] = [];
 

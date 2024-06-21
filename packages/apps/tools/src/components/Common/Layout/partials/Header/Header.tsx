@@ -99,6 +99,7 @@ const Header: FC<IHeaderProps> = () => {
             <MonoContrast
               className={atoms({
                 color: 'text.base.default',
+                fontSize: 'lg',
               })}
             />
           </NavHeaderButton>
@@ -112,6 +113,7 @@ const Header: FC<IHeaderProps> = () => {
             <MonoBuildCircle
               className={atoms({
                 color: 'text.base.default',
+                fontSize: 'lg',
               })}
             />
           </NavHeaderButton>

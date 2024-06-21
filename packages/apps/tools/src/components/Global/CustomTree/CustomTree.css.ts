@@ -36,14 +36,50 @@ export const itemContainerStyle = style([
     minHeight: token('size.n10'),
     borderInline: 'none',
     borderBlockStart: 'none',
+    borderBlockEnd: 'none',
     ':hover': {
       backgroundColor: token('color.background.semantic.info.subtlest'),
     },
   },
 ]);
 
-export const reloadButtonStyles = atoms({ marginInlineEnd: 'sm' });
+export const topLevelItemContainerStyle = style({
+  borderBlockEnd: `${token('border.width.hairline')} solid ${token('color.border.base.default')}`,
+});
+
+export const activeItemContainerStyle = style({
+  backgroundColor: token('color.background.semantic.info.subtle'),
+  borderInlineEnd: `${token('border.width.thick')} solid ${token('color.border.tint.outline')}`,
+});
+
+export const reloadButtonStyles = style({
+  marginInlineEnd: token('spacing.sm'),
+});
+
+export const reloadIconStyles = style({
+  selectors: {
+    [`${reloadButtonStyles} &`]: {
+      color: token('color.icon.base.inverse.default'),
+    },
+    [`${reloadButtonStyles}:hover &`]: {
+      color: token('color.icon.base.@hover'),
+    },
+  },
+});
+
+export const reloadLoadingStyles = style({
+  selectors: {
+    [`${reloadButtonStyles} &`]: {
+      color: token('color.icon.semantic.positive.default'),
+    },
+  },
+});
 
 export const firstLevelTreeNodeStyles = style({
-  borderBlockEnd: '1px solid rgba(0, 0, 0, 0.25)',
+  borderBlockEnd: `${token('border.width.hairline')} solid ${token('color.border.base.default')}`,
+});
+
+export const activeItemStyles = style({
+  backgroundColor: token('color.background.semantic.info.subtle'),
+  borderInlineEnd: `${token('border.width.thick')} solid ${token('color.border.tint.outline')}`,
 });
