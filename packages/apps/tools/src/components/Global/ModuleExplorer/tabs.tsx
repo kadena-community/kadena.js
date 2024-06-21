@@ -109,7 +109,7 @@ const EditorTabs: FC<ITabsProps> = ({
   return (
     <>
       <Box
-        paddingBlockStart={'md'}
+        paddingBlockStart={'sm'}
         backgroundColor="surfaceHighContrast.default"
       >
         <Tabs
@@ -132,7 +132,7 @@ const EditorTabs: FC<ITabsProps> = ({
       <Stack
         alignItems="center"
         paddingInlineStart={'md'}
-        paddingBlockStart={'md'}
+        paddingBlockStart={'sm'}
         backgroundColor="surface.default"
         className={secondLevelTabContainerStyles}
       >
