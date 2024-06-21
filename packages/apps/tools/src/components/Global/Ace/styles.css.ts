@@ -1,6 +1,10 @@
+import { token } from '@kadena/react-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 
-export const containerStyle = style({ height: '100%' });
+export const containerStyle = style({
+  height: '100%',
+  paddingBlockStart: token('spacing.sm'),
+});
 
 /*
  * <span> elements get a global style (which includes font-family) from the `react-ui` library, we
