@@ -1,4 +1,3 @@
-import { token } from '@kadena/react-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 
 export const containerStyle = style({
