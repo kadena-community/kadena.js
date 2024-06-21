@@ -1,6 +1,14 @@
 import type { ModuleModel } from '@/hooks/use-module-query';
 import type { ITabNode } from '@kadena/react-ui';
-import { Box, Stack, TabItem, Tabs, Text } from '@kadena/react-ui';
+import {
+  Badge,
+  Box,
+  Stack,
+  TabItem,
+  Tabs,
+  Text,
+  maskValue,
+} from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC, Key } from 'react';
 import React, { useCallback, useMemo } from 'react';
@@ -8,6 +16,7 @@ import {
   firstLevelTabPanelStyles,
   secondLevelTabContainerStyles,
   secondLevelTabPanelStyles,
+  tabsBadgeStyles,
   tabsLabelStyles,
 } from './styles.css';
 import { mapToTabs, moduleToTabId, modulesToMap, tabIdToModule } from './utils';
@@ -19,6 +28,28 @@ export interface ITabsProps {
   onModuleTabClose: (modules: ModuleModel[]) => void;
   onChainTabClose: (module: ModuleModel) => void;
 }
+
+const moduleTitle = (title: string) => {
+  const [namespace, moduleName] = title.split('.');
+
+  if (moduleName) {
+    return (
+      <>
+        <Badge size="sm" className={tabsBadgeStyles}>
+          {namespace.length > 12
+            ? maskValue(namespace, {
+                character: '.',
+                headLength: namespace.startsWith('n_') ? 6 : 4,
+              })
+            : namespace}
+        </Badge>
+        {moduleName}
+      </>
+    );
+  }
+
+  return namespace;
+};
 
 const EditorTabs: FC<ITabsProps> = ({
   openedModules,
@@ -122,7 +153,7 @@ const EditorTabs: FC<ITabsProps> = ({
           isCompact
         >
           {(item) => (
-            <TabItem key={item.title} title={item.title}>
+            <TabItem key={item.title} title={moduleTitle(item.title)}>
               {/* We render nothing, since we don't want to rerender the sub tabs below every single time. */}
               {null}
             </TabItem>
