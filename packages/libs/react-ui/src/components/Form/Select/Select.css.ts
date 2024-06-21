@@ -22,9 +22,9 @@ export const selectButtonClass = style({
   overflow: 'hidden',
   position: 'relative',
   alignItems: 'center',
-  paddingBlock: '0',
+  paddingBlock: 0,
   paddingInlineStart: token('spacing.md'),
-  paddingInlineEnd: '0',
+  paddingInlineEnd: 0,
   selectors: {
     '&[data-hovered]': {
       cursor: 'pointer',
