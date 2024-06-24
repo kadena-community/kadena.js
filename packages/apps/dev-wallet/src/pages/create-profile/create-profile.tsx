@@ -149,9 +149,6 @@ export function CreateProfile() {
                     gap={'lg'}
                   >
                     <Text>
-                      You can choose the way you want to login to your wallet
-                    </Text>
-                    <Text>
                       Your system supports <Text bold>WebAuthn</Text> so you can
                       create a more secure and more convenient password-less
                       profile!

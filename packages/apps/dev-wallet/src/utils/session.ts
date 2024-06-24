@@ -52,6 +52,7 @@ const throttle = <T extends (...args: unknown[]) => any>(
 export function createSession(
   key: string = 'session',
   password: Uint8Array = SESSION_PASS,
+  useEncryption = true,
 ) {
   let loaded = false;
   let session: { expiration?: string; creationDate?: string } & Record<
@@ -66,7 +67,9 @@ export function createSession(
     session.expiration = `${Date.now() + 1000 * 60 * 30}`; // 30 minutes
     localStorage.setItem(
       'session',
-      await kadenaEncrypt(password, JSON.stringify(session)),
+      useEncryption
+        ? await kadenaEncrypt(password, JSON.stringify(session))
+        : JSON.stringify(session),
     );
   };
   return {
@@ -76,7 +79,9 @@ export function createSession(
       if (current) {
         try {
           session = JSON.parse(
-            new TextDecoder().decode(await kadenaDecrypt(password, current)),
+            useEncryption
+              ? new TextDecoder().decode(await kadenaDecrypt(password, current))
+              : current,
           );
           console.log('Loaded session', session);
           if (Date.now() > Number(session.expiration)) {

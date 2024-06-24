@@ -1,7 +1,11 @@
 import { defaultAccentColor } from '@/modules/layout/layout.provider.tsx';
+import { recoverPublicKey, retrieveCredential } from '@/utils/webAuthn';
 import { IUnsignedCommand } from '@kadena/client';
 import { useCallback, useContext } from 'react';
 import * as AccountService from '../account/account.service';
+import { BIP44Service } from '../key-source/hd-wallet/BIP44';
+import { ChainweaverService } from '../key-source/hd-wallet/chainweaver';
+import { keySourceManager } from '../key-source/key-source-manager';
 import { ExtWalletContextType, WalletContext } from './wallet.provider';
 import { IKeySource, IProfile } from './wallet.repository';
 import * as WalletService from './wallet.service';
@@ -55,17 +59,67 @@ export const useWallet = () => {
     setProfile(undefined);
   }, [setProfile]);
 
+  const unlockKeySource = useCallback(
+    async (keySource: IKeySource) => {
+      const { profile } = context;
+      // for now we use the same password as the profile password
+      // later we have different password for key sources. we need to handle that.
+      // we check the auth mode of the profile and use the appropriate password/web-authn to unlock the key source
+      switch (profile?.options.authMode) {
+        case 'PASSWORD': {
+          console.log('unlocking with password');
+          // TODO: replace this with a proper password prompt
+          const pass = prompt('Enter password');
+          if (!pass) {
+            throw new Error('Password is required');
+          }
+          const service = (await keySourceManager.get(keySource.source)) as
+            | ChainweaverService
+            | BIP44Service;
+
+          await service.connect(pass, keySource as any);
+          break;
+        }
+        case 'WEB_AUTHN': {
+          const credentialId = profile.options.webAuthnCredential;
+          const credential = await retrieveCredential(credentialId);
+          if (!credential) {
+            throw new Error('Failed to retrieve credential');
+          }
+          const keys = await recoverPublicKey(credential);
+          const service = (await keySourceManager.get(keySource.source)) as
+            | ChainweaverService
+            | BIP44Service;
+          for (const key of keys) {
+            try {
+              await service.connect(key, keySource as any);
+              console.log('Key source unlocked with: ', key);
+              break;
+            } catch (e) {
+              continue;
+            }
+          }
+          if (!service.isConnected()) {
+            throw new Error('Failed to unlock key source');
+          }
+          break;
+        }
+        default: {
+          throw new Error('Unsupported auth mode');
+        }
+      }
+    },
+    [context],
+  );
+
   const sign = useCallback(
-    async (
-      TXs: IUnsignedCommand[],
-      onConnect: (keySource: IKeySource) => Promise<void> = async () => {},
-    ) => {
+    async (TXs: IUnsignedCommand[]) => {
       if (!isUnlocked(context)) {
         throw new Error('Wallet in not unlocked');
       }
-      return WalletService.sign(context.keySources, onConnect, TXs);
+      return WalletService.sign(context.keySources, unlockKeySource, TXs);
     },
-    [context],
+    [context, unlockKeySource],
   );
 
   const decryptSecret = useCallback(
@@ -79,7 +133,7 @@ export const useWallet = () => {
   );
 
   const createKey = useCallback(async (keySource: IKeySource) => {
-    return WalletService.createKey(keySource);
+    return WalletService.createKey(keySource, unlockKeySource);
   }, []);
 
   const createKAccount = useCallback(

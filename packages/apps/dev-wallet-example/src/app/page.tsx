@@ -124,13 +124,12 @@ export default function Home() {
             }
             disabled={!profile}
             onClick={async () => {
-              const { message } = await getWalletConnection();
+              const { message, close } = await getWalletConnection();
               const response = await message('GET_STATUS', {
                 name: appName,
               });
-              console.log(response);
-              log.push(JSON.stringify(response));
-              setLog([...log]);
+              addLog(response);
+              // close();
             }}
           >
             GET_STATUS

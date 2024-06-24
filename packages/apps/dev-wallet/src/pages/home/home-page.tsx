@@ -1,3 +1,4 @@
+import { useNetwork } from '@/modules/network/network.hook';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import {
   listClass,
@@ -5,10 +6,12 @@ import {
   panelClass,
 } from '@/pages/home/style.css.ts';
 import { getAccountName } from '@/utils/helpers';
-import { Box, Heading, Stack, Text } from '@kadena/react-ui';
+import { Box, Button, Heading, Stack, Text } from '@kadena/react-ui';
 
 export function HomePage() {
-  const { accounts, profile } = useWallet();
+  const { accounts, profile, createKAccount, createKey, keySources } =
+    useWallet();
+  const { activeNetwork } = useNetwork();
 
   return (
     <Box>
@@ -22,6 +25,20 @@ export function HomePage() {
       </Box>
       <Box className={panelClass} marginBlockStart="xs">
         <Heading as="h4">{accounts.length} accounts</Heading>
+        <Button
+          onClick={async () => {
+            if (profile && activeNetwork) {
+              const key = await createKey(keySources[0]);
+              await createKAccount(
+                profile.uuid,
+                activeNetwork.networkId,
+                key.publicKey,
+              );
+            }
+          }}
+        >
+          Create Account
+        </Button>
         <Box marginBlockStart="md">
           <Text>Owned ({accounts.length})</Text>
           {accounts.length ? (

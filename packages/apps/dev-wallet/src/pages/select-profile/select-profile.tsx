@@ -1,3 +1,4 @@
+import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IProfile } from '@/modules/wallet/wallet.repository';
 import { recoverPublicKey, retrieveCredential } from '@/utils/webAuthn';
@@ -18,6 +19,7 @@ import {
 
 export function SelectProfile() {
   const { profileList, unlockProfile } = useWallet();
+  const { unlockHDWallet } = useHDWallet();
 
   const unlockWithWebAuthn = async (
     profile: Pick<IProfile, 'name' | 'uuid' | 'accentColor' | 'options'>,
@@ -36,6 +38,12 @@ export function SelectProfile() {
       const result = await unlockProfile(profile.uuid, key);
       if (result) {
         console.log(`Profile unlocked with: ${key}`);
+        // for now we just pick the first key source later we should have a way to select the key source
+        const keySource = result.keySources[0];
+        if (!keySource) {
+          throw new Error('No key source found');
+        }
+        await unlockHDWallet(keySource.source, key, keySource);
         return;
       }
     }

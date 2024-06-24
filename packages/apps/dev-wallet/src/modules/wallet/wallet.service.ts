@@ -125,8 +125,14 @@ export const unlockProfile = async (profileId: string, password: string) => {
   }
 };
 
-export async function createKey(keySource: IKeySource) {
+export async function createKey(
+  keySource: IKeySource,
+  onConnect: (keySource: IKeySource) => Promise<void>,
+) {
   const service = await keySourceManager.get(keySource.source);
+  if (!service.isConnected()) {
+    await onConnect(keySource);
+  }
   const key = await service.createKey(keySource.uuid);
   return key;
 }
