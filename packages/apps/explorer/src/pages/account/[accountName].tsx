@@ -7,6 +7,8 @@ import { FormatLink } from '@/components/compact-table/utils/format-link';
 import { FormatStatus } from '@/components/compact-table/utils/format-status';
 import DetailLayout from '@/components/layout/detail-layout/detail-layout';
 import MaskedAccountName from '@/components/mask-accountname/mask-accountname';
+import { useQueryContext } from '@/context/query-context';
+import { account } from '@/graphql/queries/account.graph';
 import { Heading, Stack, TabItem, Tabs } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import type { FC, Key } from 'react';
@@ -21,12 +23,21 @@ export interface IKeyProps {
 const Account: FC = () => {
   const router = useRouter();
   const [selectedTab, setSelectedTab] = useState<string>('Transactions');
+
+  const { setQueries } = useQueryContext();
+
+  const accountQueryVariables = {
+    accountName: router.query.accountName as string,
+  };
+
   const { loading, data, error } = useAccountQuery({
-    variables: {
-      accountName: router.query.accountName as string,
-    },
+    variables: accountQueryVariables,
     skip: !router.query.accountName,
   });
+
+  useEffect(() => {
+    setQueries([{ query: account, variables: accountQueryVariables }]);
+  }, []);
 
   useEffect(() => {
     const hash = router.asPath.split('#')[1];
