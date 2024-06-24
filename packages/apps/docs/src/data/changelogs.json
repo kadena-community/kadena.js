@@ -47070,6 +47070,269 @@
     "owner": "kadena-community",
     "repoName": "kadena.js",
     "content": {
+      "0.12.1": {
+        "label": "0.12.1",
+        "isLocked": true,
+        "authors": [
+          {
+            "login": "r-mulder",
+            "id": 116208434,
+            "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+            "html_url": "https://github.com/r-mulder",
+            "url": "https://api.github.com/users/r-mulder"
+          },
+          {
+            "login": "sstraatemans",
+            "id": 4015521,
+            "avatar_url": "https://avatars.githubusercontent.com/u/4015521?v=4",
+            "html_url": "https://github.com/sstraatemans",
+            "url": "https://api.github.com/users/sstraatemans"
+          }
+        ],
+        "patches": [
+          {
+            "label": "fix the grid styles which were being applied to a layer while the base styling was being applied via atoms, all styles aren't applied on a layer for layout components",
+            "commits": [
+              {
+                "hash": "16f0b17ed",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Thu, 20 Jun 2024 11:22:58 GMT",
+                    "date": "Mon, 24 Jun 2024 08:45:56 GMT"
+                  },
+                  "data": {
+                    "sha": "16f0b17ed38f32c005d9203fe64a42127ca1936e",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/16f0b17ed38f32c005d9203fe64a42127ca1936e",
+                    "author": {
+                      "login": "r-mulder",
+                      "id": 116208434,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+                      "html_url": "https://github.com/r-mulder",
+                      "url": "https://api.github.com/users/r-mulder"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/16f0b17ed38f32c005d9203fe64a42127ca1936e/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/16f0b17ed38f32c005d9203fe64a42127ca1936e",
+                    "commit": {
+                      "message": "fix: grid components were not behaving correct due to layers (#2302)",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Added documentation for useTheme hook",
+            "commits": [
+              {
+                "hash": "4dc02eec8",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Mon, 24 Jun 2024 08:44:49 GMT",
+                    "date": "Mon, 24 Jun 2024 08:45:56 GMT"
+                  },
+                  "data": {
+                    "sha": "4dc02eec87639c2c11b8a494537b4c709b9c99bb",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/4dc02eec87639c2c11b8a494537b4c709b9c99bb",
+                    "author": {
+                      "login": "sstraatemans",
+                      "id": 4015521,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/4015521?v=4",
+                      "html_url": "https://github.com/sstraatemans",
+                      "url": "https://api.github.com/users/sstraatemans"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/4dc02eec87639c2c11b8a494537b4c709b9c99bb/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/4dc02eec87639c2c11b8a494537b4c709b9c99bb",
+                    "commit": {
+                      "message": "chore(react-ui): add documentation for the useTheme hook (#2313)\n\n* added documentation for the useTheme hook\r\n\r\n* add codeowner",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "fix: make the icon on the text link component optional",
+            "commits": [
+              {
+                "hash": "db77beba0",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Wed, 19 Jun 2024 15:08:49 GMT",
+                    "date": "Mon, 24 Jun 2024 08:45:56 GMT"
+                  },
+                  "data": {
+                    "sha": "db77beba0c95b8fbec0840489781b6388feb15fb",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/db77beba0c95b8fbec0840489781b6388feb15fb",
+                    "author": {
+                      "login": "r-mulder",
+                      "id": 116208434,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+                      "html_url": "https://github.com/r-mulder",
+                      "url": "https://api.github.com/users/r-mulder"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/db77beba0c95b8fbec0840489781b6388feb15fb/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/db77beba0c95b8fbec0840489781b6388feb15fb",
+                    "commit": {
+                      "message": "fix: make the icon optional for the textlink component (#2286)\n\n* fix: make the icon optional for the textlink component\r\n\r\n* chore: add changeset",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "fix: prevent icons from scaling down in size when their parent container shrinks in size",
+            "commits": [
+              {
+                "hash": "c0a6ffde5",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Wed, 19 Jun 2024 13:11:21 GMT",
+                    "date": "Mon, 24 Jun 2024 08:45:56 GMT"
+                  },
+                  "data": {
+                    "sha": "c0a6ffde55a532538203cdfb7e4a86ed5599d8d0",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/c0a6ffde55a532538203cdfb7e4a86ed5599d8d0",
+                    "author": {
+                      "login": "r-mulder",
+                      "id": 116208434,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+                      "html_url": "https://github.com/r-mulder",
+                      "url": "https://api.github.com/users/r-mulder"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/c0a6ffde55a532538203cdfb7e4a86ed5599d8d0/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/c0a6ffde55a532538203cdfb7e4a86ed5599d8d0",
+                    "commit": {
+                      "message": "fix: remove max height from global image and svg selector to prevent … (#2282)\n\n* fix: remove max height from global image and svg selector to prevent icons from scaling down\r\n\r\n* chore: add changeset\r\n\r\n* fix: restore the max width to the elements other than svg",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "fix: make custom styling functions to add the default layer and remove usage of the atoms function to style components",
+            "commits": [
+              {
+                "hash": "7ee91269f",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Wed, 19 Jun 2024 13:15:47 GMT",
+                    "date": "Mon, 24 Jun 2024 08:45:56 GMT"
+                  },
+                  "data": {
+                    "sha": "7ee91269f18d44ca3dd4bbb7e483f41bb9d24481",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/7ee91269f18d44ca3dd4bbb7e483f41bb9d24481",
+                    "author": {
+                      "login": "r-mulder",
+                      "id": 116208434,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+                      "html_url": "https://github.com/r-mulder",
+                      "url": "https://api.github.com/users/r-mulder"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/7ee91269f18d44ca3dd4bbb7e483f41bb9d24481/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/7ee91269f18d44ca3dd4bbb7e483f41bb9d24481",
+                    "commit": {
+                      "message": "Fix/layers (#2279)\n\n* feat: add custom styling functions which applies the layer by default\r\n\r\n* chore: refactor css files to use custom styling functions and not use atoms\r\n\r\n* chore: refactor remaining components to use custom style functions\r\n\r\n* chore: add changeset\r\n\r\n* chore: fix formatting\r\n\r\n* fix: recipe return type to fix recipeVariant type for props\r\n\r\n* chore: fix type errors\r\n\r\n* fix: remove unused imports\r\n\r\n* chore: fix formatting\r\n\r\n* chore: add documentation\r\n\r\n* fix: typo in button type",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "fix styling errors caused by missing tokens references from the styling refactor",
+            "commits": [
+              {
+                "hash": "5b95decb2",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Fri, 21 Jun 2024 07:45:08 GMT",
+                    "date": "Mon, 24 Jun 2024 08:45:56 GMT"
+                  },
+                  "data": {
+                    "sha": "5b95decb22c8623ef06c32d8b5e163d40716c6b4",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/5b95decb22c8623ef06c32d8b5e163d40716c6b4",
+                    "author": {
+                      "login": "r-mulder",
+                      "id": 116208434,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+                      "html_url": "https://github.com/r-mulder",
+                      "url": "https://api.github.com/users/r-mulder"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/5b95decb22c8623ef06c32d8b5e163d40716c6b4/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/5b95decb22c8623ef06c32d8b5e163d40716c6b4",
+                    "commit": {
+                      "message": "Fix/UI layer leftovers (#2304)\n\n* fix: left over issues from converting the styles to layers\r\n\r\n* chore: add changeset\r\n\r\n* fix: use correct token for navHeader links",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "add contained prop to tabs component, this will make the content the same color as the tab",
+            "commits": [
+              {
+                "hash": "6d9900ef8",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Thu, 20 Jun 2024 11:23:19 GMT",
+                    "date": "Mon, 24 Jun 2024 08:45:57 GMT"
+                  },
+                  "data": {
+                    "sha": "6d9900ef8f3be51c088aecf88224f4d11bfb0ecd",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/6d9900ef8f3be51c088aecf88224f4d11bfb0ecd",
+                    "author": {
+                      "login": "r-mulder",
+                      "id": 116208434,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+                      "html_url": "https://github.com/r-mulder",
+                      "url": "https://api.github.com/users/r-mulder"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/6d9900ef8f3be51c088aecf88224f4d11bfb0ecd/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/6d9900ef8f3be51c088aecf88224f4d11bfb0ecd",
+                    "commit": {
+                      "message": "Feat/UI contained tabs (#2291)\n\n* feat: add tab spacing and border behaviour as well as background color\r\n\r\n* fix: fix border for items\r\n\r\n* fix: remove border logic and rename contained story\r\n\r\n* chore: add changeset",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          }
+        ],
+        "minors": [],
+        "miscs": [],
+        "date": "2024-06-24T08:44:49.000Z"
+      },
       "0.12.0": {
         "label": "0.12.0",
         "isLocked": true,
