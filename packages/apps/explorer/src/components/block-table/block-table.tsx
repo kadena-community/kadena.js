@@ -3,6 +3,8 @@ import {
   useLastBlockHeightQuery,
   useNewBlocksSubscription,
 } from '@/__generated__/sdk';
+import { useQueryContext } from '@/context/query-context';
+import { newBlocks } from '@/graphql/subscriptions/newBlocks.graph';
 import type { IChainBlock } from '@/services/block';
 import { addBlockData } from '@/services/block';
 import { Stack } from '@kadena/react-ui';
@@ -73,6 +75,15 @@ const BlockTable: React.FC = () => {
       }
     }
   }, [newBlocksData]);
+
+  const { setQueries } = useQueryContext();
+  useEffect(() => {
+    setQueries([
+      {
+        query: newBlocks,
+      },
+    ]);
+  }, []);
 
   return (
     <>
