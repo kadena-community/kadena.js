@@ -41,7 +41,6 @@ export const loadingWrapperClass = style([
     alignItems: 'center',
   }),
   {
-    backgroundColor: tokens.kda.foundation.color.neutral.n0,
     opacity: '.8',
     inset: 0,
   },
