@@ -1,20 +1,13 @@
+import { useQueryContext } from '@/context/query-context';
 import { MonoHub } from '@kadena/react-icons/system';
 import { Box, Button, Dialog, DialogContent, Divider } from '@kadena/react-ui';
-import type { DocumentNode } from 'graphql';
 import { print } from 'graphql';
 import React, { useState } from 'react';
 
-interface IGraphQLQueryDialogProps {
-  queries: {
-    query: DocumentNode;
-    variables?: Record<string, unknown>;
-  }[];
-}
+export const GraphQLQueryDialog = (): JSX.Element => {
+  let { queries } = useQueryContext();
 
-export const GraphQLQueryDialog = (
-  props: IGraphQLQueryDialogProps,
-): JSX.Element => {
-  const { queries } = props;
+  if (!queries) queries = [];
 
   const [isOpen, setIsOpen] = useState(false);
 
