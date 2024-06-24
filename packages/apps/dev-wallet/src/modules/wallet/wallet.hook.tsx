@@ -1,7 +1,9 @@
+import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import { defaultAccentColor } from '@/modules/layout/layout.provider.tsx';
 import { recoverPublicKey, retrieveCredential } from '@/utils/webAuthn';
 import { IUnsignedCommand } from '@kadena/client';
 import { useCallback, useContext } from 'react';
+import { UnlockPrompt } from '../../Components/UnlockPrompt/UnlockPrompt';
 import * as AccountService from '../account/account.service';
 import { BIP44Service } from '../key-source/hd-wallet/BIP44';
 import { ChainweaverService } from '../key-source/hd-wallet/chainweaver';
@@ -21,6 +23,7 @@ const isUnlocked = (
 
 export const useWallet = () => {
   const [context, setProfile] = useContext(WalletContext) ?? [];
+  const prompt = usePrompt();
   if (!context || !setProfile) {
     throw new Error('useWallet must be used within a WalletProvider');
   }
@@ -68,8 +71,9 @@ export const useWallet = () => {
       switch (profile?.options.authMode) {
         case 'PASSWORD': {
           console.log('unlocking with password');
-          // TODO: replace this with a proper password prompt
-          const pass = prompt('Enter password');
+          const pass = await prompt((resolve, reject) => (
+            <UnlockPrompt resolve={resolve} reject={reject} />
+          ));
           if (!pass) {
             throw new Error('Password is required');
           }
@@ -77,7 +81,7 @@ export const useWallet = () => {
             | ChainweaverService
             | BIP44Service;
 
-          await service.connect(pass, keySource as any);
+          await service.connect(pass as string, keySource as any);
           break;
         }
         case 'WEB_AUTHN': {
