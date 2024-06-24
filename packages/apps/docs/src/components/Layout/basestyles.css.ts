@@ -14,7 +14,7 @@ globalStyle('a:not(nav a)', {
 });
 
 globalStyle('a:hover:not(nav a)', {
-  color: tokens.kda.foundation.color.link.brand.primary.default['@hover'],
+  color: tokens.kda.foundation.color.link.brand.primary['@hover'],
   textDecoration: 'none',
 });
 
