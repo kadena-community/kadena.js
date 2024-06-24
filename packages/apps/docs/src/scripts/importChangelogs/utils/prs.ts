@@ -52,6 +52,7 @@ export const getPrId = (content: string): IChangelogVersionRecord => {
     .replace(/\(?[, ]*\)/g, '')
     .replace(/^\:/, '')
     .replace(/\[``\]\(\S*/, '')
+    .replace(/\\/, '')
     .trim();
 
   return { label: content, prIds, commits: [] };
