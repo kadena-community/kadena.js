@@ -11,7 +11,7 @@ export const useBlockHash = (
   searchQuery: string,
   searchOption: SearchOptionEnum | null,
 ): IHookReturnValue<BlockQuery> => {
-  const blcokQueryVariables = {
+  const blockQueryVariables = {
     hash: returnSearchQuery(
       searchQuery,
       searchOption,
@@ -20,7 +20,7 @@ export const useBlockHash = (
   };
 
   const { loading, data, error } = useBlockQuery({
-    variables: blcokQueryVariables,
+    variables: blockQueryVariables,
     skip:
       !searchQuery ||
       !isSearchRequested(searchOption, SearchOptionEnum.BLOCKHASH),
