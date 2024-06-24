@@ -59,7 +59,6 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
             </NavHeaderLink>
           ))}
         </NavHeaderLinkList>
-
         <Stack justifyContent="flex-end" gap="md" flex={1}>
           <NavHeaderButtonLink
             className={socialsClass}
