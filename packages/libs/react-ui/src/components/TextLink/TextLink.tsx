@@ -24,6 +24,7 @@ export type ITextLinkProps = Omit<AriaFocusRingProps, 'isTextInput'> &
     title?: string;
     style?: React.CSSProperties;
     children?: string | number;
+    withIcon?: boolean;
   };
 
 /**
@@ -34,11 +35,18 @@ export type ITextLinkProps = Omit<AriaFocusRingProps, 'isTextInput'> &
  * @param className - additional class name
  * @param style - additional style
  * @param title - title to be shown as HTML tooltip
+ * @param withIcon - optionally show an link icon
  */
 
 const TextLink = forwardRef(
   (
-    { isCompact = false, children, className, ...props }: ITextLinkProps,
+    {
+      isCompact = false,
+      children,
+      className,
+      withIcon,
+      ...props
+    }: ITextLinkProps,
     forwardedRef: ForwardedRef<HTMLAnchorElement>,
   ) => {
     props = disableLoadingProps(props);
@@ -77,7 +85,7 @@ const TextLink = forwardRef(
               })}
             >
               {children}
-              <MonoLink />
+              {withIcon && <MonoLink />}
             </span>
           }
         </>

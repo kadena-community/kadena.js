@@ -1,30 +1,24 @@
-import { style, styleVariants } from '@vanilla-extract/css';
-import { atoms } from '../../styles/atoms.css';
-import { token } from '../../styles/index';
+import { style, styleVariants, token } from '../../styles/index';
 
-export const base = style([
-  atoms({
+export const base = style({
+  position: 'absolute',
+  fontSize: token('typography.fontSize.sm'),
+  borderRadius: token('spacing.xs'),
+  color: token('color.text.base.inverse.default'),
+  pointerEvents: 'none',
+  backgroundColor: token('color.background.base.inverse.default'),
+  maxWidth: token('layout.content.maxWidth'),
+  width: 'max-content',
+  ':before': {
+    content: '',
     position: 'absolute',
-    fontSize: 'sm',
-    borderRadius: 'xs',
-    color: 'text.base.inverse.default',
-    pointerEvents: 'none',
-    backgroundColor: 'base.inverse.default',
-    maxWidth: 'content.maxWidth',
-  }),
-  {
-    width: 'max-content',
-    ':before': {
-      content: '',
-      position: 'absolute',
-      borderTop: '6px solid transparent',
-      borderRight: '6px solid transparent',
-      borderBottom: `6px solid ${token('color.background.base.inverse.default')}`,
-      borderLeft: '6px solid transparent',
-    },
-    zIndex: token('zIndex.overlay'),
+    borderTop: '6px solid transparent',
+    borderRight: '6px solid transparent',
+    borderBottom: `6px solid ${token('color.background.base.inverse.default')}`,
+    borderLeft: '6px solid transparent',
   },
-]);
+  zIndex: token('zIndex.overlay'),
+});
 
 export const tooltipPositionVariants = styleVariants({
   bottom: [

@@ -1,13 +1,13 @@
-import { atoms } from '../../styles/atoms.css';
+import { style, token } from '../../styles';
 
 export const transformVariants = {
-  uppercase: [atoms({ textTransform: 'uppercase' })],
-  lowercase: [atoms({ textTransform: 'lowercase' })],
-  capitalize: [atoms({ textTransform: 'capitalize' })],
-  none: [atoms({ textTransform: 'none' })],
+  uppercase: style({ textTransform: 'uppercase' }),
+  lowercase: style({ textTransform: 'lowercase' }),
+  capitalize: style({ textTransform: 'capitalize' }),
+  none: style({ textTransform: 'none' }),
 };
 
 export const colorVariants = {
-  default: [atoms({ color: 'text.subtlest.default' })],
-  emphasize: [atoms({ color: 'text.base.default' })],
+  default: style({ color: token('color.text.subtlest.default') }),
+  emphasize: style({ color: token('color.text.base.default') }),
 };

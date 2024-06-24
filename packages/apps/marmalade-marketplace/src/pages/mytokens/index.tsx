@@ -9,8 +9,6 @@ export default function MyTokens() {
   const [tokens, setTokens] = useState<Array<NonFungibleTokenBalance>>([]);
   const { account } = useAccount();
 
-  console.log(tokens)
-
   const fetchTokens = async (accountName?:string) => {
     if (!accountName) return;
     const tokens = await getTokens(accountName);

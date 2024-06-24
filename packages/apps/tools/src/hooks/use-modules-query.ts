@@ -60,6 +60,7 @@ const useModulesQuery = (
     queryKey: [QUERY_KEY, networkId, chainIds],
     queryFn: () => fetchModules(networkId, chainIds),
     staleTime: Infinity,
+    placeholderData: [],
   });
 };
 

@@ -1,6 +1,4 @@
-import { style } from '@vanilla-extract/css';
-import { token } from '../../styles';
-import { atoms } from '../../styles/atoms.css';
+import { style, token } from '../../styles';
 
 export const containerClass = style({
   backgroundColor: token('color.background.layer.default'),
@@ -16,11 +14,7 @@ export const containerClass = style({
 
 export const fullWidthClass = style({ width: '100%' });
 
-export const disabledClass = style([
-  atoms({
-    pointerEvents: 'none',
-  }),
-  {
-    opacity: 0.5,
-  },
-]);
+export const disabledClass = style({
+  pointerEvents: 'none',
+  opacity: 0.5,
+});

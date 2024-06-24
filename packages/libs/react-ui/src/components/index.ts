@@ -32,7 +32,6 @@ export type { MaskOptions } from './MaskedValue';
 export type { IMaskedValueProps } from './MaskedValue/MaskedValue';
 export type { IModalProps } from './Modal';
 export type {
-  INavHeaderButtonLinkProps,
   INavHeaderButtonProps,
   INavHeaderLinkListProps,
   INavHeaderLinkProps,
