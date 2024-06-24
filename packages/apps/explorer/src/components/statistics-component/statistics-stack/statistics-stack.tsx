@@ -33,10 +33,7 @@ const StatisticsStack: React.FC<IStatisticsComponentProps> = ({ data }) => {
 
         <Stack flexDirection={'row'}>
           <div className={borderStyleClass}>
-            {/* <Button variant="transparent" endVisual={<MonoHub />}>
-              Graph
-            </Button> */}
-            <GraphQLQueryDialog queries={[]} />
+            <GraphQLQueryDialog />
           </div>
 
           <div className={borderStyleClass}>

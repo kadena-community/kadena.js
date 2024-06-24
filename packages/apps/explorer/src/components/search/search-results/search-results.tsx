@@ -19,7 +19,6 @@ const SearchResults: FC<ISearchResultsProps> = ({
   loading,
   errors,
 }) => {
-  console.log(searchData[SearchOptionEnum.REQUESTKEY]);
   return (
     <>
       {loading && <div>Loading...</div>}
