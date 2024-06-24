@@ -1,4 +1,3 @@
-import { isDevEnvironment } from '@/utils/isDevEnvironment';
 import {
   MonoAnimation,
   MonoQrCodeScanner,
@@ -43,15 +42,12 @@ const menuData: ISidebarToolbarItem[] = [
       },
     ],
   },
-];
-
-if (isDevEnvironment) {
-  menuData.push({
+  {
     title: 'Modules',
     icon: <MonoViewInAr style={{ maxWidth: '100%' }} />,
     href: 'modules',
     items: [{ title: 'Explorer', href: Routes.MODULE_EXPLORER }],
-  });
-}
+  },
+];
 
 export { menuData };
