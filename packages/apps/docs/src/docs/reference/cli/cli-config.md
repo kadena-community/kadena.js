@@ -63,7 +63,7 @@ Alternatively, you can run `kadena config init` with the `--global` command-line
 This option enables you to use the same configuration settings from any folder on your computer. 
 
 Configuration settings that are defined in a local working directory take precedence over configuration settings defined in the home directory. 
-If you add more than one configuration folder to your development environment, you can use the `kadena config path` commands to see which path is being used in a specific directory.
+If you add more than one configuration folder to your development environment, you can use the `kadena config show` command to see details about the development environment you have configured in your working or global directory.
 
 ### Basic usage
 
@@ -118,21 +118,30 @@ To create the Kadena CLI configuration folder without creating a new wallet or a
 kadena config init --create-wallet="false"
 ```
 
-## kadena config path
+## kadena config show
 
-Use `kadena config path` to display the location of the configuration folder currently being used.
-If you add more than one configuration folder to your development environment, you can use the `kadena config path` command to see the location of the configuration folder that's used for your current directory.
+Use `kadena config show` to display the location of the configuration folder currently being used and details about the development environment you have configured in your working or global directory.
+If you add more than one configuration folder to your development environment, you can use the `kadena config show` command to see the location of the configuration folder that's used for your current directory.
 
 To display the location of the configuration folder currently being used, run the following command:
 
 ```bash
-kadena config path       
+kadena config show
 ```
 
-The command displays the path to the Kadena CLI configuration folder.
+The command displays the path to the Kadena CLI configuration folder and additional details about your development environment.
 For example:
 
 ```bash
-Currently using kadena config directory in:
-/Users/pistolas/MY-KADENA/.kadena
+Currently using the following config:
+Config path           /Users/pistolas/.kadena                      
+Wallet path           /Users/pistolas/.kadena/wallets              
+Number of wallets     3                                            
+Default template path /Users/pistolas/.kadena/transaction-templates
+Number of templates   6                                            
+Network path          /Users/pistolas/.kadena/networks             
+Number of networks    3                                            
+Default network       devnet                                          
+Account path          /Users/pistolas/.kadena/accounts             
+Number of accounts    6                                         
 ```
