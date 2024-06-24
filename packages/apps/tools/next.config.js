@@ -32,6 +32,15 @@ const config = {
     QA_LEDGER_MOCKED_PUBKEY: process.env.QA_LEDGER_MOCKED_PUBKEY,
     QA_LEDGER_MOCKED_PRIVATEKEY: process.env.QA_LEDGER_MOCKED_PRIVATEKEY,
   },
+  webpack: (config) => {
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+
+      fs: false, // Fixes npm packages that depend on `fs` module
+    };
+
+    return config;
+  },
   async redirects() {
     return [
       {

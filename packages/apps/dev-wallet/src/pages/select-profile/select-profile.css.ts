@@ -1,10 +1,11 @@
+import {
+  cardBackgroundColorHover,
+  cardColor,
+  cardColorHover,
+  linkBlockColor,
+} from '@/utils/color.ts';
 import { atoms, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
-
-const cardColor = 'rgba(255, 255, 255, 0.03)';
-const cardBackgroundColorHover = 'rgba(255, 255, 255, 0.07)';
-const cardColorHover = 'rgba(255, 255, 255, 0.2)';
-const linkBlockColor = 'rgba(255, 255, 255, 0.6)';
 
 export const titleClass = style([
   atoms({

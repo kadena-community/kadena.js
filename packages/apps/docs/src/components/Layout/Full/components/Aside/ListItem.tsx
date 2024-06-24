@@ -1,5 +1,4 @@
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
-import { createSlug } from '@/utils/createSlug';
 import type { ISubHeaderElement } from '@kadena/docs-tools';
 import { useRouter } from 'next/router';
 import type { FC, MouseEvent } from 'react';
@@ -23,7 +22,7 @@ export const ListItem: FC<IProps> = ({
   const router = useRouter();
 
   if (item.title === undefined || item.title === '') return null;
-  const slug = `#${createSlug(item.title)}`;
+  const slug = `#${item.slug}`;
 
   const handleItemClick = (ev: MouseEvent<HTMLAnchorElement>): void => {
     ev.preventDefault();
@@ -45,7 +44,7 @@ export const ListItem: FC<IProps> = ({
 
   return (
     <AsideLink
-      href={slug}
+      href={`${slug}`}
       key={slug}
       label={item.title}
       isActive={activeItem === slug}
@@ -53,7 +52,7 @@ export const ListItem: FC<IProps> = ({
     >
       {item.children.length > 0 && (
         <AsideList inner={true}>
-          {item.children.map((innerItem) => {
+          {item.children.map((innerItem: ISubHeaderElement) => {
             return (
               <ListItem
                 key={innerItem.title}

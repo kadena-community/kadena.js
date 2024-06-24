@@ -1,7 +1,7 @@
-import { createSlug } from '@/utils/createSlug';
-import { MonoLink } from '@kadena/react-icons';
+import { removHashFromLink } from '@/scripts/utils/createSlug';
+import { MonoCheck, MonoLink } from '@kadena/react-icons';
 import type { FC, ReactNode } from 'react';
-import React from 'react';
+import React, { useState } from 'react';
 import { headerClassVariants, headerIconLinkClass } from './styles.css';
 
 type TagType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
@@ -9,44 +9,41 @@ interface IProp {
   as: TagType;
   variant?: TagType;
   children: ReactNode;
+  slug: string;
 }
 
 export interface IHeader {
   children: string;
+  slug: string;
 }
 
-export const TaggedHeading: FC<IProp> = ({ children, as, variant }) => {
-  let slugInputStr = '';
-
-  if (Array.isArray(children)) {
-    slugInputStr = [children]
-      .flat()
-      .map((child) => {
-        if (typeof child === 'string') return child.trim();
-        if (typeof child.props.children === 'string')
-          return child.props.children.trim();
-        return '';
-      })
-      .filter((child) => child !== '') // remove empty strings to avoid join adding extra spaces
-      .join(' ');
-  } else if (typeof children === 'string') {
-    slugInputStr = children;
-  }
-
-  const slug = createSlug(slugInputStr);
+export const TaggedHeading: FC<IProp> = ({ children, as, variant, slug }) => {
   const outerSlug = `header${slug}`;
+  const [copySuccess, setCopySuccess] = useState(false);
+
+  const handleCopy = async () => {
+    const url = removHashFromLink(window.location.href);
+    await navigator.clipboard.writeText(`${url}#${slug}`);
+    setCopySuccess(true);
+    setTimeout(() => {
+      setCopySuccess(false);
+    }, 3000);
+  };
 
   const content = (
     <>
       {children}
-      <a
-        id={slug}
-        className={headerIconLinkClass}
-        href={`#${slug}`}
-        aria-labelledby={outerSlug}
-      >
-        <MonoLink />
-      </a>
+
+      {as === 'h2' && (
+        <button
+          id={slug}
+          className={headerIconLinkClass}
+          aria-labelledby={outerSlug}
+          onClick={handleCopy}
+        >
+          {copySuccess ? <MonoCheck /> : <MonoLink />}
+        </button>
+      )}
     </>
   );
 

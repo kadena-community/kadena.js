@@ -3,7 +3,7 @@ import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
 import { defineConfig, mergeConfig } from 'vitest/config';
 
 const localConfig = defineConfig({
-  plugins: [vanillaExtractPlugin({ emitCssInSsr: true })],
+  plugins: [vanillaExtractPlugin()],
   test: {
     setupFiles: ['vitest.setup.ts'],
     environment: 'happy-dom',

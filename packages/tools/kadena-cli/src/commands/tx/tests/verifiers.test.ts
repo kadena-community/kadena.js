@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { useMswHandler } from '../../../mocks/server.js';
 import { assertCommandError } from '../../../utils/command.util.js';
 import { createAndWriteTransaction } from '../commands/txCreateTransaction.js';
 import { testTransactionAction } from '../commands/txTestSignedTransaction.js';
@@ -35,6 +36,16 @@ verifiers:
 `;
 
 describe('tx add', () => {
+  beforeEach(() => {
+    useMswHandler({
+      response: {
+        result: {
+          status: 'success',
+          data: 'Write succeeded',
+        },
+      },
+    });
+  });
   it('Prompts values and writes the transaction file', async () => {
     const transaction = await createAndWriteTransaction(template, {}, null);
     assertCommandError(transaction);

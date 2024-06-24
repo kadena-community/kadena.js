@@ -28,6 +28,10 @@ export const ACCOUNT_DIR = 'accounts';
 // Default settings path
 export const DEFAULT_SETTINGS_PATH = 'defaults';
 
+// transaction path
+export const TRANSACTIONS_PATH = 'transactions';
+export const TRANSACTIONS_LOG_FILE = 'transactions-log.yaml';
+
 // key extensions
 export const WALLET_EXT = '.wallet';
 export const WALLET_LEGACY_EXT = '.legacy.wallet';

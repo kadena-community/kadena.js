@@ -5,6 +5,18 @@ make styling, accessing tokens easier or just reducing boilerplate
 
 ## Functions
 
+### style, styleVariants, recipe, globalStyles
+
+To make sure that the components are expandable with custom styling, we applied all styles onto
+a css layer. To reduce boilerplate and make sure that all styles are being applied to the same layer
+we created wrapper functions to apply the styles onto a layer without the need to manually add the layer.
+To make use of these functions you can import the function from the styles folder. They have the same
+names as the vanilla extract functions to keep a familiar API.
+
+```ts
+import { style, styleVariants, recipe, globalStyles } from '../styles'
+```
+
 ### token(...)
 
 ```ts

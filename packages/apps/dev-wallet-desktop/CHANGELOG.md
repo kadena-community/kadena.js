@@ -1,5 +1,25 @@
 # @kadena/dev-wallet-desktop
 
+## 0.0.11
+
+### Patch Changes
+
+- @kadena/dev-wallet\@0.1.3
+
+## 0.0.10
+
+### Patch Changes
+
+- @kadena/dev-wallet\@0.1.2
+
+## 0.0.9
+
+### Patch Changes
+
+- c9fe555df: Pin sensitive dependencies to specific versions
+- Updated dependencies \[c9fe555df]
+  - @kadena/dev-wallet\@0.1.1
+
 ## 0.0.8
 
 ### Patch Changes

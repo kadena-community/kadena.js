@@ -1,5 +1,3 @@
-import type { Response } from 'cross-fetch';
-
 /**
  * Parses raw `fetch` response into text.
  *

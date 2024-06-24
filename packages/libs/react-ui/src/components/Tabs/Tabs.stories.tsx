@@ -36,7 +36,7 @@ const ExampleManyTabs = [
   { title: 'Really Long Title 7', content: 'Content for tab 7' },
 ];
 
-const meta: Meta<ITabsProps> = {
+const meta: Meta<ITabsProps<object>> = {
   title: 'Layout/Tabs',
   component: Tabs,
   decorators: [onLayer2],
@@ -100,11 +100,16 @@ const meta: Meta<ITabsProps> = {
         type: 'boolean',
       },
     },
+    isContained: {
+      control: {
+        type: 'boolean',
+      },
+    },
   },
 };
 
 export default meta;
-type Story = StoryObj<ITabsProps>;
+type Story = StoryObj<ITabsProps<object>>;
 
 export const TabsStory: Story = {
   name: 'Tabs',
@@ -152,6 +157,30 @@ export const DefaultSelectedTabsStory: Story = {
   },
 };
 
+export const ContainedVariant: Story = {
+  name: 'Contained scrollable Tabs with defaultSelectedTab',
+  args: {
+    ['aria-label']: 'generic tabs story',
+    defaultSelectedKey: ExampleManyTabs[5].title,
+    isContained: true,
+  },
+  render: (props) => {
+    return (
+      <Tabs
+        {...props}
+        aria-label={props['aria-label']}
+        defaultSelectedKey={props.defaultSelectedKey}
+      >
+        {ExampleManyTabs.map((tab) => (
+          <TabItem key={tab.title} title={tab.title}>
+            {tab.content}
+          </TabItem>
+        ))}
+      </Tabs>
+    );
+  },
+};
+
 export const ControlledTabsStory: Story = {
   name: 'Tabs',
   render: () => {
@@ -178,6 +207,24 @@ export const ControlledTabsStory: Story = {
           </TabItem>
         </Tabs>
       </Stack>
+    );
+  },
+};
+
+export const DynamicTabsStory: Story = {
+  name: 'Tabs with Dynamic Items',
+  args: {
+    ['aria-label']: 'dynamic tabs story',
+  },
+  render: (props) => {
+    return (
+      <Tabs {...props} aria-label={props['aria-label']} items={ExampleManyTabs}>
+        {(item) => (
+          <TabItem key={item.title} title={item.title}>
+            {item.content}
+          </TabItem>
+        )}
+      </Tabs>
     );
   },
 };

@@ -2,7 +2,7 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { MonoAdd } from '@kadena/react-icons';
 import { Box, Heading, Stack } from '@kadena/react-ui';
 import { tokens } from '@kadena/react-ui/styles';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import InitialsAvatar from './initials';
 import {
   aliasClass,
@@ -15,10 +15,11 @@ import {
 } from './select-profile.css';
 
 export function SelectProfile() {
-  const { isUnlocked, profileList, lockProfile } = useWallet();
+  const { isUnlocked, profileList } = useWallet();
   if (isUnlocked) {
-    lockProfile();
+    return <Navigate to="/" replace />;
   }
+
   return (
     <Box>
       <Heading variant="h1" className={titleClass}>

@@ -5,6 +5,7 @@ import {
   reducePRData,
 } from './utils/reduce';
 
+console.log({ env: process.env.GITHUB_APITOKEN });
 const octokit = new Octokit({
   auth: process.env.GITHUB_APITOKEN,
 });

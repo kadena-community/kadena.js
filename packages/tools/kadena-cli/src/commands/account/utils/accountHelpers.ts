@@ -19,7 +19,7 @@ import { isNotEmptyString, notEmpty } from '../../../utils/globalHelpers.js';
 export const accountAliasFileSchema = z.object({
   name: z.string(),
   fungible: z.string(),
-  publicKeys: z.array(z.string()),
+  publicKeys: z.array(z.string()).nonempty(),
   predicate: z.string(),
 });
 
@@ -28,6 +28,10 @@ export const formatZodErrors = (errors: ZodError): string => {
     .map((error) => {
       if (error.code === 'invalid_type') {
         return `"${error.path}": expected ${error.expected}, received ${error.received}`;
+      }
+
+      if (error.code === 'too_small') {
+        return `"${error.path}": ${error.message}`;
       }
       return error.message;
     })

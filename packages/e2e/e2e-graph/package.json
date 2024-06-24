@@ -37,8 +37,10 @@
     "eslint": "^8.45.0",
     "eslint-import-resolver-typescript": "3.5.5",
     "eslint-plugin-playwright": "1.6.1",
+    "graphql-ws": "^5.16.0",
     "parse-md": "2.0.5",
     "playwright-i18next-fixture": "^1.0.0",
-    "prettier": "~3.2.5"
+    "prettier": "~3.2.5",
+    "ws": "^8.16.0"
   }
 }

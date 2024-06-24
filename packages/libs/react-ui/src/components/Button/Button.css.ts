@@ -1,9 +1,6 @@
-import { createVar, layer, style } from '@vanilla-extract/css';
-import { recipe } from '@vanilla-extract/recipes';
-import { token, tokens, uiBaseBold, uiSmallestBold } from '../../styles';
-import { atoms } from '../../styles/atoms.css';
-
-const defaults = layer('defaults');
+import { createVar } from '@vanilla-extract/css';
+import { token, uiBaseBold, uiSmallestBold } from '../../styles';
+import { recipe, style } from '../../styles/utils';
 
 export const hoverBackgroundColor = createVar();
 export const disabledBackgroundColor = createVar();
@@ -18,8 +15,8 @@ export const disabledBadgeStyle = style({
   transition: 'opacity 0.2s ease-in-out',
 });
 
-export const iconOnlyStyle = atoms({
-  paddingInline: 'sm',
+export const iconOnlyStyle = style({
+  paddingInline: token('spacing.sm'),
 });
 
 // spacing if there is a leading icon or avatar
@@ -45,13 +42,11 @@ const noEndVisualSpacing = createVar();
 export const noEndVisualStyle = style({ marginInlineEnd: noEndVisualSpacing });
 
 export const centerContentWrapper = style([
-  atoms({
+  {
     display: 'flex',
     alignItems: 'center',
-    gap: 'sm',
+    gap: token('spacing.sm'),
     flexDirection: 'row',
-  }),
-  {
     fontFamily: 'inherit',
     fontSize: 'inherit',
     lineHeight: 'inherit',
@@ -63,8 +58,8 @@ export const reverseDirectionStyle = style({
 });
 
 const focus = {
-  outline: `${tokens.kda.foundation.color.border.tint.outline} solid ${tokens.kda.foundation.border.width.normal}`,
-  outlineOffset: tokens.kda.foundation.border.width.normal,
+  outline: `${token('color.border.tint.outline')} solid ${token('border.width.normal')}`,
+  outlineOffset: token('border.width.normal'),
   backgroundColor: focusBackgroundColor,
 };
 
@@ -143,43 +138,39 @@ const inverseSelectors = {
 };
 
 export const buttonReset = style({
-  '@layer': {
-    [defaults]: {
-      position: 'relative',
-      appearance: 'button',
-      WebkitAppearance: 'button',
-      paddingInline: 0,
-      /* Remove the inheritance of text transform on button in Edge, Firefox, and IE. */
-      textTransform: 'none',
-      WebkitFontSmoothing: 'antialiased',
-      /* Font smoothing for Firefox */
-      MozOsxFontSmoothing: 'grayscale',
-      verticalAlign: 'top',
-      /* prevent touch scrolling on buttons */
-      touchAction: 'none',
-      userSelect: 'none',
-      cursor: 'pointer',
-      textDecoration: 'none',
-      isolation: 'isolate',
-      border: 'none',
-      ':focus': {
-        outline: 'none',
-      },
-      ':focus-visible': {
-        zIndex: 3,
-      },
-      selectors: {
-        /* Fix Firefox */
-        '&::-moz-focus-inner': {
-          border: 0,
-          /* Remove the inner border and padding for button in Firefox. */
-          borderStyle: 'none',
-          padding: 0,
-          /* Use uppercase PX so values don't get converted to rem */
-          marginBlockStart: '-2PX',
-          marginBlockEnd: '-2PX',
-        },
-      },
+  position: 'relative',
+  appearance: 'button',
+  WebkitAppearance: 'button',
+  paddingInline: 0,
+  /* Remove the inheritance of text transform on button in Edge, Firefox, and IE. */
+  textTransform: 'none',
+  WebkitFontSmoothing: 'antialiased',
+  /* Font smoothing for Firefox */
+  MozOsxFontSmoothing: 'grayscale',
+  verticalAlign: 'top',
+  /* prevent touch scrolling on buttons */
+  touchAction: 'none',
+  userSelect: 'none',
+  cursor: 'pointer',
+  textDecoration: 'none',
+  isolation: 'isolate',
+  border: 'none',
+  ':focus': {
+    outline: 'none',
+  },
+  ':focus-visible': {
+    zIndex: 3,
+  },
+  selectors: {
+    /* Fix Firefox */
+    '&::-moz-focus-inner': {
+      border: 0,
+      /* Remove the inner border and padding for button in Firefox. */
+      borderStyle: 'none',
+      padding: 0,
+      /* Use uppercase PX so values don't get converted to rem */
+      marginBlockStart: '-2PX',
+      marginBlockEnd: '-2PX',
     },
   },
 });
@@ -187,15 +178,13 @@ export const buttonReset = style({
 export const button = recipe({
   base: [
     buttonReset,
-    atoms({
+    {
       display: 'inline-flex',
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: 'xs',
-      gap: 'sm',
-      paddingBlock: 'sm',
-    }),
-    {
+      borderRadius: token('radius.xs'),
+      gap: token('spacing.sm'),
+      paddingBlock: token('spacing.sm'),
       minWidth: 'fit-content',
       color: textColor,
       backgroundColor: backgroundColor,

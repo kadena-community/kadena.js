@@ -1,5 +1,40 @@
 # @kadena/client-utils
 
+## 0.8.0
+
+### Minor Changes
+
+- 83c3d58: Add support for Marmalade utility functions
+
+## 0.7.0
+
+### Minor Changes
+
+- 9c145f196: Add support for public key scheme
+
+### Patch Changes
+
+- Updated dependencies \[9c145f196]
+  - @kadena/client\@1.12.0
+  - @kadena/pactjs-cli\@1.12.0
+
+## 0.6.0
+
+### Minor Changes
+
+- aa1aae60c: Added `listModules` function to `client-utils`
+
+### Patch Changes
+
+- c9fe555df: Pin sensitive dependencies to specific versions
+- 381a766e8: Added marmalade functions and correspondent integration testing
+- Updated dependencies \[c9fe555df]
+- Updated dependencies \[9c4145cb7]
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/pactjs-cli\@1.11.2
+  - @kadena/client\@1.11.2
+  - @kadena/chainweb-node-client\@0.6.2
+
 ## 0.5.4
 
 ### Patch Changes

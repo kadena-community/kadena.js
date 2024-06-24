@@ -4,34 +4,44 @@ import type { ComponentProps, ReactNode } from 'react';
 import React, { useEffect, useRef } from 'react';
 import type { AriaTabListProps } from 'react-aria';
 import { mergeProps, useFocusRing, useTabList } from 'react-aria';
-import type { Node } from 'react-stately';
+import type { Node as ITabNode } from 'react-stately';
 import { Item as TabItem, useTabListState } from 'react-stately';
 import { Tab } from './Tab';
 import { TabPanel } from './TabPanel';
-import { scrollContainer, tabListClass, tabsContainerClass } from './Tabs.css';
+import {
+  containedTabContent,
+  scrollContainer,
+  tabListClass,
+  tabListGap,
+  tabsContainerClass,
+} from './Tabs.css';
 import { TabsPagination } from './TabsPagination';
 
-export { TabItem };
+export { ITabNode, TabItem };
 
 export type ITabItemProps = ComponentProps<typeof TabItem>;
 
-export interface ITabsProps
-  extends Omit<AriaTabListProps<object>, 'orientation' | 'items'> {
+export interface ITabsProps<T>
+  extends Omit<AriaTabListProps<T>, 'orientation'> {
   className?: string;
   inverse?: boolean;
   borderPosition?: 'top' | 'bottom';
-  onClose?: (item: Node<object>) => void;
+  onClose?: (item: ITabNode<T>) => void;
   isCompact?: boolean;
+  tabPanelClassName?: string;
+  isContained?: boolean;
 }
 
-export const Tabs = ({
+export function Tabs<T extends object>({
   className,
-  borderPosition = 'bottom',
+  borderPosition = 'top',
   inverse = false,
   onClose,
   isCompact,
+  tabPanelClassName,
+  isContained,
   ...props
-}: ITabsProps): ReactNode => {
+}: ITabsProps<T>): ReactNode {
   const state = useTabListState(props);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -77,6 +87,7 @@ export const Tabs = ({
         <div className={scrollContainer} ref={scrollRef}>
           <div
             className={classNames(tabListClass, {
+              [tabListGap]: isContained,
               focusVisible: isFocusVisible,
             })}
             {...mergeProps(tabListProps, focusProps)}
@@ -96,7 +107,13 @@ export const Tabs = ({
           </div>
         </div>
       </TabsPagination>
-      <TabPanel key={state.selectedItem?.key} state={state} />
+      <TabPanel
+        key={state.selectedItem?.key}
+        state={state}
+        className={classNames(tabPanelClassName, {
+          [containedTabContent]: isContained,
+        })}
+      />
     </div>
   );
-};
+}

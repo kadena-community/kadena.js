@@ -1,7 +1,7 @@
 {
   "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {
-    "types": ["node"],
+    "types": ["node", "vitest/globals", "vitest-dom/extend-expect"],
     "rootDir": ".",
     "baseUrl": ".",
     "target": "ES2020",

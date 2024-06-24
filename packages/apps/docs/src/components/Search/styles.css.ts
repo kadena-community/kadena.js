@@ -19,7 +19,7 @@ export const tabClass = style([
     display: 'flex',
     height: '100%',
     flexDirection: 'column',
-    overflowY: 'scroll',
+    overflowY: 'auto',
     overflowX: 'visible',
   }),
 ]);

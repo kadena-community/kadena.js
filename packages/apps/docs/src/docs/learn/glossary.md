@@ -302,8 +302,6 @@ advantage of their utility value.&#x20;
 - **NFTs** that prove ownership over a unique digital asset such as art or a
   venue ticket.
 
-## T
-
 ### time-to-live (TTL) 
 
 The expiration time—in seconds—for how long a transaction should be considered valid for inclusion in a block after its creation time. 

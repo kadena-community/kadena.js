@@ -1,73 +1,68 @@
-import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
-import { recipe } from '@vanilla-extract/recipes';
-import { token, uiBaseBold, uiSmallestBold } from '../../styles';
-import { atoms } from '../../styles/atoms.css';
+import {
+  globalStyle,
+  recipe,
+  style,
+  styleVariants,
+  token,
+  uiBaseBold,
+  uiSmallestBold,
+} from '../../styles';
 
-export const tabsContainerClass = style([
-  atoms({
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    position: 'relative',
-  }),
-]);
+export const tabsContainerClass = style({
+  display: 'flex',
+  flexDirection: 'column',
+  width: '100%',
+  position: 'relative',
+});
 
-export const scrollContainer = style([
-  atoms({
-    overflowX: 'auto',
-    display: 'flex',
-    flexDirection: 'row',
-    position: 'relative',
-  }),
-  {
-    scrollbarWidth: 'none',
-    paddingTop: '2px', // For focus ring
-    selectors: {
-      '&.paginationLeft:not(.paginationRight)': {
-        maskImage:
-          'linear-gradient(90deg,rgba(255,255,255,0) 32px, rgba(255,255,255,1) 64px)',
-      },
-      '&.paginationRight:not(.paginationLeft)': {
-        maskImage:
-          'linear-gradient(90deg,rgba(255,255,255,1) calc(100% - 32px),transparent)',
-      },
-      '&.paginationLeft.paginationRight': {
-        maskImage:
-          'linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0) 32px,rgba(255,255,255,1) 96px,rgba(255,255,255,1) calc(100% - 32px), transparent)',
-      },
+export const scrollContainer = style({
+  overflowX: 'auto',
+  display: 'flex',
+  flexDirection: 'row',
+  position: 'relative',
+  scrollbarWidth: 'none',
+  paddingTop: '2px', // For focus ring
+  selectors: {
+    '&.paginationLeft:not(.paginationRight)': {
+      maskImage:
+        'linear-gradient(90deg,rgba(255,255,255,0) 32px, rgba(255,255,255,1) 64px)',
+    },
+    '&.paginationRight:not(.paginationLeft)': {
+      maskImage:
+        'linear-gradient(90deg,rgba(255,255,255,1) calc(100% - 32px),transparent)',
+    },
+    '&.paginationLeft.paginationRight': {
+      maskImage:
+        'linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0) 32px,rgba(255,255,255,1) 96px,rgba(255,255,255,1) calc(100% - 32px), transparent)',
     },
   },
-]);
+});
 
-export const tabListControls = style([
-  atoms({
-    display: 'flex',
-    flexDirection: 'row',
-    position: 'relative',
-    width: '100%',
-  }),
-  {
-    maxWidth: '100%',
-    ':before': {
-      content: '""',
-      position: 'absolute',
-      bottom: 0,
-      right: 0,
-      left: 0,
-      borderBottom: `2px solid ${token('color.border.base.subtle')}`,
-    },
+export const tabListControls = style({
+  display: 'flex',
+  flexDirection: 'row',
+  position: 'relative',
+  width: '100%',
+  maxWidth: '100%',
+  ':before': {
+    content: '""',
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    left: 0,
+    borderBottom: `2px solid ${token('color.border.base.subtle')}`,
   },
-]);
+});
 
-export const tabListClass = style([
-  atoms({
-    display: 'inline-flex',
-    flexDirection: 'row',
-  }),
-  {
-    minWidth: '100%',
-  },
-]);
+export const tabListClass = style({
+  display: 'inline-flex',
+  flexDirection: 'row',
+  minWidth: '100%',
+});
+
+export const tabListGap = style({
+  gap: '2px',
+});
 
 // Prevent button from increasing the tab size and having the outline conflict with label
 globalStyle(`${tabListClass} button`, {
@@ -80,21 +75,20 @@ globalStyle(`${tabListClass} span`, {
 
 export const tabItemClass = recipe({
   base: [
-    atoms({
+    {
       display: 'flex',
       alignItems: 'center',
       cursor: 'pointer',
-      paddingBlock: 'n2',
-      paddingInline: 'n4',
-      gap: 'n2',
-      backgroundColor: 'transparent',
-      color: 'text.base.default',
       outline: 'none',
-    }),
-    {
+      paddingBlock: token('size.n2'),
+      paddingInline: token('size.n4'),
+      gap: token('size.n2'),
+      backgroundColor: token('color.background.base.default'),
+      color: token('color.text.base.default'),
       zIndex: 3,
       minWidth: 'fit-content',
-      borderBlock: `2px solid transparent`,
+      borderBlockStart: `2px solid transparent`,
+      borderBlockEnd: `2px solid ${token('color.border.base.subtle')}`,
       borderTopLeftRadius: token('radius.xs'),
       borderTopRightRadius: token('radius.xs'),
       transition:
@@ -102,7 +96,6 @@ export const tabItemClass = recipe({
       whiteSpace: 'nowrap',
       selectors: {
         '&[data-selected="true"]': {
-          backgroundColor: token('color.background.base.@active'),
           color: token('color.text.base.@active'),
         },
         '&[data-hovered="true"]': {
@@ -169,15 +162,13 @@ export const tabItemClass = recipe({
   },
 });
 
-export const tabContentClass = style([
-  atoms({
-    marginBlock: 'md',
-    fontSize: 'base',
-    color: 'text.base.default',
-    flex: 1,
-    overflowY: 'auto',
-  }),
-]);
+export const tabContentClass = style({
+  marginBlock: token('spacing.md'),
+  fontSize: token('typography.fontSize.base'),
+  color: token('color.text.base.default'),
+  flex: 1,
+  overflowY: 'auto',
+});
 
 const paginationButtonBase = style({
   zIndex: 3,
@@ -189,7 +180,7 @@ const paginationButtonBase = style({
 export const paginationButton = styleVariants({
   left: [
     paginationButtonBase,
-    atoms({ position: 'absolute', left: 0, top: 0, bottom: 0 }),
+    { position: 'absolute', left: 0, top: 0, bottom: 0 },
   ],
   right: [paginationButtonBase],
 });
@@ -215,4 +206,10 @@ export const closeButtonClass = style({
       opacity: 1,
     },
   },
+});
+
+export const containedTabContent = style({
+  backgroundColor: token('color.background.base.@active'),
+  margin: 0,
+  paddingBlock: token('size.n4'),
 });

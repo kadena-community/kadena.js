@@ -1,15 +1,14 @@
-import { recipe } from '@vanilla-extract/recipes';
-import { atoms, token } from '../../../styles';
+import { recipe, token } from '../../../styles';
 import { iconFill } from '../Form.css';
 
 export const helperText = recipe({
-  base: atoms({
+  base: {
     display: 'flex',
     alignItems: 'center',
-    gap: 'xxs',
-    fontSize: 'xs',
-    color: 'text.semantic.info.default',
-  }),
+    gap: token('spacing.xxs'),
+    fontSize: token('typography.fontSize.xs'),
+    color: token('color.text.semantic.info.default'),
+  },
   defaultVariants: {
     intent: 'info',
   },

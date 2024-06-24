@@ -11,7 +11,12 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'html'],
       include: ['src/**/*.ts'],
-      exclude: ['**/mocks/**', 'src/index.ts', 'src/commands/devnet/**'],
+      exclude: [
+        '**/mocks/**',
+        'src/index.ts',
+        'src/commands/devnet/**',
+        '**/*.test-live.ts',
+      ],
     },
   },
 });

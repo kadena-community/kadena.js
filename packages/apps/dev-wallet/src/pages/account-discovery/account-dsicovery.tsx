@@ -13,7 +13,7 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 const NUMBER_OF_KEYS_TO_DISCOVER = 20;
 
 export function AccountDiscovery() {
-  const { profile, retrieveAccounts, keySources } = useWallet();
+  const { profile, keySources } = useWallet();
   const { keySourceId } = useParams();
   const [key, setKey] = useState<IKeyItem>();
   const [discoveryStatus, setDiscoveryStatus] = useState<
@@ -41,7 +41,6 @@ export function AccountDiscovery() {
         setAccounts((prev) => [...prev, data]);
       })
       .execute();
-    await retrieveAccounts(profile.uuid);
     setDiscoveryStatus('finished');
   }
 

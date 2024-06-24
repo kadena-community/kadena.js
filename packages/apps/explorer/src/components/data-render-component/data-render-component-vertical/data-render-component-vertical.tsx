@@ -1,5 +1,6 @@
+import CopyButton from '@/components/copy-button/copy-button';
 import { MonoArrowOutward } from '@kadena/react-icons/system';
-import { Text } from '@kadena/react-ui';
+import { Stack, Text } from '@kadena/react-ui';
 import classNames from 'classnames';
 import React, { Fragment } from 'react';
 import {
@@ -12,12 +13,14 @@ import {
   linkClass,
   linkIconClass,
   textClass,
+  textCopyClass,
 } from './styles.css';
 
 interface IDataRenderComponentField {
   type?: 'text' | 'code';
   key: string;
-  value: string | string[];
+  canCopy?: boolean;
+  value: string | string[] | JSX.Element | JSX.Element[];
   link?: string;
 }
 
@@ -65,11 +68,22 @@ const DataRenderComponentVertical: React.FC<IDataRenderComponentProps> = ({
               </dd>
             ))
           ) : (
-            <dd className={descriptionDetailsClass}>
-              <Text variant="code" className={textClass}>
-                {field.value}
+            <Stack
+              as="dd"
+              gap="xs"
+              className={descriptionDetailsClass}
+              alignItems="center"
+            >
+              <Text
+                variant="code"
+                className={classNames(textClass, {
+                  [textCopyClass]: field.canCopy,
+                })}
+              >
+                <span id="requestkey">{field.value}</span>
               </Text>
-            </dd>
+              {field.canCopy && <CopyButton id="requestkey" />}
+            </Stack>
           )}
         </Fragment>
       ))}

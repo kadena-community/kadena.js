@@ -1,5 +1,70 @@
 # @kadena/explorer
 
+## 0.2.1
+
+### Patch Changes
+
+- ed626de: Added graph in local .env variables describing graph host url's
+- Updated dependencies \[1bbf1c6]
+- Updated dependencies \[63bdbcb]
+- Updated dependencies \[15a492c]
+  - @kadena/graph\@1.0.5
+  - @kadena/react-ui\@0.12.0
+
+## 0.2.0
+
+### Minor Changes
+
+- d5286c2f0: add the navbar to the layout
+
+### Patch Changes
+
+- bf2ac3987: fix of styling in the transaction page
+- 51e34b300: Added queries used by main search
+- Updated dependencies \[6a969ebdc]
+- Updated dependencies \[b541021f4]
+- Updated dependencies \[e648c32fa]
+  - @kadena/react-ui\@0.11.0
+  - @kadena/graph\@1.0.4
+
+## 0.1.0
+
+### Minor Changes
+
+- 872a0f199: add the account page
+
+### Patch Changes
+
+- 9231982a1: Implemented statistics, search and logo components and necessary
+  logic
+- e5f85728a: Data Render Component, Transactions List and hash tab routing done.
+  Including mobile support.
+- 2a172928f: added transaction/\[requestKey] page
+- ca4fbfae2: Add Media for SSR
+- Updated dependencies \[020be02d7]
+- Updated dependencies \[9d7545ae0]
+- Updated dependencies \[f045afe82]
+- Updated dependencies \[e5f85728a]
+- Updated dependencies \[5a9d2de5e]
+- Updated dependencies \[dac1b28ca]
+- Updated dependencies \[3805b414e]
+- Updated dependencies \[c9fe555df]
+- Updated dependencies \[8e2a29721]
+- Updated dependencies \[cfb7c5bab]
+- Updated dependencies \[864329d3e]
+- Updated dependencies \[076f0980f]
+- Updated dependencies \[9cb50ea42]
+- Updated dependencies \[7e19fd3f3]
+- Updated dependencies \[f4a18faa8]
+- Updated dependencies \[30217ff8e]
+- Updated dependencies \[49fb38853]
+- Updated dependencies \[a415d7995]
+- Updated dependencies \[07ec9691c]
+- Updated dependencies \[4a5045c52]
+- Updated dependencies \[b0b05ca86]
+  - @kadena/react-ui\@0.10.0
+  - @kadena/graph\@1.0.3
+
 ## 0.0.2
 
 ### Patch Changes
