@@ -1,4 +1,3 @@
-import { MonoHub } from '@kadena/react-icons/system';
 import {
   KadenaLogo,
   NavHeader,

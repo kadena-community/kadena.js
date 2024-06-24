@@ -1,5 +1,4 @@
 import { atoms } from '@kadena/react-ui/styles';
-import { style } from '@vanilla-extract/css';
 
 export const borderStyleClass = atoms({
   borderStyle: 'solid',
