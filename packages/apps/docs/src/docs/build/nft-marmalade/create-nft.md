@@ -181,6 +181,11 @@ To create the token:
    You can also use different guards for any token action if you want to authorize different accounts to perform specific actions. 
 
 5. On the Sign tab, select an unrestricted signing key from the available Unrestricted Signing Keys, then click **Next**.
+   
+   Note that you can explicitly add the CREATE-TOKEN capability and select individual signing keys for the GAS and CREATE-TOKEN capabilities instead of using an unrestricted signing key. 
+   By selecting an unrestricted signing key, you implicitly grant permission to pay the transaction fee (GAS) and create the token (CREATE-TOKEN) to the owner of the selected key. 
+   
+   You must explicitly or implicitly select a signing key for the transaction to succeed.
 
 6. On the Preview tab, scroll to see the Raw Response is **true**, then click **Submit**.
    
