@@ -12,7 +12,6 @@ export const useHDWallet = () => {
     mnemonic: string,
     derivationPathTemplate?: string,
   ) => {
-    console.log('creating hd wallet', type);
     switch (type) {
       case 'HD-BIP44': {
         const service = (await keySourceManager.get(type)) as BIP44Service;
@@ -44,7 +43,6 @@ export const useHDWallet = () => {
     password: string,
     keySource: IKeySource,
   ) => {
-    console.log('unlocking hd wallet', type);
     switch (type) {
       case 'HD-BIP44': {
         const service = (await keySourceManager.get(type)) as BIP44Service;

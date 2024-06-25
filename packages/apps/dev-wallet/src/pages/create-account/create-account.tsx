@@ -5,7 +5,7 @@ import {
 } from '@/modules/account/account.repository.ts';
 import { useNetwork } from '@/modules/network/network.hook.ts';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { createPrincipal } from '@kadena/client-utils';
+import { createPrincipal } from '@kadena/client-utils/built-in';
 import {
   Button,
   Heading,
@@ -78,8 +78,6 @@ export function CreateAccount() {
 
     await accountRepository.addKeyset(keySet);
     await accountRepository.addAccount(account);
-
-    console.log('Account created: ', account);
 
     navigate('/');
   };

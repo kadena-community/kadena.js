@@ -103,7 +103,6 @@ export const accountDiscovery = (
           contract,
         )
           .on('chain-result', async (data) => {
-            console.log('chain-result', data);
             await emit('chain-result')(data as IDiscoveredAccount);
           })
           .execute()) as IDiscoveredAccount[];
@@ -146,8 +145,6 @@ export const accountDiscovery = (
       }
 
       await emit('query-done')(accounts);
-
-      console.log('usedKeys', usedKeys);
 
       // store keys; key creation needs to be in sequence so I used a for loop instead of Promise.all
       for (const key of usedKeys) {

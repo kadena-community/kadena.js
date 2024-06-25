@@ -97,7 +97,6 @@ export async function retrieveCredential(
     credential.response.clientDataJSON,
   );
   const json = JSON.parse(clientDataJSON);
-  console.log('ClientDataJSON:', json);
   if (json.type !== 'webauthn.get') {
     throw new Error('INVALID_CREDENTIAL_TYPE');
   }
@@ -106,8 +105,6 @@ export async function retrieveCredential(
     console.error('Challenge:', base64Challenge);
     throw new Error('INVALID_CHALLENGE');
   }
-
-  console.log('Challenge:', challenge);
 
   return credential;
 }
@@ -297,13 +294,6 @@ export const getPublicKeyForKadena = async (attestationObject: ArrayBuffer) => {
 export function extractPublicKeyHex(arrayBuffer: ArrayBuffer) {
   // Convert ArrayBuffer to Uint8Array
   const uint8Array = new Uint8Array(arrayBuffer);
-  console.log(
-    'ORIGINAL PUBLIC KEY INFO',
-    'length:',
-    Buffer.from(arrayBuffer).toString('hex').length,
-    'data:',
-    Buffer.from(arrayBuffer).toString('hex'),
-  );
 
   // Parse the DER-encoded SubjectPublicKeyInfo
   const asn1 = asn1js.fromBER(uint8Array.buffer);

@@ -34,10 +34,8 @@ export function SelectProfile() {
     }
     const keys = await recoverPublicKey(credential);
     for (const key of keys) {
-      console.log({ key, type: typeof key[0] });
       const result = await unlockProfile(profile.uuid, key);
       if (result) {
-        console.log(`Profile unlocked with: ${key}`);
         // for now we just pick the first key source later we should have a way to select the key source
         const keySource = result.keySources[0];
         if (!keySource) {

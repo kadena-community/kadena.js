@@ -70,7 +70,6 @@ export const useWallet = () => {
       // we check the auth mode of the profile and use the appropriate password/web-authn to unlock the key source
       switch (profile?.options.authMode) {
         case 'PASSWORD': {
-          console.log('unlocking with password');
           const pass = await prompt((resolve, reject) => (
             <UnlockPrompt resolve={resolve} reject={reject} />
           ));
@@ -97,7 +96,6 @@ export const useWallet = () => {
           for (const key of keys) {
             try {
               await service.connect(key, keySource as any);
-              console.log('Key source unlocked with: ', key);
               break;
             } catch (e) {
               continue;

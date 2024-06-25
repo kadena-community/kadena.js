@@ -34,7 +34,6 @@ const sigScheme = (
 export function normalizeSigs(tx: IUnsignedCommand): IUnsignedCommand['sigs'] {
   const cmd: IPactCommand = JSON.parse(tx.cmd);
   const scheme = sigScheme(tx.sigs);
-  console.log('sig scheme', scheme);
   if (scheme === 'SigData') {
     const sigs = tx.sigs as unknown as SigData;
     const normalizedSigs = cmd.signers.map(({ pubKey }) =>

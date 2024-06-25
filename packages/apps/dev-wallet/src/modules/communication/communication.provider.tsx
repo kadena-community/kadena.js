@@ -33,13 +33,7 @@ const handle = (
 ) => {
   const cb = async (event: MessageEvent) => {
     if (event.data.type === type && event.source) {
-      console.log('Received message', event.data, event.origin);
       const payload = await handler(event.data);
-      console.log('Sending response', {
-        id: event.data.id,
-        type: event.data.type,
-        ...payload,
-      });
       event.source.postMessage(
         { id: event.data.id, type: event.data.type, ...payload },
         { targetOrigin: event.origin },
@@ -125,7 +119,6 @@ export const CommunicationProvider: FC<PropsWithChildren> = ({ children }) => {
     const run = async () => {
       if (isUnlocked && requests.has('unlock')) {
         const req = requests.get('unlock');
-        console.log('Unlocking request', req);
         req?.resolve({});
         requests.delete('unlock');
         if (req && typeof req.payload === 'string') {

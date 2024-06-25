@@ -3,7 +3,6 @@
 import {
   base64URLdecode,
   createCredential,
-  extractPublicKeyHex,
   getPublicKeyForKadena,
   retrieveCredential,
 } from '@/utils/webAuthn';
@@ -69,7 +68,6 @@ export function createWebAuthnService() {
     const publicKey = await getPublicKeyForKadena(
       credential.credential.response.attestationObject,
     );
-    console.log('WEBAUTHN publicKey', publicKey);
     const newKey = {
       publicKey: `WEBAUTHN-${publicKey}`,
       index: credential.credential.id,

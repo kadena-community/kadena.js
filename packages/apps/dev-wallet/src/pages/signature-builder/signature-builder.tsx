@@ -121,7 +121,6 @@ export function SignatureBuilder() {
   async function signTransaction() {
     if (unsignedTx) {
       const normalizedTx = { ...unsignedTx, sigs: normalizeSigs(unsignedTx) };
-      console.log('normalizedTx', normalizedTx);
       const tx = await sign([normalizedTx]);
       setSignedTx(tx[0]);
     }

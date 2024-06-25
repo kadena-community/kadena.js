@@ -67,13 +67,11 @@ export function CreateProfile() {
     password: string;
     accentColor?: string;
   }) {
-    console.log('creating profile');
     let pass = password;
     if (!activeNetwork) {
       return;
     }
     if (webAuthnCredential && password === 'WEB_AUTHN_PROTECTED') {
-      console.log('using webauthn');
       const pk = webAuthnCredential.response.getPublicKey();
       if (!pk) {
         throw new Error('Public key not found');
@@ -106,7 +104,6 @@ export function CreateProfile() {
     const key = await createKey(keySource);
 
     await createKAccount(profile.uuid, activeNetwork.networkId, key.publicKey);
-    console.log('wallet created');
     // everything is created, now we can unlock the profile
     await unlockProfile(profile.uuid, pass);
   }
@@ -122,7 +119,6 @@ export function CreateProfile() {
       if (!isShortFlow) {
         navigate('personalize-profile');
       } else {
-        console.log('submitting form', formRef.current);
         setTimeout(() => {
           formRef.current?.requestSubmit();
         }, 200);

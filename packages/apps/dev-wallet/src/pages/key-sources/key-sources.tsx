@@ -84,7 +84,6 @@ export function KeySources() {
       const password = (await prompt((resolve, reject) => (
         <PasswordPrompt resolve={resolve} reject={reject} />
       ))) as string;
-      console.log('password', password);
       if (!password || !profile) {
         return;
       }

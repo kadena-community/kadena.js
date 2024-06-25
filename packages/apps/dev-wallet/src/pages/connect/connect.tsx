@@ -30,7 +30,6 @@ export function Connect() {
           <Button
             variant="primary"
             onPress={() => {
-              console.log('Accepting request', request?.resolve);
               request?.resolve({ status: 'accepted' });
               setResult('accepted');
             }}
@@ -39,7 +38,6 @@ export function Connect() {
           </Button>
           <Button
             onPress={() => {
-              console.log('Rejecting request');
               request?.resolve({ status: 'rejected' });
               setResult('rejected');
             }}

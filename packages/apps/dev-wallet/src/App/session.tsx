@@ -29,7 +29,6 @@ export const SessionProvider: FC<PropsWithChildren> = ({ children }) => {
     return () => {
       console.log('Session is unloaded', Session.renew);
       events.forEach((event) => {
-        console.log(`document.removeEventListener("${event}", renew);`);
         document.removeEventListener(event, Session.renew);
       });
     };

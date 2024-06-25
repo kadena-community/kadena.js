@@ -40,7 +40,6 @@ const throttle = <T extends (...args: unknown[]) => any>(
   let lastCall = 0;
   let lastResult: ReturnType<T>;
   return (...args: Parameters<T>): ReturnType<T> => {
-    console.log('throttle', { lastCall, lastResult });
     const now = Date.now();
     if (now - lastCall < delay) return lastResult;
     lastCall = now;
