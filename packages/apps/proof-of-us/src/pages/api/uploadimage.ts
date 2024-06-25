@@ -18,9 +18,14 @@ const checksizeIsOk = (base64: string): boolean => {
   return true;
 };
 
-export const uploadImageString = async (base64: string): Promise<any> => {
+export const uploadImageString = async (
+  base64: string,
+): Promise<IUploadResult> => {
   if (!checksizeIsOk(base64) || !process.env.PINATA_JWT) {
-    return;
+    return {
+      url: '',
+      cid: '',
+    };
   }
 
   const pinata = new pinataSDK({
@@ -42,7 +47,11 @@ export const uploadImageString = async (base64: string): Promise<any> => {
   stream.push(buffer);
   stream.push(null);
 
-  return await pinata.pinFileToIPFS(stream, options);
+  const result = await pinata.pinFileToIPFS(stream, options);
+  return {
+    url: `https://ipfs.io/ipfs/${result.IpfsHash}`,
+    cid: result.IpfsHash,
+  };
 };
 
 export default async function handler(
@@ -85,8 +94,5 @@ export default async function handler(
     });
   }
 
-  return res.status(200).json({
-    url: `https://ipfs.io/ipfs/${imageData.IpfsHash}`,
-    cid: imageData.IpfsHash,
-  } as IUploadResult);
+  return res.status(200).json(imageData);
 }

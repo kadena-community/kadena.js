@@ -115,10 +115,7 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
       return;
     }
     const manifest = await createManifest(proofOfUs, signees, imageData.url);
-    const manifestData = await createMetaDataUrl(
-      manifest,
-      proofOfUs.proofOfUsId,
-    );
+    const manifestData = await createMetaDataUrl(manifest);
     if (!manifestData) {
       console.error('no manifestData found');
       return;

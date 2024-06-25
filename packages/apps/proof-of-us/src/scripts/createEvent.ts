@@ -1,4 +1,5 @@
 import { uploadImageString } from '@/pages/api/uploadimage';
+import { uploadMeta } from '@/pages/api/uploadmeta';
 import type { ChainId } from '@kadena/client';
 import {
   Pact,
@@ -9,7 +10,7 @@ import { PactNumber } from '@kadena/pactjs';
 import dotenv from 'dotenv';
 import { getClient } from '../utils/client';
 import { createManifest } from '../utils/createManifest';
-import { createMetaDataUrl } from '../utils/upload';
+import { createHashData } from '../utils/upload';
 
 dotenv.config();
 
@@ -33,8 +34,8 @@ const namespace = 'n_31cd1d224d06ca2b327f1b03f06763e305099250';
 const collectionId = process.env.NEXT_PUBLIC_CONNECTION_COLLECTIONID ?? '';
 
 const eventName = 'Test event';
-const startTime = Math.round(new Date(2024, 5, 13, 15, 1).getTime() / 1000);
-const endTime = Math.round(new Date(2024, 5, 15, 23, 15).getTime() / 1000);
+const startTime = Math.round(new Date(2024, 5, 25, 12, 45).getTime() / 1000);
+const endTime = Math.round(new Date(2026, 5, 15, 23, 15).getTime() / 1000);
 const bgColor = '#271755';
 
 console.log({
@@ -83,7 +84,8 @@ const createEvent = async () => {
     date: startTime * 1000,
   };
 
-  const imageData = await uploadImageString(imageBase64Str);
+  const imageDataResult = await uploadImageString(imageBase64Str);
+  const imageData = createHashData(imageDataResult);
 
   if (!imageData) {
     console.log('ERROR!  no imagedata');
@@ -92,7 +94,9 @@ const createEvent = async () => {
 
   // @ts-expect-error WebAuthn is not yet added to the @kadena/client types
   const manifest = await createManifest(proofOfUs, [], imageData.url);
-  const metadata = await createMetaDataUrl(manifest);
+  const metadataResult = await uploadMeta(manifest);
+
+  const metadata = createHashData(metadataResult);
 
   if (!metadata) {
     console.log('ERROR no metadata');
@@ -136,6 +140,8 @@ const createEvent = async () => {
     ])
     .addSigner(senderPubKey)
     .createTransaction();
+
+  console.log({ unsignedTx });
 
   const signWithChainweaver = createSignWithChainweaver();
   const signedTx = await signWithChainweaver(unsignedTx);

@@ -5,6 +5,20 @@ interface INFTUrl {
   };
 }
 
+export interface IUploadResult {
+  url: string;
+  cid: string;
+}
+
+export const createHashData = (data: IUploadResult): INFTUrl => {
+  return {
+    url: data.url,
+    data: {
+      cid: data.cid,
+    },
+  };
+};
+
 export const createImageUrl = async (
   bg: string,
   proofOfUsId: string,
@@ -25,12 +39,7 @@ export const createImageUrl = async (
     return;
   }
 
-  return {
-    url: imageData.url,
-    data: {
-      cid: imageData.cid,
-    },
-  };
+  return createHashData(imageData);
 };
 
 export const createMetaDataUrl = async (
@@ -46,24 +55,5 @@ export const createMetaDataUrl = async (
     return;
   }
 
-  return {
-    url: metadata.url,
-    data: {
-      cid: metadata.cid,
-    },
-  };
-
-  // const metadataFileName = 'metadata';
-  // const metadata = await NFTStorage.encodeDirectory([
-  //   new File([JSON.stringify(manifest, null, 2)], metadataFileName),
-  // ]);
-
-  // const metadataUrl = uri
-  //   ? uri
-  //   : `https://${metadata.cid.toString()}.ipfs.nftstorage.link/${metadataFileName}`;
-
-  // console.log('metadata cid', metadata.cid.toString());
-  // console.log('metadata url', metadataUrl);
-
-  // return { data: metadata, url: metadataUrl };
+  return createHashData(metadata);
 };

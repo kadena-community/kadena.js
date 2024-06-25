@@ -5,6 +5,31 @@ interface IResponseData {
   message: string;
 }
 
+export const uploadMeta = async (metadata: any): Promise<IUploadResult> => {
+  if (!process.env.PINATA_JWT) {
+    return {
+      url: '',
+      cid: '',
+    };
+  }
+
+  const pinata = new pinataSDK({
+    pinataJWTKey: process.env.PINATA_JWT,
+  });
+
+  const options = {
+    pinataMetadata: {
+      name: `metadata for ${metadata.image}`,
+    },
+    pinataOptions: {},
+  };
+  const result = await pinata.pinJSONToIPFS(metadata, options);
+  return {
+    url: `https://ipfs.io/ipfs/${result.IpfsHash}`,
+    cid: result.IpfsHash,
+  };
+};
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<IResponseData | IUploadResult>,
@@ -30,26 +55,12 @@ export default async function handler(
     });
   }
 
-  const pinata = new pinataSDK({
-    pinataJWTKey: process.env.PINATA_JWT,
-  });
-
-  const options = {
-    pinataMetadata: {
-      name: `metadata for ${manifest.image}`,
-    },
-    pinataOptions: {},
-  };
-
-  const metadata = await pinata.pinJSONToIPFS(manifest, options);
+  const metadata = await uploadMeta(manifest);
   if (!metadata) {
     return res.status(500).json({
       message: 'metadata data could not be created',
     });
   }
 
-  return res.status(200).json({
-    url: `https://ipfs.io/ipfs/${metadata.IpfsHash}`,
-    cid: metadata.IpfsHash,
-  } as IUploadResult);
+  return res.status(200).json(metadata);
 }
