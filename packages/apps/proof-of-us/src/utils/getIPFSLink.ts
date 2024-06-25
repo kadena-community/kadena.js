@@ -7,7 +7,6 @@ export const getIPFSLink = (uri: string): string => {
   const ipfsIORegExp = /(?:https:\/\/)ipfs\.io\/ipfs\/(.+)/;
   const match2 = uri.match(ipfsIORegExp);
   if (match2) {
-    console.log(`${env.URL}/pinata/${match2[1]}`);
     return `${env.URL}/pinata/${match2[1]}`;
   }
 

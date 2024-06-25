@@ -32,7 +32,7 @@ describe('getIPFSLink', () => {
     const url =
       'https://ipfs.io/ipfs/QmV35YjVXCVcoDUZFzUkci62hf7DjGEUnRFchLjGpMWi4g';
     const expectedUrl =
-      'https://masters-of-the-universe.com/api/ipfsio/QmV35YjVXCVcoDUZFzUkci62hf7DjGEUnRFchLjGpMWi4g';
+      'https://masters-of-the-universe.com/pinata/QmV35YjVXCVcoDUZFzUkci62hf7DjGEUnRFchLjGpMWi4g';
     const result = getIPFSLink(url);
     expect(result).toBe(expectedUrl);
   });
