@@ -62,7 +62,7 @@ export async function getHashRateAndTotalDifficulty(): Promise<{
     const blocks = await prismaClient.block.findMany({
       where: {
         height: {
-          gte: Number(currentHeight) - 4, //4 because with 3 sometimes we have less than 20 blocks
+          gte: Number(currentHeight) - 4, //it was verified that with 3 heights sometimes we did not have 20 blocks
         },
       },
       select: {
