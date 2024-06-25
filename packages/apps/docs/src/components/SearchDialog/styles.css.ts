@@ -2,6 +2,9 @@ import { atoms, responsiveStyle } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const dialogClass = style([
+  atoms({
+    backgroundColor: 'base.default',
+  }),
   responsiveStyle({
     xs: {
       height: '100svh',

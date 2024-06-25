@@ -1,7 +1,7 @@
 {
   "name": "@kadena/react-ui",
-  "version": "0.10.0",
-  "description": "A react component library built on Kadena's Design System",
+  "version": "0.12.1",
+  "description": "A react component library built on Kadena's Kode Design System",
   "repository": {
     "type": "git",
     "url": "https://github.com/kadena-community/kadena.js.git",

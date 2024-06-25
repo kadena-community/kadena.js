@@ -5,6 +5,7 @@ import { headingClass, sectionClass } from './styles.css';
 
 interface IDataRenderComponentField {
   type?: 'text' | 'code';
+  canCopy?: boolean;
   key: string;
   value: string | string[] | JSX.Element | JSX.Element[];
   link?: string;

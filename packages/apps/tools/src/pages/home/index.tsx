@@ -336,6 +336,23 @@ const Home: FC = () => {
               </TableHeader>
               <TableBody>
                 <Row>
+                  <Cell>June 24, 2024</Cell>
+                  <Cell>
+                    Released version 1.4 of the Tools Website, including the
+                    Modules module, which has a Modules Explorer.
+                  </Cell>
+                </Row>
+                <Row>
+                  <Cell>April 16, 2024</Cell>
+                  <Cell>
+                    Released version 1.3 of the Tools Website, including an
+                    addition to the Transactions module; a Transfer page,
+                    enabling transfers to be made using various signing methods.
+                    The initial release will only support signing with a Ledger
+                    device.
+                  </Cell>
+                </Row>
+                <Row>
                   <Cell>January 31, 2024</Cell>
                   <Cell>
                     Released version 1.2 of the Tools Website, including the

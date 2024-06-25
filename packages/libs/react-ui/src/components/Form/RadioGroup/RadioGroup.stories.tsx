@@ -71,6 +71,11 @@ const meta: Meta<IRadioGroupProps> = {
         type: 'text',
       },
     },
+    inverse: {
+      control: {
+        type: 'boolean',
+      },
+    },
   },
 };
 
@@ -80,12 +85,36 @@ const radios = Array.from(Array(10).keys()).map((key) => {
   return <Radio key={key} value={`value:${key}`}>{`Option: ${key}`}</Radio>;
 });
 
+// Just to make the inverse prop visible in the story
+const InverseWrapper = ({
+  children,
+  inversed,
+}: {
+  children: React.ReactNode;
+  inversed?: boolean;
+}) => {
+  return (
+    <div
+      style={{
+        padding: '1rem',
+        backgroundColor: inversed ? 'black' : 'transparent',
+      }}
+    >
+      {children}
+    </div>
+  );
+};
+
 export const Base: RadioGroupStoryType = {
   args: {
     direction: 'row',
   },
   render: (props: IRadioGroupProps) => {
-    return <RadioGroup {...props}>{radios}</RadioGroup>;
+    return (
+      <InverseWrapper inversed={props.inverse}>
+        <RadioGroup {...props}>{radios}</RadioGroup>
+      </InverseWrapper>
+    );
   },
 };
 

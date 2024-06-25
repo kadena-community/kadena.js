@@ -1,5 +1,4 @@
-import { style, styleVariants } from '@vanilla-extract/css';
-import { token } from '../../../styles';
+import { style, styleVariants, token } from '../../../styles';
 
 export const addon = style({
   position: 'absolute',

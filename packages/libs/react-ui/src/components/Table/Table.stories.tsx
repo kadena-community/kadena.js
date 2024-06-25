@@ -56,6 +56,24 @@ const meta: Meta<typeof Table> = {
       },
     },
   },
+  argTypes: {
+    isStriped: {
+      control: {
+        type: 'boolean',
+      },
+    },
+    isCompact: {
+      control: {
+        type: 'boolean',
+      },
+    },
+    selectionMode: {
+      control: {
+        type: 'radio',
+      },
+      options: ['single', 'multiple', 'none'],
+    },
+  },
 };
 
 export default meta;
@@ -67,13 +85,9 @@ export const Primary: Story = {
     isStriped: false,
     isCompact: false,
   },
-  render: ({ isStriped, isCompact }) => {
+  render: (args) => {
     return (
-      <Table
-        aria-label="Example static collection table"
-        isStriped={isStriped}
-        isCompact={isCompact}
-      >
+      <Table {...args} aria-label="Example static collection table">
         <TableHeader>
           {columns.map((column) => (
             <Column key={column.key} isRowHeader={column.isRowHeader}>

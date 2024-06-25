@@ -1,4 +1,3 @@
-import { MonoHub } from '@kadena/react-icons/system';
 import {
   KadenaLogo,
   NavHeader,
@@ -12,6 +11,7 @@ import {
 import Link from 'next/link';
 import type { FC } from 'react';
 import React, { useState } from 'react';
+import { GraphQLQueryDialog } from '../graphql-query-dialog/graphql-query-dialog';
 import { navbarWrapperClass } from './styles.css';
 
 export const NavBar: FC = () => {
@@ -29,8 +29,8 @@ export const NavBar: FC = () => {
           <NavHeaderLink>{''}</NavHeaderLink>
           <NavHeaderLink>{''}</NavHeaderLink>
         </NavHeaderLinkList>
-        <NavHeaderButton variant="transparent" endVisual={<MonoHub />}>
-          Graph
+        <NavHeaderButton variant="transparent">
+          <GraphQLQueryDialog />
         </NavHeaderButton>
         <NavHeaderSelect
           aria-label="Select Network"

@@ -1,5 +1,48 @@
 # @kadena/react-ui
 
+## 0.12.1
+
+### Patch Changes
+
+- 16f0b17ed: fix the grid styles which were being applied to a layer while the
+  base styling was being applied via atoms, all styles aren't applied on a layer
+  for layout components
+- 4dc02eec8: Added documentation for useTheme hook
+- db77beba0: fix: make the icon on the text link component optional
+- c0a6ffde5: fix: prevent icons from scaling down in size when their parent
+  container shrinks in size
+- 7ee91269f: fix: make custom styling functions to add the default layer and
+  remove usage of the atoms function to style components
+- 5b95decb2: fix styling errors caused by missing tokens references from the
+  styling refactor
+- 6d9900ef8: add contained prop to tabs component, this will make the content
+  the same color as the tab
+
+## 0.12.0
+
+### Minor Changes
+
+- 63bdbcb: Add: rebranded table and card components
+
+### Patch Changes
+
+- 15a492c: Icon token set
+
+## 0.11.0
+
+### Minor Changes
+
+- 6a969ebdc: Add radiogroup component
+- e648c32fa: - Reintroduced `items` prop for Tabs component to offer Dynamic
+  collection support.
+  - Added `tabPanelClassName` prop to Tabs component to forward styles to
+    TabPanel component.
+  - Added export of ITabNode type.
+
+### Patch Changes
+
+- b541021f4: Readme update
+
 ## 0.10.0
 
 ### Minor Changes

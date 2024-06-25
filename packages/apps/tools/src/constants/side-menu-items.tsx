@@ -1,4 +1,3 @@
-import { isDevEnvironment } from '@/utils/isDevEnvironment';
 import {
   MonoAnimation,
   MonoQrCodeScanner,
@@ -11,7 +10,7 @@ import Routes from './routes';
 const menuData: ISidebarToolbarItem[] = [
   {
     title: 'Faucet',
-    icon: <MonoQrCodeScanner />,
+    icon: <MonoQrCodeScanner style={{ maxWidth: '100%' }} />,
     href: 'faucet',
     items: [
       {
@@ -26,7 +25,7 @@ const menuData: ISidebarToolbarItem[] = [
   },
   {
     title: 'Transactions',
-    icon: <MonoAnimation />,
+    icon: <MonoAnimation style={{ maxWidth: '100%' }} />,
     href: 'transactions',
     items: [
       {
@@ -43,15 +42,12 @@ const menuData: ISidebarToolbarItem[] = [
       },
     ],
   },
-];
-
-if (isDevEnvironment) {
-  menuData.push({
+  {
     title: 'Modules',
-    icon: <MonoViewInAr />,
+    icon: <MonoViewInAr style={{ maxWidth: '100%' }} />,
     href: 'modules',
     items: [{ title: 'Explorer', href: Routes.MODULE_EXPLORER }],
-  });
-}
+  },
+];
 
 export { menuData };

@@ -1,56 +1,41 @@
-import { style } from '@vanilla-extract/css';
-import { atoms, token } from '../../../styles';
+import { style, token } from '../../../styles';
 
-export const headerClass = style([
-  atoms({
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'sm',
-  }),
-]);
+export const headerClass = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: token('spacing.sm'),
+});
 
-export const infoClass = style([
-  atoms({
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'xxs',
-    fontSize: 'xs',
-    marginInlineStart: 'auto',
-    color: 'text.base.default',
-  }),
-]);
+export const infoClass = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: token('spacing.xxs'),
+  fontSize: token('typography.fontSize.xs'),
+  marginInlineStart: 'auto',
+  color: token('color.text.base.default'),
+});
 
-export const tagClass = style([
-  atoms({
-    backgroundColor: 'base.inverse.default',
-    color: 'text.base.inverse.default',
-    borderRadius: 'sm',
-    paddingInline: 'sm',
-    fontSize: 'xs',
-    fontWeight: 'secondaryFont.bold',
-    display: 'inline-block',
-  }),
-  {
-    paddingTop: '0.05rem',
-    paddingBottom: '0.05rem',
-  },
-]);
+export const tagClass = style({
+  backgroundColor: token('color.background.base.inverse.default'),
+  color: token('color.text.base.inverse.default'),
+  borderRadius: token('radius.sm'),
+  paddingInline: token('spacing.sm'),
+  fontSize: token('typography.fontSize.xs'),
+  fontWeight: token('typography.weight.secondaryFont.bold'),
+  display: 'inline-block',
+  paddingTop: '0.05rem',
+  paddingBottom: '0.05rem',
+});
 
-export const labelClass = style([
-  atoms({
-    fontSize: 'sm',
-    color: 'text.base.default',
-    fontWeight: 'secondaryFont.bold',
-  }),
-]);
+export const labelClass = style({
+  fontSize: token('typography.fontSize.sm'),
+  color: token('color.text.base.default'),
+  fontWeight: token('typography.weight.secondaryFont.bold'),
+});
 
-export const disabledLabelClass = style([
-  atoms({
-    fontSize: 'sm',
-    pointerEvents: 'none',
-    fontWeight: 'secondaryFont.bold',
-  }),
-  {
-    color: token('color.text.base.@disabled'),
-  },
-]);
+export const disabledLabelClass = style({
+  fontSize: token('typography.fontSize.sm'),
+  pointerEvents: 'none',
+  fontWeight: token('typography.weight.secondaryFont.bold'),
+  color: token('color.text.base.@disabled'),
+});

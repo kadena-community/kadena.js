@@ -1,32 +1,27 @@
-import { style } from '@vanilla-extract/css';
-import { atoms, tokens } from '../../../styles';
+import { style, token } from '../../../styles';
 
-export const buttonClass = style([
-  atoms({
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 'md',
-    cursor: 'pointer',
-    border: 'none',
-    backgroundColor: 'base.default',
-    color: 'text.base.default',
-  }),
-  {
-    width: '32px',
-    height: '32px',
-    selectors: {
-      [`&:hover`]: {
-        backgroundColor: tokens.kda.foundation.color.background.base['@hover'],
-        color: tokens.kda.foundation.color.background.base.default,
-      },
-    },
-    ':disabled': {
-      opacity: 0.7,
-      backgroundColor: tokens.kda.foundation.color.icon.base['@disabled'],
-      color: tokens.kda.foundation.color.text.base['@disabled'],
-      cursor: 'not-allowed',
-      pointerEvents: 'none',
+export const buttonClass = style({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: token('radius.md'),
+  cursor: 'pointer',
+  border: 'none',
+  backgroundColor: token('color.background.base.default'),
+  color: token('color.text.base.default'),
+  width: token('size.n8'),
+  height: token('size.n8'),
+  selectors: {
+    [`&:hover`]: {
+      backgroundColor: token('color.background.base.@hover'),
+      color: token('color.background.base.default'),
     },
   },
-]);
+  ':disabled': {
+    opacity: 0.7,
+    backgroundColor: token('color.icon.base.@disabled'),
+    color: token('color.text.base.@disabled'),
+    cursor: 'not-allowed',
+    pointerEvents: 'none',
+  },
+});

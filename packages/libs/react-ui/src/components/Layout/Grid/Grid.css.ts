@@ -3,17 +3,13 @@ import { style, styleVariants } from '@vanilla-extract/css';
 import mapValues from 'lodash.mapvalues';
 import { breakpoints, mapToProperty } from '../../../styles/themeUtils';
 
-export const gridContainerClass = style([
-  {
-    display: 'grid',
-  },
-]);
+export const gridContainerClass = style({
+  display: 'grid',
+});
 
-export const gridItemClass = style([
-  {
-    gridColumnStart: 'auto',
-  },
-]);
+export const gridItemClass = style({
+  gridColumnStart: 'auto',
+});
 
 const columnCount: Record<number, number> = {
   1: 1,

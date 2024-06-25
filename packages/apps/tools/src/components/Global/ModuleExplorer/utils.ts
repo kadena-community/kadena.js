@@ -1,12 +1,17 @@
-import type { IncompleteModuleModel } from '@/hooks/use-module-query';
+import type {
+  IncompleteModuleModel,
+  ModuleModel,
+} from '@/hooks/use-module-query';
 import type { ElementType } from '@/types/utils';
 import type {
   ChainwebChainId,
   ChainwebNetworkId,
 } from '@kadena/chainweb-node-client';
 import { contractParser } from '@kadena/pactjs-generator';
+import type { FuseResult } from 'fuse.js';
+import type { IModuleExplorerProps } from '.';
 import type { TreeItem } from '../CustomTree/CustomTree';
-import type { IChainModule, Outline } from './types';
+import type { Outline } from './types';
 
 export type Contract = ReturnType<typeof contractParser>[0][0]; // TODO: Should we improve this because it's a bit hacky?
 export type ContractInterface = ElementType<Contract['usedInterface']> & {
@@ -17,18 +22,18 @@ export type ContractInterface = ElementType<Contract['usedInterface']> & {
 export type ContractCapability = ElementType<Contract['capabilities']>;
 export type ContractFunction = ElementType<Contract['functions']>;
 
-export const chainModuleToOutlineTreeItems = (
-  chainModule: IChainModule,
-  items: TreeItem<IncompleteModuleModel>[],
+export const moduleToOutlineTreeItems = (
+  module: IncompleteModuleModel,
+  items: IncompleteModuleModel[],
 ): TreeItem<Outline>[] => {
   const treeItems: TreeItem<Outline>[] = [];
 
-  if (!chainModule.code) {
+  if (!module.code) {
     return treeItems;
   }
 
-  const [, namespace] = chainModule.moduleName.split('.');
-  const [[parsedContract]] = contractParser(chainModule.code, namespace);
+  const [, namespace] = module.name.split('.');
+  const [[parsedContract]] = contractParser(module.code, namespace);
 
   const { usedInterface: interfaces, capabilities, functions } = parsedContract;
 
@@ -38,32 +43,30 @@ export const chainModuleToOutlineTreeItems = (
       key: 'interfaces',
       data: {
         name: 'interfaces',
-        chainId: chainModule.chainId,
-        networkId: chainModule.network as ChainwebNetworkId,
+        chainId: module.chainId,
+        networkId: module.networkId,
       },
       children: interfaces.map((i) => {
-        // Top level, one of the networks
-        const networkItems = items.find((item) => {
-          return item.data.networkId === chainModule.network;
-        });
-        // The second level, the module on certain chains
-        const chainModules = networkItems?.children.find((child) => {
-          return child.data.name === i.name;
-        });
-        // And now the final search, the module on the specific chain
-        const moduleTreeItem = chainModules?.children.find((child) => {
-          return child.data.chainId === chainModule.chainId;
+        const name = i.namespace ? `${i.namespace}.${i.name}` : i.name;
+
+        const interfaceModule = items.find((item) => {
+          return (
+            item.networkId === module.networkId &&
+            item.name === name &&
+            item.chainId === module.chainId
+          );
         });
 
         return {
-          title: i.name,
-          key: `${chainModule.network}.${i.name}`,
-          label: moduleTreeItem?.data.hash,
+          title: name,
+          key: `${module.networkId}.${i.name}`,
+          label: interfaceModule?.hash,
           data: {
             ...i,
-            chainId: chainModule.chainId,
-            networkId: chainModule.network as ChainwebNetworkId,
-            code: moduleTreeItem?.data.code,
+            name,
+            chainId: module.chainId,
+            networkId: module.networkId,
+            code: interfaceModule?.code,
           },
           children: [],
         };
@@ -102,15 +105,85 @@ export const chainModuleToOutlineTreeItems = (
   return treeItems;
 };
 
-export const moduleModelToChainModule = (
-  module: IncompleteModuleModel,
-): IChainModule => {
-  const chainModule: IChainModule = {
-    code: module.code,
-    chainId: module.chainId,
-    moduleName: module.name,
-    hash: module.hash,
-    network: module.networkId,
+export const checkModuleEquality = (
+  module1: IncompleteModuleModel,
+  module2: IncompleteModuleModel,
+) => {
+  return (
+    module1.name === module2.name &&
+    module1.chainId === module2.chainId &&
+    module1.networkId === module2.networkId
+  );
+};
+
+export const modulesToMap = (
+  modules: ModuleModel[],
+): Map<string, ModuleModel[]> => {
+  return modules.reduce<Map<string, ModuleModel[]>>((acc, module) => {
+    const { name } = module;
+
+    if (!acc.has(name)) {
+      acc.set(name, []);
+    }
+    const chains = acc.get(name)!;
+
+    if (!chains.includes(module)) {
+      chains.push(module);
+    }
+
+    return acc;
+  }, new Map());
+};
+
+export const KEY_DELIMITER = '!_&_!'; // A character sequence that is unlikely to appear in a module name.
+
+export const moduleToTabId = (module: ModuleModel): string => {
+  return [module.networkId, module.name, module.chainId].join(KEY_DELIMITER);
+};
+
+export const tabIdToModule = (tabId: string): IncompleteModuleModel => {
+  const [networkId, name, chainId] = tabId.split(KEY_DELIMITER);
+
+  return {
+    networkId: networkId as ChainwebNetworkId,
+    name,
+    chainId: chainId as ChainwebChainId,
   };
-  return chainModule;
+};
+
+export const mapToTabs = (map: Map<string, ModuleModel[]>) => {
+  return Array.from(map.entries()).map(([name, modules]) => {
+    return {
+      title: name,
+      children: modules,
+    };
+  });
+};
+
+export const generateDataMap = (
+  items: IModuleExplorerProps['items'],
+): Map<ChainwebNetworkId, IncompleteModuleModel[]> => {
+  const dataMap = new Map<ChainwebNetworkId, IncompleteModuleModel[]>();
+
+  items.forEach((item) => {
+    const networkId = item.key as ChainwebNetworkId;
+    dataMap.set(networkId, item.data);
+  });
+
+  return dataMap;
+};
+
+export const searchResultsToDataMap = (
+  results: FuseResult<IncompleteModuleModel>[],
+): Map<ChainwebNetworkId, IncompleteModuleModel[]> => {
+  return results.reduce<Map<ChainwebNetworkId, IncompleteModuleModel[]>>(
+    (acc, result) => {
+      const networkId = result.item.networkId;
+      const data = acc.get(networkId) || [];
+      data.push(result.item);
+      acc.set(networkId, data);
+      return acc;
+    },
+    new Map(),
+  );
 };

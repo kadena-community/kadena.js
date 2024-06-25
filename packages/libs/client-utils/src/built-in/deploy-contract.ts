@@ -1,4 +1,4 @@
-import type { ChainId } from '@kadena/client';
+import type { ChainId, ISigner } from '@kadena/client';
 import { Pact } from '@kadena/client';
 
 import { submitClient } from '../core';
@@ -10,7 +10,7 @@ import type { IClientConfig } from '../core/utils/helpers';
 export interface ITransactionBody {
   chainId: ChainId;
   networkId: string;
-  signers: string[];
+  signers: ISigner[];
   meta: {
     gasLimit: number;
     chainId: ChainId;

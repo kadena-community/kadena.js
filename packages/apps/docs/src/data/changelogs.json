@@ -8,6 +8,121 @@
     "owner": "kadena-io",
     "repoName": "pact",
     "content": {
+      "4.13.0": {
+        "label": "4.13.0",
+        "isLocked": true,
+        "authors": [
+          {
+            "login": "chessai",
+            "id": 18648043,
+            "avatar_url": "https://avatars.githubusercontent.com/u/18648043?v=4",
+            "html_url": "https://github.com/chessai",
+            "url": "https://api.github.com/users/chessai"
+          }
+        ],
+        "patches": [
+          {
+            "label": "Fixed support for decoding a hyperlane TokenMessage",
+            "commits": [],
+            "prIds": [
+              {
+                "id": 1362,
+                "tries": 1,
+                "commits": [
+                  {
+                    "sha": "02e1f61bd0a09dd2f15d4c74eea1a835d1e92b7d",
+                    "url": "https://api.github.com/repos/kadena-io/pact/commits/02e1f61bd0a09dd2f15d4c74eea1a835d1e92b7d",
+                    "author": {
+                      "login": "chessai",
+                      "id": 18648043,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/18648043?v=4",
+                      "html_url": "https://github.com/chessai",
+                      "url": "https://api.github.com/users/chessai"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-io/pact/commits/02e1f61bd0a09dd2f15d4c74eea1a835d1e92b7d/comments",
+                    "html_url": "https://github.com/kadena-io/pact/commit/02e1f61bd0a09dd2f15d4c74eea1a835d1e92b7d",
+                    "commit": {
+                      "message": "Fix hyperlane natives\n\nSigned-off-by: Evgenii Akentev <i@ak3n.com>\nChange-Id: I8f09e97090ae3fbe32bbe0339414ef175d987800",
+                      "comment_count": 0
+                    }
+                  }
+                ],
+                "data": {
+                  "url": "https://api.github.com/repos/kadena-io/pact/pulls/1362",
+                  "headers": {
+                    "last-modified": "Fri, 14 Jun 2024 18:31:45 GMT",
+                    "date": "Wed, 19 Jun 2024 12:08:55 GMT"
+                  },
+                  "data": {
+                    "title": "Hyperlane natives fixes",
+                    "html_url": "https://github.com/kadena-io/pact/pull/1362",
+                    "user": {
+                      "login": "ak3n",
+                      "id": 588373,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/588373?v=4",
+                      "html_url": "https://github.com/ak3n",
+                      "url": "https://api.github.com/users/ak3n"
+                    },
+                    "body": "The corresponding chainweb PR: https://github.com/kadena-io/chainweb-node/pull/1901\r\n\r\nPR checklist:\r\n\r\n* [ ] Test coverage for the proposed changes\r\n* [ ] PR description contains example output from repl interaction or a snippet from unit test output\r\n* [ ] New builtins have a FV translation\r\n* [ ] Documentation has been (manually) updated at https://docs.kadena.io/pact\r\n* [ ] Any changes that could be relevant to users [have been recorded in the changelog](https://github.com/kadena-io/pact/blob/master/CHANGELOG.md)\r\n* [ ] In case of  changes to the Pact trace output (`pact -t`), make sure [pact-lsp](https://github.com/kadena-io/pact-lsp) is in sync.\r\n\r\nAdditionally, please justify why you should or should not do the following:\r\n\r\n* [ ] Confirm replay/back compat\r\n* [ ] Benchmark regressions\r\n* [ ] (For Kadena engineers) Run integration-tests against a Chainweb built with this version of Pact\r\n"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "minors": [
+          {
+            "label": "Support for encoding a hyperlane TokenMessage",
+            "commits": [],
+            "prIds": [
+              {
+                "id": 1362,
+                "tries": 1,
+                "commits": [
+                  {
+                    "sha": "02e1f61bd0a09dd2f15d4c74eea1a835d1e92b7d",
+                    "url": "https://api.github.com/repos/kadena-io/pact/commits/02e1f61bd0a09dd2f15d4c74eea1a835d1e92b7d",
+                    "author": {
+                      "login": "chessai",
+                      "id": 18648043,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/18648043?v=4",
+                      "html_url": "https://github.com/chessai",
+                      "url": "https://api.github.com/users/chessai"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-io/pact/commits/02e1f61bd0a09dd2f15d4c74eea1a835d1e92b7d/comments",
+                    "html_url": "https://github.com/kadena-io/pact/commit/02e1f61bd0a09dd2f15d4c74eea1a835d1e92b7d",
+                    "commit": {
+                      "message": "Fix hyperlane natives\n\nSigned-off-by: Evgenii Akentev <i@ak3n.com>\nChange-Id: I8f09e97090ae3fbe32bbe0339414ef175d987800",
+                      "comment_count": 0
+                    }
+                  }
+                ],
+                "data": {
+                  "url": "https://api.github.com/repos/kadena-io/pact/pulls/1362",
+                  "headers": {
+                    "last-modified": "Fri, 14 Jun 2024 18:31:45 GMT",
+                    "date": "Wed, 19 Jun 2024 12:08:55 GMT"
+                  },
+                  "data": {
+                    "title": "Hyperlane natives fixes",
+                    "html_url": "https://github.com/kadena-io/pact/pull/1362",
+                    "user": {
+                      "login": "ak3n",
+                      "id": 588373,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/588373?v=4",
+                      "html_url": "https://github.com/ak3n",
+                      "url": "https://api.github.com/users/ak3n"
+                    },
+                    "body": "The corresponding chainweb PR: https://github.com/kadena-io/chainweb-node/pull/1901\r\n\r\nPR checklist:\r\n\r\n* [ ] Test coverage for the proposed changes\r\n* [ ] PR description contains example output from repl interaction or a snippet from unit test output\r\n* [ ] New builtins have a FV translation\r\n* [ ] Documentation has been (manually) updated at https://docs.kadena.io/pact\r\n* [ ] Any changes that could be relevant to users [have been recorded in the changelog](https://github.com/kadena-io/pact/blob/master/CHANGELOG.md)\r\n* [ ] In case of  changes to the Pact trace output (`pact -t`), make sure [pact-lsp](https://github.com/kadena-io/pact-lsp) is in sync.\r\n\r\nAdditionally, please justify why you should or should not do the following:\r\n\r\n* [ ] Confirm replay/back compat\r\n* [ ] Benchmark regressions\r\n* [ ] (For Kadena engineers) Run integration-tests against a Chainweb built with this version of Pact\r\n"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "miscs": [],
+        "date": "2024-06-14T18:31:45.000Z"
+      },
       "4.12.0": {
         "label": "4.12.0",
         "isLocked": true,
@@ -28222,6 +28337,144 @@
     "owner": "kadena-community",
     "repoName": "kadena.js",
     "content": {
+      "1.1.2": {
+        "label": "1.1.2",
+        "isLocked": true,
+        "authors": [
+          {
+            "login": "Ghislain89",
+            "id": 72976986,
+            "avatar_url": "https://avatars.githubusercontent.com/u/72976986?v=4",
+            "html_url": "https://github.com/Ghislain89",
+            "url": "https://api.github.com/users/Ghislain89"
+          }
+        ],
+        "patches": [
+          {
+            "label": "Updated dependencies \\\n*   @kadena/client-utils@0.8.0",
+            "commits": [
+              {
+                "hash": "83c3d58",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Wed, 19 Jun 2024 12:07:41 GMT",
+                    "date": "Wed, 19 Jun 2024 12:08:56 GMT"
+                  },
+                  "data": {
+                    "sha": "83c3d585a50bd7a81d3cd8ac4340d9ca16d2d194",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/83c3d585a50bd7a81d3cd8ac4340d9ca16d2d194",
+                    "author": {
+                      "login": "Ghislain89",
+                      "id": 72976986,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/72976986?v=4",
+                      "html_url": "https://github.com/Ghislain89",
+                      "url": "https://api.github.com/users/Ghislain89"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/83c3d585a50bd7a81d3cd8ac4340d9ca16d2d194/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/83c3d585a50bd7a81d3cd8ac4340d9ca16d2d194",
+                    "commit": {
+                      "message": "fix: add missing changeset for client utils (#2298)",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          }
+        ],
+        "minors": [],
+        "miscs": [],
+        "date": "2024-06-19T12:07:41.000Z"
+      },
+      "1.1.1": {
+        "label": "1.1.1",
+        "isLocked": true,
+        "authors": [
+          {
+            "login": "javadkh2",
+            "id": 18360508,
+            "avatar_url": "https://avatars.githubusercontent.com/u/18360508?v=4",
+            "html_url": "https://github.com/javadkh2",
+            "url": "https://api.github.com/users/javadkh2"
+          }
+        ],
+        "patches": [
+          {
+            "label": "Updated dependencies \\",
+            "commits": [
+              {
+                "hash": "9c145f196",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Fri, 14 Jun 2024 07:55:02 GMT",
+                    "date": "Fri, 14 Jun 2024 08:02:46 GMT"
+                  },
+                  "data": {
+                    "sha": "9c145f1965851478ac016d210d0ac9aa58d03f88",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/9c145f1965851478ac016d210d0ac9aa58d03f88",
+                    "author": {
+                      "login": "javadkh2",
+                      "id": 18360508,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/18360508?v=4",
+                      "html_url": "https://github.com/javadkh2",
+                      "url": "https://api.github.com/users/javadkh2"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/9c145f1965851478ac016d210d0ac9aa58d03f88/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/9c145f1965851478ac016d210d0ac9aa58d03f88",
+                    "commit": {
+                      "message": "Feat/client utils add support for scheme (#2248)\n\n* feat(client-utils): add support for public key scheme\r\n\r\n* chore: changeset",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Updated dependencies \\\n*   @kadena/client@1.12.0\n*   @kadena/client-utils@0.7.0\n*   @kadena/pactjs-cli@1.12.0\n*   @kadena/pactjs-generator@1.12.0",
+            "commits": [
+              {
+                "hash": "9c145f196",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Fri, 14 Jun 2024 07:55:02 GMT",
+                    "date": "Fri, 14 Jun 2024 08:02:46 GMT"
+                  },
+                  "data": {
+                    "sha": "9c145f1965851478ac016d210d0ac9aa58d03f88",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/9c145f1965851478ac016d210d0ac9aa58d03f88",
+                    "author": {
+                      "login": "javadkh2",
+                      "id": 18360508,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/18360508?v=4",
+                      "html_url": "https://github.com/javadkh2",
+                      "url": "https://api.github.com/users/javadkh2"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/9c145f1965851478ac016d210d0ac9aa58d03f88/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/9c145f1965851478ac016d210d0ac9aa58d03f88",
+                    "commit": {
+                      "message": "Feat/client utils add support for scheme (#2248)\n\n* feat(client-utils): add support for public key scheme\r\n\r\n* chore: changeset",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          }
+        ],
+        "minors": [],
+        "miscs": [],
+        "date": "2024-06-14T07:55:02.000Z"
+      },
       "1.1.0": {
         "label": "1.1.0",
         "isLocked": true,
@@ -30119,6 +30372,58 @@
     "owner": "kadena-community",
     "repoName": "kadena.js",
     "content": {
+      "1.12.0": {
+        "label": "1.12.0",
+        "isLocked": true,
+        "authors": [
+          {
+            "login": "javadkh2",
+            "id": 18360508,
+            "avatar_url": "https://avatars.githubusercontent.com/u/18360508?v=4",
+            "html_url": "https://github.com/javadkh2",
+            "url": "https://api.github.com/users/javadkh2"
+          }
+        ],
+        "patches": [],
+        "minors": [
+          {
+            "label": "Export ISigner interface",
+            "commits": [
+              {
+                "hash": "9c145f196",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Fri, 14 Jun 2024 07:55:02 GMT",
+                    "date": "Fri, 14 Jun 2024 08:02:46 GMT"
+                  },
+                  "data": {
+                    "sha": "9c145f1965851478ac016d210d0ac9aa58d03f88",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/9c145f1965851478ac016d210d0ac9aa58d03f88",
+                    "author": {
+                      "login": "javadkh2",
+                      "id": 18360508,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/18360508?v=4",
+                      "html_url": "https://github.com/javadkh2",
+                      "url": "https://api.github.com/users/javadkh2"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/9c145f1965851478ac016d210d0ac9aa58d03f88/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/9c145f1965851478ac016d210d0ac9aa58d03f88",
+                    "commit": {
+                      "message": "Feat/client utils add support for scheme (#2248)\n\n* feat(client-utils): add support for public key scheme\r\n\r\n* chore: changeset",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          }
+        ],
+        "miscs": [],
+        "date": "2024-06-14T07:55:02.000Z"
+      },
       "1.11.2": {
         "label": "1.11.2",
         "isLocked": true,
@@ -32696,6 +33001,145 @@
     "owner": "kadena-community",
     "repoName": "kadena.js",
     "content": {
+      "0.8.0": {
+        "label": "0.8.0",
+        "isLocked": true,
+        "authors": [
+          {
+            "login": "Ghislain89",
+            "id": 72976986,
+            "avatar_url": "https://avatars.githubusercontent.com/u/72976986?v=4",
+            "html_url": "https://github.com/Ghislain89",
+            "url": "https://api.github.com/users/Ghislain89"
+          }
+        ],
+        "patches": [],
+        "minors": [
+          {
+            "label": "Add support for Marmalade utility functions",
+            "commits": [
+              {
+                "hash": "83c3d58",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Wed, 19 Jun 2024 12:07:41 GMT",
+                    "date": "Wed, 19 Jun 2024 12:08:56 GMT"
+                  },
+                  "data": {
+                    "sha": "83c3d585a50bd7a81d3cd8ac4340d9ca16d2d194",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/83c3d585a50bd7a81d3cd8ac4340d9ca16d2d194",
+                    "author": {
+                      "login": "Ghislain89",
+                      "id": 72976986,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/72976986?v=4",
+                      "html_url": "https://github.com/Ghislain89",
+                      "url": "https://api.github.com/users/Ghislain89"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/83c3d585a50bd7a81d3cd8ac4340d9ca16d2d194/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/83c3d585a50bd7a81d3cd8ac4340d9ca16d2d194",
+                    "commit": {
+                      "message": "fix: add missing changeset for client utils (#2298)",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          }
+        ],
+        "miscs": [],
+        "date": "2024-06-19T12:07:41.000Z"
+      },
+      "0.7.0": {
+        "label": "0.7.0",
+        "isLocked": true,
+        "authors": [
+          {
+            "login": "javadkh2",
+            "id": 18360508,
+            "avatar_url": "https://avatars.githubusercontent.com/u/18360508?v=4",
+            "html_url": "https://github.com/javadkh2",
+            "url": "https://api.github.com/users/javadkh2"
+          }
+        ],
+        "patches": [
+          {
+            "label": "Updated dependencies \\\n*   @kadena/client@1.12.0\n*   @kadena/pactjs-cli@1.12.0",
+            "commits": [
+              {
+                "hash": "9c145f196",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Fri, 14 Jun 2024 07:55:02 GMT",
+                    "date": "Fri, 14 Jun 2024 08:02:46 GMT"
+                  },
+                  "data": {
+                    "sha": "9c145f1965851478ac016d210d0ac9aa58d03f88",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/9c145f1965851478ac016d210d0ac9aa58d03f88",
+                    "author": {
+                      "login": "javadkh2",
+                      "id": 18360508,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/18360508?v=4",
+                      "html_url": "https://github.com/javadkh2",
+                      "url": "https://api.github.com/users/javadkh2"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/9c145f1965851478ac016d210d0ac9aa58d03f88/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/9c145f1965851478ac016d210d0ac9aa58d03f88",
+                    "commit": {
+                      "message": "Feat/client utils add support for scheme (#2248)\n\n* feat(client-utils): add support for public key scheme\r\n\r\n* chore: changeset",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          }
+        ],
+        "minors": [
+          {
+            "label": "Add support for public key scheme",
+            "commits": [
+              {
+                "hash": "9c145f196",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Fri, 14 Jun 2024 07:55:02 GMT",
+                    "date": "Fri, 14 Jun 2024 08:02:46 GMT"
+                  },
+                  "data": {
+                    "sha": "9c145f1965851478ac016d210d0ac9aa58d03f88",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/9c145f1965851478ac016d210d0ac9aa58d03f88",
+                    "author": {
+                      "login": "javadkh2",
+                      "id": 18360508,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/18360508?v=4",
+                      "html_url": "https://github.com/javadkh2",
+                      "url": "https://api.github.com/users/javadkh2"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/9c145f1965851478ac016d210d0ac9aa58d03f88/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/9c145f1965851478ac016d210d0ac9aa58d03f88",
+                    "commit": {
+                      "message": "Feat/client utils add support for scheme (#2248)\n\n* feat(client-utils): add support for public key scheme\r\n\r\n* chore: changeset",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          }
+        ],
+        "miscs": [],
+        "date": "2024-06-14T07:55:02.000Z"
+      },
       "0.6.0": {
         "label": "0.6.0",
         "isLocked": true,
@@ -35891,6 +36335,260 @@
     "owner": "kadena-community",
     "repoName": "kadena.js",
     "content": {
+      "1.0.5": {
+        "label": "1.0.5",
+        "isLocked": true,
+        "authors": [
+          {
+            "login": "nil-amrutlal-dept",
+            "id": 112877112,
+            "avatar_url": "https://avatars.githubusercontent.com/u/112877112?v=4",
+            "html_url": "https://github.com/nil-amrutlal-dept",
+            "url": "https://api.github.com/users/nil-amrutlal-dept"
+          },
+          {
+            "login": "MRVDH",
+            "id": 6686385,
+            "avatar_url": "https://avatars.githubusercontent.com/u/6686385?v=4",
+            "html_url": "https://github.com/MRVDH",
+            "url": "https://api.github.com/users/MRVDH"
+          },
+          {
+            "login": "javadkh2",
+            "id": 18360508,
+            "avatar_url": "https://avatars.githubusercontent.com/u/18360508?v=4",
+            "html_url": "https://github.com/javadkh2",
+            "url": "https://api.github.com/users/javadkh2"
+          }
+        ],
+        "patches": [
+          {
+            "label": "Included cross-chain transfers in transfer object",
+            "commits": [
+              {
+                "hash": "f4ac431f4",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Thu, 09 Nov 2023 11:24:22 GMT",
+                    "date": "Fri, 07 Jun 2024 06:51:50 GMT"
+                  },
+                  "data": {
+                    "sha": "f4ac431f4ffa0f169fdae2689ded9847f0212840",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/f4ac431f4ffa0f169fdae2689ded9847f0212840",
+                    "author": {
+                      "login": "nil-amrutlal-dept",
+                      "id": 112877112,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/112877112?v=4",
+                      "html_url": "https://github.com/nil-amrutlal-dept",
+                      "url": "https://api.github.com/users/nil-amrutlal-dept"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/f4ac431f4ffa0f169fdae2689ded9847f0212840/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/f4ac431f4ffa0f169fdae2689ded9847f0212840",
+                    "commit": {
+                      "message": "changeset files",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Enabled option for different gas payers in simulation",
+            "commits": [
+              {
+                "hash": "66338bfa0",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Thu, 09 Nov 2023 15:56:29 GMT",
+                    "date": "Fri, 07 Jun 2024 06:51:50 GMT"
+                  },
+                  "data": {
+                    "sha": "66338bfa0f9bcbc7938f2d65a636389072a9caf2",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/66338bfa0f9bcbc7938f2d65a636389072a9caf2",
+                    "author": {
+                      "login": "nil-amrutlal-dept",
+                      "id": 112877112,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/112877112?v=4",
+                      "html_url": "https://github.com/nil-amrutlal-dept",
+                      "url": "https://api.github.com/users/nil-amrutlal-dept"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/66338bfa0f9bcbc7938f2d65a636389072a9caf2/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/66338bfa0f9bcbc7938f2d65a636389072a9caf2",
+                    "commit": {
+                      "message": "changeset file",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "acount and chainAccount now implement the Node type, meaning that\nthey can be used in the node and nodes queries. Besides this, several\noptimizations with async data retrieval.",
+            "commits": [
+              {
+                "hash": "d58bce7ef",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Thu, 09 Nov 2023 10:33:57 GMT",
+                    "date": "Fri, 07 Jun 2024 06:51:51 GMT"
+                  },
+                  "data": {
+                    "sha": "d58bce7ef085fefb7cbce67cddfe7fa5d142d2db",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/d58bce7ef085fefb7cbce67cddfe7fa5d142d2db",
+                    "author": {
+                      "login": "MRVDH",
+                      "id": 6686385,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/6686385?v=4",
+                      "html_url": "https://github.com/MRVDH",
+                      "url": "https://api.github.com/users/MRVDH"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/d58bce7ef085fefb7cbce67cddfe7fa5d142d2db/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/d58bce7ef085fefb7cbce67cddfe7fa5d142d2db",
+                    "commit": {
+                      "message": "changeset",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Fix simulate script edge case (when it attempts cross-chain\ntransfers to the same chain. Add build step in start:generate script",
+            "commits": [
+              {
+                "hash": "0a36ed900",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Thu, 09 Nov 2023 12:28:42 GMT",
+                    "date": "Fri, 07 Jun 2024 06:51:51 GMT"
+                  },
+                  "data": {
+                    "sha": "0a36ed900870e3328e130573cb61257affac417b",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/0a36ed900870e3328e130573cb61257affac417b",
+                    "author": {
+                      "login": "nil-amrutlal-dept",
+                      "id": 112877112,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/112877112?v=4",
+                      "html_url": "https://github.com/nil-amrutlal-dept",
+                      "url": "https://api.github.com/users/nil-amrutlal-dept"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/0a36ed900870e3328e130573cb61257affac417b/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/0a36ed900870e3328e130573cb61257affac417b",
+                    "commit": {
+                      "message": "changeset file",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Updated dependencies \\\n*   @kadena/client@1.6.3",
+            "commits": [
+              {
+                "hash": "4bd53128d",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Mon, 13 Nov 2023 16:06:33 GMT",
+                    "date": "Fri, 07 Jun 2024 06:51:51 GMT"
+                  },
+                  "data": {
+                    "sha": "4bd53128da6d25050a1d2cea3d501496ce0557f2",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/4bd53128da6d25050a1d2cea3d501496ce0557f2",
+                    "author": {
+                      "login": "javadkh2",
+                      "id": 18360508,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/18360508?v=4",
+                      "html_url": "https://github.com/javadkh2",
+                      "url": "https://api.github.com/users/javadkh2"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/4bd53128da6d25050a1d2cea3d501496ce0557f2/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/4bd53128da6d25050a1d2cea3d501496ce0557f2",
+                    "commit": {
+                      "message": "fix(client): createEckoWalletQuicksign",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          }
+        ],
+        "minors": [],
+        "miscs": [],
+        "date": "2023-11-13T16:06:33.000Z"
+      },
+      "1.0.4": {
+        "label": "1.0.4",
+        "isLocked": true,
+        "authors": [
+          {
+            "login": "alber70g",
+            "id": 516972,
+            "avatar_url": "https://avatars.githubusercontent.com/u/516972?v=4",
+            "html_url": "https://github.com/alber70g",
+            "url": "https://api.github.com/users/alber70g"
+          }
+        ],
+        "patches": [
+          {
+            "label": "Added gas estimation query and adjusted folder structure for devnet\nfiles",
+            "commits": [
+              {
+                "hash": "6f79f73dd",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Thu, 09 Nov 2023 08:41:57 GMT",
+                    "date": "Fri, 07 Jun 2024 06:51:52 GMT"
+                  },
+                  "data": {
+                    "sha": "6f79f73dd33525ae096b77a013771d71c6d955fd",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/6f79f73dd33525ae096b77a013771d71c6d955fd",
+                    "author": {
+                      "login": "alber70g",
+                      "id": 516972,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/516972?v=4",
+                      "html_url": "https://github.com/alber70g",
+                      "url": "https://api.github.com/users/alber70g"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/6f79f73dd33525ae096b77a013771d71c6d955fd/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/6f79f73dd33525ae096b77a013771d71c6d955fd",
+                    "commit": {
+                      "message": "chore(monorepo): revert move changeset to force release",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          }
+        ],
+        "minors": [],
+        "miscs": [],
+        "date": "2023-11-09T08:41:57.000Z"
+      },
       "1.0.3": {
         "label": "1.0.3",
         "isLocked": true,
@@ -41098,260 +41796,6 @@
         "minors": [],
         "miscs": [],
         "date": "2023-11-27T13:16:13.000Z"
-      },
-      "1.0.5": {
-        "label": "1.0.5",
-        "isLocked": true,
-        "authors": [
-          {
-            "login": "nil-amrutlal-dept",
-            "id": 112877112,
-            "avatar_url": "https://avatars.githubusercontent.com/u/112877112?v=4",
-            "html_url": "https://github.com/nil-amrutlal-dept",
-            "url": "https://api.github.com/users/nil-amrutlal-dept"
-          },
-          {
-            "login": "MRVDH",
-            "id": 6686385,
-            "avatar_url": "https://avatars.githubusercontent.com/u/6686385?v=4",
-            "html_url": "https://github.com/MRVDH",
-            "url": "https://api.github.com/users/MRVDH"
-          },
-          {
-            "login": "javadkh2",
-            "id": 18360508,
-            "avatar_url": "https://avatars.githubusercontent.com/u/18360508?v=4",
-            "html_url": "https://github.com/javadkh2",
-            "url": "https://api.github.com/users/javadkh2"
-          }
-        ],
-        "patches": [
-          {
-            "label": "Included cross-chain transfers in transfer object",
-            "commits": [
-              {
-                "hash": "f4ac431f4",
-                "tries": 1,
-                "data": {
-                  "status": 200,
-                  "headers": {
-                    "last-modified": "Thu, 09 Nov 2023 11:24:22 GMT",
-                    "date": "Fri, 07 Jun 2024 06:51:50 GMT"
-                  },
-                  "data": {
-                    "sha": "f4ac431f4ffa0f169fdae2689ded9847f0212840",
-                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/f4ac431f4ffa0f169fdae2689ded9847f0212840",
-                    "author": {
-                      "login": "nil-amrutlal-dept",
-                      "id": 112877112,
-                      "avatar_url": "https://avatars.githubusercontent.com/u/112877112?v=4",
-                      "html_url": "https://github.com/nil-amrutlal-dept",
-                      "url": "https://api.github.com/users/nil-amrutlal-dept"
-                    },
-                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/f4ac431f4ffa0f169fdae2689ded9847f0212840/comments",
-                    "html_url": "https://github.com/kadena-community/kadena.js/commit/f4ac431f4ffa0f169fdae2689ded9847f0212840",
-                    "commit": {
-                      "message": "changeset files",
-                      "comment_count": 0
-                    }
-                  }
-                }
-              }
-            ],
-            "prIds": []
-          },
-          {
-            "label": "Enabled option for different gas payers in simulation",
-            "commits": [
-              {
-                "hash": "66338bfa0",
-                "tries": 1,
-                "data": {
-                  "status": 200,
-                  "headers": {
-                    "last-modified": "Thu, 09 Nov 2023 15:56:29 GMT",
-                    "date": "Fri, 07 Jun 2024 06:51:50 GMT"
-                  },
-                  "data": {
-                    "sha": "66338bfa0f9bcbc7938f2d65a636389072a9caf2",
-                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/66338bfa0f9bcbc7938f2d65a636389072a9caf2",
-                    "author": {
-                      "login": "nil-amrutlal-dept",
-                      "id": 112877112,
-                      "avatar_url": "https://avatars.githubusercontent.com/u/112877112?v=4",
-                      "html_url": "https://github.com/nil-amrutlal-dept",
-                      "url": "https://api.github.com/users/nil-amrutlal-dept"
-                    },
-                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/66338bfa0f9bcbc7938f2d65a636389072a9caf2/comments",
-                    "html_url": "https://github.com/kadena-community/kadena.js/commit/66338bfa0f9bcbc7938f2d65a636389072a9caf2",
-                    "commit": {
-                      "message": "changeset file",
-                      "comment_count": 0
-                    }
-                  }
-                }
-              }
-            ],
-            "prIds": []
-          },
-          {
-            "label": "acount and chainAccount now implement the Node type, meaning that\nthey can be used in the node and nodes queries. Besides this, several\noptimizations with async data retrieval.",
-            "commits": [
-              {
-                "hash": "d58bce7ef",
-                "tries": 1,
-                "data": {
-                  "status": 200,
-                  "headers": {
-                    "last-modified": "Thu, 09 Nov 2023 10:33:57 GMT",
-                    "date": "Fri, 07 Jun 2024 06:51:51 GMT"
-                  },
-                  "data": {
-                    "sha": "d58bce7ef085fefb7cbce67cddfe7fa5d142d2db",
-                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/d58bce7ef085fefb7cbce67cddfe7fa5d142d2db",
-                    "author": {
-                      "login": "MRVDH",
-                      "id": 6686385,
-                      "avatar_url": "https://avatars.githubusercontent.com/u/6686385?v=4",
-                      "html_url": "https://github.com/MRVDH",
-                      "url": "https://api.github.com/users/MRVDH"
-                    },
-                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/d58bce7ef085fefb7cbce67cddfe7fa5d142d2db/comments",
-                    "html_url": "https://github.com/kadena-community/kadena.js/commit/d58bce7ef085fefb7cbce67cddfe7fa5d142d2db",
-                    "commit": {
-                      "message": "changeset",
-                      "comment_count": 0
-                    }
-                  }
-                }
-              }
-            ],
-            "prIds": []
-          },
-          {
-            "label": "Fix simulate script edge case (when it attempts cross-chain\ntransfers to the same chain. Add build step in start:generate script",
-            "commits": [
-              {
-                "hash": "0a36ed900",
-                "tries": 1,
-                "data": {
-                  "status": 200,
-                  "headers": {
-                    "last-modified": "Thu, 09 Nov 2023 12:28:42 GMT",
-                    "date": "Fri, 07 Jun 2024 06:51:51 GMT"
-                  },
-                  "data": {
-                    "sha": "0a36ed900870e3328e130573cb61257affac417b",
-                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/0a36ed900870e3328e130573cb61257affac417b",
-                    "author": {
-                      "login": "nil-amrutlal-dept",
-                      "id": 112877112,
-                      "avatar_url": "https://avatars.githubusercontent.com/u/112877112?v=4",
-                      "html_url": "https://github.com/nil-amrutlal-dept",
-                      "url": "https://api.github.com/users/nil-amrutlal-dept"
-                    },
-                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/0a36ed900870e3328e130573cb61257affac417b/comments",
-                    "html_url": "https://github.com/kadena-community/kadena.js/commit/0a36ed900870e3328e130573cb61257affac417b",
-                    "commit": {
-                      "message": "changeset file",
-                      "comment_count": 0
-                    }
-                  }
-                }
-              }
-            ],
-            "prIds": []
-          },
-          {
-            "label": "Updated dependencies \\\n*   @kadena/client@1.6.3",
-            "commits": [
-              {
-                "hash": "4bd53128d",
-                "tries": 1,
-                "data": {
-                  "status": 200,
-                  "headers": {
-                    "last-modified": "Mon, 13 Nov 2023 16:06:33 GMT",
-                    "date": "Fri, 07 Jun 2024 06:51:51 GMT"
-                  },
-                  "data": {
-                    "sha": "4bd53128da6d25050a1d2cea3d501496ce0557f2",
-                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/4bd53128da6d25050a1d2cea3d501496ce0557f2",
-                    "author": {
-                      "login": "javadkh2",
-                      "id": 18360508,
-                      "avatar_url": "https://avatars.githubusercontent.com/u/18360508?v=4",
-                      "html_url": "https://github.com/javadkh2",
-                      "url": "https://api.github.com/users/javadkh2"
-                    },
-                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/4bd53128da6d25050a1d2cea3d501496ce0557f2/comments",
-                    "html_url": "https://github.com/kadena-community/kadena.js/commit/4bd53128da6d25050a1d2cea3d501496ce0557f2",
-                    "commit": {
-                      "message": "fix(client): createEckoWalletQuicksign",
-                      "comment_count": 0
-                    }
-                  }
-                }
-              }
-            ],
-            "prIds": []
-          }
-        ],
-        "minors": [],
-        "miscs": [],
-        "date": "2023-11-13T16:06:33.000Z"
-      },
-      "1.0.4": {
-        "label": "1.0.4",
-        "isLocked": true,
-        "authors": [
-          {
-            "login": "alber70g",
-            "id": 516972,
-            "avatar_url": "https://avatars.githubusercontent.com/u/516972?v=4",
-            "html_url": "https://github.com/alber70g",
-            "url": "https://api.github.com/users/alber70g"
-          }
-        ],
-        "patches": [
-          {
-            "label": "Added gas estimation query and adjusted folder structure for devnet\nfiles",
-            "commits": [
-              {
-                "hash": "6f79f73dd",
-                "tries": 1,
-                "data": {
-                  "status": 200,
-                  "headers": {
-                    "last-modified": "Thu, 09 Nov 2023 08:41:57 GMT",
-                    "date": "Fri, 07 Jun 2024 06:51:52 GMT"
-                  },
-                  "data": {
-                    "sha": "6f79f73dd33525ae096b77a013771d71c6d955fd",
-                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/6f79f73dd33525ae096b77a013771d71c6d955fd",
-                    "author": {
-                      "login": "alber70g",
-                      "id": 516972,
-                      "avatar_url": "https://avatars.githubusercontent.com/u/516972?v=4",
-                      "html_url": "https://github.com/alber70g",
-                      "url": "https://api.github.com/users/alber70g"
-                    },
-                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/6f79f73dd33525ae096b77a013771d71c6d955fd/comments",
-                    "html_url": "https://github.com/kadena-community/kadena.js/commit/6f79f73dd33525ae096b77a013771d71c6d955fd",
-                    "commit": {
-                      "message": "chore(monorepo): revert move changeset to force release",
-                      "comment_count": 0
-                    }
-                  }
-                }
-              }
-            ],
-            "prIds": []
-          }
-        ],
-        "minors": [],
-        "miscs": [],
-        "date": "2023-11-09T08:41:57.000Z"
       }
     }
   },
@@ -43221,6 +43665,58 @@
     "owner": "kadena-community",
     "repoName": "kadena.js",
     "content": {
+      "1.12.0": {
+        "label": "1.12.0",
+        "isLocked": true,
+        "authors": [
+          {
+            "login": "javadkh2",
+            "id": 18360508,
+            "avatar_url": "https://avatars.githubusercontent.com/u/18360508?v=4",
+            "html_url": "https://github.com/javadkh2",
+            "url": "https://api.github.com/users/javadkh2"
+          }
+        ],
+        "patches": [
+          {
+            "label": "Updated dependencies \\\n*   @kadena/client@1.12.0\n*   @kadena/pactjs-generator@1.12.0",
+            "commits": [
+              {
+                "hash": "9c145f196",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Fri, 14 Jun 2024 07:55:02 GMT",
+                    "date": "Fri, 14 Jun 2024 08:02:46 GMT"
+                  },
+                  "data": {
+                    "sha": "9c145f1965851478ac016d210d0ac9aa58d03f88",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/9c145f1965851478ac016d210d0ac9aa58d03f88",
+                    "author": {
+                      "login": "javadkh2",
+                      "id": 18360508,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/18360508?v=4",
+                      "html_url": "https://github.com/javadkh2",
+                      "url": "https://api.github.com/users/javadkh2"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/9c145f1965851478ac016d210d0ac9aa58d03f88/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/9c145f1965851478ac016d210d0ac9aa58d03f88",
+                    "commit": {
+                      "message": "Feat/client utils add support for scheme (#2248)\n\n* feat(client-utils): add support for public key scheme\r\n\r\n* chore: changeset",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          }
+        ],
+        "minors": [],
+        "miscs": [],
+        "date": "2024-06-14T07:55:02.000Z"
+      },
       "1.11.2": {
         "label": "1.11.2",
         "isLocked": true,
@@ -45514,6 +46010,14 @@
     "owner": "kadena-community",
     "repoName": "kadena.js",
     "content": {
+      "1.12.0": {
+        "label": "1.12.0",
+        "isLocked": true,
+        "authors": [],
+        "patches": [],
+        "minors": [],
+        "miscs": []
+      },
       "1.11.2": {
         "label": "1.11.2",
         "isLocked": true,
@@ -46566,6 +47070,498 @@
     "owner": "kadena-community",
     "repoName": "kadena.js",
     "content": {
+      "0.12.1": {
+        "label": "0.12.1",
+        "isLocked": true,
+        "authors": [
+          {
+            "login": "r-mulder",
+            "id": 116208434,
+            "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+            "html_url": "https://github.com/r-mulder",
+            "url": "https://api.github.com/users/r-mulder"
+          },
+          {
+            "login": "sstraatemans",
+            "id": 4015521,
+            "avatar_url": "https://avatars.githubusercontent.com/u/4015521?v=4",
+            "html_url": "https://github.com/sstraatemans",
+            "url": "https://api.github.com/users/sstraatemans"
+          }
+        ],
+        "patches": [
+          {
+            "label": "fix the grid styles which were being applied to a layer while the base styling was being applied via atoms, all styles aren't applied on a layer for layout components",
+            "commits": [
+              {
+                "hash": "16f0b17ed",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Thu, 20 Jun 2024 11:22:58 GMT",
+                    "date": "Mon, 24 Jun 2024 08:45:56 GMT"
+                  },
+                  "data": {
+                    "sha": "16f0b17ed38f32c005d9203fe64a42127ca1936e",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/16f0b17ed38f32c005d9203fe64a42127ca1936e",
+                    "author": {
+                      "login": "r-mulder",
+                      "id": 116208434,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+                      "html_url": "https://github.com/r-mulder",
+                      "url": "https://api.github.com/users/r-mulder"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/16f0b17ed38f32c005d9203fe64a42127ca1936e/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/16f0b17ed38f32c005d9203fe64a42127ca1936e",
+                    "commit": {
+                      "message": "fix: grid components were not behaving correct due to layers (#2302)",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "Added documentation for useTheme hook",
+            "commits": [
+              {
+                "hash": "4dc02eec8",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Mon, 24 Jun 2024 08:44:49 GMT",
+                    "date": "Mon, 24 Jun 2024 08:45:56 GMT"
+                  },
+                  "data": {
+                    "sha": "4dc02eec87639c2c11b8a494537b4c709b9c99bb",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/4dc02eec87639c2c11b8a494537b4c709b9c99bb",
+                    "author": {
+                      "login": "sstraatemans",
+                      "id": 4015521,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/4015521?v=4",
+                      "html_url": "https://github.com/sstraatemans",
+                      "url": "https://api.github.com/users/sstraatemans"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/4dc02eec87639c2c11b8a494537b4c709b9c99bb/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/4dc02eec87639c2c11b8a494537b4c709b9c99bb",
+                    "commit": {
+                      "message": "chore(react-ui): add documentation for the useTheme hook (#2313)\n\n* added documentation for the useTheme hook\r\n\r\n* add codeowner",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "fix: make the icon on the text link component optional",
+            "commits": [
+              {
+                "hash": "db77beba0",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Wed, 19 Jun 2024 15:08:49 GMT",
+                    "date": "Mon, 24 Jun 2024 08:45:56 GMT"
+                  },
+                  "data": {
+                    "sha": "db77beba0c95b8fbec0840489781b6388feb15fb",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/db77beba0c95b8fbec0840489781b6388feb15fb",
+                    "author": {
+                      "login": "r-mulder",
+                      "id": 116208434,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+                      "html_url": "https://github.com/r-mulder",
+                      "url": "https://api.github.com/users/r-mulder"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/db77beba0c95b8fbec0840489781b6388feb15fb/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/db77beba0c95b8fbec0840489781b6388feb15fb",
+                    "commit": {
+                      "message": "fix: make the icon optional for the textlink component (#2286)\n\n* fix: make the icon optional for the textlink component\r\n\r\n* chore: add changeset",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "fix: prevent icons from scaling down in size when their parent container shrinks in size",
+            "commits": [
+              {
+                "hash": "c0a6ffde5",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Wed, 19 Jun 2024 13:11:21 GMT",
+                    "date": "Mon, 24 Jun 2024 08:45:56 GMT"
+                  },
+                  "data": {
+                    "sha": "c0a6ffde55a532538203cdfb7e4a86ed5599d8d0",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/c0a6ffde55a532538203cdfb7e4a86ed5599d8d0",
+                    "author": {
+                      "login": "r-mulder",
+                      "id": 116208434,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+                      "html_url": "https://github.com/r-mulder",
+                      "url": "https://api.github.com/users/r-mulder"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/c0a6ffde55a532538203cdfb7e4a86ed5599d8d0/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/c0a6ffde55a532538203cdfb7e4a86ed5599d8d0",
+                    "commit": {
+                      "message": "fix: remove max height from global image and svg selector to prevent … (#2282)\n\n* fix: remove max height from global image and svg selector to prevent icons from scaling down\r\n\r\n* chore: add changeset\r\n\r\n* fix: restore the max width to the elements other than svg",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "fix: make custom styling functions to add the default layer and remove usage of the atoms function to style components",
+            "commits": [
+              {
+                "hash": "7ee91269f",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Wed, 19 Jun 2024 13:15:47 GMT",
+                    "date": "Mon, 24 Jun 2024 08:45:56 GMT"
+                  },
+                  "data": {
+                    "sha": "7ee91269f18d44ca3dd4bbb7e483f41bb9d24481",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/7ee91269f18d44ca3dd4bbb7e483f41bb9d24481",
+                    "author": {
+                      "login": "r-mulder",
+                      "id": 116208434,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+                      "html_url": "https://github.com/r-mulder",
+                      "url": "https://api.github.com/users/r-mulder"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/7ee91269f18d44ca3dd4bbb7e483f41bb9d24481/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/7ee91269f18d44ca3dd4bbb7e483f41bb9d24481",
+                    "commit": {
+                      "message": "Fix/layers (#2279)\n\n* feat: add custom styling functions which applies the layer by default\r\n\r\n* chore: refactor css files to use custom styling functions and not use atoms\r\n\r\n* chore: refactor remaining components to use custom style functions\r\n\r\n* chore: add changeset\r\n\r\n* chore: fix formatting\r\n\r\n* fix: recipe return type to fix recipeVariant type for props\r\n\r\n* chore: fix type errors\r\n\r\n* fix: remove unused imports\r\n\r\n* chore: fix formatting\r\n\r\n* chore: add documentation\r\n\r\n* fix: typo in button type",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "fix styling errors caused by missing tokens references from the styling refactor",
+            "commits": [
+              {
+                "hash": "5b95decb2",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Fri, 21 Jun 2024 07:45:08 GMT",
+                    "date": "Mon, 24 Jun 2024 08:45:56 GMT"
+                  },
+                  "data": {
+                    "sha": "5b95decb22c8623ef06c32d8b5e163d40716c6b4",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/5b95decb22c8623ef06c32d8b5e163d40716c6b4",
+                    "author": {
+                      "login": "r-mulder",
+                      "id": 116208434,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+                      "html_url": "https://github.com/r-mulder",
+                      "url": "https://api.github.com/users/r-mulder"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/5b95decb22c8623ef06c32d8b5e163d40716c6b4/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/5b95decb22c8623ef06c32d8b5e163d40716c6b4",
+                    "commit": {
+                      "message": "Fix/UI layer leftovers (#2304)\n\n* fix: left over issues from converting the styles to layers\r\n\r\n* chore: add changeset\r\n\r\n* fix: use correct token for navHeader links",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "add contained prop to tabs component, this will make the content the same color as the tab",
+            "commits": [
+              {
+                "hash": "6d9900ef8",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Thu, 20 Jun 2024 11:23:19 GMT",
+                    "date": "Mon, 24 Jun 2024 08:45:57 GMT"
+                  },
+                  "data": {
+                    "sha": "6d9900ef8f3be51c088aecf88224f4d11bfb0ecd",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/6d9900ef8f3be51c088aecf88224f4d11bfb0ecd",
+                    "author": {
+                      "login": "r-mulder",
+                      "id": 116208434,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+                      "html_url": "https://github.com/r-mulder",
+                      "url": "https://api.github.com/users/r-mulder"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/6d9900ef8f3be51c088aecf88224f4d11bfb0ecd/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/6d9900ef8f3be51c088aecf88224f4d11bfb0ecd",
+                    "commit": {
+                      "message": "Feat/UI contained tabs (#2291)\n\n* feat: add tab spacing and border behaviour as well as background color\r\n\r\n* fix: fix border for items\r\n\r\n* fix: remove border logic and rename contained story\r\n\r\n* chore: add changeset",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          }
+        ],
+        "minors": [],
+        "miscs": [],
+        "date": "2024-06-24T08:44:49.000Z"
+      },
+      "0.12.0": {
+        "label": "0.12.0",
+        "isLocked": true,
+        "authors": [
+          {
+            "login": "isaozler",
+            "id": 1378630,
+            "avatar_url": "https://avatars.githubusercontent.com/u/1378630?v=4",
+            "html_url": "https://github.com/isaozler",
+            "url": "https://api.github.com/users/isaozler"
+          },
+          {
+            "login": "r-mulder",
+            "id": 116208434,
+            "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+            "html_url": "https://github.com/r-mulder",
+            "url": "https://api.github.com/users/r-mulder"
+          }
+        ],
+        "patches": [
+          {
+            "label": "Icon token set",
+            "commits": [
+              {
+                "hash": "15a492c",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Tue, 18 Jun 2024 09:40:36 GMT",
+                    "date": "Wed, 19 Jun 2024 12:08:56 GMT"
+                  },
+                  "data": {
+                    "sha": "15a492cef524ef287531e6df25f6c667fd9442c8",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/15a492cef524ef287531e6df25f6c667fd9442c8",
+                    "author": {
+                      "login": "isaozler",
+                      "id": 1378630,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/1378630?v=4",
+                      "html_url": "https://github.com/isaozler",
+                      "url": "https://api.github.com/users/isaozler"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/15a492cef524ef287531e6df25f6c667fd9442c8/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/15a492cef524ef287531e6df25f6c667fd9442c8",
+                    "commit": {
+                      "message": "Checkbox icon token fix (#2289)",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          }
+        ],
+        "minors": [
+          {
+            "label": "Add: rebranded table and card components",
+            "commits": [
+              {
+                "hash": "63bdbcb",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Mon, 17 Jun 2024 10:07:34 GMT",
+                    "date": "Wed, 19 Jun 2024 12:08:56 GMT"
+                  },
+                  "data": {
+                    "sha": "63bdbcb85d2f55e09a2ab8859690bfa539281841",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/63bdbcb85d2f55e09a2ab8859690bfa539281841",
+                    "author": {
+                      "login": "r-mulder",
+                      "id": 116208434,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+                      "html_url": "https://github.com/r-mulder",
+                      "url": "https://api.github.com/users/r-mulder"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/63bdbcb85d2f55e09a2ab8859690bfa539281841/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/63bdbcb85d2f55e09a2ab8859690bfa539281841",
+                    "commit": {
+                      "message": "feat: redo table styles and add inverse variants for radio and checkbox (#2266)\n\n* feat: redo table styles and add inverse variants for radio and checkbox\r\n\r\n* chore: add changeset\r\n\r\n* fix: header spacing and alternating header rows\r\n\r\n* chore: make inverse option properly visible in stories",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          }
+        ],
+        "miscs": [],
+        "date": "2024-06-18T09:40:36.000Z"
+      },
+      "0.11.0": {
+        "label": "0.11.0",
+        "isLocked": true,
+        "authors": [
+          {
+            "login": "isaozler",
+            "id": 1378630,
+            "avatar_url": "https://avatars.githubusercontent.com/u/1378630?v=4",
+            "html_url": "https://github.com/isaozler",
+            "url": "https://api.github.com/users/isaozler"
+          },
+          {
+            "login": "r-mulder",
+            "id": 116208434,
+            "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+            "html_url": "https://github.com/r-mulder",
+            "url": "https://api.github.com/users/r-mulder"
+          },
+          {
+            "login": "sanderlooijenga",
+            "id": 5989212,
+            "avatar_url": "https://avatars.githubusercontent.com/u/5989212?v=4",
+            "html_url": "https://github.com/sanderlooijenga",
+            "url": "https://api.github.com/users/sanderlooijenga"
+          }
+        ],
+        "patches": [
+          {
+            "label": "Readme update",
+            "commits": [
+              {
+                "hash": "b541021f4",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Thu, 13 Jun 2024 17:44:26 GMT",
+                    "date": "Fri, 14 Jun 2024 08:02:46 GMT"
+                  },
+                  "data": {
+                    "sha": "b541021f4061ee784f743dfac55115666f6abe09",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/b541021f4061ee784f743dfac55115666f6abe09",
+                    "author": {
+                      "login": "isaozler",
+                      "id": 1378630,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/1378630?v=4",
+                      "html_url": "https://github.com/isaozler",
+                      "url": "https://api.github.com/users/isaozler"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/b541021f4061ee784f743dfac55115666f6abe09/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/b541021f4061ee784f743dfac55115666f6abe09",
+                    "commit": {
+                      "message": "name fix leftover (#2272)",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          }
+        ],
+        "minors": [
+          {
+            "label": "Add radiogroup component",
+            "commits": [
+              {
+                "hash": "6a969ebdc",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Mon, 10 Jun 2024 12:54:10 GMT",
+                    "date": "Fri, 14 Jun 2024 08:02:46 GMT"
+                  },
+                  "data": {
+                    "sha": "6a969ebdc0f54fde0cff9a5edc4b2bcb02fd590f",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/6a969ebdc0f54fde0cff9a5edc4b2bcb02fd590f",
+                    "author": {
+                      "login": "r-mulder",
+                      "id": 116208434,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/116208434?v=4",
+                      "html_url": "https://github.com/r-mulder",
+                      "url": "https://api.github.com/users/r-mulder"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/6a969ebdc0f54fde0cff9a5edc4b2bcb02fd590f/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/6a969ebdc0f54fde0cff9a5edc4b2bcb02fd590f",
+                    "commit": {
+                      "message": "Feat/UI radiogroup component (#2205)\n\nfeat: add radiogroup and radio components",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          },
+          {
+            "label": "- Reintroduced `items` prop for Tabs component to offer Dynamic collection support.\n*   Added `tabPanelClassName` prop to Tabs component to forward styles to TabPanel component.\n*   Added export of ITabNode type.",
+            "commits": [
+              {
+                "hash": "e648c32fa",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Wed, 12 Jun 2024 07:31:28 GMT",
+                    "date": "Fri, 14 Jun 2024 08:02:46 GMT"
+                  },
+                  "data": {
+                    "sha": "e648c32fadc928427875e4566b49bc1eab5ed1f7",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/e648c32fadc928427875e4566b49bc1eab5ed1f7",
+                    "author": {
+                      "login": "sanderlooijenga",
+                      "id": 5989212,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/5989212?v=4",
+                      "html_url": "https://github.com/sanderlooijenga",
+                      "url": "https://api.github.com/users/sanderlooijenga"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/e648c32fadc928427875e4566b49bc1eab5ed1f7/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/e648c32fadc928427875e4566b49bc1eab5ed1f7",
+                    "commit": {
+                      "message": "Tools dApp - Module Explorer UX/UI revamp - Editor (#2252)\n\n* Add `zod` dependency to `client-utils` package\r\n\r\n* Implement `zod` validation in `describe-module`\r\n\r\n* Close the menu when it has 1 or no children\r\n\r\n* Improve page styling a bit\r\n\r\n* Interfaces don't have all describe-module data\r\n\r\n* props proxies\r\n\r\n* Temporary decrease test coverage tresholds\r\n\r\n* Adjust placeholder according to new design\r\n\r\n* Make first (and only) item of opened modules active\r\n\r\n* Initial version of statusbar\r\n\r\n* Initial Editor Tabs component\r\n\r\n* Styling updates to the status bar\r\n\r\n* Use fetch from hook\r\n\r\n* Get rid of \"ViewModel\" and just use Module Model\r\n\r\n* Use the new layout and components for the editor\r\n\r\n* Some  further editor tabs styling\r\n\r\n* Fix height of editor\r\n\r\n* Some additional ACE editor styles update\r\n\r\n* Add some styling to explorer tree top item\r\n\r\n* use github (dark or light) theme for editor\r\n\r\n* Styling updates to Editor Status bar\r\n\r\n* Move menu showing logic to specific page\r\n\r\n* revert client-utils change\r\n\r\n* Add close tab functionality and change rendering a bit\r\n\r\n* Implement close tab handlers\r\n\r\n* Fix closing of first (top level) tab\r\n\r\n* Call onActiveModuleChange callback when selecting module\r\n\r\n* Some further styling to the Editor Tabs\r\n\r\n* The Editor tabs need to be compact\r\n\r\n* Add possibility to add `items` to Tabs component\r\n\r\n* Add styling possibility to TabPanel\r\n\r\n* Re-export TabNode type\r\n\r\n* Revert some changes\r\n\r\n* linting\r\n\r\n* Cleanup\r\n\r\n* Fix some typing issues\r\n\r\n* updated lockfile\r\n\r\n* Linting & formatting\r\n\r\n* Add generic to Tabs stories entry\r\n\r\n* Page styling adjustments (under construction)\r\n\r\n* update react-ace editor\r\n\r\n* Use correct font\r\n\r\n* Add \"full width\" page styling option\r\n\r\n* Add translation file entry\r\n\r\n* Some documentation & cleanup\r\n\r\n* Rename TabNode to ITabNode for consistency\r\n\r\n* Add storybook entry for dynamic Tabs items\r\n\r\n* Changeset entry\r\n\r\n* DRY: extract and reuse module equality logic\r\n\r\n* Use translation for label\r\n\r\n* Extract functions to utils file + add tests for it\r\n\r\n* Only show hash in the statusbar if applicable",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          }
+        ],
+        "miscs": [],
+        "date": "2024-06-13T17:44:26.000Z"
+      },
       "0.10.0": {
         "label": "0.10.0",
         "isLocked": true,
@@ -52664,6 +53660,58 @@
     "owner": "kadena-community",
     "repoName": "kadena.js",
     "content": {
+      "0.1.5": {
+        "label": "0.1.5",
+        "isLocked": true,
+        "authors": [
+          {
+            "login": "isaozler",
+            "id": 1378630,
+            "avatar_url": "https://avatars.githubusercontent.com/u/1378630?v=4",
+            "html_url": "https://github.com/isaozler",
+            "url": "https://api.github.com/users/isaozler"
+          }
+        ],
+        "patches": [
+          {
+            "label": "a",
+            "commits": [
+              {
+                "hash": "f0e773291",
+                "tries": 1,
+                "data": {
+                  "status": 200,
+                  "headers": {
+                    "last-modified": "Thu, 13 Jun 2024 16:50:00 GMT",
+                    "date": "Fri, 14 Jun 2024 08:02:47 GMT"
+                  },
+                  "data": {
+                    "sha": "f0e77329142d8fb21b8d7e3d913005bfd789180d",
+                    "url": "https://api.github.com/repos/kadena-community/kadena.js/commits/f0e77329142d8fb21b8d7e3d913005bfd789180d",
+                    "author": {
+                      "login": "isaozler",
+                      "id": 1378630,
+                      "avatar_url": "https://avatars.githubusercontent.com/u/1378630?v=4",
+                      "html_url": "https://github.com/isaozler",
+                      "url": "https://api.github.com/users/isaozler"
+                    },
+                    "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/f0e77329142d8fb21b8d7e3d913005bfd789180d/comments",
+                    "html_url": "https://github.com/kadena-community/kadena.js/commit/f0e77329142d8fb21b8d7e3d913005bfd789180d",
+                    "commit": {
+                      "message": "fix design system name (#2271)",
+                      "comment_count": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "prIds": []
+          }
+        ],
+        "minors": [],
+        "miscs": [],
+        "date": "2024-06-13T16:50:00.000Z"
+      },
       "0.1.4": {
         "label": "0.1.4",
         "isLocked": true,

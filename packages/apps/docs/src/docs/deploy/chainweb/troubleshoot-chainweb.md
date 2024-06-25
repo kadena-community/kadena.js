@@ -11,9 +11,9 @@ layout: full
 
 # Troubleshooting Chainweb
 
-### Running a Node
+## Running a Node
 
-#### Peer Sync Errors
+### Peer Sync Errors
 
 If you're running a node and getting something like this the following, then it
 means that peer synchronization has failed:
@@ -60,13 +60,13 @@ occurs due to misconfiguration. Just in case, however, consider asking in the
 Discord to check with us and make sure your node is configured correctly and on
 a happy path.
 
-#### Regenerate deleted configs
+### Regenerate deleted configs
 
 Issue `./chainweb-node --print-config` to create a fresh config yaml.
 
-### Mining KDA
+## Mining KDA
 
-#### Discover peers to mine
+### Discover peers to mine
 
 Every Chainweb node maintains a list of peers. If you want a list of peers to
 mine, curl the `/cut/peer` endpoint on any node to discover its list of peers. A
@@ -79,7 +79,7 @@ good start would be any bootstrap node:
                 ...
 ```
 
-#### See if a node is minable
+### See if a node is minable
 
 Keep up to date with the list of minable nodes, or to test or yourself, point
 your miner at any of the available nodes and see if it starts mining. This is
@@ -89,7 +89,7 @@ easiest if you set the default log level to `debug`. For example:
 ./chainweb-miner cpu --cores 2 --node us-w2.chainweb.com:443 --miner-account <some account> --miner-key <some key>  --log-level debug
 ```
 
-#### Balance isn't showing up after mining a block
+### Balance isn't showing up after mining a block
 
 Proof-of-Work algorithms rely on the fact that only one winning chain is chosen
 after a certain length of time. In the meantime, there can be many competing
@@ -104,7 +104,7 @@ healthy distribution of hash power across the network by running your own node
 and making sure not to centralize your mining attempts on particularly powerful
 nodes.
 
-#### 404 Errors
+### 404 Errors
 
 Miners will receive 404 errors when miners fail to connect to a node. This can
 happen for a variety of reasons:

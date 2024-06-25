@@ -1,6 +1,5 @@
-import { createVar, style } from '@vanilla-extract/css';
-import { recipe } from '@vanilla-extract/recipes';
-import { token, uiBaseRegular } from '../../../styles';
+import { createVar } from '@vanilla-extract/css';
+import { recipe, style, token, uiBaseRegular } from '../../../styles';
 
 const maxWidth = createVar();
 
@@ -21,6 +20,9 @@ export const labelClass = style([
       },
       '&[data-readonly="true"]': {
         cursor: 'unset',
+      },
+      '&[data-inversed="true"]': {
+        color: token('color.text.base.inverse.default'),
       },
     },
   },
@@ -77,6 +79,19 @@ export const boxClass = style([
       [`${labelClass}[data-readonly="true"] &[data-selected="true"]`]: {
         backgroundColor: token('color.background.input.@disabled'),
       },
+      // inverted
+      [`${labelClass}[data-inversed="true"] &`]: {
+        borderColor: token('color.border.base.inverse.bold'),
+        backgroundColor: token('color.background.input.inverse.default'),
+      },
+      [`${labelClass}[data-inversed="true"] &[data-selected="true"]`]: {
+        borderColor: token('color.border.base.inverse.boldest'),
+        backgroundColor: token('color.background.input.default'),
+      },
+      [`${labelClass}[data-hovered="true"][data-inversed="true"] &[data-selected="true"]`]:
+        {
+          backgroundColor: token('color.background.input.@hover'),
+        },
     },
   },
 ]);
@@ -85,20 +100,28 @@ export const iconClass = style([
   {
     fill: token('color.background.input.inverse.@focus'),
     opacity: 0,
+    transition: 'opacity 0.2s, transform 0.2s',
+    transform: 'scale(0)',
     selectors: {
       // selected
       [`${boxClass}[data-selected="true"] &`]: {
+        transform: 'scale(1)',
         opacity: 1,
       },
       // disabled
       [`${labelClass}[data-disabled="true"] ${boxClass}[data-selected="true"] &`]:
         {
           fill: token('color.background.input.@disabled'),
-        },
-      // readonly
-      [`${labelClass}[data-readonly="true"] ${boxClass}[data-selected="true"] &`]:
-        {
-          fill: token('color.background.input.inverse.default'),
+
+          // readonly
+          [`${labelClass}[data-readonly="true"] ${boxClass}[data-selected="true"] &`]:
+            {
+              fill: token('color.background.input.inverse.default'),
+            },
+          // inverted
+          [`${labelClass}[data-inversed="true"] &`]: {
+            color: token('color.icon.base.default'),
+          },
         },
     },
   },

@@ -110,7 +110,7 @@ Creating the configuration folder in a working directory enables you to have dif
 If you want to use the same configuration settings from any folder on your computer, you can create a global configuration folder in your home directory by running the `kadena config init --global` command. The `--global` command-line option adds the `kadena` configuration folder to the `.config` folder in your home directory so that the settings are available globally on your computer. 
 
 Configuration settings that are defined in a local working directory take precedence over configuration settings defined in the home directory. 
-If you add more than one configuration folder to your development environment, you can use `kadena config path` to see which path is being used in a specific directory.
+If you add more than one configuration folder to your development environment, you can use `kadena config show` to see details about the development environment you have configured in your working or global directory.
 
 To configure initial settings:
 
@@ -142,15 +142,15 @@ To configure initial settings:
    If you already have keys and an account or an existing wallet that you want to use, you can select **No** to end the interactive session.
    However, wallets are an important part of interacting with any blockchain, so you can create one now as part of your initial configuration steps.
 
-1. Select **Yes** and press Return to continue setting up your local development environment.
-1. Enter a wallet name and press Return.
+3. Select **Yes** and press Return to continue setting up your local development environment.
+4. Enter a wallet name and press Return.
    For example:
 
    ```bash
    ? Enter your wallet name: pistolas
    ```
 
-2. Enter and confirm a password for the wallet to generate a public and secret key pair.
+5. Enter and confirm a password for the wallet to generate a public and secret key pair.
    For example:
 
    ```bash
@@ -167,8 +167,8 @@ To configure initial settings:
      No
    ```
 
-3. Select **Yes** to continue setting up your local development environment with a local account.
-4. Enter an alias for the local account and press Return.
+6. Select **Yes** to continue setting up your local development environment with a local account.
+7. Enter an alias for the local account and press Return.
    For example:
 
    ```bash
@@ -516,7 +516,7 @@ To add a new local account:
    
    
    Executed:
-   kadena account add --type="wallet" --wallet-name="pistolas" --account-alias="pistolas-local" --fungible="coin" --public-keys="ad833b6bbfc72fb7d18b88cd5b4349f82b2f015be8e4b5e7ad28f3249fd5e105" --predicate="keys-all" 
+   kadena account add --from="wallet" --wallet-name="pistolas" --account-alias="pistolas-local" --fungible="coin" --public-keys="ad833b6bbfc72fb7d18b88cd5b4349f82b2f015be8e4b5e7ad28f3249fd5e105" --predicate="keys-all" 
    ```
 
 You now have one onchain account and one local account.

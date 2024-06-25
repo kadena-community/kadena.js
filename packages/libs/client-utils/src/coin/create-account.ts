@@ -1,4 +1,9 @@
-import type { ChainId, IPactModules, PactReturnType } from '@kadena/client';
+import type {
+  ChainId,
+  IPactModules,
+  ISigner,
+  PactReturnType,
+} from '@kadena/client';
 import { Pact, readKeyset } from '@kadena/client';
 import {
   addKeyset,
@@ -17,7 +22,7 @@ interface ICreateAccountCommandInput {
     keys: string[];
     pred: 'keys-all' | 'keys-2' | 'keys-any';
   };
-  gasPayer: { account: string; publicKeys: string[] };
+  gasPayer: { account: string; publicKeys: ISigner[] };
   chainId: ChainId;
   /**
    * compatible contract with fungible-v2; default is "coin"

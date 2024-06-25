@@ -3,6 +3,7 @@ import type { DocumentNode } from 'graphql';
 
 export const CORE_BLOCK_FIELDS: DocumentNode = gql`
   fragment CoreBlockFields on Block {
+    id
     height
     hash
     chainId

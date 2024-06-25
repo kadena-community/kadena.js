@@ -1,6 +1,5 @@
-import { fallbackVar, style } from '@vanilla-extract/css';
-import { recipe } from '@vanilla-extract/recipes';
-import { token, uiSmallRegular } from '../../../styles';
+import { fallbackVar } from '@vanilla-extract/css';
+import { recipe, style, token, uiSmallRegular } from '../../../styles';
 
 const maxWidth = fallbackVar('100%');
 
@@ -18,6 +17,9 @@ export const labelClass = style([
       '&[data-disabled="true"]': {
         cursor: 'not-allowed',
         color: token('color.text.base.@disabled'),
+      },
+      '&[data-inversed="true"]': {
+        color: token('color.text.base.inverse.default'),
       },
       '&[data-readonly="true"]': {
         cursor: 'unset',
@@ -51,7 +53,6 @@ export const boxClass = style({
     [`${labelClass}[data-focus-visible="true"] &`]: {
       outline: `2px solid ${token('color.border.tint.outline')}`,
       outlineOffset: '1px',
-      backgroundColor: token('color.background.input.@focus'),
     },
     // disabled
     [`${labelClass}[data-disabled="true"] &`]: {
@@ -69,7 +70,6 @@ export const boxClass = style({
     [`${labelClass}[data-focus-visible="true"] &[data-selected="true"]`]: {
       outline: `2px solid ${token('color.border.tint.outline')}`,
       outlineOffset: '1px',
-      backgroundColor: token('color.background.input.inverse.@focus'),
     },
     // readonly
     [`${labelClass}[data-readonly="true"] &`]: {
@@ -78,17 +78,34 @@ export const boxClass = style({
     [`${labelClass}[data-readonly="true"] &[data-selected="true"]`]: {
       backgroundColor: token('color.background.input.@disabled'),
     },
+    // inverted
+    [`${labelClass}[data-inversed="true"] &`]: {
+      borderColor: token('color.border.base.inverse.bold'),
+      backgroundColor: token('color.background.input.inverse.default'),
+    },
+    [`${labelClass}[data-inversed="true"] &[data-selected="true"]`]: {
+      borderColor: token('color.border.base.inverse.boldest'),
+      backgroundColor: token('color.background.input.default'),
+    },
+    [`${labelClass}[data-hovered="true"][data-inversed="true"] &[data-selected="true"]`]:
+      {
+        backgroundColor: token('color.background.input.@hover'),
+      },
   },
 });
 
 export const iconClass = style({
-  color: token('color.icon.base.inverse.default'),
+  color: token('color.icon.base.inverse.@active'),
+  transition: 'opacity 0.2s ease, transform 0.4s ease',
+  transformOrigin: 'center',
+  transform: 'scale(0)',
   opacity: 0,
   height: token('size.n3'),
   width: token('size.n3'),
   selectors: {
     // selected
     [`${boxClass}[data-selected="true"] &`]: {
+      transform: 'scale(1)',
       opacity: 1,
     },
     // disabled
@@ -101,6 +118,10 @@ export const iconClass = style({
       {
         color: token('color.icon.base.default'),
       },
+    // inverted
+    [`${labelClass}[data-inversed="true"] &`]: {
+      color: token('color.icon.base.@active'),
+    },
   },
 });
 

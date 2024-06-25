@@ -1,18 +1,12 @@
-import { recipe } from '@vanilla-extract/recipes';
-import { token } from '../../styles';
-import { atoms } from '../../styles/atoms.css';
+import { recipe, token } from '../../styles';
 
 export const dividerClass = recipe({
-  base: [
-    atoms({
-      width: '100%',
-      marginBlock: 'lg',
-      border: 'none',
-    }),
-    {
-      height: token('border.width.hairline'),
-    },
-  ],
+  base: {
+    width: '100%',
+    marginBlock: token('spacing.lg'),
+    border: 'none',
+    height: token('border.width.hairline'),
+  },
   variants: {
     variant: {
       subtle: {

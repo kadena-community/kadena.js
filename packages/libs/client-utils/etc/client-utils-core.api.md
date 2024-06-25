@@ -11,6 +11,7 @@ import { ICommandResult } from '@kadena/chainweb-node-client';
 import type { INetworkOptions } from '@kadena/client';
 import type { IPactCommand } from '@kadena/client';
 import { IPartialPactCommand } from '@kadena/client';
+import type { ISigner } from '@kadena/client';
 import type { ISignFunction } from '@kadena/client';
 import { ITransactionDescriptor } from '@kadena/client';
 import { IUnsignedCommand } from '@kadena/types';

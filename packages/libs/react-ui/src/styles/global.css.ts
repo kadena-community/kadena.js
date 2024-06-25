@@ -1,5 +1,6 @@
 // NOTE: Refer to https://www.joshwcomeau.com/css/custom-css-reset/ for more detailed explanation
-import { globalFontFace, globalStyle } from '@vanilla-extract/css';
+import { globalFontFace } from '@vanilla-extract/css';
+import { globalStyle } from '../styles';
 import { breakpoints } from './themeUtils';
 import { monospaceFont, primaryFont, secondaryFont, vars } from './vars.css';
 
@@ -87,6 +88,9 @@ globalStyle('body', {
 */
 globalStyle('img, picture, video, canvas, svg', {
   display: 'block',
+});
+
+globalStyle('img, picture, video, canvas', {
   maxWidth: '100%',
 });
 
@@ -113,7 +117,7 @@ globalStyle('#root, #__next', {
 });
 
 /*
-    10. Kadena Design System
+    10. Kode Design System
 */
 globalStyle(':root', {
   vars: {

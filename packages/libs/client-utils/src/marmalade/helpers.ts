@@ -1,3 +1,4 @@
+import type { ISigner } from '@kadena/client';
 import { addSigner } from '@kadena/client/fp';
 import type { IGeneralCapability } from '@kadena/client/lib/interfaces/type-utilities';
 import type { ICap } from '@kadena/types';
@@ -6,6 +7,7 @@ import {
   COLLECTION_POLICY,
   GUARD_POLICY,
   NON_FUNGIBLE_POLICY,
+  NON_UPDATABLE_URI_POLICY,
   ROYALTY_POLICY,
 } from './config';
 
@@ -19,9 +21,21 @@ export const validatePolicies = (
     }
   }
 
-  if (policyConfig?.guarded || policyConfig?.updatableURI) {
+  if (policyConfig?.guarded) {
     if (!policies.includes(GUARD_POLICY)) {
       throw new Error('Guard policy is required');
+    }
+  }
+
+  if (policyConfig?.nonUpdatableURI === true) {
+    if (!policies.includes(NON_UPDATABLE_URI_POLICY)) {
+      throw new Error('Non-updatable URI policy is required');
+    }
+  }
+
+  if (policyConfig?.nonUpdatableURI === false) {
+    if (!policies.includes(GUARD_POLICY)) {
+      throw new Error('Guard policy is required for updatable URI');
     }
   }
 
@@ -58,3 +72,20 @@ export const formatAdditionalSigners = (
       formatCapabilities(signer.capabilities, signFor),
     ),
   );
+
+export const formatWebAuthnSigner = (
+  signer: ISigner | ISigner[],
+): ISigner | ISigner[] => {
+  const formatSingleSigner = (s: ISigner): ISigner => {
+    if (typeof s === 'string' && s.startsWith('WEBAUTHN')) {
+      return { pubKey: s, scheme: 'WebAuthn' } as ISigner;
+    }
+    return s;
+  };
+
+  if (Array.isArray(signer)) {
+    return signer.map(formatSingleSigner);
+  }
+
+  return formatSingleSigner(signer);
+};

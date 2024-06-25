@@ -7,6 +7,7 @@ export const CORE_ACCOUNT_FIELDS: DocumentNode = gql`
     totalBalance
     chainAccounts {
       chainId
+      balance
       guard {
         keys
         predicate

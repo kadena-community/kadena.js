@@ -32,9 +32,22 @@ In this context, a soul-bound token refers to a token that is uniquely associate
 A token created with the soul-bound policy can be initiated, minted, and burned, but cannot be sold or transferred.
 In addition, the token can only ever be minted once, even if the token is burned in the future.
 
-You must use the concrete `guard-policy` in conjunction with the soul-bound policy to make sure only an authorized account can mint and burn the token.
+You must use the concrete `guard-policy` in conjunction with the `soul-bound-policy` to make sure only an authorized account can mint and burn the token.
 
 ## Timed mint policy
 
 The timed mint policy enables the minting of tokens within a specific time window. 
 This policy restricts the minting of tokens to a predefined period and provides control over the minting process.
+
+## Private token policy
+
+The private token policy allows you to create a token airdrop without revealing the metadata of the token beforehand. 
+You can then reveal the token URI and its corresponding metadata at any time after the initial airdrop event.
+
+You must use the concrete `guard-policy` in conjunction with the `private-token-policy` to make sure only an authorized account can update the token URI.
+
+If you use this policy to create a token, the token URI should be the hash of the actual URI. 
+You can calculate the hash using a local call to the Chainweb node so there is no trace of the URI recorded on the chain.
+Revealing the initial URI updates the blockchain database and emits an event. 
+You can update the URI after it's been revealed if you have an account with permission to update the URI.
+Note: token URI can still be updated by the uri-guard but only after r
