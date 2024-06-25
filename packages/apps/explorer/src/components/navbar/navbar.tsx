@@ -20,7 +20,7 @@ export const NavBar: FC = () => {
     <Stack className={navbarWrapperClass}>
       <NavHeader
         logo={
-          <Link href="">
+          <Link href="/">
             <KadenaLogo height={40} />
           </Link>
         }
