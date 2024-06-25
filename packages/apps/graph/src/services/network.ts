@@ -6,6 +6,11 @@ interface IBlockWithDifficulty {
   creationTime: Date;
   difficulty: bigint;
   height: bigint;
+  chainId: bigint;
+}
+
+interface IBlockGroup {
+  [key: string]: IBlockWithDifficulty[];
 }
 
 export class NetworkError extends Error {
@@ -57,13 +62,14 @@ export async function getHashRateAndTotalDifficulty(): Promise<{
     const blocks = await prismaClient.block.findMany({
       where: {
         height: {
-          gte: Number(currentHeight) - 3,
+          gte: Number(currentHeight) - 4, //4 because with 3 sometimes we have less than 20 blocks
         },
       },
       select: {
         creationTime: true,
         target: true,
         height: true,
+        chainId: true,
       },
     });
 
@@ -75,6 +81,7 @@ export async function getHashRateAndTotalDifficulty(): Promise<{
         creationTime: block.creationTime,
         difficulty: 2n ** 256n / BigInt(block.target.round().toFixed()),
         height: block.height,
+        chainId: block.chainId,
       });
     }
 
@@ -124,7 +131,7 @@ function calculateTotalDiffulty(
   currentHeight: bigint,
   blocks: IBlockWithDifficulty[],
 ): bigint | undefined {
-  for (let i = currentHeight; i > currentHeight - 3n; i--) {
+  for (let i = currentHeight; i > currentHeight - 4n; i--) {
     const blocksOfThisHeight = blocks.filter((block) => block.height === i);
 
     if (blocksOfThisHeight.length === networkData.chainIds.length) {
@@ -132,6 +139,36 @@ function calculateTotalDiffulty(
         (acc, block) => acc + block.difficulty,
         0n,
       );
+      // Deal with the case where we have orphan blocks.
+    } else if (blocksOfThisHeight.length > networkData.chainIds.length) {
+      // Group blocks by chainId
+      const blocksGroupedByChainId = blocksOfThisHeight.reduce<IBlockGroup>(
+        (acc, block) => {
+          const chainIdKey = block.chainId.toString();
+          if (!acc[chainIdKey]) {
+            acc[chainIdKey] = [];
+          }
+          acc[chainIdKey].push(block);
+          return acc;
+        },
+        {},
+      );
+
+      // Calculate total difficulty
+      let totalDifficulty = 0n;
+      for (const chainId of networkData.chainIds) {
+        const blocks = blocksGroupedByChainId[chainId.toString()];
+        if (blocks) {
+          const chainDifficulty = blocks.reduce(
+            (acc, block) => acc + block.difficulty,
+            0n,
+          );
+
+          // If there are multiple blocks, we average their difficulties.
+          totalDifficulty += chainDifficulty / BigInt(blocks.length);
+        }
+      }
+      return totalDifficulty;
     }
   }
 }
