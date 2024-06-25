@@ -106,13 +106,19 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
   const createTx = async () => {
     if (!proofOfUs || !account || !signees) return;
 
-    const imageData = await createImageUrl(background.bg);
+    const imageData = await createImageUrl(
+      background.bg,
+      proofOfUs.proofOfUsId,
+    );
     if (!imageData) {
       console.error('no image found');
       return;
     }
     const manifest = await createManifest(proofOfUs, signees, imageData.url);
-    const manifestData = await createMetaDataUrl(manifest);
+    const manifestData = await createMetaDataUrl(
+      manifest,
+      proofOfUs.proofOfUsId,
+    );
     if (!manifestData) {
       console.error('no manifestData found');
       return;

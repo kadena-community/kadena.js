@@ -19,13 +19,12 @@ interface INFTUrl {
   url: string;
   data: {
     cid: CID;
-    car: CarReader;
   };
 }
 
 export const createImageUrl = async (
   bg: string,
-  uri?: string,
+  proofOfUsId: string,
 ): Promise<INFTUrl | undefined> => {
   const mimeType = bg.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/)?.[1];
 
@@ -33,37 +32,56 @@ export const createImageUrl = async (
     return;
   }
 
-  const blob = base64ToBlob(bg, mimeType);
-  const imageFileName = 'image';
+  const res = await fetch('/api/uploadimage', {
+    method: 'POST',
+    body: JSON.stringify({ proofOfUsId }),
+  });
+  const imageData = await res.json();
 
-  const image = await NFTStorage.encodeDirectory([
-    createFileFromBlob(blob, imageFileName),
-  ]);
-  const imageUrl = uri
-    ? uri
-    : `https://${image.cid.toString()}.ipfs.nftstorage.link/${imageFileName}`;
+  if (!imageData?.url) {
+    return;
+  }
 
-  console.log('image cid', image.cid.toString());
-  console.log('image url', imageUrl);
-
-  return { url: imageUrl, data: image };
+  return {
+    url: imageData.url,
+    data: {
+      cid: imageData.cid,
+    },
+  };
 };
 
 export const createMetaDataUrl = async (
   manifest: any,
-  uri?: string,
+  proofOfUsId: string,
 ): Promise<INFTUrl | undefined> => {
-  const metadataFileName = 'metadata';
-  const metadata = await NFTStorage.encodeDirectory([
-    new File([JSON.stringify(manifest, null, 2)], metadataFileName),
-  ]);
+  const res = await fetch('/api/uploadmeta', {
+    method: 'POST',
+    body: JSON.stringify({ proofOfUsId, manifest }),
+  });
+  const metadata = await res.json();
 
-  const metadataUrl = uri
-    ? uri
-    : `https://${metadata.cid.toString()}.ipfs.nftstorage.link/${metadataFileName}`;
+  if (!metadata?.url) {
+    return;
+  }
 
-  console.log('metadata cid', metadata.cid.toString());
-  console.log('metadata url', metadataUrl);
+  return {
+    url: metadata.url,
+    data: {
+      cid: metadata.cid,
+    },
+  };
 
-  return { data: metadata, url: metadataUrl };
+  // const metadataFileName = 'metadata';
+  // const metadata = await NFTStorage.encodeDirectory([
+  //   new File([JSON.stringify(manifest, null, 2)], metadataFileName),
+  // ]);
+
+  // const metadataUrl = uri
+  //   ? uri
+  //   : `https://${metadata.cid.toString()}.ipfs.nftstorage.link/${metadataFileName}`;
+
+  // console.log('metadata cid', metadata.cid.toString());
+  // console.log('metadata url', metadataUrl);
+
+  // return { data: metadata, url: metadataUrl };
 };
