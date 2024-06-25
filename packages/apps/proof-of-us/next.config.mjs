@@ -19,6 +19,10 @@ const nextConfig = {
   async rewrites() {
     return [
       {
+        source: '/api/ipfsio/:cid',
+        destination: `https://ipfs.io/ipfs/:cid`,
+      },
+      {
         source: '/api/ipfs/:id/:path/image',
         destination: `https://:id.ipfs.:path.link/image`,
       },
