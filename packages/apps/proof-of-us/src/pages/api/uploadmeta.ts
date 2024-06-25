@@ -1,8 +1,5 @@
-import { store } from '@/utils/socket/store';
 import pinataSDK from '@pinata/sdk';
-import fs from 'fs';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { Readable } from 'stream';
 
 interface IResponseData {
   message: string;
@@ -19,36 +16,32 @@ export default async function handler(
   }
 
   const body = JSON.parse(req.body);
-  console.log({ body });
-  const proofOfUsId = body.proofOfUsId;
   const manifest = body.manifest;
 
-  if (!manifest || !proofOfUsId) {
+  if (!manifest) {
     return res.status(500).json({
       message: 'manifest data could not be created',
     });
   }
 
-  if (!process.env.NEXT_PUBLIC_PINATA_JWT) {
+  if (!process.env.PINATA_JWT) {
     return res.status(500).json({
       message: 'api token not found',
     });
   }
 
   const pinata = new pinataSDK({
-    pinataJWTKey: process.env.NEXT_PUBLIC_PINATA_JWT,
+    pinataJWTKey: process.env.PINATA_JWT,
   });
 
   const options = {
     pinataMetadata: {
-      name: `${proofOfUsId} metadata`,
+      name: `metadata for ${manifest.image}`,
     },
     pinataOptions: {},
   };
 
-  console.log({ manifest });
   const metadata = await pinata.pinJSONToIPFS(manifest, options);
-
   if (!metadata) {
     return res.status(500).json({
       message: 'metadata data could not be created',

@@ -1,12 +1,49 @@
 import { store } from '@/utils/socket/store';
 import pinataSDK from '@pinata/sdk';
-import fs from 'fs';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Readable } from 'stream';
 
 interface IResponseData {
   message: string;
 }
+
+const fileSizeLimitMb = 2;
+
+const checksizeIsOk = (base64: string): boolean => {
+  const base64String = base64.replaceAll('=', '');
+  const size = base64String.length * (3 / 4);
+  if (size > fileSizeLimitMb * 1024 * 1024) {
+    return false;
+  }
+  return true;
+};
+
+export const uploadImageString = async (base64: string): Promise<any> => {
+  if (!checksizeIsOk(base64) || !process.env.PINATA_JWT) {
+    return;
+  }
+
+  const pinata = new pinataSDK({
+    pinataJWTKey: process.env.PINATA_JWT,
+  });
+
+  const fileName = `Proof of Us image`;
+  const options = {
+    pinataMetadata: {
+      name: fileName,
+    },
+    pinataOptions: {},
+  };
+
+  const base64Data = base64.replace(/^data:image\/png;base64,/, '');
+  const buffer = Buffer.from(base64Data, 'base64');
+
+  const stream = new Readable();
+  stream.push(buffer);
+  stream.push(null);
+
+  return await pinata.pinFileToIPFS(stream, options);
+};
 
 export default async function handler(
   req: NextApiRequest,
@@ -28,41 +65,19 @@ export default async function handler(
     });
   }
 
-  const fileSizeLimitMb = 2;
-  const base64String = background.bg.replaceAll('=', '');
-  const size = base64String.length * (3 / 4);
-  if (size > fileSizeLimitMb * 1024 * 1024) {
-    return res.status(500).json({
-      message: `the image more than ${fileSizeLimitMb}Mb`,
-    });
-  }
-
-  if (!process.env.NEXT_PUBLIC_PINATA_JWT) {
+  if (!process.env.PINATA_JWT) {
     return res.status(500).json({
       message: 'api token not found',
     });
   }
 
-  const pinata = new pinataSDK({
-    pinataJWTKey: process.env.NEXT_PUBLIC_PINATA_JWT,
-  });
+  if (!checksizeIsOk(background?.bg)) {
+    return res.status(500).json({
+      message: `the image more than ${fileSizeLimitMb}Mb`,
+    });
+  }
 
-  const fileName = `${proofOfUsId}.png`;
-  const options = {
-    pinataMetadata: {
-      name: fileName,
-    },
-    pinataOptions: {},
-  };
-
-  const base64Data = background.bg.replace(/^data:image\/png;base64,/, '');
-  const buffer = Buffer.from(base64Data, 'base64');
-
-  const stream = new Readable();
-  stream.push(buffer);
-  stream.push(null);
-
-  const imageData = await pinata.pinFileToIPFS(stream, options);
+  const imageData = await uploadImageString(background?.bg);
 
   if (!imageData) {
     return res.status(500).json({

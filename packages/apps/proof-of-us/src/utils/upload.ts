@@ -1,24 +1,7 @@
-import type { CarReader } from 'nft.storage';
-import { Blob, File, NFTStorage } from 'nft.storage';
-import type { CID } from 'nft.storage/dist/src/lib/interface';
-
-export const createFileFromBlob = (blob: Blob, fileName: string) => {
-  return new File([blob], fileName, { type: blob.type });
-};
-
-export const base64ToBlob = (base64: string, mimeType: string) => {
-  const bytes = atob(base64.split(',')[1]);
-  const arr = new Uint8Array(bytes.length);
-  for (let i = 0; i < bytes.length; i++) {
-    arr[i] = bytes.charCodeAt(i);
-  }
-  return new Blob([arr], { type: mimeType });
-};
-
 interface INFTUrl {
   url: string;
   data: {
-    cid: CID;
+    cid: string;
   };
 }
 
@@ -52,11 +35,10 @@ export const createImageUrl = async (
 
 export const createMetaDataUrl = async (
   manifest: any,
-  proofOfUsId: string,
 ): Promise<INFTUrl | undefined> => {
   const res = await fetch('/api/uploadmeta', {
     method: 'POST',
-    body: JSON.stringify({ proofOfUsId, manifest }),
+    body: JSON.stringify({ manifest }),
   });
   const metadata = await res.json();
 

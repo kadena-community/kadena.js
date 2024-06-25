@@ -1,3 +1,4 @@
+import { uploadImageString } from '@/pages/api/uploadimage';
 import type { ChainId } from '@kadena/client';
 import {
   Pact,
@@ -6,11 +7,9 @@ import {
 } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import dotenv from 'dotenv';
-import { NFTStorage } from 'nft.storage';
-import { createImageUrl, createMetaDataUrl } from '../utils/upload';
-
 import { getClient } from '../utils/client';
 import { createManifest } from '../utils/createManifest';
+import { createMetaDataUrl } from '../utils/upload';
 
 dotenv.config();
 
@@ -84,7 +83,7 @@ const createEvent = async () => {
     date: startTime * 1000,
   };
 
-  const imageData = await createImageUrl(imageBase64Str);
+  const imageData = await uploadImageString(imageBase64Str);
 
   if (!imageData) {
     console.log('ERROR!  no imagedata');
@@ -165,23 +164,6 @@ const createEvent = async () => {
   }
 
   console.log('start upload');
-
-  if (!process.env.NFTSTORAGE_API_TOKEN) {
-    console.log('ERROR: NFTSTORAGE_API_TOKEN NOT DEFINED');
-    return;
-  }
-  const client = new NFTStorage({ token: process.env.NFTSTORAGE_API_TOKEN });
-
-  const results = await Promise.allSettled([
-    client.storeCar(imageData.data.car),
-    client.storeCar(metadata.data.car),
-  ]);
-
-  const failed = results.filter((result) => result.status === 'rejected');
-
-  if (failed.length) {
-    console.log('Error uploading data to IPFS', failed);
-  }
 
   console.log({
     imageCid: imageData.data.cid.toString(),
