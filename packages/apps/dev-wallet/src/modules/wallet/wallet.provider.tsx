@@ -20,6 +20,7 @@ export type ExtWalletContextType = {
   accounts?: IAccount[];
   profileList?: Pick<IProfile, 'name' | 'uuid' | 'accentColor' | 'options'>[];
   keySources?: IKeySource[];
+  loaded?: boolean;
 };
 
 export const WalletContext = createContext<
@@ -99,7 +100,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       if (!profile) {
         keySourceManager.reset();
         session.clear();
-        setContextValue(({ profileList }) => ({ profileList }));
+        setContextValue(({ profileList }) => ({ profileList, loaded: true }));
         return null;
       }
       if (!noSession) {
@@ -117,6 +118,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
         profile,
         accounts,
         keySources,
+        loaded: true,
       }));
       return { profile, accounts, keySources };
     },
@@ -125,13 +127,13 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     const loadSession = async () => {
-      if (!session.isLoaded) return;
+      if (!session.isLoaded()) return;
       const profileId = session.get('profileId') as string | undefined;
       if (profileId) {
         const profile = await walletRepository.getProfile(profileId);
-        console.log('retrieving profile from session', profile);
-        setProfile(profile, true);
+        await setProfile(profile, true);
       }
+      setContextValue((ctx) => ({ ...ctx, loaded: true }));
     };
     loadSession();
   }, [retrieveProfileList, session, setProfile]);
@@ -142,7 +144,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <WalletContext.Provider value={[contextValue, setProfile]}>
-      {children}
+      {contextValue.loaded ? children : 'Loading wallet...'}
     </WalletContext.Provider>
   );
 };

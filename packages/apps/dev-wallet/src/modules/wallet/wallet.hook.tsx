@@ -111,8 +111,49 @@ export const useWallet = () => {
         }
       }
     },
-    [context],
+    [context, prompt],
   );
+
+  const askForPassword = useCallback(async (): Promise<string | null> => {
+    const { profile } = context;
+    if (!profile) {
+      return null;
+    }
+    // for now we use the same password as the profile password
+    // later we have different password for key sources. we need to handle that.
+    // we check the auth mode of the profile and use the appropriate password/web-authn to unlock the key source
+    switch (profile.options.authMode) {
+      case 'PASSWORD': {
+        const pass = (await prompt((resolve, reject) => (
+          <UnlockPrompt resolve={resolve} reject={reject} />
+        ))) as string;
+        if (!pass) {
+          return null;
+        }
+        const result = await WalletService.unlockProfile(profile.uuid, pass);
+        if (!result) return null;
+        return pass;
+      }
+      case 'WEB_AUTHN': {
+        const credentialId = profile.options.webAuthnCredential;
+        const credential = await retrieveCredential(credentialId);
+        if (!credential) {
+          return null;
+        }
+        const keys = await recoverPublicKey(credential);
+        for (const key of keys) {
+          const result = await WalletService.unlockProfile(profile.uuid, key);
+          if (result) {
+            return key;
+          }
+        }
+        return null;
+      }
+      default: {
+        throw new Error('Unsupported auth mode');
+      }
+    }
+  }, [context, prompt]);
 
   const sign = useCallback(
     async (TXs: IUnsignedCommand[]) => {
@@ -163,6 +204,7 @@ export const useWallet = () => {
     sign,
     decryptSecret,
     lockProfile,
+    askForPassword,
     isUnlocked: isUnlocked(context),
     profile: context.profile,
     profileList: context.profileList ?? [],

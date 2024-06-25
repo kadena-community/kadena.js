@@ -4,6 +4,7 @@ import { style } from '@vanilla-extract/css';
 
 export const keyInput = style({
   maxWidth: '100%',
+  width: '100%',
   flex: 1,
   color: 'white',
   textAlign: 'left',
@@ -25,12 +26,19 @@ export const cardClass = style([
     padding: 'md',
     textAlign: 'center',
     fontFamily: 'secondaryFont',
-    width: '100%',
   }),
   {
     cursor: 'pointer',
     backgroundColor: cardColor,
     border: `1px solid ${cardColor}`,
+  },
+]);
+
+export const passwordDialog = style([
+  {
+    padding: '30px',
+    border: 'none',
+    maxWidth: '460px',
   },
 ]);
 

@@ -5,6 +5,7 @@ import {
   createContext,
   useContext,
   useLayoutEffect,
+  useState,
 } from 'react';
 
 const sessionContext = createContext<Session | null>(null);
@@ -19,15 +20,20 @@ export const useSession = () => {
 };
 
 export const SessionProvider: FC<PropsWithChildren> = ({ children }) => {
+  const [loaded, setLoaded] = useState(false);
   useLayoutEffect(() => {
-    Session.load();
-    console.log('Session is loaded', Session.get('profileId'));
     const events = ['visibilitychange', 'touchstart', 'keydown', 'click'];
-    events.forEach((event) => {
-      document.addEventListener(event, Session.renew);
-    });
+    const run = async () => {
+      await Session.load();
+      console.log('Session is loaded', Session.get('profileId'));
+      events.forEach((event) => {
+        document.addEventListener(event, Session.renew);
+      });
+      setLoaded(true);
+    };
+    run();
     return () => {
-      console.log('Session is unloaded', Session.renew);
+      console.log('Session is review', Session.renew);
       events.forEach((event) => {
         document.removeEventListener(event, Session.renew);
       });
@@ -36,7 +42,7 @@ export const SessionProvider: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <sessionContext.Provider value={Session}>
-      {children}
+      {loaded ? children : 'Loading session...'}
     </sessionContext.Provider>
   );
 };
