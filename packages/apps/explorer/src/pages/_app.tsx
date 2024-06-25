@@ -3,6 +3,7 @@ import '@kadena/react-ui/global';
 
 import { MediaContextProvider } from '@/components/layout/media';
 import { graphHost, wsGraphHost } from '@/constants/graphHost';
+import { QueryContextProvider } from '@/context/query-context';
 import type { NormalizedCacheObject } from '@apollo/client';
 import {
   ApolloClient,
@@ -63,17 +64,19 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
     <ApolloProvider client={client}>
       <RouterProvider navigate={router.push}>
         <MediaContextProvider>
-          <Head>
-            <title>K:Explorer</title>
-            <link
-              rel="icon"
-              href="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/icons/internal/default/icon%40128.png"
-            />
-          </Head>
+          <QueryContextProvider>
+            <Head>
+              <title>K:Explorer</title>
+              <link
+                rel="icon"
+                href="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/icons/internal/default/icon%40128.png"
+              />
+            </Head>
 
-          <main>
-            <ReactComponent {...pageProps} />
-          </main>
+            <main>
+              <ReactComponent {...pageProps} />
+            </main>
+          </QueryContextProvider>
         </MediaContextProvider>
       </RouterProvider>
     </ApolloProvider>

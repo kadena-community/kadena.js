@@ -12,6 +12,7 @@ export const buttonClass = style([
     border: 'none',
     paddingInline: 'n2',
     cursor: 'pointer',
+    color: 'icon.base.default',
   }),
   {
     backgroundColor: 'transparent',

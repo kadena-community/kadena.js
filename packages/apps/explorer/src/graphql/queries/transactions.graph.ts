@@ -1,7 +1,13 @@
 import { gql } from '@apollo/client';
 import type { DocumentNode } from 'graphql';
+import {
+  ALL_TRANSACTION_FIELDS,
+  CORE_TRANSACTION_FIELDS,
+} from '../fragments/transactions.graph';
 
 export const transactions: DocumentNode = gql`
+  ${ALL_TRANSACTION_FIELDS}
+
   query transactions(
     $fungibleName: String
     $accountName: String
@@ -39,6 +45,8 @@ export const transactions: DocumentNode = gql`
 `;
 
 export const coreTransaction: DocumentNode = gql`
+  ${CORE_TRANSACTION_FIELDS}
+
   query transaction($requestKey: String!) {
     transaction(requestKey: $requestKey) {
       ...CoreTransactionFields

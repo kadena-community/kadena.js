@@ -19,14 +19,17 @@ export const useAccount = (
   searchOption: SearchOptionEnum | null,
 ): IHookReturnValue<IAccountData[]> => {
   const [cleanedData, setCleanedData] = useState<IAccountData[]>([]);
+
+  const accountQueryVariables = {
+    accountName: returnSearchQuery(
+      searchQuery,
+      searchOption,
+      SearchOptionEnum.ACCOUNT,
+    ),
+  };
+
   const { loading, data, error } = useAccountQuery({
-    variables: {
-      accountName: returnSearchQuery(
-        searchQuery,
-        searchOption,
-        SearchOptionEnum.ACCOUNT,
-      ),
-    },
+    variables: accountQueryVariables,
     skip:
       !searchQuery ||
       !isSearchRequested(searchOption, SearchOptionEnum.ACCOUNT),

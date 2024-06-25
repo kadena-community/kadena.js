@@ -13,10 +13,11 @@ globalStyle('a:not(nav a)', {
   textDecoration: 'underline',
 });
 
-globalStyle('a:hover', {
+globalStyle('a:hover:not(nav a)', {
   color: tokens.kda.foundation.color.link.brand.primary['@hover'],
   textDecoration: 'none',
 });
+
 globalStyle('p a', {
   fontWeight: '500',
 });
