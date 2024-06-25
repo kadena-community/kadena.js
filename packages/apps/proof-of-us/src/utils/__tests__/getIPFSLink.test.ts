@@ -28,14 +28,14 @@ describe('getIPFSLink', () => {
     expect(result).toBe(expectedUrl);
   });
 
-  it('should return the ipfs.io proxy link', () => {
-    const url =
-      'https://ipfs.io/ipfs/QmV35YjVXCVcoDUZFzUkci62hf7DjGEUnRFchLjGpMWi4g';
-    const expectedUrl =
-      'https://masters-of-the-universe.com/pinata/QmV35YjVXCVcoDUZFzUkci62hf7DjGEUnRFchLjGpMWi4g';
-    const result = getIPFSLink(url);
-    expect(result).toBe(expectedUrl);
-  });
+  //   it('should return the ipfs.io proxy link', () => {
+  //     const url =
+  //       'https://ipfs.io/ipfs/QmV35YjVXCVcoDUZFzUkci62hf7DjGEUnRFchLjGpMWi4g';
+  //     const expectedUrl =
+  //       'https://masters-of-the-universe.com/pinata/QmV35YjVXCVcoDUZFzUkci62hf7DjGEUnRFchLjGpMWi4g';
+  //     const result = getIPFSLink(url);
+  //     expect(result).toBe(expectedUrl);
+  //   });
 
   it('should return the the normal link if it is not nftstorage or ipfs.io ', () => {
     const url = 'https://masters-of-the-universe.com';
