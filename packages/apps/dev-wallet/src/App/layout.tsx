@@ -117,12 +117,7 @@ export const Layout: FC = () => {
         >
           <Sidebar></Sidebar>
           <Box padding="n10" className={mainColumnStyle}>
-            <div
-              className={backgroundStyle}
-              // style={{
-              //   backgroundImage: `radial-gradient(circle farthest-side at 50% 240%, ${accentColor}, transparent 75%)`,
-              // }}
-            ></div>
+            <div className={backgroundStyle}></div>
             <Outlet />
           </Box>
         </Stack>

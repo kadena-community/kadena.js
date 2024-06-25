@@ -11,7 +11,7 @@ import { unlockPrompt } from './style.css.ts';
 
 export const UnlockPrompt: React.FC<{
   resolve: (pass: string) => void;
-  reject: () => void;
+  reject: (reason: any) => void;
 }> = ({ resolve, reject }) => (
   <Dialog isOpen={true} className={unlockPrompt}>
     <form

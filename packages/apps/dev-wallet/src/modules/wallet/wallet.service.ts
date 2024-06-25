@@ -36,7 +36,7 @@ export function sign(
                 publicKeys.find((key) => key.publicKey === signer.pubKey)
                   ?.index,
             )
-            .filter((index) => index !== undefined) as number[];
+            .filter((index) => index !== undefined) as number[] | string[];
 
           const service = await keySourceManager.get(source);
 

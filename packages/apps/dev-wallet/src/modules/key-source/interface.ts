@@ -12,7 +12,7 @@ export interface IKeySourceService {
   sign(
     keySourceId: string,
     message: string,
-    indexes: number[],
+    indexes: number[] | string[],
   ): Promise<Array<{ sig: string; pubKey: string }>>;
 
   getPublicKey: (keySource: IKeySource, index: number) => Promise<IKeyItem>;

@@ -83,6 +83,9 @@ export const accountDiscovery = (
       numberOfKeys = 20,
       contract = 'coin',
     ) => {
+      if (keySource.source === 'web-authn') {
+        throw new Error('Account discovery not supported for web-authn');
+      }
       const keySourceService = await keySourceManager.get(keySource.source);
       const accounts: IAccount[] = [];
       const keysets: IKeySet[] = [];
@@ -148,7 +151,7 @@ export const accountDiscovery = (
 
       // store keys; key creation needs to be in sequence so I used a for loop instead of Promise.all
       for (const key of usedKeys) {
-        await keySourceService.createKey(keySource.uuid, key.index);
+        await keySourceService.createKey(keySource.uuid, key.index as number);
       }
 
       // store accounts

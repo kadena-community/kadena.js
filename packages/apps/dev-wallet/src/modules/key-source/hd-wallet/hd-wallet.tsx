@@ -7,7 +7,7 @@ import { ChainweaverService } from './chainweaver';
 export const useHDWallet = () => {
   const createHDWallet = async (
     profileId: string,
-    type: KeySourceType,
+    type: 'HD-BIP44' | 'HD-chainweaver',
     password: string,
     mnemonic: string,
     derivationPathTemplate?: string,

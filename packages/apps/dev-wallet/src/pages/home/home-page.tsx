@@ -1,4 +1,3 @@
-import { useNetwork } from '@/modules/network/network.hook';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import {
   listClass,
@@ -6,56 +5,47 @@ import {
   panelClass,
 } from '@/pages/home/style.css.ts';
 import { getAccountName } from '@/utils/helpers';
-import { Box, Button, Heading, Stack, Text } from '@kadena/react-ui';
+import { Box, Heading, Stack, Text } from '@kadena/react-ui';
+import { Link } from 'react-router-dom';
+import { linkClass } from '../select-profile/select-profile.css';
 
 export function HomePage() {
-  const { accounts, profile, createKAccount, createKey, keySources } =
-    useWallet();
-  const { activeNetwork } = useNetwork();
+  const { accounts, profile } = useWallet();
 
   return (
-    <Box>
-      <Text>Welcome back</Text>
-      <Heading as="h1">{profile?.name}</Heading>
-      <Box className={panelClass} marginBlockStart="xl">
-        <Heading as="h4">Your assets</Heading>
-        <Box marginBlockStart="md">
-          <Text>Tokens</Text>
+    <>
+      <Box>
+        <Text>Welcome back</Text>
+        <Heading as="h1">{profile?.name}</Heading>
+        <Box className={panelClass} marginBlockStart="xl">
+          <Heading as="h4">Your assets</Heading>
+          <Box marginBlockStart="md">
+            <Text>Tokens</Text>
+          </Box>
+        </Box>
+        <Box className={panelClass} marginBlockStart="xs">
+          <Heading as="h4">{accounts.length} accounts</Heading>
+          <Link to="/create-account" className={linkClass}>
+            Create Account
+          </Link>
+          <Box marginBlockStart="md">
+            <Text>Owned ({accounts.length})</Text>
+            {accounts.length ? (
+              <ul className={listClass}>
+                {' '}
+                {accounts.map(({ address, overallBalance }) => (
+                  <li key={address} className={listItemClass}>
+                    <Stack justifyContent="space-between">
+                      <Text>{getAccountName(address) ?? 'No Address ;(!'}</Text>
+                      <Text>{overallBalance} KDA</Text>
+                    </Stack>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </Box>
         </Box>
       </Box>
-      <Box className={panelClass} marginBlockStart="xs">
-        <Heading as="h4">{accounts.length} accounts</Heading>
-        <Button
-          onClick={async () => {
-            if (profile && activeNetwork) {
-              const key = await createKey(keySources[0]);
-              await createKAccount(
-                profile.uuid,
-                activeNetwork.networkId,
-                key.publicKey,
-              );
-            }
-          }}
-        >
-          Create Account
-        </Button>
-        <Box marginBlockStart="md">
-          <Text>Owned ({accounts.length})</Text>
-          {accounts.length ? (
-            <ul className={listClass}>
-              {' '}
-              {accounts.map(({ address, overallBalance }) => (
-                <li key={address} className={listItemClass}>
-                  <Stack justifyContent="space-between">
-                    <Text>{getAccountName(address) ?? 'No Address ;(!'}</Text>
-                    <Text>{overallBalance} KDA</Text>
-                  </Stack>
-                </li>
-              ))}
-            </ul>
-          ) : null}
-        </Box>
-      </Box>
-    </Box>
+    </>
   );
 }

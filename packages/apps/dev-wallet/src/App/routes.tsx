@@ -12,7 +12,9 @@ import {
 import { CommunicationProvider } from '@/modules/communication/communication.provider';
 import { AccountDiscovery } from '@/pages/account-discovery/account-dsicovery';
 import { Connect } from '@/pages/connect/connect';
+import { CreateAccount } from '@/pages/create-account/create-account';
 import { ImportWallet } from '@/pages/import-wallet/import-wallet';
+import { KeySources } from '@/pages/key-sources/key-sources';
 import { CreateNetwork } from '@/pages/networks/create-network';
 import { Networks } from '@/pages/networks/networks';
 import { Ready } from '@/pages/ready/ready';
@@ -81,6 +83,8 @@ export const Routes: FC = () => {
           <Route path="/networks" element={<Networks />} />
           <Route path="/networks/create" element={<CreateNetwork />} />
           <Route path="/connect/:requestId" element={<Connect />} />
+          <Route path="/key-sources" element={<KeySources />} />
+          <Route path="/create-account" element={<CreateAccount />} />
         </Route>
       </Route>
       <Route path="/ready" element={<Ready />} />

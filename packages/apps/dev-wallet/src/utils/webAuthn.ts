@@ -11,12 +11,19 @@ function i2hex(i: number) {
 
 export const hex = (bytes: Uint8Array) => Array.from(bytes).map(i2hex).join('');
 
-function base64URLencode(utf8Arr: Uint8Array) {
+export function base64URLencode(utf8Arr: Uint8Array) {
   const base64Encoded = Buffer.from(utf8Arr).toString('base64');
   return base64Encoded
     .replace(/\+/g, '-')
     .replace(/\//g, '_')
     .replace(/=+$/, '');
+}
+
+export function base64URLdecode(str: string) {
+  const base64Encoded = str.replace(/-/g, '+').replace(/_/g, '/');
+  const padding = str.length % 4 === 0 ? '' : '='.repeat(4 - (str.length % 4));
+  const base64WithPadding = base64Encoded + padding;
+  return new TextEncoder().encode(atob(base64WithPadding));
 }
 
 export async function createCredential() {
@@ -63,8 +70,10 @@ export interface PublicKeyCredentialRetrieve extends PublicKeyCredential {
   response: AuthenticatorAssertionResponse;
 }
 
-export async function retrieveCredential(credentialId: ArrayBuffer) {
-  const challenge = new Uint8Array(32);
+export async function retrieveCredential(
+  credentialId: ArrayBuffer,
+  challenge = new Uint8Array(32),
+) {
   window.crypto.getRandomValues(challenge);
   const credential = (await navigator.credentials.get({
     publicKey: {

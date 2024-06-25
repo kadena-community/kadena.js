@@ -27,6 +27,13 @@ function createKeySourceManager(): IKeySourceManager {
             services.set(source, chainweaver);
             return chainweaver;
           });
+
+        case 'web-authn':
+          return import('./web-authn/webauthn').then((module) => {
+            const webAuthn = module.createWebAuthnService();
+            services.set(source, webAuthn);
+            return webAuthn;
+          });
         default:
           throw new Error(`Key source service not found for ${source}`);
       }

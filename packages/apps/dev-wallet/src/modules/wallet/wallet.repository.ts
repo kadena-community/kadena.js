@@ -1,15 +1,10 @@
 import { IDBService, dbService } from '@/modules/db/db.service';
 import type { INetwork } from '../network/network.repository';
 
-export interface IKeyItem {
-  publicKey: string;
-  index: number;
-}
-
-export type KeySourceType = 'HD-BIP44' | 'HD-chainweaver';
+export type KeySourceType = 'HD-BIP44' | 'HD-chainweaver' | 'web-authn';
 
 export interface IKeyItem {
-  index: number;
+  index?: number | string;
   publicKey: string;
 }
 

@@ -1,6 +1,8 @@
-import { HDWalletKeySource } from '@/modules/key-source/key-source.repository';
+import {
+  IHDBIP44,
+  IHDChainweaver,
+} from '@/modules/key-source/key-source.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { KeySourceType } from '@/modules/wallet/wallet.repository';
 import { Box, Button, Heading, Text, TextField } from '@kadena/react-ui';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -24,13 +26,12 @@ export function WriteDownRecoveryPhrase() {
         throw new Error('Key source not found');
       }
       if (
-        !(['HD-BIP44', 'HD-chainweaver'] as KeySourceType[]).includes(
-          keySource.source,
-        )
+        keySource.source !== 'HD-BIP44' &&
+        keySource.source !== 'HD-chainweaver'
       ) {
         throw new Error('Unsupported key source');
       }
-      const secretId = (keySource as HDWalletKeySource).secretId;
+      const secretId = (keySource as IHDBIP44 | IHDChainweaver).secretId;
       if (!secretId) {
         throw new Error('No mnemonic found');
       }

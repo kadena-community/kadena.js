@@ -27,6 +27,12 @@ export function AccountDiscovery() {
   async function start() {
     const keySource = keySources.find((ks) => ks.uuid === keySourceId);
     if (!activeNetwork || !keySource || !profile) return;
+    if (
+      keySource.source !== 'HD-BIP44' &&
+      keySource.source !== 'HD-chainweaver'
+    ) {
+      throw new Error('Unsupported key source');
+    }
     setDiscoveryStatus('discovering');
     await accountDiscovery(
       activeNetwork.networkId,
@@ -76,7 +82,7 @@ export function AccountDiscovery() {
                 {key && (
                   <Text>
                     {' '}
-                    #{key.index + 1} Address: `k:{key.publicKey} `
+                    #{key.index} Address: `k:{key.publicKey} `
                   </Text>
                 )}
               </Text>
