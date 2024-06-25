@@ -1,5 +1,4 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { env } from '../env';
 import { getIPFSLink } from '../getIPFSLink';
 
 const mocks = vi.hoisted(() => {

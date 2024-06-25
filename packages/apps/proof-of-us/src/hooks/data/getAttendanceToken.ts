@@ -47,6 +47,7 @@ export const useGetAttendanceToken: IDataHook<
     ? { ...data, startDate, endDate, manifestUri: token?.uri }
     : undefined;
 
+  console.log({ newData });
   return {
     isLoading: isLoading || isTokenLoading,
     hasError,
