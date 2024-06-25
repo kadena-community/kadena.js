@@ -1,4 +1,5 @@
 import * as asn1js from 'asn1js';
+import * as cbor from 'cbor-web';
 import elliptic from 'elliptic';
 
 export interface PublicKeyCredentialCreate extends PublicKeyCredential {
@@ -279,9 +280,30 @@ async function recoverPublicKeyFromSignature(
   ];
 }
 
-export function extractPublicKeyBytes(arrayBuffer: ArrayBuffer) {
+export const getPublicKeyForKadena = async (attestationObject: ArrayBuffer) => {
+  const { authData } = cbor.decode(attestationObject);
+
+  const dataView = new DataView(new ArrayBuffer(2));
+  const idLenBytes = authData.slice(53, 55);
+  idLenBytes.forEach((value: number, index: number) =>
+    dataView.setUint8(index, value),
+  );
+  const credentialIdLength = dataView.getUint16(0);
+  const publicKeyBytes = authData.slice(55 + credentialIdLength);
+
+  return Buffer.from(publicKeyBytes).toString('hex');
+};
+
+export function extractPublicKeyHex(arrayBuffer: ArrayBuffer) {
   // Convert ArrayBuffer to Uint8Array
   const uint8Array = new Uint8Array(arrayBuffer);
+  console.log(
+    'ORIGINAL PUBLIC KEY INFO',
+    'length:',
+    Buffer.from(arrayBuffer).toString('hex').length,
+    'data:',
+    Buffer.from(arrayBuffer).toString('hex'),
+  );
 
   // Parse the DER-encoded SubjectPublicKeyInfo
   const asn1 = asn1js.fromBER(uint8Array.buffer);
@@ -296,8 +318,12 @@ export function extractPublicKeyBytes(arrayBuffer: ArrayBuffer) {
   const subjectPublicKey = (subjectPublicKeyInfo.valueBlock as any).value[1];
   const publicKeyBytes = subjectPublicKey.valueBlock.valueHex;
 
-  // Return the public key bytes
-  return new Uint8Array(publicKeyBytes);
+  const rawPubKeyHex = Buffer.from(publicKeyBytes).toString('hex');
+
+  const ec = new elliptic.ec('p256');
+  const key = ec.keyFromPublic(rawPubKeyHex, 'hex');
+
+  return key.getPublic().encode('hex', false);
 }
 
 export async function recoverPublicKey(assertion: PublicKeyCredentialRetrieve) {
@@ -312,5 +338,5 @@ export async function recoverPublicKey(assertion: PublicKeyCredentialRetrieve) {
     signature,
     concatenatedData,
   );
-  return recoveredPublicKey.map((p) => p.encode('hex'));
+  return recoveredPublicKey.map((p) => p.encode('hex', false));
 }

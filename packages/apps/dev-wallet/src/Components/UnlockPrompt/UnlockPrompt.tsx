@@ -13,7 +13,7 @@ export const UnlockPrompt: React.FC<{
   resolve: (pass: string) => void;
   reject: (reason: any) => void;
 }> = ({ resolve, reject }) => (
-  <Dialog isOpen={true} className={unlockPrompt}>
+  <Dialog size="sm" isOpen={true} className={unlockPrompt}>
     <form
       onSubmit={(event) => {
         const formData = new FormData(event.target as HTMLFormElement);

@@ -3,8 +3,8 @@
 import {
   base64URLdecode,
   createCredential,
-  extractPublicKeyBytes,
-  hex,
+  extractPublicKeyHex,
+  getPublicKeyForKadena,
   retrieveCredential,
 } from '@/utils/webAuthn';
 import { IKeySource } from '../../wallet/wallet.repository';
@@ -66,10 +66,12 @@ export function createWebAuthnService() {
     if (!pkBuffer) {
       throw new Error('Error getting public key');
     }
-    const pk = extractPublicKeyBytes(pkBuffer);
-    const publicKey = hex(pk);
+    const publicKey = await getPublicKeyForKadena(
+      credential.credential.response.attestationObject,
+    );
+    console.log('WEBAUTHN publicKey', publicKey);
     const newKey = {
-      publicKey,
+      publicKey: `WEBAUTHN-${publicKey}`,
       index: credential.credential.id,
     };
 
@@ -101,7 +103,7 @@ export function createWebAuthnService() {
       );
       sigs.push({
         sig: JSON.stringify(cred.response),
-        pubKey: key.publicKey,
+        pubKey: `WEBAUTHN-${key.publicKey}`,
       });
     }
     return sigs;

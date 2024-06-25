@@ -12,6 +12,7 @@ export const keyInput = style({
 export const advanceOptions = style({
   backgroundColor: 'transparent',
   color: tokens.kda.foundation.color.palette.aqua.n50,
+  fontSize: tokens.kda.foundation.typography.fontSize.md,
   border: 'none',
   textAlign: 'left',
   cursor: 'pointer',

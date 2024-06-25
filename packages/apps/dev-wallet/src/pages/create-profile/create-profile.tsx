@@ -5,8 +5,7 @@ import { useNetwork } from '@/modules/network/network.hook';
 import {
   PublicKeyCredentialCreate,
   createCredential,
-  extractPublicKeyBytes,
-  hex,
+  extractPublicKeyHex,
 } from '@/utils/webAuthn';
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
 import { MonoCheck } from '@kadena/react-icons/system';
@@ -79,7 +78,7 @@ export function CreateProfile() {
       if (!pk) {
         throw new Error('Public key not found');
       }
-      pass = hex(new Uint8Array(extractPublicKeyBytes(pk)));
+      pass = extractPublicKeyHex(pk);
     }
     const mnemonic = kadenaGenMnemonic();
     const profile = await createProfile(

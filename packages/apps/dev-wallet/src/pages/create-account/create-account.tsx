@@ -138,12 +138,12 @@ export function CreateAccount() {
           <Select
             selectedKey={selectedPred}
             onSelectionChange={(opion) => {
-              setSelectedPred(opion as string);
+              setSelectedPred(opion as 'keys-all' | 'keys-any' | 'keys-2');
             }}
           >
             <SelectItem key={'keys-all'}>All-keys</SelectItem>
             <SelectItem key={'keys-any'}>One-Key</SelectItem>
-            <SelectItem key={'keys-two'}>two-Key</SelectItem>
+            <SelectItem key={'keys-two'}>two-Keys</SelectItem>
           </Select>
         </>
       )}

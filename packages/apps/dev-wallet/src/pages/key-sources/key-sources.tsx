@@ -24,6 +24,7 @@ function PasswordPrompt({
 }) {
   return (
     <Dialog
+      size="sm"
       className={passwordDialog}
       isOpen={true}
       onOpenChange={(isOpen) => {
