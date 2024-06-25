@@ -21,25 +21,6 @@ describe('content utils', () => {
     vi.resetAllMocks();
   });
   describe('getChangelog', () => {
-    it('should get the CHANGELOGTEMP.md when the repo is for Chainweb Node', () => {
-      //this is temporary, until Chainweb Node gets the changelog file , just right
-      const spy = vi.spyOn(fs, 'readFileSync');
-
-      const repo: IRepo = {
-        name: 'Chainweb Node',
-        slug: 'chainweb-node',
-        repo: 'https://github.com/kadena-io/chainweb-node.git',
-        directory: '/',
-        fileName: 'CHANGELOG.md',
-        owner: 'kadena-io',
-        repoName: 'chainweb-node',
-      };
-
-      getChangelog(repo);
-
-      expect(spy).toBeCalledTimes(1);
-      expect(spy).toBeCalledWith(`${process.cwd()}/CHANGELOGTEMP.md`, 'utf-8');
-    });
     it('should read the content of a changelog from a repo', () => {
       const spy = vi.spyOn(fs, 'readFileSync');
 

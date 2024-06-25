@@ -8,11 +8,6 @@ export const writeContent = (content: IChangelogComplete): void => {
 };
 
 export const getChangelog = (repo: IRepo): string => {
-  //TODO: this is only for chainwebnode
-  if (repo.slug === 'chainweb-node') {
-    return fs.readFileSync(`${process.cwd()}/CHANGELOGTEMP.md`, 'utf-8');
-  }
-
   if (repo.repoName === CURRENTPACKAGE) {
     return fs.readFileSync(
       `${process.cwd()}/../../..${repo.directory}/${repo.fileName}`,

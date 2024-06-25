@@ -197,13 +197,4 @@ export const REPOS: IRepo[] = [
     owner: 'kadena-io',
     repoName: 'chainweb-node',
   },
-  // {
-  //   name: 'Chainweb Node',
-  //   slug: 'chainweb-node',
-  //   repo: 'https://github.com/kadena-community/kadena.js.git',
-  //   directory: '/packages/apps/docs',
-  //   fileName: 'CHANGELOGTEMP.md',
-  //   owner: 'kadena-community',
-  //   repoName: 'kadena.js',
-  // },
 ];
