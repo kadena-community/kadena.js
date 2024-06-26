@@ -12,6 +12,7 @@ export interface IAccountData {
   key: string;
   chains: number;
   balance: number;
+  accountName: string;
 }
 
 export const useAccount = (
@@ -36,32 +37,32 @@ export const useAccount = (
   });
 
   useEffect(() => {
+    if (!data?.fungibleAccount) return;
+    const accountName = data.fungibleAccount.accountName;
     const newData =
-      data?.fungibleAccount?.chainAccounts?.reduce<IAccountData[]>(
-        (acc, val) => {
-          const key = val.guard.keys[0];
-          const predicate = val.guard.predicate;
+      data.fungibleAccount.chainAccounts.reduce<IAccountData[]>((acc, val) => {
+        const key = val.guard.keys[0];
+        const predicate = val.guard.predicate;
 
-          const item = acc.find(
-            (item) => item.key === key && item.predicate === predicate,
-          );
+        const item = acc.find(
+          (item) => item.key === key && item.predicate === predicate,
+        );
 
-          if (item) {
-            item.chains = item.chains + 1;
-            item.balance = item.chains + val.balance;
-          } else {
-            acc.push({
-              predicate,
-              key,
-              chains: 1,
-              balance: val.balance,
-            });
-          }
+        if (item) {
+          item.chains = item.chains + 1;
+          item.balance = item.chains + val.balance;
+        } else {
+          acc.push({
+            predicate,
+            key,
+            chains: 1,
+            balance: val.balance,
+            accountName,
+          });
+        }
 
-          return acc;
-        },
-        [],
-      ) ?? [];
+        return acc;
+      }, []) ?? [];
 
     setCleanedData(newData);
   }, [data]);

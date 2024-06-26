@@ -19,6 +19,7 @@ const SearchResults: FC<ISearchResultsProps> = ({
   loading,
   errors,
 }) => {
+  console.log('searchData', searchData);
   return (
     <>
       {loading && <div>Loading...</div>}
@@ -30,6 +31,12 @@ const SearchResults: FC<ISearchResultsProps> = ({
         {searchData[SearchOptionEnum.ACCOUNT].data.length > 0 && (
           <CompactTable
             fields={[
+              {
+                label: 'Account',
+                key: 'accountName',
+                width: '20%',
+                render: FormatLink({ appendUrl: '/account' }),
+              },
               {
                 label: 'Key',
                 key: 'key',
