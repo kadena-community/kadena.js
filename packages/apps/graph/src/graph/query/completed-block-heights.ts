@@ -50,12 +50,13 @@ builder.queryField('completedBlockHeights', (t) =>
       },
     ) {
       try {
+        console.log('completedHeightsArg', completedHeightsArg);
         if (completedHeightsArg) {
           const completedHeights = (await prismaClient.$queryRaw`
             SELECT height
             FROM blocks b
             GROUP BY height
-            HAVING COUNT(*) >= ${networkData.chainIds} AND
+            HAVING COUNT(*) >= ${networkData.chainIds.length} AND
             COUNT(CASE WHEN height = height THEN 1 ELSE NULL END) > 0
             ORDER BY height DESC
             LIMIT ${heightCount}
