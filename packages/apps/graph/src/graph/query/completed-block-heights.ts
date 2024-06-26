@@ -12,7 +12,7 @@ builder.queryField('completedBlockHeights', (t) =>
     args: {
       completedHeights: t.arg.boolean({
         required: false,
-        defaultValue: false,
+        defaultValue: true,
       }),
       heightCount: t.arg.int({
         required: false,

@@ -1,13 +1,16 @@
 import type { IDialogProps } from '@kadena/react-ui';
 import { Box, Dialog, DialogContent, DialogHeader } from '@kadena/react-ui';
+
+import { useRouter } from 'next/router';
 import type { FC, FormEvent } from 'react';
 import React, { useState } from 'react';
 import { Search } from '../Search/Search';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { contentClass, dialogClass } from './styles.css';
 
-export const SearchDialog: FC<IDialogProps> = (props) => {
+export const SearchDialog: FC<IDialogProps> = ({ isOpen, onOpenChange }) => {
   const [query, setQuery] = useState<string | undefined>();
+  const router = useRouter();
 
   const handleSubmit = async (
     evt: FormEvent<HTMLFormElement>,
@@ -18,8 +21,22 @@ export const SearchDialog: FC<IDialogProps> = (props) => {
     setQuery(value);
   };
 
+  const handleOpenChange = (bool: boolean): void => {
+    if (!bool) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      router.push(`${router.pathname}`);
+      setQuery(undefined);
+    }
+
+    if (onOpenChange) onOpenChange(bool);
+  };
+
   return (
-    <Dialog {...props} className={dialogClass}>
+    <Dialog
+      isOpen={isOpen}
+      className={dialogClass}
+      onOpenChange={handleOpenChange}
+    >
       <DialogHeader>
         <h2>
           <Search></Search>
@@ -27,7 +44,7 @@ export const SearchDialog: FC<IDialogProps> = (props) => {
       </DialogHeader>
       <DialogContent className={contentClass}>
         <Box marginBlock="md">
-          <SearchBar onSubmit={handleSubmit} />
+          <SearchBar onSubmit={handleSubmit} query={query} />
         </Box>
         <Search query={query} hasScroll={true} limitResults={10} />
       </DialogContent>
