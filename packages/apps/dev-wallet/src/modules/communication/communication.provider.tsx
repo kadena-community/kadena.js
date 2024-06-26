@@ -52,7 +52,9 @@ export const useRequests = () => {
   return requests;
 };
 
-export const CommunicationProvider: FC<PropsWithChildren> = ({ children }) => {
+export const CommunicationProvider: FC<
+  PropsWithChildren<{ setOrigin: (pathname: string) => void }>
+> = ({ setOrigin, children }) => {
   const [requests] = useState(() => new Map<string, Request>());
   const navigate = useNavigate();
   const { isUnlocked, accounts, profile } = useWallet();
@@ -81,20 +83,10 @@ export const CommunicationProvider: FC<PropsWithChildren> = ({ children }) => {
 
     const handleRequest = (type: RequestType, route: string) =>
       handle(type, async (payload) => {
+        console.log('handleRequest', type, payload);
         const request = createRequest(payload);
-        const next = `${route}/${payload.id}`;
-        if (!isUnlocked) {
-          const unlock = {
-            id: 'unlock',
-            type: 'UNLOCK_REQUEST' as const,
-            payload: next,
-          };
-          const unlockRequest = createRequest(unlock);
-          navigate(`/select-profile`);
-          await unlockRequest;
-        } else {
-          navigate(next);
-        }
+        setOrigin(`${route}/${payload.id}`);
+        navigate(`${route}/${payload.id}`);
         return request;
       });
     const handlers = [
@@ -113,20 +105,6 @@ export const CommunicationProvider: FC<PropsWithChildren> = ({ children }) => {
     return () => {
       handlers.forEach((unsubscribe) => unsubscribe());
     };
-  }, [navigate, requests, isUnlocked]);
-
-  useEffect(() => {
-    const run = async () => {
-      if (isUnlocked && requests.has('unlock')) {
-        const req = requests.get('unlock');
-        req?.resolve({});
-        requests.delete('unlock');
-        if (req && typeof req.payload === 'string') {
-          navigate(req.payload);
-        }
-      }
-    };
-    run();
   }, [navigate, requests, isUnlocked]);
 
   return (

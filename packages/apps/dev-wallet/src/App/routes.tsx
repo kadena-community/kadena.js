@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from 'react';
+import { FC, PropsWithChildren, useEffect, useState } from 'react';
 import {
   Navigate,
   Outlet,
@@ -7,6 +7,8 @@ import {
   createBrowserRouter,
   createMemoryRouter,
   createRoutesFromElements,
+  useLocation,
+  useSearchParams,
 } from 'react-router-dom';
 
 import { CommunicationProvider } from '@/modules/communication/communication.provider';
@@ -35,10 +37,16 @@ const Redirect: FC<
   PropsWithChildren<{
     if: boolean;
     to: string;
+    setOrigin?: (pathname: string) => void;
   }>
-> = ({ if: condition, to: redirectPath, children }) => {
+> = ({ if: condition, to, children, setOrigin }) => {
+  const location = useLocation();
+
   if (condition) {
-    return <Navigate to={redirectPath} replace />;
+    if (setOrigin) {
+      setOrigin(location.pathname);
+    }
+    return <Navigate to={to} replace />;
   }
 
   return <> {children ? children : <Outlet />}</>;
@@ -47,11 +55,21 @@ const Redirect: FC<
 export const Routes: FC = () => {
   const { isUnlocked } = useWallet();
   const isLocked = !isUnlocked;
+  const [origin, setOrigin1] = useState('/');
+
+  const setOrigin = (value: string) => {
+    console.log('setOrigin', value);
+    setOrigin1(value);
+  };
 
   const routes = createRoutesFromElements(
-    <Route element={<CommunicationProvider children={<Outlet />} />}>
+    <Route
+      element={
+        <CommunicationProvider children={<Outlet />} setOrigin={setOrigin} />
+      }
+    >
       <Route element={<LayoutMini />}>
-        <Route element={<Redirect if={!isLocked} to="/" />}>
+        <Route element={<Redirect if={!isLocked} to={origin} />}>
           <Route path="/select-profile" element={<SelectProfile />} />
           <Route path="/create-profile/*" element={<CreateProfile />} />
           <Route
@@ -61,7 +79,11 @@ export const Routes: FC = () => {
           <Route path="/import-wallet" element={<ImportWallet />} />
         </Route>
       </Route>
-      <Route element={<Redirect if={isLocked} to="/select-profile" />}>
+      <Route
+        element={
+          <Redirect if={isLocked} to="/select-profile" setOrigin={setOrigin} />
+        }
+      >
         <Route element={<LayoutMini />}>
           <Route
             path="/backup-recovery-phrase/:keySourceId"

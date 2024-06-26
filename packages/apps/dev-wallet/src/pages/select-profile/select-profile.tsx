@@ -5,7 +5,7 @@ import { recoverPublicKey, retrieveCredential } from '@/utils/webAuthn';
 import { MonoAdd } from '@kadena/react-icons';
 import { Box, Heading, Stack } from '@kadena/react-ui';
 import { tokens } from '@kadena/react-ui/styles';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import InitialsAvatar from './initials';
 import {
   aliasClass,
@@ -20,6 +20,7 @@ import {
 export function SelectProfile() {
   const { profileList, unlockProfile } = useWallet();
   const { unlockHDWallet } = useHDWallet();
+  const [params] = useSearchParams();
 
   const unlockWithWebAuthn = async (
     profile: Pick<IProfile, 'name' | 'uuid' | 'accentColor' | 'options'>,
@@ -47,6 +48,8 @@ export function SelectProfile() {
     }
     console.error('Failed to unlock profile');
   };
+
+  const redirect = params.get('redirect');
 
   return (
     <Box>
@@ -89,7 +92,7 @@ export function SelectProfile() {
           ) : (
             <Link
               key={profile.uuid}
-              to={`/unlock-profile/${profile.uuid}`}
+              to={`/unlock-profile/${profile.uuid}${redirect ? `?redirect=${redirect}` : ''}`}
               style={{ textDecoration: 'none' }}
               className={cardClass}
             >

@@ -2,8 +2,15 @@
 
 import { useState } from 'react';
 
-const walletOrigin = () => (window as any).walletUrl || 'http://localhost:4173';
-const walletUrl = () => `${walletOrigin()}/ready`;
+const sleep = (time: number) =>
+  new Promise<void>((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, time);
+  });
+
+const walletOrigin = () => (window as any).walletUrl || 'http://localhost:1420';
+const walletUrl = () => `${walletOrigin()}`;
 const walletName = 'Dev-Wallet';
 const appName = 'Dev Wallet Example';
 
@@ -33,7 +40,7 @@ const communicate =
   };
 
 let walletGlobal: Window | null = null;
-async function getWalletConnection() {
+async function getWalletConnection(page: string = '') {
   if (walletGlobal && !walletGlobal.closed) {
     return {
       message: communicate(window, walletGlobal),
@@ -47,19 +54,36 @@ async function getWalletConnection() {
     throw new Error('POPUP_BLOCKED');
   }
   const message = communicate(window, wallet);
+  const waitForWallet = async () => {
+    for (let i = 0; i < 50; i++) {
+      try {
+        await Promise.race([
+          message('GET_STATUS', {
+            name: appName,
+          }),
+          sleep(300).then(() => {
+            throw new Error('TIMEOUT');
+          }),
+        ]);
+      } catch (e) {
+        console.log('error', e);
+        continue;
+      }
+      console.log('wallet is ready');
+      break;
+    }
+  };
   await Promise.race([
     message('GET_STATUS', {
       name: appName,
     }),
-    new Promise((_, reject) => setTimeout(reject, 300)),
+    sleep(300).then(() => {
+      throw new Error('TIMEOUT');
+    }),
   ]).catch(async () => {
     wallet.location.href = walletUrl();
     // todo: replace this by a better way to know when the wallet is ready
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(true);
-      }, 300);
-    });
+    return waitForWallet();
   });
   walletGlobal = wallet;
   return {

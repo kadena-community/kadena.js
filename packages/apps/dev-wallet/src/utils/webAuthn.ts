@@ -50,9 +50,9 @@ export async function createCredential() {
         alg: -7,
       },
     ],
-    authenticatorSelection: {
-      authenticatorAttachment: 'platform',
-    },
+    // authenticatorSelection: {
+    //   authenticatorAttachment: 'platform',
+    // },
     timeout: 60000,
     attestation: 'none',
   };
