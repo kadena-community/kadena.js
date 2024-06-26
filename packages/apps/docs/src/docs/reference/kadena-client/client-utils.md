@@ -1,7 +1,6 @@
 ---
 title: Client utilities
-description:
-  The `@kadena` libraries provide a TypeScript based application programming interface API for interacting with smart contracts and the Kadena network. The libraries include helper functions for many common tasks in core Pact modules, such as the `coin` module, and `core` functions that you can use to develop new interfaces for custom contracts.
+description: The `@kadena` libraries provide a TypeScript based application programming interface API for interacting with smart contracts and the Kadena network. The libraries include helper functions for many common tasks in core Pact modules, such as the `coin` module, and `core` functions that you can use to develop new interfaces for custom contracts.
 menu: Frontend libraries
 label: Client utilities
 order: 1
@@ -11,14 +10,12 @@ tags: ['TypeScript', 'Kadena client', 'frontend']
 
 # Kadena client utilities
 
-The `@kadena/client-utils` library provides a TypeScript based application programming interface API for interacting with smart contracts and the Kadena network. 
-The library includes helper functions for the `coin` module that you can import using `@kadena/client-utils/coin`.
-For example, you can import specific `coin` module functions into a TypeScript program with the following statement:
+The `@kadena/client-utils` library provides a TypeScript based application programming interface API for interacting with smart contracts and the Kadena network. The library includes helper functions for the `coin` module that you can import using `@kadena/client-utils/coin`. For example, you can import specific `coin` module functions into a TypeScript program with the following statement:
 
 ```typescript
-import { getBalance, transferCrossChain } from "@kadena/client-utils/coin"
+import { getBalance, transferCrossChain } from '@kadena/client-utils/coin';
 ```
-  
+
 The library also exports `core` utilities that you can use to develop your own API functions for any type kind of smart contract.
 
 The client-utils package contains functions exported into the following modules:
@@ -33,8 +30,8 @@ The client-utils package contains functions exported into the following modules:
 
 The Kadena `client-utils` package includes the following `built-in` helper functions:
 
-- [createPrincipal](#createprincipal)
-- [describeModule](#describemodule)
+- [createPrincipal](#built-in-utilities)
+- [describeModule](#built-in-utilities)
 
 ### createPrincipal
 
@@ -58,23 +55,17 @@ describeModule _module_
 
 #### Parameters
 
-| Parameter | Type | Description
-| --------- | ---- | -----------
-| module | string | Specifies the name of the module to describe.
+| Parameter | Type   | Description                                   |
+| --------- | ------ | --------------------------------------------- |
+| module    | string | Specifies the name of the module to describe. |
 
 #### Return values
 
 This function returns the following information:
 
-blessed: string[];
-code: string;
-hash: string;
-interfaces: string[];
-keyset: string;
-name: string;
+blessed: string[]; code: string; hash: string; interfaces: string[]; keyset: string; name: string;
 
 #### Example
-
 
 ## Coin module utilities
 
@@ -103,14 +94,14 @@ The Kadena `client-utils` package includes the following `core` helper functions
 
 ### asyncPipe
 
-Use `asyncPipe` to open a connection to the Kadena network and execute multiple functions in order to return a single result.
-This utility enables you to pass the output from the first function as input to a second function and return the combined results.
+Use `asyncPipe` to open a connection to the Kadena network and execute multiple functions in order to return a single result. This utility enables you to pass the output from the first function as input to a second function and return the combined results.
 
 #### Basic usage
 
 ```typescript
 asyncPipe( function(), function())
 ```
+
 #### Parameters
 
 #### Return value
@@ -171,9 +162,7 @@ Use `estimateGas` to ...
 
 ### preflightClient
 
-Use `preflightClient` to prepare a preflight request for a signed transaction to connect to the Kadena blockchain without submitting a transaction. 
-The response to the preflight request contains information about the expected success of the transaction and the how much gas the transaction requires. 
-Preflight requests help to ensure that clients don't send transactions to the blockchain that are likely to fail.
+Use `preflightClient` to prepare a preflight request for a signed transaction to connect to the Kadena blockchain without submitting a transaction. The response to the preflight request contains information about the expected success of the transaction and the how much gas the transaction requires. Preflight requests help to ensure that clients don't send transactions to the blockchain that are likely to fail.
 
 Because you must for pay processing any transaction request even if a transaction fails, you should use a preflight request for any computationally expensive transactions—like deploying a module—before sending the actual transaction to the blockchain.
 
@@ -199,11 +188,11 @@ submitClient _chainId_ _networkId_ _requestKey_
 
 You must pass the following arguments to the `submitClient` command:
 
-| Parameter | Type | Description
-| --------- | ---- | -----------
-| `chainId` | string | Specifies the chain for the client to connect to using the chain identifier. Valid values are strings representing chain “0” through chain “19”.
-| `networkId` | string | Specifies the network identifier for the client to connect to. Valid values are development, Testnet, and Mainnet.
-| `requestKey` | string | Specifies the request key to determine if the request was successful.
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `chainId` | string | Specifies the chain for the client to connect to using the chain identifier. Valid values are strings representing chain “0” through chain “19”. |
+| `networkId` | string | Specifies the network identifier for the client to connect to. Valid values are development, Testnet, and Mainnet. |
+| `requestKey` | string | Specifies the request key to determine if the request was successful. |
 
 #### Return value
 
@@ -307,7 +296,6 @@ describe('submitClient', () => {
 #### Return value
 
 #### Example
-
 
 ## Nodejs utilities
 
