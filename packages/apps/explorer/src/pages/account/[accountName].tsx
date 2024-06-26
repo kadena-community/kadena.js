@@ -86,9 +86,11 @@ const Account: FC = () => {
         <Heading as="h5">
           {parseFloat(fungibleAccount?.totalBalance).toFixed(2)} KDA spread
           across {fungibleAccount?.chainAccounts.length} Chains for account{' '}
-          <Text as="span" className={accountNameTextClass}>
-            {fungibleAccount?.accountName}
-          </Text>
+          <div style={{ display: 'flex', maxWidth: `calc(100% - 15px)` }}>
+            <Text as="span" className={accountNameTextClass}>
+              {fungibleAccount?.accountName}
+            </Text>
+          </div>
         </Heading>
       </Stack>
 
