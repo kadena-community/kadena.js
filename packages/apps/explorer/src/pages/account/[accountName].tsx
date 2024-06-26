@@ -6,13 +6,13 @@ import { FormatAmount } from '@/components/compact-table/utils/format-amount';
 import { FormatLink } from '@/components/compact-table/utils/format-link';
 import { FormatStatus } from '@/components/compact-table/utils/format-status';
 import DetailLayout from '@/components/layout/detail-layout/detail-layout';
-import MaskedAccountName from '@/components/mask-accountname/mask-accountname';
 import { useQueryContext } from '@/context/query-context';
 import { account } from '@/graphql/queries/account.graph';
-import { Heading, Stack, TabItem, Tabs } from '@kadena/react-ui';
+import { Heading, Stack, TabItem, Tabs, Text } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import type { FC, Key } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
+import { accountNameTextClass } from './style.css';
 
 export interface IKeyProps {
   chainId: string;
@@ -36,8 +36,10 @@ const Account: FC = () => {
   });
 
   useEffect(() => {
-    setQueries([{ query: account, variables: accountQueryVariables }]);
-  }, []);
+    if (router.query.accountName) {
+      setQueries([{ query: account, variables: accountQueryVariables }]);
+    }
+  }, [router.query.accountName]);
 
   useEffect(() => {
     const hash = router.asPath.split('#')[1];
@@ -84,7 +86,9 @@ const Account: FC = () => {
         <Heading as="h5">
           {parseFloat(fungibleAccount?.totalBalance).toFixed(2)} KDA spread
           across {fungibleAccount?.chainAccounts.length} Chains for account{' '}
-          <MaskedAccountName value={fungibleAccount?.accountName ?? ''} />
+          <Text as="span" className={accountNameTextClass}>
+            {fungibleAccount?.accountName}
+          </Text>
         </Heading>
       </Stack>
 
