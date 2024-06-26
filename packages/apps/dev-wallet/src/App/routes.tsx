@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren, useEffect, useState } from 'react';
+import { FC, PropsWithChildren, useState } from 'react';
 import {
   Navigate,
   Outlet,
@@ -8,7 +8,6 @@ import {
   createMemoryRouter,
   createRoutesFromElements,
   useLocation,
-  useSearchParams,
 } from 'react-router-dom';
 
 import { CommunicationProvider } from '@/modules/communication/communication.provider';

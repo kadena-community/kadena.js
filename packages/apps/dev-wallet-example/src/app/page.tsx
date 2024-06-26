@@ -9,7 +9,7 @@ const sleep = (time: number) =>
     }, time);
   });
 
-const walletOrigin = () => (window as any).walletUrl || 'http://localhost:1420';
+const walletOrigin = () => (window as any).walletUrl || 'http://localhost:4173';
 const walletUrl = () => `${walletOrigin()}`;
 const walletName = 'Dev-Wallet';
 const appName = 'Dev Wallet Example';
