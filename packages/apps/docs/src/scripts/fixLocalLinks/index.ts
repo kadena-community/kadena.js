@@ -43,6 +43,10 @@ const fixHashLinks = async (link: string): Promise<string> => {
   // get the page to the hashlink
   const file = await getFileFromNameOfUrl(cleanedLink);
 
+  if (cleanedHashUrl === 'kadena-at-a-glance') {
+    // console.log(`1${cleanedHashUrl}1`, createSlug(cleanedHashUrl));
+    // console.log(createSlug('Kadena at a glance'));
+  }
   if (!file) return `#${createSlug(cleanedHashUrl)}`;
 
   const parentTree = await getParentTreeFromPage(file);
@@ -152,6 +156,8 @@ const fixLinks = async (
 
     if (isLocalPageLink(link.url)) {
       link.url = getUrlofPageFile(link.url);
+    }
+    if (link.url.startsWith('/') || link.url.startsWith('#')) {
       link.url = await fixHashLinks(link.url);
     }
   }
@@ -191,6 +197,7 @@ export const fixLocalLinksSingle =
   (path: string) => async (): Promise<IScriptResult> => {
     errors.length = 0;
     success.length = 0;
+
     const page = await getPageFromPath(path);
 
     if (!page) {
@@ -203,3 +210,5 @@ export const fixLocalLinksSingle =
 
     return { errors, success };
   };
+
+//fixLocalLinksSingle('/quick-start.md')();

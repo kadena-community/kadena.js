@@ -1,4 +1,12 @@
-export const createSlugHash = (str: string): string => {
+const createToBeHashedString = (str: string): string => {
+  return str
+    .replace(/\./g, '') // Remove numbers with dots
+    .replace(/ /g, '-')
+    .toLowerCase();
+};
+
+export const createSlugHash = (propStr: string): string => {
+  const str = createToBeHashedString(propStr);
   let hash = 0;
   // if the length of the string is 0, return 0
   if (str.length === 0) return ``;
@@ -24,6 +32,11 @@ export const createSlug = (str: string): string => {
     .replace(/ /g, '-')
     .toLowerCase()
     .replace(/^-+|-+$/g, '');
+
+  if (str === 'kadena-at-a-glance' || str === 'Kadena at a glance') {
+    console.log(str, `1${normalizedSlug}1`, createSlugHash(normalizedSlug));
+    console.log(createSlug('*'), createSlugHash(normalizedSlug));
+  }
 
   return `${normalizedSlug}${createSlugHash(str)}`;
 };

@@ -12,6 +12,7 @@ export const getPageFromPath = async (
   let page: IConfigTreeItem | undefined = undefined;
   const find = (pages: IConfigTreeItem[], path: string): void => {
     pages.forEach((p) => {
+      console.log(p.file);
       if (p.file === path) page = p;
 
       find(p.children ?? [], path);
@@ -20,5 +21,6 @@ export const getPageFromPath = async (
 
   find(pages, cleanedPath);
 
+  console.log({ page });
   return page;
 };
