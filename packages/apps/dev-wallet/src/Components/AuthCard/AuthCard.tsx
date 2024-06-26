@@ -15,7 +15,7 @@ export const AuthCard: FC<IProps> = ({ children }) => {
       <Stack paddingBlockEnd="md">
         <Button
           variant="transparent"
-          onClick={() => navigate(-1)}
+          onPress={() => navigate(-1)}
           className={backButtonClass}
         >
           <Stack alignItems="center" gap="xs">

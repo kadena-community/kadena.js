@@ -151,7 +151,7 @@ export function CreateProfile() {
                     {!isShortFlow && (
                       <Button
                         type="button"
-                        onClick={() => navigate('personalize-profile')}
+                        onPress={() => navigate('personalize-profile')}
                         isDisabled={Boolean(
                           errors.confirmation?.message ||
                             errors.password?.message ||
