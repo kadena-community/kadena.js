@@ -403,7 +403,7 @@ type Query {
 
     """Default: all chains"""
     chainIds: [String!]
-    completedHeights: Boolean = false
+    completedHeights: Boolean = true
     first: Int
     heightCount: Int = 3
     last: Int

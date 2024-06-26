@@ -12,7 +12,7 @@ builder.queryField('completedBlockHeights', (t) =>
     args: {
       completedHeights: t.arg.boolean({
         required: false,
-        defaultValue: false,
+        defaultValue: true,
       }),
       heightCount: t.arg.int({
         required: false,
@@ -50,7 +50,6 @@ builder.queryField('completedBlockHeights', (t) =>
       },
     ) {
       try {
-        console.log('completedHeightsArg', completedHeightsArg);
         if (completedHeightsArg) {
           const completedHeights = (await prismaClient.$queryRaw`
             SELECT height
