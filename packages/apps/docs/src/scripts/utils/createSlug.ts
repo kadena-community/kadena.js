@@ -33,11 +33,6 @@ export const createSlug = (str: string): string => {
     .toLowerCase()
     .replace(/^-+|-+$/g, '');
 
-  if (str === 'kadena-at-a-glance' || str === 'Kadena at a glance') {
-    console.log(str, `1${normalizedSlug}1`, createSlugHash(normalizedSlug));
-    console.log(createSlug('*'), createSlugHash(normalizedSlug));
-  }
-
   return `${normalizedSlug}${createSlugHash(str)}`;
 };
 
