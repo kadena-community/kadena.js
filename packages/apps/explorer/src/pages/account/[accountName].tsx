@@ -8,11 +8,11 @@ import { FormatStatus } from '@/components/compact-table/utils/format-status';
 import DetailLayout from '@/components/layout/detail-layout/detail-layout';
 import { useQueryContext } from '@/context/query-context';
 import { account } from '@/graphql/queries/account.graph';
+import { accountNameTextClass } from '@/styles/account.css';
 import { Heading, Stack, TabItem, Tabs, Text } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import type { FC, Key } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
-import { accountNameTextClass } from './style.css';
 
 export interface IKeyProps {
   chainId: string;
