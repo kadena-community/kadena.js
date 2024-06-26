@@ -1,7 +1,6 @@
 import {
   KadenaLogo,
   NavHeader,
-  NavHeaderButton,
   NavHeaderLink,
   NavHeaderLinkList,
   NavHeaderSelect,
