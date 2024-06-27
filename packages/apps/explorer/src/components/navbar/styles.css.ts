@@ -3,6 +3,9 @@ import { $$pageWidth } from '../layout/styles.css';
 
 export const navbarWrapperClass = style({});
 
-globalStyle(`${navbarWrapperClass} > nav >div`, {
-  maxWidth: $$pageWidth,
-});
+globalStyle(
+  `${navbarWrapperClass} > nav >div, ${navbarWrapperClass} > footer`,
+  {
+    maxWidth: $$pageWidth,
+  },
+);
