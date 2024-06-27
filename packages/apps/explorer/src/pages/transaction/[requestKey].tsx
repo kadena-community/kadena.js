@@ -4,7 +4,8 @@ import { TransactionRequestComponent } from '@/components/transaction-components
 import { TransactionResultComponent } from '@/components/transaction-components/transaction-result-component';
 import { useQueryContext } from '@/context/query-context';
 import { transactionRequestKey } from '@/graphql/pages/transaction/transaction-requestkey.graph';
-import { TabItem, Tabs, maskValue } from '@kadena/react-ui';
+import { truncateValues } from '@/services/format';
+import { Heading, Stack, TabItem, Tabs } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
@@ -40,7 +41,15 @@ const Transaction: React.FC = () => {
       ) : null}
       {data && data.transaction && (
         <>
-          <h1>Transaction {maskValue(data.transaction.hash)}</h1>
+          <Stack margin="md">
+            <Heading as="h1" className="truncate">
+              Transaction{' '}
+              {truncateValues(data.transaction.hash, {
+                length: 16,
+                endChars: 5,
+              })}
+            </Heading>
+          </Stack>
 
           <Tabs>
             <TabItem title="Request" key="Request">
