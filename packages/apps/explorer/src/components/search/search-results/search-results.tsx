@@ -31,6 +31,12 @@ const SearchResults: FC<ISearchResultsProps> = ({
           <CompactTable
             fields={[
               {
+                label: 'Account',
+                key: 'accountName',
+                width: '20%',
+                render: FormatLink({ appendUrl: '/account' }),
+              },
+              {
                 label: 'Key',
                 key: 'key',
                 width: '20%',
