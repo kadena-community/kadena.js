@@ -8,7 +8,6 @@ import {
 } from '../../styles';
 
 export const tableWrapper = style({
-  width: 'fit-content',
   overflowX: 'auto',
 });
 
