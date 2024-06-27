@@ -1,8 +1,9 @@
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
+import { networkConstants } from '@/constants/network';
 import { SpireKeyKdacolorLogoWhite } from '@kadena/react-icons/product';
 import { Button, Select, SelectItem, Stack, Text } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { IStatisticsComponentProps } from '../statistics-component';
 import {
   borderStyleClass,
@@ -11,6 +12,11 @@ import {
 
 const StatisticsStack: React.FC<IStatisticsComponentProps> = ({ data }) => {
   const [selectedNetwork, setSelectedNetwork] = useState('Mainnet');
+
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log(selectedNetwork);
+  }, [selectedNetwork]);
 
   return (
     <Stack flexDirection={'row'}>
@@ -49,11 +55,17 @@ const StatisticsStack: React.FC<IStatisticsComponentProps> = ({ data }) => {
                 setSelectedNetwork(value.toString())
               }
             >
-              <SelectItem key={'Mainnet'} textValue="Mainnet">
-                Mainnet
+              <SelectItem
+                key={networkConstants.mainnet01.key}
+                textValue={networkConstants.mainnet01.label}
+              >
+                {networkConstants.mainnet01.label}
               </SelectItem>
-              <SelectItem key={'Testnet'} textValue="Testnet">
-                Testnet
+              <SelectItem
+                key={networkConstants.testnet04.key}
+                textValue={networkConstants.testnet04.label}
+              >
+                {networkConstants.testnet04.label}
               </SelectItem>
             </Select>
           </div>
