@@ -28,8 +28,47 @@ export const GraphQLQueryDialog = (): JSX.Element => {
       >
         {() => (
           <DialogContent>
-            <p>Amount of queries on this page: {queries.length}</p>
+            <h2>
+              What is <code>@kadena/graph</code>
+            </h2>
+            <p>
+              <a href="https://www.npmjs.com/package/@kadena/graph">
+                <code>@kadena/graph</code>
+              </a>{' '}
+              is a GraphQL layer built on top of the Kadena blockchain. It
+              facilitates efficient querying of blockchain data, including{' '}
+              <strong>block details</strong>, <strong>transactions</strong>{' '}
+              within blocks, <strong>outcomes</strong> of these transactions,{' '}
+              <strong>mempool information</strong> and more. By leveraging a
+              PostgreSQL database backend, fed by an ETL process known as
+              chainweb-data, <code>@kadena/graph</code> provides a swift and
+              structured way to access blockchain information.
+            </p>
+            <p>
+              Experiment with it here
+              <ol>
+                <li>
+                  Mainnet:{' '}
+                  <a href="https://graph.kadena.network/graphql">
+                    graph.kadena.network
+                  </a>
+                </li>
+                <li>
+                  Testnet:{' '}
+                  <a href="https://graph.testnet.kadena.network/graphql">
+                    graph.testnet.kadena.network
+                  </a>
+                </li>
+              </ol>
+            </p>
+            <p>
+              Documentation and more information can be found at{' '}
+              <a href="https://docs.kadena.io/build/frontend/kadena-graph">
+                docs.kadena.io
+              </a>
+            </p>
             <Divider />
+            <h2>Queries ({queries.length})</h2>
             {queries.map((query, index) => (
               <div key={index}>
                 <p>Query #{index + 1}</p>
@@ -41,6 +80,12 @@ export const GraphQLQueryDialog = (): JSX.Element => {
                     <p>Variables</p>
                     <Box marginBlockEnd="sm" />
                     <pre>{JSON.stringify(query.variables, null, 2)}</pre>
+                  </>
+                )}
+                {!query.variables && (
+                  <>
+                    <Box marginBlockEnd="sm" />
+                    <p>No variables used for this query</p>
                   </>
                 )}
                 {index + 1 !== queries.length && <Divider />}
