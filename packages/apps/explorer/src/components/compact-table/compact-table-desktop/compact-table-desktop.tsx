@@ -2,6 +2,7 @@ import {
   Cell,
   Column,
   Row,
+  Stack,
   Table,
   TableBody,
   TableHeader,
@@ -19,7 +20,7 @@ const CompactTableDesktop: FC<ICompactTableProps> = ({
   label = 'Table',
 }) => {
   return (
-    <Table aria-label={label} isStriped className={tableClass}>
+    <Table aria-label={label} isStriped className={tableClass} width="100%">
       <TableHeader>
         {fields.map((field) => (
           <Column key={field.key} width={field.width}>

@@ -1,4 +1,5 @@
 import { useNetworkInfoQuery } from '@/__generated__/sdk';
+import Footer from '@/components/footer/footer';
 import { Media } from '@/components/layout/media';
 import StatisticsComponent from '@/components/statistics-component/statistics-component';
 import { formatStatisticsData } from '@/services/format';
@@ -22,28 +23,17 @@ export const SearchLayout: FC<IProps> = ({ children }: IProps) => {
 
   return (
     <div className={documentStyle}>
-      <Media greaterThanOrEqual="sm">
-        <Stack
-          className={atoms({ flexDirection: 'column' })}
-          gap={'xxl'}
-          alignItems={'center'}
-        >
-          <StatisticsComponent data={statisticsGridData} />
-        </Stack>
-      </Media>
-
-      <Media lessThan="sm">
-        <Stack
-          className={atoms({ flexDirection: 'column-reverse' })}
-          gap={'xxl'}
-          alignItems={'center'}
-          paddingBlockStart={'xxl'}
-        >
-          <StatisticsComponent data={statisticsGridData} />
-        </Stack>
-      </Media>
+      <Stack
+        className={atoms({ flexDirection: 'column' })}
+        flexDirection={{ xs: 'column-reverse', sm: 'column' }}
+        gap={'xxl'}
+        alignItems={'center'}
+      >
+        <StatisticsComponent data={statisticsGridData} />
+      </Stack>
 
       <main className={layoutWrapperClass}>{children}</main>
+      <Footer />
     </div>
   );
 };
