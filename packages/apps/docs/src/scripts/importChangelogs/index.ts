@@ -1,6 +1,6 @@
 import type { IScriptResult } from '@kadena/docs-tools';
 import fs from 'fs';
-import type { Node, Text } from 'mdast';
+import type { Node,Text } from 'mdast';
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { remark } from 'remark';
 import type { Root } from 'remark-gfm';
@@ -9,14 +9,14 @@ import { deleteTempDir } from '../importReadme/importRepo';
 import { runPrettier } from '../runPrettier';
 import { isParent } from '../utils';
 import {
-  CHANGELOGFILENAME,
-  REPOS,
-  VersionPosition,
-  errors,
-  success,
+CHANGELOGFILENAME,
+REPOS,
+VersionPosition,
+errors,
+success,
 } from './constants';
 import { checkVersionPosition } from './utils/checkNames';
-import { getChangelog, writeContent } from './utils/content';
+import { getChangelog,writeContent } from './utils/content';
 import { createVersion } from './utils/createVersion';
 import { createVersionRecord } from './utils/createVersionRecord';
 import { enrichPackageContent } from './utils/enrichPackageContent';
@@ -175,8 +175,13 @@ export const importChangelogs = async (): Promise<IScriptResult> => {
 
   deleteTempDir();
 
-  process.exitCode = 1;
+  console.log(errors.length);
+
+  if (errors.length > 0) process.exitCode = 1;
+  else process.exitCode = 0;
+
   return { success, errors };
+
 };
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
