@@ -1,4 +1,3 @@
-import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useSubmit } from '@/hooks/submit';
 import { getReturnUrl } from '@/utils/getReturnUrl';
@@ -22,37 +21,13 @@ interface IProps {
 export const MintView: FC<IProps> = () => {
   const { proofOfUs, signees, updateSignee, resetSignatures } = useProofOfUs();
   const { doSubmit, transaction } = useSubmit();
-  const { uploadBackground } = useAvatar();
   const [uploadError, setUploadError] = useState(false);
   const router = useRouter();
 
   const handleMint = async () => {
     if (!proofOfUs) return;
     setUploadError(false);
-    try {
-      const result: IUploadResult = await uploadBackground(
-        proofOfUs.proofOfUsId,
-      );
-      //check that upload urls are the same, that we already saved in proofofus (at start of signing)
-      if (
-        !proofOfUs.manifestUri?.includes(result.metadataUrlUpload) ||
-        !proofOfUs.imageUri.includes(result.imageUrlUpload)
-      ) {
-        console.log({
-          result,
-          manifestUri: proofOfUs.manifestUri,
-          imageUri: proofOfUs.imageUri,
-        });
-        setUploadError(true);
-        window.location.hash = '';
-        return;
-      }
-    } catch (e) {
-      console.error('UPLOAD ERR');
-      setUploadError(true);
-      router.replace(`${getReturnUrl()}`);
-      return;
-    }
+
     try {
       await updateSignee({ signerStatus: 'success' }, true);
       await doSubmit();
