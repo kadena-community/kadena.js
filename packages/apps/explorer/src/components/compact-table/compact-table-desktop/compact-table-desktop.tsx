@@ -19,7 +19,7 @@ const CompactTableDesktop: FC<ICompactTableProps> = ({
   label = 'Table',
 }) => {
   return (
-    <Table aria-label={label} isStriped className={tableClass} width="100%">
+    <Table aria-label={label} isStriped className={tableClass}>
       <TableHeader>
         {fields.map((field) => (
           <Column key={field.key} width={field.width}>
