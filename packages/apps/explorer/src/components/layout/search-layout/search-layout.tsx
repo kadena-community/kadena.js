@@ -1,6 +1,5 @@
 import { useNetworkInfoQuery } from '@/__generated__/sdk';
 import Footer from '@/components/footer/footer';
-import { Media } from '@/components/layout/media';
 import StatisticsComponent from '@/components/statistics-component/statistics-component';
 import { formatStatisticsData } from '@/services/format';
 import { Stack } from '@kadena/react-ui';

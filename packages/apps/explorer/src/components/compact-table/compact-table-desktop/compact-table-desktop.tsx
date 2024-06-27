@@ -2,7 +2,6 @@ import {
   Cell,
   Column,
   Row,
-  Stack,
   Table,
   TableBody,
   TableHeader,
