@@ -22,7 +22,7 @@ export class SpireKeyIndex {
 
     //Enter Passkey and Continue
     await expect(actor.getByRole('heading', { name: 'Passkey' })).toBeVisible();
-    await actor.getByAltText('fingerprint icon').click();
+    await actor.getByTestId('fingerprint-icon').click();
 
     // //set device type
     // await expect(

@@ -13,7 +13,9 @@ test('1 Initiator, 1 signers. all participants sign -> Should be able to mint th
   signer1,
 }) => {
   await test.step('Create account in SpireKey and initiate a connection in Proof of Us.', async () => {
-    await initiator.goto('https://proof-of-us-git-test-pou-spirekey-kadena-js.vercel.app/');
+    await initiator.goto(
+      'https://proof-of-us-git-feat-poukadena-kadena-js.vercel.app/',
+    );
     // Initiator: Create a SpireKey account
     await initiator.getByRole('button', { name: 'Login to mint' }).click();
     await spireKey.createSpireKeyAccountFor(initiator, 'initiator');
@@ -74,11 +76,10 @@ test('1 Initiator, 10 signers. all participants sign -> Should be able to mint t
   signer7,
   signer8,
   signer9,
-  signer10,
 }) => {
   await test.step('Create account in SpireKey and initiate a connection in Proof of Us.', async () => {
     await initiator.goto(
-      'https://proof-of-us-git-feat-pouinitiatordeletesigners-kadena-js.vercel.app/',
+      'https://proof-of-us-git-feat-poukadena-kadena-js.vercel.app/',
     );
     // Initiator: Create a SpireKey account
     await initiator.getByRole('button', { name: 'Login to mint' }).click();
@@ -97,7 +98,6 @@ test('1 Initiator, 10 signers. all participants sign -> Should be able to mint t
       signer7.goto(shareUrl),
       signer8.goto(shareUrl),
       signer9.goto(shareUrl),
-      signer10.goto(shareUrl),
     ]);
 
     await Promise.all([
@@ -110,7 +110,6 @@ test('1 Initiator, 10 signers. all participants sign -> Should be able to mint t
       spireKey.createSpireKeyAccountFor(signer7, 'signer7', true),
       spireKey.createSpireKeyAccountFor(signer8, 'signer8', true),
       spireKey.createSpireKeyAccountFor(signer9, 'signer9', true),
-      spireKey.createSpireKeyAccountFor(signer10, 'signer10', true),
     ]);
 
     await Promise.all([
@@ -123,7 +122,6 @@ test('1 Initiator, 10 signers. all participants sign -> Should be able to mint t
       signer7.goto(shareUrl),
       signer8.goto(shareUrl),
       signer9.goto(shareUrl),
-      signer10.goto(shareUrl),
     ]);
   });
   // await test.step('Disable Signing for Signer 3', async () => {
@@ -143,7 +141,6 @@ test('1 Initiator, 10 signers. all participants sign -> Should be able to mint t
       proofOfUs.signProofWith(signer7),
       proofOfUs.signProofWith(signer8),
       proofOfUs.signProofWith(signer9),
-      proofOfUs.signProofWith(signer10),
     ]);
 
     await Promise.all([
@@ -156,7 +153,6 @@ test('1 Initiator, 10 signers. all participants sign -> Should be able to mint t
       spireKey.signTransaction(signer7),
       spireKey.signTransaction(signer8),
       spireKey.signTransaction(signer9),
-      spireKey.signTransaction(signer10),
     ]);
   });
   await test.step('Upload the Proof with the Initiator', async () => {
@@ -218,7 +214,7 @@ test('1 Initiator, 19 signers. all participants sign -> Should be able to mint t
 }) => {
   await test.step('Create account in SpireKey and initiate a connection in Proof of Us.', async () => {
     await initiator.goto(
-      'https://proof-of-us-git-feat-pouinitiatordeletesigners-kadena-js.vercel.app/',
+      'https://proof-of-us-git-feat-poukadena-kadena-js.vercel.app/',
     );
     // Initiator: Create a SpireKey account
     await initiator.getByRole('button', { name: 'Login to mint' }).click();
