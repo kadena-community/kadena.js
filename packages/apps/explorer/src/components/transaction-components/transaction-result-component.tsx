@@ -39,7 +39,11 @@ export const TransactionResultComponent: React.FC<{
         title="Block"
         fields={[
           { key: 'Height', value: transactionResult.block.height },
-          { key: 'Hash', value: transactionResult.block.hash },
+          {
+            key: 'Hash',
+            value: transactionResult.block.hash,
+            link: `/block/${transactionResult.block.hash}`,
+          },
           { key: 'Created', value: transactionResult.block.creationTime },
         ]}
       />
