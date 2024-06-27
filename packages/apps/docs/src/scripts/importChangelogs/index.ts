@@ -175,8 +175,6 @@ export const importChangelogs = async (): Promise<IScriptResult> => {
 
   deleteTempDir();
 
-  console.log(errors.length);
-
   if (errors.length > 0) process.exitCode = 1;
   else process.exitCode = 0;
 
