@@ -19,7 +19,7 @@ const config = {
     {
       label: 'Internal dev packages are pinned to `workspace:*`',
       packages: ['**'],
-      dependencies: ['@kadena-dev/*', '@kadena/types', '@kadena/react-icons'],
+      dependencies: ['@kadena-dev/*', '@kadena/types', '@kadena/react-icons', '@kadena/docs-tools'],
       dependencyTypes: ['dev'],
       pinVersion: 'workspace:*',
     },
