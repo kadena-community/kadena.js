@@ -18,6 +18,8 @@ import type {
   IAuctionPurchaseConfig,
   IDutchAuctionPurchaseInput,
   WithAuctionPurchase,
+  KeysetGuard, 
+  FunctionGuard
 } from './config';
 import {
   formatAdditionalSigners,
@@ -37,10 +39,10 @@ interface IBuyTokenInput extends CommonProps {
   };
   buyer: {
     account: string;
-    keyset: {
+    keyset:  {
       keys: string[];
       pred: 'keys-all' | 'keys-2' | 'keys-any';
-    };
+    } | string;
   };
   buyerFungibleAccount?: string;
 }
@@ -51,7 +53,7 @@ const generatePolicyTransactionData = <C extends IAuctionPurchaseConfig>(
   const data = [];
 
   data.push(addData('buyer', props.buyer!.account));
-  data.push(addData('buyer-guard', props.buyer!.keyset));
+  data.push(addData('buyer-guard', `CapabilityGuard {name: n_eef68e581f767dd66c4d4c39ed922be944ede505.webauthn-wallet.DEBIT,args: ["w:Q0qcTnspIqnaH5Q62Wln39NLf_ub9eoU3AA3khr_2zo:keys-any"],pactId: }`));
 
   if (props.buyerFungibleAccount) {
     data.push(addData('buyer_fungible_account', props.buyerFungibleAccount));
@@ -108,7 +110,7 @@ const buyTokenCommand = <C extends IAuctionPurchaseConfig>({
       proof: null,
       data: {},
     }),
-    addSigner(formatWebAuthnSigner(buyer.keyset.keys), (signFor) => [
+    addSigner(formatWebAuthnSigner(["WEBAUTHN-a501020326200121582087d774da209cfe85947aa1b9b68e688cdd6d947cf07c3a8fef783f3f9a6e84cb22582085879f16b6e2ee5f8d5aabcc4a0d2a578e3e30f40cf4c90765236a863497d336"]), (signFor) => [
       signFor('coin.GAS'),
       signFor(
         'marmalade-v2.ledger.BUY',

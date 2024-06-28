@@ -45,12 +45,8 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
       return;
     }
 
-    const webauthnGuard = await getWebauthnGuard({
-      account: account.accountName,
-      host: env.URL,
-      networkId: env.NETWORKID,
-      chainId: sale.chainId,
-    })
+    const webauthnGuard = getWebauthnGuard(account.accountName)
+
 
     const escrowAccount = await getEscrowAccount({
       saleId: sale.saleId,
@@ -72,15 +68,18 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
         },
         buyer: {
           account: account.accountName,
-          keyset: webauthnGuard["devices"][0]["guard"]
+          keyset: getWebauthnGuard(account.accountName)
         },
         buyerFungibleAccount: account.accountName,
         capabilities: [
           ...generateSpireKeyGasCapability(account.accountName)!,
           {
             name: `${env.WEBAUTHN_WALLET}.TRANSFER`,
-            props: [account.accountName, escrowAccount["account"], new PactNumber(sale.startPrice).toPactDecimal()]
+            props: [account.accountName, escrowAccount["account"], sale.startPrice]
           },
+          {name: `marmalade-v2.ledger.BUY`, 
+            props: ["t:4V-JVwklwR0L43KOybc0PS5JtOMb0C_qMWgdruIout0","k:3a9582c99cee1ee4bb2bdd995960d595c39776e5917bc43e8cdc71b645e0720e","c:HaVXI-z_P3Br5zmh9M0KZTe-LdnYUcKEJvDOwEmyJpo",1,"3lxvBSQNSklQc22RqfaVOWMuE_YmtqEQFRcx3vTZsiw"]
+          }
         ],
       },
         {
