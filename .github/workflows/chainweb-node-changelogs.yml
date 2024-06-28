@@ -3,9 +3,6 @@ name: Update Chainweb-node Changelogs
 on:
   workflow_dispatch:
   pull_request:
- 
-
-concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   update-changelog:
