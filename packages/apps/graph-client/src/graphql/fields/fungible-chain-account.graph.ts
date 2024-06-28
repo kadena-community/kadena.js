@@ -15,8 +15,10 @@ export const ALL_FUNGIBLE_CHAIN_ACCOUNT_FIELDS: DocumentNode = gql`
     ...CoreFungibleChainAccountFields
     accountName
     guard {
-      keys
-      predicate
+      ... on Keyset {
+        keys
+        predicate
+      }
     }
     fungibleName
 

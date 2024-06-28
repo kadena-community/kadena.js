@@ -1,11 +1,12 @@
-import { getTokenInfo } from '@devnet/simulation/marmalade/get-token-info';
-import type { ChainId } from '@kadena/types';
+import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
-import { tokenDetailsLoader } from '../data-loaders/token-details';
+import { nonFungibleTokenBalancesLoader } from '../data-loaders/non-fungible-token-balances';
+import { nonFungibleTokenInfoLoader } from '../data-loaders/non-fungible-token-info';
 import type { INonFungibleTokenBalance } from '../types/graphql-types';
 import { NonFungibleTokenBalanceName } from '../types/graphql-types';
-import NonFungibleToken from './non-fungible-token';
+import Guard from './guard';
+import NonFungibleTokenInfo from './non-fungible-token-info';
 
 export default builder.node(
   builder.objectRef<INonFungibleTokenBalance>(NonFungibleTokenBalanceName),
@@ -27,7 +28,7 @@ export default builder.node(
     async loadOne({ tokenId, accountName, chainId }) {
       try {
         return (
-          await tokenDetailsLoader.load({
+          await nonFungibleTokenBalancesLoader.load({
             accountName,
             chainId,
           })
@@ -43,21 +44,24 @@ export default builder.node(
       chainId: t.exposeString('chainId'),
       version: t.exposeString('version'),
       guard: t.field({
-        type: 'Guard',
+        type: Guard,
         resolve(parent) {
           return parent.guard;
         },
       }),
       info: t.field({
-        type: NonFungibleToken,
+        type: NonFungibleTokenInfo,
+        complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
         nullable: true,
         async resolve(parent) {
           try {
-            return await getTokenInfo(
-              parent.tokenId,
-              parent.chainId.toString() as ChainId,
-              parent.version,
-            );
+            const tokenInfo = await nonFungibleTokenInfoLoader.load({
+              tokenId: parent.tokenId,
+              chainId: parent.chainId,
+              version: parent.version,
+            });
+
+            return tokenInfo;
           } catch (error) {
             throw normalizeError(error);
           }

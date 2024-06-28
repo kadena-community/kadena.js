@@ -7,7 +7,7 @@ import {
 } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
-import { tokenDetailsLoader } from '../data-loaders/token-details';
+import { nonFungibleTokenBalancesLoader } from '../data-loaders/non-fungible-token-balances';
 import type { INonFungibleChainAccount } from '../types/graphql-types';
 import { NonFungibleChainAccountName } from '../types/graphql-types';
 import NonFungibleTokenBalance from './non-fungible-token-balance';
@@ -45,7 +45,7 @@ export default builder.node(
         complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
         async resolve(parent) {
           try {
-            const tokenDetails = await tokenDetailsLoader.load({
+            const tokenDetails = await nonFungibleTokenBalancesLoader.load({
               accountName: parent.accountName,
               chainId: parent.chainId,
             });
