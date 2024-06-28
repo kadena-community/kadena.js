@@ -102,7 +102,12 @@ To generate the types required to work with the coin contract:
    
    ```bash
    npm run generate-types:coin:devnet
+   ```
    
+   This script uses the pactjs-cli to generate types from the oin contract on the development network.
+   You should see output similar to the following:
+
+   ```bash
    > snippets@1.0.0 generate-types:coin:devnet
    > pactjs contract-generate --contract coin --api http://localhost:8080/chainweb/0.0/development/chain/1/pact
    
@@ -122,6 +127,9 @@ To generate the types required to work with the coin contract:
    
    Verifying tsconfig.json at `/Users/pistolas/election-dapp/snippets/tsconfig.json`
    ```
+
+   Because you're generating types to create an account outside of the context of a particular namespace, you can ignore the `namespace` warnings.
+
 ### Prepare to run the transfer-create script
 
 Before you transfer coins from a public test account, you should review the script that calls the `transfer-create` to learn more about how Kadena client libraries enable you to insteract with the Kadean blockchain.
@@ -201,19 +209,21 @@ To transfer coins to fund the administrative account:
    npm run transfer-create:devnet -- k:<your-public-key>
    ```
 
+   Replace `k:<your-public-key>` with the **account name** for your administrative account. 
+   You can copy this account name from Chainweaver when viewing the account watch list.
    After a few seconds, you should see output similar to the following:
 
    ```bash
    > snippets@1.0.0 transfer-create:devnet
-   > KADENA_NETWORK=devnet ts-node ./transfer-create.ts k:5ec41b89d323398a609ffd54581f2bd6afc706858063e8f3e8bc76dc5c35e2c0
+   > KADENA_NETWORK=devnet ts-node ./transfer-create.ts k:5ec41b89d...5c35e2c0
    
    { status: 'success', data: 'Write succeeded' }
    ```
 
-5. Verify that your account was created using the Kadena client and the `coin-details` script for the administrative account with a command similar to the following:
+1. Verify that your account was created using the Kadena client and the `coin-details` script for the administrative account with a command similar to the following:
 
    ```bash
-   npm run coin-details:devnet -- k:<your-public-key>
+   npm run coin-details:devnet -- k:5ec41b89d...5c35e2c0
    ```
 
    You should see information about the new account similar to the following:
@@ -232,9 +242,9 @@ To transfer coins to fund the administrative account:
    }
    ```
 
-6. Click **Accounts** in the Chainweaver navigation panel.
+2. Click **Accounts** in the Chainweaver navigation panel.
 
-7. Expand your administrative account to verify that on chain 1 you are the owner, one keyset is defined, and the balance is 20 KDA.
+3. Expand your administrative account to verify that on chain 1 you are the owner, one keyset is defined, and the balance is 20 KDA.
 
    ![Your funded administrative account on the development network](/assets/docs/election-workshop/funded-account.png)
 

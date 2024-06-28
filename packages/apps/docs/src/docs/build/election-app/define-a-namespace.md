@@ -54,12 +54,12 @@ To write a simple transaction in Pact:
 
 5. Change to the `pact` folder in a terminal within your code editor.
 
-6. Execute the transaction using the `pact` command-line program.
+6. Execute the transaction using the `pact` command-line program with the `--trace` command-line option.
 
    If `pact-cli` is installed locally, run the following command inside the `pact` folder in the terminal shell:
 
    ```bash
-   pact namespace.repl -t
+   pact namespace.repl --trace
    ```
 
    After you execute the file, you should see the following output:
@@ -83,7 +83,7 @@ To write a simple transaction in Pact:
    (load "namespace.repl")
    ```
 
-   If you are using `pact-cli` in a browser, you can replace the `pact namespace.repl -t` command with `(load "namespace.repl")` throughout this tutorial.
+   If you are using `pact-cli` in a browser, you can replace the `pact namespace.repl --trace` command with `(load "namespace.repl")` throughout this tutorial.
 
 ## Use Pact built-in functions
 
@@ -127,14 +127,12 @@ To define the election application namespace with the `define-namespace` functio
 3. Execute the transaction using the `pact` command-line program by running the following command in the current terminal shell:
 
    ```bash
-   pact namespace.repl -t
+   pact namespace.repl --trace
    ```
 
    You'll see that this transaction fails with output similar to the following:
 
    ```bash
-   namespace.repl:1:0:Trace: Begin Tx 0: Define a namespace called 'election
-   namespace.repl:4:0:Trace: FAILURE: Test whether a namespace can be defined: evaluation of actual failed:namespace.repl:7:32: No such key in message: user-keyset
    namespace.repl:9:0:Trace: Commit Tx 0: Define a namespace called 'election
    namespace.repl:4:0:ExecError: FAILURE: Test whether a namespace can be defined: evaluation of actual failed:namespace.repl:7:32: No such key in message: user-keyset
    Load failed
@@ -161,7 +159,7 @@ To define the election application namespace with the `define-namespace` functio
 5. Execute the transaction using the `pact` command-line program:
 
    ```bash
-   pact namespace.repl -t
+   pact namespace.repl --trace
    ```
 
    You'll see that this transaction succeeds with output similar to the following:
@@ -201,7 +199,7 @@ To test modifying the election application namespace:
 3. Execute the transaction using the `pact` command-line program:
 
    ```bash
-   pact namespace.repl -t
+   pact namespace.repl --trace
    ```
 
    You'll see that this transaction fails with a message containing `Keyset failure` because only the `admin-keyset` is allowed to update the namespace and the transaction isn't signed by the `admin-keyset`.
@@ -219,7 +217,7 @@ To test modifying the election application namespace:
 5. Execute the transaction using the `pact` command-line program:
 
    ```bash
-   pact namespace.repl -t
+   pact namespace.repl --trace
    ```
 
    You'll see that the update transaction succeeds with output similar to the following:
@@ -265,7 +263,7 @@ To verify that redefining the election application namespace fails:
 3. Execute the transaction using the `pact` command-line program:
 
    ```bash
-   pact namespace.repl -t
+   pact namespace.repl --trace
    ```
 
    You'll see that the redefining the namespace fails—as expected—with output similar to the following:
@@ -307,7 +305,7 @@ To verify that redefining the election application namespace succeeds:
 3. Execute the transaction using the `pact` command-line program:
 
    ```bash
-   pact namespace.repl -t
+   pact namespace.repl --trace
    ```
 
    You'll see that the transaction succeeds with output similar to the following:
@@ -345,7 +343,7 @@ To create a principal namespace:
    )
    ```
 
-4. Load the `ns` module from the local filesystem to make it available in the Pact REPL by adding the following lines of code to the `principal-namespace.repl`:
+4. Load the `ns` module from the local filesystem to make it available in the Pact REPL by adding the following lines of code to the `principal-namespace.repl` file:
 
    ```pact
    (begin-tx)
@@ -375,14 +373,14 @@ To create a principal namespace:
 
    - The `admin-keyset` calls the `ns.create-principal-namespace` function.
    - The output of the `ns.create-principal-namespace` function is stored in the `ns-name` variable.
-   - The `define-namespace` function takes the output stored in `ns-name` variable as its first argument to create the unique name for the namespace.
+   - The `define-namespace` function takes the output stored in the `ns-name` variable as its first argument to create the unique name for the namespace.
 
    The code is similar to the code you wrote in the `namespace.repl` file except that you're using the `ns` module and passing the `ns-name` variable instead of using a hardcoded `election` string.
 
 6. Execute the transaction using the `pact` command-line program:
 
    ```bash
-   pact principal-namespace.repl -t
+   pact principal-namespace.repl --trace
    ```
 
    You'll see that the transaction succeeds with output similar to the following:
