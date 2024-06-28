@@ -15,84 +15,47 @@
   ],
   "exports": {
     ".": {
-      "types": {
-        "import": "./lib/esm/index.d.ts",
-        "require": "./lib/cjs/index.d.ts"
-      },
+      "types": "./lib/types/index.d.ts",
       "import": "./lib/esm/index.mjs",
       "require": "./lib/cjs/index.js"
     },
     "./built-in": {
-      "types": {
-        "import": "./lib/esm/built-in/index.d.ts",
-        "require": "./lib/cjs/built-in/index.d.ts"
-      },
+      "types": "./lib/types/built-in/index.d.ts",
       "import": "./lib/esm/built-in/index.mjs",
       "require": "./lib/cjs/built-in/index.js"
     },
     "./coin": {
-      "types": {
-        "import": "./lib/esm/coin/index.d.ts",
-        "require": "./lib/cjs/coin/index.d.ts"
-      },
+      "types": "./lib/types/coin/index.d.ts",
       "import": "./lib/esm/coin/index.mjs",
       "require": "./lib/cjs/coin/index.js"
     },
     "./core": {
-      "types": {
-        "import": "./lib/esm/core/index.d.ts",
-        "require": "./lib/cjs/core/index.d.ts"
-      },
+      "types": "./lib/types/core/index.d.ts",
       "import": "./lib/esm/core/index.mjs",
       "require": "./lib/cjs/core/index.js"
     },
     "./nodejs": {
-      "types": {
-        "import": "./lib/esm/nodejs/index.d.ts",
-        "require": "./lib/cjs/nodejs/index.d.ts"
-      },
+      "types": "./lib/types/nodejs/index.d.ts",
       "import": "./lib/esm/nodejs/index.mjs",
       "require": "./lib/cjs/nodejs/index.js"
     },
     "./marmalade": {
-      "types": {
-        "import": "./lib/esm/marmalade/index.d.ts",
-        "require": "./lib/cjs/marmalade/index.d.ts"
-      },
+      "types": "./lib/types/marmalade/index.d.ts",
       "import": "./lib/esm/marmalade/index.mjs",
       "require": "./lib/cjs/marmalade/index.js"
     }
   },
   "typesVersions": {
     "*": {
-      ".": [
-        "./lib/esm/index.d.ts"
-      ],
-      "built-in": [
-        "./lib/esm/built-in/index.d.ts"
-      ],
-      "core": [
-        "./lib/esm/core/index.d.ts"
-      ],
-      "coin": [
-        "./lib/esm/coin/index.d.ts"
-      ],
-      "nodejs": [
-        "./lib/esm/nodejs/index.d.ts"
-      ],
-      "marmalade": [
-        "./lib/esm/marmalade/index.d.ts"
-      ]
+      ".": ["./lib/types/index.d.ts"],
+      "built-in": ["./lib/types/built-in/index.d.ts"],
+      "core": ["./lib/types/core/index.d.ts"],
+      "coin": ["./lib/types/coin/index.d.ts"],
+      "nodejs": ["./lib/types/nodejs/index.d.ts"],
+      "marmalade": ["./lib/types/marmalade/index.d.ts"]
     }
   },
-  "files": [
-    "dist",
-    "lib",
-    "built-in",
-    "coin",
-    "core",
-    "src"
-  ],
+  "files": ["dist", "lib", "built-in", "coin", "core", "src"],
   "scripts": {
     "ae": "pnpm run ae:core && pnpm run ae:built-in && pnpm run ae:coin",
     "ae:built-in": "api-extractor run --verbose -c ./config/api-extractor-built-in.json",

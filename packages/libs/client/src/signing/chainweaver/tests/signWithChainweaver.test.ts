@@ -195,14 +195,14 @@ describe('signWithChainweaver', () => {
         const txWithOneSig = await signFn(unsignedTransaction);
 
         expect(txWithOneSig.sigs).toStrictEqual([
-          { sig: 'gas-key-sig' },
+          { sig: 'gas-key-sig', pubKey: 'gas-signer-pubkey' },
           undefined,
         ]);
 
         const signedTx = await signFn(txWithOneSig);
         expect(signedTx.sigs).toEqual([
-          { sig: 'gas-key-sig' },
-          { sig: 'transfer-key-sig' },
+          { sig: 'gas-key-sig', pubKey: 'gas-signer-pubkey' },
+          { sig: 'transfer-key-sig', pubKey: 'transfer-signer-pubkey' },
         ]);
       });
 
@@ -272,6 +272,6 @@ describe('signWithChainweaver', () => {
     });
     const signedTx = await signWithChainweaver(unsignedTransaction);
 
-    expect(signedTx.sigs).toStrictEqual([{ sig: 'sig' }]);
+    expect(signedTx.sigs).toStrictEqual([{ sig: 'sig', pubKey: 'pubkey' }]);
   });
 });

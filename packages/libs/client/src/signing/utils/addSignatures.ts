@@ -48,7 +48,7 @@ export const addSignatures: (
           return undefined;
         }
         debug(`Using new signature for pubKey ${pubKey}`);
-        return { sig: signature.sig };
+        return { sig: signature.sig, pubKey };
       }),
     };
   } else if (signaturesMatchesSigners(parsedTransaction, signatures)) {

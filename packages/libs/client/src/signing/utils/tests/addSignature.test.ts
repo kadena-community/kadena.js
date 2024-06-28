@@ -31,7 +31,7 @@ describe('addSignature', () => {
     expect(withFirstSig).toStrictEqual({
       cmd: JSON.stringify(command),
       hash: 'test-hash',
-      sigs: [{ sig: 'first-sig' }, undefined],
+      sigs: [{ sig: 'first-sig', pubKey: 'first_public_key' }, undefined],
     });
 
     const withAllSigs = addSignatures(withFirstSig, {
@@ -42,7 +42,10 @@ describe('addSignature', () => {
     expect(withAllSigs).toStrictEqual({
       cmd: JSON.stringify(command),
       hash: 'test-hash',
-      sigs: [{ sig: 'first-sig' }, { sig: 'second-sig' }],
+      sigs: [
+        { sig: 'first-sig', pubKey: 'first_public_key' },
+        { sig: 'second-sig', pubKey: 'second_public_key' },
+      ],
     });
   });
 
