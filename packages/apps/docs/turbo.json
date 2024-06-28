@@ -5,8 +5,7 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**", "./src/_generated/**"],
-      "outputMode": "new-only",
-      "cache": false
+      "outputMode": "new-only"
     }
   }
 }
