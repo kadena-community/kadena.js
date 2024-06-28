@@ -13,7 +13,6 @@ interface GuardFormProps {
 const GuardForm: FC<GuardFormProps> = ({ guardInput, handleGuardInputChange, handleGuardExcludeChange , excluded }) => (
   <div className={styles.formSection}>
     <TextField 
-    
       label="URI Guard" 
       name="uriGuard" 
       value={guardInput.uriGuard} 
