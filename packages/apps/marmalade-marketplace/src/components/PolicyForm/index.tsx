@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Checkbox } from '@kadena/react-ui';
+import { Heading } from '@kadena/react-ui';
 import * as styles from '@/styles/create-token.css';
 import { ICreateTokenPolicyConfig } from "@kadena/client-utils/marmalade";
 
@@ -10,19 +10,9 @@ interface PolicyFormProps {
 
 const PolicyForm: FC<PolicyFormProps> = ({ policyConfig, handleCheckboxChange }) => (
     <div className={styles.formSection}>
+        <Heading as="h5" className={styles.formHeading}>Policy Configuration</Heading>
+        <br/>
         <div className={styles.checkboxRow}>
-          <div className={styles.firstColumn}>
-            <div className={styles.checkboxContainer}>
-              <input
-                className={styles.checkboxInput}
-                type="checkbox"
-                id="customPolicies"
-                name="customPolicies"
-                checked={policyConfig.customPolicies}
-                onChange={handleCheckboxChange}
-              />
-              <label className={styles.checkboxLabel} htmlFor="customPolicies">Custom Policies</label>
-            </div>
             <div className={styles.checkboxContainer}>
               <input
                 className={styles.checkboxInput}
@@ -45,8 +35,6 @@ const PolicyForm: FC<PolicyFormProps> = ({ policyConfig, handleCheckboxChange })
               />
               <label className={styles.checkboxLabel} htmlFor="guarded">Guarded</label>
             </div>
-          </div>
-          <div className={styles.secondColumn}>
             <div className={styles.checkboxContainer}>
               <input
                 className={styles.checkboxInput}
@@ -80,7 +68,6 @@ const PolicyForm: FC<PolicyFormProps> = ({ policyConfig, handleCheckboxChange })
               />
               <label className={styles.checkboxLabel} htmlFor="collection">Collection</label>
             </div>
-          </div>
       </div>
     </div>
 );
