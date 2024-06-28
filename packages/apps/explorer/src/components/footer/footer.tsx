@@ -10,7 +10,6 @@ import React from 'react';
 import { Media } from '../layout/media';
 import Logo from '../logo/logo';
 import FooterColumn from './footer-column';
-import FooterLink from './footer-link';
 import {
   doubleContentClass,
   footerClass,
