@@ -37,6 +37,7 @@ interface IProps {
 export const ShareView: FC<IProps> = ({ prev, status }) => {
   const qrRef = useRef<QRCode | null>(null);
   const qrContainerRef = useRef<HTMLDivElement>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const [isMounted, setIsMounted] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
@@ -106,7 +107,10 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
   const createTx = async () => {
     if (!proofOfUs || !account || !signees) return;
 
-    const imageData = await createImageUrl(background.bg);
+    const imageData = await createImageUrl(
+      background.bg,
+      proofOfUs.proofOfUsId,
+    );
     if (!imageData) {
       console.error('no image found');
       return;
@@ -141,8 +145,9 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
   };
 
   const handleStartSigning = async () => {
+    setIsUploading(true);
     const transactionData = await createTx();
-    console.log({ transactionData });
+
     if (!transactionData) return;
     const transaction = Buffer.from(
       JSON.stringify(transactionData.transaction),
@@ -158,6 +163,8 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
       eventName: transactionData.eventName,
       isReadyToSign: true,
     });
+
+    setIsUploading(false);
   };
 
   return (
@@ -207,6 +214,7 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
               </div>
               <Stack gap="md">
                 <StartSigningButton
+                  isLoading={isUploading}
                   signees={signees}
                   onPress={handleStartSigning}
                 />
@@ -230,7 +238,7 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
                   <Button variant="secondary">Reset Signers</Button>
                 </Confirmation>
                 <Button isDisabled={!readyToMint} onPress={handleSign}>
-                  {readyToMint ? 'Sign & Upload' : 'Waiting for signatures'}
+                  {readyToMint ? 'Sign & Mint' : 'Waiting for signatures'}
                 </Button>
               </>
             )}

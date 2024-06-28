@@ -5,6 +5,8 @@ import { FormatLink } from '@/components/compact-table/utils/format-link';
 import { FormatStatus } from '@/components/compact-table/utils/format-status';
 import DataRenderComponent from '@/components/data-render-component/data-render-component';
 import SearchLayout from '@/components/layout/search-layout/search-layout';
+import { useQueryContext } from '@/context/query-context';
+import { block } from '@/graphql/queries/block.graph';
 import { Badge, TabItem, Tabs } from '@kadena/react-ui';
 
 import { useRouter } from 'next/router';
@@ -14,6 +16,8 @@ import React, { useEffect, useState } from 'react';
 const Block: React.FC = () => {
   const router = useRouter();
   const [selectedTab, setSelectedTab] = useState<string>('Header');
+
+  const { setQueries } = useQueryContext();
 
   useEffect(() => {
     const hash = router.asPath.split('#')[1];
@@ -29,10 +33,16 @@ const Block: React.FC = () => {
     router.replace(`#${tab}`);
   };
 
+  const blockQueryVariables = {
+    hash: router.query.hash as string,
+  };
+
+  useEffect(() => {
+    setQueries([{ query: block, variables: blockQueryVariables }]);
+  }, []);
+
   const { loading, data, error } = useBlockQuery({
-    variables: {
-      hash: router.query.hash as string,
-    },
+    variables: blockQueryVariables,
     skip: !router.query.hash,
   });
 

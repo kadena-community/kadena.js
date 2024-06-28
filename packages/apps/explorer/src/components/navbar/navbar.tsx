@@ -1,8 +1,6 @@
-import { MonoHub } from '@kadena/react-icons/system';
 import {
   KadenaLogo,
   NavHeader,
-  NavHeaderButton,
   NavHeaderLink,
   NavHeaderLinkList,
   NavHeaderSelect,
@@ -12,6 +10,7 @@ import {
 import Link from 'next/link';
 import type { FC } from 'react';
 import React, { useState } from 'react';
+import { GraphQLQueryDialog } from '../graphql-query-dialog/graphql-query-dialog';
 import { navbarWrapperClass } from './styles.css';
 
 export const NavBar: FC = () => {
@@ -20,7 +19,7 @@ export const NavBar: FC = () => {
     <Stack className={navbarWrapperClass}>
       <NavHeader
         logo={
-          <Link href="">
+          <Link href="/">
             <KadenaLogo height={40} />
           </Link>
         }
@@ -29,9 +28,9 @@ export const NavBar: FC = () => {
           <NavHeaderLink>{''}</NavHeaderLink>
           <NavHeaderLink>{''}</NavHeaderLink>
         </NavHeaderLinkList>
-        <NavHeaderButton variant="transparent" endVisual={<MonoHub />}>
-          Graph
-        </NavHeaderButton>
+        {/* Puting the Query Dialog Component inside a NavHeaderButton was
+        causing hydration issues: button inside a button */}
+        <GraphQLQueryDialog />
         <NavHeaderSelect
           aria-label="Select Network"
           defaultSelectedKey={selectedNetwork}

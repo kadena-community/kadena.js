@@ -1,8 +1,13 @@
-import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
-import { token, uiSmallBold, uiSmallRegular } from '../../styles';
+import {
+  globalStyle,
+  style,
+  styleVariants,
+  token,
+  uiSmallBold,
+  uiSmallRegular,
+} from '../../styles';
 
 export const tableWrapper = style({
-  width: 'fit-content',
   overflowX: 'auto',
 });
 

@@ -1,6 +1,5 @@
-import { createVar, style } from '@vanilla-extract/css';
-import { recipe } from '@vanilla-extract/recipes';
-import { token, uiBaseRegular } from '../../../styles';
+import { createVar } from '@vanilla-extract/css';
+import { recipe, style, token, uiBaseRegular } from '../../../styles';
 
 const maxWidth = createVar();
 

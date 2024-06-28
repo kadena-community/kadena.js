@@ -69,6 +69,7 @@ export type ModulesMap = Map<
  */
 export const mapToTreeItems = (
   modulesMap: ModulesMap,
+  activeModule?: IncompleteModuleModel,
   parent?: Namespace,
   needsSorting = true,
 ): TreeItem<IncompleteModuleModel>[] => {
@@ -82,6 +83,7 @@ export const mapToTreeItems = (
     if (value instanceof Map) {
       const mapped = mapToTreeItems(
         value,
+        activeModule,
         `${typeof parent === 'string' ? `${parent}.` : ''}${name}`,
         needsSorting,
       );
@@ -94,6 +96,10 @@ export const mapToTreeItems = (
           title: chain.chainId,
           children: [],
           label: chain.hash,
+          isActive:
+            chain.networkId === activeModule?.networkId &&
+            chain.name === activeModule?.name &&
+            chain.chainId === activeModule?.chainId,
         };
       });
     }

@@ -50,25 +50,25 @@ You can use the following optional flags with `kadena account` commands.
 ## kadena account add
 
 Use `kadena account add` to add a new local account manually from existing keys or from a wallet.
-The parameters required depend on the type of account you specify using the `--type` command-line option. 
-Use `--type manual` to add an account manually from existing local keys.
-Use `--type wallet` to add an account to an existing wallet.
+The parameters required depend on the type of account you specify using the `--from` command-line option. 
+Use `--from key` to add an account manually from existing local keys.
+Use `--from wallet` to add an account to an existing wallet.
 
 ### Basic usage
 
 The basic syntax for the `kadena account add` command is:
 
 ```bash
-kadena account add --type manual | wallet [arguments] [flags]
+kadena account add --from key | wallet [arguments] [flags]
 ```
 
-### Arguments for manual
+### Arguments for using a local key
 
-You can use the following command-line arguments with the `kadena account add --type manual` command:
+You can use the following command-line arguments with the `kadena account add --from key` command:
 
 | Use this argument | To do this                                 | 
 | ----------------- | ------------------------------------------ | 
-| -t, --type _manual_ | Specify the type of account to add. Use`manual` to add an account manually from existing keys. |
+| -f --from _key_ | Specify the type of account to add. Use `--from key` to add an account manually from existing keys. |
 | -l, --account-alias _aliasName_ | Specify an alias for the account. | 
 | -f, --fungible _fungible_ | Specify the fungible module name. The default is `coin`. |
 | -p, --predicate _predicate_ | Specify the predicate to use for the account. You can specify on the the `keys-all`, `keys-any`, or `keys-2` built-in predicates or a custom predicate. |
@@ -80,13 +80,13 @@ You can use the following command-line arguments with the `kadena account add --
 
 If you want to verify the account details on the blockchain, you must provide the network name and chain identifier.
 
-### Arguments for wallet
+### Arguments for using a wallet
 
-You can use the following command-line arguments with the `kadena account add --type wallet` command:
+You can use the following command-line arguments with the `kadena account add --from wallet` command:
 
 | Use this argument | To do this                                 |
 | ----------------- | ------------------------------------------ |
-| -t, --type _wallet_ | Specify the type of account to add. Use `wallet` to add a wallet account. | 
+| -f, --from _wallet_ | Specify the type of account to add. Use `--from wallet` to add a wallet account. | 
 | -l, --account-alias _aliasName_ | Specify an alias for the account. |
 | -a, --account-name _accountName_ | Provide an account name. |
 | -f, --fungible _fungible_ | Specify the fungible module name. The default is `coin`.|
@@ -110,7 +110,7 @@ If you have other public keys that you want to use, you can add an account by en
 To add an account locally from an account that exists on the Kadena test network and chain identifier 1, run a command similar to the following:
 
 ```bash
-kadena account add --type=manual --account-alias=pistolas-testnet --account-name=k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e --fungible=coin --verify --network=testnet --chain-id=1
+kadena account add --from=key --account-alias=pistolas-testnet --account-name=k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e --fungible=coin --verify --network=testnet --chain-id=1
 ```
 
 This command verifies the account details on the Kadena test network and displays a confirmation message similar to the following:
@@ -122,7 +122,7 @@ The account configuration "pistolas-testnet" has been saved in .kadena/accounts/
 To add an account by providing public keys manually, you can run a command similar to the following:
 
 ```bash
-kadena account add --type="manual" --account-alias=pistolas-publickey --account-name=k:3e7e7db00e2e575a5260b8705ab7663574b186657451d6990316af6bc5108b59 --fungible="coin" --public-keys=3e7e7db00e2e575a5260b8705ab7663574b186657451d6990316af6bc5108b59,99d30af3fa91d78cc06cf53a0d4eb2d7fa2a5a72944cc5451311b455a67a3c1c --predicate=keys-any
+kadena account add --from="key" --account-alias=pistolas-publickey --account-name=k:3e7e7db00e2e575a5260b8705ab7663574b186657451d6990316af6bc5108b59 --fungible="coin" --public-keys=3e7e7db00e2e575a5260b8705ab7663574b186657451d6990316af6bc5108b59,99d30af3fa91d78cc06cf53a0d4eb2d7fa2a5a72944cc5451311b455a67a3c1c --predicate=keys-any
 ```
 
 This command prompts you to specify whether you want to verify the account information before adding the account.
@@ -137,13 +137,13 @@ For example:
 To add an account from a wallet, you can run a command similar to the following:
 
 ```bash
-kadena account add --type="wallet" --wallet-name="wallet_name" --account-alias="account_alias" --fungible="coin" --public-keys="7c8939951b61614c30f837d7b02fe4982565962b5665d0e0f836b79720747cb2" --predicate="keys-all"
+kadena account add --from="wallet" --wallet-name="wallet_name" --account-alias="account_alias" --fungible="coin" --public-keys="7c8939951b61614c30f837d7b02fe4982565962b5665d0e0f836b79720747cb2" --predicate="keys-all"
 ```
 
-To add an account with wallet type and auto generate keys, you can run a command similar to the following:
+To add an account from a wallet and automatically generate new keys, you can run a command similar to the following:
 
 ```bash
-kadena account add --type="wallet" --wallet-name="wallet-name" --account-alias="account_alias_testing" --fungible="coin" --public-keys="your_public_key,_generate_" --predicate="keys-all" --password-file="./kadenawallet-pw.txt"
+kadena account add --from="wallet" --wallet-name="wallet-name" --account-alias="account_alias_testing" --fungible="coin" --public-keys="your_public_key,_generate_" --predicate="keys-all" --password-file="./kadenawallet-pw.txt"
 ```
 
 ## kadena account details

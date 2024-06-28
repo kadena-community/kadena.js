@@ -23,7 +23,9 @@ const Home: React.FC = () => {
     <SearchLayout>
       <Media greaterThanOrEqual="sm">
         <Stack flexDirection="column" gap={'xxl'} alignItems={'center'}>
-          <LogoKdacolorLight />
+          <a href="/">
+            <LogoKdacolorLight cursor={'pointer'} />
+          </a>
           <SearchComponent
             searchOption={searchOption}
             setSearchOption={setSearchOption}
@@ -54,7 +56,9 @@ const Home: React.FC = () => {
           alignItems={'center'}
           paddingBlockStart={'xxl'}
         >
-          <LogoKdacolorLight />
+          <a href="/">
+            <LogoKdacolorLight cursor={'pointer'} />
+          </a>
           <SearchComponent
             searchOption={searchOption}
             setSearchOption={setSearchOption}

@@ -1,6 +1,6 @@
 {
   "name": "@kadena/proof-of-us",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "private": true,
   "scripts": {
     "build": "pnpm run generate:sdk && next build",
@@ -31,6 +31,7 @@
     "@kadena/pactjs": "workspace:*",
     "@kadena/react-icons": "workspace:*",
     "@kadena/react-ui": "workspace:*",
+    "@pinata/sdk": "^2.1.0",
     "@vanilla-extract/css": "1.14.2",
     "@vanilla-extract/recipes": "0.5.1",
     "classnames": "^2.3.1",
@@ -44,7 +45,6 @@
     "http-proxy-middleware": "^2.0.6",
     "next": "14.2.2",
     "next-themes": "^0.2.1",
-    "nft.storage": "^7.1.1",
     "react": "^18.2.0",
     "react-aria-components": "^1.0.1",
     "react-dom": "^18.2.0",

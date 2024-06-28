@@ -16,6 +16,11 @@ interface IChangelogPackage extends IRepo {
 
 interface IChangelogPackageVersion {
   label: string;
+  description: string;
+  descriptionTemp?: {
+    type: string;
+    children: [];
+  };
   isLocked: boolean;
   date?: Date;
   authors: IChangelogUser[];

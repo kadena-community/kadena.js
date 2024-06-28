@@ -1,8 +1,10 @@
 import {
-  useBlocksFromHeightsQuery,
+  useCompletedBlockHeightsQuery,
   useLastBlockHeightQuery,
   useNewBlocksSubscription,
 } from '@/__generated__/sdk';
+import { useQueryContext } from '@/context/query-context';
+import { newBlocks } from '@/graphql/subscriptions/newBlocks.graph';
 import type { IChainBlock } from '@/services/block';
 import { addBlockData } from '@/services/block';
 import { Stack } from '@kadena/react-ui';
@@ -21,18 +23,18 @@ const endColumn = { title: 'Block', subtitle: 'Activity' };
 const BlockTable: React.FC = () => {
   const { data: newBlocksData } = useNewBlocksSubscription();
   const { data: lastBlockHeight } = useLastBlockHeightQuery();
+  const { data: oldBlocksData } = useCompletedBlockHeightsQuery({
+    variables: {
+      // Change this if the table needs to show more than 80 blocks at once (on startup)
+      first: 80,
+      // We don't want only completed heights
+      completedHeights: false,
+      heightCount: 4,
+    },
+  });
 
   const [blockData, setBlockData] = useState<IChainBlock>({});
   const [blockHeights, updateBlockHeights] = useState<number[]>([1, 2, 3, 4]);
-
-  const { data: oldBlocksData } = useBlocksFromHeightsQuery({
-    variables: {
-      startHeight: lastBlockHeight?.lastBlockHeight - 4,
-      endHeight: lastBlockHeight?.lastBlockHeight,
-      first: 80,
-    },
-    skip: !lastBlockHeight?.lastBlockHeight,
-  });
 
   useEffect(() => {
     if (lastBlockHeight?.lastBlockHeight) {
@@ -73,6 +75,15 @@ const BlockTable: React.FC = () => {
       }
     }
   }, [newBlocksData]);
+
+  const { setQueries } = useQueryContext();
+  useEffect(() => {
+    setQueries([
+      {
+        query: newBlocks,
+      },
+    ]);
+  }, []);
 
   return (
     <>

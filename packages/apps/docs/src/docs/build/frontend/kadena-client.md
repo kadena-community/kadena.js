@@ -1,8 +1,6 @@
 ---
 title: Kadena client
-description:
-  The @kadena/client library provides a TypeScript-based API for interacting
-  with smart contracts and Chainweb nodes on the Kadena network.
+description: The @kadena/client library provides a TypeScript-based API for interacting with smart contracts and Chainweb nodes on the Kadena network.
 menu: Frontend frameworks
 label: Kadena client
 order: 3
@@ -13,9 +11,7 @@ tags: ['TypeScript', 'Kadena', 'Kadena client', 'frontend']
 
 # Kadena client
 
-The `@kadena/client` library provides a TypeScript-based API for interacting
-with smart contracts and Chainweb nodes on the Kadena network. 
-The library includes modules to help you perform the following types of common tasks:
+The `@kadena/client` library provides a TypeScript-based API for interacting with smart contracts and Chainweb nodes on the Kadena network. The library includes modules to help you perform the following types of common tasks:
 
 - Create commands
 - Sign transactions
@@ -26,9 +22,7 @@ If you only need to interact with the `coin` contract, you can use the functions
 
 ## Get started with Kadena client
 
-One of the most important features of the Kadena client library is that helps you create **command** objects with the correct structure.
-You can then construct and sign transactions to send the command to the blockchain network.
-After you submit a transaction for processing, you can use the Kadena client to listen for the transaction results.
+One of the most important features of the Kadena client library is that helps you create **command** objects with the correct structure. You can then construct and sign transactions to send the command to the blockchain network. After you submit a transaction for processing, you can use the Kadena client to listen for the transaction results.
 
 The following example illustrates the structure of a command object:
 
@@ -80,9 +74,7 @@ interface IPactCommand {
 }
 ```
 
-If your use case is simple enough that you can create the JSON directly, you don't need to use the functions in the Kadena client library. 
-You can also use some parts of the library, without using everything.
-If you prefer to learn from code, check out the [client-examples](https://github.com/kadena-community/kadena.js/tree/main/packages/libs/client-examples).
+If your use case is simple enough that you can create the JSON directly, you don't need to use the functions in the Kadena client library. You can also use some parts of the library, without using everything. If you prefer to learn from code, check out the [client-examples](https://github.com/kadena-community/kadena.js/tree/main/packages/libs/client-examples).
 
 ### Install
 
@@ -100,8 +92,7 @@ After you install the library, you can import `@kadena/client` functions into a 
 import { createClient, Pact } from '@kadena/client';
 ```
 
-The library also exports functional programming utilities under `@kadena/client/fp` for more flexibility when using a functional programming approach.
-To import functional programming utilities, include the following statement in your TypeScript or JavaScript program.
+The library also exports functional programming utilities under `@kadena/client/fp` for more flexibility when using a functional programming approach. To import functional programming utilities, include the following statement in your TypeScript or JavaScript program.
 
 ```typescript
 import { composePactCommand } from '@kadena/client/fp';
@@ -109,9 +100,7 @@ import { composePactCommand } from '@kadena/client/fp';
 
 ## Calling Pact modules
 
-Interacting with the Kadena blockchain network and Chainweb nodes is mostly a matter of calling smart contract functions. 
-From the client perspective, you need to write Pact code in a string and pass it to the `IPactCommand.payload.exec.code` interface. 
-Without code completion and validation, writing the Pact code string manually is error-prone and vulnerable to code injection.
+Interacting with the Kadena blockchain network and Chainweb nodes is mostly a matter of calling smart contract functions. From the client perspective, you need to write Pact code in a string and pass it to the `IPactCommand.payload.exec.code` interface. Without code completion and validation, writing the Pact code string manually is error-prone and vulnerable to code injection.
 
 To simplify the process, you can use `Pact.modules` to help you:
 
@@ -125,7 +114,6 @@ You can skip this part of the client library if your code is just a simple **con
 
 Use `Pact.modules` with the following format:
 
-
 ```typescript
 import { Pact } from `@kadena/client`;
 
@@ -134,8 +122,8 @@ Pact.modules[`${namespace}.${moduleName}`][functionName](...args);
 
 ### Parameters
 
-| Parameter | Type        | Description       |
-| --------- | ----------- | ----------------- |
+| Parameter | Type        | Description        |
+| --------- | ----------- | ------------------ |
 | ...args   | PactValue[] | List of arguments. |
 
 ```typescript
@@ -175,8 +163,7 @@ const code = Pact.modules["free.my-module"].["my-function"](["first", { time: ne
 
 ### Create type definitions
 
-You can use [@kadena/pactjs-cli](/reference/kadena-client/pactjs-cli) to create the type definitions for the Pact module you use.
-After you generate the type definitions file, the code editor in your development environment should provide code completion for functions and capabilities.
+You can use [@kadena/pactjs-cli](/reference/kadena-client/pactjs-cli) to create the type definitions for the Pact module you use. After you generate the type definitions file, the code editor in your development environment should provide code completion for functions and capabilities.
 
 To create a type definition file for the `coin` contract:
 
@@ -186,28 +173,24 @@ npx @kadena/pactjs-cli contract-generate --contract coin --api https://api.testn
 
 ## Creating commands
 
-As illustrated in [Get started with Kadena client](#get-started-with-kadena-client), a command is a JSON object with three keys: `cmd`, `hash`, and `sig`. 
-There are two types of commands:
+As illustrated in [Get started with Kadena client](#get-started-with-kadena-client), a command is a JSON object with three keys: `cmd`, `hash`, and `sig`. There are two types of commands:
 
 - [Execution](#execution) commands
 - [Continuation](#continuation) commands
 
-You can create the JSON object without using the Kadena client library.
-However, using the library and `Pact.builder` to create the command object simplifies the process.
+You can create the JSON object without using the Kadena client library. However, using the library and `Pact.builder` to create the command object simplifies the process.
 
 ### Pact.builder.execution
 
-You can use `Pact.builder` to create an execution command object, `IPactCommand.payload.exec.code`.
-Most transactions are execution (exec) commands that complete in a single step.
-Execution commands are also be used for the first step in transactions that are `defpact` multi-step transactions.
+You can use `Pact.builder` to create an execution command object, `IPactCommand.payload.exec.code`. Most transactions are execution (exec) commands that complete in a single step. Execution commands are also be used for the first step in transactions that are `defpact` multi-step transactions.
 
 ```typescript
 Pact.builder.execution(...codes): IBuilder
 ```
 
-| Parameter | Type     | Description   |
-| --------- | -------- | ------------- |
-| ...codes   | string[] | List of input for a function. |
+| Parameter | Type     | Description                   |
+| --------- | -------- | ----------------------------- |
+| ...codes  | string[] | List of input for a function. |
 
 #### Examples
 
@@ -236,52 +219,46 @@ Pact.builder.continuation(contData): IBuilder
 ```
 
 | Parameter | Type | Description |
-| --------- | ---- |------------ |
-| contData  | object | Continuation data includes a unique `defpact` identifier, whether the transactions rolls back a previous transaction, the transaction step that the continuation represents with the first step being step 0, and a simple payment verification proof if one is generated by calling the `/spv` endpoint. |
+| --- | --- | --- |
+| contData | object | Continuation data includes a unique `defpact` identifier, whether the transactions rolls back a previous transaction, the transaction step that the continuation represents with the first step being step 0, and a simple payment verification proof if one is generated by calling the `/spv` endpoint. |
 
 The `contData` object consists of the following properties:
 
 ```json
-{ 
-    pactId: string, 
-    rollback: boolean, 
-    step: number, 
-    data?: Record<string, any>, 
+{
+    pactId: string,
+    rollback: boolean,
+    step: number,
+    data?: Record<string, any>,
     proof?: null \| string
-} 
+}
 ```
 
 #### Example
 
-The `coin.cross-chain` function is a `defpact` multi-step transaction that burns tokens in
-the source chain and mints tokens in the destination chain. 
-After the first step completes successfully, you can call the second step by using the `continuation` command object.
+The `coin.cross-chain` function is a `defpact` multi-step transaction that burns tokens in the source chain and mints tokens in the destination chain. After the first step completes successfully, you can call the second step by using the `continuation` command object.
 
 ```typescript
-
 const builder: IBuilder = Pact.builder.continuation({
   pactId,
   rollback: false,
-  step:1,
-  proof: spvProof
-})
-
+  step: 1,
+  proof: spvProof,
+});
 ```
 
 ### addSigner
 
-You can use the `addSigner` method to add public keys and capabilities for a transaction signer to the command. 
-You can call `addSigner` multiple times to add multiple signers to the transaction.
-Later, the Chainweb node checks whether all required signers have signed the transaction or not.
+You can use the `addSigner` method to add public keys and capabilities for a transaction signer to the command. You can call `addSigner` multiple times to add multiple signers to the transaction. Later, the Chainweb node checks whether all required signers have signed the transaction or not.
 
 ```typescript
 Pact.builder.execution(...codes).addSigner(signerOrSignersList, capabilityCallback): IBuilder
 ```
 
-| Parameter | Type | Description  |
-| --------- | ---- | ------------ |
+| Parameter | Type | Description |
+| --- | --- | --- |
 | signer | string or object\| { pubKey: string; scheme?: 'ED25519' \| 'ETH' \| 'WebAuthn'; address?: string;} \| ISigner[] | Public key of the signer or the signer object (this can also be a list of signers if all of the signers sign for the same capabilities). |
-| capabilityCallback | (signFor) => ReturnType<signFor>[]    | Allows you to scope what the signer is signing for to a specific list of capabilities.   |
+| capabilityCallback | (signFor) => ReturnType<signFor>[] | Allows you to scope what the signer is signing for to a specific list of capabilities. |
 
 Chainweb supports the following signature schemes for public keys:
 
@@ -289,9 +266,7 @@ Chainweb supports the following signature schemes for public keys:
 - `WebAuthn`
 - `ETH`
 
-The default signature scheme is `ED25519`. 
-You can pass just the public key if the signature scheme is `ED25519`.
-If the scheme is not `ED25519`, you must pass a signer object that includes the pubic key and the signature scheme.
+The default signature scheme is `ED25519`. You can pass just the public key if the signature scheme is `ED25519`. If the scheme is not `ED25519`, you must pass a signer object that includes the pubic key and the signature scheme.
 
 #### Examples
 
@@ -368,10 +343,7 @@ const equivalentPactCommand = {
 
 ### addData
 
-You can use `addData` to add data to the `IPactCommand.payload.exec.data` or
-`IPactCommand.payload.cont.data` command.
-This data is readable in the smart contract later. 
-You can also use this data in the code you set in the command.
+You can use `addData` to add data to the `IPactCommand.payload.exec.data` or `IPactCommand.payload.cont.data` command. This data is readable in the smart contract later. You can also use this data in the code you set in the command.
 
 ```typescript
 Pact.builder
@@ -379,10 +351,10 @@ Pact.builder
   .addData(key, value): IBuilder
 ```
 
-| Parameter | Type      | Description                  |
-| --------- | --------- | ---------------------------- |
+| Parameter | Type      | Description                                      |
+| --------- | --------- | ------------------------------------------------ |
 | key       | string    | The key associated with the data you're sending. |
-| value     | PactValue | Data that you want to send.       |
+| value     | PactValue | Data that you want to send.                      |
 
 #### Examples
 
@@ -410,8 +382,7 @@ Pact.builder
 
 ### addKeyset
 
-Because keysets are often included as data in commands, you can use the `addKeyset` method as an
-alternative to the `addData` method to add a keyset to a command.
+Because keysets are often included as data in commands, you can use the `addKeyset` method as an alternative to the `addData` method to add a keyset to a command.
 
 ```typescript
 Pact.builder
@@ -419,15 +390,15 @@ Pact.builder
   .addKeyset(name, pred, ...keys): IBuilder
 ```
 
-| Parameter | Type                                        | Description                                                                  |
-| --------- | ------------------------------------------- | ---------------------------------------------------------------------------- |
-| name      | string                                      | The name associated with the keyset.                                       |
-| pred      | "keys-all"\|"keys-2"\| "keys-any" \| string | One of the built-in predicate functions or a user-defined predicate function. |
-| ...keys   | ...string[]                                 | List of public keys in the keyset.                                        |
+| Parameter | Type | Description |
+| --- | --- | --- |
+| name | string | The name associated with the keyset. |
+| pred | "keys-all"\|"keys-2"\| "keys-any" \| string | One of the built-in predicate functions or a user-defined predicate function. |
+| ...keys | ...string[] | List of public keys in the keyset. |
 
 #### Examples
 
-To use `readKeyset` and `addKeyset` helper functions with transfer-create: 
+To use `readKeyset` and `addKeyset` helper functions with transfer-create:
 
 ```typescript
 Pact.builder
@@ -462,20 +433,20 @@ Pact.builder
   .setMeta(meta): IBuilder
 ```
 
-| Parameter | Type                                                                                                               | Description         |
-| --------- | ------------------------------------------------------------------------------------------------------------------ | ------------------- |
-| meta      | { chainId: ChainId, senderAccount: string, gasLimit: number, gasPrice: number, ttl: number, creationTime: number } | Add a metadata object to the command. |
+| Parameter | Type | Description |
+| --- | --- | --- |
+| meta | { chainId: ChainId, senderAccount: string, gasLimit: number, gasPrice: number, ttl: number, creationTime: number } | Add a metadata object to the command. |
 
 The `meta` object consists of the following properties:
 
-| Property      | Type            | Default value       | Description                                                          |
-| ------------- | --------------- | ------------------- | -------------------------------------------------------------------- |
-| chainId       | `"0"` to `"19"` | `undefined`         | Chain identifier for the chain. Valid values are from 0 to 19.                                         |
-| senderAccount | `string`        | `undefined`         | The account address that you want to pay transaction fees from.|
-| gasLimit      | `number`        | `2500`              | Maximum units of gas that you want to allow to be deducted when running the transaction. |
-| gasPrice      | `number`        | `1.0e-8`            | Price of each gas unit based on KDA (e.g., 0.0000001).               |
-| ttl           | `number`        | `28800`             | Time-to-live (ttl) for the transaction to be valid in seconds. The default value is 8 hours.    |
-| creationTime  | `number`        | `Date.now() / 1000` | Transaction creation time in seconds.                                |
+| Property | Type | Default value | Description |
+| --- | --- | --- | --- |
+| chainId | `"0"` to `"19"` | `undefined` | Chain identifier for the chain. Valid values are from 0 to 19. |
+| senderAccount | `string` | `undefined` | The account address that you want to pay transaction fees from. |
+| gasLimit | `number` | `2500` | Maximum units of gas that you want to allow to be deducted when running the transaction. |
+| gasPrice | `number` | `1.0e-8` | Price of each gas unit based on KDA (e.g., 0.0000001). |
+| ttl | `number` | `28800` | Time-to-live (ttl) for the transaction to be valid in seconds. The default value is 8 hours. |
+| creationTime | `number` | `Date.now() / 1000` | Transaction creation time in seconds. |
 
 #### Examples
 
@@ -494,8 +465,8 @@ You can use `setNonce` function to set `IPactCommand.nonce` to a custom nonce fo
 Pact.builder.execution(code).setNonce(nonce): IBuilder
 ```
 
-| Parameter | Type   | Description      |
-| --------- | ------ | ---------------- |
+| Parameter | Type   | Description                       |
+| --------- | ------ | --------------------------------- |
 | nonce     | string | Custom nonce for the transaction. |
 
 #### Examples
@@ -515,8 +486,8 @@ You can use `setNetworkId` to set `IPactCommand.network` to specify the network 
 Pact.builder.execution(code).setNetworkId(networkId): IBuilder
 ```
 
-| Parameter | Type   | Description                                 |
-| --------- | ------ | ------------------------------------------- |
+| Parameter | Type | Description |
+| --- | --- | --- |
 | networkId | string | Network identifier, for example, "mainnet01" or "testnet04". |
 
 #### Examples
@@ -530,11 +501,7 @@ Pact.builder
 
 ## Creating transactions
 
-After you set all parts of the command, you can create the transaction object by
-calling the `createTransaction` method. 
-This method adds all of the default values to the command, converts `cmd` to a string, and adds the hash. 
-You must add signatures to the transaction object using a wallet to submit the transaction to the blockchain.
-For information about adding signatures from a wallet, see [Signing transactions](#signing-transactions).
+After you set all parts of the command, you can create the transaction object by calling the `createTransaction` method. This method adds all of the default values to the command, converts `cmd` to a string, and adds the hash. You must add signatures to the transaction object using a wallet to submit the transaction to the blockchain. For information about adding signatures from a wallet, see [Signing transactions](#signing-transactions).
 
 ```typescript
 const transaction: IUnsignedCommand = Pact.builder
@@ -564,8 +531,7 @@ const output = {
 
 ### getCommand
 
-If you prefer to have the non-stringified version of the command, you can use
-`getCommand`.
+If you prefer to have the non-stringified version of the command, you can use `getCommand`.
 
 ```typescript
 const transaction: IPactCommand = Pact.builder.execution(code).getCommand();
@@ -625,13 +591,11 @@ const output = {
 
 ### initialPactCommand
 
-If you find yourself repeating certain parts of methods for different commands,
-you can create your own command builder by using the `createTransactionBuilder` function. This function
-allows you to set all of the default values once and then reuse them in `createTransaction`.
+If you find yourself repeating certain parts of methods for different commands, you can create your own command builder by using the `createTransactionBuilder` function. This function allows you to set all of the default values once and then reuse them in `createTransaction`.
 
-| Parameter | Type                  | Description              |
-| --------- | --------------------- | ------------------------ |
-| initial   | Partial<IPactCommand> | The initial Pact command values that you want to reuse. |
+| Parameter | Type | Description |
+| --- | --- | --- |
+| initial | Partial<IPactCommand> | The initial Pact command values that you want to reuse. |
 
 ```typescript
 const builder: ITransactionBuilder =
@@ -700,27 +664,17 @@ const output = const output = {
 
 ## Signing transactions
 
-After creating the command, you need to sign it using the appropriate private keys.
-The signing process is usually managed with a wallet. Kadena has two protocols for
-signing transactions, each serving different purposes:
+After creating the command, you need to sign it using the appropriate private keys. The signing process is usually managed with a wallet. Kadena has two protocols for signing transactions, each serving different purposes:
 
-- **Sign API**: This API allows users to send their sign requests to the wallet.
-  The wallet is then responsible for creating and signing the transaction
-  simultaneously. With this approach, the wallet has more freedom, making it
-  more suitable for simple transactions.
+- **Sign API**: This API allows users to send their sign requests to the wallet. The wallet is then responsible for creating and signing the transaction simultaneously. With this approach, the wallet has more freedom, making it more suitable for simple transactions.
 
-- **Quicksign**: This API is designed to give dApps full control over the
-  command, with the wallet only responsible for adding signatures. This is the
-  recommended method if you are using the command builder from this library.
+- **Quicksign**: This API is designed to give dApps full control over the command, with the wallet only responsible for adding signatures. This is the recommended method if you are using the command builder from this library.
 
-Wallets typically have their own API for communicating with applications. 
-You can use the API provided by the wallet, or, depending on the wallet, use one of the wallet-specific wrapper functions for convenience.
+Wallets typically have their own API for communicating with applications. You can use the API provided by the wallet, or, depending on the wallet, use one of the wallet-specific wrapper functions for convenience.
 
 ### Sign function interface
 
-The `sign` function can be used two ways: 
-If you pass a single transaction to the function, it returns the single signed (or partially signed) transaction.
-If you pass a list of transactions to the function, it returns the list of signed (or partially signed) transactions.
+The `sign` function can be used two ways: If you pass a single transaction to the function, it returns the single signed (or partially signed) transaction. If you pass a list of transactions to the function, it returns the list of signed (or partially signed) transactions.
 
 ```typescript
 interface ISignFunction {
@@ -733,20 +687,19 @@ interface ISignFunction {
 
 #### Single transaction
 
-| Parameter | Type             | Description     |
-| --------- | ---------------- | --------------- |
+| Parameter | Type             | Description                   |
+| --------- | ---------------- | ----------------------------- |
 | tx        | IUnsignedCommand | The transaction to be signed. |
 
 #### List of transactions
 
-| Parameter | Type               | Description                                |
-| --------- | ------------------ | ------------------------------------------ |
+| Parameter | Type               | Description                            |
+| --------- | ------------------ | -------------------------------------- |
 | tsList    | IUnsignedCommand[] | List of the transactions to be signed. |
 
 ### Chainweaver
 
-You can use `createSignWithChainweaver` to sign a transaction using Chainweaver. 
-It's a factory function that returns the actual sign function.
+You can use `createSignWithChainweaver` to sign a transaction using Chainweaver. It's a factory function that returns the actual sign function.
 
 This function uses the `quicksign` protocol.
 
@@ -754,9 +707,9 @@ This function uses the `quicksign` protocol.
 createSignWithChainweaver(options:{ host?: string }): ISignFunction
 ```
 
-| Parameter | Type              | Description                                                           |
-| --------- | ----------------- | --------------------------------------------------------------------- |
-| option    | { host?: string } | option including host URL default `{ host: 'http://127.0.0.1:9467' }` |
+| Parameter | Type | Description |
+| --- | --- | --- |
+| option | { host?: string } | option including host URL default `{ host: 'http://127.0.0.1:9467' }` |
 
 #### Examples
 
@@ -788,8 +741,7 @@ const [txOneSigned, txTwoSigned] = signWithChainweaver([txOne, txTwo]);
 
 ### WalletConnect
 
-The WalletConnect protocol and helper functions are based on [KIP-017](https://github.com/kadena-io/KIPs/blob/master/kip-0017.md).
-You must use the WalletConnect protocol to create a walletConnect client and session before you can use the helper functions to sign transactions.
+The WalletConnect protocol and helper functions are based on [KIP-017](https://github.com/kadena-io/KIPs/blob/master/kip-0017.md). You must use the WalletConnect protocol to create a walletConnect client and session before you can use the helper functions to sign transactions.
 
 #### Wallet Connect sign method
 
@@ -801,9 +753,9 @@ The return object might contain different data than what you would pass from the
 createWalletConnectSign(client, session, walletConnectChainId): (transaction: IUnsignedCommand): Promise<ICommand | IUnsignedCommand>
 ```
 
-| Parameter | Type | Description | 
-| --------- - | ---- | ----------- | 
-| client | Client | The `wallet-connect` client object. | 
+| Parameter | Type | Description |
+| --- | --- | --- |
+| client | Client | The `wallet-connect` client object. |
 | session | SessionTypes.Struct | The wallet-connect session object. |
 | networkId | string | The network identifier, for example, `mainnet01` or `testnet04`. The identifier can include the `kadena:` prefix, for example, `kadena:mainnet01`. |
 
@@ -827,9 +779,9 @@ The `createWalletConnectQuicksign` function returns the `sign` function using th
 createWalletConnectQuicksign(client, session, walletConnectChainId): ISignFunction
 ```
 
-| Parameter | Type                | Description                                                                                                    |
-| --------- | ------------------- | -------------------------------------------------------------------------------------------------------------- |
-| client | Client | The `wallet-connect` client object. | 
+| Parameter | Type | Description |
+| --- | --- | --- |
+| client | Client | The `wallet-connect` client object. |
 | session | SessionTypes.Struct | The wallet-connect session object. |
 | networkId | string | The network identifier, for example, `mainnet01` or `testnet04`. The identifier can include the `kadena:` prefix, for example, `kadena:mainnet01`. |
 
@@ -880,15 +832,16 @@ connect(networkId: string): Promise<boolean>
 
 #### createEckoWalletSign
 
-The `createEckoWalletSign` function uses the `sign` protocol to communicate with EckoWallet.
-The return object might contain different data than what you would pass from the transaction builder because the `sign` protocol lets the wallet create the transaction.
+The `createEckoWalletSign` function uses the `sign` protocol to communicate with EckoWallet. The return object might contain different data than what you would pass from the transaction builder because the `sign` protocol lets the wallet create the transaction.
 
 ```typescript
 createEckoWalletSign(options:{ host?: string }): (transaction: IUnsignedCommand): Promise<ICommand | IUnsignedCommand>
 ```
 
 ##### Examples
+
 To sign a transaction using EckoWallet:
+
 ```typescript
 const signWithEckoWallet = createEckoWalletSign();
 
@@ -981,16 +934,15 @@ const signedTx = signWithKeypair(tx);
 
 If you already have the signature for a transaction, you can use the `addSignatures` function to add the signature to the transaction.
 
-All signatures you add should either include a public key, or none of them should. 
-If the signatures don't include the public keys, then the number of signatures must match the number of signers, and the signatures are matched based on their order.
+All signatures you add should either include a public key, or none of them should. If the signatures don't include the public keys, then the number of signatures must match the number of signers, and the signatures are matched based on their order.
 
 ```typescript
 addSignatures(transaction, ...signatures): IUnsignedCommand | ICommand
 ```
 
-| Parameter     | Type      | Description                                                 |
-| ------------- | ------- | ---------------------------------------- |
-| transaction   | IUnsignedCommand  | The partially signed or unsigned transaction.   |
+| Parameter | Type | Description |
+| --- | --- | --- |
+| transaction | IUnsignedCommand | The partially signed or unsigned transaction. |
 | ...signatures | Array<{ sig: string; pubKey: string }> \| Array<{ sig: string }> | List of signatures to be added to the transaction. |
 
 #### Examples
@@ -1016,9 +968,7 @@ const signedTx = addSignatures(
 
 ## Communicating with the network
 
-Kadena exposes endpoints for communicating with Chainweb nodes through the [Pact REST API}(https://api.chainweb.com/openapi/pact.html). 
-You can use any REST client to call these endpoints.
-However, the Kadena client library also provides functions to make these call more convenient for frontend frameworks.
+Kadena exposes endpoints for communicating with Chainweb nodes through the [Pact REST API}(https://api.chainweb.com/openapi/pact.html). You can use any REST client to call these endpoints. However, the Kadena client library also provides functions to make these call more convenient for frontend frameworks.
 
 ### createClient
 
@@ -1061,14 +1011,12 @@ You can use object destructuring to extract specific functions.
 const { submit, local, pollCreateSpv } = createClient();
 ```
 
-| Parameter | Type                                                                 | Description                                                                                                                                         |
-| --------- | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| host      | string \| (options: {chainId: ChainId; networkId: string}) => string | The Pact service URL as a string or the function that returns the URL.                                                                              |
-| options   | { confirmationDepth?: number }                                       | Additional options for the client. It has only one property now: `confirmationDepth`, which can be used in the poll endpoint. Default value is `0`. |
+| Parameter | Type | Description |
+| --- | --- | --- |
+| host | string \| (options: {chainId: ChainId; networkId: string}) => string | The Pact service URL as a string or the function that returns the URL. |
+| options | { confirmationDepth?: number } | Additional options for the client. It has only one property now: `confirmationDepth`, which can be used in the poll endpoint. Default value is `0`. |
 
-Both `host` and `options` are optional. 
-The default value of `host` is a function that returns the Chainweb node URLs for mainnet and testnet. 
-If you want to use different URLs, you must specify the `host` parameter.
+Both `host` and `options` are optional. The default value of `host` is a function that returns the Chainweb node URLs for mainnet and testnet. If you want to use different URLs, you must specify the `host` parameter.
 
 The `networkId` and `chainId` parameters are read from the command object and passed to the URL generator function.
 
@@ -1077,15 +1025,17 @@ The `networkId` and `chainId` parameters are read from the command object and pa
 To create a client for the development network and a specific chain identifier (1):
 
 ```typescript
-const client = createClient("http://127.0.0.1:8080/chainweb/0.0/development/chain/1/pact");
+const client = createClient(
+  'http://127.0.0.1:8080/chainweb/0.0/development/chain/1/pact',
+);
 ```
 
-To create a client for the development network that covers multi-chain and uses
- the URL generator function for more flexibility:
+To create a client for the development network that covers multi-chain and uses the URL generator function for more flexibility:
 
 ```typescript
-const devNetClient = createClient(({chainId, networkId})=>
-   `http://127.0.0.1:8080/chainweb/0.0/${networkId}/chain/${chainId ?? '1'}/pact`
+const devNetClient = createClient(
+  ({ chainId, networkId }) =>
+    `http://127.0.0.1:8080/chainweb/0.0/${networkId}/chain/${chainId ?? '1'}/pact`,
 );
 ```
 
@@ -1107,16 +1057,16 @@ const client = createClient(({ chainId, networkId }) => {
 To create a client with a `confirmationDepth` of `5` that waits for five new blocks to be added to the chain before reading the result of a transaction:
 
 ```typescript
-const { submit, pollStatus } = createClient(undefined, { confirmationDepth: 5 });
+const { submit, pollStatus } = createClient(undefined, {
+  confirmationDepth: 5,
+});
 ```
 
 ## Submitting transactions
 
-You can use the `submit` or `submitOne` functions to submit data to the blockchain. 
-These functions use the Pact `/send` endpoint.
+You can use the `submit` or `submitOne` functions to submit data to the blockchain. These functions use the Pact `/send` endpoint.
 
-The client `send` function is a deprecated alias for the `submit` function with the same interface.
-To submit one transaction using the `submit` function:
+The client `send` function is a deprecated alias for the `submit` function with the same interface. To submit one transaction using the `submit` function:
 
 ```typescript
 const { submit } = createClient();
@@ -1131,8 +1081,8 @@ interface ITransactionDescriptor {
 
 ```
 
-| Parameter | Type     | Description                        |
-| --------- | -------- | ---------------------------------- |
+| Parameter | Type     | Description                         |
+| --------- | -------- | ----------------------------------- |
 | tx        | ICommand | The command object ready to submit. |
 
 To submit a list of transactions using the `submit` function:
@@ -1143,14 +1093,13 @@ const { submit } = createClient();
 submit(txList): Promise<ITransactionDescriptor[]>;
 ```
 
-| Parameter | Type       | Description                         |
-| --------- | ---------- | ----------------------------------- |
+| Parameter | Type       | Description                              |
+| --------- | ---------- | ---------------------------------------- |
 | txList    | ICommand[] | List of command objects ready to submit. |
 
 In most cases, you should store the result of this function so you can fetch the result of the request.
 
-The `submitOne` function is the same as submitting one transaction using the `submit` function.
-For example:
+The `submitOne` function is the same as submitting one transaction using the `submit` function. For example:
 
 ```typescript
 const { submitOne } = createClient();
@@ -1158,15 +1107,15 @@ const { submitOne } = createClient();
 submitOne(tx): Promise<ITransactionDescriptor>;
 ```
 
-| Parameter | Type     | Description                        |
-| --------- | -------- | ---------------------------------- |
+| Parameter | Type     | Description                         |
+| --------- | -------- | ----------------------------------- |
 | tx        | ICommand | The command object ready to submit. |
 
 ## Getting transaction results
 
-After you submit a transaction, you need to query for the result using a request key.
-You can query transaction results by calling the `/listen` or `/poll` endpoint. 
-- The `/listen` endpoint is a blocking request. It only accepts one request key and returns the results when the transaction result is ready. If you use this endpoint, the HTTP request remains open for a while. 
+After you submit a transaction, you need to query for the result using a request key. You can query transaction results by calling the `/listen` or `/poll` endpoint.
+
+- The `/listen` endpoint is a blocking request. It only accepts one request key and returns the results when the transaction result is ready. If you use this endpoint, the HTTP request remains open for a while.
 - The`/poll` endpoint accepts a list of request keys and responds immediately with the current status of the request key.
 
 The Kadena client library exposes the following functions to use the /listen or /poll endpoint in different scenarios:
@@ -1207,8 +1156,8 @@ interface ICommandResult {
     yield: {
       data: Array<[string, PactValue]>;
       provenance: {
-          targetChainId: ChainId;
-          moduleHash: string;
+        targetChainId: ChainId;
+        moduleHash: string;
       } | null;
     };
   };
@@ -1217,7 +1166,7 @@ interface ICommandResult {
     blockTime: number;
     blockHeight: number;
     prevBlockHash: string;
-    publicMeta?: IPactCommand['meta']
+    publicMeta?: IPactCommand['meta'];
   };
   events: Array<{
     name: string;
@@ -1244,13 +1193,12 @@ getStatus(transactionDescriptor: TransactionDescriptor[] | ITransactionDescripto
 ```
 
 | Parameter | Type | Description |
-| --------- | ---- | ----------- |
+| --- | --- | --- |
 | transactionDescriptor | TransactionDescriptor[list] | One or more request keys to be queried |
 
 ### pollStatus
 
-This function calls `/poll` in intervals and returns the result of all requests
-when all are ready.
+This function calls `/poll` in intervals and returns the result of all requests when all are ready.
 
 ```typescript
 const { pollStatus } = createClient();
@@ -1272,20 +1220,18 @@ interface IPollRequestPromise extends Promise {
 }
 ```
 
-| Parameter | Type  | Description   |
-| --------- | ----- | ------------- |
+| Parameter | Type | Description |
+| --- | --- | --- |
 | transactionDescriptor | TransactionDescriptor[list] | One or more request keys to be queried. |
-| pollOptions | object | Optional poll configuration settings.|
-| onPoll | string | Identifier for the callback that is called each time the node is polled for the status of a request key. This callback might be called several times if the request is not ready yet.|
-| timeout | time | Specifies a timeout in milliseconds to stop polling if the result is not ready. The default is `180000` milliseconds (3 minutes).|
-| interval | time | Specifies the delay between retry attempts. The default is `5000` milliseconds (5 seconds).|
+| pollOptions | object | Optional poll configuration settings. |
+| onPoll | string | Identifier for the callback that is called each time the node is polled for the status of a request key. This callback might be called several times if the request is not ready yet. |
+| timeout | time | Specifies a timeout in milliseconds to stop polling if the result is not ready. The default is `180000` milliseconds (3 minutes). |
+| interval | time | Specifies the delay between retry attempts. The default is `5000` milliseconds (5 seconds). |
 | confirmationDepth | number | Sets the confirmationDepth for getting the response. This setting overrides the one you set in the `createClient` function. |
 
 #### Return value
 
-The return value is a special type of promise that enables you to listen for each individual request
-through the `requests` property.
-Alternatively, you can `await` the result without using the `requests` property to handle most use cases.
+The return value is a special type of promise that enables you to listen for each individual request through the `requests` property. Alternatively, you can `await` the result without using the `requests` property to handle most use cases.
 
 #### Examples
 
@@ -1300,20 +1246,22 @@ Poll the status of several requests and get the result for each one immediately:
 ```typescript
 const resultPromise = pollStatus([firstRequest, secondRequest, thirdRequest]);
 // Notify the UI from the result of each request as soon as it's available
-resultPromise.requests["first-request-key"].then(res => {UI.notify(res)});
-resultPromise.requests["second-request-key"].then(res => {UI.notify(res)});
-resultPromise.requests["third-request-key"].then(res => {UI.notify(res)});
+resultPromise.requests['first-request-key'].then((res) => {
+  UI.notify(res);
+});
+resultPromise.requests['second-request-key'].then((res) => {
+  UI.notify(res);
+});
+resultPromise.requests['third-request-key'].then((res) => {
+  UI.notify(res);
+});
 // The final result object
 const finalResult = await resultPromise;
 ```
 
 ### listen
 
-`listen` is another function for fetching the result of one request. It uses the
-`/listen` endpoint, which is a blocking endpoint. **Note**: If your
-network or firewall configuration doesn't allow keeping HTTP connections open for a
-long time, then it's better to use `pollOne` which has the same interface but
-uses `/poll` under the hood.
+`listen` is another function for fetching the result of one request. It uses the `/listen` endpoint, which is a blocking endpoint. **Note**: If your network or firewall configuration doesn't allow keeping HTTP connections open for a long time, then it's better to use `pollOne` which has the same interface but uses `/poll` under the hood.
 
 ```typescript
 const { listen } = createClient();
@@ -1322,13 +1270,12 @@ listen(transactionDescriptor: TransactionDescriptor[] | ITransactionDescriptor):
 ```
 
 | Parameter | Type | Description |
-| --------- | ---- | ----------- |
+| --- | --- | --- |
 | transactionDescriptor | TransactionDescriptor | The request object including `requestKey`, `networkId`, and `chainId`. |
 
 ### pollOne
 
-The `pollOne` function fetches the result of only one request using the `/poll`
-endpoint.
+The `pollOne` function fetches the result of only one request using the `/poll` endpoint.
 
 ```typescript
 const { pollOne } = createClient();
@@ -1337,17 +1284,12 @@ pollOne(transactionDescriptor: TransactionDescriptor[] | ITransactionDescriptor)
 ```
 
 | Parameter | Type | Description |
-| --------- | ---- | ----------- |
+| --- | --- | --- |
 | transactionDescriptor | TransactionDescriptor | The request object including `requestKey`, `networkId`, and `chainId`. |
 
 ## Reading data
 
-Apart from transactions, you can also send read requests to the node. This
-mainly utilizes the `/local` endpoint. These kinds of requests return the result
-immediately since you don't need to submit data. You can also use these
-functions to validate your transaction before calling the `/send` endpoint to
-avoid transaction failure, as in some scenarios you need to pay gas even for
-failed transactions.
+Apart from transactions, you can also send read requests to the node. This mainly utilizes the `/local` endpoint. These kinds of requests return the result immediately since you don't need to submit data. You can also use these functions to validate your transaction before calling the `/send` endpoint to avoid transaction failure, as in some scenarios you need to pay gas even for failed transactions.
 
 The following functions all use the `/local` endpoint:
 
@@ -1359,8 +1301,7 @@ The following functions all use the `/local` endpoint:
 
 ### local
 
-The `local` function is the most generic function that utilizes the `/local`
-endpoint.
+The `local` function is the most generic function that utilizes the `/local` endpoint.
 
 ```typescript
 local(
@@ -1369,12 +1310,11 @@ local(
 ): Promise<ICommandResult & { preflightWarnings?: string[] }>;
 ```
 
-The return type is `ICommandResult` with `preflightWarnings` when it is set to
-true.
+The return type is `ICommandResult` with `preflightWarnings` when it is set to true.
 
 | Parameter | Type | Description |
-| --------- | ---- | ----------- |
-| transaction | ICommand or IUnsignedCommand  | The signed or unsigned command object. |
+| --- | --- | --- |
+| transaction | ICommand or IUnsignedCommand | The signed or unsigned command object. |
 | options | object | Optional configuration settings. |
 | preflight | boolean | Runs the code in the `preflight` mode to simulate submitting the transaction. You can also use this option to preview the estimated gas that the transaction would consume. The default is `true`. |
 | signatureVerification | boolean | Runs the signature verification in the node for the transaction. The default is `true`. |
@@ -1398,26 +1338,28 @@ Use local call for gas estimation:
 
 ```typescript
 // We don't need to send signatures to check gas estimation;
-const response = await client.local(unsignedTx, { preflight:true , signatureVerification: false });
+const response = await client.local(unsignedTx, {
+  preflight: true,
+  signatureVerification: false,
+});
 
 if (response.result.status === 'failure') {
   throw response.result.error;
 }
 
-const gasEstimation =  response.gas;
+const gasEstimation = response.gas;
 ```
 
 ### dirtyRead
 
-Alias for local where both preflight and signatureVerification are false. This function is useful
-when your code only needs to read data from the node.
+Alias for local where both preflight and signatureVerification are false. This function is useful when your code only needs to read data from the node.
 
 ```typescript
 dirtyRead(transaction: ICommand | IUnsignedCommand): Promise<ICommandResult>;
 ```
 
-| Parameter   | Type                         | Description                           |
-| ----------- | ---------------------------- | ------------------------------------- |
+| Parameter | Type | Description |
+| --- | --- | --- |
 | transaction | ICommand or IUnsignedCommand | The signed or unsigned command object |
 
 #### Examples
@@ -1428,7 +1370,7 @@ Get account balance
 const tr = Pact.builder
   .execution(Pact.modules.coin['get-balance'](account))
   .setMeta({ chainId: '0' })
-  .setNetworkId("mainnet04")
+  .setNetworkId('mainnet04')
   .createTransaction();
 
 // We don't need to submit a transaction for just reading data,
@@ -1450,8 +1392,8 @@ Alias for local where preflight is true but signatureVerification is false.
 preflight(transaction: ICommand | IUnsignedCommand): Promise<ICommandResult>;
 ```
 
-| Parameter   | Type                         | Description                           |
-| ----------- | ---------------------------- | ------------------------------------- |
+| Parameter | Type | Description |
+| --- | --- | --- |
 | transaction | ICommand or IUnsignedCommand | The signed or unsigned command object |
 
 ### signatureVerification
@@ -1462,41 +1404,41 @@ Alias for local where preflight is false but signatureVerification is true.
 signatureVerification(transaction: ICommand | IUnsignedCommand): Promise<ICommandResult & { preflightWarnings?: string[] }>;
 ```
 
-| Parameter   | Type                         | Description                           |
-| ----------- | ---------------------------- | ------------------------------------- |
+| Parameter | Type | Description |
+| --- | --- | --- |
 | transaction | ICommand or IUnsignedCommand | The signed or unsigned command object |
 
 ### runPact
 
-If you just want to see the result of a pact code and don't want to create a
-command object, you can use the `runPact` function. This function creates a
-command object internally.
+If you just want to see the result of a pact code and don't want to create a command object, you can use the `runPact` function. This function creates a command object internally.
 
 ```typescript
 runPact(code: string, data?: Record<string, unknown>, options?: { chainId: ChainId; networkId: string }): Promise<ICommandResult>;
 ```
 
-| Parameter | Type | Description                                                    |
-| --------- | -----| -------------------------------------------------------------- |
-| code | string | Pact code                                                      |
-| data | Record<string, unknown> | Data to be sent with the transaction                           |
-| options | object | 
+| Parameter | Type | Description |
+| --- | --- | --- |
+| code | string | Pact code |
+| data | Record<string, unknown> | Data to be sent with the transaction |
+| options | object |
 | chainId | string | Specifies the chain identifier that you want to send the transaction to. The valid values are "0" to "19". |
 | networkId | string | Specifies the network identifier that you want to send the transaction to. |
 
 #### Examples
 
 ```typescript
-const { runPact } = createClient()
+const { runPact } = createClient();
 
-const result = await runPact(`(coin.getBalance "alice")`, { }, { networkId:"mainnet01", chainId:"1" })
-
+const result = await runPact(
+  `(coin.getBalance "alice")`,
+  {},
+  { networkId: 'mainnet01', chainId: '1' },
+);
 ```
 
 ### Requesting simple payment verification (spv)
 
-You need SPV proof mainly for cross-chain transactions - but it's not limited to
-this, and you can request SPV proof for all kinds of transactions.
+You need SPV proof mainly for cross-chain transactions - but it's not limited to this, and you can request SPV proof for all kinds of transactions.
 
 There are two functions for this purpose, both of which use the `/spv` endpoint:
 
@@ -1511,8 +1453,8 @@ Request SPV proof if it's ready.
 createSpv(transactionDescriptor: ITransactionDescriptor, targetChainId: ChainId): Promise<string>;
 ```
 
-| Parameter | Type  | Description |
-| ----------| ------| ----------- |
+| Parameter | Type | Description |
+| --- | --- | --- |
 | transactionDescriptor | object | Specifies the request key, network identifier, and chain identifier for the transaction that you want to create a simple payment verification (spv) proof for. |
 | targetChainId | string | Specifies the chain identifier that consumes this proof. |
 
@@ -1529,48 +1471,47 @@ pollCreateSpv(
 ```
 
 | Parameter | Type | Description |
-| --------- | ---- | ----------- |
+| --- | --- | --- |
 | transactionDescriptor | object | Specifies the request key, network identifier, and chain identifier for the transaction that you want to create a simple payment verification (spv) proof for. |
 | targetChainId | string | Specifies the chain identifier that consumes this proof. |
-| pollOptions | object | Optional poll configuration settings.|
-| onPoll | string | Identifier for the callback that is called each time the node is polled for the status of a request key. This callback might be called several times if the request is not ready yet.|
-| timeout | time | Specifies a timeout in milliseconds to stop polling if the result is not ready. The default is `180000` milliseconds (3 minutes).|
-| interval | time | Specifies the delay between retry attempts. The default is `5000` milliseconds (5 seconds).|
+| pollOptions | object | Optional poll configuration settings. |
+| onPoll | string | Identifier for the callback that is called each time the node is polled for the status of a request key. This callback might be called several times if the request is not ready yet. |
+| timeout | time | Specifies a timeout in milliseconds to stop polling if the result is not ready. The default is `180000` milliseconds (3 minutes). |
+| interval | time | Specifies the delay between retry attempts. The default is `5000` milliseconds (5 seconds). |
 
 #### Examples
 
 ```typescript
-const request = await submit(crossChainTx)
-const response = await pollOne(request)
+const request = await submit(crossChainTx);
+const response = await pollOne(request);
 // create spv proof for the transaction
-const spvProof = await pollSpvProof(request)
+const spvProof = await pollSpvProof(request);
 
-const continuationTx = Pact.builder.continuation({
-  pactId: response.continuation.pactId,
-  rollback: false,
-  step:1,
-  proof: spvProof
-}).addMeta({
-  chainId: targetChainId,
-  // using gas station for paying gas fee
-  senderAccount : 'kadena-xchain-gas'
-}).createTransaction()
+const continuationTx = Pact.builder
+  .continuation({
+    pactId: response.continuation.pactId,
+    rollback: false,
+    step: 1,
+    proof: spvProof,
+  })
+  .addMeta({
+    chainId: targetChainId,
+    // using gas station for paying gas fee
+    senderAccount: 'kadena-xchain-gas',
+  })
+  .createTransaction();
 
-const contRequest = await submit(continuationTx)
-const finalResult = await pollOne(contRequest)
+const contRequest = await submit(continuationTx);
+const finalResult = await pollOne(contRequest);
 ```
 
 ## Functional programming to compose Pact commands
 
-For additional flexibility, you can use the functional programming (FP) API to create Pact commands.
-The functional programming (FP) API supports the same functions as the command builder API.
-In fact, the command builder API uses the functional programming (FP) API under the hood.
-To reduce redundancy, this section lists the common functions with examples for using the `composePactCommand` function rather than repeating the full function descriptions and parameter tables.
+For additional flexibility, you can use the functional programming (FP) API to create Pact commands. The functional programming (FP) API supports the same functions as the command builder API. In fact, the command builder API uses the functional programming (FP) API under the hood. To reduce redundancy, this section lists the common functions with examples for using the `composePactCommand` function rather than repeating the full function descriptions and parameter tables.
 
 ### Importing functions
 
-To use the functional programming (FP) API, import functions from the `@kadena/client/fp` package.
-For example:
+To use the functional programming (FP) API, import functions from the `@kadena/client/fp` package. For example:
 
 ```typescript
 import { composePactCommand, execution } from '@kadena/client/fp';
@@ -1578,9 +1519,7 @@ import { composePactCommand, execution } from '@kadena/client/fp';
 
 ### composePactCommand
 
-The `composePactCommand` function let you compose parts of the Pact command and create the final command objects.
-The function accepts pure JSON as well as reducer functions. 
-This function eventfully returns the `IPartialPactCommand` interface that is converted to a string for the `cmd` key in the JSON command object.
+The `composePactCommand` function let you compose parts of the Pact command and create the final command objects. The function accepts pure JSON as well as reducer functions. This function eventfully returns the `IPartialPactCommand` interface that is converted to a string for the `cmd` key in the JSON command object.
 
 ```typescript
 type CommandReducer = (cmd?: IPartialPactCommand | (() => IPartialPactCommand)) => IPartialPactCommand;
@@ -1590,11 +1529,10 @@ composePactCommand(
   ): CommandReducer
 ```
 
-The return value is also a `CommandReducer` function that you can pass to another `composePactCommand` call. 
-Eventually, when you call the function, it also adds the default values.
+The return value is also a `CommandReducer` function that you can pass to another `composePactCommand` call. Eventually, when you call the function, it also adds the default values.
 
 | Parameter | Type | Description |
-| --------- | ---- | ----------- |
+| --- | --- | --- |
 | ...reducersOrPartialCommands | Array<IPartialPactCommand \| CommandReducer> | List of command reducers or partial Pact commands. |
 
 #### Examples
@@ -1677,10 +1615,10 @@ const command: IPactCommand = composePactCommand(
   continuation({
     pactId,
     rollback: false,
-    step:1,
-    proof: spvProof
-  })
-)()
+    step: 1,
+    proof: spvProof,
+  }),
+)();
 ```
 
 ### addSigner
@@ -1773,6 +1711,7 @@ To add data to `IPactCommand.payload.exec.data` or `IPactCommand.payload.cont.da
 ```typescript
 addData(key, value): CommandReducer
 ```
+
 For example, to transfer with parameters in data:
 
 ```typescript
@@ -1866,6 +1805,7 @@ To set `IPactCommand.network`:
 ```typescript
 setNetworkId(networkId): { networkId : string }
 ```
+
 For example:
 
 ```typescript

@@ -188,4 +188,13 @@ export const REPOS: IRepo[] = [
     owner: 'kadena-community',
     repoName: 'kadena.js',
   },
+  {
+    name: 'Chainweb Node',
+    slug: 'chainweb-node',
+    repo: 'https://github.com/kadena-io/chainweb-node.git',
+    directory: '/',
+    fileName: 'CHANGELOG.md',
+    owner: 'kadena-io',
+    repoName: 'chainweb-node',
+  },
 ];

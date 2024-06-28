@@ -237,7 +237,7 @@ To create a token in a collection:
 
 1. Click the **Raw** tab to configure policy settings for the collection policy and the guard policy as a JSON object, then click **Next**.
    
-   In this example, the **Raw** data sets the collection identifier and registers the guards to use for the mint, burn, transfer, and sale operations.
+   In this example, the **Raw** data sets the collection identifier and registers the guards to use for the mint, burn, sale, transfer, and URI update operations.
    For example:
    
    ```json
@@ -253,6 +253,9 @@ To create a token in a collection:
          "keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], 
          "pred": "keys-all"},
        "transfer-guard": {
+         "keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], 
+         "pred": "keys-all"},
+       "uri-guard": {
          "keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], 
          "pred": "keys-all"}
    }

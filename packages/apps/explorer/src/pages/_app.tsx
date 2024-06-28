@@ -3,6 +3,7 @@ import '@kadena/react-ui/global';
 
 import { MediaContextProvider } from '@/components/layout/media';
 import { graphHost, wsGraphHost } from '@/constants/graphHost';
+import { QueryContextProvider } from '@/context/query-context';
 import type { NormalizedCacheObject } from '@apollo/client';
 import {
   ApolloClient,
@@ -12,7 +13,7 @@ import {
 } from '@apollo/client';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { RouterProvider } from '@kadena/react-ui';
+import { RouterProvider, useTheme } from '@kadena/react-ui';
 import { createClient } from 'graphql-ws';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
@@ -59,21 +60,24 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
   // Fixes "Component' cannot be used as a JSX component."
   const ReactComponent = Component as ComponentType;
   const router = useRouter();
+  useTheme({ lockedTheme: 'light' });
   return (
     <ApolloProvider client={client}>
       <RouterProvider navigate={router.push}>
         <MediaContextProvider>
-          <Head>
-            <title>K:Explorer</title>
-            <link
-              rel="icon"
-              href="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/icons/internal/default/icon%40128.png"
-            />
-          </Head>
+          <QueryContextProvider>
+            <Head>
+              <title>K:Explorer</title>
+              <link
+                rel="icon"
+                href="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/icons/internal/default/icon%40128.png"
+              />
+            </Head>
 
-          <main>
-            <ReactComponent {...pageProps} />
-          </main>
+            <main>
+              <ReactComponent {...pageProps} />
+            </main>
+          </QueryContextProvider>
         </MediaContextProvider>
       </RouterProvider>
     </ApolloProvider>
