@@ -7,7 +7,7 @@ import { layoutWrapperClass } from '../layout/styles.css';
 
 import StatisticsComponent from '../statistics-component/statistics-component';
 import ThemeToggle from '../theme-toggle/theme-toggle';
-import { headerClass } from './styles.css';
+import { buttonSizeClass, headerClass } from './styles.css';
 
 const Header: FC = () => {
   const [selectedNetwork, setSelectedNetwork] =
@@ -22,6 +22,7 @@ const Header: FC = () => {
       >
         <Stack>
           <Select
+            size="lg"
             aria-label="Select network"
             defaultSelectedKey={selectedNetwork}
             fontType="code"
@@ -43,7 +44,11 @@ const Header: FC = () => {
 
         <GraphQLQueryDialog />
 
-        <Button variant="primary" startVisual={<SpireKeyKdacolorLogoWhite />} />
+        <Button
+          className={buttonSizeClass}
+          variant="primary"
+          startVisual={<SpireKeyKdacolorLogoWhite />}
+        />
       </Stack>
       {/* <NavBar /> */}
     </Stack>

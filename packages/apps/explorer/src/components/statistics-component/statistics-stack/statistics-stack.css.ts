@@ -20,5 +20,7 @@ export const boxClass = style([
     borderColor: 'base.subtle',
     backgroundColor: 'surface.default',
   }),
-  {},
+  {
+    maxHeight: '48px',
+  },
 ]);

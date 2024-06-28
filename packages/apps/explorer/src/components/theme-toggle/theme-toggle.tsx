@@ -3,6 +3,7 @@ import { Button, NavHeaderButton, Themes, useTheme } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
+import { buttonSizeClass } from '../header/styles.css';
 import { baseIcon, reversedIcon, socialsClass } from './styles.css';
 
 const ThemeToggle: FC = () => {
@@ -27,6 +28,7 @@ const ThemeToggle: FC = () => {
 
   return (
     <Button
+      className={buttonSizeClass}
       variant="transparent"
       onPress={toggleTheme}
       title="Toggle between Light and Dark theme"

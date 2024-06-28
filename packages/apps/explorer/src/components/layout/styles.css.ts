@@ -1,5 +1,5 @@
 import { tokens } from '@kadena/react-ui/styles';
-import { createVar, style } from '@vanilla-extract/css';
+import { createVar, globalStyle, style } from '@vanilla-extract/css';
 
 export const $$pageWidth = createVar();
 

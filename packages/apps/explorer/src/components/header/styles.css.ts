@@ -1,5 +1,5 @@
 import { atoms, tokens } from '@kadena/react-ui/styles';
-import { createVar, style } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
 
 export const headerClass = style([
   atoms({
@@ -11,3 +11,9 @@ export const headerClass = style([
     borderEndEndRadius: tokens.kda.foundation.radius.md,
   },
 ]);
+
+export const buttonSizeClass = style({
+  display: 'flex',
+  width: '48px',
+  aspectRatio: '1/1',
+});
