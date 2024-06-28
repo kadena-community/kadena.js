@@ -17,7 +17,11 @@ import type {
   PlaceBidProps,
   WithPlaceBid,
 } from './config';
-import { formatAdditionalSigners, formatWebAuthnSigner, formatCapabilities } from './helpers';
+import {
+  formatAdditionalSigners,
+  formatCapabilities,
+  formatWebAuthnSigner,
+} from './helpers';
 
 interface IPlaceBidInput extends CommonProps {
   saleId: string;

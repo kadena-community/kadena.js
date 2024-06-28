@@ -10,7 +10,11 @@ import type { ChainId, IPactDecimal } from '@kadena/types';
 import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 import type { CommonProps } from './config';
-import { formatAdditionalSigners, formatWebAuthnSigner, formatCapabilities } from './helpers';
+import {
+  formatAdditionalSigners,
+  formatCapabilities,
+  formatWebAuthnSigner,
+} from './helpers';
 
 interface ITransferTokenInput extends CommonProps {
   policyConfig?: {

@@ -16,7 +16,11 @@ import type {
   IDutchAuctionInput,
   WithAuction,
 } from './config';
-import { formatAdditionalSigners, formatWebAuthnSigner, formatCapabilities } from './helpers';
+import {
+  formatAdditionalSigners,
+  formatCapabilities,
+  formatWebAuthnSigner,
+} from './helpers';
 
 interface IUpdateAuctionInput extends CommonProps {
   chainId: ChainId;

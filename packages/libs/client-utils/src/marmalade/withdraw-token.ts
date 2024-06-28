@@ -13,7 +13,11 @@ import type {
   IWithdrawSaleTokenPolicyConfig,
   WithWithdrawSaleTokenPolicy,
 } from './config';
-import { formatAdditionalSigners, formatWebAuthnSigner, formatCapabilities } from './helpers';
+import {
+  formatAdditionalSigners,
+  formatCapabilities,
+  formatWebAuthnSigner,
+} from './helpers';
 
 interface IWithdrawTokenInput extends CommonProps {
   tokenId: string;

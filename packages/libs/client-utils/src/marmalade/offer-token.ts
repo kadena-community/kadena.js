@@ -20,7 +20,11 @@ import type {
   SalePolicyProps,
   WithSaleTokenPolicy,
 } from './config';
-import { formatAdditionalSigners, formatWebAuthnSigner, formatCapabilities } from './helpers';
+import {
+  formatAdditionalSigners,
+  formatCapabilities,
+  formatWebAuthnSigner,
+} from './helpers';
 
 interface IOfferTokenInput extends CommonProps {
   tokenId: string;
