@@ -39,7 +39,7 @@ const Header: FC = () => {
             handleToggleMenu={handleToggleMenu}
             menuIsOpen={menuIsOpen}
           >
-            Hier komt de searchbar
+            {/*  Here comes the search bar */}
           </NavBar>
         </Stack>
         <Stack
