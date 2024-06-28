@@ -32,6 +32,7 @@ export interface IWebAuthn {
   keys: Array<{
     index: string;
     publicKey: string;
+    scheme: 'WebAuthn';
   }>;
 }
 

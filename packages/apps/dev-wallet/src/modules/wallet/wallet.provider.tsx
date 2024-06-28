@@ -8,7 +8,12 @@ import {
 } from 'react';
 
 import { useSession } from '@/App/session';
-import { IAccount } from '../account/account.repository';
+import { throttle } from '@/utils/session';
+import {
+  Fungible,
+  IAccount,
+  accountRepository,
+} from '../account/account.repository';
 import * as AccountService from '../account/account.service';
 import { dbService } from '../db/db.service';
 import { keySourceManager } from '../key-source/key-source-manager';
@@ -20,6 +25,7 @@ export type ExtWalletContextType = {
   accounts?: IAccount[];
   profileList?: Pick<IProfile, 'name' | 'uuid' | 'accentColor' | 'options'>[];
   keySources?: IKeySource[];
+  fungibles?: Fungible[];
   loaded?: boolean;
 };
 
@@ -34,6 +40,8 @@ export const WalletContext = createContext<
     ]
   | null
 >(null);
+
+const syncAllAccounts = throttle(AccountService.syncAllAccounts, 1000);
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   const [contextValue, setContextValue] = useState<ExtWalletContextType>({});
@@ -66,6 +74,13 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     }));
   }, []);
 
+  const retrieveFungibles = useCallback(async () => {
+    const fungibles = await accountRepository.getAllFungibles();
+    setContextValue((ctx) => ({ ...ctx, fungibles }));
+    console.log('Fungibles', fungibles);
+    return fungibles;
+  }, []);
+
   // subscribe to db changes and update the context
   useEffect(() => {
     const unsubscribe = dbService.subscribe((event, storeName, data) => {
@@ -74,6 +89,10 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       switch (storeName) {
         case 'profile': {
           retrieveProfileList();
+          break;
+        }
+        case 'fungible': {
+          retrieveFungibles();
           break;
         }
         case 'keySource':
@@ -93,14 +112,24 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     return () => {
       unsubscribe();
     };
-  }, [retrieveProfileList, retrieveKeySources, retrieveAccounts]);
+  }, [
+    retrieveProfileList,
+    retrieveKeySources,
+    retrieveAccounts,
+    retrieveFungibles,
+  ]);
 
   const setProfile = useCallback(
     async (profile: IProfile | undefined, noSession = false) => {
       if (!profile) {
         keySourceManager.reset();
         session.clear();
-        setContextValue(({ profileList }) => ({ profileList, loaded: true }));
+        setContextValue((ctx) => ({
+          ...ctx,
+          profile: undefined,
+          accounts: undefined,
+          keySources: undefined,
+        }));
         return null;
       }
       if (!noSession) {
@@ -112,13 +141,12 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
         profile.uuid,
       );
       keySourceManager.reset();
-      AccountService.syncAllAccounts(profile.uuid);
-      setContextValue(({ profileList }) => ({
-        profileList,
+      syncAllAccounts(profile.uuid);
+      setContextValue((ctx) => ({
+        ...ctx,
         profile,
         accounts,
         keySources,
-        loaded: true,
       }));
       return { profile, accounts, keySources };
     },
@@ -141,6 +169,10 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     retrieveProfileList();
   }, [retrieveProfileList]);
+
+  useEffect(() => {
+    retrieveFungibles();
+  }, [retrieveFungibles]);
 
   return (
     <WalletContext.Provider value={[contextValue, setProfile]}>

@@ -119,7 +119,7 @@ export function CreateAccount() {
       profileId: profile.uuid,
       address: principal,
       keysetId: keySet.uuid,
-      networkId: activeNetwork.uuid,
+      networkId: activeNetwork.networkId,
       contract: 'coin',
       chains: [],
       overallBalance: '0',

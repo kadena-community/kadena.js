@@ -20,11 +20,29 @@ export function base64URLencode(utf8Arr: Uint8Array) {
     .replace(/=+$/, '');
 }
 
-export function base64URLdecode(str: string) {
-  const base64Encoded = str.replace(/-/g, '+').replace(/_/g, '/');
-  const padding = str.length % 4 === 0 ? '' : '='.repeat(4 - (str.length % 4));
-  const base64WithPadding = base64Encoded + padding;
-  return new TextEncoder().encode(atob(base64WithPadding));
+export function base64URLdecode(base64Url: string) {
+  // Replace URL-safe characters with standard Base64 characters
+  base64Url = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+
+  // Add padding if necessary
+  const padding = base64Url.length % 4;
+  if (padding === 2) {
+    base64Url += '==';
+  } else if (padding === 3) {
+    base64Url += '=';
+  }
+
+  // Decode Base64 string to a binary string
+  const binaryString = atob(base64Url);
+
+  // Convert binary string to ArrayBuffer
+  const len = binaryString.length;
+  const bytes = new Uint8Array(len);
+  for (let i = 0; i < len; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+
+  return bytes.buffer;
 }
 
 export async function createCredential() {

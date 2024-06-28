@@ -6,6 +6,7 @@ import {
   getPublicKeyForKadena,
   retrieveCredential,
 } from '@/utils/webAuthn';
+
 import { IKeySource } from '../../wallet/wallet.repository';
 import { IWebAuthn, keySourceRepository } from '../key-source.repository';
 
@@ -70,6 +71,7 @@ export function createWebAuthnService() {
     );
     const newKey = {
       publicKey: `WEBAUTHN-${publicKey}`,
+      scheme: 'WebAuthn' as const,
       index: credential.credential.id,
     };
 
@@ -99,9 +101,15 @@ export function createWebAuthnService() {
         base64URLdecode(key.index),
         new TextEncoder().encode(message),
       );
+      const base64 = (buffer: ArrayBuffer) =>
+        Buffer.from(buffer).toString('base64');
       sigs.push({
-        sig: JSON.stringify(cred.response),
-        pubKey: `WEBAUTHN-${key.publicKey}`,
+        sig: JSON.stringify({
+          signature: base64(cred.response.signature),
+          authenticatorData: base64(cred.response.authenticatorData),
+          clientDataJSON: base64(cred.response.clientDataJSON),
+        }),
+        pubKey: key.publicKey,
       });
     }
     return sigs;

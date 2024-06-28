@@ -1,4 +1,5 @@
 import { IDBService, dbService } from '@/modules/db/db.service';
+import { SignerScheme } from '@kadena/client';
 import type { INetwork } from '../network/network.repository';
 
 export type KeySourceType = 'HD-BIP44' | 'HD-chainweaver' | 'web-authn';
@@ -6,6 +7,7 @@ export type KeySourceType = 'HD-BIP44' | 'HD-chainweaver' | 'web-authn';
 export interface IKeyItem {
   index?: number | string;
   publicKey: string;
+  scheme?: SignerScheme;
 }
 
 export interface IKeySource {

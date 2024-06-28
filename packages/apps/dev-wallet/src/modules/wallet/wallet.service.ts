@@ -1,5 +1,10 @@
 import { defaultAccentColor } from '@/modules/layout/layout.provider.tsx';
-import { addSignatures, IPactCommand, IUnsignedCommand } from '@kadena/client';
+import {
+  addSignatures,
+  ICommand,
+  IPactCommand,
+  IUnsignedCommand,
+} from '@kadena/client';
 import { kadenaDecrypt, kadenaEncrypt } from '@kadena/hd-wallet';
 import { accountRepository } from '../account/account.repository';
 import { keySourceManager } from '../key-source/key-source-manager';
@@ -19,50 +24,47 @@ export function getAccounts(profileId: string) {
   return accountRepository.getAccountsByProfileId(profileId);
 }
 
-export function sign(
+export async function sign(
   keySources: IKeySource[],
   onConnect: (keySource: IKeySource) => Promise<void>,
   TXs: IUnsignedCommand[],
 ) {
-  const signedTx = Promise.all(
-    TXs.map(async (Tx) => {
-      const signatures = await Promise.all(
-        keySources.map(async (keySource) => {
-          const { keys: publicKeys, source } = keySource;
-          const cmd: IPactCommand = JSON.parse(Tx.cmd);
-          const relevantIndexes = cmd.signers
-            .map(
-              (signer) =>
-                publicKeys.find((key) => key.publicKey === signer.pubKey)
-                  ?.index,
-            )
-            .filter((index) => index !== undefined) as number[] | string[];
+  const signedTxs: Array<IUnsignedCommand | ICommand> = [];
+  for (const Tx of TXs) {
+    let signaturesOf: Array<{ sig: string; pubKey: string }> = [];
+    for (const keySource of keySources) {
+      console.log('keySource to sign', keySource);
+      const { keys: publicKeys, source } = keySource;
+      const cmd: IPactCommand = JSON.parse(Tx.cmd);
+      const relevantIndexes = cmd.signers
+        .map(
+          (signer) =>
+            publicKeys.find((key) => key.publicKey === signer.pubKey)?.index,
+        )
+        .filter((index) => index !== undefined) as number[] | string[];
 
-          const service = await keySourceManager.get(source);
+      const service = await keySourceManager.get(source);
 
-          if (!service.isConnected()) {
-            // call onConnect to connect to the keySource;
-            // then the ui can prompt the user to unlock the wallet in case of hd-wallet
-            await onConnect(keySource);
-          }
+      if (!service.isConnected()) {
+        // call onConnect to connect to the keySource;
+        // then the ui can prompt the user to unlock the wallet in case of hd-wallet
+        await onConnect(keySource);
+      }
 
-          if (relevantIndexes.length > 0) {
-            const signatures = await service.sign(
-              keySource.uuid,
-              Tx.hash,
-              relevantIndexes,
-            );
+      if (relevantIndexes.length > 0) {
+        const signatures = await service.sign(
+          keySource.uuid,
+          Tx.hash,
+          relevantIndexes,
+        );
 
-            return signatures;
-          }
-          return [];
-        }),
-      );
-      return addSignatures(Tx, ...signatures.flat());
-    }),
-  );
+        signaturesOf = signaturesOf.concat(signatures);
+      }
+    }
+    signedTxs.push(addSignatures(Tx, ...signaturesOf));
+  }
 
-  return signedTx;
+  return signedTxs;
 }
 
 export function getRelevantKeys(

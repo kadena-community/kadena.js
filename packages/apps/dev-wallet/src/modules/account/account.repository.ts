@@ -30,10 +30,20 @@ export interface IAccount {
   address: string;
   overallBalance: string;
   chains: Array<{
-    chainId: string;
+    chainId: ChainId;
     balance: string;
   }>;
+  keyset?: IKeySet;
 }
+
+const deleteKey = <Key extends string, T extends Partial<Record<Key, unknown>>>(
+  obj: T,
+  key: Key,
+) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { [key]: toBeDeleted, ...rest } = obj;
+  return rest;
+};
 
 const createAccountRepository = ({
   getAll,
@@ -41,6 +51,9 @@ const createAccountRepository = ({
   add,
   update,
 }: IDBService) => {
+  const getKeyset = async (id: string): Promise<IKeySet> => {
+    return getOne('keyset', id);
+  };
   return {
     addKeyset: async (keyset: IKeySet): Promise<void> => {
       return add('keyset', keyset);
@@ -48,20 +61,32 @@ const createAccountRepository = ({
     updateKeyset: async (keyset: IKeySet): Promise<void> => {
       return update('keyset', keyset);
     },
-    getKeyset: async (id: string): Promise<IKeySet> => {
-      return getOne('keyset', id);
-    },
+    getKeyset,
     addAccount: async (account: IAccount): Promise<void> => {
-      return add('account', account);
+      return add('account', deleteKey(account, 'keyset' as const));
     },
     updateAccount: async (account: IAccount): Promise<void> => {
-      return update('account', account);
+      return update('account', deleteKey(account, 'keyset'));
     },
-    getAccount: async (id: string): Promise<IAccount> => {
-      return getOne('account', id);
+    getAccount: async (id: string) => {
+      const account: IAccount = await getOne('account', id);
+      return {
+        ...account,
+        keyset: await getKeyset(account.keysetId),
+      };
     },
-    getAccountsByProfileId(profileId: string): Promise<IAccount[]> {
-      return getAll('account', profileId, 'profileId');
+    async getAccountsByProfileId(profileId: string) {
+      const accounts: IAccount[] = await getAll(
+        'account',
+        profileId,
+        'profileId',
+      );
+      return Promise.all(
+        accounts.map(async (account) => ({
+          ...account,
+          keyset: await getKeyset(account.keysetId),
+        })),
+      );
     },
     addFungible: async (fungible: Fungible): Promise<void> => {
       return add('fungible', fungible);

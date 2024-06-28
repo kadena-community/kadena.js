@@ -2,6 +2,7 @@ import {
   MonoDataThresholding,
   MonoKey,
   MonoSignature,
+  MonoTrendingUp,
 } from '@kadena/react-icons';
 import { Box, Stack, Text } from '@kadena/react-ui';
 import type { FC } from 'react';
@@ -34,7 +35,7 @@ export const Sidebar: FC = () => {
             <li className={sidebarMenuOptionClass}>
               <NavLink to="/sig-builder" className={sidebarLinkClass}>
                 <Stack alignItems="center" gap="md">
-                  <MonoSignature></MonoSignature>
+                  <MonoSignature />
                   Sig Builder
                 </Stack>
               </NavLink>
@@ -42,8 +43,16 @@ export const Sidebar: FC = () => {
             <li className={sidebarMenuOptionClass}>
               <NavLink to="/key-sources" className={sidebarLinkClass}>
                 <Stack alignItems="center" gap="md">
-                  <MonoKey></MonoKey>
+                  <MonoKey />
                   Key sources
+                </Stack>
+              </NavLink>
+            </li>
+            <li className={sidebarMenuOptionClass}>
+              <NavLink to="/transfer" className={sidebarLinkClass}>
+                <Stack alignItems="center" gap="md">
+                  <MonoTrendingUp />
+                  Transfer
                 </Stack>
               </NavLink>
             </li>

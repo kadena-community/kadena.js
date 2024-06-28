@@ -33,7 +33,7 @@ export async function decryptRecord(encrypted: EncryptedRecord) {
 const SESSION_PASS = new TextEncoder().encode('7b_ksKD_M4D0jnd7_ZM');
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const throttle = <T extends (...args: unknown[]) => any>(
+export const throttle = <T extends (...args: any[]) => any>(
   fn: T,
   delay: number,
 ) => {
@@ -62,7 +62,7 @@ export function createSession(
     expiration: `${Date.now() + 1000 * 60 * 30}`,
   };
   const renew = async () => {
-    console.log('Renewing session', session);
+    // console.log('Renewing session', session);
     session.expiration = `${Date.now() + 1000 * 60 * 30}`; // 30 minutes
     localStorage.setItem(
       'session',
@@ -82,7 +82,7 @@ export function createSession(
               ? new TextDecoder().decode(await kadenaDecrypt(password, current))
               : current,
           );
-          console.log('Loaded session', session);
+          // console.log('Loaded session', session);
           if (Date.now() > Number(session.expiration)) {
             throw new Error('Session expired!');
           }

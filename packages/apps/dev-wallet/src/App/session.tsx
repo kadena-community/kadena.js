@@ -25,7 +25,7 @@ export const SessionProvider: FC<PropsWithChildren> = ({ children }) => {
     const events = ['visibilitychange', 'touchstart', 'keydown', 'click'];
     const run = async () => {
       await Session.load();
-      console.log('Session is loaded', Session.get('profileId'));
+      // console.log('Session is loaded', Session.get('profileId'));
       events.forEach((event) => {
         document.addEventListener(event, Session.renew);
       });
@@ -33,7 +33,7 @@ export const SessionProvider: FC<PropsWithChildren> = ({ children }) => {
     };
     run();
     return () => {
-      console.log('Session is review', Session.renew);
+      // console.log('Session is review', Session.renew);
       events.forEach((event) => {
         document.removeEventListener(event, Session.renew);
       });

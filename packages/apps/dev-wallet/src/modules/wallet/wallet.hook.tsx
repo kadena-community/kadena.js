@@ -1,7 +1,7 @@
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import { defaultAccentColor } from '@/modules/layout/layout.provider.tsx';
 import { recoverPublicKey, retrieveCredential } from '@/utils/webAuthn';
-import { IUnsignedCommand } from '@kadena/client';
+import { ISignFunction, IUnsignedCommand } from '@kadena/client';
 import { useCallback, useContext } from 'react';
 import { UnlockPrompt } from '../../Components/UnlockPrompt/UnlockPrompt';
 import * as AccountService from '../account/account.service';
@@ -156,14 +156,19 @@ export const useWallet = () => {
   }, [context, prompt]);
 
   const sign = useCallback(
-    async (TXs: IUnsignedCommand[]) => {
+    async (TXs: IUnsignedCommand | IUnsignedCommand[]) => {
       if (!isUnlocked(context)) {
         throw new Error('Wallet in not unlocked');
       }
-      return WalletService.sign(context.keySources, unlockKeySource, TXs);
+      if (Array.isArray(TXs)) {
+        return WalletService.sign(context.keySources, unlockKeySource, TXs);
+      }
+      return WalletService.sign(context.keySources, unlockKeySource, [
+        TXs,
+      ]).then((res) => res[0]);
     },
     [context, unlockKeySource],
-  );
+  ) as ISignFunction;
 
   const decryptSecret = useCallback(
     async (password: string, secretId: string) => {
@@ -178,6 +183,24 @@ export const useWallet = () => {
   const createKey = useCallback(async (keySource: IKeySource) => {
     return WalletService.createKey(keySource, unlockKeySource);
   }, []);
+
+  const getPublicKeyData = useCallback(
+    (publicKey: string) => {
+      if (!context.keySources) return null;
+      for (const source of context.keySources) {
+        for (const key of source.keys) {
+          if (key.publicKey === publicKey) {
+            return {
+              ...key,
+              source: source.source,
+            };
+          }
+        }
+      }
+      return null;
+    },
+    [context],
+  );
 
   const createKAccount = useCallback(
     async (
@@ -205,10 +228,12 @@ export const useWallet = () => {
     decryptSecret,
     lockProfile,
     askForPassword,
+    getPublicKeyData,
     isUnlocked: isUnlocked(context),
     profile: context.profile,
     profileList: context.profileList ?? [],
     accounts: context.accounts || [],
     keySources: context.keySources || [],
+    fungibles: context.fungibles || [],
   };
 };

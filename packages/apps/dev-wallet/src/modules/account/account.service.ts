@@ -27,7 +27,7 @@ export async function createKAccount(
   networkId: string,
   publicKey: string,
   contract: string = 'coin',
-  chains: Array<{ chainId: string; balance: string }> = [],
+  chains: Array<{ chainId: ChainId; balance: string }> = [],
 ) {
   const keyset: IKeySet = {
     principal: `k:${publicKey}`,
@@ -169,6 +169,7 @@ export const accountDiscovery = (
 );
 
 export const syncAccount = async (account: IAccount) => {
+  console.log('syncing account', account.address);
   const updatedAccount = { ...account };
 
   const chainResult = (await discoverAccount(
@@ -176,7 +177,13 @@ export const syncAccount = async (account: IAccount) => {
     updatedAccount.networkId,
     undefined,
     updatedAccount.contract,
-  ).execute()) as IDiscoveredAccount[];
+  )
+    .execute()
+    .catch((error) =>
+      console.error('DISCOVERY ERROR', error),
+    )) as IDiscoveredAccount[];
+
+  console.log('chainResult', account.address, chainResult);
 
   updatedAccount.chains = chainResult
     .filter(({ result }) => Boolean(result))
@@ -194,10 +201,12 @@ export const syncAccount = async (account: IAccount) => {
   );
 
   await accountRepository.updateAccount(updatedAccount);
+  console.log('updated account', updatedAccount);
   return updatedAccount;
 };
 
 export const syncAllAccounts = async (profileId: string) => {
   const accounts = await accountRepository.getAccountsByProfileId(profileId);
+  console.log('syncing accounts', accounts);
   return Promise.all(accounts.map(syncAccount));
 };

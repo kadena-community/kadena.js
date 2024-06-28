@@ -27,6 +27,7 @@ import { WriteDownRecoveryPhrase } from '../pages/backup-recovery-phrase/write-d
 import { CreateProfile } from '../pages/create-profile/create-profile';
 import { HomePage } from '../pages/home/home-page';
 import { SelectProfile } from '../pages/select-profile/select-profile';
+import { Transfer } from '../pages/transfer/transfer';
 import { UnlockProfile } from '../pages/unlock-profile/unlock-profile';
 import { getScriptType } from '../utils/window';
 import { Layout } from './layout';
@@ -106,6 +107,7 @@ export const Routes: FC = () => {
           <Route path="/connect/:requestId" element={<Connect />} />
           <Route path="/key-sources" element={<KeySources />} />
           <Route path="/create-account" element={<CreateAccount />} />
+          <Route path="/transfer" element={<Transfer />} />
         </Route>
       </Route>
       <Route path="/ready" element={<Ready />} />
