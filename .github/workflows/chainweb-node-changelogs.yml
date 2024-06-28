@@ -2,7 +2,7 @@ name: Update Chainweb-node Changelogs
 
 on:
   workflow_dispatch:
-  pull_request:
+ 
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -11,7 +11,6 @@ jobs:
     name: Update Chainweb-node Changelogs
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
       contents: write
       pull-requests: write
 
@@ -38,7 +37,7 @@ jobs:
           body: |
             This PR updates the Chainweb-node changelogs.
           branch: update-chainweb-node-changelogs #TODO set to main, before merging
-          base: chore/chainweb-node-changelogs
+          base: main
           reviewers: |
             @sstraatemans
           assignees: |
