@@ -2,9 +2,7 @@ name: Update Chainweb-node Changelogs
 
 on:
   workflow_dispatch:
-  push: 
-    branches:
-       - main
+  pull_request:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
