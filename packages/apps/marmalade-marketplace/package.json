@@ -48,6 +48,7 @@
     "@vitejs/plugin-react": "^4.3.1",
     "@vitest/coverage-v8": "^1.6.0",
     "dotenv": "~16.4.5",
+    "form-data": "^4.0.0",
     "happy-dom": "^12.9.1",
     "next-router-mock": "^0.9.10",
     "node-cron": "^3.0.3",
