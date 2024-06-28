@@ -1,5 +1,5 @@
 import { SpireKeyKdacolorLogoWhite } from '@kadena/react-icons/product';
-import { MonoMenu } from '@kadena/react-icons/system';
+import { MonoMenu, MonoMenuOpen } from '@kadena/react-icons/system';
 import { Button, Select, SelectItem, Stack } from '@kadena/react-ui';
 import type { FC, PropsWithChildren } from 'react';
 import React, { useState } from 'react';
@@ -10,10 +10,13 @@ import MobileLogo from '../logo/mobile-logo';
 import ThemeToggle from '../theme-toggle/theme-toggle';
 import { buttonSizeClass } from './styles.css';
 
-export const NavBar: FC<PropsWithChildren<{ isFixed?: boolean }>> = ({
-  children,
-  isFixed,
-}) => {
+export const NavBar: FC<
+  PropsWithChildren<{
+    isFixed?: boolean;
+    handleToggleMenu: () => void;
+    menuIsOpen?: boolean;
+  }>
+> = ({ children, isFixed, handleToggleMenu, menuIsOpen }) => {
   const [selectedNetwork, setSelectedNetwork] = useState('Mainnet');
   return (
     <>
@@ -73,7 +76,8 @@ export const NavBar: FC<PropsWithChildren<{ isFixed?: boolean }>> = ({
           <Button
             className={buttonSizeClass}
             variant="primary"
-            startVisual={<MonoMenu />}
+            onClick={handleToggleMenu}
+            startVisual={menuIsOpen ? <MonoMenuOpen /> : <MonoMenu />}
           />
         </Stack>
       </Media>
