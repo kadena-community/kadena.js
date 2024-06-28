@@ -1,20 +1,13 @@
-import { SpireKeyKdacolorLogoWhite } from '@kadena/react-icons/product';
-import { Button, Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { GraphQLQueryDialog } from '../graphql-query-dialog/graphql-query-dialog';
 import { layoutWrapperClass } from '../layout/styles.css';
 import { NavBar } from '../navbar/navbar';
+import Sidemenu from '../sidemenu/sidemenu';
 import StatisticsStack from '../statistics-component/statistics-stack/statistics-stack';
-import {
-  fixedClass,
-  fixedVisibleClass,
-  headerClass,
-  menuClass,
-  menuOpenClass,
-} from './styles.css';
+import { fixedClass, fixedVisibleClass, headerClass } from './styles.css';
 
 const Header: FC = () => {
   const { ref, inView } = useInView({
@@ -28,21 +21,8 @@ const Header: FC = () => {
 
   return (
     <>
-      <Stack
-        flexDirection="column"
-        width="100%"
-        className={classNames(menuClass, menuIsOpen && menuOpenClass)}
-      >
-        <Stack paddingBlock="xxxl" />
-        <Stack width="100%">
-          <GraphQLQueryDialog />
+      <Sidemenu isOpen={menuIsOpen} />
 
-          <Button
-            variant="primary"
-            startVisual={<SpireKeyKdacolorLogoWhite />}
-          />
-        </Stack>
-      </Stack>
       <Stack as="header" className={layoutWrapperClass}>
         <Stack
           className={classNames(
