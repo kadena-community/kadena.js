@@ -24,3 +24,7 @@ export const boxClass = style([
     maxHeight: '48px',
   },
 ]);
+
+export const overFlowClass = style({
+  whiteSpace: 'nowrap',
+});

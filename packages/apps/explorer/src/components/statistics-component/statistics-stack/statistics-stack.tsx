@@ -1,27 +1,40 @@
+import { useNetworkInfoQuery } from '@/__generated__/sdk';
+import { Media } from '@/components/layout/media';
+import { formatStatisticsData } from '@/services/format';
 import { Stack, Text } from '@kadena/react-ui';
+import type { FC } from 'react';
 import React from 'react';
-import type { IStatisticsComponentProps } from '../statistics-component';
-import { boxClass } from './statistics-stack.css';
+import { boxClass, overFlowClass } from './statistics-stack.css';
 
-const StatisticsStack: React.FC<IStatisticsComponentProps> = ({ data }) => {
+const StatisticsStack: FC = () => {
+  const { data: statisticsData } = useNetworkInfoQuery({
+    pollInterval: 5000,
+  });
+
+  const statisticsGridData = formatStatisticsData(statisticsData?.networkInfo);
+
   return (
-    <Stack flexDirection={'row'} flex={1} gap="xs">
-      {data.map((item) => (
-        <Stack
-          className={boxClass}
-          flex={1}
-          flexDirection={'column'}
-          alignItems={'center'}
-          padding={'sm'}
-          key={`statistic-stack-${item.label}`}
-        >
-          <Text variant="code" bold>
-            {item.value}
-          </Text>
-          <Text size="smallest">{item.label}</Text>
-        </Stack>
-      ))}
-    </Stack>
+    <Media greaterThanOrEqual="md" style={{ width: '100%' }}>
+      <Stack flexDirection={'row'} flex={1} gap="xs">
+        {statisticsGridData.map((item) => (
+          <Stack
+            className={boxClass}
+            flex={1}
+            flexDirection={'column'}
+            alignItems={'center'}
+            padding={'sm'}
+            key={`statistic-stack-${item.label}`}
+          >
+            <Text variant="code" bold>
+              {item.value}
+            </Text>
+            <Text size="smallest" className={overFlowClass}>
+              {item.label}
+            </Text>
+          </Stack>
+        ))}
+      </Stack>
+    </Media>
   );
 };
 

@@ -3,6 +3,7 @@ import Layout from '@/components/layout/layout';
 import { Media } from '@/components/layout/media';
 import SearchComponent from '@/components/search/search-component/search-component';
 import SearchResults from '@/components/search/search-results/search-results';
+import StatisticsGrid from '@/components/statistics-component/statistics-grid/statistics-grid';
 import { useSearch } from '@/hooks/search';
 import { LogoKdacolorLight } from '@kadena/react-icons/brand';
 import { Stack } from '@kadena/react-ui';
@@ -26,6 +27,7 @@ const Home: React.FC = () => {
           <a href="/">
             <LogoKdacolorLight cursor={'pointer'} />
           </a>
+
           <SearchComponent
             searchOption={searchOption}
             setSearchOption={setSearchOption}
@@ -50,6 +52,7 @@ const Home: React.FC = () => {
       </Media>
 
       <Media lessThan="sm">
+        <StatisticsGrid />
         <Stack
           flexDirection="column"
           gap={'xxl'}

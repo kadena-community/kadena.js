@@ -1,12 +1,11 @@
 import { Stack } from '@kadena/react-ui';
+import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
-import { layoutWrapperClass } from '../layout/styles.css';
-
-import classNames from 'classnames';
 import { useInView } from 'react-intersection-observer';
+import { layoutWrapperClass } from '../layout/styles.css';
 import { NavBar } from '../navbar/navbar';
-import StatisticsComponent from '../statistics-component/statistics-component';
+import StatisticsStack from '../statistics-component/statistics-stack/statistics-stack';
 import { fixedClass, fixedVisibleClass, headerClass } from './styles.css';
 
 const Header: FC = () => {
@@ -37,7 +36,7 @@ const Header: FC = () => {
           gap="md"
         >
           <NavBar>
-            <StatisticsComponent />
+            <StatisticsStack />
           </NavBar>
         </Stack>
       </Stack>
