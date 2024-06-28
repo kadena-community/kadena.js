@@ -34,8 +34,8 @@ jobs:
           title: Update Chainweb-node Changelogs
           body: |
             This PR updates the Chainweb-node changelogs.
-          branch: update-chainweb-node-changelogs #TODO set to main, before merging
-          base: main
+          branch: chainweb-node-changelogs 
+          base: chore/chainweb-node-changelogs #TODO set to main, before merging
           reviewers: |
             @sstraatemans
           assignees: |
