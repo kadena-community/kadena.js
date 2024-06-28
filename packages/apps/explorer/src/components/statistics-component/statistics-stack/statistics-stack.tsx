@@ -3,7 +3,8 @@ import { networkConstants } from '@/constants/network';
 import { SpireKeyKdacolorLogoWhite } from '@kadena/react-icons/product';
 import { Button, Select, SelectItem, Stack, Text } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
-import React, { useEffect, useState } from 'react';
+import { redirect, useRouter } from 'next/navigation';
+import React, { Key, useEffect, useState } from 'react';
 import type { IStatisticsComponentProps } from '../statistics-component';
 import {
   borderStyleClass,
@@ -12,10 +13,26 @@ import {
 
 const StatisticsStack: React.FC<IStatisticsComponentProps> = ({ data }) => {
   const [selectedNetwork, setSelectedNetwork] = useState('Mainnet');
+  const router = useRouter();
 
+  const handleNetworkChange = (value: Key) => {
+    setSelectedNetwork(value.toString());
+  };
+
+  //TODO Implement redirection when instances are active
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log(selectedNetwork);
+    const mainnetUrl = process.env.NEXT_PUBLIC_EXPLORER_TESTNET_INSTANCE;
+    const testnetUrl = process.env.NEXT_PUBLIC_EXPLORER_TESTNET_INSTANCE;
+
+    if (selectedNetwork === networkConstants.mainnet01.key) {
+      if (mainnetUrl) {
+        // window.location.href = mainnetUrl;
+      }
+    } else if (selectedNetwork === networkConstants.testnet04.key) {
+      if (testnetUrl) {
+        // window.location.href = testnetUrl;
+      }
+    }
   }, [selectedNetwork]);
 
   return (
@@ -51,9 +68,7 @@ const StatisticsStack: React.FC<IStatisticsComponentProps> = ({ data }) => {
               className={atoms({
                 height: '100%',
               })}
-              onSelectionChange={(value) =>
-                setSelectedNetwork(value.toString())
-              }
+              onSelectionChange={handleNetworkChange}
             >
               <SelectItem
                 key={networkConstants.mainnet01.key}
