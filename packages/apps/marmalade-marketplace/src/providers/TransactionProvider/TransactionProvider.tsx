@@ -1,13 +1,10 @@
 'use client';
 import { env } from '@/utils/env';
-import { getAccountCookieName } from '@/utils/getAccountCookieName';
-import { getReturnUrl } from '@/utils/getReturnUrl';
 import { tryParse, decodeBase64 , ERROR} from '@/utils/signWithSpireKey';
-import { IUnsignedCommand,ICommand, createClient, isSignedTransaction, ITransactionDescriptor,IPollOptions } from "@kadena/client"
-import { useRouter, useSearchParams } from 'next/navigation';
+import { IUnsignedCommand,ICommand, createClient, isSignedTransaction, ITransactionDescriptor,IPollOptions, ICommandResult } from "@kadena/client"
+import { useSearchParams } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
-import { createContext, useCallback, useEffect, useState } from 'react';
-import { useAccount } from '@/hooks/account';
+import { createContext, useEffect, useState } from 'react';
 
 interface ITransactionError {
   message: string;
@@ -16,8 +13,8 @@ interface ITransactionError {
 export interface ITransactionContext {
   transaction?: IUnsignedCommand | ICommand;
   error?: ITransactionError;
-  preview: () => Promise<void>; 
-  send: () => Promise<void>; 
+  preview: () => Promise<void | ICommandResult>
+  send: () => Promise<void | ITransactionDescriptor>
   poll: (req:any) => Promise<any>; 
   setTransaction: (transaction: IUnsignedCommand | ICommand) => void;
 }

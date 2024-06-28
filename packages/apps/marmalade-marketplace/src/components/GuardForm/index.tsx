@@ -50,7 +50,7 @@ const GuardForm: FC<GuardFormProps> = ({ guardInput, handleGuardInputChange, han
       value={guardInput.transferGuard} 
       disabled={guardInput.transferGuard === excluded}
       onChange={handleGuardInputChange} 
-      endAddon={<Checkbox isSelected={guardInput.transferGuard === excluded} onChange={(e) => handleGuardExcludeChange('transferGuard', e.target.checked)}>Exclude</Checkbox>}
+      endAddon={<Checkbox isSelected={guardInput.transferGuard === excluded} onChange={(e) => handleGuardExcludeChange('transferGuard', e)}>Exclude</Checkbox>}
     />
   </div>
 );

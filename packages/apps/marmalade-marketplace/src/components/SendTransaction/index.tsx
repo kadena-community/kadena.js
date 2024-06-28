@@ -1,11 +1,11 @@
 import React, { FC, useState } from 'react';
 import { Card, Divider, Button, Dialog} from '@kadena/react-ui';
 import * as styles from '@/styles/create-token.css';
-import { IUnsignedCommand, ICommand, ITransactionDescriptor } from "@kadena/client"
+import { IUnsignedCommand, ICommand, ITransactionDescriptor, ICommandResult } from "@kadena/client"
 
 interface SendTransactionFormProps {
-  send: () => Promise<void>; 
-  preview: () => Promise<void>; 
+  preview: () => Promise<void | ICommandResult>
+  send: () => Promise<void | ITransactionDescriptor>
   poll: (req:any) => Promise<any>; 
   transaction?: IUnsignedCommand | ICommand;
 }
