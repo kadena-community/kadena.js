@@ -14,12 +14,12 @@ import { ListBox } from '../../ListBox';
 import { Popover } from '../../Popover';
 import { Field } from '../Field/Field';
 import { input } from '../Form.css';
+import type { FormFieldDirection } from '../FormFieldHeader/FormFieldHeader';
 import { comboBoxControlClass } from './Combobox.css';
 
 type Variants = NonNullable<RecipeVariants<typeof input>>;
 
-export interface IComboboxProps<T extends object = any>
-  extends AriaComboBoxProps<T> {
+export interface IComboboxProps<T extends object = any> extends AriaComboBoxProps<T> {
   variant?: Variants['variant'];
   fontType?: Variants['fontType'];
   size?: Variants['size'];
@@ -28,6 +28,7 @@ export interface IComboboxProps<T extends object = any>
   className?: string;
   tag?: string;
   info?: string;
+  direction?: FormFieldDirection;
   /*
    * @deprecated Use `isDisabled` instead. only here to support libs that manages props like `react-hook-form`
    */
@@ -58,6 +59,7 @@ function ComboBoxBase<T extends object>(
     variant = 'default',
     startVisual,
     label,
+    direction = 'row',
   } = props;
 
   const { contains } = useFilter({ sensitivity: 'base' });
@@ -98,6 +100,7 @@ function ComboBoxBase<T extends object>(
       label={label}
       isDisabled={isDisabled}
       description={description}
+      direction={direction}
       errorMessage={errorMessage}
       size={size}
       tag={tag}

@@ -12,6 +12,7 @@ import type { RecipeVariants } from '@vanilla-extract/recipes';
 import classNames from 'classnames';
 import { Field } from '../Field/Field';
 import { input } from '../Form.css';
+import type { FormFieldDirection } from '../FormFieldHeader/FormFieldHeader';
 import { selectButtonValue, selectItemClass } from './Select.css';
 import { SelectButton } from './SelectButton';
 
@@ -31,6 +32,7 @@ export interface ISelectProps<T extends object = any>
   info?: string;
   startVisual?: ReactElement;
   className?: string;
+  direction?: FormFieldDirection;
 }
 
 function SelectBase<T extends object>(
@@ -48,6 +50,7 @@ function SelectBase<T extends object>(
     variant = 'default',
     label,
     startVisual,
+    direction = 'row',
   } = props;
   const isDisabled = props.disabled ?? props.isDisabled;
   const ref = useObjectRef(forwardedRef);
@@ -80,6 +83,7 @@ function SelectBase<T extends object>(
       ref={ref}
       startVisual={startVisual}
       isInvalid={fieldProps.isInvalid}
+      direction={direction}
     >
       <HiddenSelect
         isDisabled={isDisabled}

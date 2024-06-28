@@ -6,6 +6,7 @@ import { useCheckboxGroup } from 'react-aria';
 import type { CheckboxGroupState } from 'react-stately';
 import { useCheckboxGroupState } from 'react-stately';
 import { FormFieldHeader } from '../FormFieldHeader/FormFieldHeader';
+import type { FormFieldDirection } from '../FormFieldHeader/FormFieldHeader';
 import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
 import { groupClass, layoutClass } from './Checkbox.css';
 
@@ -19,6 +20,7 @@ export interface ICheckboxProps extends AriaCheckboxGroupProps {
   isReadOnly?: boolean;
   label?: string;
   tag?: string;
+  formFieldDirection?: FormFieldDirection;
 }
 
 export const CheckboxContext = createContext<CheckboxGroupState | null>(null);
@@ -36,6 +38,7 @@ export function CheckboxGroup(props: ICheckboxProps) {
     isReadOnly,
     label,
     tag,
+    formFieldDirection = 'row',
   } = props;
   const state = useCheckboxGroupState(props);
   const {
@@ -60,6 +63,7 @@ export function CheckboxGroup(props: ICheckboxProps) {
           tag={tag}
           info={info}
           isDisabled={isDisabled}
+          direction={formFieldDirection}
           {...labelProps}
         />
       )}

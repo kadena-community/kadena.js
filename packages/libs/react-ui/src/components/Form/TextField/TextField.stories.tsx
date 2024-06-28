@@ -149,6 +149,17 @@ const meta: Meta<ITextFieldProps> = {
         disable: true,
       },
     },
+    direction: {
+      description: 'Orientation of the form header labels',
+      control: {
+        type: 'radio',
+      },
+      options: {
+        Row: 'row',
+        Column: 'column',
+      },
+      defaultValue: 'row',
+    },
   },
   args: {
     fontType: 'ui',
@@ -162,6 +173,7 @@ const meta: Meta<ITextFieldProps> = {
     errorMessage: '',
     isDisabled: false,
     isRequired: false,
+    direction: 'row',
   },
 };
 
