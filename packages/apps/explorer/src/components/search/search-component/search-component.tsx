@@ -133,7 +133,6 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
   return (
     <>
       <Box
-        paddingInline={'xxl'}
         display={'flex'}
         flexDirection={'column'}
         onKeyDown={(e) => handleSearchValueKeyDown(e)}

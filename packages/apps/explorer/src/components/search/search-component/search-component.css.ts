@@ -1,18 +1,8 @@
-import { atoms, responsiveStyle } from '@kadena/react-ui/styles';
+import { atoms } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const searchBoxClass = style({
-  ...responsiveStyle({
-    md: {
-      width: 525,
-    },
-    sm: {
-      width: 475,
-    },
-    xs: {
-      width: 325,
-    },
-  }),
+  width: '100%',
 });
 
 export const searchInputClass = style([
@@ -23,7 +13,7 @@ export const searchInputClass = style([
     outline: 'none',
   }),
   {
-    height: 55,
+    height: 46,
     border: 'none',
     width: '75%',
   },

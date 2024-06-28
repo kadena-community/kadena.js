@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { layoutWrapperClass } from '../layout/styles.css';
 import { NavBar } from '../navbar/navbar';
+import SearchBarHeader from '../search/searchbar-header/searchbar-header';
 import Sidemenu from '../sidemenu/sidemenu';
 import StatisticsStack from '../statistics-component/statistics-stack/statistics-stack';
 import { fixedClass, fixedVisibleClass, headerClass } from './styles.css';
@@ -39,7 +40,7 @@ const Header: FC = () => {
             handleToggleMenu={handleToggleMenu}
             menuIsOpen={menuIsOpen}
           >
-            {/*  Here comes the search bar */}
+            <SearchBarHeader />
           </NavBar>
         </Stack>
         <Stack
