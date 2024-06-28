@@ -1,3 +1,5 @@
+import { networkConstants } from '@/constants/network';
+import { useRedirectOnNetworkChange } from '@/hooks/network/redirect';
 import {
   KadenaLogo,
   NavHeader,
@@ -14,7 +16,12 @@ import { GraphQLQueryDialog } from '../graphql-query-dialog/graphql-query-dialog
 import { navbarWrapperClass } from './styles.css';
 
 export const NavBar: FC = () => {
-  const [selectedNetwork, setSelectedNetwork] = useState('Mainnet');
+  const [selectedNetwork, setSelectedNetwork] = useState(
+    networkConstants.mainnet01.label,
+  );
+
+  useRedirectOnNetworkChange(selectedNetwork);
+
   return (
     <Stack className={navbarWrapperClass}>
       <NavHeader
@@ -38,11 +45,17 @@ export const NavBar: FC = () => {
             setSelectedNetwork(value.toString())
           }
         >
-          <SelectItem key={'Mainnet'} textValue="Mainnet">
-            Mainnet
+          <SelectItem
+            key={networkConstants.mainnet01.key}
+            textValue={networkConstants.mainnet01.label}
+          >
+            {networkConstants.mainnet01.label}
           </SelectItem>
-          <SelectItem key={'Testnet'} textValue="Testnet">
-            Testnet
+          <SelectItem
+            key={networkConstants.testnet04.key}
+            textValue={networkConstants.testnet04.label}
+          >
+            {networkConstants.testnet04.label}
           </SelectItem>
         </NavHeaderSelect>
       </NavHeader>
