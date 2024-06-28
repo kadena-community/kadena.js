@@ -1,6 +1,6 @@
+import { NavBar } from '@/components/navbar/navbar';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
-import { NavBar } from './../../navbar/navbar';
 import { documentStyle, layoutWrapperClass } from './../styles.css';
 
 interface IProps {

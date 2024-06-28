@@ -1,10 +1,10 @@
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import { networkConstants } from '@/constants/network';
+import { useRedirectOnNetworkChange } from '@/hooks/network/redirect';
 import { SpireKeyKdacolorLogoWhite } from '@kadena/react-icons/product';
 import { Button, Select, SelectItem, Stack, Text } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
-import type { Key } from 'react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import type { IStatisticsComponentProps } from '../statistics-component';
 import {
   borderStyleClass,
@@ -12,27 +12,11 @@ import {
 } from './statistics-stack.css';
 
 const StatisticsStack: React.FC<IStatisticsComponentProps> = ({ data }) => {
-  const [selectedNetwork, setSelectedNetwork] = useState('Mainnet');
+  const [selectedNetwork, setSelectedNetwork] = useState(
+    networkConstants.mainnet01.label,
+  );
 
-  const handleNetworkChange = (value: Key) => {
-    setSelectedNetwork(value.toString());
-  };
-
-  //TODO Implement redirection when instances are active
-  useEffect(() => {
-    const mainnetUrl = process.env.NEXT_PUBLIC_EXPLORER_TESTNET_INSTANCE;
-    const testnetUrl = process.env.NEXT_PUBLIC_EXPLORER_TESTNET_INSTANCE;
-
-    if (selectedNetwork === networkConstants.mainnet01.key) {
-      if (mainnetUrl) {
-        // window.location.href = mainnetUrl;
-      }
-    } else if (selectedNetwork === networkConstants.testnet04.key) {
-      if (testnetUrl) {
-        // window.location.href = testnetUrl;
-      }
-    }
-  }, [selectedNetwork]);
+  useRedirectOnNetworkChange(selectedNetwork);
 
   return (
     <Stack flexDirection={'row'}>
@@ -67,7 +51,9 @@ const StatisticsStack: React.FC<IStatisticsComponentProps> = ({ data }) => {
               className={atoms({
                 height: '100%',
               })}
-              onSelectionChange={handleNetworkChange}
+              onSelectionChange={(value: any) =>
+                setSelectedNetwork(value.toString())
+              }
             >
               <SelectItem
                 key={networkConstants.mainnet01.key}
