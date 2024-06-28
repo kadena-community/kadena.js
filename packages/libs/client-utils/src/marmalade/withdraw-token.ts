@@ -13,7 +13,11 @@ import type {
   IWithdrawSaleTokenPolicyConfig,
   WithWithdrawSaleTokenPolicy,
 } from './config';
-import { formatAdditionalSigners, formatCapabilities } from './helpers';
+import {
+  formatAdditionalSigners,
+  formatCapabilities,
+  formatWebAuthnSigner,
+} from './helpers';
 
 interface IWithdrawTokenInput extends CommonProps {
   tokenId: string;
@@ -55,7 +59,7 @@ const withdrawTokenCommand = <C extends IWithdrawSaleTokenPolicyConfig>({
         timeout,
       },
     }),
-    addSigner(seller.keyset.keys, (signFor) => [
+    addSigner(formatWebAuthnSigner(seller.keyset.keys), (signFor) => [
       signFor('coin.GAS'),
       signFor(
         'marmalade-v2.ledger.WITHDRAW',

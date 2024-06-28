@@ -1,3 +1,5 @@
+import { networkConstants } from '@/constants/network';
+import { useRedirectOnNetworkChange } from '@/hooks/network/redirect';
 import { SpireKeyKdacolorLogoWhite } from '@kadena/react-icons/product';
 import { MonoMenu, MonoMenuOpen } from '@kadena/react-icons/system';
 import { Button, Select, SelectItem, Stack } from '@kadena/react-ui';
@@ -17,7 +19,11 @@ export const NavBar: FC<
     menuIsOpen?: boolean;
   }>
 > = ({ children, isFixed, handleToggleMenu, menuIsOpen }) => {
-  const [selectedNetwork, setSelectedNetwork] = useState('Mainnet');
+  const [selectedNetwork, setSelectedNetwork] = useState(
+    networkConstants.mainnet01.key,
+  );
+
+  useRedirectOnNetworkChange(selectedNetwork);
   return (
     <>
       <Stack alignItems="center">
@@ -46,11 +52,17 @@ export const NavBar: FC<
               setSelectedNetwork(value.toString() as keyof typeof NetworkTypes)
             }
           >
-            <SelectItem key={'Mainnet'} textValue="Mainnet">
-              Mainnet
+            <SelectItem
+              key={networkConstants.mainnet01.key}
+              textValue={networkConstants.mainnet01.label}
+            >
+              {networkConstants.mainnet01.label}
             </SelectItem>
-            <SelectItem key={'Testnet'} textValue="Testnet">
-              Testnet
+            <SelectItem
+              key={networkConstants.testnet04.key}
+              textValue={networkConstants.testnet04.label}
+            >
+              {networkConstants.testnet04.label}
             </SelectItem>
           </Select>
         </Media>
