@@ -1,24 +1,37 @@
 import React from 'react';
 import { expect, test, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import CollectionForm from '@/components/CollectionForm'; // Adjust the import path as necessary
+import CreateToken from '@/components/CreateToken'; // Adjust the import path as necessary
 
-test('CollectionForm renders and handles input changes', () => {
-  const mockHandleCollectionInputChange = vi.fn();
-  const collectionInput = { collectionId: '123' };
+test('CreateToken renders and handles input changes', () => {
+  render(<CreateToken />);
 
-  render(
-    <CollectionForm
-      collectionInput={collectionInput}
-      handleCollectionInputChange={mockHandleCollectionInputChange}
-    />
-  );
+  const uriInputElement = screen.getByLabelText('URI') as HTMLInputElement;
+  expect(uriInputElement).toBeDefined();
 
-  const inputElement = screen.getByLabelText('Collection ID') as HTMLInputElement;
-  expect(inputElement).toBeDefined();
-  expect(inputElement.value).toBe('123');
+  fireEvent.change(uriInputElement, { target: { value: 'new-uri' } });
 
-  fireEvent.change(inputElement, { target: { value: '456' } });
+  expect(uriInputElement.value).toBe('new-uri');
 
-  expect(mockHandleCollectionInputChange).toHaveBeenCalled();
+  const precisionInputElement = screen.getByLabelText('Precision') as HTMLInputElement;
+  expect(precisionInputElement).toBeDefined();
+
+  fireEvent.change(precisionInputElement, { target: { value: '1' } });
+
+  expect(precisionInputElement.value).toBe('1');
+});
+
+test('CreateToken handles form submission', async () => {
+  const mockHandleSubmit = vi.fn((event) => event.preventDefault());
+
+  render(<CreateToken />);
+
+  const submitButton = screen.getByText('Create Token');
+  expect(submitButton).toBeDefined();
+
+  submitButton.onclick = mockHandleSubmit;
+
+  fireEvent.click(submitButton);
+
+  expect(mockHandleSubmit).toHaveBeenCalled();
 });
