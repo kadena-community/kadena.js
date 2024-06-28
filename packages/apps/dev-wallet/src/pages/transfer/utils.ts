@@ -1,5 +1,10 @@
 import { IAccount } from '@/modules/account/account.repository';
-import { BuiltInPredicate, ChainId, ISigner } from '@kadena/client';
+import {
+  BuiltInPredicate,
+  ChainId,
+  ISigner,
+  SignerScheme,
+} from '@kadena/client';
 import { transferCreateCommand } from '@kadena/client-utils/coin';
 import { estimateGas } from '@kadena/client-utils/core';
 import { PactNumber } from '@kadena/pactjs';
@@ -156,6 +161,7 @@ export async function findOptimalTransfer(
   receiverAccount: IReceiverAccount,
   amount: string,
   networkId: string,
+  getPublicKeyData: (publicKey: string) => { scheme?: SignerScheme } | null,
 ): Promise<IOptimalTransfer[] | null> {
   const withGasEstimation = await Promise.all(
     senderAccount.chains.map(async (data) => ({
@@ -163,7 +169,16 @@ export async function findOptimalTransfer(
       ...(await estimateTransferGas(
         {
           account: senderAccount.address,
-          publicKeys: senderAccount.keyset!.guard.keys,
+          publicKeys: senderAccount.keyset!.guard.keys.map((key) => {
+            const info = getPublicKeyData(key);
+            if (info && info.scheme) {
+              return {
+                pubKey: key,
+                scheme: info.scheme,
+              };
+            }
+            return key;
+          }),
         },
         {
           account: receiverAccount.address,

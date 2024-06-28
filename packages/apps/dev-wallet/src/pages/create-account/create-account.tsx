@@ -85,7 +85,7 @@ export function CreateAccount() {
       throw new Error('Profile or active network not found');
     }
     const keys = showAdvanced
-      ? externalKeys.split(',').filter((key) => key.length > 0)
+      ? externalKeys.split(/\r?\n/).filter((key) => key.length > 0)
       : [];
     for (const keySource of keySources.filter((keySource) =>
       selectedKeySources.includes(keySource.uuid),
@@ -133,6 +133,12 @@ export function CreateAccount() {
   if (created) {
     return <Navigate to="/" />;
   }
+
+  const keysCount = showAdvanced
+    ? externalKeys.split(/\r?\n/).filter((key) => key.length > 0).length +
+      selectedKeySources.length
+    : selectedKeySources.length;
+
   return (
     <Stack
       flexDirection={'column'}
@@ -213,11 +219,11 @@ export function CreateAccount() {
         </>
       )}
       <Text>
-        {!selectedKeySources.length
+        {!keysCount
           ? 'Select at least one key source to create an account'
-          : `The account will be guarded by ${selectedKeySources.length} keys`}
+          : `The account will be guarded by ${keysCount} keys`}
       </Text>
-      <Button onClick={create} isDisabled={!selectedKeySources.length}>
+      <Button onClick={create} isDisabled={!keysCount}>
         Create
       </Button>
     </Stack>

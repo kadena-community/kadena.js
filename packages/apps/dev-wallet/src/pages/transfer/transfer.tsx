@@ -1,6 +1,6 @@
 import { useNetwork } from '@/modules/network/network.hook';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { ChainId } from '@kadena/client';
+import { ChainId, ISigner } from '@kadena/client';
 import { discoverAccount, transferCreate } from '@kadena/client-utils/coin';
 import {
   Button,
@@ -179,6 +179,7 @@ export function Transfer() {
         receiverAccount,
         amount,
         activeNetwork!.networkId,
+        getPublicKeyData,
       );
       setOptimalTransfers(optimals ?? []);
       if (!optimals) {
@@ -186,7 +187,7 @@ export function Transfer() {
       }
     };
     check();
-  }, [account, receiverAccount, amount, activeNetwork]);
+  }, [account, receiverAccount, amount, activeNetwork, getPublicKeyData]);
 
   return (
     <>

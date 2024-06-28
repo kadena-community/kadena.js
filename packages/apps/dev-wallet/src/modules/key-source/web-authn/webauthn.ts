@@ -1,11 +1,12 @@
 // TODO: implement this module
 
 import {
-  base64URLdecode,
   createCredential,
   getPublicKeyForKadena,
   retrieveCredential,
 } from '@/utils/webAuthn';
+
+import { base64UrlDecodeArr } from '@kadena/cryptography-utils';
 
 import { IKeySource } from '../../wallet/wallet.repository';
 import { IWebAuthn, keySourceRepository } from '../key-source.repository';
@@ -98,11 +99,13 @@ export function createWebAuthnService() {
         throw new Error('Key not found');
       }
       const cred = await retrieveCredential(
-        base64URLdecode(key.index),
-        new TextEncoder().encode(message),
+        base64UrlDecodeArr(key.index),
+        base64UrlDecodeArr(message),
       );
+
       const base64 = (buffer: ArrayBuffer) =>
         Buffer.from(buffer).toString('base64');
+
       sigs.push({
         sig: JSON.stringify({
           signature: base64(cred.response.signature),
