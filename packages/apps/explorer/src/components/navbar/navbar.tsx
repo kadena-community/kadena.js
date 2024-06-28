@@ -1,43 +1,82 @@
 import { SpireKeyKdacolorLogoWhite } from '@kadena/react-icons/product';
+import { MonoMenu } from '@kadena/react-icons/system';
 import { Button, Select, SelectItem, Stack } from '@kadena/react-ui';
 import type { FC, PropsWithChildren } from 'react';
 import React, { useState } from 'react';
 import { GraphQLQueryDialog } from '../graphql-query-dialog/graphql-query-dialog';
+import { Media } from '../layout/media';
+import Logo from '../logo/logo';
+import MobileLogo from '../logo/mobile-logo';
 import ThemeToggle from '../theme-toggle/theme-toggle';
 import { buttonSizeClass } from './styles.css';
 
-export const NavBar: FC<PropsWithChildren> = ({ children }) => {
+export const NavBar: FC<PropsWithChildren<{ isFixed?: boolean }>> = ({
+  children,
+  isFixed,
+}) => {
   const [selectedNetwork, setSelectedNetwork] = useState('Mainnet');
   return (
     <>
-      <Stack>
-        <Select
-          size="lg"
-          aria-label="Select network"
-          defaultSelectedKey={selectedNetwork}
-          fontType="code"
-          onSelectionChange={(value) =>
-            setSelectedNetwork(value.toString() as keyof typeof NetworkTypes)
-          }
-        >
-          <SelectItem key={'Mainnet'} textValue="Mainnet">
-            Mainnet
-          </SelectItem>
-          <SelectItem key={'Testnet'} textValue="Testnet">
-            Testnet
-          </SelectItem>
-        </Select>
+      <Stack alignItems="center">
+        {isFixed ? (
+          <>
+            <Media greaterThanOrEqual="md">
+              <Logo />
+            </Media>
+            <Media lessThan="md">
+              <MobileLogo />
+            </Media>
+          </>
+        ) : (
+          <Media lessThan="md">
+            <Logo />
+          </Media>
+        )}
+
+        <Media greaterThanOrEqual="md">
+          <Select
+            size="lg"
+            aria-label="Select network"
+            defaultSelectedKey={selectedNetwork}
+            fontType="code"
+            onSelectionChange={(value) =>
+              setSelectedNetwork(value.toString() as keyof typeof NetworkTypes)
+            }
+          >
+            <SelectItem key={'Mainnet'} textValue="Mainnet">
+              Mainnet
+            </SelectItem>
+            <SelectItem key={'Testnet'} textValue="Testnet">
+              Testnet
+            </SelectItem>
+          </Select>
+        </Media>
       </Stack>
       <Stack flex={1}>{children}</Stack>
-      <ThemeToggle />
 
-      <GraphQLQueryDialog />
+      <Media greaterThanOrEqual="md">
+        <Stack>
+          <ThemeToggle />
+          <GraphQLQueryDialog />
 
-      <Button
-        className={buttonSizeClass}
-        variant="primary"
-        startVisual={<SpireKeyKdacolorLogoWhite />}
-      />
+          <Button
+            className={buttonSizeClass}
+            variant="primary"
+            startVisual={<SpireKeyKdacolorLogoWhite />}
+          />
+        </Stack>
+      </Media>
+      <Media lessThan="md">
+        <Stack>
+          <ThemeToggle />
+
+          <Button
+            className={buttonSizeClass}
+            variant="primary"
+            startVisual={<MonoMenu />}
+          />
+        </Stack>
+      </Media>
     </>
   );
 };

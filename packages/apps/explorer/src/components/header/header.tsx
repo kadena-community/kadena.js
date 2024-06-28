@@ -26,7 +26,7 @@ const Header: FC = () => {
           width="100%"
           gap="md"
         >
-          <NavBar>Hier komt de searchbar</NavBar>
+          <NavBar isFixed>Hier komt de searchbar</NavBar>
         </Stack>
         <Stack
           ref={ref}

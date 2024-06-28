@@ -7,7 +7,8 @@ export const headerClass = style([
     padding: 'sm',
   }),
   {
-    backgroundColor: tokens.kda.foundation.color.background.layer.default,
+    backgroundColor:
+      tokens.kda.foundation.color.background.surfaceHighContrast.default,
     borderEndStartRadius: tokens.kda.foundation.radius.md,
     borderEndEndRadius: tokens.kda.foundation.radius.md,
   },
