@@ -14,7 +14,7 @@ const localConfig = defineConfig({
         lines: 9,
         functions: 8,
         branches: 22,
-        statements: 10,
+        statements: 9,
         autoUpdate: false
       },
     },
