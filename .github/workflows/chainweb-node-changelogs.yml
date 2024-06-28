@@ -24,7 +24,7 @@ jobs:
         uses: ./.github/actions/runner-setup
 
       - name: Build Docs Tools
-        run:  pnpm turbo build --filter @kadena/docs-tools
+        run:  pnpm turbo build --filter @kadena/docs
 
       - name: Update chainweb-node changelog
         run: pnpm run docs:changelogs
