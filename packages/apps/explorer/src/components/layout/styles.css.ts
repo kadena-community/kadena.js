@@ -1,5 +1,5 @@
 import { tokens } from '@kadena/react-ui/styles';
-import { createVar, globalStyle, style } from '@vanilla-extract/css';
+import { createVar, style } from '@vanilla-extract/css';
 
 export const $$pageWidth = createVar();
 
@@ -10,6 +10,7 @@ export const documentStyle = style({
 });
 
 export const layoutWrapperClass = style({
+  position: 'relative',
   marginInline: 'auto',
   maxWidth: $$pageWidth,
 });

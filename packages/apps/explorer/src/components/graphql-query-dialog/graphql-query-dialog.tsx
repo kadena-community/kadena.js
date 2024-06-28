@@ -3,7 +3,7 @@ import { MonoHub } from '@kadena/react-icons/system';
 import { Box, Button, Dialog, DialogContent, Divider } from '@kadena/react-ui';
 import { print } from 'graphql';
 import React, { useState } from 'react';
-import { buttonSizeClass } from '../header/styles.css';
+import { buttonSizeClass } from '../navbar/styles.css';
 
 export const GraphQLQueryDialog = (): JSX.Element => {
   let { queries } = useQueryContext();

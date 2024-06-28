@@ -1,10 +1,10 @@
 import { MonoContrast } from '@kadena/react-icons';
-import { Button, NavHeaderButton, Themes, useTheme } from '@kadena/react-ui';
+import { Button, Themes, useTheme } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
-import { buttonSizeClass } from '../header/styles.css';
-import { baseIcon, reversedIcon, socialsClass } from './styles.css';
+import { buttonSizeClass } from '../navbar/styles.css';
+import { baseIcon, reversedIcon } from './styles.css';
 
 const ThemeToggle: FC = () => {
   const [isMounted, setIsMounted] = useState<boolean>(false);

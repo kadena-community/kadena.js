@@ -1,41 +1,23 @@
-import {
-  KadenaLogo,
-  NavHeader,
-  NavHeaderLink,
-  NavHeaderLinkList,
-  NavHeaderSelect,
-  SelectItem,
-  Stack,
-} from '@kadena/react-ui';
-import Link from 'next/link';
-import type { FC } from 'react';
+import { SpireKeyKdacolorLogoWhite } from '@kadena/react-icons/product';
+import { Button, Select, SelectItem, Stack } from '@kadena/react-ui';
+import type { FC, PropsWithChildren } from 'react';
 import React, { useState } from 'react';
 import { GraphQLQueryDialog } from '../graphql-query-dialog/graphql-query-dialog';
-import { navbarWrapperClass } from './styles.css';
+import ThemeToggle from '../theme-toggle/theme-toggle';
+import { buttonSizeClass } from './styles.css';
 
-export const NavBar: FC = () => {
+export const NavBar: FC<PropsWithChildren> = ({ children }) => {
   const [selectedNetwork, setSelectedNetwork] = useState('Mainnet');
   return (
-    <Stack className={navbarWrapperClass}>
-      <NavHeader
-        logo={
-          <Link href="/">
-            <KadenaLogo height={40} />
-          </Link>
-        }
-      >
-        <NavHeaderLinkList>
-          <NavHeaderLink>{''}</NavHeaderLink>
-          <NavHeaderLink>{''}</NavHeaderLink>
-        </NavHeaderLinkList>
-        {/* Puting the Query Dialog Component inside a NavHeaderButton was
-        causing hydration issues: button inside a button */}
-        <GraphQLQueryDialog />
-        <NavHeaderSelect
-          aria-label="Select Network"
+    <>
+      <Stack>
+        <Select
+          size="lg"
+          aria-label="Select network"
           defaultSelectedKey={selectedNetwork}
-          onSelectionChange={(value: any) =>
-            setSelectedNetwork(value.toString())
+          fontType="code"
+          onSelectionChange={(value) =>
+            setSelectedNetwork(value.toString() as keyof typeof NetworkTypes)
           }
         >
           <SelectItem key={'Mainnet'} textValue="Mainnet">
@@ -44,8 +26,18 @@ export const NavBar: FC = () => {
           <SelectItem key={'Testnet'} textValue="Testnet">
             Testnet
           </SelectItem>
-        </NavHeaderSelect>
-      </NavHeader>
-    </Stack>
+        </Select>
+      </Stack>
+      <Stack flex={1}>{children}</Stack>
+      <ThemeToggle />
+
+      <GraphQLQueryDialog />
+
+      <Button
+        className={buttonSizeClass}
+        variant="primary"
+        startVisual={<SpireKeyKdacolorLogoWhite />}
+      />
+    </>
   );
 };

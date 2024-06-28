@@ -1,57 +1,47 @@
-import { SpireKeyKdacolorLogoWhite } from '@kadena/react-icons/product';
-import { Button, Select, SelectItem, Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/react-ui';
 import type { FC } from 'react';
-import React, { useState } from 'react';
-import { GraphQLQueryDialog } from '../graphql-query-dialog/graphql-query-dialog';
+import React from 'react';
 import { layoutWrapperClass } from '../layout/styles.css';
 
+import classNames from 'classnames';
+import { useInView } from 'react-intersection-observer';
+import { NavBar } from '../navbar/navbar';
 import StatisticsComponent from '../statistics-component/statistics-component';
-import ThemeToggle from '../theme-toggle/theme-toggle';
-import { buttonSizeClass, headerClass } from './styles.css';
+import { fixedClass, fixedVisibleClass, headerClass } from './styles.css';
 
 const Header: FC = () => {
-  const [selectedNetwork, setSelectedNetwork] =
-    useState<keyof typeof NetworkTypes>('Mainnet');
+  const { ref, inView } = useInView({
+    rootMargin: '20px',
+  });
+
   return (
-    <Stack as="header" className={layoutWrapperClass}>
-      <Stack
-        className={headerClass}
-        alignItems={'center'}
-        width="100%"
-        gap="md"
-      >
-        <Stack>
-          <Select
-            size="lg"
-            aria-label="Select network"
-            defaultSelectedKey={selectedNetwork}
-            fontType="code"
-            onSelectionChange={(value) =>
-              setSelectedNetwork(value.toString() as keyof typeof NetworkTypes)
-            }
-          >
-            <SelectItem key={'Mainnet'} textValue="Mainnet">
-              Mainnet
-            </SelectItem>
-            <SelectItem key={'Testnet'} textValue="Testnet">
-              Testnet
-            </SelectItem>
-          </Select>
+    <>
+      <Stack as="header" className={layoutWrapperClass}>
+        <Stack
+          className={classNames(
+            headerClass,
+            fixedClass,
+            !inView && fixedVisibleClass,
+          )}
+          alignItems={'center'}
+          width="100%"
+          gap="md"
+        >
+          <NavBar>Hier komt de searchbar</NavBar>
         </Stack>
-        <StatisticsComponent />
-
-        <ThemeToggle />
-
-        <GraphQLQueryDialog />
-
-        <Button
-          className={buttonSizeClass}
-          variant="primary"
-          startVisual={<SpireKeyKdacolorLogoWhite />}
-        />
+        <Stack
+          ref={ref}
+          className={headerClass}
+          alignItems={'center'}
+          width="100%"
+          gap="md"
+        >
+          <NavBar>
+            <StatisticsComponent />
+          </NavBar>
+        </Stack>
       </Stack>
-      {/* <NavBar /> */}
-    </Stack>
+    </>
   );
 };
 
