@@ -22,12 +22,12 @@ interface CompoundVariant<Variants extends VariantGroups> {
   style: RecipeStyleRule;
 }
 
-type PatternOptions<Variants extends VariantGroups> = {
+interface PatternOptions<Variants extends VariantGroups> {
   base?: RecipeStyleRule;
   variants?: Variants;
   defaultVariants?: VariantSelection<Variants>;
   compoundVariants?: Array<CompoundVariant<Variants>>;
-};
+}
 
 const addLayer = (styles: StyleRule) => {
   return {

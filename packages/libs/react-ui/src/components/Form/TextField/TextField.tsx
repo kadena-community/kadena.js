@@ -13,6 +13,7 @@ import type { AriaTextFieldProps } from 'react-aria';
 import { useFocusRing, useHover, useTextField } from 'react-aria';
 import { Field } from '../Field/Field';
 import { input } from '../Form.css';
+import type { IFormFieldHeaderProps } from '../FormFieldHeader/FormFieldHeader';
 
 type PickedAriaTextFieldProps = Omit<
   AriaTextFieldProps,
@@ -30,6 +31,7 @@ export interface ITextFieldProps extends PickedAriaTextFieldProps {
   className?: string;
   tag?: string;
   info?: string;
+  direction?: IFormFieldHeaderProps['direction'];
   /*
    * @deprecated Use `isDisabled` instead. only here to support libs that manages props like `react-hook-form`
    */
@@ -55,6 +57,7 @@ export function TextFieldBase(
     tag,
     errorMessage,
     variant = 'default',
+    direction = 'row',
     ...props
   }: ITextFieldProps,
   forwardedRef: ForwardedRef<ElementRef<'input'>>,
@@ -93,6 +96,7 @@ export function TextFieldBase(
       label={props.label}
       isDisabled={isDisabled}
       description={props.description}
+      direction={direction}
       startVisual={startVisual}
       endAddon={endAddon}
       errorMessage={errorMessage}

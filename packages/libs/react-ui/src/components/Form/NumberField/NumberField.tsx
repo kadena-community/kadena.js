@@ -14,6 +14,7 @@ import { useFocusRing, useHover, useLocale, useNumberField } from 'react-aria';
 import { useNumberFieldState } from 'react-stately';
 import { Field } from '../Field/Field';
 import { input } from '../Form.css';
+import type { IFormFieldHeaderProps } from '../FormFieldHeader/FormFieldHeader';
 import { NumberFieldActions } from './NumberFieldActions';
 
 type Variants = NonNullable<RecipeVariants<typeof input>>;
@@ -44,6 +45,7 @@ export interface INumberFieldProps extends PickedAriaNumberFieldProps {
   onValueChange?: (value: number) => void;
   startVisual?: ReactElement;
   isOutlined?: boolean;
+  direction?: IFormFieldHeaderProps['direction'];
 }
 
 export function NumberFieldBase(
@@ -70,6 +72,7 @@ export function NumberFieldBase(
     variant = 'default',
     label,
     startVisual,
+    direction = 'row',
   } = props;
 
   const { inputProps, ...fieldProps } = useNumberField(
@@ -105,11 +108,13 @@ export function NumberFieldBase(
       isDisabled={isDisabled}
       description={description}
       startVisual={startVisual}
+      direction={direction}
       endAddon={
         <NumberFieldActions
           isDisabled={isDisabled}
           variant={variant}
           state={state}
+          size={size}
         />
       }
       errorMessage={errorMessage}

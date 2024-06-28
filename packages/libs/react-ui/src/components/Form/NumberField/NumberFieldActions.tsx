@@ -2,8 +2,9 @@ import { MonoAdd, MonoRemove } from '@kadena/react-icons/system';
 import React from 'react';
 import { Button } from '../../Button/Button';
 
+import classNames from 'classnames';
 import type { INumberFieldProps } from '.';
-import { iconSize } from './NumberField.css';
+import { addOnIconSize, addOnStyleClass, iconSize } from './NumberField.css';
 
 interface INumberFieldActionsProps {
   isDisabled?: boolean;
@@ -20,20 +21,20 @@ export const NumberFieldActions = ({
 }: INumberFieldActionsProps) => (
   <>
     <Button
-      className={iconSize[size]}
+      className={classNames(iconSize[size], addOnStyleClass)}
       isDisabled={isDisabled || variant === 'readonly'}
       onPress={state.increment}
       variant="transparent"
     >
-      <MonoAdd />
+      <MonoAdd className={addOnIconSize[size]} />
     </Button>
     <Button
-      className={iconSize[size]}
+      className={classNames(iconSize[size], addOnStyleClass)}
       isDisabled={isDisabled || variant === 'readonly'}
       onPress={state.decrement}
       variant="transparent"
     >
-      <MonoRemove />
+      <MonoRemove className={addOnIconSize[size]} />
     </Button>
   </>
 );
