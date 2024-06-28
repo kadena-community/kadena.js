@@ -12,6 +12,7 @@ import { TextField } from '../TextField';
 import type { ITextFieldProps } from './TextField';
 
 import { iconControl } from '../../../storyDecorators/iconControl';
+import { Grid, GridItem } from '../../Layout';
 
 const { variant, fontType, size } = getVariants(input);
 
@@ -466,33 +467,43 @@ export const CustomErrorMessage: Story = {
           e.preventDefault();
         }}
       >
-        <TextField
-          label="Overiding native message"
-          validationBehavior="native"
-          isRequired
-          errorMessage={(validation) => {
-            if (validation.validationDetails.valueMissing) {
-              return 'Custom message for required';
-            }
+        <Grid
+          gap="md"
+          columns={{
+            xs: 2,
           }}
-        />
-
-        <TextField
-          label="What is your favorite crypto token?"
-          description={
-            v === 'kda' ? 'You are a true believer 🚀' : 'Answer carefully'
-          }
-          value={value}
-          variant="positive"
-          onValueChange={setValue}
-          validationBehavior="aria"
-          isInvalid={!!v && v !== 'kda'}
-          errorMessage={
-            v.startsWith('k')
-              ? 'You are on the right track'
-              : 'Wrong answer think again 🤔'
-          }
-        />
+        >
+          <GridItem>
+            <TextField
+              label="Overiding native message"
+              validationBehavior="native"
+              isRequired
+              errorMessage={(validation) => {
+                if (validation.validationDetails.valueMissing) {
+                  return 'Custom message for required';
+                }
+              }}
+            />
+          </GridItem>
+          <GridItem>
+            <TextField
+              label="What is your favorite crypto token?"
+              description={
+                v === 'kda' ? 'You are a true believer 🚀' : 'Answer carefully'
+              }
+              value={value}
+              variant="positive"
+              onValueChange={setValue}
+              validationBehavior="aria"
+              isInvalid={!!v && v !== 'kda'}
+              errorMessage={
+                v.startsWith('k')
+                  ? 'You are on the right track'
+                  : 'Wrong answer think again 🤔'
+              }
+            />
+          </GridItem>
+        </Grid>
         <Button type="submit">Submit</Button>
       </Form>
     );

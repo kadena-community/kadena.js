@@ -5,8 +5,8 @@ import type { AriaCheckboxGroupProps } from 'react-aria';
 import { useCheckboxGroup } from 'react-aria';
 import type { CheckboxGroupState } from 'react-stately';
 import { useCheckboxGroupState } from 'react-stately';
-import { FormFieldHeader } from '../FormFieldHeader/FormFieldHeader';
 import type { FormFieldDirection } from '../FormFieldHeader/FormFieldHeader';
+import { FormFieldHeader } from '../FormFieldHeader/FormFieldHeader';
 import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
 import { groupClass, layoutClass } from './Checkbox.css';
 

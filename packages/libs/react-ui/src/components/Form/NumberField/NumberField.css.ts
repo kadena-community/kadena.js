@@ -30,7 +30,7 @@ export const addOnIconSize = styleVariants({
 
 export const addOnStyleClass = style({
   aspectRatio: '1/1',
-})
+});
 
 /** Storybook example style */
 export const smallInputWrapper = style({

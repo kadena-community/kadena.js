@@ -41,21 +41,21 @@ export const disabledLabelClass = style({
 });
 
 export const directionClass = styleVariants({
-  'column': {
+  column: {
     flexDirection: 'column',
     alignItems: 'flex-start',
   },
-  'row': {
+  row: {
     flexDirection: 'row',
     alignItems: 'center',
-  }
-})
+  },
+});
 
 export const directionInfoClass = styleVariants({
-  'column': {
+  column: {
     marginInlineStart: 'unset',
   },
-  'row': {
+  row: {
     marginInlineStart: 'auto',
-  }
-})
+  },
+});

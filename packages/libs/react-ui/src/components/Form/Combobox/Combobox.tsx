@@ -19,7 +19,8 @@ import { comboBoxControlClass } from './Combobox.css';
 
 type Variants = NonNullable<RecipeVariants<typeof input>>;
 
-export interface IComboboxProps<T extends object = any> extends AriaComboBoxProps<T> {
+export interface IComboboxProps<T extends object = any>
+  extends AriaComboBoxProps<T> {
   variant?: Variants['variant'];
   fontType?: Variants['fontType'];
   size?: Variants['size'];
