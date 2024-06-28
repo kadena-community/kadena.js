@@ -1,6 +1,6 @@
 import BlockTable from '@/components/block-table/block-table';
+import Layout from '@/components/layout/layout';
 import { Media } from '@/components/layout/media';
-import SearchLayout from '@/components/layout/search-layout/search-layout';
 import SearchComponent from '@/components/search/search-component/search-component';
 import SearchResults from '@/components/search/search-results/search-results';
 import { useSearch } from '@/hooks/search';
@@ -20,7 +20,7 @@ const Home: React.FC = () => {
   } = useSearch();
 
   return (
-    <SearchLayout>
+    <Layout>
       <Media greaterThanOrEqual="sm">
         <Stack flexDirection="column" gap={'xxl'} alignItems={'center'}>
           <a href="/">
@@ -81,7 +81,7 @@ const Home: React.FC = () => {
           )}
         </Stack>
       </Media>
-    </SearchLayout>
+    </Layout>
   );
 };
 

@@ -1,5 +1,5 @@
 import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
-import DetailLayout from '@/components/layout/detail-layout/detail-layout';
+import Layout from '@/components/layout/layout';
 import { TransactionRequestComponent } from '@/components/transaction-components/transaction-request-component';
 import { TransactionResultComponent } from '@/components/transaction-components/transaction-result-component';
 import { useQueryContext } from '@/context/query-context';
@@ -32,7 +32,7 @@ const Transaction: React.FC = () => {
   }, []);
 
   return (
-    <DetailLayout>
+    <Layout>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error.message}</p>}
       {!loading && (!data || !data.transaction) ? (
@@ -54,7 +54,7 @@ const Transaction: React.FC = () => {
           </Tabs>
         </>
       )}
-    </DetailLayout>
+    </Layout>
   );
 };
 

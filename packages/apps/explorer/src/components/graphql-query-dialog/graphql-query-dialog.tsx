@@ -14,14 +14,11 @@ export const GraphQLQueryDialog = (): JSX.Element => {
   return (
     <>
       <Button
-        endVisual={<MonoHub />}
+        startVisual={<MonoHub />}
         title="Show the GraphQL query used."
-        isCompact
         variant="transparent"
         onPress={() => setIsOpen(true)}
-      >
-        GraphQL
-      </Button>
+      ></Button>
       <Dialog
         isOpen={isOpen}
         onOpenChange={(isOpen: boolean) => setIsOpen(isOpen)}
