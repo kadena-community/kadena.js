@@ -2,9 +2,9 @@ import { MonoAccountCircle, MonoAdd } from '@kadena/react-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import {
-getVariants,
-onLayer3,
-withContentWidth,
+  getVariants,
+  onLayer3,
+  withContentWidth,
 } from '../../../storyDecorators';
 import { atoms } from '../../../styles';
 import { getArrayOf } from '../../../utils';
