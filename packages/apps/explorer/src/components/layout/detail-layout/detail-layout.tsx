@@ -1,3 +1,4 @@
+import Footer from '@/components/footer/footer';
 import { NavBar } from '@/components/navbar/navbar';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
@@ -12,6 +13,7 @@ export const DetailLayout: FC<IProps> = ({ children }: IProps) => {
     <div className={documentStyle}>
       <NavBar />
       <main className={layoutWrapperClass}>{children}</main>
+      <Footer />
     </div>
   );
 };
