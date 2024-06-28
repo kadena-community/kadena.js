@@ -11,7 +11,7 @@ import type { ChainId, IPactDecimal } from '@kadena/types';
 import { submitClient } from '../core';
 import type { IClientConfig } from '../core/utils/helpers';
 import type { CommonProps } from './config';
-import { formatAdditionalSigners, formatCapabilities } from './helpers';
+import { formatAdditionalSigners, formatWebAuthnSigner, formatCapabilities } from './helpers';
 
 interface IMintTokenInput extends CommonProps {
   policyConfig?: {
@@ -58,7 +58,7 @@ const mintTokenCommand = ({
       ),
     ),
     addKeyset('guard', guard.keyset.pred, ...guard.keyset.keys),
-    addSigner(guard.keyset.keys, (signFor) => [
+    addSigner(formatWebAuthnSigner(guard.keyset.keys), (signFor) => [
       signFor('coin.GAS'),
       signFor('marmalade-v2.ledger.MINT', tokenId, accountName, amount),
       ...(policyConfig?.guarded
