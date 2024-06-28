@@ -169,11 +169,11 @@ function CreateTokenComponent() {
 
       if (!account) throw new Error("Connect Spirekey account")
       if (isOpen) {
-        // const imageUrl = await uploadFile(file);
-        // if (!imageUrl) throw new Error('Error creating image URL');
-        // const metadataUrl = await uploadMetadata({...metadata, image: imageUrl});
-        // if (!metadataUrl) throw new Error('Error creating metadata URL');
-        setTokenInput((prev) => ({ ...prev, uri: "testing..." }));
+        const imageUrl = await uploadFile(file);
+        if (!imageUrl) throw new Error('Error creating image URL');
+        const metadataUrl = await uploadMetadata({...metadata, image: imageUrl});
+        if (!metadataUrl) throw new Error('Error creating metadata URL');
+        setTokenInput((prev) => ({ ...prev, uri: metadataUrl }));
       }
 
       if (policyConfig.hasRoyalty && (!royaltyInput.royaltyFungible || !royaltyInput.royaltyCreator || !royaltyInput.royaltyGuard || !royaltyInput.royaltyRate)) {
@@ -226,7 +226,7 @@ function CreateTokenComponent() {
       });
       const ipfsHash = await res.text();
       setUploading(false);
-      return  `https://${ipfsHash}.ipfs.nftstorage.link`;
+      return  `ipfs://${ipfsHash}`;
     } catch (e) {
       console.error(e);
       setUploading(false);
@@ -246,7 +246,7 @@ function CreateTokenComponent() {
       const ipfsHash = await res.text();
       setCid(ipfsHash);
       setUploading(false);
-      return `https://${ipfsHash}.ipfs.nftstorage.link`;
+      return `ipfs://${ipfsHash}`;
     } catch (e) {
       console.error(e);
       setUploading(false);

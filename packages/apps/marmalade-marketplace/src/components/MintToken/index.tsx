@@ -27,7 +27,7 @@ function MintTokenComponent() {
   }, [account]);
   
   const { transaction, send, preview, poll } = useTransaction();
-  const [tokenId, setTokenId] = useState<string>("t:EfRRXKnCRtUsIud8Qy_vUQ-F8bljJY1isAd2R6j1F1E");
+  const [tokenId, setTokenId] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
   const [error, setError] = useState("");
   const [result, setResult] = useState<object>({});
