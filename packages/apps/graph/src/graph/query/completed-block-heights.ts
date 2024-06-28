@@ -11,6 +11,8 @@ builder.queryField('completedBlockHeights', (t) =>
       'Retrieve all completed blocks from a given height. Default page size is 20.',
     args: {
       completedHeights: t.arg.boolean({
+        description:
+          'Retrieve blocks from completed heights only. Default: true',
         required: false,
         defaultValue: true,
       }),

@@ -61,8 +61,6 @@ const generateEventsFilter = async (args: {
       ),
     }),
     ...((args.minHeight || args.maxHeight) && conditionsForHeight(args)),
-    // ...(args.minHeight && { height: { gte: args.minHeight } }),
-    // ...(args.maxHeight && { height: { lte: args.maxHeight } }),
   };
 };
 
