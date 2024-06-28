@@ -2,7 +2,8 @@ name: Update Chainweb-node Changelogs
 
 on:
   workflow_dispatch:
-  pull_request:
+  schedule:
+    - cron: '0 0 * * SUN'
 
 jobs:
   update-changelog:
@@ -35,7 +36,7 @@ jobs:
           body: |
             This PR updates the Chainweb-node changelogs.
           branch: chainweb-node-changelogs 
-          base: chore/chainweb-node-changelogs #TODO set to main, before merging
+          base: main
           reviewers: |
             @sstraatemans
           assignees: |
