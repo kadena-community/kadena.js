@@ -38,7 +38,7 @@ jobs:
           body: |
             This PR updates the Chainweb-node changelogs.
           branch: update-chainweb-node-changelogs
-          base: main
+        #  base: main
           reviewers: |
             @sstraatemans
           assignees: |
