@@ -66,9 +66,12 @@ export interface PublicKeyCredentialRetrieve extends PublicKeyCredential {
 
 export async function retrieveCredential(
   credentialId: ArrayBuffer,
-  challenge = new Uint8Array(32),
+  challenge?: Uint8Array,
 ) {
-  window.crypto.getRandomValues(challenge);
+  if (!challenge) {
+    challenge = new Uint8Array(32);
+    window.crypto.getRandomValues(challenge);
+  }
   const credential = (await navigator.credentials.get({
     publicKey: {
       allowCredentials: [
