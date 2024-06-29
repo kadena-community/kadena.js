@@ -4,11 +4,11 @@
     "baseUrl": ".",
     "target": "ESNext",
     "types": ["node", "vitest/globals"],
-    "module": "NodeNext",
+    "module": "preserve",
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "Bundler",
     "outDir": "dist/esm",
     "allowSyntheticDefaultImports": true,
     "removeComments": true
