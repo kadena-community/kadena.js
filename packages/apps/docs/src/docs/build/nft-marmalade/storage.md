@@ -157,15 +157,14 @@ You get 100 MB free on sign up and can easily upload in a few minutes using the 
    const data = await fs.readFile('/path/to/your/file.txt', 'utf8'); //nodejs specific
    
    const response = await fetch('https://api.akord.com/files', {
-   method: 'POST',
-   headers: {
-   'Accept': 'application/json',
-   'Api-Key': 'your_api_key',
-   'Content-Type': 'text/plain'
-   },
-   body: data
+      method: 'POST',
+      headers: {
+      'Accept': 'application/json',
+      'Api-Key': 'your_api_key',
+      'Content-Type': 'text/plain'
+      },
+      body: data
    });
-   ```
 
 That's it! You just uploaded the file to Arweave.
 
