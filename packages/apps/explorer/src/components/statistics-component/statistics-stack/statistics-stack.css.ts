@@ -1,4 +1,4 @@
-import { atoms } from '@kadena/react-ui/styles';
+import { atoms, style } from '@kadena/react-ui/styles';
 
 export const borderStyleClass = atoms({
   borderStyle: 'solid',
@@ -11,4 +11,20 @@ export const statisticsSpireKeyClass = atoms({
   borderWidth: 'hairline',
   display: 'flex',
   backgroundColor: 'base.inverse.default',
+});
+
+export const boxClass = style([
+  atoms({
+    borderWidth: 'hairline',
+    borderStyle: 'solid',
+    borderColor: 'base.subtle',
+    backgroundColor: 'surface.default',
+  }),
+  {
+    maxHeight: '48px',
+  },
+]);
+
+export const overFlowClass = style({
+  whiteSpace: 'nowrap',
 });

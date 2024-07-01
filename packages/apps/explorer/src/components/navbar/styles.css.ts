@@ -1,11 +1,7 @@
-import { globalStyle, style } from '@vanilla-extract/css';
-import { $$pageWidth } from '../layout/styles.css';
+import { style } from '@vanilla-extract/css';
 
-export const navbarWrapperClass = style({});
-
-globalStyle(
-  `${navbarWrapperClass} > nav >div, ${navbarWrapperClass} > footer`,
-  {
-    maxWidth: $$pageWidth,
-  },
-);
+export const buttonSizeClass = style({
+  display: 'flex',
+  width: '48px',
+  aspectRatio: '1/1',
+});

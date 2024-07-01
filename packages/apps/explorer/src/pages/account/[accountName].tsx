@@ -5,7 +5,7 @@ import { FormatAccount } from '@/components/compact-table/utils/format-account';
 import { FormatAmount } from '@/components/compact-table/utils/format-amount';
 import { FormatLink } from '@/components/compact-table/utils/format-link';
 import { FormatStatus } from '@/components/compact-table/utils/format-status';
-import DetailLayout from '@/components/layout/detail-layout/detail-layout';
+import Layout from '@/components/layout/layout';
 import { useQueryContext } from '@/context/query-context';
 import { account } from '@/graphql/queries/account.graph';
 import { accountNameTextClass } from '@/styles/account.css';
@@ -78,7 +78,7 @@ const Account: FC = () => {
   }, [fungibleAccount?.chainAccounts]);
 
   return (
-    <DetailLayout>
+    <Layout>
       {loading && <div>Loading...</div>}
       {error && <div>Error: {error.message}</div>}
 
@@ -218,7 +218,7 @@ const Account: FC = () => {
           </Tabs>
         </Stack>
       </Stack>
-    </DetailLayout>
+    </Layout>
   );
 };
 

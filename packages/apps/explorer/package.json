@@ -37,7 +37,8 @@
     "graphql-ws": "^5.16.0",
     "next": "14.2.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-intersection-observer": "^9.10.3"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "5.0.2",

@@ -1,64 +1,98 @@
 import { networkConstants } from '@/constants/network';
 import { useRedirectOnNetworkChange } from '@/hooks/network/redirect';
-import {
-  KadenaLogo,
-  NavHeader,
-  NavHeaderLink,
-  NavHeaderLinkList,
-  NavHeaderSelect,
-  SelectItem,
-  Stack,
-} from '@kadena/react-ui';
-import Link from 'next/link';
-import type { FC } from 'react';
+import { SpireKeyKdacolorLogoWhite } from '@kadena/react-icons/product';
+import { MonoMenu, MonoMenuOpen } from '@kadena/react-icons/system';
+import { Button, Select, SelectItem, Stack } from '@kadena/react-ui';
+import type { FC, PropsWithChildren } from 'react';
 import React, { useState } from 'react';
 import { GraphQLQueryDialog } from '../graphql-query-dialog/graphql-query-dialog';
-import { navbarWrapperClass } from './styles.css';
+import { Media } from '../layout/media';
+import Logo from '../logo/logo';
+import MobileLogo from '../logo/mobile-logo';
+import ThemeToggle from '../theme-toggle/theme-toggle';
+import { buttonSizeClass } from './styles.css';
 
-export const NavBar: FC = () => {
+export const NavBar: FC<
+  PropsWithChildren<{
+    isFixed?: boolean;
+    handleToggleMenu: () => void;
+    menuIsOpen?: boolean;
+  }>
+> = ({ children, isFixed, handleToggleMenu, menuIsOpen }) => {
   const [selectedNetwork, setSelectedNetwork] = useState(
-    networkConstants.mainnet01.label,
+    networkConstants.mainnet01.key,
   );
 
   useRedirectOnNetworkChange(selectedNetwork);
-
   return (
-    <Stack className={navbarWrapperClass}>
-      <NavHeader
-        logo={
-          <Link href="/">
-            <KadenaLogo height={40} />
-          </Link>
-        }
-      >
-        <NavHeaderLinkList>
-          <NavHeaderLink>{''}</NavHeaderLink>
-          <NavHeaderLink>{''}</NavHeaderLink>
-        </NavHeaderLinkList>
-        {/* Puting the Query Dialog Component inside a NavHeaderButton was
-        causing hydration issues: button inside a button */}
-        <GraphQLQueryDialog />
-        <NavHeaderSelect
-          aria-label="Select Network"
-          defaultSelectedKey={selectedNetwork}
-          onSelectionChange={(value: any) =>
-            setSelectedNetwork(value.toString())
-          }
-        >
-          <SelectItem
-            key={networkConstants.mainnet01.key}
-            textValue={networkConstants.mainnet01.label}
+    <>
+      <Stack alignItems="center">
+        {isFixed ? (
+          <>
+            <Media greaterThanOrEqual="md">
+              <Logo />
+            </Media>
+            <Media lessThan="md">
+              <MobileLogo />
+            </Media>
+          </>
+        ) : (
+          <Media lessThan="md">
+            <Logo />
+          </Media>
+        )}
+
+        <Media greaterThanOrEqual="md">
+          <Select
+            size="lg"
+            aria-label="Select network"
+            defaultSelectedKey={selectedNetwork}
+            fontType="code"
+            onSelectionChange={(value) =>
+              setSelectedNetwork(value.toString() as keyof typeof NetworkTypes)
+            }
           >
-            {networkConstants.mainnet01.label}
-          </SelectItem>
-          <SelectItem
-            key={networkConstants.testnet04.key}
-            textValue={networkConstants.testnet04.label}
-          >
-            {networkConstants.testnet04.label}
-          </SelectItem>
-        </NavHeaderSelect>
-      </NavHeader>
-    </Stack>
+            <SelectItem
+              key={networkConstants.mainnet01.key}
+              textValue={networkConstants.mainnet01.label}
+            >
+              {networkConstants.mainnet01.label}
+            </SelectItem>
+            <SelectItem
+              key={networkConstants.testnet04.key}
+              textValue={networkConstants.testnet04.label}
+            >
+              {networkConstants.testnet04.label}
+            </SelectItem>
+          </Select>
+        </Media>
+      </Stack>
+      <Stack flex={1}>{children}</Stack>
+
+      <Media greaterThanOrEqual="md">
+        <Stack>
+          <ThemeToggle />
+          <GraphQLQueryDialog />
+
+          <Button
+            className={buttonSizeClass}
+            variant="primary"
+            startVisual={<SpireKeyKdacolorLogoWhite />}
+          />
+        </Stack>
+      </Media>
+      <Media lessThan="md">
+        <Stack>
+          <ThemeToggle />
+
+          <Button
+            className={buttonSizeClass}
+            variant="primary"
+            onClick={handleToggleMenu}
+            startVisual={menuIsOpen ? <MonoMenuOpen /> : <MonoMenu />}
+          />
+        </Stack>
+      </Media>
+    </>
   );
 };
