@@ -1,6 +1,7 @@
 import { SpireKeyKdacolorLogoWhite } from '@kadena/react-icons/product';
 import { MonoMenu, MonoMenuOpen } from '@kadena/react-icons/system';
 import { Button, Stack } from '@kadena/react-ui';
+import Link from 'next/link';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 import { GraphQLQueryDialog } from '../graphql-query-dialog/graphql-query-dialog';
@@ -24,15 +25,21 @@ export const NavBar: FC<
         {isFixed ? (
           <>
             <Media greaterThanOrEqual="md">
-              <Logo />
+              <Link href="/">
+                <Logo />
+              </Link>
             </Media>
             <Media lessThan="md">
-              <MobileLogo />
+              <Link href="/">
+                <MobileLogo />
+              </Link>
             </Media>
           </>
         ) : (
           <Media lessThan="md">
-            <Logo />
+            <Link href="/">
+              <Logo />
+            </Link>
           </Media>
         )}
 
