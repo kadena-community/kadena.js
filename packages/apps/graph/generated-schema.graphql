@@ -403,6 +403,8 @@ type Query {
 
     """Default: all chains"""
     chainIds: [String!]
+
+    """Retrieve blocks from completed heights only. Default: true"""
     completedHeights: Boolean = true
     first: Int
     heightCount: Int = 3
