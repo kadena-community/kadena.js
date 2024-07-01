@@ -12,7 +12,6 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
   return (
     <div className={documentStyle}>
       <Header />
-
       <main className={layoutWrapperClass}>{children}</main>
       <Footer />
     </div>

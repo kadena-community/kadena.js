@@ -1,7 +1,12 @@
 import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
 import type { ISearchItem } from '@/components/search/search-component/search-component';
 import type { ApolloError } from '@apollo/client';
-import { useRouter } from 'next/router';
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAccount } from './utils/account';
 import { useBlockHash } from './utils/block-hash';
@@ -22,6 +27,10 @@ export interface IHookReturnValue<T> {
 
 export const useSearch = () => {
   const router = useRouter();
+  const location = usePathname();
+  const params = useSearchParams();
+  console.log(params);
+
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isMounted, setIsMounted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -75,36 +84,36 @@ export const useSearch = () => {
 
     if (!searchQuery) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.replace(`${router.route}`);
+      router.replace(`${location}`);
       return;
     }
 
-    const { q, so } = router.query;
+    const q = params.get('q');
+    const so = params.get('so');
     const soInt: SearchOptionEnum = parseInt(so as any);
 
     if (q === searchQuery && soInt === searchOption) return;
 
     if (searchOption === SearchOptionEnum.ACCOUNT) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push(
-        `${router.route}?q=${searchQuery}&so=${searchOption}&fungible=coin`,
-      );
+      router.push(`/?q=${searchQuery}&so=${searchOption}&fungible=coin`);
     } else {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push(`${router.route}?q=${searchQuery}&so=${searchOption}`);
+      router.push(`/?q=${searchQuery}&so=${searchOption}`);
     }
   }, [searchQuery, isMounted]);
 
   useEffect(() => {
-    if (!router.isReady) return;
-    const { q, so } = router.query;
+    const q = params.get('q');
+    const so = params.get('so');
+
     const soInt: SearchOptionEnum | null = !isNaN(parseInt(so as any))
       ? parseInt(so as any)
       : null;
     setSearchQuery(q as string);
     setSearchOption(soInt);
     setIsMounted(true);
-  }, [router.isReady, router.query]);
+  }, [params]);
 
   useEffect(() => {
     setLoading(

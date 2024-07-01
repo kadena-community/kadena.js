@@ -22,6 +22,7 @@ export interface IKeyProps {
 
 const Account: FC = () => {
   const router = useRouter();
+  console.log({ router });
   const [selectedTab, setSelectedTab] = useState<string>('Transactions');
 
   const { setQueries } = useQueryContext();
