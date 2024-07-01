@@ -1,10 +1,11 @@
 import BlockTable from '@/components/block-table/block-table';
+import Layout from '@/components/layout/layout';
 import { Media } from '@/components/layout/media';
-import SearchLayout from '@/components/layout/search-layout/search-layout';
+import Logo from '@/components/logo/logo';
 import SearchComponent from '@/components/search/search-component/search-component';
 import SearchResults from '@/components/search/search-results/search-results';
+import StatisticsGrid from '@/components/statistics-component/statistics-grid/statistics-grid';
 import { useSearch } from '@/hooks/search';
-import { LogoKdacolorLight } from '@kadena/react-icons/brand';
 import { Stack } from '@kadena/react-ui';
 import React from 'react';
 
@@ -20,12 +21,18 @@ const Home: React.FC = () => {
   } = useSearch();
 
   return (
-    <SearchLayout>
+    <Layout>
       <Media greaterThanOrEqual="sm">
-        <Stack flexDirection="column" gap={'xxl'} alignItems={'center'}>
+        <Stack
+          flexDirection="column"
+          gap={'xxl'}
+          alignItems={'center'}
+          marginBlockStart="md"
+        >
           <a href="/">
-            <LogoKdacolorLight cursor={'pointer'} />
+            <Logo />
           </a>
+
           <SearchComponent
             searchOption={searchOption}
             setSearchOption={setSearchOption}
@@ -50,6 +57,7 @@ const Home: React.FC = () => {
       </Media>
 
       <Media lessThan="sm">
+        <StatisticsGrid />
         <Stack
           flexDirection="column"
           gap={'xxl'}
@@ -57,7 +65,7 @@ const Home: React.FC = () => {
           paddingBlockStart={'xxl'}
         >
           <a href="/">
-            <LogoKdacolorLight cursor={'pointer'} />
+            <Logo />
           </a>
           <SearchComponent
             searchOption={searchOption}
@@ -81,7 +89,7 @@ const Home: React.FC = () => {
           )}
         </Stack>
       </Media>
-    </SearchLayout>
+    </Layout>
   );
 };
 

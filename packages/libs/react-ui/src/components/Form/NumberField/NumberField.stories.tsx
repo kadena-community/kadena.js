@@ -14,6 +14,7 @@ import { MonoAccountCircle } from '@kadena/react-icons/system';
 import { Form } from '../Form';
 import { input } from '../Form.css';
 import type { INumberFieldProps } from './NumberField';
+import { smallInputWrapper } from './NumberField.css';
 
 const { variant, fontType, size } = getVariants(input);
 
@@ -21,6 +22,14 @@ const formStoryClass = atoms({
   display: 'flex',
   flexDirection: 'column',
   gap: 'md',
+});
+
+const formStorySmallInputsClass = atoms({
+  display: 'flex',
+  flexDirection: 'row',
+  gap: 'md',
+  maxWidth: 'content.maxWidth',
+  backgroundColor: 'accent.primary.default',
 });
 
 const meta: Meta<INumberFieldProps> = {
@@ -151,6 +160,17 @@ const meta: Meta<INumberFieldProps> = {
         disable: true,
       },
     },
+    direction: {
+      description: 'Orientation of the form header labels',
+      control: {
+        type: 'radio',
+      },
+      options: {
+        Row: 'row',
+        Column: 'column',
+      },
+      defaultValue: 'row',
+    },
   },
   args: {
     fontType: 'ui',
@@ -164,6 +184,7 @@ const meta: Meta<INumberFieldProps> = {
     errorMessage: undefined,
     isDisabled: false,
     isRequired: false,
+    direction: 'row',
   },
 };
 
@@ -299,6 +320,40 @@ export const CustomErrorMessage: Story = {
         />
         <Button type="submit">Submit</Button>
       </Form>
+    );
+  },
+};
+
+export const SmallWidth: Story = {
+  name: 'Small Width',
+  args: {
+    direction: 'column',
+    placeholder: '0',
+    label: 'Small Value',
+  },
+  render: (props) => {
+    return (
+      <div className={smallInputWrapper}>
+        <Form
+          className={formStorySmallInputsClass}
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
+          <NumberField
+            {...props}
+            label={`${props.label} 1`}
+            validationBehavior="aria"
+            minValue={0}
+          />
+          <NumberField
+            {...props}
+            label={`${props.label} 2`}
+            validationBehavior="aria"
+            minValue={0}
+          />
+        </Form>
+      </div>
     );
   },
 };

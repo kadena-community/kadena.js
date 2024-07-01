@@ -4,7 +4,7 @@ import CompactTable from '@/components/compact-table/compact-table';
 import { FormatLink } from '@/components/compact-table/utils/format-link';
 import { FormatStatus } from '@/components/compact-table/utils/format-status';
 import DataRenderComponent from '@/components/data-render-component/data-render-component';
-import DetailLayout from '@/components/layout/detail-layout/detail-layout';
+import Layout from '@/components/layout/layout';
 import { useQueryContext } from '@/context/query-context';
 import { block } from '@/graphql/queries/block.graph';
 import { truncateValues } from '@/services/format';
@@ -48,7 +48,7 @@ const Block: React.FC = () => {
   });
 
   return (
-    <DetailLayout>
+    <Layout>
       {loading && <div>Loading...</div>}
       {error && <div>Error: {error.message}</div>}
 
@@ -199,7 +199,7 @@ const Block: React.FC = () => {
           </Tabs>
         </>
       )}
-    </DetailLayout>
+    </Layout>
   );
 };
 

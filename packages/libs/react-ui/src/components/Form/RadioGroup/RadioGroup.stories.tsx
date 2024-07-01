@@ -76,6 +76,17 @@ const meta: Meta<IRadioGroupProps> = {
         type: 'boolean',
       },
     },
+    formFieldDirection: {
+      description: 'Orientation of the form header labels',
+      control: {
+        type: 'radio',
+      },
+      options: {
+        Row: 'row',
+        Column: 'column',
+      },
+      defaultValue: 'row',
+    },
   },
 };
 

@@ -11,6 +11,7 @@ import {
   startAddonSize,
   startAddonStyles,
 } from '../Form.css';
+import type { FormFieldDirection } from '../FormFieldHeader/FormFieldHeader';
 import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
 
 interface IFieldProps {
@@ -33,6 +34,7 @@ interface IFieldProps {
   validationDetails: ValidityState;
   validationErrors: string[];
   inlineVisuals?: boolean;
+  direction?: FormFieldDirection;
 }
 
 const Field = forwardRef(
@@ -57,6 +59,7 @@ const Field = forwardRef(
       validationErrors,
       variant = 'default',
       inlineVisuals = false,
+      direction = 'row',
     }: IFieldProps,
     ref: ForwardedRef<ElementRef<'input' | 'textarea' | 'select' | 'button'>>,
   ) => {
@@ -84,6 +87,7 @@ const Field = forwardRef(
             tag={tag}
             info={info}
             isDisabled={isDisabled}
+            direction={direction}
             {...labelProps}
           />
         )}

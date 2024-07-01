@@ -5,6 +5,7 @@ import type { AriaRadioGroupProps } from 'react-aria';
 import { useRadioGroup } from 'react-aria';
 import type { RadioGroupState } from 'react-stately';
 import { useRadioGroupState } from 'react-stately';
+import type { FormFieldDirection } from '../FormFieldHeader/FormFieldHeader';
 import { FormFieldHeader } from '../FormFieldHeader/FormFieldHeader';
 import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
 import { groupClass, layoutClass } from './Radio.css';
@@ -19,6 +20,7 @@ export interface IRadioGroupProps extends AriaRadioGroupProps {
   isReadOnly?: boolean;
   label?: string;
   tag?: string;
+  formFieldDirection?: FormFieldDirection;
 }
 
 export const RadioContext = createContext<RadioGroupState | null>(null);
@@ -36,6 +38,7 @@ export function RadioGroup(props: IRadioGroupProps) {
     isReadOnly,
     label,
     tag,
+    formFieldDirection = 'row',
   } = props;
   const state = useRadioGroupState(props);
   const {
@@ -60,6 +63,7 @@ export function RadioGroup(props: IRadioGroupProps) {
           tag={tag}
           info={info}
           isDisabled={isDisabled}
+          direction={formFieldDirection}
           {...labelProps}
         />
       )}

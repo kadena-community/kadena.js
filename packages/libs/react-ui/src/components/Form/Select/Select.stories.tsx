@@ -134,6 +134,17 @@ const meta: Meta<ISelectProps> = {
         defaultValue: { summary: 'false' },
       },
     },
+    direction: {
+      description: 'Orientation of the form header labels',
+      control: {
+        type: 'radio',
+      },
+      options: {
+        Row: 'row',
+        Column: 'column',
+      },
+      defaultValue: 'row',
+    },
   },
 };
 
