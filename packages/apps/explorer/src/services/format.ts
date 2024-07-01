@@ -49,15 +49,59 @@ export function formatStatisticsData(
     },
   ];
 }
+
 export function truncateValues(
-  value?: string,
-  minLength: number = 15,
-  startChars: number = 5,
-  endChars: number = 4,
+  value: string = '',
+  options?: { length?: number; startChars?: number; endChars?: number },
 ): string {
-  if (!value) return '';
-  if (value.length > minLength) {
-    return `${value.slice(0, startChars)}...${value.slice(-endChars)}`;
+  // Default size if only size is given or not provided
+  const defaultSize = 18;
+
+  // If size is not provided, set to defaultSize
+  const minLength = options?.length ?? defaultSize;
+
+  // if no startChars or endChars, and it's smaller than default or given length
+  if (
+    (!options || !options.startChars || !options.endChars) &&
+    value.length <= minLength
+  ) {
+    return value;
   }
-  return value;
+
+  // if startChars and endChars are not provided
+  if (!options || (options && !options.startChars && !options.endChars)) {
+    console.log('no startChars and endChars');
+    return `${value.slice(0, minLength)}…`;
+  }
+
+  // if endChars is provided
+  if (options && !options.startChars && options.endChars) {
+    console.log('only endChars');
+    return `${value.slice(0, minLength - options.endChars)}…${value.slice(
+      value.length - options.endChars,
+    )}`;
+  }
+
+  // if startChars and endChars are provided
+  if (options && options.startChars && options.endChars) {
+    console.log('both startChars and endChars');
+    // no reason to truncate if the options are longer than the value length
+    if (options.startChars + options.endChars >= value.length) {
+      return value;
+    }
+
+    return `${value.slice(0, options.startChars)}…${value.slice(
+      value.length - options.endChars,
+    )}`;
+  }
+
+  // if only startChars is given
+  if (options && options.startChars && !options.endChars) {
+    console.log('only startChars');
+    return `${value.slice(0, options.startChars)}…${value.slice(
+      -(minLength - options.startChars),
+    )}`;
+  }
+
+  return value; // fallback in case none of the conditions match
 }
