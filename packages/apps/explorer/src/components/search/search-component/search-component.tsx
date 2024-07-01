@@ -2,7 +2,7 @@ import { SearchOptionEnum } from '@/hooks/search/utils/utils';
 import { truncateValues } from '@/services/format';
 import type { ApolloError } from '@apollo/client';
 import { MonoSearch } from '@kadena/react-icons/system';
-import { Badge, Box } from '@kadena/react-ui';
+import { Badge, Box, Stack } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
 import type { Dispatch, SetStateAction } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
@@ -132,7 +132,8 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
 
   return (
     <>
-      <Box
+      <Stack
+        width="100%"
         display={'flex'}
         flexDirection={'column'}
         onKeyDown={(e) => handleSearchValueKeyDown(e)}
@@ -231,7 +232,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
             ))}
           </div>
         )}
-      </Box>
+      </Stack>
     </>
   );
 };
