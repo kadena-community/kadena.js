@@ -1,6 +1,16 @@
 import { useQueryContext } from '@/context/query-context';
 import { MonoHub } from '@kadena/react-icons/system';
-import { Box, Button, Dialog, DialogContent, Divider } from '@kadena/react-ui';
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogContent,
+  Divider,
+  Heading,
+  Stack,
+  Text,
+  TextLink,
+} from '@kadena/react-ui';
 import { print } from 'graphql';
 import React, { useState } from 'react';
 
@@ -28,10 +38,9 @@ export const GraphQLQueryDialog = (): JSX.Element => {
       >
         {() => (
           <DialogContent>
-            <h2>
-              What is <code>@kadena/graph</code>
-            </h2>
-            <p>
+            <Heading as="h2">What is @kadena/graph</Heading>
+
+            <Text>
               <a href="https://www.npmjs.com/package/@kadena/graph">
                 <code>@kadena/graph</code>
               </a>{' '}
@@ -43,15 +52,17 @@ export const GraphQLQueryDialog = (): JSX.Element => {
               PostgreSQL database backend, fed by an ETL process known as
               chainweb-data, <code>@kadena/graph</code> provides a swift and
               structured way to access blockchain information.
-            </p>
-            <p>
+            </Text>
+            <Text>
               Experiment with it here
               <ol>
                 <li>
-                  Mainnet:{' '}
-                  <a href="https://graph.kadena.network/graphql">
-                    graph.kadena.network
-                  </a>
+                  <Text as="span">
+                    Mainnet:{' '}
+                    <a href="https://graph.kadena.network/graphql">
+                      graph.kadena.network
+                    </a>
+                  </Text>
                 </li>
                 <li>
                   Testnet:{' '}
@@ -60,36 +71,37 @@ export const GraphQLQueryDialog = (): JSX.Element => {
                   </a>
                 </li>
               </ol>
-            </p>
-            <p>
+            </Text>
+            <Text>
               Documentation and more information can be found at{' '}
               <a href="https://docs.kadena.io/build/frontend/kadena-graph">
                 docs.kadena.io
               </a>
-            </p>
+            </Text>
             <Divider />
-            <h2>Queries ({queries.length})</h2>
+            <Heading as="h2">Queries ({queries.length})</Heading>
             {queries.map((query, index) => (
-              <div key={index}>
-                <p>Query #{index + 1}</p>
+              <Stack key={index} flexDirection="column">
+                <Text>Query #{index + 1}</Text>
                 <Box marginBlockEnd="sm" />
                 <pre>{print(query.query)}</pre>
                 {query.variables && (
                   <>
                     <Box marginBlockEnd="sm" />
-                    <p>Variables</p>
+                    <Text>Variables</Text>
                     <Box marginBlockEnd="sm" />
                     <pre>{JSON.stringify(query.variables, null, 2)}</pre>
                   </>
                 )}
                 {!query.variables && (
                   <>
-                    <Box marginBlockEnd="sm" />
-                    <p>No variables used for this query</p>
+                    <Box marginBlock="sm">
+                      <Text>No variables used for this query</Text>
+                    </Box>
                   </>
                 )}
                 {index + 1 !== queries.length && <Divider />}
-              </div>
+              </Stack>
             ))}
           </DialogContent>
         )}
