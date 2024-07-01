@@ -1,14 +1,13 @@
-import { networkConstants } from '@/constants/network';
-import { useRedirectOnNetworkChange } from '@/hooks/network/redirect';
 import { SpireKeyKdacolorLogoWhite } from '@kadena/react-icons/product';
 import { MonoMenu, MonoMenuOpen } from '@kadena/react-icons/system';
-import { Button, Select, SelectItem, Stack } from '@kadena/react-ui';
+import { Button, Stack } from '@kadena/react-ui';
 import type { FC, PropsWithChildren } from 'react';
-import React, { useState } from 'react';
+import React from 'react';
 import { GraphQLQueryDialog } from '../graphql-query-dialog/graphql-query-dialog';
 import { Media } from '../layout/media';
 import Logo from '../logo/logo';
 import MobileLogo from '../logo/mobile-logo';
+import SelectNetwork from '../select-network/select-network';
 import ThemeToggle from '../theme-toggle/theme-toggle';
 import { buttonSizeClass } from './styles.css';
 
@@ -19,11 +18,6 @@ export const NavBar: FC<
     menuIsOpen?: boolean;
   }>
 > = ({ children, isFixed, handleToggleMenu, menuIsOpen }) => {
-  const [selectedNetwork, setSelectedNetwork] = useState(
-    networkConstants.mainnet01.key,
-  );
-
-  useRedirectOnNetworkChange(selectedNetwork);
   return (
     <>
       <Stack alignItems="center">
@@ -43,28 +37,7 @@ export const NavBar: FC<
         )}
 
         <Media greaterThanOrEqual="md">
-          <Select
-            size="lg"
-            aria-label="Select network"
-            defaultSelectedKey={selectedNetwork}
-            fontType="code"
-            onSelectionChange={(value) =>
-              setSelectedNetwork(value.toString() as keyof typeof NetworkTypes)
-            }
-          >
-            <SelectItem
-              key={networkConstants.mainnet01.key}
-              textValue={networkConstants.mainnet01.label}
-            >
-              {networkConstants.mainnet01.label}
-            </SelectItem>
-            <SelectItem
-              key={networkConstants.testnet04.key}
-              textValue={networkConstants.testnet04.label}
-            >
-              {networkConstants.testnet04.label}
-            </SelectItem>
-          </Select>
+          <SelectNetwork />
         </Media>
       </Stack>
       <Stack flex={1}>{children}</Stack>
