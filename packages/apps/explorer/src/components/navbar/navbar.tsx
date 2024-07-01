@@ -15,14 +15,15 @@ import { buttonSizeClass } from './styles.css';
 export const NavBar: FC<
   PropsWithChildren<{
     isFixed?: boolean;
+    isSearchPage?: boolean;
     handleToggleMenu: () => void;
     menuIsOpen?: boolean;
   }>
-> = ({ children, isFixed, handleToggleMenu, menuIsOpen }) => {
+> = ({ children, isFixed, isSearchPage, handleToggleMenu, menuIsOpen }) => {
   return (
     <>
       <Stack alignItems="center">
-        {isFixed ? (
+        {isFixed || !isSearchPage ? (
           <>
             <Media greaterThanOrEqual="md">
               <Link href="/">
