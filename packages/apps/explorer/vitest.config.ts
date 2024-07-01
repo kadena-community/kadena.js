@@ -9,7 +9,12 @@ const localConfig = defineConfig({
     coverage: {
       exclude: [],
       provider: 'v8',
-      thresholds: {},
+      thresholds: {
+        lines: 0,
+        functions: 0,
+        branches: 0,
+        statements: 0,
+      },
     },
   },
   resolve: {
