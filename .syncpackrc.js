@@ -13,7 +13,7 @@ const config = {
         '@kadena/pactjs-cli',
         '@kadena-dev/eslint-plugin',
         'remark-gfm',
-        '@kadena/spirekey-sdk'
+        '@kadena/spirekey-sdk',
       ],
       isIgnored: true, // Toggle flag or or remove group to see inconsistencies
     },
