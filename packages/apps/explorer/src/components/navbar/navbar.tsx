@@ -1,4 +1,3 @@
-import { SpireKeyKdacolorLogoWhite } from '@kadena/react-icons/product';
 import { MonoMenu, MonoMenuOpen } from '@kadena/react-icons/system';
 import { Button, Stack } from '@kadena/react-ui';
 import Link from 'next/link';
@@ -54,12 +53,6 @@ export const NavBar: FC<
         <Stack>
           <ThemeToggle />
           <GraphQLQueryDialog />
-
-          <Button
-            className={buttonSizeClass}
-            variant="primary"
-            startVisual={<SpireKeyKdacolorLogoWhite />}
-          />
         </Stack>
       </Media>
       <Media lessThan="md">
