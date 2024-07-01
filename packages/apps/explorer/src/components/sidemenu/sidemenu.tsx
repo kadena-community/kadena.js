@@ -1,11 +1,9 @@
 import { menuConfig } from '@/utils/menuConfig';
-import { SpireKeyKdacolorLogoWhite } from '@kadena/react-icons/product';
-import { Button, Heading, Stack, TextLink } from '@kadena/react-ui';
+import { Heading, Stack, TextLink } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 import { GraphQLQueryDialog } from '../graphql-query-dialog/graphql-query-dialog';
-import { buttonSizeClass } from '../navbar/styles.css';
 import { listClass, menuClass, menuOpenClass } from './styles.css';
 
 interface IProps {
@@ -23,12 +21,6 @@ const Sidemenu: FC<PropsWithChildren<IProps>> = ({ isOpen }) => {
       <Stack paddingBlock="xxxl" />
       <Stack width="100%" justifyContent="flex-end" paddingInlineEnd="sm">
         <GraphQLQueryDialog />
-
-        <Button
-          className={buttonSizeClass}
-          variant="primary"
-          startVisual={<SpireKeyKdacolorLogoWhite />}
-        />
       </Stack>
 
       <ul className={listClass}>

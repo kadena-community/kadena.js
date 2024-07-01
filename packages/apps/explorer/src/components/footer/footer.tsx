@@ -5,6 +5,7 @@ import {
   MonoLogoX,
 } from '@kadena/react-icons/system';
 import { Heading, Stack, Text } from '@kadena/react-ui';
+import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
 import { Media } from '../layout/media';
@@ -29,7 +30,9 @@ const Footer: FC = () => {
       <Media greaterThanOrEqual="md">
         <Stack width="100%" flexDirection={{ xs: 'column', sm: 'row' }}>
           <Stack flex={1} flexDirection="column" gap="lg" marginInlineEnd="lg">
-            <Logo />
+            <Link href="/">
+              <Logo />
+            </Link>
             <Text>
               Kadena is a high-performance blockchain platform enabling
               scalable, secure, and efficient smart contracts.

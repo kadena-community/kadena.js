@@ -1,6 +1,6 @@
-import { SpireKeyKdacolorLogoWhite } from '@kadena/react-icons/product';
 import { MonoMenu, MonoMenuOpen } from '@kadena/react-icons/system';
 import { Button, Stack } from '@kadena/react-ui';
+import Link from 'next/link';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 import { GraphQLQueryDialog } from '../graphql-query-dialog/graphql-query-dialog';
@@ -14,25 +14,32 @@ import { buttonSizeClass } from './styles.css';
 export const NavBar: FC<
   PropsWithChildren<{
     isFixed?: boolean;
+    isSearchPage?: boolean;
     handleToggleMenu: () => void;
     menuIsOpen?: boolean;
   }>
-> = ({ children, isFixed, handleToggleMenu, menuIsOpen }) => {
+> = ({ children, isFixed, isSearchPage, handleToggleMenu, menuIsOpen }) => {
   return (
     <>
       <Stack alignItems="center">
-        {isFixed ? (
+        {isFixed || !isSearchPage ? (
           <>
             <Media greaterThanOrEqual="md">
-              <Logo />
+              <Link href="/">
+                <Logo />
+              </Link>
             </Media>
             <Media lessThan="md">
-              <MobileLogo />
+              <Link href="/">
+                <MobileLogo />
+              </Link>
             </Media>
           </>
         ) : (
           <Media lessThan="md">
-            <Logo />
+            <Link href="/">
+              <Logo />
+            </Link>
           </Media>
         )}
 
@@ -46,12 +53,6 @@ export const NavBar: FC<
         <Stack>
           <ThemeToggle />
           <GraphQLQueryDialog />
-
-          <Button
-            className={buttonSizeClass}
-            variant="primary"
-            startVisual={<SpireKeyKdacolorLogoWhite />}
-          />
         </Stack>
       </Media>
       <Media lessThan="md">

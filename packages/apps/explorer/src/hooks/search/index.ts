@@ -77,7 +77,9 @@ export const useSearch = () => {
 
     if (!searchQuery) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.replace(`${location}`);
+      if (location === '/') {
+        router.replace(`${location}`);
+      }
       return;
     }
 
