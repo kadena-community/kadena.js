@@ -9,7 +9,6 @@ import {
   Heading,
   Stack,
   Text,
-  TextLink,
 } from '@kadena/react-ui';
 import { print } from 'graphql';
 import React, { useState } from 'react';
