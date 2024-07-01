@@ -7,6 +7,7 @@ import { atoms } from '@kadena/react-ui/styles';
 import type { Dispatch, SetStateAction } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  editingBoxClass,
   searchBadgeBoxClass,
   searchBoxClass,
   searchInputClass,
@@ -133,6 +134,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
   return (
     <>
       <Stack
+        position="relative"
         width="100%"
         display={'flex'}
         flexDirection={'column'}
@@ -181,16 +183,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
         </Box>
 
         {isEditing && (
-          <div
-            className={atoms({
-              display: 'grid',
-              borderStyle: 'solid',
-              borderWidth: 'hairline',
-              backgroundColor: 'base.@active',
-              fontSize: 'sm',
-              fontFamily: 'primaryFont',
-            })}
-          >
+          <div className={editingBoxClass}>
             {searchData?.map((item, index) => (
               <Box
                 key={index}
