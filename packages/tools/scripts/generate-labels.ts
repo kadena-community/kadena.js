@@ -42,4 +42,5 @@ const main = async () => {
   const yamlString = yaml.dump(existingLabels);
   await fs.writeFile(labelerYmlPath, yamlString, 'utf8');
 };
+
 main();
