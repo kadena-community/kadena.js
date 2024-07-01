@@ -1,12 +1,7 @@
 import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
 import type { ISearchItem } from '@/components/search/search-component/search-component';
 import type { ApolloError } from '@apollo/client';
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAccount } from './utils/account';
 import { useBlockHash } from './utils/block-hash';
@@ -29,8 +24,6 @@ export const useSearch = () => {
   const router = useRouter();
   const location = usePathname();
   const params = useSearchParams();
-  console.log(params);
-
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isMounted, setIsMounted] = useState(false);
   const [loading, setLoading] = useState(false);
