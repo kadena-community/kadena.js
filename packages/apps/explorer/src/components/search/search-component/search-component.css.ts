@@ -22,3 +22,19 @@ export const searchInputClass = style([
 export const searchBadgeBoxClass = style({
   width: '20%',
 });
+
+export const editingBoxClass = style([
+  atoms({
+    position: 'absolute',
+    display: 'grid',
+    borderStyle: 'solid',
+    borderWidth: 'hairline',
+    backgroundColor: 'base.@active',
+    fontSize: 'sm',
+    fontFamily: 'primaryFont',
+  }),
+  {
+    top: '45px',
+    width: '100%',
+  },
+]);
