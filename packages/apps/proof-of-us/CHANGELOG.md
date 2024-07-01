@@ -1,5 +1,22 @@
 # @kadena/proof-of-us
 
+## 0.4.0
+
+### Minor Changes
+
+- f7a9f7e19: switching from nftstorage to pinata ipfs
+
+### Patch Changes
+
+- Updated dependencies \[6d4e82074]
+- Updated dependencies \[df0a2e823]
+- Updated dependencies \[311d0bf44]
+- Updated dependencies \[0e9c0d049]
+- Updated dependencies \[950444ccf]
+  - @kadena/client\@1.12.1
+  - @kadena/react-ui\@0.12.2
+  - @kadena/graph\@1.0.6
+
 ## 0.3.4
 
 ### Patch Changes

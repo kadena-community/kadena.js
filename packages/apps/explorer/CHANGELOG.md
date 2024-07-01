@@ -1,5 +1,24 @@
 # @kadena/explorer
 
+## 0.2.3
+
+### Patch Changes
+
+- e8a47ead1: QoL improvements for truncated messages. Each page has a decent
+  title
+- 779b599a5: Implemented small ui fixes in the explorer
+- ebd7fcfa4: Added rerouting to different instances when network toogle is
+  selected
+- f8afbbaa7: Refactored logic to deal with blocks fetched on startup
+- cb0f14f3f: Update readme with some adition info
+- 555892d55: Added graph in local .env variables describing graph host url's
+- Updated dependencies \[df0a2e823]
+- Updated dependencies \[311d0bf44]
+- Updated dependencies \[0e9c0d049]
+- Updated dependencies \[950444ccf]
+  - @kadena/react-ui\@0.12.2
+  - @kadena/graph\@1.0.6
+
 ## 0.2.2
 
 ### Patch Changes

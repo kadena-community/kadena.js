@@ -1,5 +1,16 @@
 # @kadena/graph-client
 
+## 0.2.5
+
+### Patch Changes
+
+- Updated dependencies \[df0a2e823]
+- Updated dependencies \[311d0bf44]
+- Updated dependencies \[0e9c0d049]
+- Updated dependencies \[950444ccf]
+  - @kadena/react-ui\@0.12.2
+  - @kadena/graph\@1.0.6
+
 ## 0.2.4
 
 ### Patch Changes

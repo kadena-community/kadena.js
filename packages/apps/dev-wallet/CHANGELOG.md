@@ -1,5 +1,19 @@
 # @kadena/dev-wallet
 
+## 0.1.5
+
+### Patch Changes
+
+- Updated dependencies \[6d4e82074]
+- Updated dependencies \[df0a2e823]
+- Updated dependencies \[311d0bf44]
+- Updated dependencies \[3949dcccf]
+  - @kadena/client\@1.12.1
+  - @kadena/react-ui\@0.12.2
+  - @kadena/hd-wallet\@0.4.2
+  - @kadena/client-utils\@0.8.1
+  - @kadena/pactjs-generator\@1.12.1
+
 ## 0.1.4
 
 ### Patch Changes
