@@ -10,8 +10,8 @@ interface RoyaltyFormProps {
 const RoyaltyForm: FC<RoyaltyFormProps> = ({ royaltyInput, handleRoyaltyInputChange }) => (
   <div className={styles.formSection}>
     <TextField label="Royalty Fungible" name="royaltyFungible" value={royaltyInput.royaltyFungible} onChange={handleRoyaltyInputChange} disabled />
-    <TextField label="Royalty Creator" name="royaltyCreator" value={royaltyInput.royaltyCreator} onChange={handleRoyaltyInputChange} />
-    <TextField label="Royalty Guard" name="royaltyGuard" value={royaltyInput.royaltyGuard} onChange={handleRoyaltyInputChange} />
+    <TextField label="Royalty Creator" name="royaltyCreator" value={royaltyInput.royaltyCreator} onChange={handleRoyaltyInputChange} disabled/>
+    <TextField label="Royalty Guard" name="royaltyGuard" value={royaltyInput.royaltyGuard} onChange={handleRoyaltyInputChange} disabled/>
     <TextField label="Royalty Rate" name="royaltyRate" value={royaltyInput.royaltyRate} onChange={handleRoyaltyInputChange} />
   </div>
 );

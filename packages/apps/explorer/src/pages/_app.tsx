@@ -13,7 +13,8 @@ import {
 } from '@apollo/client';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { RouterProvider } from '@kadena/react-ui';
+import '@components/globalstyles.css';
+import { RouterProvider, useTheme } from '@kadena/react-ui';
 import { createClient } from 'graphql-ws';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
@@ -60,6 +61,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
   // Fixes "Component' cannot be used as a JSX component."
   const ReactComponent = Component as ComponentType;
   const router = useRouter();
+  useTheme();
   return (
     <ApolloProvider client={client}>
       <RouterProvider navigate={router.push}>

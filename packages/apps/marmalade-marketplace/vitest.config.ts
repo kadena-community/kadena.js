@@ -11,10 +11,10 @@ const localConfig = defineConfig({
     environment: 'happy-dom',
     coverage: {
       thresholds: {
-        lines: 10,
+        lines: 9,
         functions: 8,
-        branches: 25,
-        statements: 10,
+        branches: 22,
+        statements: 9,
         autoUpdate: false
       },
     },

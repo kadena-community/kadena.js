@@ -42,7 +42,6 @@ export const oneColumnRow = style({
   marginTop: '20px',
 });
 
-
 export const formLabel = style({
   marginBottom: '5px',
   color: 'black',
@@ -58,13 +57,6 @@ export const formInput = style({
   ':hover': {
     borderColor: '#aaa', // change border color on hover
   },
-});
-
-export const checkboxRow = style({
-  display: 'flex',
-  justifyContent: 'flex-start',
-  alignItems: 'flex-start',
-  marginBottom: '10px',
 });
 
 export const firstColumn = style({
@@ -95,6 +87,14 @@ export const uploadImage = style({
 
 export const uploadText = style({
   margin: '0',
+});
+
+export const checkboxRow = style({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'flex-start',
+  alignItems: 'flex-start',
+  marginBottom: '10px',
 });
 
 export const checkboxContainer = style({
@@ -155,10 +155,70 @@ export const buttonRowRight = style({
   marginTop: '20px',
 });
 
-
 export const textareaField = style({
   width: 100,
   height: 400,
   resize: "none",
   // box-sizing: "border-box"
+});
+
+export const container = style({
+  maxWidth: 600,
+  margin: '0 auto',
+  padding: 20,
+  backgroundColor: '#f0f0f0',
+  borderRadius: 8,
+  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+});
+
+export const card = style({
+  padding: 20,
+  backgroundColor: '#ffffff',
+  border: '1px solid #e0e0e0',
+  borderRadius: 4,
+  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+});
+
+export const transactionDetails = style({
+  marginBottom: 20,
+});
+
+export const transactionDetailsHeader = style({
+  fontSize: '1.2rem',
+  marginBottom: 10,
+});
+
+export const buttonContainer = style({
+  marginTop: 16,
+});
+
+export const button = style({
+  marginRight: 12,
+});
+
+export const formHeading = style({
+  color: 'black',
+});
+
+export const errorBox = style({ 
+  color: 'red', 
+  backgroundColor: '#ffe6e6', 
+  border: '1px solid red', 
+  borderRadius: '5px', 
+  padding: '10px', 
+  margin: '10px 0',
+  fontFamily: 'Arial, sans-serif',
+  fontSize: '14px'
+});
+
+
+export const resultBox = style({ 
+  color: 'green', 
+  backgroundColor: '#e6ffe6',
+  border: "1px solid green",
+  borderRadius: '5px', 
+  padding: '10px', 
+  margin: '10px 0',
+  fontFamily: 'Arial, sans-serif',
+  fontSize: '14px'
 });

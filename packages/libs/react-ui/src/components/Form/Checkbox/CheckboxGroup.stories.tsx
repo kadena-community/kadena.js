@@ -75,6 +75,17 @@ const meta: Meta<ICheckboxProps> = {
         type: 'boolean',
       },
     },
+    formFieldDirection: {
+      description: 'Orientation of the form header labels',
+      control: {
+        type: 'radio',
+      },
+      options: {
+        Row: 'row',
+        Column: 'column',
+      },
+      defaultValue: 'row',
+    },
   },
 };
 

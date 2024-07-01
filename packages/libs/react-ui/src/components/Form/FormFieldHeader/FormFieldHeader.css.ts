@@ -1,4 +1,4 @@
-import { style, token } from '../../../styles';
+import { style, styleVariants, token } from '../../../styles';
 
 export const headerClass = style({
   display: 'flex',
@@ -38,4 +38,24 @@ export const disabledLabelClass = style({
   pointerEvents: 'none',
   fontWeight: token('typography.weight.secondaryFont.bold'),
   color: token('color.text.base.@disabled'),
+});
+
+export const directionClass = styleVariants({
+  column: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+});
+
+export const directionInfoClass = styleVariants({
+  column: {
+    marginInlineStart: 'unset',
+  },
+  row: {
+    marginInlineStart: 'auto',
+  },
 });

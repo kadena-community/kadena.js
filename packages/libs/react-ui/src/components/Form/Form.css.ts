@@ -41,7 +41,6 @@ export const baseContainerClass = recipe({
     width: '100%',
     transition: 'outline-color 0.2s ease-in-out',
     outlineColor: 'transparent',
-    minWidth: '150px',
     ...responsiveStyle({
       sm: {
         maxWidth: '100%',
@@ -254,6 +253,7 @@ export const input = recipe({
     {
       outline: 'none',
       flex: 1,
+      width: '100%',
       paddingInlineStart: token('size.n4'),
       border: 'none',
       backgroundColor: token('color.background.input.default'),

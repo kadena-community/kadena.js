@@ -10,6 +10,7 @@ import {
 import type { ChainId } from '@kadena/types';
 import { submitClient } from '../core';
 import type { IClientConfig } from '../core/utils/helpers';
+import { formatWebAuthnSigner } from './helpers';
 
 interface IUpdateUriInput {
   policyConfig?: {
@@ -37,7 +38,7 @@ const updateUriCommand = ({
   composePactCommand(
     execution(Pact.modules['marmalade-v2.ledger']['update-uri'](tokenId, uri)),
     addKeyset('guard', guard.keyset.pred, ...guard.keyset.keys),
-    addSigner(guard.keyset.keys, (signFor) => [
+    addSigner(formatWebAuthnSigner(guard.keyset.keys), (signFor) => [
       signFor('coin.GAS'),
       signFor('marmalade-v2.ledger.UPDATE-URI', tokenId, uri),
       ...(policyConfig?.guarded

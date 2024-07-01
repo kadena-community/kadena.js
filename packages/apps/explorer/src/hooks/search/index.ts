@@ -93,17 +93,18 @@ export const useSearch = () => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       router.push(`${router.route}?q=${searchQuery}&so=${searchOption}`);
     }
-  }, [searchQuery, searchOption, isMounted]);
+  }, [searchQuery, isMounted]);
 
   useEffect(() => {
     if (!router.isReady) return;
-
     const { q, so } = router.query;
-    const soInt: SearchOptionEnum = parseInt(so as any);
+    const soInt: SearchOptionEnum | null = !isNaN(parseInt(so as any))
+      ? parseInt(so as any)
+      : null;
     setSearchQuery(q as string);
     setSearchOption(soInt);
     setIsMounted(true);
-  }, [router.isReady]);
+  }, [router.isReady, router.query]);
 
   useEffect(() => {
     setLoading(

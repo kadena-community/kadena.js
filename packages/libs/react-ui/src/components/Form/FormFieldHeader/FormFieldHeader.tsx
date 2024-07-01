@@ -3,12 +3,15 @@ import classNames from 'classnames';
 import type { ComponentProps, FC, ReactNode } from 'react';
 import React from 'react';
 import {
+  directionClass,
+  directionInfoClass,
   disabledLabelClass,
   headerClass,
   infoClass,
   labelClass,
   tagClass,
 } from './FormFieldHeader.css';
+export type FormFieldDirection = NonNullable<keyof typeof directionInfoClass>;
 
 export interface IFormFieldHeaderProps extends ComponentProps<'label'> {
   label: ReactNode;
@@ -16,6 +19,7 @@ export interface IFormFieldHeaderProps extends ComponentProps<'label'> {
   info?: string;
   className?: string;
   isDisabled?: boolean;
+  direction?: FormFieldDirection;
 }
 
 export const FormFieldHeader: FC<IFormFieldHeaderProps> = ({
@@ -24,16 +28,28 @@ export const FormFieldHeader: FC<IFormFieldHeaderProps> = ({
   info,
   className,
   isDisabled,
+  direction,
   ...rest
 }) => {
   return (
-    <div className={classNames(headerClass, className)}>
+    <div
+      className={classNames(
+        headerClass,
+        className,
+        direction && directionClass[direction],
+      )}
+    >
       <label {...rest} className={isDisabled ? disabledLabelClass : labelClass}>
         {label}
       </label>
       {Boolean(tag) && <span className={tagClass}>{tag}</span>}
       {Boolean(info) && (
-        <span className={infoClass}>
+        <span
+          className={classNames(
+            infoClass,
+            direction && directionInfoClass[direction],
+          )}
+        >
           {info}
           <MonoErrorOutline />
         </span>
