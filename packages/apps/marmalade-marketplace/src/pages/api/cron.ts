@@ -172,12 +172,14 @@ async function parseEvents(
           host: env.CHAINWEB_API_HOST,
         });
 
+        console.log('data', data);
         quoteInfo = {
           startPrice: data['sale-price'],
           saleType: data['sale-type'],
         };
-      } catch {
+      } catch (error) {
         // sale does not have quote
+        console.log('error', error);
       }
 
       saleRecords[saleId] = {
@@ -197,6 +199,7 @@ async function parseEvents(
         tokenId,
         amount,
         timeoutAt: Number(timeout.int) * 1000,
+        endsAt: Number(timeout.int) * 1000,
         ...quoteInfo,
       };
       continue;
@@ -364,10 +367,17 @@ async function parseEvents(
     }
 
     if (event.event === 'marmalade-sale.conventional-auction.BID_PLACED') {
-      const [bidId, tokenId] = event.parameters;
+      const [bidId, saleId] = event.parameters;
 
       const bidDetails = await getBid({
         bidId: bidId as string,
+        chainId: event.chainId,
+        networkId: env.NETWORK_NAME,
+        host: env.CHAINWEB_API_HOST,
+      });
+
+      const quoteInfo = await getQuoteInfo({
+        saleId: saleId as string,
         chainId: event.chainId,
         networkId: env.NETWORK_NAME,
         host: env.CHAINWEB_API_HOST,
@@ -378,7 +388,7 @@ async function parseEvents(
         chainId: event.chainId,
         block: event.block,
         bidId,
-        tokenId,
+        tokenId: quoteInfo['token-id'],
         bid: bidDetails['bid'],
         bidder: {
           account: bidDetails['bidder'],
