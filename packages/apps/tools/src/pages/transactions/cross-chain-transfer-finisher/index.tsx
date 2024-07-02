@@ -50,7 +50,7 @@ import {
   TextField,
   TextareaField,
   TrackerCard,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import Debug from 'debug';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';

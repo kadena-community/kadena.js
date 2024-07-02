@@ -1,6 +1,6 @@
 import CopyButton from '@/components/copy-button/copy-button';
 import { MonoArrowOutward } from '@kadena/react-icons/system';
-import { Stack, Text } from '@kadena/react-ui';
+import { Stack, Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import React, { Fragment } from 'react';
 import {

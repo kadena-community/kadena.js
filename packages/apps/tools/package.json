@@ -32,7 +32,7 @@
     "@kadena/pactjs": "workspace:*",
     "@kadena/pactjs-generator": "workspace:*",
     "@kadena/react-icons": "workspace:*",
-    "@kadena/react-ui": "workspace:*",
+    "@kadena/kode-ui": "workspace:*",
     "@ledgerhq/hw-app-kda": "git+ssh://git@github.com:obsidiansystems/hw-app-kda",
     "@ledgerhq/hw-transport-webhid": "^6.28.3",
     "@ledgerhq/logs": "^6.12.0",

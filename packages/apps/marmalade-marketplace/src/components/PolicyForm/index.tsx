@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Heading } from '@kadena/react-ui';
+import { Heading } from '@kadena/kode-ui';
 import * as styles from '@/styles/create-token.css';
 import { ICreateTokenPolicyConfig } from "@kadena/client-utils/marmalade";
 

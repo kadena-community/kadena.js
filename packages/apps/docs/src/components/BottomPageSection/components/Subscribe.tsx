@@ -5,7 +5,7 @@ import {
   Notification,
   Stack,
   TextField,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React from 'react';
 import { useSubscribe } from './useSubscribe';

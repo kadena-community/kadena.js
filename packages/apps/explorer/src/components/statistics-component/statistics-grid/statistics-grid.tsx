@@ -1,8 +1,8 @@
 import { useNetworkInfoQuery } from '@/__generated__/sdk';
 import { Media } from '@/components/layout/media';
 import { formatStatisticsData } from '@/services/format';
-import { Grid, Stack, Text } from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
+import { Grid, Stack, Text } from '@kadena/kode-ui';
+import { atoms } from '@kadena/kode-ui/styles';
 import type { FC } from 'react';
 import React from 'react';
 

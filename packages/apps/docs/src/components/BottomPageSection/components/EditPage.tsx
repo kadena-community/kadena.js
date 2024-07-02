@@ -1,7 +1,7 @@
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { MonoCreate } from '@kadena/react-icons/system';
-import type { IButtonProps } from '@kadena/react-ui';
-import { Button } from '@kadena/react-ui';
+import type { IButtonProps } from '@kadena/kode-ui';
+import { Button } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React from 'react';
 

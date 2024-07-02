@@ -8,7 +8,7 @@ import {
   tooltipInfoContainer,
 } from '@/pages/transactions/transfer/styles.css';
 import { MonoInfo, MonoKey } from '@kadena/react-icons/system';
-import { NumberField, Stack, Tooltip } from '@kadena/react-ui';
+import { NumberField, Stack, Tooltip } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';

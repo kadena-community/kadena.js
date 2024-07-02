@@ -1,5 +1,5 @@
-import '@kadena/react-ui/global';
-import { tokens } from '@kadena/react-ui/styles';
+import '@kadena/kode-ui/global';
+import { tokens } from '@kadena/kode-ui/styles';
 import { globalStyle } from '@vanilla-extract/css';
 
 globalStyle('body', {

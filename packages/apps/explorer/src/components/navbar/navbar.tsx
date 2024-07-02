@@ -1,5 +1,5 @@
 import { MonoMenu, MonoMenuOpen } from '@kadena/react-icons/system';
-import { Button, Stack } from '@kadena/react-ui';
+import { Button, Stack } from '@kadena/kode-ui';
 import Link from 'next/link';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';

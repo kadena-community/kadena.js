@@ -4,7 +4,7 @@ import {
   cardColorHover,
   linkBlockColor,
 } from '@/utils/color.ts';
-import { atoms, tokens } from '@kadena/react-ui/styles';
+import { atoms, tokens } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const titleClass = style([

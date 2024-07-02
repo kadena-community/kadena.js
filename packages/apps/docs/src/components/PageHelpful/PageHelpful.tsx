@@ -8,7 +8,7 @@ import {
   Stack,
   Text,
   ToggleButton,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { FC } from 'react';

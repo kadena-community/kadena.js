@@ -1,7 +1,7 @@
 import { useNetworkInfoQuery } from '@/__generated__/sdk';
 import { Media } from '@/components/layout/media';
 import { formatStatisticsData } from '@/services/format';
-import { Stack, Text } from '@kadena/react-ui';
+import { Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React from 'react';
 import { boxClass, overFlowClass } from './statistics-stack.css';

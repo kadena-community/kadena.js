@@ -1,4 +1,4 @@
-import { atoms, tokens } from '@kadena/react-ui/styles';
+import { atoms, tokens } from '@kadena/kode-ui/styles';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const asideItemLinkClass = style([

@@ -16,7 +16,7 @@
 - Updated dependencies \[311d0bf44]
 - Updated dependencies \[0e9c0d049]
 - Updated dependencies \[950444ccf]
-  - @kadena/react-ui\@0.12.2
+  - @kadena/kode-ui\@0.12.2
   - @kadena/graph\@1.0.6
 
 ## 0.2.2
@@ -30,7 +30,7 @@
 - Updated dependencies \[7ee91269f]
 - Updated dependencies \[5b95decb2]
 - Updated dependencies \[6d9900ef8]
-  - @kadena/react-ui\@0.12.1
+  - @kadena/kode-ui\@0.12.1
 
 ## 0.2.1
 
@@ -41,7 +41,7 @@
 - Updated dependencies \[63bdbcb]
 - Updated dependencies \[15a492c]
   - @kadena/graph\@1.0.5
-  - @kadena/react-ui\@0.12.0
+  - @kadena/kode-ui\@0.12.0
 
 ## 0.2.0
 
@@ -56,7 +56,7 @@
 - Updated dependencies \[6a969ebdc]
 - Updated dependencies \[b541021f4]
 - Updated dependencies \[e648c32fa]
-  - @kadena/react-ui\@0.11.0
+  - @kadena/kode-ui\@0.11.0
   - @kadena/graph\@1.0.4
 
 ## 0.1.0
@@ -94,7 +94,7 @@
 - Updated dependencies \[07ec9691c]
 - Updated dependencies \[4a5045c52]
 - Updated dependencies \[b0b05ca86]
-  - @kadena/react-ui\@0.10.0
+  - @kadena/kode-ui\@0.10.0
   - @kadena/graph\@1.0.3
 
 ## 0.0.2
@@ -123,6 +123,6 @@
 - Updated dependencies \[5cf752eed]
 - Updated dependencies \[0d18ab81c]
 - Updated dependencies \[37375fa7e]
-  - @kadena/react-ui\@0.9.0
+  - @kadena/kode-ui\@0.9.0
   - @kadena/graph\@1.0.2
   - @kadena/react-icons\@0.0.3

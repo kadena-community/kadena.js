@@ -11,8 +11,8 @@ import {
   Table,
   TableBody,
   TableHeader,
-} from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
+} from '@kadena/kode-ui';
+import { atoms } from '@kadena/kode-ui/styles';
 import React from 'react';
 
 interface IFungibleChainAccountTableProps {

@@ -1,5 +1,5 @@
 import { useNetwork } from '@/modules/network/network.hook';
-import { Box, Heading, Text } from '@kadena/react-ui';
+import { Box, Heading, Text } from '@kadena/kode-ui';
 import { Link } from 'react-router-dom';
 
 export function Networks() {

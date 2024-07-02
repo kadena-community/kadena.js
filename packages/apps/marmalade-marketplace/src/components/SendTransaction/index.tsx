@@ -1,19 +1,19 @@
 import React, { FC, useState } from 'react';
-import { Card, Divider, Button, Dialog} from '@kadena/react-ui';
+import { Card, Divider, Button, Dialog} from '@kadena/kode-ui';
 import * as styles from '@/styles/create-token.css';
 import { IUnsignedCommand, ICommand, ITransactionDescriptor, ICommandResult } from "@kadena/client"
 
 interface SendTransactionFormProps {
   preview: () => Promise<void | ICommandResult>
   send: () => Promise<void | ITransactionDescriptor>
-  poll: (req:any) => Promise<any>; 
+  poll: (req:any) => Promise<any>;
   transaction?: IUnsignedCommand | ICommand;
 }
 
-const SendTransaction: FC<SendTransactionFormProps> = ({ send, preview, poll, transaction}) =>{ 
+const SendTransaction: FC<SendTransactionFormProps> = ({ send, preview, poll, transaction}) =>{
   const [previewStatus, setPreviewStatus] = useState<boolean>(false);
   const [loadingStatus, setLoadingStatus] = useState<boolean>(false);
-  const [result, setResult] = useState<string>(""); 
+  const [result, setResult] = useState<string>("");
   const [requestKey, setRequestKey] = useState<string | undefined>(undefined);
   const [error, setError] = useState("");
   interface Transaction {
@@ -43,9 +43,9 @@ const SendTransaction: FC<SendTransactionFormProps> = ({ send, preview, poll, tr
     try {
       const res:any  = await send();
       setRequestKey(res);
-      setLoadingStatus(true); 
+      setLoadingStatus(true);
       const pollResult = await poll(res);
-      setLoadingStatus(false); 
+      setLoadingStatus(false);
     } catch (error) {
       setError(JSON.stringify(error));
 
@@ -95,7 +95,7 @@ return(
       {renderTransactionDetails()}
       <Divider />
       <div className={styles.buttonContainer}>
-        {!previewStatus ? 
+        {!previewStatus ?
           (<Button className={styles.button} onPress={handlePreview}>Preview Transaction</Button>)
         : (<Button className={styles.button} onPress={handleSend} loadingLabel="Transaction in Progress.." isLoading={loadingStatus}>Send Transaction</Button>)
         }

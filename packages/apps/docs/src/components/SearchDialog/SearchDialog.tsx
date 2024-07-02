@@ -1,5 +1,5 @@
-import type { IDialogProps } from '@kadena/react-ui';
-import { Box, Dialog, DialogContent, DialogHeader } from '@kadena/react-ui';
+import type { IDialogProps } from '@kadena/kode-ui';
+import { Box, Dialog, DialogContent, DialogHeader } from '@kadena/kode-ui';
 
 import { useRouter } from 'next/router';
 import type { FC, FormEvent } from 'react';

@@ -30,7 +30,7 @@
     "@kadena/graph": "workspace:*",
     "@kadena/pactjs": "workspace:*",
     "@kadena/react-icons": "workspace:*",
-    "@kadena/react-ui": "workspace:*",
+    "@kadena/kode-ui": "workspace:*",
     "@pinata/sdk": "^2.1.0",
     "@vanilla-extract/css": "1.14.2",
     "@vanilla-extract/recipes": "0.5.1",

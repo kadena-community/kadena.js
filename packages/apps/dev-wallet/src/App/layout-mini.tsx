@@ -9,8 +9,8 @@ import {
   Text,
   Themes,
   useTheme,
-} from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
+} from '@kadena/kode-ui';
+import { atoms } from '@kadena/kode-ui/styles';
 import { FC, useContext } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { containerStyle, headerStyle, mainStyle } from './layout-mini.css';

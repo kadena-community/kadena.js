@@ -1,4 +1,4 @@
-import { atoms, token } from '@kadena/react-ui/styles';
+import { atoms, token } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const containerStyle = style([

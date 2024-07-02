@@ -1,5 +1,5 @@
 import { getClassName } from '@/utils/getClassName';
-import { atoms, darkThemeClass, tokens } from '@kadena/react-ui/styles';
+import { atoms, darkThemeClass, tokens } from '@kadena/kode-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 import { headerClass } from '../Heading/styles.css';
 import { paragraphWrapperClass } from '../Paragraph/styles.css';

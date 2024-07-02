@@ -7,7 +7,7 @@ import {
   Stack,
   Text,
   TextField,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import { useForm } from 'react-hook-form';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';

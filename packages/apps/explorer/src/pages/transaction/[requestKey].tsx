@@ -5,7 +5,7 @@ import { TransactionResultComponent } from '@/components/transaction-components/
 import { useQueryContext } from '@/context/query-context';
 import { transactionRequestKey } from '@/graphql/pages/transaction/transaction-requestkey.graph';
 import { truncateValues } from '@/services/format';
-import { Heading, Stack, TabItem, Tabs } from '@kadena/react-ui';
+import { Heading, Stack, TabItem, Tabs } from '@kadena/kode-ui';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 

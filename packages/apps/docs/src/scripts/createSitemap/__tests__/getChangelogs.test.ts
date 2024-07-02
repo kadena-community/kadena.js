@@ -7,7 +7,7 @@ const mocks = vi.hoisted(() => {
         name: 'Kode UI Components',
         slug: 'kode-ui-components',
         repo: 'https://github.com/kadena-community/kadena.js.git',
-        directory: '/packages/libs/react-ui',
+        directory: '/packages/libs/kode-ui',
         fileName: 'CHANGELOG.md',
         owner: 'kadena-community',
         repoName: 'kadena.js',

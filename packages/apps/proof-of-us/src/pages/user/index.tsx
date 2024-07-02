@@ -14,7 +14,7 @@ import { useAccount } from '@/hooks/account';
 import { useTokens } from '@/hooks/tokens';
 import { secondaryTextClass } from '@/styles/global.css';
 import { MonoGroup, MonoLogout } from '@kadena/react-icons';
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';

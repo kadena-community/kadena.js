@@ -43,7 +43,7 @@ Overview of the main packages maintained in this repository:
 | [@kadena/pactjs-cli][47]             | [![version][49]][48] |
 | [@kadena/pactjs-generator][50]       | [![version][52]][51] |
 | [@kadena/react-icons][53]            | [![version][55]][54] |
-| [@kadena/react-ui][56]               | [![version][58]][57] |
+| [@kadena/kode-ui][56]               | [![version][58]][57] |
 | [@kadena/types][59]                  | [![version][61]][60] |
 
 <!--packageTable end -->
@@ -127,9 +127,9 @@ Special thanks to the wonderful people who have contributed to this project:
 [54]: packages/libs/react-icons/CHANGELOG.md
 [55]: https://img.shields.io/npm/v/@kadena/react-icons.svg
 [56]:
-  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/react-ui
-[57]: packages/libs/react-ui/CHANGELOG.md
-[58]: https://img.shields.io/npm/v/@kadena/react-ui.svg
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/kode-ui
+[57]: packages/libs/kode-ui/CHANGELOG.md
+[58]: https://img.shields.io/npm/v/@kadena/kode-ui.svg
 [59]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/types
 [60]: packages/libs/types/CHANGELOG.md

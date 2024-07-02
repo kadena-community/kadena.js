@@ -11,7 +11,7 @@ import {
   BreadcrumbsItem,
   Notification,
   Stack,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 

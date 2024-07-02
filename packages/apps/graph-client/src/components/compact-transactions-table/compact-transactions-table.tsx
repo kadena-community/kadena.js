@@ -19,8 +19,8 @@ import {
   TableBody,
   TableHeader,
   Tooltip,
-} from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
+} from '@kadena/kode-ui';
+import { atoms } from '@kadena/kode-ui/styles';
 import { truncate } from '@utils/truncate';
 import React from 'react';
 

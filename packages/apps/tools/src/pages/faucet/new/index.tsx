@@ -9,7 +9,7 @@ import {
   Notification,
   NotificationHeading,
   Stack,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 
 import {
   hoverTagContainerStyle,

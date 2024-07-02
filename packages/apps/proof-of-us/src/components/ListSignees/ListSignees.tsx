@@ -10,7 +10,7 @@ import {
   MonoSignature,
   MonoSignatureNotAllowed,
 } from '@kadena/react-icons';
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import { motion } from 'framer-motion';
 import type { FC } from 'react';

@@ -5,7 +5,7 @@ const withVanillaExtract = createVanillaExtractPlugin();
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  transpilePackages: ['@kadena/react-ui'],
+  transpilePackages: ['@kadena/kode-ui'],
   env: {
     KADENA_GRAPH_HOST: process.env.KADENA_GRAPH_HOST,
     KADENA_GRAPH_WS_HOST: process.env.KADENA_GRAPH_WS_HOST,

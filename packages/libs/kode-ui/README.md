@@ -1,6 +1,6 @@
 # React UI
 
-**@kadena/react-ui** is a library used to provide a styling environment and
+**@kadena/kode-ui** is a library used to provide a styling environment and
 basic React components for reuse in Kadena applications. It uses
 [vanilla-extract/css][1] (will be referred to as VE) to establish a system of
 utility classes (defined as [sprinkles][2]) and CSS variables (defined in the
@@ -19,7 +19,7 @@ and interact with their configuration options.
 ### Install
 
 ```sh
-pnpm install @kadena/react-ui
+pnpm install @kadena/kode-ui
 ```
 
 Since this library uses VE and is not pre-bundled, the consuming project will
@@ -32,17 +32,17 @@ Run the following commands to install dependencies and build the library from
 this repo:
 
 ```sh
-pnpm install --filter @kadena/react-ui
-pnpm build --filter @kadena/react-ui
+pnpm install --filter @kadena/kode-ui
+pnpm build --filter @kadena/kode-ui
 ```
 
-Add **@kadena/react-ui** as a dependency in your `package.json`:
+Add **@kadena/kode-ui** as a dependency in your `package.json`:
 
 ```json
 {
   ...
   "dependencies": {
-    "@kadena/react-ui": "workspace:*",
+    "@kadena/kode-ui": "workspace:*",
     ...
   }
 }
@@ -64,7 +64,7 @@ pnpm add @vanilla-extract/next-plugin --dev
 
 _If you don’t have a next.config.js file in the root of your project, you'll
 need to create one first._ Add the plugin to your next.config.js file and add
-**@kadena/react-ui** to transpilePackages:
+**@kadena/kode-ui** to transpilePackages:
 
 ```ts
 const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin');
@@ -72,7 +72,7 @@ const withVanillaExtract = createVanillaExtractPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ['@kadena/react-ui'],
+  transpilePackages: ['@kadena/kode-ui'],
 };
 
 module.exports = withVanillaExtract(nextConfig);
@@ -82,17 +82,17 @@ If required, this plugin can be composed with other plugins. See [VE Next.js
 integration docs][6].
 
 After the plugin is setup, you should be able to use styling utilities exported
-from **@kadena/react-ui** and components within your application.
+from **@kadena/kode-ui** and components within your application.
 
 ### Usage
 
-As mentioned earlier, **@kadena/react-ui** provides components and styling
+As mentioned earlier, **@kadena/kode-ui** provides components and styling
 utilities that align with the [Kode Design System][3].
 
 Example for importing and using components:
 
 ```tsx
-import { Text } from '@kadena/react-ui';
+import { Text } from '@kadena/kode-ui';
 
 export const Component = () => {
   return <Text>Hello World!</Text>;
@@ -102,10 +102,10 @@ export const Component = () => {
 We are using [vanilla-extract/css][1] to define our design system and style our
 components. To utilize the same theme variables and utility classes in
 conjunction with [vanilla-extract/css][1] in your own project, you can import
-them via `@kadena/react-ui/styles`:
+them via `@kadena/kode-ui/styles`:
 
 ```ts
-import { atoms, vars } from '@kadena/react-ui/styles';
+import { atoms, vars } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const exampleClass = style([
@@ -121,21 +121,21 @@ export const exampleClass = style([
 
 We are overriding some global styles and adding fonts in this library. To make
 sure fonts are loaded and global styles are applied, you will need to add the
-`import '@kadena/react-ui/global'` to your app's entry point.
+`import '@kadena/kode-ui/global'` to your app's entry point.
 
 ### Dark Theme
 
 We are utilizing the [theming][7] feature from VE to create CSS color variables
 that invert depending on the selected theme (light/dark). By default, the theme
 will have colors suitable for light mode, but to add dark theme integration you
-can export `darkThemeClass` from **@kadena/react-ui** and use it with your theme
+can export `darkThemeClass` from **@kadena/kode-ui** and use it with your theme
 provider.
 
 You can use "next-themes" to set this up in Next.js projects by wrapping
 `Component` with the `ThemeProvider` in `__app.tsx`
 
 ```tsx
-import { darkThemeClass } from '@kadena/react-ui/styles';
+import { darkThemeClass } from '@kadena/kode-ui/styles';
 import { ThemeProvider } from 'next-themes';
 
 export const MyApp = ({ Component, pageProps }) => {
@@ -193,7 +193,7 @@ theme, for example.
 _Atoms_
 
 Sprinkles is an optional package built on top of VE that allows users to
-generate a set of custom utility classes (similar to Tailwind). @kadena/react-ui
+generate a set of custom utility classes (similar to Tailwind). @kadena/kode-ui
 has setup `atoms` using the defined theme based on the [Kadena Design
 System][3]. Whenever possible it is preferrable to use these utility classes and
 avoid creating unnecessary custom classes using the `style` function to keep the

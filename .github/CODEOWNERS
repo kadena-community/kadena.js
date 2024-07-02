@@ -16,7 +16,7 @@
 /packages/libs/client-utils                     @alber70g @javadkh2 @jessevanmuijden @wooglie @jermaine150 @ggobugi27
 /packages/libs/kadena.js                        @alber70g
 /packages/libs/pactjs-generator                 @alber70g @javadkh2
-/packages/libs/react-ui                         @eileenmguo @sstraatemans @r-mulder @isaozler
+/packages/libs/kode-ui                         @eileenmguo @sstraatemans @r-mulder @isaozler
 /packages/libs/types                            @alber70g
 /packages/libs/toolbox                          @alber70g @salamaashoush
 /packages/tools/eslint-config                   @alber70g

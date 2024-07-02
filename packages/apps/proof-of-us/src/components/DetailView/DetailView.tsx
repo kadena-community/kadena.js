@@ -9,7 +9,7 @@ import {
   MonoClose,
   MonoQrCodeScanner,
 } from '@kadena/react-icons';
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import { useRouter } from 'next/navigation';
 import type { ChangeEventHandler, FC } from 'react';
 import { useState } from 'react';

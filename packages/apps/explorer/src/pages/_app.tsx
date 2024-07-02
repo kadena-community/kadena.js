@@ -1,5 +1,5 @@
-// load global styles from @kadena/react-ui
-import '@kadena/react-ui/global';
+// load global styles from @kadena/kode-ui
+import '@kadena/kode-ui/global';
 
 import { MediaContextProvider } from '@/components/layout/media';
 import { graphHost, wsGraphHost } from '@/constants/graphHost';
@@ -14,7 +14,7 @@ import {
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
 import '@components/globalstyles.css';
-import { RouterProvider, useTheme } from '@kadena/react-ui';
+import { RouterProvider, useTheme } from '@kadena/kode-ui';
 import { createClient } from 'graphql-ws';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';

@@ -1,4 +1,4 @@
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import { usePathname } from 'next/navigation';
 import type { FC } from 'react';

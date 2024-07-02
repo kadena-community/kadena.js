@@ -1,5 +1,5 @@
-// load global styles from @kadena/react-ui
-import '@kadena/react-ui/global';
+// load global styles from @kadena/kode-ui
+import '@kadena/kode-ui/global';
 
 // eslint-disable-next-line import/no-unresolved
 import { Analytics } from '@/components/Analytics/Analytics';

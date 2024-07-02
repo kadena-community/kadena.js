@@ -3,7 +3,7 @@ import {
   MonoArrowRight,
   MonoCached,
 } from '@kadena/react-icons/system';
-import { Badge, Button, Stack, Text } from '@kadena/react-ui';
+import { Badge, Button, Stack, Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import React, { useCallback } from 'react';
 import type { ICustomAccordionProps } from '../CustomAccordion/CustomAccordion';

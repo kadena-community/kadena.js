@@ -19,7 +19,7 @@ import {
   Grid,
   GridItem,
   Heading,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';

@@ -28,7 +28,7 @@
     "@graphql-yoga/apollo-link": "~3.3.0",
     "@kadena/graph": "workspace:*",
     "@kadena/react-icons": "workspace:*",
-    "@kadena/react-ui": "workspace:*",
+    "@kadena/kode-ui": "workspace:*",
     "@parcel/watcher": "^2.4.1",
     "eslint": "^8.45.0",
     "graphql": "~16.8.1",

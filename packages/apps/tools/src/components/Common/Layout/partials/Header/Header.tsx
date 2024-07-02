@@ -20,8 +20,8 @@ import {
   NavHeaderLinkList,
   NavHeaderSelect,
   SelectItem,
-} from '@kadena/react-ui';
-import { atoms, breakpoints } from '@kadena/react-ui/styles';
+} from '@kadena/kode-ui';
+import { atoms, breakpoints } from '@kadena/kode-ui/styles';
 import { useTheme } from 'next-themes';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';

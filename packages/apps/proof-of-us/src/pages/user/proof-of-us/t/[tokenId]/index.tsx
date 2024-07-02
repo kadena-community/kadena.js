@@ -4,7 +4,7 @@ import UserLayout from '@/components/UserLayout/UserLayout';
 import { Share } from '@/features/Share/Share';
 import { fetchManifestData } from '@/utils/fetchManifestData';
 import { getTokenUri, getTransaction } from '@/utils/proofOfUs';
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import type { GetServerSidePropsContext, NextPage } from 'next';
 
 interface IProps {

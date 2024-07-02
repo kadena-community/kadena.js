@@ -8,7 +8,7 @@
 - Updated dependencies \[df0a2e823]
 - Updated dependencies \[311d0bf44]
   - @kadena/client\@1.12.1
-  - @kadena/react-ui\@0.12.2
+  - @kadena/kode-ui\@0.12.2
   - @kadena/client-utils\@0.8.1
 
 ## 0.0.4
@@ -22,7 +22,7 @@
 - Updated dependencies \[7ee91269f]
 - Updated dependencies \[5b95decb2]
 - Updated dependencies \[6d9900ef8]
-  - @kadena/react-ui\@0.12.1
+  - @kadena/kode-ui\@0.12.1
 
 ## 0.0.3
 
@@ -31,7 +31,7 @@
 - Updated dependencies \[63bdbcb]
 - Updated dependencies \[83c3d58]
 - Updated dependencies \[15a492c]
-  - @kadena/react-ui\@0.12.0
+  - @kadena/kode-ui\@0.12.0
   - @kadena/client-utils\@0.8.0
 
 ## 0.0.2
@@ -43,7 +43,7 @@
 - Updated dependencies \[e648c32fa]
 - Updated dependencies \[9c145f196]
 - Updated dependencies \[9c145f196]
-  - @kadena/react-ui\@0.11.0
+  - @kadena/kode-ui\@0.11.0
   - @kadena/client\@1.12.0
   - @kadena/client-utils\@0.7.0
 
@@ -68,6 +68,6 @@
 - Updated dependencies \[07ec9691c]
 - Updated dependencies \[381a766e8]
 - Updated dependencies \[b0b05ca86]
-  - @kadena/react-ui\@0.10.0
+  - @kadena/kode-ui\@0.10.0
   - @kadena/client-utils\@0.6.0
   - @kadena/client\@1.11.2

@@ -9,7 +9,7 @@ import { PactCodeView } from '@/Components/PactCodeView/PactCodeView';
 import { Wizard } from '@/Components/Wizard/Wizard';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { execCodeParser } from '@kadena/pactjs-generator';
-import { Box, Button, Card, Heading, Text } from '@kadena/react-ui';
+import { Box, Button, Card, Heading, Text } from '@kadena/kode-ui';
 import { useMemo, useState } from 'react';
 import { codeArea } from './style.css';
 import { normalizeSigs } from './utils/normalizeSigs';

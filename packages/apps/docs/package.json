@@ -37,7 +37,7 @@
     "@kadena/docs-tools": "workspace:*",
     "@kadena/fonts": "~0.0.1",
     "@kadena/react-icons": "workspace:*",
-    "@kadena/react-ui": "workspace:*",
+    "@kadena/kode-ui": "workspace:*",
     "@mailchimp/mailchimp_marketing": "~3.0.80",
     "@mdx-js/loader": "~2.3.0",
     "@mdx-js/react": "~2.3.0",

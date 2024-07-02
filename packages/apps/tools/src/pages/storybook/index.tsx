@@ -22,7 +22,7 @@ import {
   SelectItem,
   Stack,
   Text,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 import React, { useState } from 'react';

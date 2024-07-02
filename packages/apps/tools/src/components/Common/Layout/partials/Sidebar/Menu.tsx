@@ -3,7 +3,7 @@ import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/Menu
 import { useLayoutContext } from '@/context';
 import { useIsMatchingMediaQuery } from '@/hooks/use-is-mobile-media-query';
 import { MonoClose } from '@kadena/react-icons/system';
-import { breakpoints } from '@kadena/react-ui/styles';
+import { breakpoints } from '@kadena/kode-ui/styles';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React from 'react';

@@ -1,4 +1,4 @@
-import { Heading, Stack } from '@kadena/react-ui';
+import { Heading, Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React from 'react';
 import { CommitItem } from './CommitItem';

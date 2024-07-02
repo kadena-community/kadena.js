@@ -12,7 +12,7 @@ import { Heading } from '@/components/Typography/Heading';
 import UserLayout from '@/components/UserLayout/UserLayout';
 import { env } from '@/utils/env';
 import { MonoClose } from '@kadena/react-icons';
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
 

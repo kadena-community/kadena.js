@@ -9,7 +9,7 @@ import { env } from '@/utils/env';
 import { getReturnHostUrl, getReturnUrl } from '@/utils/getReturnUrl';
 import { getAccountSignee, isAlreadySigning } from '@/utils/isAlreadySigning';
 import { MonoSignature } from '@kadena/react-icons';
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import type { FC } from 'react';

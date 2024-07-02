@@ -1,4 +1,4 @@
-import { atoms } from '@kadena/react-ui/styles';
+import { atoms } from '@kadena/kode-ui/styles';
 
 export const centerBlockClass = atoms({
   display: 'flex',

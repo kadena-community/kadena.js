@@ -1,6 +1,6 @@
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { MonoLink } from '@kadena/react-icons/system';
-import { Button } from '@kadena/react-ui';
+import { Button } from '@kadena/kode-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React from 'react';

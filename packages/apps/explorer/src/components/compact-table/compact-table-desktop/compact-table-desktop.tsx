@@ -5,7 +5,7 @@ import {
   Table,
   TableBody,
   TableHeader,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React from 'react';
 import type { ICompactTableProps } from '../compact-table';

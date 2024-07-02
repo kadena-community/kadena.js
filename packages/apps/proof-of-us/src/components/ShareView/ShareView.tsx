@@ -9,7 +9,7 @@ import {
   MonoArrowDownward,
   MonoCheckCircle,
 } from '@kadena/react-icons';
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';

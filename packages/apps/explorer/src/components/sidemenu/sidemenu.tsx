@@ -1,5 +1,5 @@
 import { menuConfig } from '@/utils/menuConfig';
-import { Heading, Stack, TextLink } from '@kadena/react-ui';
+import { Heading, Stack, TextLink } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
