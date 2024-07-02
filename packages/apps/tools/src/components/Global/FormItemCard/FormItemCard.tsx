@@ -3,8 +3,8 @@ import {
   helperStyle,
   helperTextIconStyle,
 } from '@/components/Global/FormItemCard/styles.css';
+import { Card, Grid, GridItem, Heading, Text } from '@kadena/kode-ui';
 import { MonoInfo } from '@kadena/react-icons/system';
-import { Card, Grid, GridItem, Heading, Text } from '@kadena/react-ui';
 import type { ChangeEvent, FC } from 'react';
 import React from 'react';
 

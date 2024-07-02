@@ -1,4 +1,4 @@
-import { Heading, Stack } from '@kadena/react-ui';
+import { Heading, Stack } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';

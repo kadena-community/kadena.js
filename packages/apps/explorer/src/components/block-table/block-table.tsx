@@ -7,7 +7,7 @@ import { useQueryContext } from '@/context/query-context';
 import { newBlocks } from '@/graphql/subscriptions/newBlocks.graph';
 import type { IBlockData, IChainBlock } from '@/services/block';
 import { addBlockData } from '@/services/block';
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import React, { useEffect, useState } from 'react';
 import BlockTableHeader from './block-header/block-header';
 import BlockRow from './block-row/block-row';

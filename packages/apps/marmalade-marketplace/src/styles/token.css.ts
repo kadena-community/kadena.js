@@ -1,6 +1,6 @@
 // token.css.ts
 
-import { token } from '@kadena/react-ui/styles';
+import { token } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const mainWrapperClass = style({

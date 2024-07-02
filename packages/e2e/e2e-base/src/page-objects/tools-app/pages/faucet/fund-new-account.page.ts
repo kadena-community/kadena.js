@@ -1,7 +1,7 @@
 import type { Locator, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import type { IAccount } from '../../../../types/account.types';
-import { ListBoxComponent } from '../../../react-ui/listBox.component';
+import { ListBoxComponent } from '../../../kode-ui/listBox.component';
 export class FundNewAccountPage {
   private readonly _page: Page;
   private _publicKey: Locator;

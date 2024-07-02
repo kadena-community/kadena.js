@@ -3,7 +3,7 @@ import { options } from '@/components/Layout/Redocly/Redocly';
 import { Specs } from '@/components/Specs/Specs';
 import { getPageConfig } from '@/utils/config';
 import type { ILayout } from '@kadena/docs-tools';
-import { Heading } from '@kadena/react-ui';
+import { Heading } from '@kadena/kode-ui';
 import type { GetStaticProps } from 'next';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { FC } from 'react';

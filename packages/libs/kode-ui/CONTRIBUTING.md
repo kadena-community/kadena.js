@@ -1,4 +1,4 @@
-# Contributing to @kadena/react-ui
+# Contributing to @kadena/kode-ui
 
 This is an aggregation of the conventions that we have picked up while
 developing this component library. This library is still in its early stages of

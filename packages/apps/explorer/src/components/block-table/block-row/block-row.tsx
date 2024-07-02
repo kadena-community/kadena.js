@@ -2,7 +2,7 @@ import BlockActivityChart from '@/components/block-activity-graph/block-activity
 import routes from '@/constants/routes';
 import type { IHeightBlock } from '@/services/block';
 import { formatNumberWithUnit } from '@/services/format';
-import { Grid, Link, Stack, Text } from '@kadena/react-ui';
+import { Grid, Link, Stack, Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import React from 'react';
 import {

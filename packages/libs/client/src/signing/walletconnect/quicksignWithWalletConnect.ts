@@ -12,7 +12,7 @@ import type { TWalletConnectChainId } from './walletConnectTypes';
  *
  * @public
  */
-export function createWalletConnectQuicksign(
+export function createQuicksignWithWalletConnect(
   client: Client,
   session: SessionTypes.Struct,
   walletConnectChainId: TWalletConnectChainId,
@@ -89,3 +89,12 @@ export function createWalletConnectQuicksign(
 
   return quicksignWithWalletConnect;
 }
+
+/**
+ * Creates the quicksignWithWalletConnect function with interface {@link ISingleSignFunction}
+ *
+ *
+ * @deprecated Use {@link createQuicksignWithWalletConnect} instead
+ * @public
+ */
+export const createWalletConnectQuicksign = createQuicksignWithWalletConnect;

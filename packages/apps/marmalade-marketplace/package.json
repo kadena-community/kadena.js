@@ -1,6 +1,6 @@
 {
   "name": "@kadena/marmalade-marketplace",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": true,
   "browser": {
     "fs": false
@@ -20,7 +20,7 @@
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/pactjs": "workspace:*",
     "@kadena/react-icons": "workspace:*",
-    "@kadena/react-ui": "workspace:*",
+    "@kadena/kode-ui": "workspace:*",
     "@pinata/sdk": "^2.1.0",
     "firebase": "^10.8.0",
     "formidable": "^3.5.1",

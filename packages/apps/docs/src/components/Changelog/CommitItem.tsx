@@ -1,4 +1,4 @@
-import { Stack, Text } from '@kadena/react-ui';
+import { Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';

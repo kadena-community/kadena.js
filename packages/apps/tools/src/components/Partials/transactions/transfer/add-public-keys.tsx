@@ -1,4 +1,4 @@
-import { Button, FormFieldHeader, Stack, TextField } from '@kadena/react-ui';
+import { Button, FormFieldHeader, Stack, TextField } from '@kadena/kode-ui';
 
 import { validatePublicKey } from '@/services/utils/utils';
 import { stripAccountPrefix } from '@/utils/string';

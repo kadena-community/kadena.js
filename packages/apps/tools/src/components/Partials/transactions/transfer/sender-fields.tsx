@@ -1,5 +1,5 @@
 import type { DerivationMode } from '@/hooks/use-ledger-public-key';
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import type { ChainId } from '@kadena/types';
 import type { FC } from 'react';
 import React, { useCallback, useState } from 'react';

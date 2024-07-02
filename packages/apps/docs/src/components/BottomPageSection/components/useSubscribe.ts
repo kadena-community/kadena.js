@@ -1,6 +1,6 @@
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { isEmailValid } from '@/utils/isEmailValid';
-import type { IButtonProps } from '@kadena/react-ui';
+import type { IButtonProps } from '@kadena/kode-ui';
 import type { ChangeEvent, MouseEvent } from 'react';
 import { useState } from 'react';
 

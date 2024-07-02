@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test';
-import { NotificationContainerComponent } from '../react-ui/notificationContainer.component';
+import { NotificationContainerComponent } from '../kode-ui/notificationContainer.component';
 import { AsideComponent } from '../tools-app/components/aside.component';
 import { FundExistingAccountPage } from '../tools-app/pages/faucet/fund-existing-account.page';
 import { FundNewAccountPage } from '../tools-app/pages/faucet/fund-new-account.page';

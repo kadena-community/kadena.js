@@ -10,13 +10,13 @@ import {
   Table,
   TableBody,
   TableHeader,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 
 import type { GetTransactionsQuery } from '@/__generated__/sdk';
 import routes from '@/constants/routes';
 import { formatLisp } from '@/utils/formatter';
 import type { FetchMoreOptions, FetchMoreQueryOptions } from '@apollo/client';
-import { atoms } from '@kadena/react-ui/styles';
+import { atoms } from '@kadena/kode-ui/styles';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 

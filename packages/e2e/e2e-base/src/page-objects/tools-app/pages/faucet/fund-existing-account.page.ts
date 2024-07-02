@@ -1,6 +1,6 @@
 import type { Locator, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { ListBoxComponent } from '../../../react-ui/listBox.component';
+import { ListBoxComponent } from '../../../kode-ui/listBox.component';
 
 export class FundExistingAccountPage {
   private readonly _page: Page;

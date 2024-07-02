@@ -1,6 +1,6 @@
 import type { ModuleModel } from '@/hooks/use-module-query';
-import { Badge, Stack, Text } from '@kadena/react-ui';
-import { monospaceSmallestRegular } from '@kadena/react-ui/styles';
+import { Badge, Stack, Text } from '@kadena/kode-ui';
+import { monospaceSmallestRegular } from '@kadena/kode-ui/styles';
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';

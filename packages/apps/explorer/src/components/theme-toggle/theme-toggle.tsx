@@ -1,5 +1,5 @@
+import { Button, Themes, useTheme } from '@kadena/kode-ui';
 import { MonoContrast } from '@kadena/react-icons';
-import { Button, Themes, useTheme } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';

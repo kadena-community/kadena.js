@@ -1,5 +1,5 @@
 import { barClass } from '@/components/block-activity-graph/style.css';
-import { atoms, responsiveStyle, token, tokens } from '@kadena/react-ui/styles';
+import { atoms, responsiveStyle, token, tokens } from '@kadena/kode-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 import { blockGridHoverableStyle } from '../block-table.css';
 

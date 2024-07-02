@@ -9,7 +9,7 @@ import {
   GridItem,
   Heading,
   Stack,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC, FormEvent } from 'react';

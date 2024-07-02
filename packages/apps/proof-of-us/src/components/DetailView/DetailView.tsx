@@ -4,12 +4,12 @@ import { MessageBlock } from '@/components/MessageBlock/MessageBlock';
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
+import { Stack } from '@kadena/kode-ui';
 import {
   MonoArrowBack,
   MonoClose,
   MonoQrCodeScanner,
 } from '@kadena/react-icons';
-import { Stack } from '@kadena/react-ui';
 import { useRouter } from 'next/navigation';
 import type { ChangeEventHandler, FC } from 'react';
 import { useState } from 'react';

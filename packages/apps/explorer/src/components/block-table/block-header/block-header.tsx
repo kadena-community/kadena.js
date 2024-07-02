@@ -1,5 +1,5 @@
 import { Media } from '@/components/layout/media';
-import { Grid, Stack, Text } from '@kadena/react-ui';
+import { Grid, Stack, Text } from '@kadena/kode-ui';
 import React from 'react';
 import { blockGridStyle } from '../block-table.css';
 import { columnTitleClass, headerColumnStyle } from './block-header.css';

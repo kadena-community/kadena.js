@@ -1,5 +1,5 @@
-import type { ITableV1Props } from '@kadena/react-ui';
-import { TableV1 as StyledTable } from '@kadena/react-ui';
+import type { ITableV1Props } from '@kadena/kode-ui';
+import { TableV1 as StyledTable } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React from 'react';
 import { wrapperClass } from '../styles.css';

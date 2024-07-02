@@ -14,7 +14,7 @@ const config = {
     process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test'
       ? ['(?<!(spec|test).)tsx']
       : ['tsx'],
-  transpilePackages: ['@kadena/react-ui'],
+  transpilePackages: ['@kadena/kode-ui'],
   env: {
     KADENA_API_TTIL: process.env.KADENA_API_TTIL,
     KADENA_MAINNET_API: process.env.KADENA_MAINNET_API,

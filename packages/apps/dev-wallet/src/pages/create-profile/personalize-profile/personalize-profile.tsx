@@ -3,8 +3,8 @@ import {
   LayoutContext,
 } from '@/modules/layout/layout.provider.tsx';
 import { MonoCheck } from '@kadena/react-icons';
-import { Button, Heading, Stack, Text, TextField } from '@kadena/react-ui';
-import { tokens } from '@kadena/react-ui/styles';
+import { Button, Heading, Stack, Text, TextField } from '@kadena/kode-ui';
+import { tokens } from '@kadena/kode-ui/styles';
 import { FC, useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { colorOptionClass, listClass } from './styles.css.ts';

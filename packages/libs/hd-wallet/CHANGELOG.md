@@ -1,5 +1,11 @@
 # @kadena/hd-wallet
 
+## 0.4.2
+
+### Patch Changes
+
+- 3949dcccf: Add getting started to the readme
+
 ## 0.4.1
 
 ### Patch Changes

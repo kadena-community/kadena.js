@@ -8,7 +8,7 @@ import Layout from '@/components/layout/layout';
 import { useQueryContext } from '@/context/query-context';
 import { block } from '@/graphql/queries/block.graph';
 import { truncateValues } from '@/services/format';
-import { Badge, Heading, Stack, TabItem, Tabs } from '@kadena/react-ui';
+import { Badge, Heading, Stack, TabItem, Tabs } from '@kadena/kode-ui';
 
 import { useRouter } from 'next/router';
 import type { Key } from 'react';

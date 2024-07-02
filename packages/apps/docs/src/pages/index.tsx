@@ -16,8 +16,8 @@ import {
   getVersions,
 } from '@/scripts/importChangelogs/utils/misc';
 import { getPageConfig } from '@/utils/config';
+import { Box, Button, Grid, GridItem, Heading, Stack } from '@kadena/kode-ui';
 import { MonoList } from '@kadena/react-icons';
-import { Box, Button, Grid, GridItem, Heading, Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';

@@ -2,7 +2,7 @@ import React, { FormEvent, useState, useEffect} from 'react';
 import { env } from '@/utils/env';
 import * as styles from '@/styles/create-token.css';
 import { useRouter } from 'next/navigation';
-import { Stack, Heading, Button, TextField, NumberField } from '@kadena/react-ui';
+import { Stack, Heading, Button, TextField, NumberField } from '@kadena/kode-ui';
 import { ChainId, BuiltInPredicate } from '@kadena/client';
 import { getTokenInfo, mintToken } from '@kadena/client-utils/marmalade';
 import { useAccount } from '@/hooks/account';
@@ -15,7 +15,7 @@ import { PactNumber } from "@kadena/pactjs";
 function MintTokenComponent() {
   const router = useRouter();
   const { account } = useAccount();
-  
+
   const [walletKey, setWalletKey] = useState<string>('');
   const [walletAccount, setWalletAccount] = useState('');
 
@@ -25,7 +25,7 @@ function MintTokenComponent() {
       setWalletAccount(account.accountName);
     }
   }, [account]);
-  
+
   const { transaction, send, preview, poll } = useTransaction();
   const [tokenId, setTokenId] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
@@ -53,7 +53,7 @@ function MintTokenComponent() {
       const amountFormatted = (amount === 1) ? {"decimal": "1"} : new PactNumber(amount).toPactDecimal();
       await mintToken({
         policyConfig: checkPolicies(res.policies),
-        tokenId: tokenId, 
+        tokenId: tokenId,
         accountName: walletAccount,
         guard: {
           account: walletAccount,
@@ -69,7 +69,7 @@ function MintTokenComponent() {
       {
         ...config,
         defaults: { networkId: config.networkId, meta: { chainId: config.chainId } },
-      }).execute(); 
+      }).execute();
     } catch (error) {
       console.log(error)
       setError(error?.message);

@@ -1,7 +1,7 @@
 import { Button } from '@/components/Button/Button';
 import { showModalBtnClass } from '@/components/Confirmation/styles.css';
 import { Modal } from '@/components/Modal/Modal';
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import type { FC, PropsWithChildren } from 'react';
 import { useState } from 'react';
 

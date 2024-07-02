@@ -1,4 +1,4 @@
-import { responsiveStyle } from '@kadena/react-ui/styles';
+import { responsiveStyle } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const socialsClass = style([

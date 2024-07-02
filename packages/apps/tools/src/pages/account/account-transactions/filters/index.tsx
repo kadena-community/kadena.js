@@ -9,7 +9,6 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { MonoKeyboardArrowRight } from '@kadena/react-icons';
 import {
   Box,
   Breadcrumbs,
@@ -19,7 +18,8 @@ import {
   Grid,
   GridItem,
   Heading,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
+import { MonoKeyboardArrowRight } from '@kadena/react-icons';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';

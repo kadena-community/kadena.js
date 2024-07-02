@@ -1,5 +1,5 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { Box, Heading, Text } from '@kadena/react-ui';
+import { Box, Heading, Text } from '@kadena/kode-ui';
 import { Link, useParams } from 'react-router-dom';
 
 declare const PasswordCredential: {

@@ -7,7 +7,7 @@ import {
   darkThemeClass,
   responsiveStyle,
   tokens,
-} from '@kadena/react-ui/styles';
+} from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const mostPopularBoxClass = style([

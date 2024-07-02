@@ -1,6 +1,6 @@
 import Footer from '@/components/footer/footer';
 import Header from '@/components/header/header';
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
 import { documentStyle, layoutWrapperClass } from './styles.css';

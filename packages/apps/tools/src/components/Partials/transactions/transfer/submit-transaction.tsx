@@ -1,6 +1,6 @@
 import type { FormStatus } from '@/components/Global/FormStatusNotification';
 import { FormStatusNotification } from '@/components/Global/FormStatusNotification';
-import { Button, Stack } from '@kadena/react-ui';
+import { Button, Stack } from '@kadena/kode-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useState } from 'react';

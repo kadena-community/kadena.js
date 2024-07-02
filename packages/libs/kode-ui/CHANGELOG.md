@@ -1,4 +1,12 @@
-# @kadena/react-ui
+# @kadena/kode-ui
+
+## 0.12.2
+
+### Patch Changes
+
+- df0a2e823: Minimal width Form field elements fixed and Form field label
+  orientation enhanced with the direction to flow horizontally or vertically
+- 311d0bf44: fix the width issue from tables
 
 ## 0.12.1
 

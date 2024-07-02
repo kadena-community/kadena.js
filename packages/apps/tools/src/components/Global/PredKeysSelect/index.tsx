@@ -1,5 +1,5 @@
-import type { ISelectProps } from '@kadena/react-ui';
-import { Select, SelectItem } from '@kadena/react-ui';
+import type { ISelectProps } from '@kadena/kode-ui';
+import { Select, SelectItem } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useCallback } from 'react';
 

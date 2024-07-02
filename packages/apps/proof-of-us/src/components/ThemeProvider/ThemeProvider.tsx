@@ -1,6 +1,6 @@
 'use client';
 
-import { darkThemeClass } from '@kadena/react-ui/styles';
+import { darkThemeClass } from '@kadena/kode-ui/styles';
 import { ThemeProvider as NextThemeProvider } from 'next-themes';
 import type { FC, PropsWithChildren } from 'react';
 

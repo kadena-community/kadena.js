@@ -1,6 +1,6 @@
 {
   "name": "@kadena/graph-client",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "private": true,
   "scripts": {
     "build": "pnpm run generate:sdk && next build",
@@ -27,8 +27,8 @@
     "@apollo/client": "~3.9.11",
     "@graphql-yoga/apollo-link": "~3.3.0",
     "@kadena/graph": "workspace:*",
+    "@kadena/kode-ui": "workspace:*",
     "@kadena/react-icons": "workspace:*",
-    "@kadena/react-ui": "workspace:*",
     "@parcel/watcher": "^2.4.1",
     "eslint": "^8.45.0",
     "graphql": "~16.8.1",
