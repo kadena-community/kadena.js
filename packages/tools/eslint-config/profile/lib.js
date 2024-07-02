@@ -13,7 +13,8 @@ module.exports = {
     '../mixins/typedef-allow-implicitly-typed-parameters.js',
     'prettier',
   ],
-  plugins: ['@kadena-dev/eslint-plugin', 'import'],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint', '@kadena-dev/eslint-plugin', 'import'],
   rules: {
     '@kadena-dev/no-eslint-disable': 'error',
     '@typescript-eslint/no-unused-vars': 'error',
