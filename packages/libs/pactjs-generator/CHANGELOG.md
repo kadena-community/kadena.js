@@ -1,5 +1,7 @@
 # Change Log - @kadena/pactjs-generator
 
+## 1.12.1
+
 ## 1.12.0
 
 ## 1.11.2

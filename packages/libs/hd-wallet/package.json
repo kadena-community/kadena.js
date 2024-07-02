@@ -1,6 +1,6 @@
 {
   "name": "@kadena/hd-wallet",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Key derivation based on Hierarchical Deterministic (HD)/Mnemonic keys and BIP32, for Kadena",
   "repository": {
     "type": "git",

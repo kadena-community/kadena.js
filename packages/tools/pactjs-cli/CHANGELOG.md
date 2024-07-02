@@ -1,5 +1,13 @@
 # Change Log - @kadena/pactjs-cli
 
+## 1.12.1
+
+### Patch Changes
+
+- Updated dependencies \[6d4e82074]
+  - @kadena/client\@1.12.1
+  - @kadena/pactjs-generator\@1.12.1
+
 ## 1.12.0
 
 ### Patch Changes
