@@ -2,7 +2,7 @@ import {
   MonoDataThresholding,
   MonoKey,
   MonoSignature,
-  MonoTrendingUp,
+  MonoSwapHoriz,
 } from '@kadena/react-icons';
 import { Box, Stack, Text } from '@kadena/react-ui';
 import type { FC } from 'react';
@@ -51,7 +51,7 @@ export const Sidebar: FC = () => {
             <li className={sidebarMenuOptionClass}>
               <NavLink to="/transfer" className={sidebarLinkClass}>
                 <Stack alignItems="center" gap="md">
-                  <MonoTrendingUp />
+                  <MonoSwapHoriz />
                   Transfer
                 </Stack>
               </NavLink>

@@ -41,7 +41,7 @@ export const WalletContext = createContext<
   | null
 >(null);
 
-const syncAllAccounts = throttle(AccountService.syncAllAccounts, 1000);
+export const syncAllAccounts = throttle(AccountService.syncAllAccounts, 1000);
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   const [contextValue, setContextValue] = useState<ExtWalletContextType>({});

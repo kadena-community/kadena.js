@@ -500,6 +500,9 @@ setGlobalConfig: (cfg: Partial<IClientConfig>) => void;
 // @alpha (undocumented)
 export const submitClient: <T = PactValue>(args_0: IClientConfig, client?: IClient | undefined) => {
     (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
+    event: "command";
+    data: IUnsignedCommand;
+    }, {
     event: "sign";
     data: ICommand;
     }, {
@@ -512,7 +515,25 @@ export const submitClient: <T = PactValue>(args_0: IClientConfig, client?: IClie
     event: "listen";
     data: ICommandResult;
     }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>;
-    from: ((event: "sign", data: ICommand) => IEmitterWrapper<[{
+    from: ((event: "command", data: IUnsignedCommand) => IEmitterWrapper<[{
+    event: "command";
+    data: IUnsignedCommand;
+    }, {
+    event: "sign";
+    data: ICommand;
+    }, {
+    event: "preflight";
+    data: ICommandResult;
+    }, {
+    event: "submit";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen";
+    data: ICommandResult;
+    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "sign", data: ICommand) => IEmitterWrapper<[{
+    event: "command";
+    data: IUnsignedCommand;
+    }, {
     event: "sign";
     data: ICommand;
     }, {
@@ -525,6 +546,9 @@ export const submitClient: <T = PactValue>(args_0: IClientConfig, client?: IClie
     event: "listen";
     data: ICommandResult;
     }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "preflight", data: ICommandResult) => IEmitterWrapper<[{
+    event: "command";
+    data: IUnsignedCommand;
+    }, {
     event: "sign";
     data: ICommand;
     }, {
@@ -537,6 +561,9 @@ export const submitClient: <T = PactValue>(args_0: IClientConfig, client?: IClie
     event: "listen";
     data: ICommandResult;
     }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "submit", data: ITransactionDescriptor) => IEmitterWrapper<[{
+    event: "command";
+    data: IUnsignedCommand;
+    }, {
     event: "sign";
     data: ICommand;
     }, {
@@ -549,6 +576,9 @@ export const submitClient: <T = PactValue>(args_0: IClientConfig, client?: IClie
     event: "listen";
     data: ICommandResult;
     }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "listen", data: ICommandResult) => IEmitterWrapper<[{
+    event: "command";
+    data: IUnsignedCommand;
+    }, {
     event: "sign";
     data: ICommand;
     }, {

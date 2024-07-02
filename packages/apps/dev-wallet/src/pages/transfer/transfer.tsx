@@ -1,6 +1,8 @@
+import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import { useNetwork } from '@/modules/network/network.hook';
+import * as transactionService from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { ChainId, ISigner } from '@kadena/client';
+import { ChainId } from '@kadena/client';
 import { discoverAccount, transferCreate } from '@kadena/client-utils/coin';
 import {
   Button,
@@ -13,6 +15,7 @@ import {
 } from '@kadena/react-ui';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { DiscoverdAccounts } from './components/DiscoverdAccounts';
 import { card, linkClass } from './style.css';
 import {
@@ -30,7 +33,7 @@ interface SendForm {
 }
 
 export function Transfer() {
-  const { accounts, fungibles, sign, getPublicKeyData } = useWallet();
+  const { accounts, fungibles, sign, getPublicKeyData, profile } = useWallet();
   const { activeNetwork } = useNetwork();
   const [receiverAccount, setReceiverAccount] =
     useState<IReceiverAccount | null>(null);
@@ -40,6 +43,9 @@ export function Transfer() {
   const [optimalTransfers, setOptimalTransfers] = useState<
     Array<IOptimalTransfer>
   >([]);
+  const navigate = useNavigate();
+
+  const prompt = usePrompt();
 
   const {
     watch,
@@ -71,7 +77,7 @@ export function Transfer() {
 
   const account = accounts.find((acc) => acc.uuid === getValues('sender'));
   async function submit({ contract, sender, receiver, amount }: SendForm) {
-    if (!account || +account.overallBalance < 0 || !activeNetwork) {
+    if (!account || +account.overallBalance < 0 || !activeNetwork || !profile) {
       console.log({ contract, sender, receiver, amount });
       throw new Error('INVALID_INPUTs');
     }
@@ -80,8 +86,8 @@ export function Transfer() {
     }
 
     Promise.all(
-      optimalTransfers.map((optimal) =>
-        transferCreate(
+      optimalTransfers.map(async (optimal) => {
+        const task = transferCreate(
           {
             amount: optimal.amount,
             contract: contract,
@@ -115,8 +121,50 @@ export function Transfer() {
             },
             sign,
           },
-        ).execute(),
-      ),
+        );
+        const command = await task.executeTo('command');
+        const tx = await transactionService.addTransaction(
+          command,
+          profile.uuid,
+          activeNetwork.networkId,
+        );
+        navigate(`/transaction/${tx.uuid}`);
+        // try {
+        //   await prompt((resolve, reject) => (
+        //     <ReviewTransaction
+        //       transaction={command}
+        //       resolve={resolve}
+        //       reject={reject}
+        //     />
+        //   ));
+        // } catch (e) {
+        //   console.log('Transaction rejected deleting from db', e);
+        //   await transactionRepository.deleteTransaction(tx.uuid);
+        //   return;
+        // }
+        // const signed = await task.executeTo('sign');
+        // await transactionRepository.updateTransaction({
+        //   ...tx,
+        //   ...signed,
+        //   status: 'signed',
+        // });
+        // const request = await task.executeTo('submit');
+        // await transactionRepository.updateTransaction({
+        //   ...tx,
+        //   ...signed,
+        //   status: 'submitted',
+        //   request,
+        // });
+        // const result = await task.executeTo('listen');
+        // await transactionRepository.updateTransaction({
+        //   ...tx,
+        //   ...signed,
+        //   status: result.result.status,
+        //   result: result,
+        //   request,
+        // });
+        // return task.execute();
+      }),
     ).then((results) => {
       console.log('transfer results', results);
     });

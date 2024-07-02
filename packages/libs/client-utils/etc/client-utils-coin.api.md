@@ -16,6 +16,7 @@ import { IPartialPactCommand } from '@kadena/client/lib/interfaces/IPactCommand'
 import type { ISigner } from '@kadena/client';
 import type { ISignFunction } from '@kadena/client';
 import { ITransactionDescriptor } from '@kadena/client';
+import { IUnsignedCommand } from '@kadena/types';
 import { PactValue } from '@kadena/types';
 
 // Warning: (ae-forgotten-export) The symbol "ICreateAccountCommandInput" needs to be exported by the entry point index.d.ts
@@ -24,6 +25,9 @@ import { PactValue } from '@kadena/types';
 //
 // @alpha (undocumented)
 export const createAccount: (inputs: ICreateAccountCommandInput, config: IClientConfig) => IEmitterWrapper<[{
+event: "command";
+data: IUnsignedCommand;
+}, {
 event: "sign";
 data: ICommand;
 }, {
@@ -73,6 +77,9 @@ export const getBalance: (account: string, networkId: string, chainId: ChainId, 
 //
 // @alpha (undocumented)
 export const rotate: (inputs: IRotateCommandInput, config: IClientConfig) => IEmitterWrapper<[{
+event: "command";
+data: IUnsignedCommand;
+}, {
 event: "sign";
 data: ICommand;
 }, {
@@ -93,6 +100,9 @@ export const rotateCommand: ({ account, newguard, gasPayer, chainId, contract, }
 //
 // @alpha (undocumented)
 export const safeTransfer: (inputs: ISafeTransferInput, config: IClientConfig) => IEmitterWrapper<[{
+event: "command";
+data: IUnsignedCommand;
+}, {
 event: "sign";
 data: ICommand;
 }, {
@@ -113,6 +123,9 @@ export const safeTransferCommand: ({ sender, receiver, amount, gasPayer, chainId
 //
 // @alpha (undocumented)
 export const transfer: (inputs: ITransferInput, config: IClientConfig) => IEmitterWrapper<[{
+event: "command";
+data: IUnsignedCommand;
+}, {
 event: "sign";
 data: ICommand;
 }, {
@@ -133,6 +146,9 @@ export const transferCommand: ({ sender, receiver, amount, gasPayer, chainId, co
 //
 // @alpha (undocumented)
 export const transferCreate: (inputs: ICreateTransferInput, config: IClientConfig) => IEmitterWrapper<[{
+event: "command";
+data: IUnsignedCommand;
+}, {
 event: "sign";
 data: ICommand;
 }, {

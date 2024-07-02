@@ -25,8 +25,8 @@ export const usePrompt = () => {
   return useCallback(
     (
       render: (
-        resolve: (data: any) => void,
-        reject: (data: any) => void,
+        resolve: (data?: any) => void,
+        reject: (data?: any) => void,
       ) => JSX.Element,
     ) => {
       return new Promise((resolve, reject) => {

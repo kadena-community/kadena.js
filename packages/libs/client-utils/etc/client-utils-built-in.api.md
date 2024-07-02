@@ -14,6 +14,7 @@ import { IPactInt } from '@kadena/types';
 import type { ISigner } from '@kadena/client';
 import type { ISignFunction } from '@kadena/client';
 import { ITransactionDescriptor } from '@kadena/client';
+import { IUnsignedCommand } from '@kadena/types';
 import { PactValue } from '@kadena/types';
 
 // Warning: (ae-forgotten-export) The symbol "IDeployContractInput" needs to be exported by the entry point index.d.ts
@@ -30,6 +31,9 @@ export const createPrincipal: (inputs: ICreatePrincipalInput, config: Omit<IClie
 //
 // @alpha
 export const deployContract: (inputs: IDeployContractInput, config: IClientConfig) => IEmitterWrapper<[{
+event: "command";
+data: IUnsignedCommand;
+}, {
 event: "sign";
 data: ICommand;
 }, {
