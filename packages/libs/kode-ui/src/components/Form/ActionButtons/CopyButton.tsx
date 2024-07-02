@@ -1,4 +1,4 @@
-import { MonoCheck, MonoContentCopy } from '@kadena/react-icons/system';
+import { MonoCheck, MonoContentCopy } from '@kadena/kode-icons/system';
 import type { ComponentProps, FC } from 'react';
 import React, { useRef } from 'react';
 import { useAsyncFn } from '../../../utils/useAsyncFn';

@@ -1,4 +1,4 @@
-import { MonoClose } from '@kadena/react-icons/system';
+import { MonoClose } from '@kadena/kode-icons/system';
 import { useObjectRef } from '@react-aria/utils';
 import cn from 'classnames';
 import type { FC, ReactNode } from 'react';

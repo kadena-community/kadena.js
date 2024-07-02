@@ -10,7 +10,7 @@ import {
 } from 'react-aria';
 import { Stack } from '..';
 
-import { MonoExpandLess, MonoExpandMore } from '@kadena/react-icons/system';
+import { MonoExpandLess, MonoExpandMore } from '@kadena/kode-icons/system';
 import classNames from 'classnames';
 import {
   columnHeader,

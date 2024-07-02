@@ -1489,7 +1489,7 @@
             "prIds": []
           },
           {
-            "label": "Updated dependencies @kadena/react-icons@0.0.3",
+            "label": "Updated dependencies @kadena/kode-icons@0.0.3",
             "commits": [
               {
                 "hash": "93bf55b07",
@@ -4937,7 +4937,7 @@
     "name": "Kode Icons",
     "slug": "kode-icons",
     "repo": "https://github.com/kadena-community/kadena.js.git",
-    "directory": "/packages/libs/react-icons",
+    "directory": "/packages/libs/kode-icons",
     "fileName": "CHANGELOG.md",
     "owner": "kadena-community",
     "repoName": "kadena.js",

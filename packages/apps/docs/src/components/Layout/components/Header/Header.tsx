@@ -1,5 +1,6 @@
 import { useMenu } from '@/hooks/useMenu/useMenu';
 import type { IMenuItem, LayoutType } from '@kadena/docs-tools';
+import { MonoLogoGithub, MonoLogoX } from '@kadena/kode-icons';
 import {
   NavHeader,
   NavHeaderButtonLink,
@@ -8,7 +9,6 @@ import {
   Stack,
   Themes,
 } from '@kadena/kode-ui';
-import { MonoLogoGithub, MonoLogoX } from '@kadena/react-icons';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';

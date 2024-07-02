@@ -1,4 +1,5 @@
 import { updateConsent } from '@/utils/analytics';
+import { MonoCheck, MonoClose, MonoCookie } from '@kadena/kode-icons';
 import {
   Notification,
   NotificationButton,
@@ -6,7 +7,6 @@ import {
   NotificationHeading,
   Text,
 } from '@kadena/kode-ui';
-import { MonoCheck, MonoClose, MonoCookie } from '@kadena/react-icons';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { containerClass, notificationWrapperClass } from './styles.css';

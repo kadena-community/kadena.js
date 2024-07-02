@@ -64,7 +64,7 @@ import {
   MonoInfo,
   MonoKeyboardArrowRight,
   MonoLink,
-} from '@kadena/react-icons/system';
+} from '@kadena/kode-icons/system';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';

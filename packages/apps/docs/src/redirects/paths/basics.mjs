@@ -5,7 +5,7 @@ export const basicsPathUrlRedirects = [
     permanent: true,
   },
   {
-    source: '/changelogs/react-icons',
+    source: '/changelogs/kode-icons',
     destination: '/changelogs/kode-icons',
     permanent: true,
   },

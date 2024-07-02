@@ -1,5 +1,19 @@
 # @kadena/dev-wallet
 
+## 0.2.0
+
+### Minor Changes
+
+- d5de83869: Rename 'react-ui' to 'kode-ui'
+- 563fb6cad: Rename react-icons to kode-icons
+
+### Patch Changes
+
+- Updated dependencies \[d5de83869]
+- Updated dependencies \[563fb6cad]
+  - @kadena/kode-icons\@0.1.0
+  - @kadena/kode-ui\@0.13.0
+
 ## 0.1.5
 
 ### Patch Changes
@@ -117,7 +131,7 @@
   - @kadena/cryptography-utils\@0.4.3
   - @kadena/pactjs-generator\@1.11.1
   - @kadena/client-utils\@0.5.4
-  - @kadena/react-icons\@0.0.3
+  - @kadena/kode-icons\@0.0.3
   - @kadena/client\@1.11.1
   - @kadena/pactjs\@0.4.3
 

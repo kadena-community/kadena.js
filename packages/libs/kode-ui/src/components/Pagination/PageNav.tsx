@@ -1,4 +1,4 @@
-import { MonoChevronLeft, MonoChevronRight } from '@kadena/react-icons/system';
+import { MonoChevronLeft, MonoChevronRight } from '@kadena/kode-icons/system';
 import type { FC } from 'react';
 import React from 'react';
 import { Button } from '../Button';

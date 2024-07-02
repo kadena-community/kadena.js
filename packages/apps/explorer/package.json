@@ -1,6 +1,6 @@
 {
   "name": "@kadena/explorer",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "private": true,
   "scripts": {
     "build": "pnpm run generate:sdk && next build",
@@ -28,8 +28,8 @@
     "@artsy/fresnel": "^7.1.4",
     "@graphql-yoga/apollo-link": "~3.3.0",
     "@kadena/graph": "workspace:*",
+    "@kadena/kode-icons": "workspace:*",
     "@kadena/kode-ui": "workspace:*",
-    "@kadena/react-icons": "workspace:*",
     "@parcel/watcher": "^2.4.1",
     "classnames": "^2.3.1",
     "eslint": "^8.45.0",

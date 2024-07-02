@@ -42,7 +42,7 @@ import {
   MonoInfo,
   MonoKeyboardArrowRight,
   MonoLink,
-} from '@kadena/react-icons/system';
+} from '@kadena/kode-icons/system';
 import Link from 'next/link';
 import {
   accountNameContainerClass,

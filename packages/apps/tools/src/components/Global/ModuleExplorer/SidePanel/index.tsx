@@ -4,7 +4,7 @@ import {
   MonoMenuOpen,
   MonoSearch,
   MonoVerticalSplit,
-} from '@kadena/react-icons/system';
+} from '@kadena/kode-icons/system';
 
 import type { ChainwebNetworkId } from '@kadena/chainweb-node-client';
 import { Button, Heading, Stack } from '@kadena/kode-ui';

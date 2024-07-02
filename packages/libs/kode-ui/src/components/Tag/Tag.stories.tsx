@@ -1,4 +1,4 @@
-import { MonoEditNote } from '@kadena/react-icons/system';
+import { MonoEditNote } from '@kadena/kode-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { Stack } from '..';

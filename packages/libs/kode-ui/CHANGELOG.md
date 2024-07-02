@@ -1,5 +1,18 @@
 # @kadena/kode-ui
 
+## 0.13.0
+
+### Minor Changes
+
+- d5de83869: Rename 'react-ui' to 'kode-ui'
+- 563fb6cad: Rename react-icons to kode-icons
+
+### Patch Changes
+
+- Updated dependencies \[d5de83869]
+- Updated dependencies \[563fb6cad]
+  - @kadena/kode-icons\@0.1.0
+
 ## 0.12.2
 
 ### Patch Changes
@@ -102,7 +115,7 @@
   other form elements. Breaking change: startIcon has been renamed to
   startVisual to be consistent with other components.
 - Updated dependencies \[93bf55b07]
-  - @kadena/react-icons\@0.0.3
+  - @kadena/kode-icons\@0.0.3
 
 ## 0.8.4
 

@@ -1,4 +1,11 @@
-# @kadena/react-icons
+# @kadena/kode-icons
+
+## 0.1.0
+
+### Minor Changes
+
+- d5de83869: Rename 'react-ui' to 'kode-ui'
+- 563fb6cad: Rename react-icons to kode-icons
 
 ## 0.0.3
 

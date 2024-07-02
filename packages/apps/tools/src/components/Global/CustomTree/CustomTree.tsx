@@ -1,9 +1,9 @@
-import { Badge, Button, Stack, Text } from '@kadena/kode-ui';
 import {
   MonoArrowDropDown,
   MonoArrowRight,
   MonoCached,
-} from '@kadena/react-icons/system';
+} from '@kadena/kode-icons/system';
+import { Badge, Button, Stack, Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import React, { useCallback } from 'react';
 import type { ICustomAccordionProps } from '../CustomAccordion/CustomAccordion';

@@ -1,11 +1,11 @@
 {
-  "name": "@kadena/react-icons",
-  "version": "0.0.3",
+  "name": "@kadena/kode-icons",
+  "version": "0.1.0",
   "description": "Kadena's React icons library",
   "repository": {
     "type": "git",
     "url": "https://github.com/kadena-community/kadena.js.git",
-    "directory": "packages/libs/react-icons"
+    "directory": "packages/libs/kode-icons"
   },
   "license": "ISC",
   "author": "KADENA",

@@ -3,7 +3,7 @@ import {
   MonoWifi1Bar,
   MonoWifi2Bar,
   MonoWifiOff,
-} from '@kadena/react-icons';
+} from '@kadena/kode-icons';
 import { differenceInSeconds } from 'date-fns';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';

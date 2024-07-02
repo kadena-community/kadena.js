@@ -1,4 +1,4 @@
-import { MonoWarningAmber } from '@kadena/react-icons/system';
+import { MonoWarningAmber } from '@kadena/kode-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { onLayer1 } from '../../storyDecorators';

@@ -147,7 +147,7 @@ export const REPOS: IRepo[] = [
     name: 'Kode Icons',
     slug: 'kode-icons',
     repo: 'https://github.com/kadena-community/kadena.js.git',
-    directory: '/packages/libs/react-icons',
+    directory: '/packages/libs/kode-icons',
     fileName: 'CHANGELOG.md',
     owner: 'kadena-community',
     repoName: 'kadena.js',
