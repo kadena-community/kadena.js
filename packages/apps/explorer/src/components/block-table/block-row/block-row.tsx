@@ -34,10 +34,7 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
 
   console.log(heights);
   return (
-    <Grid
-      columns={4}
-      className={classNames(blockGridStyle, blockGridHoverableStyle)}
-    >
+    <Grid className={classNames(blockGridStyle, blockGridHoverableStyle)}>
       <Stack className={headerColumnStyle}>
         <Text className={textStyle}>{chainId}</Text>
       </Stack>
