@@ -27,7 +27,7 @@ Before you start this tutorial, verify the following basic requirements:
 
 - You have an internet connection and a web browser installed on your local computer.
 - You have a code editor, such as [Visual Studio Code](https://code.visualstudio.com/download), access to an interactive terminal shell, and are generally familiar with using command-line programs.
-- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git) repository as described in [Prepare your workspace](/build/election/prepare-your-workspace).
+- You have cloned the [voting-dapp](https://github.com/kadena-community/voting-dapp.git) repository to create your project directory as described in [Prepare your workspace](/build/election/prepare-your-workspace).
 - You have the development network running in a Docker container as described in [Start a local blockchain](/build/election/start-a-local-blockchain).
 - You are [connected to the development network](/build/election/start-a-local-blockchain#connect-to-the-development-network) using your local host IP address and port number 8080.
 - You have created and funded an administrative account as described in [Add an administrator account](/build/election/add-admin-account).
@@ -122,7 +122,7 @@ To test table creation:
    (commit-tx)
    ```
    
-   These transactions are required because, inside `election.pact` file, the `election` module is defined in your principal namespace and it is governed by the `admin-keyset` in that namespace.
+   These transactions are required because, inside of the `election.pact` file, the `election` module is defined in your principal namespace and it is governed by the `admin-keyset` in that namespace.
 
 7. Add a transaction to load the election module:
    
@@ -138,7 +138,7 @@ To test table creation:
    `pact` folder in current terminal shell:
 
    ```bash
-   pact election.repl -t
+   pact election.repl --trace
    ```
 
    As before, if you don't have `pact` installed locally, you can load the
@@ -149,7 +149,7 @@ To test table creation:
    ```
 
    If you are using the `pact-cli` in a browser, you can replace the
-   `pact election.repl -t` command with `(load "election.repl")` throughout this
+   `pact election.repl --trace` command with `(load "election.repl")` throughout this
    tutorial.
 
    You should see that the transaction succeeds with output similar to the
@@ -190,7 +190,7 @@ To test that the table works as expected:
 1. Execute the transaction using the `pact` command-line program:
 
    ```pact
-   pact election.repl -t
+   pact election.repl --trace
    ```
 
    If the current implementation of the `list-candidates` function returns [1,
@@ -253,7 +253,7 @@ To test that the table works as expected:
 1. Execute the transaction using the `pact` command-line program:   
 
    ```pact
-   pact election.repl -t
+   pact election.repl --trace
    ```
 
    Because there are no candidates in the table, you should see the transaction
@@ -328,7 +328,7 @@ To add candidates to the database:
 
 3. Open the `election-dapp/pact/election.pact` file in your code editor.
 
-4. Define the `add-candidate` function inside the election module definition to
+4. Define the `add-candidate` function inside the `election` module definition to
    receive a `candidate` JSON object and call the built-in `insert` function:
 
    ```pact
@@ -354,12 +354,15 @@ To add candidates to the database:
      The keys correspond to the column names.
      In this case, the `votes` column of the new value always gets a value `0` and the `name` column gets a value of `"Candidate A"`, `"Candidate B"`, or `"Candidate C"`, as per your test cases.
 
+   Now that you've added the `add-candidate` function to the `election` module, you can test it using the `election.repl` file.
+
+1. Execute the transaction using the `pact` command-line program:
+
    ```pact
-   pact election.repl -t
+   pact election.repl --trace
    ```
 
-   You should see that the transaction succeeds with output similar to the
-   following:
+   You should see that the transaction succeeds with output similar to the following:
 
    ```bash
    election.repl:39:0:Trace: Using n_14912521e87a6d387157d526b281bde8422371d1.election
@@ -372,7 +375,9 @@ To add candidates to the database:
 
    The key of each row in a table must be unique. You can add a transaction to
    the `election.repl` file to test that you can't insert a row with a duplicate
-   key. For example:
+   key.
+
+2. Add a transaction to the `election.repl` file to test that you can't insert a row with a duplicate key:
 
    ```pact
    (begin-tx "Add candidate with existing key")
@@ -408,10 +413,10 @@ To add candidates to the database:
    (commit-tx)
    ```
 
-7. Execute the transaction using the `pact` command-line program:
+4. Execute the transaction using the `pact` command-line program:
 
    ```pact
-   pact election.repl -t
+   pact election.repl --trace
    ```
 
    You should see that the transaction succeeds with output similar to the
@@ -482,7 +487,7 @@ To guard access to the `add-candidate` function:
 3. Execute the transaction using the `pact` command-line program:
    
    ```pact
-   pact election.repl -t
+   pact election.repl --trace
    ```
 
    You should see that the transaction fails with output similar to the
@@ -520,7 +525,7 @@ To guard access to the `add-candidate` function:
 6. Execute the transaction using the `pact` command-line program:
    
    ```pact
-   pact election.repl -t
+   pact election.repl --trace
    ```
 
    You should see output similar to the following that verifies the

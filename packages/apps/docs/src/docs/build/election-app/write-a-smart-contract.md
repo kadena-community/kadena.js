@@ -37,7 +37,7 @@ Before you start this tutorial, verify the following basic requirements:
 
 - You have an internet connection and a web browser installed on your local computer.
 - You have a code editor, such as [Visual Studio Code](https://code.visualstudio.com/download), access to an interactive terminal shell, and are generally familiar with using command-line programs.
-- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.gitp) repository as described in [Prepare your workspace](/build/election/prepare-your-workspace).
+- You have cloned the [voting-dapp](https://github.com/kadena-community/voting-dapp.gitp) repository to create your project directory as described in [Prepare your workspace](/build/election/prepare-your-workspace).
 - You have the development network running in a Docker container as described in [Start a local blockchain](/build/election/start-a-local-blockchain).
 - You are [connected to the development network](/build/election/start-a-local-blockchain#connect-to-the-development-network) using your local host IP address and port number 8080.
 - You have created and funded an administrative account as described in [Add an administrator account](/build/election/add-admin-account).
@@ -76,7 +76,7 @@ To create the starter code for a Pact module:
    If `pact-cli` is installed locally, run the following command inside the `pact` folder in the terminal shell:
 
    ```bash
-   pact module.repl -t
+   pact module.repl --trace
    ```
 
    As before, if you don't have `pact` installed locally, you can load the
@@ -88,7 +88,7 @@ To create the starter code for a Pact module:
    ```
 
    If you are using the `pact-cli` in a browser, you can replace the
-   `pact module.repl -t` command with `(load "module.repl")` throughout this
+   `pact module.repl --trace` command with `(load "module.repl")` throughout this
    tutorial.
 
    You'll see that this transaction fails with an error similar to the
@@ -125,7 +125,7 @@ To create the starter code for a Pact module:
    any functions. You must define at least one function in a Pact module for the
    module to be valid.
 
-6. Add a `list-candidates` function to the transaction that defines the `election` module.
+6. Add a `list-candidates` function inside the transaction that defines the `election` module.
    
    ```pact
    (begin-tx
@@ -178,11 +178,17 @@ To create the starter code for a Pact module:
      (define-keyset "election.admin-keyset" (read-keyset 'admin-keyset))
    (commit-tx)
    ```
+   
+   As you might remember from previous tutorials, this code:
+
+   - Loads the `admin-keyset` context and signatures into the REPL environment.
+   - Defines the `election` namespace.
+   - Enters the `election` namespace to define the `election.admin-keyset` as the namespace owner.
 
 8. Execute the transaction using the `pact` command-line program:
 
    ```pact
-   pact module.repl -t
+   pact module.repl --trace
    ```
 
    You'll now see that the transaction succeeds with output similar to the
@@ -204,18 +210,18 @@ To create the starter code for a Pact module:
    Load successful
    ```
 
-   You now have all of the starter code required to defined the Pact `election`
+   You now have all of the starter code required to define the Pact `election`
    module in the `election` namespace. The module is governed by the
    `election.admin-keyset` and only includes one function.
 
 ## Test the election module
 
 Although the `election` module is governed by a keyset and can't be modified
-without a signed transaction, the `list-candidate` function publicly accessible.
+without a signed transaction, the `list-candidate` function is publicly accessible.
 You can use the global `list-modules` Pact function in the Pact REPL to test
 access to the `election` module and the `list-candidate` function.
 
-To test access to the election module:
+To test access to the `election` module:
 
 1. Open the `election-dapp/pact/module.repl` file in the code editor on your
    computer.
@@ -238,7 +244,7 @@ To test access to the election module:
 1. Execute the transaction using the `pact` command-line program:
 
    ```pact
-   pact module.repl -t
+   pact module.repl --trace
    ```
 
    You should see output similar to the following that indicates the `election`
@@ -270,7 +276,7 @@ To test access to the election module:
 1. Execute the transaction using the `pact` command-line program:
 
    ```pact
-   pact module.repl -t
+   pact module.repl --trace
    ```
 
    You should see output similar to the following that indicates you were able
@@ -345,7 +351,7 @@ To test updating a module with the correct keyset:
 2. Execute the transaction using the `pact` command-line program:
    
    ```pact
-   pact module.repl -t
+   pact module.repl --trace
    ```
    
    You should see output similar to the following that indicates you were able to call the updated `list-candidates` function and that the function returned a list with numbers:
@@ -394,7 +400,7 @@ To test updating a module with an incorrect keyset:
 1. Execute the transaction using the `pact` command-line program:
    
    ```pact
-   pact module.repl -t
+   pact module.repl --trace
    ```
    
    You should see the `Load failed` message and that the failure was caused by a `Keyset failure` error. 
@@ -405,7 +411,7 @@ To test updating a module with an incorrect keyset:
 3. Execute the transaction using the `pact` command-line program to verify that the `module.repl` file loads successfully before you continue:
    
    ```pact
-   pact module.repl -t
+   pact module.repl --trace
    ```
 
 ## Modify module governance
@@ -452,7 +458,7 @@ To modify governance for the module:
 3. Execute the transaction using the `pact` command-line program:
 
    ```pact
-   pact module.repl -t
+   pact module.repl --trace
    ```
    
    You should see output similar to the following that indicates you successfully updated the `election` module to be governed by a capability:
@@ -492,7 +498,7 @@ To deploy the Pact module on the development network:
    
    Remember that a module definition requires a namespace, a governing owner, and at least one function.
    
-   Because you're deploying the module in your own principal namespace on the local development network, replace the generic `election` namespace and keyset you used in the` module.repl` file with the unique principal namespace you defined on the development network.
+   Because you're deploying the module in your own principal namespace on the local development network, replace the generic `election` namespace and keyset you used in the `module.repl` file with the unique principal namespace you defined on the development network.
    
    For example:
 
@@ -625,13 +631,14 @@ To view the module in Chainweaver:
 
 2. In Chainweaver, click **Contracts** in the navigation panel, then click **Module Explorer**.
 
-3. Under **Deployed Contracts**, search for the `election` module. 
+3. Under **Deployed Contracts**, click **Refresh**, then search for the `election` module. 
 
 4. Click **View** to see the name of the function and capability that you defined in the module.
 
-5. Click **Open** to see the content of the module.
+5. Click **Open** to see the content of the module in the editor panel.
    
-   The line specifying the namespace for the module isn't included because it isn't considered part of the module itself. 
+   The line specifying the namespace for the module isn't included because it isn't considered part of the module itself.
+
 6. Click **Call** to the right of the `list-candidates` function. 
 
 7. In the **Function: list-candidates** window, click **Preview** and scroll down to see that the **Raw Response** displayed is `[1, 2, 3]`. 
@@ -700,15 +707,15 @@ To verify that other accounts can't update your module:
    npm run transfer-create:devnet -- <new-account-name>
    ```
 
-1. Verify that updating the `election` module fails by running a command similar
-   to the following with the new account name you copied from Chainweaver:
+6. Attempt to update the `election` module by running the `deploy-module` script with the new account name you copied from Chainweaver:
 
    ```bash
    npm run deploy-module:devnet -- <new-account-name>
    ```
 
-   You should see that the transaction fails with output similar to the
-   following:
+7. Click **Sign All** in Chainweaver to sign the request using the new account key.
+
+   You should see that the transaction fails with output similar to the following:
 
    ```bash
    {
