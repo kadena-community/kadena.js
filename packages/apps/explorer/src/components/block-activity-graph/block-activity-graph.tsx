@@ -34,7 +34,10 @@ const BlockActivityChart: React.FC<IBlockActivityChartProps> = ({ data }) => {
   }, [data]);
   return (
     <>
-      <Stack position="relative" style={{ height }} gap="xxxl">
+      <Stack
+        position="relative"
+        style={{ height, transform: 'translateX(-20px)' }}
+      >
         {data.map((data, idx) => {
           const barHeight = innerData[idx].data;
           const x = idx * barWidth;
@@ -43,7 +46,6 @@ const BlockActivityChart: React.FC<IBlockActivityChartProps> = ({ data }) => {
           return (
             <Stack
               className={barClass}
-              position="absolute"
               key={data.height}
               style={{
                 left: x,

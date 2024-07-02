@@ -20,12 +20,13 @@ export const blockGridStyle = style([
     borderStyle: 'solid',
     borderColor: 'base.subtle',
   }),
+
   responsiveStyle({
-    sm: {
+    md: {
       gridTemplateColumns: '10% 10% 1fr 1fr 1fr 1fr 10%',
     },
     xs: {
-      gridTemplateColumns: '1fr 3fr',
+      gridTemplateColumns: '10% 1fr 1fr 1fr 1fr',
     },
   }),
   {},

@@ -9,8 +9,6 @@ import type { IChainBlock } from '@/services/block';
 import { addBlockData } from '@/services/block';
 import { Stack } from '@kadena/react-ui';
 import React, { useEffect, useState } from 'react';
-import { fullWidthClass } from '../globalstyles.css';
-import { Media } from '../layout/media';
 import BlockTableHeader from './block-header/block-header';
 import BlockRow from './block-row/block-row';
 
@@ -88,53 +86,27 @@ const BlockTable: React.FC = () => {
 
   return (
     <>
-      <Media greaterThanOrEqual="sm" className={fullWidthClass}>
-        <Stack
-          display="flex"
-          flexDirection={'column'}
-          gap={'md'}
-          paddingInline={'lg'}
-          width="100%"
-        >
-          <BlockTableHeader
-            startColumns={startColumns}
-            heightColumns={blockHeights}
-            endColumn={endColumn}
+      <Stack
+        display="flex"
+        flexDirection={'column'}
+        gap={'md'}
+        paddingInline={{ xs: 'xs', md: 'lg' }}
+        width="100%"
+      >
+        <BlockTableHeader
+          startColumns={startColumns}
+          heightColumns={blockHeights}
+          endColumn={endColumn}
+        />
+        {Object.keys(blockData).map((chainId) => (
+          <BlockRow
+            key={chainId}
+            blockRowData={blockData[Number(chainId)]}
+            heights={blockHeights}
+            chainId={Number(chainId)}
           />
-          {Object.keys(blockData).map((chainId) => (
-            <BlockRow
-              key={chainId}
-              blockRowData={blockData[Number(chainId)]}
-              heights={blockHeights}
-              chainId={Number(chainId)}
-            />
-          ))}
-        </Stack>
-      </Media>
-      <Media lessThan="sm">
-        <Stack
-          display="flex"
-          flexDirection={'column'}
-          gap={'md'}
-          paddingInline={'sm'}
-        >
-          <BlockTableHeader
-            startColumns={startColumns}
-            heightColumns={blockHeights}
-            endColumn={endColumn}
-            isCompact
-          />
-          {Object.keys(blockData).map((chainId) => (
-            <BlockRow
-              key={chainId}
-              blockRowData={blockData[Number(chainId)]}
-              heights={blockHeights}
-              chainId={Number(chainId)}
-              isCompact
-            />
-          ))}
-        </Stack>
-      </Media>
+        ))}
+      </Stack>
     </>
   );
 };

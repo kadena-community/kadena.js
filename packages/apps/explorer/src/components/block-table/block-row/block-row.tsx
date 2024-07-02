@@ -16,14 +16,12 @@ interface IBlockTableRowProps {
   blockRowData: IHeightBlock;
   heights: number[];
   chainId: number;
-  isCompact?: boolean;
 }
 
 const BlockTableRow: React.FC<IBlockTableRowProps> = ({
   blockRowData,
   heights,
   chainId,
-  isCompact,
 }) => {
   const blockDifficulty =
     blockRowData[heights[3]]?.difficulty ||
@@ -32,20 +30,17 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
     blockRowData[heights[0]]?.difficulty ||
     'N/A';
 
-  console.log(heights);
   return (
     <Grid className={classNames(blockGridStyle, blockGridHoverableStyle)}>
       <Stack className={headerColumnStyle}>
         <Text className={textStyle}>{chainId}</Text>
       </Stack>
 
-      {!isCompact && (
-        <Stack className={headerColumnStyle}>
-          <Text variant="code">
-            {`${formatNumberWithUnit(Number(blockDifficulty))}H`}
-          </Text>
-        </Stack>
-      )}
+      <Stack className={headerColumnStyle}>
+        <Text variant="code">
+          {`${formatNumberWithUnit(Number(blockDifficulty))}H`}
+        </Text>
+      </Stack>
 
       {heights.map((height) =>
         blockRowData[height] ? (
@@ -69,16 +64,14 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
         ),
       )}
 
-      {!isCompact && (
-        <Stack className={headerColumnStyle}>
-          <BlockActivityChart
-            data={heights.map((height) => ({
-              height,
-              data: blockRowData[height]?.txCount ?? 0,
-            }))}
-          />
-        </Stack>
-      )}
+      <Stack className={headerColumnStyle}>
+        <BlockActivityChart
+          data={heights.map((height) => ({
+            height,
+            data: blockRowData[height]?.txCount ?? 0,
+          }))}
+        />
+      </Stack>
     </Grid>
   );
 };

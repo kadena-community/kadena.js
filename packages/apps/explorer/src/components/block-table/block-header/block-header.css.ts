@@ -1,13 +1,14 @@
-import { atoms, token, tokens } from '@kadena/react-ui/styles';
+import { atoms, responsiveStyle, token, tokens } from '@kadena/react-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 import { blockGridHoverableStyle } from '../block-table.css';
 
 export const headerColumnStyle = style([
   atoms({
+    display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 'md',
+    paddingBlock: 'md',
     backgroundColor: 'surface.default',
   }),
   {
@@ -19,6 +20,23 @@ export const headerColumnStyle = style([
         background: token('color.background.input.default'),
       },
     },
+
+    ...responsiveStyle({
+      xs: {
+        selectors: {
+          '&:nth-child(2), &:nth-child(7)': {
+            display: 'none',
+          },
+        },
+      },
+      md: {
+        selectors: {
+          '&:nth-child(2), &:nth-child(7)': {
+            display: 'flex',
+          },
+        },
+      },
+    }),
   },
 ]);
 
