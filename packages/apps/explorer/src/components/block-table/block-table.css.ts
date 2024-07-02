@@ -1,5 +1,5 @@
 import { atoms, responsiveStyle, token, tokens } from '@kadena/react-ui/styles';
-import { globalStyle, style } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
 
 export const blockHeightColumnHeaderStyle = style([
   atoms({

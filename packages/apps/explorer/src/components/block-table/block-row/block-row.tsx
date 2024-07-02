@@ -11,12 +11,7 @@ import {
   blockGridStyle,
   blockHeightColumnHeaderStyle,
 } from '../block-table.css';
-import {
-  rowChartElementStyle,
-  rowLinkElementStyle,
-  rowTextElementStyle,
-  textStyle,
-} from './block-row.css';
+import { textStyle } from './block-row.css';
 interface IBlockTableRowProps {
   blockRowData: IHeightBlock;
   heights: number[];
@@ -37,6 +32,7 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
     blockRowData[heights[0]]?.difficulty ||
     'N/A';
 
+  console.log(heights);
   return (
     <Grid
       columns={4}
@@ -79,7 +75,10 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
       {!isCompact && (
         <Stack className={headerColumnStyle}>
           <BlockActivityChart
-            data={heights.map((height) => blockRowData[height]?.txCount || 0)}
+            data={heights.map((height) => ({
+              height,
+              data: blockRowData[height]?.txCount ?? 0,
+            }))}
           />
         </Stack>
       )}

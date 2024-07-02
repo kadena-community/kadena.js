@@ -1,10 +1,7 @@
 import { Media } from '@/components/layout/media';
 import { Grid, Stack, Text } from '@kadena/react-ui';
 import React from 'react';
-import {
-  blockGridStyle,
-  blockHeightColumnHeaderStyle,
-} from '../block-table.css';
+import { blockGridStyle } from '../block-table.css';
 import { headerColumnStyle } from './block-header.css';
 
 interface IBlockTableHeaderProps {

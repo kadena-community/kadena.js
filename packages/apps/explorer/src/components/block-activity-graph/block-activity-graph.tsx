@@ -1,36 +1,60 @@
-import React from 'react';
+import { Stack } from '@kadena/react-ui';
+import React, { useEffect, useState } from 'react';
+import { barClass } from './style.css';
+
+interface IData {
+  height: number;
+  data: number;
+}
 
 interface IBlockActivityChartProps {
-  data: number[];
+  data: IData[];
 }
 
 const BlockActivityChart: React.FC<IBlockActivityChartProps> = ({ data }) => {
-  const barWidth = 15;
-  const gap = 4;
-  const totalWidth = data.length * (barWidth + gap); // Calculate total width
+  const [innerData, setInnerData] = useState<IData[]>(
+    data.map((o) => ({ ...o, data: 2 })),
+  );
+  const barWidth = 12;
   const height = 50;
-  const maxValue = Math.max(...data);
+  const maxValue = Math.max(...data.map((o) => o.data));
   const scaleFactor = maxValue !== 0 ? height / maxValue : 1;
 
-  return (
-    <svg width={totalWidth} height={height} xmlns="http://www.w3.org/2000/svg">
-      {data.map((value, index) => {
-        const barHeight = Math.max(value * scaleFactor, value === 0 ? 2 : 0);
-        const x = index * (barWidth + gap);
-        const y = height - barHeight;
+  useEffect(() => {
+    if (!data.length) return;
 
-        return (
-          <rect
-            key={index}
-            x={x}
-            y={y}
-            width={barWidth}
-            height={barHeight}
-            fill="black"
-          />
-        );
-      })}
-    </svg>
+    setInnerData(
+      data.map((o) => {
+        return {
+          ...o,
+          data: Math.max(o.data * scaleFactor, o.data === 0 ? 2 : 0),
+        };
+      }),
+    );
+  }, [data]);
+  return (
+    <>
+      <Stack position="relative" style={{ height }} gap="xxxl">
+        {data.map((data, idx) => {
+          const barHeight = innerData[idx].data;
+          const x = idx * barWidth;
+          const y = height - barHeight;
+
+          return (
+            <Stack
+              className={barClass}
+              position="absolute"
+              key={data.height}
+              style={{
+                left: x,
+                top: y,
+                height: barHeight,
+              }}
+            ></Stack>
+          );
+        })}
+      </Stack>
+    </>
   );
 };
 
