@@ -70,13 +70,11 @@ export function truncateValues(
 
   // if startChars and endChars are not provided
   if (!options || (options && !options.startChars && !options.endChars)) {
-    console.log('no startChars and endChars');
     return `${value.slice(0, minLength)}…`;
   }
 
   // if endChars is provided
   if (options && !options.startChars && options.endChars) {
-    console.log('only endChars');
     return `${value.slice(0, minLength - options.endChars)}…${value.slice(
       value.length - options.endChars,
     )}`;
@@ -84,7 +82,6 @@ export function truncateValues(
 
   // if startChars and endChars are provided
   if (options && options.startChars && options.endChars) {
-    console.log('both startChars and endChars');
     // no reason to truncate if the options are longer than the value length
     if (options.startChars + options.endChars >= value.length) {
       return value;
@@ -97,7 +94,6 @@ export function truncateValues(
 
   // if only startChars is given
   if (options && options.startChars && !options.endChars) {
-    console.log('only startChars');
     return `${value.slice(0, options.startChars)}…${value.slice(
       -(minLength - options.startChars),
     )}`;
