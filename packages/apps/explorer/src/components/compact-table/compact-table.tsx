@@ -23,6 +23,7 @@ const CompactTable: React.FC<ICompactTableProps> = ({
   data,
   label,
 }) => {
+  console.log(data);
   return (
     <>
       <Media lessThan="sm">
