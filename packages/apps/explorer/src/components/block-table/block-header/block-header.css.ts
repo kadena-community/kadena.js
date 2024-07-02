@@ -1,4 +1,5 @@
 import { barClass } from '@/components/block-activity-graph/style.css';
+import { $$pageWidth } from '@/components/layout/styles.css';
 import { atoms, responsiveStyle, token, tokens } from '@kadena/kode-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 import { blockGridHoverableStyle } from '../block-table.css';
@@ -68,5 +69,21 @@ globalStyle(`${blockGridHoverableStyle}:hover ${barClass}`, {
 export const columnTitleClass = style([
   atoms({
     color: 'text.gray.default',
+  }),
+]);
+
+export const blockHeaderFixedClass = style([
+  atoms({
+    position: 'fixed',
+  }),
+  {
+    top: '70px',
+    width: '100%',
+    zIndex: tokens.kda.foundation.zIndex.dialog,
+  },
+  responsiveStyle({
+    xxl: {
+      width: $$pageWidth,
+    },
   }),
 ]);

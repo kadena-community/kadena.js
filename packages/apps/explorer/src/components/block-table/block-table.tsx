@@ -9,7 +9,9 @@ import type { IBlockData, IChainBlock } from '@/services/block';
 import { addBlockData } from '@/services/block';
 import { Stack } from '@kadena/kode-ui';
 import React, { useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 import BlockTableHeader from './block-header/block-header';
+import { blockHeaderFixedClass } from './block-header/block-header.css';
 import BlockRow from './block-row/block-row';
 
 export const startColumns = [
@@ -49,6 +51,11 @@ const BlockTable: React.FC = () => {
   const [blockData, setBlockData] = useState<IChainBlock>({});
   const [maxBlockTxCount, setmaxBlockTxCount] = useState(0);
   const [blockHeights, updateBlockHeights] = useState<number[]>([1, 2, 3, 4]);
+
+  const { ref, inView } = useInView({
+    rootMargin: '-160px 0px 0px 0px',
+    initialInView: true,
+  });
 
   useEffect(() => {
     if (lastBlockHeight?.lastBlockHeight) {
@@ -99,12 +106,13 @@ const BlockTable: React.FC = () => {
     ]);
   }, []);
 
+  console.log(inView);
   return (
     <>
       <Stack
+        className={!inView ? blockHeaderFixedClass : ''}
         display="flex"
         flexDirection={'column'}
-        gap={'sm'}
         paddingInline={{ xs: 'xs', md: 'lg' }}
         width="100%"
       >
@@ -113,6 +121,16 @@ const BlockTable: React.FC = () => {
           heightColumns={blockHeights}
           endColumn={endColumn}
         />
+      </Stack>
+      <Stack
+        display="flex"
+        flexDirection={'column'}
+        gap={'sm'}
+        paddingInline={{ xs: 'xs', md: 'lg' }}
+        width="100%"
+      >
+        <span ref={ref} style={{ height: 0 }} />
+        {!inView && <Stack marginBlock="xxl" />}
         {Object.keys(blockData).map((chainId) => (
           <BlockRow
             key={chainId}

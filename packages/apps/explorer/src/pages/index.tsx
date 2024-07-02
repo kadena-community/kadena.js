@@ -25,7 +25,6 @@ const Home: React.FC = () => {
       <Media greaterThanOrEqual="sm">
         <Stack
           flexDirection="column"
-          gap={'xxl'}
           alignItems={'center'}
           marginBlockStart="md"
         >
@@ -60,7 +59,6 @@ const Home: React.FC = () => {
         <StatisticsGrid />
         <Stack
           flexDirection="column"
-          gap={'xxl'}
           alignItems={'center'}
           paddingBlockStart={'xxl'}
         >
