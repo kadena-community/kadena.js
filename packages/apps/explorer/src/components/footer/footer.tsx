@@ -1,10 +1,10 @@
 import { menuConfig } from '@/utils/menuConfig';
-import { Heading, Stack, Text } from '@kadena/kode-ui';
 import {
   MonoLogoGithub,
   MonoLogoLinkedin,
   MonoLogoX,
-} from '@kadena/react-icons/system';
+} from '@kadena/kode-icons/system';
+import { Heading, Stack, Text } from '@kadena/kode-ui';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';

@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 
-import { MonoQuestionMark } from '@kadena/react-icons/system';
+import { MonoQuestionMark } from '@kadena/kode-icons/system';
 import classNames from 'classnames';
 import { circle, circleStatus, disabledStyle } from './Avatar.css';
 import { getInitials } from './getInitials';

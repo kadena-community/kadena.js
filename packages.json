@@ -150,10 +150,10 @@
     "path": "packages/apps/proof-of-us"
   },
   {
-    "name": "@kadena/react-icons",
+    "name": "@kadena/kode-icons",
     "version": "0.0.3",
     "private": false,
-    "path": "packages/libs/react-icons"
+    "path": "packages/libs/kode-icons"
   },
   {
     "name": "@kadena/spirekey-example",

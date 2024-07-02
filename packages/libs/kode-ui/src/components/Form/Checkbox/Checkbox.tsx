@@ -1,4 +1,4 @@
-import { MonoCheck, MonoRemove } from '@kadena/react-icons';
+import { MonoCheck, MonoRemove } from '@kadena/kode-icons';
 import React, { useRef } from 'react';
 import type { AriaCheckboxProps } from 'react-aria';
 import {

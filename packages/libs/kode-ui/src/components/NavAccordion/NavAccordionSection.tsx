@@ -1,5 +1,5 @@
 'use client';
-import { MonoClose } from '@kadena/react-icons/system';
+import { MonoClose } from '@kadena/kode-icons/system';
 import classNames from 'classnames';
 import type { FC, FunctionComponentElement as FCElement } from 'react';
 import React, { Children, useContext } from 'react';

@@ -2,7 +2,7 @@ import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
-import { MonoClose } from '@kadena/react-icons';
+import { MonoClose } from '@kadena/kode-icons';
 import classnames from 'classnames';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';

@@ -1,4 +1,4 @@
-import { MonoClose } from '@kadena/react-icons/system';
+import { MonoClose } from '@kadena/kode-icons/system';
 import classNames from 'classnames';
 import type { ReactNode } from 'react';
 import React, { useRef } from 'react';

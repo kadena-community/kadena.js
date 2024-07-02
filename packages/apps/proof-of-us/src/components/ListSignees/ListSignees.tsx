@@ -5,12 +5,12 @@ import {
   getPercentageSignees,
   isAlreadySigning,
 } from '@/utils/isAlreadySigning';
-import { Stack } from '@kadena/kode-ui';
 import {
   MonoDelete,
   MonoSignature,
   MonoSignatureNotAllowed,
-} from '@kadena/react-icons';
+} from '@kadena/kode-icons';
+import { Stack } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import { motion } from 'framer-motion';
 import type { FC } from 'react';

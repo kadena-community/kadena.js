@@ -1,4 +1,5 @@
 import { useQueryContext } from '@/context/query-context';
+import { MonoHub } from '@kadena/kode-icons/system';
 import {
   Box,
   Button,
@@ -9,7 +10,6 @@ import {
   Stack,
   Text,
 } from '@kadena/kode-ui';
-import { MonoHub } from '@kadena/react-icons/system';
 import { print } from 'graphql';
 import React, { useState } from 'react';
 import { buttonSizeClass } from '../navbar/styles.css';

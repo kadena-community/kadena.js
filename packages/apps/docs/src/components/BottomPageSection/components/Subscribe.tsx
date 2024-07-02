@@ -1,3 +1,4 @@
+import { MonoAlternateEmail } from '@kadena/kode-icons';
 import {
   Button,
   Heading,
@@ -5,7 +6,6 @@ import {
   Stack,
   TextField,
 } from '@kadena/kode-ui';
-import { MonoAlternateEmail } from '@kadena/react-icons';
 import type { FC } from 'react';
 import React from 'react';
 import { useSubscribe } from './useSubscribe';

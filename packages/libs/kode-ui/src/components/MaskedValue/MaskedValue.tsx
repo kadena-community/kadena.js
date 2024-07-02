@@ -1,5 +1,5 @@
 'use client';
-import { MonoVisibility, MonoVisibilityOff } from '@kadena/react-icons/system';
+import { MonoVisibility, MonoVisibilityOff } from '@kadena/kode-icons/system';
 import type { FC } from 'react';
 import React, { useState } from 'react';
 import {

@@ -1,4 +1,4 @@
-# @kadena/react-icons
+# @kadena/kode-icons
 
 ## 0.0.3
 

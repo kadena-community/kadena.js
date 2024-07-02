@@ -1,7 +1,7 @@
 /* eslint-disable @kadena-dev/no-eslint-disable */
 /* eslint-disable @typescript-eslint/naming-convention */
-import * as BrandIcons from '@kadena/react-icons/brand';
-import * as SystemIcons from '@kadena/react-icons/system';
+import * as BrandIcons from '@kadena/kode-icons/brand';
+import * as SystemIcons from '@kadena/kode-icons/system';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';

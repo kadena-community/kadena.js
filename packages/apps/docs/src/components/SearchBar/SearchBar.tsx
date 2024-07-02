@@ -1,5 +1,5 @@
+import { MonoSearch } from '@kadena/kode-icons';
 import { TextField } from '@kadena/kode-ui';
-import { MonoSearch } from '@kadena/react-icons';
 import type {
   ChangeEventHandler,
   FormEvent,

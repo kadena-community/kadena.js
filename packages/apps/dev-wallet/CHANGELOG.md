@@ -117,7 +117,7 @@
   - @kadena/cryptography-utils\@0.4.3
   - @kadena/pactjs-generator\@1.11.1
   - @kadena/client-utils\@0.5.4
-  - @kadena/react-icons\@0.0.3
+  - @kadena/kode-icons\@0.0.3
   - @kadena/client\@1.11.1
   - @kadena/pactjs\@0.4.3
 

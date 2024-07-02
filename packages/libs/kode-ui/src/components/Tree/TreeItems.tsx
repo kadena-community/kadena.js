@@ -1,5 +1,5 @@
 'use client';
-import { MonoCake, MonoExpandMore } from '@kadena/react-icons/system';
+import { MonoCake, MonoExpandMore } from '@kadena/kode-icons/system';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { useState } from 'react';

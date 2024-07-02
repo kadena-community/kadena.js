@@ -1,4 +1,4 @@
-import { MonoExpandMore } from '@kadena/react-icons/system';
+import { MonoExpandMore } from '@kadena/kode-icons/system';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import classNames from 'classnames';
 import type { ForwardedRef, Ref } from 'react';

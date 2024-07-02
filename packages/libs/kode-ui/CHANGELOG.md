@@ -102,7 +102,7 @@
   other form elements. Breaking change: startIcon has been renamed to
   startVisual to be consistent with other components.
 - Updated dependencies \[93bf55b07]
-  - @kadena/react-icons\@0.0.3
+  - @kadena/kode-icons\@0.0.3
 
 ## 0.8.4
 

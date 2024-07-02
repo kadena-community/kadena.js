@@ -1,4 +1,4 @@
-import { MonoAdd } from '@kadena/react-icons/system';
+import { MonoAdd } from '@kadena/kode-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import {

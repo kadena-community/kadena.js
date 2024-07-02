@@ -8,4 +8,4 @@
 "@kadena/kode-ui": minor
 ---
 
-Rename 'react-ui' to 'kode-ui'
+Rename react-icons to kode-icons

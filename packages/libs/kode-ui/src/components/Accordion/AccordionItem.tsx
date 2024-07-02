@@ -1,4 +1,4 @@
-import { MonoAdd } from '@kadena/react-icons/system';
+import { MonoAdd } from '@kadena/kode-icons/system';
 import classNames from 'classnames';
 import React, { useRef } from 'react';
 import { mergeProps, useFocusRing, useHover } from 'react-aria';

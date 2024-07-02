@@ -1,4 +1,4 @@
-import { MonoArrowBackIosNew } from '@kadena/react-icons';
+import { MonoArrowBackIosNew } from '@kadena/kode-icons';
 import { Box, Button, Stack } from '@kadena/kode-ui';
 import type { FC, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';

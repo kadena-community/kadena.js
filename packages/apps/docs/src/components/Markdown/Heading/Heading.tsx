@@ -1,5 +1,5 @@
 import { removHashFromLink } from '@/scripts/utils/createSlug';
-import { MonoCheck, MonoLink } from '@kadena/react-icons';
+import { MonoCheck, MonoLink } from '@kadena/kode-icons';
 import type { FC, ReactNode } from 'react';
 import React, { useState } from 'react';
 import { headerClassVariants, headerIconLinkClass } from './styles.css';

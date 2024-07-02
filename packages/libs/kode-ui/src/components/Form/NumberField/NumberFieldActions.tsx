@@ -1,4 +1,4 @@
-import { MonoAdd, MonoRemove } from '@kadena/react-icons/system';
+import { MonoAdd, MonoRemove } from '@kadena/kode-icons/system';
 import React from 'react';
 import { Button } from '../../Button/Button';
 
