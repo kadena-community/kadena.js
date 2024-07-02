@@ -6,6 +6,7 @@ import { Grid, Link, Stack, Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import React from 'react';
 import {
+  blockActivityColumnClass,
   columnTitleClass,
   headerColumnStyle,
 } from '../block-header/block-header.css';
@@ -38,11 +39,13 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
   return (
     <Grid className={classNames(blockGridStyle, blockGridHoverableStyle)}>
       <Stack className={headerColumnStyle}>
-        <Text className={textStyle}>{chainId}</Text>
+        <Text className={textStyle} bold>
+          {chainId}
+        </Text>
       </Stack>
 
       <Stack className={headerColumnStyle}>
-        <Text as="span" variant="code">
+        <Text as="span" variant="code" bold>
           {formatNumberWithUnit(Number(blockDifficulty))}
           <Text as="span" className={columnTitleClass}>
             H
@@ -57,7 +60,7 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
             className={headerColumnStyle}
             href={`${routes.BLOCK_DETAILS}/${blockRowData[height].hash}`}
           >
-            <Text className={blockHeightColumnHeaderStyle} variant="code">
+            <Text className={blockHeightColumnHeaderStyle} variant="code" bold>
               {blockRowData[height].txCount}
             </Text>
           </Link>
@@ -72,7 +75,9 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
         ),
       )}
 
-      <Stack className={headerColumnStyle}>
+      <Stack
+        className={classNames(headerColumnStyle, blockActivityColumnClass)}
+      >
         <BlockActivityChart
           maxBlockTxCount={maxBlockTxCount}
           data={heights.map((height) => ({

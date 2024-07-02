@@ -104,7 +104,7 @@ const BlockTable: React.FC = () => {
       <Stack
         display="flex"
         flexDirection={'column'}
-        gap={'md'}
+        gap={'sm'}
         paddingInline={{ xs: 'xs', md: 'lg' }}
         width="100%"
       >

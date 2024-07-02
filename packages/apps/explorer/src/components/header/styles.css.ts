@@ -1,4 +1,4 @@
-import { atoms, tokens } from '@kadena/kode-ui/styles';
+import { atoms, responsiveStyle, tokens } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 import { $$pageWidth } from '../layout/styles.css';
 
@@ -9,10 +9,16 @@ export const headerClass = style([
   {
     backgroundColor:
       tokens.kda.foundation.color.background.surfaceHighContrast.default,
-    borderEndStartRadius: tokens.kda.foundation.radius.md,
-    borderEndEndRadius: tokens.kda.foundation.radius.md,
+
     zIndex: tokens.kda.foundation.zIndex.sticky,
   },
+
+  responsiveStyle({
+    xxl: {
+      borderEndStartRadius: tokens.kda.foundation.radius.md,
+      borderEndEndRadius: tokens.kda.foundation.radius.md,
+    },
+  }),
 ]);
 
 export const fixedClass = style({

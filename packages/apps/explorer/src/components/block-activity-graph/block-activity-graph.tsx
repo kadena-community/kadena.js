@@ -20,7 +20,7 @@ const BlockActivityChart: React.FC<IBlockActivityChartProps> = ({
     data.map((o) => ({ ...o, data: 2 })),
   );
   const barWidth = 12;
-  const height = 50;
+  const height = 40;
   const maxValue = maxBlockTxCount;
   const scaleFactor = maxValue !== 0 ? height / maxValue : 1;
 

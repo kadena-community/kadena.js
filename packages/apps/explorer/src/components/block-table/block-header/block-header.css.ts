@@ -3,13 +3,19 @@ import { atoms, responsiveStyle, token, tokens } from '@kadena/kode-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 import { blockGridHoverableStyle } from '../block-table.css';
 
+export const blockActivityColumnClass = style([
+  {
+    paddingBlockEnd: '0',
+  },
+]);
+
 export const headerColumnStyle = style([
   atoms({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingBlock: 'md',
+    paddingBlock: 'sm',
     backgroundColor: 'surface.default',
   }),
   {
