@@ -1,0 +1,17 @@
+{
+  "name": "my-pact-project",
+  "dependencies": [
+    "git@github.com:alber70g/my-project.git/pact/pact-project.json",
+		"./chainweb-config.json"
+  ],
+  "dependencyTree": [
+    {
+      "path": "./coin.pact",
+      "dependencies": [
+        {
+          "path": "./fungible-v2.pact"
+        }
+      ]
+    }
+  ]
+}
