@@ -1,4 +1,4 @@
-import { MonoClose } from '@kadena/react-icons/system';
+import { MonoClose } from '@kadena/kode-icons/system';
 import { mergeRefs } from '@react-aria/utils';
 import type { FC, ReactNode } from 'react';
 import React from 'react';

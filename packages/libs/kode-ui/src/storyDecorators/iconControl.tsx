@@ -1,4 +1,4 @@
-import * as icons from '@kadena/react-icons';
+import * as icons from '@kadena/kode-icons';
 import type { ReactElement } from 'react';
 import React from 'react';
 

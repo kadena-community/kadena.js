@@ -16,12 +16,12 @@ considerations:
    the `@kadena/kode-ui` and allowing the icons to be universally compatible
    with any build-system and react styling solutions.
 4. Icons are grouped in different folders and package entries eg
-   `@kadena/react-icons/system`.
+   `@kadena/kode-icons/system`.
 
 ### Install
 
 ```sh
-pnpm install @kadena/react-icons
+pnpm install @kadena/kode-icons
 ```
 
 ### Development

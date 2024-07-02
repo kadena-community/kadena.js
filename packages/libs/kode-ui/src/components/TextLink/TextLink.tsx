@@ -1,4 +1,4 @@
-import { MonoLink } from '@kadena/react-icons/system';
+import { MonoLink } from '@kadena/kode-icons/system';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 import classNames from 'classnames';

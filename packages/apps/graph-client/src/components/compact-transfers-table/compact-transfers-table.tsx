@@ -4,6 +4,7 @@ import type {
   Transfer,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
+import { KSquareKdacolorGreen } from '@kadena/kode-icons/brand';
 import {
   Box,
   Cell,
@@ -17,7 +18,6 @@ import {
   Tooltip,
 } from '@kadena/kode-ui';
 import { atoms } from '@kadena/kode-ui/styles';
-import { KSquareKdacolorGreen } from '@kadena/react-icons/brand';
 import { truncate } from '@utils/truncate';
 import React from 'react';
 interface ICompactTransfersTableProps {

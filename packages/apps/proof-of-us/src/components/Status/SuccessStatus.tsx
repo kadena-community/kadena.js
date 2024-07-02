@@ -1,5 +1,5 @@
+import { MonoChecklist } from '@kadena/kode-icons';
 import { Stack } from '@kadena/kode-ui';
-import { MonoChecklist } from '@kadena/react-icons';
 import Link from 'next/link';
 import type { FC, PropsWithChildren } from 'react';
 import { Button } from '../Button/Button';

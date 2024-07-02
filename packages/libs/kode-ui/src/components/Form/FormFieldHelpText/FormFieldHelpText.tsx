@@ -1,4 +1,4 @@
-import { MonoWarningAmber } from '@kadena/react-icons/system';
+import { MonoWarningAmber } from '@kadena/kode-icons/system';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 import classNames from 'classnames';
 import type { ComponentProps, FC } from 'react';

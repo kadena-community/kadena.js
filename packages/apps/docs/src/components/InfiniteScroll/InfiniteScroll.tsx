@@ -1,5 +1,5 @@
+import { MonoRefresh } from '@kadena/kode-icons';
 import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
-import { MonoRefresh } from '@kadena/react-icons';
 import type { FC } from 'react';
 import React, { useEffect, useRef } from 'react';
 import { Loading } from '../Loading/Loading';

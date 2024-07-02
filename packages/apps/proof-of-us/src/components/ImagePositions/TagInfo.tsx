@@ -1,6 +1,6 @@
 import { deviceColors } from '@/styles/tokens.css';
+import { MonoClose, MonoInfo } from '@kadena/kode-icons';
 import { Stack } from '@kadena/kode-ui';
-import { MonoClose, MonoInfo } from '@kadena/react-icons';
 import type { FC } from 'react';
 import { IconButton } from '../IconButton/IconButton';
 import { Heading } from '../Typography/Heading';

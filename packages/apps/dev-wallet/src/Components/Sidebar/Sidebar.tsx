@@ -1,4 +1,4 @@
-import { MonoDataThresholding, MonoSignature } from '@kadena/react-icons';
+import { MonoDataThresholding, MonoSignature } from '@kadena/kode-icons';
 import { Box, Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import { NavLink, useParams } from 'react-router-dom';

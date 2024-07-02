@@ -1,8 +1,8 @@
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { CHAINS } from '@kadena/chainweb-node-client';
+import { MonoLink } from '@kadena/kode-icons/system';
 import type { ISelectProps } from '@kadena/kode-ui';
 import { Select, SelectItem } from '@kadena/kode-ui';
-import { MonoLink } from '@kadena/react-icons/system';
 import type { FC } from 'react';
 import React, { useCallback } from 'react';
 

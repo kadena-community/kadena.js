@@ -2,7 +2,7 @@ import { Button, FormFieldHeader, Stack, TextField } from '@kadena/kode-ui';
 
 import { validatePublicKey } from '@/services/utils/utils';
 import { stripAccountPrefix } from '@/utils/string';
-import { MonoAdd, MonoDelete } from '@kadena/react-icons/system';
+import { MonoAdd, MonoDelete } from '@kadena/kode-icons/system';
 import useTranslation from 'next-translate/useTranslation';
 import React, { useState } from 'react';
 

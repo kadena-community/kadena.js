@@ -10,7 +10,7 @@ import { atoms } from '../../../styles';
 import { Button } from '../../Button';
 import { NumberField } from './NumberField';
 
-import { MonoAccountCircle } from '@kadena/react-icons/system';
+import { MonoAccountCircle } from '@kadena/kode-icons/system';
 import { Form } from '../Form';
 import { input } from '../Form.css';
 import type { INumberFieldProps } from './NumberField';

@@ -1,4 +1,4 @@
-import { MonoExplore, MonoFiberNew } from '@kadena/react-icons/system';
+import { MonoExplore, MonoFiberNew } from '@kadena/kode-icons/system';
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import React from 'react';
 import { withCenteredStory, withContentWidth } from '../../storyDecorators';

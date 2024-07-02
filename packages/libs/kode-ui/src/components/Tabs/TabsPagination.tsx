@@ -2,7 +2,7 @@
 import {
   MonoArrowBackIosNew,
   MonoArrowForwardIos,
-} from '@kadena/react-icons/system';
+} from '@kadena/kode-icons/system';
 import classNames from 'classnames';
 import type { ReactElement, RefObject } from 'react';
 import React, { useEffect, useState } from 'react';

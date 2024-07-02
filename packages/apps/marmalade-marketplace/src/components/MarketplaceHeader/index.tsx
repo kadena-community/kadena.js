@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { env } from '@/utils/env';
-import { MonoAccountCircle, MonoCheck, MonoClose } from '@kadena/react-icons';
+import { MonoAccountCircle, MonoCheck, MonoClose } from '@kadena/kode-icons';
 import { useAccount } from '@/hooks/account';
 import { useTransaction } from '@/hooks/transaction';
 import { useRouter } from 'next/navigation';

@@ -1,4 +1,4 @@
-import { MonoLoading } from '@kadena/react-icons';
+import { MonoLoading } from '@kadena/kode-icons';
 import React from 'react';
 import { spin } from './styles.css';
 

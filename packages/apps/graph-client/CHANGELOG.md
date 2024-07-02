@@ -103,7 +103,7 @@
 - Updated dependencies \[37375fa7e]
   - @kadena/kode-ui\@0.9.0
   - @kadena/graph\@1.0.2
-  - @kadena/react-icons\@0.0.3
+  - @kadena/kode-icons\@0.0.3
 
 ## 0.1.19
 

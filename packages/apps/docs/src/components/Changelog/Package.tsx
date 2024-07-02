@@ -1,6 +1,6 @@
 import { getVersions } from '@/scripts/importChangelogs/utils/misc';
+import { MonoKeyboardArrowRight, MonoList } from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
-import { MonoKeyboardArrowRight, MonoList } from '@kadena/react-icons/system';
 import classNames from 'classnames';
 import Link from 'next/link';
 import type { FC } from 'react';

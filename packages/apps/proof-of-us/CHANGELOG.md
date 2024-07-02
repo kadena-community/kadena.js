@@ -113,7 +113,7 @@
 - Updated dependencies \[37375fa7e]
   - @kadena/kode-ui\@0.9.0
   - @kadena/graph\@1.0.2
-  - @kadena/react-icons\@0.0.3
+  - @kadena/kode-icons\@0.0.3
   - @kadena/client\@1.11.1
   - @kadena/pactjs\@0.4.3
 
@@ -217,7 +217,7 @@
 - Updated dependencies \[6ddf094d8]
 - Updated dependencies \[6ddf094d8]
 - Updated dependencies \[550e6d9e4]
-  - @kadena/react-icons\@0.0.2
+  - @kadena/kode-icons\@0.0.2
   - @kadena/client\@1.9.0
   - @kadena/kode-ui\@0.8.2
   - @kadena/pactjs\@0.4.2

@@ -8,6 +8,11 @@ import type { IMenuItem } from '@/types/Layout';
 import { getHref } from '@/utils/getHref';
 import type { INetworkData } from '@/utils/network';
 import {
+  MonoBuildCircle,
+  MonoContrast,
+  MonoPublic,
+} from '@kadena/kode-icons/system';
+import {
   KadenaLogo,
   NavHeader,
   NavHeaderButton,
@@ -17,11 +22,6 @@ import {
   SelectItem,
 } from '@kadena/kode-ui';
 import { atoms, breakpoints } from '@kadena/kode-ui/styles';
-import {
-  MonoBuildCircle,
-  MonoContrast,
-  MonoPublic,
-} from '@kadena/react-icons/system';
 import { useTheme } from 'next-themes';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';

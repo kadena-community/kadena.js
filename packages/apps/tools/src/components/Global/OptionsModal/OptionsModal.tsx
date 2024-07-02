@@ -7,6 +7,12 @@ import {
 } from '@/components/Global/OptionsModal/styles.css';
 import type { DevOption } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
+import {
+  MonoCode,
+  MonoRadioButtonChecked,
+  MonoRadioButtonUnchecked,
+  MonoWebAsset,
+} from '@kadena/kode-icons/system';
 import type { IDialogProps } from '@kadena/kode-ui';
 import {
   Button,
@@ -18,12 +24,6 @@ import {
   Tag,
   Text,
 } from '@kadena/kode-ui';
-import {
-  MonoCode,
-  MonoRadioButtonChecked,
-  MonoRadioButtonUnchecked,
-  MonoWebAsset,
-} from '@kadena/react-icons/system';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC, ReactElement } from 'react';
 import React, { useEffect, useState } from 'react';

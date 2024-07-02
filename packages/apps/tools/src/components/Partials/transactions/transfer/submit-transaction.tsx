@@ -30,7 +30,7 @@ import { getExplorerLink } from '@/utils/getExplorerLink';
 import {
   MonoContentCopy,
   MonoKeyboardArrowRight,
-} from '@kadena/react-icons/system';
+} from '@kadena/kode-icons/system';
 import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
 import { useQueryClient } from '@tanstack/react-query';
 import Trans from 'next-translate/Trans';

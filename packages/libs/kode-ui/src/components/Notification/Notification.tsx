@@ -1,4 +1,4 @@
-import { MonoClose, MonoInfo } from '@kadena/react-icons/system';
+import { MonoClose, MonoInfo } from '@kadena/kode-icons/system';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 import classNames from 'classnames';
 import type { FC } from 'react';

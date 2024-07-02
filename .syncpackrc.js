@@ -22,7 +22,7 @@ const config = {
       dependencies: [
         '@kadena-dev/*',
         '@kadena/types',
-        '@kadena/react-icons',
+        '@kadena/kode-icons',
         '@kadena/docs-tools',
       ],
       dependencyTypes: ['dev'],

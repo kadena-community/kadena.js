@@ -19,7 +19,7 @@
     "@kadena/client-utils": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/pactjs": "workspace:*",
-    "@kadena/react-icons": "workspace:*",
+    "@kadena/kode-icons": "workspace:*",
     "@kadena/kode-ui": "workspace:*",
     "@pinata/sdk": "^2.1.0",
     "firebase": "^10.8.0",

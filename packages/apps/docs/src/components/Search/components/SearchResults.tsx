@@ -1,6 +1,6 @@
 import { Loading } from '@/components/Loading/Loading';
+import { MonoChevronRight, MonoWarning } from '@kadena/kode-icons';
 import { Box, Button, Notification, Stack, useDialog } from '@kadena/kode-ui';
-import { MonoChevronRight, MonoWarning } from '@kadena/react-icons';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';

@@ -1,5 +1,5 @@
 'use client';
-import { MonoExpandMore } from '@kadena/react-icons/system';
+import { MonoExpandMore } from '@kadena/kode-icons/system';
 import classNames from 'classnames';
 import type { FC, FunctionComponentElement } from 'react';
 import React, { Children, useState } from 'react';

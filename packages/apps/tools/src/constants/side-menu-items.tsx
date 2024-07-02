@@ -2,7 +2,7 @@ import {
   MonoAnimation,
   MonoQrCodeScanner,
   MonoViewInAr,
-} from '@kadena/react-icons/system';
+} from '@kadena/kode-icons/system';
 import React from 'react';
 import type { ISidebarToolbarItem } from '../types/Layout';
 import Routes from './routes';

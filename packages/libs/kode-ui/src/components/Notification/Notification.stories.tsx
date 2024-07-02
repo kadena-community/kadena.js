@@ -1,4 +1,4 @@
-import { MonoCheck, MonoClose } from '@kadena/react-icons/system';
+import { MonoCheck, MonoClose } from '@kadena/kode-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { getVariants, withContentWidth } from '../../storyDecorators';
