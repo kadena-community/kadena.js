@@ -2,6 +2,7 @@ import { Button } from '@/components/Button/Button';
 import { Modal } from '@/components/Modal/Modal';
 import type { EVENT_NAMES } from '@/utils/analytics';
 import { analyticsEvent } from '@/utils/analytics';
+import { Stack } from '@kadena/kode-ui';
 import {
   MonoAddLink,
   MonoCheckCircle,
@@ -10,7 +11,6 @@ import {
   MonoLogoX,
   MonoThumbUpOffAlt,
 } from '@kadena/react-icons';
-import { Stack } from '@kadena/kode-ui';
 import type { FC, MouseEvent } from 'react';
 import { useEffect, useState } from 'react';
 import { IconButton } from '../IconButton/IconButton';

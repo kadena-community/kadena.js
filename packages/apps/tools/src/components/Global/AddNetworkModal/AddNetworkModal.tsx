@@ -1,6 +1,5 @@
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { MonoKeyboardArrowRight } from '@kadena/react-icons/system';
 import type { IDialogProps } from '@kadena/kode-ui';
 import {
   Button,
@@ -10,6 +9,7 @@ import {
   Stack,
   TextField,
 } from '@kadena/kode-ui';
+import { MonoKeyboardArrowRight } from '@kadena/react-icons/system';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';

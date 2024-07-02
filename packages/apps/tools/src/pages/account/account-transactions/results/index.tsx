@@ -9,13 +9,6 @@ import type { ITransaction } from '@/services/accounts/get-transactions';
 import { getTransactions } from '@/services/accounts/get-transactions';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import {
-  MonoDelete,
-  MonoHistory,
-  MonoInfo,
-  MonoKeyboardArrowRight,
-  MonoRefresh,
-} from '@kadena/react-icons/system';
-import {
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
@@ -33,6 +26,13 @@ import {
   Text,
   TrackerCard,
 } from '@kadena/kode-ui';
+import {
+  MonoDelete,
+  MonoHistory,
+  MonoInfo,
+  MonoKeyboardArrowRight,
+  MonoRefresh,
+} from '@kadena/react-icons/system';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';

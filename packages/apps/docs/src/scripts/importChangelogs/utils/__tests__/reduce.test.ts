@@ -1120,8 +1120,7 @@ describe('reduce utils', () => {
           },
           {
             sha: '7375b767e15dfe4c8594578b1ebcc5576cfe1ea5',
-            filename:
-              'packages/libs/kode-ui/src/components/Modal/Modal.css.ts',
+            filename: 'packages/libs/kode-ui/src/components/Modal/Modal.css.ts',
             status: 'modified',
             additions: 2,
             deletions: 2,

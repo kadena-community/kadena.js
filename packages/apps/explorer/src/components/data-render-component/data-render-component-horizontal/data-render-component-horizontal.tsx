@@ -1,6 +1,6 @@
 import CopyButton from '@/components/copy-button/copy-button';
-import { MonoArrowOutward } from '@kadena/react-icons';
 import { Stack, Text } from '@kadena/kode-ui';
+import { MonoArrowOutward } from '@kadena/react-icons';
 import React from 'react';
 import {
   dataFieldClass,

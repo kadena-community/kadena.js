@@ -31,12 +31,6 @@ import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
-  MonoContentCopy,
-  MonoInfo,
-  MonoKeyboardArrowRight,
-  MonoLink,
-} from '@kadena/react-icons/system';
-import {
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
@@ -51,6 +45,12 @@ import {
   TextareaField,
   TrackerCard,
 } from '@kadena/kode-ui';
+import {
+  MonoContentCopy,
+  MonoInfo,
+  MonoKeyboardArrowRight,
+  MonoLink,
+} from '@kadena/react-icons/system';
 import Debug from 'debug';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';

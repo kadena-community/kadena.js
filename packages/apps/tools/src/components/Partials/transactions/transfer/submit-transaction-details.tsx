@@ -4,7 +4,6 @@ import type {
   IExecutionPayloadObject,
   IPactCommand,
 } from '@kadena/client';
-import { MonoExpandLess, MonoExpandMore } from '@kadena/react-icons/system';
 import {
   Heading,
   Stack,
@@ -12,6 +11,7 @@ import {
   ToggleButton,
   TrackerCard,
 } from '@kadena/kode-ui';
+import { MonoExpandLess, MonoExpandMore } from '@kadena/react-icons/system';
 import type { ICap } from '@kadena/types';
 import useTranslation from 'next-translate/useTranslation';
 import React, { useState } from 'react';

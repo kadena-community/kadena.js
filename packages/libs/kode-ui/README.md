@@ -1,7 +1,7 @@
 # React UI
 
-**@kadena/kode-ui** is a library used to provide a styling environment and
-basic React components for reuse in Kadena applications. It uses
+**@kadena/kode-ui** is a library used to provide a styling environment and basic
+React components for reuse in Kadena applications. It uses
 [vanilla-extract/css][1] (will be referred to as VE) to establish a system of
 utility classes (defined as [sprinkles][2]) and CSS variables (defined in the
 theme) that align with Kadena's [Kode Design System][3] and exposes them so that
