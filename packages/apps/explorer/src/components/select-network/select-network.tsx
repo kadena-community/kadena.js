@@ -1,56 +1,179 @@
-import { networkConstants } from '@/constants/network';
-import { useRedirectOnNetworkChange } from '@/hooks/network/redirect';
-import { Select, SelectItem } from '@kadena/kode-ui';
+import type { INetwork } from '@/context/networks-context';
+import { useNetworkContext } from '@/context/networks-context';
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  Divider,
+  Form,
+  Heading,
+  Select,
+  SelectItem,
+  Stack,
+  Text,
+  TextField,
+} from '@kadena/kode-ui';
 
-import type { FC } from 'react';
+import type { FC, FormEventHandler } from 'react';
 import React, { useState } from 'react';
 
-const getDefaultSelectedNetwork = (url?: string): string => {
-  const foundNetwork = Object.entries(networkConstants).find(([, nw]) =>
-    nw.url.includes(process.env.NEXT_PUBLIC_VERCEL_URL ?? ''),
-  );
-
-  if (!foundNetwork) return 'mainnet01';
-  return foundNetwork[0] ?? 'mainnet01';
-};
-
 const SelectNetwork: FC = () => {
-  const [selectedNetwork, setSelectedNetwork] = useState(
-    getDefaultSelectedNetwork(process.env.NEXT_PUBLIC_VERCEL_URL),
-  );
+  const { networks, addNetwork, activeNetwork, setActiveNetwork } =
+    useNetworkContext();
 
-  useRedirectOnNetworkChange(selectedNetwork);
+  const [isOpen, setIsOpen] = useState(false);
+  const [formError, setFormError] = useState<(string | undefined)[]>();
 
-  const handleSelect = (value: any): void => {
-    const key = value.toString() as keyof typeof networkConstants;
-    const network = networkConstants[key];
+  const handleSelectNetwork = (value: any): void => {
+    if (value === 'new') {
+      setIsOpen(true);
+      return;
+    }
 
-    setSelectedNetwork(key);
-    window.location = network.url as unknown as Location;
+    setActiveNetwork(value);
+  };
+
+  if (!networks) return null;
+
+  const handleCreateNetwork: FormEventHandler<HTMLFormElement> = (e): void => {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+    let { label, networkId, chainwebUrl, graphUrl } =
+      getFormValues<INetwork>(data);
+
+    const errors = validateNewNetwork(networks, {
+      label,
+      networkId,
+      chainwebUrl,
+      graphUrl,
+    });
+    setFormError(errors);
+
+    if (errors.length > 0) {
+      console.warn('Errors adding network: ', errors.join('\n'));
+      return;
+    }
+
+    // set label to identifier if empty
+    if (label.length === 0) {
+      label = networkId;
+    }
+
+    addNetwork({
+      networkId,
+      label,
+      chainwebUrl,
+      graphUrl,
+    });
+    setActiveNetwork(() => networkId);
+    setIsOpen(false);
   };
 
   return (
-    <Select
-      size="lg"
-      aria-label="Select network"
-      defaultSelectedKey={selectedNetwork}
-      fontType="code"
-      onSelectionChange={handleSelect}
-    >
-      <SelectItem
-        key={networkConstants.mainnet01.key}
-        textValue={networkConstants.mainnet01.label}
+    <>
+      <Select
+        size="lg"
+        aria-label="Select network"
+        defaultSelectedKey={activeNetwork!.networkId}
+        fontType="code"
+        onSelectionChange={handleSelectNetwork}
       >
-        {networkConstants.mainnet01.label}
-      </SelectItem>
-      <SelectItem
-        key={networkConstants.testnet04.key}
-        textValue={networkConstants.testnet04.label}
+        {
+          networks.map((network) => (
+            <SelectItem key={network.networkId} textValue={network.label}>
+              {network.label}
+            </SelectItem>
+          )) as any
+        }
+        <SelectItem key="new">New Network...</SelectItem>
+      </Select>
+      <Dialog
+        isOpen={isOpen}
+        onOpenChange={(isOpen: boolean) => setIsOpen(isOpen)}
       >
-        {networkConstants.testnet04.label}
-      </SelectItem>
-    </Select>
+        {() => (
+          <DialogContent>
+            <Heading as="h3">Create a new network</Heading>
+            <Divider />
+            <Form onSubmit={handleCreateNetwork}>
+              <TextField
+                label="Name"
+                name="label"
+                autoFocus
+                description="The label to show in the networks menu"
+              ></TextField>
+              <TextField
+                label="Identifier"
+                name="networkId"
+                description="The identifier used in transactions"
+              ></TextField>
+              <TextField label="GraphQL URL" name="graphUrl"></TextField>
+              {/* <TextField label="Chainweb URL" name="chainwebUrl"></TextField> */}
+
+              {formError && formError.length > 0 && (
+                <Stack>
+                  {(formError as string[]).map((e) => (
+                    <Text color="emphasize">{e}</Text>
+                  ))}
+                </Stack>
+              )}
+              <Button type="submit">Create</Button>
+              <Text>
+                <pre>
+                  activeNetwork: {JSON.stringify(activeNetwork, null, 2)}
+                </pre>
+                <pre>networks: {JSON.stringify(networks, null, 2)}</pre>
+              </Text>
+            </Form>
+          </DialogContent>
+        )}
+      </Dialog>
+    </>
   );
 };
 
 export default SelectNetwork;
+
+function getFormValues<T extends Record<string, unknown>>(data: FormData): T {
+  const values: Record<string, unknown> = {};
+  data.forEach((value, key) => {
+    values[key] = value;
+  });
+  return values as T;
+}
+
+function validateNewNetwork(
+  networks: INetwork[],
+  newNetwork: {
+    label: string;
+    networkId: string;
+    chainwebUrl: string | undefined;
+    graphUrl: string;
+  },
+): string[] {
+  const errors = [];
+
+  if (networks.some((network) => network.networkId === newNetwork.networkId)) {
+    errors.push('network already exists');
+  }
+
+  errors.push(
+    ...(Object.entries(newNetwork)
+      .map(([key, value]) => {
+        switch (key) {
+          case 'networkId':
+          case 'graphUrl':
+            return value === undefined || value.length <= 0
+              ? `'${key}' is required`
+              : undefined;
+          case 'label':
+          case 'chainwebUrl':
+          default:
+            return undefined;
+        }
+      })
+      .filter(Boolean) as string[]),
+  );
+
+  return errors;
+}

@@ -23,7 +23,7 @@ const Header: FC = () => {
       <Stack as="header" className={layoutWrapperClass}>
         {isSearchPage && (
           <Stack
-            data-isSearchPage={isSearchPage}
+            data-is-search-page={isSearchPage}
             className={classNames(
               headerClass,
               fixedClass,

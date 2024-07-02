@@ -3,6 +3,8 @@ import '@kadena/kode-ui/global';
 
 import { MediaContextProvider } from '@/components/layout/media';
 import { graphHost, wsGraphHost } from '@/constants/graphHost';
+import { networkConstants } from '@/constants/network';
+import { NetworkContextProvider } from '@/context/networks-context';
 import { QueryContextProvider } from '@/context/query-context';
 import type { NormalizedCacheObject } from '@apollo/client';
 import {
@@ -64,23 +66,27 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
   useTheme();
   return (
     <ApolloProvider client={client}>
-      <RouterProvider navigate={router.push}>
-        <MediaContextProvider>
-          <QueryContextProvider>
-            <Head>
-              <title>K:Explorer</title>
-              <link
-                rel="icon"
-                href="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/icons/internal/default/icon%40128.png"
-              />
-            </Head>
+      <NetworkContextProvider
+        networks={[networkConstants.mainnet01, networkConstants.testnet04]}
+      >
+        <RouterProvider navigate={router.push}>
+          <MediaContextProvider>
+            <QueryContextProvider>
+              <Head>
+                <title>K:Explorer</title>
+                <link
+                  rel="icon"
+                  href="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/icons/internal/default/icon%40128.png"
+                />
+              </Head>
 
-            <main>
-              <ReactComponent {...pageProps} />
-            </main>
-          </QueryContextProvider>
-        </MediaContextProvider>
-      </RouterProvider>
+              <main>
+                <ReactComponent {...pageProps} />
+              </main>
+            </QueryContextProvider>
+          </MediaContextProvider>
+        </RouterProvider>
+      </NetworkContextProvider>
     </ApolloProvider>
   );
 }

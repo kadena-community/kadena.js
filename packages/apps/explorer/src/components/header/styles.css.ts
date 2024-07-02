@@ -29,7 +29,7 @@ export const fixedClass = style({
   transform: 'translateY(-100%)',
   maxWidth: $$pageWidth,
   selectors: {
-    '&:not([data-isSearchPage="true"])': {
+    '&:not([data-is-search-page="true"])': {
       transform: 'translateY(0%)',
     },
   },
