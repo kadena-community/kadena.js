@@ -20,7 +20,7 @@ const BlockTableHeader: React.FC<IBlockTableHeaderProps> = ({
   isCompact,
 }) => {
   return (
-    <Grid columns={4} className={blockGridStyle}>
+    <Grid className={blockGridStyle}>
       {isCompact ? (
         <Stack key={0} className={headerColumnStyle}>
           <Text variant="body" size="small">
