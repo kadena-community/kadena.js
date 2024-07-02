@@ -9,15 +9,19 @@ interface IData {
 
 interface IBlockActivityChartProps {
   data: IData[];
+  maxBlockTxCount: number;
 }
 
-const BlockActivityChart: React.FC<IBlockActivityChartProps> = ({ data }) => {
+const BlockActivityChart: React.FC<IBlockActivityChartProps> = ({
+  data,
+  maxBlockTxCount,
+}) => {
   const [innerData, setInnerData] = useState<IData[]>(
     data.map((o) => ({ ...o, data: 2 })),
   );
   const barWidth = 12;
   const height = 50;
-  const maxValue = Math.max(...data.map((o) => o.data));
+  const maxValue = maxBlockTxCount;
   const scaleFactor = maxValue !== 0 ? height / maxValue : 1;
 
   useEffect(() => {

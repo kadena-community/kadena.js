@@ -1,3 +1,4 @@
+import { barClass } from '@/components/block-activity-graph/style.css';
 import { atoms, responsiveStyle, token, tokens } from '@kadena/react-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 import { blockGridHoverableStyle } from '../block-table.css';
@@ -20,24 +21,23 @@ export const headerColumnStyle = style([
         background: token('color.background.input.default'),
       },
     },
-
-    ...responsiveStyle({
-      xs: {
-        selectors: {
-          '&:nth-child(2), &:nth-child(7)': {
-            display: 'none',
-          },
-        },
-      },
-      md: {
-        selectors: {
-          '&:nth-child(2), &:nth-child(7)': {
-            display: 'flex',
-          },
-        },
-      },
-    }),
   },
+  responsiveStyle({
+    xs: {
+      selectors: {
+        '&:nth-child(2), &:nth-child(7)': {
+          display: 'none',
+        },
+      },
+    },
+    md: {
+      selectors: {
+        '&:nth-child(2), &:nth-child(7)': {
+          display: 'flex',
+        },
+      },
+    },
+  }),
 ]);
 
 globalStyle(
@@ -53,3 +53,14 @@ globalStyle(
     background: token('color.background.input.default'),
   },
 );
+
+globalStyle(`${blockGridHoverableStyle}:hover ${barClass}`, {
+  backgroundColor:
+    tokens.kda.foundation.color.icon.brand.primary.inverse['@hover'],
+});
+
+export const columnTitleClass = style([
+  atoms({
+    color: 'text.gray.default',
+  }),
+]);

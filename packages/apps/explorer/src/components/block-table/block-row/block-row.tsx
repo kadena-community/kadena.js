@@ -5,7 +5,10 @@ import { formatNumberWithUnit } from '@/services/format';
 import { Grid, Link, Stack, Text } from '@kadena/react-ui';
 import classNames from 'classnames';
 import React from 'react';
-import { headerColumnStyle } from '../block-header/block-header.css';
+import {
+  columnTitleClass,
+  headerColumnStyle,
+} from '../block-header/block-header.css';
 import {
   blockGridHoverableStyle,
   blockGridStyle,
@@ -16,12 +19,14 @@ interface IBlockTableRowProps {
   blockRowData: IHeightBlock;
   heights: number[];
   chainId: number;
+  maxBlockTxCount: number;
 }
 
 const BlockTableRow: React.FC<IBlockTableRowProps> = ({
   blockRowData,
   heights,
   chainId,
+  maxBlockTxCount,
 }) => {
   const blockDifficulty =
     blockRowData[heights[3]]?.difficulty ||
@@ -37,8 +42,11 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
       </Stack>
 
       <Stack className={headerColumnStyle}>
-        <Text variant="code">
-          {`${formatNumberWithUnit(Number(blockDifficulty))}H`}
+        <Text as="span" variant="code">
+          {formatNumberWithUnit(Number(blockDifficulty))}
+          <Text as="span" className={columnTitleClass}>
+            H
+          </Text>
         </Text>
       </Stack>
 
@@ -66,6 +74,7 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
 
       <Stack className={headerColumnStyle}>
         <BlockActivityChart
+          maxBlockTxCount={maxBlockTxCount}
           data={heights.map((height) => ({
             height,
             data: blockRowData[height]?.txCount ?? 0,

@@ -5,7 +5,7 @@ import {
 } from '@/__generated__/sdk';
 import { useQueryContext } from '@/context/query-context';
 import { newBlocks } from '@/graphql/subscriptions/newBlocks.graph';
-import type { IChainBlock } from '@/services/block';
+import type { IBlockData, IChainBlock } from '@/services/block';
 import { addBlockData } from '@/services/block';
 import { Stack } from '@kadena/react-ui';
 import React, { useEffect, useState } from 'react';
@@ -18,6 +18,20 @@ export const startColumns = [
 ];
 
 const endColumn = { title: 'Block', subtitle: 'Activity' };
+
+const getmaxBlockTxCount = (blockData: IChainBlock): number => {
+  const txCounts = Math.max(
+    ...Object.entries(blockData)
+      .map(([, chain]) => {
+        return Object.entries(chain).map(([, block]) => {
+          return (block as IBlockData).txCount;
+        });
+      })
+      .flat(),
+  );
+
+  return txCounts;
+};
 
 const BlockTable: React.FC = () => {
   const { data: newBlocksData } = useNewBlocksSubscription();
@@ -33,6 +47,7 @@ const BlockTable: React.FC = () => {
   });
 
   const [blockData, setBlockData] = useState<IChainBlock>({});
+  const [maxBlockTxCount, setmaxBlockTxCount] = useState(0);
   const [blockHeights, updateBlockHeights] = useState<number[]>([1, 2, 3, 4]);
 
   useEffect(() => {
@@ -57,7 +72,7 @@ const BlockTable: React.FC = () => {
     if (newBlocksData) {
       const updatedBlockData = addBlockData(blockData, newBlocksData);
       setBlockData(updatedBlockData);
-
+      setmaxBlockTxCount(getmaxBlockTxCount(updatedBlockData));
       if (!newBlocksData.newBlocks) return;
 
       const newMaxHeight = Math.max(
@@ -104,6 +119,7 @@ const BlockTable: React.FC = () => {
             blockRowData={blockData[Number(chainId)]}
             heights={blockHeights}
             chainId={Number(chainId)}
+            maxBlockTxCount={maxBlockTxCount}
           />
         ))}
       </Stack>
