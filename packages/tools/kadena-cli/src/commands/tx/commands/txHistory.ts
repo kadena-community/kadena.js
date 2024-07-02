@@ -2,7 +2,6 @@ import { createClient } from '@kadena/client';
 import type { Command } from 'commander';
 import path from 'node:path';
 import { TRANSACTIONS_LOG_FILE } from '../../../constants/config.js';
-import { KadenaError } from '../../../services/service-error.js';
 import { createCommand } from '../../../utils/createCommand.js';
 import { notEmpty } from '../../../utils/globalHelpers.js';
 import { globalOptions } from '../../../utils/globalOptions.js';
@@ -116,8 +115,6 @@ export const printTxLogs = (transactionLog: ITransactionLog): void => {
 export const txHistory = async (): Promise<void> => {
   try {
     const transactionDir = getTransactionDirectory();
-    if (!notEmpty(transactionDir)) throw new KadenaError('no_kadena_directory');
-
     const transactionFilePath = path.join(
       transactionDir,
       TRANSACTIONS_LOG_FILE,

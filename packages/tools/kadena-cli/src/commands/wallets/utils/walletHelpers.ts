@@ -1,7 +1,7 @@
-import path from 'node:path';
+import type { IAccount } from '../../../services/account/account.types.js';
+import { services } from '../../../services/index.js';
 import { log } from '../../../utils/logger.js';
 import { relativeToCwd } from '../../../utils/path.util.js';
-import { writeAccountAlias } from '../../account/utils/createAccountConfigFile.js';
 
 export const logWalletInfo = (
   words: string,
@@ -39,27 +39,17 @@ export const logAccountCreation = (
 export const createAccountAliasByPublicKey = async (
   alias: string,
   publicKey: string,
-  directory: string,
-): Promise<{
-  accountName: string;
-  accountFilepath: string;
-}> => {
+): Promise<IAccount> => {
   const accountName = `k:${publicKey}`;
-  const accountFilepath = path.join(directory, `${alias}.yaml`);
-  await writeAccountAlias(
-    {
-      accountName,
-      fungible: 'coin',
-      predicate: `keys-all`,
-      publicKeysConfig: [publicKey],
-    },
-    accountFilepath,
-  );
+  const account = await services.account.create({
+    alias: alias,
+    name: accountName,
+    fungible: 'coin',
+    predicate: 'keys-all',
+    publicKeys: [publicKey],
+  });
 
-  return {
-    accountName,
-    accountFilepath,
-  };
+  return account;
 };
 
 /** find `amount` of free indexes starting at a `startIndex` while excluding indexes already in use by `existingIndexes` */
