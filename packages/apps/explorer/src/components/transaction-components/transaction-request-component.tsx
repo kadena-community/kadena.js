@@ -105,7 +105,7 @@ export const TransactionRequestComponent: React.FC<{
             { key: 'Scheme', value: signer.scheme ?? '' },
             {
               key: 'Capabilities',
-              value: (
+              value: signer.clist.length === 0 ? <></> : (
                 <DataRenderComponent
                   fields={signer.clist.map((capability) => ({
                     key: capability.name,

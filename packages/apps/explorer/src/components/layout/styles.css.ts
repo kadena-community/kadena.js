@@ -14,3 +14,7 @@ export const layoutWrapperClass = style({
   marginInline: 'auto',
   maxWidth: $$pageWidth,
 });
+
+export const contentClass = style({
+  minHeight: 'calc(100vh - 248px)',
+});

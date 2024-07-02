@@ -1,6 +1,6 @@
 export const menuConfig: IMenuConfig = [
   {
-    label: 'build',
+    label: 'Build',
     children: [
       { url: 'https://www.kadena.io/marmalade', label: 'Marmalade' },
       {

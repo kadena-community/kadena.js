@@ -4,7 +4,7 @@ import type {
   Transfer,
 } from '@/__generated__/sdk';
 import DataRenderComponent from '@/components/data-render-component/data-render-component';
-import { Text } from '@kadena/kode-ui';
+import { Grid, Text } from '@kadena/kode-ui';
 import React, { useEffect } from 'react';
 import { ifNill } from '../../utils/ifNill';
 
@@ -90,7 +90,7 @@ export const TransactionResultComponent: React.FC<{
           { key: 'Transaction ID', value: transactionResult.transactionId },
           {
             key: 'Continuation',
-            value: (
+            value: transactionResult.continuation && (
               <DataRenderComponent
                 fields={objectToDataRenderComponentFields({
                   ...JSON.parse(transactionResult.continuation ?? '[]'),
@@ -126,7 +126,7 @@ function mapParameters(
   if (!parameters) return '';
   try {
     return (
-      <>
+      <Grid>
         {(JSON.parse(parameters) as unknown[]).map((param) => {
           if (typeof param === 'object') {
             // eslint-disable-next-line react/jsx-key
@@ -139,7 +139,7 @@ function mapParameters(
           // eslint-disable-next-line react/jsx-key
           return <Text variant="code">{JSON.stringify(param)}</Text>;
         })}
-      </>
+      </Grid>
     );
   } catch {
     return parameters;
