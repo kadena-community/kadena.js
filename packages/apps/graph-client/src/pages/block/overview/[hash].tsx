@@ -10,7 +10,6 @@ import {
 } from '@/graphql/queries.graph';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import routes from '@constants/routes';
-import { KSquareKdacolorGreen } from '@kadena/react-icons/brand';
 import {
   Accordion,
   AccordionItem,
@@ -28,8 +27,9 @@ import {
   Table,
   TableBody,
   TableHeader,
-} from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
+} from '@kadena/kode-ui';
+import { atoms } from '@kadena/kode-ui/styles';
+import { KSquareKdacolorGreen } from '@kadena/react-icons/brand';
 
 import { useRouter } from 'next/router';
 import React from 'react';

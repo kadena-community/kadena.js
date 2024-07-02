@@ -1,8 +1,8 @@
 import type { FC } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 
-import type { IButtonProps } from '@kadena/react-ui';
-import { Button, Stack } from '@kadena/react-ui';
+import type { IButtonProps } from '@kadena/kode-ui';
+import { Button, Stack } from '@kadena/kode-ui';
 
 import { NAME_VALIDATION } from '@/components/Global/AccountNameField';
 import { FormStatusNotification } from '@/components/Global/FormStatusNotification';

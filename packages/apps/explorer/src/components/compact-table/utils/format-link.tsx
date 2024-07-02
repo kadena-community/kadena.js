@@ -1,5 +1,5 @@
+import { Stack, Text } from '@kadena/kode-ui';
 import { MonoArrowOutward } from '@kadena/react-icons';
-import { Stack, Text } from '@kadena/react-ui';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';

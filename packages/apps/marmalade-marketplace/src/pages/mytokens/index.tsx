@@ -3,7 +3,7 @@ import { ChainId } from '@kadena/client';
 import { getTokens, NonFungibleTokenBalance } from '@/graphql/queries/client';
 import { useAccount } from '@/hooks/account';
 import { Token } from "@/components/Token";
-import { Grid, GridItem, Stack } from "@kadena/react-ui";
+import { Grid, GridItem, Stack } from "@kadena/kode-ui";
 
 export default function MyTokens() {
   const [tokens, setTokens] = useState<Array<NonFungibleTokenBalance>>([]);

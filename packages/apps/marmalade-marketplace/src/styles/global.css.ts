@@ -1,5 +1,5 @@
 import { deviceColors } from '@/styles/tokens.css';
-import '@kadena/react-ui/global';
+import '@kadena/kode-ui/global';
 import { globalStyle, style } from '@vanilla-extract/css';
 
 globalStyle('body', {

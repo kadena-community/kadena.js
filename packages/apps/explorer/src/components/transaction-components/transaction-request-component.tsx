@@ -1,7 +1,7 @@
 import type { TransactionRequestKeyQuery } from '@/__generated__/sdk';
 import DataRenderComponent from '@/components/data-render-component/data-render-component';
 import { ifNill } from '@/utils/ifNill';
-import { Text } from '@kadena/react-ui';
+import { Text } from '@kadena/kode-ui';
 import React from 'react';
 
 type Transaction = Omit<

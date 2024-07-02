@@ -18,13 +18,6 @@ import {
 } from '@/services/transfer-tracker/get-transfer-status';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
-  MonoInfo,
-  MonoLink,
-  MonoRefresh,
-  MonoSearch,
-  MonoWarning,
-} from '@kadena/react-icons/system';
-import {
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
@@ -38,7 +31,14 @@ import {
   NotificationHeading,
   Stack,
   TrackerCard,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
+import {
+  MonoInfo,
+  MonoLink,
+  MonoRefresh,
+  MonoSearch,
+  MonoWarning,
+} from '@kadena/react-icons/system';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';

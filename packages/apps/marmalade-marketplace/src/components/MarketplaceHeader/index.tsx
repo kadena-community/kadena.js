@@ -17,7 +17,7 @@ import {
   NotificationFooter,
   NotificationButton,
   NotificationHeading
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 
 export const MarketplaceHeader= () => {
   const [showNotification, setShowNotification] = useState(false);

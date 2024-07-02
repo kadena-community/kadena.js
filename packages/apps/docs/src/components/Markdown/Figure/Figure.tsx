@@ -1,4 +1,4 @@
-import { Dialog, Text } from '@kadena/react-ui';
+import { Dialog, Text } from '@kadena/kode-ui';
 import Image from 'next/image';
 import type { FC } from 'react';
 import React, { useState } from 'react';

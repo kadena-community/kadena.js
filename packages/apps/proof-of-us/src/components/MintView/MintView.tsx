@@ -1,7 +1,7 @@
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useSubmit } from '@/hooks/submit';
 import { getReturnUrl } from '@/utils/getReturnUrl';
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';

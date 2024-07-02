@@ -1,6 +1,6 @@
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import type { INavigation } from '@kadena/docs-tools';
-import { Divider, Grid, GridItem, Stack } from '@kadena/react-ui';
+import { Divider, Grid, GridItem, Stack } from '@kadena/kode-ui';
 import classnames from 'classnames';
 import Link from 'next/link';
 import type { FC } from 'react';

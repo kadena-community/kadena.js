@@ -10,7 +10,7 @@ import {
   TabItem,
   Tabs,
   Text,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { ChainSelect } from '@/components/Global/ChainSelect';

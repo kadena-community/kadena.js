@@ -1,4 +1,4 @@
-import { Heading, Stack } from '@kadena/react-ui';
+import { Heading, Stack } from '@kadena/kode-ui';
 import { format } from 'date-fns';
 import Link from 'next/link';
 import type { FC } from 'react';

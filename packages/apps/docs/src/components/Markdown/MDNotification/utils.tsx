@@ -1,5 +1,5 @@
+import type { INotificationProps } from '@kadena/kode-ui';
 import { MonoWarning } from '@kadena/react-icons';
-import type { INotificationProps } from '@kadena/react-ui';
 import React from 'react';
 
 export type LabelType =

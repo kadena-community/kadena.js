@@ -2,7 +2,7 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import { env } from '@/utils/env';
 import * as styles from '@/styles/create-token.css';
 import { useRouter } from 'next/navigation';
-import { Stack, Heading, Tabs, TabItem, Button, Select, TextField, NumberField, SelectItem } from '@kadena/react-ui';
+import { Stack, Heading, Tabs, TabItem, Button, Select, TextField, NumberField, SelectItem } from '@kadena/kode-ui';
 
 // Import form components
 import RoyaltyForm from '@/components/RoyaltyForm';
@@ -23,7 +23,7 @@ import { useTransaction } from '@/hooks/transaction';
 function CreateTokenComponent() {
   const router = useRouter();
   const { account } = useAccount();
-  
+
   const [walletKey, setWalletKey] = useState<string>('');
   const [walletAccount, setWalletAccount] = useState('');
 
@@ -33,8 +33,8 @@ function CreateTokenComponent() {
       setWalletAccount(account.accountName);
     }
   }, [account]);
-  
-  
+
+
   const excluded = "[EXCLUDED]";
 
   const { transaction, send, preview, poll } = useTransaction();
@@ -75,7 +75,7 @@ function CreateTokenComponent() {
     saleGuard: walletKey,
     transferGuard: walletKey,
   });
-  
+
   const [royaltyInput, setRoyaltyInput] = useState({
     royaltyFungible: 'coin',
     royaltyCreator: walletAccount,
@@ -120,14 +120,14 @@ function CreateTokenComponent() {
   };
 
   const handleTokenInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;  
+    const { name, value } = e.target;
     setTokenInput((prev) => ({ ...prev, [name]: value}));
   };
 
   const handlePrecisionChange = (value: number) => {
     if (Number.isInteger(value) && value >= 0) {
       setTokenInput((prev) => ({
-        ...prev, 
+        ...prev,
         precision: value,
       }));
     }
@@ -192,7 +192,7 @@ function CreateTokenComponent() {
         royalty: formatRoyaltyInput(royaltyInput),
         collection: collectionInput,
       };
-      
+
       const tokenIdCreated = await createTokenId({ ...inputs, networkId: config.networkId, host: config.host });
       setTokenId(tokenIdCreated);
 

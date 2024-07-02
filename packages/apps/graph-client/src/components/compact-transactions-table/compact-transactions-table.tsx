@@ -7,7 +7,6 @@ import type {
   QueryTransactionsConnection,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
-import { KSquareKdacolorGreen } from '@kadena/react-icons/brand';
 import {
   Box,
   Cell,
@@ -19,8 +18,9 @@ import {
   TableBody,
   TableHeader,
   Tooltip,
-} from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
+} from '@kadena/kode-ui';
+import { atoms } from '@kadena/kode-ui/styles';
+import { KSquareKdacolorGreen } from '@kadena/react-icons/brand';
 import { truncate } from '@utils/truncate';
 import React from 'react';
 

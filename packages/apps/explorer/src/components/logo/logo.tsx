@@ -1,4 +1,4 @@
-import { useTheme } from '@kadena/react-ui';
+import { useTheme } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React from 'react';
 

@@ -1,4 +1,4 @@
-import '@kadena/react-ui/global';
+import '@kadena/kode-ui/global';
 import { globalStyle, style } from '@vanilla-extract/css';
 import { deviceColors } from './tokens.css';
 

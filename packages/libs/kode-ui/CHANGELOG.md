@@ -1,4 +1,4 @@
-# @kadena/react-ui
+# @kadena/kode-ui
 
 ## 0.12.2
 

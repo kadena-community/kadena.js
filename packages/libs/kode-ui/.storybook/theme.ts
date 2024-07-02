@@ -13,7 +13,7 @@ export const KadenaTheme = create({
 
   // Brand
   brandTitle: 'Kadena React UI Component Library',
-  brandUrl: 'https://react-ui.kadena.io/',
+  brandUrl: 'https://kode-ui.kadena.io/',
   brandImage: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="k_logo" x="0px" y="0px" enable-background="new 0 0 420 226" xml:space="preserve" width="420" height="98" viewBox="0 0 420 98">
     <style>path { fill: %234A9079; }</style>
     <path d="M118.134 77.4827V19.9131H126.945V43.839H128.307C131.887 39.8782 139.014 31.9048 149.698 19.9131H161.233C156.906 24.6798 148.285 34.127 135.359 48.2546C139.842 53.125 148.79 62.8657 162.193 77.4827H150.256C146.624 73.4125 139.307 65.2779 128.307 53.0732H126.945V77.4827H118.134Z" />

@@ -5,7 +5,7 @@ import {
   Select,
   SelectItem,
   TextField,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useState } from 'react';

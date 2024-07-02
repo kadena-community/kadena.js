@@ -2,7 +2,7 @@ import { BottomPageSection } from '@/components/BottomPageSection/BottomPageSect
 import { Breadcrumbs } from '@/components/Breadcrumbs/Breadcrumbs';
 import { TopPageSection } from '@/components/TopPageSection/TopPageSection';
 import type { IPageProps, ISubHeaderElement } from '@kadena/docs-tools';
-import { Heading } from '@kadena/react-ui';
+import { Heading } from '@kadena/kode-ui';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';

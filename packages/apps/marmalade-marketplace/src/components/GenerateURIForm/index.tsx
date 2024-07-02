@@ -1,5 +1,5 @@
 import React, { FC, useRef } from 'react';
-import { TextField, Heading } from '@kadena/react-ui';
+import { TextField, Heading } from '@kadena/kode-ui';
 import * as styles from '@/styles/create-token.css';
 
 interface GenerateURIProps {

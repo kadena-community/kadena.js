@@ -1,6 +1,6 @@
 import { networkConstants } from '@/constants/network';
 import { useRedirectOnNetworkChange } from '@/hooks/network/redirect';
-import { Select, SelectItem } from '@kadena/react-ui';
+import { Select, SelectItem } from '@kadena/kode-ui';
 
 import type { FC } from 'react';
 import React, { useState } from 'react';

@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import React, { useEffect } from 'react';
 
-import { Heading, Select, SelectItem, Stack } from '@kadena/react-ui';
+import { Heading, Select, SelectItem, Stack } from '@kadena/kode-ui';
 
 import Link from 'next/link';
 

@@ -1,5 +1,5 @@
 import { customTokens } from '@/styles/tokens.css';
-import { atoms, tokens } from '@kadena/react-ui/styles';
+import { atoms, tokens } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 import { recipe } from '@vanilla-extract/recipes';

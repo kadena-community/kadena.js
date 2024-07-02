@@ -1,5 +1,5 @@
+import { Box, Button, Dialog, DialogContent, Divider } from '@kadena/kode-ui';
 import { MonoInfo } from '@kadena/react-icons/system';
-import { Box, Button, Dialog, DialogContent, Divider } from '@kadena/react-ui';
 import type { DocumentNode } from 'graphql';
 import { print } from 'graphql';
 import React, { useState } from 'react';

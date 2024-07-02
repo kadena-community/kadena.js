@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { TextField } from '@kadena/react-ui';
+import { TextField } from '@kadena/kode-ui';
 import * as styles from '@/styles/create-token.css';
 
 interface RoyaltyFormProps {

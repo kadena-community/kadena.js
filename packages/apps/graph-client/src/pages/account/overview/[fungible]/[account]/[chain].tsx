@@ -37,8 +37,8 @@ import {
   TableHeader,
   Tabs,
   TextField,
-} from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
+} from '@kadena/kode-ui';
+import { atoms } from '@kadena/kode-ui/styles';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 

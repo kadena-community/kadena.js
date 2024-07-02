@@ -100,7 +100,7 @@ const nextConfig = {
 
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   reactStrictMode: true,
-  transpilePackages: ['@kadena/react-ui', 'react-tweet'],
+  transpilePackages: ['@kadena/kode-ui', 'react-tweet'],
   images: {
     remotePatterns: [
       {

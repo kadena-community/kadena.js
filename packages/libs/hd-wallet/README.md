@@ -27,13 +27,13 @@ of the library.
 
 To install the library, you can use npm or yarn:
 
-```bash
+```sh
 npm install @kadena/hd-wallet
 ```
 
 or
 
-```bash
+```sh
 yarn add @kadena/hd-wallet
 ```
 

@@ -9,7 +9,7 @@ import Layout from '@/components/layout/layout';
 import { useQueryContext } from '@/context/query-context';
 import { account } from '@/graphql/queries/account.graph';
 import { accountNameTextClass } from '@/styles/account.css';
-import { Heading, Stack, TabItem, Tabs, Text } from '@kadena/react-ui';
+import { Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
 import type { FC, Key } from 'react';

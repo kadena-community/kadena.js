@@ -1,5 +1,5 @@
 import React, { useState, FormEvent } from 'react';
-import { Heading , Select, SelectItem} from '@kadena/react-ui';
+import { Heading , Select, SelectItem} from '@kadena/kode-ui';
 import { Providers } from "@/providers/Providers";
 import Layout from '@/components/Layout';
 import CreateToken from '@/components/CreateToken';

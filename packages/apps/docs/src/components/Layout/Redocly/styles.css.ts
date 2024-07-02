@@ -1,4 +1,4 @@
-import { responsiveStyle, tokens } from '@kadena/react-ui/styles';
+import { responsiveStyle, tokens } from '@kadena/kode-ui/styles';
 import { createVar, style } from '@vanilla-extract/css';
 import { $$asideMenuWidthCode } from '../basestyles.css';
 import {

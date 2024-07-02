@@ -22,8 +22,8 @@ import {
   Stack,
   Themes,
   useTheme,
-} from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
+} from '@kadena/kode-ui';
+import { atoms } from '@kadena/kode-ui/styles';
 import { FC, useContext } from 'react';
 import { Link, Navigate, Outlet } from 'react-router-dom';
 

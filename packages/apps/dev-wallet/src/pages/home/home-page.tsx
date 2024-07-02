@@ -5,7 +5,7 @@ import {
   panelClass,
 } from '@/pages/home/style.css.ts';
 import { getAccountName } from '@/utils/helpers';
-import { Box, Heading, Stack, Text } from '@kadena/react-ui';
+import { Box, Heading, Stack, Text } from '@kadena/kode-ui';
 
 export function HomePage() {
   const { accounts, profile } = useWallet();

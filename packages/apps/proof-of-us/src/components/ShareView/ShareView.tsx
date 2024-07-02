@@ -4,12 +4,12 @@ import { useSignToken } from '@/hooks/data/signToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { getReturnHostUrl } from '@/utils/getReturnUrl';
 import { isAlreadySigning, isReadyToMint } from '@/utils/isAlreadySigning';
+import { Stack } from '@kadena/kode-ui';
 import {
   MonoArrowBack,
   MonoArrowDownward,
   MonoCheckCircle,
 } from '@kadena/react-icons';
-import { Stack } from '@kadena/react-ui';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';

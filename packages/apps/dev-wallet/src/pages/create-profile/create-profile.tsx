@@ -5,7 +5,7 @@ import { useNetwork } from '@/modules/network/network.hook';
 import { IKeySource } from '@/modules/wallet/wallet.repository';
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
 import { MonoCheck } from '@kadena/react-icons/system';
-import { Button, Heading, Stack, Text, TextField } from '@kadena/react-ui';
+import { Button, Heading, Stack, Text, TextField } from '@kadena/kode-ui';
 import { useContext, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';

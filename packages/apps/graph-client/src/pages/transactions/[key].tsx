@@ -4,7 +4,6 @@ import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import routes from '@/constants/routes';
 import { getTransactionByRequestKey } from '@/graphql/subscriptions.graph';
 import { formatCode, formatLisp } from '@/utils/formatter';
-import { MonoCheck, MonoClose } from '@kadena/react-icons/system';
 import {
   Box,
   Breadcrumbs,
@@ -18,8 +17,9 @@ import {
   Table,
   TableBody,
   TableHeader,
-} from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
+} from '@kadena/kode-ui';
+import { atoms } from '@kadena/kode-ui/styles';
+import { MonoCheck, MonoClose } from '@kadena/react-icons/system';
 import { useRouter } from 'next/router';
 import React from 'react';
 

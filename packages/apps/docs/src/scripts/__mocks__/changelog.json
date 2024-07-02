@@ -1116,7 +1116,7 @@
     "name": "Kode UI Components",
     "slug": "kode-ui-components",
     "repo": "https://github.com/kadena-community/kadena.js.git",
-    "directory": "/packages/libs/react-ui",
+    "directory": "/packages/libs/kode-ui",
     "fileName": "CHANGELOG.md",
     "owner": "kadena-community",
     "repoName": "kadena.js",
@@ -2604,7 +2604,7 @@
                     "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/3e940f62e477d5677379331299d57d39a33f66e2/comments",
                     "html_url": "https://github.com/kadena-community/kadena.js/commit/3e940f62e477d5677379331299d57d39a33f66e2",
                     "commit": {
-                      "message": "Aria and tokes complete form fields (#1512)\n\n* Refactor text fields\r\n\r\n* Select component\r\n\r\n* Combobox component\r\n\r\n* updated ListBox styles, added gap between form elements in Form stories, started fixing errors in select test\r\n\r\n* Fix lint errors and tests\r\n\r\n* Update apps to use the new form fields\r\n\r\n* Update packages/libs/react-ui/src/components/Form/Select/Select.stories.tsx\r\n\r\nCo-authored-by: eileenmguo <eileen@kadena.io>\r\n\r\n* Fix popover behavior\r\n\r\n* add changeset\r\n\r\n* use bundler resolution instead\r\n\r\n* FIx lint errors\r\n\r\n* Replaced old style with atoms\r\n\r\n* Fix tree shaking and build issue\r\n\r\n* Add global style note in readme\r\n\r\n* add jsdoc for utils and hooks\r\n\r\n* fix lint errors\r\n\r\n* skip chainweaver kadenaGenKeypair test\r\n\r\n* make hd-wallet test timeout 4x\r\n\r\n* get rid of any\r\n\r\n* Fix account name form filed\r\n\r\n* fix lints\r\n\r\n* fix disabled state and code font\r\n\r\n* fix pub key reset\r\n\r\n---------\r\n\r\nCo-authored-by: Eileen Guo <eileen.m.guo@gmail.com>\r\nCo-authored-by: eileenmguo <eileen@kadena.io>\r\nCo-authored-by: MRVDH <maarten.vandenhoven@deptagency.com>",
+                      "message": "Aria and tokes complete form fields (#1512)\n\n* Refactor text fields\r\n\r\n* Select component\r\n\r\n* Combobox component\r\n\r\n* updated ListBox styles, added gap between form elements in Form stories, started fixing errors in select test\r\n\r\n* Fix lint errors and tests\r\n\r\n* Update apps to use the new form fields\r\n\r\n* Update packages/libs/kode-ui/src/components/Form/Select/Select.stories.tsx\r\n\r\nCo-authored-by: eileenmguo <eileen@kadena.io>\r\n\r\n* Fix popover behavior\r\n\r\n* add changeset\r\n\r\n* use bundler resolution instead\r\n\r\n* FIx lint errors\r\n\r\n* Replaced old style with atoms\r\n\r\n* Fix tree shaking and build issue\r\n\r\n* Add global style note in readme\r\n\r\n* add jsdoc for utils and hooks\r\n\r\n* fix lint errors\r\n\r\n* skip chainweaver kadenaGenKeypair test\r\n\r\n* make hd-wallet test timeout 4x\r\n\r\n* get rid of any\r\n\r\n* Fix account name form filed\r\n\r\n* fix lints\r\n\r\n* fix disabled state and code font\r\n\r\n* fix pub key reset\r\n\r\n---------\r\n\r\nCo-authored-by: Eileen Guo <eileen.m.guo@gmail.com>\r\nCo-authored-by: eileenmguo <eileen@kadena.io>\r\nCo-authored-by: MRVDH <maarten.vandenhoven@deptagency.com>",
                       "comment_count": 1
                     }
                   }
@@ -3398,7 +3398,7 @@
                     "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/957af99228e5a3b9a22b9ed69fad879eade2e7e0/comments",
                     "html_url": "https://github.com/kadena-community/kadena.js/commit/957af99228e5a3b9a22b9ed69fad879eade2e7e0",
                     "commit": {
-                      "message": "[@kadena/react-ui] Split the dialog/ modal and add tests",
+                      "message": "[@kadena/kode-ui] Split the dialog/ modal and add tests",
                       "comment_count": 0
                     }
                   }

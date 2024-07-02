@@ -1,5 +1,5 @@
 import { getClassName } from '@/utils/getClassName';
-import { atoms, tokens } from '@kadena/react-ui/styles';
+import { atoms, tokens } from '@kadena/kode-ui/styles';
 import {
   createVar,
   fallbackVar,

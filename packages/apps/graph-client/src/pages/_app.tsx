@@ -1,5 +1,5 @@
-// load global styles from @kadena/react-ui
-import '@kadena/react-ui/global';
+// load global styles from @kadena/kode-ui
+import '@kadena/kode-ui/global';
 
 import Layout from '@/components/common/layout';
 import type { NormalizedCacheObject } from '@apollo/client';
@@ -9,7 +9,7 @@ import {
   InMemoryCache,
   split,
 } from '@apollo/client';
-import { RouterProvider } from '@kadena/react-ui';
+import { RouterProvider } from '@kadena/kode-ui';
 import '@styles/globals.css';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';

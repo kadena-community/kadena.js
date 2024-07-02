@@ -1,5 +1,5 @@
 import { filePathToRoute } from '@/pages/api/semanticsearch';
-import { Box, Heading, Text, useDialog } from '@kadena/react-ui';
+import { Box, Heading, Text, useDialog } from '@kadena/kode-ui';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
