@@ -1,5 +1,5 @@
-import { atoms, responsiveStyle } from '@kadena/react-ui/styles';
-import { style } from '@vanilla-extract/css';
+import { atoms, responsiveStyle, token, tokens } from '@kadena/react-ui/styles';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 export const blockHeightColumnHeaderStyle = style([
   atoms({
@@ -14,16 +14,30 @@ export const blockHeightColumnHeaderStyle = style([
 ]);
 
 export const blockGridStyle = style([
+  atoms({
+    borderRadius: 'sm',
+    borderWidth: 'hairline',
+    borderStyle: 'solid',
+    borderColor: 'base.subtle',
+  }),
   responsiveStyle({
     sm: {
-      gridTemplateColumns: '1fr 1fr 3fr 1fr',
+      gridTemplateColumns: '10% 10% 1fr 1fr 1fr 1fr 10%',
     },
     xs: {
       gridTemplateColumns: '1fr 3fr',
     },
   }),
-  {
-    outline: 'solid',
-    outlineWidth: 'thin',
-  },
+  {},
 ]);
+
+export const blockGridHoverableStyle = style({
+  transition:
+    'background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out',
+  selectors: {
+    '&:hover': {
+      borderColor: token('color.border.base.bold'),
+      backgroundColor: tokens.kda.foundation.color.background.base['@hover'],
+    },
+  },
+});

@@ -1,5 +1,5 @@
 import { token, tokens } from '@kadena/react-ui/styles';
-import { globalStyle } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 globalStyle('body,html', {
   backgroundColor: tokens.kda.foundation.color.background.base.default,
@@ -11,4 +11,8 @@ globalStyle('a', {
 
 globalStyle('a:hover', {
   color: token('color.link.base.@focus'),
+});
+
+export const fullWidthClass = style({
+  width: '100%',
 });

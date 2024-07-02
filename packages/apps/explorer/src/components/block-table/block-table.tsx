@@ -9,6 +9,7 @@ import type { IChainBlock } from '@/services/block';
 import { addBlockData } from '@/services/block';
 import { Stack } from '@kadena/react-ui';
 import React, { useEffect, useState } from 'react';
+import { fullWidthClass } from '../globalstyles.css';
 import { Media } from '../layout/media';
 import BlockTableHeader from './block-header/block-header';
 import BlockRow from './block-row/block-row';
@@ -87,12 +88,13 @@ const BlockTable: React.FC = () => {
 
   return (
     <>
-      <Media greaterThanOrEqual="sm">
+      <Media greaterThanOrEqual="sm" className={fullWidthClass}>
         <Stack
           display="flex"
           flexDirection={'column'}
           gap={'md'}
-          padding={'sm'}
+          paddingInline={'lg'}
+          width="100%"
         >
           <BlockTableHeader
             startColumns={startColumns}
@@ -114,7 +116,7 @@ const BlockTable: React.FC = () => {
           display="flex"
           flexDirection={'column'}
           gap={'md'}
-          padding={'sm'}
+          paddingInline={'sm'}
         >
           <BlockTableHeader
             startColumns={startColumns}

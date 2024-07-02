@@ -47,21 +47,21 @@ const BlockTableHeader: React.FC<IBlockTableHeaderProps> = ({
           </Stack>
         ))
       )}
-      <Stack borderStyle="solid" borderWidth="hairline">
-        {heightColumns.map((height, index) => (
-          <Stack key={index} className={blockHeightColumnHeaderStyle}>
-            <Media greaterThanOrEqual="sm">
-              <Text variant="body" size="small">
-                {blockHeightColumnDescription}
-              </Text>
-            </Media>
 
-            <Text variant="body" size="small" bold>
-              {height}
+      {heightColumns.map((height, index) => (
+        <Stack key={index} className={headerColumnStyle}>
+          <Media greaterThanOrEqual="sm">
+            <Text variant="body" size="small">
+              {blockHeightColumnDescription}
             </Text>
-          </Stack>
-        ))}
-      </Stack>
+          </Media>
+
+          <Text variant="body" size="small" bold>
+            {height}
+          </Text>
+        </Stack>
+      ))}
+
       {!isCompact && (
         <Stack className={headerColumnStyle}>
           <Text variant="body" size="small">

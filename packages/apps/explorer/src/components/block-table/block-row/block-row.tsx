@@ -3,8 +3,11 @@ import routes from '@/constants/routes';
 import type { IHeightBlock } from '@/services/block';
 import { formatNumberWithUnit } from '@/services/format';
 import { Grid, Link, Stack, Text } from '@kadena/react-ui';
+import classNames from 'classnames';
 import React from 'react';
+import { headerColumnStyle } from '../block-header/block-header.css';
 import {
+  blockGridHoverableStyle,
   blockGridStyle,
   blockHeightColumnHeaderStyle,
 } from '../block-table.css';
@@ -35,45 +38,46 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
     'N/A';
 
   return (
-    <Grid columns={4} className={blockGridStyle}>
-      <Stack className={rowTextElementStyle}>
+    <Grid
+      columns={4}
+      className={classNames(blockGridStyle, blockGridHoverableStyle)}
+    >
+      <Stack className={headerColumnStyle}>
         <Text className={textStyle}>{chainId}</Text>
       </Stack>
 
       {!isCompact && (
-        <Stack className={rowTextElementStyle}>
+        <Stack className={headerColumnStyle}>
           <Text variant="code">
             {`${formatNumberWithUnit(Number(blockDifficulty))}H`}
           </Text>
         </Stack>
       )}
 
-      <Stack>
-        {heights.map((height) =>
-          blockRowData[height] ? (
-            <Link
-              key={`block-${chainId}-${height}`}
-              className={rowLinkElementStyle}
-              href={`${routes.BLOCK_DETAILS}/${blockRowData[height].hash}`}
-            >
-              <Text className={blockHeightColumnHeaderStyle} variant="code">
-                {blockRowData[height].txCount}
-              </Text>
-            </Link>
-          ) : (
-            <Stack
-              key={`no-block-${chainId}-${height}`}
-              className={rowTextElementStyle}
-              width="100%"
-            >
-              <Text>-</Text>
-            </Stack>
-          ),
-        )}
-      </Stack>
+      {heights.map((height) =>
+        blockRowData[height] ? (
+          <Link
+            key={`block-${chainId}-${height}`}
+            className={headerColumnStyle}
+            href={`${routes.BLOCK_DETAILS}/${blockRowData[height].hash}`}
+          >
+            <Text className={blockHeightColumnHeaderStyle} variant="code">
+              {blockRowData[height].txCount}
+            </Text>
+          </Link>
+        ) : (
+          <Stack
+            key={`no-block-${chainId}-${height}`}
+            className={headerColumnStyle}
+            width="100%"
+          >
+            <Text>-</Text>
+          </Stack>
+        ),
+      )}
 
       {!isCompact && (
-        <Stack className={rowChartElementStyle}>
+        <Stack className={headerColumnStyle}>
           <BlockActivityChart
             data={heights.map((height) => blockRowData[height]?.txCount || 0)}
           />
