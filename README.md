@@ -39,11 +39,11 @@ Overview of the main packages maintained in this repository:
 | [@kadena/graph][35]                  | [![version][37]][36] |
 | [@kadena/hd-wallet][38]              | [![version][40]][39] |
 | [@kadena/kadena-cli][41]             | [![version][43]][42] |
-| [@kadena/kode-ui][44]                | [![version][46]][45] |
-| [@kadena/pactjs][47]                 | [![version][49]][48] |
-| [@kadena/pactjs-cli][50]             | [![version][52]][51] |
-| [@kadena/pactjs-generator][53]       | [![version][55]][54] |
-| [@kadena/kode-icons][56]            | [![version][58]][57] |
+| [@kadena/kode-icons][44]             | [![version][46]][45] |
+| [@kadena/kode-ui][47]                | [![version][49]][48] |
+| [@kadena/pactjs][50]                 | [![version][52]][51] |
+| [@kadena/pactjs-cli][53]             | [![version][55]][54] |
+| [@kadena/pactjs-generator][56]       | [![version][58]][57] |
 | [@kadena/types][59]                  | [![version][61]][60] |
 
 <!--packageTable end -->
@@ -111,25 +111,25 @@ Special thanks to the wonderful people who have contributed to this project:
 [42]: packages/tools/kadena-cli/CHANGELOG.md
 [43]: https://img.shields.io/npm/v/@kadena/kadena-cli.svg
 [44]:
-  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/kode-ui
-[45]: packages/libs/kode-ui/CHANGELOG.md
-[46]: https://img.shields.io/npm/v/@kadena/kode-ui.svg
-[47]:
-  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/pactjs
-[48]: packages/libs/pactjs/CHANGELOG.md
-[49]: https://img.shields.io/npm/v/@kadena/pactjs.svg
-[50]:
-  https://github.com/kadena-community/kadena.js/tree/main/packages/tools/pactjs-cli
-[51]: packages/tools/pactjs-cli/CHANGELOG.md
-[52]: https://img.shields.io/npm/v/@kadena/pactjs-cli.svg
-[53]:
-  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/pactjs-generator
-[54]: packages/libs/pactjs-generator/CHANGELOG.md
-[55]: https://img.shields.io/npm/v/@kadena/pactjs-generator.svg
-[56]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/kode-icons
-[57]: packages/libs/kode-icons/CHANGELOG.md
-[58]: https://img.shields.io/npm/v/@kadena/kode-icons.svg
+[45]: packages/libs/kode-icons/CHANGELOG.md
+[46]: https://img.shields.io/npm/v/@kadena/kode-icons.svg
+[47]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/kode-ui
+[48]: packages/libs/kode-ui/CHANGELOG.md
+[49]: https://img.shields.io/npm/v/@kadena/kode-ui.svg
+[50]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/pactjs
+[51]: packages/libs/pactjs/CHANGELOG.md
+[52]: https://img.shields.io/npm/v/@kadena/pactjs.svg
+[53]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/tools/pactjs-cli
+[54]: packages/tools/pactjs-cli/CHANGELOG.md
+[55]: https://img.shields.io/npm/v/@kadena/pactjs-cli.svg
+[56]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/pactjs-generator
+[57]: packages/libs/pactjs-generator/CHANGELOG.md
+[58]: https://img.shields.io/npm/v/@kadena/pactjs-generator.svg
 [59]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/types
 [60]: packages/libs/types/CHANGELOG.md
