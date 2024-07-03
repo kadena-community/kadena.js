@@ -22,6 +22,12 @@ export const blockWrapperClass = style([
   }),
 ]);
 
+export const blockWrapperSelectedClass = style([
+  atoms({
+    borderColor: 'tint.outline',
+  }),
+]);
+
 export const blockGridStyle = style([
   responsiveStyle({
     md: {

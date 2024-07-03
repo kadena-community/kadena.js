@@ -15,6 +15,7 @@ import {
   blockGridHoverableStyle,
   blockGridStyle,
   blockWrapperClass,
+  blockWrapperSelectedClass,
 } from '../block-table.css';
 import { textStyle } from './block-row.css';
 import HeightInfo from './height-info/height-info';
@@ -42,7 +43,13 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
   const isShowHeightInfo = selectedChainId === chainId;
 
   return (
-    <Stack className={blockWrapperClass} width="100%" flexDirection="column">
+    <Stack
+      className={classNames(blockWrapperClass, {
+        [blockWrapperSelectedClass]: isShowHeightInfo,
+      })}
+      width="100%"
+      flexDirection="column"
+    >
       <Grid className={classNames(blockGridStyle, blockGridHoverableStyle)}>
         <Stack className={headerColumnStyle}>
           <Text className={textStyle} bold>
