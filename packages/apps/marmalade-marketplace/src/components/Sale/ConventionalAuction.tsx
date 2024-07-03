@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { buyToken, escrowAccount, getAuctionDetails, getBid, withdrawToken } from "@kadena/client-utils/marmalade";
 import * as styles from "@/styles/sale.css"
 import { env } from "@/utils/env";
-import { Button, Stack } from "@kadena/react-ui";
+import { Button, Stack } from "@kadena/kode-ui";
 import { parsePactDate } from "@/utils/date";
 import { IPactInt } from "../../../../../libs/types/dist/types";
 import { Sale } from "@/hooks/getSales";

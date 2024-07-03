@@ -3,7 +3,7 @@ import { buyToken, getEscrowAccount } from "@kadena/client-utils/marmalade";
 import { getWebauthnGuard } from "@kadena/client-utils/webauthn";
 import * as styles from "@/styles/sale.css"
 import { env } from "@/utils/env";
-import { Button } from "@kadena/react-ui";
+import { Button } from "@kadena/kode-ui";
 import { createSignWithSpireKey } from "@/utils/signWithSpireKey";
 import { Sale } from "@/hooks/getSales";
 import { useRouter, useSearchParams } from "next/navigation";
