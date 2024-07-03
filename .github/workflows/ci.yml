@@ -137,6 +137,9 @@ jobs:
     
     - name: Merge & Publish Report
       uses: ./.github/actions/merge-publish-reports
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
 
   ci-gate:
     if: always()
