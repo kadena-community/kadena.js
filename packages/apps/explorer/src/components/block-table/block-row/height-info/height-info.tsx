@@ -1,8 +1,10 @@
 import type { Transaction } from '@/__generated__/sdk';
 import { useBlockQuery } from '@/__generated__/sdk';
 import BlockTransactions from '@/components/block-transactions/block-transactions';
+import routes from '@/constants/routes';
 import type { IBlockData } from '@/services/block';
-import { Heading, Stack } from '@kadena/kode-ui';
+import { Heading, Stack, TextLink } from '@kadena/kode-ui';
+import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
 import { blockInfoClass } from './styles.css';
@@ -32,8 +34,20 @@ const HeightInfo: FC<IProps> = ({ height }) => {
       className={blockInfoClass}
       width="100%"
       flexDirection="column"
+      gap="xs"
     >
-      <Heading as="h6">{height.height}</Heading>
+      <Stack alignItems="center">
+        <Heading as="h6">Block {height.height}</Heading>
+
+        <Stack flex={1} />
+        <Link
+          href={`${routes.BLOCK_DETAILS}/${height.hash}`}
+          legacyBehavior
+          passHref
+        >
+          <TextLink>See all details</TextLink>
+        </Link>
+      </Stack>
 
       <BlockTransactions
         transactions={

@@ -53,6 +53,9 @@ const BlockTable: React.FC = () => {
   const [blockData, setBlockData] = useState<IChainBlock>({});
   const [maxBlockTxCount, setmaxBlockTxCount] = useState(0);
   const [blockHeights, updateBlockHeights] = useState<number[]>([1, 2, 3, 4]);
+  const [blockHeightsClean, updateBlockHeightsClean] = useState<number[]>([
+    1, 2, 3, 4,
+  ]);
 
   const { ref, inView } = useInView({
     rootMargin: '-160px 0px 0px 0px',
@@ -66,14 +69,10 @@ const BlockTable: React.FC = () => {
         (_, i) => lastBlockHeight.lastBlockHeight - i,
       ).reverse();
 
-      if (selectedHeight && !newBlockHeights.includes(selectedHeight.height)) {
-        console.log(111);
-        newBlockHeights[0] = selectedHeight.height;
-      }
-
-      updateBlockHeights(newBlockHeights);
+      //updateBlockHeights(newBlockHeights);
+      updateBlockHeightsClean(newBlockHeights);
     }
-  }, [lastBlockHeight, selectedHeight?.hash]);
+  }, [lastBlockHeight]);
 
   useEffect(() => {
     if (oldBlocksData) {
@@ -99,17 +98,20 @@ const BlockTable: React.FC = () => {
           (_, i) => newMaxHeight - i,
         ).reverse();
 
-        if (
-          selectedHeight &&
-          !newBlockHeights.includes(selectedHeight.height)
-        ) {
-          newBlockHeights[0] = selectedHeight.height;
-        }
-
-        updateBlockHeights(newBlockHeights);
+        // updateBlockHeights(newBlockHeights);
+        updateBlockHeightsClean(newBlockHeights);
       }
     }
   }, [newBlocksData]);
+
+  useEffect(() => {
+    if (selectedHeight && !blockHeightsClean.includes(selectedHeight?.height)) {
+      blockHeightsClean[0] = selectedHeight?.height;
+      updateBlockHeights(blockHeightsClean);
+    } else {
+      updateBlockHeights(blockHeightsClean);
+    }
+  }, [selectedHeight, blockHeightsClean]);
 
   const { setQueries } = useQueryContext();
   useEffect(() => {

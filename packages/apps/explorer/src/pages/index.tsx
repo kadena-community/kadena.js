@@ -23,75 +23,73 @@ const Home: React.FC = () => {
 
   return (
     <Layout>
-      <Media greaterThanOrEqual="sm">
-        <Stack
-          flexDirection="column"
-          alignItems={'center'}
-          marginBlockStart="md"
-        >
-          <a href="/">
-            <Logo />
-          </a>
+      <BlockInfoProvider>
+        <Media greaterThanOrEqual="sm">
+          <Stack
+            flexDirection="column"
+            alignItems={'center'}
+            marginBlockStart="md"
+          >
+            <a href="/">
+              <Logo />
+            </a>
 
-          <SearchComponent
-            searchOption={searchOption}
-            setSearchOption={setSearchOption}
-            searchData={searchData}
-            setSearchQuery={setSearchQuery}
-            searchQuery={searchQuery}
-            loading={loading}
-            errors={errors}
-          />
-          {searchQuery ? (
-            searchData && (
-              <SearchResults
-                searchData={searchData}
-                loading={loading}
-                errors={errors}
-              />
-            )
-          ) : (
-            <BlockInfoProvider>
+            <SearchComponent
+              searchOption={searchOption}
+              setSearchOption={setSearchOption}
+              searchData={searchData}
+              setSearchQuery={setSearchQuery}
+              searchQuery={searchQuery}
+              loading={loading}
+              errors={errors}
+            />
+            {searchQuery ? (
+              searchData && (
+                <SearchResults
+                  searchData={searchData}
+                  loading={loading}
+                  errors={errors}
+                />
+              )
+            ) : (
               <BlockTable />
-            </BlockInfoProvider>
-          )}
-        </Stack>
-      </Media>
+            )}
+          </Stack>
+        </Media>
 
-      <Media lessThan="sm">
-        <StatisticsGrid />
-        <Stack
-          flexDirection="column"
-          alignItems={'center'}
-          paddingBlockStart={'xxl'}
-        >
-          <a href="/">
-            <Logo />
-          </a>
-          <SearchComponent
-            searchOption={searchOption}
-            setSearchOption={setSearchOption}
-            searchData={searchData}
-            setSearchQuery={setSearchQuery}
-            searchQuery={searchQuery}
-            loading={loading}
-            errors={errors}
-          />
-          {searchQuery ? (
-            searchData && (
-              <SearchResults
-                searchData={searchData}
-                loading={loading}
-                errors={errors}
-              />
-            )
-          ) : (
-            <BlockInfoProvider>
+        <Media lessThan="sm">
+          <StatisticsGrid />
+          <Stack
+            flexDirection="column"
+            alignItems={'center'}
+            paddingBlockStart={'xxl'}
+          >
+            <a href="/">
+              <Logo />
+            </a>
+            <SearchComponent
+              searchOption={searchOption}
+              setSearchOption={setSearchOption}
+              searchData={searchData}
+              setSearchQuery={setSearchQuery}
+              searchQuery={searchQuery}
+              loading={loading}
+              errors={errors}
+            />
+            {searchQuery ? (
+              searchData && (
+                <SearchResults
+                  searchData={searchData}
+                  loading={loading}
+                  errors={errors}
+                />
+              )
+            ) : (
               <BlockTable />
-            </BlockInfoProvider>
-          )}
-        </Stack>
-      </Media>
+            )}
+          </Stack>
+        </Media>
+      </BlockInfoProvider>
     </Layout>
   );
 };
