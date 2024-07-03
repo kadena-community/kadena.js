@@ -31,7 +31,7 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
   chainId,
   maxBlockTxCount,
 }) => {
-  const { selectedChainId, selectedHash } = useBlockInfo();
+  const { selectedChainId, selectedHeight } = useBlockInfo();
   const blockDifficulty =
     blockRowData[heights[3]]?.difficulty ||
     blockRowData[heights[2]]?.difficulty ||
@@ -89,7 +89,7 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
           />
         </Stack>
       </Grid>
-      {isShowHeightInfo && <HeightInfo hash={selectedHash} />}
+      {isShowHeightInfo && <HeightInfo height={selectedHeight} />}
     </Stack>
   );
 };

@@ -20,9 +20,9 @@ const BlockCell: FC<IProps> = ({ height, chainId }) => {
 
   const handleOpenHeight = useCallback(() => {
     if (handleOpenHeightBlock) {
-      handleOpenHeightBlock(height.height, chainId, height.hash);
+      handleOpenHeightBlock(chainId, height);
     }
-  }, [height.height, chainId, height.hash, handleOpenHeightBlock]);
+  }, [chainId, height.hash, handleOpenHeightBlock]);
   return (
     <Stack
       position="relative"

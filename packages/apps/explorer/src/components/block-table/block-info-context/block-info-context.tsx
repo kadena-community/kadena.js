@@ -1,22 +1,18 @@
+import type { IBlockData } from '@/services/block';
 import type { FC, PropsWithChildren } from 'react';
 import React, { createContext, useContext, useState } from 'react';
 
 interface IBlockInfoContextProps {
   selectedChainId?: number;
-  selectedHeight?: number;
+  selectedHeight?: IBlockData;
   selectedHash?: string;
-  handleOpenHeightBlock: (
-    height: number,
-    chainId: number,
-    hash: string,
-  ) => void;
+  handleOpenHeightBlock: (chainId: number, height: IBlockData) => void;
 }
 
 const defaultContext: IBlockInfoContextProps = {
   selectedChainId: undefined,
   selectedHeight: undefined,
-  selectedHash: undefined,
-  handleOpenHeightBlock: (height: number, chainId: number, hash: string) => {},
+  handleOpenHeightBlock: (chainId: number, height: IBlockData) => {},
 };
 
 export const BlockInfoContext = createContext<
@@ -26,30 +22,24 @@ export const BlockInfoContext = createContext<
 export const BlockInfoProvider: FC<PropsWithChildren> = ({ children }) => {
   const context = useContext(BlockInfoContext);
   const [selectedChainId, setSelectedChainId] = useState<number | undefined>();
-  const [selectedHeight, setSelectedHeight] = useState<number | undefined>();
-  const [selectedHash, setSelectedHash] = useState<string | undefined>();
+  const [selectedHeight, setSelectedHeight] = useState<
+    IBlockData | undefined
+  >();
 
-  const handleOpenHeightBlock = (
-    height: number,
-    chainId: number,
-    hash: string,
-  ) => {
+  const handleOpenHeightBlock = (chainId: number, height: IBlockData): void => {
     // if block is already open, close again
+
     if (
       selectedChainId === chainId &&
-      selectedHeight === height &&
-      selectedHash === hash
+      selectedHeight?.height === height?.height
     ) {
       setSelectedChainId(undefined);
       setSelectedHeight(undefined);
-      setSelectedHash(undefined);
       return;
     }
 
-    console.log({ chainId });
     setSelectedChainId(chainId);
     setSelectedHeight(height);
-    setSelectedHash(hash);
   };
 
   if (context) return <>{children}</>;
@@ -58,7 +48,6 @@ export const BlockInfoProvider: FC<PropsWithChildren> = ({ children }) => {
       value={{
         selectedChainId,
         selectedHeight,
-        selectedHash,
         handleOpenHeightBlock,
       }}
     >
