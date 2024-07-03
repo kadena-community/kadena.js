@@ -1,7 +1,7 @@
 import { IUnsignedCommand } from '@kadena/client';
 import { transactionRepository } from './transaction.repository';
 
-export function addTransaction(
+export async function addTransaction(
   transaction: IUnsignedCommand,
   profileId: string,
   networkId: string,
@@ -13,6 +13,6 @@ export function addTransaction(
     status: 'initiated' as const,
     ...transaction,
   };
-  transactionRepository.addTransaction(tx);
+  await transactionRepository.addTransaction(tx);
   return tx;
 }

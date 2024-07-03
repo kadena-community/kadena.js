@@ -164,7 +164,7 @@ export function ReviewTransaction({
                         >
                           <Value>
                             (
-                            {[cap.name, ...cap.args.map(parseAsPactValue)].join(
+                            {[cap.name, ...cap.args.map((data)=> typeof data === "number" ? data : parseAsPactValue(data))].join(
                               ' ',
                             )}
                             )

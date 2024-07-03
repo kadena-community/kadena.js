@@ -1,18 +1,14 @@
-import {
-  IPactCommand,
-  IUnsignedCommand,
-  parseAsPactValue,
-} from '@kadena/client';
-import { Button, Heading, Stack, Text } from '@kadena/react-ui';
+import { IPactCommand, IUnsignedCommand } from '@kadena/client';
+import { Heading, Stack, Text } from '@kadena/react-ui';
 import { FC, PropsWithChildren, useMemo } from 'react';
 import {
-  breakAllClass,
   cardClass,
   codeClass,
   containerClass,
-  footerClass,
   labelClass,
 } from './style.css.ts';
+
+import { Signers } from './Signers.tsx';
 
 const Label: FC<PropsWithChildren> = ({ children }) => (
   <Text className={labelClass}>{children}</Text>
@@ -29,18 +25,13 @@ const Value: FC<PropsWithChildren<{ className?: string }>> = ({
 
 export function ReviewTransaction({
   transaction,
-  confirm,
-  refuse,
 }: {
   transaction: IUnsignedCommand;
-  confirm: () => void;
-  refuse: () => void;
 }) {
   const command: IPactCommand = useMemo(
     () => JSON.parse(transaction.cmd),
     [transaction.cmd],
   );
-  console.log('parseAsPactValue', parseAsPactValue);
   return (
     <Stack flexDirection={'column'} className={containerClass}>
       <Heading>Confirm Transaction</Heading>
@@ -120,50 +111,7 @@ export function ReviewTransaction({
             </Stack>
           </Stack>
         </Stack>
-        <Stack flexDirection={'column'} gap={'sm'}>
-          <Heading variant="h4">Signers</Heading>
-          <Stack gap={'sm'} flexDirection={'column'}>
-            {command.signers.map((signer) => (
-              <Stack
-                gap={'sm'}
-                flexDirection={'column'}
-                className={cardClass}
-                key={signer.pubKey}
-              >
-                <Heading variant="h5">Public Key</Heading>
-                <Value className={breakAllClass}>{signer.pubKey}</Value>
-                <Stack gap={'sm'} justifyContent={'space-between'}></Stack>
-                <Stack gap={'sm'} flexDirection={'column'}>
-                  <Heading variant="h5">Sign for</Heading>
-                  {signer.clist &&
-                    signer.clist.map((cap) => (
-                      <Stack
-                        key={cap.name}
-                        gap={'sm'}
-                        justifyContent={'space-between'}
-                        className={codeClass}
-                      >
-                        <Value>
-                          (
-                          {[cap.name, ...cap.args.map(parseAsPactValue)].join(
-                            ' ',
-                          )}
-                          )
-                        </Value>
-                      </Stack>
-                    ))}
-                </Stack>
-              </Stack>
-            ))}
-          </Stack>
-        </Stack>
-      </Stack>
-
-      <Stack gap={'sm'} flex={1} className={footerClass}>
-        <Button onClick={confirm}>Confirm</Button>
-        <Button variant="transparent" onClick={refuse}>
-          Refuse
-        </Button>
+        <Signers transaction={transaction} />
       </Stack>
     </Stack>
   );

@@ -13,6 +13,9 @@ import { Box, Button, Card, Heading, Text } from '@kadena/react-ui';
 import { useMemo, useState } from 'react';
 import { codeArea } from './style.css';
 import { normalizeSigs } from './utils/normalizeSigs';
+import * as transactionService from '@/modules/transaction/transaction.service';
+import { useNetwork } from '@/modules/network/network.hook';
+import { useNavigate } from 'react-router-dom';
 
 type requestScheme =
   | 'invalid'
@@ -71,7 +74,9 @@ export function SignatureBuilder() {
   const [capsWithoutSigners, setCapsWithoutSigners] = useState<
     ISigningRequest['caps']
   >([]);
-  const { sign } = useWallet();
+  const { sign, profile } = useWallet();
+  const { activeNetwork } = useNetwork();
+  const navigate = useNavigate();
 
   const exec =
     pactCommand && pactCommand.payload && 'exec' in pactCommand.payload
@@ -176,7 +181,15 @@ export function SignatureBuilder() {
                 <Box>
                   {['PactCommand', 'quickSignRequest'].includes(schema!) && (
                     <>
-                      <Button onPress={() => goTo(2)}>
+                      <Button onPress={async () => {
+                        if(!unsignedTx || !profile || !activeNetwork) return;
+                        const tx = await transactionService.addTransaction(
+                          unsignedTx,
+                          profile.uuid,
+                          activeNetwork.networkId,
+                        );
+                        navigate(`/transaction/${tx.uuid}`)
+                      }}>
                         Review Transaction
                       </Button>
                     </>

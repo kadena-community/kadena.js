@@ -32,3 +32,24 @@ export const containerClass = style({
   borderRadius: '5px',
   backgroundColor: tokens.kda.foundation.color.neutral.n1,
 });
+
+export const signedClass = style({
+  background: vars.colors.$positiveContrast,
+  padding: '2px 5px',
+  borderRadius: '3px',
+  fontWeight: 'bold',
+});
+
+export const readyToSignClass = style({
+  background: vars.colors.$primaryLowContrast,
+  padding: '2px 5px',
+  borderRadius: '3px',
+  fontWeight: 'bold',
+});
+
+export const tagClass = style({
+  background: vars.colors.$layoutSurfaceCard,
+  padding: '2px 5px',
+  borderRadius: '3px',
+  fontWeight: 'bold',
+});

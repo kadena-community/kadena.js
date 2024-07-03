@@ -4,10 +4,11 @@ import {
 } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { submitClient } from '@kadena/client-utils';
-import { Heading, Stack } from '@kadena/react-ui';
+import { Button, Heading, Stack } from '@kadena/react-ui';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ReviewTransaction } from './components/ReviewTransaction';
+import { Signers } from './components/Signers';
 
 const getTxStartPoint = (tx: ITransaction | undefined | null) => {
   if (!tx) {
@@ -35,6 +36,7 @@ const getTxStartPoint = (tx: ITransaction | undefined | null) => {
 export function Transaction() {
   const { transactionId } = useParams();
   const { sign } = useWallet();
+  const [error, setError] = useState<string | null>(null);
   const [transaction, setTransaction] = useState<ITransaction | null>(null);
   const [task, setTask] = useState<ReturnType<
     ReturnType<typeof submitClient>['from']
@@ -89,54 +91,82 @@ export function Transaction() {
     run();
   }, [transactionId, sign]);
 
+  const onError = (e: Error) => {
+    console.error(e);
+    setError(e.message ?? e.toString());
+  };
+
+  if (error) {
+    return (
+      <Stack flexDirection={'column'} gap={'xl'}>
+        <Heading variant="h4">Error: {error}</Heading>
+      </Stack>
+    );
+  }
+
   return (
     <Stack flexDirection={'column'} gap={'xl'}>
       <Heading variant="h4">Status: {transaction?.status || 'UNKNOWN'}</Heading>
       {transaction?.status === 'initiated' && (
-        <ReviewTransaction
-          transaction={transaction}
-          confirm={() => {
-            console.log("task?.executeTo('sign')", task?.executeTo('sign'));
-            task?.executeTo('sign');
-          }}
-          refuse={() => {
-            transactionRepository.deleteTransaction(transaction.uuid);
-          }}
-        />
+        <>
+          <ReviewTransaction transaction={transaction} />
+          <Stack gap={'sm'} flex={1}>
+            <Button
+              onClick={() => {
+                task?.executeTo('sign').catch(onError);
+              }}
+            >
+              Sign Transaction
+            </Button>
+            <Button
+              variant="transparent"
+              onClick={() => {
+                transactionRepository.deleteTransaction(transaction.uuid);
+              }}
+            >
+              Reject
+            </Button>
+          </Stack>
+        </>
       )}
 
       {transaction?.status === 'signed' && (
-        <Stack>
-          <Heading variant="h4">Transaction Signed</Heading>
-          {transaction.sigs.map((sig, i) => (
-            <Stack key={i}>
-              <Heading variant="h4">Signature {i + 1}</Heading>
-              <Stack>
-                <Heading variant="h5">PubKey</Heading>
-                <Stack>{sig?.pubKey}</Stack>
-              </Stack>
-              <Stack>
-                <Heading variant="h5">Signature</Heading>
-                <Stack>{sig?.sig}</Stack>
-              </Stack>
+        <>
+          <Signers transaction={transaction} />
+          <Stack gap={'sm'} justifyContent={'space-between'} flex={1}>
+            <Stack gap={'sm'}>
+              <Button
+                variant="positive"
+                onClick={() => {
+                  task?.execute().catch(onError);
+                }}
+              >
+                Copy Signed Transaction
+              </Button>
+              <Button
+                variant="transparent"
+                onClick={() => {
+                  transactionRepository.deleteTransaction(transaction.uuid);
+                }}
+              >
+                Remove Transaction
+              </Button>
             </Stack>
-          ))}
-          <Stack>
-            <button
+            <Button
               onClick={() => {
-                task?.execute();
+                task?.execute().catch(onError);
               }}
             >
-              Submit
-            </button>
+              Submit Transaction
+            </Button>
           </Stack>
-        </Stack>
+        </>
       )}
 
       {transaction?.status === 'submitted' && (
-        <Stack>
+        <Stack flexDirection={'column'}>
           <Heading variant="h4">Transaction Submitted</Heading>
-          <Stack>
+          <Stack flexDirection={'column'}>
             <Heading variant="h5">Request</Heading>
             <Stack>{JSON.stringify(transaction.request)}</Stack>
           </Stack>
@@ -144,9 +174,9 @@ export function Transaction() {
       )}
 
       {transaction?.status === 'success' && (
-        <Stack>
+        <Stack flexDirection={'column'}>
           <Heading variant="h4">Transaction Success</Heading>
-          <Stack>
+          <Stack flexDirection={'column'}>
             <Heading variant="h5">Result</Heading>
             <Stack>{JSON.stringify(transaction.result)}</Stack>
           </Stack>
@@ -154,7 +184,7 @@ export function Transaction() {
       )}
 
       {transaction?.status === 'failure' && (
-        <Stack>
+        <Stack flexDirection={'column'}>
           <Heading variant="h4">Transaction failed</Heading>
           <Stack>
             <Heading variant="h5">Result</Heading>

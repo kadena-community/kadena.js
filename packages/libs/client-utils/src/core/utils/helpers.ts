@@ -131,16 +131,20 @@ export const getClient = (
 export const asyncLock = () => {
   let res = () => {};
   let promise = Promise.resolve();
+  let isLocked = false;
   const lock = {
     open: () => {
+      isLocked = false;
       res();
     },
     waitTillOpen: () => promise,
     close: () => {
+      isLocked = true;
       promise = new Promise((resolve) => {
         res = resolve;
       });
     },
+    isLocked: () => isLocked,
   };
   lock.close();
   return lock;

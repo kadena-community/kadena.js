@@ -18,7 +18,7 @@ export type ITransaction = {
   profileId: string;
   hash: string;
   cmd: string;
-  sigs: Array<{ sig: string; pubKey?: string } | undefined>;
+  sigs: Array<{ sig?: string; pubKey?: string } | undefined>;
 } & (
   | {
       height?: number;

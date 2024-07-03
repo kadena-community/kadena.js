@@ -153,7 +153,9 @@ export interface ISignature {
 // @alpha (undocumented)
 export interface ISignatureJson {
     // (undocumented)
-    sig: string;
+    pubKey?: string;
+    // (undocumented)
+    sig?: string;
 }
 
 // @alpha (undocumented)

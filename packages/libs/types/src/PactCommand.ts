@@ -198,7 +198,8 @@ export interface IUserSig {
  * @alpha
  */
 export interface ISignatureJson {
-  sig: string;
+  sig?: string;
+  pubKey?: string;
 }
 
 // TODO: function for gettig from ICommandPayload-> CommandPayloadStringifiedJSON

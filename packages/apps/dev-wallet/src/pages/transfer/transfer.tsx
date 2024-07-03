@@ -349,12 +349,19 @@ export function Transfer() {
             justifyContent={'flex-start'}
             alignItems={'flex-start'}
             paddingBlockStart={'lg'}
+            gap={'sm'}
           >
             <Button
               type="submit"
               isDisabled={!isValid || optimalTransfers.length === 0}
             >
-              Transfer
+              Confirm
+            </Button>
+            <Button
+              variant="transparent"
+              isDisabled={!isValid || optimalTransfers.length === 0}
+            >
+              Advance Options
             </Button>
           </Stack>
         </form>
