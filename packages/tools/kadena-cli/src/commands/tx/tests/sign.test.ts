@@ -59,6 +59,25 @@ describe('tx sign', () => {
     expect(signWithKeypair).toHaveBeenCalled();
     expect(signWithWallet).not.toHaveBeenCalled();
   });
+
+  it('signs a transaction when it is coming from chainweaver', async () => {
+    const chainweaverTx = `{"cmd":"{\"signers\":[{\"pubKey\":\"554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94\",\"clist\":[{\"name\":\"coin.TRANSFER\",\"args\":[\"k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94\",\"k:ff9b64a61902024870a59775624ca594ab14054c97eb6fae97105b88674b5edd\",1.000000000001]},{\"name\":\"coin.GAS\",\"args\":[]}]},{\"pubKey\":\"ff9b64a61902024870a59775624ca594ab14054c97eb6fae97105b88674b5edd\",\"clist\":[{\"name\":\"coin.TRANSFER\",\"args\":[\"k:ff9b64a61902024870a59775624ca594ab14054c97eb6fae97105b88674b5edd\",\"k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94\",1.0e-12]}]}],\"meta\":{\"creationTime\":1720002679,\"ttl\":19128,\"chainId\":\"0\",\"gasPrice\":1.0e-8,\"gasLimit\":4720,\"sender\":\"k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94\"},\"nonce\":\"chainweaver\",\"networkId\":\"testnet04\",\"payload\":{\"exec\":{\"code\":\"(coin.transfer-create \\\"k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94\\\" \\\"k:ff9b64a61902024870a59775624ca594ab14054c97eb6fae97105b88674b5edd\\\" (read-keyset \\\"ks\\\") (+ 1.0 0.000000000001))\\n(coin.transfer \\\"k:ff9b64a61902024870a59775624ca594ab14054c97eb6fae97105b88674b5edd\\\" \\\"k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94\\\" 0.000000000001)\",\"data\":{\"ks\":{\"keys\":[\"ff9b64a61902024870a59775624ca594ab14054c97eb6fae97105b88674b5edd\"],\"pred\":\"keys-all\"}}}}}","hash":"OgrErbv9r4VhL1-jIhbneTzCsPp8JnkR78UGeiWCxHU","sigs":{"ff9b64a61902024870a59775624ca594ab14054c97eb6fae97105b88674b5edd":null,"554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94":"0144fcb6c550fcb1d5c1e6d712a2168e93f3081d624cdf20aa8983a372046f2eba7121b53f2a9d8837de0908c3dc16b976ad85cdf92c5eb5856c6a814611dd03"}}`;
+
+    mockPrompts({
+      select: {
+        'Select an action:': 'wallet',
+      },
+    });
+
+    const { stderr } = await runCommand(['tx', 'sign'], {
+      stdin: chainweaverTx,
+    });
+    console.log(stderr);
+
+    expect(stderr.includes('wallet')).toEqual(true);
+    expect(signWithWallet).toHaveBeenCalled();
+    expect(signWithKeypair).not.toHaveBeenCalled();
+  });
 });
 
 const publicKey =
