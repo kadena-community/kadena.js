@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import BlockTableHeader from './block-header/block-header';
 import { blockHeaderFixedClass } from './block-header/block-header.css';
+import { useBlockInfo } from './block-info-context/block-info-context';
 import BlockRow from './block-row/block-row';
 
 export const startColumns = [
@@ -47,10 +48,14 @@ const BlockTable: React.FC = () => {
       heightCount: 4,
     },
   });
+  const { selectedHeight } = useBlockInfo();
 
   const [blockData, setBlockData] = useState<IChainBlock>({});
   const [maxBlockTxCount, setmaxBlockTxCount] = useState(0);
   const [blockHeights, updateBlockHeights] = useState<number[]>([1, 2, 3, 4]);
+  const [blockHeightsClean, updateBlockHeightsClean] = useState<number[]>([
+    1, 2, 3, 4,
+  ]);
 
   const { ref, inView } = useInView({
     rootMargin: '-160px 0px 0px 0px',
@@ -64,7 +69,8 @@ const BlockTable: React.FC = () => {
         (_, i) => lastBlockHeight.lastBlockHeight - i,
       ).reverse();
 
-      updateBlockHeights(newBlockHeights);
+      //updateBlockHeights(newBlockHeights);
+      updateBlockHeightsClean(newBlockHeights);
     }
   }, [lastBlockHeight]);
 
@@ -92,10 +98,20 @@ const BlockTable: React.FC = () => {
           (_, i) => newMaxHeight - i,
         ).reverse();
 
-        updateBlockHeights(newBlockHeights);
+        //updateBlockHeights(newBlockHeights);
+        updateBlockHeightsClean(newBlockHeights);
       }
     }
   }, [newBlocksData]);
+
+  useEffect(() => {
+    if (selectedHeight && !blockHeightsClean.includes(selectedHeight?.height)) {
+      blockHeightsClean[0] = selectedHeight?.height;
+      updateBlockHeights(blockHeightsClean);
+    } else {
+      updateBlockHeights(blockHeightsClean);
+    }
+  }, [selectedHeight, newBlocksData]);
 
   const { setQueries } = useQueryContext();
   useEffect(() => {
@@ -106,7 +122,6 @@ const BlockTable: React.FC = () => {
     ]);
   }, []);
 
-  console.log(inView);
   return (
     <>
       <Stack

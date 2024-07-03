@@ -2,7 +2,7 @@ import { Media } from '@/components/layout/media';
 import { Grid, Stack, Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import React from 'react';
-import { blockGridStyle } from '../block-table.css';
+import { blockGridStyle, blockWrapperClass } from '../block-table.css';
 import { columnTitleClass, headerColumnStyle } from './block-header.css';
 
 interface IBlockTableHeaderProps {
@@ -20,7 +20,7 @@ const BlockTableHeader: React.FC<IBlockTableHeaderProps> = ({
   endColumn,
 }) => {
   return (
-    <Grid className={classNames(blockGridStyle)}>
+    <Grid className={classNames(blockGridStyle, blockWrapperClass)}>
       {startColumns.map((column, index) => (
         <Stack key={index} className={headerColumnStyle}>
           <Text as="p" variant="body" size="small" className={columnTitleClass}>
