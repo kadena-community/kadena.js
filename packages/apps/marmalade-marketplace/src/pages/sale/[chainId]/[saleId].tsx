@@ -1,4 +1,4 @@
-import { Heading, Stack } from '@kadena/react-ui';
+import { Heading, Stack } from '@kadena/kode-ui';
 import * as styles from "@/styles/sale.css"
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
