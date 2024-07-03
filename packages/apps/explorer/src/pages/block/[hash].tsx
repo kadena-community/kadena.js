@@ -1,9 +1,6 @@
 import type { Transaction } from '@/__generated__/sdk';
 import { useBlockQuery } from '@/__generated__/sdk';
 import BlockTransactions from '@/components/block-transactions/block-transactions';
-import CompactTable from '@/components/compact-table/compact-table';
-import { FormatLink } from '@/components/compact-table/utils/format-link';
-import { FormatStatus } from '@/components/compact-table/utils/format-status';
 import DataRenderComponent from '@/components/data-render-component/data-render-component';
 import Layout from '@/components/layout/layout';
 import { useQueryContext } from '@/context/query-context';
