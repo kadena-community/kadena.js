@@ -4,6 +4,10 @@ import { devices } from '@playwright/test';
 
 const config: PlaywrightTestConfig = {
   ...baseConfig,
+  reporter:
+    process.env.CI !== undefined
+      ? [['list'], ['blob', { outputFile: 'blob-pou.zip' }]]
+      : [['list'], ['html', { open: 'never' }]],
   timeout: 1800000,
   projects: [
     {

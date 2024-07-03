@@ -10,10 +10,6 @@ export const baseConfig: PlaywrightTestConfig = {
   retries: process.env.CI !== undefined ? 1 : 0,
   workers: 1,
   reportSlowTests: null,
-  reporter:
-    process.env.CI !== undefined
-      ? [['list'], ['blob']]
-      : [['list'], ['html', { open: 'never' }]],
   use: {
     headless: process.env.CI !== undefined,
     baseURL: 'http://localhost:3000/',

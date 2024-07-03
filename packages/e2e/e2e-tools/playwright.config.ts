@@ -3,6 +3,10 @@ import type { PlaywrightTestConfig } from '@playwright/test';
 
 const config: PlaywrightTestConfig = {
   ...baseConfig,
+  reporter:
+    process.env.CI !== undefined
+      ? [['list'], ['blob', { outputFile: 'blob-tools.zip' }]]
+      : [['list'], ['html', { open: 'never' }]],
   webServer: {
     command: `pnpm --filter @kadena/tools start`,
     url: 'http://localhost:3000',
