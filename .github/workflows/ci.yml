@@ -2,9 +2,6 @@ name: CI (build, lint, test)
 # All pull requests, and
 # Workflow dispatch allows you to run this workflow manually from the Actions tab
 on:
-  push:
-    branches:
-      - main
   pull_request:
   workflow_dispatch:
 
