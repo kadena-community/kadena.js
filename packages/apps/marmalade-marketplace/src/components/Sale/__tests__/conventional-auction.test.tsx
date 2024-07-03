@@ -1,7 +1,7 @@
-import { expect, test } from 'vitest'
+import { expect, test } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { useAccount } from '@/hooks/account';
-import { ConventionalAuction } from '@/components/Sale/ConventionalAuction'
+import { ConventionalAuction } from '@/components/Sale/ConventionalAuction';
 import { Sale } from '@/hooks/getSales';
 import { useRouter } from 'next/navigation';
 import { getAuctionDetails } from '@kadena/client-utils/marmalade';
@@ -17,7 +17,6 @@ const mockUseAccount = vi.mocked(useAccount);
 const mockUseRouter = vi.mocked(useRouter);
 const mockGetAuctionDetails = vi.mocked(getAuctionDetails);
 const mockGetBids = vi.mocked(getBids);
-
 
 // Mocking the Token component
 vi.mock('@/components/Token', () => ({
@@ -66,7 +65,7 @@ describe('ConventionalAuction component', () => {
           "account": "k:5a2afbc4564b76b2c27ce5a644cab643c43663835ea0be22433b209d3351f937"
         },
       }
-    ]
+    ];
 
     mockUseAccount.mockReturnValue(mockAccountContext);
     mockGetAuctionDetails.mockReturnValue(Promise.resolve(mockAuctionDetails));
@@ -94,14 +93,24 @@ describe('ConventionalAuction component', () => {
           ]
         },
       }
-    }
+    };
 
     render(<ConventionalAuction sale={mockSale as unknown as Sale} tokenImageUrl='' />);
 
+    const textMatcher = (content, element) => {
+      const hasText = (node) => node.textContent === content;
+      const nodeHasText = hasText(element);
+      const childrenDontHaveText = Array.from(element.children).every(
+        (child) => !hasText(child)
+      );
+
+      return nodeHasText && childrenDontHaveText;
+    };
+
     await waitFor(() => {
       expect(screen.getByText(/Reserve Price: 1.5/)).toBeInTheDocument();
-      expect(screen.getByText(/Start Date: 6\/25\/2024, 5:06:11 PM/)).toBeInTheDocument();
-      expect(screen.getByText(/End Date: 1\/19\/2027, 4:16:01 AM/)).toBeInTheDocument();
+      expect(screen.getByText((content, element) => textMatcher('Start Date: 6/25/2024, 5:06:11 PM', element))).toBeInTheDocument();
+      expect(screen.getByText((content, element) => textMatcher('End Date: 1/19/2027, 4:16:01 AM', element))).toBeInTheDocument();
       expect(screen.getByText(/Reserve Price: 1.5/)).toBeInTheDocument();
       expect(screen.getByText(/800/)).toBeInTheDocument();
       expect(screen.getByText(/k:5a2afbc4564b76b2c27ce5a644cab643c43663835ea0be22433b209d3351f937/)).toBeInTheDocument();
