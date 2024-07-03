@@ -5,7 +5,7 @@ const config: PlaywrightTestConfig = {
   ...baseConfig,
   reporter:
     process.env.CI !== undefined
-      ? [['list'], ['blob', { outputFile: 'blob-tools.zip' }]]
+      ? [['list'], ['blob', { outoutputFile: './blob-report/blob-tools.zip' }]]
       : [['list'], ['html', { open: 'never' }]],
   webServer: {
     command: `pnpm --filter @kadena/tools start`,
