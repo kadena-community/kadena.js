@@ -143,7 +143,6 @@ jobs:
       with:
         path: all-blob-reports
         pattern: blob-report-*
-        merge-multiple: true
 
     - name: Merge into HTML Report
       run: pnpm dlx playwright merge-reports --reporter html ./all-blob-reports
