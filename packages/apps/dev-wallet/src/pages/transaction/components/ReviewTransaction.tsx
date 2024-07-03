@@ -1,27 +1,10 @@
 import { IPactCommand, IUnsignedCommand } from '@kadena/client';
-import { Heading, Stack, Text } from '@kadena/react-ui';
-import { FC, PropsWithChildren, useMemo } from 'react';
-import {
-  cardClass,
-  codeClass,
-  containerClass,
-  labelClass,
-} from './style.css.ts';
+import { Heading, Stack } from '@kadena/react-ui';
+import { useMemo } from 'react';
+import { cardClass, codeClass, containerClass } from './style.css.ts';
 
 import { Signers } from './Signers.tsx';
-
-const Label: FC<PropsWithChildren> = ({ children }) => (
-  <Text className={labelClass}>{children}</Text>
-);
-
-const Value: FC<PropsWithChildren<{ className?: string }>> = ({
-  children,
-  className,
-}) => (
-  <Text bold variant="code" className={className}>
-    {children}
-  </Text>
-);
+import { Label, Value } from './helpers.tsx';
 
 export function ReviewTransaction({
   transaction,

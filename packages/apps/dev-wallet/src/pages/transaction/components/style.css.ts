@@ -53,3 +53,19 @@ export const tagClass = style({
   borderRadius: '3px',
   fontWeight: 'bold',
 });
+
+export const pendingClass = style({
+  color: vars.colors.$warningHighContrast,
+});
+
+export const successClass = style({
+  color: vars.colors.$positiveAccent,
+});
+
+export const failureClass = style({
+  color: vars.colors.$negativeAccent,
+});
+
+export const pendingText = style({
+  opacity: 0.5,
+});

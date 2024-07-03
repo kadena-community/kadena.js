@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ReviewTransaction } from './components/ReviewTransaction';
 import { Signers } from './components/Signers';
+import { SubmittedStatus } from './components/SubmittedStatus';
+import { containerClass } from './components/style.css';
 
 const getTxStartPoint = (tx: ITransaction | undefined | null) => {
   if (!tx) {
@@ -131,14 +133,17 @@ export function Transaction() {
       )}
 
       {transaction?.status === 'signed' && (
-        <>
+        <Stack className={containerClass} flexDirection={'column'} gap={'lg'}>
           <Signers transaction={transaction} />
           <Stack gap={'sm'} justifyContent={'space-between'} flex={1}>
             <Stack gap={'sm'}>
               <Button
                 variant="positive"
                 onClick={() => {
-                  task?.execute().catch(onError);
+                  const { cmd, hash, sigs } = transaction;
+                  navigator.clipboard.writeText(
+                    JSON.stringify({ cmd, hash, sigs }),
+                  );
                 }}
               >
                 Copy Signed Transaction
@@ -160,38 +165,10 @@ export function Transaction() {
               Submit Transaction
             </Button>
           </Stack>
-        </>
-      )}
-
-      {transaction?.status === 'submitted' && (
-        <Stack flexDirection={'column'}>
-          <Heading variant="h4">Transaction Submitted</Heading>
-          <Stack flexDirection={'column'}>
-            <Heading variant="h5">Request</Heading>
-            <Stack>{JSON.stringify(transaction.request)}</Stack>
-          </Stack>
         </Stack>
       )}
 
-      {transaction?.status === 'success' && (
-        <Stack flexDirection={'column'}>
-          <Heading variant="h4">Transaction Success</Heading>
-          <Stack flexDirection={'column'}>
-            <Heading variant="h5">Result</Heading>
-            <Stack>{JSON.stringify(transaction.result)}</Stack>
-          </Stack>
-        </Stack>
-      )}
-
-      {transaction?.status === 'failure' && (
-        <Stack flexDirection={'column'}>
-          <Heading variant="h4">Transaction failed</Heading>
-          <Stack>
-            <Heading variant="h5">Result</Heading>
-            <Stack>{JSON.stringify(transaction.result)}</Stack>
-          </Stack>
-        </Stack>
-      )}
+      {transaction?.request && <SubmittedStatus transaction={transaction} />}
     </Stack>
   );
 }
