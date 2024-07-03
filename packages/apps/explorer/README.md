@@ -9,6 +9,10 @@
 
 <!-- genericHeader end -->
 
+## Kadena Block Explorer 
+
+![Kadena block explorer](./kadena-block-explorer.png)
+
 - [Getting started][1]
   - [Running the explorer][2]
     - [Dependencies][3]
