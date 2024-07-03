@@ -1,6 +1,6 @@
 {
   "name": "@kadena/explorer",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "private": true,
   "scripts": {
     "build": "pnpm run generate:sdk && next build",
@@ -20,7 +20,7 @@
     "start": "next start",
     "start:graph": "cd ../graph && pnpm run start",
     "start:graph:generate": "cd ../graph && pnpm run start:generate",
-    "test": "echo \"No tests yet.\"",
+    "test": "vitest",
     "verify": "tsc --noEmit"
   },
   "dependencies": {
@@ -28,8 +28,8 @@
     "@artsy/fresnel": "^7.1.4",
     "@graphql-yoga/apollo-link": "~3.3.0",
     "@kadena/graph": "workspace:*",
-    "@kadena/react-icons": "workspace:*",
-    "@kadena/react-ui": "workspace:*",
+    "@kadena/kode-icons": "workspace:*",
+    "@kadena/kode-ui": "workspace:*",
     "@parcel/watcher": "^2.4.1",
     "classnames": "^2.3.1",
     "eslint": "^8.45.0",
@@ -37,7 +37,8 @@
     "graphql-ws": "^5.16.0",
     "next": "14.2.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-intersection-observer": "^9.10.3"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "5.0.2",
@@ -54,9 +55,11 @@
     "@types/react-dom": "^18.2.25",
     "@vanilla-extract/css": "1.14.2",
     "@vanilla-extract/next-plugin": "2.4.0",
+    "@vitest/coverage-v8": "^1.6.0",
     "cache-sh": "^1.2.1",
     "concurrently": "^8.2.2",
     "prettier": "~3.2.5",
-    "typescript": "5.4.5"
+    "typescript": "5.4.5",
+    "vitest": "^1.6.0"
   }
 }

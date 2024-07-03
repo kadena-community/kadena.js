@@ -1,4 +1,4 @@
-import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/styles';
+import { atoms, responsiveStyle, tokens } from '@kadena/kode-ui/styles';
 import { createVar, globalStyle, style } from '@vanilla-extract/css';
 import { $$leftSideWidth, $$pageWidth } from './global.css';
 

@@ -1,6 +1,6 @@
 import type { FungibleChainAccount } from '@/__generated__/sdk';
 import routes from '@constants/routes';
-import { MonoLink } from '@kadena/react-icons/system';
+import { MonoLink } from '@kadena/kode-icons/system';
 import {
   Box,
   Cell,
@@ -11,8 +11,8 @@ import {
   Table,
   TableBody,
   TableHeader,
-} from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
+} from '@kadena/kode-ui';
+import { atoms } from '@kadena/kode-ui/styles';
 import React from 'react';
 
 interface IFungibleChainAccountTableProps {

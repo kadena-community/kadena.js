@@ -1,6 +1,6 @@
 import { getContrast } from '@/utils/getContrast';
 import { getIPFSLink } from '@/utils/getIPFSLink';
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import { motion } from 'framer-motion';
 import type { FC } from 'react';
 import { useMemo } from 'react';

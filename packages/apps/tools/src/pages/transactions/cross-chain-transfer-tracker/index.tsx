@@ -23,7 +23,7 @@ import {
   MonoRefresh,
   MonoSearch,
   MonoWarning,
-} from '@kadena/react-icons/system';
+} from '@kadena/kode-icons/system';
 import {
   Box,
   Breadcrumbs,
@@ -38,7 +38,7 @@ import {
   NotificationHeading,
   Stack,
   TrackerCard,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';

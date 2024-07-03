@@ -14,7 +14,7 @@ import {
   MonoInfo,
   MonoKeyboardArrowRight,
   MonoRefresh,
-} from '@kadena/react-icons/system';
+} from '@kadena/kode-icons/system';
 import {
   Box,
   Breadcrumbs,
@@ -32,7 +32,7 @@ import {
   TableHeader,
   Text,
   TrackerCard,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';

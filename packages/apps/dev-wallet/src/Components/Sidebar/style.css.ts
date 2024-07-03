@@ -1,5 +1,5 @@
 import { sidebarTextColorClass } from '@/utils/color.ts';
-import { atoms, tokens, vars } from '@kadena/react-ui/styles';
+import { atoms, tokens, vars } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const sidebarClass = style([

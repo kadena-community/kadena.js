@@ -1,4 +1,4 @@
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import { isAfter } from 'date-fns';
 
 import type { FC } from 'react';

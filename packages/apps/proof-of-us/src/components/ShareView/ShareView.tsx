@@ -8,8 +8,8 @@ import {
   MonoArrowBack,
   MonoArrowDownward,
   MonoCheckCircle,
-} from '@kadena/react-icons';
-import { Stack } from '@kadena/react-ui';
+} from '@kadena/kode-icons';
+import { Stack } from '@kadena/kode-ui';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';

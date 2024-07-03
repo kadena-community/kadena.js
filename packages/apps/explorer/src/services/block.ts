@@ -4,7 +4,7 @@ import type {
   NewBlocksSubscriptionResult,
 } from '@/__generated__/sdk';
 
-interface IBlockData {
+export interface IBlockData {
   hash: string;
   height: number;
   chainId: number;

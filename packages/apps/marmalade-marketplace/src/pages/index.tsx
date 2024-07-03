@@ -1,5 +1,5 @@
 import { getSales } from "@/hooks/getSales";
-import { Button, Grid, GridItem, Link } from "@kadena/react-ui";
+import { Button, Grid, GridItem, Link } from "@kadena/kode-ui";
 import { Token } from "@/components/Token";
 import { useEffect, useState } from "react";
 import { actionBarClass, actionBarSaleActiveClass, actionBarSaleClass } from "@/styles/home.css";

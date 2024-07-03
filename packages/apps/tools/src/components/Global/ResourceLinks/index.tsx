@@ -1,4 +1,4 @@
-import { MonoLink } from '@kadena/react-icons/system';
+import { MonoLink } from '@kadena/kode-icons/system';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React from 'react';

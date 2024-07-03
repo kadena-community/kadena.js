@@ -1,4 +1,4 @@
-import { Heading, Stack, Text } from '@kadena/react-ui';
+import { Heading, Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';

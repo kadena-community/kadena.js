@@ -1,5 +1,5 @@
 import type { ChainwebNetworkId } from '@kadena/chainweb-node-client';
-import { MonoManageSearch } from '@kadena/react-icons/system';
+import { MonoManageSearch } from '@kadena/kode-icons/system';
 import {
   Box,
   Select,
@@ -7,7 +7,7 @@ import {
   Stack,
   Text,
   TextField,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';

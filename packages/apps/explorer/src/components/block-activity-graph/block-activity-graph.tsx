@@ -1,36 +1,66 @@
-import React from 'react';
+import { Stack } from '@kadena/kode-ui';
+import React, { useEffect, useState } from 'react';
+import { barClass } from './style.css';
 
-interface IBlockActivityChartProps {
-  data: number[];
+interface IData {
+  height: number;
+  data: number;
 }
 
-const BlockActivityChart: React.FC<IBlockActivityChartProps> = ({ data }) => {
-  const barWidth = 15;
-  const gap = 4;
-  const totalWidth = data.length * (barWidth + gap); // Calculate total width
-  const height = 50;
-  const maxValue = Math.max(...data);
+interface IBlockActivityChartProps {
+  data: IData[];
+  maxBlockTxCount: number;
+}
+
+const BlockActivityChart: React.FC<IBlockActivityChartProps> = ({
+  data,
+  maxBlockTxCount,
+}) => {
+  const [innerData, setInnerData] = useState<IData[]>(
+    data.map((o) => ({ ...o, data: 2 })),
+  );
+  const barWidth = 12;
+  const height = 40;
+  const maxValue = maxBlockTxCount;
   const scaleFactor = maxValue !== 0 ? height / maxValue : 1;
 
-  return (
-    <svg width={totalWidth} height={height} xmlns="http://www.w3.org/2000/svg">
-      {data.map((value, index) => {
-        const barHeight = Math.max(value * scaleFactor, value === 0 ? 2 : 0);
-        const x = index * (barWidth + gap);
-        const y = height - barHeight;
+  useEffect(() => {
+    if (!data.length) return;
 
-        return (
-          <rect
-            key={index}
-            x={x}
-            y={y}
-            width={barWidth}
-            height={barHeight}
-            fill="black"
-          />
-        );
-      })}
-    </svg>
+    setInnerData(
+      data.map((o) => {
+        return {
+          ...o,
+          data: Math.max(o.data * scaleFactor, o.data === 0 ? 2 : 0),
+        };
+      }),
+    );
+  }, [data]);
+  return (
+    <>
+      <Stack
+        position="relative"
+        style={{ height, transform: 'translateX(-20px)' }}
+      >
+        {data.map((data, idx) => {
+          const barHeight = innerData[idx].data;
+          const x = idx * barWidth;
+          const y = height - barHeight;
+
+          return (
+            <Stack
+              className={barClass}
+              key={data.height}
+              style={{
+                left: x,
+                top: y,
+                height: barHeight,
+              }}
+            ></Stack>
+          );
+        })}
+      </Stack>
+    </>
   );
 };
 

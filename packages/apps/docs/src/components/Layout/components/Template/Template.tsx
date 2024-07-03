@@ -1,7 +1,7 @@
 import { useMenu } from '@/hooks/useMenu/useMenu';
 import { useWindowScroll } from '@/hooks/useWindowScroll';
 import type { IMenuItem } from '@kadena/docs-tools';
-import { breakpoints } from '@kadena/react-ui/styles';
+import { breakpoints } from '@kadena/kode-ui/styles';
 import type { FC, ReactNode } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useMedia } from 'react-use';

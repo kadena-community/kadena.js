@@ -1,12 +1,13 @@
 import { SearchOptionEnum } from '@/hooks/search/utils/utils';
 import { truncateValues } from '@/services/format';
 import type { ApolloError } from '@apollo/client';
-import { MonoSearch } from '@kadena/react-icons/system';
-import { Badge, Box } from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
+import { MonoSearch } from '@kadena/kode-icons/system';
+import { Badge, Box, Stack } from '@kadena/kode-ui';
+import { atoms } from '@kadena/kode-ui/styles';
 import type { Dispatch, SetStateAction } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  editingBoxClass,
   searchBadgeBoxClass,
   searchBoxClass,
   searchInputClass,
@@ -132,8 +133,9 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
 
   return (
     <>
-      <Box
-        paddingInline={'xxl'}
+      <Stack
+        position="relative"
+        width="100%"
         display={'flex'}
         flexDirection={'column'}
         onKeyDown={(e) => handleSearchValueKeyDown(e)}
@@ -181,16 +183,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
         </Box>
 
         {isEditing && (
-          <div
-            className={atoms({
-              display: 'grid',
-              borderStyle: 'solid',
-              borderWidth: 'hairline',
-              backgroundColor: 'base.@active',
-              fontSize: 'sm',
-              fontFamily: 'primaryFont',
-            })}
-          >
+          <div className={editingBoxClass}>
             {searchData?.map((item, index) => (
               <Box
                 key={index}
@@ -232,7 +225,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
             ))}
           </div>
         )}
-      </Box>
+      </Stack>
     </>
   );
 };

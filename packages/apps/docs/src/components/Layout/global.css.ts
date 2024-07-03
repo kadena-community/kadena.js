@@ -1,4 +1,4 @@
-import { darkThemeClass } from '@kadena/react-ui/styles';
+import { darkThemeClass } from '@kadena/kode-ui/styles';
 import {
   createVar,
   globalFontFace,

@@ -1,6 +1,6 @@
 import { getContrast } from '@/utils/getContrast';
 import { getIPFSLink } from '@/utils/getIPFSLink';
-import { MonoDownloading } from '@kadena/react-icons';
+import { MonoDownloading } from '@kadena/kode-icons';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import { connectThumbClass } from './style.css';

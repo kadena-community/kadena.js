@@ -18,7 +18,7 @@
 - Updated dependencies \[5a71173a8]
 - Updated dependencies \[6d30efacd]
 - Updated dependencies \[d1f705b4d]
-  - @kadena/react-ui\@0.6.0
+  - @kadena/kode-ui\@0.6.0
   - @kadena/docs-tools\@0.1.0
 
 ## 0.7.0
@@ -46,7 +46,7 @@
 - Updated dependencies \[d9109f3ba]
 - Updated dependencies \[4b8b728dd]
 - Updated dependencies \[fd17c4dbc]
-  - @kadena/react-ui\@0.5.0
+  - @kadena/kode-ui\@0.5.0
   - @kadena/docs-tools\@0.1.0
 
 ## 0.6.2
@@ -54,7 +54,7 @@
 ### Patch Changes
 
 - Updated dependencies \[49d8366c7]
-  - @kadena/react-ui\@0.4.0
+  - @kadena/kode-ui\@0.4.0
 
 ## 0.6.1
 
@@ -64,7 +64,7 @@
 - 6f79f73dd: fix small errors in election dapp tutorial
 - Updated dependencies \[6f79f73dd]
 - Updated dependencies \[6f79f73dd]
-  - @kadena/react-ui\@0.3.1
+  - @kadena/kode-ui\@0.3.1
 
 ## 0.6.0
 
@@ -78,7 +78,7 @@
 - Updated dependencies \[6491589b5]
 - Updated dependencies \[8a719c647]
 - Updated dependencies \[df7044cac]
-  - @kadena/react-ui\@0.3.0
+  - @kadena/kode-ui\@0.3.0
 
 ## 0.5.0
 
@@ -92,7 +92,7 @@
 - Updated dependencies \[1d7d88081]
 - Updated dependencies \[fa98adaa8]
 - Updated dependencies \[fa6b84e22]
-  - @kadena/react-ui\@0.2.1
+  - @kadena/kode-ui\@0.2.1
 
 ## 0.4.1
 
@@ -153,7 +153,7 @@
 - Updated dependencies \[a664a9535]
 - Updated dependencies \[c375cb124]
 - Updated dependencies \[49a9956fa]
-  - @kadena/react-ui\@0.2.0
+  - @kadena/kode-ui\@0.2.0
 
 ## 0.3.1
 
@@ -179,4 +179,4 @@
 - Updated dependencies \[242b5687]
 - Updated dependencies \[14b81501]
 - Updated dependencies \[3e53006e]
-  - @kadena/react-ui\@0.1.0
+  - @kadena/kode-ui\@0.1.0

@@ -9,7 +9,7 @@ import useLedgerPublicKey, {
   derivationModes,
 } from '@/hooks/use-ledger-public-key';
 import type { ChainId } from '@kadena/client';
-import { MonoCAccount, MonoKey, MonoUsb } from '@kadena/react-icons/system';
+import { MonoCAccount, MonoKey, MonoUsb } from '@kadena/kode-icons/system';
 import {
   Breadcrumbs,
   BreadcrumbsItem,
@@ -22,7 +22,7 @@ import {
   SelectItem,
   Stack,
   Text,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 import React, { useState } from 'react';

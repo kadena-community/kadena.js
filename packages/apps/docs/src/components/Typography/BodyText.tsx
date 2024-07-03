@@ -1,5 +1,5 @@
-import type { ITextProps } from '@kadena/react-ui';
-import { Text } from '@kadena/react-ui';
+import type { ITextProps } from '@kadena/kode-ui';
+import { Text } from '@kadena/kode-ui';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
 

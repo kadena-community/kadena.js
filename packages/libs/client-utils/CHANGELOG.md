@@ -1,5 +1,13 @@
 # @kadena/client-utils
 
+## 0.8.1
+
+### Patch Changes
+
+- Updated dependencies \[6d4e82074]
+  - @kadena/client\@1.12.1
+  - @kadena/pactjs-cli\@1.12.1
+
 ## 0.8.0
 
 ### Minor Changes

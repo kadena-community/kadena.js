@@ -1,64 +1,72 @@
-import { networkConstants } from '@/constants/network';
-import { useRedirectOnNetworkChange } from '@/hooks/network/redirect';
-import {
-  KadenaLogo,
-  NavHeader,
-  NavHeaderLink,
-  NavHeaderLinkList,
-  NavHeaderSelect,
-  SelectItem,
-  Stack,
-} from '@kadena/react-ui';
+import { MonoMenu, MonoMenuOpen } from '@kadena/kode-icons/system';
+import { Button, Stack } from '@kadena/kode-ui';
 import Link from 'next/link';
-import type { FC } from 'react';
-import React, { useState } from 'react';
+import type { FC, PropsWithChildren } from 'react';
+import React from 'react';
 import { GraphQLQueryDialog } from '../graphql-query-dialog/graphql-query-dialog';
-import { navbarWrapperClass } from './styles.css';
+import { Media } from '../layout/media';
+import Logo from '../logo/logo';
+import MobileLogo from '../logo/mobile-logo';
+import SelectNetwork from '../select-network/select-network';
+import ThemeToggle from '../theme-toggle/theme-toggle';
+import { buttonSizeClass } from './styles.css';
 
-export const NavBar: FC = () => {
-  const [selectedNetwork, setSelectedNetwork] = useState(
-    networkConstants.mainnet01.label,
-  );
-
-  useRedirectOnNetworkChange(selectedNetwork);
-
+export const NavBar: FC<
+  PropsWithChildren<{
+    isFixed?: boolean;
+    isSearchPage?: boolean;
+    handleToggleMenu: () => void;
+    menuIsOpen?: boolean;
+  }>
+> = ({ children, isFixed, isSearchPage, handleToggleMenu, menuIsOpen }) => {
   return (
-    <Stack className={navbarWrapperClass}>
-      <NavHeader
-        logo={
-          <Link href="/">
-            <KadenaLogo height={40} />
-          </Link>
-        }
-      >
-        <NavHeaderLinkList>
-          <NavHeaderLink>{''}</NavHeaderLink>
-          <NavHeaderLink>{''}</NavHeaderLink>
-        </NavHeaderLinkList>
-        {/* Puting the Query Dialog Component inside a NavHeaderButton was
-        causing hydration issues: button inside a button */}
-        <GraphQLQueryDialog />
-        <NavHeaderSelect
-          aria-label="Select Network"
-          defaultSelectedKey={selectedNetwork}
-          onSelectionChange={(value: any) =>
-            setSelectedNetwork(value.toString())
-          }
-        >
-          <SelectItem
-            key={networkConstants.mainnet01.key}
-            textValue={networkConstants.mainnet01.label}
-          >
-            {networkConstants.mainnet01.label}
-          </SelectItem>
-          <SelectItem
-            key={networkConstants.testnet04.key}
-            textValue={networkConstants.testnet04.label}
-          >
-            {networkConstants.testnet04.label}
-          </SelectItem>
-        </NavHeaderSelect>
-      </NavHeader>
-    </Stack>
+    <>
+      <Stack alignItems="center">
+        {isFixed || !isSearchPage ? (
+          <>
+            <Media greaterThanOrEqual="md">
+              <Link href="/">
+                <Logo />
+              </Link>
+            </Media>
+            <Media lessThan="md">
+              <Link href="/">
+                <MobileLogo />
+              </Link>
+            </Media>
+          </>
+        ) : (
+          <Media lessThan="md">
+            <Link href="/">
+              <Logo />
+            </Link>
+          </Media>
+        )}
+
+        <Media greaterThanOrEqual="md">
+          <SelectNetwork />
+        </Media>
+      </Stack>
+      <Stack flex={1}>{children}</Stack>
+
+      <Media greaterThanOrEqual="md">
+        <Stack>
+          <ThemeToggle />
+          <GraphQLQueryDialog />
+        </Stack>
+      </Media>
+      <Media lessThan="md">
+        <Stack>
+          <ThemeToggle />
+
+          <Button
+            className={buttonSizeClass}
+            variant="primary"
+            onClick={handleToggleMenu}
+            startVisual={menuIsOpen ? <MonoMenuOpen /> : <MonoMenu />}
+          />
+        </Stack>
+      </Media>
+    </>
   );
 };

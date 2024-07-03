@@ -4,10 +4,10 @@ import {
   MonoMenuOpen,
   MonoSearch,
   MonoVerticalSplit,
-} from '@kadena/react-icons/system';
+} from '@kadena/kode-icons/system';
 
 import type { ChainwebNetworkId } from '@kadena/chainweb-node-client';
-import { Button, Heading, Stack } from '@kadena/react-ui';
+import { Button, Heading, Stack } from '@kadena/kode-ui';
 import React, { useState } from 'react';
 import CustomAccordion from '../../CustomAccordion/CustomAccordion';
 import type { ICustomTreeProps, TreeItem } from '../../CustomTree/CustomTree';

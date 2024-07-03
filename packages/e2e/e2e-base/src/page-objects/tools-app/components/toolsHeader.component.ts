@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
-import { ListBoxComponent } from '../../react-ui/listBox.component';
-import { NavHeaderComponent } from '../../react-ui/navHeader.component';
+import { ListBoxComponent } from '../../kode-ui/listBox.component';
+import { NavHeaderComponent } from '../../kode-ui/navHeader.component';
 
 export class ToolsHeaderComponent extends NavHeaderComponent {
   public networkListBox: ListBoxComponent;

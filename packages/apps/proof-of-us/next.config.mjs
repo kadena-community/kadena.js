@@ -5,7 +5,7 @@ const withVanillaExtract = createVanillaExtractPlugin();
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
-  transpilePackages: ['@kadena/react-ui'],
+  transpilePackages: ['@kadena/kode-ui'],
   webpack: (config) => {
     config.optimization.splitChunks = false;
     config.externals.push({

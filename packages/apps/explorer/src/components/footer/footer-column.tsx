@@ -1,12 +1,13 @@
-import { Heading, Stack } from '@kadena/react-ui';
-import type { FC, PropsWithChildren } from 'react';
+import { Heading, Stack } from '@kadena/kode-ui';
+import type { FC } from 'react';
 import React from 'react';
+import FooterLink from './footer-link';
 
-interface IProps extends PropsWithChildren {
-  title: string;
+interface IProps {
+  data: IMenuConfigItem;
 }
 
-const FooterColumn: FC<IProps> = ({ children, title }) => {
+const FooterColumn: FC<IProps> = ({ data }) => {
   return (
     <Stack
       flex={1}
@@ -15,8 +16,12 @@ const FooterColumn: FC<IProps> = ({ children, title }) => {
       gap="sm"
       marginInlineEnd="md"
     >
-      <Heading as="h6">{title}</Heading>
-      {children}
+      <Heading as="h6">{data.label}</Heading>
+      {data.children.map((item) => (
+        <FooterLink key={item.url} href={item.url}>
+          {item.label}
+        </FooterLink>
+      ))}
     </Stack>
   );
 };

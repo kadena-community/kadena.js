@@ -12,8 +12,8 @@ import {
   MonoRadioButtonChecked,
   MonoRadioButtonUnchecked,
   MonoWebAsset,
-} from '@kadena/react-icons/system';
-import type { IDialogProps } from '@kadena/react-ui';
+} from '@kadena/kode-icons/system';
+import type { IDialogProps } from '@kadena/kode-ui';
 import {
   Button,
   Card,
@@ -23,7 +23,7 @@ import {
   Stack,
   Tag,
   Text,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC, ReactElement } from 'react';
 import React, { useEffect, useState } from 'react';

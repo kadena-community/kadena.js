@@ -1,4 +1,4 @@
-import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/styles';
+import { atoms, responsiveStyle, tokens } from '@kadena/kode-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 
 export const descriptionListClass = style([

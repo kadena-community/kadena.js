@@ -3,7 +3,7 @@ import {
   MonoLoading,
   MonoSignature,
   MonoSignatureNotAllowed,
-} from '@kadena/react-icons';
+} from '@kadena/kode-icons';
 import type { FC, PropsWithChildren } from 'react';
 import { Button } from '../Button/Button';
 import { animateClass } from '../SignStatus/style.css';

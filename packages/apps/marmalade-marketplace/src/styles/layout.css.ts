@@ -1,4 +1,4 @@
-import '@kadena/react-ui/global';
+import '@kadena/kode-ui/global';
 import { style } from '@vanilla-extract/css';
 
 export const stickyHeader = style({

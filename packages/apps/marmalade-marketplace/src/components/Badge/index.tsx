@@ -1,4 +1,4 @@
-import { Text } from "@kadena/react-ui";
+import { Text } from "@kadena/kode-ui";
 import { tokenBadgeWrapperClass } from '@/styles/token.css';
 
 interface BadgeProps {

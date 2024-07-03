@@ -5,12 +5,13 @@ import {
 } from '@/__generated__/sdk';
 import { useQueryContext } from '@/context/query-context';
 import { newBlocks } from '@/graphql/subscriptions/newBlocks.graph';
-import type { IChainBlock } from '@/services/block';
+import type { IBlockData, IChainBlock } from '@/services/block';
 import { addBlockData } from '@/services/block';
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import React, { useEffect, useState } from 'react';
-import { Media } from '../layout/media';
+import { useInView } from 'react-intersection-observer';
 import BlockTableHeader from './block-header/block-header';
+import { blockHeaderFixedClass } from './block-header/block-header.css';
 import BlockRow from './block-row/block-row';
 
 export const startColumns = [
@@ -19,6 +20,20 @@ export const startColumns = [
 ];
 
 const endColumn = { title: 'Block', subtitle: 'Activity' };
+
+const getmaxBlockTxCount = (blockData: IChainBlock): number => {
+  const txCounts = Math.max(
+    ...Object.entries(blockData)
+      .map(([, chain]) => {
+        return Object.entries(chain).map(([, block]) => {
+          return (block as IBlockData).txCount;
+        });
+      })
+      .flat(),
+  );
+
+  return txCounts;
+};
 
 const BlockTable: React.FC = () => {
   const { data: newBlocksData } = useNewBlocksSubscription();
@@ -34,7 +49,13 @@ const BlockTable: React.FC = () => {
   });
 
   const [blockData, setBlockData] = useState<IChainBlock>({});
+  const [maxBlockTxCount, setmaxBlockTxCount] = useState(0);
   const [blockHeights, updateBlockHeights] = useState<number[]>([1, 2, 3, 4]);
+
+  const { ref, inView } = useInView({
+    rootMargin: '-160px 0px 0px 0px',
+    initialInView: true,
+  });
 
   useEffect(() => {
     if (lastBlockHeight?.lastBlockHeight) {
@@ -58,7 +79,7 @@ const BlockTable: React.FC = () => {
     if (newBlocksData) {
       const updatedBlockData = addBlockData(blockData, newBlocksData);
       setBlockData(updatedBlockData);
-
+      setmaxBlockTxCount(getmaxBlockTxCount(updatedBlockData));
       if (!newBlocksData.newBlocks) return;
 
       const newMaxHeight = Math.max(
@@ -85,54 +106,41 @@ const BlockTable: React.FC = () => {
     ]);
   }, []);
 
+  console.log(inView);
   return (
     <>
-      <Media greaterThanOrEqual="sm">
-        <Stack
-          display="flex"
-          flexDirection={'column'}
-          gap={'md'}
-          padding={'sm'}
-        >
-          <BlockTableHeader
-            startColumns={startColumns}
-            heightColumns={blockHeights}
-            endColumn={endColumn}
+      <Stack
+        className={!inView ? blockHeaderFixedClass : ''}
+        display="flex"
+        flexDirection={'column'}
+        paddingInline={{ xs: 'xs', md: 'lg' }}
+        width="100%"
+      >
+        <BlockTableHeader
+          startColumns={startColumns}
+          heightColumns={blockHeights}
+          endColumn={endColumn}
+        />
+      </Stack>
+      <Stack
+        display="flex"
+        flexDirection={'column'}
+        gap={'sm'}
+        paddingInline={{ xs: 'xs', md: 'lg' }}
+        width="100%"
+      >
+        <span ref={ref} style={{ height: 0 }} />
+        {!inView && <Stack marginBlock="xxl" />}
+        {Object.keys(blockData).map((chainId) => (
+          <BlockRow
+            key={chainId}
+            blockRowData={blockData[Number(chainId)]}
+            heights={blockHeights}
+            chainId={Number(chainId)}
+            maxBlockTxCount={maxBlockTxCount}
           />
-          {Object.keys(blockData).map((chainId) => (
-            <BlockRow
-              key={chainId}
-              blockRowData={blockData[Number(chainId)]}
-              heights={blockHeights}
-              chainId={Number(chainId)}
-            />
-          ))}
-        </Stack>
-      </Media>
-      <Media lessThan="sm">
-        <Stack
-          display="flex"
-          flexDirection={'column'}
-          gap={'md'}
-          padding={'sm'}
-        >
-          <BlockTableHeader
-            startColumns={startColumns}
-            heightColumns={blockHeights}
-            endColumn={endColumn}
-            isCompact
-          />
-          {Object.keys(blockData).map((chainId) => (
-            <BlockRow
-              key={chainId}
-              blockRowData={blockData[Number(chainId)]}
-              heights={blockHeights}
-              chainId={Number(chainId)}
-              isCompact
-            />
-          ))}
-        </Stack>
-      </Media>
+        ))}
+      </Stack>
     </>
   );
 };

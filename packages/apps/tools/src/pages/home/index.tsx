@@ -20,13 +20,13 @@ import {
   Table,
   TableBody,
   TableHeader,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 
 import { linkStyle } from '@/pages/faucet/styles.css';
-import { MonoHelp } from '@kadena/react-icons/system';
+import { MonoHelp } from '@kadena/kode-icons/system';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React, { useRef } from 'react';

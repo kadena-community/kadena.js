@@ -2,7 +2,7 @@
 import { Button } from '@/components/Button/Button';
 import { ScreenHeight } from '@/components/ScreenHeight/ScreenHeight';
 import { useAccount } from '@/hooks/account';
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';

@@ -1,6 +1,6 @@
 import SendTransaction from '@/components/SendTransaction';
 import { useTransaction } from '@/hooks/transaction';
-import { Stack } from "@kadena/react-ui";
+import { Stack } from "@kadena/kode-ui";
 
 export default function Transaction() {
   const {transaction, send, preview, poll} = useTransaction();

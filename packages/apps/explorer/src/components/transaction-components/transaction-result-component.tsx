@@ -4,7 +4,7 @@ import type {
   Transfer,
 } from '@/__generated__/sdk';
 import DataRenderComponent from '@/components/data-render-component/data-render-component';
-import { Text } from '@kadena/react-ui';
+import { Text } from '@kadena/kode-ui';
 import React, { useEffect } from 'react';
 import { ifNill } from '../../utils/ifNill';
 
@@ -39,7 +39,11 @@ export const TransactionResultComponent: React.FC<{
         title="Block"
         fields={[
           { key: 'Height', value: transactionResult.block.height },
-          { key: 'Hash', value: transactionResult.block.hash },
+          {
+            key: 'Hash',
+            value: transactionResult.block.hash,
+            link: `/block/${transactionResult.block.hash}`,
+          },
           { key: 'Created', value: transactionResult.block.creationTime },
         ]}
       />

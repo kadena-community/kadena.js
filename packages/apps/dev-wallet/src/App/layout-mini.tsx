@@ -1,7 +1,7 @@
 import { LayoutContext } from '@/modules/layout/layout.provider.tsx';
 import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
-import { MonoLogout } from '@kadena/react-icons';
-import { MonoContrast } from '@kadena/react-icons/system';
+import { MonoLogout } from '@kadena/kode-icons';
+import { MonoContrast } from '@kadena/kode-icons/system';
 import {
   KadenaLogo,
   NavHeaderButton,
@@ -9,8 +9,8 @@ import {
   Text,
   Themes,
   useTheme,
-} from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
+} from '@kadena/kode-ui';
+import { atoms } from '@kadena/kode-ui/styles';
 import { FC, useContext } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { containerStyle, headerStyle, mainStyle } from './layout-mini.css';

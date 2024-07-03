@@ -5,11 +5,12 @@ import { FormatAccount } from '@/components/compact-table/utils/format-account';
 import { FormatAmount } from '@/components/compact-table/utils/format-amount';
 import { FormatLink } from '@/components/compact-table/utils/format-link';
 import { FormatStatus } from '@/components/compact-table/utils/format-status';
-import DetailLayout from '@/components/layout/detail-layout/detail-layout';
+import Layout from '@/components/layout/layout';
 import { useQueryContext } from '@/context/query-context';
 import { account } from '@/graphql/queries/account.graph';
 import { accountNameTextClass } from '@/styles/account.css';
-import { Heading, Stack, TabItem, Tabs, Text } from '@kadena/react-ui';
+import { Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
+import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
 import type { FC, Key } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -22,24 +23,25 @@ export interface IKeyProps {
 
 const Account: FC = () => {
   const router = useRouter();
+  const params = useSearchParams();
   const [selectedTab, setSelectedTab] = useState<string>('Transactions');
-
+  const accountName = params.get('accountName');
   const { setQueries } = useQueryContext();
 
   const accountQueryVariables = {
-    accountName: router.query.accountName as string,
+    accountName: accountName ?? '',
   };
 
   const { loading, data, error } = useAccountQuery({
     variables: accountQueryVariables,
-    skip: !router.query.accountName,
+    skip: !accountName,
   });
 
   useEffect(() => {
-    if (router.query.accountName) {
+    if (accountName) {
       setQueries([{ query: account, variables: accountQueryVariables }]);
     }
-  }, [router.query.accountName]);
+  }, [accountName]);
 
   useEffect(() => {
     const hash = router.asPath.split('#')[1];
@@ -78,7 +80,7 @@ const Account: FC = () => {
   }, [fungibleAccount?.chainAccounts]);
 
   return (
-    <DetailLayout>
+    <Layout>
       {loading && <div>Loading...</div>}
       {error && <div>Error: {error.message}</div>}
 
@@ -218,7 +220,7 @@ const Account: FC = () => {
           </Tabs>
         </Stack>
       </Stack>
-    </DetailLayout>
+    </Layout>
   );
 };
 

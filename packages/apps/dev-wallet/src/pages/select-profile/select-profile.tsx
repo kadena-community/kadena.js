@@ -1,7 +1,7 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { MonoAdd } from '@kadena/react-icons';
-import { Box, Heading, Stack } from '@kadena/react-ui';
-import { tokens } from '@kadena/react-ui/styles';
+import { MonoAdd } from '@kadena/kode-icons';
+import { Box, Heading, Stack } from '@kadena/kode-ui';
+import { tokens } from '@kadena/kode-ui/styles';
 import { Link, Navigate } from 'react-router-dom';
 import InitialsAvatar from './initials';
 import {
