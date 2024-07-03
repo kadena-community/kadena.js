@@ -1,3 +1,4 @@
+import { BlockInfoProvider } from '@/components/block-table/block-info-context/block-info-context';
 import BlockTable from '@/components/block-table/block-table';
 import Layout from '@/components/layout/layout';
 import { Media } from '@/components/layout/media';
@@ -50,7 +51,9 @@ const Home: React.FC = () => {
               />
             )
           ) : (
-            <BlockTable />
+            <BlockInfoProvider>
+              <BlockTable />
+            </BlockInfoProvider>
           )}
         </Stack>
       </Media>
@@ -83,7 +86,9 @@ const Home: React.FC = () => {
               />
             )
           ) : (
-            <BlockTable />
+            <BlockInfoProvider>
+              <BlockTable />
+            </BlockInfoProvider>
           )}
         </Stack>
       </Media>

@@ -5,17 +5,22 @@ import type { FC } from 'react';
 import React, { useCallback } from 'react';
 import {
   headerColumnHeightStyle,
+  headerColumnSelectedStyle,
   headerColumnStyle,
 } from '../block-header/block-header.css';
 import { useBlockInfo } from '../block-info-context/block-info-context';
-import { blockHeightColumnHeaderStyle } from './../block-table.css';
+import {
+  blockCaratStyle,
+  blockHeightColumnHeaderStyle,
+} from './../block-table.css';
 
 interface IProps {
   height: IBlockData;
   chainId: number;
+  isSelected?: boolean;
 }
 
-const BlockCell: FC<IProps> = ({ height, chainId }) => {
+const BlockCell: FC<IProps> = ({ height, chainId, isSelected }) => {
   const { handleOpenHeightBlock } = useBlockInfo();
 
   const handleOpenHeight = useCallback(() => {
@@ -28,11 +33,19 @@ const BlockCell: FC<IProps> = ({ height, chainId }) => {
       position="relative"
       onClick={handleOpenHeight}
       key={`block-${chainId}-${height}`}
-      className={classNames(headerColumnStyle, headerColumnHeightStyle)}
+      className={classNames(headerColumnStyle, headerColumnHeightStyle, {
+        [headerColumnSelectedStyle]: isSelected,
+      })}
     >
-      <Text className={blockHeightColumnHeaderStyle} variant="code" bold>
+      <Text
+        as="span"
+        className={blockHeightColumnHeaderStyle}
+        variant="code"
+        bold
+      >
         {height.txCount}
       </Text>
+      {isSelected && <span className={blockCaratStyle} />}
     </Stack>
   );
 };

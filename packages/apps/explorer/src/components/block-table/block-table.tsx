@@ -12,7 +12,7 @@ import React, { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import BlockTableHeader from './block-header/block-header';
 import { blockHeaderFixedClass } from './block-header/block-header.css';
-import { BlockInfoProvider } from './block-info-context/block-info-context';
+import { useBlockInfo } from './block-info-context/block-info-context';
 import BlockRow from './block-row/block-row';
 
 export const startColumns = [
@@ -48,6 +48,7 @@ const BlockTable: React.FC = () => {
       heightCount: 4,
     },
   });
+  const { selectedHeight } = useBlockInfo();
 
   const [blockData, setBlockData] = useState<IChainBlock>({});
   const [maxBlockTxCount, setmaxBlockTxCount] = useState(0);
@@ -65,9 +66,14 @@ const BlockTable: React.FC = () => {
         (_, i) => lastBlockHeight.lastBlockHeight - i,
       ).reverse();
 
+      if (selectedHeight && !newBlockHeights.includes(selectedHeight.height)) {
+        console.log(111);
+        newBlockHeights[0] = selectedHeight.height;
+      }
+
       updateBlockHeights(newBlockHeights);
     }
-  }, [lastBlockHeight]);
+  }, [lastBlockHeight, selectedHeight?.hash]);
 
   useEffect(() => {
     if (oldBlocksData) {
@@ -93,6 +99,13 @@ const BlockTable: React.FC = () => {
           (_, i) => newMaxHeight - i,
         ).reverse();
 
+        if (
+          selectedHeight &&
+          !newBlockHeights.includes(selectedHeight.height)
+        ) {
+          newBlockHeights[0] = selectedHeight.height;
+        }
+
         updateBlockHeights(newBlockHeights);
       }
     }
@@ -108,7 +121,7 @@ const BlockTable: React.FC = () => {
   }, []);
 
   return (
-    <BlockInfoProvider>
+    <>
       <Stack
         className={!inView ? blockHeaderFixedClass : ''}
         display="flex"
@@ -141,7 +154,7 @@ const BlockTable: React.FC = () => {
           />
         ))}
       </Stack>
-    </BlockInfoProvider>
+    </>
   );
 };
 

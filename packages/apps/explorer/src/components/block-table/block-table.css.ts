@@ -1,16 +1,30 @@
 import { atoms, responsiveStyle, token, tokens } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
+export const blockCaratStyle = style([
+  atoms({
+    position: 'absolute',
+    bottom: 0,
+  }),
+  {
+    zIndex: token('zIndex.overlay'),
+    width: 0,
+    height: 0,
+    borderLeft: '12px solid transparent',
+    borderRight: '12px solid transparent',
+    borderBottom: `12px solid ${token('color.background.layer.default')}`,
+  },
+]);
+
 export const blockHeightColumnHeaderStyle = style([
   atoms({
+    position: 'relative',
     flexDirection: 'column',
     alignItems: 'center',
     padding: 'sm',
     justifyContent: 'center',
   }),
-  {
-    width: '25%',
-  },
+  {},
 ]);
 
 export const blockWrapperClass = style([

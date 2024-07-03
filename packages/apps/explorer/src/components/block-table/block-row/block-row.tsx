@@ -69,6 +69,7 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
         {heights.map((height) =>
           blockRowData[height] ? (
             <BlockCell
+              isSelected={isShowHeightInfo && height === selectedHeight?.height}
               key={`${height}${chainId}`}
               height={blockRowData[height]}
               chainId={chainId}

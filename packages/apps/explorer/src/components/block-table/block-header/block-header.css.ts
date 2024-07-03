@@ -16,6 +16,16 @@ export const headerColumnHeightStyle = style([
   }),
 ]);
 
+export const headerColumnSelectedStyle = style([
+  {
+    backgroundColor: `${token('color.background.base.inverse.default')}!important`,
+  },
+]);
+
+globalStyle(`${headerColumnSelectedStyle} > *`, {
+  color: `${token('color.text.base.inverse.default')}`,
+});
+
 export const headerColumnStyle = style([
   atoms({
     display: 'flex',
