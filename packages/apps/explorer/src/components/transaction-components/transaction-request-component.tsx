@@ -130,7 +130,11 @@ export const TransactionRequestComponent: React.FC<{
 
       <DataRenderComponent
         title="Signatures"
-        fields={transaction.sigs.map((s) => ({ key: '', value: s.sig }))}
+        fields={transaction.sigs.map((s) => ({
+          key: '',
+          id: 'signatures',
+          value: s.sig,
+        }))}
       />
     </>
   );
