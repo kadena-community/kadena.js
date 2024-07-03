@@ -123,7 +123,7 @@ jobs:
           path: packages/e2e/e2e-${{ matrix.app }}/blob-report/
           retention-days: 1
 
-  merge-reports:
+  merge-publish-reports:
     if: ${{ !cancelled() }}
     needs: [end-to-end-tests]
 
@@ -136,27 +136,10 @@ jobs:
           show-progress: false
 
     -  name: Runner Setup
-       uses: ./.github/actions/runner-setup  
-
-    - name: Download blob reports from GitHub Actions Artifacts
-      uses: actions/download-artifact@v4
-      with:
-        path: all-blob-reports
-        pattern: blob-report-*
-        merge-multiple: true
+       uses: ./.github/actions/runner-setup 
     
-    - name: Display structure of downloaded files
-      run: ls -R all-blob-reports
-
-    - name: Merge into HTML Report
-      run: pnpm dlx playwright merge-reports --reporter html ./all-blob-reports
-
-    - name: Upload HTML report
-      uses: actions/upload-artifact@v4
-      with:
-        name: end-to-end-test-report
-        path: playwright-report
-        retention-days: 14
+    - name: Merge & Publish Report
+      uses: ./.github/actions/merge-publish-reports
 
   ci-gate:
     if: always()
@@ -164,6 +147,7 @@ jobs:
       - build
       - integration-tests
       - end-to-end-tests
+      - merge-publish-reports
     runs-on: Ubuntu-latest
     steps:
       - name: Check required jobs.
