@@ -23,7 +23,7 @@ const config: PlaywrightTestConfig = {
       testDir: 'tests',
       dependencies: ['setup'],
       use: {
-        storageState: './setup/storageState.json',  
+        storageState: './setup/storageState.json',
       },
     },
   ],
