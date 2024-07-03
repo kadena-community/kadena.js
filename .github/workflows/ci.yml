@@ -129,6 +129,12 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
+
+    - uses: actions/checkout@v4
+      with:
+          fetch-depth: 2
+          show-progress: false
+          
     -  name: Runner Setup
        uses: ./.github/actions/runner-setup  
 
