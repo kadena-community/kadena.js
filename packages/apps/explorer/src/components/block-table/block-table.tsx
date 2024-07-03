@@ -106,7 +106,6 @@ const BlockTable: React.FC = () => {
     ]);
   }, []);
 
-  console.log(inView);
   return (
     <>
       <Stack

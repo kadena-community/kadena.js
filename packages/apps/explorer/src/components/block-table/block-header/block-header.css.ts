@@ -10,6 +10,12 @@ export const blockActivityColumnClass = style([
   },
 ]);
 
+export const headerColumnHeightStyle = style([
+  atoms({
+    cursor: 'pointer',
+  }),
+]);
+
 export const headerColumnStyle = style([
   atoms({
     display: 'flex',
