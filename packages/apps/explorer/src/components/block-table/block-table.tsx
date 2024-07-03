@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import BlockTableHeader from './block-header/block-header';
 import { blockHeaderFixedClass } from './block-header/block-header.css';
+import { BlockInfoProvider } from './block-info-context/block-info-context';
 import BlockRow from './block-row/block-row';
 
 export const startColumns = [
@@ -107,7 +108,7 @@ const BlockTable: React.FC = () => {
   }, []);
 
   return (
-    <>
+    <BlockInfoProvider>
       <Stack
         className={!inView ? blockHeaderFixedClass : ''}
         display="flex"
@@ -140,7 +141,7 @@ const BlockTable: React.FC = () => {
           />
         ))}
       </Stack>
-    </>
+    </BlockInfoProvider>
   );
 };
 

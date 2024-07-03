@@ -3,14 +3,19 @@ import type { IHeightBlock } from '@/services/block';
 import { formatNumberWithUnit } from '@/services/format';
 import { Grid, Stack, Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React from 'react';
 import BlockCell from '../block-cell/block-cell';
 import {
   blockActivityColumnClass,
   columnTitleClass,
   headerColumnStyle,
 } from '../block-header/block-header.css';
-import { blockGridHoverableStyle, blockGridStyle } from '../block-table.css';
+import { useBlockInfo } from '../block-info-context/block-info-context';
+import {
+  blockGridHoverableStyle,
+  blockGridStyle,
+  blockWrapperClass,
+} from '../block-table.css';
 import { textStyle } from './block-row.css';
 import HeightInfo from './height-info/height-info';
 interface IBlockTableRowProps {
@@ -26,7 +31,7 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
   chainId,
   maxBlockTxCount,
 }) => {
-  const [openBlock, setOpenBlock] = useState<any>();
+  const { selectedChainId, selectedHash } = useBlockInfo();
   const blockDifficulty =
     blockRowData[heights[3]]?.difficulty ||
     blockRowData[heights[2]]?.difficulty ||
@@ -34,33 +39,10 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
     blockRowData[heights[0]]?.difficulty ||
     'N/A';
 
-  const handleOpenHeightBlock = (
-    height: number,
-    chainId: number,
-    hash: string,
-  ) => {
-    // if block is already open, close again
-    if (
-      openBlock?.chainId === chainId &&
-      openBlock?.height === height &&
-      openBlock?.hash === hash
-    ) {
-      setOpenBlock(undefined);
-      return;
-    }
-
-    setOpenBlock({
-      height,
-      chainId,
-      hash,
-    });
-  };
-
-  const isShowHeightInfo = openBlock?.chainId === chainId;
+  const isShowHeightInfo = selectedChainId === chainId;
 
   return (
-    <>
-      {' '}
+    <Stack className={blockWrapperClass} width="100%" flexDirection="column">
       <Grid className={classNames(blockGridStyle, blockGridHoverableStyle)}>
         <Stack className={headerColumnStyle}>
           <Text className={textStyle} bold>
@@ -83,7 +65,6 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
               key={`${height}${chainId}`}
               height={blockRowData[height]}
               chainId={chainId}
-              onOpenHeight={handleOpenHeightBlock}
             />
           ) : (
             <Stack
@@ -108,8 +89,8 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
           />
         </Stack>
       </Grid>
-      {isShowHeightInfo && <HeightInfo hash={openBlock.hash} />}
-    </>
+      {isShowHeightInfo && <HeightInfo hash={selectedHash} />}
+    </Stack>
   );
 };
 

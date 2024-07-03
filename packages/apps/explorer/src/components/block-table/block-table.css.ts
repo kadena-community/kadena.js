@@ -13,14 +13,16 @@ export const blockHeightColumnHeaderStyle = style([
   },
 ]);
 
-export const blockGridStyle = style([
+export const blockWrapperClass = style([
   atoms({
     borderRadius: 'sm',
     borderWidth: 'hairline',
     borderStyle: 'solid',
     borderColor: 'base.subtle',
   }),
+]);
 
+export const blockGridStyle = style([
   responsiveStyle({
     md: {
       gridTemplateColumns: '10% 10% 1fr 1fr 1fr 1fr 10%',
