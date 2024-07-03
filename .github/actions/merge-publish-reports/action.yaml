@@ -28,7 +28,7 @@ runs:
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ inputs.GITHUB_TOKEN }}
-        publish_dir: playwright-report/
+        publish_dir: playwright-report
         destination_dir: ${{ github.event.number }}/${{ steps.timestamp.outputs.timestamp }}
       
     - name: Add Link to Summary
