@@ -115,12 +115,39 @@ jobs:
         with:
           test-object: ${{ matrix.app }}
 
-      - uses: actions/upload-artifact@v4
-        if: always()
+      - name: Upload Blob Report  
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
-          name: playwright-report-${{ matrix.app }}
-          path: packages/e2e/e2e-${{ matrix.app }}/playwright-report/
-          retention-days: 30
+          name: blob-report-${{ matrix.app }}
+          path: packages/e2e/e2e-${{ matrix.app }}/blob-report/
+          retention-days: 1
+
+  merge-reports:
+    if: ${{ !cancelled() }}
+    needs: [end-to-end-tests]
+
+    runs-on: ubuntu-latest
+    steps:
+    -  name: Runner Setup
+       uses: ./.github/actions/runner-setup  
+
+    - name: Download blob reports from GitHub Actions Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: all-blob-reports
+        pattern: blob-report-*
+        merge-multiple: true
+
+    - name: Merge into HTML Report
+      run: npx playwright merge-reports --reporter html ./all-blob-reports
+
+    - name: Upload HTML report
+      uses: actions/upload-artifact@v4
+      with:
+        name: end-to-end-test-report
+        path: playwright-report
+        retention-days: 14
 
   ci-gate:
     if: always()
