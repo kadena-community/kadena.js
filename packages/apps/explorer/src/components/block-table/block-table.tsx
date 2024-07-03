@@ -98,7 +98,7 @@ const BlockTable: React.FC = () => {
           (_, i) => newMaxHeight - i,
         ).reverse();
 
-        // updateBlockHeights(newBlockHeights);
+        //updateBlockHeights(newBlockHeights);
         updateBlockHeightsClean(newBlockHeights);
       }
     }
@@ -111,7 +111,7 @@ const BlockTable: React.FC = () => {
     } else {
       updateBlockHeights(blockHeightsClean);
     }
-  }, [selectedHeight, blockHeightsClean]);
+  }, [selectedHeight, newBlocksData]);
 
   const { setQueries } = useQueryContext();
   useEffect(() => {

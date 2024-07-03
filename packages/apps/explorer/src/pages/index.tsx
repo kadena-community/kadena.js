@@ -33,27 +33,6 @@ const Home: React.FC = () => {
             <a href="/">
               <Logo />
             </a>
-
-            <SearchComponent
-              searchOption={searchOption}
-              setSearchOption={setSearchOption}
-              searchData={searchData}
-              setSearchQuery={setSearchQuery}
-              searchQuery={searchQuery}
-              loading={loading}
-              errors={errors}
-            />
-            {searchQuery ? (
-              searchData && (
-                <SearchResults
-                  searchData={searchData}
-                  loading={loading}
-                  errors={errors}
-                />
-              )
-            ) : (
-              <BlockTable />
-            )}
           </Stack>
         </Media>
 
@@ -67,28 +46,29 @@ const Home: React.FC = () => {
             <a href="/">
               <Logo />
             </a>
-            <SearchComponent
-              searchOption={searchOption}
-              setSearchOption={setSearchOption}
+          </Stack>
+        </Media>
+
+        <SearchComponent
+          searchOption={searchOption}
+          setSearchOption={setSearchOption}
+          searchData={searchData}
+          setSearchQuery={setSearchQuery}
+          searchQuery={searchQuery}
+          loading={loading}
+          errors={errors}
+        />
+        {searchQuery ? (
+          searchData && (
+            <SearchResults
               searchData={searchData}
-              setSearchQuery={setSearchQuery}
-              searchQuery={searchQuery}
               loading={loading}
               errors={errors}
             />
-            {searchQuery ? (
-              searchData && (
-                <SearchResults
-                  searchData={searchData}
-                  loading={loading}
-                  errors={errors}
-                />
-              )
-            ) : (
-              <BlockTable />
-            )}
-          </Stack>
-        </Media>
+          )
+        ) : (
+          <BlockTable />
+        )}
       </BlockInfoProvider>
     </Layout>
   );
