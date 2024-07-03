@@ -105,24 +105,27 @@ export const TransactionRequestComponent: React.FC<{
             { key: 'Scheme', value: signer.scheme ?? '' },
             {
               key: 'Capabilities',
-              value: (
-                <DataRenderComponent
-                  fields={signer.clist.map((capability) => ({
-                    key: capability.name,
-                    value: (
-                      <>
-                        {(JSON.parse(capability.args) as string[])
-                          .map((n, i) => (
-                            <Text as="p" variant="code" key={i}>
-                              {JSON.stringify(n)}
-                            </Text>
-                          ))
-                          .flat()}
-                      </>
-                    ),
-                  }))}
-                />
-              ),
+              value:
+                signer.clist.length === 0 ? (
+                  <></>
+                ) : (
+                  <DataRenderComponent
+                    fields={signer.clist.map((capability) => ({
+                      key: capability.name,
+                      value: (
+                        <>
+                          {(JSON.parse(capability.args) as string[])
+                            .map((n, i) => (
+                              <Text as="p" variant="code" key={i}>
+                                {JSON.stringify(n)}
+                              </Text>
+                            ))
+                            .flat()}
+                        </>
+                      ),
+                    }))}
+                  />
+                ),
             },
           ])
           .flat()}
