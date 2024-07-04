@@ -69,7 +69,6 @@
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
     "@types/uuid": "^9.0.8",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@vanilla-extract/next-plugin": "2.4.0",
     "@vanilla-extract/vite-plugin": "4.0.7",
     "@vanilla-extract/webpack-plugin": "2.3.7",
