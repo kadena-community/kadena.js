@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
 import FooterLink from './footer-link';
-import { isClosedClass } from './style.css';
+import { footerColumnClass, isClosedClass } from './style.css';
 
 interface IProps {
   data: IMenuConfigItem;
@@ -13,10 +13,9 @@ interface IProps {
 const FooterColumn: FC<IProps> = ({ data, isOpen }) => {
   return (
     <Stack
-      className={classNames({
+      className={classNames(footerColumnClass, {
         [isClosedClass]: !isOpen,
       })}
-      flex={1}
       marginBlock="sm"
       flexDirection="column"
       gap="sm"

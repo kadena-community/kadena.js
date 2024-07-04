@@ -17,6 +17,7 @@ import {
   footerClass,
   footerLinkClass,
   socialLinkClass,
+  tripleContentClass,
 } from './style.css';
 
 const Footer: FC = () => {
@@ -99,14 +100,14 @@ const Footer: FC = () => {
         </Stack>
 
         <Stack
-          className={doubleContentClass}
+          className={tripleContentClass}
           gap="xl"
           flexDirection={{ xs: 'column', lg: 'row' }}
         >
           <FooterColumn isOpen={isOpen} data={menuConfig[2]} />
           <FooterColumn isOpen={isOpen} data={menuConfig[3]} />
+          <FooterColumn isOpen={isOpen} data={menuConfig[4]} />
         </Stack>
-        <FooterColumn isOpen={isOpen} data={menuConfig[4]} />
       </Stack>
 
       <Stack

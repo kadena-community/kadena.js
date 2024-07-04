@@ -22,8 +22,25 @@ export const footerClass = style([
 export const doubleContentClass = style([
   {
     display: 'none',
-    flex: 2,
+    flex: 1,
   },
+  responsiveStyle({
+    lg: {
+      flex: 2,
+    },
+  }),
+]);
+
+export const tripleContentClass = style([
+  {
+    display: 'none',
+    flex: 1,
+  },
+  responsiveStyle({
+    lg: {
+      flex: 3,
+    },
+  }),
 ]);
 
 export const socialLinkClass = style([
@@ -41,12 +58,16 @@ export const footerLinkClass = style({
   },
 });
 
+export const footerColumnClass = style({
+  flex: 1,
+});
+
 export const isClosedClass = style([
   {
     display: 'none!important',
   },
   responsiveStyle({
-    md: {
+    sm: {
       display: 'flex!important',
     },
   }),
