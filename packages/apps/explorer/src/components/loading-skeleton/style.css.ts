@@ -15,7 +15,8 @@ export const loadingPillClass = style([
   {
     backgroundColor: tokens.kda.foundation.color.background.input['@hover'],
     width: '100%',
-    maxWidth: '80%',
+    maxWidth: '70%',
+    minHeight: '20px',
     height: '65%',
     overflow: 'hidden',
     selectors: {

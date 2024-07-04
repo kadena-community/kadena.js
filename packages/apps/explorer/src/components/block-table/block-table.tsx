@@ -10,11 +10,11 @@ import { addBlockData } from '@/services/block';
 import { Stack } from '@kadena/kode-ui';
 import React, { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import LoadingSkeletonBlockTable from '../loading-skeleton/loading-skeleton-block-table/loading-skeleton-block-table';
 import BlockTableHeader from './block-header/block-header';
 import { blockHeaderFixedClass } from './block-header/block-header.css';
 import { useBlockInfo } from './block-info-context/block-info-context';
 import BlockRow from './block-row/block-row';
+import { blockDataLoading } from './utils/block-data-loading';
 
 export const startColumns = [
   { title: 'Chain', subtitle: 'Number' },
@@ -36,6 +36,8 @@ const getmaxBlockTxCount = (blockData: IChainBlock): number => {
 
   return txCounts;
 };
+
+const blockHeightsLoading = [0, 1, 2, 3];
 
 const BlockTable: React.FC = () => {
   const { data: newBlocksData, loading: newBlocksLoading } =
@@ -74,8 +76,10 @@ const BlockTable: React.FC = () => {
     if (newBlocksLoading || lastBlockLoading || oldBlocksLoading) {
       setIsLoading(true);
     } else {
-      setIsLoading(false);
-      setIsMounted(true);
+      setTimeout(() => {
+        setIsLoading(false);
+        setIsMounted(true);
+      }, 500);
     }
   }, [
     isLoading,
@@ -145,12 +149,8 @@ const BlockTable: React.FC = () => {
     ]);
   }, []);
 
-  if (isLoading) {
-    return <LoadingSkeletonBlockTable />;
-  }
   return (
     <>
-      <LoadingSkeletonBlockTable />
       <Stack
         className={!inView ? blockHeaderFixedClass : ''}
         display="flex"
@@ -159,8 +159,9 @@ const BlockTable: React.FC = () => {
         width="100%"
       >
         <BlockTableHeader
+          isLoading={isLoading}
           startColumns={startColumns}
-          heightColumns={blockHeights}
+          heightColumns={isLoading ? blockHeightsLoading : blockHeights}
           endColumn={endColumn}
         />
       </Stack>
@@ -173,15 +174,22 @@ const BlockTable: React.FC = () => {
       >
         <span ref={ref} style={{ height: 0 }} />
         {!inView && <Stack marginBlock="xxl" />}
-        {Object.keys(blockData).map((chainId) => (
-          <BlockRow
-            key={chainId}
-            blockRowData={blockData[Number(chainId)]}
-            heights={blockHeights}
-            chainId={Number(chainId)}
-            maxBlockTxCount={maxBlockTxCount}
-          />
-        ))}
+        {Object.keys(isLoading ? blockDataLoading : blockData).map(
+          (chainId) => (
+            <BlockRow
+              isLoading={isLoading}
+              key={chainId}
+              blockRowData={
+                isLoading
+                  ? blockDataLoading[Number(chainId)]
+                  : blockData[Number(chainId)]
+              }
+              heights={isLoading ? blockHeightsLoading : blockHeights}
+              chainId={Number(chainId)}
+              maxBlockTxCount={maxBlockTxCount}
+            />
+          ),
+        )}
       </Stack>
     </>
   );
