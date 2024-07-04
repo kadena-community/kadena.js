@@ -1,4 +1,4 @@
-import { token, tokens } from '@kadena/kode-ui/styles';
+import { atoms, token, tokens } from '@kadena/kode-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 
 globalStyle('body,html', {
