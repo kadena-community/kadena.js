@@ -1,5 +1,4 @@
-import { MonoMenu, MonoMenuOpen } from '@kadena/kode-icons/system';
-import { Button, Stack } from '@kadena/kode-ui';
+import { Stack } from '@kadena/kode-ui';
 import Link from 'next/link';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
@@ -9,16 +8,13 @@ import Logo from '../logo/logo';
 import MobileLogo from '../logo/mobile-logo';
 import SelectNetwork from '../select-network/select-network';
 import ThemeToggle from '../theme-toggle/theme-toggle';
-import { buttonSizeClass } from './styles.css';
 
 export const NavBar: FC<
   PropsWithChildren<{
     isFixed?: boolean;
     isSearchPage?: boolean;
-    handleToggleMenu: () => void;
-    menuIsOpen?: boolean;
   }>
-> = ({ children, isFixed, isSearchPage, handleToggleMenu, menuIsOpen }) => {
+> = ({ children, isFixed, isSearchPage }) => {
   return (
     <>
       <Stack alignItems="center">
@@ -49,24 +45,10 @@ export const NavBar: FC<
       </Stack>
       <Stack flex={1}>{children}</Stack>
 
-      <Media greaterThanOrEqual="md">
-        <Stack>
-          <ThemeToggle />
-          <GraphQLQueryDialog />
-        </Stack>
-      </Media>
-      <Media lessThan="md">
-        <Stack>
-          <ThemeToggle />
-
-          <Button
-            className={buttonSizeClass}
-            variant="primary"
-            onClick={handleToggleMenu}
-            startVisual={menuIsOpen ? <MonoMenuOpen /> : <MonoMenu />}
-          />
-        </Stack>
-      </Media>
+      <Stack>
+        <ThemeToggle />
+        <GraphQLQueryDialog />
+      </Stack>
     </>
   );
 };

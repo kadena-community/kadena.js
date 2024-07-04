@@ -1,16 +1,21 @@
 import { Heading, Stack } from '@kadena/kode-ui';
+import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
 import FooterLink from './footer-link';
+import { footerColumnClass, isClosedClass } from './style.css';
 
 interface IProps {
   data: IMenuConfigItem;
+  isOpen?: boolean;
 }
 
-const FooterColumn: FC<IProps> = ({ data }) => {
+const FooterColumn: FC<IProps> = ({ data, isOpen }) => {
   return (
     <Stack
-      flex={1}
+      className={classNames(footerColumnClass, {
+        [isClosedClass]: !isOpen,
+      })}
       marginBlock="sm"
       flexDirection="column"
       gap="sm"
