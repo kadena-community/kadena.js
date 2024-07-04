@@ -1,7 +1,7 @@
 'use client';
 import { env } from '@/utils/env';
-import { tryParse, decodeBase64 , ERROR} from '@/utils/signWithSpireKey';
-import { IUnsignedCommand,ICommand, createClient, isSignedTransaction, ITransactionDescriptor,IPollOptions, ICommandResult } from "@kadena/client"
+import { tryParse, decodeBase64, ERROR } from '@/utils/signWithSpireKey';
+import { IUnsignedCommand, ICommand, createClient, isSignedTransaction, ITransactionDescriptor, IPollOptions, ICommandResult } from "@kadena/client"
 import { useSearchParams } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useEffect, useState } from 'react';
@@ -15,16 +15,16 @@ export interface ITransactionContext {
   error?: ITransactionError;
   preview: () => Promise<void | ICommandResult>
   send: () => Promise<void | ITransactionDescriptor>
-  poll: (req:any) => Promise<any>; 
+  poll: (req: any) => Promise<any>;
   setTransaction: (transaction: IUnsignedCommand | ICommand) => void;
 }
 
 export const TransactionContext = createContext<ITransactionContext>({
   transaction: undefined,
-  preview: async () => {},
-  send: async () => {},
-  poll: async (req) => {},
-  setTransaction: (transaction) => {},
+  preview: async () => { },
+  send: async () => { },
+  poll: async (req) => { },
+  setTransaction: (transaction) => { },
 });
 
 export const TransactionProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -32,27 +32,27 @@ export const TransactionProvider: FC<PropsWithChildren> = ({ children }) => {
   const [transaction, setTransaction] = useState<IUnsignedCommand | ICommand>();
   const [isMounted, setIsMounted] = useState(false);
 
-  const parseTx =  (): void =>  {
+  const parseTx = (): void => {
     if (searchParams.has('transaction')) {
-        const transactionSearch = searchParams.get('transaction');
-        if (transactionSearch && transactionSearch?.length > 0) {
-          const parsedTransaction = tryParse<IUnsignedCommand | ICommand>(
-            decodeBase64(transactionSearch),
-          );
-          if (parsedTransaction === ERROR) {
-            return;
-          }
-          console.log(
-            'retrieved transaction from querystring parameters',
-            JSON.stringify(parsedTransaction, null, 2),
-          );
-          console.log(parsedTransaction)
-          setTransaction(parsedTransaction);
+      const transactionSearch = searchParams.get('transaction');
+      if (transactionSearch && transactionSearch?.length > 0) {
+        const parsedTransaction = tryParse<IUnsignedCommand | ICommand>(
+          decodeBase64(transactionSearch),
+        );
+        if (parsedTransaction === ERROR) {
+          return;
         }
+        console.log(
+          'retrieved transaction from querystring parameters',
+          JSON.stringify(parsedTransaction, null, 2),
+        );
+        console.log(parsedTransaction)
+        setTransaction(parsedTransaction);
       }
+    }
   }
 
-  const { local, submitOne, pollStatus } = createClient(({ chainId, networkId }) => `https://${env.CHAINWEB_API_HOST}/chainweb/0.0/${networkId}/chain/${chainId}/pact`);
+  const { local, submitOne, pollStatus } = createClient(({ chainId, networkId }) => `${env.CHAINWEB_API_HOST}/chainweb/0.0/${networkId}/chain/${chainId}/pact`);
 
 
   const preview = async () => {
@@ -65,23 +65,23 @@ export const TransactionProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const send = async () => {
     if (!transaction) return;
-    const {meta} = JSON.parse(transaction?.cmd)
+    const { meta } = JSON.parse(transaction?.cmd)
     if (isSignedTransaction(transaction)) {
       const res = await submitOne(transaction).catch(console.log);
       return res;
     }
   }
 
-  const poll = async (req:any) =>  {
+  const poll = async (req: any) => {
     return pollStatus(req);
   }
-  
+
   useEffect(() => {
     parseTx();
   }, [searchParams]);
 
   return (
-    <TransactionContext.Provider value={{ transaction, preview, send, poll, setTransaction}}>
+    <TransactionContext.Provider value={{ transaction, preview, send, poll, setTransaction }}>
       {children}
     </TransactionContext.Provider>
   );

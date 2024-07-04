@@ -6,7 +6,7 @@ import { IUnsignedCommand, ICommand, ITransactionDescriptor, ICommandResult } fr
 interface SendTransactionFormProps {
   preview: () => Promise<void | ICommandResult>
   send: () => Promise<void | ITransactionDescriptor>
-  poll: (req:any) => Promise<any>;
+  poll: (req: any) => Promise<any>;
   transaction?: IUnsignedCommand | ICommand;
 }
 
@@ -26,8 +26,8 @@ const SendTransaction: FC<SendTransactionFormProps> = ({ send, preview, poll, tr
   const handlePreview = async () => {
     try {
       const res: any = await preview();
-      const result = res?.result.status === "success" ?  res?.result.status : undefined;
-      if (result==="success") {
+      const result = res?.result.status === "success" ? res?.result.status : undefined;
+      if (result === "success") {
         setPreviewStatus(true);
         setResult(JSON.stringify(res?.result))
       } else {
@@ -41,7 +41,7 @@ const SendTransaction: FC<SendTransactionFormProps> = ({ send, preview, poll, tr
 
   const handleSend = async () => {
     try {
-      const res:any  = await send();
+      const res: any = await send();
       setRequestKey(res);
       setLoadingStatus(true);
       const pollResult = await poll(res);
@@ -64,17 +64,18 @@ const SendTransaction: FC<SendTransactionFormProps> = ({ send, preview, poll, tr
         <p><strong>Network ID:</strong> {networkId}</p>
         <p><strong>Payload:</strong></p>
         <div style={{ marginLeft: 20 }}>
-          <p><strong>Exec Code:</strong> {payload.exec.code}</p>
+          {payload.exec?.["code"] && <p><strong>Exec Code:</strong> {payload.exec.code}</p>}
+          {payload.exec?.["const"] && <p><strong>Cont Code:</strong> {payload.exec.cont}</p>}
         </div>
         <p><strong>Signers:</strong></p>
         <ul style={{ marginLeft: 20 }}>
-          {signers.map((signer:any, index:any) => (
+          {signers.map((signer: any, index: any) => (
             <li key={index}>
               <p><strong>Public Key:</strong> {signer.pubKey}</p>
               <p><strong>Scheme:</strong> {signer.scheme}</p>
               <p><strong>Contract List:</strong></p>
               <ul style={{ marginLeft: 20 }}>
-                {signer.clist.map((contract:any, idx:any) => (
+                {signer.clist.map((contract: any, idx: any) => (
                   <li key={idx}>
                     <p><strong>Name:</strong> {contract.name}</p>
                     <p><strong>Arguments:</strong> {JSON.stringify(contract.args)}</p>
@@ -95,7 +96,7 @@ return(
       {renderTransactionDetails()}
       <Divider />
       <div className={styles.buttonContainer}>
-        {!previewStatus ?
+        {!previewStatus ? 
           (<Button className={styles.button} onPress={handlePreview}>Preview Transaction</Button>)
         : (<Button className={styles.button} onPress={handleSend} loadingLabel="Transaction in Progress.." isLoading={loadingStatus}>Send Transaction</Button>)
         }

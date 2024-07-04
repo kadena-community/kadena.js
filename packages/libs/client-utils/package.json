@@ -61,6 +61,14 @@
       },
       "import": "./lib/esm/marmalade/index.mjs",
       "require": "./lib/cjs/marmalade/index.js"
+    },
+    "./webauthn": {
+      "types": {
+        "import": "./lib/esm/webauthn/index.d.ts",
+        "require": "./lib/cjs/webauthn/index.d.ts"
+      },
+      "import": "./lib/esm/webauthn/index.mjs",
+      "require": "./lib/cjs/webauthn/index.js"
     }
   },
   "typesVersions": {
@@ -82,6 +90,9 @@
       ],
       "marmalade": [
         "./lib/esm/marmalade/index.d.ts"
+      ],
+      "webauthn": [
+        "./lib/esm/webauthn/index.d.ts"
       ]
     }
   },
@@ -113,7 +124,7 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
-    "pactjs:generate:contract": "pactjs contract-generate --contract coin --contract marmalade-v2.ledger --contract marmalade-v2.collection-policy-v1 --contract marmalade-v2.policy-manager --contract marmalade-sale.conventional-auction --contract marmalade-sale.dutch-auction --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact",
+    "pactjs:generate:contract": "pactjs contract-generate --contract coin --contract marmalade-v2.ledger --contract marmalade-v2.collection-policy-v1 --contract marmalade-v2.policy-manager --contract marmalade-sale.conventional-auction --contract marmalade-sale.dutch-auction --contract n_eef68e581f767dd66c4d4c39ed922be944ede505.webauthn-wallet --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact",
     "test": "vitest run",
     "test:integration": "pnpm run test:integration:setup && vitest run -c ./vitest.integration.config.ts",
     "test:integration:local": "vitest run -c ./vitest.integration.config.ts",
