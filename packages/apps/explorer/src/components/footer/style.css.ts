@@ -1,4 +1,4 @@
-import { atoms, style, tokens } from '@kadena/kode-ui/styles';
+import { atoms, responsiveStyle, style, tokens } from '@kadena/kode-ui/styles';
 import { $$pageWidth } from '../layout/styles.css';
 
 export const footerClass = style([
@@ -40,3 +40,14 @@ export const footerLinkClass = style({
     },
   },
 });
+
+export const isClosedClass = style([
+  {
+    display: 'none!important',
+  },
+  responsiveStyle({
+    md: {
+      display: 'flex!important',
+    },
+  }),
+]);

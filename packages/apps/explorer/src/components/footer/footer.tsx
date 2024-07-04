@@ -47,7 +47,7 @@ const Footer: FC = () => {
             </Link>
             <Stack flex={1} />
             <Media lessThan="sm">
-              <Button variant="outlined" onClick={handleToggleContent}>
+              <Button variant="outlined" onPress={handleToggleContent}>
                 <MonoMoreVert />
               </Button>
             </Media>
