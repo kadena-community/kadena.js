@@ -1,3 +1,4 @@
+import { ingest } from './ingestion/cli/command/ingest';
 import remarkAdmonitions from './remarkAdmonition';
 import remarkCheckForCodeTitle from './remarkCheckForCodeTitle';
 import remarkFigureOutOfParagraph from './remarkFigureOutOfParagraph';
@@ -48,6 +49,7 @@ export {
   getPathName,
   getReadTime,
   getUrlNameOfPageFile,
+  ingest,
   isMarkDownFile,
   remarkAdmonitions,
   remarkCheckForCodeTitle,
