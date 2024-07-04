@@ -10,12 +10,12 @@ export const loadingPillClass = style([
     position: 'relative',
     display: 'flex',
     borderRadius: 'md',
-    marginInline: 'lg',
   }),
   {
     backgroundColor: tokens.kda.foundation.color.background.input['@hover'],
     width: '100%',
     maxWidth: '70%',
+    minWidth: '100px',
     minHeight: '20px',
     height: '65%',
     overflow: 'hidden',

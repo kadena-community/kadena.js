@@ -8,6 +8,7 @@ export interface ICompactTableProps {
   label?: string;
   data: any[];
   fields: ITableField[];
+  isLoading?: boolean;
 }
 
 export interface ITableField {
@@ -16,20 +17,27 @@ export interface ITableField {
   label: string;
   key: string;
   render?: FC<{ value: string }>;
+  isLoading?: boolean;
 }
 
 const CompactTable: React.FC<ICompactTableProps> = ({
   fields,
   data,
   label,
+  isLoading = false,
 }) => {
   return (
     <>
       <Media lessThan="sm">
-        <CompactTableMobile fields={fields} data={data} />
+        <CompactTableMobile isLoading={isLoading} fields={fields} data={data} />
       </Media>
       <Media greaterThanOrEqual="sm">
-        <CompactTableDesktop fields={fields} data={data} label={label} />
+        <CompactTableDesktop
+          isLoading={isLoading}
+          fields={fields}
+          data={data}
+          label={label}
+        />
       </Media>
     </>
   );
