@@ -74,8 +74,6 @@
     "@types/node": "^20.12.7",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
     "@vanilla-extract/next-plugin": "2.1.2",
     "@vanilla-extract/vite-plugin": "4.0.7",
     "@vitest/coverage-v8": "^1.6.0",
