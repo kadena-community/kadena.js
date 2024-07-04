@@ -6,7 +6,8 @@ export const footerClass = style([
     width: '100%',
     paddingBlockStart: 'xl',
     paddingBlockEnd: 'md',
-    paddingInline: 'xxxl',
+    paddingInlineStart: 'xxxl',
+    paddingInlineEnd: 'md',
     borderColor: 'base.subtle',
     borderWidth: 'hairline',
   }),
@@ -18,9 +19,13 @@ export const footerClass = style([
   },
 ]);
 
-export const doubleContentClass = style({
-  flex: 2,
-});
+export const doubleContentClass = style([
+  {
+    display: 'none',
+    flex: 2,
+  },
+]);
+
 export const socialLinkClass = style([
   atoms({
     color: 'icon.base.default',

@@ -5,11 +5,13 @@ import FooterLink from './footer-link';
 
 interface IProps {
   data: IMenuConfigItem;
+  isOpen?: boolean;
 }
 
-const FooterColumn: FC<IProps> = ({ data }) => {
+const FooterColumn: FC<IProps> = ({ data, isOpen }) => {
   return (
     <Stack
+      style={{ display: isOpen ? 'flex' : 'none' }}
       flex={1}
       marginBlock="sm"
       flexDirection="column"
