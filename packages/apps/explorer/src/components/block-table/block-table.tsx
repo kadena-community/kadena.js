@@ -10,6 +10,7 @@ import { addBlockData } from '@/services/block';
 import { Stack } from '@kadena/kode-ui';
 import React, { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+import LoadingSkeletonBlockTable from '../loading-skeleton/loading-skeleton-block-table/loading-skeleton-block-table';
 import BlockTableHeader from './block-header/block-header';
 import { blockHeaderFixedClass } from './block-header/block-header.css';
 import { useBlockInfo } from './block-info-context/block-info-context';
@@ -37,19 +38,24 @@ const getmaxBlockTxCount = (blockData: IChainBlock): number => {
 };
 
 const BlockTable: React.FC = () => {
-  const { data: newBlocksData } = useNewBlocksSubscription();
-  const { data: lastBlockHeight } = useLastBlockHeightQuery();
-  const { data: oldBlocksData } = useCompletedBlockHeightsQuery({
-    variables: {
-      // Change this if the table needs to show more than 80 blocks at once (on startup)
-      first: 80,
-      // We don't want only completed heights
-      completedHeights: false,
-      heightCount: 4,
-    },
-  });
+  const { data: newBlocksData, loading: newBlocksLoading } =
+    useNewBlocksSubscription();
+  const { data: lastBlockHeight, loading: lastBlockLoading } =
+    useLastBlockHeightQuery();
+  const { data: oldBlocksData, loading: oldBlocksLoading } =
+    useCompletedBlockHeightsQuery({
+      variables: {
+        // Change this if the table needs to show more than 80 blocks at once (on startup)
+        first: 80,
+        // We don't want only completed heights
+        completedHeights: false,
+        heightCount: 4,
+      },
+    });
   const { selectedHeight } = useBlockInfo();
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const [blockData, setBlockData] = useState<IChainBlock>({});
   const [maxBlockTxCount, setmaxBlockTxCount] = useState(0);
   const [blockHeights, updateBlockHeights] = useState<number[]>([1, 2, 3, 4]);
@@ -61,6 +67,23 @@ const BlockTable: React.FC = () => {
     rootMargin: '-160px 0px 0px 0px',
     initialInView: true,
   });
+
+  useEffect(() => {
+    if (isMounted) return;
+
+    if (newBlocksLoading || lastBlockLoading || oldBlocksLoading) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+      setIsMounted(true);
+    }
+  }, [
+    isLoading,
+    isMounted,
+    newBlocksLoading,
+    lastBlockLoading,
+    oldBlocksLoading,
+  ]);
 
   useEffect(() => {
     if (lastBlockHeight?.lastBlockHeight) {
@@ -122,8 +145,12 @@ const BlockTable: React.FC = () => {
     ]);
   }, []);
 
+  if (isLoading) {
+    return <LoadingSkeletonBlockTable />;
+  }
   return (
     <>
+      <LoadingSkeletonBlockTable />
       <Stack
         className={!inView ? blockHeaderFixedClass : ''}
         display="flex"
