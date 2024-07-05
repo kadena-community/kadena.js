@@ -2,7 +2,6 @@ import { writeFile } from 'fs/promises';
 import path from 'path';
 import * as prettier from 'prettier';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function createAsyncPipeOverload(length: number) {
   const genericTypes: string[] = [];
   const functions: string[] = [];
@@ -30,7 +29,6 @@ function createAsyncPipeOverload(length: number) {
   `;
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function createAsyncPipeType(maxLength: number) {
   const overloads = Array.from({ length: maxLength }, (arg, i) =>
     createAsyncPipeOverload(i + 1),

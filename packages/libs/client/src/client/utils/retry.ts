@@ -18,7 +18,6 @@ const rejectAfter = (
   return { stopTimer: stopTimer, promise };
 };
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const retry = <T extends object | string | void | boolean>(
   task: () => Promise<T>,
 ) =>
