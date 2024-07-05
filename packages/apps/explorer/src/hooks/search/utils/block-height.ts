@@ -1,5 +1,5 @@
-import type { BlocksFromHeightsQuery } from '@/__generated__/sdk';
-import { useBlocksFromHeightsQuery } from '@/__generated__/sdk';
+import type { BlocksFromHeightQuery } from '@/__generated__/sdk';
+import { useBlocksFromHeightQuery } from '@/__generated__/sdk';
 import type { IHookReturnValue } from '..';
 import {
   SearchOptionEnum,
@@ -10,8 +10,8 @@ import {
 export const useBlockHeight = (
   searchQuery: string,
   searchOption: SearchOptionEnum | null,
-): IHookReturnValue<BlocksFromHeightsQuery> => {
-  const { loading, data, error } = useBlocksFromHeightsQuery({
+): IHookReturnValue<BlocksFromHeightQuery> => {
+  const { loading, data, error } = useBlocksFromHeightQuery({
     variables: {
       first: 200,
       startHeight: parseInt(
