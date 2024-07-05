@@ -1,5 +1,5 @@
 import type {
-  BlocksFromHeightsQueryResult,
+  BlocksFromHeightQueryResult,
   CompletedBlockHeightsQueryResult,
   NewBlocksSubscriptionResult,
 } from '@/__generated__/sdk';
@@ -24,7 +24,7 @@ export function addBlockData(
   existingData: IChainBlock,
   newData:
     | NewBlocksSubscriptionResult['data']
-    | BlocksFromHeightsQueryResult['data']
+    | BlocksFromHeightQueryResult['data']
     | CompletedBlockHeightsQueryResult['data'],
 ): IChainBlock {
   const updatedData = { ...existingData };

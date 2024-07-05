@@ -1,4 +1,3 @@
-import ValueLoader from '@/components/loading-skeleton/value-loader/value-loader';
 import type { IBlockData } from '@/services/block';
 import { Stack, Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
@@ -19,10 +18,9 @@ interface IProps {
   height: IBlockData;
   chainId: number;
   isSelected?: boolean;
-  isLoading: boolean;
 }
 
-const BlockCell: FC<IProps> = ({ height, chainId, isSelected, isLoading }) => {
+const BlockCell: FC<IProps> = ({ height, chainId, isSelected }) => {
   const { handleOpenHeightBlock } = useBlockInfo();
 
   const handleOpenHeight = useCallback(() => {
@@ -39,16 +37,14 @@ const BlockCell: FC<IProps> = ({ height, chainId, isSelected, isLoading }) => {
         [headerColumnSelectedStyle]: isSelected,
       })}
     >
-      <ValueLoader isLoading={isLoading}>
-        <Text
-          as="span"
-          className={blockHeightColumnHeaderStyle}
-          variant="code"
-          bold
-        >
-          {height.txCount}
-        </Text>
-      </ValueLoader>
+      <Text
+        as="span"
+        className={blockHeightColumnHeaderStyle}
+        variant="code"
+        bold
+      >
+        {height.txCount}
+      </Text>
       {isSelected && <span className={blockCaratStyle} />}
     </Stack>
   );
