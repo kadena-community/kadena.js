@@ -39,6 +39,7 @@ const BlockTransactions: FC<IProps> = ({ transactions, isLoading }) => {
           variant: 'code',
           width: '10%',
           render: FormatStatus(),
+          loaderVariant: 'icon',
         },
         {
           label: 'Sender',

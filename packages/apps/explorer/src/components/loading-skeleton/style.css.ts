@@ -1,4 +1,4 @@
-import { atoms, tokens } from '@kadena/kode-ui/styles';
+import { atoms, recipe, tokens } from '@kadena/kode-ui/styles';
 import { keyframes, style } from '@vanilla-extract/css';
 
 const shimmer = keyframes({
@@ -9,13 +9,10 @@ export const loadingPillClass = style([
   atoms({
     position: 'relative',
     display: 'flex',
-    borderRadius: 'md',
   }),
   {
     backgroundColor: tokens.kda.foundation.color.background.input['@hover'],
-    width: '100%',
-    maxWidth: '70%',
-    minWidth: '100px',
+
     minHeight: '20px',
     height: '65%',
     overflow: 'hidden',
@@ -32,3 +29,29 @@ export const loadingPillClass = style([
     },
   },
 ]);
+
+export const loadingVariants = recipe({
+  variants: {
+    variant: {
+      default: [
+        atoms({
+          borderRadius: 'md',
+        }),
+        {
+          width: '100%',
+          maxWidth: '70%',
+          minWidth: '100px',
+        },
+      ],
+      icon: [
+        atoms({
+          borderRadius: 'round',
+        }),
+        {
+          width: '30%',
+          aspectRatio: '1/1',
+        },
+      ],
+    },
+  },
+});

@@ -1,6 +1,6 @@
 import { Media } from '@/components/layout/media';
-import type { FC } from 'react';
 import React from 'react';
+import type { ITableField } from '../loading-skeleton/types';
 import CompactTableDesktop from './compact-table-desktop/compact-table-desktop';
 import CompactTableMobile from './compact-table-mobile/compact-table-mobile';
 
@@ -8,15 +8,6 @@ export interface ICompactTableProps {
   label?: string;
   data: any[];
   fields: ITableField[];
-  isLoading?: boolean;
-}
-
-export interface ITableField {
-  width: any;
-  variant?: 'body' | 'code';
-  label: string;
-  key: string;
-  render?: FC<{ value: string }>;
   isLoading?: boolean;
 }
 

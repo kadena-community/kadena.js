@@ -14,7 +14,7 @@ import BlockTableHeader from './block-header/block-header';
 import { blockHeaderFixedClass } from './block-header/block-header.css';
 import { useBlockInfo } from './block-info-context/block-info-context';
 import BlockRow from './block-row/block-row';
-import { blockDataLoading } from './utils/block-data-loading';
+import { blockDataLoading } from './loading-data';
 
 export const startColumns = [
   { title: 'Chain', subtitle: 'Number' },
@@ -79,7 +79,7 @@ const BlockTable: React.FC = () => {
       setTimeout(() => {
         setIsLoading(false);
         setIsMounted(true);
-      }, 500);
+      }, 200);
     }
   }, [
     isLoading,

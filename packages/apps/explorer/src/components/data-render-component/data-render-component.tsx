@@ -15,20 +15,24 @@ interface IDataRenderComponentProps {
   title?: string;
   type?: 'vertical' | 'horizontal';
   fields: IDataRenderComponentField[];
-  isLoading?:boolean;
+  isLoading?: boolean;
 }
 
 const DataRenderComponent: React.FC<IDataRenderComponentProps> = ({
   title,
   type,
   fields,
-  isLoading = false
+  isLoading = false,
 }) => {
   return (
     <section className={sectionClass}>
       {title && <h4 className={headingClass}>{title}</h4>}
       {(!type || type === 'vertical') && (
-        <DataRenderComponentVertical isLoading={isLoading} fields={fields} title={!!title} />
+        <DataRenderComponentVertical
+          isLoading={isLoading}
+          fields={fields}
+          title={!!title}
+        />
       )}
       {type === 'horizontal' && (
         <DataRenderComponentHorizontal isLoading={isLoading} fields={fields} />

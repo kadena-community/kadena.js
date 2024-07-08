@@ -1,10 +1,24 @@
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
-import { loadingPillClass } from './style.css';
+import { loadingPillClass, loadingVariants } from './style.css';
+import type { ILoadingVariants } from './types';
 
-const LoadingPill: FC<{ className?: string }> = ({ className }) => {
-  return <span className={classNames(loadingPillClass, className)} />;
+interface IProps {
+  className?: string;
+  variant: ILoadingVariants;
+}
+
+const LoadingPill: FC<IProps> = ({ className, variant }) => {
+  return (
+    <span
+      className={classNames(
+        loadingVariants({ variant }),
+        loadingPillClass,
+        className,
+      )}
+    />
+  );
 };
 
 export default LoadingPill;

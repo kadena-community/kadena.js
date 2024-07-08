@@ -1,12 +1,13 @@
-import type { Transaction } from '@/__generated__/sdk';
+import type { BlockQuery, Transaction } from '@/__generated__/sdk';
 import { useBlockQuery } from '@/__generated__/sdk';
 import BlockTransactions from '@/components/block-transactions/block-transactions';
 import routes from '@/constants/routes';
+import { loadingData } from '@/pages/block/loading-data';
 import type { IBlockData } from '@/services/block';
 import { Heading, Stack, TextLink } from '@kadena/kode-ui';
 import Link from 'next/link';
 import type { FC } from 'react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { blockInfoClass } from './styles.css';
 
 interface IProps {
@@ -14,6 +15,9 @@ interface IProps {
 }
 
 const HeightInfo: FC<IProps> = ({ height }) => {
+  const [innerData, setInnerData] = useState<BlockQuery>(loadingData);
+  const [isLoading, setIsLoading] = useState(true);
+
   const blockQueryVariables = {
     hash: height?.hash ?? '',
     skip: !height?.hash,
@@ -22,6 +26,20 @@ const HeightInfo: FC<IProps> = ({ height }) => {
   const { loading, data, error } = useBlockQuery({
     variables: blockQueryVariables,
   });
+
+  useEffect(() => {
+    if (loading) {
+      setIsLoading(true);
+      return;
+    }
+
+    if (data) {
+      setTimeout(() => {
+        setIsLoading(false);
+        setInnerData(data);
+      }, 200);
+    }
+  }, [loading, data]);
 
   if (!height) return null;
 
@@ -50,8 +68,9 @@ const HeightInfo: FC<IProps> = ({ height }) => {
       </Stack>
 
       <BlockTransactions
+        isLoading={isLoading}
         transactions={
-          data?.block?.transactions.edges.map(
+          innerData?.block?.transactions.edges.map(
             (edge) => edge.node as Transaction,
           ) ?? []
         }
