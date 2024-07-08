@@ -29,14 +29,14 @@
   "devDependencies": {
     "@changesets/cli": "^2.26.2",
     "@kadena-dev/markdown": "workspace:*",
-    "knip": "^2.38.1",
+    "knip": "^5.24.3",
     "only-allow": "^1.2.1",
     "prettier": "~3.2.5",
-    "prettier-plugin-organize-imports": "^3.2.3",
+    "prettier-plugin-organize-imports": "^4.0.0",
     "prettier-plugin-packagejson": "^2.4.6",
-    "syncpack": "^11.2.1",
-    "tsx": "^3.12.10",
-    "turbo": "^1.10.15"
+    "syncpack": "^12.3.3",
+    "tsx": "^4.16.2",
+    "turbo": "^2.0.6"
   },
   "engines": {
     "node": ">=18 <21",
