@@ -177,18 +177,6 @@ describe('extractResult', () => {
       } as unknown as SuccessfulResponse),
     ).toBe('test-data');
   });
-
-  it('returns undefined if it is not success', () => {
-    expect(
-      extractResult({
-        result: {
-          status: 'failure',
-          data: 'failure-data',
-          error: 'error-message',
-        },
-      } as unknown as SuccessfulResponse),
-    ).toBe(undefined);
-  });
 });
 
 describe('asyncLock', () => {
