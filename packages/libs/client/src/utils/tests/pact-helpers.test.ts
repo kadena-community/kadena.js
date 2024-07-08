@@ -14,6 +14,9 @@ describe('literal', () => {
   it('returns a function that returns the input', () => {
     expect(literal('free.contract').toJSON()).toBe('Literal(free.contract)');
   });
+  it('returns a function that returns the input', () => {
+    expect(literal('free.contract').toString()).toBe('free.contract');
+  });
 });
 
 describe('unpackLiterals', () => {

@@ -78,7 +78,10 @@ describe('signWithKeypair', () => {
           '09e82da78d531e2d16852a923e9fe0f80f3b67a9b8d92c7f05e4782222252e12',
         sig: '5bdcceab829c628afc2afe28d18e5efdc724f0ebc18e1aa10b03c07123f23bdd698a197aba39fc035c0a71c5c821f2f8e12fd6fb138dc33e6d2323b3bbd1b40e',
       },
-      undefined,
+      {
+        pubKey:
+          '815224b7316e0053635a91fea90f1f5bb474831b257be1aaaf2129ff989824d8',
+      },
     ]);
 
     const signedTx = await signWithKeypair2(txWithOneSig);
