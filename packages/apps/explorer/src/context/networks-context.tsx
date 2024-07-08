@@ -10,7 +10,6 @@ import {
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { createClient } from 'graphql-ws';
-import { useParams } from 'next/navigation';
 import React, {
   createContext,
   useCallback,
@@ -68,8 +67,8 @@ const NetworkContextProvider = (props: {
 }): JSX.Element => {
   const [networks, setNetworks] = useState<INetwork[]>(getDefaultNetworks());
   const [isMounted, setIsMounted] = useState(false);
-  const { networkId } = useParams() ?? {};
   const router = useRouter();
+  const networkId = router.query.networkId as string;
   const [activeNetwork, setActiveNetwork] = useState<INetwork | undefined>();
 
   const checkStorage = () => {

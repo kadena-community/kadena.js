@@ -1,18 +1,19 @@
 import { Stack } from '@kadena/kode-ui';
 import classNames from 'classnames';
-import { usePathname } from 'next/navigation';
+
 import type { FC } from 'react';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 import { layoutWrapperClass } from '../layout/styles.css';
 import { NavBar } from '../navbar/navbar';
+import { useRouter } from '../routing/useRouter';
 import SearchBarHeader from '../search/searchbar-header/searchbar-header';
 import StatisticsStack from '../statistics-component/statistics-stack/statistics-stack';
 import { fixedClass, fixedVisibleClass, headerClass } from './styles.css';
 
 const Header: FC = () => {
-  const location = usePathname();
-  const isSearchPage = location === '/';
+  const router = useRouter();
+  const isSearchPage = router.asPath === '/';
   const { ref, inView } = useInView({
     rootMargin: '20px',
     skip: !isSearchPage,

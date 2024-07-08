@@ -1,7 +1,7 @@
 import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
+import { useRouter } from '@/components/routing/useRouter';
 import type { ISearchItem } from '@/components/search/search-component/search-component';
 import type { ApolloError } from '@apollo/client';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAccount } from './utils/account';
 import { useBlockHash } from './utils/block-hash';
@@ -22,8 +22,6 @@ export interface IHookReturnValue<T> {
 
 export const useSearch = () => {
   const router = useRouter();
-  const location = usePathname();
-  const params = useSearchParams();
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isMounted, setIsMounted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -77,14 +75,15 @@ export const useSearch = () => {
 
     if (!searchQuery) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      if (location === '/') {
-        router.replace(`${location}`);
+      if (router.asPath === '/') {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        router.replace(`${router.asPath}`);
       }
       return;
     }
 
-    const q = params.get('q');
-    const so = params.get('so');
+    const q = router.query.q;
+    const so = router.query.so;
     const soInt: SearchOptionEnum = parseInt(so as any);
 
     if (q === searchQuery && soInt === searchOption) return;
@@ -99,8 +98,8 @@ export const useSearch = () => {
   }, [searchQuery, isMounted]);
 
   useEffect(() => {
-    const q = params.get('q');
-    const so = params.get('so');
+    const q = router.query.q;
+    const so = router.query.so;
 
     const soInt: SearchOptionEnum | null = !isNaN(parseInt(so as any))
       ? parseInt(so as any)
@@ -108,7 +107,7 @@ export const useSearch = () => {
     setSearchQuery(q as string);
     setSearchOption(soInt);
     setIsMounted(true);
-  }, [params]);
+  }, [router.query]);
 
   useEffect(() => {
     setLoading(
