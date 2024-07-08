@@ -1,12 +1,4 @@
 export const networkConstants = {
-  // devnet: {
-  //   networkId: 'devnet',
-  //   label: 'Devnet',
-  //   chainwebUrl: 'api.testnet.chainweb.com',
-  //   graphUrl: 'http://localhost:4000/graphql',
-  //   wsGraphUrl: 'ws://localhost:4000/graphql',
-  //   explorerUrl: 'https://explorer.testnet.kadena.io/',
-  // },
   mainnet01: {
     networkId: 'mainnet01',
     label: 'Mainnet',

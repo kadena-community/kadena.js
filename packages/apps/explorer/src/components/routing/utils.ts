@@ -1,6 +1,10 @@
 import type { INetwork } from '@/context/networks-context';
 
-export const createHref = (activeNetwork: INetwork, href: string): string => {
+export const createHref = (
+  activeNetwork: INetwork,
+  networks: INetwork[],
+  href: string,
+): string => {
   //if the href is just a # link return it.
   if (href.startsWith('#')) return href;
 
@@ -8,7 +12,7 @@ export const createHref = (activeNetwork: INetwork, href: string): string => {
 
   const cleanedArr = arr.filter((val) => val);
 
-  if (cleanedArr[0] !== activeNetwork.networkId) {
+  if (!networks.find((n) => n.networkId === cleanedArr[0])) {
     cleanedArr.unshift(activeNetwork.networkId);
   }
 

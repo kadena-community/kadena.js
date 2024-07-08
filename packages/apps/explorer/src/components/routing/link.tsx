@@ -10,10 +10,10 @@ const Link: FC<LinkProps & HTMLProps<HTMLAnchorElement>> = ({
   href,
   ...restProps
 }) => {
-  const { activeNetwork } = useNetwork();
+  const { activeNetwork, networks } = useNetwork();
 
   return (
-    <NextLink href={createHref(activeNetwork, href)} {...restProps}>
+    <NextLink href={createHref(activeNetwork, networks, href)} {...restProps}>
       {children}
     </NextLink>
   );

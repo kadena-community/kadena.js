@@ -44,7 +44,8 @@ const NetworkContext = createContext<INetworkContext>({
   addNetwork: () => {},
 });
 
-const storageKey = 'networks';
+export const storageKey = 'networks';
+export const selectedNetworkKey = 'selectedNetwork';
 
 const useNetwork = (): INetworkContext => {
   const context = useContext(NetworkContext);
@@ -106,7 +107,9 @@ const NetworkContextProvider = (props: {
   }, [storageListener]);
 
   const setActiveNetworkByKey = (networkId: string): void => {
-    setActiveNetwork(networks.find((x) => x.networkId === networkId)!);
+    const network = networks.find((x) => x.networkId === networkId)!;
+    setActiveNetwork(network);
+    localStorage.setItem(selectedNetworkKey, JSON.stringify(network));
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     router.push(`/${networkId}`);
@@ -125,12 +128,14 @@ const NetworkContextProvider = (props: {
 
       setNetworks((v) => [...v, newNetwork]);
       setActiveNetwork(newNetwork);
+      localStorage.setItem(selectedNetworkKey, JSON.stringify(newNetwork));
+
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       router.push(`/${newNetwork.networkId}`);
     }
   };
 
-  const getApolloClient = () => {
+  const getApolloClient = useCallback(() => {
     const httpLink = new YogaLink({
       endpoint: activeNetwork?.graphUrl,
     });
@@ -159,7 +164,7 @@ const NetworkContextProvider = (props: {
     });
 
     return client;
-  };
+  }, [activeNetwork]);
 
   if (!isMounted || !activeNetwork) return <div>loading</div>;
 
