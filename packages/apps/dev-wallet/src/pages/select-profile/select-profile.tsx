@@ -1,8 +1,11 @@
+import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { IProfile } from '@/modules/wallet/wallet.repository';
+import { recoverPublicKey, retrieveCredential } from '@/utils/webAuthn';
 import { MonoAdd } from '@kadena/kode-icons';
 import { Box, Heading, Stack } from '@kadena/kode-ui';
 import { tokens } from '@kadena/kode-ui/styles';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import InitialsAvatar from './initials';
 import {
   aliasClass,
@@ -15,10 +18,38 @@ import {
 } from './select-profile.css';
 
 export function SelectProfile() {
-  const { isUnlocked, profileList } = useWallet();
-  if (isUnlocked) {
-    return <Navigate to="/" replace />;
-  }
+  const { profileList, unlockProfile } = useWallet();
+  const { unlockHDWallet } = useHDWallet();
+  const [params] = useSearchParams();
+
+  const unlockWithWebAuthn = async (
+    profile: Pick<IProfile, 'name' | 'uuid' | 'accentColor' | 'options'>,
+  ) => {
+    if (profile.options.authMode !== 'WEB_AUTHN') {
+      throw new Error('Profile does not support WebAuthn');
+    }
+    const credentialId = profile.options.webAuthnCredential;
+    const credential = await retrieveCredential(credentialId);
+    if (!credential) {
+      throw new Error('Failed to retrieve credential');
+    }
+    const keys = await recoverPublicKey(credential);
+    for (const key of keys) {
+      const result = await unlockProfile(profile.uuid, key);
+      if (result) {
+        // for now we just pick the first key source later we should have a way to select the key source
+        const keySource = result.keySources[0];
+        if (!keySource) {
+          throw new Error('No key source found');
+        }
+        await unlockHDWallet(keySource.source, key, keySource);
+        return;
+      }
+    }
+    console.error('Failed to unlock profile');
+  };
+
+  const redirect = params.get('redirect');
 
   return (
     <Box>
@@ -36,21 +67,50 @@ export function SelectProfile() {
         flexWrap="wrap"
         marginBlock="lg"
       >
-        {profileList.map((profile) => (
-          <Link
-            key={profile.uuid}
-            to={`/unlock-profile/${profile.uuid}`}
-            style={{ textDecoration: 'none' }}
-            className={cardClass}
-          >
-            <Stack alignItems="center" gap="md">
-              <div className={imgClass}>
-                <InitialsAvatar name={profile.name} />
-              </div>
-              <div className={aliasClass}> {profile.name}</div>
-            </Stack>
-          </Link>
-        ))}
+        {profileList.map((profile) =>
+          profile.options.authMode === 'WEB_AUTHN' ? (
+            <button
+              key={profile.uuid}
+              className={cardClass}
+              onClick={() => {
+                unlockWithWebAuthn(profile);
+              }}
+            >
+              <Stack alignItems="center" gap="md">
+                <div
+                  className={imgClass}
+                  style={{ backgroundColor: profile.accentColor }}
+                >
+                  <InitialsAvatar
+                    name={profile.name}
+                    accentColor={profile.accentColor}
+                  />
+                </div>
+                <div className={aliasClass}> {profile.name}</div>
+              </Stack>
+            </button>
+          ) : (
+            <Link
+              key={profile.uuid}
+              to={`/unlock-profile/${profile.uuid}${redirect ? `?redirect=${redirect}` : ''}`}
+              style={{ textDecoration: 'none' }}
+              className={cardClass}
+            >
+              <Stack alignItems="center" gap="md">
+                <div
+                  className={imgClass}
+                  style={{ backgroundColor: profile.accentColor }}
+                >
+                  <InitialsAvatar
+                    name={profile.name}
+                    accentColor={profile.accentColor}
+                  />
+                </div>
+                <div className={aliasClass}> {profile.name}</div>
+              </Stack>
+            </Link>
+          ),
+        )}
         <Link
           to="/create-profile"
           style={{ textDecoration: 'none' }}

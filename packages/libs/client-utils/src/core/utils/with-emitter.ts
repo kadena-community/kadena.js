@@ -122,11 +122,13 @@ export const withEmitter: WithEmitter = (fn) => {
         const pr = new Promise((resolve, reject) => {
           exec().catch(reject);
 
-          const resolveAndLock = (data: any) => {
+          const resolveAndLock = async (data: any) => {
             resolve(data);
             emitter.removeEventListener(event, resolveAndLock);
-            lock.close();
-            return lock.waitTillOpen();
+            if (!lock.isLocked()) {
+              lock.close();
+            }
+            await lock.waitTillOpen();
           };
           emitter.addEventListener(event, resolveAndLock);
         });

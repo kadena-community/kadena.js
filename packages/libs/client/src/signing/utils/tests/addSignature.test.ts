@@ -31,7 +31,10 @@ describe('addSignature', () => {
     expect(withFirstSig).toStrictEqual({
       cmd: JSON.stringify(command),
       hash: 'test-hash',
-      sigs: [{ sig: 'first-sig' }, undefined],
+      sigs: [
+        { sig: 'first-sig', pubKey: 'first_public_key' },
+        { pubKey: 'second_public_key' },
+      ],
     });
 
     const withAllSigs = addSignatures(withFirstSig, {
@@ -42,7 +45,10 @@ describe('addSignature', () => {
     expect(withAllSigs).toStrictEqual({
       cmd: JSON.stringify(command),
       hash: 'test-hash',
-      sigs: [{ sig: 'first-sig' }, { sig: 'second-sig' }],
+      sigs: [
+        { sig: 'first-sig', pubKey: 'first_public_key' },
+        { sig: 'second-sig', pubKey: 'second_public_key' },
+      ],
     });
   });
 
@@ -77,7 +83,10 @@ describe('addSignature', () => {
     expect(withAllSigs).toStrictEqual({
       cmd: JSON.stringify(command),
       hash: 'test-hash',
-      sigs: [{ sig: 'first-sig' }, { sig: 'second-sig' }],
+      sigs: [
+        { sig: 'first-sig', pubKey: 'first_public_key' },
+        { sig: 'second-sig', pubKey: 'second_public_key' },
+      ],
     });
   });
   it('throws an exception if signatures are not matched', () => {

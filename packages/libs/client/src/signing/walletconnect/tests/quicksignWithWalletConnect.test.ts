@@ -138,7 +138,7 @@ describe('quicksignWithWalletConnect', () => {
     expect(result).toEqual({
       cmd: '{"payload":{"exec":{"code":"(coin.transfer \\"bonnie\\" \\"clyde\\" 1)","data":{"test-data":"test-data"}}},"meta":{"chainId":"1","gasLimit":10000,"gasPrice":1e-8,"sender":"test-sender","ttl":180,"creationTime":1234},"signers":[{"clist":[{"name":"test-cap-name","args":["test-cap-arg"]}],"pubKey":"test-pub-key"}],"networkId":"testnet-id","nonce":""}',
       hash: 'test-hash',
-      sigs: [{ sig: 'test-sig' }],
+      sigs: [{ sig: 'test-sig', pubKey: 'test-pub-key' }],
     });
   });
 

@@ -200,7 +200,7 @@ export function DutchAuction({ tokenImageUrl, sale }: DutchAuctionProps) {
       chainId: sale.chainId,
       networkId: env.NETWORK_NAME,
       host: env.CHAINWEB_API_HOST,
-    })
+    }) as string | { account?: string };
 
     try {
       await buyToken({
@@ -208,7 +208,11 @@ export function DutchAuction({ tokenImageUrl, sale }: DutchAuctionProps) {
           dutch: true
         },
         escrow: {
-          account: escrowAccountResult as string
+          account: typeof escrowAccountResult === "string"
+          ? escrowAccountResult
+          : "account" in escrowAccountResult && escrowAccountResult.account
+            ? escrowAccountResult.account
+            : escrowAccountResult as string,
         },
         updatedPrice: new PactNumber(currentPrice).toPactDecimal(),
         tokenId: auctionDetails?.["token-id"],

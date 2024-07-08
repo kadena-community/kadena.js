@@ -60,7 +60,7 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: I
     }], [{
     event: 'poll-spv';
     data: string;
-    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>;
+    }], T extends Promise<any> ? T : Promise<T>>;
     from: ((event: "sign", data: ICommand) => IEmitterWrapper<[{
     event: "sign";
     data: ICommand;
@@ -94,7 +94,7 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: I
     }], [{
     event: 'poll-spv';
     data: string;
-    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "preflight", data: ICommandResult) => IEmitterWrapper<[{
+    }], T extends Promise<any> ? T : Promise<T>>) & ((event: "preflight", data: ICommandResult) => IEmitterWrapper<[{
     event: "sign";
     data: ICommand;
     }, {
@@ -127,7 +127,7 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: I
     }], [{
     event: 'poll-spv';
     data: string;
-    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "submit", data: ITransactionDescriptor) => IEmitterWrapper<[{
+    }], T extends Promise<any> ? T : Promise<T>>) & ((event: "submit", data: ITransactionDescriptor) => IEmitterWrapper<[{
     event: "sign";
     data: ICommand;
     }, {
@@ -160,7 +160,7 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: I
     }], [{
     event: 'poll-spv';
     data: string;
-    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "listen", data: ICommandResult) => IEmitterWrapper<[{
+    }], T extends Promise<any> ? T : Promise<T>>) & ((event: "listen", data: ICommandResult) => IEmitterWrapper<[{
     event: "sign";
     data: ICommand;
     }, {
@@ -193,7 +193,7 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: I
     }], [{
     event: 'poll-spv';
     data: string;
-    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "spv-proof", data: {
+    }], T extends Promise<any> ? T : Promise<T>>) & ((event: "spv-proof", data: {
         pactId: string;
         step: number;
         proof: string;
@@ -232,7 +232,7 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: I
     }], [{
     event: 'poll-spv';
     data: string;
-    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "gas-station" | "sign-continuation", data: ICommand) => IEmitterWrapper<[{
+    }], T extends Promise<any> ? T : Promise<T>>) & ((event: "gas-station" | "sign-continuation", data: ICommand) => IEmitterWrapper<[{
     event: "sign";
     data: ICommand;
     }, {
@@ -265,7 +265,7 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: I
     }], [{
     event: 'poll-spv';
     data: string;
-    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "submit-continuation", data: ITransactionDescriptor) => IEmitterWrapper<[{
+    }], T extends Promise<any> ? T : Promise<T>>) & ((event: "submit-continuation", data: ITransactionDescriptor) => IEmitterWrapper<[{
     event: "sign";
     data: ICommand;
     }, {
@@ -298,7 +298,7 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: I
     }], [{
     event: 'poll-spv';
     data: string;
-    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "listen-continuation", data: ICommandResult) => IEmitterWrapper<[{
+    }], T extends Promise<any> ? T : Promise<T>>) & ((event: "listen-continuation", data: ICommandResult) => IEmitterWrapper<[{
     event: "sign";
     data: ICommand;
     }, {
@@ -331,7 +331,7 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: I
     }], [{
     event: 'poll-spv';
     data: string;
-    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "poll-spv", data: string) => IEmitterWrapper<[{
+    }], T extends Promise<any> ? T : Promise<T>>) & ((event: "poll-spv", data: string) => IEmitterWrapper<[{
     event: "sign";
     data: ICommand;
     }, {
@@ -364,7 +364,7 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: I
     }], [{
     event: 'poll-spv';
     data: string;
-    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>);
+    }], T extends Promise<any> ? T : Promise<T>>);
 };
 
 // @alpha (undocumented)
@@ -372,11 +372,11 @@ export const dirtyReadClient: <T = PactValue>(args_0: Omit<IClientConfig, "sign"
     (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
     event: "dirtyRead";
     data: ICommandResult;
-    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>;
+    }], [], T extends Promise<any> ? T : Promise<T>>;
     from: (event: "dirtyRead", data: ICommandResult) => IEmitterWrapper<[{
     event: "dirtyRead";
     data: ICommandResult;
-    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>;
+    }], [], T extends Promise<any> ? T : Promise<T>>;
 };
 
 // @alpha
@@ -417,20 +417,20 @@ export const preflightClient: <T = PactValue>(args_0: IClientConfig, client?: IC
     }, {
     event: "preflight";
     data: ICommandResult;
-    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>;
+    }], [], T extends Promise<any> ? T : Promise<T>>;
     from: ((event: "sign", data: IUnsignedCommand) => IEmitterWrapper<[{
     event: "sign";
     data: IUnsignedCommand;
     }, {
     event: "preflight";
     data: ICommandResult;
-    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "preflight", data: ICommandResult) => IEmitterWrapper<[{
+    }], [], T extends Promise<any> ? T : Promise<T>>) & ((event: "preflight", data: ICommandResult) => IEmitterWrapper<[{
     event: "sign";
     data: IUnsignedCommand;
     }, {
     event: "preflight";
     data: ICommandResult;
-    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>);
+    }], [], T extends Promise<any> ? T : Promise<T>>);
 };
 
 // @alpha (undocumented)
@@ -438,7 +438,9 @@ export const queryAllChainsClient: <T = PactValue>(args_0: Omit<IClientConfig, "
     (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
     event: "query-result";
     data: {
-    result: Awaited<T> | undefined;
+    result: Awaited<T>; /**
+    * @alpha
+    */
     chainId: ChainId | undefined;
     }[];
     }], [{
@@ -448,16 +450,22 @@ export const queryAllChainsClient: <T = PactValue>(args_0: Omit<IClientConfig, "
     chainId: ChainId;
     };
     }], Promise<{
-    result: Awaited<T> | undefined;
+    result: Awaited<T>; /**
+    * @alpha
+    */
     chainId: ChainId | undefined;
     }[]>>;
     from: ((event: "query-result", data: {
-        result: Awaited<T> | undefined;
+        result: Awaited<T>; /**
+        * @alpha
+        */
         chainId: ChainId | undefined;
     }[]) => IEmitterWrapper<[{
     event: "query-result";
     data: {
-    result: Awaited<T> | undefined;
+    result: Awaited<T>; /**
+    * @alpha
+    */
     chainId: ChainId | undefined;
     }[];
     }], [{
@@ -467,7 +475,9 @@ export const queryAllChainsClient: <T = PactValue>(args_0: Omit<IClientConfig, "
     chainId: ChainId;
     };
     }], Promise<{
-    result: Awaited<T> | undefined;
+    result: Awaited<T>; /**
+    * @alpha
+    */
     chainId: ChainId | undefined;
     }[]>>) & ((event: "chain-result", data: {
         result: T;
@@ -475,7 +485,9 @@ export const queryAllChainsClient: <T = PactValue>(args_0: Omit<IClientConfig, "
     }) => IEmitterWrapper<[{
     event: "query-result";
     data: {
-    result: Awaited<T> | undefined;
+    result: Awaited<T>; /**
+    * @alpha
+    */
     chainId: ChainId | undefined;
     }[];
     }], [{
@@ -485,7 +497,9 @@ export const queryAllChainsClient: <T = PactValue>(args_0: Omit<IClientConfig, "
     chainId: ChainId;
     };
     }], Promise<{
-    result: Awaited<T> | undefined;
+    result: Awaited<T>; /**
+    * @alpha
+    */
     chainId: ChainId | undefined;
     }[]>>);
 };
@@ -500,6 +514,9 @@ setGlobalConfig: (cfg: Partial<IClientConfig>) => void;
 // @alpha (undocumented)
 export const submitClient: <T = PactValue>(args_0: IClientConfig, client?: IClient | undefined) => {
     (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
+    event: "command";
+    data: IUnsignedCommand;
+    }, {
     event: "sign";
     data: ICommand;
     }, {
@@ -511,8 +528,11 @@ export const submitClient: <T = PactValue>(args_0: IClientConfig, client?: IClie
     }, {
     event: "listen";
     data: ICommandResult;
-    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>;
-    from: ((event: "sign", data: ICommand) => IEmitterWrapper<[{
+    }], [], T extends Promise<any> ? T : Promise<T>>;
+    from: ((event: "command", data: IUnsignedCommand) => IEmitterWrapper<[{
+    event: "command";
+    data: IUnsignedCommand;
+    }, {
     event: "sign";
     data: ICommand;
     }, {
@@ -524,7 +544,10 @@ export const submitClient: <T = PactValue>(args_0: IClientConfig, client?: IClie
     }, {
     event: "listen";
     data: ICommandResult;
-    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "preflight", data: ICommandResult) => IEmitterWrapper<[{
+    }], [], T extends Promise<any> ? T : Promise<T>>) & ((event: "sign", data: ICommand) => IEmitterWrapper<[{
+    event: "command";
+    data: IUnsignedCommand;
+    }, {
     event: "sign";
     data: ICommand;
     }, {
@@ -536,7 +559,10 @@ export const submitClient: <T = PactValue>(args_0: IClientConfig, client?: IClie
     }, {
     event: "listen";
     data: ICommandResult;
-    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "submit", data: ITransactionDescriptor) => IEmitterWrapper<[{
+    }], [], T extends Promise<any> ? T : Promise<T>>) & ((event: "preflight", data: ICommandResult) => IEmitterWrapper<[{
+    event: "command";
+    data: IUnsignedCommand;
+    }, {
     event: "sign";
     data: ICommand;
     }, {
@@ -548,7 +574,10 @@ export const submitClient: <T = PactValue>(args_0: IClientConfig, client?: IClie
     }, {
     event: "listen";
     data: ICommandResult;
-    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "listen", data: ICommandResult) => IEmitterWrapper<[{
+    }], [], T extends Promise<any> ? T : Promise<T>>) & ((event: "submit", data: ITransactionDescriptor) => IEmitterWrapper<[{
+    event: "command";
+    data: IUnsignedCommand;
+    }, {
     event: "sign";
     data: ICommand;
     }, {
@@ -560,7 +589,22 @@ export const submitClient: <T = PactValue>(args_0: IClientConfig, client?: IClie
     }, {
     event: "listen";
     data: ICommandResult;
-    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>);
+    }], [], T extends Promise<any> ? T : Promise<T>>) & ((event: "listen", data: ICommandResult) => IEmitterWrapper<[{
+    event: "command";
+    data: IUnsignedCommand;
+    }, {
+    event: "sign";
+    data: ICommand;
+    }, {
+    event: "preflight";
+    data: ICommandResult;
+    }, {
+    event: "submit";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen";
+    data: ICommandResult;
+    }], [], T extends Promise<any> ? T : Promise<T>>);
 };
 
 // Warning: (ae-forgotten-export) The symbol "IEmit" needs to be exported by the entry point index.d.ts

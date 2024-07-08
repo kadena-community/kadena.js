@@ -1,4 +1,9 @@
-import { MonoDataThresholding, MonoSignature } from '@kadena/kode-icons';
+import {
+  MonoDataThresholding,
+  MonoKey,
+  MonoSignature,
+  MonoSwapHoriz,
+} from '@kadena/kode-icons';
 import { Box, Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
@@ -23,15 +28,31 @@ export const Sidebar: FC = () => {
               <NavLink to="/" className={sidebarLinkClass}>
                 <Stack alignItems="center" gap="md">
                   <MonoDataThresholding></MonoDataThresholding>
-                  Dashboard
+                  <Text>Dashboard</Text>
                 </Stack>
               </NavLink>
             </li>
             <li className={sidebarMenuOptionClass}>
               <NavLink to="/sig-builder" className={sidebarLinkClass}>
                 <Stack alignItems="center" gap="md">
-                  <MonoSignature></MonoSignature>
+                  <MonoSignature />
                   Sig Builder
+                </Stack>
+              </NavLink>
+            </li>
+            <li className={sidebarMenuOptionClass}>
+              <NavLink to="/key-sources" className={sidebarLinkClass}>
+                <Stack alignItems="center" gap="md">
+                  <MonoKey />
+                  Key sources
+                </Stack>
+              </NavLink>
+            </li>
+            <li className={sidebarMenuOptionClass}>
+              <NavLink to="/transfer" className={sidebarLinkClass}>
+                <Stack alignItems="center" gap="md">
+                  <MonoSwapHoriz />
+                  Transfer
                 </Stack>
               </NavLink>
             </li>

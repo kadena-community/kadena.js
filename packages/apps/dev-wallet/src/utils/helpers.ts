@@ -10,5 +10,5 @@ export const execInSequence = <Args extends unknown[], T>(
 
 export const sleep = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
-export const getAccountName = (account: string) =>
-  `${account.substring(0, 9)}...${account.substring(account.length - 5)}`;
+export const getAccountName = (account: string) => account;
+// `${account.substring(0, 9)}...${account.substring(account.length - 5)}`;

@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { IPollRequestPromise } from '../../interfaces/interfaces';
 import {
+  getHostUrl,
   getPromise,
   getUrl,
   jsonRequest,
@@ -71,6 +72,23 @@ describe('client utils', () => {
       expect(() =>
         kadenaHostGenerator({ networkId: 'incorrect-network', chainId: '14' }),
       ).toThrowError(Error(`UNKNOWN_NETWORK_ID: incorrect-network`));
+    });
+  });
+
+  describe('getHostUrl', () => {
+    it('returns a function that generates host url based on the networkId and chainId', () => {
+      const hostUrl = 'http://localhost:8080';
+      const getLocalHostUrl = getHostUrl(hostUrl);
+      expect(getLocalHostUrl({ networkId: 'mainnet01', chainId: '14' })).toBe(
+        'http://localhost:8080/chainweb/0.0/mainnet01/chain/14/pact',
+      );
+    });
+    it("removes the last '/' from the host url", () => {
+      const hostUrl = 'http://localhost:8080/';
+      const getLocalHostUrl = getHostUrl(hostUrl);
+      expect(getLocalHostUrl({ networkId: 'mainnet01', chainId: '14' })).toBe(
+        'http://localhost:8080/chainweb/0.0/mainnet01/chain/14/pact',
+      );
     });
   });
 

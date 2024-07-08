@@ -11,6 +11,7 @@ import type {
 import { createClient, getHostUrl, isSignedTransaction } from '@kadena/client';
 import type { PactValue } from '@kadena/types';
 
+import type { IPactResultSuccess } from '@kadena/chainweb-node-client';
 import { composePactCommand } from '@kadena/client/fp';
 import { getGlobalConfig } from '../global-config';
 import type { Any } from './types';
@@ -101,20 +102,21 @@ export const checkSuccess = <
       .then(() => fn(input))
       .then(() => input)) as Any;
 
+export type SuccessfulResponse = Omit<ICommandResult, 'result'> & {
+  result: IPactResultSuccess;
+};
+
 // throw if the result is failed ; we might introduce another api for error handling
-export const throwIfFails = (response: ICommandResult): ICommandResult => {
+export const throwIfFails = (response: ICommandResult): SuccessfulResponse => {
   if (response.result.status !== 'success') {
     throw response.result.error;
   }
-  return response;
+  return response as SuccessfulResponse;
 };
 
 export const pickFirst = <T extends Any[]>([tx]: T) => tx;
 
-export const extractResult = <T = PactValue>(response: ICommandResult) => {
-  if (response.result.status !== 'success') {
-    return undefined;
-  }
+export const extractResult = <T = PactValue>(response: SuccessfulResponse) => {
   return response.result.data as T;
 };
 
@@ -131,16 +133,20 @@ export const getClient = (
 export const asyncLock = () => {
   let res = () => {};
   let promise = Promise.resolve();
+  let isLocked = false;
   const lock = {
     open: () => {
+      isLocked = false;
       res();
     },
     waitTillOpen: () => promise,
     close: () => {
+      isLocked = true;
       promise = new Promise((resolve) => {
         res = resolve;
       });
     },
+    isLocked: () => isLocked,
   };
   lock.close();
   return lock;
