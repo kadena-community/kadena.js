@@ -198,7 +198,7 @@ export interface IUserSig {
  * @alpha
  */
 export interface ISignatureJson {
-  sig?: string;
+  sig: string;
   pubKey?: string;
 }
 
@@ -226,7 +226,7 @@ export interface ICommand {
 export interface IUnsignedCommand {
   cmd: CommandPayloadStringifiedJSON;
   hash: PactTransactionHash;
-  sigs: Array<ISignatureJson | undefined>;
+  sigs: Array<ISignatureJson | { pubKey: string; sig?: string } | undefined>;
 }
 
 /**

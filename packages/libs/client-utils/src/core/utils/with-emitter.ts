@@ -125,12 +125,10 @@ export const withEmitter: WithEmitter = (fn) => {
           const resolveAndLock = async (data: any) => {
             resolve(data);
             emitter.removeEventListener(event, resolveAndLock);
-            console.log('lock the door');
             if (!lock.isLocked()) {
               lock.close();
             }
             await lock.waitTillOpen();
-            console.log('open the door');
           };
           emitter.addEventListener(event, resolveAndLock);
         });

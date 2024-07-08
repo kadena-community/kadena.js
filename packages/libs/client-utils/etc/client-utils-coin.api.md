@@ -75,7 +75,7 @@ export const getBalance: (account: string, networkId: string, chainId: ChainId, 
 
 // Warning: (ae-forgotten-export) The symbol "ISafeTransferInput" needs to be exported by the entry point index.d.ts
 //
-// @public (undocumented)
+// @alpha (undocumented)
 export const partialTransferCommand: ({ sender, amount, receiver, contract, }: Omit<ISafeTransferInput, 'gasPayer' | 'chainId'>) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => Partial<IPartialPactCommand>;
 
 // Warning: (ae-forgotten-export) The symbol "IRotateCommandInput" needs to be exported by the entry point index.d.ts

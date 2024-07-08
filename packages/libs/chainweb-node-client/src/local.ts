@@ -95,8 +95,10 @@ export function convertIUnsignedTransactionToNoSig(
 ): ICommand {
   return {
     ...transaction,
-    sigs: transaction.sigs.map(
-      (s: ISignatureJson | undefined) => s ?? { sig: '' },
+    sigs: transaction.sigs.map((s) =>
+      s && typeof s.sig === 'string'
+        ? (s as ISignatureJson)
+        : { ...s, sig: '' },
     ),
   };
 }

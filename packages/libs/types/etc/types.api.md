@@ -155,7 +155,7 @@ export interface ISignatureJson {
     // (undocumented)
     pubKey?: string;
     // (undocumented)
-    sig?: string;
+    sig: string;
 }
 
 // @alpha (undocumented)
@@ -221,7 +221,10 @@ export interface IUnsignedCommand {
     // (undocumented)
     hash: PactTransactionHash;
     // (undocumented)
-    sigs: Array<ISignatureJson | undefined>;
+    sigs: Array<ISignatureJson | {
+        pubKey: string;
+        sig?: string;
+    } | undefined>;
 }
 
 // @alpha (undocumented)
