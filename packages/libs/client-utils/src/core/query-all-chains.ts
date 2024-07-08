@@ -9,12 +9,7 @@ import { composePactCommand, setMeta } from '@kadena/client/fp';
 import type { PactValue } from '@kadena/types';
 import { asyncPipe } from './utils/asyncPipe';
 import type { IClientConfig, IEmit, SuccessfulResponse } from './utils/helpers';
-import {
-  composeWithDefaults,
-  extractResult,
-  getClient,
-  throwIfFails,
-} from './utils/helpers';
+import { composeWithDefaults, extractResult, getClient } from './utils/helpers';
 
 const chainIds = [...Array(20).keys()].map((key) => `${key}` as ChainId);
 
