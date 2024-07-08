@@ -64,6 +64,7 @@ const SelectNetwork: FC = () => {
       label,
       chainwebUrl,
       graphUrl,
+      wsGraphUrl: graphUrl,
     });
 
     setIsOpen(false);
@@ -74,7 +75,7 @@ const SelectNetwork: FC = () => {
       <Select
         size="lg"
         aria-label="Select network"
-        defaultSelectedKey={activeNetwork!.networkId}
+        selectedKey={activeNetwork!.networkId}
         fontType="code"
         onSelectionChange={handleSelectNetwork}
       >
@@ -120,12 +121,6 @@ const SelectNetwork: FC = () => {
                 </Stack>
               )}
               <Button type="submit">Create</Button>
-              <Text>
-                <pre>
-                  activeNetwork: {JSON.stringify(activeNetwork, null, 2)}
-                </pre>
-                <pre>networks: {JSON.stringify(networks, null, 2)}</pre>
-              </Text>
             </Form>
           </DialogContent>
         )}

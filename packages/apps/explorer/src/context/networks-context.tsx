@@ -1,4 +1,15 @@
 import { networkConstants } from '@/constants/network';
+import type { NormalizedCacheObject } from '@apollo/client';
+import {
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+  split,
+} from '@apollo/client';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { getMainDefinition } from '@apollo/client/utilities';
+import { createClient } from 'graphql-ws';
+import { useParams, useRouter } from 'next/navigation';
 import React, {
   createContext,
   useCallback,
@@ -6,6 +17,10 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+
+// next/apollo-link bug: https://github.com/dotansimha/graphql-yoga/issues/2194
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { YogaLink } = require('@graphql-yoga/apollo-link');
 
 export type INetwork = Omit<
   typeof networkConstants.mainnet01,
@@ -51,6 +66,10 @@ const NetworkContextProvider = (props: {
   children: React.ReactNode;
 }): JSX.Element => {
   const [networks, setNetworks] = useState<INetwork[]>(getDefaultNetworks());
+  const [isMounted, setIsMounted] = useState(false);
+  const { networkId } = useParams() ?? {};
+  const router = useRouter();
+  const [activeNetwork, setActiveNetwork] = useState<INetwork | undefined>();
 
   const checkStorage = () => {
     const storage: INetwork[] = JSON.parse(
@@ -58,6 +77,7 @@ const NetworkContextProvider = (props: {
     );
 
     setNetworks([...getDefaultNetworks(), ...storage]);
+    setIsMounted(true);
   };
 
   const storageListener = useCallback((event: StorageEvent | Event) => {
@@ -66,6 +86,14 @@ const NetworkContextProvider = (props: {
 
     checkStorage();
   }, []);
+
+  useEffect(() => {
+    if (!networks.length || !isMounted) return;
+    const network =
+      networks.find((n) => n.networkId === networkId) ?? networks[0];
+    console.log(network, networkId);
+    setActiveNetwork(network);
+  }, [networkId, networks, isMounted]);
 
   useEffect(() => {
     checkStorage();
@@ -77,24 +105,10 @@ const NetworkContextProvider = (props: {
     };
   }, [storageListener]);
 
-  const [activeNetwork, setActiveNetwork] = useState<INetwork>(
-    networks.find((x) => x.networkId === 'mainnet01')!,
-  );
-
   const setActiveNetworkByKey = (networkId: string): void => {
     setActiveNetwork(networks.find((x) => x.networkId === networkId)!);
 
-    // switch url when switching between mainnet01 and testnet04
-    switch (networkId) {
-      case 'mainnet01':
-        window.location.assign('https://explorer.kadena.io/');
-        break;
-      case 'testnet04':
-        window.location.assign('https://explorer.testnet.kadena.io/');
-        break;
-      default:
-        break;
-    }
+    router.push(`/${networkId}`);
   };
 
   const addNetwork = (newNetwork: INetwork): void => {
@@ -110,10 +124,43 @@ const NetworkContextProvider = (props: {
 
       setNetworks((v) => [...v, newNetwork]);
       setActiveNetwork(newNetwork);
+      router.push(`/${newNetwork.networkId}`);
     }
   };
 
-  console.log({ networks, activeNetwork });
+  const getApolloClient = () => {
+    const httpLink = new YogaLink({
+      endpoint: activeNetwork?.graphUrl,
+    });
+
+    const wsLink = new GraphQLWsLink(
+      createClient({
+        url: activeNetwork!.wsGraphUrl,
+      }),
+    );
+
+    const splitLink = split(
+      ({ query }) => {
+        const definition = getMainDefinition(query);
+        return (
+          definition.kind === 'OperationDefinition' &&
+          definition.operation === 'subscription'
+        );
+      },
+      wsLink, // Use WebSocket link for subscriptions
+      httpLink, // Use HTTP link for queries and mutations
+    );
+
+    const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
+      link: splitLink,
+      cache: new InMemoryCache(),
+    });
+
+    return client;
+  };
+
+  if (!isMounted || !activeNetwork) return <div>loading</div>;
+
   return (
     <NetworkContext.Provider
       value={{
@@ -123,7 +170,9 @@ const NetworkContextProvider = (props: {
         addNetwork,
       }}
     >
-      {props.children}
+      <ApolloProvider client={getApolloClient()}>
+        {props.children}
+      </ApolloProvider>
     </NetworkContext.Provider>
   );
 };

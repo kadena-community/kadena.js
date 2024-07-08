@@ -1,4 +1,4 @@
-import { graphHost } from '@/constants/graphHost';
+import { useNetwork } from '@/context/networks-context';
 import { useQueryContext } from '@/context/query-context';
 import { MonoHub } from '@kadena/kode-icons/system';
 import {
@@ -20,6 +20,7 @@ import { code } from './styles.css';
 
 export const GraphQLQueryDialog = (): JSX.Element => {
   let { queries } = useQueryContext();
+  const { activeNetwork } = useNetwork();
 
   if (!queries) queries = [];
 
@@ -100,7 +101,7 @@ export const GraphQLQueryDialog = (): JSX.Element => {
                     <TextLink
                       key={index}
                       target="_blank"
-                      href={createEmbedQueryUrl(query, graphHost)}
+                      href={createEmbedQueryUrl(query, activeNetwork.graphUrl)}
                       withIcon={true}
                     >
                       {`Query ${index + 1}: ${getQueryTitle(print(query.query)) || ''}`}
