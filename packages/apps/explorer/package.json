@@ -20,7 +20,7 @@
     "start": "next start",
     "start:graph": "cd ../graph && pnpm run start",
     "start:graph:generate": "cd ../graph && pnpm run start:generate",
-    "test": "vitest",
+    "test": "vitest run",
     "verify": "tsc --noEmit"
   },
   "dependencies": {
