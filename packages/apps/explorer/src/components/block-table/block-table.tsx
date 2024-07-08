@@ -54,10 +54,11 @@ const BlockTable: React.FC = () => {
         heightCount: 4,
       },
     });
-  const { selectedHeight } = useBlockInfo();
 
+  const { selectedHeight } = useBlockInfo();
   const [isLoading, setIsLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+
   const [blockData, setBlockData] = useState<IChainBlock>({});
   const [maxBlockTxCount, setmaxBlockTxCount] = useState(0);
   const [blockHeights, updateBlockHeights] = useState<number[]>([1, 2, 3, 4]);

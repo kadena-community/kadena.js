@@ -25,7 +25,7 @@ interface IBlockTableRowProps {
   heights: number[];
   chainId: number;
   maxBlockTxCount: number;
-  isLoading: boolean;
+  isLoading?: boolean;
 }
 
 const BlockTableRow: React.FC<IBlockTableRowProps> = ({
@@ -75,8 +75,8 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
           blockRowData[height] ? (
             <BlockCell
               isLoading={isLoading}
-              key={`${height}${chainId}`}
               isSelected={isShowHeightInfo && height === selectedHeight?.height}
+              key={`${height}${chainId}`}
               height={blockRowData[height]}
               chainId={chainId}
             />

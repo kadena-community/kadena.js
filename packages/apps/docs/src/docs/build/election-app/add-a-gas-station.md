@@ -32,7 +32,7 @@ Before you start this tutorial, verify the following basic requirements:
 
 - You have an internet connection and a web browser installed on your local computer.
 - You have a code editor, such as [Visual Studio Code](https://code.visualstudio.com/download), access to an interactive terminal shell, and are generally familiar with using command-line programs.
-- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git) repository as described in [Prepare your workspace](/build/election/prepare-your-workspace).
+- You have cloned the [voting-dapp](https://github.com/kadena-community/voting-dapp.git) repository to create your project directory as described in [Prepare your workspace](/build/election/prepare-your-workspace).
 - You have the development network running in a Docker container as described in [Start a local blockchain](/build/election/start-a-local-blockchain).
 - You are [connected to the development network](/build/election/start-a-local-blockchain#connect-to-the-development-network) using your local host IP address and port number 8080.
 - You have created and funded an administrative account as described in [Add an administrator account](/build/election/add-admin-account).
@@ -51,25 +51,25 @@ To create a voter account:
 
 1. Verify the development network is currently running on your local computer.
 
-2. Open Chainweaver.
+2. Open and unlock the Chainweaver desktop or web application and verify that you're connected to **development network (devnet)** from the network list.
+   
+3. Click **Keys** in the Chainweaver navigation panel.
 
-3. Select **devnet** from the network list.
+4. Click **Generate Key** to add a new public key to your list of public keys.
 
-4. Click **Keys** in the Chainweaver navigation panel.
-
-5. Click **Generate Key** to add a new public key to your list of public keys.
-
-6. Click **Add k: Account** for the new public key to add a new account to the list of accounts you are watching in Chainweaver.
+5. Click **Add k: Account** for the new public key to add a new account to the list of accounts you are watching in Chainweaver.
 
    If you expand the new account, you'll see that no balance exists for the account on any chain and there's no information about the owner or keyset for the account.
 
-7. Open the `election-dapp/snippets/create-account.ts` file in the code editor on your computer.
+6. Open the `election-dapp/snippets/create-account.ts` file in the code editor on your computer.
 
-   This script uses the Kadena client to call the `create-account` function of the `coin` contract to create a voter account. After importing the dependencies and creating the client with the `devnet` configuration, the script calls the `main` function. You'll notice that this script is similar to the `./snippets/transfer-create.ts` script you used previously. However, this script doesn't pass funds to the executed function and it isn't necessary to sign for the `COIN.TRANSFER` capability.
+   You'll notice that this script is similar to the `./snippets/transfer-create.ts` script you used previously. 
+   The script imports functions from the Kadena client library to call the `create-account` function of the `coin` contract to create a voter account.
+   However, the`main` function doesn't pass any funds or sign for the `COIN.TRANSFER` capability.
 
-8. Open the `election-dapp/snippets` folder in a terminal shell on your computer.
+7. Open the `election-dapp/snippets` folder in a terminal shell on your computer.
 
-9. Run the following command to create a new voter account.
+8. Run the following command to create a new voter account.
 
    ```bash
    npm run create-account:devnet -- k:<voter-public-key>
@@ -82,8 +82,8 @@ To create a voter account:
    ```bash
    { status: 'success', data: 'Write succeeded' }
    ```
-
-10. Verify that the account was created by checking the account details using the Kadena client:
+   
+   You can also verify that the account was created by checking the account details using the Kadena client:
 
     ```bash
     npm run coin-details:devnet -- k:<voter-public-key>
@@ -143,8 +143,10 @@ To attempt to cast a vote with the voter account:
    In the console, you'll see an error similar to the following:
 
    ```console
-   Attempt to buy gas failed with: (enforce (<= amount balance) "...: Failure: Tx Failed: Insufficient funds`, proving that it is indeed not possible to vote with an account that has zero balance.
+   Attempt to buy gas failed with: (enforce (<= amount balance) "...: Failure: Tx Failed: Insufficient funds
    ```
+
+   With the current implementation, it isn't possible to vote using an account that has a zero balance.
 
 ## Implement the gas payer interface
 
@@ -192,7 +194,7 @@ To create the gas station module:
    If the Pact REPL is installed locally, run the following command inside the `pact` folder in the terminal shell:
 
    ```bash
-   pact election-gas-station.repl -t
+   pact election-gas-station.repl --trace
    ```
 
    As before, if you don't have the Pact REPL installed locally, you can load the file in the [Pact REPL](http://localhost:8080/ttyd/pact-cli/) with the following command:
@@ -201,7 +203,7 @@ To create the gas station module:
    (load "election-gas-station.repl")
    ```
 
-   If you are using the Pact REPL in a browser, you can replace the `pact election-gas-station.repl -t` command with `(load "election-gas-station.repl")` throughout this tutorial.
+   If you are using the Pact REPL in a browser, you can replace the `pact election-gas-station.repl --trace` command with `(load "election-gas-station.repl")` throughout this tutorial.
 
    You should see that this transaction fails with an error similar to the following:
 
@@ -233,7 +235,7 @@ To create the gas station module:
 8. Execute the transaction using the `pact` command-line program:
 
    ```pact
-   pact election-gas-station.repl -t
+   pact election-gas-station.repl --trace
    ```
 
    You should see that this transaction fails with an error similar to the following:
@@ -256,13 +258,7 @@ To create the gas station module:
 10. Execute the transaction using the `pact` command-line program:
 
     ```pact
-    pact election-gas-station.repl -t
-    ```
-
-    You should see that the transaction succeeds with output similar to the following:
-
-    ```pact
-    pact election-gas-station.repl -t
+    pact election-gas-station.repl --trace
     ```
 
     You should see that the transaction succeeds with output similar to the following:
@@ -435,7 +431,7 @@ To create a capability-guarded account:
 4. Execute the transaction using the `pact` command-line program:
 
    ```pact
-   pact election-gas-station.repl -t
+   pact election-gas-station.repl --trace
    ```
 
    You should see that the transaction succeeds with output similar to the following:
@@ -483,7 +479,7 @@ To create a capability-guarded account:
 9. Execute the transaction using the `pact` command-line program:
 
    ```pact
-   pact election-gas-station.repl -t
+   pact election-gas-station.repl --trace
    ```
 
    You should see that the transaction succeeds with output similar to the following:
@@ -519,17 +515,20 @@ To deploy the new Pact module on the development network:
    npm run deploy-gas-station:devnet -- k:<your-public-key> upgrade init
    ```
 
-   Remember that `k:<your-public-key>` is the default **account name** for the administrative account that you funded in [Add an administrator account](/build/election/add-admin-account). You can copy this account name from Chainweaver when viewing the account watch list.
+   Remember that `k:<your-public-key>` is the default **account name** for the administrative account that you funded in [Add an administrator account](/build/election/add-admin-account). 
+   You can copy this account name from Chainweaver when viewing the account watch list.
+   As before, you must include  `upgrade` and `init` to update the contract and add the GAS_STATION_ACCOUNT capability guard from your `election-gas-station` module.
 
 5. Click **Sign All** to sign the request.
 
-   After you click Sign All, the transaction is executed and the results are displayed in your terminal shell. For example, you should see output similar to the following:
+   After you click Sign All, the transaction is executed and the results are displayed in your terminal shell. 
+   For example, you should see output similar to the following:
 
    ```bash
    { status: 'success', data: [ 'Write succeeded' ] }
    ```
 
-6. Verify that the gas station account now exists with a 0 KDA balance on the development network by running the following script.
+   You can also verify that the gas station account exists with a 0 balance on the development network by running the following script:
 
    ```bash
    npm run coin-details:devnet -- c:<capability-guarded-account-name>
@@ -591,7 +590,7 @@ To fund the gas station account:
    { status: 'success', data: [ 'Write succeeded' ] }
    ```
 
-6. Verify that the election gas station account now has a KDA balance on the development network by running the following script again.
+6. Verify that the election gas station account now has a KDA balance on the development network by running the following script:
 
    ```bash
    npm run coin-details:devnet -- c:<capability-guarded-account-name>
@@ -622,10 +621,6 @@ To modify the `senderAccount` to use the gas station account:
 1. Open the `frontend/src/repositories/vote/DevnetVoteRepository.ts` file in the code editor on your computer.
 
 2. Update the `senderAccount` in the transaction metadata to replace `'election-gas-station'` with the `c:<capability-guarded-account-name>` account name for your gas station.
-
-   For example:
-
-3. Update the `senderAccount` in the transaction metadata to replace `election-gas-station` with the `c:<capability-guarded-account-name>` account name for your gas station.
 
    For example:
 
@@ -669,9 +664,12 @@ You might recall in the previous tutorial that you tested voting with a transact
 (commit-tx)
 ```
 
-In this test from the previous tutorial, the `caps` field passed to `env-sigs` is an empty array. As a consequence, the signature of the transaction is not scoped to any capability and the signer automatically approves all capabilities required for the function to execute.
+In this test from the previous tutorial, the `caps` field passed to `env-sigs` is an empty array. 
+As a consequence, the signature of the transaction is not scoped to any capability and the signer automatically approves all capabilities required for the function to execute.
 
-In the `vote` function of `frontend/src/repositories/vote/DevnetVoteRepository.ts`, you scoped the signature of the transaction to the `GAS_PAYER` capability, but not to the `ACCOUNT-OWNER` capability. If you sign for some capabilities but not for all capabilities required for a transaction to be executed, the transaction will fail at the point where a capability is required that you did not sign for. Therefore, you need to add a second capability to the array passed to `addSigners` in the `vote` function in `frontend/src/repositories/vote/DevnetVoteRepository.ts`.
+However, in this tutorial, you modified the `vote` function in the `frontend/src/repositories/vote/DevnetVoteRepository.ts` file to scope the signature of the `vote` transaction to grant the `GAS_PAYER` capability, but not the `ACCOUNT-OWNER` capability. 
+If you sign for some capabilities but not for all capabilities required for a transaction to be executed, the transaction will fail at the point where a capability is required that you didn't sign for. 
+Therefore, you need to add a second capability to the array passed to `addSigners` in the `vote` function.
 
 To set the scope for the `ACCOUNT-OWNER` capability:
 
@@ -839,8 +837,8 @@ As an alternative, you might want to deploy the election application and smart c
 
 We can't wait to see what you build next.
 
-To see the code for the activity you completed in this tutorial, check out the `complete-tutorial` branch from the `election-dapp` repository by running the following command in your terminal shell:
+To see the code for the activity you completed in this tutorial, check out the `00-complete` branch from the `voting-dapp` repository by running the following command in your terminal shell:
 
 ```bash
-git checkout complete-tutorial
+git checkout 00-complete
 ```
