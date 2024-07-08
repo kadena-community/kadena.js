@@ -1,5 +1,5 @@
 {
-  "name": "dev-wallet-example",
+  "name": "@kadena/dev-wallet-example",
   "version": "0.1.0",
   "private": true,
   "scripts": {
