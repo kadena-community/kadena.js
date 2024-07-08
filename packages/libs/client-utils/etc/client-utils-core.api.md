@@ -438,7 +438,9 @@ export const queryAllChainsClient: <T = PactValue>(args_0: Omit<IClientConfig, "
     (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
     event: "query-result";
     data: {
-    result: Awaited<T>;
+    result: Awaited<T>; /**
+    * @alpha
+    */
     chainId: ChainId | undefined;
     }[];
     }], [{
@@ -448,16 +450,22 @@ export const queryAllChainsClient: <T = PactValue>(args_0: Omit<IClientConfig, "
     chainId: ChainId;
     };
     }], Promise<{
-    result: Awaited<T>;
+    result: Awaited<T>; /**
+    * @alpha
+    */
     chainId: ChainId | undefined;
     }[]>>;
     from: ((event: "query-result", data: {
-        result: Awaited<T>;
+        result: Awaited<T>; /**
+        * @alpha
+        */
         chainId: ChainId | undefined;
     }[]) => IEmitterWrapper<[{
     event: "query-result";
     data: {
-    result: Awaited<T>;
+    result: Awaited<T>; /**
+    * @alpha
+    */
     chainId: ChainId | undefined;
     }[];
     }], [{
@@ -467,7 +475,9 @@ export const queryAllChainsClient: <T = PactValue>(args_0: Omit<IClientConfig, "
     chainId: ChainId;
     };
     }], Promise<{
-    result: Awaited<T>;
+    result: Awaited<T>; /**
+    * @alpha
+    */
     chainId: ChainId | undefined;
     }[]>>) & ((event: "chain-result", data: {
         result: T;
@@ -475,7 +485,9 @@ export const queryAllChainsClient: <T = PactValue>(args_0: Omit<IClientConfig, "
     }) => IEmitterWrapper<[{
     event: "query-result";
     data: {
-    result: Awaited<T>;
+    result: Awaited<T>; /**
+    * @alpha
+    */
     chainId: ChainId | undefined;
     }[];
     }], [{
@@ -485,7 +497,9 @@ export const queryAllChainsClient: <T = PactValue>(args_0: Omit<IClientConfig, "
     chainId: ChainId;
     };
     }], Promise<{
-    result: Awaited<T>;
+    result: Awaited<T>; /**
+    * @alpha
+    */
     chainId: ChainId | undefined;
     }[]>>);
 };
