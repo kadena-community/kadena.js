@@ -2,12 +2,12 @@ import { IPactCommand, IUnsignedCommand } from '@kadena/client';
 
 type SigData = Record<string, string>;
 type CommandSigData = Array<{
-  pubKey: string;
+  pubKey?: string;
   sig?: string;
 }>;
 type CommandJson = Array<
   | {
-      sig: string;
+      sig?: string;
     }
   | null
   | undefined

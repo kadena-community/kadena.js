@@ -24,3 +24,9 @@ export const card = style([
     maxWidth: '635px',
   },
 ]);
+
+export const disabledItemClass = style({
+  color: tokens.kda.foundation.color.neutral.n50,
+  cursor: 'not-allowed',
+  flex: 1,
+});

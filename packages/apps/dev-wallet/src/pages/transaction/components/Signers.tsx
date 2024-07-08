@@ -3,7 +3,7 @@ import {
   IUnsignedCommand,
   parseAsPactValue,
 } from '@kadena/client';
-import { Heading, Stack, Text } from '@kadena/react-ui';
+import { Button, Heading, Stack, Text } from '@kadena/react-ui';
 import { FC, PropsWithChildren, useMemo } from 'react';
 import {
   breakAllClass,
@@ -14,6 +14,7 @@ import {
   tagClass,
 } from './style.css.ts';
 
+import { ITransaction } from '@/modules/transaction/transaction.repository.ts';
 import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
 import classNames from 'classnames';
 
@@ -26,7 +27,14 @@ const Value: FC<PropsWithChildren<{ className?: string }>> = ({
   </Text>
 );
 
-export function Signers({ transaction }: { transaction: IUnsignedCommand }) {
+export function Signers({
+  transaction,
+  onSign,
+}: {
+  transaction: IUnsignedCommand;
+  onSign: (sig: ITransaction['sigs']) => void;
+}) {
+  const { sign } = useWallet();
   const { getPublicKeyData } = useWallet();
   const command: IPactCommand = useMemo(
     () => JSON.parse(transaction.cmd),
@@ -52,7 +60,7 @@ export function Signers({ transaction }: { transaction: IUnsignedCommand }) {
                 <Heading variant="h5">Public Key</Heading>
                 {signature && <Text className={signedClass}>Signed</Text>}
                 {!signature && info && (
-                  <Text className={readyToSignClass}>Your key</Text>
+                  <Text className={readyToSignClass}>Owned</Text>
                 )}
                 {<Text className={tagClass}>{info?.source ?? 'External'}</Text>}
               </Stack>
@@ -83,6 +91,19 @@ export function Signers({ transaction }: { transaction: IUnsignedCommand }) {
                     </Stack>
                   ))}
               </Stack>
+              {!signature && (
+                <Button
+                  isCompact
+                  onClick={async () => {
+                    const signed = (await sign(transaction, [
+                      signer.pubKey,
+                    ])) as IUnsignedCommand;
+                    onSign(signed.sigs ?? []);
+                  }}
+                >
+                  Sign
+                </Button>
+              )}
               {signature && (
                 <>
                   <Heading variant="h5">Signature</Heading>

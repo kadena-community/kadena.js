@@ -83,6 +83,7 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
     create('transaction', 'uuid', [
       { index: 'hash', unique: true },
       { index: 'profileId' },
+      { index: 'groupId' },
       { index: 'network', indexKeyPath: ['profileId', 'networkId'] },
       {
         index: 'network-status',

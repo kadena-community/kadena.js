@@ -28,6 +28,7 @@ export async function sign(
   keySources: IKeySource[],
   onConnect: (keySource: IKeySource) => Promise<void>,
   TXs: IUnsignedCommand[],
+  keysToSignsBy: string[] = [],
 ) {
   const signedTxs: Array<IUnsignedCommand | ICommand> = [];
   for (const Tx of TXs) {
@@ -39,9 +40,20 @@ export async function sign(
       const relevantIndexes = cmd.signers
         .map(
           (signer) =>
-            publicKeys.find((key) => key.publicKey === signer.pubKey)?.index,
+            publicKeys.find(
+              (key) =>
+                key.publicKey === signer.pubKey &&
+                (keysToSignsBy.length === 0 ||
+                  keysToSignsBy.includes(key.publicKey)),
+            )?.index,
         )
         .filter((index) => index !== undefined) as number[] | string[];
+
+      console.log(keySource.source, 'relevantIndexes', relevantIndexes);
+
+      if (relevantIndexes.length === 0) {
+        continue;
+      }
 
       const service = await keySourceManager.get(source);
 

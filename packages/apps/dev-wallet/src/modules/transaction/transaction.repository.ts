@@ -19,6 +19,7 @@ export type ITransaction = {
   hash: string;
   cmd: string;
   sigs: Array<{ sig?: string; pubKey?: string } | undefined>;
+  groupId?: string;
 } & (
   | {
       height?: number;
@@ -44,6 +45,7 @@ export interface TransactionRepository {
   ) => Promise<ITransaction[]>;
   getTransaction: (uuid: string) => Promise<ITransaction>;
   getTransactionByHash: (hash: string) => Promise<ITransaction>;
+  getTransactionsByGroup: (groupId: string) => Promise<ITransaction[]>;
   addTransaction: (transaction: ITransaction) => Promise<void>;
   updateTransaction: (transaction: ITransaction) => Promise<void>;
   deleteTransaction: (transactionId: string) => Promise<void>;
@@ -81,6 +83,11 @@ const createTransactionRepository = ({
     getTransactionByHash: async (hash: string): Promise<ITransaction> => {
       const tx = getAll('transaction', hash, 'hash');
       return Array.isArray(tx) ? tx[0] : undefined;
+    },
+    getTransactionsByGroup: async (
+      groupId: string,
+    ): Promise<ITransaction[]> => {
+      return getAll('transaction', groupId, 'groupId');
     },
     addTransaction: async (transaction: ITransaction): Promise<void> => {
       console.log('addTransaction', transaction);

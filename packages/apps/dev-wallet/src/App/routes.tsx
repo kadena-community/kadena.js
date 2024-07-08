@@ -109,7 +109,7 @@ export const Routes: FC = () => {
           <Route path="/key-sources" element={<KeySources />} />
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/transfer" element={<Transfer />} />
-          <Route path="/transaction/:transactionId" element={<Transaction />} />
+          <Route path="/transaction/:groupId" element={<Transaction />} />
         </Route>
       </Route>
       <Route path="/ready" element={<Ready />} />

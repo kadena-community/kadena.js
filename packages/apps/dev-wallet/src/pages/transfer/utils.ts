@@ -1,20 +1,19 @@
 import { IAccount } from '@/modules/account/account.repository';
+import { BuiltInPredicate, ChainId, ISigner } from '@kadena/client';
 import {
-  BuiltInPredicate,
-  ChainId,
-  ISigner,
-  SignerScheme,
-} from '@kadena/client';
-import { transferCreateCommand } from '@kadena/client-utils/coin';
+  safeTransferCreateCommand,
+  transferCreateCommand,
+} from '@kadena/client-utils/coin';
 import { estimateGas } from '@kadena/client-utils/core';
 import { PactNumber } from '@kadena/pactjs';
 
 interface IReciverAccount {
   account: string;
   keyset: {
-    keys: string[];
+    keys: ISigner[];
     pred: 'keys-all' | 'keys-2' | 'keys-any';
   };
+  publicKeys: ISigner[];
 }
 
 export const estimateTransferGas = async (
@@ -22,8 +21,13 @@ export const estimateTransferGas = async (
   to: IReciverAccount,
   chainId: ChainId,
   networkId: string,
+  isSafeTransfer: boolean,
 ) => {
-  const tx = transferCreateCommand({
+  const transferFn = isSafeTransfer
+    ? safeTransferCreateCommand
+    : transferCreateCommand;
+
+  const tx = transferFn({
     sender: from,
     receiver: to,
     chainId,
@@ -58,8 +62,12 @@ export const getOptimalTransfers = (
     );
     const safeBalance = new PactNumber(safeLimit)
       .multipliedBy(item.gasPrice)
+      // reserve 1 kda to avoid insufficient balance
+      .plus(1)
       .negated()
       .plus(item.balance);
+
+    if (safeBalance.isLessThanOrEqualTo(0)) continue;
 
     const fromChain = amountLeft.isLessThan(safeBalance)
       ? amountLeft
@@ -87,7 +95,7 @@ export interface IReceiverAccount {
   overallBalance: string;
   keyset: {
     guard: {
-      keys: string[];
+      keys: ISigner[];
       pred: BuiltInPredicate;
     };
   };
@@ -156,12 +164,23 @@ export interface IOptimalTransfer {
   gasPrice: number;
 }
 
+export function simpleOptimalTransfer(senderAccount: IAccount, amount: string) {
+  const withGas = senderAccount.chains.map(({ balance, chainId }) => ({
+    balance,
+    chainId,
+    gasLimit: 2500,
+    gasPrice: 1.0e-8,
+  }));
+  return getOptimalTransfers(withGas, amount);
+}
+
 export async function findOptimalTransfer(
   senderAccount: IAccount,
   receiverAccount: IReceiverAccount,
   amount: string,
   networkId: string,
-  getPublicKeyData: (publicKey: string) => { scheme?: SignerScheme } | null,
+  mapKeys: (key: ISigner) => ISigner,
+  isSafeTransfer: boolean,
 ): Promise<IOptimalTransfer[] | null> {
   const withGasEstimation = await Promise.all(
     senderAccount.chains.map(async (data) => ({
@@ -169,23 +188,16 @@ export async function findOptimalTransfer(
       ...(await estimateTransferGas(
         {
           account: senderAccount.address,
-          publicKeys: senderAccount.keyset!.guard.keys.map((key) => {
-            const info = getPublicKeyData(key);
-            if (info && info.scheme) {
-              return {
-                pubKey: key,
-                scheme: info.scheme,
-              };
-            }
-            return key;
-          }),
+          publicKeys: senderAccount.keyset!.guard.keys.map(mapKeys),
         },
         {
           account: receiverAccount.address,
           keyset: receiverAccount.keyset.guard,
+          publicKeys: receiverAccount.keyset.guard.keys.map(mapKeys),
         },
         data.chainId,
         networkId,
+        isSafeTransfer,
       )),
     })),
   );

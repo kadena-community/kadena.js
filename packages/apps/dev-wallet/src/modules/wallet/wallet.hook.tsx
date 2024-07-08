@@ -1,7 +1,7 @@
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import { defaultAccentColor } from '@/modules/layout/layout.provider.tsx';
 import { recoverPublicKey, retrieveCredential } from '@/utils/webAuthn';
-import { ISignFunction, IUnsignedCommand } from '@kadena/client';
+import { IUnsignedCommand } from '@kadena/client';
 import { useCallback, useContext, useEffect } from 'react';
 import { UnlockPrompt } from '../../Components/UnlockPrompt/UnlockPrompt';
 import * as AccountService from '../account/account.service';
@@ -160,19 +160,30 @@ export const useWallet = () => {
   }, [context, prompt]);
 
   const sign = useCallback(
-    async (TXs: IUnsignedCommand | IUnsignedCommand[]) => {
+    async (
+      TXs: IUnsignedCommand | IUnsignedCommand[],
+      publicKeys?: string[],
+    ) => {
       if (!isUnlocked(context)) {
         throw new Error('Wallet in not unlocked');
       }
       if (Array.isArray(TXs)) {
-        return WalletService.sign(context.keySources, unlockKeySource, TXs);
+        return WalletService.sign(
+          context.keySources,
+          unlockKeySource,
+          TXs,
+          publicKeys,
+        );
       }
-      return WalletService.sign(context.keySources, unlockKeySource, [
-        TXs,
-      ]).then((res) => res[0]);
+      return WalletService.sign(
+        context.keySources,
+        unlockKeySource,
+        [TXs],
+        publicKeys,
+      ).then((res) => res[0]);
     },
     [context, unlockKeySource],
-  ) as ISignFunction;
+  );
 
   const decryptSecret = useCallback(
     async (password: string, secretId: string) => {

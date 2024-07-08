@@ -24,7 +24,7 @@ interface ISafeTransferInput {
   contract?: string;
 }
 
-const partialTransferCommand = ({
+export const partialTransferCommand = ({
   sender,
   amount,
   receiver,

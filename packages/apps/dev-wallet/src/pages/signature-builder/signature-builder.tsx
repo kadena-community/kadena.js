@@ -1,4 +1,5 @@
 import {
+  ICommand,
   IPartialPactCommand,
   ISigningRequest,
   IUnsignedCommand,
@@ -7,15 +8,15 @@ import {
 
 import { PactCodeView } from '@/Components/PactCodeView/PactCodeView';
 import { Wizard } from '@/Components/Wizard/Wizard';
+import { useNetwork } from '@/modules/network/network.hook';
+import * as transactionService from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { execCodeParser } from '@kadena/pactjs-generator';
 import { Box, Button, Card, Heading, Text } from '@kadena/react-ui';
 import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { codeArea } from './style.css';
 import { normalizeSigs } from './utils/normalizeSigs';
-import * as transactionService from '@/modules/transaction/transaction.service';
-import { useNetwork } from '@/modules/network/network.hook';
-import { useNavigate } from 'react-router-dom';
 
 type requestScheme =
   | 'invalid'
@@ -126,8 +127,8 @@ export function SignatureBuilder() {
   async function signTransaction() {
     if (unsignedTx) {
       const normalizedTx = { ...unsignedTx, sigs: normalizeSigs(unsignedTx) };
-      const tx = await sign([normalizedTx]);
-      setSignedTx(tx[0]);
+      const tx = (await sign(normalizedTx)) as ICommand;
+      setSignedTx(tx);
     }
   }
 
@@ -181,15 +182,17 @@ export function SignatureBuilder() {
                 <Box>
                   {['PactCommand', 'quickSignRequest'].includes(schema!) && (
                     <>
-                      <Button onPress={async () => {
-                        if(!unsignedTx || !profile || !activeNetwork) return;
-                        const tx = await transactionService.addTransaction(
-                          unsignedTx,
-                          profile.uuid,
-                          activeNetwork.networkId,
-                        );
-                        navigate(`/transaction/${tx.uuid}`)
-                      }}>
+                      <Button
+                        onPress={async () => {
+                          if (!unsignedTx || !profile || !activeNetwork) return;
+                          const tx = await transactionService.addTransaction(
+                            unsignedTx,
+                            profile.uuid,
+                            activeNetwork.networkId,
+                          );
+                          navigate(`/transaction/${tx.uuid}`);
+                        }}
+                      >
                         Review Transaction
                       </Button>
                     </>

@@ -1,174 +1,185 @@
 import {
   ITransaction,
+  TransactionStatus,
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
-import { useWallet } from '@/modules/wallet/wallet.hook';
-import { submitClient } from '@kadena/client-utils';
-import { Button, Heading, Stack } from '@kadena/react-ui';
-import { useEffect, useState } from 'react';
+import { ICommand, createClient } from '@kadena/client';
+import { isSignedCommand } from '@kadena/pactjs';
+import { Button, Heading, Notification, Stack, Text } from '@kadena/react-ui';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ReviewTransaction } from './components/ReviewTransaction';
-import { Signers } from './components/Signers';
 import { SubmittedStatus } from './components/SubmittedStatus';
-import { containerClass } from './components/style.css';
 
-const getTxStartPoint = (tx: ITransaction | undefined | null) => {
-  if (!tx) {
-    return null;
-  }
-  switch (tx.status) {
-    case 'initiated':
-      return [
-        'command',
-        { cmd: tx.cmd, hash: tx.hash, sigs: tx.sigs },
-      ] as const;
-    case 'signed':
-      return ['sign', { cmd: tx.cmd, hash: tx.hash, sigs: tx.sigs }] as const;
-    case 'submitted':
-      return ['submit', tx.request] as const;
-    case 'success':
-      return ['listen', tx.result] as const;
-    case 'failure':
-      return ['listen', tx.result] as const;
-    default:
-      return null;
-  }
-};
+const steps: TransactionStatus[] = [
+  'initiated',
+  'signed',
+  'submitted',
+  'success',
+  'failure',
+  'persisted',
+];
+
+const getOverallStep = (list: ITransaction[]) =>
+  list.reduce(
+    (acc: [TransactionStatus, number], tx, idx) => {
+      const [step] = acc;
+      if (steps.indexOf(tx.status) < steps.indexOf(step)) {
+        return [tx.status, idx] as [TransactionStatus, number];
+      }
+      return acc;
+    },
+    ['persisted', 0] as const,
+  );
 
 export function Transaction() {
-  const { transactionId } = useParams();
-  const { sign } = useWallet();
+  const { groupId } = useParams();
+  const [Txs, setTxs] = useState<ITransaction[] | null>(null);
+  const [step, setStep] = useState<TransactionStatus | null>(null);
+  const [selectedTxIndex, setSelectedTxIndex] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
-  const [transaction, setTransaction] = useState<ITransaction | null>(null);
-  const [task, setTask] = useState<ReturnType<
-    ReturnType<typeof submitClient>['from']
-  > | null>(null);
 
-  const patchTransaction = async (tx: Partial<ITransaction>) => {
-    setTransaction((transaction) => {
-      const updated = {
-        ...(transaction ?? {}),
-        ...tx,
-      } as ITransaction;
-      transactionRepository.updateTransaction(updated);
-      return updated;
-    });
-  };
+  const loadTxs = useCallback(async (groupId: string) => {
+    const list = await transactionRepository.getTransactionsByGroup(groupId);
+    const [overallStep, firstTx] = getOverallStep(list);
+    setTxs(list);
+    setSelectedTxIndex(firstTx);
+    setStep(overallStep);
+    return list;
+  }, []);
 
   useEffect(() => {
-    if (!transactionId) {
-      return;
+    if (groupId) {
+      loadTxs(groupId);
     }
-    const run = async () => {
-      const tx = await transactionRepository.getTransaction(transactionId);
-      if (!tx) {
-        throw new Error('Transaction not found');
-      }
-      setTransaction(tx);
-      const startPoint = getTxStartPoint(tx);
-      if (!startPoint) {
-        throw new Error('Invalid transaction status');
-      }
-      const [event, data] = startPoint;
-      console.log('startPoint', event, data);
-      const process = submitClient({ sign }).from(event as any, data as any);
-      process
-        .on('command', async (data) => {
-          patchTransaction({ ...data, status: 'initiated' });
-        })
-        .on('sign', async (data) => {
-          patchTransaction({ ...data, status: 'signed' });
-        })
-        .on('submit', async (request) => {
-          patchTransaction({ request, status: 'submitted' });
-        })
-        .on('listen', async (result) => {
-          patchTransaction({
-            result,
-            status: result.result.status,
-          });
-        });
-      setTask(process);
-    };
-    run();
-  }, [transactionId, sign]);
+  }, [groupId, loadTxs]);
 
-  const onError = (e: Error) => {
-    console.error(e);
-    setError(e.message ?? e.toString());
-  };
+  const transaction = Txs ? Txs[selectedTxIndex] : null;
 
-  if (error) {
+  const patchTransaction = useCallback(
+    async (tx: Partial<ITransaction>) => {
+      if (transaction && Txs) {
+        const updated = {
+          ...transaction,
+          ...tx,
+        } as ITransaction;
+        await transactionRepository.updateTransaction(updated);
+        const updatedList = Txs.map((t) =>
+          t.uuid === updated.uuid ? updated : t,
+        );
+        const [overallStep, firstTx] = getOverallStep(updatedList);
+        setTxs(updatedList);
+        setSelectedTxIndex(firstTx);
+        setStep(overallStep);
+        return updatedList;
+      }
+    },
+    [transaction, Txs],
+  );
+
+  const submitTxs = useCallback(async (list: ITransaction[]) => {
+    if (!groupId) return;
+    const client = createClient();
+    if (!list.every(isSignedCommand)) return;
+    await Promise.all(
+      list.map((tx) =>
+        client
+          .preflight({ cmd: tx.cmd, sigs: tx.sigs, hash: tx.hash } as ICommand)
+          .then((result) => {
+            if (result.result.status !== 'success') {
+              throw (result.result.error as any).message || result.result.error;
+            }
+          }),
+      ),
+    );
+    await Promise.all(
+      list.map((tx) =>
+        client
+          .submitOne({ cmd: tx.cmd, sigs: tx.sigs, hash: tx.hash } as ICommand)
+          .then(async (request) => {
+            const updatedTx = {
+              ...tx,
+              status: 'submitted',
+              request,
+            } as ITransaction;
+            await transactionRepository.updateTransaction(updatedTx);
+            await loadTxs(groupId);
+            return request;
+          })
+          .then(async (req) => [await client.pollOne(req), req] as const)
+          .then(async ([result, request]) => {
+            const updatedTx = {
+              ...tx,
+              status: result.result.status,
+              request,
+              result,
+            } as ITransaction;
+            await transactionRepository.updateTransaction(updatedTx);
+            await loadTxs(groupId);
+            return result;
+          })
+          .catch((e) => {
+            setError(e && e.message ? e.message : e ?? 'Unknown error');
+          }),
+      ),
+    );
+  }, []);
+
+  if (!Txs || !transaction || !groupId) return null;
+
+  if (['success', 'failure', 'submitted'].includes(step!)) {
     return (
       <Stack flexDirection={'column'} gap={'xl'}>
-        <Heading variant="h4">Error: {error}</Heading>
+        <Heading variant="h4">{step}</Heading>
+        <Stack gap={'lg'}>
+          {Txs.map((tx) => (
+            <SubmittedStatus key={tx.uuid} transaction={tx} />
+          ))}
+        </Stack>
       </Stack>
     );
   }
-
   return (
     <Stack flexDirection={'column'} gap={'xl'}>
-      <Heading variant="h4">Status: {transaction?.status || 'UNKNOWN'}</Heading>
-      {transaction?.status === 'initiated' && (
-        <>
-          <ReviewTransaction transaction={transaction} />
-          <Stack gap={'sm'} flex={1}>
-            <Button
-              onClick={() => {
-                task?.executeTo('sign').catch(onError);
-              }}
-            >
-              Sign Transaction
-            </Button>
-            <Button
-              variant="transparent"
-              onClick={() => {
-                transactionRepository.deleteTransaction(transaction.uuid);
-              }}
-            >
-              Reject
-            </Button>
-          </Stack>
-        </>
-      )}
-
-      {transaction?.status === 'signed' && (
-        <Stack className={containerClass} flexDirection={'column'} gap={'lg'}>
-          <Signers transaction={transaction} />
-          <Stack gap={'sm'} justifyContent={'space-between'} flex={1}>
-            <Stack gap={'sm'}>
-              <Button
-                variant="positive"
-                onClick={() => {
-                  const { cmd, hash, sigs } = transaction;
-                  navigator.clipboard.writeText(
-                    JSON.stringify({ cmd, hash, sigs }),
-                  );
-                }}
-              >
-                Copy Signed Transaction
-              </Button>
-              <Button
-                variant="transparent"
-                onClick={() => {
-                  transactionRepository.deleteTransaction(transaction.uuid);
-                }}
-              >
-                Remove Transaction
-              </Button>
-            </Stack>
-            <Button
-              onClick={() => {
-                task?.execute().catch(onError);
-              }}
-            >
-              Submit Transaction
-            </Button>
-          </Stack>
-        </Stack>
-      )}
-
-      {transaction?.request && <SubmittedStatus transaction={transaction} />}
+      <Heading variant="h4">{step}</Heading>
+      <Text>
+        transaction {selectedTxIndex + 1}/{Txs.length}
+      </Text>
+      {error && <Notification role="alert">{error}</Notification>}
+      <ReviewTransaction
+        transaction={transaction}
+        onSign={(sigs) => {
+          patchTransaction({
+            sigs,
+            status: sigs.every((data) => data?.sig)
+              ? steps.indexOf(transaction.status) < steps.indexOf('signed')
+                ? 'signed'
+                : transaction.status
+              : transaction.status,
+          });
+        }}
+      />
+      <Stack gap={'sm'} flex={1}>
+        <Button
+          onClick={async () => {
+            if (Txs.every(isSignedCommand)) {
+              const list = await loadTxs(groupId);
+              submitTxs(list);
+            }
+          }}
+          isDisabled={!Txs.every(isSignedCommand)}
+        >
+          Submit
+        </Button>
+        <Button
+          variant="transparent"
+          onClick={() => {
+            transactionRepository.deleteTransaction(transaction.uuid);
+          }}
+        >
+          Reject
+        </Button>
+      </Stack>
     </Stack>
   );
 }

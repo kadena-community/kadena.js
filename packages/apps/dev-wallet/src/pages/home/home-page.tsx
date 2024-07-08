@@ -1,16 +1,19 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import {
+  chainListClass,
   listClass,
   listItemClass,
   panelClass,
 } from '@/pages/home/style.css.ts';
 import { getAccountName } from '@/utils/helpers';
 import { Box, Heading, Stack, Text } from '@kadena/react-ui';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { linkClass } from '../select-profile/select-profile.css';
 
 export function HomePage() {
   const { accounts, profile } = useWallet();
+  const [selectedAccountIdx, setSelectedAccountIdx] = useState<number>(-1);
 
   return (
     <>
@@ -32,13 +35,35 @@ export function HomePage() {
             <Text>Owned ({accounts.length})</Text>
             {accounts.length ? (
               <ul className={listClass}>
-                {' '}
-                {accounts.map(({ address, overallBalance }) => (
-                  <li key={address} className={listItemClass}>
-                    <Stack justifyContent="space-between">
+                {accounts.map(({ address, overallBalance, chains }, idx) => (
+                  <li key={address}>
+                    <Stack
+                      justifyContent="space-between"
+                      className={listItemClass}
+                      onClick={() => {
+                        setSelectedAccountIdx((cu) => {
+                          return cu === idx ? -1 : idx;
+                        });
+                      }}
+                    >
                       <Text>{getAccountName(address) ?? 'No Address ;(!'}</Text>
                       <Text>{overallBalance} KDA</Text>
                     </Stack>
+                    {selectedAccountIdx === idx && chains.length > 0 && (
+                      <ul className={chainListClass}>
+                        {chains.map(({ chainId, balance }) => (
+                          <li key={address}>
+                            <Stack
+                              justifyContent="space-between"
+                              className={listItemClass}
+                            >
+                              <Text>chain {chainId}</Text>
+                              <Text>{balance} KDA</Text>
+                            </Stack>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </li>
                 ))}
               </ul>

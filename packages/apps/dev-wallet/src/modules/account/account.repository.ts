@@ -75,6 +75,16 @@ const createAccountRepository = ({
         keyset: await getKeyset(account.keysetId),
       };
     },
+    getAccountByAddress: async (address: string) => {
+      const account: IAccount[] = await getAll('account', address, 'address');
+      if (account.length === 0) {
+        return null;
+      }
+      return {
+        ...account[0],
+        keyset: await getKeyset(account[0].keysetId),
+      };
+    },
     async getAccountsByProfileId(profileId: string) {
       const accounts: IAccount[] = await getAll(
         'account',

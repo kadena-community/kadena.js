@@ -3,13 +3,16 @@ import { Heading, Stack } from '@kadena/react-ui';
 import { useMemo } from 'react';
 import { cardClass, codeClass, containerClass } from './style.css.ts';
 
+import { ITransaction } from '@/modules/transaction/transaction.repository.ts';
 import { Signers } from './Signers.tsx';
 import { Label, Value } from './helpers.tsx';
 
 export function ReviewTransaction({
   transaction,
+  onSign,
 }: {
   transaction: IUnsignedCommand;
+  onSign: (sig: ITransaction['sigs']) => void;
 }) {
   const command: IPactCommand = useMemo(
     () => JSON.parse(transaction.cmd),
@@ -94,7 +97,7 @@ export function ReviewTransaction({
             </Stack>
           </Stack>
         </Stack>
-        <Signers transaction={transaction} />
+        <Signers transaction={transaction} onSign={onSign} />
       </Stack>
     </Stack>
   );
