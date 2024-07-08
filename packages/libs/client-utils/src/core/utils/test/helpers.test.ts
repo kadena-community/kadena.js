@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
 import type { ICommandResult } from '@kadena/chainweb-node-client';
+import type { SuccessfulResponse } from '../helpers';
 import {
   asyncLock,
   checkSuccess,
@@ -173,7 +174,7 @@ describe('extractResult', () => {
     expect(
       extractResult({
         result: { status: 'success', data: 'test-data' },
-      } as unknown as ICommandResult),
+      } as unknown as SuccessfulResponse),
     ).toBe('test-data');
   });
 
@@ -185,7 +186,7 @@ describe('extractResult', () => {
           data: 'failure-data',
           error: 'error-message',
         },
-      } as unknown as ICommandResult),
+      } as unknown as SuccessfulResponse),
     ).toBe(undefined);
   });
 });

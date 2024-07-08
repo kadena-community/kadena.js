@@ -45,7 +45,7 @@ data: ITransactionDescriptor;
 }, {
 event: "listen";
 data: ICommandResult;
-}], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]> | Promise<Record<string, any>>>;
+}], [], Promise<string> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]> | Promise<Record<string, any>>>;
 
 // @alpha (undocumented)
 export const describeModule: (module: string, config: Omit<IClientConfig, 'sign'>) => Promise<IDescribeModuleOutput>;
