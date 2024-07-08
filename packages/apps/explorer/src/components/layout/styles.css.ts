@@ -16,5 +16,6 @@ export const layoutWrapperClass = style({
 });
 
 export const contentClass = style({
+  height: '64px',
   minHeight: 'calc(100vh - 248px)',
 });
