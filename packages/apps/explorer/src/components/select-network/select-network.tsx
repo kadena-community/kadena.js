@@ -1,5 +1,5 @@
 import type { INetwork } from '@/context/networks-context';
-import { useNetworkContext } from '@/context/networks-context';
+import { useNetwork } from '@/context/networks-context';
 import {
   Button,
   Dialog,
@@ -19,7 +19,7 @@ import React, { useState } from 'react';
 
 const SelectNetwork: FC = () => {
   const { networks, addNetwork, activeNetwork, setActiveNetwork } =
-    useNetworkContext();
+    useNetwork();
 
   const [isOpen, setIsOpen] = useState(false);
   const [formError, setFormError] = useState<(string | undefined)[]>();
@@ -65,7 +65,7 @@ const SelectNetwork: FC = () => {
       chainwebUrl,
       graphUrl,
     });
-    setActiveNetwork(() => networkId);
+
     setIsOpen(false);
   };
 
@@ -113,7 +113,9 @@ const SelectNetwork: FC = () => {
               {formError && formError.length > 0 && (
                 <Stack>
                   {(formError as string[]).map((e) => (
-                    <Text color="emphasize">{e}</Text>
+                    <Text key={e} color="emphasize">
+                      {e}
+                    </Text>
                   ))}
                 </Stack>
               )}

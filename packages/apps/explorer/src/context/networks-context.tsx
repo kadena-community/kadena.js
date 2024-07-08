@@ -1,5 +1,11 @@
 import { networkConstants } from '@/constants/network';
-import React, { createContext, useContext, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 export type INetwork = Omit<
   typeof networkConstants.mainnet01,
@@ -23,7 +29,9 @@ const NetworkContext = createContext<INetworkContext>({
   addNetwork: () => {},
 });
 
-const useNetworkContext = (): INetworkContext => {
+const storageKey = 'networks';
+
+const useNetwork = (): INetworkContext => {
   const context = useContext(NetworkContext);
 
   if (context === undefined) {
@@ -33,16 +41,43 @@ const useNetworkContext = (): INetworkContext => {
   return context;
 };
 
+const getDefaultNetworks = (): INetworkContext['networks'] => [
+  networkConstants.mainnet01,
+  networkConstants.testnet04,
+];
+
 const NetworkContextProvider = (props: {
   networks?: INetwork[];
   children: React.ReactNode;
 }): JSX.Element => {
-  const [networks, setNetworks] = useState<INetworkContext['networks']>([
-    networkConstants.mainnet01,
-    networkConstants.testnet04,
-  ]);
+  const [networks, setNetworks] = useState<INetwork[]>(getDefaultNetworks());
 
-  let [activeNetwork, setActiveNetwork] = useState<INetwork>(
+  const checkStorage = () => {
+    const storage: INetwork[] = JSON.parse(
+      localStorage.getItem(storageKey) ?? '[]',
+    );
+
+    setNetworks([...getDefaultNetworks(), ...storage]);
+  };
+
+  const storageListener = useCallback((event: StorageEvent | Event) => {
+    if (event.type !== storageKey && 'key' in event && event.key !== storageKey)
+      return;
+
+    checkStorage();
+  }, []);
+
+  useEffect(() => {
+    checkStorage();
+    window.addEventListener(storageKey, storageListener);
+    window.addEventListener('storage', storageListener);
+    return () => {
+      window.removeEventListener(storageKey, storageListener);
+      window.removeEventListener('storage', storageListener);
+    };
+  }, [storageListener]);
+
+  const [activeNetwork, setActiveNetwork] = useState<INetwork>(
     networks.find((x) => x.networkId === 'mainnet01')!,
   );
 
@@ -63,9 +98,22 @@ const NetworkContextProvider = (props: {
   };
 
   const addNetwork = (newNetwork: INetwork): void => {
-    setNetworks((networks) => [...networks, newNetwork]);
+    const storage: INetwork[] = JSON.parse(
+      localStorage.getItem(storageKey) ?? '[]',
+    );
+    if (
+      !storage.find((network) => network.networkId === newNetwork.networkId)
+    ) {
+      storage.push(newNetwork);
+      localStorage.setItem(storageKey, JSON.stringify(storage));
+      window.dispatchEvent(new Event(storageKey));
+
+      setNetworks((v) => [...v, newNetwork]);
+      setActiveNetwork(newNetwork);
+    }
   };
 
+  console.log({ networks, activeNetwork });
   return (
     <NetworkContext.Provider
       value={{
@@ -80,4 +128,4 @@ const NetworkContextProvider = (props: {
   );
 };
 
-export { NetworkContext, NetworkContextProvider, useNetworkContext };
+export { NetworkContext, NetworkContextProvider, useNetwork };

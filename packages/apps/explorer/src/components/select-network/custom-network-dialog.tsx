@@ -15,7 +15,7 @@ import React, { useState } from 'react';
 import { buttonSizeClass } from '../navbar/styles.css';
 
 export const GraphQLQueryDialog = (): JSX.Element => {
-  let { networks } = useNetworksContext();
+  const { networks } = useNetwork();
 
   if (!queries) queries = [];
 
