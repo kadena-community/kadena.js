@@ -1,3 +1,4 @@
+import Link from '@/components/routing/link';
 import { MonoArrowOutward } from '@kadena/kode-icons/system';
 import { Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
@@ -35,14 +36,14 @@ const DataRenderComponentVertical: React.FC<IDataRenderComponentProps> = ({
           <dt className={descriptionTermClass}>{field.key}</dt>
           {field.link ? (
             <dd className={descriptionDetailsLinkClass}>
-              <a href={field.link} className={linkClass}>
+              <Link href={field.link} className={linkClass}>
                 <Text variant="code" className={textClass}>
                   {field.value}
                 </Text>
-              </a>
-              <a href={field.link} className={iconLinkClass}>
+              </Link>
+              <Link href={field.link} className={iconLinkClass}>
                 <MonoArrowOutward className={linkIconClass} />
-              </a>
+              </Link>
             </dd>
           ) : field.type === 'code' ? (
             <dd className={descriptionDetailsClass}>

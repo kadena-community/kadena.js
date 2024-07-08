@@ -3,12 +3,11 @@ import { useBlockQuery } from '@/__generated__/sdk';
 import BlockTransactions from '@/components/block-transactions/block-transactions';
 import DataRenderComponent from '@/components/data-render-component/data-render-component';
 import Layout from '@/components/layout/layout';
+import { useRouter } from '@/components/routing/useRouter';
 import { useQueryContext } from '@/context/query-context';
 import { block } from '@/graphql/queries/block.graph';
 import { truncateValues } from '@/services/format';
 import { Badge, Heading, Stack, TabItem, Tabs } from '@kadena/kode-ui';
-
-import { useRouter } from 'next/router';
 import type { Key } from 'react';
 import React, { useEffect, useState } from 'react';
 
@@ -137,6 +136,7 @@ const Block: React.FC = () => {
                   {
                     key: 'Account',
                     value: data.block.minerAccount.accountName,
+                    link: `/account/${data.block.minerAccount.accountName}`,
                   },
                   {
                     key: 'Public Keys',

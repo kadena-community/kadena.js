@@ -1,5 +1,6 @@
 // load global styles from @kadena/kode-ui
 import { MediaContextProvider } from '@/components/layout/media';
+import { useRouter } from '@/components/routing/useRouter';
 import { NetworkContextProvider } from '@/context/networks-context';
 import { QueryContextProvider } from '@/context/query-context';
 import '@components/globalstyles.css';
@@ -7,7 +8,6 @@ import { RouterProvider, useTheme } from '@kadena/kode-ui';
 import '@kadena/kode-ui/global';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import type { ComponentType } from 'react';
 import React from 'react';
 

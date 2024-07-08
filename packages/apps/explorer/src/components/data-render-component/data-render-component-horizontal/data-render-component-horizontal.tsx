@@ -1,4 +1,5 @@
 import CopyButton from '@/components/copy-button/copy-button';
+import Link from '@/components/routing/link';
 import { MonoArrowOutward } from '@kadena/kode-icons';
 import { Stack, Text } from '@kadena/kode-ui';
 import React from 'react';
@@ -34,14 +35,14 @@ const DataRenderComponentHorizontal: React.FC<IDataRenderComponentProps> = ({
           <div className={headerClass}>{field.key}</div>
           {field.link ? (
             <div className={dataFieldLinkClass}>
-              <a href={field.link} className={linkClass}>
+              <Link href={field.link} className={linkClass}>
                 <Text variant="code" className={dataFieldClass}>
                   {field.value}
                 </Text>
-              </a>
-              <a href={field.link} className={iconLinkClass}>
+              </Link>
+              <Link href={field.link} className={iconLinkClass}>
                 <MonoArrowOutward className={linkIconClass} />
-              </a>
+              </Link>
             </div>
           ) : field.type === 'code' ? (
             <Text variant="code" className={dataFieldClass}>

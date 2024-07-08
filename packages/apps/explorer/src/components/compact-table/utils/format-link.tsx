@@ -1,6 +1,6 @@
+import Link from '@/components/routing/link';
 import { MonoArrowOutward } from '@kadena/kode-icons';
 import { Stack, Text } from '@kadena/kode-ui';
-import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
 import {

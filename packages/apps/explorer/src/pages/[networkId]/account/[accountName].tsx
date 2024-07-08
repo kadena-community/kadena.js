@@ -6,12 +6,11 @@ import { FormatAmount } from '@/components/compact-table/utils/format-amount';
 import { FormatLink } from '@/components/compact-table/utils/format-link';
 import { FormatStatus } from '@/components/compact-table/utils/format-status';
 import Layout from '@/components/layout/layout';
+import { useRouter } from '@/components/routing/useRouter';
 import { useQueryContext } from '@/context/query-context';
 import { account } from '@/graphql/queries/account.graph';
 import { accountNameTextClass } from '@/styles/account.css';
 import { Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
-import { useSearchParams } from 'next/navigation';
-import { useRouter } from 'next/router';
 import type { FC, Key } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
 
@@ -23,18 +22,19 @@ export interface IKeyProps {
 
 const Account: FC = () => {
   const router = useRouter();
-  const params = useSearchParams();
   const [selectedTab, setSelectedTab] = useState<string>('Transactions');
-  const accountName = params.get('accountName');
+  const accountName = router.query.accountName as string;
   const { setQueries } = useQueryContext();
 
   const accountQueryVariables = {
-    accountName: accountName ?? '',
+    accountName,
   };
+
+  console.log(accountName);
 
   const { loading, data, error } = useAccountQuery({
     variables: accountQueryVariables,
-    skip: !accountName,
+    skip: !router.query.accountName,
   });
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const Account: FC = () => {
   const handleSelectedTab = (tab: Key): void => {
     setSelectedTab(tab as string);
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    router.replace(`#${tab}`);
+    router.push(`#${tab}`);
   };
 
   const { fungibleAccount } = data ?? {};

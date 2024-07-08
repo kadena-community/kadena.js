@@ -1,3 +1,4 @@
+import { useRouter } from '@/components/routing/useRouter';
 import { networkConstants } from '@/constants/network';
 import type { NormalizedCacheObject } from '@apollo/client';
 import {
@@ -9,7 +10,7 @@ import {
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { createClient } from 'graphql-ws';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import React, {
   createContext,
   useCallback,
@@ -108,6 +109,7 @@ const NetworkContextProvider = (props: {
   const setActiveNetworkByKey = (networkId: string): void => {
     setActiveNetwork(networks.find((x) => x.networkId === networkId)!);
 
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     router.push(`/${networkId}`);
   };
 
@@ -124,6 +126,7 @@ const NetworkContextProvider = (props: {
 
       setNetworks((v) => [...v, newNetwork]);
       setActiveNetwork(newNetwork);
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       router.push(`/${newNetwork.networkId}`);
     }
   };

@@ -8,6 +8,7 @@ import SearchResults from '@/components/search/search-results/search-results';
 import StatisticsGrid from '@/components/statistics-component/statistics-grid/statistics-grid';
 import { useSearch } from '@/hooks/search';
 import { Stack } from '@kadena/kode-ui';
+import Link from 'next/dist/client/link';
 import React from 'react';
 
 const Home: React.FC = () => {
@@ -30,9 +31,9 @@ const Home: React.FC = () => {
             alignItems={'center'}
             marginBlockStart="md"
           >
-            <a href="/">
+            <Link href="/">
               <Logo />
-            </a>
+            </Link>
           </Stack>
         </Media>
 
