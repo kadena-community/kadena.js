@@ -1,7 +1,7 @@
 import { Button } from '@/components/Button/Button';
 import { TextField } from '@/components/TextField/TextField';
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import type { FC, FormEventHandler } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { mobileInputClass } from './style.css';

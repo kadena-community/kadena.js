@@ -1,5 +1,5 @@
-import type { ITheme } from '@kadena/react-ui';
-import { Themes, useTheme } from '@kadena/react-ui';
+import type { ITheme } from '@kadena/kode-ui';
+import { Themes, useTheme } from '@kadena/kode-ui';
 import type { ComponentPropsWithRef, FC } from 'react';
 import React from 'react';
 

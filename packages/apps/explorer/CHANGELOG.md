@@ -1,5 +1,62 @@
 # @kadena/explorer
 
+## 0.3.0
+
+### Minor Changes
+
+- d5de83869: Rename 'react-ui' to 'kode-ui'
+- 563fb6cad: Rename react-icons to kode-icons
+
+### Patch Changes
+
+- Updated dependencies \[d5de83869]
+- Updated dependencies \[563fb6cad]
+  - @kadena/kode-icons\@0.1.0
+  - @kadena/kode-ui\@0.13.0
+
+## 0.2.3
+
+### Patch Changes
+
+- e8a47ead1: QoL improvements for truncated messages. Each page has a decent
+  title
+- 779b599a5: Implemented small ui fixes in the explorer
+- ebd7fcfa4: Added rerouting to different instances when network toogle is
+  selected
+- f8afbbaa7: Refactored logic to deal with blocks fetched on startup
+- cb0f14f3f: Update readme with some adition info
+- 555892d55: Added graph in local .env variables describing graph host url's
+- Updated dependencies \[df0a2e823]
+- Updated dependencies \[311d0bf44]
+- Updated dependencies \[0e9c0d049]
+- Updated dependencies \[950444ccf]
+  - @kadena/kode-ui\@0.12.2
+  - @kadena/graph\@1.0.6
+
+## 0.2.2
+
+### Patch Changes
+
+- Updated dependencies \[16f0b17ed]
+- Updated dependencies \[4dc02eec8]
+- Updated dependencies \[db77beba0]
+- Updated dependencies \[c0a6ffde5]
+- Updated dependencies \[7ee91269f]
+- Updated dependencies \[5b95decb2]
+- Updated dependencies \[6d9900ef8]
+  - @kadena/kode-ui\@0.12.1
+
+## 0.2.1
+
+### Patch Changes
+
+- ed626de: Added graph in local .env variables describing graph host url's
+- Updated dependencies \[1bbf1c6]
+- Updated dependencies \[63bdbcb]
+- Updated dependencies \[15a492c]
+  - @kadena/graph\@1.0.5
+  - @kadena/kode-ui\@0.12.0
+
 ## 0.2.0
 
 ### Minor Changes
@@ -13,7 +70,7 @@
 - Updated dependencies \[6a969ebdc]
 - Updated dependencies \[b541021f4]
 - Updated dependencies \[e648c32fa]
-  - @kadena/react-ui\@0.11.0
+  - @kadena/kode-ui\@0.11.0
   - @kadena/graph\@1.0.4
 
 ## 0.1.0
@@ -51,7 +108,7 @@
 - Updated dependencies \[07ec9691c]
 - Updated dependencies \[4a5045c52]
 - Updated dependencies \[b0b05ca86]
-  - @kadena/react-ui\@0.10.0
+  - @kadena/kode-ui\@0.10.0
   - @kadena/graph\@1.0.3
 
 ## 0.0.2
@@ -80,6 +137,6 @@
 - Updated dependencies \[5cf752eed]
 - Updated dependencies \[0d18ab81c]
 - Updated dependencies \[37375fa7e]
-  - @kadena/react-ui\@0.9.0
+  - @kadena/kode-ui\@0.9.0
   - @kadena/graph\@1.0.2
-  - @kadena/react-icons\@0.0.3
+  - @kadena/kode-icons\@0.0.3

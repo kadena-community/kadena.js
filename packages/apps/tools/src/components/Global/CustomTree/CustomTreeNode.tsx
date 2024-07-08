@@ -1,12 +1,14 @@
-import { MonoArrowDropDown, MonoArrowRight } from '@kadena/react-icons/system';
-import { Badge, Button, Stack, Text } from '@kadena/react-ui';
-import { ellipsis, monospaceSmallestRegular } from '@kadena/react-ui/styles';
+import { MonoArrowDropDown, MonoArrowRight } from '@kadena/kode-icons/system';
+import { Badge, Button, Stack, Text } from '@kadena/kode-ui';
+import { ellipsis, monospaceSmallestRegular } from '@kadena/kode-ui/styles';
 import classNames from 'classnames';
 import React from 'react';
 import type { ICustomAccordionProps } from '../CustomAccordion/CustomAccordion';
 import CustomAccordion from '../CustomAccordion/CustomAccordion';
 import type { TreeItem } from './CustomTree';
 import {
+  activeItemContainerStyle,
+  activeItemStyles,
   firstLevelTreeNodeStyles,
   itemBadgeStyle,
   itemContainerStyle,
@@ -14,30 +16,38 @@ import {
 } from './CustomTree.css';
 
 export interface INodeProps<T>
-  extends Omit<ICustomAccordionProps<T>, 'data' | 'children'> {
-  data: TreeItem<T>[];
+  extends Omit<ICustomAccordionProps<T>, 'items' | 'children'> {
+  items: TreeItem<T>[];
   level: number;
   onItemClick: (item: TreeItem<T>) => void;
   onExpandCollapse: (item: TreeItem<T>, expanded: boolean) => void;
+  isActive?: boolean;
 }
 
 function Node<T>({
-  data,
+  items,
   level,
   onItemClick,
   onExpandCollapse,
+  isActive,
   ...rest
 }: INodeProps<T>) {
   return (
     <CustomAccordion
       {...rest}
-      data={data}
+      items={items}
       itemProps={{
-        className: classNames({ [firstLevelTreeNodeStyles]: level === 1 }),
+        className: classNames({
+          [firstLevelTreeNodeStyles]: level === 1,
+          [activeItemStyles]: isActive,
+        }),
       }}
     >
       {(child) => {
         const hasChildren = !!child.data.children.length;
+        const hasActiveChild = child.data.children.some(
+          (item) => item.isActive,
+        );
         return (
           <>
             <Stack
@@ -54,9 +64,11 @@ function Node<T>({
                 }
               }}
               role="button"
-              className={itemContainerStyle}
+              className={classNames(itemContainerStyle, {
+                [activeItemContainerStyle]: hasActiveChild,
+              })}
               style={{
-                paddingInlineStart: `${level * 20 + (!hasChildren ? 20 : 0)}px`,
+                paddingInlineStart: `${level * 20 + (!hasChildren ? 40 : 0)}px`,
                 cursor: hasChildren ? 'default' : 'pointer',
               }}
             >
@@ -77,7 +89,9 @@ function Node<T>({
                   )}
                 </Button>
               ) : null}
-              <Text className={itemTitleStyle}>{child.data.title}</Text>
+              <Text className={itemTitleStyle} bold={hasActiveChild}>
+                {child.data.title}
+              </Text>
               {child.data.label ? (
                 <Badge
                   size="sm"
@@ -86,6 +100,7 @@ function Node<T>({
                     ellipsis,
                     itemBadgeStyle,
                   )}
+                  style={child.data.isActive ? 'info' : undefined}
                 >
                   {child.data.label}
                 </Badge>
@@ -98,10 +113,11 @@ function Node<T>({
             </Stack>
             {child.isExpanded && hasChildren ? (
               <Node
-                data={child.data.children}
+                items={child.data.children}
                 level={level + 1}
                 onItemClick={onItemClick}
                 onExpandCollapse={onExpandCollapse}
+                isActive={child.data.isActive || hasActiveChild}
                 {...child.accessibilityProps}
               />
             ) : null}

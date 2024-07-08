@@ -47,6 +47,7 @@ export const getCommitId = (content: string): IChangelogVersionRecord => {
       .replace('[]', '')
       .replace('()', '')
       .replace(/^\:/, '')
+      .replace(/\[``\]\(\S*/, '')
       .trim();
 
     const [hash] = match;

@@ -1,5 +1,5 @@
 import { IPactCommand, IUnsignedCommand } from '@kadena/client';
-import { Heading, Stack } from '@kadena/react-ui';
+import { Heading, Stack } from '@kadena/kode-ui';
 import { useMemo } from 'react';
 import { cardClass, codeClass, containerClass } from './style.css.ts';
 

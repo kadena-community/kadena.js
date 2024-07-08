@@ -1,6 +1,6 @@
 {
   "name": "@kadena/client-utils",
-  "version": "0.7.0",
+  "version": "0.8.1",
   "description": "Utility functions build as a wrapper around @kadena/client",
   "repository": {
     "type": "git",
@@ -43,19 +43,46 @@
       "types": "./lib/types/marmalade/index.d.ts",
       "import": "./lib/esm/marmalade/index.mjs",
       "require": "./lib/cjs/marmalade/index.js"
+    },
+    "./webauthn": {
+      "types": "./lib/types/webauthn/index.d.ts",
+      "import": "./lib/esm/webauthn/index.mjs",
+      "require": "./lib/cjs/webauthn/index.js"
     }
   },
   "typesVersions": {
     "*": {
-      ".": ["./lib/types/index.d.ts"],
-      "built-in": ["./lib/types/built-in/index.d.ts"],
-      "core": ["./lib/types/core/index.d.ts"],
-      "coin": ["./lib/types/coin/index.d.ts"],
-      "nodejs": ["./lib/types/nodejs/index.d.ts"],
-      "marmalade": ["./lib/types/marmalade/index.d.ts"]
+      ".": [
+        "./lib/types/index.d.ts"
+      ],
+      "built-in": [
+        "./lib/types/built-in/index.d.ts"
+      ],
+      "core": [
+        "./lib/types/core/index.d.ts"
+      ],
+      "coin": [
+        "./lib/types/coin/index.d.ts"
+      ],
+      "nodejs": [
+        "./lib/types/nodejs/index.d.ts"
+      ],
+      "marmalade": [
+        "./lib/types/marmalade/index.d.ts"
+      ],
+      "webauthn": [
+        "./lib/esm/webauthn/index.d.ts"
+      ]
     }
   },
-  "files": ["dist", "lib", "built-in", "coin", "core", "src"],
+  "files": [
+    "dist",
+    "lib",
+    "built-in",
+    "coin",
+    "core",
+    "src"
+  ],
   "scripts": {
     "ae": "pnpm run ae:core && pnpm run ae:built-in && pnpm run ae:coin",
     "ae:built-in": "api-extractor run --verbose -c ./config/api-extractor-built-in.json",
@@ -76,7 +103,7 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
-    "pactjs:generate:contract": "pactjs contract-generate --contract coin --contract marmalade-v2.ledger --contract marmalade-v2.collection-policy-v1 --contract marmalade-v2.policy-manager --contract marmalade-sale.conventional-auction --contract marmalade-sale.dutch-auction --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact",
+    "pactjs:generate:contract": "pactjs contract-generate --contract coin --contract marmalade-v2.ledger --contract marmalade-v2.collection-policy-v1 --contract marmalade-v2.policy-manager --contract marmalade-sale.conventional-auction --contract marmalade-sale.dutch-auction --contract n_eef68e581f767dd66c4d4c39ed922be944ede505.webauthn-wallet --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact",
     "test": "vitest run",
     "test:integration": "pnpm run test:integration:setup && vitest run -c ./vitest.integration.config.ts",
     "test:integration:local": "vitest run -c ./vitest.integration.config.ts",

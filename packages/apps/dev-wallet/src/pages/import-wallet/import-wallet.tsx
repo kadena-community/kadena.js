@@ -1,7 +1,7 @@
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IKeySource } from '@/modules/wallet/wallet.repository';
-import { Box, Button, Heading, Stack, Text, TextField } from '@kadena/react-ui';
+import { Box, Button, Heading, Stack, Text, TextField } from '@kadena/kode-ui';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Navigate } from 'react-router-dom';

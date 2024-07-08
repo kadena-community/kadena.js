@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Text, TextField } from '@kadena/react-ui';
+import { Box, Button, Heading, Text, TextField } from '@kadena/kode-ui';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 

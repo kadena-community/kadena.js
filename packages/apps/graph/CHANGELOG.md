@@ -1,5 +1,24 @@
 # @kadena/graph
 
+## 1.0.6
+
+### Patch Changes
+
+- 0e9c0d049: Fixed issue with completed heights query
+- 950444ccf: Implement logic to handle difficulty calculations when there are
+  orphan blocks
+- Updated dependencies \[6d4e82074]
+  - @kadena/client\@1.12.1
+  - @kadena/client-utils\@0.8.1
+
+## 1.0.5
+
+### Patch Changes
+
+- 1bbf1c6: Added minHeight and maxHeight arguments to transactions and events
+- Updated dependencies \[83c3d58]
+  - @kadena/client-utils\@0.8.0
+
 ## 1.0.4
 
 ### Patch Changes

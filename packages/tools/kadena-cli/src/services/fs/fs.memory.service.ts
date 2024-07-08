@@ -1,5 +1,5 @@
 import { vol } from 'memfs';
-import type { Dirent } from 'node:fs';
+import type { Dirent, Stats } from 'node:fs';
 import { dirname } from 'path';
 import type { IFileSystemService } from './fs.service.js';
 
@@ -60,5 +60,8 @@ export const memoryFileSystemService: IFileSystemService = {
   },
   async appendFile(path: string, data: string) {
     await fs.appendFile(path, data, { encoding: 'utf8' });
+  },
+  async lstat(path: string) {
+    return fs.lstat(path) as unknown as Stats;
   },
 };

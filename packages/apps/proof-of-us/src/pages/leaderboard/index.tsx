@@ -18,8 +18,8 @@ import {
   winnerClass,
   winnerListClass,
 } from '@/styles/leaderboard.css';
-import { MonoArrowBack } from '@kadena/react-icons';
-import { Stack } from '@kadena/react-ui';
+import { MonoArrowBack } from '@kadena/kode-icons';
+import { Stack } from '@kadena/kode-ui';
 import cn from 'classnames';
 import { motion } from 'framer-motion';
 import Link from 'next/link';

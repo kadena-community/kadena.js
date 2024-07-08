@@ -9,7 +9,7 @@ import { useTokens } from '@/hooks/tokens';
 import { useTransaction } from '@/hooks/transaction';
 import { env } from '@/utils/env';
 import { getReturnUrl } from '@/utils/getReturnUrl';
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import { isAfter, isBefore } from 'date-fns';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';

@@ -45,6 +45,8 @@ export async function deployMarmamaladeNamespaces({
     await Promise.all(
       config.namespaces.map(async (namespace) => {
         let keysets;
+        /* The keysets for each file are hardcoded here for the ns-contract-admin and fungible-util files
+        By default they will be marmalade-admin and marmalade-user */
         if (config.file === 'ns-contract-admin.pact') {
           keysets = [
             {

@@ -1,5 +1,5 @@
 import { useRequests } from '@/modules/communication/communication.provider';
-import { Button, Heading, Notification, Stack, Text } from '@kadena/react-ui';
+import { Button, Heading, Notification, Stack, Text } from '@kadena/kode-ui';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 

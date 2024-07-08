@@ -1,79 +1,40 @@
-import { SpireKeyKdacolorLogoWhite } from '@kadena/react-icons/product';
-import { MonoHub } from '@kadena/react-icons/system';
-import { Button, Select, SelectItem, Stack, Text } from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
-import React, { useState } from 'react';
-import { Media } from '../../layout/media';
-import type { IStatisticsComponentProps } from '../statistics-component';
-import {
-  borderStyleClass,
-  statisticsSpireKeyClass,
-} from './statistics-stack.css';
+import { useNetworkInfoQuery } from '@/__generated__/sdk';
+import { Media } from '@/components/layout/media';
+import { formatStatisticsData } from '@/services/format';
+import { Stack, Text } from '@kadena/kode-ui';
+import type { FC } from 'react';
+import React from 'react';
+import { boxClass, overFlowClass } from './statistics-stack.css';
 
-const StatisticsStack: React.FC<IStatisticsComponentProps> = ({ data }) => {
-  const [selectedNetwork, setSelectedNetwork] = useState('Mainnet');
+const StatisticsStack: FC = () => {
+  const { data: statisticsData } = useNetworkInfoQuery({
+    pollInterval: 5000,
+  });
+
+  const statisticsGridData = formatStatisticsData(statisticsData?.networkInfo);
 
   return (
-    <Stack flexDirection={'row'}>
-      <Stack flexDirection={'row'}>
-        {data.map((item) => (
+    <Media greaterThanOrEqual="md" style={{ width: '100%' }}>
+      <Stack flexDirection={'row'} flex={1} gap="xs">
+        {statisticsGridData.map((item) => (
           <Stack
+            className={boxClass}
+            flex={1}
             flexDirection={'column'}
             alignItems={'center'}
             padding={'sm'}
-            borderStyle="solid"
-            borderWidth="hairline"
             key={`statistic-stack-${item.label}`}
           >
-            <Text variant="code">{item.value}</Text>
-            <Text variant="code" bold size="smallest">
+            <Text variant="code" bold>
+              {item.value}
+            </Text>
+            <Text size="smallest" className={overFlowClass}>
               {item.label}
             </Text>
           </Stack>
         ))}
-
-        <Stack flexDirection={'row'}>
-          <div className={borderStyleClass}>
-            <Media greaterThanOrEqual="md">
-              <Button variant="transparent" endVisual={<MonoHub />}>
-                Graph
-              </Button>
-            </Media>
-            <Media lessThan="md">
-              <Button variant="transparent" endVisual={<MonoHub />} />
-            </Media>
-          </div>
-
-          <div className={borderStyleClass}>
-            <Select
-              aria-label="Select network"
-              defaultSelectedKey={selectedNetwork}
-              fontType="code"
-              size="lg"
-              className={atoms({
-                height: '100%',
-              })}
-              onSelectionChange={(value) =>
-                setSelectedNetwork(value.toString())
-              }
-            >
-              <SelectItem key={'Mainnet'} textValue="Mainnet">
-                Mainnet
-              </SelectItem>
-              <SelectItem key={'Testnet'} textValue="Testnet">
-                Testnet
-              </SelectItem>
-            </Select>
-          </div>
-          <div className={statisticsSpireKeyClass}>
-            <Button
-              variant="transparent"
-              startVisual={<SpireKeyKdacolorLogoWhite />}
-            />
-          </div>
-        </Stack>
       </Stack>
-    </Stack>
+    </Media>
   );
 };
 

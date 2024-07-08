@@ -17,7 +17,11 @@ import type {
   PlaceBidProps,
   WithPlaceBid,
 } from './config';
-import { formatAdditionalSigners, formatCapabilities } from './helpers';
+import {
+  formatAdditionalSigners,
+  formatCapabilities,
+  formatWebAuthnSigner,
+} from './helpers';
 
 interface IPlaceBidInput extends CommonProps {
   saleId: string;
@@ -55,7 +59,7 @@ const placeBidCommand = <C extends IPlaceBidConfig>({
       ),
     ),
     addKeyset('account-guard', bidder.keyset.pred, ...bidder.keyset.keys),
-    addSigner(bidder.keyset.keys, (signFor) => [
+    addSigner(formatWebAuthnSigner(bidder.keyset.keys), (signFor) => [
       signFor('coin.GAS'),
       signFor('marmalade-sale.conventional-auction.PLACE_BID', bidder.keyset),
       signFor('coin.TRANSFER', bidder.account, escrowAccount, bid),

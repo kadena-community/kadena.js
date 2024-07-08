@@ -1,4 +1,4 @@
-import { atoms } from '@kadena/react-ui/styles';
+import { atoms } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const searchFormClass = style([
@@ -12,6 +12,7 @@ export const buttonClass = style([
     border: 'none',
     paddingInline: 'n2',
     cursor: 'pointer',
+    color: 'icon.base.default',
   }),
   {
     backgroundColor: 'transparent',

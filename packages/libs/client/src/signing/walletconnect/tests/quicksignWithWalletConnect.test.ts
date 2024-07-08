@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { IPactCommand } from '../../../interfaces/IPactCommand';
 import { createTransaction } from '../../../utils/createTransaction';
 import type { ISignFunction } from '../../ISignFunction';
-import { createWalletConnectQuicksign } from '../quicksignWithWalletConnect';
+import { createQuicksignWithWalletConnect } from '../quicksignWithWalletConnect';
 import type { TWalletConnectChainId } from '../walletConnectTypes';
 
 import type Client from '@walletconnect/sign-client';
@@ -58,7 +58,7 @@ describe('quicksignWithWalletConnect', () => {
     };
 
     const quicksignWithWalletConnect: ISignFunction =
-      createWalletConnectQuicksign(
+      createQuicksignWithWalletConnect(
         client as unknown as Client,
         session,
         walletConnectChainId,
@@ -102,7 +102,7 @@ describe('quicksignWithWalletConnect', () => {
       ),
     };
 
-    quicksignWithWalletConnect = createWalletConnectQuicksign(
+    quicksignWithWalletConnect = createQuicksignWithWalletConnect(
       client as unknown as Client,
       session,
       walletConnectChainId,
@@ -147,7 +147,7 @@ describe('quicksignWithWalletConnect', () => {
       request: vi.fn(() => Promise.resolve()),
     };
 
-    quicksignWithWalletConnect = createWalletConnectQuicksign(
+    quicksignWithWalletConnect = createQuicksignWithWalletConnect(
       client as unknown as Client,
       session,
       walletConnectChainId,
@@ -167,7 +167,7 @@ describe('quicksignWithWalletConnect', () => {
       ),
     };
 
-    quicksignWithWalletConnect = createWalletConnectQuicksign(
+    quicksignWithWalletConnect = createQuicksignWithWalletConnect(
       client as unknown as Client,
       session,
       walletConnectChainId,
@@ -210,7 +210,7 @@ describe('quicksignWithWalletConnect', () => {
       ),
     };
 
-    quicksignWithWalletConnect = createWalletConnectQuicksign(
+    quicksignWithWalletConnect = createQuicksignWithWalletConnect(
       client as unknown as Client,
       session,
       walletConnectChainId,

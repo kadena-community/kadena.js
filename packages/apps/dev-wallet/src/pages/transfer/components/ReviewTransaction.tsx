@@ -12,7 +12,7 @@ import {
   Heading,
   Stack,
   Text,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import { FC, PropsWithChildren, useMemo } from 'react';
 import {
   PreviewModalClass,
@@ -164,9 +164,14 @@ export function ReviewTransaction({
                         >
                           <Value>
                             (
-                            {[cap.name, ...cap.args.map((data)=> typeof data === "number" ? data : parseAsPactValue(data))].join(
-                              ' ',
-                            )}
+                            {[
+                              cap.name,
+                              ...cap.args.map((data) =>
+                                typeof data === 'number'
+                                  ? data
+                                  : parseAsPactValue(data),
+                              ),
+                            ].join(' ')}
                             )
                           </Value>
                         </Stack>

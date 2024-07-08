@@ -1,10 +1,37 @@
+import { useState } from 'react';
 import { env } from '@/utils/env';
-import { NavHeader, KadenaLogo, NavHeaderLinkList, NavHeaderLink, Button, NavHeaderButton, Tooltip } from '@kadena/react-ui';
-import { MonoAccountCircle } from '@kadena/react-icons';
+import { MonoAccountCircle, MonoCheck, MonoClose } from '@kadena/kode-icons';
 import { useAccount } from '@/hooks/account';
+import { useTransaction } from '@/hooks/transaction';
+import { useRouter } from 'next/navigation';
+import { fundAccount } from '@/utils/fund'
+import {
+  NavHeader,
+  KadenaLogo,
+  NavHeaderLinkList,
+  NavHeaderLink,
+  Button,
+  NavHeaderButton,
+  Tooltip,
+  Notification,
+  NotificationFooter,
+  NotificationButton,
+  NotificationHeading
+} from '@kadena/kode-ui';
 
 export const MarketplaceHeader= () => {
-  const { account, isMounted, login, logout } = useAccount();
+  const [showNotification, setShowNotification] = useState(false);
+  const { account, login, logout } = useAccount();
+  const { setTransaction } = useTransaction();
+  const router = useRouter();
+
+  const onFundAccount = () => {
+    setShowNotification(false);
+    const transaction = fundAccount(account?.accountName || '');
+    setTransaction(transaction);
+    //Redirect to the transaction page
+    router.push('/transaction');
+  };
 
   return (
     <NavHeader logo={<a href="/"><KadenaLogo height={40} /></a>}>
@@ -41,11 +68,41 @@ export const MarketplaceHeader= () => {
                 <a href={env.WALLET_URL} target="_blank"><NavHeaderButton endVisual={<MonoAccountCircle />}/></a>
               </Tooltip>
               <p>{account.alias}</p>
+              <Button onClick={() => setShowNotification(true)} variant="primary" isCompact={false}>Fund Account</Button>
               <Button onClick={logout} variant="primary" isCompact={false}>Disconnect</Button>
             </>
           )
         : <Button onClick={login} variant="primary" isCompact={false}>Connect Wallet</Button>
       }
+      {showNotification && <div style={{ position: 'absolute', top: '65px', right: "50px" }}>
+        <Notification
+          intent="info"
+          isDismissable={false}
+          role="none"
+          type="stacked"
+        >
+          <NotificationHeading>
+            Faucet
+          </NotificationHeading>
+          Are you sure you want to fund your account with 20 KDA?
+          <NotificationFooter>
+            <NotificationButton
+              icon={<MonoCheck />}
+              intent="positive"
+              onClick={onFundAccount}
+            >
+              Confirm
+            </NotificationButton>
+            <NotificationButton
+              icon={<MonoClose />}
+              intent="negative"
+              onClick={() => setShowNotification(false)}
+            >
+              Cancel
+            </NotificationButton>
+          </NotificationFooter>
+        </Notification>
+      </div>}
     </NavHeader>
   );
 };

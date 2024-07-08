@@ -1,5 +1,5 @@
 import { getPackages } from '@/scripts/importChangelogs/utils/misc';
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useMemo } from 'react';
 import { Package } from './Package';

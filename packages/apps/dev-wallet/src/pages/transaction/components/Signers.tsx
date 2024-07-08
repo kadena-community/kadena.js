@@ -3,7 +3,7 @@ import {
   IUnsignedCommand,
   parseAsPactValue,
 } from '@kadena/client';
-import { Button, Heading, Stack, Text } from '@kadena/react-ui';
+import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import { FC, PropsWithChildren, useMemo } from 'react';
 import {
   breakAllClass,

@@ -3,7 +3,7 @@ const withVanillaExtract = createVanillaExtractPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ['@kadena/react-ui'],
+  transpilePackages: ['@kadena/kode-ui'],
 };
 
 module.exports = withVanillaExtract(nextConfig);

@@ -3,7 +3,7 @@ import {
   darkThemeClass,
   responsiveStyle,
   tokens,
-} from '@kadena/react-ui/styles';
+} from '@kadena/kode-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 
 export const backgroundClass = style([
@@ -225,9 +225,17 @@ export const togglePackageIconOpenClass = style({
   transform: 'rotate(90deg)',
 });
 
-export const versionWrapperClass = style({
+export const pkgWrapperClass = style({
   overflow: 'hidden',
   willChange: 'maxHeight',
   transition: 'max-height 1s ease-in-out',
 });
-export const versionWrapperOpenClass = style({});
+export const pkgWrapperOpenClass = style({});
+
+export const versionWrapperClass = style({});
+
+globalStyle(`${versionWrapperClass}`, {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: tokens.kda.foundation.spacing.md,
+});

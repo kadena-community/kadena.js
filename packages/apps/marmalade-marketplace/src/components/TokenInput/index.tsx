@@ -1,4 +1,4 @@
-import {   TextField} from '@kadena/react-ui';
+import {   TextField} from '@kadena/kode-ui';
     import * as styles from "@/styles/global.css"
   export const TokenInput= () => {
     return (
@@ -19,4 +19,3 @@ import {   TextField} from '@kadena/react-ui';
       </>
     );
   };
-  

@@ -1,16 +1,18 @@
-import { atoms, token } from '@kadena/react-ui/styles';
+import { atoms, token } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const containerStyle = style([
   atoms({
     display: 'flex',
     flexDirection: 'column',
-    overflow: 'scroll',
+    overflow: 'auto',
   }),
   style({
     borderInlineEnd: `${token('border.width.normal')} solid ${token('color.border.base.default')}`,
   }),
 ]);
+
+export const customAccordionItemStyle = style({ overflow: 'auto' });
 
 export const itemStyle = style({
   height: token('size.n12'),
@@ -23,3 +25,17 @@ export const headingStyles = style({
 });
 
 export const iconStyles = atoms({ paddingInlineStart: 'sm' });
+
+export const searchResultsStyles = atoms({
+  paddingBlock: 'sm',
+  paddingInline: 'n3',
+  backgroundColor: 'base.warm',
+});
+
+export const searchResultQueryStyles = style({
+  fontWeight: token('typography.weight.primaryFont.bold'),
+});
+
+export const searchInputStyles = atoms({
+  width: '100%',
+});

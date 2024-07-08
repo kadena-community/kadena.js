@@ -1,23 +1,39 @@
 import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
-import DetailLayout from '@/components/layout/detail-layout/detail-layout';
+import Layout from '@/components/layout/layout';
 import { TransactionRequestComponent } from '@/components/transaction-components/transaction-request-component';
 import { TransactionResultComponent } from '@/components/transaction-components/transaction-result-component';
-import { TabItem, Tabs, maskValue } from '@kadena/react-ui';
+import { useQueryContext } from '@/context/query-context';
+import { transactionRequestKey } from '@/graphql/pages/transaction/transaction-requestkey.graph';
+import { truncateValues } from '@/services/format';
+import { Heading, Stack, TabItem, Tabs } from '@kadena/kode-ui';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const Transaction: React.FC = () => {
   const router = useRouter();
 
+  const { setQueries } = useQueryContext();
+
+  const transactionRequestKeyQueryVariables = {
+    requestKey: router.query.requestKey as string,
+  };
+
   const { loading, data, error } = useTransactionRequestKeyQuery({
-    variables: {
-      requestKey: router.query.requestKey as string,
-    },
+    variables: transactionRequestKeyQueryVariables,
     skip: !router.query.requestKey,
   });
 
+  useEffect(() => {
+    setQueries([
+      {
+        query: transactionRequestKey,
+        variables: transactionRequestKeyQueryVariables,
+      },
+    ]);
+  }, []);
+
   return (
-    <DetailLayout>
+    <Layout>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error.message}</p>}
       {!loading && (!data || !data.transaction) ? (
@@ -25,7 +41,15 @@ const Transaction: React.FC = () => {
       ) : null}
       {data && data.transaction && (
         <>
-          <h1>Transaction {maskValue(data.transaction.hash)}</h1>
+          <Stack margin="md">
+            <Heading as="h1" className="truncate">
+              Transaction{' '}
+              {truncateValues(data.transaction.hash, {
+                length: 16,
+                endChars: 5,
+              })}
+            </Heading>
+          </Stack>
 
           <Tabs>
             <TabItem title="Request" key="Request">
@@ -39,7 +63,7 @@ const Transaction: React.FC = () => {
           </Tabs>
         </>
       )}
-    </DetailLayout>
+    </Layout>
   );
 };
 

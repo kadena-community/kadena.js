@@ -1,4 +1,4 @@
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import type { FC, PropsWithChildren } from 'react';
 import { totalScreenHeightClass } from './style.css';
 

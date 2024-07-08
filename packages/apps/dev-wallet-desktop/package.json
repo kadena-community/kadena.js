@@ -2,7 +2,7 @@
   "name": "@kadena/dev-wallet-desktop",
   "description": "Kadena developer wallet",
   "private": true,
-  "version": "0.0.10",
+  "version": "0.0.14",
   "type": "module",
   "scripts": {
     "dev": "tauri dev",

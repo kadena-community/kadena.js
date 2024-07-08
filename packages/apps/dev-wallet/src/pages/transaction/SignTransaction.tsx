@@ -2,8 +2,8 @@ import {
   ITransaction,
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
+import { Button, Heading, Stack } from '@kadena/kode-ui';
 import { isSignedCommand } from '@kadena/pactjs';
-import { Button, Heading, Stack } from '@kadena/react-ui';
 import { ReviewTransaction } from './components/ReviewTransaction';
 
 export function SignTransaction({

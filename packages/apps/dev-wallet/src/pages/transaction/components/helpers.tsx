@@ -1,4 +1,4 @@
-import { Text } from '@kadena/react-ui';
+import { Text } from '@kadena/kode-ui';
 import { FC, PropsWithChildren } from 'react';
 import { labelClass } from './style.css.ts';
 

@@ -6,7 +6,7 @@ import {
   panelClass,
 } from '@/pages/home/style.css.ts';
 import { getAccountName } from '@/utils/helpers';
-import { Box, Heading, Stack, Text } from '@kadena/react-ui';
+import { Box, Heading, Stack, Text } from '@kadena/kode-ui';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { linkClass } from '../select-profile/select-profile.css';

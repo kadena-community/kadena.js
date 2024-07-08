@@ -1,4 +1,4 @@
-import { Heading } from '@kadena/react-ui';
+import { Heading } from '@kadena/kode-ui';
 
 export function Ready() {
   return (

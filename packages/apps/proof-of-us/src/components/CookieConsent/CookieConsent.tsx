@@ -1,14 +1,14 @@
 'use client';
 
 import { COOKIE_CONSENTNAME, updateConsent } from '@/utils/analytics';
-import { MonoCheck, MonoClose, MonoCookie } from '@kadena/react-icons';
+import { MonoCheck, MonoClose, MonoCookie } from '@kadena/kode-icons';
 import {
   Notification,
   NotificationButton,
   NotificationFooter,
   NotificationHeading,
   Text,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { notificationWrapperClass } from './styles.css';

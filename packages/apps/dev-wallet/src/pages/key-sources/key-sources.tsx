@@ -12,7 +12,7 @@ import {
   Stack,
   Text,
   TextField,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import { passwordDialog } from './style.css.ts';
 
 function PasswordPrompt({

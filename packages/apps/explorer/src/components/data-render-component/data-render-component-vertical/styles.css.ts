@@ -1,4 +1,4 @@
-import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/styles';
+import { atoms, responsiveStyle, tokens } from '@kadena/kode-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 
 export const descriptionListClass = style([
@@ -43,6 +43,13 @@ export const descriptionDetailsClass = style({
   }),
 });
 
+export const descriptionDetailsExpandedClass = style({
+  overflow: 'unset',
+  textOverflow: 'unset',
+  whiteSpace: 'break-spaces',
+  wordBreak: 'break-all',
+});
+
 export const descriptionDetailsLinkClass = style({
   display: 'flex',
   alignItems: 'center',
@@ -84,6 +91,7 @@ export const textClass = style({
   // If we use atoms it will be overridden by the Text component.
   color: tokens.kda.foundation.color.text.base.default,
 });
+
 export const textCopyClass = style([]);
 
 globalStyle(`${textCopyClass} + svg`, {

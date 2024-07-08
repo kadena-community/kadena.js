@@ -1,16 +1,16 @@
 import { getSales } from "@/hooks/getSales";
-import { Button, Grid, GridItem, Link } from "@kadena/react-ui";
+import { Button, Grid, GridItem, Link } from "@kadena/kode-ui";
 import { Token } from "@/components/Token";
 import { useEffect, useState } from "react";
 import { actionBarClass, actionBarSaleActiveClass, actionBarSaleClass } from "@/styles/home.css";
 
 export default function Home() {
 
-  const [saleStatus, setSaleStatus] = useState<'CREATED' | 'SOLD'>("CREATED");
+  const [saleState, setSaleState] = useState<'ACTIVE' | 'PAST'>("ACTIVE");
 
   const { data, loading, error, refetch } = getSales({
     limit: 8,
-    status: saleStatus,
+    state: saleState,
     sort: [
       {
         field: "block",
@@ -21,18 +21,20 @@ export default function Home() {
 
   useEffect(() => {
     refetch();
-  }, [saleStatus]);
+  }, [saleState]);
+
+  console.log("data", data)
 
   return (
-    <div>
+    <div style={{ marginTop: "100px" }}>
       <div className={actionBarClass}>
         <div className={actionBarSaleClass}>
           <Button
-            className={saleStatus === "CREATED" ? actionBarSaleActiveClass : ""}
-            onClick={() => setSaleStatus("CREATED")}>Active sales</Button>
+            className={saleState === "ACTIVE" ? actionBarSaleActiveClass : ""}
+            onClick={() => setSaleState("ACTIVE")}>Active sales</Button>
           <Button
-            className={saleStatus === "SOLD" ? actionBarSaleActiveClass : ""}
-            onClick={() => setSaleStatus("SOLD")}>Past sales</Button>
+            className={saleState === "PAST" ? actionBarSaleActiveClass : ""}
+            onClick={() => setSaleState("PAST")}>Past sales</Button>
         </div>
         <Link variant="primary">
           Sell Token
@@ -41,6 +43,8 @@ export default function Home() {
 
       {error && <div>Error: <pre>{JSON.stringify(error, null, 2)}</pre></div>}
       {loading && <h2>Loading..</h2>}
+
+      {!loading && !error && data.length === 0 && <h2>No sales found</h2>}
 
       <div>
         <Grid
@@ -53,7 +57,7 @@ export default function Home() {
           gap="xl">
           {data.map((sale, index) => (
             <GridItem key={index}>
-              <a href={`/tokens/${sale.tokenId}`}>
+              <a href={`/sale/${sale.chainId}/${sale.saleId}`}>
                 <Token tokenId={sale.tokenId} chainId={sale.chainId} sale={sale} />
               </a>
             </GridItem>

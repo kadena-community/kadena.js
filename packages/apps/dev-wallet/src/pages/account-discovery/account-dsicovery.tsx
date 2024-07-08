@@ -1,5 +1,5 @@
 import { IKeyItem } from '@/modules/wallet/wallet.repository';
-import { Box, Heading, Text } from '@kadena/react-ui';
+import { Box, Heading, Text } from '@kadena/kode-ui';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 

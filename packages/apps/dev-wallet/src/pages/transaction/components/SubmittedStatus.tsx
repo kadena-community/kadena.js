@@ -1,6 +1,6 @@
 import { ITransaction } from '@/modules/transaction/transaction.repository';
-import { MonoBrightness1 } from '@kadena/react-icons/system';
-import { Button, Heading, Stack, Text } from '@kadena/react-ui';
+import { MonoBrightness1 } from '@kadena/kode-icons/system';
+import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import { Value } from './helpers';
 import {

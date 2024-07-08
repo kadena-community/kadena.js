@@ -1,4 +1,4 @@
-import { breakpoints } from '@kadena/react-ui/styles';
+import { breakpoints } from '@kadena/kode-ui/styles';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useMedia } from 'react-use';
 

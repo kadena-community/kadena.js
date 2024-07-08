@@ -1,8 +1,8 @@
-import CopyButton from '@/components/copy-button/copy-button';
-import { MonoArrowOutward } from '@kadena/react-icons/system';
-import { Stack, Text } from '@kadena/react-ui';
+import { MonoArrowOutward } from '@kadena/kode-icons/system';
+import { Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import React, { Fragment } from 'react';
+import ExpandTruncatedField from '../expand-truncated-field/expand-truncated-field';
 import {
   descriptionDetailsClass,
   descriptionDetailsLinkClass,
@@ -13,16 +13,7 @@ import {
   linkClass,
   linkIconClass,
   textClass,
-  textCopyClass,
 } from './styles.css';
-
-interface IDataRenderComponentField {
-  type?: 'text' | 'code';
-  key: string;
-  canCopy?: boolean;
-  value: string | string[] | JSX.Element | JSX.Element[];
-  link?: string;
-}
 
 interface IDataRenderComponentProps {
   title: boolean;
@@ -68,22 +59,7 @@ const DataRenderComponentVertical: React.FC<IDataRenderComponentProps> = ({
               </dd>
             ))
           ) : (
-            <Stack
-              as="dd"
-              gap="xs"
-              className={descriptionDetailsClass}
-              alignItems="center"
-            >
-              <Text
-                variant="code"
-                className={classNames(textClass, {
-                  [textCopyClass]: field.canCopy,
-                })}
-              >
-                <span id="requestkey">{field.value}</span>
-              </Text>
-              {field.canCopy && <CopyButton id="requestkey" />}
-            </Stack>
+            <ExpandTruncatedField field={field} />
           )}
         </Fragment>
       ))}

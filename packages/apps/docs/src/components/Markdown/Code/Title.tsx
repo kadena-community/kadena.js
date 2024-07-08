@@ -1,5 +1,5 @@
-import { MonoCheck, MonoContentCopy } from '@kadena/react-icons';
-import { Button, Stack } from '@kadena/react-ui';
+import { MonoCheck, MonoContentCopy } from '@kadena/kode-icons';
+import { Button, Stack } from '@kadena/kode-ui';
 import type { FC, ReactNode } from 'react';
 import React, { useCallback, useRef, useState } from 'react';
 import {

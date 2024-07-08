@@ -8,8 +8,8 @@ import {
   extractPublicKeyHex,
 } from '@/utils/webAuthn';
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
-import { MonoCheck } from '@kadena/react-icons/system';
-import { Button, Heading, Stack, Text, TextField } from '@kadena/react-ui';
+import { MonoCheck } from '@kadena/kode-icons/system';
+import { Button, Heading, Stack, Text, TextField } from '@kadena/kode-ui';
 import { useContext, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Route, Routes, useNavigate } from 'react-router-dom';

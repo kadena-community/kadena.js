@@ -1,8 +1,8 @@
 import type { FC } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 
-import type { IButtonProps } from '@kadena/react-ui';
-import { Button, Stack } from '@kadena/react-ui';
+import type { IButtonProps } from '@kadena/kode-ui';
+import { Button, Stack } from '@kadena/kode-ui';
 
 import { NAME_VALIDATION } from '@/components/Global/AccountNameField';
 import { FormStatusNotification } from '@/components/Global/FormStatusNotification';
@@ -24,10 +24,7 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 
 import type { AccountDetails } from '@/hooks/use-account-details-query';
 import { stripAccountPrefix } from '@/utils/string';
-import {
-  MonoKeyboardArrowRight,
-  MonoRefresh,
-} from '@kadena/react-icons/system';
+import { MonoKeyboardArrowRight, MonoRefresh } from '@kadena/kode-icons/system';
 import type { ChainId } from '@kadena/types';
 import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
 import { z } from 'zod';

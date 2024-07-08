@@ -5,7 +5,7 @@ import {
   Stack,
   Text,
   TextField,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import React from 'react';
 import { unlockPrompt } from './style.css.ts';
 

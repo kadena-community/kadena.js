@@ -1,5 +1,5 @@
 import { DrawerIconButton } from '@/components/Common/DrawerToolbar/DrawerIcon';
-import { MonoClose } from '@kadena/react-icons/system';
+import { MonoClose } from '@kadena/kode-icons/system';
 import classNames from 'classnames';
 import type { ForwardRefExoticComponent, ReactElement, ReactNode } from 'react';
 import React, { forwardRef, useCallback, useEffect, useState } from 'react';

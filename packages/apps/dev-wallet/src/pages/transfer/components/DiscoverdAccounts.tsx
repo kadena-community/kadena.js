@@ -1,4 +1,4 @@
-import { Button, Dialog, Heading, Stack, Text } from '@kadena/react-ui';
+import { Button, Dialog, Heading, Stack, Text } from '@kadena/kode-ui';
 import { FC } from 'react';
 import { IReceiverAccount } from '../utils';
 

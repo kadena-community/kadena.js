@@ -6,15 +6,15 @@ import { VersionPosition } from '../constants';
  * atm there is no other way then to check the names of those headers to see where the content should live in the changelogs.json
  */
 export const checkPatchNames = (value: string): boolean => {
-  const names = ['patch changes', 'bugfixes', 'tests'];
+  const names = ['patch changes', 'bugfixes', 'bug fixes', 'tests'];
 
-  return names.includes(value.toLowerCase());
+  return !!names.find((name) => value.toLowerCase().includes(name));
 };
 
 export const checkMinorNames = (value: string): boolean => {
   const names = ['minor changes', 'features'];
 
-  return names.includes(value.toLowerCase());
+  return !!names.find((name) => value.toLowerCase().includes(name));
 };
 
 export const checkVersionPosition = (value: string): VersionPosition => {

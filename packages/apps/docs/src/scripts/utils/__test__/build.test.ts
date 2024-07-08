@@ -49,7 +49,7 @@ describe('utils build', () => {
 
       await initFunc(func, 'test function');
       expect(consoleMock).toHaveBeenCalledTimes(2);
-      expect(consoleWarnMock).toHaveBeenCalledTimes(3);
+      expect(consoleWarnMock).toHaveBeenCalledTimes(4);
       expect(func).toHaveBeenCalledOnce();
     });
 
@@ -73,7 +73,7 @@ describe('utils build', () => {
 
       await initFunc(func, 'test function');
       expect(consoleMock).toHaveBeenCalledTimes(2);
-      expect(consoleWarnMock).toHaveBeenCalledTimes(1);
+      expect(consoleWarnMock).toHaveBeenCalledTimes(2);
       expect(func).toHaveBeenCalledOnce();
     });
   });

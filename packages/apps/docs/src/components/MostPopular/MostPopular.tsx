@@ -1,5 +1,5 @@
 import type { IMostPopularPage } from '@/MostPopularData';
-import type { IHeadingProps } from '@kadena/react-ui';
+import type { IHeadingProps } from '@kadena/kode-ui';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';

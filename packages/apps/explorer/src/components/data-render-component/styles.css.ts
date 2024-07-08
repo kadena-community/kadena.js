@@ -1,12 +1,14 @@
-import { atoms } from '@kadena/react-ui/styles';
+import { atoms, token } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const sectionClass = style([
   atoms({
     padding: 'n6',
-    backgroundColor: 'base.default',
     marginBlockEnd: 'md',
   }),
+  {
+    backgroundColor: token('color.background.surface.default'),
+  },
 ]);
 
 export const headingClass = style([

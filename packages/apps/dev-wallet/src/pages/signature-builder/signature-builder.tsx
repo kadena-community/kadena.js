@@ -12,7 +12,7 @@ import { useNetwork } from '@/modules/network/network.hook';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { execCodeParser } from '@kadena/pactjs-generator';
-import { Box, Button, Card, Heading, Text } from '@kadena/react-ui';
+import { Box, Button, Card, Heading, Text } from '@kadena/kode-ui';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { codeArea } from './style.css';

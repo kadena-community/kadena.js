@@ -79,12 +79,12 @@ Github Config & Actions:
 '@kadena/proof-of-us':
   - changed-files:
       - any-glob-to-any-file: packages/apps/proof-of-us/*
-'@kadena/react-icons':
+'@kadena/kode-icons':
   - changed-files:
-      - any-glob-to-any-file: packages/libs/react-icons/*
-'@kadena/react-ui':
+      - any-glob-to-any-file: packages/libs/kode-icons/*
+'@kadena/kode-ui':
   - changed-files:
-      - any-glob-to-any-file: packages/libs/react-ui/*
+      - any-glob-to-any-file: packages/libs/kode-ui/*
 '@kadena/spirekey-example':
   - changed-files:
       - any-glob-to-any-file: packages/apps/spirekey-example/*

@@ -1,8 +1,11 @@
 import { gql } from '@apollo/client';
 import type { DocumentNode } from 'graphql';
+import { CORE_BLOCK_FIELDS } from '../fragments/block.graph';
 
 export const coreBlocksFromHeights: DocumentNode = gql`
-  query blocksFromHeights(
+  ${CORE_BLOCK_FIELDS}
+
+  query coreBlocksFromHeight(
     $startHeight: Int!
     $endHeight: Int
     $chainIds: [String!]

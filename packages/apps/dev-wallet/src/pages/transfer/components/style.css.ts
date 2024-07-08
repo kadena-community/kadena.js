@@ -1,4 +1,4 @@
-import { tokens, vars } from '@kadena/react-ui/styles';
+import { tokens, vars } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const PreviewModalClass = style({

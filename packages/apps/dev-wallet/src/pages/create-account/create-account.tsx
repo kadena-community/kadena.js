@@ -19,7 +19,7 @@ import {
   Stack,
   Text,
   TextareaField,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import {

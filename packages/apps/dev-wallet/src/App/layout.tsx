@@ -9,7 +9,7 @@ import { LayoutContext } from '@/modules/layout/layout.provider.tsx';
 import { useNetwork } from '@/modules/network/network.hook';
 import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
 import { pageClass } from '@/pages/home/style.css.ts';
-import { MonoContrast, MonoLogout, MonoPublic } from '@kadena/react-icons';
+import { MonoContrast, MonoLogout, MonoPublic } from '@kadena/kode-icons';
 import {
   Box,
   KadenaLogo,
@@ -22,8 +22,8 @@ import {
   Stack,
   Themes,
   useTheme,
-} from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
+} from '@kadena/kode-ui';
+import { atoms } from '@kadena/kode-ui/styles';
 import { FC, useContext } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 

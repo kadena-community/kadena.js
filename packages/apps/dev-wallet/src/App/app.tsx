@@ -1,7 +1,7 @@
 import { DatabaseProvider } from '@/modules/db/db.provider';
 import { LayoutProvider } from '@/modules/layout/layout.provider.tsx';
 import { WalletProvider } from '@/modules/wallet/wallet.provider';
-import { useTheme } from '@kadena/react-ui';
+import { useTheme } from '@kadena/kode-ui';
 import { PromptProvider } from '../Components/PromptProvider/Prompt';
 import { Routes } from './routes';
 import { SessionProvider } from './session';

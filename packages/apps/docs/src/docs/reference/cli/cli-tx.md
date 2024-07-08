@@ -33,6 +33,8 @@ Use the following actions to specify the operation you want to perform.
 | send | Send a signed transaction to the network.|
 | status | Get the status of a transaction.|
 | list | List transactions.|
+| local | Submit Pact code as a local call. |
+| history | Display a formatted list of transactions with their details.
 
 ## Flags
 
@@ -457,3 +459,145 @@ transaction-kQSKbcjN3z-signed.json Yes
 tx-simple.json                     No    
 tx-transfer-testnet.json           No    
 ```
+
+## kadena tx local
+
+Use `kadena tx local` to submit Pact code as a local call. 
+This command can be useful for testing Pact code without submitting the transaction to the blockchain.
+
+### Basic usage
+
+The basic syntax for the `kadena tx local` command is:
+
+```bash
+kadena tx local [arguments] [flags]
+```
+
+### Arguments
+
+You can use the following command-line arguments with the `kadena tx local` command:
+
+| Use this argument | To do this |
+| ----------------- | ---------- |
+| -n, --network _networkName_ | Specify the Kadena network to connect to for calling the `/local` endpoint. The default is the `/local` endpoint on the Kadena test network. |
+| -c, --chain-id _chainID_ | Specify the chain identifier to connect to for calling the `/local` endpoint. Valid values are "0" to "19". The default is the `/local` endpoint on chain 0. |
+| -g, --gas-limit _gasLimit_ | Specify a gas limit for executing the local transaction. |
+
+### Examples
+
+To execute a simple Pact expression using the `/local` endpoint on the default network and chain, you can run a command similar to the following: 
+
+```bash
+kadena tx local "(+ 2 2)"
+```
+
+This command evaluates the `(+ 2 2)` expressions displays the following output:
+
+```bash
+Local transaction on network testnet chain 0:
+4
+```
+
+To execute a Pact expression using the `/local` endpoint on a specific chain and set a gas limit for the transaction, you can run a command similar to the following: 
+
+```bash
+kadena tx local --network testnet --chain-id 3 --gas-limit 4 "(* 3 4)"
+```
+
+If the gas limit is too low, the command fails with an error message similar to the following:
+
+```bash
+Local transaction on network testnet chain 3:
+Error from local call:
+Gas limit (4) exceeded: 6
+```
+
+If you adjust the gas limit, the command succeeds:
+
+```bash
+kadena tx local --network testnet --chain-id 3 --gas-limit 10 "(* 3 4)"
+Local transaction on network testnet chain 3:
+12
+```
+
+To execute a Pact command that includes strings, you can escape the inner quotations marks with a command similar to the following:
+
+```bash
+kadena tx local --chain-id 3 '(base64-encode "once in a lifetime")'
+```
+
+The command evaluates the expression and displays the following output:
+
+```bash
+Local transaction on network testnet chain 3:
+"b25jZSBpbiBhIGxpZmV0aW1l"
+
+```
+
+## kadena tx history
+
+Use `kadena tx history` to list your transactions history. 
+
+### Basic usage
+
+The basic syntax for the `kadena tx history` command is:
+
+```bash
+kadena tx list [arguments] [flags]
+```
+
+### Arguments
+
+You can use the following command-line arguments with the `kadena tx history` command:
+
+| Use this argument | To do this |
+| ----------------- | ---------- |
+| -d, --directory _configDirectory_ | Specify the path to the configuration folder. The default is the current working directory. |
+
+### Examples
+
+To list the transaction history in your current working directory, you can run the following command:
+
+```bash
+kadena tx history
+```
+
+This command displays output similar to the following:
+
+```bash
+Request Key    EYh5uvPiUSBXS0KC7XDVKQxabgm7jXtdray_CBK_XRs
+Network Host   http://localhost:8080                      
+Network ID     development                                
+Chain ID       3                                          
+Time           2024-06-18 14:06                           
+Status         success                                    
+Transaction ID 1438 
+                     
+Request Key    m32rYeSP3iBoNZNZhkknHTDdIokPzBjy3xeI-Md1Dn0
+Network Host   http://localhost:8080                      
+Network ID     development                                
+Chain ID       3                                          
+Time           2024-06-18 14:16                           
+Status         success                                    
+Transaction ID 1471                 
+```
+
+To format the output in JSON, you can include the `--json` command-line options:
+
+```bash
+kadena tx history --json
+```
+
+```bash
+{
+  "EYh5uvPiUSBXS0KC7XDVKQxabgm7jXtdray_CBK_XRs": 
+  {
+    "dateTime": "2024-06-18T21:06:51.366Z",
+    "cmd": "{\"payload\":{\"exec\":{\"code\":\"(coin.transfer-create \\\"k:0b8fb7b68f6e058143d5c57094a9be9835811d936ae486120ef036cc4ff9b31a\\\" \\\"k:6887c4cce24a0ac69e0db0e3e1db6d2d97edb6b7935da7c19f1651b71ade398f\\\" (read-keyset \\\"account-guard\\\") 2.0)\",\"data\":{\"account-guard\":{\"keys\":[\"6887c4cce24a0ac69e0db0e3e1db6d2d97edb6b7935da7c19f1651b71ade398f\"],\"pred\":\"keys-all\"}}}},\"nonce\":\"\",\"networkId\":\"development\",\"meta\":{\"sender\":\"k:0b8fb7b68f6e058143d5c57094a9be9835811d936ae486120ef036cc4ff9b31a\",\"chainId\":\"3\",\"creationTime\":1718744764,\"gasLimit\":2000,\"gasPrice\":1e-8,\"ttl\":7200},\"signers\":[{\"pubKey\":\"0b8fb7b68f6e058143d5c57094a9be9835811d936ae486120ef036cc4ff9b31a\",\"clist\":[{\"name\":\"coin.TRANSFER\",\"args\":[\"k:0b8fb7b68f6e058143d5c57094a9be9835811d936ae486120ef036cc4ff9b31a\",\"k:6887c4cce24a0ac69e0db0e3e1db6d2d97edb6b7935da7c19f1651b71ade398f\",2]},{\"name\":\"coin.GAS\",\"args\":[]}]}]}",
+    "networkId": "development",
+    "chainId": "3",
+    "networkHost": "http://localhost:8080",
+    "status": "success",
+    "txId": 1438
+  }
+}

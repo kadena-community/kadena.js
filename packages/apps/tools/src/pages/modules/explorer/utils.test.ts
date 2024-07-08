@@ -257,6 +257,7 @@ describe('mapToTreeItems', () => {
             title: '1',
             children: [],
             label: undefined,
+            isActive: false,
           },
         ],
       },
@@ -312,9 +313,9 @@ describe('mapToTreeItems', () => {
                 title: '1',
                 children: [],
                 label: undefined,
+                isActive: false,
               },
             ],
-            label: undefined,
           },
         ],
       },
@@ -335,7 +336,7 @@ describe('mapToTreeItems', () => {
       ],
     ]);
 
-    const result = mapToTreeItems(modulesMap, 'some-parent-key');
+    const result = mapToTreeItems(modulesMap, undefined, 'some-parent-key');
     expect(result).toEqual([
       {
         data: {
@@ -352,6 +353,7 @@ describe('mapToTreeItems', () => {
               chainId: '1' as ChainwebChainId,
               networkId: 'testnet04' as ChainwebNetworkId,
             },
+            isActive: false,
             key: 'some-parent-key.coin.1',
             title: '1',
             children: [],

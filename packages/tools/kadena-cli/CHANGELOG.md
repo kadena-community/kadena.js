@@ -1,5 +1,28 @@
 # @kadena/kadena-cli
 
+## 1.2.0
+
+### Minor Changes
+
+- 8f4897d44: Add pactjs command for generating typescript from pact
+
+### Patch Changes
+
+- Updated dependencies \[6d4e82074]
+- Updated dependencies \[3949dcccf]
+  - @kadena/client\@1.12.1
+  - @kadena/hd-wallet\@0.4.2
+  - @kadena/client-utils\@0.8.1
+  - @kadena/pactjs-cli\@1.12.1
+  - @kadena/pactjs-generator\@1.12.1
+
+## 1.1.2
+
+### Patch Changes
+
+- Updated dependencies \[83c3d58]
+  - @kadena/client-utils\@0.8.0
+
 ## 1.1.1
 
 ### Patch Changes

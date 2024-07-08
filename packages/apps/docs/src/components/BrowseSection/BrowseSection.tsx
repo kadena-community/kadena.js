@@ -1,5 +1,5 @@
-import type { IHeadingProps } from '@kadena/react-ui';
-import { Heading, Link } from '@kadena/react-ui';
+import type { IHeadingProps } from '@kadena/kode-ui';
+import { Heading, Link } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import NextLink from 'next/link';
 import type { FC, ReactNode } from 'react';

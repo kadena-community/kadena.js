@@ -1,32 +1,38 @@
 import BlockActivityChart from '@/components/block-activity-graph/block-activity-graph';
-import routes from '@/constants/routes';
 import type { IHeightBlock } from '@/services/block';
 import { formatNumberWithUnit } from '@/services/format';
-import { Grid, Link, Stack, Text } from '@kadena/react-ui';
+import { Grid, Stack, Text } from '@kadena/kode-ui';
+import classNames from 'classnames';
 import React from 'react';
+import BlockCell from '../block-cell/block-cell';
 import {
+  blockActivityColumnClass,
+  columnTitleClass,
+  headerColumnStyle,
+} from '../block-header/block-header.css';
+import { useBlockInfo } from '../block-info-context/block-info-context';
+import {
+  blockGridHoverableStyle,
   blockGridStyle,
-  blockHeightColumnHeaderStyle,
+  blockWrapperClass,
+  blockWrapperSelectedClass,
 } from '../block-table.css';
-import {
-  rowChartElementStyle,
-  rowLinkElementStyle,
-  rowTextElementStyle,
-  textStyle,
-} from './block-row.css';
+import { textStyle } from './block-row.css';
+import HeightInfo from './height-info/height-info';
 interface IBlockTableRowProps {
   blockRowData: IHeightBlock;
   heights: number[];
   chainId: number;
-  isCompact?: boolean;
+  maxBlockTxCount: number;
 }
 
 const BlockTableRow: React.FC<IBlockTableRowProps> = ({
   blockRowData,
   heights,
   chainId,
-  isCompact,
+  maxBlockTxCount,
 }) => {
+  const { selectedChainId, selectedHeight } = useBlockInfo();
   const blockDifficulty =
     blockRowData[heights[3]]?.difficulty ||
     blockRowData[heights[2]]?.difficulty ||
@@ -34,52 +40,65 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
     blockRowData[heights[0]]?.difficulty ||
     'N/A';
 
-  return (
-    <Grid columns={4} className={blockGridStyle}>
-      <Stack className={rowTextElementStyle}>
-        <Text className={textStyle}>{chainId}</Text>
-      </Stack>
+  const isShowHeightInfo = selectedChainId === chainId;
 
-      {!isCompact && (
-        <Stack className={rowTextElementStyle}>
-          <Text variant="code">
-            {`${formatNumberWithUnit(Number(blockDifficulty))}H`}
+  return (
+    <Stack
+      className={classNames(blockWrapperClass, {
+        [blockWrapperSelectedClass]: isShowHeightInfo,
+      })}
+      width="100%"
+      flexDirection="column"
+    >
+      <Grid className={classNames(blockGridStyle, blockGridHoverableStyle)}>
+        <Stack className={headerColumnStyle}>
+          <Text className={textStyle} bold>
+            {chainId}
           </Text>
         </Stack>
-      )}
 
-      <Stack>
+        <Stack className={headerColumnStyle}>
+          <Text as="span" variant="code" bold>
+            {formatNumberWithUnit(Number(blockDifficulty))}
+            <Text as="span" className={columnTitleClass}>
+              H
+            </Text>
+          </Text>
+        </Stack>
+
         {heights.map((height) =>
           blockRowData[height] ? (
-            <Link
-              key={`block-${chainId}-${height}`}
-              className={rowLinkElementStyle}
-              href={`${routes.BLOCK_DETAILS}/${blockRowData[height].hash}`}
-            >
-              <Text className={blockHeightColumnHeaderStyle} variant="code">
-                {blockRowData[height].txCount}
-              </Text>
-            </Link>
+            <BlockCell
+              isSelected={isShowHeightInfo && height === selectedHeight?.height}
+              key={`${height}${chainId}`}
+              height={blockRowData[height]}
+              chainId={chainId}
+            />
           ) : (
             <Stack
               key={`no-block-${chainId}-${height}`}
-              className={rowTextElementStyle}
+              className={headerColumnStyle}
               width="100%"
             >
               <Text>-</Text>
             </Stack>
           ),
         )}
-      </Stack>
 
-      {!isCompact && (
-        <Stack className={rowChartElementStyle}>
+        <Stack
+          className={classNames(headerColumnStyle, blockActivityColumnClass)}
+        >
           <BlockActivityChart
-            data={heights.map((height) => blockRowData[height]?.txCount || 0)}
+            maxBlockTxCount={maxBlockTxCount}
+            data={heights.map((height) => ({
+              height,
+              data: blockRowData[height]?.txCount ?? 0,
+            }))}
           />
         </Stack>
-      )}
-    </Grid>
+      </Grid>
+      {isShowHeightInfo && <HeightInfo height={selectedHeight} />}
+    </Stack>
   );
 };
 

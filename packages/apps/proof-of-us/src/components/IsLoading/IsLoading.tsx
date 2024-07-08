@@ -1,4 +1,4 @@
-import { MonoLoading } from '@kadena/react-icons';
+import { MonoLoading } from '@kadena/kode-icons';
 import type { FC } from 'react';
 import { animateClass, loaderWrapperClass } from './style.css';
 

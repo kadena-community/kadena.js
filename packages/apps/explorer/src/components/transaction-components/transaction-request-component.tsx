@@ -1,7 +1,7 @@
 import type { TransactionRequestKeyQuery } from '@/__generated__/sdk';
 import DataRenderComponent from '@/components/data-render-component/data-render-component';
 import { ifNill } from '@/utils/ifNill';
-import { Text } from '@kadena/react-ui';
+import { Text } from '@kadena/kode-ui';
 import React from 'react';
 
 type Transaction = Omit<
@@ -105,24 +105,27 @@ export const TransactionRequestComponent: React.FC<{
             { key: 'Scheme', value: signer.scheme ?? '' },
             {
               key: 'Capabilities',
-              value: (
-                <DataRenderComponent
-                  fields={signer.clist.map((capability) => ({
-                    key: capability.name,
-                    value: (
-                      <>
-                        {(JSON.parse(capability.args) as string[])
-                          .map((n, i) => (
-                            <Text as="p" variant="code" key={i}>
-                              {JSON.stringify(n)}
-                            </Text>
-                          ))
-                          .flat()}
-                      </>
-                    ),
-                  }))}
-                />
-              ),
+              value:
+                signer.clist.length === 0 ? (
+                  <></>
+                ) : (
+                  <DataRenderComponent
+                    fields={signer.clist.map((capability) => ({
+                      key: capability.name,
+                      value: (
+                        <>
+                          {(JSON.parse(capability.args) as string[])
+                            .map((n, i) => (
+                              <Text as="p" variant="code" key={i}>
+                                {JSON.stringify(n)}
+                              </Text>
+                            ))
+                            .flat()}
+                        </>
+                      ),
+                    }))}
+                  />
+                ),
             },
           ])
           .flat()}
@@ -130,7 +133,11 @@ export const TransactionRequestComponent: React.FC<{
 
       <DataRenderComponent
         title="Signatures"
-        fields={transaction.sigs.map((s) => ({ key: '', value: s.sig }))}
+        fields={transaction.sigs.map((s) => ({
+          key: '',
+          id: 'signatures',
+          value: s.sig,
+        }))}
       />
     </>
   );

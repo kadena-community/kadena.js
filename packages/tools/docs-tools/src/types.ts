@@ -222,6 +222,8 @@ export interface IConfigTreeItem {
   url: string;
   file: string;
   repo?: string;
+  repoBranch?: string;
+  repoDir?: string;
   children?: IConfigTreeItem[];
   destination?: string;
 }

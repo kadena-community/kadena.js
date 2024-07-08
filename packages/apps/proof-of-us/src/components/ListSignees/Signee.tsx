@@ -1,7 +1,7 @@
 import { useAccount } from '@/hooks/account';
 import { deviceColors } from '@/styles/tokens.css';
 import { getSigneeName } from '@/utils/getSigneeName';
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import { PingStatus } from '../PingStatus/PingStatus';

@@ -9,8 +9,8 @@ import {
   MonoDelete,
   MonoSignature,
   MonoSignatureNotAllowed,
-} from '@kadena/react-icons';
-import { Stack } from '@kadena/react-ui';
+} from '@kadena/kode-icons';
+import { Stack } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import { motion } from 'framer-motion';
 import type { FC } from 'react';

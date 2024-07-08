@@ -4,8 +4,8 @@ import {
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
 import { ICommand, createClient } from '@kadena/client';
+import { Button, Heading, Notification, Stack, Text } from '@kadena/kode-ui';
 import { isSignedCommand } from '@kadena/pactjs';
-import { Button, Heading, Notification, Stack, Text } from '@kadena/react-ui';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ReviewTransaction } from './components/ReviewTransaction';

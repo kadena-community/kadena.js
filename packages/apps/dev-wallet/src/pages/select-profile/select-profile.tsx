@@ -2,9 +2,9 @@ import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IProfile } from '@/modules/wallet/wallet.repository';
 import { recoverPublicKey, retrieveCredential } from '@/utils/webAuthn';
-import { MonoAdd } from '@kadena/react-icons';
-import { Box, Heading, Stack } from '@kadena/react-ui';
-import { tokens } from '@kadena/react-ui/styles';
+import { MonoAdd } from '@kadena/kode-icons';
+import { Box, Heading, Stack } from '@kadena/kode-ui';
+import { tokens } from '@kadena/kode-ui/styles';
 import { Link, useSearchParams } from 'react-router-dom';
 import InitialsAvatar from './initials';
 import {

@@ -1,4 +1,4 @@
-import { Box, Heading } from '@kadena/react-ui';
+import { Box, Heading } from '@kadena/kode-ui';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 import { cardClass, descriptionWrapperClass } from './styles.css';

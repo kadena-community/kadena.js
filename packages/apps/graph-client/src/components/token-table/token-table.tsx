@@ -1,5 +1,5 @@
 import type { NonFungibleTokenBalance } from '@/__generated__/sdk';
-import { KSquareKdacolorGreen } from '@kadena/react-icons/brand';
+import { KSquareKdacolorGreen } from '@kadena/kode-icons/brand';
 import {
   Box,
   Cell,
@@ -9,8 +9,8 @@ import {
   Table,
   TableBody,
   TableHeader,
-} from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
+} from '@kadena/kode-ui';
+import { atoms } from '@kadena/kode-ui/styles';
 import React from 'react';
 
 interface ITokenTableProps {

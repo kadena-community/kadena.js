@@ -1,5 +1,5 @@
 import { getClassName } from '@/utils/getClassName';
-import { atoms, tokens } from '@kadena/react-ui/styles';
+import { atoms, tokens } from '@kadena/kode-ui/styles';
 import {
   createVar,
   fallbackVar,
@@ -15,6 +15,8 @@ export const headerIconLinkClass = style([
   atoms({
     display: 'flex',
     alignItems: 'center',
+    color: 'icon.base.default',
+    cursor: 'pointer',
   }),
   {
     paddingInlineStart: tokens.kda.foundation.size.n3,

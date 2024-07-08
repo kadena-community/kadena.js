@@ -1,4 +1,4 @@
-import { Badge, Grid, GridItem, Stack, Tooltip } from '@kadena/react-ui';
+import { Badge, Grid, GridItem, Stack, Tooltip } from '@kadena/kode-ui';
 import { formatDistanceToNow } from 'date-fns';
 import Link from 'next/link';
 import type { FC } from 'react';

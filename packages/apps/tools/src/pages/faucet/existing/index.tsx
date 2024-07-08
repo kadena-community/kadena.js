@@ -22,7 +22,7 @@ import {
   Notification,
   NotificationHeading,
   Stack,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
@@ -42,7 +42,7 @@ import {
   MonoInfo,
   MonoKeyboardArrowRight,
   MonoLink,
-} from '@kadena/react-icons/system';
+} from '@kadena/kode-icons/system';
 import Link from 'next/link';
 import {
   accountNameContainerClass,

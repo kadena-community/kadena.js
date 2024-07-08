@@ -21,7 +21,7 @@ import {
   Stack,
   Text,
   TextField,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import classNames from 'classnames';
 import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';

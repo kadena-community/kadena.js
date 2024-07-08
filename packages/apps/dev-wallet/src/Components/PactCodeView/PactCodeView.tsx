@@ -1,5 +1,5 @@
 import { IParsedCode } from '@kadena/pactjs-generator';
-import { Box, Text } from '@kadena/react-ui';
+import { Box, Text } from '@kadena/kode-ui';
 import { FC } from 'react';
 
 import { textStyle } from './styles.css';

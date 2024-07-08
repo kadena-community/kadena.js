@@ -5,20 +5,19 @@
 /common                                         @alber70g
 /pnpm-lock.yaml
 /packages/apps/docs
-/packages/apps/proof-of-us                      @sstraatemans @realdreamer @ghislain89
-/packages/apps/graph                            @alber70g @MRVDH @nil-amrutlal-dept
-/packages/apps/graph-client                     @alber70g @MRVDH @nil-amrutlal-dept
-/packages/apps/marmalade-marketplace            @wooglie @jermaine150 @ggobugi27
-/packages/apps/tools                            @sanderlooijenga
+/packages/apps/proof-of-us                      @sstraatemans @ghislain89
+/packages/apps/graph                            @alber70g
+/packages/apps/graph-client                     @alber70g 
+/packages/apps/marmalade-marketplace            @jermaine150 @ggobugi27
+/packages/apps/tools                            
 /packages/libs/bootstrap-lib                    @alber70g
-/packages/libs/chainweb-stream-client           @Takadenoshi
+/packages/libs/chainweb-stream-client          
 /packages/libs/client                           @alber70g @javadkh2 @nillo
-/packages/libs/client-utils                     @alber70g @javadkh2 @jessevanmuijden @wooglie @jermaine150 @ggobugi27
+/packages/libs/client-utils                     @alber70g @javadkh2 @jermaine150 @ggobugi27
 /packages/libs/kadena.js                        @alber70g
 /packages/libs/pactjs-generator                 @alber70g @javadkh2
-/packages/libs/react-ui                         @eileenmguo @sstraatemans @r-mulder
+/packages/libs/kode-ui                          @sstraatemans @isaozler
 /packages/libs/types                            @alber70g
-/packages/libs/toolbox                          @alber70g @salamaashoush
 /packages/tools/eslint-config                   @alber70g
 /packages/tools/eslint-plugin                   @alber70g
 /packages/tools/pactjs-cli                      @alber70g @javadkh2
@@ -26,6 +25,6 @@
 /packages/e2e                                   @ghislain89
 /packages/e2e/e2e-base                          @ghislain89
 /packages/e2e/e2e-docs                          @ghislain89 @sstraatemans
-/packages/e2e/e2e-graph                         @ghislain89 @MRVDH @nil-amrutlal-dept
-/packages/e2e/e2e-tools                         @ghislain89 @sanderlooijenga
-/packages/tools/integration-tests               @ghislain89 @sstraatemans @sanderlooijenga @MRVDH @nil-amrutlal-dept
+/packages/e2e/e2e-graph                         @ghislain89
+/packages/e2e/e2e-tools                         @ghislain89
+/packages/tools/integration-tests               @ghislain89 @sstraatemans

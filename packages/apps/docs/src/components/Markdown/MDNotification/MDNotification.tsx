@@ -1,4 +1,4 @@
-import { Notification, NotificationHeading } from '@kadena/react-ui';
+import { Notification, NotificationHeading } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
