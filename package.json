@@ -35,7 +35,7 @@
     "prettier-plugin-organize-imports": "^3.2.3",
     "prettier-plugin-packagejson": "^2.4.6",
     "syncpack": "^11.2.1",
-    "tsx": "^4.16.0",
+    "tsx": "^4.16.2",
     "turbo": "^1.10.15"
   },
   "engines": {
