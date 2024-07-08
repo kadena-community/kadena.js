@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { useTheme } from 'next-themes'
 import { env } from '@/utils/env';
-import { MonoAccountCircle, MonoCheck, MonoClose } from '@kadena/kode-icons';
+import { MonoAccountCircle, MonoCheck, MonoClose, MonoContrast } from '@kadena/kode-icons';
 import { useAccount } from '@/hooks/account';
 import { useTransaction } from '@/hooks/transaction';
 import { useRouter } from 'next/navigation';
@@ -24,6 +25,8 @@ export const MarketplaceHeader= () => {
   const { account, login, logout } = useAccount();
   const { setTransaction } = useTransaction();
   const router = useRouter();
+  const { theme, setTheme } = useTheme()
+
 
   const onFundAccount = () => {
     setShowNotification(false);
@@ -31,6 +34,10 @@ export const MarketplaceHeader= () => {
     setTransaction(transaction);
     //Redirect to the transaction page
     router.push('/transaction');
+  };
+
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
   return (
@@ -61,6 +68,7 @@ export const MarketplaceHeader= () => {
           My Tokens
         </NavHeaderLink>) : <></>}
       </NavHeaderLinkList>
+      <NavHeaderButton onPress={toggleTheme}  endVisual={<MonoContrast />} />
       {account
         ? (
             <>
