@@ -2,12 +2,7 @@ import { useNetworkInfoQuery } from '@/__generated__/sdk';
 import type { INetwork } from '@/context/networks-context';
 import { useNetwork } from '@/context/networks-context';
 import type { ApolloError, NormalizedCacheObject } from '@apollo/client';
-import {
-  ApolloClient,
-  InMemoryCache,
-  split,
-  useApolloClient,
-} from '@apollo/client';
+import { ApolloClient, InMemoryCache, split } from '@apollo/client';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
 import {
