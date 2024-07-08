@@ -27,7 +27,7 @@
     "version": "changeset version && pnpm run docs:changelogs && pnpm run format:pkgs && pnpm run format:md"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.26.2",
+    "@changesets/cli": "^2.27.7",
     "@kadena-dev/markdown": "workspace:*",
     "knip": "^2.38.1",
     "only-allow": "^1.2.1",
