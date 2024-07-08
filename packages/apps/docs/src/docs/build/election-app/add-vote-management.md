@@ -23,7 +23,7 @@ Before you start this tutorial, verify the following basic requirements:
 
 - You have an internet connection and a web browser installed on your local computer.
 - You have a code editor, such as [Visual Studio Code](https://code.visualstudio.com/download), access to an interactive terminal shell, and are generally familiar with using command-line programs.
-- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git) repository as described in [Prepare your workspace](/build/election/prepare-your-workspace).
+- You have cloned the [voting-dapp](https://github.com/kadena-community/voting-dapp.git) repository to create your project directory as described in [Prepare your workspace](/build/election/prepare-your-workspace).
 - You have the development network running in a Docker container as described in [Start a local blockchain](/build/election/start-a-local-blockchain).
 - You are [connected to the development network](/build/election/start-a-local-blockchain#connect-to-the-development-network) using your local host IP address and port number 8080.
 - You have created and funded an administrative account as described in [Add an administrator account](/build/election/add-admin-account).
@@ -41,7 +41,7 @@ To implement the `vote` function in the `election` Pact module, you can test you
 ### Organize your REPL files
 
 So far, you have added all of your tests for the `election` module to the  `election-dapp/pact/election.repl` file. 
-While this is convenient if you have a small number of tests, continuing to add tests to a single file will make testing more complex and difficult to follow. 
+While this is convenient if you have a small number of tests, continuing to add tests to a single file will make testing more complex and more difficult to follow. 
 To keep tests more organized, you can split them into multiple `.repl` files and reuse the code by loading one file into the other. 
 
 To organize tests into separate files:
@@ -59,6 +59,7 @@ To organize tests into separate files:
    ```pact
    (load "setup.repl")
    ```
+
 6. Open the `candidates.repl` file and and add the following as the first line in the file:
    
    ```pact
@@ -68,13 +69,13 @@ To organize tests into separate files:
 7. Verify tests in the `candidates.repl` file still pass by running the following command:
 
    ```bash
-   pact candidates.repl -t
+   pact candidates.repl --trace
    ```
 
 8. Verify that `voting.repl` loads successfully by running the following command:
 
    ```bash
-   pact voting.repl -t
+   pact voting.repl --trace
    ```
 
 ### Prepare a test for incrementing votes
@@ -105,7 +106,7 @@ To prepare a test for incrementing votes:
 
    Remember to replace the namespace with your own principal namespace.
 
-3. Add the following lines of code for a voting transaction:
+3. Add the following lines of code to test a voting transaction:
    
    ```pact
    (begin-tx "Voting for a candidate")
@@ -137,9 +138,9 @@ To prepare a test for incrementing votes:
    Load failed
    ```
 
-1. Open the `election-dapp/pact/election.pact` file in your code editor.
+4. Open the `election-dapp/pact/election.pact` file in your code editor.
 
-2. Define the `vote` function after the `add-candidate` function and before the `candidates-schema` definition with the following lines of code: 
+5. Define the `vote` function after the `add-candidate` function with the following lines of code: 
    
    ```pact
    (defun vote (candidateKey:string)
@@ -150,7 +151,7 @@ To prepare a test for incrementing votes:
    )
    ```
    
-   In this code, the `vote` function takes the `candidateKey` parameter with a of type string: 
+   In this code, the `vote` function takes the `candidateKey` parameter with a type of string: 
   
    - The `candidateKey` value specifies the key for the row in the `candidates` table to read using the built-in `with-read` Pact function. 
    - The database column named  `"votes"` is assigned a value from the  `numberOfVotes` variable. 
@@ -163,10 +164,10 @@ To prepare a test for incrementing votes:
      In this case, the `vote` function only updates the `votes` column.
      The new value is the current number of votes that was obtained from `with-read` and stored in the `numberOfVotes` variable incremented by one (`(+ numberOfVotes 1)`).
 
-1. Execute the transaction using the `pact` command-line program:
+6. Execute the transaction using the `pact` command-line program:
    
    ```pact
-   pact voting.repl -t
+   pact voting.repl --trace
    ```
 
    You should see the transaction succeeds with output similar to the following:
@@ -181,30 +182,30 @@ To prepare a test for incrementing votes:
 
 ### Prepare a test for voting on an invalid candidate
 
-To make the `vote` function more robust, you should handle the scenario where the `candidateKey`  passed in that doesn't exist in the database. 
+To make the `vote` function more robust, you should handle the scenario where the `candidateKey` doesn't exist in the database. 
 
 To prepare a test for votes on an invalid candidate:
 
 1. Open the `election-dapp/pact/voting.repl` file in the code editor on your computer.
 
-1. Add the following transaction before the `Voting for a candidate` transaction:
+2. Add the following transaction before the `Voting for a candidate` transaction:
 
    ```pact
    (begin-tx "Voting for a non-existing candidate")
      (use n_14912521e87a6d387157d526b281bde8422371d1.election)
      (expect-failure
        "Cannot vote for a non-existing candidate"
-       (vote "X")
+       (vote "20")
      )
    (commit-tx)
    ```
    
    Remember to replace the namespace with your own principal namespace.
 
-1. Execute the transaction using the `pact` command-line program:
+3. Execute the transaction using the `pact` command-line program:
    
    ```pact
-   pact voting.repl -t
+   pact voting.repl --trace
    ```
 
    You should see that the transaction succeeds with output similar to the following:
@@ -216,12 +217,12 @@ To prepare a test for votes on an invalid candidate:
    voting.repl:17:0:Trace: Commit Tx 4: Voting for a non-existing candidate
    ```
    
-   The test returns the expected result—failure—because the call to `with-read` fails for the `candidateKey` value of `"X"`.
+   The test returns the expected result—failure—because the call to `with-read` fails for the `candidateKey` value of `"20"`.
    The failure prevents the execution of the `update` function. 
    
    As you add checks to the `vote` function, you should return more specific error messages, so that each check provides information about why it failed to the caller of the function.
 
-2. Update the invalid candidate transaction to specify `"Candidate does not exist"` as the expected error message:
+4. Update the invalid candidate transaction to specify `"Candidate does not exist"` as the expected error message:
    
       ```pact
    (begin-tx "Voting for a non-existing candidate")
@@ -240,10 +241,10 @@ To prepare a test for votes on an invalid candidate:
    - The second argument is the expected output of the function call.
    - The third argument is the actual function call. 
 
-1. Execute the transaction using the `pact` command-line program:
+5. Execute the transaction using the `pact` command-line program:
    
    ```pact
-   pact voting.repl -t
+   pact voting.repl --trace
    ```
 
    You should see that the transaction fails with output similar to the following:
@@ -255,16 +256,14 @@ To prepare a test for votes on an invalid candidate:
    voting.repl:18:0:Trace: Commit Tx 4: Voting for a non-existing candidate
    ```
    
-   To prevent the read operation from failing with a standard message, you can use the built-in `with-default-read` Pact function.
-   The `with-default-read` function doesn't throw an error if no row is found with the specified key, but returns a default object instead. 
-   The default object contains the default values for the name (`""`) and votes (`0`) columns.
+   Because the error message doesn't contain the expected output of `Candidate does not exist` that you specified in the previous step, the `with-read` function returns a default error message. 
+   If you want to provide a more specific error message, you can use the built-in `with-default-read` Pact function.
+   The `with-default-read` function enables you to return a default object with default values or a specific error message if a specific condition is detected.
+   In this example, you can use the `with-default-read` function to set the default values for the name (`""`) and votes (`0`) columns.
    
-   For successful reads, the value of the `"name"` column is assigned to a `name` variable, similar to the value of the `"votes"` column. 
-   This allows you to enforce that `name` must not be an empty string, and throw a specific error if it is. 
+6. Open the `election-dapp/pact/election.pact` file in your code editor.
 
-1. Open the `election-dapp/pact/election.pact` file in your code editor.
-
-2. Update the `vote` function to use the `with-default-read` function and return an error if `name` is an empty string:
+7. Update the `vote` function to use the `with-default-read` function:
 
 
    ```pact
@@ -277,24 +276,27 @@ To prepare a test for votes on an invalid candidate:
      )
    )
    ```
+   
+   With this code, a successful read operation assigns the value of the `"name"` column to a `name` variable and the value of the `"votes"` column to the `numberOfVotes` variable. 
+   The function also checks that the candidate `name` associated with the `candidateKey` is not an empty string, and returns a specific error if it is. 
 
-1. Execute the transaction using the `pact` command-line program:
+8. Execute the transaction using the `pact` command-line program:
    
    ```pact
-   pact voting.repl -t
+   pact voting.repl --trace
    ```
 
    You should see that the transaction succeeds with output similar to the following:
    
    ```bash
-   voting.repl:11:0:Trace: Begin Tx 4: Voting for a non-existing candidate
-   voting.repl:12:5:Trace: Using n_14912521e87a6d387157d526b281bde8422371d1.election
-   voting.repl:13:5:Trace: Expect failure: success: Cannot vote for a non-existing candidate
-   voting.repl:18:0:Trace: Commit Tx 4: Voting for a non-existing candidate
+   voting.repl:12:0:Trace: Begin Tx 4: Voting for a non-existing candidate
+   voting.repl:13:2:Trace: Using n_14912521e87a6d387157d526b281bde8422371d1.election
+   voting.repl:14:2:Trace: Expect failure: success: Cannot vote for a non-existing candidate
+   voting.repl:19:0:Trace: Commit Tx 4: Voting for a non-existing candidate
+   ...
+   Load successful
    ```
    
-   The `vote` function now returns a specific error message when someone tries to vote for a candidate that doesn't exist.
-
 ## Prevent double votes
 
 At this point, the `election` smart contract allows voting, but it doesn't yet restrict each Kadena account to only voting once. 
@@ -349,7 +351,7 @@ To define the database schema and table:
 4. Execute the transaction using the `pact` command-line program:
    
    ```pact
-   pact voting.repl -t
+   pact voting.repl --trace
    ```
 
    You should see that the transaction succeeds with `TableCreated` twice in the output similar to the following:
@@ -383,7 +385,7 @@ To test that an account can only vote once:
 4. Execute the transaction using the `pact` command-line program:
    
    ```pact
-   pact voting.repl -t
+   pact voting.repl --trace
    ```
 
    You should see that the transaction fails with output similar to the following:
@@ -398,7 +400,7 @@ To test that an account can only vote once:
    Remember that all transactions in `voting.repl` are signed with the `admin-keyset` you defined for the REPL environment in the `setup.repl` file. 
    Your administrative account can cast more than one vote on `Candidate A`, which makes the election unfair.
 
-   To fix this issue, you'll need to update the `vote` function and `election` module.
+   To fix this issue, you'll need to update the `vote` function in the `election` module.
 
 1. Open the `election-dapp/pact/election.pact` file in your code editor.
 
@@ -460,7 +462,7 @@ To test that an account can only vote once:
 4. Execute the transaction using the `pact` command-line program:
    
    ```pact
-   pact voting.repl -t
+   pact voting.repl --trace
    ```
 
    You should see that the transaction succeeds with output similar to the following:
@@ -531,7 +533,7 @@ To demonstrate voting on behalf of another account:
 4. Execute the transaction using the `pact` command-line program:
    
    ```pact
-   pact voting.repl -t
+   pact voting.repl --trace
    ```
 
    You should see that the transaction fails with output similar to the following:
@@ -543,11 +545,11 @@ To demonstrate voting on behalf of another account:
    ```
    
    The test failed because the `voter` account name doesn't exist in the `votes` table keys and the candidate exists, so the number of votes for the candidate is incremented. 
-   You need to make sure that the signer of the transaction owns the KDA account passed to the `vote` function.
+   You need to make sure that the signer of the transaction owns the `account` passed to the `vote` function.
 
-1. Open the `election-dapp/pact/election.pact` file in the code editor on your computer.
+5. Open the `election-dapp/pact/election.pact` file in the code editor on your computer.
 
-1. Define the `ACCOUNT-OWNER` capability to enforce the guard of the account passed to the `vote` function:
+6. Define the `ACCOUNT-OWNER` capability to enforce the guard of the account passed to the `vote` function:
    
    ```pact
    (use coin [ details ])
@@ -562,7 +564,7 @@ To demonstrate voting on behalf of another account:
    In this case, `voter-keyset` is the guard for the account. 
    By enforcing this guard, you can ensure that the keyset used to sign the `vote` transaction belongs to the account name passed to the function.
 
-2. Apply the capability by wrapping the `update` and `insert` statements in the `vote` function inside a `with-capability` statement as follows:
+7. Apply the capability by wrapping the `update` and `insert` statements in the `vote` function inside a `with-capability` statement as follows:
 
    ```pact
    (defun vote (account:string candidateKey:string)
@@ -581,10 +583,10 @@ To demonstrate voting on behalf of another account:
    )
    ```
 
-3. Execute the transaction using the `pact` command-line program:
+8. Execute the transaction using the `pact` command-line program:
    
    ```pact
-   pact voting.repl -t
+   pact voting.repl --trace
    ```
 
    You should see that the transaction succeeds with output similar to the following:
@@ -687,18 +689,18 @@ To update the `election` module on the development network:
 3. Verify your contract changes in the Chainweaver Module Explorer by refreshing the list of **Deployed Contracts**, then clicking **View** for the `election` module.
    
    After you click View, you should see the updated list of functions and capabilities.
-   If you click **Open**, you can view the module code in the editor pane and verify that the `election` module deployed on the local development network is what you expect.
+   If you click **Open**, you can view the module code in the editor panel and verify that the `election` module deployed on the local development network is what you expect.
 
-## Update the frontend and cast a vote
+## Update the frontend
 
 As you learned in [Nominate candidates](/build/election/nominate-candidates), the election application frontend is written in TypeScript and uses repositories to exchange data with the backend. 
 By default, the frontend uses the in-memory implementations of the repositories. 
-By making changes to the implementation of the `interface IVoteRepository` in
+By making changes to the implementation of the `interface IVoteRepository` in the
 `frontend/src/repositories/candidate/DevnetVoteRepository.ts` file, you can configure the
 frontend to use the `devnet` backend instead of the `in-memory` backend. 
 After making these changes, you can use the frontend to cast votes on candidates listed in the `candidates` table and managed by the `election` module running on the development network blockchain.
 
-To cast a vote using the election application website:
+To update the frontend to use the `election` module:
 
 1. Open `election-dapp/frontend/src/repositories/candidate/DevnetVoteRepository.ts` in your code editor.
 2. Replace the value of the `NAMESPACE` constant with your own principal namespace.
@@ -749,17 +751,38 @@ To cast a vote using the election application website:
    npm install
    ```
 
-8. Start the frontend application configured to use the `devnet` backend by running the following command: 
+8. Start the frontend application configured to use the development network running locally by running the following command: 
 
    ```bash
    npm run start-devnet
    ```
 
-1. Open `http://localhost:5173` in your browser, then click **Set Account**.
-2. Paste your administrative account, then click **Save**.
-3. Add a candidate, if necessary.
-4. Click **Vote Now** for a candidate, sign the transaction, and wait for the transaction to
-finish. 
+## Cast a vote
+
+Now that you have deployed the smart contract on the development network and updated the frontend to use the election module backend, you can use the election application to cast votes.
+
+To cast a vote using the election application website:
+
+1. Verify the development network is currently running on your local computer.
+
+2. Open and unlock the Chainweaver desktop or web application and verify that:
+   
+   - You're connected to **development network (devnet)** from the network list.
+   - Your administrative account name with the **k:** prefix exists on chain 1.
+   - Your administrative account name is funded with KDA on chain 1. 
+   
+   You're going to use Chainweaver to sign the voting transaction. 
+
+3. Open `http://localhost:5173` in your browser, then click **Set Account**.
+
+4. Paste your administrative account, then click **Save**.
+
+5. Click **Add Candidate** to add candidates, if necessary.
+
+6. Click **Vote Now** for a candidate row.
+
+7. Sign the transaction, and wait for the transaction to finish.
+
 1. Verify that the number of votes for the candidate you voted for increased by one vote. 
    
    After you vote, the Vote Now button is disabled because the frontend checks if your account has already voted by making a `local` request to the `account-voted` function of the `election` Pact module.

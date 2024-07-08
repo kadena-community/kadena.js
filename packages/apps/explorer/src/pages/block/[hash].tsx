@@ -153,9 +153,7 @@ const Block: React.FC = () => {
               title={
                 <>
                   Transactions{' '}
-                  <Badge size="sm">
-                    {data.block.transactions.edges.length}
-                  </Badge>
+                  <Badge size="sm">{data.block.transactions.totalCount}</Badge>
                 </>
               }
               key="Transactions"
