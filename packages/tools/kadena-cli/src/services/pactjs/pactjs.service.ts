@@ -242,11 +242,11 @@ export class PactJSService implements IPactJSService {
 
     Object.keys(modules).forEach((name) => {
       if (!modules[name].namespace) {
-        log.error(`WARNING: No namespace found for module "${name}".`);
+        log.error(`  WARNING: No namespace found for module "${name}".`);
       }
       if (!modules[name].functions) {
         log.error(
-          `WARNING: No functions found for module "${name}". Skipping.`,
+          `  WARNING: No functions found for module "${name}". Skipping.`,
         );
         return;
       }

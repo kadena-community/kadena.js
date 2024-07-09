@@ -20,6 +20,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'error',
     'prefer-template': 'warn',
     'import/no-unresolved': 'error',
+    '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/consistent-type-imports': [
       'error',
       {

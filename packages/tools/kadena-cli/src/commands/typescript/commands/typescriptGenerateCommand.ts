@@ -108,9 +108,7 @@ export const typescriptGenerateCommand = createCommand(
     Object.keys(modules).map((name) => {
       if (['', undefined, null].includes(modules[name].namespace)) {
         log.warning(
-          `\n
-            WARNING: No namespace found for module "${name}". You can pass --namespace as a fallback.
-          \n`,
+          `  WARNING: No namespace found for module "${name}". You can pass --namespace as a fallback.`,
         );
       }
       moduleDtss.set(name, generateDts(modules[name]));
