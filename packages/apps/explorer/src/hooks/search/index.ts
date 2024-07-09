@@ -74,7 +74,6 @@ export const useSearch = () => {
     if (!isMounted) return;
 
     if (!searchQuery) {
-      console.log(445, router.asPath);
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       if (router.asPath === '/') {
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
