@@ -81,17 +81,25 @@ export function Transaction() {
     if (!groupId) return;
     const client = createClient();
     if (!list.every(isSignedCommand)) return;
-    await Promise.all(
+    const preflightValidation = await Promise.all(
       list.map((tx) =>
         client
           .preflight({ cmd: tx.cmd, sigs: tx.sigs, hash: tx.hash } as ICommand)
-          .then((result) => {
-            if (result.result.status !== 'success') {
-              throw (result.result.error as any).message || result.result.error;
-            }
+          .then(async (result) => {
+            await transactionRepository.updateTransaction({
+              ...tx,
+              status: 'preflight',
+              preflight: result,
+              request: undefined,
+            });
+            return result.result.status === 'success';
           }),
       ),
     );
+    if (preflightValidation.some((isValid) => !isValid)) {
+      setError('Preflight failed');
+      return;
+    }
     await Promise.all(
       list.map((tx) =>
         client

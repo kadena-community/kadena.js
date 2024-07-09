@@ -19,6 +19,7 @@
     "@hookform/resolvers": "^3.2.0",
     "@kadena/client": "workspace:*",
     "@kadena/client-utils": "workspace:*",
+    "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/hd-wallet": "workspace:*",
     "@kadena/kode-icons": "workspace:*",
