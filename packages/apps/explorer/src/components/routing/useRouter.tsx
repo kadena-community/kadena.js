@@ -1,6 +1,6 @@
 import { useNetwork } from '@/context/networks-context';
 import { useRouter as NextUseRouter } from 'next/router';
-import { createHref } from './utils';
+import { createHref, removeNetworkFromPath } from './utils';
 
 export const useRouter = () => {
   const { activeNetwork, networks } = useNetwork();
@@ -13,5 +13,7 @@ export const useRouter = () => {
     return router.push(createHref(activeNetwork, networks, href));
   };
 
-  return { ...router, replace, push };
+  const asPath = removeNetworkFromPath(router.asPath, networks);
+
+  return { ...router, replace, push, asPath };
 };

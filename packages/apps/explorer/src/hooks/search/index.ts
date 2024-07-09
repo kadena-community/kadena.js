@@ -74,6 +74,7 @@ export const useSearch = () => {
     if (!isMounted) return;
 
     if (!searchQuery) {
+      console.log(445, router.asPath);
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       if (router.asPath === '/') {
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -82,11 +83,12 @@ export const useSearch = () => {
       return;
     }
 
-    const q = router.query.q;
-    const so = router.query.so;
-    const soInt: SearchOptionEnum = parseInt(so as any);
+    const query = router.query.q;
+    const searchOptionQuery: SearchOptionEnum = parseInt(
+      router.query.so as any,
+    );
 
-    if (q === searchQuery && soInt === searchOption) return;
+    if (query === searchQuery && searchOptionQuery === searchOption) return;
 
     if (searchOption === SearchOptionEnum.ACCOUNT) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -98,14 +100,15 @@ export const useSearch = () => {
   }, [searchQuery, isMounted]);
 
   useEffect(() => {
-    const q = router.query.q;
-    const so = router.query.so;
-
-    const soInt: SearchOptionEnum | null = !isNaN(parseInt(so as any))
-      ? parseInt(so as any)
+    const query = router.query.q;
+    const searchOptionQuery: SearchOptionEnum | null = !isNaN(
+      parseInt(router.query.so as any),
+    )
+      ? parseInt(router.query.so as any)
       : null;
-    setSearchQuery(q as string);
-    setSearchOption(soInt);
+
+    setSearchQuery(query as string);
+    setSearchOption(searchOptionQuery);
     setIsMounted(true);
   }, [router.query]);
 

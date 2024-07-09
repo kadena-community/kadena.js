@@ -18,3 +18,18 @@ export const createHref = (
 
   return `/${cleanedArr.join('/')}`;
 };
+
+export const removeNetworkFromPath = (href: string, networks: INetwork[]) => {
+  const arr = href
+    .replace(/[?#].*/, '')
+    .split('/')
+    .filter((v) => v);
+
+  if (networks.find((v) => v.networkId === arr[0])) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [first, ...restArr] = arr;
+    return `/${restArr.join('/')}`;
+  }
+
+  return href;
+};
