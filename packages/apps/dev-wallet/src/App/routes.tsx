@@ -77,7 +77,10 @@ export const Routes: FC = () => {
             path="/unlock-profile/:profileId"
             element={<UnlockProfile />}
           />
-          <Route path="/import-wallet" element={<ImportWallet />} />
+          <Route
+            path="/import-wallet"
+            element={<ImportWallet setOrigin={setOrigin} />}
+          />
         </Route>
       </Route>
       <Route
