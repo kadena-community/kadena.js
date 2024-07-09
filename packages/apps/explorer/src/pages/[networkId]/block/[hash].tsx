@@ -39,6 +39,10 @@ const Block: React.FC = () => {
 
   const blockQueryVariables = {
     hash: router.query.hash as string,
+    transactions: {
+      first: 1,
+      last: 1,
+    },
   };
 
   useEffect(() => {
@@ -47,6 +51,7 @@ const Block: React.FC = () => {
 
   const { loading, data, error } = useBlockQuery({
     variables: blockQueryVariables,
+
     skip: !router.query.hash,
   });
 

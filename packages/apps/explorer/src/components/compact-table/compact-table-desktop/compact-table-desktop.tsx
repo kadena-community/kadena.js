@@ -2,6 +2,7 @@ import {
   Cell,
   Column,
   Row,
+  Stack,
   Table,
   TableBody,
   TableHeader,
@@ -12,7 +13,7 @@ import type { ICompactTableProps } from '../compact-table';
 
 import TablePagination from '../table-pagination/table-pagination';
 import FieldCell from './field-cell';
-import { tableClass } from './styles.css';
+import { tableBorderClass, tableClass } from './styles.css';
 
 const CompactTableDesktop: FC<ICompactTableProps> = ({
   data,
@@ -21,7 +22,14 @@ const CompactTableDesktop: FC<ICompactTableProps> = ({
   isLoading = false,
 }) => {
   return (
-    <>
+    <Stack
+      padding="sm"
+      width="100%"
+      flexDirection="column"
+      gap="sm"
+      className={tableBorderClass}
+    >
+      <TablePagination />
       <Table aria-label={label} isStriped className={tableClass}>
         <TableHeader>
           {fields.map((field) => (
@@ -42,8 +50,7 @@ const CompactTableDesktop: FC<ICompactTableProps> = ({
           ))}
         </TableBody>
       </Table>
-      <TablePagination />
-    </>
+    </Stack>
   );
 };
 
