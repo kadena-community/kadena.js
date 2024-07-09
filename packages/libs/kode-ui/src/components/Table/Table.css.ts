@@ -106,9 +106,8 @@ globalStyle(`${tableRow} td:last-of-type`, {
   borderBottomRightRadius: token('size.n2'),
 });
 
-globalStyle(`tbody ${tableRow} td`, {
-  borderRadius: '2px',
-  borderBlock: '2px solid transparent',
+globalStyle(`${table} tbody[data-isstriped="true"] tr:nth-child(even)`, {
+  backgroundColor: token('color.background.surface.default'),
 });
 
 export const tableRowContent = style({

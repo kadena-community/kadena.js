@@ -1,4 +1,4 @@
-import type { Transaction, Transfer } from '@/__generated__/sdk';
+import type { AccountQuery, Transaction, Transfer } from '@/__generated__/sdk';
 import { useAccountQuery } from '@/__generated__/sdk';
 import CompactTable from '@/components/compact-table/compact-table';
 import { FormatAccount } from '@/components/compact-table/utils/format-account';
@@ -6,6 +6,8 @@ import { FormatAmount } from '@/components/compact-table/utils/format-amount';
 import { FormatLink } from '@/components/compact-table/utils/format-link';
 import { FormatStatus } from '@/components/compact-table/utils/format-status';
 import Layout from '@/components/layout/layout';
+import { loadingData } from '@/components/loading-skeleton/loading-data/loading-data-accountquery';
+import ValueLoader from '@/components/loading-skeleton/value-loader/value-loader';
 import { useRouter } from '@/components/routing/useRouter';
 import { useQueryContext } from '@/context/query-context';
 import { account } from '@/graphql/queries/account.graph';
@@ -22,6 +24,8 @@ export interface IKeyProps {
 
 const Account: FC = () => {
   const router = useRouter();
+  const [innerData, setInnerData] = useState<AccountQuery>(loadingData);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedTab, setSelectedTab] = useState<string>('Transactions');
   const accountName = router.query.accountName as string;
   const { setQueries } = useQueryContext();
@@ -34,6 +38,20 @@ const Account: FC = () => {
     variables: accountQueryVariables,
     skip: !router.query.accountName,
   });
+
+  useEffect(() => {
+    if (loading) {
+      setIsLoading(true);
+      return;
+    }
+
+    if (data) {
+      setTimeout(() => {
+        setIsLoading(false);
+        setInnerData(data);
+      }, 200);
+    }
+  }, [loading, data]);
 
   useEffect(() => {
     if (accountName) {
@@ -55,7 +73,7 @@ const Account: FC = () => {
     router.push(`#${tab}`);
   };
 
-  const { fungibleAccount } = data ?? {};
+  const { fungibleAccount } = innerData ?? {};
 
   const keys: IKeyProps[] = useMemo(() => {
     const innerKeys: IKeyProps[] =
@@ -79,23 +97,31 @@ const Account: FC = () => {
 
   return (
     <Layout>
-      {loading && <div>Loading...</div>}
       {error && <div>Error: {error.message}</div>}
 
-      <Stack margin="md">
-        <Heading as="h5">
-          {parseFloat(fungibleAccount?.totalBalance).toFixed(2)} KDA spread
-          across {fungibleAccount?.chainAccounts.length} Chains for account{' '}
-          <div style={{ display: 'flex', maxWidth: `calc(100% - 15px)` }}>
+      <Stack margin="md" width="100%" flexDirection="column">
+        <ValueLoader isLoading={isLoading}>
+          <Heading as="h5">
+            {parseFloat(fungibleAccount?.totalBalance).toFixed(2)} KDA spread
+            across {fungibleAccount?.chainAccounts.length} Chains for account{' '}
+          </Heading>
+        </ValueLoader>
+        <Stack
+          marginBlockStart="xs"
+          width="100%"
+          style={{ maxWidth: `calc(100% - 15px)` }}
+        >
+          <ValueLoader isLoading={isLoading}>
             <Text as="span" className={accountNameTextClass}>
               {fungibleAccount?.accountName}
             </Text>
-          </div>
-        </Heading>
+          </ValueLoader>
+        </Stack>
       </Stack>
 
       {keys && (
         <CompactTable
+          isLoading={isLoading}
           label="Keys table"
           fields={[
             {
@@ -131,6 +157,7 @@ const Account: FC = () => {
             >
               {fungibleAccount?.transactions && (
                 <CompactTable
+                  isLoading={isLoading}
                   label="Keys table"
                   fields={[
                     {
@@ -172,6 +199,7 @@ const Account: FC = () => {
             >
               {fungibleAccount?.transfers && (
                 <CompactTable
+                  isLoading={isLoading}
                   fields={[
                     {
                       label: 'Height',

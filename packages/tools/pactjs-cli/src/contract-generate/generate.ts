@@ -104,14 +104,14 @@ async function generator(
 
   Object.keys(modules).map((name) => {
     if (['', undefined, null].includes(modules[name].namespace)) {
-      console.log(`
-      WARNING: No namespace found for module "${name}". You can pass --namespace as a fallback.
-      `);
+      console.log(
+        `  WARNING: No namespace found for module "${name}". You can pass --namespace as a fallback.`,
+      );
     }
     if (modules[name].functions === undefined) {
-      console.log(`
-      WARNING: No functions found for module "${name}". This module will be skipped.
-      `);
+      console.log(
+        `  WARNING: No functions found for module "${name}". This module will be skipped.`,
+      );
       return;
     }
     moduleDtss.set(name, generateDts(modules[name]));

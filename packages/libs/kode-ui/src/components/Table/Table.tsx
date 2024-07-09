@@ -79,7 +79,7 @@ export function Table<T extends object>(props: ITableProps<T>) {
             );
           })}
         </TableRowGroup>
-        <TableRowGroup type="tbody">
+        <TableRowGroup isStriped={props.isStriped} type="tbody">
           {[...collection.body.childNodes].map((row) => (
             <TableRow
               key={row.key}
@@ -96,7 +96,12 @@ export function Table<T extends object>(props: ITableProps<T>) {
                     selectionMode={props.selectionMode}
                   />
                 ) : (
-                  <TableCell key={cell.key} cell={cell} state={state} />
+                  <TableCell
+                    key={cell.key}
+                    cell={cell}
+                    state={state}
+                    data-isstriped={props.isStriped}
+                  />
                 ),
               )}
             </TableRow>
@@ -109,6 +114,7 @@ export function Table<T extends object>(props: ITableProps<T>) {
 
 export interface ITableRowGroupProps {
   type: 'thead' | 'tbody';
+  isStriped?: boolean;
   children?: React.ReactNode;
 }
 
@@ -116,7 +122,12 @@ export function TableRowGroup({
   // eslint-disable-next-line @typescript-eslint/naming-convention
   type: Element,
   children,
+  isStriped,
 }: ITableRowGroupProps) {
   const { rowGroupProps } = useTableRowGroup();
-  return <Element {...rowGroupProps}>{children}</Element>;
+  return (
+    <Element data-isstriped={isStriped} {...rowGroupProps}>
+      {children}
+    </Element>
+  );
 }

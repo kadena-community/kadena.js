@@ -9,19 +9,19 @@
 
 <!-- genericHeader end -->
 
-## Kadena Block Explorer 
+## Kadena Block Explorer
 
-![Kadena block explorer](./kadena-block-explorer.png)
+![Kadena block explorer][1]
 
-- [Getting started][1]
-  - [Running the explorer][2]
-    - [Dependencies][3]
-      - [Graph][4]
-        - [Method 1][5]
-        - [Method 2][6]
-- [Useful extra's][7]
-  - [Running devnet][8]
-- [Changelog][9]
+- [Getting started][2]
+  - [Running the explorer][3]
+    - [Dependencies][4]
+      - [Graph][5]
+        - [Method 1][6]
+        - [Method 2][7]
+- [Useful extra's][8]
+  - [Running devnet][9]
+- [Changelog][10]
 
 # Getting started
 
@@ -51,7 +51,7 @@ pnpm run next:dev
 #### Graph
 
 @kadena/explorer relies on @kadena/graph to be running. See the [@kadena/graph
-README][10] for more information.
+README][11] for more information.
 
 There are two ways you can use the GraphQL server. You can either run it locally
 or you can point the explorer to the existing instances of graph.
@@ -59,7 +59,7 @@ or you can point the explorer to the existing instances of graph.
 ##### Method 1: Running your own instance
 
 For this method you can find all the relevant documentation in [@kadena/graph
-README][10]. You can also have a look on how to run devnet [here][8]
+README][11]. You can also have a look on how to run devnet [here][9]
 
 ##### Method 2: Pointing to an existing instance of graph
 
@@ -73,11 +73,11 @@ instances
 
 Prerequisites:
 
-- [pnpm][11]
-- [Docker][12] (or an alternative, e.g. [podman][13])
+- [pnpm][12]
+- [Docker][13] (or an alternative, e.g. [podman][14])
 
 This project has a built-in command to create and start devnet. For the full
-guide visit the quickstart page on the documentation website [here][14].
+guide visit the quickstart page on the documentation website [here][15].
 
 This command will start the existing image, and if not found, download and run a
 new image. You can run `pnpm run devnet:update` to update the devnet image.
@@ -88,20 +88,21 @@ pnpm run devnet
 
 ## Changelog
 
-See [CHANGELOG.md][15].
+See [CHANGELOG.md][16].
 
-[1]: #getting-started
-[2]: #running-the-explorer
-[3]: #dependencies
-[4]: #graph
-[5]: #method-1-running-your-own-instance
-[6]: #method-2-pointing-to-an-existing-instance-of-graph
-[7]: #useful-extras
-[8]: #running-devnet
-[9]: #changelog
-[10]: ../graph/README.md
-[11]: https://pnpm.io/installation
-[12]: https://docs.docker.com/get-docker/
-[13]: https://podman.io/docs/installation
-[14]: https://docs.kadena.io/build/quickstart
-[15]: ./CHANGELOG.md
+[1]: ./kadena-block-explorer.png
+[2]: #getting-started
+[3]: #running-the-explorer
+[4]: #dependencies
+[5]: #graph
+[6]: #method-1-running-your-own-instance
+[7]: #method-2-pointing-to-an-existing-instance-of-graph
+[8]: #useful-extras
+[9]: #running-devnet
+[10]: #changelog
+[11]: ../graph/README.md
+[12]: https://pnpm.io/installation
+[13]: https://docs.docker.com/get-docker/
+[14]: https://podman.io/docs/installation
+[15]: https://docs.kadena.io/build/quickstart
+[16]: ./CHANGELOG.md

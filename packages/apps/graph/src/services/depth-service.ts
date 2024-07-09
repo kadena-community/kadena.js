@@ -1,6 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const getLatestBlockHeights = async (chainIds?: string[]) =>
   await prismaClient.block.groupBy({
     by: ['chainId'],

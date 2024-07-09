@@ -2,13 +2,14 @@ const ALLOWED_DEPENDENCIES = {
   '@kadena/js-monorepo': [
     '@changesets/cli',
     '@kadena-dev/markdown',
+    'buffer',
+    'jiti',
     'knip',
     'only-allow',
-    'prettier',
     'prettier-plugin-organize-imports',
     'prettier-plugin-packagejson',
+    'prettier',
     'syncpack',
-    'tsx',
     'turbo',
   ],
 };
