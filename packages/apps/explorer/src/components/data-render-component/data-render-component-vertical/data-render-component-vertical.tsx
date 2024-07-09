@@ -1,4 +1,5 @@
 import ValueLoader from '@/components/loading-skeleton/value-loader/value-loader';
+import Link from '@/components/routing/link';
 import { MonoArrowOutward } from '@kadena/kode-icons/system';
 import { Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
@@ -39,14 +40,14 @@ const DataRenderComponentVertical: React.FC<IDataRenderComponentProps> = ({
           {field.link ? (
             <dd className={descriptionDetailsLinkClass}>
               <ValueLoader isLoading={isLoading}>
-                <a href={field.link} className={linkClass}>
+                <Link href={field.link} className={linkClass}>
                   <Text variant="code" className={textClass}>
                     {field.value}
                   </Text>
-                </a>
-                <a href={field.link} className={iconLinkClass}>
+                </Link>
+                <Link href={field.link} className={iconLinkClass}>
                   <MonoArrowOutward className={linkIconClass} />
-                </a>
+                </Link>
               </ValueLoader>
             </dd>
           ) : field.type === 'code' ? (

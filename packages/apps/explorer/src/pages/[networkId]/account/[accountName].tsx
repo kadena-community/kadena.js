@@ -8,11 +8,11 @@ import { FormatStatus } from '@/components/compact-table/utils/format-status';
 import Layout from '@/components/layout/layout';
 import { loadingData } from '@/components/loading-skeleton/loading-data/loading-data-accountquery';
 import ValueLoader from '@/components/loading-skeleton/value-loader/value-loader';
+import { useRouter } from '@/components/routing/useRouter';
 import { useQueryContext } from '@/context/query-context';
 import { account } from '@/graphql/queries/account.graph';
 import { accountNameTextClass } from '@/styles/account.css';
 import { Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
-import { useRouter } from 'next/router';
 import type { FC, Key } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
 
@@ -31,12 +31,12 @@ const Account: FC = () => {
   const { setQueries } = useQueryContext();
 
   const accountQueryVariables = {
-    accountName: accountName ?? '',
+    accountName,
   };
 
   const { loading, data, error } = useAccountQuery({
     variables: accountQueryVariables,
-    skip: !accountName,
+    skip: !router.query.accountName,
   });
 
   useEffect(() => {
@@ -70,7 +70,7 @@ const Account: FC = () => {
   const handleSelectedTab = (tab: Key): void => {
     setSelectedTab(tab as string);
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    router.replace(`#${tab}`);
+    router.push(`#${tab}`);
   };
 
   const { fungibleAccount } = innerData ?? {};
