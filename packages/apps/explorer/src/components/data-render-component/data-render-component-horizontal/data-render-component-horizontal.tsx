@@ -1,6 +1,9 @@
 import CopyButton from '@/components/copy-button/copy-button';
+import ValueLoader from '@/components/loading-skeleton/value-loader/value-loader';
 import { MonoArrowOutward } from '@kadena/kode-icons';
 import { Stack, Text } from '@kadena/kode-ui';
+import { atoms } from '@kadena/kode-ui/styles';
+import classNames from 'classnames';
 import React from 'react';
 import {
   dataFieldClass,
@@ -22,11 +25,17 @@ interface IDataRenderComponentField {
 
 interface IDataRenderComponentProps {
   fields: IDataRenderComponentField[];
+  isLoading?: boolean;
 }
 
 const DataRenderComponentHorizontal: React.FC<IDataRenderComponentProps> = ({
   fields,
+  isLoading = false,
 }) => {
+  const dataFieldClassWithMargin = classNames(
+    dataFieldClass,
+    atoms({ marginBlockStart: 'xs' }),
+  );
   return (
     <div className={flexClass}>
       {fields.map((field, index) => (
@@ -34,31 +43,48 @@ const DataRenderComponentHorizontal: React.FC<IDataRenderComponentProps> = ({
           <div className={headerClass}>{field.key}</div>
           {field.link ? (
             <div className={dataFieldLinkClass}>
-              <a href={field.link} className={linkClass}>
-                <Text variant="code" className={dataFieldClass}>
-                  {field.value}
-                </Text>
-              </a>
-              <a href={field.link} className={iconLinkClass}>
-                <MonoArrowOutward className={linkIconClass} />
-              </a>
+              <ValueLoader isLoading={isLoading}>
+                <a href={field.link} className={linkClass}>
+                  <Text variant="code" className={dataFieldClassWithMargin}>
+                    {field.value}
+                  </Text>
+                </a>
+                <a href={field.link} className={iconLinkClass}>
+                  <MonoArrowOutward className={linkIconClass} />
+                </a>
+              </ValueLoader>
             </div>
           ) : field.type === 'code' ? (
-            <Text variant="code" className={dataFieldClass}>
-              <pre>{field.value}</pre>
+            <Text variant="code" className={dataFieldClassWithMargin}>
+              <ValueLoader isLoading={isLoading}>
+                <pre>{field.value}</pre>
+              </ValueLoader>
             </Text>
           ) : Array.isArray(field.value) ? (
             field.value.map((value, index) => (
-              <Text variant="code" className={dataFieldClass} key={index}>
-                {value}
+              <Text
+                variant="code"
+                className={dataFieldClassWithMargin}
+                key={index}
+              >
+                <ValueLoader isLoading={isLoading}>{value}</ValueLoader>
               </Text>
             ))
           ) : (
             <Stack gap="md">
-              <Text variant="code" className={dataFieldClass}>
-                <span id="requestkey">{field.value}</span>
+              <Text
+                variant="code"
+                className={classNames(dataFieldClassWithMargin)}
+              >
+                <ValueLoader isLoading={isLoading}>
+                  <span id="requestkey">{field.value}</span>
+                </ValueLoader>
               </Text>
-              {field.canCopy && <CopyButton id="requestkey" />}
+              {field.canCopy && (
+                <ValueLoader isLoading={isLoading}>
+                  <CopyButton id="requestkey" />
+                </ValueLoader>
+              )}
             </Stack>
           )}
         </div>

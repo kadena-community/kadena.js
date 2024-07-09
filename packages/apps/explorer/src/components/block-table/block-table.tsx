@@ -14,6 +14,7 @@ import BlockTableHeader from './block-header/block-header';
 import { blockHeaderFixedClass } from './block-header/block-header.css';
 import { useBlockInfo } from './block-info-context/block-info-context';
 import BlockRow from './block-row/block-row';
+import { blockDataLoading } from './loading-data';
 
 export const startColumns = [
   { title: 'Chain', subtitle: 'Number' },
@@ -36,19 +37,27 @@ const getmaxBlockTxCount = (blockData: IChainBlock): number => {
   return txCounts;
 };
 
+const blockHeightsLoading = [0, 1, 2, 3];
+
 const BlockTable: React.FC = () => {
-  const { data: newBlocksData } = useNewBlocksSubscription();
-  const { data: lastBlockHeight } = useLastBlockHeightQuery();
-  const { data: oldBlocksData } = useCompletedBlockHeightsQuery({
-    variables: {
-      // Change this if the table needs to show more than 80 blocks at once (on startup)
-      first: 80,
-      // We don't want only completed heights
-      completedHeights: false,
-      heightCount: 4,
-    },
-  });
+  const { data: newBlocksData, loading: newBlocksLoading } =
+    useNewBlocksSubscription();
+  const { data: lastBlockHeight, loading: lastBlockLoading } =
+    useLastBlockHeightQuery();
+  const { data: oldBlocksData, loading: oldBlocksLoading } =
+    useCompletedBlockHeightsQuery({
+      variables: {
+        // Change this if the table needs to show more than 80 blocks at once (on startup)
+        first: 80,
+        // We don't want only completed heights
+        completedHeights: false,
+        heightCount: 4,
+      },
+    });
+
   const { selectedHeight } = useBlockInfo();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   const [blockData, setBlockData] = useState<IChainBlock>({});
   const [maxBlockTxCount, setmaxBlockTxCount] = useState(0);
@@ -61,6 +70,25 @@ const BlockTable: React.FC = () => {
     rootMargin: '-160px 0px 0px 0px',
     initialInView: true,
   });
+
+  useEffect(() => {
+    if (isMounted) return;
+
+    if (newBlocksLoading || lastBlockLoading || oldBlocksLoading) {
+      setIsLoading(true);
+    } else {
+      setTimeout(() => {
+        setIsLoading(false);
+        setIsMounted(true);
+      }, 200);
+    }
+  }, [
+    isLoading,
+    isMounted,
+    newBlocksLoading,
+    lastBlockLoading,
+    oldBlocksLoading,
+  ]);
 
   useEffect(() => {
     if (lastBlockHeight?.lastBlockHeight) {
@@ -132,8 +160,9 @@ const BlockTable: React.FC = () => {
         width="100%"
       >
         <BlockTableHeader
+          isLoading={isLoading}
           startColumns={startColumns}
-          heightColumns={blockHeights}
+          heightColumns={isLoading ? blockHeightsLoading : blockHeights}
           endColumn={endColumn}
         />
       </Stack>
@@ -146,15 +175,22 @@ const BlockTable: React.FC = () => {
       >
         <span ref={ref} style={{ height: 0 }} />
         {!inView && <Stack marginBlock="xxl" />}
-        {Object.keys(blockData).map((chainId) => (
-          <BlockRow
-            key={chainId}
-            blockRowData={blockData[Number(chainId)]}
-            heights={blockHeights}
-            chainId={Number(chainId)}
-            maxBlockTxCount={maxBlockTxCount}
-          />
-        ))}
+        {Object.keys(isLoading ? blockDataLoading : blockData).map(
+          (chainId) => (
+            <BlockRow
+              isLoading={isLoading}
+              key={chainId}
+              blockRowData={
+                isLoading
+                  ? blockDataLoading[Number(chainId)]
+                  : blockData[Number(chainId)]
+              }
+              heights={isLoading ? blockHeightsLoading : blockHeights}
+              chainId={Number(chainId)}
+              maxBlockTxCount={maxBlockTxCount}
+            />
+          ),
+        )}
       </Stack>
     </>
   );

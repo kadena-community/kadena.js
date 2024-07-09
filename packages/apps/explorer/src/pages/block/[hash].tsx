@@ -1,18 +1,23 @@
-import type { Transaction } from '@/__generated__/sdk';
+import type { BlockQuery, Transaction } from '@/__generated__/sdk';
 import { useBlockQuery } from '@/__generated__/sdk';
 import BlockTransactions from '@/components/block-transactions/block-transactions';
 import DataRenderComponent from '@/components/data-render-component/data-render-component';
 import Layout from '@/components/layout/layout';
+import ValueLoader from '@/components/loading-skeleton/value-loader/value-loader';
 import { useQueryContext } from '@/context/query-context';
 import { block } from '@/graphql/queries/block.graph';
 import { truncateValues } from '@/services/format';
 import { Badge, Heading, Stack, TabItem, Tabs } from '@kadena/kode-ui';
+import { atoms } from '@kadena/kode-ui/styles';
 
 import { useRouter } from 'next/router';
 import type { Key } from 'react';
 import React, { useEffect, useState } from 'react';
+import { loadingData } from '../../components/loading-skeleton/loading-data/loading-data-blockquery';
 
 const Block: React.FC = () => {
+  const [innerData, setInnerData] = useState<BlockQuery>(loadingData);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const [selectedTab, setSelectedTab] = useState<string>('Header');
 
@@ -28,6 +33,7 @@ const Block: React.FC = () => {
 
   const handleSelectedTab = (tab: Key): void => {
     setSelectedTab(tab as string);
+
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     router.replace(`#${tab}`);
   };
@@ -45,106 +51,137 @@ const Block: React.FC = () => {
     skip: !router.query.hash,
   });
 
+  useEffect(() => {
+    if (loading) {
+      setIsLoading(true);
+      return;
+    }
+
+    if (data) {
+      setTimeout(() => {
+        setIsLoading(false);
+        setInnerData(data);
+      }, 200);
+    }
+  }, [loading, data]);
+
   return (
     <Layout>
-      {loading && <div>Loading...</div>}
       {error && <div>Error: {error.message}</div>}
 
-      {data && data.block && (
+      {innerData && innerData.block && (
         <>
           <Stack margin="md">
-            <Heading as="h1">
+            <Heading
+              as="h1"
+              className={atoms({
+                display: 'flex',
+                width: '100%',
+                alignItems: 'center',
+              })}
+            >
               Block{' '}
-              {truncateValues(data.block.hash, { length: 16, endChars: 5 })}
+              <ValueLoader isLoading={isLoading}>
+                {truncateValues(innerData.block.hash, {
+                  length: 16,
+                  endChars: 5,
+                })}
+              </ValueLoader>
             </Heading>
           </Stack>
           <Tabs selectedKey={selectedTab} onSelectionChange={handleSelectedTab}>
             <TabItem title="Header" key="Header">
               <DataRenderComponent
+                isLoading={isLoading}
                 type="horizontal"
                 fields={[
                   {
                     key: 'Block Height',
-                    value: data.block.height.toString(),
+                    value: innerData.block.height.toString(),
                   },
                   {
                     key: 'Creation Time',
-                    value: new Date(data.block.creationTime).toLocaleString(),
+                    value: new Date(
+                      innerData.block.creationTime,
+                    ).toLocaleString(),
                   },
                   {
                     key: 'Chain',
-                    value: data.block.chainId,
+                    value: innerData.block.chainId,
                   },
                 ]}
               />
               <DataRenderComponent
+                isLoading={isLoading}
                 fields={[
                   {
                     key: 'Parent',
-                    value: data.block.parent?.hash.toString() || 'Genesis',
-                    link: `/block/${data.block.parent?.hash}`,
+                    value: innerData.block.parent?.hash.toString() || 'Genesis',
+                    link: `/block/${innerData.block.parent?.hash}`,
                   },
                   {
                     key: 'POW Hash',
-                    value: data.block.powHash,
+                    value: innerData.block.powHash,
                   },
                   {
                     key: 'Payload Hash',
-                    value: data.block.payloadHash,
+                    value: innerData.block.payloadHash,
                   },
                   {
                     key: 'Target',
-                    value: data.block.target,
+                    value: innerData.block.target,
                   },
                   {
                     key: 'Hash',
-                    value: data.block.hash,
+                    value: innerData.block.hash,
                     canCopy: true,
                   },
                   {
                     key: 'Weight',
-                    value: data.block.weight,
+                    value: innerData.block.weight,
                   },
                   {
                     key: 'Epoch Start',
-                    value: new Date(data.block.epoch).toLocaleString(),
+                    value: new Date(innerData.block.epoch).toLocaleString(),
                   },
                   {
                     key: 'Target',
-                    value: data.block.target,
+                    value: innerData.block.target,
                   },
                   {
                     key: 'Flags',
-                    value: data.block.flags,
+                    value: innerData.block.flags,
                   },
                   {
                     key: 'Nonce',
-                    value: data.block.nonce,
+                    value: innerData.block.nonce,
                   },
                 ]}
               />
               <DataRenderComponent
+                isLoading={isLoading}
                 title="Neighbors"
-                fields={data.block.neighbors.map((neighbor) => ({
+                fields={innerData.block.neighbors.map((neighbor) => ({
                   key: `Chain ${neighbor.chainId}`,
                   value: neighbor.hash,
                   link: `/block/${neighbor.hash}`,
                 }))}
               />
               <DataRenderComponent
+                isLoading={isLoading}
                 title="Miner"
                 fields={[
                   {
                     key: 'Account',
-                    value: data.block.minerAccount.accountName,
+                    value: innerData.block.minerAccount.accountName,
                   },
                   {
                     key: 'Public Keys',
-                    value: data.block.minerAccount.guard.keys,
+                    value: innerData.block.minerAccount.guard.keys,
                   },
                   {
                     key: 'Predicate',
-                    value: data.block.minerAccount.guard.predicate,
+                    value: innerData.block.minerAccount.guard.predicate,
                   },
                 ]}
               />
@@ -153,13 +190,18 @@ const Block: React.FC = () => {
               title={
                 <>
                   Transactions{' '}
-                  <Badge size="sm">{data.block.transactions.totalCount}</Badge>
+                  <ValueLoader isLoading={isLoading} variant="icon">
+                    <Badge size="sm">
+                      {innerData.block.transactions.edges.length}
+                    </Badge>
+                  </ValueLoader>
                 </>
               }
               key="Transactions"
             >
               <BlockTransactions
-                transactions={data.block.transactions.edges.map(
+                isLoading={isLoading}
+                transactions={innerData.block.transactions.edges.map(
                   (edge) => edge.node as Transaction,
                 )}
               />
