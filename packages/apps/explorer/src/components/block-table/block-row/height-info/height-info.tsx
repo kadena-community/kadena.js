@@ -17,9 +17,13 @@ interface IProps {
 const HeightInfo: FC<IProps> = ({ height }) => {
   const [innerData, setInnerData] = useState<BlockQuery>(loadingData);
   const [isLoading, setIsLoading] = useState(true);
+  const [paginationFirstRecord, setPaginationFirstRecord] = useState(10);
+  const [paginationLastRecord, setPaginationLastRecord] = useState(0);
 
   const blockQueryVariables = {
     hash: height?.hash ?? '',
+    first: paginationFirstRecord,
+    last: paginationLastRecord,
     skip: !height?.hash,
   };
 
@@ -54,7 +58,7 @@ const HeightInfo: FC<IProps> = ({ height }) => {
       flexDirection="column"
       gap="xs"
     >
-      <Stack alignItems="center">
+      <Stack alignItems="center" paddingInlineEnd="md">
         <Heading as="h6">Block {height.height}</Heading>
 
         <Stack flex={1} />
@@ -68,6 +72,8 @@ const HeightInfo: FC<IProps> = ({ height }) => {
       </Stack>
 
       <BlockTransactions
+        pageSize={paginationFirstRecord}
+        totalCount={innerData.block?.transactions.totalCount ?? 0}
         isLoading={isLoading}
         transactions={
           innerData?.block?.transactions.edges.map(

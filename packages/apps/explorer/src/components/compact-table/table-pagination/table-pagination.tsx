@@ -9,27 +9,36 @@ import React from 'react';
 import PaginationButton from './pagination-button/pagination-button';
 import { paginationClass } from './styles.css';
 
-const TablePagination: FC = () => {
+interface IProps {
+  totalCount: number;
+  pageSize: number;
+}
+
+const TablePagination: FC<IProps> = ({ pageSize, totalCount }) => {
+  const totalPages = Math.ceil(totalCount / pageSize);
+  const pageArray = Array.from({ length: totalPages - 1 }, (_, i) => i).sort();
+  console.log({ pageArray });
   return (
     <Stack as="ul" gap="xs" className={paginationClass}>
       <PaginationButton>
         <MonoKeyboardArrowLeft />
       </PaginationButton>
-      <PaginationButton>1</PaginationButton>
-      <PaginationButton>d</PaginationButton>
-      <PaginationButton>d</PaginationButton>
+      {pageArray.map((item) => (
+        <PaginationButton key={item}>{item}</PaginationButton>
+      ))}
+
       <PaginationButton>
         <MonoKeyboardArrowRight />
       </PaginationButton>
       <Stack flex={1} />
       <Stack>
-        <Select defaultSelectedKey={1} placeholder="Select page">
+        {/* <Select defaultSelectedKey={1} placeholder="Select page">
           <SelectItem>
             <Stack alignItems="center" gap="sm" marginInlineEnd="lg">
               <MonoRedo /> 1
             </Stack>
           </SelectItem>
-        </Select>
+        </Select> */}
       </Stack>
     </Stack>
   );

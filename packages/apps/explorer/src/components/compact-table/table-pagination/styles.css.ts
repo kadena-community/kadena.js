@@ -25,6 +25,6 @@ export const buttonClass = style([
 
 export const paginationClass = style([
   atoms({
-    paddingInlineStart: 'md',
+    paddingInline: 'md',
   }),
 ]);

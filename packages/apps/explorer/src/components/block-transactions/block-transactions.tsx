@@ -10,9 +10,16 @@ import { noTransactionsTitleClass } from './styles.css';
 interface IProps {
   transactions: Transaction[];
   isLoading: boolean;
+  totalCount: number;
+  pageSize: number;
 }
 
-const BlockTransactions: FC<IProps> = ({ transactions, isLoading }) => {
+const BlockTransactions: FC<IProps> = ({
+  transactions,
+  isLoading,
+  totalCount,
+  pageSize,
+}) => {
   if (!transactions.length) {
     return (
       <Stack
@@ -31,6 +38,8 @@ const BlockTransactions: FC<IProps> = ({ transactions, isLoading }) => {
 
   return (
     <CompactTable
+      pageSize={pageSize}
+      totalCount={totalCount}
       isLoading={isLoading}
       fields={[
         {
