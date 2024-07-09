@@ -2,12 +2,7 @@ import type { INetwork } from '@/context/networks-context';
 
 export const validateNewNetwork = (
   networks: INetwork[],
-  newNetwork: {
-    label: string;
-    networkId: string;
-    chainwebUrl: string | undefined;
-    graphUrl: string;
-  },
+  newNetwork: INetwork,
 ): string[] => {
   const errors = [];
 

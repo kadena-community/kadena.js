@@ -30,8 +30,6 @@ const Account: FC = () => {
     accountName,
   };
 
-  console.log(accountName);
-
   const { loading, data, error } = useAccountQuery({
     variables: accountQueryVariables,
     skip: !router.query.accountName,

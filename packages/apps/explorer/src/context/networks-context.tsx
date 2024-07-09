@@ -92,7 +92,6 @@ const NetworkContextProvider = (props: {
     if (!networks.length || !isMounted) return;
     const network =
       networks.find((n) => n.networkId === networkId) ?? networks[0];
-    console.log(network, networkId);
     setActiveNetwork(network);
   }, [networkId, networks, isMounted]);
 
@@ -126,7 +125,6 @@ const NetworkContextProvider = (props: {
       localStorage.setItem(storageKey, JSON.stringify(storage));
       window.dispatchEvent(new Event(storageKey));
 
-      setNetworks((v) => [...v, newNetwork]);
       setActiveNetwork(newNetwork);
       localStorage.setItem(selectedNetworkKey, JSON.stringify(newNetwork));
 

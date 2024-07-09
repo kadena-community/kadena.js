@@ -1,10 +1,6 @@
-import { useNetworkInfoQuery } from '@/__generated__/sdk';
 import type { INetwork } from '@/context/networks-context';
 import { useNetwork } from '@/context/networks-context';
-import type { ApolloError, NormalizedCacheObject } from '@apollo/client';
-import { ApolloClient, InMemoryCache, split } from '@apollo/client';
-import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
-import { getMainDefinition } from '@apollo/client/utilities';
+import { MonoCheck, MonoClose } from '@kadena/kode-icons/system';
 import {
   Button,
   Dialog,
@@ -16,47 +12,9 @@ import {
   Text,
   TextField,
 } from '@kadena/kode-ui';
-import { createClient } from 'graphql-ws';
 import type { FC, FormEventHandler } from 'react';
 import React, { useState } from 'react';
 import { getFormValues, validateNewNetwork } from './utils';
-
-// next/apollo-link bug: https://github.com/dotansimha/graphql-yoga/issues/2194
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { YogaLink } = require('@graphql-yoga/apollo-link');
-
-const getApolloClient = (network: INetwork) => {
-  const httpLink = new YogaLink({
-    endpoint: network?.graphUrl,
-  });
-
-  const wsLink = new GraphQLWsLink(
-    createClient({
-      url: network!.wsGraphUrl,
-    }),
-  );
-
-  const splitLink = split(
-    ({ query }) => {
-      const definition = getMainDefinition(query);
-      return (
-        definition.kind === 'OperationDefinition' &&
-        definition.operation === 'subscription'
-      );
-    },
-    wsLink, // Use WebSocket link for subscriptions
-    httpLink, // Use HTTP link for queries and mutations
-  );
-
-  console.log(222, { splitLink });
-
-  const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
-    link: splitLink,
-    cache: new InMemoryCache(),
-  });
-
-  return client;
-};
 
 interface IProps {
   handleOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -64,32 +22,9 @@ interface IProps {
 }
 
 const NewNetwork: FC<IProps> = ({ handleOpen, createNetwork }) => {
-  const { networks } = useNetwork();
+  const { networks, addNetwork } = useNetwork();
   const [formError, setFormError] = useState<(string | undefined)[]>();
-  const [client, setClient] = useState<
-    ApolloClient<NormalizedCacheObject> | undefined
-  >(undefined);
-
-  let loading: boolean = false;
-  let data: any;
-  let error: ApolloError | undefined;
-
-  //const apolloc = useApolloClient(client);
-
-  try {
-    const result = useNetworkInfoQuery({
-      client: client,
-      skip: !client,
-    });
-    console.log({ result });
-
-    loading = result.loading;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    data = result.data;
-    error = result.error;
-  } catch (e) {
-    console.error(333, e);
-  }
+  const [checkStatus, setCheckStatus] = useState<number>(0);
 
   const handleCreateNetwork: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -98,45 +33,68 @@ const NewNetwork: FC<IProps> = ({ handleOpen, createNetwork }) => {
     let { label, networkId, chainwebUrl, graphUrl } =
       getFormValues<INetwork>(data);
 
-    const errors = validateNewNetwork(networks, {
-      label,
+    const newNetwork: INetwork = {
       networkId,
+      label,
       chainwebUrl,
       graphUrl,
-    });
+      wsGraphUrl: graphUrl,
+    };
 
-    console.log({ errors });
+    const errors = validateNewNetwork(networks, newNetwork);
+
     setFormError(errors);
 
-    // if (errors.length > 0) {
-    //   console.warn('Errors adding network: ', errors.join('\n'));
-    //   return;
-    // }
+    if (errors.length > 0) {
+      console.warn('Errors adding network: ', errors.join('\n'));
+      return;
+    }
 
     if (label.length === 0) {
       label = networkId;
     }
 
-    setClient(
-      getApolloClient({
-        networkId: 'devnet',
-        label: 'devnet',
-        chainwebUrl: 'api.testnet.chainweb.com',
-        graphUrl: 'https://localhost:4000/graphql',
-        wsGraphUrl: 'https://localhost:4000/graphql',
-        explorerUrl: 'https://explorer.testnet.kadena.io/',
+    const result = await fetch(graphUrl, {
+      method: 'POST',
+      headers: {
+        accept:
+          'application/graphql-response+json, application/json, multipart/mixed',
+        'cache-control': 'no-cache',
+        'content-type': 'application/json',
+        pragma: 'no-cache',
+        'sec-fetch-mode': 'cors',
+        'sec-fetch-site': 'cross-site',
+      },
+      //body: '{"query":"query networkInfo {\\n  networkInfo {\\n    apiVersion\\n    networkHost\\n    networkId\\n    transactionCount\\n    coinsInCirculation\\n    networkHashRate\\n    totalDifficulty\\n    __typename\\n  }\\n}","variables":{},"operationName":"networkInfo","extensions":{}}',
+      body: JSON.stringify({
+        query: `query networkInfo {
+            networkInfo {
+              apiVersion
+              networkHost
+              networkId
+              transactionCount
+              coinsInCirculation
+              networkHashRate
+              totalDifficulty__typename
+            }
+          }`,
+        variables: {},
+        operationName: 'networkInfo',
+        extensions: {},
       }),
-    );
+    });
+    setCheckStatus(result.status);
 
-    // addNetwork({
-    //   networkId,
-    //   label,
-    //   chainwebUrl,
-    //   graphUrl,
-    //   wsGraphUrl: graphUrl,
-    // });
+    try {
+      await result.json();
 
-    //createNetwork(e);
+      if (result.status === 200) {
+        addNetwork(newNetwork);
+        createNetwork(e);
+      }
+    } catch (e) {
+      setCheckStatus(500);
+    }
   };
 
   return (
@@ -165,7 +123,6 @@ const NewNetwork: FC<IProps> = ({ handleOpen, createNetwork }) => {
               name="graphUrl"
               isRequired
             ></TextField>
-            {/* <TextField label="Chainweb URL" name="chainwebUrl"></TextField> */}
 
             {formError && formError.length > 0 && (
               <Stack flexDirection="column">
@@ -177,8 +134,16 @@ const NewNetwork: FC<IProps> = ({ handleOpen, createNetwork }) => {
               </Stack>
             )}
 
-            {loading && <Stack>loading</Stack>}
-            {error && <Stack>the graphURL is not a correct graph</Stack>}
+            {checkStatus === 200 && (
+              <Stack>
+                <MonoCheck />
+              </Stack>
+            )}
+            {checkStatus > 200 && (
+              <Stack>
+                <MonoClose /> There is an issue with the graph URL
+              </Stack>
+            )}
 
             <Stack flex={1} justifyContent="flex-end" marginBlock="md">
               <Button type="submit">Create Network</Button>
