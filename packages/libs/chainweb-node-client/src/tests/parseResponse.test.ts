@@ -49,3 +49,14 @@ test('should fail if Response status not `ok`', async () => {
 
   return expect(parseFailedResponse).rejects.toThrowError(mockFailureResponse);
 });
+
+test('returns response itself if ok is falsy and its not parsable to text', async () => {
+  const invalidResponse: any = {
+    ok: false,
+    text: () => Promise.reject(new Error('Some error')),
+  };
+
+  return expect(parseResponse(invalidResponse as Response)).resolves.toBe(
+    invalidResponse,
+  );
+});

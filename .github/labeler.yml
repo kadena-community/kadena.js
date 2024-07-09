@@ -139,3 +139,6 @@ kadena.js:
 e2e-proof-of-us:
   - changed-files:
       - any-glob-to-any-file: packages/e2e/e2e-proof-of-us/*
+'@kadena/dev-wallet-example':
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/dev-wallet-example/*

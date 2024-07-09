@@ -14,7 +14,6 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
   return (
     <div className={documentStyle}>
       <Header />
-      <Stack marginBlock="xl" />
       <Stack
         as="main"
         flexDirection="column"

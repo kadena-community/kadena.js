@@ -25,7 +25,7 @@ import {
 } from '@kadena/kode-ui';
 import { atoms } from '@kadena/kode-ui/styles';
 import { FC, useContext } from 'react';
-import { Link, Navigate, Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 
 export const Layout: FC = () => {
   const { networks, activeNetwork, setActiveNetwork } = useNetwork();
@@ -51,10 +51,6 @@ export const Layout: FC = () => {
   const handleLogOut = () => {
     lockProfile();
   };
-
-  if (!isUnlocked) {
-    return <Navigate to="/select-profile" replace />;
-  }
 
   return (
     <>
@@ -113,15 +109,15 @@ export const Layout: FC = () => {
         </Stack>
       </NavHeader>
       <main>
-        <Stack className={pageClass}>
+        <Stack
+          className={pageClass}
+          style={{
+            backgroundImage: `radial-gradient(circle farthest-side at 50% 170%, ${accentColor}, transparent 75%)`,
+          }}
+        >
           <Sidebar></Sidebar>
           <Box padding="n10" className={mainColumnStyle}>
-            <div
-              className={backgroundStyle}
-              style={{
-                backgroundImage: `radial-gradient(circle farthest-side at 50% 240%, ${accentColor}, transparent 75%)`,
-              }}
-            ></div>
+            <div className={backgroundStyle}></div>
             <Outlet />
           </Box>
         </Stack>

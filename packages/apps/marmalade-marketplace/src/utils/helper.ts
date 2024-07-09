@@ -4,7 +4,7 @@ import { PactNumber } from "@kadena/pactjs";
 import { env } from '@/utils/env';
 
 export const getPolicies = (policyConfig: ICreateTokenPolicyConfig) => {
-    const policyMap: { [key: string]: string } = { 
+    const policyMap: { [key: string]: string } = {
       nonUpdatableURI: "marmalade-v2.non-updatable-uri-policy-v1",
       customPolicies: "",
       guarded: "marmalade-v2.guard-policy-v1",
@@ -26,7 +26,7 @@ export const getPolicies = (policyConfig: ICreateTokenPolicyConfig) => {
     const filteredGuardInput = Object.fromEntries(
       Object.entries(guardInput).filter(([key, value]) => value !== '[EXCLUDED]')
     );
-  
+
     return {
       ...(filteredGuardInput.uriGuard && { uriGuard: formatKeyset(filteredGuardInput.uriGuard) }),
       ...(filteredGuardInput.burnGuard && { burnGuard: formatKeyset(filteredGuardInput.burnGuard) }),
@@ -79,7 +79,7 @@ export const getPolicies = (policyConfig: ICreateTokenPolicyConfig) => {
   });
 
   export const generateSpireKeyGasCapability = (account:string): CommonProps['capabilities'] => {
-    const capabilities:CommonProps['capabilities'] = []; 
+    const capabilities:CommonProps['capabilities'] = [];
     capabilities.push({name: `${env.WEBAUTHN_WALLET}.GAS_PAYER`, props: [account, new PactNumber(0).toPactInteger(), new PactNumber(0).toPactDecimal() ]});
     capabilities.push({name: `${env.WEBAUTHN_WALLET}.GAS`, props: [account]});
     return capabilities;
@@ -89,16 +89,16 @@ export const getPolicies = (policyConfig: ICreateTokenPolicyConfig) => {
     namespace: string;
     name: string;
   }
-  
-  interface Policy {
+
+  export interface Policy {
     refSpec: RefSpec[];
     refName: RefSpec;
   }
-  
+
 
   export const checkPolicies = (policies: Policy[]): ICreateTokenPolicyConfig => {
     const result: ICreateTokenPolicyConfig = {};
-  
+
     policies.forEach(policy => {
       if (policy.refName.name === 'guard-policy-v1') {
         result.guarded = true;
@@ -107,7 +107,6 @@ export const getPolicies = (policyConfig: ICreateTokenPolicyConfig) => {
         result.nonFungible = true;
       }
     });
-  
+
     return result;
   };
-  
