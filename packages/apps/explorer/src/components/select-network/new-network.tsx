@@ -54,38 +54,33 @@ const NewNetwork: FC<IProps> = ({ handleOpen, createNetwork }) => {
       label = networkId;
     }
 
-    const result = await fetch(graphUrl, {
-      method: 'POST',
-      headers: {
-        accept:
-          'application/graphql-response+json, application/json, multipart/mixed',
-        'cache-control': 'no-cache',
-        'content-type': 'application/json',
-        pragma: 'no-cache',
-        'sec-fetch-mode': 'cors',
-        'sec-fetch-site': 'cross-site',
-      },
-      //body: '{"query":"query networkInfo {\\n  networkInfo {\\n    apiVersion\\n    networkHost\\n    networkId\\n    transactionCount\\n    coinsInCirculation\\n    networkHashRate\\n    totalDifficulty\\n    __typename\\n  }\\n}","variables":{},"operationName":"networkInfo","extensions":{}}',
-      body: JSON.stringify({
-        query: `query networkInfo {
+    try {
+      const result = await fetch(graphUrl, {
+        method: 'POST',
+        headers: {
+          accept:
+            'application/graphql-response+json, application/json, multipart/mixed',
+          'cache-control': 'no-cache',
+          'content-type': 'application/json',
+          pragma: 'no-cache',
+          'sec-fetch-mode': 'cors',
+          'sec-fetch-site': 'cross-site',
+        },
+        //body: '{"query":"query networkInfo {\\n  networkInfo {\\n    apiVersion\\n    networkHost\\n    networkId\\n    transactionCount\\n    coinsInCirculation\\n    networkHashRate\\n    totalDifficulty\\n    __typename\\n  }\\n}","variables":{},"operationName":"networkInfo","extensions":{}}',
+        body: JSON.stringify({
+          query: `query networkInfo {
             networkInfo {
-              apiVersion
-              networkHost
-              networkId
-              transactionCount
-              coinsInCirculation
-              networkHashRate
-              totalDifficulty__typename
+              totalDifficulty
             }
           }`,
-        variables: {},
-        operationName: 'networkInfo',
-        extensions: {},
-      }),
-    });
-    setCheckStatus(result.status);
+          variables: {},
+          operationName: 'networkInfo',
+          extensions: {},
+        }),
+      });
+      setCheckStatus(result.status);
 
-    try {
+      console.log(result);
       await result.json();
 
       if (result.status === 200) {
@@ -93,6 +88,7 @@ const NewNetwork: FC<IProps> = ({ handleOpen, createNetwork }) => {
         createNetwork(e);
       }
     } catch (e) {
+      console.log(222, e);
       setCheckStatus(500);
     }
   };
