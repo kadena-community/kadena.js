@@ -12,7 +12,7 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
         <ThemeProvider
           attribute="class"
           enableSystem={false}
-          defaultTheme="light"
+          defaultTheme="dark"
           value={{
             light: 'light',
             dark: darkThemeClass,
