@@ -117,6 +117,7 @@ const NetworkContextProvider = (props: {
     const storage: INetwork[] = JSON.parse(
       localStorage.getItem(storageKey) ?? '[]',
     );
+
     if (
       !storage.find((network) => network.networkId === newNetwork.networkId)
     ) {
@@ -163,6 +164,12 @@ const NetworkContextProvider = (props: {
 
     return client;
   }, [activeNetwork]);
+
+  useEffect(() => {
+    if (!isMounted && router.asPath === '/' && !activeNetwork) {
+      setActiveNetwork(networks[0]);
+    }
+  }, [isMounted, activeNetwork]);
 
   if (!isMounted || !activeNetwork) return <div>loading</div>;
 
