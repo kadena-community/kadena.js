@@ -1,3 +1,4 @@
+import Link from '@/components/routing/link';
 import { menuConfig } from '@/utils/menuConfig';
 import {
   MonoLogoGithub,
@@ -6,7 +7,6 @@ import {
   MonoMoreVert,
 } from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
-import Link from 'next/link';
 import type { FC } from 'react';
 import React, { useState } from 'react';
 import { Media } from '../layout/media';

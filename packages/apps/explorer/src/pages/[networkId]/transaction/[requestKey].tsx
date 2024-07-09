@@ -1,12 +1,12 @@
 import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
 import Layout from '@/components/layout/layout';
+import { useRouter } from '@/components/routing/useRouter';
 import { TransactionRequestComponent } from '@/components/transaction-components/transaction-request-component';
 import { TransactionResultComponent } from '@/components/transaction-components/transaction-result-component';
 import { useQueryContext } from '@/context/query-context';
 import { transactionRequestKey } from '@/graphql/pages/transaction/transaction-requestkey.graph';
 import { truncateValues } from '@/services/format';
 import { Heading, Stack, TabItem, Tabs } from '@kadena/kode-ui';
-import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
 const Transaction: React.FC = () => {

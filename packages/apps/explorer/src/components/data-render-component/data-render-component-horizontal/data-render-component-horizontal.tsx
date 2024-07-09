@@ -1,5 +1,6 @@
 import CopyButton from '@/components/copy-button/copy-button';
 import ValueLoader from '@/components/loading-skeleton/value-loader/value-loader';
+import Link from '@/components/routing/link';
 import { MonoArrowOutward } from '@kadena/kode-icons';
 import { Stack, Text } from '@kadena/kode-ui';
 import { atoms } from '@kadena/kode-ui/styles';
@@ -44,14 +45,14 @@ const DataRenderComponentHorizontal: React.FC<IDataRenderComponentProps> = ({
           {field.link ? (
             <div className={dataFieldLinkClass}>
               <ValueLoader isLoading={isLoading}>
-                <a href={field.link} className={linkClass}>
+                <Link href={field.link} className={linkClass}>
                   <Text variant="code" className={dataFieldClassWithMargin}>
                     {field.value}
                   </Text>
-                </a>
-                <a href={field.link} className={iconLinkClass}>
+                </Link>
+                <Link href={field.link} className={iconLinkClass}>
                   <MonoArrowOutward className={linkIconClass} />
-                </a>
+                </Link>
               </ValueLoader>
             </div>
           ) : field.type === 'code' ? (

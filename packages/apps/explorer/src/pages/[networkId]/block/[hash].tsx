@@ -3,17 +3,16 @@ import { useBlockQuery } from '@/__generated__/sdk';
 import BlockTransactions from '@/components/block-transactions/block-transactions';
 import DataRenderComponent from '@/components/data-render-component/data-render-component';
 import Layout from '@/components/layout/layout';
+import { loadingData } from '@/components/loading-skeleton/loading-data/loading-data-blockquery';
 import ValueLoader from '@/components/loading-skeleton/value-loader/value-loader';
+import { useRouter } from '@/components/routing/useRouter';
 import { useQueryContext } from '@/context/query-context';
 import { block } from '@/graphql/queries/block.graph';
 import { truncateValues } from '@/services/format';
 import { Badge, Heading, Stack, TabItem, Tabs } from '@kadena/kode-ui';
 import { atoms } from '@kadena/kode-ui/styles';
-
-import { useRouter } from 'next/router';
 import type { Key } from 'react';
 import React, { useEffect, useState } from 'react';
-import { loadingData } from '../../components/loading-skeleton/loading-data/loading-data-blockquery';
 
 const Block: React.FC = () => {
   const [innerData, setInnerData] = useState<BlockQuery>(loadingData);
@@ -174,6 +173,7 @@ const Block: React.FC = () => {
                   {
                     key: 'Account',
                     value: innerData.block.minerAccount.accountName,
+                    link: `/account/${innerData.block.minerAccount.accountName}`,
                   },
                   {
                     key: 'Public Keys',
