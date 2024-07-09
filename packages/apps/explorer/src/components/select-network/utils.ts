@@ -6,7 +6,13 @@ export const validateNewNetwork = (
 ): string[] => {
   const errors = [];
 
-  if (networks.some((network) => network.networkId === newNetwork.networkId)) {
+  if (
+    networks.some(
+      (network) =>
+        network.networkId === newNetwork.networkId &&
+        network.label === newNetwork.label,
+    )
+  ) {
     errors.push('network already exists');
   }
 

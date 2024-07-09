@@ -66,7 +66,6 @@ const NewNetwork: FC<IProps> = ({ handleOpen, createNetwork }) => {
           'sec-fetch-mode': 'cors',
           'sec-fetch-site': 'cross-site',
         },
-        //body: '{"query":"query networkInfo {\\n  networkInfo {\\n    apiVersion\\n    networkHost\\n    networkId\\n    transactionCount\\n    coinsInCirculation\\n    networkHashRate\\n    totalDifficulty\\n    __typename\\n  }\\n}","variables":{},"operationName":"networkInfo","extensions":{}}',
         body: JSON.stringify({
           query: `query networkInfo {
             networkInfo {
@@ -80,7 +79,6 @@ const NewNetwork: FC<IProps> = ({ handleOpen, createNetwork }) => {
       });
       setCheckStatus(result.status);
 
-      console.log(result);
       await result.json();
 
       if (result.status === 200) {
@@ -88,7 +86,6 @@ const NewNetwork: FC<IProps> = ({ handleOpen, createNetwork }) => {
         createNetwork(e);
       }
     } catch (e) {
-      console.log(222, e);
       setCheckStatus(500);
     }
   };
