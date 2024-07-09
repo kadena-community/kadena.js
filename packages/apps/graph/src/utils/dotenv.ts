@@ -32,6 +32,7 @@ export const dotenv: {
   TRACING_ENABLED: boolean;
   TRACING_EXPOSED: boolean;
   TRACING_LOG_FILENAME: string;
+  SENTRY_DSN: string | undefined;
   SIMULATE_DEFAULT_CHAIN_ID: ChainId;
   SIMULATE_LOG_FOLDER_NAME: string;
   TIMEOUT_PACT_QUERY: number;
@@ -121,6 +122,7 @@ export const dotenv: {
     false,
   ),
   TRACING_LOG_FILENAME: or(process.env.TRACING_LOG_FILENAME, 'traces.log'),
+  SENTRY_DSN: or(process.env.SENTRY_DSN, undefined),
   SIMULATE_DEFAULT_CHAIN_ID: or(
     process.env.SIMULATE_DEFAULT_CHAIN_ID as ChainId,
     '0' as ChainId,

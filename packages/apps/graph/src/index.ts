@@ -9,11 +9,13 @@ moduleAlias.addAliases({
   '@devnet': `${__dirname}/devnet`,
 });
 
+import { AttributeNames } from '@pothos/tracing-sentry';
+import * as Sentry from '@sentry/node';
 import { SystemCheckError, runSystemsCheck } from '@services/systems-check';
 import { dotenv } from '@utils/dotenv';
 import type { ExecutionArgs } from 'graphql';
 import { useServer } from 'graphql-ws/lib/use/ws';
-import { createYoga } from 'graphql-yoga';
+import { Plugin, createYoga } from 'graphql-yoga';
 import 'json-bigint-patch';
 import { createServer } from 'node:http';
 import type { Socket } from 'node:net';
@@ -30,10 +32,39 @@ if (dotenv.NODE_ENV === 'development') {
 
 const schema = builder.toSchema();
 
-const plugins = [extensionsPlugin()];
+const plugins: Plugin[] = [extensionsPlugin()];
 
 if (dotenv.COMPLEXITY_EXPOSED) {
   plugins.push(complexityPlugin(schema));
+}
+
+const tracingPlugin: Plugin = {
+  onExecute: ({ setExecuteFn, executeFn }) => {
+    setExecuteFn((options) =>
+      Sentry.startSpan(
+        {
+          op: 'graphql.execute',
+          name: options.operationName ?? '<unnamed operation>',
+          forceTransaction: true,
+          attributes: {
+            [AttributeNames.OPERATION_NAME]: options.operationName ?? undefined,
+            // [AttributeNames.SOURCE]: print(options.document),
+          },
+        },
+        () => executeFn(options),
+      ),
+    );
+  },
+};
+
+if (dotenv.SENTRY_DSN) {
+  console.log(` ✔ starting with sentry ${dotenv.NODE_ENV}-${dotenv.NETWORK_HOST}`);
+  Sentry.init({
+    dsn: dotenv.SENTRY_DSN,
+    tracesSampleRate: 1,
+    environment: `${dotenv.NODE_ENV}-${dotenv.NETWORK_HOST}`,
+  });
+  plugins.push(tracingPlugin);
 }
 
 const yogaApp = createYoga({
