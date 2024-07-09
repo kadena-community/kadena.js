@@ -1,5 +1,21 @@
 # @kadena/explorer
 
+## 0.4.0
+
+### Minor Changes
+
+- 1ec7c85: add loading skeletons
+- c00ae03: show block info when the block height is clicked on homepage
+
+### Patch Changes
+
+- c1c84d2: Added minHeight to the layout to prevent flickering across the page
+- 371cf07: update the footer functionality
+- 5d34a15: Minor improvements to the graphql modal
+  - @kadena/graph\@1.0.7
+  - @kadena/kode-icons\@0.1.0
+  - @kadena/kode-ui\@0.13.0
+
 ## 0.3.0
 
 ### Minor Changes

@@ -1,5 +1,25 @@
 # @kadena/dev-wallet
 
+## 0.3.0
+
+### Minor Changes
+
+- 29168e2: Transfer + Transactions page
+
+### Patch Changes
+
+- Updated dependencies \[29168e2]
+- Updated dependencies \[07c0a26]
+- Updated dependencies \[29168e2]
+  - @kadena/client\@1.13.0
+  - @kadena/client-utils\@0.9.0
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/hd-wallet\@0.4.2
+  - @kadena/kode-icons\@0.1.0
+  - @kadena/kode-ui\@0.13.0
+  - @kadena/pactjs\@0.4.3
+  - @kadena/pactjs-generator\@1.13.0
+
 ## 0.2.0
 
 ### Minor Changes
