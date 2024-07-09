@@ -23,6 +23,13 @@ export const listClass = style([
   }),
 ]);
 
+export const chainListClass = style([
+  atoms({
+    listStyleType: 'none',
+    paddingBlock: 'n1',
+  }),
+]);
+
 export const listItemClass = style([
   atoms({
     padding: 'md',

@@ -1,21 +1,17 @@
-import { useSession } from '@/App/session';
 import { IKeySource, KeySourceType } from '@/modules/wallet/wallet.repository';
-import { encryptRecord } from '@/utils/session';
 import { keySourceManager } from '../key-source-manager';
 import { IHDBIP44, IHDChainweaver } from '../key-source.repository';
 import { BIP44Service } from './BIP44';
 import { ChainweaverService } from './chainweaver';
 
 export const useHDWallet = () => {
-  const session = useSession();
   const createHDWallet = async (
     profileId: string,
-    type: KeySourceType,
+    type: 'HD-BIP44' | 'HD-chainweaver',
     password: string,
     mnemonic: string,
     derivationPathTemplate?: string,
   ) => {
-    console.log('creating hd wallet', type);
     switch (type) {
       case 'HD-BIP44': {
         const service = (await keySourceManager.get(type)) as BIP44Service;
@@ -24,10 +20,6 @@ export const useHDWallet = () => {
           mnemonic,
           password,
           derivationPathTemplate,
-        );
-        await session.set(
-          `key-source:${type}`,
-          await encryptRecord(service.getContext()),
         );
         return keySource;
       }
@@ -39,10 +31,6 @@ export const useHDWallet = () => {
           type,
         )) as ChainweaverService;
         const keySource = await service.register(profileId, mnemonic, password);
-        await session.set(
-          `key-source:${type}`,
-          await encryptRecord(service.getContext()),
-        );
         return keySource;
       }
       default:
@@ -55,7 +43,6 @@ export const useHDWallet = () => {
     password: string,
     keySource: IKeySource,
   ) => {
-    console.log('unlocking hd wallet', type);
     switch (type) {
       case 'HD-BIP44': {
         const service = (await keySourceManager.get(type)) as BIP44Service;

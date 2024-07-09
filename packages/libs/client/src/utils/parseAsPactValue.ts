@@ -8,7 +8,7 @@ const isDate = (obj: unknown): obj is Date => {
 };
 
 /**
- * @internal
+ * @public
  */
 export function parseAsPactValue(
   input: PactValue | (() => string) | Literal,

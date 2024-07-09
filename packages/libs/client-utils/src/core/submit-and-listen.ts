@@ -21,6 +21,7 @@ export const submitAndListen =
     asyncPipe(
       composeWithDefaults(defaults),
       createTransaction,
+      emit('command'),
       safeSign(sign),
       emit('sign'),
       checkSuccess(

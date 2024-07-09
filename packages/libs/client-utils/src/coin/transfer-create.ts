@@ -21,7 +21,7 @@ interface ICreateTransferInput {
   receiver: {
     account: string;
     keyset: {
-      keys: string[];
+      keys: ISigner[];
       pred: 'keys-all' | 'keys-2' | 'keys-any';
     };
   };
@@ -55,7 +55,13 @@ export const transferCreateCommand = ({
         },
       ),
     ),
-    addKeyset('account-guard', receiver.keyset.pred, ...receiver.keyset.keys),
+    addKeyset(
+      'account-guard',
+      receiver.keyset.pred,
+      ...receiver.keyset.keys.map((key) =>
+        typeof key === 'object' ? key.pubKey : key,
+      ),
+    ),
     addSigner(sender.publicKeys, (signFor) => [
       signFor(
         `${contract as 'coin'}.TRANSFER`,

@@ -28,8 +28,8 @@ export type BIP44Context = {
   encryptedSeed: Uint8Array;
 };
 
-export function createBIP44Service(initialContext: BIP44Context | null = null) {
-  let context: BIP44Context | null = initialContext;
+export function createBIP44Service() {
+  let context: BIP44Context | null = null;
 
   const isConnected = () => Boolean(context);
   const disconnect = () => {
@@ -151,7 +151,6 @@ export function createBIP44Service(initialContext: BIP44Context | null = null) {
     getPublicKey,
     sign,
     clearCache: () => {},
-    getContext: () => context,
   };
 }
 

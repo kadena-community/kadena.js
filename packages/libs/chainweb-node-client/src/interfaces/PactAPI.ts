@@ -15,7 +15,7 @@ import type {
  *
  * @alpha
  */
-interface IPactResultSuccess {
+export interface IPactResultSuccess {
   status: 'success';
   data: PactValue;
 }
@@ -27,7 +27,7 @@ interface IPactResultSuccess {
  *
  * @alpha
  */
-interface IPactResultError {
+export interface IPactResultError {
   status: 'failure';
   error: object;
 }

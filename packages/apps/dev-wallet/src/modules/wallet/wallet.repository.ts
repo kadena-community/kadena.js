@@ -1,16 +1,13 @@
 import { IDBService, dbService } from '@/modules/db/db.service';
+import { SignerScheme } from '@kadena/client';
 import type { INetwork } from '../network/network.repository';
 
-export interface IKeyItem {
-  publicKey: string;
-  index: number;
-}
-
-export type KeySourceType = 'HD-BIP44' | 'HD-chainweaver';
+export type KeySourceType = 'HD-BIP44' | 'HD-chainweaver' | 'web-authn';
 
 export interface IKeyItem {
-  index: number;
+  index?: number | string;
   publicKey: string;
+  scheme?: SignerScheme;
 }
 
 export interface IKeySource {
@@ -26,6 +23,14 @@ export interface IProfile {
   networks: INetwork[];
   secretId: string;
   accentColor: string;
+  options:
+    | {
+        authMode: 'PASSWORD';
+      }
+    | {
+        authMode: 'WEB_AUTHN';
+        webAuthnCredential: ArrayBuffer;
+      };
 }
 
 const createWalletRepository = ({

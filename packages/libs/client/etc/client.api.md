@@ -478,6 +478,9 @@ export type PactReturnType<T extends (...args: any[]) => any> = T extends (...ar
     returnType: infer RR;
 } ? RR : any : any;
 
+// @public (undocumented)
+export function parseAsPactValue(input: PactValue | (() => string) | Literal): string;
+
 // @public
 export const readKeyset: (key: string) => () => string;
 

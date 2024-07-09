@@ -22,7 +22,7 @@ export function UnlockProfile() {
   } = useForm<{ password: string }>();
   const { unlockHDWallet } = useHDWallet();
   const { profileId } = useParams();
-  const { isUnlocked, profileList, unlockProfile } = useWallet();
+  const { profileList, unlockProfile } = useWallet();
   const profile = profileList.find((p) => p.uuid === profileId);
   const incorrectPasswordMsg = 'Password is incorrect';
 
@@ -48,9 +48,6 @@ export function UnlockProfile() {
   }
   if (!profile) {
     return <Navigate to="/select-profile" replace />;
-  }
-  if (isUnlocked) {
-    return <Navigate to="/" replace />;
   }
   return (
     <>

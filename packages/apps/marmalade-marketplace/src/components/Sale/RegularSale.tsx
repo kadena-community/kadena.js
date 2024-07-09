@@ -57,7 +57,7 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
       host: env.URL,
       networkId: env.NETWORKID,
       chainId: sale.chainId,
-    })
+    }) as { account: string }
 
     console.log("escrowAccount", escrowAccount);
 
