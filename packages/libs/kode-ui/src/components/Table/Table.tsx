@@ -8,7 +8,7 @@ import { useTableState } from 'react-stately';
 
 import { TableCell, TableRow } from './Body';
 import { TableColumnHeader, TableHeaderRow } from './Header';
-import { stripedClass, table, tableWrapper } from './Table.css';
+import { table, tableWrapper } from './Table.css';
 import { TableSelectAllCell } from './TableSelectAllCell';
 import { TableSelectionCell } from './TableSelectionCell';
 
