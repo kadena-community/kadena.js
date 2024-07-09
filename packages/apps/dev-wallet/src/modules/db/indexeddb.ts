@@ -68,7 +68,11 @@ export const deleteDatabase = (name: string) => {
 
 export const getAllItems =
   (db: IDBDatabase) =>
-  <T>(storeName: string, filter?: string[] | string, indexName?: string) => {
+  <T>(
+    storeName: string,
+    filter?: string[] | string | IDBKeyRange,
+    indexName?: string,
+  ) => {
     return new Promise<T[]>((resolve, reject) => {
       const transaction = db.transaction(storeName, 'readonly');
       const store = transaction.objectStore(storeName);

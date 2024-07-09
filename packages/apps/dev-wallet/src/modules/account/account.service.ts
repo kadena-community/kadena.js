@@ -27,7 +27,7 @@ export async function createKAccount(
   networkId: string,
   publicKey: string,
   contract: string = 'coin',
-  chains: Array<{ chainId: string; balance: string }> = [],
+  chains: Array<{ chainId: ChainId; balance: string }> = [],
 ) {
   const keyset: IKeySet = {
     principal: `k:${publicKey}`,
@@ -83,6 +83,9 @@ export const accountDiscovery = (
       numberOfKeys = 20,
       contract = 'coin',
     ) => {
+      if (keySource.source === 'web-authn') {
+        throw new Error('Account discovery not supported for web-authn');
+      }
       const keySourceService = await keySourceManager.get(keySource.source);
       const accounts: IAccount[] = [];
       const keysets: IKeySet[] = [];
@@ -100,7 +103,6 @@ export const accountDiscovery = (
           contract,
         )
           .on('chain-result', async (data) => {
-            console.log('chain-result', data);
             await emit('chain-result')(data as IDiscoveredAccount);
           })
           .execute()) as IDiscoveredAccount[];
@@ -144,11 +146,9 @@ export const accountDiscovery = (
 
       await emit('query-done')(accounts);
 
-      console.log('usedKeys', usedKeys);
-
       // store keys; key creation needs to be in sequence so I used a for loop instead of Promise.all
       for (const key of usedKeys) {
-        await keySourceService.createKey(keySource.uuid, key.index);
+        await keySourceService.createKey(keySource.uuid, key.index as number);
       }
 
       // store accounts
@@ -169,6 +169,7 @@ export const accountDiscovery = (
 );
 
 export const syncAccount = async (account: IAccount) => {
+  console.log('syncing account', account.address);
   const updatedAccount = { ...account };
 
   const chainResult = (await discoverAccount(
@@ -176,7 +177,13 @@ export const syncAccount = async (account: IAccount) => {
     updatedAccount.networkId,
     undefined,
     updatedAccount.contract,
-  ).execute()) as IDiscoveredAccount[];
+  )
+    .execute()
+    .catch((error) =>
+      console.error('DISCOVERY ERROR', error),
+    )) as IDiscoveredAccount[];
+
+  console.log('chainResult', account.address, chainResult);
 
   updatedAccount.chains = chainResult
     .filter(({ result }) => Boolean(result))
@@ -194,10 +201,12 @@ export const syncAccount = async (account: IAccount) => {
   );
 
   await accountRepository.updateAccount(updatedAccount);
+  console.log('updated account', updatedAccount);
   return updatedAccount;
 };
 
 export const syncAllAccounts = async (profileId: string) => {
   const accounts = await accountRepository.getAccountsByProfileId(profileId);
+  console.log('syncing accounts', accounts);
   return Promise.all(accounts.map(syncAccount));
 };

@@ -33,7 +33,9 @@ export function ImportWallet() {
       return;
     }
     try {
-      const profile = await createProfile(name, password);
+      const profile = await createProfile(name, password, undefined, {
+        authMode: 'PASSWORD',
+      });
       // for now we only support slip10 so we just create the keySource and the first account by default for it
       // later we should change this flow to be more flexible
       const keySource = await createHDWallet(

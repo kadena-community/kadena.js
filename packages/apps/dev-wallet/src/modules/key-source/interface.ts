@@ -6,16 +6,15 @@ export interface ISecretRepository {
 }
 
 export interface IKeySourceService {
-  isConnected: () => boolean;
-  disconnect: () => void | Promise<void>;
   createKey: (keySourceId: string, index?: number) => Promise<IKeyItem>;
   sign(
     keySourceId: string,
     message: string,
-    indexes: number[],
+    indexes: number[] | string[],
   ): Promise<Array<{ sig: string; pubKey: string }>>;
 
   getPublicKey: (keySource: IKeySource, index: number) => Promise<IKeyItem>;
+  isConnected: () => boolean;
+  disconnect: () => void | Promise<void>;
   clearCache: () => void | Promise<void>;
-  getContext: () => Record<string, unknown> | null;
 }

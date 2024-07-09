@@ -8,7 +8,12 @@ import {
 } from 'react';
 
 import { useSession } from '@/App/session';
-import { IAccount } from '../account/account.repository';
+import { throttle } from '@/utils/session';
+import {
+  Fungible,
+  IAccount,
+  accountRepository,
+} from '../account/account.repository';
 import * as AccountService from '../account/account.service';
 import { dbService } from '../db/db.service';
 import { keySourceManager } from '../key-source/key-source-manager';
@@ -18,8 +23,10 @@ import * as WalletService from './wallet.service';
 export type ExtWalletContextType = {
   profile?: IProfile;
   accounts?: IAccount[];
-  profileList?: Pick<IProfile, 'name' | 'uuid' | 'accentColor'>[];
+  profileList?: Pick<IProfile, 'name' | 'uuid' | 'accentColor' | 'options'>[];
   keySources?: IKeySource[];
+  fungibles?: Fungible[];
+  loaded?: boolean;
 };
 
 export const WalletContext = createContext<
@@ -34,16 +41,19 @@ export const WalletContext = createContext<
   | null
 >(null);
 
+export const syncAllAccounts = throttle(AccountService.syncAllAccounts, 10000);
+
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   const [contextValue, setContextValue] = useState<ExtWalletContextType>({});
   const session = useSession();
 
   const retrieveProfileList = useCallback(async () => {
     const profileList = (await walletRepository.getAllProfiles()).map(
-      ({ name, uuid, accentColor }) => ({
+      ({ name, uuid, accentColor, options }) => ({
         name,
         uuid,
         accentColor,
+        options,
       }),
     );
     setContextValue((ctx) => ({ ...ctx, profileList }));
@@ -64,6 +74,13 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     }));
   }, []);
 
+  const retrieveFungibles = useCallback(async () => {
+    const fungibles = await accountRepository.getAllFungibles();
+    setContextValue((ctx) => ({ ...ctx, fungibles }));
+    console.log('Fungibles', fungibles);
+    return fungibles;
+  }, []);
+
   // subscribe to db changes and update the context
   useEffect(() => {
     const unsubscribe = dbService.subscribe((event, storeName, data) => {
@@ -72,6 +89,10 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       switch (storeName) {
         case 'profile': {
           retrieveProfileList();
+          break;
+        }
+        case 'fungible': {
+          retrieveFungibles();
           break;
         }
         case 'keySource':
@@ -91,18 +112,28 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     return () => {
       unsubscribe();
     };
-  }, [retrieveProfileList, retrieveKeySources, retrieveAccounts]);
+  }, [
+    retrieveProfileList,
+    retrieveKeySources,
+    retrieveAccounts,
+    retrieveFungibles,
+  ]);
 
   const setProfile = useCallback(
     async (profile: IProfile | undefined, noSession = false) => {
       if (!profile) {
         keySourceManager.reset();
         session.clear();
-        setContextValue(({ profileList }) => ({ profileList }));
+        setContextValue((ctx) => ({
+          ...ctx,
+          profile: undefined,
+          accounts: undefined,
+          keySources: undefined,
+        }));
         return null;
       }
       if (!noSession) {
-        await session.createSession();
+        await session.reset();
       }
       await session.set('profileId', profile.uuid);
       const accounts = await WalletService.getAccounts(profile.uuid);
@@ -110,9 +141,9 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
         profile.uuid,
       );
       keySourceManager.reset();
-      AccountService.syncAllAccounts(profile.uuid);
-      setContextValue(({ profileList }) => ({
-        profileList,
+      syncAllAccounts(profile.uuid);
+      setContextValue((ctx) => ({
+        ...ctx,
         profile,
         accounts,
         keySources,
@@ -124,28 +155,28 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     const loadSession = async () => {
-      if (!session.isLoaded) return;
+      if (!session.isLoaded()) return;
       const profileId = session.get('profileId') as string | undefined;
       if (profileId) {
         const profile = await walletRepository.getProfile(profileId);
-        console.log('retrieving profile from session', profile);
-        // Note: this only loads the profile but the keySources are still locked.
-        // So the user needs to enter the password if they need to sign a Tx
-        // or create new keys, this is for security reasons;
-        // I don't want to store the password or the keySource context in the session
-        setProfile(profile, true);
+        await setProfile(profile, true);
       }
+      setContextValue((ctx) => ({ ...ctx, loaded: true }));
     };
     loadSession();
   }, [retrieveProfileList, session, setProfile]);
 
   useEffect(() => {
     retrieveProfileList();
-  });
+  }, [retrieveProfileList]);
+
+  useEffect(() => {
+    retrieveFungibles();
+  }, [retrieveFungibles]);
 
   return (
     <WalletContext.Provider value={[contextValue, setProfile]}>
-      {children}
+      {contextValue.loaded ? children : 'Loading wallet...'}
     </WalletContext.Provider>
   );
 };

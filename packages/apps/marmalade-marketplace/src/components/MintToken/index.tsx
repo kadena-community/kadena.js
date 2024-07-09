@@ -9,7 +9,7 @@ import { useAccount } from '@/hooks/account';
 import { createSignWithSpireKey } from '@/utils/signWithSpireKey';
 import SendTransaction from '@/components/SendTransaction';
 import { useTransaction } from '@/hooks/transaction';
-import { generateSpireKeyGasCapability, checkPolicies } from '@/utils/helper';
+import { generateSpireKeyGasCapability, checkPolicies, Policy } from '@/utils/helper';
 import { PactNumber } from "@kadena/pactjs";
 
 function MintTokenComponent() {
@@ -47,7 +47,7 @@ function MintTokenComponent() {
         networkId: config.networkId,
         chainId: config.chainId,
         host: config.host,
-      })
+      }) as { policies: Policy[] };
       setResult( checkPolicies(res.policies))
 
       const amountFormatted = (amount === 1) ? {"decimal": "1"} : new PactNumber(amount).toPactDecimal();

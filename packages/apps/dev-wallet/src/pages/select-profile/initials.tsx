@@ -1,6 +1,12 @@
 import { initialsClass } from './select-profile.css';
 
-const InitialsAvatar = (props: { name: string }) => {
+const InitialsAvatar = ({
+  name,
+  accentColor,
+}: {
+  name: string;
+  accentColor: string;
+}) => {
   const getInitials = (name: string) => {
     let initials = '';
     const has2names = name.split(' ').length > 1;
@@ -18,9 +24,13 @@ const InitialsAvatar = (props: { name: string }) => {
     return initials;
   };
 
-  const initials = getInitials(props.name || 'default');
+  const initials = getInitials(name || 'default');
 
-  return <div className={initialsClass}>{initials}</div>;
+  return (
+    <div className={initialsClass} style={{ backgroundColor: accentColor }}>
+      {initials}
+    </div>
+  );
 };
 
 export default InitialsAvatar;

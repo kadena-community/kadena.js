@@ -62,6 +62,12 @@ type Bid = {
   requestKey: string;
 };
 
+export interface QuoteInfo {
+  'sale-price': number;
+  'sale-type': string;
+  'token-id': string;
+}
+
 const isChainEnabled: Record<string, boolean> = env.CHAIN_IDS.reduce(
   (acc, chainId) => ({ ...acc, [chainId]: true }),
   {},
@@ -170,7 +176,7 @@ async function parseEvents(
           chainId: event.chainId,
           networkId: env.NETWORK_NAME,
           host: env.CHAINWEB_API_HOST,
-        });
+        }) as QuoteInfo;
 
         console.log('data', data);
         quoteInfo = {
@@ -381,7 +387,7 @@ async function parseEvents(
         chainId: event.chainId,
         networkId: env.NETWORK_NAME,
         host: env.CHAINWEB_API_HOST,
-      });
+      }) as QuoteInfo;
 
       bidRecords[bidId] = {
         ...bidRecords[bidId],
