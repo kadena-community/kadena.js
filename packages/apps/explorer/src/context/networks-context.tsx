@@ -90,8 +90,7 @@ const NetworkContextProvider = (props: {
 
   useEffect(() => {
     if (!networks.length || !isMounted) return;
-    const network =
-      networks.find((n) => n.networkId === networkId) ?? networks[0];
+    const network = networks.find((n) => n.networkId === networkId);
     setActiveNetwork(network);
   }, [networkId, networks, isMounted]);
 
@@ -138,6 +137,7 @@ const NetworkContextProvider = (props: {
       endpoint: activeNetwork?.graphUrl,
     });
 
+    console.log(activeNetwork?.graphUrl);
     const wsLink = new GraphQLWsLink(
       createClient({
         url: activeNetwork!.wsGraphUrl,
