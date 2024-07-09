@@ -1,8 +1,8 @@
 import type { BlockQuery, Transaction } from '@/__generated__/sdk';
 import { useBlockQuery } from '@/__generated__/sdk';
 import BlockTransactions from '@/components/block-transactions/block-transactions';
+import { loadingData } from '@/components/loading-skeleton/loading-data/loading-data-blockquery';
 import routes from '@/constants/routes';
-import { loadingData } from '@/pages/block/loading-data';
 import type { IBlockData } from '@/services/block';
 import { Heading, Stack, TextLink } from '@kadena/kode-ui';
 import Link from 'next/link';

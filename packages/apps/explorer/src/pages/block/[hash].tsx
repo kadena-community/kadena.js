@@ -13,7 +13,7 @@ import { atoms } from '@kadena/kode-ui/styles';
 import { useRouter } from 'next/router';
 import type { Key } from 'react';
 import React, { useEffect, useState } from 'react';
-import { loadingData } from './loading-data';
+import { loadingData } from '../../components/loading-skeleton/loading-data/loading-data-blockquery';
 
 const Block: React.FC = () => {
   const [innerData, setInnerData] = useState<BlockQuery>(loadingData);

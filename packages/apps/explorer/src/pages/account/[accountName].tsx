@@ -6,6 +6,7 @@ import { FormatAmount } from '@/components/compact-table/utils/format-amount';
 import { FormatLink } from '@/components/compact-table/utils/format-link';
 import { FormatStatus } from '@/components/compact-table/utils/format-status';
 import Layout from '@/components/layout/layout';
+import { loadingData } from '@/components/loading-skeleton/loading-data/loading-data-accountquery';
 import ValueLoader from '@/components/loading-skeleton/value-loader/value-loader';
 import { useQueryContext } from '@/context/query-context';
 import { account } from '@/graphql/queries/account.graph';
@@ -14,7 +15,6 @@ import { Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
 import { useRouter } from 'next/router';
 import type { FC, Key } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
-import { loadingData } from './loading-data';
 
 export interface IKeyProps {
   chainId: string;
