@@ -125,9 +125,9 @@ export const claimAttendanceToken = async (
   account: IAccount,
 ): Promise<IUnsignedCommand | undefined> => {
   const eventId = decodeURIComponent(id);
-  const credential = account.credentials[0];
+  const pubKey = account.devices[0].guard.keys[0];
 
-  if (!credential) {
+  if (!pubKey) {
     throw new Error('credential of account not found');
   }
 
@@ -148,7 +148,7 @@ export const claimAttendanceToken = async (
     })
     .addSigner(
       {
-        pubKey: `${credential.publicKey}`,
+        pubKey,
         scheme: 'WebAuthn',
       },
       (withCap) => [

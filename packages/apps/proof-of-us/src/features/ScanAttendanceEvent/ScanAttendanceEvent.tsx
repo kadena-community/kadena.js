@@ -9,7 +9,9 @@ import { useTokens } from '@/hooks/tokens';
 import { useTransaction } from '@/hooks/transaction';
 import { env } from '@/utils/env';
 import { getReturnUrl } from '@/utils/getReturnUrl';
+import { ICommand } from '@kadena/client';
 import { Stack } from '@kadena/kode-ui';
+import { SignedTransactions, sign } from '@kadena/spirekey-sdk';
 import { isAfter, isBefore } from 'date-fns';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -29,7 +31,6 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   isMinted,
 }) => {
   const { claim } = useClaimAttendanceToken();
-  const router = useRouter();
   const { account, isMounted, login } = useAccount();
   const { addMintingData, tokens } = useTokens();
   const { doSubmit, isStatusLoading } = useSubmit();
@@ -42,14 +43,12 @@ export const ScanAttendanceEvent: FC<IProps> = ({
 
   const getProof = (
     data: IProofOfUsTokenMeta,
-    transaction: string,
+    transaction: ICommand,
   ): IProofOfUsData => {
-    const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
-
     const proof: IProofOfUsData = {
       proofOfUsId: data.properties.eventId || '',
       type: 'attendance',
-      requestKey: tx.hash,
+      requestKey: transaction.hash,
       title: data.name,
       isReadyToSign: false,
       mintStatus: 'init',
@@ -66,34 +65,18 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     return proof;
   };
 
-  const createProof = async () => {
-    if (!transaction || !account) return;
-
-    const proof = getProof(data, transaction);
-    await addMintingData(proof);
-    await doSubmit(transaction, proof);
-  };
-
-  useEffect(() => {
-    createProof();
-  }, [account, transaction]);
-
   const handleClaim = async () => {
     const transaction = await claim(eventId);
     if (!transaction || !account) return;
 
-    const bufferedTx = Buffer.from(JSON.stringify(transaction)).toString(
-      'base64',
-    );
+    const { transactions } = await sign([transaction], [account]);
 
-    router.push(
-      `${
-        process.env.NEXT_PUBLIC_WALLET_URL
-      }sign#transaction=${bufferedTx}&chainId=${
-        env.CHAINID
-      }&returnUrl=${getReturnUrl()}
-      `,
-    );
+    transactions.map(async (t) => {
+      // should perform check to see if all sigs are present
+      const proof = getProof(data, t as ICommand);
+      await addMintingData(proof);
+      await doSubmit(Buffer.from(JSON.stringify(t)).toString('base64'), proof);
+    });
   };
 
   const startDate = new Date(data.startDate * 1000);

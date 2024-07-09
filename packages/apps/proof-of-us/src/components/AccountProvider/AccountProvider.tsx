@@ -31,7 +31,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter();
 
   const login = useCallback(async () => {
-    const acc = await connect('development', '1');
+    const acc = await connect('mainnet01', '8');
     setAccount(acc);
     setIsMounted(true);
     localStorage.setItem(getAccountCookieName(), JSON.stringify(acc));
@@ -46,6 +46,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     initSpireKey();
+    setIsMounted(true);
   }, []);
 
   return (
