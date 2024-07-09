@@ -1,103 +1,9 @@
-import type { BlockQuery } from '@/__generated__/sdk';
+import type { AccountQuery } from '@/__generated__/sdk';
 
-export const loadingData: BlockQuery = {
-  block: {
-    chainId: 0,
-    creationTime: new Date().toLocaleString(),
-    difficulty: 0,
-    epoch: new Date().toLocaleString(),
-    flags: 0,
-    hash: '0',
-    height: 0,
-    id: '0',
-    minerAccount: {
-      accountName: '',
-      guard: {
-        predicate: '',
-        keys: ['0'],
-      },
-    },
-    neighbors: [
-      {
-        chainId: '0',
-        hash: '',
-      },
-      {
-        chainId: '1',
-        hash: '',
-      },
-    ],
-    nonce: 0,
-    parent: {
-      hash: '',
-    },
-    payloadHash: '',
-    powHash: '',
-    target: 0,
-    weight: 0,
+export const loadingData: AccountQuery = {
+  fungibleAccount: {
     transactions: {
-      totalCount: 0,
       edges: [
-        {
-          node: {
-            hash: '',
-            result: {
-              block: {
-                height: 0,
-              },
-              goodResult: '',
-            },
-            cmd: {
-              meta: {
-                sender: '',
-                chainId: 0,
-              },
-              payload: {
-                code: '',
-              },
-            },
-          },
-        },
-        {
-          node: {
-            hash: '',
-            result: {
-              block: {
-                height: 0,
-              },
-              goodResult: '',
-            },
-            cmd: {
-              meta: {
-                sender: '',
-                chainId: 0,
-              },
-              payload: {
-                code: '',
-              },
-            },
-          },
-        },
-        {
-          node: {
-            hash: '',
-            result: {
-              block: {
-                height: 0,
-              },
-              goodResult: '',
-            },
-            cmd: {
-              meta: {
-                sender: '',
-                chainId: 0,
-              },
-              payload: {
-                code: '',
-              },
-            },
-          },
-        },
         {
           node: {
             hash: '',
@@ -220,5 +126,119 @@ export const loadingData: BlockQuery = {
         },
       ],
     },
+    transfers: {
+      edges: [
+        {
+          node: {
+            requestKey: '0',
+            blockHash: '0',
+            amount: 0,
+            chainId: 0,
+            receiverAccount: '0',
+            senderAccount: '0',
+            height: 1,
+          },
+        },
+        {
+          node: {
+            requestKey: '0',
+            blockHash: '0',
+            amount: 0,
+            chainId: 0,
+            receiverAccount: '0',
+            senderAccount: '0',
+            height: 1,
+          },
+        },
+        {
+          node: {
+            requestKey: '0',
+            blockHash: '0',
+            amount: 0,
+            chainId: 0,
+            receiverAccount: '0',
+            senderAccount: '0',
+            height: 1,
+          },
+        },
+        {
+          node: {
+            requestKey: '0',
+            blockHash: '0',
+            amount: 0,
+            chainId: 0,
+            receiverAccount: '0',
+            senderAccount: '0',
+            height: 1,
+          },
+        },
+        {
+          node: {
+            requestKey: '0',
+            blockHash: '0',
+            amount: 0,
+            chainId: 0,
+            receiverAccount: '0',
+            senderAccount: '0',
+            height: 1,
+          },
+        },
+        {
+          node: {
+            requestKey: '0',
+            blockHash: '0',
+            amount: 0,
+            chainId: 0,
+            receiverAccount: '0',
+            senderAccount: '0',
+            height: 1,
+          },
+        },
+      ],
+    },
+    accountName: '0',
+    totalBalance: 0,
+    chainAccounts: [
+      {
+        chainId: '0',
+        balance: 0,
+        guard: {
+          keys: ['0'],
+          predicate: '0',
+        },
+      },
+      {
+        chainId: '0',
+        balance: 0,
+        guard: {
+          keys: ['0'],
+          predicate: '0',
+        },
+      },
+      {
+        chainId: '0',
+        balance: 0,
+        guard: {
+          keys: ['0'],
+          predicate: '0',
+        },
+      },
+      {
+        chainId: '0',
+        balance: 0,
+        guard: {
+          keys: ['0'],
+          predicate: '0',
+        },
+      },
+      {
+        chainId: '0',
+        balance: 0,
+        guard: {
+          keys: ['0'],
+          predicate: '0',
+        },
+      },
+    ],
   },
 };

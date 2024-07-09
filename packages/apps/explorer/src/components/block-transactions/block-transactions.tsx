@@ -46,6 +46,7 @@ const BlockTransactions: FC<IProps> = ({ transactions, isLoading }) => {
           key: 'cmd.meta.sender',
           variant: 'code',
           width: '25%',
+          render: FormatLink({ appendUrl: '/account' }),
         },
         {
           label: 'RequestKey',

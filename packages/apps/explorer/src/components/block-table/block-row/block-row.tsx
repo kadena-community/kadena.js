@@ -33,7 +33,7 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
   heights,
   chainId,
   maxBlockTxCount,
-  isLoading,
+  isLoading = false,
 }) => {
   const { selectedChainId, selectedHeight } = useBlockInfo();
   const blockDifficulty =
