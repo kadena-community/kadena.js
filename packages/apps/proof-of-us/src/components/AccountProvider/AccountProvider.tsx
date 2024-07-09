@@ -1,9 +1,8 @@
 'use client';
-import { env } from '@/utils/env';
 import { getAccountCookieName } from '@/utils/getAccountCookieName';
-import { getReturnUrl } from '@/utils/getReturnUrl';
 import { store } from '@/utils/socket/store';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { connect, initSpireKey } from '@kadena/spirekey-sdk';
+import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
 
@@ -30,27 +29,13 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const [account, setAccount] = useState<IAccount>();
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const decodeAccount = useCallback((userResponse: string) => {
-    if (!userResponse) return;
-    try {
-      const account: IAccount = JSON.parse(
-        Buffer.from(userResponse, 'base64').toString(),
-      );
-      return account;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (e: any) {
-      return;
-    }
-  }, []);
-
-  const login = useCallback(() => {
-    router.push(
-      `${env.WALLET_URL}/connect?returnUrl=${getReturnUrl([
-        'user',
-      ])}&networkId=${env.NETWORKID}&chainId=${env.CHAINID}&optimistic=true`,
-    );
+  const login = useCallback(async () => {
+    const acc = await connect('development', '1');
+    setAccount(acc);
+    setIsMounted(true);
+    localStorage.setItem(getAccountCookieName(), JSON.stringify(acc));
+    store.saveAlias(account);
   }, [router]);
 
   const logout = useCallback(() => {
@@ -59,37 +44,9 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     router.replace('/');
   }, []);
 
-  const loginResponse = useCallback(async () => {
-    const innerSearchParams = new URLSearchParams(window.location.search);
-    const userResponse = innerSearchParams.has('user')
-      ? innerSearchParams.get('user')
-      : localStorage.getItem(getAccountCookieName());
-
-    if (!userResponse) {
-      setIsMounted(true);
-      return;
-    }
-
-    if (innerSearchParams.has('user')) {
-      localStorage.setItem(getAccountCookieName(), userResponse);
-    }
-    const account = decodeAccount(userResponse);
-    store.saveAlias(account);
-    setAccount(account);
-    setIsMounted(true);
-
-    if (searchParams.has('user')) {
-      setTimeout(() => {
-        router.replace(getReturnUrl(['user']));
-      }, 100);
-    }
-  }, [setAccount, setIsMounted, searchParams, decodeAccount, router]);
-
   useEffect(() => {
-    loginResponse();
+    initSpireKey();
   }, []);
-
-  console.log({ account }, account?.accountName);
 
   return (
     <AccountContext.Provider value={{ account, login, logout, isMounted }}>

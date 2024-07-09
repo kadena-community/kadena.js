@@ -1,10 +1,12 @@
+
 export const getSigneeAccount = (
   account: IAccount,
   signees?: IProofOfUsSignee[],
 ): IProofOfUsSignee => {
   const signer = signees?.find((c) => c.accountName === account.accountName);
 
-  const credential = account.credentials[0];
+  // TODO: probably add a list of keys that need to sign
+  const publicKey = account.devices[0].guard.keys[0];
   if (signer) return signer;
 
   return {
@@ -12,6 +14,6 @@ export const getSigneeAccount = (
     alias: account.alias,
     initiator: false,
     signerStatus: 'init',
-    publicKey: credential.publicKey,
+    publicKey,
   };
 };
