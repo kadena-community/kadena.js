@@ -46,6 +46,9 @@ importers:
       '@hookform/resolvers':
         specifier: ^3.2.0
         version: 3.7.0(react-hook-form@7.52.1(react@18.3.1))
+      '@kadena/chainweb-node-client':
+        specifier: workspace:*
+        version: link:../../libs/chainweb-node-client
       '@kadena/client':
         specifier: workspace:*
         version: link:../../libs/client
