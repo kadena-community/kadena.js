@@ -20,15 +20,20 @@ export const createHref = (
 };
 
 export const removeNetworkFromPath = (href: string, networks: INetwork[]) => {
+  const regExp = new RegExp(/[?#].*/);
+  const match = href.match(regExp);
+
+  const searchParams = match?.length ? match[0] : '';
+
   const arr = href
-    .replace(/[?#].*/, '')
+    .replace(regExp, '')
     .split('/')
     .filter((v) => v);
 
   if (networks.find((v) => v.networkId === arr[0])) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [first, ...restArr] = arr;
-    return `/${restArr.join('/')}`;
+    return `/${restArr.join('/')}${searchParams}`;
   }
 
   return href;

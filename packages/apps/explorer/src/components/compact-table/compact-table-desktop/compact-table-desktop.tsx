@@ -2,6 +2,7 @@ import {
   Cell,
   Column,
   Row,
+  Stack,
   Table,
   TableBody,
   TableHeader,
@@ -11,35 +12,48 @@ import React from 'react';
 import type { ICompactTableProps } from '../compact-table';
 
 import FieldCell from './field-cell';
-import { tableClass } from './styles.css';
+import { tableBorderClass, tableClass } from './styles.css';
 
-const CompactTableDesktop: FC<ICompactTableProps> = ({
+type IProps = Omit<
+  ICompactTableProps,
+  'pageInfo' | 'setPage' | 'pageSize' | 'totalCount'
+>;
+
+const CompactTableDesktop: FC<IProps> = ({
   data,
   fields,
   label = 'Table',
   isLoading = false,
 }) => {
   return (
-    <Table aria-label={label} isStriped className={tableClass}>
-      <TableHeader>
-        {fields.map((field) => (
-          <Column key={field.key} width={field.width}>
-            {field.label}
-          </Column>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {data.map((item, idx) => (
-          <Row key={idx}>
-            {fields.map((field) => (
-              <Cell key={field.key}>
-                <FieldCell isLoading={isLoading} field={field} item={item} />
-              </Cell>
-            ))}
-          </Row>
-        ))}
-      </TableBody>
-    </Table>
+    <Stack
+      padding="sm"
+      width="100%"
+      flexDirection="column"
+      gap="sm"
+      className={tableBorderClass}
+    >
+      <Table aria-label={label} isStriped className={tableClass}>
+        <TableHeader>
+          {fields.map((field) => (
+            <Column key={field.key} width={field.width}>
+              {field.label}
+            </Column>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {data.map((item, idx) => (
+            <Row key={idx}>
+              {fields.map((field) => (
+                <Cell key={field.key}>
+                  <FieldCell isLoading={isLoading} field={field} item={item} />
+                </Cell>
+              ))}
+            </Row>
+          ))}
+        </TableBody>
+      </Table>
+    </Stack>
   );
 };
 

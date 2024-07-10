@@ -1,32 +1,32 @@
-import type { BlockTransactionsQuery, Transaction } from '@/__generated__/sdk';
-import { useBlockTransactionsQuery } from '@/__generated__/sdk';
+import type {
+  AccountTransactionsQuery,
+  Transaction,
+} from '@/__generated__/sdk';
+import { useAccountTransactionsQuery } from '@/__generated__/sdk';
 import { usePagination } from '@/hooks/usePagination';
 import { graphqlIdFor } from '@/utils/graphqlIdFor';
-import { Heading, Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import CompactTable from '../compact-table/compact-table';
 import { FormatLink } from '../compact-table/utils/format-link';
 import { FormatStatus } from '../compact-table/utils/format-status';
-import { loadingData } from './loading-data-blocktransactionsquery';
-import { noTransactionsTitleClass } from './styles.css';
+import { loadingData } from './loading-data-account-transactionsquery';
 
-interface IProps {
-  hash: string;
-}
-
-const BlockTransactions: FC<IProps> = ({ hash }) => {
-  const id = graphqlIdFor('Block', hash);
+const AccountTransactionsTable: FC<{ accountName: string }> = ({
+  accountName,
+}) => {
+  const id = graphqlIdFor('FungibleAccount', `["coin", "${accountName}"]`);
   const [innerData, setInnerData] =
-    useState<BlockTransactionsQuery>(loadingData);
+    useState<AccountTransactionsQuery>(loadingData);
   const [isLoading, setIsLoading] = useState(true);
 
   const { variables, handlePageChange, pageSize } = usePagination({
     id,
   });
 
-  const { loading, data } = useBlockTransactionsQuery({
+  const { data, loading } = useAccountTransactionsQuery({
     variables,
+    skip: !id,
   });
 
   useEffect(() => {
@@ -44,23 +44,7 @@ const BlockTransactions: FC<IProps> = ({ hash }) => {
     }
   }, [loading, data]);
 
-  if (innerData.node?.__typename !== 'Block') return null;
-
-  if (!innerData.node?.transactions.edges.length) {
-    return (
-      <Stack
-        flexDirection="column"
-        width="100%"
-        justifyContent="center"
-        marginBlockStart="md"
-        marginBlockEnd="xxxl"
-      >
-        <Heading as="h4" className={noTransactionsTitleClass}>
-          There are no transactions in this block
-        </Heading>
-      </Stack>
-    );
-  }
+  if (innerData.node?.__typename !== 'FungibleAccount') return null;
 
   return (
     <CompactTable
@@ -69,6 +53,7 @@ const BlockTransactions: FC<IProps> = ({ hash }) => {
       pageInfo={innerData.node!.transactions.pageInfo}
       totalCount={innerData.node!.transactions.totalCount}
       isLoading={isLoading}
+      label="Keys table"
       fields={[
         {
           label: 'Status',
@@ -76,7 +61,6 @@ const BlockTransactions: FC<IProps> = ({ hash }) => {
           variant: 'code',
           width: '10%',
           render: FormatStatus(),
-          loaderVariant: 'icon',
         },
         {
           label: 'Sender',
@@ -99,11 +83,11 @@ const BlockTransactions: FC<IProps> = ({ hash }) => {
           width: '40%',
         },
       ]}
-      data={innerData.node.transactions.edges.map(
+      data={innerData.node!.transactions.edges.map(
         (edge) => edge.node as Transaction,
       )}
     />
   );
 };
 
-export default BlockTransactions;
+export default AccountTransactionsTable;

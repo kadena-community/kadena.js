@@ -4,7 +4,12 @@ import type { ICompactTableProps } from '../compact-table';
 import FieldCell from '../compact-table-desktop/field-cell';
 import { headerClass, rowClass, sectionClass } from './styles.css';
 
-const CompactTableMobile: FC<ICompactTableProps> = ({
+type IProps = Omit<
+  ICompactTableProps,
+  'pageInfo' | 'setPage' | 'pageSize' | 'totalCount'
+>;
+
+const CompactTableMobile: FC<IProps> = ({
   data,
   fields,
   isLoading = false,

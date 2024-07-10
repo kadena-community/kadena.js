@@ -24,13 +24,8 @@ export const block: DocumentNode = gql`
         chainId
         hash
       }
-      transactions(first: 500) {
+      transactions {
         totalCount
-        edges {
-          node {
-            ...CoreTransactionFields
-          }
-        }
       }
     }
   }

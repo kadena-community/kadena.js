@@ -1,4 +1,4 @@
-import type { BlockQuery, Transaction } from '@/__generated__/sdk';
+import type { BlockQuery } from '@/__generated__/sdk';
 import { useBlockQuery } from '@/__generated__/sdk';
 import BlockTransactions from '@/components/block-transactions/block-transactions';
 import DataRenderComponent from '@/components/data-render-component/data-render-component';
@@ -39,6 +39,10 @@ const Block: React.FC = () => {
 
   const blockQueryVariables = {
     hash: router.query.hash as string,
+    transactions: {
+      first: 1,
+      last: 1,
+    },
   };
 
   useEffect(() => {
@@ -47,6 +51,7 @@ const Block: React.FC = () => {
 
   const { loading, data, error } = useBlockQuery({
     variables: blockQueryVariables,
+
     skip: !router.query.hash,
   });
 
@@ -192,19 +197,14 @@ const Block: React.FC = () => {
                   Transactions{' '}
                   <ValueLoader isLoading={isLoading} variant="icon">
                     <Badge size="sm">
-                      {innerData.block.transactions.edges.length}
+                      {innerData.block.transactions.totalCount}
                     </Badge>
                   </ValueLoader>
                 </>
               }
               key="Transactions"
             >
-              <BlockTransactions
-                isLoading={isLoading}
-                transactions={innerData.block.transactions.edges.map(
-                  (edge) => edge.node as Transaction,
-                )}
-              />
+              <BlockTransactions hash={router.query.hash as string} />
             </TabItem>
           </Tabs>
         </>
