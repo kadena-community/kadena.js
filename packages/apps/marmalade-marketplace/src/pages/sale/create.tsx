@@ -1,12 +1,96 @@
 import { useEffect, useState } from "react";
-import { Stack } from "@kadena/kode-ui";
+import { getTokenInfo } from '@kadena/client-utils/marmalade'
+import { Stack, TextField, Select, SelectItem, Grid, Button, NumberField } from "@kadena/kode-ui";
 import CrudCard from '@/components/CrudCard';
-import { MonoAutoFixHigh } from '@kadena/kode-icons';
-import { Checkbox } from '@kadena/kode-ui';
+import { getTokenImageUrl, getTokenMetadata } from '@/utils/token';
+import { MonoAutoFixHigh, MonoAccountBalanceWallet, MonoAccessTime } from '@kadena/kode-icons';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { env } from '@/utils/env';
 import * as styles from '@/styles/create-sale.css';
 
+interface SaleData {
+  tokenId?: string;
+  chainId?: string;
+  saleType?: string;
+  price?: number;
+  timeout?: number;
+}
+
 export default function CreateSale() {
+  const [tokenId, setTokenId] = useState<string | null>(null);
+  const [chainId, setChainId] = useState<string | null>(null);
+  const [tokenImageUrl, setTokenImageUrl] = useState<string>("/no-image.webp");
+  const [saleData, setSaleData] = useState<SaleData>({});
+
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  useEffect(() => {
+    const tokenIdParam = searchParams.get('tokenid');
+    const chainIdParam = searchParams.get('chainid');
+    if (tokenIdParam && chainIdParam) {
+      setTokenId(tokenIdParam);
+      setChainId(chainIdParam);
+      setSaleData({ tokenId: tokenIdParam, chainId: chainIdParam });
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    async function fetch() {
+      const tokenInfo = await getTokenInfo({
+        tokenId,
+        chainId,
+        networkId: env.NETWORK_NAME,
+        host: env.CHAINWEB_API_HOST
+      }) as { uri: string };
+
+      // If tokeninfo is null, redirect to main page, or show 'Token not found' message
+
+      const tokenMetadata = await getTokenMetadata(tokenInfo.uri);
+
+      if (!!tokenMetadata?.image?.length) {
+        const tokenImageUrl = getTokenImageUrl(tokenMetadata.image);
+
+        if (tokenImageUrl) {
+          setTokenImageUrl(tokenImageUrl);
+        } else console.log('Invalid Image URL', tokenMetadata.image)
+      }
+    }
+
+    // TODO: add try catch around fetch
+    //fetch();
+
+  }, [tokenId])
+
+  const onCancelPress = () => {
+    // Redirect back to previous page
+    router.back();
+  }
+
+  const onCreateSalePress = () => {
+    // Create the sale
+    console.log(saleData)
+  }
+
+  const isSaleValid = () => {
+    if (!saleData.saleType) return false;
+
+    if (saleData.saleType === "none") {
+      if (!saleData.price) return false;
+      if (!saleData.timeout) return false;
+    } else {
+      return false
+    }
+
+    return true;
+  }
+
+  const onSaleDataChange = (key: string, value: string | number) => {
+    setSaleData({ ...saleData, [key]: value })
+  }
+
   return (
+    <div>
     <Stack flex={1} flexDirection="column" className={styles.container}>
       <CrudCard
         headingSize="h3"
@@ -20,25 +104,92 @@ export default function CreateSale() {
         ]}
       >
         <div>
-          <p>Form to create a new sale</p>
+          <img
+            src={tokenImageUrl}
+            alt="Token Image"
+            className={styles.tokenImageClass}
+          />
+          <div className={styles.propertyContainer}>
+            <div className={styles.propertyLabel}>Token ID:</div>
+            <div className={styles.propertyValue}>{tokenId}</div>
+          </div>
+          <div className={styles.propertyContainer}>
+            <div className={styles.propertyLabel}>Name:</div>
+            <div className={styles.propertyValue}>{tokenId}</div>
+          </div>
+          <div className={styles.propertyContainer}>
+            <div className={styles.propertyLabel}>Description:</div>
+            <div className={styles.propertyValue}>{tokenId}</div>
+          </div>
+          <div className={styles.propertyContainer}>
+            <div className={styles.propertyLabel}>Resides on Chain:</div>
+            <div className={styles.propertyValue}>{chainId}</div>
+          </div>
         </div>
       </CrudCard>
       <CrudCard
-        title="Metadata"
-        description={["Explaining metadata copy"]}
+        title="Sale Contract"
+        description={["Select the contract to use for the sale or select none and offer the token up for sale for a fixed price"]}
       >
         <div>
-          <p>Form to setup metadata</p>
+          <Select onSelectionChange={(key) => setSaleData({ ...saleData, saleType: key.toString() })  } label="Select a sale contract">
+            <SelectItem key="none">None</SelectItem>
+            <SelectItem key="conventional">Conventional Auction</SelectItem>
+            <SelectItem key="dutch">Dutch Auction</SelectItem>
+          </Select>
         </div>
       </CrudCard>
-      <CrudCard
-        title="Policies"
-        description={["Explaining copy for the concrete policies"]}
-      >
-        <div>
-          <p>Form to setup policies</p>
-        </div>
-      </CrudCard>
+      {saleData.saleType === "conventional" && (
+        <CrudCard
+          title="Conventional Auction"
+          description={[
+            "Allow bidding on the token up untill a certain time",
+            "The highest bidder at the end of the auction wins the token",
+            "The seller can choose to set a reserve price",
+          ]}
+        >
+          <div>
+            <p>Form to setup conventional auction</p>
+          </div>
+        </CrudCard>)}
+      {saleData.saleType === "dutch" && (
+        <CrudCard
+          title="Dutch Auction"
+          description={[
+            "The price of the token is set high and decreases over time",
+            "The first bidder to accept the price wins the token",
+            "The seller can choose to set a start and reserve price"
+          ]}
+        >
+          <div>
+            <p>Form to setup dutch auction</p>
+          </div>
+        </CrudCard>)}
+      {saleData.saleType === "none" && (
+        <CrudCard
+          title="Offer token"
+          description={[
+            "Offer the token up for sale for a fixed price",
+            "The first buyer to accept the price wins the token",
+            ""
+          ]}
+        >
+          <div className={styles.offerContainer}>
+            <NumberField value={saleData.price} onChange={(e) => onSaleDataChange('price', parseInt(e.target.value))} label="Price" minValue={1} placeholder="Set the token price in KDA" startVisual={<MonoAccountBalanceWallet />} />
+            <NumberField value={saleData.timeout} onChange={(e) => onSaleDataChange('timeout', parseInt(e.target.value))} label="Timeout" minValue={1} defaultValue={7} startVisual={<MonoAccessTime />} description="Set the minumum amount of days that the sale will be valid" />
+          </div>
+        </CrudCard>)}
     </Stack>
+    <Stack className={styles.buttonRowContainer}>
+        <Button variant="outlined" onPress={onCancelPress}>
+          Cancel
+        </Button>
+        <Button onPress={onCreateSalePress} isDisabled={!isSaleValid()}>
+          Create Sale
+        </Button>
+      </Stack>
+    </div>
   );
 }
+
+

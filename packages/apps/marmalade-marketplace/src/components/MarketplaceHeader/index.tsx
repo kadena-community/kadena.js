@@ -32,7 +32,7 @@ export const MarketplaceHeader= () => {
     setShowNotification(false);
     const transaction = fundAccount(account?.accountName || '');
     setTransaction(transaction);
-    //Redirect to the transaction page
+    // Redirect to the transaction page
     router.push('/transaction');
   };
 
