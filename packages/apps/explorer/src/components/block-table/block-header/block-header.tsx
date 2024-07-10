@@ -1,4 +1,5 @@
 import { Media } from '@/components/layout/media';
+import ValueLoader from '@/components/loading-skeleton/value-loader/value-loader';
 import { Grid, Stack, Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import React from 'react';
@@ -9,6 +10,7 @@ interface IBlockTableHeaderProps {
   startColumns: Array<{ title: string; subtitle?: string }>;
   heightColumns: Array<number>;
   endColumn: { title: string; subtitle?: string };
+  isLoading: boolean;
 }
 
 const blockHeightColumnDescription = 'Block Height';
@@ -18,6 +20,7 @@ const BlockTableHeader: React.FC<IBlockTableHeaderProps> = ({
   startColumns,
   heightColumns,
   endColumn,
+  isLoading,
 }) => {
   return (
     <Grid className={classNames(blockGridStyle, blockWrapperClass)}>
@@ -49,9 +52,11 @@ const BlockTableHeader: React.FC<IBlockTableHeaderProps> = ({
             </Text>
           </Media>
 
-          <Text variant="body" size="small" bold>
-            {height}
-          </Text>
+          <ValueLoader isLoading={isLoading}>
+            <Text variant="body" size="small" bold>
+              {height}
+            </Text>
+          </ValueLoader>
         </Stack>
       ))}
 

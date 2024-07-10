@@ -14,7 +14,6 @@ import { generateClientUrl } from '../utils/txHelpers.js';
 import { arbitraryCodeTemplate } from './templates/templates.js';
 import { createTransaction } from './txCreateTransaction.js';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 async function getNetworkConfig(flagConfig: INetworkCreateOptions | null) {
   if (flagConfig) return flagConfig;
   const networks = await getNetworks();

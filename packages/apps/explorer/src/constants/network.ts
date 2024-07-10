@@ -1,14 +1,18 @@
 export const networkConstants = {
   mainnet01: {
-    key: 'mainnet01',
+    networkId: 'mainnet01',
     label: 'Mainnet',
-    API: 'api.chainweb.com',
-    url: 'https://explorer.kadena.io/',
+    chainwebUrl: 'api.chainweb.com',
+    graphUrl: 'https://graph.kadena.network/graphql',
+    wsGraphUrl: 'https://graph.kadena.network/graphql',
+    explorerUrl: 'https://explorer.kadena.io/',
   },
   testnet04: {
-    key: 'testnet04',
+    networkId: 'testnet04',
     label: 'Testnet',
-    API: 'api.testnet.chainweb.com',
-    url: 'https://explorer.testnet.kadena.io/',
+    chainwebUrl: 'api.testnet.chainweb.com',
+    graphUrl: 'https://graph.testnet.kadena.network/graphql',
+    wsGraphUrl: 'https://graph.testnet.kadena.network/graphql',
+    explorerUrl: 'https://explorer.testnet.kadena.io/',
   },
 };

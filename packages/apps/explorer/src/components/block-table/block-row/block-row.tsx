@@ -1,4 +1,5 @@
 import BlockActivityChart from '@/components/block-activity-graph/block-activity-graph';
+import ValueLoader from '@/components/loading-skeleton/value-loader/value-loader';
 import type { IHeightBlock } from '@/services/block';
 import { formatNumberWithUnit } from '@/services/format';
 import { Grid, Stack, Text } from '@kadena/kode-ui';
@@ -24,6 +25,7 @@ interface IBlockTableRowProps {
   heights: number[];
   chainId: number;
   maxBlockTxCount: number;
+  isLoading?: boolean;
 }
 
 const BlockTableRow: React.FC<IBlockTableRowProps> = ({
@@ -31,6 +33,7 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
   heights,
   chainId,
   maxBlockTxCount,
+  isLoading = false,
 }) => {
   const { selectedChainId, selectedHeight } = useBlockInfo();
   const blockDifficulty =
@@ -58,17 +61,20 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
         </Stack>
 
         <Stack className={headerColumnStyle}>
-          <Text as="span" variant="code" bold>
-            {formatNumberWithUnit(Number(blockDifficulty))}
-            <Text as="span" className={columnTitleClass}>
-              H
+          <ValueLoader isLoading={isLoading}>
+            <Text as="span" variant="code" bold>
+              {formatNumberWithUnit(Number(blockDifficulty))}
+              <Text as="span" className={columnTitleClass}>
+                H
+              </Text>
             </Text>
-          </Text>
+          </ValueLoader>
         </Stack>
 
         {heights.map((height) =>
           blockRowData[height] ? (
             <BlockCell
+              isLoading={isLoading}
               isSelected={isShowHeightInfo && height === selectedHeight?.height}
               key={`${height}${chainId}`}
               height={blockRowData[height]}

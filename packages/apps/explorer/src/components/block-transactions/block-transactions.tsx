@@ -1,17 +1,37 @@
 import type { Transaction } from '@/__generated__/sdk';
+import { Heading, Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React from 'react';
 import CompactTable from '../compact-table/compact-table';
 import { FormatLink } from '../compact-table/utils/format-link';
 import { FormatStatus } from '../compact-table/utils/format-status';
+import { noTransactionsTitleClass } from './styles.css';
 
 interface IProps {
   transactions: Transaction[];
+  isLoading: boolean;
 }
 
-const BlockTransactions: FC<IProps> = ({ transactions }) => {
+const BlockTransactions: FC<IProps> = ({ transactions, isLoading }) => {
+  if (!transactions.length) {
+    return (
+      <Stack
+        flexDirection="column"
+        width="100%"
+        justifyContent="center"
+        marginBlockStart="md"
+        marginBlockEnd="xxxl"
+      >
+        <Heading as="h4" className={noTransactionsTitleClass}>
+          There are no transactions in this block
+        </Heading>
+      </Stack>
+    );
+  }
+
   return (
     <CompactTable
+      isLoading={isLoading}
       fields={[
         {
           label: 'Status',
@@ -19,12 +39,14 @@ const BlockTransactions: FC<IProps> = ({ transactions }) => {
           variant: 'code',
           width: '10%',
           render: FormatStatus(),
+          loaderVariant: 'icon',
         },
         {
           label: 'Sender',
           key: 'cmd.meta.sender',
           variant: 'code',
           width: '25%',
+          render: FormatLink({ appendUrl: '/account' }),
         },
         {
           label: 'RequestKey',

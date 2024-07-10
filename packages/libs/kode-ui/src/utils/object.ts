@@ -24,7 +24,6 @@ export function flattenObject<
   return flattenObjectHelper(tokens, ignoredPaths);
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function flattenObjectHelper(
   tokens: Record<string, unknown>,
   ignoredPaths: readonly string[] = [],

@@ -2,7 +2,6 @@ import { complexityFromQuery } from '@pothos/plugin-complexity';
 import type { GraphQLSchema } from 'graphql';
 import { handleStreamOrSingleExecutionResult } from 'graphql-yoga';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const complexityPlugin = (schema: GraphQLSchema) => ({
   onExecute: () => ({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

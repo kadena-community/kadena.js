@@ -1,13 +1,15 @@
+import type { ITableField } from '@/components/loading-skeleton/types';
+import ValueLoader from '@/components/loading-skeleton/value-loader/value-loader';
 import { Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React from 'react';
-import type { ITableField } from '../compact-table';
 import { dataFieldClass } from '../styles.css';
 import { FormatDefault } from '../utils/format-default';
 
 interface IProps {
   field: ITableField;
   item: any;
+  isLoading?: boolean;
 }
 
 const getItem = (item: IProps['item'], key: ITableField['key']) => {
@@ -23,11 +25,13 @@ const getItem = (item: IProps['item'], key: ITableField['key']) => {
   return value;
 };
 
-const FieldCell: FC<IProps> = ({ field, item }) => {
+const FieldCell: FC<IProps> = ({ field, item, isLoading = false }) => {
   const Render = field.render ? field.render : FormatDefault();
   return (
     <Text as="span" variant={field.variant} className={dataFieldClass}>
-      <Render value={getItem(item, field.key)} />
+      <ValueLoader isLoading={isLoading} variant={field.loaderVariant}>
+        <Render value={getItem(item, field.key)} />
+      </ValueLoader>
     </Text>
   );
 };

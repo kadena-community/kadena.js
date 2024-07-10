@@ -17,6 +17,7 @@ const CompactTableDesktop: FC<ICompactTableProps> = ({
   data,
   fields,
   label = 'Table',
+  isLoading = false,
 }) => {
   return (
     <Table aria-label={label} isStriped className={tableClass}>
@@ -32,7 +33,7 @@ const CompactTableDesktop: FC<ICompactTableProps> = ({
           <Row key={idx}>
             {fields.map((field) => (
               <Cell key={field.key}>
-                <FieldCell field={field} item={item} />
+                <FieldCell isLoading={isLoading} field={field} item={item} />
               </Cell>
             ))}
           </Row>

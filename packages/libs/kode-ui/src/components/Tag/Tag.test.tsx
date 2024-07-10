@@ -14,7 +14,6 @@ const tags = [
 describe('Tag', () => {
   const onDelete = vi.fn();
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const TestComponent = () => {
     return (
       <TagGroup

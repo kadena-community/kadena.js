@@ -1,3 +1,5 @@
+import ValueLoader from '@/components/loading-skeleton/value-loader/value-loader';
+import Link from '@/components/routing/link';
 import { MonoArrowOutward } from '@kadena/kode-icons/system';
 import { Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
@@ -18,11 +20,13 @@ import {
 interface IDataRenderComponentProps {
   title: boolean;
   fields: IDataRenderComponentField[];
+  isLoading?: boolean;
 }
 
 const DataRenderComponentVertical: React.FC<IDataRenderComponentProps> = ({
   title,
   fields,
+  isLoading = false,
 }) => {
   const descriptionListClassNames = title
     ? classNames(descriptionListClass, descriptionListIndentClass)
@@ -35,31 +39,37 @@ const DataRenderComponentVertical: React.FC<IDataRenderComponentProps> = ({
           <dt className={descriptionTermClass}>{field.key}</dt>
           {field.link ? (
             <dd className={descriptionDetailsLinkClass}>
-              <a href={field.link} className={linkClass}>
-                <Text variant="code" className={textClass}>
-                  {field.value}
-                </Text>
-              </a>
-              <a href={field.link} className={iconLinkClass}>
-                <MonoArrowOutward className={linkIconClass} />
-              </a>
+              <ValueLoader isLoading={isLoading}>
+                <Link href={field.link} className={linkClass}>
+                  <Text variant="code" className={textClass}>
+                    {field.value}
+                  </Text>
+                </Link>
+                <Link href={field.link} className={iconLinkClass}>
+                  <MonoArrowOutward className={linkIconClass} />
+                </Link>
+              </ValueLoader>
             </dd>
           ) : field.type === 'code' ? (
             <dd className={descriptionDetailsClass}>
               <Text variant="code" className={textClass}>
-                <pre>{field.value}</pre>
+                <ValueLoader isLoading={isLoading}>
+                  <pre>{field.value}</pre>
+                </ValueLoader>
               </Text>
             </dd>
           ) : Array.isArray(field.value) ? (
             field.value.map((value, index) => (
               <dd className={descriptionDetailsClass} key={index}>
                 <Text variant="code" className={textClass}>
-                  {value}
+                  <ValueLoader isLoading={isLoading}>{value}</ValueLoader>
                 </Text>
               </dd>
             ))
           ) : (
-            <ExpandTruncatedField field={field} />
+            <ValueLoader isLoading={isLoading}>
+              <ExpandTruncatedField field={field} />
+            </ValueLoader>
           )}
         </Fragment>
       ))}
