@@ -69,7 +69,8 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     const transaction = await claim(eventId);
     if (!transaction || !account) return;
 
-    const { transactions } = await sign([transaction], [account]);
+    const { transactions, isReady } = await sign([transaction], [account]);
+    await isReady();
 
     transactions.map(async (t) => {
       // should perform check to see if all sigs are present
