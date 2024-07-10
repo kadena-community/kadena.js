@@ -1,5 +1,5 @@
 import type { ITablePaginationPageOptions } from '@/components/compact-table/table-pagination/table-pagination';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const PAGESIZE = 20;
 
@@ -20,7 +20,7 @@ export const usePagination = ({ id, pageSize = PAGESIZE }: IProps) => {
   >(undefined);
   const [paginationFirstRecord, setPaginationFirstRecord] = useState<
     number | undefined | null
-  >(PAGESIZE);
+  >(pageSize);
 
   const variables = {
     id,
@@ -36,6 +36,13 @@ export const usePagination = ({ id, pageSize = PAGESIZE }: IProps) => {
     setPaginationBeforeRecord(page.before);
     setPaginationAfterRecord(page.after);
   };
+
+  useEffect(() => {
+    setPaginationLastRecord(undefined);
+    setPaginationFirstRecord(pageSize);
+    setPaginationBeforeRecord(undefined);
+    setPaginationAfterRecord(undefined);
+  }, [id]);
 
   return {
     variables,

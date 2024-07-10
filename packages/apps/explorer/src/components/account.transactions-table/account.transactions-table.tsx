@@ -1,27 +1,30 @@
-import type { AccountTransfersQuery, Transfer } from '@/__generated__/sdk';
-import { useAccountTransfersQuery } from '@/__generated__/sdk';
+import type {
+  AccountTransactionsQuery,
+  Transaction,
+} from '@/__generated__/sdk';
+import { useAccountTransactionsQuery } from '@/__generated__/sdk';
 import { usePagination } from '@/hooks/usePagination';
 import { graphqlIdFor } from '@/utils/graphqlIdFor';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import CompactTable from '../compact-table/compact-table';
-import { FormatAmount } from '../compact-table/utils/format-amount';
 import { FormatLink } from '../compact-table/utils/format-link';
-import { loadingData } from './loading-data-account-transfersquery';
+import { FormatStatus } from '../compact-table/utils/format-status';
+import { loadingData } from './loading-data-account-transactionsquery';
 
-const AccountTransfersTable: FC<{ accountName: string }> = ({
+const AccountTransactionsTable: FC<{ accountName: string }> = ({
   accountName,
 }) => {
   const id = graphqlIdFor('FungibleAccount', `["coin", "${accountName}"]`);
   const [innerData, setInnerData] =
-    useState<AccountTransfersQuery>(loadingData);
+    useState<AccountTransactionsQuery>(loadingData);
   const [isLoading, setIsLoading] = useState(true);
 
   const { variables, handlePageChange, pageSize } = usePagination({
     id,
   });
 
-  const { data, loading } = useAccountTransfersQuery({
+  const { data, loading } = useAccountTransactionsQuery({
     variables,
     skip: !id,
   });
@@ -43,55 +46,49 @@ const AccountTransfersTable: FC<{ accountName: string }> = ({
 
   if (innerData.node?.__typename !== 'FungibleAccount') return null;
 
+  console.log(innerData);
   return (
     <CompactTable
       setPage={handlePageChange}
       pageSize={pageSize}
-      pageInfo={innerData.node!.transfers.pageInfo}
-      totalCount={innerData.node!.transfers.totalCount}
+      pageInfo={innerData.node!.transactions.pageInfo}
+      totalCount={innerData.node!.transactions.totalCount}
       isLoading={isLoading}
+      label="Keys table"
       fields={[
         {
-          label: 'Height',
-          key: 'height',
+          label: 'Status',
+          key: 'result.goodResult',
           variant: 'code',
           width: '10%',
-        },
-        {
-          label: 'ChainId',
-          key: 'chainId',
-          variant: 'code',
-          width: '10%',
-        },
-        {
-          label: 'Amount',
-          key: 'amount',
-          width: '20%',
-          render: FormatAmount(),
+          render: FormatStatus(),
         },
         {
           label: 'Sender',
-          key: 'senderAccount',
-          width: '20%',
-          render: FormatLink({ appendUrl: '/account' }),
-        },
-        {
-          label: 'Receiver',
-          key: 'receiverAccount',
-          width: '20%',
+          key: 'cmd.meta.sender',
+          variant: 'code',
+          width: '25%',
           render: FormatLink({ appendUrl: '/account' }),
         },
         {
           label: 'RequestKey',
-          key: 'requestKey',
-          width: '20%',
+          key: 'hash',
+          variant: 'code',
+          width: '25%',
+          render: FormatLink({ appendUrl: '/transaction' }),
+        },
+        {
+          label: 'Code Preview',
+          key: 'cmd.payload.code',
+          variant: 'code',
+          width: '40%',
         },
       ]}
-      data={innerData.node?.transfers.edges.map(
-        (edge) => edge.node as Transfer,
+      data={innerData.node!.transactions.edges.map(
+        (edge) => edge.node as Transaction,
       )}
     />
   );
 };
 
-export default AccountTransfersTable;
+export default AccountTransactionsTable;

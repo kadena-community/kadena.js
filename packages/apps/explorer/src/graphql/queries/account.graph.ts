@@ -12,11 +12,6 @@ export const account: DocumentNode = gql`
       ...CoreAccountFields
       transactions {
         totalCount
-        edges {
-          node {
-            ...CoreTransactionFields
-          }
-        }
       }
       transfers {
         totalCount

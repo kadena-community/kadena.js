@@ -1,9 +1,8 @@
-import type { AccountQuery, Transaction } from '@/__generated__/sdk';
+import type { AccountQuery } from '@/__generated__/sdk';
 import { useAccountQuery } from '@/__generated__/sdk';
 import AccountTransfersTable from '@/components/account-transfers-table/account-transfers-table';
+import AccountTransactionsTable from '@/components/account.transactions-table/account.transactions-table';
 import CompactTable from '@/components/compact-table/compact-table';
-import { FormatLink } from '@/components/compact-table/utils/format-link';
-import { FormatStatus } from '@/components/compact-table/utils/format-status';
 import Layout from '@/components/layout/layout';
 import { loadingData } from '@/components/loading-skeleton/loading-data/loading-data-accountquery';
 import ValueLoader from '@/components/loading-skeleton/value-loader/value-loader';
@@ -154,44 +153,7 @@ const Account: FC = () => {
               title={`Transactions (${fungibleAccount?.transactions.totalCount})`}
               key="Transactions"
             >
-              {fungibleAccount?.transactions && (
-                <CompactTable
-                  isLoading={isLoading}
-                  label="Keys table"
-                  fields={[
-                    {
-                      label: 'Status',
-                      key: 'result.goodResult',
-                      variant: 'code',
-                      width: '10%',
-                      render: FormatStatus(),
-                    },
-                    {
-                      label: 'Sender',
-                      key: 'cmd.meta.sender',
-                      variant: 'code',
-                      width: '25%',
-                      render: FormatLink({ appendUrl: '/account' }),
-                    },
-                    {
-                      label: 'RequestKey',
-                      key: 'hash',
-                      variant: 'code',
-                      width: '25%',
-                      render: FormatLink({ appendUrl: '/transaction' }),
-                    },
-                    {
-                      label: 'Code Preview',
-                      key: 'cmd.payload.code',
-                      variant: 'code',
-                      width: '40%',
-                    },
-                  ]}
-                  data={fungibleAccount?.transactions.edges.map(
-                    (edge) => edge.node as Transaction,
-                  )}
-                />
-              )}
+              <AccountTransactionsTable accountName={accountName} />
             </TabItem>
             <TabItem
               title={`Transfers (${fungibleAccount?.transfers.totalCount})`}
