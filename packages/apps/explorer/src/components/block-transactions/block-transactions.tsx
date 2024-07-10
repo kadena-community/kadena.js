@@ -23,16 +23,16 @@ const BlockTransactions: FC<IProps> = ({ hash }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [paginationLastRecord, setPaginationLastRecord] = useState<
-    number | undefined
+    number | undefined | null
   >(undefined);
   const [paginationBeforeRecord, setPaginationBeforeRecord] = useState<
-    string | undefined
+    string | undefined | null
   >(undefined);
   const [paginationAfterRecord, setPaginationAfterRecord] = useState<
-    string | undefined
+    string | undefined | null
   >(undefined);
   const [paginationFirstRecord, setPaginationFirstRecord] = useState<
-    number | undefined
+    number | undefined | null
   >(PAGESIZE);
 
   const blockQueryVariables = {
@@ -64,12 +64,14 @@ const BlockTransactions: FC<IProps> = ({ hash }) => {
     if (data) {
       setTimeout(() => {
         setIsLoading(false);
+
         setInnerData(data);
       }, 200);
     }
   }, [loading, data]);
 
-  console.log(innerData);
+  if (innerData.node?.__typename !== 'Block') return null;
+
   if (!innerData.node?.transactions.edges.length) {
     return (
       <Stack
@@ -90,8 +92,8 @@ const BlockTransactions: FC<IProps> = ({ hash }) => {
     <CompactTable
       setPage={handlePageChange}
       pageSize={PAGESIZE}
-      pageInfo={innerData.node.transactions.pageInfo}
-      totalCount={innerData.node.transactions.totalCount}
+      pageInfo={innerData.node!.transactions.pageInfo}
+      totalCount={innerData.node!.transactions.totalCount}
       isLoading={isLoading}
       fields={[
         {

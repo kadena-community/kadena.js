@@ -1,6 +1,7 @@
 import type { BlockTransactionsQuery } from '@/__generated__/sdk';
 
 export const loadingData: BlockTransactionsQuery = {
+  __typename: 'Query',
   node: {
     __typename: 'Block',
     transactions: {
@@ -14,18 +15,15 @@ export const loadingData: BlockTransactionsQuery = {
       totalCount: 0,
       edges: [
         {
+          cursor: '',
           node: {
             hash: '',
             result: {
-              block: {
-                height: 0,
-              },
               goodResult: '',
             },
             cmd: {
               meta: {
                 sender: '',
-                chainId: 0,
               },
               payload: {
                 code: '',
@@ -34,18 +32,15 @@ export const loadingData: BlockTransactionsQuery = {
           },
         },
         {
+          cursor: '',
           node: {
             hash: '',
             result: {
-              block: {
-                height: 0,
-              },
               goodResult: '',
             },
             cmd: {
               meta: {
                 sender: '',
-                chainId: 0,
               },
               payload: {
                 code: '',
@@ -54,18 +49,15 @@ export const loadingData: BlockTransactionsQuery = {
           },
         },
         {
+          cursor: '',
           node: {
             hash: '',
             result: {
-              block: {
-                height: 0,
-              },
               goodResult: '',
             },
             cmd: {
               meta: {
                 sender: '',
-                chainId: 0,
               },
               payload: {
                 code: '',
@@ -74,18 +66,15 @@ export const loadingData: BlockTransactionsQuery = {
           },
         },
         {
+          cursor: '',
           node: {
             hash: '',
             result: {
-              block: {
-                height: 0,
-              },
               goodResult: '',
             },
             cmd: {
               meta: {
                 sender: '',
-                chainId: 0,
               },
               payload: {
                 code: '',
@@ -94,18 +83,15 @@ export const loadingData: BlockTransactionsQuery = {
           },
         },
         {
+          cursor: '',
           node: {
             hash: '',
             result: {
-              block: {
-                height: 0,
-              },
               goodResult: '',
             },
             cmd: {
               meta: {
                 sender: '',
-                chainId: 0,
               },
               payload: {
                 code: '',
@@ -114,18 +100,15 @@ export const loadingData: BlockTransactionsQuery = {
           },
         },
         {
+          cursor: '',
           node: {
             hash: '',
             result: {
-              block: {
-                height: 0,
-              },
               goodResult: '',
             },
             cmd: {
               meta: {
                 sender: '',
-                chainId: 0,
               },
               payload: {
                 code: '',
@@ -134,18 +117,15 @@ export const loadingData: BlockTransactionsQuery = {
           },
         },
         {
+          cursor: '',
           node: {
             hash: '',
             result: {
-              block: {
-                height: 0,
-              },
               goodResult: '',
             },
             cmd: {
               meta: {
                 sender: '',
-                chainId: 0,
               },
               payload: {
                 code: '',
@@ -154,18 +134,15 @@ export const loadingData: BlockTransactionsQuery = {
           },
         },
         {
+          cursor: '',
           node: {
             hash: '',
             result: {
-              block: {
-                height: 0,
-              },
               goodResult: '',
             },
             cmd: {
               meta: {
                 sender: '',
-                chainId: 0,
               },
               payload: {
                 code: '',
@@ -174,18 +151,15 @@ export const loadingData: BlockTransactionsQuery = {
           },
         },
         {
+          cursor: '',
           node: {
             hash: '',
             result: {
-              block: {
-                height: 0,
-              },
               goodResult: '',
             },
             cmd: {
               meta: {
                 sender: '',
-                chainId: 0,
               },
               payload: {
                 code: '',

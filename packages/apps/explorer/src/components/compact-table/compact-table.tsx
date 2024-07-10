@@ -12,14 +12,14 @@ export interface ICompactTableProps {
   data: any[];
   fields: ITableField[];
   isLoading?: boolean;
-  totalCount: number;
-  pageSize: number;
-  setPage: (page: ITablePaginationPageOptions) => void;
-  pageInfo: {
-    endCursor: string;
-    hasNextPage: boolean;
-    hasPreviousPage: boolean;
-    startCursor: string;
+  totalCount?: number;
+  pageSize?: number;
+  setPage?: (page: ITablePaginationPageOptions) => void;
+  pageInfo?: {
+    endCursor?: string | null;
+    startCursor?: string | null;
+    hasNextPage?: boolean;
+    hasPreviousPage?: boolean;
   };
 }
 
@@ -35,12 +35,14 @@ const CompactTable: React.FC<ICompactTableProps> = ({
 }) => {
   return (
     <>
-      <TablePagination
-        totalCount={totalCount}
-        pageSize={pageSize}
-        setPage={setPage}
-        pageInfo={pageInfo}
-      />
+      {setPage && pageInfo && totalCount && pageSize && (
+        <TablePagination
+          totalCount={totalCount}
+          pageSize={pageSize}
+          setPage={setPage}
+          pageInfo={pageInfo}
+        />
+      )}
       <Media lessThan="sm">
         <CompactTableMobile isLoading={isLoading} fields={fields} data={data} />
       </Media>

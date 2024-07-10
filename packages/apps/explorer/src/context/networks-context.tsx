@@ -138,7 +138,6 @@ const NetworkContextProvider = (props: {
       endpoint: activeNetwork?.graphUrl,
     });
 
-    console.log(activeNetwork?.graphUrl);
     const wsLink = new GraphQLWsLink(
       createClient({
         url: activeNetwork!.wsGraphUrl,

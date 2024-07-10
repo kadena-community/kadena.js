@@ -9,20 +9,20 @@ import PaginationButton from './pagination-button/pagination-button';
 import { paginationClass } from './styles.css';
 
 export interface ITablePaginationPageOptions {
-  after?: string;
-  first?: number;
-  last?: number;
-  before?: string;
+  after?: string | null;
+  before?: string | null;
+  first?: number | null;
+  last?: number | null;
 }
 interface IProps {
   totalCount: number;
   pageSize: number;
   setPage: (page: ITablePaginationPageOptions) => void;
   pageInfo: {
-    endCursor: string;
-    hasNextPage: boolean;
-    hasPreviousPage: boolean;
-    startCursor: string;
+    endCursor?: string | null;
+    startCursor?: string | null;
+    hasNextPage?: boolean;
+    hasPreviousPage?: boolean;
   };
 }
 
