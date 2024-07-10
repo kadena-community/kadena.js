@@ -19,6 +19,7 @@ import {
   NotificationButton,
   NotificationHeading
 } from '@kadena/kode-ui';
+import * as styles from './style.css';
 
 export const MarketplaceHeader= () => {
   const [showNotification, setShowNotification] = useState(false);
@@ -41,27 +42,27 @@ export const MarketplaceHeader= () => {
   };
 
   return (
-    <NavHeader logo={<a href="/"><KadenaLogo height={40} /></a>}>
+    <NavHeader className={styles.navHeader} logo={<a href="/"><KadenaLogo height={40} /></a>}>
       <NavHeaderLinkList>
-        <NavHeaderLink
+        <NavHeaderLink className={styles.navHeaderLink}
           href="/marketplace"
           onClick={() => {}}
         >
           Marketplace
         </NavHeaderLink>
-        <NavHeaderLink
+        <NavHeaderLink className={styles.navHeaderLink}
           href="/tokens"
           onClick={() => {}}
         >
           Tokens
         </NavHeaderLink>
-        <NavHeaderLink
+        <NavHeaderLink className={styles.navHeaderLink}
           href="/transfer"
           onClick={() => {}}
         >
           Transfer
         </NavHeaderLink>
-        {account ? (<NavHeaderLink
+        {account ? (<NavHeaderLink className={styles.navHeaderLink}
           href="/mytokens"
           onClick={() => {}}
         >

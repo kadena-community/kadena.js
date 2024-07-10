@@ -2,28 +2,25 @@ import { useEffect, useState } from "react";
 import { getTokenInfo } from '@kadena/client-utils/marmalade'
 import { Stack, TextField, Select, SelectItem, Grid, Button, NumberField } from "@kadena/kode-ui";
 import CrudCard from '@/components/CrudCard';
+import { useAccount } from '@/hooks/account';
 import { getTokenImageUrl, getTokenMetadata } from '@/utils/token';
 import { MonoAutoFixHigh, MonoAccountBalanceWallet, MonoAccessTime } from '@kadena/kode-icons';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { env } from '@/utils/env';
 import * as styles from '@/styles/create-sale.css';
-
-interface SaleData {
-  tokenId?: string;
-  chainId?: string;
-  saleType?: string;
-  price?: number;
-  timeout?: number;
-}
+import { TokenMetadata } from "@/components/Token";
+import { CreateSaleInput, createSale } from "@/utils/createSale";
 
 export default function CreateSale() {
   const [tokenId, setTokenId] = useState<string | null>(null);
   const [chainId, setChainId] = useState<string | null>(null);
   const [tokenImageUrl, setTokenImageUrl] = useState<string>("/no-image.webp");
-  const [saleData, setSaleData] = useState<SaleData>({});
+  const [tokenMetadata, setTokenMetadata] = useState<TokenMetadata | null>();
+  const [saleData, setSaleData] = useState<CreateSaleInput>({});
 
   const searchParams = useSearchParams();
   const router = useRouter();
+  const account = useAccount();
 
   useEffect(() => {
     const tokenIdParam = searchParams.get('tokenid');
@@ -37,39 +34,42 @@ export default function CreateSale() {
 
   useEffect(() => {
     async function fetch() {
-      const tokenInfo = await getTokenInfo({
-        tokenId,
-        chainId,
-        networkId: env.NETWORK_NAME,
-        host: env.CHAINWEB_API_HOST
-      }) as { uri: string };
+      try {
+        const tokenInfo = await getTokenInfo({
+          tokenId,
+          chainId,
+          networkId: env.NETWORK_NAME,
+          host: env.CHAINWEB_API_HOST
+        }) as { uri: string };
 
-      // If tokeninfo is null, redirect to main page, or show 'Token not found' message
+        const metadata = await getTokenMetadata(tokenInfo.uri);
+        setTokenMetadata(metadata);
 
-      const tokenMetadata = await getTokenMetadata(tokenInfo.uri);
+        if (!!metadata?.image?.length) {
+          const tokenImageUrl = getTokenImageUrl(metadata.image);
 
-      if (!!tokenMetadata?.image?.length) {
-        const tokenImageUrl = getTokenImageUrl(tokenMetadata.image);
-
-        if (tokenImageUrl) {
-          setTokenImageUrl(tokenImageUrl);
-        } else console.log('Invalid Image URL', tokenMetadata.image)
+          if (tokenImageUrl) {
+            setTokenImageUrl(tokenImageUrl);
+          } else console.log('Invalid Image URL', metadata.image)
+        }
+      } catch (e) {
+        console.log('Error fetching token info', e)
       }
     }
 
-    // TODO: add try catch around fetch
-    //fetch();
-
+    fetch();
   }, [tokenId])
 
   const onCancelPress = () => {
-    // Redirect back to previous page
     router.back();
   }
 
-  const onCreateSalePress = () => {
+  const onCreateSalePress = async () => {
     // Create the sale
     console.log(saleData)
+    saleData.account = account?.account?.accountName;
+    saleData.key = account?.account?.credentials[0].publicKey
+    const saleId = await createSale(saleData);
   }
 
   const isSaleValid = () => {
@@ -87,6 +87,12 @@ export default function CreateSale() {
 
   const onSaleDataChange = (key: string, value: string | number) => {
     setSaleData({ ...saleData, [key]: value })
+  }
+
+  const onSaleTypeChange = (key: string | number) => {
+    const saleType = key.toString();
+    const timeout = saleType === "none" ? 7 : 0;
+    setSaleData({ ...saleData, saleType, timeout })
   }
 
   return (
@@ -115,11 +121,11 @@ export default function CreateSale() {
           </div>
           <div className={styles.propertyContainer}>
             <div className={styles.propertyLabel}>Name:</div>
-            <div className={styles.propertyValue}>{tokenId}</div>
+            <div className={styles.propertyValue}>{tokenMetadata?.name}</div>
           </div>
           <div className={styles.propertyContainer}>
             <div className={styles.propertyLabel}>Description:</div>
-            <div className={styles.propertyValue}>{tokenId}</div>
+            <div className={styles.propertyValue}>{tokenMetadata?.description}</div>
           </div>
           <div className={styles.propertyContainer}>
             <div className={styles.propertyLabel}>Resides on Chain:</div>
@@ -132,7 +138,7 @@ export default function CreateSale() {
         description={["Select the contract to use for the sale or select none and offer the token up for sale for a fixed price"]}
       >
         <div>
-          <Select onSelectionChange={(key) => setSaleData({ ...saleData, saleType: key.toString() })  } label="Select a sale contract">
+          <Select onSelectionChange={onSaleTypeChange} label="Select a sale contract">
             <SelectItem key="none">None</SelectItem>
             <SelectItem key="conventional">Conventional Auction</SelectItem>
             <SelectItem key="dutch">Dutch Auction</SelectItem>
@@ -175,8 +181,8 @@ export default function CreateSale() {
           ]}
         >
           <div className={styles.offerContainer}>
-            <NumberField value={saleData.price} onChange={(e) => onSaleDataChange('price', parseInt(e.target.value))} label="Price" minValue={1} placeholder="Set the token price in KDA" startVisual={<MonoAccountBalanceWallet />} />
-            <NumberField value={saleData.timeout} onChange={(e) => onSaleDataChange('timeout', parseInt(e.target.value))} label="Timeout" minValue={1} defaultValue={7} startVisual={<MonoAccessTime />} description="Set the minumum amount of days that the sale will be valid" />
+            <NumberField value={saleData.price} onChange={(e) => onSaleDataChange('price', parseInt(e.target.value))} label="Price" minValue={0.1} placeholder="Set the token price in KDA" startVisual={<MonoAccountBalanceWallet />} />
+            <NumberField value={saleData.timeout} onChange={(e) => onSaleDataChange('timeout', parseInt(e.target.value))} label="Timeout" minValue={1} startVisual={<MonoAccessTime />} description="Set the minumum amount of days that the sale will be valid" />
           </div>
         </CrudCard>)}
     </Stack>
