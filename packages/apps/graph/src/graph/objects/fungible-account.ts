@@ -34,6 +34,7 @@ export default builder.node(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return (source as any).__typename === FungibleAccountName;
     },
+
     async loadOne({ fungibleName, accountName }) {
       try {
         return {
@@ -57,6 +58,7 @@ export default builder.node(
         complexity: {
           field: COMPLEXITY.FIELD.CHAINWEB_NODE,
         },
+
         async resolve(parent) {
           try {
             return (
@@ -82,6 +84,7 @@ export default builder.node(
         complexity: {
           field: COMPLEXITY.FIELD.CHAINWEB_NODE,
         },
+
         async resolve(parent) {
           try {
             return (
@@ -117,6 +120,7 @@ export default builder.node(
             last: args.last,
           }),
         }),
+
         async totalCount(parent) {
           try {
             return await prismaClient.transaction.count({
@@ -133,6 +137,7 @@ export default builder.node(
             throw normalizeError(error);
           }
         },
+
         async resolve(query, parent) {
           try {
             return await prismaClient.transaction.findMany({
@@ -165,42 +170,36 @@ export default builder.node(
             last: args.last,
           }),
         }),
+
         async totalCount(parent) {
           try {
-            return await prismaClient.transfer.count({
-              where: {
-                OR: [
-                  {
-                    senderAccount: parent.accountName,
-                  },
-                  {
-                    receiverAccount: parent.accountName,
-                  },
-                ],
+            return prismaCountOr(prismaClient.transfer.count, [
+              {
+                senderAccount: parent.accountName,
               },
-            });
+              {
+                receiverAccount: parent.accountName,
+              },
+            ]);
           } catch (error) {
             throw normalizeError(error);
           }
         },
+
         async resolve(query, parent) {
           try {
-            return await prismaClient.transfer.findMany({
-              ...query,
-              where: {
-                OR: [
-                  {
-                    senderAccount: parent.accountName,
-                  },
-                  {
-                    receiverAccount: parent.accountName,
-                  },
-                ],
-              },
-              orderBy: {
-                height: 'desc',
-              },
-            });
+            return prismaFindManyOr(
+              prismaClient.transfer.findMany,
+              { ...query, orderBy: { height: 'desc' } },
+              [
+                {
+                  senderAccount: parent.accountName,
+                },
+                {
+                  receiverAccount: parent.accountName,
+                },
+              ],
+            );
           } catch (error) {
             throw normalizeError(error);
           }
@@ -209,3 +208,25 @@ export default builder.node(
     }),
   },
 );
+
+/**
+ * Split the query into multiple queries based on the amount of OR conditions.
+ * Merge the results and return the total count.
+ */
+async function prismaCountOr(query: any, ors: any[]) {
+  const result = await Promise.all(
+    ors.map((condition) => query({ ...query, where: condition })),
+  );
+  return result.reduce((acc, count) => acc + count, 0);
+}
+
+/**
+ * Split the query into multiple queries based on the amount of OR conditions.
+ * Merge the results
+ */
+async function prismaFindManyOr(query: any, parent: any, ors: any[]) {
+  const result = await Promise.all(
+    ors.map((condition) => query({ ...parent, where: condition })),
+  );
+  return result.flat();
+}
