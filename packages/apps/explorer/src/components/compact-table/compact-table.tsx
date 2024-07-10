@@ -35,7 +35,7 @@ const CompactTable: React.FC<ICompactTableProps> = ({
 }) => {
   return (
     <>
-      {setPage && pageInfo && totalCount && pageSize && (
+      {!!(setPage && pageInfo && totalCount && pageSize) && (
         <TablePagination
           totalCount={totalCount}
           pageSize={pageSize}

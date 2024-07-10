@@ -46,7 +46,6 @@ const AccountTransactionsTable: FC<{ accountName: string }> = ({
 
   if (innerData.node?.__typename !== 'FungibleAccount') return null;
 
-  console.log(innerData);
   return (
     <CompactTable
       setPage={handlePageChange}

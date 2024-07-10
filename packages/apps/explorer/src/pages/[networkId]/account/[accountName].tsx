@@ -67,8 +67,15 @@ const Account: FC = () => {
 
   const handleSelectedTab = (tab: Key): void => {
     setSelectedTab(tab as string);
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    router.push(`#${tab}`);
+
+    const regExp = new RegExp(/[?#].*/);
+
+    const newUrl = `${router.asPath.replace(regExp, '')}#${tab}`;
+    window.history.replaceState(
+      { ...window.history.state, as: newUrl, url: newUrl },
+      '',
+      newUrl,
+    );
   };
 
   const { fungibleAccount } = innerData ?? {};
@@ -117,31 +124,30 @@ const Account: FC = () => {
         </Stack>
       </Stack>
 
-      {keys && (
-        <CompactTable
-          isLoading={isLoading}
-          label="Keys table"
-          fields={[
-            {
-              label: 'ChainId',
-              key: 'chainId',
-              width: '10%',
-            },
-            {
-              variant: 'code',
-              label: 'Key',
-              key: 'key',
-              width: '50%',
-            },
-            {
-              label: 'Predicate',
-              key: 'predicate',
-              width: '40%',
-            },
-          ]}
-          data={keys}
-        />
-      )}
+      <CompactTable
+        isLoading={isLoading}
+        label="Keys table"
+        fields={[
+          {
+            label: 'ChainId',
+            key: 'chainId',
+            width: '10%',
+          },
+          {
+            variant: 'code',
+            label: 'Key',
+            key: 'key',
+            width: '50%',
+          },
+          {
+            label: 'Predicate',
+            key: 'predicate',
+            width: '40%',
+          },
+        ]}
+        data={keys}
+      />
+
       <Stack
         width="100%"
         gap="md"
