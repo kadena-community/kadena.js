@@ -1,8 +1,7 @@
-import type { AccountQuery, Transaction, Transfer } from '@/__generated__/sdk';
+import type { AccountQuery, Transaction } from '@/__generated__/sdk';
 import { useAccountQuery } from '@/__generated__/sdk';
+import AccountTransfersTable from '@/components/account-transfers-table/account-transfers-table';
 import CompactTable from '@/components/compact-table/compact-table';
-import { FormatAccount } from '@/components/compact-table/utils/format-account';
-import { FormatAmount } from '@/components/compact-table/utils/format-amount';
 import { FormatLink } from '@/components/compact-table/utils/format-link';
 import { FormatStatus } from '@/components/compact-table/utils/format-status';
 import Layout from '@/components/layout/layout';
@@ -152,7 +151,7 @@ const Account: FC = () => {
         <Stack flex={1} flexDirection="column" marginBlockStart="lg">
           <Tabs selectedKey={selectedTab} onSelectionChange={handleSelectedTab}>
             <TabItem
-              title={`Transactions (${fungibleAccount?.transactions.edges.length ?? 0})`}
+              title={`Transactions (${fungibleAccount?.transactions.totalCount})`}
               key="Transactions"
             >
               {fungibleAccount?.transactions && (
@@ -172,6 +171,7 @@ const Account: FC = () => {
                       key: 'cmd.meta.sender',
                       variant: 'code',
                       width: '25%',
+                      render: FormatLink({ appendUrl: '/account' }),
                     },
                     {
                       label: 'RequestKey',
@@ -194,54 +194,10 @@ const Account: FC = () => {
               )}
             </TabItem>
             <TabItem
-              title={`Transfers (${fungibleAccount?.transfers.edges.length ?? 0})`}
+              title={`Transfers (${fungibleAccount?.transfers.totalCount})`}
               key="Transfers"
             >
-              {fungibleAccount?.transfers && (
-                <CompactTable
-                  isLoading={isLoading}
-                  fields={[
-                    {
-                      label: 'Height',
-                      key: 'height',
-                      variant: 'code',
-                      width: '10%',
-                    },
-                    {
-                      label: 'ChainId',
-                      key: 'chainId',
-                      variant: 'code',
-                      width: '10%',
-                    },
-                    {
-                      label: 'Amount',
-                      key: 'amount',
-                      width: '20%',
-                      render: FormatAmount(),
-                    },
-                    {
-                      label: 'Sender',
-                      key: 'senderAccount',
-                      width: '20%',
-                      render: FormatAccount(),
-                    },
-                    {
-                      label: 'Receiver',
-                      key: 'receiverAccount',
-                      width: '20%',
-                      render: FormatAccount(),
-                    },
-                    {
-                      label: 'RequestKey',
-                      key: 'requestKey',
-                      width: '20%',
-                    },
-                  ]}
-                  data={fungibleAccount?.transfers.edges.map(
-                    (edge) => edge.node as Transfer,
-                  )}
-                />
-              )}
+              <AccountTransfersTable accountName={accountName} />
             </TabItem>
           </Tabs>
         </Stack>

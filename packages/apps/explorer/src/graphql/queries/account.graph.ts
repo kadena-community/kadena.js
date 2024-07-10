@@ -11,6 +11,7 @@ export const account: DocumentNode = gql`
     fungibleAccount(accountName: $accountName) {
       ...CoreAccountFields
       transactions {
+        totalCount
         edges {
           node {
             ...CoreTransactionFields
@@ -18,17 +19,7 @@ export const account: DocumentNode = gql`
         }
       }
       transfers {
-        edges {
-          node {
-            requestKey
-            blockHash
-            amount
-            chainId
-            receiverAccount
-            senderAccount
-            height
-          }
-        }
+        totalCount
       }
     }
   }

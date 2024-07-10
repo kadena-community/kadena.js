@@ -1,12 +1,12 @@
 import type { BlockTransactionsQuery, Transaction } from '@/__generated__/sdk';
 import { useBlockTransactionsQuery } from '@/__generated__/sdk';
 import { loadingData } from '@/components/loading-skeleton/loading-data/loading-data-blocktransactionsquery';
+import { usePagination } from '@/hooks/usePagination';
 import { graphqlIdFor } from '@/utils/graphqlIdFor';
 import { Heading, Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import CompactTable from '../compact-table/compact-table';
-import type { ITablePaginationPageOptions } from '../compact-table/table-pagination/table-pagination';
 import { FormatLink } from '../compact-table/utils/format-link';
 import { FormatStatus } from '../compact-table/utils/format-status';
 import { noTransactionsTitleClass } from './styles.css';
@@ -15,45 +15,19 @@ interface IProps {
   hash: string;
 }
 
-const PAGESIZE = 20;
 const BlockTransactions: FC<IProps> = ({ hash }) => {
   const id = graphqlIdFor('Block', hash);
   const [innerData, setInnerData] =
     useState<BlockTransactionsQuery>(loadingData);
   const [isLoading, setIsLoading] = useState(true);
 
-  const [paginationLastRecord, setPaginationLastRecord] = useState<
-    number | undefined | null
-  >(undefined);
-  const [paginationBeforeRecord, setPaginationBeforeRecord] = useState<
-    string | undefined | null
-  >(undefined);
-  const [paginationAfterRecord, setPaginationAfterRecord] = useState<
-    string | undefined | null
-  >(undefined);
-  const [paginationFirstRecord, setPaginationFirstRecord] = useState<
-    number | undefined | null
-  >(PAGESIZE);
-
-  const blockQueryVariables = {
+  const { variables, handlePageChange, pageSize } = usePagination({
     id,
-    first: paginationFirstRecord,
-    last: paginationLastRecord,
-    before: paginationBeforeRecord,
-    after: paginationAfterRecord,
-    skip: !id,
-  };
-
-  const { loading, data } = useBlockTransactionsQuery({
-    variables: blockQueryVariables,
   });
 
-  const handlePageChange = (page: ITablePaginationPageOptions) => {
-    setPaginationLastRecord(page.last);
-    setPaginationFirstRecord(page.first);
-    setPaginationBeforeRecord(page.before);
-    setPaginationAfterRecord(page.after);
-  };
+  const { loading, data } = useBlockTransactionsQuery({
+    variables,
+  });
 
   useEffect(() => {
     if (loading) {
@@ -91,7 +65,7 @@ const BlockTransactions: FC<IProps> = ({ hash }) => {
   return (
     <CompactTable
       setPage={handlePageChange}
-      pageSize={PAGESIZE}
+      pageSize={pageSize}
       pageInfo={innerData.node!.transactions.pageInfo}
       totalCount={innerData.node!.transactions.totalCount}
       isLoading={isLoading}

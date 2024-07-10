@@ -3,6 +3,7 @@ import type { AccountQuery } from '@/__generated__/sdk';
 export const loadingData: AccountQuery = {
   fungibleAccount: {
     transactions: {
+      totalCount: 0,
       edges: [
         {
           node: {
@@ -127,74 +128,7 @@ export const loadingData: AccountQuery = {
       ],
     },
     transfers: {
-      edges: [
-        {
-          node: {
-            requestKey: '0',
-            blockHash: '0',
-            amount: 0,
-            chainId: 0,
-            receiverAccount: '0',
-            senderAccount: '0',
-            height: 1,
-          },
-        },
-        {
-          node: {
-            requestKey: '0',
-            blockHash: '0',
-            amount: 0,
-            chainId: 0,
-            receiverAccount: '0',
-            senderAccount: '0',
-            height: 1,
-          },
-        },
-        {
-          node: {
-            requestKey: '0',
-            blockHash: '0',
-            amount: 0,
-            chainId: 0,
-            receiverAccount: '0',
-            senderAccount: '0',
-            height: 1,
-          },
-        },
-        {
-          node: {
-            requestKey: '0',
-            blockHash: '0',
-            amount: 0,
-            chainId: 0,
-            receiverAccount: '0',
-            senderAccount: '0',
-            height: 1,
-          },
-        },
-        {
-          node: {
-            requestKey: '0',
-            blockHash: '0',
-            amount: 0,
-            chainId: 0,
-            receiverAccount: '0',
-            senderAccount: '0',
-            height: 1,
-          },
-        },
-        {
-          node: {
-            requestKey: '0',
-            blockHash: '0',
-            amount: 0,
-            chainId: 0,
-            receiverAccount: '0',
-            senderAccount: '0',
-            height: 1,
-          },
-        },
-      ],
+      totalCount: 0,
     },
     accountName: '0',
     totalBalance: 0,
