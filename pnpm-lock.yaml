@@ -576,6 +576,9 @@ importers:
       '@rushstack/eslint-config':
         specifier: ~3.6.9
         version: 3.6.10(eslint@8.57.0)(typescript@5.4.5)
+      '@types/js-cookie':
+        specifier: ~3.0.3
+        version: 3.0.6
       '@types/node':
         specifier: ^20.12.7
         version: 20.14.9
