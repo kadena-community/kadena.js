@@ -188,18 +188,20 @@ export default builder.node(
 
         async resolve(query, parent) {
           try {
-            return prismaFindManyOr(
-              prismaClient.transfer.findMany,
-              { ...query, orderBy: { height: 'desc' } },
-              [
-                {
-                  senderAccount: parent.accountName,
-                },
-                {
-                  receiverAccount: parent.accountName,
-                },
-              ],
-            );
+            return (
+              await prismaFindManyOr(
+                prismaClient.transfer.findMany,
+                { ...query, orderBy: { height: 'desc' } },
+                [
+                  {
+                    senderAccount: parent.accountName,
+                  },
+                  {
+                    receiverAccount: parent.accountName,
+                  },
+                ],
+              )
+            ).sort((a, b) => b.height - a.height);
           } catch (error) {
             throw normalizeError(error);
           }
