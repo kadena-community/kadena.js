@@ -6,6 +6,7 @@ export const buttonClass = style([
     color: 'text.base.default',
     borderRadius: 'xs',
     borderColor: 'base.default',
+    borderWidth: 'hairline',
     borderStyle: 'solid',
     backgroundColor: 'transparent',
     paddingInline: 'sm',
