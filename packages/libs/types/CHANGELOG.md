@@ -1,5 +1,11 @@
 # Change Log - @kadena/types
 
+## 0.7.0
+
+### Minor Changes
+
+- 29168e2: Add optional pubKey to the signature type
+
 ## 0.6.2
 
 ### Patch Changes
