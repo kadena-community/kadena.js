@@ -14,7 +14,12 @@ import type { ICompactTableProps } from '../compact-table';
 import FieldCell from './field-cell';
 import { tableBorderClass, tableClass } from './styles.css';
 
-const CompactTableDesktop: FC<ICompactTableProps> = ({
+type IProps = Omit<
+  ICompactTableProps,
+  'pageInfo' | 'setPage' | 'pageSize' | 'totalCount'
+>;
+
+const CompactTableDesktop: FC<IProps> = ({
   data,
   fields,
   label = 'Table',

@@ -28,3 +28,21 @@ export const paginationClass = style([
     paddingInline: 'md',
   }),
 ]);
+
+export const disabledClass = style([
+  atoms({
+    cursor: 'not-allowed',
+  }),
+  {
+    backgroundColor: token('color.background.base.@disabled'),
+    borderColor: token('color.border.base.@disabled'),
+    color: token('color.text.base.@disabled'),
+    selectors: {
+      '&:hover': {
+        backgroundColor: token('color.background.base.@disabled'),
+        borderColor: token('color.border.base.@disabled'),
+        color: token('color.text.base.@disabled'),
+      },
+    },
+  },
+]);

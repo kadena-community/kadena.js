@@ -4,6 +4,7 @@ import { fullWidthClass } from '../globalstyles.css';
 import type { ITableField } from '../loading-skeleton/types';
 import CompactTableDesktop from './compact-table-desktop/compact-table-desktop';
 import CompactTableMobile from './compact-table-mobile/compact-table-mobile';
+import type { ITablePaginationPageOptions } from './table-pagination/table-pagination';
 import TablePagination from './table-pagination/table-pagination';
 
 export interface ICompactTableProps {
@@ -11,8 +12,15 @@ export interface ICompactTableProps {
   data: any[];
   fields: ITableField[];
   isLoading?: boolean;
-  totalCount?: number;
-  pageSize?: number;
+  totalCount: number;
+  pageSize: number;
+  setPage: (page: ITablePaginationPageOptions) => void;
+  pageInfo: {
+    endCursor: string;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+    startCursor: string;
+  };
 }
 
 const CompactTable: React.FC<ICompactTableProps> = ({
@@ -20,12 +28,19 @@ const CompactTable: React.FC<ICompactTableProps> = ({
   data,
   label,
   isLoading = false,
-  totalCount = 0,
-  pageSize = 0,
+  totalCount,
+  pageSize,
+  setPage,
+  pageInfo,
 }) => {
   return (
     <>
-      <TablePagination totalCount={totalCount} pageSize={pageSize} />
+      <TablePagination
+        totalCount={totalCount}
+        pageSize={pageSize}
+        setPage={setPage}
+        pageInfo={pageInfo}
+      />
       <Media lessThan="sm">
         <CompactTableMobile isLoading={isLoading} fields={fields} data={data} />
       </Media>
