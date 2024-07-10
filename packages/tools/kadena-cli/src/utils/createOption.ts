@@ -39,7 +39,7 @@ export function createOption<const T extends IOptionCreatorObject>(data: T) {
   return (settings?: IOptionSettings) => {
     const isOptional = settings?.isOptional ?? data.defaultIsOptional ?? true;
     const isInQuestions = settings?.disableQuestion !== true;
-        const prompt: T['prompt'] = (responses, args) =>
+    const prompt: T['prompt'] = (responses, args) =>
       data.prompt(responses, args, isOptional);
     const validation =
       isOptional === true ? data.validation.optional() : data.validation;
