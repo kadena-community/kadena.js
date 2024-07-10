@@ -56,11 +56,11 @@
     "@microsoft/api-extractor": "^7.43.1",
     "@rushstack/eslint-config": "~3.6.9",
     "@types/node": "^20.12.7",
-    "@vitest/coverage-v8": "^1.6.0",
+    "@vitest/coverage-v8": "^2.0.1",
     "eslint": "^8.45.0",
     "prettier": "~3.2.5",
     "typescript": "5.4.5",
-    "vitest": "^1.6.0"
+    "vitest": "^2.0.1"
   },
   "publishConfig": {
     "provenance": true
