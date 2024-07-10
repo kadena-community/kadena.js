@@ -12,7 +12,7 @@ runs:
 
       - name: Build dependencies for e2e tests
         shell: bash
-        run: pnpm turbo build --filter e2e-base^...
+        run: pnpm turbo build --filter @kadena/e2e-base^...
 
       - name: Run end-to-end tests
         shell: bash
