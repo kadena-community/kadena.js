@@ -1,7 +1,8 @@
+import { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import { ChainId, ICommandResult } from '@kadena/client';
 import { IDBService, dbService } from '../db/db.service';
 
-type NotSubmittedTransactionStatus = 'initiated' | 'signed';
+type NotSubmittedTransactionStatus = 'initiated' | 'signed' | 'preflight';
 type SubmittedTransactionStatus =
   | 'submitted'
   | 'success'
@@ -34,9 +35,16 @@ export type ITransaction = {
         requestKey: string;
       };
       result?: ICommandResult;
+      preflight: ILocalCommandResult;
     }
   | {
-      status: NotSubmittedTransactionStatus;
+      status: 'initiated' | 'signed';
+      preflight?: undefined;
+      request?: undefined;
+    }
+  | {
+      status: 'preflight';
+      preflight: ILocalCommandResult;
       request?: undefined;
     }
 );

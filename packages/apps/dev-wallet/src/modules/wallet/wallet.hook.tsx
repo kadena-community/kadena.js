@@ -250,6 +250,7 @@ export const useWallet = () => {
     lockProfile,
     askForPassword,
     getPublicKeyData,
+    unlockKeySource,
     isUnlocked: isUnlocked(context),
     profile: context.profile,
     profileList: context.profileList ?? [],

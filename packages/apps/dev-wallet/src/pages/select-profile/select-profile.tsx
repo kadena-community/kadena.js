@@ -54,7 +54,7 @@ export function SelectProfile() {
   return (
     <Box>
       <Heading variant="h1" className={titleClass}>
-        Welcome to <br /> DevWallet v1.0
+        Welcome to <br /> Chainweaver v3.0
       </Heading>
       <Heading variant="h5" as="h2" className={subtitleClass}>
         Access your profile securely and start <br />
