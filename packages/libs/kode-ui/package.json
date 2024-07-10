@@ -57,7 +57,7 @@
     "styles"
   ],
   "scripts": {
-    "build": "crackle package && jiti scripts/fix-build.ts",
+    "build": "crackle package && tsx scripts/fix-build.ts",
     "build:storybook": "storybook build",
     "chromatic": "chromatic -b build:storybook",
     "dev": "crackle dev --shim=none",
@@ -145,7 +145,6 @@
     "eslint-import-resolver-typescript": "3.5.5",
     "eslint-plugin-import": "~2.27.5",
     "eslint-plugin-storybook": "^0.8.0",
-    "jiti": "^1.21.6",
     "mini-css-extract-plugin": "2.7.6",
     "prettier": "~3.2.5",
     "prop-types": "^15.8.1",
@@ -154,6 +153,7 @@
     "storybook-dark-mode": "^4.0.1",
     "tiny-readdir-glob": "^1.2.1",
     "tsc-alias": "~1.8.7",
+    "tsx": "^4.16.2",
     "typescript": "5.4.5",
     "vitest": "^1.6.0",
     "vitest-dom": "^0.1.1"
