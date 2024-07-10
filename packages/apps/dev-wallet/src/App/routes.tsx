@@ -56,12 +56,7 @@ const Redirect: FC<
 export const Routes: FC = () => {
   const { isUnlocked } = useWallet();
   const isLocked = !isUnlocked;
-  const [origin, setOrigin1] = useState('/');
-
-  const setOrigin = (value: string) => {
-    console.log('setOrigin', value);
-    setOrigin1(value);
-  };
+  const [origin, setOrigin] = useState('/');
 
   const routes = createRoutesFromElements(
     <Route
