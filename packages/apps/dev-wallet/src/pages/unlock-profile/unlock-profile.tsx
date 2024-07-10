@@ -20,7 +20,6 @@ export function UnlockProfile() {
     setError,
     formState: { isValid, errors },
   } = useForm<{ password: string }>();
-  const { unlockHDWallet } = useHDWallet();
   const { profileId } = useParams();
   const { profileList, unlockProfile } = useWallet();
   const profile = profileList.find((p) => p.uuid === profileId);
@@ -40,7 +39,6 @@ export function UnlockProfile() {
       if (!keySource) {
         throw new Error('No key source found');
       }
-      await unlockHDWallet(keySource.source, password, keySource);
     } catch (e) {
       console.log(e);
       setError('password', { type: 'manual', message: incorrectPasswordMsg });
