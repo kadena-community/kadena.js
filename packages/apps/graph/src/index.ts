@@ -65,7 +65,7 @@ if (dotenv.SENTRY_DSN) {
   Sentry.init({
     dsn: dotenv.SENTRY_DSN,
     tracesSampleRate: 1,
-    environment: `${dotenv.NODE_ENV}-${dotenv.ENVIRONMENT}`,
+    environment: dotenv.ENVIRONMENT,
   });
   plugins.push(tracingPlugin);
 }
