@@ -12,6 +12,9 @@ interface IGetWalletGuardInput {
   host?: IClientConfig['host'];
 }
 
+/**
+ * Creates the account name of the guard fetched from  `getWebauthnGuard` function.
+ */
 export const getWebauthnAccount = ({
   account,
   chainId,

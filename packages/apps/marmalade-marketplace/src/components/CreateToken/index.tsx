@@ -177,7 +177,6 @@ function CreateTokenComponent() {
         if (!metadataUrl) throw new Error('Error creating metadata URL');
         updatedTokenInput = { ...updatedTokenInput, uri: metadataUrl };
         setTokenInput((prev) => ({ ...prev, uri: metadataUrl }));
-        await new Promise(resolve => setTimeout(resolve, 0));
       }
       
       if (policyConfig.hasRoyalty && (!royaltyInput.royaltyFungible || !royaltyInput.royaltyCreator || !royaltyInput.royaltyGuard || !royaltyInput.royaltyRate)) {

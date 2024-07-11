@@ -12,6 +12,11 @@ interface IGetWalletGuardInput {
   host?: IClientConfig['host'];
 }
 
+/**
+ * Fetches the WebAuthn guard for a specified account.
+ * This function constructs a command to retrieve the WebAuthn guard details from the given wallet account,
+ * and returns the first guard from the devices list associated with that account.
+ */
 export const getWebauthnGuard = ({
   account,
   chainId,

@@ -106,7 +106,7 @@ function MintTokenComponent() {
       setAmount(value);
     }
   }
-console.log("hi")
+
   getWebauthnGuard({  account: walletAccount,
     chainId: "8",
     networkId: "testnet04",

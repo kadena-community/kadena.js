@@ -12,14 +12,21 @@ import { ConventionalAuction } from '@/components/Sale/ConventionalAuction';
 import { DutchAuction } from '@/components/Sale/DutchAuction';
 import { RegularSale } from '@/components/Sale/RegularSale';
 import { getSale } from '@/hooks/getSale';
+import { QuoteInfo } from '@/pages/api/cron';
+
+interface TokenInfo {
+  uri: string;
+  supply: string;
+  id: string;
+}
 
 export default function Sale() {
   const params = useParams();
 
   const { data } = getSale(params?.["saleId"] as string);
 
-  const [quoteInfo, setQuoteInfo] = useState();
-  const [tokenInfo, setTokenInfo] = useState();
+  const [quoteInfo, setQuoteInfo] = useState<QuoteInfo>();
+  const [tokenInfo, setTokenInfo] = useState<TokenInfo>();
   const [tokenMetadata, setTokenMetadata] = useState<TokenMetadata>();
   const [tokenImageUrl, setTokenImageUrl] = useState<string>("/no-image.webp");
 
@@ -34,7 +41,7 @@ export default function Sale() {
           chainId: params["chainId"] as ChainId,
           networkId: env.NETWORK_NAME,
           host: env.CHAINWEB_API_HOST
-        });
+        }) as QuoteInfo;
 
         setQuoteInfo(quoteInfo);
         console.log("quoteInfo", quoteInfo);
@@ -55,11 +62,13 @@ export default function Sale() {
           chainId: params["chainId"] as ChainId,
           networkId: env.NETWORK_NAME,
           host: env.CHAINWEB_API_HOST
-        });
+        }) as TokenInfo;
 
         setTokenInfo(tokenInfo);
         console.log("tokenInfo", tokenInfo);
       } catch { }
+
+      if(!tokenInfo) throw new Error("Token Info not found");
 
       try {
         const tokenMetadata = await getTokenMetadata(tokenInfo.uri);
