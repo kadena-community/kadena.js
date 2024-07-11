@@ -2,7 +2,10 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import { env } from '@/utils/env';
 import * as styles from '@/styles/create-token.css';
 import { useRouter } from 'next/navigation';
-import { Stack, Heading, Tabs, TabItem, Button, Select, TextField, NumberField, SelectItem } from '@kadena/kode-ui';
+import { Stack, Heading, Tabs, TabItem, Button, Select, TextField, NumberField, SelectItem, 
+  Checkbox
+ } from '@kadena/kode-ui';
+import { MonoAutoFixHigh, MonoAccountBalanceWallet, MonoAccessTime } from '@kadena/kode-icons';
 
 // Import form components
 import RoyaltyForm from '@/components/RoyaltyForm';
@@ -10,6 +13,7 @@ import GuardForm from '@/components/GuardForm';
 import CollectionForm from '@/components/CollectionForm';
 import PolicyForm from '@/components/PolicyForm';
 import GenerateURIForm from '@/components/GenerateURIForm';
+import CrudCard from '@/components/CrudCard';
 
 // Import client
 import { ChainId, BuiltInPredicate } from '@kadena/client';
@@ -282,7 +286,87 @@ function CreateTokenComponent() {
     <>
       {!transaction ? (
         <Stack flex={1} flexDirection="column">
-          <div className={styles.twoColumnRow}>
+          <CrudCard
+            headingSize="h3"
+            titleIcon={<MonoAutoFixHigh />}
+            title="Create Token"
+            description={[
+              "Create a new token",
+              "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi",
+              "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore",
+              "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia"
+            ]}
+          >
+            <div>
+              <img
+                // src={tokenImageUrl}
+                alt="Token Image"
+                className={styles.tokenImageClass}
+              />
+                  <TextField
+                    label="CreationGuard"
+                    name="CreationGuard"
+                    value={"guard"}
+                    onChange={handleTokenInputChange}
+                  />
+                  <NumberField
+                    label="Precision"
+                    value={tokenInput.precision}
+                    onValueChange={handlePrecisionChange}
+                  />
+                  <Select label="Chain ID" name="chainId" selectedKey={tokenInput.chainId} isDisabled>
+                    {Array.from({ length: 20 }, (_, i) => i.toString()).map(option => (
+                      <SelectItem key={option} textValue={option}>{option}</SelectItem>
+                    ))}
+                  </Select>
+            </div>
+          </CrudCard>
+          <CrudCard
+              title="Metadata"
+              description={["Select the metadata input that will be stored as the uri"]}
+            >
+            <TextField
+              label="Name"
+              name="metadataName"
+              value={tokenInput.metadataName as string}
+              onChange={handleTokenInputChange}
+            />
+            <TextField
+              label="Description"
+              name="metadataDescription"
+              value={tokenInput.metadataDescription as string}
+              onChange={handleTokenInputChange}
+            />
+            {/* <TextField
+              label="Author"
+              name="metadataAuthors"
+              value={tokenInput.metadataAuthors as string}
+              onChange={handleTokenInputChange}
+              info="(optional)"
+            />
+            <TextField
+              label="Collection Name"
+              name="metadataCollectionName"
+              value={tokenInput.metadataCollectionName as string}
+              onChange={handleTokenInputChange}
+              info="(optional)"
+            />
+            <TextField
+              label="Collection Family"
+              name="metadataCollectionFamily"
+              value={tokenInput.metadataCollectionFamily as string}
+              onChange={handleTokenInputChange}
+              info="(optional)"
+            /> */}
+          </CrudCard>
+          <CrudCard
+              title="Policies"
+              description={["Select the metadata input that will be stored as the uri"]}
+            >
+            <PolicyForm policyConfig={policyConfig} handleCheckboxChange={handleCheckboxChange} />
+          </CrudCard>
+          
+          {/* <div className={styles.twoColumnRow}>
             <div className={styles.oneColumnRow}>
               <div className={styles.formSection}>
                 <div className={styles.verticalForm}>
@@ -360,7 +444,7 @@ function CreateTokenComponent() {
             <div className={styles.errorBox}>
               <p>Error: {error}</p>
             </div>
-          )}
+          )} */}
         </Stack>
       ) : (
         <SendTransaction send={send} preview={preview} poll={poll} transaction={transaction} />

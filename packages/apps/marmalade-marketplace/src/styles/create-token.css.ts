@@ -1,4 +1,5 @@
 import { style, globalStyle } from '@vanilla-extract/css';
+import { tokens } from '@kadena/kode-ui/styles';
 import { deviceColors } from '@/styles/tokens.css';
 
 globalStyle('body', {
@@ -99,8 +100,8 @@ export const checkboxRow = style({
 
 export const checkboxContainer = style({
   display: 'flex',
-  alignItems: 'center',
-  gap: '10px',
+  flexWrap: 'wrap',
+//   gap: '10px',
 });
 
 export const checkboxLabel = style({
@@ -162,14 +163,14 @@ export const textareaField = style({
   // box-sizing: "border-box"
 });
 
-export const container = style({
-  maxWidth: 600,
-  margin: '0 auto',
-  padding: 20,
-  backgroundColor: '#f0f0f0',
-  borderRadius: 8,
-  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-});
+// export const container = style({
+//   maxWidth: 600,
+//   margin: '0 auto',
+//   padding: 20,
+//   backgroundColor: '#f0f0f0',
+//   borderRadius: 8,
+//   boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+// });
 
 export const card = style({
   padding: 20,
@@ -221,4 +222,50 @@ export const resultBox = style({
   margin: '10px 0',
   fontFamily: 'Arial, sans-serif',
   fontSize: '14px'
+});
+
+
+export const checkboxStyle = style({
+  flex: '1 1 50%',
+  boxSizing: 'border-box',
+  padding: '5px',
+})
+
+export const container = style({
+  margin: '160px 15% 0',
+  backgroundColor: tokens.kda.foundation.color.background.surface.default,
+  borderRadius: tokens.kda.foundation.radius.sm,
+  border: `1px solid ${deviceColors.borderColor}`,
+});
+
+export const buttonRowContainer = style({
+  margin: `${tokens.kda.foundation.spacing.n6} 15% 0`,
+  justifyContent: 'space-between',
+});
+
+export const tokenImageClass = style({
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover',
+  borderRadius: tokens.kda.foundation.radius.lg,
+  margin: '-88px 0 20px',
+});
+
+export const propertyContainer = style({
+  display: 'flex',
+  marginBottom: '10px',
+});
+
+export const propertyLabel = style({
+  flex: '1',
+});
+
+export const propertyValue = style({
+  flex: '2',
+});
+
+export const offerContainer = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: tokens.kda.foundation.spacing.n4,
 });
