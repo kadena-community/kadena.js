@@ -7,13 +7,27 @@ import {
 } from '@/pages/home/style.css.ts';
 import { getAccountName } from '@/utils/helpers';
 import { Box, Heading, Stack, Text } from '@kadena/kode-ui';
-import { useState } from 'react';
+import { PactNumber } from '@kadena/pactjs';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { linkClass } from '../select-profile/select-profile.css';
 
 export function HomePage() {
-  const { accounts, profile } = useWallet();
+  const { accounts, profile, fungibles } = useWallet();
   const [selectedAccountIdx, setSelectedAccountIdx] = useState<number>(-1);
+  const assets = useMemo(() => {
+    return Object.entries(
+      accounts.reduce(
+        (acc, { contract, overallBalance }) => {
+          acc[contract] = new PactNumber(overallBalance)
+            .plus(acc[contract] ?? 0)
+            .toDecimal();
+          return acc;
+        },
+        {} as Record<string, string>,
+      ),
+    );
+  }, [accounts]);
 
   return (
     <>
@@ -23,7 +37,13 @@ export function HomePage() {
         <Box className={panelClass} marginBlockStart="xl">
           <Heading as="h4">Your assets</Heading>
           <Box marginBlockStart="md">
-            <Text>Tokens</Text>
+            {assets.length > 0 &&
+              assets.map(([contract, balance]) => (
+                <Heading variant="h5" key={contract}>
+                  {fungibles.find((item) => item.contract === contract)?.symbol}
+                  : {balance}
+                </Heading>
+              ))}
           </Box>
         </Box>
         <Box className={panelClass} marginBlockStart="xs">

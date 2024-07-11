@@ -1,5 +1,13 @@
 # Change Log - @kadena/chainweb-node-client
 
+## 0.6.3
+
+### Patch Changes
+
+- 29168e2: Updated types
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/pactjs\@0.4.3
+
 ## 0.6.2
 
 ### Patch Changes

@@ -1,5 +1,19 @@
 # @kadena/graph
 
+## 1.0.7
+
+### Patch Changes
+
+- Updated dependencies \[29168e2]
+- Updated dependencies \[07c0a26]
+- Updated dependencies \[29168e2]
+- Updated dependencies \[29168e2]
+  - @kadena/client\@1.13.0
+  - @kadena/client-utils\@0.9.0
+  - @kadena/chainweb-node-client\@0.6.3
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/pactjs\@0.4.3
+
 ## 1.0.6
 
 ### Patch Changes

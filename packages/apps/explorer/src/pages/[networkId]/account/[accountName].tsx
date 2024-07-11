@@ -1,10 +1,8 @@
-import type { AccountQuery, Transaction, Transfer } from '@/__generated__/sdk';
+import type { AccountQuery } from '@/__generated__/sdk';
 import { useAccountQuery } from '@/__generated__/sdk';
+import AccountTransfersTable from '@/components/account-transfers-table/account-transfers-table';
+import AccountTransactionsTable from '@/components/account.transactions-table/account.transactions-table';
 import CompactTable from '@/components/compact-table/compact-table';
-import { FormatAccount } from '@/components/compact-table/utils/format-account';
-import { FormatAmount } from '@/components/compact-table/utils/format-amount';
-import { FormatLink } from '@/components/compact-table/utils/format-link';
-import { FormatStatus } from '@/components/compact-table/utils/format-status';
 import Layout from '@/components/layout/layout';
 import { loadingData } from '@/components/loading-skeleton/loading-data/loading-data-accountquery';
 import ValueLoader from '@/components/loading-skeleton/value-loader/value-loader';
@@ -69,8 +67,15 @@ const Account: FC = () => {
 
   const handleSelectedTab = (tab: Key): void => {
     setSelectedTab(tab as string);
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    router.push(`#${tab}`);
+
+    const regExp = new RegExp(/[?#].*/);
+
+    const newUrl = `${router.asPath.replace(regExp, '')}#${tab}`;
+    window.history.replaceState(
+      { ...window.history.state, as: newUrl, url: newUrl },
+      '',
+      newUrl,
+    );
   };
 
   const { fungibleAccount } = innerData ?? {};
@@ -119,31 +124,30 @@ const Account: FC = () => {
         </Stack>
       </Stack>
 
-      {keys && (
-        <CompactTable
-          isLoading={isLoading}
-          label="Keys table"
-          fields={[
-            {
-              label: 'ChainId',
-              key: 'chainId',
-              width: '10%',
-            },
-            {
-              variant: 'code',
-              label: 'Key',
-              key: 'key',
-              width: '50%',
-            },
-            {
-              label: 'Predicate',
-              key: 'predicate',
-              width: '40%',
-            },
-          ]}
-          data={keys}
-        />
-      )}
+      <CompactTable
+        isLoading={isLoading}
+        label="Keys table"
+        fields={[
+          {
+            label: 'ChainId',
+            key: 'chainId',
+            width: '10%',
+          },
+          {
+            variant: 'code',
+            label: 'Key',
+            key: 'key',
+            width: '50%',
+          },
+          {
+            label: 'Predicate',
+            key: 'predicate',
+            width: '40%',
+          },
+        ]}
+        data={keys}
+      />
+
       <Stack
         width="100%"
         gap="md"
@@ -152,96 +156,16 @@ const Account: FC = () => {
         <Stack flex={1} flexDirection="column" marginBlockStart="lg">
           <Tabs selectedKey={selectedTab} onSelectionChange={handleSelectedTab}>
             <TabItem
-              title={`Transactions (${fungibleAccount?.transactions.edges.length ?? 0})`}
+              title={`Transactions (${fungibleAccount?.transactions.totalCount})`}
               key="Transactions"
             >
-              {fungibleAccount?.transactions && (
-                <CompactTable
-                  isLoading={isLoading}
-                  label="Keys table"
-                  fields={[
-                    {
-                      label: 'Status',
-                      key: 'result.goodResult',
-                      variant: 'code',
-                      width: '10%',
-                      render: FormatStatus(),
-                    },
-                    {
-                      label: 'Sender',
-                      key: 'cmd.meta.sender',
-                      variant: 'code',
-                      width: '25%',
-                    },
-                    {
-                      label: 'RequestKey',
-                      key: 'hash',
-                      variant: 'code',
-                      width: '25%',
-                      render: FormatLink({ appendUrl: '/transaction' }),
-                    },
-                    {
-                      label: 'Code Preview',
-                      key: 'cmd.payload.code',
-                      variant: 'code',
-                      width: '40%',
-                    },
-                  ]}
-                  data={fungibleAccount?.transactions.edges.map(
-                    (edge) => edge.node as Transaction,
-                  )}
-                />
-              )}
+              <AccountTransactionsTable accountName={accountName} />
             </TabItem>
             <TabItem
-              title={`Transfers (${fungibleAccount?.transfers.edges.length ?? 0})`}
+              title={`Transfers (${fungibleAccount?.transfers.totalCount})`}
               key="Transfers"
             >
-              {fungibleAccount?.transfers && (
-                <CompactTable
-                  isLoading={isLoading}
-                  fields={[
-                    {
-                      label: 'Height',
-                      key: 'height',
-                      variant: 'code',
-                      width: '10%',
-                    },
-                    {
-                      label: 'ChainId',
-                      key: 'chainId',
-                      variant: 'code',
-                      width: '10%',
-                    },
-                    {
-                      label: 'Amount',
-                      key: 'amount',
-                      width: '20%',
-                      render: FormatAmount(),
-                    },
-                    {
-                      label: 'Sender',
-                      key: 'senderAccount',
-                      width: '20%',
-                      render: FormatAccount(),
-                    },
-                    {
-                      label: 'Receiver',
-                      key: 'receiverAccount',
-                      width: '20%',
-                      render: FormatAccount(),
-                    },
-                    {
-                      label: 'RequestKey',
-                      key: 'requestKey',
-                      width: '20%',
-                    },
-                  ]}
-                  data={fungibleAccount?.transfers.edges.map(
-                    (edge) => edge.node as Transfer,
-                  )}
-                />
-              )}
+              <AccountTransfersTable accountName={accountName} />
             </TabItem>
           </Tabs>
         </Stack>

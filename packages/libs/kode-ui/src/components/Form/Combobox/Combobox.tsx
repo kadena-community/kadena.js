@@ -30,6 +30,7 @@ export interface IComboboxProps<T extends object = any>
   tag?: string;
   info?: string;
   direction?: FormFieldDirection;
+  allowsCustomValue?: boolean;
   /*
    * @deprecated Use `isDisabled` instead. only here to support libs that manages props like `react-hook-form`
    */

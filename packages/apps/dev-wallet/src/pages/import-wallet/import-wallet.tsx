@@ -1,10 +1,8 @@
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { IKeySource } from '@/modules/wallet/wallet.repository';
 import { Box, Button, Heading, Stack, Text, TextField } from '@kadena/kode-ui';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Navigate } from 'react-router-dom';
 
 type Inputs = {
   phrase: string;
@@ -20,12 +18,15 @@ const defaultValues: Inputs = {
   fromChainweaver: false,
 };
 
-export function ImportWallet() {
+export function ImportWallet({
+  setOrigin,
+}: {
+  setOrigin: (pathname: string) => void;
+}) {
   const { register, handleSubmit } = useForm<Inputs>({ defaultValues });
   const { createHDWallet } = useHDWallet();
   const [error, setError] = useState('');
-  const { createProfile, isUnlocked } = useWallet();
-  const [selectedKeySource, setSelectedKeySource] = useState<IKeySource>();
+  const { createProfile, unlockProfile } = useWallet();
   async function confirm({ phrase, password, name, fromChainweaver }: Inputs) {
     const is12Words = phrase.trim().split(' ').length === 12;
     if (!is12Words) {
@@ -36,23 +37,17 @@ export function ImportWallet() {
       const profile = await createProfile(name, password, undefined, {
         authMode: 'PASSWORD',
       });
-      // for now we only support slip10 so we just create the keySource and the first account by default for it
-      // later we should change this flow to be more flexible
       const keySource = await createHDWallet(
         profile.uuid,
         fromChainweaver ? 'HD-chainweaver' : 'HD-BIP44',
         password,
         phrase,
       );
-      setSelectedKeySource(keySource);
+      setOrigin(`/account-discovery/${keySource.uuid}`);
+      await unlockProfile(profile.uuid, password);
     } catch (e) {
       setError((e as Error).message);
     }
-  }
-  if (isUnlocked && selectedKeySource) {
-    return (
-      <Navigate to={`/account-discovery/${selectedKeySource.uuid}`} replace />
-    );
   }
   return (
     <>

@@ -11,6 +11,7 @@ export const sectionClass = style([
 
 export const headerClass = style([
   atoms({
+    color: 'text.base.default',
     fontWeight: 'primaryFont.bold',
   }),
 ]);
