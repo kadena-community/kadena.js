@@ -1,4 +1,4 @@
-import type { ChainId} from '@kadena/client';
+import type { ChainId } from '@kadena/client';
 import { execution } from '@kadena/client/fp';
 import type { NetworkId } from '@kadena/types';
 import { pipe } from 'ramda';
@@ -12,7 +12,7 @@ interface IGetWalletGuardInput {
   host?: IClientConfig['host'];
 }
 
-export const getWebauthnGuard = ({
+export const getWebauthnAccount = ({
   account,
   chainId,
   networkId,
@@ -20,7 +20,7 @@ export const getWebauthnGuard = ({
 }: IGetWalletGuardInput) =>
   pipe(
     () => 
-    `(at 'guard (at 0 (at 'devices (n_eef68e581f767dd66c4d4c39ed922be944ede505.webauthn-wallet.get-webauthn-guard "${account}"))))` ,
+    `(create-principal (at 'guard (at 0 (at 'devices (n_eef68e581f767dd66c4d4c39ed922be944ede505.webauthn-wallet.get-webauthn-guard "${account}")))))` ,
     execution,
     dirtyReadClient
     ({

@@ -45,7 +45,10 @@
       "require": "./lib/cjs/marmalade/index.js"
     },
     "./webauthn": {
-      "types": "./lib/types/webauthn/index.d.ts",
+      "types": {
+        "import": "./lib/esm/webauthn/index.d.ts",
+        "require": "./lib/cjs/webauthn/index.d.ts"
+      },
       "import": "./lib/esm/webauthn/index.mjs",
       "require": "./lib/cjs/webauthn/index.js"
     }
@@ -68,10 +71,19 @@
         "./lib/types/nodejs/index.d.ts"
       ],
       "marmalade": [
+<<<<<<< HEAD
         "./lib/types/marmalade/index.d.ts"
       ],
       "webauthn": [
         "./lib/esm/webauthn/index.d.ts"
+||||||| e80d984ef
+        "./lib/esm/marmalade/index.d.ts"
+=======
+        "./lib/esm/marmalade/index.d.ts"
+      ],
+      "webauthn": [
+        "./lib/esm/webauthn/index.d.ts"
+>>>>>>> cdf6d9ea5bb728adf6e06243fa7803cd7e8d9829
       ]
     }
   },
