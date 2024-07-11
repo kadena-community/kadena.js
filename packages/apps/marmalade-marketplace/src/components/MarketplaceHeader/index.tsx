@@ -21,7 +21,7 @@ import {
   NotificationHeading,
   Link,
   Badge,
-  Select, 
+  Select,
   SelectItem
 } from '@kadena/kode-ui';
 import { MarmaladeMarketplaceLogo } from '@/components/MarmaladeMarketplaceLogo';
@@ -61,21 +61,21 @@ export const MarketplaceHeader= () => {
       </a>
     }>
       <NavHeaderLinkList>
-        <Link 
+        <Link
           className={styles.navHeaderLink}
           href="/marketplace"
           // onClick={() => {}}
         >
           Marketplace
         </Link>
-        <Link 
+        <Link
           href="/tokens"
           // onClick={() => {}}
           endVisual={<Badge size='sm' style={'highContrast'}>beta</Badge>}
         >
           Create
         </Link>
-        <Link className={styles.navHeaderLink} 
+        <Link className={styles.navHeaderLink}
           href="/mint"
           // onClick={() => {}}
           endVisual={<Badge size='sm' style={'highContrast'}>beta</Badge>}
@@ -95,10 +95,10 @@ export const MarketplaceHeader= () => {
             <>
               {/* <Button onClick={() => setShowNotification(true)} variant="primary" isCompact={false}>Fund Account</Button> */}
               <div className={styles.walletContainer}>
-                <Button 
+                <Button
                   className={styles.walletButton}
-                  variant="primary" 
-                  isCompact={false} 
+                  variant="primary"
+                  isCompact={false}
                   startVisual={<SpireKeyKdacolorLogoWhite style={{color: 'black'}}/>}
                   endVisual={<Badge style="inverse" size="sm">{account.accountName.slice(0,5) + "..." + account.accountName.slice(-3)}</Badge>}
                 >
@@ -115,7 +115,7 @@ export const MarketplaceHeader= () => {
             </>
 
           )
-        : <Button onClick={login} variant="primary" isCompact={false} 
+        : <Button onClick={login} variant="primary" isCompact={false}
         startVisual={<SpireKeyKdacolorLogoWhite style={{color: 'black'}}/>}
         endVisual={<Badge style={'inverse'} size="sm" >Wallet</Badge>}>Connect</Button>
       }

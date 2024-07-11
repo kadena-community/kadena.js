@@ -3,6 +3,8 @@ import { ChainId } from '@kadena/client';
 import { getTokens, NonFungibleTokenBalance } from '@/graphql/queries/client';
 import { useAccount } from '@/hooks/account';
 import { Token } from "@/components/Token";
+import { getWebauthnAccount } from "@kadena/client-utils/webauthn";
+import { env } from '@/utils/env';
 import { Grid, GridItem, Stack, Heading } from "@kadena/kode-ui";
 
 export default function MyTokens() {
@@ -11,7 +13,13 @@ export default function MyTokens() {
 
   const fetchTokens = async (accountName?:string) => {
     if (!accountName) return;
-    const tokens = await getTokens(accountName);
+    const webauthnAccount:string = await getWebauthnAccount({
+      account: account? account.accountName : "",
+      host: env.URL,
+      networkId: env.NETWORKID,
+      chainId: '8' as ChainId, // Temporary hardcoded chainId untill we can use the c: SpireKey account
+    }) as string
+    const tokens = await getTokens(webauthnAccount);
     setTokens(tokens);
   };
 
