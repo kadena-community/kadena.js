@@ -94,6 +94,7 @@ const AccountTransfersTable: FC<{ accountName: string }> = ({
           label: 'RequestKey',
           key: 'requestKey',
           width: '20%',
+          render: FormatLink({ appendUrl: '/transaction' }),
         },
       ]}
       data={innerData.node?.transfers.edges.map(

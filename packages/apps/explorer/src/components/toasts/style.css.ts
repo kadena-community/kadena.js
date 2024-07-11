@@ -26,3 +26,17 @@ export const toastWrapperClass = style([
     },
   }),
 ]);
+
+export const notificationClass = style({
+  transition: 'all 0.9s ease',
+  position: 'relative',
+  transform: 'translateY(0px)',
+  opacity: 1,
+});
+export const hideAnimationClass = style({
+  transform: 'translateY(-100px)',
+  opacity: 0,
+});
+export const showAnimationClass = style({
+  transform: 'translateY(0px)',
+});

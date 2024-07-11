@@ -29,17 +29,26 @@ export const ToastProvider: FC<PropsWithChildren> = ({ children }) => {
     setToasts((v) => [...v, { ...toast, id }]);
   };
 
-  const removeToast = (toast: IToast) => {};
+  const removeToast = (toast: IToast) => {
+    setToasts((v) => v.filter((v) => v.id !== toast.id));
+  };
 
   console.log(toasts);
   return (
     <ToastContext.Provider value={{ toasts, addToast }}>
       {children}
-      <Stack flexDirection="column" className={toastWrapperClass} gap="md">
-        {toasts.map((toast, idx) => (
-          <Toast key={toast.id} toast={toast} removeToast={removeToast} />
-        ))}
-      </Stack>
+      {toasts.length > 0 && (
+        <Stack flexDirection="column" className={toastWrapperClass} gap="md">
+          {toasts.map((toast, idx) => (
+            <Toast
+              idx={toasts.length - idx}
+              key={toast.id}
+              toast={toast}
+              removeToast={removeToast}
+            />
+          ))}
+        </Stack>
+      )}
     </ToastContext.Provider>
   );
 };
