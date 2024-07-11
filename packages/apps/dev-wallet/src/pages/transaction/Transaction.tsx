@@ -65,17 +65,9 @@ export function Transaction() {
         } as ITransaction;
         await transactionRepository.updateTransaction(updated);
         return loadTxs(groupId!);
-        // const updatedList = Txs.map((t) =>
-        //   t.uuid === updated.uuid ? updated : t,
-        // );
-        // const [overallStep, firstTx] = getOverallStep(updatedList);
-        // setTxs(updatedList);
-        // setSelectedTxIndex(firstTx);
-        // setStep(overallStep);
-        // return updatedList;
       }
     },
-    [transaction, Txs],
+    [transaction, Txs, groupId, loadTxs],
   );
 
   const submitTxs = useCallback(async (list: ITransaction[]) => {

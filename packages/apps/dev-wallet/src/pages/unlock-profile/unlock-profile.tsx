@@ -1,5 +1,4 @@
 import { AuthCard } from '@/Components/AuthCard/AuthCard';
-import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet';
 import {
   Avatar,
   Button,
