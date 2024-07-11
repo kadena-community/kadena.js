@@ -34,6 +34,7 @@ export default function CreateSale() {
 
   useEffect(() => {
     async function fetch() {
+      if (!tokenId || !chainId) return;
       try {
         const tokenInfo = await getTokenInfo({
           tokenId,
