@@ -52,7 +52,7 @@ function MintTokenComponent() {
       setResult( checkPolicies(res.policies))
 
       const webauthnGuard = await getWebauthnGuard({
-        account: account.accountName,
+        account: account? account.accountName : "",
         host: env.URL,
         networkId: env.NETWORKID,
         chainId: config.chainId,
@@ -62,7 +62,7 @@ function MintTokenComponent() {
       }
   
       const webauthnAccount:string = await getWebauthnAccount({
-        account: account.accountName,
+        account: account? account.accountName : "",
         host: env.URL,
         networkId: env.NETWORKID,
         chainId: config.chainId,
