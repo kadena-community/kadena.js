@@ -142,6 +142,7 @@ export function ConventionalAuction({ tokenImageUrl, sale }: ConventionalAuction
 
     try {
       await buyToken({
+        signer: "",
         auctionConfig: {
           conventional: true
         },
@@ -187,7 +188,7 @@ export function ConventionalAuction({ tokenImageUrl, sale }: ConventionalAuction
         </>}
 
         {mustCreateAuction && <>
-          <span>Auction creation must be completed</span>
+          <span>No auction found, did you forgot to initiate the auction?</span>
           <hr />
         </>}
 

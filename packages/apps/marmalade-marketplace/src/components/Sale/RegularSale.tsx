@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { buyToken, getEscrowAccount } from "@kadena/client-utils/marmalade";
-import { getWebauthnGuard } from "@kadena/client-utils/webauthn";
+import { getWebauthnGuard, getWebauthnAccount } from "@kadena/client-utils/webauthn";
 import * as styles from "@/styles/sale.css"
 import { env } from "@/utils/env";
 import { Button } from "@kadena/kode-ui";
@@ -39,6 +39,7 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
     sign: createSignWithSpireKey(router, { host: env.WALLET_URL ?? '' }),
   };
 
+  console.log(account  , "ACCOUNT")
   const handleBuyNow = async () => {
     if (!account?.alias) {
       alert("Please connect your wallet first to buy.");
@@ -50,7 +51,17 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
       host: env.URL,
       networkId: env.NETWORKID,
       chainId: sale.chainId,
-    })
+    }) as {
+      keys: string[];
+      pred: "keys-all" | "keys-2" | "keys-any";
+    }
+
+    const webauthnAccount:string = await getWebauthnAccount({
+      account: account.accountName,
+      host: env.URL,
+      networkId: env.NETWORKID,
+      chainId: sale.chainId,
+    }) as string
 
     const escrowAccount = await getEscrowAccount({
       saleId: sale.saleId,
@@ -58,6 +69,7 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
       networkId: env.NETWORKID,
       chainId: sale.chainId,
     })
+    console.log("signer",  webauthnGuard)
 
     console.log("escrowAccount", escrowAccount);
 
@@ -70,9 +82,10 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
         seller: {
           account: sale.seller.account,
         },
+        signer: webauthnGuard.keys[0],
         buyer: {
-          account: account.accountName,
-          keyset: webauthnGuard["devices"][0]["guard"]
+          account: webauthnAccount,
+          keyset: webauthnGuard 
         },
         buyerFungibleAccount: account.accountName,
         capabilities: [
@@ -82,6 +95,7 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
             props: [account.accountName, escrowAccount["account"], new PactNumber(sale.startPrice).toPactDecimal()]
           },
         ],
+        meta: {senderAccount: account.accountName}
       },
         {
           ...config,

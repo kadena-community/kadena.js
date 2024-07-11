@@ -204,6 +204,7 @@ export function DutchAuction({ tokenImageUrl, sale }: DutchAuctionProps) {
 
     try {
       await buyToken({
+        signer: "",
         auctionConfig: {
           dutch: true
         },
