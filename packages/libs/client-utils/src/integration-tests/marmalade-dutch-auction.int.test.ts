@@ -750,6 +750,7 @@ describe('buyToken', () => {
         seller: {
           account: sourceAccount.account,
         },
+        signer: secondaryTargetAccount.publicKey,
         buyer: {
           account: secondaryTargetAccount.account,
           keyset: {

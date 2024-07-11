@@ -142,6 +142,7 @@ export function ConventionalAuction({ tokenImageUrl, sale }: ConventionalAuction
 
     try {
       await buyToken({
+        signer: "",
         auctionConfig: {
           conventional: true
         },
