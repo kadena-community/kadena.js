@@ -327,6 +327,10 @@ To fund an onchain account:
    ? Enter an amount: 2
    ```
 
+   You can request up to 20 coins per network. 
+   If you select more than one chain in the request, the coins are distributed equally over the chain identifiers you specify. 
+   For example, if you request 20 coins for the development network and chains 0-3, each chain receives five coins. 
+
 1. Select a network, then press Return.
    For example, enter **devnet** to make this account available on the local development network:
 

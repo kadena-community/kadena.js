@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { useTheme } from 'next-themes'
 import { env } from '@/utils/env';
-import { MonoAccountCircle, MonoCheck, MonoClose } from '@kadena/kode-icons';
+import { MonoAccountCircle, MonoCheck, MonoClose, MonoContrast } from '@kadena/kode-icons';
 import { useAccount } from '@/hooks/account';
 import { useTransaction } from '@/hooks/transaction';
 import { useRouter } from 'next/navigation';
@@ -18,49 +19,57 @@ import {
   NotificationButton,
   NotificationHeading
 } from '@kadena/kode-ui';
+import * as styles from './style.css';
 
 export const MarketplaceHeader= () => {
   const [showNotification, setShowNotification] = useState(false);
   const { account, login, logout } = useAccount();
   const { setTransaction } = useTransaction();
   const router = useRouter();
+  const { theme, setTheme } = useTheme()
+
 
   const onFundAccount = () => {
     setShowNotification(false);
     const transaction = fundAccount(account?.accountName || '');
     setTransaction(transaction);
-    //Redirect to the transaction page
+    // Redirect to the transaction page
     router.push('/transaction');
   };
 
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
+
   return (
-    <NavHeader logo={<a href="/"><KadenaLogo height={40} /></a>}>
+    <NavHeader className={styles.navHeader} logo={<a href="/"><KadenaLogo height={40} /></a>}>
       <NavHeaderLinkList>
-        <NavHeaderLink
+        <NavHeaderLink className={styles.navHeaderLink}
           href="/marketplace"
           onClick={() => {}}
         >
           Marketplace
         </NavHeaderLink>
-        <NavHeaderLink
+        <NavHeaderLink className={styles.navHeaderLink}
           href="/tokens"
           onClick={() => {}}
         >
           Tokens
         </NavHeaderLink>
-        <NavHeaderLink
+        <NavHeaderLink className={styles.navHeaderLink}
           href="/transfer"
           onClick={() => {}}
         >
           Transfer
         </NavHeaderLink>
-        {account ? (<NavHeaderLink
+        {account ? (<NavHeaderLink className={styles.navHeaderLink}
           href="/mytokens"
           onClick={() => {}}
         >
           My Tokens
         </NavHeaderLink>) : <></>}
       </NavHeaderLinkList>
+      <NavHeaderButton onPress={toggleTheme}  endVisual={<MonoContrast />} />
       {account
         ? (
             <>

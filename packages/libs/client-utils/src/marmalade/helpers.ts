@@ -68,7 +68,7 @@ export const formatAdditionalSigners = (
   additionalSigners: CommonProps['additionalSigners'] = [],
 ): any[] =>
   additionalSigners.map((signer) =>
-    addSigner(signer.keyset.keys, (signFor) =>
+    addSigner(signer.keys, (signFor) =>
       formatCapabilities(signer.capabilities, signFor),
     ),
   );

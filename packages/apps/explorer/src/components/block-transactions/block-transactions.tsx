@@ -1,19 +1,52 @@
-import type { Transaction } from '@/__generated__/sdk';
+import type { BlockTransactionsQuery, Transaction } from '@/__generated__/sdk';
+import { useBlockTransactionsQuery } from '@/__generated__/sdk';
+import { usePagination } from '@/hooks/usePagination';
+import { graphqlIdFor } from '@/utils/graphqlIdFor';
 import { Heading, Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CompactTable from '../compact-table/compact-table';
 import { FormatLink } from '../compact-table/utils/format-link';
 import { FormatStatus } from '../compact-table/utils/format-status';
+import { loadingData } from './loading-data-blocktransactionsquery';
 import { noTransactionsTitleClass } from './styles.css';
 
 interface IProps {
-  transactions: Transaction[];
-  isLoading: boolean;
+  hash: string;
 }
 
-const BlockTransactions: FC<IProps> = ({ transactions, isLoading }) => {
-  if (!transactions.length) {
+const BlockTransactions: FC<IProps> = ({ hash }) => {
+  const id = graphqlIdFor('Block', hash);
+  const [innerData, setInnerData] =
+    useState<BlockTransactionsQuery>(loadingData);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const { variables, handlePageChange, pageSize } = usePagination({
+    id,
+  });
+
+  const { loading, data } = useBlockTransactionsQuery({
+    variables,
+  });
+
+  useEffect(() => {
+    if (loading) {
+      setIsLoading(true);
+      return;
+    }
+
+    if (data) {
+      setTimeout(() => {
+        setIsLoading(false);
+
+        setInnerData(data);
+      }, 200);
+    }
+  }, [loading, data]);
+
+  if (innerData.node?.__typename !== 'Block') return null;
+
+  if (!innerData.node?.transactions.edges.length) {
     return (
       <Stack
         flexDirection="column"
@@ -31,6 +64,10 @@ const BlockTransactions: FC<IProps> = ({ transactions, isLoading }) => {
 
   return (
     <CompactTable
+      setPage={handlePageChange}
+      pageSize={pageSize}
+      pageInfo={innerData.node!.transactions.pageInfo}
+      totalCount={innerData.node!.transactions.totalCount}
       isLoading={isLoading}
       fields={[
         {
@@ -62,7 +99,9 @@ const BlockTransactions: FC<IProps> = ({ transactions, isLoading }) => {
           width: '40%',
         },
       ]}
-      data={transactions}
+      data={innerData.node.transactions.edges.map(
+        (edge) => edge.node as Transaction,
+      )}
     />
   );
 };

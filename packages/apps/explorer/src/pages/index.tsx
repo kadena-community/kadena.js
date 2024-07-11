@@ -1,34 +1,42 @@
-import { useRouter } from '@/components/routing/useRouter';
-import type { INetwork } from '@/context/networks-context';
-import { selectedNetworkKey, useNetwork } from '@/context/networks-context';
-import React, { useEffect } from 'react';
+import { selectedNetworkKey } from '@/context/networks-context';
+import type { GetServerSideProps } from 'next';
+import type React from 'react';
 
 const Home: React.FC = () => {
-  const router = useRouter();
-  const { setActiveNetwork, networks } = useNetwork();
+  return null;
+};
 
-  useEffect(() => {
-    if (!localStorage.getItem(selectedNetworkKey)) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.replace(`/${networks[0].networkId}`);
-      return;
-    }
-    const network: INetwork = JSON.parse(
-      localStorage.getItem(selectedNetworkKey) ?? '{}',
-    );
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const DEFAULTNETWORKID = 'mainnet01';
+  if (!ctx.req.headers.cookie) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: `/${DEFAULTNETWORKID}`,
+      },
+    };
+  }
+  const cookieValues = ctx.req.headers
+    .cookie!.split(';')
+    .reduce<Record<string, { key: string; value: string }>>((acc, val) => {
+      const [key, value] = val.split('=');
+      acc[key.trim()] = {
+        key: key.trim(),
+        value: value.trim(),
+      };
+      return acc;
+    }, {});
 
-    if (!network) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.replace(`/`);
-      return;
-    }
+  const network = cookieValues[selectedNetworkKey] ?? {
+    value: DEFAULTNETWORKID,
+  };
 
-    setActiveNetwork(network.networkId);
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    router.replace(`/${network.networkId}`);
-  }, [router.asPath]);
-
-  return <div>rerouting</div>;
+  return {
+    redirect: {
+      permanent: false,
+      destination: `/${network.value}`,
+    },
+  };
 };
 
 export default Home;
