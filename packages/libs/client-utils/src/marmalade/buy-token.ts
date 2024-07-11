@@ -1,6 +1,7 @@
 import type {
   IPactModules,
   IPartialPactCommand,
+  ISigner,
   PactReturnType,
 } from '@kadena/client';
 import {
@@ -32,15 +33,18 @@ interface IBuyTokenInput extends CommonProps {
   saleId: string;
   amount: IPactDecimal;
   chainId: ChainId;
+  signer: string;
   seller: {
     account: string;
   };
   buyer: {
     account: string;
-    keyset: {
-      keys: string[];
-      pred: 'keys-all' | 'keys-2' | 'keys-any';
-    };
+    keyset:
+      | {
+          keys: string[];
+          pred: 'keys-all' | 'keys-2' | 'keys-any';
+        }
+      | string;
   };
   buyerFungibleAccount?: string;
 }
@@ -97,6 +101,7 @@ const buyTokenCommand = <C extends IAuctionPurchaseConfig>({
   policyConfig,
   meta,
   capabilities,
+  signer,
   additionalSigners,
   ...props
 }: WithAuctionPurchase<C, IBuyTokenInput>) =>
@@ -108,7 +113,7 @@ const buyTokenCommand = <C extends IAuctionPurchaseConfig>({
       proof: null,
       data: {},
     }),
-    addSigner(formatWebAuthnSigner(buyer.keyset.keys), (signFor) => [
+    addSigner(formatWebAuthnSigner(signer as ISigner), (signFor) => [
       signFor('coin.GAS'),
       signFor(
         'marmalade-v2.ledger.BUY',

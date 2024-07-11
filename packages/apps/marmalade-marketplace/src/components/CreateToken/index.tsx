@@ -166,16 +166,19 @@ function CreateTokenComponent() {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     try {
-
       if (!account) throw new Error("Connect Spirekey account")
+
+      let updatedTokenInput = { ...tokenInput };
+
       if (isOpen) {
         const imageUrl = await uploadFile(file);
         if (!imageUrl) throw new Error('Error creating image URL');
         const metadataUrl = await uploadMetadata({...metadata, image: imageUrl});
         if (!metadataUrl) throw new Error('Error creating metadata URL');
+        updatedTokenInput = { ...updatedTokenInput, uri: metadataUrl };
         setTokenInput((prev) => ({ ...prev, uri: metadataUrl }));
       }
-
+      
       if (policyConfig.hasRoyalty && (!royaltyInput.royaltyFungible || !royaltyInput.royaltyCreator || !royaltyInput.royaltyGuard || !royaltyInput.royaltyRate)) {
         throw new Error('Please provide all Royalty inputs');
       }
@@ -185,7 +188,7 @@ function CreateTokenComponent() {
       }
 
       const inputs = {
-        ...formatInput(tokenInput),
+        ...formatInput(updatedTokenInput),
         policyConfig,
         policies: getPolicies(policyConfig),
         guards: formatGuardInput(guardInput),
