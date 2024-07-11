@@ -15,7 +15,8 @@ import { SystemCheckError, runSystemsCheck } from '@services/systems-check';
 import { dotenv } from '@utils/dotenv';
 import type { ExecutionArgs } from 'graphql';
 import { useServer } from 'graphql-ws/lib/use/ws';
-import { Plugin, createYoga } from 'graphql-yoga';
+import type { Plugin } from 'graphql-yoga';
+import { createYoga } from 'graphql-yoga';
 import 'json-bigint-patch';
 import { createServer } from 'node:http';
 import type { Socket } from 'node:net';
@@ -58,7 +59,9 @@ const tracingPlugin: Plugin = {
 };
 
 if (dotenv.SENTRY_DSN) {
-  console.log(` ✔ starting with sentry ${dotenv.NODE_ENV}-${dotenv.NETWORK_HOST}`);
+  console.log(
+    ` ✔ starting with sentry ${dotenv.NODE_ENV}-${dotenv.NETWORK_HOST}`,
+  );
   Sentry.init({
     dsn: dotenv.SENTRY_DSN,
     tracesSampleRate: 1,
