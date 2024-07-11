@@ -15,5 +15,5 @@ export const useRouter = () => {
 
   const asPath = removeNetworkFromPath(router.asPath, networks);
 
-  return { ...router, replace, push, asPath };
+  return { ...router, replace, push, asPath, activeNetwork };
 };

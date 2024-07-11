@@ -1,5 +1,5 @@
 import { getSales } from "@/hooks/getSales";
-import { Button, Grid, GridItem, Link } from "@kadena/kode-ui";
+import { Button, Grid, GridItem, Heading } from "@kadena/kode-ui";
 import { Token } from "@/components/Token";
 import { useEffect, useState } from "react";
 import { actionBarClass, actionBarSaleActiveClass, actionBarSaleClass } from "@/styles/home.css";
@@ -36,15 +36,12 @@ export default function Home() {
             className={saleState === "PAST" ? actionBarSaleActiveClass : ""}
             onClick={() => setSaleState("PAST")}>Past sales</Button>
         </div>
-        <Link variant="primary">
-          Sell Token
-        </Link>
       </div>
 
       {error && <div>Error: <pre>{JSON.stringify(error, null, 2)}</pre></div>}
       {loading && <h2>Loading..</h2>}
 
-      {!loading && !error && data.length === 0 && <h2>No sales found</h2>}
+      {!loading && !error && data.length === 0 && <Heading as="h2">No sales found</Heading>}
 
       <div>
         <Grid

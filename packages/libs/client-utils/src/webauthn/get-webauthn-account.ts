@@ -13,11 +13,9 @@ interface IGetWalletGuardInput {
 }
 
 /**
- * Fetches the WebAuthn guard for a specified account.
- * This function constructs a command to retrieve the WebAuthn guard details from the given wallet account,
- * and returns the first guard from the devices list associated with that account.
+ * Creates the account name of the guard fetched from  `getWebauthnGuard` function.
  */
-export const getWebauthnGuard = ({
+export const getWebauthnAccount = ({
   account,
   chainId,
   networkId,
@@ -25,7 +23,7 @@ export const getWebauthnGuard = ({
 }: IGetWalletGuardInput) =>
   pipe(
     () =>
-      `(at 'guard (at 0 (at 'devices (n_eef68e581f767dd66c4d4c39ed922be944ede505.webauthn-wallet.get-webauthn-guard "${account}"))))`,
+      `(create-principal (at 'guard (at 0 (at 'devices (n_eef68e581f767dd66c4d4c39ed922be944ede505.webauthn-wallet.get-webauthn-guard "${account}")))))`,
     execution,
     dirtyReadClient({
       host,
