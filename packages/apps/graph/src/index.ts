@@ -60,12 +60,12 @@ const tracingPlugin: Plugin = {
 
 if (dotenv.SENTRY_DSN) {
   console.log(
-    ` ✔ starting with sentry ${dotenv.NODE_ENV}-${dotenv.NETWORK_HOST}`,
+    ` ✔ starting with sentry ${dotenv.NODE_ENV}-${dotenv.ENVIRONMENT}`,
   );
   Sentry.init({
     dsn: dotenv.SENTRY_DSN,
     tracesSampleRate: 1,
-    environment: `${dotenv.NODE_ENV}-${dotenv.NETWORK_HOST}`,
+    environment: `${dotenv.NODE_ENV}-${dotenv.ENVIRONMENT}`,
   });
   plugins.push(tracingPlugin);
 }

@@ -25,6 +25,7 @@ export const dotenv: {
   NETWORK_HOST: string;
   NETWORK_STATISTICS_URL: string;
   NODE_ENV: string;
+  ENVIRONMENT: string;
   PORT: number;
   PRISMA_LOGGING_ENABLED: boolean;
   PRISMA_LOG_TO_FILE: boolean;
@@ -103,6 +104,7 @@ export const dotenv: {
     'http://localhost:8080/stats',
   ),
   NODE_ENV: or(process.env.NODE_ENV, 'production'),
+  ENVIRONMENT: or(process.env.ENVIRONMENT, 'mainnet'),
   PORT: parseInt(or(process.env.PORT, '4000'), 10),
   PRISMA_LOGGING_ENABLED: or(
     process.env.PRISMA_LOGGING_ENABLED?.toLocaleLowerCase() === 'true',
