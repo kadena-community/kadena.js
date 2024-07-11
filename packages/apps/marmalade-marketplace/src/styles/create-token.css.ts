@@ -105,7 +105,7 @@ export const checkboxContainer = style({
 });
 
 export const checkboxLabel = style({
-  color: 'black',
+  color: 'white',
   userSelect: 'none',
 });
 

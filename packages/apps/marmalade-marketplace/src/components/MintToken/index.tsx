@@ -12,6 +12,9 @@ import SendTransaction from '@/components/SendTransaction';
 import { useTransaction } from '@/hooks/transaction';
 import { generateSpireKeyGasCapability, checkPolicies, Policy } from '@/utils/helper';
 import { PactNumber } from "@kadena/pactjs";
+import { MonoAutoFixHigh, MonoAccountBalanceWallet, MonoAccessTime } from '@kadena/kode-icons';
+
+import CrudCard from '@/components/CrudCard';
 
 function MintTokenComponent() {
   const router = useRouter();
@@ -116,35 +119,37 @@ console.log("hi")
   return (
     <>
       {!transaction ? (
-        <Stack flex={1} flexDirection="column">
-          <div className={styles.twoColumnRow}>
-            <div className={styles.oneColumnRow}>
-              <div className={styles.formSection}>
-                <div className={styles.verticalForm}>
-                  <Heading as="h5" className={styles.formHeading}>Token Information</Heading>
-                  <br />
-                  <TextField label="Token ID" name="tokenId" value={tokenId} onChange={handleTokenInputChange} />
-                  <NumberField label="Amount" value={amount} onValueChange={hanldeAmountInputChange} />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className={styles.buttonRow}>
-            <Button type="submit" onClick={handleButtonClick}>
-              Mint Token
-            </Button>
-          </div>
-          {result && (
-            <div className={styles.resultBox}>
-              <p>Token Policy Information: {JSON.stringify(result)}</p>
-            </div>
-          )}
-          {error && (
-            <div className={styles.errorBox}>
-              <p>Error: {error}</p>
-            </div>
-          )}
-        </Stack>
+        <Stack flex={1} flexDirection="column"  className={styles.container}>
+          <CrudCard
+            headingSize="h3"
+            titleIcon={<MonoAutoFixHigh />}
+            title="Mint Token"
+            description={[
+              "Mint a new token",
+              "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi",
+              "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore",
+              "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia"
+            ]}
+          >
+          <TextField label="Token ID" name="tokenId" value={tokenId} onChange={handleTokenInputChange} />
+          <NumberField label="Amount" value={amount} onValueChange={hanldeAmountInputChange} />
+  
+        </CrudCard>
+
+        <div className={styles.buttonRow}>
+          <Button type="submit" onClick={handleButtonClick}>
+            Mint Token
+          </Button>
+        </div>
+        {result && (<CrudCard
+          title="Token Policy Information"
+          description={[
+            "Displays the token policy information",
+          ]}>
+            <p>Token Policy Information: {JSON.stringify(result)}</p>
+        </CrudCard>
+        )}
+      </Stack>
       ) : (
         <SendTransaction send={send} preview={preview} poll={poll} transaction={transaction} />
       )}

@@ -73,7 +73,14 @@ export const MarketplaceHeader= () => {
           // onClick={() => {}}
           endVisual={<Badge size='sm' style={'highContrast'}>beta</Badge>}
         >
-          Token
+          Create
+        </Link>
+        <Link 
+          href="/mint"
+          // onClick={() => {}}
+          endVisual={<Badge size='sm' style={'highContrast'}>beta</Badge>}
+        >
+          Mint
         </Link>
         {account ? (<Link 
           href="/mytokens"
