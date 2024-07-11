@@ -1,7 +1,11 @@
+import { Stack } from '@kadena/kode-ui';
 import type { FC, PropsWithChildren } from 'react';
-import React, { createContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
+import { toastWrapperClass } from '../style.css';
+import Toast from '../toast/toast';
 
-interface IToast {
+export interface IToast {
+  id: string;
   type: 'success' | 'info' | 'error';
   label: string;
   body: string;
@@ -9,7 +13,7 @@ interface IToast {
 
 interface IToastContext {
   toasts: IToast[];
-  addToast: (toast: IToast) => void;
+  addToast: (toast: Omit<IToast, 'id'>) => void;
 }
 
 export const ToastContext = createContext<IToastContext>({
@@ -19,10 +23,33 @@ export const ToastContext = createContext<IToastContext>({
 
 export const ToastProvider: FC<PropsWithChildren> = ({ children }) => {
   const [toasts, setToasts] = useState<IToast[]>([]);
-  const addToast = (toast: IToast) => {};
+  const addToast = (toast: Omit<IToast, 'id'>) => {
+    const id = Math.random().toString(16).slice(2);
+    console.log(id);
+    setToasts((v) => [...v, { ...toast, id }]);
+  };
+
+  const removeToast = (toast: IToast) => {};
+
+  console.log(toasts);
   return (
     <ToastContext.Provider value={{ toasts, addToast }}>
       {children}
+      <Stack flexDirection="column" className={toastWrapperClass} gap="md">
+        {toasts.map((toast, idx) => (
+          <Toast key={toast.id} toast={toast} removeToast={removeToast} />
+        ))}
+      </Stack>
     </ToastContext.Provider>
   );
+};
+
+export const useToast = (): IToastContext => {
+  const context = useContext(ToastContext);
+
+  if (context === undefined) {
+    throw new Error('Please use toastProvider in parent component');
+  }
+
+  return context;
 };

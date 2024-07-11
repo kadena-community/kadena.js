@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react';
 import CompactTable from '../compact-table/compact-table';
 import { FormatLink } from '../compact-table/utils/format-link';
 import { FormatStatus } from '../compact-table/utils/format-status';
+import { useToast } from '../toasts/toast-context/toast-context';
 import { loadingData } from './loading-data-account-transactionsquery';
 
 const AccountTransactionsTable: FC<{ accountName: string }> = ({
@@ -24,7 +25,8 @@ const AccountTransactionsTable: FC<{ accountName: string }> = ({
     id,
   });
 
-  const { data, loading } = useAccountTransactionsQuery({
+  const { addToast } = useToast();
+  const { data, loading, error } = useAccountTransactionsQuery({
     variables,
     skip: !id,
   });
@@ -35,6 +37,14 @@ const AccountTransactionsTable: FC<{ accountName: string }> = ({
       return;
     }
 
+    if (error) {
+      addToast({
+        type: 'error',
+        label: 'Something went wrong',
+        body: 'Loading of account transactions failed',
+      });
+    }
+
     if (data) {
       setTimeout(() => {
         setIsLoading(false);
@@ -42,7 +52,7 @@ const AccountTransactionsTable: FC<{ accountName: string }> = ({
         setInnerData(data);
       }, 200);
     }
-  }, [loading, data]);
+  }, [loading, data, error]);
 
   if (innerData.node?.__typename !== 'FungibleAccount') return null;
 
