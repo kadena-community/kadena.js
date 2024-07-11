@@ -1,4 +1,4 @@
-import { tokens, vars } from '@kadena/kode-ui/styles';
+import { atoms, tokens, vars } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const PreviewModalClass = style({
@@ -29,3 +29,17 @@ export const labelClass = style({
   maxWidth: '200px',
   flex: '1',
 });
+
+export const discoverdAccountClass = style([
+  {
+    backgroundColor: vars.colors.$layoutSurfaceCard,
+    selectors: {
+      '&:nth-child(odd)': {
+        backgroundColor: vars.colors.$layoutSurfaceDefault,
+      },
+    },
+  },
+  atoms({
+    padding: 'md',
+  }),
+]);

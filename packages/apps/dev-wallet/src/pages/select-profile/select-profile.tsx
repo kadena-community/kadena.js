@@ -1,4 +1,3 @@
-import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IProfile } from '@/modules/wallet/wallet.repository';
 import { recoverPublicKey, retrieveCredential } from '@/utils/webAuthn';
@@ -19,7 +18,6 @@ import {
 
 export function SelectProfile() {
   const { profileList, unlockProfile } = useWallet();
-  const { unlockHDWallet } = useHDWallet();
   const [params] = useSearchParams();
 
   const unlockWithWebAuthn = async (
@@ -35,16 +33,7 @@ export function SelectProfile() {
     }
     const keys = await recoverPublicKey(credential);
     for (const key of keys) {
-      const result = await unlockProfile(profile.uuid, key);
-      if (result) {
-        // for now we just pick the first key source later we should have a way to select the key source
-        const keySource = result.keySources[0];
-        if (!keySource) {
-          throw new Error('No key source found');
-        }
-        await unlockHDWallet(keySource.source, key, keySource);
-        return;
-      }
+      await unlockProfile(profile.uuid, key);
     }
     console.error('Failed to unlock profile');
   };
@@ -54,7 +43,7 @@ export function SelectProfile() {
   return (
     <Box>
       <Heading variant="h1" className={titleClass}>
-        Welcome to <br /> DevWallet v1.0
+        Welcome to <br /> Chainweaver v3.0
       </Heading>
       <Heading variant="h5" as="h2" className={subtitleClass}>
         Access your profile securely and start <br />

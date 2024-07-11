@@ -1,9 +1,10 @@
 import {
+  addSignatures,
   IPactCommand,
   IUnsignedCommand,
   parseAsPactValue,
 } from '@kadena/client';
-import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
+import { Button, Heading, Stack, Text, TextareaField } from '@kadena/kode-ui';
 import { FC, PropsWithChildren, useMemo } from 'react';
 import {
   breakAllClass,
@@ -16,6 +17,7 @@ import {
 
 import { ITransaction } from '@/modules/transaction/transaction.repository.ts';
 import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
+import { normalizeSigs } from '@/pages/signature-builder/utils/normalizeSigs.ts';
 import classNames from 'classnames';
 
 const Value: FC<PropsWithChildren<{ className?: string }>> = ({
@@ -91,7 +93,7 @@ export function Signers({
                     </Stack>
                   ))}
               </Stack>
-              {!signature && (
+              {!signature && info && (
                 <Button
                   isCompact
                   onClick={async () => {
@@ -103,6 +105,49 @@ export function Signers({
                 >
                   Sign
                 </Button>
+              )}
+              {!signature && !info && (
+                <form
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    const formData = new FormData(
+                      event.target as HTMLFormElement,
+                    );
+                    const signature = formData.get('signature') as string;
+                    let sigObject;
+                    if (!signature) return;
+                    try {
+                      const json: IUnsignedCommand = JSON.parse(signature);
+                      const sigs = normalizeSigs(json);
+                      const extSignature = sigs.find(
+                        (item) => item.pubKey === signer.pubKey,
+                      );
+
+                      if (!extSignature || !extSignature.sig) {
+                        return;
+                      }
+                      sigObject = extSignature as {
+                        sig: string;
+                        pubKey: string;
+                      };
+                    } catch (e) {
+                      sigObject = { sig: signature, pubKey: signer.pubKey };
+                    }
+                    // TODO: verify signature before adding it
+                    const sigs = addSignatures(transaction, sigObject);
+                    onSign(sigs.sigs);
+                  }}
+                >
+                  <Stack gap={'sm'} flex={1} flexDirection={'column'}>
+                    <TextareaField
+                      label="Signature or Signed Tx"
+                      name="signature"
+                    />
+                    <Button isCompact type="submit">
+                      Add Signature
+                    </Button>
+                  </Stack>
+                </form>
               )}
               {signature && (
                 <>

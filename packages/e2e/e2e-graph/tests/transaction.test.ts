@@ -493,7 +493,7 @@ test.describe('Subscription: getTransactions', () => {
     let account: IAccount;
     let preflightResponse: ICommandResult;
     let query: SubscribePayload;
-    let subscription;
+    let subscription: ReturnType<typeof wsClient.iterate>;
 
     await test.step('Create Transfer Task and execute preflight', async () => {
       account = await generateAccount(1, ['0', '1']);
@@ -561,17 +561,17 @@ test.describe('Subscription: getTransactions', () => {
       });
     });
 
-    await test.step('Assert the third event to contain the successful transaction', async () => {});
-
-    const thirdEvent = (await subscription.next()).value.data;
-    expect(thirdEvent).toEqual({
-      transaction: {
-        result: {
-          __typename: 'TransactionResult',
-          badResult: null,
-          goodResult: JSON.stringify('Write succeeded'),
+    await test.step('Assert the third event to contain the successful transaction', async () => {
+      const thirdEvent = (await subscription.next()).value.data;
+      expect(thirdEvent).toEqual({
+        transaction: {
+          result: {
+            __typename: 'TransactionResult',
+            badResult: null,
+            goodResult: JSON.stringify('Write succeeded'),
+          },
         },
-      },
+      });
     });
   });
   test.afterEach(async () => {

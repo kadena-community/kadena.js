@@ -328,7 +328,6 @@ export function Transfer() {
                         account.contract === 'coin' &&
                         +account.overallBalance > 0,
                     )
-
                     .map((account) => (
                       <SelectItem key={account.uuid}>
                         <span
@@ -358,19 +357,6 @@ export function Transfer() {
                 </Text>
               </Stack>
             </Stack>
-            {/* <TextField
-              label="To"
-              placeholder="Enter address"
-              {...register('receiver', {
-                onBlur: (event) => {
-                  const value = event.target.value;
-                  discoverReceiver(value);
-                },
-                onChange: () => {
-                  setReceiverAccount(null);
-                },
-              })}
-            /> */}
             <Controller
               control={control}
               name="receiver"
@@ -378,6 +364,7 @@ export function Transfer() {
                 <Combobox
                   size="sm"
                   label="To"
+                  allowsCustomValue
                   inputValue={field.value ?? ''}
                   onSelectionChange={field.onChange}
                   onInputChange={(value) => {

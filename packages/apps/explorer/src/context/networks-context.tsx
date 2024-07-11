@@ -10,6 +10,7 @@ import {
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { createClient } from 'graphql-ws';
+import Cookies from 'js-cookie';
 import React, {
   createContext,
   useCallback,
@@ -108,6 +109,7 @@ const NetworkContextProvider = (props: {
     const network = networks.find((x) => x.networkId === networkId)!;
     setActiveNetwork(network);
     localStorage.setItem(selectedNetworkKey, JSON.stringify(network));
+    Cookies.set(selectedNetworkKey, network.networkId);
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     router.push(`/${networkId}`);
@@ -127,6 +129,7 @@ const NetworkContextProvider = (props: {
 
       setActiveNetwork(newNetwork);
       localStorage.setItem(selectedNetworkKey, JSON.stringify(newNetwork));
+      Cookies.set(selectedNetworkKey, newNetwork.networkId);
 
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       router.push(`/${newNetwork.networkId}`);
@@ -138,7 +141,6 @@ const NetworkContextProvider = (props: {
       endpoint: activeNetwork?.graphUrl,
     });
 
-    console.log(activeNetwork?.graphUrl);
     const wsLink = new GraphQLWsLink(
       createClient({
         url: activeNetwork!.wsGraphUrl,
@@ -171,7 +173,7 @@ const NetworkContextProvider = (props: {
     }
   }, [isMounted, activeNetwork]);
 
-  if (!isMounted || !activeNetwork) return <div>loading</div>;
+  if (!isMounted || !activeNetwork) return <></>;
 
   return (
     <NetworkContext.Provider

@@ -1,5 +1,20 @@
 # @kadena/kadena-cli
 
+## 1.2.1
+
+### Patch Changes
+
+- Updated dependencies \[29168e2]
+- Updated dependencies \[07c0a26]
+- Updated dependencies \[29168e2]
+  - @kadena/client\@1.13.0
+  - @kadena/client-utils\@0.9.0
+  - @kadena/pactjs-cli\@1.13.0
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/hd-wallet\@0.4.2
+  - @kadena/pactjs\@0.4.3
+  - @kadena/pactjs-generator\@1.13.0
+
 ## 1.2.0
 
 ### Minor Changes

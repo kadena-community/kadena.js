@@ -13,7 +13,7 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 const NUMBER_OF_KEYS_TO_DISCOVER = 20;
 
 export function AccountDiscovery() {
-  const { profile, keySources } = useWallet();
+  const { profile, keySources, unlockKeySource } = useWallet();
   const { keySourceId } = useParams();
   const [key, setKey] = useState<IKeyItem>();
   const [discoveryStatus, setDiscoveryStatus] = useState<
@@ -34,6 +34,7 @@ export function AccountDiscovery() {
       throw new Error('Unsupported key source');
     }
     setDiscoveryStatus('discovering');
+    await unlockKeySource(keySource);
     await accountDiscovery(
       activeNetwork.networkId,
       keySource,

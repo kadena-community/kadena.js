@@ -31,7 +31,9 @@ const sigScheme = (
   return 'unknown';
 };
 
-export function normalizeSigs(tx: IUnsignedCommand): IUnsignedCommand['sigs'] {
+export function normalizeSigs(
+  tx: IUnsignedCommand,
+): Array<{ sig?: string; pubKey: string }> {
   const cmd: IPactCommand = JSON.parse(tx.cmd);
   const scheme = sigScheme(tx.sigs);
   if (scheme === 'SigData') {
@@ -40,8 +42,9 @@ export function normalizeSigs(tx: IUnsignedCommand): IUnsignedCommand['sigs'] {
       sigs[pubKey]
         ? {
             sig: sigs[pubKey],
+            pubKey,
           }
-        : undefined,
+        : { pubKey },
     );
     return normalizedSigs;
   }
@@ -49,13 +52,21 @@ export function normalizeSigs(tx: IUnsignedCommand): IUnsignedCommand['sigs'] {
     const sigs = tx.sigs as unknown as CommandSigData;
     const normalizedSigs = cmd.signers.map(({ pubKey }) => {
       const item = sigs.find((s) => s.pubKey === pubKey);
-      return item && item.sig ? { sig: item.sig } : undefined;
+      return item && item.sig ? { sig: item.sig, pubKey } : { pubKey };
     });
     return normalizedSigs;
   }
   if (scheme === 'CommandJson') {
-    return tx.sigs;
+    return cmd.signers.map(({ pubKey }, index) => {
+      const sig = (tx.sigs as CommandJson)[index]?.sig;
+      return sig ? { sig, pubKey } : { pubKey };
+    });
   }
 
-  return cmd.signers.map(() => undefined);
+  return cmd.signers.map(({ pubKey }) => ({ pubKey }));
 }
+
+export const normalizeTx = (tx: IUnsignedCommand) => ({
+  ...tx,
+  sigs: normalizeSigs(tx),
+});

@@ -11,12 +11,12 @@ import { Wizard } from '@/Components/Wizard/Wizard';
 import { useNetwork } from '@/modules/network/network.hook';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { execCodeParser } from '@kadena/pactjs-generator';
 import { Box, Button, Card, Heading, Text } from '@kadena/kode-ui';
+import { execCodeParser } from '@kadena/pactjs-generator';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { codeArea } from './style.css';
-import { normalizeSigs } from './utils/normalizeSigs';
+import { normalizeSigs, normalizeTx } from './utils/normalizeSigs';
 
 type requestScheme =
   | 'invalid'
@@ -89,26 +89,27 @@ export function SignatureBuilder() {
     [exec.code],
   );
 
-  function processSig(sig: string) {
-    setInput(sig);
-    const schema = determineSchema(sig);
+  function processSig(inputData: string) {
+    setInput(inputData);
+    const schema = determineSchema(inputData);
     switch (schema) {
       case 'quickSignRequest': {
-        const parsed: IUnsignedCommand = JSON.parse(sig);
+        const parsed: IUnsignedCommand = JSON.parse(inputData);
         setPactCommand(JSON.parse(parsed.cmd));
-        setUnsignedTx(parsed);
+        setUnsignedTx(normalizeTx(parsed));
         setCapsWithoutSigners([]);
         break;
       }
       case 'PactCommand': {
-        const parsed: IPartialPactCommand = JSON.parse(sig);
+        const parsed: IPartialPactCommand = JSON.parse(inputData);
         setPactCommand(parsed);
-        setUnsignedTx(createTransaction(parsed));
+        const tx = createTransaction(parsed);
+        setUnsignedTx(normalizeTx(tx));
         setCapsWithoutSigners([]);
         break;
       }
       case 'signingRequest': {
-        const parsed: ISigningRequest = JSON.parse(sig);
+        const parsed: ISigningRequest = JSON.parse(inputData);
         const pactCommand = signingRequestToPactCommand(parsed);
         setPactCommand(pactCommand);
         setCapsWithoutSigners(parsed.caps);
@@ -185,12 +186,14 @@ export function SignatureBuilder() {
                       <Button
                         onPress={async () => {
                           if (!unsignedTx || !profile || !activeNetwork) return;
-                          const tx = await transactionService.addTransaction(
+                          const groupId = crypto.randomUUID();
+                          await transactionService.addTransaction(
                             unsignedTx,
                             profile.uuid,
                             activeNetwork.networkId,
+                            groupId,
                           );
-                          navigate(`/transaction/${tx.uuid}`);
+                          navigate(`/transaction/${groupId}`);
                         }}
                       >
                         Review Transaction

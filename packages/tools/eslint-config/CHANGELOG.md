@@ -1,5 +1,12 @@
 # Change Log - @kadena-dev/eslint-config
 
+## 1.0.5
+
+### Patch Changes
+
+- 2db3568: Use @typescript-eslint as plugin and parser to get rid of eslint
+  warnings of aliases in nextjs projects
+
 ## 1.0.4
 
 ### Patch Changes

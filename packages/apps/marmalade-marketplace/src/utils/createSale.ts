@@ -1,13 +1,13 @@
 import { offerToken } from '@kadena/client-utils/marmalade'
-import { useCallback, useEffect, useState } from "react";
 import { env } from '@/utils/env';
 import { createSignWithSpireKey } from "@/utils/signWithSpireKey";
 import { useRouter } from "next/navigation";
 import { PactNumber } from '@kadena/pactjs';
+import { ChainId } from '@kadena/client';
 
 export interface CreateSaleInput {
   tokenId?: string;
-  chainId?: string;
+  chainId?: ChainId;
   saleType?: string;
   price?: number;
   timeout?: number;
@@ -25,11 +25,13 @@ export const createSale = async (input: CreateSaleInput) => {
     sign: createSignWithSpireKey(router, { host: env.WALLET_URL ?? '' }),
   };
 
+  if (!input.tokenId || !input.chainId || !input.account || !input.key || !input.timeout) return
+
   try {
     await offerToken({
       chainId: input.chainId,
       tokenId: input.tokenId,
-      timeout: input.timeout,
+      timeout: new PactNumber(input.timeout).toPactInteger(),
       amount: new PactNumber(1).toPactDecimal(),
       seller: {
         account: input.account,
