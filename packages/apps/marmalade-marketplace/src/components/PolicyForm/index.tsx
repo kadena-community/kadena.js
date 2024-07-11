@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Heading, Checkbox } from '@kadena/kode-ui';
+import { Heading } from '@kadena/kode-ui';
 import * as styles from '@/styles/create-token.css';
 import { ICreateTokenPolicyConfig } from "@kadena/client-utils/marmalade";
 
@@ -9,26 +9,11 @@ interface PolicyFormProps {
 }
 
 const PolicyForm: FC<PolicyFormProps> = ({ policyConfig, handleCheckboxChange }) => (
-      <>
-      Available Concrete Policies
-          <div className={styles.checkboxContainer}>
-            <div className={styles.checkboxStyle}>
-              <Checkbox>Collection</Checkbox>
-            </div>
-            <div className={styles.checkboxStyle}>
-              <Checkbox>Guard</Checkbox>
-            </div>
-            <div className={styles.checkboxStyle}>
-              <Checkbox>Royalty</Checkbox>
-            </div>
-            <div className={styles.checkboxStyle}>
-              <Checkbox>Non-fungible</Checkbox>
-            </div>
-            <div className={styles.checkboxStyle}>
-              <Checkbox>Non-upgradable URI</Checkbox>
-            </div>
-          </div>
-            {/* <div  className={styles.checkboxContainer}>
+    <div className={styles.formSection}>
+        <Heading as="h5" className={styles.formHeading}>Policy Configuration</Heading>
+        <br/>
+        <div className={styles.checkboxRow}>
+            <div className={styles.checkboxContainer}>
               <input
                 className={styles.checkboxInput}
                 type="checkbox"
@@ -37,7 +22,7 @@ const PolicyForm: FC<PolicyFormProps> = ({ policyConfig, handleCheckboxChange })
                 checked={policyConfig.nonUpdatableURI}
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="nonUpdatableURI">Non-Updatable URI</label>
+              <label className={styles.checkboxLabel} htmlFor="nonUpdatableURI">Non-Updatable URI</label>
             </div>
             <div className={styles.checkboxContainer}>
               <input
@@ -48,7 +33,7 @@ const PolicyForm: FC<PolicyFormProps> = ({ policyConfig, handleCheckboxChange })
                 checked={policyConfig.guarded}
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="guarded">Guarded</label>
+              <label className={styles.checkboxLabel} htmlFor="guarded">Guarded</label>
             </div>
             <div className={styles.checkboxContainer}>
               <input
@@ -59,7 +44,7 @@ const PolicyForm: FC<PolicyFormProps> = ({ policyConfig, handleCheckboxChange })
                 checked={policyConfig.nonFungible}
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="nonFungible">Non-Fungible</label>
+              <label className={styles.checkboxLabel} htmlFor="nonFungible">Non Fungible</label>
             </div>
             <div className={styles.checkboxContainer}>
               <input
@@ -70,7 +55,7 @@ const PolicyForm: FC<PolicyFormProps> = ({ policyConfig, handleCheckboxChange })
                 checked={policyConfig.hasRoyalty}
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="hasRoyalty">Has Royalty</label>
+              <label className={styles.checkboxLabel} htmlFor="hasRoyalty">Has Royalty</label>
             </div>
             <div className={styles.checkboxContainer}>
               <input
@@ -81,9 +66,10 @@ const PolicyForm: FC<PolicyFormProps> = ({ policyConfig, handleCheckboxChange })
                 checked={policyConfig.collection}
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="collection">Collection</label>
-            </div> */}
-    </>
+              <label className={styles.checkboxLabel} htmlFor="collection">Collection</label>
+            </div>
+      </div>
+    </div>
 );
 
 export default PolicyForm;
