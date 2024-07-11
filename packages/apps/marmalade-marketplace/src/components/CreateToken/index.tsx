@@ -166,7 +166,6 @@ function CreateTokenComponent() {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     try {
-
       if (!account) throw new Error("Connect Spirekey account")
 
       let updatedTokenInput = { ...tokenInput };
