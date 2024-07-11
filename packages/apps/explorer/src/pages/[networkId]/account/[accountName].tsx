@@ -105,7 +105,7 @@ const Account: FC = () => {
     <Layout>
       {error && <div>Error: {error.message}</div>}
 
-      <Stack margin="md" width="100%" flexDirection="column">
+      <Stack padding="md" width="100%" flexDirection="column">
         <ValueLoader isLoading={isLoading}>
           <Heading as="h5">
             {parseFloat(fungibleAccount?.totalBalance).toFixed(2)} KDA spread
