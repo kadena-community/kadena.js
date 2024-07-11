@@ -7,6 +7,15 @@ const Home: React.FC = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const DEFAULTNETWORKID = 'mainnet01';
+  if (!ctx.req.headers.cookie) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: `/${DEFAULTNETWORKID}`,
+      },
+    };
+  }
   const cookieValues = ctx.req.headers
     .cookie!.split(';')
     .reduce<Record<string, { key: string; value: string }>>((acc, val) => {
@@ -18,7 +27,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       return acc;
     }, {});
 
-  const network = cookieValues[selectedNetworkKey] ?? { value: 'mainnet01' };
+  const network = cookieValues[selectedNetworkKey] ?? {
+    value: DEFAULTNETWORKID,
+  };
 
   return {
     redirect: {
