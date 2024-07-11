@@ -22,8 +22,6 @@ const GuardForm: FC<GuardFormProps> = ({ guardInput, handleGuardInputChange, han
       name="uriGuard"
       value={guardInput.uriGuard}
       disabled
-      // disabled={guardInput.uriGuard === excluded}
-      // onChange={handleGuardInputChange}
       endAddon={<Checkbox isSelected={guardInput.uriGuard === excluded} onChange={(e) => handleGuardExcludeChange('uriGuard', e)}>Exclude</Checkbox>}
     />
     <TextField
@@ -31,9 +29,6 @@ const GuardForm: FC<GuardFormProps> = ({ guardInput, handleGuardInputChange, han
       name="mintGuard"
       value={guardInput.mintGuard}
       disabled
-
-      // disabled={guardInput.mintGuard === excluded}
-      // onChange={handleGuardInputChange}
       endAddon={<Checkbox isSelected={guardInput.mintGuard === excluded} onChange={(e) => handleGuardExcludeChange('mintGuard', e)}>Exclude</Checkbox>}
     />
     <TextField
@@ -41,18 +36,13 @@ const GuardForm: FC<GuardFormProps> = ({ guardInput, handleGuardInputChange, han
       name="burnGuard"
       value={guardInput.burnGuard}
       disabled
-
-      // disabled={guardInput.burnGuard === excluded}
-      // onChange={handleGuardInputChange}
       endAddon={<Checkbox isSelected={guardInput.burnGuard === excluded} onChange={(e) => handleGuardExcludeChange('burnGuard', e)}>Exclude</Checkbox>}
     />
     <TextField
       label="Sale Guard"
       name="saleGuard"
       value={guardInput.saleGuard}
-      // disabled={guardInput.saleGuard === excluded}
       disabled
-      // onChange={handleGuardInputChange}
       endAddon={<Checkbox isSelected={guardInput.saleGuard === excluded} onChange={(e) => handleGuardExcludeChange('saleGuard', e)}>Exclude</Checkbox>}
     />
     <TextField
@@ -60,8 +50,6 @@ const GuardForm: FC<GuardFormProps> = ({ guardInput, handleGuardInputChange, han
       name="transferGuard"
       value={guardInput.transferGuard}
       disabled
-      // disabled={guardInput.transferGuard === excluded}
-      // onChange={handleGuardInputChange}
       endAddon={<Checkbox isSelected={guardInput.transferGuard === excluded} onChange={(e) => handleGuardExcludeChange('transferGuard', e)}>Exclude</Checkbox>}
     />
   </CrudCard>

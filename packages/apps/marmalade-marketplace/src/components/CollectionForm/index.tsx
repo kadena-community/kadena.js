@@ -9,16 +9,14 @@ interface CollectionFormProps {
 }
 
 const CollectionForm: FC<CollectionFormProps> = ({ collectionInput, handleCollectionInputChange,  }) => (
-  //  <div className={styles.formSection}>
-      <CrudCard
-        title="Collection"
-        description={[
-          "Provide a Collection ID"
-        ]}
-      >
-        <TextField label="Collection ID" name="collectionId" value={collectionInput.collectionId} onChange={handleCollectionInputChange} />
-      </CrudCard>
-  // </div>
+  <CrudCard
+    title="Collection"
+    description={[
+      "Provide a Collection ID"
+    ]}
+  >
+    <TextField label="Collection ID" name="collectionId" value={collectionInput.collectionId} onChange={handleCollectionInputChange} />
+  </CrudCard>
 );
 
 export default CollectionForm;

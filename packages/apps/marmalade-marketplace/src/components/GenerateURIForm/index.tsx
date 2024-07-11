@@ -61,23 +61,21 @@ const GenerateURIForm: FC<GenerateURIProps> = ({
 
   return (
     <div className={styles.tokenImageClass}>
-      <div className={styles.tokenImageClass}>
-        <div
-          onDrop={handleFileDrop}
-          onDragOver={handleDragOver}
-          onClick={() => inputFile.current?.click()}
-          style={{ width: '100%' }}
-        >
-          <input
-            type="file"
-            id="fileInput"
-            ref={inputFile}
-            style={{ display: 'none' }}
-            onChange={handleFileChange}
-          />
-          <img className={styles.tokenImageClass} src={imagePreview} alt="Uploaded Preview" className={styles.uploadImage} />
-        </div>
-    </div>
+      <div
+        onDrop={handleFileDrop}
+        onDragOver={handleDragOver}
+        onClick={() => inputFile.current?.click()}
+        style={{ width: '100%', backgroundColor: 'white'}}
+      >
+        <input
+          type="file"
+          id="fileInput"
+          ref={inputFile}
+          style={{ display: 'none' }}
+          onChange={handleFileChange}
+        />
+        <img className={styles.tokenImageClass} src={imagePreview} alt="Uploaded Preview" />
+      </div>
     </div>
   );
 };

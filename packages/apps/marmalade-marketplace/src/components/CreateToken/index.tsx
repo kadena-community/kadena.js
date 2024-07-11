@@ -125,7 +125,7 @@ function CreateTokenComponent() {
     setTokenInput({ ...tokenInput, uri: '' });
   };
 
-  const handleTokenInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTokenInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setTokenInput((prev) => ({ ...prev, [name]: value}));
   };
@@ -301,7 +301,7 @@ function CreateTokenComponent() {
             ]}
           >
             <div>
-               <GenerateURIForm
+              <GenerateURIForm
                 handleTokenInputChange={handleTokenInputChange}
                 tokenInput={tokenInput}
                 setError={setError}
@@ -311,23 +311,23 @@ function CreateTokenComponent() {
                 setImagePreview={setImagePreview}
                 base64Image={base64Image}
                 setBase64Image={setBase64Image}
-            />
-                  <TextField
-                    label="Creation Guard"
-                    name="CreationGuard"
-                    value={walletKey}
-                    disabled
-                  />
-                  <NumberField
-                    label="Precision"
-                    value={tokenInput.precision}
-                    onValueChange={handlePrecisionChange}
-                  />
-                  <Select label="Chain ID" name="chainId" selectedKey={tokenInput.chainId} isDisabled>
-                    {Array.from({ length: 20 }, (_, i) => i.toString()).map(option => (
-                      <SelectItem key={option} textValue={option}>{option}</SelectItem>
-                    ))}
-                  </Select>
+              />
+              <TextField
+                label="Creation Guard"
+                name="CreationGuard"
+                value={walletKey}
+                disabled
+              />
+              <NumberField
+                label="Precision"
+                value={tokenInput.precision}
+                onValueChange={handlePrecisionChange}
+              />
+              <Select label="Chain ID" name="chainId" selectedKey={tokenInput.chainId} isDisabled>
+                {Array.from({ length: 20 }, (_, i) => i.toString()).map(option => (
+                  <SelectItem key={option} textValue={option}>{option}</SelectItem>
+                ))}
+              </Select>
             </div>
           </CrudCard>
           <CrudCard
