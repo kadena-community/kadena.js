@@ -651,9 +651,18 @@ importers:
       '@pothos/plugin-validation':
         specifier: ^3.10.1
         version: 3.10.2(@pothos/core@3.41.2(graphql@16.8.2))(graphql@16.8.2)(zod@3.23.8)
+      '@pothos/tracing-sentry':
+        specifier: ^0.8.1
+        version: 0.8.1(@pothos/core@3.41.2(graphql@16.8.2))(@pothos/plugin-tracing@0.5.8(@pothos/core@3.41.2(graphql@16.8.2))(graphql@16.8.2))(@sentry/node@8.15.0)(graphql@16.8.2)
       '@prisma/client':
         specifier: ^5.12.1
         version: 5.16.1(prisma@5.16.1)
+      '@sentry/node':
+        specifier: ^8.15.0
+        version: 8.15.0
+      '@sentry/profiling-node':
+        specifier: ^8.15.0
+        version: 8.15.0
       cli-highlight:
         specifier: ^2.1.11
         version: 2.1.11
@@ -6606,6 +6615,14 @@ packages:
       graphql: ^16.8.1
       zod: '*'
 
+  '@pothos/tracing-sentry@0.8.1':
+    resolution: {integrity: sha512-Qv3/EQNT4RoJVuuz2uqXIYEVXORbiuh43nI4NGan+tUDzotNHsbkKXRt7kzwWn0xaC7wkp7q/48SYWsPwfhZQQ==}
+    peerDependencies:
+      '@pothos/core': '*'
+      '@pothos/plugin-tracing': '*'
+      '@sentry/node': '*'
+      graphql: '>=15.1.0'
+
   '@prisma/client@5.16.1':
     resolution: {integrity: sha512-wM9SKQjF0qLxdnOZIVAIMKiz6Hu7vDt4FFAih85K1dk/Rr2mdahy6d3QP41K62N9O0DJJA//gUDA3Mp49xsKIg==}
     engines: {node: '>=16.13'}
@@ -8036,6 +8053,11 @@ packages:
       '@opentelemetry/instrumentation': ^0.52.1
       '@opentelemetry/sdk-trace-base': ^1.25.1
       '@opentelemetry/semantic-conventions': ^1.25.1
+
+  '@sentry/profiling-node@8.15.0':
+    resolution: {integrity: sha512-1XVqrBx8sTmxHIrdDgrXQeNRmF6nCeV+AvJnvlTJWoENE5Mtchd29VxkYz8hc649VL8fZn5mZA7A/a8UaroMGw==}
+    engines: {node: '>=14.18'}
+    hasBin: true
 
   '@sentry/react@8.15.0':
     resolution: {integrity: sha512-mRkWZ3gVkgT5VrRVHfOlritsxNM0XOOkOqKP2WXiHCRCGKns7hwGcEt5Y9AKFITIKL9ADtmE22tjv69V5fYwqQ==}
@@ -15047,6 +15069,10 @@ packages:
 
   no-case@3.0.4:
     resolution: {integrity: sha512-fgAN3jGAh+RoxUGZHTSOLJIqUc2wmoBwGR4tbpNAKmmovFoWq0OdRkb0VkldReO2a2iBT/OEulG9XSUc10r3zg==}
+
+  node-abi@3.65.0:
+    resolution: {integrity: sha512-ThjYBfoDNr08AWx6hGaRbfPwxKV9kVzAzOzlLKbk2CuqXE2xnCh+cbAGnwM3t8Lq4v9rUB7VfondlkBckcJrVA==}
+    engines: {node: '>=10'}
 
   node-abort-controller@3.1.1:
     resolution: {integrity: sha512-AGK2yQKIjRuqnc6VkX2Xj5d+QW8xZ87pa1UK6yA6ouUyuxfHuMP6umE5QK7UmTeOAymo+Zx1Fxiuw9rVx8taHQ==}
@@ -23680,6 +23706,13 @@ snapshots:
       graphql: 16.8.2
       zod: 3.23.8
 
+  '@pothos/tracing-sentry@0.8.1(@pothos/core@3.41.2(graphql@16.8.2))(@pothos/plugin-tracing@0.5.8(@pothos/core@3.41.2(graphql@16.8.2))(graphql@16.8.2))(@sentry/node@8.15.0)(graphql@16.8.2)':
+    dependencies:
+      '@pothos/core': 3.41.2(graphql@16.8.2)
+      '@pothos/plugin-tracing': 0.5.8(@pothos/core@3.41.2(graphql@16.8.2))(graphql@16.8.2)
+      '@sentry/node': 8.15.0
+      graphql: 16.8.2
+
   '@prisma/client@5.16.1(prisma@5.16.1)':
     optionalDependencies:
       prisma: 5.16.1
@@ -25693,6 +25726,17 @@ snapshots:
       '@sentry/core': 8.15.0
       '@sentry/types': 8.15.0
       '@sentry/utils': 8.15.0
+
+  '@sentry/profiling-node@8.15.0':
+    dependencies:
+      '@sentry/core': 8.15.0
+      '@sentry/node': 8.15.0
+      '@sentry/types': 8.15.0
+      '@sentry/utils': 8.15.0
+      detect-libc: 2.0.3
+      node-abi: 3.65.0
+    transitivePeerDependencies:
+      - supports-color
 
   '@sentry/react@8.15.0(react@18.3.1)':
     dependencies:
@@ -35452,6 +35496,10 @@ snapshots:
     dependencies:
       lower-case: 2.0.2
       tslib: 2.6.3
+
+  node-abi@3.65.0:
+    dependencies:
+      semver: 7.6.2
 
   node-abort-controller@3.1.1: {}
 
