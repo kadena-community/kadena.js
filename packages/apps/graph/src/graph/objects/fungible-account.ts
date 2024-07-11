@@ -126,11 +126,6 @@ export default builder.node(
             return await prismaClient.transaction.count({
               where: {
                 senderAccount: parent.accountName,
-                events: {
-                  some: {
-                    moduleName: parent.fungibleName,
-                  },
-                },
               },
             });
           } catch (error) {
@@ -144,11 +139,6 @@ export default builder.node(
               ...query,
               where: {
                 senderAccount: parent.accountName,
-                events: {
-                  some: {
-                    moduleName: parent.fungibleName,
-                  },
-                },
               },
               orderBy: {
                 height: 'desc',
@@ -173,35 +163,69 @@ export default builder.node(
 
         async totalCount(parent) {
           try {
-            return prismaCountOr(prismaClient.transfer.count, [
-              {
-                senderAccount: parent.accountName,
-              },
-              {
-                receiverAccount: parent.accountName,
-              },
-            ]);
+            return (
+              await Promise.all([
+                await prismaClient.transfer.count({
+                  where: {
+                    senderAccount: parent.accountName,
+                    NOT: {
+                      receiverAccount: parent.accountName,
+                    },
+                    moduleName: parent.fungibleName,
+                  },
+                }),
+                await prismaClient.transfer.count({
+                  where: {
+                    receiverAccount: parent.accountName,
+                    NOT: {
+                      senderAccount: parent.accountName,
+                    },
+                    moduleName: parent.fungibleName,
+                  },
+                }),
+              ])
+            ).reduce((acc, count) => acc + count, 0);
           } catch (error) {
             throw normalizeError(error);
           }
         },
 
-        async resolve(query, parent) {
+        async resolve(condition, parent) {
           try {
             return (
-              await prismaFindManyOr(
-                prismaClient.transfer.findMany,
-                { ...query, orderBy: { height: 'desc' } },
-                [
-                  {
-                    senderAccount: parent.accountName,
-                  },
-                  {
+              await Promise.all([
+                await prismaClient.transfer.findMany({
+                  ...condition,
+                  where: {
                     receiverAccount: parent.accountName,
+                    NOT: {
+                      receiverAccount: parent.accountName,
+                    },
+                    moduleName: parent.fungibleName,
                   },
-                ],
-              )
-            ).sort((a, b) => b.height - a.height);
+                  orderBy: {
+                    height: 'desc',
+                  },
+                }),
+
+                await prismaClient.transfer.findMany({
+                  ...condition,
+                  where: {
+                    receiverAccount: parent.accountName,
+                    NOT: {
+                      senderAccount: parent.accountName,
+                    },
+                    moduleName: parent.fungibleName,
+                  },
+                  orderBy: {
+                    height: 'desc',
+                  },
+                }),
+              ])
+            )
+              .reduce((acc, transfers) => acc.concat(transfers), [])
+              .sort((a, b) => bigintSortFn(a.height, b.height))
+              .slice(condition.skip, condition.skip + condition.take);
           } catch (error) {
             throw normalizeError(error);
           }
@@ -215,9 +239,9 @@ export default builder.node(
  * Split the query into multiple queries based on the amount of OR conditions.
  * Merge the results and return the total count.
  */
-async function prismaCountOr(query: any, ors: any[]) {
+export async function prismaCountOr(query: any, parent: any, ors: any[]) {
   const result = await Promise.all(
-    ors.map((condition) => query({ ...query, where: condition })),
+    ors.map((condition) => query({ ...parent, where: condition })),
   );
   return result.reduce((acc, count) => acc + count, 0);
 }
@@ -226,9 +250,19 @@ async function prismaCountOr(query: any, ors: any[]) {
  * Split the query into multiple queries based on the amount of OR conditions.
  * Merge the results
  */
-async function prismaFindManyOr(query: any, parent: any, ors: any[]) {
+export async function prismaFindManyOr(query: any, parent: any, ors: any[]) {
   const result = await Promise.all(
     ors.map((condition) => query({ ...parent, where: condition })),
   );
   return result.flat();
+}
+
+export function bigintSortFn(a: bigint, b: bigint): number {
+  if (a > b) {
+    return 1;
+  } else if (a < b) {
+    return -1;
+  } else {
+    return 0;
+  }
 }

@@ -2,9 +2,9 @@ import type { AccountQuery } from '@/__generated__/sdk';
 
 export const loadingData: AccountQuery = {
   fungibleAccount: {
-    transactions: {
-      totalCount: 0,
-    },
+    // transactions: {
+    //   totalCount: 0,
+    // },
     transfers: {
       totalCount: 0,
     },

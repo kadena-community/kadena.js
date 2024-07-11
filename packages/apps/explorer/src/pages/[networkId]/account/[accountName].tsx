@@ -1,7 +1,6 @@
 import type { AccountQuery } from '@/__generated__/sdk';
 import { useAccountQuery } from '@/__generated__/sdk';
 import AccountTransfersTable from '@/components/account-transfers-table/account-transfers-table';
-import AccountTransactionsTable from '@/components/account.transactions-table/account.transactions-table';
 import CompactTable from '@/components/compact-table/compact-table';
 import Layout from '@/components/layout/layout';
 import { loadingData } from '@/components/loading-skeleton/loading-data/loading-data-accountquery';
@@ -155,12 +154,13 @@ const Account: FC = () => {
       >
         <Stack flex={1} flexDirection="column" marginBlockStart="lg">
           <Tabs selectedKey={selectedTab} onSelectionChange={handleSelectedTab}>
-            <TabItem
-              title={`Transactions (${fungibleAccount?.transactions.totalCount})`}
+            {/* TODO enable when index for sender is fixed */}
+            {/* <TabItem
+              title={`Transactions`}
               key="Transactions"
             >
               <AccountTransactionsTable accountName={accountName} />
-            </TabItem>
+            </TabItem> */}
             <TabItem
               title={`Transfers (${fungibleAccount?.transfers.totalCount})`}
               key="Transfers"

@@ -47,6 +47,10 @@ const NetworkContext = createContext<INetworkContext>({
 export const storageKey = 'networks';
 export const selectedNetworkKey = 'selectedNetwork';
 
+const cache = new InMemoryCache();
+
+// defaultDataIdFromObject
+
 const useNetwork = (): INetworkContext => {
   const context = useContext(NetworkContext);
 
@@ -135,6 +139,7 @@ const NetworkContextProvider = (props: {
 
   const getApolloClient = useCallback(() => {
     const httpLink = new YogaLink({
+      cache,
       endpoint: activeNetwork?.graphUrl,
     });
 
