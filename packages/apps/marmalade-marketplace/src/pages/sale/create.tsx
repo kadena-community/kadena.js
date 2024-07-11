@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
+import { ChainId } from '@kadena/client';
 import { getTokenInfo } from '@kadena/client-utils/marmalade'
-import { Stack, TextField, Select, SelectItem, Grid, Button, NumberField } from "@kadena/kode-ui";
+import { Stack, Select, SelectItem, Button, NumberField } from "@kadena/kode-ui";
+import { MonoAutoFixHigh, MonoAccountBalanceWallet, MonoAccessTime } from '@kadena/kode-icons';
 import CrudCard from '@/components/CrudCard';
+import { TokenMetadata } from "@/components/Token";
 import { useAccount } from '@/hooks/account';
 import { getTokenImageUrl, getTokenMetadata } from '@/utils/token';
-import { MonoAutoFixHigh, MonoAccountBalanceWallet, MonoAccessTime } from '@kadena/kode-icons';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { env } from '@/utils/env';
-import * as styles from '@/styles/create-sale.css';
-import { TokenMetadata } from "@/components/Token";
 import { CreateSaleInput, createSale } from "@/utils/createSale";
+import { env } from '@/utils/env';
+import { useSearchParams, useRouter } from 'next/navigation';
+import * as styles from '@/styles/create-sale.css';
 
 export default function CreateSale() {
   const [tokenId, setTokenId] = useState<string | null>(null);
-  const [chainId, setChainId] = useState<string | null>(null);
+  const [chainId, setChainId] = useState<ChainId | null>(null);
   const [tokenImageUrl, setTokenImageUrl] = useState<string>("/no-image.webp");
   const [tokenMetadata, setTokenMetadata] = useState<TokenMetadata | null>();
   const [saleData, setSaleData] = useState<CreateSaleInput>({});
@@ -27,13 +28,14 @@ export default function CreateSale() {
     const chainIdParam = searchParams.get('chainid');
     if (tokenIdParam && chainIdParam) {
       setTokenId(tokenIdParam);
-      setChainId(chainIdParam);
-      setSaleData({ tokenId: tokenIdParam, chainId: chainIdParam });
+      setChainId(chainIdParam as ChainId);
+      setSaleData({ tokenId: tokenIdParam, chainId: chainIdParam as ChainId });
     }
   }, [searchParams]);
 
   useEffect(() => {
     async function fetch() {
+      if (!tokenId || !chainId) return;
       try {
         const tokenInfo = await getTokenInfo({
           tokenId,
@@ -197,5 +199,3 @@ export default function CreateSale() {
     </div>
   );
 }
-
-

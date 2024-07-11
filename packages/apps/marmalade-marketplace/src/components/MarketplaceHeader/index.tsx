@@ -26,7 +26,6 @@ import {
 } from '@kadena/kode-ui';
 import { MarmaladeMarketplaceLogo } from '@/components/MarmaladeMarketplaceLogo';
 import * as styles from './style.css';
-// import { Link } from 'react-aria-components';
 
 export const MarketplaceHeader= () => {
   const [showNotification, setShowNotification] = useState(false);
@@ -63,6 +62,7 @@ export const MarketplaceHeader= () => {
     }>
       <NavHeaderLinkList>
         <Link 
+          className={styles.navHeaderLink}
           href="/marketplace"
           // onClick={() => {}}
         >
@@ -75,14 +75,14 @@ export const MarketplaceHeader= () => {
         >
           Create
         </Link>
-        <Link 
+        <Link className={styles.navHeaderLink} 
           href="/mint"
           // onClick={() => {}}
           endVisual={<Badge size='sm' style={'highContrast'}>beta</Badge>}
         >
           Mint
         </Link>
-        {account ? (<Link 
+        {account ? (<Link className={styles.navHeaderLink}
           href="/mytokens"
           // onClick={() => {}}
         >

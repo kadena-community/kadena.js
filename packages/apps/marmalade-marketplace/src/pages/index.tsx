@@ -40,6 +40,7 @@ export default function Home() {
 
       {error && <div>Error: <pre>{JSON.stringify(error, null, 2)}</pre></div>}
       {loading && <h2>Loading..</h2>}
+
       {!loading && !error && data.length === 0 && <Heading as="h2">No sales found</Heading>}
 
       <div>

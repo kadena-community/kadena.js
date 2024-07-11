@@ -269,6 +269,11 @@ Note that you can't use this command to fund an account on the Kadena main netwo
 
 If a faucet contract isn't available on the development network for the specified chain identifier, you can use the `--deploy-faucet` option to fund accounts on the development network.
 
+Although you can run this command multiple times, there's a limit to the number of coins you can request.
+You can request up to 20 coins per network. 
+If you select more than one chain in the request, the coins are distributed equally over the chain identifiers you specify. 
+For example, if you request 20 coins for the development network and chains 0-3, each chain receives five coins. 
+
 ```bash
 kadena account fund [arguments] [flags]
 ```

@@ -55,7 +55,7 @@ function MintTokenComponent() {
       setResult( checkPolicies(res.policies))
 
       const webauthnGuard = await getWebauthnGuard({
-        account: account.accountName,
+        account: account? account.accountName : "",
         host: env.URL,
         networkId: env.NETWORKID,
         chainId: config.chainId,
@@ -65,13 +65,14 @@ function MintTokenComponent() {
       }
   
       const webauthnAccount:string = await getWebauthnAccount({
-        account: account.accountName,
+        account: account? account.accountName : "",
         host: env.URL,
         networkId: env.NETWORKID,
         chainId: config.chainId,
       }) as string
   
       const amountFormatted = (amount === 1) ? {"decimal": "1.0"} : new PactNumber(amount).toPactDecimal();
+
       await mintToken({
         policyConfig: checkPolicies(res.policies),
         tokenId: tokenId,
@@ -110,6 +111,12 @@ function MintTokenComponent() {
     }
   }
 console.log("hi")
+  getWebauthnGuard({  account: walletAccount,
+    chainId: "8",
+    networkId: "testnet04",
+    host: env.CHAINWEB_API_HOST,}).then(console.log)
+
+
   getWebauthnGuard({  account: walletAccount,
     chainId: "8",
     networkId: "testnet04",

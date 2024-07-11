@@ -1,13 +1,15 @@
+
 import { style } from '@vanilla-extract/css';
 import { tokens } from '@kadena/kode-ui/styles';
 
-// export const logoDark = style({
-//   fill: 'white',
-// });
+export const navHeader = style({
+  backgroundColor: tokens.kda.foundation.color.background.layer.default,
+});
 
-// export const logoLight = style({
-//   fill: 'black',
-// });
+export const navHeaderLink = style({
+  fontSize: tokens.kda.foundation.typography.fontSize.base,
+});
+
 export const walletButton = style({
   height: '40px',
 });

@@ -182,9 +182,9 @@ function CreateTokenComponent() {
         const metadataUrl = await uploadMetadata({...metadata, image: imageUrl});
         if (!metadataUrl) throw new Error('Error creating metadata URL');
         updatedTokenInput = { ...updatedTokenInput, uri: metadataUrl };
-        setTokenInput(updatedTokenInput);
+        setTokenInput((prev) => ({ ...prev, uri: metadataUrl }));
       }
-
+      
       if (policyConfig.hasRoyalty && (!royaltyInput.royaltyFungible || !royaltyInput.royaltyCreator || !royaltyInput.royaltyGuard || !royaltyInput.royaltyRate)) {
         throw new Error('Please provide all Royalty inputs');
       }

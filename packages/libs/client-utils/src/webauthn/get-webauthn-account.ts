@@ -12,6 +12,9 @@ interface IGetWalletGuardInput {
   host?: IClientConfig['host'];
 }
 
+/**
+ * Creates the account name of the guard fetched from  `getWebauthnGuard` function.
+ */
 export const getWebauthnAccount = ({
   account,
   chainId,
@@ -19,11 +22,10 @@ export const getWebauthnAccount = ({
   host,
 }: IGetWalletGuardInput) =>
   pipe(
-    () => 
-    `(create-principal (at 'guard (at 0 (at 'devices (n_eef68e581f767dd66c4d4c39ed922be944ede505.webauthn-wallet.get-webauthn-guard "${account}")))))` ,
+    () =>
+      `(create-principal (at 'guard (at 0 (at 'devices (n_eef68e581f767dd66c4d4c39ed922be944ede505.webauthn-wallet.get-webauthn-guard "${account}")))))`,
     execution,
-    dirtyReadClient
-    ({
+    dirtyReadClient({
       host,
       defaults: {
         networkId,
