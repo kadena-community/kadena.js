@@ -1,8 +1,8 @@
 import type {
   IPactModules,
   IPartialPactCommand,
+  ISigner,
   PactReturnType,
-  ISigner
 } from '@kadena/client';
 import {
   addData,
@@ -39,10 +39,12 @@ interface IBuyTokenInput extends CommonProps {
   };
   buyer: {
     account: string;
-    keyset: {
-      keys: string[];
-      pred: 'keys-all' | 'keys-2' | 'keys-any';
-    } | string;
+    keyset:
+      | {
+          keys: string[];
+          pred: 'keys-all' | 'keys-2' | 'keys-any';
+        }
+      | string;
   };
   buyerFungibleAccount?: string;
 }

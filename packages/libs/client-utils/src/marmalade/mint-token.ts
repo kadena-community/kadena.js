@@ -24,7 +24,6 @@ interface IMintTokenInput extends CommonProps {
     nonFungible?: boolean;
   };
   tokenId: string;
-  signer: string;
   accountName: string;
   chainId: ChainId;
   guard: {
