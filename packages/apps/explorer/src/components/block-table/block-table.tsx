@@ -10,6 +10,7 @@ import { addBlockData } from '@/services/block';
 import { Stack } from '@kadena/kode-ui';
 import React, { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { useToast } from '../toasts/toast-context/toast-context';
 import BlockTableHeader from './block-header/block-header';
 import { blockHeaderFixedClass } from './block-header/block-header.css';
 import { useBlockInfo } from './block-info-context/block-info-context';
@@ -40,20 +41,30 @@ const getmaxBlockTxCount = (blockData: IChainBlock): number => {
 const blockHeightsLoading = [0, 1, 2, 3];
 
 const BlockTable: React.FC = () => {
-  const { data: newBlocksData, loading: newBlocksLoading } =
-    useNewBlocksSubscription();
-  const { data: lastBlockHeight, loading: lastBlockLoading } =
-    useLastBlockHeightQuery();
-  const { data: oldBlocksData, loading: oldBlocksLoading } =
-    useCompletedBlockHeightsQuery({
-      variables: {
-        // Change this if the table needs to show more than 80 blocks at once (on startup)
-        first: 80,
-        // We don't want only completed heights
-        completedHeights: false,
-        heightCount: 4,
-      },
-    });
+  const { addToast } = useToast();
+  const {
+    data: newBlocksData,
+    loading: newBlocksLoading,
+    error: newBlocksError,
+  } = useNewBlocksSubscription();
+  const {
+    data: lastBlockHeight,
+    loading: lastBlockLoading,
+    error: lastBlockError,
+  } = useLastBlockHeightQuery();
+  const {
+    data: oldBlocksData,
+    loading: oldBlocksLoading,
+    error: oldBlocksError,
+  } = useCompletedBlockHeightsQuery({
+    variables: {
+      // Change this if the table needs to show more than 80 blocks at once (on startup)
+      first: 80,
+      // We don't want only completed heights
+      completedHeights: false,
+      heightCount: 4,
+    },
+  });
 
   const { selectedHeight } = useBlockInfo();
   const [isLoading, setIsLoading] = useState(false);
@@ -89,6 +100,36 @@ const BlockTable: React.FC = () => {
     lastBlockLoading,
     oldBlocksLoading,
   ]);
+
+  useEffect(() => {
+    if (newBlocksError) {
+      addToast({
+        type: 'negative',
+        label: 'Something went wrong',
+        body: 'Loading of new blocks failed',
+      });
+    }
+  }, [newBlocksError]);
+
+  useEffect(() => {
+    if (lastBlockError) {
+      addToast({
+        type: 'negative',
+        label: 'Something went wrong',
+        body: 'Loading of completed blockheights failed',
+      });
+    }
+  }, [lastBlockError]);
+
+  useEffect(() => {
+    if (oldBlocksError) {
+      addToast({
+        type: 'negative',
+        label: 'Something went wrong',
+        body: 'Loading of old blocks failed',
+      });
+    }
+  }, [oldBlocksError]);
 
   useEffect(() => {
     if (lastBlockHeight?.lastBlockHeight) {

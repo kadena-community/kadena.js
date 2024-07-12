@@ -1,5 +1,7 @@
 import type { BlocksFromHeightQuery } from '@/__generated__/sdk';
 import { useBlocksFromHeightQuery } from '@/__generated__/sdk';
+import { useToast } from '@/components/toasts/toast-context/toast-context';
+import { useEffect } from 'react';
 import type { IHookReturnValue } from '..';
 import {
   SearchOptionEnum,
@@ -11,6 +13,7 @@ export const useBlockHeight = (
   searchQuery: string,
   searchOption: SearchOptionEnum | null,
 ): IHookReturnValue<BlocksFromHeightQuery> => {
+  const { addToast } = useToast();
   const { loading, data, error } = useBlocksFromHeightQuery({
     variables: {
       first: 200,
@@ -35,9 +38,18 @@ export const useBlockHeight = (
       !isSearchRequested(searchOption, SearchOptionEnum.BLOCKHEIGHT),
   });
 
+  useEffect(() => {
+    if (error) {
+      addToast({
+        type: 'negative',
+        label: 'Something went wrong',
+        body: 'Loading of blocks data from height failed',
+      });
+    }
+  }, [error]);
+
   return {
     loading,
     data,
-    error,
   };
 };

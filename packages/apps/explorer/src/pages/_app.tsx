@@ -1,6 +1,7 @@
 // load global styles from @kadena/kode-ui
 import { MediaContextProvider } from '@/components/layout/media';
 import { useRouter } from '@/components/routing/useRouter';
+import { ToastProvider } from '@/components/toasts/toast-context/toast-context';
 import { NetworkContextProvider } from '@/context/networks-context';
 import { QueryContextProvider } from '@/context/query-context';
 import '@components/globalstyles.css';
@@ -19,24 +20,26 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
   useTheme();
 
   return (
-    <NetworkContextProvider>
-      <RouterProvider navigate={router.push}>
-        <MediaContextProvider>
-          <QueryContextProvider>
-            <Head>
-              <title>K:Explorer</title>
-              <link
-                rel="icon"
-                href="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/icons/internal/default/icon%40128.png"
-              />
-            </Head>
+    <ToastProvider>
+      <NetworkContextProvider>
+        <RouterProvider navigate={router.push}>
+          <MediaContextProvider>
+            <QueryContextProvider>
+              <Head>
+                <title>K:Explorer</title>
+                <link
+                  rel="icon"
+                  href="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/icons/internal/default/icon%40128.png"
+                />
+              </Head>
 
-            <main>
-              <ReactComponent {...pageProps} />
-            </main>
-          </QueryContextProvider>
-        </MediaContextProvider>
-      </RouterProvider>
-    </NetworkContextProvider>
+              <main>
+                <ReactComponent {...pageProps} />
+              </main>
+            </QueryContextProvider>
+          </MediaContextProvider>
+        </RouterProvider>
+      </NetworkContextProvider>
+    </ToastProvider>
   );
 }

@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react';
 import CompactTable from '../compact-table/compact-table';
 import { FormatLink } from '../compact-table/utils/format-link';
 import { FormatStatus } from '../compact-table/utils/format-status';
+import { useToast } from '../toasts/toast-context/toast-context';
 import { loadingData } from './loading-data-blocktransactionsquery';
 import { noTransactionsTitleClass } from './styles.css';
 
@@ -25,7 +26,8 @@ const BlockTransactions: FC<IProps> = ({ hash }) => {
     id,
   });
 
-  const { loading, data } = useBlockTransactionsQuery({
+  const { addToast } = useToast();
+  const { loading, data, error } = useBlockTransactionsQuery({
     variables,
   });
 
@@ -35,6 +37,14 @@ const BlockTransactions: FC<IProps> = ({ hash }) => {
       return;
     }
 
+    if (error) {
+      addToast({
+        type: 'negative',
+        label: 'Something went wrong',
+        body: 'Loading of block transactions failed',
+      });
+    }
+
     if (data) {
       setTimeout(() => {
         setIsLoading(false);
@@ -42,7 +52,7 @@ const BlockTransactions: FC<IProps> = ({ hash }) => {
         setInnerData(data);
       }, 200);
     }
-  }, [loading, data]);
+  }, [loading, data, error]);
 
   if (innerData.node?.__typename !== 'Block') return null;
 

@@ -1,6 +1,7 @@
 import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
 import Layout from '@/components/layout/layout';
 import { useRouter } from '@/components/routing/useRouter';
+import { useToast } from '@/components/toasts/toast-context/toast-context';
 import { TransactionRequestComponent } from '@/components/transaction-components/transaction-request-component';
 import { TransactionResultComponent } from '@/components/transaction-components/transaction-result-component';
 import { useQueryContext } from '@/context/query-context';
@@ -18,6 +19,7 @@ const Transaction: React.FC = () => {
     requestKey: router.query.requestKey as string,
   };
 
+  const { addToast } = useToast();
   const { loading, data, error } = useTransactionRequestKeyQuery({
     variables: transactionRequestKeyQueryVariables,
     skip: !router.query.requestKey,
@@ -32,10 +34,18 @@ const Transaction: React.FC = () => {
     ]);
   }, []);
 
+  useEffect(() => {
+    if (error) {
+      addToast({
+        type: 'negative',
+        label: 'Something went wrong',
+        body: 'Loading of transaction requestkey data failed',
+      });
+    }
+  }, [error]);
+
   return (
     <Layout>
-      {loading && <p>Loading...</p>}
-      {error && <p>Error: {error.message}</p>}
       {!loading && (!data || !data.transaction) ? (
         <p>Transaction not found</p>
       ) : null}

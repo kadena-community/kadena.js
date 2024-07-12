@@ -6,6 +6,7 @@ import Layout from '@/components/layout/layout';
 import { loadingData } from '@/components/loading-skeleton/loading-data/loading-data-blockquery';
 import ValueLoader from '@/components/loading-skeleton/value-loader/value-loader';
 import { useRouter } from '@/components/routing/useRouter';
+import { useToast } from '@/components/toasts/toast-context/toast-context';
 import { useQueryContext } from '@/context/query-context';
 import { block } from '@/graphql/queries/block.graph';
 import { truncateValues } from '@/services/format';
@@ -49,6 +50,7 @@ const Block: React.FC = () => {
     setQueries([{ query: block, variables: blockQueryVariables }]);
   }, []);
 
+  const { addToast } = useToast();
   const { loading, data, error } = useBlockQuery({
     variables: blockQueryVariables,
 
@@ -61,18 +63,24 @@ const Block: React.FC = () => {
       return;
     }
 
+    if (error) {
+      addToast({
+        type: 'negative',
+        label: 'Something went wrong',
+        body: 'Loading of account transactions failed',
+      });
+    }
+
     if (data) {
       setTimeout(() => {
         setIsLoading(false);
         setInnerData(data);
       }, 200);
     }
-  }, [loading, data]);
+  }, [loading, data, error]);
 
   return (
     <Layout>
-      {error && <div>Error: {error.message}</div>}
-
       {innerData && innerData.block && (
         <>
           <Stack margin="md">
