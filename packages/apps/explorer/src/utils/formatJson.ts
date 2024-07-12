@@ -6,7 +6,6 @@ export const formatJson = (json: string) => {
   } catch (e) {
     console.warn('Failed to parse JSON. Returning original string.', json);
     return json;
-  } finally {
-    return json;
   }
+  return json;
 };

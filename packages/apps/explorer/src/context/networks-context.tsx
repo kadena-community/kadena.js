@@ -8,7 +8,6 @@ import {
   split,
 } from '@apollo/client';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
-// import { getMainDefinition } from '@apollo/client/utilities';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { createClient } from 'graphql-ws';
 import Cookies from 'js-cookie';
@@ -35,7 +34,6 @@ export type INetwork = Omit<
 const cache = new InMemoryCache({
   resultCaching: true,
 });
-console.log('creating cache');
 
 interface INetworkContext {
   networks: INetwork[];
@@ -169,7 +167,6 @@ const NetworkContextProvider = (props: {
       link: splitLink,
       cache,
     });
-    console.log('creating client');
 
     return client;
   }, [activeNetwork]);

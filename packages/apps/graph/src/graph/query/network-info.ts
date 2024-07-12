@@ -5,23 +5,8 @@ import {
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { networkData } from '@utils/network';
-import { builder } from '../builder';
 import { memoize } from '../../utils/memoize';
-
-builder.queryField('networkInfo', (t) =>
-  t.field({
-    description: 'Get information about the network.',
-    type: 'NetworkInfo',
-    nullable: true,
-    async resolve() {
-      try {
-        return await getNetworkInfo();
-      } catch (error) {
-        throw normalizeError(error);
-      }
-    },
-  }),
-);
+import { builder } from '../builder';
 
 const getNetworkInfo = memoize(
   async () => {
@@ -48,4 +33,17 @@ const getNetworkInfo = memoize(
   { maxAge: 1000 * 30 /* 30 sec */ },
 );
 
-
+builder.queryField('networkInfo', (t) =>
+  t.field({
+    description: 'Get information about the network.',
+    type: 'NetworkInfo',
+    nullable: true,
+    async resolve() {
+      try {
+        return await getNetworkInfo();
+      } catch (error) {
+        throw normalizeError(error);
+      }
+    },
+  }),
+);

@@ -126,9 +126,9 @@ export default builder.node(
                 await prismaClient.transfer.count({
                   where: {
                     senderAccount: parent.accountName,
-                    NOT: {
-                      receiverAccount: parent.accountName,
-                    },
+                    // NOT: {
+                    //   receiverAccount: parent.accountName,
+                    // },
                     moduleName: parent.fungibleName,
                     chainId: parseInt(parent.chainId),
                   },
@@ -136,9 +136,9 @@ export default builder.node(
                 await prismaClient.transfer.count({
                   where: {
                     receiverAccount: parent.accountName,
-                    NOT: {
-                      senderAccount: parent.accountName,
-                    },
+                    // NOT: {
+                    //   senderAccount: parent.accountName,
+                    // },
                     moduleName: parent.fungibleName,
                     chainId: parseInt(parent.chainId),
                   },

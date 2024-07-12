@@ -1,16 +1,20 @@
 import { useNetworkInfoQuery } from '@/__generated__/sdk';
 import { Media } from '@/components/layout/media';
 import { useToast } from '@/components/toasts/toast-context/toast-context';
+import { CONSTANTS } from '@/constants/constants';
 import { formatStatisticsData } from '@/services/format';
 import { Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useEffect } from 'react';
 import { boxClass, overFlowClass } from './statistics-stack.css';
-import { CONSTANTS } from '@/constants/constants';
 
 const StatisticsStack: FC = () => {
   const { addToast } = useToast();
-  const { data: statisticsData, error, stopPolling } = useNetworkInfoQuery({
+  const {
+    data: statisticsData,
+    error,
+    stopPolling,
+  } = useNetworkInfoQuery({
     pollInterval: CONSTANTS.NETWORK_POLLING_RATE,
   });
 

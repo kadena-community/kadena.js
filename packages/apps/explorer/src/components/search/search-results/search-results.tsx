@@ -1,6 +1,9 @@
 import CompactTable from '@/components/compact-table/compact-table';
 import { FormatAmount } from '@/components/compact-table/utils/format-amount';
-import { FormatJsonParse, FormatLink } from '@/components/compact-table/utils/format-link';
+import {
+  FormatJsonParse,
+  FormatLink,
+} from '@/components/compact-table/utils/format-link';
 import { FormatStatus } from '@/components/compact-table/utils/format-status';
 import { SearchOptionEnum } from '@/hooks/search/utils/utils';
 import type { ApolloError } from '@apollo/client';
@@ -142,7 +145,7 @@ const SearchResults: FC<ISearchResultsProps> = ({
                 key: 'cmd.payload.code',
                 variant: 'code',
                 width: '40%',
-                render: FormatJsonParse()
+                render: FormatJsonParse(),
               },
             ]}
             data={[searchData[SearchOptionEnum.REQUESTKEY].data?.transaction]}

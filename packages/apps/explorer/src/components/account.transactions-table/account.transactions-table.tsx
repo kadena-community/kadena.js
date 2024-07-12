@@ -8,7 +8,10 @@ import { graphqlIdFor } from '@/utils/graphqlIdFor';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import CompactTable from '../compact-table/compact-table';
-import { FormatJsonParse, FormatLink } from '../compact-table/utils/format-link';
+import {
+  FormatJsonParse,
+  FormatLink,
+} from '../compact-table/utils/format-link';
 import { FormatStatus } from '../compact-table/utils/format-status';
 import { useToast } from '../toasts/toast-context/toast-context';
 import { loadingData } from './loading-data-account-transactionsquery';

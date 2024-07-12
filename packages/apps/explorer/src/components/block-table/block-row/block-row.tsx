@@ -75,7 +75,9 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
           blockRowData[height] ? (
             <BlockCell
               isLoading={isLoading}
-              isSelected={isShowBlockDetails && height === selectedHeight?.height}
+              isSelected={
+                isShowBlockDetails && height === selectedHeight?.height
+              }
               key={`${height}${chainId}`}
               height={blockRowData[height]}
               chainId={chainId}

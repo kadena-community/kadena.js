@@ -14,7 +14,7 @@ export const loadingData: BlockTransactionsQuery = {
         startCursor: '',
       },
       totalCount: 0,
-      edges: Array(10).fill({
+      edges: Array(9).fill({
         cursor: '',
         node: {
           id: '',

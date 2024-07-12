@@ -6,7 +6,10 @@ import { Heading, Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import CompactTable from '../compact-table/compact-table';
-import { FormatJsonParse, FormatLink } from '../compact-table/utils/format-link';
+import {
+  FormatJsonParse,
+  FormatLink,
+} from '../compact-table/utils/format-link';
 import { FormatStatus } from '../compact-table/utils/format-status';
 import { useToast } from '../toasts/toast-context/toast-context';
 import { loadingData } from './loading-data-blocktransactionsquery';
@@ -107,7 +110,7 @@ const BlockTransactions: FC<IProps> = ({ hash }) => {
           key: 'cmd.payload.code',
           variant: 'code',
           width: '40%',
-          render: FormatJsonParse()
+          render: FormatJsonParse(),
         },
       ]}
       data={innerData.node.transactions.edges.map(
