@@ -34,7 +34,7 @@ const Toast: FC<IProps> = ({ toast, removeToast, idx }) => {
         [hideAnimationClass]: hide,
       })}
     >
-      <Notification role="status">
+      <Notification role="alert" intent={toast.type}>
         <NotificationHeading>{toast.label}</NotificationHeading>
         {toast.body}
       </Notification>

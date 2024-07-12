@@ -39,7 +39,7 @@ const AccountTransactionsTable: FC<{ accountName: string }> = ({
 
     if (error) {
       addToast({
-        type: 'error',
+        type: 'negative',
         label: 'Something went wrong',
         body: 'Loading of account transactions failed',
       });

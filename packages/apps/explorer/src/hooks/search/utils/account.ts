@@ -1,4 +1,5 @@
 import { useAccountQuery } from '@/__generated__/sdk';
+import { useToast } from '@/components/toasts/toast-context/toast-context';
 import { useEffect, useState } from 'react';
 import type { IHookReturnValue } from '..';
 import {
@@ -29,6 +30,7 @@ export const useAccount = (
     ),
   };
 
+  const { addToast } = useToast();
   const { loading, data, error } = useAccountQuery({
     variables: accountQueryVariables,
     skip:
@@ -67,9 +69,19 @@ export const useAccount = (
     setCleanedData(newData);
   }, [data]);
 
+  useEffect(() => {
+    if (error) {
+      addToast({
+        type: 'negative',
+        label: 'Something went wrong',
+        body: 'Loading of account data failed',
+      });
+    }
+  }, [error]);
+
   return {
     loading,
-    error,
+
     data: cleanedData,
   };
 };

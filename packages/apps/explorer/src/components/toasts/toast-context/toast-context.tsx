@@ -7,7 +7,7 @@ import Toast from '../toast/toast';
 
 export interface IToast {
   id: string;
-  type: 'success' | 'info' | 'error';
+  type: 'warning' | 'info' | 'positive' | 'negative';
   label: string;
   body: string;
 }

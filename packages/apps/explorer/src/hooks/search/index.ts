@@ -1,6 +1,7 @@
 import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
 import { useRouter } from '@/components/routing/useRouter';
 import type { ISearchItem } from '@/components/search/search-component/search-component';
+import { useToast } from '@/components/toasts/toast-context/toast-context';
 import type { ApolloError } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { useAccount } from './utils/account';
@@ -30,6 +31,7 @@ export const useSearch = () => {
     null,
   );
 
+  const { addToast } = useToast();
   const {
     loading: accountLoading,
     data: accountData,
@@ -139,6 +141,16 @@ export const useSearch = () => {
 
     setErrors(errors);
   }, [accountError, blockError, blockHeightError, eventError, requestKeyError]);
+
+  useEffect(() => {
+    if (errors) {
+      addToast({
+        type: 'negative',
+        label: 'Something went wrong',
+        body: 'Loading search data failed',
+      });
+    }
+  }, [errors]);
 
   const searchData: ISearchItem[] = [
     { title: 'Account', data: accountData },
