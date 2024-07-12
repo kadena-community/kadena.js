@@ -14,14 +14,21 @@ import {
 } from '@kadena/kode-ui';
 import type { FC, FormEventHandler } from 'react';
 import React, { useState } from 'react';
+import NetworkListItem from './network-listitem/network-listitem';
+import { networkListClass } from './style.css';
 import { getFormValues, validateNewNetwork } from './utils';
 
 interface IProps {
   handleOpen: React.Dispatch<React.SetStateAction<boolean>>;
   createNetwork: FormEventHandler<HTMLFormElement>;
+  selectNetwork: (network: any) => void;
 }
 
-const NewNetwork: FC<IProps> = ({ handleOpen, createNetwork }) => {
+const NewNetwork: FC<IProps> = ({
+  handleOpen,
+  createNetwork,
+  selectNetwork,
+}) => {
   const { networks, addNetwork } = useNetwork();
   const [formError, setFormError] = useState<(string | undefined)[]>();
   const [checkStatus, setCheckStatus] = useState<number>(0);
@@ -97,6 +104,20 @@ const NewNetwork: FC<IProps> = ({ handleOpen, createNetwork }) => {
     >
       {() => (
         <DialogContent>
+          <Heading as="h3">Available networks</Heading>
+          <Stack flexDirection="column" as="ul" className={networkListClass}>
+            {networks.map((network) => (
+              <>
+                <NetworkListItem
+                  selectNetwork={selectNetwork}
+                  key={network.label}
+                  network={network}
+                />
+                <Divider />
+              </>
+            ))}
+          </Stack>
+
           <Heading as="h3">Create a new network</Heading>
           <Divider />
           <Form onSubmit={handleCreateNetwork}>

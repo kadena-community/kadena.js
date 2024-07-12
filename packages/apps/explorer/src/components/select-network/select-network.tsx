@@ -1,8 +1,10 @@
-import { useNetwork } from '@/context/networks-context';
-import { Select, SelectItem } from '@kadena/kode-ui';
+import { INetwork, useNetwork } from '@/context/networks-context';
+import { Button, Select, SelectItem, Stack } from '@kadena/kode-ui';
 
+import { MonoSettings } from '@kadena/kode-icons/system';
 import type { FC, FormEventHandler } from 'react';
 import React, { useState } from 'react';
+import { Media } from '../layout/media';
 import NewNetwork from './new-network';
 
 const SelectNetwork: FC = () => {
@@ -11,12 +13,8 @@ const SelectNetwork: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSelectNetwork = (value: any): void => {
-    if (value === 'new') {
-      setIsOpen(true);
-      return;
-    }
-
     setActiveNetwork(value);
+    setIsOpen(false);
   };
 
   if (!networks) return null;
@@ -31,24 +29,33 @@ const SelectNetwork: FC = () => {
 
   return (
     <>
-      <Select
-        size="lg"
-        aria-label="Select network"
-        selectedKey={activeNetwork!.networkId}
-        fontType="code"
-        onSelectionChange={handleSelectNetwork}
-      >
-        {
-          networks.map((network) => (
-            <SelectItem key={network.networkId} textValue={network.label}>
-              {network.label}
-            </SelectItem>
-          )) as any
-        }
-        <SelectItem key="new">New Network...</SelectItem>
-      </Select>
+      <Stack alignItems="center" gap="xs">
+        <Media greaterThanOrEqual="md">
+          <Select
+            size="lg"
+            aria-label="Select network"
+            selectedKey={activeNetwork!.networkId}
+            fontType="code"
+            onSelectionChange={handleSelectNetwork}
+          >
+            {
+              networks.map((network) => (
+                <SelectItem key={network.networkId} textValue={network.label}>
+                  {network.label}
+                </SelectItem>
+              )) as any
+            }
+          </Select>
+        </Media>
+
+        <Button variant="transparent" onPress={() => setIsOpen(true)}>
+          <MonoSettings />
+        </Button>
+      </Stack>
+
       {isOpen && (
         <NewNetwork
+          selectNetwork={handleSelectNetwork}
           handleOpen={setIsOpen}
           createNetwork={handleCreateNetwork}
         />
