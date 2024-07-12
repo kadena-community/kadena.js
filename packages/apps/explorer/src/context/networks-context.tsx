@@ -1,4 +1,5 @@
 import { useRouter } from '@/components/routing/useRouter';
+import { useToast } from '@/components/toasts/toast-context/toast-context';
 import { networkConstants } from '@/constants/network';
 import type { NormalizedCacheObject } from '@apollo/client';
 import {
@@ -73,6 +74,7 @@ const NetworkContextProvider = (props: {
   networks?: INetwork[];
   children: React.ReactNode;
 }): JSX.Element => {
+  const { addToast } = useToast();
   const [networks, setNetworks] = useState<INetwork[]>(getDefaultNetworks());
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
@@ -129,7 +131,11 @@ const NetworkContextProvider = (props: {
         (n) => n?.label === network.label && n.networkId === network.networkId,
       )
     ) {
-      //TODO addtoast
+      addToast({
+        type: 'negative',
+        label: 'Something went wrong',
+        body: "You can't remove this default network",
+      });
       return;
     }
 
