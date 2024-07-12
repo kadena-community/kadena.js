@@ -108,7 +108,11 @@ const Block: React.FC = () => {
                 type="horizontal"
                 fields={[
                   {
-                    key: 'Block Height',
+                    key: 'Chain',
+                    value: innerData.block.chainId,
+                  },
+                  {
+                    key: 'Height',
                     value: innerData.block.height.toString(),
                   },
                   {
@@ -116,10 +120,6 @@ const Block: React.FC = () => {
                     value: new Date(
                       innerData.block.creationTime,
                     ).toLocaleString(),
-                  },
-                  {
-                    key: 'Chain',
-                    value: innerData.block.chainId,
                   },
                 ]}
               />

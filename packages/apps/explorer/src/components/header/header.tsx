@@ -14,7 +14,7 @@ import { fixedClass, fixedVisibleClass, headerClass } from './styles.css';
 const Header: FC = () => {
   const router = useRouter();
   const isSearchPage = router.asPath === '/';
-  const { ref, inView } = useInView({
+  const { ref: inViewRef, inView } = useInView({
     rootMargin: '20px',
     skip: !isSearchPage,
   });
@@ -40,7 +40,7 @@ const Header: FC = () => {
           </Stack>
         )}
         <Stack
-          ref={ref}
+          ref={inViewRef}
           className={classNames(headerClass, !isSearchPage && fixedClass)}
           alignItems={'center'}
           width="100%"

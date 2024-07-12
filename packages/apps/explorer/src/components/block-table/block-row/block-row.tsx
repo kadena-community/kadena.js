@@ -1,4 +1,4 @@
-import BlockActivityChart from '@/components/block-activity-graph/block-activity-graph';
+import ChainActivityChart from '@/components/block-activity-graph/block-activity-graph';
 import ValueLoader from '@/components/loading-skeleton/value-loader/value-loader';
 import type { IHeightBlock } from '@/services/block';
 import { formatNumberWithUnit } from '@/services/format';
@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import React from 'react';
 import BlockCell from '../block-cell/block-cell';
 import {
-  blockActivityColumnClass,
+  chainActivityColumnClass,
   columnTitleClass,
   headerColumnStyle,
 } from '../block-header/block-header.css';
@@ -43,12 +43,12 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
     blockRowData[heights[0]]?.difficulty ||
     'N/A';
 
-  const isShowHeightInfo = selectedChainId === chainId;
+  const isShowBlockDetails = selectedChainId === chainId;
 
   return (
     <Stack
       className={classNames(blockWrapperClass, {
-        [blockWrapperSelectedClass]: isShowHeightInfo,
+        [blockWrapperSelectedClass]: isShowBlockDetails,
       })}
       width="100%"
       flexDirection="column"
@@ -75,7 +75,7 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
           blockRowData[height] ? (
             <BlockCell
               isLoading={isLoading}
-              isSelected={isShowHeightInfo && height === selectedHeight?.height}
+              isSelected={isShowBlockDetails && height === selectedHeight?.height}
               key={`${height}${chainId}`}
               height={blockRowData[height]}
               chainId={chainId}
@@ -92,9 +92,9 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
         )}
 
         <Stack
-          className={classNames(headerColumnStyle, blockActivityColumnClass)}
+          className={classNames(headerColumnStyle, chainActivityColumnClass)}
         >
-          <BlockActivityChart
+          <ChainActivityChart
             maxBlockTxCount={maxBlockTxCount}
             data={heights.map((height) => ({
               height,
@@ -103,7 +103,7 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
           />
         </Stack>
       </Grid>
-      {isShowHeightInfo && <HeightInfo height={selectedHeight} />}
+      {isShowBlockDetails && <HeightInfo blockData={selectedHeight} />}
     </Stack>
   );
 };

@@ -26,7 +26,7 @@ export const TransactionRequestComponent: React.FC<{
             },
             {
               key: 'Env Data',
-              value: JSON.stringify(
+              value: transaction.cmd.payload.data.length > 0 ?? JSON.stringify(
                 JSON.parse(transaction.cmd.payload.data),
                 null,
                 2,
@@ -34,7 +34,7 @@ export const TransactionRequestComponent: React.FC<{
             },
             {
               key: 'Code',
-              value: JSON.parse(transaction.cmd.payload.code ?? ''),
+              value: JSON.parse(transaction.cmd.payload.code ?? '""'),
             },
           ]}
         />

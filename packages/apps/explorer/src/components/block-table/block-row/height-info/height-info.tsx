@@ -1,18 +1,23 @@
 import BlockTransactions from '@/components/block-transactions/block-transactions';
-import Link from '@/components/routing/link';
+import DataRenderComponent from '@/components/data-render-component/data-render-component';
+// import Link from '@/components/routing/link';
 import routes from '@/constants/routes';
 import type { IBlockData } from '@/services/block';
-import { Heading, Stack, TextLink } from '@kadena/kode-ui';
+import {
+  // Heading,
+  Stack,
+  // TextLink,
+} from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React from 'react';
 import { blockInfoClass } from './styles.css';
 
 interface IProps {
-  height?: IBlockData;
+  blockData?: IBlockData;
 }
 
-const HeightInfo: FC<IProps> = ({ height }) => {
-  if (!height) return null;
+const HeightInfo: FC<IProps> = ({ blockData }) => {
+  if (!blockData) return null;
 
   return (
     <Stack
@@ -22,19 +27,29 @@ const HeightInfo: FC<IProps> = ({ height }) => {
       flexDirection="column"
     >
       <Stack alignItems="center" paddingInlineEnd="md">
-        <Heading as="h6">Block {height.height}</Heading>
+        <DataRenderComponent
+          type="horizontal"
+          fields={[
+            {
+              key: 'Chain',
+              value: blockData.chainId.toString(10),
+            },
+            {
+              key: 'Height',
+              value: blockData.height.toString(),
+            },
+            {
+              key: 'Hash',
+              value: blockData.hash,
+              link: `${routes.BLOCK_DETAILS}/${blockData.hash}`,
+            },
+          ]}
+        />
 
         <Stack flex={1} />
-        <Link
-          href={`${routes.BLOCK_DETAILS}/${height.hash}`}
-          legacyBehavior
-          passHref
-        >
-          <TextLink>See all details</TextLink>
-        </Link>
       </Stack>
 
-      <BlockTransactions hash={height.hash} />
+      <BlockTransactions hash={blockData.hash} />
     </Stack>
   );
 };

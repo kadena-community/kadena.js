@@ -7,12 +7,12 @@ interface IData {
   data: number;
 }
 
-interface IBlockActivityChartProps {
+interface IChainActivityChartProps {
   data: IData[];
   maxBlockTxCount: number;
 }
 
-const BlockActivityChart: React.FC<IBlockActivityChartProps> = ({
+const ChainActivityChart: React.FC<IChainActivityChartProps> = ({
   data,
   maxBlockTxCount,
 }) => {
@@ -64,4 +64,4 @@ const BlockActivityChart: React.FC<IBlockActivityChartProps> = ({
   );
 };
 
-export default BlockActivityChart;
+export default ChainActivityChart;

@@ -26,6 +26,7 @@ const BlockCell: FC<IProps> = ({ height, chainId, isSelected, isLoading }) => {
   const { handleOpenHeightBlock } = useBlockInfo();
 
   const handleOpenHeight = useCallback(() => {
+    if(isLoading) return;
     if (handleOpenHeightBlock) {
       handleOpenHeightBlock(chainId, height);
     }

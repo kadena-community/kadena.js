@@ -11,6 +11,7 @@ export const blockTransactions: DocumentNode = gql`
   ) {
     node(id: $id) {
       ... on Block {
+        hash
         transactions(
           first: $first
           after: $after
@@ -27,6 +28,7 @@ export const blockTransactions: DocumentNode = gql`
           edges {
             cursor
             node {
+              id
               hash
               cmd {
                 meta {

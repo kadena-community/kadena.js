@@ -9,6 +9,7 @@ export const block: DocumentNode = gql`
 
   query block($hash: String!) {
     block(hash: $hash) {
+      hash
       ...AllBlockFields
       parent {
         hash
