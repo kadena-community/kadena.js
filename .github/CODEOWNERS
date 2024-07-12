@@ -5,7 +5,7 @@
 /common                                         @alber70g
 /pnpm-lock.yaml
 
-// Apps
+# Apps
 /packages/apps/dev-wallet                       @alber70g @javadkh2
 /packages/apps/dev-wallet-*                     @alber70g @javadkh2
 /packages/apps/docs                             @sstraatemans
@@ -16,7 +16,7 @@
 /packages/apps/proof-of-us                      @sstraatemans
 /packages/apps/tools
 
-// E2E test packages
+# e2e2e tests
 /packages/e2e
 /packages/e2e/e2e-base                          @sstraatemans
 /packages/e2e/e2e-docs                          @sstraatemans
@@ -24,7 +24,7 @@
 /packages/e2e/e2e-proof-of-us                   @sstraatemans
 /packages/e2e/e2e-tools                         
 
-// Libraries
+# Libraries
 /packages/libs/bootstrap-lib                    @alber70g
 /packages/libs/chainweb-node-client             @alber70g
 /packages/libs/chainweb-stream-client
@@ -44,7 +44,7 @@
 /packages/tools/pactjs-cli                      @alber70g @javadkh2
 /packages/tools/shared-config                   @alber70g
 
-// Tools
+# Tools
 /packages/tools                                 @alber70g
 /packages/tools/docs-tools                      @sstraatemans
 /packages/tools/kadena-cli                      @alber70g @nillo @barthuijgen
