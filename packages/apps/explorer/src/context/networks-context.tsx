@@ -5,10 +5,11 @@ import {
   ApolloClient,
   ApolloProvider,
   InMemoryCache,
-  // split,
+  split,
 } from '@apollo/client';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 // import { getMainDefinition } from '@apollo/client/utilities';
+import { getMainDefinition } from '@apollo/client/utilities';
 import { createClient } from 'graphql-ws';
 import Cookies from 'js-cookie';
 import React, {
@@ -18,11 +19,10 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-// import { createInMemoryCache } from './createInMemoryCache';
 
 // next/apollo-link bug: https://github.com/dotansimha/graphql-yoga/issues/2194
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-// const { YogaLink } = require('@graphql-yoga/apollo-link');
+const { YogaLink } = require('@graphql-yoga/apollo-link');
 
 export type INetwork = Omit<
   typeof networkConstants.mainnet01,
@@ -31,6 +31,11 @@ export type INetwork = Omit<
   chainwebUrl?: string;
   explorerUrl?: string;
 };
+
+const cache = new InMemoryCache({
+  resultCaching: true,
+});
+console.log('creating cache');
 
 interface INetworkContext {
   networks: INetwork[];
@@ -48,10 +53,6 @@ const NetworkContext = createContext<INetworkContext>({
 
 export const storageKey = 'networks';
 export const selectedNetworkKey = 'selectedNetwork';
-
-const cache = new InMemoryCache();
-
-// defaultDataIdFromObject
 
 const useNetwork = (): INetworkContext => {
   const context = useContext(NetworkContext);
@@ -142,10 +143,9 @@ const NetworkContextProvider = (props: {
   };
 
   const getApolloClient = useCallback(() => {
-    // const httpLink = new YogaLink({
-    //   endpoint: activeNetwork?.graphUrl,
-    //   cache: createInMemoryCache(),
-    // });
+    const httpLink = new YogaLink({
+      endpoint: activeNetwork?.graphUrl,
+    });
 
     const wsLink = new GraphQLWsLink(
       createClient({
@@ -153,32 +153,23 @@ const NetworkContextProvider = (props: {
       }),
     );
 
-    // const splitLink = split(
-    //   ({ query }) => {
-    //     const definition = getMainDefinition(query);
-    //     return (
-    //       definition.kind === 'OperationDefinition' &&
-    //       definition.operation === 'subscription'
-    //     );
-    //   },
-    //   wsLink, // Use WebSocket link for subscriptions
-    //   httpLink, // Use HTTP link for queries and mutations
-    // );
+    const splitLink = split(
+      ({ query }) => {
+        const definition = getMainDefinition(query);
+        return (
+          definition.kind === 'OperationDefinition' &&
+          definition.operation === 'subscription'
+        );
+      },
+      wsLink, // Use WebSocket link for subscriptions
+      httpLink, // Use HTTP link for queries and mutations
+    );
 
     const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
-      link: wsLink,
-      cache: new InMemoryCache({
-        resultCaching: true,
-        typePolicies: {
-          Block: {
-            keyFields: ['hash'],
-          },
-          Transaction: {
-            keyFields: ['hash'],
-          },
-        },
-      }),
+      link: splitLink,
+      cache,
     });
+    console.log('creating client');
 
     return client;
   }, [activeNetwork]);

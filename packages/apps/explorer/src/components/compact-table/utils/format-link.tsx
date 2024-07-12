@@ -38,7 +38,7 @@ export const FormatLink = ({ appendUrl }: IOptions): FC<IProps> => {
 export const FormatJsonParse = (): FC<IProps> => {
   const Component: FC<IProps> = ({ value }) => (
     <Text variant="code" className={dataFieldClass}>
-      {value.length > 0 ? JSON.parse(value) : value}
+      {!!value && value?.length > 0 ? JSON.parse(value) : value}
     </Text>
   );
   return Component;

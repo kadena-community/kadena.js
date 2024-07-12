@@ -1,5 +1,6 @@
 import type { TransactionRequestKeyQuery } from '@/__generated__/sdk';
 import DataRenderComponent from '@/components/data-render-component/data-render-component';
+import { formatJson } from '@/utils/formatJson';
 import { ifNill } from '@/utils/ifNill';
 import { Text } from '@kadena/kode-ui';
 import React from 'react';
@@ -26,11 +27,7 @@ export const TransactionRequestComponent: React.FC<{
             },
             {
               key: 'Env Data',
-              value: transaction.cmd.payload.data.length > 0 ?? JSON.stringify(
-                JSON.parse(transaction.cmd.payload.data),
-                null,
-                2,
-              ),
+              value: formatJson(transaction.cmd.payload.data),
             },
             {
               key: 'Code',
@@ -49,12 +46,7 @@ export const TransactionRequestComponent: React.FC<{
             },
             {
               key: 'Data',
-
-              value: JSON.stringify(
-                JSON.parse(transaction.cmd.payload.data),
-                null,
-                2,
-              ),
+              value: formatJson(transaction.cmd.payload.data),
             },
             {
               key: 'Pact ID',
