@@ -1,13 +1,8 @@
 import { Notification, NotificationHeading, Stack } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import type { FC } from 'react';
-import React, { useEffect, useRef, useState } from 'react';
-import {
-  hideAnimationClass,
-  lifeCycleVariants,
-  notificationClass,
-  showAnimationClass,
-} from '../style.css';
+import React, { useEffect, useState } from 'react';
+import { hideAnimationClass, notificationClass } from '../style.css';
 import type { IToast } from '../toast-context/toast-context';
 
 interface IProps {
@@ -22,7 +17,7 @@ const Toast: FC<IProps> = ({ toast, removeToast, idx }) => {
   useEffect(() => {
     setTimeout(() => {
       setHide(true);
-    }, 4000);
+    }, 10000);
   }, []);
 
   useEffect(() => {

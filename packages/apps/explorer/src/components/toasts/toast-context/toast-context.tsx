@@ -1,7 +1,8 @@
 import { Stack } from '@kadena/kode-ui';
+import classNames from 'classnames';
 import type { FC, PropsWithChildren } from 'react';
 import React, { createContext, useContext, useState } from 'react';
-import { toastWrapperClass } from '../style.css';
+import { isNewClass, toastWrapperClass } from '../style.css';
 import Toast from '../toast/toast';
 
 export interface IToast {
@@ -23,22 +24,32 @@ export const ToastContext = createContext<IToastContext>({
 
 export const ToastProvider: FC<PropsWithChildren> = ({ children }) => {
   const [toasts, setToasts] = useState<IToast[]>([]);
+  const [isNew, setIsNew] = useState(false);
   const addToast = (toast: Omit<IToast, 'id'>) => {
     const id = Math.random().toString(16).slice(2);
     console.log(id);
     setToasts((v) => [...v, { ...toast, id }]);
+    setIsNew(true);
+
+    setTimeout(() => {
+      setIsNew(false);
+    }, 1000);
   };
 
   const removeToast = (toast: IToast) => {
     setToasts((v) => v.filter((v) => v.id !== toast.id));
   };
 
-  console.log(toasts);
   return (
     <ToastContext.Provider value={{ toasts, addToast }}>
       {children}
       {toasts.length > 0 && (
-        <Stack flexDirection="column" className={toastWrapperClass} gap="md">
+        <Stack
+          flexDirection="column"
+          className={classNames(toastWrapperClass, { [isNewClass]: isNew })}
+          gap="md"
+        >
+          {isNew}
           {toasts.map((toast, idx) => (
             <Toast
               idx={toasts.length - idx}

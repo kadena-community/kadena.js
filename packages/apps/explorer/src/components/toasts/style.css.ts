@@ -16,6 +16,8 @@ export const toastWrapperClass = style([
     width: '100vw',
     zIndex: token('zIndex.dialog'),
     pointerEvents: 'none',
+    transition: 'transform 0.9s ease, opacity 0.9s ease',
+    transform: 'translateY(0px)',
   },
   responsiveStyle({
     md: {
@@ -27,8 +29,13 @@ export const toastWrapperClass = style([
   }),
 ]);
 
+export const isNewClass = style({
+  transition: 'transform 0s ease, opacity 0s ease',
+  transform: 'translateY(100px)',
+});
+
 export const notificationClass = style({
-  transition: 'all 0.9s ease',
+  transition: 'transform 0.9s ease, opacity 0.9s ease',
   position: 'relative',
   transform: 'translateY(0px)',
   opacity: 1,
@@ -36,7 +43,4 @@ export const notificationClass = style({
 export const hideAnimationClass = style({
   transform: 'translateY(-100px)',
   opacity: 0,
-});
-export const showAnimationClass = style({
-  transform: 'translateY(0px)',
 });
