@@ -117,9 +117,9 @@ As most apps require specific environment variables in order to work with the
 sandbox blockchain instance. As these apps are mostly NextJS applications, each
 of them have a `.env.test` file committed to the repository and these apps are
 built with `NODE_ENV` set to `test`. This instructs NextJS to use the test
-environment file. To prevent dependencis being built with the NODE_ENV set to
+environment file. To prevent dependencis being built with the NODE*ENV set to
 test as well, each app has a `build:e2e` script that builds dependencies without
-touching the NODE_ENV and builds _just the app_ using the NODE_env set to test.
+touching the NODE_ENV and builds \_just the app* using the NODE_env set to test.
 
 at the end of the test run, a report is generated and archived as part of the
 run results. This can be downloaded and the HTML report can be viewewd.
@@ -155,7 +155,6 @@ const localConfig = defineConfig({
 });
 
 export default mergeConfig(baseConfig, localConfig);
-
 ```
 
 ### Chromatic
