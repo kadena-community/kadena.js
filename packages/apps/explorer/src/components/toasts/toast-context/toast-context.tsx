@@ -27,7 +27,6 @@ export const ToastProvider: FC<PropsWithChildren> = ({ children }) => {
   const [isNew, setIsNew] = useState(false);
   const addToast = (toast: Omit<IToast, 'id'>) => {
     const id = Math.random().toString(16).slice(2);
-    console.log(id);
     setToasts((v) => [...v, { ...toast, id }]);
     setIsNew(true);
 
