@@ -22,9 +22,9 @@ export const startColumns = [
   { title: 'Chain', subtitle: 'Difficulty' },
 ];
 
-const endColumn = { title: 'Block', subtitle: 'Activity' };
+const endColumn = { title: 'Chain', subtitle: 'Activity' };
 
-const getmaxBlockTxCount = (blockData: IChainBlock): number => {
+const getMaxBlockTxCount = (blockData: IChainBlock): number => {
   const txCounts = Math.max(
     ...Object.entries(blockData)
       .map(([, chain]) => {
@@ -154,7 +154,7 @@ const BlockTable: React.FC = () => {
     if (newBlocksData) {
       const updatedBlockData = addBlockData(blockData, newBlocksData);
       setBlockData(updatedBlockData);
-      setmaxBlockTxCount(getmaxBlockTxCount(updatedBlockData));
+      setmaxBlockTxCount(getMaxBlockTxCount(updatedBlockData));
       if (!newBlocksData.newBlocks) return;
 
       const newMaxHeight = Math.max(

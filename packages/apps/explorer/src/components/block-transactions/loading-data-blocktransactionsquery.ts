@@ -3,6 +3,7 @@ import type { BlockTransactionsQuery } from '@/__generated__/sdk';
 export const loadingData: BlockTransactionsQuery = {
   __typename: 'Query',
   node: {
+    hash: '',
     __typename: 'Block',
     transactions: {
       __typename: 'BlockTransactionsConnection',
@@ -13,161 +14,24 @@ export const loadingData: BlockTransactionsQuery = {
         startCursor: '',
       },
       totalCount: 0,
-      edges: [
-        {
-          cursor: '',
-          node: {
-            hash: '',
-            result: {
-              goodResult: '',
+      edges: Array(10).fill({
+        cursor: '',
+        node: {
+          id: '',
+          hash: '',
+          result: {
+            goodResult: '',
+          },
+          cmd: {
+            meta: {
+              sender: '',
             },
-            cmd: {
-              meta: {
-                sender: '',
-              },
-              payload: {
-                code: '',
-              },
+            payload: {
+              code: '',
             },
           },
         },
-        {
-          cursor: '',
-          node: {
-            hash: '',
-            result: {
-              goodResult: '',
-            },
-            cmd: {
-              meta: {
-                sender: '',
-              },
-              payload: {
-                code: '',
-              },
-            },
-          },
-        },
-        {
-          cursor: '',
-          node: {
-            hash: '',
-            result: {
-              goodResult: '',
-            },
-            cmd: {
-              meta: {
-                sender: '',
-              },
-              payload: {
-                code: '',
-              },
-            },
-          },
-        },
-        {
-          cursor: '',
-          node: {
-            hash: '',
-            result: {
-              goodResult: '',
-            },
-            cmd: {
-              meta: {
-                sender: '',
-              },
-              payload: {
-                code: '',
-              },
-            },
-          },
-        },
-        {
-          cursor: '',
-          node: {
-            hash: '',
-            result: {
-              goodResult: '',
-            },
-            cmd: {
-              meta: {
-                sender: '',
-              },
-              payload: {
-                code: '',
-              },
-            },
-          },
-        },
-        {
-          cursor: '',
-          node: {
-            hash: '',
-            result: {
-              goodResult: '',
-            },
-            cmd: {
-              meta: {
-                sender: '',
-              },
-              payload: {
-                code: '',
-              },
-            },
-          },
-        },
-        {
-          cursor: '',
-          node: {
-            hash: '',
-            result: {
-              goodResult: '',
-            },
-            cmd: {
-              meta: {
-                sender: '',
-              },
-              payload: {
-                code: '',
-              },
-            },
-          },
-        },
-        {
-          cursor: '',
-          node: {
-            hash: '',
-            result: {
-              goodResult: '',
-            },
-            cmd: {
-              meta: {
-                sender: '',
-              },
-              payload: {
-                code: '',
-              },
-            },
-          },
-        },
-        {
-          cursor: '',
-          node: {
-            hash: '',
-            result: {
-              goodResult: '',
-            },
-            cmd: {
-              meta: {
-                sender: '',
-              },
-              payload: {
-                code: '',
-              },
-            },
-          },
-        },
-      ],
+      }),
     },
   },
 };

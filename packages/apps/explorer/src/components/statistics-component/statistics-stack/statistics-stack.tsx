@@ -6,11 +6,12 @@ import { Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useEffect } from 'react';
 import { boxClass, overFlowClass } from './statistics-stack.css';
+import { CONSTANTS } from '@/constants/constants';
 
 const StatisticsStack: FC = () => {
   const { addToast } = useToast();
-  const { data: statisticsData, error } = useNetworkInfoQuery({
-    pollInterval: 5000,
+  const { data: statisticsData, error, stopPolling } = useNetworkInfoQuery({
+    pollInterval: CONSTANTS.NETWORK_POLLING_RATE,
   });
 
   useEffect(() => {
@@ -20,6 +21,7 @@ const StatisticsStack: FC = () => {
         label: 'Something went wrong',
         body: 'Loading of network info data failed',
       });
+      stopPolling();
     }
   }, [error]);
 
