@@ -16,7 +16,7 @@ import {
 export type SearchItemTitle =
   | 'Account'
   | 'Request Key'
-  | 'Block Height'
+  | 'Height'
   | 'Block Hash'
   | 'Events';
 
@@ -57,7 +57,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
       setSearchOption(SearchOptionEnum.REQUESTKEY);
     }
 
-    if (inferedOption === 'Block Height') {
+    if (inferedOption === 'Height') {
       setSearchOption(SearchOptionEnum.BLOCKHEIGHT);
     }
 
@@ -77,7 +77,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
     } else if (value.length === 43) {
       return 'Request Key';
     } else if (/^\d+$/.test(value)) {
-      return 'Block Height';
+      return 'Height';
     }
 
     return undefined;

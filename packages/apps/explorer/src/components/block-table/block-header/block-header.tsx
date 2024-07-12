@@ -13,8 +13,8 @@ interface IBlockTableHeaderProps {
   isLoading: boolean;
 }
 
-const blockHeightColumnDescription = 'Block Height';
-const blockHeightColumnSmallDescription = 'B. Height';
+const blockHeightColumnDescription = 'Height';
+const blockHeightColumnSmallDescription = 'Height';
 
 const BlockTableHeader: React.FC<IBlockTableHeaderProps> = ({
   startColumns,

@@ -1,6 +1,9 @@
 import CompactTable from '@/components/compact-table/compact-table';
 import { FormatAmount } from '@/components/compact-table/utils/format-amount';
-import { FormatLink } from '@/components/compact-table/utils/format-link';
+import {
+  FormatJsonParse,
+  FormatLink,
+} from '@/components/compact-table/utils/format-link';
 import { FormatStatus } from '@/components/compact-table/utils/format-status';
 import { SearchOptionEnum } from '@/hooks/search/utils/utils';
 import type { ApolloError } from '@apollo/client';
@@ -72,7 +75,7 @@ const SearchResults: FC<ISearchResultsProps> = ({
                 width: '20%',
               },
               {
-                label: 'Block Height',
+                label: 'Height',
                 key: 'node.height',
                 width: '20%',
               },
@@ -98,7 +101,7 @@ const SearchResults: FC<ISearchResultsProps> = ({
                 width: '20%',
               },
               {
-                label: 'Block Height',
+                label: 'Height',
                 key: 'height',
                 width: '20%',
               },
@@ -142,6 +145,7 @@ const SearchResults: FC<ISearchResultsProps> = ({
                 key: 'cmd.payload.code',
                 variant: 'code',
                 width: '40%',
+                render: FormatJsonParse(),
               },
             ]}
             data={[searchData[SearchOptionEnum.REQUESTKEY].data?.transaction]}
@@ -157,7 +161,7 @@ const SearchResults: FC<ISearchResultsProps> = ({
                 width: '20%',
               },
               {
-                label: 'Block Height',
+                label: 'Height',
                 key: 'node.block.height',
                 width: '20%',
               },

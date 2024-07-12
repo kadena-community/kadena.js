@@ -156,7 +156,7 @@ export const useSearch = () => {
     { title: 'Account', data: accountData },
     { title: 'Request Key', data: requestKeyData },
     { title: 'Block Hash', data: blockData },
-    { title: 'Block Height', data: blockHeightData },
+    { title: 'Height', data: blockHeightData },
     { title: 'Events', data: eventData },
   ];
   return {

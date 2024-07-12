@@ -31,6 +31,10 @@ export type INetwork = Omit<
   explorerUrl?: string;
 };
 
+const cache = new InMemoryCache({
+  resultCaching: true,
+});
+
 interface INetworkContext {
   networks: INetwork[];
   activeNetwork: INetwork;
@@ -47,10 +51,6 @@ const NetworkContext = createContext<INetworkContext>({
 
 export const storageKey = 'networks';
 export const selectedNetworkKey = 'selectedNetwork';
-
-const cache = new InMemoryCache();
-
-// defaultDataIdFromObject
 
 const useNetwork = (): INetworkContext => {
   const context = useContext(NetworkContext);
@@ -142,7 +142,6 @@ const NetworkContextProvider = (props: {
 
   const getApolloClient = useCallback(() => {
     const httpLink = new YogaLink({
-      cache,
       endpoint: activeNetwork?.graphUrl,
     });
 
@@ -166,7 +165,7 @@ const NetworkContextProvider = (props: {
 
     const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
       link: splitLink,
-      cache: new InMemoryCache(),
+      cache,
     });
 
     return client;

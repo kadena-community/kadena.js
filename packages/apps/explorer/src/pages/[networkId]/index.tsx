@@ -10,6 +10,7 @@ import { useSearch } from '@/hooks/search';
 import { Stack } from '@kadena/kode-ui';
 import Link from 'next/dist/client/link';
 import React from 'react';
+import { useInView } from 'react-intersection-observer';
 
 const Home: React.FC = () => {
   const {
@@ -21,6 +22,7 @@ const Home: React.FC = () => {
     loading,
     errors,
   } = useSearch();
+  const { inView, ref: inViewRef } = useInView();
 
   return (
     <Layout>
@@ -38,7 +40,9 @@ const Home: React.FC = () => {
         </Media>
 
         <Media lessThan="sm">
-          <StatisticsGrid />
+          <Stack ref={inViewRef}>
+            <StatisticsGrid inView={inView} />
+          </Stack>
           <Stack
             flexDirection="column"
             alignItems={'center'}
