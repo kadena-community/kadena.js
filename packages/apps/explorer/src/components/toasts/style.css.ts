@@ -39,6 +39,7 @@ export const notificationClass = style({
   position: 'relative',
   transform: 'translateY(0px)',
   opacity: 1,
+  pointerEvents: 'all',
 });
 export const hideAnimationClass = style({
   transform: 'translateY(-100px)',
