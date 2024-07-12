@@ -6,3 +6,9 @@ export const networkListClass = style([
     padding: 'no',
   }),
 ]);
+
+export const selectedNetworkClass = style([
+  atoms({
+    backgroundColor: 'base.@active',
+  }),
+]);

@@ -1,4 +1,5 @@
-import { INetwork, useNetwork } from '@/context/networks-context';
+import type { INetwork } from '@/context/networks-context';
+import { useNetwork } from '@/context/networks-context';
 import { Button, Select, SelectItem, Stack } from '@kadena/kode-ui';
 
 import { MonoSettings } from '@kadena/kode-icons/system';
@@ -8,10 +9,15 @@ import { Media } from '../layout/media';
 import NewNetwork from './new-network';
 
 const SelectNetwork: FC = () => {
-  const { networks, activeNetwork, setActiveNetwork } = useNetwork();
+  const { networks, activeNetwork, setActiveNetwork, removeNetwork } =
+    useNetwork();
 
   const [isOpen, setIsOpen] = useState(false);
 
+  const handleRemoveNetwork = (network: INetwork): void => {
+    removeNetwork(network);
+    setIsOpen(false);
+  };
   const handleSelectNetwork = (value: any): void => {
     setActiveNetwork(value);
     setIsOpen(false);
@@ -55,6 +61,7 @@ const SelectNetwork: FC = () => {
 
       {isOpen && (
         <NewNetwork
+          removeNetwork={handleRemoveNetwork}
           selectNetwork={handleSelectNetwork}
           handleOpen={setIsOpen}
           createNetwork={handleCreateNetwork}

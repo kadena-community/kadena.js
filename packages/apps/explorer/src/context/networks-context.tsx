@@ -36,6 +36,7 @@ interface INetworkContext {
   activeNetwork: INetwork;
   setActiveNetwork: (activeNetwork: INetwork['networkId']) => void;
   addNetwork: (newNetwork: INetwork) => void;
+  removeNetwork: (newNetwork: INetwork) => void;
 }
 
 const NetworkContext = createContext<INetworkContext>({
@@ -43,6 +44,7 @@ const NetworkContext = createContext<INetworkContext>({
   activeNetwork: {} as INetwork,
   setActiveNetwork: () => {},
   addNetwork: () => {},
+  removeNetwork: () => {},
 });
 
 export const storageKey = 'networks';
@@ -119,6 +121,39 @@ const NetworkContextProvider = (props: {
     router.push(`/${networkId}`);
   };
 
+  const removeNetwork = (network: INetwork): void => {
+    //check that network is not a default network
+    const defaultNetworks = getDefaultNetworks();
+    if (
+      defaultNetworks.find(
+        (n) => n?.label === network.label && n.networkId === network.networkId,
+      )
+    ) {
+      //TODO addtoast
+      return;
+    }
+
+    setNetworks((v) =>
+      v.filter(
+        (n) => n?.label === network.label && n.networkId === network.networkId,
+      ),
+    );
+
+    return;
+
+    //check that its not an activenetwork
+    if (
+      activeNetwork?.label === network.label &&
+      activeNetwork.networkId === network.networkId
+    ) {
+      //if the same as activenetwork
+      Cookies.remove(selectedNetworkKey);
+      setActiveNetwork(undefined);
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      router.push(`/`);
+    }
+  };
+
   const addNetwork = (newNetwork: INetwork): void => {
     const storage: INetwork[] = JSON.parse(
       localStorage.getItem(storageKey) ?? '[]',
@@ -185,6 +220,7 @@ const NetworkContextProvider = (props: {
       value={{
         networks,
         activeNetwork,
+        removeNetwork,
         setActiveNetwork: setActiveNetworkByKey,
         addNetwork,
       }}

@@ -21,15 +21,17 @@ import { getFormValues, validateNewNetwork } from './utils';
 interface IProps {
   handleOpen: React.Dispatch<React.SetStateAction<boolean>>;
   createNetwork: FormEventHandler<HTMLFormElement>;
-  selectNetwork: (network: any) => void;
+  selectNetwork: (value: any) => void;
+  removeNetwork: (network: INetwork) => void;
 }
 
 const NewNetwork: FC<IProps> = ({
   handleOpen,
   createNetwork,
   selectNetwork,
+  removeNetwork,
 }) => {
-  const { networks, addNetwork } = useNetwork();
+  const { networks, addNetwork, activeNetwork } = useNetwork();
   const [formError, setFormError] = useState<(string | undefined)[]>();
   const [checkStatus, setCheckStatus] = useState<number>(0);
 
@@ -109,7 +111,12 @@ const NewNetwork: FC<IProps> = ({
             {networks.map((network) => (
               <>
                 <NetworkListItem
+                  isActive={
+                    activeNetwork.networkId === network.networkId &&
+                    activeNetwork.label === network.label
+                  }
                   selectNetwork={selectNetwork}
+                  removeNetwork={removeNetwork}
                   key={network.label}
                   network={network}
                 />
