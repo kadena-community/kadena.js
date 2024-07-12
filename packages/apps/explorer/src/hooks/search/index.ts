@@ -143,7 +143,7 @@ export const useSearch = () => {
   }, [accountError, blockError, blockHeightError, eventError, requestKeyError]);
 
   useEffect(() => {
-    if (errors) {
+    if (errors.length) {
       addToast({
         type: 'negative',
         label: 'Something went wrong',

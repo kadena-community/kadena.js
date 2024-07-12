@@ -37,7 +37,7 @@ const AccountTransfersTable: FC<{ accountName: string }> = ({
       addToast({
         type: 'negative',
         label: 'Something went wrong',
-        body: 'Loading of account transactions failed',
+        body: 'Loading of account transfers failed',
       });
     }
 
