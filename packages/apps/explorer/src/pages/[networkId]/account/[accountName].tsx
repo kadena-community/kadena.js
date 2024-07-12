@@ -6,6 +6,7 @@ import Layout from '@/components/layout/layout';
 import { loadingData } from '@/components/loading-skeleton/loading-data/loading-data-accountquery';
 import ValueLoader from '@/components/loading-skeleton/value-loader/value-loader';
 import { useRouter } from '@/components/routing/useRouter';
+import { useToast } from '@/components/toasts/toast-context/toast-context';
 import { useQueryContext } from '@/context/query-context';
 import { account } from '@/graphql/queries/account.graph';
 import { accountNameTextClass } from '@/styles/account.css';
@@ -31,6 +32,7 @@ const Account: FC = () => {
     accountName,
   };
 
+  const { addToast } = useToast();
   const { loading, data, error } = useAccountQuery({
     variables: accountQueryVariables,
     skip: !router.query.accountName,
@@ -42,13 +44,21 @@ const Account: FC = () => {
       return;
     }
 
+    if (error) {
+      addToast({
+        type: 'negative',
+        label: 'Something went wrong',
+        body: 'Loading of account failed',
+      });
+    }
+
     if (data) {
       setTimeout(() => {
         setIsLoading(false);
         setInnerData(data);
       }, 200);
     }
-  }, [loading, data]);
+  }, [loading, data, error]);
 
   useEffect(() => {
     if (accountName) {
@@ -102,9 +112,7 @@ const Account: FC = () => {
 
   return (
     <Layout>
-      {error && <div>Error: {error.message}</div>}
-
-      <Stack margin="md" width="100%" flexDirection="column">
+      <Stack padding="md" width="100%" flexDirection="column">
         <ValueLoader isLoading={isLoading}>
           <Heading as="h5">
             {parseFloat(fungibleAccount?.totalBalance).toFixed(2)} KDA spread

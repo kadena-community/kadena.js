@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import CompactTable from '../compact-table/compact-table';
 import { FormatAmount } from '../compact-table/utils/format-amount';
 import { FormatLink } from '../compact-table/utils/format-link';
+import { useToast } from '../toasts/toast-context/toast-context';
 import { loadingData } from './loading-data-account-transfersquery';
 
 const AccountTransfersTable: FC<{ accountName: string }> = ({
@@ -20,8 +21,8 @@ const AccountTransfersTable: FC<{ accountName: string }> = ({
   const { variables, handlePageChange, pageSize } = usePagination({
     id,
   });
-
-  const { data, loading } = useAccountTransfersQuery({
+  const { addToast } = useToast();
+  const { data, loading, error } = useAccountTransfersQuery({
     variables,
     skip: !id,
   });
@@ -30,6 +31,14 @@ const AccountTransfersTable: FC<{ accountName: string }> = ({
     if (loading) {
       setIsLoading(true);
       return;
+    }
+
+    if (error) {
+      addToast({
+        type: 'negative',
+        label: 'Something went wrong',
+        body: 'Loading of account transfers failed',
+      });
     }
 
     if (data) {
@@ -85,6 +94,7 @@ const AccountTransfersTable: FC<{ accountName: string }> = ({
           label: 'RequestKey',
           key: 'requestKey',
           width: '20%',
+          render: FormatLink({ appendUrl: '/transaction' }),
         },
       ]}
       data={innerData.node?.transfers.edges.map(
