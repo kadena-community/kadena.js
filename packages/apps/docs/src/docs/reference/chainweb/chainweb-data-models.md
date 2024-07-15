@@ -1,0 +1,255 @@
+---
+title: Data models
+description:
+  Summarizes the data models used for different elements and attributes in Chainweb nodes.
+menu: Chainweb API
+label: Data models
+order: 2
+layout: full
+tags: ['chainweb', 'node api', 'chainweb api', 'api reference']
+---
+
+# Data models
+
+Data models summarize the parameters that define important Chainweb node elements.
+The information in the data models is the same as the information covered in the endpoint documentation.
+It's duplicated here as a quick reference.
+
+## Cut model
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| origin | object | Defines a peer information object that consists of an `id` string and an `address` object. The `origin` parameter is required to use the `PUT /cut` endpoint. For more information, see the [Peer information](#peer-information) data model.
+| height (required) | integer&nbsp;>=&nbsp;0 | Defines the cut height. The cut height is the sum of the height of all blocks of the cut. You should avoid using this value because its semantics may change in the future.
+| weight (required) | string | Defines the cut weight. The cut weight is the sum of the weights from all of the blocks included in the cut. The weight string consists of 43 characters from the [a-zA-Z0-9_-] character set.
+| hashes (required) | object | Defines an object that maps chain identifiers to their respective block hash and block height. The block `hash` property is a required
+string value [a-zA-Z0-9_-]{43}. The block `height` property is a required integer value >= 0. The `hashes` object includes the `height` and `hash` properties for each chain, as illustrated for chains 0 and 1 in the truncated JSON example.
+| instance | string | Defines the network identifier for the cut.
+| id | string | Defines a cut identifier.
+
+```json
+{
+  "value": {
+    "origin": null,
+    "height": 30798466,
+    "weight": "b0wYplmNiTBXCwAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "hashes": {
+      "0": {
+        "height": 1539923,
+        "hash": "qEaSmWt_tDcJC9AGbgWY9x12LW5VED7hGgfyz9x_S3w"
+      },
+      "1": {
+        "height": 1539923,
+        "hash": "TJuC6nfhamfD517gspAZmqD9umR71nAgttDOi1JbBHw"
+      },
+    },
+    "id": "BBz7KeurYTeQ0hMGbwUbQC84cRbVcacoDQTye-3qkXI",
+    "instance": "mainnet01"
+  }
+}
+```
+
+## Block header model
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| creationTime (required) | integer&nbsp;>=&nbsp;0 | Timestamp in microseconds since the start of the UNIX epoch.
+| parent (required) | string | Parent block hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
+| height (required) | integer >= 0 | Block height. The height of a block is the number of its predecessors in the block chain.
+| hash (required) | string | Block hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
+| chainId (required) | integer >= 0 | A Chainweb chain ID. In Kadena Chainweb chains are named by numbers starting form 0. Valid values depend on the current graph at the respective block height of the chainweb version.
+| weight (required) | string | Block weight is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set. The weight of a block is the sum of the difficulties of the block and of all of its ancestors. The difficulty of a block is the maximum difficulty divided by the target. The string is a 256-bit little endian encoding of the numerical value.
+| featureFlags (required) | integer | A reserved value that must be 0.
+| epochStart (required) | integer >= 0 | Timestamp in microseconds since the start of the UNIX epoch.
+| adjacents (required) | object | The block hashes of the adjacent parents of the block. This is represented as an associative array that maps the adjacent chain ids to the respective block hash. Each block hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
+| payloadHash (required) | string | Block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
+| chainwebVersion (required) | enum | The Chainweb version identifier for the Kadena network. The valid values are "test-singleton", "development", "mainnet01", and "testnet04".
+| target (required) | string | The Proof-of-Work target for a block is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set. The string is a 256-bit little endian encoding of the numerical value.
+| nonce (required) | string non-empty [0-9]+ | The Proof-of-Work nonce for the block. This is computed by the miner such that the block hash is smaller than the target.
+
+```json
+{
+  "value": {
+    "$ref": "#/components/examples/blockHeaderPage/value/items/0"
+  }
+}
+```
+
+## Payload model
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| transactions (required) | Array of strings | Array of Base64Url encoded strings without padding that represent signed Pact transactions in JSON format.
+| minerData (required) | string [a-zA-Z0-9_-]+ | Miner information is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.This information is included as part of the payload JSON object.
+| transactionsHash (required) | string | The transaction hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
+| outputsHash (required) | string | The output hash is SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
+| payloadHash (required) | string | The block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
+
+```json
+{
+  "value": {
+    "$ref": "#/components/examples/payloads/value/1"
+  }
+}
+```
+
+## Payload with outputs model
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| transactions (required) | Array of strings | Array with pairs of strings that represent transactions and their outputs. Signed Pact transactions and their outputs are both Base64Url encoded strings—without padding—that represent signed Pact transactions in JSON format.
+| minerData (required) | string | Miner information is a Base64Url-encoded string—without padding—that consists of characters from the [a-zA-Z0-9_-] character set.This information is included as part of the payload JSON object.
+| transactionsHash (required) | string | The transaction hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
+| outputsHash (required) | string | The output hash is SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
+| payloadHash (required) | string | The block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
+| coinbase (required) | string | Coinbase output is a Base64Url-encoded string—without padding—that consists of characters from the [a-zA-Z0-9_-] character set. This information is included as part of the payload output JSON object.
+
+
+```json
+{
+  "value": {
+    "transactions": [],
+    "minerData": "eyJhY2NvdW50IjoiYTFiMzE0MGNiN2NjODk1YzBlMDkxNzAyZWQwNTU3OWZiZTA1YzZlNjc0NWY4MmNlNjAzNzQ2YjQwMGM4MTU0OCIsInByZWRpY2F0ZSI6ImtleXMtYWxsIiwicHVibGljLWtleXMiOlsiYTFiMzE0MGNiN2NjODk1YzBlMDkxNzAyZWQwNTU3OWZiZTA1YzZlNjc0NWY4MmNlNjAzNzQ2YjQwMGM4MTU0OCJdfQ",
+    "transactionsHash": "nT0j4xw2woMkdXXaopdurXIn24OG-jNMqQzUGfxV_MA",
+    "outputsHash": "4pXRrZ2K0_V0iGAxQCKrKdLjQTBZHBOQS7P-47kdnhY",
+    "payloadHash": "GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA",
+    "coinbase": "eyJnYXMiOjAsInJlc3VsdCI6eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6IldyaXRlIHN1Y2NlZWRlZCJ9LCJyZXFLZXkiOiJJa2hoV0VGQ2NURlFTMU5MYkdodVkwcHJNRjlOZERjMVgyeE1OMDVUTTNkSk5qSTNVV1pZV2w4NE5Xc2kiLCJsb2dzIjoiZ3Noak1kWFJrVGxKYmIxalZkQWJ6SVVDcGpQb1JBQ2pEbExzRzBXNkJEMCIsIm1ldGFEYXRhIjpudWxsLCJjb250aW51YXRpb24iOm51bGwsInR4SWQiOjEyNzIzNTB9"
+  }
+}
+```
+
+## Peer info model
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| id (required) | string or null | The `id` is a Base64Url-encoded string—without padding—that consists of characters from the [a-zA-Z0-9_-] character set. This string represents the SHA256 fingerprint of the SSL certificate of the node. The field can be null only if the node uses an official CA-signed certificate.
+| address (required) | object | The `address` contains a `hostname` and `port` number. The `hostname` is a required string value in the form of a domain, IPv4 IP address, or IPv6 address. The hostname must be a domain name only if the respective node is using a valid CA-signed SSL certificate. The `port` is a required integer value [1 .. 65535] that hosts the peer node.
+
+```json
+{
+  "address": {
+    "hostname": "85.238.99.91",
+    "port": 30004
+  },
+  "id": "PRLmVUcc9AH3fyfMYiWeC4nV2i1iHwc0-aM7iAO8h18"
+}
+```
+
+Note that it is generally easier to query the peer information for a node using a GET query for the peer database. 
+To get the Base64Url-encoded SHA256 fingerprint peer `id` for peers with self-signed certificates, run a command like this for the specified chainweb-node NODE:
+
+```bash
+echo |
+openssl s_client -showcerts -servername ${NODE} -connect ${NODE}:443 2>/dev/null |
+openssl x509 -fingerprint -noout -sha256 |
+sed 's/://g' |
+tail -c 65 |
+xxd -r -p |
+base64 |
+tr -d '=' |
+tr '/+' '_-'
+```
+
+For example, to get the peer id for a testnet bootstrap server:
+
+```bash
+echo |
+openssl s_client -showcerts -servername us-e1.chainweb.com  -connect us-e1.chainweb.com:443 2>/dev/null |
+openssl x509 -fingerprint -noout -sha256 |
+sed 's/://g' |
+tail -c 65 |
+xxd -r -p |
+base64 |
+tr -d '=' |
+tr '/+' '_-'
+vPELrRZEn3km96owfL0ANJbOBeeUGnEBOx0AGCTZsdA
+```
+
+## Chainweb node info model
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| nodeNumberOfChains (required) | integer >= 10 | Number of chains in the network the node is part of.
+| nodeApiVersion (required) | string | Version information for the node.
+| nodeChains (required) | Array of strings >= 0 items | Chain identifiers for the chains in network the node is part of.
+| nodeVersion (required) | string | Network identifier for the network the node is part of. The valid values are  "test-singleton", "development", "mainnet01", and "testnet04".
+| nodeGraphHistory (required) | Array of integers | Array of all chain graphs indexed by the height of the first block with the respective graph. Graphs are encoded as adjacency lists.
+
+```json
+{
+  "value": {
+    "nodeNumberOfChains": 20,
+    "nodeApiVersion": "0.0",
+    "nodeChains": [ "12", "13", "..."],
+    "nodeVersion": "mainnet01",
+    "nodeGraphHistory": [
+      [ 0,
+        [ ]
+      ],
+      [
+        852054,
+        [ ]
+      ]
+    ]
+  }
+}
+```
+
+## Collection page model
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| limit (required) | integer >= 0 | The number of items in the page. This number can be smaller but never be larger than the number of requested items.
+| next (required) | (null or null) or (string or null)^(inclusive|exclusive):.*$ | A cursor that can be used to query the next page. It should be used literally as value for the next parameter in a follow-up request.
+| items (required) | any | The items in the page.
+
+```json
+{
+  "value": {
+    "next": "inclusive:o1S4NNFhKWg8T1HEkmDvsTH9Ut9l3_qHRpp00yRKZIk",
+    "items": [
+      "AAAAAAAAAABRoiLHW7EFAB2lwAatTykipYZ3CZNPzLe-f5S-zUt8COtu0H12f_OZAwAFAAAAMpic85rur2MYf3zli8s8bHxTFjriFoMPTr6ZPs8sjxMKAAAAVBKuhU_hQmuvKlx88A5o-FH0rzNo59NsdxmOGNBQ-ycPAAAAMItdqgHZxf7j6l0oE8X-G9-VyMbnQmZrtSniuRe_EJ9CtyxsSb7daPIIYAaXMgSEsQ3dkxY5GjJjLwAAAAAAABqWlmx5B6wo0YWPIShNKmdVrAQWht2P85BS1drGLpkAAAAAADUJ-ARn7blgHgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEIPAAAAAAAFAAAA-na5gFuxBQAFL-3CY4YuAJNGp9KhDkbrKkIPWYyq8WvtAaNPoUFWC16louSx8YN5",
+      "AAAAAAAAAAA0slHKW7EFAJNGp9KhDkbrKkIPWYyq8WvtAaNPoUFWC16louSx8YN5AwAFAAAAALcxv1ZiwwQ_QX9eOBZMbzIop6n7XtveS1FqOFwyvGMKAAAAC76ElC60qXSJQCHePpzzJxsCYvvrqvmkoHPyZnex-4QPAAAAKv0sz_rTANjoiJwMrdZFCJNFwdH0U_M5ouwMr3BXBfpCtyxsSb7daPIIYAaXMgSEsQ3dkxY5GjJjLwAAAAAAALJlIg1vY3w_9L63bePn1yk_5agvdEbIBBjm3adxc5xWAAAAAGzpBzdiVL9gHgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQUIPAAAAAAAFAAAA-na5gFuxBQALiBhXgqaHAb4VWug3oddEVy0X9y_jEkE2Kmi_vyGP5ovr-fDIz_Uf"
+    ],
+    "limit": 2
+  }
+}
+```
+
+## Miner info model
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| account	| string | Account name is the miner account name. Usually this is the same as the public key.
+| predicate	| enum | The key predicate guard for the account. For accounts with a single key, this is usually `keys-all`.
+| public-keys	| Array of strings | Miner public key.
+
+```json
+{
+  "account": "miner",
+  "predicate": "keys-all",
+  "public-keys": [
+    "f880a433d6e2a13a32b6169030f56245efdd8c1b8a5027e9ce98a88e886bef27"
+  ]
+}
+```
+
+## Mining update event stream model
+
+A server-sent event that notifies miners when new mining work becomes available. 
+The stream is terminated by the server in regular intervals and it is up to the client to request a new stream.
+
+Each event consists of a single line. 
+Events are separated by empty lines.
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| events | Array | Each event	consists of the string value "event:New Cut".
+
+```text
+event:New Cut
+
+event:New Cut
+
+event:New Cut
+```
