@@ -12,6 +12,7 @@ import {
   editOptionSelectedClass,
   editingBoxClass,
   searchBadgeBoxClass,
+  searchBadgeBoxSelectedClass,
   searchBoxClass,
   searchBoxEditingClass,
   searchInputClass,
@@ -130,8 +131,6 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
       setEscapePressed(false);
       setOptionClicked(false);
 
-      setSearchOption(editHover);
-
       handleSearch();
     } else if (e.key === 'Escape') {
       setOptionClicked(false);
@@ -167,6 +166,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
           className={classNames(searchBoxClass, {
             [searchBoxEditingClass]: isEditing,
           })}
+          // ugly hack to align the search in the header
           style={{ top: position === 'header' ? '-28px' : 0 }}
         >
           <Stack width="100%" alignItems="center" paddingInline="md">
@@ -186,7 +186,12 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
             )}
 
             {searchOption !== null && (
-              <Stack className={searchBadgeBoxClass}>
+              <Stack
+                className={classNames(
+                  searchBadgeBoxClass,
+                  searchBadgeBoxSelectedClass,
+                )}
+              >
                 {!!searchData[searchOption] && searchData[searchOption].title}
               </Stack>
             )}

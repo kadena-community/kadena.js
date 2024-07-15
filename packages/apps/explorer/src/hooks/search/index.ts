@@ -25,6 +25,7 @@ export const useSearch = () => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isMounted, setIsMounted] = useState(false);
+  const [searchData, setSearchData] = useState<ISearchItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<ApolloError[]>([]);
   const [searchOption, setSearchOption] = useState<SearchOptionEnum | null>(
@@ -85,12 +86,15 @@ export const useSearch = () => {
     }
 
     const query = router.query.q;
-    const searchOptionQuery: SearchOptionEnum = parseInt(
-      router.query.so as any,
-    );
+    const searchOptionQuery: SearchOptionEnum | null = !isNaN(
+      parseInt(router.query.so as any),
+    )
+      ? parseInt(router.query.so as any)
+      : null;
 
     if (query === searchQuery && searchOptionQuery === searchOption) return;
 
+    console.log({ searchOption });
     if (searchOption === SearchOptionEnum.ACCOUNT) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       router.push(`/?q=${searchQuery}&so=${searchOption}&fungible=coin`);
@@ -102,27 +106,55 @@ export const useSearch = () => {
 
   useEffect(() => {
     const query = router.query.q;
-    // const searchOptionQuery: SearchOptionEnum | null = !isNaN(
-    //   parseInt(router.query.so as any),
-    // )
-    //   ? parseInt(router.query.so as any)
-    //   : null;
+
+    const searchOptionQuery: SearchOptionEnum | null = !isNaN(
+      parseInt(router.query.so as any),
+    )
+      ? parseInt(router.query.so as any)
+      : null;
 
     setSearchQuery(query as string);
-    // setSearchOption(searchOptionQuery);
+    setSearchOption(searchOptionQuery);
     setIsMounted(true);
   }, [router.query]);
 
   useEffect(() => {
-    setLoading(
-      checkLoading(
-        accountLoading,
-        blockLoading,
-        blockHeightLoading,
-        eventLoading,
-        requestKeyLoading,
-      ),
+    if (loading) return;
+
+    const result: ISearchItem[] = [
+      { title: 'Account', data: accountData },
+      { title: 'Request Key', data: requestKeyData },
+      { title: 'Block Hash', data: blockData },
+      { title: 'Height', data: blockHeightData },
+      { title: 'Events', data: eventData },
+    ];
+
+    setSearchData(result);
+  }, [
+    loading,
+    accountData,
+    requestKeyData,
+    blockData,
+    blockHeightData,
+    eventData,
+  ]);
+
+  useEffect(() => {
+    const loadingResult = checkLoading(
+      accountLoading,
+      blockLoading,
+      blockHeightLoading,
+      eventLoading,
+      requestKeyLoading,
     );
+
+    if (!loadingResult) {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
+      return;
+    }
   }, [
     accountLoading,
     blockLoading,
@@ -152,13 +184,6 @@ export const useSearch = () => {
     }
   }, [errors]);
 
-  const searchData: ISearchItem[] = [
-    { title: 'Account', data: accountData },
-    { title: 'Request Key', data: requestKeyData },
-    { title: 'Block Hash', data: blockData },
-    { title: 'Height', data: blockHeightData },
-    { title: 'Events', data: eventData },
-  ];
   return {
     searchOption,
     setSearchOption,
