@@ -5,7 +5,7 @@ export const containerStyle = style({
 });
 
 /*
- * <span> elements get a global style (which includes font-family) from the `react-ui` library, we
+ * <span> elements get a global style (which includes font-family) from the `kode-ui` library, we
  * need to reset it here otherwise code in the editor won't be rendered as a monospace font.
  */
 globalStyle(`${containerStyle} span`, { fontFamily: 'inherit !important' });

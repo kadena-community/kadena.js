@@ -602,7 +602,7 @@
             "prIds": []
           },
           {
-            "label": "fix: use new text and header components from react-ui package",
+            "label": "fix: use new text and header components from kode-ui package",
             "commits": [
               {
                 "hash": "8bb3168818",
@@ -1363,7 +1363,7 @@
                     "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/b8f8fb55e148bb7333c94c99cbd6f0f6db4d5676/comments",
                     "html_url": "https://github.com/kadena-community/kadena.js/commit/b8f8fb55e148bb7333c94c99cbd6f0f6db4d5676",
                     "commit": {
-                      "message": "[@react-ui] Fix: brand logo size (#1420)\n\n* fix: brand logo height\r\n\r\n* chore: add changeset",
+                      "message": "[@kode-ui] Fix: brand logo size (#1420)\n\n* fix: brand logo height\r\n\r\n* chore: add changeset",
                       "comment_count": 1
                     }
                   }
@@ -1465,7 +1465,7 @@
                     "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/5516b24675f97b62c1223b153ecb03150f51e948/comments",
                     "html_url": "https://github.com/kadena-community/kadena.js/commit/5516b24675f97b62c1223b153ecb03150f51e948",
                     "commit": {
-                      "message": "[@react-ui] New brand logos (#1417)\n\n* feat: new brand logos\r\n\r\n* achore: add changeset\r\n\r\n* chore: run formatter",
+                      "message": "[@kode-ui] New brand logos (#1417)\n\n* feat: new brand logos\r\n\r\n* achore: add changeset\r\n\r\n* chore: run formatter",
                       "comment_count": 1
                     }
                   }
@@ -2652,7 +2652,7 @@
                     "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/5b8161d668cd47ae1cbd54e003d2c66a7d07e427/comments",
                     "html_url": "https://github.com/kadena-community/kadena.js/commit/5b8161d668cd47ae1cbd54e003d2c66a7d07e427",
                     "commit": {
-                      "message": "[DOCS]fix: Important updates related to overall docs UI/UX and some react-ui components (#1046)",
+                      "message": "[DOCS]fix: Important updates related to overall docs UI/UX and some kode-ui components (#1046)",
                       "comment_count": 3
                     }
                   }
@@ -2824,7 +2824,7 @@
                     "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/3572d7cdd750c12e5cdaf8b1f9c88c8b3d4d42c2/comments",
                     "html_url": "https://github.com/kadena-community/kadena.js/commit/3572d7cdd750c12e5cdaf8b1f9c88c8b3d4d42c2",
                     "commit": {
-                      "message": "feat(docs): implement track page helpful vote\n\n* feat(docs): implement useModal hook for page helpful component\r\n\r\n* feat(docs): implement usePageHelpful hook for page helpful component\r\n\r\n* feat(ui): add thumbup + thumbdown icon in system icons\r\n\r\n* feat(ui): implement pageHelpful component\r\n\r\n* feat(docs): implement page helpful section at bottom page\r\n\r\n* feat(docs): add storybook for page helpful component\r\n\r\n* feat(docs): implement local storage and google events setup with comments\r\n\r\n* fix(ui): add disabled ui styles for icon button\r\n\r\n* fix(ui): add close callback methods for Modal component\r\n\r\n* chore(docs): remove console logs\r\n\r\n* chore(docs): add empty changeset\r\n\r\n* chore(docs): update story for page helpful component\r\n\r\n* feat(docs): rename modal hooks + fix button spacing\r\n\r\n* fix(ui): edit link inline element\r\n\r\n* fix(docs): remove edit page button and use link\r\n\r\n* fix(ui): update IconButton with extra state props\r\n\r\n* feat(docs): add reset state for page helpful votes\r\n\r\n* feat(ui): add active state for IconButton component\r\n\r\n* feat(docs): update active state for up/down button\r\n\r\n* feat(ui): implement active state for IconButton for color variant\r\n\r\n* fix(ui): address PR review comments\r\n\r\n* fix(docs): update props for IconButton in helpful component\r\n\r\n* fix(ui): update link component default inline style\r\n\r\n* fix(docs): remove inline prop for link component\r\n\r\n* chore: add changeset for react-ui updates\r\n\r\n* fix(docs): update button component\r\n\r\n* fix(ui): update Link storybook\r\n\r\n* chore(docs): fix formatting\r\n\r\n* fix(ui): update storybook for link component",
+                      "message": "feat(docs): implement track page helpful vote\n\n* feat(docs): implement useModal hook for page helpful component\r\n\r\n* feat(docs): implement usePageHelpful hook for page helpful component\r\n\r\n* feat(ui): add thumbup + thumbdown icon in system icons\r\n\r\n* feat(ui): implement pageHelpful component\r\n\r\n* feat(docs): implement page helpful section at bottom page\r\n\r\n* feat(docs): add storybook for page helpful component\r\n\r\n* feat(docs): implement local storage and google events setup with comments\r\n\r\n* fix(ui): add disabled ui styles for icon button\r\n\r\n* fix(ui): add close callback methods for Modal component\r\n\r\n* chore(docs): remove console logs\r\n\r\n* chore(docs): add empty changeset\r\n\r\n* chore(docs): update story for page helpful component\r\n\r\n* feat(docs): rename modal hooks + fix button spacing\r\n\r\n* fix(ui): edit link inline element\r\n\r\n* fix(docs): remove edit page button and use link\r\n\r\n* fix(ui): update IconButton with extra state props\r\n\r\n* feat(docs): add reset state for page helpful votes\r\n\r\n* feat(ui): add active state for IconButton component\r\n\r\n* feat(docs): update active state for up/down button\r\n\r\n* feat(ui): implement active state for IconButton for color variant\r\n\r\n* fix(ui): address PR review comments\r\n\r\n* fix(docs): update props for IconButton in helpful component\r\n\r\n* fix(ui): update link component default inline style\r\n\r\n* fix(docs): remove inline prop for link component\r\n\r\n* chore: add changeset for kode-ui updates\r\n\r\n* fix(docs): update button component\r\n\r\n* fix(ui): update Link storybook\r\n\r\n* chore(docs): fix formatting\r\n\r\n* fix(ui): update storybook for link component",
                       "comment_count": 3
                     }
                   }
@@ -2994,7 +2994,7 @@
                     "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/6cf0c27e5544ce2f188ee8f751f33f704ee30ec4/comments",
                     "html_url": "https://github.com/kadena-community/kadena.js/commit/6cf0c27e5544ce2f188ee8f751f33f704ee30ec4",
                     "commit": {
-                      "message": "feat(ui): implement non-outlined and inline style notification component (#1014)\n\n* feat(ui): implement non-outlined notification component\r\n\r\n* chore: add changeset for react-ui updates\r\n\r\n* fix(ui): update borderwidth for notification outlined component\r\n\r\n* refactor: inline variant class names\r\n\r\n* fix: update Notification component with outline variant\r\n\r\n* fix(ui): update notification component types\r\n\r\n* refactor: use sprinkles for media query\r\n\r\n* fix(ui): update inline variant false",
+                      "message": "feat(ui): implement non-outlined and inline style notification component (#1014)\n\n* feat(ui): implement non-outlined notification component\r\n\r\n* chore: add changeset for kode-ui updates\r\n\r\n* fix(ui): update borderwidth for notification outlined component\r\n\r\n* refactor: inline variant class names\r\n\r\n* fix: update Notification component with outline variant\r\n\r\n* fix(ui): update notification component types\r\n\r\n* refactor: use sprinkles for media query\r\n\r\n* fix(ui): update inline variant false",
                       "comment_count": 4
                     }
                   }
@@ -3198,7 +3198,7 @@
                     "comments_url": "https://api.github.com/repos/kadena-community/kadena.js/commits/80c680d2cb2cec398cb5c66344517ffcf52ab5a5/comments",
                     "html_url": "https://github.com/kadena-community/kadena.js/commit/80c680d2cb2cec398cb5c66344517ffcf52ab5a5",
                     "commit": {
-                      "message": "fix(react-ui): add content wrapper and set max width for notification component (#1028)\n\n* fix(react-ui): add wrapper for notification component\r\n\r\n* chore: add changeset for react-ui notification update\r\n\r\n* fix(react-ui): move spacing to wrapper",
+                      "message": "fix(kode-ui): add content wrapper and set max width for notification component (#1028)\n\n* fix(kode-ui): add wrapper for notification component\r\n\r\n* chore: add changeset for kode-ui notification update\r\n\r\n* fix(kode-ui): move spacing to wrapper",
                       "comment_count": 1
                     }
                   }

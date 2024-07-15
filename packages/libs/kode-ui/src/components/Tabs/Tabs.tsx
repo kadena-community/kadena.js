@@ -30,6 +30,7 @@ export interface ITabsProps<T>
   isCompact?: boolean;
   tabPanelClassName?: string;
   isContained?: boolean;
+  isDecoupled?: boolean;
 }
 
 export function Tabs<T extends object>({
@@ -40,6 +41,7 @@ export function Tabs<T extends object>({
   isCompact,
   tabPanelClassName,
   isContained,
+  isDecoupled = false,
   ...props
 }: ITabsProps<T>): ReactNode {
   const state = useTabListState(props);
@@ -78,6 +80,10 @@ export function Tabs<T extends object>({
     }
   }, []);
 
+  useEffect(() => {
+    console.log({scrollRef: scrollRef.current?.offsetWidth})
+  }, [scrollRef])
+
   return (
     <div className={classNames(tabsContainerClass, className)}>
       <TabsPagination
@@ -107,13 +113,13 @@ export function Tabs<T extends object>({
           </div>
         </div>
       </TabsPagination>
-      <TabPanel
+      { !isDecoupled && <TabPanel
         key={state.selectedItem?.key}
         state={state}
         className={classNames(tabPanelClassName, {
           [containedTabContent]: isContained,
         })}
-      />
+      />}
     </div>
   );
 }

@@ -11,7 +11,7 @@
 /packages/apps/docs                             @sstraatemans
 /packages/apps/explorer                         @sstraatemans @alber70g
 /packages/apps/graph                            @alber70g
-/packages/apps/graph-client                     @alber70g 
+/packages/apps/graph-client                     @alber70g
 /packages/apps/marmalade-marketplace            @jermaine150 @ggobugi27
 /packages/apps/proof-of-us                      @sstraatemans
 /packages/apps/tools
@@ -22,7 +22,7 @@
 /packages/e2e/e2e-docs                          @sstraatemans
 /packages/e2e/e2e-graph                         @sstraatemans @alber70g
 /packages/e2e/e2e-proof-of-us                   @sstraatemans
-/packages/e2e/e2e-tools                         
+/packages/e2e/e2e-tools
 
 # Libraries
 /packages/libs/bootstrap-lib                    @alber70g
@@ -31,7 +31,7 @@
 /packages/libs/chainwebjs
 /packages/libs/client                           @alber70g @javadkh2 @nillo
 /packages/libs/client-utils                     @alber70g @javadkh2 @jermaine150 @ggobugi27
-/packages/libs/cryptography-utils               
+/packages/libs/cryptography-utils
 /packages/libs/hd-wallet                        @alber70g @javadkh2
 /packages/libs/kadena.js                        @alber70g @javadkh2
 /packages/libs/kode-icons                       @sstraatemans @isaozler

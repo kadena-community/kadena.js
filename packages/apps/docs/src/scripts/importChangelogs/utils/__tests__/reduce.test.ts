@@ -761,11 +761,11 @@ describe('reduce utils', () => {
               deletions: 4,
               changes: 59,
               blob_url:
-                'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.css.ts',
+                'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.css.ts',
               raw_url:
-                'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.css.ts',
+                'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.css.ts',
               contents_url:
-                'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.css.ts?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
+                'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.css.ts?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
               patch:
                 "@@ -34,10 +34,6 @@ export const overlayClass = style([\n       maxHeight: '75vh',\n     },\n   }),\n-  {\n-    backdropFilter: 'blur(12px)',\n-    cursor: 'default',\n-  },\n ]);\n \n export const closeButtonClass = style([\n@@ -65,6 +61,14 @@ export const titleWrapperClass = style([\n   }),\n ]);\n \n+export const subtitleWrapperClass = style([\n+  atoms({\n+    marginBlockEnd: 'sm',\n+    fontWeight: 'primaryFont.light',\n+    color: 'text.gray.default',\n+  }),\n+]);\n+\n export const footerClass = style([atoms({ flexShrink: 0 })]);\n \n export const contentClass = style([\n@@ -78,3 +82,50 @@ export const contentClass = style([\n     marginRight: calc(tokens.kda.foundation.spacing.xxl).negate().toString(),\n   },\n ]);\n+\n+export const smClass = style([\n+  responsiveStyle({\n+    xs: {\n+      maxHeight: '100svh',\n+      maxWidth: '100vw',\n+    },\n+    sm: {\n+      maxHeight: '100svh',\n+      maxWidth: '100vw',\n+    },\n+    md: {\n+      maxWidth: tokens.kda.foundation.layout.content.maxWidth,\n+      maxHeight: '75vh',\n+    },\n+  }),\n+]);\n+\n+const smallSizes = {\n+  xs: {\n+    height: '100svh',\n+    maxWidth: '100vw',\n+  },\n+  sm: {\n+    height: '100svh',\n+    maxWidth: '100vw',\n+  },\n+};\n+export const mdClass = style([\n+  responsiveStyle({\n+    ...smallSizes,\n+    md: {\n+      maxHeight: '84svh',\n+      maxWidth: '60vw',\n+    },\n+  }),\n+]);\n+\n+export const lgClass = style([\n+  responsiveStyle({\n+    ...smallSizes,\n+    md: {\n+      maxHeight: '96svh',\n+      maxWidth: '84vw',\n+    },\n+  }),\n+]);",
             },
@@ -778,11 +778,11 @@ describe('reduce utils', () => {
               deletions: 2,
               changes: 15,
               blob_url:
-                'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.stories.tsx',
+                'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.stories.tsx',
               raw_url:
-                'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.stories.tsx',
+                'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.stories.tsx',
               contents_url:
-                'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.stories.tsx?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
+                'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.stories.tsx?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
               patch:
                 "@@ -3,9 +3,10 @@ import React, { useState } from 'react';\n import { Button } from '../Button';\n import type { IDialogProps } from '../Dialog';\n import { Dialog, DialogContent, DialogFooter, DialogHeader } from '../Dialog';\n+import { DialogHeaderSubtitle } from './DialogHeaderSubtitle';\n import { ModalContent } from './StoryComponents';\n \n-type DialogStoryProps = IDialogProps & { title: string };\n+type DialogStoryProps = IDialogProps & { title: string; subtitle: string };\n \n const meta: Meta<DialogStoryProps> = {\n   title: 'Overlays/Dialog',\n@@ -45,6 +46,13 @@ A Dialog is a type of modal that is used to display information or prompt the us\n         type: { summary: 'string' },\n       },\n     },\n+    size: {\n+      control: {\n+        type: 'radio',\n+      },\n+      options: ['sm', 'md', 'lg'],\n+      defaultValue: 'md',\n+    },\n   },\n };\n \n@@ -55,19 +63,22 @@ export const DialogStory: Story = {\n   name: 'Dialog',\n   args: {\n     title: 'Dialog Title',\n+    subtitle: 'Dialog subtitle',\n   },\n-  render: ({ title }) => {\n+  render: ({ title, subtitle, size }) => {\n     const [isOpen, setIsOpen] = useState(false);\n \n     return (\n       <>\n         <Button onClick={() => setIsOpen(true)}>Modal Trigger</Button>\n         <Dialog\n           isOpen={isOpen}\n+          size={size}\n           onOpenChange={(isOpen: boolean) => setIsOpen(isOpen)}\n         >\n           {(state) => (\n             <>\n+              <DialogHeaderSubtitle>{subtitle}</DialogHeaderSubtitle>\n               <DialogHeader>{title}</DialogHeader>\n               <DialogContent>\n                 <ModalContent />",
             },
@@ -795,11 +795,11 @@ describe('reduce utils', () => {
               deletions: 3,
               changes: 25,
               blob_url:
-                'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.tsx',
+                'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.tsx',
               raw_url:
-                'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.tsx',
+                'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.tsx',
               contents_url:
-                'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.tsx?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
+                'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.tsx?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
               patch:
                 "@@ -10,18 +10,37 @@ import { useOverlayTriggerState } from 'react-stately';\n import type { IModalProps } from '../Modal/Modal';\n import { Modal } from '../Modal/Modal';\n import { DialogContext } from './Dialog.context';\n-import { closeButtonClass, overlayClass } from './Dialog.css';\n+import {\n+  closeButtonClass,\n+  lgClass,\n+  mdClass,\n+  overlayClass,\n+  smClass,\n+} from './Dialog.css';\n \n+const sizeMap = {\n+  sm: smClass,\n+  md: mdClass,\n+  lg: lgClass,\n+};\n interface IBaseDialogProps\n   extends Omit<IModalProps, 'children'>,\n     AriaDialogProps {\n   children?: ((state: OverlayTriggerState) => ReactNode) | ReactNode;\n   className?: string;\n+  size?: keyof typeof sizeMap;\n }\n \n const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(\n   (props, ref) => {\n-    const { className, children, isDismissable = true, state, ...rest } = props;\n+    const {\n+      className,\n+      children,\n+      isDismissable = true,\n+      size = 'md',\n+      state,\n+      ...rest\n+    } = props;\n     const dialogRef = useObjectRef<HTMLDivElement | null>(ref);\n     const { dialogProps, titleProps } = useDialog(\n       {\n@@ -35,7 +54,7 @@ const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(\n       <DialogContext.Provider value={{ titleProps, state }}>\n         <div\n           ref={dialogRef}\n-          className={cn(overlayClass, className)}\n+          className={cn(overlayClass, className, sizeMap[size])}\n           {...mergeProps(rest, dialogProps)}\n         >\n           {typeof children === 'function' ? children(state) : children}",
             },
@@ -812,11 +812,11 @@ describe('reduce utils', () => {
               deletions: 0,
               changes: 23,
               blob_url:
-                'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialogHeaderSubtitle.tsx',
+                'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialogHeaderSubtitle.tsx',
               raw_url:
-                'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialogHeaderSubtitle.tsx',
+                'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialogHeaderSubtitle.tsx',
               contents_url:
-                'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialogHeaderSubtitle.tsx?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
+                'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialogHeaderSubtitle.tsx?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
               patch:
                 "@@ -0,0 +1,23 @@\n+import cn from 'classnames';\n+import type { FC } from 'react';\n+import React, { useContext } from 'react';\n+import { Heading } from '../Typography';\n+import { DialogContext } from './Dialog.context';\n+import { subtitleWrapperClass } from './Dialog.css';\n+import type { IDialogHeaderProps } from './DialogHeader';\n+\n+export const DialogHeaderSubtitle: FC<IDialogHeaderProps> = ({\n+  children,\n+  className,\n+}) => {\n+  const { titleProps } = useContext(DialogContext);\n+  return (\n+    <div className={cn(subtitleWrapperClass, className)} {...titleProps}>\n+      {typeof children === 'string' ? (\n+        <Heading as=\"h6\">{children}</Heading>\n+      ) : (\n+        children\n+      )}\n+    </div>\n+  );\n+};",
             },
@@ -828,11 +828,11 @@ describe('reduce utils', () => {
               deletions: 0,
               changes: 1,
               blob_url:
-                'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2Findex.ts',
+                'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2Findex.ts',
               raw_url:
-                'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2Findex.ts',
+                'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2Findex.ts',
               contents_url:
-                'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2Findex.ts?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
+                'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2Findex.ts?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
               patch:
                 "@@ -6,4 +6,5 @@ export { DialogFooter } from './DialogFooter';\n export type { IDialogFooterProps } from './DialogFooter';\n export { DialogHeader } from './DialogHeader';\n export type { IDialogHeaderProps } from './DialogHeader';\n+export { DialogHeaderSubtitle } from './DialogHeaderSubtitle';\n export { useDialog } from './useDialog';",
             },
@@ -845,11 +845,11 @@ describe('reduce utils', () => {
               deletions: 2,
               changes: 4,
               blob_url:
-                'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FModal%2FModal.css.ts',
+                'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FModal%2FModal.css.ts',
               raw_url:
-                'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FModal%2FModal.css.ts',
+                'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FModal%2FModal.css.ts',
               contents_url:
-                'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FModal%2FModal.css.ts?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
+                'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FModal%2FModal.css.ts?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
               patch:
                 "@@ -8,9 +8,9 @@ export const underlayClass = style([\n     justifyContent: 'center',\n     position: 'fixed',\n     inset: 0,\n+    backgroundColor: 'base.default',\n   }),\n   {\n-    // TODO: Update to use token\n-    backgroundColor: 'rgba(26, 26, 26, 0.8)',\n+    backdropFilter: 'blur(12px)',\n   },\n ]);",
             },
@@ -861,11 +861,11 @@ describe('reduce utils', () => {
               deletions: 0,
               changes: 1,
               blob_url:
-                'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2Findex.ts',
+                'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2Findex.ts',
               raw_url:
-                'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2Findex.ts',
+                'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2Findex.ts',
               contents_url:
-                'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2Findex.ts?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
+                'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2Findex.ts?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
               patch:
                 "@@ -66,6 +66,7 @@ export {\n   DialogContent,\n   DialogFooter,\n   DialogHeader,\n+  DialogHeaderSubtitle,\n   useDialog,\n } from './Dialog';\n export { Divider } from './Divider/Divider';",
             },
@@ -877,11 +877,11 @@ describe('reduce utils', () => {
               deletions: 0,
               changes: 1,
               blob_url:
-                'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Findex.ts',
+                'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Findex.ts',
               raw_url:
-                'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Findex.ts',
+                'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Findex.ts',
               contents_url:
-                'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Freact-ui%2Fsrc%2Findex.ts?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
+                'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Fkode-ui%2Fsrc%2Findex.ts?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
               patch:
                 '@@ -69,6 +69,7 @@ export {\n   DialogContent,\n   DialogFooter,\n   DialogHeader,\n+  DialogHeaderSubtitle,\n   Divider,\n   Form,\n   FormFieldHeader,',
             },
@@ -1044,11 +1044,11 @@ describe('reduce utils', () => {
             deletions: 4,
             changes: 59,
             blob_url:
-              'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.css.ts',
+              'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.css.ts',
             raw_url:
-              'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.css.ts',
+              'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.css.ts',
             contents_url:
-              'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.css.ts?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
+              'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.css.ts?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
             patch:
               "@@ -34,10 +34,6 @@ export const overlayClass = style([\n       maxHeight: '75vh',\n     },\n   }),\n-  {\n-    backdropFilter: 'blur(12px)',\n-    cursor: 'default',\n-  },\n ]);\n \n export const closeButtonClass = style([\n@@ -65,6 +61,14 @@ export const titleWrapperClass = style([\n   }),\n ]);\n \n+export const subtitleWrapperClass = style([\n+  atoms({\n+    marginBlockEnd: 'sm',\n+    fontWeight: 'primaryFont.light',\n+    color: 'text.gray.default',\n+  }),\n+]);\n+\n export const footerClass = style([atoms({ flexShrink: 0 })]);\n \n export const contentClass = style([\n@@ -78,3 +82,50 @@ export const contentClass = style([\n     marginRight: calc(tokens.kda.foundation.spacing.xxl).negate().toString(),\n   },\n ]);\n+\n+export const smClass = style([\n+  responsiveStyle({\n+    xs: {\n+      maxHeight: '100svh',\n+      maxWidth: '100vw',\n+    },\n+    sm: {\n+      maxHeight: '100svh',\n+      maxWidth: '100vw',\n+    },\n+    md: {\n+      maxWidth: tokens.kda.foundation.layout.content.maxWidth,\n+      maxHeight: '75vh',\n+    },\n+  }),\n+]);\n+\n+const smallSizes = {\n+  xs: {\n+    height: '100svh',\n+    maxWidth: '100vw',\n+  },\n+  sm: {\n+    height: '100svh',\n+    maxWidth: '100vw',\n+  },\n+};\n+export const mdClass = style([\n+  responsiveStyle({\n+    ...smallSizes,\n+    md: {\n+      maxHeight: '84svh',\n+      maxWidth: '60vw',\n+    },\n+  }),\n+]);\n+\n+export const lgClass = style([\n+  responsiveStyle({\n+    ...smallSizes,\n+    md: {\n+      maxHeight: '96svh',\n+      maxWidth: '84vw',\n+    },\n+  }),\n+]);",
           },
@@ -1061,11 +1061,11 @@ describe('reduce utils', () => {
             deletions: 2,
             changes: 15,
             blob_url:
-              'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.stories.tsx',
+              'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.stories.tsx',
             raw_url:
-              'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.stories.tsx',
+              'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.stories.tsx',
             contents_url:
-              'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.stories.tsx?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
+              'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.stories.tsx?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
             patch:
               "@@ -3,9 +3,10 @@ import React, { useState } from 'react';\n import { Button } from '../Button';\n import type { IDialogProps } from '../Dialog';\n import { Dialog, DialogContent, DialogFooter, DialogHeader } from '../Dialog';\n+import { DialogHeaderSubtitle } from './DialogHeaderSubtitle';\n import { ModalContent } from './StoryComponents';\n \n-type DialogStoryProps = IDialogProps & { title: string };\n+type DialogStoryProps = IDialogProps & { title: string; subtitle: string };\n \n const meta: Meta<DialogStoryProps> = {\n   title: 'Overlays/Dialog',\n@@ -45,6 +46,13 @@ A Dialog is a type of modal that is used to display information or prompt the us\n         type: { summary: 'string' },\n       },\n     },\n+    size: {\n+      control: {\n+        type: 'radio',\n+      },\n+      options: ['sm', 'md', 'lg'],\n+      defaultValue: 'md',\n+    },\n   },\n };\n \n@@ -55,19 +63,22 @@ export const DialogStory: Story = {\n   name: 'Dialog',\n   args: {\n     title: 'Dialog Title',\n+    subtitle: 'Dialog subtitle',\n   },\n-  render: ({ title }) => {\n+  render: ({ title, subtitle, size }) => {\n     const [isOpen, setIsOpen] = useState(false);\n \n     return (\n       <>\n         <Button onClick={() => setIsOpen(true)}>Modal Trigger</Button>\n         <Dialog\n           isOpen={isOpen}\n+          size={size}\n           onOpenChange={(isOpen: boolean) => setIsOpen(isOpen)}\n         >\n           {(state) => (\n             <>\n+              <DialogHeaderSubtitle>{subtitle}</DialogHeaderSubtitle>\n               <DialogHeader>{title}</DialogHeader>\n               <DialogContent>\n                 <ModalContent />",
           },
@@ -1077,11 +1077,11 @@ describe('reduce utils', () => {
             deletions: 3,
             changes: 25,
             blob_url:
-              'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.tsx',
+              'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.tsx',
             raw_url:
-              'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.tsx',
+              'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.tsx',
             contents_url:
-              'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.tsx?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
+              'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialog.tsx?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
             patch:
               "@@ -10,18 +10,37 @@ import { useOverlayTriggerState } from 'react-stately';\n import type { IModalProps } from '../Modal/Modal';\n import { Modal } from '../Modal/Modal';\n import { DialogContext } from './Dialog.context';\n-import { closeButtonClass, overlayClass } from './Dialog.css';\n+import {\n+  closeButtonClass,\n+  lgClass,\n+  mdClass,\n+  overlayClass,\n+  smClass,\n+} from './Dialog.css';\n \n+const sizeMap = {\n+  sm: smClass,\n+  md: mdClass,\n+  lg: lgClass,\n+};\n interface IBaseDialogProps\n   extends Omit<IModalProps, 'children'>,\n     AriaDialogProps {\n   children?: ((state: OverlayTriggerState) => ReactNode) | ReactNode;\n   className?: string;\n+  size?: keyof typeof sizeMap;\n }\n \n const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(\n   (props, ref) => {\n-    const { className, children, isDismissable = true, state, ...rest } = props;\n+    const {\n+      className,\n+      children,\n+      isDismissable = true,\n+      size = 'md',\n+      state,\n+      ...rest\n+    } = props;\n     const dialogRef = useObjectRef<HTMLDivElement | null>(ref);\n     const { dialogProps, titleProps } = useDialog(\n       {\n@@ -35,7 +54,7 @@ const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(\n       <DialogContext.Provider value={{ titleProps, state }}>\n         <div\n           ref={dialogRef}\n-          className={cn(overlayClass, className)}\n+          className={cn(overlayClass, className, sizeMap[size])}\n           {...mergeProps(rest, dialogProps)}\n         >\n           {typeof children === 'function' ? children(state) : children}",
           },
@@ -1094,11 +1094,11 @@ describe('reduce utils', () => {
             deletions: 0,
             changes: 23,
             blob_url:
-              'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialogHeaderSubtitle.tsx',
+              'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialogHeaderSubtitle.tsx',
             raw_url:
-              'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialogHeaderSubtitle.tsx',
+              'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialogHeaderSubtitle.tsx',
             contents_url:
-              'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2FDialogHeaderSubtitle.tsx?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
+              'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2FDialogHeaderSubtitle.tsx?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
             patch:
               "@@ -0,0 +1,23 @@\n+import cn from 'classnames';\n+import type { FC } from 'react';\n+import React, { useContext } from 'react';\n+import { Heading } from '../Typography';\n+import { DialogContext } from './Dialog.context';\n+import { subtitleWrapperClass } from './Dialog.css';\n+import type { IDialogHeaderProps } from './DialogHeader';\n+\n+export const DialogHeaderSubtitle: FC<IDialogHeaderProps> = ({\n+  children,\n+  className,\n+}) => {\n+  const { titleProps } = useContext(DialogContext);\n+  return (\n+    <div className={cn(subtitleWrapperClass, className)} {...titleProps}>\n+      {typeof children === 'string' ? (\n+        <Heading as=\"h6\">{children}</Heading>\n+      ) : (\n+        children\n+      )}\n+    </div>\n+  );\n+};",
           },
@@ -1110,11 +1110,11 @@ describe('reduce utils', () => {
             deletions: 0,
             changes: 1,
             blob_url:
-              'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2Findex.ts',
+              'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2Findex.ts',
             raw_url:
-              'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2Findex.ts',
+              'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2Findex.ts',
             contents_url:
-              'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FDialog%2Findex.ts?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
+              'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FDialog%2Findex.ts?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
             patch:
               "@@ -6,4 +6,5 @@ export { DialogFooter } from './DialogFooter';\n export type { IDialogFooterProps } from './DialogFooter';\n export { DialogHeader } from './DialogHeader';\n export type { IDialogHeaderProps } from './DialogHeader';\n+export { DialogHeaderSubtitle } from './DialogHeaderSubtitle';\n export { useDialog } from './useDialog';",
           },
@@ -1126,11 +1126,11 @@ describe('reduce utils', () => {
             deletions: 2,
             changes: 4,
             blob_url:
-              'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FModal%2FModal.css.ts',
+              'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FModal%2FModal.css.ts',
             raw_url:
-              'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FModal%2FModal.css.ts',
+              'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FModal%2FModal.css.ts',
             contents_url:
-              'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2FModal%2FModal.css.ts?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
+              'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2FModal%2FModal.css.ts?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
             patch:
               "@@ -8,9 +8,9 @@ export const underlayClass = style([\n     justifyContent: 'center',\n     position: 'fixed',\n     inset: 0,\n+    backgroundColor: 'base.default',\n   }),\n   {\n-    // TODO: Update to use token\n-    backgroundColor: 'rgba(26, 26, 26, 0.8)',\n+    backdropFilter: 'blur(12px)',\n   },\n ]);",
           },
@@ -1142,11 +1142,11 @@ describe('reduce utils', () => {
             deletions: 0,
             changes: 1,
             blob_url:
-              'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2Findex.ts',
+              'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2Findex.ts',
             raw_url:
-              'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2Findex.ts',
+              'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2Findex.ts',
             contents_url:
-              'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Freact-ui%2Fsrc%2Fcomponents%2Findex.ts?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
+              'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Fkode-ui%2Fsrc%2Fcomponents%2Findex.ts?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
             patch:
               "@@ -66,6 +66,7 @@ export {\n   DialogContent,\n   DialogFooter,\n   DialogHeader,\n+  DialogHeaderSubtitle,\n   useDialog,\n } from './Dialog';\n export { Divider } from './Divider/Divider';",
           },
@@ -1158,11 +1158,11 @@ describe('reduce utils', () => {
             deletions: 0,
             changes: 1,
             blob_url:
-              'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Findex.ts',
+              'https://github.com/kadena-community/kadena.js/blob/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Findex.ts',
             raw_url:
-              'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Freact-ui%2Fsrc%2Findex.ts',
+              'https://github.com/kadena-community/kadena.js/raw/b06929dcc2136eecf1f87b77e1712a3e91ed47f4/packages%2Flibs%2Fkode-ui%2Fsrc%2Findex.ts',
             contents_url:
-              'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Freact-ui%2Fsrc%2Findex.ts?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
+              'https://api.github.com/repos/kadena-community/kadena.js/contents/packages%2Flibs%2Fkode-ui%2Fsrc%2Findex.ts?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
             patch:
               '@@ -69,6 +69,7 @@ export {\n   DialogContent,\n   DialogFooter,\n   DialogHeader,\n+  DialogHeaderSubtitle,\n   Divider,\n   Form,\n   FormFieldHeader,',
           },

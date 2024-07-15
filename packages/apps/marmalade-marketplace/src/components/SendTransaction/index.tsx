@@ -96,7 +96,7 @@ return(
       {renderTransactionDetails()}
       <Divider />
       <div className={styles.buttonContainer}>
-        {!previewStatus ? 
+        {!previewStatus ?
           (<Button className={styles.button} onPress={handlePreview}>Preview Transaction</Button>)
         : (<Button className={styles.button} onPress={handleSend} loadingLabel="Transaction in Progress.." isLoading={loadingStatus}>Send Transaction</Button>)
         }

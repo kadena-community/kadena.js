@@ -63,14 +63,14 @@ function MintTokenComponent() {
         keys: string[];
         pred: "keys-all" | "keys-2" | "keys-any";
       }
-  
+
       const webauthnAccount:string = await getWebauthnAccount({
         account: account? account.accountName : "",
         host: env.URL,
         networkId: env.NETWORKID,
         chainId: config.chainId,
       }) as string
-  
+
       const amountFormatted = (amount === 1) ? {"decimal": "1.0"} : new PactNumber(amount).toPactDecimal();
 
       await mintToken({
@@ -140,7 +140,7 @@ console.log("hi")
           >
           <TextField label="Token ID" name="tokenId" value={tokenId} onChange={handleTokenInputChange} />
           <NumberField label="Amount" value={amount} onValueChange={hanldeAmountInputChange} />
-  
+
         </CrudCard>
 
         <div className={styles.buttonRow}>

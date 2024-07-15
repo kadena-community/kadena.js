@@ -174,7 +174,7 @@ const Header: FC<IHeaderProps> = (props) => {
             </SelectItem>
           </Select>
 
-          {/* TODO: Maybe replace with SearchField when it is implemented in the react-ui */}
+          {/* TODO: Maybe replace with SearchField when it is implemented in the kode-ui */}
           <TextField
             label={searchTypeLabels[searchType]}
             id="search-field"

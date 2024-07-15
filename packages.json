@@ -162,6 +162,21 @@
     "path": "packages/apps/proof-of-us"
   },
   {
+<<<<<<< HEAD
+=======
+    "name": "@kadena/kode-icons",
+    "version": "0.0.3",
+    "private": false,
+    "path": "packages/libs/kode-icons"
+  },
+  {
+    "name": "@kadena/kode-ui",
+    "version": "0.12.1",
+    "private": false,
+    "path": "packages/libs/kode-ui"
+  },
+  {
+>>>>>>> 2397b1e20 (UI and Icon Library references refactored)
     "name": "@kadena/spirekey-example",
     "version": "0.0.9",
     "private": true,

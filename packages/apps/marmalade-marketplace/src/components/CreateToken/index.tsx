@@ -230,7 +230,7 @@ function CreateTokenComponent() {
             setTokenInput((prev) => ({ ...prev, uri: metadataUrl }));
           });
       };
-      
+
     handleFileUpload()
       .then(() => {
         validateInputs();
@@ -420,8 +420,8 @@ function CreateTokenComponent() {
           >
             No data required
           </CrudCard>)}
-           
-            
+
+
           <div className={styles.buttonRow}>
             <Button type="submit" onClick={handleSubmit}>
               Create Token
@@ -431,7 +431,7 @@ function CreateTokenComponent() {
             <div className={styles.errorBox}>
               <p>Error: {error}</p>
             </div>
-          )} 
+          )}
         </Stack>
       </div>
       ) : (

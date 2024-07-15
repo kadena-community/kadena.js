@@ -125,7 +125,7 @@
 - fa60f7fd9: Fixed Popover not rendering when element was bigger than viewport
 - 6aac4b623: Upgrading deps
 - 5a304c326: Update input for icons to reactElement
-- 8bb3168818: fix: use new text and header components from react-ui package
+- 8bb3168818: fix: use new text and header components from kode-ui package
 - 5c5937eef6: Update tokens
 
 ## 0.8.3

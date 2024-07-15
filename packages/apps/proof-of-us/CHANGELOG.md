@@ -181,7 +181,7 @@
 
 ### Patch Changes
 
-- 8bb3168818: fix: use new text and header components from react-ui package
+- 8bb3168818: fix: use new text and header components from kode-ui package
 - Updated dependencies \[2bac09b5e]
 - Updated dependencies \[b316674811]
 - Updated dependencies \[8f7b1221c]
