@@ -68,7 +68,7 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
       host: env.URL,
       networkId: env.NETWORKID,
       chainId: sale.chainId,
-    })
+    }) as { account: string }
     console.log("signer",  webauthnGuard)
 
     console.log("escrowAccount", escrowAccount);
@@ -85,7 +85,7 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
         signer: webauthnGuard.keys[0],
         buyer: {
           account: webauthnAccount,
-          keyset: webauthnGuard 
+          keyset: webauthnGuard
         },
         buyerFungibleAccount: account.accountName,
         capabilities: [

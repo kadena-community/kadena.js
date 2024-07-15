@@ -6,6 +6,7 @@ export const GET_TOKENS_QUERY = `
       nonFungibleTokenBalances {
         balance
         tokenId
+        chainId
         info {
           uri
         }

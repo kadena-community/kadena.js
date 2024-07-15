@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { ChainId } from '@kadena/client';
 import { getTokenInfo } from '@kadena/client-utils/marmalade'
 import { Stack, Select, SelectItem, Button, NumberField } from "@kadena/kode-ui";
-import { MonoAutoFixHigh, MonoAccountBalanceWallet, MonoAccessTime } from '@kadena/kode-icons';
+import { MonoAutoFixHigh, MonoAccessTime } from '@kadena/kode-icons';
+import { KRoundedFilledKdacolorBlack  } from '@kadena/kode-icons/brand';
 import CrudCard from '@/components/CrudCard';
 import { TokenMetadata } from "@/components/Token";
 import { useAccount } from '@/hooks/account';
@@ -183,7 +184,7 @@ export default function CreateSale() {
           ]}
         >
           <div className={styles.offerContainer}>
-            <NumberField value={saleData.price} onChange={(e) => onSaleDataChange('price', parseInt(e.target.value))} label="Price" minValue={0.1} placeholder="Set the token price in KDA" startVisual={<MonoAccountBalanceWallet />} />
+            <NumberField value={saleData.price} onChange={(e) => onSaleDataChange('price', parseInt(e.target.value))} label="Price" minValue={0.1} placeholder="Set the token price in KDA" startVisual={<KRoundedFilledKdacolorBlack />} />
             <NumberField value={saleData.timeout} onChange={(e) => onSaleDataChange('timeout', parseInt(e.target.value))} label="Timeout" minValue={1} startVisual={<MonoAccessTime />} description="Set the minumum amount of days that the sale will be valid" />
           </div>
         </CrudCard>)}
@@ -199,5 +200,3 @@ export default function CreateSale() {
     </div>
   );
 }
-
-
