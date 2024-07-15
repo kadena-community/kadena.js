@@ -1,3 +1,4 @@
+import type { Transaction } from '@/__generated__/sdk';
 import CompactTable from '@/components/compact-table/compact-table';
 import { FormatAmount } from '@/components/compact-table/utils/format-amount';
 import {
@@ -10,6 +11,7 @@ import type { ApolloError } from '@apollo/client';
 import type { FC } from 'react';
 import React from 'react';
 import type { ISearchItem } from '../search-component/search-component';
+import { loadingData } from './../loading-data-search';
 
 export interface ISearchResultsProps {
   searchData: ISearchItem[];
@@ -17,19 +19,48 @@ export interface ISearchResultsProps {
   errors: ApolloError[];
 }
 
-const SearchResults: FC<ISearchResultsProps> = ({
-  searchData,
-  loading,
-  errors,
-}) => {
+const SearchResults: FC<ISearchResultsProps> = ({ searchData, loading }) => {
   return (
     <>
-      {loading && <div>Loading...</div>}
-      {errors?.length > 0 && (
-        <pre>Error: {JSON.stringify(errors, null, 2)}</pre>
-      )}
-
       <section style={{ width: '100%' }}>
+        {loading && (
+          <CompactTable
+            isLoading={true}
+            fields={[
+              {
+                label: '-',
+                key: 'result.goodResult',
+                variant: 'code',
+                width: '10%',
+              },
+              {
+                label: '-',
+                key: 'cmd.meta.sender',
+                variant: 'code',
+                width: '25%',
+              },
+              {
+                label: '-',
+                key: 'hash',
+                variant: 'code',
+                width: '25%',
+              },
+              {
+                label: '-',
+                key: 'cmd.payload.code',
+                variant: 'code',
+                width: '40%',
+              },
+            ]}
+            data={
+              loadingData.node?.__typename === 'FungibleAccount'
+                ? loadingData.node!.transactions.edges.map(
+                    (edge) => edge.node as Transaction,
+                  )
+                : []
+            }
+          />
+        )}
         {searchData[SearchOptionEnum.ACCOUNT].data.length > 0 && (
           <CompactTable
             fields={[
