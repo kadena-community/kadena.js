@@ -102,14 +102,14 @@ export const useSearch = () => {
 
   useEffect(() => {
     const query = router.query.q;
-    const searchOptionQuery: SearchOptionEnum | null = !isNaN(
-      parseInt(router.query.so as any),
-    )
-      ? parseInt(router.query.so as any)
-      : null;
+    // const searchOptionQuery: SearchOptionEnum | null = !isNaN(
+    //   parseInt(router.query.so as any),
+    // )
+    //   ? parseInt(router.query.so as any)
+    //   : null;
 
     setSearchQuery(query as string);
-    setSearchOption(searchOptionQuery);
+    // setSearchOption(searchOptionQuery);
     setIsMounted(true);
   }, [router.query]);
 

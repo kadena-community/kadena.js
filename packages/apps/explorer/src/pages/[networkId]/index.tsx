@@ -25,7 +25,6 @@ const Home: React.FC = () => {
     errors,
   } = useSearch();
   const { inView, ref: inViewRef } = useInView();
-
   return (
     <Layout>
       <BlockInfoProvider>
@@ -41,8 +40,9 @@ const Home: React.FC = () => {
           </Stack>
         </Media>
 
+        <Stack ref={inViewRef}></Stack>
         <Media lessThan="md" className={fullWidthClass}>
-          <Stack ref={inViewRef} width="100%" marginBlock="xxxl">
+          <Stack width="100%" marginBlock="xxxl">
             <StatisticsGrid inView={inView} />
           </Stack>
         </Media>

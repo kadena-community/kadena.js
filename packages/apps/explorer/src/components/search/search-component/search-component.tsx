@@ -1,18 +1,17 @@
+import LoadingIcon from '@/components/loading-icon/loading-icon';
 import { SearchOptionEnum } from '@/hooks/search/utils/utils';
-import { truncateValues } from '@/services/format';
 import type { ApolloError } from '@apollo/client';
 import { MonoSearch } from '@kadena/kode-icons/system';
-import { Badge, Box, Stack } from '@kadena/kode-ui';
-import { atoms } from '@kadena/kode-ui/styles';
+import { Stack } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import type { Dispatch, SetStateAction } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   editOptionClass,
+  editOptionHoverClass,
   editOptionSelectedClass,
   editingBoxClass,
   searchBadgeBoxClass,
-  searchBarClass,
   searchBoxClass,
   searchBoxEditingClass,
   searchInputClass,
@@ -47,7 +46,9 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
   searchQuery,
   searchOption,
   setSearchOption,
+  loading,
 }) => {
+  const [editHover, setEditHover] = useState<null | number>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [searchValue, setSearchValue] = useState<string>('');
   const [optionClicked, setOptionClicked] = useState(false);
@@ -63,11 +64,9 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
     if (inferedOption === 'Request Key') {
       setSearchOption(SearchOptionEnum.REQUESTKEY);
     }
-
     if (inferedOption === 'Height') {
       setSearchOption(SearchOptionEnum.BLOCKHEIGHT);
     }
-
     if (!inferedOption || inferedOption === undefined) {
       setSearchOption(null);
     }
@@ -109,19 +108,30 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
   const handleSearchValueKeyDown = (
     e: React.KeyboardEvent<HTMLDivElement>,
   ): void => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+    }
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      setIsEditing(false);
+    }
+
     if (e.key === 'ArrowDown') {
       e.preventDefault();
-      setSearchOption((prev) =>
+      setEditHover((prev) =>
         prev === null ? 0 : Math.min(prev + 1, searchData.length - 1),
       );
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
-      setSearchOption((prev) => (prev === null ? 0 : Math.max(prev - 1, 0)));
+      setEditHover((prev) => (prev === null ? 0 : Math.max(prev - 1, 0)));
     } else if (e.key === 'Enter') {
       e.preventDefault();
-      setIsEditing(false);
+      setIsEditing((v) => !v);
       setEscapePressed(false);
       setOptionClicked(false);
+
+      setSearchOption(editHover);
+
       handleSearch();
     } else if (e.key === 'Escape') {
       setOptionClicked(false);
@@ -160,7 +170,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
           style={{ top: position === 'header' ? '-28px' : 0 }}
         >
           <Stack width="100%" alignItems="center" paddingInline="md">
-            <MonoSearch />
+            {loading ? <LoadingIcon /> : <MonoSearch />}
 
             <input
               ref={ref}
@@ -171,7 +181,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
               onClick={() => setIsEditing((v) => !v)}
               className={searchInputClass}
             />
-            {isEditing && (
+            {isEditing && searchOption === null && (
               <Stack className={searchBadgeBoxClass}>Search by</Stack>
             )}
 
@@ -188,9 +198,12 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
                 <Stack
                   className={classNames(editOptionClass, {
                     [editOptionSelectedClass]: searchOption === index,
+                    [editOptionHoverClass]: editHover === index,
                   })}
                   key={index}
                   onMouseDown={() => setOptionClicked(true)}
+                  onMouseEnter={() => setEditHover(index)}
+                  onMouseLeave={() => setEditHover(null)}
                   onClick={() => {
                     handleSearch();
                     setSearchOption(index);

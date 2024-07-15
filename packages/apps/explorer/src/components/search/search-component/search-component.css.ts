@@ -86,15 +86,6 @@ export const editOptionClass = style([
     paddingBlock: 'sm',
     cursor: 'pointer',
   }),
-  {
-    selectors: {
-      '&:hover': {
-        backgroundColor:
-          tokens.kda.foundation.color.background.brand.primary.default,
-        color: tokens.kda.foundation.color.text.base.default,
-      },
-    },
-  },
 ]);
 
 export const editOptionSelectedClass = style([
@@ -106,5 +97,12 @@ export const editOptionSelectedClass = style([
     borderLeftStyle: 'solid',
     borderLeftWidth: '6px',
     borderLeftColor: tokens.kda.foundation.color.border.brand.primary.default,
+  },
+]);
+export const editOptionHoverClass = style([
+  {
+    backgroundColor:
+      tokens.kda.foundation.color.background.brand.primary.default,
+    color: tokens.kda.foundation.color.text.base.default,
   },
 ]);

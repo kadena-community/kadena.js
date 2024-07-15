@@ -1,5 +1,4 @@
 import { useNetworkInfoQuery } from '@/__generated__/sdk';
-import { Media } from '@/components/layout/media';
 import { useToast } from '@/components/toasts/toast-context/toast-context';
 import { CONSTANTS } from '@/constants/constants';
 import { formatStatisticsData } from '@/services/format';
