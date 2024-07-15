@@ -62,7 +62,8 @@ const generateTransactionFilter = async (args: {
 
 builder.queryField('transactions', (t) =>
   t.prismaConnection({
-    description: 'Retrieve transactions. Default page size is 20.',
+    description:
+      'Retrieve transactions. Default page size is 20.\n At least one of accountName, fungibleName, blockHash, or requestKey must be provided.',
     type: Prisma.ModelName.Transaction,
     cursor: 'blockHash_requestKey',
     edgesNullable: false,
@@ -162,6 +163,23 @@ builder.queryField('transactions', (t) =>
             },
           ]);
         }
+
+        if (
+          stringNullOrEmpty(args.accountName) &&
+          stringNullOrEmpty(args.fungibleName) &&
+          stringNullOrEmpty(args.blockHash) &&
+          stringNullOrEmpty(args.requestKey)
+        ) {
+          throw new ZodError([
+            {
+              code: 'custom',
+              message:
+                'At least one of accountName, fungibleName, blockHash, or requestKey must be provided',
+              path: ['transactions'],
+            },
+          ]);
+        }
+
         let transactions: Transaction[] = [];
         let skip = 0;
         const take = query.take;
