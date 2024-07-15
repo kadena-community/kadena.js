@@ -49,6 +49,8 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
   setSearchOption,
   loading,
 }) => {
+  const [selectedSearchOption, setSelectedSearchOption] =
+    useState<SearchOptionEnum | null>(null);
   const [editHover, setEditHover] = useState<null | number>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [searchValue, setSearchValue] = useState<string>('');
@@ -59,6 +61,9 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
   const handleSearchOption = (
     inferedOption: SearchItemTitle | undefined,
   ): void => {
+    // if the option is selected by hand, do not infer the value
+    if (selectedSearchOption) return;
+
     if (inferedOption === 'Account') {
       setSearchOption(SearchOptionEnum.ACCOUNT);
     }
@@ -187,12 +192,20 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
 
             {searchOption !== null && (
               <Stack
+                gap="xs"
+                as="button"
                 className={classNames(
                   searchBadgeBoxClass,
                   searchBadgeBoxSelectedClass,
                 )}
+                onClick={() => {
+                  setSelectedSearchOption(null);
+                  setSearchOption(null);
+                }}
               >
                 {!!searchData[searchOption] && searchData[searchOption].title}
+
+                <Stack as="span">x</Stack>
               </Stack>
             )}
           </Stack>
@@ -211,6 +224,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
                   onMouseLeave={() => setEditHover(null)}
                   onClick={() => {
                     handleSearch();
+                    setSelectedSearchOption(index);
                     setSearchOption(index);
                     setIsEditing(false);
                   }}

@@ -66,6 +66,7 @@ export const searchBadgeBoxSelectedClass = style([
   {
     backgroundColor: token('color.background.base.inverse.default'),
     color: token('color.text.base.inverse.default'),
+    cursor: 'pointer',
   },
 ]);
 
