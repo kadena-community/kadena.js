@@ -36,32 +36,30 @@ const StatisticsGrid: FC<IStatisticsGridProps> = ({ inView }) => {
   const statisticsGridData = formatStatisticsData(statisticsData?.networkInfo);
 
   return (
-    <Media lessThan="md">
-      <Grid columns={2} borderStyle="solid" borderWidth="hairline">
-        {statisticsGridData.map((item) => (
-          <Stack
-            flexDirection={'column'}
-            alignItems={'center'}
-            padding={'sm'}
-            borderStyle="solid"
-            borderWidth="hairline"
-            key={`statistic-stack-${item.label}`}
+    <Grid columns={2} borderStyle="solid" borderWidth="hairline" width="100%">
+      {statisticsGridData.map((item) => (
+        <Stack
+          flexDirection={'column'}
+          alignItems={'center'}
+          padding={'sm'}
+          borderStyle="solid"
+          borderWidth="hairline"
+          key={`statistic-stack-${item.label}`}
+        >
+          <Text variant="code">{item.value}</Text>
+          <Text
+            variant="code"
+            bold
+            size="smallest"
+            className={atoms({
+              flexWrap: 'nowrap',
+            })}
           >
-            <Text variant="code">{item.value}</Text>
-            <Text
-              variant="code"
-              bold
-              size="smallest"
-              className={atoms({
-                flexWrap: 'nowrap',
-              })}
-            >
-              {item.label}
-            </Text>
-          </Stack>
-        ))}
-      </Grid>
-    </Media>
+            {item.label}
+          </Text>
+        </Stack>
+      ))}
+    </Grid>
   );
 };
 

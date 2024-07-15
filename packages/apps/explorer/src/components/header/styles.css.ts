@@ -10,7 +10,7 @@ export const headerClass = style([
     backgroundColor:
       tokens.kda.foundation.color.background.surfaceHighContrast.default,
 
-    zIndex: tokens.kda.foundation.zIndex.sticky,
+    zIndex: tokens.kda.foundation.zIndex.overlay,
   },
 
   responsiveStyle({

@@ -4,12 +4,17 @@ import type { ApolloError } from '@apollo/client';
 import { MonoSearch } from '@kadena/kode-icons/system';
 import { Badge, Box, Stack } from '@kadena/kode-ui';
 import { atoms } from '@kadena/kode-ui/styles';
+import classNames from 'classnames';
 import type { Dispatch, SetStateAction } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  editOptionClass,
+  editOptionSelectedClass,
   editingBoxClass,
   searchBadgeBoxClass,
+  searchBarClass,
   searchBoxClass,
+  searchBoxEditingClass,
   searchInputClass,
 } from './search-component.css';
 
@@ -32,9 +37,11 @@ export interface ISearchComponentProps {
   setSearchOption: Dispatch<SetStateAction<SearchOptionEnum | null>>;
   loading: boolean;
   errors: ApolloError[];
+  position?: 'header' | 'default';
 }
 
 const SearchComponent: React.FC<ISearchComponentProps> = ({
+  position = 'default',
   searchData,
   setSearchQuery,
   searchQuery,
@@ -145,86 +152,57 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
           }
         }}
       >
-        <Box
-          display={'inline-flex'}
-          flexDirection={'row'}
-          alignItems={'center'}
-          borderStyle="solid"
-          borderWidth="hairline"
-          backgroundColor="base.default"
-          gap={'sm'}
-          paddingInlineStart={'sm'}
-          paddingInlineEnd={'sm'}
-          className={searchBoxClass}
+        <Stack
+          alignItems="flex-start"
+          className={classNames(searchBoxClass, {
+            [searchBoxEditingClass]: isEditing,
+          })}
+          style={{ top: position === 'header' ? '-28px' : 0 }}
         >
-          <MonoSearch />
+          <Stack width="100%" alignItems="center" paddingInline="md">
+            <MonoSearch />
 
-          <input
-            ref={ref}
-            type="text"
-            placeholder="Search the Kadena Blockchain on"
-            value={searchValue}
-            onChange={(e) => handleSearchValueChange(e)}
-            onClick={() => setIsEditing((v) => !v)}
-            className={searchInputClass}
-          />
+            <input
+              ref={ref}
+              type="text"
+              placeholder="Search the Kadena Blockchain on"
+              value={searchValue}
+              onChange={(e) => handleSearchValueChange(e)}
+              onClick={() => setIsEditing((v) => !v)}
+              className={searchInputClass}
+            />
+            {isEditing && (
+              <Stack className={searchBadgeBoxClass}>Search by</Stack>
+            )}
 
-          {searchOption !== null && (
-            <Box
-              display={'flex'}
-              justifyContent={'flex-end'}
-              className={searchBadgeBoxClass}
-            >
-              {searchData[searchOption] && (
-                <Badge size="lg">{searchData[searchOption].title}</Badge>
-              )}
-            </Box>
+            {searchOption !== null && (
+              <Stack className={searchBadgeBoxClass}>
+                {!!searchData[searchOption] && searchData[searchOption].title}
+              </Stack>
+            )}
+          </Stack>
+
+          {isEditing && (
+            <Stack flexDirection="column" className={editingBoxClass}>
+              {searchData?.map((item, index) => (
+                <Stack
+                  className={classNames(editOptionClass, {
+                    [editOptionSelectedClass]: searchOption === index,
+                  })}
+                  key={index}
+                  onMouseDown={() => setOptionClicked(true)}
+                  onClick={() => {
+                    handleSearch();
+                    setSearchOption(index);
+                    setIsEditing(false);
+                  }}
+                >
+                  <Stack>{item.title}</Stack>
+                </Stack>
+              ))}
+            </Stack>
           )}
-        </Box>
-
-        {isEditing && (
-          <div className={editingBoxClass}>
-            {searchData?.map((item, index) => (
-              <Box
-                key={index}
-                onMouseDown={() => setOptionClicked(true)}
-                onClick={() => {
-                  handleSearch();
-                  setSearchOption(index);
-                  setIsEditing(false);
-                }}
-                style={{
-                  gridTemplateColumns: '1fr 3fr',
-                  borderLeft: index === searchOption ? 'solid' : 'none',
-                }}
-                className={atoms({
-                  display: 'grid',
-                  alignItems: 'flex-start',
-                  paddingInlineStart: 'md',
-                  cursor: 'pointer',
-                  backgroundColor:
-                    index === searchOption ? 'base.@active' : 'base.default',
-                  width: '100%',
-                })}
-              >
-                <div
-                  className={atoms({
-                    alignItems: 'flex-start',
-                  })}
-                >
-                  {item.title}
-                </div>
-                <div
-                  className={atoms({
-                    alignItems: 'flex-end',
-                  })}
-                >
-                  {truncateValues(searchValue)}
-                </div>
-              </Box>
-            ))}
-          </div>
-        )}
+        </Stack>
       </Stack>
     </>
   );
