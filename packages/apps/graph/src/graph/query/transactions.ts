@@ -119,6 +119,25 @@ builder.queryField('transactions', (t) =>
       }),
     }),
     async totalCount(__parent, args) {
+      // at least one of these should be in the args
+      // accountName && fungibleName
+      // blockHash
+      // requestKey
+      if (
+        stringNullOrEmpty(args.accountName) &&
+        stringNullOrEmpty(args.fungibleName) &&
+        stringNullOrEmpty(args.blockHash) &&
+        stringNullOrEmpty(args.requestKey)
+      ) {
+        throw new ZodError([
+          {
+            code: 'custom',
+            message:
+              'At least one of accountName, fungibleName, blockHash, or requestKey must be provided',
+            path: ['transactions'],
+          },
+        ]);
+      }
       try {
         return prismaClient.transaction.count({
           where: await generateTransactionFilter(args),
@@ -190,3 +209,7 @@ builder.queryField('transactions', (t) =>
     },
   }),
 );
+
+function stringNullOrEmpty(s: string | null | undefined): boolean {
+  return s === null || s === undefined || s === '';
+}
