@@ -169,55 +169,86 @@ function CreateTokenComponent() {
     setCollectionInput((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (event: FormEvent) => {
+  const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     try {
-      if (!account) throw new Error("Connect Spirekey account")
+      if (!account) throw new Error("Connect Spirekey account");
 
       let updatedTokenInput = { ...tokenInput };
 
-      if (isOpen) {
-        const imageUrl = await uploadFile(file);
-        if (!imageUrl) throw new Error('Error creating image URL');
-        const metadataUrl = await uploadMetadata({...metadata, image: imageUrl});
-        if (!metadataUrl) throw new Error('Error creating metadata URL');
-        updatedTokenInput = { ...updatedTokenInput, uri: metadataUrl };
-        setTokenInput((prev) => ({ ...prev, uri: metadataUrl }));
-      }
-      
-      if (policyConfig.hasRoyalty && (!royaltyInput.royaltyFungible || !royaltyInput.royaltyCreator || !royaltyInput.royaltyGuard || !royaltyInput.royaltyRate)) {
-        throw new Error('Please provide all Royalty inputs');
-      }
+      const validateInputs = () => {
+        if (policyConfig.hasRoyalty && (!royaltyInput.royaltyFungible || !royaltyInput.royaltyCreator || !royaltyInput.royaltyGuard || !royaltyInput.royaltyRate)) {
+          throw new Error('Please provide all Royalty inputs');
+        }
 
-      if (policyConfig.collection && !collectionInput.collectionId) {
-        throw new Error('Please provide all Collection inputs');
-      }
-    
-      const inputs = {
+        if (policyConfig.collection && !collectionInput.collectionId) {
+          throw new Error('Please provide all Collection inputs');
+        }
+      };
+
+      const createInputs = () => ({
         ...formatInput(updatedTokenInput),
         policyConfig,
         policies: getPolicies(policyConfig),
         guards: formatGuardInput(guardInput),
         royalty: formatRoyaltyInput(royaltyInput),
         collection: collectionInput,
+      });
+
+      const processTokenCreation = async (inputs: any) => {
+        try {
+          const tokenIdCreated = await createTokenId({ ...inputs, networkId: config.networkId, host: config.host });
+          setTokenId(tokenIdCreated);
+
+          await createToken(
+            {
+              ...inputs,
+              tokenId: tokenIdCreated,
+              capabilities: generateSpireKeyGasCapability(walletAccount),
+            },
+            {
+              ...config,
+              defaults: { networkId: config.networkId, meta: { chainId: inputs.chainId } },
+            }
+          ).execute();
+        } catch (error) {
+          console.error(error);
+          setError(JSON.stringify(error.message));
+        }
       };
 
-      const tokenIdCreated = await createTokenId({ ...inputs, networkId: config.networkId, host: config.host });
-      setTokenId(tokenIdCreated);
+      const handleFileUpload = () => {
+        return uploadFile(file)
+          .then((imageUrl) => {
+            if (!imageUrl) throw new Error('Error creating image URL');
+            return uploadMetadata({ ...metadata, image: imageUrl });
+          })
+          .then((metadataUrl) => {
+            if (!metadataUrl) throw new Error('Error creating metadata URL');
+            updatedTokenInput = { ...updatedTokenInput, uri: metadataUrl };
+            setTokenInput((prev) => ({ ...prev, uri: metadataUrl }));
+          });
+      };
 
-      await createToken(
-        {
-          ...inputs,
-          tokenId: tokenIdCreated,
-          capabilities: generateSpireKeyGasCapability(walletAccount)
-        },
-        {
-          ...config,
-          defaults: { networkId: config.networkId, meta: { chainId: inputs.chainId } },
-        }
-      ).execute();
-    } catch (e) {
-      setError(JSON.stringify(e.message));
+      if (isOpen) {
+        handleFileUpload()
+          .then(() => {
+            validateInputs();
+            const inputs = createInputs();
+            processTokenCreation(inputs);
+          })
+          .catch((error) => {
+            console.error(error);
+            setError(JSON.stringify(error.message));
+          });
+      } else {
+        validateInputs();
+        const inputs = createInputs();
+        processTokenCreation(inputs);
+      }
+    } catch (error) {
+      console.error(error);
+      setError(JSON.stringify(error.message));
     }
   };
 
