@@ -11,12 +11,14 @@ interface IProps {
   selectNetwork: (value: any) => void;
   removeNetwork: (value: INetwork) => void;
   isActive: boolean;
+  isDefaultNetwork: boolean;
 }
 const NetworkListItem: FC<IProps> = ({
   network,
   selectNetwork,
   isActive,
   removeNetwork,
+  isDefaultNetwork,
 }) => {
   const handleSelect = useCallback(() => {
     selectNetwork(network.networkId);
@@ -34,11 +36,13 @@ const NetworkListItem: FC<IProps> = ({
       <Heading as="h5">{network.label}</Heading>
       <Stack flex={1} />
       <Stack gap="xs">
+        {!isDefaultNetwork && (
+          <Button variant="outlined" onPress={handleRemove}>
+            <MonoRemove />
+          </Button>
+        )}
         <Button variant="outlined" onPress={handleSelect}>
           Select
-        </Button>
-        <Button variant="outlined" onPress={handleRemove}>
-          <MonoRemove />
         </Button>
       </Stack>
     </Stack>

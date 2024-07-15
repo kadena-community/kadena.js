@@ -1,5 +1,6 @@
 import type { INetwork } from '@/context/networks-context';
 import { useNetwork } from '@/context/networks-context';
+import { isDefaultNetwork } from '@/utils/isDefaultNetwork';
 import { MonoCheck, MonoClose } from '@kadena/kode-icons/system';
 import {
   Button,
@@ -111,6 +112,7 @@ const NewNetwork: FC<IProps> = ({
             {networks.map((network) => (
               <>
                 <NetworkListItem
+                  isDefaultNetwork={isDefaultNetwork(network)}
                   isActive={
                     activeNetwork.networkId === network.networkId &&
                     activeNetwork.label === network.label

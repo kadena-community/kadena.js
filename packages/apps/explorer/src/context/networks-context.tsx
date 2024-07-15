@@ -1,6 +1,7 @@
 import { useRouter } from '@/components/routing/useRouter';
 import { useToast } from '@/components/toasts/toast-context/toast-context';
-import { networkConstants } from '@/constants/network';
+import { getDefaultNetworks } from '@/utils/getDefaultNetworks';
+import { isDefaultNetwork } from '@/utils/isDefaultNetwork';
 import type { NormalizedCacheObject } from '@apollo/client';
 import {
   ApolloClient,
@@ -19,26 +20,11 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import type { INetwork, INetworkContext } from './types';
 
 // next/apollo-link bug: https://github.com/dotansimha/graphql-yoga/issues/2194
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { YogaLink } = require('@graphql-yoga/apollo-link');
-
-export type INetwork = Omit<
-  typeof networkConstants.mainnet01,
-  'chainwebUrl' | 'explorerUrl'
-> & {
-  chainwebUrl?: string;
-  explorerUrl?: string;
-};
-
-interface INetworkContext {
-  networks: INetwork[];
-  activeNetwork: INetwork;
-  setActiveNetwork: (activeNetwork: INetwork['networkId']) => void;
-  addNetwork: (newNetwork: INetwork) => void;
-  removeNetwork: (newNetwork: INetwork) => void;
-}
 
 const NetworkContext = createContext<INetworkContext>({
   networks: [],
@@ -64,11 +50,6 @@ const useNetwork = (): INetworkContext => {
 
   return context;
 };
-
-const getDefaultNetworks = (): INetworkContext['networks'] => [
-  networkConstants.mainnet01,
-  networkConstants.testnet04,
-];
 
 const NetworkContextProvider = (props: {
   networks?: INetwork[];
@@ -125,12 +106,8 @@ const NetworkContextProvider = (props: {
 
   const removeNetwork = (network: INetwork): void => {
     //check that network is not a default network
-    const defaultNetworks = getDefaultNetworks();
-    if (
-      defaultNetworks.find(
-        (n) => n?.label === network.label && n.networkId === network.networkId,
-      )
-    ) {
+
+    if (isDefaultNetwork(network)) {
       addToast({
         type: 'negative',
         label: 'Something went wrong',
@@ -139,13 +116,23 @@ const NetworkContextProvider = (props: {
       return;
     }
 
-    setNetworks((v) =>
-      v.filter(
-        (n) => n?.label === network.label && n.networkId === network.networkId,
-      ),
-    );
+    setNetworks((v) => {
+      const innerNetworks = v
+        .filter(
+          (n) =>
+            n?.label !== network.label && n.networkId !== network.networkId,
+        )
+        .filter((v) => !isDefaultNetwork(v));
+      localStorage.setItem(storageKey, JSON.stringify(innerNetworks));
 
-    return;
+      return innerNetworks;
+    });
+
+    addToast({
+      type: 'info',
+      label: 'Success',
+      body: 'Network was successfully removed',
+    });
 
     //check that its not an activenetwork
     if (
