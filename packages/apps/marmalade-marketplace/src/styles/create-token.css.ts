@@ -4,7 +4,7 @@ import { deviceColors } from '@/styles/tokens.css';
 
 globalStyle('body', {
   color: 'white',
-  backgroundColor: deviceColors.kadenaBlack,
+  // backgroundColor: deviceColors.kadenaBlack,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',

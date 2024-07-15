@@ -226,27 +226,23 @@ function CreateTokenComponent() {
           .then((metadataUrl) => {
             if (!metadataUrl) throw new Error('Error creating metadata URL');
             updatedTokenInput = { ...updatedTokenInput, uri: metadataUrl };
+
             setTokenInput((prev) => ({ ...prev, uri: metadataUrl }));
           });
       };
-
-      if (isOpen) {
-        handleFileUpload()
-          .then(() => {
-            validateInputs();
-            const inputs = createInputs();
-            processTokenCreation(inputs);
-          })
-          .catch((error) => {
-            console.error(error);
-            setError(JSON.stringify(error.message));
-          });
-      } else {
+      
+    handleFileUpload()
+      .then(() => {
         validateInputs();
         const inputs = createInputs();
         processTokenCreation(inputs);
-      }
-    } catch (error) {
+      })
+      .catch((error) => {
+        console.error(error);
+        setError(JSON.stringify(error.message));
+      });
+
+        } catch (error) {
       console.error(error);
       setError(JSON.stringify(error.message));
     }
