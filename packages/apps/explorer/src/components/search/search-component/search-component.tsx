@@ -205,7 +205,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
               >
                 {!!searchData[searchOption] && searchData[searchOption].title}
 
-                <Stack as="span">x</Stack>
+                {!!selectedSearchOption && <Stack as="span">x</Stack>}
               </Stack>
             )}
           </Stack>
