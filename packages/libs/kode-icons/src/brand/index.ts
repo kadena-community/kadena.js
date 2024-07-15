@@ -1,3 +1,6 @@
+export { default as KRoundedFilledKdacolorBlack } from './KRoundedFilledKdacolorBlack';
+export { default as KRoundedFilledKdacolorGreen } from './KRoundedFilledKdacolorGreen';
+export { default as KRoundedFilledKdacolorWhite } from './KRoundedFilledKdacolorWhite';
 export { default as KRoundedKdacolorBlack } from './KRoundedKdacolorBlack';
 export { default as KRoundedKdacolorGreen } from './KRoundedKdacolorGreen';
 export { default as KRoundedKdacolorWhite } from './KRoundedKdacolorWhite';
