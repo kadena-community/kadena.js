@@ -15,9 +15,7 @@ export const layoutWrapperClass = style({
   maxWidth: $$pageWidth,
 });
 
-export const contentClass = style([
-  {
-    marginTop: '64px',
-    minHeight: 'calc(100vh - 248px)',
-  },
-]);
+export const contentClass = style({
+  marginTop: '64px',
+  minHeight: 'calc(100vh - 248px)',
+});
