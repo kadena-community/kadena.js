@@ -9,7 +9,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   editOptionClass,
   editOptionHoverClass,
-  editOptionSelectedClass,
   editingBoxClass,
   searchBadgeBoxClass,
   searchBadgeBoxSelectedClass,
@@ -51,16 +50,23 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
 }) => {
   const [editHover, setEditHover] = useState<null | number>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [searchValue, setSearchValue] = useState<string>('');
   const [innerSearchOption, setInnerSearchOption] =
     useState<SearchOptionEnum | null>(searchOption);
   const [optionClicked, setOptionClicked] = useState(false);
 
   const ref = useRef<HTMLInputElement>(null);
 
-  const handleSearch = (): void => {
-    setSearchOption(innerSearchOption);
+  const handleSearch = (searchOptionIdx: SearchOptionEnum | null): void => {
+    console.log('handlesearch', searchOptionIdx);
+    if (searchOptionIdx !== null) {
+      setSearchOption(searchOptionIdx);
+      setInnerSearchOption(searchOptionIdx);
+    } else {
+      setSearchOption(innerSearchOption);
+    }
     setIsEditing(false);
+    //setEditHover(null);
+    console.log({ innerSearchOption });
 
     const value = ref.current?.value ?? '';
     if (setSearchQuery) setSearchQuery(value);
@@ -69,9 +75,9 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
   const handleSearchValueChange = (
     e: React.ChangeEvent<HTMLInputElement>,
   ): void => {
-    setSearchOption(null);
+    setInnerSearchOption(null);
+    setEditHover(null);
     setIsEditing(true);
-    setSearchValue(e.target.value);
   };
 
   const handleSearchValueKeyDown = (
@@ -89,10 +95,9 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
       e.preventDefault();
       setOptionClicked(false);
 
-      handleSearch();
+      handleSearch(editHover);
     } else if (e.key === 'Escape') {
       setOptionClicked(false);
-      setInnerSearchOption(null);
       setIsEditing(false);
     } else {
       setOptionClicked(false);
@@ -111,14 +116,6 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
       window.removeEventListener('scroll', scrollListener);
     };
   }, [setIsEditing]);
-
-  useEffect(() => {
-    setInnerSearchOption(searchOption);
-  }, [searchOption]);
-
-  useEffect(() => {
-    setSearchValue(searchQuery ?? '');
-  }, [searchQuery]);
 
   return (
     <>
@@ -149,17 +146,17 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
               ref={ref}
               type="text"
               placeholder="Search the Kadena Blockchain on"
-              value={searchValue}
+              defaultValue={searchQuery}
               onFocus={() => setIsEditing(true)}
               onClick={() => setIsEditing(true)}
               onChange={(e) => handleSearchValueChange(e)}
               className={searchInputClass}
             />
-            {isEditing && searchOption === null && (
+            {isEditing && innerSearchOption === null && (
               <Stack className={searchBadgeBoxClass}>Search by</Stack>
             )}
 
-            {searchOption !== null && (
+            {innerSearchOption !== null && (
               <Stack
                 gap="xs"
                 as="button"
@@ -169,10 +166,10 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
                 )}
                 onClick={() => {
                   setOptionClicked(false);
-                  setSearchOption(null);
+                  setInnerSearchOption(null);
                 }}
               >
-                {searchData[searchOption].title}
+                {searchData[innerSearchOption].title}
 
                 <Stack as="span">x</Stack>
               </Stack>
@@ -191,7 +188,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
                   onMouseEnter={() => setEditHover(index)}
                   onMouseLeave={() => setEditHover(null)}
                   onClick={() => {
-                    setSearchOption(index);
+                    setInnerSearchOption(index);
                     setIsEditing(false);
                     setOptionClicked(false);
                   }}

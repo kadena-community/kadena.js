@@ -96,17 +96,6 @@ export const editOptionClass = style([
   }),
 ]);
 
-export const editOptionSelectedClass = style([
-  atoms({
-    backgroundColor: 'brand.primary.inverse.@active',
-    color: 'text.base.inverse.@active',
-  }),
-  {
-    borderLeftStyle: 'solid',
-    borderLeftWidth: '6px',
-    borderLeftColor: tokens.kda.foundation.color.border.brand.primary.default,
-  },
-]);
 export const editOptionHoverClass = style([
   {
     backgroundColor:
