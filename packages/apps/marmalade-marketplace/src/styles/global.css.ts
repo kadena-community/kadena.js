@@ -28,7 +28,6 @@ export const mainWrapperClass = style({
   height: '100dvh',
   margin: '0 auto',
   paddingBottom: '50px',
-
   overflowY: 'auto',
   overflowX: 'hidden',
 });

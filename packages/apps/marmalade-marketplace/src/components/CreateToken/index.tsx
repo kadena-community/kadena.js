@@ -327,7 +327,6 @@ function CreateTokenComponent() {
               "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia"
             ]}
           >
-            <div>
               <GenerateURIForm
                 handleTokenInputChange={handleTokenInputChange}
                 tokenInput={tokenInput}
@@ -355,7 +354,6 @@ function CreateTokenComponent() {
                   <SelectItem key={option} textValue={option}>{option}</SelectItem>
                 ))}
               </Select>
-            </div>
           </CrudCard>
           <CrudCard
               title="Metadata"

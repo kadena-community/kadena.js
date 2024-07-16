@@ -3,7 +3,8 @@ import { buyToken, getEscrowAccount } from "@kadena/client-utils/marmalade";
 import { getWebauthnGuard, getWebauthnAccount } from "@kadena/client-utils/webauthn";
 import * as styles from "@/styles/sale.css"
 import { env } from "@/utils/env";
-import { Button } from "@kadena/kode-ui";
+import { MonoAutoFixHigh, MonoAccountBalanceWallet, MonoAccessTime } from '@kadena/kode-icons';
+import { Stack, Button } from "@kadena/kode-ui";
 import { createSignWithSpireKey } from "@/utils/signWithSpireKey";
 import { Sale } from "@/hooks/getSales";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -11,6 +12,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { useAccount } from "@/hooks/account";
 import { PactNumber } from "@kadena/pactjs";
 import { generateSpireKeyGasCapability } from "@/utils/helper";
+import CrudCard from '@/components/CrudCard';
 
 export interface RegularSaleProps {
   tokenImageUrl: string;
@@ -108,19 +110,36 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
   }
 
   return (
-    <div className={styles.twoColumnRow}>
+    <>
+      <CrudCard
+        headingSize="h3"
+        titleIcon={<MonoAutoFixHigh />}
+        title="View a Sale"
+        description={[
+          "View Available Sales and Buy",
+          "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi",
+          "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore",
+          "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia"
+        ]}
+      >
       <img
         src={tokenImageUrl}
         alt="Token Image"
         className={styles.tokenImageClass}
       />
-      <div className={styles.tokenInfoClass}>
-        Price: {sale.startPrice}
+      </CrudCard>
+      <CrudCard       
+        title="Sale Information"
+        description= {[]}
+      >
+        <div className={styles.tokenInfoClass}>
+          Price: {sale.startPrice}
 
         <Button variant="primary" onClick={handleBuyNow}>
           Buy Now
         </Button>
       </div>
-    </div>
+      </CrudCard>
+    </>
   );
 }

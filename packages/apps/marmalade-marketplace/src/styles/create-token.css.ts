@@ -243,12 +243,23 @@ export const buttonRowContainer = style({
   justifyContent: 'space-between',
 });
 
+
+export const tokenImageWrapper = style({
+  width: '100%',
+  paddingBottom: '100%', 
+  position: 'relative',
+  borderRadius: tokens.kda.foundation.radius.lg,
+  margin: '-88px 0 20px',
+});
+
 export const tokenImageClass = style({
   width: '100%',
   height: '100%',
   objectFit: 'cover',
+  position: 'absolute',
+  top: 0,
+  left: 0,  
   borderRadius: tokens.kda.foundation.radius.lg,
-  margin: '-88px 0 20px',
 });
 
 export const propertyContainer = style({

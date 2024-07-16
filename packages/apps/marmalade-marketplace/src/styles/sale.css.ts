@@ -2,6 +2,7 @@
 
 import { deviceColors } from '@/styles/tokens.css';
 import { globalStyle, style } from '@vanilla-extract/css';
+import { tokens } from '@kadena/kode-ui/styles';
 
 globalStyle('body', {
   color: 'white',
@@ -73,4 +74,11 @@ export const bidClass = style({
   flexDirection: 'row',
   gap: '4px',
   maxWidth: '400px',
+});
+
+export const container = style({
+  margin: '160px 15% 0',
+  backgroundColor: tokens.kda.foundation.color.background.surface.default,
+  borderRadius: tokens.kda.foundation.radius.sm,
+  border: `1px solid ${deviceColors.borderColor}`,
 });

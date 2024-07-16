@@ -13,6 +13,7 @@ import { DutchAuction } from '@/components/Sale/DutchAuction';
 import { RegularSale } from '@/components/Sale/RegularSale';
 import { getSale } from '@/hooks/getSale';
 import { QuoteInfo } from '@/pages/api/cron';
+import CrudCard from '@/components/CrudCard';
 
 interface TokenInfo {
   uri: string;
@@ -107,7 +108,8 @@ export default function Sale() {
       <Heading>
         <title>SaleId</title>
       </Heading>
-      <Stack flex={1} flexDirection="column">
+      <Stack flex={1} flexDirection="column"  className={styles.container}>
+        
         <h3>{getSaleType()} - {params?.["saleId"]}</h3>
         <br />
 
@@ -132,8 +134,10 @@ export default function Sale() {
           />
         )}
 
-        <div className={styles.tokenDetailsWrapper}>
-          <span>Token Details</span>
+        <CrudCard 
+          title="Token Details"
+          description={[]}>
+            
           <div className={styles.tokenDetailsInnerContainer}>
             <span>Supply: {tokenInfo?.["supply"]}</span>
             <span>Amount: {data?.amount}</span>
@@ -142,7 +146,7 @@ export default function Sale() {
             <span>SaleId: {params?.["saleId"]}</span>
             <span>Seller: {data?.seller.account}</span>
           </div>
-        </div>
+        </CrudCard>
       </Stack>
     </>
   );
