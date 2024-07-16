@@ -22,11 +22,11 @@ export const validateNewNetwork = (
         switch (key) {
           case 'networkId':
           case 'slug':
+          case 'label':
           case 'graphUrl':
             return value === undefined || value.length <= 0
               ? `'${key}' is required`
               : undefined;
-          case 'label':
           case 'chainwebUrl':
           default:
             return undefined;
