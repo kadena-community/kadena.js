@@ -21,6 +21,7 @@ export const validateNewNetwork = (
       .map(([key, value]) => {
         switch (key) {
           case 'networkId':
+          case 'slug':
           case 'graphUrl':
             return value === undefined || value.length <= 0
               ? `'${key}' is required`
