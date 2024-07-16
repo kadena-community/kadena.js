@@ -54,6 +54,8 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
   const [editHover, setEditHover] = useState<null | number>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [searchValue, setSearchValue] = useState<string>('');
+  const [innerSearchOption, setInnerSearchOption] =
+    useState<SearchOptionEnum | null>(searchOption);
   const [optionClicked, setOptionClicked] = useState(false);
   const [escapePressed, setEscapePressed] = useState(false);
   const ref = useRef<HTMLInputElement>(null);
@@ -65,16 +67,16 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
     if (selectedSearchOption) return;
 
     if (inferedOption === 'Account') {
-      setSearchOption(SearchOptionEnum.ACCOUNT);
+      setInnerSearchOption(SearchOptionEnum.ACCOUNT);
     }
     if (inferedOption === 'Request Key') {
-      setSearchOption(SearchOptionEnum.REQUESTKEY);
+      setInnerSearchOption(SearchOptionEnum.REQUESTKEY);
     }
     if (inferedOption === 'Height') {
-      setSearchOption(SearchOptionEnum.BLOCKHEIGHT);
+      setInnerSearchOption(SearchOptionEnum.BLOCKHEIGHT);
     }
     if (!inferedOption || inferedOption === undefined) {
-      setSearchOption(null);
+      setInnerSearchOption(null);
     }
   };
 
@@ -98,6 +100,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
   const handleSearch = (): void => {
     const value = ref.current?.value ?? '';
     if (setSearchQuery) setSearchQuery(value);
+    setSearchOption(innerSearchOption);
   };
 
   const handleSearchValueChange = (
@@ -107,8 +110,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
 
     if (escapePressed || optionClicked) return;
 
-    const inferedOption = inferOption(e.target.value);
-    handleSearchOption(inferedOption);
+    handleSearchOption(inferOption(e.target.value));
   };
 
   const handleSearchValueKeyDown = (
@@ -139,7 +141,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
       handleSearch();
     } else if (e.key === 'Escape') {
       setOptionClicked(false);
-      setSearchOption(null);
+      setInnerSearchOption(null);
       setEscapePressed(true);
       setIsEditing(false);
     } else {
@@ -147,6 +149,10 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
       setOptionClicked(false);
     }
   };
+
+  useEffect(() => {
+    setInnerSearchOption(searchOption);
+  }, [searchOption]);
 
   useEffect(() => {
     setSearchValue(searchQuery ?? '');
@@ -186,11 +192,11 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
               onClick={() => setIsEditing((v) => !v)}
               className={searchInputClass}
             />
-            {isEditing && searchOption === null && (
+            {isEditing && innerSearchOption === null && (
               <Stack className={searchBadgeBoxClass}>Search by</Stack>
             )}
 
-            {searchOption !== null && (
+            {innerSearchOption !== null && (
               <Stack
                 gap="xs"
                 as="button"
@@ -200,12 +206,13 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
                 )}
                 onClick={() => {
                   setSelectedSearchOption(null);
-                  setSearchOption(null);
+                  setInnerSearchOption(null);
                 }}
               >
-                {!!searchData[searchOption] && searchData[searchOption].title}
+                {!!searchData[innerSearchOption] &&
+                  searchData[innerSearchOption].title}
 
-                {!!selectedSearchOption && <Stack as="span">x</Stack>}
+                {selectedSearchOption !== null && <Stack as="span">x</Stack>}
               </Stack>
             )}
           </Stack>
@@ -215,7 +222,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
               {searchData?.map((item, index) => (
                 <Stack
                   className={classNames(editOptionClass, {
-                    [editOptionSelectedClass]: searchOption === index,
+                    [editOptionSelectedClass]: innerSearchOption === index,
                     [editOptionHoverClass]: editHover === index,
                   })}
                   key={index}
@@ -223,10 +230,10 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
                   onMouseEnter={() => setEditHover(index)}
                   onMouseLeave={() => setEditHover(null)}
                   onClick={() => {
-                    handleSearch();
                     setSelectedSearchOption(index);
-                    setSearchOption(index);
+                    setInnerSearchOption(index);
                     setIsEditing(false);
+                    handleSearch();
                   }}
                 >
                   <Stack>{item.title}</Stack>

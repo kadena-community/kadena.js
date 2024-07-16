@@ -76,15 +76,6 @@ export const useSearch = () => {
   useEffect(() => {
     if (!isMounted) return;
 
-    if (!searchQuery) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      if (router.asPath === '/') {
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        router.replace(`${router.asPath}`);
-      }
-      return;
-    }
-
     const query = router.query.q;
     const searchOptionQuery: SearchOptionEnum | null = !isNaN(
       parseInt(router.query.so as any),
@@ -92,17 +83,23 @@ export const useSearch = () => {
       ? parseInt(router.query.so as any)
       : null;
 
+    const queryArray = [];
+    if (searchQuery) {
+      queryArray.push(`q=${searchQuery}`);
+    }
+    if (searchOption !== null && searchOption !== undefined) {
+      queryArray.push(`so=${searchOption}`);
+
+      if (searchOption === SearchOptionEnum.ACCOUNT) {
+        queryArray.push(`fungible=coin`);
+      }
+    }
+
     if (query === searchQuery && searchOptionQuery === searchOption) return;
 
-    console.log({ searchOption });
-    if (searchOption === SearchOptionEnum.ACCOUNT) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push(`/?q=${searchQuery}&so=${searchOption}&fungible=coin`);
-    } else {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push(`/?q=${searchQuery}&so=${searchOption}`);
-    }
-  }, [searchQuery, isMounted]);
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    router.push(`/?${queryArray.join('&')}`);
+  }, [searchQuery, searchOption, isMounted]);
 
   useEffect(() => {
     const query = router.query.q;
@@ -119,7 +116,16 @@ export const useSearch = () => {
   }, [router.query]);
 
   useEffect(() => {
-    if (loading) return;
+    if (loading) {
+      setSearchData([
+        { title: 'Account', data: [] },
+        { title: 'Request Key', data: {} },
+        { title: 'Block Hash', data: {} },
+        { title: 'Height', data: {} },
+        { title: 'Events', data: {} },
+      ]);
+      return;
+    }
 
     const result: ISearchItem[] = [
       { title: 'Account', data: accountData },
@@ -183,6 +189,8 @@ export const useSearch = () => {
       });
     }
   }, [errors]);
+
+  console.log({ searchOption, searchQuery });
 
   return {
     searchOption,

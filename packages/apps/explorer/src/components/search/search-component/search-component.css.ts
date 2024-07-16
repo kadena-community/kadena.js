@@ -32,11 +32,11 @@ export const searchInputClass = style([
     fontFamily: 'monospaceFont',
     outline: 'none',
     color: 'text.base.default',
+    flex: 1,
   }),
   {
     height: 46,
     border: 'none',
-    width: '75%',
 
     selectors: {
       '&::placeholder': {
