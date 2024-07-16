@@ -1,5 +1,5 @@
 import LoadingIcon from '@/components/loading-icon/loading-icon';
-import { SearchOptionEnum } from '@/hooks/search/utils/utils';
+import type { SearchOptionEnum } from '@/hooks/search/utils/utils';
 import type { ApolloError } from '@apollo/client';
 import { MonoSearch } from '@kadena/kode-icons/system';
 import { Stack } from '@kadena/kode-ui';
@@ -49,56 +49,14 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
   setSearchOption,
   loading,
 }) => {
-  const [selectedSearchOption, setSelectedSearchOption] =
-    useState<SearchOptionEnum | null>(null);
   const [editHover, setEditHover] = useState<null | number>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [searchValue, setSearchValue] = useState<string>('');
   const [innerSearchOption, setInnerSearchOption] =
     useState<SearchOptionEnum | null>(searchOption);
   const [optionClicked, setOptionClicked] = useState(false);
-  const [escapePressed, setEscapePressed] = useState(false);
+
   const ref = useRef<HTMLInputElement>(null);
-
-  const handleSearchOption = (
-    inferedOption: SearchItemTitle | undefined,
-  ): void => {
-    // if the option is selected by hand, do not infer the value
-
-    console.log({ selectedSearchOption });
-    if (selectedSearchOption !== null && selectedSearchOption !== undefined)
-      return;
-
-    if (inferedOption === 'Account') {
-      setInnerSearchOption(SearchOptionEnum.ACCOUNT);
-    }
-    if (inferedOption === 'Request Key') {
-      setInnerSearchOption(SearchOptionEnum.REQUESTKEY);
-    }
-    if (inferedOption === 'Height') {
-      setInnerSearchOption(SearchOptionEnum.BLOCKHEIGHT);
-    }
-    if (!inferedOption || inferedOption === undefined) {
-      setInnerSearchOption(null);
-    }
-  };
-
-  const inferOption = (value: string): SearchItemTitle | undefined => {
-    if (
-      value.toLocaleLowerCase().startsWith('k:') ||
-      value.toLocaleLowerCase().startsWith('w:')
-    ) {
-      return 'Account';
-    } else if (value.includes('.')) {
-      return 'Events';
-    } else if (value.length === 43) {
-      return 'Request Key';
-    } else if (/^\d+$/.test(value)) {
-      return 'Height';
-    }
-
-    return undefined;
-  };
 
   const handleSearch = (): void => {
     setSearchOption(innerSearchOption);
@@ -111,11 +69,9 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
   const handleSearchValueChange = (
     e: React.ChangeEvent<HTMLInputElement>,
   ): void => {
+    setSearchOption(null);
+    setIsEditing(true);
     setSearchValue(e.target.value);
-
-    if (escapePressed || optionClicked) return;
-
-    handleSearchOption(inferOption(e.target.value));
   };
 
   const handleSearchValueKeyDown = (
@@ -131,17 +87,14 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
       setEditHover((prev) => (prev === null ? 0 : Math.max(prev - 1, 0)));
     } else if (e.key === 'Enter') {
       e.preventDefault();
-      setEscapePressed(false);
       setOptionClicked(false);
 
       handleSearch();
     } else if (e.key === 'Escape') {
       setOptionClicked(false);
       setInnerSearchOption(null);
-      setEscapePressed(true);
       setIsEditing(false);
     } else {
-      setEscapePressed(false);
       setOptionClicked(false);
     }
   };
@@ -202,11 +155,11 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
               onChange={(e) => handleSearchValueChange(e)}
               className={searchInputClass}
             />
-            {isEditing && innerSearchOption === null && (
+            {isEditing && searchOption === null && (
               <Stack className={searchBadgeBoxClass}>Search by</Stack>
             )}
 
-            {innerSearchOption !== null && (
+            {searchOption !== null && (
               <Stack
                 gap="xs"
                 as="button"
@@ -215,16 +168,13 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
                   searchBadgeBoxSelectedClass,
                 )}
                 onClick={() => {
-                  if (selectedSearchOption === null) return;
-                  setSelectedSearchOption(null);
                   setOptionClicked(false);
-                  // setInnerSearchOption(null);
+                  setSearchOption(null);
                 }}
               >
-                {!!searchData[innerSearchOption] &&
-                  searchData[innerSearchOption].title}
+                {searchData[searchOption].title}
 
-                {selectedSearchOption !== null && <Stack as="span">x</Stack>}
+                <Stack as="span">x</Stack>
               </Stack>
             )}
           </Stack>
@@ -234,7 +184,6 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
               {searchData?.map((item, index) => (
                 <Stack
                   className={classNames(editOptionClass, {
-                    [editOptionSelectedClass]: innerSearchOption === index,
                     [editOptionHoverClass]: editHover === index,
                   })}
                   key={index}
@@ -242,8 +191,9 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
                   onMouseEnter={() => setEditHover(index)}
                   onMouseLeave={() => setEditHover(null)}
                   onClick={() => {
-                    setSelectedSearchOption(index);
-                    setInnerSearchOption(index);
+                    setSearchOption(index);
+                    setIsEditing(false);
+                    setOptionClicked(false);
                   }}
                 >
                   <Stack>{item.title}</Stack>

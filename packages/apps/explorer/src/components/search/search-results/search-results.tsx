@@ -21,6 +21,7 @@ export interface ISearchResultsProps {
 }
 
 const SearchResults: FC<ISearchResultsProps> = ({ searchData, loading }) => {
+  console.log(searchData);
   return (
     <>
       <section style={{ width: '100%' }}>
