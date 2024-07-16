@@ -38,7 +38,7 @@ const cache = new InMemoryCache({
 interface INetworkContext {
   networks: INetwork[];
   activeNetwork: INetwork;
-  setActiveNetwork: (activeNetwork: INetwork['networkId']) => void;
+  setActiveNetwork: (activeNetwork: INetwork['slug']) => void;
   addNetwork: (newNetwork: INetwork) => void;
 }
 
@@ -74,7 +74,7 @@ const NetworkContextProvider = (props: {
   const [networks, setNetworks] = useState<INetwork[]>(getDefaultNetworks());
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
-  const networkId = router.query.networkId as string;
+  const networkSlug = router.query.networkSlug as string;
   const [activeNetwork, setActiveNetwork] = useState<INetwork | undefined>();
 
   const checkStorage = () => {
@@ -95,9 +95,9 @@ const NetworkContextProvider = (props: {
 
   useEffect(() => {
     if (!networks.length || !isMounted) return;
-    const network = networks.find((n) => n.networkId === networkId);
+    const network = networks.find((n) => n.slug === networkSlug);
     setActiveNetwork(network);
-  }, [networkId, networks, isMounted]);
+  }, [networkSlug, networks, isMounted]);
 
   useEffect(() => {
     checkStorage();
@@ -109,14 +109,14 @@ const NetworkContextProvider = (props: {
     };
   }, [storageListener]);
 
-  const setActiveNetworkByKey = (networkId: string): void => {
-    const network = networks.find((x) => x.networkId === networkId)!;
+  const setActiveNetworkByKey = (networkSlug: string): void => {
+    const network = networks.find((x) => x.slug === networkSlug)!;
     setActiveNetwork(network);
     localStorage.setItem(selectedNetworkKey, JSON.stringify(network));
-    Cookies.set(selectedNetworkKey, network.networkId);
+    Cookies.set(selectedNetworkKey, network.slug);
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    router.push(`/${networkId}`);
+    router.push(`/${networkSlug}`);
   };
 
   const addNetwork = (newNetwork: INetwork): void => {
@@ -124,19 +124,17 @@ const NetworkContextProvider = (props: {
       localStorage.getItem(storageKey) ?? '[]',
     );
 
-    if (
-      !storage.find((network) => network.networkId === newNetwork.networkId)
-    ) {
+    if (!storage.find((network) => network.slug === newNetwork.slug)) {
       storage.push(newNetwork);
       localStorage.setItem(storageKey, JSON.stringify(storage));
       window.dispatchEvent(new Event(storageKey));
 
       setActiveNetwork(newNetwork);
       localStorage.setItem(selectedNetworkKey, JSON.stringify(newNetwork));
-      Cookies.set(selectedNetworkKey, newNetwork.networkId);
+      Cookies.set(selectedNetworkKey, newNetwork.slug);
 
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push(`/${newNetwork.networkId}`);
+      router.push(`/${newNetwork.slug}`);
     }
   };
 

@@ -2,6 +2,7 @@ export const networkConstants = {
   mainnet01: {
     networkId: 'mainnet01',
     label: 'Mainnet',
+    slug: 'mainnet',
     chainwebUrl: 'api.chainweb.com',
     graphUrl: 'https://graph.kadena.network/graphql',
     wsGraphUrl: 'https://graph.kadena.network/graphql',
@@ -10,6 +11,7 @@ export const networkConstants = {
   testnet04: {
     networkId: 'testnet04',
     label: 'Testnet',
+    slug: 'testnet',
     chainwebUrl: 'api.testnet.chainweb.com',
     graphUrl: 'https://graph.testnet.kadena.network/graphql',
     wsGraphUrl: 'https://graph.testnet.kadena.network/graphql',

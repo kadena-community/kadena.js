@@ -12,8 +12,8 @@ export const createHref = (
 
   const cleanedArr = arr.filter((val) => val);
 
-  if (!networks.find((n) => n.networkId === cleanedArr[0])) {
-    cleanedArr.unshift(activeNetwork.networkId);
+  if (!networks.find((n) => n.slug === cleanedArr[0])) {
+    cleanedArr.unshift(activeNetwork.slug);
   }
 
   return `/${cleanedArr.join('/')}`;
@@ -30,7 +30,7 @@ export const removeNetworkFromPath = (href: string, networks: INetwork[]) => {
     .split('/')
     .filter((v) => v);
 
-  if (networks.find((v) => v.networkId === arr[0])) {
+  if (networks.find((v) => v.slug === arr[0])) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [first, ...restArr] = arr;
     return `/${restArr.join('/')}${searchParams}`;

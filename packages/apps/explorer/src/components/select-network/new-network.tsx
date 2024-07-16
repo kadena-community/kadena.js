@@ -30,12 +30,13 @@ const NewNetwork: FC<IProps> = ({ handleOpen, createNetwork }) => {
     e.preventDefault();
 
     const data = new FormData(e.currentTarget);
-    let { label, networkId, chainwebUrl, graphUrl } =
+    let { label, networkId, slug, chainwebUrl, graphUrl } =
       getFormValues<INetwork>(data);
 
     const newNetwork: INetwork = {
       networkId,
       label,
+      slug,
       chainwebUrl,
       graphUrl,
       wsGraphUrl: graphUrl,
