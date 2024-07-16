@@ -209,7 +209,7 @@ export function DutchAuction({ tokenImageUrl, sale }: DutchAuctionProps) {
           dutch: true
         },
         escrow: {
-          account: escrowAccountResult as string
+          account: escrowAccountResult as unknown as string
         },
         updatedPrice: new PactNumber(currentPrice).toPactDecimal(),
         tokenId: auctionDetails?.["token-id"],

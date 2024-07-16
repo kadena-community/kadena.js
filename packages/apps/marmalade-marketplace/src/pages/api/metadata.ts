@@ -9,7 +9,6 @@ export const config = {
     bodyParser: false,
   },
 };
-
 const saveFile = async (file:any) => {
   try {
     const filepath = file[0].filepath; 
