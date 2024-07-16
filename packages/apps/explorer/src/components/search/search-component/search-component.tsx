@@ -2,7 +2,7 @@ import LoadingIcon from '@/components/loading-icon/loading-icon';
 import type { SearchOptionEnum } from '@/hooks/search/utils/utils';
 import type { ApolloError } from '@apollo/client';
 import { MonoSearch } from '@kadena/kode-icons/system';
-import { Stack } from '@kadena/kode-ui';
+import { Stack, Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import type { Dispatch, SetStateAction } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
@@ -10,6 +10,7 @@ import {
   editOptionClass,
   editOptionHoverClass,
   editingBoxClass,
+  iconColorClass,
   searchBadgeBoxClass,
   searchBadgeBoxSelectedClass,
   searchBoxClass,
@@ -143,7 +144,11 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
           style={{ top: position === 'header' ? '-28px' : 0 }}
         >
           <Stack width="100%" alignItems="center" paddingInline="md">
-            {loading ? <LoadingIcon /> : <MonoSearch />}
+            {loading ? (
+              <LoadingIcon className={iconColorClass} />
+            ) : (
+              <MonoSearch className={iconColorClass} />
+            )}
 
             <input
               ref={ref}
@@ -197,7 +202,9 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
                     handleSearch(index);
                   }}
                 >
-                  <Stack>In {item.title}</Stack>
+                  <Stack>
+                    <Text>In {item.title}</Text>
+                  </Stack>
                 </Stack>
               ))}
             </Stack>

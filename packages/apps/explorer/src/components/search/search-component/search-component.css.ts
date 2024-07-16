@@ -103,3 +103,7 @@ export const editOptionHoverClass = style([
     color: tokens.kda.foundation.color.text.base.default,
   },
 ]);
+
+export const iconColorClass = style({
+  color: token('color.icon.base.default'),
+});
