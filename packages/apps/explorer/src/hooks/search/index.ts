@@ -190,8 +190,6 @@ export const useSearch = () => {
     }
   }, [errors]);
 
-  console.log({ searchOption, searchQuery });
-
   return {
     searchOption,
     setSearchOption,

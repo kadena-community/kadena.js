@@ -9,11 +9,11 @@ interface IProps {
 }
 
 const NoSearchResults: FC<IProps> = ({ searchData }) => {
-  console.log(searchData);
   if (
     !searchData[SearchOptionEnum.ACCOUNT].data.length &&
     !searchData[SearchOptionEnum.BLOCKHASH].data &&
-    !searchData[SearchOptionEnum.BLOCKHEIGHT].data &&
+    !searchData[SearchOptionEnum.BLOCKHEIGHT].data?.blocksFromHeight?.edges
+      .length &&
     !searchData[SearchOptionEnum.EVENT].data &&
     !searchData[SearchOptionEnum.REQUESTKEY].data?.transaction
   )

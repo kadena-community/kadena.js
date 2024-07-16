@@ -100,8 +100,8 @@ const SearchResults: FC<ISearchResultsProps> = ({ searchData, loading }) => {
               />
             )}
 
-            {searchData[SearchOptionEnum.BLOCKHEIGHT].data
-              ?.blocksFromHeight && (
+            {searchData[SearchOptionEnum.BLOCKHEIGHT].data?.blocksFromHeight
+              ?.edges?.length && (
               <CompactTable
                 fields={[
                   {

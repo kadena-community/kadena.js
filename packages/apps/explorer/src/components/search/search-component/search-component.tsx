@@ -64,7 +64,9 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
     inferedOption: SearchItemTitle | undefined,
   ): void => {
     // if the option is selected by hand, do not infer the value
-    if (selectedSearchOption) return;
+
+    if (selectedSearchOption !== null && selectedSearchOption !== undefined)
+      return;
 
     if (inferedOption === 'Account') {
       setInnerSearchOption(SearchOptionEnum.ACCOUNT);
@@ -97,10 +99,16 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
     return undefined;
   };
 
-  const handleSearch = (): void => {
+  const handleSearch = (index?: SearchOptionEnum | null): void => {
+    if (index !== null && index !== undefined) {
+      setSearchOption(index);
+      setInnerSearchOption(index);
+      return;
+    } else {
+      setSearchOption(innerSearchOption);
+    }
     const value = ref.current?.value ?? '';
     if (setSearchQuery) setSearchQuery(value);
-    setSearchOption(innerSearchOption);
   };
 
   const handleSearchValueChange = (
@@ -116,14 +124,6 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
   const handleSearchValueKeyDown = (
     e: React.KeyboardEvent<HTMLDivElement>,
   ): void => {
-    if (e.key === 'Tab') {
-      e.preventDefault();
-    }
-    if (e.key === 'Escape') {
-      e.preventDefault();
-      setIsEditing(false);
-    }
-
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       setEditHover((prev) =>
@@ -134,7 +134,6 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
       setEditHover((prev) => (prev === null ? 0 : Math.max(prev - 1, 0)));
     } else if (e.key === 'Enter') {
       e.preventDefault();
-      setIsEditing((v) => !v);
       setEscapePressed(false);
       setOptionClicked(false);
 
@@ -180,7 +179,12 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
           // ugly hack to align the search in the header
           style={{ top: position === 'header' ? '-28px' : 0 }}
         >
-          <Stack width="100%" alignItems="center" paddingInline="md">
+          <Stack
+            width="100%"
+            alignItems="center"
+            paddingInline="md"
+            onBlur={() => setTimeout(() => setIsEditing(false), 200)}
+          >
             {loading ? <LoadingIcon /> : <MonoSearch />}
 
             <input
@@ -188,8 +192,9 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
               type="text"
               placeholder="Search the Kadena Blockchain on"
               value={searchValue}
+              onFocus={() => setIsEditing(true)}
+              onClick={() => setIsEditing(true)}
               onChange={(e) => handleSearchValueChange(e)}
-              onClick={() => setIsEditing((v) => !v)}
               className={searchInputClass}
             />
             {isEditing && innerSearchOption === null && (
@@ -205,8 +210,9 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
                   searchBadgeBoxSelectedClass,
                 )}
                 onClick={() => {
+                  if (selectedSearchOption !== null) return;
                   setSelectedSearchOption(null);
-                  setInnerSearchOption(null);
+                  // setInnerSearchOption(null);
                 }}
               >
                 {!!searchData[innerSearchOption] &&
@@ -231,9 +237,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
                   onMouseLeave={() => setEditHover(null)}
                   onClick={() => {
                     setSelectedSearchOption(index);
-                    setInnerSearchOption(index);
-                    setIsEditing(false);
-                    handleSearch();
+                    handleSearch(index);
                   }}
                 >
                   <Stack>{item.title}</Stack>
