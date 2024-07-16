@@ -18,10 +18,10 @@ import {
 } from './search-component.css';
 
 export type SearchItemTitle =
-  | 'Account'
-  | 'Request Key'
-  | 'Height'
-  | 'Block Hash'
+  | 'Accounts'
+  | 'Request Keys'
+  | 'Heights'
+  | 'Block Hashes'
   | 'Events';
 
 export interface ISearchItem {
@@ -57,16 +57,15 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
   const ref = useRef<HTMLInputElement>(null);
 
   const handleSearch = (searchOptionIdx: SearchOptionEnum | null): void => {
-    console.log('handlesearch', searchOptionIdx);
     if (searchOptionIdx !== null) {
       setSearchOption(searchOptionIdx);
       setInnerSearchOption(searchOptionIdx);
     } else {
-      setSearchOption(innerSearchOption);
+      setInnerSearchOption(null);
+      setSearchOption(null);
     }
+
     setIsEditing(false);
-    //setEditHover(null);
-    console.log({ innerSearchOption });
 
     const value = ref.current?.value ?? '';
     if (setSearchQuery) setSearchQuery(value);
@@ -103,6 +102,10 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
       setOptionClicked(false);
     }
   };
+
+  useEffect(() => {
+    setInnerSearchOption(searchOption);
+  }, [searchOption]);
 
   //on scroll remove the dropdown
   useEffect(() => {
@@ -167,10 +170,10 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
                 onClick={() => {
                   setOptionClicked(false);
                   setInnerSearchOption(null);
+                  handleSearch(null);
                 }}
               >
                 {searchData[innerSearchOption].title}
-
                 <Stack as="span">x</Stack>
               </Stack>
             )}
@@ -191,9 +194,10 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
                     setInnerSearchOption(index);
                     setIsEditing(false);
                     setOptionClicked(false);
+                    handleSearch(index);
                   }}
                 >
-                  <Stack>{item.title}</Stack>
+                  <Stack>In {item.title}</Stack>
                 </Stack>
               ))}
             </Stack>

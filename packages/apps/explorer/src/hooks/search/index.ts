@@ -74,6 +74,7 @@ export const useSearch = () => {
   });
 
   useEffect(() => {
+    console.log(searchOption, searchQuery);
     if (!isMounted) return;
 
     const query = router.query.q;
@@ -123,20 +124,20 @@ export const useSearch = () => {
   useEffect(() => {
     if (loading) {
       setSearchData([
-        { title: 'Account', data: [] },
-        { title: 'Request Key', data: {} },
-        { title: 'Block Hash', data: {} },
-        { title: 'Height', data: {} },
+        { title: 'Accounts', data: [] },
+        { title: 'Request Keys', data: {} },
+        { title: 'Block Hashes', data: {} },
+        { title: 'Heights', data: {} },
         { title: 'Events', data: {} },
       ]);
       return;
     }
 
     const result: ISearchItem[] = [
-      { title: 'Account', data: accountData },
-      { title: 'Request Key', data: requestKeyData },
-      { title: 'Block Hash', data: blockData },
-      { title: 'Height', data: blockHeightData },
+      { title: 'Accounts', data: accountData },
+      { title: 'Request Keys', data: requestKeyData },
+      { title: 'Block Hashes', data: blockData },
+      { title: 'Heights', data: blockHeightData },
       { title: 'Events', data: eventData },
     ];
 
