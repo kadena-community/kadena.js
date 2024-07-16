@@ -2,10 +2,8 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import { env } from '@/utils/env';
 import * as styles from '@/styles/create-token.css';
 import { useRouter } from 'next/navigation';
-import { Stack, Heading, Tabs, TabItem, Button, Select, TextField, TextareaField, NumberField, SelectItem,
-  Checkbox
- } from '@kadena/kode-ui';
-import { MonoAutoFixHigh, MonoAccountBalanceWallet, MonoAccessTime } from '@kadena/kode-icons';
+import { Stack, Button, Select, TextField, TextareaField, NumberField, SelectItem } from '@kadena/kode-ui';
+import { MonoAutoFixHigh } from '@kadena/kode-icons';
 
 // Import form components
 import RoyaltyForm from '@/components/RoyaltyForm';
@@ -16,7 +14,7 @@ import GenerateURIForm from '@/components/GenerateURIForm';
 import CrudCard from '@/components/CrudCard';
 
 // Import client
-import { ChainId, BuiltInPredicate } from '@kadena/client';
+import { ChainId } from '@kadena/client';
 import { createTokenId, createToken, ICreateTokenPolicyConfig } from '@kadena/client-utils/marmalade';
 import { useAccount } from '@/hooks/account';
 import { getPolicies, formatGuardInput, formatRoyaltyInput, createPrecision, formatAccount, generateSpireKeyGasCapability } from '@/utils/helper';
@@ -27,30 +25,20 @@ import { useTransaction } from '@/hooks/transaction';
 function CreateTokenComponent() {
   const router = useRouter();
   const { account } = useAccount();
-
-  const [walletKey, setWalletKey] = useState<string>('');
-  const [walletAccount, setWalletAccount] = useState('');
-
-  useEffect(() => {
-    if (account) {
-      setWalletKey(account.credentials[0].publicKey);
-      setWalletAccount(account.accountName);
-    }
-  }, [account]);
-
+  const { transaction, send, preview, poll } = useTransaction();
 
   const excluded = "[EXCLUDED]";
 
-  const { transaction, send, preview, poll } = useTransaction();
-  const [isOpen, setIsOpen] = useState(false);
+  const [walletKey, setWalletKey] = useState<string>('');
+  const [walletAccount, setWalletAccount] = useState('');
   const [file, setFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string>("/no-image.webp");
-  console.log(imagePreview)
+  const [imagePreview, setImagePreview] = useState<string>();
   const [base64Image, setBase64Image] = useState('');
   const [error, setError] = useState('');
   const [cid, setCid] = useState('');
-  const [tokenImageUrl, setTokenImageUrl] = useState<string>("/no-image.webp");
   const [uploading, setUploading] = useState(false);
+  const [collectionInput, setCollectionInput] = useState({ collectionId: '' });
+  const [tokenId, setTokenId] = useState<string>('');
 
   const [policyConfig, setPolicyConfig] = useState<ICreateTokenPolicyConfig>({
     nonUpdatableURI: false,
@@ -91,6 +79,13 @@ function CreateTokenComponent() {
 
   useEffect(() => {
     if (account) {
+      setWalletKey(account.credentials[0].publicKey);
+      setWalletAccount(account.accountName);
+    }
+  }, [account]);
+
+  useEffect(() => {
+    if (account) {
       setGuardInput({
         uriGuard: account.credentials[0].publicKey,
         burnGuard: account.credentials[0].publicKey,
@@ -107,22 +102,11 @@ function CreateTokenComponent() {
     }
   }, [account]);
 
-  const [collectionInput, setCollectionInput] = useState({
-    collectionId: '',
-  });
-  const [tokenId, setTokenId] = useState<string>('');
-
-
   const config = {
     host: env.URL,
     networkId: env.NETWORKID,
     chainId: tokenInput.chainId as ChainId,
     sign: createSignWithSpireKey(router, { host: env.WALLET_URL ?? '' }),
-  };
-
-  const toggle = () => {
-    setIsOpen(!isOpen);
-    setTokenInput({ ...tokenInput, uri: '' });
   };
 
   const handleTokenInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -139,8 +123,7 @@ function CreateTokenComponent() {
     }
   };
 
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = event.target;
+  const handleCheckboxChange = (name:string, checked:boolean) => {
     if (name === 'nonFungible' && checked) {
       setTokenInput({ ...tokenInput, precision: 0 });
     }
@@ -169,22 +152,32 @@ function CreateTokenComponent() {
     setCollectionInput((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (event: FormEvent) => {
+  const validateInputs = () => {
+    if (!file) {
+      throw new Error('Please selecte a file');
+    }
+
+    if (!tokenInput.metadataName || !tokenInput.metadataDescription) {
+      throw new Error('Please provide metadata name and description');
+    }
+
+    if (policyConfig.hasRoyalty && (!royaltyInput.royaltyFungible || !royaltyInput.royaltyCreator || !royaltyInput.royaltyGuard || !royaltyInput.royaltyRate)) {
+      throw new Error('Please provide all Royalty inputs');
+    }
+
+    if (policyConfig.collection && !collectionInput.collectionId) {
+      throw new Error('Please provide all Collection inputs');
+    }
+  };
+
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     try {
       if (!account) throw new Error("Connect Spirekey account");
 
       let updatedTokenInput = { ...tokenInput };
 
-      const validateInputs = () => {
-        if (policyConfig.hasRoyalty && (!royaltyInput.royaltyFungible || !royaltyInput.royaltyCreator || !royaltyInput.royaltyGuard || !royaltyInput.royaltyRate)) {
-          throw new Error('Please provide all Royalty inputs');
-        }
 
-        if (policyConfig.collection && !collectionInput.collectionId) {
-          throw new Error('Please provide all Collection inputs');
-        }
-      };
 
       const createInputs = () => ({
         ...formatInput(updatedTokenInput),
@@ -230,19 +223,13 @@ function CreateTokenComponent() {
             setTokenInput((prev) => ({ ...prev, uri: metadataUrl }));
           });
       };
-      
-    handleFileUpload()
-      .then(() => {
-        validateInputs();
-        const inputs = createInputs();
-        processTokenCreation(inputs);
-      })
-      .catch((error) => {
-        console.error(error);
-        setError(JSON.stringify(error.message));
-      });
 
-        } catch (error) {
+    validateInputs();
+    await handleFileUpload();
+    const inputs = createInputs();
+    await processTokenCreation(inputs);
+
+    } catch (error) {
       console.error(error);
       setError(JSON.stringify(error.message));
     }
@@ -288,6 +275,10 @@ function CreateTokenComponent() {
       setUploading(false);
       alert('Trouble uploading file');
     }
+  };
+
+  const onCancelPress = () => {
+    router.back();
   };
 
   const formatInput = (input: typeof tokenInput) => {
@@ -339,40 +330,44 @@ function CreateTokenComponent() {
                 base64Image={base64Image}
                 setBase64Image={setBase64Image}
               />
-              <TextField
-                label="Creation Guard"
-                name="CreationGuard"
-                value={walletKey}
-                disabled
-              />
-              <NumberField
-                label="Precision"
-                value={tokenInput.precision}
-                onValueChange={handlePrecisionChange}
-              />
-              <Select label="Chain ID" name="chainId" selectedKey={tokenInput.chainId} isDisabled>
-                {Array.from({ length: 20 }, (_, i) => i.toString()).map(option => (
-                  <SelectItem key={option} textValue={option}>{option}</SelectItem>
-                ))}
-              </Select>
+              <div className={styles.formContainer}>
+                <TextField
+                  label="Creation Guard"
+                  name="CreationGuard"
+                  value={walletKey}
+                  disabled
+                />
+                <NumberField
+                  label="Precision"
+                  value={tokenInput.precision}
+                  onValueChange={handlePrecisionChange}
+                />
+                <Select label="Chain" name="chainId" selectedKey={tokenInput.chainId} isDisabled>
+                  {Array.from({ length: 20 }, (_, i) => i.toString()).map(option => (
+                    <SelectItem key={option} textValue={option}>{option}</SelectItem>
+                  ))}
+                </Select>
+              </div>
             </div>
           </CrudCard>
           <CrudCard
               title="Metadata"
               description={["Select the metadata input that will be stored as the uri"]}
             >
-            <TextField
-              label="Name"
-              name="metadataName"
-              value={tokenInput.metadataName as string}
-              onChange={handleTokenInputChange}
-            />
-            <TextareaField
-              label="Description"
-              name="metadataDescription"
-              value={tokenInput.metadataDescription as string}
-              onChange={handleTokenInputChange}
-            />
+            <div className={styles.formContainer}>
+              <TextField
+                label="Name"
+                name="metadataName"
+                value={tokenInput.metadataName as string}
+                onChange={handleTokenInputChange}
+              />
+              <TextareaField
+                label="Description"
+                name="metadataDescription"
+                value={tokenInput.metadataDescription as string}
+                onChange={handleTokenInputChange}
+              />
+            </div>
             {/* <TextField
               label="Author"
               name="metadataAuthors"
@@ -399,7 +394,7 @@ function CreateTokenComponent() {
               title="Policies"
               description={["Select the metadata input that will be stored as the uri"]}
             >
-            <PolicyForm policyConfig={policyConfig} handleCheckboxChange={handleCheckboxChange} />
+            <PolicyForm handleCheckboxChange={handleCheckboxChange} />
           </CrudCard>
           {(policyConfig.guarded) && <GuardForm guardInput={guardInput} handleGuardInputChange={handleGuardInputChange} handleGuardExcludeChange={handleGuardExcludeChange} excluded={excluded} />}
           {policyConfig.hasRoyalty && <RoyaltyForm royaltyInput={royaltyInput} handleRoyaltyInputChange={handleRoyaltyInputChange} /> }
@@ -420,19 +415,21 @@ function CreateTokenComponent() {
           >
             No data required
           </CrudCard>)}
-           
-            
-          <div className={styles.buttonRow}>
-            <Button type="submit" onClick={handleSubmit}>
-              Create Token
-            </Button>
-          </div>
+
           {error && (
             <div className={styles.errorBox}>
               <p>Error: {error}</p>
             </div>
-          )} 
+          )}
         </Stack>
+        <div className={styles.buttonRow}>
+          <Button variant="outlined" onPress={onCancelPress}>
+            Cancel
+          </Button>
+          <Button type="submit" onClick={handleSubmit}>
+            Create Token
+          </Button>
+        </div>
       </div>
       ) : (
         <SendTransaction send={send} preview={preview} poll={poll} transaction={transaction} />

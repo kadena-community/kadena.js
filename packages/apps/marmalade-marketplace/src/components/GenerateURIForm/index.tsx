@@ -1,13 +1,14 @@
 import React, { FC, useRef } from 'react';
-import { TextField, Heading } from '@kadena/kode-ui';
-import * as styles from '@/styles/create-token.css';
+import { Button } from '@kadena/kode-ui';
+import { MonoPermMedia, MonoUploadFile } from '@kadena/kode-icons';
+import * as styles from './style.css';
 
 interface GenerateURIProps {
   tokenInput: { [key: string]: string | number | object };
   handleTokenInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   file: File | null;
   setFile: (file: File) => void;
-  imagePreview: string;
+  imagePreview?: string;
   setImagePreview: (url: string) => void;
   base64Image: string;
   setBase64Image: (base64: string) => void;
@@ -15,9 +16,6 @@ interface GenerateURIProps {
 }
 
 const GenerateURIForm: FC<GenerateURIProps> = ({
-  tokenInput,
-  handleTokenInputChange,
-  file,
   setFile,
   imagePreview,
   setImagePreview,
@@ -59,13 +57,17 @@ const GenerateURIForm: FC<GenerateURIProps> = ({
     event.preventDefault();
   };
 
+  const handleFileClick = () => {
+    inputFile.current?.click();
+  };
+
   return (
-    <div className={styles.tokenImageClass}>
+    <>
+    <div className={styles.tokenImageContainer}>
       <div
         onDrop={handleFileDrop}
         onDragOver={handleDragOver}
-        onClick={() => inputFile.current?.click()}
-        style={{ width: '100%', backgroundColor: 'white'}}
+        onClick={handleFileClick}
       >
         <input
           type="file"
@@ -74,9 +76,20 @@ const GenerateURIForm: FC<GenerateURIProps> = ({
           style={{ display: 'none' }}
           onChange={handleFileChange}
         />
-        <img className={styles.tokenImageClass} src={imagePreview} alt="Uploaded Preview" />
+        {imagePreview
+          ? <img src={imagePreview} alt="Uploaded Preview" />
+          : <div className={styles.uploadContainer}><MonoPermMedia className={styles.uploadIcon} /></div>}
       </div>
     </div>
+    <Button
+        startVisual={<MonoUploadFile />}
+        onPress={handleFileClick}
+        variant="outlined"
+        style={{ marginBottom: '50px' }}
+      >
+        Upload
+      </Button>
+    </>
   );
 };
 

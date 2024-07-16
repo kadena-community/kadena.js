@@ -5,7 +5,7 @@ import { globalStyle, style } from '@vanilla-extract/css';
 
 globalStyle('body', {
   color: 'white',
-  backgroundColor: tokens.kda.foundation.color.background.layer.default,
+  backgroundColor: tokens.kda.foundation.color.background.base.default,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
