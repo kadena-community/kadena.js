@@ -93,6 +93,7 @@ export const editOptionClass = style([
     paddingInline: 'lg',
     paddingBlock: 'sm',
     cursor: 'pointer',
+    color: 'text.base.default',
   }),
 ]);
 

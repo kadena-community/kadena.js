@@ -202,9 +202,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
                     handleSearch(index);
                   }}
                 >
-                  <Stack>
-                    <Text>In {item.title}</Text>
-                  </Stack>
+                  <Stack>In {item.title}</Stack>
                 </Stack>
               ))}
             </Stack>
