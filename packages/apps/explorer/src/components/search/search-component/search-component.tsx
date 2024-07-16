@@ -65,6 +65,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
   ): void => {
     // if the option is selected by hand, do not infer the value
 
+    console.log({ selectedSearchOption });
     if (selectedSearchOption !== null && selectedSearchOption !== undefined)
       return;
 
@@ -99,14 +100,10 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
     return undefined;
   };
 
-  const handleSearch = (index?: SearchOptionEnum | null): void => {
-    if (index !== null && index !== undefined) {
-      setSearchOption(index);
-      setInnerSearchOption(index);
-      return;
-    } else {
-      setSearchOption(innerSearchOption);
-    }
+  const handleSearch = (): void => {
+    setSearchOption(innerSearchOption);
+    setIsEditing(false);
+
     const value = ref.current?.value ?? '';
     if (setSearchQuery) setSearchQuery(value);
   };
@@ -149,6 +146,19 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
     }
   };
 
+  //on scroll remove the dropdown
+  useEffect(() => {
+    const scrollListener = () => {
+      setIsEditing(false);
+    };
+
+    window.addEventListener('scroll', scrollListener);
+
+    return () => {
+      window.removeEventListener('scroll', scrollListener);
+    };
+  }, [setIsEditing]);
+
   useEffect(() => {
     setInnerSearchOption(searchOption);
   }, [searchOption]);
@@ -179,12 +189,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
           // ugly hack to align the search in the header
           style={{ top: position === 'header' ? '-28px' : 0 }}
         >
-          <Stack
-            width="100%"
-            alignItems="center"
-            paddingInline="md"
-            onBlur={() => setTimeout(() => setIsEditing(false), 200)}
-          >
+          <Stack width="100%" alignItems="center" paddingInline="md">
             {loading ? <LoadingIcon /> : <MonoSearch />}
 
             <input
@@ -210,8 +215,9 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
                   searchBadgeBoxSelectedClass,
                 )}
                 onClick={() => {
-                  if (selectedSearchOption !== null) return;
+                  if (selectedSearchOption === null) return;
                   setSelectedSearchOption(null);
+                  setOptionClicked(false);
                   // setInnerSearchOption(null);
                 }}
               >
@@ -237,7 +243,7 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
                   onMouseLeave={() => setEditHover(null)}
                   onClick={() => {
                     setSelectedSearchOption(index);
-                    handleSearch(index);
+                    setInnerSearchOption(index);
                   }}
                 >
                   <Stack>{item.title}</Stack>

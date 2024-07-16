@@ -32,7 +32,7 @@ const Home: React.FC = () => {
           <Stack
             flexDirection="column"
             alignItems={'center'}
-            marginBlock="xxxl"
+            marginBlockEnd="xxxl"
           >
             <Link href="/">
               <Logo />

@@ -95,7 +95,12 @@ export const useSearch = () => {
       }
     }
 
-    if (query === searchQuery && searchOptionQuery === searchOption) return;
+    if (
+      (query === searchQuery && searchOptionQuery === searchOption) ||
+      !queryArray.filter((v) => v.startsWith('q=')).length
+    ) {
+      return;
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     router.push(`/?${queryArray.join('&')}`);
