@@ -2,7 +2,7 @@ import LoadingIcon from '@/components/loading-icon/loading-icon';
 import type { SearchOptionEnum } from '@/hooks/search/utils/utils';
 import type { ApolloError } from '@apollo/client';
 import { MonoSearch } from '@kadena/kode-icons/system';
-import { Stack, Text } from '@kadena/kode-ui';
+import { Stack } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import type { Dispatch, SetStateAction } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
