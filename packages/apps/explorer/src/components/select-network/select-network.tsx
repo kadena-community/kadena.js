@@ -15,7 +15,6 @@ const SelectNetwork: FC = () => {
       setIsOpen(true);
       return;
     }
-
     setActiveNetwork(value);
   };
 
@@ -40,7 +39,10 @@ const SelectNetwork: FC = () => {
       >
         {
           networks.map((network) => (
-            <SelectItem key={network.slug} textValue={network.label}>
+            <SelectItem
+              key={network.slug ?? network.label}
+              textValue={network.label}
+            >
               {network.label}
             </SelectItem>
           )) as any

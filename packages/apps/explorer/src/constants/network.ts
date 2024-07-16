@@ -1,5 +1,5 @@
 export const networkConstants = {
-  mainnet01: {
+  mainnet: {
     networkId: 'mainnet01',
     label: 'Mainnet',
     slug: 'mainnet',
@@ -8,7 +8,7 @@ export const networkConstants = {
     wsGraphUrl: 'https://graph.kadena.network/graphql',
     explorerUrl: 'https://explorer.kadena.io/',
   },
-  testnet04: {
+  testnet: {
     networkId: 'testnet04',
     label: 'Testnet',
     slug: 'testnet',

@@ -44,7 +44,6 @@ export const NavBar: FC<
         </Media>
       </Stack>
       <Stack flex={1}>{children}</Stack>
-
       <Stack>
         <ThemeToggle />
         <GraphQLQueryDialog />

@@ -1,4 +1,5 @@
 import { useRouter } from '@/components/routing/useRouter';
+import { useToast } from '@/components/toasts/toast-context/toast-context';
 import { networkConstants } from '@/constants/network';
 import type { NormalizedCacheObject } from '@apollo/client';
 import {
@@ -24,7 +25,7 @@ import React, {
 const { YogaLink } = require('@graphql-yoga/apollo-link');
 
 export type INetwork = Omit<
-  typeof networkConstants.mainnet01,
+  typeof networkConstants.mainnet,
   'chainwebUrl' | 'explorerUrl'
 > & {
   chainwebUrl?: string;
@@ -62,10 +63,18 @@ const useNetwork = (): INetworkContext => {
   return context;
 };
 
-const getDefaultNetworks = (): INetworkContext['networks'] => [
-  networkConstants.mainnet01,
-  networkConstants.testnet04,
+export const getDefaultNetworks = (): INetworkContext['networks'] => [
+  networkConstants.mainnet,
+  networkConstants.testnet,
 ];
+
+export const getNetworks = (): INetwork[] => {
+  const storage: INetwork[] = JSON.parse(
+    localStorage.getItem(storageKey) ?? '[]',
+  );
+
+  return [...getDefaultNetworks(), ...storage];
+};
 
 const NetworkContextProvider = (props: {
   networks?: INetwork[];
@@ -76,6 +85,7 @@ const NetworkContextProvider = (props: {
   const router = useRouter();
   const networkSlug = router.query.networkSlug as string;
   const [activeNetwork, setActiveNetwork] = useState<INetwork | undefined>();
+  const { addToast } = useToast();
 
   const checkStorage = () => {
     const storage: INetwork[] = JSON.parse(
@@ -95,7 +105,7 @@ const NetworkContextProvider = (props: {
 
   useEffect(() => {
     if (!networks.length || !isMounted) return;
-    const network = networks.find((n) => n.slug === networkSlug);
+    const network = networks.find((n) => n.slug && n.slug === networkSlug);
     setActiveNetwork(network);
   }, [networkSlug, networks, isMounted]);
 
@@ -110,13 +120,21 @@ const NetworkContextProvider = (props: {
   }, [storageListener]);
 
   const setActiveNetworkByKey = (networkSlug: string): void => {
-    const network = networks.find((x) => x.slug === networkSlug)!;
-    setActiveNetwork(network);
+    const network = networks.find((x) => x.slug === networkSlug);
+
+    if (!network) {
+      addToast({
+        type: 'negative',
+        label: 'Network not found',
+        body: `network ${networkSlug} is depricated`,
+      });
+      return;
+    }
+
     localStorage.setItem(selectedNetworkKey, JSON.stringify(network));
     Cookies.set(selectedNetworkKey, network.slug);
 
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    router.push(`/${networkSlug}`);
+    window.location.href = `/${networkSlug}`;
   };
 
   const addNetwork = (newNetwork: INetwork): void => {
@@ -133,8 +151,7 @@ const NetworkContextProvider = (props: {
       localStorage.setItem(selectedNetworkKey, JSON.stringify(newNetwork));
       Cookies.set(selectedNetworkKey, newNetwork.slug);
 
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push(`/${newNetwork.slug}`);
+      window.location.href = `/${newNetwork.slug}`;
     }
   };
 

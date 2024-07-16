@@ -79,7 +79,7 @@ export const useSearch = () => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       if (router.asPath === '/') {
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        router.replace(`${router.asPath}`);
+        // router.replace(`${router.asPath}`);
       }
       return;
     }

@@ -112,6 +112,7 @@ const NewNetwork: FC<IProps> = ({ handleOpen, createNetwork }) => {
               name="networkId"
               isRequired
             ></TextField>
+            <TextField label="Slug" name="slug" isRequired></TextField>
             <TextField
               label="GraphQL URL"
               name="graphUrl"
