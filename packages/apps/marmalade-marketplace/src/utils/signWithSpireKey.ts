@@ -1,5 +1,6 @@
-import { IUnsignedCommand, ISignFunction } from '@kadena/client';
-import { getReturnUrl } from "@/utils/getReturnUrl"
+import { getReturnUrl } from '@/utils/getReturnUrl';
+import { ISignFunction, IUnsignedCommand } from '@kadena/client';
+import { sign } from '@kadena/spirekey-sdk';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 export const ERROR = Symbol('ERROR');
@@ -86,63 +87,68 @@ export function tryParse<T>(msg: string): T | typeof ERROR {
   }
 }
 
-
 /**
  *
  * @internal
  *
  */
-export const signTransactions = (router: AppRouterInstance, spireKeyUrl: string) =>
-    (async (
-        tx: IUnsignedCommand 
-    ) => {
+export const signTransactions = (
+  router: AppRouterInstance,
+  spireKeyUrl: string,
+) =>
+  (async (tx: IUnsignedCommand) => {
+    const query: ISignRequestQuerystring = {
+      transaction: encodeBase64(JSON.stringify(tx)),
+      returnUrl: getReturnUrl(['tokens']),
+      optimistic: false,
+    };
+    const queryString = new URLSearchParams(query as any).toString();
+    router.push(`${spireKeyUrl}/sign?${queryString}`);
 
-        const query: ISignRequestQuerystring = {
-            transaction: encodeBase64(JSON.stringify(tx)),
-            returnUrl: getReturnUrl([
-                'tokens',
-                ]),
-            optimistic: false,
-        };
-        const queryString = new URLSearchParams(query as any).toString();
-        router.push(`${spireKeyUrl}/sign?${queryString}`);
-        
-      try {
-        const searchParams = new URLSearchParams(location.search);
-        if (searchParams.has('transaction')) {
-            const transactionSearch = searchParams.get('transaction');
-            if (transactionSearch && transactionSearch?.length > 0) {
-              const parsedTransaction = tryParse<IUnsignedCommand>(
-                decodeBase64(transactionSearch),
-              );
-              if (parsedTransaction === ERROR) {
-                return;
-              }
-              console.log(
-                'retrieved transaction from querystring parameters',
-                JSON.stringify(parsedTransaction, null, 2),
-              );
-      
-              return parsedTransaction;
-            } else return tx
-          } else return tx;
-      } catch (error) {
-        throw new Error("error");
-      }
-    }) as ISignFunction;
-  
-  /**
-   * Creates the signWithSpireKey
-   * @param options - object to customize behaviour.
-   * @returns - {@link ISignFunction}
-   * @public
-   */
-  export function createSignWithSpireKey(router: AppRouterInstance, 
-    options = {  host: 'https://spirekey.kadena.io' },
-  ): ISignFunction {
-    const { host } = options;
-    const signWithSpireKey = signTransactions(router, host);
-  
-    return signWithSpireKey;
-  }
+    try {
+      const searchParams = new URLSearchParams(location.search);
+      if (searchParams.has('transaction')) {
+        const transactionSearch = searchParams.get('transaction');
+        if (transactionSearch && transactionSearch?.length > 0) {
+          const parsedTransaction = tryParse<IUnsignedCommand>(
+            decodeBase64(transactionSearch),
+          );
+          if (parsedTransaction === ERROR) {
+            return;
+          }
+          console.log(
+            'retrieved transaction from querystring parameters',
+            JSON.stringify(parsedTransaction, null, 2),
+          );
 
+          return parsedTransaction;
+        } else return tx;
+      } else return tx;
+    } catch (error) {
+      throw new Error('error');
+    }
+  }) as ISignFunction;
+
+/**
+ * Creates the signWithSpireKey
+ * @param options - object to customize behaviour.
+ * @returns - {@link ISignFunction}
+ * @public
+ */
+export function createSignWithSpireKey(
+  router: AppRouterInstance,
+  options = { host: 'https://spirekey.kadena.io' },
+): ISignFunction {
+  const { host } = options;
+  const signWithSpireKey = signTransactions(router, host);
+
+  return signWithSpireKey;
+}
+
+export const createSignWithSpireKeySDK =
+  (accounts: IAccount[]): ISignFunction =>
+  async (tx: IUnsignedCommand[]) => {
+    const { transactions, isReady } = await sign(tx, accounts);
+    await isReady();
+    return transactions;
+  };

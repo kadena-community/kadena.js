@@ -1,7 +1,7 @@
 'use client';
+import { env } from '@/utils/env';
 import { getAccountCookieName } from '@/utils/getAccountCookieName';
-import { getReturnUrl } from '@/utils/getReturnUrl';
-import { connect } from '@kadena/spirekey-sdk';
+import { connect, type Account } from '@kadena/spirekey-sdk';
 import { useRouter, useSearchParams } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
@@ -11,7 +11,7 @@ interface IAccountError {
 }
 
 export interface IAccountContext {
-  account?: IAccount;
+  account?: Account;
   error?: IAccountError;
   isMounted: boolean;
   login: () => void;
@@ -36,7 +36,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   const login = useCallback(async () => {
-    const account = await connect('testnet04', '1');
+    const account = await connect('testnet04', env.CHAIN_IDS[0]);
     setIsMounted(true);
     setAccount(account);
     localStorage.setItem(getAccountCookieName(), JSON.stringify(account));
