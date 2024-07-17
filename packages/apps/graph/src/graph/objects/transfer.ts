@@ -1,7 +1,6 @@
 import { prismaClient } from '@db/prisma-client';
 import type { Block, Transfer } from '@prisma/client';
 import { Prisma } from '@prisma/client';
-import { Decimal } from '@prisma/client/runtime/library';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
@@ -56,65 +55,67 @@ export default builder.prismaNode(Prisma.ModelName.Transfer, {
         'The counterpart of the crosschain-transfer. `null` when it is not a cross-chain-transfer.',
       type: Prisma.ModelName.Transfer,
       nullable: true,
-      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * 2, // In the worst case resolve scenario, it executes 2 queries.
+      complexity: COMPLEXITY.FIELD.PRISMA_WITH_RELATIONS * 2, // In the worst case resolve scenario, it executes 2 queries.
       select: {
         amount: true,
         blockHash: true,
         requestKey: true,
+        senderAccount: true,
+        receiverAccount: true,
+        transaction: {
+          select: {
+            pactId: true,
+          },
+        },
       },
       async resolve(__query, parent) {
         try {
-          // Find all transactions that match either of the two conditions
-          const transactions = await prismaClient.transaction.findMany({
-            where: {
-              OR: [
-                { pactId: parent.requestKey },
-                { blockHash: parent.blockHash, requestKey: parent.requestKey },
-              ],
-            },
-            include: { transfers: true },
-          });
-
-          // Filter the transactions to find the counterTransaction
-          let counterTransaction = transactions.find(
-            (transaction) =>
-              (transaction.pactId === parent.requestKey ||
-                (transaction.blockHash === parent.blockHash &&
-                  transaction.requestKey === parent.requestKey &&
-                  transaction.pactId !== null &&
-                  transaction.pactId !== undefined)) &&
-              transaction.transfers.find((transfer) =>
-                transfer.amount.equals(new Decimal(parent.amount)),
-              ),
-          );
-
-          if (!counterTransaction) {
+          // Only transactions that have an empty sender or receiver are crosschain transfers
+          if (parent.senderAccount !== '' && parent.receiverAccount !== '') {
+            return null;
+          }
+          // If it doesn't have a related transaction or pactid, it's not a crosschain transfer
+          // This usually doesn't happen, but TypeScript requires it as the db-schema doesn't define it
+          if (
+            parent.transaction?.pactId === null ||
+            parent.transaction?.pactId === undefined
+          ) {
             return null;
           }
 
-          // If the counterTransaction was found using the second condition, find the initiating transaction
-          if (
-            counterTransaction.blockHash === parent.blockHash &&
-            counterTransaction.requestKey === parent.requestKey &&
-            counterTransaction.pactId
-          ) {
-            const initiatingTransaction =
-              await prismaClient.transaction.findFirstOrThrow({
-                where: {
-                  requestKey: counterTransaction.pactId,
-                  pactId: undefined,
-                },
-                include: { transfers: true },
-              });
+          let where: Prisma.TransactionWhereInput = {};
 
-            counterTransaction = initiatingTransaction;
+          if (parent.receiverAccount === '') {
+            // this is the sending side of the crosschain transfer
+            // we're looking for a transaction that has the same pactId as the requestKey
+            where = {
+              pactId: parent.requestKey,
+            };
           }
 
-          return counterTransaction.transfers
-            ? (counterTransaction.transfers.find((transfer) =>
-                transfer.amount.equals(new Decimal(parent.amount)),
-              ) as Transfer)
-            : null;
+          if (parent.senderAccount === '') {
+            // this is the receiving side of the crosschain transfer
+            // we're looking for a transaction that has the same requestKey as the pactId
+            where = {
+              requestKey: parent.transaction.pactId,
+            };
+          }
+
+          let counterpartTx = await prismaClient.transaction.findFirstOrThrow({
+            where,
+            include: {
+              transfers: {
+                where: {
+                  amount: parent.amount,
+                },
+                take: 1,
+              },
+            },
+          });
+
+          if (!!counterpartTx) {
+            return counterpartTx.transfers[0];
+          }
         } catch (error) {
           throw normalizeError(error);
         }
