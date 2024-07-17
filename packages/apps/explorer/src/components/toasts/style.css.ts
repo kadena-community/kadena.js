@@ -31,7 +31,7 @@ export const toastWrapperClass = style([
 
 export const isNewClass = style({
   transition: 'transform 0s ease, opacity 0s ease',
-  transform: 'translateY(100px)',
+  transform: 'translateY(150px)',
 });
 
 export const notificationClass = style({
@@ -42,6 +42,6 @@ export const notificationClass = style({
   pointerEvents: 'all',
 });
 export const hideAnimationClass = style({
-  transform: 'translateY(-100px)',
+  transform: 'translateY(-150px)',
   opacity: 0,
 });

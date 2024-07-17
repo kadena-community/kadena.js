@@ -15,7 +15,7 @@ export interface IToast {
   action?: () => void;
   actionIcon?: ReactElement;
   actionLabel?: string;
-  onlyOneOfType?: string; //if this value is set, there can only be 1 error with this value. all next ones will be ignored
+  onlyOne?: boolean; //if this value is set, there can only be 1 error with this value. all next ones will be ignored
 }
 
 export type INetworkToast = Pick<IToast, 'body'>;
@@ -39,17 +39,15 @@ export const ToastProvider: FC<PropsWithChildren> = ({ children }) => {
   const createId = (): string => Math.random().toString(16).slice(2);
   const addToast = (toast: Omit<IToast, 'id'>) => {
     // first check if there already is a toast with this specific onlyOneOfType that is not null
-    if (
-      toasts.find(
-        (t) => t.onlyOneOfType && t.onlyOneOfType === toast.onlyOneOfType,
-      )
-    )
+    if (toast.onlyOne) {
+      setToasts([{ ...toast, id: createId() }]);
       return;
+    }
 
     setToasts((prevToasts) => {
-      prevToasts.find(
-        (t) => t.onlyOneOfType && t.onlyOneOfType === toast.onlyOneOfType,
-      );
+      //if there is a toast that has onLyOne to true, do not add the toast
+      if (prevToasts.find((t) => t.onlyOne)) return [...prevToasts];
+
       return [...prevToasts, { ...toast, id: createId() }];
     });
     setIsNew(true);
@@ -62,7 +60,7 @@ export const ToastProvider: FC<PropsWithChildren> = ({ children }) => {
   const addNetworkFailToast = (toast: INetworkToast) => {
     const newToast: Omit<IToast, 'id'> = {
       ...toast,
-      onlyOneOfType: 'networkfail',
+      onlyOne: true,
       type: 'negative',
       label: 'Network not found',
       permanent: true,
@@ -107,7 +105,6 @@ export const ToastProvider: FC<PropsWithChildren> = ({ children }) => {
 
 export const useToast = (): IToastContext => {
   const context = useContext(ToastContext);
-
   if (context === undefined) {
     throw new Error('Please use toastProvider in parent component');
   }
