@@ -1,5 +1,6 @@
 import { useRouter } from '@/components/routing/useRouter';
 import { useToast } from '@/components/toasts/toast-context/toast-context';
+import type { INetwork } from '@/constants/network';
 import { networkConstants } from '@/constants/network';
 import type { NormalizedCacheObject } from '@apollo/client';
 import {
@@ -23,14 +24,6 @@ import React, {
 // next/apollo-link bug: https://github.com/dotansimha/graphql-yoga/issues/2194
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { YogaLink } = require('@graphql-yoga/apollo-link');
-
-export type INetwork = Omit<
-  typeof networkConstants.mainnet,
-  'chainwebUrl' | 'explorerUrl'
-> & {
-  chainwebUrl?: string;
-  explorerUrl?: string;
-};
 
 const cache = new InMemoryCache({
   resultCaching: true,
@@ -63,10 +56,8 @@ const useNetwork = (): INetworkContext => {
   return context;
 };
 
-export const getDefaultNetworks = (): INetworkContext['networks'] => [
-  networkConstants.mainnet,
-  networkConstants.testnet,
-];
+export const getDefaultNetworks = (): INetworkContext['networks'] =>
+  networkConstants;
 
 export const getNetworks = (): INetwork[] => {
   const storage: INetwork[] = JSON.parse(
@@ -126,7 +117,7 @@ const NetworkContextProvider = (props: {
       addToast({
         type: 'negative',
         label: 'Network not found',
-        body: `network ${networkSlug} is depricated`,
+        body: `network ${networkSlug} is deprecated`,
       });
       return;
     }

@@ -1,4 +1,4 @@
-import type { INetwork } from '@/context/networks-context';
+import type { INetwork } from '@/constants/network';
 import { useNetwork } from '@/context/networks-context';
 import { MonoCheck, MonoClose } from '@kadena/kode-icons/system';
 import {
@@ -31,7 +31,7 @@ const NewNetwork: FC<IProps> = ({ handleOpen, createNetwork }) => {
 
     const data = new FormData(e.currentTarget);
     let { label, networkId, slug, chainwebUrl, graphUrl } =
-      getFormValues<INetwork>(data);
+      getFormValues<any>(data);
 
     const newNetwork: INetwork = {
       networkId,

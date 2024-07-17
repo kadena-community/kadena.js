@@ -1,4 +1,4 @@
-import type { INetwork } from '@/context/networks-context';
+import type { INetwork } from '@/constants/network';
 
 export const createHref = (
   activeNetwork: INetwork,
