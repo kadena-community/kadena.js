@@ -1,4 +1,3 @@
-import type { INetwork } from '@/constants/network';
 import {
   getNetworks,
   selectedNetworkKey,
@@ -56,9 +55,8 @@ export const useRouter = () => {
   const replace = (href: string): Promise<boolean> => {
     return router.replace(createHref(activeNetwork, networks, href));
   };
-  const push = (href: string, network?: INetwork): Promise<boolean> => {
-    const innerNetwork = network ? network : activeNetwork;
-    return router.push(createHref(innerNetwork, networks, href));
+  const push = (href: string): Promise<boolean> => {
+    return router.push(createHref(activeNetwork, networks, href));
   };
 
   const asPath = removeNetworkFromPath(router.asPath, networks);
