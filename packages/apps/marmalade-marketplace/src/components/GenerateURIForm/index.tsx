@@ -87,7 +87,7 @@ const GenerateURIForm: FC<GenerateURIProps> = ({
         variant="outlined"
         style={{ marginBottom: '50px' }}
       >
-        Upload
+        Select File
       </Button>
     </>
   );

@@ -24,21 +24,18 @@ import { useTransaction } from '@/hooks/transaction';
 
 function CreateTokenComponent() {
   const router = useRouter();
-  const { account } = useAccount();
+  const { account, webauthnAccount } = useAccount();
   const { transaction, send, preview, poll } = useTransaction();
 
   const excluded = "[EXCLUDED]";
 
   const [walletKey, setWalletKey] = useState<string>('');
-  const [walletAccount, setWalletAccount] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>();
   const [base64Image, setBase64Image] = useState('');
   const [error, setError] = useState('');
-  const [cid, setCid] = useState('');
   const [uploading, setUploading] = useState(false);
   const [collectionInput, setCollectionInput] = useState({ collectionId: '' });
-  const [tokenId, setTokenId] = useState<string>('');
 
   const [policyConfig, setPolicyConfig] = useState<ICreateTokenPolicyConfig>({
     nonUpdatableURI: false,
@@ -53,7 +50,6 @@ function CreateTokenComponent() {
     tokenId: '',
     precision: 0,
     chainId: '8',
-    creatorGuard: '',
     metadataName: '',
     metadataDescription: '',
     metadataCollectionName: '',
@@ -72,35 +68,31 @@ function CreateTokenComponent() {
 
   const [royaltyInput, setRoyaltyInput] = useState({
     royaltyFungible: 'coin',
-    royaltyCreator: walletAccount,
+    royaltyCreator: webauthnAccount?.account ?? '',
     royaltyGuard: walletKey,
     royaltyRate: '0.05',
   });
 
   useEffect(() => {
-    if (account) {
-      setWalletKey(account.credentials[0].publicKey);
-      setWalletAccount(account.accountName);
-    }
-  }, [account]);
+    if (webauthnAccount) {
+      const key = webauthnAccount.guard.keys[0];
 
-  useEffect(() => {
-    if (account) {
       setGuardInput({
-        uriGuard: account.credentials[0].publicKey,
-        burnGuard: account.credentials[0].publicKey,
-        mintGuard: account.credentials[0].publicKey,
-        saleGuard: account.credentials[0].publicKey,
-        transferGuard: account.credentials[0].publicKey,
+        uriGuard: key,
+        burnGuard: key,
+        mintGuard: key,
+        saleGuard: key,
+        transferGuard: key,
       });
 
       setRoyaltyInput(prev => ({
         ...prev,
-        royaltyCreator: account.accountName,
-        royaltyGuard: account.credentials[0].publicKey,
+        royaltyCreator: webauthnAccount.account,
+        royaltyGuard: key
       }));
+      setWalletKey(key);
     }
-  }, [account]);
+  }, [webauthnAccount]);
 
   const config = {
     host: env.URL,
@@ -154,7 +146,7 @@ function CreateTokenComponent() {
 
   const validateInputs = () => {
     if (!file) {
-      throw new Error('Please selecte a file');
+      throw new Error('Please select a file');
     }
 
     if (!tokenInput.metadataName || !tokenInput.metadataDescription) {
@@ -172,12 +164,11 @@ function CreateTokenComponent() {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    setUploading(true);
     try {
       if (!account) throw new Error("Connect Spirekey account");
 
       let updatedTokenInput = { ...tokenInput };
-
-
 
       const createInputs = () => ({
         ...formatInput(updatedTokenInput),
@@ -191,13 +182,13 @@ function CreateTokenComponent() {
       const processTokenCreation = async (inputs: any) => {
         try {
           const tokenIdCreated = await createTokenId({ ...inputs, networkId: config.networkId, host: config.host });
-          setTokenId(tokenIdCreated);
+          // setTokenId(tokenIdCreated);
 
           await createToken(
             {
               ...inputs,
               tokenId: tokenIdCreated,
-              capabilities: generateSpireKeyGasCapability(walletAccount),
+              capabilities: generateSpireKeyGasCapability(account.accountName ?? ''),
             },
             {
               ...config,
@@ -206,7 +197,11 @@ function CreateTokenComponent() {
           ).execute();
         } catch (error) {
           console.error(error);
-          setError(JSON.stringify(error.message));
+          // Workaround for an incorrect signing error that is thrown by client-utils, transaction
+          // signing isn't happening yet at this point
+          if (!error.message.includes('Signing failed')) {
+            setError(JSON.stringify(error.message));
+          }
         }
       };
 
@@ -228,10 +223,12 @@ function CreateTokenComponent() {
     await handleFileUpload();
     const inputs = createInputs();
     await processTokenCreation(inputs);
+    setUploading(false);
 
     } catch (error) {
       console.error(error);
       setError(JSON.stringify(error.message));
+      setUploading(false);
     }
   };
 
@@ -267,7 +264,6 @@ function CreateTokenComponent() {
         body: formData,
       });
       const ipfsHash = await res.text();
-      setCid(ipfsHash);
       setUploading(false);
       return `ipfs://${ipfsHash}`;
     } catch (e) {
@@ -286,7 +282,7 @@ function CreateTokenComponent() {
       ...input,
       chainId: input.chainId as ChainId,
       precision: createPrecision(input.precision),
-      creator: formatAccount(walletAccount, walletKey),
+      creator: formatAccount(account?.accountName || '', account?.credentials[0].publicKey || ''),
     };
   };
 
@@ -426,7 +422,7 @@ function CreateTokenComponent() {
           <Button variant="outlined" onPress={onCancelPress}>
             Cancel
           </Button>
-          <Button type="submit" onClick={handleSubmit}>
+          <Button isDisabled={uploading}  loadingLabel="Creating Token..." isLoading={uploading} type="submit" onClick={handleSubmit}>
             Create Token
           </Button>
         </div>
