@@ -21,6 +21,7 @@
     "@kadena/kode-icons": "workspace:*",
     "@kadena/kode-ui": "workspace:*",
     "@kadena/pactjs": "workspace:*",
+    "@kadena/spirekey-sdk": "0.0.1-dev-8",
     "@pinata/sdk": "^2.1.0",
     "firebase": "^10.8.0",
     "formidable": "^3.5.1",
