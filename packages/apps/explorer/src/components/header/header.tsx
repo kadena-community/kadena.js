@@ -2,7 +2,7 @@ import { Stack } from '@kadena/kode-ui';
 import classNames from 'classnames';
 
 import type { FC } from 'react';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { layoutWrapperClass } from '../layout/styles.css';
 import { NavBar } from '../navbar/navbar';
@@ -13,7 +13,12 @@ import { fixedClass, fixedVisibleClass, headerClass } from './styles.css';
 
 const Header: FC = () => {
   const router = useRouter();
-  const isSearchPage = router.asPath === '/';
+
+  const isSearchPage = useMemo(() => {
+    const regExp = new RegExp(/[?#].*/);
+    const newUrl = router.asPath.replace(regExp, '');
+    return newUrl === '/';
+  }, [router.asPath]);
   const { ref: inViewRef, inView } = useInView({
     rootMargin: '20px',
     skip: !isSearchPage,

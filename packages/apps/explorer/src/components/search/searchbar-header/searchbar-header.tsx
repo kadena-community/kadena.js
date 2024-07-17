@@ -16,6 +16,7 @@ const SearchBarHeader: FC = () => {
 
   return (
     <SearchComponent
+      position="header"
       searchOption={searchOption}
       setSearchOption={setSearchOption}
       searchData={searchData}

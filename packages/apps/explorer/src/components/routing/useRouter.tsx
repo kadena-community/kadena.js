@@ -21,7 +21,7 @@ export const useRouter = () => {
 
     const pathArray = router.asPath.split('/').filter((v) => !!v);
     const foundNetwork = innerNetworks.find(
-      (n) => n.slug && n.slug.startsWith(pathArray[0]),
+      (n) => n.slug && pathArray[0].startsWith(n.slug),
     );
 
     if (!foundNetwork) {
@@ -48,7 +48,7 @@ export const useRouter = () => {
         Cookies.remove(selectedNetworkKey);
       }
 
-      window.location.href = '/mainnet';
+      //window.location.href = '/mainnet';
     }
   }, [router.asPath]);
 
