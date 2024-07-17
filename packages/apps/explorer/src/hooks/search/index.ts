@@ -74,7 +74,6 @@ export const useSearch = () => {
   });
 
   useEffect(() => {
-    console.log(searchOption, searchQuery);
     if (!isMounted) return;
 
     const query = router.query.q;
