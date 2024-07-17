@@ -155,11 +155,11 @@ To return all of the ancestors of the `"QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqB
 
 ### Responses
 
-Requests to `/chain/{chain}/hash/branch` can return the following response codes:
+Requests to `POST http://{baseURL}/chain/{chain}/hash/branch` return the following response codes:
 
 - **200 OK** indicates that the request succeeded and returns the requested block hashes. 
   All block hashes that match the specified criteria are returned from the chain database, including hashes for orphaned blocks.
-- **404 Not Found** indicates that the requested block hashes could not be found.
+- **404 Not Found** indicates that there were no block hashes matching the request criteria.
 
 #### Response headers
 
