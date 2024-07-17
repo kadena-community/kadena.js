@@ -150,5 +150,5 @@ export const createSignWithSpireKeySDK =
   async (tx: IUnsignedCommand[]) => {
     const { transactions, isReady } = await sign(tx, accounts);
     await isReady();
-    return transactions;
+    return transactions[0];
   };
