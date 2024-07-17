@@ -48,7 +48,7 @@ export const useRouter = () => {
         Cookies.remove(selectedNetworkKey);
       }
 
-      //window.location.href = '/mainnet';
+      window.location.href = '/mainnet';
     }
   }, [router.asPath]);
 
