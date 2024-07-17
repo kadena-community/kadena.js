@@ -1,3 +1,4 @@
+import type { INetwork } from '@/constants/network';
 import {
   getNetworks,
   selectedNetworkKey,
@@ -48,16 +49,16 @@ export const useRouter = () => {
         Cookies.remove(selectedNetworkKey);
       }
 
-      //window.location.href = '/mainnet';
+      window.location.href = '/mainnet';
     }
   }, [router.asPath]);
 
   const replace = (href: string): Promise<boolean> => {
     return router.replace(createHref(activeNetwork, networks, href));
   };
-  const push = (href: string): Promise<boolean> => {
-    console.log(activeNetwork);
-    return router.push(createHref(activeNetwork, networks, href));
+  const push = (href: string, network?: INetwork): Promise<boolean> => {
+    const innerNetwork = network ? network : activeNetwork;
+    return router.push(createHref(innerNetwork, networks, href));
   };
 
   const asPath = removeNetworkFromPath(router.asPath, networks);

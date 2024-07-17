@@ -1,5 +1,6 @@
 import type { INetwork } from '@/constants/network';
 import { useNetwork } from '@/context/networks-context';
+import { checkNetwork } from '@/utils/checkNetwork';
 import { MonoCheck, MonoClose } from '@kadena/kode-icons/system';
 import {
   Button,
@@ -56,30 +57,8 @@ const NewNetwork: FC<IProps> = ({ handleOpen, createNetwork }) => {
     }
 
     try {
-      const result = await fetch(graphUrl, {
-        method: 'POST',
-        headers: {
-          accept:
-            'application/graphql-response+json, application/json, multipart/mixed',
-          'cache-control': 'no-cache',
-          'content-type': 'application/json',
-          pragma: 'no-cache',
-          'sec-fetch-mode': 'cors',
-          'sec-fetch-site': 'cross-site',
-        },
-        body: JSON.stringify({
-          query: `query networkInfo {
-            networkInfo {
-              totalDifficulty
-            }
-          }`,
-          variables: {},
-          operationName: 'networkInfo',
-          extensions: {},
-        }),
-      });
+      const result = await checkNetwork(graphUrl);
       setCheckStatus(result.status);
-
       await result.json();
 
       if (result.status === 200) {
