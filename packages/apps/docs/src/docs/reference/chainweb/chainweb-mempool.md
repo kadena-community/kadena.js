@@ -10,12 +10,14 @@ tags: ['chainweb', 'node api', 'chainweb api', 'api reference']
 ---
 
 # Mempool endpoints
-Mempool P2P endpoints for communication between mempools. End users are not supposed to use these endpoints directly. Instead, the respective Pact endpoints should be used for submitting transactions into the network.
 
-Get Pending Transactions from the Mempool
+The memory pool peer-to-peer endpoints enable communication between mempools on different nodes. 
+These API endpoints are not included for reference but are not intended to be used directly. 
+Instead, you should use the appropriate Pact endpoints to submit transactions to the network.
 
-POST
-/chain/{chain}/mempool/getPending
+## Get pending transactions from the mempool
+
+Use `POST https://{baseURL}/chain/{chain}/mempool/getPending` to retrieve pending transactions from the memory pool.
 
 PATH PARAMETERS
 chain

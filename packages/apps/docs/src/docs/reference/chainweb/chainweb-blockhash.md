@@ -12,20 +12,20 @@ tags: ['chainweb', 'node api', 'chainweb api', 'api reference']
 # Block hash endpoints
 
 Block hash endpoints return block hashes from the chain database.
-Generally, block hashes are returned in ascending order and include hashes from orphaned blocks.
+Generally, block hashes are returned in **ascending** order and include hashes from orphaned blocks.
 
 If you only want to query for blocks that are included in the winning branch of the chain, you can use the branch endpoint.
 The branch endpoint returns blocks in descending order starting from the leafs of branches of the block chain.
 
 ## Get block hashes
 
-Use `GET /chain/{chain}/hash` to get block hashes for the specified chain.
+Use `GET https://{baseURL}/chain/{chain}/hash` to get block hashes for the specified chain.
 
 ### Path parameters
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| chain (required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block hashes for the first chain (0), the request is `GET /chain/0/hash`.
+| chain (required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block hashes for the first chain (0), the request is `GET https://{baseURL}//chain/0/hash`.
 
 ### Query parameters
 
@@ -33,14 +33,14 @@ Use `GET /chain/{chain}/hash` to get block hashes for the specified chain.
 | --------- | ---- | -----------
 | limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number records returned might be lower than the value you specify.
 | next | string | Specifies the cursor value to retrieve the next page of results. You can find the value to specify in the `next` property returned by the previous page in a successful response.
-| minheight	| integer >= 0 | Specifies the minimum block height for the returned hashes. For example: minheight=500000
-| maxheight | integer >= 0 | Specifies the maximum block height for the returned hashes. For example: maxheight=500000
+| minheight	| integer >= 0 | Specifies the minimum block height for the returned hashes. For example: `minheight=4471908`.
+| maxheight | integer >= 0 | Specifies the maximum block height for the returned hashes. For example: `maxheight=4953816`.
 
 ### Responses
 
-Requests to `/chain/{chain}/hash` can return the following response codes:
+Requests to `GET https://{baseURL}/chain/{chain}/hash` can return the following response codes:
 
-- **200 OK** indicates that the request succeeded and returns a collection of block hashed in **ascending** order. 
+- **200 OK** indicates that the request succeeded and returns a collection of block hashes in **ascending** order. 
   All block hashes that match the specified criteria are returned from the chain database, including hashes for orphaned blocks.
 - **404 Not Found** indicates that a query parameter value specifies a nonexistent block height.
 
@@ -64,15 +64,21 @@ If the request is successful, the response returns `application/json` content wi
 | limit (required) | integer >= 0 | Specifies the maximum number of items in the page. This number can be smaller but never larger than the number of requested items.
 | next (required) | string or null | Returns a value that can be used to query the next page. You can use this values for the `next` parameter in a follow-up request. The format for this parameter consists of two parts. The first part of the string can be `inclusive`, `exclusive` or null. The second part is the value that calls the next page of results or null if there are no more results to query.
 
-For example:
+### Example
+
+```Postman
+GET https://api.chainweb.com/chainweb/0.0/mainnet01/chain/19/hash?limit=3
+```
 
 ```json
 {
-  "value": {
-    "next": "inclusive:o1S4NNFhKWg8T1HEkmDvsTH9Ut9l3_qHRpp00yRKZIk",
-    "items": [],
-    "limit": 2
-    }
+    "limit": 3,
+    "items": [
+        "y76dr78dPJlFDMPzCc-aEz97iRyimv5Ij3psdVlC64c",
+        "1ETD2LKF_gmJ92-q1fqAJY2eZerhhZA2kLxM1BC5hKE",
+        "1B3UJuYNx0LHqtgbJ_sSpJl5h-77pMfvjBBy85e2K8w"
+    ],
+    "next": "inclusive:qgsxD1G5m8dGZ4W9nMKBotU2I10ilURkRIE3_UKHlLM"
 }
 ```
 
@@ -96,23 +102,23 @@ For example:
 
 ## Get block hash branches
 
-Use `POST /chain/{chain}/hash/branch` to get block hashes from the branches of the block chain in descending order.
+Use `POST https://{baseURL}/chain/{chain}/hash/branch` to get block hashes from the branches of the block chain in descending order.
 This call only returns blocks that are ancestors of the same block in the set of upper bounds and that are not ancestors of any block in the set of lower bounds.
 
 ### Path parameters
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| chain (required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block hashes for the first chain (0), the request is `POST /chain/0/hash/branch`.
+| chain (required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block hashes for the first chain (0), the request is `POST https://{baseURL}/chain/0/hash/branch`.
 
 ### Query parameters
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number records might be lower.
+| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the limit you set.
 | next | string | Specifies the cursor for the next page. This value can be found as the value of the `next` property of the previous page.
-| minheight	| integer >= 0 | Specifies the minimum block height for the returned hashes. For example: minheight=500000
-| maxheight | integer >= 0 | Specifies the maximum block height for the returned hashes. For example: maxheight=500000
+| minheight	| integer >= 0 | Specifies the minimum block height for the returned hashes. For example: `minheight=4471908`.
+| maxheight | integer >= 0 | Specifies the maximum block height for the returned hashes. For example: `maxheight=4953816`.
 
 ### Request body schema
 
@@ -123,7 +129,7 @@ Use the following parameters to specify the upper and lower bounds for the queri
 | lower	| Array of strings (Block Hash) | Specifies the lower bound for the query. No block hashes are returned that are predecessors of any block with a hash from this array. Each block hash consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
 | upper | Array of strings (Block Hash) | Specifies the upper bound for the query. All returned block hashes are predecessors of a block with an hash from this array. Each block hash consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
 
-The following examples illustrate setting lower and upper bounds for a quesry parameters. 
+The following examples illustrate setting lower and upper bounds for the query parameters. 
 For example, to return all of the ancestors of the "QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74" block that are not ancestors of the "RClyuyZAacwvPpmLXKbTwrIRXWeUSjiNhJVP2esH8KM" block, you might specify bounds similar to the following:
 
 ```json
@@ -198,37 +204,62 @@ If the request is successful, the response returns application/json content with
 | limit (required) | integer >= 0 | Specifies the maximum number of items in the page. This number can be smaller but never larger than the number of requested items.
 | next (required) | string or null | Returns a value that can be used to query the next page. You can use this values for the `next` parameter in a follow-up request. The format for this parameter consists of two parts. The first part of the string can be `inclusive`, `exclusive` or null. The second part is the value that calls the next page of results or null if there are no more results to query.
 
-#### Example
+#### Examples
 
-Send a request to the Kadena main network:
+You can send a request to the Kadena main network—mainnet01—and chain 0 by calling the main network service endpoint:
 
-POST https://us-e1.chainweb.com/chainweb/0.0/mainnet01/chain/0/hash/branch?limit=2
+```Postman
+POST https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/hash/branch
+```
 
-##### Request body
+The request body for this query is:
 
 ```json
 {
-  "lower": [
-    "RClyuyZAacwvPpmLXKbTwrIRXWeUSjiNhJVP2esH8KM"
-    ],
-  "upper": [
-    "QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"
-    ]
+    "lower" :["RClyuyZAacwvPpmLXKbTwrIRXWeUSjiNhJVP2esH8KM"],
+    "upper" : ["QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"]
 }
 ```
 
-##### Response body
+This request returns one item in the response body:
 
 ```json
 {
-  "value": {
-    "next": "inclusive:o1S4NNFhKWg8T1HEkmDvsTH9Ut9l3_qHRpp00yRKZIk",
+    "limit": 1,
     "items": [
-      "QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74",
-      "RClyuyZAacwvPpmLXKbTwrIRXWeUSjiNhJVP2esH8KM"
+        "QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"
     ],
-    "limit": 2
-  }
+    "next": null
+}
+```
+
+You can send a request to the Kadena test network—testnet04—and chain 18 by calling the testnet service endpoint like this:
+
+```Postman
+POST https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/18/hash/branch
+```
+
+The request body for this query is:
+
+```json
+{
+    "lower": ["egzXuuj9EWIadpIQipb59N1DFPgDE6Gdlo2LmReGAfI"],
+    "upper": ["w5pM1MLEpJcBdMS5KT3tcxEj86hCO4Qv-q-xMysGmOw"]
+}
+```
+
+This request returns four items in the response body:
+
+```json
+{
+    "limit": 4,
+    "items": [
+        "w5pM1MLEpJcBdMS5KT3tcxEj86hCO4Qv-q-xMysGmOw",
+        "LfjtkAgRa6jt6al0VACE4Gylu8McHf34233qZjqETuo",
+        "DRKyE0T_42ajfqC7kmBEn07pTMZbshFBWGzWT27cqwg",
+        "5o4nH_H_mcDnfmXDnp9XqRU5qWcpaKGdfECMZB0CQ8s"
+    ],
+    "next": null
 }
 ```
 
@@ -245,7 +276,7 @@ For example:
 
 ```json
 {
-  "reason": "string",
-  "key": "QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH7"
+    "key": "QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74",
+    "reason": "key not found"
 }
 ```

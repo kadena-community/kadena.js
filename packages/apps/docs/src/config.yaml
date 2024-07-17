@@ -516,12 +516,6 @@ pages:
           cut:
             url: /cut
             file: /reference/chainweb/chainweb-cut.md
-          blockhash:
-            url: /blockhash
-            file: /reference/chainweb/chainweb-blockhash.md
-          blockheader:
-            url: /blockheader
-            file: /reference/chainweb/chainweb-blockheader.md
           payload:
             url: /payload
             file: /reference/chainweb/chainweb-payload.md
@@ -537,6 +531,12 @@ pages:
           block:
             url: /service-block
             file: /reference/chainweb/chainweb-service-block.md
+          blockhash:
+            url: /blockhash
+            file: /reference/chainweb/chainweb-blockhash.md
+          blockheader:
+            url: /blockheader
+            file: /reference/chainweb/chainweb-blockheader.md
           mining:
             url: /mining
             file: /reference/chainweb/chainweb-service-mining.md

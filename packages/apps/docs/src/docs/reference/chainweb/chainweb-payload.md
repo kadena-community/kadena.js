@@ -142,7 +142,7 @@ Use an array of payload hash strings and an array of block heights in a JSON obj
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| hashes | Array of strings | Each block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set. For example: `GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA`.
+| hashes | Array of strings | Specifies the block payload hashes to include in the query request. Each block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set. For example: `GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA`.
 | heights | Array of integers | Specifies the block heights to include in the request.
 
 For example, a batch query request with a payload hash array for two payloads would look similar to the following::
@@ -315,22 +315,21 @@ Use an array of payload hash strings in a JSON object to specify the payloads yo
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| payloadHash | Array of strings | Each block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set. For example: `GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA`.
+| hashes (required) | Array of strings | Each block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set. For example: `GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA`.
+| heights (required) | Array of integers | Specifies the block heights to include in the request.
 
 For example, a batch query request with a payload hash array for two payloads would look similar to the following::
 
 ```json
 {
-  "value": [
-    "GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA",
-    "jcQOWz7K9qKnkUv4Z883D2ZjkFFGgccoSroWGaoogLM"
-  ]
+    "hashes": ["nrPYG6PSkE40eYuf4LLrPFRADp2Uq7EI9d4OOIqeOMs", "OnnBJzL7-m8jvhofERC2EVa6awCuJYGNZwvNaVZuv68"],
+    "heights": [4953900, 4953901, 4953902, 4953903, 4953904]
 }
 ```
 
 ### Responses
 
-Requests to `/chain/{chain}/payload` can return the following response codes:
+Requests to `/chain/{chain}/payload/outputs/batch` can return the following response codes:
 
 - **200 OK** indicates that the request succeeded and returns some or all of the requested block payloads. The payloads may be returned in any order.
 - **404 Not Found** indicates that the payload hash wasn't found.

@@ -1,210 +1,299 @@
 ---
-title: Miscellaneous endpoints
+title: Maintenance and other services endpoints
 description:
-  Provides reference information for the chainweb-node block endpoints.
+  Provides reference information for the endpoints you can use to query or update information about the chainweb-node configuration, backups, health check, and other services.
 menu: Chainweb API
-label: Block endpoints
+label: Maintenance endpoints
 order: 2
 layout: full
 tags: ['chainweb', 'node api', 'chainweb api', 'api reference']
 ---
 
-# Miscellaneous endpoints
-Configuration of Chainweb Node
+# Maintenance and other services endpoints
 
-GET
-/config
+There are several endpoints you can use to query or update information about a Chainweb node, including its current configuration and availability.
 
+## Configure a Chainweb node
 
+Use `GET https://{baseURL}/config` to return configuration information for a Chainweb node.
+The configuration details are returned as a JSON object with sensitive information removed from the result. 
+The JSON schema depends on the version of the `chainweb-node` software running on the node and is not part of the stable `chainweb-node` API.
 
+### Responses
 
+Requests to the `/config` endpoint return the following response code:
 
-Returns the configuration of chainweb-node as a JSON structure. Sensitive information is removed from the result. The JSON schema depends on the chainweb node version and is not part of the stable chainweb-node API.
+- **200 OK** returns the configuration details for the Chainweb node.
 
-Responses
-200 Configuration of the chainweb node
-RESPONSE HEADERS
-x-peer-addr	
-string (Host Address) ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$
-Example: "10.36.1.3:42988"
-Host and port of the client as observed by the remote node
+#### Response header
 
-x-server-timestamp	
-integer (POSIX Timestamp) >= 0
-Example: 1618597601
-The time of the clock of the remote node
+The response header consists of the following parameters:
 
-x-chainweb-node-version	
-string
-Example: "2.6"
-The version of the remote chainweb node
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote chainweb node in the format ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$. For example: "10.36.1.3:42988"
+| x-server-timestamp | integer >= 0 | Specifies the clock time of the remote chainweb node using the UNIX epoch timestamp. For example: 1618597601
+| x-chainweb-node-version	| string | Specifies the version of the remote chainweb node. For example: "2.23"
 
-RESPONSE SCHEMA: application/json
-Schema not provided
-Response samples
-200
-Content type
-application/json
+#### Response schema
 
-Copy
-Expand allCollapse all
+The content of the JSON schema depends on the version of the `chainweb-node` software running on the node and is not part of the stable `chainweb-node` API.
+
+### Examples
+
+You can send a request to a Kadena main network bootstrap node by calling the `/config` endpoint.
+For example:
+
+```Postman
+GET https://us-e1.chainweb.com/config
+```
+
+Alternatively, you can send a request to the Kadena test or main network by calling the appropriate service endpoint.
+For example:
+
+```Postman
+ https://us1.testnet.chainweb.com/config
+```
+
+These sample requests return the schema for `chainweb-node` version 2.24.1. 
+
+For the bootstrap node, the response looks similar to the following:
+
+```json
 {
-"value": {
-"allowReadsInLocal": false,
-"rosetta": true,
-"throttling": {},
-"serviceApi": {},
-"validateHashesOnReplay": false,
-"chainwebVersion": "mainnet01",
-"pactQueueSize": 2000,
-"mining": {},
-"p2p": {},
-"transactionIndex": {},
-"gasLimitOfBlock": 150000,
-"reorgLimit": 480,
-"headerStream": true,
-"mempoolP2p": {},
-"reintroTxs": true,
-"cuts": {}
+    "allowReadsInLocal": false,
+    "backup": {
+        "api": {
+            "configuration": {},
+            "enabled": false
+        },
+        "directory": null
+    },
+    "chainwebVersion": "mainnet01",
+    "cuts": {
+        "fastForwardBlockHeightLimit": null,
+        "fetchTimeout": 3000000,
+        "initialBlockHeightLimit": null,
+        "pruneChainDatabase": "none"
+    },
+    "enableLocalTimeout": false,
+    "fullHistoricPactState": true,
+    "gasLimitOfBlock": 150000,
+    "headerStream": false,
+    "logGas": false,
+    "mempoolP2p": {
+        "configuration": {
+            "maxSessionCount": 6,
+            "pollInterval": 30,
+            "sessionTimeout": 300
+        },
+        "enabled": false
+    },
+    "minGasPrice": 1.0e-8,
+    "mining": {
+        "coordination": {
+            "enabled": false,
+            "limit": 1200,
+            "miners": [],
+            "payloadRefreshDelay": 15000000,
+            "updateStreamLimit": 2000,
+            "updateStreamTimeout": 240
+        },
+        "nodeMining": {
+            "enabled": false,
+            "miner": {
+                "account": "",
+                "predicate": "keys-all",
+                "public-keys": []
+            }
+        }
+    },
+    "moduleCacheLimit": 62914560,
+    "onlySyncPact": false,
+    "p2p": {
+        "bootstrapReachability": 0,
+        "ignoreBootstrapNodes": false,
+        "maxPeerCount": 1000,
+        "maxSessionCount": 10,
+        "peer": {
+            "certificateChain": null,
+            "certificateChainFile": null,
+            "hostaddress": {
+                "hostname": "us-e1.chainweb.com",
+                "port": 443
+            },
+            "interface": "*",
+            "key": null,
+            "keyFile": null
+        },
+        "peers": [
+            {
+                "address": {
+                    "hostname": "us-e1.chainweb.com",
+                    "port": 443
+                },
+                "id": null
+            },
+            {
+                "address": {
+                    "hostname": "fr1.chainweb.com",
+                    "port": 443
+                },
+                "id": null
+            },
+        ],
+        "private": false,
+        "sessionTimeout": 240
+    },
+    "pactQueueSize": 2000,
+    "preInsertCheckTimeout": 1000000,
+    "readOnlyReplay": false,
+    "reintroTxs": true,
+    "reorgLimit": 480,
+    "rosetta": false,
+    "serviceApi": {
+        "interface": "invalid",
+        "payloadBatchLimit": 1000,
+        "port": 0,
+        "validateSpec": false
+    },
+    "syncPactChains": null,
+    "throttling": {
+        "global": 50,
+        "mempool": 20,
+        "putPeer": 11
+    }
 }
-}
-Start a backup job
+```
 
-POST
-/make-backup
+## Start a backup job
 
+Use the `POST https://{basaeURL}/make-backup` to start a backup job for a Chainweb node.
+Backup jobs are identified by the UNIX timestamp when they're begun.
 
+If a backup job is already in progress, this endpoint returns the in-progress backup job identifier instead of starting a new backup job.
 
+The RocksDB portion of the Chainweb database is always backed up.
+If you set the `backupPact` option, the backup job includes the Pact Sqlite portion of the Chainweb nodes database in the backup.
+Backing up both databases takes much longer than only backing up the RockDB database.
 
+There is no automatic backup retention policy.
+You should define your own policy and delete old backup copies, as appropriate.
 
-Backup jobs are identified by the Unix timestamp when they're begun.
+You can enable the backup API for a node by adding the following lines to the node configuration:
 
-If a backup job is already in progress, this endpoint will return its identifier instead of starting a new one.
-
-The RocksDB portion of the database is always backed up; if backupPact is set, the Sqlite (Pact) portion is backed up as well, taking much longer.
-
-There is no automatic backup retention policy - users need to delete old backups.
-
-This API is enabled by configuring the node thus:
-
+```yaml
 backup:
   api:
     enabled: true
-  directory: {some file path to put backups in}
-The backup directory ideally will be located in the same partition as the RocksDB portion of the node database.
+  directory: path-to-backups-directory
+```
 
-RocksDB backups to the same partition as holds the active RocksDB database will have almost zero space overhead immediately, but over time as the active database diverges from the backup the space overhead will increase. If the backup is to another partition, it will take longer and take as much disk space as the active RocksDB database.
+Ideally, you should locate the backup directory in the same partition as the RocksDB portion of the Chainweb node database.
+
+Storing RocksDB backups in the same partition as the active RocksDB database minimizes the space required and the time it takes to complete backups initially.
+Over time—as the active database diverges from the backup copy—the space required will increase. 
+If you store the backup on another partition, the backup operation takes longer and the backup copy requires as much disk space as the active RocksDB database.
 
 Pact database backups always require about as much space as the active Pact database does.
 
-QUERY PARAMETERS
-backupPact	
-any
-Flag, if present back up the Pact databases too. Extra disk space and time required
+### Query parameters
 
-Responses
-200 A backup job has been created
-RESPONSE HEADERS
-x-peer-addr	
-string (Host Address) ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$
-Example: "10.36.1.3:42988"
-Host and port of the client as observed by the remote node
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| backupPact | any | Indicates that you want to back up both the RockDB database and the Pact database. This option requires additional disk space and increases the time required to complete the backup.
 
-x-server-timestamp	
-integer (POSIX Timestamp) >= 0
-Example: 1618597601
-The time of the clock of the remote node
+### Responses
 
-x-chainweb-node-version	
-string
-Example: "2.6"
-The version of the remote chainweb node
+Requests to the `POST https://{basaeURL}/make-backup` endpoint return the following response code:
 
-RESPONSE SCHEMA: text/plain
-string (Backup job identifier) [a-zA-Z0-9_-]+
-Textual backup job identifier
+- **200 OK** indicates that a backup job has been created.
 
-Check the status of a backup job
+#### Response header
 
-GET
-/check-backup/{backupId}
+The response header consists of the following parameters:
 
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote chainweb node in the format ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$. For example: "10.36.1.3:42988"
+| x-server-timestamp | integer >= 0 | Specifies the clock time of the remote chainweb node using the UNIX epoch timestamp. For example: 1618597601
+| x-chainweb-node-version	| string | Specifies the version of the remote chainweb node. For example: "2.23"
 
+#### Response schema
 
+The response returns `text/plain` content with the following information:
 
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| backupId | string | Specifies the backup job identifier with a UNIX timestamp from the [a-zA-Z0-9_-] character set.
 
-PATH PARAMETERS
-backupId
-required
-string (Backup job identifier) [a-zA-Z0-9_-]+
-Example: 1648665437000
-The identifier of the backup being checked
+## Check the status of a backup job
 
-Responses
-200 A backup job with that identifier exists, here is its status
-RESPONSE HEADERS
-x-peer-addr	
-string (Host Address) ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$
-Example: "10.36.1.3:42988"
-Host and port of the client as observed by the remote node
+Use `GET https://{baseURL}/check-backup/{backupId}` to check the status of a backup job.
 
-x-server-timestamp	
-integer (POSIX Timestamp) >= 0
-Example: 1618597601
-The time of the clock of the remote node
+### Path parameters
 
-x-chainweb-node-version	
-string
-Example: "2.6"
-The version of the remote chainweb node
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| backupId (required) | string | Specifies the backup job identifier with a UNIX timestamp from the [a-zA-Z0-9_-] character set. For example: 1648665437000
 
-RESPONSE SCHEMA: text/plain
-string (Backup job status) backup-done|backup-in-progress|backup-failed
-404 There is no backup job with that identifier
-Health Check
+### Responses
 
-GET
-/health-check
+Requests to the `GET https://{baseURL}/check-backup` endpoint can return the following response codes:
 
+- **200 OK** indicates that a backup job with the specified identifier exists and returns its current status.
+- **404 Not Found** indicates that there were no backup jobs matching the specified identifier.
 
+#### Response header
 
-Checks whether the chainweb-node is up and running and responding to API requests. In order to check the state of consensus the /cut/get endpoint should be used instead.
+The response header consists of the following parameters:
 
-Responses
-200 The node is healthy
-RESPONSE HEADERS
-x-peer-addr	
-string (Host Address) ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$
-Example: "10.36.1.3:42988"
-Host and port of the client as observed by the remote node
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote chainweb node in the format ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$. For example: "10.36.1.3:42988"
+| x-server-timestamp | integer >= 0 | Specifies the clock time of the remote chainweb node using the UNIX epoch timestamp. For example: 1618597601
+| x-chainweb-node-version	| string | Specifies the version of the remote chainweb node. For example: "2.23"
 
-x-server-timestamp	
-integer (POSIX Timestamp) >= 0
-Example: 1618597601
-The time of the clock of the remote node
+#### Response schema
 
-x-chainweb-node-version	
-string
-Example: "2.6"
-The version of the remote chainweb node
+The response returns `text/plain` content with the following information:
 
-RESPONSE SCHEMA: text/plain
-string
-Response samples
-200
-Content type
-text/plain
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| status | string | Specifies the status of the backup job with the specified identifier. There are three possible status messages: `backup-done`, `backup-in-progress`, and `backup-failed`.
 
-Copy
-Health check OK.
-General Node Info
+## Check node health
 
-GET
-/info
+Use `GET https://{baseURL}/health-check` to check whether `chainweb-node` is running and responding to API requests. 
+To check the state of consensus, you should use the `GET /cut` endpoint instead of this endpoint.
 
+### Responses
 
+Requests to the `/health-check` endpoint return the following response code:
 
-Provides general information about the node and the chainweb version
+- **200 OK** indicates that the node is running and responding to API requests.
+
+#### Response header
+
+The response header consists of the following parameters:
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote chainweb node in the format ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$. For example: "10.36.1.3:42988"
+| x-server-timestamp | integer >= 0 | Specifies the clock time of the remote chainweb node using the UNIX epoch timestamp. For example: 1618597601
+| x-chainweb-node-version	| string | Specifies the version of the remote chainweb node. For example: "2.23"
+
+#### Response schema
+
+The response returns `text/plain` content with the following information:
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| check | string | Health check OK.
+
+## Get general node information
+
+Use `GET https://{baseURL}/info` to return general information about the node and the Chainweb version.
 
 Responses
 200 General information about the node and the chainweb version
@@ -259,24 +348,23 @@ Expand allCollapse all
 "nodeGraphHistory": []
 }
 }
-Blocks Event Stream
+## Blocks event stream
 
-GET
-/header/updates
+Use `GET https://{baseURL}/header/updates` to connect to a source of server events that emits a BlockHeader event for each new block header that is added to the chain database of the remote node.
 
-
-
-
-
-A source of server events that emits a BlockHeader event for each new block header that is added to the chain database of the remote node.
-
-The stream contains blocks that may later become orphaned. It is therefor recommended to buffer events on the client side for the most recent block heights until the desired confirmation depth is reached.
+The stream contains blocks that may later become orphaned. 
+It is therefor recommended to buffer events on the client side for the most recent block heights until the desired confirmation depth is reached.
 
 The server may terminate this stream from time to time and it is up to the client to reinitiate the stream.
 
 Responses
-200 A stream of BlockHeader events. This is not a JSON array. Events are separated by empty lines. Each event consists of an event property and a data property which are separated by newlines.
+
+- **200 OK** A stream of BlockHeader events. This is not a JSON array. Events are separated by empty lines. Each event consists of an event property and a data property which are separated by newlines.
+
 RESPONSE HEADERS
+
+!!!include(chainweb-response-headers.md)!!!
+
 x-peer-addr	
 string (Host Address) ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$
 Example: "10.36.1.3:42988"
@@ -310,10 +398,10 @@ data:{"txCount":0,"powHash":"00000000000006e0b164858ee0fcbfd112f4242d5010ff33d3a
 
 event:BlockHeader
 data:{"txCount":0,"powHash":"00000000000001c40ddfd6574f9962a443714f3817bbea773a55fec63c7d95c8","header":{"creationTime":1619037446256086,"parent":"usmNftUR_mHpXOm8gCvtbZ50_9VaefaIVvcMdrKwc5A","height":1554652,"hash":"SOfbK_kI_9BtgLemWmb3FWOgDCTxf1tPulKCq1ndmWA","chainId":18,"weight":"i7XsQnkhY9yLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","featureFlags":0,"epochStart":1619035885828397,"adjacents":{"19":"fQJ5JKQLdGEwZIoC5HrhJstk3Iibj_a2dfmJl9osG-o","17":"L-GeIWZE4fMCICSpPptsfYpsLj3oO5eCiyJimclYJiY","3":"V7m9ROQmJs2i1UI05t8J6rjkfg7m795esdsIjhqyqfc"},"payloadHash":"Ji7WisfH5IulPMcFglexGcVDnA59aS5k1YSE2_6L4t8","chainwebVersion":"mainnet01","target":"tvH4nBuGx3opw-50T8-i6ECi68IgpFLOjAcAAAAAAAA","nonce":"9499180874660840183"},"target":"000000000000078cce52a420c2eba240e8a2cf4f74eec3297ac7861b9cf8f1b6"}
-Blocks Event Stream
 
-GET
-/block/updates
+## Blocks Event Stream
+
+GET /block/updates
 
 
 

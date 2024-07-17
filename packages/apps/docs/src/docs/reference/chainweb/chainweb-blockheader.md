@@ -17,15 +17,15 @@ Similar to the block endpoints, block headers are generally returned in ascendin
 If you only want to query for blocks that are included in the winning branch of the chain, you can use the branch endpoint.
 The branch endpoint returns blocks in descending order starting from the leafs of branches of the block chain.
 
-Block headers are returned in three different formats depending on the format specified in the Accept header of the request:
+Block headers are returned in three different formats depending on the content type specified in the Accept header of the request:
 
-- `application/json` returns block headers in as a base64Url encoded binary without padding.
-- `application/json;blockheader-encoding=object` returns block headers in JSON encoding.
+- `application/json` returns block headers in as a base64Url-encoded strings without padding.
+- `application/json;blockheader-encoding=object` returns block headers as JSON-encoded objects.
 - `application/octet-stream` returns block headers as binary data if supported by the endpoint.
 
 ## Get block headers
 
-Use `GET /chain/{chain}/header` to get block headers for the specified chain.
+Use `GET https://{baseURL}/chain/{chain}/header` to get block headers for the specified chain.
 This call returns a collection of block headers in ascending order that satisfies the query parameters. 
 All block headers that match the query criteria are returned from the chain database, including headers for orphaned blocks.
 
@@ -33,24 +33,25 @@ All block headers that match the query criteria are returned from the chain data
 
 | Parameter | Type | Description
 | :--------- | :---- | :-----------
-| chain (required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block headers for the first chain (0), the request is `GET /chain/0/header`.
+| chain (required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block headers for the first chain (0), the request is `GET https://{baseURL}/chain/0/header`.
 
 ### Query parameters
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number records might be lower.
+| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the limit you set.
 | next | string | Specifies the cursor for the next page. This value can be found as the value of the next property of the previous page.
 | minheight	| integer >= 0 | Specifies the minimum block height for the returned headers. For example: minheight=500000
 | maxheight | integer >= 0 | Specifies the maximum block height for the returned headers. For example: maxheight=500000
 
 ### Responses
 
-Requests to `/chain/{chain}/header` can return the following response codes:
+Requests to `https://{baseURL}/chain/{chain}/header` can return the following response codes:
 
 - **200 OK** indicates that the request succeeded and returns a collection of block headers in **ascending** order. 
   All block headers that match the specified criteria are returned from the chain database, including headers for orphaned blocks.
 - **404 Not Found** indicates that the `next` or `maxheight` parameter specifies a nonexistent block height.
+- **406 Not Acceptable** indicates the endpoint can't generate content in the format specified by the Accept header.
 
 #### Response headers
 
@@ -64,87 +65,65 @@ The response header parameters are the same for successful and unsuccessful requ
 
 #### Successful response schemas
 
-The format of the information returned in the response depends on the content type specified in the accept header of the request.
-
-##### application/json
+The format of the information returned in the response depends on the content type specified in the Accept header of the request.
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| items (required) | Array of objects (Block Header) | Returns an array of base64-encoded block headers.
+| items (required) | Array of block headers | Returns an array of block headers as base64Url-encoded strings (`application/json`), JSON-encoded objects (`application/json;blockheader-encoding=object`), or a binary data stream (`application/octet-stream`, if supported).
 | limit (required) | integer >= 0 | Specifies the number of items in the page. This number can be smaller but never be larger than the number of requested items.
-| next (required) | (null or null) or (string or null) | Returns a cursor that can be used in a follow up request to query the next page. It should be used literally as the value for the `next` parameter in the follow-up request. It can be specified as inclusive or exclusive.
+| next (required) | string or null | Returns a cursor that can be used in a follow up request to query the next page. It should be used literally as the value for the `next` parameter in the follow-up request. It can be specified as inclusive or exclusive.
 
-For example:
+#### Examples
+
+You can send a request to the Kadena test network—testnet04—and chain 18 by calling the testnet service endpoint like this:
+
+```Postman
+GET https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/18/header?limit=5
+```
+
+With the Accept header set to `application/json`, this request returns five items in the response body and each item is a base64Url-encoded string like this:
 
 ```json
 {
-  "value": {
-    "next": "inclusive:o1S4NNFhKWg8T1HEkmDvsTH9Ut9l3_qHRpp00yRKZIk",
+    "limit": 5,
     "items": [
-      "AAAAAAAAAABRoiLHW7EFAB2lwAatTykipYZ3CZNPzLe-f5S-zUt8COtu0H12f_OZAwAFAAAAMpic85rur2MYf3zli8s8bHxTFjriFoMPTr6ZPs8sjxMKAAAAVBKuhU_hQmuvKlx88A5o-FH0rzNo59NsdxmOGNBQ-ycPAAAAMItdqgHZxf7j6l0oE8X-G9-VyMbnQmZrtSniuRe_EJ9CtyxsSb7daPIIYAaXMgSEsQ3dkxY5GjJjLwAAAAAAABqWlmx5B6wo0YWPIShNKmdVrAQWht2P85BS1drGLpkAAAAAADUJ-ARn7blgHgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEIPAAAAAAAFAAAA-na5gFuxBQAFL-3CY4YuAJNGp9KhDkbrKkIPWYyq8WvtAaNPoUFWC16louSx8YN5",
-      "AAAAAAAAAAA0slHKW7EFAJNGp9KhDkbrKkIPWYyq8WvtAaNPoUFWC16louSx8YN5AwAFAAAAALcxv1ZiwwQ_QX9eOBZMbzIop6n7XtveS1FqOFwyvGMKAAAAC76ElC60qXSJQCHePpzzJxsCYvvrqvmkoHPyZnex-4QPAAAAKv0sz_rTANjoiJwMrdZFCJNFwdH0U_M5ouwMr3BXBfpCtyxsSb7daPIIYAaXMgSEsQ3dkxY5GjJjLwAAAAAAALJlIg1vY3w_9L63bePn1yk_5agvdEbIBBjm3adxc5xWAAAAAGzpBzdiVL9gHgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQUIPAAAAAAAFAAAA-na5gFuxBQALiBhXgqaHAb4VWug3oddEVy0X9y_jEkE2Kmi_vyGP5ovr-fDIz_Uf"
+        "AAAAAAAAAAAIfWWp5I0FACxINuh5jyNOJ9Ty5BpWjH7nOcJNC4ascVq1RHEaS5T1AwADAAAA_rvcGOcdozdWaDSgaRFc_fK1n5v41BFIHF4Ji0RCGs4RAAAAb5qGjOICdYykrSpEbBSgAQDqJFEliNDBN-Bp9eyZw5kTAAAAdJruo-NqQ_vbBAP-sMWPuZNC3ehk2BIMawncfRFFdXc1kiSWlbrG6NI-tfeDKFcid_HE5LokOORb8ZsbAAAAAB1PmYXX7EAok638Y7W5K-TB5o6LpDreiDagdr7mIhd4EgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPBMFAAAAAAAHAAAACH1lqeSNBQAAAAAAAAAAAFbA3wN38oaSnT0filswQEZoeYbbgS50Hu2V3CyKYUms",
+        "AAAAAAAAAACnVe9fhKsFAFbA3wN38oaSnT0filswQEZoeYbbgS50Hu2V3CyKYUmsAwADAAAA-nw1FP5zeHNTfxRXb4U7Z_IiExcRKgefyvIVhEBEF3ARAAAAtOerMVBv5NcJjh4c40W22FZ89poibtBlz-yQl4NM7lwTAAAAScaDZyeTNseqh6bdbG0bu_2BT83afeMrR9pxf68T8rw1kiSWlbrG6NI-tfeDKFcid_HE5LokOORb8ZsbAAAAANoTQUjcrRtfjAK0a8hc_oRTV1lvahJao40s6dnbmrR1EgAAAImntEUJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPRMFAAAAAAAHAAAACH1lqeSNBQAXGvYWMKPbAZPdgSp72jVyf9n9IawNW_JStBvp8LmEbQKa86PTswSj",
+        "AAAAAAAAAACeppxmhKsFAJPdgSp72jVyf9n9IawNW_JStBvp8LmEbQKa86PTswSjAwADAAAAGfiTtZIOPkAZfgk9SF6Ri5Mty3ymlnbpxguTInfwuyERAAAAPLMckdi4615Uc-5qnL-uI_9QHrrDvkqP5vtGL3SnfGwTAAAARLK7tXaFwXh9JC_qMRSLQlUiLYV781yNQNYBhz1cGfI1kiSWlbrG6NI-tfeDKFcid_HE5LokOORb8ZsbAAAAAHxcyWdHz5kWWtGO3cUDYihBW1qFxrxgoNH1W0sBwZ8AEgAAABJPaYsSAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPhMFAAAAAAAHAAAAp1XvX4SrBQCkvcyyiYdKAwdPQ5YCRqIO84OtNU6YWI2dybKXPASclW6PYATjBzpg",
+        "AAAAAAAAAADgcapnhKsFAAdPQ5YCRqIO84OtNU6YWI2dybKXPASclW6PYATjBzpgAwADAAAAIvi7WXbV6o5HlKPSNWgNN3CdSaeYIgP23BAoSBucT_gRAAAATAJAFT7ZYf1ol4nIznTnhoQdG9PwKo5ZfhnAxbxPgqATAAAAvZfSTL7OYc912dvEAhpCBjQ7IGP74za9IHHmLgD49Y01kiSWlbrG6NI-tfeDKFcid_HE5LokOORb8ZsbAAAAAHesXvpjWbiPH_MwqlCOtihcQVcSdvLOdutoSuEQFCr5EgAAAJv2HdEbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPxMFAAAAAAAHAAAAp1XvX4SrBQAy7ocBFa4RAGX0L4EevnQdIKnSPxZZYfFecQiw7cS7YdP8fqU58nyh",
+        "AAAAAAAAAABqJjNrhKsFAGX0L4EevnQdIKnSPxZZYfFecQiw7cS7YdP8fqU58nyhAwADAAAADGVzBBRQHue9CWN2zwsfTR5t6qn2s64Ew9RA6eQy7vIRAAAASUBHlEIk97kFTiHDyS1upRDi2VAe-tgpKh3_bfK0boYTAAAAk9Oei1NEPxkvZoJUqhfrXqAE66QUdmw0uZ5SzYVdaSM1kiSWlbrG6NI-tfeDKFcid_HE5LokOORb8ZsbAAAAAE02n0jPaODQLeBQfN5ntrOw-oVAjJcx_wqtrrFDciDeEgAAACSe0hYlAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQBMFAAAAAAAHAAAAp1XvX4SrBQC_AS9h_w0AgGKAeHC4PMYNKXwiIHa7zV4NXA88HqdtEemDTfocbETG"
     ],
-    "limit": 2
-  }
+    "next": "inclusive:WHNaP_33KC47YeYCdwidTtc7qspkihlEikqT9_7TqAA"
 }
 ```
 
-##### application/json;blockheader-encoding=object
-
-| Parameter | Type | Description
-| --------- | ---- | -----------
-| items (required) | Array of objects (Block Header) | Returns an array of JSON-encoded block headers.
-| limit (required) | integer >= 0 | Specifies the number of items in the page. This number can be smaller but never be larger than the number of requested items.
-| next (required) | (null or null) or (string or null) | Returns a cursor that can be used in a follow up request to query the next page. It should be used literally as the value for the `next` parameter in the follow-up request. It can be specified as inclusive or exclusive.
-
-For example:
+With the Accept header set to `application/json;blockheader-encoding=object`, each item in the response body is a JSON-encoded object like this:
 
 ```json
 {
-  "value": {
-    "next": "inclusive:o1S4NNFhKWg8T1HEkmDvsTH9Ut9l3_qHRpp00yRKZIk",
+    "limit": 1,
     "items": [
-      {
-        "creationTime": 1602382624629329,
-        "parent": "HaXABq1PKSKlhncJk0_Mt75_lL7NS3wI627QfXZ_85k",
-        "height": 1000000,
-        "hash": "k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k",
-        "chainId": 0,
-        "weight": "NQn4BGftuWAeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-        "featureFlags": 0,
-        "epochStart": 1602381443331834,
-        "adjacents": {
-          "5": "Mpic85rur2MYf3zli8s8bHxTFjriFoMPTr6ZPs8sjxM",
-          "10": "VBKuhU_hQmuvKlx88A5o-FH0rzNo59NsdxmOGNBQ-yc",
-          "15": "MItdqgHZxf7j6l0oE8X-G9-VyMbnQmZrtSniuRe_EJ8"
-        },
-        "payloadHash": "GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA",
-        "chainwebVersion": "mainnet01",
-        "target": "QrcsbEm-3WjyCGAGlzIEhLEN3ZMWORoyYy8AAAAAAAA",
-        "nonce": "13095611958898437"
-      },
-      {
-        "creationTime": 1602382678045236,
-        "parent": "k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k",
-        "height": 1000001,
-        "hash": "vhVa6Deh10RXLRf3L-MSQTYqaL-_IY_mi-v58MjP9R8",
-        "chainId": 0,
-        "weight": "bOkHN2JUv2AeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-        "featureFlags": 0,
-        "epochStart": 1602381443331834,
-        "adjacents": {
-          "5": "ALcxv1ZiwwQ_QX9eOBZMbzIop6n7XtveS1FqOFwyvGM",
-          "10": "C76ElC60qXSJQCHePpzzJxsCYvvrqvmkoHPyZnex-4Q",
-          "15": "Kv0sz_rTANjoiJwMrdZFCJNFwdH0U_M5ouwMr3BXBfo"
-        },
-        "payloadHash": "smUiDW9jfD_0vrdt4-fXKT_lqC90RsgEGObdp3FznFY",
-        "chainwebVersion": "mainnet01",
-        "target": "QrcsbEm-3WjyCGAGlzIEhLEN3ZMWORoyYy8AAAAAAAA",
-        "nonce": "110239794631051275"
-      }
+        {
+            "nonce": "0",
+            "creationTime": 1563388117613832,
+            "parent": "LEg26HmPI04n1PLkGlaMfuc5wk0LhqxxWrVEcRpLlPU",
+            "adjacents": {
+                "17": "b5qGjOICdYykrSpEbBSgAQDqJFEliNDBN-Bp9eyZw5k",
+                "19": "dJruo-NqQ_vbBAP-sMWPuZNC3ehk2BIMawncfRFFdXc",
+                "3": "_rvcGOcdozdWaDSgaRFc_fK1n5v41BFIHF4Ji0RCGs4"
+            },
+            "target": "NZIklpW6xujSPrX3gyhXInfxxOS6JDjkW_GbGwAAAAA",
+            "payloadHash": "HU-ZhdfsQCiTrfxjtbkr5MHmjoukOt6INqB2vuYiF3g",
+            "chainId": 18,
+            "weight": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "height": 332604,
+            "chainwebVersion": "testnet04",
+            "epochStart": 1563388117613832,
+            "featureFlags": 0,
+            "hash": "VsDfA3fyhpKdPR-KWzBARmh5htuBLnQe7ZXcLIphSaw"
+        }
     ],
-    "limit": 2
-  }
+    "next": "inclusive:k92BKnvaNXJ_2f0hrA1b8lK0G-nwuYRtAprzo9OzBKM"
 }
 ```
 
@@ -154,38 +133,37 @@ If you specified `application/json` in the accept header of the request and ther
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| reason | string | Provides a placeholder for specifying the reason that no block headers were found. |
 | key | string (Block Hash) | Specifies the base64Url-encoded block hash (without padding). The block hash consists of 43 characters from the `^[a-zA-Z0-9_-]{43}$` character set. |
+| reason | string | Provides a placeholder for specifying the reason that no block headers were found. |
 
 For example:
 
 ```json
 {
-  "reason": "string",
-  "key": "QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH7"
+  "key": "QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH7",
+  "reason": "key not found"
+
 }
 ```
 
 ## Get block header by hash
 
-Use `GET /chain/{chain}/header/{blockHash}` to get a block headers by using its hash
-This call returns a collection of block headers in ascending order that satisfies the query parameters. 
-All block headers that match the query criteria are returned from the chain database, including headers for orphaned blocks.
+Use `GET https://{baseURL}/chain/{chain}/header/{blockHash}` to get a block header by using its hash.
 
 ### Path parameters
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| chain (required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block headers for the first chain (0), the request is `GET /chain/0/header/{blockHash}`.
-| blockHash (required) | string | Specifies the block hash of a block. The block hash consists of 43 characters from the `^[a-zA-Z0-9_-]{43}$` character set. For example: value,k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k.
+| chain (required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block headers for the first chain (0), the request is `GET https://{baseURL}/chain/0/header/{blockHash}`.
+| blockHash (required) | string | Specifies the block hash of a block. The block hash consists of 43 characters from the `^[a-zA-Z0-9_-]{43}$` character set. For example: `k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k`.
 
 ### Responses
 
-Requests to `/chain/{chain}/header/{blockHash}` can return the following response codes:
+Requests to `https://{baseURL}/chain/{chain}/header/{blockHash}` can return the following response codes:
 
 - **200 OK** indicates that the request succeeded and returns the block header matching the specified hash.
 - **404 Not Found** indicates that no block header with the specified block hash was found.
-- **406 Not Acceptable** indicates that the value specified for the Accept header is not supported.
+- **406 Not Acceptable** indicates the endpoint can't generate content in the format specified by the Accept header.
 
 #### Response headers
 
@@ -199,59 +177,48 @@ The response header parameters are the same for successful and unsuccessful requ
 
 #### Successful response schemas
 
-The format of the information returned in the response depends on the content type specified in the accept header of the request.
+The format of the information returned in the response depends on the content type specified in the Accept header of the request.
 
-##### application/json
+#### Examples
 
-| Parameter | Type | Description
-| --------- | ---- | -----------
-| blockHeader | string | Returns the base64Urlencoded binary block header, without padding[a-zA-Z0-9_-]+.
+You can send a request to the Kadena main network—mainnet01—and chain 4 by calling the service endpoint like this:
 
-For example:
+```Postman
+GET https://api.chainweb.com/chainweb/0.0/mainnet01/chain/4/header/tsFkxqNHy_WbdnDDTumV_2MFjMQTyJrzb8--dO3kjjM
+```
+
+With the Accept header set to `application/json`, this request returns the block header as a base64Url-encoded string without padding:
+
+```text
+"AAAAAAAAAACHrEs-Th0GAIPjfG2bsp6NK5D8iWUoRUM1OQ3p9q3stapX5Zybos80AwAJAAAAGXv0fxVXgDQTtRTxMjWfr6JXXrSscoaCaxEDPC93QIgOAAAAVosxlCQP8q0cPi3zd_yD_099Untb69bnIgIFlAioj9ITAAAAYlpdztdOQ-ChRklldcC2oHbZlAMIiYAGRgzTZBXvRgaKSm6dcl7l1vKo1o0wOE5aEG0l4ulUQ1YVAAAAAAAAAG1aryT2lPfDS6jwjJmgctr-u158xYunNRIujS2Y2VbyBAAAABWoQdQYrsb9AUkBAAAAAAAAAAAAAAAAAAAAAAAAAAAA2JZLAAAAAAAFAAAAcRDzfU0dBgDGFmKDSkZ45LbBZMajR8v1m3Zww07plf9jBYzEE8ia82_PvnTt5I4z"
+```
+
+With the Accept header set to `application/json;blockheader-encoding=object`, the request returns the block header as a JSON-encoded object like this:
 
 ```json
 {
-  "value": {
-    "$ref": "#/components/examples/base64HeaderPage/value/items/0"
-  }
+    "nonce": "16462985723698616006",
+    "creationTime": 1721071750065287,
+    "parent": "g-N8bZuyno0rkPyJZShFQzU5Den2rey1qlflnJuizzQ",
+    "adjacents": {
+        "19": "YlpdztdOQ-ChRklldcC2oHbZlAMIiYAGRgzTZBXvRgY",
+        "14": "VosxlCQP8q0cPi3zd_yD_099Untb69bnIgIFlAioj9I",
+        "9": "GXv0fxVXgDQTtRTxMjWfr6JXXrSscoaCaxEDPC93QIg"
+    },
+    "target": "ikpunXJe5dbyqNaNMDhOWhBtJeLpVENWFQAAAAAAAAA",
+    "payloadHash": "bVqvJPaU98NLqPCMmaBy2v67XnzFi6c1Ei6NLZjZVvI",
+    "chainId": 4,
+    "weight": "FahB1Biuxv0BSQEAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "height": 4953816,
+    "chainwebVersion": "mainnet01",
+    "epochStart": 1721068523032689,
+    "featureFlags": 0,
+    "hash": "tsFkxqNHy_WbdnDDTumV_2MFjMQTyJrzb8--dO3kjjM"
 }
 ```
 
-##### application/json;blockheader-encoding=object
-
-| Parameter | Type | Description
-| --------- | ---- | -----------
-| creationTime (required) | integer >= 0 | Specifies the timestamp in microseconds since the start of the UNIX epoch.
-| parent (required) | string (Block Hash) | Specifies the base64Url for the parent block hash, encoded without padding. The block hash consists of 43 characters from the following character set: ^[a-zA-Z0-9_-]{43}$. 
-| height (required) | integer >= 0 | Specifies the block height for the block header. The height for a block is determined by the number of predecessors it has in the block chain.
-| hash (required) | string (Block Hash) | Specifies the base64Url for the returned block hash, encoded without padding. The block hash consists of 43 characters from the following character set: ^[a-zA-Z0-9_-]{43}$.
-| chainId (required) | integer >= 0 | Specifies the chain identifier for the returned block. In  Kadena networks, individual chain identifiers start with the index 0 for the first chain. Valid values depend on the current graph at the respective block height of the chainweb version.
-| weight (required) | string (Block Weight) | Specifies the proof-of-work weight for the returned block. In a proof-of-work chain, block weight is the sum of the difficulties of the block and of all of its ancestors. The difficulty of a block is the maximum difficulty divided by the target. It is represented as the base64Url (without padding) in 256-bit little endian encoding of the numerical value.
-| featureFlags (required) | integer = 0 | Specifies a reserved value that must be 0.
-| epochStart (required) | integer >= 0 | Specifies the timestamp in microseconds since the start of the UNIX epoch.
-| adjacents (required) | object | Specifies the block hashes of the adjacent parents of the block. This parameter is represented as an associative array that maps the adjacent chain identifiers to the respective block hash.
-| payloadHash (required) | string (Block Payload Hash) | Specifies the base64Url (without padding) encoded block payload hash. The payload hash consists of 43 characters using characters from the ^[a-zA-Z0-9_-]{43}$ character set.
-| chainwebVersion (required) | string | Specifies the network identifier for the Kadena network. Valid values are "test-singleton", "development", "mainnet01", and "testnet04".
-| target (required) | string (PoW Target) | Specifies the proof-of-work target for the returned block. In a proof-of-work chain, the target for a block is represented as the base64Url (without padding) in 256-bit little endian encoding of the numerical value.
-| nonce (required) | string (PoW Nonce) non-empty [0-9]+ | Specifies the proof-of-work nonce of the returned block. This value is computed by the miner such that the block hash is smaller than the target.
-
-For example:
-
-```json
-{
-  "value": {
-    "$ref": "#/components/examples/blockHeaderPage/value/items/0"
-  }
-}
-```
-
-##### application/octet-stream
-
-| Parameter | Type | Description
-| --------- | ---- | -----------
-| blockHeader | string (Binary Block Header) = 318 characters | Returns the binary representation of the block header.
-
-No example.
+If you set the Accept header to `application/octet-stream` and the content type is supported, the request returns a binary representation of the block header.
+If the content type isn't support, the reguest fails with a 406 response code.
 
 #### Not found response schema
 
@@ -259,28 +226,28 @@ If you specified `application/json` in the Accept header of the request and ther
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| reason | string | Provides a placeholder for specifying the reason that no block headers were found. |
 | key | string | Specifies the base64Url-encoded block hash (without padding). The block hash consists of 43 characters from the `^[a-zA-Z0-9_-]{43}$` character set. |
+| reason | string | Provides a placeholder for specifying the reason that no block headers were found. |
 
 For example:
 
 ```json
 {
-  "reason": "string",
-  "key": "QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH7"
+    "key": "WjPVpdhdS9NFU1rPHV_DiLI74a-wKs1g4CZSN6z5gHY",
+    "reason": "key not found"
 }
 ```
 
 ## Get block header branches
 
-Use `POST /chain/{chain}/header/branch` to return a page of block headers from branches of the block chain in **descending** order.
+Use `POST https://{baseURL}/chain/{chain}/header/branch` to return a page of block headers from branches of the block chain in **descending** order.
 Only blocks that are ancestors of the same block in the set of upper bounds and are not ancestors of any block in the set of lower bounds are returned.
 
 ### Path parameters
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| chain (required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block headers for the first chain (0), the request is `GET /chain/0/header/branch`.
+| chain (required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block headers for the first chain (0), the request is `POST https://{baseURL}/chain/0/header/branch`.
 
 ### Query parameters
 
@@ -349,7 +316,7 @@ To return an empty page:
 
 ### Responses
 
-Requests to `/chain/{chain}/header/branch` can return the following response codes:
+Requests to `https://{baseURL}/chain/{chain}/header/branch` can return the following response codes:
 
 - **200 OK** indicates that the request succeeded and returns the block headers matching the specified criteria as base64Url-encoded or JSON-encoded.
 - **400 Bad Request** indicates that the branch bounds were exceeded.
@@ -368,104 +335,103 @@ The response header parameters are the same for successful and unsuccessful requ
 
 #### Successful response schemas
 
-The format of the information returned in the response depends on the content type specified in the accept header of the request.
-
-##### application/json
+The format of the information returned in the response depends on the content type specified in the Accept header of the request.
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| items (required) | Array of objects (Block Header) | Returns an array of base64-encoded block headers.
+| items (required) | Array of block headers | Returns an array of block headers as base64Url-encoded strings (`application/json`), JSON-encoded objects (`application/json;blockheader-encoding=object`), or a binary data stream (`application/octet-stream`, if supported)
 | limit (required) | integer >= 0 | Specifies the number of items in the page. This number can be smaller but never be larger than the number of requested items.
-| next (required) | (null or null) or (string or null) | Returns a cursor that can be used in a follow up request to query the next page. It should be used literally as the value for the `next` parameter in the follow-up request. It can be specified as inclusive or exclusive.
+| next (required) | string or null | Returns a cursor that can be used in a follow up request to query the next page. It should be used literally as the value for the `next` parameter in the follow-up request. It can be specified as inclusive or exclusive.
 
-For example:
+#### Examples
+
+You can send a request to the Kadena main network—mainnet01—and chain 4 with a limit of three items per request and a minimum block height of 4953300 by calling the service endpoint like this:
+
+```Postman
+POST https://api.chainweb.com/chainweb/0.0/mainnet01/chain/4/header/branch?limit=3&minheight=4953300
+```
+
+With the Accept header set to `application/json`, this request returns the block headers as a base64Url-encoded strings without padding:
 
 ```json
 {
-  "value": {
-    "next": "inclusive:u9Va7MRkDSOCm0yWpsC2w-4Z0oyEMv-BjofkHeIln6g",
+    "limit": 3,
     "items": [
-      "AAAAAAAAAADX5AyHgcAFAEQpcrsmQGnMLz6Zi1ym08KyEV1nlEo4jYSVT9nrB_CjAwAFAAAA4BMlW68KbggSREOGDeH_oFFoUrpZ0zX0hM0TTdYrEAYKAAAARoxLy8ECsIIWebtW8zZsH1xfRGu4NOuSlgH4cAJLFcwPAAAAsHRn1laXo2DK2_85nOH7apQyC6Vr_gEctSElqdrCC03a4wKcHiVawSuP3DULW8CnWwdh36wAF_eSBwAAAAAAAA3PRGZVm8h4aY9cMgXAQf3QbYSNDUnFxjZnr8FwcknXAAAAAIopfw9LdjBqowAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA3LgXAAAAAAAFAAAAavQWLYHABQAOBvq0L1PrvEMRggM-QGNWONZ4dclrYKoSoWfaT4j0WoBXSCjagR--",
-      "AAAAAAAAAAC46tSFgcAFANxrUMH15DY-83DeKwlvDWsj4DY4Sphc5I82jCVSpSuCAwAFAAAAwdorGxUmrIkWyssvz3oHm3uqurfNd5ywiD6NHsZQEr8KAAAA750C1IKC9doZZKtqCckOF8JmIaHMhDfopNobHeJvmXMPAAAA4pgr0U_1kQxou-NIc42nICYqOgLM1Vawamal-HuhLvfa4wKcHiVawSuP3DULW8CnWwdh36wAF_eSBwAAAAAAANdqRLGXd6y6OGwShrFC7vBrIWf_TLCfaYpLnu-q7A7AAAAAAI5IadugqQ5qowAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA27gXAAAAAAAFAAAAavQWLYHABQBFGVPEmhORyEQpcrsmQGnMLz6Zi1ym08KyEV1nlEo4jYSVT9nrB_Cj"
+        "AAAAAAAAAACHrEs-Th0GAIPjfG2bsp6NK5D8iWUoRUM1OQ3p9q3stapX5Zybos80AwAJAAAAGXv0fxVXgDQTtRTxMjWfr6JXXrSscoaCaxEDPC93QIgOAAAAVosxlCQP8q0cPi3zd_yD_099Untb69bnIgIFlAioj9ITAAAAYlpdztdOQ-ChRklldcC2oHbZlAMIiYAGRgzTZBXvRgaKSm6dcl7l1vKo1o0wOE5aEG0l4ulUQ1YVAAAAAAAAAG1aryT2lPfDS6jwjJmgctr-u158xYunNRIujS2Y2VbyBAAAABWoQdQYrsb9AUkBAAAAAAAAAAAAAAAAAAAAAAAAAAAA2JZLAAAAAAAFAAAAcRDzfU0dBgDGFmKDSkZ45LbBZMajR8v1m3Zww07plf9jBYzEE8ia82_PvnTt5I4z",
+        "AAAAAAAAAAA_lIk6Th0GAKw2xvazH-9PUpO1fCT45HbD8uU5Nsu51AAI0uD75S98AwAJAAAAptV1M_F1lYvTgMuC8g17ltHfA3SPsypQtiPWT8CTOW8OAAAAd_4KONk9zhF-yXHzShOookNJq9wV67K7jKxcZjcTtVETAAAAqp2F3-wGndQygNovYEYmrCygvvagdZRqHCi8Rml3C_qKSm6dcl7l1vKo1o0wOE5aEG0l4ulUQ1YVAAAAAAAAAJ1YNbk1mDHy9fXRpWr5RtcQNyMdcV6Wrc7l1yeb14WvBAAAAN80jMLyM8fxAUkBAAAAAAAAAAAAAAAAAAAAAAAAAAAA15ZLAAAAAAAFAAAAcRDzfU0dBgD-CxOF2XaGNoPjfG2bsp6NK5D8iWUoRUM1OQ3p9q3stapX5Zybos80",
+        "AAAAAAAAAAAu1Hc3Th0GANsQ9KLq4IMMIXs1kWe-AeOqxJtuuLxO3iruSl3AmktlAwAJAAAAMmRRH-P_WCcG8UNu-NS4iWCmT4Godwm0ScV7MJXxNuUOAAAAH6HdmZhFzniidoeZTFUa4CKnMa-5e0INX8vhvhezAPcTAAAA82lUdaVunS05mRdpWeSSb0vixsVpYISDRLX0BE2lySeKSm6dcl7l1vKo1o0wOE5aEG0l4ulUQ1YVAAAAAAAAAAHTXM_ZAusmXzCBgSx7u8opHkC8kkNCDX7KS8ywVI60BAAAAKnB1rDMucflAUkBAAAAAAAAAAAAAAAAAAAAAAAAAAAA1pZLAAAAAAAFAAAAcRDzfU0dBgBxACkcRTx3HKw2xvazH-9PUpO1fCT45HbD8uU5Nsu51AAI0uD75S98"
     ],
-    "limit": 2
-  }
+    "next": "inclusive:2xD0ourggwwhezWRZ74B46rEm264vE7eKu5KXcCaS2U"
 }
 ```
 
-##### apapplication/json;blockheader-encoding=object
-
-| Parameter | Type | Description
-| --------- | ---- | -----------
-| items (required) | Array of objects (Block Header) | Returns an array of JSON-encoded block headers.
-| limit (required) | integer >= 0 | Specifies the number of items in the page. This number can be smaller but never be larger than the number of requested items.
-| next (required) | (null or null) or (string or null) | Returns a cursor that can be used in a follow up request to query the next page. It should be used literally as the value for the `next` parameter in the follow-up request. It can be specified as inclusive or exclusive.
-
-For example:
+With the Accept header set to `application/json;blockheader-encoding=object`, the request returns the block headers as JSON-encoded objects like this:
 
 ```json
 {
-  "value": {
-    "next": "inclusive:o1S4NNFhKWg8T1HEkmDvsTH9Ut9l3_qHRpp00yRKZIk",
+    "limit": 3,
     "items": [
-      {
-        "creationTime": 1602382624629329,
-        "parent": "HaXABq1PKSKlhncJk0_Mt75_lL7NS3wI627QfXZ_85k",
-        "height": 1000000,
-        "hash": "k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k",
-        "chainId": 0,
-        "weight": "NQn4BGftuWAeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-        "featureFlags": 0,
-        "epochStart": 1602381443331834,
-        "adjacents": {
-          "5": "Mpic85rur2MYf3zli8s8bHxTFjriFoMPTr6ZPs8sjxM",
-          "10": "VBKuhU_hQmuvKlx88A5o-FH0rzNo59NsdxmOGNBQ-yc",
-          "15": "MItdqgHZxf7j6l0oE8X-G9-VyMbnQmZrtSniuRe_EJ8"
+        {
+            "nonce": "16462985723698616006",
+            "creationTime": 1721071750065287,
+            "parent": "g-N8bZuyno0rkPyJZShFQzU5Den2rey1qlflnJuizzQ",
+            "adjacents": {
+                "19": "YlpdztdOQ-ChRklldcC2oHbZlAMIiYAGRgzTZBXvRgY",
+                "14": "VosxlCQP8q0cPi3zd_yD_099Untb69bnIgIFlAioj9I",
+                "9": "GXv0fxVXgDQTtRTxMjWfr6JXXrSscoaCaxEDPC93QIg"
+            },
+            "target": "ikpunXJe5dbyqNaNMDhOWhBtJeLpVENWFQAAAAAAAAA",
+            "payloadHash": "bVqvJPaU98NLqPCMmaBy2v67XnzFi6c1Ei6NLZjZVvI",
+            "chainId": 4,
+            "weight": "FahB1Biuxv0BSQEAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "height": 4953816,
+            "chainwebVersion": "mainnet01",
+            "epochStart": 1721068523032689,
+            "featureFlags": 0,
+            "hash": "tsFkxqNHy_WbdnDDTumV_2MFjMQTyJrzb8--dO3kjjM"
         },
-        "payloadHash": "GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA",
-        "chainwebVersion": "mainnet01",
-        "target": "QrcsbEm-3WjyCGAGlzIEhLEN3ZMWORoyYy8AAAAAAAA",
-        "nonce": "13095611958898437"
-      },
-      {
-        "creationTime": 1602382678045236,
-        "parent": "k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k",
-        "height": 1000001,
-        "hash": "vhVa6Deh10RXLRf3L-MSQTYqaL-_IY_mi-v58MjP9R8",
-        "chainId": 0,
-        "weight": "bOkHN2JUv2AeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-        "featureFlags": 0,
-        "epochStart": 1602381443331834,
-        "adjacents": {
-          "5": "ALcxv1ZiwwQ_QX9eOBZMbzIop6n7XtveS1FqOFwyvGM",
-          "10": "C76ElC60qXSJQCHePpzzJxsCYvvrqvmkoHPyZnex-4Q",
-          "15": "Kv0sz_rTANjoiJwMrdZFCJNFwdH0U_M5ouwMr3BXBfo"
+        {
+            "nonce": "3928958401539935230",
+            "creationTime": 1721071687013439,
+            "parent": "rDbG9rMf709Sk7V8JPjkdsPy5Tk2y7nUAAjS4PvlL3w",
+            "adjacents": {
+                "19": "qp2F3-wGndQygNovYEYmrCygvvagdZRqHCi8Rml3C_o",
+                "14": "d_4KONk9zhF-yXHzShOookNJq9wV67K7jKxcZjcTtVE",
+                "9": "ptV1M_F1lYvTgMuC8g17ltHfA3SPsypQtiPWT8CTOW8"
+            },
+            "target": "ikpunXJe5dbyqNaNMDhOWhBtJeLpVENWFQAAAAAAAAA",
+            "payloadHash": "nVg1uTWYMfL19dGlavlG1xA3Ix1xXpatzuXXJ5vXha8",
+            "chainId": 4,
+            "weight": "3zSMwvIzx_EBSQEAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "height": 4953815,
+            "chainwebVersion": "mainnet01",
+            "epochStart": 1721068523032689,
+            "featureFlags": 0,
+            "hash": "g-N8bZuyno0rkPyJZShFQzU5Den2rey1qlflnJuizzQ"
         },
-        "payloadHash": "smUiDW9jfD_0vrdt4-fXKT_lqC90RsgEGObdp3FznFY",
-        "chainwebVersion": "mainnet01",
-        "target": "QrcsbEm-3WjyCGAGlzIEhLEN3ZMWORoyYy8AAAAAAAA",
-        "nonce": "110239794631051275"
-      }
+        {
+            "nonce": "2051174422813409393",
+            "creationTime": 1721071635518510,
+            "parent": "2xD0ourggwwhezWRZ74B46rEm264vE7eKu5KXcCaS2U",
+            "adjacents": {
+                "19": "82lUdaVunS05mRdpWeSSb0vixsVpYISDRLX0BE2lySc",
+                "14": "H6HdmZhFzniidoeZTFUa4CKnMa-5e0INX8vhvhezAPc",
+                "9": "MmRRH-P_WCcG8UNu-NS4iWCmT4Godwm0ScV7MJXxNuU"
+            },
+            "target": "ikpunXJe5dbyqNaNMDhOWhBtJeLpVENWFQAAAAAAAAA",
+            "payloadHash": "AdNcz9kC6yZfMIGBLHu7yikeQLySQ0INfspLzLBUjrQ",
+            "chainId": 4,
+            "weight": "qcHWsMy5x-UBSQEAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "height": 4953814,
+            "chainwebVersion": "mainnet01",
+            "epochStart": 1721068523032689,
+            "featureFlags": 0,
+            "hash": "rDbG9rMf709Sk7V8JPjkdsPy5Tk2y7nUAAjS4PvlL3w"
+        }
     ],
-    "limit": 2
-  }
+    "next": "inclusive:2xD0ourggwwhezWRZ74B46rEm264vE7eKu5KXcCaS2U"
 }
 ```
 
-#### Not found response schema
-
-If you specified `application/json` in the Accept header of the request and there are no results matching the request criteria, the response returns the following:
-
-| Parameter | Type | Description |
-| --------- | ---- | ----------- |
-| reason | string | Provides a placeholder for specifying the reason that no block headers were found. |
-| key | string | Specifies the base64Url-encoded block hash (without padding). The block hash consists of 43 characters from the [`a-zA-Z0-9_-`] character set. |
-
-For example:
-
-```json
-{
-  "reason": "string",
-  "key": "QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH7"
-}
-```
+If you set the Accept header to `application/octet-stream` and the content type is supported, the request returns a binary representation of the block header.
+If the content type isn't support, the reguest fails with a 406 response code.

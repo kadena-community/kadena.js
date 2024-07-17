@@ -48,7 +48,7 @@ The response returns application/json content with the following information:
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| origin | object | Describes a peer information object that consists of an `id` string and an `address` object for a Chainweb node. The `origin` parameter is required to use the `PUT /cut` endpoint. For more information, see the [Peer information](#peer-information) data model.
+| origin | object | Describes a peer information object that consists of an `id` string and an `address` object for a Chainweb node. The `origin` parameter is required to use the `PUT /cut` endpoint. For more information, see the [Peer information](#peer-information-model) data model.
 | height&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the cut height. The cut height is the sum of the height for all of the blocks included in the cut. You should avoid using this value because its semantics may change in the future.
 | weight&nbsp;(required) | string | Specifies the cut weight. The cut weight is the sum of the weights from all of the blocks included in the cut. The weight string consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
 | hashes&nbsp;(required) | object | Specifies an object that maps chain identifiers 0-19 to their respective block hash and block height for the cut.
@@ -59,7 +59,7 @@ The response returns application/json content with the following information:
 
 To send a request to the Kadena main network:
 
-```postman
+```Postman
 GET https://us-e1.chainweb.com/chainweb/0.0/mainnet01/cut?maxheight=4833114
 ```
 
@@ -132,7 +132,7 @@ Use the following parameters to specify a cut with an `origin` property that is 
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| origin (required) | object | Describes a peer information object that consists of an `id` string and an `address` object for a Chainweb node. The `origin` parameter is required to use the `PUT /cut` endpoint. For more information, see the [Peer information](#peer-information) data model.
+| origin (required) | object | Describes a peer information object that consists of an `id` string and an `address` object for a Chainweb node. The `origin` parameter is required to use the `PUT /cut` endpoint. For more information, see the [Peer information](#peer-information-model) data model.
 | height&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the cut height to publish. The cut height is the sum of the height for all of the blocks included in the cut. You should avoid using this value because its semantics may change in the future.
 | weight&nbsp;(required) | string| Specifies the cut weight. The cut weight is the sum of the weights from all of the blocks included in the cut. The weight string consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
 | hashes&nbsp;(required) | object | Specifies an object that maps chain identifiers 0-19 to their respective block hash and block height for the cut.
