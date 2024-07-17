@@ -7,7 +7,7 @@ interface GenerateURIProps {
   handleTokenInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   file: File | null;
   setFile: (file: File) => void;
-  imagePreview: string | null;
+  imagePreview: string;
   setImagePreview: (url: string) => void;
   base64Image: string;
   setBase64Image: (base64: string) => void;
@@ -60,69 +60,21 @@ const GenerateURIForm: FC<GenerateURIProps> = ({
   };
 
   return (
-    <div className={styles.twoColumnRow}>
-      <div className={styles.uploadContainer}>
-        <div
-          onDrop={handleFileDrop}
-          onDragOver={handleDragOver}
-          onClick={() => inputFile.current?.click()}
-          style={{ width: '100%' }}
-        >
-          <input
-            type="file"
-            id="fileInput"
-            ref={inputFile}
-            style={{ display: 'none' }}
-            onChange={handleFileChange}
-          />
-          {imagePreview ? (
-            <img src={imagePreview} alt="Uploaded Preview" className={styles.uploadImage} />
-          ) : (
-            <div>
-              <p className={styles.uploadText}>Upload Image</p>
-              <p className={styles.uploadText}>Drag/Drop or Select</p>
-            </div>
-          )}
-        </div>
-      </div>
-      <div className={styles.formSection}>
-        <div className={styles.verticalForm}>
-          <Heading as="h5" className={styles.formHeading}>Metadata</Heading>
-          <br />
-          <TextField
-            label="Name"
-            name="metadataName"
-            value={tokenInput.metadataName as string}
-            onChange={handleTokenInputChange}
-          />
-          <TextField
-            label="Description"
-            name="metadataDescription"
-            value={tokenInput.metadataDescription as string}
-            onChange={handleTokenInputChange}
-          />
-          <TextField
-            label="Author"
-            name="metadataAuthors"
-            value={tokenInput.metadataAuthors as string}
-            onChange={handleTokenInputChange}
-            info="(optional)"
-          />
-          <TextField
-            label="Collection Name"
-            name="metadataCollectionName"
-            value={tokenInput.metadataCollectionName as string}
-            onChange={handleTokenInputChange}
-            info="(optional)"
-          />
-          <TextField
-            label="Collection Family"
-            name="metadataCollectionFamily"
-            value={tokenInput.metadataCollectionFamily as string}
-            onChange={handleTokenInputChange}
-            info="(optional)"
-          />
-        </div>
+    <div className={styles.tokenImageClass}>
+      <div
+        onDrop={handleFileDrop}
+        onDragOver={handleDragOver}
+        onClick={() => inputFile.current?.click()}
+        style={{ width: '100%', backgroundColor: 'white'}}
+      >
+        <input
+          type="file"
+          id="fileInput"
+          ref={inputFile}
+          style={{ display: 'none' }}
+          onChange={handleFileChange}
+        />
+        <img className={styles.tokenImageClass} src={imagePreview} alt="Uploaded Preview" />
       </div>
     </div>
   );

@@ -1,15 +1,18 @@
 import { BlockInfoProvider } from '@/components/block-table/block-info-context/block-info-context';
 import BlockTable from '@/components/block-table/block-table';
+import { fullWidthClass } from '@/components/globalstyles.css';
 import Layout from '@/components/layout/layout';
 import { Media } from '@/components/layout/media';
 import Logo from '@/components/logo/logo';
 import SearchComponent from '@/components/search/search-component/search-component';
+import { searchBarClass } from '@/components/search/search-component/search-component.css';
 import SearchResults from '@/components/search/search-results/search-results';
 import StatisticsGrid from '@/components/statistics-component/statistics-grid/statistics-grid';
 import { useSearch } from '@/hooks/search';
 import { Stack } from '@kadena/kode-ui';
 import Link from 'next/dist/client/link';
 import React from 'react';
+import { useInView } from 'react-intersection-observer';
 
 const Home: React.FC = () => {
   const {
@@ -21,15 +24,15 @@ const Home: React.FC = () => {
     loading,
     errors,
   } = useSearch();
-
+  const { inView, ref: inViewRef } = useInView();
   return (
     <Layout>
       <BlockInfoProvider>
-        <Media greaterThanOrEqual="sm">
+        <Media greaterThanOrEqual="md">
           <Stack
             flexDirection="column"
             alignItems={'center'}
-            marginBlockStart="md"
+            marginBlockEnd="xxxl"
           >
             <Link href="/">
               <Logo />
@@ -37,28 +40,25 @@ const Home: React.FC = () => {
           </Stack>
         </Media>
 
-        <Media lessThan="sm">
-          <StatisticsGrid />
-          <Stack
-            flexDirection="column"
-            alignItems={'center'}
-            paddingBlockStart={'xxl'}
-          >
-            <a href="/">
-              <Logo />
-            </a>
+        <Stack ref={inViewRef}></Stack>
+        <Media lessThan="md" className={fullWidthClass}>
+          <Stack width="100%" marginBlock="xxxl">
+            <StatisticsGrid inView={inView} />
           </Stack>
         </Media>
 
-        <SearchComponent
-          searchOption={searchOption}
-          setSearchOption={setSearchOption}
-          searchData={searchData}
-          setSearchQuery={setSearchQuery}
-          searchQuery={searchQuery}
-          loading={loading}
-          errors={errors}
-        />
+        <Stack className={searchBarClass}>
+          <SearchComponent
+            searchOption={searchOption}
+            setSearchOption={setSearchOption}
+            searchData={searchData}
+            setSearchQuery={setSearchQuery}
+            searchQuery={searchQuery}
+            loading={loading}
+            errors={errors}
+          />
+        </Stack>
+        <Stack marginBlock="xxxl" />
         {searchQuery ? (
           searchData && (
             <SearchResults

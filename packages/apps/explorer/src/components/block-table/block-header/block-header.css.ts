@@ -4,7 +4,7 @@ import { atoms, responsiveStyle, token, tokens } from '@kadena/kode-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 import { blockGridHoverableStyle } from '../block-table.css';
 
-export const blockActivityColumnClass = style([
+export const chainActivityColumnClass = style([
   {
     paddingBlockEnd: '0',
   },
@@ -95,7 +95,7 @@ export const blockHeaderFixedClass = style([
   {
     top: '70px',
     width: '100%',
-    zIndex: tokens.kda.foundation.zIndex.dialog,
+    zIndex: tokens.kda.foundation.zIndex.dropdown,
   },
   responsiveStyle({
     xxl: {

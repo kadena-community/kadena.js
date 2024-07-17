@@ -1,26 +1,22 @@
-import type { INetwork } from '@/context/networks-context';
 import { useNetwork } from '@/context/networks-context';
-import { Button, Select, SelectItem, Stack } from '@kadena/kode-ui';
+import { Select, SelectItem } from '@kadena/kode-ui';
 
-import { MonoSettings } from '@kadena/kode-icons/system';
+import { MonoNetworkWifi } from '@kadena/kode-icons/system';
 import type { FC, FormEventHandler } from 'react';
 import React, { useState } from 'react';
-import { Media } from '../layout/media';
 import NewNetwork from './new-network';
 
 const SelectNetwork: FC = () => {
-  const { networks, activeNetwork, setActiveNetwork, removeNetwork } =
-    useNetwork();
+  const { networks, activeNetwork, setActiveNetwork } = useNetwork();
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleRemoveNetwork = (network: INetwork): void => {
-    removeNetwork(network);
-    setIsOpen(false);
-  };
   const handleSelectNetwork = (value: any): void => {
+    if (value === 'new') {
+      setIsOpen(true);
+      return;
+    }
     setActiveNetwork(value);
-    setIsOpen(false);
   };
 
   if (!networks) return null;
@@ -35,34 +31,30 @@ const SelectNetwork: FC = () => {
 
   return (
     <>
-      <Stack alignItems="center" gap="xs">
-        <Media greaterThanOrEqual="md">
-          <Select
-            size="lg"
-            aria-label="Select network"
-            selectedKey={activeNetwork!.networkId}
-            fontType="code"
-            onSelectionChange={handleSelectNetwork}
-          >
-            {
-              networks.map((network) => (
-                <SelectItem key={network.networkId} textValue={network.label}>
-                  {network.label}
-                </SelectItem>
-              )) as any
-            }
-          </Select>
-        </Media>
-
-        <Button variant="transparent" onPress={() => setIsOpen(true)}>
-          <MonoSettings />
-        </Button>
-      </Stack>
-
+      <Select
+        size="lg"
+        aria-label="Select network"
+        selectedKey={activeNetwork!.slug}
+        fontType="code"
+        onSelectionChange={handleSelectNetwork}
+      >
+        {
+          networks.map((network) => (
+            <SelectItem
+              key={network.slug ?? network.label}
+              textValue={network.label}
+            >
+              {network.label}
+            </SelectItem>
+          )) as any
+        }
+        <SelectItem key="new">
+          <MonoNetworkWifi /> Add Network
+        </SelectItem>
+        <SelectItem key="new">Configure</SelectItem>
+      </Select>
       {isOpen && (
         <NewNetwork
-          removeNetwork={handleRemoveNetwork}
-          selectNetwork={handleSelectNetwork}
           handleOpen={setIsOpen}
           createNetwork={handleCreateNetwork}
         />

@@ -2,14 +2,17 @@ import { expect, test } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react';
 import { useAccount } from '@/hooks/account';
 import { getTokens } from '@/graphql/queries/client';
+import { getWebauthnAccount } from "@kadena/client-utils/webauthn";
 import MyTokens from '@/pages/mytokens'
 
 // Mocking the custom hooks and functions
 vi.mock('@/hooks/account');
 vi.mock('@/graphql/queries/client');
+vi.mock("@kadena/client-utils/webauthn");
 
 const mockUseAccount = vi.mocked(useAccount);
 const mockGetTokens = vi.mocked(getTokens);
+const mockGetWebauthnAccount = vi.mocked(getWebauthnAccount);
 
 // Mocking the Token component
 vi.mock('@/components/Token', () => ({
@@ -46,6 +49,7 @@ describe('MyTokens component', () => {
 
     mockUseAccount.mockReturnValue(mockAccountContext);
     mockGetTokens.mockResolvedValue(mockTokens);
+    mockGetWebauthnAccount.mockResolvedValue('test-account');
 
     render(<MyTokens />);
 

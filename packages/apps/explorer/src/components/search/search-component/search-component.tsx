@@ -1,23 +1,28 @@
-import { SearchOptionEnum } from '@/hooks/search/utils/utils';
-import { truncateValues } from '@/services/format';
+import LoadingIcon from '@/components/loading-icon/loading-icon';
+import type { SearchOptionEnum } from '@/hooks/search/utils/utils';
 import type { ApolloError } from '@apollo/client';
 import { MonoSearch } from '@kadena/kode-icons/system';
-import { Badge, Box, Stack } from '@kadena/kode-ui';
-import { atoms } from '@kadena/kode-ui/styles';
+import { Stack } from '@kadena/kode-ui';
+import classNames from 'classnames';
 import type { Dispatch, SetStateAction } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  editOptionClass,
+  editOptionHoverClass,
   editingBoxClass,
+  iconColorClass,
   searchBadgeBoxClass,
+  searchBadgeBoxSelectedClass,
   searchBoxClass,
+  searchBoxEditingClass,
   searchInputClass,
 } from './search-component.css';
 
 export type SearchItemTitle =
-  | 'Account'
-  | 'Request Key'
-  | 'Block Height'
-  | 'Block Hash'
+  | 'Accounts'
+  | 'Request Keys'
+  | 'Heights'
+  | 'Block Hashes'
   | 'Events';
 
 export interface ISearchItem {
@@ -32,58 +37,37 @@ export interface ISearchComponentProps {
   setSearchOption: Dispatch<SetStateAction<SearchOptionEnum | null>>;
   loading: boolean;
   errors: ApolloError[];
+  position?: 'header' | 'default';
 }
 
 const SearchComponent: React.FC<ISearchComponentProps> = ({
+  position = 'default',
   searchData,
   setSearchQuery,
   searchQuery,
   searchOption,
   setSearchOption,
+  loading,
 }) => {
+  const [editHover, setEditHover] = useState<null | number>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [searchValue, setSearchValue] = useState<string>('');
+  const [innerSearchOption, setInnerSearchOption] =
+    useState<SearchOptionEnum | null>(searchOption);
   const [optionClicked, setOptionClicked] = useState(false);
-  const [escapePressed, setEscapePressed] = useState(false);
+
   const ref = useRef<HTMLInputElement>(null);
 
-  const handleSearchOption = (
-    inferedOption: SearchItemTitle | undefined,
-  ): void => {
-    if (inferedOption === 'Account') {
-      setSearchOption(SearchOptionEnum.ACCOUNT);
-    }
-    if (inferedOption === 'Request Key') {
-      setSearchOption(SearchOptionEnum.REQUESTKEY);
-    }
-
-    if (inferedOption === 'Block Height') {
-      setSearchOption(SearchOptionEnum.BLOCKHEIGHT);
-    }
-
-    if (!inferedOption || inferedOption === undefined) {
+  const handleSearch = (searchOptionIdx: SearchOptionEnum | null): void => {
+    if (searchOptionIdx !== null) {
+      setSearchOption(searchOptionIdx);
+      setInnerSearchOption(searchOptionIdx);
+    } else {
+      setInnerSearchOption(null);
       setSearchOption(null);
     }
-  };
 
-  const inferOption = (value: string): SearchItemTitle | undefined => {
-    if (
-      value.toLocaleLowerCase().startsWith('k:') ||
-      value.toLocaleLowerCase().startsWith('w:')
-    ) {
-      return 'Account';
-    } else if (value.includes('.')) {
-      return 'Events';
-    } else if (value.length === 43) {
-      return 'Request Key';
-    } else if (/^\d+$/.test(value)) {
-      return 'Block Height';
-    }
+    setIsEditing(false);
 
-    return undefined;
-  };
-
-  const handleSearch = (): void => {
     const value = ref.current?.value ?? '';
     if (setSearchQuery) setSearchQuery(value);
   };
@@ -91,12 +75,9 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
   const handleSearchValueChange = (
     e: React.ChangeEvent<HTMLInputElement>,
   ): void => {
-    setSearchValue(e.target.value);
-
-    if (escapePressed || optionClicked) return;
-
-    const inferedOption = inferOption(e.target.value);
-    handleSearchOption(inferedOption);
+    setInnerSearchOption(null);
+    setEditHover(null);
+    setIsEditing(true);
   };
 
   const handleSearchValueKeyDown = (
@@ -104,32 +85,41 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
   ): void => {
     if (e.key === 'ArrowDown') {
       e.preventDefault();
-      setSearchOption((prev) =>
+      setEditHover((prev) =>
         prev === null ? 0 : Math.min(prev + 1, searchData.length - 1),
       );
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
-      setSearchOption((prev) => (prev === null ? 0 : Math.max(prev - 1, 0)));
+      setEditHover((prev) => (prev === null ? 0 : Math.max(prev - 1, 0)));
     } else if (e.key === 'Enter') {
       e.preventDefault();
-      setIsEditing(false);
-      setEscapePressed(false);
       setOptionClicked(false);
-      handleSearch();
+
+      handleSearch(editHover);
     } else if (e.key === 'Escape') {
       setOptionClicked(false);
-      setSearchOption(null);
-      setEscapePressed(true);
       setIsEditing(false);
     } else {
-      setEscapePressed(false);
       setOptionClicked(false);
     }
   };
 
   useEffect(() => {
-    setSearchValue(searchQuery ?? '');
-  }, [searchQuery]);
+    setInnerSearchOption(searchOption);
+  }, [searchOption]);
+
+  //on scroll remove the dropdown
+  useEffect(() => {
+    const scrollListener = () => {
+      setIsEditing(false);
+    };
+
+    window.addEventListener('scroll', scrollListener);
+
+    return () => {
+      window.removeEventListener('scroll', scrollListener);
+    };
+  }, [setIsEditing]);
 
   return (
     <>
@@ -145,86 +135,79 @@ const SearchComponent: React.FC<ISearchComponentProps> = ({
           }
         }}
       >
-        <Box
-          display={'inline-flex'}
-          flexDirection={'row'}
-          alignItems={'center'}
-          borderStyle="solid"
-          borderWidth="hairline"
-          backgroundColor="base.default"
-          gap={'sm'}
-          paddingInlineStart={'sm'}
-          paddingInlineEnd={'sm'}
-          className={searchBoxClass}
+        <Stack
+          alignItems="flex-start"
+          className={classNames(searchBoxClass, {
+            [searchBoxEditingClass]: isEditing,
+          })}
+          // ugly hack to align the search in the header
+          style={{ top: position === 'header' ? '-28px' : 0 }}
         >
-          <MonoSearch />
+          <Stack width="100%" alignItems="center" paddingInline="md">
+            {loading ? (
+              <LoadingIcon className={iconColorClass} />
+            ) : (
+              <MonoSearch className={iconColorClass} />
+            )}
 
-          <input
-            ref={ref}
-            type="text"
-            placeholder="Search the Kadena Blockchain on"
-            value={searchValue}
-            onChange={(e) => handleSearchValueChange(e)}
-            onClick={() => setIsEditing((v) => !v)}
-            className={searchInputClass}
-          />
+            <input
+              ref={ref}
+              type="text"
+              placeholder="Search the Kadena Blockchain on"
+              defaultValue={searchQuery}
+              onFocus={() => setIsEditing(true)}
+              onClick={() => setIsEditing(true)}
+              onChange={(e) => handleSearchValueChange(e)}
+              className={searchInputClass}
+            />
+            {isEditing && innerSearchOption === null && (
+              <Stack className={searchBadgeBoxClass}>Search by</Stack>
+            )}
 
-          {searchOption !== null && (
-            <Box
-              display={'flex'}
-              justifyContent={'flex-end'}
-              className={searchBadgeBoxClass}
-            >
-              {searchData[searchOption] && (
-                <Badge size="lg">{searchData[searchOption].title}</Badge>
-              )}
-            </Box>
-          )}
-        </Box>
-
-        {isEditing && (
-          <div className={editingBoxClass}>
-            {searchData?.map((item, index) => (
-              <Box
-                key={index}
-                onMouseDown={() => setOptionClicked(true)}
+            {innerSearchOption !== null && (
+              <Stack
+                gap="xs"
+                as="button"
+                className={classNames(
+                  searchBadgeBoxClass,
+                  searchBadgeBoxSelectedClass,
+                )}
                 onClick={() => {
-                  handleSearch();
-                  setSearchOption(index);
-                  setIsEditing(false);
+                  setOptionClicked(false);
+                  setInnerSearchOption(null);
+                  handleSearch(null);
                 }}
-                style={{
-                  gridTemplateColumns: '1fr 3fr',
-                  borderLeft: index === searchOption ? 'solid' : 'none',
-                }}
-                className={atoms({
-                  display: 'grid',
-                  alignItems: 'flex-start',
-                  paddingInlineStart: 'md',
-                  cursor: 'pointer',
-                  backgroundColor:
-                    index === searchOption ? 'base.@active' : 'base.default',
-                  width: '100%',
-                })}
               >
-                <div
-                  className={atoms({
-                    alignItems: 'flex-start',
+                {searchData[innerSearchOption].title}
+                <Stack as="span">x</Stack>
+              </Stack>
+            )}
+          </Stack>
+
+          {isEditing && (
+            <Stack flexDirection="column" className={editingBoxClass}>
+              {searchData?.map((item, index) => (
+                <Stack
+                  className={classNames(editOptionClass, {
+                    [editOptionHoverClass]: editHover === index,
                   })}
+                  key={index}
+                  onMouseDown={() => setOptionClicked(true)}
+                  onMouseEnter={() => setEditHover(index)}
+                  onMouseLeave={() => setEditHover(null)}
+                  onClick={() => {
+                    setInnerSearchOption(index);
+                    setIsEditing(false);
+                    setOptionClicked(false);
+                    handleSearch(index);
+                  }}
                 >
-                  {item.title}
-                </div>
-                <div
-                  className={atoms({
-                    alignItems: 'flex-end',
-                  })}
-                >
-                  {truncateValues(searchValue)}
-                </div>
-              </Box>
-            ))}
-          </div>
-        )}
+                  <Stack>In {item.title}</Stack>
+                </Stack>
+              ))}
+            </Stack>
+          )}
+        </Stack>
       </Stack>
     </>
   );

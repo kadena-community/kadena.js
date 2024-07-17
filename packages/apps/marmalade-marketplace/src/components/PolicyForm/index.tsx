@@ -9,8 +9,8 @@ interface PolicyFormProps {
 }
 
 const PolicyForm: FC<PolicyFormProps> = ({ policyConfig, handleCheckboxChange }) => (
-    <div className={styles.formSection}>
-        <Heading as="h5" className={styles.formHeading}>Policy Configuration</Heading>
+    <>
+        Available Concrete Policies
         <br/>
         <div className={styles.checkboxRow}>
             <div className={styles.checkboxContainer}>
@@ -69,7 +69,7 @@ const PolicyForm: FC<PolicyFormProps> = ({ policyConfig, handleCheckboxChange })
               <label className={styles.checkboxLabel} htmlFor="collection">Collection</label>
             </div>
       </div>
-    </div>
+    </>
 );
 
 export default PolicyForm;

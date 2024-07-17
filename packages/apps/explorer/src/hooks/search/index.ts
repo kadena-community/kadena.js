@@ -25,6 +25,7 @@ export const useSearch = () => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isMounted, setIsMounted] = useState(false);
+  const [searchData, setSearchData] = useState<ISearchItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<ApolloError[]>([]);
   const [searchOption, setSearchOption] = useState<SearchOptionEnum | null>(
@@ -75,33 +76,39 @@ export const useSearch = () => {
   useEffect(() => {
     if (!isMounted) return;
 
-    if (!searchQuery) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      if (router.asPath === '/') {
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        router.replace(`${router.asPath}`);
+    const query = router.query.q;
+    const searchOptionQuery: SearchOptionEnum | null = !isNaN(
+      parseInt(router.query.so as any),
+    )
+      ? parseInt(router.query.so as any)
+      : null;
+
+    const queryArray = [];
+    if (searchQuery) {
+      queryArray.push(`q=${searchQuery}`);
+    }
+    if (searchOption !== null && searchOption !== undefined) {
+      queryArray.push(`so=${searchOption}`);
+
+      if (searchOption === SearchOptionEnum.ACCOUNT) {
+        queryArray.push(`fungible=coin`);
       }
+    }
+
+    if (
+      (query === searchQuery && searchOptionQuery === searchOption) ||
+      !queryArray.filter((v) => v.startsWith('q=')).length
+    ) {
       return;
     }
 
-    const query = router.query.q;
-    const searchOptionQuery: SearchOptionEnum = parseInt(
-      router.query.so as any,
-    );
-
-    if (query === searchQuery && searchOptionQuery === searchOption) return;
-
-    if (searchOption === SearchOptionEnum.ACCOUNT) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push(`/?q=${searchQuery}&so=${searchOption}&fungible=coin`);
-    } else {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push(`/?q=${searchQuery}&so=${searchOption}`);
-    }
-  }, [searchQuery, isMounted]);
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    router.push(`/?${queryArray.join('&')}`);
+  }, [searchQuery, searchOption, isMounted]);
 
   useEffect(() => {
     const query = router.query.q;
+
     const searchOptionQuery: SearchOptionEnum | null = !isNaN(
       parseInt(router.query.so as any),
     )
@@ -114,15 +121,51 @@ export const useSearch = () => {
   }, [router.query]);
 
   useEffect(() => {
-    setLoading(
-      checkLoading(
-        accountLoading,
-        blockLoading,
-        blockHeightLoading,
-        eventLoading,
-        requestKeyLoading,
-      ),
+    if (loading) {
+      setSearchData([
+        { title: 'Accounts', data: [] },
+        { title: 'Request Keys', data: {} },
+        { title: 'Block Hashes', data: {} },
+        { title: 'Heights', data: {} },
+        { title: 'Events', data: {} },
+      ]);
+      return;
+    }
+
+    const result: ISearchItem[] = [
+      { title: 'Accounts', data: accountData },
+      { title: 'Request Keys', data: requestKeyData },
+      { title: 'Block Hashes', data: blockData },
+      { title: 'Heights', data: blockHeightData },
+      { title: 'Events', data: eventData },
+    ];
+
+    setSearchData(result);
+  }, [
+    loading,
+    accountData,
+    requestKeyData,
+    blockData,
+    blockHeightData,
+    eventData,
+  ]);
+
+  useEffect(() => {
+    const loadingResult = checkLoading(
+      accountLoading,
+      blockLoading,
+      blockHeightLoading,
+      eventLoading,
+      requestKeyLoading,
     );
+
+    if (!loadingResult) {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
+      return;
+    }
   }, [
     accountLoading,
     blockLoading,
@@ -152,13 +195,6 @@ export const useSearch = () => {
     }
   }, [errors]);
 
-  const searchData: ISearchItem[] = [
-    { title: 'Account', data: accountData },
-    { title: 'Request Key', data: requestKeyData },
-    { title: 'Block Hash', data: blockData },
-    { title: 'Block Height', data: blockHeightData },
-    { title: 'Events', data: eventData },
-  ];
   return {
     searchOption,
     setSearchOption,

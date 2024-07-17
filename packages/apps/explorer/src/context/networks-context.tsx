@@ -1,7 +1,7 @@
 import { useRouter } from '@/components/routing/useRouter';
 import { useToast } from '@/components/toasts/toast-context/toast-context';
-import { getDefaultNetworks } from '@/utils/getDefaultNetworks';
-import { isDefaultNetwork } from '@/utils/isDefaultNetwork';
+import type { INetwork } from '@/constants/network';
+import { networkConstants } from '@/constants/network';
 import type { NormalizedCacheObject } from '@apollo/client';
 import {
   ApolloClient,
@@ -20,26 +20,31 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import type { INetwork, INetworkContext } from './types';
 
 // next/apollo-link bug: https://github.com/dotansimha/graphql-yoga/issues/2194
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { YogaLink } = require('@graphql-yoga/apollo-link');
+
+const cache = new InMemoryCache({
+  resultCaching: true,
+});
+
+interface INetworkContext {
+  networks: INetwork[];
+  activeNetwork: INetwork;
+  setActiveNetwork: (activeNetwork: INetwork['slug']) => void;
+  addNetwork: (newNetwork: INetwork) => void;
+}
 
 const NetworkContext = createContext<INetworkContext>({
   networks: [],
   activeNetwork: {} as INetwork,
   setActiveNetwork: () => {},
   addNetwork: () => {},
-  removeNetwork: () => {},
 });
 
 export const storageKey = 'networks';
 export const selectedNetworkKey = 'selectedNetwork';
-
-const cache = new InMemoryCache();
-
-// defaultDataIdFromObject
 
 const useNetwork = (): INetworkContext => {
   const context = useContext(NetworkContext);
@@ -51,16 +56,27 @@ const useNetwork = (): INetworkContext => {
   return context;
 };
 
+export const getDefaultNetworks = (): INetworkContext['networks'] =>
+  networkConstants;
+
+export const getNetworks = (): INetwork[] => {
+  const storage: INetwork[] = JSON.parse(
+    localStorage.getItem(storageKey) ?? '[]',
+  );
+
+  return [...getDefaultNetworks(), ...storage];
+};
+
 const NetworkContextProvider = (props: {
   networks?: INetwork[];
   children: React.ReactNode;
 }): JSX.Element => {
-  const { addToast } = useToast();
   const [networks, setNetworks] = useState<INetwork[]>(getDefaultNetworks());
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
-  const networkId = router.query.networkId as string;
+  const networkSlug = router.query.networkSlug as string;
   const [activeNetwork, setActiveNetwork] = useState<INetwork | undefined>();
+  const { addToast } = useToast();
 
   const checkStorage = () => {
     const storage: INetwork[] = JSON.parse(
@@ -80,9 +96,9 @@ const NetworkContextProvider = (props: {
 
   useEffect(() => {
     if (!networks.length || !isMounted) return;
-    const network = networks.find((n) => n.networkId === networkId);
+    const network = networks.find((n) => n.slug && n.slug === networkSlug);
     setActiveNetwork(network);
-  }, [networkId, networks, isMounted]);
+  }, [networkSlug, networks, isMounted]);
 
   useEffect(() => {
     checkStorage();
@@ -94,57 +110,22 @@ const NetworkContextProvider = (props: {
     };
   }, [storageListener]);
 
-  const setActiveNetworkByKey = (networkId: string): void => {
-    const network = networks.find((x) => x.networkId === networkId)!;
-    setActiveNetwork(network);
-    localStorage.setItem(selectedNetworkKey, JSON.stringify(network));
-    Cookies.set(selectedNetworkKey, network.networkId);
+  const setActiveNetworkByKey = (networkSlug: string): void => {
+    const network = networks.find((x) => x.slug === networkSlug);
 
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    router.push(`/${networkId}`);
-  };
-
-  const removeNetwork = (network: INetwork): void => {
-    //check that network is not a default network
-
-    if (isDefaultNetwork(network)) {
+    if (!network) {
       addToast({
         type: 'negative',
-        label: 'Something went wrong',
-        body: "You can't remove this default network",
+        label: 'Network not found',
+        body: `network ${networkSlug} is deprecated`,
       });
       return;
     }
 
-    setNetworks((v) => {
-      const innerNetworks = v
-        .filter(
-          (n) =>
-            n?.label !== network.label && n.networkId !== network.networkId,
-        )
-        .filter((v) => !isDefaultNetwork(v));
-      localStorage.setItem(storageKey, JSON.stringify(innerNetworks));
+    localStorage.setItem(selectedNetworkKey, JSON.stringify(network));
+    Cookies.set(selectedNetworkKey, network.slug);
 
-      return innerNetworks;
-    });
-
-    addToast({
-      type: 'info',
-      label: 'Success',
-      body: 'Network was successfully removed',
-    });
-
-    //check that its not an activenetwork
-    if (
-      activeNetwork?.label === network.label &&
-      activeNetwork.networkId === network.networkId
-    ) {
-      //if the same as activenetwork
-      Cookies.remove(selectedNetworkKey);
-      setActiveNetwork(undefined);
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push(`/`);
-    }
+    window.location.href = `/${networkSlug}`;
   };
 
   const addNetwork = (newNetwork: INetwork): void => {
@@ -152,25 +133,21 @@ const NetworkContextProvider = (props: {
       localStorage.getItem(storageKey) ?? '[]',
     );
 
-    if (
-      !storage.find((network) => network.networkId === newNetwork.networkId)
-    ) {
+    if (!storage.find((network) => network.slug === newNetwork.slug)) {
       storage.push(newNetwork);
       localStorage.setItem(storageKey, JSON.stringify(storage));
       window.dispatchEvent(new Event(storageKey));
 
       setActiveNetwork(newNetwork);
       localStorage.setItem(selectedNetworkKey, JSON.stringify(newNetwork));
-      Cookies.set(selectedNetworkKey, newNetwork.networkId);
+      Cookies.set(selectedNetworkKey, newNetwork.slug);
 
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push(`/${newNetwork.networkId}`);
+      window.location.href = `/${newNetwork.slug}`;
     }
   };
 
   const getApolloClient = useCallback(() => {
     const httpLink = new YogaLink({
-      cache,
       endpoint: activeNetwork?.graphUrl,
     });
 
@@ -194,7 +171,7 @@ const NetworkContextProvider = (props: {
 
     const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
       link: splitLink,
-      cache: new InMemoryCache(),
+      cache,
     });
 
     return client;
@@ -213,7 +190,6 @@ const NetworkContextProvider = (props: {
       value={{
         networks,
         activeNetwork,
-        removeNetwork,
         setActiveNetwork: setActiveNetworkByKey,
         addNetwork,
       }}

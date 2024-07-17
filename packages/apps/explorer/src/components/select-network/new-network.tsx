@@ -1,4 +1,4 @@
-import type { INetwork } from '@/context/networks-context';
+import type { INetwork } from '@/constants/network';
 import { useNetwork } from '@/context/networks-context';
 import { isDefaultNetwork } from '@/utils/isDefaultNetwork';
 import { MonoCheck, MonoClose } from '@kadena/kode-icons/system';
@@ -40,12 +40,13 @@ const NewNetwork: FC<IProps> = ({
     e.preventDefault();
 
     const data = new FormData(e.currentTarget);
-    let { label, networkId, chainwebUrl, graphUrl } =
-      getFormValues<INetwork>(data);
+    let { label, networkId, slug, chainwebUrl, graphUrl } =
+      getFormValues<any>(data);
 
     const newNetwork: INetwork = {
       networkId,
       label,
+      slug,
       chainwebUrl,
       graphUrl,
       wsGraphUrl: graphUrl,
@@ -141,6 +142,7 @@ const NewNetwork: FC<IProps> = ({
               name="networkId"
               isRequired
             ></TextField>
+            <TextField label="Slug" name="slug" isRequired></TextField>
             <TextField
               label="GraphQL URL"
               name="graphUrl"

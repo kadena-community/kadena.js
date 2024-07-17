@@ -167,19 +167,12 @@ export default builder.node(
               await Promise.all([
                 await prismaClient.transfer.count({
                   where: {
-                    senderAccount: parent.accountName,
-                    NOT: {
-                      receiverAccount: parent.accountName,
-                    },
-                    moduleName: parent.fungibleName,
-                  },
-                }),
-                await prismaClient.transfer.count({
-                  where: {
-                    receiverAccount: parent.accountName,
-                    NOT: {
-                      senderAccount: parent.accountName,
-                    },
+                    OR: [
+                      { senderAccount: parent.accountName },
+                      {
+                        receiverAccount: parent.accountName,
+                      },
+                    ],
                     moduleName: parent.fungibleName,
                   },
                 }),
@@ -197,7 +190,7 @@ export default builder.node(
                 await prismaClient.transfer.findMany({
                   ...condition,
                   where: {
-                    receiverAccount: parent.accountName,
+                    senderAccount: parent.accountName,
                     NOT: {
                       receiverAccount: parent.accountName,
                     },

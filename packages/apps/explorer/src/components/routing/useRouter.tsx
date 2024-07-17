@@ -1,4 +1,8 @@
-import { selectedNetworkKey, useNetwork } from '@/context/networks-context';
+import {
+  getNetworks,
+  selectedNetworkKey,
+  useNetwork,
+} from '@/context/networks-context';
 import Cookies from 'js-cookie';
 import { useRouter as NextUseRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -11,24 +15,40 @@ export const useRouter = () => {
   //check that the first part of a URL is really an existing network.
   //if not, redirect to root
   useEffect(() => {
-    const pathArray = router.asPath;
-    const foundNetwork = networks.find((n) =>
-      n.networkId.startsWith(pathArray[0]),
+    if (!router.isReady) return;
+
+    const innerNetworks = getNetworks();
+
+    const pathArray = router.asPath.split('/').filter((v) => !!v);
+    const foundNetwork = innerNetworks.find(
+      (n) => n.slug && pathArray[0].startsWith(n.slug),
     );
 
     if (!foundNetwork) {
       //check that localstorage for selectedNetwork is not that value
-      const selectedNetworkLocalstorage = JSON.parse(
-        localStorage.getItem(selectedNetworkKey) ?? '{}',
-      );
+      const selectedNetworkLocalstorageValue =
+        localStorage.getItem(selectedNetworkKey);
 
-      if (selectedNetworkLocalstorage.networkId === pathArray[0]) {
+      try {
+        const selectedNetworkLocalstorage = selectedNetworkLocalstorageValue
+          ? JSON.parse(selectedNetworkLocalstorageValue)
+          : null;
+
+        if (selectedNetworkLocalstorage) {
+          if (
+            selectedNetworkLocalstorage.slug === pathArray[0] ||
+            !selectedNetworkLocalstorage.slug
+          ) {
+            localStorage.removeItem(selectedNetworkKey);
+            Cookies.remove(selectedNetworkKey);
+          }
+        }
+      } catch (e) {
         localStorage.removeItem(selectedNetworkKey);
         Cookies.remove(selectedNetworkKey);
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push('/');
+      window.location.href = '/mainnet';
     }
   }, [router.asPath]);
 
