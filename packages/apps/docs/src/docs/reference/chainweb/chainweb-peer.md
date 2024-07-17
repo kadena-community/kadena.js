@@ -85,7 +85,7 @@ This request returns two items with peer information in the response body:
 }
 ```
 
-To send a follow-up request to get peer information for the next two peers, you can add the next parameter to the request:
+To send a follow-up request to get peer information for the next two peers, you can add the `next` parameter to the request:
 
 ```Postman
 GET https://us-e1.chainweb.com/chainweb/0.0/mainnet01/cut/peer?limit=2&next=inclusive:2
