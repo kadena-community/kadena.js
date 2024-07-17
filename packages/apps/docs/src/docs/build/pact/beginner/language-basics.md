@@ -245,7 +245,7 @@ pact> (* 5 5)
 25
 ```
 
-Other math operations can be performed by changing [multiply](/reference/functions/operators#h42) to [add](/reference/functions/operators#h43), [subtract](/reference/functions/operators#h45), or [divide](/reference/functions/operators#h47).
+Other math operations can be performed by changing [multiply](/reference/functions/operators) to [add](/reference/functions/operators), [subtract](/reference/functions/operators), or [divide](/reference/functions/operators).
 
 #### Combine Expressions
 

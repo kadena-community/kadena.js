@@ -79,7 +79,7 @@ const Account: FC = () => {
 
     const regExp = new RegExp(/[?#].*/);
 
-    const newUrl = `/${router.activeNetwork.networkId}${router.asPath.replace(regExp, '')}#${tab}`;
+    const newUrl = `/${router.activeNetwork.slug}${router.asPath.replace(regExp, '')}#${tab}`;
 
     window.history.replaceState(
       { ...window.history.state, as: newUrl, url: newUrl },
