@@ -107,7 +107,7 @@ The Chainweb service API includes the following endpoints:
 - [Mining service endpoints](/reference/chainweb-api/mining)
 - [Pact REST API endpoints](/reference/rest-api)
 - [Rosetta endpoints](/reference/chainweb-api/rosetta)
-- [Maintenance and other services endpoints](/reference/chainweb-api/misc)
+- [Maintenance and other endpoints](/reference/chainweb-api/misc)
 
 ### Base URL
 
