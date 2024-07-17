@@ -182,7 +182,6 @@ function CreateTokenComponent() {
       const processTokenCreation = async (inputs: any) => {
         try {
           const tokenIdCreated = await createTokenId({ ...inputs, networkId: config.networkId, host: config.host });
-          // setTokenId(tokenIdCreated);
 
           await createToken(
             {

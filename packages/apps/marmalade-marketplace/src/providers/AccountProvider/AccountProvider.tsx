@@ -10,7 +10,7 @@ interface IAccountError {
   message: string;
 }
 
-interface WebauthnAccountDetails {
+export interface WebauthnAccountDetails {
   account:string
   guard: {
     keys: string[];
