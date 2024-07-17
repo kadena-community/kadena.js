@@ -2,6 +2,7 @@ import { useNetworkInfoQuery } from '@/__generated__/sdk';
 import { Media } from '@/components/layout/media';
 import { useToast } from '@/components/toasts/toast-context/toast-context';
 import { CONSTANTS } from '@/constants/constants';
+import { useNetwork } from '@/context/networks-context';
 import { formatStatisticsData } from '@/services/format';
 import { Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
@@ -9,6 +10,7 @@ import React, { useEffect } from 'react';
 import { boxClass, overFlowClass } from './statistics-stack.css';
 
 const StatisticsStack: FC = () => {
+  const { stopServer } = useNetwork();
   const { addToast } = useToast();
   const {
     data: statisticsData,
@@ -26,6 +28,7 @@ const StatisticsStack: FC = () => {
         body: 'Loading of network info data failed',
       });
       stopPolling();
+      stopServer();
     }
   }, [error]);
 

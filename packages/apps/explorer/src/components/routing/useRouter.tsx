@@ -56,6 +56,7 @@ export const useRouter = () => {
     return router.replace(createHref(activeNetwork, networks, href));
   };
   const push = (href: string): Promise<boolean> => {
+    console.log(activeNetwork);
     return router.push(createHref(activeNetwork, networks, href));
   };
 

@@ -34,6 +34,7 @@ interface INetworkContext {
   activeNetwork: INetwork;
   setActiveNetwork: (activeNetwork: INetwork['slug']) => void;
   addNetwork: (newNetwork: INetwork) => void;
+  stopServer: () => void;
 }
 
 const NetworkContext = createContext<INetworkContext>({
@@ -41,6 +42,7 @@ const NetworkContext = createContext<INetworkContext>({
   activeNetwork: {} as INetwork,
   setActiveNetwork: () => {},
   addNetwork: () => {},
+  stopServer: () => {},
 });
 
 export const storageKey = 'networks';
@@ -76,6 +78,7 @@ const NetworkContextProvider = (props: {
   const router = useRouter();
   const networkSlug = router.query.networkSlug as string;
   const [activeNetwork, setActiveNetwork] = useState<INetwork | undefined>();
+  const [stopped, setStopped] = useState(false);
   const { addToast } = useToast();
 
   const checkStorage = () => {
@@ -146,6 +149,13 @@ const NetworkContextProvider = (props: {
     }
   };
 
+  const stopServer = () => {
+    setStopped(true);
+    console.log(activeNetwork);
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    router.push('straatemans/500');
+  };
+
   const getApolloClient = useCallback(() => {
     const httpLink = new YogaLink({
       endpoint: activeNetwork?.graphUrl,
@@ -192,6 +202,7 @@ const NetworkContextProvider = (props: {
         activeNetwork,
         setActiveNetwork: setActiveNetworkByKey,
         addNetwork,
+        stopServer,
       }}
     >
       <ApolloProvider client={getApolloClient()}>
