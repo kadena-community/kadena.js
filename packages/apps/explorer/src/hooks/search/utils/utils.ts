@@ -13,7 +13,7 @@ export const checkLoading = (...attrs: boolean[]): boolean => {
 export const isSearchRequested = (
   searchOption: SearchOptionEnum | null,
   requestedSearchOption: SearchOptionEnum,
-): boolean => requestedSearchOption === searchOption || searchOption === null;
+): boolean => requestedSearchOption === searchOption;
 
 export const returnSearchQuery = (
   searchQuery: string,
