@@ -1,4 +1,4 @@
-# React UI
+# Kode UI
 
 **@kadena/kode-ui** is a library used to provide a styling environment and basic
 React components for reuse in Kadena applications. It uses
