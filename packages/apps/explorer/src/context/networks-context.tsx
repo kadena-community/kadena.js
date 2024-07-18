@@ -2,6 +2,7 @@ import { useRouter } from '@/components/routing/useRouter';
 import { useToast } from '@/components/toasts/toast-context/toast-context';
 import type { INetwork } from '@/constants/network';
 import { networkConstants } from '@/constants/network';
+import { checkNetwork } from '@/utils/checkNetwork';
 import type { NormalizedCacheObject } from '@apollo/client';
 import {
   ApolloClient,
@@ -35,6 +36,7 @@ interface INetworkContext {
   setActiveNetwork: (activeNetwork: INetwork['slug']) => void;
   addNetwork: (newNetwork: INetwork) => void;
   removeNetwork: (newNetwork: INetwork) => void;
+  stopServer: () => void;
 }
 
 const NetworkContext = createContext<INetworkContext>({
@@ -43,10 +45,42 @@ const NetworkContext = createContext<INetworkContext>({
   setActiveNetwork: () => {},
   addNetwork: () => {},
   removeNetwork: () => {},
+  stopServer: () => {},
 });
 
 export const storageKey = 'networks';
 export const selectedNetworkKey = 'selectedNetwork';
+
+const getApolloClient = (network: INetwork) => {
+  const httpLink = new YogaLink({
+    endpoint: network?.graphUrl,
+  });
+
+  const wsLink = new GraphQLWsLink(
+    createClient({
+      url: network!.wsGraphUrl,
+    }),
+  );
+
+  const splitLink = split(
+    ({ query }) => {
+      const definition = getMainDefinition(query);
+      return (
+        definition.kind === 'OperationDefinition' &&
+        definition.operation === 'subscription'
+      );
+    },
+    wsLink, // Use WebSocket link for subscriptions
+    httpLink, // Use HTTP link for queries and mutations
+  );
+
+  const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
+    link: splitLink,
+    cache,
+  });
+
+  return client;
+};
 
 const useNetwork = (): INetworkContext => {
   const context = useContext(NetworkContext);
@@ -78,7 +112,8 @@ const NetworkContextProvider = (props: {
   const router = useRouter();
   const networkSlug = router.query.networkSlug as string;
   const [activeNetwork, setActiveNetwork] = useState<INetwork | undefined>();
-  const { addToast } = useToast();
+  const [client, setClient] = useState<ApolloClient<NormalizedCacheObject>>();
+  const { addNetworkFailToast } = useToast();
 
   const checkStorage = () => {
     const storage: INetwork[] = JSON.parse(
@@ -96,6 +131,33 @@ const NetworkContextProvider = (props: {
     checkStorage();
   }, []);
 
+  const stopServer = () => {
+    client?.stop();
+    addNetworkFailToast({
+      body: `There is an issue with ${activeNetwork!.graphUrl}`,
+    });
+  };
+
+  const checkIfNetworkAvailable = async (graphUrl: string) => {
+    try {
+      const result = await checkNetwork(graphUrl);
+      await result.json();
+
+      if (result.status !== 200) {
+        stopServer();
+      }
+    } catch (e) {
+      stopServer();
+    }
+  };
+
+  useEffect(() => {
+    if (!activeNetwork || !activeNetwork.graphUrl) return;
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    checkIfNetworkAvailable(activeNetwork.graphUrl);
+  }, [activeNetwork]);
+
   useEffect(() => {
     if (!networks.length || !isMounted) return;
     const network = networks.find((n) => n.slug && n.slug === networkSlug);
@@ -112,15 +174,17 @@ const NetworkContextProvider = (props: {
     };
   }, [storageListener]);
 
+  useEffect(() => {
+    if (!activeNetwork) return;
+    const resultClient = getApolloClient(activeNetwork);
+    setClient(resultClient);
+  }, [activeNetwork]);
+
   const setActiveNetworkByKey = (networkSlug: string): void => {
     const network = networks.find((x) => x.slug === networkSlug);
 
     if (!network) {
-      addToast({
-        type: 'negative',
-        label: 'Network not found',
-        body: `network ${networkSlug} is deprecated`,
-      });
+      stopServer();
       return;
     }
 
@@ -164,44 +228,13 @@ const NetworkContextProvider = (props: {
     }
   };
 
-  const getApolloClient = useCallback(() => {
-    const httpLink = new YogaLink({
-      endpoint: activeNetwork?.graphUrl,
-    });
-
-    const wsLink = new GraphQLWsLink(
-      createClient({
-        url: activeNetwork!.wsGraphUrl,
-      }),
-    );
-
-    const splitLink = split(
-      ({ query }) => {
-        const definition = getMainDefinition(query);
-        return (
-          definition.kind === 'OperationDefinition' &&
-          definition.operation === 'subscription'
-        );
-      },
-      wsLink, // Use WebSocket link for subscriptions
-      httpLink, // Use HTTP link for queries and mutations
-    );
-
-    const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
-      link: splitLink,
-      cache,
-    });
-
-    return client;
-  }, [activeNetwork]);
-
   useEffect(() => {
     if (!isMounted && router.asPath === '/' && !activeNetwork) {
       setActiveNetwork(networks[0]);
     }
   }, [isMounted, activeNetwork]);
 
-  if (!isMounted || !activeNetwork) return <></>;
+  if (!isMounted || !activeNetwork || !client) return <></>;
 
   return (
     <NetworkContext.Provider
@@ -211,11 +244,10 @@ const NetworkContextProvider = (props: {
         setActiveNetwork: setActiveNetworkByKey,
         addNetwork,
         removeNetwork,
+        stopServer,
       }}
     >
-      <ApolloProvider client={getApolloClient()}>
-        {props.children}
-      </ApolloProvider>
+      <ApolloProvider client={client}>{props.children}</ApolloProvider>
     </NetworkContext.Provider>
   );
 };

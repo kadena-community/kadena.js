@@ -35,14 +35,6 @@ const CompactTable: React.FC<ICompactTableProps> = ({
 }) => {
   return (
     <>
-      {!!(setPage && pageInfo && totalCount && pageSize) && (
-        <TablePagination
-          totalCount={totalCount}
-          pageSize={pageSize}
-          setPage={setPage}
-          pageInfo={pageInfo}
-        />
-      )}
       <Media lessThan="sm">
         <CompactTableMobile isLoading={isLoading} fields={fields} data={data} />
       </Media>
@@ -54,6 +46,14 @@ const CompactTable: React.FC<ICompactTableProps> = ({
           label={label}
         />
       </Media>
+      {!!(setPage && pageInfo && totalCount && pageSize) && (
+        <TablePagination
+          totalCount={totalCount}
+          pageSize={pageSize}
+          setPage={setPage}
+          pageInfo={pageInfo}
+        />
+      )}
     </>
   );
 };

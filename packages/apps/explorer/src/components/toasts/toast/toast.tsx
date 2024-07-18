@@ -1,4 +1,11 @@
-import { Notification, NotificationHeading, Stack } from '@kadena/kode-ui';
+import { MonoWarning } from '@kadena/kode-icons/system';
+import {
+  Notification,
+  NotificationButton,
+  NotificationFooter,
+  NotificationHeading,
+  Stack,
+} from '@kadena/kode-ui';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
@@ -15,12 +22,16 @@ const Toast: FC<IProps> = ({ toast, removeToast, idx }) => {
   const [hide, setHide] = useState(false);
 
   useEffect(() => {
+    if (toast.permanent) return;
+
     setTimeout(() => {
       setHide(true);
     }, 10000);
   }, []);
 
   useEffect(() => {
+    if (toast.permanent) return;
+
     if (!hide) return;
     setTimeout(() => {
       setHide(false);
@@ -42,6 +53,18 @@ const Toast: FC<IProps> = ({ toast, removeToast, idx }) => {
       >
         <NotificationHeading>{toast.label}</NotificationHeading>
         {toast.body}
+
+        <NotificationFooter>
+          {toast.actionLabel && (
+            <NotificationButton
+              icon={toast.actionIcon ?? <MonoWarning />}
+              intent="negative"
+              onClick={toast.action}
+            >
+              {toast.actionLabel}
+            </NotificationButton>
+          )}
+        </NotificationFooter>
       </Notification>
     </Stack>
   );

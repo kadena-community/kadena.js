@@ -7,6 +7,7 @@ import { withCenteredStory } from '../src/storyDecorators';
 import { darkThemeClass } from '../src/styles';
 import { colorPalette } from '../src/styles/colors';
 import '../src/styles/global.css';
+import './global.css';
 
 const preview: Preview = {
   parameters: {

@@ -37,16 +37,16 @@ globalFontFace(secondaryFont, {
 // Kode mono
 globalFontFace(monospaceFont, {
   fontStyle: 'normal',
-  fontWeight: '400, 700',
+  fontWeight: '400..700',
   fontDisplay: 'swap',
-  src: `url(https://fonts.gstatic.com/s/kodemono/v1/A2BYn5pb0QgtVEPFnlYOk4LweZGZuPcc.woff2) format('woff2')`,
+  src: `url(https://fonts.gstatic.com/s/kodemono/v2/A2BLn5pb0QgtVEPFnlYkkaoBgw4qv9odq5myxDOZacezE3hnRicF.woff2) format('woff2')`,
   unicodeRange: `U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF`,
 });
 globalFontFace(monospaceFont, {
   fontStyle: 'normal',
-  fontWeight: '400, 700',
+  fontWeight: '400..700',
   fontDisplay: 'swap',
-  src: `url(https://fonts.gstatic.com/s/kodemono/v1/A2BYn5pb0QgtVEPFnlYOnYLweZGZuA.woff2) format('woff2')`,
+  src: `url(https://fonts.gstatic.com/s/kodemono/v2/A2BLn5pb0QgtVEPFnlYkkaoBgw4qv9odq5myxD2ZacezE3hnRg.woff2) format('woff2')`,
   unicodeRange:
     'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD',
 });
@@ -106,7 +106,7 @@ globalStyle('button, input, select, textarea, label', {
 */
 globalStyle('p, h1, h2, h3, h4, h5, h6, span, li', {
   overflowWrap: 'break-word',
-  fontFamily: vars.fonts.$main,
+  fontFamily: `${vars.fonts.$main} !important`,
 });
 
 /*

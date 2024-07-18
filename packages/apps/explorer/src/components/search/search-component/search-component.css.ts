@@ -66,7 +66,6 @@ export const searchBadgeBoxSelectedClass = style([
   {
     backgroundColor: token('color.background.base.inverse.default'),
     color: token('color.text.base.inverse.default'),
-    cursor: 'pointer',
   },
 ]);
 
@@ -83,7 +82,7 @@ export const editingBoxClass = style([
 ]);
 
 export const searchBarClass = style({
-  maxWidth: '480px',
+  maxWidth: '650px',
   width: '100%',
   marginInline: 'auto',
 });
@@ -102,6 +101,13 @@ export const editOptionHoverClass = style([
     backgroundColor:
       tokens.kda.foundation.color.background.brand.primary.default,
     color: tokens.kda.foundation.color.text.base.default,
+  },
+]);
+export const editOptionSelectedClass = style([
+  {
+    backgroundColor: token('color.background.brand.primary.inverse.default'),
+    color: token('color.text.base.inverse.@focus'),
+    borderLeft: `${tokens.kda.foundation.radius.md} solid ${tokens.kda.foundation.color.border.brand.primary.default}`,
   },
 ]);
 
