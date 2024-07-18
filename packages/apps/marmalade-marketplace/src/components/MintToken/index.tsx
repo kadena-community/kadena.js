@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { Stack, Heading, Button, TextField, NumberField } from '@kadena/kode-ui';
 import { ChainId, BuiltInPredicate } from '@kadena/client';
 import { getTokenInfo, mintToken } from '@kadena/client-utils/marmalade';
-import { getWebauthnGuard, getWebauthnAccount } from "@kadena/client-utils/webauthn";
 import { useAccount } from '@/hooks/account';
 import { createSignWithSpireKey } from '@/utils/signWithSpireKey';
 import SendTransaction from '@/components/SendTransaction';
@@ -18,7 +17,7 @@ import CrudCard from '@/components/CrudCard';
 
 function MintTokenComponent() {
   const router = useRouter();
-  const { account } = useAccount();
+  const { account, webauthnAccount } = useAccount();
 
   const [walletKey, setWalletKey] = useState<string>('');
   const [walletAccount, setWalletAccount] = useState('');
@@ -54,32 +53,19 @@ function MintTokenComponent() {
       }) as { policies: Policy[] };
       setResult( checkPolicies(res.policies))
 
-      const webauthnGuard = await getWebauthnGuard({
-        account: account? account.accountName : "",
-        host: env.URL,
-        networkId: env.NETWORKID,
-        chainId: config.chainId,
-      }) as {
-        keys: string[];
-        pred: "keys-all" | "keys-2" | "keys-any";
-      }
-  
-      const webauthnAccount:string = await getWebauthnAccount({
-        account: account? account.accountName : "",
-        host: env.URL,
-        networkId: env.NETWORKID,
-        chainId: config.chainId,
-      }) as string
-  
       const amountFormatted = (amount === 1) ? {"decimal": "1.0"} : new PactNumber(amount).toPactDecimal();
+
+      if (!webauthnAccount) {
+        throw new Error("Webauthn account not found");
+      }
 
       await mintToken({
         policyConfig: checkPolicies(res.policies),
         tokenId: tokenId,
-        accountName: webauthnAccount,
+        accountName: webauthnAccount?.account || "",
         guard: {
-          account: webauthnAccount,
-          keyset: webauthnGuard,
+          account: webauthnAccount.account,
+          keyset: webauthnAccount.guard
         },
         amount: amountFormatted,
         chainId: config.chainId as ChainId,
@@ -110,18 +96,6 @@ function MintTokenComponent() {
       setAmount(value);
     }
   }
-console.log("hi")
-  getWebauthnGuard({  account: walletAccount,
-    chainId: "8",
-    networkId: "testnet04",
-    host: env.CHAINWEB_API_HOST,}).then(console.log)
-
-
-  getWebauthnGuard({  account: walletAccount,
-    chainId: "8",
-    networkId: "testnet04",
-    host: env.CHAINWEB_API_HOST,}).then(console.log)
-
 
   return (
     <>
@@ -140,7 +114,7 @@ console.log("hi")
           >
           <TextField label="Token ID" name="tokenId" value={tokenId} onChange={handleTokenInputChange} />
           <NumberField label="Amount" value={amount} onValueChange={hanldeAmountInputChange} />
-  
+
         </CrudCard>
 
         <div className={styles.buttonRow}>

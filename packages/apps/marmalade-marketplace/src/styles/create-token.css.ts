@@ -1,29 +1,6 @@
-import { style, globalStyle } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
 import { tokens } from '@kadena/kode-ui/styles';
 import { deviceColors } from '@/styles/tokens.css';
-
-globalStyle('body', {
-  color: 'white',
-  // backgroundColor: deviceColors.kadenaBlack,
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  backgroundRepeat: 'no-repeat',
-  backgroundAttachment: 'fixed',
-});
-
-globalStyle('a', {
-  color: 'white',
-});
-
-globalStyle('a:hover', {
-  color: 'lightgray',
-  textDecoration: 'none',
-});
-
-globalStyle('a:has(button)', {
-  textDecoration: 'none',
-  flex: 1,
-});
 
 export const mainWrapperClass = style({
   display: 'grid',
@@ -41,6 +18,12 @@ export const oneColumnRow = style({
   gridTemplateColumns: '1fr',
   gap: '20px',
   marginTop: '20px',
+});
+
+export const formContainer = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: tokens.kda.foundation.spacing.n4,
 });
 
 export const formLabel = style({
@@ -90,30 +73,6 @@ export const uploadText = style({
   margin: '0',
 });
 
-export const checkboxRow = style({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'flex-start',
-  alignItems: 'flex-start',
-  marginBottom: '10px',
-});
-
-export const checkboxContainer = style({
-  display: 'flex',
-  flexWrap: 'wrap',
-//   gap: '10px',
-});
-
-export const checkboxLabel = style({
-  color: 'white',
-  userSelect: 'none',
-});
-
-export const checkboxInput = style({
-  width: '16px',
-  height: '16px',
-});
-
 export const responseMessage = style({
   margin: '20px 0',
   padding: '10px',
@@ -146,8 +105,8 @@ export const verticalForm = style({
 
 export const buttonRow = style({
   display: 'flex',
-  justifyContent: 'center',
-  marginTop: '20px',
+  justifyContent: 'space-between',
+  margin: `${tokens.kda.foundation.spacing.n6} 15% 0`,
 });
 
 export const buttonRowRight = style({
@@ -201,24 +160,24 @@ export const formHeading = style({
   color: 'black',
 });
 
-export const errorBox = style({ 
-  color: 'red', 
-  backgroundColor: '#ffe6e6', 
-  border: '1px solid red', 
-  borderRadius: '5px', 
-  padding: '10px', 
+export const errorBox = style({
+  color: 'red',
+  backgroundColor: '#ffe6e6',
+  border: '1px solid red',
+  borderRadius: '5px',
+  padding: '10px',
   margin: '10px 0',
   fontFamily: 'Arial, sans-serif',
   fontSize: '14px'
 });
 
 
-export const resultBox = style({ 
-  color: 'green', 
+export const resultBox = style({
+  color: 'green',
   backgroundColor: '#e6ffe6',
   border: "1px solid green",
-  borderRadius: '5px', 
-  padding: '10px', 
+  borderRadius: '5px',
+  padding: '10px',
   margin: '10px 0',
   fontFamily: 'Arial, sans-serif',
   fontSize: '14px'
@@ -233,7 +192,7 @@ export const checkboxStyle = style({
 
 export const container = style({
   margin: '160px 15% 0',
-  backgroundColor: tokens.kda.foundation.color.background.surface.default,
+  backgroundColor: tokens.kda.foundation.color.background.layer.default,
   borderRadius: tokens.kda.foundation.radius.sm,
   border: `1px solid ${deviceColors.borderColor}`,
 });
@@ -241,14 +200,6 @@ export const container = style({
 export const buttonRowContainer = style({
   margin: `${tokens.kda.foundation.spacing.n6} 15% 0`,
   justifyContent: 'space-between',
-});
-
-export const tokenImageClass = style({
-  width: '100%',
-  height: '100%',
-  objectFit: 'cover',
-  borderRadius: tokens.kda.foundation.radius.lg,
-  margin: '-88px 0 20px',
 });
 
 export const propertyContainer = style({

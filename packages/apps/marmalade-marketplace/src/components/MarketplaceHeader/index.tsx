@@ -29,7 +29,7 @@ import * as styles from './style.css';
 
 export const MarketplaceHeader= () => {
   const [showNotification, setShowNotification] = useState(false);
-  const { account, login, logout } = useAccount();
+  const { account, webauthnAccount, login, logout } = useAccount();
   const { setTransaction } = useTransaction();
   const router = useRouter();
   const { theme, setTheme } = useTheme()
@@ -44,7 +44,7 @@ export const MarketplaceHeader= () => {
 
   const onFundAccount = () => {
     setShowNotification(false);
-    const transaction = fundAccount(account?.accountName || '');
+    const transaction = fundAccount(webauthnAccount?.account || '');
     setTransaction(transaction);
     // Redirect to the transaction page
     router.push('/transaction');
@@ -100,7 +100,7 @@ export const MarketplaceHeader= () => {
                   variant="primary"
                   isCompact={false}
                   startVisual={<SpireKeyKdacolorLogoWhite style={{color: 'black'}}/>}
-                  endVisual={<Badge style="inverse" size="sm">{account.accountName.slice(0,5) + "..." + account.accountName.slice(-3)}</Badge>}
+                  endVisual={<Badge style="inverse" size="sm">{webauthnAccount?.account.slice(0,5) + "..." + webauthnAccount?.account.slice(-3)}</Badge>}
                 >
                   {account.alias}
                 </Button>
