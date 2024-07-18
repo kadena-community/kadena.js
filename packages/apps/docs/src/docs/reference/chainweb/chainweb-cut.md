@@ -6,7 +6,7 @@ menu: Chainweb API
 label: Cut endpoints
 order: 2
 layout: full
-tags: ['chainweb', 'node api', 'chainweb api', 'api reference']
+tags: ['chainweb', 'node api', 'chainweb api', 'api reference' 'block height cut']
 ---
 
 # Cut endpoints
@@ -18,7 +18,7 @@ Two blocks from two different chains are said to be concurrent if either one of 
 
 ## Query the current cut
 
-Use `GET /cut` to query a chainweb node for the current cut.
+Use `GET https://{baseURL}/cut` to query a Chainweb node for the current cut.
 
 ### Query parameters
 
@@ -28,19 +28,19 @@ Use `GET /cut` to query a chainweb node for the current cut.
 
 ### Responses
 
-Requests to `/cut` can return the following response codes:
+Requests to `GET https://{baseURL}/cut` return the following response code:
 
-- **200 OK** indicates that the request succeeded and returns the blockchain state for the specified block height. 
+- **200 OK** indicates that the request succeeded and the response body returns the blockchain state for each chain at the specified block height. 
 
 #### Response header
 
-The response header contains the following information:
+The response header parameters are the same for all successful and unsuccessful Chainweb node requests.
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote chainweb node in the format ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$. For example: "10.36.1.3:42988"
-| x-server&#8209;timestamp | integer&nbsp;>=&nbsp;0 | Specifies the clock time of the remote chainweb node using the UNIX epoch timestamp. For example: 1618597601
-| x&#8209;chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote chainweb node. For example: "2.23"
+| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote Chainweb node in the format ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$. For example: `"10.36.1.3:42988"`.
+| x-server&#8209;timestamp | integer&nbsp;>=&nbsp;0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
+| x&#8209;chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
 
 #### Response schema
 
@@ -48,29 +48,32 @@ The response returns application/json content with the following information:
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| origin | object | Describes a peer information object that consists of an `id` string and an `address` object for a Chainweb node. The `origin` parameter is required to use the `PUT /cut` endpoint. For more information, see the [Peer information](#peer-information) data model.
+| origin | object | Describes a peer information object that consists of an `id` string and an `address` object for a Chainweb node. The `origin` parameter is required to use the `PUT /cut` endpoint. For more information, see the [Peer information](/reference/chainweb-api/data-models#peer-information-modelh-1716301923) data model.
 | height&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the cut height. The cut height is the sum of the height for all of the blocks included in the cut. You should avoid using this value because its semantics may change in the future.
 | weight&nbsp;(required) | string | Specifies the cut weight. The cut weight is the sum of the weights from all of the blocks included in the cut. The weight string consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
 | hashes&nbsp;(required) | object | Specifies an object that maps chain identifiers 0-19 to their respective block hash and block height for the cut.
 | instance | string | Specifies the network identifier for the cut.
 | id | string | Specifies a cut identifier. The id string consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
 
-#### Example
+### Examples
 
-Send a request to the Kadena main network:
+You can send a request to a bootstrap node for the Kadena main network with a call like this:
 
+```Postman
 GET https://us-e1.chainweb.com/chainweb/0.0/mainnet01/cut?maxheight=4833114
+```
 
-##### Response header
+The response header for this request looks like this:
 
 ```text
+```Response
 X-Server-Timestamp: 1717448611
 X-Peer-Addr: 54.86.50.139:49795
 X-Chainweb-Node-Version: 2.24
 Content-Type: application/json;charset=utf-8
 ```
 
-##### Response body
+The response body for this request returns the state for each chain with the maximum block height of 483314:
 
 ```json
 {
@@ -117,26 +120,30 @@ Content-Type: application/json;charset=utf-8
       "hash":"1kDMHN7wEE51E1yDew16WE8GFWfSXBCpmV5Koy00Mjg"
     }
   },
-  "origin":null,"weight":"yQadPJMTi0wrAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  "origin":null,
+  "weight":"yQadPJMTi0wrAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
   "height":4833110,
   "instance":"mainnet01",
   "id":"unhwBpXkw-Pa9hulGzExDev40Ju7VelHTg1zArwsoOU"
 }
 ```
 
+Note that this sample request was sent to a bootstrap node for the Kadena public blockchain, so the `origin` is `null`.
+If you want to publish a cut, you must send the request to a Chainweb node that return a value for the `origin` property.
+
 ## Publish a cut
 
-Use `PUT /cut` to publish a cut to a Chainweb node.
+Use `PUT https://{baseURL}/cut` to publish a cut to a Chainweb node.
 The cut must contain an `origin` property that is not null. 
 The receiving node will first try to obtain all missing dependencies from the node specified for the `origin` property before searching for the dependencies in the peer-to-peer network.
 
 ### Request body schema
 
-Use the following parameters to specify a cut with an `origin` property that is not null.
+Use the following parameters to specify a `cut` with an `origin` property that is not null.
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| origin (required) | object | Describes a peer information object that consists of an `id` string and an `address` object for a Chainweb node. The `origin` parameter is required to use the `PUT /cut` endpoint. For more information, see the [Peer information](#peer-information) data model.
+| origin (required) | object | Describes a peer information object that consists of an `id` string and an `address` object for a Chainweb node. The `origin` parameter is required to use the `PUT /cut` endpoint. For more information, see the [Peer information](/reference/chainweb-api/data-models#peer-information-modelh-1716301923) data model.
 | height&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the cut height to publish. The cut height is the sum of the height for all of the blocks included in the cut. You should avoid using this value because its semantics may change in the future.
 | weight&nbsp;(required) | string| Specifies the cut weight. The cut weight is the sum of the weights from all of the blocks included in the cut. The weight string consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
 | hashes&nbsp;(required) | object | Specifies an object that maps chain identifiers 0-19 to their respective block hash and block height for the cut.
@@ -145,17 +152,125 @@ Use the following parameters to specify a cut with an `origin` property that is 
 
 ### Responses
 
-Requests to `/cut` can return the following response codes:
+Requests to `PUT /cut` return the following response codes:
 
-- **204 No Content** indicates that the cut was added to the cut processing pipeline on the remote node.
-- **401 Unauthorized** indicates that the node where you are trying to publish the cut is not a peer of the node identified in the `origin` property, and therefore cannot the cut.
+- **204 No Content** indicates that the request was successful and the cut was added to the cut processing pipeline on the remote Chainweb node.
+- **401 Unauthorized** indicates that the node where you are trying to publish the cut is not a peer of the node identified in the `origin` property, and therefore cannot process the cut you're attempting to publish.
 
 #### Response header
 
-The response header parameters are the same for successful and unsuccessful requests.
+The response header parameters are the same for all successful and unsuccessful Chainweb node requests.
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote chainweb node in the format ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$. For example: "10.36.1.3:42988"
-| x-server-timestamp | integer >= 0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: 1618597601
-| x-chainweb-node-version	| string | Specifies the version of the remote chainweb node. For example: "2.23"
+| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote Chainweb node in the format ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$. For example: `"10.36.1.3:42988"`.
+| x-server&#8209;timestamp | integer&nbsp;>=&nbsp;0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
+| x&#8209;chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
+
+### Examples
+
+You can send a request to publish a cut on a node with a call to the `/cut` endpoint similar to the following:
+
+```
+PUT https://sfchainweb.example.com/chainweb/0.0/testnet04/cut`
+```
+
+The request body for contains parameters similar to the following:
+
+```json
+{
+   "origin": {
+      "address": {
+        "hostname": "85.238.99.91",
+        "port": 30004
+        },
+      "id": "PRLmVUcc9AH3fyfMYiWeC4nV2i1iHwc0-aM7iAO8h18"
+    },
+    "height": 30798466,
+    "weight": "b0wYplmNiTBXCwAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "hashes": {
+      "0": {
+        "height": 1539923,
+        "hash": "qEaSmWt_tDcJC9AGbgWY9x12LW5VED7hGgfyz9x_S3w"
+      },
+      "1": {
+        "height": 1539923,
+        "hash": "TJuC6nfhamfD517gspAZmqD9umR71nAgttDOi1JbBHw"
+      },
+      "2": {
+        "height": 1539924,
+        "hash": "4ineCWfnO1rneWuBMLPzqTl2HF_sZpypT_3TEzf3VLc"
+      },
+      "3": {
+        "height": 1539924,
+        "hash": "ZEOMXB2ByqzL2HfYVKIZKAnoe4wIeJ2SaltnXDir59k"
+      },
+      "4": {
+        "height": 1539923,
+        "hash": "0g0rOoSznVW2BJDBmK0Lbxz22F-sxTZUNIrUs_Q8Ye4"
+      },
+      "5": {
+        "height": 1539923,
+        "hash": "5y_TL-clnF_wELMBKyJk0Sz8RVShw_bGQETJdrMkADA"
+      },
+      "6": {
+        "height": 1539923,
+        "hash": "YkQKv6P4_C4jRM3RqKK9FWPxIneeLzlkKQS9ATAQYRk"
+      },
+      "7": {
+        "height": 1539923,
+        "hash": "j_hJ9iiH_ATyeQeeRN3auGXjbBWiFgnTU0dYPIz8cKM"
+      },
+      "8": {
+        "height": 1539924,
+        "hash": "s7c3B55VbDsS6EJ-nc9S5k2kNbPOBGI8xxF3vUg4d4Q"
+      },
+      "9": {
+        "height": 1539922,
+        "hash": "bowQf63xSY9owHKhK1yGee2Q0Fn8yL_oCLaEUn-CGoA"
+      },
+      "10": {
+        "height": 1539924,
+        "hash": "uP-pHW4QKrV9fN1mlDGwKuaiIDlJW7xYSj1nW53EHM4"
+      },
+      "11": {
+        "height": 1539924,
+        "hash": "TIhegjZ0GEC73T4m0BVuFtfLNGuS56IUWEuf93AJ5UU"
+      },
+      "12": {
+        "height": 1539923,
+        "hash": "-j1qcAS9Fs-WQmc3WEhzZ96VojxnlIA2TFpfyIv31Zs"
+      },
+      "13": {
+        "height": 1539923,
+        "hash": "S-4TqMgWGlK1k33XRlU9w0Lfwr0RvkO5Jn78Au1OglM"
+      },
+      "14": {
+        "height": 1539923,
+        "hash": "xSuULf--S4TrgYNz82deaGhnPLWrg3pXkynGeUPUGwA"
+      },
+      "15": {
+        "height": 1539923,
+        "hash": "jsc9rugvcHXDiBAuoO9_j8R_b_jchtJJ8b5596i8wVg"
+      },
+      "16": {
+        "height": 1539923,
+        "hash": "qs1aEY8kSxfUBb_JRVswv5dYINRXBjGJteC-6RC1hjc"
+      },
+      "17": {
+        "height": 1539924,
+        "hash": "xzVBXaQxzlUfUrakDgppUubQBRXGh-Uy0HBdMNwCq_Y"
+      },
+      "18": {
+        "height": 1539924,
+        "hash": "4VOHPAqwioySYRycdl5MxfscQHwtlwwCAt7AySYQT98"
+      },
+      "19": {
+        "height": 1539923,
+        "hash": "1PrRg20XyQ_2cfgGOgNK9K-cqIJ1vO8-A-RJlfN5m00"
+      }
+    },
+    "id": "BBz7KeurYTeQ0hMGbwUbQC84cRbVcacoDQTye-3qkXI",
+    "instance": "mainnet01"
+}
+```
