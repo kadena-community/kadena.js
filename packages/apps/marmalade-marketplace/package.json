@@ -10,7 +10,7 @@
     "dev": "pnpm generate && next dev",
     "generate": "npx graphql-codegen",
     "start": "next start",
-    "start:cron": "ts-node scripts/cron.ts",
+    "start:cron": "TS_NODE_PROJECT='./tsconfig.cron.json' ts-node scripts/cron.ts",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage"
   },

@@ -19,16 +19,6 @@ function MintTokenComponent() {
   const router = useRouter();
   const { account, webauthnAccount } = useAccount();
 
-  const [walletKey, setWalletKey] = useState<string>('');
-  const [walletAccount, setWalletAccount] = useState('');
-
-  useEffect(() => {
-    if (account) {
-      setWalletKey(account.credentials[0].publicKey);
-      setWalletAccount(account.accountName);
-    }
-  }, [account]);
-
   const { transaction, send, preview, poll } = useTransaction();
   const [tokenId, setTokenId] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
@@ -58,6 +48,8 @@ function MintTokenComponent() {
       if (!webauthnAccount) {
         throw new Error("Webauthn account not found");
       }
+
+      const walletAccount = account?.accountName || '';
 
       await mintToken({
         policyConfig: checkPolicies(res.policies),

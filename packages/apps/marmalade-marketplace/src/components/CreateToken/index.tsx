@@ -14,21 +14,20 @@ import GenerateURIForm from '@/components/GenerateURIForm';
 import CrudCard from '@/components/CrudCard';
 
 // Import client
-import { ChainId } from '@kadena/client';
+import { ChainId, ICommand, IUnsignedCommand } from '@kadena/client';
 import { createTokenId, createToken, ICreateTokenPolicyConfig } from '@kadena/client-utils/marmalade';
 import { useAccount } from '@/hooks/account';
 import { getPolicies, formatGuardInput, formatRoyaltyInput, createPrecision, formatAccount, generateSpireKeyGasCapability } from '@/utils/helper';
 import { createSignWithSpireKeySDK } from '@/utils/signWithSpireKey';
-import SendTransaction from '@/components/SendTransaction';
 import { useTransaction } from '@/hooks/transaction';
-import { sign } from '@kadena/spirekey-sdk';
 
 function CreateTokenComponent() {
   const router = useRouter();
   const { account, webauthnAccount } = useAccount();
-  const { transaction, send, preview, poll } = useTransaction();
+  const { setTransaction } = useTransaction();
 
   const excluded = "[EXCLUDED]";
+  let tokenId = '';
 
   const [walletKey, setWalletKey] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
@@ -95,11 +94,16 @@ function CreateTokenComponent() {
     }
   }, [webauthnAccount]);
 
+  const onTransactionSigned = (transaction: IUnsignedCommand | ICommand) => {
+    setTransaction(transaction);
+    router.push(`/transaction?returnUrl=/mint?tokenId=${tokenId}`);
+  }
+
   const config = {
     host: env.URL,
     networkId: env.NETWORKID,
     chainId: tokenInput.chainId as ChainId,
-    sign: createSignWithSpireKeySDK([account]),
+    sign: createSignWithSpireKeySDK([account], onTransactionSigned),
   };
 
   const handleTokenInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -163,8 +167,7 @@ function CreateTokenComponent() {
     }
   };
 
-  const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
     setUploading(true);
     try {
       if (!account) throw new Error("Connect Spirekey account");
@@ -183,6 +186,7 @@ function CreateTokenComponent() {
       const processTokenCreation = async (inputs: any) => {
         try {
           const tokenIdCreated = await createTokenId({ ...inputs, networkId: config.networkId, host: config.host });
+          tokenId = tokenIdCreated;
 
           await createToken(
             {
@@ -234,7 +238,6 @@ function CreateTokenComponent() {
 
   const uploadMetadata = async (metadata: any) => {
     try {
-      setUploading(true);
       const formData = new FormData();
       const metadataContent = JSON.stringify(metadata);
       const metadataBlob = new Blob([metadataContent], { type: 'application/json' });
@@ -245,18 +248,15 @@ function CreateTokenComponent() {
         body: formData,
       });
       const ipfsHash = await res.text();
-      setUploading(false);
       return  `ipfs://${ipfsHash}`;
     } catch (e) {
       console.error(e);
-      setUploading(false);
       alert('Trouble uploading file');
     }
   };
 
   const uploadFile = async (fileToUpload: any) => {
     try {
-      setUploading(true);
       const formData = new FormData();
       formData.append('file', fileToUpload, fileToUpload.name);
       const res = await fetch('/api/files', {
@@ -264,11 +264,9 @@ function CreateTokenComponent() {
         body: formData,
       });
       const ipfsHash = await res.text();
-      setUploading(false);
       return `ipfs://${ipfsHash}`;
     } catch (e) {
       console.error(e);
-      setUploading(false);
       alert('Trouble uploading file');
     }
   };
@@ -299,138 +297,132 @@ function CreateTokenComponent() {
   };
 
   return (
-    <>
-      {!transaction ? (
-      <div>
-        <Stack flex={1} flexDirection="column"  className={styles.container}>
-          <CrudCard
-            headingSize="h3"
-            titleIcon={<MonoAutoFixHigh />}
-            title="Create Token"
-            description={[
-              "Create a new token",
-              "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi",
-              "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore",
-              "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia"
-            ]}
-          >
-            <div>
-              <GenerateURIForm
-                handleTokenInputChange={handleTokenInputChange}
-                tokenInput={tokenInput}
-                setError={setError}
-                file={file}
-                setFile={setFile}
-                imagePreview={imagePreview}
-                setImagePreview={setImagePreview}
-                base64Image={base64Image}
-                setBase64Image={setBase64Image}
-              />
-              <div className={styles.formContainer}>
-                <TextField
-                  label="Creation Guard"
-                  name="CreationGuard"
-                  value={walletKey}
-                  disabled
-                />
-                <NumberField
-                  label="Precision"
-                  value={tokenInput.precision}
-                  onValueChange={handlePrecisionChange}
-                />
-                <Select label="Chain" name="chainId" selectedKey={tokenInput.chainId} isDisabled>
-                  {Array.from({ length: 20 }, (_, i) => i.toString()).map(option => (
-                    <SelectItem key={option} textValue={option}>{option}</SelectItem>
-                  ))}
-                </Select>
-              </div>
-            </div>
-          </CrudCard>
-          <CrudCard
-              title="Metadata"
-              description={["Select the metadata input that will be stored as the uri"]}
-            >
+    <div>
+      <Stack flex={1} flexDirection="column"  className={styles.container}>
+        <CrudCard
+          headingSize="h3"
+          titleIcon={<MonoAutoFixHigh />}
+          title="Create Token"
+          description={[
+            "Create a new token",
+            "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi",
+            "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore",
+            "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia"
+          ]}
+        >
+          <div>
+            <GenerateURIForm
+              handleTokenInputChange={handleTokenInputChange}
+              tokenInput={tokenInput}
+              setError={setError}
+              file={file}
+              setFile={setFile}
+              imagePreview={imagePreview}
+              setImagePreview={setImagePreview}
+              base64Image={base64Image}
+              setBase64Image={setBase64Image}
+            />
             <div className={styles.formContainer}>
               <TextField
-                label="Name"
-                name="metadataName"
-                value={tokenInput.metadataName as string}
-                onChange={handleTokenInputChange}
+                label="Creation Guard"
+                name="CreationGuard"
+                value={walletKey}
+                disabled
               />
-              <TextareaField
-                label="Description"
-                name="metadataDescription"
-                value={tokenInput.metadataDescription as string}
-                onChange={handleTokenInputChange}
+              <NumberField
+                label="Precision"
+                value={tokenInput.precision}
+                onValueChange={handlePrecisionChange}
               />
+              <Select label="Chain" name="chainId" selectedKey={tokenInput.chainId} isDisabled>
+                {Array.from({ length: 20 }, (_, i) => i.toString()).map(option => (
+                  <SelectItem key={option} textValue={option}>{option}</SelectItem>
+                ))}
+              </Select>
             </div>
-            {/* <TextField
-              label="Author"
-              name="metadataAuthors"
-              value={tokenInput.metadataAuthors as string}
-              onChange={handleTokenInputChange}
-              info="(optional)"
-            />
-            <TextField
-              label="Collection Name"
-              name="metadataCollectionName"
-              value={tokenInput.metadataCollectionName as string}
-              onChange={handleTokenInputChange}
-              info="(optional)"
-            />
-            <TextField
-              label="Collection Family"
-              name="metadataCollectionFamily"
-              value={tokenInput.metadataCollectionFamily as string}
-              onChange={handleTokenInputChange}
-              info="(optional)"
-            /> */}
-          </CrudCard>
-          <CrudCard
-              title="Policies"
-              description={["Select the metadata input that will be stored as the uri"]}
-            >
-            <PolicyForm handleCheckboxChange={handleCheckboxChange} />
-          </CrudCard>
-          {(policyConfig.guarded) && <GuardForm guardInput={guardInput} handleGuardInputChange={handleGuardInputChange} handleGuardExcludeChange={handleGuardExcludeChange} excluded={excluded} />}
-          {policyConfig.hasRoyalty && <RoyaltyForm royaltyInput={royaltyInput} handleRoyaltyInputChange={handleRoyaltyInputChange} /> }
-          {policyConfig.collection && <CollectionForm collectionInput={collectionInput} handleCollectionInputChange={handleCollectionInputChange} /> }
-          {policyConfig.nonFungible && (<CrudCard
-            title="Non-fungible"
-            description={[
-              "Enforces that token is non-fungible by setting max-supply to 1 and precision to 0"
-            ]}
+          </div>
+        </CrudCard>
+        <CrudCard
+            title="Metadata"
+            description={["Select the metadata input that will be stored as the uri"]}
           >
-            No data required
-          </CrudCard>)}
-          {policyConfig.nonUpdatableURI && (<CrudCard
-            title="Non-upgradable URI"
-            description={[
-              "Enforces that token's URI is not updatable. If not selected, a URI guard is required"
-            ]}
+          <div className={styles.formContainer}>
+            <TextField
+              label="Name"
+              name="metadataName"
+              value={tokenInput.metadataName as string}
+              onChange={handleTokenInputChange}
+            />
+            <TextareaField
+              label="Description"
+              name="metadataDescription"
+              value={tokenInput.metadataDescription as string}
+              onChange={handleTokenInputChange}
+            />
+          </div>
+          {/* <TextField
+            label="Author"
+            name="metadataAuthors"
+            value={tokenInput.metadataAuthors as string}
+            onChange={handleTokenInputChange}
+            info="(optional)"
+          />
+          <TextField
+            label="Collection Name"
+            name="metadataCollectionName"
+            value={tokenInput.metadataCollectionName as string}
+            onChange={handleTokenInputChange}
+            info="(optional)"
+          />
+          <TextField
+            label="Collection Family"
+            name="metadataCollectionFamily"
+            value={tokenInput.metadataCollectionFamily as string}
+            onChange={handleTokenInputChange}
+            info="(optional)"
+          /> */}
+        </CrudCard>
+        <CrudCard
+            title="Policies"
+            description={["Select the metadata input that will be stored as the uri"]}
           >
-            No data required
-          </CrudCard>)}
+          <PolicyForm handleCheckboxChange={handleCheckboxChange} />
+        </CrudCard>
+        {(policyConfig.guarded) && <GuardForm guardInput={guardInput} handleGuardInputChange={handleGuardInputChange} handleGuardExcludeChange={handleGuardExcludeChange} excluded={excluded} />}
+        {policyConfig.hasRoyalty && <RoyaltyForm royaltyInput={royaltyInput} handleRoyaltyInputChange={handleRoyaltyInputChange} /> }
+        {policyConfig.collection && <CollectionForm collectionInput={collectionInput} handleCollectionInputChange={handleCollectionInputChange} /> }
+        {policyConfig.nonFungible && (<CrudCard
+          title="Non-fungible"
+          description={[
+            "Enforces that token is non-fungible by setting max-supply to 1 and precision to 0"
+          ]}
+        >
+          No data required
+        </CrudCard>)}
+        {policyConfig.nonUpdatableURI && (<CrudCard
+          title="Non-upgradable URI"
+          description={[
+            "Enforces that token's URI is not updatable. If not selected, a URI guard is required"
+          ]}
+        >
+          No data required
+        </CrudCard>)}
 
-          {error && (
-            <div className={styles.errorBox}>
-              <p>Error: {error}</p>
-            </div>
-          )}
-        </Stack>
-        <div className={styles.buttonRow}>
-          <Button variant="outlined" onPress={onCancelPress}>
-            Cancel
-          </Button>
-          <Button isDisabled={uploading}  loadingLabel="Creating Token..." isLoading={uploading} type="submit" onClick={handleSubmit}>
-            Create Token
-          </Button>
-        </div>
+        {error && (
+          <div className={styles.errorBox}>
+            <p>Error: {error}</p>
+          </div>
+        )}
+      </Stack>
+      <div className={styles.buttonRow}>
+        <Button variant="outlined" onPress={onCancelPress}>
+          Cancel
+        </Button>
+        <Button isDisabled={uploading}  loadingLabel="Creating Token..." isLoading={uploading} onPress={handleSubmit}>
+          Create Token
+        </Button>
       </div>
-      ) : (
-        <SendTransaction send={send} preview={preview} poll={poll} transaction={transaction} />
-      )}
-    </>
+    </div>
   );
 }
 

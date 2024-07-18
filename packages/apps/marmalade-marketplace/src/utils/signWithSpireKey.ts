@@ -145,11 +145,13 @@ export function createSignWithSpireKey(
   return signWithSpireKey;
 }
 
-export const createSignWithSpireKeySDK = (
-  accounts: IAccount[],
+export const createSignWithSpireKeySDK = (accounts: IAccount[], onSign?: (tx: IUnsignedCommand) => void
 ): ISignFunction =>
   (async (tx: IUnsignedCommand[]) => {
     const { transactions, isReady } = await sign(tx, accounts);
     await isReady();
+    if(onSign) {
+      onSign(transactions[0]);
+    }
     return transactions[0];
   }) as unknown as ISignFunction;

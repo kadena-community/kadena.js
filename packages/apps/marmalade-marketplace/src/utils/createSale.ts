@@ -1,13 +1,9 @@
 import { useAccount } from '@/hooks/account';
 import { env } from '@/utils/env';
-import {
-  createSignWithSpireKey,
-  createSignWithSpireKeySDK,
-} from '@/utils/signWithSpireKey';
+import { createSignWithSpireKeySDK } from '@/utils/signWithSpireKey';
 import { ChainId } from '@kadena/client';
 import { offerToken } from '@kadena/client-utils/marmalade';
 import { PactNumber } from '@kadena/pactjs';
-import { useRouter } from 'next/navigation';
 
 export interface CreateSaleInput {
   tokenId?: string;
