@@ -1,4 +1,4 @@
-import type { INetwork } from '@/context/networks-context';
+import type { INetwork } from '@/constants/network';
 
 export const validateNewNetwork = (
   networks: INetwork[],
@@ -10,7 +10,7 @@ export const validateNewNetwork = (
     networks.some(
       (network) =>
         network.networkId === newNetwork.networkId &&
-        network.label === newNetwork.label,
+        network.slug === newNetwork.slug,
     )
   ) {
     errors.push('network already exists');
@@ -21,11 +21,12 @@ export const validateNewNetwork = (
       .map(([key, value]) => {
         switch (key) {
           case 'networkId':
+          case 'slug':
+          case 'label':
           case 'graphUrl':
             return value === undefined || value.length <= 0
               ? `'${key}' is required`
               : undefined;
-          case 'label':
           case 'chainwebUrl':
           default:
             return undefined;

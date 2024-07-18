@@ -2,10 +2,8 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import { env } from '@/utils/env';
 import * as styles from '@/styles/create-token.css';
 import { useRouter } from 'next/navigation';
-import { Stack, Heading, Tabs, TabItem, Button, Select, TextField, TextareaField, NumberField, SelectItem,
-  Checkbox
- } from '@kadena/kode-ui';
-import { MonoAutoFixHigh, MonoAccountBalanceWallet, MonoAccessTime } from '@kadena/kode-icons';
+import { Stack, Button, Select, TextField, TextareaField, NumberField, SelectItem } from '@kadena/kode-ui';
+import { MonoAutoFixHigh } from '@kadena/kode-icons';
 
 // Import form components
 import RoyaltyForm from '@/components/RoyaltyForm';
@@ -16,7 +14,7 @@ import GenerateURIForm from '@/components/GenerateURIForm';
 import CrudCard from '@/components/CrudCard';
 
 // Import client
-import { ChainId, BuiltInPredicate } from '@kadena/client';
+import { ChainId } from '@kadena/client';
 import { createTokenId, createToken, ICreateTokenPolicyConfig } from '@kadena/client-utils/marmalade';
 import { useAccount } from '@/hooks/account';
 import { getPolicies, formatGuardInput, formatRoyaltyInput, createPrecision, formatAccount, generateSpireKeyGasCapability } from '@/utils/helper';
@@ -26,31 +24,18 @@ import { useTransaction } from '@/hooks/transaction';
 
 function CreateTokenComponent() {
   const router = useRouter();
-  const { account } = useAccount();
-
-  const [walletKey, setWalletKey] = useState<string>('');
-  const [walletAccount, setWalletAccount] = useState('');
-
-  useEffect(() => {
-    if (account) {
-      setWalletKey(account.credentials[0].publicKey);
-      setWalletAccount(account.accountName);
-    }
-  }, [account]);
-
+  const { account, webauthnAccount } = useAccount();
+  const { transaction, send, preview, poll } = useTransaction();
 
   const excluded = "[EXCLUDED]";
 
-  const { transaction, send, preview, poll } = useTransaction();
-  const [isOpen, setIsOpen] = useState(false);
+  const [walletKey, setWalletKey] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string>("/no-image.webp");
-  console.log(imagePreview)
+  const [imagePreview, setImagePreview] = useState<string>();
   const [base64Image, setBase64Image] = useState('');
   const [error, setError] = useState('');
-  const [cid, setCid] = useState('');
-  const [tokenImageUrl, setTokenImageUrl] = useState<string>("/no-image.webp");
   const [uploading, setUploading] = useState(false);
+  const [collectionInput, setCollectionInput] = useState({ collectionId: '' });
 
   const [policyConfig, setPolicyConfig] = useState<ICreateTokenPolicyConfig>({
     nonUpdatableURI: false,
@@ -65,7 +50,6 @@ function CreateTokenComponent() {
     tokenId: '',
     precision: 0,
     chainId: '8',
-    creatorGuard: '',
     metadataName: '',
     metadataDescription: '',
     metadataCollectionName: '',
@@ -84,45 +68,37 @@ function CreateTokenComponent() {
 
   const [royaltyInput, setRoyaltyInput] = useState({
     royaltyFungible: 'coin',
-    royaltyCreator: walletAccount,
+    royaltyCreator: webauthnAccount?.account ?? '',
     royaltyGuard: walletKey,
     royaltyRate: '0.05',
   });
 
   useEffect(() => {
-    if (account) {
+    if (webauthnAccount) {
+      const key = webauthnAccount.guard.keys[0];
+
       setGuardInput({
-        uriGuard: account.credentials[0].publicKey,
-        burnGuard: account.credentials[0].publicKey,
-        mintGuard: account.credentials[0].publicKey,
-        saleGuard: account.credentials[0].publicKey,
-        transferGuard: account.credentials[0].publicKey,
+        uriGuard: key,
+        burnGuard: key,
+        mintGuard: key,
+        saleGuard: key,
+        transferGuard: key,
       });
 
       setRoyaltyInput(prev => ({
         ...prev,
-        royaltyCreator: account.accountName,
-        royaltyGuard: account.credentials[0].publicKey,
+        royaltyCreator: webauthnAccount.account,
+        royaltyGuard: key
       }));
+      setWalletKey(key);
     }
-  }, [account]);
-
-  const [collectionInput, setCollectionInput] = useState({
-    collectionId: '',
-  });
-  const [tokenId, setTokenId] = useState<string>('');
-
+  }, [webauthnAccount]);
 
   const config = {
     host: env.URL,
     networkId: env.NETWORKID,
     chainId: tokenInput.chainId as ChainId,
     sign: createSignWithSpireKey(router, { host: env.WALLET_URL ?? '' }),
-  };
-
-  const toggle = () => {
-    setIsOpen(!isOpen);
-    setTokenInput({ ...tokenInput, uri: '' });
   };
 
   const handleTokenInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -139,8 +115,7 @@ function CreateTokenComponent() {
     }
   };
 
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = event.target;
+  const handleCheckboxChange = (name:string, checked:boolean) => {
     if (name === 'nonFungible' && checked) {
       setTokenInput({ ...tokenInput, precision: 0 });
     }
@@ -169,22 +144,31 @@ function CreateTokenComponent() {
     setCollectionInput((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (event: FormEvent) => {
+  const validateInputs = () => {
+    if (!file) {
+      throw new Error('Please select a file');
+    }
+
+    if (!tokenInput.metadataName || !tokenInput.metadataDescription) {
+      throw new Error('Please provide metadata name and description');
+    }
+
+    if (policyConfig.hasRoyalty && (!royaltyInput.royaltyFungible || !royaltyInput.royaltyCreator || !royaltyInput.royaltyGuard || !royaltyInput.royaltyRate)) {
+      throw new Error('Please provide all Royalty inputs');
+    }
+
+    if (policyConfig.collection && !collectionInput.collectionId) {
+      throw new Error('Please provide all Collection inputs');
+    }
+  };
+
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    setUploading(true);
     try {
       if (!account) throw new Error("Connect Spirekey account");
 
       let updatedTokenInput = { ...tokenInput };
-
-      const validateInputs = () => {
-        if (policyConfig.hasRoyalty && (!royaltyInput.royaltyFungible || !royaltyInput.royaltyCreator || !royaltyInput.royaltyGuard || !royaltyInput.royaltyRate)) {
-          throw new Error('Please provide all Royalty inputs');
-        }
-
-        if (policyConfig.collection && !collectionInput.collectionId) {
-          throw new Error('Please provide all Collection inputs');
-        }
-      };
 
       const createInputs = () => ({
         ...formatInput(updatedTokenInput),
@@ -198,13 +182,12 @@ function CreateTokenComponent() {
       const processTokenCreation = async (inputs: any) => {
         try {
           const tokenIdCreated = await createTokenId({ ...inputs, networkId: config.networkId, host: config.host });
-          setTokenId(tokenIdCreated);
 
           await createToken(
             {
               ...inputs,
               tokenId: tokenIdCreated,
-              capabilities: generateSpireKeyGasCapability(walletAccount),
+              capabilities: generateSpireKeyGasCapability(account.accountName ?? ''),
             },
             {
               ...config,
@@ -213,7 +196,11 @@ function CreateTokenComponent() {
           ).execute();
         } catch (error) {
           console.error(error);
-          setError(JSON.stringify(error.message));
+          // Workaround for an incorrect signing error that is thrown by client-utils, transaction
+          // signing isn't happening yet at this point
+          if (!error.message.includes('Signing failed')) {
+            setError(JSON.stringify(error.message));
+          }
         }
       };
 
@@ -230,21 +217,17 @@ function CreateTokenComponent() {
             setTokenInput((prev) => ({ ...prev, uri: metadataUrl }));
           });
       };
-      
-    handleFileUpload()
-      .then(() => {
-        validateInputs();
-        const inputs = createInputs();
-        processTokenCreation(inputs);
-      })
-      .catch((error) => {
-        console.error(error);
-        setError(JSON.stringify(error.message));
-      });
 
-        } catch (error) {
+    validateInputs();
+    await handleFileUpload();
+    const inputs = createInputs();
+    await processTokenCreation(inputs);
+    setUploading(false);
+
+    } catch (error) {
       console.error(error);
       setError(JSON.stringify(error.message));
+      setUploading(false);
     }
   };
 
@@ -280,7 +263,6 @@ function CreateTokenComponent() {
         body: formData,
       });
       const ipfsHash = await res.text();
-      setCid(ipfsHash);
       setUploading(false);
       return `ipfs://${ipfsHash}`;
     } catch (e) {
@@ -290,12 +272,16 @@ function CreateTokenComponent() {
     }
   };
 
+  const onCancelPress = () => {
+    router.back();
+  };
+
   const formatInput = (input: typeof tokenInput) => {
     return {
       ...input,
       chainId: input.chainId as ChainId,
       precision: createPrecision(input.precision),
-      creator: formatAccount(walletAccount, walletKey),
+      creator: formatAccount(account?.accountName || '', account?.credentials[0].publicKey || ''),
     };
   };
 
@@ -339,40 +325,44 @@ function CreateTokenComponent() {
                 base64Image={base64Image}
                 setBase64Image={setBase64Image}
               />
-              <TextField
-                label="Creation Guard"
-                name="CreationGuard"
-                value={walletKey}
-                disabled
-              />
-              <NumberField
-                label="Precision"
-                value={tokenInput.precision}
-                onValueChange={handlePrecisionChange}
-              />
-              <Select label="Chain ID" name="chainId" selectedKey={tokenInput.chainId} isDisabled>
-                {Array.from({ length: 20 }, (_, i) => i.toString()).map(option => (
-                  <SelectItem key={option} textValue={option}>{option}</SelectItem>
-                ))}
-              </Select>
+              <div className={styles.formContainer}>
+                <TextField
+                  label="Creation Guard"
+                  name="CreationGuard"
+                  value={walletKey}
+                  disabled
+                />
+                <NumberField
+                  label="Precision"
+                  value={tokenInput.precision}
+                  onValueChange={handlePrecisionChange}
+                />
+                <Select label="Chain" name="chainId" selectedKey={tokenInput.chainId} isDisabled>
+                  {Array.from({ length: 20 }, (_, i) => i.toString()).map(option => (
+                    <SelectItem key={option} textValue={option}>{option}</SelectItem>
+                  ))}
+                </Select>
+              </div>
             </div>
           </CrudCard>
           <CrudCard
               title="Metadata"
               description={["Select the metadata input that will be stored as the uri"]}
             >
-            <TextField
-              label="Name"
-              name="metadataName"
-              value={tokenInput.metadataName as string}
-              onChange={handleTokenInputChange}
-            />
-            <TextareaField
-              label="Description"
-              name="metadataDescription"
-              value={tokenInput.metadataDescription as string}
-              onChange={handleTokenInputChange}
-            />
+            <div className={styles.formContainer}>
+              <TextField
+                label="Name"
+                name="metadataName"
+                value={tokenInput.metadataName as string}
+                onChange={handleTokenInputChange}
+              />
+              <TextareaField
+                label="Description"
+                name="metadataDescription"
+                value={tokenInput.metadataDescription as string}
+                onChange={handleTokenInputChange}
+              />
+            </div>
             {/* <TextField
               label="Author"
               name="metadataAuthors"
@@ -399,7 +389,7 @@ function CreateTokenComponent() {
               title="Policies"
               description={["Select the metadata input that will be stored as the uri"]}
             >
-            <PolicyForm policyConfig={policyConfig} handleCheckboxChange={handleCheckboxChange} />
+            <PolicyForm handleCheckboxChange={handleCheckboxChange} />
           </CrudCard>
           {(policyConfig.guarded) && <GuardForm guardInput={guardInput} handleGuardInputChange={handleGuardInputChange} handleGuardExcludeChange={handleGuardExcludeChange} excluded={excluded} />}
           {policyConfig.hasRoyalty && <RoyaltyForm royaltyInput={royaltyInput} handleRoyaltyInputChange={handleRoyaltyInputChange} /> }
@@ -420,19 +410,21 @@ function CreateTokenComponent() {
           >
             No data required
           </CrudCard>)}
-           
-            
-          <div className={styles.buttonRow}>
-            <Button type="submit" onClick={handleSubmit}>
-              Create Token
-            </Button>
-          </div>
+
           {error && (
             <div className={styles.errorBox}>
               <p>Error: {error}</p>
             </div>
-          )} 
+          )}
         </Stack>
+        <div className={styles.buttonRow}>
+          <Button variant="outlined" onPress={onCancelPress}>
+            Cancel
+          </Button>
+          <Button isDisabled={uploading}  loadingLabel="Creating Token..." isLoading={uploading} type="submit" onClick={handleSubmit}>
+            Create Token
+          </Button>
+        </div>
       </div>
       ) : (
         <SendTransaction send={send} preview={preview} poll={poll} transaction={transaction} />

@@ -95,7 +95,7 @@ export const blockHeaderFixedClass = style([
   {
     top: '70px',
     width: '100%',
-    zIndex: tokens.kda.foundation.zIndex.dialog,
+    zIndex: tokens.kda.foundation.zIndex.dropdown,
   },
   responsiveStyle({
     xxl: {

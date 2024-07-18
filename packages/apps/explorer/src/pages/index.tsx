@@ -7,12 +7,12 @@ const Home: React.FC = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const DEFAULTNETWORKID = 'mainnet01';
+  const DEFAULTNETWORKSLUG = 'mainnet';
   if (!ctx.req.headers.cookie) {
     return {
       redirect: {
         permanent: false,
-        destination: `/${DEFAULTNETWORKID}`,
+        destination: `/${DEFAULTNETWORKSLUG}`,
       },
     };
   }
@@ -28,7 +28,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }, {});
 
   const network = cookieValues[selectedNetworkKey] ?? {
-    value: DEFAULTNETWORKID,
+    value: DEFAULTNETWORKSLUG,
   };
 
   return {

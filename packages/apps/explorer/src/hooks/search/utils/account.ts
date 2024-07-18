@@ -39,6 +39,11 @@ export const useAccount = (
   });
 
   useEffect(() => {
+    if (loading || !isSearchRequested(searchOption, SearchOptionEnum.ACCOUNT)) {
+      setCleanedData([]);
+      return;
+    }
+
     if (!data?.fungibleAccount) return;
     const accountName = data.fungibleAccount.accountName;
     const newData =
@@ -67,7 +72,7 @@ export const useAccount = (
       }, []) ?? [];
 
     setCleanedData(newData);
-  }, [data]);
+  }, [data, loading]);
 
   useEffect(() => {
     if (error) {
@@ -81,7 +86,6 @@ export const useAccount = (
 
   return {
     loading,
-
     data: cleanedData,
   };
 };

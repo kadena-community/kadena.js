@@ -1,4 +1,4 @@
-'use client';
+import { getWebauthnGuard, getWebauthnAccount } from "@kadena/client-utils/webauthn";
 import { env } from '@/utils/env';
 import { getAccountCookieName } from '@/utils/getAccountCookieName';
 import { getReturnUrl } from '@/utils/getReturnUrl';
@@ -10,8 +10,17 @@ interface IAccountError {
   message: string;
 }
 
+export interface WebauthnAccountDetails {
+  account:string
+  guard: {
+    keys: string[];
+    pred: "keys-all" | "keys-2" | "keys-any";
+  }
+}
+
 export interface IAccountContext {
   account?: IAccount;
+  webauthnAccount?: WebauthnAccountDetails;
   error?: IAccountError;
   isMounted: boolean;
   login: () => void;
@@ -20,6 +29,7 @@ export interface IAccountContext {
 
 export const AccountContext = createContext<IAccountContext>({
   account: undefined,
+  webauthnAccount: undefined,
   isMounted: false,
   login: () => {},
   logout: () => {},
@@ -27,9 +37,11 @@ export const AccountContext = createContext<IAccountContext>({
 
 export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const [account, setAccount] = useState<IAccount>();
+  const [webauthnAccount, setWebauthnAccount] = useState<WebauthnAccountDetails>();
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
+  const chainId = '8';
 
   const decodeAccount = useCallback((userResponse: string) => {
     if (!userResponse) return;
@@ -58,6 +70,30 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     router.replace('/');
   }, []);
 
+  const getWebauthnAccountDetails = async (account: string): Promise<WebauthnAccountDetails> => {
+    const webauthnAccount:string = await getWebauthnAccount({
+      account: account,
+      host: env.URL,
+      networkId: env.NETWORKID,
+      chainId,
+    }) as string
+
+    const webauthnGuard = await getWebauthnGuard({
+      account: account,
+      host: env.URL,
+      networkId: env.NETWORKID,
+      chainId,
+    }) as {
+      keys: string[];
+      pred: "keys-all" | "keys-2" | "keys-any";
+    }
+
+    return {
+      account:webauthnAccount,
+      guard:webauthnGuard
+    }
+  };
+
   const loginResponse = useCallback(async () => {
     const innerSearchParams = new URLSearchParams(window.location.search);
     const userResponse = innerSearchParams.has('user')
@@ -73,8 +109,10 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
       localStorage.setItem(getAccountCookieName(), userResponse);
     }
     const account = decodeAccount(userResponse);
-    // store.saveAlias(account);
+    const accountDetails = await getWebauthnAccountDetails(account?.accountName || '');
+
     setAccount(account);
+    setWebauthnAccount(accountDetails);
     setIsMounted(true);
 
     if (searchParams.has('user')) {
@@ -91,7 +129,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   console.log({ account }, account?.accountName);
 
   return (
-    <AccountContext.Provider value={{ account, login, logout, isMounted }}>
+    <AccountContext.Provider value={{ account, webauthnAccount, login, logout, isMounted }}>
       {children}
     </AccountContext.Provider>
   );

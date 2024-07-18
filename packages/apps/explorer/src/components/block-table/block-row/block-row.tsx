@@ -63,7 +63,9 @@ const BlockTableRow: React.FC<IBlockTableRowProps> = ({
         <Stack className={headerColumnStyle}>
           <ValueLoader isLoading={isLoading}>
             <Text as="span" variant="code" bold>
-              {formatNumberWithUnit(Number(blockDifficulty))}
+              {Number.isNaN(Number(blockDifficulty))
+                ? '-'
+                : formatNumberWithUnit(Number(blockDifficulty))}
               <Text as="span" className={columnTitleClass}>
                 H
               </Text>

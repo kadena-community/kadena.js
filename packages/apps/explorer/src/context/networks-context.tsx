@@ -1,5 +1,8 @@
 import { useRouter } from '@/components/routing/useRouter';
+import { useToast } from '@/components/toasts/toast-context/toast-context';
+import type { INetwork } from '@/constants/network';
 import { networkConstants } from '@/constants/network';
+import { checkNetwork } from '@/utils/checkNetwork';
 import type { NormalizedCacheObject } from '@apollo/client';
 import {
   ApolloClient,
@@ -23,14 +26,6 @@ import React, {
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { YogaLink } = require('@graphql-yoga/apollo-link');
 
-export type INetwork = Omit<
-  typeof networkConstants.mainnet01,
-  'chainwebUrl' | 'explorerUrl'
-> & {
-  chainwebUrl?: string;
-  explorerUrl?: string;
-};
-
 const cache = new InMemoryCache({
   resultCaching: true,
 });
@@ -38,8 +33,9 @@ const cache = new InMemoryCache({
 interface INetworkContext {
   networks: INetwork[];
   activeNetwork: INetwork;
-  setActiveNetwork: (activeNetwork: INetwork['networkId']) => void;
+  setActiveNetwork: (activeNetwork: INetwork['slug']) => void;
   addNetwork: (newNetwork: INetwork) => void;
+  stopServer: () => void;
 }
 
 const NetworkContext = createContext<INetworkContext>({
@@ -47,10 +43,42 @@ const NetworkContext = createContext<INetworkContext>({
   activeNetwork: {} as INetwork,
   setActiveNetwork: () => {},
   addNetwork: () => {},
+  stopServer: () => {},
 });
 
 export const storageKey = 'networks';
 export const selectedNetworkKey = 'selectedNetwork';
+
+const getApolloClient = (network: INetwork) => {
+  const httpLink = new YogaLink({
+    endpoint: network?.graphUrl,
+  });
+
+  const wsLink = new GraphQLWsLink(
+    createClient({
+      url: network!.wsGraphUrl,
+    }),
+  );
+
+  const splitLink = split(
+    ({ query }) => {
+      const definition = getMainDefinition(query);
+      return (
+        definition.kind === 'OperationDefinition' &&
+        definition.operation === 'subscription'
+      );
+    },
+    wsLink, // Use WebSocket link for subscriptions
+    httpLink, // Use HTTP link for queries and mutations
+  );
+
+  const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
+    link: splitLink,
+    cache,
+  });
+
+  return client;
+};
 
 const useNetwork = (): INetworkContext => {
   const context = useContext(NetworkContext);
@@ -62,10 +90,16 @@ const useNetwork = (): INetworkContext => {
   return context;
 };
 
-const getDefaultNetworks = (): INetworkContext['networks'] => [
-  networkConstants.mainnet01,
-  networkConstants.testnet04,
-];
+export const getDefaultNetworks = (): INetworkContext['networks'] =>
+  networkConstants;
+
+export const getNetworks = (): INetwork[] => {
+  const storage: INetwork[] = JSON.parse(
+    localStorage.getItem(storageKey) ?? '[]',
+  );
+
+  return [...getDefaultNetworks(), ...storage];
+};
 
 const NetworkContextProvider = (props: {
   networks?: INetwork[];
@@ -74,8 +108,10 @@ const NetworkContextProvider = (props: {
   const [networks, setNetworks] = useState<INetwork[]>(getDefaultNetworks());
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
-  const networkId = router.query.networkId as string;
+  const networkSlug = router.query.networkSlug as string;
   const [activeNetwork, setActiveNetwork] = useState<INetwork | undefined>();
+  const [client, setClient] = useState<ApolloClient<NormalizedCacheObject>>();
+  const { addNetworkFailToast } = useToast();
 
   const checkStorage = () => {
     const storage: INetwork[] = JSON.parse(
@@ -93,11 +129,38 @@ const NetworkContextProvider = (props: {
     checkStorage();
   }, []);
 
+  const stopServer = () => {
+    client?.stop();
+    addNetworkFailToast({
+      body: `There is an issue with ${activeNetwork!.graphUrl}`,
+    });
+  };
+
+  const checkIfNetworkAvailable = async (graphUrl: string) => {
+    try {
+      const result = await checkNetwork(graphUrl);
+      await result.json();
+
+      if (result.status !== 200) {
+        stopServer();
+      }
+    } catch (e) {
+      stopServer();
+    }
+  };
+
+  useEffect(() => {
+    if (!activeNetwork || !activeNetwork.graphUrl) return;
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    checkIfNetworkAvailable(activeNetwork.graphUrl);
+  }, [activeNetwork]);
+
   useEffect(() => {
     if (!networks.length || !isMounted) return;
-    const network = networks.find((n) => n.networkId === networkId);
+    const network = networks.find((n) => n.slug && n.slug === networkSlug);
     setActiveNetwork(network);
-  }, [networkId, networks, isMounted]);
+  }, [networkSlug, networks, isMounted]);
 
   useEffect(() => {
     checkStorage();
@@ -109,14 +172,24 @@ const NetworkContextProvider = (props: {
     };
   }, [storageListener]);
 
-  const setActiveNetworkByKey = (networkId: string): void => {
-    const network = networks.find((x) => x.networkId === networkId)!;
-    setActiveNetwork(network);
-    localStorage.setItem(selectedNetworkKey, JSON.stringify(network));
-    Cookies.set(selectedNetworkKey, network.networkId);
+  useEffect(() => {
+    if (!activeNetwork) return;
+    const resultClient = getApolloClient(activeNetwork);
+    setClient(resultClient);
+  }, [activeNetwork]);
 
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    router.push(`/${networkId}`);
+  const setActiveNetworkByKey = (networkSlug: string): void => {
+    const network = networks.find((x) => x.slug === networkSlug);
+
+    if (!network) {
+      stopServer();
+      return;
+    }
+
+    localStorage.setItem(selectedNetworkKey, JSON.stringify(network));
+    Cookies.set(selectedNetworkKey, network.slug);
+
+    window.location.href = `/${networkSlug}`;
   };
 
   const addNetwork = (newNetwork: INetwork): void => {
@@ -124,52 +197,18 @@ const NetworkContextProvider = (props: {
       localStorage.getItem(storageKey) ?? '[]',
     );
 
-    if (
-      !storage.find((network) => network.networkId === newNetwork.networkId)
-    ) {
+    if (!storage.find((network) => network.slug === newNetwork.slug)) {
       storage.push(newNetwork);
       localStorage.setItem(storageKey, JSON.stringify(storage));
       window.dispatchEvent(new Event(storageKey));
 
       setActiveNetwork(newNetwork);
       localStorage.setItem(selectedNetworkKey, JSON.stringify(newNetwork));
-      Cookies.set(selectedNetworkKey, newNetwork.networkId);
+      Cookies.set(selectedNetworkKey, newNetwork.slug);
 
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push(`/${newNetwork.networkId}`);
+      window.location.href = `/${newNetwork.slug}`;
     }
   };
-
-  const getApolloClient = useCallback(() => {
-    const httpLink = new YogaLink({
-      endpoint: activeNetwork?.graphUrl,
-    });
-
-    const wsLink = new GraphQLWsLink(
-      createClient({
-        url: activeNetwork!.wsGraphUrl,
-      }),
-    );
-
-    const splitLink = split(
-      ({ query }) => {
-        const definition = getMainDefinition(query);
-        return (
-          definition.kind === 'OperationDefinition' &&
-          definition.operation === 'subscription'
-        );
-      },
-      wsLink, // Use WebSocket link for subscriptions
-      httpLink, // Use HTTP link for queries and mutations
-    );
-
-    const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
-      link: splitLink,
-      cache,
-    });
-
-    return client;
-  }, [activeNetwork]);
 
   useEffect(() => {
     if (!isMounted && router.asPath === '/' && !activeNetwork) {
@@ -177,7 +216,7 @@ const NetworkContextProvider = (props: {
     }
   }, [isMounted, activeNetwork]);
 
-  if (!isMounted || !activeNetwork) return <></>;
+  if (!isMounted || !activeNetwork || !client) return <></>;
 
   return (
     <NetworkContext.Provider
@@ -186,11 +225,10 @@ const NetworkContextProvider = (props: {
         activeNetwork,
         setActiveNetwork: setActiveNetworkByKey,
         addNetwork,
+        stopServer,
       }}
     >
-      <ApolloProvider client={getApolloClient()}>
-        {props.children}
-      </ApolloProvider>
+      <ApolloProvider client={client}>{props.children}</ApolloProvider>
     </NetworkContext.Provider>
   );
 };

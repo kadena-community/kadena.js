@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
-import { TextField, Button, Checkbox } from '@kadena/kode-ui';
-import * as styles from '@/styles/create-token.css';
+import { TextField, Checkbox } from '@kadena/kode-ui';
 import CrudCard from '@/components/CrudCard';
 
 
