@@ -6,7 +6,7 @@ menu: Chainweb API
 label: Cut endpoints
 order: 2
 layout: full
-tags: ['chainweb', 'node api', 'chainweb api', 'api reference' 'block height cut']
+tags: ['chainweb', 'node api', 'chainweb api', 'api reference', 'block height cut']
 ---
 
 # Cut endpoints
@@ -38,7 +38,7 @@ The response header parameters are the same for all successful and unsuccessful 
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote Chainweb node in the format ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$. For example: `"10.36.1.3:42988"`.
+| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote Chainweb node. The host address can be a domain name or an IP address in IPv4 or IPv6 format. For example: `"10.36.1.3:42988"`.
 | x-server&#8209;timestamp | integer&nbsp;>=&nbsp;0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
 | x&#8209;chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
 
@@ -66,7 +66,6 @@ GET https://us-e1.chainweb.com/chainweb/0.0/mainnet01/cut?maxheight=4833114
 The response header for this request looks like this:
 
 ```text
-```Response
 X-Server-Timestamp: 1717448611
 X-Peer-Addr: 54.86.50.139:49795
 X-Chainweb-Node-Version: 2.24
@@ -152,7 +151,7 @@ Use the following parameters to specify a `cut` with an `origin` property that i
 
 ### Responses
 
-Requests to `PUT /cut` return the following response codes:
+Requests to `PUT https://{baseURL}/cut` return the following response codes:
 
 - **204 No Content** indicates that the request was successful and the cut was added to the cut processing pipeline on the remote Chainweb node.
 - **401 Unauthorized** indicates that the node where you are trying to publish the cut is not a peer of the node identified in the `origin` property, and therefore cannot process the cut you're attempting to publish.
@@ -163,7 +162,7 @@ The response header parameters are the same for all successful and unsuccessful 
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote Chainweb node in the format ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$. For example: `"10.36.1.3:42988"`.
+| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote Chainweb node. The host address can be a domain name or an IP address in IPv4 or IPv6 format. For example: `"10.36.1.3:42988"`.
 | x-server&#8209;timestamp | integer&nbsp;>=&nbsp;0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
 | x&#8209;chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
 
@@ -171,7 +170,7 @@ The response header parameters are the same for all successful and unsuccessful 
 
 You can send a request to publish a cut on a node with a call to the `/cut` endpoint similar to the following:
 
-```
+```Postman
 PUT https://sfchainweb.example.com/chainweb/0.0/testnet04/cut`
 ```
 
