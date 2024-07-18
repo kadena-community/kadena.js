@@ -1,6 +1,6 @@
 import { SearchDialog } from '@/components/SearchDialog/SearchDialog';
 import { useOpenSearch } from '@/hooks/useOpenSearch';
-import { MonoSearch, MonoSlashForward } from '@kadena/react-icons';
+import { MonoSearch, MonoSlashForward } from '@kadena/kode-icons';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';

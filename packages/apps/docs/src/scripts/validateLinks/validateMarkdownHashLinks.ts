@@ -3,6 +3,7 @@ import { globby } from 'globby';
 import markdownLinkExtractor from 'markdown-link-extractor';
 import fs from 'node:fs';
 import path from 'node:path';
+import { getCleanedHash } from '../fixLocalLinks/utils/getCleanedHash';
 
 // Function to validate anchor links within a single Markdown file
 export interface IValidateAnchorLinksResult {
@@ -33,7 +34,7 @@ function validateAnchorLinks(
     const match: RegExpMatchArray | null = link.match(/#(.*)$/);
     if (!match) return false;
 
-    const cleanHashedUrl: string = link.replace(/(h\d+|h-\d+)/g, '');
+    const cleanHashedUrl: string = getCleanedHash(link);
     const [linkPath, hash]: string[] = cleanHashedUrl.split('#');
 
     const internalLinkFilePath: string = path.join(basePath, `${linkPath}.md`);
@@ -59,7 +60,7 @@ function validateAnchorLinks(
   });
 
   const invalidInternalAnchors: string[] = anchorLinks.filter(
-    (anchorLink: string) => !anchors.includes(anchorLink),
+    (anchorLink: string) => !anchors.includes(getCleanedHash(anchorLink)),
   );
 
   return {

@@ -1,5 +1,49 @@
 # Change Log - @kadena/client
 
+## 1.13.0
+
+### Minor Changes
+
+- 29168e2: Fixed addSignatures for signatues object with pubKey + exported
+  parseAsPactValue
+
+### Patch Changes
+
+- Updated dependencies \[29168e2]
+  - @kadena/chainweb-node-client\@0.6.3
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/pactjs\@0.4.3
+
+## 1.12.1
+
+### Patch Changes
+
+- 6d4e82074: Deprecated wallet function names (`createSignWithX`) to provide a
+  clearer naming scheme.
+
+  The following functions have been deprecated:
+
+  - `createWalletConnectSign` -> `createSignWithWalletConnect`
+  - `createWalletConnectQuicksign` -> `createQuicksignWithWalletConnect`
+  - `createEckoWalletSign` -> `createSignWithEckoWallet`
+  - `createEckoWalletQuicksign` -> `createQuicksignWithEckoWallet`
+
+## 1.12.0
+
+### Minor Changes
+
+- 9c145f196: Export ISigner interface
+
+## 1.11.2
+
+### Patch Changes
+
+- c9fe555df: Pin sensitive dependencies to specific versions
+- Updated dependencies \[c9fe555df]
+- Updated dependencies \[9c4145cb7]
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/chainweb-node-client\@0.6.2
+
 ## 1.11.1
 
 ### Patch Changes

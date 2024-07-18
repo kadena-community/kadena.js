@@ -1,10 +1,11 @@
-import { atoms, tokens } from '@kadena/react-ui/styles';
+import {
+  cardBackgroundColorHover,
+  cardColor,
+  cardColorHover,
+  linkBlockColor,
+} from '@/utils/color.ts';
+import { atoms, tokens } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
-
-const cardColor = 'rgba(255, 255, 255, 0.03)';
-const cardBackgroundColorHover = 'rgba(255, 255, 255, 0.07)';
-const cardColorHover = 'rgba(255, 255, 255, 0.2)';
-const linkBlockColor = 'rgba(255, 255, 255, 0.6)';
 
 export const titleClass = style([
   atoms({
@@ -29,6 +30,7 @@ export const cardClass = style([
     width: '100%',
   }),
   {
+    cursor: 'pointer',
     backgroundColor: cardColor,
     border: `1px solid ${cardColor}`,
     selectors: {
@@ -64,8 +66,9 @@ export const aliasClass = style([
 
 export const initialsClass = style([
   atoms({
-    fontSize: '9xl',
+    fontSize: 'lg',
     fontWeight: 'secondaryFont.bold',
+    color: 'text.base.default',
   }),
 ]);
 

@@ -1,68 +1,95 @@
-import { useNetwork } from '@/modules/network/network.hook';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { IKeySource } from '@/modules/wallet/wallet.repository';
-import { Box, Button, Card, Heading } from '@kadena/react-ui';
-import { Link, Navigate } from 'react-router-dom';
+import {
+  chainListClass,
+  listClass,
+  listItemClass,
+  panelClass,
+} from '@/pages/home/style.css.ts';
+import { getAccountName } from '@/utils/helpers';
+import { Box, Heading, Stack, Text } from '@kadena/kode-ui';
+import { PactNumber } from '@kadena/pactjs';
+import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { linkClass } from '../select-profile/select-profile.css';
 
 export function HomePage() {
-  const {
-    accounts,
-    isUnlocked,
-    createKey,
-    createKAccount,
-    keySources,
-    profile,
-  } = useWallet();
-  const { activeNetwork } = useNetwork();
+  const { accounts, profile, fungibles } = useWallet();
+  const [selectedAccountIdx, setSelectedAccountIdx] = useState<number>(-1);
+  const assets = useMemo(() => {
+    return Object.entries(
+      accounts.reduce(
+        (acc, { contract, overallBalance }) => {
+          acc[contract] = new PactNumber(overallBalance)
+            .plus(acc[contract] ?? 0)
+            .toDecimal();
+          return acc;
+        },
+        {} as Record<string, string>,
+      ),
+    );
+  }, [accounts]);
 
-  if (!isUnlocked) {
-    return <Navigate to="/select-profile" replace />;
-  }
-  const createAccount = async (keySource: IKeySource) => {
-    if (!profile || !activeNetwork) {
-      throw new Error('Profile or activeNetwork not found!!');
-    }
-    const key = await createKey(keySource);
-    if (key) {
-      await createKAccount(
-        profile.uuid,
-        activeNetwork.networkId,
-        key.publicKey,
-      );
-    }
-  };
-  console.log('keySources', keySources);
   return (
     <>
-      <Box margin="md">
-        <Heading as="h1">Welcome to Chainweaver 3.0</Heading>
-        <Heading as="h3">Available key sources</Heading>
-        {keySources.map((ks) => (
-          <Card>
-            <Heading as="h6">{ks.source}</Heading>
-            <Button onPress={() => createAccount(ks)}>Add k account</Button>
-            <br />
-            <Link to={`/backup-recovery-phrase/${ks.uuid}`}>
-              Back up recovery phrase
-            </Link>
-          </Card>
-        ))}
-        <Heading as="h6">Accounts</Heading>
-        {accounts.length ? (
-          <ul>
-            {' '}
-            {accounts.map(({ address, overallBalance }) => (
-              <li>
-                <Box>
-                  {address ?? 'No Address ;(!'} : {overallBalance}
-                </Box>
-              </li>
-            ))}
-          </ul>
-        ) : null}
-      </Box>
       <Box>
-        <Link to="/sig-builder">Sig Builder</Link>
+        <Text>Welcome back</Text>
+        <Heading as="h1">{profile?.name}</Heading>
+        <Box className={panelClass} marginBlockStart="xl">
+          <Heading as="h4">Your assets</Heading>
+          <Box marginBlockStart="md">
+            {assets.length > 0 &&
+              assets.map(([contract, balance]) => (
+                <Heading variant="h5" key={contract}>
+                  {fungibles.find((item) => item.contract === contract)?.symbol}
+                  : {balance}
+                </Heading>
+              ))}
+          </Box>
+        </Box>
+        <Box className={panelClass} marginBlockStart="xs">
+          <Heading as="h4">{accounts.length} accounts</Heading>
+          <Link to="/create-account" className={linkClass}>
+            Create Account
+          </Link>
+          <Box marginBlockStart="md">
+            <Text>Owned ({accounts.length})</Text>
+            {accounts.length ? (
+              <ul className={listClass}>
+                {accounts.map(({ address, overallBalance, chains }, idx) => (
+                  <li key={address}>
+                    <Stack
+                      justifyContent="space-between"
+                      className={listItemClass}
+                      onClick={() => {
+                        setSelectedAccountIdx((cu) => {
+                          return cu === idx ? -1 : idx;
+                        });
+                      }}
+                    >
+                      <Text>{getAccountName(address) ?? 'No Address ;(!'}</Text>
+                      <Text>{overallBalance} KDA</Text>
+                    </Stack>
+                    {selectedAccountIdx === idx && chains.length > 0 && (
+                      <ul className={chainListClass}>
+                        {chains.map(({ chainId, balance }) => (
+                          <li key={address}>
+                            <Stack
+                              justifyContent="space-between"
+                              className={listItemClass}
+                            >
+                              <Text>chain {chainId}</Text>
+                              <Text>{balance} KDA</Text>
+                            </Stack>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </Box>
+        </Box>
       </Box>
     </>
   );

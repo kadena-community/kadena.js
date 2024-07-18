@@ -1,7 +1,6 @@
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { useCallback, useEffect, useState } from 'react';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const useOpenSearch = () => {
   const [isOpen, setIsOpen] = useState(false);
   const handleOpenSearch = useCallback((): void => {

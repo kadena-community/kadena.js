@@ -1,5 +1,23 @@
 # @kadena/hd-wallet
 
+## 0.4.2
+
+### Patch Changes
+
+- 3949dcccf: Add getting started to the readme
+
+## 0.4.1
+
+### Patch Changes
+
+- 1d1f1dcaf: Expose api doc
+- c9fe555df: Pin sensitive dependencies to specific versions
+- b916ea42b: Verify that the derivation path template includes `<index>`
+- 4b8c2bc0e: Separated test config for Chainweaver to avoid long timeout for all
+  newly developed functions.
+- Updated dependencies \[c9fe555df]
+  - @kadena/cryptography-utils\@0.4.4
+
 ## 0.4.0
 
 ### Minor Changes

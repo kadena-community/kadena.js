@@ -4,7 +4,7 @@ import {
   darkThemeClass,
   responsiveStyle,
   tokens,
-} from '@kadena/react-ui/styles';
+} from '@kadena/kode-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 import { paragraphWrapperClass } from '../Paragraph/styles.css';
 

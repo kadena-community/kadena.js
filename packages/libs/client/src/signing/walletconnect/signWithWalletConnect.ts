@@ -15,11 +15,11 @@ interface ISigningResponse {
  * Creates the signWithWalletConnect function with interface {@link ISingleSignFunction}
  *
  * @remarks
- * It is preferred to use the {@link createWalletConnectQuicksign} function
+ * It is preferred to use the {@link createQuicksignWithWalletConnect} function
  *
  * @public
  */
-export function createWalletConnectSign(
+export function createSignWithWalletConnect(
   client: Client,
   session: SessionTypes.Struct,
   walletConnectChainId: TWalletConnectChainId,
@@ -80,3 +80,14 @@ export function createWalletConnectSign(
 
   return signWithWalletConnect;
 }
+
+/**
+ * Creates the signWithWalletConnect function with interface {@link ISingleSignFunction}
+ *
+ * @remarks
+ * It is preferred to use the {@link createQuicksignWithWalletConnect} function
+ *
+ * @deprecated Use {@link createSignWithWalletConnect} instead
+ * @public
+ */
+export const createWalletConnectSign = createSignWithWalletConnect;

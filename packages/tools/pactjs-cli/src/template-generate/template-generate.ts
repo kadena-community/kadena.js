@@ -15,7 +15,6 @@ import type { z } from 'zod';
 import type { TTemplateGenerateOptions } from '.';
 
 export const templateGenerate =
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   (program: Command, version: string) => (args: TTemplateGenerateOptions) => {
     try {
       const { clean, file, out } = args;

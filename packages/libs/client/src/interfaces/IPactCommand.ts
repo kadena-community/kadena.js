@@ -85,3 +85,14 @@ export interface IPartialPactCommand extends AllPartial<IPactCommand> {
  * @public
  */
 export type BuiltInPredicate = 'keys-all' | 'keys-any' | 'keys-2';
+
+/**
+ * @public
+ */
+export type ISigner =
+  | string
+  | {
+      pubKey: string;
+      scheme?: SignerScheme;
+      address?: string;
+    };

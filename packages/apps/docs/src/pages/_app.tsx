@@ -1,5 +1,5 @@
-// load global styles from @kadena/react-ui
-import '@kadena/react-ui/global';
+// load global styles from @kadena/kode-ui
+import '@kadena/kode-ui/global';
 
 // eslint-disable-next-line import/no-unresolved
 import { Analytics } from '@/components/Analytics/Analytics';
@@ -10,7 +10,7 @@ import { useIphoneInputFix } from '@/hooks/useIphoneInputFix';
 import { MenuProvider } from '@/hooks/useMenu/MenuProvider';
 import { getLayout } from '@/utils/getLayout';
 import type { IPageMeta, IPageProps } from '@kadena/docs-tools';
-import { RouterProvider } from '@kadena/react-ui';
+import { RouterProvider } from '@kadena/kode-ui';
 import { MDXProvider } from '@mdx-js/react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';

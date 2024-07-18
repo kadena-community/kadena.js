@@ -1,5 +1,21 @@
 # Change Log - @kadena/chainweb-node-client
 
+## 0.6.3
+
+### Patch Changes
+
+- 29168e2: Updated types
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/pactjs\@0.4.3
+
+## 0.6.2
+
+### Patch Changes
+
+- 9c4145cb7: Remove cross-fetch since we only support node >=18
+- Updated dependencies \[c9fe555df]
+  - @kadena/cryptography-utils\@0.4.4
+
 ## 0.6.1
 
 ### Patch Changes

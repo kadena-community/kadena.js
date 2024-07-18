@@ -1,4 +1,4 @@
-import { atoms, darkThemeClass, tokens } from '@kadena/react-ui/styles';
+import { atoms, darkThemeClass, tokens } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 import { $$footerMenu, $$pageWidth } from '../../global.css';
 

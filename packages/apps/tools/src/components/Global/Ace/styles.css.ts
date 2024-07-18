@@ -1,6 +1,8 @@
 import { globalStyle, style } from '@vanilla-extract/css';
 
-export const containerStyle = style({});
+export const containerStyle = style({
+  height: '100%',
+});
 
 /*
  * <span> elements get a global style (which includes font-family) from the `react-ui` library, we

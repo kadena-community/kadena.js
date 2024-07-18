@@ -17,6 +17,11 @@ describe('createVersion util', () => {
     const expectedResult: IChangelogPackageVersion = {
       label: '2.0.0',
       isLocked: false,
+      description: '',
+      descriptionTemp: {
+        type: 'root',
+        children: [],
+      },
       authors: [],
       patches: [],
       minors: [],

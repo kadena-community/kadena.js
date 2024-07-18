@@ -3,14 +3,14 @@ name: Visual Regression Tests
 on:
   push:
     paths:
-      - 'packages/libs/react-ui/**'
+      - 'packages/libs/kode-ui/**'
 env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
 jobs:
   visual-regression-tests:
-    name: '@kadena/react-ui'
+    name: '@kadena/kode-ui'
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +23,7 @@ jobs:
       uses: ./.github/actions/runner-setup
 
     - name: Build
-      run: pnpm run build --filter @kadena/react-ui...
+      run: pnpm run build --filter @kadena/kode-ui...
 
     - name: Publish Storybook
       uses: chromaui/action@latest
@@ -31,6 +31,6 @@ jobs:
         exitOnceUploaded: true
         buildScriptName: 'build:storybook'
         projectToken: ${{ secrets.REACT_UI_CHROMATIC_TOKEN }}
-        workingDir: packages/libs/react-ui
+        workingDir: packages/libs/kode-ui
         autoAcceptChanges: 'main'
         onlyChanged: true # Required option to enable TurboSnap

@@ -38,7 +38,7 @@ To start the sales process for a non-fungible token:
    - Set the **timeout** to the number of blocks you want to wait before you can withdraw from the sale. 
      The timeout is optional, so for this example, it is set to zero.
 
-   ```pact
+   ```text
    (marmalade-v2.ledger.sale "t:jEDZtohdLCkbsbFTlVrgVOQOYckgSLHHWQsXKry8jO0" "k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e" 1.0 0)
    ```  
 
@@ -94,7 +94,7 @@ To start the sales process for a non-fungible token:
    
    In this example, the OFFER capabilities look like this:
    
-   ```pact
+   ```text
    (marmalade-v2.ledger.OFFER "t:jEDZtohdLCkbsbFTlVrgVOQOYckgSLHHWQsXKry8jO0" "k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e" 1.0 0)
    ```
 

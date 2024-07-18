@@ -7,7 +7,7 @@ import {
   Heading,
   Notification,
   Stack,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
@@ -24,7 +24,7 @@ import { RightInfoSidebar } from '@/components/Partials/transactions/transfer/ri
 import { SignForm } from '@/components/Partials/transactions/transfer/sign-form';
 import { SubmitTransaction } from '@/components/Partials/transactions/transfer/submit-transaction';
 import useIsLedgerLibSupported from '@/hooks/use-is-ledger-lib-supported';
-import { MonoHelp } from '@kadena/react-icons/system';
+import { MonoHelp } from '@kadena/kode-icons/system';
 
 const TransferPage = () => {
   const router = useRouter();
@@ -89,34 +89,48 @@ const TransferPage = () => {
         gap={'lg'}
       >
         {showNotSupported ? (
-          <Notification intent={'negative'} role={'alert'} isDismissable>
+          <Notification
+            intent={'negative'}
+            role={'alert'}
+            type="inlineStacked"
+            isDismissable
+          >
+            <div>
+              <Trans
+                i18nKey="common:ledger-error-notification"
+                components={[
+                  <a
+                    className={notificationLinkStyle}
+                    target={'_blank'}
+                    href="https://caniuse.com/?search=webhid"
+                    rel="noreferrer"
+                    key="link-to-ledger-docs"
+                  />,
+                ]}
+              />
+            </div>
+          </Notification>
+        ) : null}
+        <Notification
+          intent="info"
+          role="alert"
+          type="inlineStacked"
+          isDismissable
+        >
+          <div>
             <Trans
-              i18nKey="common:ledger-error-notification"
+              i18nKey="common:ledger-info-notification"
               components={[
                 <a
                   className={notificationLinkStyle}
                   target={'_blank'}
-                  href="https://caniuse.com/?search=webhid"
+                  href="https://support.ledger.com/hc/en-us/articles/7415959614109?docs=true"
                   rel="noreferrer"
                   key="link-to-ledger-docs"
                 />,
               ]}
             />
-          </Notification>
-        ) : null}
-        <Notification intent="info" role="alert" isDismissable>
-          <Trans
-            i18nKey="common:ledger-info-notification"
-            components={[
-              <a
-                className={notificationLinkStyle}
-                target={'_blank'}
-                href="https://support.ledger.com/hc/en-us/articles/7415959614109?docs=true"
-                rel="noreferrer"
-                key="link-to-ledger-docs"
-              />,
-            ]}
-          />
+          </div>
         </Notification>
 
         <SignForm

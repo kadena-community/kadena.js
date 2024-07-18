@@ -2,6 +2,7 @@ import { database } from "@/utils/firebase";
 import { BuiltInPredicate, ChainId } from "@kadena/client";
 import { OrderByDirection, collection, getDocs, limit, orderBy, query, where } from "firebase/firestore";
 import { useCallback, useEffect, useState } from "react";
+import { IPactDecimal, IPactInt } from "../../../../libs/types/dist/types";
 
 export type Sale = {
   status: 'CREATED' | 'WITHDRAWN' | 'SOLD';
@@ -28,13 +29,21 @@ export type Sale = {
   };
   saleType?: string;
   escrow?: string;
-  price?: number;
-  startPrice?: number;
+
+  startsAt?: number;
+  endsAt?: number;
+  startPrice: number;
+  reservePrice?: number
+  sellPrice?: number;
+  priceInterval?: IPactInt;
+  highestBid?: number
+  highestBidId?: string
 };
 
 interface GetSalesProps {
   chainIds?: number[];
   block?: number;
+  state?: "ACTIVE" | "PAST";
   status?: Sale['status'];
   saleType?: Sale['saleType'];
   limit?: number;
@@ -61,6 +70,10 @@ export const getSales = (props?: GetSalesProps) => {
       if (props?.block) constraints.push(where("block", "==", props.block));
 
       if (props?.status) constraints.push(where("status", "==", props.status));
+
+      if (props?.state === "ACTIVE") constraints.push(where("endsAt", ">", new Date().getTime()));
+
+      if (props?.state === "PAST") constraints.push(where("endsAt", "<", new Date().getTime()));
 
       if (props?.saleType) constraints.push(where("saleType", "==", props.saleType));
 

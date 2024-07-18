@@ -1,6 +1,6 @@
 {
   "name": "@kadena/explorer",
-  "version": "0.0.2",
+  "version": "0.4.0",
   "private": true,
   "scripts": {
     "build": "pnpm run generate:sdk && next build",
@@ -11,7 +11,7 @@
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier . --cache --write",
-    "generate:sdk": "graphql-codegen --config codegen-sdk.yml",
+    "generate:sdk": "cache-sh -i \"{codegen-sdk.yml,./node_modules/@kadena/graph/generated-schema.graphql,src/**/*.graph.ts,src/__generated__/**}\" -- graphql-codegen --config codegen-sdk.yml",
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
@@ -20,7 +20,7 @@
     "start": "next start",
     "start:graph": "cd ../graph && pnpm run start",
     "start:graph:generate": "cd ../graph && pnpm run start:generate",
-    "test": "echo \"No tests yet.\"",
+    "test": "vitest run",
     "verify": "tsc --noEmit"
   },
   "dependencies": {
@@ -28,16 +28,19 @@
     "@artsy/fresnel": "^7.1.4",
     "@graphql-yoga/apollo-link": "~3.3.0",
     "@kadena/graph": "workspace:*",
-    "@kadena/react-icons": "workspace:*",
-    "@kadena/react-ui": "workspace:*",
+    "@kadena/kode-icons": "workspace:*",
+    "@kadena/kode-ui": "workspace:*",
     "@parcel/watcher": "^2.4.1",
+    "@sentry/nextjs": "^8",
     "classnames": "^2.3.1",
     "eslint": "^8.45.0",
     "graphql": "~16.8.1",
     "graphql-ws": "^5.16.0",
+    "js-cookie": "~3.0.5",
     "next": "14.2.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-intersection-observer": "^9.10.3"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "5.0.2",
@@ -49,13 +52,17 @@
     "@kadena-dev/shared-config": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@rushstack/eslint-config": "~3.6.9",
+    "@types/js-cookie": "~3.0.3",
     "@types/node": "^20.12.7",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
     "@vanilla-extract/css": "1.14.2",
     "@vanilla-extract/next-plugin": "2.4.0",
+    "@vitest/coverage-v8": "^1.6.0",
+    "cache-sh": "^1.2.1",
     "concurrently": "^8.2.2",
     "prettier": "~3.2.5",
-    "typescript": "5.4.5"
+    "typescript": "5.4.5",
+    "vitest": "^1.6.0"
   }
 }

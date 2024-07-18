@@ -1,5 +1,38 @@
 # Change Log - @kadena/pactjs-cli
 
+## 1.13.0
+
+### Patch Changes
+
+- Updated dependencies \[29168e2]
+  - @kadena/client\@1.13.0
+  - @kadena/pactjs-generator\@1.13.0
+
+## 1.12.1
+
+### Patch Changes
+
+- Updated dependencies \[6d4e82074]
+  - @kadena/client\@1.12.1
+  - @kadena/pactjs-generator\@1.12.1
+
+## 1.12.0
+
+### Patch Changes
+
+- Updated dependencies \[9c145f196]
+  - @kadena/client\@1.12.0
+  - @kadena/pactjs-generator\@1.12.0
+
+## 1.11.2
+
+### Patch Changes
+
+- c9fe555df: Pin sensitive dependencies to specific versions
+- Updated dependencies \[c9fe555df]
+  - @kadena/client\@1.11.2
+  - @kadena/pactjs-generator\@1.11.2
+
 ## 1.11.1
 
 ### Patch Changes

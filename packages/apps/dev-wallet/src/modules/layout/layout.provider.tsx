@@ -32,11 +32,12 @@ export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
     accentColor: defaultAccentColor,
   });
 
+  const accentColor = profile?.accentColor;
   useEffect(() => {
     setLayoutContext({
-      accentColor: profile?.accentColor ?? defaultAccentColor,
+      accentColor: accentColor ?? defaultAccentColor,
     });
-  }, [profile]);
+  }, [accentColor]);
 
   return (
     <LayoutContext.Provider value={{ layoutContext, setLayoutContext }}>

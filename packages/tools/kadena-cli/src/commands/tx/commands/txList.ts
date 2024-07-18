@@ -5,6 +5,20 @@ import { log } from '../../../utils/logger.js';
 import { printTx } from '../utils/txDisplayHelper.js';
 import { getAllTransactions } from '../utils/txHelpers.js';
 
+export const listTransactionAction = async ({
+  directory,
+}: {
+  directory: string;
+}): Promise<{ fileName: string; signed: boolean }[]> => {
+  const transactions = await getAllTransactions(directory);
+
+  return transactions.sort((a, b) => {
+    const aIsSigned = a.signed === true ? 1 : -1;
+    const bIsSigned = b.signed === true ? 1 : -1;
+    return bIsSigned - aIsSigned;
+  });
+};
+
 export const createTxListCommand: (program: Command, version: string) => void =
   createCommand(
     'list',
@@ -14,13 +28,7 @@ export const createTxListCommand: (program: Command, version: string) => void =
       log.debug('list-tx:action');
 
       const { directory } = await option.directory();
-      const transactions = await getAllTransactions(directory);
-
-      transactions.sort((a, b) => {
-        const aIsSigned = a.signed === true ? 1 : -1;
-        const bIsSigned = b.signed === true ? 1 : -1;
-        return bIsSigned - aIsSigned;
-      });
+      const transactions = await listTransactionAction({ directory });
 
       await printTx(transactions);
     },

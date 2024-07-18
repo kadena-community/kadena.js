@@ -30,12 +30,17 @@ const decryptPassword = async (context: {
   encryptedPassword: Uint8Array;
 }) => kadenaDecrypt(context.encryptionKey, context.encryptedPassword);
 
+export type ChainweaverContext = {
+  encryptionKey: Uint8Array;
+  encryptedPassword: Uint8Array;
+};
+
 export function createChainweaverService() {
-  let context: {
-    encryptionKey: Uint8Array;
-    encryptedPassword: Uint8Array;
-    cache: Map<string, IKeyPair>;
-  } | null = null;
+  let context:
+    | (ChainweaverContext & {
+        cache: Map<string, IKeyPair>;
+      })
+    | null = null;
 
   return {
     isConnected: () => Boolean(context),
@@ -84,6 +89,7 @@ export function createChainweaverService() {
         keySource.rootKeyId,
       );
       await kadenaDecrypt(password, encryptedRootKey);
+      console.log('Connected to HD-chainweaver key source');
       context = await createContext(password);
     },
 
@@ -142,7 +148,7 @@ export function createChainweaverService() {
       const secretId = crypto.randomUUID();
       await keySourceRepository.addEncryptedValue(
         secretId,
-        new TextEncoder().encode(key.secretKey),
+        Buffer.from(key.secretKey, 'base64'),
       );
       const newKey = {
         publicKey: key.publicKey,
@@ -176,9 +182,9 @@ export function createChainweaverService() {
 
       const result = await Promise.all(
         keys.map(async (key) => ({
-          sig: new TextDecoder().decode(
+          sig: Buffer.from(
             await kadenaSign(password, message, key.secretKey),
-          ),
+          ).toString('hex'),
           pubKey: key.publicKey,
         })),
       );

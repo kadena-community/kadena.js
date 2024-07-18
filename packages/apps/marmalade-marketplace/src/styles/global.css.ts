@@ -1,10 +1,11 @@
 import { deviceColors } from '@/styles/tokens.css';
-import '@kadena/react-ui/global';
+import { tokens } from '@kadena/kode-ui/styles';
+import '@kadena/kode-ui/global';
 import { globalStyle, style } from '@vanilla-extract/css';
 
 globalStyle('body', {
   color: 'white',
-  backgroundColor: deviceColors.kadenaBlack,
+  backgroundColor: tokens.kda.foundation.color.background.base.default,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',

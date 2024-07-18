@@ -1,13 +1,21 @@
 import type { NetworkInfo } from '@/__generated__/sdk';
 
-export function formatNumberWithUnit(number: number, unit?: string): string {
+/**
+ * This function gets your numeric value and returns a string with the value and the unit (e.g. 1023 will be formatted to 1.02 K)
+ * @param number Value to be formatted
+ * @returns string value with unit
+ */
+export function formatNumberWithUnit(number: number): string {
   if (number === 0) {
-    return `0 ${unit ? unit : ''}`;
+    return `0`;
   }
   const units = ['', 'K', 'M', 'B', 'T', 'P', 'E'];
   const unitIndex = Math.floor(Math.log10(Math.abs(number)) / 3);
   const formattedNumber = (number / Math.pow(1000, unitIndex)).toFixed(2);
-  return `${formattedNumber} ${units[unitIndex]}${unit ? unit : ''}`;
+  const unit = units[unitIndex] || '';
+  const returnString = `${formattedNumber} ${unit}`;
+
+  return returnString;
 }
 
 export function formatStatisticsData(
@@ -25,11 +33,11 @@ export function formatStatisticsData(
   return [
     {
       label: 'Est. Network Hash',
-      value: formatNumberWithUnit(networkInfo.networkHashRate, 'H/s'),
+      value: `${formatNumberWithUnit(networkInfo.networkHashRate)}H/s`,
     },
     {
       label: 'Total Difficulty',
-      value: formatNumberWithUnit(networkInfo.totalDifficulty, 'H'),
+      value: `${formatNumberWithUnit(networkInfo.totalDifficulty)}H`,
     },
     {
       label: 'Transactions',
@@ -43,13 +51,53 @@ export function formatStatisticsData(
 }
 
 export function truncateValues(
-  value: string,
-  minLength: number = 15,
-  startChars: number = 5,
-  endChars: number = 4,
+  value: string = '',
+  options?: { length?: number; startChars?: number; endChars?: number },
 ): string {
-  if (value.length > minLength) {
-    return `${value.slice(0, startChars)}...${value.slice(-endChars)}`;
+  // Default size if only size is given or not provided
+  const defaultSize = 18;
+
+  // If size is not provided, set to defaultSize
+  const minLength = options?.length ?? defaultSize;
+
+  // if no startChars or endChars, and it's smaller than default or given length
+  if (
+    (!options || !options.startChars || !options.endChars) &&
+    value.length <= minLength
+  ) {
+    return value;
   }
-  return value;
+
+  // if startChars and endChars are not provided
+  if (!options || (options && !options.startChars && !options.endChars)) {
+    return `${value.slice(0, minLength)}…`;
+  }
+
+  // if endChars is provided
+  if (options && !options.startChars && options.endChars) {
+    return `${value.slice(0, minLength - options.endChars)}…${value.slice(
+      value.length - options.endChars,
+    )}`;
+  }
+
+  // if startChars and endChars are provided
+  if (options && options.startChars && options.endChars) {
+    // no reason to truncate if the options are longer than the value length
+    if (options.startChars + options.endChars >= value.length) {
+      return value;
+    }
+
+    return `${value.slice(0, options.startChars)}…${value.slice(
+      value.length - options.endChars,
+    )}`;
+  }
+
+  // if only startChars is given
+  if (options && options.startChars && !options.endChars) {
+    return `${value.slice(0, options.startChars)}…${value.slice(
+      -(minLength - options.startChars),
+    )}`;
+  }
+
+  return value; // fallback in case none of the conditions match
 }

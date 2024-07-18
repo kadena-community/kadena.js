@@ -1,6 +1,6 @@
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { isEmailValid } from '@/utils/isEmailValid';
-import type { IButtonProps } from '@kadena/react-ui';
+import type { IButtonProps } from '@kadena/kode-ui';
 import type { ChangeEvent, MouseEvent } from 'react';
 import { useState } from 'react';
 
@@ -23,7 +23,6 @@ export const useSubscribe = (): IReturn => {
   const canSubmit = Boolean(email) && !hasError;
   const hasSuccess = Boolean(message) && !hasError;
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const handleSubscribe = async (
     event: MouseEvent<HTMLButtonElement>,
   ): Promise<void> => {

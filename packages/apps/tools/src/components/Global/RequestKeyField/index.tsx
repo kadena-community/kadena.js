@@ -1,10 +1,10 @@
-import { MonoKey } from '@kadena/react-icons/system';
-import type { ITextFieldProps } from '@kadena/react-ui';
-import { TextField } from '@kadena/react-ui';
+import { MonoKey } from '@kadena/kode-icons/system';
+import type { ITextFieldProps } from '@kadena/kode-ui';
+import { TextField } from '@kadena/kode-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { forwardRef } from 'react';
-import * as z from 'zod';
+import { z } from 'zod';
 
 export const RequestLength: { MIN: number; MAX: number } = { MIN: 43, MAX: 44 };
 

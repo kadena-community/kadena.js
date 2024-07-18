@@ -1,4 +1,9 @@
-import type { ChainId, IPactModules, PactReturnType } from '@kadena/client';
+import type {
+  ChainId,
+  IPactModules,
+  ISigner,
+  PactReturnType,
+} from '@kadena/client';
 import { Pact, readKeyset } from '@kadena/client';
 import {
   addKeyset,
@@ -12,16 +17,16 @@ import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
 interface ICreateTransferInput {
-  sender: { account: string; publicKeys: string[] };
+  sender: { account: string; publicKeys: ISigner[] };
   receiver: {
     account: string;
     keyset: {
-      keys: string[];
+      keys: ISigner[];
       pred: 'keys-all' | 'keys-2' | 'keys-any';
     };
   };
   amount: string;
-  gasPayer?: { account: string; publicKeys: string[] };
+  gasPayer?: { account: string; publicKeys: ISigner[] };
   chainId: ChainId;
   /**
    * compatible contract with fungible-v2; default is "coin"
@@ -50,7 +55,13 @@ export const transferCreateCommand = ({
         },
       ),
     ),
-    addKeyset('account-guard', receiver.keyset.pred, ...receiver.keyset.keys),
+    addKeyset(
+      'account-guard',
+      receiver.keyset.pred,
+      ...receiver.keyset.keys.map((key) =>
+        typeof key === 'object' ? key.pubKey : key,
+      ),
+    ),
     addSigner(sender.publicKeys, (signFor) => [
       signFor(
         `${contract as 'coin'}.TRANSFER`,

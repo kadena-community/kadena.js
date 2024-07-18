@@ -1,6 +1,6 @@
 {
   "name": "kadena.js",
-  "version": "0.1.3",
+  "version": "0.1.6",
   "private": true,
   "description": "A practical util library for JavaScript programmers who are building on the Kadena blockchain",
   "keywords": [

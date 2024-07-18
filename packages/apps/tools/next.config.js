@@ -14,7 +14,7 @@ const config = {
     process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test'
       ? ['(?<!(spec|test).)tsx']
       : ['tsx'],
-  transpilePackages: ['@kadena/react-ui'],
+  transpilePackages: ['@kadena/kode-ui'],
   env: {
     KADENA_API_TTIL: process.env.KADENA_API_TTIL,
     KADENA_MAINNET_API: process.env.KADENA_MAINNET_API,
@@ -31,6 +31,15 @@ const config = {
     QA_LEDGER_MOCK: process.env.QA_LEDGER_MOCK,
     QA_LEDGER_MOCKED_PUBKEY: process.env.QA_LEDGER_MOCKED_PUBKEY,
     QA_LEDGER_MOCKED_PRIVATEKEY: process.env.QA_LEDGER_MOCKED_PRIVATEKEY,
+  },
+  webpack: (config) => {
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+
+      fs: false, // Fixes npm packages that depend on `fs` module
+    };
+
+    return config;
   },
   async redirects() {
     return [

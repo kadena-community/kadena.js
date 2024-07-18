@@ -1,5 +1,5 @@
-import { MonoClose } from '@kadena/react-icons';
-import { Stack } from '@kadena/react-ui';
+import { MonoClose } from '@kadena/kode-icons';
+import { Stack } from '@kadena/kode-ui';
 import Link from 'next/link';
 import type { FC, PropsWithChildren } from 'react';
 import { Button } from '../Button/Button';

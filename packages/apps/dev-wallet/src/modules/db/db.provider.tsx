@@ -26,7 +26,6 @@ export const DatabaseProvider: FC<{
     const setupDataBase = async () => {
       console.log('setting up database');
       const db = await setupDatabase();
-      console.log('database setup done');
       await sleep(10);
       try {
         await addDefaultNetworks();
@@ -42,7 +41,6 @@ export const DatabaseProvider: FC<{
     const closeConnectionsCallback = () => {
       if (document.hidden) {
         // close all connections when app is hidden; since open connections will block other tabs from accessing the database
-        console.log('closing database connections', new Date());
         closeDatabaseConnections();
       }
     };

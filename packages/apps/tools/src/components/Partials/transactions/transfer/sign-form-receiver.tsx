@@ -10,7 +10,7 @@ import {
   TabItem,
   Tabs,
   Text,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { ChainSelect } from '@/components/Global/ChainSelect';
@@ -23,14 +23,14 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import type { AccountDetails } from '@/hooks/use-account-details-query';
 import { useAccountDetailsQuery } from '@/hooks/use-account-details-query';
 import { stripAccountPrefix } from '@/utils/string';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import useTranslation from 'next-translate/useTranslation';
 import type { FormData } from './sign-form';
 
 import { LoadingCard } from '@/components/Global/LoadingCard';
 import { useAccountChainDetailsQuery } from '@/hooks/use-account-chain-details-query';
 import { createPrincipal } from '@/services/faucet/create-principal';
-import { MonoContentCopy, MonoInfo } from '@kadena/react-icons/system';
+import { MonoContentCopy, MonoInfo } from '@kadena/kode-icons/system';
 import type { ChainId } from '@kadena/types';
 import { useDebounce } from 'react-use';
 import type { SenderType } from './sign-form-sender';
@@ -207,8 +207,7 @@ export const SignFormReceiver = ({
     ],
     queryFn: () => createPrincipal(pubKeys, watchReceiverChainId, pred),
     enabled: pubKeys.length > 0,
-    placeholderData: '',
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   });
 
   useEffect(() => {

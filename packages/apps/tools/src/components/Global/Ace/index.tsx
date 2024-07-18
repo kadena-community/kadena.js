@@ -4,9 +4,12 @@ import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/ext-searchbox';
 import 'ace-builds/src-noconflict/mode-clojure';
 import 'ace-builds/src-noconflict/mode-lisp';
+import 'ace-builds/src-noconflict/theme-github';
+import 'ace-builds/src-noconflict/theme-github_dark';
 import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/theme-one_dark';
 
+import { token } from '@kadena/kode-ui/styles';
 import type { FC } from 'react';
 import React from 'react';
 import type { IAceEditorProps } from 'react-ace';
@@ -34,8 +37,8 @@ const AceViewerComponent: FC<IEditorProps> = ({
   <div className={containerStyle}>
     <AceEditor
       value={code}
-      width={width || '94%'}
-      height={height || '40rem'}
+      width={width || '100%'}
+      height={height || '100%'}
       readOnly={readOnly !== false}
       onChange={onChange}
       keyboardHandler={keyboardHandler}
@@ -48,6 +51,7 @@ const AceViewerComponent: FC<IEditorProps> = ({
         enableSnippets: true,
         showLineNumbers: true,
         tabSize: 2,
+        fontFamily: token('typography.family.monospaceFont'),
       }}
       fontSize={14}
     />

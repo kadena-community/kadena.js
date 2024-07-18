@@ -1,30 +1,41 @@
-import { atoms, tokens } from '@kadena/react-ui/styles';
+import { atoms, token } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const containerStyle = style([
   atoms({
     display: 'flex',
     flexDirection: 'column',
+    overflow: 'auto',
   }),
-  {
-    height: `calc(${tokens.kda.foundation.size.n64} * 3 + ${tokens.kda.foundation.size.n16})`, // 52rem
-  },
+  style({
+    borderInlineEnd: `${token('border.width.normal')} solid ${token('color.border.base.default')}`,
+  }),
 ]);
 
-export const modulesContainerStyle = style([
-  atoms({ flex: 1, overflow: 'scroll' }),
-]);
+export const customAccordionItemStyle = style({ overflow: 'auto' });
 
-export const moduleTitle = style({
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  maxWidth: `calc(${tokens.kda.foundation.size.n64} + ${tokens.kda.foundation.size.n8})`, // 2rem less than the width of the column
+export const itemStyle = style({
+  height: token('size.n12'),
+  borderBlockEnd: `${token('border.width.hairline')} solid ${token('color.border.base.default')}`,
+  boxSizing: 'content-box',
 });
 
-export const outlineStyle = style([
-  {
-    height: tokens.kda.foundation.size.n64,
-    overflow: 'scroll',
-  },
-]);
+export const headingStyles = style({
+  flex: 1,
+});
+
+export const iconStyles = atoms({ paddingInlineStart: 'sm' });
+
+export const searchResultsStyles = atoms({
+  paddingBlock: 'sm',
+  paddingInline: 'n3',
+  backgroundColor: 'base.warm',
+});
+
+export const searchResultQueryStyles = style({
+  fontWeight: token('typography.weight.primaryFont.bold'),
+});
+
+export const searchInputStyles = atoms({
+  width: '100%',
+});

@@ -1,5 +1,5 @@
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
-import { MonoThumbDownOffAlt, MonoThumbUpOffAlt } from '@kadena/react-icons';
+import { MonoThumbDownOffAlt, MonoThumbUpOffAlt } from '@kadena/kode-icons';
 import {
   Button,
   Dialog,
@@ -8,7 +8,7 @@ import {
   Stack,
   Text,
   ToggleButton,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { FC } from 'react';

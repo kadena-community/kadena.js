@@ -1,4 +1,4 @@
-import { Text } from '@kadena/react-ui';
+import { Text } from '@kadena/kode-ui';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
 import { textClass } from './styles.css';

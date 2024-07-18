@@ -576,6 +576,7 @@ describe('buyToken', () => {
         seller: {
           account: sourceAccount.account,
         },
+        signer: secondaryTargetAccount.publicKey,
         buyer: {
           account: secondaryTargetAccount.account,
           keyset: {
@@ -584,7 +585,6 @@ describe('buyToken', () => {
           },
         },
         amount: new PactNumber(1).toPactDecimal(),
-        timeout,
       },
       config,
     )
@@ -599,6 +599,7 @@ describe('buyToken', () => {
       .on(
         'preflight',
         withStep((step, prResult) => {
+          console.log('prResult', JSON.stringify(prResult, null, 2));
           expect(step).toBe(2);
           if (prResult.result.status === 'failure') {
             expect(prResult.result.status).toBe('success');

@@ -1,4 +1,4 @@
-import { atoms, tokens } from '@kadena/react-ui/styles';
+import { atoms } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const staticResultsListClass = style([
@@ -19,7 +19,7 @@ export const tabClass = style([
     display: 'flex',
     height: '100%',
     flexDirection: 'column',
-    overflowY: 'scroll',
+    overflowY: 'auto',
     overflowX: 'visible',
   }),
 ]);
@@ -41,7 +41,6 @@ export const loadingWrapperClass = style([
     alignItems: 'center',
   }),
   {
-    backgroundColor: tokens.kda.foundation.color.neutral.n0,
     opacity: '.8',
     inset: 0,
   },

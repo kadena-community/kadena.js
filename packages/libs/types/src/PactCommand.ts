@@ -199,6 +199,7 @@ export interface IUserSig {
  */
 export interface ISignatureJson {
   sig: string;
+  pubKey?: string;
 }
 
 // TODO: function for gettig from ICommandPayload-> CommandPayloadStringifiedJSON
@@ -225,7 +226,7 @@ export interface ICommand {
 export interface IUnsignedCommand {
   cmd: CommandPayloadStringifiedJSON;
   hash: PactTransactionHash;
-  sigs: Array<ISignatureJson | undefined>;
+  sigs: Array<ISignatureJson | { pubKey: string; sig?: string } | undefined>;
 }
 
 /**

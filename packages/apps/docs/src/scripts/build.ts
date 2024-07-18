@@ -3,6 +3,7 @@ import { checkForHeaders } from './checkForHeaders';
 import { checkRedirects } from './checkRedirects';
 import { checkUnusedImages } from './checkUnusedImages';
 import { copyFavIcons } from './copyFavIcons';
+import { createPactDocs } from './createPactDocs';
 import { createSitemap } from './createSitemap';
 import { createSpecs } from './createSpec';
 import { fixLocalLinks } from './fixLocalLinks';
@@ -19,6 +20,10 @@ import { validateLinks } from './validateLinks';
   //starting with a cleanslate, removing the tempdir.
   deleteTempDir();
   await initFunc(movePages, 'Move all pages from docs with config.yaml');
+  await initFunc(
+    createPactDocs,
+    'Get info from pact repo and build pages with config.yaml',
+  );
   await initFunc(fixLocalLinks, 'fix local links from the config.yaml');
   await initFunc(createDocsTree, 'Create docs tree');
   await initFunc(createSpecs, 'Create specs files');

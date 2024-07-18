@@ -1,51 +1,42 @@
-import { useNetworkInfoQuery } from '@/__generated__/sdk';
-import { Media } from '@/components/layout/media';
-import Search from '@/components/search/search';
-import Statistics from '@/components/statistics/statistics';
-import { getSearchData } from '@/constants/search';
-import { formatStatisticsData } from '@/services/format';
-import { LogoKdacolorLight } from '@kadena/react-icons/brand';
-import { Stack } from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
-import React from 'react';
+import { selectedNetworkKey } from '@/context/networks-context';
+import type { GetServerSideProps } from 'next';
+import type React from 'react';
 
 const Home: React.FC = () => {
-  // Ideally we would pull this data once and then make calcs client-side
-  const { data: statisticsData } = useNetworkInfoQuery({
-    pollInterval: 5000,
-  });
+  return null;
+};
 
-  const statisticsGridData = formatStatisticsData(statisticsData?.networkInfo);
-  const searchData = getSearchData();
-  return (
-    <>
-      <Media greaterThanOrEqual="sm">
-        <Stack
-          className={atoms({ flexDirection: 'column' })}
-          gap={'xxl'}
-          alignItems={'center'}
-        >
-          <Statistics data={statisticsGridData} />
-          <LogoKdacolorLight />
-          <Search {...searchData} />
-        </Stack>
-      </Media>
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const DEFAULTNETWORKSLUG = 'mainnet';
+  if (!ctx.req.headers.cookie) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: `/${DEFAULTNETWORKSLUG}`,
+      },
+    };
+  }
+  const cookieValues = ctx.req.headers
+    .cookie!.split(';')
+    .reduce<Record<string, { key: string; value: string }>>((acc, val) => {
+      const [key, value] = val.split('=');
+      acc[key.trim()] = {
+        key: key.trim(),
+        value: value.trim(),
+      };
+      return acc;
+    }, {});
 
-      <Media lessThan="sm">
-        <Stack
-          className={atoms({ flexDirection: 'column-reverse' })}
-          gap={'xxl'}
-          alignItems={'center'}
-          paddingBlockStart={'xxl'}
-        >
-          <Statistics data={statisticsGridData} />
+  const network = cookieValues[selectedNetworkKey] ?? {
+    value: DEFAULTNETWORKSLUG,
+  };
 
-          <LogoKdacolorLight />
-          <Search {...searchData} />
-        </Stack>
-      </Media>
-    </>
-  );
+  return {
+    redirect: {
+      permanent: false,
+      destination: `/${network.value}`,
+    },
+  };
 };
 
 export default Home;

@@ -7,6 +7,7 @@ export const CORE_TRANSACTION_FIELDS: DocumentNode = gql`
     cmd {
       meta {
         sender
+        chainId
       }
       payload {
         ... on ExecutionPayload {
@@ -18,6 +19,9 @@ export const CORE_TRANSACTION_FIELDS: DocumentNode = gql`
       ... on TransactionResult {
         badResult
         goodResult
+        block {
+          height
+        }
       }
     }
   }
@@ -30,7 +34,6 @@ export const ALL_TRANSACTION_FIELDS: DocumentNode = gql`
     cmd {
       meta {
         creationTime
-        chainId
         gasLimit
         gasPrice
         ttl

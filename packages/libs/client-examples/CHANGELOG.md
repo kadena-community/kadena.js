@@ -1,5 +1,54 @@
 # @kadena/client-examples
 
+## 0.1.6
+
+### Patch Changes
+
+- Updated dependencies \[29168e2]
+- Updated dependencies \[07c0a26]
+- Updated dependencies \[29168e2]
+- Updated dependencies \[29168e2]
+  - @kadena/client\@1.13.0
+  - @kadena/client-utils\@0.9.0
+  - @kadena/chainweb-node-client\@0.6.3
+  - @kadena/pactjs\@0.4.3
+
+## 0.1.5
+
+### Patch Changes
+
+- Updated dependencies \[6d4e82074]
+  - @kadena/client\@1.12.1
+  - @kadena/client-utils\@0.8.1
+
+## 0.1.4
+
+### Patch Changes
+
+- Updated dependencies \[83c3d58]
+  - @kadena/client-utils\@0.8.0
+
+## 0.1.3
+
+### Patch Changes
+
+- Updated dependencies \[9c145f196]
+- Updated dependencies \[9c145f196]
+  - @kadena/client\@1.12.0
+  - @kadena/client-utils\@0.7.0
+
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies \[c9fe555df]
+- Updated dependencies \[aa1aae60c]
+- Updated dependencies \[9c4145cb7]
+- Updated dependencies \[381a766e8]
+  - @kadena/client-utils\@0.6.0
+  - @kadena/client\@1.11.2
+  - @kadena/chainweb-node-client\@0.6.2
+
 ## 0.1.1
 
 ### Patch Changes

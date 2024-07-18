@@ -1,6 +1,65 @@
 import { getChangelogs } from '../utils/getChangelogs';
 
+const mocks = vi.hoisted(() => {
+  return {
+    REPOS: [
+      {
+        name: 'Kode UI Components',
+        slug: 'kode-ui-components',
+        repo: 'https://github.com/kadena-community/kadena.js.git',
+        directory: '/packages/libs/kode-ui',
+        fileName: 'CHANGELOG.md',
+        owner: 'kadena-community',
+        repoName: 'kadena.js',
+      },
+      {
+        name: 'Kode Icons',
+        slug: 'kode-icons',
+        repo: 'https://github.com/kadena-community/kadena.js.git',
+        directory: '/packages/libs/kode-icons',
+        fileName: 'CHANGELOG.md',
+        owner: 'kadena-community',
+        repoName: 'kadena.js',
+      },
+      {
+        name: 'KadenaJS',
+        slug: 'kadenajs',
+        repo: 'https://github.com/kadena-community/kadena.js.git',
+        directory: '/packages/libs/kadena.js',
+        fileName: 'CHANGELOG.md',
+        owner: 'kadena-community',
+        repoName: 'kadena.js',
+      },
+      {
+        name: 'Pact 4',
+        slug: 'pact',
+        repo: 'https://github.com/kadena-io/pact.git',
+        directory: '/',
+        fileName: 'CHANGELOG.md',
+        owner: 'kadena-io',
+        repoName: 'pact',
+      },
+    ],
+  };
+});
+
 describe('getChangelogs', () => {
+  beforeEach(() => {
+    vi.mock('@/scripts/importChangelogs/constants', async () => {
+      const actual = (await vi.importActual(
+        '@/scripts/importChangelogs/constants',
+      )) as {};
+
+      return {
+        ...actual,
+        REPOS: mocks.REPOS,
+      };
+    });
+  });
+
+  afterEach(() => {
+    vi.resetAllMocks();
+  });
   it('should return an string of url strings for all repos', async () => {
     const { default: changelog } = await import(
       './../../__mocks__/changelog.json',
@@ -26,12 +85,6 @@ describe('getChangelogs', () => {
     <url>
         <loc>/changelogs/kode-icons</loc>
         <lastmod>2024-04-25</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>1</priority>
-    </url>
-    <url>
-        <loc>/changelogs/kadena-cli</loc>
-        <lastmod>2024-05-13</lastmod>
         <changefreq>monthly</changefreq>
         <priority>1</priority>
     </url>

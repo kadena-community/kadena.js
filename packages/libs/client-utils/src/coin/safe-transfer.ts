@@ -1,4 +1,4 @@
-import type { ChainId } from '@kadena/client';
+import type { ChainId, ISigner } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import {
   addSigner,
@@ -13,10 +13,10 @@ import type { IClientConfig } from '../core/utils/helpers';
 import { transferCommand } from './transfer';
 
 interface ISafeTransferInput {
-  sender: { account: string; publicKeys: string[] };
-  receiver: { account: string; publicKeys: string[] };
+  sender: { account: string; publicKeys: ISigner[] };
+  receiver: { account: string; publicKeys: ISigner[] };
   amount: string;
-  gasPayer?: { account: string; publicKeys: string[] };
+  gasPayer?: { account: string; publicKeys: ISigner[] };
   chainId: ChainId;
   /**
    * compatible contract with fungible-v2; default is "coin"
@@ -24,7 +24,11 @@ interface ISafeTransferInput {
   contract?: string;
 }
 
-const partialTransferCommand = ({
+/**
+ *
+ * @alpha
+ */
+export const partialTransferCommand = ({
   sender,
   amount,
   receiver,

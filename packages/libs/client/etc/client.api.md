@@ -36,11 +36,17 @@ export { ChainId }
 // @public
 export const createClient: ICreateClient;
 
-// @public
-export function createEckoWalletQuicksign(): IEckoSignFunction;
+// @public @deprecated
+export const createEckoWalletQuicksign: typeof createQuicksignWithEckoWallet;
+
+// @public @deprecated
+export const createEckoWalletSign: typeof createSignWithEckoWallet;
 
 // @public
-export function createEckoWalletSign(): IEckoSignSingleFunction;
+export function createQuicksignWithEckoWallet(): IEckoSignFunction;
+
+// @public
+export function createQuicksignWithWalletConnect(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISignFunction;
 
 // @public
 export function createSignWithChainweaver(options?: {
@@ -48,7 +54,13 @@ export function createSignWithChainweaver(options?: {
 }): ISignFunction;
 
 // @public
+export function createSignWithEckoWallet(): IEckoSignSingleFunction;
+
+// @public
 export const createSignWithKeypair: ICreateSignWithKeypair;
+
+// @public
+export function createSignWithWalletConnect(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISingleSignFunction;
 
 // @public
 export const createTransaction: (pactCommand: IPartialPactCommand) => IUnsignedCommand;
@@ -56,11 +68,11 @@ export const createTransaction: (pactCommand: IPartialPactCommand) => IUnsignedC
 // @public
 export const createTransactionBuilder: (initial?: IPartialPactCommand) => ITransactionBuilder;
 
-// @public
-export function createWalletConnectQuicksign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISignFunction;
+// @public @deprecated
+export const createWalletConnectQuicksign: typeof createQuicksignWithWalletConnect;
 
-// @public
-export function createWalletConnectSign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISingleSignFunction;
+// @public @deprecated
+export const createWalletConnectSign: typeof createSignWithWalletConnect;
 
 // @public
 export const getHostUrl: (hostBaseUrl: string) => ({ networkId, chainId }: INetworkOptions) => string;
@@ -356,6 +368,13 @@ export interface ISignBody {
     ttl: number;
 }
 
+// @public (undocumented)
+export type ISigner = string | {
+    pubKey: string;
+    scheme?: SignerScheme;
+    address?: string;
+};
+
 // @public
 export interface ISignFunction extends ISingleSignFunction {
     // (undocumented)
@@ -458,6 +477,9 @@ export type PactReference = Literal | (() => string);
 export type PactReturnType<T extends (...args: any[]) => any> = T extends (...args: any[]) => infer R ? R extends {
     returnType: infer RR;
 } ? RR : any : any;
+
+// @public (undocumented)
+export function parseAsPactValue(input: PactValue | (() => string) | Literal): string;
 
 // @public
 export const readKeyset: (key: string) => () => string;

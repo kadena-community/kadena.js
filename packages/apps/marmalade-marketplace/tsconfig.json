@@ -1,7 +1,7 @@
 {
   "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {
-    "types": ["node"],
+    "types": ["node", "vitest/globals", "vitest-dom/extend-expect"],
     "rootDir": ".",
     "baseUrl": ".",
     "target": "ES2020",
@@ -9,7 +9,8 @@
     "skipLibCheck": true,
     "noEmit": true,
     "incremental": true,
-    "moduleResolution": "node",
+    "module": "Preserve",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "declaration": false, // fixes pnpm issue: https://github.com/microsoft/TypeScript/issues/42873

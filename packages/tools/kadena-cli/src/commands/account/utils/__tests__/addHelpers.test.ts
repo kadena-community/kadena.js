@@ -1,73 +1,24 @@
-import { describe, expect, it } from 'vitest';
-import type { IAccountDetailsResult } from '../../types.js';
-import { getUpdatedConfig } from '../addHelpers.js';
-import { defaultConfigMock } from './mocks.js';
+import type { Mock } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+import { getAccountDirectory } from '../accountHelpers.js';
+import { getAccountFilePath } from '../addHelpers.js';
 
-describe('getUpdatedConfig', () => {
-  it('should return config when updateOption is overwriteFromChain is "false"', () => {
-    const config = {
-      ...defaultConfigMock,
-      accountName: 'accountName',
-      publicKeys: 'publicKeys',
-      publicKeysConfig: ['publicKeys'],
-    };
-    const accountDetails: IAccountDetailsResult = {
-      guard: {
-        keys: ['publicKeys'],
-        pred: 'keys-all',
-      },
-      account: 'accountName',
-      balance: 0,
-    };
-    const overwriteFromChain = false;
-    const result = getUpdatedConfig(config, accountDetails, overwriteFromChain);
-    expect(result).toEqual(config);
+vi.mock('../accountHelpers.js', () => ({
+  getAccountDirectory: vi.fn().mockReturnValue('test'),
+}));
+
+describe('getAccountFilePath', () => {
+  it('should return the account file path', () => {
+    const fileName = 'test';
+    const result = getAccountFilePath(fileName);
+    expect(result).toEqual('test/test.yaml');
   });
 
-  it('should return updated config when overwriteFromChain is "true"', () => {
-    const config = {
-      ...defaultConfigMock,
-      accountName: 'accountName',
-      publicKeys: 'publicKeys',
-      publicKeysConfig: ['publicKeys'],
-    };
-    const accountDetails: IAccountDetailsResult = {
-      guard: {
-        keys: ['publicKeys'],
-        pred: 'keys-any',
-      },
-      account: 'accountName',
-      balance: 0,
-    };
-    const overwriteFromChain = true;
-    const expectedResult = {
-      ...config,
-      predicate: 'keys-any',
-    };
-
-    const result = getUpdatedConfig(config, accountDetails, overwriteFromChain);
-    expect(result).toEqual(expectedResult);
-  });
-
-  it('should return config when accountDetails keys are empty', () => {
-    const config = {
-      ...defaultConfigMock,
-      accountName: 'accountName',
-      publicKeys: 'publicKeys',
-      publicKeysConfig: ['publicKeys'],
-    };
-
-    const accountDetails: IAccountDetailsResult = {
-      guard: {
-        keys: [],
-        pred: 'keys-all',
-      },
-      account: 'accountName',
-      balance: 0,
-    };
-
-    const overwriteFromChain = true;
-    const result = getUpdatedConfig(config, accountDetails, overwriteFromChain);
-    expect(result).toEqual(config);
+  it('should throw an error when accountDirectory is null', () => {
+    (getAccountDirectory as Mock).mockReturnValue(null);
+    const fileName = 'test';
+    expect(() => getAccountFilePath(fileName)).toThrowError(
+      'Kadena directory not found. use `kadena config init` to create one.',
+    );
   });
 });

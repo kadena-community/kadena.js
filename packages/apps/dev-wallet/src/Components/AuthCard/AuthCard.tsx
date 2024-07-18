@@ -1,22 +1,28 @@
-import { MonoArrowBackIosNew } from '@kadena/react-icons';
-import { Box, Stack } from '@kadena/react-ui';
+import { MonoArrowBackIosNew } from '@kadena/kode-icons';
+import { Box, Button, Stack } from '@kadena/kode-ui';
 import type { FC, ReactNode } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { authCard, backButtonClass, iconStyle } from './style.css.ts';
 
 interface IProps {
   children: ReactNode;
-  backButtonLink: string;
 }
 
-export const AuthCard: FC<IProps> = ({ children, backButtonLink }) => {
+export const AuthCard: FC<IProps> = ({ children }) => {
+  const navigate = useNavigate();
   return (
     <Box className={authCard}>
-      <Link to={backButtonLink} className={backButtonClass}>
-        <Stack alignItems="center" gap="xs" paddingBlockEnd="md">
-          <MonoArrowBackIosNew className={iconStyle} /> Back
-        </Stack>
-      </Link>
+      <Stack paddingBlockEnd="md">
+        <Button
+          variant="transparent"
+          onClick={() => navigate(-1)}
+          className={backButtonClass}
+        >
+          <Stack alignItems="center" gap="xs">
+            <MonoArrowBackIosNew className={iconStyle} /> Back
+          </Stack>
+        </Button>
+      </Stack>
       {children}
     </Box>
   );

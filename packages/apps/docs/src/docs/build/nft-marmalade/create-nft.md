@@ -95,37 +95,131 @@ The topic provides a walk-though to illustrate the entire process from artwork t
 
 1. Copy the content identifier for the metadata file.
 
-   With this step, you are ready to mint the non-fungible token.
-   The simplest way to do that is using the `mint-NFT` helper function defined in the `marmalade-v2.util` contract.
+   With this step, you are ready to select policies and create the non-fungible token identifier.
+
+## Create a token identifier
+
+Every token must have a unique identifier that links the token metadata to the location of the asset.
+You can create token identifiers using the `create-token-id` function in the `marmalade-v2.ledger` contract.
+As before, you can use the Chainweaver desktop or web application to navigate to contract functions and **Testnet** as the network to connect to.
+
+To create a token identifier:
+
+1. In Chainweaver, click **Contracts**, then click **Module Explorer**.
+
+1. Under **Deployed Contracts**, select the `marmalade-v2.ledger` contract, then click **View**.
+
+2. Under Functions, select **create-token-id**, then click **Call**. 
+   
+1. On the Parameters tab, you need to specify the **token-details** and a **creation-guard**.
+   
+   In this example, the **token-details** for the metadata file that describes the first token in the collection looks like this:
+   
+   ```json
+   {
+      "uri": "ipfs://bafkreibtpwfidowlbmxblew2lyghgy2tctvcazsfcjxk3ozgnm5a33uc4m/guitar1.json",
+      "precision": 0,
+      "policies": [marmalade-v2.non-fungible-policy-v1,marmalade-v2.guard-policy-v1]
+   }
+   ```
+   
+   As this example illustrates, the most common concrete policies to use are the non-fungible-token and guard policies.
+   If you want to enforce royalty payments, you should add the royalty policy to the list.
+   The guard policy is particularly important because it protects the token from unauthorized activity.
+   To configure the guard policy, you'll register the accounts that can perform the activities you want to restrict access to when you create the token.
+
+   You can use **(read-keyset "my-keyset")** for the **creation-guard** to read the keyset from information you configure in the transaction details.
+
+   After configuring the parameters for the **create-token-identifier** function, click **Next**.
+
+2. On the Configuration tab, select the **Transaction Sender** and, under Advanced, configure **my-keyset** by selecting a keyset predicate and a key, then click **Next**.
+
+3. On the Sign tab, select an unrestricted signing key from the available Unrestricted Signing Keys, then click **Next**.
+
+   Note that you aren't required to select a transaction sender or a signing key to create a token identifier. 
+   However, this information is required to submit a transaction that records the token identifier in the blockchain.
+
+4. On the Preview tab, scroll to see the **Raw Response** is a token identifier.
+   
+   In this example, the token identifier generated for the new token is:
+   "t:LgMWE4ZKH4H2i6Ri4ZyuWIpHCE5cJDS4HjFEzN7PnQ0"
+
+## Create the token
+
+Now that you have a unique identifier for the token, you can create the reference to the token on the Kadena blockchain.
+
+To create the token:
+
+1. In **Module Explorer**, check that you are still viewing the `marmalade-v2.ledger` contract, then select the **create-token** function and click **Call**. 
+   
+2. On the Parameters tab, specify the token identifier for the **id**, the token **precision**, the **uri** for the token metadata, the token **policies** you want to apply, and a **creation-guard** keyset, then click **Next**.
+   
+   In this example, the **id** is "t:LgMWE4ZKH4H2i6Ri4ZyuWIpHCE5cJDS4HjFEzN7PnQ0", the **precision** is 0, the **uri** is "ipfs://bafkreibtpwfidowlbmxblew2lyghgy2tctvcazsfcjxk3ozgnm5a33uc4m/guitar1.json", the **policies** are [marmalade-v2.non-fungible-policy-v1,marmalade-v2.guard-policy-v1], and the **creation-guard** is specified using (read-keyset "my-keyset").
+
+3. On the Configuration tab, select the Transaction Sender, then click **Advanced** to select a key and a predicate function for the creation guard, then click **Next**.
+
+4. Click the **Raw** tab to configure any policy settings required for the policies applied to the token—for example, to add guards if you are using the guard policy or royalty information if you using the royalty policy—then click **Next**.
+   
+   For this example, you can use the **Raw** data to register guards for the mint, burn, and URI update operations:
+   
+   ```json
+   {
+       "mint-guard": {
+         "keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], 
+         "pred": "keys-all"},
+       "burn-guard": {
+         "keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], 
+         "pred": "keys-all"},
+       "uri-guard": {
+         "keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], 
+         "pred": "keys-all"}
+   }
+   ```
+
+   In this example, the same account is authorized to perform all three operations.
+   You don't need to specify a guard for any token activity that you don't want to restrict access to.
+   You can also use different guards for any token action if you want to authorize different accounts to perform specific actions. 
+
+5. On the Sign tab, select an unrestricted signing key from the available Unrestricted Signing Keys, then click **Next**.
+   
+   Note that you can explicitly add the CREATE-TOKEN capability and select individual signing keys for the GAS and CREATE-TOKEN capabilities instead of using an unrestricted signing key. 
+   By selecting an unrestricted signing key, you implicitly grant permission to pay the transaction fee (GAS) and create the token (CREATE-TOKEN) to the owner of the selected key. 
+   
+   You must explicitly or implicitly select a signing key for the transaction to succeed.
+
+6. On the Preview tab, scroll to see the Raw Response is **true**, then click **Submit**.
+   
+   After you submit the transaction, it is queued for processing in the memory pool until validated and added to a block.
+   After the transaction is included in a block, your NFT is part of the permanent blockchain record.
 
 ## Mint the non-fungible token
 
-The `mint-NFT` helper function defined in the `marmalade-v2.util` contract is similar to the `mint-basic-NFT` function used in [Get started with Marmalade](/build/nft-marmalade/get-started).
-Like the `mint-basic-NFT` function, you can access the `mint-NFT` function using the Chainweaver desktop or web application.
+The `mint` function defined in the `marmalade-v2.ledger` contract is similar to the `mint-basic-NFT` function used in [Get started with Marmalade](/build/nft-marmalade/get-started).
+Like the other functions, you can access the `mint` function using the Chainweaver desktop or web application.
 
 To mint the non-fungible token uploaded to IPFS:
 
-1. Open and unlock the Chainweaver desktop or web application.
-2. Select **Testnet** as the network to connect to the Kadena test network.
-3. Click **Contracts**, then click **Module Explorer**.
-4. Under **Deployed Contracts**, select the `marmalade-v2.util` contract, then click **View**.
-5. Under Functions, select **mint-NFT**, then click **Call**. 
-6. On the Parameters tab, set the **uri**, **policies**, and **guard** information, then click **Next**.
+1. In **Module Explorer**, check that you are still viewing the `marmalade-v2.ledger` contract, then select the **mint** function and click **Call**. 
    
-   - Set the **uri** to point to the content identifier for the metadata file for the token.
-     For this walk-through, the **uri** for the metadata file for the token is:
-     `ipfs://bafkreibtpwfidowlbmxblew2lyghgy2tctvcazsfcjxk3ozgnm5a33uc4m/guitar1.json`
+2. On the Parameters tab, specify the token identifier for the **id**, the **account** for the token owner, the **guard** for the account that is authorized to mint the token, and the **amount** to mint, then click **Next**.
+   
+      In this example, the id is "t:LgMWE4ZKH4H2i6Ri4ZyuWIpHCE5cJDS4HjFEzN7PnQ0", the account is "k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e", the guard is specified using (read-keyset "my-keyset"), and the amount is 1.0.
 
-   - Set the **policies** to identify the policies to enforce for the token.
-     For this walk-through, the token uses the following policies: 
-     [marmalade-v2.non-fungible-policy-v1,marmalade-v2.guard-policy-v1]
+3. On the Configuration tab, select the **Transaction Sender** and review the General transaction settings, then click **Advanced** to verify the keyset you're using.
+   
+   After you select a key and a predicate function to use, click **Next**.
 
-   - Set the **guard** to authorize a specific keyset or another guard to mint the token.
-     For this walk-through, the guard can be read from the transaction using `(read-keyset "my-keyset")`.
+4. On the Sign tab, click the Grant Capabilities plus (+) to add the MINT capability to the transaction and specify the **token identifier**, **minting account**, and **amount** as arguments.
 
-7. On the Configuration tab, select the **Transaction Sender**, review transaction settings, and select the keyset to use, then click **Next**.
-8. On the Sign tab, select an Unrestricted Signing key, then click **Next**.
-9. On the Preview tab, scroll to see the Raw Response is **true**, then click **Submit**.
+   In this example, the MINT capabilities look like this:
+   
+   ```text
+   (marmalade-v2.ledger.MINT "t:LgMWE4ZKH4H2i6Ri4ZyuWIpHCE5cJDS4HjFEzN7PnQ0" "k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e" 1.0)
+   ```
+
+   After you add the capability and arguments, select an account to sign for the **coin.GAS** and **marmalade-v2.ledger.MINT** capabilities, then click **Next**.
+
+5. On the Preview tab, scroll to see the Raw Response is **true**, then click **Submit**.
    
    After you submit the transaction, it is queued for processing in the memory pool until validated and added to a block.
    After the transaction is included in a block, your NFT is part of the permanent blockchain record and added to the Marmalade ledger.

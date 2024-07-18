@@ -35,7 +35,7 @@ import {
   MonoInfo,
   MonoKeyboardArrowRight,
   MonoLink,
-} from '@kadena/react-icons/system';
+} from '@kadena/kode-icons/system';
 import {
   Box,
   Breadcrumbs,
@@ -50,7 +50,7 @@ import {
   TextField,
   TextareaField,
   TrackerCard,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import Debug from 'debug';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
@@ -60,7 +60,7 @@ import { useRouter } from 'next/router';
 import type { ChangeEventHandler, FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import * as z from 'zod';
+import { z } from 'zod';
 import { containerClass } from '../styles.css';
 import {
   formButtonStyle,
@@ -398,18 +398,25 @@ const CrossChainTransferFinisher: FC = () => {
       <Heading as="h4">{t('Finish transaction')}</Heading>
 
       <div className={notificationContainerStyle}>
-        <Notification intent="warning" role="status" isDismissable>
+        <Notification
+          intent="warning"
+          role="status"
+          type="inlineStacked"
+          isDismissable
+        >
           <NotificationHeading>{t('Application Settings')}</NotificationHeading>
-          <Trans
-            i18nKey="common:application-settings-warning"
-            components={[
-              <a
-                className={notificationLinkStyle}
-                key="link-open-settings"
-                onClick={handleDevOptionsClick}
-              />,
-            ]}
-          />
+          <div>
+            <Trans
+              i18nKey="common:application-settings-warning"
+              components={[
+                <a
+                  className={notificationLinkStyle}
+                  key="link-open-settings"
+                  onClick={handleDevOptionsClick}
+                />,
+              ]}
+            />
+          </div>
         </Notification>
       </div>
 

@@ -20,7 +20,11 @@ import type {
   SalePolicyProps,
   WithSaleTokenPolicy,
 } from './config';
-import { formatAdditionalSigners, formatCapabilities } from './helpers';
+import {
+  formatAdditionalSigners,
+  formatCapabilities,
+  formatWebAuthnSigner,
+} from './helpers';
 
 interface IOfferTokenInput extends CommonProps {
   tokenId: string;
@@ -80,7 +84,7 @@ const offerTokenCommand = <C extends ISaleTokenPolicyConfig>({
         timeout,
       ),
     ),
-    addSigner(seller.keyset.keys, (signFor) => [
+    addSigner(formatWebAuthnSigner(seller.keyset.keys), (signFor) => [
       signFor('coin.GAS'),
       signFor(
         'marmalade-v2.ledger.OFFER',

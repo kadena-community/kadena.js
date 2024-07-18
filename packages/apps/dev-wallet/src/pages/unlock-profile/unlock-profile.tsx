@@ -1,9 +1,15 @@
-import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.hook';
-import { Button, Heading, Text, TextField, Stack, Avatar } from '@kadena/react-ui';
+import { AuthCard } from '@/Components/AuthCard/AuthCard';
+import {
+  Avatar,
+  Button,
+  Heading,
+  Stack,
+  Text,
+  TextField,
+} from '@kadena/kode-ui';
 import { useForm } from 'react-hook-form';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
-import { AuthCard } from '@/Components/AuthCard/AuthCard';
 import { passwordContainer, profileContainer } from './styles.css.ts';
 
 export function UnlockProfile() {
@@ -11,11 +17,10 @@ export function UnlockProfile() {
     register,
     handleSubmit,
     setError,
-    formState: { isValid, errors }
+    formState: { isValid, errors },
   } = useForm<{ password: string }>();
   const { profileId } = useParams();
-  const { isUnlocked, profileList, unlockProfile } = useWallet();
-  const { unlockHDWallet } = useHDWallet();
+  const { profileList, unlockProfile } = useWallet();
   const profile = profileList.find((p) => p.uuid === profileId);
   const incorrectPasswordMsg = 'Password is incorrect';
 
@@ -33,7 +38,6 @@ export function UnlockProfile() {
       if (!keySource) {
         throw new Error('No key source found');
       }
-      await unlockHDWallet(keySource.source, password, keySource);
     } catch (e) {
       console.log(e);
       setError('password', { type: 'manual', message: incorrectPasswordMsg });
@@ -42,13 +46,15 @@ export function UnlockProfile() {
   if (!profile) {
     return <Navigate to="/select-profile" replace />;
   }
-  if (isUnlocked) {
-    return <Navigate to="/" replace />;
-  }
   return (
     <>
-      <AuthCard backButtonLink="/select-profile">
-        <Stack gap="md" padding="sm" display="inline-flex" className={profileContainer}>
+      <AuthCard>
+        <Stack
+          gap="md"
+          padding="sm"
+          display="inline-flex"
+          className={profileContainer}
+        >
           <Avatar size="md" name={profile.name} /> {profile.name}
         </Stack>
         <Heading variant="h5">Unlock your profile</Heading>
@@ -69,8 +75,13 @@ export function UnlockProfile() {
             />
           </div>
           <Stack flexDirection="column" gap="md">
-            <Button type="submit" isDisabled={!isValid} >Continue</Button>
-            <Text as="p" size="small">Forgot password? <Link to="/import-wallet">Recover your profile</Link></Text>
+            <Button type="submit" isDisabled={!isValid}>
+              Continue
+            </Button>
+            <Text as="p" size="small">
+              Forgot password?
+              <Link to="/import-wallet">Recover your profile</Link>
+            </Text>
           </Stack>
         </form>
       </AuthCard>

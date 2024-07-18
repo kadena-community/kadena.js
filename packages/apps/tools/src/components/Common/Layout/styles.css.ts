@@ -1,4 +1,4 @@
-import { atoms, tokens } from '@kadena/react-ui/styles';
+import { atoms, tokens } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const headerStyle = style([
@@ -28,15 +28,25 @@ export const gridItemMainStyle = style([
   atoms({
     width: '100%',
     overflowY: 'scroll',
+    overflowX: 'hidden',
   }),
   {
     height: '100vh',
+    width: '100vw',
     paddingTop: tokens.kda.foundation.size.n20,
     paddingInline: `calc(${tokens.kda.foundation.size.n20} + ${tokens.kda.foundation.size.n2})`,
     borderRight: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
     selectors: {
       '&.isMenuOpen': {
-        paddingLeft: `calc(${tokens.kda.foundation.size.n64} + ${tokens.kda.foundation.size.n20} + ${tokens.kda.foundation.size.n2})`,
+        paddingInlineStart: `calc(${tokens.kda.foundation.size.n64} + ${tokens.kda.foundation.size.n20} + ${tokens.kda.foundation.size.n2})`,
+      },
+      '&.useFullWidth': {
+        paddingTop: tokens.kda.foundation.size.n16, // Same as the height of `headerStyle`
+        paddingInlineStart: tokens.kda.foundation.size.n12, // Same as the width of `sidebarStyle`
+        paddingInlineEnd: 0,
+      },
+      '&.useFullWidth.isMenuOpen': {
+        paddingInlineStart: `calc(${tokens.kda.foundation.size.n64} + ${tokens.kda.foundation.size.n10})`, // Same as the width of `sidebarStyle` (when menu is opened)
       },
     },
   },

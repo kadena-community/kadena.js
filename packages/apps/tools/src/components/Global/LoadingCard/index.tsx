@@ -1,7 +1,7 @@
 import React from 'react';
 
-import type { ICardProps } from '@kadena/react-ui';
-import { Card, ProgressCircle } from '@kadena/react-ui';
+import type { ICardProps } from '@kadena/kode-ui';
+import { Card, ProgressCircle } from '@kadena/kode-ui';
 import useTranslation from 'next-translate/useTranslation';
 import { containerStyle } from './styles.css';
 

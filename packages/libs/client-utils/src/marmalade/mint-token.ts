@@ -7,11 +7,16 @@ import {
   execution,
   setMeta,
 } from '@kadena/client/fp';
+import { PactNumber } from '@kadena/pactjs';
 import type { ChainId, IPactDecimal } from '@kadena/types';
 import { submitClient } from '../core';
 import type { IClientConfig } from '../core/utils/helpers';
 import type { CommonProps } from './config';
-import { formatAdditionalSigners, formatCapabilities } from './helpers';
+import {
+  formatAdditionalSigners,
+  formatCapabilities,
+  formatWebAuthnSigner,
+} from './helpers';
 
 interface IMintTokenInput extends CommonProps {
   policyConfig?: {
@@ -42,9 +47,12 @@ const mintTokenCommand = ({
   capabilities,
   additionalSigners,
 }: IMintTokenInput) => {
-  if (policyConfig?.nonFungible && amount.decimal !== '1') {
+  if (
+    policyConfig?.nonFungible &&
+    amount.decimal !== new PactNumber(1).toDecimal()
+  ) {
     throw new Error(
-      'Non-fungible tokens can only be minted with an amount of 1',
+      'Non-fungible tokens can only be minted with an amount of 1.0',
     );
   }
 
@@ -58,7 +66,7 @@ const mintTokenCommand = ({
       ),
     ),
     addKeyset('guard', guard.keyset.pred, ...guard.keyset.keys),
-    addSigner(guard.keyset.keys, (signFor) => [
+    addSigner(formatWebAuthnSigner(guard.keyset.keys), (signFor) => [
       signFor('coin.GAS'),
       signFor('marmalade-v2.ledger.MINT', tokenId, accountName, amount),
       ...(policyConfig?.guarded

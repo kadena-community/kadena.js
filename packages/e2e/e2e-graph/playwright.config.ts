@@ -3,6 +3,10 @@ import type { PlaywrightTestConfig } from '@playwright/test';
 
 const config: PlaywrightTestConfig = {
   ...baseConfig,
+  reporter:
+    process.env.CI !== undefined
+      ? [['list'], ['blob', { outputFile: './blob-report/blob-graph.zip' }]]
+      : [['list'], ['html', { open: 'never' }]],
   webServer: {
     timeout: 90000,
     command: `pnpm --filter @kadena/graph start:generate`,

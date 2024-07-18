@@ -1,6 +1,6 @@
 import type { FormStatus } from '@/components/Global/FormStatusNotification';
 import { FormStatusNotification } from '@/components/Global/FormStatusNotification';
-import { Button, Stack } from '@kadena/react-ui';
+import { Button, Stack } from '@kadena/kode-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useState } from 'react';
@@ -30,7 +30,7 @@ import { getExplorerLink } from '@/utils/getExplorerLink';
 import {
   MonoContentCopy,
   MonoKeyboardArrowRight,
-} from '@kadena/react-icons/system';
+} from '@kadena/kode-icons/system';
 import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
 import { useQueryClient } from '@tanstack/react-query';
 import Trans from 'next-translate/Trans';

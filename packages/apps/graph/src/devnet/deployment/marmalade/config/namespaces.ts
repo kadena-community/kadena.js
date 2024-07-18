@@ -3,6 +3,7 @@ export interface IMarmaladeNamespaceConfig {
   namespaces: string[];
 }
 
+// Note: the order of these matters - the first file is the first to be processed and so on
 export const marmaladeNamespaceConfig: IMarmaladeNamespaceConfig[] = [
   {
     file: 'ns-marmalade.pact',

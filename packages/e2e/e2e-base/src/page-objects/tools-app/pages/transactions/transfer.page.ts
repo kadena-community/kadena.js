@@ -1,6 +1,6 @@
 import type { Locator, Page } from '@playwright/test';
 import { generateAccount } from '../../../../helpers/client-utils/accounts.helper';
-import { ListBoxComponent } from '../../../react-ui/listBox.component';
+import { ListBoxComponent } from '../../../kode-ui/listBox.component';
 
 export class TransferPage {
   private readonly _page: Page;

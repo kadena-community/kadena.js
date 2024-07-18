@@ -1,22 +1,31 @@
 {
   "name": "@kadena/marmalade-marketplace",
-  "version": "0.0.0",
+  "version": "0.1.1",
   "private": true,
+  "browser": {
+    "fs": false
+  },
   "scripts": {
     "build": "pnpm generate && next build",
     "dev": "pnpm generate && next dev",
     "generate": "npx graphql-codegen",
     "start": "next start",
-    "start:cron": "ts-node scripts/cron.ts"
+    "start:cron": "ts-node scripts/cron.ts",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@kadena/client": "workspace:*",
     "@kadena/client-utils": "workspace:*",
+    "@kadena/cryptography-utils": "workspace:*",
+    "@kadena/kode-icons": "workspace:*",
+    "@kadena/kode-ui": "workspace:*",
     "@kadena/pactjs": "workspace:*",
-    "@kadena/react-ui": "workspace:*",
-    "@kadena/react-icons": "workspace:*",
+    "@pinata/sdk": "^2.1.0",
     "firebase": "^10.8.0",
+    "formidable": "^3.5.1",
     "next": "14.2.2",
+    "next-themes": "^0.2.1",
     "react": "^18.2.0",
     "react-aria-components": "^1.0.1",
     "react-dom": "^18.2.0"
@@ -26,17 +35,27 @@
     "@graphql-codegen/typescript": "^4.0.6",
     "@graphql-codegen/typescript-operations": "~4.2.0",
     "@kadena-dev/shared-config": "workspace:*",
+    "@testing-library/react": "~14.0.0",
     "@types/css-modules": "^1.0.5",
+    "@types/formidable": "^3.4.5",
     "@types/node": "^20.12.7",
     "@types/node-cron": "^3.0.11",
     "@types/react": "^18.2.79",
+    "@types/react-dom": "^18.2.25",
     "@types/webpack-env": "^1.18.5",
     "@vanilla-extract/css": "1.14.2",
     "@vanilla-extract/next-plugin": "2.4.0",
-    "axios": "^1.6.8",
+    "@vanilla-extract/vite-plugin": "4.0.7",
+    "@vitejs/plugin-react": "^4.3.1",
+    "@vitest/coverage-v8": "^1.6.0",
     "dotenv": "~16.4.5",
+    "form-data": "^4.0.0",
+    "happy-dom": "^12.9.1",
+    "next-router-mock": "^0.9.10",
     "node-cron": "^3.0.3",
-    "ts-node": "~10.9.2"
+    "ts-node": "~10.9.2",
+    "vitest": "^1.6.0",
+    "vitest-dom": "^0.1.1"
   },
   "engines": {
     "node": ">=18"

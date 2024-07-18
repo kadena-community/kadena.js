@@ -1,5 +1,5 @@
 import { IKeyItem } from '@/modules/wallet/wallet.repository';
-import { Box, Heading, Text } from '@kadena/react-ui';
+import { Box, Heading, Text } from '@kadena/kode-ui';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -13,7 +13,7 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 const NUMBER_OF_KEYS_TO_DISCOVER = 20;
 
 export function AccountDiscovery() {
-  const { profile, retrieveAccounts, keySources } = useWallet();
+  const { profile, keySources, unlockKeySource } = useWallet();
   const { keySourceId } = useParams();
   const [key, setKey] = useState<IKeyItem>();
   const [discoveryStatus, setDiscoveryStatus] = useState<
@@ -27,7 +27,14 @@ export function AccountDiscovery() {
   async function start() {
     const keySource = keySources.find((ks) => ks.uuid === keySourceId);
     if (!activeNetwork || !keySource || !profile) return;
+    if (
+      keySource.source !== 'HD-BIP44' &&
+      keySource.source !== 'HD-chainweaver'
+    ) {
+      throw new Error('Unsupported key source');
+    }
     setDiscoveryStatus('discovering');
+    await unlockKeySource(keySource);
     await accountDiscovery(
       activeNetwork.networkId,
       keySource,
@@ -41,7 +48,6 @@ export function AccountDiscovery() {
         setAccounts((prev) => [...prev, data]);
       })
       .execute();
-    await retrieveAccounts(profile.uuid);
     setDiscoveryStatus('finished');
   }
 
@@ -77,7 +83,7 @@ export function AccountDiscovery() {
                 {key && (
                   <Text>
                     {' '}
-                    #{key.index + 1} Address: `k:{key.publicKey} `
+                    #{key.index} Address: `k:{key.publicKey} `
                   </Text>
                 )}
               </Text>

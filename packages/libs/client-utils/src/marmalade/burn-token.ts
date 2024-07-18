@@ -14,7 +14,11 @@ import type { ChainId, IPactDecimal } from '@kadena/types';
 import { submitClient } from '../core';
 import type { IClientConfig } from '../core/utils/helpers';
 import type { CommonProps } from './config';
-import { formatAdditionalSigners, formatCapabilities } from './helpers';
+import {
+  formatAdditionalSigners,
+  formatCapabilities,
+  formatWebAuthnSigner,
+} from './helpers';
 
 interface IBurnTokenInput extends CommonProps {
   policyConfig?: {
@@ -58,7 +62,7 @@ const burnTokenCommand = ({
     execution(
       Pact.modules['marmalade-v2.ledger'].burn(tokenId, accountName, amount),
     ),
-    addSigner(guard.keyset.keys, (signFor) => [
+    addSigner(formatWebAuthnSigner(guard.keyset.keys), (signFor) => [
       signFor('coin.GAS'),
       signFor('marmalade-v2.ledger.BURN', tokenId, accountName, amount),
       ...(policyConfig?.guarded

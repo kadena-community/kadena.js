@@ -1,0 +1,30 @@
+name: Prune old E2E Reports
+
+on:
+ workflow_dispatch:
+ schedule:
+    - cron: "0 0 * * 6"   # Every Saturday around midnight
+  
+
+jobs:
+  delete_old_reports:
+    runs-on: ubuntu-latest
+    permissions:
+        contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with: 
+          ref: gh-pages
+
+      - name: Run Cleanup
+        run: |
+         chmod +x ./cleanup.sh
+         ./cleanup.sh
+
+      - name: Commit all changed files back to the repository
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          branch: gh-pages
+          commit_message: Delete folders older than 30 days

@@ -1,5 +1,99 @@
 # @kadena/graph-client
 
+## 0.3.1
+
+### Patch Changes
+
+- @kadena/graph\@1.0.7
+- @kadena/kode-icons\@0.1.0
+- @kadena/kode-ui\@0.13.0
+
+## 0.3.0
+
+### Minor Changes
+
+- d5de83869: Rename 'react-ui' to 'kode-ui'
+- 563fb6cad: Rename react-icons to kode-icons
+
+### Patch Changes
+
+- Updated dependencies \[d5de83869]
+- Updated dependencies \[563fb6cad]
+  - @kadena/kode-icons\@0.1.0
+  - @kadena/kode-ui\@0.13.0
+
+## 0.2.5
+
+### Patch Changes
+
+- Updated dependencies \[df0a2e823]
+- Updated dependencies \[311d0bf44]
+- Updated dependencies \[0e9c0d049]
+- Updated dependencies \[950444ccf]
+  - @kadena/kode-ui\@0.12.2
+  - @kadena/graph\@1.0.6
+
+## 0.2.4
+
+### Patch Changes
+
+- Updated dependencies \[16f0b17ed]
+- Updated dependencies \[4dc02eec8]
+- Updated dependencies \[db77beba0]
+- Updated dependencies \[c0a6ffde5]
+- Updated dependencies \[7ee91269f]
+- Updated dependencies \[5b95decb2]
+- Updated dependencies \[6d9900ef8]
+  - @kadena/kode-ui\@0.12.1
+
+## 0.2.3
+
+### Patch Changes
+
+- Updated dependencies \[1bbf1c6]
+- Updated dependencies \[63bdbcb]
+- Updated dependencies \[15a492c]
+  - @kadena/graph\@1.0.5
+  - @kadena/kode-ui\@0.12.0
+
+## 0.2.2
+
+### Patch Changes
+
+- Updated dependencies \[6a969ebdc]
+- Updated dependencies \[b541021f4]
+- Updated dependencies \[e648c32fa]
+  - @kadena/kode-ui\@0.11.0
+  - @kadena/graph\@1.0.4
+
+## 0.2.1
+
+### Patch Changes
+
+- Updated dependencies \[020be02d7]
+- Updated dependencies \[9d7545ae0]
+- Updated dependencies \[f045afe82]
+- Updated dependencies \[e5f85728a]
+- Updated dependencies \[5a9d2de5e]
+- Updated dependencies \[dac1b28ca]
+- Updated dependencies \[3805b414e]
+- Updated dependencies \[c9fe555df]
+- Updated dependencies \[8e2a29721]
+- Updated dependencies \[cfb7c5bab]
+- Updated dependencies \[864329d3e]
+- Updated dependencies \[076f0980f]
+- Updated dependencies \[9cb50ea42]
+- Updated dependencies \[7e19fd3f3]
+- Updated dependencies \[f4a18faa8]
+- Updated dependencies \[30217ff8e]
+- Updated dependencies \[49fb38853]
+- Updated dependencies \[a415d7995]
+- Updated dependencies \[07ec9691c]
+- Updated dependencies \[4a5045c52]
+- Updated dependencies \[b0b05ca86]
+  - @kadena/kode-ui\@0.10.0
+  - @kadena/graph\@1.0.3
+
 ## 0.2.0
 
 ### Minor Changes
@@ -29,9 +123,9 @@
 - Updated dependencies \[5cf752eed]
 - Updated dependencies \[0d18ab81c]
 - Updated dependencies \[37375fa7e]
-  - @kadena/react-ui\@0.9.0
+  - @kadena/kode-ui\@0.9.0
   - @kadena/graph\@1.0.2
-  - @kadena/react-icons\@0.0.3
+  - @kadena/kode-icons\@0.0.3
 
 ## 0.1.19
 
@@ -110,14 +204,14 @@
 - Updated dependencies \[077c7c1e6]
 - Updated dependencies \[5c5937eef6]
   - @kadena/graph\@0.1.12
-  - @kadena/react-ui\@0.8.4
+  - @kadena/kode-ui\@0.8.4
 
 ## 0.1.14
 
 ### Patch Changes
 
 - Updated dependencies \[25de564cd]
-  - @kadena/react-ui\@0.8.3
+  - @kadena/kode-ui\@0.8.3
 
 ## 0.1.13
 
@@ -133,7 +227,7 @@
 - f503c33df: Fixed Cont/Exec Payload renaming issue
 - 7e50d4949: Replaced SSE with WebSockets for Subscriptions
 - Updated dependencies \[550e6d9e4]
-  - @kadena/react-ui\@0.8.2
+  - @kadena/kode-ui\@0.8.2
 
 ## 0.1.12
 
@@ -142,7 +236,7 @@
 - 3abcf01d2: Added Tooltip in cases where columns can be truncated
 - Updated dependencies \[cce6c38de]
 - Updated dependencies \[1aa8bfa8d]
-  - @kadena/react-ui\@0.8.1
+  - @kadena/kode-ui\@0.8.1
 
 ## 0.1.11
 
@@ -153,14 +247,14 @@
 - Updated dependencies \[817eff027]
 - Updated dependencies \[5a52cd69b]
 - Updated dependencies \[eb12b600e]
-  - @kadena/react-ui\@0.8.0
+  - @kadena/kode-ui\@0.8.0
 
 ## 0.1.10
 
 ### Patch Changes
 
 - Updated dependencies \[b6a44c813]
-  - @kadena/react-ui\@0.7.1
+  - @kadena/kode-ui\@0.7.1
 
 ## 0.1.9
 
@@ -185,7 +279,7 @@
 - Updated dependencies \[47e3ac2a9]
 - Updated dependencies \[9d3aab7c8]
 - Updated dependencies \[58ed2adfa]
-  - @kadena/react-ui\@0.7.0
+  - @kadena/kode-ui\@0.7.0
 
 ## 0.1.8
 
@@ -198,7 +292,7 @@
 - Updated dependencies \[5a71173a8]
 - Updated dependencies \[6d30efacd]
 - Updated dependencies \[d1f705b4d]
-  - @kadena/react-ui\@0.6.0
+  - @kadena/kode-ui\@0.6.0
 
 ## 0.1.7
 
@@ -221,7 +315,7 @@
 - Updated dependencies \[6992a2b58]
 - Updated dependencies \[d9109f3ba]
 - Updated dependencies \[4b8b728dd]
-  - @kadena/react-ui\@0.5.0
+  - @kadena/kode-ui\@0.5.0
 
 ## 0.1.6
 
@@ -230,7 +324,7 @@
 - f4ac431f4: Edited the pages containing transfers to display cross-chain
   transfers as one entry
 - Updated dependencies \[49d8366c7]
-  - @kadena/react-ui\@0.4.0
+  - @kadena/kode-ui\@0.4.0
 
 ## 0.1.5
 
@@ -241,7 +335,7 @@
   the endpoint
 - Updated dependencies \[6f79f73dd]
 - Updated dependencies \[6f79f73dd]
-  - @kadena/react-ui\@0.3.1
+  - @kadena/kode-ui\@0.3.1
 
 ## 0.1.4
 
@@ -254,7 +348,7 @@
 - Updated dependencies \[6491589b5]
 - Updated dependencies \[8a719c647]
 - Updated dependencies \[df7044cac]
-  - @kadena/react-ui\@0.3.0
+  - @kadena/kode-ui\@0.3.0
 
 ## 0.1.3
 
@@ -267,7 +361,7 @@
 - Updated dependencies \[1d7d88081]
 - Updated dependencies \[fa98adaa8]
 - Updated dependencies \[fa6b84e22]
-  - @kadena/react-ui\@0.2.1
+  - @kadena/kode-ui\@0.2.1
 
 ## 0.1.2
 
@@ -316,7 +410,7 @@
 - Updated dependencies \[a664a9535]
 - Updated dependencies \[c375cb124]
 - Updated dependencies \[49a9956fa]
-  - @kadena/react-ui\@0.2.0
+  - @kadena/kode-ui\@0.2.0
 
 ## 0.1.1
 
@@ -330,4 +424,4 @@
 - Updated dependencies \[242b5687]
 - Updated dependencies \[14b81501]
 - Updated dependencies \[3e53006e]
-  - @kadena/react-ui\@0.1.0
+  - @kadena/kode-ui\@0.1.0

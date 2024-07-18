@@ -1,39 +1,48 @@
-import { IKeySource } from '../wallet/wallet.repository';
+import { KeySourceType } from '../wallet/wallet.repository';
 import { IKeySourceService } from './interface';
 
 export interface IKeySourceManager {
-  get(source: IKeySource['source']): Promise<IKeySourceService>;
+  get(source: KeySourceType): Promise<IKeySourceService>;
   reset(): void;
 }
 
 function createKeySourceManager(): IKeySourceManager {
-  let bip44: IKeySourceService;
-  let chainweaver: IKeySourceService;
+  const services = new Map<string, IKeySourceService>();
   return {
-    async get(
-      source: 'HD-BIP44' | 'HD-chainweaver',
-    ): Promise<IKeySourceService> {
+    async get(source: KeySourceType): Promise<IKeySourceService> {
+      if (services.has(source)) {
+        return services.get(source) as IKeySourceService;
+      }
       switch (source) {
         case 'HD-BIP44':
-          if (bip44) return bip44;
           return import('./hd-wallet/BIP44').then((module) => {
-            bip44 = module.createBIP44Service();
+            const bip44 = module.createBIP44Service();
+            services.set(source, bip44);
             return bip44;
           });
 
         case 'HD-chainweaver':
-          if (chainweaver) return chainweaver;
           return import('./hd-wallet/chainweaver').then((module) => {
-            chainweaver = module.createChainweaverService();
+            const chainweaver = module.createChainweaverService();
+            services.set(source, chainweaver);
             return chainweaver;
+          });
+
+        case 'web-authn':
+          return import('./web-authn/webauthn').then((module) => {
+            const webAuthn = module.createWebAuthnService();
+            services.set(source, webAuthn);
+            return webAuthn;
           });
         default:
           throw new Error(`Key source service not found for ${source}`);
       }
     },
-    reset() {
-      bip44?.disconnect();
-      chainweaver?.disconnect();
+    async reset() {
+      await Promise.all(
+        [...services.values()].map((service) => service.disconnect()),
+      );
+      services.clear();
     },
   };
 }

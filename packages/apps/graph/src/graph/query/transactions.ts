@@ -7,6 +7,7 @@ import {
   getConditionForMinimumDepth,
 } from '@services/depth-service';
 import { normalizeError } from '@utils/errors';
+import { ZodError } from 'zod';
 import { builder } from '../builder';
 
 const generateTransactionFilter = async (args: {
@@ -16,29 +17,53 @@ const generateTransactionFilter = async (args: {
   blockHash?: string | null | undefined;
   requestKey?: string | null | undefined;
   minimumDepth?: number | null | undefined;
-}): Promise<Prisma.TransactionWhereInput> => ({
-  ...(args.accountName && { senderAccount: args.accountName }),
-  ...(args.fungibleName && {
-    events: {
-      some: {
-        moduleName: args.fungibleName,
+  minHeight?: number | null | undefined;
+  maxHeight?: number | null | undefined;
+}): Promise<Prisma.TransactionWhereInput> => {
+  const conditionForBlockHeight = (args: {
+    minHeight?: number | null | undefined;
+    maxHeight?: number | null | undefined;
+  }): Prisma.TransactionWhereInput => {
+    const conditions: Prisma.TransactionWhereInput[] = [];
+
+    if (args.minHeight) {
+      conditions.push({ block: { height: { gte: args.minHeight } } });
+    }
+
+    if (args.maxHeight) {
+      conditions.push({ block: { height: { lte: args.maxHeight } } });
+    }
+
+    return { AND: conditions };
+  };
+
+  return {
+    ...(args.accountName && { senderAccount: args.accountName }),
+    ...(args.fungibleName && {
+      events: {
+        some: {
+          moduleName: args.fungibleName,
+        },
       },
-    },
-  }),
-  ...(args.chainId && { chainId: parseInt(args.chainId) }),
-  ...(args.blockHash && { blockHash: args.blockHash }),
-  ...(args.requestKey && { requestKey: args.requestKey }),
-  ...(args.minimumDepth && {
-    OR: await getConditionForMinimumDepth(
-      args.minimumDepth,
-      args.chainId ? [args.chainId] : undefined,
-    ),
-  }),
-});
+    }),
+    ...(args.chainId && { chainId: parseInt(args.chainId) }),
+    ...(args.blockHash && { blockHash: args.blockHash }),
+    ...(args.requestKey && { requestKey: args.requestKey }),
+    ...(args.minimumDepth && {
+      OR: await getConditionForMinimumDepth(
+        args.minimumDepth,
+        args.chainId ? [args.chainId] : undefined,
+      ),
+    }),
+    ...(args.minHeight && { block: { height: { gte: args.minHeight } } }),
+    ...((args.maxHeight || args.minHeight) && conditionForBlockHeight(args)),
+  };
+};
 
 builder.queryField('transactions', (t) =>
   t.prismaConnection({
-    description: 'Retrieve transactions. Default page size is 20.',
+    description:
+      'Retrieve transactions. Default page size is 20.\n At least one of accountName, fungibleName, blockHash, or requestKey must be provided.',
     type: Prisma.ModelName.Transaction,
     cursor: 'blockHash_requestKey',
     edgesNullable: false,
@@ -74,6 +99,18 @@ builder.queryField('transactions', (t) =>
           nonnegative: true,
         },
       }),
+      minHeight: t.arg.int({
+        required: false,
+        validate: {
+          nonnegative: true,
+        },
+      }),
+      maxHeight: t.arg.int({
+        required: false,
+        validate: {
+          nonnegative: true,
+        },
+      }),
     },
     complexity: (args) => ({
       field: getDefaultConnectionComplexity({
@@ -83,6 +120,25 @@ builder.queryField('transactions', (t) =>
       }),
     }),
     async totalCount(__parent, args) {
+      // at least one of these should be in the args
+      // accountName && fungibleName
+      // blockHash
+      // requestKey
+      if (
+        stringNullOrEmpty(args.accountName) &&
+        stringNullOrEmpty(args.fungibleName) &&
+        stringNullOrEmpty(args.blockHash) &&
+        stringNullOrEmpty(args.requestKey)
+      ) {
+        throw new ZodError([
+          {
+            code: 'custom',
+            message:
+              'At least one of accountName, fungibleName, blockHash, or requestKey must be provided',
+            path: ['transactions'],
+          },
+        ]);
+      }
       try {
         return prismaClient.transaction.count({
           where: await generateTransactionFilter(args),
@@ -94,6 +150,36 @@ builder.queryField('transactions', (t) =>
 
     async resolve(query, __parent, args) {
       try {
+        if (
+          args.minHeight &&
+          args.maxHeight &&
+          args.minHeight > args.maxHeight
+        ) {
+          throw new ZodError([
+            {
+              code: 'custom',
+              message: 'minHeight must be lower than maxHeight',
+              path: ['transactions'],
+            },
+          ]);
+        }
+
+        if (
+          stringNullOrEmpty(args.accountName) &&
+          stringNullOrEmpty(args.fungibleName) &&
+          stringNullOrEmpty(args.blockHash) &&
+          stringNullOrEmpty(args.requestKey)
+        ) {
+          throw new ZodError([
+            {
+              code: 'custom',
+              message:
+                'At least one of accountName, fungibleName, blockHash, or requestKey must be provided',
+              path: ['transactions'],
+            },
+          ]);
+        }
+
         let transactions: Transaction[] = [];
         let skip = 0;
         const take = query.take;
@@ -141,3 +227,7 @@ builder.queryField('transactions', (t) =>
     },
   }),
 );
+
+function stringNullOrEmpty(s: string | null | undefined): boolean {
+  return s === null || s === undefined || s === '';
+}

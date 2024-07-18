@@ -444,7 +444,7 @@ describe('updateAuction', () => {
           if (prResult.result.status === 'failure') {
             expect(prResult.result.status).toBe('success');
           } else {
-            expect(prResult.result.data).toBe('Write succeeded');
+            expect(prResult.result.data).toBe(true);
           }
         }),
       )
@@ -464,13 +464,13 @@ describe('updateAuction', () => {
           if (sbResult.result.status === 'failure') {
             expect(sbResult.result.status).toBe('success');
           } else {
-            expect(sbResult.result.data).toBe('Write succeeded');
+            expect(sbResult.result.data).toBe(true);
           }
         }),
       )
       .execute();
 
-    expect(result).toBe('Write succeeded');
+    expect(result).toBe(true);
   });
 });
 
@@ -908,6 +908,7 @@ describe('buyToken', () => {
         seller: {
           account: sourceAccount.account,
         },
+        signer: secondaryTargetAccount.publicKey,
         buyer: {
           account: secondaryTargetAccount.account,
           keyset: {
@@ -916,7 +917,6 @@ describe('buyToken', () => {
           },
         },
         amount: new PactNumber(1).toPactDecimal(),
-        timeout,
       },
       config,
     )

@@ -9,6 +9,7 @@ import { walletsCommandFactory } from './commands/wallets/index.js';
 import { networksCommandFactory } from './commands/networks/index.js';
 import { txCommandFactory } from './commands/tx/index.js';
 // import { typescriptCommandFactory } from './typescript/index.js';
+import { pactjsCommandFactory } from './commands/pactjs/index.js';
 import { versionCommand } from './commands/version/index.js';
 
 import type { Command } from 'commander';
@@ -21,6 +22,7 @@ const packageJson: { version: string } = JSON.parse(
 
 export function loadProgram(program: Command): Command {
   [
+    pactjsCommandFactory,
     configCommandFactory,
     networksCommandFactory,
     // devnetCommandFactory,

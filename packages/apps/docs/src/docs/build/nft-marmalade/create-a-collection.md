@@ -76,8 +76,8 @@ To identify the collection:
       "name": "luxi-dupree",
       "operator-account": "k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e", 
       "operator-guard": KeySet {
-         keys: [bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e],
-         pred: keys-all
+         "keys": ["bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"],
+         "pred": "keys-all"
          },
       "size": 0
    }
@@ -167,7 +167,7 @@ To create a token identifier:
 
 1. Under **Deployed Contracts**, select the `marmalade-v2.ledger` contract, then click **View**.
 
-2. Under Functions, select **create-token-id**, then click **Call**. 
+1. Under Functions, select **create-token-id**, then click **Call**. 
    
 1. On the Parameters tab, you need to specify the **token-details** and a **creation-guard**.
    
@@ -190,14 +190,14 @@ To create a token identifier:
 
    After configuring the parameters for the **create-token-id** function, click **Next**.
 
-2. On the Configuration tab, select the **Transaction Sender** and, under Advanced, configure **my-keyset** by selecting a keyset predicate and a key, then click **Next**.
+1. On the Configuration tab, select the **Transaction Sender** and, under Advanced, configure **my-keyset** by selecting a keyset predicate and a key, then click **Next**.
 
-3. On the Sign tab, select an unrestricted signing key from the available Unrestricted Signing Keys, then click **Next**.
+1. On the Sign tab, select an unrestricted signing key from the available Unrestricted Signing Keys, then click **Next**.
 
    Note that you aren't required to select a transaction sender or a signing key to create a token identifier. 
    However, this information is required to submit a transaction that records the token identifier in the blockchain.
 
-4. On the Preview tab, scroll to see the **Raw Response** is a token identifier.
+1. On the Preview tab, scroll to see the **Raw Response** is a token identifier.
    
    In this example, the token identifier created is "t:BRY_BIznnBWXuXlzKHg8Ha-s6k_4YTf1ctOfsz3CeWg".
 
@@ -215,9 +215,9 @@ To create a token in a collection:
 
 1. Under **Deployed Contracts**, select the `marmalade-v2.ledger` contract, then click **View**.
 
-2. Under Functions, select **create-token**, then click **Call**. 
+1. Under Functions, select **create-token**, then click **Call**. 
    
-3. On the Parameters tab, you need to specify the token **id**, **precision**, **uri**, **policies**, and a **creation-guard**, then click **Next**.
+1. On the Parameters tab, you need to specify the token **id**, **precision**, **uri**, **policies**, and a **creation-guard**, then click **Next**.
    
    In this example, the parameters look like this for the first token in the collection:
 
@@ -229,15 +229,15 @@ To create a token in a collection:
 
    Be sure that the **creation guard** you specify here matches the **operator guard** you used to create the collection.
 
-4. On the Configuration tab, review the transaction details, select the **Transaction Sender**, then click **Advanced**.
+1. On the Configuration tab, review the transaction details, select the **Transaction Sender**, then click **Advanced**.
 
-5. On the Keysets tab, type the keyset name, click **Create**, select a keyset predicate, and select a key.
+1. On the Keysets tab, type the keyset name, click **Create**, select a keyset predicate, and select a key.
    
    Remember that you must use the same keyset that you used to create the collection.
 
-6. Click the **Raw** tab to configure policy settings for the collection policy and the guard policy as a JSON object, then click **Next**.
+1. Click the **Raw** tab to configure policy settings for the collection policy and the guard policy as a JSON object, then click **Next**.
    
-   In this example, the **Raw** data sets the collection identifier and registers the guards to use for the mint, burn, transfer, and sale operations.
+   In this example, the **Raw** data sets the collection identifier and registers the guards to use for the mint, burn, sale, transfer, and URI update operations.
    For example:
    
    ```json
@@ -254,6 +254,9 @@ To create a token in a collection:
          "pred": "keys-all"},
        "transfer-guard": {
          "keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], 
+         "pred": "keys-all"},
+       "uri-guard": {
+         "keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], 
          "pred": "keys-all"}
    }
    ```
@@ -262,9 +265,9 @@ To create a token in a collection:
    You don't need to specify a guard for any token activity that you don't want to restrict access to.
    You can also use different guards for any token action if you want to authorize different accounts to perform specific actions.
 
-7. On the Sign tab, select an unrestricted signing key from the available Unrestricted Signing Keys, then click **Next**.
+1. On the Sign tab, select an unrestricted signing key from the available Unrestricted Signing Keys, then click **Next**.
 
-8. On the Preview tab, review the transaction details, including the destination network and chain, and verify that the **Raw Response** is **true**, then click **Submit**.
+1. On the Preview tab, review the transaction details, including the destination network and chain, and verify that the **Raw Response** is **true**, then click **Submit**.
 
    After you submit the transaction, it is queued for processing in the memory pool until validated and added to a block.
    After the transaction is included in a block, you can view the transaction results in the block explorer.
@@ -300,13 +303,13 @@ To mint a non-fungible token in a collection:
 
    In this example, the MINT capabilities look like this:
    
-   ```pact
+   ```text
    (marmalade-v2.ledger.MINT "t:BRY_BIznnBWXuXlzKHg8Ha-s6k_4YTf1ctOfsz3CeWg" "k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e" 1.0)
    ```
 
 1. Select an account to sign for the **coin.GAS** and **marmalade-v2.ledger.MINT** capabilities, then click **Next**.
 
-9.  On the Preview tab, scroll to see the Raw Response is **true**, then click **Submit**.
+1. On the Preview tab, scroll to see the Raw Response is **true**, then click **Submit**.
    
    After you submit the transaction, it is queued for processing in the memory pool until validated and added to a block.
    After the transaction is included in a block, you can view the transaction results in the block explorer.
@@ -322,9 +325,10 @@ To mint a non-fungible token in a collection:
       "id": "collection:MawFy7BSJMkatOJ07y_e0tYbPE26K_q8x0ACX5C25B8",
       "max-size": 8,
       "name": "luxi-dupree",
-      "operator-account": "k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e","operator-guard": KeySet {
-         keys: [bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e],
-         pred: keys-all
+      "operator-account": "k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e",
+      "operator-guard": KeySet {
+         "keys": ["bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"],
+         "pred": "keys-all"
          },
       "size": 1
    }

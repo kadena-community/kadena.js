@@ -1,5 +1,5 @@
 import { filePathToRoute } from '@/pages/api/semanticsearch';
-import { Box, Heading, Text, useDialog } from '@kadena/react-ui';
+import { Box, Heading, Text, useDialog } from '@kadena/kode-ui';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
@@ -51,7 +51,7 @@ const Item: FC<IResultProps> = ({ item }) => {
 
   return (
     <li>
-      <Link href={url} passHref legacyBehavior>
+      <Link href={removeHashFromString(url)} passHref legacyBehavior>
         <a className={itemLinkClass} onClick={state.close}>
           <Heading as="h5">{item.title}</Heading>
           <ItemBreadCrumb url={url} />

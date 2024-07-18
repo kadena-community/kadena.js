@@ -3,6 +3,8 @@
   "compilerOptions": {
     "types": [".kadena/pactjs-generated", "node"],
     "lib": ["es2019"],
-    "noEmit": true
+    "outDir": "lib/types",
+    "declaration": true,
+    "emitDeclarationOnly": true
   }
 }

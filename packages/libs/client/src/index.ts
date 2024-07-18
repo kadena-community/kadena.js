@@ -26,3 +26,5 @@ export {
   IKeyPair,
   IUnsignedCommand,
 } from '@kadena/types';
+
+export * from './utils/parseAsPactValue';

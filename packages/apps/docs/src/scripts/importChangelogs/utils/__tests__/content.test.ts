@@ -47,10 +47,10 @@ describe('content utils', () => {
       const spy = vi.spyOn(fs, 'readFileSync');
 
       const repo: IRepo = {
-        name: 'React UI',
-        slug: 'react-ui',
+        name: 'Kode UI',
+        slug: 'kode-ui',
         repo: 'https://github.com/kadena-community/kadena.js.git',
-        directory: '/packages/libs/react-ui',
+        directory: '/packages/libs/kode-ui',
         fileName: 'CHANGELOG.md',
         owner: 'kadena-community',
         repoName: CURRENTPACKAGE,
@@ -60,7 +60,7 @@ describe('content utils', () => {
 
       expect(spy).toBeCalledTimes(1);
       expect(spy).toBeCalledWith(
-        `${process.cwd()}/../../../packages/libs/react-ui/CHANGELOG.md`,
+        `${process.cwd()}/../../../packages/libs/kode-ui/CHANGELOG.md`,
         'utf-8',
       );
     });

@@ -1,6 +1,21 @@
-import { style } from '@vanilla-extract/css';
+import { tokens } from '@kadena/kode-ui/styles';
+import { createVar, style } from '@vanilla-extract/css';
+
+export const $$pageWidth = createVar();
 
 export const documentStyle = style({
-  padding: '30px 50px 50px 50px',
-  fontSize: '14px',
+  vars: {
+    [$$pageWidth]: tokens.kda.foundation.breakpoint.xxl, // '1440px',
+  },
+});
+
+export const layoutWrapperClass = style({
+  position: 'relative',
+  marginInline: 'auto',
+  maxWidth: $$pageWidth,
+});
+
+export const contentClass = style({
+  marginTop: '64px',
+  minHeight: 'calc(100vh - 248px)',
 });

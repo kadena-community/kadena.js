@@ -3,9 +3,9 @@ import {
   MonoCheck,
   MonoInfo,
   MonoWarning,
-} from '@kadena/react-icons/system';
-import type { INotificationProps } from '@kadena/react-ui';
-import { Notification, NotificationHeading } from '@kadena/react-ui';
+} from '@kadena/kode-icons/system';
+import type { INotificationProps } from '@kadena/kode-ui';
+import { Notification, NotificationHeading } from '@kadena/kode-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
