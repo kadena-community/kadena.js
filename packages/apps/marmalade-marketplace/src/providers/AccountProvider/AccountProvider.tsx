@@ -43,10 +43,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const searchParams = useSearchParams();
   const chainId = '8';
 
-  const decodeAccount = useCallback((userResponse: string) => {
-    throw new Error('Should not be used');
-  }, []);
-
   const login = useCallback(async () => {
     const account = await connect(env.NETWORKID, chainId);
     setIsMounted(true);
