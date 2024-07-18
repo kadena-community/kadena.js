@@ -61,22 +61,22 @@ const AccountTransfersTable: FC<{ accountName: string }> = ({
       isLoading={isLoading}
       fields={[
         {
-          label: 'Height',
-          key: 'height',
-          variant: 'code',
-          width: '10%',
-        },
-        {
           label: 'ChainId',
           key: 'chainId',
           variant: 'code',
           width: '10%',
         },
         {
-          label: 'Amount',
-          key: 'amount',
+          label: 'Height',
+          key: 'height',
+          variant: 'code',
+          width: '10%',
+        },
+        {
+          label: 'RequestKey',
+          key: 'requestKey',
           width: '20%',
-          render: FormatAmount(),
+          render: FormatLink({ appendUrl: '/transaction' }),
         },
         {
           label: 'Sender',
@@ -91,10 +91,12 @@ const AccountTransfersTable: FC<{ accountName: string }> = ({
           render: FormatLink({ appendUrl: '/account' }),
         },
         {
-          label: 'RequestKey',
-          key: 'requestKey',
+          label: 'Amount',
+          key: 'amount',
+          variant: 'code',
+          align: 'end',
           width: '20%',
-          render: FormatLink({ appendUrl: '/transaction' }),
+          render: FormatAmount(),
         },
       ]}
       data={innerData.node?.transfers.edges.map(

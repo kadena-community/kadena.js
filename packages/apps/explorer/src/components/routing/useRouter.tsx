@@ -19,9 +19,13 @@ export const useRouter = () => {
 
     const innerNetworks = getNetworks();
 
-    const pathArray = router.asPath.split('/').filter((v) => !!v);
+    const regExp = new RegExp(/[?#].*/);
+    const pathArray = router.asPath
+      .replace(regExp, '')
+      .split('/')
+      .filter((v) => !!v);
     const foundNetwork = innerNetworks.find(
-      (n) => n.slug && pathArray[0].startsWith(n.slug),
+      (n) => n.slug && pathArray[0] === n.slug,
     );
 
     if (!foundNetwork) {

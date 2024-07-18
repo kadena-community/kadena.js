@@ -207,6 +207,7 @@ const SearchResults: FC<ISearchResultsProps> = ({ searchData, loading }) => {
                     label: 'RequestKey',
                     key: 'node.requestKey',
                     width: '20%',
+                    render: FormatLink({ appendUrl: '/transaction' }),
                   },
                   {
                     label: 'Parameters',
