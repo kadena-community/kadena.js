@@ -46,7 +46,7 @@ Requests to `GET http://{baseURL}/chain/{chain}/hash` return the following respo
 
 #### Response header
 
-The response header parameters are the same for all successful and unsuccessful requests.
+The response header parameters are the same for all successful and unsuccessful Chainweb node requests.
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
@@ -163,13 +163,13 @@ Requests to `/chain/{chain}/hash/branch` can return the following response codes
 
 #### Response headers
 
-The response header parameters are the same for successful and unsuccessful requests.
+The response header parameters are the same for all successful and unsuccessful Chainweb node requests.
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote chainweb node in the format ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$. For example: "10.36.1.3:42988"
-| x-server-timestamp | integer >= 0 | Specifies the clock time of the remote chainweb node using the UNIX epoch timestamp. For example: 1618597601
-| x-chainweb-node-version	| string | Specifies the version of the remote chainweb node. For example: "2.23"
+| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote Chainweb node in the format ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$. For example: `"10.36.1.3:42988"`.
+| x-server&#8209;timestamp | integer&nbsp;>=&nbsp;0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
+| x-chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
 
 #### Successful response schema
 
