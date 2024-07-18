@@ -1,5 +1,5 @@
 import { atoms } from '@kadena/kode-ui/styles';
-import { style } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 export const networkListClass = style([
   atoms({
@@ -12,3 +12,7 @@ export const selectedNetworkClass = style([
     backgroundColor: 'base.@active',
   }),
 ]);
+
+export const selectWrapperClass = style([]);
+
+globalStyle(`${selectWrapperClass}`, {});

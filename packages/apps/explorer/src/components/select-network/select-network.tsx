@@ -1,10 +1,14 @@
 import { useNetwork } from '@/context/networks-context';
-import { Select, SelectItem } from '@kadena/kode-ui';
+import { Select, SelectItem, Stack } from '@kadena/kode-ui';
 
-import { MonoNetworkWifi } from '@kadena/kode-icons/system';
+import {
+  MonoControlPointDuplicate,
+  MonoPermScanWifi,
+} from '@kadena/kode-icons/system';
 import type { FC, FormEventHandler } from 'react';
 import React, { useState } from 'react';
 import NewNetwork from './new-network';
+import { selectWrapperClass } from './style.css';
 
 const SelectNetwork: FC = () => {
   const { networks, activeNetwork, setActiveNetwork } = useNetwork();
@@ -30,7 +34,7 @@ const SelectNetwork: FC = () => {
   };
 
   return (
-    <>
+    <Stack className={selectWrapperClass}>
       <Select
         size="lg"
         aria-label="Select network"
@@ -48,10 +52,8 @@ const SelectNetwork: FC = () => {
             </SelectItem>
           )) as any
         }
-        <SelectItem key="new">
-          <MonoNetworkWifi /> Add Network
-        </SelectItem>
-        <SelectItem key="new">Configure</SelectItem>
+        <SelectItem key="new">Add Network</SelectItem>
+        <SelectItem key="configure">Configure</SelectItem>
       </Select>
       {isOpen && (
         <NewNetwork
@@ -59,7 +61,7 @@ const SelectNetwork: FC = () => {
           createNetwork={handleCreateNetwork}
         />
       )}
-    </>
+    </Stack>
   );
 };
 

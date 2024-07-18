@@ -34,6 +34,7 @@ interface INetworkContext {
   activeNetwork: INetwork;
   setActiveNetwork: (activeNetwork: INetwork['slug']) => void;
   addNetwork: (newNetwork: INetwork) => void;
+  removeNetwork: (newNetwork: INetwork) => void;
 }
 
 const NetworkContext = createContext<INetworkContext>({
@@ -41,6 +42,7 @@ const NetworkContext = createContext<INetworkContext>({
   activeNetwork: {} as INetwork,
   setActiveNetwork: () => {},
   addNetwork: () => {},
+  removeNetwork: () => {},
 });
 
 export const storageKey = 'networks';
@@ -128,6 +130,22 @@ const NetworkContextProvider = (props: {
     window.location.href = `/${networkSlug}`;
   };
 
+  const removeNetwork = (network: INetwork): void => {
+    const defaultNetworks = getDefaultNetworks();
+
+    //if a defaultnetwork dont delete
+    if (
+      defaultNetworks.find(
+        (nw) => nw.slug === network.slug && nw.label === network.label,
+      )
+    )
+      return;
+
+    const storage: INetwork[] = JSON.parse(
+      localStorage.getItem(storageKey) ?? '[]',
+    );
+  };
+
   const addNetwork = (newNetwork: INetwork): void => {
     const storage: INetwork[] = JSON.parse(
       localStorage.getItem(storageKey) ?? '[]',
@@ -192,6 +210,7 @@ const NetworkContextProvider = (props: {
         activeNetwork,
         setActiveNetwork: setActiveNetworkByKey,
         addNetwork,
+        removeNetwork,
       }}
     >
       <ApolloProvider client={getApolloClient()}>
