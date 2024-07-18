@@ -1,4 +1,4 @@
-import { globalStyle, vars } from "../src/styles";
+import { globalStyle, vars } from '../src/styles';
 
 globalStyle('pre.prismjs > div, pre.prismjs > div span, code', {
   overflowWrap: 'break-word',
