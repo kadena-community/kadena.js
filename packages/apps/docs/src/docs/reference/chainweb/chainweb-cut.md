@@ -129,7 +129,7 @@ The response body for this request returns the state for each chain with the max
 ```
 
 Note that this sample request was sent to a bootstrap node for the Kadena public blockchain, so the `origin` is `null`.
-If you want to publish a cut, you must send the request to a Chainweb node that return a value for the `origin` property.
+If you want to publish a cut, you must send the request to a Chainweb node that returns a value for the `origin` property.
 
 ## Publish a cut
 
