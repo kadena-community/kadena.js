@@ -1,4 +1,4 @@
-import { atoms, tokens } from '@kadena/kode-ui/styles';
+import { atoms, recipe, tokens } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const sectionClass = style([
@@ -59,10 +59,27 @@ export const linkIconClass = style([
 ]);
 
 export const dataFieldClass = style({
+  display: 'flex!important',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
   // If we use atoms it will be overridden by the Text component.
   color: tokens.kda.foundation.color.text.base.default,
+});
+
+export const alignVariants = recipe({
+  variants: {
+    align: {
+      start: style({
+        justifyContent: 'flex-start',
+      }),
+      end: style({
+        justifyContent: 'flex-end',
+      }),
+      center: style({
+        justifyContent: 'center',
+      }),
+    },
+  },
 });
