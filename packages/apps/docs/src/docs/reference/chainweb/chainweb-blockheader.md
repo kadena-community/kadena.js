@@ -6,7 +6,7 @@ menu: Chainweb API
 label: Block header endpoints
 order: 2
 layout: full
-tags: ['chainweb', 'node api', 'chainweb api', 'api reference']
+tags: ['chainweb', 'node api', 'chainweb api', 'api reference', 'block header']
 ---
 
 # Block header endpoints
@@ -25,7 +25,7 @@ Block headers are returned in three different formats depending on the content t
 
 ## Get block headers
 
-Use `GET https://{baseURL}/chain/{chain}/header` to get block headers for the specified chain.
+Use `GET http://{baseURL}/chain/{chain}/header` to get block headers for the specified chain.
 This call returns a collection of block headers in ascending order that satisfies the query parameters. 
 All block headers that match the query criteria are returned from the chain database, including headers for orphaned blocks.
 
@@ -33,20 +33,20 @@ All block headers that match the query criteria are returned from the chain data
 
 | Parameter | Type | Description
 | :--------- | :---- | :-----------
-| chain (required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block headers for the first chain (0), the request is `GET https://{baseURL}/chain/0/header`.
+| chain (required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block headers for the first chain (0), the request is `GET http://{baseURL}/chain/0/header`.
 
 ### Query parameters
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the limit you set.
-| next | string | Specifies the cursor for the next page. This value can be found as the value of the next property of the previous page.
-| minheight	| integer >= 0 | Specifies the minimum block height for the returned headers. For example: minheight=500000
-| maxheight | integer >= 0 | Specifies the maximum block height for the returned headers. For example: maxheight=500000
+| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the limit you set. For example: `limit=3`.
+| next | string | Specifies the cursor to retrieve the next page of results. This value can be found as the value of the next property of the previous page. For example: `"inclusive:qgsxD1G5m8dGZ4W9nMKBotU2I10ilURkRIE3_UKHlLM"`.
+| minheight	| integer >= 0 | Specifies the minimum block height for the returned headers. For example: minheight=500000.
+| maxheight | integer >= 0 | Specifies the maximum block height for the returned headers. For example: maxheight=500000.
 
 ### Responses
 
-Requests to `https://{baseURL}/chain/{chain}/header` can return the following response codes:
+Requests to `http://{baseURL}/chain/{chain}/header` return the following response codes:
 
 - **200 OK** indicates that the request succeeded and returns a collection of block headers in **ascending** order. 
   All block headers that match the specified criteria are returned from the chain database, including headers for orphaned blocks.
@@ -55,13 +55,13 @@ Requests to `https://{baseURL}/chain/{chain}/header` can return the following re
 
 #### Response headers
 
-The response header parameters are the same for successful and unsuccessful requests.
+The response header parameters are the same for all successful and unsuccessful Chainweb node requests.
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote chainweb node in the format ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$. For example: "10.36.1.3:42988"
-| x-server-timestamp | integer >= 0 | Specifies the clock time of the remote chainweb node using the UNIX epoch timestamp. For example: 1618597601
-| x-chainweb-node-version	| string | Specifies the version of the remote chainweb node. For example: "2.23"
+| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote Chainweb node in the format ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$. For example: `"10.36.1.3:42988"`.
+| x-server&#8209;timestamp | integer&nbsp;>=&nbsp;0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
+| x&#8209;chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
 
 #### Successful response schemas
 
@@ -73,12 +73,21 @@ The format of the information returned in the response depends on the content ty
 | limit (required) | integer >= 0 | Specifies the number of items in the page. This number can be smaller but never be larger than the number of requested items.
 | next (required) | string or null | Returns a cursor that can be used in a follow up request to query the next page. It should be used literally as the value for the `next` parameter in the follow-up request. It can be specified as inclusive or exclusive.
 
-#### Examples
+#### Not found response schema
+
+If you specified `application/json` in the Accept header of the request and there are no results matching the request criteria, the response returns the following:
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| key | string (Block Hash) | Specifies the base64Url-encoded block hash (without padding). The block hash consists of 43 characters from the `^[a-zA-Z0-9_-]{43}$` character set. |
+| reason | string | Provides a placeholder for specifying the reason that no block headers were found. |
+
+### Examples
 
 You can send a request to the Kadena test network—testnet04—and chain 18 by calling the testnet service endpoint like this:
 
 ```Postman
-GET https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/18/header?limit=5
+GET http://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/18/header?limit=5
 ```
 
 With the Accept header set to `application/json`, this request returns five items in the response body and each item is a base64Url-encoded string like this:
@@ -127,14 +136,6 @@ With the Accept header set to `application/json;blockheader-encoding=object`, ea
 }
 ```
 
-#### Not found response schema
-
-If you specified `application/json` in the accept header of the request and there are no results matching the request criteria, the response returns the following:
-
-| Parameter | Type | Description |
-| --------- | ---- | ----------- |
-| key | string (Block Hash) | Specifies the base64Url-encoded block hash (without padding). The block hash consists of 43 characters from the `^[a-zA-Z0-9_-]{43}$` character set. |
-| reason | string | Provides a placeholder for specifying the reason that no block headers were found. |
 
 For example:
 
@@ -253,10 +254,10 @@ Only blocks that are ancestors of the same block in the set of upper bounds and 
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number of records might be lower.
-| next | string | Specifies the cursor for the next page. This value can be found as the value of the next property of the previous page.
-| minheight	| integer >= 0 | Specifies the minimum block height for the returned headers. For example: minheight=500000
-| maxheight | integer >= 0 | Specifies the maximum block height for the returned headers. For example: maxheight=500000
+| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number of records might be lower. For example: `limit=3`.
+| next | string | Specifies the cursor to retrieve the next page of results. This value can be found as the value of the next property of the previous page. For example: `"inclusive:qgsxD1G5m8dGZ4W9nMKBotU2I10ilURkRIE3_UKHlLM"`.
+| minheight	| integer >= 0 | Specifies the minimum block height for the returned headers. For example: `minheight=4471908`.
+| maxheight | integer >= 0 | Specifies the maximum block height for the returned headers. For example: `maxheight=4953816`.
 
 ### Request schema
 
@@ -264,10 +265,10 @@ These parameters specify the upper and lower bounds for the queried branches.
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| lower	| Array of strings (Block Hash) | Specifies the lower bound for the query. No block hashes are returned that are predecessors of any block with a hash from this array. The block hash consists of 43 characters from the `^[a-zA-Z0-9_-]{43}$` character set. |
-| upper | Array of strings (Block Hash) | Specifies the upper bound for the query. Returned block hashes are predecessors of a block with an hash from this array. This includes blocks with hashes from this array. The block hash consists of 43 characters from the `^[a-zA-Z0-9_-]{43}$` character set. |
+| lower	| Array of strings | Specifies the lower bound block header hash for the query. No block headers are returned that are predecessors of any block with a hash from this array. The block hash consists of 43 characters from the `^[a-zA-Z0-9_-]{43}$` character set. |
+| upper | Array of strings | Specifies the upper bound block header for the query. All block hashes returned are predecessors of a block with a hash from this array. The block hash consists of 43 characters from the `^[a-zA-Z0-9_-]{43}$` character set. |
 
-The following examples illustrate the results to expect based on setting these parameters. 
+The following examples illustrate the results to expect based on setting the lower and upper bound parameters. 
 For example, to return all of the ancestors of a block that are not ancestors of another block, you might specify bounds similar to the following:
 
 ```json

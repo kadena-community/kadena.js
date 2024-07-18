@@ -34,8 +34,8 @@ All blocks that match the criteria are returned from the chain database, includi
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the value you specify.
-| next | string | Specifies the cursor value to retrieve the next page of results. You can find the value to specify in the `next` property returned by the previous page in a successful response.
+| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the value you specify. For example: `limit=3`.
+| next | string | Specifies the cursor value to retrieve the next page of results. You can find the value to specify in the `next` property returned by the previous page in a successful response. For example: `"inclusive:qgsxD1G5m8dGZ4W9nMKBotU2I10ilURkRIE3_UKHlLM"`.
 | minheight	| integer >= 0 | Specifies the minimum block height for the blocks to return. For example: `minheight=4471908`.
 | maxheight | integer >= 0 | Specifies the maximum block height for the blocks to return. For example: `maxheight=4953816`.
 

@@ -6,7 +6,7 @@ menu: Chainweb API
 label: Block hash endpoints
 order: 2
 layout: full
-tags: ['chainweb', 'node api', 'chainweb api', 'api reference']
+tags: ['chainweb', 'node api', 'chainweb api', 'api reference', 'block hash']
 ---
 
 # Block hash endpoints
@@ -31,7 +31,7 @@ Use `GET http://{baseURL}/chain/{chain}/hash` to get block hashes for the specif
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the value you specify.
+| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the value you specify. For example: `limit=3`.
 | next | string | Specifies the cursor value to retrieve the next page of results. You can find the value to specify in the `next` property returned by the previous page in a successful response. For example: `"inclusive:qgsxD1G5m8dGZ4W9nMKBotU2I10ilURkRIE3_UKHlLM"`.
 | minheight	| integer >= 0 | Specifies the minimum block height for the returned hashes. For example: `minheight=4471908`.
 | maxheight | integer >= 0 | Specifies the maximum block height for the returned hashes. For example: `maxheight=4953816`.
@@ -50,9 +50,9 @@ The response header parameters are the same for all successful and unsuccessful 
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote chainweb node in the format ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$. For example: `"10.36.1.3:42988"`.
-| x-server-timestamp | integer >= 0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
-| x-chainweb-node-version	| string | Specifies the version of the remote chainweb node. For example: `"2.23"`.
+| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote Chainweb node. The host address can be a domain name or an IP address in IPv4 or IPv6 format. For example: `"10.36.1.3:42988"`.
+| x-server&#8209;timestamp | integer&nbsp;>=&nbsp;0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
+| x&#8209;chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
 
 #### Successful response schema
 
@@ -116,7 +116,7 @@ This call only returns blocks that are ancestors of the same block in the set of
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the limit you set.
+| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the limit you set. For example: `limit=3`.
 | next | string | Specifies the cursor value to retrieve the next page of results. You can find the value to specify in the `next` property returned by the previous page in a successful response. For example: `"inclusive:qgsxD1G5m8dGZ4W9nMKBotU2I10ilURkRIE3_UKHlLM"`.
 | minheight	| integer >= 0 | Specifies the minimum block height for the returned hashes. For example: `minheight=4471908`.
 | maxheight | integer >= 0 | Specifies the maximum block height for the returned hashes. For example: `maxheight=4953816`.
@@ -127,8 +127,8 @@ Use the following parameters to specify the upper and lower bounds for the queri
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| lower	| Array of strings (Block Hash) | Specifies the lower bound for the query. No block hashes are returned that are predecessors of any block with a hash from this array. Each block hash consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
-| upper | Array of strings (Block Hash) | Specifies the upper bound for the query. All returned block hashes are predecessors of a block with an hash from this array. Each block hash consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
+| lower	| Array of strings | Specifies the lower bound for the query. No block hashes are returned that are predecessors of any block with a hash from this array. Each block hash consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
+| upper | Array of strings | Specifies the upper bound for the query. All returned block hashes are predecessors of a block with an hash from this array. Each block hash consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
 
 The following examples illustrate setting lower and upper bounds for the query parameters. 
 
@@ -155,7 +155,7 @@ To return all of the ancestors of the `"QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqB
 
 ### Responses
 
-Requests to `/chain/{chain}/hash/branch` can return the following response codes:
+Requests to `/chain/{chain}/hash/branch` return the following response codes:
 
 - **200 OK** indicates that the request succeeded and returns the requested block hashes. 
   All block hashes that match the specified criteria are returned from the chain database, including hashes for orphaned blocks.
@@ -167,7 +167,7 @@ The response header parameters are the same for all successful and unsuccessful 
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote Chainweb node in the format ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$. For example: `"10.36.1.3:42988"`.
+| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote Chainweb node. The host address can be a domain name or an IP address in IPv4 or IPv6 format. For example: `"10.36.1.3:42988"`.
 | x-server&#8209;timestamp | integer&nbsp;>=&nbsp;0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
 | x-chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
 
@@ -177,7 +177,7 @@ If the request is successful, the response returns application/json content with
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| items (required) | Array of strings (Block Hash) | Returns an array of block hashes. Each block hash consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
+| items (required) | Array of strings | Returns an array of block hashes. Each block hash consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
 | limit (required) | integer >= 0 | Specifies the maximum number of items in the page. This number can be smaller but never larger than the number of requested items.
 | next (required) | string or null | Returns a value that can be used to query the next page. You can use this values for the `next` parameter in a follow-up request. The format for this parameter consists of two parts. The first part of the string can be `inclusive`, `exclusive` or null. The second part is the value that calls the next page of results or null if there are no more results to query.
 
@@ -187,7 +187,7 @@ If there are no results matching the request criteria, the response returns the 
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| key | string | Specifies the base64Url-encoded block hash (without padding). The block hash consists of 43 characters from the [`a-zA-Z0-9_-`] character set. |
+| key | string | Specifies the base64Url-encoded block hash without padding. The block hash consists of 43 characters from the [`a-zA-Z0-9_-`] character set. |
 | reason | string | Provides a placeholder for specifying the reason that no block hashes were found. |
 
 ### Examples
@@ -249,7 +249,7 @@ This request returns four items in the response body:
 }
 ```
 
-If you specify an upper or lower bound doesn't exist on the chain where you're sending the request, the response body indicates the reason the no results matching the request criteria were found. 
+If you specify an upper or lower bound doesn't exist on the chain where you're sending the request, the response body indicates the reason no results matching the request criteria were found. 
 For example:
 
 ```json

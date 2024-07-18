@@ -23,8 +23,8 @@ Use GET https://{baseURL}/cut/peer to query peer node information for a specific
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower.
-| next | string | Specifies the cursor for the next page. This value can be found as the value of the `next` property of the previous page.
+| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower. For example: `limit=3`.
+| next | string | Specifies the cursor to retrieve the next page of results. This value can be found as the value of the `next` property of the previous page. For example: `"inclusive:qgsxD1G5m8dGZ4W9nMKBotU2I10ilURkRIE3_UKHlLM"`.
 
 ### Responses
 
