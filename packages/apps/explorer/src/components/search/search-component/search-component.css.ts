@@ -37,7 +37,7 @@ export const searchInputClass = style([
   {
     height: 46,
     border: 'none',
-
+    overflowX: 'auto',
     selectors: {
       '&::placeholder': {
         fontFamily: tokens.kda.foundation.typography.family.primaryFont,
