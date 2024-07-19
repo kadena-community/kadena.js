@@ -3,7 +3,11 @@ import ValueLoader from '@/components/loading-skeleton/value-loader/value-loader
 import { Grid, Stack, Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import React from 'react';
-import { blockGridStyle, blockWrapperClass } from '../block-table.css';
+import {
+  blockGridStyle,
+  blockHeaderClass,
+  blockWrapperClass,
+} from '../block-table.css';
 import { columnTitleClass, headerColumnStyle } from './block-header.css';
 
 interface IBlockTableHeaderProps {
@@ -23,7 +27,13 @@ const BlockTableHeader: React.FC<IBlockTableHeaderProps> = ({
   isLoading,
 }) => {
   return (
-    <Grid className={classNames(blockGridStyle, blockWrapperClass)}>
+    <Grid
+      className={classNames(
+        blockGridStyle,
+        blockWrapperClass,
+        blockHeaderClass,
+      )}
+    >
       {startColumns.map((column, index) => (
         <Stack key={index} className={headerColumnStyle}>
           <Text as="p" variant="body" size="small" className={columnTitleClass}>
