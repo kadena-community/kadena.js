@@ -170,10 +170,7 @@ const Account: FC = () => {
             >
               <AccountTransactionsTable accountName={accountName} />
             </TabItem> */}
-            <TabItem
-              title={`Transfers (${fungibleAccount?.transfers.totalCount})`}
-              key="Transfers"
-            >
+            <TabItem title={`Transfers`} key="Transfers">
               <AccountTransfersTable accountName={accountName} />
             </TabItem>
           </Tabs>
