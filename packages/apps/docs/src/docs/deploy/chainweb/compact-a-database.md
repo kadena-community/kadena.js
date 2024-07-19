@@ -11,12 +11,10 @@ tags: [pact, chainweb, network, node operator, developer]
 ---
 # Compact a Chainweb node database
 
-## This feature is unstable. Make sure to back up your database before using this tool.
-
 Because a healthy blockchain continuously adds new transactions in new blocks that change the state of the database, managing the storage requirements on individual nodes can be challenging.
 
-To address this storage issue, Chainweb provides the `cwtool compact` command.
-The `cwtool compact` command enables you to delete historical unused state from the `chainweb-node` Pact SQLite database.
+To address this storage issue, Chainweb provides the `compact` command-line program.
+The `compact` command enables you to delete historical unused state from the `chainweb-node` chain RocksDB database and the Pact SQLite database.
 Removing old state that isn't required to validate transactions or reach consensus enables your node to use far less disk space overall while maintaining the semantic integrity of node operations.
 
 To compact a Chainweb node database:
@@ -24,17 +22,17 @@ To compact a Chainweb node database:
 1. Open a terminal shell on a computer with access to the `chainweb-node` you manage.
 
    For example, if you run the node in a Docker container, open a terminal in the container.
-   If you installed chainweb-node from a release binary or built it from source, open a terminal or secure shell on the computer where the binary is installed.
+   If you installed `chainweb-node` from a release binary or built it from source, open a terminal or secure shell on the computer where the binary is installed.
 
-   For information about installing chainweb-node from a release binary or building it from source code, see the [chainweb-node README](https://github.com/kadena-io/chainweb-node#README).
+   For information about installing `chainweb-node` from a release binary or building it from the source code, see the [chainweb-node README](https://github.com/kadena-io/chainweb-node#README).
 
-2. Verify that you have access to the `cwtool`  command-line program by running the following command:
+2. Verify that you have access to the `compact` command-line program by running the following command:
 
    ```bash
-   cwtool --help
+   compact --help
    ```
 
-   If you have access to the `cwtool` program, you should see usage information similar to the following:
+   If you have access to the `compact` program, you should see usage information similar to the following:
 
    ```bash
    Chainweb Tool
