@@ -100,7 +100,7 @@ Minimum block height of the returned headers
 
 maxheight	
 integer >= 0
-Example: maxheight=500000
+Example: maxheight=`maxheight=4953816`
 Maximum block height of the returned headers
 
 REQUEST BODY SCHEMA: application/json
