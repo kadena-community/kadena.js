@@ -5,6 +5,56 @@ import { style } from '@vanilla-extract/css';
 import { tokens } from './contract.css';
 
 /**
+ * Code @xs Description
+ */
+export const monospaceLargeRegular = style({
+  fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.md,
+  fontWeight: tokens.kda.foundation.typography.weight.monospaceFont.regular,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+  letterSpacing: tokens.kda.foundation.spacing.n0,
+  '@media': {
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.lg,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.lg,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.lg,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+  },
+});
+
+/**
+ * Code Bold @ xs Description
+ */
+export const monospaceLargeBold = style({
+  fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.md,
+  fontWeight: tokens.kda.foundation.typography.weight.monospaceFont.medium,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+  letterSpacing: tokens.kda.foundation.spacing.n0,
+  '@media': {
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.lg,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.lg,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.lg,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+  },
+});
+
+/**
  * Small Code @xs Description
  */
 export const monospaceSmallRegular = style({
@@ -531,6 +581,56 @@ export const bodyBaseBold = style({
     },
     '(width >= 96rem)': {
       fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+  },
+});
+
+/**
+ * P Large @xs Description
+ */
+export const uiLargeRegular = style({
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.md,
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.regular,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+  letterSpacing: tokens.kda.foundation.spacing.n0,
+  '@media': {
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.lg,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.lg,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.lg,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+  },
+});
+
+/**
+ * P Bold @ xs Description
+ */
+export const uiLargeBold = style({
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.md,
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+  letterSpacing: tokens.kda.foundation.spacing.n0,
+  '@media': {
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.lg,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.lg,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.lg,
       lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
     },
   },
