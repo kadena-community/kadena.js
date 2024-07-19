@@ -74,6 +74,7 @@ export const editingBoxClass = style([
     fontSize: 'md',
     position: 'absolute',
     fontFamily: 'primaryFont',
+    backgroundColor: 'overlay.default',
   }),
   {
     top: '45px',

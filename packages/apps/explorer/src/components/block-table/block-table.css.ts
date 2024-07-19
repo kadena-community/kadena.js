@@ -33,6 +33,14 @@ export const blockWrapperClass = style([
     borderWidth: 'hairline',
     borderStyle: 'solid',
     borderColor: 'base.subtle',
+    backgroundColor: 'overlay.default',
+  }),
+]);
+
+export const blockHeaderClass = style([
+  atoms({
+    backgroundColor: 'overlay.default',
+    borderColor: 'base.bold',
   }),
 ]);
 
