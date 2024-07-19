@@ -48,8 +48,7 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
     e.preventDefault();
 
     const data = new FormData(e.currentTarget);
-    const { label, networkId, slug, chainwebUrl, graphUrl } =
-      getFormValues<any>(data);
+    const { label, networkId, slug, graphUrl } = getFormValues<any>(data);
 
     const newNetwork = {
       ...defineNewNetwork(),
@@ -57,7 +56,7 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
       networkId,
       slug,
       graphUrl,
-      chainwebUrl,
+      wsGraphUrl: graphUrl,
     };
 
     const errors = validateNewNetwork(networks, newNetwork);
@@ -68,12 +67,14 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
       console.warn('Errors adding network: ', errors.join('\n'));
       return;
     }
+    delete newNetwork.isNew;
+    delete newNetwork.graphUrlIsValid;
 
     addNetwork(newNetwork);
-    handleOpen(false);
   };
 
   const handleChangeGraphUrl: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setNetwork((v) => ({ ...v, graphUrlIsValid: undefined }));
     setGraphUrl(e.target.value);
   };
 
@@ -105,6 +106,10 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
   };
 
   useEffect(() => {
+    if (!network.slug) {
+      setGraphUrl('');
+      return;
+    }
     setGraphUrl(network.graphUrl);
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     validateNetwork();
@@ -138,7 +143,7 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
                         setNetwork(innerNetwork);
                       }
                     }}
-                    removeNetwork={() => removeNetwork(network)}
+                    removeNetwork={() => removeNetwork(innerNetwork)}
                     key={innerNetwork.label}
                     network={innerNetwork}
                   />
@@ -179,7 +184,13 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
               endAddon={
                 <Button
                   isDisabled={!graphUrl}
-                  variant={network.graphUrlIsValid ? 'primary' : 'transparent'}
+                  variant={
+                    network.graphUrlIsValid === false
+                      ? 'negative'
+                      : network.graphUrlIsValid === true
+                        ? 'primary'
+                        : 'transparent'
+                  }
                   onPress={validateNetwork}
                 >
                   Validate

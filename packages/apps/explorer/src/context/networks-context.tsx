@@ -195,13 +195,24 @@ const NetworkContextProvider = (props: {
     window.location.href = `/${networkSlug}`;
   };
 
-  const removeNetwork = (network: INetwork): void => {
+  const removeNetwork = (paramNetwork: INetwork): void => {
     //if a defaultnetwork dont delete
-    if (isDefaultNetwork(network)) return;
+    if (isDefaultNetwork(paramNetwork)) return;
 
-    // const storage: INetwork[] = JSON.parse(
-    //   localStorage.getItem(storageKey) ?? '[]',
-    // );
+    const storage: INetwork[] = JSON.parse(
+      localStorage.getItem(storageKey) ?? '[]',
+    );
+
+    const newStorage = storage.filter((n) => n.slug !== paramNetwork.slug);
+    localStorage.setItem(storageKey, JSON.stringify(newStorage));
+    window.dispatchEvent(new Event(storageKey));
+
+    if (activeNetwork?.slug === paramNetwork.slug) {
+      localStorage.removeItem(selectedNetworkKey);
+      Cookies.remove(selectedNetworkKey);
+
+      window.location.href = `/mainnet`;
+    }
   };
 
   const addNetwork = (newNetwork: INetwork): void => {

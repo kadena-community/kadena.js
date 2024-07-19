@@ -25,6 +25,7 @@ const NetworkListItem: FC<IProps> = ({
   }, [network]);
 
   const handleRemove = useCallback(() => {
+    if (!confirm('Are you sure you want to remove this network')) return;
     removeNetwork(network);
   }, [network]);
   return (
