@@ -1,8 +1,8 @@
-import type { INetwork } from '@/context/types';
+import type { INetwork } from '@/constants/network';
 import { getDefaultNetworks } from './getDefaultNetworks';
 
 export const isDefaultNetwork = (network: INetwork): boolean => {
   return !!getDefaultNetworks().find(
-    (n) => n?.label === network.label && n.networkId === network.networkId,
+    (n) => n?.slug === network.slug && n.networkId === network.networkId,
   );
 };

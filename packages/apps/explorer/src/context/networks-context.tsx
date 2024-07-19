@@ -3,6 +3,7 @@ import { useToast } from '@/components/toasts/toast-context/toast-context';
 import type { INetwork } from '@/constants/network';
 import { networkConstants } from '@/constants/network';
 import { checkNetwork } from '@/utils/checkNetwork';
+import { isDefaultNetwork } from '@/utils/isDefaultNetwork';
 import type { NormalizedCacheObject } from '@apollo/client';
 import {
   ApolloClient,
@@ -195,19 +196,12 @@ const NetworkContextProvider = (props: {
   };
 
   const removeNetwork = (network: INetwork): void => {
-    const defaultNetworks = getDefaultNetworks();
-
     //if a defaultnetwork dont delete
-    if (
-      defaultNetworks.find(
-        (nw) => nw.slug === network.slug && nw.label === network.label,
-      )
-    )
-      return;
+    if (isDefaultNetwork(network)) return;
 
-    const storage: INetwork[] = JSON.parse(
-      localStorage.getItem(storageKey) ?? '[]',
-    );
+    // const storage: INetwork[] = JSON.parse(
+    //   localStorage.getItem(storageKey) ?? '[]',
+    // );
   };
 
   const addNetwork = (newNetwork: INetwork): void => {

@@ -1,4 +1,4 @@
-import type { INetwork } from '@/context/networks-context';
+import type { INetwork } from '@/constants/network';
 import { MonoRemove } from '@kadena/kode-icons/system';
 import { Button, Heading, Stack } from '@kadena/kode-ui';
 import classNames from 'classnames';
@@ -21,7 +21,7 @@ const NetworkListItem: FC<IProps> = ({
   isDefaultNetwork,
 }) => {
   const handleSelect = useCallback(() => {
-    selectNetwork(network.networkId);
+    selectNetwork(network);
   }, [network]);
 
   const handleRemove = useCallback(() => {
