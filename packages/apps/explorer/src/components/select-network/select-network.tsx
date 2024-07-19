@@ -4,7 +4,6 @@ import { Button, Select, SelectItem, Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useState } from 'react';
 import { ConfigNetwork } from './ConfigNetwork';
-import { selectWrapperClass } from './style.css';
 
 const SelectNetwork: FC = () => {
   const { networks, activeNetwork, setActiveNetwork } = useNetwork();
@@ -17,7 +16,7 @@ const SelectNetwork: FC = () => {
   if (!networks) return null;
 
   return (
-    <Stack className={selectWrapperClass}>
+    <>
       <Stack>
         <Select
           size="lg"
@@ -45,7 +44,7 @@ const SelectNetwork: FC = () => {
         />
       </Stack>
       {isOpen && <ConfigNetwork handleOpen={setIsOpen} />}
-    </Stack>
+    </>
   );
 };
 

@@ -1,18 +1,19 @@
-import { atoms } from '@kadena/kode-ui/styles';
-import { globalStyle, style } from '@vanilla-extract/css';
+import { atoms, token, tokens } from '@kadena/kode-ui/styles';
+import { style } from '@vanilla-extract/css';
 
-export const networkListClass = style([
+export const cardVisualClass = style({
+  width: tokens.kda.foundation.size.n16,
+  height: tokens.kda.foundation.size.n16,
+  color: token('color.icon.brand.primary.default'),
+});
+
+export const selectBoxClass = style([
   atoms({
-    padding: 'no',
+    position: 'absolute',
   }),
+  {
+    width: '50%',
+    right: 0,
+    top: '-8px',
+  },
 ]);
-
-export const selectedNetworkClass = style([
-  atoms({
-    backgroundColor: 'base.@active',
-  }),
-]);
-
-export const selectWrapperClass = style([]);
-
-globalStyle(`${selectWrapperClass}`, {});
