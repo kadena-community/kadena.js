@@ -1,10 +1,5 @@
 import { useNetwork } from '@/context/networks-context';
 import { Select, SelectItem, Stack } from '@kadena/kode-ui';
-
-import {
-  MonoControlPointDuplicate,
-  MonoPermScanWifi,
-} from '@kadena/kode-icons/system';
 import type { FC, FormEventHandler } from 'react';
 import React, { useState } from 'react';
 import NewNetwork from './new-network';

@@ -14,8 +14,15 @@ import {
   Text,
   TextField,
 } from '@kadena/kode-ui';
-import type { FC, FormEventHandler } from 'react';
-import React, { useState } from 'react';
+import type {
+  ChangeEventHandler,
+  EventHandler,
+  FC,
+  FocusEventHandler,
+  FormEventHandler,
+  MouseEventHandler,
+} from 'react';
+import React, { useRef, useState } from 'react';
 import NetworkListItem from './network-listitem/network-listitem';
 import { networkListClass } from './style.css';
 import { getFormValues, validateNewNetwork } from './utils';
@@ -36,6 +43,9 @@ const NewNetwork: FC<IProps> = ({
   const { networks, addNetwork, activeNetwork } = useNetwork();
   const [formError, setFormError] = useState<(string | undefined)[]>();
   const [checkStatus, setCheckStatus] = useState<number>(0);
+  const refInputGraph = useRef<HTMLInputElement>(null);
+  const [graphUrl, setGraphUrl] = useState('');
+  const [graphUrlIsValid, setGraphUrlIsValid] = useState<boolean | null>(null);
 
   const handleCreateNetwork: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -65,18 +75,31 @@ const NewNetwork: FC<IProps> = ({
     if (label.length === 0) {
       label = networkId;
     }
+  };
+
+  const handleChangeGraphUrl: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setGraphUrl(e.target.value);
+  };
+
+  const validateNetwork:
+    | FormEventHandler<HTMLButtonElement>
+    | FocusEventHandler<HTMLButtonElement> = async (e: any) => {
+    e.preventDefault();
+
+    const value = e.target.value;
+    setGraphUrl(value);
 
     try {
-      const result = await checkNetwork(graphUrl);
-      setCheckStatus(result.status);
+      const result = await checkNetwork(value);
       await result.json();
 
       if (result.status === 200) {
-        addNetwork(newNetwork);
-        createNetwork(e);
+        setGraphUrlIsValid(true);
+      } else {
+        setGraphUrlIsValid(false);
       }
     } catch (e) {
-      setCheckStatus(500);
+      setGraphUrlIsValid(false);
     }
   };
 
@@ -123,9 +146,26 @@ const NewNetwork: FC<IProps> = ({
             ></TextField>
             <TextField label="Slug" name="slug" isRequired></TextField>
             <TextField
+              ref={refInputGraph}
               label="GraphQL URL"
               name="graphUrl"
+              onChange={handleChangeGraphUrl}
+              onBlur={validateNetwork}
               isRequired
+              validate={() => {
+                if (graphUrlIsValid === false) {
+                  return 'This network is not reachable';
+                }
+              }}
+              endAddon={
+                <Button
+                  isDisabled={!graphUrl}
+                  variant="transparent"
+                  onPress={validateNetwork}
+                >
+                  Validate
+                </Button>
+              }
             ></TextField>
 
             {formError && formError.length > 0 && (
