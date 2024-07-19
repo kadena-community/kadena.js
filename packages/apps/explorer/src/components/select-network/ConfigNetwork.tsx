@@ -173,86 +173,88 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
               title={!network.isNew ? 'Update network' : 'Create Network'}
               visual={<MonoPermScanWifi className={cardVisualClass} />}
             >
-              <TextField
-                ref={refInputGraph}
-                label="GraphQL URL"
-                name="graphUrl"
-                value={graphUrl}
-                variant={network.graphUrlIsValid ? 'positive' : 'default'}
-                onChange={handleChangeGraphUrl}
-                onBlur={(e) => {
-                  e.preventDefault();
-                  // eslint-disable-next-line @typescript-eslint/no-floating-promises
-                  validateNetwork();
-                }}
-                isRequired
-                validate={() => {
-                  if (network.graphUrlIsValid === false) {
-                    return 'This network is not reachable';
-                  }
-                }}
-                endAddon={
-                  <Button
-                    isDisabled={!graphUrl}
-                    variant={
-                      network.graphUrlIsValid === false
-                        ? 'negative'
-                        : network.graphUrlIsValid === true
-                          ? 'primary'
-                          : 'transparent'
+              <Stack gap="xl" flexDirection="column">
+                <TextField
+                  ref={refInputGraph}
+                  label="GraphQL URL"
+                  name="graphUrl"
+                  value={graphUrl}
+                  variant={network.graphUrlIsValid ? 'positive' : 'default'}
+                  onChange={handleChangeGraphUrl}
+                  onBlur={(e) => {
+                    e.preventDefault();
+                    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+                    validateNetwork();
+                  }}
+                  isRequired
+                  validate={() => {
+                    if (network.graphUrlIsValid === false) {
+                      return 'This network is not reachable';
                     }
-                    onPress={() => validateNetwork()}
-                  >
-                    Validate
-                  </Button>
-                }
-              ></TextField>
+                  }}
+                  endAddon={
+                    <Button
+                      isDisabled={!graphUrl}
+                      variant={
+                        network.graphUrlIsValid === false
+                          ? 'negative'
+                          : network.graphUrlIsValid === true
+                            ? 'primary'
+                            : 'transparent'
+                      }
+                      onPress={() => validateNetwork()}
+                    >
+                      Validate
+                    </Button>
+                  }
+                ></TextField>
 
-              {network.graphUrlIsValid && (
-                <>
-                  <TextField
-                    label="Name"
-                    name="label"
-                    value={network?.label}
-                    onChange={(e) => {
-                      setNetwork((v) => ({ ...v, label: e.target.value }));
-                    }}
-                    autoFocus
-                    isRequired
-                  ></TextField>
-                  <TextField
-                    label="NetworkId"
-                    value={network?.networkId}
-                    onChange={(e) => {
-                      setNetwork((v) => ({
-                        ...v,
-                        networkId: e.target.value,
-                      }));
-                    }}
-                    name="networkId"
-                    isRequired
-                  ></TextField>
-                  <TextField
-                    label="Slug"
-                    name="slug"
-                    value={network?.slug}
-                    onChange={(e) => {
-                      setNetwork((v) => ({ ...v, slug: e.target.value }));
-                    }}
-                    isRequired
-                  ></TextField>
-                </>
-              )}
+                {network.graphUrlIsValid && (
+                  <>
+                    <TextField
+                      label="Name"
+                      name="label"
+                      value={network?.label}
+                      onChange={(e) => {
+                        setNetwork((v) => ({ ...v, label: e.target.value }));
+                      }}
+                      autoFocus
+                      isRequired
+                    ></TextField>
+                    <TextField
+                      label="NetworkId"
+                      value={network?.networkId}
+                      onChange={(e) => {
+                        setNetwork((v) => ({
+                          ...v,
+                          networkId: e.target.value,
+                        }));
+                      }}
+                      name="networkId"
+                      isRequired
+                    ></TextField>
+                    <TextField
+                      label="Slug"
+                      name="slug"
+                      value={network?.slug}
+                      onChange={(e) => {
+                        setNetwork((v) => ({ ...v, slug: e.target.value }));
+                      }}
+                      isRequired
+                    ></TextField>
+                  </>
+                )}
 
-              {formError && formError.length > 0 && (
-                <Stack flexDirection="column">
-                  {(formError as string[]).map((e) => (
-                    <Text key={e} color="emphasize">
-                      {e}
-                    </Text>
-                  ))}
-                </Stack>
-              )}
+                {formError && formError.length > 0 && (
+                  <Stack flexDirection="column">
+                    {(formError as string[]).map((e) => (
+                      <Text key={e} color="emphasize">
+                        {e}
+                      </Text>
+                    ))}
+                  </Stack>
+                )}
+              </Stack>
             </CardContentBlock>
             <CardFooter>
               {!isDefaultNetwork(network) && !network.isNew && (

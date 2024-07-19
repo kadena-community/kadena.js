@@ -35,7 +35,6 @@ const SelectNetwork: FC = () => {
               </SelectItem>
             )) as any
           }
-          <SelectItem key="configure">Configure</SelectItem>
         </Select>
         <Button
           onPress={() => setIsOpen(true)}

@@ -207,6 +207,7 @@ const NetworkContextProvider = (props: {
     localStorage.setItem(storageKey, JSON.stringify(newStorage));
     window.dispatchEvent(new Event(storageKey));
 
+    //if the removed network was the active network, redirect to mainnet
     if (activeNetwork?.slug === paramNetwork.slug) {
       localStorage.removeItem(selectedNetworkKey);
       Cookies.remove(selectedNetworkKey);
