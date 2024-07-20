@@ -2,6 +2,7 @@ import type { AccountTransfersQuery, Transfer } from '@/__generated__/sdk';
 import { useAccountTransfersQuery } from '@/__generated__/sdk';
 import { usePagination } from '@/hooks/usePagination';
 import { graphqlIdFor } from '@/utils/graphqlIdFor';
+import { Heading, Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import CompactTable from '../compact-table/compact-table';
@@ -51,6 +52,13 @@ const AccountTransfersTable: FC<{ accountName: string }> = ({
   }, [loading, data]);
 
   if (innerData.node?.__typename !== 'FungibleAccount') return null;
+
+  if (error)
+    return (
+      <Stack justifyContent="center">
+        <Heading as="h5">There was an issue with loading the results</Heading>
+      </Stack>
+    );
 
   return (
     <CompactTable
