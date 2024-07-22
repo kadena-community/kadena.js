@@ -90,6 +90,15 @@ export const REPOS: IRepo[] = [
     repoName: 'kadena.js',
   },
   {
+    name: 'Block Explorer',
+    slug: 'explorer',
+    repo: 'https://github.com/kadena-community/kadena.js.git',
+    directory: '/packages/apps/explorer',
+    fileName: 'CHANGELOG.md',
+    owner: 'kadena-community',
+    repoName: 'kadena.js',
+  },
+  {
     name: 'ChainwebJS',
     slug: 'chainwebjs',
     repo: 'https://github.com/kadena-community/kadena.js.git',
