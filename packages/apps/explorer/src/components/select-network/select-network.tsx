@@ -19,7 +19,7 @@ const SelectNetwork: FC = () => {
   return (
     <>
       <Stack>
-        <Media greaterThan="md">
+        <Media greaterThanOrEqual="md">
           <Select
             size="lg"
             aria-label="Select network"
