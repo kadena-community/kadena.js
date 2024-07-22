@@ -6,6 +6,10 @@ import { Grid, Stack, Text } from '@kadena/kode-ui';
 import { atoms } from '@kadena/kode-ui/styles';
 import type { FC } from 'react';
 import React, { useEffect } from 'react';
+import {
+  boxClass,
+  overFlowClass,
+} from '../statistics-stack/statistics-stack.css';
 
 interface IStatisticsGridProps {
   inView: boolean;
@@ -35,25 +39,19 @@ const StatisticsGrid: FC<IStatisticsGridProps> = ({ inView }) => {
   const statisticsGridData = formatStatisticsData(statisticsData?.networkInfo);
 
   return (
-    <Grid columns={2} borderStyle="solid" borderWidth="hairline" width="100%">
+    <Grid columns={2} width="100%" gap="xs">
       {statisticsGridData.map((item) => (
         <Stack
+          className={boxClass}
           flexDirection={'column'}
           alignItems={'center'}
           padding={'sm'}
-          borderStyle="solid"
-          borderWidth="hairline"
           key={`statistic-stack-${item.label}`}
         >
-          <Text variant="code">{item.value}</Text>
-          <Text
-            variant="code"
-            bold
-            size="smallest"
-            className={atoms({
-              flexWrap: 'nowrap',
-            })}
-          >
+          <Text variant="code" bold>
+            {item.value}
+          </Text>
+          <Text size="smallest" className={overFlowClass}>
             {item.label}
           </Text>
         </Stack>
