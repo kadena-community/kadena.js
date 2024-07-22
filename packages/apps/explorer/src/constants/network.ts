@@ -8,6 +8,11 @@ export interface INetwork {
   explorerUrl?: string;
 }
 
+export type IEditNetwork = INetwork & {
+  graphUrlIsValid?: boolean;
+  isNew?: boolean;
+};
+
 export const networkConstants: INetwork[] = [
   {
     networkId: 'mainnet01',

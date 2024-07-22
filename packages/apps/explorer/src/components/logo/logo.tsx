@@ -8,6 +8,7 @@ const Logo: FC = () => {
   if (theme === 'dark') {
     return (
       <svg
+        style={{ width: '100%' }}
         data-style="kdacolor"
         width="230"
         height="40"

@@ -1,4 +1,4 @@
-import type { INetwork } from '@/constants/network';
+import type { IEditNetwork, INetwork } from '@/constants/network';
 
 export const validateNewNetwork = (
   networks: INetwork[],
@@ -46,4 +46,16 @@ export const getFormValues = <T extends Record<string, unknown>>(
     values[key] = value;
   });
   return values as T;
+};
+
+export const defineNewNetwork = (): IEditNetwork => {
+  return {
+    networkId: '',
+    label: '',
+    slug: '',
+    chainwebUrl: '',
+    graphUrl: '',
+    wsGraphUrl: '',
+    isNew: true,
+  };
 };
