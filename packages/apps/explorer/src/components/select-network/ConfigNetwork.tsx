@@ -162,6 +162,7 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
 
               <Stack gap="xl" flexDirection="column">
                 <TextField
+                  maxLength={150}
                   ref={refInputGraph}
                   label="GraphQL URL"
                   name="graphUrl"
@@ -199,6 +200,7 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
                 {network.graphUrlIsValid && (
                   <>
                     <TextField
+                      maxLength={15}
                       label="Name"
                       name="label"
                       value={network?.label}
@@ -209,6 +211,7 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
                       isRequired
                     ></TextField>
                     <TextField
+                      maxLength={50}
                       label="NetworkId"
                       value={network?.networkId}
                       onChange={(e) => {
@@ -221,6 +224,7 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
                       isRequired
                     ></TextField>
                     <TextField
+                      maxLength={15}
                       label="Slug"
                       name="slug"
                       value={network?.slug}

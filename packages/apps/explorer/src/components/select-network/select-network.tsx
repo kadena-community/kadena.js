@@ -33,7 +33,9 @@ const SelectNetwork: FC = () => {
                   key={network.slug ?? network.label}
                   textValue={network.label}
                 >
-                  {network.label}
+                  <Stack paddingInlineEnd="md" style={{ whiteSpace: 'nowrap' }}>
+                    {network.label}
+                  </Stack>
                 </SelectItem>
               )) as any
             }

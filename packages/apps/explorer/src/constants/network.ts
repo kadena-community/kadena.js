@@ -10,7 +10,7 @@ export interface INetwork {
 
 export type IEditNetwork = INetwork & {
   graphUrlIsValid?: boolean;
-  isNew?: true;
+  isNew?: boolean;
 };
 
 export const networkConstants: INetwork[] = [
