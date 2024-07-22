@@ -1,5 +1,6 @@
 import type { IEditNetwork } from '@/constants/network';
 import { useNetwork } from '@/context/networksContext';
+import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import { checkNetwork } from '@/utils/checkNetwork';
 import { defaultNamingOfNetwork } from '@/utils/defaultNamingOfNetwork';
 import { isDefaultNetwork } from '@/utils/isDefaultNetwork';
@@ -35,6 +36,7 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
 
   const handleRemove = useCallback(() => {
     if (!confirm('Are you sure you want to remove this network')) return;
+
     removeNetwork(network);
   }, [network]);
 
@@ -62,6 +64,10 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
     delete newNetwork.isNew;
     delete newNetwork.graphUrlIsValid;
 
+    analyticsEvent(EVENT_NAMES['click:add_network'], {
+      network: network.graphUrl,
+    });
+
     addNetwork(newNetwork);
   };
 
@@ -73,6 +79,10 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
   const validateNetwork = async (url?: string) => {
     const value = url ? url : refInputGraph?.current?.value;
     if (!value) return;
+
+    analyticsEvent(EVENT_NAMES['click:validate_network'], {
+      network: value,
+    });
 
     try {
       const result = await checkNetwork(value);

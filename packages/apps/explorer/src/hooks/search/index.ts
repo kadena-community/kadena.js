@@ -108,7 +108,6 @@ export const useSearch = () => {
 
   useEffect(() => {
     const query = router.query.q;
-
     const searchOptionQuery: SearchOptionEnum | null = !isNaN(
       parseInt(router.query.so as any),
     )

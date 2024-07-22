@@ -4,6 +4,7 @@ import { Stack } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
+import { CookieConsent } from '../CookieConsent/CookieConsent';
 import { contentClass, documentStyle, layoutWrapperClass } from './styles.css';
 
 interface IProps {
@@ -13,6 +14,7 @@ interface IProps {
 export const Layout: FC<IProps> = ({ children }: IProps) => {
   return (
     <div className={documentStyle}>
+      <CookieConsent />
       <Header />
       <Stack
         as="main"
