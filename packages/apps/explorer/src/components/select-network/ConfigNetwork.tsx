@@ -19,23 +19,11 @@ import type { ChangeEventHandler, FC, FormEventHandler } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { CardContentBlock, CardFooter } from '../CardPattern/CardPattern';
 import { cardVisualClass } from './style.css';
-import { getFormValues, validateNewNetwork } from './utils';
+import { defineNewNetwork, getFormValues, validateNewNetwork } from './utils';
 
 interface IProps {
   handleOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
-const defineNewNetwork = (): IEditNetwork => {
-  return {
-    networkId: '',
-    label: '',
-    slug: '',
-    chainwebUrl: '',
-    graphUrl: '',
-    wsGraphUrl: '',
-    isNew: true,
-  };
-};
 
 export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
   const { networks, addNetwork, removeNetwork } = useNetwork();
@@ -66,9 +54,7 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
     };
 
     const errors = validateNewNetwork(networks, newNetwork);
-
     setFormError(errors);
-
     if (errors.length > 0) {
       console.warn('Errors adding network: ', errors.join('\n'));
       return;
