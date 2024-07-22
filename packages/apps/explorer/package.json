@@ -53,6 +53,7 @@
     "@kadena-dev/shared-config": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@rushstack/eslint-config": "~3.6.9",
+    "@types/gtag.js": "~0.0.12",
     "@types/js-cookie": "~3.0.3",
     "@types/node": "^20.12.7",
     "@types/react": "^18.2.79",

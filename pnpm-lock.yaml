@@ -576,6 +576,9 @@ importers:
       '@rushstack/eslint-config':
         specifier: ~3.6.9
         version: 3.6.10(eslint@8.57.0)(typescript@5.4.5)
+      '@types/gtag.js':
+        specifier: ~0.0.12
+        version: 0.0.20
       '@types/js-cookie':
         specifier: ~3.0.3
         version: 3.0.6
