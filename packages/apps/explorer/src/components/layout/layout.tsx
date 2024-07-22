@@ -1,5 +1,5 @@
-import Footer from '@/components/footer/footer';
-import Header from '@/components/header/header';
+import { Footer } from '@/components/Footer/Footer';
+import { Header } from '@/components/Header/Header';
 import { Stack } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import type { FC, ReactNode } from 'react';
@@ -25,5 +25,3 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
     </div>
   );
 };
-
-export default Layout;

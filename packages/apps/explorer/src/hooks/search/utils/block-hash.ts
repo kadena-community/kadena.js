@@ -1,6 +1,6 @@
 import type { BlockQuery } from '@/__generated__/sdk';
 import { useBlockQuery } from '@/__generated__/sdk';
-import { useToast } from '@/components/toasts/toast-context/toast-context';
+import { useToast } from '@/components/Toasts/ToastContext/ToastContext';
 import { useEffect } from 'react';
 import type { IHookReturnValue } from '..';
 import {

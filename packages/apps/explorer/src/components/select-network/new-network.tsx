@@ -1,5 +1,5 @@
 import type { INetwork } from '@/constants/network';
-import { useNetwork } from '@/context/networks-context';
+import { useNetwork } from '@/context/networksContext';
 import { checkNetwork } from '@/utils/checkNetwork';
 import { MonoCheck, MonoClose } from '@kadena/kode-icons/system';
 import {

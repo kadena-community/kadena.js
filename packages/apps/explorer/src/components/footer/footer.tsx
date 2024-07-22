@@ -1,4 +1,4 @@
-import Link from '@/components/routing/link';
+import { Link } from '@/components/Routing/Link';
 import { menuConfig } from '@/utils/menuConfig';
 import {
   MonoLogoGithub,
@@ -9,9 +9,9 @@ import {
 import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useState } from 'react';
-import { Media } from '../layout/media';
-import Logo from '../logo/logo';
-import FooterColumn from './footer-column';
+import { Media } from '../Layout/media';
+import { Logo } from '../Logo/Logo';
+import { FooterColumn } from './FooterColumn';
 import {
   doubleContentClass,
   footerClass,
@@ -20,7 +20,7 @@ import {
   tripleContentClass,
 } from './style.css';
 
-const Footer: FC = () => {
+export const Footer: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const year = new Date().getFullYear();
 
@@ -131,5 +131,3 @@ const Footer: FC = () => {
     </Stack>
   );
 };
-
-export default Footer;

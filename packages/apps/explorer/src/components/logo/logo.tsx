@@ -2,7 +2,7 @@ import { useTheme } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React from 'react';
 
-const Logo: FC = () => {
+export const Logo: FC = () => {
   const { theme } = useTheme();
 
   if (theme === 'dark') {
@@ -150,5 +150,3 @@ const Logo: FC = () => {
     </svg>
   );
 };
-
-export default Logo;

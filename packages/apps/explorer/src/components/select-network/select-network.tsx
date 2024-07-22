@@ -1,4 +1,4 @@
-import { useNetwork } from '@/context/networks-context';
+import { useNetwork } from '@/context/networksContext';
 import { Select, SelectItem } from '@kadena/kode-ui';
 
 import type { FC, FormEventHandler } from 'react';

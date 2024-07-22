@@ -1,9 +1,9 @@
 import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
-import { useRouter } from '@/components/routing/useRouter';
-import type { ISearchItem } from '@/components/search/search-component/search-component';
-import { useToast } from '@/components/toasts/toast-context/toast-context';
+import type { ISearchItem } from '@/components/Search/SearchComponent/SearchComponent';
+import { useToast } from '@/components/Toasts/ToastContext/ToastContext';
 import type { ApolloError } from '@apollo/client';
 import { useEffect, useState } from 'react';
+import { useRouter } from '../router';
 import { useAccount } from './utils/account';
 import { useBlockHash } from './utils/block-hash';
 import { useBlockHeight } from './utils/block-height';

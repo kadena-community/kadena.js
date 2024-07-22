@@ -1,17 +1,17 @@
 import { Stack } from '@kadena/kode-ui';
 import classNames from 'classnames';
 
+import { useRouter } from '@/hooks/router';
 import type { FC } from 'react';
 import React, { useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { layoutWrapperClass } from '../layout/styles.css';
-import { NavBar } from '../navbar/navbar';
-import { useRouter } from '../routing/useRouter';
-import SearchBarHeader from '../search/searchbar-header/searchbar-header';
-import StatisticsStack from '../statistics-component/statistics-stack/statistics-stack';
+import { layoutWrapperClass } from '../Layout/styles.css';
+import { NavBar } from '../Navbar/Navbar';
+import { SearchBarHeader } from '../Search/SearchbarHeader/SearchbarHeader';
+import { StatisticsStack } from '../StatisticsComponent/StatisticsStack/StatisticsStack';
 import { fixedClass, fixedVisibleClass, headerClass } from './styles.css';
 
-const Header: FC = () => {
+export const Header: FC = () => {
   const router = useRouter();
 
   const isSearchPage = useMemo(() => {
@@ -59,5 +59,3 @@ const Header: FC = () => {
     </>
   );
 };
-
-export default Header;

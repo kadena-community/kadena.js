@@ -1,6 +1,6 @@
 import { atoms, responsiveStyle, token, tokens } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
-import { $$pageWidth } from '../layout/styles.css';
+import { $$pageWidth } from '../Layout/styles.css';
 
 export const headerClass = style([
   atoms({

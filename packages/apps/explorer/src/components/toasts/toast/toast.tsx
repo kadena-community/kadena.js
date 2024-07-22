@@ -9,8 +9,8 @@ import {
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
+import type { IToast } from '../ToastContext/ToastContext';
 import { hideAnimationClass, notificationClass } from '../style.css';
-import type { IToast } from '../toast-context/toast-context';
 
 interface IProps {
   toast: IToast;
@@ -18,7 +18,7 @@ interface IProps {
   idx: number;
 }
 
-const Toast: FC<IProps> = ({ toast, removeToast, idx }) => {
+export const Toast: FC<IProps> = ({ toast, removeToast, idx }) => {
   const [hide, setHide] = useState(false);
 
   useEffect(() => {
@@ -69,5 +69,3 @@ const Toast: FC<IProps> = ({ toast, removeToast, idx }) => {
     </Stack>
   );
 };
-
-export default Toast;

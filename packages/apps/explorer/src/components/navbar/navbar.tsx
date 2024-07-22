@@ -1,13 +1,13 @@
-import Link from '@/components/routing/link';
+import { Link } from '@/components/Routing/Link';
 import { Stack } from '@kadena/kode-ui';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
-import { GraphQLQueryDialog } from '../graphql-query-dialog/graphql-query-dialog';
-import { Media } from '../layout/media';
-import Logo from '../logo/logo';
-import MobileLogo from '../logo/mobile-logo';
+import { GraphQLQueryDialog } from '../GraphqlQueryDialog/GraphqlQueryDialog';
+import { Media } from '../Layout/media';
+import { Logo } from '../Logo/Logo';
+import { MobileLogo } from '../Logo/MobileLogo';
+import { ThemeToggle } from '../ThemeToggle/ThemeToggle';
 import SelectNetwork from '../select-network/select-network';
-import ThemeToggle from '../theme-toggle/theme-toggle';
 
 export const NavBar: FC<
   PropsWithChildren<{
