@@ -18,7 +18,7 @@ import {
 import type { ChangeEventHandler, FC, FormEventHandler } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { CardContentBlock, CardFooter } from '../CardPattern/CardPattern';
-import { cardVisualClass, selectBoxClass } from './style.css';
+import { cardVisualClass } from './style.css';
 import { getFormValues, validateNewNetwork } from './utils';
 
 interface IProps {
@@ -138,41 +138,42 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
     >
       {() => (
         <DialogContent>
-          <Stack position="relative">
-            <Select
-              className={selectBoxClass}
-              aria-label="Select network"
-              selectedKey={network.slug}
-              onSelectionChange={handleSelectNetwork}
-            >
-              {
-                networks.map((n) => {
-                  const innerNetwork =
-                    n.slug === network.slug
-                      ? { ...n, graphUrlIsValid: network.graphUrlIsValid }
-                      : { ...n };
-
-                  return (
-                    <SelectItem
-                      key={innerNetwork.slug}
-                      textValue={innerNetwork.label}
-                    >
-                      {innerNetwork.label}
-                    </SelectItem>
-                  );
-                }) as any
-              }
-              <SelectItem textValue="New network" key="new">
-                New network
-              </SelectItem>
-            </Select>
-          </Stack>
-
           <Form onSubmit={handleCreateNetwork}>
             <CardContentBlock
               title={!network.isNew ? 'Update network' : 'Create Network'}
               visual={<MonoPermScanWifi className={cardVisualClass} />}
             >
+              <Stack position="relative" marginBlockEnd="xxxl">
+                <Select
+                  label="Select a network"
+                  placeholder="Select a network"
+                  aria-label="Select network"
+                  selectedKey={network.slug}
+                  onSelectionChange={handleSelectNetwork}
+                >
+                  {
+                    networks.map((n) => {
+                      const innerNetwork =
+                        n.slug === network.slug
+                          ? { ...n, graphUrlIsValid: network.graphUrlIsValid }
+                          : { ...n };
+
+                      return (
+                        <SelectItem
+                          key={innerNetwork.slug}
+                          textValue={innerNetwork.label}
+                        >
+                          {innerNetwork.label}
+                        </SelectItem>
+                      );
+                    }) as any
+                  }
+                  <SelectItem textValue="New network" key="new">
+                    ...new network
+                  </SelectItem>
+                </Select>
+              </Stack>
+
               <Stack gap="xl" flexDirection="column">
                 <TextField
                   ref={refInputGraph}
