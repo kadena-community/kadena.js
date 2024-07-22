@@ -5,9 +5,9 @@ export const loadingData: AccountQuery = {
     // transactions: {
     //   totalCount: 0,
     // },
-    transfers: {
-      totalCount: 0,
-    },
+    // transfers: {
+    //   totalCount: 0,
+    // },
     accountName: '0',
     totalBalance: 0,
     chainAccounts: [
