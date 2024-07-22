@@ -1,6 +1,6 @@
 import { useNetworkInfoQuery } from '@/__generated__/sdk';
-import { Media } from '@/components/Layout_rename/media';
-import { useToast } from '@/components/Toast_rename/ToastContext/ToastContext';
+import { Media } from '@/components/Layout/media';
+import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import { CONSTANTS } from '@/constants/constants';
 import { formatStatisticsData } from '@/services/format';
 import { Stack, Text } from '@kadena/kode-ui';

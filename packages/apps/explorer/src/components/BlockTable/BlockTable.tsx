@@ -10,7 +10,7 @@ import { addBlockData } from '@/services/block';
 import { Stack } from '@kadena/kode-ui';
 import React, { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { useToast } from '../Toast_rename/ToastContext/ToastContext';
+import { useToast } from '../Toast/ToastContext/ToastContext';
 import { BlockTableHeader } from './BlockHeader/BlockHeader';
 import { blockHeaderFixedClass } from './BlockHeader/blockHeader.css';
 import { useBlockInfo } from './BlockInfoContext/BlockInfoContext';

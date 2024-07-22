@@ -1,6 +1,6 @@
 import type { EventsQuery } from '@/__generated__/sdk';
 import { useEventsQuery } from '@/__generated__/sdk';
-import { useToast } from '@/components/Toast_rename/ToastContext/ToastContext';
+import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import { useEffect } from 'react';
 import type { IHookReturnValue } from '..';
 import {

@@ -1,5 +1,5 @@
 import { barClass } from '@/components/BlockActivityGraph/style.css';
-import { $$pageWidth } from '@/components/Layout_rename/styles.css';
+import { $$pageWidth } from '@/components/Layout/styles.css';
 import { atoms, responsiveStyle, token, tokens } from '@kadena/kode-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 import { blockGridHoverableStyle } from '../blockTable.css';

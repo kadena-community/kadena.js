@@ -1,5 +1,5 @@
 import { useAccountQuery } from '@/__generated__/sdk';
-import { useToast } from '@/components/Toast_rename/ToastContext/ToastContext';
+import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import { useEffect, useState } from 'react';
 import type { IHookReturnValue } from '..';
 import {

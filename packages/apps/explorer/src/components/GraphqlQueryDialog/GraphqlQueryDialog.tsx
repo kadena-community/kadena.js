@@ -15,7 +15,7 @@ import {
 import type { DocumentNode } from 'graphql';
 import { print } from 'graphql';
 import React, { useState } from 'react';
-import { buttonSizeClass } from '../Navbar_rename/styles.css';
+import { buttonSizeClass } from '../Navbar/styles.css';
 import { code } from './styles.css';
 
 export const GraphQLQueryDialog = (): JSX.Element => {

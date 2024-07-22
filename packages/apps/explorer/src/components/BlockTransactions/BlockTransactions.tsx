@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { CompactTable } from '../CompactTable/CompactTable';
 import { FormatJsonParse, FormatLink } from '../CompactTable/utils/formatLink';
 import { FormatStatus } from '../CompactTable/utils/formatStatus';
-import { useToast } from '../Toast_rename/ToastContext/ToastContext';
+import { useToast } from '../Toast/ToastContext/ToastContext';
 import { loadingData } from './loadingDataBlocktransactionsquery';
 import { noTransactionsTitleClass } from './styles.css';
 

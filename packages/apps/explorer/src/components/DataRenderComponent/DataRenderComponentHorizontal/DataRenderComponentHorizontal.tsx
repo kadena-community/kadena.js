@@ -1,6 +1,6 @@
 import { CopyButton } from '@/components/CopyButton/CopyButton';
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
-import { Link } from '@/components/Routing_rename/Link_rename';
+import { Link } from '@/components/Routing/Link';
 import { MonoArrowOutward } from '@kadena/kode-icons';
 import { Stack, Text } from '@kadena/kode-ui';
 import { atoms } from '@kadena/kode-ui/styles';

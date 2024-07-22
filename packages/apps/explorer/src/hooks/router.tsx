@@ -1,7 +1,4 @@
-import {
-  createHref,
-  removeNetworkFromPath,
-} from '@/components/Routing_rename/utils';
+import { createHref, removeNetworkFromPath } from '@/components/Routing/utils';
 import {
   getNetworks,
   selectedNetworkKey,

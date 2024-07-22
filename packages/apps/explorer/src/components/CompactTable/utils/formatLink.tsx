@@ -1,4 +1,4 @@
-import { Link } from '@/components/Routing_rename/Link_rename';
+import { Link } from '@/components/Routing/Link';
 import { MonoArrowOutward } from '@kadena/kode-icons';
 import { Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
