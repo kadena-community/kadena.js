@@ -91,13 +91,6 @@ export const SearchResults: FC<ISearchResultsProps> = ({
                     key: 'chains',
                     width: '20%',
                   },
-
-                  {
-                    label: 'Balance',
-                    key: 'balance',
-                    width: '20%',
-                    render: FormatAmount(),
-                  },
                 ]}
                 data={Object.values(searchData[SearchOptionEnum.ACCOUNT].data)}
               />
