@@ -14,8 +14,8 @@ interface IProps {
 export const Layout: FC<IProps> = ({ children }: IProps) => {
   return (
     <div className={documentStyle}>
-      <Header />
       <CookieConsent />
+      <Header />
       <Stack
         as="main"
         flexDirection="column"

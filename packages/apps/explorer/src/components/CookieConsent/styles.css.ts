@@ -1,14 +1,14 @@
-import { atoms, tokens } from '@kadena/kode-ui/styles';
+import { atoms } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 import { $$pageWidth } from '../Layout/styles.css';
 
 export const containerClass = style([
   atoms({
-    position: 'sticky',
     backgroundColor: 'semantic.info.default',
+    marginBlockEnd: 'lg',
   }),
   {
-    top: tokens.kda.foundation.size.n16,
+    top: 'unset',
     zIndex: 1000,
   },
 ]);
