@@ -1,6 +1,6 @@
 import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
-import { Layout } from '@/components/Layout/Layout';
-import { useToast } from '@/components/Toasts/ToastContext/ToastContext';
+import { Layout } from '@/components/Layout_rename/Layout_rename';
+import { useToast } from '@/components/Toast_rename/ToastContext/ToastContext';
 import { TransactionRequestComponent } from '@/components/TransactionComponents/TransactionRequestComponent';
 import { TransactionResultComponent } from '@/components/TransactionComponents/TransactionResultComponent';
 import { useQueryContext } from '@/context/queryContext';

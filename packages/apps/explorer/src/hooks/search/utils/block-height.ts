@@ -1,6 +1,6 @@
 import type { BlocksFromHeightQuery } from '@/__generated__/sdk';
 import { useBlocksFromHeightQuery } from '@/__generated__/sdk';
-import { useToast } from '@/components/Toasts/ToastContext/ToastContext';
+import { useToast } from '@/components/Toast_rename/ToastContext/ToastContext';
 import { useEffect } from 'react';
 import type { IHookReturnValue } from '..';
 import {

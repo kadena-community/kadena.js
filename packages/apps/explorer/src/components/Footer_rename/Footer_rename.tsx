@@ -1,4 +1,4 @@
-import { Link } from '@/components/Routing/Link';
+import { Link } from '@/components/Routing_rename/Link_rename';
 import { menuConfig } from '@/utils/menuConfig';
 import {
   MonoLogoGithub,
@@ -9,8 +9,8 @@ import {
 import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useState } from 'react';
-import { Media } from '../Layout/media';
-import { Logo } from '../Logo/Logo';
+import { Media } from '../Layout_rename/media';
+import { Logo } from '../Logo_rename/Logo_rename';
 import { FooterColumn } from './FooterColumn';
 import {
   doubleContentClass,

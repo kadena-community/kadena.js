@@ -1,4 +1,4 @@
-import { Media } from '@/components/Layout/media';
+import { Media } from '@/components/Layout_rename/media';
 import React from 'react';
 import type { ITableField } from '../LoadingSkeleton/types';
 import { fullWidthClass } from '../globalstyles.css';

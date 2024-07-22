@@ -1,9 +1,9 @@
 import { BlockInfoProvider } from '@/components/BlockTable/BlockInfoContext/BlockInfoContext';
 import { BlockTable } from '@/components/BlockTable/BlockTable';
 import { fullWidthClass } from '@/components/globalstyles.css';
-import { Layout } from '@/components/Layout/Layout';
-import { Media } from '@/components/Layout/media';
-import { Logo } from '@/components/Logo/Logo';
+import { Layout } from '@/components/Layout_rename/Layout_rename';
+import { Media } from '@/components/Layout_rename/media';
+import { Logo } from '@/components/Logo_rename/Logo_rename';
 import { SearchComponent } from '@/components/Search/SearchComponent/SearchComponent';
 import { searchBarClass } from '@/components/Search/SearchComponent/searchComponent.css';
 import { SearchResults } from '@/components/Search/SearchResults/SearchResults';

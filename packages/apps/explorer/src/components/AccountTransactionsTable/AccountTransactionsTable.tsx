@@ -11,7 +11,7 @@ import { FormatJsonParse, FormatLink } from '../CompactTable/utils/formatLink';
 
 import { CompactTable } from '../CompactTable/CompactTable';
 import { FormatStatus } from '../CompactTable/utils/formatStatus';
-import { useToast } from '../Toasts/ToastContext/ToastContext';
+import { useToast } from '../Toast_rename/ToastContext/ToastContext';
 import { loadingData } from './loadingDataAccountTransactionsquery';
 
 export const AccountTransactionsTable: FC<{ accountName: string }> = ({

@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { CompactTable } from '../CompactTable/CompactTable';
 import { FormatAmount } from '../CompactTable/utils/formatAmount';
 import { FormatLink } from '../CompactTable/utils/formatLink';
-import { useToast } from '../Toasts/ToastContext/ToastContext';
+import { useToast } from '../Toast_rename/ToastContext/ToastContext';
 import { loadingData } from './loadingDataAccountTransfersquery';
 
 export const AccountTransfersTable: FC<{ accountName: string }> = ({

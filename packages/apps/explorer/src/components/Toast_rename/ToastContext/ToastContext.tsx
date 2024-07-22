@@ -3,7 +3,7 @@ import { Stack } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import type { FC, PropsWithChildren, ReactElement } from 'react';
 import React, { createContext, useContext, useState } from 'react';
-import { Toast } from '../Toast/Toast';
+import { Toast } from '../Toast_rename/Toast_rename';
 import { isNewClass, toastWrapperClass } from '../style.css';
 
 export interface IToast {

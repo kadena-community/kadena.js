@@ -1,4 +1,4 @@
-import { Media } from '@/components/Layout/media';
+import { Media } from '@/components/Layout_rename/media';
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
 import { Grid, Stack, Text } from '@kadena/kode-ui';
 import classNames from 'classnames';

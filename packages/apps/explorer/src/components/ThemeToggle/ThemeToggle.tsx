@@ -3,7 +3,7 @@ import { Button, Themes, useTheme } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
-import { buttonSizeClass } from '../Navbar/styles.css';
+import { buttonSizeClass } from '../Navbar_rename/styles.css';
 import { baseIcon, reversedIcon } from './styles.css';
 
 export const ThemeToggle: FC = () => {

@@ -1,11 +1,11 @@
-import { Link } from '@/components/Routing/Link';
+import { Link } from '@/components/Routing_rename/Link_rename';
 import { Stack } from '@kadena/kode-ui';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 import { GraphQLQueryDialog } from '../GraphqlQueryDialog/GraphqlQueryDialog';
-import { Media } from '../Layout/media';
-import { Logo } from '../Logo/Logo';
-import { MobileLogo } from '../Logo/MobileLogo';
+import { Media } from '../Layout_rename/media';
+import { Logo } from '../Logo_rename/Logo_rename';
+import { MobileLogo } from '../Logo_rename/MobileLogo';
 import { ThemeToggle } from '../ThemeToggle/ThemeToggle';
 import SelectNetwork from '../select-network/select-network';
 

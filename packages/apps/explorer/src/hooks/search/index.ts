@@ -1,6 +1,6 @@
 import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
 import type { ISearchItem } from '@/components/Search/SearchComponent/SearchComponent';
-import { useToast } from '@/components/Toasts/ToastContext/ToastContext';
+import { useToast } from '@/components/Toast_rename/ToastContext/ToastContext';
 import type { ApolloError } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { useRouter } from '../router';

@@ -1,5 +1,5 @@
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
-import { Link } from '@/components/Routing/Link';
+import { Link } from '@/components/Routing_rename/Link_rename';
 import { MonoArrowOutward } from '@kadena/kode-icons/system';
 import { Text } from '@kadena/kode-ui';
 import classNames from 'classnames';

@@ -1,6 +1,6 @@
 // load global styles from @kadena/kode-ui
-import { MediaContextProvider } from '@/components/Layout/media';
-import { ToastProvider } from '@/components/Toasts/ToastContext/ToastContext';
+import { MediaContextProvider } from '@/components/Layout_rename/media';
+import { ToastProvider } from '@/components/Toast_rename/ToastContext/ToastContext';
 import { NetworkContextProvider } from '@/context/networksContext';
 import { QueryContextProvider } from '@/context/queryContext';
 import { useRouter } from '@/hooks/router';
