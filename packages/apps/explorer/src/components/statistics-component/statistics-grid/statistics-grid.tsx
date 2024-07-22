@@ -3,7 +3,6 @@ import { useToast } from '@/components/toasts/toast-context/toast-context';
 import { CONSTANTS } from '@/constants/constants';
 import { formatStatisticsData } from '@/services/format';
 import { Grid, Stack, Text } from '@kadena/kode-ui';
-import { atoms } from '@kadena/kode-ui/styles';
 import type { FC } from 'react';
 import React, { useEffect } from 'react';
 import {
