@@ -6,8 +6,8 @@ import { GraphQLQueryDialog } from '../GraphqlQueryDialog/GraphqlQueryDialog';
 import { Media } from '../Layout/media';
 import { Logo } from '../Logo/Logo';
 import { MobileLogo } from '../Logo/MobileLogo';
+import { SelectNetwork } from '../SelectNetwork/SelectNetwork';
 import { ThemeToggle } from '../ThemeToggle/ThemeToggle';
-import SelectNetwork from '../select-network/select-network';
 
 export const NavBar: FC<
   PropsWithChildren<{
@@ -45,7 +45,10 @@ export const NavBar: FC<
       </Stack>
       <Stack flex={1}>{children}</Stack>
 
-      <Stack>
+      <Stack alignItems="center">
+        <Media lessThan="md">
+          <SelectNetwork />
+        </Media>
         <ThemeToggle />
         <GraphQLQueryDialog />
       </Stack>

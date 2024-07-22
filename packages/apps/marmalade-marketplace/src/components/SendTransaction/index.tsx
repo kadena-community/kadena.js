@@ -1,7 +1,9 @@
-import React, { FC, useState } from 'react';
-import { Card, Divider, Button, Dialog} from '@kadena/kode-ui';
+import React, { FC, MouseEventHandler, useEffect, useState } from 'react';
+import { Card, Divider, Button, Dialog, PressEvent} from '@kadena/kode-ui';
 import * as styles from '@/styles/create-token.css';
 import { IUnsignedCommand, ICommand, ITransactionDescriptor, ICommandResult } from "@kadena/client"
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 interface SendTransactionFormProps {
   preview: () => Promise<void | ICommandResult>
@@ -13,15 +15,21 @@ interface SendTransactionFormProps {
 const SendTransaction: FC<SendTransactionFormProps> = ({ send, preview, poll, transaction}) =>{
   const [previewStatus, setPreviewStatus] = useState<boolean>(false);
   const [loadingStatus, setLoadingStatus] = useState<boolean>(false);
-  const [result, setResult] = useState<string>("");
+  const [result, setResult] = useState<string>();
   const [requestKey, setRequestKey] = useState<string | undefined>(undefined);
   const [error, setError] = useState("");
-  interface Transaction {
-    cmd: string;
-    hash: string;
-    sigs: { sig: string }[];
-    nonce: string;
-  }
+  const [returnUrl, setReturnUrl] = useState<string>();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (searchParams.has('returnUrl')) {
+      const url = searchParams.get('returnUrl');
+      if (url) {
+        setReturnUrl(url);
+      }
+    }
+  }, [searchParams]);
 
   const handlePreview = async () => {
     try {
@@ -41,14 +49,26 @@ const SendTransaction: FC<SendTransactionFormProps> = ({ send, preview, poll, tr
 
   const handleSend = async () => {
     try {
+      setResult("");
       const res: any = await send();
-      setRequestKey(res);
+      const { requestKey } = res;
+      setRequestKey(requestKey);
       setLoadingStatus(true);
-      const pollResult = await poll(res);
+      const pollResponse = await poll(res);
+      const pollResult = pollResponse[requestKey];
+      const result = pollResult?.result.status === "success" ? pollResult?.result.status : undefined;
+      if (result === "success") {
+        setResult(JSON.stringify(pollResult.result));
+        if (returnUrl) {
+          window.location.href = returnUrl;
+        }
+      } else {
+        throw new Error(JSON.stringify(pollResult))
+      }
       setLoadingStatus(false);
     } catch (error) {
       setError(JSON.stringify(error));
-
+      setLoadingStatus(false);
       console.error('Error sending transaction:', error);
     }
   };
@@ -96,18 +116,18 @@ return(
       {renderTransactionDetails()}
       <Divider />
       <div className={styles.buttonContainer}>
-        {!previewStatus ? 
+        {!previewStatus ?
           (<Button className={styles.button} onPress={handlePreview}>Preview Transaction</Button>)
         : (<Button className={styles.button} onPress={handleSend} loadingLabel="Transaction in Progress.." isLoading={loadingStatus}>Send Transaction</Button>)
         }
       </div>
     </Card>
-    {error && (
+    {result && (
       <div className={styles.resultBox}>
-        <p>Error: {error}</p>
+        <p>{JSON.stringify(result)}</p>
       </div>
     )}
-    <p>{JSON.stringify(result)}</p>
+
     {error && (
       <div className={styles.errorBox}>
         <p>Error: {error}</p>

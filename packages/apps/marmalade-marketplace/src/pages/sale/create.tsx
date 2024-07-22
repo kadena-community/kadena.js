@@ -41,7 +41,7 @@ export default function CreateSale() {
         const tokenInfo = await getTokenInfo({
           tokenId,
           chainId,
-          networkId: env.NETWORK_NAME,
+          networkId: env.NETWORKID,
           host: env.CHAINWEB_API_HOST
         }) as { uri: string };
 
@@ -71,7 +71,7 @@ export default function CreateSale() {
     // Create the sale
     console.log(saleData)
     saleData.account = account?.account?.accountName;
-    saleData.key = account?.account?.credentials[0].publicKey
+    saleData.key = account?.account?.devices[0].guard.keys[0];
     const saleId = await createSale(saleData);
   }
 

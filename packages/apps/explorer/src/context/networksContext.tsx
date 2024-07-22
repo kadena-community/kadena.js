@@ -3,6 +3,7 @@ import type { INetwork } from '@/constants/network';
 import { networkConstants } from '@/constants/network';
 import { useRouter } from '@/hooks/router';
 import { checkNetwork } from '@/utils/checkNetwork';
+import { isDefaultNetwork } from '@/utils/isDefaultNetwork';
 import type { NormalizedCacheObject } from '@apollo/client';
 import {
   ApolloClient,
@@ -35,6 +36,7 @@ interface INetworkContext {
   activeNetwork: INetwork;
   setActiveNetwork: (activeNetwork: INetwork['slug']) => void;
   addNetwork: (newNetwork: INetwork) => void;
+  removeNetwork: (newNetwork: INetwork) => void;
   stopServer: () => void;
 }
 
@@ -43,6 +45,7 @@ const NetworkContext = createContext<INetworkContext>({
   activeNetwork: {} as INetwork,
   setActiveNetwork: () => {},
   addNetwork: () => {},
+  removeNetwork: () => {},
   stopServer: () => {},
 });
 
@@ -192,6 +195,27 @@ const NetworkContextProvider = (props: {
     window.location.href = `/${networkSlug}`;
   };
 
+  const removeNetwork = (paramNetwork: INetwork): void => {
+    //if a defaultnetwork dont delete
+    if (isDefaultNetwork(paramNetwork)) return;
+
+    const storage: INetwork[] = JSON.parse(
+      localStorage.getItem(storageKey) ?? '[]',
+    );
+
+    const newStorage = storage.filter((n) => n.slug !== paramNetwork.slug);
+    localStorage.setItem(storageKey, JSON.stringify(newStorage));
+    window.dispatchEvent(new Event(storageKey));
+
+    //if the removed network was the active network, redirect to mainnet
+    if (activeNetwork?.slug === paramNetwork.slug) {
+      localStorage.removeItem(selectedNetworkKey);
+      Cookies.remove(selectedNetworkKey);
+
+      window.location.href = `/mainnet`;
+    }
+  };
+
   const addNetwork = (newNetwork: INetwork): void => {
     const storage: INetwork[] = JSON.parse(
       localStorage.getItem(storageKey) ?? '[]',
@@ -225,6 +249,7 @@ const NetworkContextProvider = (props: {
         activeNetwork,
         setActiveNetwork: setActiveNetworkByKey,
         addNetwork,
+        removeNetwork,
         stopServer,
       }}
     >

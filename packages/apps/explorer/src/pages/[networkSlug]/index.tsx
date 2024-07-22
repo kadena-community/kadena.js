@@ -42,12 +42,17 @@ const Home: React.FC = () => {
 
         <Stack ref={inViewRef}></Stack>
         <Media lessThan="md" className={fullWidthClass}>
-          <Stack width="100%" marginBlock="xxxl">
+          <Stack
+            width="100%"
+            marginBlockStart={{ xs: 'no', md: 'xxxl' }}
+            marginBlockEnd="xxxl"
+            paddingInline="xs"
+          >
             <StatisticsGrid inView={inView} />
           </Stack>
         </Media>
 
-        <Stack className={searchBarClass}>
+        <Stack className={searchBarClass} paddingInline="xs">
           <SearchComponent
             searchOption={searchOption}
             setSearchOption={setSearchOption}

@@ -1,7 +1,7 @@
 import { getWebauthnGuard, getWebauthnAccount } from "@kadena/client-utils/webauthn";
 import { env } from '@/utils/env';
 import { getAccountCookieName } from '@/utils/getAccountCookieName';
-import { getReturnUrl } from '@/utils/getReturnUrl';
+import { connect, type Account } from '@kadena/spirekey-sdk';
 import { useRouter, useSearchParams } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
@@ -19,7 +19,7 @@ export interface WebauthnAccountDetails {
 }
 
 export interface IAccountContext {
-  account?: IAccount;
+  account?: Account;
   webauthnAccount?: WebauthnAccountDetails;
   error?: IAccountError;
   isMounted: boolean;
@@ -36,33 +36,19 @@ export const AccountContext = createContext<IAccountContext>({
 });
 
 export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [account, setAccount] = useState<IAccount>();
+  const [account, setAccount] = useState<Account>();
   const [webauthnAccount, setWebauthnAccount] = useState<WebauthnAccountDetails>();
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const chainId = '8';
 
-  const decodeAccount = useCallback((userResponse: string) => {
-    if (!userResponse) return;
-    try {
-      const account: IAccount = JSON.parse(
-        Buffer.from(userResponse, 'base64').toString(),
-      );
-      return account;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (e: any) {
-      return;
-    }
-  }, []);
-
-  const login = useCallback(() => {
-    router.push(
-      `${env.WALLET_URL}/connect?returnUrl=${getReturnUrl([
-        'user',
-      ])}&networkId=${env.NETWORKID}&optimistic=true`,
-    );
-  }, [router]);
+  const login = useCallback(async () => {
+    const account = await connect(env.NETWORKID, chainId);
+    setIsMounted(true);
+    setAccount(account);
+    localStorage.setItem(getAccountCookieName(), JSON.stringify(account));
+  }, [connect]);
 
   const logout = useCallback(() => {
     localStorage.removeItem(getAccountCookieName());
@@ -95,32 +81,16 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const loginResponse = useCallback(async () => {
-    const innerSearchParams = new URLSearchParams(window.location.search);
-    const userResponse = innerSearchParams.has('user')
-      ? innerSearchParams.get('user')
-      : localStorage.getItem(getAccountCookieName());
-
-    if (!userResponse) {
-      setIsMounted(true);
-      return;
-    }
-
-    if (innerSearchParams.has('user')) {
-      localStorage.setItem(getAccountCookieName(), userResponse);
-    }
-    const account = decodeAccount(userResponse);
-    const accountDetails = await getWebauthnAccountDetails(account?.accountName || '');
-
+    const storedAccount = localStorage.getItem(getAccountCookieName());
+    if (!storedAccount) return;
+    const account = JSON.parse(storedAccount);
+    if (!account) return;
     setAccount(account);
+
+    const accountDetails = await getWebauthnAccountDetails(account?.accountName || '');
     setWebauthnAccount(accountDetails);
     setIsMounted(true);
-
-    if (searchParams.has('user')) {
-      setTimeout(() => {
-        router.replace(getReturnUrl(['user']));
-      }, 100);
-    }
-  }, [setAccount, setIsMounted, searchParams, decodeAccount, router]);
+  }, [setAccount, setIsMounted, searchParams, router]);
 
   useEffect(() => {
     loginResponse();

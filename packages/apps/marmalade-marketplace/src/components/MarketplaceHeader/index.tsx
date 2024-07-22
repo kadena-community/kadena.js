@@ -44,7 +44,7 @@ export const MarketplaceHeader= () => {
 
   const onFundAccount = () => {
     setShowNotification(false);
-    const transaction = fundAccount(webauthnAccount?.account || '');
+    const transaction = fundAccount(account?.accountName || '');
     setTransaction(transaction);
     // Redirect to the transaction page
     router.push('/transaction');
