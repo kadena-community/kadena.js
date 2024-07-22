@@ -40,7 +40,7 @@ export const Token: React.FC<TokenProps> = ({
       const tokenInfo = await getTokenInfo({
         tokenId,
         chainId,
-        networkId: env.NETWORK_NAME,
+        networkId: env.NETWORKID,
         host: env.CHAINWEB_API_HOST
       }) as { uri: string };
 
