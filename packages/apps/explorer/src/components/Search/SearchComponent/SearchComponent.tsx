@@ -1,5 +1,6 @@
 import { LoadingIcon } from '@/components/LoadingIcon/LoadingIcon';
 import { SearchOptionEnum } from '@/hooks/search/utils/utils';
+import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import type { ApolloError } from '@apollo/client';
 import { MonoSearch } from '@kadena/kode-icons/system';
 import { Stack } from '@kadena/kode-ui';
@@ -83,9 +84,13 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
     }
 
     setIsEditing(false);
-
     const value = ref.current?.value ?? '';
     if (setSearchQuery) setSearchQuery(value);
+
+    analyticsEvent(EVENT_NAMES['click:search'], {
+      q: value,
+      so: `${searchOptionIdx ? searchOptionIdx : innerSearchOption}`,
+    });
   };
 
   const handleSearchValueChange = (
@@ -93,7 +98,6 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
   ): void => {
     const value = e.target.value;
     if (!value) {
-      console.log(1111);
       setSearchOption(null);
       setIsEditing(false);
       return;

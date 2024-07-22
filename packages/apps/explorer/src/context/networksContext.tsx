@@ -2,6 +2,7 @@ import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import type { INetwork } from '@/constants/network';
 import { networkConstants } from '@/constants/network';
 import { useRouter } from '@/hooks/router';
+import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { checkNetwork } from '@/utils/checkNetwork';
 import { isDefaultNetwork } from '@/utils/isDefaultNetwork';
 import type { NormalizedCacheObject } from '@apollo/client';
@@ -133,6 +134,10 @@ const NetworkContextProvider = (props: {
   }, []);
 
   const stopServer = () => {
+    analyticsEvent(EVENT_NAMES['event:stopserver'], {
+      network: activeNetwork?.graphUrl,
+    });
+
     client?.stop();
     addNetworkFailToast({
       body: `There is an issue with ${activeNetwork!.graphUrl}`,
@@ -189,6 +194,10 @@ const NetworkContextProvider = (props: {
       return;
     }
 
+    analyticsEvent(EVENT_NAMES['click:change_network'], {
+      network: network.graphUrl,
+    });
+
     localStorage.setItem(selectedNetworkKey, JSON.stringify(network));
     Cookies.set(selectedNetworkKey, network.slug);
 
@@ -206,6 +215,10 @@ const NetworkContextProvider = (props: {
     const newStorage = storage.filter((n) => n.slug !== paramNetwork.slug);
     localStorage.setItem(storageKey, JSON.stringify(newStorage));
     window.dispatchEvent(new Event(storageKey));
+
+    analyticsEvent(EVENT_NAMES['click:remove_network'], {
+      network: paramNetwork.graphUrl,
+    });
 
     //if the removed network was the active network, redirect to mainnet
     if (activeNetwork?.slug === paramNetwork.slug) {

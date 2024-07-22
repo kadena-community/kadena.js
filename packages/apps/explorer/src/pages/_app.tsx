@@ -1,4 +1,5 @@
 // load global styles from @kadena/kode-ui
+import { Analytics } from '@/components/Analytics/Analytics';
 import { MediaContextProvider } from '@/components/Layout/media';
 import { ToastProvider } from '@/components/Toast/ToastContext/ToastContext';
 import { NetworkContextProvider } from '@/context/networksContext';
@@ -40,6 +41,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
           </MediaContextProvider>
         </RouterProvider>
       </NetworkContextProvider>
+      <Analytics />
     </ToastProvider>
   );
 }
