@@ -1,6 +1,5 @@
 import type { Transaction } from '@/__generated__/sdk';
 import { CompactTable } from '@/components/CompactTable/CompactTable';
-import { FormatAmount } from '@/components/CompactTable/utils/formatAmount';
 import {
   FormatJsonParse,
   FormatLink,
