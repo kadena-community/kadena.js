@@ -2,6 +2,7 @@ import type { AccountQuery } from '@/__generated__/sdk';
 import { useAccountQuery } from '@/__generated__/sdk';
 import { AccountTransfersTable } from '@/components/AccountTransfersTable/AccountTransfersTable';
 import { CompactTable } from '@/components/CompactTable/CompactTable';
+import { FormatAmount } from '@/components/CompactTable/utils/formatAmount';
 import { Layout } from '@/components/Layout/Layout';
 import { loadingData } from '@/components/LoadingSkeleton/loadingData/loadingDataAccountquery';
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
@@ -96,6 +97,7 @@ const Account: FC = () => {
         const guardKeys: IKeyProps[] = val.guard.keys.map((key) => {
           return {
             key: key,
+            balance: val.balance,
             predicate: val.guard.predicate,
             chainId: val.chainId,
           };
@@ -145,12 +147,19 @@ const Account: FC = () => {
             variant: 'code',
             label: 'Key',
             key: 'key',
-            width: '50%',
+            width: '40%',
           },
           {
             label: 'Predicate',
             key: 'predicate',
-            width: '40%',
+            width: '20%',
+          },
+          {
+            label: 'Balance',
+            key: 'balance',
+            width: '30%',
+            align: 'end',
+            render: FormatAmount(),
           },
         ]}
         data={keys}

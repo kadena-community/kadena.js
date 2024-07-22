@@ -11,6 +11,7 @@ import type { FC } from 'react';
 import React from 'react';
 import type { ICompactTableProps } from '../CompactTable';
 
+import { alignVariants } from '../styles.css';
 import { FieldCell } from './FieldCell';
 import { tableBorderClass, tableClass } from './styles.css';
 
@@ -37,7 +38,12 @@ export const CompactTableDesktop: FC<IProps> = ({
         <TableHeader>
           {fields.map((field) => (
             <Column key={field.key} width={field.width}>
-              {field.label}
+              <Stack
+                width="100%"
+                className={alignVariants({ align: field.align ?? 'start' })}
+              >
+                {field.label}
+              </Stack>
             </Column>
           ))}
         </TableHeader>

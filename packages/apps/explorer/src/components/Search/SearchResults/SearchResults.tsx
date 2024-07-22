@@ -1,6 +1,5 @@
 import type { Transaction } from '@/__generated__/sdk';
 import { CompactTable } from '@/components/CompactTable/CompactTable';
-import { FormatAmount } from '@/components/CompactTable/utils/formatAmount';
 import {
   FormatJsonParse,
   FormatLink,
@@ -90,13 +89,6 @@ export const SearchResults: FC<ISearchResultsProps> = ({
                     label: 'Chains',
                     key: 'chains',
                     width: '20%',
-                  },
-
-                  {
-                    label: 'Balance',
-                    key: 'balance',
-                    width: '20%',
-                    render: FormatAmount(),
                   },
                 ]}
                 data={Object.values(searchData[SearchOptionEnum.ACCOUNT].data)}
