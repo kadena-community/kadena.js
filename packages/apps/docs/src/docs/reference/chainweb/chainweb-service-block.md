@@ -1,7 +1,7 @@
 ---
 title: Block endpoints
 description:
-  Provides reference information for the chainweb-node block endpoints.
+  Provides reference information for the chainweb-node service API block endpoints.
 menu: Chainweb API
 label: Block service endpoints
 order: 2
