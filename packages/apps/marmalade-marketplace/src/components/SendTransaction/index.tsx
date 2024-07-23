@@ -1,10 +1,11 @@
 import React, { FC, MouseEventHandler, useEffect, useState } from 'react';
-import { Card, Divider, Button, Dialog, PressEvent} from '@kadena/kode-ui';
+import { Card, Divider, Button, Dialog, PressEvent, Notification, NotificationFooter, NotificationButton, NotificationHeading,} from '@kadena/kode-ui';
+import { MonoCheck, MonoClose } from '@kadena/kode-icons';
 import * as styles from '@/styles/create-token.css';
 import { IUnsignedCommand, ICommand, ITransactionDescriptor, ICommandResult } from "@kadena/client"
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-
+import TransactionPreview from '@/components/TransactionPreview';
 interface SendTransactionFormProps {
   preview: () => Promise<void | ICommandResult>
   send: () => Promise<void | ITransactionDescriptor>
@@ -14,13 +15,18 @@ interface SendTransactionFormProps {
 
 const SendTransaction: FC<SendTransactionFormProps> = ({ send, preview, poll, transaction}) =>{
   const [previewStatus, setPreviewStatus] = useState<boolean>(false);
+  const [isPreview, setIsPreview] = useState<boolean>(true);
   const [loadingStatus, setLoadingStatus] = useState<boolean>(false);
-  const [result, setResult] = useState<string>();
+  const [result, setResult] = useState<string>('');
   const [requestKey, setRequestKey] = useState<string | undefined>(undefined);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(false);
   const [returnUrl, setReturnUrl] = useState<string>();
   const searchParams = useSearchParams();
   const router = useRouter();
+
+  const onCancelPress = () => {
+    router.back();
+  };
 
   useEffect(() => {
     if (searchParams.has('returnUrl')) {
@@ -36,13 +42,18 @@ const SendTransaction: FC<SendTransactionFormProps> = ({ send, preview, poll, tr
       const res: any = await preview();
       const result = res?.result.status === "success" ? res?.result.status : undefined;
       if (result === "success") {
+        setError(false);
         setPreviewStatus(true);
+        setIsPreview(true)
         setResult(JSON.stringify(res?.result))
       } else {
         throw new Error(JSON.stringify(res))
       }
     } catch (e) {
-      setError(e.message);
+      setError(true);
+      setIsPreview(true)
+      setPreviewStatus(true);
+      setResult(JSON.parse(e.message).result.error.message)
       console.error('Error previewing transaction:', e);
     }
   };
@@ -58,6 +69,8 @@ const SendTransaction: FC<SendTransactionFormProps> = ({ send, preview, poll, tr
       const pollResult = pollResponse[requestKey];
       const result = pollResult?.result.status === "success" ? pollResult?.result.status : undefined;
       if (result === "success") {
+        setIsPreview(false);
+        setPreviewStatus(true)
         setResult(JSON.stringify(pollResult.result));
         if (returnUrl) {
           window.location.href = returnUrl;
@@ -67,7 +80,7 @@ const SendTransaction: FC<SendTransactionFormProps> = ({ send, preview, poll, tr
       }
       setLoadingStatus(false);
     } catch (error) {
-      setError(JSON.stringify(error));
+      setError(true);
       setLoadingStatus(false);
       console.error('Error sending transaction:', error);
     }
@@ -114,25 +127,15 @@ return(
   <div >
     <Card >
       {renderTransactionDetails()}
-      <Divider />
-      <div className={styles.buttonContainer}>
-        {!previewStatus ?
-          (<Button className={styles.button} onPress={handlePreview}>Preview Transaction</Button>)
-        : (<Button className={styles.button} onPress={handleSend} loadingLabel="Transaction in Progress.." isLoading={loadingStatus}>Send Transaction</Button>)
-        }
-      </div>
     </Card>
-    {result && (
-      <div className={styles.resultBox}>
-        <p>{JSON.stringify(result)}</p>
-      </div>
-    )}
 
-    {error && (
-      <div className={styles.errorBox}>
-        <p>Error: {error}</p>
-      </div>
-    )}
+    <div className={styles.buttonRow}>
+      <Button variant="outlined" onPress={onCancelPress}>
+        Cancel
+      </Button>
+      <Button className={styles.button} onPress={handlePreview} loadingLabel="Transaction in Progress.."  isLoading={loadingStatus} >Preview Transaction</Button>
+    </div>
+    {previewStatus && <TransactionPreview sendTransaction={handleSend} preview={isPreview} showNotification={previewStatus} setShowNotification={setPreviewStatus} error={error} txResponse={result}/>}
   </div>
 );}
 

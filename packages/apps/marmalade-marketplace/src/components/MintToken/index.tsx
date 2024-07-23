@@ -1,47 +1,77 @@
 import React, { FormEvent, useState, useEffect} from 'react';
 import { env } from '@/utils/env';
-import * as styles from '@/styles/create-token.css';
+import * as styles from './style.css';
 import { useRouter } from 'next/navigation';
-import { Stack, Heading, Button, TextField, NumberField } from '@kadena/kode-ui';
+import { Stack,  Button, TextField, NumberField, Checkbox } from '@kadena/kode-ui';
 import { ChainId, BuiltInPredicate } from '@kadena/client';
 import { getTokenInfo, mintToken } from '@kadena/client-utils/marmalade';
 import { useAccount } from '@/hooks/account';
-import { createSignWithSpireKey } from '@/utils/signWithSpireKey';
+import { createSignWithSpireKeySDK } from '@/utils/signWithSpireKey';
 import SendTransaction from '@/components/SendTransaction';
 import { useTransaction } from '@/hooks/transaction';
-import { generateSpireKeyGasCapability, checkPolicies, Policy } from '@/utils/helper';
+import { generateSpireKeyGasCapability, checkConcretePolicies, Policy } from '@/utils/helper';
 import { PactNumber } from "@kadena/pactjs";
 import { MonoAutoFixHigh, MonoAccountBalanceWallet, MonoAccessTime } from '@kadena/kode-icons';
+import { TokenMetadata } from "@/components/Token";
+import { getTokenImageUrl, getTokenMetadata } from '@/utils/token';
+import { ICommand, IUnsignedCommand } from '@kadena/client';
 
 import CrudCard from '@/components/CrudCard';
 
 function MintTokenComponent() {
   const router = useRouter();
   const { account, webauthnAccount } = useAccount();
-
-  const { transaction, send, preview, poll } = useTransaction();
+  const { transaction, send, preview, poll, setTransaction } = useTransaction();
   const [tokenId, setTokenId] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
   const [error, setError] = useState("");
-  const [result, setResult] = useState<object>({});
+  const [result, setResult] = useState<{guarded?: boolean, collection?:boolean, hasRoyalty?: boolean, nonFungible?: boolean, nonUpdatableURI?: boolean} | undefined>(undefined);
+  const [tokenMetadata, setTokenMetadata] = useState<TokenMetadata | null>();
+  const [tokenInfo, setTokenInfo] = useState<{uri: string}>({uri: ''})
+  const [tokenImageUrl, setTokenImageUrl] = useState<string>("/no-image.webp");
+  
+  const onTransactionSigned = (transaction: IUnsignedCommand | ICommand) => {
+    setTransaction(transaction);
+    router.push(`/transaction?returnUrl=/tokens/${tokenId}`);
+  }
 
   const config = {
     host: env.URL,
     networkId: env.NETWORKID,
     chainId: '8' as ChainId,
-    sign: createSignWithSpireKey(router, { host: env.WALLET_URL ?? '' }),
+    sign: createSignWithSpireKeySDK([account], onTransactionSigned),
   };
+
+  const fetchTokenInfo = async () => {
+    const res = await getTokenInfo({
+      tokenId,
+      networkId: config.networkId,
+      chainId: config.chainId,
+      host: config.host,
+    }) as { policies: Policy[], uri: string };
+    setTokenInfo(res); 
+    setResult(checkConcretePolicies(res.policies))
+    await fetch(res);
+  }
+
+  async function fetch(tokenInfo:any) {
+    const metadata = await getTokenMetadata(tokenInfo.uri);
+    setTokenMetadata(metadata);
+    try {
+      if (!!metadata?.image?.length) {
+        const tokenImageUrl = getTokenImageUrl(metadata.image);
+        if (tokenImageUrl) {
+          setTokenImageUrl(tokenImageUrl);
+        } else console.log('Invalid Image URL', metadata.image)
+      }
+    } catch (e) {
+      console.log('Error fetching token info', e)
+    }
+  }
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     try {
-      const res = await getTokenInfo({
-        tokenId,
-        networkId: config.networkId,
-        chainId: config.chainId,
-        host: config.host,
-      }) as { policies: Policy[] };
-      setResult( checkPolicies(res.policies))
 
       const amountFormatted = (amount === 1) ? {"decimal": "1.0"} : new PactNumber(amount).toPactDecimal();
 
@@ -52,7 +82,7 @@ function MintTokenComponent() {
       const walletAccount = account?.accountName || '';
 
       await mintToken({
-        policyConfig: checkPolicies(res.policies),
+        policyConfig: result,
         tokenId: tokenId,
         accountName: webauthnAccount?.account || "",
         guard: {
@@ -83,6 +113,10 @@ function MintTokenComponent() {
     if (name === 'tokenId') setTokenId(value);
   };
 
+  const onCancelPress = () => {
+    router.back();
+  };
+
   const hanldeAmountInputChange = (value: number) => {
     if (value >= 0) {
       setAmount(value);
@@ -92,39 +126,63 @@ function MintTokenComponent() {
   return (
     <>
       {!transaction ? (
-        <Stack flex={1} flexDirection="column"  className={styles.container}>
-          <CrudCard
-            headingSize="h3"
-            titleIcon={<MonoAutoFixHigh />}
-            title="Mint Token"
+        <div>
+          <Stack flex={1} flexDirection="column"  className={styles.container}>
+            <CrudCard
+              headingSize="h3"
+              titleIcon={<MonoAutoFixHigh />}
+              title="Mint Token"
+              description={[
+                "After creating the tokens, they are ready to be minted.",
+                "Minting refers to increasing a token's supply and assigning it to specific accounts.",
+                "Each token adheres to the rules established during its creation process.",
+                "Once you mint a token to your account, you can either sell it or use it for various purposes within the ecosystem.",
+                "Try minting your own nft!"
+              ]}
+            >
+            <div>
+              <img
+                src={tokenImageUrl}
+                alt="Token Image"
+                className={styles.tokenImageClass}
+              />
+            </div>
+            <div className={styles.formContainer} >
+              <TextField label="Token ID" name="tokenId" value={tokenId} onChange={handleTokenInputChange} onBlur={fetchTokenInfo} /> 
+              <NumberField label="Amount" value={amount} onValueChange={hanldeAmountInputChange} />
+            </div>
+          </CrudCard>
+
+          {result && (<CrudCard
+            title="Token Policy Information"
             description={[
-              "Mint a new token",
-              "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi",
-              "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore",
-              "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia"
-            ]}
-          >
-          <TextField label="Token ID" name="tokenId" value={tokenId} onChange={handleTokenInputChange} />
-          <NumberField label="Amount" value={amount} onValueChange={hanldeAmountInputChange} />
-
-        </CrudCard>
-
-        <div className={styles.buttonRow}>
-          <Button type="submit" onClick={handleButtonClick}>
-            Mint Token
-          </Button>
-        </div>
-        {result && (<CrudCard
-          title="Token Policy Information"
-          description={[
-            "Displays the token policy information",
-          ]}>
-            <p>Token Policy Information: {JSON.stringify(result)}</p>
-        </CrudCard>
-        )}
+              "Displays the token policy information",
+            ]}>
+            <div className={styles.checkboxRow}>
+              <Checkbox isReadOnly={true} id="nonUpdatableURI" isSelected={result.nonUpdatableURI}>Non-Updatable URI</Checkbox>
+              <Checkbox isReadOnly={true} id="guarded"  isSelected={result?.guarded}>Guarded</Checkbox>
+            </div>
+            <div className={styles.checkboxRow}>
+              <Checkbox isReadOnly={true} id="nonFungible" isSelected={result?.nonFungible}>Non Fungible</Checkbox>
+              <Checkbox isReadOnly={true} id="hasRoyalty" isSelected={result?.hasRoyalty}>Has Royalty</Checkbox>
+            </div>
+            <div className={styles.checkboxRow}>
+              <Checkbox isReadOnly={true} id="collection" isSelected={result?.collection}>Collection</Checkbox>
+            </div> 
+          </CrudCard>
+          )}
       </Stack>
+      <div className={styles.buttonRow}>
+        <Button variant="outlined" onPress={onCancelPress}>
+          Cancel
+        </Button>
+        <Button type="submit" onClick={handleButtonClick}>
+          Mint Token
+        </Button>
+      </div>
+      </div>
       ) : (
-        <SendTransaction send={send} preview={preview} poll={poll} transaction={transaction} />
+        <SendTransaction send={send} preview={preview} poll={poll} transaction={transaction}  />
       )}
     </>
   );
