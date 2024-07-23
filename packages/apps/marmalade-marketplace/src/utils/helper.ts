@@ -1,5 +1,5 @@
 import { ICreateTokenPolicyConfig, CommonProps } from "@kadena/client-utils/marmalade";
-import { BuiltInPredicate } from "@kadena/client";
+import { BuiltInPredicate, ChainId } from "@kadena/client";
 import { PactNumber } from "@kadena/pactjs";
 import { env } from '@/utils/env';
 
@@ -95,8 +95,7 @@ export const getPolicies = (policyConfig: ICreateTokenPolicyConfig) => {
     refName: RefSpec;
   }
 
-
-  export const checkPolicies = (policies: Policy[]): ICreateTokenPolicyConfig => {
+  export const checkConcretePolicies = (policies: Policy[]): ICreateTokenPolicyConfig => {
     const result: ICreateTokenPolicyConfig = {};
 
     policies.forEach(policy => {
@@ -106,7 +105,17 @@ export const getPolicies = (policyConfig: ICreateTokenPolicyConfig) => {
       if (policy.refName.name === 'non-fungible-policy-v1') {
         result.nonFungible = true;
       }
+      if (policy.refName.name === 'non-updatable-uri-policy-v1') {
+        result.nonUpdatableURI = true;
+      }
+      if (policy.refName.name === 'collection-policy-v1') {
+        result.collection = true;
+      }
+      if (policy.refName.name === 'royalty-policy-v1') {
+        result.hasRoyalty = true;
+      }
     });
 
     return result;
   };
+

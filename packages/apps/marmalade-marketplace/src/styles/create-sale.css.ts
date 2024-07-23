@@ -9,6 +9,19 @@ export const container = style({
   border: `1px solid ${deviceColors.borderColor}`,
 });
 
+export const secondContainer = style({
+  margin: '50px 15% 0',
+  backgroundColor: tokens.kda.foundation.color.background.surface.default,
+  borderRadius: tokens.kda.foundation.radius.sm,
+  border: `1px solid ${deviceColors.borderColor}`,
+});
+
+export const formContainer = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: tokens.kda.foundation.spacing.n4,
+});
+
 export const buttonRowContainer = style({
   margin: `${tokens.kda.foundation.spacing.n6} 15% 0`,
   justifyContent: 'space-between',
