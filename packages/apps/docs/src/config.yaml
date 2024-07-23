@@ -509,6 +509,22 @@ pages:
       spirekey:
         url: /spirekey
         file: /reference/spirekey-ref.md
+      chainwebapi:
+        url: /chainweb-api
+        file: /reference/chainweb/chainweb-api.md
+        children:
+          cut:
+            url: /cut
+            file: /reference/chainweb/chainweb-cut.md
+          blockhash:
+            url: /blockhash
+            file: /reference/chainweb/chainweb-blockhash.md
+          datamodels:
+            url: /data-models
+            file: /reference/chainweb/chainweb-data-models.md
+          binary:
+            url: /binary-encoding
+            file: /reference/chainweb/chainweb-encoding.md
       chainwebref:
         url: /chainweb-ref
         file: /reference/chainweb/api/chainweb-api.tsx
