@@ -1,5 +1,6 @@
 import type { AccountTransfersQuery, Transfer } from '@/__generated__/sdk';
 import { useAccountTransfersQuery } from '@/__generated__/sdk';
+import { useQueryContext } from '@/context/queryContext';
 import { usePagination } from '@/hooks/usePagination';
 import { graphqlIdFor } from '@/utils/graphqlIdFor';
 import { Heading, Stack } from '@kadena/kode-ui';
@@ -9,6 +10,7 @@ import { CompactTable } from '../CompactTable/CompactTable';
 import { FormatAmount } from '../CompactTable/utils/formatAmount';
 import { FormatLink } from '../CompactTable/utils/formatLink';
 import { useToast } from '../Toast/ToastContext/ToastContext';
+import { accountTransfers } from './AccountTransfers.graph';
 import { loadingData } from './loadingDataAccountTransfersquery';
 
 export const AccountTransfersTable: FC<{ accountName: string }> = ({
@@ -18,6 +20,7 @@ export const AccountTransfersTable: FC<{ accountName: string }> = ({
   const [innerData, setInnerData] =
     useState<AccountTransfersQuery>(loadingData);
   const [isLoading, setIsLoading] = useState(true);
+  const { setQueries } = useQueryContext();
 
   const { variables, handlePageChange, pageSize } = usePagination({
     id,
@@ -50,6 +53,12 @@ export const AccountTransfersTable: FC<{ accountName: string }> = ({
       }, 200);
     }
   }, [loading, data]);
+
+  useEffect(() => {
+    if (id) {
+      setQueries([{ query: accountTransfers, variables }]);
+    }
+  }, [id]);
 
   if (innerData.node?.__typename !== 'FungibleAccount') return null;
 

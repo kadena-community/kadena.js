@@ -2,6 +2,8 @@ import { useNetworkInfoQuery } from '@/__generated__/sdk';
 import { Media } from '@/components/Layout/media';
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import { CONSTANTS } from '@/constants/constants';
+import { useQueryContext } from '@/context/queryContext';
+import { networkInfo } from '@/graphql/queries/network-info.graph';
 import { formatStatisticsData } from '@/services/format';
 import { Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
@@ -10,13 +12,17 @@ import { boxClass, overFlowClass } from './statisticsStack.css';
 
 export const StatisticsStack: FC = () => {
   const { addToast } = useToast();
+  const { setQueries } = useQueryContext();
+
+  const variables = {
+    pollInterval: CONSTANTS.NETWORK_POLLING_RATE,
+  };
+
   const {
     data: statisticsData,
     error,
     stopPolling,
-  } = useNetworkInfoQuery({
-    pollInterval: CONSTANTS.NETWORK_POLLING_RATE,
-  });
+  } = useNetworkInfoQuery(variables);
 
   useEffect(() => {
     if (error) {
@@ -28,6 +34,10 @@ export const StatisticsStack: FC = () => {
       stopPolling();
     }
   }, [error]);
+
+  useEffect(() => {
+    setQueries([{ query: networkInfo, variables }]);
+  }, []);
 
   const statisticsGridData = formatStatisticsData(statisticsData?.networkInfo);
 
