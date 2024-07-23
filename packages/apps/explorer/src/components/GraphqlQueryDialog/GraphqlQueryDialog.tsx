@@ -19,10 +19,8 @@ import { buttonSizeClass } from '../Navbar/styles.css';
 import { code } from './styles.css';
 
 export const GraphQLQueryDialog = (): JSX.Element => {
-  let { queries } = useQueryContext();
+  const { queries } = useQueryContext();
   const { activeNetwork } = useNetwork();
-
-  if (!queries) queries = [];
 
   const [isOpen, setIsOpen] = useState(false);
 
