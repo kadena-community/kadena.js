@@ -17,7 +17,6 @@ import { PactNumber } from '@kadena/pactjs';
 import { generateSpireKeyGasCapability } from '@/utils/helper';
 import { offerToken } from '@kadena/client-utils/marmalade';
 import { createSignWithSpireKeySDK } from '@/utils/signWithSpireKey';
-import SendTransaction from '@/components/SendTransaction';
 import * as styles from '@/styles/create-sale.css';
 
 export default function CreateSale() {
@@ -28,7 +27,7 @@ export default function CreateSale() {
   const [saleData, setSaleData] = useState<CreateSaleInput>({ timeout: 0, saleType: "none", price: 0, amount: 0 });
   const searchParams = useSearchParams();
   const params = useParams();
-  const { transaction, send, preview, poll, setTransaction } = useTransaction();
+  const { setTransaction } = useTransaction();
   const router = useRouter();
   const account = useAccount();
 
@@ -149,99 +148,93 @@ useEffect(() => {
   }
   
   return (
-    <>
-      {!transaction ? (
-        <div>
-          <Stack flex={1} flexDirection="column" className={styles.container}>
-            <CrudCard
-              headingSize="h3"
-              titleIcon={<MonoSelectAll />}
-              title="Create Sale"
-              description={[
-                "Token ID: " + tokenId,
-                "Token Name: " + tokenMetadata?.name,
-                "Token Description: " + tokenMetadata?.description,
-                "Resides on Chain: " + chainId,
-              ]}
-            >
-              <div>
-                <img
-                  src={tokenImageUrl}
-                  alt="Token Image"
-                  className={styles.tokenImageClass}
-                />
-              </div>
-              <Button
-                startVisual={<MonoViewInAr />}
-                variant="outlined"
-                style={{ marginBottom: '50px' }}
-              >
-                Explore NFT Details
-              </Button>
+    <div>
+      <Stack flex={1} flexDirection="column" className={styles.container}>
+        <CrudCard
+          headingSize="h3"
+          titleIcon={<MonoSelectAll />}
+          title="Create Sale"
+          description={[
+            "Token ID: " + tokenId,
+            "Token Name: " + tokenMetadata?.name,
+            "Token Description: " + tokenMetadata?.description,
+            "Resides on Chain: " + chainId,
+          ]}
+        >
+          <div>
+            <img
+              src={tokenImageUrl}
+              alt="Token Image"
+              className={styles.tokenImageClass}
+            />
+          </div>
+          <Button
+            startVisual={<MonoViewInAr />}
+            variant="outlined"
+            style={{ marginBottom: '50px' }}
+          >
+            Explore NFT Details
+          </Button>
+          </CrudCard>
+        </Stack>
+        <Stack flex={1} flexDirection="column" className={styles.secondContainer}>
+          <Tabs>
+            <TabItem title="General Info">
+              <CrudCard title="Token Information" description={[]}>
+                <></>
               </CrudCard>
-            </Stack>
-            <Stack flex={1} flexDirection="column" className={styles.secondContainer}>
-              <Tabs>
-                <TabItem title="General Info">
-                  <CrudCard title="Token Information" description={[]}>
-                    <></>
-                  </CrudCard>
-                </TabItem>
-                <TabItem title="Sale">
-                  <CrudCard title="Make a Sale" description={[]}>
-                    <div className={styles.formContainer}>
-                      <Select onSelectionChange={onSaleTypeChange} label="Select a sale contract">
-                        <SelectItem key="none">None</SelectItem>
-                        <SelectItem key="conventional">Conventional Auction</SelectItem>
-                        <SelectItem key="dutch">Dutch Auction</SelectItem>
-                      </Select>
-                        <NumberField value={saleData.amount} onValueChange={(value:number) => {onSaleDataChange('amount', value)}} label="Amount" minValue={0.1} placeholder="Set the amount to sell" startVisual={<KRoundedFilledKdacolorBlack />} />
-                      <NumberField value={saleData.price} onValueChange={(value:number) => {onSaleDataChange('price', value)}}label="Price" minValue={0.1} placeholder="Set the token price in KDA" />
-                      <NumberField value={saleData.timeout} onValueChange={(value:number) => {onSaleDataChange('timeout', value)}} label="Timeout" minValue={1} startVisual={<MonoAccessTime />} description="Set the minumum amount of days that the sale will be valid" />
-                    </div>
-                  </CrudCard>
-                  </TabItem>
-              </Tabs>
-              {saleData.saleType === "conventional" && (
-              <CrudCard
-                title="Conventional Auction"
-                description={[
-                  "Allow bidding on the token up untill a certain time",
-                  "The highest bidder at the end of the auction wins the token",
-                  "The seller can choose to set a reserve price",
-                ]}
-              >
-                <div>
-                  <p>Form to setup conventional auction</p>
+            </TabItem>
+            <TabItem title="Sale">
+              <CrudCard title="Make a Sale" description={[]}>
+                <div className={styles.formContainer}>
+                  <Select onSelectionChange={onSaleTypeChange} label="Select a sale contract">
+                    <SelectItem key="none">None</SelectItem>
+                    <SelectItem key="conventional">Conventional Auction</SelectItem>
+                    <SelectItem key="dutch">Dutch Auction</SelectItem>
+                  </Select>
+                    <NumberField value={saleData.amount} onValueChange={(value:number) => {onSaleDataChange('amount', value)}} label="Amount" minValue={0.1} placeholder="Set the amount to sell" startVisual={<KRoundedFilledKdacolorBlack />} />
+                  <NumberField value={saleData.price} onValueChange={(value:number) => {onSaleDataChange('price', value)}}label="Price" minValue={0.1} placeholder="Set the token price in KDA" />
+                  <NumberField value={saleData.timeout} onValueChange={(value:number) => {onSaleDataChange('timeout', value)}} label="Timeout" minValue={1} startVisual={<MonoAccessTime />} description="Set the minumum amount of days that the sale will be valid" />
                 </div>
-              </CrudCard>)}
-            {saleData.saleType === "dutch" && (
-              <CrudCard
-                title="Dutch Auction"
-                description={[
-                  "The price of the token is set high and decreases over time",
-                  "The first bidder to accept the price wins the token",
-                  "The seller can choose to set a start and reserve price"
-                ]}
-              >
-                <div>
-                  <p>Form to setup dutch auction</p>
-                </div>
-              </CrudCard>)}
-            
-          </Stack>
-          <Stack className={styles.buttonRowContainer}>
-            <Button variant="outlined" onPress={onCancelPress}>
-              Cancel
-            </Button>
-            <Button onPress={onCreateSalePress} isDisabled={!isSaleValid()}>
-              Create Sale
-            </Button>
-          </Stack>
-        </div>) 
-        : (
-          <SendTransaction send={send} preview={preview} poll={poll} transaction={transaction}  />
-        )}
-      </>
+              </CrudCard>
+              </TabItem>
+          </Tabs>
+          {saleData.saleType === "conventional" && (
+          <CrudCard
+            title="Conventional Auction"
+            description={[
+              "Allow bidding on the token up untill a certain time",
+              "The highest bidder at the end of the auction wins the token",
+              "The seller can choose to set a reserve price",
+            ]}
+          >
+            <div>
+              <p>Form to setup conventional auction</p>
+            </div>
+          </CrudCard>)}
+        {saleData.saleType === "dutch" && (
+          <CrudCard
+            title="Dutch Auction"
+            description={[
+              "The price of the token is set high and decreases over time",
+              "The first bidder to accept the price wins the token",
+              "The seller can choose to set a start and reserve price"
+            ]}
+          >
+            <div>
+              <p>Form to setup dutch auction</p>
+            </div>
+          </CrudCard>)}
+        
+      </Stack>
+      <Stack className={styles.buttonRowContainer}>
+        <Button variant="outlined" onPress={onCancelPress}>
+          Cancel
+        </Button>
+        <Button onPress={onCreateSalePress} isDisabled={!isSaleValid()}>
+          Create Sale
+        </Button>
+      </Stack>
+    </div>
   );
 }

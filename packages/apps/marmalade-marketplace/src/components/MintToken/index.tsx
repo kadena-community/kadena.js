@@ -7,7 +7,6 @@ import { ChainId, BuiltInPredicate } from '@kadena/client';
 import { getTokenInfo, mintToken } from '@kadena/client-utils/marmalade';
 import { useAccount } from '@/hooks/account';
 import { createSignWithSpireKeySDK } from '@/utils/signWithSpireKey';
-import SendTransaction from '@/components/SendTransaction';
 import { useTransaction } from '@/hooks/transaction';
 import { generateSpireKeyGasCapability, checkConcretePolicies, Policy } from '@/utils/helper';
 import { PactNumber } from "@kadena/pactjs";
@@ -21,7 +20,7 @@ import CrudCard from '@/components/CrudCard';
 function MintTokenComponent() {
   const router = useRouter();
   const { account, webauthnAccount } = useAccount();
-  const { transaction, send, preview, poll, setTransaction } = useTransaction();
+  const { setTransaction } = useTransaction();
   const [tokenId, setTokenId] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
   const [error, setError] = useState("");
@@ -124,53 +123,51 @@ function MintTokenComponent() {
   }
 
   return (
-    <>
-      {!transaction ? (
-        <div>
-          <Stack flex={1} flexDirection="column"  className={styles.container}>
-            <CrudCard
-              headingSize="h3"
-              titleIcon={<MonoAutoFixHigh />}
-              title="Mint Token"
-              description={[
-                "After creating the tokens, they are ready to be minted.",
-                "Minting refers to increasing a token's supply and assigning it to specific accounts.",
-                "Each token adheres to the rules established during its creation process.",
-                "Once you mint a token to your account, you can either sell it or use it for various purposes within the ecosystem.",
-                "Try minting your own nft!"
-              ]}
-            >
-            <div>
-              <img
-                src={tokenImageUrl}
-                alt="Token Image"
-                className={styles.tokenImageClass}
-              />
-            </div>
-            <div className={styles.formContainer} >
-              <TextField label="Token ID" name="tokenId" value={tokenId} onChange={handleTokenInputChange} onBlur={fetchTokenInfo} /> 
-              <NumberField label="Amount" value={amount} onValueChange={hanldeAmountInputChange} />
-            </div>
-          </CrudCard>
+    <div>
+      <Stack flex={1} flexDirection="column"  className={styles.container}>
+        <CrudCard
+          headingSize="h3"
+          titleIcon={<MonoAutoFixHigh />}
+          title="Mint Token"
+          description={[
+            "After creating the tokens, they are ready to be minted.",
+            "Minting refers to increasing a token's supply and assigning it to specific accounts.",
+            "Each token adheres to the rules established during its creation process.",
+            "Once you mint a token to your account, you can either sell it or use it for various purposes within the ecosystem.",
+            "Try minting your own nft!"
+          ]}
+        >
+          <div>
+            <img
+              src={tokenImageUrl}
+              alt="Token Image"
+              className={styles.tokenImageClass}
+            />
+          </div>
+          <div className={styles.formContainer} >
+            <TextField label="Token ID" name="tokenId" value={tokenId} onChange={handleTokenInputChange} onBlur={fetchTokenInfo} /> 
+            <NumberField label="Amount" value={amount} onValueChange={hanldeAmountInputChange} />
+          </div>
+        </CrudCard>
 
-          {result && (<CrudCard
-            title="Token Policy Information"
-            description={[
-              "Displays the token policy information",
-            ]}>
-            <div className={styles.checkboxRow}>
-              <Checkbox isReadOnly={true} id="nonUpdatableURI" isSelected={result.nonUpdatableURI}>Non-Updatable URI</Checkbox>
-              <Checkbox isReadOnly={true} id="guarded"  isSelected={result?.guarded}>Guarded</Checkbox>
-            </div>
-            <div className={styles.checkboxRow}>
-              <Checkbox isReadOnly={true} id="nonFungible" isSelected={result?.nonFungible}>Non Fungible</Checkbox>
-              <Checkbox isReadOnly={true} id="hasRoyalty" isSelected={result?.hasRoyalty}>Has Royalty</Checkbox>
-            </div>
-            <div className={styles.checkboxRow}>
-              <Checkbox isReadOnly={true} id="collection" isSelected={result?.collection}>Collection</Checkbox>
-            </div> 
-          </CrudCard>
-          )}
+        {result && (<CrudCard
+          title="Token Policy Information"
+          description={[
+            "Displays the token policy information",
+          ]}>
+          <div className={styles.checkboxRow}>
+            <Checkbox isReadOnly={true} id="nonUpdatableURI" isSelected={result.nonUpdatableURI}>Non-Updatable URI</Checkbox>
+            <Checkbox isReadOnly={true} id="guarded"  isSelected={result?.guarded}>Guarded</Checkbox>
+          </div>
+          <div className={styles.checkboxRow}>
+            <Checkbox isReadOnly={true} id="nonFungible" isSelected={result?.nonFungible}>Non Fungible</Checkbox>
+            <Checkbox isReadOnly={true} id="hasRoyalty" isSelected={result?.hasRoyalty}>Has Royalty</Checkbox>
+          </div>
+          <div className={styles.checkboxRow}>
+            <Checkbox isReadOnly={true} id="collection" isSelected={result?.collection}>Collection</Checkbox>
+          </div> 
+        </CrudCard>
+        )}
       </Stack>
       <div className={styles.buttonRow}>
         <Button variant="outlined" onPress={onCancelPress}>
@@ -180,11 +177,7 @@ function MintTokenComponent() {
           Mint Token
         </Button>
       </div>
-      </div>
-      ) : (
-        <SendTransaction send={send} preview={preview} poll={poll} transaction={transaction}  />
-      )}
-    </>
+    </div>
   );
 }
 
