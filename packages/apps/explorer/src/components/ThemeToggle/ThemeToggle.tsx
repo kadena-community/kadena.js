@@ -1,3 +1,4 @@
+import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import { MonoContrast } from '@kadena/kode-icons';
 import { Button, Themes, useTheme } from '@kadena/kode-ui';
 import classNames from 'classnames';
@@ -21,6 +22,11 @@ export const ThemeToggle: FC = () => {
 
   const toggleTheme = useCallback((): void => {
     const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
+
+    analyticsEvent(EVENT_NAMES['click:switch_theme'], {
+      theme: newTheme,
+    });
+
     setTheme(newTheme);
   }, [setTheme, theme]);
 

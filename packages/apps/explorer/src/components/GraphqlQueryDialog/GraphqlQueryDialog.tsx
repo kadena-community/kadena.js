@@ -1,5 +1,6 @@
 import { useNetwork } from '@/context/networksContext';
 import { useQueryContext } from '@/context/queryContext';
+import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import { MonoHub } from '@kadena/kode-icons/system';
 import {
   Box,
@@ -21,8 +22,12 @@ import { code } from './styles.css';
 export const GraphQLQueryDialog = (): JSX.Element => {
   const { queries } = useQueryContext();
   const { activeNetwork } = useNetwork();
-
   const [isOpen, setIsOpen] = useState(false);
+
+  const handlePress = () => {
+    setIsOpen(true);
+    analyticsEvent(EVENT_NAMES['click:open_graphDialog'], {});
+  };
 
   return (
     <>
@@ -31,7 +36,7 @@ export const GraphQLQueryDialog = (): JSX.Element => {
         startVisual={<MonoHub />}
         title="Show the GraphQL query used."
         variant="transparent"
-        onPress={() => setIsOpen(true)}
+        onPress={handlePress}
       ></Button>
       <Dialog
         isOpen={isOpen}

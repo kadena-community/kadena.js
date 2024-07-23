@@ -1,5 +1,6 @@
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
 import type { IBlockData } from '@/services/block';
+import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import { Stack, Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import type { FC } from 'react';
@@ -32,6 +33,12 @@ export const BlockCell: FC<IProps> = ({
 
   const handleOpenHeight = useCallback(() => {
     if (isLoading) return;
+
+    analyticsEvent(EVENT_NAMES['click:open_blockheightpopup'], {
+      chainId: `${height.chainId}`,
+      height: `${height.height}`,
+    });
+
     if (handleOpenHeightBlock) {
       handleOpenHeightBlock(chainId, height);
     }
