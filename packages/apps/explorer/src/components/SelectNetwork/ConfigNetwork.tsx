@@ -44,16 +44,27 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
     e.preventDefault();
 
     const data = new FormData(e.currentTarget);
-    const { label, networkId, slug, graphUrl } = getFormValues<any>(data);
+    const { label, networkId, slug, graphUrl, isNew } =
+      getFormValues<any>(data);
 
-    const newNetwork = {
-      ...defineNewNetwork(),
-      label,
-      networkId,
-      slug,
-      graphUrl,
-      wsGraphUrl: graphUrl,
-    };
+    const newNetwork =
+      isNew === 'true'
+        ? {
+            ...defineNewNetwork(),
+            label,
+            networkId,
+            slug,
+            graphUrl,
+            wsGraphUrl: graphUrl,
+          }
+        : {
+            ...network,
+            label,
+            networkId,
+            graphUrl,
+            wsGraphUrl: graphUrl,
+            isNew: false,
+          };
 
     const errors = validateNewNetwork(networks, newNetwork);
     setFormError(errors);
@@ -135,6 +146,11 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
       {() => (
         <DialogContent>
           <Form onSubmit={handleCreateNetwork}>
+            <input
+              type="hidden"
+              value={network.isNew?.toString() ?? 'false'}
+              name="isNew"
+            />
             <CardContentBlock
               title={!network.isNew ? 'Update network' : 'Create Network'}
               visual={<MonoPermScanWifi className={cardVisualClass} />}
@@ -210,6 +226,17 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
                 {network.graphUrlIsValid && (
                   <>
                     <TextField
+                      isDisabled={!network.isNew}
+                      maxLength={15}
+                      label="Slug"
+                      name="slug"
+                      value={network?.slug}
+                      onChange={(e) => {
+                        setNetwork((v) => ({ ...v, slug: e.target.value }));
+                      }}
+                      isRequired
+                    ></TextField>
+                    <TextField
                       maxLength={15}
                       label="Name"
                       name="label"
@@ -231,16 +258,6 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
                         }));
                       }}
                       name="networkId"
-                      isRequired
-                    ></TextField>
-                    <TextField
-                      maxLength={15}
-                      label="Slug"
-                      name="slug"
-                      value={network?.slug}
-                      onChange={(e) => {
-                        setNetwork((v) => ({ ...v, slug: e.target.value }));
-                      }}
                       isRequired
                     ></TextField>
                   </>
@@ -265,7 +282,7 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
               )}
               <Stack flex={1} />
 
-              {!isDefaultNetwork(network) && (
+              {!isDefaultNetwork(network) ? (
                 <>
                   <Button
                     onPress={() => {
@@ -279,6 +296,8 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
                     {!network.isNew ? 'Update network' : 'Create Network'}
                   </Button>
                 </>
+              ) : (
+                <>This network cannot be edited</>
               )}
             </CardFooter>
           </Form>

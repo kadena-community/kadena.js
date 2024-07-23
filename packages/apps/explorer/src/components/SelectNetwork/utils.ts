@@ -2,13 +2,14 @@ import type { IEditNetwork, INetwork } from '@/constants/network';
 
 export const validateNewNetwork = (
   networks: INetwork[],
-  newNetwork: INetwork,
+  newNetwork: IEditNetwork,
 ): string[] => {
   const errors = [];
 
   if (
     networks.some(
       (network) =>
+        newNetwork.isNew &&
         network.networkId === newNetwork.networkId &&
         network.slug === newNetwork.slug,
     )

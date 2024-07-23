@@ -244,6 +244,13 @@ const NetworkContextProvider = (props: {
       Cookies.set(selectedNetworkKey, newNetwork.slug);
 
       window.location.href = `/${newNetwork.slug}`;
+    } else {
+      const newStorage = storage.map((network) => {
+        if (network.slug === newNetwork.slug) return newNetwork;
+        return network;
+      });
+      localStorage.setItem(storageKey, JSON.stringify(newStorage));
+      window.dispatchEvent(new Event(storageKey));
     }
   };
 
