@@ -1,6 +1,6 @@
 {
   "name": "@kadena/marmalade-marketplace",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "browser": {
     "fs": false
@@ -10,7 +10,7 @@
     "dev": "pnpm generate && next dev",
     "generate": "npx graphql-codegen",
     "start": "next start",
-    "start:cron": "ts-node scripts/cron.ts",
+    "start:cron": "TS_NODE_PROJECT='./tsconfig.cron.json' ts-node scripts/cron.ts",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage"
   },
@@ -18,13 +18,15 @@
     "@kadena/client": "workspace:*",
     "@kadena/client-utils": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
-    "@kadena/pactjs": "workspace:*",
     "@kadena/kode-icons": "workspace:*",
     "@kadena/kode-ui": "workspace:*",
+    "@kadena/pactjs": "workspace:*",
+    "@kadena/spirekey-sdk": "0.0.1-dev-8",
     "@pinata/sdk": "^2.1.0",
     "firebase": "^10.8.0",
     "formidable": "^3.5.1",
     "next": "14.2.2",
+    "next-themes": "^0.2.1",
     "react": "^18.2.0",
     "react-aria-components": "^1.0.1",
     "react-dom": "^18.2.0"

@@ -2,9 +2,6 @@ name: CI (build, lint, test)
 # All pull requests, and
 # Workflow dispatch allows you to run this workflow manually from the Actions tab
 on:
-  push:
-    branches:
-      - main
   pull_request:
   workflow_dispatch:
 
@@ -115,12 +112,34 @@ jobs:
         with:
           test-object: ${{ matrix.app }}
 
-      - uses: actions/upload-artifact@v4
-        if: always()
+      - name: Upload Blob Report  
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
-          name: playwright-report-${{ matrix.app }}
-          path: packages/e2e/e2e-${{ matrix.app }}/playwright-report/
-          retention-days: 30
+          name: blob-report-${{ matrix.app }}
+          path: packages/e2e/e2e-${{ matrix.app }}/blob-report/
+          retention-days: 1
+
+  merge-publish-reports:
+    if: ${{ !cancelled() }}
+    needs: [end-to-end-tests]
+
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v4
+      with:
+          fetch-depth: 2
+          show-progress: false
+
+    -  name: Runner Setup
+       uses: ./.github/actions/runner-setup 
+    
+    - name: Merge & Publish Report
+      uses: ./.github/actions/merge-publish-reports
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
 
   ci-gate:
     if: always()
@@ -128,6 +147,7 @@ jobs:
       - build
       - integration-tests
       - end-to-end-tests
+      - merge-publish-reports
     runs-on: Ubuntu-latest
     steps:
       - name: Check required jobs.

@@ -1,28 +1,6 @@
-import { style, globalStyle } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
+import { tokens } from '@kadena/kode-ui/styles';
 import { deviceColors } from '@/styles/tokens.css';
-
-globalStyle('body', {
-  color: 'white',
-  backgroundColor: deviceColors.kadenaBlack,
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  backgroundRepeat: 'no-repeat',
-  backgroundAttachment: 'fixed',
-});
-
-globalStyle('a', {
-  color: 'white',
-});
-
-globalStyle('a:hover', {
-  color: 'lightgray',
-  textDecoration: 'none',
-});
-
-globalStyle('a:has(button)', {
-  textDecoration: 'none',
-  flex: 1,
-});
 
 export const mainWrapperClass = style({
   display: 'grid',
@@ -40,6 +18,12 @@ export const oneColumnRow = style({
   gridTemplateColumns: '1fr',
   gap: '20px',
   marginTop: '20px',
+});
+
+export const formContainer = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: tokens.kda.foundation.spacing.n4,
 });
 
 export const formLabel = style({
@@ -89,30 +73,6 @@ export const uploadText = style({
   margin: '0',
 });
 
-export const checkboxRow = style({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'flex-start',
-  alignItems: 'flex-start',
-  marginBottom: '10px',
-});
-
-export const checkboxContainer = style({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '10px',
-});
-
-export const checkboxLabel = style({
-  color: 'black',
-  userSelect: 'none',
-});
-
-export const checkboxInput = style({
-  width: '16px',
-  height: '16px',
-});
-
 export const responseMessage = style({
   margin: '20px 0',
   padding: '10px',
@@ -145,8 +105,8 @@ export const verticalForm = style({
 
 export const buttonRow = style({
   display: 'flex',
-  justifyContent: 'center',
-  marginTop: '20px',
+  justifyContent: 'space-between',
+  margin: `${tokens.kda.foundation.spacing.n6} 15% 0`,
 });
 
 export const buttonRowRight = style({
@@ -162,14 +122,14 @@ export const textareaField = style({
   // box-sizing: "border-box"
 });
 
-export const container = style({
-  maxWidth: 600,
-  margin: '0 auto',
-  padding: 20,
-  backgroundColor: '#f0f0f0',
-  borderRadius: 8,
-  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-});
+// export const container = style({
+//   maxWidth: 600,
+//   margin: '0 auto',
+//   padding: 20,
+//   backgroundColor: '#f0f0f0',
+//   borderRadius: 8,
+//   boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+// });
 
 export const card = style({
   padding: 20,
@@ -200,25 +160,63 @@ export const formHeading = style({
   color: 'black',
 });
 
-export const errorBox = style({ 
-  color: 'red', 
-  backgroundColor: '#ffe6e6', 
-  border: '1px solid red', 
-  borderRadius: '5px', 
-  padding: '10px', 
+export const errorBox = style({
+  color: 'red',
+  backgroundColor: '#ffe6e6',
+  border: '1px solid red',
+  borderRadius: '5px',
+  padding: '10px',
   margin: '10px 0',
   fontFamily: 'Arial, sans-serif',
   fontSize: '14px'
 });
 
 
-export const resultBox = style({ 
-  color: 'green', 
+export const resultBox = style({
+  color: 'green',
   backgroundColor: '#e6ffe6',
   border: "1px solid green",
-  borderRadius: '5px', 
-  padding: '10px', 
+  borderRadius: '5px',
+  padding: '10px',
   margin: '10px 0',
   fontFamily: 'Arial, sans-serif',
   fontSize: '14px'
+});
+
+
+export const checkboxStyle = style({
+  flex: '1 1 50%',
+  boxSizing: 'border-box',
+  padding: '5px',
+})
+
+export const container = style({
+  margin: '160px 15% 0',
+  backgroundColor: tokens.kda.foundation.color.background.layer.default,
+  borderRadius: tokens.kda.foundation.radius.sm,
+  border: `1px solid ${deviceColors.borderColor}`,
+});
+
+export const buttonRowContainer = style({
+  margin: `${tokens.kda.foundation.spacing.n6} 15% 0`,
+  justifyContent: 'space-between',
+});
+
+export const propertyContainer = style({
+  display: 'flex',
+  marginBottom: '10px',
+});
+
+export const propertyLabel = style({
+  flex: '1',
+});
+
+export const propertyValue = style({
+  flex: '2',
+});
+
+export const offerContainer = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: tokens.kda.foundation.spacing.n4,
 });

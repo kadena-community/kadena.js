@@ -1,5 +1,19 @@
 # Change Log - @kadena/client
 
+## 1.13.0
+
+### Minor Changes
+
+- 29168e2: Fixed addSignatures for signatues object with pubKey + exported
+  parseAsPactValue
+
+### Patch Changes
+
+- Updated dependencies \[29168e2]
+  - @kadena/chainweb-node-client\@0.6.3
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/pactjs\@0.4.3
+
 ## 1.12.1
 
 ### Patch Changes

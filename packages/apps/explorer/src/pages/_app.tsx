@@ -1,60 +1,17 @@
 // load global styles from @kadena/kode-ui
-import '@kadena/kode-ui/global';
-
-import { MediaContextProvider } from '@/components/layout/media';
-import { graphHost, wsGraphHost } from '@/constants/graphHost';
-import { QueryContextProvider } from '@/context/query-context';
-import type { NormalizedCacheObject } from '@apollo/client';
-import {
-  ApolloClient,
-  ApolloProvider,
-  InMemoryCache,
-  split,
-} from '@apollo/client';
-import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
-import { getMainDefinition } from '@apollo/client/utilities';
+import { Analytics } from '@/components/Analytics/Analytics';
+import { MediaContextProvider } from '@/components/Layout/media';
+import { ToastProvider } from '@/components/Toast/ToastContext/ToastContext';
+import { NetworkContextProvider } from '@/context/networksContext';
+import { QueryContextProvider } from '@/context/queryContext';
+import { useRouter } from '@/hooks/router';
 import '@components/globalstyles.css';
 import { RouterProvider, useTheme } from '@kadena/kode-ui';
-import { createClient } from 'graphql-ws';
+import '@kadena/kode-ui/global';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import type { ComponentType } from 'react';
 import React from 'react';
-
-// next/apollo-link bug: https://github.com/dotansimha/graphql-yoga/issues/2194
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { YogaLink } = require('@graphql-yoga/apollo-link');
-
-console.log('graphHost', graphHost);
-console.log('wsGraphHost', wsGraphHost);
-
-const httpLink = new YogaLink({
-  endpoint: graphHost,
-});
-
-const wsLink = new GraphQLWsLink(
-  createClient({
-    url: wsGraphHost,
-  }),
-);
-
-const splitLink = split(
-  ({ query }) => {
-    const definition = getMainDefinition(query);
-    return (
-      definition.kind === 'OperationDefinition' &&
-      definition.operation === 'subscription'
-    );
-  },
-  wsLink, // Use WebSocket link for subscriptions
-  httpLink, // Use HTTP link for queries and mutations
-);
-
-const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
-  link: splitLink,
-  cache: new InMemoryCache(),
-});
 
 // eslint-disable-next-line @typescript-eslint/naming-convention, react/function-component-definition
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
@@ -62,25 +19,29 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
   const ReactComponent = Component as ComponentType;
   const router = useRouter();
   useTheme();
-  return (
-    <ApolloProvider client={client}>
-      <RouterProvider navigate={router.push}>
-        <MediaContextProvider>
-          <QueryContextProvider>
-            <Head>
-              <title>K:Explorer</title>
-              <link
-                rel="icon"
-                href="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/icons/internal/default/icon%40128.png"
-              />
-            </Head>
 
-            <main>
-              <ReactComponent {...pageProps} />
-            </main>
-          </QueryContextProvider>
-        </MediaContextProvider>
-      </RouterProvider>
-    </ApolloProvider>
+  return (
+    <ToastProvider>
+      <NetworkContextProvider>
+        <RouterProvider navigate={router.push}>
+          <MediaContextProvider>
+            <QueryContextProvider>
+              <Head>
+                <title>K:Explorer</title>
+                <link
+                  rel="icon"
+                  href="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/icons/internal/default/icon%40128.png"
+                />
+              </Head>
+
+              <main>
+                <ReactComponent {...pageProps} />
+              </main>
+            </QueryContextProvider>
+          </MediaContextProvider>
+        </RouterProvider>
+      </NetworkContextProvider>
+      <Analytics />
+    </ToastProvider>
   );
 }

@@ -39,7 +39,7 @@ export default function Sale() {
         quoteInfo = await getQuoteInfo({
           saleId: params["saleId"] as string,
           chainId: params["chainId"] as ChainId,
-          networkId: env.NETWORK_NAME,
+          networkId: env.NETWORKID,
           host: env.CHAINWEB_API_HOST
         }) as QuoteInfo;
 
@@ -60,7 +60,7 @@ export default function Sale() {
         tokenInfo = await getTokenInfo({
           tokenId,
           chainId: params["chainId"] as ChainId,
-          networkId: env.NETWORK_NAME,
+          networkId: env.NETWORKID,
           host: env.CHAINWEB_API_HOST
         }) as TokenInfo;
 

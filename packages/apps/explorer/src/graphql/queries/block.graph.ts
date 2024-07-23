@@ -9,6 +9,7 @@ export const block: DocumentNode = gql`
 
   query block($hash: String!) {
     block(hash: $hash) {
+      hash
       ...AllBlockFields
       parent {
         hash
@@ -24,13 +25,8 @@ export const block: DocumentNode = gql`
         chainId
         hash
       }
-      transactions(first: 500) {
+      transactions {
         totalCount
-        edges {
-          node {
-            ...CoreTransactionFields
-          }
-        }
       }
     }
   }

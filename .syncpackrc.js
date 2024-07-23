@@ -12,6 +12,7 @@ const config = {
         '@kadena/fonts',
         '@kadena/pactjs-cli',
         '@kadena-dev/eslint-plugin',
+        '@kadena/spirekey-sdk',
         'remark-gfm',
       ],
       isIgnored: true, // Toggle flag or or remove group to see inconsistencies
@@ -48,6 +49,11 @@ const config = {
         'Allow `@kadena/tools` to downgrade `@vanilla-extract/next-plugin` to fix initial render issues (see https://github.com/vanilla-extract-css/vanilla-extract/issues/1152#issuecomment-1784531987)',
       packages: ['@kadena/tools'],
       dependencies: ['@vanilla-extract/next-plugin'],
+    },
+    {
+      label: 'Allow buffer to have two versions',
+      packages: ['@kadena/js-monorepo'],
+      dependencies: ['buffer'],
     },
   ],
 };

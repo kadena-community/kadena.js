@@ -1,4 +1,5 @@
 enum NetworkTypes {
+  Devnet = Devnet,
   Mainnet = Mainnet,
   Testnet = Testnet,
 }

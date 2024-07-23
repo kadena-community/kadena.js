@@ -58,7 +58,7 @@
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier . --cache --write",
-    "generate:icons": "tsx scripts/generateIcons.ts && pnpm build && pnpm run format:src",
+    "generate:icons": "jiti scripts/generateIcons.ts && pnpm build && pnpm run format:src",
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
@@ -82,10 +82,10 @@
     "@types/react-dom": "^18.2.25",
     "eslint": "^8.45.0",
     "giget": "^1.2.1",
+    "jiti": "^1.21.6",
     "prettier": "~3.2.5",
     "scule": "^1.3.0",
     "tiny-readdir-glob": "^1.2.1",
-    "tsx": "^3.12.10",
     "typescript": "5.4.5",
     "unbuild": "^2.0.0"
   }

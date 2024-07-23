@@ -14,10 +14,7 @@ export interface CommonProps {
     props: any[];
   }[];
   additionalSigners?: {
-    keyset: {
-      keys: string[];
-      pred: BuiltInPredicate;
-    };
+    keys: string[];
     capabilities: {
       name: string;
       props: any[];

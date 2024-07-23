@@ -1,4 +1,7 @@
 import { useAccountQuery } from '@/__generated__/sdk';
+import { useToast } from '@/components/Toast/ToastContext/ToastContext';
+import { useQueryContext } from '@/context/queryContext';
+import { account } from '@/graphql/queries/account.graph';
 import { useEffect, useState } from 'react';
 import type { IHookReturnValue } from '..';
 import {
@@ -20,6 +23,7 @@ export const useAccount = (
   searchOption: SearchOptionEnum | null,
 ): IHookReturnValue<IAccountData[]> => {
   const [cleanedData, setCleanedData] = useState<IAccountData[]>([]);
+  const { setQueries } = useQueryContext();
 
   const accountQueryVariables = {
     accountName: returnSearchQuery(
@@ -29,6 +33,7 @@ export const useAccount = (
     ),
   };
 
+  const { addToast } = useToast();
   const { loading, data, error } = useAccountQuery({
     variables: accountQueryVariables,
     skip:
@@ -37,6 +42,25 @@ export const useAccount = (
   });
 
   useEffect(() => {
+    if (
+      !searchQuery ||
+      !isSearchRequested(searchOption, SearchOptionEnum.ACCOUNT)
+    )
+      return;
+    setQueries([
+      {
+        query: account,
+        variables: accountQueryVariables,
+      },
+    ]);
+  }, [searchQuery, searchOption]);
+
+  useEffect(() => {
+    if (loading || !isSearchRequested(searchOption, SearchOptionEnum.ACCOUNT)) {
+      setCleanedData([]);
+      return;
+    }
+
     if (!data?.fungibleAccount) return;
     const accountName = data.fungibleAccount.accountName;
     const newData =
@@ -65,11 +89,20 @@ export const useAccount = (
       }, []) ?? [];
 
     setCleanedData(newData);
-  }, [data]);
+  }, [data, loading]);
+
+  useEffect(() => {
+    if (error) {
+      addToast({
+        type: 'negative',
+        label: 'Something went wrong',
+        body: 'Loading of account data failed',
+      });
+    }
+  }, [error]);
 
   return {
     loading,
-    error,
     data: cleanedData,
   };
 };

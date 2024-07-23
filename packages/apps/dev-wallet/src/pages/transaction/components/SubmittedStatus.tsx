@@ -1,4 +1,5 @@
 import { ITransaction } from '@/modules/transaction/transaction.repository';
+import { parseAsPactValue } from '@kadena/client';
 import { MonoBrightness1 } from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
@@ -19,6 +20,9 @@ export function SubmittedStatus({
   if (!transaction.request?.requestKey) {
     return <Text>Request Key not found</Text>;
   }
+  if (transaction.preflight.result.status !== 'success') {
+    return <Text>Preflight failed</Text>;
+  }
   const status = transaction.status;
   return (
     <Stack flexDirection={'column'} gap={'lg'}>
@@ -26,6 +30,12 @@ export function SubmittedStatus({
       <Stack gap={'sm'} flexDirection={'column'}>
         <Heading variant="h6">Request Key</Heading>
         <Value className={codeClass}>{transaction.request.requestKey}</Value>
+      </Stack>
+      <Stack gap={'sm'} flexDirection={'column'}>
+        <Heading variant="h6">Preflight Result</Heading>
+        <Value className={codeClass}>
+          {parseAsPactValue(transaction.preflight.result.data)}
+        </Value>
       </Stack>
       <Stack gap={'sm'} flexDirection={'column'}>
         <Heading variant="h6">Transaction Status</Heading>
@@ -46,6 +56,14 @@ export function SubmittedStatus({
           </Text>
         </Stack>
       </Stack>
+      {transaction.result && transaction.result.result.status === 'success' && (
+        <Stack gap={'sm'} flexDirection={'column'}>
+          <Heading variant="h6">Transaction Result</Heading>
+          <Value className={codeClass}>
+            {parseAsPactValue(transaction.result.result.data)}
+          </Value>
+        </Stack>
+      )}
       <Stack>
         {transaction.result && (
           <Button

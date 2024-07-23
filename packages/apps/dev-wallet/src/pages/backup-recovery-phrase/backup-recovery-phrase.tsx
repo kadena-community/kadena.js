@@ -23,6 +23,7 @@ export function BackupRecoveryPhrase() {
       navigator.credentials.store(passwordCredential);
     }
   };
+
   return (
     <>
       <Box margin="md">

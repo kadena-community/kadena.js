@@ -6,7 +6,6 @@ describe('asyncPipe', () => {
     const asyncAlways = (input: string): Promise<string> =>
       Promise.resolve(input);
 
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     const asyncAppend = (append: string) => (input: string) =>
       Promise.resolve(`${input} ${append}`);
 
@@ -23,7 +22,6 @@ describe('asyncPipe', () => {
     const asyncTest = (one: string, two: string): Promise<string> =>
       Promise.resolve(`"${one}-${two}"`);
 
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     const asyncAppend = (append: string) => (input: string) =>
       Promise.resolve(`${input} ${append}`);
 

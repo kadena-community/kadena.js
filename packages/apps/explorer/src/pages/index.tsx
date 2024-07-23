@@ -1,77 +1,42 @@
-import { BlockInfoProvider } from '@/components/block-table/block-info-context/block-info-context';
-import BlockTable from '@/components/block-table/block-table';
-import Layout from '@/components/layout/layout';
-import { Media } from '@/components/layout/media';
-import Logo from '@/components/logo/logo';
-import SearchComponent from '@/components/search/search-component/search-component';
-import SearchResults from '@/components/search/search-results/search-results';
-import StatisticsGrid from '@/components/statistics-component/statistics-grid/statistics-grid';
-import { useSearch } from '@/hooks/search';
-import { Stack } from '@kadena/kode-ui';
-import React from 'react';
+import { selectedNetworkKey } from '@/context/networksContext';
+import type { GetServerSideProps } from 'next';
+import type React from 'react';
 
 const Home: React.FC = () => {
-  const {
-    setSearchQuery,
-    searchQuery,
-    searchOption,
-    setSearchOption,
-    data: searchData,
-    loading,
-    errors,
-  } = useSearch();
+  return null;
+};
 
-  return (
-    <Layout>
-      <BlockInfoProvider>
-        <Media greaterThanOrEqual="sm">
-          <Stack
-            flexDirection="column"
-            alignItems={'center'}
-            marginBlockStart="md"
-          >
-            <a href="/">
-              <Logo />
-            </a>
-          </Stack>
-        </Media>
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const DEFAULTNETWORKSLUG = 'mainnet';
+  if (!ctx.req.headers.cookie) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: `/${DEFAULTNETWORKSLUG}`,
+      },
+    };
+  }
+  const cookieValues = ctx.req.headers
+    .cookie!.split(';')
+    .reduce<Record<string, { key: string; value: string }>>((acc, val) => {
+      const [key, value] = val.split('=');
+      acc[key.trim()] = {
+        key: key.trim(),
+        value: value.trim(),
+      };
+      return acc;
+    }, {});
 
-        <Media lessThan="sm">
-          <StatisticsGrid />
-          <Stack
-            flexDirection="column"
-            alignItems={'center'}
-            paddingBlockStart={'xxl'}
-          >
-            <a href="/">
-              <Logo />
-            </a>
-          </Stack>
-        </Media>
+  const network = cookieValues[selectedNetworkKey] ?? {
+    value: DEFAULTNETWORKSLUG,
+  };
 
-        <SearchComponent
-          searchOption={searchOption}
-          setSearchOption={setSearchOption}
-          searchData={searchData}
-          setSearchQuery={setSearchQuery}
-          searchQuery={searchQuery}
-          loading={loading}
-          errors={errors}
-        />
-        {searchQuery ? (
-          searchData && (
-            <SearchResults
-              searchData={searchData}
-              loading={loading}
-              errors={errors}
-            />
-          )
-        ) : (
-          <BlockTable />
-        )}
-      </BlockInfoProvider>
-    </Layout>
-  );
+  return {
+    redirect: {
+      permanent: false,
+      destination: `/${network.value}`,
+    },
+  };
 };
 
 export default Home;

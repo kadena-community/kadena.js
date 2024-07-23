@@ -1,13 +1,14 @@
 import React, { FC, useRef } from 'react';
-import { TextField, Heading } from '@kadena/kode-ui';
-import * as styles from '@/styles/create-token.css';
+import { Button } from '@kadena/kode-ui';
+import { MonoPermMedia, MonoUploadFile } from '@kadena/kode-icons';
+import * as styles from './style.css';
 
 interface GenerateURIProps {
   tokenInput: { [key: string]: string | number | object };
   handleTokenInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   file: File | null;
   setFile: (file: File) => void;
-  imagePreview: string | null;
+  imagePreview?: string;
   setImagePreview: (url: string) => void;
   base64Image: string;
   setBase64Image: (base64: string) => void;
@@ -15,9 +16,6 @@ interface GenerateURIProps {
 }
 
 const GenerateURIForm: FC<GenerateURIProps> = ({
-  tokenInput,
-  handleTokenInputChange,
-  file,
   setFile,
   imagePreview,
   setImagePreview,
@@ -59,72 +57,39 @@ const GenerateURIForm: FC<GenerateURIProps> = ({
     event.preventDefault();
   };
 
+  const handleFileClick = () => {
+    inputFile.current?.click();
+  };
+
   return (
-    <div className={styles.twoColumnRow}>
-      <div className={styles.uploadContainer}>
-        <div
-          onDrop={handleFileDrop}
-          onDragOver={handleDragOver}
-          onClick={() => inputFile.current?.click()}
-          style={{ width: '100%' }}
-        >
-          <input
-            type="file"
-            id="fileInput"
-            ref={inputFile}
-            style={{ display: 'none' }}
-            onChange={handleFileChange}
-          />
-          {imagePreview ? (
-            <img src={imagePreview} alt="Uploaded Preview" className={styles.uploadImage} />
-          ) : (
-            <div>
-              <p className={styles.uploadText}>Upload Image</p>
-              <p className={styles.uploadText}>Drag/Drop or Select</p>
-            </div>
-          )}
-        </div>
-      </div>
-      <div className={styles.formSection}>
-        <div className={styles.verticalForm}>
-          <Heading as="h5" className={styles.formHeading}>Metadata</Heading>
-          <br />
-          <TextField
-            label="Name"
-            name="metadataName"
-            value={tokenInput.metadataName as string}
-            onChange={handleTokenInputChange}
-          />
-          <TextField
-            label="Description"
-            name="metadataDescription"
-            value={tokenInput.metadataDescription as string}
-            onChange={handleTokenInputChange}
-          />
-          <TextField
-            label="Author"
-            name="metadataAuthors"
-            value={tokenInput.metadataAuthors as string}
-            onChange={handleTokenInputChange}
-            info="(optional)"
-          />
-          <TextField
-            label="Collection Name"
-            name="metadataCollectionName"
-            value={tokenInput.metadataCollectionName as string}
-            onChange={handleTokenInputChange}
-            info="(optional)"
-          />
-          <TextField
-            label="Collection Family"
-            name="metadataCollectionFamily"
-            value={tokenInput.metadataCollectionFamily as string}
-            onChange={handleTokenInputChange}
-            info="(optional)"
-          />
-        </div>
+    <>
+    <div className={styles.tokenImageContainer}>
+      <div
+        onDrop={handleFileDrop}
+        onDragOver={handleDragOver}
+        onClick={handleFileClick}
+      >
+        <input
+          type="file"
+          id="fileInput"
+          ref={inputFile}
+          style={{ display: 'none' }}
+          onChange={handleFileChange}
+        />
+        {imagePreview
+          ? <img src={imagePreview} alt="Uploaded Preview" />
+          : <div className={styles.uploadContainer}><MonoPermMedia className={styles.uploadIcon} /></div>}
       </div>
     </div>
+    <Button
+        startVisual={<MonoUploadFile />}
+        onPress={handleFileClick}
+        variant="outlined"
+        style={{ marginBottom: '50px' }}
+      >
+        Select File
+      </Button>
+    </>
   );
 };
 

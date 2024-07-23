@@ -1,4 +1,4 @@
-# Utils within React UI
+# Utils within Kode UI
 
 In order to make our lives easier we have created a few utilities within UI to
 make styling, accessing tokens easier or just reducing boilerplate

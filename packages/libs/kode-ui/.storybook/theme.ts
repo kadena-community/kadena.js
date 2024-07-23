@@ -8,11 +8,11 @@ export const KadenaTheme = create({
   appBg: colorPalette.$white,
 
   // Typography
-  fontBase: "'Haas Grotesk Display', -apple-system, sans-serif",
-  fontCode: "'Kode Mono', Menlo, monospace",
+  fontBase: '"Space Grotesk", -apple-system, sans-serif',
+  fontCode: '"Kode Mono", Menlo, monospace',
 
   // Brand
-  brandTitle: 'Kadena React UI Component Library',
+  brandTitle: 'Kadena Kode UI Component Library',
   brandUrl: 'https://kode-ui.kadena.io/',
   brandImage: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="k_logo" x="0px" y="0px" enable-background="new 0 0 420 226" xml:space="preserve" width="420" height="98" viewBox="0 0 420 98">
     <style>path { fill: %234A9079; }</style>
