@@ -1,6 +1,8 @@
 import type { BlockQuery } from '@/__generated__/sdk';
 import { useBlockQuery } from '@/__generated__/sdk';
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
+import { useQueryContext } from '@/context/queryContext';
+import { block } from '@/graphql/queries/block.graph';
 import { useEffect } from 'react';
 import type { IHookReturnValue } from '..';
 import {
@@ -21,6 +23,7 @@ export const useBlockHash = (
     ),
   };
 
+  const { setQueries } = useQueryContext();
   const { addToast } = useToast();
   const { loading, data, error } = useBlockQuery({
     variables: blockQueryVariables,
@@ -28,6 +31,20 @@ export const useBlockHash = (
       !searchQuery ||
       !isSearchRequested(searchOption, SearchOptionEnum.BLOCKHASH),
   });
+
+  useEffect(() => {
+    if (
+      !searchQuery ||
+      !isSearchRequested(searchOption, SearchOptionEnum.BLOCKHASH)
+    )
+      return;
+    setQueries([
+      {
+        query: block,
+        variables: blockQueryVariables,
+      },
+    ]);
+  }, [searchQuery, searchOption]);
 
   useEffect(() => {
     if (error) {

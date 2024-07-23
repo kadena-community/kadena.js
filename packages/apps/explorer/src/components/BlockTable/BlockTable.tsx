@@ -4,6 +4,8 @@ import {
   useNewBlocksSubscription,
 } from '@/__generated__/sdk';
 import { useQueryContext } from '@/context/queryContext';
+import { completedBlockHeights } from '@/graphql/queries/completed-block-heights.graph';
+import { lastBlockHeight } from '@/graphql/queries/last-block-height.graph';
 import { newBlocks } from '@/graphql/subscriptions/newBlocks.graph';
 import type { IBlockData, IChainBlock } from '@/services/block';
 import { addBlockData } from '@/services/block';
@@ -48,24 +50,28 @@ export const BlockTable: React.FC = () => {
     error: newBlocksError,
   } = useNewBlocksSubscription();
   const {
-    data: lastBlockHeight,
+    data: lastBlockHeightData,
     loading: lastBlockLoading,
     error: lastBlockError,
   } = useLastBlockHeightQuery();
+
+  const completedBlockHeightsVariables = {
+    // Change this if the table needs to show more than 80 blocks at once (on startup)
+    first: 80,
+    // We don't want only completed heights
+    completedHeights: false,
+    heightCount: 4,
+  };
+
   const {
     data: oldBlocksData,
     loading: oldBlocksLoading,
     error: oldBlocksError,
   } = useCompletedBlockHeightsQuery({
-    variables: {
-      // Change this if the table needs to show more than 80 blocks at once (on startup)
-      first: 80,
-      // We don't want only completed heights
-      completedHeights: false,
-      heightCount: 4,
-    },
+    variables: completedBlockHeightsVariables,
   });
 
+  const { setQueries } = useQueryContext();
   const { selectedHeight } = useBlockInfo();
   const [isLoading, setIsLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -132,16 +138,16 @@ export const BlockTable: React.FC = () => {
   }, [oldBlocksError]);
 
   useEffect(() => {
-    if (lastBlockHeight?.lastBlockHeight) {
+    if (lastBlockHeightData?.lastBlockHeight) {
       const newBlockHeights = Array.from(
         { length: 4 },
-        (_, i) => lastBlockHeight.lastBlockHeight - i,
+        (_, i) => lastBlockHeightData.lastBlockHeight - i,
       ).reverse();
 
       //updateBlockHeights(newBlockHeights);
       updateBlockHeightsClean(newBlockHeights);
     }
-  }, [lastBlockHeight]);
+  }, [lastBlockHeightData]);
 
   useEffect(() => {
     if (oldBlocksData) {
@@ -182,11 +188,17 @@ export const BlockTable: React.FC = () => {
     }
   }, [selectedHeight, newBlocksData]);
 
-  const { setQueries } = useQueryContext();
   useEffect(() => {
     setQueries([
       {
         query: newBlocks,
+      },
+      {
+        query: lastBlockHeight,
+      },
+      {
+        query: completedBlockHeights,
+        variables: completedBlockHeightsVariables,
       },
     ]);
   }, []);

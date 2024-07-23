@@ -1,19 +1,14 @@
-import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
 import type { ISearchItem } from '@/components/Search/SearchComponent/SearchComponent';
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import type { ApolloError } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { useRouter } from '../router';
 import { useAccount } from './utils/account';
-import { useBlockHash } from './utils/block-hash';
-import { useBlockHeight } from './utils/block-height';
+import { useBlockHash } from './utils/blockHash';
+import { useBlockHeight } from './utils/blockHeight';
 import { useEvent } from './utils/event';
-import {
-  SearchOptionEnum,
-  checkLoading,
-  isSearchRequested,
-  returnSearchQuery,
-} from './utils/utils';
+import { useRequestKey } from './utils/requestKey';
+import { SearchOptionEnum, checkLoading } from './utils/utils';
 
 export interface IHookReturnValue<T> {
   loading: boolean;
@@ -56,22 +51,12 @@ export const useSearch = () => {
     data: eventData,
     error: eventError,
   } = useEvent(searchQuery, searchOption);
+
   const {
     loading: requestKeyLoading,
     data: requestKeyData,
     error: requestKeyError,
-  } = useTransactionRequestKeyQuery({
-    variables: {
-      requestKey: returnSearchQuery(
-        searchQuery,
-        searchOption,
-        SearchOptionEnum.REQUESTKEY,
-      ),
-    },
-    skip:
-      !searchQuery ||
-      !isSearchRequested(searchOption, SearchOptionEnum.REQUESTKEY),
-  });
+  } = useRequestKey(searchQuery, searchOption);
 
   useEffect(() => {
     if (!isMounted) return;
