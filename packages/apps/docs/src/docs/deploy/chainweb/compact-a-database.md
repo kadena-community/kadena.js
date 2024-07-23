@@ -39,35 +39,36 @@ To compact a Chainweb node database:
    ```bash
    Pact DB Compaction Tool - create a compacted copy of the source database directory Pact DB into the target directory.
    
-   chainweb-version 
-   --from Directory containing SQLite Pact state and RocksDB block data to compact (expected to be in $DIR/0/{sqlite,rocksDb}
-   
-   --to Directory where to place the compacted Pact state and block data. It will place them in $DIR/0/{sqlite,rocksDb}, respectively.
-   --parallel Turn on multi-threaded compaction. The threads are per-chain.
-   --log-dir Directory where compaction logs will be placed.
-
-   Usage: cwtool COMMAND
+   Usage: compact ARGUMENTS
 
    Available options:
      -h,--help                Show this help text
+   
+   Arguments:
+
+     --from                   Specifies the root directory that contains the SQLite Pact state and RocksDB block data you want to compact.
+     --to                     Specifies the destination directory for the compacted Pact state and block data.
+     --parallel               Enables multi-threaded compaction. The threads are per-chain. The default is true.
+     --log-dir                Specifies the directory where compaction logs are placed.
+     --chainweb-version       Specifies the Chainweb node version network identifier. The default is mainnet01.
    ```
 
-3. Compact your `rocksdb` and `sqlite` databases by running the `compact` command with the following arguments:
+1. Compact your `rocksdb` and `sqlite` databases by running the `compact` command with the following arguments:
 
-   - `--from` to specify the path to the current database.
-   - `--to` to specify the path to the compacted state.
+   - `--from` to specify the path to the database directory you want to compact. You should specify the database root directory that contains the `0/sqlite` and `0/rocksdb` subdirectories. For example, the `data/state/chainweb/db` directory is the root directory for the `data/state/chainweb/db/0/sqlite` directory and the `data/state/chainweb/db/0/rocksdb` directory.
+   - `--to` to specify the path to the compacted database. The compact program writes the compacted databases to the `$DIR/0/sqlite` and `$DIR/0/rocksdb` subdirectories within the directory you specify.
    - `--log-dir` to specify the directory where you want the `compact` program to put the log files it creates, one for each chain. If the directory doesn’t exist, the `compact` program creates it. These logs can be useful for debugging if something goes wrong.
    - `--chainweb-version` to specify the network identifier for the node. This argument is optional if you're compacting a database for the `mainnet01` network. If you're compacting a database for another network—for example, the Kadena test network—you must specify the network identifier. Valid values are "`development`", "`testnet04`", and "`mainnet01`".
 
-   For example, if you have navigated to the `data/state/chainweb` directory, run a command similar to the following:
+   For example, if you have navigated to the `data/state/chainweb` directory on a testnet node, run a command similar to the following:
 
    ```bash
    compact --from db --to compact-testnet-db --log-dir /tmp/compact-db-logs --chainweb-version testnet04
    ```
 
-4. Stop your node.
+2. Stop your node.
 
-5. Restart your node with the new compacted database directory.
+3. Restart your node with the new compacted database directory.
    
    You can specify the new compacted database directory as a command-line option or edit the node configuration file you use to set the new compacted database directory.
 
