@@ -1,4 +1,5 @@
 import { useNetwork } from '@/context/networksContext';
+import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import { MonoSettings } from '@kadena/kode-icons/system';
 import { Button, Select, SelectItem, Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
@@ -12,6 +13,11 @@ export const SelectNetwork: FC = () => {
 
   const handleSelectNetwork = (value: any): void => {
     setActiveNetwork(value);
+  };
+
+  const handlePress = () => {
+    setIsOpen(true);
+    analyticsEvent(EVENT_NAMES['click:open_configDialog'], {});
   };
 
   if (!networks) return null;
@@ -42,7 +48,7 @@ export const SelectNetwork: FC = () => {
           </Select>
         </Media>
         <Button
-          onPress={() => setIsOpen(true)}
+          onPress={handlePress}
           variant="transparent"
           endVisual={<MonoSettings />}
         />
