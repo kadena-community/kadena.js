@@ -19,12 +19,7 @@ describe('utils setSignatures', () => {
       sigs: [],
     };
 
-    const bufferedTx = Buffer.from(JSON.stringify(tx)).toString('base64');
-
-    const signedBufferedTx = setSignatures(bufferedTx, signees);
-    const signedTx = JSON.parse(
-      Buffer.from(signedBufferedTx, 'base64').toString(),
-    );
+    const signedTx = setSignatures(tx, signees);
 
     expect(signedTx.sigs.length).toEqual(5);
 

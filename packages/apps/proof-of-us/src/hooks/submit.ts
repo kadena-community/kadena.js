@@ -15,18 +15,17 @@ export enum SubmitStatus {
 }
 
 export const useSubmit = () => {
-  const { proofOfUs, signees, getSignees } = useProofOfUs();
+  const { proofOfUs, getSignees } = useProofOfUs();
   const [result, setResult] = useState<any>({});
   const [status, setStatus] = useState(SubmitStatus.IDLE);
-  const [tx, setTx] = useState<any>(null);
-  const [preview, setPreview] = useState<any>(null);
   const router = useRouter();
 
   const doSubmit = async (txArg?: string, proof?: IProofOfUsData) => {
     const innerProofOfUs = proof ? proof : proofOfUs;
-    const innerTransaction = txArg ? txArg : JSON.parse(innerProofOfUs?.tx);
+    const innerTransaction = txArg
+      ? JSON.parse(Buffer.from(txArg, 'base64').toString())
+      : JSON.parse(innerProofOfUs?.tx);
 
-    console.log(innerTransaction, innerProofOfUs);
     if (!innerTransaction) return;
     setStatus(SubmitStatus.LOADING);
     const client = getClient();
@@ -37,9 +36,6 @@ export const useSubmit = () => {
       ? innerTransaction
       : setSignatures(innerTransaction, latestSignees);
 
-    console.log({ signedTransaction });
-
-    //const tx = JSON.parse(Buffer.from(signedTransaction, 'base64').toString());
     try {
       await client.submit(signedTransaction);
 
@@ -74,8 +70,6 @@ export const useSubmit = () => {
     status !== SubmitStatus.ERROR;
   return {
     doSubmit,
-    tx,
-    preview,
     result,
     status,
     SubmitStatus,

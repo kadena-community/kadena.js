@@ -1,10 +1,11 @@
+import { IUnsignedCommand } from '@kadena/client';
+
 export const setSignatures = (
   tx: any,
   signees: IProofOfUsSignee[] = [],
-): string => {
+): IUnsignedCommand => {
   const innerTx = tx;
   const { signers } = JSON.parse(innerTx.cmd);
-  console.log({ signers, signees });
   const sigs = signers.reduce((acc: any, val: any) => {
     const pubKey = val.pubKey;
 
@@ -16,8 +17,6 @@ export const setSignatures = (
 
     return acc;
   }, []);
-
-  console.log('signed', { ...innerTx, sigs });
 
   return { ...innerTx, sigs };
 };
