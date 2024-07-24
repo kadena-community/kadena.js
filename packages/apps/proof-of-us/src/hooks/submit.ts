@@ -2,7 +2,7 @@ import { getClient } from '@/utils/client';
 import { getReturnHostUrl, getReturnUrl } from '@/utils/getReturnUrl';
 import { setSignatures } from '@/utils/setSignatures';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useProofOfUs } from './proofOfUs';
 
 export enum SubmitStatus {
