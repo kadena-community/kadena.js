@@ -646,13 +646,14 @@ The following example shows how a "hash timelock" guard can be made, to implemen
 
 ### Events
 
-Pact 3.7 introduces [events](/build/pact/advanced#eventsh2087505209) which are emitted in the course of a transaction and included in the transaction receipt to allow for monitoring and proving via SPV that a particular event transpired.
+In Pact, [events](/build/pact/advanced#eventsh2087505209) are emitted as part of transaction execution and are included in the transaction results. 
+With events, you can monitor transaction results to determine if a specific operation occurred and prove the outcome using a simple payment verification proof.
 
-In Pact, events are modeled as capabilities, for the following reasons:
+Events are treated as capabilities because they share the following characteristics:
 
-- Capabilities already have the right shape for an event, which is essentially arbitrary data published under a topic or name. With capabilities, the capability name is the topic, and the arguments are the data.
-- The acquisition of managed capabilities are a bona-fide event. Events complete the managed lifecycle, where you might install/approve a capability of some quantity on the way in, but not necessarily see what quantity was used. With events, the output of the actually acquired capability is present in the receipt.
-- Capabilities are protected such that they can only be acquired in module code, which is appropriate as well for events.
+- Events, like capabilities, allow arbitrary data to be published under a topic or a name. With capabilities, the capability name is the topic, and the arguments are the data.
+- Granting permission to aquire a managed capability is, in itself, an event recorded for transaction. Events complete the managed lifecycle, where you might install/approve a capability of some quantity on the way in, but not necessarily see what quantity was used. With events, the output of the actually acquired capability is present in the transaction results.
+- Capabilities are protected such that they can only be acquired in module code, which is appropriate for events as well.
 
 #### The @event metadata tag
 
