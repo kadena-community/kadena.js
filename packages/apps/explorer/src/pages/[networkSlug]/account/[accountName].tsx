@@ -1,14 +1,15 @@
 import type { AccountQuery } from '@/__generated__/sdk';
 import { useAccountQuery } from '@/__generated__/sdk';
-import AccountTransfersTable from '@/components/account-transfers-table/account-transfers-table';
-import CompactTable from '@/components/compact-table/compact-table';
-import Layout from '@/components/layout/layout';
-import { loadingData } from '@/components/loading-skeleton/loading-data/loading-data-accountquery';
-import ValueLoader from '@/components/loading-skeleton/value-loader/value-loader';
-import { useRouter } from '@/components/routing/useRouter';
-import { useToast } from '@/components/toasts/toast-context/toast-context';
-import { useQueryContext } from '@/context/query-context';
+import { AccountTransfersTable } from '@/components/AccountTransfersTable/AccountTransfersTable';
+import { CompactTable } from '@/components/CompactTable/CompactTable';
+import { FormatAmount } from '@/components/CompactTable/utils/formatAmount';
+import { Layout } from '@/components/Layout/Layout';
+import { loadingData } from '@/components/LoadingSkeleton/loadingData/loadingDataAccountquery';
+import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
+import { useToast } from '@/components/Toast/ToastContext/ToastContext';
+import { useQueryContext } from '@/context/queryContext';
 import { account } from '@/graphql/queries/account.graph';
+import { useRouter } from '@/hooks/router';
 import { accountNameTextClass } from '@/styles/account.css';
 import { Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
 import type { FC, Key } from 'react';
@@ -96,6 +97,7 @@ const Account: FC = () => {
         const guardKeys: IKeyProps[] = val.guard.keys.map((key) => {
           return {
             key: key,
+            balance: val.balance,
             predicate: val.guard.predicate,
             chainId: val.chainId,
           };
@@ -145,12 +147,19 @@ const Account: FC = () => {
             variant: 'code',
             label: 'Key',
             key: 'key',
-            width: '50%',
+            width: '40%',
           },
           {
             label: 'Predicate',
             key: 'predicate',
-            width: '40%',
+            width: '20%',
+          },
+          {
+            label: 'Balance',
+            key: 'balance',
+            width: '30%',
+            align: 'end',
+            render: FormatAmount(),
           },
         ]}
         data={keys}
@@ -170,10 +179,7 @@ const Account: FC = () => {
             >
               <AccountTransactionsTable accountName={accountName} />
             </TabItem> */}
-            <TabItem
-              title={`Transfers (${fungibleAccount?.transfers.totalCount})`}
-              key="Transfers"
-            >
+            <TabItem title={`Transfers`} key="Transfers">
               <AccountTransfersTable accountName={accountName} />
             </TabItem>
           </Tabs>

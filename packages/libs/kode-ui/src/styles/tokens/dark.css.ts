@@ -31,6 +31,9 @@ export const darkThemeValues = {
         lg: '8px',
         xl: '16px',
         xxl: '24px',
+        'xs-outline': '3px',
+        'sm-outline': '5px',
+        'md-outline': '7px',
         round: '999rem',
       },
       screen: {
@@ -185,6 +188,13 @@ export const darkThemeValues = {
         sticky: '100',
         toast: '10000',
       },
+      effect: {
+        shadow: {
+          level1: `4px 0.5rem ${tokens.kda.foundation.size.n2} 4px #000000`,
+          level2: `4rem 4rem ${tokens.kda.foundation.size.n2} 2rem #000000`,
+          level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
+        },
+      },
       color: {
         accent: {
           blue: tokens.kda.foundation.color.palette.blue.n50,
@@ -229,6 +239,11 @@ export const darkThemeValues = {
           },
           layer: {
             default: tokens.kda.foundation.color.neutral['n5@alpha80'],
+            solid: tokens.kda.foundation.color.neutral.n5,
+          },
+          overlay: {
+            default: tokens.kda.foundation.color.neutral['n5@alpha95'],
+            '@hover': tokens.kda.foundation.color.neutral.n5,
           },
           surface: {
             default: tokens.kda.foundation.color.neutral['n99@alpha6'],
@@ -245,23 +260,31 @@ export const darkThemeValues = {
           brand: {
             primary: {
               default: tokens.kda.foundation.color.brand.primary.n5,
+              subtle: tokens.kda.foundation.color.brand.primary.n1,
+              subtlest: tokens.kda.foundation.color.brand.primary.n0,
               '@hover': tokens.kda.foundation.color.brand.primary.n10,
               '@focus': tokens.kda.foundation.color.brand.primary.n20,
               '@active': tokens.kda.foundation.color.brand.primary.n30,
               inverse: {
                 default: tokens.kda.foundation.color.brand.primary.n95,
+                subtle: tokens.kda.foundation.color.brand.primary.n99,
+                subtlest: tokens.kda.foundation.color.brand.primary.n100,
                 '@hover': tokens.kda.foundation.color.brand.primary.n90,
                 '@focus': tokens.kda.foundation.color.brand.primary.n80,
                 '@active': tokens.kda.foundation.color.brand.primary.n70,
               },
             },
             secondary: {
-              default: tokens.kda.foundation.color.brand.secondary.n1,
+              default: tokens.kda.foundation.color.brand.secondary.n5,
+              subtle: tokens.kda.foundation.color.brand.secondary.n1,
+              subtlest: tokens.kda.foundation.color.brand.secondary.n0,
               '@hover': tokens.kda.foundation.color.brand.secondary.n5,
               '@focus': tokens.kda.foundation.color.brand.secondary.n10,
               '@active': tokens.kda.foundation.color.brand.secondary.n20,
               inverse: {
-                default: tokens.kda.foundation.color.brand.secondary.n99,
+                default: tokens.kda.foundation.color.brand.secondary.n95,
+                subtle: tokens.kda.foundation.color.brand.secondary.n99,
+                subtlest: tokens.kda.foundation.color.brand.secondary.n100,
                 '@hover': tokens.kda.foundation.color.brand.secondary.n95,
                 '@focus': tokens.kda.foundation.color.brand.secondary.n90,
                 '@active': tokens.kda.foundation.color.brand.secondary.n80,
@@ -401,6 +424,9 @@ export const darkThemeValues = {
               '@active': tokens.kda.foundation.color.neutral.n95,
               '@disabled': tokens.kda.foundation.color.neutral['n0@alpha10'],
             },
+          },
+          skeleton: {
+            default: tokens.kda.foundation.color.neutral['n20@alpha80'],
           },
         },
         border: {
@@ -785,12 +811,14 @@ export const darkThemeValues = {
           'n1@alpha80': '#020e1bcc',
           'n1@alpha90': '#020e1be6',
           'n5@alpha80': '#131e2bcc',
+          'n5@alpha95': '#131e2bf2',
           'n10@alpha80': '#252f3acc',
           'n20@alpha80': '#475059cc',
           'n80@alpha80': '#b0b3b7cc',
           'n90@alpha20': '#d2d4d633',
           'n90@alpha25': '#d2d4d640',
           'n95@alpha80': '#e4e5e5cc',
+          'n95@alpha95': '#e4e5e5f2',
           'n99@alpha0': '#f5f5f500',
           'n99@alpha1': '#f5f5f503',
           'n99@alpha3': '#f5f5f508',
@@ -1249,19 +1277,6 @@ export const darkThemeValues = {
           },
         },
       },
-      effect: {
-        shadow: {
-          level1: `4px 0.5rem ${tokens.kda.foundation.size.n2} 4px #000000`,
-          level2: `4rem 4rem ${tokens.kda.foundation.size.n2} 2rem #000000`,
-          level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
-        },
-      },
-      layout: {
-        content: {
-          minWidth: '33.75rem',
-          maxWidth: '42.5rem',
-        },
-      },
       icon: {
         size: {
           xxs: tokens.kda.foundation.size.n3,
@@ -1271,6 +1286,12 @@ export const darkThemeValues = {
           lg: tokens.kda.foundation.size.n8,
           xl: tokens.kda.foundation.size.n10,
           xxl: tokens.kda.foundation.size.n16,
+        },
+      },
+      layout: {
+        content: {
+          minWidth: '33.75rem',
+          maxWidth: '42.5rem',
         },
       },
       typography: {

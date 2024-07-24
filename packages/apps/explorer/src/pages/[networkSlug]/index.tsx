@@ -1,13 +1,13 @@
-import { BlockInfoProvider } from '@/components/block-table/block-info-context/block-info-context';
-import BlockTable from '@/components/block-table/block-table';
+import { BlockInfoProvider } from '@/components/BlockTable/BlockInfoContext/BlockInfoContext';
+import { BlockTable } from '@/components/BlockTable/BlockTable';
 import { fullWidthClass } from '@/components/globalstyles.css';
-import Layout from '@/components/layout/layout';
-import { Media } from '@/components/layout/media';
-import Logo from '@/components/logo/logo';
-import SearchComponent from '@/components/search/search-component/search-component';
-import { searchBarClass } from '@/components/search/search-component/search-component.css';
-import SearchResults from '@/components/search/search-results/search-results';
-import StatisticsGrid from '@/components/statistics-component/statistics-grid/statistics-grid';
+import { Layout } from '@/components/Layout/Layout';
+import { Media } from '@/components/Layout/media';
+import { Logo } from '@/components/Logo/Logo';
+import { SearchComponent } from '@/components/Search/SearchComponent/SearchComponent';
+import { searchBarClass } from '@/components/Search/SearchComponent/searchComponent.css';
+import { SearchResults } from '@/components/Search/SearchResults/SearchResults';
+import { StatisticsGrid } from '@/components/StatisticsComponent/StatisticsGrid/StatisticsGrid';
 import { useSearch } from '@/hooks/search';
 import { Stack } from '@kadena/kode-ui';
 import Link from 'next/dist/client/link';
@@ -42,12 +42,17 @@ const Home: React.FC = () => {
 
         <Stack ref={inViewRef}></Stack>
         <Media lessThan="md" className={fullWidthClass}>
-          <Stack width="100%" marginBlock="xxxl">
+          <Stack
+            width="100%"
+            marginBlockStart={{ xs: 'no', md: 'xxxl' }}
+            marginBlockEnd="xxxl"
+            paddingInline="xs"
+          >
             <StatisticsGrid inView={inView} />
           </Stack>
         </Media>
 
-        <Stack className={searchBarClass}>
+        <Stack className={searchBarClass} paddingInline="xs">
           <SearchComponent
             searchOption={searchOption}
             setSearchOption={setSearchOption}

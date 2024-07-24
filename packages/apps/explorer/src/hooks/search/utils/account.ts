@@ -1,5 +1,7 @@
 import { useAccountQuery } from '@/__generated__/sdk';
-import { useToast } from '@/components/toasts/toast-context/toast-context';
+import { useToast } from '@/components/Toast/ToastContext/ToastContext';
+import { useQueryContext } from '@/context/queryContext';
+import { account } from '@/graphql/queries/account.graph';
 import { useEffect, useState } from 'react';
 import type { IHookReturnValue } from '..';
 import {
@@ -21,6 +23,7 @@ export const useAccount = (
   searchOption: SearchOptionEnum | null,
 ): IHookReturnValue<IAccountData[]> => {
   const [cleanedData, setCleanedData] = useState<IAccountData[]>([]);
+  const { setQueries } = useQueryContext();
 
   const accountQueryVariables = {
     accountName: returnSearchQuery(
@@ -37,6 +40,20 @@ export const useAccount = (
       !searchQuery ||
       !isSearchRequested(searchOption, SearchOptionEnum.ACCOUNT),
   });
+
+  useEffect(() => {
+    if (
+      !searchQuery ||
+      !isSearchRequested(searchOption, SearchOptionEnum.ACCOUNT)
+    )
+      return;
+    setQueries([
+      {
+        query: account,
+        variables: accountQueryVariables,
+      },
+    ]);
+  }, [searchQuery, searchOption]);
 
   useEffect(() => {
     if (loading || !isSearchRequested(searchOption, SearchOptionEnum.ACCOUNT)) {
