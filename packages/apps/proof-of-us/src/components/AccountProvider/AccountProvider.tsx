@@ -32,11 +32,15 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter();
 
   const login = useCallback(async () => {
-    const acc = await connect(env.NETWORKID, env.CHAINID);
-    setAccount(acc);
-    setIsMounted(true);
-    localStorage.setItem(getAccountCookieName(), JSON.stringify(acc));
-    store.saveAlias(account);
+    try {
+      const acc = await connect(env.NETWORKID, env.CHAINID);
+      setAccount(acc);
+      setIsMounted(true);
+      localStorage.setItem(getAccountCookieName(), JSON.stringify(acc));
+      store.saveAlias(account);
+    } catch (e) {
+      localStorage.removeItem(getAccountCookieName());
+    }
   }, [router]);
 
   const logout = useCallback(() => {
