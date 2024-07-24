@@ -8,14 +8,16 @@ layout: full
 tags: ['pact', 'language basics']
 ---
 
-# Explore Pact language basics
+# Explore basic functions
 
 In [Set up a local development network](/build/pact/dev-network), you learned how to set up a local development environment and connect to it using Chainweaver. 
 Chainweaver provides a Module Explorer as part of its development environment.
-The Module Explorer enables you to navigate smart contract module—that is, .pact files—review module code, and view or call module functions. 
-Chainweaver also include an editor for working directly with the code and the Pact read-evaluate-print-loop (REPL) interactive shell for testing your code as you go.
+The Module Explorer enables you to navigate smart contract modules—that is, `.pact` files—review module code, and view or call module functions. 
+Chainweaver also includes an editor for working directly with the code and the Pact read-evaluate-print-loop (REPL) interactive interpreter for testing your code as you go.
+In most cases, you can use the account and contract management features in Chainweaver in combination with an integrated development environment (IDE), like Visual Studio Code, or another code editor to provide end-to-end development environment. 
 
-In this tutorial, you'll learn the basics for working with the Pact programming language and the built-in functions that Pact provides.
+In this tutorial, you'll learn the basics for working with the Pact programming language and the built-in functions that Pact provides using the Pact REPL interpreter and Visual Studio Code.
+If you use Chainweaver or another IDE for your code editor, you'll need to adjust some steps to suit your environment. 
 
 ## Basic operations and data types
 
@@ -25,11 +27,11 @@ For example, Pact allows you define the following types of data:
 | Data type | Description | Examples
 | :--------- | :----------- | :-------
 | Integer | Any whole number value—positive or negative—that doesn't include a decimal.| 1, 2, 3, -19
-| Decimal | Any values that include a decimal. | 1.0, 23.5
-| String | Any text within quotes. You can represent strings using double quotes or, in some cases, using a single quote. | “Hello”, "Welcome to the show" 'hello
-| Boolean | Anything that is represented by true and false literals | true, false
-| Lists | List literals are created inside square brackets ([ ]). List items can be separated with spaces or commas. If all of the items in the list have the same type, then the type is defined by the content of the list. Otherwise, the type is defined as just a “list”. | [1,2,3] or [1 2 3] = “[Integer]” [1 2 true] = “list”
-| Object | Objects are dictionaries, created with curly braces ({ }) specifying key-value pairs | {“house”:”blue”, “locked”:”no”}
+| Decimal | Any number value that includes a decimal. Decimal values can have a potentially unlimited precision. | 1.0, 23.5, 3.14159265359
+| String | Any text within quotes. You can represent strings using double quotes or, in some cases, using a single quote. | “Hello”, "Welcome to the show", 'hello
+| Boolean | Anything that is represented by true and false literals. | true, false
+| List | List literals are created inside square brackets ([ ]). List items can be separated with spaces or commas. If all of the items in the list have the same type, then the type is defined by the content of the list. Otherwise, the type is just defined as a “list”. | [1,2,3] or [1 2 3] = “[Integer]” [1 2 true] = “list”
+| Object | Objects are dictionaries specifying key-value pairs created inside curly braces ({ }). | {“house”:”blue”, “locked”:”no”}
 
 For more information about data types, see [Pact syntax](/reference/syntax).
 
@@ -81,22 +83,22 @@ To work with strings:
 3. Use double quotation marks to identify a string.
 
    ```pact
-   pact > "Where the wild things are"
+   pact> "Where the wild things are"
    "Where the wild things are"
    ```
 
 3. Use a single quotation mark to identify a string.
 
    ```pact
-   pact > 'hello
+   pact> 'hello
    "hello"
    ```
 
 1. Concatenate two strings using the built-in `add` function.
    
    ```pact
-   (+ 'hello " darkness my old friend")
-   "hello darkness my old friend"
+   pact> (+ 'Hello " darkness my old friend")
+   "Hello darkness my old friend"
    ```
 
 ### List and object operations
@@ -116,53 +118,64 @@ To create lists and objects:
 3. Use double quotation marks to identify strings in a list using square brackets.
    
    ```pact
-   pact > ["Alice" "Dinesh" "Lee"]
+   pact> ["Alice" "Dinesh" "Lee"]
    ["Alice" "Dinesh" "Lee"]
    ```
 
 4. Use double quotation marks to identify strings in an object that describes a cat named Scratchy who’s 6 years old.
 
    ```pact
-   pact > { "type": "cat", "name": "Scratchy", "age": 6 }
+   pact> { "type": "cat", "name": "Scratchy", "age": 6 }
    {"type": "cat", "name": "Scratchy", "age": 6}
    ```
 
 5. Make a list that that contains two objects that describe a cat named Scratchy and a dog named Fluffy.
    
    ```pact
-   pact > [ { "type": "cat", "name": "Scratchy", "age": 6 } { "type": "dog", "name": "Fluffy", "age": 3 } ]
+   pact> [ { "type": "cat", "name": "Scratchy", "age": 6 } { "type": "dog", "name": "Fluffy", "age": 3 } ]
    [{"type": "cat","name": "Scratchy","age": 6}
    {"type": "dog","name": "Fluffy","age": 3}]
    ```
 
 ## Time formats
 
-Pact supports many different time properties and formats. Look through the following example along with the supporting summary of time formats to better understand one possibility of representing time with Pact.
+Pact supports many different time properties and formats. 
+The following example illustrates using a `format-time` built-in function to format the time specified using the `time` built-in function:
 
 ```bash title=" "
-pact> (format-time "%Y-%m-%dT%H:%M:%S%N" (time "2016-07-23T13:30:45Z"))
-"2016-07-23T13:30:45+00:00"
+pact> (format-time "%Y-%m-%d %H:%M:%S%N" (time "2024-07-23T13:30:45Z"))
+"2024-07-23 13:30:45+00:00"
 ```
 
-The following table provides a summary of time formats in the order of the example shown above.
+The `time` function constructs a time object from a UTC value using the ISO8601 format (%Y-%m-%dT%H:%M:%SZ).
+The format-time built-in functions takes a format argument and a time argument to produce the specified time in the specified format.
+The following table provides a summary of time formats used in the previous example:
 
 | format | purpose |
 | --- | --- |
-| %Y | year, no padding. |
-| %m | month of year, 0-padded to two chars, "01"–"12" |
-| %d | day of month, 0-padded to two chars, "01"–"31" |
-| T | Text character placed in formatting to separate date from time. This is meant to help make this differentiation but is not part of an actual time format. |
-| %H | hour of day (24-hour), 0-padded to two chars, "00"–"23" |
-| %M | minute of hour, 0-padded to two chars, "00"–"59" |
-| %S | second of minute (without decimal part), 0-padded to two chars, "00"–"60" |
-| %N | ISO 8601 style numeric time zone (e.g., "-06:00" or "+01:00") /EXTENSION/ |
+| %Y | Year, no padding. |
+| %m | Month of the year, 0-padded to two chars, "01"–"12" |
+| %d | Day of the month, 0-padded to two chars, "01"–"31" |
+| %H | Hour of the day (24-hour), 0-padded to two chars, "00"–"23" |
+| %M | Minute of of the hour, 0-padded to two chars, "00"–"59" |
+| %S | Second of the minute (without decimal part), 0-padded to two chars, "00"–"60" |
+| %N | ISO 8601 style numeric time zone (for example, "-06:00" or "+01:00")|
 
-View the language reference for more [time formats](/reference/functions/time).
+There are many other formatting options than included in the previous example.
+For example, you can replace the numeric representing the month of the year with the short or long name for the month.
+
+```pact
+pact> (format-time "%Y-%b-%d" (time "2024-07-24T13:30:45Z"))
+"2024-Jul-24"
+```
+For more information about all of the formats supported, see [Time formats](/reference/functions/time).
 
 ## Parenthesis
 
-Pact uses parentheses to mark each statement in the code, including module and function declarations and related logic.
-The following is an example of a **helloWorld** module in Pact.
+As you've already seen, Pact uses parentheses to mark each statement in the code.
+Parentheses enclose all module declaration, all function declarations, and any related logic.
+Often, the code requires nested parenthetical statements to resolve the logic.
+For example, the following code defines a **helloWorld** module in Pact:
 
 ```pact
 (module helloWorld 'admin-keyset
@@ -173,7 +186,7 @@ The following is an example of a **helloWorld** module in Pact.
 
 Within the module `helloworld` declaration, there is a `hello` function declaration that makes use of the `format` built-in function.
 
-#### Comments
+## Comments
 
 You can add comments using double quotation marks (`" "`) or single quotation marks (`' '`) to clearly describe the purpose of the code.
 
@@ -427,7 +440,7 @@ To use the common general functions:
    ["Hello Kadena" "Hello Pact" "Hello Standard Library"]
    ```
 
-5. Format a message using strings, curly braces ({}) for placeholders, and variables.
+5. Format a message using strings, curly braces (`{ }`) for placeholders and a list of values or variables.
 
    ```pact
    (format "My {} has {}" ["dog" "fleas"])
