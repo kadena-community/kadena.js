@@ -48,7 +48,7 @@ Alternatively, you can send a request to the Kadena test or main network by call
 For example:
 
 ```Postman
- https://us1.testnet.chainweb.com/config
+GET https://us1.testnet.chainweb.com/config
 ```
 
 These sample requests return the schema for `chainweb-node` version 2.24.1. 
