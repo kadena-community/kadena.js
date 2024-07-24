@@ -202,15 +202,14 @@ export const createConnectTokenTransaction = async (
   signees: IProofOfUsSignee[],
   account: IAccount,
 ): Promise<IUnsignedCommand | undefined> => {
-  console.log({ account });
-  const credential = account.credentials[0];
+  const pubKey = account.devices[0].guard.keys[0];
   const collectionId = process.env.NEXT_PUBLIC_CONNECTION_COLLECTIONID ?? '';
 
   if (!collectionId) {
     throw new Error('collectionId not found');
   }
 
-  if (!credential) {
+  if (!pubKey) {
     throw new Error('credential of account not found');
   }
 

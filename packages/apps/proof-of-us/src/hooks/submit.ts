@@ -4,7 +4,6 @@ import { setSignatures } from '@/utils/setSignatures';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useProofOfUs } from './proofOfUs';
-import { useTransaction } from './transaction';
 
 export enum SubmitStatus {
   IDLE = 'idle',
@@ -16,48 +15,33 @@ export enum SubmitStatus {
 }
 
 export const useSubmit = () => {
-  const { proofOfUs, signees } = useProofOfUs();
+  const { proofOfUs, signees, getSignees } = useProofOfUs();
   const [result, setResult] = useState<any>({});
   const [status, setStatus] = useState(SubmitStatus.IDLE);
   const [tx, setTx] = useState<any>(null);
   const [preview, setPreview] = useState<any>(null);
   const router = useRouter();
 
-  const { transaction } = useTransaction();
-
-  const processTransaction = async (transaction: string) => {
-    const client = getClient();
-    const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
-    setTx(tx);
-
-    if (tx.sigs.filter((x: any) => x === null).length)
-      return setStatus(SubmitStatus.INCOMPLETE);
-
-    const res = await client.local(tx);
-    setPreview(res);
-  };
-
-  useEffect(() => {
-    if (!transaction) return;
-    setStatus(SubmitStatus.SUBMITABLE);
-    processTransaction(transaction);
-  }, [transaction]);
-
   const doSubmit = async (txArg?: string, proof?: IProofOfUsData) => {
-    const innerTransaction = txArg ? txArg : transaction;
     const innerProofOfUs = proof ? proof : proofOfUs;
-    console.log(innerTransaction);
+    const innerTransaction = txArg ? txArg : JSON.parse(innerProofOfUs?.tx);
+
+    console.log(innerTransaction, innerProofOfUs);
     if (!innerTransaction) return;
     setStatus(SubmitStatus.LOADING);
     const client = getClient();
 
+    const latestSignees = await getSignees();
+
     const signedTransaction = txArg
       ? innerTransaction
-      : setSignatures(innerTransaction, signees);
+      : setSignatures(innerTransaction, latestSignees);
 
-    const tx = JSON.parse(Buffer.from(signedTransaction, 'base64').toString());
+    console.log({ signedTransaction });
+
+    //const tx = JSON.parse(Buffer.from(signedTransaction, 'base64').toString());
     try {
-      await client.submit(tx);
+      await client.submit(signedTransaction);
 
       if (!innerProofOfUs?.requestKey) {
         router.replace(`${getReturnHostUrl()}/user`);
@@ -90,7 +74,6 @@ export const useSubmit = () => {
     status !== SubmitStatus.ERROR;
   return {
     doSubmit,
-    transaction,
     tx,
     preview,
     result,

@@ -1,9 +1,10 @@
 export const setSignatures = (
-  tx: string,
+  tx: any,
   signees: IProofOfUsSignee[] = [],
 ): string => {
-  const innerTx = JSON.parse(Buffer.from(tx, 'base64').toString());
+  const innerTx = tx;
   const { signers } = JSON.parse(innerTx.cmd);
+  console.log({ signers, signees });
   const sigs = signers.reduce((acc: any, val: any) => {
     const pubKey = val.pubKey;
 
@@ -16,5 +17,7 @@ export const setSignatures = (
     return acc;
   }, []);
 
-  return Buffer.from(JSON.stringify({ ...innerTx, sigs })).toString('base64');
+  console.log('signed', { ...innerTx, sigs });
+
+  return { ...innerTx, sigs };
 };

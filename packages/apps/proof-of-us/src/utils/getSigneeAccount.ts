@@ -1,4 +1,3 @@
-
 export const getSigneeAccount = (
   account: IAccount,
   signees?: IProofOfUsSignee[],
@@ -10,6 +9,7 @@ export const getSigneeAccount = (
   if (signer) return signer;
 
   return {
+    ...account,
     accountName: account.accountName,
     alias: account.alias,
     initiator: false,

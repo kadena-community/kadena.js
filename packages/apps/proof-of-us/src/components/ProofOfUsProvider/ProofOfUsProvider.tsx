@@ -44,6 +44,7 @@ export interface IProofOfUsContext {
   hasSigned: () => Promise<boolean>;
   isSignee: () => Promise<boolean>;
   getSignee: () => Promise<IProofOfUsSignee | undefined>;
+  getSignees: () => Promise<IProofOfUsSignee[]>;
   updateSigneePing: (signee: IProofOfUsSignee) => Promise<void>;
   updateProofOfUs: (value: any) => Promise<void>;
   getSignature: (tx: IUnsignedCommand) => Promise<string | undefined>;
@@ -69,6 +70,7 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   hasSigned: async () => false,
   isSignee: async () => false,
   getSignee: async () => undefined,
+  getSignees: async () => [],
   updateSigneePing: async () => {},
   updateProofOfUs: async () => {},
   getSignature: async () => undefined,
@@ -299,6 +301,12 @@ export const ProofOfUsProvider: FC<IProps> = ({ children, proofOfUsId }) => {
     return signee;
   };
 
+  const getSignees = async (): Promise<IProofOfUsSignee[]> => {
+    if (!proofOfUs) return [];
+
+    return store.getProofOfUsSignees(proofOfUs.proofOfUsId);
+  };
+
   const updateSigneePing = async (signee: IProofOfUsSignee): Promise<void> => {
     if (!proofOfUs) return;
     return store.updateSigneePing(proofOfUs, signee);
@@ -359,6 +367,7 @@ export const ProofOfUsProvider: FC<IProps> = ({ children, proofOfUsId }) => {
         hasSigned,
         isSignee,
         getSignee,
+        getSignees,
         updateSigneePing,
         getSignature,
         resetSignatures,
