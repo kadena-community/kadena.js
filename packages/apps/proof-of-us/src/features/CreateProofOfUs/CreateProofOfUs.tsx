@@ -1,6 +1,5 @@
 import { AvatarEditor } from '@/components/AvatarEditor/AvatarEditor';
 import { DetailView } from '@/components/DetailView/DetailView';
-import { MintView } from '@/components/MintView/MintView';
 import { ShareView } from '@/components/ShareView/ShareView';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { createProofOfUsID } from '@/utils/createProofOfUsID';
@@ -56,7 +55,6 @@ export const CreateProofOfUs: FC<IProps> = ({ params }) => {
       {status === 1 && <AvatarEditor next={next} status={status} />}
       {status === 2 && <DetailView next={next} prev={prev} />}
       {status === 3 && <ShareView next={next} prev={prev} status={status} />}
-      {status >= 4 && <MintView next={next} prev={prev} status={status} />}
     </div>
   );
 };

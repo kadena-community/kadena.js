@@ -7,16 +7,13 @@ import { useClaimAttendanceToken } from '@/hooks/data/claimAttendanceToken';
 import { useSubmit } from '@/hooks/submit';
 import { useTokens } from '@/hooks/tokens';
 import { useTransaction } from '@/hooks/transaction';
-import { env } from '@/utils/env';
-import { getReturnUrl } from '@/utils/getReturnUrl';
 import { ICommand } from '@kadena/client';
 import { Stack } from '@kadena/kode-ui';
-import { SignedTransactions, sign } from '@kadena/spirekey-sdk';
+import { sign } from '@kadena/spirekey-sdk';
 import { isAfter, isBefore } from 'date-fns';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import type { Dispatch, FC, SetStateAction } from 'react';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 
 interface IProps {
   data: IProofOfUsTokenMeta;
