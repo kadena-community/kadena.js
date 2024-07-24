@@ -6,7 +6,6 @@ import { useAccount } from '@/hooks/account';
 import { useClaimAttendanceToken } from '@/hooks/data/claimAttendanceToken';
 import { useSubmit } from '@/hooks/submit';
 import { useTokens } from '@/hooks/tokens';
-import { useTransaction } from '@/hooks/transaction';
 import { ICommand } from '@kadena/client';
 import { Stack } from '@kadena/kode-ui';
 import { sign } from '@kadena/spirekey-sdk';
@@ -31,7 +30,6 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   const { account, isMounted, login } = useAccount();
   const { addMintingData, tokens } = useTokens();
   const { doSubmit, isStatusLoading } = useSubmit();
-  const { transaction } = useTransaction();
 
   const tokenId = useMemo(() => {
     const token = tokens?.find((t) => t.info?.uri === data.manifestUri);
@@ -66,15 +64,20 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     const transaction = await claim(eventId);
     if (!transaction || !account) return;
 
-    const { transactions, isReady } = await sign([transaction], [account]);
-    await isReady();
+    try {
+      const { transactions, isReady } = await sign([transaction], [account]);
+      await isReady();
 
-    transactions.map(async (t) => {
-      // should perform check to see if all sigs are present
-      const proof = getProof(data, t as ICommand);
-      await addMintingData(proof);
-      await doSubmit(Buffer.from(JSON.stringify(t)).toString('base64'), proof);
-    });
+      transactions.map(async (t) => {
+        // should perform check to see if all sigs are present
+        const proof = getProof(data, t as ICommand);
+        await addMintingData(proof);
+        await doSubmit(
+          Buffer.from(JSON.stringify(t)).toString('base64'),
+          proof,
+        );
+      });
+    } catch (e) {}
   };
 
   const startDate = new Date(data.startDate * 1000);

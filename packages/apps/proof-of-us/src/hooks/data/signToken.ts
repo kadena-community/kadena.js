@@ -1,20 +1,17 @@
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { env } from '@/utils/env';
-import { getReturnHostUrl, getReturnUrl } from '@/utils/getReturnUrl';
+import { getReturnHostUrl } from '@/utils/getReturnUrl';
 import type { OptimalTransactionsAccount } from '@kadena/spirekey-sdk';
-import { SignedTransactions, sign as signSpireKey } from '@kadena/spirekey-sdk';
+import { sign as signSpireKey } from '@kadena/spirekey-sdk';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAccount } from '../account';
 import { useSubmit } from '../submit';
-import { useTransaction } from '../transaction';
 
 export const useSignToken = () => {
   const {
     updateSignee,
     proofOfUs,
     signees,
-    hasSigned,
     updateProofOfUs,
     getSignature,
     isInitiator,
@@ -32,35 +29,35 @@ export const useSignToken = () => {
     setIsLoading(true);
     setHasError(false);
 
-    const { transactions, isReady } = await signSpireKey(
-      [JSON.parse(proofOfUs.tx)],
-      signees as unknown as OptimalTransactionsAccount[],
-    );
-
-    console.log({ transactions, isReady });
-
-    await isReady();
-
-    const signature = await getSignature(transactions[0]);
-
-    await updateSignee({ signerStatus: 'success', signature }, true);
-
-    const accountIsInitiator = await isInitiator();
-    await updateProofOfUs({
-      tx: JSON.stringify(transactions[0]),
-      status: 3,
-    });
-
-    if (accountIsInitiator) {
-      console.log('accountIsInitiator');
-      await doSubmit();
-    } else {
-      router.replace(
-        `${getReturnHostUrl()}/user/proof-of-us/mint/${transactions[0].hash}?id=${
-          proofOfUs.proofOfUsId
-        }`,
+    try {
+      const { transactions, isReady } = await signSpireKey(
+        [JSON.parse(proofOfUs.tx)],
+        signees as unknown as OptimalTransactionsAccount[],
       );
-    }
+
+      await isReady();
+
+      const signature = await getSignature(transactions[0]);
+
+      await updateSignee({ signerStatus: 'success', signature }, true);
+
+      const accountIsInitiator = await isInitiator();
+      await updateProofOfUs({
+        tx: JSON.stringify(transactions[0]),
+        status: 3,
+      });
+
+      if (accountIsInitiator) {
+        console.log('accountIsInitiator');
+        await doSubmit();
+      } else {
+        router.replace(
+          `${getReturnHostUrl()}/user/proof-of-us/mint/${transactions[0].hash}?id=${
+            proofOfUs.proofOfUsId
+          }`,
+        );
+      }
+    } catch (e) {}
   };
 
   return { isLoading, hasError, data, signToken };
