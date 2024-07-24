@@ -1,4 +1,5 @@
 'use client';
+import { env } from '@/utils/env';
 import { getAccountCookieName } from '@/utils/getAccountCookieName';
 import { store } from '@/utils/socket/store';
 import { connect, initSpireKey } from '@kadena/spirekey-sdk';
@@ -31,7 +32,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter();
 
   const login = useCallback(async () => {
-    const acc = await connect('mainnet01', '8');
+    const acc = await connect(env.NETWORKID, env.CHAINID);
     setAccount(acc);
     setIsMounted(true);
     localStorage.setItem(getAccountCookieName(), JSON.stringify(acc));
@@ -45,7 +46,19 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    initSpireKey();
+    const storage = localStorage.getItem(getAccountCookieName());
+    if (storage) {
+      try {
+        setAccount(JSON.parse(storage));
+      } catch (e) {
+        localStorage.removeItem(getAccountCookieName());
+      }
+    }
+
+    initSpireKey({
+      hostUrl: 'https://spirekey.kadena.io',
+      useRAccount: true,
+    });
     setIsMounted(true);
   }, []);
 

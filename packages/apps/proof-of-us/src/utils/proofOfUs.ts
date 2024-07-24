@@ -202,6 +202,7 @@ export const createConnectTokenTransaction = async (
   signees: IProofOfUsSignee[],
   account: IAccount,
 ): Promise<IUnsignedCommand | undefined> => {
+  console.log({ account });
   const credential = account.credentials[0];
   const collectionId = process.env.NEXT_PUBLIC_CONNECTION_COLLECTIONID ?? '';
 
