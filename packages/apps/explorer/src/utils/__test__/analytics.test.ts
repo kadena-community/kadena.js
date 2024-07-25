@@ -94,7 +94,7 @@ describe('analytics', () => {
 
   describe('analyticsEvent', () => {
     it('should call analyticsEvent with correct props', () => {
-      analyticsEvent(EVENT_NAMES['click:asidemenu_deeplink'], {
+      analyticsEvent(EVENT_NAMES['click:add_network'], {
         label: 'Master of the universe',
         hash: '/he-man',
       });
@@ -102,7 +102,7 @@ describe('analytics', () => {
       expect(window.gtag).toHaveBeenNthCalledWith(
         1,
         'event',
-        'click:asidemenu_deeplink',
+        'click:add_network',
         {
           hash: '/he-man',
           label: 'Master of the universe',
@@ -116,19 +116,19 @@ describe('analytics', () => {
         .mockImplementation(() => undefined);
 
       vi.stubEnv('NODE_ENV', 'development');
-      analyticsEvent(EVENT_NAMES['click:asidemenu_deeplink'], {
+      analyticsEvent(EVENT_NAMES['click:add_network'], {
         label: 'Master of the universe',
         hash: '/he-man',
       });
 
       expect(consoleMock).toBeCalledWith('GTAG EVENT', {
-        name: 'click:asidemenu_deeplink',
+        name: 'click:add_network',
         options: { hash: '/he-man', label: 'Master of the universe' },
       });
       expect(window.gtag).toHaveBeenNthCalledWith(
         1,
         'event',
-        'click:asidemenu_deeplink',
+        'click:add_network',
         {
           hash: '/he-man',
           label: 'Master of the universe',

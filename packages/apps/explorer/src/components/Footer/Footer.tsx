@@ -1,6 +1,6 @@
 import { Link } from '@/components/Routing/Link';
+import { menuConfig } from '@/config/menuConfig';
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
-import { menuConfig } from '@/utils/menuConfig';
 import {
   MonoLogoGithub,
   MonoLogoLinkedin,
