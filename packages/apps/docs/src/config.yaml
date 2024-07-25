@@ -552,16 +552,6 @@ pages:
           binary:
             url: /binary-encoding
             file: /reference/chainweb/chainweb-encoding.md
-          nodeclient:
-            url: /node-client
-            file: /reference/chainweb/chainweb-node.md
-          streamclient:
-            file: /reference/chainweb/chainweb-stream.md
-            url: /stream-client
-          jsbindings:
-            file: /reference/chainweb/chainwebjs.md
-            url: /js-bindings
-
       chainwebref:
         url: /chainweb-ref
         file: /reference/chainweb/api/chainweb-api.tsx
