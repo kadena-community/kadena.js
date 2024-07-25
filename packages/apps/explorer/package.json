@@ -21,11 +21,14 @@
     "start:graph": "cd ../graph && pnpm run start",
     "start:graph:generate": "cd ../graph && pnpm run start:generate",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest  --coverage",
     "verify": "tsc --noEmit"
   },
   "dependencies": {
     "@apollo/client": "~3.9.11",
     "@artsy/fresnel": "^7.1.4",
+    "@google-analytics/data": "~3.2.2",
     "@graphql-yoga/apollo-link": "~3.3.0",
     "@kadena/graph": "workspace:*",
     "@kadena/kode-icons": "workspace:*",
@@ -36,6 +39,7 @@
     "eslint": "^8.45.0",
     "graphql": "~16.8.1",
     "graphql-ws": "^5.16.0",
+    "js-cookie": "~3.0.5",
     "next": "14.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -51,6 +55,9 @@
     "@kadena-dev/shared-config": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@rushstack/eslint-config": "~3.6.9",
+    "@testing-library/react": "~14.0.0",
+    "@types/gtag.js": "~0.0.12",
+    "@types/js-cookie": "~3.0.3",
     "@types/node": "^20.12.7",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
@@ -59,8 +66,10 @@
     "@vitest/coverage-v8": "^1.6.0",
     "cache-sh": "^1.2.1",
     "concurrently": "^8.2.2",
+    "next-router-mock": "^0.9.10",
     "prettier": "~3.2.5",
     "typescript": "5.4.5",
-    "vitest": "^1.6.0"
+    "vitest": "^1.6.0",
+    "vitest-dom": "^0.1.1"
   }
 }

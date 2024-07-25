@@ -1,30 +1,51 @@
 # About code owners: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
-/.github                                        @ghislain89 @alber70g @sstraatemans @javadkh2
+/.github                                        @alber70g @sstraatemans @javadkh2
 /.changeset
 /common                                         @alber70g
 /pnpm-lock.yaml
-/packages/apps/docs
-/packages/apps/proof-of-us                      @sstraatemans @ghislain89
-/packages/apps/graph                            @alber70g
-/packages/apps/graph-client                     @alber70g 
-/packages/apps/marmalade-marketplace            @jermaine150 @ggobugi27
-/packages/apps/tools                            
-/packages/libs/bootstrap-lib                    @alber70g
-/packages/libs/chainweb-stream-client          
-/packages/libs/client                           @alber70g @javadkh2 @nillo
-/packages/libs/client-utils                     @alber70g @javadkh2 @jermaine150 @ggobugi27
-/packages/libs/kadena.js                        @alber70g
-/packages/libs/pactjs-generator                 @alber70g @javadkh2
-/packages/libs/kode-ui                          @sstraatemans @isaozler
-/packages/libs/types                            @alber70g
-/packages/tools/eslint-config                   @alber70g
-/packages/tools/eslint-plugin                   @alber70g
-/packages/tools/pactjs-cli                      @alber70g @javadkh2
-/packages/tools/shared-config                   @alber70g
-/packages/e2e                                   @ghislain89
-/packages/e2e/e2e-base                          @ghislain89
-/packages/e2e/e2e-docs                          @ghislain89 @sstraatemans
-/packages/e2e/e2e-graph                         @ghislain89
-/packages/e2e/e2e-tools                         @ghislain89
-/packages/tools/integration-tests               @ghislain89 @sstraatemans
+
+# Apps
+/packages/apps/dev-wallet                       
+/packages/apps/dev-wallet-*                     
+/packages/apps/docs                             
+/packages/apps/explorer                         
+/packages/apps/graph                            
+/packages/apps/graph-client                     
+/packages/apps/marmalade-marketplace            
+/packages/apps/proof-of-us                      
+/packages/apps/tools
+
+# e2e2e tests
+/packages/e2e
+/packages/e2e/e2e-base                          
+/packages/e2e/e2e-docs                          
+/packages/e2e/e2e-graph                         
+/packages/e2e/e2e-proof-of-us                   
+/packages/e2e/e2e-tools                         
+
+# Libraries
+/packages/libs/bootstrap-lib                    
+/packages/libs/chainweb-node-client             
+/packages/libs/chainweb-stream-client
+/packages/libs/chainwebjs
+/packages/libs/client                           
+/packages/libs/client-utils                     
+/packages/libs/cryptography-utils               
+/packages/libs/hd-wallet                        
+/packages/libs/kadena.js                        
+/packages/libs/kode-icons                       
+/packages/libs/kode-ui                          
+/packages/libs/pactjs                           
+/packages/libs/pactjs-generator                 
+/packages/libs/types                            
+/packages/tools/eslint-config                   
+/packages/tools/eslint-plugin                   
+/packages/tools/pactjs-cli                      
+/packages/tools/shared-config                   
+
+# Tools
+/packages/tools                                 
+/packages/tools/docs-tools                      
+/packages/tools/kadena-cli                      
+

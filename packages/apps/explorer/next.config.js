@@ -6,10 +6,6 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   transpilePackages: ['@kadena/kode-ui'],
-  env: {
-    KADENA_GRAPH_HOST: process.env.KADENA_GRAPH_HOST,
-    KADENA_GRAPH_WS_HOST: process.env.KADENA_GRAPH_WS_HOST,
-  },
 };
 
 module.exports = withVanillaExtract(nextConfig);
@@ -22,7 +18,7 @@ module.exports = withSentryConfig(module.exports, {
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options
 
-  org: 'kadena-test',
+  org: 'kadena',
   project: 'kadena-explorer',
 
   // Only print logs for uploading source maps in CI

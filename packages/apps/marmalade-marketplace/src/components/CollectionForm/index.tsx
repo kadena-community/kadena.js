@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import { TextField, Button } from '@kadena/kode-ui';
-import * as styles from '@/styles/create-token.css';
+import { TextField } from '@kadena/kode-ui';
+import CrudCard from '@/components/CrudCard';
 
 interface CollectionFormProps {
   collectionInput: { [key: string]: string };
@@ -8,9 +8,14 @@ interface CollectionFormProps {
 }
 
 const CollectionForm: FC<CollectionFormProps> = ({ collectionInput, handleCollectionInputChange,  }) => (
-  <div className={styles.formSection}>
+  <CrudCard
+    title="Collection"
+    description={[
+      "Provide a Collection ID"
+    ]}
+  >
     <TextField label="Collection ID" name="collectionId" value={collectionInput.collectionId} onChange={handleCollectionInputChange} />
-  </div>
+  </CrudCard>
 );
 
 export default CollectionForm;

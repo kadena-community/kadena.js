@@ -4,8 +4,12 @@ import DataloaderPlugin from '@pothos/plugin-dataloader';
 import PrismaPlugin from '@pothos/plugin-prisma';
 import type PrismaTypes from '@pothos/plugin-prisma/generated';
 import RelayPlugin from '@pothos/plugin-relay';
-import TracingPlugin, { wrapResolver } from '@pothos/plugin-tracing';
+import TracingPlugin, {
+  isRootField,
+  wrapResolver,
+} from '@pothos/plugin-tracing';
 import ValidationPlugin from '@pothos/plugin-validation';
+import { createSentryWrapper } from '@pothos/tracing-sentry';
 import { Prisma } from '@prisma/client';
 import { logTrace } from '@services/tracing/trace-service';
 import { dotenv } from '@utils/dotenv';
@@ -72,6 +76,11 @@ export const PRISMA = {
   DEFAULT_SIZE: 20,
 };
 
+const traceResolver = createSentryWrapper({
+  includeArgs: true,
+  includeSource: true,
+});
+
 export const builder = new SchemaBuilder<
   IDefaultTypesExtension & {
     PrismaTypes: PrismaTypes;
@@ -108,6 +117,11 @@ export const builder = new SchemaBuilder<
     TracingPlugin,
     ValidationPlugin,
   ],
+
+  tracing: {
+    default: (config) => isRootField(config),
+    wrap: (resolver, options) => traceResolver(resolver, options),
+  },
 
   prisma: {
     client: prismaClient,

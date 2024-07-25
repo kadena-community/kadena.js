@@ -103,11 +103,11 @@ export const Full: FC<IPageProps> = ({
                   On this page
                 </Heading>
                 <AsideList ref={menuRef}>
-                  {aSideMenuTree.map((innerItem: ISubHeaderElement) => {
+                  {aSideMenuTree.map((innerItem: ISubHeaderElement, idx) => {
                     const innerSlug = innerItem.slug;
                     return (
                       <ListItem
-                        key={innerSlug}
+                        key={`${innerSlug}${idx}${innerItem.title}`}
                         scrollArea={scrollRef.current}
                         item={innerItem}
                         activeItem={activeItem}

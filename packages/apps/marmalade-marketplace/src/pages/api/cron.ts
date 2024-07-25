@@ -174,7 +174,7 @@ async function parseEvents(
         const data = await getQuoteInfo({
           saleId: saleId as string,
           chainId: event.chainId,
-          networkId: env.NETWORK_NAME,
+          networkId: env.NETWORKID,
           host: env.CHAINWEB_API_HOST,
         }) as QuoteInfo;
 
@@ -267,7 +267,7 @@ async function parseEvents(
         },
         saleId: saleId as string,
         chainId: event.chainId,
-        networkId: env.NETWORK_NAME,
+        networkId: env.NETWORKID,
         host: env.CHAINWEB_API_HOST,
       });
 
@@ -301,7 +301,7 @@ async function parseEvents(
         },
         saleId: saleId as string,
         chainId: event.chainId,
-        networkId: env.NETWORK_NAME,
+        networkId: env.NETWORKID,
         host: env.CHAINWEB_API_HOST,
       });
 
@@ -337,13 +337,13 @@ async function parseEvents(
           },
           saleId: saleId as string,
           chainId: event.chainId,
-          networkId: env.NETWORK_NAME,
+          networkId: env.NETWORKID,
           host: env.CHAINWEB_API_HOST,
         }),
         escrowAccount({
           saleId: saleId as string,
           chainId: event.chainId,
-          networkId: env.NETWORK_NAME,
+          networkId: env.NETWORKID,
           host: env.CHAINWEB_API_HOST,
         }),
       ]);
@@ -378,14 +378,14 @@ async function parseEvents(
       const bidDetails = await getBid({
         bidId: bidId as string,
         chainId: event.chainId,
-        networkId: env.NETWORK_NAME,
+        networkId: env.NETWORKID,
         host: env.CHAINWEB_API_HOST,
       });
 
       const quoteInfo = await getQuoteInfo({
         saleId: saleId as string,
         chainId: event.chainId,
-        networkId: env.NETWORK_NAME,
+        networkId: env.NETWORKID,
         host: env.CHAINWEB_API_HOST,
       }) as QuoteInfo;
 

@@ -1,8 +1,8 @@
 import { IncomingForm }  from "formidable";
 import fs from "fs";
-import FormData from "form-data";
 const pinataSDK = require("@pinata/sdk");
 const pinata = new pinataSDK({ pinataJWTKey: process.env.PINATA_JWT });
+console.log( process.env.PINATA_JWT, "Pinatat key")
 
 export const config = {
   api: {
@@ -12,7 +12,7 @@ export const config = {
 
 const saveFile = async (file:any) => {
   try {
-    const filepath = file[0].filepath; 
+    const filepath = file[0].filepath;
     console.log(filepath)
     const stream = fs.createReadStream(filepath);
     const options = {

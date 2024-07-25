@@ -1,9 +1,10 @@
 import { IPactCommand, IUnsignedCommand } from '@kadena/client';
-import { Heading, Stack } from '@kadena/kode-ui';
+import { Button, Heading, Stack } from '@kadena/kode-ui';
 import { useMemo } from 'react';
 import { cardClass, codeClass, containerClass } from './style.css.ts';
 
 import { ITransaction } from '@/modules/transaction/transaction.repository.ts';
+import { MonoContentCopy } from '@kadena/kode-icons/system';
 import { Signers } from './Signers.tsx';
 import { Label, Value } from './helpers.tsx';
 
@@ -20,7 +21,27 @@ export function ReviewTransaction({
   );
   return (
     <Stack flexDirection={'column'} className={containerClass}>
-      <Heading>Confirm Transaction</Heading>
+      <Stack justifyContent={'space-between'}>
+        <Heading>Confirm Transaction</Heading>
+        <Button
+          variant="transparent"
+          onClick={() => {
+            navigator.clipboard.writeText(
+              JSON.stringify(
+                {
+                  hash: transaction.hash,
+                  cmd: transaction.cmd,
+                  sigs: transaction.sigs,
+                },
+                null,
+                2,
+              ),
+            );
+          }}
+        >
+          <MonoContentCopy />
+        </Button>
+      </Stack>
       <Stack flexDirection={'column'} gap={'xl'}>
         <Stack gap={'sm'} flexDirection={'column'}>
           <Heading variant="h4">hash (request-key)</Heading>

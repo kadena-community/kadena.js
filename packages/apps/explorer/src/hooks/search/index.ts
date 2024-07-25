@@ -1,18 +1,14 @@
-import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
-import { useRouter } from '@/components/routing/useRouter';
-import type { ISearchItem } from '@/components/search/search-component/search-component';
+import type { ISearchItem } from '@/components/Search/SearchComponent/SearchComponent';
+import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import type { ApolloError } from '@apollo/client';
 import { useEffect, useState } from 'react';
+import { useRouter } from '../router';
 import { useAccount } from './utils/account';
-import { useBlockHash } from './utils/block-hash';
-import { useBlockHeight } from './utils/block-height';
+import { useBlockHash } from './utils/blockHash';
+import { useBlockHeight } from './utils/blockHeight';
 import { useEvent } from './utils/event';
-import {
-  SearchOptionEnum,
-  checkLoading,
-  isSearchRequested,
-  returnSearchQuery,
-} from './utils/utils';
+import { useRequestKey } from './utils/requestKey';
+import { SearchOptionEnum, checkLoading } from './utils/utils';
 
 export interface IHookReturnValue<T> {
   loading: boolean;
@@ -24,12 +20,14 @@ export const useSearch = () => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isMounted, setIsMounted] = useState(false);
+  const [searchData, setSearchData] = useState<ISearchItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<ApolloError[]>([]);
   const [searchOption, setSearchOption] = useState<SearchOptionEnum | null>(
     null,
   );
 
+  const { addToast } = useToast();
   const {
     loading: accountLoading,
     data: accountData,
@@ -53,50 +51,45 @@ export const useSearch = () => {
     data: eventData,
     error: eventError,
   } = useEvent(searchQuery, searchOption);
+
   const {
     loading: requestKeyLoading,
     data: requestKeyData,
     error: requestKeyError,
-  } = useTransactionRequestKeyQuery({
-    variables: {
-      requestKey: returnSearchQuery(
-        searchQuery,
-        searchOption,
-        SearchOptionEnum.REQUESTKEY,
-      ),
-    },
-    skip:
-      !searchQuery ||
-      !isSearchRequested(searchOption, SearchOptionEnum.REQUESTKEY),
-  });
+  } = useRequestKey(searchQuery, searchOption);
 
   useEffect(() => {
     if (!isMounted) return;
 
-    if (!searchQuery) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      if (router.asPath === '/') {
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        router.replace(`${router.asPath}`);
+    const query = router.query.q;
+    const searchOptionQuery: SearchOptionEnum | null = !isNaN(
+      parseInt(router.query.so as any),
+    )
+      ? parseInt(router.query.so as any)
+      : null;
+
+    const queryArray = [];
+    if (searchQuery) {
+      queryArray.push(`q=${searchQuery}`);
+    }
+    if (searchOption !== null && searchOption !== undefined) {
+      queryArray.push(`so=${searchOption}`);
+
+      if (searchOption === SearchOptionEnum.ACCOUNT) {
+        queryArray.push(`fungible=coin`);
       }
+    }
+
+    if (
+      (query === searchQuery && searchOptionQuery === searchOption) ||
+      !queryArray.filter((v) => v.startsWith('q=')).length
+    ) {
       return;
     }
 
-    const query = router.query.q;
-    const searchOptionQuery: SearchOptionEnum = parseInt(
-      router.query.so as any,
-    );
-
-    if (query === searchQuery && searchOptionQuery === searchOption) return;
-
-    if (searchOption === SearchOptionEnum.ACCOUNT) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push(`/?q=${searchQuery}&so=${searchOption}&fungible=coin`);
-    } else {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push(`/?q=${searchQuery}&so=${searchOption}`);
-    }
-  }, [searchQuery, isMounted]);
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    router.push(`/?${queryArray.join('&')}`);
+  }, [searchQuery, searchOption, isMounted]);
 
   useEffect(() => {
     const query = router.query.q;
@@ -112,15 +105,51 @@ export const useSearch = () => {
   }, [router.query]);
 
   useEffect(() => {
-    setLoading(
-      checkLoading(
-        accountLoading,
-        blockLoading,
-        blockHeightLoading,
-        eventLoading,
-        requestKeyLoading,
-      ),
+    if (loading) {
+      setSearchData([
+        { title: 'Account', data: [] },
+        { title: 'Request Key', data: {} },
+        { title: 'Block Hash', data: {} },
+        { title: 'Height', data: {} },
+        { title: 'Event', data: {} },
+      ]);
+      return;
+    }
+
+    const result: ISearchItem[] = [
+      { title: 'Account', data: accountData },
+      { title: 'Request Key', data: requestKeyData },
+      { title: 'Block Hash', data: blockData },
+      { title: 'Height', data: blockHeightData },
+      { title: 'Event', data: eventData },
+    ];
+
+    setSearchData(result);
+  }, [
+    loading,
+    accountData,
+    requestKeyData,
+    blockData,
+    blockHeightData,
+    eventData,
+  ]);
+
+  useEffect(() => {
+    const loadingResult = checkLoading(
+      accountLoading,
+      blockLoading,
+      blockHeightLoading,
+      eventLoading,
+      requestKeyLoading,
     );
+
+    if (!loadingResult) {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
+      return;
+    }
   }, [
     accountLoading,
     blockLoading,
@@ -140,13 +169,16 @@ export const useSearch = () => {
     setErrors(errors);
   }, [accountError, blockError, blockHeightError, eventError, requestKeyError]);
 
-  const searchData: ISearchItem[] = [
-    { title: 'Account', data: accountData },
-    { title: 'Request Key', data: requestKeyData },
-    { title: 'Block Hash', data: blockData },
-    { title: 'Block Height', data: blockHeightData },
-    { title: 'Events', data: eventData },
-  ];
+  useEffect(() => {
+    if (errors.length) {
+      addToast({
+        type: 'negative',
+        label: 'Something went wrong',
+        body: 'Loading search data failed',
+      });
+    }
+  }, [errors]);
+
   return {
     searchOption,
     setSearchOption,

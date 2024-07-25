@@ -10,6 +10,7 @@ export const blockHeight: DocumentNode = gql`
     ) {
       edges {
         node {
+          height
           hash
           chainId
         }

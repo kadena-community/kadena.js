@@ -48,7 +48,7 @@ export function ConventionalAuction({ tokenImageUrl, sale }: ConventionalAuction
           },
           saleId: sale.saleId,
           chainId: sale.chainId,
-          networkId: env.NETWORK_NAME,
+          networkId: env.NETWORKID,
           host: env.CHAINWEB_API_HOST
         });
       } catch {
@@ -63,7 +63,7 @@ export function ConventionalAuction({ tokenImageUrl, sale }: ConventionalAuction
       const highestBid = await getBid({
         bidId: auctionDetails?.["highest-bid-id"],
         chainId: sale.chainId,
-        networkId: env.NETWORK_NAME,
+        networkId: env.NETWORKID,
         host: env.CHAINWEB_API_HOST,
       })
 
@@ -136,12 +136,13 @@ export function ConventionalAuction({ tokenImageUrl, sale }: ConventionalAuction
     const escrowAccountResult = await escrowAccount({
       saleId: sale.saleId,
       chainId: sale.chainId,
-      networkId: env.NETWORK_NAME,
+      networkId: env.NETWORKID,
       host: env.CHAINWEB_API_HOST,
     })
 
     try {
       await buyToken({
+        signer: "",
         auctionConfig: {
           conventional: true
         },

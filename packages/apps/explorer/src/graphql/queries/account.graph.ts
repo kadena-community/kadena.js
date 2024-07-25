@@ -7,12 +7,12 @@ export const account: DocumentNode = gql`
   query account($accountName: String!) {
     fungibleAccount(accountName: $accountName) {
       ...CoreAccountFields
-      transactions {
-        totalCount
-      }
-      transfers {
-        totalCount
-      }
+      # transactions {
+      #   totalCount
+      # }
+      # transfers {
+      #   totalCount
+      # }
     }
   }
 `;

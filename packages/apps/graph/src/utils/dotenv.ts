@@ -25,6 +25,7 @@ export const dotenv: {
   NETWORK_HOST: string;
   NETWORK_STATISTICS_URL: string;
   NODE_ENV: string;
+  ENVIRONMENT: string;
   PORT: number;
   PRISMA_LOGGING_ENABLED: boolean;
   PRISMA_LOG_TO_FILE: boolean;
@@ -32,6 +33,7 @@ export const dotenv: {
   TRACING_ENABLED: boolean;
   TRACING_EXPOSED: boolean;
   TRACING_LOG_FILENAME: string;
+  SENTRY_DSN: string | undefined;
   SIMULATE_DEFAULT_CHAIN_ID: ChainId;
   SIMULATE_LOG_FOLDER_NAME: string;
   TIMEOUT_PACT_QUERY: number;
@@ -102,6 +104,7 @@ export const dotenv: {
     'http://localhost:8080/stats',
   ),
   NODE_ENV: or(process.env.NODE_ENV, 'production'),
+  ENVIRONMENT: or(process.env.ENVIRONMENT, 'mainnet'),
   PORT: parseInt(or(process.env.PORT, '4000'), 10),
   PRISMA_LOGGING_ENABLED: or(
     process.env.PRISMA_LOGGING_ENABLED?.toLocaleLowerCase() === 'true',
@@ -121,6 +124,7 @@ export const dotenv: {
     false,
   ),
   TRACING_LOG_FILENAME: or(process.env.TRACING_LOG_FILENAME, 'traces.log'),
+  SENTRY_DSN: or(process.env.SENTRY_DSN, undefined),
   SIMULATE_DEFAULT_CHAIN_ID: or(
     process.env.SIMULATE_DEFAULT_CHAIN_ID as ChainId,
     '0' as ChainId,

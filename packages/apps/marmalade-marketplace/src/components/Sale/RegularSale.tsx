@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { buyToken, getEscrowAccount } from "@kadena/client-utils/marmalade";
-import { getWebauthnGuard } from "@kadena/client-utils/webauthn";
 import * as styles from "@/styles/sale.css"
 import { env } from "@/utils/env";
 import { Button } from "@kadena/kode-ui";
@@ -21,7 +20,7 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
 
   const router = useRouter() as AppRouterInstance;
   const searchParams = useSearchParams();
-  const { account } = useAccount();
+  const { account, webauthnAccount } = useAccount();
 
   useEffect(() => {
 
@@ -40,17 +39,10 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
   };
 
   const handleBuyNow = async () => {
-    if (!account?.alias) {
+    if (!webauthnAccount || !account) {
       alert("Please connect your wallet first to buy.");
       return;
     }
-
-    const webauthnGuard = await getWebauthnGuard({
-      account: account.accountName,
-      host: env.URL,
-      networkId: env.NETWORKID,
-      chainId: sale.chainId,
-    })
 
     const escrowAccount = await getEscrowAccount({
       saleId: sale.saleId,
@@ -59,7 +51,6 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
       chainId: sale.chainId,
     }) as { account: string }
 
-    console.log("escrowAccount", escrowAccount);
 
     try {
       await buyToken({
@@ -70,9 +61,10 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
         seller: {
           account: sale.seller.account,
         },
+        signer: webauthnAccount?.guard.keys[0] || '',
         buyer: {
-          account: account.accountName,
-          keyset: webauthnGuard["devices"][0]["guard"]
+          account: webauthnAccount.account,
+          keyset: webauthnAccount.guard,
         },
         buyerFungibleAccount: account.accountName,
         capabilities: [
@@ -82,6 +74,7 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
             props: [account.accountName, escrowAccount["account"], new PactNumber(sale.startPrice).toPactDecimal()]
           },
         ],
+        meta: {senderAccount: account.accountName}
       },
         {
           ...config,

@@ -131,6 +131,7 @@ export function CreateAccount() {
     setCreated(true);
   };
   if (created) {
+    // useNavigate does not work some times so I had to use Navigate
     return <Navigate to="/" />;
   }
 

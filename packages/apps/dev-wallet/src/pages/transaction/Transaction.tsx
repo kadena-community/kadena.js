@@ -64,17 +64,10 @@ export function Transaction() {
           ...tx,
         } as ITransaction;
         await transactionRepository.updateTransaction(updated);
-        const updatedList = Txs.map((t) =>
-          t.uuid === updated.uuid ? updated : t,
-        );
-        const [overallStep, firstTx] = getOverallStep(updatedList);
-        setTxs(updatedList);
-        setSelectedTxIndex(firstTx);
-        setStep(overallStep);
-        return updatedList;
+        return loadTxs(groupId!);
       }
     },
-    [transaction, Txs],
+    [transaction, Txs, groupId, loadTxs],
   );
 
   const submitTxs = useCallback(async (list: ITransaction[]) => {
@@ -100,8 +93,9 @@ export function Transaction() {
       setError('Preflight failed');
       return;
     }
+    const listForSubmission = await loadTxs(groupId);
     await Promise.all(
-      list.map((tx) =>
+      listForSubmission.map((tx) =>
         client
           .submitOne({ cmd: tx.cmd, sigs: tx.sigs, hash: tx.hash } as ICommand)
           .then(async (request) => {

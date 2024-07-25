@@ -17,8 +17,9 @@ export const deviceColors = {
   salmon: '#FFB7A9',
   skin: '#FFB2CE',
   lightViolet: '#DBBBFE',
-  borderColor: 'rgba(255,255,255, .2)',
+  borderColor: 'rgba(245,245,245, .1)',
   backgroundTransparentColor: 'rgba(255,255,255, 0.05)',
+  background: 'rgba(19, 30, 43, 0.8)',
 };
 
 export const customTokens = createGlobalTheme(':root', {
