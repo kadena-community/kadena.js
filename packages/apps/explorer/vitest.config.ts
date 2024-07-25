@@ -1,11 +1,18 @@
 import baseConfig from '@kadena-dev/shared-config/vitest.config';
 import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
+import react from '@vitejs/plugin-react';
+import path from 'path';
 import { defineConfig, mergeConfig } from 'vitest/config';
 
 export default mergeConfig(
   baseConfig,
   defineConfig({
-    plugins: [vanillaExtractPlugin({ emitCssInSsr: true })],
+    plugins: [vanillaExtractPlugin({ emitCssInSsr: true }), react()],
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './src'),
+      },
+    },
     test: {
       globals: true,
       globalSetup: './vitest-globals.ts',

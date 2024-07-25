@@ -7,6 +7,7 @@ export enum SearchOptionEnum {
 }
 
 export const checkLoading = (...attrs: boolean[]): boolean => {
+  console.log(attrs);
   return attrs.find((v: boolean) => v === false) ?? false;
 };
 
