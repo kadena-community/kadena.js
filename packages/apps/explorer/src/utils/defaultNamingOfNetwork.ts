@@ -10,7 +10,7 @@ const createTypeName = (
   networks: INetwork[],
 ): string => {
   const foundResult = networks.filter((network) =>
-    network[type]?.startsWith(label),
+    network[type]?.toLowerCase().startsWith(label.toLowerCase()),
   );
 
   return foundResult.length > 0 ? `${label}-${foundResult.length}` : label;
@@ -25,6 +25,10 @@ export const defaultNamingOfNetwork = (
     ...network,
     networkId: body.networkInfo?.networkId ?? '',
     label: createTypeName('label', body.networkInfo?.networkId ?? '', networks),
-    slug: createTypeName('slug', body.networkInfo?.networkId ?? '', networks),
+    slug: createTypeName(
+      'slug',
+      body.networkInfo?.networkId ?? '',
+      networks,
+    ).toLowerCase(),
   };
 };
