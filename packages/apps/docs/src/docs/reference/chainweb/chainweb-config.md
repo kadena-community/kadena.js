@@ -1,7 +1,7 @@
 ---
 title: Configuration endpoint
 description:
-  Provides reference information for the chainweb-node config endpoints.
+  Provides reference information for the chainweb-node config endpoint.
 menu: Chainweb API
 label: Config endpoint
 order: 2
