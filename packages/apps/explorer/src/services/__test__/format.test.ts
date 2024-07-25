@@ -1,5 +1,5 @@
-import { truncateValues } from '@/services/format';
 import { describe, expect, it } from 'vitest';
+import { truncateValues } from '../format';
 
 describe('truncateValues', () => {
   describe('truncates', () => {

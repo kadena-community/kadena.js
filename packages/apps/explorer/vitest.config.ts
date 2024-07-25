@@ -1,27 +1,34 @@
 import baseConfig from '@kadena-dev/shared-config/vitest.config';
-import path from 'path';
+import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
 import { defineConfig, mergeConfig } from 'vitest/config';
 
-const localConfig = defineConfig({
-  test: {
-    include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
-    exclude: ['src/**/*.int.test.ts'],
-    coverage: {
-      exclude: [],
-      provider: 'v8',
-      thresholds: {
-        lines: 0,
-        functions: 0,
-        branches: 0,
-        statements: 0,
+export default mergeConfig(
+  baseConfig,
+  defineConfig({
+    plugins: [vanillaExtractPlugin({ emitCssInSsr: true })],
+    test: {
+      globals: true,
+      globalSetup: './vitest-globals.ts',
+      setupFiles: ['vitest.setup.ts'],
+      environment: 'happy-dom',
+      coverage: {
+        provider: 'v8',
+        thresholds: {
+          lines: 64.96,
+          functions: 60.36,
+          branches: 85.45,
+          statements: 64.96,
+        },
+        exclude: [
+          'src/**/*.tsx',
+          'src/**/*.d.ts',
+          'src/**/__fixtures__/**/*.ts',
+          'src/components/**/index.ts',
+          'src/**/*.css.ts',
+          'src/**/*.md',
+          'src/**/*.mdx',
+        ],
       },
     },
-  },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
-  },
-});
-
-export default mergeConfig(baseConfig, localConfig);
+  }),
+);
