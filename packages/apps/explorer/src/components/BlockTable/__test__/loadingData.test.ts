@@ -5,8 +5,7 @@ describe('loading data', () => {
   describe('loadingDataAccountTransactionsquery', () => {
     it('should return the correct type', () => {
       expectTypeOf(blockDataLoading).toBeObject();
-
-      expectTypeOf(blockDataLoading).toMatchTypeOf<IChainBlock>();
+      assertType<IChainBlock>(blockDataLoading);
     });
   });
 });
