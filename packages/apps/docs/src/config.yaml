@@ -516,9 +516,36 @@ pages:
           cut:
             url: /cut
             file: /reference/chainweb/chainweb-cut.md
+          payload:
+            url: /payload
+            file: /reference/chainweb/chainweb-payload.md
+          mempool:
+            url: /mempool
+            file: /reference/chainweb/chainweb-mempool.md
+          peer:
+            url: /peer
+            file: /reference/chainweb/chainweb-peer.md
+          config:
+            url: /config
+            file: /reference/chainweb/chainweb-config.md
+          block:
+            url: /service-block
+            file: /reference/chainweb/chainweb-service-block.md
           blockhash:
             url: /blockhash
             file: /reference/chainweb/chainweb-blockhash.md
+          blockheader:
+            url: /blockheader
+            file: /reference/chainweb/chainweb-blockheader.md
+          mining:
+            url: /mining
+            file: /reference/chainweb/chainweb-service-mining.md
+          rosetta:
+            url: /rosetta
+            file: /reference/chainweb/chainweb-service-rosetta.md
+          misc:
+            url: /misc
+            file: /reference/chainweb/chainweb-service-misc.md
           datamodels:
             url: /data-models
             file: /reference/chainweb/chainweb-data-models.md
