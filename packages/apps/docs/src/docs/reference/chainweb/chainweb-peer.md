@@ -28,13 +28,13 @@ Use GET https://{baseURL}/cut/peer to query peer node information for a specific
 
 ### Responses
 
-Requests to `GET https://{baseURL}/cut/peer` can return the following response codes:
+Requests to `GET https://{baseURL}/cut/peer` return the following response code:
 
 - **200 OK** indicates that the request succeeded. The response body desribes the peers from the peer database on the remote node.
 
 #### Response headers
 
-The response header parameters are the same for successful and unsuccessful requests.
+The response header parameters are the same for all successful and unsuccessful Chainweb node requests.
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
@@ -131,18 +131,13 @@ Use the following parameters to specify the peer information you want to add to 
 
 ### Responses
 
-Requests to `PUT https://{baseURL}/cut/peer` can return the following response codes:
+Requests to `PUT https://{baseURL}/cut/peer` return the following response codes:
 
 - **204 No Content** indicates that the request was successful and the peer was added to the peer database of the remote node.
 - **400 Bad Request** indicates that the request itself is invalid or that the hostname and port provided for the peer is not reachable. Before a Chainweb node adds a peer to its peer database, the node checks whether the peer can be reached using the information provided. If this check fails, an error is returned.
 
-Request samples
-Payload
-Content type
-application/json
+### Examples
 
-Copy
-Expand allCollapse all
 {
 "address": {
 "hostname": "85.238.99.91",
@@ -160,27 +155,23 @@ Invalid hostaddress: IsNotReachable (PeerInfo {_peerId = Nothing, _peerAddr = Ho
 
 ## Get mempool network peer information
 
-GET
-/chain/{chain}/mempool/peer
+Use `GET https://{baseURL}/chain/{chain}/mempool/peer`
 
 
-PATH PARAMETERS
-chain
-required
-integer >= 0
-Example: 0
-the id of the chain to which the request is sent
+### Path parameters
 
-QUERY PARAMETERS
-limit	
-integer >= 0
-Maximum number of records that may be returned. The actual number may be lower.
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| chain (required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block hashes for the first chain (0), the request is `GET https://{baseURL}/chain/0/mempool/peer`.
 
-next	
-string
-The cursor for the next page. This value can be found as value of the next property of the previous page.
+### Query parameters
 
-Responses
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the value you specify. For example: `limit=3`.
+| next | string | Specifies the cursor value to retrieve the next page of results. You can find the value to specify in the `next` property returned by the previous page in a successful response. For example: `"inclusive:qgsxD1G5m8dGZ4W9nMKBotU2I10ilURkRIE3_UKHlLM"`.
+
+### Responses
 200 Peer information
 RESPONSE HEADERS
 x-peer-addr	
