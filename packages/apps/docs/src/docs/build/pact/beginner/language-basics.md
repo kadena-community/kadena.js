@@ -614,7 +614,7 @@ To add simple calculator functions:
 
 In this tutorial, you learned some of the basics for using the Pact programming language with an introduction to Pact syntax and built-in functions. 
 You also wrote a few simple functions of your own.
-To learn more about the Pact programming language and built-in functions, see the followin topics:
+To learn more about the Pact programming language and built-in functions, see the following topics:
 
 - [Pact syntax](https://docs.kadena.io/reference/syntax)
 - [Pact functions](https://docs.kadena.io/reference/functions)
