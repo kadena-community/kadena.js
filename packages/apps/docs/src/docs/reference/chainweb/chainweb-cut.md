@@ -174,7 +174,7 @@ You can send a request to publish a cut on a node with a call to the `/cut` endp
 PUT https://sfchainweb.example.com/chainweb/0.0/testnet04/cut`
 ```
 
-The request body for contains parameters similar to the following:
+The request body for publishing a cut contains parameters similar to the following:
 
 ```json
 {

@@ -19,14 +19,14 @@ You can also send requests to query the transaction outputs along with the paylo
 
 ## Get block payload
 
-Use `GET https://{baseURL}/chain/{chain}/payload/{payloadHash}` to get the payload data.
+Use `GET https://{baseURL}/chain/{chain}/payload/{payloadHash}` to get the raw payload data for the specified payload hash.
 
 ### Path parameters
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
 | chain (required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the payload request to. Valid values are 0 to 19. For example, to get block payload for the first chain (0), the request is `GET https://{baseURL}/chain/0/payload`.
-| payloadHash (required) | string | Specifies the payload hash for the request. The block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set. For example: `GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA`.
+| payloadHash (required) | string | Specifies the payload hash for the request. The block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set. For example: `GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA`.
 
 ### Query parameters
 
@@ -38,7 +38,7 @@ Use `GET https://{baseURL}/chain/{chain}/payload/{payloadHash}` to get the paylo
 
 Requests to `GET https://{baseURL}/chain/{chain}/payload/{payloadhash}` return the following response codes:
 
-- **200 OK** indicates that the request succeeded and returns the payload data for the specified payload hash. 
+- **200 OK** indicates that the request succeeded and the response body returns the payload data for the specified payload hash. 
 - **404 Not Found** indicates that the payload hash wasn't found.
 
 #### Response header
@@ -58,10 +58,10 @@ If the request is successful, the response returns `application/json` content wi
 | Parameter | Type | Description
 | --------- | ---- | -----------
 | transactions (required) | Array of strings | An array of Base64Url-encoded strings—without padding—that describe signed Pact transactions in JSON format.
-| minerData (required) | string | Miner information is a Base64Url-encoded string—without padding—that consists of characters from the [a-zA-Z0-9_-] character set.This information is included as part of the payload JSON object.
-| transactionsHash (required) | string | The transaction hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
-| outputsHash (required) | string | The output hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
-| payloadHash (required) | string | The block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
+| minerData (required) | string | Miner information is a Base64Url-encoded string—without padding—that consists of characters from the `a-zA-Z0-9_-` character set. This information is included as part of the payload JSON object.
+| transactionsHash (required) | string | The transaction hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set.
+| outputsHash (required) | string | The output hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set.
+| payloadHash (required) | string | The block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set.
 
 #### Not found response schema
 
@@ -69,7 +69,7 @@ If there are no results matching the request criteria, the response returns the 
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| key | string | Specifies the base64Url-encoded block hash without padding. The block hash consists of 43 characters from the [`a-zA-Z0-9_-`] character set. |
+| key | string | Specifies the base64Url-encoded block hash without padding. The block hash consists of 43 characters from the `a-zA-Z0-9_-` character set. |
 | reason | string | Provides a placeholder for specifying the reason that no block hashes were found. |
 
 ### Examples
@@ -106,7 +106,7 @@ In this example, the payload data includes three transactions:
 }
 ```
 
-In the following example, the payload hash doesn't include any transaction:
+In the following example, the payload hash doesn't include any transactions:
 
 ```Postman
 GET https://us1.testnet.chainweb.com/chainweb/0.0/testnet04/chain/18/payload/PB4yVhQo7vosXUH9Pik2z_OyJzn_fH0ChH-WOygOKuw
@@ -134,7 +134,7 @@ For example:
 }
 ```
 
-## Get batch of block payload
+## Request multiple block payloads
 
 Use `POST https://{baseURL}/chain/{chain}/payload/batch` to request multiple block payloads in a batch.
 
@@ -150,7 +150,7 @@ Use an array of payload hash strings and an array of block heights in a JSON obj
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| hashes | Array of strings | Specifies the block payload hashes to include in the query request. Each block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set. For example: `GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA`.
+| hashes | Array of strings | Specifies the block payload hashes to include in the query request. Each block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set. For example: `GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA`.
 | heights | Array of integers | Specifies the block heights to include in the request.
 
 ### Responses
@@ -177,10 +177,10 @@ If the request is successful, the response returns `application/json` content wi
 | Parameter | Type | Description
 | --------- | ---- | -----------
 | transactions (required) | Array of strings | An array of Base64Url-encoded strings—without padding—that describe signed Pact transactions in JSON format.
-| minerData (required) | string | Miner information is a Base64Url-encoded string—without padding—that consists of characters from the [a-zA-Z0-9_-] character set.This information is included as part of the payload JSON object.
-| transactionsHash (required) | string | The transaction hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
-| outputsHash (required) | string | The output hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
-| payloadHash (required) | string | The block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
+| minerData (required) | string | Miner information is a Base64Url-encoded string—without padding—that consists of characters from the `a-zA-Z0-9_-` character set.This information is included as part of the payload JSON object.
+| transactionsHash (required) | string | The transaction hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set.
+| outputsHash (required) | string | The output hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set.
+| payloadHash (required) | string | The block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set.
 
 ### Examples
 
@@ -235,7 +235,7 @@ Use `GET https://{baseURL}/chain/{chain}/payload/{payloadHash}/outputs` to get p
 | Parameter | Type | Description
 | --------- | ---- | -----------
 | chain (required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the payload request to. Valid values are 0 to 19. For example, to get block payload for the first chain (0), the request is `GET https://{baseURL}/chain/0/payload/{payloadHash}/outputs`.
-| payloadHash (required) | string | The block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set. For example: `GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA`.
+| payloadHash (required) | string | The block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set. For example: `GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA`.
 
 ### Query parameters
 
@@ -267,11 +267,11 @@ If the request is successful, the response returns `application/json` content wi
 | Parameter | Type | Description
 | --------- | ---- | -----------
 | transactions (required) | Array of strings | An array of Base64Url-encoded strings—without padding—that describe signed Pact transactions in JSON format.
-| minerData (required) | string | Miner information is a Base64Url-encoded string—without padding—that consists of characters from the [a-zA-Z0-9_-] character set.This information is included as part of the payload JSON object.
-| transactionsHash (required) | string | The transaction hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
-| outputsHash (required) | string | The output hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
-| payloadHash (required) | string | The block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
-| coinbase (required) | string | Coinbase output is a Base64Url-encoded string—without padding—that consists of characters from the [a-zA-Z0-9_-] character set. This information is included as part of the payload output JSON object.
+| minerData (required) | string | Miner information is a Base64Url-encoded string—without padding—that consists of characters from the `a-zA-Z0-9_-` character set.This information is included as part of the payload JSON object.
+| transactionsHash (required) | string | The transaction hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set.
+| outputsHash (required) | string | The output hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set.
+| payloadHash (required) | string | The block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set.
+| coinbase (required) | string | Coinbase output is a Base64Url-encoded string—without padding—that consists of characters from the `a-zA-Z0-9_-` character set. This information is included as part of the payload output JSON object.
 
 #### Not found response schema
 
@@ -279,7 +279,7 @@ If there are no results matching the request criteria, the response returns the 
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| key | string | Specifies the base64Url-encoded block hash without padding. The block hash consists of 43 characters from the [`a-zA-Z0-9_-`] character set. |
+| key | string | Specifies the base64Url-encoded block hash without padding. The block hash consists of 43 characters from the `a-zA-Z0-9_-` character set. |
 | reason | string | Provides a placeholder for specifying the reason that no block hashes were found. |
 
 ### Examples
@@ -318,7 +318,7 @@ For example:
 }
 ```
 
-## Get batch of block payload with outputs
+## Request multiple block payloads with outputs
 
 Use `POST https://{baseURL}/chain/{chain}/payload/outputs/batch` to request multiple block payloads with output in a batch.
 
@@ -334,12 +334,12 @@ Use an array of payload hash strings in a JSON object to specify the payloads yo
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| hashes (required) | Array of strings | Each block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set. For example: `GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA`.
+| hashes (required) | Array of strings | Each block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set. For example: `GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA`.
 | heights (required) | Array of integers | Specifies the block heights to include in the request.
 
 ### Responses
 
-Requests to `https://{baseURL}/chain/{chain}/payload/outputs/batch` return the following response codes:
+Requests to `POST https://{baseURL}/chain/{chain}/payload/outputs/batch` return the following response codes:
 
 - **200 OK** indicates that the request succeeded and the response body includes some or all of the requested block payloads. The payloads are returned in any order.
 - **404 Not Found** indicates that no payloads mateching the request criteris were found.
@@ -361,11 +361,11 @@ If the request is successful, the response returns `application/json` content wi
 | Parameter | Type | Description
 | --------- | ---- | -----------
 | transactions (required) | Array of strings | An array of Base64Url-encoded strings—without padding—that describe signed Pact transactions in JSON format.
-| minerData (required) | string | Miner information is a Base64Url-encoded string—without padding—that consists of characters from the [a-zA-Z0-9_-] character set.This information is included as part of the payload JSON object.
-| transactionsHash (required) | string | The transaction hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
-| outputsHash (required) | string | The output hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
-| payloadHash (required) | string | The block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
-| coinbase (required) | string | Coinbase output is a Base64Url-encoded string—without padding—that consists of characters from the [a-zA-Z0-9_-] character set. This information is included as part of the payload output JSON object.
+| minerData (required) | string | Miner information is a Base64Url-encoded string—without padding—that consists of characters from the `a-zA-Z0-9_-` character set.This information is included as part of the payload JSON object.
+| transactionsHash (required) | string | The transaction hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set.
+| outputsHash (required) | string | The output hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set.
+| payloadHash (required) | string | The block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set.
+| coinbase (required) | string | Coinbase output is a Base64Url-encoded string—without padding—that consists of characters from the `a-zA-Z0-9_-` character set. This information is included as part of the payload output JSON object.
 
 ### Examples
 
