@@ -12,6 +12,18 @@ export interface IValidateAnchorLinksResult {
   invalidInternalAnchors: string[];
 }
 
+//for some reason the function markdownLinkExtractor returns dirty hashes.
+//sometimes with a '-', sometimes with a '-NUMBER' at the end.
+//remove those
+export const cleanAnchors =
+  (link: string) =>
+  (anchors: string[]): string[] => {
+    const reg = new RegExp(/-\d*$/);
+
+    if (link.match(reg)) return anchors;
+    return anchors.map((line) => line.replace(/-\d*$/, ''));
+  };
+
 function validateAnchorLinks(
   filePath: string,
   basePath: string,
@@ -35,6 +47,7 @@ function validateAnchorLinks(
     if (!match) return false;
 
     const cleanHashedUrl: string = getCleanedHash(link);
+
     const [linkPath, hash]: string[] = cleanHashedUrl.split('#');
 
     const internalLinkFilePath: string = path.join(basePath, `${linkPath}.md`);
@@ -56,7 +69,10 @@ function validateAnchorLinks(
     const { anchors = [] }: { anchors: string[] } =
       markdownLinkExtractor(internalContent, true) || {};
 
-    return !anchors.includes(`#${hash}`);
+    return (
+      !cleanAnchors(hash)(anchors).includes(`#${hash}`) &&
+      !anchors.includes(`#${hash}-`)
+    );
   });
 
   const invalidInternalAnchors: string[] = anchorLinks.filter(
