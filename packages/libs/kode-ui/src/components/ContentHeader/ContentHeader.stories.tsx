@@ -53,3 +53,17 @@ export const Primary: Story = {
     );
   },
 };
+
+export const DescriptionComponent: Story = {
+  name: 'ContentHeader with Description Component',
+  args: {
+    icon: <MonoCAccount />,
+    heading: 'Incoming Transactions',
+    description: <span>Description with <strong>styled</strong> content.</span>,
+  },
+  render: ({ icon, heading, description }) => {
+    return (
+      <ContentHeader heading={heading} icon={icon} description={description} />
+    );
+  },
+};

@@ -7,7 +7,7 @@ import { containerClass, descriptionClass } from './ContentHeader.css';
 export interface IContentHeaderProps {
   icon: ReactElement;
   heading: string;
-  description?: string;
+  description?: string | ReactElement;
 }
 
 export const ContentHeader: FC<IContentHeaderProps> = ({
@@ -19,11 +19,13 @@ export const ContentHeader: FC<IContentHeaderProps> = ({
     <div className={containerClass}>
       {icon}
       <Heading as="h4">{heading}</Heading>
-      {description ? (
+      {description && (
         <div className={descriptionClass}>
+          {typeof description === 'string' ? (
           <Text as="p">{description}</Text>
+          ) : description}
         </div>
-      ) : null}
+      )}
     </div>
   );
 };
