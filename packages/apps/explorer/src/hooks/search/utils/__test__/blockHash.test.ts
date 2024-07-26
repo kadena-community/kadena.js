@@ -59,11 +59,8 @@ describe('useEvent', () => {
     mocks.useQuery.mockReturnValue({
       error: 'test',
     });
-    const { result } = renderHook(() =>
-      useBlockHash('123', SearchOptionEnum.BLOCKHASH),
-    );
+    renderHook(() => useBlockHash('123', SearchOptionEnum.BLOCKHASH));
 
-    console.log(result.current);
     expect(mocks.addToast).toBeCalledTimes(1);
     expect(mocks.addToast).toBeCalledWith({
       body: 'Loading of block data failed',

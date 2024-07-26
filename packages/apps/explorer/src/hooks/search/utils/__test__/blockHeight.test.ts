@@ -59,11 +59,8 @@ describe('useEvent', () => {
     mocks.useQuery.mockReturnValue({
       error: 'test',
     });
-    const { result } = renderHook(() =>
-      useBlockHeight('123', SearchOptionEnum.BLOCKHEIGHT),
-    );
+    renderHook(() => useBlockHeight('123', SearchOptionEnum.BLOCKHEIGHT));
 
-    console.log(result.current);
     expect(mocks.addToast).toBeCalledTimes(1);
     expect(mocks.addToast).toBeCalledWith({
       body: 'Loading of blocks data from height failed',

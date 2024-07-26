@@ -57,11 +57,8 @@ describe('useEvent', () => {
     mocks.useQuery.mockReturnValue({
       error: 'test',
     });
-    const { result } = renderHook(() =>
-      useEvent('coin.TRANSFER', SearchOptionEnum.EVENT),
-    );
+    renderHook(() => useEvent('coin.TRANSFER', SearchOptionEnum.EVENT));
 
-    console.log(result.current);
     expect(mocks.addToast).toBeCalledTimes(1);
     expect(mocks.addToast).toBeCalledWith({
       body: 'Loading of events failed',

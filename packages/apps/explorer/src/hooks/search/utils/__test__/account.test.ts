@@ -63,7 +63,6 @@ describe('useEvent', () => {
       useAccount('123', SearchOptionEnum.ACCOUNT),
     );
 
-    console.log(result.current);
     expect(mocks.addToast).toBeCalledTimes(1);
     expect(mocks.addToast).toBeCalledWith({
       body: 'Loading of account data failed',

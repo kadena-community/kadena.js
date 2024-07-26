@@ -59,11 +59,8 @@ describe('useEvent', () => {
     mocks.useQuery.mockReturnValue({
       error: 'test',
     });
-    const { result } = renderHook(() =>
-      useRequestKey('123', SearchOptionEnum.REQUESTKEY),
-    );
+    renderHook(() => useRequestKey('123', SearchOptionEnum.REQUESTKEY));
 
-    console.log(result.current);
     expect(mocks.addToast).toBeCalledTimes(1);
     expect(mocks.addToast).toBeCalledWith({
       body: 'Loading of requestKey data failed',
