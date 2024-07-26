@@ -31,7 +31,7 @@
     "@kadena/kode-icons": "workspace:*",
     "@kadena/kode-ui": "workspace:*",
     "@kadena/pactjs": "workspace:*",
-    "@kadena/spirekey-sdk": "0.0.1-dev-10",
+    "@kadena/spirekey-sdk": "0.0.1-dev-11",
     "@pinata/sdk": "^2.1.0",
     "@vanilla-extract/css": "1.14.2",
     "@vanilla-extract/recipes": "0.5.1",
