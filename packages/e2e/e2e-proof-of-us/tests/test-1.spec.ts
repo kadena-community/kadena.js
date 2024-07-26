@@ -18,10 +18,10 @@ test('1 Initiator, 1 signers. all participants sign -> Should be able to mint th
 }) => {
   const webAuthNInitiator = new WebAuthNHelper();
   const webAuthNSigner1 = new WebAuthNHelper();
-  await webAuthNInitiator.enableWebAuthN(initiator, browser);
-  await webAuthNSigner1.enableWebAuthN(signer1, browser);
+
   await test.step('Create account in SpireKey and initiate a connection in Proof of Us.', async () => {
     await initiator.goto(TESTURL);
+    await webAuthNInitiator.enableWebAuthN(initiator, browser);
     // Initiator: Create a SpireKey account
     initiator.on('popup', async (popup) => {
       await popup.waitForLoadState();
@@ -38,8 +38,11 @@ test('1 Initiator, 1 signers. all participants sign -> Should be able to mint th
     expect(shareUrl).toBeDefined();
   });
   await test.step('Scan the QR code and create an account for all signers', async () => {
+    // await signer1.waitForLoadState();
+
     await Promise.all([
       signer1.on('popup', async (popup) => {
+        await popup.waitForTimeout(1000);
         await popup.waitForLoadState();
         await spireKey.createSpireKeyAccountFor(
           webAuthNSigner1,
@@ -49,10 +52,11 @@ test('1 Initiator, 1 signers. all participants sign -> Should be able to mint th
         );
       }),
     ]);
-
-    await Promise.all([signer1.goto(shareUrl)]);
-    await signer1.waitForLoadState();
   });
+
+  await signer1.goto(shareUrl);
+  await webAuthNSigner1.enableWebAuthN(signer1, browser);
+
   // await test.step('Disable Signing for Signer 3', async () => {
   //   await proofOfUs.disableSigningFor(initiator, 'signer4');
   // });
@@ -65,12 +69,13 @@ test('1 Initiator, 1 signers. all participants sign -> Should be able to mint th
       signer1.on('popup', async (popup) => {
         console.log(1111111);
         await popup.waitForLoadState();
+        await webAuthNSigner1.enableWebAuthN(popup);
         // console.log(666);
         // //  await expect(popup.locator('h2')).toHaveText('Permissions');
         // console.log(5555);
-        // await popup.getByRole('button', { name: 'Sign' }).click();
+        await popup.getByRole('button', { name: 'Sign' }).click();
 
-        await spireKey.signTransaction(webAuthNSigner1, popup);
+        // await spireKey.signTransaction(webAuthNSigner1, popup);
       }),
     ]);
 
