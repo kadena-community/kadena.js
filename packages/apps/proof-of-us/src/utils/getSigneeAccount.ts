@@ -8,6 +8,8 @@ export const getSigneeAccount = (
   const publicKey = account.devices[0].guard.keys[0];
   if (signer) return signer;
 
+  delete account.isReady;
+
   return {
     ...account,
     accountName: account.accountName,

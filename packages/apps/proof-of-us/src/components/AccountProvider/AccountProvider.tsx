@@ -61,7 +61,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
     initSpireKey({
       hostUrl: 'https://spirekey.kadena.io',
-      useRAccount: true,
     });
     setIsMounted(true);
   }, []);

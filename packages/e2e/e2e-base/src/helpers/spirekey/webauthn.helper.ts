@@ -4,6 +4,7 @@ export class WebAuthNHelper {
   public async enableWebAuthN(
     actor: Page,
   ): Promise<{ id: string; cdp: CDPSession }> {
+    console.log(99999999);
     const cdpSession = await actor.context().newCDPSession(actor);
     await cdpSession.send('WebAuthn.enable');
     const id = await cdpSession.send('WebAuthn.addVirtualAuthenticator', {
@@ -16,6 +17,7 @@ export class WebAuthNHelper {
         hasResidentKey: true,
       },
     });
+
     return {
       id: id.authenticatorId,
       cdp: cdpSession,
