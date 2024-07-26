@@ -27,6 +27,7 @@ export function addBlockData(
     | BlocksFromHeightQueryResult['data']
     | CompletedBlockHeightsQueryResult['data'],
 ): IChainBlock {
+  console.log({ existingData });
   const updatedData = { ...existingData };
 
   if (!newData) return updatedData;
