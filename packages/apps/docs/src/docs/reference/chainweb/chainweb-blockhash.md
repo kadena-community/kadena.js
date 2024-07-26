@@ -60,9 +60,9 @@ If the request is successful, the response returns `application/json` content wi
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| items (required) | Array of strings | Lists the block hashes matching the request criteria. Each block hash string consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
-| limit (required) | integer >= 0 | Specifies the maximum number of items to include in the page of results. This number can be smaller but never larger than the number of requested items.
-| next (required) | string or null | Returns a value that can be used to query the next page. You can use this value for the `next` parameter in a follow-up request. The format for this parameter consists of two parts. The first part of the string can be `inclusive`, `exclusive` or `null`. The second part is the value that calls the next page of results or `null` if there are no more results to query.
+| items&nbsp;(required) | Array of strings | Lists the block hashes matching the request criteria. Each block hash string consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
+| limit&nbsp;(required) | integer >= 0 | Specifies the maximum number of items to include in the page of results. This number can be smaller but never larger than the number of requested items.
+| next&nbsp;(required) | string or null | Returns a value that can be used to query the next page. You can use this value for the `next` parameter in a follow-up request. The format for this parameter consists of two parts. The first part of the string can be `inclusive`, `exclusive` or `null`. The second part is the value that calls the next page of results or `null` if there are no more results to query.
 
 ### Examples
 
@@ -167,7 +167,7 @@ The response header parameters are the same for all successful and unsuccessful 
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote Chainweb node. The host address can be a domain name or an IP address in IPv4 or IPv6 format. For example: `"10.36.1.3:42988"`.
+| x-peer-addr | string | Specifies the host address and port number of the client as observed by the remote Chainweb node. The host address can be a domain name or an IP address in IPv4 or IPv6 format. For example: `"10.36.1.3:42988"`.
 | x-server&#8209;timestamp | integer&nbsp;>=&nbsp;0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
 | x-chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
 
@@ -177,9 +177,9 @@ If the request is successful, the response returns application/json content with
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| items (required) | Array of strings | Returns an array of block hashes. Each block hash consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
-| limit (required) | integer >= 0 | Specifies the maximum number of items in the page. This number can be smaller but never larger than the number of requested items.
-| next (required) | string or null | Returns a value that can be used to query the next page. You can use this values for the `next` parameter in a follow-up request. The format for this parameter consists of two parts. The first part of the string can be `inclusive`, `exclusive` or null. The second part is the value that calls the next page of results or null if there are no more results to query.
+| items&nbsp;(required) | Array of strings | Returns an array of block hashes. Each block hash consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
+| limit&nbsp;(required) | integer >= 0 | Specifies the maximum number of items in the page. This number can be smaller but never larger than the number of requested items.
+| next&nbsp;(required) | string or null | Returns a value that can be used to query the next page. You can use this values for the `next` parameter in a follow-up request. The format for this parameter consists of two parts. The first part of the string can be `inclusive`, `exclusive` or null. The second part is the value that calls the next page of results or null if there are no more results to query.
 
 #### Not found response schema
 
@@ -202,7 +202,7 @@ The request body for this query is:
 
 ```json
 {
-    "lower" :["RClyuyZAacwvPpmLXKbTwrIRXWeUSjiNhJVP2esH8KM"],
+    "lower" : ["RClyuyZAacwvPpmLXKbTwrIRXWeUSjiNhJVP2esH8KM"],
     "upper" : ["QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"]
 }
 ```

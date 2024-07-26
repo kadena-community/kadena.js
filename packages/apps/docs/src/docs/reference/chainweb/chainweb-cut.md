@@ -44,7 +44,7 @@ The response header parameters are the same for all successful and unsuccessful 
 
 #### Response schema
 
-The response returns application/json content with the following information:
+The response returns `application/json` content with the following information:
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
