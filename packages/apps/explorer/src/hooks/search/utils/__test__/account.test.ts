@@ -59,9 +59,7 @@ describe('useEvent', () => {
     mocks.useQuery.mockReturnValue({
       error: 'test',
     });
-    const { result } = renderHook(() =>
-      useAccount('123', SearchOptionEnum.ACCOUNT),
-    );
+    renderHook(() => useAccount('123', SearchOptionEnum.ACCOUNT));
 
     expect(mocks.addToast).toBeCalledTimes(1);
     expect(mocks.addToast).toBeCalledWith({
