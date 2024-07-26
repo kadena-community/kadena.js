@@ -11,3 +11,5 @@ certificates
 # generated files
 src/__generated__
 !src/__generated__/.gitkeep
+.vercel
+.env*.local
