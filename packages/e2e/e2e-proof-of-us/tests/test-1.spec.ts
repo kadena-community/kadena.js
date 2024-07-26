@@ -14,16 +14,22 @@ const TESTURL = 'http://localhost:3000/';
 test('1 Initiator, 1 signers. all participants sign -> Should be able to mint the connection token @xs', async ({
   initiator,
   signer1,
+  browser,
 }) => {
-  const webAuthNHelper = new WebAuthNHelper();
-  await webAuthNHelper.enableWebAuthN(initiator);
-  await webAuthNHelper.enableWebAuthN(signer1);
+  const webAuthNInitiator = new WebAuthNHelper();
+  const webAuthNSigner1 = new WebAuthNHelper();
+  await webAuthNInitiator.enableWebAuthN(initiator, browser);
+  await webAuthNSigner1.enableWebAuthN(signer1, browser);
   await test.step('Create account in SpireKey and initiate a connection in Proof of Us.', async () => {
     await initiator.goto(TESTURL);
     // Initiator: Create a SpireKey account
     initiator.on('popup', async (popup) => {
       await popup.waitForLoadState();
-      await spireKey.createSpireKeyAccountFor(popup, 'initiator');
+      await spireKey.createSpireKeyAccountFor(
+        webAuthNInitiator,
+        popup,
+        'initiator',
+      );
     });
 
     await initiator.getByRole('button', { name: 'Login to mint' }).click();
@@ -35,7 +41,12 @@ test('1 Initiator, 1 signers. all participants sign -> Should be able to mint th
     await Promise.all([
       signer1.on('popup', async (popup) => {
         await popup.waitForLoadState();
-        await spireKey.createSpireKeyAccountFor(popup, 'signer1', true);
+        await spireKey.createSpireKeyAccountFor(
+          webAuthNSigner1,
+          popup,
+          'signer1',
+          true,
+        );
       }),
     ]);
 
@@ -54,12 +65,12 @@ test('1 Initiator, 1 signers. all participants sign -> Should be able to mint th
       signer1.on('popup', async (popup) => {
         console.log(1111111);
         await popup.waitForLoadState();
-        console.log(666);
-        //  await expect(popup.locator('h2')).toHaveText('Permissions');
-        console.log(5555);
-        await popup.getByRole('button', { name: 'Sign' }).click();
+        // console.log(666);
+        // //  await expect(popup.locator('h2')).toHaveText('Permissions');
+        // console.log(5555);
+        // await popup.getByRole('button', { name: 'Sign' }).click();
 
-        //await spireKey.signTransaction(popup);
+        await spireKey.signTransaction(webAuthNSigner1, popup);
       }),
     ]);
 

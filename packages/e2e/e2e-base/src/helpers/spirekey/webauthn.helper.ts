@@ -1,13 +1,23 @@
-import type { CDPSession, Page } from '@playwright/test';
+import type {
+  Browser,
+  BrowserContext,
+  CDPSession,
+  Page,
+} from '@playwright/test';
 
 export class WebAuthNHelper {
+  private context: BrowserContext;
   public async enableWebAuthN(
     actor: Page,
-  ): Promise<{ id: string; cdp: CDPSession }> {
-    console.log(99999999);
-    const cdpSession = await actor.context().newCDPSession(actor);
+    browser?: Browser,
+  ): Promise<CDPSession> {
+    if (!this.context) {
+      const contexts = await browser!.contexts();
+      this.context = await contexts[contexts.length - 1];
+    }
+    const cdpSession = await this.context.newCDPSession(actor);
     await cdpSession.send('WebAuthn.enable');
-    const id = await cdpSession.send('WebAuthn.addVirtualAuthenticator', {
+    await cdpSession.send('WebAuthn.addVirtualAuthenticator', {
       options: {
         protocol: 'ctap2',
         ctap2Version: 'ctap2_1',
@@ -18,9 +28,6 @@ export class WebAuthNHelper {
       },
     });
 
-    return {
-      id: id.authenticatorId,
-      cdp: cdpSession,
-    };
+    return cdpSession;
   }
 }

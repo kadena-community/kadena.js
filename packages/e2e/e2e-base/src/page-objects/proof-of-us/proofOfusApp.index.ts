@@ -47,7 +47,8 @@ export class ProofOfUsAppIndex {
   }
 
   public async signProofWith(actor: Page): Promise<void> {
-    await actor.waitForTimeout(1000);
+    await actor.waitForTimeout(2000);
+    console.log('WTF');
     await actor.getByRole('button', { name: 'SIGN' }).first().click();
   }
 
