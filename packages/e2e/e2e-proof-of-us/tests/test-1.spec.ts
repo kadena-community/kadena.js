@@ -1,5 +1,4 @@
 import { test } from '@kadena-dev/e2e-base/src/fixtures/shared/test.fixture';
-import { WebAuthNHelper } from '@kadena-dev/e2e-base/src/helpers/spirekey/webauthn.helper';
 import { expect } from '@playwright/test';
 
 const proofTitle = 'Super Fancy Title';
@@ -8,7 +7,6 @@ let initiatorCredential: object;
 let signerCredential: object;
 
 const TESTURL = 'https://spirekey-proof-of-us.vercel.app/';
-const webAuthNHelper = new WebAuthNHelper();
 
 test('1 Initiator, 1 signers. all participants sign -> Should be able to mint the connection token @xs', async ({
   initiator,
