@@ -11,163 +11,179 @@ tags: ['chainweb', 'node api', 'chainweb api', 'api reference']
 
 # Mining endpoints
 
-Mining Endpoints
-The Mining API of Chainweb node is disabled by default. It can be enabled and configured in the configuration file.
+The Chainweb node mining API is disabled by default. 
+You must enable and configure the mining API in the node configuration file before you can use any of the mining endpoints.
 
-The mining API consists of the following endpoints that are described in detail on the Chainweb mining wiki page
+## Get mining work
 
-GET mining/work
-POST mining/solved
-GET mining/updates
-Get Mining Work
+Use `GET https://{baseURL}/mining/work` to request a new block header to work on.
 
-GET
-/mining/work
+### Request body schema
 
-A new BlockHeader to mine on
+Use the following parameters to specify the miner information.
 
-REQUEST BODY SCHEMA: application/json
-Miner Info
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| account	| string | Specifies the miner account name. Usually this is the same as the public key.
+| predicate	| key predicate | Specifies the number of keys required from the enumerated values of the "keys-all", "keys-any", and "keys-2"
+key predicate options. For accounts with a single key, the predicate is usually "keys-all".
+| public-keys	| Array of strings | Lists one or more miner public keys.
 
-account	
-string (Account Name)
-Miner account name. Usually this is the same as the public key.
+### Responses
 
-predicate	
-any (Key Predicate)
-Enum: "keys-all" "keys-any"
-key predicate. For a single key this is usually keys-all.
+Requests to `GET https://{baseURL}/minig/work` return the following response codes:
 
-public-keys	
-Array of strings (Miner Public Key)
-Responses
-200 A mining work item
-RESPONSE HEADERS
-x-peer-addr	
-string (Host Address) ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$
-Example: "10.36.1.3:42988"
-Host and port of the client as observed by the remote node
+- **200 OK** indicates that the request was successful and the response is an encoded stream of data.
 
-x-server-timestamp	
-integer (POSIX Timestamp) >= 0
-Example: 1618597601
-The time of the clock of the remote node
+#### Response header
 
-x-chainweb-node-version	
-string
-Example: "2.6"
-The version of the remote chainweb node
+The response header parameters are the same for all successful and unsuccessful Chainweb node requests.
 
-RESPONSE SCHEMA: application/octet-stream
-chainBytes	
-string <binary> (4 Chain ID Bytes)
-The chain selection made by the Node. This is informational. Generally, miner should not care about the chain.
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| x-peer-addr | string | Specifies the host address and port number of the client as observed by the remote Chainweb node. The host address can be a domain name or an IP address in IPv4 or IPv6 format. For example: `"10.36.1.3:42988"`.
+| x-server&#8209;timestamp | integer&nbsp;>=&nbsp;0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
+| x&#8209;chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
 
-targetBytes	
-string <binary> (32 PoW Target Bytes)
-The PoW target for the current block. The PoW hash of a valid block must not be larger than this value.
+#### Successful response schema
 
-For arithmetic comparisons the hash-target and the PoW hash are interpreted as unsigned 256 bit integral number in little endian encoding.
+If the request is successful, the response returns `application/octet-stream` content with the following:
 
-headerBytes	
-string <binary> (286 Work Header Bytes)
-PoW Work Header Bytes. The last 8 bytes are the nonce. The creation time is encoded in bytes 44-52. Miners must not change or make any assumption about the other bytes.
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| chainBytes | string binary | Identifies the chain selected by the node with four chain identifier bytes. This is informational. Generally, miners shouldn't care about the chain.
+| targetBytes	| string binary | Specifies the proof-of-work target for the current block in 32 proof-of-work target bytes. The proof-of-work hash of a valid block must not be larger than this value. For arithmetic comparisons, the hash-target and the proof-of-work hash are interpreted as unsigned 256-bit integral number in little endian encoding.
+| headerBytes	| string binary | Specifies the proof-of-work in 286 work header bytes. The last 8 bytes are the nonce. The creation time is encoded in bytes 44-52. Miners must not change or make any assumption about the other bytes. The creation time is encoded as little endian two complement integral number that counts SI microseconds since the start of the UNIX epoch (leap seconds are ignored). It always positive (highest bit is 0). Miners are free but not required to update the creation time. The value must be strictly larger than the creation time of the parent block and must not be in the future.
 
-The creation time is encoded as little endian twoth complement integral number that counts SI microseconds since POSIX epoch (leap seconds are ignored). It always positive (highest bit is 0). Miners are free but not required to update the creation time. The value must be strictly larger than the creation time of the parent block and must not be in the future.
+### Examples
 
-Request samples
-Payload
-Content type
-application/json
+If you have enabled mining, you can send a request for work like this:
 
-Copy
-Expand allCollapse all
+```Postman
+GET https://us-e1.chainweb.com/chainweb/0.0/mainnet01/mining/work
+```
+
+The request body should contain parameters similar to the following:
+
+```json
 {
-"account": "miner",
-"predicate": "keys-all",
-"public-keys": [
-"f880a433d6e2a13a32b6169030f56245efdd8c1b8a5027e9ce98a88e886bef27"
-]
+    "account": "miner",
+    "predicate": "keys-all",
+    "public-keys": [
+        "f880a433d6e2a13a32b6169030f56245efdd8c1b8a5027e9ce98a88e886bef27"
+    ]
 }
-Solved Mining Work
+```
 
-POST
-/chainweb/0.0/mainnet01/mining/solved
+If the request is successful, the response is an octet stream with:
 
-Submit a solution for a new block
+Work bytes - (ChainBytes4 + TargetBytes32 + HeaderBytes286)
 
-REQUEST BODY SCHEMA: application/octet-stream
-The solved PoW work header bytes
+This is the minimum information required to perform proof-of-work validation. 
+No knowledge of Chainweb internals is necessary.
+For information about the encoding of work bytes, see [Binary encoding](/reference/chainweb-api/binary-encoding#work-header-binary-encodingh861308059).
 
-string <binary> (286 Solved PoW Work Header Bytes)
-The original work received that was received from /mining/work with updated nonce value such that it satisfies the Proof-of-Work. The nonce are last 8 bytes of the work header bytes.
+## Solved mining work
 
-The PoW hash of a valid block is computed using blake2s. It must not be larger than the PoW target for the current block. The target was received along with the work header bytes from the /mining/work endpoint. For arithmetic comparisons the hash-target and the PoW hash are interpreted as unsigned 256 bit integral number in little endian encoding.
+Use `POST https://{basseURL}/mining/solved` to submit a solution for a new block.
 
-Miners are free but not required to also update the creation time. The value must be strictly larger than the creation time of the parent block and must not be in the future.
+### Request body schema
 
-Responses
-204 Solved mining work is valid
-RESPONSE HEADERS
-x-peer-addr	
-string (Host Address) ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$
-Example: "10.36.1.3:42988"
-Host and port of the client as observed by the remote node
+The request body should be `application/octet-stream` content with the solved proof-of-work work header bytes.
 
-x-server-timestamp	
-integer (POSIX Timestamp) >= 0
-Example: 1618597601
-The time of the clock of the remote node
+The solved proof-of-work binary string of 286 bytes should consist of the original work received from the `/mining/work` endpoint with updated nonce value such that it satisfies the proof-of-work puzzle. 
+The nonce is defined in the last 8 bytes of the work header bytes.
 
-x-chainweb-node-version	
-string
-Example: "2.6"
-The version of the remote chainweb node
+The proof-of-work hash of a valid block is computed using blake2s. 
+It must not be larger than the proof-of-work target for the current block. 
+The target was received along with the work header bytes from the `/mining/work` endpoint. 
+For arithmetic comparisons, the hash-target and the proof-of-work hash are interpreted as an unsigned 256-bit integral number in little endian encoding.
 
-Notification of Updated Work
+Miners can also update the creation time.
+However, the value must be strictly larger than the creation time of the parent block and must not be in the future.
 
-GET
-/mining/updates
+### Responses
 
-An server-sent event sources that notifies miners when new mining work becomes available.
+Requests to `POST https://{baseURL}/mining/solved` return the following response codes:
 
-The stream is terminated by the server in regular intervals and it is up to the client to request a new stream.
+- **204 No Content** indicates that the request was successful and the proof-of-work solution is valid.
 
-REQUEST BODY SCHEMA: application/octet-stream
-The first 4 bytes received from a call to /mining/work. This tells the Node to only inform the Miner of a new Cut when the specific chain in question has updated.
+#### Response header
 
-string <binary> (4 Chain ID bytes)
-Responses
-200 Each events consists of a single line: event:New Cut. Events are separated by empty lines.
-RESPONSE HEADERS
-x-peer-addr	
-string (Host Address) ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$
-Example: "10.36.1.3:42988"
-Host and port of the client as observed by the remote node
+The response header parameters are the same for all successful and unsuccessful Chainweb node requests.
 
-x-server-timestamp	
-integer (POSIX Timestamp) >= 0
-Example: 1618597601
-The time of the clock of the remote node
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| x-peer-addr | string | Specifies the host address and port number of the client as observed by the remote Chainweb node. The host address can be a domain name or an IP address in IPv4 or IPv6 format. For example: `"10.36.1.3:42988"`.
+| x-server&#8209;timestamp | integer&nbsp;>=&nbsp;0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
+| x&#8209;chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
 
-x-chainweb-node-version	
-string
-Example: "2.6"
-The version of the remote chainweb node
+### Examples
 
-RESPONSE SCHEMA: text/event-stream
-Array 
-event	
-string
-Value: "New Cut"
-Response samples
-200
-Content type
-text/event-stream
+If you have enabled mining, you can submit a proof-of-work solution like this:
 
-Copy
-event:New Cut
+```Postman
+POST https://us-e1.chainweb.com/chainweb/0.0/mainnet01/mining/solved
+```
 
-event:New Cut
+The request body should be 286 bytes from the original work received from the `/mining/work` endpoint with updated the nonce.
+If the request is successful, you'll see the **204 No Content** response returned.
 
-event:New Cut
+## Notification of updated work
+
+Use `GET https://{baseURL}/mining/updates` to receive notifications from a server when new mining work becomes available.
+
+This server-sent event stream is terminated by the server in regular intervals.
+It's the responsibility of the miner to periodically request a new stream.
+
+### Request body
+
+The request body should be `application/octet-stream` content with the first four bytes—the chain identifier bytes—received from a call to the `/mining/work` endpoint. 
+With this request body, Node only informs the miner of a new cut when the chain identified by the first four bytes has updated.
+
+### Responses
+
+Requests to `GET https://{baseURL}/mining/updates` return the following response code:
+
+- **200 OK** for each update event. 
+  Each event consists of a single line with the message **event:New Cut**. 
+  Events are separated by empty lines.
+
+#### Response header
+
+The response header parameters are the same for all successful and unsuccessful Chainweb node requests.
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| x-peer-addr | string | Specifies the host address and port number of the client as observed by the remote Chainweb node. The host address can be a domain name or an IP address in IPv4 or IPv6 format. For example: `"10.36.1.3:42988"`.
+| x-server&#8209;timestamp | integer&nbsp;>=&nbsp;0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
+| x&#8209;chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
+
+#### Successful response schema
+
+If the request is successful, the response returns `text/event-stream` content with the following:
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| event | string | Indicates a chain update with the message event:New Cut on a single line.
+
+### Examples
+
+If you have enabled mining, you can request notification for chain updates like this:
+
+```Postman
+GET https://us-e1.chainweb.com/chainweb/0.0/mainnet01/mining/updates
+```
+
+The request body should be `application/octet-stream` content with the first four chain identifier bytes from a work header. 
+
+The server-send events look like this:
+```text
+[
+  event:New Cut
+
+  event:New Cut
+
+  event:New Cut
+]
+```

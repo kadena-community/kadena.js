@@ -33,16 +33,16 @@ All block headers that match the query criteria are returned from the chain data
 
 | Parameter | Type | Description
 | :--------- | :---- | :-----------
-| chain (required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block headers for the first chain (0), the request is `GET http://{baseURL}/chain/0/header`.
+| chain&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block headers for the first chain (0), the request is `GET http://{baseURL}/chain/0/header`.
 
 ### Query parameters
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the limit you set. For example: `limit=3`.
+| limit | integer&nbsp;>=&nbsp;0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the limit you set. For example: `limit=3`.
 | next | string | Specifies the cursor to retrieve the next page of results. This value can be found as the value of the next property of the previous page. For example: `"inclusive:qgsxD1G5m8dGZ4W9nMKBotU2I10ilURkRIE3_UKHlLM"`.
-| minheight	| integer >= 0 | Specifies the minimum block height for the returned headers. For example: `minheight=4471908`.
-| maxheight | integer >= 0 | Specifies the maximum block height for the returned headers. For example: `maxheight=4953816`.
+| minheight	| integer&nbsp;>=&nbsp;0 | Specifies the minimum block height for the returned headers. For example: `minheight=4471908`.
+| maxheight | integer&nbsp;>=&nbsp;0 | Specifies the maximum block height for the returned headers. For example: `maxheight=4953816`.
 
 ### Responses
 
@@ -59,7 +59,7 @@ The response header parameters are the same for all successful and unsuccessful 
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote Chainweb node. The host address can be a domain name or an IP address in IPv4 or IPv6 format. For example: `"10.36.1.3:42988"`.
+| x-peer-addr | string | Specifies the host address and port number of the client as observed by the remote Chainweb node. The host address can be a domain name or an IP address in IPv4 or IPv6 format. For example: `"10.36.1.3:42988"`.
 | x-server&#8209;timestamp | integer&nbsp;>=&nbsp;0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
 | x&#8209;chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
 
@@ -69,9 +69,9 @@ The format of the information returned in the response depends on the content ty
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| items (required) | Array of block headers | Returns an array of block headers as base64Url-encoded strings (`application/json`), JSON-encoded objects (`application/json;blockheader-encoding=object`), or a binary data stream (`application/octet-stream`, if supported).
-| limit (required) | integer >= 0 | Specifies the number of items in the page. This number can be smaller but never be larger than the number of requested items.
-| next (required) | string or null | Returns a cursor that can be used in a follow up request to query the next page. It should be used literally as the value for the `next` parameter in the follow-up request. It can be specified as inclusive or exclusive.
+| items&nbsp;(required) | Array&nbsp;of&nbsp;block&nbsp;headers | Returns an array of block headers as base64Url-encoded strings (`application/json`), JSON-encoded objects (`application/json;blockheader-encoding=object`), or a binary data stream (`application/octet-stream`, if supported).
+| limit&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the number of items in the page. This number can be smaller but never be larger than the number of requested items.
+| next&nbsp;(required) | string&nbsp;or&nbsp;null | Returns a cursor that can be used in a follow up request to query the next page. It should be used literally as the value for the `next` parameter in the follow-up request. It can be specified as inclusive or exclusive.
 
 #### Not found response schema
 
@@ -79,7 +79,7 @@ If you specified `application/json` in the Accept header of the request and ther
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| key | string (Block Hash) | Specifies the base64Url-encoded block hash (without padding). The block hash consists of 43 characters from the `^[a-zA-Z0-9_-]{43}$` character set. |
+| key | string | Specifies the base64Url-encoded block hash (without padding). The block hash consists of 43 characters from the `^[a-zA-Z0-9_-]{43}$` character set. |
 | reason | string | Provides a placeholder for specifying the reason that no block headers were found. |
 
 ### Examples
@@ -156,8 +156,8 @@ Use `GET http://{baseURL}/chain/{chain}/header/{blockHash}` to get a block heade
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| chain (required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block headers for the first chain (0), the request is `GET http://{baseURL}/chain/0/header/{blockHash}`.
-| blockHash (required) | string | Specifies the block hash of a block. The block hash consists of 43 characters from the `^[a-zA-Z0-9_-]{43}$` character set. For example: `k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k`.
+| chain&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block headers for the first chain (0), the request is `GET http://{baseURL}/chain/0/header/{blockHash}`.
+| blockHash&nbsp;(required) | string | Specifies the block hash of a block. The block hash consists of 43 characters from the `^[a-zA-Z0-9_-]{43}$` character set. For example: `k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k`.
 
 ### Responses
 
@@ -173,7 +173,7 @@ The response header parameters are the same for all successful and unsuccessful 
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote Chainweb node. The host address can be a domain name or an IP address in IPv4 or IPv6 format. For example: `"10.36.1.3:42988"`.
+| x-peer-addr | string | Specifies the host address and port number of the client as observed by the remote Chainweb node. The host address can be a domain name or an IP address in IPv4 or IPv6 format. For example: `"10.36.1.3:42988"`.
 | x-server&#8209;timestamp | integer&nbsp;>=&nbsp;0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
 | x-chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
 
@@ -229,7 +229,7 @@ With the Accept header set to `application/json;blockheader-encoding=object`, th
 ```
 
 If you set the Accept header to `application/octet-stream` and the content type is supported, the request returns a binary representation of the block header.
-If the content type isn't support, the reguest fails with a 406 response code.
+If the content type isn't support, the reguest fails with a **406 Not Acceptable** response code.
 
 If there are no results matching the request criter, the response body indicates the reason no results matching the request criteria were found. 
 For example:
@@ -250,16 +250,16 @@ Only blocks that are ancestors of the same block in the set of upper bounds and 
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| chain (required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block headers for the first chain (0), the request is `POST http://{baseURL}/chain/0/header/branch`.
+| chain&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block headers for the first chain (0), the request is `POST http://{baseURL}/chain/0/header/branch`.
 
 ### Query parameters
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number of records might be lower. For example: `limit=3`.
+| limit | integer&nbsp;>=&nbsp;0 | Specifies the maximum number of records that should be returned. The actual number of records might be lower. For example: `limit=3`.
 | next | string | Specifies the cursor to retrieve the next page of results. This value can be found as the value of the next property of the previous page. For example: `"inclusive:qgsxD1G5m8dGZ4W9nMKBotU2I10ilURkRIE3_UKHlLM"`.
-| minheight	| integer >= 0 | Specifies the minimum block height for the returned headers. For example: `minheight=4471908`.
-| maxheight | integer >= 0 | Specifies the maximum block height for the returned headers. For example: `maxheight=4953816`.
+| minheight	| integer&nbsp;>=&nbsp;0 | Specifies the minimum block height for the returned headers. For example: `minheight=4471908`.
+| maxheight | integer&nbsp;>=&nbsp;0 | Specifies the maximum block height for the returned headers. For example: `maxheight=4953816`.
 
 ### Request schema
 
@@ -267,7 +267,7 @@ These parameters specify the upper and lower bounds for the queried branches.
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| lower	| Array of strings | Specifies the lower bound block header hash for the query. No block headers are returned that are predecessors of any block with a hash from this array. The block hash consists of 43 characters from the `^[a-zA-Z0-9_-]{43}$` character set. |
+| lower	| Array&nbsp;of&nbsp;strings | Specifies the lower bound block header hash for the query. No block headers are returned that are predecessors of any block with a hash from this array. The block hash consists of 43 characters from the `^[a-zA-Z0-9_-]{43}$` character set. |
 | upper | Array of strings | Specifies the upper bound block header for the query. All block hashes returned are predecessors of a block with a hash from this array. The block hash consists of 43 characters from the `^[a-zA-Z0-9_-]{43}$` character set. |
 
 The following examples illustrate the results to expect based on setting the lower and upper bound parameters. 
@@ -311,7 +311,7 @@ The response header parameters are the same for all successful and unsuccessful 
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote Chainweb node. The host address can be a domain name or an IP address in IPv4 or IPv6 format. For example: `"10.36.1.3:42988"`.
+| x-peer-addr | string | Specifies the host address and port number of the client as observed by the remote Chainweb node. The host address can be a domain name or an IP address in IPv4 or IPv6 format. For example: `"10.36.1.3:42988"`.
 | x-server&#8209;timestamp | integer&nbsp;>=&nbsp;0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
 | x-chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
 
@@ -321,8 +321,8 @@ The format of the information returned in the response depends on the content ty
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| items (required) | Array of block headers | Returns an array of block headers as base64Url-encoded strings (`application/json`), JSON-encoded objects (`application/json;blockheader-encoding=object`), or a binary data stream (`application/octet-stream`, if supported)
-| limit (required) | integer >= 0 | Specifies the number of items in the page. This number can be smaller but never be larger than the number of requested items.
+| items&nbsp;(required) | Array&nbsp;of&nbsp;block&nbsp;headers | Returns an array of block headers as base64Url-encoded strings (`application/json`), JSON-encoded objects (`application/json;blockheader-encoding=object`), or a binary data stream (`application/octet-stream`, if supported)
+| limit&nbsp;(required) | integer >= 0 | Specifies the number of items in the page. This number can be smaller but never be larger than the number of requested items.
 | next (required) | string or null | Returns a cursor that can be used in a follow up request to query the next page. It should be used literally as the value for the `next` parameter in the follow-up request. It can be specified as inclusive or exclusive.
 
 ### Examples
@@ -416,4 +416,4 @@ With the Accept header set to `application/json;blockheader-encoding=object`, th
 ```
 
 If you set the Accept header to `application/octet-stream` and the content type is supported, the request returns a binary representation of the block header.
-If the content type isn't support, the reguest fails with a 406 response code.
+If the content type isn't support, the reguest fails with a **406 Not Acceptable** response code.

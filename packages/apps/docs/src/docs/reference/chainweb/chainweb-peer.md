@@ -23,7 +23,7 @@ Use `GET https://{baseURL}/cut/peer` to retrieve peer node information about the
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the value you specify. For example: `limit=3`.
+| limit | integer&nbsp;>=&nbsp;0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the value you specify. For example: `limit=3`.
 | next | string | Specifies the cursor value to retrieve the next page of results. You can find the value to specify in the `next` property returned by the previous page in a successful response. For example: `"inclusive:qgsxD1G5m8dGZ4W9nMKBotU2I10ilURkRIE3_UKHlLM"`.
 
 ### Responses
@@ -38,7 +38,7 @@ The response header parameters are the same for all successful and unsuccessful 
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote Chainweb node. The host address can be a domain name or an IP address in IPv4 or IPv6 format. For example: `"10.36.1.3:42988"`.
+| x-peer-addr | string | Specifies the host address and port number of the client as observed by the remote Chainweb node. The host address can be a domain name or an IP address in IPv4 or IPv6 format. For example: `"10.36.1.3:42988"`.
 | x-server&#8209;timestamp | integer&nbsp;>=&nbsp;0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
 | x&#8209;chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
 
@@ -48,8 +48,8 @@ If the request is successful, the response returns `application/json` content wi
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| items&nbsp;(required) | Array of objects | Returns an array of peer information objects.
-| limit&nbsp;(required) | integer >= 0 | Specifies the maximum number of items in the page. This number can be smaller but never larger than the number of requested items.
+| items&nbsp;(required) | Array&nbsp;of&nbsp;objects | Returns an array of peer information objects.
+| limit&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the maximum number of items in the page. This number can be smaller but never larger than the number of requested items.
 | next&nbsp;(required) | string or null | Returns a value that can be used to query the next page. You can use this value for the `next` parameter in a follow-up request. The format for this parameter consists of two parts. The first part of the string can be `inclusive`, `exclusive`, or null. The second part is the value that calls the next page of results or null if there are no more results to query.
 
 ### Examples
@@ -126,7 +126,7 @@ Use the following parameters to specify the peer information you want to add to 
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| id&nbsp;(required) | string or null | Specifies the Base64Url-encoded string—without padding—that represents the SHA256 fingerprint of the SSL certificate for the remote node. This field can only be `null` if the node uses an official certificate authority (CA) signed certificate. In all other cases, the `id` string consists of 43 characters from the `a-zA-Z0-9_-` character set.
+| id&nbsp;(required) | string&nbsp;or&nbsp;null | Specifies the Base64Url-encoded string—without padding—that represents the SHA256 fingerprint of the SSL certificate for the remote node. This field can only be `null` if the node uses an official certificate authority (CA) signed certificate. In all other cases, the `id` string consists of 43 characters from the `a-zA-Z0-9_-` character set.
 | address&nbsp;(required) | object | Specifies the host and port number of the peer. 
 
 ### Responses
@@ -156,7 +156,7 @@ The request body for adding a peer contains parameters similar to the following:
 }
 ```
 
-If the request is successful, you'll see the 204 No Content response returned.
+If the request is successful, you'll see the **204 No Content** response returned.
 If the host name or IP address wasn't reachable, you'll see an error message similar to the following:
 
 ```text
@@ -171,13 +171,13 @@ Use `GET https://{baseURL}/chain/{chain}/mempool/peer` to retrieve peer informat
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| chain (required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block hashes for the first chain (0), the request is `GET https://{baseURL}/chain/0/mempool/peer`.
+| chain&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block hashes for the first chain (0), the request is `GET https://{baseURL}/chain/0/mempool/peer`.
 
 ### Query parameters
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the value you specify. For example: `limit=3`.
+| limit | integer&nbsp;>=&nbsp;0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the value you specify. For example: `limit=3`.
 | next | string | Specifies the cursor value to retrieve the next page of results. You can find the value to specify in the `next` property returned by the previous page in a successful response. For example: `"inclusive:qgsxD1G5m8dGZ4W9nMKBotU2I10ilURkRIE3_UKHlLM"`.
 
 ### Responses
@@ -202,8 +202,8 @@ If the request is successful, the response returns `application/json` content wi
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| items&nbsp;(required) | Array of objects | Returns an array of peer information objects.
-| limit&nbsp;(required) | integer >= 0 | Specifies the maximum number of items in the page. This number can be smaller but never larger than the number of requested items.
+| items&nbsp;(required) | Array&nbsp;of&nbsp;objects | Returns an array of peer information objects.
+| limit&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the maximum number of items in the page. This number can be smaller but never larger than the number of requested items.
 | next&nbsp;(required) | string or null | Returns a value that can be used to query the next page. You can use this value for the `next` parameter in a follow-up request. The format for this parameter consists of two parts. The first part of the string can be `inclusive`, `exclusive`, or null. The second part is the value that calls the next page of results or null if there are no more results to query.
 
 ### Examples
@@ -254,7 +254,7 @@ Use `PUT https://{baseURL}/chain/{chain}/mempool/peer` to add peer information t
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| chain (required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block hashes for the first chain (0), the request is `PUT https://{baseURL}/chain/0/mempool/peer`.
+| chain&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block hashes for the first chain (0), the request is `PUT https://{baseURL}/chain/0/mempool/peer`.
 
 ### Request body schema
 
@@ -262,7 +262,7 @@ Use the following parameters to specify the peer information you want to add to 
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| id&nbsp;(required) | string or null | Specifies the Base64Url-encoded string—without padding—that represents the SHA256 fingerprint of the SSL certificate for the remote node. This field can only be `null` if the node uses an official certificate authority (CA) signed certificate. In all other cases, the `id` string consists of 43 characters from the `a-zA-Z0-9_-` character set.
+| id&nbsp;(required) | string&nbsp;or&nbsp;null | Specifies the Base64Url-encoded string—without padding—that represents the SHA256 fingerprint of the SSL certificate for the remote node. This field can only be `null` if the node uses an official certificate authority (CA) signed certificate. In all other cases, the `id` string consists of 43 characters from the `a-zA-Z0-9_-` character set.
 | address&nbsp;(required) | object | Specifies the host and port number of the peer you want to add to the peer database of the memory pool peer-to-peer network for the specified chain.
 
 ### Responses
@@ -272,7 +272,7 @@ Requests to `PUT https://{baseURL}/chain/{chain}/mempool/peer` return the follow
 - **204 No Content** indicates that the request was successful and the peer was added to the peer database of the remote node.
 - **400 Bad Request** indicates that the request itself is invalid or that the hostname and port provided for the peer is not reachable. Before a Chainweb node adds a peer to its peer database, the node checks whether the peer can be reached using the information provided. If this check fails, an error is returned.
 
-### Response header
+#### Response header
 
 The response header parameters are the same for all successful and unsuccessful Chainweb node requests.
 

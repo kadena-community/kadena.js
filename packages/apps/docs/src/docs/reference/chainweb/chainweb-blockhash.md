@@ -25,16 +25,16 @@ Use `GET http://{baseURL}/chain/{chain}/hash` to get block hashes for the specif
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| chain (required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block hashes for the first chain (0), the request is `GET http://{baseURL}/chain/0/hash`.
+| chain&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block hashes for the first chain (0), the request is `GET http://{baseURL}/chain/0/hash`.
 
 ### Query parameters
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the value you specify. For example: `limit=3`.
+| limit | integer&nbsp;>=&nbsp;0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the value you specify. For example: `limit=3`.
 | next | string | Specifies the cursor value to retrieve the next page of results. You can find the value to specify in the `next` property returned by the previous page in a successful response. For example: `"inclusive:qgsxD1G5m8dGZ4W9nMKBotU2I10ilURkRIE3_UKHlLM"`.
-| minheight	| integer >= 0 | Specifies the minimum block height for the returned hashes. For example: `minheight=4471908`.
-| maxheight | integer >= 0 | Specifies the maximum block height for the returned hashes. For example: `maxheight=4953816`.
+| minheight	| integer&nbsp;>=&nbsp;0 | Specifies the minimum block height for the returned hashes. For example: `minheight=4471908`.
+| maxheight | integer&nbsp;>=&nbsp;0 | Specifies the maximum block height for the returned hashes. For example: `maxheight=4953816`.
 
 ### Responses
 
@@ -87,7 +87,13 @@ This request returns a maximum of three items in the response body like this:
 ```
 
 To send a follow-up request to get block hashes for the next three blocks, you can add the `next` parameter to the request.
-In this example, the follow-up request is `GET http://api.chainweb.com/chainweb/0.0/mainnet01/chain/19/hash?limit=3&next=inclusive:qgsxD1G5m8dGZ4W9nMKBotU2I10ilURkRIE3_UKHlLM` that returns three more hashes and a new `next` value:
+In this example, the follow-up request looks like this:
+
+```Postman
+GET http://api.chainweb.com/chainweb/0.0/mainnet01/chain/19/hash?limit=3&next=inclusive:qgsxD1G5m8dGZ4W9nMKBotU2I10ilURkRIE3_UKHlLM
+``` 
+
+The follow-up request returns three more hashes and a new `next` value:
 
 ```json
 {
@@ -110,16 +116,16 @@ This call only returns blocks that are ancestors of the same block in the set of
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| chain (required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block hashes for the first chain (0), the request is `POST http://{baseURL}/chain/0/hash/branch`.
+| chain&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block hashes for the first chain (0), the request is `POST http://{baseURL}/chain/0/hash/branch`.
 
 ### Query parameters
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the limit you set. For example: `limit=3`.
+| limit | integer&nbsp;>=&nbsp;0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the limit you set. For example: `limit=3`.
 | next | string | Specifies the cursor value to retrieve the next page of results. You can find the value to specify in the `next` property returned by the previous page in a successful response. For example: `"inclusive:qgsxD1G5m8dGZ4W9nMKBotU2I10ilURkRIE3_UKHlLM"`.
-| minheight	| integer >= 0 | Specifies the minimum block height for the returned hashes. For example: `minheight=4471908`.
-| maxheight | integer >= 0 | Specifies the maximum block height for the returned hashes. For example: `maxheight=4953816`.
+| minheight	| integer&nbsp;>=&nbsp;0 | Specifies the minimum block height for the returned hashes. For example: `minheight=4471908`.
+| maxheight | integer&nbsp;>=&nbsp;0 | Specifies the maximum block height for the returned hashes. For example: `maxheight=4953816`.
 
 ### Request body schema
 
@@ -127,7 +133,7 @@ Use the following parameters to specify the upper and lower bounds for the queri
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| lower	| Array of strings | Specifies the lower bound for the query. No block hashes are returned that are predecessors of any block with a hash from this array. Each block hash consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
+| lower	| Array&nbsp;of&nbsp;strings | Specifies the lower bound for the query. No block hashes are returned that are predecessors of any block with a hash from this array. Each block hash consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
 | upper | Array of strings | Specifies the upper bound for the query. All returned block hashes are predecessors of a block with an hash from this array. Each block hash consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
 
 The following examples illustrate setting lower and upper bounds for the query parameters. 
@@ -177,9 +183,9 @@ If the request is successful, the response returns application/json content with
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| items&nbsp;(required) | Array of strings | Returns an array of block hashes. Each block hash consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
-| limit&nbsp;(required) | integer >= 0 | Specifies the maximum number of items in the page. This number can be smaller but never larger than the number of requested items.
-| next&nbsp;(required) | string or null | Returns a value that can be used to query the next page. You can use this values for the `next` parameter in a follow-up request. The format for this parameter consists of two parts. The first part of the string can be `inclusive`, `exclusive` or null. The second part is the value that calls the next page of results or null if there are no more results to query.
+| items&nbsp;(required) | Array&nbsp;of&nbsp;strings | Returns an array of block hashes. Each block hash consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
+| limit&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the maximum number of items in the page. This number can be smaller but never larger than the number of requested items.
+| next&nbsp;(required) | string&nbsp;or&nbsp;null | Returns a value that can be used to query the next page. You can use this values for the `next` parameter in a follow-up request. The format for this parameter consists of two parts. The first part of the string can be `inclusive`, `exclusive` or null. The second part is the value that calls the next page of results or null if there are no more results to query.
 
 #### Not found response schema
 

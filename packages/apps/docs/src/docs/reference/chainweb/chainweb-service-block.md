@@ -28,16 +28,16 @@ All blocks that match the criteria are returned from the chain database, includi
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| chain (required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block hashes for the first chain (0), the request is `GET https://{baseURL}/chain/0/block`.
+| chain&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block hashes for the first chain (0), the request is `GET https://{baseURL}/chain/0/block`.
 
 ### Query parameters
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| limit | integer >= 0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the value you specify. For example: `limit=3`.
+| limit | integer&nbsp;>=&nbsp;0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the value you specify. For example: `limit=3`.
 | next | string | Specifies the cursor value to retrieve the next page of results. You can find the value to specify in the `next` property returned by the previous page in a successful response. For example: `"inclusive:qgsxD1G5m8dGZ4W9nMKBotU2I10ilURkRIE3_UKHlLM"`.
-| minheight	| integer >= 0 | Specifies the minimum block height for the blocks to return. For example: `minheight=4471908`.
-| maxheight | integer >= 0 | Specifies the maximum block height for the blocks to return. For example: `maxheight=4953816`.
+| minheight	| integer&nbsp;>=&nbsp;0 | Specifies the minimum block height for the blocks to return. For example: `minheight=4471908`.
+| maxheight | integer&nbsp;>=&nbsp;0 | Specifies the maximum block height for the blocks to return. For example: `maxheight=4953816`.
 
 ### Responses
 
@@ -46,13 +46,15 @@ Requests to `GET https://{baseURL}/chain/{chain}/block` can return the following
 - **200 OK** indicates that the request succeeded. The response body includes all of the blocks matching the criteria specified, including any orphaned blocks.
 - **404 Not Found** indicates that no blocks matching the request criteria were found or that the `next` or `maxheight` parameter wasn't valid.
 
-The response header parameters are the same for successful and unsuccessful requests.
+### Response header
+
+The response header parameters are the same for all successful and unsuccessful Chainweb node requests.
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote chainweb node in the format ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$. For example: `"10.36.1.3:42988"`.
-| x-server-timestamp | integer >= 0 | Specifies the clock time of the remote chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
-| x-chainweb-node-version	| string | Specifies the version of the remote chainweb node. For example: `"2.23"`.
+| x-peer-addr | string | Specifies the host address and port number of the client as observed by the remote Chainweb node. The host address can be a domain name or an IP address in IPv4 or IPv6 format. For example: `"10.36.1.3:42988"`.
+| x-server&#8209;timestamp | integer&nbsp;>=&nbsp;0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
+| x&#8209;chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
 
 #### Successful response schema
 
@@ -60,9 +62,9 @@ If the request is successful, the response returns `application/json` content wi
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| items (required) | Array of objects | Returns an array of JSON-encoded objects representing full blocks. 
-| limit (required) | integer >= 0 | Specifies the maximum number of items in the page. This number can be smaller but never larger than the number of requested items.
-| next (required) | string or null | Returns a value that can be used to query the next page. You can use this value for the `next` parameter in a follow-up request. The format for this parameter consists of two parts. The first part of the string can be `inclusive`, `exclusive` or null. The second part is the value that calls the next page of results or null if there are no more results to query.
+| items&nbsp;(required) | Array&nbsp;of&nbsp;objects | Returns an array of JSON-encoded objects representing full blocks. 
+| limit&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the maximum number of items in the page. This number can be smaller but never larger than the number of requested items.
+| next&nbsp;(required) | string&nbsp;or&nbsp;null | Returns a value that can be used to query the next page. You can use this value for the `next` parameter in a follow-up request. The format for this parameter consists of two parts. The first part of the string can be `inclusive`, `exclusive` or null. The second part is the value that calls the next page of results or null if there are no more results to query.
 
 ## Get block branches
 

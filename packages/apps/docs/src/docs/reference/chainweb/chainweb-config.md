@@ -11,7 +11,7 @@ tags: ['chainweb', 'node api', 'chainweb api', 'api reference']
 
 # Configuration endpoint
 
-Use `GET https://{baseURL}/config` to return configuration information for a Chainweb node.
+Use `GET https://{hostname}/config` to return configuration information for a Chainweb node.
 The configuration details are returned as a JSON object with sensitive information removed from the result. 
 The JSON schema depends on the version of the `chainweb-node` software running on the node and is not part of the stable `chainweb-node` API.
 
@@ -21,15 +21,15 @@ Requests to the `/config` endpoint return the following response code:
 
 - **200 OK** returns the configuration details for the Chainweb node.
 
-#### Response header
+### Response header
 
-The response header consists of the following parameters:
+The response header parameters are the same for all successful and unsuccessful Chainweb node requests.
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| x-peer-addr	| string | Specifies the host address and port number of the client as observed by the remote chainweb node in the format ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$. For example: `"10.36.1.3:42988"`.
-| x-server-timestamp | integer >= 0 | Specifies the clock time of the remote chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
-| x-chainweb-node-version	| string | Specifies the version of the remote chainweb node. For example: `"2.23"`.
+| x-peer-addr | string | Specifies the host address and port number of the client as observed by the remote Chainweb node. The host address can be a domain name or an IP address in IPv4 or IPv6 format. For example: `"10.36.1.3:42988"`.
+| x-server&#8209;timestamp | integer&nbsp;>=&nbsp;0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
+| x&#8209;chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
 
 #### Response schema
 
@@ -44,8 +44,7 @@ For example:
 GET https://us-e1.chainweb.com/config
 ```
 
-Alternatively, you can send a request to the Kadena test or main network by calling the appropriate service endpoint.
-For example:
+You can send a request to a Kadena test network bootstrap node like this:
 
 ```Postman
 GET https://us1.testnet.chainweb.com/config
@@ -160,4 +159,10 @@ For the bootstrap node, the response looks similar to the following:
         "putPeer": 11
     }
 }
+```
+
+To get configuration for a local development network, you can call the /config endpoint like this:
+
+```Postman
+GET https://us-e1.chainweb.com/config
 ```
