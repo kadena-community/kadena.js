@@ -1,35 +1,34 @@
-import type { Page } from '@playwright/test';
-import { expect } from '@playwright/test';
+import type { CDPSession, Page } from '@playwright/test';
 import { WebAuthNHelper } from '../../helpers/spirekey/webauthn.helper';
+
+const webAuthNHelper = new WebAuthNHelper();
 
 export class SpireKeyIndex {
   public constructor() {}
 
   public async createSpireKeyAccountFor(
     actor: Page,
-    alias: string,
     wait = false,
-  ): Promise<void> {
-    const webAuthNHelper = new WebAuthNHelper();
-    await webAuthNHelper.enableWebAuthN(actor);
+    virtualAuthenticator: { authenticatorId: string; cdpSession: CDPSession },
+  ): Promise<object> {
     await actor.getByRole('button', { name: 'Register' }).click();
     await actor.getByRole('button', { name: 'Continue' }).click();
 
-    // We should now be on the card overview
-    await expect(actor.locator('h2')).toHaveText('Register');
+    await actor.getByRole('heading', { name: 'Register' }).waitFor();
     if (wait) {
       await actor.waitForTimeout(45000);
     }
+    const credential = await webAuthNHelper.getCredential(
+      virtualAuthenticator.authenticatorId,
+      virtualAuthenticator.cdpSession,
+    );
     await actor.getByRole('button', { name: 'Complete' }).click();
-    // Create Spirekey Account
+
+    return credential.credentials[0];
   }
 
   public async signTransaction(actor: Page): Promise<void> {
-    const webAuthNHelper = new WebAuthNHelper();
-    await webAuthNHelper.enableWebAuthN(actor);
-    await expect(actor.locator('h2')).toHaveText('Permissions');
-    console.log(5555);
+    await actor.getByRole('heading', { name: 'Permissions' }).waitFor();
     await actor.getByRole('button', { name: 'Sign' }).click();
-    console.log(42342);
   }
 }

@@ -51,7 +51,7 @@ export class ProofOfUsAppIndex {
     await actor.getByRole('button', { name: 'SIGN' }).first().click();
   }
 
-  public async uploadProofWith(actor: Page): Promise<void> {
+  public async signAndMintWith(actor: Page): Promise<void> {
     await actor.getByRole('button', { name: 'SIGN & MINT' }).waitFor();
     await actor.getByRole('button', { name: 'SIGN & MINT' }).first().click();
   }
