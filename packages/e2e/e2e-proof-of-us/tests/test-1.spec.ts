@@ -19,16 +19,11 @@ test('1 Initiator, 1 signers. all participants sign -> Should be able to mint th
   await test.step('Create an account for the initiator and create proof', async () => {
     await initiator.goto(TESTURL);
     const popupPromise = initiator.waitForEvent('popup');
-    await initiator.getByRole('button', { name: 'Login to mint' }).click();
-
+    await proofOfusApp.loginToMintWith(initiator);
     const initiatorPopup = await popupPromise;
-    const virtualAuthenticator =
-      await webAuthNHelper.enableVirtualAuthenticator(initiatorPopup);
-
     initiatorCredential = await spirekeyApp.createSpireKeyAccountFor(
       initiatorPopup,
       true,
-      virtualAuthenticator,
     );
 
     shareUrl = await proofOfusApp.createProofWith(initiator, proofTitle);
@@ -37,17 +32,14 @@ test('1 Initiator, 1 signers. all participants sign -> Should be able to mint th
 
   await test.step('Create an account for the signer', async () => {
     await signer1.goto(TESTURL);
-    // Start waiting for popup before clicking. Note no await.
+
     const popupPromise = signer1.waitForEvent('popup');
-    await signer1.getByRole('button', { name: 'Login to mint' }).click();
+    await proofOfusApp.loginToMintWith(signer1);
 
     const signerPopup = await popupPromise;
-    const virtualAuthenticator =
-      await webAuthNHelper.enableVirtualAuthenticator(signerPopup);
     signerCredential = await spirekeyApp.createSpireKeyAccountFor(
       signerPopup,
       true,
-      virtualAuthenticator,
     );
   });
 
@@ -64,22 +56,14 @@ test('1 Initiator, 1 signers. all participants sign -> Should be able to mint th
 
     await proofOfusApp.signProofWith(signer1);
     const signerPopup = await popupPromise;
-    await webAuthNHelper.enableVirtualAuthenticator(
-      signerPopup,
-      signerCredential,
-    );
-    await spirekeyApp.signTransaction(signerPopup);
+    await spirekeyApp.signTransaction(signerPopup, signerCredential);
   });
 
   await test.step('Sign with Initiator & Mint NFT', async () => {
     const popupPromise = initiator.waitForEvent('popup');
     await proofOfusApp.signAndMintWith(initiator);
     const initiatorPopup = await popupPromise;
-    await webAuthNHelper.enableVirtualAuthenticator(
-      initiatorPopup,
-      initiatorCredential,
-    );
-    await spirekeyApp.signTransaction(initiatorPopup);
+    await spirekeyApp.signTransaction(initiatorPopup, initiatorCredential);
   });
 
   await test.step('The Proof should be succesfully minted for the initiator as well as all the signers', async () => {
@@ -91,6 +75,10 @@ test('1 Initiator, 1 signers. all participants sign -> Should be able to mint th
         timeout: 120000,
       }),
     ]);
+  });
+
+  await test.step('DEBUG: log link to block explorer', async () => {
+    await proofOfusApp.logBlockExplorerUrl(initiator);
   });
 });
 

@@ -17,11 +17,8 @@ export class WebAuthNHelper {
         hasResidentKey: true,
       },
     });
-    console.log(result);
-    console.log(credentials);
 
-    if (credentials) {
-      console.log('adding credentials');
+    if (credentials !== undefined) {
       await this.addCredential(result.authenticatorId, credentials, cdpSession);
     }
     return {
