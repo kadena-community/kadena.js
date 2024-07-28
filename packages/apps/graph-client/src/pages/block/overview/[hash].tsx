@@ -202,12 +202,17 @@ const Block: React.FC = () => {
                             <Column>Value</Column>
                           </TableHeader>
                           <TableBody>
-                            {data.block.minerAccount.guard.keys?.map(
-                              (minerKey, index) => (
-                                <Row key={index}>
-                                  <Cell>{minerKey}</Cell>
-                                </Row>
-                              ),
+                            {data.block.minerAccount.guard.__typename ===
+                            'Keyset' ? (
+                              data.block.minerAccount.guard.keys?.map(
+                                (minerKey, index) => (
+                                  <Row key={index}>
+                                    <Cell>{minerKey}</Cell>
+                                  </Row>
+                                ),
+                              )
+                            ) : (
+                              <span style={{ color: 'lightgray' }}>N/A</span>
                             )}
                           </TableBody>
                         </Table>
@@ -217,7 +222,14 @@ const Block: React.FC = () => {
                       <Cell>
                         <strong>Predicate</strong>
                       </Cell>
-                      <Cell>{data.block.minerAccount.guard.predicate}</Cell>
+                      <Cell>
+                        {data.block.minerAccount.guard.__typename ===
+                        'Keyset' ? (
+                          data.block.minerAccount.guard.predicate
+                        ) : (
+                          <span style={{ color: 'lightgray' }}>N/A</span>
+                        )}
+                      </Cell>
                     </Row>
                   </TableBody>
                 </Table>

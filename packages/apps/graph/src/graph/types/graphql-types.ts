@@ -1,6 +1,6 @@
 import type { Signer, Transaction, Transfer } from '@prisma/client';
 
-export interface IGuard {
+export interface IKeyset {
   keys: string[];
   predicate: 'keys-all' | 'keys-any' | 'keys-two';
 }
@@ -22,17 +22,26 @@ export interface INonFungibleTokenBalance {
   balance: number;
   accountName: string;
   chainId: string;
-  guard: IGuard;
-  info?: INonFungibleToken;
+  guard: IKeyset | IJsonString;
+  info?: INonFungibleTokenInfo;
   version: string;
 }
 
-export interface INonFungibleToken {
+export interface IModuleReference {
+  name: string;
+  namespace: string;
+}
+
+export interface IPolicy {
+  refSpec: IModuleReference[];
+  refName: IModuleReference;
+}
+
+export interface INonFungibleTokenInfo {
   supply: number;
   precision: number;
   uri: string;
-  // TODO: figure out what to do with weird pact-arrays
-  // policies: string[];
+  policies: [IPolicy];
 }
 
 export const FungibleChainAccountName: 'FungibleChainAccount' =
@@ -43,7 +52,7 @@ export interface IFungibleChainAccount {
   chainId: string;
   fungibleName: string;
   accountName: string;
-  guard: IGuard;
+  guard: IKeyset;
   balance: number;
   transactions: Transaction[];
   transfers: Transfer[];
@@ -161,6 +170,10 @@ export interface IPactQueryResponse {
   code: string;
 }
 
+export interface IJsonString {
+  type: string;
+  value: string;
+}
 export interface INetworkInfo {
   networkHost: string;
   networkId: string;
