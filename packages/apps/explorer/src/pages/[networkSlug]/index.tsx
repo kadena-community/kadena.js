@@ -15,52 +15,18 @@ import React from 'react';
 import { useInView } from 'react-intersection-observer';
 
 const Home: React.FC = () => {
-  const {
-    setSearchQuery,
-    searchQuery,
-    searchOption,
-    setSearchOption,
-    data: searchData,
-    loading,
-  } = useSearch();
+  const { searchQuery, data: searchData, loading } = useSearch();
   const { inView, ref: inViewRef } = useInView();
   return (
     <Layout>
       <BlockInfoProvider>
-        <Media greaterThanOrEqual="md">
-          <Stack
-            flexDirection="column"
-            alignItems={'center'}
-            marginBlockEnd="xxxl"
-          >
-            <Link href="/">
-              <Logo />
-            </Link>
-          </Stack>
-        </Media>
-
         <Stack ref={inViewRef}></Stack>
         <Media lessThan="md" className={fullWidthClass}>
-          <Stack
-            width="100%"
-            marginBlockStart={{ xs: 'no', md: 'xxxl' }}
-            marginBlockEnd="xxxl"
-            paddingInline="xs"
-          >
+          <Stack width="100%" marginBlockEnd="xxxl" paddingInline="xs">
             <StatisticsGrid inView={inView} />
           </Stack>
         </Media>
 
-        <Stack className={searchBarClass} paddingInline="xs">
-          <SearchComponent
-            searchOption={searchOption}
-            setSearchOption={setSearchOption}
-            searchData={searchData}
-            setSearchQuery={setSearchQuery}
-            searchQuery={searchQuery}
-            loading={loading}
-          />
-        </Stack>
         <Stack marginBlock="xxxl" />
         {searchQuery ? (
           searchData && (

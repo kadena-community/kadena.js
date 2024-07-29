@@ -1,16 +1,20 @@
 import { LoadingIcon } from '@/components/LoadingIcon/LoadingIcon';
-import { SearchOptionEnum } from '@/hooks/search/utils/utils';
-import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
+import {
+  getSearchOptions,
+  getSearchOptionTitle,
+  SearchOptionEnum,
+} from '@/hooks/search/utils/utils';
+import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { MonoSearch } from '@kadena/kode-icons/system';
 import { Stack } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import type { Dispatch, SetStateAction } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  editingBoxClass,
   editOptionClass,
   editOptionHoverClass,
   editOptionSelectedClass,
-  editingBoxClass,
   iconColorClass,
   searchBadgeBoxClass,
   searchBadgeBoxSelectedClass,
@@ -95,18 +99,19 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
     e: React.ChangeEvent<HTMLInputElement>,
   ): void => {
     const value = e.target.value;
+
     if (!value) {
       setSearchOption(null);
+      setInnerSearchOption(null);
       setIsEditing(false);
       return;
-    }
-    const option = inferOption(value);
+    } else {
+      const option = inferOption(value);
 
-    if (searchOption === null) {
-      setInnerSearchOption(option);
+      if (searchOption === null) {
+        setInnerSearchOption(option);
+      }
     }
-    setEditHover(null);
-    setIsEditing(true);
   };
 
   const handleSearchValueKeyDown = (
@@ -115,7 +120,7 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       setEditHover((prev) =>
-        prev === null ? 0 : Math.min(prev + 1, searchData.length - 1),
+        prev === null ? 0 : Math.min(prev + 1, getSearchOptions().length - 1),
       );
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
@@ -143,7 +148,6 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
     };
 
     window.addEventListener('scroll', scrollListener);
-
     return () => {
       window.removeEventListener('scroll', scrollListener);
     };
@@ -162,6 +166,7 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
             setIsEditing(false);
           }
         }}
+        style={{ minHeight: position === 'default' ? '56px' : 'unset' }}
       >
         <Stack
           alignItems="flex-start"
@@ -195,7 +200,7 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
                   setIsEditing(true);
                 }
               }}
-              onChange={(e) => handleSearchValueChange(e)}
+              onKeyUp={(e) => handleSearchValueChange(e)}
               className={searchInputClass}
             />
             {isEditing && innerSearchOption === null && (
@@ -210,14 +215,14 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
                   searchBadgeBoxSelectedClass,
                 )}
               >
-                {searchData[innerSearchOption].title}
+                {getSearchOptionTitle(innerSearchOption)}
               </Stack>
             )}
           </Stack>
 
           {isEditing && (
             <Stack flexDirection="column" className={editingBoxClass}>
-              {searchData?.map((item, index) => (
+              {getSearchOptions().map((item, index) => (
                 <Stack
                   className={classNames(editOptionClass, {
                     [editOptionHoverClass]: editHover === index,
@@ -233,7 +238,7 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
                     handleSearch(index);
                   }}
                 >
-                  <Stack>{item.title}</Stack>
+                  <Stack>{getSearchOptionTitle(item)}</Stack>
                 </Stack>
               ))}
             </Stack>

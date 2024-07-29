@@ -6,6 +6,23 @@ export enum SearchOptionEnum {
   EVENT,
 }
 
+const SEACHOPTIONTITLES: Record<SearchOptionEnum, string> = {
+  [SearchOptionEnum.ACCOUNT]: 'Account',
+  [SearchOptionEnum.REQUESTKEY]: 'RequestKey',
+  [SearchOptionEnum.BLOCKHASH]: 'Block Hash',
+  [SearchOptionEnum.BLOCKHEIGHT]: 'Height',
+  [SearchOptionEnum.EVENT]: 'Event',
+};
+
+export const getSearchOptions = (): number[] => {
+  return Object.keys(SearchOptionEnum)
+    .filter((v: string) => !isNaN(Number(v)))
+    .map((v) => parseInt(v));
+};
+
+export const getSearchOptionTitle = (searchOption: SearchOptionEnum): string =>
+  SEACHOPTIONTITLES[searchOption];
+
 export const checkLoading = (...attrs: boolean[]): boolean => {
   return attrs.find((v: boolean) => v === false) ?? false;
 };

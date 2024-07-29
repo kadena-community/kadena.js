@@ -1,4 +1,4 @@
-import { tokens } from '@kadena/kode-ui/styles';
+import { responsiveStyle, tokens } from '@kadena/kode-ui/styles';
 import { createVar, style } from '@vanilla-extract/css';
 
 export const $$pageWidth = createVar();
@@ -16,6 +16,5 @@ export const layoutWrapperClass = style({
 });
 
 export const contentClass = style({
-  marginTop: '64px',
   minHeight: 'calc(100vh - 248px)',
 });
