@@ -31,6 +31,9 @@ export class ProofOfUsAppIndex {
   public async loginToMintWith(actor: Page): Promise<void> {
     await actor.getByRole('button', { name: 'Login to mint' }).click();
   }
+  public async loginToMintWithSigner(actor: Page): Promise<void> {
+    await actor.getByRole('button', { name: 'Login' }).click();
+  }
 
   public async disableSigningFor(
     actor: Page,

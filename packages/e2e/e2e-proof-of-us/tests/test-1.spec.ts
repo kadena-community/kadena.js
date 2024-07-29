@@ -29,10 +29,9 @@ test('1 Initiator, 1 signers. all participants sign -> Should be able to mint th
   });
 
   await test.step('Create an account for the signer', async () => {
-    await signer1.goto(TESTURL);
-
+    await signer1.goto(shareUrl);
     const popupPromise = signer1.waitForEvent('popup');
-    await proofOfusApp.loginToMintWith(signer1);
+    await proofOfusApp.loginToMintWithSigner(signer1);
 
     const signerPopup = await popupPromise;
     signerCredential = await spirekeyApp.createSpireKeyAccountFor(
