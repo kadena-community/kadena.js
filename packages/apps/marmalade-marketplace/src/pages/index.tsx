@@ -54,7 +54,7 @@ export default function Home() {
           gap="xl">
           {data.map((sale, index) => (
             <GridItem key={index}>
-              <a href={`/sale/${sale.chainId}/${sale.saleId}`}>
+              <a href={`/tokens/${sale.tokenId}?saleId=${sale.saleId}&chainId=${sale.chainId}`}>
                 <Token tokenId={sale.tokenId} chainId={sale.chainId} sale={sale} />
               </a>
             </GridItem>

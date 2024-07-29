@@ -53,3 +53,8 @@ export const offerContainer = style({
   flexDirection: 'column',
   gap: tokens.kda.foundation.spacing.n4,
 });
+
+export const flexContainer = style({
+  display: 'flex',
+  gap:  tokens.kda.foundation.spacing.n4,
+});

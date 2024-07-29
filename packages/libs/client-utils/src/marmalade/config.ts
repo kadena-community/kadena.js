@@ -153,7 +153,7 @@ export interface ISaleAuctionInfoInput {
     keyset: {
       keys: string[];
       pred: BuiltInPredicate;
-    };
+    } | object;
   };
   saleType?:
     | 'marmalade-sale.conventional-auction'

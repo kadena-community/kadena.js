@@ -54,7 +54,6 @@ cd packages/apps/marmalade-marketplace
 - Go to the Firebase Console.
 - Create a new project (or use an existing one).
 - Create a Firestore database in your project.
-- Generate a service account key and download the JSON file.
 
 6. **Add Environment Variables**
 

@@ -68,8 +68,8 @@ const SendTransaction: FC<SendTransactionFormProps> = ({ send, preview, poll, tr
       const pollResponse = await poll(res);
       const pollResult = pollResponse[requestKey];
       const result = pollResult?.result.status === "success" ? pollResult?.result.status : undefined;
+      setIsPreview(false);
       if (result === "success") {
-        setIsPreview(false);
         setPreviewStatus(true)
         setResult(JSON.stringify(pollResult.result));
         if (returnUrl) {

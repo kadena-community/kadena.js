@@ -104,8 +104,8 @@ const getAllEventsFromBlock = async (blockNumber: number) => {
 
       if (
         !block?.node ||
-        !isChainEnabled[block.node.chainId] ||
-        block.node.transactions.edges.length === 0
+        !isChainEnabled[block.node.chainId] 
+        // || block.node.transactions.edges.length === 0
       ) {
         continue;
       }
@@ -165,8 +165,8 @@ async function parseEvents(
     }
 
     if (event.event === 'marmalade-v2.ledger.SALE') {
-      const [tokenId, sellerAccount, amount, timeout, saleId] =
-        event.parameters;
+    const [tokenId, sellerAccount, amount, timeout, saleId] =
+        event.parameters; 
 
       let quoteInfo = {};
 
@@ -178,7 +178,6 @@ async function parseEvents(
           host: env.CHAINWEB_API_HOST,
         }) as QuoteInfo;
 
-        console.log('data', data);
         quoteInfo = {
           startPrice: data['sale-price'],
           saleType: data['sale-type'],
@@ -497,7 +496,7 @@ export default async function handler(
   res: NextApiResponse<ResponseData>,
 ) {
   const { isProcessing, latestProcessedBlockNumber } = await getSettings();
-
+  console.log(isProcessing, "isProcessing")
   if (isProcessing) {
     res.status(425).json({ message: 'SYNCING' });
     return;

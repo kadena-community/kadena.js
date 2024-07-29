@@ -36,7 +36,7 @@ interface IOfferTokenInput extends CommonProps {
     keyset: {
       keys: string[];
       pred: 'keys-all' | 'keys-2' | 'keys-any';
-    };
+    }
   };
 }
 

@@ -96,7 +96,7 @@ function CreateTokenComponent() {
 
   const onTransactionSigned = (transaction: IUnsignedCommand | ICommand) => {
     setTransaction(transaction);
-    router.push(`/transaction?returnUrl=/mint?tokenId=${tokenId}`);
+    router.push(`/transaction`);
   }
 
   const config = {
