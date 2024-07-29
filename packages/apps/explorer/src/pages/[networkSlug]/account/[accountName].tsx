@@ -8,6 +8,7 @@ import { loadingData } from '@/components/LoadingSkeleton/loadingData/loadingDat
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import { useQueryContext } from '@/context/queryContext';
+import { useSearch } from '@/context/searchContext';
 import { account } from '@/graphql/queries/account.graph';
 import { useRouter } from '@/hooks/router';
 import { accountNameTextClass } from '@/styles/account.css';
@@ -23,8 +24,8 @@ export interface IKeyProps {
 
 const Account: FC = () => {
   const router = useRouter();
+  const { setIsLoading, isLoading } = useSearch();
   const [innerData, setInnerData] = useState<AccountQuery>(loadingData);
-  const [isLoading, setIsLoading] = useState(true);
   const [selectedTab, setSelectedTab] = useState<string>('Transactions');
   const accountName = router.query.accountName as string;
   const { setQueries } = useQueryContext();

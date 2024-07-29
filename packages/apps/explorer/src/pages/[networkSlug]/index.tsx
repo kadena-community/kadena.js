@@ -3,19 +3,12 @@ import { BlockTable } from '@/components/BlockTable/BlockTable';
 import { fullWidthClass } from '@/components/globalstyles.css';
 import { Layout } from '@/components/Layout/Layout';
 import { Media } from '@/components/Layout/media';
-import { Logo } from '@/components/Logo/Logo';
-import { SearchComponent } from '@/components/Search/SearchComponent/SearchComponent';
-import { searchBarClass } from '@/components/Search/SearchComponent/searchComponent.css';
-import { SearchResults } from '@/components/Search/SearchResults/SearchResults';
 import { StatisticsGrid } from '@/components/StatisticsComponent/StatisticsGrid/StatisticsGrid';
-import { useSearch } from '@/hooks/search';
 import { Stack } from '@kadena/kode-ui';
-import Link from 'next/dist/client/link';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 
 const Home: React.FC = () => {
-  const { searchQuery, data: searchData, loading } = useSearch();
   const { inView, ref: inViewRef } = useInView();
   return (
     <Layout>
@@ -28,13 +21,7 @@ const Home: React.FC = () => {
         </Media>
 
         <Stack marginBlock="xxxl" />
-        {searchQuery ? (
-          searchData && (
-            <SearchResults searchData={searchData} loading={loading} />
-          )
-        ) : (
-          <BlockTable />
-        )}
+        <BlockTable />
       </BlockInfoProvider>
     </Layout>
   );

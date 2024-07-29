@@ -5,8 +5,10 @@ import { DataRenderComponent } from '@/components/DataRenderComponent/DataRender
 import { Layout } from '@/components/Layout/Layout';
 import { loadingData } from '@/components/LoadingSkeleton/loadingData/loadingDataBlockquery';
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
+import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import { useQueryContext } from '@/context/queryContext';
+import { useSearch } from '@/context/searchContext';
 import { block } from '@/graphql/queries/block.graph';
 import { useRouter } from '@/hooks/router';
 import { truncateValues } from '@/services/format';
@@ -17,7 +19,7 @@ import React, { useEffect, useState } from 'react';
 
 const Block: React.FC = () => {
   const [innerData, setInnerData] = useState<BlockQuery>(loadingData);
-  const [isLoading, setIsLoading] = useState(true);
+  const { setIsLoading, isLoading } = useSearch();
   const router = useRouter();
   const [selectedTab, setSelectedTab] = useState<string>('Header');
 
@@ -81,7 +83,7 @@ const Block: React.FC = () => {
 
   return (
     <Layout>
-      {innerData && innerData.block && (
+      {innerData && innerData.block ? (
         <>
           <Stack margin="md">
             <Heading
@@ -216,6 +218,8 @@ const Block: React.FC = () => {
             </TabItem>
           </Tabs>
         </>
+      ) : (
+        <NoSearchResults />
       )}
     </Layout>
   );

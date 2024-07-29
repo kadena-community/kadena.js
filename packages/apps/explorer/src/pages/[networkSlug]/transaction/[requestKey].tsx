@@ -1,9 +1,11 @@
 import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
 import { Layout } from '@/components/Layout/Layout';
+import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import { TransactionRequestComponent } from '@/components/TransactionComponents/TransactionRequestComponent';
 import { TransactionResultComponent } from '@/components/TransactionComponents/TransactionResultComponent';
 import { useQueryContext } from '@/context/queryContext';
+import { useSearch } from '@/context/searchContext';
 import { transactionRequestKey } from '@/graphql/pages/transaction/transaction-requestkey.graph';
 import { useRouter } from '@/hooks/router';
 import { truncateValues } from '@/services/format';
@@ -12,7 +14,7 @@ import React, { useEffect } from 'react';
 
 const Transaction: React.FC = () => {
   const router = useRouter();
-
+  const { setIsLoading } = useSearch();
   const { setQueries } = useQueryContext();
 
   const transactionRequestKeyQueryVariables = {
@@ -35,6 +37,11 @@ const Transaction: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if (loading) {
+      setIsLoading(true);
+      return;
+    }
+
     if (error) {
       addToast({
         type: 'negative',
@@ -42,14 +49,17 @@ const Transaction: React.FC = () => {
         body: 'Loading of transaction requestkey data failed',
       });
     }
-  }, [error]);
+
+    if (data) {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 200);
+    }
+  }, [loading, data, error]);
 
   return (
     <Layout>
-      {!loading && (!data || !data.transaction) ? (
-        <p>Transaction not found</p>
-      ) : null}
-      {data && data.transaction && (
+      {data && data.transaction ? (
         <>
           <Stack margin="md">
             <Heading as="h1" className="truncate">
@@ -72,6 +82,8 @@ const Transaction: React.FC = () => {
             </TabItem>
           </Tabs>
         </>
+      ) : (
+        <NoSearchResults />
       )}
     </Layout>
   );

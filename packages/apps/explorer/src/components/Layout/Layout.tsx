@@ -7,7 +7,7 @@ import React from 'react';
 import { CookieConsent } from '../CookieConsent/CookieConsent';
 import { contentClass, documentStyle, layoutWrapperClass } from './styles.css';
 
-import { useSearch } from '@/hooks/search';
+import { useSearch } from '@/context/searchContext';
 import { Logo } from '../Logo/Logo';
 import { Link } from '../Routing/Link';
 import { SearchComponent } from '../Search/SearchComponent/SearchComponent';
@@ -22,8 +22,7 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
     searchQuery,
     searchOption,
     setSearchOption,
-    data: searchData,
-    loading,
+    isLoading,
   } = useSearch();
 
   return (
@@ -51,10 +50,9 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
           <SearchComponent
             searchOption={searchOption}
             setSearchOption={setSearchOption}
-            searchData={searchData}
             setSearchQuery={setSearchQuery}
             searchQuery={searchQuery}
-            loading={loading}
+            loading={isLoading}
           />
         </Stack>
 

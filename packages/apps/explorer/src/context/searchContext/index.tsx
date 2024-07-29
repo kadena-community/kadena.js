@@ -1,22 +1,41 @@
-import type { ISearchItem } from '@/components/Search/SearchComponent/SearchComponent';
-import type { ApolloError } from '@apollo/client';
-import { useEffect, useState } from 'react';
-import { useRouter } from './../router';
-import { useAccount } from './utils/account';
-import { useBlockHash } from './utils/blockHash';
-import { useBlockHeight } from './utils/blockHeight';
-import { useEvent } from './utils/event';
-import { useRequestKey } from './utils/requestKey';
-import { SearchOptionEnum, checkLoading } from './utils/utils';
+import { useRouter } from '@/hooks/router';
+import type { Dispatch, SetStateAction } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { SearchOptionEnum } from './utils/utils';
 
-export interface IHookReturnValue<T> {
-  loading: boolean;
-  error?: ApolloError;
-  data?: T;
+interface ISearchContext {
+  searchOption: SearchOptionEnum | null;
+  setSearchOption: Dispatch<SetStateAction<SearchOptionEnum | null>>;
+  setSearchQuery: Dispatch<SetStateAction<string>>;
+  searchQuery: string;
+  isLoading: boolean;
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
 
-export const useSearch = () => {
+const SearchContext = createContext<ISearchContext>({
+  searchOption: null,
+  setSearchOption: () => {},
+  setSearchQuery: () => {},
+  searchQuery: '',
+  isLoading: false,
+  setIsLoading: () => {},
+});
+
+const useSearch = (): ISearchContext => {
+  const context = useContext(SearchContext);
+
+  if (context === undefined) {
+    throw new Error('Please use QueryContextProvider in parent component');
+  }
+
+  return context;
+};
+
+const SearchContextProvider = (props: {
+  children: React.ReactNode;
+}): JSX.Element => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchOption, setSearchOption] = useState<SearchOptionEnum | null>(
     null,
   );
@@ -24,10 +43,6 @@ export const useSearch = () => {
   const [oldSearchQuery, setOldSearchQuery] = useState<string>('');
   const [oldSearchOption, setOldSearchOption] =
     useState<SearchOptionEnum | null>(null);
-
-  const [isMounted, setIsMounted] = useState(false);
-  const [searchData, setSearchData] = useState<ISearchItem[]>([]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     switch (true) {
@@ -72,12 +87,6 @@ export const useSearch = () => {
 
     setOldSearchQuery(searchQuery);
     setOldSearchOption(searchOption);
-    // const query = router.query.q;
-    // const searchOptionQuery: SearchOptionEnum | null = !isNaN(
-    //   parseInt(router.query.so as any),
-    // )
-    //   ? parseInt(router.query.so as any)
-    //   : null;
 
     if (searchOption === SearchOptionEnum.ACCOUNT) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -107,36 +116,22 @@ export const useSearch = () => {
       router.push(`/block/${searchQuery}`);
       return;
     }
-
-    // const queryArray = [];
-    // if (searchQuery) {
-    //   queryArray.push(`q=${searchQuery}`);
-    // }
-    // if (searchOption !== null && searchOption !== undefined) {
-    //   queryArray.push(`so=${searchOption}`);
-
-    //   if (searchOption === SearchOptionEnum.ACCOUNT) {
-    //     queryArray.push(`fungible=coin`);
-    //   }
-    // }
-
-    // if (
-    //   (query === searchQuery && searchOptionQuery === searchOption) ||
-    //   !queryArray.filter((v) => v.startsWith('q=')).length
-    // ) {
-    //   return;
-    // }
-
-    // // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    // router.push(`/?${queryArray.join('&')}`);
   }, [searchQuery, searchOption]);
 
-  return {
-    searchOption,
-    setSearchOption,
-    setSearchQuery,
-    data: searchData,
-    searchQuery,
-    loading,
-  };
+  return (
+    <SearchContext.Provider
+      value={{
+        searchOption,
+        setSearchOption,
+        setSearchQuery,
+        searchQuery,
+        isLoading,
+        setIsLoading,
+      }}
+    >
+      {props.children}
+    </SearchContext.Provider>
+  );
 };
+
+export { SearchContext, SearchContextProvider, useSearch };

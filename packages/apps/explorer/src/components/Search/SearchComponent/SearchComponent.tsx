@@ -3,7 +3,7 @@ import {
   getSearchOptions,
   getSearchOptionTitle,
   SearchOptionEnum,
-} from '@/hooks/search/utils/utils';
+} from '@/context/searchContext/utils/utils';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { MonoSearch } from '@kadena/kode-icons/system';
 import { Stack } from '@kadena/kode-ui';
@@ -30,12 +30,7 @@ export type SearchItemTitle =
   | 'Block Hash'
   | 'Event';
 
-export interface ISearchItem {
-  title: SearchItemTitle;
-  data?: any;
-}
 export interface ISearchComponentProps {
-  searchData: ISearchItem[];
   setSearchQuery?: Dispatch<SetStateAction<string>>;
   searchQuery?: string;
   searchOption: SearchOptionEnum | null;
@@ -62,7 +57,6 @@ const inferOption = (value: string): SearchOptionEnum => {
 
 export const SearchComponent: React.FC<ISearchComponentProps> = ({
   position = 'default',
-  searchData,
   setSearchQuery,
   searchQuery,
   searchOption,
@@ -96,9 +90,9 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
   };
 
   const handleSearchValueChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.KeyboardEvent<HTMLInputElement>,
   ): void => {
-    const value = e.target.value;
+    const value = e.currentTarget.value;
 
     if (!value) {
       setSearchOption(null);

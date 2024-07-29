@@ -1,39 +1,28 @@
-import type { BlockQuery, BlocksFromHeightQuery } from '@/__generated__/sdk';
-import { useBlockQuery, useBlocksFromHeightQuery } from '@/__generated__/sdk';
+import type { BlocksFromHeightQuery } from '@/__generated__/sdk';
+import { useBlocksFromHeightQuery } from '@/__generated__/sdk';
 import { blockHeightLoading } from '@/components/BlockTable/loadingBlockHeightData';
-import { BlockTransactions } from '@/components/BlockTransactions/BlockTransactions';
 import { CompactTable } from '@/components/CompactTable/CompactTable';
 import { FormatLink } from '@/components/CompactTable/utils/formatLink';
-import { DataRenderComponent } from '@/components/DataRenderComponent/DataRenderComponent';
 import { Layout } from '@/components/Layout/Layout';
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
+import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import { useQueryContext } from '@/context/queryContext';
+import { useSearch } from '@/context/searchContext';
 import { block } from '@/graphql/queries/block.graph';
 import { useRouter } from '@/hooks/router';
-import { SearchOptionEnum } from '@/hooks/search/utils/utils';
 import { truncateValues } from '@/services/format';
-import { Badge, Heading, Stack, TabItem, Tabs } from '@kadena/kode-ui';
+import { Heading, Stack } from '@kadena/kode-ui';
 import { atoms } from '@kadena/kode-ui/styles';
-import type { Key } from 'react';
+
 import React, { useEffect, useState } from 'react';
 
 const Height: React.FC = () => {
+  const router = useRouter();
+  const { setIsLoading, isLoading } = useSearch();
   const [innerData, setInnerData] =
     useState<BlocksFromHeightQuery>(blockHeightLoading);
-  const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
-  const [selectedTab, setSelectedTab] = useState<string>('Header');
-
   const { setQueries } = useQueryContext();
-
-  useEffect(() => {
-    const hash = router.asPath.split('#')[1];
-
-    if (hash) {
-      setSelectedTab(hash);
-    }
-  }, [router.asPath]);
 
   const blockHeightVariables = {
     first: 200,
@@ -58,6 +47,8 @@ const Height: React.FC = () => {
     }
 
     if (error) {
+      setIsLoading(false);
+      setInnerData({} as BlocksFromHeightQuery);
       addToast({
         type: 'negative',
         label: 'Something went wrong',
@@ -75,7 +66,7 @@ const Height: React.FC = () => {
 
   return (
     <Layout>
-      {innerData && innerData.blocksFromHeight && (
+      {innerData && innerData.blocksFromHeight ? (
         <>
           <Stack margin="md">
             <Heading
@@ -119,6 +110,8 @@ const Height: React.FC = () => {
             data={innerData?.blocksFromHeight.edges ?? []}
           />
         </>
+      ) : (
+        <NoSearchResults />
       )}
     </Layout>
   );

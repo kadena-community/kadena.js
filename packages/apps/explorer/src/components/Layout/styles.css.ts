@@ -1,4 +1,4 @@
-import { responsiveStyle, tokens } from '@kadena/kode-ui/styles';
+import { tokens } from '@kadena/kode-ui/styles';
 import { createVar, style } from '@vanilla-extract/css';
 
 export const $$pageWidth = createVar();
