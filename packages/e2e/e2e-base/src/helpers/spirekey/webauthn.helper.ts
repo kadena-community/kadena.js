@@ -1,23 +1,13 @@
-import type {
-  Browser,
-  BrowserContext,
-  CDPSession,
-  Page,
-} from '@playwright/test';
+import type { CDPSession, Page } from '@playwright/test';
 
 export class WebAuthNHelper {
-  private context: BrowserContext;
-  public async enableWebAuthN(
+  public async enableVirtualAuthenticator(
     actor: Page,
-    browser?: Browser,
-  ): Promise<CDPSession> {
-    if (!this.context) {
-      const contexts = await browser!.contexts();
-      this.context = await contexts[contexts.length - 1];
-    }
-    const cdpSession = await this.context.newCDPSession(actor);
+    credentials?,
+  ): Promise<{ authenticatorId: string; cdpSession: CDPSession }> {
+    const cdpSession = await actor.context().newCDPSession(actor);
     await cdpSession.send('WebAuthn.enable');
-    await cdpSession.send('WebAuthn.addVirtualAuthenticator', {
+    const result = await cdpSession.send('WebAuthn.addVirtualAuthenticator', {
       options: {
         protocol: 'ctap2',
         ctap2Version: 'ctap2_1',
@@ -28,6 +18,22 @@ export class WebAuthNHelper {
       },
     });
 
-    return cdpSession;
+    if (credentials !== undefined) {
+      await this.addCredential(result.authenticatorId, credentials, cdpSession);
+    }
+    return {
+      authenticatorId: result.authenticatorId,
+      cdpSession: cdpSession,
+    };
+  }
+
+  public async getCredential(authenticatorId: string, cdpSession: CDPSession) {
+    return cdpSession.send('WebAuthn.getCredentials', {
+      authenticatorId,
+    });
+  }
+
+  public async addCredential(authenticatorId, credential, cdpSession) {
+    cdpSession.send('WebAuthn.addCredential', { authenticatorId, credential });
   }
 }

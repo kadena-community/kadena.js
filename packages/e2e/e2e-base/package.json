@@ -32,12 +32,12 @@
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@kadena/types": "workspace:*",
-    "@playwright/test": "^1.44.0",
+    "@playwright/test": "^1.45.3",
     "@rushstack/eslint-config": "~3.6.9",
     "@types/node": "^20.12.7",
     "directory-tree": "3.5.1",
     "eslint": "^8.45.0",
-    "eslint-plugin-playwright": "1.6.1",
+    "eslint-plugin-playwright": "1.6.2",
     "prettier": "~3.2.5"
   }
 }
