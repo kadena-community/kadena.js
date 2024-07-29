@@ -3,15 +3,16 @@ import type {
   Transaction,
 } from '@/__generated__/sdk';
 import { useAccountTransactionsQuery } from '@/__generated__/sdk';
+import { useQueryContext } from '@/context/queryContext';
 import { usePagination } from '@/hooks/usePagination';
 import { graphqlIdFor } from '@/utils/graphqlIdFor';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
-import { FormatJsonParse, FormatLink } from '../CompactTable/utils/formatLink';
-
 import { CompactTable } from '../CompactTable/CompactTable';
+import { FormatJsonParse, FormatLink } from '../CompactTable/utils/formatLink';
 import { FormatStatus } from '../CompactTable/utils/formatStatus';
 import { useToast } from '../Toast/ToastContext/ToastContext';
+import { accountTransactions } from './AccountTransactions.graph';
 import { loadingData } from './loadingDataAccountTransactionsquery';
 
 export const AccountTransactionsTable: FC<{ accountName: string }> = ({
@@ -21,6 +22,7 @@ export const AccountTransactionsTable: FC<{ accountName: string }> = ({
   const [innerData, setInnerData] =
     useState<AccountTransactionsQuery>(loadingData);
   const [isLoading, setIsLoading] = useState(true);
+  const { setQueries } = useQueryContext();
 
   const { variables, handlePageChange, pageSize } = usePagination({
     id,
@@ -54,6 +56,12 @@ export const AccountTransactionsTable: FC<{ accountName: string }> = ({
       }, 200);
     }
   }, [loading, data, error]);
+
+  useEffect(() => {
+    if (accountName) {
+      setQueries([{ query: accountTransactions, variables }]);
+    }
+  }, [accountName]);
 
   if (innerData.node?.__typename !== 'FungibleAccount') return null;
 

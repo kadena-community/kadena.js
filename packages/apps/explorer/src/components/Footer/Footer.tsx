@@ -1,5 +1,6 @@
 import { Link } from '@/components/Routing/Link';
-import { menuConfig } from '@/utils/menuConfig';
+import { menuConfig } from '@/config/menuConfig';
+import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import {
   MonoLogoGithub,
   MonoLogoLinkedin,
@@ -26,6 +27,12 @@ export const Footer: FC = () => {
 
   const handleToggleContent = () => {
     setIsOpen((v) => !v);
+  };
+
+  const handleAnalyticsForSocial = (social: string) => {
+    analyticsEvent(EVENT_NAMES['click:nav_sociallink'], {
+      social,
+    });
   };
   return (
     <Stack
@@ -63,6 +70,7 @@ export const Footer: FC = () => {
             <Heading as="h6">Socials</Heading>
             <Stack gap="sm">
               <a
+                onClick={() => handleAnalyticsForSocial('twitter')}
                 className={socialLinkClass}
                 href="https://x.com/kadena_io"
                 target="_blank"
@@ -72,6 +80,7 @@ export const Footer: FC = () => {
               </a>
 
               <a
+                onClick={() => handleAnalyticsForSocial('linkedin')}
                 className={socialLinkClass}
                 href="https://www.linkedin.com/company/kadena-llc/mycompany/"
                 target="_blank"
@@ -80,6 +89,7 @@ export const Footer: FC = () => {
                 <MonoLogoLinkedin />
               </a>
               <a
+                onClick={() => handleAnalyticsForSocial('github')}
                 className={socialLinkClass}
                 href="https://github.com/kadena-community"
                 target="_blank"

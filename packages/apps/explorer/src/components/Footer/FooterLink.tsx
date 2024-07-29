@@ -5,11 +5,12 @@ import { footerLinkClass } from './style.css';
 
 interface IProps extends PropsWithChildren {
   href: string;
+  onClick: () => void;
 }
 
-export const FooterLink: FC<IProps> = ({ href, children }) => {
+export const FooterLink: FC<IProps> = ({ onClick, href, children }) => {
   return (
-    <a className={footerLinkClass} href={href} target="_bank">
+    <a onClick={onClick} className={footerLinkClass} href={href} target="_bank">
       <Text>{children}</Text>
     </a>
   );

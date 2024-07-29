@@ -1,3 +1,4 @@
+import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import { Heading, Stack } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import type { FC } from 'react';
@@ -11,6 +12,10 @@ interface IProps {
 }
 
 export const FooterColumn: FC<IProps> = ({ data, isOpen }) => {
+  const handleAnalyticsForClick = (item: { url: string; label: string }) => {
+    analyticsEvent(EVENT_NAMES['click:nav_footerlink'], item);
+  };
+
   return (
     <Stack
       className={classNames(footerColumnClass, {
@@ -23,7 +28,11 @@ export const FooterColumn: FC<IProps> = ({ data, isOpen }) => {
     >
       <Heading as="h6">{data.label}</Heading>
       {data.children.map((item) => (
-        <FooterLink key={item.url} href={item.url}>
+        <FooterLink
+          onClick={() => handleAnalyticsForClick(item)}
+          key={item.url}
+          href={item.url}
+        >
           {item.label}
         </FooterLink>
       ))}

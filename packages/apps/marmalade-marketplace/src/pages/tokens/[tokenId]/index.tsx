@@ -113,7 +113,7 @@ useEffect(() => {
 
   const onTransactionSigned = (transaction: IUnsignedCommand | ICommand) => {
     setTransaction(transaction);
-    router.push(`/transaction?returnUrl=/tokens?tokenId=${tokenId}`);
+    router.push(`/transaction?returnUrl=/tokens/${tokenId}`);
   }
 
   const onCreateSalePress = async () => {

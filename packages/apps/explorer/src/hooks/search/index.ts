@@ -1,19 +1,13 @@
-import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
 import type { ISearchItem } from '@/components/Search/SearchComponent/SearchComponent';
-import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import type { ApolloError } from '@apollo/client';
 import { useEffect, useState } from 'react';
-import { useRouter } from '../router';
+import { useRouter } from './../router';
 import { useAccount } from './utils/account';
-import { useBlockHash } from './utils/block-hash';
-import { useBlockHeight } from './utils/block-height';
+import { useBlockHash } from './utils/blockHash';
+import { useBlockHeight } from './utils/blockHeight';
 import { useEvent } from './utils/event';
-import {
-  SearchOptionEnum,
-  checkLoading,
-  isSearchRequested,
-  returnSearchQuery,
-} from './utils/utils';
+import { useRequestKey } from './utils/requestKey';
+import { SearchOptionEnum, checkLoading } from './utils/utils';
 
 export interface IHookReturnValue<T> {
   loading: boolean;
@@ -27,51 +21,35 @@ export const useSearch = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [searchData, setSearchData] = useState<ISearchItem[]>([]);
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<ApolloError[]>([]);
+
   const [searchOption, setSearchOption] = useState<SearchOptionEnum | null>(
     null,
   );
 
-  const { addToast } = useToast();
-  const {
-    loading: accountLoading,
-    data: accountData,
-    error: accountError,
-  } = useAccount(searchQuery, searchOption);
+  const { loading: accountLoading, data: accountData } = useAccount(
+    searchQuery,
+    searchOption,
+  );
 
-  const {
-    loading: blockLoading,
-    data: blockData,
-    error: blockError,
-  } = useBlockHash(searchQuery, searchOption);
+  const { loading: blockLoading, data: blockData } = useBlockHash(
+    searchQuery,
+    searchOption,
+  );
 
-  const {
-    loading: blockHeightLoading,
-    data: blockHeightData,
-    error: blockHeightError,
-  } = useBlockHeight(searchQuery, searchOption);
+  const { loading: blockHeightLoading, data: blockHeightData } = useBlockHeight(
+    searchQuery,
+    searchOption,
+  );
 
-  const {
-    loading: eventLoading,
-    data: eventData,
-    error: eventError,
-  } = useEvent(searchQuery, searchOption);
-  const {
-    loading: requestKeyLoading,
-    data: requestKeyData,
-    error: requestKeyError,
-  } = useTransactionRequestKeyQuery({
-    variables: {
-      requestKey: returnSearchQuery(
-        searchQuery,
-        searchOption,
-        SearchOptionEnum.REQUESTKEY,
-      ),
-    },
-    skip:
-      !searchQuery ||
-      !isSearchRequested(searchOption, SearchOptionEnum.REQUESTKEY),
-  });
+  const { loading: eventLoading, data: eventData } = useEvent(
+    searchQuery,
+    searchOption,
+  );
+
+  const { loading: requestKeyLoading, data: requestKeyData } = useRequestKey(
+    searchQuery,
+    searchOption,
+  );
 
   useEffect(() => {
     if (!isMounted) return;
@@ -116,6 +94,7 @@ export const useSearch = () => {
 
     setSearchQuery(query as string);
     setSearchOption(searchOptionQuery);
+
     setIsMounted(true);
   }, [router.query]);
 
@@ -173,27 +152,6 @@ export const useSearch = () => {
     requestKeyLoading,
   ]);
 
-  useEffect(() => {
-    const errors: ApolloError[] = [];
-    if (accountError) errors.push(accountError);
-    if (blockError) errors.push(blockError);
-    if (eventError) errors.push(eventError);
-    if (blockHeightError) errors.push(blockHeightError);
-    if (requestKeyError) errors.push(requestKeyError);
-
-    setErrors(errors);
-  }, [accountError, blockError, blockHeightError, eventError, requestKeyError]);
-
-  useEffect(() => {
-    if (errors.length) {
-      addToast({
-        type: 'negative',
-        label: 'Something went wrong',
-        body: 'Loading search data failed',
-      });
-    }
-  }, [errors]);
-
   return {
     searchOption,
     setSearchOption,
@@ -201,6 +159,5 @@ export const useSearch = () => {
     data: searchData,
     searchQuery,
     loading,
-    errors,
   };
 };

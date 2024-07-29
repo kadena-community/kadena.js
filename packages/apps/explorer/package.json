@@ -21,6 +21,8 @@
     "start:graph": "cd ../graph && pnpm run start",
     "start:graph:generate": "cd ../graph && pnpm run start:generate",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest  --coverage",
     "verify": "tsc --noEmit"
   },
   "dependencies": {
@@ -53,6 +55,8 @@
     "@kadena-dev/shared-config": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@rushstack/eslint-config": "~3.6.9",
+    "@testing-library/react": "~14.0.0",
+    "@testing-library/react-hooks": "^8.0.1",
     "@types/gtag.js": "~0.0.12",
     "@types/js-cookie": "~3.0.3",
     "@types/node": "^20.12.7",
@@ -60,11 +64,14 @@
     "@types/react-dom": "^18.2.25",
     "@vanilla-extract/css": "1.14.2",
     "@vanilla-extract/next-plugin": "2.4.0",
+    "@vitejs/plugin-react": "^4.3.1",
     "@vitest/coverage-v8": "^1.6.0",
     "cache-sh": "^1.2.1",
     "concurrently": "^8.2.2",
+    "next-router-mock": "^0.9.10",
     "prettier": "~3.2.5",
     "typescript": "5.4.5",
-    "vitest": "^1.6.0"
+    "vitest": "^1.6.0",
+    "vitest-dom": "^0.1.1"
   }
 }

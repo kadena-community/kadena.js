@@ -1,7 +1,6 @@
 import { LoadingIcon } from '@/components/LoadingIcon/LoadingIcon';
 import { SearchOptionEnum } from '@/hooks/search/utils/utils';
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
-import type { ApolloError } from '@apollo/client';
 import { MonoSearch } from '@kadena/kode-icons/system';
 import { Stack } from '@kadena/kode-ui';
 import classNames from 'classnames';
@@ -38,7 +37,6 @@ export interface ISearchComponentProps {
   searchOption: SearchOptionEnum | null;
   setSearchOption: Dispatch<SetStateAction<SearchOptionEnum | null>>;
   loading: boolean;
-  errors: ApolloError[];
   position?: 'header' | 'default';
 }
 

@@ -14,12 +14,15 @@ import { MonoAutoFixHigh, MonoAccountBalanceWallet, MonoAccessTime } from '@kade
 import { TokenMetadata } from "@/components/Token";
 import { getTokenImageUrl, getTokenMetadata } from '@/utils/token';
 import { ICommand, IUnsignedCommand } from '@kadena/client';
+import { useSearchParams } from 'next/navigation';
 
 import CrudCard from '@/components/CrudCard';
 
 function MintTokenComponent() {
   const router = useRouter();
   const { account, webauthnAccount } = useAccount();
+  const searchParams = useSearchParams();
+
   const { setTransaction } = useTransaction();
   const [tokenId, setTokenId] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
@@ -34,6 +37,16 @@ function MintTokenComponent() {
     router.push(`/transaction?returnUrl=/tokens/${tokenId}`);
   }
 
+  useEffect(() => {
+    if (searchParams.has('tokenId')) {
+      const tokenId = searchParams.get('tokenId');
+      if (tokenId) {
+        setTokenId(tokenId);
+        fetchTokenInfo(tokenId);
+      }      
+    }
+  }, [searchParams]);
+
   const config = {
     host: env.URL,
     networkId: env.NETWORKID,
@@ -41,15 +54,15 @@ function MintTokenComponent() {
     sign: createSignWithSpireKeySDK([account], onTransactionSigned),
   };
 
-  const fetchTokenInfo = async () => {
+  const fetchTokenInfo = async (id: string) => {
     const res = await getTokenInfo({
-      tokenId,
+      tokenId: id,
       networkId: config.networkId,
       chainId: config.chainId,
       host: config.host,
     }) as { policies: Policy[], uri: string };
     setTokenInfo(res); 
-    setResult(checkConcretePolicies(res.policies))
+    setResult(checkConcretePolicies(res.policies))    
     await fetch(res);
   }
 
@@ -108,15 +121,15 @@ function MintTokenComponent() {
   };
 
   const handleTokenInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    if (name === 'tokenId') setTokenId(value);
+    const { value } = event.target;
+    setTokenId(value);
   };
 
   const onCancelPress = () => {
     router.back();
   };
 
-  const hanldeAmountInputChange = (value: number) => {
+  const handleAmountInputChange = (value: number) => {
     if (value >= 0) {
       setAmount(value);
     }
@@ -145,8 +158,8 @@ function MintTokenComponent() {
             />
           </div>
           <div className={styles.formContainer} >
-            <TextField label="Token ID" name="tokenId" value={tokenId} onChange={handleTokenInputChange} onBlur={fetchTokenInfo} /> 
-            <NumberField label="Amount" value={amount} onValueChange={hanldeAmountInputChange} />
+            <TextField label="Token ID" name="tokenId" value={tokenId} onChange={handleTokenInputChange} onBlur={() => fetchTokenInfo(tokenId)} /> 
+            <NumberField label="Amount" value={amount} onValueChange={handleAmountInputChange} />
           </div>
         </CrudCard>
 
@@ -167,6 +180,11 @@ function MintTokenComponent() {
             <Checkbox isReadOnly={true} id="collection" isSelected={result?.collection}>Collection</Checkbox>
           </div> 
         </CrudCard>
+        )}
+        {error && (
+          <div className={styles.errorBox}>
+            <p>Error: {error}</p>
+          </div>
         )}
       </Stack>
       <div className={styles.buttonRow}>

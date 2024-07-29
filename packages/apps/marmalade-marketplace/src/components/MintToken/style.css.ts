@@ -44,3 +44,14 @@ export const formContainer = style({
   flexDirection: 'column',
   gap: tokens.kda.foundation.spacing.n4,
 });
+
+export const errorBox = style({
+  color: 'red',
+  backgroundColor: '#ffe6e6',
+  border: '1px solid red',
+  borderRadius: '5px',
+  padding: '10px',
+  margin: '10px 0',
+  fontFamily: 'Arial, sans-serif',
+  fontSize: '14px'
+});

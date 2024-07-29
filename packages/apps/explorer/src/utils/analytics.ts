@@ -5,6 +5,12 @@ export const EVENT_NAMES = {
   'click:add_network': 'click:add_network',
   'click:remove_network': 'click:remove_network',
   'click:change_network': 'click:change_network',
+  'click:switch_theme': 'click:switch_theme',
+  'click:open_graphDialog': 'click:open_graphDialog',
+  'click:open_configDialog': 'click:open_configDialog',
+  'click:nav_sociallink': 'click:nav_sociallink',
+  'click:nav_footerlink': 'click:nav_footerlink',
+  'click:open_blockheightpopup': 'click:open_blockheightpopup',
   'event:stopserver': 'event:stopserver',
 } as const;
 

@@ -11,7 +11,6 @@ export const SearchBarHeader: FC = () => {
     setSearchOption,
     data: searchData,
     loading,
-    errors,
   } = useSearch();
 
   return (
@@ -23,7 +22,6 @@ export const SearchBarHeader: FC = () => {
       setSearchQuery={setSearchQuery}
       searchQuery={searchQuery}
       loading={loading}
-      errors={errors}
     />
   );
 };

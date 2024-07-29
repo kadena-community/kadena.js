@@ -61,7 +61,6 @@ Create a .env file in the root of the project from .env.example file and modify 
 
 ```bash
 NEXT_PUBLIC_FB_APIKEY="your-api-key"
-NEXT_PUBLIC_FB_DBURL="your-database-url"
 NEXT_PUBLIC_FB_PROJECTID="your-project-id"
 NEXT_PUBLIC_FB_APPID="your-app-id"
 ```
