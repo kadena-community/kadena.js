@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import { tokens } from '@kadena/kode-ui/styles';
-import { deviceColors } from '../../../styles/tokens.css';
+import { deviceColors } from '../styles/tokens.css';
 
 export const container = style({
   margin: '160px 15% 0',
