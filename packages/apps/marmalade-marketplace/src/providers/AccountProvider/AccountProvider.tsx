@@ -48,6 +48,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const login = useCallback(async () => {
     const account = await connect(env.NETWORKID, chainId);
+    console.log(account)
     setIsMounted(true);
     setAccount(account);
     localStorage.setItem(getAccountCookieName(), JSON.stringify(account));
@@ -89,7 +90,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     const account = JSON.parse(storedAccount);
     if (!account) return;
     setAccount(account);
-    const accountInfo = await details(account?.accountName || '', env.NETWORKID, chainId);
+    const accountInfo:{guard?:any} = await details(account?.accountName || '', env.NETWORKID, chainId);
     setAccountGuard(accountInfo.guard);
     const accountDetails = await getWebauthnAccountDetails(account?.accountName || '');
     setWebauthnAccount(accountDetails);

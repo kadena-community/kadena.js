@@ -150,10 +150,12 @@ export interface ISaleAuctionInfoInput {
   price: IPactDecimal;
   sellerFungibleAccount: {
     account: string;
-    keyset: {
-      keys: string[];
-      pred: BuiltInPredicate;
-    } | object;
+    keyset:
+      | {
+          keys: string[];
+          pred: BuiltInPredicate;
+        }
+      | object;
   };
   saleType?:
     | 'marmalade-sale.conventional-auction'

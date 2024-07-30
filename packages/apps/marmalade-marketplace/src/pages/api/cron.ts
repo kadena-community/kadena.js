@@ -473,8 +473,9 @@ const sync = async (fromBlock: number, toBlock: number) => {
     }
   } catch (error) {
     await saveSettings({ isProcessing: false });
-
     throw error;
+  } finally {
+    await saveSettings({ isProcessing: false });
   }
 
   await saveSettings({ isProcessing: false });

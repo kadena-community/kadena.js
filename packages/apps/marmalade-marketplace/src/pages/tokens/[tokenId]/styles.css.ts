@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import { tokens } from '@kadena/kode-ui/styles';
-import { deviceColors } from './tokens.css';
+import { deviceColors } from '../../../styles/tokens.css';
 
 export const container = style({
   margin: '160px 15% 0',
@@ -15,6 +15,17 @@ export const secondContainer = style({
   borderRadius: tokens.kda.foundation.radius.sm,
   border: `1px solid ${deviceColors.borderColor}`,
 });
+
+export const shareContainer = style({
+  display: 'flex',
+  margin: `${tokens.kda.foundation.spacing.n4} 0% 0`,
+  gap: tokens.kda.foundation.spacing.n4,
+  
+});
+
+export const tabContainer = style({
+  backgroundColor: tokens.kda.foundation.color.background.layer.default
+})
 
 export const formContainer = style({
   display: 'flex',
@@ -56,5 +67,21 @@ export const offerContainer = style({
 
 export const flexContainer = style({
   display: 'flex',
-  gap:  tokens.kda.foundation.spacing.n4,
+  gap:  tokens.kda.foundation.spacing.n2,
+  borderRadius: tokens.kda.foundation.radius.sm,
+  border: '1 0 0 0',
 });
+
+export const flexItem = style({
+  flex: '1',
+  margin: `0 ${tokens.kda.foundation.spacing.n4}`,
+  gap: tokens.kda.foundation.spacing.n2
+})
+
+export const checkboxRow = style({
+  display: 'flex',
+  flexDirection: 'row',
+  marginBottom: tokens.kda.foundation.spacing.n2,
+  marginTop: tokens.kda.foundation.spacing.n2,
+});
+

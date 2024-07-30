@@ -15,7 +15,7 @@ import { generateSpireKeyGasCapability } from "@/utils/helper";
 
 export interface RegularSaleProps {
   tokenImageUrl: string;
-  sale: Sale
+  sale: Sale;
 }
 
 export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
@@ -24,7 +24,6 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
   const router = useRouter() as AppRouterInstance;
   const searchParams = useSearchParams();
   const { account, webauthnAccount } = useAccount();
-  console.log("Log account from bid", account)
 
   useEffect(() => {
 
@@ -45,8 +44,10 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
       chainId: sale.chainId,
       sign: createSignWithSpireKeySDK([account], onTransactionSigned),
     };
-
+  
+    console.log(env)
   const handleBuyNow = async () => {
+
     if (!webauthnAccount || !account) {
       alert("Please connect your wallet first to buy.");
       return;
@@ -58,7 +59,6 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
       networkId: env.NETWORKID,
       chainId: sale.chainId,
     }) as { account: string }
-
 
     try {
       await buyToken({
@@ -88,18 +88,14 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
           "defaults": { "networkId": config.networkId, meta: { "chainId": sale.chainId } }
         }).execute();
 
-    } catch (error) {
+      } catch (error) {
       console.error(error);
     }
   }
 
   return (
-    <div className={styles.twoColumnRow}>
-      <div className={styles.tokenInfoClass}>
-        <Button variant="primary" onClick={handleBuyNow}>
-          Buy Now
-        </Button>
-      </div>
-    </div>
+    <Button variant="primary" onClick={handleBuyNow}>
+      Buy Now
+    </Button>
   );
 }

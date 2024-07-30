@@ -1,34 +1,9 @@
 // styles.css.ts
 
 import { deviceColors } from '@/styles/tokens.css';
-import { globalStyle, style } from '@vanilla-extract/css';
+import {  style } from '@vanilla-extract/css';
 
-globalStyle('body', {
-  color: 'white',
-  backgroundColor: deviceColors.kadenaBlack,
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  backgroundRepeat: 'no-repeat',
-  backgroundAttachment: 'fixed',
-});
 
-globalStyle('a', {
-  color: 'white',
-});
-
-globalStyle('a:hover', {
-  color: 'lightgray',
-  textDecoration: 'none',
-});
-
-globalStyle('a:has(button)', {
-  textDecoration: 'none',
-  flex: 1,
-});
-
-export const mainWrapperClass = style({
-  display: 'grid',
-});
 
 export const twoColumnRow = style({
   display: 'grid',
