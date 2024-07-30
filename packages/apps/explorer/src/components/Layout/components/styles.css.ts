@@ -1,5 +1,37 @@
-import { atoms, recipe } from '@kadena/kode-ui/styles';
+import { atoms, recipe, responsiveStyle, token } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
+
+export const searchWrapperVariants = recipe({
+  variants: {
+    variant: {
+      default: {},
+      full: {
+        paddingInline: token('spacing.lg'),
+      },
+    },
+  },
+});
+export const searchWrapperClass = style([
+  atoms({
+    display: 'grid',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    gap: 'lg',
+  }),
+  {
+    gridTemplateRows: 'auto',
+    gridTemplateColumns: '100%',
+  },
+  responsiveStyle({
+    md: {
+      gap: 'unset',
+      justifyContent: 'unset',
+      gridTemplateRows: 'auto',
+      gridTemplateColumns: 'clamp(200px, 25%, 256px) auto',
+    },
+  }),
+]);
 
 export const layoutVariants = recipe({
   variants: {
@@ -7,8 +39,17 @@ export const layoutVariants = recipe({
       default: {
         gridTemplateAreas: `
                 'header header'
+                'aside aside'
+                'body  body'
+                `,
+        ...responsiveStyle({
+          md: {
+            gridTemplateAreas: `
+                'header header'
                 'aside  body'
                 `,
+          },
+        }),
       },
       full: {
         gridTemplateAreas: `
@@ -25,7 +66,7 @@ export const mainClass = style([
   }),
   {
     gridTemplateRows: 'auto',
-    gridTemplateColumns: 'clamp(200px, 25%, 256px) auto',
+    gridTemplateColumns: 'clamp(150px, 24%, 256px) auto',
   },
 ]);
 

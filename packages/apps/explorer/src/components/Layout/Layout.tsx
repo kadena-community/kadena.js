@@ -12,6 +12,10 @@ import { Logo } from '../Logo/Logo';
 import { Link } from '../Routing/Link';
 import { SearchComponent } from '../Search/SearchComponent/SearchComponent';
 import { LayoutMain } from './components/LayoutMain';
+import {
+  searchWrapperClass,
+  searchWrapperVariants,
+} from './components/styles.css';
 
 interface IProps {
   children?: ReactNode;
@@ -37,13 +41,13 @@ export const Layout: FC<IProps> = ({ children, layout = 'full' }) => {
         className={classNames(layoutWrapperClass, contentClass)}
       >
         <Stack
-          flexDirection={{ xs: 'column', sm: 'row' }}
-          alignItems="center"
-          marginInline="lg"
-          gap="md"
+          className={classNames(
+            searchWrapperClass,
+            searchWrapperVariants({ variant: layout }),
+          )}
           marginBlock="xxxl"
         >
-          <Stack position="relative">
+          <Stack position="relative" justifyContent="center" width="100%">
             <Link href="/">
               <Logo />
             </Link>

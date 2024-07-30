@@ -3,7 +3,6 @@ import { useAccountQuery } from '@/__generated__/sdk';
 import { AccountTransfersTable } from '@/components/AccountTransfersTable/AccountTransfersTable';
 import { CompactTable } from '@/components/CompactTable/CompactTable';
 import { FormatAmount } from '@/components/CompactTable/utils/formatAmount';
-import { LayoutAside } from '@/components/Layout/components/LayoutAside';
 import { LayoutBody } from '@/components/Layout/components/LayoutBody';
 import { LayoutHeader } from '@/components/Layout/components/LayoutHeader';
 import { Layout } from '@/components/Layout/Layout';
@@ -118,14 +117,13 @@ const Account: FC = () => {
   }, [fungibleAccount?.chainAccounts]);
 
   return (
-    <Layout>
+    <Layout layout="full">
       {error || !fungibleAccount ? (
         <NoSearchResults />
       ) : (
         <>
           <LayoutHeader>Account Details</LayoutHeader>
 
-          <LayoutAside>tsssest</LayoutAside>
           <LayoutBody>
             <Stack padding="md" width="100%" flexDirection="column">
               <ValueLoader isLoading={isLoading}>
