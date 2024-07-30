@@ -1,4 +1,3 @@
-import { deviceColors } from '@/styles/tokens.css';
 import { tokens } from '@kadena/kode-ui/styles';
 import '@kadena/kode-ui/global';
 import { globalStyle, style } from '@vanilla-extract/css';
@@ -34,7 +33,6 @@ export const mainWrapperClass = style({
 });
 
 export const secondaryTextClass = style({
-  color: deviceColors.kadenaFont,
   opacity: '.8',
   textAlign: 'center',
 });

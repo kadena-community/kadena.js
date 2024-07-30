@@ -67,12 +67,9 @@ export const getPolicies = (policyConfig: ICreateTokenPolicyConfig) => {
     pred: 'keys-all' as BuiltInPredicate,
   });
 
-  export const formatAccount = (account: string, key: string) => ({
+  export const formatAccount = (account: string, guard: any) => ({
     account,
-    keyset: {
-      keys: [key],
-      pred: 'keys-all' as BuiltInPredicate,
-    },
+    keyset: guard,
   });
 
   export const generateSpireKeyGasCapability = (account:string): CommonProps['capabilities'] => {

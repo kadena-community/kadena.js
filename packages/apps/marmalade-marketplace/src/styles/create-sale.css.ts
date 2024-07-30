@@ -1,19 +1,18 @@
 import { style } from '@vanilla-extract/css';
 import { tokens } from '@kadena/kode-ui/styles';
-import { deviceColors } from './tokens.css';
 
 export const container = style({
   margin: '160px 15% 0',
   backgroundColor: tokens.kda.foundation.color.background.surface.default,
   borderRadius: tokens.kda.foundation.radius.sm,
-  border: `1px solid ${deviceColors.borderColor}`,
+  border: `1px solid ${tokens.kda.foundation.color.border.base.subtle}`,
 });
 
 export const secondContainer = style({
   margin: '50px 15% 0',
   backgroundColor: tokens.kda.foundation.color.background.surface.default,
   borderRadius: tokens.kda.foundation.radius.sm,
-  border: `1px solid ${deviceColors.borderColor}`,
+  border: `1px solid ${tokens.kda.foundation.color.border.base.subtle}`,
 });
 
 export const formContainer = style({

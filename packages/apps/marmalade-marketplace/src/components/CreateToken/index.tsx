@@ -278,7 +278,7 @@ function CreateTokenComponent() {
       ...input,
       chainId: input.chainId as ChainId,
       precision: createPrecision(input.precision),
-      creator: formatAccount(account?.accountName || '', account?.devices[0].guard.keys[0] || ''),
+      creator: formatAccount(account?.accountName || '', account?.guard),
     };
   };
 

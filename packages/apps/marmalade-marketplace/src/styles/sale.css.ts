@@ -1,11 +1,7 @@
-// styles.css.ts
-
-import { deviceColors } from '@/styles/tokens.css';
 import { globalStyle, style } from '@vanilla-extract/css';
 
 globalStyle('body', {
-  color: 'white',
-  backgroundColor: deviceColors.kadenaBlack,
+  color: 'white',  
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
