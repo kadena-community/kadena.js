@@ -2,6 +2,8 @@ import type { EventsQuery } from '@/__generated__/sdk';
 import { useEventsQuery } from '@/__generated__/sdk';
 import { CompactTable } from '@/components/CompactTable/CompactTable';
 import { FormatLink } from '@/components/CompactTable/utils/formatLink';
+import { LayoutBody } from '@/components/Layout/components/LayoutBody';
+import { LayoutHeader } from '@/components/Layout/components/LayoutHeader';
 import { Layout } from '@/components/Layout/Layout';
 import { loadingEventData } from '@/components/LoadingSkeleton/loadingData/loadingDataEventquery';
 import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
@@ -10,8 +12,6 @@ import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { block } from '@/graphql/queries/block.graph';
 import { useRouter } from '@/hooks/router';
-import { Heading, Stack } from '@kadena/kode-ui';
-import { atoms } from '@kadena/kode-ui/styles';
 
 import React, { useEffect, useState } from 'react';
 
@@ -62,46 +62,36 @@ const Height: React.FC = () => {
     <Layout>
       {innerData && innerData.events.edges.length ? (
         <>
-          <Stack margin="md">
-            <Heading
-              as="h1"
-              className={atoms({
-                display: 'flex',
-                width: '100%',
-                alignItems: 'center',
-              })}
-            >
-              Events
-            </Heading>
-          </Stack>
-
-          <CompactTable
-            isLoading={isLoading}
-            fields={[
-              {
-                label: 'ChainId',
-                key: 'node.chainId',
-                width: '20%',
-              },
-              {
-                label: 'Height',
-                key: 'node.block.height',
-                width: '20%',
-              },
-              {
-                label: 'RequestKey',
-                key: 'node.requestKey',
-                width: '20%',
-                render: FormatLink({ appendUrl: '/transaction' }),
-              },
-              {
-                label: 'Parameters',
-                key: 'node.parameters',
-                width: '40%',
-              },
-            ]}
-            data={innerData.events.edges}
-          />
+          <LayoutHeader>Events</LayoutHeader>
+          <LayoutBody>
+            <CompactTable
+              isLoading={isLoading}
+              fields={[
+                {
+                  label: 'ChainId',
+                  key: 'node.chainId',
+                  width: '20%',
+                },
+                {
+                  label: 'Height',
+                  key: 'node.block.height',
+                  width: '20%',
+                },
+                {
+                  label: 'RequestKey',
+                  key: 'node.requestKey',
+                  width: '20%',
+                  render: FormatLink({ appendUrl: '/transaction' }),
+                },
+                {
+                  label: 'Parameters',
+                  key: 'node.parameters',
+                  width: '40%',
+                },
+              ]}
+              data={innerData.events.edges}
+            />
+          </LayoutBody>
         </>
       ) : (
         <NoSearchResults />

@@ -3,6 +3,8 @@ import { useBlocksFromHeightQuery } from '@/__generated__/sdk';
 import { blockHeightLoading } from '@/components/BlockTable/loadingBlockHeightData';
 import { CompactTable } from '@/components/CompactTable/CompactTable';
 import { FormatLink } from '@/components/CompactTable/utils/formatLink';
+import { LayoutBody } from '@/components/Layout/components/LayoutBody';
+import { LayoutHeader } from '@/components/Layout/components/LayoutHeader';
 import { Layout } from '@/components/Layout/Layout';
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
 import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
@@ -12,8 +14,6 @@ import { useSearch } from '@/context/searchContext';
 import { block } from '@/graphql/queries/block.graph';
 import { useRouter } from '@/hooks/router';
 import { truncateValues } from '@/services/format';
-import { Heading, Stack } from '@kadena/kode-ui';
-import { atoms } from '@kadena/kode-ui/styles';
 
 import React, { useEffect, useState } from 'react';
 
@@ -68,47 +68,40 @@ const Height: React.FC = () => {
     <Layout>
       {innerData && innerData.blocksFromHeight ? (
         <>
-          <Stack margin="md">
-            <Heading
-              as="h1"
-              className={atoms({
-                display: 'flex',
-                width: '100%',
-                alignItems: 'center',
+          <LayoutHeader>
+            <ValueLoader isLoading={isLoading}>
+              Block Height{' '}
+              {truncateValues(router.query.height as string, {
+                length: 16,
+                endChars: 5,
               })}
-            >
-              <ValueLoader isLoading={isLoading}>
-                Block Height{' '}
-                {truncateValues(router.query.height as string, {
-                  length: 16,
-                  endChars: 5,
-                })}
-              </ValueLoader>
-            </Heading>
-          </Stack>
+            </ValueLoader>
+          </LayoutHeader>
 
-          <CompactTable
-            isLoading={isLoading}
-            fields={[
-              {
-                label: 'ChainId',
-                key: 'node.chainId',
-                width: '20%',
-              },
-              {
-                label: 'Height',
-                key: 'node.height',
-                width: '20%',
-              },
-              {
-                label: 'Hash',
-                key: 'node.hash',
-                width: '60%',
-                render: FormatLink({ appendUrl: '/block' }),
-              },
-            ]}
-            data={innerData?.blocksFromHeight.edges ?? []}
-          />
+          <LayoutBody>
+            <CompactTable
+              isLoading={isLoading}
+              fields={[
+                {
+                  label: 'ChainId',
+                  key: 'node.chainId',
+                  width: '20%',
+                },
+                {
+                  label: 'Height',
+                  key: 'node.height',
+                  width: '20%',
+                },
+                {
+                  label: 'Hash',
+                  key: 'node.hash',
+                  width: '60%',
+                  render: FormatLink({ appendUrl: '/block' }),
+                },
+              ]}
+              data={innerData?.blocksFromHeight.edges ?? []}
+            />
+          </LayoutBody>
         </>
       ) : (
         <NoSearchResults />

@@ -1,5 +1,7 @@
 import type { TransactionRequestKeyQuery } from '@/__generated__/sdk';
 import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
+import { LayoutBody } from '@/components/Layout/components/LayoutBody';
+import { LayoutHeader } from '@/components/Layout/components/LayoutHeader';
 import { Layout } from '@/components/Layout/Layout';
 import { loadingTransactionData } from '@/components/LoadingSkeleton/loadingData/loadingDataTransactionRequestKeyQuery';
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
@@ -12,7 +14,7 @@ import { useSearch } from '@/context/searchContext';
 import { transactionRequestKey } from '@/graphql/pages/transaction/transaction-requestkey.graph';
 import { useRouter } from '@/hooks/router';
 import { truncateValues } from '@/services/format';
-import { Heading, Stack, TabItem, Tabs } from '@kadena/kode-ui';
+import { TabItem, Tabs } from '@kadena/kode-ui';
 import React, { useEffect, useState } from 'react';
 
 const Transaction: React.FC = () => {
@@ -66,34 +68,34 @@ const Transaction: React.FC = () => {
 
   return (
     <Layout>
-      {data && data.transaction ? (
+      {innerData && innerData.transaction ? (
         <>
-          <Stack margin="md">
-            <Heading as="h1" className="truncate">
-              <ValueLoader isLoading={isLoading}>
-                Transaction{' '}
-                {truncateValues(innerData.transaction?.hash, {
-                  length: 16,
-                  endChars: 5,
-                })}
-              </ValueLoader>
-            </Heading>
-          </Stack>
+          <LayoutHeader>
+            <ValueLoader isLoading={isLoading}>
+              Transaction{' '}
+              {truncateValues(innerData.transaction?.hash, {
+                length: 16,
+                endChars: 5,
+              })}
+            </ValueLoader>
+          </LayoutHeader>
 
-          <Tabs>
-            <TabItem title="Request" key="Request">
-              <TransactionRequestComponent
-                isLoading={isLoading}
-                transaction={innerData.transaction}
-              />
-            </TabItem>
-            <TabItem title="Result" key="Result">
-              <TransactionResultComponent
-                isLoading={isLoading}
-                transaction={innerData.transaction?.result}
-              />
-            </TabItem>
-          </Tabs>
+          <LayoutBody>
+            <Tabs>
+              <TabItem title="Request" key="Request">
+                <TransactionRequestComponent
+                  isLoading={isLoading}
+                  transaction={innerData.transaction}
+                />
+              </TabItem>
+              <TabItem title="Result" key="Result">
+                <TransactionResultComponent
+                  isLoading={isLoading}
+                  transaction={innerData.transaction?.result}
+                />
+              </TabItem>
+            </Tabs>
+          </LayoutBody>
         </>
       ) : (
         <NoSearchResults />

@@ -11,12 +11,14 @@ import { useSearch } from '@/context/searchContext';
 import { Logo } from '../Logo/Logo';
 import { Link } from '../Routing/Link';
 import { SearchComponent } from '../Search/SearchComponent/SearchComponent';
+import { LayoutMain } from './components/LayoutMain';
 
 interface IProps {
   children?: ReactNode;
+  layout?: 'default' | 'full';
 }
 
-export const Layout: FC<IProps> = ({ children }: IProps) => {
+export const Layout: FC<IProps> = ({ children, layout = 'full' }) => {
   const {
     setSearchQuery,
     searchQuery,
@@ -56,7 +58,7 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
           />
         </Stack>
 
-        {children}
+        <LayoutMain layout={layout}>{children}</LayoutMain>
       </Stack>
       <Footer />
     </div>

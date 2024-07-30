@@ -3,6 +3,9 @@ import { useAccountQuery } from '@/__generated__/sdk';
 import { AccountTransfersTable } from '@/components/AccountTransfersTable/AccountTransfersTable';
 import { CompactTable } from '@/components/CompactTable/CompactTable';
 import { FormatAmount } from '@/components/CompactTable/utils/formatAmount';
+import { LayoutAside } from '@/components/Layout/components/LayoutAside';
+import { LayoutBody } from '@/components/Layout/components/LayoutBody';
+import { LayoutHeader } from '@/components/Layout/components/LayoutHeader';
 import { Layout } from '@/components/Layout/Layout';
 import { loadingData } from '@/components/LoadingSkeleton/loadingData/loadingDataAccountquery';
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
@@ -114,88 +117,92 @@ const Account: FC = () => {
     });
   }, [fungibleAccount?.chainAccounts]);
 
-  console.log(innerData);
   return (
     <Layout>
       {error || !fungibleAccount ? (
         <NoSearchResults />
       ) : (
         <>
-          <Stack padding="md" width="100%" flexDirection="column">
-            <ValueLoader isLoading={isLoading}>
-              <Heading as="h5">
-                {parseFloat(fungibleAccount?.totalBalance).toFixed(2)} KDA
-                spread across {fungibleAccount?.chainAccounts.length} Chains for
-                account{' '}
-              </Heading>
-            </ValueLoader>
-            <Stack
-              marginBlockStart="xs"
-              width="100%"
-              style={{ maxWidth: `calc(100% - 15px)` }}
-            >
+          <LayoutHeader>Account Details</LayoutHeader>
+
+          <LayoutAside>tsssest</LayoutAside>
+          <LayoutBody>
+            <Stack padding="md" width="100%" flexDirection="column">
               <ValueLoader isLoading={isLoading}>
-                <Text as="span" className={accountNameTextClass}>
-                  {fungibleAccount?.accountName}
-                </Text>
+                <Heading as="h5">
+                  {parseFloat(fungibleAccount?.totalBalance).toFixed(2)} KDA
+                  spread across {fungibleAccount?.chainAccounts.length} Chains
+                  for account{' '}
+                </Heading>
               </ValueLoader>
-            </Stack>
-          </Stack>
-
-          <CompactTable
-            isLoading={isLoading}
-            label="Keys table"
-            fields={[
-              {
-                label: 'ChainId',
-                key: 'chainId',
-                width: '10%',
-              },
-              {
-                variant: 'code',
-                label: 'Key',
-                key: 'key',
-                width: '40%',
-              },
-              {
-                label: 'Predicate',
-                key: 'predicate',
-                width: '20%',
-              },
-              {
-                label: 'Balance',
-                key: 'balance',
-                width: '30%',
-                align: 'end',
-                render: FormatAmount(),
-              },
-            ]}
-            data={keys}
-          />
-
-          <Stack
-            width="100%"
-            gap="md"
-            flexDirection={{ xs: 'column-reverse', md: 'row' }}
-          >
-            <Stack flex={1} flexDirection="column" marginBlockStart="lg">
-              <Tabs
-                selectedKey={selectedTab}
-                onSelectionChange={handleSelectedTab}
+              <Stack
+                marginBlockStart="xs"
+                width="100%"
+                style={{ maxWidth: `calc(100% - 15px)` }}
               >
-                {/* TODO enable when index for sender is fixed */}
-                {/* <TabItem
+                <ValueLoader isLoading={isLoading}>
+                  <Text as="span" className={accountNameTextClass}>
+                    {fungibleAccount?.accountName}
+                  </Text>
+                </ValueLoader>
+              </Stack>
+            </Stack>
+
+            <CompactTable
+              isLoading={isLoading}
+              label="Keys table"
+              fields={[
+                {
+                  label: 'ChainId',
+                  key: 'chainId',
+                  width: '10%',
+                },
+                {
+                  variant: 'code',
+                  label: 'Key',
+                  key: 'key',
+                  width: '40%',
+                },
+                {
+                  label: 'Predicate',
+                  key: 'predicate',
+                  width: '20%',
+                },
+                {
+                  label: 'Balance',
+                  key: 'balance',
+                  width: '30%',
+                  align: 'end',
+                  render: FormatAmount(),
+                },
+              ]}
+              data={keys}
+            />
+
+            <Stack
+              width="100%"
+              gap="md"
+              flexDirection={{ xs: 'column-reverse', md: 'row' }}
+            >
+              <Stack flex={1} flexDirection="column" marginBlockStart="lg">
+                <Tabs
+                  selectedKey={selectedTab}
+                  onSelectionChange={handleSelectedTab}
+                >
+                  {/* TODO enable when index for sender is fixed */}
+                  {/* <TabItem
               title={`Transactions`}
               key="Transactions"
             >
               <AccountTransactionsTable accountName={accountName} />
             </TabItem> */}
-                <TabItem title={`Transfers`} key="Transfers">
-                  <AccountTransfersTable accountName={accountName} />
-                </TabItem>
-              </Tabs>
+                  <TabItem title={`Transfers`} key="Transfers">
+                    <AccountTransfersTable accountName={accountName} />
+                  </TabItem>
+                </Tabs>
+              </Stack>
             </Stack>
-          </Stack>
+          </LayoutBody>
         </>
       )}
     </Layout>
