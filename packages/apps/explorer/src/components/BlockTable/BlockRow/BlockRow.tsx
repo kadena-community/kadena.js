@@ -43,8 +43,6 @@ export const BlockRow: React.FC<IBlockTableRowProps> = ({
     blockRowData[heights[0]]?.difficulty ||
     'N/A';
 
-  console.log({ blockDifficulty });
-
   const isShowBlockDetails = selectedChainId === chainId;
 
   return (

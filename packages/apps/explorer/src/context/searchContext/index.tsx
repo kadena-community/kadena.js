@@ -76,6 +76,11 @@ const SearchContextProvider = (props: {
         setSearchQuery(router.query.requestKey as string);
         setOldSearchQuery(router.query.requestKey as string);
         break;
+      default:
+        setSearchOption(null);
+        setOldSearchOption(null);
+        setSearchQuery('');
+        setOldSearchQuery('');
     }
   }, [router.asPath]);
 

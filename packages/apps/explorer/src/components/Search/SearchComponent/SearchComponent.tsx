@@ -123,17 +123,20 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
       e.preventDefault();
       setOptionClicked(false);
       handleSearch(editHover);
+      setIsEditing(false);
     } else if (e.key === 'Escape') {
       setOptionClicked(false);
       setIsEditing(false);
     } else {
       setOptionClicked(false);
+      setIsEditing(true);
     }
   };
 
   useEffect(() => {
     setInnerSearchOption(searchOption);
-  }, [searchOption]);
+    if (ref.current) ref.current.value = searchQuery ?? '';
+  }, [searchOption, searchQuery]);
 
   //on scroll remove the dropdown
   useEffect(() => {
