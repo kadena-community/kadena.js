@@ -16,7 +16,6 @@ describe('formatJson', () => {
 
   it('should return the given string if json is malformatted', () => {
     const json = "{ id: 'Not formatted with quotes' }";
-
     const result = formatJson(json);
 
     expect(result).toEqual(json);
