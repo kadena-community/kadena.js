@@ -2,7 +2,6 @@ import { ICreateTokenPolicyConfig, CommonProps } from "@kadena/client-utils/marm
 import { BuiltInPredicate } from "@kadena/client";
 import { PactNumber } from "@kadena/pactjs";
 import { env } from '@/utils/env';
-
 export const getPolicies = (policyConfig: ICreateTokenPolicyConfig) => {
     const policyMap: { [key: string]: string } = {
       nonUpdatableURI: "marmalade-v2.non-updatable-uri-policy-v1",
@@ -112,3 +111,7 @@ export const getPolicies = (policyConfig: ICreateTokenPolicyConfig) => {
     return result;
   };
 
+export const isPrecise = (n:number, precision:number):boolean => {
+  const length = String(n).split(".")[1] ? String(n).split(".")[1].length : 0;
+  return length === precision;
+}

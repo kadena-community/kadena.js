@@ -15,6 +15,17 @@ export const secondContainer = style({
   border: `1px solid ${tokens.kda.foundation.color.border.base.subtle}`,
 });
 
+export const shareContainer = style({
+  display: 'flex',
+  margin: `${tokens.kda.foundation.spacing.n4} 0% 0`,
+  gap: tokens.kda.foundation.spacing.n4,
+  
+});
+
+export const tabContainer = style({
+  backgroundColor: tokens.kda.foundation.color.background.layer.default
+})
+
 export const formContainer = style({
   display: 'flex',
   flexDirection: 'column',
@@ -52,3 +63,24 @@ export const offerContainer = style({
   flexDirection: 'column',
   gap: tokens.kda.foundation.spacing.n4,
 });
+
+export const flexContainer = style({
+  display: 'flex',
+  gap:  tokens.kda.foundation.spacing.n2,
+  borderRadius: tokens.kda.foundation.radius.sm,
+  border: '1 0 0 0',
+});
+
+export const flexItem = style({
+  flex: '1',
+  margin: `0 ${tokens.kda.foundation.spacing.n4}`,
+  gap: tokens.kda.foundation.spacing.n2
+})
+
+export const checkboxRow = style({
+  display: 'flex',
+  flexDirection: 'row',
+  marginBottom: tokens.kda.foundation.spacing.n2,
+  marginTop: tokens.kda.foundation.spacing.n2,
+});
+

@@ -3,7 +3,9 @@ import { buyToken, getEscrowAccount } from "@kadena/client-utils/marmalade";
 import * as styles from "@/styles/sale.css"
 import { env } from "@/utils/env";
 import { Button } from "@kadena/kode-ui";
-import { createSignWithSpireKey } from "@/utils/signWithSpireKey";
+import { createSignWithSpireKeySDK } from "@/utils/signWithSpireKey";
+import { useTransaction } from '@/hooks/transaction';
+import { ICommand, IUnsignedCommand } from '@kadena/client';
 import { Sale } from "@/hooks/getSales";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
@@ -13,10 +15,11 @@ import { generateSpireKeyGasCapability } from "@/utils/helper";
 
 export interface RegularSaleProps {
   tokenImageUrl: string;
-  sale: Sale
+  sale: Sale;
 }
 
 export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
+  const { setTransaction } = useTransaction();
 
   const router = useRouter() as AppRouterInstance;
   const searchParams = useSearchParams();
@@ -30,14 +33,19 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
     }
 
   }, [])
-
-  const config = {
-    host: env.URL,
-    networkId: env.NETWORKID,
-    chainId: sale.chainId,
-    sign: createSignWithSpireKey(router, { host: env.WALLET_URL ?? '' }),
-  };
-
+  
+  const onTransactionSigned = (transaction: IUnsignedCommand | ICommand) => {
+    setTransaction(transaction);
+    router.push(`/transaction?returnUrl=/tokens`);
+  }
+    const config = {
+      host: env.URL,
+      networkId: env.NETWORKID,
+      chainId: sale.chainId,
+      sign: createSignWithSpireKeySDK([account], onTransactionSigned),
+    };
+  
+    console.log(env)
   const handleBuyNow = async () => {
     if (!account) {
       alert("Please connect your wallet first to buy.");
@@ -51,9 +59,8 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
       chainId: sale.chainId,
     }) as { account: string }
 
-    // TODO: Read guard differently after Spirekey SDK is updated
-    const guard = account.devices[0].guard
-    const key = guard.keys[0];    
+    // TODO: Update key to r:account's public key 
+    const key = ''
 
     try {
       await buyToken({
@@ -64,17 +71,16 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
         seller: {
           account: sale.seller.account,
         },
-        signer: key || '',
+        signer: key || '', 
         buyer: {
           account: account.accountName,
-          keyset: guard,
+          keyset: account.guard,
         },
         buyerFungibleAccount: account.accountName,
         capabilities: [
-          ...generateSpireKeyGasCapability(account.accountName)!,
-          {
-            name: 'coin.TRANSFER',
-            props: [account.accountName, escrowAccount["account"], new PactNumber(sale.startPrice).toPactDecimal()]
+          ...generateSpireKeyGasCapability(account.accountName)!,          
+          {name: `marmalade-v2.ledger.BUY`, 
+            props: [sale.tokenId, sale.seller.account, account.accountName, 1.0, sale.saleId]
           },
         ],
         meta: {senderAccount: account.accountName}
@@ -84,25 +90,14 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
           "defaults": { "networkId": config.networkId, meta: { "chainId": sale.chainId } }
         }).execute();
 
-    } catch (error) {
+      } catch (error) {
       console.error(error);
     }
   }
 
   return (
-    <div className={styles.twoColumnRow}>
-      <img
-        src={tokenImageUrl}
-        alt="Token Image"
-        className={styles.tokenImageClass}
-      />
-      <div className={styles.tokenInfoClass}>
-        Price: {sale.startPrice}
-
-        <Button variant="primary" onClick={handleBuyNow}>
-          Buy Now
-        </Button>
-      </div>
-    </div>
+    <Button variant="primary" onClick={handleBuyNow}>
+      Buy Now
+    </Button>
   );
 }

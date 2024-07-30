@@ -8,23 +8,6 @@ globalStyle('body', {
   backgroundAttachment: 'fixed',
 });
 
-globalStyle('a', {
-  color: 'white',
-});
-
-globalStyle('a:hover', {
-  color: 'lightgray',
-  textDecoration: 'none',
-});
-
-globalStyle('a:has(button)', {
-  textDecoration: 'none',
-  flex: 1,
-});
-
-export const mainWrapperClass = style({
-  display: 'grid',
-});
 
 export const twoColumnRow = style({
   display: 'grid',

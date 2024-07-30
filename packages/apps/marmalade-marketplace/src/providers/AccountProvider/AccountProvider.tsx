@@ -4,7 +4,6 @@ import { connect, initSpireKey, type Account } from '@kadena/spirekey-sdk';
 import { useRouter, useSearchParams } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
-
 interface IAccountError {
   message: string;
 }
@@ -45,6 +44,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const login = useCallback(async () => {
     const account = await connect(env.NETWORKID, chainId);
+    console.log(account)
     setIsMounted(true);
     setAccount(account);
     localStorage.setItem(getAccountCookieName(), JSON.stringify(account));

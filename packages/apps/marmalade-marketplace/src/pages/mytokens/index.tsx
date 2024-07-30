@@ -13,7 +13,8 @@ export default function MyTokens() {
     if (!accountName) return;
 
     const tokens = await getTokens(accountName);
-    setTokens(tokens);
+    console.log(tokens)
+    setTokens(tokens.filter(token => token.balance > 0));
   };
 
   useEffect(() => {
@@ -34,8 +35,8 @@ export default function MyTokens() {
         gap="xl">
         {tokens.map((token) => (
           <GridItem key={token.tokenId}>
-            <a href={`/tokens/${token.tokenId}`}>
-              <Token tokenId={token.tokenId} chainId={token.chainId as ChainId} balance={token.balance} />
+            <a href={`/tokens/${token.tokenId}?chainId=${token.chainId}`}>
+              <Token tokenId={token.tokenId} chainId={token.chainId as ChainId} balance={token.balance}/>
             </a>
           </GridItem>
         ))}
