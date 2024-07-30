@@ -7,7 +7,7 @@ import { Grid, GridItem, Stack, Heading } from "@kadena/kode-ui";
 
 export default function MyTokens() {
   const [tokens, setTokens] = useState<Array<NonFungibleTokenBalance>>([]);
-  const { webauthnAccount } = useAccount();
+  const { account } = useAccount();
 
   const fetchTokens = async (accountName?:string) => {
     if (!accountName) return;
@@ -17,13 +17,14 @@ export default function MyTokens() {
   };
 
   useEffect(() => {
-    fetchTokens(webauthnAccount?.account);
-  }, [webauthnAccount?.account]);
+    fetchTokens(account?.accountName);    
+  }, [account?.accountName]);
 
   return (
     <Stack flex={1} flexDirection="column">
       <Heading as="h1">My Tokens</Heading>
       <Grid
+        style={{ marginTop: "25px" }}
         columns={{
           lg: 4,
           md: 3,
@@ -34,7 +35,7 @@ export default function MyTokens() {
         {tokens.map((token) => (
           <GridItem key={token.tokenId}>
             <a href={`/tokens/${token.tokenId}`}>
-              <Token tokenId={token.tokenId} chainId={token.chainId as ChainId} />
+              <Token tokenId={token.tokenId} chainId={token.chainId as ChainId} balance={token.balance} />
             </a>
           </GridItem>
         ))}

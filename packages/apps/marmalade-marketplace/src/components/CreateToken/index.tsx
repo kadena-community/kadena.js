@@ -29,7 +29,6 @@ function CreateTokenComponent() {
   const excluded = "[EXCLUDED]";
   let tokenId = '';
 
-  const [walletKey, setWalletKey] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>();
   const [base64Image, setBase64Image] = useState('');
@@ -59,39 +58,37 @@ function CreateTokenComponent() {
   });
 
   const [guardInput, setGuardInput] = useState({
-    uriGuard: walletKey,
-    burnGuard: walletKey,
-    mintGuard: walletKey,
-    saleGuard: walletKey,
-    transferGuard: walletKey,
+    uriGuard: account?.guard,
+    burnGuard: account?.guard,
+    mintGuard: account?.guard,
+    saleGuard: account?.guard,
+    transferGuard: account?.guard,
   });
 
   const [royaltyInput, setRoyaltyInput] = useState({
     royaltyFungible: 'coin',
     royaltyCreator: account?.accountName ?? '',
-    royaltyGuard: walletKey,
+    royaltyGuard: account?.guard,
     royaltyRate: '0.05',
   });
 
   useEffect(() => {
-    if (account) {
-      // TODO: Read guard differently after Spirekey SDK is updated
-      const key = account.devices[0].guard.keys[0];      
-
+    if (account) {      
+      const guard = account.guard
+      
       setGuardInput({
-        uriGuard: key,
-        burnGuard: key,
-        mintGuard: key,
-        saleGuard: key,
-        transferGuard: key,
+        uriGuard: guard,
+        burnGuard: guard,
+        mintGuard: guard,
+        saleGuard: guard,
+        transferGuard: guard,
       });
 
       setRoyaltyInput(prev => ({
         ...prev,
         royaltyCreator: account.accountName,
-        royaltyGuard: key
-      }));
-      setWalletKey(key);
+        royaltyGuard: account.guard,
+      }));      
     }
   }, [account]);
 
@@ -136,7 +133,7 @@ function CreateTokenComponent() {
   const handleGuardExcludeChange = (name: string, checked: boolean) => {
     setGuardInput((prevState) => ({
       ...prevState,
-      [name]: checked ? excluded : walletKey,
+      [name]: checked ? excluded : account?.guard,
     }));
   };
 
@@ -327,7 +324,7 @@ function CreateTokenComponent() {
               <TextField
                 label="Creation Guard"
                 name="CreationGuard"
-                value={walletKey}
+                value={JSON.stringify(account?.guard)}
                 disabled
               />
               <NumberField

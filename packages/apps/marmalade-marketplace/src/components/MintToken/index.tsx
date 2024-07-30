@@ -91,19 +91,13 @@ function MintTokenComponent() {
         throw new Error("Spirekey account not found");
       }
 
-      const walletAccount = account?.accountName || '';
-      // TODO: Read guard differently after Spirekey SDK is updated
-      const keyset = account.devices[0].guard    
+      const walletAccount = account?.accountName || '';     
 
       await mintToken({
         policyConfig: result,
         tokenId: tokenId,
         accountName: walletAccount,
-        guard: {
-          account: walletAccount,
-          keyset: keyset
-        },
-        // guard: 'n_a8850e2c3b0026e8a774fa8b7b822d5909ffc2c8.spirekey-keyset',
+        guard: account?.guard,        
         amount: amountFormatted,
         chainId: config.chainId as ChainId,
         capabilities: generateSpireKeyGasCapability(walletAccount),
