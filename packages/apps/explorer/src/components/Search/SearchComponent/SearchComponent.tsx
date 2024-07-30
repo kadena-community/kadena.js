@@ -97,6 +97,7 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
     if (!value) {
       setSearchOption(null);
       setInnerSearchOption(null);
+      setSearchQuery && setSearchQuery('');
       setIsEditing(false);
       return;
     } else {
