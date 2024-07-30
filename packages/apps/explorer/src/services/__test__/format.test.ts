@@ -1,7 +1,45 @@
+import type { NetworkInfo } from '@/__generated__/sdk';
 import { describe, expect, it } from 'vitest';
-import { formatNumberWithUnit, truncateValues } from '../format';
+import {
+  formatNumberWithUnit,
+  formatStatisticsData,
+  truncateValues,
+} from '../format';
 
 describe('format service', () => {
+  describe('formatStatisticsData', () => {
+    it('should return default values if there is no network info', () => {
+      const result = formatStatisticsData(null);
+      expect(result).toEqual([
+        { label: 'Est. Network Hash', value: '0 H/s' },
+        { label: 'Total Difficulty', value: '0  H' },
+        { label: 'Transactions', value: '0' },
+        { label: 'Circulating Coins', value: '0' },
+      ]);
+    });
+
+    it('should return the correct data in array', () => {
+      const networkinfo: NetworkInfo = {
+        apiVersion: '0.0',
+        networkHost: 'http://localhost:1848',
+        networkId: 'mainnet01',
+        transactionCount: 122315680,
+        coinsInCirculation: 282680541.01543,
+        networkHashRate: 745385289638286100,
+        totalDifficulty: 22539309104514253000,
+        __typename: 'NetworkInfo',
+      };
+
+      const result = formatStatisticsData(networkinfo);
+
+      expect(result).toEqual([
+        { label: 'Est. Network Hash', value: '745.39 PH/s' },
+        { label: 'Total Difficulty', value: '22.54 EH' },
+        { label: 'Transactions', value: '122.32 M' },
+        { label: 'Circulating Coins', value: '282.68 M' },
+      ]);
+    });
+  });
   describe('formatNumberWithUnit', () => {
     it('should "0" if number is 0', () => {
       const result = formatNumberWithUnit(0);

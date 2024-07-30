@@ -1,7 +1,7 @@
 import type { TransactionRequestKeyQuery } from '@/__generated__/sdk';
 import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
 import { Layout } from '@/components/Layout/Layout';
-import { loadingTransactionData } from '@/components/LoadingSkeleton/loadingData/transactionDataLoading';
+import { loadingTransactionData } from '@/components/LoadingSkeleton/loadingData/loadingDataTransactionRequestKeyQuery';
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
 import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
