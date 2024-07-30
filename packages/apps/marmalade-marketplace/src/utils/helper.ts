@@ -1,5 +1,5 @@
 import { ICreateTokenPolicyConfig, CommonProps } from "@kadena/client-utils/marmalade";
-import { BuiltInPredicate, ChainId } from "@kadena/client";
+import { BuiltInPredicate } from "@kadena/client";
 import { PactNumber } from "@kadena/pactjs";
 import { env } from '@/utils/env';
 
@@ -79,9 +79,8 @@ export const getPolicies = (policyConfig: ICreateTokenPolicyConfig) => {
   });
 
   export const generateSpireKeyGasCapability = (account:string): CommonProps['capabilities'] => {
-    const capabilities:CommonProps['capabilities'] = [];
-    capabilities.push({name: `${env.WEBAUTHN_WALLET}.GAS_PAYER`, props: [account, new PactNumber(0).toPactInteger(), new PactNumber(0).toPactDecimal() ]});
-    capabilities.push({name: `${env.WEBAUTHN_WALLET}.GAS`, props: [account]});
+    const capabilities:CommonProps['capabilities'] = [];    
+    capabilities.push({name: 'coin.GAS', props: [account]});
     return capabilities;
   };
 

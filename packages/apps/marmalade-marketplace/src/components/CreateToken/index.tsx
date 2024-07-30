@@ -23,7 +23,7 @@ import { useTransaction } from '@/hooks/transaction';
 
 function CreateTokenComponent() {
   const router = useRouter();
-  const { account, webauthnAccount } = useAccount();
+  const { account } = useAccount();
   const { setTransaction } = useTransaction();
 
   const excluded = "[EXCLUDED]";
@@ -68,14 +68,15 @@ function CreateTokenComponent() {
 
   const [royaltyInput, setRoyaltyInput] = useState({
     royaltyFungible: 'coin',
-    royaltyCreator: webauthnAccount?.account ?? '',
+    royaltyCreator: account?.accountName ?? '',
     royaltyGuard: walletKey,
     royaltyRate: '0.05',
   });
 
   useEffect(() => {
-    if (webauthnAccount) {
-      const key = webauthnAccount.guard.keys[0];
+    if (account) {
+      // TODO: Read guard differently after Spirekey SDK is updated
+      const key = account.devices[0].guard.keys[0];      
 
       setGuardInput({
         uriGuard: key,
@@ -87,12 +88,12 @@ function CreateTokenComponent() {
 
       setRoyaltyInput(prev => ({
         ...prev,
-        royaltyCreator: webauthnAccount.account,
+        royaltyCreator: account.accountName,
         royaltyGuard: key
       }));
       setWalletKey(key);
     }
-  }, [webauthnAccount]);
+  }, [account]);
 
   const onTransactionSigned = (transaction: IUnsignedCommand | ICommand) => {
     setTransaction(transaction);

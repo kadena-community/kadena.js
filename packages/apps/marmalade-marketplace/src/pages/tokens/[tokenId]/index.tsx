@@ -91,7 +91,6 @@ useEffect(() => {
 
   const onCreateSalePress = async () => {
     if (
-      !account.webauthnAccount ||
       !account.account ||
       !saleData.tokenId ||
       !saleData.chainId ||
@@ -106,6 +105,9 @@ useEffect(() => {
       sign: createSignWithSpireKeySDK([account.account.accountName], onTransactionSigned),
     };
 
+    // TODO: Read guard differently after Spirekey SDK is updated
+    const guard = account.account.devices[0].guard
+
     const saleId = await offerToken(
       {...saleData, 
         tokenId: tokenId,
@@ -113,8 +115,8 @@ useEffect(() => {
         timeout: new PactNumber(Math.floor(new Date().getTime()/1000) + (saleData.timeout ?? 0) * 24 * 60 * 60).toPactInteger(),
         amount:  new PactNumber(Number(saleData.amount)).toPactDecimal(),
         seller: {
-          account: account.webauthnAccount.account,
-          keyset: account.webauthnAccount.guard
+          account: account.account.accountName,
+          keyset: guard
         },
         capabilities: generateSpireKeyGasCapability(account.account.accountName),
         meta: {senderAccount: account.account.accountName}

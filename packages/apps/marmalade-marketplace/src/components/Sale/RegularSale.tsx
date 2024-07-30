@@ -20,7 +20,7 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
 
   const router = useRouter() as AppRouterInstance;
   const searchParams = useSearchParams();
-  const { account, webauthnAccount } = useAccount();
+  const { account } = useAccount();
 
   useEffect(() => {
 
@@ -39,7 +39,7 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
   };
 
   const handleBuyNow = async () => {
-    if (!webauthnAccount || !account) {
+    if (!account) {
       alert("Please connect your wallet first to buy.");
       return;
     }
@@ -51,6 +51,9 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
       chainId: sale.chainId,
     }) as { account: string }
 
+    // TODO: Read guard differently after Spirekey SDK is updated
+    const guard = account.devices[0].guard
+    const key = guard.keys[0];    
 
     try {
       await buyToken({
@@ -61,16 +64,16 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
         seller: {
           account: sale.seller.account,
         },
-        signer: webauthnAccount?.guard.keys[0] || '',
+        signer: key || '',
         buyer: {
-          account: webauthnAccount.account,
-          keyset: webauthnAccount.guard,
+          account: account.accountName,
+          keyset: guard,
         },
         buyerFungibleAccount: account.accountName,
         capabilities: [
           ...generateSpireKeyGasCapability(account.accountName)!,
           {
-            name: `${env.WEBAUTHN_WALLET}.TRANSFER`,
+            name: 'coin.TRANSFER',
             props: [account.accountName, escrowAccount["account"], new PactNumber(sale.startPrice).toPactDecimal()]
           },
         ],
