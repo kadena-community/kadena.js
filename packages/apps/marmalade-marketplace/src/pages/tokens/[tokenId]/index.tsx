@@ -25,7 +25,7 @@ import { getTimestampFromDays } from '@/utils/date';
 import { createSignWithSpireKeySDK } from '@/utils/signWithSpireKey';
 
 //styles 
-import * as styles from './styles.css';
+import * as styles from '../../../styles/token-details.css';
 
 export default function CreateSale() {
   const params = useParams();
