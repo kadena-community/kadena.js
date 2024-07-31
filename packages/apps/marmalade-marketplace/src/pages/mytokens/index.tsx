@@ -13,7 +13,7 @@ export default function MyTokens() {
     if (!accountName) return;
 
     const tokens = await getTokens(accountName);
-    console.log(tokens)
+
     setTokens(tokens.filter(token => token.balance > 0));
   };
 

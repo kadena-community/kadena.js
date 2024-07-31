@@ -5,6 +5,7 @@ import { useSearchParams, useParams, useRouter } from 'next/navigation';
 import { ChainId, parseAsPactValue } from '@kadena/client';
 import { ICommand, IUnsignedCommand } from '@kadena/client';
 import { getTokenInfo } from '@kadena/client-utils/marmalade'
+import type { Guard } from '@kadena/client-utils/marmalade';
 import { offerToken , ISaleTokenPolicyConfig, getAccountDetails } from '@kadena/client-utils/marmalade';
 import { PactNumber } from '@kadena/pactjs';
 import { Stack, Button, NumberField, Tabs, TabItem, Checkbox, RadioGroup, Radio } from "@kadena/kode-ui";
@@ -131,11 +132,11 @@ export default function CreateSale() {
 
   useEffect(() => {
     async function fetch() {
-      if (!account?.webauthnAccount?.account) return;
+      if (!account.account?.accountName) return;
       try {
         const details: {balance?: number} = await getAccountDetails({
           chainId: chainId as ChainId,
-          accountName: account.webauthnAccount?.account as string, 
+          accountName: account.account?.accountName as string, 
           tokenId: tokenId as string,
           networkId: env.NETWORKID,
           host: env.CHAINWEB_API_HOST
@@ -191,7 +192,7 @@ export default function CreateSale() {
           price: new PactNumber(saleData.price).toPactDecimal(),
           sellerFungibleAccount: {
             account: account.account.accountName, 
-            keyset:  account.account.guard as object
+            guard:  account.account.guard as Guard
           }
       }, 
         policyConfig: {...policyConfig, auction: true},
@@ -199,9 +200,10 @@ export default function CreateSale() {
         chainId: chainId as ChainId,
         timeout: getTimestampFromDays(saleData.timeout),
         amount:  new PactNumber(Number(saleData.amount)).toPactDecimal(),
+        signerPublicKey: account.account?.devices[0].guard.keys[0],
         seller: {
           account: account.account.accountName,
-          keyset: account.account.guard as object
+          guard: account.account.guard as Guard
         },
         capabilities: generateSpireKeyGasCapability(account.account.accountName),
         meta: {senderAccount: account.account.accountName}

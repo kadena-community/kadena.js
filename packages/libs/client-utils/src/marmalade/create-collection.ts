@@ -26,7 +26,7 @@ interface ICreateCollectionInput extends Pick<CommonProps, 'meta'> {
   chainId: ChainId;
   operator: {
     account: string;
-    keyset: {
+    guard: {
       keys: string[];
       pred: BuiltInPredicate;
     };
@@ -51,15 +51,15 @@ const createCollectionCommand = ({
       ),
     ),
     setMeta({ senderAccount: operator.account, chainId }),
-    addKeyset('operator-guard', operator.keyset.pred, ...operator.keyset.keys),
-    addSigner(formatWebAuthnSigner(operator.keyset.keys), (signFor) => [
+    addKeyset('operator-guard', operator.guard.pred, ...operator.guard.keys),
+    addSigner(formatWebAuthnSigner(operator.guard.keys), (signFor) => [
       signFor('coin.GAS'),
       signFor(
         'marmalade-v2.collection-policy-v1.COLLECTION',
         id,
         name,
         size,
-        operator.keyset,
+        operator.guard,
       ),
     ]),
     setMeta({ senderAccount: operator.account, chainId, ...meta }),

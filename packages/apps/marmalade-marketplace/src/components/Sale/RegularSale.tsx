@@ -12,7 +12,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { useAccount } from "@/hooks/account";
 import { PactNumber } from "@kadena/pactjs";
 import { generateSpireKeyGasCapability } from "@/utils/helper";
-
+import type {Guard} from "@kadena/client-utils/marmalade";
 export interface RegularSaleProps {
   tokenImageUrl: string;
   sale: Sale;
@@ -71,10 +71,10 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
         seller: {
           account: sale.seller.account,
         },
-        signer: key || '', 
+        signerPublicKey: key || '', 
         buyer: {
           account: account.accountName,
-          keyset: account.guard,
+          guard: account.guard as Guard,
         },
         buyerFungibleAccount: account.accountName,
         capabilities: [

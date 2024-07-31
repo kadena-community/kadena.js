@@ -68,7 +68,7 @@ export const getPolicies = (policyConfig: ICreateTokenPolicyConfig) => {
 
   export const formatAccount = (account: string, guard: any) => ({
     account,
-    keyset: guard,
+    guard,
   });
 
   export const generateSpireKeyGasCapability = (account:string): CommonProps['capabilities'] => {

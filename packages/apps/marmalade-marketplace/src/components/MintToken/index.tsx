@@ -4,6 +4,7 @@ import * as styles from './style.css';
 import { useRouter } from 'next/navigation';
 import { Stack,  Button, TextField, NumberField, Checkbox } from '@kadena/kode-ui';
 import { ChainId } from '@kadena/client';
+import type {Guard} from '@kadena/client-utils/marmalade';
 import { getTokenInfo, mintToken } from '@kadena/client-utils/marmalade';
 import { useAccount } from '@/hooks/account';
 import { createSignWithSpireKeySDK } from '@/utils/signWithSpireKey';
@@ -21,6 +22,7 @@ import CrudCard from '@/components/CrudCard';
 function MintTokenComponent() {
   const router = useRouter();
   const { account } = useAccount();
+  console.log("Account from provider", account)
   const searchParams = useSearchParams();
 
   const { setTransaction } = useTransaction();
@@ -97,7 +99,8 @@ function MintTokenComponent() {
         policyConfig: result,
         tokenId: tokenId,
         accountName: walletAccount,
-        guard: account?.guard,        
+        signerPublicKey: account && account.devices[0].guard.keys[0],
+        guard: {account: walletAccount, guard: account.guard as Guard },
         amount: amountFormatted,
         chainId: config.chainId as ChainId,
         capabilities: generateSpireKeyGasCapability(walletAccount),

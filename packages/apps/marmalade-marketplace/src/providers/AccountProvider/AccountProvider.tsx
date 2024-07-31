@@ -45,6 +45,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const login = useCallback(async () => {
     const account = await connect(env.NETWORKID, chainId);
     console.log(account)
+    console.log(account)
     setIsMounted(true);
     setAccount(account);
     localStorage.setItem(getAccountCookieName(), JSON.stringify(account));

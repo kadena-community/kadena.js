@@ -92,7 +92,6 @@ const SendTransaction: FC<SendTransactionFormProps> = ({ send, preview, poll, tr
     const { meta, networkId, payload, signers } = parsedTransaction;
     return (
       <div className={styles.transactionDetails}>
-        <h3 className={styles.transactionDetailsHeader}>Transaction Details</h3>
         <p><strong>Meta:</strong> {JSON.stringify(meta)}</p>
         <p><strong>Network ID:</strong> {networkId}</p>
         <p><strong>Payload:</strong></p>

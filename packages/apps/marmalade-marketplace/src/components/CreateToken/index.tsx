@@ -185,12 +185,12 @@ function CreateTokenComponent() {
         try {
           const tokenIdCreated = await createTokenId({ ...inputs, networkId: config.networkId, host: config.host });
           tokenId = tokenIdCreated;
-
+          
           await createToken(
             {
               ...inputs,
+              signerPublicKey: account?.devices[0].guard.keys[0],
               tokenId: tokenIdCreated,
-              capabilities: generateSpireKeyGasCapability(account.accountName ?? ''),
             },
             {
               ...config,

@@ -24,11 +24,13 @@ export interface TokenMetadata {
 interface TokenProps {
   tokenId: string;
   chainId: ChainId;
-  balance: number;
+  balance?: number;
+  sale?: Sale;
 }
 
 export const Token: React.FC<TokenProps> = ({
   tokenId,
+  sale: Sale,
   chainId,
   balance,
 }) => {
