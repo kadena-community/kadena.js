@@ -22,24 +22,24 @@ export interface CommonProps {
   }[];
 }
 
-export interface FunctionGuard {
+export interface FunctionGuard extends Record<string, unknown> {
   args: string[];
   fun: string;
 }
 
-export interface RefKeyset {
+export interface RefKeyset  extends Record<string, unknown> {
   keysetref: {
     ns: string;
     ksn: string;
   };
 }
 
-export interface Keyset {
+export interface Keyset  extends Record<string, unknown>{
   keys: string[];
   pred: BuiltInPredicate;
 }
 
-export type Guard = RefKeyset | Keyset | FunctionGuard;
+export type Guard  = RefKeyset | Keyset | FunctionGuard;
 
 export const GUARD_POLICY = 'marmalade-v2.guard-policy-v1';
 export const NON_FUNGIBLE_POLICY = 'marmalade-v2.non-fungible-policy-v1';
