@@ -38,8 +38,6 @@ describe('Home component', () => {
     render(<Home />);
 
     // Check if texts are rendered correctly
-    expect(screen.getByText('Active sales')).toBeInTheDocument();
-    expect(screen.getByText('Past sales')).toBeInTheDocument();
 
     // Check if tokens are fetched and displayed
     await waitFor(() => {

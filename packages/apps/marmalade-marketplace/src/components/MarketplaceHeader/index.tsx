@@ -50,7 +50,7 @@ export const MarketplaceHeader= () => {
       <NavHeaderLinkList>
         <Link
           className={styles.navHeaderLink}
-          href="/marketplace"
+          href="/"
         >
           Marketplace
         </Link>

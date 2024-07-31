@@ -5,6 +5,7 @@ import { useSearchParams, useParams, useRouter } from 'next/navigation';
 import { ChainId, parseAsPactValue } from '@kadena/client';
 import { ICommand, IUnsignedCommand } from '@kadena/client';
 import { getTokenInfo } from '@kadena/client-utils/marmalade'
+import type { Guard } from '@kadena/client-utils/marmalade';
 import { offerToken , ISaleTokenPolicyConfig, getAccountDetails } from '@kadena/client-utils/marmalade';
 import { PactNumber } from '@kadena/pactjs';
 import { Stack, Button, NumberField, Tabs, TabItem, Checkbox, RadioGroup, Radio } from "@kadena/kode-ui";
@@ -131,11 +132,11 @@ export default function CreateSale() {
 
   useEffect(() => {
     async function fetch() {
-      if (!account?.webauthnAccount?.account) return;
+      if (!account.account?.accountName) return;
       try {
         const details: {balance?: number} = await getAccountDetails({
           chainId: chainId as ChainId,
-          accountName: account.webauthnAccount?.account as string, 
+          accountName: account.account?.accountName as string, 
           tokenId: tokenId as string,
           networkId: env.NETWORKID,
           host: env.CHAINWEB_API_HOST
@@ -154,12 +155,11 @@ export default function CreateSale() {
 
   const onTransactionSigned = (transaction: IUnsignedCommand | ICommand) => {
     setTransaction(transaction);
-    router.push(`/transaction?returnUrl=/tokens/${tokenId}`);
+    router.push(`/transaction?returnUrl=/tokens/${tokenId}?chainId=${'8'}`);
   }
 
   const onCreateSalePress = async () => {
     if (
-      !account.webauthnAccount ||
       !account.account ||
       !saleData.tokenId ||
       !saleData.chainId ||
@@ -192,7 +192,7 @@ export default function CreateSale() {
           price: new PactNumber(saleData.price).toPactDecimal(),
           sellerFungibleAccount: {
             account: account.account.accountName, 
-            keyset:  account.accountGuard as object
+            guard:  account.account.guard as Guard
           }
       }, 
         policyConfig: {...policyConfig, auction: true},
@@ -200,9 +200,10 @@ export default function CreateSale() {
         chainId: chainId as ChainId,
         timeout: getTimestampFromDays(saleData.timeout),
         amount:  new PactNumber(Number(saleData.amount)).toPactDecimal(),
+        signerPublicKey: account.account?.devices[0].guard.keys[0],
         seller: {
-          account: account.webauthnAccount.account,
-          keyset: account.webauthnAccount.guard
+          account: account.account.accountName,
+          guard: account.account.guard as Guard
         },
         capabilities: generateSpireKeyGasCapability(account.account.accountName),
         meta: {senderAccount: account.account.accountName}
@@ -257,6 +258,8 @@ export default function CreateSale() {
   }
 
   const handleTabChange = (key:any) => {
+    if (!saleId && key === "bid") return;
+    if (balance === 0 && key === "sale") return;
     setSelectedKey(key);
   };
 
@@ -350,7 +353,7 @@ export default function CreateSale() {
                     <Radio value="conventional">Conventional</Radio>
                     <Radio value="dutch">Dutch</Radio>
                   </RadioGroup>
-                  <NumberField value={saleData.amount} onValueChange={(value:number) => {onSaleDataChange('amount', value)}} label="Amount" minValue={1} placeholder="Set the amount to sell" variant={saleInputValid.amount ? "default" : "negative"} errorMessage={"Check Precision"}/>
+                  <NumberField value={saleData.amount} onValueChange={(value:number) => {onSaleDataChange('amount', value)}} label="Amount" minValue={1} placeholder="Set the amount to sell" variant={saleInputValid.amount ? "default" : "negative"} errorMessage={"Check Amount"}/>
                   <NumberField value={saleData.price} onValueChange={(value:number) => {onSaleDataChange('price', value)}}label="Price" minValue={0.1} placeholder="Set the token price in KDA"  variant={saleInputValid.price ? "default" : "negative"}/>
                   <NumberField value={saleData.timeout} onValueChange={(value:number) => {onSaleDataChange('timeout', value)}} label="Timeout" minValue={1} info="Set valid sale days" variant={saleInputValid.timeout ? "default" : "negative"} />
                 </div>
@@ -358,14 +361,13 @@ export default function CreateSale() {
             </TabItem>
             {/* only show bid tab if saleId is present*/}
             <TabItem title="Buy" key="bid">
-              <CrudCard title="Buy token" description={[
-                `There are 3 sale types: regular, conventional, dutch auction`,
-                `You can view and bid on the offers here`
-              ]}>
-                <Bid saleId={saleId!} chainId={chainId}/>
-              </CrudCard>
+                <CrudCard title="Buy token" description={[
+                  `There are 3 sale types: regular, conventional, dutch auction`,
+                  `You can view and bid on the offers here`
+                ]}>
+                  <Bid saleId={saleId!} chainId={chainId}/>
+                </CrudCard>
             </TabItem>
-
           </Tabs>
           {/* {saleData.saleType === "conventional" && ( */}
         {false && (

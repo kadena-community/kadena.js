@@ -31,7 +31,7 @@ interface IBurnTokenInput extends CommonProps {
   chainId: ChainId;
   guard: {
     account: string;
-    keyset: {
+    guard: {
       keys: string[];
       pred: BuiltInPredicate;
     };
@@ -62,7 +62,7 @@ const burnTokenCommand = ({
     execution(
       Pact.modules['marmalade-v2.ledger'].burn(tokenId, accountName, amount),
     ),
-    addSigner(formatWebAuthnSigner(guard.keyset.keys), (signFor) => [
+    addSigner(formatWebAuthnSigner(guard.guard.keys), (signFor) => [
       signFor('coin.GAS'),
       signFor('marmalade-v2.ledger.BURN', tokenId, accountName, amount),
       ...(policyConfig?.guarded

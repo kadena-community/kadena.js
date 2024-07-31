@@ -26,24 +26,23 @@ export default function Home() {
   console.log("data", data)
 
   return (
-    <div style={{ marginTop: "100px" }}>
-      <div className={actionBarClass}>
-        <div className={actionBarSaleClass}>
-          <Button
-            className={saleState === "ACTIVE" ? actionBarSaleActiveClass : ""}
-            onClick={() => setSaleState("ACTIVE")}>Active sales</Button>
-          <Button
-            className={saleState === "PAST" ? actionBarSaleActiveClass : ""}
-            onClick={() => setSaleState("PAST")}>Past sales</Button>
-        </div>
+    <div>
+      <div style={{ marginTop: '-60px', marginLeft: '-6%', marginRight: '-6%'}}>
+        <img
+          src={`/listingHeader.png`}
+          alt="Header Image"
+          style={{ position: 'relative', width: '100%', maxHeight: '400px', left: '0px', right: '0px'}} 
+        />
       </div>
-
       {error && <div>Error: <pre>{JSON.stringify(error, null, 2)}</pre></div>}
       {loading && <h2>Loading..</h2>}
 
       {!loading && !error && data.length === 0 && <Heading as="h2">No sales found</Heading>}
 
-      <div>
+      <div style={{ padding: '20px'}}>
+        <div style={{ marginTop: '20px', marginBottom: '20px' }}>
+        <Heading >Active Sales</Heading>
+        </div>
         <Grid
           columns={{
             lg: 4,

@@ -1,11 +1,10 @@
-import { deviceColors } from '@/styles/tokens.css';
-import { tokens } from '@kadena/kode-ui/styles';
+import { tokens, token } from '@kadena/kode-ui/styles';
 import '@kadena/kode-ui/global';
 import { globalStyle, style } from '@vanilla-extract/css';
 
 globalStyle('body', {
   color: 'white',
-  backgroundColor: tokens.kda.foundation.color.background.base.default,
+  backgroundColor: token('color.background.base.default'),
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
@@ -33,7 +32,6 @@ export const mainWrapperClass = style({
 });
 
 export const secondaryTextClass = style({
-  color: deviceColors.kadenaFont,
   opacity: '.8',
   textAlign: 'center',
 });

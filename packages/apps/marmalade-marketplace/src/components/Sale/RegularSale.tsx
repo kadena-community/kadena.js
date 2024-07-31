@@ -12,7 +12,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { useAccount } from "@/hooks/account";
 import { PactNumber } from "@kadena/pactjs";
 import { generateSpireKeyGasCapability } from "@/utils/helper";
-
+import type {Guard} from "@kadena/client-utils/marmalade";
 export interface RegularSaleProps {
   tokenImageUrl: string;
   sale: Sale;
@@ -23,7 +23,7 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
 
   const router = useRouter() as AppRouterInstance;
   const searchParams = useSearchParams();
-  const { account, webauthnAccount } = useAccount();
+  const { account } = useAccount();
 
   useEffect(() => {
 
@@ -47,8 +47,7 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
   
     console.log(env)
   const handleBuyNow = async () => {
-
-    if (!webauthnAccount || !account) {
+    if (!account) {
       alert("Please connect your wallet first to buy.");
       return;
     }
@@ -69,19 +68,19 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
         seller: {
           account: sale.seller.account,
         },
-        signer: webauthnAccount?.guard.keys[0] || '',
+        signerPublicKey: account?.devices[0].guard.keys[0],
         buyer: {
-          account: webauthnAccount.account,
-          keyset: webauthnAccount.guard,
+          account: account.accountName,
+          guard: account.guard as Guard,
         },
         buyerFungibleAccount: account.accountName,
         capabilities: [
-          ...generateSpireKeyGasCapability(account.accountName)!,
-          {name: `marmalade-v2.ledger.BUY`, 
-            props: [sale.tokenId,sale.seller.account,webauthnAccount.account,1.0,sale.saleId]
+          {name:'marmalade-v2.ledger.BUY',
+            props: [sale.tokenId, sale.seller.account, account.accountName, sale.amount, sale.saleId]},
+          {name: `coin.TRANSFER`, 
+            props: [account.accountName, escrowAccount.account,sale.startPrice]
           },
         ],
-        meta: {senderAccount: account.accountName}
       },
         {
           ...config,

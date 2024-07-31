@@ -1,8 +1,12 @@
-// styles.css.ts
+import { globalStyle, style } from '@vanilla-extract/css';
 
-import { deviceColors } from '@/styles/tokens.css';
-import {  style } from '@vanilla-extract/css';
-
+globalStyle('body', {
+  color: 'white',  
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
+  backgroundAttachment: 'fixed',
+});
 
 
 export const twoColumnRow = style({

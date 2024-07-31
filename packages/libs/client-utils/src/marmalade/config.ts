@@ -22,15 +22,24 @@ export interface CommonProps {
   }[];
 }
 
-export interface KeysetGuard {
+export interface FunctionGuard extends Record<string, unknown> {
+  args: string[];
+  fun: string;
+}
+
+export interface RefKeyset extends Record<string, unknown> {
+  keysetref: {
+    ns: string;
+    ksn: string;
+  };
+}
+
+export interface Keyset extends Record<string, unknown> {
   keys: string[];
   pred: BuiltInPredicate;
 }
 
-export interface FunctionGuard {
-  args: string[];
-  fun: string;
-}
+export type Guard = RefKeyset | Keyset | FunctionGuard;
 
 export const GUARD_POLICY = 'marmalade-v2.guard-policy-v1';
 export const NON_FUNGIBLE_POLICY = 'marmalade-v2.non-fungible-policy-v1';
@@ -67,20 +76,17 @@ export interface IRoyaltyInfoInput {
   };
   creator: {
     account: string;
-    keyset: {
-      keys: string[];
-      pred: BuiltInPredicate;
-    };
+    guard: Guard;
   };
   royaltyRate: IPactDecimal;
 }
 
 export interface IGuardInfoInput {
-  mintGuard?: KeysetGuard | FunctionGuard;
-  uriGuard?: KeysetGuard | FunctionGuard;
-  saleGuard?: KeysetGuard | FunctionGuard;
-  burnGuard?: KeysetGuard | FunctionGuard;
-  transferGuard?: KeysetGuard | FunctionGuard;
+  mintGuard?: Guard;
+  uriGuard?: Guard;
+  saleGuard?: Guard;
+  burnGuard?: Guard;
+  transferGuard?: Guard;
 }
 
 export interface ICollectionInfoInput {
@@ -150,12 +156,7 @@ export interface ISaleAuctionInfoInput {
   price: IPactDecimal;
   sellerFungibleAccount: {
     account: string;
-    keyset:
-      | {
-          keys: string[];
-          pred: BuiltInPredicate;
-        }
-      | object;
+    guard: Guard;
   };
   saleType?:
     | 'marmalade-sale.conventional-auction'
@@ -163,7 +164,7 @@ export interface ISaleAuctionInfoInput {
 }
 
 export interface ISaleGuardInfoInput {
-  saleGuard?: KeysetGuard | FunctionGuard;
+  saleGuard?: Guard;
 }
 
 export interface ISaleTokenPolicyConfig {
@@ -199,7 +200,7 @@ export type WithSaleTokenPolicy<C extends ISaleTokenPolicyConfig, Base> = Base &
 /** -----------WITHDRAW----------- */
 
 export interface IWithdrawSaleGuardInfoInput {
-  saleGuard?: KeysetGuard | FunctionGuard;
+  saleGuard?: Guard;
 }
 
 export interface IWithdrawSaleTokenPolicyConfig {
