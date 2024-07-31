@@ -14,7 +14,7 @@ tags: [pact, chainweb, network, node operator, developer]
 Because a healthy blockchain continuously adds new transactions in new blocks that change the state of the database, managing the storage requirements on individual nodes can be challenging.
 
 To address this storage issue, Chainweb provides the `compact` command-line program.
-The `compact` command enables you to delete historical unused state from the `chainweb-node` chain RocksDB database and the Pact SQLite database.
+The `compact` command enables you to delete historical unused state from the `chainweb-node` RocksDB database and the Pact SQLite database.
 Removing old state that isn't required to validate transactions or reach consensus enables your node to use far less disk space overall while maintaining the semantic integrity of node operations.
 
 After you compact the state and restart the node to use the compacted database, you can delete the old database to further reduce your storage overhead or save the old database in another location as a backup.
@@ -36,24 +36,27 @@ To compact a Chainweb node database:
 
    If you have access to the `compact` program, you should see usage information similar to the following:
 
-   ```bash
-   Pact DB Compaction Tool - create a compacted copy of the source database directory Pact DB into the target directory.
-   
-   Usage: compact ARGUMENTS
+   ```bash   
+   Usage: compact [--chainweb-version ARG] --from ARG --to ARG [--parallel]
+                  --log-dir ARG
 
+     Pact DB Compaction Tool - create a compacted copy of the source database
+     directory Pact DB into the target directory.
+   
    Available options:
+     --from ARG               Directory containing SQLite Pact state and RocksDB
+                              block data to compact, expected to be in
+                              $DIR/0/{sqlite,rocksDb}.
+     --to ARG                 Directory where to place the compacted Pact state and
+                              block data. It will place them in
+                              $DIR/0/{sqlite,rocksDb}, respectively.
+     --parallel               Turn on multi-threaded compaction. The threads are
+                              per-chain.
+     --log-dir ARG            Directory where compaction logs will be placed.
      -h,--help                Show this help text
-   
-   Arguments:
-
-     --from                   Specifies the root directory that contains the SQLite Pact state and RocksDB block data you want to compact.
-     --to                     Specifies the destination directory for the compacted Pact state and block data.
-     --parallel               Enables multi-threaded compaction. The threads are per-chain. The default is true.
-     --log-dir                Specifies the directory where compaction logs are placed.
-     --chainweb-version       Specifies the Chainweb node version network identifier. The default is mainnet01.
    ```
 
-1. Compact your `rocksdb` and `sqlite` databases by running the `compact` command with the following arguments:
+3. Compact your `rocksdb` and `sqlite` databases by running the `compact` command with the following arguments:
 
    - `--from` to specify the path to the database directory you want to compact. You should specify the database root directory that contains the `0/sqlite` and `0/rocksdb` subdirectories. For example, the `data/state/chainweb/db` directory is the root directory for the `data/state/chainweb/db/0/sqlite` directory and the `data/state/chainweb/db/0/rocksdb` directory.
    - `--to` to specify the path to the compacted database. The compact program writes the compacted databases to the `$DIR/0/sqlite` and `$DIR/0/rocksdb` subdirectories within the directory you specify.
@@ -66,9 +69,9 @@ To compact a Chainweb node database:
    compact --from db --to compact-testnet-db --log-dir /tmp/compact-db-logs --chainweb-version testnet04
    ```
 
-2. Stop your node.
+4. Stop your node.
 
-3. Restart your node with the new compacted database directory.
+5. Restart your node with the new compacted database directory.
    
    You can specify the new compacted database directory as a command-line option or edit the node configuration file you use to set the new compacted database directory.
 
