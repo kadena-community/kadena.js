@@ -23,7 +23,16 @@ export default function MyTokens() {
 
   return (
     <Stack flex={1} flexDirection="column">
-      <Heading as="h1">My Tokens</Heading>
+      <div style={{ marginTop: '-60px', marginLeft: '-6%', marginRight: '-6%'}}>
+        <img
+          src={`/listingHeader.png`}
+          alt="Header Image"
+          style={{ position: 'relative', width: '100%', maxHeight: '400px', left: '0px', right: '0px'}} 
+        />
+      </div>
+      <div style={{marginTop: '20px'}}>
+        <Heading as="h1">My Tokens</Heading>
+      </div>
       <Grid
         style={{ marginTop: "25px" }}
         columns={{

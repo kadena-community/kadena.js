@@ -113,5 +113,5 @@ export const getPolicies = (policyConfig: ICreateTokenPolicyConfig) => {
 
 export const isPrecise = (n:number, precision:number):boolean => {
   const length = String(n).split(".")[1] ? String(n).split(".")[1].length : 0;
-  return length === precision;
+  return length <= precision;
 }

@@ -36,7 +36,7 @@ function MintTokenComponent() {
   
   const onTransactionSigned = (transaction: IUnsignedCommand | ICommand) => {
     setTransaction(transaction);
-    router.push(`/transaction?returnUrl=/tokens/${tokenId}`);
+    router.push(`/transaction?returnUrl=/tokens/${tokenId}?chainId=${`8`}`);
   }
 
   useEffect(() => {

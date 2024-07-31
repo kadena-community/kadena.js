@@ -28,7 +28,7 @@ const TransactionPreview: FC<TransactionPreviewProps> = ({ sendTransaction, prev
           <NotificationHeading>
             {preview ? "Transaction Preview" : "Transaction Sent"}
           </NotificationHeading>
-          {error ? txResponse : "Preview Successful"}
+          {error ? txResponse : preview ?  "Preview Successful" : "Transaction Sent Successfully"}
           <NotificationFooter>
             {preview && !error && (
             <NotificationButton

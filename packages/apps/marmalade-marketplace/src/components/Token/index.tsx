@@ -30,7 +30,7 @@ interface TokenProps {
 
 export const Token: React.FC<TokenProps> = ({
   tokenId,
-  sale: Sale,
+  sale,
   chainId,
   balance,
 }) => {
@@ -78,8 +78,8 @@ export const Token: React.FC<TokenProps> = ({
       </div>
       <div className={styles.metaContainer}>
         <div>
-          <Text as="p">Balance</Text>
-          <Text as="p" color="emphasize">{balance}</Text>
+          <Text as="p">{balance ? 'Balance' : 'Price'}</Text>
+          <Text as="p" color="emphasize">{balance ? balance : sale?.startPrice}</Text>
         </div>
         <div>
           <Text as="p">Chain</Text>

@@ -59,9 +59,6 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
       chainId: sale.chainId,
     }) as { account: string }
 
-    // TODO: Update key to r:account's public key 
-    const key = ''
-
     try {
       await buyToken({
         tokenId: sale.tokenId,
@@ -71,19 +68,19 @@ export function RegularSale({ tokenImageUrl, sale }: RegularSaleProps) {
         seller: {
           account: sale.seller.account,
         },
-        signerPublicKey: key || '', 
+        signerPublicKey: account?.devices[0].guard.keys[0],
         buyer: {
           account: account.accountName,
           guard: account.guard as Guard,
         },
         buyerFungibleAccount: account.accountName,
         capabilities: [
-          ...generateSpireKeyGasCapability(account.accountName)!,          
-          {name: `marmalade-v2.ledger.BUY`, 
-            props: [sale.tokenId, sale.seller.account, account.accountName, 1.0, sale.saleId]
+          {name:'marmalade-v2.ledger.BUY',
+            props: [sale.tokenId, sale.seller.account, account.accountName, sale.amount, sale.saleId]},
+          {name: `coin.TRANSFER`, 
+            props: [account.accountName, escrowAccount.account,sale.startPrice]
           },
         ],
-        meta: {senderAccount: account.accountName}
       },
         {
           ...config,
