@@ -8,10 +8,11 @@ import type {
   ForwardedRef,
   ReactElement,
 } from 'react';
-import React, { forwardRef, useCallback } from 'react';
+import React, { forwardRef, useCallback, useState } from 'react';
 import type { AriaNumberFieldProps } from 'react-aria';
 import { useFocusRing, useHover, useLocale, useNumberField } from 'react-aria';
 import { useNumberFieldState } from 'react-stately';
+import { useMobile } from '../../../utils';
 import { Field } from '../Field/Field';
 import { input } from '../Form.css';
 import type { IFormFieldHeaderProps } from '../FormFieldHeader/FormFieldHeader';
@@ -90,12 +91,15 @@ export function NumberFieldBase(
     isTextInput: true,
     autoFocus: props.autoFocus,
   });
+  const [isTouched, setIsTouched] = useState(false);
+  const { isMobile } = useMobile();
 
   // handle uncontrollable form state eg. react-hook-form
   const handleOnChange = useCallback(
     (event: ChangeEvent<ElementRef<'input'>>) => {
       inputProps.onChange?.(event);
       props.onChange?.(event);
+      setIsTouched(isTouched && !!event.target.value);
     },
     [props.onChange, inputProps.onChange],
   );
@@ -129,7 +133,8 @@ export function NumberFieldBase(
         ref={ref}
         className={classNames(
           input({
-            variant: fieldProps.isInvalid ? 'negative' : props.variant,
+            variant:
+              fieldProps.isInvalid && isTouched ? 'negative' : props.variant,
             size,
             fontType,
           }),
@@ -143,6 +148,7 @@ export function NumberFieldBase(
         data-positive={props.isPositive || undefined}
         data-has-start-addon={!!props.startVisual || undefined}
         data-has-end-addon
+        data-is-mobile={isMobile || undefined}
       />
     </Field>
   );
