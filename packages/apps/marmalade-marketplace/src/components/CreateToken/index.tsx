@@ -73,23 +73,22 @@ function CreateTokenComponent() {
   });
 
   useEffect(() => {
-    if (account) {      
-      const guard = account.guard
-      
-      setGuardInput({
-        uriGuard: guard,
-        burnGuard: guard,
-        mintGuard: guard,
-        saleGuard: guard,
-        transferGuard: guard,
-      });
+    if (!account) return;
+    const guard = account.guard
+    
+    setGuardInput({
+      uriGuard: guard,
+      burnGuard: guard,
+      mintGuard: guard,
+      saleGuard: guard,
+      transferGuard: guard,
+    });
 
-      setRoyaltyInput(prev => ({
-        ...prev,
-        royaltyCreator: account.accountName,
-        royaltyGuard: account.guard,
-      }));      
-    }
+    setRoyaltyInput(prev => ({
+      ...prev,
+      royaltyCreator: account.accountName,
+      royaltyGuard: account.guard,
+    }));      
   }, [account]);
 
   const onTransactionSigned = (transaction: IUnsignedCommand | ICommand) => {

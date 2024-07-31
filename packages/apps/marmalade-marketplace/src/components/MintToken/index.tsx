@@ -22,7 +22,6 @@ import CrudCard from '@/components/CrudCard';
 function MintTokenComponent() {
   const router = useRouter();
   const { account } = useAccount();
-  console.log("Account from provider", account)
   const searchParams = useSearchParams();
 
   const { setTransaction } = useTransaction();

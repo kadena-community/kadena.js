@@ -44,8 +44,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const login = useCallback(async () => {
     const account = await connect(env.NETWORKID, chainId);
-    console.log(account)
-    console.log(account)
     setIsMounted(true);
     setAccount(account);
     localStorage.setItem(getAccountCookieName(), JSON.stringify(account));
@@ -69,8 +67,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     loginResponse();
   }, []);
-
-  console.log({ account }, account?.accountName);
 
   return (
     <AccountContext.Provider value={{ account, login, logout, isMounted }}>
