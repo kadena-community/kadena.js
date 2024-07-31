@@ -69,6 +69,9 @@ To compact a Chainweb node database:
    compact --from db --to compact-testnet-db --log-dir /tmp/compact-db-logs --chainweb-version testnet04
    ```
 
+   Note that the location of the Chainweb root database directory—`data/state/chainweb/db` in this example—depends on the configuration of the node.
+   If you haven't specified a location in the configuration file, the default location is `~/.local/share/chainweb-node/{chainweb-network-id}`, for example `~/.local/share/chainweb-node/testnet04` for a node in the Kadena test network.
+
 4. Stop your node.
 
 5. Restart your node with the new compacted database directory.
