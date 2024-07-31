@@ -10,6 +10,7 @@ import { Popover } from '../../Popover';
 
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 import classNames from 'classnames';
+import { useMobile } from '../../../utils';
 import { Field } from '../Field/Field';
 import { input } from '../Form.css';
 import type { FormFieldDirection } from '../FormFieldHeader/FormFieldHeader';
@@ -69,6 +70,8 @@ function SelectBase<T extends object>(
     ref,
   );
 
+  const { isMobile } = useMobile();
+
   return (
     <Field
       {...fieldProps}
@@ -113,6 +116,7 @@ function SelectBase<T extends object>(
         isInvalid={fieldProps.isInvalid}
         isPositive={props.isPositive}
         elementType="button"
+        data-is-mobile={isMobile || undefined}
       >
         <span
           {...valueProps}
