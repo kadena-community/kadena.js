@@ -105,9 +105,6 @@ export default function CreateSale() {
           host: env.CHAINWEB_API_HOST
         }) as ITokenInfo;
 
-        // if token info is not valid, redirect to the home 
-        console.log(tokenInfo)
-
         setTokenInfo(tokenInfo);
         setTokenPrecision(Number(tokenInfo.precision.int))
         setPolicyConfig(checkConcretePolicies(tokenInfo.policies));
@@ -276,7 +273,7 @@ export default function CreateSale() {
             "Resides on Chain " + chainId,            
           ]}
         >
-          <div>
+          <div className={styles.tokenImageContainer}>
             <img
               src={tokenImageUrl}
               alt="Token Image"
