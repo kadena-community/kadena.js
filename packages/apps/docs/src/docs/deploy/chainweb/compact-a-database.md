@@ -28,6 +28,9 @@ To compact a Chainweb node database:
 
    For information about installing `chainweb-node` from a release binary or building it from the source code, see the [chainweb-node README](https://github.com/kadena-io/chainweb-node#README).
 
+   If you run the node in a Docker container, pull the latest image to download the `compact` binary.
+   If you built the node from the source code, you can rebuild to get the `compact` binary.
+
 2. Verify that you have access to the `compact` command-line program by running the following command:
 
    ```bash
