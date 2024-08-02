@@ -2,7 +2,7 @@ import { Pact } from '@kadena/client';
 
 import { useEffect, useState } from "react";
 import { useSearchParams, useParams, useRouter } from 'next/navigation';
-import { ChainId, parseAsPactValue } from '@kadena/client';
+import { ChainId } from '@kadena/client';
 import { ICommand, IUnsignedCommand } from '@kadena/client';
 import { getTokenInfo } from '@kadena/client-utils/marmalade'
 import type { Guard } from '@kadena/client-utils/marmalade';
@@ -26,7 +26,7 @@ import { getTimestampFromDays } from '@/utils/date';
 import { createSignWithSpireKeySDK } from '@/utils/signWithSpireKey';
 
 //styles 
-import * as styles from './style.css';
+import * as styles from '../../../styles/token.css';
 
 export default function CreateSale() {
   const params = useParams();
