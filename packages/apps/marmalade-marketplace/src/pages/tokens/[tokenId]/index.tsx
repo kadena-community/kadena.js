@@ -8,7 +8,7 @@ import { getTokenInfo } from '@kadena/client-utils/marmalade'
 import type { Guard } from '@kadena/client-utils/marmalade';
 import { offerToken , ISaleTokenPolicyConfig, getAccountDetails } from '@kadena/client-utils/marmalade';
 import { PactNumber } from '@kadena/pactjs';
-import { Stack, Button, NumberField, Tabs, TabItem, Checkbox, RadioGroup, Radio } from "@kadena/kode-ui";
+import { Stack, Button, NumberField, Tabs, TabItem, Checkbox, RadioGroup, Radio, Text } from "@kadena/kode-ui";
 import { MonoSelectAll, MonoViewInAr, MonoIosShare} from '@kadena/kode-icons';
 import CrudCard from '@/components/CrudCard';
 import LabeledText from "@/components/LabeledText";
@@ -26,7 +26,7 @@ import { getTimestampFromDays } from '@/utils/date';
 import { createSignWithSpireKeySDK } from '@/utils/signWithSpireKey';
 
 //styles 
-import * as styles from '../../../styles/token-details.css';
+import * as styles from './style.css';
 
 export default function CreateSale() {
   const params = useParams();
@@ -259,7 +259,7 @@ export default function CreateSale() {
 
   const handleTabChange = (key:any) => {
     if (!saleId && key === "bid") return;
-    if (balance === 0 && key === "sale") return;
+    // if (balance === 0 && key === "sale") return;
     setSelectedKey(key);
   };
 
@@ -291,11 +291,11 @@ export default function CreateSale() {
               }}
               startVisual={<MonoViewInAr />}
               variant="outlined"
-              style={{ marginBottom: '50px' }}
             >
               Explore NFT Details
             </Button>
             <Button
+              style={{width: '40px'}} 
               onClick={async () => {
                 if (navigator?.share) {
                   await navigator.share(({ title: "Token", url: "" }));
@@ -303,19 +303,18 @@ export default function CreateSale() {
               }}
               startVisual={<MonoIosShare />}
               variant="outlined"
-              style={{ marginBottom: '50px' }}
             />
           </div>
           </CrudCard>
         </Stack>
         <Stack flex={1} flexDirection="column" className={styles.secondContainer}>
-          <Tabs className={styles.tabContainer} inverse={true} selectedKey={selectedKey} onSelectionChange={handleTabChange} 
+          <Tabs tabPanelClassName={styles.tabContainer} isContained={true} inverse={true} selectedKey={selectedKey} onSelectionChange={handleTabChange} 
            >
             <TabItem title="General Info" key="info">
               <div className={styles.flexContainer}>
                 <div className={styles.flexItem}>
+                  <LabeledText label={`ID`} value={tokenId!}/>
                   <LabeledText label={`Name`} value={tokenMetadata?.name!}/>
-                  <LabeledText label={`ID`} value={tokenId}/>
                 </div>
                 <div className={styles.flexItem}>
                   <LabeledText label={`Precision`} value={tokenInfo?.precision?.int!}/>
@@ -323,50 +322,74 @@ export default function CreateSale() {
                 </div>
               </div>
             </TabItem>
-            <TabItem title="Policies" key="policies">
-              {tokenInfo?.policies ? checkConcretePolicies(tokenInfo.policies) && (
-              <CrudCard
-                title="Token Policy Information"
-                description={[
-                  "Displays the token policy information",
-                ]}>
-                <div className={styles.checkboxRow}>
-                  <Checkbox isReadOnly={true} id="nonUpdatableURI" isSelected={checkConcretePolicies(tokenInfo.policies).nonUpdatableURI}>Non-Updatable URI</Checkbox>
-                  <Checkbox isReadOnly={true} id="guarded"  isSelected={checkConcretePolicies(tokenInfo.policies)?.guarded}>Guarded</Checkbox>
-                </div>
-                <div className={styles.checkboxRow}>
-                  <Checkbox isReadOnly={true} id="nonFungible" isSelected={checkConcretePolicies(tokenInfo.policies)?.nonFungible}>Non Fungible</Checkbox>
-                  <Checkbox isReadOnly={true} id="hasRoyalty" isSelected={checkConcretePolicies(tokenInfo.policies)?.hasRoyalty}>Has Royalty</Checkbox>
-                </div>
-                <div className={styles.checkboxRow}>
-                  <Checkbox isReadOnly={true} id="collection" isSelected={checkConcretePolicies(tokenInfo.policies)?.collection}>Collection</Checkbox>
-                </div> 
-              </CrudCard>
-              ) : <></>}
-            </TabItem>
             <TabItem title="Sale" key="sale">
               {/* Disable sale when user doesn't own token*/}
-              <CrudCard title="Make a Sale" description={[]}>
-                <div className={styles.formContainer}>
-                  <RadioGroup label='Auction Type' direction="row" onChange={onSaleTypeChange} isInvalid={!saleInputValid.saleType} errorMessage={"Auction not supported"} > 
-                    <Radio value="none" >None</Radio>
-                    <Radio value="conventional">Conventional</Radio>
-                    <Radio value="dutch">Dutch</Radio>
-                  </RadioGroup>
-                  <NumberField value={saleData.amount} onValueChange={(value:number) => {onSaleDataChange('amount', value)}} label="Amount" minValue={1} placeholder="Set the amount to sell" variant={saleInputValid.amount ? "default" : "negative"} errorMessage={"Check Amount"}/>
-                  <NumberField value={saleData.price} onValueChange={(value:number) => {onSaleDataChange('price', value)}}label="Price" minValue={0.1} placeholder="Set the token price in KDA"  variant={saleInputValid.price ? "default" : "negative"}/>
-                  <NumberField value={saleData.timeout} onValueChange={(value:number) => {onSaleDataChange('timeout', value)}} label="Timeout" minValue={1} info="Set valid sale days" variant={saleInputValid.timeout ? "default" : "negative"} />
-                </div>
+              <CrudCard title="Create a Sale" description={[
+                  `You can select the amount of tokens you want to sell and set the price for each token.`,
+                  `You must also set the timeout of the sale, which refers to the time the sale will be active and will not be withdrawn.`,
+                  `Marmalade supports two types of auctions: Conventional and Dutch.`, 
+                  `However, the app supports only regular sales without auction for now.`
+                ]} >
+                <Stack flex={1} flexDirection="column">
+                  <div style={{ marginBottom: '8px'}}>
+                    <br />
+                    <div className={styles.labelTitle}>
+                      <Text as="span" size='small' variant='ui'>{'Sale Type'}</Text>
+                    </div>
+                    <div style={{width: '1.1rem'}}>
+                      <RadioGroup direction="row" onChange={onSaleTypeChange} isInvalid={!saleInputValid.saleType} errorMessage={"Auction not supported"} > 
+                        <Radio value="conventional" >Conventional</Radio>
+                        <Radio value="dutch">Dutch</Radio>
+                        <Radio value="none" >None</Radio>
+                      </RadioGroup>
+                    </div>
+                  </div>
+                  <div className={styles.labelTitle}>
+                      <Text as="span" size='small' variant='ui'>{'Amount'}</Text>
+                  </div>
+                  <NumberField value={saleData.amount} onValueChange={(value:number) => {onSaleDataChange('amount', value)}} minValue={1} placeholder="Set the amount to sell" variant={saleInputValid.amount ? "default" : "negative"} errorMessage={"Check Amount"}/>
+                  <div className={styles.labelTitle}>
+                    <Text as="span" size='small' variant='ui'>{'Price'}</Text>
+                  </div>
+                  <NumberField value={saleData.price} onValueChange={(value:number) => {onSaleDataChange('price', value)}} minValue={0.1} placeholder="Set the token price in KDA"  variant={saleInputValid.price ? "default" : "negative"}/>
+                  <div className={styles.labelTitle}>
+                    <Text as="span" size='small' variant='ui'>{'Timeout'}</Text>
+                  </div>
+                  <NumberField value={saleData.timeout} onValueChange={(value:number) => {onSaleDataChange('timeout', value)}} minValue={1} info="Set valid sale days" variant={saleInputValid.timeout ? "default" : "negative"} />
+                </Stack>
               </CrudCard>
             </TabItem>
             {/* only show bid tab if saleId is present*/}
             <TabItem title="Buy" key="bid">
-                <CrudCard title="Buy token" description={[
-                  `There are 3 sale types: regular, conventional, dutch auction`,
-                  `You can view and bid on the offers here`
+              <CrudCard title="Buy token" description={[
+                `You can view and bid on the available offers here.`,
+                `Clicking 'Buy Now' will transfer the fungible payment to the sale's escrow account and transfer the token to your account.`
+              ]} >
+                <Bid saleId={saleId!} chainId={chainId}/>
+              </CrudCard>
+            </TabItem>
+            <TabItem title="Configuration" key="policies">
+              {tokenInfo?.policies ? checkConcretePolicies(tokenInfo.policies) && (
+              <CrudCard
+                title="Token Policies"
+                description={[
+                  "Token Policies define the behaviors of the token.", 
+                  "Policies are set by the token creator at creation time, and cannot be altered after creation.",
                 ]}>
-                  <Bid saleId={saleId!} chainId={chainId}/>
-                </CrudCard>
+                  <Text as="span" size='small' variant='ui'>{'Policies'}</Text>
+                <div className={styles.configContainer}>
+                  <div className={styles.checkboxColumn}>
+                    <Checkbox isReadOnly={true} id="nonUpdatableURI" isSelected={checkConcretePolicies(tokenInfo.policies).nonUpdatableURI}>Non-Updatable URI</Checkbox>
+                    <Checkbox isReadOnly={true} id="guarded"  isSelected={checkConcretePolicies(tokenInfo.policies)?.guarded}>Guarded</Checkbox>
+                    <Checkbox isReadOnly={true} id="nonFungible" isSelected={checkConcretePolicies(tokenInfo.policies)?.nonFungible}>Non Fungible</Checkbox>
+                  </div>
+                  <div className={styles.checkboxColumn}>
+                    <Checkbox isReadOnly={true} id="hasRoyalty" isSelected={checkConcretePolicies(tokenInfo.policies)?.hasRoyalty}>Has Royalty</Checkbox>
+                    <Checkbox isReadOnly={true} id="collection" isSelected={checkConcretePolicies(tokenInfo.policies)?.collection}>Collection</Checkbox>
+                  </div> 
+                </div>
+              </CrudCard>
+              ) : <></>}
             </TabItem>
           </Tabs>
           {/* {saleData.saleType === "conventional" && ( */}

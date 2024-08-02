@@ -1,35 +1,35 @@
-import { style } from '@vanilla-extract/css';
+import {globalStyle,  style } from '@vanilla-extract/css';
 import { tokens, token } from '@kadena/kode-ui/styles';
 
 export const container = style({
   margin: '160px 15% 0',
-  backgroundColor: token('color.background.surface.default'),
+  backgroundColor: token('color.background.layer.default'),
   borderRadius: token('radius.sm'),
   border: `1px solid ${token('color.border.base.subtle')}`,
+  gap: '64px',
 });
 
 export const secondContainer = style({
   margin: '50px 15% 0',
-  backgroundColor: token('color.background.surface.default'),
-  borderRadius: token('radius.sm'),
-  border: `1px solid ${token('color.border.base.subtle')}`,
+  backgroundColor: token('color.background.base.default'),
 });
 
 export const shareContainer = style({
   display: 'flex',
   margin: `${token('spacing.n4')} 0% 0`,
+  width: '101%',
+  height: '38px',
   gap: token('spacing.n4'),
-  
+  justifyContent: 'space-between',
 });
 
-export const tabContainer = style({
-  backgroundColor: token('color.background.layer.default'),
-})
-
 export const formContainer = style({
+  marginTop: '25px',
   display: 'flex',
   flexDirection: 'column',
+  justifyContent: 'space-between',
   gap: token('spacing.n4'),
+  width: '100%'
 });
 
 export const buttonRowContainer = style({
@@ -40,6 +40,8 @@ export const buttonRowContainer = style({
 export const tokenImageClass = style({
   width: '100%',
   height: '100%',
+  minHeight: '336px',
+  minWidth: '336px',
   objectFit: 'cover',
   borderRadius: token('radius.lg'),
   margin: '-88px 0 20px',
@@ -64,23 +66,49 @@ export const offerContainer = style({
   gap: token('spacing.n4'),
 });
 
-export const flexContainer = style({
+export const tabContainer = style({
   display: 'flex',
   gap:  token('spacing.n2'),
+  border: `1px solid ${token('color.border.base.subtle')}`,
+  borderTop: 'none',
   borderRadius: token('radius.sm'),
-  border: '1 0 0 0',
+  backgroundColor: token('color.background.layer.default'),
+});
+
+export const flexContainer = style({
+  display: 'flex',
+  width: '100%',
+  padding: '16px 32px',
+  borderRadius: token('radius.sm'),
+  justifyContent: 'space-between',
+  gap:  token('spacing.n3'),
 });
 
 export const flexItem = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap:  token('spacing.n2'),
   flex: '1',
-  margin: `0 ${token('spacing.n4')}`,
-  gap: token('spacing.n2'),
 })
 
-export const checkboxRow = style({
+export const checkboxColumn = style({
   display: 'flex',
-  flexDirection: 'row',
+  flexDirection: 'column',
   marginBottom: token('spacing.n2'),
   marginTop: token('spacing.n2'),
+  justifyContent: 'space-evenly',
+  height: '100%'
 });
 
+export const configContainer = style({
+  display: "flex", 
+  flexDirection: 'row', 
+  justifyContent: 'space-between', 
+  height: '100px'
+})
+
+export const labelTitle = style({
+  paddingTop: token('spacing.n2'),
+  paddingBottom: token('spacing.n2'),
+  gap: token('spacing.n2')
+});

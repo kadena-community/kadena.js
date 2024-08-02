@@ -31,18 +31,17 @@ export default function Home() {
         <img
           src={`/listingHeader.png`}
           alt="Header Image"
-          style={{ position: 'relative', width: '100%', maxHeight: '400px', left: '0px', right: '0px'}} 
+          style={{ position: 'relative', width: '100%', maxHeight: '600px', left: '0px', right: '0px'}} 
         />
       </div>
       {error && <div>Error: <pre>{JSON.stringify(error, null, 2)}</pre></div>}
       {loading && <h2>Loading..</h2>}
 
-      {!loading && !error && data.length === 0 && <Heading as="h2">No sales found</Heading>}
-
       <div style={{ padding: '20px'}}>
         <div style={{ marginTop: '20px', marginBottom: '20px' }}>
         <Heading >Active Sales</Heading>
         </div>
+        {!loading && !error && data.length === 0 && <Heading as="h2">No sales found</Heading>}
         <Grid
           columns={{
             lg: 4,
