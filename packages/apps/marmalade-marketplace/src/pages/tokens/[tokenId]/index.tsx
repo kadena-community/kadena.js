@@ -48,8 +48,6 @@ export default function CreateSale() {
   const [selectedKey, setSelectedKey] = useState(saleId ? "bid" : "info");
 
   interface CreateSaleInput {
-    tokenId?: string;
-    chainId?: ChainId;
     saleType?: string;
     price: number;
     timeout: number;
@@ -74,6 +72,7 @@ export default function CreateSale() {
   const { data } = getSale(saleId as string);
   
   useEffect(() => {
+
     const tokenIdParam = params?.["tokenId"];
     const chainIdParam = searchParams.get("chainId");
     const saleIdParam = searchParams.get("saleId");
@@ -90,8 +89,8 @@ export default function CreateSale() {
       setSaleId(saleIdParam);
     }    
 
-    setSaleData({ ...saleData, tokenId, chainId: chainId as ChainId});
-    
+    setSaleData({ ...saleData});
+
   }, [searchParams]);
 
   useEffect(() => {
@@ -106,7 +105,6 @@ export default function CreateSale() {
         }) as ITokenInfo;
 
         // if token info is not valid, redirect to the home 
-        console.log(tokenInfo)
 
         setTokenInfo(tokenInfo);
         setTokenPrecision(Number(tokenInfo.precision.int))
@@ -160,10 +158,12 @@ export default function CreateSale() {
   }
 
   const onCreateSalePress = async () => {
+    console.log(      
+      account.account,
+      saleData.timeout,
+      saleData.amount)
     if (
       !account.account ||
-      !saleData.tokenId ||
-      !saleData.chainId ||
       !saleData.timeout ||
       !saleData.amount
     ) throw new Error("Not all required fields are provided");
@@ -171,12 +171,12 @@ export default function CreateSale() {
     const saleConfig = {
       host: env.URL,
       networkId: env.NETWORKID,
-      chainId: saleData.chainId,
+      chainId: chainId as ChainId,
       sign: createSignWithSpireKeySDK([account.account], onTransactionSigned),
     };
 
     await offerToken(
-      {...saleData, 
+      { ...saleData, 
         auction:  {
           fungible: {
             refName: {
@@ -309,7 +309,7 @@ export default function CreateSale() {
           </CrudCard>
         </Stack>
         <Stack flex={1} flexDirection="column" className={styles.secondContainer}>
-          <Tabs className={styles.tabsContainer} tabPanelClassName={styles.tabContainer} isContained={true} inverse={true} selectedKey={selectedKey} onSelectionChange={handleTabChange} >
+          <Tabs className={styles.tabsContainer} tabPanelClassName={styles.tabContainer} isContained={true} inverse={false} selectedKey={selectedKey} onSelectionChange={handleTabChange} >
             <TabItem title="General Info" key="info"> 
               <div className={styles.flexContainer}>
                 <div className={styles.flexItem}>
