@@ -6,5 +6,6 @@ dist
 # managed by crackle
 /dist
 /global
+/patterns
 /styles
 # end managed by crackle
