@@ -259,7 +259,7 @@ export default function CreateSale() {
 
   const handleTabChange = (key:any) => {
     if (!saleId && key === "bid") return;
-    // if (balance === 0 && key === "sale") return;
+    if (balance === 0 && key === "sale") return;
     setSelectedKey(key);
   };
 
