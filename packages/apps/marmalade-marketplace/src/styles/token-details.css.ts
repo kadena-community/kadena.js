@@ -37,13 +37,21 @@ export const buttonRowContainer = style({
   justifyContent: 'space-between',
 });
 
+export const tokenImageContainer = style({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '100%',
+  minHeight: '336px',  
+  margin: '-88px 0 20px',
+});
+
 export const tokenImageClass = style({
   width: '100%',
   height: '100%',
   objectFit: 'cover',
-  borderRadius: token('radius.lg'),
-  margin: '-88px 0 20px',
-});
+  borderRadius: tokens.kda.foundation.radius.lg,
+});  
 
 export const propertyContainer = style({
   display: 'flex',
