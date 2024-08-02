@@ -131,6 +131,7 @@ export default function CreateSale() {
 
 
   useEffect(() => {
+    if (chainId === '') return;
     async function fetch() {
       if (!account.account?.accountName) return;
       try {
@@ -147,7 +148,7 @@ export default function CreateSale() {
       }
     } 
     fetch();
-    }, [account])
+    }, [account, chainId])
 
   const onCancelPress = () => {
     router.back();

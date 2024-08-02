@@ -38,27 +38,20 @@ export const buttonRowContainer = style({
 });
 
 export const tokenImageContainer = style({
-  width: '100%',
-  height: '100%',
-  minHeight: '336px',
-  objectFit: 'cover',
-  borderRadius: tokens.kda.foundation.radius.lg,
-  backgroundColor: tokens.kda.foundation.color.background.layer.default,
+  display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  display: 'flex',
-  border: `2px dashed ${tokens.kda.foundation.color.border.base.subtle}`,
+  width: '100%',
+  minHeight: '336px',  
   margin: '-88px 0 20px',
 });
 
 export const tokenImageClass = style({
   width: '100%',
   height: '100%',
-  minHeight: '336px',
-  minWidth: '336px',
   objectFit: 'cover',
-  borderRadius: tokens.kda.foundation.radius.lg,
-});  
+  borderRadius: tokens.kda.foundation.radius.lg,  
+});
 
 export const propertyContainer = style({
   display: 'flex',
