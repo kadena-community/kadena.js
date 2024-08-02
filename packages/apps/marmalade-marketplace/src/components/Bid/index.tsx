@@ -31,7 +31,7 @@ export default function Bid({ saleId, chainId }: { saleId: string, chainId: stri
               </RadioGroup>
             </div>
             <LabeledText label="Sale Id" value={saleId}/>  
-            <LabeledText label="Seller" value={data?.seller.account!}/>
+            <LabeledText label="Seller" value={"w:Q0qcTnspIqnaH5Q62Wln39NLf_ub9eoU3AA3khr_2zo:keys-any"}/>
             <LabeledText label="Amount" value={String(data?.amount)}/>
             <LabeledText label="Price" value={String(data?.startPrice)}/>
           </div>

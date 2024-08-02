@@ -308,9 +308,8 @@ export default function CreateSale() {
           </CrudCard>
         </Stack>
         <Stack flex={1} flexDirection="column" className={styles.secondContainer}>
-          <Tabs tabPanelClassName={styles.tabContainer} isContained={true} inverse={true} selectedKey={selectedKey} onSelectionChange={handleTabChange} 
-           >
-            <TabItem title="General Info" key="info">
+          <Tabs className={styles.tabsContainer} tabPanelClassName={styles.tabContainer} isContained={true} inverse={true} selectedKey={selectedKey} onSelectionChange={handleTabChange} >
+            <TabItem title="General Info" key="info"> 
               <div className={styles.flexContainer}>
                 <div className={styles.flexItem}>
                   <LabeledText label={`ID`} value={tokenId!}/>
@@ -334,19 +333,17 @@ export default function CreateSale() {
                   <div style={{ marginBottom: '8px'}}>
                     <br />
                     <div className={styles.labelTitle}>
-                      <Text as="span" size='small' variant='ui'>{'Sale Type'}</Text>
+                      <Text as="span" size='small' variant='ui'>{'Auction Type'}</Text>
                     </div>
-                    <div style={{width: '1.1rem'}}>
-                      <RadioGroup direction="row" onChange={onSaleTypeChange} isInvalid={!saleInputValid.saleType} errorMessage={"Auction not supported"} > 
-                        <Radio value="conventional" >Conventional</Radio>
-                        <Radio value="dutch">Dutch</Radio>
-                        <Radio value="none" >None</Radio>
-                      </RadioGroup>
-                    </div>
+                    <RadioGroup direction="row" onChange={onSaleTypeChange} isInvalid={!saleInputValid.saleType} errorMessage={"Auction not supported"} > 
+                      <Radio value="conventional" >Conventional</Radio>
+                      <Radio value="dutch">Dutch</Radio>
+                      <Radio value="none" >None</Radio>
+                    </RadioGroup>
                   </div>
                   <div className={styles.labelTitle}>
-                      <Text as="span" size='small' variant='ui'>{'Amount'}</Text>
-                  </div>
+                    <Text as="span" size='small' variant='ui'>{'Amount'}</Text>
+                  </div>                  
                   <NumberField value={saleData.amount} onValueChange={(value:number) => {onSaleDataChange('amount', value)}} minValue={1} placeholder="Set the amount to sell" variant={saleInputValid.amount ? "default" : "negative"} errorMessage={"Check Amount"}/>
                   <div className={styles.labelTitle}>
                     <Text as="span" size='small' variant='ui'>{'Price'}</Text>

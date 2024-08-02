@@ -37,15 +37,28 @@ export const buttonRowContainer = style({
   justifyContent: 'space-between',
 });
 
+export const tokenImageContainer = style({
+  width: '100%',
+  height: '100%',
+  minHeight: '336px',
+  objectFit: 'cover',
+  borderRadius: tokens.kda.foundation.radius.lg,
+  backgroundColor: tokens.kda.foundation.color.background.layer.default,
+  justifyContent: 'center',
+  alignItems: 'center',
+  display: 'flex',
+  border: `2px dashed ${tokens.kda.foundation.color.border.base.subtle}`,
+  margin: '-88px 0 20px',
+});
+
 export const tokenImageClass = style({
   width: '100%',
   height: '100%',
   minHeight: '336px',
   minWidth: '336px',
   objectFit: 'cover',
-  borderRadius: token('radius.lg'),
-  margin: '-88px 0 20px',
-});
+  borderRadius: tokens.kda.foundation.radius.lg,
+});  
 
 export const propertyContainer = style({
   display: 'flex',
@@ -66,7 +79,11 @@ export const offerContainer = style({
   gap: token('spacing.n4'),
 });
 
+export const tabsContainer = style({
+});
+
 export const tabContainer = style({
+  padding: '0',
   display: 'flex',
   gap:  token('spacing.n2'),
   border: `1px solid ${token('color.border.base.subtle')}`,
@@ -78,7 +95,7 @@ export const tabContainer = style({
 export const flexContainer = style({
   display: 'flex',
   width: '100%',
-  padding: '16px 32px',
+  padding: '32px',
   borderRadius: token('radius.sm'),
   justifyContent: 'space-between',
   gap:  token('spacing.n3'),
