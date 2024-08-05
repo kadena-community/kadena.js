@@ -78,7 +78,6 @@ const isEventEnabled: Record<string, boolean> = env.EVENTS.reduce(
 );
 
 const getAllEventsFromBlock = async (blockNumber: number) => {
-  console.log('Getting all events from block', blockNumber);
   const events: Event[] = [];
 
   let response: BlocksFromHeightQuery['blocksFromHeight'] | null = null;
@@ -104,7 +103,7 @@ const getAllEventsFromBlock = async (blockNumber: number) => {
 
       if (
         !block?.node ||
-        !isChainEnabled[block.node.chainId] 
+        !isChainEnabled[block.node.chainId]
         // || block.node.transactions.edges.length === 0
       ) {
         continue;
@@ -126,7 +125,6 @@ const getAllEventsFromBlock = async (blockNumber: number) => {
               ? JSON.parse(event.node.parameters)
               : [],
           };
-          console.log(data);
 
           events.push(data);
         }
@@ -165,18 +163,18 @@ async function parseEvents(
     }
 
     if (event.event === 'marmalade-v2.ledger.SALE') {
-    const [tokenId, sellerAccount, amount, timeout, saleId] =
-        event.parameters; 
+      const [tokenId, sellerAccount, amount, timeout, saleId] =
+        event.parameters;
 
       let quoteInfo = {};
 
       try {
-        const data = await getQuoteInfo({
+        const data = (await getQuoteInfo({
           saleId: saleId as string,
           chainId: event.chainId,
           networkId: env.NETWORKID,
           host: env.CHAINWEB_API_HOST,
-        }) as QuoteInfo;
+        })) as QuoteInfo;
 
         quoteInfo = {
           startPrice: data['sale-price'],
@@ -381,12 +379,12 @@ async function parseEvents(
         host: env.CHAINWEB_API_HOST,
       });
 
-      const quoteInfo = await getQuoteInfo({
+      const quoteInfo = (await getQuoteInfo({
         saleId: saleId as string,
         chainId: event.chainId,
         networkId: env.NETWORKID,
         host: env.CHAINWEB_API_HOST,
-      }) as QuoteInfo;
+      })) as QuoteInfo;
 
       bidRecords[bidId] = {
         ...bidRecords[bidId],
@@ -457,8 +455,10 @@ const sync = async (fromBlock: number, toBlock: number) => {
 
   try {
     for (let i = fromBlock; i <= toBlock; i++) {
+      // Fetching too many blocks
       const events = await getAllEventsFromBlock(i);
 
+      // not enough time to process these steps after
       const { sales, bids } = await parseEvents(events);
 
       if (sales.length > 0) {
@@ -497,7 +497,6 @@ export default async function handler(
   res: NextApiResponse<ResponseData>,
 ) {
   const { isProcessing, latestProcessedBlockNumber } = await getSettings();
-  console.log(isProcessing, "isProcessing")
   if (isProcessing) {
     res.status(425).json({ message: 'SYNCING' });
     return;
@@ -516,11 +515,11 @@ export default async function handler(
       return;
     }
 
-    console.log('blockDiff:', latestBlockNumber - latestProcessedBlockNumber);
-
-    const endBlock = getEndBlock(latestProcessedBlockNumber, latestBlockNumber);
-
-    await sync(latestProcessedBlockNumber + 1, endBlock);
+    const blocksToProcess = Math.min(10, latestBlockNumber - latestProcessedBlockNumber);
+    await sync(
+      latestProcessedBlockNumber + 1,
+      latestProcessedBlockNumber + blocksToProcess + 1,
+    );
 
     res.status(200).write('OK');
     res.end();
