@@ -12,13 +12,12 @@ import { ThemeToggle } from '../ThemeToggle/ThemeToggle';
 export const NavBar: FC<
   PropsWithChildren<{
     isFixed?: boolean;
-    isSearchPage?: boolean;
   }>
-> = ({ children, isFixed, isSearchPage }) => {
+> = ({ children, isFixed }) => {
   return (
     <>
       <Stack alignItems="center">
-        {isFixed || !isSearchPage ? (
+        {isFixed ? (
           <>
             <Media greaterThanOrEqual="md">
               <Link href="/">

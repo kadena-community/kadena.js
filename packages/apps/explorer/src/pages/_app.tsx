@@ -4,6 +4,7 @@ import { MediaContextProvider } from '@/components/Layout/media';
 import { ToastProvider } from '@/components/Toast/ToastContext/ToastContext';
 import { NetworkContextProvider } from '@/context/networksContext';
 import { QueryContextProvider } from '@/context/queryContext';
+import { SearchContextProvider } from '@/context/searchContext';
 import { useRouter } from '@/hooks/router';
 import '@components/globalstyles.css';
 import { RouterProvider, useTheme } from '@kadena/kode-ui';
@@ -26,17 +27,19 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
         <RouterProvider navigate={router.push}>
           <MediaContextProvider>
             <QueryContextProvider>
-              <Head>
-                <title>K:Explorer</title>
-                <link
-                  rel="icon"
-                  href="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/icons/internal/default/icon%40128.png"
-                />
-              </Head>
+              <SearchContextProvider>
+                <Head>
+                  <title>K:Explorer</title>
+                  <link
+                    rel="icon"
+                    href="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/icons/internal/default/icon%40128.png"
+                  />
+                </Head>
 
-              <main>
-                <ReactComponent {...pageProps} />
-              </main>
+                <main>
+                  <ReactComponent {...pageProps} />
+                </main>
+              </SearchContextProvider>
             </QueryContextProvider>
           </MediaContextProvider>
         </RouterProvider>

@@ -1,9 +1,7 @@
-import type {
-  TransactionMempoolInfo,
-  TransactionRequestKeyQuery,
-  Transfer,
-} from '@/__generated__/sdk';
+import type { TransactionRequestKeyQuery, Transfer } from '@/__generated__/sdk';
 import { DataRenderComponent } from '@/components/DataRenderComponent/DataRenderComponent';
+import { getCrosschainTransfer } from '@/utils/getCrosschainTransfer';
+import { objectToDataRenderComponentFields } from '@/utils/objectToDataRenderComponentFields';
 import { Grid, Text } from '@kadena/kode-ui';
 import React, { useEffect } from 'react';
 import { ifNill } from '../../utils/ifNill';
@@ -14,98 +12,99 @@ type TransactionResult = Exclude<
 >['result'];
 
 export const TransactionResultComponent: React.FC<{
-  transactionResult: TransactionResult;
-}> = ({ transactionResult }) => {
+  transaction?: TransactionResult | null;
+  isLoading: boolean;
+}> = ({ transaction, isLoading }) => {
   const [crosschainTransfer, setCrosschainTransfer] =
     React.useState<Transfer>();
 
   useEffect(() => {
-    if (
-      transactionResult &&
-      transactionResult.__typename === 'TransactionResult'
-    ) {
-      const xchainTx = getCrosschainTransfer(transactionResult);
+    if (transaction && transaction.__typename === 'TransactionResult') {
+      const xchainTx = getCrosschainTransfer(transaction);
       setCrosschainTransfer(xchainTx);
     }
-  }, [transactionResult]);
+  }, [transaction]);
 
-  if (transactionResult.__typename !== 'TransactionResult') {
+  if (transaction?.__typename !== 'TransactionResult') {
     return null;
   }
+
+  if (!transaction) return;
 
   return (
     <>
       <DataRenderComponent
+        isLoading={isLoading}
         title="Block"
         fields={[
-          { key: 'Height', value: transactionResult.block.height },
+          { key: 'Height', value: transaction.block.height },
           {
             key: 'Hash',
-            value: transactionResult.block.hash,
-            link: `/block/${transactionResult.block.hash}`,
+            value: transaction.block.hash,
+            link: `/block/${transaction.block.hash}`,
           },
-          { key: 'Created', value: transactionResult.block.creationTime },
+          { key: 'Created', value: transaction.block.creationTime },
         ]}
       />
 
-      {transactionResult.__typename === 'TransactionResult' &&
-        crosschainTransfer && (
-          <DataRenderComponent
-            title="Crosschain Transfer"
-            fields={[
-              {
-                key: 'Type',
-                // note: this might be confusing
-                //   where the COUNTERPART SENDER is empty, the COUNTERPART is
-                //   the minting transaction (finisher transaction)
-                // That makes the CURRENT transaction the sender
-                value:
-                  getCrosschainTransfer(
-                    transactionResult,
-                  ).senderAccount.trim() === ''
-                    ? 'Initiation transaction'
-                    : 'Finisher transaction',
-              },
-              {
-                key: 'Counterpart',
-                value: getCrosschainTransfer(transactionResult).requestKey,
-                link: `/transaction/${getCrosschainTransfer(transactionResult).requestKey}`,
-              },
-            ]}
-          />
-        )}
+      {transaction.__typename === 'TransactionResult' && crosschainTransfer && (
+        <DataRenderComponent
+          isLoading={isLoading}
+          title="Crosschain Transfer"
+          fields={[
+            {
+              key: 'Type',
+              // note: this might be confusing
+              //   where the COUNTERPART SENDER is empty, the COUNTERPART is
+              //   the minting transaction (finisher transaction)
+              // That makes the CURRENT transaction the sender
+              value:
+                getCrosschainTransfer(transaction).senderAccount.trim() === ''
+                  ? 'Initiation transaction'
+                  : 'Finisher transaction',
+            },
+            {
+              key: 'Counterpart',
+              value: getCrosschainTransfer(transaction).requestKey,
+              link: `/transaction/${getCrosschainTransfer(transaction).requestKey}`,
+            },
+          ]}
+        />
+      )}
 
       <DataRenderComponent
+        isLoading={isLoading}
         title="Result"
         fields={[
           {
             key: 'Result',
             value:
-              transactionResult.badResult !== null
-                ? `Failed: ${ifNill(transactionResult.badResult, '')}`
-                : `Success: ${ifNill(transactionResult.goodResult, '')}`,
+              transaction.badResult !== null
+                ? `Failed: ${ifNill(transaction.badResult, '')}`
+                : `Success: ${ifNill(transaction.goodResult, '')}`,
           },
-          { key: 'Logs', value: transactionResult.logs },
-          { key: 'Gas', value: transactionResult.gas },
-          { key: 'Transaction ID', value: transactionResult.transactionId },
+          { key: 'Logs', value: transaction.logs },
+          { key: 'Gas', value: transaction.gas },
+          { key: 'Transaction ID', value: transaction.transactionId },
           {
             key: 'Continuation',
-            value: transactionResult.continuation && (
+            value: transaction.continuation && (
               <DataRenderComponent
                 fields={objectToDataRenderComponentFields({
-                  ...JSON.parse(transactionResult.continuation ?? '[]'),
+                  ...JSON.parse(transaction.continuation ?? '[]'),
                 })}
               />
             ),
           },
-          { key: 'Metadata', value: transactionResult.metadata },
+          { key: 'Metadata', value: transaction.metadata },
         ]}
       />
 
       <DataRenderComponent
+        isLoading={isLoading}
         title="Events"
         fields={
-          transactionResult.events.edges
+          transaction.events.edges
             .map(
               (edge) =>
                 edge && {
@@ -144,26 +143,4 @@ function mapParameters(
   } catch {
     return parameters;
   }
-}
-
-function objectToDataRenderComponentFields(
-  obj: Record<string, unknown>,
-): { key: string; value: string }[] {
-  return Object.entries(obj).map(([key, value]) => ({
-    key,
-    value: JSON.stringify(value),
-  }));
-}
-
-type TransactionMempoolOrResult = Exclude<
-  TransactionRequestKeyQuery['transaction'],
-  undefined | null
->['result'];
-
-type TxResult = Exclude<TransactionMempoolOrResult, TransactionMempoolInfo>;
-
-function getCrosschainTransfer(transaction: TxResult): Transfer {
-  return transaction.transfers.edges.find(
-    (edge) => edge?.node.crossChainTransfer !== null,
-  )?.node.crossChainTransfer as Transfer;
 }
