@@ -10,9 +10,9 @@ export const account: DocumentNode = gql`
       # transactions {
       #   totalCount
       # }
-      transfers {
-        totalCount
-      }
+      # transfers {
+      #   totalCount
+      # }
     }
   }
 `;

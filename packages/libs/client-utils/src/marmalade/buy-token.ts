@@ -16,6 +16,7 @@ import { submitClient } from '../core';
 import type { IClientConfig } from '../core/utils/helpers';
 import type {
   CommonProps,
+  Guard,
   IAuctionPurchaseConfig,
   IDutchAuctionPurchaseInput,
   WithAuctionPurchase,
@@ -33,18 +34,13 @@ interface IBuyTokenInput extends CommonProps {
   saleId: string;
   amount: IPactDecimal;
   chainId: ChainId;
-  signer: string;
+  signerPublicKey: string;
   seller: {
     account: string;
   };
   buyer: {
     account: string;
-    keyset:
-      | {
-          keys: string[];
-          pred: 'keys-all' | 'keys-2' | 'keys-any';
-        }
-      | string;
+    guard: Guard;
   };
   buyerFungibleAccount?: string;
 }
@@ -55,7 +51,7 @@ const generatePolicyTransactionData = <C extends IAuctionPurchaseConfig>(
   const data = [];
 
   data.push(addData('buyer', props.buyer!.account));
-  data.push(addData('buyer-guard', props.buyer!.keyset));
+  data.push(addData('buyer-guard', props.buyer!.guard));
 
   if (props.buyerFungibleAccount) {
     data.push(addData('buyer_fungible_account', props.buyerFungibleAccount));
@@ -101,7 +97,7 @@ const buyTokenCommand = <C extends IAuctionPurchaseConfig>({
   policyConfig,
   meta,
   capabilities,
-  signer,
+  signerPublicKey,
   additionalSigners,
   ...props
 }: WithAuctionPurchase<C, IBuyTokenInput>) =>
@@ -113,7 +109,7 @@ const buyTokenCommand = <C extends IAuctionPurchaseConfig>({
       proof: null,
       data: {},
     }),
-    addSigner(formatWebAuthnSigner(signer as ISigner), (signFor) => [
+    addSigner(formatWebAuthnSigner(signerPublicKey as ISigner), (signFor) => [
       signFor('coin.GAS'),
       signFor(
         'marmalade-v2.ledger.BUY',

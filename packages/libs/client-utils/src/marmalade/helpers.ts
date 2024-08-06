@@ -2,7 +2,13 @@ import type { ISigner } from '@kadena/client';
 import { addSigner } from '@kadena/client/fp';
 import type { IGeneralCapability } from '@kadena/client/lib/interfaces/type-utilities';
 import type { ICap } from '@kadena/types';
-import type { CommonProps, ICreateTokenPolicyConfig } from './config';
+import type {
+  CommonProps,
+  Guard,
+  ICreateTokenPolicyConfig,
+  Keyset,
+  RefKeyset,
+} from './config';
 import {
   COLLECTION_POLICY,
   GUARD_POLICY,
@@ -88,4 +94,17 @@ export const formatWebAuthnSigner = (
   }
 
   return formatSingleSigner(signer);
+};
+
+export const isKeysetGuard = (guard: Guard): guard is Keyset => {
+  return 'keys' in guard;
+};
+
+export const isRefKeysetGuard = (guard: Guard): guard is RefKeyset => {
+  return 'keysetref' in guard;
+};
+
+export const readRefKeyset = (guard: RefKeyset) => {
+  return () =>
+    `(keyset-ref-guard "${guard.keysetref.ns}.${guard.keysetref.ksn}")`;
 };

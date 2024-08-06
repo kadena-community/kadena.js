@@ -21,7 +21,7 @@ interface IUpdateUriInput {
   chainId: ChainId;
   guard: {
     account: string;
-    keyset: {
+    guard: {
       keys: string[];
       pred: 'keys-all' | 'keys-2' | 'keys-any';
     };
@@ -37,8 +37,8 @@ const updateUriCommand = ({
 }: IUpdateUriInput) =>
   composePactCommand(
     execution(Pact.modules['marmalade-v2.ledger']['update-uri'](tokenId, uri)),
-    addKeyset('guard', guard.keyset.pred, ...guard.keyset.keys),
-    addSigner(formatWebAuthnSigner(guard.keyset.keys), (signFor) => [
+    addKeyset('guard', guard.guard.pred, ...guard.guard.keys),
+    addSigner(formatWebAuthnSigner(guard.guard.keys), (signFor) => [
       signFor('coin.GAS'),
       signFor('marmalade-v2.ledger.UPDATE-URI', tokenId, uri),
       ...(policyConfig?.guarded

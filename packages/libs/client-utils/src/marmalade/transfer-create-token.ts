@@ -26,14 +26,14 @@ interface ITransferCreateTokenInput extends CommonProps {
   chainId: ChainId;
   sender: {
     account: string;
-    keyset: {
+    guard: {
       keys: string[];
       pred: 'keys-all' | 'keys-2' | 'keys-any';
     };
   };
   receiver: {
     account: string;
-    keyset: {
+    guard: {
       keys: string[];
       pred: 'keys-all' | 'keys-2' | 'keys-any';
     };
@@ -66,8 +66,8 @@ const createTransferTokenCommand = ({
         amount,
       ),
     ),
-    addKeyset('receiver-guard', receiver.keyset.pred, ...receiver.keyset.keys),
-    addSigner(formatWebAuthnSigner(sender.keyset.keys), (signFor) => [
+    addKeyset('receiver-guard', receiver.guard.pred, ...receiver.guard.keys),
+    addSigner(formatWebAuthnSigner(sender.guard.keys), (signFor) => [
       signFor('coin.GAS'),
       signFor(
         'marmalade-v2.ledger.TRANSFER',

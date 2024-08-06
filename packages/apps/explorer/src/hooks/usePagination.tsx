@@ -1,4 +1,4 @@
-import type { ITablePaginationPageOptions } from '@/components/compact-table/table-pagination/table-pagination';
+import type { ITablePaginationPageOptions } from '@/components/CompactTable/TablePagination/TablePagination';
 import { useEffect, useState } from 'react';
 
 const PAGESIZE = 20;

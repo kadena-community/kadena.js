@@ -14,7 +14,7 @@ import type { IClientConfig } from '../core/utils/helpers';
 interface ICreateCollectionIdInput {
   collectionName: string;
   operator: {
-    keyset: {
+    guard: {
       keys: string[];
       pred: BuiltInPredicate;
     };
@@ -38,7 +38,7 @@ export const createCollectionId = ({
         readKeyset('operator-guard'),
       ),
     execution,
-    addKeyset('operator-guard', operator.keyset.pred, ...operator.keyset.keys),
+    addKeyset('operator-guard', operator.guard.pred, ...operator.guard.keys),
     dirtyReadClient<
       PactReturnType<
         IPactModules['marmalade-v2.collection-policy-v1']['create-collection-id']

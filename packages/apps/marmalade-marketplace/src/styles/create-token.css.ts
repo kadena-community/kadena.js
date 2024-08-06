@@ -1,6 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { tokens } from '@kadena/kode-ui/styles';
-import { deviceColors } from '@/styles/tokens.css';
+import { tokens, token } from '@kadena/kode-ui/styles';
 
 export const mainWrapperClass = style({
   display: 'grid',
@@ -23,7 +22,7 @@ export const oneColumnRow = style({
 export const formContainer = style({
   display: 'flex',
   flexDirection: 'column',
-  gap: tokens.kda.foundation.spacing.n4,
+  gap: token('spacing.n4'),
 });
 
 export const formLabel = style({
@@ -106,7 +105,7 @@ export const verticalForm = style({
 export const buttonRow = style({
   display: 'flex',
   justifyContent: 'space-between',
-  margin: `${tokens.kda.foundation.spacing.n6} 15% 0`,
+  margin: `${token('spacing.n6')} 15% 0`,
 });
 
 export const buttonRowRight = style({
@@ -192,13 +191,13 @@ export const checkboxStyle = style({
 
 export const container = style({
   margin: '160px 15% 0',
-  backgroundColor: tokens.kda.foundation.color.background.layer.default,
-  borderRadius: tokens.kda.foundation.radius.sm,
-  border: `1px solid ${deviceColors.borderColor}`,
+  backgroundColor: token('color.background.layer.default'),
+  borderRadius: token(`radius.sm`),
+  border: `1px solid ${token(`color.border.base.subtle`)}`,
 });
 
 export const buttonRowContainer = style({
-  margin: `${tokens.kda.foundation.spacing.n6} 15% 0`,
+  margin: `${token('spacing.n6')} 15% 0`,
   justifyContent: 'space-between',
 });
 
@@ -218,5 +217,5 @@ export const propertyValue = style({
 export const offerContainer = style({
   display: 'flex',
   flexDirection: 'column',
-  gap: tokens.kda.foundation.spacing.n4,
+  gap: token('spacing.n4'),
 });

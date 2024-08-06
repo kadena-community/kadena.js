@@ -39,7 +39,7 @@ const inputs = {
   policies: [],
   creator: {
     account: sourceAccount.account,
-    keyset: {
+    guard: {
       keys: [sourceAccount.publicKey],
       pred: 'keys-all' as const,
     },
@@ -130,7 +130,7 @@ describe('mintToken', () => {
         accountName: sourceAccount.account,
         guard: {
           account: sourceAccount.account,
-          keyset: {
+          guard: {
             keys: [sourceAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -226,7 +226,7 @@ describe('offerToken - with auction data', () => {
           },
           sellerFungibleAccount: {
             account: sourceAccount.account,
-            keyset: {
+            guard: {
               keys: [sourceAccount.publicKey],
               pred: 'keys-all' as const,
             },
@@ -238,7 +238,7 @@ describe('offerToken - with auction data', () => {
         tokenId: tokenId as string,
         seller: {
           account: sourceAccount.account,
-          keyset: {
+          guard: {
             keys: [sourceAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -308,7 +308,7 @@ describe('offerToken - with auction data', () => {
         tokenId: 'non-existing-token',
         seller: {
           account: secondaryTargetAccount.account,
-          keyset: {
+          guard: {
             keys: [secondaryTargetAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -344,7 +344,7 @@ describe('createAuction', () => {
         chainId,
         seller: {
           account: sourceAccount.account,
-          keyset: {
+          guard: {
             keys: [sourceAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -419,7 +419,7 @@ describe('updateAuction', () => {
         chainId,
         seller: {
           account: sourceAccount.account,
-          keyset: {
+          guard: {
             keys: [sourceAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -532,7 +532,7 @@ describe('buyToken', () => {
     policies: [],
     creator: {
       account: sourceAccount.account,
-      keyset: {
+      guard: {
         keys: [sourceAccount.publicKey],
         pred: 'keys-all' as const,
       },
@@ -570,7 +570,7 @@ describe('buyToken', () => {
         accountName: sourceAccount.account,
         guard: {
           account: sourceAccount.account,
-          keyset: {
+          guard: {
             keys: [sourceAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -606,7 +606,7 @@ describe('buyToken', () => {
           },
           sellerFungibleAccount: {
             account: sourceAccount.account,
-            keyset: {
+            guard: {
               keys: [sourceAccount.publicKey],
               pred: 'keys-all' as const,
             },
@@ -618,7 +618,7 @@ describe('buyToken', () => {
         tokenId: tokenId as string,
         seller: {
           account: sourceAccount.account,
-          keyset: {
+          guard: {
             keys: [sourceAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -692,7 +692,7 @@ describe('buyToken', () => {
         chainId,
         seller: {
           account: sourceAccount.account,
-          keyset: {
+          guard: {
             keys: [sourceAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -750,10 +750,10 @@ describe('buyToken', () => {
         seller: {
           account: sourceAccount.account,
         },
-        signer: secondaryTargetAccount.publicKey,
+        signerPublicKey: secondaryTargetAccount.publicKey,
         buyer: {
           account: secondaryTargetAccount.account,
-          keyset: {
+          guard: {
             keys: [secondaryTargetAccount.publicKey],
             pred: 'keys-all' as const,
           },

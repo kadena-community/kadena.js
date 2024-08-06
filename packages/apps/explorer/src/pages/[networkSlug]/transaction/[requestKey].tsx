@@ -1,11 +1,11 @@
 import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
-import Layout from '@/components/layout/layout';
-import { useRouter } from '@/components/routing/useRouter';
-import { useToast } from '@/components/toasts/toast-context/toast-context';
-import { TransactionRequestComponent } from '@/components/transaction-components/transaction-request-component';
-import { TransactionResultComponent } from '@/components/transaction-components/transaction-result-component';
-import { useQueryContext } from '@/context/query-context';
+import { Layout } from '@/components/Layout/Layout';
+import { useToast } from '@/components/Toast/ToastContext/ToastContext';
+import { TransactionRequestComponent } from '@/components/TransactionComponents/TransactionRequestComponent';
+import { TransactionResultComponent } from '@/components/TransactionComponents/TransactionResultComponent';
+import { useQueryContext } from '@/context/queryContext';
 import { transactionRequestKey } from '@/graphql/pages/transaction/transaction-requestkey.graph';
+import { useRouter } from '@/hooks/router';
 import { truncateValues } from '@/services/format';
 import { Heading, Stack, TabItem, Tabs } from '@kadena/kode-ui';
 import React, { useEffect } from 'react';

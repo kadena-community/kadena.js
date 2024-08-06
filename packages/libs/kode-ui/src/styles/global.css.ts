@@ -106,8 +106,14 @@ globalStyle('button, input, select, textarea, label', {
 */
 globalStyle('p, h1, h2, h3, h4, h5, h6, span, li', {
   overflowWrap: 'break-word',
-  fontFamily: `${vars.fonts.$main} !important`,
 });
+
+globalStyle(
+  '#storybook-docs p, #storybook-docs h1, #storybook-docs h2, #storybook-docs h3, #storybook-docs h4, #storybook-docs h5, #storybook-docs h6, #storybook-docs span, #storybook-docs li',
+  {
+    fontFamily: `${vars.fonts.$main} !important`,
+  },
+);
 
 /*
     9. Create a root stacking context

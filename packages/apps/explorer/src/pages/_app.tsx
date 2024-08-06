@@ -1,9 +1,10 @@
 // load global styles from @kadena/kode-ui
-import { MediaContextProvider } from '@/components/layout/media';
-import { useRouter } from '@/components/routing/useRouter';
-import { ToastProvider } from '@/components/toasts/toast-context/toast-context';
-import { NetworkContextProvider } from '@/context/networks-context';
-import { QueryContextProvider } from '@/context/query-context';
+import { Analytics } from '@/components/Analytics/Analytics';
+import { MediaContextProvider } from '@/components/Layout/media';
+import { ToastProvider } from '@/components/Toast/ToastContext/ToastContext';
+import { NetworkContextProvider } from '@/context/networksContext';
+import { QueryContextProvider } from '@/context/queryContext';
+import { useRouter } from '@/hooks/router';
 import '@components/globalstyles.css';
 import { RouterProvider, useTheme } from '@kadena/kode-ui';
 import '@kadena/kode-ui/global';
@@ -40,6 +41,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
           </MediaContextProvider>
         </RouterProvider>
       </NetworkContextProvider>
+      <Analytics />
     </ToastProvider>
   );
 }

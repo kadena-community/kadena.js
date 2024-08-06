@@ -1,11 +1,9 @@
-import { getWebauthnGuard, getWebauthnAccount } from "@kadena/client-utils/webauthn";
 import { env } from '@/utils/env';
 import { getAccountCookieName } from '@/utils/getAccountCookieName';
-import { getReturnUrl } from '@/utils/getReturnUrl';
+import { connect, initSpireKey, type Account } from '@kadena/spirekey-sdk';
 import { useRouter, useSearchParams } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
-
 interface IAccountError {
   message: string;
 }
@@ -19,8 +17,7 @@ export interface WebauthnAccountDetails {
 }
 
 export interface IAccountContext {
-  account?: IAccount;
-  webauthnAccount?: WebauthnAccountDetails;
+  account?: Account;
   error?: IAccountError;
   isMounted: boolean;
   login: () => void;
@@ -28,41 +25,29 @@ export interface IAccountContext {
 }
 
 export const AccountContext = createContext<IAccountContext>({
-  account: undefined,
-  webauthnAccount: undefined,
+  account: undefined,  
   isMounted: false,
   login: () => {},
   logout: () => {},
 });
 
 export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [account, setAccount] = useState<IAccount>();
-  const [webauthnAccount, setWebauthnAccount] = useState<WebauthnAccountDetails>();
+  const [account, setAccount] = useState<Account>();
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const chainId = '8';
 
-  const decodeAccount = useCallback((userResponse: string) => {
-    if (!userResponse) return;
-    try {
-      const account: IAccount = JSON.parse(
-        Buffer.from(userResponse, 'base64').toString(),
-      );
-      return account;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (e: any) {
-      return;
-    }
+  useEffect(() => {
+    initSpireKey({ hostUrl: env.WALLET_URL, useRAccount: true })
   }, []);
 
-  const login = useCallback(() => {
-    router.push(
-      `${env.WALLET_URL}/connect?returnUrl=${getReturnUrl([
-        'user',
-      ])}&networkId=${env.NETWORKID}&optimistic=true`,
-    );
-  }, [router]);
+  const login = useCallback(async () => {
+    const account = await connect(env.NETWORKID, chainId);
+    setIsMounted(true);
+    setAccount(account);
+    localStorage.setItem(getAccountCookieName(), JSON.stringify(account));
+  }, [connect]);
 
   const logout = useCallback(() => {
     localStorage.removeItem(getAccountCookieName());
@@ -70,66 +55,21 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     router.replace('/');
   }, []);
 
-  const getWebauthnAccountDetails = async (account: string): Promise<WebauthnAccountDetails> => {
-    const webauthnAccount:string = await getWebauthnAccount({
-      account: account,
-      host: env.URL,
-      networkId: env.NETWORKID,
-      chainId,
-    }) as string
-
-    const webauthnGuard = await getWebauthnGuard({
-      account: account,
-      host: env.URL,
-      networkId: env.NETWORKID,
-      chainId,
-    }) as {
-      keys: string[];
-      pred: "keys-all" | "keys-2" | "keys-any";
-    }
-
-    return {
-      account:webauthnAccount,
-      guard:webauthnGuard
-    }
-  };
-
   const loginResponse = useCallback(async () => {
-    const innerSearchParams = new URLSearchParams(window.location.search);
-    const userResponse = innerSearchParams.has('user')
-      ? innerSearchParams.get('user')
-      : localStorage.getItem(getAccountCookieName());
-
-    if (!userResponse) {
-      setIsMounted(true);
-      return;
-    }
-
-    if (innerSearchParams.has('user')) {
-      localStorage.setItem(getAccountCookieName(), userResponse);
-    }
-    const account = decodeAccount(userResponse);
-    const accountDetails = await getWebauthnAccountDetails(account?.accountName || '');
-
+    const storedAccount = localStorage.getItem(getAccountCookieName());
+    if (!storedAccount) return;
+    const account = JSON.parse(storedAccount);
+    if (!account) return;
     setAccount(account);
-    setWebauthnAccount(accountDetails);
     setIsMounted(true);
-
-    if (searchParams.has('user')) {
-      setTimeout(() => {
-        router.replace(getReturnUrl(['user']));
-      }, 100);
-    }
-  }, [setAccount, setIsMounted, searchParams, decodeAccount, router]);
+  }, [setAccount, setIsMounted, searchParams, router]);
 
   useEffect(() => {
     loginResponse();
   }, []);
 
-  console.log({ account }, account?.accountName);
-
   return (
-    <AccountContext.Provider value={{ account, webauthnAccount, login, logout, isMounted }}>
+    <AccountContext.Provider value={{ account, login, logout, isMounted }}>
       {children}
     </AccountContext.Provider>
   );

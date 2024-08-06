@@ -14,6 +14,7 @@ export const checkNetwork = (graphUrl: string): Promise<Response> =>
       query: `query networkInfo {
                   networkInfo {
                     totalDifficulty
+                    networkId
                   }
                 }`,
       variables: {},

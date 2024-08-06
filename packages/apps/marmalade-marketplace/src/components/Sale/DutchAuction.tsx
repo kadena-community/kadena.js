@@ -66,7 +66,7 @@ export function DutchAuction({ tokenImageUrl, sale }: DutchAuctionProps) {
         },
         saleId: sale.saleId,
         chainId: sale.chainId,
-        networkId: env.NETWORK_NAME,
+        networkId: env.NETWORKID,
         host: env.CHAINWEB_API_HOST
       });
 
@@ -120,7 +120,7 @@ export function DutchAuction({ tokenImageUrl, sale }: DutchAuctionProps) {
         chainId: sale.chainId,
         seller: {
           account: sale.seller.account,
-          keyset: sale.seller.guard!
+          guard: sale.seller.guard!
         },
         timeout: new PactNumber(sale.timeoutAt / 1000).toPactInteger()
       }, {
@@ -180,7 +180,7 @@ export function DutchAuction({ tokenImageUrl, sale }: DutchAuctionProps) {
     });
     const transaction = await signWithKeypair(unsignedTransaction);
 
-    const HOST = `${env.CHAINWEB_API_HOST}/chainweb/0.0/${env.NETWORK_NAME}/chain/${sale.chainId}/pact`;
+    const HOST = `${env.CHAINWEB_API_HOST}/chainweb/0.0/${env.NETWORKID}/chain/${sale.chainId}/pact`;
     const client = createClient(HOST);
 
     const command = await client.local(transaction)
@@ -198,13 +198,13 @@ export function DutchAuction({ tokenImageUrl, sale }: DutchAuctionProps) {
     const escrowAccountResult = await getEscrowAccount({
       saleId: sale.saleId,
       chainId: sale.chainId,
-      networkId: env.NETWORK_NAME,
+      networkId: env.NETWORKID,
       host: env.CHAINWEB_API_HOST,
     })
 
     try {
       await buyToken({
-        signer: "",
+        signerPublicKey: "",
         auctionConfig: {
           dutch: true
         },
@@ -221,7 +221,7 @@ export function DutchAuction({ tokenImageUrl, sale }: DutchAuctionProps) {
         },
         buyer: {
           account: account?.accountName,
-          keyset: {
+          guard: {
             keys: [(command.result as any).data],
             pred: "keys-all"
           }

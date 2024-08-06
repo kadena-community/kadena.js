@@ -1,11 +1,15 @@
 import type { Page } from '@playwright/test';
+import { expect } from '@playwright/test';
 
 export class ProofOfUsAppIndex {
   public constructor() {}
 
   public async createProofWith(actor: Page, title: string): Promise<string> {
     // Navigate to the dashboard
-    await actor.getByRole('button', { name: 'GO TO DASHBOARD' }).click();
+    await actor
+      .getByRole('button', { name: 'GO TO DASHBOARD' })
+      .first()
+      .click();
     await actor.getByRole('link', { name: 'Go check it out!' }).click();
 
     // Make a photo
@@ -44,11 +48,19 @@ export class ProofOfUsAppIndex {
 
   public async signProofWith(actor: Page): Promise<void> {
     await actor.waitForTimeout(1000);
-    await actor.getByRole('button', { name: 'SIGN' }).click();
+    await actor.getByRole('button', { name: 'SIGN' }).first().click();
   }
 
   public async uploadProofWith(actor: Page): Promise<void> {
-    await actor.getByRole('button', { name: 'SIGN & UPLOAD' }).waitFor();
-    await actor.getByRole('button', { name: 'SIGN & UPLOAD' }).click();
+    await actor.getByRole('button', { name: 'SIGN & MINT' }).waitFor();
+    await actor.getByRole('button', { name: 'SIGN & MINT' }).first().click();
+  }
+  public async countallSigners(
+    actor: Page,
+    expectedSigneeCount: number,
+  ): Promise<void> {
+    await expect(actor.locator('.swipeable-list-item')).toHaveCount(
+      expectedSigneeCount,
+    );
   }
 }

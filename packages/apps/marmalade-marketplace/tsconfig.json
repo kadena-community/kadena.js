@@ -34,5 +34,8 @@
     "css.d.ts",
     "scripts"
   ],
-  "exclude": ["node_modules", "src/__generated__/**"]
+  "exclude": [
+    "node_modules",
+    "src/__generated__/**"
+  ]
 }

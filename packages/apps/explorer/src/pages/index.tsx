@@ -1,4 +1,4 @@
-import { selectedNetworkKey } from '@/context/networks-context';
+import { selectedNetworkKey } from '@/context/networksContext';
 import type { GetServerSideProps } from 'next';
 import type React from 'react';
 

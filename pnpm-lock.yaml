@@ -500,6 +500,9 @@ importers:
       '@artsy/fresnel':
         specifier: ^7.1.4
         version: 7.1.4(react@18.3.1)
+      '@google-analytics/data':
+        specifier: ~3.2.2
+        version: 3.2.2
       '@graphql-yoga/apollo-link':
         specifier: ~3.3.0
         version: 3.3.1(@apollo/client@3.9.11(@types/react@18.3.3)(graphql-ws@5.16.0(graphql@16.8.2))(graphql@16.8.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/node@20.14.9)(graphql@16.8.2)
@@ -573,6 +576,15 @@ importers:
       '@rushstack/eslint-config':
         specifier: ~3.6.9
         version: 3.6.10(eslint@8.57.0)(typescript@5.4.5)
+      '@testing-library/react':
+        specifier: ~14.0.0
+        version: 14.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@testing-library/react-hooks':
+        specifier: ^8.0.1
+        version: 8.0.1(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/gtag.js':
+        specifier: ~0.0.12
+        version: 0.0.20
       '@types/js-cookie':
         specifier: ~3.0.3
         version: 3.0.6
@@ -591,6 +603,9 @@ importers:
       '@vanilla-extract/next-plugin':
         specifier: 2.4.0
         version: 2.4.0(@types/node@20.14.9)(lightningcss@1.25.1)(next@14.2.2(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.45.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.1)(webpack@5.88.2)
+      '@vitejs/plugin-react':
+        specifier: ^4.3.1
+        version: 4.3.1(vite@5.3.3(@types/node@20.14.9)(lightningcss@1.25.1)(terser@5.31.1))
       '@vitest/coverage-v8':
         specifier: ^1.6.0
         version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(canvas@2.11.2))(lightningcss@1.25.1)(terser@5.31.1))
@@ -600,6 +615,9 @@ importers:
       concurrently:
         specifier: ^8.2.2
         version: 8.2.2
+      next-router-mock:
+        specifier: ^0.9.10
+        version: 0.9.13(next@14.2.2(@opentelemetry/api@1.9.0)(@playwright/test@1.45.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       prettier:
         specifier: ~3.2.5
         version: 3.2.5
@@ -609,6 +627,9 @@ importers:
       vitest:
         specifier: ^1.6.0
         version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(canvas@2.11.2))(lightningcss@1.25.1)(terser@5.31.1)
+      vitest-dom:
+        specifier: ^0.1.1
+        version: 0.1.1(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0)(lightningcss@1.25.1)(terser@5.31.1))
 
   packages/apps/graph:
     dependencies:
@@ -872,6 +893,9 @@ importers:
       '@kadena/pactjs':
         specifier: workspace:*
         version: link:../../libs/pactjs
+      '@kadena/spirekey-sdk':
+        specifier: 0.0.1-dev-12
+        version: 0.0.1-dev-12
       '@pinata/sdk':
         specifier: ^2.1.0
         version: 2.1.0
@@ -5383,8 +5407,29 @@ packages:
   '@juggle/resize-observer@3.4.0':
     resolution: {integrity: sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==}
 
+  '@kadena/chainweb-node-client@0.6.3':
+    resolution: {integrity: sha512-hIfknEHEoOXFRwS4FYaGk7NyZYCfcwLX0bB3gLNKndx98PZM4N291cq1rU2vA41WnzpgS9cBvZ3NB3iZer3tjw==}
+
+  '@kadena/client@1.13.0':
+    resolution: {integrity: sha512-bKkSh0hQ5eGP7L6YfBv8n2ZseVExzLFOy7nLF1Tcp21MbixDsRvq8VDZ0AoHsNBSrlXRfqvBqDp2Q2rgbjIHjA==}
+
+  '@kadena/cryptography-utils@0.4.4':
+    resolution: {integrity: sha512-8xUcGlmBuuR9PSW88eqJuW49EmcQeiplDlsvN1N++1Bw6KV4lXlBKlJn5TM8lxctGNpewtzlIUimQFIlMqm9aw==}
+
   '@kadena/fonts@0.0.1':
     resolution: {integrity: sha512-epUOJbW96Yd827XQD2/6Ibow9qcevgPhVKsUhfzG9L26U4PLMMWZ0KXxIoFQ6DKpQa9xE4GK8DkPzn30pJb+3Q==}
+
+  '@kadena/kode-icons@0.1.0':
+    resolution: {integrity: sha512-DBHPg0ze/34FYR4BG+nTzR/jS9kxbjMtxgdVTN4HZIydmPLTs7CU15mWTkkFOaYRx0phK2rhH2TwVwhoqIujQw==}
+
+  '@kadena/kode-ui@0.13.0':
+    resolution: {integrity: sha512-zC8gIwduMKxDonoclMvYlcHSWwVzD4ZRWaM9s4Sgs5AK2zAZK17ioPW7SNxQV9+bNcCChcAuUMUZAyshT5YzPw==}
+
+  '@kadena/pactjs@0.4.3':
+    resolution: {integrity: sha512-EYqIrhw5YbGz7+10rq4QnqC9I22OfApCRfNIvrcq6Lwg0I04grFXCspgEFrgZO1ThTvG4nN0gs8DZl72HBleGw==}
+
+  '@kadena/spirekey-sdk@0.0.1-dev-12':
+    resolution: {integrity: sha512-jSys4wSIixY7GeSuJ1PjWA0oMXytl1r28arZ0JNL6IkcV6TcQni/ymWI+Efz/Ves6hU3Roox1zIC3g1WAJqTwA==}
 
   '@kamilkisiela/fast-url-parser@1.1.4':
     resolution: {integrity: sha512-gbkePEBupNydxCelHCESvFSFM8XPh1Zs/OAVRW/rKpEqPAl5PbOM90Si8mv9bvnR53uPD2s/FiRxdvSejpRJew==}
@@ -9609,6 +9654,7 @@ packages:
 
   '@walletconnect/sign-client@2.8.6':
     resolution: {integrity: sha512-rOFTKTHP7oJfXgYHX7+SdB8VbcsEE3ZFG/bMdmZboWaBim1mrY3vUyDdKrNr0VgI3AwBiEQezQDfKxBX0pMSQQ==}
+    deprecated: Reliability and performance greatly improved - please see https://github.com/WalletConnect/walletconnect-monorepo/releases
 
   '@walletconnect/time@1.0.2':
     resolution: {integrity: sha512-uzdd9woDcJ1AaBZRhqy5rNC9laqWGErfc4dxA9a87mPdKOgWMD85mcFo9dIYIts/Jwocfwn07EC6EzclKubk/g==}
@@ -21744,9 +21790,109 @@ snapshots:
 
   '@juggle/resize-observer@3.4.0': {}
 
+  '@kadena/chainweb-node-client@0.6.3':
+    dependencies:
+      '@kadena/cryptography-utils': 0.4.4
+      '@kadena/pactjs': 0.4.3
+      cross-fetch: 3.1.8
+    transitivePeerDependencies:
+      - encoding
+
+  '@kadena/client@1.13.0':
+    dependencies:
+      '@kadena/chainweb-node-client': 0.6.3
+      '@kadena/cryptography-utils': 0.4.4
+      '@kadena/pactjs': 0.4.3
+      '@walletconnect/sign-client': 2.8.6
+      cross-fetch: 3.1.8
+      debug: 4.3.4(supports-color@5.5.0)
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@react-native-async-storage/async-storage'
+      - '@upstash/redis'
+      - '@vercel/kv'
+      - bufferutil
+      - encoding
+      - ioredis
+      - supports-color
+      - uWebSockets.js
+      - utf-8-validate
+
+  '@kadena/cryptography-utils@0.4.4':
+    dependencies:
+      blakejs: 1.2.1
+      buffer: 6.0.3
+      tweetnacl: 1.0.3
+
   '@kadena/fonts@0.0.1':
     dependencies:
       lodash.kebabcase: 4.1.1
+
+  '@kadena/kode-icons@0.1.0':
+    dependencies:
+      react: 18.3.1
+
+  '@kadena/kode-ui@0.13.0':
+    dependencies:
+      '@kadena/kode-icons': 0.1.0
+      '@react-aria/accordion': 3.0.0-alpha.25(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/focus': 3.17.1(react@18.3.1)
+      '@react-aria/selection': 3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/utils': 3.24.1(react@18.3.1)
+      '@react-stately/table': 3.11.8(react@18.3.1)
+      '@react-stately/utils': 3.10.1(react@18.3.1)
+      '@react-types/grid': 3.2.6(react@18.3.1)
+      '@react-types/table': 3.9.5(react@18.3.1)
+      '@vanilla-extract/css': 1.14.2
+      '@vanilla-extract/css-utils': 0.1.4
+      '@vanilla-extract/recipes': 0.5.1(@vanilla-extract/css@1.14.2)
+      '@vanilla-extract/sprinkles': 1.6.1(@vanilla-extract/css@1.14.2)
+      classnames: 2.5.1
+      lodash.get: 4.4.2
+      lodash.mapvalues: 4.6.0
+      lodash.omit: 4.5.0
+      react: 18.3.1
+      react-aria: 3.33.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-dom: 18.3.1(react@18.3.1)
+      react-stately: 3.31.1(react@18.3.1)
+
+  '@kadena/pactjs@0.4.3':
+    dependencies:
+      bignumber.js: 9.1.2
+
+  '@kadena/spirekey-sdk@0.0.1-dev-12':
+    dependencies:
+      '@kadena/client': 1.13.0
+      '@kadena/kode-ui': 0.13.0
+      '@vanilla-extract/css': 1.15.3
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@react-native-async-storage/async-storage'
+      - '@upstash/redis'
+      - '@vercel/kv'
+      - babel-plugin-macros
+      - bufferutil
+      - encoding
+      - ioredis
+      - supports-color
+      - uWebSockets.js
+      - utf-8-validate
 
   '@kamilkisiela/fast-url-parser@1.1.4': {}
 
@@ -22538,13 +22684,15 @@ snapshots:
     transitivePeerDependencies:
       - '@parcel/core'
 
-  '@parcel/cache@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))':
+  '@parcel/cache@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)':
     dependencies:
       '@parcel/core': 2.12.0(@swc/helpers@0.5.11)
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/logger': 2.12.0
       '@parcel/utils': 2.12.0
       lmdb: 2.8.5
+    transitivePeerDependencies:
+      - '@swc/helpers'
 
   '@parcel/codeframe@2.12.0':
     dependencies:
@@ -22604,7 +22752,7 @@ snapshots:
   '@parcel/core@2.12.0(@swc/helpers@0.5.11)':
     dependencies:
       '@mischnic/json-sourcemap': 0.1.1
-      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/diagnostic': 2.12.0
       '@parcel/events': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
@@ -23019,7 +23167,7 @@ snapshots:
 
   '@parcel/types@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)':
     dependencies:
-      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/diagnostic': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
@@ -28624,7 +28772,7 @@ snapshots:
 
   agent-base@6.0.2:
     dependencies:
-      debug: 4.3.5
+      debug: 4.3.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 

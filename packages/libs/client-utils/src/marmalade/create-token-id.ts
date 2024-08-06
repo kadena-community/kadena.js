@@ -1,5 +1,4 @@
 import type {
-  BuiltInPredicate,
   ChainId,
   IPactModules,
   PactReference,
@@ -11,8 +10,13 @@ import type { IPactInt, NetworkId } from '@kadena/types';
 import { pipe } from 'ramda';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
-import type { ICreateTokenPolicyConfig } from './config';
-import { validatePolicies } from './helpers';
+import type { Guard, ICreateTokenPolicyConfig, RefKeyset } from './config';
+import {
+  isKeysetGuard,
+  isRefKeysetGuard,
+  readRefKeyset,
+  validatePolicies,
+} from './helpers';
 
 interface ICreateTokenIdInput {
   policyConfig?: ICreateTokenPolicyConfig;
@@ -20,10 +24,7 @@ interface ICreateTokenIdInput {
   uri: string;
   precision: IPactInt | PactReference;
   creator: {
-    keyset: {
-      keys: string[];
-      pred: BuiltInPredicate;
-    };
+    guard: Guard;
   };
   chainId: ChainId;
   networkId: NetworkId;
@@ -42,27 +43,54 @@ export const createTokenId = ({
 }: ICreateTokenIdInput) => {
   validatePolicies(policyConfig, policies);
 
-  return pipe(
-    () =>
-      Pact.modules['marmalade-v2.ledger']['create-token-id'](
-        {
-          precision,
-          uri,
-          policies: () =>
-            policies.length > 0 ? `[${policies.join(' ')}]` : '[]',
+  if (isKeysetGuard(creator.guard)) {
+    return pipe(
+      () =>
+        Pact.modules['marmalade-v2.ledger']['create-token-id'](
+          {
+            precision,
+            uri,
+            policies: () =>
+              policies.length > 0 ? `[${policies.join(' ')}]` : '[]',
+          },
+          readKeyset('creation-guard'),
+        ),
+      execution,
+      addKeyset('creation-guard', creator.guard.pred, ...creator.guard.keys),
+      dirtyReadClient<
+        PactReturnType<IPactModules['marmalade-v2.ledger']['create-token-id']>
+      >({
+        host,
+        defaults: {
+          networkId,
+          meta: { chainId },
         },
-        readKeyset('creation-guard'),
-      ),
-    execution,
-    addKeyset('creation-guard', creator.keyset.pred, ...creator.keyset.keys),
-    dirtyReadClient<
-      PactReturnType<IPactModules['marmalade-v2.ledger']['create-token-id']>
-    >({
-      host,
-      defaults: {
-        networkId,
-        meta: { chainId },
-      },
-    }),
-  )().execute();
+      }),
+    )().execute();
+  } else if (isRefKeysetGuard(creator.guard)) {
+    return pipe(
+      () =>
+        Pact.modules['marmalade-v2.ledger']['create-token-id'](
+          {
+            precision,
+            uri,
+            policies: () =>
+              policies.length > 0 ? `[${policies.join(' ')}]` : '[]',
+          },
+          readRefKeyset(creator.guard as RefKeyset),
+        ),
+      execution,
+      dirtyReadClient<
+        PactReturnType<IPactModules['marmalade-v2.ledger']['create-token-id']>
+      >({
+        host,
+        defaults: {
+          networkId,
+          meta: { chainId },
+        },
+      }),
+    )().execute();
+  } else {
+    throw new Error('Guard type is not supported');
+  }
 };

@@ -26,7 +26,7 @@ interface IUpdateAuctionInput extends CommonProps {
   chainId: ChainId;
   seller: {
     account: string;
-    keyset: {
+    guard: {
       keys: string[];
       pred: 'keys-all' | 'keys-2' | 'keys-any';
     };
@@ -54,7 +54,7 @@ const updateConventionalAuctionCommand = <C extends IAuctionConfig>({
         reservedPrice,
       ),
     ),
-    addSigner(formatWebAuthnSigner(seller.keyset.keys), (signFor) => [
+    addSigner(formatWebAuthnSigner(seller.guard.keys), (signFor) => [
       signFor('coin.GAS'),
       signFor(
         `marmalade-sale.conventional-auction.MANAGE_AUCTION`,
@@ -95,7 +95,7 @@ const updateDutchAuctionCommand = <C extends IAuctionConfig>({
         priceIntervalInSeconds,
       ),
     ),
-    addSigner(formatWebAuthnSigner(seller.keyset.keys), (signFor) => [
+    addSigner(formatWebAuthnSigner(seller.guard.keys), (signFor) => [
       signFor('coin.GAS'),
       signFor(`marmalade-sale.dutch-auction.MANAGE_AUCTION`, saleId, tokenId),
     ]),

@@ -1,3 +1,5 @@
+/// <reference types="@kadena/spirekey-sdk" />
+
 type IAccountCrendentialType = 'WebAuthn' | 'ED25519';
 
 interface IAccountCrendential {
@@ -5,12 +7,7 @@ interface IAccountCrendential {
   type: IAccountCrendentialType;
 }
 
-interface IAccount {
-  accountName: string;
-  alias: string;
-  pendingTxIds: string[];
-  credentials: IAccountCrendential[];
-}
+type IAccount = Account;
 
 interface IError {
   message: string;

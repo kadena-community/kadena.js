@@ -37,7 +37,7 @@ const inputs = {
   policies: ['marmalade-v2.collection-policy-v1'],
   creator: {
     account: sourceAccount.account,
-    keyset: {
+    guard: {
       keys: [sourceAccount.publicKey],
       pred: 'keys-all' as const,
     },
@@ -59,7 +59,7 @@ describe('createCollectionId', () => {
       collectionName,
       chainId,
       operator: {
-        keyset: {
+        guard: {
           keys: [sourceAccount.publicKey],
           pred: 'keys-all' as const,
         },
@@ -223,7 +223,7 @@ describe('mintToken', () => {
         accountName: sourceAccount.account,
         guard: {
           account: sourceAccount.account,
-          keyset: {
+          guard: {
             keys: [sourceAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -294,7 +294,7 @@ describe('mintToken', () => {
         accountName: sourceAccount.account,
         guard: {
           account: sourceAccount.account,
-          keyset: {
+          guard: {
             keys: [sourceAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -325,7 +325,7 @@ describe('getCollection', () => {
         int: Number(collectionSize.int),
       },
       name: collectionName,
-      'operator-guard': inputs.creator.keyset,
+      'operator-guard': inputs.creator.guard,
       size: {
         int: 1,
       },
