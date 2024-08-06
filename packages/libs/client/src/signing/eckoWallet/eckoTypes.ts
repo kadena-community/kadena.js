@@ -2,6 +2,10 @@ import type { ICommand } from '@kadena/types';
 import type { IQuicksignResponseOutcomes } from '../../signing-api/v1/quicksign';
 import type { ISignFunction, ISingleSignFunction } from '../ISignFunction';
 
+/**
+ * The response status of the Ecko Wallet request
+ * @public
+ */
 export type EckoStatus = 'success' | 'fail';
 
 /**
@@ -12,6 +16,9 @@ export interface ICommonEckoFunctions {
   isInstalled: () => boolean;
   isConnected: (networkId: string) => Promise<boolean>;
   connect: (networkId: string) => Promise<boolean>;
+  checkStatus: (
+    networkId: string,
+  ) => Promise<IEckoConnectOrStatusResponse | undefined>;
 }
 /**
  * Interface to use when writing a signing function for Ecko Wallet that accepts a single transaction
@@ -29,6 +36,10 @@ export interface IEckoSignFunction
   extends ISignFunction,
     ICommonEckoFunctions {}
 
+/**
+ * Interface that describes the response from Ecko Wallet when checking status or connecting
+ * @public
+ */
 export interface IEckoConnectOrStatusResponse {
   status: EckoStatus;
   message?: string;

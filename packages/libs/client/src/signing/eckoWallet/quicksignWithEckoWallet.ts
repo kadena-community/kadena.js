@@ -1,7 +1,7 @@
 import type { ICommand, IUnsignedCommand } from '@kadena/types';
 import { addSignatures } from '../utils/addSignatures';
 import { parseTransactionCommand } from '../utils/parseTransactionCommand';
-import { connect, isConnected, isInstalled } from './eckoCommon';
+import { checkStatus, connect, isConnected, isInstalled } from './eckoCommon';
 import type { IEckoQuicksignResponse, IEckoSignFunction } from './eckoTypes';
 
 /**
@@ -85,6 +85,7 @@ export function createQuicksignWithEckoWallet(): IEckoSignFunction {
   quicksignWithEckoWallet.isInstalled = isInstalled;
   quicksignWithEckoWallet.isConnected = isConnected;
   quicksignWithEckoWallet.connect = connect;
+  quicksignWithEckoWallet.checkStatus = checkStatus;
 
   return quicksignWithEckoWallet;
 }

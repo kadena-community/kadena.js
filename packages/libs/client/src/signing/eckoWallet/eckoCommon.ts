@@ -45,3 +45,25 @@ export const connect: ICommonEckoFunctions['connect'] = async (networkId) => {
 
   return true;
 };
+
+export const checkStatus: ICommonEckoFunctions['checkStatus'] = async (
+  networkId,
+) => {
+  if (!isInstalled()) {
+    throw new Error('Ecko Wallet is not installed');
+  }
+
+  await connect(networkId);
+
+  const checkstatusResponse =
+    await window.kadena?.request<IEckoConnectOrStatusResponse>({
+      method: 'kda_checkStatus',
+      networkId,
+    });
+
+  if (checkstatusResponse?.status === 'fail') {
+    throw new Error('Error getting status from Ecko Wallet');
+  }
+
+  return checkstatusResponse;
+};
