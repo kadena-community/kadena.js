@@ -34,7 +34,7 @@ import {
   TRANSACTIONS_PATH,
   TX_TEMPLATE_FOLDER,
 } from '../../../constants/config.js';
-import { ICommandSchema } from '../../../prompts/tx.js';
+import { ICommandSchema, IUnsignedCommandSchema } from '../../../prompts/tx.js';
 import { services } from '../../../services/index.js';
 import { KadenaError } from '../../../services/service-error.js';
 import type {
@@ -310,9 +310,11 @@ export async function getTransactionFromFile(
       throw Error(`Failed to read file at path: ${transactionFilePath}`);
     }
     const transaction = JSON.parse(fileContent);
-    const parsedTransaction = ICommandSchema.parse(transaction);
+    const parsedTransaction = IUnsignedCommandSchema.parse(transaction);
     if (signed) {
-      const isSignedTx = isSignedTransaction(transaction);
+      const isSignedTx = isSignedTransaction(
+        parsedTransaction as IUnsignedCommand,
+      );
       if (!isSignedTx) {
         throw Error(`${transactionFile} is not a signed transaction`);
       }
