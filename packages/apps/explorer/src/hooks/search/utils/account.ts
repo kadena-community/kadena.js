@@ -74,7 +74,7 @@ export const useAccount = (
 
         if (item) {
           item.chains = item.chains + 1;
-          item.balance = item.chains + val.balance;
+          item.balance += val.balance;
         } else {
           acc.push({
             predicate,

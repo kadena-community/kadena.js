@@ -22,7 +22,6 @@ const Home: React.FC = () => {
     setSearchOption,
     data: searchData,
     loading,
-    errors,
   } = useSearch();
   const { inView, ref: inViewRef } = useInView();
   return (
@@ -60,17 +59,12 @@ const Home: React.FC = () => {
             setSearchQuery={setSearchQuery}
             searchQuery={searchQuery}
             loading={loading}
-            errors={errors}
           />
         </Stack>
         <Stack marginBlock="xxxl" />
         {searchQuery ? (
           searchData && (
-            <SearchResults
-              searchData={searchData}
-              loading={loading}
-              errors={errors}
-            />
+            <SearchResults searchData={searchData} loading={loading} />
           )
         ) : (
           <BlockTable />

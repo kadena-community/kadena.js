@@ -54,7 +54,6 @@ cd packages/apps/marmalade-marketplace
 - Go to the Firebase Console.
 - Create a new project (or use an existing one).
 - Create a Firestore database in your project.
-- Generate a service account key and download the JSON file.
 
 6. **Add Environment Variables**
 
@@ -62,7 +61,6 @@ Create a .env file in the root of the project from .env.example file and modify 
 
 ```bash
 NEXT_PUBLIC_FB_APIKEY="your-api-key"
-NEXT_PUBLIC_FB_DBURL="your-database-url"
 NEXT_PUBLIC_FB_PROJECTID="your-project-id"
 NEXT_PUBLIC_FB_APPID="your-app-id"
 ```

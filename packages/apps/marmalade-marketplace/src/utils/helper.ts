@@ -1,8 +1,7 @@
 import { ICreateTokenPolicyConfig, CommonProps } from "@kadena/client-utils/marmalade";
-import { BuiltInPredicate, ChainId } from "@kadena/client";
+import { BuiltInPredicate } from "@kadena/client";
 import { PactNumber } from "@kadena/pactjs";
 import { env } from '@/utils/env';
-
 export const getPolicies = (policyConfig: ICreateTokenPolicyConfig) => {
     const policyMap: { [key: string]: string } = {
       nonUpdatableURI: "marmalade-v2.non-updatable-uri-policy-v1",
@@ -22,25 +21,25 @@ export const getPolicies = (policyConfig: ICreateTokenPolicyConfig) => {
     [key: string]: string;
   };
 
-  export const formatGuardInput = (guardInput: { uriGuard: string; burnGuard: string; mintGuard: string; saleGuard: string; transferGuard: string }) => {
+  export const formatGuardInput = (guardInput: { uriGuard: any; burnGuard: any; mintGuard: any; saleGuard: any; transferGuard: any }) => {
     const filteredGuardInput = Object.fromEntries(
       Object.entries(guardInput).filter(([key, value]) => value !== '[EXCLUDED]')
     );
 
     return {
-      ...(filteredGuardInput.uriGuard && { uriGuard: formatKeyset(filteredGuardInput.uriGuard) }),
-      ...(filteredGuardInput.burnGuard && { burnGuard: formatKeyset(filteredGuardInput.burnGuard) }),
-      ...(filteredGuardInput.mintGuard && { mintGuard: formatKeyset(filteredGuardInput.mintGuard) }),
-      ...(filteredGuardInput.saleGuard && { saleGuard: formatKeyset(filteredGuardInput.saleGuard) }),
-      ...(filteredGuardInput.transferGuard && { transferGuard: formatKeyset(filteredGuardInput.transferGuard) }),
+      ...(filteredGuardInput.uriGuard && { uriGuard: filteredGuardInput.uriGuard }),
+      ...(filteredGuardInput.burnGuard && { burnGuard: filteredGuardInput.burnGuard }),
+      ...(filteredGuardInput.mintGuard && { mintGuard: filteredGuardInput.mintGuard }),
+      ...(filteredGuardInput.saleGuard && { saleGuard: filteredGuardInput.saleGuard }),
+      ...(filteredGuardInput.transferGuard && { transferGuard: filteredGuardInput.transferGuard }),
     };
   };
 
- export const createPrecision = (n: number) => {
+  export const createPrecision = (n: number) => {
     return new PactNumber(n.toString()).toPactInteger();
   };
 
- export const formatRoyaltyInput = ( royaltyInput: { royaltyFungible: string; royaltyCreator: string; royaltyGuard: string; royaltyRate: string }) => {
+  export const formatRoyaltyInput = ( royaltyInput: { royaltyFungible: string; royaltyCreator: string; royaltyGuard: any; royaltyRate: string }) => {
     return {
       fungible: {
         refName: {
@@ -56,10 +55,7 @@ export const getPolicies = (policyConfig: ICreateTokenPolicyConfig) => {
       },
       creator: {
         account: royaltyInput.royaltyCreator,
-        keyset: {
-          keys: [royaltyInput.royaltyGuard],
-          pred: 'keys-all',
-        },
+        keyset: royaltyInput.royaltyGuard,          
       },
       royaltyRate: {"decimal": royaltyInput.royaltyRate},
     };
@@ -70,18 +66,14 @@ export const getPolicies = (policyConfig: ICreateTokenPolicyConfig) => {
     pred: 'keys-all' as BuiltInPredicate,
   });
 
-  export const formatAccount = (account: string, key: string) => ({
+  export const formatAccount = (account: string, guard: any) => ({
     account,
-    keyset: {
-      keys: [key],
-      pred: 'keys-all' as BuiltInPredicate,
-    },
+    guard,
   });
 
   export const generateSpireKeyGasCapability = (account:string): CommonProps['capabilities'] => {
-    const capabilities:CommonProps['capabilities'] = [];
-    capabilities.push({name: `${env.WEBAUTHN_WALLET}.GAS_PAYER`, props: [account, new PactNumber(0).toPactInteger(), new PactNumber(0).toPactDecimal() ]});
-    capabilities.push({name: `${env.WEBAUTHN_WALLET}.GAS`, props: [account]});
+    const capabilities:CommonProps['capabilities'] = [];    
+    capabilities.push({name: 'coin.GAS', props: [account]});
     return capabilities;
   };
 
@@ -119,3 +111,7 @@ export const getPolicies = (policyConfig: ICreateTokenPolicyConfig) => {
     return result;
   };
 
+export const isPrecise = (n:number, precision:number):boolean => {
+  const length = String(n).split(".")[1] ? String(n).split(".")[1].length : 0;
+  return length <= precision;
+}

@@ -6,7 +6,6 @@ import {
 } from '@/components/CompactTable/utils/formatLink';
 import { FormatStatus } from '@/components/CompactTable/utils/formatStatus';
 import { SearchOptionEnum } from '@/hooks/search/utils/utils';
-import type { ApolloError } from '@apollo/client';
 import type { FC } from 'react';
 import React from 'react';
 import { NoSearchResults } from '../NoSearchResults/NoSearchResults';
@@ -16,7 +15,6 @@ import { loadingData } from './../loadingDataSearch';
 export interface ISearchResultsProps {
   searchData: ISearchItem[];
   loading: boolean;
-  errors: ApolloError[];
 }
 
 export const SearchResults: FC<ISearchResultsProps> = ({

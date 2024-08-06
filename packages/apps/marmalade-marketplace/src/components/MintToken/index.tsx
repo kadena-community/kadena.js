@@ -3,23 +3,27 @@ import { env } from '@/utils/env';
 import * as styles from './style.css';
 import { useRouter } from 'next/navigation';
 import { Stack,  Button, TextField, NumberField, Checkbox } from '@kadena/kode-ui';
-import { ChainId, BuiltInPredicate } from '@kadena/client';
+import { ChainId } from '@kadena/client';
+import type {Guard} from '@kadena/client-utils/marmalade';
 import { getTokenInfo, mintToken } from '@kadena/client-utils/marmalade';
 import { useAccount } from '@/hooks/account';
 import { createSignWithSpireKeySDK } from '@/utils/signWithSpireKey';
 import { useTransaction } from '@/hooks/transaction';
 import { generateSpireKeyGasCapability, checkConcretePolicies, Policy } from '@/utils/helper';
 import { PactNumber } from "@kadena/pactjs";
-import { MonoAutoFixHigh, MonoAccountBalanceWallet, MonoAccessTime } from '@kadena/kode-icons';
+import { MonoAutoFixHigh } from '@kadena/kode-icons';
 import { TokenMetadata } from "@/components/Token";
 import { getTokenImageUrl, getTokenMetadata } from '@/utils/token';
 import { ICommand, IUnsignedCommand } from '@kadena/client';
+import { useSearchParams } from 'next/navigation';
 
 import CrudCard from '@/components/CrudCard';
 
 function MintTokenComponent() {
   const router = useRouter();
-  const { account, webauthnAccount } = useAccount();
+  const { account } = useAccount();
+  const searchParams = useSearchParams();
+
   const { setTransaction } = useTransaction();
   const [tokenId, setTokenId] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
@@ -31,8 +35,18 @@ function MintTokenComponent() {
   
   const onTransactionSigned = (transaction: IUnsignedCommand | ICommand) => {
     setTransaction(transaction);
-    router.push(`/transaction?returnUrl=/tokens/${tokenId}`);
+    router.push(`/transaction?returnUrl=/tokens/${tokenId}?chainId=${`8`}`);
   }
+
+  useEffect(() => {
+    if (searchParams.has('tokenId')) {
+      const tokenId = searchParams.get('tokenId');
+      if (tokenId) {
+        setTokenId(tokenId);
+        fetchTokenInfo(tokenId);
+      }      
+    }
+  }, [searchParams]);
 
   const config = {
     host: env.URL,
@@ -41,15 +55,15 @@ function MintTokenComponent() {
     sign: createSignWithSpireKeySDK([account], onTransactionSigned),
   };
 
-  const fetchTokenInfo = async () => {
+  const fetchTokenInfo = async (id: string) => {
     const res = await getTokenInfo({
-      tokenId,
+      tokenId: id,
       networkId: config.networkId,
       chainId: config.chainId,
       host: config.host,
     }) as { policies: Policy[], uri: string };
     setTokenInfo(res); 
-    setResult(checkConcretePolicies(res.policies))
+    setResult(checkConcretePolicies(res.policies))    
     await fetch(res);
   }
 
@@ -74,20 +88,18 @@ function MintTokenComponent() {
 
       const amountFormatted = (amount === 1) ? {"decimal": "1.0"} : new PactNumber(amount).toPactDecimal();
 
-      if (!webauthnAccount) {
-        throw new Error("Webauthn account not found");
+      if (!account) {
+        throw new Error("Spirekey account not found");
       }
 
-      const walletAccount = account?.accountName || '';
+      const walletAccount = account?.accountName || '';     
 
       await mintToken({
         policyConfig: result,
         tokenId: tokenId,
-        accountName: webauthnAccount?.account || "",
-        guard: {
-          account: webauthnAccount.account,
-          keyset: webauthnAccount.guard
-        },
+        accountName: walletAccount,
+        signerPublicKey: account && account.devices[0].guard.keys[0],
+        guard: {account: walletAccount, guard: account.guard as Guard },
         amount: amountFormatted,
         chainId: config.chainId as ChainId,
         capabilities: generateSpireKeyGasCapability(walletAccount),
@@ -108,15 +120,15 @@ function MintTokenComponent() {
   };
 
   const handleTokenInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    if (name === 'tokenId') setTokenId(value);
+    const { value } = event.target;
+    setTokenId(value);
   };
 
   const onCancelPress = () => {
     router.back();
   };
 
-  const hanldeAmountInputChange = (value: number) => {
+  const handleAmountInputChange = (value: number) => {
     if (value >= 0) {
       setAmount(value);
     }
@@ -137,7 +149,7 @@ function MintTokenComponent() {
             "Try minting your own nft!"
           ]}
         >
-          <div>
+          <div className={styles.tokenImageContainer}>
             <img
               src={tokenImageUrl}
               alt="Token Image"
@@ -145,8 +157,8 @@ function MintTokenComponent() {
             />
           </div>
           <div className={styles.formContainer} >
-            <TextField label="Token ID" name="tokenId" value={tokenId} onChange={handleTokenInputChange} onBlur={fetchTokenInfo} /> 
-            <NumberField label="Amount" value={amount} onValueChange={hanldeAmountInputChange} />
+            <TextField label="Token ID" name="tokenId" value={tokenId} onChange={handleTokenInputChange} onBlur={() => fetchTokenInfo(tokenId)} /> 
+            <NumberField label="Amount" value={amount} onValueChange={handleAmountInputChange} />
           </div>
         </CrudCard>
 
@@ -167,6 +179,11 @@ function MintTokenComponent() {
             <Checkbox isReadOnly={true} id="collection" isSelected={result?.collection}>Collection</Checkbox>
           </div> 
         </CrudCard>
+        )}
+        {error && (
+          <div className={styles.errorBox}>
+            <p>Error: {error}</p>
+          </div>
         )}
       </Stack>
       <div className={styles.buttonRow}>
