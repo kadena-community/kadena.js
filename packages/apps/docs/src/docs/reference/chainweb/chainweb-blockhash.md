@@ -60,9 +60,9 @@ If the request is successful, the response returns `application/json` content wi
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| items&nbsp;(required) | Array of strings | Lists the block hashes matching the request criteria. Each block hash string consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
-| limit&nbsp;(required) | integer >= 0 | Specifies the maximum number of items to include in the page of results. This number can be smaller but never larger than the number of requested items.
-| next&nbsp;(required) | string or null | Returns a value that can be used to query the next page. You can use this value for the `next` parameter in a follow-up request. The format for this parameter consists of two parts. The first part of the string can be `inclusive`, `exclusive` or `null`. The second part is the value that calls the next page of results or `null` if there are no more results to query.
+| items&nbsp;(required) | Array&nbsp;of&nbsp;strings | Lists the block hashes matching the request criteria. Each block hash string consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
+| limit&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the maximum number of items to include in the page of results. This number can be smaller but never larger than the number of requested items.
+| next&nbsp;(required) | string&nbsp;or&nbsp;null | Returns a value that can be used to query the next page. You can use this value for the `next` parameter in a follow-up request. The format for this parameter consists of two parts. The first part of the string can be `inclusive`, `exclusive` or `null`. The second part is the value that calls the next page of results or `null` if there are no more results to query.
 
 ### Examples
 
@@ -133,8 +133,8 @@ Use the following parameters to specify the upper and lower bounds for the queri
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| lower	| Array&nbsp;of&nbsp;strings | Specifies the lower bound for the query. No block hashes are returned that are predecessors of any block with a hash from this array. Each block hash consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
-| upper | Array of strings | Specifies the upper bound for the query. All returned block hashes are predecessors of a block with an hash from this array. Each block hash consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
+| lower	| Array&nbsp;of&nbsp;strings | Specifies the lower bound for the query. No block hashes are returned that are predecessors of any block with a hash from this array. Each block hash consists of 43 characters from the `a-zA-Z0-9_-` character set.
+| upper | Array of strings | Specifies the upper bound for the query. All returned block hashes are predecessors of a block with an hash from this array. Each block hash consists of 43 characters from the `a-zA-Z0-9_-` character set.
 
 The following examples illustrate setting lower and upper bounds for the query parameters. 
 
@@ -175,11 +175,11 @@ The response header parameters are the same for all successful and unsuccessful 
 | --------- | ---- | -----------
 | x-peer-addr | string | Specifies the host address and port number of the client as observed by the remote Chainweb node. The host address can be a domain name or an IP address in IPv4 or IPv6 format. For example: `"10.36.1.3:42988"`.
 | x-server&#8209;timestamp | integer&nbsp;>=&nbsp;0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
-| x-chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
+| x&#8209;chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
 
 #### Successful response schema
 
-If the request is successful, the response returns application/json content with the following:
+If the request is successful, the response returns `application/json` content with the following:
 
 | Parameter | Type | Description
 | --------- | ---- | -----------

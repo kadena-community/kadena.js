@@ -25,14 +25,14 @@ Use `GET https://{baseURL}/chain/{chain}/payload/{payloadHash}` to get the raw p
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| chain&nbsp;(required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the payload request to. Valid values are 0 to 19. For example, to get block payload for the first chain (0), the request is `GET https://{baseURL}/chain/0/payload`.
-| payloadHash (required) | string | Specifies the payload hash for the request. The block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set. For example: `GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA`.
+| chain&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the chain identifier of the chain you want to send the payload request to. Valid values are 0 to 19. For example, to get block payload for the first chain (0), the request is `GET https://{baseURL}/chain/0/payload`.
+| payloadHash&nbsp;(required) | string | Specifies the payload hash for the request. The block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set. For example: `GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA`.
 
 ### Query parameters
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| height | integer >= 0 | Height of a block. For example: `height=3000000`.
+| height | integer&nbsp;>=&nbsp;0 | Height of a block. For example: `height=3000000`.
 
 ### Responses
 
@@ -142,7 +142,7 @@ Use `POST https://{baseURL}/chain/{chain}/payload/batch` to request multiple blo
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| chain&nbsp;(required) | integer >= 0 | Specifies the chain identifier of the chain you want to get the payload from. Valid values are 0 to 19. For example, to get block payload for the first chain (0), the request is `POST https://{baseURL}/chain/0/payload/batch`.
+| chain&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the chain identifier of the chain you want to get the payload from. Valid values are 0 to 19. For example, to get block payload for the first chain (0), the request is `POST https://{baseURL}/chain/0/payload/batch`.
 
 ### Request body schema
 
@@ -150,8 +150,8 @@ Use an array of payload hash strings and an array of block heights in a JSON obj
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| hashes | Array of strings | Specifies the block payload hashes to include in the query request. Each block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set. For example: `GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA`.
-| heights | Array of integers | Specifies the block heights to include in the request.
+| hashes | Array&nbsp;of&nbsp;strings | Specifies the block payload hashes to include in the query request. Each block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set. For example: `GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA`.
+| heights | Array&nbsp;of&nbsp;integers | Specifies the block heights to include in the request.
 
 ### Responses
 
@@ -176,7 +176,7 @@ If the request is successful, the response returns `application/json` content wi
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| transactions&nbsp;(required) | Array of strings | An array of Base64Url-encoded strings—without padding—that describe signed Pact transactions in JSON format.
+| transactions&nbsp;(required) | Array&nbsp;of&nbsp;strings | An array of Base64Url-encoded strings—without padding—that describe signed Pact transactions in JSON format.
 | minerData (required) | string | Miner information is a Base64Url-encoded string—without padding—that consists of characters from the `a-zA-Z0-9_-` character set.This information is included as part of the payload JSON object.
 | transactionsHash&nbsp;(required) | string | The transaction hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set.
 | outputsHash (required) | string | The output hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set.
@@ -234,14 +234,14 @@ Use `GET https://{baseURL}/chain/{chain}/payload/{payloadHash}/outputs` to get p
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| chain&nbsp;(required) | integer >= 0 | Specifies the chain identifier of the chain you want to send the payload request to. Valid values are 0 to 19. For example, to get block payload for the first chain (0), the request is `GET https://{baseURL}/chain/0/payload/{payloadHash}/outputs`.
-| payloadHash (required) | string | The block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set. For example: `GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA`.
+| chain&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the chain identifier of the chain you want to send the payload request to. Valid values are 0 to 19. For example, to get block payload for the first chain (0), the request is `GET https://{baseURL}/chain/0/payload/{payloadHash}/outputs`.
+| payloadHash&nbsp;(required) | string | The block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set. For example: `GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA`.
 
 ### Query parameters
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| height | integer >= 0 | Height of a block. For example: `height=3000000`.
+| height | integer&nbsp;>=&nbsp;0 | Height of a block. For example: `height=3000000`.
 
 ### Responses
 
@@ -266,7 +266,7 @@ If the request is successful, the response returns `application/json` content wi
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| transactions&nbsp;(required) | Array of strings | An array of Base64Url-encoded strings—without padding—that describe signed Pact transactions in JSON format.
+| transactions&nbsp;(required) | Array&nbsp;of&nbsp;strings | An array of Base64Url-encoded strings—without padding—that describe signed Pact transactions in JSON format.
 | minerData (required) | string | Miner information is a Base64Url-encoded string—without padding—that consists of characters from the `a-zA-Z0-9_-` character set.This information is included as part of the payload JSON object.
 | transactionsHash&nbsp;(required) | string | The transaction hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set.
 | outputsHash (required) | string | The output hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set.
@@ -326,7 +326,7 @@ Use `POST https://{baseURL}/chain/{chain}/payload/outputs/batch` to request mult
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| chain&nbsp;(required) | integer >= 0 | Specifies the chain identifier of the chain you want to get the payload from. Valid values are 0 to 19. For example, to get block payload for the first chain (0), the request is `POST https://{baseURL}/chain/0/payload/outputs/batch`.
+| chain&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the chain identifier of the chain you want to get the payload from. Valid values are 0 to 19. For example, to get block payload for the first chain (0), the request is `POST https://{baseURL}/chain/0/payload/outputs/batch`.
 
 ### Request body schema
 
@@ -334,8 +334,8 @@ Use an array of payload hash strings in a JSON object to specify the payloads yo
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| hashes&nbsp;(required) | Array of strings | Each block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set. For example: `GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA`.
-| heights&nbsp;(required) | Array of integers | Specifies the block heights to include in the request.
+| hashes&nbsp;(required) | Array&nbsp;of&nbsp;strings | Each block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set. For example: `GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA`.
+| heights&nbsp;(required) | Array&nbsp;of&nbsp;integers | Specifies the block heights to include in the request.
 
 ### Responses
 
@@ -360,7 +360,7 @@ If the request is successful, the response returns `application/json` content wi
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| transactions&nbsp;(required) | Array of strings | An array of Base64Url-encoded strings—without padding—that describe signed Pact transactions in JSON format.
+| transactions&nbsp;(required) | Array&nbsp;of&nbsp;strings | An array of Base64Url-encoded strings—without padding—that describe signed Pact transactions in JSON format.
 | minerData (required) | string | Miner information is a Base64Url-encoded string—without padding—that consists of characters from the `a-zA-Z0-9_-` character set.This information is included as part of the payload JSON object.
 | transactionsHash&nbsp;(required) | string | The transaction hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set.
 | outputsHash (required) | string | The output hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set.

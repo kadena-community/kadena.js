@@ -54,8 +54,8 @@ If the request is successful, the response returns `application/json` content wi
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| hashes | Array of strings | Lists the transaction hashes for pending transactions in the memory pool. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set.
-| highwaterMark	| Array of integers | Specifies a two-element array with the server nonce value and the transaction identifier representing the last transaction mined out of the memory pool.
+| hashes | Array&nbsp;of&nbsp;strings | Lists the transaction hashes for pending transactions in the memory pool. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set.
+| highwaterMark	| Array&nbsp;of&nbsp;integers | Specifies a two-element array with the server nonce value and the transaction identifier representing the last transaction mined out of the memory pool.
 
 ### Examples
 
@@ -249,7 +249,7 @@ The request body consists of an array of JSON-encoded strings representing signe
 
 Requests to `PUT https://{baseURL}/chain/{chain}/mempool/insert` return the following response code:
 
-- **200 OK** indicates that the request succeeded and that transactione were inserted into the memory pool.
+- **200 OK** indicates that the request succeeded and that transactions were inserted into the memory pool.
 
 #### Response header
 

@@ -21,14 +21,14 @@ Blocks are returned in only one format, with block headers and payloads in JSON 
 
 ## Get whole blocks
 
-Use `GET https://{baseURL}/chain/{chain}/block` to return a collection of blocks in ascending order that match the query parameters you specify for the request. 
+Use GET The blocks are returned in ascending order.
 All blocks that match the criteria are returned from the chain database, including orphaned blocks.
 
 ### Path parameters
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| chain&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block hashes for the first chain (0), the request is `GET https://{baseURL}/chain/0/block`.
+| chain&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block hashes for the first chain (0), the request is `GET http://{baseURL}/chain/0/block`.
 
 ### Query parameters
 
@@ -41,12 +41,12 @@ All blocks that match the criteria are returned from the chain database, includi
 
 ### Responses
 
-Requests to `GET https://{baseURL}/chain/{chain}/block` can return the following response codes:
+Requests to `GET http://{baseURL}/chain/{chain}/block` can return the following response codes:
 
 - **200 OK** indicates that the request succeeded. The response body includes all of the blocks matching the criteria specified, including any orphaned blocks.
 - **404 Not Found** indicates that no blocks matching the request criteria were found or that the `next` or `maxheight` parameter wasn't valid.
 
-### Response header
+#### Response header
 
 The response header parameters are the same for all successful and unsuccessful Chainweb node requests.
 
@@ -66,123 +66,178 @@ If the request is successful, the response returns `application/json` content wi
 | limit&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the maximum number of items in the page. This number can be smaller but never larger than the number of requested items.
 | next&nbsp;(required) | string&nbsp;or&nbsp;null | Returns a value that can be used to query the next page. You can use this value for the `next` parameter in a follow-up request. The format for this parameter consists of two parts. The first part of the string can be `inclusive`, `exclusive` or null. The second part is the value that calls the next page of results or null if there are no more results to query.
 
+### Examples
+
+You can send a request to the Kadena main network—mainnet01—and chain 19 by calling the main network service endpoint like this:
+
+```Postman
+GET http://api.chainweb.com/chainweb/0.0/mainnet01/chain/19/block?limit=1
+```
+
+This request returns one whole block in the response body:
+
+```json
+{
+    "limit": 1,
+    "items": [
+        {
+            "header": {
+                "nonce": "0",
+                "creationTime": 1572393660000000,
+                "parent": "az5Y9U7gziz1nghnTMCR9pqZHApM5bqoqoU-PhWdrCU",
+                "adjacents": {
+                    "18": "uNzV6l3JEfRSbG8xI-W7dexgUR3RRbdpDzdfrJKyaZ8",
+                    "4": "Ou6kxMXpuwpm9uiIVhiEFHSbTdhanjHyiEh2G0EZV_w",
+                    "10": "QGPuG9FMAW15eqGOWSGcDna32l8oBnYFmvVBwHFNrg4"
+                },
+                "target": "MKiv2H1xBe7jlMF0WdiNF7m1HaJb6Uvec8sAAAAAAAA",
+                "payloadHash": "i-MN4AoxsaPds4M_MzwNSUygAkGnPZoCDvahfckowt4",
+                "chainId": 19,
+                "weight": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                "height": 852054,
+                "chainwebVersion": "mainnet01",
+                "epochStart": 1572393660000000,
+                "featureFlags": 0,
+                "hash": "y76dr78dPJlFDMPzCc-aEz97iRyimv5Ij3psdVlC64c"
+            },
+            "payloadWithOutputs": {
+                "transactions": [
+                    [
+                        "eyJnYXMiOjAsInJlc3VsdCI6eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6IkxvYWRlZCBpbnRlcmZhY2UgZnVuZ2libGUtdjEifSwicmVxS2V5IjoiNDhUMExqQW5TRnBGV3h2dmFQVi1fNkUtQ2pEQVBoV1lVRldidnlmMmxGcyIsImxvZ3MiOiJRRmEyOHRuOXkydFdMVzdUc3lHdzNOTkhpYzhxYjJ6UGtudXRpWWhnQXc4IiwibWV0YURhdGEiOm51bGwsImNvbnRpbnVhdGlvbiI6bnVsbCwidHhJZCI6MH0"
+                    ],
+                    [
+                        "eyJoYXNoIjoiQnVWLWZGSjRtMTAtWHYxMjZKcDlCaGtBenpCS3RBZFNjTU5PRjBQZDZxYyIsInNpZ3MiOltdLCJjbWQiOiJ7XCJuZXR3b3JrSWRcIjpudWxsLFwicGF5bG9hZFwiOntcImV4ZWNcIjp7XCJkYXRhXCI6e1wia2FkLW9wcy0yMFwiOntcInByZWRcIjpcImtleXMtYW55XCIsXCJrZXlzXCI6W1wiZTdmNzYzNGU5MjU1NDFmMzY4YjgyN2FkNWM3MjQyMTkwNTEwMGY2MjA1Mjg1YTc4YzE5ZDdiNGEzODcxMTgwNVwiLFwiYmUyMjlmNGE5NzVlNDQxZGM2OTRkZWQwZTkyNjBkOTkzMjcwMTI4NzAyZmY1YTVhZjdiZWQyZTQyYzk1Y2UwOVwiLFwiOWE0ODQ5Njg3Y2JjZmViMWY3YzY1MTA1Mzk2MzhkYTU3NjI4OTUwOGFlZGNjNzVmNGQ2YWQzZWQyNjIzNjM1Y1wiXX19LFwiY29kZVwiOlwiKGNvaW4uY29pbmJhc2UgXFxcIktBRF9PUFNfMjBcXFwiIChyZWFkLWtleXNldCBcXFwia2FkLW9wcy0yMFxcXCIpIDEwLjApXCJ9fSxcInNpZ25lcnNcIjpbXSxcIm1ldGFcIjp7XCJjcmVhdGlvblRpbWVcIjowLFwidHRsXCI6MTcyODAwLFwiZ2FzTGltaXRcIjowLFwiY2hhaW5JZFwiOlwiXCIsXCJnYXNQcmljZVwiOjAsXCJzZW5kZXJcIjpcIlwifSxcIm5vbmNlXCI6XCJtYWlubmV0LWdyYW50cy1rYWRvcHNcIn0ifQ",
+                        "eyJnYXMiOjAsInJlc3VsdCI6eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6IldyaXRlIHN1Y2NlZWRlZCJ9LCJyZXFLZXkiOiJCdVYtZkZKNG0xMC1YdjEyNkpwOUJoa0F6ekJLdEFkU2NNTk9GMFBkNnFjIiwibG9ncyI6IkxmMXlYSzdBVmd0VkJBOTlneWg2YWZYaU02dWVyZm9pcG8tYWZHZ3hmeUkiLCJtZXRhRGF0YSI6bnVsbCwiY29udGludWF0aW9uIjpudWxsLCJ0eElkIjo1fQ"
+                    ]
+                ],
+                "minerData": "eyJhY2NvdW50IjoiTm9NaW5lciIsInByZWRpY2F0ZSI6IjwiLCJwdWJsaWMta2V5cyI6W119",
+                "transactionsHash": "OKUjjXOvSUsmlOvBb_xfcJz_1zssIMFjFi8zktn4V5E",
+                "outputsHash": "pfAZtwPF48paINSddff1ISBIlBeDyYBueknw9osHX4A",
+                "payloadHash": "i-MN4AoxsaPds4M_MzwNSUygAkGnPZoCDvahfckowt4",
+                "coinbase": "eyJnYXMiOjAsInJlc3VsdCI6eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6Ik5PX0NPSU5CQVNFIn0sInJlcUtleSI6IkRsZFJ3Q2JsUTdMb3F5NndZSm5hb2RIbDMwZDNqM2VILXF0RnpmRXY0NmciLCJsb2dzIjpudWxsLCJtZXRhRGF0YSI6bnVsbCwiY29udGludWF0aW9uIjpudWxsLCJ0eElkIjpudWxsfQ"
+            }
+        }
+    ],
+    "next": "inclusive:1ETD2LKF_gmJ92-q1fqAJY2eZerhhZA2kLxM1BC5hKE"
+}
+```
+
 ## Get block branches
 
-POST
-/chain/{chain}/block/branch
+Use `POST http://{baseURL}/chain/{chain}/block/branch` to return blocks from branches of the block chain in descending order.
+A request sent to this endpoint returns blocks that are ancestors of any block specified for the upper bounds and that are not ancestors of any block specified for the lower bounds.
 
+### Path parameters
 
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| chain&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block hashes for the first chain (0), the request is `GET http://{baseURL}/chain/0/block/branch`.
 
+### Query parameters
 
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| limit | integer&nbsp;>=&nbsp;0 | Specifies the maximum number of records that should be returned. The actual number of records returned might be lower than the value you specify. For example: `limit=3`.
+| next | string | Specifies the cursor value to retrieve the next page of results. You can find the value to specify in the `next` property returned by the previous page in a successful response. For example: `"inclusive:qgsxD1G5m8dGZ4W9nMKBotU2I10ilURkRIE3_UKHlLM"`.
+| minheight	| integer&nbsp;>=&nbsp;0 | Specifies the minimum block height for the blocks to return. For example: `minheight=4471908`.
+| maxheight | integer&nbsp;>=&nbsp;0 | Specifies the maximum block height for the blocks to return. For example: `maxheight=4953816`.
 
-A page of blocks from branches of the block chain in descending order.
+### Request body schema
 
-Blocks are returned that are ancestors of the block in the set of upper bounds and are not ancestors of any block in the set of lower bounds.
+Use the following parameters to specify the upper and lower bounds for the queried branches.
 
-PATH PARAMETERS
-chain
-required
-integer >= 0
-Example: 0
-the id of the chain to which the request is sent
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| lower	| Array&nbsp;of&nbsp;strings | Specifies the lower bound for the query. No block hashes are returned that are predecessors of any block with a hash from this array. Each block hash consists of 43 characters from the `a-zA-Z0-9_-` character set.
+| upper | Array of strings | Specifies the upper bound for the query. All returned block hashes are predecessors of a block with an hash from this array. Each block hash consists of 43 characters from the `a-zA-Z0-9_-` character set.
 
-QUERY PARAMETERS
-limit	
-integer >= 0
-Maximum number of records that may be returned. The actual number may be lower.
+### Responses
 
-next	
-string
-The cursor for the next page. This value can be found as value of the next property of the previous page.
+Requests to `GET http://{baseURL}/chain/{chain}/block/branch` can return the following response codes:
 
-minheight	
-integer >= 0
-Example: minheight=500000
-Minimum block height of the returned headers
+- **200 OK** indicates that the request succeeded. The response body includes all of the blocks matching the criteria specified.
+- **400 Bad Request** indicates that the branch bounds were exceeded.
+- **404 Not Found** indicates that no blocks matching the request criteria were found or that the `next` or `maxheight` parameter wasn't valid.
+- **406 Not Acceptable** indicates that the endpoint can't generate content in the format specified by the Accept header.
 
-maxheight	
-integer >= 0
-Example: maxheight=`maxheight=4953816`
-Maximum block height of the returned headers
+#### Response header
 
-REQUEST BODY SCHEMA: application/json
-Upper and lower bounds of the queried branches
+The response header parameters are the same for all successful and unsuccessful Chainweb node requests.
 
-lower	
-Array of strings (Block Hash) [ items = 43 characters ^[a-zA-Z0-9_-]{43}$ ]
-No blocks are returned that are predecessors of any block with an hash from this array.
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| x-peer-addr | string | Specifies the host address and port number of the client as observed by the remote Chainweb node. The host address can be a domain name or an IP address in IPv4 or IPv6 format. For example: `"10.36.1.3:42988"`.
+| x-server&#8209;timestamp | integer&nbsp;>=&nbsp;0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
+| x&#8209;chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
 
-upper	
-Array of strings (Block Hash) [ items = 43 characters ^[a-zA-Z0-9_-]{43}$ ]
-Returned block headers are predecessors of a block with an hash from this array. This includes blocks with hashes from this array.
+#### Successful response schema
 
-Responses
-200 The blocks that were found
-RESPONSE HEADERS
-x-peer-addr	
-string (Host Address) ^\d{4}.\d{4}.\d{4}.\d{4}:\d+$
-Example: "10.36.1.3:42988"
-Host and port of the client as observed by the remote node
+If the request is successful, the response returns `application/json` content with the following:
 
-x-server-timestamp	
-integer (POSIX Timestamp) >= 0
-Example: 1618597601
-The time of the clock of the remote node
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| items&nbsp;(required) | Array&nbsp;of&nbsp;objects | Returns an array of JSON-encoded objects representing full blocks. 
+| limit&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the maximum number of items in the page. This number can be smaller but never larger than the number of requested items.
+| next&nbsp;(required) | string&nbsp;or&nbsp;null | Returns a value that can be used to query the next page. You can use this value for the `next` parameter in a follow-up request. The format for this parameter consists of two parts. The first part of the string can be `inclusive`, `exclusive` or null. The second part is the value that calls the next page of results or null if there are no more results to query.
 
-x-chainweb-node-version	
-string
-Example: "2.6"
-The version of the remote chainweb node
+### Examples
 
-RESPONSE SCHEMA: application/json
-items
-required
-Array of objects (Full block)
-Array of JSON encoded blocks
+You can send a request to the Kadena main network—mainnet01—and chain 19 by calling the main network service endpoint like this:
 
-limit
-required
-integer >= 0
-The number of items in the page. This number can be smaller but never be larger than the number of requested items.
+```Postman
+POST http://api.chainweb.com/chainweb/0.0/mainnet01/chain/19/block/branch?limit=1
+```
 
-next
-required
-(null or null) or (string or null)^(inclusive|exclusive):.*$
-A cursor that can be used to query the next page. It should be used literally as value for the next parameter in a follow-up request.
+In this example, the request returns the ancestors for a specific upper bound:
 
-400 The branch bounds were exceeded.
-404 A block indicated by a required parameter was not found.
-406 The value of the Accept header is not supported.
-Request samples
-Payload
-Content type
-application/json
-Example
-
-Ancestors of block that are not ancestors of another block
-Ancestors of block that are not ancestors of another block
-
-Copy
-Expand allCollapse all
+```json
 {
-"lower": [
-"RClyuyZAacwvPpmLXKbTwrIRXWeUSjiNhJVP2esH8KM"
-],
-"upper": [
-"QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"
-]
+    "lower": [ ],
+    "upper": ["y76dr78dPJlFDMPzCc-aEz97iRyimv5Ij3psdVlC64c"]
 }
-Response samples
-200404
-Content type
-application/json
+```
 
-Copy
-Expand allCollapse all
+This request returns a whole block similar to the following excerpt:
+
+```json
 {
-"value": {
-"next": "inclusive:o1S4NNFhKWg8T1HEkmDvsTH9Ut9l3_qHRpp00yRKZIk",
-"items": [],
-"limit": 2
+    "limit": 1,
+    "items": [
+        {
+            "header": {
+                "nonce": "0",
+                "creationTime": 1572393660000000,
+                "parent": "az5Y9U7gziz1nghnTMCR9pqZHApM5bqoqoU-PhWdrCU",
+                "adjacents": {
+                    "18": "uNzV6l3JEfRSbG8xI-W7dexgUR3RRbdpDzdfrJKyaZ8",
+                    "4": "Ou6kxMXpuwpm9uiIVhiEFHSbTdhanjHyiEh2G0EZV_w",
+                    "10": "QGPuG9FMAW15eqGOWSGcDna32l8oBnYFmvVBwHFNrg4"
+                },
+                "target": "MKiv2H1xBe7jlMF0WdiNF7m1HaJb6Uvec8sAAAAAAAA",
+                "payloadHash": "i-MN4AoxsaPds4M_MzwNSUygAkGnPZoCDvahfckowt4",
+                "chainId": 19,
+                "weight": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                "height": 852054,
+                "chainwebVersion": "mainnet01",
+                "epochStart": 1572393660000000,
+                "featureFlags": 0,
+                "hash": "y76dr78dPJlFDMPzCc-aEz97iRyimv5Ij3psdVlC64c"
+            },
+            "payloadWithOutputs": {
+                "transactions": [
+                    [
+                        "eyJoYXNoIjoiQnVWLWZGSjRtMTAtWHYxMjZKcDlCaGtBenpCS3RBZFNjTU5PRjBQZDZxYyIsInNpZ3MiOltdLCJjbWQiOiJ7XCJuZXR3b3JrSWRcIjpudWxsLFwicGF5bG9hZFwiOntcImV4ZWNcIjp7XCJkYXRhXCI6e1wia2FkLW9wcy0yMFwiOntcInByZWRcIjpcImtleXMtYW55XCIsXCJrZXlzXCI6W1wiZTdmNzYzNGU5MjU1NDFmMzY4YjgyN2FkNWM3MjQyMTkwNTEwMGY2MjA1Mjg1YTc4YzE5ZDdiNGEzODcxMTgwNVwiLFwiYmUyMjlmNGE5NzVlNDQxZGM2OTRkZWQwZTkyNjBkOTkzMjcwMTI4NzAyZmY1YTVhZjdiZWQyZTQyYzk1Y2UwOVwiLFwiOWE0ODQ5Njg3Y2JjZmViMWY3YzY1MTA1Mzk2MzhkYTU3NjI4OTUwOGFlZGNjNzVmNGQ2YWQzZWQyNjIzNjM1Y1wiXX19LFwiY29kZVwiOlwiKGNvaW4uY29pbmJhc2UgXFxcIktBRF9PUFNfMjBcXFwiIChyZWFkLWtleXNldCBcXFwia2FkLW9wcy0yMFxcXCIpIDEwLjApXCJ9fSxcInNpZ25lcnNcIjpbXSxcIm1ldGFcIjp7XCJjcmVhdGlvblRpbWVcIjowLFwidHRsXCI6MTcyODAwLFwiZ2FzTGltaXRcIjowLFwiY2hhaW5JZFwiOlwiXCIsXCJnYXNQcmljZVwiOjAsXCJzZW5kZXJcIjpcIlwifSxcIm5vbmNlXCI6XCJtYWlubmV0LWdyYW50cy1rYWRvcHNcIn0ifQ",
+                        "eyJnYXMiOjAsInJlc3VsdCI6eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6IldyaXRlIHN1Y2NlZWRlZCJ9LCJyZXFLZXkiOiJCdVYtZkZKNG0xMC1YdjEyNkpwOUJoa0F6ekJLdEFkU2NNTk9GMFBkNnFjIiwibG9ncyI6IkxmMXlYSzdBVmd0VkJBOTlneWg2YWZYaU02dWVyZm9pcG8tYWZHZ3hmeUkiLCJtZXRhRGF0YSI6bnVsbCwiY29udGludWF0aW9uIjpudWxsLCJ0eElkIjo1fQ"
+                    ]
+                ],
+                "minerData": "eyJhY2NvdW50IjoiTm9NaW5lciIsInByZWRpY2F0ZSI6IjwiLCJwdWJsaWMta2V5cyI6W119",
+                "transactionsHash": "OKUjjXOvSUsmlOvBb_xfcJz_1zssIMFjFi8zktn4V5E",
+                "outputsHash": "pfAZtwPF48paINSddff1ISBIlBeDyYBueknw9osHX4A",
+                "payloadHash": "i-MN4AoxsaPds4M_MzwNSUygAkGnPZoCDvahfckowt4",
+                "coinbase": "eyJnYXMiOjAsInJlc3VsdCI6eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6Ik5PX0NPSU5CQVNFIn0sInJlcUtleSI6IkRsZFJ3Q2JsUTdMb3F5NndZSm5hb2RIbDMwZDNqM2VILXF0RnpmRXY0NmciLCJsb2dzIjpudWxsLCJtZXRhRGF0YSI6bnVsbCwiY29udGludWF0aW9uIjpudWxsLCJ0eElkIjpudWxsfQ"
+            }
+        }
+    ],
+    "next": null
 }
-}
+```

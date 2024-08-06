@@ -20,9 +20,9 @@ It's duplicated here as a quick reference.
 | Parameter | Type | Description
 | --------- | ---- | -----------
 | origin | object | Defines a peer information object that consists of an `id` string and an `address` object. The `origin` parameter is required to use the `PUT /cut` endpoint. For more information, see the [Peer information](#peer-information-modelh-1716301923) data model.
-| height (required) | integer&nbsp;>=&nbsp;0 | Defines the cut height. The cut height is the sum of the height of all blocks of the cut. You should avoid using this value in any applications or tools because its semantics might change.
-| weight (required) | string | Defines the cut weight. The cut weight is the sum of the weights from all of the blocks included in the cut. The weight string consists of 43 characters from the [a-zA-Z0-9_-] character set.
-| hashes (required) | object | Defines an object that maps chain identifiers to their respective block `hash` and block `height`. The block `hash` property is a required string value with characters from the [a-zA-Z0-9_-] character set. The block `height` property is a required integer value >= 0. The `hashes` object includes the `height` and `hash` properties for each chain, as illustrated for chains 0 and 1 in the truncated JSON example.
+| height&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Defines the cut height. The cut height is the sum of the height of all blocks of the cut. You should avoid using this value in any applications or tools because its semantics might change.
+| weight&nbsp;(required) | string | Defines the cut weight. The cut weight is the sum of the weights from all of the blocks included in the cut. The weight string consists of 43 characters from the [a-zA-Z0-9_-] character set.
+| hashes&nbsp;(required) | object | Defines an object that maps chain identifiers to their respective block `hash` and block `height`. The block `hash` property is a required string value with characters from the [a-zA-Z0-9_-] character set. The block `height` property is a required integer value >= 0. The `hashes` object includes the `height` and `hash` properties for each chain, as illustrated for chains 0 and 1 in the truncated JSON example.
 | instance | string | Defines the network identifier for the cut.
 | id | string | Defines a cut identifier.
 
@@ -50,7 +50,7 @@ It's duplicated here as a quick reference.
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| creationTime (required) | integer&nbsp;>=&nbsp;0 | Records the time the block was created. This timestamp is in microseconds since the start of the UNIX epoch.
+| creationTime&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Records the time the block was created. This timestamp is in microseconds since the start of the UNIX epoch.
 | parent (required) | string | Records the parent block hash. The block hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
 | height (required) | integer >= 0 | Identifies the block height for the block. The height of a block is the number of its predecessors in the block chain.
 | hash (required) | string | Block hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
@@ -60,9 +60,9 @@ It's duplicated here as a quick reference.
 | epochStart (required) | integer >= 0 | Specifies a timestamp in microseconds since the start of the UNIX epoch.
 | adjacents (required) | object | Records the block hashes of the adjacent parents of the block. This is represented as an associative array that maps the adjacent chain ids to the respective block hash. Each block hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
 | payloadHash (required) | string | Specifies the block payload hash. The payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
-| chainwebVersion (required) | enum | Specifies the Chainweb network version identifier for the Kadena network. The valid values are "test-singleton", "development", "mainnet01", and "testnet04".
+| chainwebVersion&nbsp;(required) | enum | Specifies the Chainweb network version identifier for the Kadena network. The valid values are "test-singleton", "development", "mainnet01", and "testnet04".
 | target (required) | string | Specifies the proof-of-work target for the block. The proof-of-work target for a block is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set. The string is a 256-bit little endian encoding of the numerical value.
-| nonce (required) | string non-empty [0-9]+ | Specifies the proof-of-work nonce for the block. This value is computed by the miner such that the block hash is smaller than the target.
+| nonce (required) | string | Specifies the proof-of-work nonce for the block. This value is computed by the miner such that the block hash is smaller than the target.
 
 ```json
 {
@@ -90,11 +90,11 @@ It's duplicated here as a quick reference.
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| transactions (required) | Array of strings | Array of Base64Url encoded strings without padding that represent signed Pact transactions in JSON format.
-| minerData (required) | string [a-zA-Z0-9_-]+ | Miner information is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set. This information is included as part of the payload in the JSON object.
-| transactionsHash (required) | string | The transaction hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
-| outputsHash (required) | string | The output hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
-| payloadHash (required) | string | The block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
+| transactions&nbsp;(required) | Array&nbsp;of&nbsp;strings | Array of Base64Url encoded strings without padding that represent signed Pact transactions in JSON format.
+| minerData&nbsp;(required) | string | Miner information is a Base64Url-encoded string—without padding—that consists of 43 characters from the `a-zA-Z0-9_-` character set. This information is included as part of the payload in the JSON object.
+| transactionsHash&nbsp;(required) | string | The transaction hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
+| outputsHash&nbsp;(required) | string | The output hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
+| payloadHash&nbsp;(required) | string | The block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
 
 ```json
 {
@@ -112,9 +112,9 @@ It's duplicated here as a quick reference.
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| transactions (required) | Array of strings | Array with pairs of strings that represent transactions and their outputs. Signed Pact transactions and their outputs are both Base64Url-encoded strings—without padding—that represent signed Pact transactions in JSON format.
+| transactions&nbsp;(required) | Array&nbsp;of&nbsp;strings | Array with pairs of strings that represent transactions and their outputs. Signed Pact transactions and their outputs are both Base64Url-encoded strings—without padding—that represent signed Pact transactions in JSON format.
 | minerData (required) | string | Miner information is a Base64Url-encoded string—without padding—that consists of characters from the [a-zA-Z0-9_-] character set. This information is included as part of the payload JSON object.
-| transactionsHash (required) | string | The transaction hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
+| transactionsHash&nbsp;(required) | string | The transaction hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
 | outputsHash (required) | string | The output hash is a SHA256 hash. The hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
 | payloadHash (required) | string | The block payload hash is a Base64Url-encoded string—without padding—that consists of 43 characters from the [a-zA-Z0-9_-] character set.
 | coinbase (required) | string | Coinbase output is a Base64Url-encoded string—without padding—that consists of characters from the [a-zA-Z0-9_-] character set. This information is included as part of the payload output JSON object.
@@ -135,8 +135,8 @@ It's duplicated here as a quick reference.
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| id (required) | string or null | The `id` is a Base64Url-encoded string—without padding—that consists of characters from the [a-zA-Z0-9_-] character set. This string represents the SHA256 fingerprint of the SSL certificate of the node. The field can be null only if the node uses an official CA-signed certificate.
-| address (required) | object | The `address` contains a `hostname` and `port` number. The `hostname` is a required string value in the form of a domain name, IPv4 IP address, or IPv6 IP address. The hostname must be a domain name only if the node uses a valid CA-signed SSL certificate. The `port` is a required integer value [1 .. 65535] that hosts the peer node.
+| id (required) | string&nbsp;or&nbsp;null | The `id` is a Base64Url-encoded string—without padding—that consists of characters from the `a-zA-Z0-9_-` character set. This string represents the SHA256 fingerprint of the SSL certificate of the node. The field can be null only if the node uses an official CA-signed certificate.
+| address&nbsp;(required) | object | The `address` contains a `hostname` and `port` number. The `hostname` is a required string value in the form of a domain name, IPv4 IP address, or IPv6 IP address. The hostname must be a domain name only if the node uses a valid CA-signed SSL certificate. The `port` is a required integer value [1 .. 65535] that hosts the peer node.
 
 ```json
 {
@@ -187,11 +187,11 @@ vPELrRZEn3km96owfL0ANJbOBeeUGnEBOx0AGCTZsdA
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| nodeNumberOfChains (required) | integer >= 10 | Number of chains in the network the node is part of.
+| nodeNumberOfChains&nbsp;(required) | integer&nbsp;>=&nbsp;10 | Number of chains in the network the node is part of.
 | nodeApiVersion (required) | string | Chainweb API version information for the node.
-| nodeChains (required) | Array of strings >= 0 items | Chain identifiers for the chains in the network the node is part of.
+| nodeChains (required) | Array&nbsp;of&nbsp;strings | Chain identifiers for the chains in the network the node is part of.
 | nodeVersion (required) | string | Network identifier for the network the node is part of. The valid values are  "test-singleton", "development", "mainnet01", and "testnet04".
-| nodeGraphHistory (required) | Array of integers | Array of all chain graphs indexed by the height of the first block with the respective graph. Graphs are encoded as adjacency lists.
+| nodeGraphHistory&nbsp;(required) | Array&nbsp;of&nbsp;integers | Array of all chain graphs indexed by the height of the first block with the respective graph. Graphs are encoded as adjacency lists.
 
 ```json
 {
@@ -215,9 +215,9 @@ vPELrRZEn3km96owfL0ANJbOBeeUGnEBOx0AGCTZsdA
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| limit (required) | integer >= 0 | The maximum number of items in the page. This number can be smaller but never be larger than the number of requested items.
-| next (required) | string or null | A cursor that can be used to query the next page. It should be used literally as the value for the `next` parameter in a follow-up request.
-| items (required) | any | The items in the page.
+| limit&nbsp;(required) | integer&nbsp;>=&nbsp;0 | The maximum number of items in the page. This number can be smaller but never be larger than the number of requested items.
+| next&nbsp;(required) | string&nbsp;or&nbsp;null | A cursor that can be used to query the next page. It should be used literally as the value for the `next` parameter in a follow-up request.
+| items&nbsp;(required) | any | The items in the page.
 
 ```json
 {
@@ -236,7 +236,7 @@ vPELrRZEn3km96owfL0ANJbOBeeUGnEBOx0AGCTZsdA
 | --------- | ---- | -----------
 | account	| string | Account name is the miner account name. In most cases, the account name is the public key with the `k:` prefix.
 | predicate	| enum | The key predicate guard for the account. For accounts with a single key, this is usually `keys-all`.
-| public-keys	| Array of strings | Miner public key.
+| public&#8209;keys	| Array&nbsp;of&nbsp;strings | Miner public key.
 
 ```json
 {

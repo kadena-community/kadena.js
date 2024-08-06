@@ -51,7 +51,7 @@ Requests to `http://{baseURL}/chain/{chain}/header` return the following respons
 - **200 OK** indicates that the request succeeded and returns a collection of block headers in **ascending** order. 
   All block headers that match the specified criteria are returned from the chain database, including headers for orphaned blocks.
 - **404 Not Found** indicates that the `next` or `maxheight` parameter specifies a nonexistent block height.
-- **406 Not Acceptable** indicates the endpoint can't generate content in the format specified by the Accept header.
+- **406 Not Acceptable** indicates that the endpoint can't generate content in the format specified by the Accept header.
 
 #### Response headers
 
@@ -136,7 +136,6 @@ With the Accept header set to `application/json;blockheader-encoding=object`, ea
 }
 ```
 
-
 If there are no results matching the request criteria, the response body indicates the reason no results matching the request criteria were found. 
 For example:
 
@@ -175,7 +174,7 @@ The response header parameters are the same for all successful and unsuccessful 
 | --------- | ---- | -----------
 | x-peer-addr | string | Specifies the host address and port number of the client as observed by the remote Chainweb node. The host address can be a domain name or an IP address in IPv4 or IPv6 format. For example: `"10.36.1.3:42988"`.
 | x-server&#8209;timestamp | integer&nbsp;>=&nbsp;0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
-| x-chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
+| x&#8209;chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
 
 #### Successful response schemas
 
@@ -313,7 +312,7 @@ The response header parameters are the same for all successful and unsuccessful 
 | --------- | ---- | -----------
 | x-peer-addr | string | Specifies the host address and port number of the client as observed by the remote Chainweb node. The host address can be a domain name or an IP address in IPv4 or IPv6 format. For example: `"10.36.1.3:42988"`.
 | x-server&#8209;timestamp | integer&nbsp;>=&nbsp;0 | Specifies the clock time of the remote Chainweb node using the UNIX epoch timestamp. For example: `1618597601`.
-| x-chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
+| x&#8209;chainweb&#8209;node&#8209;version	| string | Specifies the version of the remote Chainweb node. For example: `"2.23"`.
 
 #### Successful response schemas
 
@@ -322,8 +321,8 @@ The format of the information returned in the response depends on the content ty
 | Parameter | Type | Description
 | --------- | ---- | -----------
 | items&nbsp;(required) | Array&nbsp;of&nbsp;block&nbsp;headers | Returns an array of block headers as base64Url-encoded strings (`application/json`), JSON-encoded objects (`application/json;blockheader-encoding=object`), or a binary data stream (`application/octet-stream`, if supported)
-| limit&nbsp;(required) | integer >= 0 | Specifies the number of items in the page. This number can be smaller but never be larger than the number of requested items.
-| next (required) | string or null | Returns a cursor that can be used in a follow up request to query the next page. It should be used literally as the value for the `next` parameter in the follow-up request. It can be specified as inclusive or exclusive.
+| limit&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the number of items in the page. This number can be smaller but never be larger than the number of requested items.
+| next (required) | string&nbsp;or&nbsp;null | Returns a cursor that can be used in a follow up request to query the next page. It should be used literally as the value for the `next` parameter in the follow-up request. It can be specified as inclusive or exclusive.
 
 ### Examples
 

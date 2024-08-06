@@ -1,8 +1,8 @@
 ---
-title: Stream client API
+title: Stream client A
 description:
   The Chainweb stream client API provides a TypeScript based application programming interface API for calling Chainweb node endpoints.
-menu: Chainweb REST API
+menu: Chainweb clients
 label: Streaming client
 order: 2
 layout: full
@@ -11,9 +11,8 @@ tags: ['TypeScript', 'Kadena client', 'frontend']
 
 # Chainweb streaming client
 
-Kadena Chainweb clients are application programming interfaces that provide TypeScript-based calls for interacting with Chainweb nodes on the Kadena network.
-
-The **chainweb-stream** client for browsers and node.js enables you to stream account, module, and event transactions, including their confirmation depth.
+Kadena Chainweb client libraries are application programming interfaces that provide TypeScript-based calls for interacting with Chainweb nodes on the Kadena network.
+The **chainweb-stream-client** for browsers and node.js enables you to stream account, module, and event transactions, including their confirmation depth.
 
 The [chainweb-stream][1] client introduces and normalizes the following features across environments:
 
@@ -62,21 +61,19 @@ Find more detailed examples under `src/examples`.
 
 ## Constructor options
 
-| Key               | Required | Description                                                     | Example Values              |
-| ----------------- | :------: | --------------------------------------------------------------- | --------------------------- |
-| network           |   Yes    | Chainweb network                                                | `mainnet01`/`testnet04`/... |
-| type              |   Yes    | Transaction type to stream (event/account)                      | `event`/`account`           |
-| id                |   Yes    | Account ID or module/event name                                 | `k:abcdef01234..`           |
-| host              |   Yes    | Chainweb-stream backend URL                                     | `http://localhost:4000`     |
-| limit             |    No    | Initial data load limit                                         | 100                         |
-| connectTimeout    |    No    | Connection timeout in ms                                        | 10_000                      |
-| heartbeatTimeout  |    No    | Stale connection timeout in ms                                  | 30_000                      |
-| maxReconnects     |    No    | How many reconnections to attempt before giving up              | 5                           |
-| confirmationDepth |    No    | How many confirmations for a transaction to be considered final | 6                           |
+| Key | Required | Description | Example Values              |
+| --- | :------: | ----------- | --------------------------- |
+| network | Yes | Chainweb network | `mainnet01`/`testnet04`/... |
+| type | Yes | Transaction type to stream (event/account) | `event`/`account`           |
+| id | Yes | Account ID or module/event name | `k:abcdef01234..`           |
+| host | Yes | Chainweb-stream backend URL | `http://localhost:4000`     |
+| limit | No | Initial data load limit | 100 |
+| connectTimeout | No | Connection timeout in ms | 10_000 |
+| heartbeatTimeout | No | Stale connection timeout in ms | 30_000                      |
+| maxReconnects | No | How many reconnections to attempt before giving up | 5  |
+| confirmationDepth | No | How many confirmations for a transaction to be considered final | 6 |
 
-## Considerations ⚠️
-
-### Ensure configuration compatibility
+## Ensure configuration compatibility
 
 Make sure that your client and server `confirmationDepth` values are compatible.
 

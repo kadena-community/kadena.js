@@ -24,10 +24,9 @@ Use the following parameters to specify the miner information.
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| account	| string | Specifies the miner account name. Usually this is the same as the public key.
-| predicate	| key predicate | Specifies the number of keys required from the enumerated values of the "keys-all", "keys-any", and "keys-2"
-key predicate options. For accounts with a single key, the predicate is usually "keys-all".
-| public-keys	| Array of strings | Lists one or more miner public keys.
+| account	| string | Specifies the miner account name. Usually, this is the same as the public key.
+| predicate	| key&nbsp;predicate | Specifies the number of keys required from the enumerated values of the "keys-all", "keys-any", and "keys-2" key predicate options. For accounts with a single key, the predicate is usually "keys-all".
+| public&#8209;keys	| Array&nbsp;of&nbsp;strings | Lists one or more miner public keys.
 
 ### Responses
 
@@ -51,9 +50,9 @@ If the request is successful, the response returns `application/octet-stream` co
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| chainBytes | string binary | Identifies the chain selected by the node with four chain identifier bytes. This is informational. Generally, miners shouldn't care about the chain.
-| targetBytes	| string binary | Specifies the proof-of-work target for the current block in 32 proof-of-work target bytes. The proof-of-work hash of a valid block must not be larger than this value. For arithmetic comparisons, the hash-target and the proof-of-work hash are interpreted as unsigned 256-bit integral number in little endian encoding.
-| headerBytes	| string binary | Specifies the proof-of-work in 286 work header bytes. The last 8 bytes are the nonce. The creation time is encoded in bytes 44-52. Miners must not change or make any assumption about the other bytes. The creation time is encoded as little endian two complement integral number that counts SI microseconds since the start of the UNIX epoch (leap seconds are ignored). It always positive (highest bit is 0). Miners are free but not required to update the creation time. The value must be strictly larger than the creation time of the parent block and must not be in the future.
+| chainBytes | string&nbsp;binary | Identifies the chain selected by the node with four chain identifier bytes. This is informational. Generally, miners shouldn't care about the chain.
+| targetBytes	| string&nbsp;binary | Specifies the proof-of-work target for the current block in 32 proof-of-work target bytes. The proof-of-work hash of a valid block must not be larger than this value. For arithmetic comparisons, the hash-target and the proof-of-work hash are interpreted as unsigned 256-bit integral number in little endian encoding.
+| headerBytes	| string&nbsp;binary | Specifies the proof-of-work in 286 work header bytes. The last 8 bytes are the nonce. The creation time is encoded in bytes 44-52. Miners must not change or make any assumption about the other bytes. The creation time is encoded as little endian two complement integral number that counts SI microseconds since the start of the UNIX epoch (leap seconds are ignored). It always positive (highest bit is 0). Miners are free but not required to update the creation time. The value must be strictly larger than the creation time of the parent block and must not be in the future.
 
 ### Examples
 

@@ -161,7 +161,7 @@ For the bootstrap node, the response looks similar to the following:
 }
 ```
 
-To get configuration for a local development network, you can call the /config endpoint like this:
+To get configuration for a local development network, you can call the `/config` endpoint like this:
 
 ```Postman
 GET https://us-e1.chainweb.com/config

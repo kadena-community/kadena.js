@@ -554,13 +554,13 @@ pages:
             file: /reference/chainweb/chainweb-encoding.md
       chainwebref:
         url: /chainweb-ref
-        file: /reference/chainweb/api/chainweb-api.tsx
+        file: /reference/chainweb/chainweb-clients.md
         children:
           nodeclient:
             url: /node-client
-            file: /reference/chainweb/chainweb-node.md
+            file: /reference/chainweb/chainweb-node-client.md
           streamclient:
-            file: /reference/chainweb/chainweb-stream.md
+            file: /reference/chainweb/chainweb-stream-client.md
             url: /stream-client
           jsbindings:
             file: /reference/chainweb/chainwebjs.md
