@@ -26,15 +26,17 @@ The [chainweb-stream][1] client introduces and normalizes the following features
 
 Alpha version / unstable.
 
-## Installation
+## Install
 
-### With npm
+You can install this package with `npm` or `yarn`.
+
+To install using `npm`, run the following command:
 
 ```sh
 npm install @kadena/chainweb-stream-client
 ```
 
-### With yarn
+To install using `yarn`, run the following command:
 
 ```sh
 yarn add @kadena/chainweb-stream-client
