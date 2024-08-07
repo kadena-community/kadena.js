@@ -472,7 +472,7 @@ To prepare to write your first functions:
    ```pact
    (module myModule GOVERNANCE
        (defcap GOVERNANCE() true)
-   )
+   
        ;; DEFINE FUNCTION HERE
    )
    ```
