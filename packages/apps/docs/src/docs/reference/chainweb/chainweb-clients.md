@@ -13,7 +13,7 @@ tags: ['TypeScript', 'Kadena client', 'frontend']
 
 Kadena Chainweb client libraries are application programming interfaces that provide TypeScript-based calls for interacting with Chainweb node endpoints on the Kadena network.
 
-The following client libraries are available to download as packages or to clone from the [kadena.js](https://github.com/kadena-community/kadena.js)) repository for further community-based development:
+The following client libraries are available to download as packages or to clone from the [kadena.js](https://github.com/kadena-community/kadena.js) repository for further community-based development:
 
 - [chainweb-node-client](https://github.com/kadena-community/kadena.js/tree/main/packages/libs/chainweb-node-client)
 - [chainweb-stream-client](https://github.com/kadena-community/kadena.js/tree/main/packages/libs/chainweb-stream-client)
