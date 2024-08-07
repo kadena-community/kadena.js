@@ -608,7 +608,6 @@ To add simple calculator functions:
    15.48780488
    ```
 
-
 ## Next steps
 
 In this tutorial, you learned some of the basics for using the Pact programming language with an introduction to Pact syntax and built-in functions. 
