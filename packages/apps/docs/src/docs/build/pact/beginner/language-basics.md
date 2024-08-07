@@ -10,11 +10,11 @@ tags: ['pact', 'language basics']
 
 # Explore basic functions
 
-In [Set up a local development network](/build/pact/dev-network), you learned how to set up a local development environment and connect to it using Chainweaver. 
-Chainweaver provides a Module Explorer as part of its development environment.
-The Module Explorer enables you to navigate smart contract modules—that is, `.pact` files—review module code, and view or call module functions. 
-Chainweaver also includes an editor for working directly with the code and the Pact read-evaluate-print-loop (REPL) interactive interpreter for testing your code as you go.
-In most cases, you can use the account and contract management features in Chainweaver in combination with an integrated development environment (IDE), like Visual Studio Code, or another code editor to provide end-to-end development environment. 
+In [Set up a local development network](/build/pact/dev-network), you learned how to set up a local development environment with a local blockchain node and the Pact smart contract programming language. 
+When you installed Pact, you also installed the Pact read-eval-print-loop (REPL) interpreter.
+The Pact REPL enables you to write and execute Pact code interactively from the command-line. but its real power lies in the ability to execute code in smart contract modules—that is, `.pact` files—or in test modules with the `.repl` file extension for testing your code as you go.
+With test modules, you can take advantage of features that are only available to use `.repl` file in the Pact REPL interpreter.
+In most cases, you can use the features provided by the Pact REPL in combination with an integrated development environment (IDE), like Visual Studio Code, to provide an end-to-end development environment. 
 
 In this tutorial, you'll learn the basics for working with the Pact programming language and the built-in functions that Pact provides using the Pact REPL interpreter and Visual Studio Code.
 If you use Chainweaver or another IDE for your code editor, you'll need to adjust some steps to suit your environment. 
@@ -28,7 +28,7 @@ For example, Pact allows you define the following types of data:
 | :--------- | :----------- | :-------
 | Integer | Any whole number value—positive or negative—that doesn't include a decimal.| 1, 2, 3, -19
 | Decimal | Any number value that includes a decimal. Decimal values can have a potentially unlimited precision. | 1.0, 23.5, 3.14159265359
-| String | Any text within quotes. You can represent strings using double quotes or, in some cases, using a single quote. | “Hello”, "Welcome to the show", 'hello
+| String | Any text within quotes. You can represent strings using double quotes. It's also possible to prepend strings used as function names or table names with a single quotation mark (').| “Hello”, "Welcome to the show", 'balances
 | Boolean | Anything that is represented by true and false literals. | true, false
 | List | List literals are created inside square brackets ([ ]). List items can be separated with spaces or commas. If all of the items in the list have the same type, then the type is defined by the content of the list. Otherwise, the type is just defined as a “list”. | [1,2,3] or [1 2 3] = “[Integer]” [1 2 true] = “list”
 | Object | Objects are dictionaries specifying key-value pairs created inside curly braces ({ }). | {“house”:”blue”, “locked”:”no”}
@@ -63,7 +63,7 @@ To try it yourself:
 
 ### String operations
 
-If most cases, you use double quotation marks (" ") around strings to support whitespace or multi-line strings.
+In most cases, you use double quotation marks (" ") around strings to support whitespace or multi-line strings.
 However, you can also represent strings by prepending the string with a single quotation mark (').
 
 Typically, you use a single quotation mark to identify strings that are used as function names or table names. 
@@ -203,12 +203,11 @@ The following is an example of the **helloWorld** smart contract with comments i
 
 ## Built-in functions
 
-After getting familiar with the Pact language syntax, you are ready to start working with some of Pact [built-in functions](/reference/functions).
+After getting familiar with the Pact language syntax, you are ready to start working with some of the Pact [built-in functions](/reference/functions).
 Pact provides a large number of built-in functions to handle different types of tasks.
 In this tutorial, you'll work with a few of the most basic functions to get you started building simple programs. 
 Additional functions will be introduced in later tutorials as they become relevant to building more complete programs using Pact.
  
-
 To list the Pact built-in functions:
 
 1. Open a terminal shell on your local computer.
