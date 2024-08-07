@@ -3,7 +3,7 @@
 title: Compact Chainweb node databases
 description: "Reduce the storage required by the Chainweb node databases."
 menu: Deploy
-label: Compact a Chainweb node database
+label: Compact Chainweb databases
 order: 2
 layout: full
 tags: [pact, chainweb, network, node operator, developer]
