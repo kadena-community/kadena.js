@@ -9,52 +9,76 @@ layout: full
 tags: ['TypeScript', 'Kadena client', 'frontend']
 ---
 
-# Bindings and types for the Chainweb REST API
+# Bindings and types for the Chainweb API
 
-High level Typescript bindings and types for the [Kadena][1] [Chainweb REST
-API][2].
+The `chainwebjs` package provides high level Typescript bindings and types for the Kadena [Chainweb API](/reference/chainweb-api).
 
-## API Documentation
+## Install
 
-### Usage Examples
+You can install this package with `npm` or `yarn`.
+
+To install using `npm`, run the following command:
+
+```sh
+npm install @kadena/chainwebjs
+```
+
+To install using `yarn`, run the following command:
+
+```sh
+yarn add @kadena/chainwebjs
+```
+
+## Usage
+
+To define a constant reference for the `chainwebjs` library, add the following line to your program:
 
 ```javascript
 const chainweb = require('@kadena/chainwebjs');
 ```
 
+To import `chainwebjs` functions, add the following line to your program:
+
 ```javascript
 import chainweb from '@kadena/chainwebjs';
 ```
 
-### Common parameters:
+## Common parameters
 
 - `network`: the Kadena Chainweb network identifier.
 - `host`: the Chainweb API host URL, including the schema and possibly the port.
 
-Currently, no authentication or extra headers are supported. If you need these
-features, you may request support by submitting an new issue in the Github
-repository.
+Currently, no authentication or extra headers are supported. 
+If you need these features, you can request support by submitting a new issue in the Github repository.
 
-Some functions require a `chainId` parameter (or an array of chain IDs). Chain
-IDs should be provided as numbers from the set of supported chains of the
-respective `network`. There is no default value.
+Some functions require a `chainId` parameter (or an array of chain IDs). 
+Chain identifier should be provided as string values representing the number of chains in the respective `network`. 
+There is no default value for the chainId.
+The valid values for the Kadena test and main network are "0" through "19".
 
-When a `depth` parameter is required, a value of `3` or larger is a safe choice.
+If a `depth` parameter is required, a value of `3` or larger is a safe choice.
 
-Functions return items in order ascending by block height. Because the server
-usually returns items in reverse order, functions buffer all items from possibly
-several pages, which can take some time. When fetching larger numbers of items
-it is recommended to use the functions in the package iteratively and possibly
-also asynchronously in order to increase performance.
+Functions return items in order ascending by block height. 
+Because the server usually returns items in reverse order, functions buffer all items from possibly
+several pages, which can take some time. 
+When fetching larger numbers of items, you can use the functions in the package iteratively and possibly
+also asynchronously to increase performance.
 
 ### Cuts
 
+To run a command equivalent to sending a request to `GET https://{baseURL}/cut/peer` to retrieve peer node information about the `cut` peer-to-peer network:
+
 ```javascript
 chainweb.cut.peers().then((x) => console.log('Cut Peers:', x));
+```
+
+To run a command equivalent to sending a request to `GET https://{baseURL}/cut` to query a Chainweb node for the current cut:
+
+```javascript
 chainweb.cut.current().then((x) => console.log('Current Cut:', x));
 ```
 
-### Chain Items
+### Chain items
 
 Chain items only include items from the currently winning branch of the chain.
 Orphaned blocks from past forks are not included. In order to avoid retrieving
@@ -76,7 +100,7 @@ There are functions for three kinds of chain items:
   various blocks are flattened into a single array or stream. Each item contains
   a `height` property that indicates the block height at which it occurred.
 
-### Block Chain Items By Height
+### Block chain items by height
 
 ```javascript
 chainweb.header.height(0, 1000000).then((x) => console.log('Header:', x));
@@ -89,7 +113,7 @@ chainweb.event.height(0, 1000000).then((x) => console.log('Events:', x));
 
 The parameters, in order, are: chain id and block height.
 
-### Block Chain Items By Block Hash
+### Block chain items by block hash
 
 ```javascript
 const bh = 'k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k';
@@ -103,7 +127,7 @@ chainweb.event.blockHash(0, bh).then((x) => console.log('Events:', x));
 
 The parameters, in order, are: chain id and block hash.
 
-### Recent Block Chain Items
+### Recent block chain items
 
 These functions return items from recent blocks in the block history starting at
 a given depth.
@@ -122,7 +146,7 @@ chainweb.event.recent(0, 3, 1000).then((x) => console.log('Events:', x));
 The parameters, in order, are: chain id, depth, and maximum number of returned
 items.
 
-### Ranges of Block Chain Items
+### Ranges of block chain items
 
 These functions query items from a range of block heights and return the result
 as an array.
@@ -176,7 +200,7 @@ stream was started. They are thus useful for prompt notification of new items.
 In order of exhaustively querying all, including old, items, one should also use
 `range` or `recent` queries for the respective type of item.
 
-## Example Values
+## Example values
 
 Example of a block object:
 
@@ -274,6 +298,3 @@ Example of an event object:
   height: 1511601
 }
 ```
-
-[1]: https://kadena.io
-[2]: https://api.chainweb.com
