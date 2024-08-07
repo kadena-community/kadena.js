@@ -196,8 +196,8 @@ If the request is successful, the response returns `application/json` content wi
 | nodeBlockDelay&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the number of seconds to delay between blocks. |
 | nodeChains&nbsp;(required) | Array&nbsp;of&nbsp;strings| Specifies the chain identifiers for the chains in the network the node is part of. |
 | nodeGenesisHeights&nbsp;(required) | Array&nbsp;of&nbsp;integers | Specifies the block height for the first block of each chain in the network.|
-| nodeGraphHistory&nbsp;(required) | Array&nbsp;of&nbsp;integers | Specifies the block height and adjacent chains in an array with arrays for all chain graphs indexed by the height of the first block with the respective graph. Graphs are encoded as adjacency lists.
-| nodeHistoricalChains&nbsp;(required) | Array&nbsp;of&nbsp;integers | Specifies |
+| nodeGraphHistory&nbsp;(required) | Array&nbsp;of&nbsp;integers | Specifies the block height and adjacent chains for all chain graphs indexed by the height of the first block with the respective graph. Graphs are encoded as adjacency lists.
+| nodeHistoricalChains&nbsp;(required) | Array&nbsp;of&nbsp;integers | Specifies the block height and adjacent chains for all chain graphs indexed by the height of the first block for the graph. Graphs are encoded as adjacency lists.|
 | nodeLatestBehaviorHeight&nbsp;(required) | integer | Specifies the latest block height for the node. |
 | nodeNumberOfChains&nbsp;(required) | integer&nbsp;>=&nbsp;10 | Specifies the number of chains in the network the node is part of. |
 | nodePackageVersion&nbsp;(required) | string | Specifies the release package version for the `chainweb-node` software package running on the node. |

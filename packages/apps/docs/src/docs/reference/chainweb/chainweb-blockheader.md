@@ -79,7 +79,7 @@ If you specified `application/json` in the Accept header of the request and ther
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| key | string | Specifies the base64Url-encoded block hash (without padding). The block hash consists of 43 characters from the `^[a-zA-Z0-9_-]{43}$` character set. |
+| key | string | Specifies the base64Url-encoded block hash (without padding). The block hash consists of 43 characters from the `^`a-zA-Z0-9_-`{43}$` character set. |
 | reason | string | Provides a placeholder for specifying the reason that no block headers were found. |
 
 ### Examples
@@ -156,7 +156,7 @@ Use `GET http://{baseURL}/chain/{chain}/header/{blockHash}` to get a block heade
 | Parameter | Type | Description
 | --------- | ---- | -----------
 | chain&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to get block headers for the first chain (0), the request is `GET http://{baseURL}/chain/0/header/{blockHash}`.
-| blockHash&nbsp;(required) | string | Specifies the block hash of a block. The block hash consists of 43 characters from the `^[a-zA-Z0-9_-]{43}$` character set. For example: `k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k`.
+| blockHash&nbsp;(required) | string | Specifies the block hash of a block. The block hash consists of 43 characters from the `a-zA-Z0-9_-` character set. For example: `k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k`.
 
 ### Responses
 
@@ -186,7 +186,7 @@ If you specified `application/json` in the Accept header of the request and ther
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| key | string | Specifies the base64Url-encoded block hash (without padding). The block hash consists of 43 characters from the `^[a-zA-Z0-9_-]{43}$` character set. |
+| key | string | Specifies the base64Url-encoded block hash (without padding). The block hash consists of 43 characters from the `a-zA-Z0-9_-` character set. |
 | reason | string | Provides a placeholder for specifying the reason that no block headers were found. |
 
 ### Examples
@@ -266,8 +266,8 @@ These parameters specify the upper and lower bounds for the queried branches.
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| lower	| Array&nbsp;of&nbsp;strings | Specifies the lower bound block header hash for the query. No block headers are returned that are predecessors of any block with a hash from this array. The block hash consists of 43 characters from the `^[a-zA-Z0-9_-]{43}$` character set. |
-| upper | Array of strings | Specifies the upper bound block header for the query. All block hashes returned are predecessors of a block with a hash from this array. The block hash consists of 43 characters from the `^[a-zA-Z0-9_-]{43}$` character set. |
+| lower	| Array&nbsp;of&nbsp;strings | Specifies the lower bound block header hash for the query. No block headers are returned that are predecessors of any block with a hash from this array. The block hash consists of 43 characters from the `a-zA-Z0-9_-` character set. |
+| upper | Array of strings | Specifies the upper bound block header for the query. All block hashes returned are predecessors of a block with a hash from this array. The block hash consists of 43 characters from the `a-zA-Z0-9_-` character set. |
 
 The following examples illustrate the results to expect based on setting the lower and upper bound parameters. 
 
