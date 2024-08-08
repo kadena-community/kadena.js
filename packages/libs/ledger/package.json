@@ -1,0 +1,35 @@
+{
+  "name": "@kadena/ledger",
+  "version": "0.0.1",
+  "private": true,
+  "description": "",
+  "keywords": [],
+  "license": "BSD-3-Clause",
+  "author": "",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "example": "cd example && pnpm dev"
+  },
+  "dependencies": {
+    "blake2b": "^2.1.4",
+    "ledger-transport-hid": "^0.1.0"
+  },
+  "devDependencies": {
+    "@kadena-dev/shared-config": "workspace:*",
+    "@types/blake2b": "^2.1.3",
+    "@types/w3c-web-hid": "^1.0.6",
+    "unbuild": "^2.0.0"
+  }
+}
