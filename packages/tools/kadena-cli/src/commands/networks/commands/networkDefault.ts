@@ -2,14 +2,12 @@ import type { Command } from 'commander';
 import yaml from 'js-yaml';
 import path from 'node:path';
 import { services } from '../../../services/index.js';
-import { KadenaError } from '../../../services/service-error.js';
 import type { CommandResult } from '../../../utils/command.util.js';
 import { assertCommandError } from '../../../utils/command.util.js';
 import { createCommand } from '../../../utils/createCommand.js';
 import { isNotEmptyObject } from '../../../utils/globalHelpers.js';
-import { getDefaultNetworkName } from '../../../utils/helpers.js';
+import { getDefaultNetworkName, isEmpty } from '../../../utils/helpers.js';
 import { log } from '../../../utils/logger.js';
-import { isEmpty } from '../../account/utils/addHelpers.js';
 import { networkOptions } from '../networkOptions.js';
 import { removeDefaultNetwork } from '../utils/networkHelpers.js';
 import {
@@ -24,13 +22,7 @@ export const setNetworkDefault = async (
   const networkDir = getNetworkDirectory();
   const networkSettingDir = getNetworksDefaultSettingsDirectory();
   const networkSettingsFilePath = getNetworksSettingsFilePath();
-  if (
-    networkDir === null ||
-    networkSettingDir === null ||
-    networkSettingsFilePath === null
-  ) {
-    throw new KadenaError('no_kadena_directory');
-  }
+
   try {
     const filePath = path.join(networkDir, `${network}.yaml`);
 

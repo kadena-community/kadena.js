@@ -17,15 +17,11 @@ import type {
 import yaml from 'js-yaml';
 import path from 'path';
 import { services } from '../../../services/index.js';
-import { KadenaError } from '../../../services/service-error.js';
 import { createTable } from '../../../utils/table.js';
 import { getNetworkDirectory } from './networkPath.js';
 
 export async function displayNetworksConfig(): Promise<void> {
   const networkDir = getNetworkDirectory();
-  if (networkDir === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
 
   const table = createTable({
     head: [

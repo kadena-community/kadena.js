@@ -2,17 +2,13 @@ import type { Table } from 'cli-table3';
 import type { Command } from 'commander';
 import { parse } from 'node:path';
 import { NO_ACCOUNTS_FOUND_ERROR_MESSAGE } from '../../../constants/account.js';
+import { services } from '../../../services/index.js';
 import { createCommand } from '../../../utils/createCommand.js';
 import { isNotEmptyString } from '../../../utils/globalHelpers.js';
 import { log } from '../../../utils/logger.js';
 import { createTable } from '../../../utils/table.js';
 import { accountOptions } from '../accountOptions.js';
 import type { IAliasAccountData } from '../types.js';
-import {
-  ensureAccountAliasFilesExists,
-  getAllAccounts,
-  readAccountFromFile,
-} from '../utils/accountHelpers.js';
 
 function generateTabularData(accounts: IAliasAccountData[]): Table {
   const table = createTable({});
@@ -41,21 +37,6 @@ function generateTabularData(accounts: IAliasAccountData[]): Table {
   return table;
 }
 
-async function accountList(
-  accountAlias: string,
-): Promise<IAliasAccountData[] | undefined> {
-  try {
-    if (accountAlias === 'all') {
-      return await getAllAccounts();
-    } else {
-      const account = await readAccountFromFile(accountAlias);
-      return [account];
-    }
-  } catch (error) {
-    return;
-  }
-}
-
 export const createAccountListCommand: (
   program: Command,
   version: string,
@@ -64,29 +45,32 @@ export const createAccountListCommand: (
   'List all available accounts',
   [accountOptions.accountSelectWithAll()],
   async (option) => {
-    const isAccountAliasesExist = await ensureAccountAliasFilesExists();
-
-    if (!isAccountAliasesExist) {
-      return log.warning(NO_ACCOUNTS_FOUND_ERROR_MESSAGE);
-    }
-
     const { accountAlias } = await option.accountAlias();
 
-    log.debug('account-list:action', accountAlias);
+    log.debug('account-list:action', { accountAlias });
 
     if (!isNotEmptyString(accountAlias)) {
       return log.error('No account alias is selected');
     }
 
-    const accountsDetails = await accountList(accountAlias);
+    if (accountAlias === 'all') {
+      const accountsDetails = await services.account.list();
 
-    if (!accountsDetails || accountsDetails.length === 0) {
-      return log.error(`Selected account alias "${accountAlias}" not found.`);
+      if (accountsDetails.length === 0) {
+        return log.warning(NO_ACCOUNTS_FOUND_ERROR_MESSAGE);
+      }
+
+      const data = generateTabularData(accountsDetails);
+      log.output(data.toString(), accountsDetails);
+    } else {
+      const accountsDetails = await services.account.getByAlias(accountAlias);
+
+      if (!accountsDetails) {
+        return log.error(`Selected account alias "${accountAlias}" not found.`);
+      }
+
+      const data = generateTabularData([accountsDetails]);
+      log.output(data.toString(), accountsDetails);
     }
-
-    const data = generateTabularData(accountsDetails);
-    const accountsListJSONOutput =
-      accountsDetails.length === 1 ? accountsDetails[0] : accountsDetails;
-    log.output(data.toString(), accountsListJSONOutput);
   },
 );

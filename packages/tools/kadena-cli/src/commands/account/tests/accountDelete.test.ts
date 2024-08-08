@@ -111,9 +111,7 @@ describe('account delete', () => {
     const res = await runCommand(
       'account delete --account-alias=not-found-alias --confirm',
     );
-    expect(res.stderr).toContain(
-      'The account alias "not-found-alias" does not exist',
-    );
+    expect(res.stderr).toContain('Account "not-found-alias" not found');
   });
 
   it('should throw invalid account alias when account passes as empty string', async () => {
@@ -125,7 +123,9 @@ describe('account delete', () => {
     // deleting account alias file to make the folder empty
     await services.filesystem.deleteFile(accountAliasFile);
 
-    const res = await runCommand('account delete');
+    const res = await runCommand(
+      'account delete --account-alias=all --confirm',
+    );
     expect(res.stderr).toContain(
       'No account aliases found. To add an account use `kadena account add` command.',
     );
