@@ -66,15 +66,29 @@ To compact a Chainweb node database:
    - `--log-dir` to specify the directory where you want the `compact` program to put the log files it creates, one for each chain. If the directory doesn’t exist, the `compact` program creates it. These logs can be useful for debugging if something goes wrong.
    - `--chainweb-version` to specify the network identifier for the node. This argument is optional if you're compacting a database for the `mainnet01` network. If you're compacting a database for another network—for example, the Kadena test network—you must specify the network identifier. Valid values are "`development`", "`testnet04`", and "`mainnet01`".
 
-   For example, if you have navigated to the `data/state/chainweb` directory on a testnet node, run a command similar to the following:
+   For example, if you are using the default location for the database directory and a node connected to the Kadena test network, run a command similar to the following:
 
    ```bash
-   compact --from db --to compact-testnet-db --log-dir /tmp/compact-db-logs --chainweb-version testnet04
+   compact --from ~/.local/share/chainweb-node/testnet04 --to ~/.local/share/chainweb-node/compact-db --log-dir /tmp/compaction-log-files
    ```
 
-   Note that the location of the Chainweb root database directory—`data/state/chainweb/db` in this example—depends on the configuration of the node.
+   Note that the location of the Chainweb root database directory—`~/.local/share/testnet04` in this example—depends on the configuration of the node.
    If you haven't specified a location in the configuration file, the default location is `~/.local/share/chainweb-node/{chainweb-network-id}`, for example `~/.local/share/chainweb-node/testnet04` for a node in the Kadena test network.
 
+   If your node isn't synchronized with the current block height of the network or doesn't have enough history to ensure proper validation, you might see the `compact` operation fail with any error similar to the following:
+
+   ```bash
+   2024-08-09T20:03:38.215Z [Error] [] locateLatestSafeTarget: Not enough history to safely compact. Aborting.
+   ```
+
+   If you have enough history for compaction to succeed, you should see a message similar to the following:
+
+   ```text
+   2024-08-10T04:08:55.955Z [Debug] [] Latest Common BlockHeight: 9419
+   2024-08-10T04:08:55.956Z [Debug] [] Earliest Common BlockHeight: 852054
+   2024-08-10T04:08:56.192Z [Debug] [] Compaction target blockheight is: 8419
+   2024-08-10T04:08:56.192Z [Debug] [] targetBlockHeight: 8419
+   ```
 4. Stop your node.
 
 5. Restart your node with the new compacted database directory.
@@ -84,7 +98,7 @@ To compact a Chainweb node database:
    For example, you can restart the node with a command similar to the following:
 
    ```bash
-   chainweb-node --database-directory=compact-testnet-db
+   chainweb-node --database-directory=~/.local/share/chainweb-node/compact-db
    ```
 
    If you're editing the configuration file, update the YAML or JSON file to set the databaseDirectory field to the location of the compacted database.
@@ -98,7 +112,7 @@ To compact a Chainweb node database:
          configuration: {}
          enabled: false
        directory: null
-     databaseDirectory: compact-testnet-db
+     databaseDirectory: ~/.local/share/chainweb-node/compact-db
    ```
 
    After you restart the node, it should run normally with the reduced database size as though nothing has changed.
