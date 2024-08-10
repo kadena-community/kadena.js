@@ -153,23 +153,24 @@ To run a node in a container:
    docker pull ghcr.io/kadena-io/chainweb-node/ubuntu:latest
    ```
 
-4. Review command-line options by running the following command:
+1. Verify the binary is ready to use and review command-line configuration options by running the following command:
    
    ```bash
    docker run --publish 1789:1789 --publish 1848:1848 --entrypoint=/chainweb/chainweb-node ghcr.io/kadena-io/chainweb-node/ubuntu:latest --help
    ```
 
-5. Review the default configuration settings for the node by running the following command:
-      
+   You should see usage information about the configuration settings you can specify as command-line options similar to the following truncated output:
+
    ```bash
-   docker run --publish 1789:1789 --publish 1848:1848 --entrypoint=/chainweb/chainweb-node ghcr.io/kadena-io/chainweb-node/ubuntu:latest --print-config
+   Usage: chainweb-node [--info] [--long-info] [-v|--version] [--license] 
+                        [-?|-h|--help] 
+                        [--print-config-as full|minimal|diff | --print-config] 
+                        [--config-file FILE] 
    ```
 
-6.  Extract the default configuration settings to create a configuration file for the node by running the following command:
-   
-   ```bash
-   docker run --publish 1789:1789 --publish 1848:1848 --entrypoint=chainweb/chainweb-node ghcr.io/kadena-io/chainweb-node/ubuntu:latest --print-config > node-config.yaml
-   ```
+      From the usage information, you can see that there are a large number of configuration options that you can use to control and operation and behavior of the Chainweb node. 
+      Before you start the node, you should review the configuration options and the default values to determine whether you want to make any changes to the configuration of the node.
+      For information about this next step, see [Review the default configuration](#review-the-default-configuration).
 
 ## Build from source
 
@@ -384,11 +385,25 @@ To review the default node configuration:
    ./chainweb-node --print-config
    ```
 
-4. Extract the default configuration settings to create a configuration file for the node by running the following command:
+   If you're running the node in a Docker container, you can view the configuration settings by running the following command:
+      
+   ```bash
+   docker run --publish 1789:1789 --publish 1848:1848 --entrypoint=/chainweb/chainweb-node ghcr.io/kadena-io/chainweb-node/ubuntu:latest --print-config
+   ```
+
+5. Extract the default configuration settings to create a configuration file for the node by running the following command:
    
    ```bash
    ./chainweb-node --print-config > node-config.yaml
    ```
+
+   If you're running the node in a Docker container, you can create a configuration file for the node by running the following command:
+   
+   ```bash
+   docker run --publish 1789:1789 --publish 1848:1848 --entrypoint=chainweb/chainweb-node ghcr.io/kadena-io/chainweb-node/ubuntu:latest --print-config > node-config.yaml
+   ```
+   
+   However, this command creates the configuration file in the host environment instead of the container.
 
    After you create a node configuration file from the default settings, you should determine whether you want to make any changes to the configuration of the node.
    
