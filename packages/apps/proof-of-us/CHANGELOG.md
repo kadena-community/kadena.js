@@ -1,5 +1,19 @@
 # @kadena/proof-of-us
 
+## 0.5.2
+
+### Patch Changes
+
+- 95bffde: fix the e2e tests
+- Updated dependencies \[1707e63]
+- Updated dependencies \[bc52918]
+- Updated dependencies \[e8ce4b4]
+- Updated dependencies \[df12c9a]
+- Updated dependencies \[85d84e7]
+- Updated dependencies \[b089abf]
+  - @kadena/graph\@1.0.8
+  - @kadena/kode-ui\@0.14.0
+
 ## 0.5.1
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@kadena/proof-of-us",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "private": true,
   "scripts": {
     "build": "pnpm run generate:sdk && next build",

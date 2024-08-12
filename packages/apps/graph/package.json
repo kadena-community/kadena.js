@@ -1,6 +1,6 @@
 {
   "name": "@kadena/graph",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "GraphQL server, available for running your own GraphQL endpoint. This project uses chainweb-data as the datasource.",
   "repository": {
     "type": "git",
