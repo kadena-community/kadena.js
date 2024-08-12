@@ -4,7 +4,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", "styles/**", "global/**"],
+      "outputs": ["dist/**", "styles/**", "patterns/**", "global/**"],
       "outputLogs": "new-only"
     }
   }
