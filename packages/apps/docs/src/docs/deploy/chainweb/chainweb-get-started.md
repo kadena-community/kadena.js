@@ -180,6 +180,8 @@ Tagged versions of the source code are tested extensively to ensure that they ar
 
 You shouldn't build `chainweb-node` from the `master` branch if you plan to run the node as part of a Kadena public network.
 
+### Download source code
+
 To download tagged source code:
 
 1. Open the [Releases](https://github.com/kadena-io/chainweb-node/releases) page.
@@ -394,26 +396,25 @@ To review the default node configuration:
 5. Extract the default configuration settings to create a configuration file for the node by running the following command:
    
    ```bash
-   ./chainweb-node --print-config > node-config.yaml
+   ./chainweb-node --print-config > default-config.yaml
    ```
 
    If you're running the node in a Docker container, you can create a configuration file for the node by running the following command:
    
    ```bash
-   docker run --publish 1789:1789 --publish 1848:1848 --entrypoint=chainweb/chainweb-node ghcr.io/kadena-io/chainweb-node/ubuntu:latest --print-config > node-config.yaml
+   docker run --publish 1789:1789 --publish 1848:1848 --entrypoint=chainweb/chainweb-node ghcr.io/kadena-io/chainweb-node/ubuntu:latest --print-config > default-config.yaml
    ```
    
-   However, this command creates the configuration file in the host environment instead of the container.
+   This command creates the default configuration file in the host environment outside of the Docker container so that you can review configuration options and settings before starting the node in the container.
 
    After you create a node configuration file from the default settings, you should determine whether you want to make any changes to the configuration of the node.
-   
-   If you want to modify the configuration of the node or add features that are disabled by default, you can:
+   If you want to modify any of the default settings or add features that are disabled by default, you can:
 
    - Edit settings in one or more configuration files.
    - Use corresponding command-line options to control node operations.
    
    For more information about editing configuration settings in the configuration file, see [Edit the configuration settings](#edit-the-configuration-settings).
-   For information about using command-line options to control node operations, see thr [chainweb-node]() command-line reference.
+   For information about using command-line options to control node operations, see the [chainweb-node]() command-line reference.
 
 ## Edit the configuration settings
 
@@ -430,10 +431,10 @@ To edit the node configuration:
 1. Open a terminal shell on a computer with access to the node configuration file.
 2. Copy the default configuration file to save as a backup.
    
-   For example, copy the `node-config.yaml` to save it as the `default-config.yaml` file:
+   For example, copy the `default-config.yaml` to save a copy of it as the `modified-config.yaml` file:
 
    ```bash
-   cp node-config.yaml default-config.yaml
+   cp default-config.yaml modified-config.yaml
    ```
 
 3. Open the configuration file in a text editor and edit the settings you want to change.
@@ -457,12 +458,12 @@ To edit the node configuration:
 
 ## Start the Chainweb node
 
-After you've made any changes needed in the node configuration file, you can start the node with the modified configuration file.
+After you've made any changes needed in the node configuration file, you can start the node with the modified configuration file or by specifying the command-line options you want to set.
 
 To start the node from the release binary or after building from the source, you can run a command similar to the following:
 
 ```bash
-./chainweb-node --config-file node-config-updated.yaml   
+./chainweb-node --config-file modified-config.yaml   
 ```
 
 To start the node in a Docker container, you can run a command similar to the following to use the default configuration settings:
@@ -471,7 +472,15 @@ To start the node in a Docker container, you can run a command similar to the fo
 docker run -p 1789:1789 -p 1848:1848 --entrypoint=/chainweb/chainweb-node ghcr.io/kadena-io/chainweb-node:ubuntu:latest   
 ```
 
-If you want to run the node with modified configuration settings, you can add the appropriate command-line options when starting the node.
+After starting the node in a Docker container, you can view the contents of the container and interact with it using basic shell commands.
+For example, you can get the container identifier by running `docker ps`, then open a shell in the container by running a command similar to the following:
+
+```bash
+docker exec --interactive --tty <container-id> /bin/bash
+```
+
+However, the container doesn't include a text editor for modifying the configuration file.
+If you want to run the node with modified configuration settings in a Docker container, you can add the appropriate command-line options when starting the node.
 For example:
 
 ```bash
