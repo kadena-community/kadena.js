@@ -123,9 +123,9 @@ To install from a release archive:
                         [--config-file FILE] 
    ```
 
-      From the usage information, you can see that there are a large number of configuration options that you can use to control and operation and behavior of the Chainweb node. 
-      Before you start the node, you should review the configuration options and the default values to determine whether you want to make any changes to the configuration of the node.
-      For information about this next step, see [Review the default configuration](#review-the-default-configuration).
+   From the usage information, you can see that there are a large number of configuration options that you can use to control and operation and behavior of the Chainweb node. 
+   Before you start the node, you should review the configuration options and the default values to determine whether you want to make any changes to the configuration of the node.
+   For information about this next step, see [Review the default configuration](#review-the-default-configuration).
 
 ## Run in a Docker container
 
@@ -237,19 +237,25 @@ To build with the native Haskell toolchain:
    brew install ca-certificates libgmp-dev libsnappy-dev zlib1g-dev liblz4-dev libbz2-dev libgflags-dev libzstd-dev
    ```
 
-1. Build a `chainweb-node` binary by running the following command:
+2. Ensure the `cabal` build tool is up-to-date by running the following command:
+   
+   ```bash
+   cabal update
+   ```
+
+3. Build a `chainweb-node` binary by running the following command:
    
    ```bash
    cabal build
    ```
 
-1. Locate the `chainweb-node` executable binary by running the following command:
+4. Locate the `chainweb-node` executable binary by running the following command:
    
    ```bash
    cabal list-bin chainweb-node
    ```
 
-8. Verify that `chainweb-node` is ready to use and review command-line configuration options by running the following command:
+5. Verify that `chainweb-node` is ready to use and review command-line configuration options by running the following command:
    
    ```bash
    ./chainweb-node --help
@@ -342,7 +348,8 @@ To build with the Nix package manager:
    After starting the build, you should see messages similar to the following:
    
    ```text
-   copying path '/nix/store/8dyrf48cwvyqhvks5adxlk675qgm7pql-haskell-project-plan-to-nix-pkgs' from 'https://nixcache.chainweb.com'...
+   copying path '/nix/store/8dyrf48cwvyqhvks5adxlk675qgm7pql-haskell-project-plan-to-nix-pkgs' from 'https://nixcache.chainweb.com'
+   ...
    ```
    
    These messages indicate that the pre-built artifacts are being successfully downloaded from the cache. 
@@ -460,16 +467,24 @@ To edit the node configuration:
 
 After you've made any changes needed in the node configuration file, you can start the node with the modified configuration file or by specifying the command-line options you want to set.
 
+### Start the node from the executable
+
 To start the node from the release binary or after building from the source, you can run a command similar to the following:
 
 ```bash
 ./chainweb-node --config-file modified-config.yaml   
 ```
 
+The node immediately begins trying to synchronize state with other nodes in the network.
+If the network is correctly configured to allow communication, you should start seeing the block height for your node catching up with its peers.
+If you see errors or warning messages, you should review the [Troubleshooting]() section for potential causes and solutions.
+
+### Start the node in a container
+
 To start the node in a Docker container, you can run a command similar to the following to use the default configuration settings:
    
 ```bash
-docker run -p 1789:1789 -p 1848:1848 --entrypoint=/chainweb/chainweb-node ghcr.io/kadena-io/chainweb-node:ubuntu:latest   
+docker run --publish 1789:1789 --publish 1848:1848 --entrypoint=/chainweb/chainweb-node ghcr.io/kadena-io/chainweb-node:ubuntu:latest   
 ```
 
 After starting the node in a Docker container, you can view the contents of the container and interact with it using basic shell commands.
@@ -484,5 +499,11 @@ If you want to run the node with modified configuration settings in a Docker con
 For example:
 
 ```bash
-docker run -p 1789:1789 -p 1848:1848 --entrypoint=/chainweb/chainweb-node ghcr.io/kadena-io/chainweb-node:ubuntu:latest --enable-backup-api --backup-directory /tmp/my-backups
+docker run --publish 1789:1789 --publish 1848:1848 --entrypoint=/chainweb/chainweb-node ghcr.io/kadena-io/chainweb-node:ubuntu:latest --enable-backup-api --backup-directory /tmp/my-backups
 ```
+
+For more information about using command-line options to control node operations, see the [chainweb-node]() command-line reference.
+
+After you start the node in the container, it immediately begins trying to synchronize state with other nodes in the network.
+If the network is correctly configured to allow communication, you should start seeing the block height for your node catching up with its peers.
+If you see errors or warning messages, you should review the [Troubleshooting]() section for potential causes and solutions.
