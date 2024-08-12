@@ -130,8 +130,10 @@ To install from a release archive:
 ## Run in a Docker container
 
 If you have Docker installed, you can download a `chainweb-node` image and run a node in a Docker container.
+If you want to run the node in a Docker container but don't have Docker installed yet, see the instructions provided in [Install Docker Engine](https://docs.docker.com/engine/install/) to download and install Docker for your operating system.
+After you have Docker installed, use the following instructions to pull the Docker image and run `chainweb-node` in a Docker container.
 
-To run a node in a container:
+To run `chainweb-node` in a Docker container:
 
 1. Open a terminal shell on the physical or virtual host where you have Docker installed.
 
@@ -153,7 +155,7 @@ To run a node in a container:
    docker pull ghcr.io/kadena-io/chainweb-node/ubuntu:latest
    ```
 
-1. Verify the binary is ready to use and review command-line configuration options by running the following command:
+4. Verify the binary is ready to use and review command-line configuration options by running the following command:
    
    ```bash
    docker run --publish 1789:1789 --publish 1848:1848 --entrypoint=/chainweb/chainweb-node ghcr.io/kadena-io/chainweb-node/ubuntu:latest --help
