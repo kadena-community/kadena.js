@@ -69,7 +69,7 @@ To compact a Chainweb node database:
    For example, if you are using the default location for the database directory and a node connected to the Kadena test network, run a command similar to the following:
 
    ```bash
-   compact --from ~/.local/share/chainweb-node/testnet04 --to ~/.local/share/chainweb-node/compact-db --log-dir /tmp/compaction-log-files
+   compact --from ~/.local/share/chainweb-node/testnet04 --to ~/.local/share/chainweb-node/compact-db --log-dir /tmp/compaction-log-files --chainweb-version testnet04
    ```
 
    Note that the location of the Chainweb root database directory—`~/.local/share/testnet04` in this example—depends on the configuration of the node.
@@ -81,7 +81,7 @@ To compact a Chainweb node database:
    2024-08-09T20:03:38.215Z [Error] [] locateLatestSafeTarget: Not enough history to safely compact. Aborting.
    ```
 
-   If you have enough history for compaction to succeed, you should see a message similar to the following:
+   If you have enough history for compaction to succeed, you should see a message in the terminal similar to the following:
 
    ```text
    2024-08-13T18:11:30.991Z [Debug] [] Latest Common BlockHeight: 4115162
@@ -89,6 +89,9 @@ To compact a Chainweb node database:
    2024-08-13T18:11:31.438Z [Debug] [] Compaction target blockheight is: 4114162
    2024-08-13T18:11:31.438Z [Debug] [] targetBlockHeight: 4114162
    ```
+
+   All other messages are recorded in the log files in the directory you specified for the `--log-dir` command-line argument.
+
 4. Stop your node.
 
 5. Restart your node with the new compacted database directory.
