@@ -84,10 +84,10 @@ To compact a Chainweb node database:
    If you have enough history for compaction to succeed, you should see a message similar to the following:
 
    ```text
-   2024-08-10T04:08:55.955Z [Debug] [] Latest Common BlockHeight: 9419
-   2024-08-10T04:08:55.956Z [Debug] [] Earliest Common BlockHeight: 852054
-   2024-08-10T04:08:56.192Z [Debug] [] Compaction target blockheight is: 8419
-   2024-08-10T04:08:56.192Z [Debug] [] targetBlockHeight: 8419
+   2024-08-13T18:11:30.991Z [Debug] [] Latest Common BlockHeight: 4115162
+   2024-08-13T18:11:30.991Z [Debug] [] Earliest Common BlockHeight: 332604
+   2024-08-13T18:11:31.438Z [Debug] [] Compaction target blockheight is: 4114162
+   2024-08-13T18:11:31.438Z [Debug] [] targetBlockHeight: 4114162
    ```
 4. Stop your node.
 
