@@ -190,7 +190,7 @@ To download tagged source code:
 
 2. Download the compressed archive for your working environment:
 
-   ![Download source code](/assets/docs/chainweb-node-assets)
+   ![Download source code](/assets/docs/chainweb-node-assets.png)
 
 3. Unzip the compressed archive double-clicking or by running commands similar to the following:
 
