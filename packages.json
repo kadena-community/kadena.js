@@ -55,13 +55,13 @@
   },
   {
     "name": "@kadena/dev-wallet",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "private": true,
     "path": "packages/apps/dev-wallet"
   },
   {
     "name": "@kadena/dev-wallet-desktop",
-    "version": "0.0.15",
+    "version": "0.0.16",
     "private": true,
     "path": "packages/apps/dev-wallet-desktop"
   },
@@ -85,19 +85,19 @@
   },
   {
     "name": "@kadena/explorer",
-    "version": "0.4.0",
+    "version": "0.5.0",
     "private": true,
     "path": "packages/apps/explorer"
   },
   {
     "name": "@kadena/graph",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "private": false,
     "path": "packages/apps/graph"
   },
   {
     "name": "@kadena/graph-client",
-    "version": "0.3.1",
+    "version": "0.3.2",
     "private": true,
     "path": "packages/apps/graph-client"
   },
@@ -127,13 +127,13 @@
   },
   {
     "name": "@kadena/kode-ui",
-    "version": "0.13.0",
+    "version": "0.14.0",
     "private": false,
     "path": "packages/libs/kode-ui"
   },
   {
     "name": "@kadena/marmalade-marketplace",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "private": true,
     "path": "packages/apps/marmalade-marketplace"
   },
@@ -157,7 +157,7 @@
   },
   {
     "name": "@kadena/proof-of-us",
-    "version": "0.5.1",
+    "version": "0.5.2",
     "private": true,
     "path": "packages/apps/proof-of-us"
   },

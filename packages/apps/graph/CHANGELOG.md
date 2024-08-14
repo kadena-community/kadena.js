@@ -1,5 +1,16 @@
 # @kadena/graph
 
+## 1.0.8
+
+### Patch Changes
+
+- 1707e63: Improve performance by memoizing networkInfo result in graph every 30
+  seconds. Skipping in explorer when there's an error. Added block info to
+  row-block component on main page
+- e8ce4b4: Fix performance issue when retrieving transactions by sender
+- b089abf: Fix issues with performance of Graph queries on
+  fungibleAccount.transfers
+
 ## 1.0.7
 
 ### Patch Changes
