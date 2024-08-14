@@ -70,6 +70,29 @@ result: any;
 chainId: ChainId_2 | undefined;
 }[]>>;
 
+// Warning: (ae-forgotten-export) The symbol "ICreateAccountCommandInput_2" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export const fundAccountOnTestnet: (inputs: ICreateAccountCommandInput_2, config: Pick<IClientConfig, 'sign'>) => IEmitterWrapper<[{
+event: "command";
+data: IUnsignedCommand;
+}, {
+event: "sign";
+data: ICommand;
+}, {
+event: "preflight";
+data: ICommandResult;
+}, {
+event: "submit";
+data: ITransactionDescriptor;
+}, {
+event: "listen";
+data: ICommandResult;
+}], [], any>;
+
+// @alpha (undocumented)
+export const fundAccountOnTestnetCommand: ({ account, keyset, amount, chainId, signerKeys, faucetAccount, contract, }: ICreateAccountCommandInput_2) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => Partial<IPartialPactCommand>;
+
 // @alpha (undocumented)
 export const getBalance: (account: string, networkId: string, chainId: ChainId, host?: IClientConfig['host'], contract?: string) => Promise<any>;
 

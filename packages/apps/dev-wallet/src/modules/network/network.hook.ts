@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 import { dbService } from '../db/db.service';
+import { useWallet } from '../wallet/wallet.hook';
 import { INetwork, networkRepository } from './network.repository';
 
 export function useNetwork() {
   const [networks, setNetworks] = useState<INetwork[]>([]);
-  const [activeNetwork, setActiveNetwork] = useState<INetwork | undefined>(
-    undefined,
-  );
+  const { setActiveNetwork, activeNetwork } = useWallet();
+  if (!setActiveNetwork) {
+    throw new Error('useNetwork must be used within a WalletProvider');
+  }
 
   const retrieveNetworks = useCallback(async () => {
     const networks = (await networkRepository.getNetworkList()) ?? [];
@@ -14,7 +16,7 @@ export function useNetwork() {
     setActiveNetwork(
       networks.filter((network) => network.networkId === 'testnet04')[0],
     );
-  }, []);
+  }, [setActiveNetwork]);
 
   useEffect(() => {
     retrieveNetworks();

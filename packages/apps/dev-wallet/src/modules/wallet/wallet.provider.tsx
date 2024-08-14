@@ -17,6 +17,7 @@ import {
 import * as AccountService from '../account/account.service';
 import { dbService } from '../db/db.service';
 import { keySourceManager } from '../key-source/key-source-manager';
+import { INetwork } from '../network/network.repository';
 import { IKeySource, IProfile, walletRepository } from './wallet.repository';
 import * as WalletService from './wallet.service';
 
@@ -27,6 +28,7 @@ export type ExtWalletContextType = {
   keySources?: IKeySource[];
   fungibles?: Fungible[];
   loaded?: boolean;
+  activeNetwork?: INetwork | undefined;
 };
 
 export const WalletContext = createContext<
@@ -37,6 +39,7 @@ export const WalletContext = createContext<
         accounts: IAccount[];
         keySources: IKeySource[];
       }>,
+      (activeNetwork: INetwork | undefined) => void,
     ]
   | null
 >(null);
@@ -153,6 +156,13 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     [session],
   );
 
+  const setActiveNetwork = useCallback(
+    (activeNetwork: INetwork | undefined) => {
+      setContextValue((ctx) => ({ ...ctx, activeNetwork }));
+    },
+    [],
+  );
+
   useEffect(() => {
     const loadSession = async () => {
       if (!session.isLoaded()) return;
@@ -175,7 +185,9 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [retrieveFungibles]);
 
   return (
-    <WalletContext.Provider value={[contextValue, setProfile]}>
+    <WalletContext.Provider
+      value={[contextValue, setProfile, setActiveNetwork]}
+    >
       {contextValue.loaded ? children : 'Loading wallet...'}
     </WalletContext.Provider>
   );

@@ -1,6 +1,7 @@
 export * from './create-account';
 export * from './details';
 export * from './discover-account';
+export * from './fund-account-on-testnet';
 export * from './get-balance';
 export * from './rotate';
 export * from './safe-transfer';
