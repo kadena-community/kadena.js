@@ -1,7 +1,6 @@
 import type { AccountQuery } from '@/__generated__/sdk';
 import { useAccountQuery } from '@/__generated__/sdk';
 import { AccountBalanceDistribution } from '@/components/AccountBalanceDistribution/AccountBalanceDistribution';
-import { AccountTransactionsTable } from '@/components/AccountTransactionsTable/AccountTransactionsTable';
 import { AccountTransfersTable } from '@/components/AccountTransfersTable/AccountTransfersTable';
 import { CompactTable } from '@/components/CompactTable/CompactTable';
 import { FormatAmount } from '@/components/CompactTable/utils/formatAmount';
@@ -17,8 +16,7 @@ import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { account } from '@/graphql/queries/account.graph';
 import { useRouter } from '@/hooks/router';
-import { accountNameTextClass } from '@/styles/account.css';
-import { Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
+import { Heading, TabItem, Tabs } from '@kadena/kode-ui';
 import type { FC, Key } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
 
