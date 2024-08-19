@@ -31,7 +31,7 @@ module.exports = {
     'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
     '@rushstack/typedef-var': 'off',
     'no-restricted-syntax': [
-      'error',
+      'warn',
       {
         selector: 'TSEnumDeclaration',
         message: 'Use `Record<string, string|number>` with `as const` instead.',
