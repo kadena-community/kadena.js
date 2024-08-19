@@ -1,8 +1,10 @@
 import { LoadingIcon } from '@/components/LoadingIcon/LoadingIcon';
+import type { SearchOptionEnum } from '@/context/searchContext/utils/utils';
 import {
+  getSearchOptionByIndex,
   getSearchOptions,
   getSearchOptionTitle,
-  SearchOptionEnum,
+  SEARCHOPTIONS,
 } from '@/context/searchContext/utils/utils';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { MonoSearch } from '@kadena/kode-icons/system';
@@ -44,15 +46,15 @@ const inferOption = (value: string): SearchOptionEnum => {
     value.toLocaleLowerCase().startsWith('k:') ||
     value.toLocaleLowerCase().startsWith('w:')
   ) {
-    return SearchOptionEnum.ACCOUNT;
+    return SEARCHOPTIONS.ACCOUNT;
   } else if (value.includes('.')) {
-    return SearchOptionEnum.EVENT;
+    return SEARCHOPTIONS.EVENT;
   } else if (value.length === 43) {
-    return SearchOptionEnum.REQUESTKEY;
+    return SEARCHOPTIONS.REQUESTKEY;
   } else if (/^\d+$/.test(value)) {
-    return SearchOptionEnum.BLOCKHEIGHT;
+    return SEARCHOPTIONS.BLOCKHEIGHT;
   }
-  return SearchOptionEnum.ACCOUNT;
+  return SEARCHOPTIONS.ACCOUNT;
 };
 
 export const SearchComponent: React.FC<ISearchComponentProps> = ({
@@ -123,7 +125,7 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
     } else if (e.key === 'Enter') {
       e.preventDefault();
       setOptionClicked(false);
-      handleSearch(editHover);
+      handleSearch(getSearchOptionByIndex(editHover));
       setIsEditing(false);
     } else if (e.key === 'Escape') {
       setOptionClicked(false);
@@ -224,16 +226,17 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
                 <Stack
                   className={classNames(editOptionClass, {
                     [editOptionHoverClass]: editHover === index,
-                    [editOptionSelectedClass]: innerSearchOption === index,
+                    [editOptionSelectedClass]:
+                      innerSearchOption === getSearchOptionByIndex(index),
                   })}
                   key={index}
                   onMouseDown={() => setOptionClicked(true)}
                   onMouseEnter={() => setEditHover(index)}
                   onMouseLeave={() => setEditHover(null)}
                   onClick={() => {
-                    setSearchOption(index);
+                    setSearchOption(getSearchOptionByIndex(index));
                     setOptionClicked(false);
-                    handleSearch(index);
+                    handleSearch(getSearchOptionByIndex(index));
                   }}
                 >
                   <Stack>{getSearchOptionTitle(item)}</Stack>

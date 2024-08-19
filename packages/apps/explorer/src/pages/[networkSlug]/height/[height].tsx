@@ -64,48 +64,51 @@ const Height: React.FC = () => {
     }
   }, [loading, data, error]);
 
+  if (!innerData || !innerData.blocksFromHeight)
+    return (
+      <Layout layout="full">
+        <LayoutBody>
+          <NoSearchResults />
+        </LayoutBody>
+      </Layout>
+    );
+
   return (
     <Layout>
-      {innerData && innerData.blocksFromHeight ? (
-        <>
-          <LayoutHeader>
-            <ValueLoader isLoading={isLoading}>
-              Block Height{' '}
-              {truncateValues(router.query.height as string, {
-                length: 16,
-                endChars: 5,
-              })}
-            </ValueLoader>
-          </LayoutHeader>
+      <LayoutHeader>
+        <ValueLoader isLoading={isLoading}>
+          Block Height{' '}
+          {truncateValues(router.query.height as string, {
+            length: 16,
+            endChars: 5,
+          })}
+        </ValueLoader>
+      </LayoutHeader>
 
-          <LayoutBody>
-            <CompactTable
-              isLoading={isLoading}
-              fields={[
-                {
-                  label: 'ChainId',
-                  key: 'node.chainId',
-                  width: '20%',
-                },
-                {
-                  label: 'Height',
-                  key: 'node.height',
-                  width: '20%',
-                },
-                {
-                  label: 'Hash',
-                  key: 'node.hash',
-                  width: '60%',
-                  render: FormatLink({ appendUrl: '/block' }),
-                },
-              ]}
-              data={innerData?.blocksFromHeight.edges ?? []}
-            />
-          </LayoutBody>
-        </>
-      ) : (
-        <NoSearchResults />
-      )}
+      <LayoutBody>
+        <CompactTable
+          isLoading={isLoading}
+          fields={[
+            {
+              label: 'ChainId',
+              key: 'node.chainId',
+              width: '20%',
+            },
+            {
+              label: 'Height',
+              key: 'node.height',
+              width: '20%',
+            },
+            {
+              label: 'Hash',
+              key: 'node.hash',
+              width: '60%',
+              render: FormatLink({ appendUrl: '/block' }),
+            },
+          ]}
+          data={innerData?.blocksFromHeight.edges ?? []}
+        />
+      </LayoutBody>
     </Layout>
   );
 };

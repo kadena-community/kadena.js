@@ -58,44 +58,47 @@ const Height: React.FC = () => {
     }
   }, [loading, data, error]);
 
+  if (!innerData || !innerData.events.edges.length)
+    return (
+      <Layout layout="full">
+        <LayoutBody>
+          <NoSearchResults />
+        </LayoutBody>
+      </Layout>
+    );
+
   return (
     <Layout>
-      {innerData && innerData.events.edges.length ? (
-        <>
-          <LayoutHeader>Events</LayoutHeader>
-          <LayoutBody>
-            <CompactTable
-              isLoading={isLoading}
-              fields={[
-                {
-                  label: 'ChainId',
-                  key: 'node.chainId',
-                  width: '20%',
-                },
-                {
-                  label: 'Height',
-                  key: 'node.block.height',
-                  width: '20%',
-                },
-                {
-                  label: 'RequestKey',
-                  key: 'node.requestKey',
-                  width: '20%',
-                  render: FormatLink({ appendUrl: '/transaction' }),
-                },
-                {
-                  label: 'Parameters',
-                  key: 'node.parameters',
-                  width: '40%',
-                },
-              ]}
-              data={innerData.events.edges}
-            />
-          </LayoutBody>
-        </>
-      ) : (
-        <NoSearchResults />
-      )}
+      <LayoutHeader>Events</LayoutHeader>
+      <LayoutBody>
+        <CompactTable
+          isLoading={isLoading}
+          fields={[
+            {
+              label: 'ChainId',
+              key: 'node.chainId',
+              width: '20%',
+            },
+            {
+              label: 'Height',
+              key: 'node.block.height',
+              width: '20%',
+            },
+            {
+              label: 'RequestKey',
+              key: 'node.requestKey',
+              width: '20%',
+              render: FormatLink({ appendUrl: '/transaction' }),
+            },
+            {
+              label: 'Parameters',
+              key: 'node.parameters',
+              width: '40%',
+            },
+          ]}
+          data={innerData.events.edges}
+        />
+      </LayoutBody>
     </Layout>
   );
 };

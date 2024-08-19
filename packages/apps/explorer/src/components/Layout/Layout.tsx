@@ -16,6 +16,7 @@ import {
   searchWrapperClass,
   searchWrapperVariants,
 } from './components/styles.css';
+import { Media } from './media';
 
 interface IProps {
   children?: ReactNode;
@@ -47,11 +48,13 @@ export const Layout: FC<IProps> = ({ children, layout = 'full' }) => {
           )}
           marginBlock="xxxl"
         >
-          <Stack position="relative" justifyContent="center" width="100%">
-            <Link href="/">
-              <Logo />
-            </Link>
-          </Stack>
+          <Media greaterThan="sm">
+            <Stack position="relative" justifyContent="center" width="100%">
+              <Link href="/">
+                <Logo />
+              </Link>
+            </Stack>
+          </Media>
 
           <SearchComponent
             searchOption={searchOption}
