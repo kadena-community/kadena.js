@@ -14,7 +14,7 @@ export const searchBoxClass = style([
     gap: 'xs',
   }),
   {
-    zIndex: 1,
+    zIndex: token('zIndex.dropdown'),
   },
 ]);
 
