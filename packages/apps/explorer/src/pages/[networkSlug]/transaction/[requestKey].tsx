@@ -1,18 +1,28 @@
+import type { TransactionRequestKeyQuery } from '@/__generated__/sdk';
 import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
+import { LayoutBody } from '@/components/Layout/components/LayoutBody';
+import { LayoutHeader } from '@/components/Layout/components/LayoutHeader';
 import { Layout } from '@/components/Layout/Layout';
+import { loadingTransactionData } from '@/components/LoadingSkeleton/loadingData/loadingDataTransactionRequestKeyQuery';
+import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
+import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import { TransactionRequestComponent } from '@/components/TransactionComponents/TransactionRequestComponent';
 import { TransactionResultComponent } from '@/components/TransactionComponents/TransactionResultComponent';
 import { useQueryContext } from '@/context/queryContext';
+import { useSearch } from '@/context/searchContext';
 import { transactionRequestKey } from '@/graphql/pages/transaction/transaction-requestkey.graph';
 import { useRouter } from '@/hooks/router';
 import { truncateValues } from '@/services/format';
-import { Heading, Stack, TabItem, Tabs } from '@kadena/kode-ui';
-import React, { useEffect } from 'react';
+import { TabItem, Tabs } from '@kadena/kode-ui';
+import React, { useEffect, useState } from 'react';
 
 const Transaction: React.FC = () => {
   const router = useRouter();
-
+  const { setIsLoading, isLoading } = useSearch();
+  const [innerData, setInnerData] = useState<TransactionRequestKeyQuery>(
+    loadingTransactionData,
+  );
   const { setQueries } = useQueryContext();
 
   const transactionRequestKeyQueryVariables = {
@@ -35,6 +45,11 @@ const Transaction: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if (loading) {
+      setIsLoading(true);
+      return;
+    }
+
     if (error) {
       addToast({
         type: 'negative',
@@ -42,36 +57,48 @@ const Transaction: React.FC = () => {
         body: 'Loading of transaction requestkey data failed',
       });
     }
-  }, [error]);
+
+    if (data) {
+      setTimeout(() => {
+        setIsLoading(false);
+        setInnerData(data);
+      }, 200);
+    }
+  }, [loading, data, error]);
 
   return (
     <Layout>
-      {!loading && (!data || !data.transaction) ? (
-        <p>Transaction not found</p>
-      ) : null}
-      {data && data.transaction && (
+      {innerData && innerData.transaction ? (
         <>
-          <Stack margin="md">
-            <Heading as="h1" className="truncate">
+          <LayoutHeader>
+            <ValueLoader isLoading={isLoading}>
               Transaction{' '}
-              {truncateValues(data.transaction.hash, {
+              {truncateValues(innerData.transaction?.hash, {
                 length: 16,
                 endChars: 5,
               })}
-            </Heading>
-          </Stack>
+            </ValueLoader>
+          </LayoutHeader>
 
-          <Tabs>
-            <TabItem title="Request" key="Request">
-              <TransactionRequestComponent transaction={data.transaction} />
-            </TabItem>
-            <TabItem title="Result" key="Result">
-              <TransactionResultComponent
-                transactionResult={data.transaction.result}
-              />
-            </TabItem>
-          </Tabs>
+          <LayoutBody>
+            <Tabs>
+              <TabItem title="Request" key="Request">
+                <TransactionRequestComponent
+                  isLoading={isLoading}
+                  transaction={innerData.transaction}
+                />
+              </TabItem>
+              <TabItem title="Result" key="Result">
+                <TransactionResultComponent
+                  isLoading={isLoading}
+                  transaction={innerData.transaction?.result}
+                />
+              </TabItem>
+            </Tabs>
+          </LayoutBody>
         </>
+      ) : (
+        <NoSearchResults />
       )}
     </Layout>
   );

@@ -7,11 +7,31 @@ import React from 'react';
 import { CookieConsent } from '../CookieConsent/CookieConsent';
 import { contentClass, documentStyle, layoutWrapperClass } from './styles.css';
 
+import { useSearch } from '@/context/searchContext';
+import { Logo } from '../Logo/Logo';
+import { Link } from '../Routing/Link';
+import { SearchComponent } from '../Search/SearchComponent/SearchComponent';
+import { LayoutMain } from './components/LayoutMain';
+import {
+  searchWrapperClass,
+  searchWrapperVariants,
+} from './components/styles.css';
+import { Media } from './media';
+
 interface IProps {
   children?: ReactNode;
+  layout?: 'default' | 'full';
 }
 
-export const Layout: FC<IProps> = ({ children }: IProps) => {
+export const Layout: FC<IProps> = ({ children, layout = 'full' }) => {
+  const {
+    setSearchQuery,
+    searchQuery,
+    searchOption,
+    setSearchOption,
+    isLoading,
+  } = useSearch();
+
   return (
     <div className={documentStyle}>
       <CookieConsent />
@@ -21,7 +41,31 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
         flexDirection="column"
         className={classNames(layoutWrapperClass, contentClass)}
       >
-        {children}
+        <Stack
+          className={classNames(
+            searchWrapperClass,
+            searchWrapperVariants({ variant: layout }),
+          )}
+          marginBlock="xxxl"
+        >
+          <Media greaterThan="sm">
+            <Stack position="relative" justifyContent="center" width="100%">
+              <Link href="/">
+                <Logo />
+              </Link>
+            </Stack>
+          </Media>
+
+          <SearchComponent
+            searchOption={searchOption}
+            setSearchOption={setSearchOption}
+            setSearchQuery={setSearchQuery}
+            searchQuery={searchQuery}
+            loading={isLoading}
+          />
+        </Stack>
+
+        <LayoutMain layout={layout}>{children}</LayoutMain>
       </Stack>
       <Footer />
     </div>

@@ -3,11 +3,15 @@ import { useAccountQuery } from '@/__generated__/sdk';
 import { AccountTransfersTable } from '@/components/AccountTransfersTable/AccountTransfersTable';
 import { CompactTable } from '@/components/CompactTable/CompactTable';
 import { FormatAmount } from '@/components/CompactTable/utils/formatAmount';
+import { LayoutBody } from '@/components/Layout/components/LayoutBody';
+import { LayoutHeader } from '@/components/Layout/components/LayoutHeader';
 import { Layout } from '@/components/Layout/Layout';
 import { loadingData } from '@/components/LoadingSkeleton/loadingData/loadingDataAccountquery';
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
+import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import { useQueryContext } from '@/context/queryContext';
+import { useSearch } from '@/context/searchContext';
 import { account } from '@/graphql/queries/account.graph';
 import { useRouter } from '@/hooks/router';
 import { accountNameTextClass } from '@/styles/account.css';
@@ -23,8 +27,8 @@ export interface IKeyProps {
 
 const Account: FC = () => {
   const router = useRouter();
+  const { setIsLoading, isLoading } = useSearch();
   const [innerData, setInnerData] = useState<AccountQuery>(loadingData);
-  const [isLoading, setIsLoading] = useState(true);
   const [selectedTab, setSelectedTab] = useState<string>('Transactions');
   const accountName = router.query.accountName as string;
   const { setQueries } = useQueryContext();
@@ -112,79 +116,95 @@ const Account: FC = () => {
     });
   }, [fungibleAccount?.chainAccounts]);
 
+  if (error || !fungibleAccount)
+    return (
+      <Layout layout="full">
+        <LayoutBody>
+          <NoSearchResults />
+        </LayoutBody>
+      </Layout>
+    );
+
   return (
-    <Layout>
-      <Stack padding="md" width="100%" flexDirection="column">
-        <ValueLoader isLoading={isLoading}>
-          <Heading as="h5">
-            {parseFloat(fungibleAccount?.totalBalance).toFixed(2)} KDA spread
-            across {fungibleAccount?.chainAccounts.length} Chains for account{' '}
-          </Heading>
-        </ValueLoader>
-        <Stack
-          marginBlockStart="xs"
-          width="100%"
-          style={{ maxWidth: `calc(100% - 15px)` }}
-        >
+    <Layout layout="full">
+      <LayoutHeader>Account Details</LayoutHeader>
+
+      <LayoutBody>
+        <Stack padding="md" width="100%" flexDirection="column">
           <ValueLoader isLoading={isLoading}>
-            <Text as="span" className={accountNameTextClass}>
-              {fungibleAccount?.accountName}
-            </Text>
+            <Heading as="h5">
+              {parseFloat(fungibleAccount?.totalBalance).toFixed(2)} KDA spread
+              across {fungibleAccount?.chainAccounts.length} Chains for account{' '}
+            </Heading>
           </ValueLoader>
+          <Stack
+            marginBlockStart="xs"
+            width="100%"
+            style={{ maxWidth: `calc(100% - 15px)` }}
+          >
+            <ValueLoader isLoading={isLoading}>
+              <Text as="span" className={accountNameTextClass}>
+                {fungibleAccount?.accountName}
+              </Text>
+            </ValueLoader>
+          </Stack>
         </Stack>
-      </Stack>
 
-      <CompactTable
-        isLoading={isLoading}
-        label="Keys table"
-        fields={[
-          {
-            label: 'ChainId',
-            key: 'chainId',
-            width: '10%',
-          },
-          {
-            variant: 'code',
-            label: 'Key',
-            key: 'key',
-            width: '40%',
-          },
-          {
-            label: 'Predicate',
-            key: 'predicate',
-            width: '20%',
-          },
-          {
-            label: 'Balance',
-            key: 'balance',
-            width: '30%',
-            align: 'end',
-            render: FormatAmount(),
-          },
-        ]}
-        data={keys}
-      />
+        <CompactTable
+          isLoading={isLoading}
+          label="Keys table"
+          fields={[
+            {
+              label: 'ChainId',
+              key: 'chainId',
+              width: '10%',
+            },
+            {
+              variant: 'code',
+              label: 'Key',
+              key: 'key',
+              width: '40%',
+            },
+            {
+              label: 'Predicate',
+              key: 'predicate',
+              width: '20%',
+            },
+            {
+              label: 'Balance',
+              key: 'balance',
+              width: '30%',
+              align: 'end',
+              render: FormatAmount(),
+            },
+          ]}
+          data={keys}
+        />
 
-      <Stack
-        width="100%"
-        gap="md"
-        flexDirection={{ xs: 'column-reverse', md: 'row' }}
-      >
-        <Stack flex={1} flexDirection="column" marginBlockStart="lg">
-          <Tabs selectedKey={selectedTab} onSelectionChange={handleSelectedTab}>
-            {/* TODO enable when index for sender is fixed */}
-            {/* <TabItem
+        <Stack
+          width="100%"
+          gap="md"
+          flexDirection={{ xs: 'column-reverse', md: 'row' }}
+        >
+          <Stack flex={1} flexDirection="column" marginBlockStart="lg">
+            <Tabs
+              selectedKey={selectedTab}
+              onSelectionChange={handleSelectedTab}
+            >
+              {/* TODO enable when index for sender is fixed */}
+              {/* <TabItem
               title={`Transactions`}
               key="Transactions"
             >
               <AccountTransactionsTable accountName={accountName} />
             </TabItem> */}
-            <TabItem title={`Transfers`} key="Transfers">
-              <AccountTransfersTable accountName={accountName} />
-            </TabItem>
-          </Tabs>
+              <TabItem title={`Transfers`} key="Transfers">
+                <AccountTransfersTable accountName={accountName} />
+              </TabItem>
+            </Tabs>
+          </Stack>
         </Stack>
-      </Stack>
+      </LayoutBody>
     </Layout>
   );
 };

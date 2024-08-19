@@ -12,74 +12,17 @@ export const loadingData: AccountTransfersQuery = {
         startCursor: '',
       },
       totalCount: 0,
-      edges: [
-        {
-          node: {
-            requestKey: '0',
-            blockHash: '0',
-            amount: 0,
-            chainId: 0,
-            receiverAccount: '0',
-            senderAccount: '0',
-            height: 1,
-          },
+      edges: Array(6).fill({
+        node: {
+          requestKey: '0',
+          blockHash: '0',
+          amount: 0,
+          chainId: 0,
+          receiverAccount: '0',
+          senderAccount: '0',
+          height: 1,
         },
-        {
-          node: {
-            requestKey: '0',
-            blockHash: '0',
-            amount: 0,
-            chainId: 0,
-            receiverAccount: '0',
-            senderAccount: '0',
-            height: 1,
-          },
-        },
-        {
-          node: {
-            requestKey: '0',
-            blockHash: '0',
-            amount: 0,
-            chainId: 0,
-            receiverAccount: '0',
-            senderAccount: '0',
-            height: 1,
-          },
-        },
-        {
-          node: {
-            requestKey: '0',
-            blockHash: '0',
-            amount: 0,
-            chainId: 0,
-            receiverAccount: '0',
-            senderAccount: '0',
-            height: 1,
-          },
-        },
-        {
-          node: {
-            requestKey: '0',
-            blockHash: '0',
-            amount: 0,
-            chainId: 0,
-            receiverAccount: '0',
-            senderAccount: '0',
-            height: 1,
-          },
-        },
-        {
-          node: {
-            requestKey: '0',
-            blockHash: '0',
-            amount: 0,
-            chainId: 0,
-            receiverAccount: '0',
-            senderAccount: '0',
-            height: 1,
-          },
-        },
-      ],
+      }),
     },
   },
 };

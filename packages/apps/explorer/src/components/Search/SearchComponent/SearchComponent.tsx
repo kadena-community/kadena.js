@@ -1,16 +1,22 @@
 import { LoadingIcon } from '@/components/LoadingIcon/LoadingIcon';
-import { SearchOptionEnum } from '@/hooks/search/utils/utils';
-import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
+import type { SearchOptionEnum } from '@/context/searchContext/utils/utils';
+import {
+  getSearchOptionByIndex,
+  getSearchOptions,
+  getSearchOptionTitle,
+  SEARCHOPTIONS,
+} from '@/context/searchContext/utils/utils';
+import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { MonoSearch } from '@kadena/kode-icons/system';
 import { Stack } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import type { Dispatch, SetStateAction } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  editingBoxClass,
   editOptionClass,
   editOptionHoverClass,
   editOptionSelectedClass,
-  editingBoxClass,
   iconColorClass,
   searchBadgeBoxClass,
   searchBadgeBoxSelectedClass,
@@ -26,12 +32,7 @@ export type SearchItemTitle =
   | 'Block Hash'
   | 'Event';
 
-export interface ISearchItem {
-  title: SearchItemTitle;
-  data?: any;
-}
 export interface ISearchComponentProps {
-  searchData: ISearchItem[];
   setSearchQuery?: Dispatch<SetStateAction<string>>;
   searchQuery?: string;
   searchOption: SearchOptionEnum | null;
@@ -45,20 +46,19 @@ const inferOption = (value: string): SearchOptionEnum => {
     value.toLocaleLowerCase().startsWith('k:') ||
     value.toLocaleLowerCase().startsWith('w:')
   ) {
-    return SearchOptionEnum.ACCOUNT;
+    return SEARCHOPTIONS.ACCOUNT;
   } else if (value.includes('.')) {
-    return SearchOptionEnum.EVENT;
+    return SEARCHOPTIONS.EVENT;
   } else if (value.length === 43) {
-    return SearchOptionEnum.REQUESTKEY;
+    return SEARCHOPTIONS.REQUESTKEY;
   } else if (/^\d+$/.test(value)) {
-    return SearchOptionEnum.BLOCKHEIGHT;
+    return SEARCHOPTIONS.BLOCKHEIGHT;
   }
-  return SearchOptionEnum.ACCOUNT;
+  return SEARCHOPTIONS.ACCOUNT;
 };
 
 export const SearchComponent: React.FC<ISearchComponentProps> = ({
   position = 'default',
-  searchData,
   setSearchQuery,
   searchQuery,
   searchOption,
@@ -92,21 +92,23 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
   };
 
   const handleSearchValueChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.KeyboardEvent<HTMLInputElement>,
   ): void => {
-    const value = e.target.value;
+    const value = e.currentTarget.value;
+
     if (!value) {
       setSearchOption(null);
+      setInnerSearchOption(null);
+      setSearchQuery && setSearchQuery('');
       setIsEditing(false);
       return;
-    }
-    const option = inferOption(value);
+    } else {
+      const option = inferOption(value);
 
-    if (searchOption === null) {
-      setInnerSearchOption(option);
+      if (searchOption === null) {
+        setInnerSearchOption(option);
+      }
     }
-    setEditHover(null);
-    setIsEditing(true);
   };
 
   const handleSearchValueKeyDown = (
@@ -115,7 +117,7 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       setEditHover((prev) =>
-        prev === null ? 0 : Math.min(prev + 1, searchData.length - 1),
+        prev === null ? 0 : Math.min(prev + 1, getSearchOptions().length - 1),
       );
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
@@ -123,18 +125,21 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
     } else if (e.key === 'Enter') {
       e.preventDefault();
       setOptionClicked(false);
-      handleSearch(editHover);
+      handleSearch(getSearchOptionByIndex(editHover));
+      setIsEditing(false);
     } else if (e.key === 'Escape') {
       setOptionClicked(false);
       setIsEditing(false);
     } else {
       setOptionClicked(false);
+      setIsEditing(true);
     }
   };
 
   useEffect(() => {
     setInnerSearchOption(searchOption);
-  }, [searchOption]);
+    if (ref.current) ref.current.value = searchQuery ?? '';
+  }, [searchOption, searchQuery]);
 
   //on scroll remove the dropdown
   useEffect(() => {
@@ -143,7 +148,6 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
     };
 
     window.addEventListener('scroll', scrollListener);
-
     return () => {
       window.removeEventListener('scroll', scrollListener);
     };
@@ -162,6 +166,7 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
             setIsEditing(false);
           }
         }}
+        style={{ minHeight: position === 'default' ? '56px' : 'unset' }}
       >
         <Stack
           alignItems="flex-start"
@@ -195,7 +200,7 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
                   setIsEditing(true);
                 }
               }}
-              onChange={(e) => handleSearchValueChange(e)}
+              onKeyUp={(e) => handleSearchValueChange(e)}
               className={searchInputClass}
             />
             {isEditing && innerSearchOption === null && (
@@ -210,30 +215,31 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
                   searchBadgeBoxSelectedClass,
                 )}
               >
-                {searchData[innerSearchOption].title}
+                {getSearchOptionTitle(innerSearchOption)}
               </Stack>
             )}
           </Stack>
 
           {isEditing && (
             <Stack flexDirection="column" className={editingBoxClass}>
-              {searchData?.map((item, index) => (
+              {getSearchOptions().map((item, index) => (
                 <Stack
                   className={classNames(editOptionClass, {
                     [editOptionHoverClass]: editHover === index,
-                    [editOptionSelectedClass]: innerSearchOption === index,
+                    [editOptionSelectedClass]:
+                      innerSearchOption === getSearchOptionByIndex(index),
                   })}
                   key={index}
                   onMouseDown={() => setOptionClicked(true)}
                   onMouseEnter={() => setEditHover(index)}
                   onMouseLeave={() => setEditHover(null)}
                   onClick={() => {
-                    setSearchOption(index);
+                    setSearchOption(getSearchOptionByIndex(index));
                     setOptionClicked(false);
-                    handleSearch(index);
+                    handleSearch(getSearchOptionByIndex(index));
                   }}
                 >
-                  <Stack>{item.title}</Stack>
+                  <Stack>{getSearchOptionTitle(item)}</Stack>
                 </Stack>
               ))}
             </Stack>
