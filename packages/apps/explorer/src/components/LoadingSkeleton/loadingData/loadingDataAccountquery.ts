@@ -4,7 +4,7 @@ export const loadingData: AccountQuery = {
   fungibleAccount: {
     accountName: '0',
     totalBalance: 0,
-    chainAccounts: Array(5).fill({
+    chainAccounts: Array(20).fill({
       chainId: '0',
       balance: 0,
       guard: {
