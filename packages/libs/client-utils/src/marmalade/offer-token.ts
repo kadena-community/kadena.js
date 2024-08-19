@@ -16,6 +16,7 @@ import { submitClient } from '../core';
 import type { IClientConfig } from '../core/utils/helpers';
 import type {
   CommonProps,
+  Guard,
   ISaleTokenPolicyConfig,
   SalePolicyProps,
   WithSaleTokenPolicy,
@@ -24,6 +25,7 @@ import {
   formatAdditionalSigners,
   formatCapabilities,
   formatWebAuthnSigner,
+  isKeysetGuard,
 } from './helpers';
 
 interface IOfferTokenInput extends CommonProps {
@@ -33,11 +35,9 @@ interface IOfferTokenInput extends CommonProps {
   chainId: ChainId;
   seller: {
     account: string;
-    keyset: {
-      keys: string[];
-      pred: 'keys-all' | 'keys-2' | 'keys-any';
-    };
+    guard: Guard;
   };
+  signerPublicKey?: string;
 }
 
 const generatePolicyTransactionData = (
@@ -53,7 +53,7 @@ const generatePolicyTransactionData = (
         'sale-price': props.auction.price,
         'seller-fungible-account': {
           account: props.auction.sellerFungibleAccount.account,
-          guard: props.auction.sellerFungibleAccount.keyset,
+          guard: props.auction.sellerFungibleAccount.guard,
         },
         'sale-type': props.auction?.saleType ?? '',
       }),
@@ -67,6 +67,7 @@ const offerTokenCommand = <C extends ISaleTokenPolicyConfig>({
   tokenId,
   chainId,
   seller,
+  signerPublicKey,
   amount,
   timeout,
   policyConfig,
@@ -74,8 +75,16 @@ const offerTokenCommand = <C extends ISaleTokenPolicyConfig>({
   capabilities,
   additionalSigners,
   ...policyProps
-}: WithSaleTokenPolicy<C, IOfferTokenInput>) =>
-  composePactCommand(
+}: WithSaleTokenPolicy<C, IOfferTokenInput>) => {
+  if (!isKeysetGuard(seller.guard) && !signerPublicKey) {
+    throw new Error('Keyset references must assign a signer publicKey');
+  }
+
+  const signer = isKeysetGuard(seller.guard)
+    ? seller.guard.keys
+    : signerPublicKey;
+
+  return composePactCommand(
     execution(
       Pact.modules['marmalade-v2.ledger'].defpact.sale(
         tokenId,
@@ -84,7 +93,7 @@ const offerTokenCommand = <C extends ISaleTokenPolicyConfig>({
         timeout,
       ),
     ),
-    addSigner(formatWebAuthnSigner(seller.keyset.keys), (signFor) => [
+    addSigner(formatWebAuthnSigner(signer!), (signFor) => [
       signFor('coin.GAS'),
       signFor(
         'marmalade-v2.ledger.OFFER',
@@ -112,6 +121,7 @@ const offerTokenCommand = <C extends ISaleTokenPolicyConfig>({
     ...formatAdditionalSigners(additionalSigners),
     setMeta({ senderAccount: seller.account, chainId, ...meta }),
   );
+};
 
 export const offerToken = <C extends ISaleTokenPolicyConfig>(
   inputs: WithSaleTokenPolicy<C, IOfferTokenInput>,

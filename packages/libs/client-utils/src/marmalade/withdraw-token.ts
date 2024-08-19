@@ -27,7 +27,7 @@ interface IWithdrawTokenInput extends CommonProps {
   chainId: ChainId;
   seller: {
     account: string;
-    keyset: {
+    guard: {
       keys: string[];
       pred: 'keys-all' | 'keys-2' | 'keys-any';
     };
@@ -59,7 +59,7 @@ const withdrawTokenCommand = <C extends IWithdrawSaleTokenPolicyConfig>({
         timeout,
       },
     }),
-    addSigner(formatWebAuthnSigner(seller.keyset.keys), (signFor) => [
+    addSigner(formatWebAuthnSigner(seller.guard.keys), (signFor) => [
       signFor('coin.GAS'),
       signFor(
         'marmalade-v2.ledger.WITHDRAW',

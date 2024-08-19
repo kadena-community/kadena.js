@@ -68,8 +68,8 @@ const SendTransaction: FC<SendTransactionFormProps> = ({ send, preview, poll, tr
       const pollResponse = await poll(res);
       const pollResult = pollResponse[requestKey];
       const result = pollResult?.result.status === "success" ? pollResult?.result.status : undefined;
+      setIsPreview(false);
       if (result === "success") {
-        setIsPreview(false);
         setPreviewStatus(true)
         setResult(JSON.stringify(pollResult.result));
         if (returnUrl) {
@@ -92,7 +92,6 @@ const SendTransaction: FC<SendTransactionFormProps> = ({ send, preview, poll, tr
     const { meta, networkId, payload, signers } = parsedTransaction;
     return (
       <div className={styles.transactionDetails}>
-        <h3 className={styles.transactionDetailsHeader}>Transaction Details</h3>
         <p><strong>Meta:</strong> {JSON.stringify(meta)}</p>
         <p><strong>Network ID:</strong> {networkId}</p>
         <p><strong>Payload:</strong></p>

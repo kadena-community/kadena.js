@@ -894,8 +894,8 @@ importers:
         specifier: workspace:*
         version: link:../../libs/pactjs
       '@kadena/spirekey-sdk':
-        specifier: 0.0.1-dev-8
-        version: 0.0.1-dev-8
+        specifier: 0.0.1-dev-12
+        version: 0.0.1-dev-12
       '@pinata/sdk':
         specifier: ^2.1.0
         version: 2.1.0
@@ -5428,8 +5428,8 @@ packages:
   '@kadena/pactjs@0.4.3':
     resolution: {integrity: sha512-EYqIrhw5YbGz7+10rq4QnqC9I22OfApCRfNIvrcq6Lwg0I04grFXCspgEFrgZO1ThTvG4nN0gs8DZl72HBleGw==}
 
-  '@kadena/spirekey-sdk@0.0.1-dev-8':
-    resolution: {integrity: sha512-CNf6Y36WdNocpJJyO05RZ1SYWUDnAZRj0awubypZTkbfwLIywBHwruEy6tI+vGLzrJA0x+KUQbdSFroIPATkGw==}
+  '@kadena/spirekey-sdk@0.0.1-dev-12':
+    resolution: {integrity: sha512-jSys4wSIixY7GeSuJ1PjWA0oMXytl1r28arZ0JNL6IkcV6TcQni/ymWI+Efz/Ves6hU3Roox1zIC3g1WAJqTwA==}
 
   '@kamilkisiela/fast-url-parser@1.1.4':
     resolution: {integrity: sha512-gbkePEBupNydxCelHCESvFSFM8XPh1Zs/OAVRW/rKpEqPAl5PbOM90Si8mv9bvnR53uPD2s/FiRxdvSejpRJew==}
@@ -21868,7 +21868,7 @@ snapshots:
     dependencies:
       bignumber.js: 9.1.2
 
-  '@kadena/spirekey-sdk@0.0.1-dev-8':
+  '@kadena/spirekey-sdk@0.0.1-dev-12':
     dependencies:
       '@kadena/client': 1.13.0
       '@kadena/kode-ui': 0.13.0

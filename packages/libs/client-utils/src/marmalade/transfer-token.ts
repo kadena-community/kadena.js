@@ -25,7 +25,7 @@ interface ITransferTokenInput extends CommonProps {
   chainId: ChainId;
   sender: {
     account: string;
-    keyset: {
+    guard: {
       keys: string[];
       pred: 'keys-all' | 'keys-2' | 'keys-any';
     };
@@ -60,7 +60,7 @@ const transferTokenCommand = ({
         amount,
       ),
     ),
-    addSigner(formatWebAuthnSigner(sender.keyset.keys), (signFor) => [
+    addSigner(formatWebAuthnSigner(sender.guard.keys), (signFor) => [
       signFor('coin.GAS'),
       signFor(
         'marmalade-v2.ledger.TRANSFER',
