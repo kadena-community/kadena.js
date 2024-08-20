@@ -46,7 +46,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          context: packages/apps/graph
+          context: "{{defaultContext}}:packages/apps/graph"
           file: ./Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
