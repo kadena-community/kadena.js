@@ -4,5 +4,9 @@ import React from 'react';
 import { asideClass } from './styles.css';
 
 export const LayoutAside: FC<PropsWithChildren> = ({ children }) => {
-  return <Stack className={asideClass}>{children}</Stack>;
+  return (
+    <Stack className={asideClass} width="100%">
+      {children}
+    </Stack>
+  );
 };

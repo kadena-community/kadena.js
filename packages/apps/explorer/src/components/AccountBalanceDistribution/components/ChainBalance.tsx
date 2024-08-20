@@ -28,6 +28,7 @@ export const ChainBalance: FC<IProps> = ({ maxValue, chain, idx }) => {
   }, [maxValue, chain]);
   return (
     <Stack
+      as="li"
       width="100%"
       justifyContent="space-between"
       className={chainBalanceWrapperClass}
