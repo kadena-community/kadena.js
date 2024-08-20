@@ -6,10 +6,10 @@ COPY . /app
 WORKDIR /app
 
 FROM base AS prod-deps
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile --filter @kadena/graph...
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --filter @kadena/graph...
 
 FROM base AS build
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --filter @kadena/graph...
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --filter @kadena/graph...
 RUN pnpm turbo build --filter @kadena/graph...
 
 FROM base
@@ -18,4 +18,4 @@ COPY --from=build /app/dist /app/dist
 EXPOSE 4000
 CMD [ "pnpm", "start" ]
 
- 
+
