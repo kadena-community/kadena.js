@@ -46,8 +46,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          context: "{{defaultContext}}:packages/apps/graph"
-          file: ./Dockerfile
+          context: "."
+          file: packages/apps/graph/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=local,src=/tmp/.buildx-cache
