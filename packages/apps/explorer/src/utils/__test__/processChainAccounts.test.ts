@@ -3,11 +3,11 @@ import type { IViewChain } from '../processChainAccounts';
 import {
   calculateMaxChainBalance,
   chainBalancePercentage,
-  devideChains,
+  divideChains,
   processChainAccounts,
 } from '../processChainAccounts';
 
-describe('devideChains', () => {
+describe('divideChains', () => {
   it('should return an array with correct length', async () => {
     const chains: IViewChain[] = [
       { chainId: '0' },
@@ -27,7 +27,7 @@ describe('devideChains', () => {
       { chainId: '14' },
     ];
 
-    const result = devideChains(chains);
+    const result = divideChains(chains);
 
     const expectedResult = {
       chains1: [
@@ -71,7 +71,7 @@ describe('devideChains', () => {
       { chainId: '13' },
     ];
 
-    const result = devideChains(chains);
+    const result = divideChains(chains);
 
     const expectedResult = {
       chains1: [
@@ -98,7 +98,7 @@ describe('devideChains', () => {
 
   it('should return an empty array ', async () => {
     const chains: IViewChain[] = [];
-    const result = devideChains(chains);
+    const result = divideChains(chains);
 
     const expectedResult = {
       chains1: [],

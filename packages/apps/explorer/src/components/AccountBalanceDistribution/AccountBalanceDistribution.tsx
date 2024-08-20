@@ -1,6 +1,6 @@
 import { CHAINCOUNT } from '@/constants/constants';
 import {
-  devideChains,
+  divideChains,
   processChainAccounts,
 } from '@/utils/processChainAccounts';
 import { Stack } from '@kadena/kode-ui';
@@ -16,7 +16,7 @@ interface IProps extends PropsWithChildren {
 export const AccountBalanceDistribution: FC<IProps> = ({ chains = [] }) => {
   const { chains1, chains2 } = useMemo(() => {
     const enrichedChains = processChainAccounts(chains, CHAINCOUNT);
-    return devideChains(enrichedChains);
+    return divideChains(enrichedChains);
   }, [chains]);
 
   return (

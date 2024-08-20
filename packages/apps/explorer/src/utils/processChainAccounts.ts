@@ -57,7 +57,7 @@ export const processChainAccounts = (
  * creates an array of all the available chains.
  * and adds the balance values of the IChainAccounts in the correct place
  */
-export const devideChains = (
+export const divideChains = (
   chains: IViewChain[],
 ): {
   chains1: IViewChain[];
