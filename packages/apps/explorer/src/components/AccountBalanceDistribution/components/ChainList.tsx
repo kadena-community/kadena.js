@@ -1,4 +1,5 @@
 import type { AccountQuery } from '@/__generated__/sdk';
+import type { IViewChain } from '@/utils/processChainAccounts';
 import { Badge, Stack } from '@kadena/kode-ui';
 import type { FC, PropsWithChildren } from 'react';
 import React, { useMemo } from 'react';
@@ -10,18 +11,15 @@ export type IChainAccounts = (
 )[];
 
 interface IProps extends PropsWithChildren {
-  chains: IChainAccounts;
-  maxValue: number;
+  chains: IViewChain[];
 }
-export const ChainList: FC<IProps> = ({ chains, maxValue }) => {
+export const ChainList: FC<IProps> = ({ chains }) => {
   const { low, high, value } = useMemo(() => {
-    const low = typeof chains[0] === 'string' ? chains[0] : chains[0].chainId;
-    const lastChain = chains[chains.length - 1];
-    const high = typeof lastChain === 'string' ? lastChain : lastChain.chainId;
+    const low = chains[0].chainId;
+    const high = chains[chains.length - 1].chainId;
 
     const value = chains.reduce((acc, val) => {
-      if (typeof val === 'string') return acc;
-      return acc + val.balance;
+      return acc + (val.balance ?? 0);
     }, 0);
 
     return { high, low, value };
@@ -42,12 +40,7 @@ export const ChainList: FC<IProps> = ({ chains, maxValue }) => {
         paddingInline="no"
       >
         {chains.map((chain, idx) => (
-          <ChainBalance
-            key={`${idx}`}
-            maxValue={maxValue}
-            chain={chain}
-            idx={typeof chain === 'string' ? chain : chain.chainId}
-          />
+          <ChainBalance key={`${idx}`} chain={chain} idx={chain.chainId} />
         ))}
       </Stack>
     </Stack>

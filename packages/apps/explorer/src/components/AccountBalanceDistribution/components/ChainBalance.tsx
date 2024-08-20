@@ -1,11 +1,9 @@
+import type { IViewChain } from '@/utils/processChainAccounts';
 import { Stack, Text } from '@kadena/kode-ui';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
-
-import { chainBalancePercentage } from '@/utils/chainBalancePercentage';
 import classNames from 'classnames';
 import type { FC, PropsWithChildren } from 'react';
-import React, { useMemo } from 'react';
-import type { IChainAccounts } from './ChainList';
+import React from 'react';
 import {
   chainBalanceWrapperClass,
   chainTextBaseClass,
@@ -16,15 +14,11 @@ import {
 } from './style.css';
 
 interface IProps extends PropsWithChildren {
-  maxValue: number;
-  chain: IChainAccounts[0];
+  chain: IViewChain;
   idx: string;
 }
 
-export const ChainBalance: FC<IProps> = ({ maxValue, chain, idx }) => {
-  const percentageValue = useMemo(() => {
-    return chainBalancePercentage(chain, maxValue);
-  }, [maxValue, chain]);
+export const ChainBalance: FC<IProps> = ({ chain, idx }) => {
   return (
     <Stack
       as="li"
@@ -33,14 +27,14 @@ export const ChainBalance: FC<IProps> = ({ maxValue, chain, idx }) => {
       className={chainBalanceWrapperClass}
       style={{
         ...assignInlineVars({
-          [percentageValueVar]: `${percentageValue}%`,
+          [percentageValueVar]: `${chain.percentage}%`,
         }),
       }}
     >
       <Stack
         justifyContent="flex-start"
         className={classNames(chainTextBaseClass, {
-          [chainTextDisabledClass]: typeof chain === 'string',
+          [chainTextDisabledClass]: !chain.percentage,
         })}
       >
         <Text>Chain {idx}</Text>
@@ -49,12 +43,12 @@ export const ChainBalance: FC<IProps> = ({ maxValue, chain, idx }) => {
       <Stack
         justifyContent="flex-end"
         className={classNames(chainTextBaseClass, {
-          [chainTextDisabledClass]: typeof chain === 'string',
+          [chainTextDisabledClass]: !chain.percentage,
         })}
         gap="xs"
       >
         <Text variant="code" color="emphasize" className={chainTextLargeClass}>
-          {typeof chain === 'string' ? '-' : chain.balance}
+          {!chain.balance ? '-' : chain.balance}
         </Text>
         <Text variant="ui" bold className={chainTextSubtleClass}>
           {' '}
