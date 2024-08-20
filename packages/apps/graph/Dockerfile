@@ -18,3 +18,4 @@ COPY --from=build /app/dist /app/dist
 EXPOSE 4000
 CMD [ "pnpm", "start" ]
 
+ 
