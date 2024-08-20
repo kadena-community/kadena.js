@@ -1,5 +1,5 @@
 import { CHAINCOUNT } from '@/constants/constants';
-import { fillChains } from '@/utils/fillChains';
+import { devideChains, fillChains } from '@/utils/fillChains';
 import { Stack } from '@kadena/kode-ui';
 import type { FC, PropsWithChildren } from 'react';
 import React, { useMemo } from 'react';
@@ -12,7 +12,7 @@ interface IProps extends PropsWithChildren {
 }
 export const AccountBalanceDistribution: FC<IProps> = ({ chains = [] }) => {
   const { chains1, chains2, maxValue } = useMemo(() => {
-    return fillChains(chains, CHAINCOUNT);
+    return devideChains(fillChains(chains, CHAINCOUNT));
   }, [chains]);
 
   return (

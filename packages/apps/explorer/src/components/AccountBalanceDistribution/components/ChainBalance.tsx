@@ -1,6 +1,7 @@
 import { Stack, Text } from '@kadena/kode-ui';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 
+import { chainBalancePercentage } from '@/utils/chainBalancePercentage';
 import classNames from 'classnames';
 import type { FC, PropsWithChildren } from 'react';
 import React, { useMemo } from 'react';
@@ -22,9 +23,7 @@ interface IProps extends PropsWithChildren {
 
 export const ChainBalance: FC<IProps> = ({ maxValue, chain, idx }) => {
   const percentageValue = useMemo(() => {
-    if (typeof chain === 'string') return 0;
-    const percentage = (chain.balance / maxValue) * 100;
-    return percentage < 2 ? 2 : percentage;
+    return chainBalancePercentage(chain, maxValue);
   }, [maxValue, chain]);
   return (
     <Stack
