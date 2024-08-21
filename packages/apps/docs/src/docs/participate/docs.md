@@ -133,7 +133,6 @@ The `/src/docs` folder includes the files and subfolders that define the structu
 - `/learn` contains foundational information about blockchains, cryptography, consensus, and Kadena core concepts and terminology.
 - `/participate` contains information about community programs and how you can get involved.
 - `/reference` provides a central hub for technical reference information about Pact, Marmalade, and other tools.
-- `/tutorials` provides a central hub for tutorials.
 
 Within these folders, the Markdown files—files with the `md` extension—contain the documentation content.
 After you explore these folders, create a local working branch of the repository for your contribution.

@@ -31,4 +31,3 @@ If you also plan to use the node as an API server for Pact or for mining, Rosett
 
 There are several options for setting up a Chainweb node in a physical or virtual environment.
 For example, you can run a Chainweb node image in a Docker container or build the binaries directly from the source code.
-
