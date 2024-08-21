@@ -28,8 +28,8 @@ export const Sidebar: FC = () => {
             <li className={sidebarMenuOptionClass}>
               <NavLink to="/" className={sidebarLinkClass}>
                 <Stack alignItems="center" gap="md">
-                  <MonoDataThresholding></MonoDataThresholding>
-                  <Text>Dashboard</Text>
+                  <MonoDataThresholding />
+                  Dashboard
                 </Stack>
               </NavLink>
             </li>
