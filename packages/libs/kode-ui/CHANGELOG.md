@@ -1,5 +1,13 @@
 # @kadena/kode-ui
 
+## 0.14.0
+
+### Minor Changes
+
+- bc52918: Fixes for button component
+- df12c9a: Storybook brand updates
+- 85d84e7: Fix mobile input element typography settings
+
 ## 0.13.0
 
 ### Minor Changes

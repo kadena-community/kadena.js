@@ -26,11 +26,6 @@ export const fixedClass = style({
   transition: 'transform .5s ease',
   transform: 'translateY(-100%)',
   maxWidth: $$pageWidth,
-  selectors: {
-    '&:not([data-is-search-page="true"])': {
-      transform: 'translateY(0%)',
-    },
-  },
 });
 
 export const fixedVisibleClass = style({

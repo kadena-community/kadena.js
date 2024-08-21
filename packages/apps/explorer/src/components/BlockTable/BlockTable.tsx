@@ -53,7 +53,9 @@ export const BlockTable: React.FC = () => {
     data: lastBlockHeightData,
     loading: lastBlockLoading,
     error: lastBlockError,
-  } = useLastBlockHeightQuery();
+  } = useLastBlockHeightQuery({
+    fetchPolicy: 'no-cache',
+  });
 
   const completedBlockHeightsVariables = {
     // Change this if the table needs to show more than 80 blocks at once (on startup)
@@ -69,6 +71,7 @@ export const BlockTable: React.FC = () => {
     error: oldBlocksError,
   } = useCompletedBlockHeightsQuery({
     variables: completedBlockHeightsVariables,
+    fetchPolicy: 'no-cache',
   });
 
   const { setQueries } = useQueryContext();
