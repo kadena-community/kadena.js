@@ -70,62 +70,92 @@ export function Transaction() {
     [transaction, Txs, groupId, loadTxs],
   );
 
-  const submitTxs = useCallback(async (list: ITransaction[]) => {
-    if (!groupId) return;
-    const client = createClient();
-    if (!list.every(isSignedCommand)) return;
-    const preflightValidation = await Promise.all(
-      list.map((tx) =>
-        client
-          .preflight({ cmd: tx.cmd, sigs: tx.sigs, hash: tx.hash } as ICommand)
-          .then(async (result) => {
-            await transactionRepository.updateTransaction({
-              ...tx,
-              status: 'preflight',
-              preflight: result,
-              request: undefined,
-            });
-            return result.result.status === 'success';
-          }),
-      ),
-    );
-    if (preflightValidation.some((isValid) => !isValid)) {
-      setError('Preflight failed');
-      return;
+  const submitTxs = useCallback(
+    async (list: ITransaction[]) => {
+      if (!groupId) return;
+      const client = createClient();
+      if (!list.every(isSignedCommand)) return;
+      const preflightValidation = await Promise.all(
+        list.map((tx) =>
+          client
+            .preflight({
+              cmd: tx.cmd,
+              sigs: tx.sigs,
+              hash: tx.hash,
+            } as ICommand)
+            .then(async (result) => {
+              await transactionRepository.updateTransaction({
+                ...tx,
+                status: 'preflight',
+                preflight: result,
+                request: undefined,
+              });
+              return result.result.status === 'success';
+            }),
+        ),
+      );
+      if (preflightValidation.some((isValid) => !isValid)) {
+        setError('Preflight failed');
+        return;
+      }
+      const listForSubmission = await loadTxs(groupId);
+      await Promise.all(
+        listForSubmission.map((tx) =>
+          client
+            .submitOne({
+              cmd: tx.cmd,
+              sigs: tx.sigs,
+              hash: tx.hash,
+            } as ICommand)
+            .then(async (request) => {
+              const updatedTx = {
+                ...tx,
+                status: 'submitted',
+                request,
+              } as ITransaction;
+              await transactionRepository.updateTransaction(updatedTx);
+              await loadTxs(groupId);
+              return request;
+            })
+            .catch((e) => {
+              setError(e && e.message ? e.message : e ?? 'Unknown error');
+            }),
+        ),
+      );
+    },
+    [groupId, loadTxs],
+  );
+
+  useEffect(() => {
+    async function run() {
+      if (step === 'submitted' && groupId) {
+        const client = createClient();
+        const listForSubmission = await loadTxs(groupId);
+        await Promise.all(
+          listForSubmission.map((tx) =>
+            tx.request
+              ? client
+                  .pollOne(tx.request)
+                  .then(async (result) => {
+                    const updatedTx = {
+                      ...tx,
+                      status: result.result.status,
+                      result,
+                    } as ITransaction;
+                    await transactionRepository.updateTransaction(updatedTx);
+                    await loadTxs(groupId);
+                    return result;
+                  })
+                  .catch((e) => {
+                    setError(e && e.message ? e.message : e ?? 'Unknown error');
+                  })
+              : null,
+          ),
+        );
+      }
     }
-    const listForSubmission = await loadTxs(groupId);
-    await Promise.all(
-      listForSubmission.map((tx) =>
-        client
-          .submitOne({ cmd: tx.cmd, sigs: tx.sigs, hash: tx.hash } as ICommand)
-          .then(async (request) => {
-            const updatedTx = {
-              ...tx,
-              status: 'submitted',
-              request,
-            } as ITransaction;
-            await transactionRepository.updateTransaction(updatedTx);
-            await loadTxs(groupId);
-            return request;
-          })
-          .then(async (req) => [await client.pollOne(req), req] as const)
-          .then(async ([result, request]) => {
-            const updatedTx = {
-              ...tx,
-              status: result.result.status,
-              request,
-              result,
-            } as ITransaction;
-            await transactionRepository.updateTransaction(updatedTx);
-            await loadTxs(groupId);
-            return result;
-          })
-          .catch((e) => {
-            setError(e && e.message ? e.message : e ?? 'Unknown error');
-          }),
-      ),
-    );
-  }, []);
+    run();
+  }, [step, groupId, loadTxs]);
 
   if (!Txs || !transaction || !groupId) return null;
 

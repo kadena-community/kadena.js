@@ -1,5 +1,6 @@
 import {
   MonoDataThresholding,
+  MonoExpandCircleDown,
   MonoKey,
   MonoSignature,
   MonoSwapHoriz,
@@ -53,6 +54,14 @@ export const Sidebar: FC = () => {
                 <Stack alignItems="center" gap="md">
                   <MonoSwapHoriz />
                   Transfer
+                </Stack>
+              </NavLink>
+            </li>
+            <li className={sidebarMenuOptionClass}>
+              <NavLink to="/transactions" className={sidebarLinkClass}>
+                <Stack alignItems="center" gap="md">
+                  <MonoExpandCircleDown />
+                  Transactions
                 </Stack>
               </NavLink>
             </li>

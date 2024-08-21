@@ -48,18 +48,34 @@ export function ReviewTransaction({
           <Value className={codeClass}>{transaction.hash}</Value>
         </Stack>
         {'exec' in command.payload && (
-          <Stack gap={'sm'} flexDirection={'column'}>
-            <Heading variant="h4">Code</Heading>
-            <Value className={codeClass}>{command.payload.exec.code}</Value>
-          </Stack>
+          <>
+            <Stack gap={'sm'} flexDirection={'column'}>
+              <Heading variant="h4">Code</Heading>
+              <Value className={codeClass}>{command.payload.exec.code}</Value>
+            </Stack>
+            <Stack gap={'sm'} flexDirection={'column'}>
+              <Heading variant="h4">Data</Heading>
+              <pre className={codeClass}>
+                {JSON.stringify(command.payload.exec.data, null, 2)}
+              </pre>
+            </Stack>
+          </>
         )}
         {'cont' in command.payload && (
-          <Stack gap={'sm'} flexDirection={'column'}>
-            <Heading variant="h4">Continuation</Heading>
-            <Value>
-              {command.payload.cont.pactId}- step({command.payload.cont.step})
-            </Value>
-          </Stack>
+          <>
+            <Stack gap={'sm'} flexDirection={'column'}>
+              <Heading variant="h4">Continuation</Heading>
+              <Value>
+                {command.payload.cont.pactId}- step({command.payload.cont.step})
+              </Value>
+            </Stack>
+            <Stack gap={'sm'} flexDirection={'column'}>
+              <Heading variant="h4">Data</Heading>
+              <pre className={codeClass}>
+                {JSON.stringify(command.payload.cont.data, null, 2)}
+              </pre>
+            </Stack>
+          </>
         )}
         <Stack gap={'sm'} flexDirection={'column'}>
           <Heading variant="h4">Transaction Metadata</Heading>

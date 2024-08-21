@@ -1,0 +1,63 @@
+{
+  "payload": {
+    "exec": {
+      "code": "(coin.transfer-create \"k:c2161a1efd2b78a4025f023c5131cd40cfd52c64a2d04d44663cf4a96c8ffd50\" \"k:3902be5eca20f8112671a2f43b0ae4a2a3fc3394752a9da9ec83c4717642ac79\" (read-keyset \"account-guard\") 16.0000301)(coin.transfer \"k:3902be5eca20f8112671a2f43b0ae4a2a3fc3394752a9da9ec83c4717642ac79\" \"k:c2161a1efd2b78a4025f023c5131cd40cfd52c64a2d04d44663cf4a96c8ffd50\" 0.0000001)",
+      "data": {
+        "account-guard": {
+          "keys": [
+            "3902be5eca20f8112671a2f43b0ae4a2a3fc3394752a9da9ec83c4717642ac79"
+          ],
+          "pred": "keys-any"
+        }
+      }
+    }
+  },
+  "signers": [
+    {
+      "pubKey": "c2161a1efd2b78a4025f023c5131cd40cfd52c64a2d04d44663cf4a96c8ffd50",
+      "scheme": "ED25519",
+      "clist": [
+        {
+          "name": "coin.TRANSFER",
+          "args": [
+            "k:c2161a1efd2b78a4025f023c5131cd40cfd52c64a2d04d44663cf4a96c8ffd50",
+            "k:3902be5eca20f8112671a2f43b0ae4a2a3fc3394752a9da9ec83c4717642ac79",
+            {
+              "decimal": "16.0000301"
+            }
+          ]
+        },
+        {
+          "name": "coin.GAS",
+          "args": []
+        }
+      ]
+    },
+    {
+      "pubKey": "3902be5eca20f8112671a2f43b0ae4a2a3fc3394752a9da9ec83c4717642ac79",
+      "scheme": "ED25519",
+      "clist": [
+        {
+          "name": "coin.TRANSFER",
+          "args": [
+            "k:3902be5eca20f8112671a2f43b0ae4a2a3fc3394752a9da9ec83c4717642ac79",
+            "k:c2161a1efd2b78a4025f023c5131cd40cfd52c64a2d04d44663cf4a96c8ffd50",
+            {
+              "decimal": "0.0000001"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "nonce": "kjs:nonce:1724234616471",
+  "meta": {
+    "gasLimit": 3000,
+    "gasPrice": 1e-8,
+    "sender": "k:c2161a1efd2b78a4025f023c5131cd40cfd52c64a2d04d44663cf4a96c8ffd50",
+    "ttl": 28800,
+    "creationTime": 1724234616,
+    "chainId": "1"
+  },
+  "networkId": "testnet04"
+}

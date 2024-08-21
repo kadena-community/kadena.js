@@ -21,6 +21,7 @@ import { Networks } from '@/pages/networks/networks';
 import { Ready } from '@/pages/ready/ready';
 import { SignatureBuilder } from '@/pages/signature-builder/signature-builder';
 import { Transaction } from '@/pages/transaction/Transaction';
+import { Transactions } from '@/pages/transactions/transactions';
 import { Heading } from '@kadena/kode-ui';
 import { useWallet } from '../modules/wallet/wallet.hook';
 import { BackupRecoveryPhrase } from '../pages/backup-recovery-phrase/backup-recovery-phrase';
@@ -108,6 +109,7 @@ export const Routes: FC = () => {
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/transfer" element={<Transfer />} />
           <Route path="/transaction/:groupId" element={<Transaction />} />
+          <Route path="/transactions" element={<Transactions />} />
         </Route>
       </Route>
       <Route path="/ready" element={<Ready />} />

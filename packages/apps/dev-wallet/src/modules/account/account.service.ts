@@ -35,7 +35,7 @@ export async function createKAccount(
     profileId,
     alias: '',
     guard: {
-      pred: 'keys-any',
+      pred: 'keys-all',
       keys: [publicKey],
     },
   };
