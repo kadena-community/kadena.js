@@ -12,7 +12,7 @@ tags: [pact, chainweb, network, node operator, developer]
 
 Computers that run the Chainweb consensus protocol—by installing and managing the `chainweb-node` software—provide the resources that power the Kadena public blockchain network. 
 By installing and running `chainweb-node` and connecting to the Kadena testnet or mainnet network, you can extend the peer-to-peer communication infrastructure and have direct access to the blockchain state.
-You can help improve and security and scalability of the network just by participating.
+You can help to improve the security and scalability of the network just by participating.
 You can also earn rewards if you choose to add resources to calculate proof-of-work solutions to validate transactions as a miner. 
 
 ## Minimum system requirements
@@ -32,10 +32,11 @@ If you also plan to use the node as an API server for Pact calls or for mining, 
 
 ### Operating system architecture
 
-It's possible to run a Chainweb node on Linux or macOS with ARM64 architecture.
-However, you must build the binaries yourself and you might experience some unexpected behavior when running a node on ARM64 architecture.
-If you want to run a Chainweb node on Microsoft Windows, you should install the latest Windows Services for Linux (WSL) software.
-You can then install the `chainweb-node` software in the WSL virtual environment rather than using the native Windows operating system. 
+Most `chainweb-node` software runs on Linux or macOS with AMD64 architectures.
+If you want to run a Chainweb node on Linux or macOS with ARM64 architecture, you'll need to build the binaries yourself from the source code.
+You might experience some unexpected behavior when running a node on ARM64 architecture.
+If you want to run a Chainweb node on Microsoft Windows, you should note that this isn't a supported configuration and requires you to install the latest Windows Services for Linux (WSL) software.
+If you choose to proceed after installing WSL, you can install the `chainweb-node` software in the WSL virtual environment rather than using the native Windows operating system. 
 
 ### Incoming and outgoing network rules
 
@@ -51,9 +52,9 @@ You can install release binaries directly on a physical Linux server or run them
 
 For more information about your installation options, see the following topics:
 
-- [Install release binaries]()
-- [Run in a Docker container]()
-- [Build from source code]()
+- [Install release binaries](#install-release-binaries)
+- [Run in a Docker container](#run-in-a-docker-container)
+- [Build from source code](#build-from-source)
 
 ## Install release binaries
 
@@ -96,19 +97,13 @@ To install from a release archive:
 
 5. Change to the directory that contains the downloaded file—typically, the Downloads folder—or move the file to a new location.
 
-6. Unzip the compressed archive by running a command similar to the following:
+6. Unzip and extract the compressed archive by running a command similar to the following:
    
    ```bash
-   gunzip chainweb-2.24.1.ghc-9.6.5.ubuntu-22.04.89b0ac3.tar.gz
+   tar -xvzf chainweb-2.24.1.ghc-9.6.5.ubuntu-22.04.89b0ac3.tar.gz
    ```
 
-7. Extract the archive by running a command similar to the following:
-   
-   ```bash
-   tar -xvf chainweb-2.24.1.ghc-9.6.5.ubuntu-22.04.89b0ac3.tar
-   ```
-
-8. Verify the binary is ready to use and review command-line configuration options by running the following command:
+7. Verify the binary is ready to use and review command-line configuration options by running the following command:
    
    ```bash
    ./chainweb-node --help
@@ -192,11 +187,10 @@ To download tagged source code:
 
    ![Download source code](/assets/docs/chainweb-node-assets.png)
 
-3. Unzip the compressed archive double-clicking or by running commands similar to the following:
+3. Unzip and extract the compressed archive by double-clicking or by running a command similar to the following:
 
    ```bash
-   gunzip chainweb-node-2.24.1.tar.gz
-   tar -xvf chainweb-node-2.24.1.tar
+   tar -xvzf chainweb-node-2.24.1.tar.gz
    ```
 
 1. Change to the `chainweb-node` source code directory. 
@@ -313,7 +307,7 @@ To build with the Nix package manager:
 
    If the `/etc/nix` directory doesn't exist, you should switch to the root user and create it, then add the `nix.conf` file to the directory.
 
-2. Restart the nix-daemon.
+2. Restart the `nix-daemon` process.
    
    Most installations of Nix are multi-user and require you to restart the nix daemon to make your `nix.conf` changes take effect. 
    
@@ -338,13 +332,11 @@ To build with the Nix package manager:
    ```bash
    sudo systemctl restart nix-daemon.service
    ```
-
-1. Change to the directory that contains the source code for the `chainweb-node` binary.
    
-2. Build `chainweb-node` by running the following command in the project directory:
+3. Build `chainweb-node` by running a command similar to the following for a specific release `tag`, such as 2.24.1:
 
    ```bash
-   nix-build
+   nix build github:kadena-io/chainweb-node/<tag>
    ```
    
    After starting the build, you should see messages similar to the following:
@@ -358,7 +350,7 @@ To build with the Nix package manager:
    
    When the build is finished, the directory with the `chainweb-node` source code contains a `result` subdirectory with a symbolic link to the Nix cache.
 
-3. Verify that `chainweb-node` is ready to use and review command-line configuration options by running the following command:
+4. Verify that `chainweb-node` is ready to use and review command-line configuration options by running the following command:
    
    ```bash
    ./result/bin/chainweb-node --help
@@ -486,7 +478,7 @@ If you see errors or warning messages, you should review the [Troubleshooting]()
 To start the node in a Docker container, you can run a command similar to the following to use the default configuration settings:
    
 ```bash
-docker run --publish 1789:1789 --publish 1848:1848 --entrypoint=/chainweb/chainweb-node ghcr.io/kadena-io/chainweb-node:ubuntu:latest   
+docker run --publish 1789:1789 --publish 1848:1848 --entrypoint=/chainweb/chainweb-node ghcr.io/kadena-io/chainweb-node/ubuntu:latest   
 ```
 
 After starting the node in a Docker container, you can view the contents of the container and interact with it using basic shell commands.
@@ -501,7 +493,7 @@ If you want to run the node with modified configuration settings in a Docker con
 For example:
 
 ```bash
-docker run --publish 1789:1789 --publish 1848:1848 --entrypoint=/chainweb/chainweb-node ghcr.io/kadena-io/chainweb-node:ubuntu:latest --enable-backup-api --backup-directory /tmp/my-backups
+docker run --publish 1789:1789 --publish 1848:1848 --entrypoint=/chainweb/chainweb-node ghcr.io/kadena-io/chainweb-node/ubuntu:latest --enable-backup-api --backup-directory /tmp/my-backups
 ```
 
 For more information about using command-line options to control node operations, see the [chainweb-node]() command-line reference.
