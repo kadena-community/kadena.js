@@ -290,7 +290,7 @@ pages:
           ledger:
             url: /ledger
             file: /participate/ledger.md
-  
+
   reference:
     url: /reference
     file: /reference/reference.md

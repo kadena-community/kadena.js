@@ -584,4 +584,3 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
 ];
-
