@@ -91,7 +91,6 @@ const Transaction: React.FC = () => {
               <TabItem title="Result" key="Result">
                 <TransactionResultComponent
                   isLoading={isLoading}
-                  requestKey={innerData.transaction.hash}
                   transaction={innerData.transaction?.result}
                 />
               </TabItem>

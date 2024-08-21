@@ -1,9 +1,8 @@
 import type { TransactionRequestKeyQuery, Transfer } from '@/__generated__/sdk';
 import { DataRenderComponent } from '@/components/DataRenderComponent/DataRenderComponent';
-import { CONSTANTS } from '@/constants/constants';
 import { getCrosschainTransfer } from '@/utils/getCrosschainTransfer';
 import { objectToDataRenderComponentFields } from '@/utils/objectToDataRenderComponentFields';
-import { Grid, Link, Stack, Text } from '@kadena/kode-ui';
+import { Grid, Text } from '@kadena/kode-ui';
 import React, { useEffect } from 'react';
 import { ifNill } from '../../utils/ifNill';
 
@@ -13,10 +12,9 @@ type TransactionResult = Exclude<
 >['result'];
 
 export const TransactionResultComponent: React.FC<{
-  requestKey?: string;
   transaction?: TransactionResult | null;
   isLoading: boolean;
-}> = ({ requestKey, transaction, isLoading }) => {
+}> = ({ transaction, isLoading }) => {
   const [crosschainTransfer, setCrosschainTransfer] =
     React.useState<Transfer>();
 
@@ -49,32 +47,6 @@ export const TransactionResultComponent: React.FC<{
         ]}
       />
 
-      {transaction.__typename === 'TransactionResult' &&
-        transaction.continuation &&
-        JSON.parse(transaction.continuation ?? '[]').step === 0 &&
-        !crosschainTransfer && (
-          <DataRenderComponent
-            isLoading={isLoading}
-            title="Crosschain Transfer"
-            fields={[
-              {
-                key: '',
-                value: (
-                  <Stack>
-                    <Link
-                      data-variant="primary"
-                      target="_blank"
-                      variant="primary"
-                      href={`${CONSTANTS.CROSSCHAINTRACKER_URL}?reqKey=${requestKey}`}
-                    >
-                      Finish the transaction
-                    </Link>
-                  </Stack>
-                ),
-              },
-            ]}
-          />
-        )}
       {transaction.__typename === 'TransactionResult' && crosschainTransfer && (
         <DataRenderComponent
           isLoading={isLoading}
