@@ -5,11 +5,11 @@ globalStyle('body,html', {
   backgroundColor: tokens.kda.foundation.color.background.base.default,
 });
 
-globalStyle('a', {
+globalStyle('a:not([data-variant])', {
   color: token('color.link.base.default'),
 });
 
-globalStyle('a:hover', {
+globalStyle('a:hover:not([data-variant])', {
   color: token('color.link.base.@focus'),
 });
 
