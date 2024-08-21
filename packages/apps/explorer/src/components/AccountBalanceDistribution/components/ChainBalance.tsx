@@ -14,11 +14,11 @@ import {
 } from './style.css';
 
 interface IProps extends PropsWithChildren {
-  chain: IViewChain;
+  chainAccount: IViewChain;
   idx: string;
 }
 
-export const ChainBalance: FC<IProps> = ({ chain, idx }) => {
+export const ChainBalance: FC<IProps> = ({ chainAccount, idx }) => {
   return (
     <Stack
       as="li"
@@ -27,14 +27,14 @@ export const ChainBalance: FC<IProps> = ({ chain, idx }) => {
       className={chainBalanceWrapperClass}
       style={{
         ...assignInlineVars({
-          [percentageValueVar]: `${chain.percentage}%`,
+          [percentageValueVar]: `${chainAccount.percentage}%`,
         }),
       }}
     >
       <Stack
         justifyContent="flex-start"
         className={classNames(chainTextBaseClass, {
-          [chainTextDisabledClass]: !chain.percentage,
+          [chainTextDisabledClass]: !chainAccount.percentage,
         })}
       >
         <Text>Chain {idx}</Text>
@@ -43,12 +43,12 @@ export const ChainBalance: FC<IProps> = ({ chain, idx }) => {
       <Stack
         justifyContent="flex-end"
         className={classNames(chainTextBaseClass, {
-          [chainTextDisabledClass]: !chain.percentage,
+          [chainTextDisabledClass]: !chainAccount.percentage,
         })}
         gap="xs"
       >
         <Text variant="code" color="emphasize" className={chainTextLargeClass}>
-          {!chain.balance ? '-' : chain.balance}
+          {!chainAccount.balance ? '-' : chainAccount.balance}
         </Text>
         <Text variant="ui" bold className={chainTextSubtleClass}>
           {' '}

@@ -1,4 +1,4 @@
-import { CHAINCOUNT } from '@/constants/constants';
+import { CONSTANTS } from '@/constants/constants';
 import {
   divideChains,
   processChainAccounts,
@@ -15,7 +15,7 @@ interface IProps extends PropsWithChildren {
 }
 export const AccountBalanceDistribution: FC<IProps> = ({ chains = [] }) => {
   const chainLists = useMemo(() => {
-    const enrichedChains = processChainAccounts(chains, CHAINCOUNT);
+    const enrichedChains = processChainAccounts(chains, CONSTANTS.CHAINCOUNT);
     return divideChains(enrichedChains, 2);
   }, [chains]);
 

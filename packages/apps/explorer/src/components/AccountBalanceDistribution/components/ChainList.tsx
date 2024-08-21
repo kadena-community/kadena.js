@@ -39,8 +39,12 @@ export const ChainList: FC<IProps> = ({ chains }) => {
         marginInline="no"
         paddingInline="no"
       >
-        {chains.map((chain, idx) => (
-          <ChainBalance key={`${idx}`} chain={chain} idx={chain.chainId} />
+        {chains.map((chainAccount, idx) => (
+          <ChainBalance
+            key={`${idx}`}
+            chainAccount={chainAccount}
+            idx={chainAccount.chainId}
+          />
         ))}
       </Stack>
     </Stack>
