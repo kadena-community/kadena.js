@@ -27,10 +27,10 @@ describe('divideChains', () => {
       { chainId: '14' },
     ];
 
-    const result = divideChains(chains);
+    const result = divideChains(chains, 2);
 
-    const expectedResult = {
-      chains1: [
+    const expectedResult = [
+      [
         { chainId: '0' },
         { chainId: '1' },
         { chainId: '2' },
@@ -40,7 +40,7 @@ describe('divideChains', () => {
         { chainId: '6' },
         { chainId: '7' },
       ],
-      chains2: [
+      [
         { chainId: '8' },
         { chainId: '9' },
         { chainId: '10' },
@@ -49,7 +49,8 @@ describe('divideChains', () => {
         { chainId: '13' },
         { chainId: '14' },
       ],
-    };
+    ];
+
     expect(result).toEqual(expectedResult);
   });
 
@@ -71,39 +72,39 @@ describe('divideChains', () => {
       { chainId: '13' },
     ];
 
-    const result = divideChains(chains);
+    const result = divideChains(chains, 3);
 
-    const expectedResult = {
-      chains1: [
+    const expectedResult = [
+      [
         { chainId: '0' },
         { chainId: '1' },
         { chainId: '2' },
         { chainId: '3' },
         { chainId: '4' },
+      ],
+      [
         { chainId: '5' },
         { chainId: '6' },
-      ],
-      chains2: [
         { chainId: '7' },
         { chainId: '8' },
         { chainId: '9' },
+      ],
+      [
         { chainId: '10' },
         { chainId: '11' },
         { chainId: '12' },
         { chainId: '13' },
       ],
-    };
+    ];
+
     expect(result).toEqual(expectedResult);
   });
 
   it('should return an empty array ', async () => {
     const chains: IViewChain[] = [];
-    const result = divideChains(chains);
+    const result = divideChains(chains, 4);
 
-    const expectedResult = {
-      chains1: [],
-      chains2: [],
-    };
+    const expectedResult = [[], [], [], []];
     expect(result).toEqual(expectedResult);
   });
 });

@@ -14,15 +14,16 @@ interface IProps extends PropsWithChildren {
   chains: IChainAccounts;
 }
 export const AccountBalanceDistribution: FC<IProps> = ({ chains = [] }) => {
-  const { chains1, chains2 } = useMemo(() => {
+  const chainLists = useMemo(() => {
     const enrichedChains = processChainAccounts(chains, CHAINCOUNT);
-    return divideChains(enrichedChains);
+    return divideChains(enrichedChains, 2);
   }, [chains]);
 
   return (
     <Stack width="100%" gap="sm" flexDirection={{ xs: 'column', md: 'row' }}>
-      <ChainList chains={chains1} />
-      <ChainList chains={chains2} />
+      {chainLists.map((chainList, idx) => (
+        <ChainList key={idx} chains={chainList} />
+      ))}
     </Stack>
   );
 };

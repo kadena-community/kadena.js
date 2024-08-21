@@ -59,13 +59,20 @@ export const processChainAccounts = (
  */
 export const divideChains = (
   chains: IViewChain[],
-): {
-  chains1: IViewChain[];
-  chains2: IViewChain[];
-} => {
-  const half = Math.ceil(chains.length / 2);
-  return {
-    chains1: chains.slice(0, half),
-    chains2: chains.slice(half),
-  };
+  listCount: number,
+): IViewChain[][] => {
+  const result: IViewChain[][] = [];
+  const totalLength = chains.length;
+  const baseSize = Math.floor(totalLength / listCount);
+  const extraItems = totalLength % listCount;
+
+  let startIndex = 0;
+
+  for (let i = 0; i < listCount; i++) {
+    const currentSize = baseSize + (i < extraItems ? 1 : 0);
+    result.push(chains.slice(startIndex, startIndex + currentSize));
+    startIndex += currentSize;
+  }
+
+  return result;
 };
