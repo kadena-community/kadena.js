@@ -86,7 +86,6 @@ const SearchContextProvider = (props: {
   }, [router.asPath]);
 
   useEffect(() => {
-    console.log({ searchQuery, oldSearchQuery, searchOption, oldSearchOption });
     if (searchQuery === oldSearchQuery && searchOption === oldSearchOption)
       return;
     if (!searchQuery || searchOption === null) return;

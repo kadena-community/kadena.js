@@ -74,7 +74,7 @@ const Height: React.FC = () => {
     );
 
   return (
-    <Layout>
+    <Layout layout="full">
       <LayoutHeader>
         <ValueLoader isLoading={isLoading}>
           Block Height{' '}

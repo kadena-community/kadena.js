@@ -92,7 +92,7 @@ const Block: React.FC = () => {
     );
 
   return (
-    <Layout>
+    <Layout layout="full">
       <LayoutHeader>
         Block{' '}
         <ValueLoader isLoading={isLoading}>
