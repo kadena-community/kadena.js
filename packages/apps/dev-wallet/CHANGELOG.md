@@ -1,5 +1,20 @@
 # @kadena/dev-wallet
 
+## 0.3.2
+
+### Patch Changes
+
+- Updated dependencies \[27ecc26]
+  - @kadena/kode-ui\@0.14.1
+  - @kadena/chainweb-node-client\@0.6.3
+  - @kadena/client\@1.13.0
+  - @kadena/client-utils\@0.9.0
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/hd-wallet\@0.4.2
+  - @kadena/kode-icons\@0.1.0
+  - @kadena/pactjs\@0.4.3
+  - @kadena/pactjs-generator\@1.13.0
+
 ## 0.3.1
 
 ### Patch Changes
