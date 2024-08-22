@@ -81,7 +81,7 @@ const Transaction: React.FC = () => {
             </Card>
           </LayoutAside>
           <LayoutBody>
-            <Tabs isContained>
+            <Tabs isCompact isContained>
               <TabItem title="Request" key="Request">
                 <TransactionRequestComponent
                   isLoading={isLoading}
