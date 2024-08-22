@@ -104,7 +104,12 @@ const Block: React.FC = () => {
       </LayoutHeader>
 
       <LayoutBody>
-        <Tabs selectedKey={selectedTab} onSelectionChange={handleSelectedTab}>
+        <Tabs
+          isCompact
+          isContained
+          selectedKey={selectedTab}
+          onSelectionChange={handleSelectedTab}
+        >
           <TabItem title="Header" key="Header">
             <DataRenderComponent
               isLoading={isLoading}

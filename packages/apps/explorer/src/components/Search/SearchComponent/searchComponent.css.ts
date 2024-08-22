@@ -1,7 +1,13 @@
-import { atoms, token, tokens } from '@kadena/kode-ui/styles';
-import { style } from '@vanilla-extract/css';
+import { atoms, responsiveStyle, token, tokens } from '@kadena/kode-ui/styles';
+import { globalStyle, style } from '@vanilla-extract/css';
 
-export const searchBoxClass = style([
+export const searchBoxClass = style({});
+
+globalStyle(`${searchBoxClass} svg`, {
+  minWidth: token('icon.size.base'),
+});
+
+export const searchBoxWrapperClass = style([
   atoms({
     position: 'absolute',
     width: '100%',
@@ -14,6 +20,7 @@ export const searchBoxClass = style([
     gap: 'xs',
   }),
   {
+    overflow: 'hidden',
     zIndex: token('zIndex.dropdown'),
   },
 ]);
@@ -27,12 +34,13 @@ export const searchBoxEditingClass = style([
 
 export const searchInputClass = style([
   atoms({
+    flex: 1,
     backgroundColor: 'transparent',
     fontSize: 'md',
     fontFamily: 'monospaceFont',
     outline: 'none',
     color: 'text.base.default',
-    flex: 1,
+    paddingInline: 'sm',
   }),
   {
     height: 46,
@@ -67,6 +75,16 @@ export const searchBadgeBoxSelectedClass = style([
     backgroundColor: token('color.background.base.inverse.default'),
     color: token('color.text.base.inverse.default'),
   },
+]);
+export const searchBadgeBoxHeaderClass = style([
+  responsiveStyle({
+    xs: {
+      display: 'none',
+    },
+    lg: {
+      display: 'flex',
+    },
+  }),
 ]);
 
 export const editingBoxClass = style([

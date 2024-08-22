@@ -10,7 +10,6 @@ export const blockInfoClass = style([
     borderWidth: 'hairline',
   }),
   {
-    width: `calc(100vw - 2rem)`,
     borderBottomWidth: 0,
     borderRightWidth: 0,
     borderLeftWidth: 0,

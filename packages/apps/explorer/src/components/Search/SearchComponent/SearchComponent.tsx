@@ -19,9 +19,11 @@ import {
   editOptionSelectedClass,
   iconColorClass,
   searchBadgeBoxClass,
+  searchBadgeBoxHeaderClass,
   searchBadgeBoxSelectedClass,
   searchBoxClass,
   searchBoxEditingClass,
+  searchBoxWrapperClass,
   searchInputClass,
 } from './searchComponent.css';
 
@@ -170,13 +172,18 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
       >
         <Stack
           alignItems="flex-start"
-          className={classNames(searchBoxClass, {
+          className={classNames(searchBoxWrapperClass, {
             [searchBoxEditingClass]: isEditing,
           })}
           // ugly hack to align the search in the header
           style={{ top: position === 'header' ? '-28px' : 0 }}
         >
-          <Stack width="100%" alignItems="center" paddingInline="md">
+          <Stack
+            width="100%"
+            alignItems="center"
+            paddingInline="md"
+            className={searchBoxClass}
+          >
             {loading ? (
               <LoadingIcon className={iconColorClass} />
             ) : (
@@ -203,8 +210,15 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
               onKeyUp={(e) => handleSearchValueChange(e)}
               className={searchInputClass}
             />
+
             {isEditing && innerSearchOption === null && (
-              <Stack className={searchBadgeBoxClass}>Search by</Stack>
+              <Stack
+                className={classNames(searchBadgeBoxClass, {
+                  [searchBadgeBoxHeaderClass]: position === 'header',
+                })}
+              >
+                Search by
+              </Stack>
             )}
 
             {innerSearchOption !== null && (
@@ -213,6 +227,7 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
                 className={classNames(
                   searchBadgeBoxClass,
                   searchBadgeBoxSelectedClass,
+                  { [searchBadgeBoxHeaderClass]: position === 'header' },
                 )}
               >
                 {getSearchOptionTitle(innerSearchOption)}

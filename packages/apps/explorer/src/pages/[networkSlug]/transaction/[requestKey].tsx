@@ -13,7 +13,6 @@ import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { transactionRequestKey } from '@/graphql/pages/transaction/transaction-requestkey.graph';
 import { useRouter } from '@/hooks/router';
-import { truncateValues } from '@/services/format';
 import { TabItem, Tabs } from '@kadena/kode-ui';
 import React, { useEffect, useState } from 'react';
 
@@ -71,17 +70,11 @@ const Transaction: React.FC = () => {
       {innerData && innerData.transaction ? (
         <>
           <LayoutHeader>
-            <ValueLoader isLoading={isLoading}>
-              Transaction{' '}
-              {truncateValues(innerData.transaction?.hash, {
-                length: 16,
-                endChars: 5,
-              })}
-            </ValueLoader>
+            <ValueLoader isLoading={isLoading}>Transaction Details</ValueLoader>
           </LayoutHeader>
 
           <LayoutBody>
-            <Tabs>
+            <Tabs isCompact isContained>
               <TabItem title="Request" key="Request">
                 <TransactionRequestComponent
                   isLoading={isLoading}
