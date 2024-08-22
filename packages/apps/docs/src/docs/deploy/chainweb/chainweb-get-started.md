@@ -10,7 +10,8 @@ tags: [pact, chainweb, network, node operator, developer]
 
 # Get started as a Chainweb node operator
 
-Computers that run the Chainweb consensus protocol—by installing and managing the `chainweb-node` software—provide the resources that power the Kadena public blockchain network. 
+Computers that run the Chainweb consensus protocol—by installing and managing the `chainweb-node` software—provide the resources that power the Kadena public blockchain network by participating in consensus and validating transactions to produce blocks.
+
 By installing and running `chainweb-node` and connecting to the Kadena testnet or mainnet network, you can extend the peer-to-peer communication infrastructure and have direct access to the blockchain state.
 You can help to improve the security and scalability of the network just by participating.
 You can also earn rewards if you choose to add resources to calculate proof-of-work solutions to validate transactions as a miner. 
@@ -25,7 +26,7 @@ Before installing Chainweb, you should verify that your computer meets the follo
 - Network: Publicly-accessible IP address.
 - Operating system: Linux AMD64 architecture.
 
-If you also plan to use the node as an API server for Pact calls or for mining, exchange integration, or accessing indexed data, you should verify that your computer meets the following minimum recommended hardware requirements: 
+If you also plan to use the node for mining, to submit transactions, or to query blockchain data, you should verify that your computer meets the following minimum recommended hardware requirements: 
 
 - Four (4) CPU cores.
 - Eight (8) GB of RAM.
@@ -35,6 +36,9 @@ If you also plan to use the node as an API server for Pact calls or for mining, 
 Most `chainweb-node` software runs on Linux or macOS with AMD64 architectures.
 If you want to run a Chainweb node on Linux or macOS with ARM64 architecture, you'll need to build the binaries yourself from the source code.
 You might experience some unexpected behavior when running a node on ARM64 architecture.
+Note that you should not configure **mining** for nodes on ARM64 architecture.
+RUnning a mining node on ARM64 architecture could cause your node to fork from the network.
+
 If you want to run a Chainweb node on Microsoft Windows, you should note that this isn't a supported configuration and requires you to install the latest Windows Services for Linux (WSL) software.
 If you choose to proceed after installing WSL, you can install the `chainweb-node` software in the WSL virtual environment rather than using the native Windows operating system. 
 
@@ -58,8 +62,8 @@ For more information about your installation options, see the following topics:
 
 ## Install release binaries
 
-You can download compressed archive files with `chainweb-node` release binaries for Ubuntu Linux directly from the [Releases](https://github.com/kadena-io/chainweb-node/releases) pages in the [chainweb-node](https://github.com/kadena-io/chainweb-node/) repository.
-If you have Ubuntu 20.0.4 or Ubuntu 22.04 on a physical or virtual machine, downloading the binary is the most straightforward installation path.
+You can download compressed archive files with `chainweb-node` release binaries for Ubuntu Linux directly from the [Releases](https://github.com/kadena-io/chainweb-node/releases) page in the [chainweb-node](https://github.com/kadena-io/chainweb-node/) repository.
+If you have Ubuntu 20.04 or Ubuntu 22.04 on a physical or virtual machine, downloading the binary is the most straightforward installation path.
 
 To install from a release archive:
 
@@ -77,8 +81,6 @@ To install from a release archive:
    sudo apt-get install ca-certificates libgmp10 libssl3 libsnappy1v5 zlib1g liblz4-1 libbz2-1.0 libgflags2.2 zstd
    ```
 
-   Note that Ubuntu 20.04 requires the `libssl1.1` package instead of the `libssl3` package. 
-   This package has been deprecated in Ubuntu 22.04.
    If your computer uses the Ubuntu 20.04 operating system, install the `libssl1.1` package instead of the `libssl3` package. 
 
 4. Download the archive file from the [Releases](https://github.com/kadena-io/chainweb-node/releases) page.
@@ -210,7 +212,7 @@ To build with the native Haskell toolchain:
    - [Haskell build tool CABAL](https://www.haskell.org/cabal/), `cabal`, version 3.4, or later.
 
    You can download, install and manage the Haskell toolchain using `ghcup`.
-   To install on Linux, macOS, FreeBSD, or WSL2, go to [GCHCup](https://www.haskell.org/ghcup/) to download the main Haskell installer, then follow the installation instructions to install the toolchain.
+   To install on Linux, macOS, FreeBSD, or WSL2, go to [GHCup](https://www.haskell.org/ghcup/) to download the main Haskell installer, then follow the installation instructions to install the toolchain.
 
 1. Install the development versions of the following required libraries: 
 
@@ -221,13 +223,13 @@ To build with the native Haskell toolchain:
    - bz2-dev
    - zstd-dev
 
-   If the host uses the advance package tool (apt), you can install these libraries by running the following command:
+   If the host uses the advanced package tool (apt), you can install these libraries by running the following command:
    
    ```bash
    apt-get install ca-certificates libssl-dev libgmp-dev libsnappy-dev zlib1g-dev liblz4-dev libbz2-dev libgflags-dev libzstd-dev
    ```
 
-   On macOS, you can install these libraries by running the following command:
+   On macOS, if you have Apple Developer Tools (`xcode`) and `brew` installed, you can install these libraries by running the following command:
    
    ```bash
    brew install ca-certificates libgmp-dev libsnappy-dev zlib1g-dev liblz4-dev libbz2-dev libgflags-dev libzstd-dev
@@ -373,7 +375,7 @@ To build with the Nix package manager:
 
 Now that you have a Chainweb node binary ready to run, you should review the default configuration options and the default values. 
 Configuration options and settings control many types of node behavior, operation, and features.
-For example, you can use configuration options to enable or disable telemetry for the node.
+For example, you can use configuration options to enable or disable the backup API for the node.
 You can also modify configuration settings to change the logging level for node messages.
 
 To review the default node configuration:
@@ -454,7 +456,7 @@ To edit the node configuration:
      
      fullHistoricPactState: false
      
-     databaseDirectory: /usr/local/share
+     databaseDirectory: /usr/local/share/chainweb/db
    ```
 
 ## Start the Chainweb node
