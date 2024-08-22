@@ -14,7 +14,7 @@ tags: [pact, chainweb, network, node operator, developer]
 Because a healthy blockchain continuously adds new transactions in new blocks that change the state of the database, managing the storage requirements on individual nodes can be challenging.
 
 To address this storage issue, Chainweb provides the `compact` command-line program.
-The `compact` command enables you to delete historical unused state from the `chainweb-node` RocksDB database and the Pact SQLite database.
+The `compact` program enables you to delete historical unused state from the `chainweb-node` RocksDB database and the Pact SQLite database.
 Removing old state that isn't required to validate transactions or reach consensus enables your node to use far less disk space overall while maintaining the semantic integrity of node operations.
 
 After you compact the state and restart the node to use the compacted database, you can delete the old database to further reduce your storage overhead or save the old database in another location as a backup.
@@ -25,11 +25,6 @@ To compact a Chainweb node database:
 
    For example, if you run the node in a Docker container, open a terminal in the container.
    If you installed `chainweb-node` from a release binary or built it from source, open a terminal or secure shell on the computer where the binary is installed.
-
-   For information about installing `chainweb-node` from a release binary or building it from the source code, see the [chainweb-node README](https://github.com/kadena-io/chainweb-node#README).
-
-   If you run the node in a Docker container, pull the latest image to download the `compact` binary.
-   If you built the node from the source code, you can rebuild to get the `compact` binary.
 
 2. Verify that you have access to the `compact` command-line program by running the following command:
 
@@ -72,7 +67,7 @@ To compact a Chainweb node database:
    compact --from ~/.local/share/chainweb-node/testnet04 --to ~/.local/share/chainweb-node/compact-db --log-dir /tmp/compaction-log-files --chainweb-version testnet04
    ```
 
-   Note that the location of the Chainweb root database directory—`~/.local/share/testnet04` in this example—depends on the configuration of the node.
+   Note that the location of the Chainweb root database directory—`~/.local/share/chainweb-node/testnet04` in this example—depends on the configuration of the node.
    If you haven't specified a location in the configuration file, the default location is `~/.local/share/chainweb-node/{chainweb-network-id}`, for example `~/.local/share/chainweb-node/testnet04` for a node in the Kadena test network.
 
    If your node isn't synchronized with the current block height of the network or doesn't have enough history to ensure proper validation, you might see the `compact` operation fail with any error similar to the following:
