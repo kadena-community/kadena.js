@@ -293,3 +293,59 @@ export const CardWithStackedContent: Story = {
     );
   },
 };
+
+export const ExternalFooter: Story = {
+  name: 'Card Pattern with external footer',
+  args: {},
+  render: ({}) => {
+    return (
+      <Box>
+        <CardFixedContainer>
+          <CardContentBlock
+            title="Example Card Layout"
+            description="This card layout is a pattern within the design system. The only mandatory properties are title and children, but many optional properties are available so that users can configure what they need."
+            visual={<MonoNote width={36} height={36} />}
+            extendedContent={
+              <Box
+                backgroundColor="semantic.warning.subtle"
+                width="100%"
+                padding="xxxl"
+                style={{ aspectRatio: 1 }}
+              />
+            }
+            supportingContent={
+              <Box
+                backgroundColor="brand.secondary.subtle"
+                width="100%"
+                paddingBlock="xxxl"
+              />
+            }
+          >
+            <Stack
+              backgroundColor="brand.primary.subtle"
+              padding="xl"
+              marginBlockEnd="md"
+            />
+            <Stack
+              backgroundColor="brand.primary.subtle"
+              padding="xl"
+              marginBlockEnd="md"
+            />
+            <Stack
+              backgroundColor="brand.primary.subtle"
+              padding="xl"
+              marginBlockEnd="md"
+            />
+          </CardContentBlock>
+        </CardFixedContainer>
+        <CardFooterGroup separated={true}>
+          <Button variant="negative">Action</Button>
+          <CardFooterGroup>
+            <Button variant="outlined">Cancel</Button>
+            <Button variant="primary">Next</Button>
+          </CardFooterGroup>
+        </CardFooterGroup>
+      </Box>
+    );
+  },
+};
