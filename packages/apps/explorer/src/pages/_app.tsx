@@ -23,27 +23,33 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
   useTheme();
   useIphoneInputFix();
   return (
-    <ToastProvider>
-      <NetworkContextProvider>
-        <RouterProvider navigate={router.push}>
-          <MediaContextProvider>
-            <QueryContextProvider>
-              <SearchContextProvider>
-                <Head>
-                  <title>K:Explorer</title>
-                  <link
-                    rel="icon"
-                    href="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/icons/internal/default/icon%40128.png"
-                  />
-                </Head>
-
-                <ReactComponent {...pageProps} />
-              </SearchContextProvider>
-            </QueryContextProvider>
-          </MediaContextProvider>
-        </RouterProvider>
-      </NetworkContextProvider>
-      <Analytics />
-    </ToastProvider>
+    <>
+      <Head>
+        <title>K:Explorer</title>
+        <link
+          rel="icon"
+          href="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/icons/internal/default/icon%40128.png"
+        />
+        <meta content="text/html; charset=UTF-8" name="Content-Type" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1"
+        />
+      </Head>
+      <ToastProvider>
+        <NetworkContextProvider>
+          <RouterProvider navigate={router.push}>
+            <MediaContextProvider>
+              <QueryContextProvider>
+                <SearchContextProvider>
+                  <ReactComponent {...pageProps} />
+                </SearchContextProvider>
+              </QueryContextProvider>
+            </MediaContextProvider>
+          </RouterProvider>
+        </NetworkContextProvider>
+        <Analytics />
+      </ToastProvider>
+    </>
   );
 }
