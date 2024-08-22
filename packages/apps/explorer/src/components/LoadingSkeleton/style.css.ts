@@ -40,7 +40,7 @@ export const loadingVariants = recipe({
         {
           width: '100%',
           maxWidth: '70%',
-          minWidth: '100px',
+          minWidth: '50px',
         },
       ],
       icon: [

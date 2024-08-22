@@ -6,6 +6,7 @@ import { NetworkContextProvider } from '@/context/networksContext';
 import { QueryContextProvider } from '@/context/queryContext';
 import { SearchContextProvider } from '@/context/searchContext';
 import { useRouter } from '@/hooks/router';
+import { useIphoneInputFix } from '@/hooks/useIphoneInputFix';
 import '@components/globalstyles.css';
 import { RouterProvider, useTheme } from '@kadena/kode-ui';
 import '@kadena/kode-ui/global';

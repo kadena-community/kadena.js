@@ -1,5 +1,7 @@
 import type { TransactionRequestKeyQuery } from '@/__generated__/sdk';
 import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
+import { cardClass } from '@/components/AccountCard/style.css';
+import { LayoutAside } from '@/components/Layout/components/LayoutAside';
 import { LayoutBody } from '@/components/Layout/components/LayoutBody';
 import { LayoutHeader } from '@/components/Layout/components/LayoutHeader';
 import { Layout } from '@/components/Layout/Layout';
@@ -14,7 +16,7 @@ import { useSearch } from '@/context/searchContext';
 import { transactionRequestKey } from '@/graphql/pages/transaction/transaction-requestkey.graph';
 import { useRouter } from '@/hooks/router';
 import { truncateValues } from '@/services/format';
-import { TabItem, Tabs } from '@kadena/kode-ui';
+import { Card, TabItem, Tabs } from '@kadena/kode-ui';
 import React, { useEffect, useState } from 'react';
 
 const Transaction: React.FC = () => {
@@ -67,21 +69,20 @@ const Transaction: React.FC = () => {
   }, [loading, data, error]);
 
   return (
-    <Layout layout="full">
+    <Layout>
       {innerData && innerData.transaction ? (
         <>
           <LayoutHeader>
-            <ValueLoader isLoading={isLoading}>
-              Transaction{' '}
-              {truncateValues(innerData.transaction?.hash, {
-                length: 16,
-                endChars: 5,
-              })}
-            </ValueLoader>
+            <ValueLoader isLoading={isLoading}>Transaction Details</ValueLoader>
           </LayoutHeader>
 
+          <LayoutAside>
+            <Card className={cardClass} fullWidth>
+              sdf
+            </Card>
+          </LayoutAside>
           <LayoutBody>
-            <Tabs>
+            <Tabs isContained>
               <TabItem title="Request" key="Request">
                 <TransactionRequestComponent
                   isLoading={isLoading}
