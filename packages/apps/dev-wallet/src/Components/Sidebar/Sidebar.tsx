@@ -1,9 +1,16 @@
 import {
+  MonoDataArray,
+  MonoDataObject,
+  MonoDataset,
   MonoDataThresholding,
   MonoExpandCircleDown,
   MonoKey,
+  MonoLayers,
+  MonoRocket,
   MonoSignature,
   MonoSwapHoriz,
+  MonoTableRows,
+  MonoThermostat,
 } from '@kadena/kode-icons';
 import { Box, Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
@@ -60,7 +67,7 @@ export const Sidebar: FC = () => {
             <li className={sidebarMenuOptionClass}>
               <NavLink to="/transactions" className={sidebarLinkClass}>
                 <Stack alignItems="center" gap="md">
-                  <MonoExpandCircleDown />
+                  <MonoTableRows />
                   Transactions
                 </Stack>
               </NavLink>
