@@ -179,7 +179,7 @@ export default builder.node(
           }
         },
 
-        async resolve(condition, parent, args, context, info) {
+        async resolve(condition, parent) {
           try {
             return await prismaClient.transfer.findMany({
               ...condition,
@@ -202,5 +202,3 @@ export default builder.node(
     }),
   },
 );
-
-

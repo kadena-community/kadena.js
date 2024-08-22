@@ -1,4 +1,3 @@
-
 export function bigintSortFn(a: bigint, b: bigint): number {
   if (a > b) {
     return 1;

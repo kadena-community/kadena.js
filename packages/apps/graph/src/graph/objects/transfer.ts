@@ -1,5 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
-import type { Block, Transfer } from '@prisma/client';
+import type { Block } from '@prisma/client';
 import { Prisma } from '@prisma/client';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
@@ -97,19 +97,21 @@ export default builder.prismaNode(Prisma.ModelName.Transfer, {
             };
           }
 
-          let counterpartTx = await prismaClient.transaction.findFirstOrThrow({
-            where,
-            include: {
-              transfers: {
-                where: {
-                  amount: parent.amount,
+          const counterpartTx = await prismaClient.transaction.findFirstOrThrow(
+            {
+              where,
+              include: {
+                transfers: {
+                  where: {
+                    amount: parent.amount,
+                  },
+                  take: 1,
                 },
-                take: 1,
               },
             },
-          });
+          );
 
-          if (!!counterpartTx) {
+          if (counterpartTx) {
             return counterpartTx.transfers[0];
           }
         } catch (error) {
