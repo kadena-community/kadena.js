@@ -1,21 +1,22 @@
 import type { AccountQuery } from '@/__generated__/sdk';
 import { useAccountQuery } from '@/__generated__/sdk';
+import { AccountBalanceDistribution } from '@/components/AccountBalanceDistribution/AccountBalanceDistribution';
+import { AccountCard } from '@/components/AccountCard/AccountCard';
 import { AccountTransfersTable } from '@/components/AccountTransfersTable/AccountTransfersTable';
 import { CompactTable } from '@/components/CompactTable/CompactTable';
 import { FormatAmount } from '@/components/CompactTable/utils/formatAmount';
+import { LayoutAside } from '@/components/Layout/components/LayoutAside';
 import { LayoutBody } from '@/components/Layout/components/LayoutBody';
 import { LayoutHeader } from '@/components/Layout/components/LayoutHeader';
 import { Layout } from '@/components/Layout/Layout';
 import { loadingData } from '@/components/LoadingSkeleton/loadingData/loadingDataAccountquery';
-import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
 import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { account } from '@/graphql/queries/account.graph';
 import { useRouter } from '@/hooks/router';
-import { accountNameTextClass } from '@/styles/account.css';
-import { Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
+import { TabItem, Tabs } from '@kadena/kode-ui';
 import type { FC, Key } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
 
@@ -29,7 +30,7 @@ const Account: FC = () => {
   const router = useRouter();
   const { setIsLoading, isLoading } = useSearch();
   const [innerData, setInnerData] = useState<AccountQuery>(loadingData);
-  const [selectedTab, setSelectedTab] = useState<string>('Transactions');
+  const [selectedTab, setSelectedTab] = useState<string>('Balance');
   const accountName = router.query.accountName as string;
   const { setQueries } = useQueryContext();
 
@@ -82,15 +83,8 @@ const Account: FC = () => {
   const handleSelectedTab = (tab: Key): void => {
     setSelectedTab(tab as string);
 
-    const regExp = new RegExp(/[?#].*/);
-
-    const newUrl = `/${router.activeNetwork.slug}${router.asPath.replace(regExp, '')}#${tab}`;
-
-    window.history.replaceState(
-      { ...window.history.state, as: newUrl, url: newUrl },
-      '',
-      newUrl,
-    );
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    router.replace(`#${tab}`);
   };
 
   const { fungibleAccount } = innerData ?? {};
@@ -126,84 +120,65 @@ const Account: FC = () => {
     );
 
   return (
-    <Layout layout="full">
+    <Layout>
       <LayoutHeader>Account Details</LayoutHeader>
+      <LayoutAside>
+        <AccountCard isLoading={isLoading} account={fungibleAccount} />
+      </LayoutAside>
 
       <LayoutBody>
-        <Stack padding="md" width="100%" flexDirection="column">
-          <ValueLoader isLoading={isLoading}>
-            <Heading as="h5">
-              {parseFloat(fungibleAccount?.totalBalance).toFixed(2)} KDA spread
-              across {fungibleAccount?.chainAccounts.length} Chains for account{' '}
-            </Heading>
-          </ValueLoader>
-          <Stack
-            marginBlockStart="xs"
-            width="100%"
-            style={{ maxWidth: `calc(100% - 15px)` }}
-          >
-            <ValueLoader isLoading={isLoading}>
-              <Text as="span" className={accountNameTextClass}>
-                {fungibleAccount?.accountName}
-              </Text>
-            </ValueLoader>
-          </Stack>
-        </Stack>
-
-        <CompactTable
-          isLoading={isLoading}
-          label="Keys table"
-          fields={[
-            {
-              label: 'ChainId',
-              key: 'chainId',
-              width: '10%',
-            },
-            {
-              variant: 'code',
-              label: 'Key',
-              key: 'key',
-              width: '40%',
-            },
-            {
-              label: 'Predicate',
-              key: 'predicate',
-              width: '20%',
-            },
-            {
-              label: 'Balance',
-              key: 'balance',
-              width: '30%',
-              align: 'end',
-              render: FormatAmount(),
-            },
-          ]}
-          data={keys}
-        />
-
-        <Stack
-          width="100%"
-          gap="md"
-          flexDirection={{ xs: 'column-reverse', md: 'row' }}
+        <Tabs
+          isCompact
+          isContained
+          selectedKey={selectedTab}
+          onSelectionChange={handleSelectedTab}
         >
-          <Stack flex={1} flexDirection="column" marginBlockStart="lg">
-            <Tabs
-              selectedKey={selectedTab}
-              onSelectionChange={handleSelectedTab}
-            >
-              {/* TODO enable when index for sender is fixed */}
-              {/* <TabItem
-              title={`Transactions`}
-              key="Transactions"
-            >
-              <AccountTransactionsTable accountName={accountName} />
-            </TabItem> */}
-              <TabItem title={`Transfers`} key="Transfers">
-                <AccountTransfersTable accountName={accountName} />
-              </TabItem>
-            </Tabs>
-          </Stack>
-        </Stack>
+          {/* <TabItem title={`Transactions`} key="Transactions">
+            <AccountTransactionsTable accountName={accountName} />
+          </TabItem> */}
+
+          <TabItem title="Account Guards" key="Keys">
+            <CompactTable
+              isLoading={isLoading}
+              label="Keys table"
+              fields={[
+                {
+                  label: 'ChainId',
+                  key: 'chainId',
+                  width: '10%',
+                },
+                {
+                  variant: 'code',
+                  label: 'Key',
+                  key: 'key',
+                  width: '40%',
+                },
+                {
+                  label: 'Predicate',
+                  key: 'predicate',
+                  width: '20%',
+                },
+                {
+                  label: 'Balance',
+                  key: 'balance',
+                  width: '30%',
+                  align: 'end',
+                  render: FormatAmount(),
+                },
+              ]}
+              data={keys}
+            />
+          </TabItem>
+          <TabItem title="Balance Distribution" key="Balance">
+            <AccountBalanceDistribution
+              accountName={accountName}
+              chains={fungibleAccount.chainAccounts ?? []}
+            />
+          </TabItem>
+          <TabItem title={`Transfers`} key="Transfers">
+            <AccountTransfersTable accountName={accountName} />
+          </TabItem>
+        </Tabs>
       </LayoutBody>
     </Layout>
   );

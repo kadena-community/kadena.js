@@ -68,7 +68,7 @@ const Height: React.FC = () => {
     );
 
   return (
-    <Layout>
+    <Layout layout="full">
       <LayoutHeader>Events</LayoutHeader>
       <LayoutBody>
         <CompactTable

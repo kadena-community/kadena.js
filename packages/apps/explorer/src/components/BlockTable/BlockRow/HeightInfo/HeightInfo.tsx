@@ -25,28 +25,24 @@ export const HeightInfo: FC<IProps> = ({ blockData }) => {
       width="100%"
       flexDirection="column"
     >
-      <Stack alignItems="center" paddingInlineEnd="md">
-        <DataRenderComponent
-          type="horizontal"
-          fields={[
-            {
-              key: 'Chain',
-              value: blockData.chainId.toString(10),
-            },
-            {
-              key: 'Height',
-              value: blockData.height.toString(),
-            },
-            {
-              key: 'Hash',
-              value: blockData.hash,
-              link: `${routes.BLOCK_DETAILS}/${blockData.hash}`,
-            },
-          ]}
-        />
-
-        <Stack flex={1} />
-      </Stack>
+      <DataRenderComponent
+        type="horizontal"
+        fields={[
+          {
+            key: 'Chain',
+            value: blockData.chainId.toString(10),
+          },
+          {
+            key: 'Height',
+            value: blockData.height.toString(),
+          },
+          {
+            key: 'Hash',
+            value: blockData.hash,
+            link: `${routes.BLOCK_DETAILS}/${blockData.hash}`,
+          },
+        ]}
+      />
 
       <BlockTransactions hash={blockData.hash} />
     </Stack>

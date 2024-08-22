@@ -92,7 +92,7 @@ const Block: React.FC = () => {
     );
 
   return (
-    <Layout>
+    <Layout layout="full">
       <LayoutHeader>
         Block{' '}
         <ValueLoader isLoading={isLoading}>
@@ -104,7 +104,12 @@ const Block: React.FC = () => {
       </LayoutHeader>
 
       <LayoutBody>
-        <Tabs selectedKey={selectedTab} onSelectionChange={handleSelectedTab}>
+        <Tabs
+          isCompact
+          isContained
+          selectedKey={selectedTab}
+          onSelectionChange={handleSelectedTab}
+        >
           <TabItem title="Header" key="Header">
             <DataRenderComponent
               isLoading={isLoading}

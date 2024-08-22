@@ -1,4 +1,10 @@
-import { atoms, recipe, responsiveStyle, token } from '@kadena/kode-ui/styles';
+import {
+  atoms,
+  recipe,
+  responsiveStyle,
+  token,
+  tokens,
+} from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const searchWrapperVariants = recipe({
@@ -37,13 +43,16 @@ export const layoutVariants = recipe({
   variants: {
     variant: {
       default: {
+        rowGap: tokens.kda.foundation.spacing.lg,
         gridTemplateAreas: `
-                'header header'
-                'aside aside'
-                'body  body'
-                `,
+        'header header'
+        'aside aside'
+        'body  body'
+        `,
         ...responsiveStyle({
           md: {
+            rowGap: 0,
+            columnGap: tokens.kda.foundation.spacing.sm,
             gridTemplateAreas: `
                 'header header'
                 'aside  body'

@@ -23,7 +23,7 @@ interface IProps {
   layout?: 'default' | 'full';
 }
 
-export const Layout: FC<IProps> = ({ children, layout = 'full' }) => {
+export const Layout: FC<IProps> = ({ children, layout = 'default' }) => {
   const {
     setSearchQuery,
     searchQuery,
