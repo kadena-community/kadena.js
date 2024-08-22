@@ -7,6 +7,7 @@ export const flexClass = style([
     gap: 'md',
   }),
   {
+    contain: 'inline-size',
     ...responsiveStyle({
       xs: {
         flexDirection: 'column',
