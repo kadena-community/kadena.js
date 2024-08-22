@@ -32,7 +32,6 @@ export const TransactionResultComponent: React.FC<{
   }
 
   if (!transaction) return;
-
   return (
     <>
       <DataRenderComponent
@@ -51,7 +50,7 @@ export const TransactionResultComponent: React.FC<{
 
       {transaction.__typename === 'TransactionResult' &&
         transaction.continuation &&
-        JSON.parse(transaction.continuation ?? '[]').step === 0 &&
+        JSON.parse(transaction.continuation ?? '{}').step === 0 &&
         !crosschainTransfer && (
           <DataRenderComponent
             isLoading={isLoading}
@@ -120,7 +119,7 @@ export const TransactionResultComponent: React.FC<{
             value: transaction.continuation && (
               <DataRenderComponent
                 fields={objectToDataRenderComponentFields({
-                  ...JSON.parse(transaction.continuation ?? '[]'),
+                  ...JSON.parse(transaction.continuation ?? '{}'),
                 })}
               />
             ),
