@@ -74,14 +74,6 @@ export default builder.prismaNode(Prisma.ModelName.Transfer, {
           if (parent.senderAccount !== '' && parent.receiverAccount !== '') {
             return null;
           }
-          // If it doesn't have a related transaction or pactid, it's not a crosschain transfer
-          // This usually doesn't happen, but TypeScript requires it as the db-schema doesn't define it
-          if (
-            parent.transaction?.pactId === null ||
-            parent.transaction?.pactId === undefined
-          ) {
-            return null;
-          }
 
           let where: Prisma.TransactionWhereInput = {};
 
@@ -94,6 +86,10 @@ export default builder.prismaNode(Prisma.ModelName.Transfer, {
           }
 
           if (parent.senderAccount === '') {
+            if (!parent.transaction?.pactId) {
+              console.log('this should not happen');
+              throw new Error('unexpected crosschain transfer');
+            }
             // this is the receiving side of the crosschain transfer
             // we're looking for a transaction that has the same requestKey as the pactId
             where = {

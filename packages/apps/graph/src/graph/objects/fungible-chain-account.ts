@@ -10,7 +10,7 @@ import { builder } from '../builder';
 import { fungibleAccountDetailsLoader } from '../data-loaders/fungible-account-details';
 import type { IFungibleChainAccount } from '../types/graphql-types';
 import { FungibleChainAccountName } from '../types/graphql-types';
-import { bigintSortFn } from './fungible-account';
+import { bigintSortFn } from '../../utils/bigintSortFn';
 import Guard from './guard';
 
 export default builder.node(
