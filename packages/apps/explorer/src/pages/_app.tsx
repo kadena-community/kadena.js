@@ -21,7 +21,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
   const ReactComponent = Component as ComponentType;
   const router = useRouter();
   useTheme();
-
+  useIphoneInputFix();
   return (
     <ToastProvider>
       <NetworkContextProvider>
@@ -37,9 +37,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
                   />
                 </Head>
 
-                <main>
-                  <ReactComponent {...pageProps} />
-                </main>
+                <ReactComponent {...pageProps} />
               </SearchContextProvider>
             </QueryContextProvider>
           </MediaContextProvider>

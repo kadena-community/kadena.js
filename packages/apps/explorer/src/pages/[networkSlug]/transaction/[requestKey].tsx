@@ -15,7 +15,6 @@ import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { transactionRequestKey } from '@/graphql/pages/transaction/transaction-requestkey.graph';
 import { useRouter } from '@/hooks/router';
-import { truncateValues } from '@/services/format';
 import { Card, TabItem, Tabs } from '@kadena/kode-ui';
 import React, { useEffect, useState } from 'react';
 
