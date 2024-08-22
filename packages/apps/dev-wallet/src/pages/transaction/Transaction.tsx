@@ -4,16 +4,20 @@ import {
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
 import { ICommand, createClient } from '@kadena/client';
-import { Button, Heading, Notification, Stack, Text } from '@kadena/kode-ui';
+import { MonoArrowBack, MonoArrowForward } from '@kadena/kode-icons/system';
+import { Box, Button, Notification, Stack, Text } from '@kadena/kode-ui';
 import { isSignedCommand } from '@kadena/pactjs';
+import classNames from 'classnames';
 import { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ReviewTransaction } from './components/ReviewTransaction';
 import { SubmittedStatus } from './components/SubmittedStatus';
+import { tabStyle } from './style.css';
 
 const steps: TransactionStatus[] = [
   'initiated',
   'signed',
+  'preflight',
   'submitted',
   'success',
   'failure',
@@ -38,6 +42,8 @@ export function Transaction() {
   const [step, setStep] = useState<TransactionStatus | null>(null);
   const [selectedTxIndex, setSelectedTxIndex] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
+  const [viewStep, setViewStep] = useState<'transaction' | 'result'>('result');
+  const navigate = useNavigate();
 
   const loadTxs = useCallback(async (groupId: string) => {
     const list = await transactionRepository.getTransactionsByGroup(groupId);
@@ -159,10 +165,42 @@ export function Transaction() {
 
   if (!Txs || !transaction || !groupId) return null;
 
-  if (['success', 'failure', 'submitted'].includes(step!)) {
+  const resultStep = ['success', 'failure', 'submitted'].includes(step!);
+
+  const Stepper = () => (
+    <Stack gap={'lg'}>
+      <button
+        className={classNames(
+          tabStyle,
+          !resultStep || viewStep === 'transaction' ? 'selected' : '',
+        )}
+        onClick={() => {
+          setViewStep('transaction');
+        }}
+      >
+        Transaction
+      </button>
+      <button
+        className={classNames(
+          tabStyle,
+          resultStep && viewStep === 'result' ? 'selected' : '',
+        )}
+        onClick={() => {
+          setViewStep('result');
+        }}
+      >
+        Result
+      </button>
+    </Stack>
+  );
+
+  if (
+    ['success', 'failure', 'submitted'].includes(step!) &&
+    viewStep === 'result'
+  ) {
     return (
       <Stack flexDirection={'column'} gap={'xl'}>
-        <Heading variant="h4">{step}</Heading>
+        <Stepper />
         <Stack gap={'lg'}>
           {Txs.map((tx) => (
             <SubmittedStatus key={tx.uuid} transaction={tx} />
@@ -173,10 +211,16 @@ export function Transaction() {
   }
   return (
     <Stack flexDirection={'column'} gap={'xl'}>
-      <Heading variant="h4">{step}</Heading>
-      <Text>
-        transaction {selectedTxIndex + 1}/{Txs.length}
-      </Text>
+      <Stepper />
+      <Stack alignItems={'center'}>
+        <Text>
+          transaction {selectedTxIndex + 1}/{Txs.length}
+        </Text>
+        <BrowseTxs
+          length={Txs.length}
+          setSelectedTxIndex={setSelectedTxIndex}
+        />
+      </Stack>
       {error && <Notification role="alert">{error}</Notification>}
       <ReviewTransaction
         transaction={transaction}
@@ -199,19 +243,65 @@ export function Transaction() {
               submitTxs(list);
             }
           }}
-          isDisabled={!Txs.every(isSignedCommand)}
+          isDisabled={
+            !Txs.every(isSignedCommand) ||
+            ['success', 'failure', 'submitted'].includes(step!)
+          }
         >
           Submit
         </Button>
         <Button
           variant="transparent"
           onClick={() => {
-            transactionRepository.deleteTransaction(transaction.uuid);
+            Txs.forEach((tx) => {
+              transactionRepository.deleteTransaction(tx.uuid);
+            });
+            navigate(`/transactions`);
           }}
+          isDisabled={['success', 'failure', 'submitted'].includes(step!)}
         >
           Reject
         </Button>
       </Stack>
     </Stack>
+  );
+}
+
+function BrowseTxs({
+  setSelectedTxIndex,
+  length,
+}: {
+  setSelectedTxIndex: React.Dispatch<React.SetStateAction<number>>;
+  length: number;
+}) {
+  return (
+    length > 1 && (
+      <Box>
+        <Button
+          variant="transparent"
+          isCompact
+          onClick={() => {
+            setSelectedTxIndex((selectedTxIndex) =>
+              selectedTxIndex === 0 ? selectedTxIndex : selectedTxIndex - 1,
+            );
+          }}
+        >
+          <MonoArrowBack />
+        </Button>
+        <Button
+          variant="transparent"
+          isCompact
+          onClick={() => {
+            setSelectedTxIndex((selectedTxIndex) =>
+              selectedTxIndex === length - 1
+                ? selectedTxIndex
+                : selectedTxIndex + 1,
+            );
+          }}
+        >
+          <MonoArrowForward />
+        </Button>
+      </Box>
+    )
   );
 }
