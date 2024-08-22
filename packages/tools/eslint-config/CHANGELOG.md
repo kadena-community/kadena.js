@@ -1,5 +1,12 @@
 # Change Log - @kadena-dev/eslint-config
 
+## 1.1.0
+
+### Minor Changes
+
+- abe3ec7: Disallow `enum`, use `<Record<string, string|number>>{} as const`
+  instead.
+
 ## 1.0.5
 
 ### Patch Changes

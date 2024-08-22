@@ -1,5 +1,21 @@
 # @kadena/explorer
 
+## 0.6.0
+
+### Minor Changes
+
+- 50c4cd5: fixing the caching of the home page block table
+- eb17e31: add functionality and styling of accountpage
+
+### Patch Changes
+
+- f2eaf1a: several minor IOS styling fixes
+- Updated dependencies \[c5c1605]
+- Updated dependencies \[27ecc26]
+  - @kadena/graph\@1.0.9
+  - @kadena/kode-ui\@0.14.1
+  - @kadena/kode-icons\@0.1.0
+
 ## 0.5.0
 
 ### Minor Changes

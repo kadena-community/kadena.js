@@ -1,5 +1,13 @@
 # @kadena/kode-ui
 
+## 0.14.1
+
+### Patch Changes
+
+- 27ecc26: Updated the CardPattern component to allow for more flexible
+  customization
+  - @kadena/kode-icons\@0.1.0
+
 ## 0.14.0
 
 ### Minor Changes
