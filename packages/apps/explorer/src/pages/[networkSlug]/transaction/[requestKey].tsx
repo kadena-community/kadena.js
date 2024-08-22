@@ -1,7 +1,5 @@
 import type { TransactionRequestKeyQuery } from '@/__generated__/sdk';
 import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
-import { cardClass } from '@/components/AccountCard/style.css';
-import { LayoutAside } from '@/components/Layout/components/LayoutAside';
 import { LayoutBody } from '@/components/Layout/components/LayoutBody';
 import { LayoutHeader } from '@/components/Layout/components/LayoutHeader';
 import { Layout } from '@/components/Layout/Layout';
@@ -68,18 +66,13 @@ const Transaction: React.FC = () => {
   }, [loading, data, error]);
 
   return (
-    <Layout>
+    <Layout layout="full">
       {innerData && innerData.transaction ? (
         <>
           <LayoutHeader>
             <ValueLoader isLoading={isLoading}>Transaction Details</ValueLoader>
           </LayoutHeader>
 
-          <LayoutAside>
-            <Card className={cardClass} fullWidth>
-              sdf
-            </Card>
-          </LayoutAside>
           <LayoutBody>
             <Tabs isCompact isContained>
               <TabItem title="Request" key="Request">
