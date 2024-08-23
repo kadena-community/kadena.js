@@ -207,7 +207,7 @@ const Block: React.FC = () => {
               <>
                 Transactions{' '}
                 <ValueLoader isLoading={isLoading} variant="icon">
-                  <Badge size="sm">
+                  <Badge style="highContrast" size="sm">
                     {innerData.block.transactions.totalCount}
                   </Badge>
                 </ValueLoader>

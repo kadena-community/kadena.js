@@ -146,7 +146,9 @@ const Account: FC = () => {
               <>
                 Account Guards{' '}
                 <ValueLoader isLoading={isLoading} variant="icon">
-                  <Badge size="sm">{keys.length}</Badge>
+                  <Badge style="highContrast" size="sm">
+                    {keys.length}
+                  </Badge>
                 </ValueLoader>
               </>
             }
