@@ -206,7 +206,6 @@ export const BlockTable: React.FC = () => {
     ]);
   }, []);
 
-  console.log(inView);
   return (
     <>
       <span ref={ref} style={{ height: 1 }} />

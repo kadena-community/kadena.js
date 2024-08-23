@@ -4,10 +4,11 @@ import { globalStyle, style } from '@vanilla-extract/css';
 export const descriptionListClass = style([
   atoms({
     display: 'grid',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   }),
   {
     gap: `${tokens.kda.foundation.spacing.sm} ${tokens.kda.foundation.spacing.lg}`,
-    justifyContent: 'start',
   },
 ]);
 

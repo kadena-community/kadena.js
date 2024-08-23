@@ -83,6 +83,7 @@ const Transaction: React.FC = () => {
               </TabItem>
               <TabItem title="Result" key="Result">
                 <TransactionResultComponent
+                  requestKey={innerData.transaction.hash}
                   isLoading={isLoading}
                   transaction={innerData.transaction?.result}
                 />
