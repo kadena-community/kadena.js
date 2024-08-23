@@ -2,7 +2,10 @@ import type { BlockQuery } from '@/__generated__/sdk';
 import { useBlockQuery } from '@/__generated__/sdk';
 import { BlockTransactions } from '@/components/BlockTransactions/BlockTransactions';
 import { DataRenderComponent } from '@/components/DataRenderComponent/DataRenderComponent';
+import { LayoutAside } from '@/components/Layout/components/LayoutAside';
+import { LayoutAsideContentBlock } from '@/components/Layout/components/LayoutAsideContentBlock';
 import { LayoutBody } from '@/components/Layout/components/LayoutBody';
+import { LayoutCard } from '@/components/Layout/components/LayoutCard';
 import { LayoutHeader } from '@/components/Layout/components/LayoutHeader';
 import { Layout } from '@/components/Layout/Layout';
 import { loadingData } from '@/components/LoadingSkeleton/loadingData/loadingDataBlockquery';
@@ -13,7 +16,6 @@ import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { block } from '@/graphql/queries/block.graph';
 import { useRouter } from '@/hooks/router';
-import { truncateValues } from '@/services/format';
 import { Badge, TabItem, Tabs } from '@kadena/kode-ui';
 import type { Key } from 'react';
 import React, { useEffect, useState } from 'react';
@@ -92,16 +94,29 @@ const Block: React.FC = () => {
     );
 
   return (
-    <Layout layout="full">
-      <LayoutHeader>
-        Block{' '}
-        <ValueLoader isLoading={isLoading}>
-          {truncateValues(innerData.block.hash, {
-            length: 16,
-            endChars: 5,
-          })}
-        </ValueLoader>
-      </LayoutHeader>
+    <Layout>
+      <LayoutHeader>Block Hash Details</LayoutHeader>
+
+      <LayoutAside>
+        <LayoutCard>
+          <LayoutAsideContentBlock
+            isLoading={isLoading}
+            label="Block Height"
+            body={`${innerData.block.height.toString()}`}
+          />
+
+          <LayoutAsideContentBlock
+            isLoading={isLoading}
+            label="Creation Time"
+            body={innerData.block.creationTime}
+          />
+          <LayoutAsideContentBlock
+            isLoading={isLoading}
+            label="Chain"
+            body={`${innerData.block.chainId}`}
+          />
+        </LayoutCard>
+      </LayoutAside>
 
       <LayoutBody>
         <Tabs
@@ -111,26 +126,6 @@ const Block: React.FC = () => {
           onSelectionChange={handleSelectedTab}
         >
           <TabItem title="Header" key="Header">
-            <DataRenderComponent
-              isLoading={isLoading}
-              type="horizontal"
-              fields={[
-                {
-                  key: 'Chain',
-                  value: innerData.block.chainId,
-                },
-                {
-                  key: 'Height',
-                  value: innerData.block.height.toString(),
-                },
-                {
-                  key: 'Creation Time',
-                  value: new Date(
-                    innerData.block.creationTime,
-                  ).toLocaleString(),
-                },
-              ]}
-            />
             <DataRenderComponent
               isLoading={isLoading}
               fields={[
