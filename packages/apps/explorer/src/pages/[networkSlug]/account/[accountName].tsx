@@ -11,13 +11,14 @@ import { LayoutCard } from '@/components/Layout/components/LayoutCard';
 import { LayoutHeader } from '@/components/Layout/components/LayoutHeader';
 import { Layout } from '@/components/Layout/Layout';
 import { loadingData } from '@/components/LoadingSkeleton/loadingData/loadingDataAccountquery';
+import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
 import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { account } from '@/graphql/queries/account.graph';
 import { useRouter } from '@/hooks/router';
-import { TabItem, Tabs } from '@kadena/kode-ui';
+import { Badge, TabItem, Tabs } from '@kadena/kode-ui';
 import type { FC, Key } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
 
@@ -140,7 +141,17 @@ const Account: FC = () => {
             <AccountTransactionsTable accountName={accountName} />
           </TabItem> */}
 
-          <TabItem title="Account Guards" key="Keys">
+          <TabItem
+            title={
+              <>
+                Account Guards{' '}
+                <ValueLoader isLoading={isLoading} variant="icon">
+                  <Badge size="sm">{keys.length}</Badge>
+                </ValueLoader>
+              </>
+            }
+            key="Keys"
+          >
             <CompactTable
               isLoading={isLoading}
               label="Keys table"
