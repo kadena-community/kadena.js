@@ -5,7 +5,7 @@ import {
   token,
   tokens,
 } from '@kadena/kode-ui/styles';
-import { style } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 export const searchWrapperVariants = recipe({
   variants: {
@@ -83,9 +83,28 @@ export const bodyClass = style({
   gridArea: 'body',
 });
 
-export const asideClass = style({
-  gridArea: 'aside',
-});
+export const asideClass = style([
+  atoms({
+    flexDirection: 'column',
+    gap: 'sm',
+  }),
+  {
+    gridArea: 'aside',
+  },
+]);
 export const headerClass = style({
   gridArea: 'header',
+});
+
+export const cardClass = style({});
+
+globalStyle(`${cardClass}`, {
+  padding: tokens.kda.foundation.spacing.md,
+  alignSelf: 'flex-start',
+});
+
+globalStyle(`${cardClass} canvas`, {
+  width: '100%!important',
+  height: 'auto!important',
+  aspectRatio: '1/1',
 });
