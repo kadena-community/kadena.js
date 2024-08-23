@@ -1,12 +1,13 @@
 import type { AccountQuery } from '@/__generated__/sdk';
 import { useAccountQuery } from '@/__generated__/sdk';
+import { AccountAside } from '@/components/AccountAside/AccountAside';
 import { AccountBalanceDistribution } from '@/components/AccountBalanceDistribution/AccountBalanceDistribution';
-import { AccountCard } from '@/components/AccountCard/AccountCard';
 import { AccountTransfersTable } from '@/components/AccountTransfersTable/AccountTransfersTable';
 import { CompactTable } from '@/components/CompactTable/CompactTable';
 import { FormatAmount } from '@/components/CompactTable/utils/formatAmount';
 import { LayoutAside } from '@/components/Layout/components/LayoutAside';
 import { LayoutBody } from '@/components/Layout/components/LayoutBody';
+import { LayoutCard } from '@/components/Layout/components/LayoutCard';
 import { LayoutHeader } from '@/components/Layout/components/LayoutHeader';
 import { Layout } from '@/components/Layout/Layout';
 import { loadingData } from '@/components/LoadingSkeleton/loadingData/loadingDataAccountquery';
@@ -123,7 +124,9 @@ const Account: FC = () => {
     <Layout>
       <LayoutHeader>Account Details</LayoutHeader>
       <LayoutAside>
-        <AccountCard isLoading={isLoading} account={fungibleAccount} />
+        <LayoutCard>
+          <AccountAside isLoading={isLoading} account={fungibleAccount} />
+        </LayoutCard>
       </LayoutAside>
 
       <LayoutBody>
