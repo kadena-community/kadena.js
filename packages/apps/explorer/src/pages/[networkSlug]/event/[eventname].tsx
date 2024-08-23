@@ -2,6 +2,7 @@ import type { EventsQuery } from '@/__generated__/sdk';
 import { useEventsQuery } from '@/__generated__/sdk';
 import { CompactTable } from '@/components/CompactTable/CompactTable';
 import { FormatLink } from '@/components/CompactTable/utils/formatLink';
+import { EventFilter } from '@/components/EventFilter/EventFilter';
 import { LayoutAside } from '@/components/Layout/components/LayoutAside';
 import { LayoutBody } from '@/components/Layout/components/LayoutBody';
 import { LayoutCard } from '@/components/Layout/components/LayoutCard';
@@ -11,23 +12,13 @@ import { loadingEventData } from '@/components/LoadingSkeleton/loadingData/loadi
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
 import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
-import { CONSTANTS } from '@/constants/constants';
 import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { block } from '@/graphql/queries/block.graph';
 import { useRouter } from '@/hooks/router';
-import {
-  Badge,
-  Button,
-  Heading,
-  Select,
-  SelectItem,
-  Stack,
-  TabItem,
-  Tabs,
-  TextField,
-} from '@kadena/kode-ui';
+import { Badge, TabItem, Tabs } from '@kadena/kode-ui';
 
+import type { FormEventHandler } from 'react';
 import React, { useEffect, useState } from 'react';
 
 const Height: React.FC = () => {
@@ -73,6 +64,11 @@ const Height: React.FC = () => {
     }
   }, [loading, data, error]);
 
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    console.log(e);
+  };
+
   if (!innerData || !innerData.events.edges.length)
     return (
       <Layout layout="full">
@@ -87,17 +83,7 @@ const Height: React.FC = () => {
       <LayoutHeader>Events</LayoutHeader>
       <LayoutAside>
         <LayoutCard>
-          <Heading as="h5">Filters</Heading>
-          <TextField label="Chains" placeholder="1, 2, 3, ..."></TextField>
-
-          <Stack width="100%" justifyContent="space-between">
-            <Button isCompact variant="outlined">
-              Reset
-            </Button>
-            <Button isCompact variant="primary">
-              Apply
-            </Button>
-          </Stack>
+          <EventFilter handleSubmit={handleSubmit} />
         </LayoutCard>
       </LayoutAside>
       <LayoutBody>
@@ -119,25 +105,20 @@ const Height: React.FC = () => {
               isLoading={isLoading}
               fields={[
                 {
-                  label: 'ChainId',
-                  key: 'node.chainId',
-                  width: '20%',
-                },
-                {
                   label: 'Height',
                   key: 'node.block.height',
-                  width: '20%',
+                  width: '15%',
                 },
                 {
                   label: 'RequestKey',
                   key: 'node.requestKey',
-                  width: '20%',
+                  width: '40%',
                   render: FormatLink({ appendUrl: '/transaction' }),
                 },
                 {
                   label: 'Parameters',
                   key: 'node.parameters',
-                  width: '40%',
+                  width: '45%',
                 },
               ]}
               data={innerData.events.edges}
