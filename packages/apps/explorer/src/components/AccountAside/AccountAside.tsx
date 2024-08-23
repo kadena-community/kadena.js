@@ -4,6 +4,7 @@ import { Stack, Text } from '@kadena/kode-ui';
 import type { FC, PropsWithChildren } from 'react';
 import React, { useEffect, useState } from 'react';
 import { QRCode } from 'react-qrcode-logo';
+import { LayoutAsideContentBlock } from '../Layout/components/LayoutAsideContentBlock';
 import { Media } from '../Layout/media';
 import { ValueLoader } from '../LoadingSkeleton/ValueLoader/ValueLoader';
 
@@ -31,19 +32,12 @@ export const AccountAside: FC<IProps> = ({ account, isLoading }) => {
         <QRCode ecLevel="L" size={200} value={`${route}`} />
       </Media>
 
-      <Stack as="span" marginBlock="md" />
-
-      <Text>Overall Balance</Text>
-      <Stack gap="xs">
-        <ValueLoader isLoading={isLoading}>
-          <Text variant="code" bold>
-            {account?.totalBalance}
-          </Text>
-          <Text variant="ui" bold>
-            KDA
-          </Text>
-        </ValueLoader>
-      </Stack>
+      <Stack as="span" marginBlock="xs" />
+      <LayoutAsideContentBlock
+        isLoading={isLoading}
+        label="Overall Balance"
+        body={`${account?.totalBalance} KDA`}
+      />
     </Stack>
   );
 };
