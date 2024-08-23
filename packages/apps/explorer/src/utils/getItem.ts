@@ -19,10 +19,7 @@ export interface IFieldCellProps {
  * @param key
  * @returns
  */
-export const getItem = (
-  item: IFieldCellProps['item'],
-  key: ITableField['key'],
-) => {
+export const getItem = (item: IFieldCellProps['item'], key: string) => {
   const keyArr = key.split('.');
   const value = keyArr.reduce((acc, val) => {
     if (!acc) return;

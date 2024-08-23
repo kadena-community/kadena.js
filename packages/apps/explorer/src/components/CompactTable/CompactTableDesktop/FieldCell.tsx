@@ -18,8 +18,8 @@ export const FieldCell: FC<IFieldCellProps> = ({
   isLoading = false,
 }) => {
   if (
-    (typeof field.key === 'string' && typeof field.render === 'function') ||
-    !field.render
+    typeof field.key === 'string' &&
+    (typeof field.render === 'function' || !field.render)
   ) {
     const Render = field.render ? field.render : FormatDefault();
 

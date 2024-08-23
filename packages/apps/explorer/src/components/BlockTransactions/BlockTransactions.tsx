@@ -7,8 +7,8 @@ import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import { CompactTable } from '../CompactTable/CompactTable';
 import { FormatJsonParse, FormatLink } from '../CompactTable/utils/formatLink';
+import { formatMultiStepTx } from '../CompactTable/utils/formatMultiStepTx';
 import { FormatStatus } from '../CompactTable/utils/formatStatus';
-import { formatXChainTX } from '../CompactTable/utils/formatXChainTX';
 import { useToast } from '../Toast/ToastContext/ToastContext';
 import { loadingData } from './loadingDataBlocktransactionsquery';
 import { noTransactionsTitleClass } from './styles.css';
@@ -86,7 +86,7 @@ export const BlockTransactions: FC<IProps> = ({ hash }) => {
           key: ['result.goodResult', 'result.continuation'],
           variant: 'code',
           width: '10%',
-          render: [FormatStatus(), formatXChainTX()],
+          render: [FormatStatus(), formatMultiStepTx()],
           loaderVariant: 'icon',
         },
         {

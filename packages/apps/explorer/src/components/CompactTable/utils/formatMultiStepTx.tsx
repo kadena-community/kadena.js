@@ -6,9 +6,9 @@ interface IProps {
   value: string;
 }
 
-export const formatXChainTX = (): FC<IProps> => {
+export const formatMultiStepTx = (): FC<IProps> => {
   const Component: FC<IProps> = ({ value }) => {
-    return value ? <MonoAirlineStops /> : undefined;
+    return value ? <MonoAirlineStops title="Multistep Tx" /> : undefined;
   };
   return Component;
 };
