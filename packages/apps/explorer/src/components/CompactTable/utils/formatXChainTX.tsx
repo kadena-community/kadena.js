@@ -8,9 +8,7 @@ interface IProps {
 
 export const formatXChainTX = (): FC<IProps> => {
   const Component: FC<IProps> = ({ value }) => {
-    return value.includes('coin.transfer-crosschain') ? (
-      <MonoAirlineStops title="Crosschain Transfer" />
-    ) : undefined;
+    return value ? <MonoAirlineStops /> : undefined;
   };
   return Component;
 };

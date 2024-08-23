@@ -83,7 +83,7 @@ export const BlockTransactions: FC<IProps> = ({ hash }) => {
       fields={[
         {
           label: 'Status',
-          key: ['result.goodResult', 'cmd.payload.code'],
+          key: ['result.goodResult', 'result.continuation'],
           variant: 'code',
           width: '10%',
           render: [FormatStatus(), formatXChainTX()],
