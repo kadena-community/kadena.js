@@ -9,14 +9,14 @@ import { LayoutCard } from '@/components/Layout/components/LayoutCard';
 import { LayoutHeader } from '@/components/Layout/components/LayoutHeader';
 import { Layout } from '@/components/Layout/Layout';
 import { loadingEventData } from '@/components/LoadingSkeleton/loadingData/loadingDataEventquery';
-import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
+
 import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { block } from '@/graphql/queries/block.graph';
 import { useRouter } from '@/hooks/router';
-import { Badge, TabItem, Tabs } from '@kadena/kode-ui';
+import { TabItem, Tabs } from '@kadena/kode-ui';
 
 import type { FormEventHandler } from 'react';
 import React, { useEffect, useState } from 'react';
@@ -88,19 +88,7 @@ const Height: React.FC = () => {
       </LayoutAside>
       <LayoutBody>
         <Tabs isCompact isContained>
-          <TabItem
-            title={
-              <>
-                1{' '}
-                <ValueLoader isLoading={isLoading} variant="icon">
-                  <Badge style="highContrast" size="sm">
-                    {innerData.events.edges.length}
-                  </Badge>
-                </ValueLoader>
-              </>
-            }
-            key="chain"
-          >
+          <TabItem title={1} key="chain">
             <CompactTable
               isLoading={isLoading}
               fields={[

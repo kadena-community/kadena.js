@@ -8,7 +8,7 @@ import {
   TextField,
 } from '@kadena/kode-ui';
 import type { FC, FormEventHandler, MouseEventHandler } from 'react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 interface IProps {
   handleSubmit: FormEventHandler<HTMLFormElement>;
@@ -47,11 +47,28 @@ export const EventFilter: FC<IProps> = ({ handleSubmit }) => {
         return newValue;
       });
     }
+
+    const heightMinInt = heightMin && parseInt(heightMin);
+    if (heightMin && Number.isNaN(heightMinInt)) {
+      setErrors((v) => ({
+        ...v,
+        heightMin: 'Only numbers',
+      }));
+    } else {
+      setErrors((v) => {
+        const newValue = { ...v };
+        delete newValue.heightMin;
+        return newValue;
+      });
+    }
   };
+
   const handleReset: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
     if (!formRef.current) return;
     formRef.current.reset();
+    setErrors({});
+    setValues({});
   };
 
   const activeFilterCount = Object.entries(values).filter((v) => {
@@ -73,6 +90,8 @@ export const EventFilter: FC<IProps> = ({ handleSubmit }) => {
             name="heightMin"
             label="Block Height min."
             placeholder="123456"
+            variant={errors.heightMin ? 'negative' : 'default'}
+            errorMessage={errors.heightMin}
             endAddon={
               <>
                 <Button
@@ -96,6 +115,8 @@ export const EventFilter: FC<IProps> = ({ handleSubmit }) => {
             name="heightMax"
             label="Block Height max."
             placeholder="123456"
+            variant={errors.heightMax ? 'negative' : 'default'}
+            errorMessage={errors.heightMax}
             endAddon={
               <>
                 <Button
@@ -129,7 +150,7 @@ export const EventFilter: FC<IProps> = ({ handleSubmit }) => {
                   <Badge size="sm" style="inverse">
                     {activeFilterCount.length}
                   </Badge>
-                ) : null
+                ) : undefined
               }
             >
               Apply
