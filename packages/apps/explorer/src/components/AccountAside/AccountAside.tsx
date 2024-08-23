@@ -1,12 +1,12 @@
 import type { AccountQuery } from '@/__generated__/sdk';
 import { useRouter } from '@/hooks/router';
-import { Stack, Text } from '@kadena/kode-ui';
+import { Stack } from '@kadena/kode-ui';
 import type { FC, PropsWithChildren } from 'react';
 import React, { useEffect, useState } from 'react';
 import { QRCode } from 'react-qrcode-logo';
 import { LayoutAsideContentBlock } from '../Layout/components/LayoutAsideContentBlock';
+import { smallCardClass } from '../Layout/components/styles.css';
 import { Media } from '../Layout/media';
-import { ValueLoader } from '../LoadingSkeleton/ValueLoader/ValueLoader';
 
 interface IProps extends PropsWithChildren {
   account: AccountQuery['fungibleAccount'];
@@ -22,22 +22,23 @@ export const AccountAside: FC<IProps> = ({ account, isLoading }) => {
   }, [router]);
 
   return (
-    <Stack flexDirection={{ xs: 'row', md: 'column' }} gap="xs" width="100%">
+    <>
       <Media greaterThanOrEqual="md">
-        <Stack>
+        <Stack justifyContent="center" width="100%">
           <QRCode ecLevel="L" size={250} value={`${route}`} />
         </Stack>
       </Media>
-      <Media lessThan="md">
-        <QRCode ecLevel="L" size={200} value={`${route}`} />
+      <Media lessThan="md" className={smallCardClass}>
+        <Stack justifyContent="center" width="100%">
+          <QRCode ecLevel="L" size={200} value={`${route}`} />
+        </Stack>
       </Media>
 
-      <Stack as="span" marginBlock="xs" />
       <LayoutAsideContentBlock
         isLoading={isLoading}
         label="Overall Balance"
         body={`${account?.totalBalance} KDA`}
       />
-    </Stack>
+    </>
   );
 };

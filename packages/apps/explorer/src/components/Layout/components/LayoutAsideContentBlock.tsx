@@ -1,6 +1,6 @@
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
 import { Stack, Text } from '@kadena/kode-ui';
-import type { FC, PropsWithChildren } from 'react';
+import type { FC } from 'react';
 import React from 'react';
 import {
   asideContentBlockClass,

@@ -1,4 +1,4 @@
-import { atoms, tokens } from '@kadena/kode-ui/styles';
+import { atoms, responsiveStyle, tokens } from '@kadena/kode-ui/styles';
 import { createVar, style } from '@vanilla-extract/css';
 
 export const $$pageWidth = createVar();
@@ -29,7 +29,21 @@ export const asideContentBlockClass = style([
   {
     alignSelf: 'self-start',
     backgroundColor: tokens.kda.foundation.color.background.base.default,
+    flexGrow: 0,
+    flexShrink: 0,
+    flexBasis: '49.3%',
   },
+  responsiveStyle({
+    xs: {
+      alignSelf: 'flex-start',
+    },
+    sm: {
+      alignSelf: 'auto',
+    },
+    md: {
+      alignSelf: 'flex-start',
+    },
+  }),
 ]);
 export const asideContentBlockLabelClass = style([
   atoms({
