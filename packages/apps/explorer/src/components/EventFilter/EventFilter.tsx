@@ -10,7 +10,8 @@ import {
 import type { FC, FormEventHandler, MouseEventHandler } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 import { NumberInput } from './components/NumberInput';
-import { IErrors, IValues, validate } from './utils/validation';
+import type { IErrors, IValues } from './utils/validation';
+import { validate } from './utils/validation';
 
 interface IProps {
   onSubmit: (values: Record<string, string | undefined>) => void;
@@ -32,6 +33,8 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
     }, '');
 
     const route = router.asPath.split('?');
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     router.push(`${route[0]}?${queryString}`);
   };
 

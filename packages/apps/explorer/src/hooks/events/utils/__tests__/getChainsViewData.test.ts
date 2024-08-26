@@ -1,4 +1,4 @@
-import { EventsQuery } from '@/__generated__/sdk';
+import type { EventsQuery } from '@/__generated__/sdk';
 import { getChainsViewData } from '../getChainsViewData';
 
 describe('getChainsViewData', () => {
