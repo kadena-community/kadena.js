@@ -4,7 +4,7 @@ import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { block } from '@/graphql/queries/block.graph';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useEventsPerChainQuery } from '../eventsPerChainQuery';
 import { useRouter } from '../router';
 import { createArrayOfChains } from './utils/createArrayOfChains';
@@ -81,14 +81,17 @@ export const useEvents = () => {
     }
   }, [loading, chainsLoading, data, chainsData, error, chainsError]);
 
-  const handleSubmit = (values: Record<string, string | undefined>): void => {
-    setIsLoading(true);
-    setInnerData([getLoadingData()]);
-    const chainsArray: number[] = createArrayOfChains(values.chains);
-    setSelectedChains(chainsArray);
-    setMinHeight(values.minHeight ? parseInt(values.minHeight) : undefined);
-    setMaxHeight(values.maxHeight ? parseInt(values.maxHeight) : undefined);
-  };
+  const handleSubmit = useCallback(
+    (values: Record<string, string | undefined>): void => {
+      setIsLoading(true);
+      setInnerData([getLoadingData()]);
+      const chainsArray: number[] = createArrayOfChains(values.chains);
+      setSelectedChains(chainsArray);
+      setMinHeight(values.minHeight ? parseInt(values.minHeight) : undefined);
+      setMaxHeight(values.maxHeight ? parseInt(values.maxHeight) : undefined);
+    },
+    [selectedChains, minHeight, maxHeight],
+  );
 
   return {
     handleSubmit,

@@ -8,7 +8,7 @@ import {
   TextField,
 } from '@kadena/kode-ui';
 import type { FC, FormEventHandler, MouseEventHandler } from 'react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { NumberInput } from './components/NumberInput';
 import type { IErrors, IValues } from './utils/validation';
 import { validate } from './utils/validation';
@@ -38,22 +38,25 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
     router.push(`${route[0]}?${queryString}`);
   };
 
-  const handleChange: FormEventHandler<HTMLFormElement> = (e) => {
+  const handleChange = (target?: HTMLInputElement) => {
     if (!formRef.current) return;
+
+    if (!target) return;
+
+    setValues((v) => ({
+      ...v,
+      [target.name]: target.value,
+    }));
+
     const data = new FormData(formRef.current);
+
     const chains = data.get('chains')?.toString().trim();
     const minHeight = data.get('minHeight')?.toString().trim();
     const maxHeight = data.get('maxHeight')?.toString().trim();
 
-    setValues({
-      chains,
-      minHeight,
-      maxHeight,
-    });
-
     // validation
-    setErrors((values) =>
-      validate(values, {
+    setErrors((errors) =>
+      validate(errors, {
         chains,
         minHeight,
         maxHeight,
@@ -75,26 +78,33 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
     }
   }, [router.asPath]);
 
-  const handleReset: MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.preventDefault();
-    if (!formRef.current) return;
-    formRef.current.reset();
-    setErrors({});
-    setValues({});
-  };
+  const handleReset: MouseEventHandler<HTMLButtonElement> = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (!formRef.current) return;
+      formRef.current.reset();
+
+      setTimeout(() => {
+        formRef.current?.reset();
+      }, 0);
+      setErrors({});
+      setValues({});
+
+      const route = router.asPath.split('?');
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      router.push(`${route[0]}`);
+    },
+    [router.asPath],
+  );
 
   const activeFilterCount = Object.entries(values).filter((v) => {
     return v[1];
   });
+
   return (
     <>
       <Heading as="h5">Filters</Heading>
-      <Form
-        validationErrors={errors}
-        ref={formRef}
-        onSubmit={handleFormSubmit}
-        onChange={handleChange}
-      >
+      <Form validationErrors={errors} ref={formRef} onSubmit={handleFormSubmit}>
         <Stack flexDirection="column" gap="xl">
           <TextField
             value={values.chains}
@@ -102,6 +112,7 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
             label="Chains"
             placeholder="1, 2, 3, ..."
             variant={errors.chains ? 'negative' : 'default'}
+            onChange={(e) => handleChange(e.target)}
             errorMessage={errors.chains}
           ></TextField>
           <NumberInput
@@ -109,6 +120,7 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
             name="minHeight"
             label="Block Height min."
             placeholder="123456"
+            onChange={handleChange}
             error={errors.minHeight}
           />
           <NumberInput
@@ -116,6 +128,7 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
             name="maxHeight"
             label="Block Height max."
             placeholder="123456"
+            onChange={handleChange}
             error={errors.maxHeight}
           />
 

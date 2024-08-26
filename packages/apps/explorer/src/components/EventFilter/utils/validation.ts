@@ -42,7 +42,7 @@ export const validateMinLesserThanMax = (
   maxVal: string | undefined,
   errors: IErrors,
 ): IErrors => {
-  if (minVal && maxVal && minVal > maxVal) {
+  if (minVal && maxVal && parseInt(minVal) > parseInt(maxVal)) {
     return {
       ...errors,
       maxHeight: 'Height min. can not be larger than the Height max',
