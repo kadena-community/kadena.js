@@ -1,5 +1,12 @@
 # @kadena/kode-ui
 
+## 0.14.2
+
+### Patch Changes
+
+- 8121019: Fixed Card Pattern heading and responsive styles
+- a5db08b: Updated primaryFont and secondaryFont to Inter
+
 ## 0.14.1
 
 ### Patch Changes

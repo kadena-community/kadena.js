@@ -1,5 +1,20 @@
 # @kadena/explorer
 
+## 0.7.0
+
+### Minor Changes
+
+- fb12a2e: style the transition page
+- 9afb0c5: add ability to finish the crosschain transfer
+- e57350b: style the block hash page
+- 2dbe962: show an indicator icon if transaction is crosschain
+
+### Patch Changes
+
+- Updated dependencies \[8121019]
+- Updated dependencies \[a5db08b]
+  - @kadena/kode-ui\@0.14.2
+
 ## 0.6.0
 
 ### Minor Changes
