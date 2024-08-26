@@ -1,8 +1,7 @@
 import { MonoAdd, MonoRemove } from '@kadena/kode-icons/system';
-import type { PressEvent } from '@kadena/kode-ui';
 import { Button, TextField } from '@kadena/kode-ui';
 import type { FC } from 'react';
-import React, { useCallback, useRef } from 'react';
+import React, { useRef } from 'react';
 
 interface IProps {
   name: string;
