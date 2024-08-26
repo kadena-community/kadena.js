@@ -29,7 +29,7 @@ const Height: React.FC = () => {
               title={chainData.chainId ? chainData.chainId : '-'}
               key={`chain${chainData.chainId}`}
             >
-              {chainData.query.edges.length === 0 ? (
+              {chainData.data.edges.length === 0 ? (
                 <NoSearchResults />
               ) : (
                 <CompactTable
@@ -52,7 +52,7 @@ const Height: React.FC = () => {
                       width: '45%',
                     },
                   ]}
-                  data={chainData.query.edges}
+                  data={chainData.data.edges}
                 />
               )}
             </TabItem>

@@ -9,6 +9,7 @@ interface IProps {
   label: string;
   placeholder: string;
   error: string;
+  value?: string;
 }
 
 export const NumberInput: FC<IProps> = ({
@@ -16,6 +17,8 @@ export const NumberInput: FC<IProps> = ({
   label,
   placeholder,
   error,
+
+  value,
   ...props
 }) => {
   const ref = useRef<HTMLInputElement | null>(null);
@@ -28,8 +31,10 @@ export const NumberInput: FC<IProps> = ({
     if (!ref.current) return;
     ref.current.value = `${parseInt(ref.current.value ?? '0') + 1}`;
   };
+
   return (
     <TextField
+      value={value}
       ref={ref}
       name={name}
       label={label}

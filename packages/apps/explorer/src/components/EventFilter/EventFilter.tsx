@@ -1,3 +1,4 @@
+import { useRouter } from '@/hooks/router';
 import {
   Badge,
   Button,
@@ -7,25 +8,34 @@ import {
   TextField,
 } from '@kadena/kode-ui';
 import type { FC, FormEventHandler, MouseEventHandler } from 'react';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { NumberInput } from './components/NumberInput';
+import { IErrors, IValues, validate } from './utils/validation';
 
 interface IProps {
   onSubmit: (values: Record<string, string | undefined>) => void;
 }
 
 export const EventFilter: FC<IProps> = ({ onSubmit }) => {
+  const router = useRouter();
   const formRef = useRef<HTMLFormElement | null>(null);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [values, setValues] = useState<Record<string, string | undefined>>({});
+  const [errors, setErrors] = useState<IErrors>({});
+  const [values, setValues] = useState<IValues>({});
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+  const handleFormSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    onSubmit(values);
+
+    const queryString = Object.entries(values).reduce((acc, val) => {
+      if (!val[1]) return acc;
+
+      return `${acc}&${val[0]}=${val[1]}`;
+    }, '');
+
+    const route = router.asPath.split('?');
+    router.push(`${route[0]}?${queryString}`);
   };
 
   const handleChange: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
     if (!formRef.current) return;
     const data = new FormData(formRef.current);
     const chains = data.get('chains')?.toString().trim();
@@ -39,60 +49,28 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
     });
 
     // validation
-    const chainRegExp = new RegExp(/^\d+(?:\s*,\s*\d+)*\s*,?$/);
-    if (chains?.length && !chains?.match(chainRegExp)) {
-      setErrors((v) => ({
-        ...v,
-        chains: 'Only numbers or a comma separated string of numbers',
-      }));
-    } else {
-      setErrors((v) => {
-        const newValue = { ...v };
-        delete newValue.chains;
-        return newValue;
-      });
-    }
-
-    const minHeightInt = minHeight && parseInt(minHeight);
-    const maxHeightInt = maxHeight && parseInt(maxHeight);
-
-    if (
-      minHeight &&
-      (Number.isNaN(minHeightInt) || (minHeightInt && minHeightInt < 0))
-    ) {
-      setErrors((v) => ({
-        ...v,
-        minHeight: 'Only numbers',
-      }));
-    } else {
-      setErrors((v) => {
-        const newValue = { ...v };
-        delete newValue.minHeight;
-        return newValue;
-      });
-    }
-
-    if (maxHeight && minHeight && minHeight > maxHeight) {
-      setErrors((v) => ({
-        ...v,
-        maxHeight: 'Height min. can not be larger than the Height max',
-      }));
-    } else if (
-      maxHeight &&
-      (Number.isNaN(maxHeightInt) || (maxHeightInt && maxHeightInt < 0))
-    ) {
-      setErrors((v) => ({
-        ...v,
-        maxHeight: 'Only numbers',
-      }));
-    } else {
-      setErrors((v) => {
-        const newValue = { ...v };
-        delete newValue.maxHeight;
-        return newValue;
-      });
-    }
+    setErrors((values) =>
+      validate(values, {
+        chains,
+        minHeight,
+        maxHeight,
+      }),
+    );
   };
+
+  useEffect(() => {
+    const innerValues = {
+      chains: router.query.chains as string,
+      minHeight: router.query.minHeight as string,
+      maxHeight: router.query.maxHeight as string,
+    };
+    const startingErrors = validate({}, innerValues);
+    setValues(innerValues);
+
+    if (!Object.keys(startingErrors).length) {
+      onSubmit(innerValues);
+    }
+  }, [router.asPath]);
 
   const handleReset: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
@@ -108,9 +86,15 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
   return (
     <>
       <Heading as="h5">Filters</Heading>
-      <Form ref={formRef} onSubmit={handleSubmit} onChange={handleChange}>
+      <Form
+        validationErrors={errors}
+        ref={formRef}
+        onSubmit={handleFormSubmit}
+        onChange={handleChange}
+      >
         <Stack flexDirection="column" gap="xl">
           <TextField
+            value={values.chains}
             name="chains"
             label="Chains"
             placeholder="1, 2, 3, ..."
@@ -118,12 +102,14 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
             errorMessage={errors.chains}
           ></TextField>
           <NumberInput
+            value={values.minHeight}
             name="minHeight"
             label="Block Height min."
             placeholder="123456"
             error={errors.minHeight}
           />
           <NumberInput
+            value={values.maxHeight}
             name="maxHeight"
             label="Block Height max."
             placeholder="123456"
@@ -134,7 +120,9 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
             <Button onClick={handleReset} isCompact variant="outlined">
               Reset
             </Button>
+
             <Button
+              isDisabled={!!Object.keys(errors).length}
               type="submit"
               isCompact
               variant="primary"
