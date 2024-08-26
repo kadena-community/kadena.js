@@ -8,6 +8,7 @@ import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { block } from '@/graphql/queries/block.graph';
 import { useEffect, useState } from 'react';
+import { useEventsPerChainQuery } from './eventsPerChainQuery';
 import { useRouter } from './router';
 
 interface IEventsQueryView {
@@ -34,7 +35,6 @@ export const useEvents = () => {
     getLoadingData(),
   ]);
   const [selectedChains, setSelectedChains] = useState<number[]>([]);
-  const { activeNetwork } = useNetwork();
 
   const { setQueries } = useQueryContext();
 
@@ -49,16 +49,28 @@ export const useEvents = () => {
   const { addToast } = useToast();
   const { loading, data, error } = useEventsQuery({
     variables: eventVariables,
-    skip: !(router.query.eventname as string),
+    skip: !(router.query.eventname as string) || selectedChains.length > 0,
+  });
+
+  const {
+    loading: chainsLoading,
+    data: chainsData,
+    error: chainsError,
+  } = useEventsPerChainQuery({
+    variables: {
+      ...eventVariables,
+      chains: selectedChains,
+    },
+    skip: !(router.query.eventname as string) || selectedChains.length === 0,
   });
 
   useEffect(() => {
-    if (loading) {
+    if (loading || chainsLoading) {
       setIsLoading(true);
       return;
     }
 
-    if (error) {
+    if (error || chainsError) {
       addToast({
         type: 'negative',
         label: 'Something went wrong',
@@ -72,90 +84,35 @@ export const useEvents = () => {
         setInnerData([{ chainId: 'all', query: data.events }]);
       }, 200);
     }
-  }, [loading, data, error]);
+    if (chainsData) {
+      setTimeout(() => {
+        setIsLoading(false);
+
+        const data = Object.keys(chainsData)
+          .map((key) => {
+            const innerData = chainsData[key];
+            const chain =
+              selectedChains.find((v) => key === `chains${v}`) ?? '0';
+            return {
+              chainId: chain,
+              query: innerData,
+            };
+          })
+          .sort((a, b) => {
+            return a.chainId > b.chainId ? 1 : -1;
+          }) as IEventsQueryView[];
+
+        setInnerData(data);
+      }, 200);
+    }
+  }, [loading, chainsLoading, data, chainsData, error, chainsError]);
 
   const handleSubmit = (values: Record<string, string | undefined>) => {
     setIsLoading(true);
     setInnerData([getLoadingData()]);
     const chainsArray: number[] = createArrayOfChains(values.chains);
     setSelectedChains(chainsArray);
-    console.log(chainsArray);
   };
-
-  const fetchChainsData = async (chains: number[]) => {
-    const promise = await fetch(activeNetwork.graphUrl, {
-      method: 'POST',
-      headers: {
-        accept:
-          'application/graphql-response+json, application/json, multipart/mixed',
-        'cache-control': 'no-cache',
-        'content-type': 'application/json',
-        pragma: 'no-cache',
-        'sec-fetch-mode': 'cors',
-        'sec-fetch-site': 'cross-site',
-      },
-      body: JSON.stringify({
-        query: `query events {
-          ${chains.map(
-            (chain) => `
-                chain${chain}: events(qualifiedEventName: "coin.TRANSFER", chainId: "${chain}") {
-                edges {
-                  node {
-                    ...CoreEventsFields
-                    __typename
-                  }
-                  __typename
-                }
-                __typename
-              }
-              `,
-          )}
-            
-          }
-
-fragment CoreEventsFields on Event {
-  chainId
-  block {
-    height
-    __typename
-  }
-  requestKey
-  parameters
-  __typename
-}
-          `,
-        variables: {},
-        operationName: 'events',
-        extensions: {},
-      }),
-    });
-
-    const result = await promise;
-    const data = await result.json();
-
-    const chainData = Object.keys(data.data)
-      .map((key) => {
-        const chainData = data.data[key];
-        const chain = selectedChains.find((v) => key === `chain${v}`) ?? '0';
-        return {
-          chainId: chain,
-          query: chainData,
-        };
-      })
-      .sort((a, b) => {
-        return a.chainId > b.chainId ? 1 : -1;
-      }) as IEventsQueryView[];
-
-    setInnerData(chainData);
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    if (selectedChains.length > 1) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      fetchChainsData(selectedChains);
-    }
-  }, [selectedChains]);
 
   return {
     handleSubmit,
