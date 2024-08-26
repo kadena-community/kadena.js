@@ -8,6 +8,7 @@ const defaultOptions = {} as const;
 export type EventsPerChainQueryVariables = Exact<{
   qualifiedName: Scalars['String']['input'];
   chains: Scalars['Int']['input'][];
+  startHeight?: Scalars['Int']['input'];
 }>;
 
 export interface EventsQuery {

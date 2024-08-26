@@ -3,7 +3,6 @@ import { useEventsQuery } from '@/__generated__/sdk';
 import { loadingEventData } from '@/components/LoadingSkeleton/loadingData/loadingDataEventquery';
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import { CONSTANTS } from '@/constants/constants';
-import { useNetwork } from '@/context/networksContext';
 import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { block } from '@/graphql/queries/block.graph';
@@ -87,10 +86,8 @@ export const useEvents = () => {
     if (chainsData) {
       setTimeout(() => {
         setIsLoading(false);
-
-        const data = Object.keys(chainsData)
-          .map((key) => {
-            const innerData = chainsData[key];
+        const data = Object.entries(chainsData)
+          .map(([key, innerData]) => {
             const chain =
               selectedChains.find((v) => key === `chains${v}`) ?? '0';
             return {

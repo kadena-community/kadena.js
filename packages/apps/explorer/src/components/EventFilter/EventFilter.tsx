@@ -29,12 +29,12 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
     if (!formRef.current) return;
     const data = new FormData(formRef.current);
     const chains = data.get('chains')?.toString().trim();
-    const heightMin = data.get('heightMin')?.toString().trim();
+    const startHeight = data.get('startHeight')?.toString().trim();
     const heightMax = data.get('heightMax')?.toString().trim();
 
     setValues({
       chains,
-      heightMin,
+      startHeight,
       heightMax,
     });
 
@@ -53,16 +53,16 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
       });
     }
 
-    const heightMinInt = heightMin && parseInt(heightMin);
-    if (heightMin && Number.isNaN(heightMinInt)) {
+    const heightMinInt = startHeight && parseInt(startHeight);
+    if (startHeight && Number.isNaN(heightMinInt)) {
       setErrors((v) => ({
         ...v,
-        heightMin: 'Only numbers',
+        startHeight: 'Only numbers',
       }));
     } else {
       setErrors((v) => {
         const newValue = { ...v };
-        delete newValue.heightMin;
+        delete newValue.startHeight;
         return newValue;
       });
     }
@@ -92,11 +92,11 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
             errorMessage={errors.chains}
           ></TextField>
           <TextField
-            name="heightMin"
+            name="startHeight"
             label="Block Height min."
             placeholder="123456"
-            variant={errors.heightMin ? 'negative' : 'default'}
-            errorMessage={errors.heightMin}
+            variant={errors.startHeight ? 'negative' : 'default'}
+            errorMessage={errors.startHeight}
             endAddon={
               <>
                 <Button
