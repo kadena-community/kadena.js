@@ -78,15 +78,18 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
     }
   }, [router.asPath]);
 
+  useEffect(() => {
+    if (Object.keys(values).length === 0) {
+      formRef.current?.reset();
+    }
+  }, [values]);
+
   const handleReset: MouseEventHandler<HTMLButtonElement> = useCallback(
     (e) => {
       e.preventDefault();
       if (!formRef.current) return;
       formRef.current.reset();
 
-      setTimeout(() => {
-        formRef.current?.reset();
-      }, 0);
       setErrors({});
       setValues({});
 
