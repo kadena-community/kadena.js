@@ -1,16 +1,9 @@
 import {
-  MonoDataArray,
-  MonoDataObject,
-  MonoDataset,
   MonoDataThresholding,
-  MonoExpandCircleDown,
   MonoKey,
-  MonoLayers,
-  MonoRocket,
   MonoSignature,
   MonoSwapHoriz,
   MonoTableRows,
-  MonoThermostat,
 } from '@kadena/kode-icons';
 import { Box, Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
