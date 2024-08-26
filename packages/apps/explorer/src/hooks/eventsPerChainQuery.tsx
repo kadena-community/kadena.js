@@ -8,7 +8,8 @@ const defaultOptions = {} as const;
 export type EventsPerChainQueryVariables = Exact<{
   qualifiedName: Scalars['String']['input'];
   chains: Scalars['Int']['input'][];
-  startHeight?: Scalars['Int']['input'];
+  minHeight?: Scalars['Int']['input'];
+  maxHeight?: Scalars['Int']['input'];
 }>;
 
 export interface EventsQuery {
@@ -46,7 +47,7 @@ export const getEventsDocument = (
   query events {
     ${variables.chains.map(
       (c) => `
-        chains${c}: events(qualifiedEventName: "${variables.qualifiedName}", chainId: "${c}") {
+        chains${c}: events(qualifiedEventName: "${variables.qualifiedName}", chainId: "${c}" ${variables.minHeight ? `minHeight: ${variables.minHeight}` : ``} ${variables.maxHeight ? `maxHeight: ${variables.maxHeight}` : ``} ) {
             edges {
                 node {
                 ...CoreEventsFields

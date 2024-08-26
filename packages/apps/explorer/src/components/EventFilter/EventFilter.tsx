@@ -1,4 +1,3 @@
-import { MonoAdd, MonoRemove } from '@kadena/kode-icons/system';
 import {
   Badge,
   Button,
@@ -9,6 +8,7 @@ import {
 } from '@kadena/kode-ui';
 import type { FC, FormEventHandler, MouseEventHandler } from 'react';
 import React, { useRef, useState } from 'react';
+import { NumberInput } from './components/NumberInput';
 
 interface IProps {
   onSubmit: (values: Record<string, string | undefined>) => void;
@@ -29,13 +29,13 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
     if (!formRef.current) return;
     const data = new FormData(formRef.current);
     const chains = data.get('chains')?.toString().trim();
-    const startHeight = data.get('startHeight')?.toString().trim();
-    const heightMax = data.get('heightMax')?.toString().trim();
+    const minHeight = data.get('minHeight')?.toString().trim();
+    const maxHeight = data.get('maxHeight')?.toString().trim();
 
     setValues({
       chains,
-      startHeight,
-      heightMax,
+      minHeight,
+      maxHeight,
     });
 
     // validation
@@ -53,16 +53,42 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
       });
     }
 
-    const heightMinInt = startHeight && parseInt(startHeight);
-    if (startHeight && Number.isNaN(heightMinInt)) {
+    const minHeightInt = minHeight && parseInt(minHeight);
+    const maxHeightInt = maxHeight && parseInt(maxHeight);
+
+    if (
+      minHeight &&
+      (Number.isNaN(minHeightInt) || (minHeightInt && minHeightInt < 0))
+    ) {
       setErrors((v) => ({
         ...v,
-        startHeight: 'Only numbers',
+        minHeight: 'Only numbers',
       }));
     } else {
       setErrors((v) => {
         const newValue = { ...v };
-        delete newValue.startHeight;
+        delete newValue.minHeight;
+        return newValue;
+      });
+    }
+
+    if (maxHeight && minHeight && minHeight > maxHeight) {
+      setErrors((v) => ({
+        ...v,
+        maxHeight: 'Height min. can not be larger than the Height max',
+      }));
+    } else if (
+      maxHeight &&
+      (Number.isNaN(maxHeightInt) || (maxHeightInt && maxHeightInt < 0))
+    ) {
+      setErrors((v) => ({
+        ...v,
+        maxHeight: 'Only numbers',
+      }));
+    } else {
+      setErrors((v) => {
+        const newValue = { ...v };
+        delete newValue.maxHeight;
         return newValue;
       });
     }
@@ -91,55 +117,17 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
             variant={errors.chains ? 'negative' : 'default'}
             errorMessage={errors.chains}
           ></TextField>
-          <TextField
-            name="startHeight"
+          <NumberInput
+            name="minHeight"
             label="Block Height min."
             placeholder="123456"
-            variant={errors.startHeight ? 'negative' : 'default'}
-            errorMessage={errors.startHeight}
-            endAddon={
-              <>
-                <Button
-                  isCompact
-                  variant="transparent"
-                  onPress={() => alert('Copied!')}
-                >
-                  <MonoAdd />
-                </Button>
-                <Button
-                  isCompact
-                  variant="transparent"
-                  onPress={() => alert('Copied!')}
-                >
-                  <MonoRemove />
-                </Button>
-              </>
-            }
+            error={errors.minHeight}
           />
-          <TextField
-            name="heightMax"
+          <NumberInput
+            name="maxHeight"
             label="Block Height max."
             placeholder="123456"
-            variant={errors.heightMax ? 'negative' : 'default'}
-            errorMessage={errors.heightMax}
-            endAddon={
-              <>
-                <Button
-                  isCompact
-                  variant="transparent"
-                  onPress={() => alert('Copied!')}
-                >
-                  <MonoAdd />
-                </Button>
-                <Button
-                  isCompact
-                  variant="transparent"
-                  onPress={() => alert('Copied!')}
-                >
-                  <MonoRemove />
-                </Button>
-              </>
-            }
+            error={errors.maxHeight}
           />
 
           <Stack width="100%" justifyContent="space-between">

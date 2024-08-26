@@ -14,15 +14,6 @@ import React from 'react';
 const Height: React.FC = () => {
   const { handleSubmit, isLoading, innerData } = useEvents();
 
-  if (!innerData.length || !innerData[0].query.edges?.length)
-    return (
-      <Layout layout="full">
-        <LayoutBody>
-          <NoSearchResults />
-        </LayoutBody>
-      </Layout>
-    );
-
   return (
     <Layout>
       <LayoutHeader>Events</LayoutHeader>
@@ -38,28 +29,32 @@ const Height: React.FC = () => {
               title={chainData.chainId ? chainData.chainId : '-'}
               key={`chain${chainData.chainId}`}
             >
-              <CompactTable
-                isLoading={isLoading}
-                fields={[
-                  {
-                    label: 'Height',
-                    key: 'node.block.height',
-                    width: '15%',
-                  },
-                  {
-                    label: 'RequestKey',
-                    key: 'node.requestKey',
-                    width: '40%',
-                    render: FormatLink({ appendUrl: '/transaction' }),
-                  },
-                  {
-                    label: 'Parameters',
-                    key: 'node.parameters',
-                    width: '45%',
-                  },
-                ]}
-                data={chainData.query.edges}
-              />
+              {chainData.query.edges.length === 0 ? (
+                <NoSearchResults />
+              ) : (
+                <CompactTable
+                  isLoading={isLoading}
+                  fields={[
+                    {
+                      label: 'Height',
+                      key: 'node.block.height',
+                      width: '15%',
+                    },
+                    {
+                      label: 'RequestKey',
+                      key: 'node.requestKey',
+                      width: '40%',
+                      render: FormatLink({ appendUrl: '/transaction' }),
+                    },
+                    {
+                      label: 'Parameters',
+                      key: 'node.parameters',
+                      width: '45%',
+                    },
+                  ]}
+                  data={chainData.query.edges}
+                />
+              )}
             </TabItem>
           ))}
         </Tabs>

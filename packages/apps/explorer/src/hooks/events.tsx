@@ -34,11 +34,15 @@ export const useEvents = () => {
     getLoadingData(),
   ]);
   const [selectedChains, setSelectedChains] = useState<number[]>([]);
+  const [minHeight, setMinHeight] = useState<number | undefined>();
+  const [maxHeight, setMaxHeight] = useState<number | undefined>();
 
   const { setQueries } = useQueryContext();
 
   const eventVariables = {
     qualifiedName: router.query.eventname as string,
+    minHeight,
+    maxHeight,
   };
 
   useEffect(() => {
@@ -47,8 +51,8 @@ export const useEvents = () => {
 
   const { addToast } = useToast();
   const { loading, data, error } = useEventsQuery({
-    variables: eventVariables,
-    skip: !(router.query.eventname as string) || selectedChains.length > 0,
+    variables: { ...eventVariables },
+    skip: !eventVariables.qualifiedName || selectedChains.length > 0,
   });
 
   const {
@@ -60,7 +64,7 @@ export const useEvents = () => {
       ...eventVariables,
       chains: selectedChains,
     },
-    skip: !(router.query.eventname as string) || selectedChains.length === 0,
+    skip: !eventVariables.qualifiedName || selectedChains.length === 0,
   });
 
   useEffect(() => {
@@ -109,6 +113,8 @@ export const useEvents = () => {
     setInnerData([getLoadingData()]);
     const chainsArray: number[] = createArrayOfChains(values.chains);
     setSelectedChains(chainsArray);
+    setMinHeight(values.minHeight ? parseInt(values.minHeight) : undefined);
+    setMaxHeight(values.maxHeight ? parseInt(values.maxHeight) : undefined);
   };
 
   return {
