@@ -18,10 +18,12 @@ export const paddingContainer = style({
 export const container = style([
   atoms({
     border: 'none',
+    borderRadius: 'no',
   }),
   {
     ...responsiveStyle({
       md: {
+        borderRadius: token('radius.md'),
         border: token('border.hairline'),
         width: '42rem',
         marginInlineStart: '50%',
@@ -54,12 +56,14 @@ export const bodyContainer = style([
 export const heading = style([
   {
     marginBlockEnd: token('spacing.md'),
-    fontSize: token('typography.fontSize.xl'),
-    lineHeight: token('typography.lineHeight.xl'),
     selectors: {
       [`${bodyContainer}:first-child &`]: {
         fontSize: token('typography.fontSize.2xl'),
         lineHeight: token('typography.lineHeight.2xl'),
+      },
+      [`${bodyContainer}:not(:first-child) &`]: {
+        fontSize: token('typography.fontSize.xl'),
+        lineHeight: token('typography.lineHeight.xl'),
       },
     },
   },
