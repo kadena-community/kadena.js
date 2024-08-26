@@ -1,5 +1,3 @@
-import type { EventsQuery } from '@/__generated__/sdk';
-import { useEventsQuery } from '@/__generated__/sdk';
 import { CompactTable } from '@/components/CompactTable/CompactTable';
 import { FormatLink } from '@/components/CompactTable/utils/formatLink';
 import { EventFilter } from '@/components/EventFilter/EventFilter';
@@ -8,68 +6,15 @@ import { LayoutBody } from '@/components/Layout/components/LayoutBody';
 import { LayoutCard } from '@/components/Layout/components/LayoutCard';
 import { LayoutHeader } from '@/components/Layout/components/LayoutHeader';
 import { Layout } from '@/components/Layout/Layout';
-import { loadingEventData } from '@/components/LoadingSkeleton/loadingData/loadingDataEventquery';
-
 import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
-import { useToast } from '@/components/Toast/ToastContext/ToastContext';
-import { useQueryContext } from '@/context/queryContext';
-import { useSearch } from '@/context/searchContext';
-import { block } from '@/graphql/queries/block.graph';
-import { useRouter } from '@/hooks/router';
+import { useEvents } from '@/hooks/events';
 import { TabItem, Tabs } from '@kadena/kode-ui';
-
-import type { FormEventHandler } from 'react';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 const Height: React.FC = () => {
-  const router = useRouter();
-  const { setIsLoading, isLoading } = useSearch();
-  const [innerData, setInnerData] = useState<EventsQuery>(loadingEventData);
+  const { handleSubmit, isLoading, innerData } = useEvents();
 
-  const { setQueries } = useQueryContext();
-
-  const eventVariables = {
-    qualifiedName: router.query.eventname as string,
-  };
-
-  useEffect(() => {
-    setQueries([{ query: block, variables: eventVariables }]);
-  }, []);
-
-  const { addToast } = useToast();
-  const { loading, data, error } = useEventsQuery({
-    variables: eventVariables,
-    skip: !(router.query.eventname as string),
-  });
-
-  useEffect(() => {
-    if (loading) {
-      setIsLoading(true);
-      return;
-    }
-
-    if (error) {
-      addToast({
-        type: 'negative',
-        label: 'Something went wrong',
-        body: 'Loading of events data failed',
-      });
-    }
-
-    if (data) {
-      setTimeout(() => {
-        setIsLoading(false);
-        setInnerData(data);
-      }, 200);
-    }
-  }, [loading, data, error]);
-
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    console.log(e);
-  };
-
-  if (!innerData || !innerData.events.edges.length)
+  if (!innerData.length || !innerData[0].query.edges?.length)
     return (
       <Layout layout="full">
         <LayoutBody>
@@ -83,35 +28,40 @@ const Height: React.FC = () => {
       <LayoutHeader>Events</LayoutHeader>
       <LayoutAside>
         <LayoutCard>
-          <EventFilter handleSubmit={handleSubmit} />
+          <EventFilter onSubmit={handleSubmit} />
         </LayoutCard>
       </LayoutAside>
       <LayoutBody>
         <Tabs isCompact isContained>
-          <TabItem title={1} key="chain">
-            <CompactTable
-              isLoading={isLoading}
-              fields={[
-                {
-                  label: 'Height',
-                  key: 'node.block.height',
-                  width: '15%',
-                },
-                {
-                  label: 'RequestKey',
-                  key: 'node.requestKey',
-                  width: '40%',
-                  render: FormatLink({ appendUrl: '/transaction' }),
-                },
-                {
-                  label: 'Parameters',
-                  key: 'node.parameters',
-                  width: '45%',
-                },
-              ]}
-              data={innerData.events.edges}
-            />
-          </TabItem>
+          {innerData.map((chainData) => (
+            <TabItem
+              title={chainData.chainId ? chainData.chainId : '-'}
+              key={`chain${chainData.chainId}`}
+            >
+              <CompactTable
+                isLoading={isLoading}
+                fields={[
+                  {
+                    label: 'Height',
+                    key: 'node.block.height',
+                    width: '15%',
+                  },
+                  {
+                    label: 'RequestKey',
+                    key: 'node.requestKey',
+                    width: '40%',
+                    render: FormatLink({ appendUrl: '/transaction' }),
+                  },
+                  {
+                    label: 'Parameters',
+                    key: 'node.parameters',
+                    width: '45%',
+                  },
+                ]}
+                data={chainData.query.edges}
+              />
+            </TabItem>
+          ))}
         </Tabs>
       </LayoutBody>
     </Layout>

@@ -11,13 +11,18 @@ import type { FC, FormEventHandler, MouseEventHandler } from 'react';
 import React, { useRef, useState } from 'react';
 
 interface IProps {
-  handleSubmit: FormEventHandler<HTMLFormElement>;
+  onSubmit: (values: Record<string, string | undefined>) => void;
 }
 
-export const EventFilter: FC<IProps> = ({ handleSubmit }) => {
+export const EventFilter: FC<IProps> = ({ onSubmit }) => {
   const formRef = useRef<HTMLFormElement | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [values, setValues] = useState<Record<string, string | undefined>>({});
+
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    onSubmit(values);
+  };
 
   const handleChange: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();

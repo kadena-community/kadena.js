@@ -6,14 +6,14 @@ describe('loading data', () => {
     it('should return the correct type', () => {
       expectTypeOf(loadingEventData).toBeObject();
 
-      expectTypeOf(loadingEventData).toMatchTypeOf<EventsQuery>();
+      expectTypeOf(loadingEventData).toMatchTypeOf<EventsQuery['events']>();
     });
   });
   describe('loadingDataBlockquery', () => {
     it('should return the correct type', () => {
       expectTypeOf(loadingEventData).toBeObject();
 
-      expectTypeOf(loadingEventData).toMatchTypeOf<EventsQuery>();
+      expectTypeOf(loadingEventData).toMatchTypeOf<EventsQuery['events']>();
     });
   });
 });
