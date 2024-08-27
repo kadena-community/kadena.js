@@ -23,7 +23,7 @@ const Height: React.FC = () => {
         </LayoutCard>
       </LayoutAside>
       <LayoutBody>
-        <Tabs isCompact isContained>
+        <Tabs isContained>
           {innerData.map((chainData) => (
             <TabItem
               title={chainData.chainId ? chainData.chainId : '-'}

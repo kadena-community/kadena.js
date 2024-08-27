@@ -120,7 +120,6 @@ const Block: React.FC = () => {
 
       <LayoutBody>
         <Tabs
-          isCompact
           isContained
           selectedKey={selectedTab}
           onSelectionChange={handleSelectedTab}

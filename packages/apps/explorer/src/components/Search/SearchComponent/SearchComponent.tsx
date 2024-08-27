@@ -193,6 +193,7 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
             <input
               ref={ref}
               type="text"
+              autoCapitalize="off"
               placeholder="Search the Kadena Blockchain"
               defaultValue={searchQuery}
               onFocus={() => {

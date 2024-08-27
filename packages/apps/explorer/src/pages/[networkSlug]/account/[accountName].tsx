@@ -132,7 +132,6 @@ const Account: FC = () => {
 
       <LayoutBody>
         <Tabs
-          isCompact
           isContained
           selectedKey={selectedTab}
           onSelectionChange={handleSelectedTab}
