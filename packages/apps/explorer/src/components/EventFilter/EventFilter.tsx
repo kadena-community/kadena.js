@@ -57,9 +57,7 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
   };
 
   const handleChange = (target?: HTMLInputElement) => {
-    if (!formRef.current) return;
-
-    if (!target) return;
+    if (!formRef.current || !target) return;
 
     setValues((v) => ({
       ...v,
@@ -67,7 +65,6 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
     }));
 
     const data = new FormData(formRef.current);
-
     const chains = data.get('chains')?.toString().trim();
     const minHeight = data.get('minHeight')?.toString().trim();
     const maxHeight = data.get('maxHeight')?.toString().trim();
@@ -88,9 +85,9 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
       minHeight: router.query.minHeight as string,
       maxHeight: router.query.maxHeight as string,
     };
-    const startingErrors = validate({}, innerValues);
     setValues(innerValues);
 
+    const startingErrors = validate({}, innerValues);
     if (!Object.keys(startingErrors).length) {
       onSubmit(innerValues);
     }
