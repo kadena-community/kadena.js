@@ -1,6 +1,6 @@
 {
   "name": "@kadena/marmalade-marketplace",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": true,
   "browser": {
     "fs": false
@@ -29,6 +29,7 @@
     "next-themes": "^0.2.1",
     "react": "^18.2.0",
     "react-aria-components": "^1.0.1",
+    "react-device-detect": "^2.2.3",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {

@@ -12,7 +12,9 @@ export const CardFixedContainer = ({
 }) => {
   return (
     <div className={paddingContainer}>
-      <Card className={cn(container, className)}>{children}</Card>
+      <Card className={cn(container, className)} fullWidth>
+        {children}
+      </Card>
     </div>
   );
 };
