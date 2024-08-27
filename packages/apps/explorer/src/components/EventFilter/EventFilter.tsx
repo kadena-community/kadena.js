@@ -11,7 +11,11 @@ import type { FC, FormEventHandler, MouseEventHandler } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { NumberInput } from './components/NumberInput';
 import type { IErrors, IValues } from './utils/validation';
-import { validate } from './utils/validation';
+import {
+  validateChains,
+  validateHeight,
+  validateMinLesserThanMax,
+} from './utils/validation';
 
 interface IProps {
   onSubmit: (values: Record<string, string | undefined>) => void;
@@ -22,6 +26,20 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
   const formRef = useRef<HTMLFormElement | null>(null);
   const [errors, setErrors] = useState<IErrors>({});
   const [values, setValues] = useState<IValues>({});
+
+  const validate = (errors: IErrors, values: IValues): IErrors => {
+    let newErrors = validateChains(values.chains, errors);
+    newErrors = validateHeight('maxHeight', values.maxHeight, newErrors);
+    newErrors = validateHeight('minHeight', values.minHeight, newErrors);
+    newErrors = validateMinLesserThanMax(
+      'minHeight',
+      values.minHeight,
+      values.maxHeight,
+      newErrors,
+    );
+
+    return newErrors;
+  };
 
   const handleFormSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();

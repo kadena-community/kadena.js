@@ -24,7 +24,12 @@ export const validateHeight = (
   errors: IErrors,
 ): IErrors => {
   const valueInt = value && parseInt(value, 10);
-  if (value && (Number.isNaN(valueInt) || (valueInt && valueInt < 0))) {
+  const digitRegExp = new RegExp(/^\d*$/);
+  if (
+    (value && !value?.match(digitRegExp)) ||
+    Number.isNaN(valueInt) ||
+    (valueInt && valueInt < 0)
+  ) {
     return {
       ...errors,
       [label]: 'Only numbers',
@@ -45,23 +50,9 @@ export const validateMinLesserThanMax = (
   if (minVal && maxVal && parseInt(minVal) > parseInt(maxVal)) {
     return {
       ...errors,
-      maxHeight: 'Height min. can not be larger than the Height max',
+      [label]: 'Height min. can not be larger than the Height max',
     };
   }
 
   return errors;
-};
-
-export const validate = (errors: IErrors, values: IValues): IErrors => {
-  let newErrors = validateChains(values.chains, errors);
-  newErrors = validateHeight('maxHeight', values.maxHeight, newErrors);
-  newErrors = validateHeight('minHeight', values.minHeight, newErrors);
-  newErrors = validateMinLesserThanMax(
-    'minHeight',
-    values.minHeight,
-    values.maxHeight,
-    newErrors,
-  );
-
-  return newErrors;
 };
