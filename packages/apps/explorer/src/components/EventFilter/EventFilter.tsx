@@ -4,12 +4,12 @@ import {
   Button,
   Form,
   Heading,
+  NumberField,
   Stack,
   TextField,
 } from '@kadena/kode-ui';
 import type { FC, FormEventHandler, MouseEventHandler } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { NumberInput } from './components/NumberInput';
 import type { IErrors, IValues } from './utils/validation';
 import {
   validateChains,
@@ -56,27 +56,14 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
     router.push(`${route[0]}?${queryString}`);
   };
 
-  const handleChange = (target?: HTMLInputElement) => {
-    if (!formRef.current || !target) return;
+  const handleChange = (value: string | number, name: string) => {
+    if (!formRef.current) return;
 
-    setValues((v) => ({
-      ...v,
-      [target.name]: target.value,
-    }));
-
-    const data = new FormData(formRef.current);
-    const chains = data.get('chains')?.toString().trim();
-    const minHeight = data.get('minHeight')?.toString().trim();
-    const maxHeight = data.get('maxHeight')?.toString().trim();
+    const innerValues = { ...values, [name]: `${value}` };
+    setValues(innerValues);
 
     // validation
-    setErrors((errors) =>
-      validate(errors, {
-        chains,
-        minHeight,
-        maxHeight,
-      }),
-    );
+    setErrors((errors) => validate(errors, innerValues));
   };
 
   useEffect(() => {
@@ -119,6 +106,7 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
     return v[1];
   });
 
+  console.log({ errors, values });
   return (
     <>
       <Heading as="h5">Filters</Heading>
@@ -129,25 +117,27 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
             name="chains"
             label="Chains"
             placeholder="1, 2, 3, ..."
+            onValueChange={(v) => handleChange(v, 'chains')}
             variant={errors.chains ? 'negative' : 'default'}
-            onChange={(e) => handleChange(e.target)}
             errorMessage={errors.chains}
           ></TextField>
-          <NumberInput
-            value={values.minHeight}
-            name="minHeight"
+          <NumberField
+            value={parseInt(values.minHeight ?? '')}
+            key="minHeight"
             label="Block Height min."
             placeholder="123456"
-            onChange={handleChange}
-            error={errors.minHeight}
+            onValueChange={(v) => handleChange(v, 'minHeight')}
+            variant={errors.minHeight ? 'negative' : 'default'}
+            errorMessage={errors.minHeight}
           />
-          <NumberInput
-            value={values.maxHeight}
-            name="maxHeight"
+          <NumberField
+            value={parseInt(values.maxHeight ?? '')}
+            key="maxHeight"
             label="Block Height max."
             placeholder="123456"
-            onChange={handleChange}
-            error={errors.maxHeight}
+            onValueChange={(v) => handleChange(v, 'maxHeight')}
+            variant={errors.maxHeight ? 'negative' : 'default'}
+            errorMessage={errors.maxHeight}
           />
 
           <Stack width="100%" justifyContent="space-between">
