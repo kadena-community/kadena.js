@@ -22,7 +22,7 @@
     "start:graph:generate": "cd ../graph && pnpm run start:generate",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "test:watch": "vitest  --coverage",
+    "test:watch": "vitest --coverage",
     "verify": "tsc --noEmit"
   },
   "dependencies": {
