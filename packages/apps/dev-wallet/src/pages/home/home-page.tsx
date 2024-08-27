@@ -1,4 +1,4 @@
-import { IKeySet } from '@/modules/account/account.repository';
+import { IAccount, IKeySet } from '@/modules/account/account.repository';
 import { useNetwork } from '@/modules/network/network.hook';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import {
@@ -21,7 +21,10 @@ import {
   createSignWithKeypair,
   createTransaction,
 } from '@kadena/client';
-import { fundAccountOnTestnetCommand } from '@kadena/client-utils/coin';
+import {
+  fundExistingAccountOnTestnetCommand,
+  fundNewAccountOnTestnetCommand,
+} from '@kadena/client-utils/coin';
 import { genKeyPair } from '@kadena/cryptography-utils';
 
 export function HomePage() {
@@ -47,22 +50,35 @@ export function HomePage() {
 
   async function fundAccount({
     address,
-    guard,
-  }: {
-    address: string;
-    guard: IKeySet['guard'];
-  }) {
+    keyset,
+    chains,
+  }: Pick<IAccount, 'address' | 'keyset' | 'chains'>) {
+    if (!keyset) {
+      throw new Error('No keyset found');
+    }
+
     const randomKeyPair = genKeyPair();
 
-    const randomChainId = Math.floor(Math.random() * 20).toString();
+    const randomChainId = '1'; // Math.floor(Math.random() * 20).toString();
 
-    const command = fundAccountOnTestnetCommand({
-      account: address,
-      keyset: guard,
-      signerKeys: [randomKeyPair.publicKey],
-      amount: 20,
-      chainId: randomChainId as ChainId,
-    });
+    const balanceOnChain =
+      chains.find((chain) => chain.chainId === randomChainId)?.balance ?? '0';
+
+    const command =
+      +balanceOnChain > 0
+        ? fundExistingAccountOnTestnetCommand({
+            account: address,
+            signerKeys: [randomKeyPair.publicKey],
+            amount: 20,
+            chainId: randomChainId as ChainId,
+          })
+        : fundNewAccountOnTestnetCommand({
+            account: address,
+            keyset: keyset?.guard,
+            signerKeys: [randomKeyPair.publicKey],
+            amount: 20,
+            chainId: randomChainId as ChainId,
+          });
 
     const tx = createTransaction(command());
 
@@ -136,7 +152,7 @@ export function HomePage() {
                                 if (!keyset) {
                                   throw new Error('No keyset found');
                                 }
-                                fundAccount({ address, guard: keyset.guard });
+                                fundAccount({ address, keyset, chains });
                               }}
                             >
                               Fund

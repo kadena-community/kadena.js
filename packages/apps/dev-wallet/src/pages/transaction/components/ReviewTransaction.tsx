@@ -1,5 +1,6 @@
 import { IPactCommand, IUnsignedCommand } from '@kadena/client';
 import { Button, Heading, Stack } from '@kadena/kode-ui';
+import yaml from 'js-yaml';
 import { useMemo } from 'react';
 import { cardClass, codeClass, containerClass } from './style.css.ts';
 
@@ -19,26 +20,28 @@ export function ReviewTransaction({
     () => JSON.parse(transaction.cmd),
     [transaction.cmd],
   );
+
+  const copyTransactionAs = (format: 'json' | 'yaml') => () => {
+    const transactionData = {
+      hash: transaction.hash,
+      cmd: transaction.cmd,
+      sigs: transaction.sigs,
+    };
+
+    let formattedData: string;
+    if (format === 'json') {
+      formattedData = JSON.stringify(transactionData, null, 2);
+    } else {
+      formattedData = yaml.dump(transactionData);
+    }
+
+    navigator.clipboard.writeText(formattedData);
+  };
   return (
     <Stack flexDirection={'column'} className={containerClass}>
       <Stack justifyContent={'space-between'}>
         <Heading>Confirm Transaction</Heading>
-        <Button
-          variant="transparent"
-          onClick={() => {
-            navigator.clipboard.writeText(
-              JSON.stringify(
-                {
-                  hash: transaction.hash,
-                  cmd: transaction.cmd,
-                  sigs: transaction.sigs,
-                },
-                null,
-                2,
-              ),
-            );
-          }}
-        >
+        <Button variant="transparent" onClick={copyTransactionAs('json')}>
           <MonoContentCopy />
         </Button>
       </Stack>
@@ -134,7 +137,13 @@ export function ReviewTransaction({
             </Stack>
           </Stack>
         </Stack>
-        <Signers transaction={transaction} onSign={onSign} />
+        <Stack gap={'sm'} flexDirection={'column'}>
+          <Signers transaction={transaction} onSign={onSign} />
+          <Stack gap={'sm'} flexDirection={'row'}>
+            <Button onClick={copyTransactionAs('json')}>Copy as JSON</Button>
+            <Button onClick={copyTransactionAs('yaml')}>Copy as YAML</Button>
+          </Stack>
+        </Stack>
       </Stack>
     </Stack>
   );
