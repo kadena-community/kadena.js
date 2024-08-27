@@ -2,9 +2,11 @@ import type { AccountQuery } from '@/__generated__/sdk';
 import { useAccountQuery } from '@/__generated__/sdk';
 import { AccountAside } from '@/components/AccountAside/AccountAside';
 import { AccountBalanceDistribution } from '@/components/AccountBalanceDistribution/AccountBalanceDistribution';
+import { AccountTransactionsTable } from '@/components/AccountTransactionsTable/AccountTransactionsTable';
 import { AccountTransfersTable } from '@/components/AccountTransfersTable/AccountTransfersTable';
 import { CompactTable } from '@/components/CompactTable/CompactTable';
 import { FormatAmount } from '@/components/CompactTable/utils/formatAmount';
+import { tabsWidthClass } from '@/components/globalstyles.css';
 import { LayoutAside } from '@/components/Layout/components/LayoutAside';
 import { LayoutBody } from '@/components/Layout/components/LayoutBody';
 import { LayoutCard } from '@/components/Layout/components/LayoutCard';
@@ -132,14 +134,11 @@ const Account: FC = () => {
 
       <LayoutBody>
         <Tabs
+          className={tabsWidthClass}
           isContained
           selectedKey={selectedTab}
           onSelectionChange={handleSelectedTab}
         >
-          {/* <TabItem title={`Transactions`} key="Transactions">
-            <AccountTransactionsTable accountName={accountName} />
-          </TabItem> */}
-
           <TabItem
             title={
               <>
@@ -192,6 +191,9 @@ const Account: FC = () => {
           </TabItem>
           <TabItem title={`Transfers`} key="Transfers">
             <AccountTransfersTable accountName={accountName} />
+          </TabItem>
+          <TabItem title={`Transactions`} key="Transactions">
+            <AccountTransactionsTable accountName={accountName} />
           </TabItem>
         </Tabs>
       </LayoutBody>

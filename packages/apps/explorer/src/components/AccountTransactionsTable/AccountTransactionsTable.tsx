@@ -6,6 +6,7 @@ import { useAccountTransactionsQuery } from '@/__generated__/sdk';
 import { useQueryContext } from '@/context/queryContext';
 import { usePagination } from '@/hooks/usePagination';
 import { graphqlIdFor } from '@/utils/graphqlIdFor';
+import { Heading, Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import { CompactTable } from '../CompactTable/CompactTable';
@@ -64,6 +65,13 @@ export const AccountTransactionsTable: FC<{ accountName: string }> = ({
   }, [accountName]);
 
   if (innerData.node?.__typename !== 'FungibleAccount') return null;
+
+  if (error)
+    return (
+      <Stack justifyContent="center">
+        <Heading as="h5">There was an issue with loading the results</Heading>
+      </Stack>
+    );
 
   return (
     <CompactTable
