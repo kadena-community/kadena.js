@@ -17,4 +17,11 @@ describe('createArrayOfChains', () => {
   it('should return array without 99 (to large)', () => {
     expect(createArrayOfChains('4,5,6,7, 99')).toEqual([4, 5, 6, 7]);
   });
+
+  it('should return array when a range is given', () => {
+    expect(createArrayOfChains('4,5,6-8,7, 99')).toEqual([4, 5, 6, 7, 8]);
+    expect(createArrayOfChains('4,5-12,6-8,7, 99')).toEqual([
+      4, 5, 6, 7, 8, 9, 10, 11, 12,
+    ]);
+  });
 });

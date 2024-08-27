@@ -5,7 +5,7 @@ export const validateChains = (
   chains: string | undefined,
   errors: IErrors,
 ): IErrors => {
-  const chainRegExp = new RegExp(/^\d+(?:\s*,\s*\d+)*\s*,?$/);
+  const chainRegExp = new RegExp(/^\d+(-\d+)?(?:,\s*\d+(-\d+)?)*$/);
   if (chains?.length && !chains?.match(chainRegExp)) {
     return {
       ...errors,

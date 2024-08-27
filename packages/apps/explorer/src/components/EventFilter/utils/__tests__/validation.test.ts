@@ -59,9 +59,18 @@ describe('validation utils', () => {
     });
 
     it('should validate strings that comma seperated', () => {
-      const result = validateChains('1,2, 4, 8', {});
+      const result = validateChains('1, 2, 4, 8', {});
       expect(result.chains).toBe(undefined);
       expect(result.chains?.length > 0).toBe(false);
+    });
+
+    it('should validate strings that show a range', () => {
+      const result = validateChains('1, 2-8, 4, 8', {});
+      expect(result.chains).toBe(undefined);
+      expect(result.chains?.length > 0).toBe(false);
+
+      const result2 = validateChains('2-8', {});
+      expect(result2.chains).toBe(undefined);
     });
 
     it('should NOT validate strings that contain other characters than digits or commas', () => {
