@@ -70,28 +70,21 @@ result: any;
 chainId: ChainId_2 | undefined;
 }[]>>;
 
-// Warning: (ae-forgotten-export) The symbol "ICreateAccountCommandInput_2" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "IFundExistingAccountOnTestnetCommandInput" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
-export const fundAccountOnTestnet: (inputs: ICreateAccountCommandInput_2, config: Pick<IClientConfig, 'sign'>) => IEmitterWrapper<[{
-event: "command";
-data: IUnsignedCommand;
-}, {
-event: "sign";
-data: ICommand;
-}, {
-event: "preflight";
-data: ICommandResult;
-}, {
-event: "submit";
-data: ITransactionDescriptor;
-}, {
-event: "listen";
-data: ICommandResult;
-}], [], any>;
+export const fundExistingAccountOnTestnet: (inputs: Omit<IFundExistingAccountOnTestnetCommandInput, 'signerKeys'>) => void;
 
 // @alpha (undocumented)
-export const fundAccountOnTestnetCommand: ({ account, keyset, amount, chainId, signerKeys, faucetAccount, contract, }: ICreateAccountCommandInput_2) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => Partial<IPartialPactCommand>;
+export const fundExistingAccountOnTestnetCommand: ({ account, amount, chainId, signerKeys, faucetAccount, contract, }: IFundExistingAccountOnTestnetCommandInput) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => Partial<IPartialPactCommand>;
+
+// Warning: (ae-forgotten-export) The symbol "IFundNewAccountOnTestnetCommandInput" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export const fundNewAccountOnTestnet: (inputs: Omit<IFundNewAccountOnTestnetCommandInput, 'signerKeys'>) => void;
+
+// @alpha (undocumented)
+export const fundNewAccountOnTestnetCommand: ({ account, keyset, amount, chainId, signerKeys, faucetAccount, contract, }: IFundNewAccountOnTestnetCommandInput) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => Partial<IPartialPactCommand>;
 
 // @alpha (undocumented)
 export const getBalance: (account: string, networkId: string, chainId: ChainId, host?: IClientConfig['host'], contract?: string) => Promise<any>;
