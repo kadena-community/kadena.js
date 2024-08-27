@@ -16,3 +16,7 @@ globalStyle('a:hover:not([data-variant])', {
 export const fullWidthClass = style({
   width: '100%',
 });
+
+export const tabsWidthClass = style({
+  maxWidth: '100vw',
+});
