@@ -33,7 +33,7 @@ export const Layout: FC<IProps> = ({ children, layout = 'default' }) => {
   } = useSearch();
 
   return (
-    <div className={classNames(documentStyle)}>
+    <div className={documentStyle}>
       <CookieConsent />
       <Header />
       <Stack
