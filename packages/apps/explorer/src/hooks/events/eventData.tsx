@@ -69,7 +69,7 @@ export const useEventData = ({
     if (data) {
       setTimeout(() => {
         setIsLoading(false);
-        setInnerData([{ chainId: 'all', data: data.events }]);
+        setInnerData([{ chainId: 'all chains', data: data.events }]);
       }, 200);
     }
     if (chainsData) {
