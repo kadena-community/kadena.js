@@ -3,7 +3,7 @@ title: Built-in utilities
 description:
   The `@kadena/client-utils` library includes several modules to provide a TypeScript-based application programming interface (API) for interacting with Pact smart contracts and the Kadena network. The modules include helper functions for many common tasks in core Pact modules, such as the `coin` module, and `core` functions that you can use to develop new interfaces for custom contracts.
 menu: Frontend libraries
-label: Client utilities
+label: Built-in utilities
 order: 1
 layout: full
 tags: ['TypeScript', 'Kadena client', 'frontend']
@@ -83,7 +83,7 @@ deployContract(contractCode, transactionBody)
 
 The `transactionBody` object contains the following properties:
 
-```
+```json
 {
   chainId: string,
   networkId: string,
@@ -93,6 +93,7 @@ The `transactionBody` object contains the following properties:
     chainId: string,
     ttl: integer,
     senderAccount: string,
+  }
 }
 ```
 
