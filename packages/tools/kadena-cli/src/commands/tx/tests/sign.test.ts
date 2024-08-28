@@ -126,7 +126,7 @@ describe('template to legacy live test', () => {
       verbose: true,
     });
 
-    const { stdout, stderr } = await runCommand(['tx', 'sign'], {
+    const { stderr } = await runCommand(['tx', 'sign'], {
       stdin: chainweaverTx,
     });
 
