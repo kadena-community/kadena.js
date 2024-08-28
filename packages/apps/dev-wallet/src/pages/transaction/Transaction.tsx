@@ -3,15 +3,27 @@ import {
   TransactionStatus,
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
-import { ICommand, createClient } from '@kadena/client';
-import { MonoArrowBack, MonoArrowForward } from '@kadena/kode-icons/system';
-import { Box, Button, Notification, Stack, Text } from '@kadena/kode-ui';
+import { useWallet } from '@/modules/wallet/wallet.hook';
+import { ICommand, IUnsignedCommand, createClient } from '@kadena/client';
+import {
+  MonoArrowBack,
+  MonoArrowForward,
+  MonoBrightness1,
+} from '@kadena/kode-icons/system';
+import { Box, Button, Card, Notification, Stack, Text } from '@kadena/kode-ui';
 import { isSignedCommand } from '@kadena/pactjs';
 import classNames from 'classnames';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ReviewTransaction } from './components/ReviewTransaction';
 import { SubmittedStatus } from './components/SubmittedStatus';
+import {
+  failureClass,
+  pendingClass,
+  successClass,
+  tabClass,
+  tabTextClass,
+} from './components/style.css';
 import { tabStyle } from './style.css';
 
 const steps: TransactionStatus[] = [
@@ -44,6 +56,7 @@ export function Transaction() {
   const [error, setError] = useState<string | null>(null);
   const [viewStep, setViewStep] = useState<'transaction' | 'result'>('result');
   const navigate = useNavigate();
+  const { sign } = useWallet();
 
   const loadTxs = useCallback(async (groupId: string) => {
     const list = await transactionRepository.getTransactionsByGroup(groupId);
@@ -201,10 +214,32 @@ export function Transaction() {
     return (
       <Stack flexDirection={'column'} gap={'xl'}>
         <Stepper />
-        <Stack gap={'lg'}>
-          {Txs.map((tx) => (
-            <SubmittedStatus key={tx.uuid} transaction={tx} />
-          ))}
+        <Stack gap={'lg'} flexDirection={'column'}>
+          <Stack gap={'sm'} flexWrap="wrap">
+            {Txs.map((tx, index) => (
+              <Button
+                variant="transparent"
+                key={tx.uuid}
+                onClick={() => setSelectedTxIndex(index)}
+                className={classNames(
+                  tabClass,
+                  selectedTxIndex === index && 'selected',
+                )}
+              >
+                <Stack gap={'sm'}>
+                  <Text className={tabTextClass}>{tx.hash}</Text>
+                  <MonoBrightness1
+                    className={classNames(
+                      tx.status === 'success' && successClass,
+                      tx.status === 'failure' && failureClass,
+                      tx.status === 'submitted' && pendingClass,
+                    )}
+                  />
+                </Stack>
+              </Button>
+            ))}
+          </Stack>
+          <SubmittedStatus transaction={transaction} />
         </Stack>
       </Stack>
     );
@@ -212,14 +247,45 @@ export function Transaction() {
   return (
     <Stack flexDirection={'column'} gap={'xl'}>
       <Stepper />
-      <Stack alignItems={'center'}>
-        <Text>
-          transaction {selectedTxIndex + 1}/{Txs.length}
-        </Text>
-        <BrowseTxs
-          length={Txs.length}
-          setSelectedTxIndex={setSelectedTxIndex}
-        />
+      <Stack alignItems={'center'} justifyContent={'space-between'}>
+        <Stack flexDirection={'row'} alignItems={'center'} gap={'sm'}>
+          <Text>
+            transaction {selectedTxIndex + 1}/{Txs.length}
+          </Text>
+          <BrowseTxs
+            length={Txs.length}
+            setSelectedTxIndex={setSelectedTxIndex}
+          />
+        </Stack>
+        {!['success', 'failure', 'submitted'].includes(step!) && (
+          <Button
+            onClick={async () => {
+              const signed = (await sign(Txs)) as (
+                | IUnsignedCommand
+                | ICommand
+              )[];
+
+              const updatedTxs = Txs.map((tx) => {
+                const signedTx = signed.find(({ hash }) => hash === tx.hash);
+                if (!signedTx) return tx;
+                return {
+                  ...tx,
+                  ...signedTx,
+                  status: isSignedCommand(signedTx)
+                    ? steps.indexOf(tx.status) < steps.indexOf('signed')
+                      ? 'signed'
+                      : tx.status
+                    : tx.status,
+                } as ITransaction;
+              });
+
+              await updatedTxs.map(transactionRepository.updateTransaction);
+              loadTxs(groupId!);
+            }}
+          >
+            Sign All
+          </Button>
+        )}
       </Stack>
       {error && <Notification role="alert">{error}</Notification>}
       <ReviewTransaction

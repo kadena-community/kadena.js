@@ -69,3 +69,19 @@ export const failureClass = style({
 export const pendingText = style({
   opacity: 0.5,
 });
+
+export const tabTextClass = style({
+  width: '50px',
+  overflow: 'hidden',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+});
+
+export const tabClass = style({
+  borderBottom: `0px solid ${vars.colors.$infoContrast}`,
+  selectors: {
+    '&.selected': {
+      borderWidth: '2px',
+    },
+  },
+});
