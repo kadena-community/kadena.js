@@ -1,5 +1,5 @@
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
-import { MonoClose, MonoMenuOpen } from '@kadena/react-icons';
+import { MonoClose, MonoMenuOpen } from '@kadena/kode-icons';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';

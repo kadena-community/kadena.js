@@ -2,7 +2,7 @@ import {
   INetwork,
   networkRepository,
 } from '@/modules/network/network.repository';
-import { Box, Button, Heading, TextField } from '@kadena/react-ui';
+import { Box, Button, Heading, TextField } from '@kadena/kode-ui';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 

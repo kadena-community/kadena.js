@@ -1,0 +1,17 @@
+{
+  "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "baseUrl": ".",
+    "types": ["node", "vitest-dom/extend-expect"],
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "declarationDir": "types",
+    "outDir": "dist/esm",
+    "allowJs": true,
+    "moduleResolution": "Bundler",
+    "removeComments": true
+  },
+  "include": ["src", "*.config.ts", "scripts"],
+  "exclude": ["node_modules"]
+}

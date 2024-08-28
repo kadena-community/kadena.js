@@ -1,6 +1,6 @@
 import type { ApolloError } from '@apollo/client';
-import { MonoClose } from '@kadena/react-icons/system';
-import { Box, Notification } from '@kadena/react-ui';
+import { MonoClose } from '@kadena/kode-icons/system';
+import { Box, Notification } from '@kadena/kode-ui';
 import React from 'react';
 
 interface IErrorBoxProps {

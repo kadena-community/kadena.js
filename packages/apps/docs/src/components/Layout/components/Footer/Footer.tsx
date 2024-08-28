@@ -1,4 +1,4 @@
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';

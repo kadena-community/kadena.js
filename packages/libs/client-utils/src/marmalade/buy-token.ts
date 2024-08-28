@@ -1,6 +1,7 @@
 import type {
   IPactModules,
   IPartialPactCommand,
+  ISigner,
   PactReturnType,
 } from '@kadena/client';
 import {
@@ -10,16 +11,21 @@ import {
   continuation,
   setMeta,
 } from '@kadena/client/fp';
-import type { ChainId, IPactDecimal, IPactInt } from '@kadena/types';
+import type { ChainId, IPactDecimal } from '@kadena/types';
 import { submitClient } from '../core';
 import type { IClientConfig } from '../core/utils/helpers';
 import type {
   CommonProps,
+  Guard,
   IAuctionPurchaseConfig,
   IDutchAuctionPurchaseInput,
   WithAuctionPurchase,
 } from './config';
-import { formatAdditionalSigners, formatCapabilities } from './helpers';
+import {
+  formatAdditionalSigners,
+  formatCapabilities,
+  formatWebAuthnSigner,
+} from './helpers';
 
 interface IBuyTokenInput extends CommonProps {
   policyConfig?: { guarded: boolean };
@@ -27,17 +33,14 @@ interface IBuyTokenInput extends CommonProps {
   tokenId: string;
   saleId: string;
   amount: IPactDecimal;
-  timeout: IPactInt;
   chainId: ChainId;
+  signerPublicKey: string;
   seller: {
     account: string;
   };
   buyer: {
     account: string;
-    keyset: {
-      keys: string[];
-      pred: 'keys-all' | 'keys-2' | 'keys-any';
-    };
+    guard: Guard;
   };
   buyerFungibleAccount?: string;
 }
@@ -48,7 +51,7 @@ const generatePolicyTransactionData = <C extends IAuctionPurchaseConfig>(
   const data = [];
 
   data.push(addData('buyer', props.buyer!.account));
-  data.push(addData('buyer-guard', props.buyer!.keyset));
+  data.push(addData('buyer-guard', props.buyer!.guard));
 
   if (props.buyerFungibleAccount) {
     data.push(addData('buyer_fungible_account', props.buyerFungibleAccount));
@@ -90,11 +93,11 @@ const buyTokenCommand = <C extends IAuctionPurchaseConfig>({
   buyer,
   buyerFungibleAccount,
   amount,
-  timeout,
   gasLimit = 3000,
   policyConfig,
   meta,
   capabilities,
+  signerPublicKey,
   additionalSigners,
   ...props
 }: WithAuctionPurchase<C, IBuyTokenInput>) =>
@@ -104,14 +107,9 @@ const buyTokenCommand = <C extends IAuctionPurchaseConfig>({
       step: 1,
       rollback: false,
       proof: null,
-      data: {
-        id: tokenId,
-        seller: seller.account,
-        amount,
-        timeout,
-      },
+      data: {},
     }),
-    addSigner(buyer.keyset.keys, (signFor) => [
+    addSigner(formatWebAuthnSigner(signerPublicKey as ISigner), (signFor) => [
       signFor('coin.GAS'),
       signFor(
         'marmalade-v2.ledger.BUY',

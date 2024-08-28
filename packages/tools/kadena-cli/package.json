@@ -1,6 +1,6 @@
 {
   "name": "@kadena/kadena-cli",
-  "version": "1.1.0",
+  "version": "1.2.1",
   "description": "Kadena CLI tool to interact with the Kadena blockchain (manage keys, transactions, etc.)",
   "keywords": [
     "Kadena",
@@ -39,7 +39,7 @@
   "scripts": {
     "build": "pnpm run generate:all && tsc",
     "bundle": "rollup -c rollup.config.mjs",
-    "dev": "NODE_ENV=development KADENA_LOG=debug node --import @swc-node/register/esm-register src/index.ts",
+    "dev": "swc --config-file .swcrc ./src -d lib --strip-leading-paths -q && NODE_ENV=development KADENA_LOG=debug node lib/index.js",
     "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",
@@ -47,7 +47,7 @@
     "generate:pact:faucet": "pactjs contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact",
     "generate:pact:kdn:mainnet": "pactjs contract-generate --contract n_32faa22a75da53789d48dcbcb124a11c8f8651a8.kadena-names --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact",
     "generate:pact:kdn:testnet": "pactjs contract-generate --contract n_32faa22a75da53789d48dcbcb124a11c8f8651a8.herdyracle --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact",
-    "kadena": "node --import @swc-node/register/esm-register src/index.ts",
+    "kadena": "swc --config-file .swcrc ./src -d lib --strip-leading-paths -q && node lib/index.js",
     "lint": "eslint src --ext .js,.ts --fix",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
@@ -85,7 +85,8 @@
     "@rollup/plugin-typescript": "^11.1.6",
     "@rushstack/eslint-config": "~3.6.9",
     "@rushstack/heft": "~0.50.6",
-    "@swc-node/register": "^1.8.0",
+    "@swc/cli": "^0.4.0",
+    "@swc/core": "~1.3.78",
     "@types/heft-jest": "~1.0.6",
     "@types/js-yaml": "4.0.9",
     "@types/node": "^20.12.7",

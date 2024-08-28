@@ -29,7 +29,7 @@
 - Updated dependencies \[3e53006e]
 - Updated dependencies \[17230731]
   - @kadena/react-components\@0.1.0
-  - @kadena/react-ui\@0.1.0
+  - @kadena/kode-ui\@0.1.0
   - @kadena/chainweb-node-client\@0.4.4
   - @kadena/cryptography-utils\@0.3.8
   - @kadena/pactjs-generator\@1.3.0

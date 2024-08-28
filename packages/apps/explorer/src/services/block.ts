@@ -1,9 +1,10 @@
 import type {
-  BlocksFromHeightsQueryResult,
+  BlocksFromHeightQueryResult,
+  CompletedBlockHeightsQueryResult,
   NewBlocksSubscriptionResult,
 } from '@/__generated__/sdk';
 
-interface IBlockData {
+export interface IBlockData {
   hash: string;
   height: number;
   chainId: number;
@@ -23,7 +24,8 @@ export function addBlockData(
   existingData: IChainBlock,
   newData:
     | NewBlocksSubscriptionResult['data']
-    | BlocksFromHeightsQueryResult['data'],
+    | BlocksFromHeightQueryResult['data']
+    | CompletedBlockHeightsQueryResult['data'],
 ): IChainBlock {
   const updatedData = { ...existingData };
 
@@ -50,6 +52,16 @@ export function addBlockData(
     if (!newData.blocksFromHeight) return updatedData;
 
     for (const block of newData.blocksFromHeight.edges) {
+      if (!block?.node) {
+        continue;
+      }
+
+      addBlock(block.node);
+    }
+  } else if ('completedBlockHeights' in newData) {
+    if (!newData.completedBlockHeights) return updatedData;
+
+    for (const block of newData.completedBlockHeights.edges) {
       if (!block?.node) {
         continue;
       }

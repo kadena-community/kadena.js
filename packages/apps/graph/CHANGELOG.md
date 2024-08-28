@@ -1,5 +1,70 @@
 # @kadena/graph
 
+## 1.0.9
+
+### Patch Changes
+
+- c5c1605: Improve performance by adding indexes for transactions.sender, and
+  transfers.to_acct and transfers.from_acct, all with height DESC
+  - @kadena/chainweb-node-client\@0.6.3
+  - @kadena/client\@1.13.0
+  - @kadena/client-utils\@0.9.0
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/pactjs\@0.4.3
+
+## 1.0.8
+
+### Patch Changes
+
+- 1707e63: Improve performance by memoizing networkInfo result in graph every 30
+  seconds. Skipping in explorer when there's an error. Added block info to
+  row-block component on main page
+- e8ce4b4: Fix performance issue when retrieving transactions by sender
+- b089abf: Fix issues with performance of Graph queries on
+  fungibleAccount.transfers
+
+## 1.0.7
+
+### Patch Changes
+
+- Updated dependencies \[29168e2]
+- Updated dependencies \[07c0a26]
+- Updated dependencies \[29168e2]
+- Updated dependencies \[29168e2]
+  - @kadena/client\@1.13.0
+  - @kadena/client-utils\@0.9.0
+  - @kadena/chainweb-node-client\@0.6.3
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/pactjs\@0.4.3
+
+## 1.0.6
+
+### Patch Changes
+
+- 0e9c0d049: Fixed issue with completed heights query
+- 950444ccf: Implement logic to handle difficulty calculations when there are
+  orphan blocks
+- Updated dependencies \[6d4e82074]
+  - @kadena/client\@1.12.1
+  - @kadena/client-utils\@0.8.1
+
+## 1.0.5
+
+### Patch Changes
+
+- 1bbf1c6: Added minHeight and maxHeight arguments to transactions and events
+- Updated dependencies \[83c3d58]
+  - @kadena/client-utils\@0.8.0
+
+## 1.0.4
+
+### Patch Changes
+
+- Updated dependencies \[9c145f196]
+- Updated dependencies \[9c145f196]
+  - @kadena/client\@1.12.0
+  - @kadena/client-utils\@0.7.0
+
 ## 1.0.3
 
 ### Patch Changes

@@ -1,0 +1,38 @@
+name: 'Merge & Publish Reports'
+inputs:
+  GITHUB_TOKEN:
+      description: 'Github Token'
+      required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Download blob reports from GitHub Actions Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: all-blob-reports
+        pattern: blob-report-*
+        merge-multiple: true
+
+    - name: Merge into HTML Report
+      shell: bash
+      run: pnpm dlx playwright merge-reports --reporter html ./all-blob-reports
+  
+    - name: Create timestamp
+      shell: bash
+      if: ${{ !cancelled() }}
+      id : timestamp
+      run: echo "timestamp=$(date --utc +%Y%m%d_%H%M%SZ)" >> "$GITHUB_OUTPUT"
+
+    - name: Publish E2E Report
+      if: ${{ !cancelled() }}
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ inputs.GITHUB_TOKEN }}
+        publish_dir: playwright-report
+        destination_dir: ${{ github.event.number }}/${{ steps.timestamp.outputs.timestamp }}
+      
+    - name: Add Link to Summary
+      shell: bash
+      if: ${{ !cancelled() }}
+      run: echo "### E2E Report - https://${{ github.repository_owner }}.github.io/kadena.js/${{ github.event.number }}/${{ steps.timestamp.outputs.timestamp }}/" >> $GITHUB_STEP_SUMMARY
+  

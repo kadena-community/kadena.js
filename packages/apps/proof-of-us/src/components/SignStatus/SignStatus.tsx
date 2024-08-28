@@ -4,7 +4,7 @@ import {
   MonoClose,
   MonoLoading,
   MonoSignatureNotAllowed,
-} from '@kadena/react-icons';
+} from '@kadena/kode-icons';
 import type { FC } from 'react';
 import { animateClass, checkClass } from './style.css';
 

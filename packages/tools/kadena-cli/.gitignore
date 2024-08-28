@@ -5,5 +5,5 @@
 #Kadena
 .kadena/
 
-*.js
+
 !/vitest.setup.js

@@ -1,4 +1,4 @@
-import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/styles';
+import { atoms, responsiveStyle, tokens } from '@kadena/kode-ui/styles';
 import { createVar, globalStyle, style } from '@vanilla-extract/css';
 import { $$leftSideWidth, $$pageWidth } from './global.css';
 
@@ -8,14 +8,16 @@ globalStyle('html, body', {
   overscrollBehaviorY: 'none',
 });
 
-globalStyle('a', {
+globalStyle('a:not(nav a)', {
   color: tokens.kda.foundation.color.link.brand.primary.default,
   textDecoration: 'underline',
 });
-globalStyle('a:hover', {
+
+globalStyle('a:hover:not(nav a)', {
   color: tokens.kda.foundation.color.link.brand.primary['@hover'],
   textDecoration: 'none',
 });
+
 globalStyle('p a', {
   fontWeight: '500',
 });

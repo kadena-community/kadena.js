@@ -9,7 +9,7 @@ import {
   Table,
   TableBody,
   TableHeader,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 
 import type { Block, QueryTransactionsConnection } from '@/__generated__/sdk';
 import {
@@ -22,7 +22,7 @@ import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import { getTransactions } from '@/graphql/queries.graph';
 import { getBlocksSubscription } from '@/graphql/subscriptions.graph';
 import routes from '@constants/routes';
-import { atoms } from '@kadena/react-ui/styles';
+import { atoms } from '@kadena/kode-ui/styles';
 import React, { useEffect, useState } from 'react';
 
 const Home: React.FC = () => {

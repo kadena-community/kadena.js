@@ -14,12 +14,13 @@ export const asyncPipe: IAsyncPipe = (
     const start = fns.findIndex((fn) => 'startPoint' in fn);
     let fnsList = fns;
     let startData = value;
+    let firstFn = first;
     if (start !== -1) {
-      fnsList = fns.slice(start + 1);
+      [firstFn, ...fnsList] = fns.slice(start + 1);
       startData = [fns[start].startPoint];
     }
     return fnsList.reduce(
       (acc, fn) => acc.then((data) => fn(data, value)),
-      Promise.resolve(first(...startData)),
+      Promise.resolve(firstFn(...startData)),
     );
   }) as Any;

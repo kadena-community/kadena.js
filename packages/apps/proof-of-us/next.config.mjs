@@ -5,7 +5,7 @@ const withVanillaExtract = createVanillaExtractPlugin();
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
-  transpilePackages: ['@kadena/react-ui'],
+  transpilePackages: ['@kadena/kode-ui'],
   webpack: (config) => {
     config.optimization.splitChunks = false;
     config.externals.push({
@@ -19,6 +19,10 @@ const nextConfig = {
   async rewrites() {
     return [
       {
+        source: '/pinata/:cid',
+        destination: 'https://ipfs.io/ipfs/:cid',
+      },
+      {
         source: '/api/ipfs/:id/:path/image',
         destination: `https://:id.ipfs.:path.link/image`,
       },
@@ -26,6 +30,7 @@ const nextConfig = {
         source: '/api/ipfs/:id/:path/metadata',
         destination: `https://:id.ipfs.:path.link/metadata`,
       },
+
       {
         source: '/graph',
         destination:

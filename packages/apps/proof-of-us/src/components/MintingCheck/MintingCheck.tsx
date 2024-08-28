@@ -1,6 +1,6 @@
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { getTransaction } from '@/utils/proofOfUs';
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';

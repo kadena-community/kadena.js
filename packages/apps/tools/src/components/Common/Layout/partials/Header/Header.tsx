@@ -11,7 +11,7 @@ import {
   MonoBuildCircle,
   MonoContrast,
   MonoPublic,
-} from '@kadena/react-icons/system';
+} from '@kadena/kode-icons/system';
 import {
   KadenaLogo,
   NavHeader,
@@ -20,8 +20,8 @@ import {
   NavHeaderLinkList,
   NavHeaderSelect,
   SelectItem,
-} from '@kadena/react-ui';
-import { atoms, breakpoints } from '@kadena/react-ui/styles';
+} from '@kadena/kode-ui';
+import { atoms, breakpoints } from '@kadena/kode-ui/styles';
 import { useTheme } from 'next-themes';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
@@ -99,6 +99,7 @@ const Header: FC<IHeaderProps> = () => {
             <MonoContrast
               className={atoms({
                 color: 'text.base.default',
+                fontSize: 'lg',
               })}
             />
           </NavHeaderButton>
@@ -112,6 +113,7 @@ const Header: FC<IHeaderProps> = () => {
             <MonoBuildCircle
               className={atoms({
                 color: 'text.base.default',
+                fontSize: 'lg',
               })}
             />
           </NavHeaderButton>

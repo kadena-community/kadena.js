@@ -11,8 +11,10 @@ import type { INetworkOptions } from '@kadena/client';
 import { IPactCommand } from '@kadena/client';
 import { IPactDecimal } from '@kadena/types';
 import { IPactInt } from '@kadena/types';
+import type { ISigner } from '@kadena/client';
 import type { ISignFunction } from '@kadena/client';
 import { ITransactionDescriptor } from '@kadena/client';
+import { IUnsignedCommand } from '@kadena/types';
 import { PactValue } from '@kadena/types';
 
 // Warning: (ae-forgotten-export) The symbol "IDeployContractInput" needs to be exported by the entry point index.d.ts
@@ -29,6 +31,9 @@ export const createPrincipal: (inputs: ICreatePrincipalInput, config: Omit<IClie
 //
 // @alpha
 export const deployContract: (inputs: IDeployContractInput, config: IClientConfig) => IEmitterWrapper<[{
+event: "command";
+data: IUnsignedCommand;
+}, {
 event: "sign";
 data: ICommand;
 }, {
@@ -40,7 +45,7 @@ data: ITransactionDescriptor;
 }, {
 event: "listen";
 data: ICommandResult;
-}], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]> | Promise<Record<string, any>>>;
+}], [], Promise<string> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]> | Promise<Record<string, any>>>;
 
 // @alpha (undocumented)
 export const describeModule: (module: string, config: Omit<IClientConfig, 'sign'>) => Promise<IDescribeModuleOutput>;
@@ -95,7 +100,7 @@ export interface ITransactionBody {
     // (undocumented)
     networkId: string;
     // (undocumented)
-    signers: string[];
+    signers: ISigner[];
 }
 
 // @alpha (undocumented)

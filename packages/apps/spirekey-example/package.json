@@ -1,9 +1,9 @@
 {
   "name": "@kadena/spirekey-example",
-  "version": "0.0.6",
+  "version": "0.0.9",
   "private": true,
   "scripts": {
-    "build": "parcel build ./index.html",
+    "build": "echo 'no build'",
     "dev": "parcel ./index.html"
   },
   "dependencies": {

@@ -51,9 +51,6 @@ export interface ICommandResult {
     metaData: IChainwebResponseMetaData | null;
     // (undocumented)
     reqKey: IBase64Url;
-    // Warning: (ae-forgotten-export) The symbol "IPactResultSuccess" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "IPactResultError" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     result: IPactResultSuccess | IPactResultError;
     // (undocumented)
@@ -98,6 +95,22 @@ export interface ILocalOptions {
 
 // @alpha (undocumented)
 export type ILocalResult = IPreflightResult | ICommandResult;
+
+// @alpha
+export interface IPactResultError {
+    // (undocumented)
+    error: object;
+    // (undocumented)
+    status: 'failure';
+}
+
+// @alpha
+export interface IPactResultSuccess {
+    // (undocumented)
+    data: PactValue;
+    // (undocumented)
+    status: 'success';
+}
 
 // @alpha
 export interface IPollRequestBody {

@@ -69,45 +69,55 @@ export type ModulesMap = Map<
  */
 export const mapToTreeItems = (
   modulesMap: ModulesMap,
+  activeModule?: IncompleteModuleModel,
   parent?: Namespace,
+  needsSorting = true,
 ): TreeItem<IncompleteModuleModel>[] => {
-  return [...modulesMap]
-    .sort(([nameA], [nameB]) => nameA.localeCompare(nameB))
-    .map(([name, value]) => {
-      let children;
+  const mappArray = [...modulesMap];
+  if (needsSorting) {
+    mappArray.sort(([nameA], [nameB]) => nameA.localeCompare(nameB));
+  }
+  return mappArray.map(([name, value]) => {
+    let children;
 
-      if (value instanceof Map) {
-        const mapped = mapToTreeItems(
-          value,
-          `${typeof parent === 'string' ? `${parent}.` : ''}${name}`,
-        );
-        children = mapped;
-      } else {
-        children = value.map((chain) => {
-          return {
-            data: chain,
-            key: `${typeof parent === 'string' ? `${parent}.` : ''}${name}.${chain.chainId}`,
-            title: chain.chainId,
-            children: [],
-            label: chain.hash,
-          };
-        });
-      }
+    if (value instanceof Map) {
+      const mapped = mapToTreeItems(
+        value,
+        activeModule,
+        `${typeof parent === 'string' ? `${parent}.` : ''}${name}`,
+        needsSorting,
+      );
+      children = mapped;
+    } else {
+      children = value.map((chain) => {
+        return {
+          data: chain,
+          key: `${typeof parent === 'string' ? `${parent}.` : ''}${name}.${chain.chainId}`,
+          title: chain.chainId,
+          children: [],
+          label: chain.hash,
+          isActive:
+            chain.networkId === activeModule?.networkId &&
+            chain.name === activeModule?.name &&
+            chain.chainId === activeModule?.chainId,
+        };
+      });
+    }
 
-      // Let's take the info from the first child as our data
-      const aux: IncompleteModuleModel = {
-        name: children[0].data.name,
-        chainId: children[0].data.chainId,
-        networkId: children[0].data.networkId,
-      };
+    // Let's take the info from the first child as our data
+    const aux: IncompleteModuleModel = {
+      name: children[0].data.name,
+      chainId: children[0].data.chainId,
+      networkId: children[0].data.networkId,
+    };
 
-      return {
-        data: aux,
-        key: `${typeof parent === 'string' ? `${parent}.` : ''}${name}`,
-        title: name,
-        children,
-      };
-    });
+    return {
+      data: aux,
+      key: `${typeof parent === 'string' ? `${parent}.` : ''}${name}`,
+      title: name,
+      children,
+    };
+  });
 };
 
 /**

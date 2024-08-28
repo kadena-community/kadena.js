@@ -1,0 +1,45 @@
+name: Update Chainweb-node Changelogs
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * SUN'
+
+jobs:
+  update-changelog:
+    name: Update Chainweb-node Changelogs
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - name: Runner setup
+        uses: ./.github/actions/runner-setup
+
+      - name: Build Docs Tools
+        run:  pnpm turbo build --filter @kadena/docs
+
+      - name: Update chainweb-node changelog
+        run: pnpm run docs:changelogs
+      
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.RELEASE_ACTION_GITHUB_TOKEN }}
+          commit-message: Update Chainweb-node Changelogs
+          title: Update Chainweb-node Changelogs
+          body: |
+            This PR updates the Chainweb-node changelogs.
+          branch: chainweb-node-changelogs 
+          base: main
+          reviewers: |
+            @sstraatemans
+          assignees: |
+            @sstraatemans 
+
+     

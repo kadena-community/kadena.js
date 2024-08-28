@@ -1,6 +1,5 @@
-import {Heading} from '@kadena/react-ui';
+import {Heading} from '@kadena/kode-ui';
 import * as styles from "@/styles/global.css"
-import { UploadImage } from '@/components/UploadImage';
 
 export default function Marketplace() {
   return (

@@ -3,7 +3,7 @@ import {
   kadenaSpinnerDivDot,
   kadenaSpinnerDivRing,
 } from '@/styles/loader.css';
-import { Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
 
 export const LoadingStatus: FC = () => {

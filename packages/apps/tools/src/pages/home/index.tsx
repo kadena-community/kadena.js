@@ -20,13 +20,13 @@ import {
   Table,
   TableBody,
   TableHeader,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 
 import { linkStyle } from '@/pages/faucet/styles.css';
-import { MonoHelp } from '@kadena/react-icons/system';
+import { MonoHelp } from '@kadena/kode-icons/system';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React, { useRef } from 'react';
@@ -335,6 +335,23 @@ const Home: FC = () => {
                 <Column>Update</Column>
               </TableHeader>
               <TableBody>
+                <Row>
+                  <Cell>June 24, 2024</Cell>
+                  <Cell>
+                    Released version 1.4 of the Tools Website, including the
+                    Modules module, which has a Modules Explorer.
+                  </Cell>
+                </Row>
+                <Row>
+                  <Cell>April 16, 2024</Cell>
+                  <Cell>
+                    Released version 1.3 of the Tools Website, including an
+                    addition to the Transactions module; a Transfer page,
+                    enabling transfers to be made using various signing methods.
+                    The initial release will only support signing with a Ledger
+                    device.
+                  </Cell>
+                </Row>
                 <Row>
                   <Cell>January 31, 2024</Cell>
                   <Cell>

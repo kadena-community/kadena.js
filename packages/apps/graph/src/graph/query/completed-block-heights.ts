@@ -11,8 +11,10 @@ builder.queryField('completedBlockHeights', (t) =>
       'Retrieve all completed blocks from a given height. Default page size is 20.',
     args: {
       completedHeights: t.arg.boolean({
+        description:
+          'Retrieve blocks from completed heights only. Default: true',
         required: false,
-        defaultValue: false,
+        defaultValue: true,
       }),
       heightCount: t.arg.int({
         required: false,
@@ -55,7 +57,7 @@ builder.queryField('completedBlockHeights', (t) =>
             SELECT height
             FROM blocks b
             GROUP BY height
-            HAVING COUNT(*) >= ${networkData.chainIds} AND
+            HAVING COUNT(*) >= ${networkData.chainIds.length} AND
             COUNT(CASE WHEN height = height THEN 1 ELSE NULL END) > 0
             ORDER BY height DESC
             LIMIT ${heightCount}

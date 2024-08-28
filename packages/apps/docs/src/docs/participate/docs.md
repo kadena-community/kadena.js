@@ -110,7 +110,7 @@ To set up a local development environment for contributing to Kadena documentati
    ```bash
    cd packages/tools/docs-tools && pnpm build
    cd ../../..
-   cd packages/libs/react-ui && pnpm build
+   cd packages/libs/kode-ui && pnpm build
    cd ../../..
    cd packages/apps/docs && pnpm run dev
    ```

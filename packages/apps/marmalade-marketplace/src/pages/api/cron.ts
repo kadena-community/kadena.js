@@ -62,6 +62,12 @@ type Bid = {
   requestKey: string;
 };
 
+export interface QuoteInfo {
+  'sale-price': number;
+  'sale-type': string;
+  'token-id': string;
+}
+
 const isChainEnabled: Record<string, boolean> = env.CHAIN_IDS.reduce(
   (acc, chainId) => ({ ...acc, [chainId]: true }),
   {},
@@ -72,7 +78,6 @@ const isEventEnabled: Record<string, boolean> = env.EVENTS.reduce(
 );
 
 const getAllEventsFromBlock = async (blockNumber: number) => {
-  console.log('Getting all events from block', blockNumber);
   const events: Event[] = [];
 
   let response: BlocksFromHeightQuery['blocksFromHeight'] | null = null;
@@ -98,8 +103,8 @@ const getAllEventsFromBlock = async (blockNumber: number) => {
 
       if (
         !block?.node ||
-        !isChainEnabled[block.node.chainId] ||
-        block.node.transactions.edges.length === 0
+        !isChainEnabled[block.node.chainId]
+        // || block.node.transactions.edges.length === 0
       ) {
         continue;
       }
@@ -120,7 +125,6 @@ const getAllEventsFromBlock = async (blockNumber: number) => {
               ? JSON.parse(event.node.parameters)
               : [],
           };
-          console.log(data);
 
           events.push(data);
         }
@@ -165,19 +169,20 @@ async function parseEvents(
       let quoteInfo = {};
 
       try {
-        const data = await getQuoteInfo({
+        const data = (await getQuoteInfo({
           saleId: saleId as string,
           chainId: event.chainId,
-          networkId: env.NETWORK_NAME,
+          networkId: env.NETWORKID,
           host: env.CHAINWEB_API_HOST,
-        });
+        })) as QuoteInfo;
 
         quoteInfo = {
           startPrice: data['sale-price'],
           saleType: data['sale-type'],
         };
-      } catch {
+      } catch (error) {
         // sale does not have quote
+        console.log('error', error);
       }
 
       saleRecords[saleId] = {
@@ -197,6 +202,7 @@ async function parseEvents(
         tokenId,
         amount,
         timeoutAt: Number(timeout.int) * 1000,
+        endsAt: Number(timeout.int) * 1000,
         ...quoteInfo,
       };
       continue;
@@ -258,7 +264,7 @@ async function parseEvents(
         },
         saleId: saleId as string,
         chainId: event.chainId,
-        networkId: env.NETWORK_NAME,
+        networkId: env.NETWORKID,
         host: env.CHAINWEB_API_HOST,
       });
 
@@ -292,7 +298,7 @@ async function parseEvents(
         },
         saleId: saleId as string,
         chainId: event.chainId,
-        networkId: env.NETWORK_NAME,
+        networkId: env.NETWORKID,
         host: env.CHAINWEB_API_HOST,
       });
 
@@ -328,13 +334,13 @@ async function parseEvents(
           },
           saleId: saleId as string,
           chainId: event.chainId,
-          networkId: env.NETWORK_NAME,
+          networkId: env.NETWORKID,
           host: env.CHAINWEB_API_HOST,
         }),
         escrowAccount({
           saleId: saleId as string,
           chainId: event.chainId,
-          networkId: env.NETWORK_NAME,
+          networkId: env.NETWORKID,
           host: env.CHAINWEB_API_HOST,
         }),
       ]);
@@ -364,21 +370,28 @@ async function parseEvents(
     }
 
     if (event.event === 'marmalade-sale.conventional-auction.BID_PLACED') {
-      const [bidId, tokenId] = event.parameters;
+      const [bidId, saleId] = event.parameters;
 
       const bidDetails = await getBid({
         bidId: bidId as string,
         chainId: event.chainId,
-        networkId: env.NETWORK_NAME,
+        networkId: env.NETWORKID,
         host: env.CHAINWEB_API_HOST,
       });
+
+      const quoteInfo = (await getQuoteInfo({
+        saleId: saleId as string,
+        chainId: event.chainId,
+        networkId: env.NETWORKID,
+        host: env.CHAINWEB_API_HOST,
+      })) as QuoteInfo;
 
       bidRecords[bidId] = {
         ...bidRecords[bidId],
         chainId: event.chainId,
         block: event.block,
         bidId,
-        tokenId,
+        tokenId: quoteInfo['token-id'],
         bid: bidDetails['bid'],
         bidder: {
           account: bidDetails['bidder'],
@@ -442,8 +455,10 @@ const sync = async (fromBlock: number, toBlock: number) => {
 
   try {
     for (let i = fromBlock; i <= toBlock; i++) {
+      // Fetching too many blocks
       const events = await getAllEventsFromBlock(i);
 
+      // not enough time to process these steps after
       const { sales, bids } = await parseEvents(events);
 
       if (sales.length > 0) {
@@ -458,8 +473,9 @@ const sync = async (fromBlock: number, toBlock: number) => {
     }
   } catch (error) {
     await saveSettings({ isProcessing: false });
-
     throw error;
+  } finally {
+    await saveSettings({ isProcessing: false });
   }
 
   await saveSettings({ isProcessing: false });
@@ -481,7 +497,6 @@ export default async function handler(
   res: NextApiResponse<ResponseData>,
 ) {
   const { isProcessing, latestProcessedBlockNumber } = await getSettings();
-
   if (isProcessing) {
     res.status(425).json({ message: 'SYNCING' });
     return;
@@ -500,11 +515,11 @@ export default async function handler(
       return;
     }
 
-    console.log('blockDiff:', latestBlockNumber - latestProcessedBlockNumber);
-
-    const endBlock = getEndBlock(latestProcessedBlockNumber, latestBlockNumber);
-
-    await sync(latestProcessedBlockNumber + 1, endBlock);
+    const blocksToProcess = Math.min(10, latestBlockNumber - latestProcessedBlockNumber);
+    await sync(
+      latestProcessedBlockNumber + 1,
+      latestProcessedBlockNumber + blocksToProcess + 1,
+    );
 
     res.status(200).write('OK');
     res.end();

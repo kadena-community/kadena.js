@@ -1,4 +1,4 @@
-import { atoms, vars } from '@kadena/react-ui/styles';
+import { atoms, vars } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const mainContentClass = style([

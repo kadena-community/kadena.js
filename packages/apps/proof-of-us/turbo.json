@@ -1,11 +1,11 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "extends": ["//"],
-  "pipeline": {
+  "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**", "./src/__generated__/**"],
-      "outputMode": "new-only"
+      "outputLogs": "new-only"
     }
   }
 }

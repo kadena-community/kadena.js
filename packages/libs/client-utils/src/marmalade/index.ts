@@ -1,5 +1,6 @@
 export * from './burn-token';
 export * from './buy-token';
+export * from './config';
 export * from './create-auction';
 export * from './create-bid-id';
 export * from './create-collection';

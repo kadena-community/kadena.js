@@ -10,8 +10,9 @@ import {
 import type { ChainId } from '@kadena/types';
 import { submitClient } from '../core';
 import type { IClientConfig } from '../core/utils/helpers';
+import { formatWebAuthnSigner } from './helpers';
 
-interface IMintTokenInput {
+interface IUpdateUriInput {
   policyConfig?: {
     guarded?: boolean;
   };
@@ -20,7 +21,7 @@ interface IMintTokenInput {
   chainId: ChainId;
   guard: {
     account: string;
-    keyset: {
+    guard: {
       keys: string[];
       pred: 'keys-all' | 'keys-2' | 'keys-any';
     };
@@ -33,11 +34,11 @@ const updateUriCommand = ({
   chainId,
   guard,
   policyConfig,
-}: IMintTokenInput) =>
+}: IUpdateUriInput) =>
   composePactCommand(
     execution(Pact.modules['marmalade-v2.ledger']['update-uri'](tokenId, uri)),
-    addKeyset('guard', guard.keyset.pred, ...guard.keyset.keys),
-    addSigner(guard.keyset.keys, (signFor) => [
+    addKeyset('guard', guard.guard.pred, ...guard.guard.keys),
+    addSigner(formatWebAuthnSigner(guard.guard.keys), (signFor) => [
       signFor('coin.GAS'),
       signFor('marmalade-v2.ledger.UPDATE-URI', tokenId, uri),
       ...(policyConfig?.guarded
@@ -47,7 +48,7 @@ const updateUriCommand = ({
     setMeta({ senderAccount: guard.account, chainId }),
   );
 
-export const updateUri = (inputs: IMintTokenInput, config: IClientConfig) =>
+export const updateUri = (inputs: IUpdateUriInput, config: IClientConfig) =>
   submitClient<
     PactReturnType<IPactModules['marmalade-v2.ledger']['update-uri']>
   >(config)(updateUriCommand(inputs));

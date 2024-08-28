@@ -17,6 +17,7 @@ import type { IPactInt } from '@kadena/types';
 import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 import type { CommonProps } from './config';
+import { formatWebAuthnSigner } from './helpers';
 
 interface ICreateCollectionInput extends Pick<CommonProps, 'meta'> {
   id: string;
@@ -25,7 +26,7 @@ interface ICreateCollectionInput extends Pick<CommonProps, 'meta'> {
   chainId: ChainId;
   operator: {
     account: string;
-    keyset: {
+    guard: {
       keys: string[];
       pred: BuiltInPredicate;
     };
@@ -50,15 +51,15 @@ const createCollectionCommand = ({
       ),
     ),
     setMeta({ senderAccount: operator.account, chainId }),
-    addKeyset('operator-guard', operator.keyset.pred, ...operator.keyset.keys),
-    addSigner(operator.keyset.keys, (signFor) => [
+    addKeyset('operator-guard', operator.guard.pred, ...operator.guard.keys),
+    addSigner(formatWebAuthnSigner(operator.guard.keys), (signFor) => [
       signFor('coin.GAS'),
       signFor(
         'marmalade-v2.collection-policy-v1.COLLECTION',
         id,
         name,
         size,
-        operator.keyset,
+        operator.guard,
       ),
     ]),
     setMeta({ senderAccount: operator.account, chainId, ...meta }),

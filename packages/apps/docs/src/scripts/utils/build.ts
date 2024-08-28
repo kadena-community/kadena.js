@@ -42,6 +42,7 @@ export const initFunc = async (
     errors.map((error) => {
       console.warn(chalk.red('⨯'), error);
     });
+    console.warn(chalk.red(`there were ${errors.length} errors`));
     setGlobalError(true);
   } else {
     success.map((succes) => {

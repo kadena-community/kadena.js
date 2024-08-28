@@ -1,6 +1,6 @@
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
-import { MonoContrast } from '@kadena/react-icons';
-import { NavHeaderButton, Themes, useTheme } from '@kadena/react-ui';
+import { MonoContrast } from '@kadena/kode-icons';
+import { NavHeaderButton, Themes, useTheme } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';

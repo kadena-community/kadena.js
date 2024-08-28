@@ -1,28 +1,42 @@
-import BlockTable from '@/components/block-table/block-table';
-import SearchLayout from '@/components/layout/search-layout/search-layout';
-import SearchComponent from '@/components/search/search-component/search-component';
-import { getSearchData } from '@/constants/search';
-import { LogoKdacolorLight } from '@kadena/react-icons/brand';
-import { Stack } from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
-import React from 'react';
+import { selectedNetworkKey } from '@/context/networksContext';
+import type { GetServerSideProps } from 'next';
+import type React from 'react';
 
 const Home: React.FC = () => {
-  const searchData = getSearchData();
+  return null;
+};
 
-  return (
-    <SearchLayout>
-      <Stack
-        className={atoms({ flexDirection: 'column' })}
-        gap={'xxl'}
-        alignItems={'center'}
-      >
-        <LogoKdacolorLight />
-        <SearchComponent {...searchData} />
-        <BlockTable />
-      </Stack>
-    </SearchLayout>
-  );
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const DEFAULTNETWORKSLUG = 'mainnet';
+  if (!ctx.req.headers.cookie) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: `/${DEFAULTNETWORKSLUG}`,
+      },
+    };
+  }
+  const cookieValues = ctx.req.headers
+    .cookie!.split(';')
+    .reduce<Record<string, { key: string; value: string }>>((acc, val) => {
+      const [key, value] = val.split('=');
+      acc[key.trim()] = {
+        key: key.trim(),
+        value: value.trim(),
+      };
+      return acc;
+    }, {});
+
+  const network = cookieValues[selectedNetworkKey] ?? {
+    value: DEFAULTNETWORKSLUG,
+  };
+
+  return {
+    redirect: {
+      permanent: false,
+      destination: `/${network.value}`,
+    },
+  };
 };
 
 export default Home;

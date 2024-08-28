@@ -7,7 +7,7 @@ const mocks = vi.hoisted(() => {
         name: 'Kode UI Components',
         slug: 'kode-ui-components',
         repo: 'https://github.com/kadena-community/kadena.js.git',
-        directory: '/packages/libs/react-ui',
+        directory: '/packages/libs/kode-ui',
         fileName: 'CHANGELOG.md',
         owner: 'kadena-community',
         repoName: 'kadena.js',
@@ -16,7 +16,7 @@ const mocks = vi.hoisted(() => {
         name: 'Kode Icons',
         slug: 'kode-icons',
         repo: 'https://github.com/kadena-community/kadena.js.git',
-        directory: '/packages/libs/react-icons',
+        directory: '/packages/libs/kode-icons',
         fileName: 'CHANGELOG.md',
         owner: 'kadena-community',
         repoName: 'kadena.js',
@@ -50,7 +50,6 @@ describe('getChangelogs', () => {
         '@/scripts/importChangelogs/constants',
       )) as {};
 
-      console.log(mocks.REPOS);
       return {
         ...actual,
         REPOS: mocks.REPOS,

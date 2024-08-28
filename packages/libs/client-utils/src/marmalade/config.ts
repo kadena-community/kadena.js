@@ -14,10 +14,7 @@ export interface CommonProps {
     props: any[];
   }[];
   additionalSigners?: {
-    keyset: {
-      keys: string[];
-      pred: BuiltInPredicate;
-    };
+    keys: string[];
     capabilities: {
       name: string;
       props: any[];
@@ -25,18 +22,29 @@ export interface CommonProps {
   }[];
 }
 
-export interface KeysetGuard {
-  keys: string[];
-  pred: BuiltInPredicate;
-}
-
-export interface FunctionGuard {
+export interface FunctionGuard extends Record<string, unknown> {
   args: string[];
   fun: string;
 }
 
+export interface RefKeyset extends Record<string, unknown> {
+  keysetref: {
+    ns: string;
+    ksn: string;
+  };
+}
+
+export interface Keyset extends Record<string, unknown> {
+  keys: string[];
+  pred: BuiltInPredicate;
+}
+
+export type Guard = RefKeyset | Keyset | FunctionGuard;
+
 export const GUARD_POLICY = 'marmalade-v2.guard-policy-v1';
 export const NON_FUNGIBLE_POLICY = 'marmalade-v2.non-fungible-policy-v1';
+export const NON_UPDATABLE_URI_POLICY =
+  'marmalade-v2.non-updatable-uri-policy-v1';
 export const ROYALTY_POLICY = 'marmalade-v2.royalty-policy-v1';
 export const COLLECTION_POLICY = 'marmalade-v2.collection-policy-v1';
 
@@ -68,20 +76,17 @@ export interface IRoyaltyInfoInput {
   };
   creator: {
     account: string;
-    keyset: {
-      keys: string[];
-      pred: BuiltInPredicate;
-    };
+    guard: Guard;
   };
   royaltyRate: IPactDecimal;
 }
 
 export interface IGuardInfoInput {
-  mintGuard?: KeysetGuard | FunctionGuard;
-  uriGuard?: KeysetGuard | FunctionGuard;
-  saleGuard?: KeysetGuard | FunctionGuard;
-  burnGuard?: KeysetGuard | FunctionGuard;
-  transferGuard?: KeysetGuard | FunctionGuard;
+  mintGuard?: Guard;
+  uriGuard?: Guard;
+  saleGuard?: Guard;
+  burnGuard?: Guard;
+  transferGuard?: Guard;
 }
 
 export interface ICollectionInfoInput {
@@ -90,7 +95,7 @@ export interface ICollectionInfoInput {
 
 export interface ICreateTokenPolicyConfig {
   customPolicies?: boolean;
-  updatableURI?: boolean;
+  nonUpdatableURI?: boolean;
   guarded?: boolean;
   nonFungible?: boolean;
   hasRoyalty?: boolean;
@@ -99,7 +104,7 @@ export interface ICreateTokenPolicyConfig {
 
 interface ConfigToDataMap {
   customPolicies: { customPolicyData: Record<string, any> };
-  updatableURI: {};
+  nonUpdatableURI: {};
   guarded: { guards: IGuardInfoInput };
   nonFungible: {};
   hasRoyalty: { royalty: IRoyaltyInfoInput };
@@ -115,7 +120,9 @@ export interface PolicyProps {
 
 type PolicyDataForConfig<C extends ICreateTokenPolicyConfig> =
   (C['customPolicies'] extends true ? ConfigToDataMap['customPolicies'] : {}) &
-    (C['updatableURI'] extends true ? ConfigToDataMap['updatableURI'] : {}) &
+    (C['nonUpdatableURI'] extends true
+      ? ConfigToDataMap['nonUpdatableURI']
+      : {}) &
     (C['guarded'] extends true ? ConfigToDataMap['guarded'] : {}) &
     (C['nonFungible'] extends true ? ConfigToDataMap['nonFungible'] : {}) &
     (C['hasRoyalty'] extends true ? ConfigToDataMap['hasRoyalty'] : {}) &
@@ -149,10 +156,7 @@ export interface ISaleAuctionInfoInput {
   price: IPactDecimal;
   sellerFungibleAccount: {
     account: string;
-    keyset: {
-      keys: string[];
-      pred: BuiltInPredicate;
-    };
+    guard: Guard;
   };
   saleType?:
     | 'marmalade-sale.conventional-auction'
@@ -160,7 +164,7 @@ export interface ISaleAuctionInfoInput {
 }
 
 export interface ISaleGuardInfoInput {
-  saleGuard?: KeysetGuard | FunctionGuard;
+  saleGuard?: Guard;
 }
 
 export interface ISaleTokenPolicyConfig {
@@ -196,7 +200,7 @@ export type WithSaleTokenPolicy<C extends ISaleTokenPolicyConfig, Base> = Base &
 /** -----------WITHDRAW----------- */
 
 export interface IWithdrawSaleGuardInfoInput {
-  saleGuard?: KeysetGuard | FunctionGuard;
+  saleGuard?: Guard;
 }
 
 export interface IWithdrawSaleTokenPolicyConfig {

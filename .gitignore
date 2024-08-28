@@ -65,8 +65,10 @@ jspm_packages/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variables file
+# dotenv environment variables files
 .env
+# direnv
+.envrc
 
 # next.js build output
 .next
@@ -96,7 +98,7 @@ temp
 #Playwright
 /packages/*/*/test-results
 /packages/*/*/playwright-report
-
+/packages/*/*/blob-report
 # cache-sh
 .cache-sh
 

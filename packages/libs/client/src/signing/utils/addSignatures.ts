@@ -21,34 +21,26 @@ export const addSignatures: (
 
   const { cmd, hash, sigs } = transaction;
   const parsedTransaction = parseTransactionCommand(transaction);
+  const pubKeyOrder = parsedTransaction.signers.map((signer) => signer.pubKey);
   if (allSignaturesHavePubKeys(signatures)) {
     // signatures have pubKeys, use pubKeys to identify order
-    const pubKeyOrder = parsedTransaction.signers.map(
-      (signer) => signer.pubKey,
-    );
     debug(`Adding signatures based on pubKeys`);
 
     return {
       cmd,
       hash,
       sigs: pubKeyOrder.map((pubKey, i) => {
+        const existed = sigs.find((sig) => sig?.pubKey === pubKey);
+        if (existed && existed.sig) {
+          return existed;
+        }
         const signature = signatures.find(
           (signature) => signature.pubKey === pubKey,
         );
-        // this allows for overriding the signature
-        // when a signature is found, the new signature will be used
-        if (signature === undefined) {
-          // signature not in list of to-be-added signatures
-          if (sigs[i] !== undefined) {
-            debug(`Using existing signature for pubKey ${pubKey}`);
-            // signature already exists, use it
-            return sigs[i];
-          }
-          debug(`No signature for pubKey ${pubKey}`);
-          return undefined;
-        }
-        debug(`Using new signature for pubKey ${pubKey}`);
-        return { sig: signature.sig };
+        return {
+          pubKey,
+          ...(signature?.sig ? { sig: signature.sig } : {}),
+        };
       }),
     };
   } else if (signaturesMatchesSigners(parsedTransaction, signatures)) {
@@ -57,7 +49,10 @@ export const addSignatures: (
     return {
       cmd,
       hash,
-      sigs: signatures.map((signature) => ({ sig: signature.sig })),
+      sigs: pubKeyOrder.map((pubKey, i) => ({
+        pubKey,
+        sig: signatures[i].sig ?? sigs[i]?.sig,
+      })),
     };
   } else {
     // signatures do not have pubKeys, and do not match length, ERROR

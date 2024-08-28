@@ -1,51 +1,139 @@
-import { env } from '@/utils/env';
-import { NavHeader, KadenaLogo, NavHeaderLinkList, NavHeaderLink, Button, NavHeaderButton, Tooltip } from '@kadena/react-ui';
-import { MonoAccountCircle } from '@kadena/react-icons';
+import { useState } from 'react';
+import { useTheme } from 'next-themes'
+import { MonoAccountCircle, MonoCheck, MonoClose, MonoContrast, MonoLogout, MonoControlPointDuplicate } from '@kadena/kode-icons';
+import SpireKeyKdacolorLogoWhite from '@/components/SpireKeyKdacolorLogoWhite';
 import { useAccount } from '@/hooks/account';
+import { useTransaction } from '@/hooks/transaction';
+import { useRouter } from 'next/navigation';
+import { fundAccount } from '@/utils/fund'
+import {
+  NavHeader,
+  NavHeaderLinkList,
+  Button,
+  NavHeaderButton,
+  Notification,
+  NotificationFooter,
+  NotificationButton,
+  NotificationHeading,
+  Link,
+  Badge
+} from '@kadena/kode-ui';
+import { MarmaladeMarketplaceLogo } from '@/components/MarmaladeMarketplaceLogo';
+import ConnectWallet from '@/components/ConnectWallet';
+import * as styles from './style.css';
 
 export const MarketplaceHeader= () => {
-  const { account, isMounted, login, logout } = useAccount();
+  const [showNotification, setShowNotification] = useState(false);
+  const { account, login, logout } = useAccount();
+  const { setTransaction } = useTransaction();
+  const router = useRouter();
+  const { theme, setTheme } = useTheme()
+
+  const onFundAccount = () => {
+    setShowNotification(false);
+    const transaction = fundAccount(account?.accountName || '');
+    setTransaction(transaction);
+    // Redirect to the transaction page
+    router.push('/transaction');
+  };
+
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
 
   return (
-    <NavHeader logo={<a href="/"><KadenaLogo height={40} /></a>}>
+    <NavHeader logo={
+      <a href="/">
+        <MarmaladeMarketplaceLogo height={56}/>
+      </a>
+    }>
       <NavHeaderLinkList>
-        <NavHeaderLink
-          href="/marketplace"
-          onClick={() => {}}
+        <Link
+          className={styles.navHeaderLink}
+          href="/"
         >
           Marketplace
-        </NavHeaderLink>
-        <NavHeaderLink
+        </Link>
+        <Link
           href="/tokens"
-          onClick={() => {}}
+          endVisual={<Badge size='sm' style={'highContrast'}>beta</Badge>}
         >
-          Tokens
-        </NavHeaderLink>
-        <NavHeaderLink
-          href="/transfer"
-          onClick={() => {}}
+          Create
+        </Link>
+        <Link className={styles.navHeaderLink}
+          href="/mint"
+          endVisual={<Badge size='sm' style={'highContrast'}>beta</Badge>}
         >
-          Transfer
-        </NavHeaderLink>
-        {account ? (<NavHeaderLink
+          Mint
+        </Link>
+        {account ? (<Link className={styles.navHeaderLink}
           href="/mytokens"
-          onClick={() => {}}
         >
           My Tokens
-        </NavHeaderLink>) : <></>}
+        </Link>) : <></>}
       </NavHeaderLinkList>
+      <NavHeaderButton onPress={toggleTheme}  endVisual={<MonoContrast />} />
       {account
-        ? (
-            <>
-              <Tooltip delay={0} content={account.accountName} position="left">
-                <a href={env.WALLET_URL} target="_blank"><NavHeaderButton endVisual={<MonoAccountCircle />}/></a>
-              </Tooltip>
-              <p>{account.alias}</p>
-              <Button onClick={logout} variant="primary" isCompact={false}>Disconnect</Button>
-            </>
+        ? (           
+            <ConnectWallet 
+              showContextMenu={true} 
+              account={account.accountName} 
+              accountAlias={account.alias} 
+              menuItems={[
+                {
+                  title: 'Fund Account',
+                  onClick: () => setShowNotification(true),
+                  key: 'fund',
+                  startVisual: <MonoControlPointDuplicate />
+                },
+                {
+                  title: 'Profile Settings',
+                  onClick: () => router.push('/profile'),
+                  key: 'profile',
+                  startVisual: <MonoAccountCircle />
+                },
+                {
+                  title: 'Disconnect',
+                  onClick: () => logout(),
+                  key: 'disconnect',
+                  startVisual: <MonoLogout />
+                }
+              ]}
+            />
           )
-        : <Button onClick={login} variant="primary" isCompact={false}>Connect Wallet</Button>
+        : <Button onClick={login} variant="primary" isCompact={false}
+        startVisual={<SpireKeyKdacolorLogoWhite style={{color: 'black'}}/>}
+        endVisual={<Badge style={'inverse'} size="sm" >Wallet</Badge>}>Connect</Button>
       }
+      {showNotification && <div style={{ position: 'absolute', top: '65px', right: "50px" }}>
+        <Notification
+          intent="info"
+          isDismissable={false}
+          role="none"
+          type="stacked"
+        >
+          <NotificationHeading>
+            Faucet
+          </NotificationHeading>
+          Are you sure you want to fund your account with 20 KDA?
+          <NotificationFooter>
+            <NotificationButton
+              icon={<MonoCheck />}
+              intent="positive"
+              onClick={onFundAccount}
+            >
+              Confirm
+            </NotificationButton>
+            <NotificationButton
+              icon={<MonoClose />}
+              intent="negative"
+              onClick={() => setShowNotification(false)}
+            >
+              Cancel
+            </NotificationButton>
+          </NotificationFooter>
+        </Notification>
+      </div>}
     </NavHeader>
   );
 };

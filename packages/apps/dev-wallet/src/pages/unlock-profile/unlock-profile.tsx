@@ -1,5 +1,4 @@
 import { AuthCard } from '@/Components/AuthCard/AuthCard';
-import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.hook';
 import {
   Avatar,
   Button,
@@ -7,7 +6,7 @@ import {
   Stack,
   Text,
   TextField,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import { useForm } from 'react-hook-form';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
@@ -21,8 +20,7 @@ export function UnlockProfile() {
     formState: { isValid, errors },
   } = useForm<{ password: string }>();
   const { profileId } = useParams();
-  const { isUnlocked, profileList, unlockProfile } = useWallet();
-  const { unlockHDWallet } = useHDWallet();
+  const { profileList, unlockProfile } = useWallet();
   const profile = profileList.find((p) => p.uuid === profileId);
   const incorrectPasswordMsg = 'Password is incorrect';
 
@@ -40,7 +38,6 @@ export function UnlockProfile() {
       if (!keySource) {
         throw new Error('No key source found');
       }
-      await unlockHDWallet(keySource.source, password, keySource);
     } catch (e) {
       console.log(e);
       setError('password', { type: 'manual', message: incorrectPasswordMsg });
@@ -48,9 +45,6 @@ export function UnlockProfile() {
   }
   if (!profile) {
     return <Navigate to="/select-profile" replace />;
-  }
-  if (isUnlocked) {
-    return <Navigate to="/" replace />;
   }
   return (
     <>

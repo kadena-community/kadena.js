@@ -1,10 +1,14 @@
-import type { ChainId, IPartialPactCommand } from '@kadena/client';
+import type {
+  ChainId,
+  ICommandResult,
+  IPartialPactCommand,
+} from '@kadena/client';
 import { createTransaction } from '@kadena/client';
 import { composePactCommand, setMeta } from '@kadena/client/fp';
 
 import type { PactValue } from '@kadena/types';
 import { asyncPipe } from './utils/asyncPipe';
-import type { IClientConfig, IEmit } from './utils/helpers';
+import type { IClientConfig, IEmit, SuccessfulResponse } from './utils/helpers';
 import { composeWithDefaults, extractResult, getClient } from './utils/helpers';
 
 const chainIds = [...Array(20).keys()].map((key) => `${key}` as ChainId);
@@ -19,6 +23,7 @@ export const query =
       composeWithDefaults(defaults),
       createTransaction,
       client.dirtyRead,
+      (response: ICommandResult) => response as SuccessfulResponse,
       extractResult<T>,
       (result) => ({ result, chainId: defaults?.meta?.chainId }),
       emit('chain-result'),

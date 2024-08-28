@@ -79,7 +79,7 @@ describe('createVersionRecord', () => {
           hash: 'c756c1425',
         },
       ],
-      label: 'Updated dependencies \\',
+      label: 'Updated dependencies',
     };
     const result = createVersionRecord(
       createNode('Updated(#1273) (#1278)dependencies [c756c1425]'),
@@ -96,7 +96,7 @@ describe('createVersionRecord', () => {
           hash: 'c756c1425',
         },
       ],
-      label: 'Updated dependencies \\',
+      label: 'Updated dependencies',
     };
     const result = createVersionRecord(
       createNode('Updated dependencies [c756c1425]'),

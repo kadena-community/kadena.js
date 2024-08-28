@@ -11,7 +11,11 @@ import type { ChainId, IPactDecimal } from '@kadena/types';
 import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 import type { CommonProps } from './config';
-import { formatAdditionalSigners, formatCapabilities } from './helpers';
+import {
+  formatAdditionalSigners,
+  formatCapabilities,
+  formatWebAuthnSigner,
+} from './helpers';
 
 interface ITransferCreateTokenInput extends CommonProps {
   policyConfig?: {
@@ -22,14 +26,14 @@ interface ITransferCreateTokenInput extends CommonProps {
   chainId: ChainId;
   sender: {
     account: string;
-    keyset: {
+    guard: {
       keys: string[];
       pred: 'keys-all' | 'keys-2' | 'keys-any';
     };
   };
   receiver: {
     account: string;
-    keyset: {
+    guard: {
       keys: string[];
       pred: 'keys-all' | 'keys-2' | 'keys-any';
     };
@@ -62,8 +66,8 @@ const createTransferTokenCommand = ({
         amount,
       ),
     ),
-    addKeyset('receiver-guard', receiver.keyset.pred, ...receiver.keyset.keys),
-    addSigner(sender.keyset.keys, (signFor) => [
+    addKeyset('receiver-guard', receiver.guard.pred, ...receiver.guard.keys),
+    addSigner(formatWebAuthnSigner(sender.guard.keys), (signFor) => [
       signFor('coin.GAS'),
       signFor(
         'marmalade-v2.ledger.TRANSFER',

@@ -2,10 +2,9 @@ import { Sale } from '@/hooks/getSales';
 import { useEffect, useState } from 'react';
 import { getTokenInfo } from '@kadena/client-utils/marmalade'
 import { ChainId, } from '@kadena/client';
+import { Text, Heading } from "@kadena/kode-ui";
 import { getTokenImageUrl, getTokenMetadata } from '@/utils/token';
-import { tokenImageClass, mainWrapperClass, tokenDescriptionClass } from '@/styles/token.css';
-import { Badge } from '../Badge';
-import { getTokenSaleBadgeLabel } from '@/utils/sale';
+import * as styles from './style.css';
 import { env } from '@/utils/env';
 
 export interface TokenMetadata {
@@ -25,14 +24,17 @@ export interface TokenMetadata {
 interface TokenProps {
   tokenId: string;
   chainId: ChainId;
+  balance?: number;
   sale?: Sale;
 }
 
 export const Token: React.FC<TokenProps> = ({
   tokenId,
-  chainId,
   sale,
+  chainId,
+  balance,
 }) => {
+  const [tokenMetadata, setTokenMetadata] = useState<TokenMetadata>();
   const [tokenImageUrl, setTokenImageUrl] = useState<string>("/no-image.webp");
 
   useEffect(() => {
@@ -40,11 +42,14 @@ export const Token: React.FC<TokenProps> = ({
       const tokenInfo = await getTokenInfo({
         tokenId,
         chainId,
-        networkId: env.NETWORK_NAME,
+        networkId: env.NETWORKID,
         host: env.CHAINWEB_API_HOST
-      });
+      }) as { uri: string };
 
       const tokenMetadata = await getTokenMetadata(tokenInfo.uri);
+      if (tokenMetadata) {
+        setTokenMetadata(tokenMetadata);
+      }
 
       if (!!tokenMetadata?.image?.length) {
         const tokenImageUrl = getTokenImageUrl(tokenMetadata.image);
@@ -58,18 +63,29 @@ export const Token: React.FC<TokenProps> = ({
     fetch();
   }, [tokenId])
 
-
   return (
-    <div className={mainWrapperClass}>
-      {sale?.saleId && (
-        <Badge label={getTokenSaleBadgeLabel(sale.saleType)} />
-      )}
-      <img
-        src={tokenImageUrl}
-        alt="Token Image"
-        className={tokenImageClass}
-      />
-      <div className={tokenDescriptionClass}>{tokenId}</div>
+    <div className={styles.mainContainer}>
+      <div className={styles.tokenImageContainer}>
+        <img
+          src={tokenImageUrl}
+          alt="Token Image"
+          className={styles.tokenImageClass}
+        />
+      </div>
+      <div className={styles.titleContainer}>
+        <Text>{tokenId?.slice(0,5) + "..." + tokenId?.slice(-5)}</Text>
+        <Heading as="h6">{tokenMetadata?.name || "Marmalade Token"}</Heading>
+      </div>
+      <div className={styles.metaContainer}>
+        <div>
+          <Text as="p">{balance ? 'Balance' : 'Price'}</Text>
+          <Text as="p" color="emphasize">{balance ? balance : sale?.startPrice}</Text>
+        </div>
+        <div>
+          <Text as="p">Chain</Text>
+          <Text as="p" color="emphasize">{chainId}</Text>
+        </div>
+      </div>
     </div>
   );
 };

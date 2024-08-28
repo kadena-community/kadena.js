@@ -157,10 +157,6 @@ interface IToken {
 }
 
 interface IUploadResult {
-  imageCid: string;
-  imageUrl: string;
-  imageUrlUpload: string;
-  metadataCid: string;
-  metadataUrl: string;
-  metadataUrlUpload: string;
+  url: string;
+  cid: string;
 }

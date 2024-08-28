@@ -3,7 +3,7 @@ import {
   Box,
   BreadcrumbsItem,
   Breadcrumbs as StyledBreadcrumbs,
-} from '@kadena/react-ui';
+} from '@kadena/kode-ui';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React, { useMemo } from 'react';

@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { tokens, atoms } from '@kadena/react-ui/styles';
+import { tokens, atoms } from '@kadena/kode-ui/styles';
 
 export const passwordContainer = style([
   atoms({

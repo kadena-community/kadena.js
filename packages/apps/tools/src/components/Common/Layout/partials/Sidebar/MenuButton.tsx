@@ -1,4 +1,4 @@
-import { Tooltip } from '@kadena/react-ui';
+import { Tooltip } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import Link from 'next/link';
 import type { ButtonHTMLAttributes, FC } from 'react';

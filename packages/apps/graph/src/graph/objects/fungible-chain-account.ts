@@ -6,6 +6,7 @@ import {
   getDefaultConnectionComplexity,
 } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
+import { bigintSortFn } from '../../utils/bigintSortFn';
 import { builder } from '../builder';
 import { fungibleAccountDetailsLoader } from '../data-loaders/fungible-account-details';
 import type { IFungibleChainAccount } from '../types/graphql-types';
@@ -70,7 +71,8 @@ export default builder.node(
       }),
       balance: t.exposeFloat('balance'),
       transactions: t.prismaConnection({
-        description: 'Default page size is 20.',
+        description:
+          'Transactions that the current account is sender of. Default page size is 20.',
         type: Prisma.ModelName.Transaction,
         cursor: 'blockHash_requestKey',
         edgesNullable: false,
@@ -85,11 +87,6 @@ export default builder.node(
           return await prismaClient.transaction.count({
             where: {
               senderAccount: parent.accountName,
-              events: {
-                some: {
-                  moduleName: parent.fungibleName,
-                },
-              },
               chainId: parseInt(parent.chainId),
             },
           });
@@ -100,11 +97,6 @@ export default builder.node(
               ...query,
               where: {
                 senderAccount: parent.accountName,
-                events: {
-                  some: {
-                    moduleName: parent.fungibleName,
-                  },
-                },
                 chainId: parseInt(parent.chainId),
               },
               orderBy: {
@@ -129,44 +121,72 @@ export default builder.node(
         }),
         async totalCount(parent) {
           try {
-            return await prismaClient.transfer.count({
-              where: {
-                OR: [
-                  {
+            return (
+              await Promise.all([
+                await prismaClient.transfer.count({
+                  where: {
                     senderAccount: parent.accountName,
+                    // NOT: {
+                    //   receiverAccount: parent.accountName,
+                    // },
+                    moduleName: parent.fungibleName,
+                    chainId: parseInt(parent.chainId),
                   },
-                  {
+                }),
+                await prismaClient.transfer.count({
+                  where: {
                     receiverAccount: parent.accountName,
+                    // NOT: {
+                    //   senderAccount: parent.accountName,
+                    // },
+                    moduleName: parent.fungibleName,
+                    chainId: parseInt(parent.chainId),
                   },
-                ],
-                moduleName: parent.fungibleName,
-                chainId: parseInt(parent.chainId),
-              },
-            });
+                }),
+              ])
+            ).reduce((acc, count) => acc + count, 0);
           } catch (error) {
             throw normalizeError(error);
           }
         },
-        async resolve(query, parent) {
+        async resolve(condition, parent) {
           try {
-            return await prismaClient.transfer.findMany({
-              ...query,
-              where: {
-                OR: [
-                  {
-                    senderAccount: parent.accountName,
-                  },
-                  {
+            return (
+              await Promise.all([
+                await prismaClient.transfer.findMany({
+                  ...condition,
+                  where: {
                     receiverAccount: parent.accountName,
+                    NOT: {
+                      receiverAccount: parent.accountName,
+                    },
+                    moduleName: parent.fungibleName,
+                    chainId: parseInt(parent.chainId),
                   },
-                ],
-                moduleName: parent.fungibleName,
-                chainId: parseInt(parent.chainId),
-              },
-              orderBy: {
-                height: 'desc',
-              },
-            });
+                  orderBy: {
+                    height: 'desc',
+                  },
+                }),
+
+                await prismaClient.transfer.findMany({
+                  ...condition,
+                  where: {
+                    receiverAccount: parent.accountName,
+                    NOT: {
+                      senderAccount: parent.accountName,
+                    },
+                    moduleName: parent.fungibleName,
+                    chainId: parseInt(parent.chainId),
+                  },
+                  orderBy: {
+                    height: 'desc',
+                  },
+                }),
+              ])
+            )
+              .reduce((acc, transfers) => acc.concat(transfers), [])
+              .sort((a, b) => bigintSortFn(a.height, b.height))
+              .slice(condition.skip, condition.skip + condition.take);
           } catch (error) {
             throw normalizeError(error);
           }

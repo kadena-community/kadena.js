@@ -13,12 +13,14 @@ module.exports = {
     '../mixins/typedef-allow-implicitly-typed-parameters.js',
     'prettier',
   ],
-  plugins: ['@kadena-dev/eslint-plugin', 'import'],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint', '@kadena-dev/eslint-plugin', 'import'],
   rules: {
     '@kadena-dev/no-eslint-disable': 'error',
     '@typescript-eslint/no-unused-vars': 'error',
     'prefer-template': 'warn',
     'import/no-unresolved': 'error',
+    '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/consistent-type-imports': [
       'error',
       {
@@ -28,6 +30,13 @@ module.exports = {
     ],
     'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
     '@rushstack/typedef-var': 'off',
+    'no-restricted-syntax': [
+      'warn',
+      {
+        selector: 'TSEnumDeclaration',
+        message: 'Use `Record<string, string|number>` with `as const` instead.',
+      },
+    ],
   },
   settings: {
     'import/parsers': {

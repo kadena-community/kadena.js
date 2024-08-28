@@ -1,5 +1,19 @@
 # Change Log - @kadena-dev/eslint-config
 
+## 1.1.0
+
+### Minor Changes
+
+- abe3ec7: Disallow `enum`, use `<Record<string, string|number>>{} as const`
+  instead.
+
+## 1.0.5
+
+### Patch Changes
+
+- 2db3568: Use @typescript-eslint as plugin and parser to get rid of eslint
+  warnings of aliases in nextjs projects
+
 ## 1.0.4
 
 ### Patch Changes

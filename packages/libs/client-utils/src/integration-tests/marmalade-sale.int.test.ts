@@ -34,7 +34,7 @@ const inputs = {
   policies: [],
   creator: {
     account: sourceAccount.account,
-    keyset: {
+    guard: {
       keys: [sourceAccount.publicKey],
       pred: 'keys-all' as const,
     },
@@ -125,7 +125,7 @@ describe('mintToken', () => {
         accountName: sourceAccount.account,
         guard: {
           account: sourceAccount.account,
-          keyset: {
+          guard: {
             keys: [sourceAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -209,7 +209,7 @@ describe('offerToken - default', () => {
         tokenId: tokenId as string,
         seller: {
           account: sourceAccount.account,
-          keyset: {
+          guard: {
             keys: [sourceAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -306,7 +306,7 @@ describe('offerToken - default', () => {
         tokenId: 'non-existing-token',
         seller: {
           account: secondaryTargetAccount.account,
-          keyset: {
+          guard: {
             keys: [secondaryTargetAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -336,7 +336,7 @@ describe('withdrawToken', () => {
         saleId: saleId as string,
         seller: {
           account: sourceAccount.account,
-          keyset: {
+          guard: {
             keys: [sourceAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -390,7 +390,7 @@ describe('withdrawToken', () => {
         saleId: saleId as string,
         seller: {
           account: sourceAccount.account,
-          keyset: {
+          guard: {
             keys: [sourceAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -463,7 +463,7 @@ describe('buyToken', () => {
     policies: [],
     creator: {
       account: sourceAccount.account,
-      keyset: {
+      guard: {
         keys: [sourceAccount.publicKey],
         pred: 'keys-all' as const,
       },
@@ -498,7 +498,7 @@ describe('buyToken', () => {
         accountName: sourceAccount.account,
         guard: {
           account: sourceAccount.account,
-          keyset: {
+          guard: {
             keys: [sourceAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -530,7 +530,7 @@ describe('buyToken', () => {
         tokenId: tokenId as string,
         seller: {
           account: sourceAccount.account,
-          keyset: {
+          guard: {
             keys: [sourceAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -576,15 +576,15 @@ describe('buyToken', () => {
         seller: {
           account: sourceAccount.account,
         },
+        signerPublicKey: secondaryTargetAccount.publicKey,
         buyer: {
           account: secondaryTargetAccount.account,
-          keyset: {
+          guard: {
             keys: [secondaryTargetAccount.publicKey],
             pred: 'keys-all' as const,
           },
         },
         amount: new PactNumber(1).toPactDecimal(),
-        timeout,
       },
       config,
     )
@@ -599,6 +599,7 @@ describe('buyToken', () => {
       .on(
         'preflight',
         withStep((step, prResult) => {
+          console.log('prResult', JSON.stringify(prResult, null, 2));
           expect(step).toBe(2);
           if (prResult.result.status === 'failure') {
             expect(prResult.result.status).toBe('success');

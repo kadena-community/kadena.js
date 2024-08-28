@@ -1,16 +1,17 @@
-import { getSales } from "@/hooks/getSales";
-import { Button, Grid, GridItem, Link } from "@kadena/react-ui";
-import { Token } from "@/components/Token";
 import { useEffect, useState } from "react";
-import { actionBarClass, actionBarSaleActiveClass, actionBarSaleClass } from "@/styles/home.css";
+import { Token } from "@/components/Token";
+import { ListingHeader } from "@/components/ListingHeader";
+import { getSales } from "@/hooks/getSales";
+import { Grid, GridItem, Heading, ProgressCircle } from "@kadena/kode-ui";
+
 
 export default function Home() {
 
-  const [saleStatus, setSaleStatus] = useState<'CREATED' | 'SOLD'>("CREATED");
+  const [saleState, setSaleState] = useState<'ACTIVE' | 'PAST'>("ACTIVE");
 
   const { data, loading, error, refetch } = getSales({
     limit: 8,
-    status: saleStatus,
+    state: saleState,
     sort: [
       {
         field: "block",
@@ -21,28 +22,20 @@ export default function Home() {
 
   useEffect(() => {
     refetch();
-  }, [saleStatus]);
+  }, [saleState]);
 
   return (
     <div>
-      <div className={actionBarClass}>
-        <div className={actionBarSaleClass}>
-          <Button
-            className={saleStatus === "CREATED" ? actionBarSaleActiveClass : ""}
-            onClick={() => setSaleStatus("CREATED")}>Active sales</Button>
-          <Button
-            className={saleStatus === "SOLD" ? actionBarSaleActiveClass : ""}
-            onClick={() => setSaleStatus("SOLD")}>Past sales</Button>
-        </div>
-        <Link variant="primary">
-          Sell Token
-        </Link>
-      </div>
-
-      {error && <div>Error: <pre>{JSON.stringify(error, null, 2)}</pre></div>}
-      {loading && <h2>Loading..</h2>}
-
+      <ListingHeader />
       <div>
+        <div style={{marginTop: '40px', marginBottom: '20px'}}>
+          <Heading as="h3">Active Sales</Heading>
+        </div>   
+        
+        {error && <div>Error: <pre>{JSON.stringify(error, null, 2)}</pre></div>}
+        {loading && <ProgressCircle size="lg" isIndeterminate />}
+        {!loading && !error && data.length === 0 && <Heading as="h5">No sales found</Heading>}   
+
         <Grid
           columns={{
             lg: 4,
@@ -53,12 +46,12 @@ export default function Home() {
           gap="xl">
           {data.map((sale, index) => (
             <GridItem key={index}>
-              <a href={`/tokens/${sale.tokenId}`}>
+              <a href={`/tokens/${sale.tokenId}?saleId=${sale.saleId}&chainId=${sale.chainId}`}>
                 <Token tokenId={sale.tokenId} chainId={sale.chainId} sale={sale} />
               </a>
             </GridItem>
           ))}
-        </Grid>
+        </Grid>           
       </div>
     </div>
   );

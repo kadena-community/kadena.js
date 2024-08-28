@@ -750,12 +750,12 @@ describe('reduce utils', () => {
               contents_url:
                 'https://api.github.com/repos/kadena-community/kadena.js/contents/.changeset%2Fbreezy-swans-joke.md?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
               patch:
-                '@@ -0,0 +1,5 @@\n+---\n+"@kadena/react-ui": patch\n+---\n+\n+Added proper sizes for the dialog',
+                '@@ -0,0 +1,5 @@\n+---\n+"@kadena/kode-ui": patch\n+---\n+\n+Added proper sizes for the dialog',
             },
             {
               sha: '3ada1d1b180945ebcd1d2970ad270839f02d363a',
               filename:
-                'packages/libs/react-ui/src/components/Dialog/Dialog.css.ts',
+                'packages/libs/kode-ui/src/components/Dialog/Dialog.css.ts',
               status: 'modified',
               additions: 55,
               deletions: 4,
@@ -772,7 +772,7 @@ describe('reduce utils', () => {
             {
               sha: 'ddaecc3b694a856640a8997847b11d6a8ba34faf',
               filename:
-                'packages/libs/react-ui/src/components/Dialog/Dialog.stories.tsx',
+                'packages/libs/kode-ui/src/components/Dialog/Dialog.stories.tsx',
               status: 'modified',
               additions: 13,
               deletions: 2,
@@ -789,7 +789,7 @@ describe('reduce utils', () => {
             {
               sha: '8125863e38dfdd4bd2b359303e0c6e40d80f5106',
               filename:
-                'packages/libs/react-ui/src/components/Dialog/Dialog.tsx',
+                'packages/libs/kode-ui/src/components/Dialog/Dialog.tsx',
               status: 'modified',
               additions: 22,
               deletions: 3,
@@ -806,7 +806,7 @@ describe('reduce utils', () => {
             {
               sha: '5fb071c85fee758399b95bbb6cce02e23b722814',
               filename:
-                'packages/libs/react-ui/src/components/Dialog/DialogHeaderSubtitle.tsx',
+                'packages/libs/kode-ui/src/components/Dialog/DialogHeaderSubtitle.tsx',
               status: 'added',
               additions: 23,
               deletions: 0,
@@ -822,7 +822,7 @@ describe('reduce utils', () => {
             },
             {
               sha: '19f1bdcd7e2850aaec6a1ef22e05cdd0c825019b',
-              filename: 'packages/libs/react-ui/src/components/Dialog/index.ts',
+              filename: 'packages/libs/kode-ui/src/components/Dialog/index.ts',
               status: 'modified',
               additions: 1,
               deletions: 0,
@@ -839,7 +839,7 @@ describe('reduce utils', () => {
             {
               sha: '7375b767e15dfe4c8594578b1ebcc5576cfe1ea5',
               filename:
-                'packages/libs/react-ui/src/components/Modal/Modal.css.ts',
+                'packages/libs/kode-ui/src/components/Modal/Modal.css.ts',
               status: 'modified',
               additions: 2,
               deletions: 2,
@@ -855,7 +855,7 @@ describe('reduce utils', () => {
             },
             {
               sha: 'ec2c513380a399d93e7fd07fbd76619d8c3912f1',
-              filename: 'packages/libs/react-ui/src/components/index.ts',
+              filename: 'packages/libs/kode-ui/src/components/index.ts',
               status: 'modified',
               additions: 1,
               deletions: 0,
@@ -871,7 +871,7 @@ describe('reduce utils', () => {
             },
             {
               sha: '43ba54115287c0a5e4544c8b696524a5b274d790',
-              filename: 'packages/libs/react-ui/src/index.ts',
+              filename: 'packages/libs/kode-ui/src/index.ts',
               status: 'modified',
               additions: 1,
               deletions: 0,
@@ -1033,12 +1033,12 @@ describe('reduce utils', () => {
             contents_url:
               'https://api.github.com/repos/kadena-community/kadena.js/contents/.changeset%2Fbreezy-swans-joke.md?ref=b06929dcc2136eecf1f87b77e1712a3e91ed47f4',
             patch:
-              '@@ -0,0 +1,5 @@\n+---\n+"@kadena/react-ui": patch\n+---\n+\n+Added proper sizes for the dialog',
+              '@@ -0,0 +1,5 @@\n+---\n+"@kadena/kode-ui": patch\n+---\n+\n+Added proper sizes for the dialog',
           },
           {
             sha: '3ada1d1b180945ebcd1d2970ad270839f02d363a',
             filename:
-              'packages/libs/react-ui/src/components/Dialog/Dialog.css.ts',
+              'packages/libs/kode-ui/src/components/Dialog/Dialog.css.ts',
             status: 'modified',
             additions: 55,
             deletions: 4,
@@ -1055,7 +1055,7 @@ describe('reduce utils', () => {
           {
             sha: 'ddaecc3b694a856640a8997847b11d6a8ba34faf',
             filename:
-              'packages/libs/react-ui/src/components/Dialog/Dialog.stories.tsx',
+              'packages/libs/kode-ui/src/components/Dialog/Dialog.stories.tsx',
             status: 'modified',
             additions: 13,
             deletions: 2,
@@ -1071,7 +1071,7 @@ describe('reduce utils', () => {
           },
           {
             sha: '8125863e38dfdd4bd2b359303e0c6e40d80f5106',
-            filename: 'packages/libs/react-ui/src/components/Dialog/Dialog.tsx',
+            filename: 'packages/libs/kode-ui/src/components/Dialog/Dialog.tsx',
             status: 'modified',
             additions: 22,
             deletions: 3,
@@ -1088,7 +1088,7 @@ describe('reduce utils', () => {
           {
             sha: '5fb071c85fee758399b95bbb6cce02e23b722814',
             filename:
-              'packages/libs/react-ui/src/components/Dialog/DialogHeaderSubtitle.tsx',
+              'packages/libs/kode-ui/src/components/Dialog/DialogHeaderSubtitle.tsx',
             status: 'added',
             additions: 23,
             deletions: 0,
@@ -1104,7 +1104,7 @@ describe('reduce utils', () => {
           },
           {
             sha: '19f1bdcd7e2850aaec6a1ef22e05cdd0c825019b',
-            filename: 'packages/libs/react-ui/src/components/Dialog/index.ts',
+            filename: 'packages/libs/kode-ui/src/components/Dialog/index.ts',
             status: 'modified',
             additions: 1,
             deletions: 0,
@@ -1120,8 +1120,7 @@ describe('reduce utils', () => {
           },
           {
             sha: '7375b767e15dfe4c8594578b1ebcc5576cfe1ea5',
-            filename:
-              'packages/libs/react-ui/src/components/Modal/Modal.css.ts',
+            filename: 'packages/libs/kode-ui/src/components/Modal/Modal.css.ts',
             status: 'modified',
             additions: 2,
             deletions: 2,
@@ -1137,7 +1136,7 @@ describe('reduce utils', () => {
           },
           {
             sha: 'ec2c513380a399d93e7fd07fbd76619d8c3912f1',
-            filename: 'packages/libs/react-ui/src/components/index.ts',
+            filename: 'packages/libs/kode-ui/src/components/index.ts',
             status: 'modified',
             additions: 1,
             deletions: 0,
@@ -1153,7 +1152,7 @@ describe('reduce utils', () => {
           },
           {
             sha: '43ba54115287c0a5e4544c8b696524a5b274d790',
-            filename: 'packages/libs/react-ui/src/index.ts',
+            filename: 'packages/libs/kode-ui/src/index.ts',
             status: 'modified',
             additions: 1,
             deletions: 0,

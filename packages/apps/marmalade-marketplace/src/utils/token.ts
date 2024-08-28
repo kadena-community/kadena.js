@@ -31,7 +31,7 @@ export const fetchData = async <Data = any>(
 };
 
 export const toIpfsGatewayUrl = (uri: string): string => {
-  return `https://nftstorage.link/ipfs/${uri.split('ipfs://')[1]}`;
+  return `https://gateway.pinata.cloud/ipfs/${uri.split('ipfs://')[1]}`;
 };
 
 export const toArweaveGatewayUrl = (uri: string): string => {

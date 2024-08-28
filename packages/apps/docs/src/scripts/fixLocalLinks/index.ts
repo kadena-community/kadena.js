@@ -1,4 +1,3 @@
-import { createSlug } from '@/utils/createSlug';
 import type { IConfigTreeItem } from '@kadena/docs-tools';
 import {
   getFileExtension,
@@ -13,6 +12,7 @@ import { remark } from 'remark';
 import type { Root } from 'remark-gfm';
 import { loadConfigPages } from '../movePages/utils/loadConfigPages';
 import { crawlPage } from '../utils/crawlPage';
+import { createSlug } from '../utils/createSlug';
 import type { IScriptResult } from './../types';
 import { getTypes } from './../utils';
 import { getFileNameOfPageFile } from './../utils/getFileNameOfPageFile';
@@ -66,7 +66,7 @@ const fixHashLinks = async (link: string): Promise<string> => {
     errors.push(`${link} deeplink was not found in config`);
   }
 
-  return `${cleanedLink}#${createSlug(foundHeader)}`;
+  return `${cleanedLink}#${createSlug(foundHeader ?? '')}`;
 };
 
 const findPageByFile = (
@@ -152,6 +152,8 @@ const fixLinks = async (
 
     if (isLocalPageLink(link.url)) {
       link.url = getUrlofPageFile(link.url);
+    }
+    if (link.url.startsWith('/') || link.url.startsWith('#')) {
       link.url = await fixHashLinks(link.url);
     }
   }

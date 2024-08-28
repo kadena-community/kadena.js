@@ -32,17 +32,18 @@ export type Sale = {
 
   startsAt?: number;
   endsAt?: number;
-  startPrice: IPactDecimal;
-  reservePrice?: IPactDecimal
-  sellPrice?: IPactDecimal;
+  startPrice: number;
+  reservePrice?: number
+  sellPrice?: number;
   priceInterval?: IPactInt;
-  highestBid?: IPactDecimal
+  highestBid?: number
   highestBidId?: string
 };
 
 interface GetSalesProps {
   chainIds?: number[];
   block?: number;
+  state?: "ACTIVE" | "PAST";
   status?: Sale['status'];
   saleType?: Sale['saleType'];
   limit?: number;
@@ -69,6 +70,10 @@ export const getSales = (props?: GetSalesProps) => {
       if (props?.block) constraints.push(where("block", "==", props.block));
 
       if (props?.status) constraints.push(where("status", "==", props.status));
+
+      if (props?.state === "ACTIVE") constraints.push(where("endsAt", ">", new Date().getTime()));
+
+      if (props?.state === "PAST") constraints.push(where("endsAt", "<", new Date().getTime()));
 
       if (props?.saleType) constraints.push(where("saleType", "==", props.saleType));
 

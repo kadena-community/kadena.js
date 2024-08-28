@@ -1,6 +1,6 @@
 import { getVersions } from '@/scripts/importChangelogs/utils/misc';
-import { MonoKeyboardArrowRight, MonoList } from '@kadena/react-icons/system';
-import { Button, Heading, Stack, Text } from '@kadena/react-ui';
+import { MonoKeyboardArrowRight, MonoList } from '@kadena/kode-icons/system';
+import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import Link from 'next/link';
 import type { FC } from 'react';
@@ -9,11 +9,11 @@ import { Version } from './Version';
 import { VersionMeta } from './VersionMeta';
 import {
   backgroundClass,
+  pkgWrapperClass,
+  pkgWrapperOpenClass,
   togglePackageButtonClass,
   togglePackageIconClass,
   togglePackageIconOpenClass,
-  versionWrapperClass,
-  versionWrapperOpenClass,
   versionsSectionClass,
   versionsSectionMetaClass,
 } from './styles.css';
@@ -73,8 +73,8 @@ export const Package: FC<IProps> = ({ pkg, isFullPage = true }) => {
         ref={ref}
         flexDirection="column"
         gap="lg"
-        className={classNames(versionWrapperClass, {
-          [versionWrapperOpenClass]: !isOpen,
+        className={classNames(pkgWrapperClass, {
+          [pkgWrapperOpenClass]: !isOpen,
         })}
       >
         {versions.map((version) => (

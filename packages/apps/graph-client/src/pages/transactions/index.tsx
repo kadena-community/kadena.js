@@ -1,4 +1,4 @@
-import { Box, Breadcrumbs, BreadcrumbsItem, Stack } from '@kadena/react-ui';
+import { Box, Breadcrumbs, BreadcrumbsItem, Stack } from '@kadena/kode-ui';
 
 import { useGetTransactionsQuery } from '@/__generated__/sdk';
 import { ExtendedTransactionsTable } from '@/components/extended-transactions-table/extended-transactions-table';

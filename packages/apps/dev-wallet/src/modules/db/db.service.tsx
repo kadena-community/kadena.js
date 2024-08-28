@@ -49,7 +49,7 @@ const createConnectionPool = (
 };
 
 const DB_NAME = 'dev-wallet';
-const DB_VERSION = 31;
+const DB_VERSION = 33;
 
 export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
   const result = await connect(DB_NAME, DB_VERSION);
@@ -80,7 +80,18 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
     create('network', 'uuid', [{ index: 'networkId', unique: true }]);
     create('fungible', 'contract', [{ index: 'symbol', unique: true }]);
     create('keyset', 'uuid', [{ index: 'profileId' }, { index: 'principal' }]);
+    create('transaction', 'uuid', [
+      { index: 'hash', unique: true },
+      { index: 'profileId' },
+      { index: 'groupId' },
+      { index: 'network', indexKeyPath: ['profileId', 'networkId'] },
+      {
+        index: 'network-status',
+        indexKeyPath: ['profileId', 'networkId', 'status'],
+      },
+    ]);
   }
+
   return db;
 });
 
@@ -116,7 +127,7 @@ type Listener = (type: EventTypes, storeName: string, ...data: any[]) => void;
 export interface IDBService {
   getAll: <T>(
     storeName: string,
-    filter?: string | string[] | undefined,
+    filter?: string | string[] | IDBKeyRange | undefined,
     indexName?: string | undefined,
   ) => Promise<T[]>;
   getOne: <T>(storeName: string, key: string) => Promise<T>;

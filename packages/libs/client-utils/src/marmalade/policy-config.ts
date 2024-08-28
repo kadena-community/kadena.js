@@ -40,21 +40,16 @@ export interface ICollectionInfoInput {
 
 export interface ICreateTokenPolicyConfig {
   customPolicies?: boolean;
-  updatableURI?: boolean;
+  nonUpdatableURI?: boolean;
   guarded?: boolean;
   nonFungible?: boolean;
   hasRoyalty?: boolean;
   collection?: boolean;
 }
 
-export const GUARD_POLICY = 'guard-policy-v1';
-export const NON_FUNGIBLE_POLICY = 'non-fungible-policy-v1';
-export const ROYALTY_POLICY = 'royalty-policy-v1';
-export const COLLECTION_POLICY = 'collection-policy-v1';
-
 interface ConfigToDataMap {
   customPolicies: { customPolicyData: Record<string, any> };
-  updatableURI: {};
+  nonUpdatableURI: {};
   guarded: { guards: IGuardInfoInput };
   nonFungible: {};
   hasRoyalty: { royalty: IRoyaltyInfoInput };
@@ -70,7 +65,9 @@ export interface PolicyProps {
 
 type PolicyDataForConfig<C extends ICreateTokenPolicyConfig> =
   (C['customPolicies'] extends true ? ConfigToDataMap['customPolicies'] : {}) &
-    (C['updatableURI'] extends true ? ConfigToDataMap['updatableURI'] : {}) &
+    (C['nonUpdatableURI'] extends true
+      ? ConfigToDataMap['nonUpdatableURI']
+      : {}) &
     (C['guarded'] extends true ? ConfigToDataMap['guarded'] : {}) &
     (C['nonFungible'] extends true ? ConfigToDataMap['nonFungible'] : {}) &
     (C['hasRoyalty'] extends true ? ConfigToDataMap['hasRoyalty'] : {}) &
@@ -83,36 +80,3 @@ export type WithCreateTokenPolicy<
   (PolicyDataForConfig<C> | undefined) & {
     policyConfig?: C;
   };
-
-export const validatePolicies = (
-  policyConfig?: ICreateTokenPolicyConfig,
-  policies: string[] = [],
-) => {
-  if (policyConfig?.collection) {
-    if (!policies.includes(COLLECTION_POLICY)) {
-      throw new Error('Collection policy is required');
-    }
-  }
-
-  if (policyConfig?.guarded || policyConfig?.updatableURI) {
-    if (!policies.includes(GUARD_POLICY)) {
-      throw new Error('Guard policy is required');
-    }
-  }
-
-  if (policyConfig?.hasRoyalty) {
-    if (!policies.includes(ROYALTY_POLICY)) {
-      throw new Error('Royalty policy is required');
-    }
-  }
-
-  if (policyConfig?.nonFungible) {
-    if (!policies.includes(NON_FUNGIBLE_POLICY)) {
-      throw new Error('Non-fungible policy is required');
-    }
-  }
-
-  if (new Set(policies).size !== policies.length) {
-    throw new Error('Duplicate policies are not allowed');
-  }
-};

@@ -1,10 +1,10 @@
-import { deviceColors } from '@/styles/tokens.css';
-import '@kadena/react-ui/global';
+import { tokens, token } from '@kadena/kode-ui/styles';
+import '@kadena/kode-ui/global';
 import { globalStyle, style } from '@vanilla-extract/css';
 
 globalStyle('body', {
   color: 'white',
-  backgroundColor: deviceColors.kadenaBlack,
+  backgroundColor: token('color.background.base.default'),
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
@@ -27,13 +27,11 @@ export const mainWrapperClass = style({
   height: '100dvh',
   margin: '0 auto',
   paddingBottom: '50px',
-
   overflowY: 'auto',
   overflowX: 'hidden',
 });
 
 export const secondaryTextClass = style({
-  color: deviceColors.kadenaFont,
   opacity: '.8',
   textAlign: 'center',
 });

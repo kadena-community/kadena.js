@@ -1,5 +1,116 @@
 # @kadena/proof-of-us
 
+## 0.5.4
+
+### Patch Changes
+
+- Updated dependencies \[8121019]
+- Updated dependencies \[a5db08b]
+  - @kadena/kode-ui\@0.14.2
+
+## 0.5.3
+
+### Patch Changes
+
+- Updated dependencies \[c5c1605]
+- Updated dependencies \[27ecc26]
+  - @kadena/graph\@1.0.9
+  - @kadena/kode-ui\@0.14.1
+  - @kadena/client\@1.13.0
+  - @kadena/kode-icons\@0.1.0
+  - @kadena/pactjs\@0.4.3
+
+## 0.5.2
+
+### Patch Changes
+
+- 95bffde: fix the e2e tests
+- Updated dependencies \[1707e63]
+- Updated dependencies \[bc52918]
+- Updated dependencies \[e8ce4b4]
+- Updated dependencies \[df12c9a]
+- Updated dependencies \[85d84e7]
+- Updated dependencies \[b089abf]
+  - @kadena/graph\@1.0.8
+  - @kadena/kode-ui\@0.14.0
+
+## 0.5.1
+
+### Patch Changes
+
+- Updated dependencies \[29168e2]
+  - @kadena/client\@1.13.0
+  - @kadena/graph\@1.0.7
+  - @kadena/kode-icons\@0.1.0
+  - @kadena/kode-ui\@0.13.0
+  - @kadena/pactjs\@0.4.3
+
+## 0.5.0
+
+### Minor Changes
+
+- d5de83869: Rename 'react-ui' to 'kode-ui'
+- 563fb6cad: Rename react-icons to kode-icons
+
+### Patch Changes
+
+- Updated dependencies \[d5de83869]
+- Updated dependencies \[563fb6cad]
+  - @kadena/kode-icons\@0.1.0
+  - @kadena/kode-ui\@0.13.0
+
+## 0.4.0
+
+### Minor Changes
+
+- f7a9f7e19: switching from nftstorage to pinata ipfs
+
+### Patch Changes
+
+- Updated dependencies \[6d4e82074]
+- Updated dependencies \[df0a2e823]
+- Updated dependencies \[311d0bf44]
+- Updated dependencies \[0e9c0d049]
+- Updated dependencies \[950444ccf]
+  - @kadena/client\@1.12.1
+  - @kadena/kode-ui\@0.12.2
+  - @kadena/graph\@1.0.6
+
+## 0.3.4
+
+### Patch Changes
+
+- Updated dependencies \[16f0b17ed]
+- Updated dependencies \[4dc02eec8]
+- Updated dependencies \[db77beba0]
+- Updated dependencies \[c0a6ffde5]
+- Updated dependencies \[7ee91269f]
+- Updated dependencies \[5b95decb2]
+- Updated dependencies \[6d9900ef8]
+  - @kadena/kode-ui\@0.12.1
+
+## 0.3.3
+
+### Patch Changes
+
+- Updated dependencies \[1bbf1c6]
+- Updated dependencies \[63bdbcb]
+- Updated dependencies \[15a492c]
+  - @kadena/graph\@1.0.5
+  - @kadena/kode-ui\@0.12.0
+
+## 0.3.2
+
+### Patch Changes
+
+- Updated dependencies \[6a969ebdc]
+- Updated dependencies \[b541021f4]
+- Updated dependencies \[e648c32fa]
+- Updated dependencies \[9c145f196]
+  - @kadena/kode-ui\@0.11.0
+  - @kadena/client\@1.12.0
+  - @kadena/graph\@1.0.4
+
 ## 0.3.1
 
 ### Patch Changes
@@ -25,7 +136,7 @@
 - Updated dependencies \[07ec9691c]
 - Updated dependencies \[4a5045c52]
 - Updated dependencies \[b0b05ca86]
-  - @kadena/react-ui\@0.10.0
+  - @kadena/kode-ui\@0.10.0
   - @kadena/graph\@1.0.3
   - @kadena/client\@1.11.2
 
@@ -59,9 +170,9 @@
 - Updated dependencies \[5cf752eed]
 - Updated dependencies \[0d18ab81c]
 - Updated dependencies \[37375fa7e]
-  - @kadena/react-ui\@0.9.0
+  - @kadena/kode-ui\@0.9.0
   - @kadena/graph\@1.0.2
-  - @kadena/react-icons\@0.0.3
+  - @kadena/kode-icons\@0.0.3
   - @kadena/client\@1.11.1
   - @kadena/pactjs\@0.4.3
 
@@ -136,7 +247,7 @@
 - Updated dependencies \[077c7c1e6]
 - Updated dependencies \[5c5937eef6]
   - @kadena/graph\@0.1.12
-  - @kadena/react-ui\@0.8.4
+  - @kadena/kode-ui\@0.8.4
   - @kadena/client\@1.11.0
 
 ## 0.2.6
@@ -153,7 +264,7 @@
 - Updated dependencies \[016b9dbfc]
 - Updated dependencies \[25de564cd]
   - @kadena/client\@1.10.0
-  - @kadena/react-ui\@0.8.3
+  - @kadena/kode-ui\@0.8.3
 
 ## 0.2.4
 
@@ -165,9 +276,9 @@
 - Updated dependencies \[6ddf094d8]
 - Updated dependencies \[6ddf094d8]
 - Updated dependencies \[550e6d9e4]
-  - @kadena/react-icons\@0.0.2
+  - @kadena/kode-icons\@0.0.2
   - @kadena/client\@1.9.0
-  - @kadena/react-ui\@0.8.2
+  - @kadena/kode-ui\@0.8.2
   - @kadena/pactjs\@0.4.2
 
 ## 0.2.3
@@ -182,7 +293,7 @@
 
 - Updated dependencies \[cce6c38de]
 - Updated dependencies \[1aa8bfa8d]
-  - @kadena/react-ui\@0.8.1
+  - @kadena/kode-ui\@0.8.1
 
 ## 0.2.1
 
@@ -193,7 +304,7 @@
 - Updated dependencies \[817eff027]
 - Updated dependencies \[5a52cd69b]
 - Updated dependencies \[eb12b600e]
-  - @kadena/react-ui\@0.8.0
+  - @kadena/kode-ui\@0.8.0
 
 ## 0.2.0
 

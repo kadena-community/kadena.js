@@ -8,6 +8,7 @@ import {
 } from '@services/depth-service';
 import { normalizeError } from '@utils/errors';
 import { parsePrismaJsonColumn } from '@utils/prisma-json-columns';
+import { ZodError } from 'zod';
 import { builder } from '../builder';
 
 const generateEventsFilter = async (args: {
@@ -18,29 +19,50 @@ const generateEventsFilter = async (args: {
   orderIndex?: number | null | undefined;
   requestKey?: string | null | undefined;
   minimumDepth?: number | null | undefined;
-}): Promise<Prisma.EventWhereInput> => ({
-  qualifiedName: args.qualifiedEventName,
-  requestKey: {
-    not: 'cb',
-  },
-  ...(args.parametersFilter && {
-    parameters: parsePrismaJsonColumn<'Event'>(args.parametersFilter, {
-      query: 'events',
-      queryParameter: 'parametersFilter',
-      column: 'parameters',
+  minHeight?: number | null | undefined;
+  maxHeight?: number | null | undefined;
+}): Promise<Prisma.EventWhereInput> => {
+  const conditionsForHeight = (args: {
+    minHeight?: number | null | undefined;
+    maxHeight?: number | null | undefined;
+  }): Prisma.EventWhereInput => {
+    const conditions: Prisma.EventWhereInput[] = [];
+
+    if (args.minHeight) {
+      conditions.push({ height: { gte: args.minHeight } });
+    }
+
+    if (args.maxHeight) {
+      conditions.push({ height: { lte: args.maxHeight } });
+    }
+
+    return { AND: conditions };
+  };
+  return {
+    qualifiedName: args.qualifiedEventName,
+    requestKey: {
+      not: 'cb',
+    },
+    ...(args.parametersFilter && {
+      parameters: parsePrismaJsonColumn<'Event'>(args.parametersFilter, {
+        query: 'events',
+        queryParameter: 'parametersFilter',
+        column: 'parameters',
+      }),
     }),
-  }),
-  ...(args.chainId && { chainId: parseInt(args.chainId) }),
-  ...(args.blockHash && { blockHash: args.blockHash }),
-  ...(args.orderIndex && { orderIndex: args.orderIndex }),
-  ...(args.requestKey && { requestKey: args.requestKey }),
-  ...(args.minimumDepth && {
-    OR: await getConditionForMinimumDepth(
-      args.minimumDepth,
-      args.chainId ? [args.chainId] : undefined,
-    ),
-  }),
-});
+    ...(args.chainId && { chainId: parseInt(args.chainId) }),
+    ...(args.blockHash && { blockHash: args.blockHash }),
+    ...(args.orderIndex && { orderIndex: args.orderIndex }),
+    ...(args.requestKey && { requestKey: args.requestKey }),
+    ...(args.minimumDepth && {
+      OR: await getConditionForMinimumDepth(
+        args.minimumDepth,
+        args.chainId ? [args.chainId] : undefined,
+      ),
+    }),
+    ...((args.minHeight || args.maxHeight) && conditionsForHeight(args)),
+  };
+};
 
 builder.queryField('events', (t) =>
   t.prismaConnection({
@@ -93,6 +115,18 @@ builder.queryField('events', (t) =>
           nonnegative: true,
         },
       }),
+      minHeight: t.arg.int({
+        required: false,
+        validate: {
+          nonnegative: true,
+        },
+      }),
+      maxHeight: t.arg.int({
+        required: false,
+        validate: {
+          nonnegative: true,
+        },
+      }),
     },
     type: Prisma.ModelName.Event,
     cursor: 'blockHash_orderIndex_requestKey',
@@ -115,6 +149,19 @@ builder.queryField('events', (t) =>
     },
     async resolve(query, __parent, args) {
       try {
+        if (
+          args.minHeight &&
+          args.maxHeight &&
+          args.minHeight > args.maxHeight
+        ) {
+          throw new ZodError([
+            {
+              code: 'custom',
+              message: 'minHeight must be lower than maxHeight',
+              path: ['events'],
+            },
+          ]);
+        }
         let events: Event[] = [];
         let skip = 0;
         const take = query.take;

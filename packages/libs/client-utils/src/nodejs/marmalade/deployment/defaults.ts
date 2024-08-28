@@ -84,9 +84,15 @@ export const defaultRemoteConfig: IRemoteConfig = {
  * By default the client configuration will point to localhost:8080 and use sender00
  * as the default account
  */
+
+const defaultPublicKey = defaultAccount.publicKeys?.[0] ?? '';
+
 export const defaultClientConfig: IClientConfig = {
   sign: createSignWithKeypair({
-    publicKey: defaultAccount.publicKeys?.[0] ?? '',
+    publicKey:
+      typeof defaultPublicKey === 'string'
+        ? defaultPublicKey
+        : defaultPublicKey.pubKey,
     secretKey: defaultAccount.secretKey,
   }),
   host: defaultNetworkHost,
