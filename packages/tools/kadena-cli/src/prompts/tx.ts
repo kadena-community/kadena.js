@@ -59,7 +59,9 @@ export const IUnsignedCommandSchema = z
   })
   // Transform sings record to array
   .transform((value) => {
-    if (Array.isArray(value.sigs)) return value;
+    if (Array.isArray(value.sigs)) {
+      return value as z.output<typeof ICommandSchema>;
+    }
     const sigs = chainWeaverSignatureSchema.safeParse(value.sigs);
     if (sigs.success) {
       const cmd = z
