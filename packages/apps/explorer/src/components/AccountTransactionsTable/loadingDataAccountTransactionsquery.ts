@@ -10,128 +10,26 @@ export const loadingData: AccountTransactionsQuery = {
         startCursor: '',
       },
       totalCount: 0,
-      edges: [
-        {
-          node: {
-            hash: '',
-            result: {
-              block: {
-                height: 0,
-              },
-              goodResult: '',
+      edges: Array(6).fill({
+        node: {
+          hash: '',
+          result: {
+            block: {
+              height: 0,
             },
-            cmd: {
-              meta: {
-                sender: '',
-                chainId: 0,
-              },
-              payload: {
-                code: '',
-              },
+            goodResult: '',
+          },
+          cmd: {
+            meta: {
+              sender: '',
+              chainId: 0,
+            },
+            payload: {
+              code: '',
             },
           },
         },
-        {
-          node: {
-            hash: '',
-            result: {
-              block: {
-                height: 0,
-              },
-              goodResult: '',
-            },
-            cmd: {
-              meta: {
-                sender: '',
-                chainId: 0,
-              },
-              payload: {
-                code: '',
-              },
-            },
-          },
-        },
-        {
-          node: {
-            hash: '',
-            result: {
-              block: {
-                height: 0,
-              },
-              goodResult: '',
-            },
-            cmd: {
-              meta: {
-                sender: '',
-                chainId: 0,
-              },
-              payload: {
-                code: '',
-              },
-            },
-          },
-        },
-        {
-          node: {
-            hash: '',
-            result: {
-              block: {
-                height: 0,
-              },
-              goodResult: '',
-            },
-            cmd: {
-              meta: {
-                sender: '',
-                chainId: 0,
-              },
-              payload: {
-                code: '',
-              },
-            },
-          },
-        },
-        {
-          node: {
-            hash: '',
-            result: {
-              block: {
-                height: 0,
-              },
-              goodResult: '',
-            },
-            cmd: {
-              meta: {
-                sender: '',
-                chainId: 0,
-              },
-              payload: {
-                code: '',
-              },
-            },
-          },
-        },
-        {
-          node: {
-            hash: '',
-            result: {
-              block: {
-                height: 0,
-              },
-              goodResult: '',
-            },
-            cmd: {
-              meta: {
-                sender: '',
-                chainId: 0,
-              },
-              payload: {
-                code: '',
-              },
-            },
-          },
-        },
-      ],
+      }),
     },
   },
 };

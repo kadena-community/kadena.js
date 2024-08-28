@@ -44,6 +44,7 @@ export const blockTransactions: DocumentNode = gql`
                 ... on TransactionResult {
                   badResult
                   goodResult
+                  continuation
                 }
               }
             }

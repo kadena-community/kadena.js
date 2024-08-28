@@ -188,13 +188,6 @@ export const darkThemeValues = {
         sticky: '100',
         toast: '10000',
       },
-      effect: {
-        shadow: {
-          level1: `4px 0.5rem ${tokens.kda.foundation.size.n2} 4px #000000`,
-          level2: `4rem 4rem ${tokens.kda.foundation.size.n2} 2rem #000000`,
-          level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
-        },
-      },
       color: {
         accent: {
           blue: tokens.kda.foundation.color.palette.blue.n50,
@@ -1277,6 +1270,19 @@ export const darkThemeValues = {
           },
         },
       },
+      effect: {
+        shadow: {
+          level1: `4px 0.5rem ${tokens.kda.foundation.size.n2} 4px #000000`,
+          level2: `4rem 4rem ${tokens.kda.foundation.size.n2} 2rem #000000`,
+          level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
+        },
+      },
+      layout: {
+        content: {
+          minWidth: '33.75rem',
+          maxWidth: '42.5rem',
+        },
+      },
       icon: {
         size: {
           xxs: tokens.kda.foundation.size.n3,
@@ -1288,16 +1294,10 @@ export const darkThemeValues = {
           xxl: tokens.kda.foundation.size.n16,
         },
       },
-      layout: {
-        content: {
-          minWidth: '33.75rem',
-          maxWidth: '42.5rem',
-        },
-      },
       typography: {
         family: {
-          primaryFont: 'Kadena Space Grotesk',
-          secondaryFont: 'Haas Grot Disp',
+          primaryFont: 'Inter',
+          secondaryFont: 'Inter',
           monospaceFont: 'Kode Mono',
         },
         fontSize: {

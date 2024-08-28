@@ -13,6 +13,7 @@ export const headerClass = style([
   atoms({
     color: 'text.base.default',
     fontWeight: 'primaryFont.bold',
+    paddingInlineEnd: 'md',
   }),
 ]);
 
@@ -26,9 +27,13 @@ export const dataFieldClass = style({
 });
 
 export const rowClass = style([
-  atoms({ gap: 'md' }),
+  atoms({ display: 'flex' }),
   {
-    display: 'flex',
+    alignItems: 'center',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    contain: 'inline-size',
   },
 ]);
 

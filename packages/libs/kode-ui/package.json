@@ -1,6 +1,6 @@
 {
   "name": "@kadena/kode-ui",
-  "version": "0.13.0",
+  "version": "0.14.2",
   "description": "A react component library built on Kadena's Kode Design System",
   "repository": {
     "type": "git",
@@ -38,6 +38,14 @@
       "import": "./dist/global.mjs",
       "require": "./dist/global.cjs"
     },
+    "./patterns": {
+      "types": {
+        "import": "./dist/patterns.d.mts",
+        "require": "./dist/patterns.d.ts"
+      },
+      "import": "./dist/patterns.mjs",
+      "require": "./dist/patterns.cjs"
+    },
     "./styles": {
       "types": {
         "import": "./dist/styles.d.mts",
@@ -54,10 +62,11 @@
   "files": [
     "dist",
     "global",
+    "patterns",
     "styles"
   ],
   "scripts": {
-    "build": "crackle package && jiti scripts/fix-build.ts",
+    "build": "crackle fix && crackle package && jiti scripts/fix-build.ts",
     "build:storybook": "storybook build",
     "chromatic": "chromatic -b build:storybook",
     "dev": "crackle dev --shim=none",

@@ -1,9 +1,3 @@
-enum NetworkTypes {
-  Devnet = Devnet,
-  Mainnet = Mainnet,
-  Testnet = Testnet,
-}
-
 interface IMenuConfigItem {
   label: string;
   children: { url: string; label: string }[];

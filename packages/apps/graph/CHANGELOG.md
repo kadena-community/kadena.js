@@ -1,5 +1,28 @@
 # @kadena/graph
 
+## 1.0.9
+
+### Patch Changes
+
+- c5c1605: Improve performance by adding indexes for transactions.sender, and
+  transfers.to_acct and transfers.from_acct, all with height DESC
+  - @kadena/chainweb-node-client\@0.6.3
+  - @kadena/client\@1.13.0
+  - @kadena/client-utils\@0.9.0
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/pactjs\@0.4.3
+
+## 1.0.8
+
+### Patch Changes
+
+- 1707e63: Improve performance by memoizing networkInfo result in graph every 30
+  seconds. Skipping in explorer when there's an error. Added block info to
+  row-block component on main page
+- e8ce4b4: Fix performance issue when retrieving transactions by sender
+- b089abf: Fix issues with performance of Graph queries on
+  fungibleAccount.transfers
+
 ## 1.0.7
 
 ### Patch Changes

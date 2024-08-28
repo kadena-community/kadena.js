@@ -1,17 +1,10 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "extends": [
-    "//"
-  ],
+  "extends": ["//"],
   "tasks": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        "mixins/**",
-        "profile/**"
-      ],
+      "dependsOn": ["^build"],
+      "outputs": ["mixins/**", "profile/**"],
       "outputLogs": "new-only"
     }
   }

@@ -1,4 +1,4 @@
-import { atoms, tokens } from '@kadena/kode-ui/styles';
+import { atoms, responsiveStyle, tokens } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const blockInfoClass = style([
@@ -16,4 +16,9 @@ export const blockInfoClass = style([
     borderEndEndRadius: tokens.kda.foundation.radius.sm,
     borderEndStartRadius: tokens.kda.foundation.radius.sm,
   },
+  responsiveStyle({
+    md: {
+      width: 'auto',
+    },
+  }),
 ]);

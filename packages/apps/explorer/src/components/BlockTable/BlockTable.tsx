@@ -53,7 +53,9 @@ export const BlockTable: React.FC = () => {
     data: lastBlockHeightData,
     loading: lastBlockLoading,
     error: lastBlockError,
-  } = useLastBlockHeightQuery();
+  } = useLastBlockHeightQuery({
+    fetchPolicy: 'no-cache',
+  });
 
   const completedBlockHeightsVariables = {
     // Change this if the table needs to show more than 80 blocks at once (on startup)
@@ -69,6 +71,7 @@ export const BlockTable: React.FC = () => {
     error: oldBlocksError,
   } = useCompletedBlockHeightsQuery({
     variables: completedBlockHeightsVariables,
+    fetchPolicy: 'no-cache',
   });
 
   const { setQueries } = useQueryContext();
@@ -84,7 +87,7 @@ export const BlockTable: React.FC = () => {
   ]);
 
   const { ref, inView } = useInView({
-    rootMargin: '-160px 0px 0px 0px',
+    rootMargin: '-60px 0px 0px 0px',
     initialInView: true,
   });
 
@@ -205,12 +208,14 @@ export const BlockTable: React.FC = () => {
 
   return (
     <>
+      <span ref={ref} style={{ height: 1 }} />
       <Stack
         className={!inView ? blockHeaderFixedClass : ''}
         display="flex"
         flexDirection={'column'}
         paddingInline={{ xs: 'xs', md: 'lg' }}
         width="100%"
+        marginBlockEnd="sm"
       >
         <BlockTableHeader
           isLoading={isLoading}
@@ -219,6 +224,7 @@ export const BlockTable: React.FC = () => {
           endColumn={endColumn}
         />
       </Stack>
+
       <Stack
         display="flex"
         flexDirection={'column'}
@@ -226,7 +232,6 @@ export const BlockTable: React.FC = () => {
         paddingInline={{ xs: 'xs', md: 'lg' }}
         width="100%"
       >
-        <span ref={ref} style={{ height: 0 }} />
         {!inView && <Stack marginBlock="xxl" />}
         {Object.keys(isLoading ? blockDataLoading : blockData).map(
           (chainId) => (

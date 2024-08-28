@@ -1,5 +1,77 @@
 # @kadena/explorer
 
+## 0.7.0
+
+### Minor Changes
+
+- fb12a2e: style the transition page
+- 9afb0c5: add ability to finish the crosschain transfer
+- e57350b: style the block hash page
+- 2dbe962: show an indicator icon if transaction is crosschain
+
+### Patch Changes
+
+- Updated dependencies \[8121019]
+- Updated dependencies \[a5db08b]
+  - @kadena/kode-ui\@0.14.2
+
+## 0.6.0
+
+### Minor Changes
+
+- 50c4cd5: fixing the caching of the home page block table
+- eb17e31: add functionality and styling of accountpage
+
+### Patch Changes
+
+- f2eaf1a: several minor IOS styling fixes
+- Updated dependencies \[c5c1605]
+- Updated dependencies \[27ecc26]
+  - @kadena/graph\@1.0.9
+  - @kadena/kode-ui\@0.14.1
+  - @kadena/kode-icons\@0.1.0
+
+## 0.5.0
+
+### Minor Changes
+
+- b6d9e96: add pagination to tables
+- 618c170: add google analytics
+- d51494a: refactor the search
+- 382369d: Set a retry when network does not work
+- 98e503c: search component functionality and styling
+- e6ffb90: add posibility to remove networks
+- 4151182: add toasts for error messages
+- d1ebdcf: add more graph queries to the graphql dialog
+
+### Patch Changes
+
+- e47459e: add tests for hooks
+- c638c95: refactor routing to use the network.slug instead of network.networkId
+- 453476a: fix the account tabs links
+- 515830f: improve the network redirect on index
+- 09a692c: fix when the network slug is testnet04 or mainnet01 it does not
+  redirect to mainnet (we were testing on slug.startsWith, so when the slug was
+  mainnet01, it found slug: mainnet) and crashed
+- 1707e63: Improve performance by memoizing networkInfo result in graph every 30
+  seconds. Skipping in explorer when there's an error. Added block info to
+  row-block component on main page
+- b0b6236: fix the reroute when network does not exist
+- 52c211c: add google analytics events for multiple actions
+- 3bd5cb5: remove skeleton loader when account transactions fails to load
+- d693227: refactor from snake-case to camel-case for maintainability
+- 167d965: fix editting networks
+- 539ff08: remove balance from account search result
+- 0450bf3: fix transparency of the header
+- Updated dependencies \[1707e63]
+- Updated dependencies \[bc52918]
+- Updated dependencies \[e8ce4b4]
+- Updated dependencies \[df12c9a]
+- Updated dependencies \[85d84e7]
+- Updated dependencies \[b089abf]
+  - @kadena/graph\@1.0.8
+  - @kadena/kode-ui\@0.14.0
+
 ## 0.4.0
 
 ### Minor Changes
