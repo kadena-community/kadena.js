@@ -13,8 +13,7 @@ const SpireKeyKdacolorLogoGreen = (
     viewBox="0 0 331 331"
     fill="none"
     fontSize="1.5em"
-    width="331"
-    height="331"
+    height="1em"
     aria-labelledby={titleId}
     {...props}
   >
