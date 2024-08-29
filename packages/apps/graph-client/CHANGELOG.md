@@ -1,5 +1,13 @@
 # @kadena/graph-client
 
+## 0.3.5
+
+### Patch Changes
+
+- Updated dependencies \[de4fb13]
+  - @kadena/kode-icons\@0.2.0
+  - @kadena/kode-ui\@0.14.3
+
 ## 0.3.4
 
 ### Patch Changes
