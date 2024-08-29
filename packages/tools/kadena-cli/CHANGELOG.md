@@ -1,5 +1,11 @@
 # @kadena/kadena-cli
 
+## 1.3.0
+
+### Minor Changes
+
+- d8ed195: Add support to sign transactions from chainweaver
+
 ## 1.2.1
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # @kadena/explorer
 
+## 0.8.0
+
+### Minor Changes
+
+- 013a55a: filter event chains also in range (ex: 1-5)
+- 41bd12c: add filter functionality for events
+
+### Patch Changes
+
+- Updated dependencies \[de4fb13]
+  - @kadena/kode-icons\@0.2.0
+  - @kadena/kode-ui\@0.14.3
+
 ## 0.7.0
 
 ### Minor Changes
