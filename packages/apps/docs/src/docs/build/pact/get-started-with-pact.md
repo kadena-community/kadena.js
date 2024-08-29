@@ -71,7 +71,7 @@ For example, pacts are used to define multi-step operations like cross-chain tra
 
 The pact definition enables each participant to only run a subset of functions while preserving the integrity of the transaction as a while in the contract.
 
-## Pact Smart contracts
+## Pact smart contracts
 
 Pact smart contracts consist of the following core components:
 
