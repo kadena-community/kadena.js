@@ -3,7 +3,6 @@ menu:
   - build
   - deploy
   - participate
-  - tutorials
   - reference
 
 pages:
@@ -292,22 +291,6 @@ pages:
             url: /ledger
             file: /participate/ledger.md
 
-  tutorials:
-    url: /tutorials
-    file: /tutorials/tutorials.md
-    children:
-      devnet:
-        url: /dev-network
-        file: /tutorials/dev-network.md
-      helloworld:
-        url: /hello-world
-        file: /tutorials/hello-world.md
-      languagebasics:
-        url: /language-basics
-        file: /tutorials/language-basics.md
-      pactjavascript:
-        url: /pact-and-javascript
-        file: /tutorials/pact-and-javascript.md
   reference:
     url: /reference
     file: /reference/reference.md
