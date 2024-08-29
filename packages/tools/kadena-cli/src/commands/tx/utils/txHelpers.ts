@@ -34,7 +34,7 @@ import {
   TRANSACTIONS_PATH,
   TX_TEMPLATE_FOLDER,
 } from '../../../constants/config.js';
-import { ICommandSchema, IUnsignedCommandSchema } from '../../../prompts/tx.js';
+import { IUnsignedCommandSchema } from '../../../prompts/tx.js';
 import { services } from '../../../services/index.js';
 import { KadenaError } from '../../../services/service-error.js';
 import type {
