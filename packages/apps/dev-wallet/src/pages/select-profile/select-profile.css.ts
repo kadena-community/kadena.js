@@ -91,3 +91,8 @@ export const linkClass = style([
     },
   },
 ]);
+
+export const noStyleLinkClass = style({
+  textDecoration: 'none',
+  color: 'inherit',
+});

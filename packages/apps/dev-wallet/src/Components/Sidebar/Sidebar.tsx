@@ -20,49 +20,56 @@ export const Sidebar: FC = () => {
   return (
     <Box paddingBlockStart="xxl" padding="xl" className={sidebarClass}>
       <aside>
-        <Text transform="uppercase" size="smallest">
-          Pages
-        </Text>
         <Box marginBlockStart="md">
           <ul className={sidebarMenuClass}>
             <li className={sidebarMenuOptionClass}>
               <NavLink to="/" className={sidebarLinkClass}>
-                <Stack alignItems="center" gap="md">
-                  <MonoDataThresholding />
-                  Dashboard
-                </Stack>
+                <Text>
+                  <Stack alignItems="center" gap="md">
+                    <MonoDataThresholding />
+                    Dashboard
+                  </Stack>
+                </Text>
               </NavLink>
             </li>
             <li className={sidebarMenuOptionClass}>
               <NavLink to="/sig-builder" className={sidebarLinkClass}>
-                <Stack alignItems="center" gap="md">
-                  <MonoSignature />
-                  Sig Builder
-                </Stack>
+                <Text>
+                  <Stack alignItems="center" gap="md">
+                    <MonoSignature />
+                    Sig Builder
+                  </Stack>
+                </Text>
               </NavLink>
             </li>
             <li className={sidebarMenuOptionClass}>
               <NavLink to="/key-sources" className={sidebarLinkClass}>
-                <Stack alignItems="center" gap="md">
-                  <MonoKey />
-                  Key sources
-                </Stack>
+                <Text>
+                  <Stack alignItems="center" gap="md">
+                    <MonoKey />
+                    Key sources
+                  </Stack>
+                </Text>
               </NavLink>
             </li>
             <li className={sidebarMenuOptionClass}>
               <NavLink to="/transfer" className={sidebarLinkClass}>
-                <Stack alignItems="center" gap="md">
-                  <MonoSwapHoriz />
-                  Transfer
-                </Stack>
+                <Text>
+                  <Stack alignItems="center" gap="md">
+                    <MonoSwapHoriz />
+                    Transfer
+                  </Stack>
+                </Text>
               </NavLink>
             </li>
             <li className={sidebarMenuOptionClass}>
               <NavLink to="/transactions" className={sidebarLinkClass}>
-                <Stack alignItems="center" gap="md">
-                  <MonoTableRows />
-                  Transactions
-                </Stack>
+                <Text>
+                  <Stack alignItems="center" gap="md">
+                    <MonoTableRows />
+                    Transactions
+                  </Stack>
+                </Text>
               </NavLink>
             </li>
           </ul>

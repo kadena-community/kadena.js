@@ -193,7 +193,7 @@ export function Transfer() {
 
     if (rec.length === 0) {
       console.log('Receiver not found!');
-      const fromDb = await accountRepository.getAccountByAddress(receiver);
+      const [fromDb] = await accountRepository.getAccountByAddress(receiver);
       if (fromDb) {
         console.log('Receiver found in DB');
         rec.push(fromDb);

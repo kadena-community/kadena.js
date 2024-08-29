@@ -4,13 +4,17 @@ import {
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { shorten } from '@/utils/helpers';
 import { ICommand, IUnsignedCommand, createClient } from '@kadena/client';
+import { MonoBrightness1 } from '@kadena/kode-icons/system';
 import {
-  MonoArrowBack,
-  MonoArrowForward,
-  MonoBrightness1,
-} from '@kadena/kode-icons/system';
-import { Box, Button, Card, Notification, Stack, Text } from '@kadena/kode-ui';
+  Button,
+  Notification,
+  Stack,
+  TabItem,
+  Tabs,
+  Text,
+} from '@kadena/kode-ui';
 import { isSignedCommand } from '@kadena/pactjs';
 import classNames from 'classnames';
 import { useCallback, useEffect, useState } from 'react';
@@ -21,8 +25,6 @@ import {
   failureClass,
   pendingClass,
   successClass,
-  tabClass,
-  tabTextClass,
 } from './components/style.css';
 import { tabStyle } from './style.css';
 
@@ -73,20 +75,18 @@ export function Transaction() {
     }
   }, [groupId, loadTxs]);
 
-  const transaction = Txs ? Txs[selectedTxIndex] : null;
-
   const patchTransaction = useCallback(
-    async (tx: Partial<ITransaction>) => {
-      if (transaction && Txs) {
+    async (original: ITransaction, patch: Partial<ITransaction>) => {
+      if (original && Txs) {
         const updated = {
-          ...transaction,
-          ...tx,
+          ...original,
+          ...patch,
         } as ITransaction;
         await transactionRepository.updateTransaction(updated);
         return loadTxs(groupId!);
       }
     },
-    [transaction, Txs, groupId, loadTxs],
+    [Txs, groupId, loadTxs],
   );
 
   const submitTxs = useCallback(
@@ -176,9 +176,30 @@ export function Transaction() {
     run();
   }, [step, groupId, loadTxs]);
 
-  if (!Txs || !transaction || !groupId) return null;
+  if (!Txs || !groupId) return null;
 
   const resultStep = ['success', 'failure', 'submitted'].includes(step!);
+
+  const signAll = async () => {
+    const signed = (await sign(Txs)) as (IUnsignedCommand | ICommand)[];
+
+    const updatedTxs = Txs.map((tx) => {
+      const signedTx = signed.find(({ hash }) => hash === tx.hash);
+      if (!signedTx) return tx;
+      return {
+        ...tx,
+        ...signedTx,
+        status: isSignedCommand(signedTx)
+          ? steps.indexOf(tx.status) < steps.indexOf('signed')
+            ? 'signed'
+            : tx.status
+          : tx.status,
+      } as ITransaction;
+    });
+
+    await updatedTxs.map(transactionRepository.updateTransaction);
+    loadTxs(groupId!);
+  };
 
   const Stepper = () => (
     <Stack gap={'lg'}>
@@ -212,22 +233,21 @@ export function Transaction() {
     viewStep === 'result'
   ) {
     return (
-      <Stack flexDirection={'column'} gap={'xl'}>
+      <Stack flexDirection={'column'} gap={'xl'} flex={1}>
         <Stepper />
-        <Stack gap={'lg'} flexDirection={'column'}>
-          <Stack gap={'sm'} flexWrap="wrap">
-            {Txs.map((tx, index) => (
-              <Button
-                variant="transparent"
-                key={tx.uuid}
-                onClick={() => setSelectedTxIndex(index)}
-                className={classNames(
-                  tabClass,
-                  selectedTxIndex === index && 'selected',
-                )}
-              >
+
+        <Tabs
+          selectedKey={selectedTxIndex}
+          onSelectionChange={(key) => setSelectedTxIndex(key as number)}
+        >
+          {Txs.map((tx, index) => (
+            <TabItem
+              key={index}
+              title={
                 <Stack gap={'sm'}>
-                  <Text className={tabTextClass}>{tx.hash}</Text>
+                  <Text>{index + 1}:</Text>
+                  <Text>{shorten(tx.hash)}</Text>
+
                   <MonoBrightness1
                     className={classNames(
                       tx.status === 'success' && successClass,
@@ -236,59 +256,60 @@ export function Transaction() {
                     )}
                   />
                 </Stack>
-              </Button>
-            ))}
-          </Stack>
-          <SubmittedStatus transaction={transaction} />
-        </Stack>
+              }
+            >
+              <SubmittedStatus transaction={tx} />
+            </TabItem>
+          ))}
+        </Tabs>
       </Stack>
     );
   }
   return (
     <Stack flexDirection={'column'} gap={'xl'}>
       <Stepper />
-      <Stack alignItems={'center'} justifyContent={'space-between'}>
-        <Stack flexDirection={'row'} alignItems={'center'} gap={'sm'}>
-          <Text>
-            transaction {selectedTxIndex + 1}/{Txs.length}
-          </Text>
-          <BrowseTxs
-            length={Txs.length}
-            setSelectedTxIndex={setSelectedTxIndex}
-          />
-        </Stack>
-        {!['success', 'failure', 'submitted'].includes(step!) && (
-          <Button
-            onClick={async () => {
-              const signed = (await sign(Txs)) as (
-                | IUnsignedCommand
-                | ICommand
-              )[];
 
-              const updatedTxs = Txs.map((tx) => {
-                const signedTx = signed.find(({ hash }) => hash === tx.hash);
-                if (!signedTx) return tx;
-                return {
-                  ...tx,
-                  ...signedTx,
-                  status: isSignedCommand(signedTx)
-                    ? steps.indexOf(tx.status) < steps.indexOf('signed')
-                      ? 'signed'
-                      : tx.status
-                    : tx.status,
-                } as ITransaction;
-              });
-
-              await updatedTxs.map(transactionRepository.updateTransaction);
-              loadTxs(groupId!);
-            }}
-          >
-            Sign All
-          </Button>
-        )}
-      </Stack>
       {error && <Notification role="alert">{error}</Notification>}
-      <ReviewTransaction
+
+      <Stack justifyContent={'flex-start'} alignItems={'flex-start'}>
+        <Tabs
+          selectedKey={selectedTxIndex.toString()}
+          onSelectionChange={(key) => setSelectedTxIndex(+key as number)}
+        >
+          {Txs.map((tx, index) => (
+            <TabItem
+              key={index}
+              title={
+                <Stack gap={'sm'}>
+                  <Text>{index + 1}:</Text>
+                  <Text>{shorten(tx.hash)}</Text>
+                  <MonoBrightness1
+                    className={classNames(
+                      steps.indexOf(tx.status) >= steps.indexOf('signed') &&
+                        successClass,
+                    )}
+                  />
+                </Stack>
+              }
+            >
+              <ReviewTransaction
+                transaction={tx}
+                onSign={(sigs) => {
+                  patchTransaction(tx, {
+                    sigs,
+                    status: sigs.every((data) => data?.sig)
+                      ? steps.indexOf(tx.status) < steps.indexOf('signed')
+                        ? 'signed'
+                        : tx.status
+                      : tx.status,
+                  });
+                }}
+              />
+            </TabItem>
+          ))}
+        </Tabs>
+      </Stack>
+      {/* <ReviewTransaction
         transaction={transaction}
         onSign={(sigs) => {
           patchTransaction({
@@ -300,8 +321,16 @@ export function Transaction() {
               : transaction.status,
           });
         }}
-      />
+      /> */}
       <Stack gap={'sm'} flex={1}>
+        <Button
+          onClick={signAll}
+          className="flex"
+          isDisabled={!!step && steps.indexOf(step) >= steps.indexOf('signed')}
+        >
+          Sign All
+        </Button>
+
         <Button
           onClick={async () => {
             if (Txs.every(isSignedCommand)) {
@@ -330,44 +359,5 @@ export function Transaction() {
         </Button>
       </Stack>
     </Stack>
-  );
-}
-
-function BrowseTxs({
-  setSelectedTxIndex,
-  length,
-}: {
-  setSelectedTxIndex: React.Dispatch<React.SetStateAction<number>>;
-  length: number;
-}) {
-  return (
-    length > 1 && (
-      <Box>
-        <Button
-          variant="transparent"
-          isCompact
-          onClick={() => {
-            setSelectedTxIndex((selectedTxIndex) =>
-              selectedTxIndex === 0 ? selectedTxIndex : selectedTxIndex - 1,
-            );
-          }}
-        >
-          <MonoArrowBack />
-        </Button>
-        <Button
-          variant="transparent"
-          isCompact
-          onClick={() => {
-            setSelectedTxIndex((selectedTxIndex) =>
-              selectedTxIndex === length - 1
-                ? selectedTxIndex
-                : selectedTxIndex + 1,
-            );
-          }}
-        >
-          <MonoArrowForward />
-        </Button>
-      </Box>
-    )
   );
 }

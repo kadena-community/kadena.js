@@ -258,6 +258,7 @@ export const useWallet = () => {
     profile: context.profile,
     profileList: context.profileList ?? [],
     accounts: context.accounts || [],
+    keysets: context.keysets || [],
     keySources: context.keySources || [],
     fungibles: context.fungibles || [],
   };

@@ -54,6 +54,11 @@ const createAccountRepository = ({
   const getKeyset = async (id: string): Promise<IKeySet> => {
     return getOne('keyset', id);
   };
+
+  const appendKeyset = async (account: IAccount) => ({
+    ...account,
+    keyset: await getKeyset(account.keysetId),
+  });
   return {
     addKeyset: async (keyset: IKeySet): Promise<void> => {
       return add('keyset', keyset);
@@ -62,6 +67,10 @@ const createAccountRepository = ({
       return update('keyset', keyset);
     },
     getKeyset,
+    async getKeysetsByProfileId(profileId: string) {
+      const keysets: IKeySet[] = await getAll('keyset', profileId, 'profileId');
+      return keysets;
+    },
     addAccount: async (account: IAccount): Promise<void> => {
       return add('account', deleteKey(account, 'keyset' as const));
     },
@@ -70,20 +79,19 @@ const createAccountRepository = ({
     },
     getAccount: async (id: string) => {
       const account: IAccount = await getOne('account', id);
-      return {
-        ...account,
-        keyset: await getKeyset(account.keysetId),
-      };
+      return appendKeyset(account);
     },
     getAccountByAddress: async (address: string) => {
       const account: IAccount[] = await getAll('account', address, 'address');
-      if (account.length === 0) {
-        return null;
-      }
-      return {
-        ...account[0],
-        keyset: await getKeyset(account[0].keysetId),
-      };
+      return Promise.all(account.map(appendKeyset));
+    },
+    getAccountByKeyset: async (keysetId: string) => {
+      const accounts: IAccount[] = await getAll(
+        'account',
+        keysetId,
+        'keysetId',
+      );
+      return accounts;
     },
     async getAccountsByProfileId(profileId: string) {
       const accounts: IAccount[] = await getAll(
@@ -91,12 +99,7 @@ const createAccountRepository = ({
         profileId,
         'profileId',
       );
-      return Promise.all(
-        accounts.map(async (account) => ({
-          ...account,
-          keyset: await getKeyset(account.keysetId),
-        })),
-      );
+      return Promise.all(accounts.map(appendKeyset));
     },
     addFungible: async (fungible: Fungible): Promise<void> => {
       return add('fungible', fungible);

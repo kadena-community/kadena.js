@@ -12,6 +12,7 @@ import { throttle } from '@/utils/session';
 import {
   Fungible,
   IAccount,
+  IKeySet,
   accountRepository,
 } from '../account/account.repository';
 import * as AccountService from '../account/account.service';
@@ -24,6 +25,7 @@ import * as WalletService from './wallet.service';
 export type ExtWalletContextType = {
   profile?: IProfile;
   accounts?: IAccount[];
+  keysets?: IKeySet[];
   profileList?: Pick<IProfile, 'name' | 'uuid' | 'accentColor' | 'options'>[];
   keySources?: IKeySource[];
   fungibles?: Fungible[];
@@ -77,6 +79,14 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     }));
   }, []);
 
+  const retrieveKeysets = useCallback(async (profileId: string) => {
+    const keysets = await accountRepository.getKeysetsByProfileId(profileId);
+    setContextValue((ctx) => ({
+      ...ctx,
+      keysets,
+    }));
+  }, []);
+
   const retrieveFungibles = useCallback(async () => {
     const fungibles = await accountRepository.getAllFungibles();
     setContextValue((ctx) => ({ ...ctx, fungibles }));
@@ -108,6 +118,11 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
             retrieveAccounts(data.profileId);
           }
           break;
+        case 'keyset':
+          if (data && (data as IKeySet).profileId) {
+            retrieveKeysets(data.profileId);
+          }
+          break;
         default:
           break;
       }
@@ -120,6 +135,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     retrieveKeySources,
     retrieveAccounts,
     retrieveFungibles,
+    retrieveKeysets,
   ]);
 
   const setProfile = useCallback(
@@ -140,6 +156,9 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       }
       await session.set('profileId', profile.uuid);
       const accounts = await WalletService.getAccounts(profile.uuid);
+      const keysets = await accountRepository.getKeysetsByProfileId(
+        profile.uuid,
+      );
       const keySources = await walletRepository.getProfileKeySources(
         profile.uuid,
       );
@@ -150,6 +169,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
         profile,
         accounts,
         keySources,
+        keysets,
       }));
       return { profile, accounts, keySources };
     },

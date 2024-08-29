@@ -42,7 +42,6 @@ export const sidebarLinkClass = style([
     padding: 'md',
   }),
   {
-    color: sidebarTextColorClass,
     minWidth: '192px',
     selectors: {
       '&.active': {
