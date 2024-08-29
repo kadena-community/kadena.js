@@ -34,7 +34,7 @@ import {
   TRANSACTIONS_PATH,
   TX_TEMPLATE_FOLDER,
 } from '../../../constants/config.js';
-import { ICommandSchema } from '../../../prompts/tx.js';
+import { IUnsignedCommandSchema } from '../../../prompts/tx.js';
 import { services } from '../../../services/index.js';
 import { KadenaError } from '../../../services/service-error.js';
 import type {
@@ -119,9 +119,11 @@ export async function getAllTransactions(
           const content = await services.filesystem.readFile(filePath);
           if (content === null) return null;
           const JSONParsedContent = JSON.parse(content);
-          const parsed = ICommandSchema.safeParse(JSONParsedContent);
+          const parsed = IUnsignedCommandSchema.safeParse(JSONParsedContent);
           if (parsed.success) {
-            const isSignedTx = isSignedTransaction(JSONParsedContent);
+            const isSignedTx = isSignedTransaction(
+              parsed.data as IUnsignedCommand,
+            );
             return {
               fileName,
               signed: isSignedTx,
@@ -138,13 +140,6 @@ export async function getAllTransactions(
     log.error(`Error reading transaction directory: ${error}`);
     throw error;
   }
-}
-
-export async function getAllTransactionFileNames(
-  directory: string,
-): Promise<string[]> {
-  const transactionFiles = await getAllTransactions(directory);
-  return transactionFiles.map((tx) => tx.fileName);
 }
 
 /**
@@ -310,9 +305,11 @@ export async function getTransactionFromFile(
       throw Error(`Failed to read file at path: ${transactionFilePath}`);
     }
     const transaction = JSON.parse(fileContent);
-    const parsedTransaction = ICommandSchema.parse(transaction);
+    const parsedTransaction = IUnsignedCommandSchema.parse(transaction);
     if (signed) {
-      const isSignedTx = isSignedTransaction(transaction);
+      const isSignedTx = isSignedTransaction(
+        parsedTransaction as IUnsignedCommand,
+      );
       if (!isSignedTx) {
         throw Error(`${transactionFile} is not a signed transaction`);
       }

@@ -21,10 +21,12 @@ export const signTransactionWithKeyPairAction = async ({
   commands: unsignedTransactions,
   keyPairs,
   directory,
+  chainweaverSignatures,
 }: {
   keyPairs: IWalletKeyPair[];
   commands: IUnsignedCommand[];
   directory?: string;
+  chainweaverSignatures?: boolean;
 }): Promise<
   CommandResult<{ commands: { command: ICommand; path: string }[] }>
 > => {
@@ -41,10 +43,10 @@ export const signTransactionWithKeyPairAction = async ({
       unsignedTransactions,
     );
 
-    const savedTransactions = await saveSignedTransactions(
-      signedCommands,
+    const savedTransactions = await saveSignedTransactions(signedCommands, {
       directory,
-    );
+      chainweaverSignatures,
+    });
 
     const signingStatus = await assessTransactionSigningStatus(signedCommands);
 
@@ -60,6 +62,7 @@ export const signTransactionWithKeyPairAction = async ({
 export const signTransactionFileWithKeyPairAction = async (data: {
   keyPairs: IWalletKeyPair[];
   files: string[];
+  chainweaverSignatures?: boolean;
 }): Promise<
   CommandResult<{ commands: { command: ICommand; path: string }[] }>
 > => {
@@ -81,6 +84,7 @@ export async function signWithKeypair(
   stdin?: string,
 ): Promise<void> {
   const key = await option.keyPairs();
+  const { legacy: chainweaverSignatures } = await option.legacy();
 
   const result = await (async () => {
     if (stdin !== undefined) {
@@ -117,6 +121,7 @@ export async function signWithKeypair(
           publicKey: x.publicKey,
           secretKey: x.secretKey!,
         })),
+        chainweaverSignatures,
       });
     }
   })();

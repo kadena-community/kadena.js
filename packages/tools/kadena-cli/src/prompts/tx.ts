@@ -41,17 +41,45 @@ export const SignatureOrUndefinedOrNull = z.union([
   z.null(),
 ]);
 
+const chainWeaverSignatureSchema = z.record(z.string(), z.string().nullable());
+
+const ICommandSignatureSchema = z.array(SignatureOrUndefinedOrNull);
+
 export const ICommandSchema = z.object({
   cmd: CommandPayloadStringifiedJSONSchema,
   hash: PactTransactionHashSchema,
-  sigs: z.array(SignatureOrUndefinedOrNull),
+  sigs: ICommandSignatureSchema,
 });
 
-export const IUnsignedCommandSchema = z.object({
-  cmd: CommandPayloadStringifiedJSONSchema,
-  hash: PactTransactionHashSchema,
-  sigs: z.array(SignatureOrUndefinedOrNull),
-});
+export const IUnsignedCommandSchema = z
+  .object({
+    cmd: CommandPayloadStringifiedJSONSchema,
+    hash: PactTransactionHashSchema,
+    sigs: ICommandSignatureSchema.or(chainWeaverSignatureSchema),
+  })
+  // Transform sings record to array
+  .transform((value) => {
+    if (Array.isArray(value.sigs)) {
+      return value as z.output<typeof ICommandSchema>;
+    }
+    const sigs = chainWeaverSignatureSchema.safeParse(value.sigs);
+    if (sigs.success) {
+      const cmd = z
+        .object({ signers: z.array(z.object({ pubKey: z.string() })) })
+        .safeParse(JSON.parse(value.cmd));
+      if (cmd.success) {
+        const keys = cmd.data.signers.map((signer) => signer.pubKey);
+        const result = {
+          ...value,
+          sigs: keys.map((key) =>
+            sigs.data[key] !== null ? { sig: sigs.data[key] } : null,
+          ),
+        };
+        return result;
+      }
+    }
+    throw new Error('Invalid signature schema');
+  });
 
 export const ISignedCommandSchema = z.object({
   cmd: CommandPayloadStringifiedJSONSchema,
