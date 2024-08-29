@@ -1,4 +1,4 @@
-schema: 'https://graph.testnet.kadena.network/graphql'
+schema: ../../apps/graph/generated-schema.graphql
 documents: './src/graphql/**/*.graphql'
 generates:
   ./src/graphql/generated/graphql.ts:
