@@ -17,7 +17,7 @@ To address this storage issue, Chainweb provides the `compact` command-line prog
 The `compact` program enables you to delete historical unused state from the `chainweb-node` RocksDB database and the Pact SQLite database.
 Removing old state that isn't required to validate transactions or reach consensus enables your node to use far less disk space overall while maintaining the semantic integrity of node operations.
 
-Note that, if possible, you should run the `compact` program on a computer or instance with higher input/output operations per second (IOPs). 
+Note that, if possible, you should run the `compact` program on a computer or instance with higher input/output operations per second (IOPS). 
 For nodes that run as virtual machines or instances on a cloud platform, you can typically configure this setting to optimize performance.
 
 After you compact the state and restart the node to use the compacted database, you can delete the old database to further reduce your storage overhead or save the old database in another location as a backup.
