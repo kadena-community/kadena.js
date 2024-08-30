@@ -1,14 +1,14 @@
 ---
-title: Get started as a Chainweb operator
+title: Get started as a node operator
 description: "Become a Chainweb node operator to support the Kadena network infrastructure."
 menu: Deploy
-label: Get started as a Chainweb operator
+label: Get started as a node operator
 order: 1
 layout: full
 tags: [pact, chainweb, network, node operator, developer]
 ---
 
-# Get started as a Chainweb node operator
+# Get started as a node operator
 
 Computers that run the Chainweb consensus protocol—by installing and managing the `chainweb-node` software—provide the resources that power the Kadena public blockchain network by participating in consensus and validating transactions to produce blocks.
 
