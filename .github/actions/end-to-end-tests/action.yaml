@@ -10,9 +10,6 @@ runs:
         shell: bash
         run: pnpm --filter e2e-${{ inputs.app }} run install:chromium
 
-      - name: Cache for Turbo
-        uses: rharkor/caching-for-turbo@v1.5
-
       - name: Build dependencies for e2e tests
         shell: bash
         run: pnpm turbo build --filter @kadena-dev/e2e-base^...
