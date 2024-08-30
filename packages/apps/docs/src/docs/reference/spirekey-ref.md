@@ -51,7 +51,7 @@ As part of the redirection, SpireKey appends a `user` object in the `searchParam
 | Parameter | Type | Description                                                              |
 | :----------- | :----------- | :----------------------------------------------------------------------- |
 | alias        | string       | Specifies an alias to use for the account as a display name. |
-| accountName  | string       | Specifies the `c:account` a user has connected to the application. |
+| accountName  | string       | Specifies the `r:account` a user has connected to the application. |
 | pendingTxIds | string[]     | Specifies an array of pending transactions related to account creation or maintenance. |
 | credentials  | Credential[] | Specifies the credential for the account. See [Credential](#credential). |
 
