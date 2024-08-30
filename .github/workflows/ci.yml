@@ -180,16 +180,10 @@ jobs:
 
     - name: Approve PR
       if: steps.check_files.outputs.exitcode == 0
-      uses: actions/github-script@v7
+      uses: hmarr/auto-approve-action@v4
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          github.pulls.createReview({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            pull_number: context.payload.pull_request.number,
-            event: 'APPROVE'
-          })
+        pull-request-number: ${{ github.event.inputs.pullRequestNumber }}
+        review-message: "Auto approved by [auto-approve-action](https://github.com/kadena-community/kadena.js/blob/main/.github/workflows/ci.yml#L186)"
 
   ci-gate:
     if: always()
