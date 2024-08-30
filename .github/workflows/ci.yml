@@ -155,6 +155,15 @@ jobs:
       with:
          fetch-depth: 2
          show-progress: false
+    # check if the PR is created by github user lsgunnlsgunn
+    - name: Check PR author
+      id: check_author
+      run: echo "author=${{ github.event.pull_request.user.login }}" >> $GITHUB_OUTPUT
+
+    # stop the workflow if the PR is not created by lsgunnlsgunn
+    - name: Author is lsgunnlsgunn
+      if: steps.check_author.outputs.author != 'lsgunnlsgunn'
+      run: exit 78
 
     - uses: pnpm/action-setup@v3
       with:
