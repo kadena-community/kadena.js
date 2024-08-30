@@ -21,12 +21,15 @@ jobs:
       - name: Runner setup
         uses: ./.github/actions/runner-setup
 
+      - name: Cache for Turbo
+        uses: rharkor/caching-for-turbo@v1.5
+
       - name: Build Docs Tools
-        run:  pnpm turbo build --filter @kadena/docs
+        run:  pnpm turbo build --filter @kadena/docs --no-cache
 
       - name: Update chainweb-node changelog
         run: pnpm run docs:changelogs
-      
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
@@ -35,11 +38,11 @@ jobs:
           title: Update Chainweb-node Changelogs
           body: |
             This PR updates the Chainweb-node changelogs.
-          branch: chainweb-node-changelogs 
+          branch: chainweb-node-changelogs
           base: main
           reviewers: |
             @sstraatemans
           assignees: |
-            @sstraatemans 
+            @sstraatemans
 
-     
+
