@@ -80,11 +80,13 @@
     "@walletconnect/types": "~2.8.1",
     "@webpro/next-translate-plugin": "^2.6.3",
     "debug": "4.3.4",
+    "dotenv": "~16.4.5",
     "eslint": "^8.45.0",
     "eslint-config-next": "13.4.5",
     "happy-dom": "^12.9.1",
     "next-router-mock": "^0.9.10",
     "prettier": "~3.2.5",
+    "tsx": "^4.16.2",
     "typescript": "5.4.5",
     "vitest": "^1.6.0",
     "vitest-dom": "^0.1.1"

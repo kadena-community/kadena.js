@@ -1,0 +1,11 @@
+{
+  "display_information": {
+    "name": "Kadena Messaging"
+  },
+  "settings": {
+    "org_deploy_enabled": false,
+    "socket_mode_enabled": false,
+    "is_hosted": false,
+    "token_rotation_enabled": false
+  }
+}
