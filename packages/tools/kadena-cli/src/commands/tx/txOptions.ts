@@ -217,4 +217,15 @@ export const txOptions = {
       'Gas limit for the local transaction',
     ),
   }),
+  chainweaverSignatures: createOption({
+    key: 'legacy' as const,
+    prompt: ({ legacy }): boolean => {
+      return legacy === true || legacy === 'true' || false;
+    },
+    validation: z.boolean().optional(),
+    option: new Option(
+      '-l, --legacy',
+      'Make the signed output transactions ChainWeaver and kda-tool compatible',
+    ),
+  }),
 };

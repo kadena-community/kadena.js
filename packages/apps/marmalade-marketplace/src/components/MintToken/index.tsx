@@ -3,14 +3,15 @@ import { env } from '@/utils/env';
 import * as styles from './style.css';
 import { useRouter } from 'next/navigation';
 import { Stack,  Button, TextField, NumberField, Checkbox } from '@kadena/kode-ui';
-import { ChainId, BuiltInPredicate } from '@kadena/client';
+import { ChainId } from '@kadena/client';
+import type {Guard} from '@kadena/client-utils/marmalade';
 import { getTokenInfo, mintToken } from '@kadena/client-utils/marmalade';
 import { useAccount } from '@/hooks/account';
 import { createSignWithSpireKeySDK } from '@/utils/signWithSpireKey';
 import { useTransaction } from '@/hooks/transaction';
 import { generateSpireKeyGasCapability, checkConcretePolicies, Policy } from '@/utils/helper';
 import { PactNumber } from "@kadena/pactjs";
-import { MonoAutoFixHigh, MonoAccountBalanceWallet, MonoAccessTime } from '@kadena/kode-icons';
+import { MonoAutoFixHigh } from '@kadena/kode-icons';
 import { TokenMetadata } from "@/components/Token";
 import { getTokenImageUrl, getTokenMetadata } from '@/utils/token';
 import { ICommand, IUnsignedCommand } from '@kadena/client';
@@ -20,7 +21,7 @@ import CrudCard from '@/components/CrudCard';
 
 function MintTokenComponent() {
   const router = useRouter();
-  const { account, webauthnAccount } = useAccount();
+  const { account } = useAccount();
   const searchParams = useSearchParams();
 
   const { setTransaction } = useTransaction();
@@ -34,7 +35,7 @@ function MintTokenComponent() {
   
   const onTransactionSigned = (transaction: IUnsignedCommand | ICommand) => {
     setTransaction(transaction);
-    router.push(`/transaction?returnUrl=/tokens/${tokenId}`);
+    router.push(`/transaction?returnUrl=/tokens/${tokenId}?chainId=${`8`}`);
   }
 
   useEffect(() => {
@@ -87,20 +88,18 @@ function MintTokenComponent() {
 
       const amountFormatted = (amount === 1) ? {"decimal": "1.0"} : new PactNumber(amount).toPactDecimal();
 
-      if (!webauthnAccount) {
-        throw new Error("Webauthn account not found");
+      if (!account) {
+        throw new Error("Spirekey account not found");
       }
 
-      const walletAccount = account?.accountName || '';
+      const walletAccount = account?.accountName || '';     
 
       await mintToken({
         policyConfig: result,
         tokenId: tokenId,
-        accountName: webauthnAccount?.account || "",
-        guard: {
-          account: webauthnAccount.account,
-          keyset: webauthnAccount.guard
-        },
+        accountName: walletAccount,
+        signerPublicKey: account && account.devices[0].guard.keys[0],
+        guard: {account: walletAccount, guard: account.guard as Guard },
         amount: amountFormatted,
         chainId: config.chainId as ChainId,
         capabilities: generateSpireKeyGasCapability(walletAccount),
@@ -150,7 +149,7 @@ function MintTokenComponent() {
             "Try minting your own nft!"
           ]}
         >
-          <div>
+          <div className={styles.tokenImageContainer}>
             <img
               src={tokenImageUrl}
               alt="Token Image"

@@ -13,7 +13,7 @@ if (
     projectId: process.env.NEXT_PUBLIC_FB_PROJECTID,
     appId: process.env.NEXT_PUBLIC_FB_APPID,
   };
-
+  
   const app = initializeApp(firebaseConfig);
   database = getFirestore(app);
 }

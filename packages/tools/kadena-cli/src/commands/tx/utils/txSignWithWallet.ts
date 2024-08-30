@@ -26,18 +26,18 @@ import {
 
 export const signTransactionsWithWallet = async ({
   password,
-  signed,
   unsignedCommands,
   skippedCommands,
   relevantKeyPairs,
   wallet,
+  chainweaverSignatures,
 }: {
   password: string;
-  signed: boolean;
   unsignedCommands: IUnsignedCommand[];
   skippedCommands: IUnsignedCommand[];
   relevantKeyPairs: IWalletKey[];
   wallet: IWallet;
+  chainweaverSignatures?: boolean;
 }): Promise<
   CommandResult<{ commands: { command: ICommand; path: string }[] }>
 > => {
@@ -66,7 +66,9 @@ export const signTransactionsWithWallet = async ({
       transactions.push(signedCommand);
     }
 
-    const savedTransactions = await saveSignedTransactions(transactions);
+    const savedTransactions = await saveSignedTransactions(transactions, {
+      chainweaverSignatures,
+    });
 
     const signingStatus = await assessTransactionSigningStatus([
       ...skippedCommands,
@@ -88,6 +90,8 @@ export async function signWithWallet(
   stdin?: string,
 ): Promise<void> {
   const results = await (async () => {
+    const { legacy: chainweaverSignatures } = await option.legacy();
+
     if (stdin !== undefined) {
       const command = await parseTransactionsFromStdin(stdin);
       const { walletName, walletNameConfig: walletConfig } =
@@ -110,11 +114,11 @@ export async function signWithWallet(
       });
       return await signTransactionsWithWallet({
         password: password.passwordFile,
-        signed: false,
         unsignedCommands: [command],
         skippedCommands: [],
         relevantKeyPairs: walletAndKeys.relevantKeyPairs,
         wallet: walletConfig,
+        chainweaverSignatures,
       });
     } else {
       const { directory } = await option.directory();
@@ -163,11 +167,11 @@ export async function signWithWallet(
 
       return await signTransactionsWithWallet({
         password: password.passwordFile,
-        signed: false,
         unsignedCommands,
         skippedCommands,
         relevantKeyPairs,
         wallet: walletConfig,
+        chainweaverSignatures,
       });
     }
   })();

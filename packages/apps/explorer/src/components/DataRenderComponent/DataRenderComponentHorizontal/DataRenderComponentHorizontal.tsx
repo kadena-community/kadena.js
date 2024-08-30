@@ -40,7 +40,9 @@ export const DataRenderComponentHorizontal: React.FC<
     <div className={flexClass}>
       {fields.map((field, index) => (
         <div key={index}>
-          <div className={headerClass}>{field.key}</div>
+          <ValueLoader isLoading={isLoading}>
+            <Text className={headerClass}>{field.key}</Text>
+          </ValueLoader>
           {field.link ? (
             <div className={dataFieldLinkClass}>
               <ValueLoader isLoading={isLoading}>

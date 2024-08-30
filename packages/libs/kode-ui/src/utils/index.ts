@@ -5,5 +5,6 @@ export * from './is';
 export * from './object';
 export * from './testId';
 export * from './useAsyncFn';
+export * from './useMobile';
 export * from './useMountedState';
 export * from './useTheme';

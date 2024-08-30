@@ -1,5 +1,4 @@
 import type {
-  BuiltInPredicate,
   ChainId,
   ICap,
   IPactModules,
@@ -23,6 +22,7 @@ import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 import type {
   CommonProps,
+  Guard,
   ICreateTokenPolicyConfig,
   PolicyProps,
   WithCreateTokenPolicy,
@@ -31,6 +31,9 @@ import {
   formatAdditionalSigners,
   formatCapabilities,
   formatWebAuthnSigner,
+  isKeysetGuard,
+  isRefKeysetGuard,
+  readRefKeyset,
   validatePolicies,
 } from './helpers';
 
@@ -40,12 +43,10 @@ interface ICreateTokenInput extends CommonProps {
   tokenId: string;
   precision: IPactInt | PactReference;
   chainId: ChainId;
+  signerPublicKey?: string;
   creator: {
     account: string;
-    keyset: {
-      keys: string[];
-      pred: BuiltInPredicate;
-    };
+    guard: Guard;
   };
 }
 
@@ -122,7 +123,7 @@ const generatePolicyTransactionData = (
       addData('royalty_spec', {
         fungible: props.royalty.fungible,
         creator: props.royalty.creator.account,
-        'creator-guard': props.royalty.creator.keyset,
+        'creator-guard': props.royalty.creator.guard,
         'royalty-rate': props.royalty.royaltyRate.decimal,
       }),
     );
@@ -157,42 +158,82 @@ const createTokenCommand = <C extends ICreateTokenPolicyConfig>({
   policyConfig,
   meta,
   capabilities,
+  signerPublicKey,
   additionalSigners,
   ...policyProps
 }: WithCreateTokenPolicy<C, ICreateTokenInput>) => {
   validatePolicies(policyConfig as ICreateTokenPolicyConfig, policies);
-  return composePactCommand(
-    execution(
-      Pact.modules['marmalade-v2.ledger']['create-token'](
-        tokenId,
-        precision,
-        uri,
-        () => (policies.length > 0 ? `[${policies.join(' ')}]` : '[]'),
-        readKeyset('creation-guard'),
-      ),
-    ),
-    setMeta({ senderAccount: creator.account, chainId }),
-    addKeyset('creation-guard', creator.keyset.pred, ...creator.keyset.keys),
-    addSigner(formatWebAuthnSigner(creator.keyset.keys), (signFor) => [
-      signFor('coin.GAS'),
-      signFor('marmalade-v2.ledger.CREATE-TOKEN', tokenId, creator.keyset),
 
-      ...generatePolicyCapabilities(
-        policyConfig as ICreateTokenPolicyConfig,
-        { ...policyProps, tokenId } as unknown as PolicyProps & {
-          tokenId: string;
-        },
-        signFor,
+  if (!isKeysetGuard(creator.guard) && !signerPublicKey) {
+    throw new Error('Keyset references must assign a signer publicKey');
+  }
+
+  if (isKeysetGuard(creator.guard)) {
+    return composePactCommand(
+      execution(
+        Pact.modules['marmalade-v2.ledger']['create-token'](
+          tokenId,
+          precision,
+          uri,
+          () => (policies.length > 0 ? `[${policies.join(' ')}]` : '[]'),
+          readKeyset('creation-guard'),
+        ),
       ),
-      ...formatCapabilities(capabilities, signFor),
-    ]),
-    ...generatePolicyTransactionData(
-      policyConfig as ICreateTokenPolicyConfig,
-      policyProps as unknown as PolicyProps,
-    ),
-    ...formatAdditionalSigners(additionalSigners),
-    setMeta({ senderAccount: creator.account, chainId, ...meta }),
-  );
+      setMeta({ senderAccount: creator.account, chainId }),
+      addKeyset('creation-guard', creator.guard.pred, ...creator.guard.keys),
+      addSigner(formatWebAuthnSigner(creator.guard.keys), (signFor) => [
+        signFor('coin.GAS'),
+        signFor('marmalade-v2.ledger.CREATE-TOKEN', tokenId, creator.guard),
+        ...generatePolicyCapabilities(
+          policyConfig as ICreateTokenPolicyConfig,
+          { ...policyProps, tokenId } as unknown as PolicyProps & {
+            tokenId: string;
+          },
+          signFor,
+        ),
+        ...formatCapabilities(capabilities, signFor),
+      ]),
+      ...generatePolicyTransactionData(
+        policyConfig as ICreateTokenPolicyConfig,
+        policyProps as unknown as PolicyProps,
+      ),
+      ...formatAdditionalSigners(additionalSigners),
+      setMeta({ senderAccount: creator.account, chainId, ...meta }),
+    );
+  } else if (isRefKeysetGuard(creator.guard)) {
+    return composePactCommand(
+      execution(
+        Pact.modules['marmalade-v2.ledger']['create-token'](
+          tokenId,
+          precision,
+          uri,
+          () => (policies.length > 0 ? `[${policies.join(' ')}]` : '[]'),
+          readRefKeyset(creator.guard),
+        ),
+      ),
+      setMeta({ senderAccount: signerPublicKey, chainId }),
+      addSigner(formatWebAuthnSigner(signerPublicKey!), (signFor) => [
+        signFor('coin.GAS'),
+        signFor('marmalade-v2.ledger.CREATE-TOKEN', tokenId, creator.guard),
+        ...generatePolicyCapabilities(
+          policyConfig as ICreateTokenPolicyConfig,
+          { ...policyProps, tokenId } as unknown as PolicyProps & {
+            tokenId: string;
+          },
+          signFor,
+        ),
+        ...formatCapabilities(capabilities, signFor),
+      ]),
+      ...generatePolicyTransactionData(
+        policyConfig as ICreateTokenPolicyConfig,
+        policyProps as unknown as PolicyProps,
+      ),
+      ...formatAdditionalSigners(additionalSigners),
+      setMeta({ senderAccount: creator.account, chainId, ...meta }),
+    );
+  } else {
+    throw new Error('Guard type is not supported');
+  }
 };
 
 export const createToken = <C extends ICreateTokenPolicyConfig>(

@@ -27,10 +27,10 @@ export const FooterColumn: FC<IProps> = ({ data, isOpen }) => {
       marginInlineEnd="md"
     >
       <Heading as="h6">{data.label}</Heading>
-      {data.children.map((item) => (
+      {data.children.map((item, idx) => (
         <FooterLink
           onClick={() => handleAnalyticsForClick(item)}
-          key={item.url}
+          key={item.url + idx}
           href={item.url}
         >
           {item.label}

@@ -32,6 +32,9 @@ jobs:
       - name: Lint monorepo root
         run: pnpm run lint
 
+      - name: Cache for Turbo
+        uses: rharkor/caching-for-turbo@v1.5
+
       - name: Build, lint, test all packages
         run: pnpm turbo lint build test
 
@@ -55,9 +58,9 @@ jobs:
           fetch-depth: 2
           show-progress: false
 
-      - name: Runner Setup  
+      - name: Runner Setup
         uses: ./.github/actions/runner-setup
-       
+
       - name: Setup Kadena sandbox
         uses: ./.github/actions/sandbox
 
@@ -79,23 +82,23 @@ jobs:
           fetch-depth: 2
           show-progress: false
 
-      -  name: Runner Setup  
+      -  name: Runner Setup
          uses: ./.github/actions/runner-setup
-      
+
       -  name: Setup Kadena sandbox
          uses: ./.github/actions/sandbox
-      
-      - name: Build App with NODE_ENV=test    
+
+      - name: Build App with NODE_ENV=test
         uses: ./.github/actions/build-app-e2e
         with:
           app: ${{ matrix.app }}
 
-      - name: Run end-to-end tests    
+      - name: Run end-to-end tests
         uses: ./.github/actions/end-to-end-tests
         with:
           app: ${{ matrix.app }}
 
-      - name: Archive sandbox logs    
+      - name: Archive sandbox logs
         uses: ./.github/actions/archive-logs
         if: always()
         with:
@@ -105,14 +108,14 @@ jobs:
         if: always()
         run: docker compose down
         working-directory: .github/actions/sandbox
-    
+
       - name: Archive volumes
         uses: ./.github/actions/archive-volumes
         if: always()
         with:
           test-object: ${{ matrix.app }}
 
-      - name: Upload Blob Report  
+      - name: Upload Blob Report
         uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
@@ -133,13 +136,13 @@ jobs:
           show-progress: false
 
     -  name: Runner Setup
-       uses: ./.github/actions/runner-setup 
-    
+       uses: ./.github/actions/runner-setup
+
     - name: Merge & Publish Report
       uses: ./.github/actions/merge-publish-reports
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
+
 
   ci-gate:
     if: always()

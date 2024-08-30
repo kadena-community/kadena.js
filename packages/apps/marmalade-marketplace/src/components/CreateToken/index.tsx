@@ -23,13 +23,12 @@ import { useTransaction } from '@/hooks/transaction';
 
 function CreateTokenComponent() {
   const router = useRouter();
-  const { account, webauthnAccount } = useAccount();
+  const { account } = useAccount();
   const { setTransaction } = useTransaction();
 
   const excluded = "[EXCLUDED]";
   let tokenId = '';
 
-  const [walletKey, setWalletKey] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>();
   const [base64Image, setBase64Image] = useState('');
@@ -59,40 +58,38 @@ function CreateTokenComponent() {
   });
 
   const [guardInput, setGuardInput] = useState({
-    uriGuard: walletKey,
-    burnGuard: walletKey,
-    mintGuard: walletKey,
-    saleGuard: walletKey,
-    transferGuard: walletKey,
+    uriGuard: account?.guard,
+    burnGuard: account?.guard,
+    mintGuard: account?.guard,
+    saleGuard: account?.guard,
+    transferGuard: account?.guard,
   });
 
   const [royaltyInput, setRoyaltyInput] = useState({
     royaltyFungible: 'coin',
-    royaltyCreator: webauthnAccount?.account ?? '',
-    royaltyGuard: walletKey,
+    royaltyCreator: account?.accountName ?? '',
+    royaltyGuard: account?.guard,
     royaltyRate: '0.05',
   });
 
   useEffect(() => {
-    if (webauthnAccount) {
-      const key = webauthnAccount.guard.keys[0];
+    if (!account) return;
+    const guard = account.guard
+    
+    setGuardInput({
+      uriGuard: guard,
+      burnGuard: guard,
+      mintGuard: guard,
+      saleGuard: guard,
+      transferGuard: guard,
+    });
 
-      setGuardInput({
-        uriGuard: key,
-        burnGuard: key,
-        mintGuard: key,
-        saleGuard: key,
-        transferGuard: key,
-      });
-
-      setRoyaltyInput(prev => ({
-        ...prev,
-        royaltyCreator: webauthnAccount.account,
-        royaltyGuard: key
-      }));
-      setWalletKey(key);
-    }
-  }, [webauthnAccount]);
+    setRoyaltyInput(prev => ({
+      ...prev,
+      royaltyCreator: account.accountName,
+      royaltyGuard: account.guard,
+    }));      
+  }, [account]);
 
   const onTransactionSigned = (transaction: IUnsignedCommand | ICommand) => {
     setTransaction(transaction);
@@ -135,7 +132,7 @@ function CreateTokenComponent() {
   const handleGuardExcludeChange = (name: string, checked: boolean) => {
     setGuardInput((prevState) => ({
       ...prevState,
-      [name]: checked ? excluded : walletKey,
+      [name]: checked ? excluded : account?.guard,
     }));
   };
 
@@ -187,12 +184,12 @@ function CreateTokenComponent() {
         try {
           const tokenIdCreated = await createTokenId({ ...inputs, networkId: config.networkId, host: config.host });
           tokenId = tokenIdCreated;
-
+          
           await createToken(
             {
               ...inputs,
+              signerPublicKey: account?.devices[0].guard.keys[0],
               tokenId: tokenIdCreated,
-              capabilities: generateSpireKeyGasCapability(account.accountName ?? ''),
             },
             {
               ...config,
@@ -280,7 +277,7 @@ function CreateTokenComponent() {
       ...input,
       chainId: input.chainId as ChainId,
       precision: createPrecision(input.precision),
-      creator: formatAccount(account?.accountName || '', account?.devices[0].guard.keys[0] || ''),
+      creator: formatAccount(account?.accountName || '', account?.guard),
     };
   };
 
@@ -326,7 +323,7 @@ function CreateTokenComponent() {
               <TextField
                 label="Creation Guard"
                 name="CreationGuard"
-                value={walletKey}
+                value={JSON.stringify(account?.guard)}
                 disabled
               />
               <NumberField

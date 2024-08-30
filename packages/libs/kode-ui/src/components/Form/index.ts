@@ -10,6 +10,7 @@ export {
 export { FormFieldHeader } from './FormFieldHeader/FormFieldHeader';
 export { FormFieldHelpText as FormFieldHelper } from './FormFieldHelpText/FormFieldHelpText';
 export { NumberField, type INumberFieldProps } from './NumberField';
+export { Radio, RadioGroup } from './RadioGroup';
 export { Select, SelectItem, type ISelectProps } from './Select';
 export { TextField, type ITextFieldProps } from './TextField';
 export { TextareaField, type ITextareaFieldProps } from './TextareaField';

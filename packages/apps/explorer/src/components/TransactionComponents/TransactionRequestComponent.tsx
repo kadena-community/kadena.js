@@ -11,14 +11,17 @@ type Transaction = Omit<
 >;
 
 export const TransactionRequestComponent: React.FC<{
-  transaction: Transaction;
-}> = ({ transaction }) => {
+  transaction?: Transaction | null;
+  isLoading: boolean;
+}> = ({ transaction, isLoading }) => {
+  if (!transaction) return;
   return (
     <>
       {transaction.cmd.payload.__typename === 'ExecutionPayload' ? (
         // Execution transaction
 
         <DataRenderComponent
+          isLoading={isLoading}
           fields={[
             {
               key: 'Request Key (hash)',
@@ -39,6 +42,7 @@ export const TransactionRequestComponent: React.FC<{
         // Continuation
 
         <DataRenderComponent
+          isLoading={isLoading}
           fields={[
             {
               key: 'Request Key (hash)',
@@ -69,6 +73,7 @@ export const TransactionRequestComponent: React.FC<{
       ) : null}
 
       <DataRenderComponent
+        isLoading={isLoading}
         title="General"
         fields={[
           { key: 'Chain', value: transaction.cmd.meta.chainId },
@@ -86,6 +91,7 @@ export const TransactionRequestComponent: React.FC<{
       />
 
       <DataRenderComponent
+        isLoading={isLoading}
         title="Signers"
         fields={transaction.cmd.signers
           // .sort((a, b) => a.orderIndex - b.orderIndex)
@@ -124,6 +130,7 @@ export const TransactionRequestComponent: React.FC<{
       />
 
       <DataRenderComponent
+        isLoading={isLoading}
         title="Signatures"
         fields={transaction.sigs.map((s) => ({
           key: '',

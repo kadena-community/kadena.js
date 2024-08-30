@@ -8,9 +8,10 @@ import type {
   ForwardedRef,
   ReactElement,
 } from 'react';
-import React, { forwardRef, useCallback } from 'react';
+import React, { forwardRef, useCallback, useState } from 'react';
 import type { AriaTextFieldProps } from 'react-aria';
 import { useFocusRing, useHover, useTextField } from 'react-aria';
+import { useMobile } from '../../../utils';
 import { Field } from '../Field/Field';
 import { input } from '../Form.css';
 import type { IFormFieldHeaderProps } from '../FormFieldHeader/FormFieldHeader';
@@ -63,6 +64,7 @@ export function TextFieldBase(
   forwardedRef: ForwardedRef<ElementRef<'input'>>,
 ) {
   const ref = useObjectRef<ElementRef<'input'>>(forwardedRef);
+  const [isTouched, setIsTouched] = useState(false);
   const isDisabled = props.isDisabled || props.disabled;
   const { inputProps, ...fieldProps } = useTextField(
     {
@@ -79,12 +81,14 @@ export function TextFieldBase(
     isTextInput: true,
     autoFocus: props.autoFocus,
   });
+  const { isMobile } = useMobile();
 
   // handle uncontrollable form state eg. react-hook-form
   const handleOnChange = useCallback(
     (event: ChangeEvent<ElementRef<'input'>>) => {
       inputProps.onChange?.(event);
       props.onChange?.(event);
+      setIsTouched(isTouched && !!event.target.value);
     },
     [props.onChange, inputProps.onChange],
   );
@@ -111,7 +115,7 @@ export function TextFieldBase(
         ref={ref}
         className={classNames(
           input({
-            variant: fieldProps.isInvalid ? 'negative' : variant,
+            variant: fieldProps.isInvalid && isTouched ? 'negative' : variant,
             size,
             fontType,
           }),
@@ -124,6 +128,7 @@ export function TextFieldBase(
         data-invalid={fieldProps.isInvalid || undefined}
         data-has-start-addon={!!startVisual || undefined}
         data-has-end-addon={!!endAddon || undefined}
+        data-is-mobile={isMobile || undefined}
       />
     </Field>
   );

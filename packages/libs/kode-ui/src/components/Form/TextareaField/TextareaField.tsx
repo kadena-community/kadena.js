@@ -8,9 +8,10 @@ import type {
   ForwardedRef,
   ReactNode,
 } from 'react';
-import React, { forwardRef, useCallback } from 'react';
+import React, { forwardRef, useCallback, useState } from 'react';
 import type { AriaTextFieldProps } from 'react-aria';
 import { useFocusRing, useHover, useTextField } from 'react-aria';
+import { useMobile } from '../../../utils';
 import { Field } from '../Field/Field';
 import type { InputVariants } from '../Form.css';
 import { input } from '../Form.css';
@@ -90,6 +91,9 @@ export function TextareaFieldBase(
     () => {},
   );
 
+  const [isTouched, setIsTouched] = useState(false);
+  const { isMobile } = useMobile();
+
   const onHeightChange = useCallback(() => {
     if (props.autoResize && ref.current) {
       const input = ref.current;
@@ -122,6 +126,7 @@ export function TextareaFieldBase(
       inputProps.onChange?.(event);
       setInputValue(event.target.value);
       props.onChange?.(event);
+      setIsTouched(isTouched && !!event.target.value);
     },
     [props.onChange, inputProps.onChange],
   );
@@ -149,7 +154,7 @@ export function TextareaFieldBase(
         ref={ref}
         className={classNames(
           input({
-            variant: fieldProps.isInvalid ? 'negative' : variant,
+            variant: fieldProps.isInvalid && isTouched ? 'negative' : variant,
             size,
             fontType,
           }),
@@ -163,6 +168,7 @@ export function TextareaFieldBase(
         data-focus-visible={isFocusVisible || undefined}
         data-has-start-addon={!!startVisual || undefined}
         data-has-end-addon={!!endAddon || undefined}
+        data-is-mobile={isMobile || undefined}
       />
     </Field>
   );

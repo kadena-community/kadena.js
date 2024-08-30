@@ -98,7 +98,7 @@ export function ConventionalAuction({ tokenImageUrl, sale }: ConventionalAuction
         chainId: sale.chainId,
         seller: {
           account: sale.seller.account,
-          keyset: sale.seller.guard!
+          guard: sale.seller.guard!
         },
         timeout: new PactNumber(sale.timeoutAt / 1000).toPactInteger()
       }, {
@@ -142,7 +142,7 @@ export function ConventionalAuction({ tokenImageUrl, sale }: ConventionalAuction
 
     try {
       await buyToken({
-        signer: "",
+        signerPublicKey: "",
         auctionConfig: {
           conventional: true
         },
@@ -159,7 +159,7 @@ export function ConventionalAuction({ tokenImageUrl, sale }: ConventionalAuction
         },
         buyer: {
           account: highestBid["bidder"],
-          keyset: highestBid["bidder-guard"]
+          guard: highestBid["bidder-guard"]
         },
       }, {
         ...config,

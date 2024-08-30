@@ -28,7 +28,7 @@ interface IPlaceBidInput extends CommonProps {
   bid: IPactDecimal;
   bidder: {
     account: string;
-    keyset: {
+    guard: {
       keys: string[];
       pred: 'keys-all' | 'keys-2' | 'keys-any';
     };
@@ -58,10 +58,10 @@ const placeBidCommand = <C extends IPlaceBidConfig>({
         bid,
       ),
     ),
-    addKeyset('account-guard', bidder.keyset.pred, ...bidder.keyset.keys),
-    addSigner(formatWebAuthnSigner(bidder.keyset.keys), (signFor) => [
+    addKeyset('account-guard', bidder.guard.pred, ...bidder.guard.keys),
+    addSigner(formatWebAuthnSigner(bidder.guard.keys), (signFor) => [
       signFor('coin.GAS'),
-      signFor('marmalade-sale.conventional-auction.PLACE_BID', bidder.keyset),
+      signFor('marmalade-sale.conventional-auction.PLACE_BID', bidder.guard),
       signFor('coin.TRANSFER', bidder.account, escrowAccount, bid),
       ...formatCapabilities(capabilities, signFor),
     ]),

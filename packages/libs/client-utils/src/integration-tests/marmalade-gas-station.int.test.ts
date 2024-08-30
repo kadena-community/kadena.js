@@ -24,7 +24,7 @@ const inputs = {
   policies: [],
   creator: {
     account: sourceAccount.account,
-    keyset: {
+    guard: {
       keys: [sourceAccount.publicKey],
       pred: 'keys-all' as const,
     },
@@ -165,7 +165,7 @@ describe('mintToken', () => {
         accountName: sourceAccount.account,
         guard: {
           account: sourceAccount.account,
-          keyset: {
+          guard: {
             keys: [sourceAccount.publicKey],
             pred: 'keys-all' as const,
           },

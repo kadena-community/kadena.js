@@ -1,5 +1,5 @@
 import { Text } from "@kadena/kode-ui";
-import { tokenBadgeWrapperClass } from '@/styles/token.css';
+import { tokenBadgeWrapperClass } from './style.css';
 
 interface BadgeProps {
   label: string

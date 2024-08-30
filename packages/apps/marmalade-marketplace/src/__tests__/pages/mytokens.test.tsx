@@ -3,7 +3,6 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { useAccount } from '@/hooks/account';
 import { getTokens } from '@/graphql/queries/client';
 import MyTokens from '@/pages/mytokens'
-import { WebauthnAccountDetails } from '@/providers/AccountProvider/AccountProvider';
 
 // Mocking the custom hooks and functions
 vi.mock('@/hooks/account');
@@ -20,7 +19,6 @@ vi.mock('@/components/Token', () => ({
 
 const dummyAccountContext = {
   account: null,
-  webauthnAccount: null,
   isMounted: false,
   login: () => {},
   logout: () => {},
@@ -34,25 +32,24 @@ describe('MyTokens component', () => {
 
   test('renders the component and fetches tokens', async () => {
     const mockAccount = {
-      accountName: 'c:test-account',
+      accountName: 'r:test-account',
       alias: 'test-alias',
       pendingTxIds: [],
-      credentials: []
+      credentials: [],
+      minApprovals: 1,
+      minRegistrationApprovals: 1,
+      balance: '0',
+      devices: [],
+      networkId: 'testnet04',
+      chainIds: [],
+      txQueue: [],
     };
 
-    const webauthnAccount: WebauthnAccountDetails = {
-      account: 'w:test-account',
-      guard: {
-        keys: [],
-        pred: "keys-any",
-      }
-    };
-
-    const mockAccountContext = { ...dummyAccountContext, account: mockAccount, webauthnAccount};
+    const mockAccountContext = { ...dummyAccountContext, account: mockAccount };
 
     const mockTokens = [
-      { accountName: 'w:test-account', balance: 15, tokenId: '1', chainId: '1' },
-      { accountName: 'w:test-account', balance: 1, tokenId: '2', chainId: '1' },
+      { accountName: 'r:test-account', balance: 15, tokenId: '1', chainId: '1' },
+      { accountName: 'r:test-account', balance: 1, tokenId: '2', chainId: '1' },
     ];
 
     mockUseAccount.mockReturnValue(mockAccountContext);
@@ -76,7 +73,14 @@ describe('MyTokens component', () => {
       accountName: 'test-account',
       alias: 'test-alias',
       pendingTxIds: [],
-      credentials: []
+      credentials: [],
+      minApprovals: 1,
+      minRegistrationApprovals: 1,
+      balance: '0',
+      devices: [],
+      networkId: 'testnet04',
+      chainIds: [],
+      txQueue: [],
     };
     const mockTokens: any[] = [];
     const mockAccountContext = { ...dummyAccountContext, account: mockAccount };

@@ -9,10 +9,9 @@ import { Item as TabItem, useTabListState } from 'react-stately';
 import { Tab } from './Tab';
 import { TabPanel } from './TabPanel';
 import {
-  containedTabContent,
+  containedTabs,
   scrollContainer,
   tabListClass,
-  tabListGap,
   tabsContainerClass,
 } from './Tabs.css';
 import { TabsPagination } from './TabsPagination';
@@ -79,7 +78,11 @@ export function Tabs<T extends object>({
   }, []);
 
   return (
-    <div className={classNames(tabsContainerClass, className)}>
+    <div
+      className={classNames(tabsContainerClass, className, {
+        [containedTabs]: isContained,
+      })}
+    >
       <TabsPagination
         wrapperContainerRef={containerRef}
         scrollContainerRef={scrollRef}
@@ -87,7 +90,6 @@ export function Tabs<T extends object>({
         <div className={scrollContainer} ref={scrollRef}>
           <div
             className={classNames(tabListClass, {
-              [tabListGap]: isContained,
               focusVisible: isFocusVisible,
             })}
             {...mergeProps(tabListProps, focusProps)}
@@ -110,9 +112,7 @@ export function Tabs<T extends object>({
       <TabPanel
         key={state.selectedItem?.key}
         state={state}
-        className={classNames(tabPanelClassName, {
-          [containedTabContent]: isContained,
-        })}
+        className={tabPanelClassName}
       />
     </div>
   );

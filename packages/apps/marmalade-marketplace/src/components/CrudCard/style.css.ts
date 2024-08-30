@@ -3,6 +3,7 @@ import { token } from '@kadena/kode-ui/styles';
 
 export const card = style({
   padding: '32px',
+  gap: '64px',
   color: token('color.text.base.default'),
 });
 

@@ -4,6 +4,7 @@ import { tokens } from '@kadena/kode-ui/styles';
 export const tokenImageContainer = style({
   width: '100%',
   height: '100%',
+  minHeight: '336px',
   objectFit: 'cover',
   borderRadius: tokens.kda.foundation.radius.lg,
   backgroundColor: tokens.kda.foundation.color.background.layer.default,

@@ -23,7 +23,7 @@ export const statusOutlineColor = createVar();
 
 export const outlineColor = createVar();
 export const iconFill = fallbackVar(token('color.icon.base.@init'));
-const textColor = fallbackVar(token('color.text.base.@init'));
+const textColor = fallbackVar(token('color.text.gray.default'));
 
 export const outlineStyles = {
   outlineStyle: `solid`,
@@ -192,10 +192,31 @@ export const inputSizeVariants = {
 
 export const inputFontTypeVariants = {
   fontType: {
-    ui: uiSmallRegular,
-    code: monospaceSmallRegular,
+    // The mobile selector is required for a11y purposes.
+    ui: {
+      uiSmallRegular,
+      '&[data-is-mobile]': {
+        // @TODO: this should reference the mobile token inputUiMobileRegular
+        fontFamily: `${token('typography.family.primaryFont')} !important`,
+        fontSize: `${token('typography.fontSize.base')} !important`,
+        fontWeight: `${token('typography.weight.primaryFont.regular')} !important`,
+        lineHeight: `${token('typography.lineHeight.xl')} !important`,
+        letterSpacing: `${token('spacing.n0')} !important`,
+      },
+    },
+    code: {
+      monospaceSmallRegular,
+      '&[data-is-mobile]': {
+        // @TODO: this should reference the mobile token inputMonospaceMobileRegular
+        fontFamily: `${token('typography.family.monospaceFont')} !important`,
+        fontSize: `${token('typography.fontSize.base')} !important`,
+        fontWeight: `${token('typography.weight.monospaceFont.regular')} !important`,
+        lineHeight: `${token('typography.lineHeight.xl')} !important`,
+        letterSpacing: `${token('spacing.n0')} !important`,
+      },
+    },
   },
-} as const;
+} as { fontType: { ui: any; code: any } };
 
 export const inputSizeCompoundVariants: {
   variants: {
@@ -258,7 +279,7 @@ export const input = recipe({
       border: 'none',
       backgroundColor: token('color.background.input.default'),
       borderRadius: '0',
-      color: textColor,
+      color: token('color.text.base.@init'),
       transition: 'box-shadow, background-color 0.2s ease-in-out',
       '::placeholder': {
         color: textColor,

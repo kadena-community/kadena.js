@@ -27,7 +27,7 @@ const inputs = {
   policies: [],
   creator: {
     account: sourceAccount.account,
-    keyset: {
+    guard: {
       keys: [sourceAccount.publicKey],
       pred: 'keys-all' as const,
     },
@@ -194,7 +194,7 @@ describe('mintToken', () => {
         accountName: sourceAccount.account,
         guard: {
           account: sourceAccount.account,
-          keyset: {
+          guard: {
             keys: [sourceAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -265,7 +265,7 @@ describe('mintToken', () => {
         accountName: sourceAccount.account,
         guard: {
           account: sourceAccount.account,
-          keyset: {
+          guard: {
             keys: [sourceAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -416,7 +416,7 @@ describe('updateUri', () => {
         chainId,
         guard: {
           account: sourceAccount.account,
-          keyset: {
+          guard: {
             keys: [sourceAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -436,7 +436,7 @@ describe('updateUri', () => {
         chainId,
         guard: {
           account: sourceAccount.account,
-          keyset: {
+          guard: {
             keys: [sourceAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -461,14 +461,14 @@ describe('transferCreateToken', () => {
         tokenId: tokenId as string,
         sender: {
           account: sourceAccount.account,
-          keyset: {
+          guard: {
             keys: [sourceAccount.publicKey],
             pred: 'keys-all' as const,
           },
         },
         receiver: {
           account: secondaryTargetAccount.account,
-          keyset: {
+          guard: {
             keys: [secondaryTargetAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -537,14 +537,14 @@ describe('transferCreateToken', () => {
         tokenId: tokenId as string,
         sender: {
           account: sourceAccount.account,
-          keyset: {
+          guard: {
             keys: [sourceAccount.publicKey],
             pred: 'keys-all' as const,
           },
         },
         receiver: {
           account: secondaryTargetAccount.account,
-          keyset: {
+          guard: {
             keys: [secondaryTargetAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -579,7 +579,7 @@ describe('burnToken', () => {
         accountName: secondaryTargetAccount.account,
         guard: {
           account: secondaryTargetAccount.account,
-          keyset: {
+          guard: {
             keys: [secondaryTargetAccount.publicKey],
             pred: 'keys-all' as const,
           },
@@ -658,7 +658,7 @@ describe('burnToken', () => {
         accountName: secondaryTargetAccount.account,
         guard: {
           account: secondaryTargetAccount.account,
-          keyset: {
+          guard: {
             keys: [secondaryTargetAccount.publicKey],
             pred: 'keys-all' as const,
           },

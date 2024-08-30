@@ -63,10 +63,17 @@ export const dataFieldClass = style({
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
+
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
   // If we use atoms it will be overridden by the Text component.
   color: tokens.kda.foundation.color.text.base.default,
 });
+
+export const dataFieldMultipleIconsClass = style([
+  atoms({
+    gap: 'xs',
+  }),
+]);
 
 export const alignVariants = recipe({
   variants: {

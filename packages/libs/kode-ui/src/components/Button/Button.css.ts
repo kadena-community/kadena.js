@@ -1,5 +1,5 @@
 import { createVar } from '@vanilla-extract/css';
-import { token, uiBaseBold, uiSmallestBold } from '../../styles';
+import { breakpoints, token, uiBaseBold, uiSmallestBold } from '../../styles';
 import { recipe, style } from '../../styles/utils';
 
 export const hoverBackgroundColor = createVar();
@@ -50,6 +50,14 @@ export const centerContentWrapper = style([
     fontFamily: 'inherit',
     fontSize: 'inherit',
     lineHeight: 'inherit',
+  },
+  {
+    height: token('size.n5'),
+    '@media': {
+      [breakpoints.lg]: {
+        height: token('size.n6'),
+      },
+    },
   },
 ]);
 
@@ -328,6 +336,7 @@ export const button = recipe({
         uiSmallestBold,
         {
           lineHeight: token('size.n4'),
+          height: token('size.n8'),
           vars: {
             [iconSize]: token('size.n4'),
             [startVisualSpacing]: token('size.n3'),

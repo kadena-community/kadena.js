@@ -120,7 +120,7 @@ export function DutchAuction({ tokenImageUrl, sale }: DutchAuctionProps) {
         chainId: sale.chainId,
         seller: {
           account: sale.seller.account,
-          keyset: sale.seller.guard!
+          guard: sale.seller.guard!
         },
         timeout: new PactNumber(sale.timeoutAt / 1000).toPactInteger()
       }, {
@@ -204,7 +204,7 @@ export function DutchAuction({ tokenImageUrl, sale }: DutchAuctionProps) {
 
     try {
       await buyToken({
-        signer: "",
+        signerPublicKey: "",
         auctionConfig: {
           dutch: true
         },
@@ -221,7 +221,7 @@ export function DutchAuction({ tokenImageUrl, sale }: DutchAuctionProps) {
         },
         buyer: {
           account: account?.accountName,
-          keyset: {
+          guard: {
             keys: [(command.result as any).data],
             pred: "keys-all"
           }
