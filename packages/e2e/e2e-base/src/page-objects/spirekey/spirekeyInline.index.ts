@@ -14,9 +14,10 @@ export class SpireKeyIndex {
       await webAuthNHelper.enableVirtualAuthenticator(actor);
 
     await actor.getByRole('button', { name: 'Register' }).click();
+    await actor.getByRole('button', { name: 'Create' }).click();
     await actor.getByRole('button', { name: 'Continue' }).click();
 
-    await actor.getByRole('heading', { name: 'Register' }).waitFor();
+    await actor.getByRole('heading', { name: 'Register Account' }).waitFor();
     if (wait) {
       await actor.waitForTimeout(45000);
     }
