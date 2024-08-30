@@ -1,4 +1,4 @@
-import { useSearch } from '@/hooks/search';
+import { useSearch } from '@/context/searchContext';
 import type { FC } from 'react';
 import React from 'react';
 import { SearchComponent } from '../SearchComponent/SearchComponent';
@@ -9,8 +9,7 @@ export const SearchBarHeader: FC = () => {
     searchQuery,
     searchOption,
     setSearchOption,
-    data: searchData,
-    loading,
+    isLoading,
   } = useSearch();
 
   return (
@@ -18,10 +17,9 @@ export const SearchBarHeader: FC = () => {
       position="header"
       searchOption={searchOption}
       setSearchOption={setSearchOption}
-      searchData={searchData}
       setSearchQuery={setSearchQuery}
       searchQuery={searchQuery}
-      loading={loading}
+      loading={isLoading}
     />
   );
 };

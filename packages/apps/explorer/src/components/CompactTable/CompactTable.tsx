@@ -35,7 +35,7 @@ export const CompactTable: React.FC<ICompactTableProps> = ({
 }) => {
   return (
     <>
-      <Media lessThan="sm">
+      <Media lessThan="sm" className={fullWidthClass}>
         <CompactTableMobile isLoading={isLoading} fields={fields} data={data} />
       </Media>
       <Media greaterThanOrEqual="sm" className={fullWidthClass}>

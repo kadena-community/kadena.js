@@ -5,7 +5,6 @@ import { $$pageWidth } from '../Layout/styles.css';
 export const containerClass = style([
   atoms({
     backgroundColor: 'semantic.info.default',
-    marginBlockEnd: 'lg',
   }),
   {
     top: 'unset',

@@ -8,14 +8,6 @@ interface IAccountError {
   message: string;
 }
 
-export interface WebauthnAccountDetails {
-  account:string
-  guard: {
-    keys: string[];
-    pred: "keys-all" | "keys-2" | "keys-any";
-  }
-}
-
 export interface IAccountContext {
   account?: Account;
   error?: IAccountError;

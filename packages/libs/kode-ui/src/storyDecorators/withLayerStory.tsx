@@ -45,6 +45,10 @@ const WithLayerStory: FC<IWithLayerStoryProps> = ({ children, layer }) => {
   );
 };
 
+export const onBackground: Decorator = (story) => (
+  <div className={atoms({ backgroundColor: 'base.default' })}>{story()}</div>
+);
+
 export const onBase: Decorator = (story) => (
   <WithLayerStory layer="base">{story()}</WithLayerStory>
 );

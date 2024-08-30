@@ -43,7 +43,7 @@ describe('createTree', async () => {
   });
 
   it('', async () => {
-    const refPages = (pages[5].children ?? [])[9];
+    const refPages = (pages[4].children ?? [])[9];
     mocks.readdirSync.mockReturnValue([
       'index.tsx',
       'js-bindings',

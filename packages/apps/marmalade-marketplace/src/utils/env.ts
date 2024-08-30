@@ -11,7 +11,6 @@ const NAMESPACE = process.env.NEXT_PUBLIC_CONTRACT_NAMESPACE;
 const GRAHQLURL = process.env.NEXT_PUBLIC_GRAHQLURL;
 const CHAINWEB_API_HOST = process.env.NEXT_PUBLIC_CHAINWEB_API_HOST;
 const CHAINWEBAPIURL = process.env.NEXT_PUBLIC_CHAINWEBAPIURL;
-const MAXSIGNERS = Number(process.env.NEXT_PUBLIC_MAXSIGNERS);
 const FAUCET_CONTRACT = process.env.NEXT_PUBLIC_FAUCET_CONTRACT;
 const FAUCET_ACCOUNT = process.env.NEXT_PUBLIC_FAUCET_ACCOUNT;
 const WEBAUTHN_WALLET = process.env.NEXT_PUBLIC_WEBAUTHN_WALLET;
@@ -26,8 +25,6 @@ if (!GRAHQLURL) console.error('NEXT_PUBLIC_GRAHQLURL is not set');
 if (!CHAINWEB_API_HOST)
   console.error('NEXT_PUBLIC_CHAINWEB_API_HOST is not set');
 if (!CHAINWEBAPIURL) console.error('NEXT_PUBLIC_CHAINWEBAPIURL is not set');
-if (!MAXSIGNERS) console.error('NEXT_PUBLIC_MAXSIGNERS is not set');
-if (!MAXSIGNERS) console.error('NEXT_PUBLIC_MAXSIGNERS is not set');
 if (!FAUCET_CONTRACT) console.error('NEXT_PUBLIC_FAUCET_CONTRACT is not set');
 if (!FAUCET_ACCOUNT) console.error('NEXT_PUBLIC_FAUCET_ACCOUNT is not set');
 if (!WEBAUTHN_WALLET) console.error('NEXT_PUBLIC_WEBAUTHN_WALLET is not set');
@@ -47,7 +44,6 @@ marmalade-sale.dutch-auction.PRICE_ACCEPTED
 `;
 
 export const env = {
-  MAXSIGNERS,
   TRACKING_ID,
   TESTNUMBER,
   WALLET_URL,

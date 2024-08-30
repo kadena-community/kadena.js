@@ -8,6 +8,8 @@ import {
   uiSmallestBold,
 } from '../../styles';
 
+export const containedTabs = style({});
+
 export const tabsContainerClass = style({
   display: 'flex',
   flexDirection: 'column',
@@ -21,7 +23,8 @@ export const scrollContainer = style({
   flexDirection: 'row',
   position: 'relative',
   scrollbarWidth: 'none',
-  paddingTop: '2px', // For focus ring
+  marginBottom: '-2px', // For overflow
+  paddingBlock: '2px', // For focus ring
   selectors: {
     '&.paginationLeft:not(.paginationRight)': {
       maskImage:
@@ -52,16 +55,23 @@ export const tabListControls = style({
     left: 0,
     borderBottom: `2px solid ${token('color.border.base.subtle')}`,
   },
+  selectors: {
+    [`${containedTabs} &:before`]: {
+      borderBottom: 'none',
+    },
+  },
 });
 
 export const tabListClass = style({
   display: 'inline-flex',
   flexDirection: 'row',
   minWidth: '100%',
-});
-
-export const tabListGap = style({
-  gap: '2px',
+  selectors: {
+    [`${containedTabs} &`]: {
+      gap: token('spacing.xxs'),
+      paddingLeft: token('spacing.sm'),
+    },
+  },
 });
 
 // Prevent button from increasing the tab size and having the outline conflict with label
@@ -77,6 +87,7 @@ export const tabItemClass = recipe({
   base: [
     {
       display: 'flex',
+      position: 'relative',
       alignItems: 'center',
       cursor: 'pointer',
       outline: 'none',
@@ -89,8 +100,10 @@ export const tabItemClass = recipe({
       minWidth: 'fit-content',
       borderBlockStart: `2px solid transparent`,
       borderBlockEnd: `2px solid ${token('color.border.base.subtle')}`,
-      borderTopLeftRadius: token('radius.xs'),
-      borderTopRightRadius: token('radius.xs'),
+      borderTopLeftRadius: token('radius.sm'),
+      borderTopRightRadius: token('radius.sm'),
+      borderBottomRightRadius: 0,
+      borderBottomLeftRadius: 0,
       transition:
         'background-color .4s ease, color .4s, border-bottom .4s ease-in-out',
       whiteSpace: 'nowrap',
@@ -103,10 +116,25 @@ export const tabItemClass = recipe({
         },
         '.focusVisible &:focus-visible': {
           outline: `2px solid ${token('color.border.tint.outline')}`,
-          borderRadius: token('radius.xs'),
           outlineOffset: '-2px',
         },
         '&.closeable': { paddingInlineEnd: token('size.n2') },
+        [`${containedTabs} &`]: {
+          borderBlockEnd: 'none',
+        },
+        [`${containedTabs} &[data-selected="true"]`]: {
+          borderInline: token('border.hairline'),
+          backgroundColor: token('color.background.layer.default'),
+        },
+        [`${containedTabs} &[data-selected="true"]:after`]: {
+          content: '',
+          position: 'absolute',
+          bottom: '-4px',
+          left: 0,
+          right: 0,
+          height: '4px', // To cover the top border of the container
+          backgroundColor: 'white',
+        },
       },
     },
   ],
@@ -168,6 +196,16 @@ export const tabContentClass = style({
   color: token('color.text.base.default'),
   flex: 1,
   overflowY: 'auto',
+  selectors: {
+    [`${containedTabs} > &`]: {
+      backgroundColor: token('color.background.layer.default'),
+      paddingBlock: token('size.n4'),
+      paddingInline: token('spacing.md'),
+      borderRadius: token('radius.sm'),
+      margin: 0,
+      border: token('border.hairline'),
+    },
+  },
 });
 
 const paginationButtonBase = style({
@@ -206,10 +244,4 @@ export const closeButtonClass = style({
       opacity: 1,
     },
   },
-});
-
-export const containedTabContent = style({
-  backgroundColor: token('color.background.base.@active'),
-  margin: 0,
-  paddingBlock: token('size.n4'),
 });

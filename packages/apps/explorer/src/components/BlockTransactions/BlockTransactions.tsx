@@ -7,6 +7,7 @@ import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import { CompactTable } from '../CompactTable/CompactTable';
 import { FormatJsonParse, FormatLink } from '../CompactTable/utils/formatLink';
+import { formatMultiStepTx } from '../CompactTable/utils/formatMultiStepTx';
 import { FormatStatus } from '../CompactTable/utils/formatStatus';
 import { useToast } from '../Toast/ToastContext/ToastContext';
 import { loadingData } from './loadingDataBlocktransactionsquery';
@@ -82,10 +83,10 @@ export const BlockTransactions: FC<IProps> = ({ hash }) => {
       fields={[
         {
           label: 'Status',
-          key: 'result.goodResult',
+          key: ['result.goodResult', 'result.continuation'],
           variant: 'code',
           width: '10%',
-          render: FormatStatus(),
+          render: [FormatStatus(), formatMultiStepTx()],
           loaderVariant: 'icon',
         },
         {

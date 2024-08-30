@@ -17,7 +17,7 @@ export const CompactTableMobile: FC<IProps> = ({
   return data.map((item, idx) => (
     <section key={idx} className={sectionClass}>
       {fields.map((field) => (
-        <div key={field.key} className={rowClass}>
+        <div key={field.key.toString()} className={rowClass}>
           <span className={headerClass}>{field.label}</span>
           <FieldCell isLoading={isLoading} item={item} field={field} />
         </div>

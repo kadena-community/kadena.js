@@ -41,12 +41,6 @@ export const tokenDetailsWrapper = style({
   gap: '20px',
 });
 
-export const tokenDetailsInnerContainer = style({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '4px',
-});
-
 export const bidClass = style({
   display: 'flex',
   flexDirection: 'row',

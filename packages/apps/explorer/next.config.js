@@ -47,4 +47,10 @@ module.exports = withSentryConfig(module.exports, {
   // https://docs.sentry.io/product/crons/
   // https://vercel.com/docs/cron-jobs
   automaticVercelMonitors: true,
+
+  // // custom local dev optimizations
+  // swcMinify: true,
+  // productionBrowserSourceMaps: false,
+  // optimizeFonts: false,
+  // fastRefresh: true,
 });
