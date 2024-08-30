@@ -1,3 +1,4 @@
+import { Assets } from '@/Components/Assets/Assets';
 import {
   accountRepository,
   IAccount,
@@ -18,12 +19,13 @@ import {
 } from '@kadena/client-utils/coin';
 import { genKeyPair } from '@kadena/cryptography-utils';
 import { MonoKey } from '@kadena/kode-icons/system';
-import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
+import { Box, Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import { useNavigate, useParams } from 'react-router-dom';
+import { panelClass } from './style.css';
 
 export function Keyset() {
   const { keysetId } = useParams();
-  const { profile, activeNetwork } = useWallet();
+  const { profile, activeNetwork, fungibles } = useWallet();
   const [keyset] = useAsync(accountRepository.getKeyset, keysetId!);
   const [accounts] = useAsync(accountRepository.getAccountByKeyset, keysetId!);
   const navigate = useNavigate();
@@ -128,8 +130,12 @@ export function Keyset() {
         gap={'sm'}
         justifyContent={'flex-end'}
       ></Stack>
-      <h1>Accounts</h1>
-      <pre>{JSON.stringify(accounts, null, 2)}</pre>
+      <Box className={panelClass} marginBlockStart="xl">
+        <Heading as="h4">Your assets</Heading>
+        <Box marginBlockStart={'sm'}>
+          <Assets accounts={accounts} fungibles={fungibles} />
+        </Box>
+      </Box>
     </Stack>
   );
 }

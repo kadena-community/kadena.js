@@ -7,7 +7,6 @@ export interface Fungible {
   symbol: string;
   interface: 'fungible-v2';
   chainIds: ChainId[];
-  wrappedFungibleId?: string; // if it's a wrapped token
 }
 
 export interface IKeySet {
