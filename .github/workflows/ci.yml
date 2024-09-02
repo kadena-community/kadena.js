@@ -10,6 +10,10 @@ env:
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
   CI: true
 
+permissions:
+  pull-requests: write
+  contents: write
+
 jobs:
   build:
     name: Build & unit test
@@ -88,6 +92,9 @@ jobs:
       -  name: Setup Kadena sandbox
          uses: ./.github/actions/sandbox
 
+      - name: Cache for Turbo
+        uses: rharkor/caching-for-turbo@v1.5
+
       - name: Build App with NODE_ENV=test
         uses: ./.github/actions/build-app-e2e
         with:
@@ -143,6 +150,43 @@ jobs:
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  auto-approve-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+         fetch-depth: 2
+         show-progress: false
+
+    - uses: pnpm/action-setup@v3
+      with:
+        version: 9
+
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: Install dependencies
+      shell: bash
+      run: pnpm install --filter @kadena-dev/scripts
+
+    - name: Run file check script
+      id: check_files
+      run: |
+        git fetch origin main:refs/remotes/origin/main
+        set +e
+        chmod +x ./packages/tools/scripts/check-changed-files.mjs
+        ./packages/tools/scripts/check-changed-files.mjs
+        echo "exitcode=$?" >> $GITHUB_OUTPUT
+        exit 0
+
+    - name: Approve PR
+      if: steps.check_files.outputs.exitcode == 0
+      uses: hmarr/auto-approve-action@v4
+      with:
+        pull-request-number: ${{ github.event.inputs.pullRequestNumber }}
+        review-message: "Auto approved by [auto-approve-action](https://github.com/kadena-community/kadena.js/blob/main/.github/workflows/ci.yml#L186)"
 
   ci-gate:
     if: always()
