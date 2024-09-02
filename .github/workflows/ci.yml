@@ -9,6 +9,8 @@ env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
   CI: true
+  # comma separated list of allowed authors for docs PRs
+  ALLOWED_DOCS_AUTHORS: lsgunnlsgunn,
 
 permissions:
   pull-requests: write
@@ -164,22 +166,22 @@ jobs:
       run: echo "author=${{ github.event.pull_request.user.login }}" >> $GITHUB_OUTPUT
 
     - uses: pnpm/action-setup@v3
-      if: steps.check_author.outputs.author == 'lsgunnlsgunn'
+      if: contains(env.ALLOWED_DOCS_AUTHORS, steps.check_author.outputs.author)
       with:
         version: 9
 
     - uses: actions/setup-node@v4
-      if: steps.check_author.outputs.author == 'lsgunnlsgunn'
+      if: contains(env.ALLOWED_DOCS_AUTHORS, steps.check_author.outputs.author)
       with:
         node-version: 20
 
     - name: Install dependencies
-      if: steps.check_author.outputs.author == 'lsgunnlsgunn'
+      if: contains(env.ALLOWED_DOCS_AUTHORS, steps.check_author.outputs.author)
       shell: bash
       run: pnpm install --filter @kadena-dev/scripts
 
     - name: Run file check script
-      if: steps.check_author.outputs.author == 'lsgunnlsgunn'
+      if: contains(env.ALLOWED_DOCS_AUTHORS, steps.check_author.outputs.author)
       id: check_files
       run: |
         git fetch origin main:refs/remotes/origin/main
@@ -190,7 +192,7 @@ jobs:
         exit 0
 
     - name: Approve PR
-      if: steps.check_files.outputs.exitcode == 0 && steps.check_author.outputs.author == 'lsgunnlsgunn'
+      if: steps.check_files.outputs.exitcode == 0 && contains(env.ALLOWED_DOCS_AUTHORS, steps.check_author.outputs.author)
       uses: hmarr/auto-approve-action@v4
       with:
         pull-request-number: ${{ github.event.inputs.pullRequestNumber }}
