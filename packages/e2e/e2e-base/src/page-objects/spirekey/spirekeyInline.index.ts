@@ -32,7 +32,9 @@ export class SpireKeyIndex {
 
   public async signTransaction(actor: Page, credential): Promise<void> {
     await webAuthNHelper.enableVirtualAuthenticator(actor, credential);
-    await actor.getByRole('heading', { name: 'Permissions' }).waitFor();
+    await actor.getByRole('heading', { name: 'Permissions' }).click();
+    await actor.waitForTimeout(5000);
+
     await actor.getByRole('button', { name: 'Sign' }).click();
   }
 }

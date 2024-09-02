@@ -48,7 +48,6 @@ export const useSignToken = () => {
       });
 
       if (accountIsInitiator) {
-        console.log('accountIsInitiator');
         await doSubmit();
       } else {
         router.replace(
