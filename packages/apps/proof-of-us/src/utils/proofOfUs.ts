@@ -136,7 +136,7 @@ export const claimAttendanceToken = async (
       `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.mint-attendance-token
       "${eventId}"
       "${account.accountName}"
-      (${process.env.NEXT_PUBLIC_WEBAUTHN_NAMESPACE}.webauthn-wallet.get-wallet-guard "${account.accountName}")
+      (at 'guard (coin.details "${account.accountName}"))
       )`,
     )
     .addData('event_id', `${eventId}`)
@@ -225,7 +225,8 @@ export const createConnectTokenTransaction = async (
     .execution(
       `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.create-and-mint-connection-token
       "${manifestUri}"
-      (map (${process.env.NEXT_PUBLIC_WEBAUTHN_NAMESPACE}.webauthn-wallet.get-wallet-guard) [${guardString}])
+      
+      (map (lambda (accountName) (at 'guard (coin.details accountName))) [${guardString}])   
       )`,
     )
     .addData('collection_id', collectionId)
