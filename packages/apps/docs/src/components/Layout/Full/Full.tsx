@@ -89,7 +89,6 @@ export const Full: FC<IPageProps> = ({
             />
             {children}
             <BottomPageSection
-              editLink={frontmatter.editLink}
               navigation={frontmatter.navigation}
             />
           </article>

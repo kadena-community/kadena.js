@@ -41,153 +41,36 @@ const Home: FC<IProps> = ({ popularPages, changelogs }) => {
           <Box className={containerClass}>
             <Grid gap="lg" columns={{ sm: 1, md: 2 }}>
               <GridItem>
-                <DocsCard
-                  label="Engage"
-                  description="Start here to learn the basics, including blockchain fundamentals and the core concepts of the Kadena network."
-                >
-                  <BrowseSection marker="none">
-                    <Link
-                      className={docsCardLink}
-                      href="/learn/what-is-a-blockchain"
-                    >
-                      What is a blockchain?
-                    </Link>
-
-                    <Link className={docsCardLink} href="/learn/why-build">
-                      Why build on a blockchain?
-                    </Link>
-
-                    <Link className={docsCardLink} href="/learn/why-kadena">
-                      Why Kadena?
-                    </Link>
-
-                    <Link className={docsCardLink} href="/learn/accounts">
-                      Accounts, keys, and principals
-                    </Link>
-                  </BrowseSection>
-                </DocsCard>
+                <Link className={docsCardLink} href="/quickstart">
+                  <DocsCard label="Quick start"></DocsCard>
+                </Link>
               </GridItem>
               <GridItem>
-                <DocsCard
-                  label="Onboard"
-                  description="Try Kadena as a first time user or start your journey as a developer with a guided tour."
-                >
-                  <BrowseSection marker="none">
-                    <Link className={docsCardLink} href="/build/onboard">
-                      Explore the blockchain
-                    </Link>
-                    <Link className={docsCardLink} href="/build/quickstart">
-                      Deploy your first contract
-                    </Link>
-                    <Link className={docsCardLink} href="/build/pact">
-                      Get started with Pact smart contract language
-                    </Link>
-                  </BrowseSection>
-                </DocsCard>
+                <Link className={docsCardLink} href="/developers">
+                  <DocsCard label="Developers"></DocsCard>
+                </Link>
               </GridItem>
               <GridItem>
-                <DocsCard
-                  label="Coach"
-                  description="Take your game to the next level with tools, sample code, and how-to guides."
-                >
-                  <BrowseSection marker="none">
-                    <Link className={docsCardLink} href="/build/pact">
-                      Smart contracts
-                    </Link>
-                    <Link className={docsCardLink} href="/build/nft-marmalade">
-                      Non-fungible tokens
-                    </Link>
-                    <Link className={docsCardLink} href="/build/templates">
-                      Code templates
-                    </Link>
-                    <Link className={docsCardLink} href="/build/frontend">
-                      Command-line interface
-                    </Link>
-                  </BrowseSection>
-                </DocsCard>
+                <Link className={docsCardLink} href="/pow">
+                  <DocsCard label="Proof-of-Work consensus"></DocsCard>
+                </Link>
               </GridItem>
               <GridItem>
-                <DocsCard
-                  label="Propel"
-                  description="Deploy your smart contracts on the network or support the infrastructure by deploying a Chainweb node."
-                >
-                  <BrowseSection marker="none">
-                    <Link className={docsCardLink} href="/deploy">
-                      Prepare to deploy
-                    </Link>
-                    <Link
-                      className={docsCardLink}
-                      href="/deploy/chainweb-get-started"
-                    >
-                      Manage a Chainweb node
-                    </Link>
-
-                    <Link className={docsCardLink} href="/learn/chainweb">
-                      Chainweb consensus protocol
-                    </Link>
-                    <Link className={docsCardLink} href="/reference/syntax">
-                      Pact smart contract language
-                    </Link>
-                  </BrowseSection>
-                </DocsCard>
+                <Link className={docsCardLink} href="/how-to">
+                  <DocsCard label="How-to"></DocsCard>
+                </Link>
               </GridItem>
 
               <GridItem rowSpan={1}>
-                <DocsCard
-                  label="Embrace"
-                  description="Find out about community programs, grants, partnerships, and business development opportunities,
-              to grow the Kadena ecosystem and how you can contribute."
-                >
-                  <BrowseSection marker="none">
-                    <Link className={docsCardLink} href="/participate">
-                      How to get involved
-                    </Link>
-                    <Link className={docsCardLink} href="/participate/docs">
-                      Contribute to doc
-                    </Link>
-
-                    <Link
-                      className={docsCardLink}
-                      href="https://kadena.io/grants/"
-                    >
-                      Grants
-                    </Link>
-                  </BrowseSection>
-                </DocsCard>
+                <Link className={docsCardLink} href="/api">
+                  <DocsCard label="API"></DocsCard>
+                </Link>
               </GridItem>
 
               <GridItem>
-                <DocsCard
-                  label="Explore beyond"
-                  description="Explore videos, whitepapers, discussion forums, and other sites and tools that are outside the scope of documentation."
-                >
-                  <BrowseSection marker="none">
-                    <Link
-                      className={docsCardLink}
-                      href="https://tools.kadena.io"
-                    >
-                      Get KDA and developer tools
-                    </Link>
-                    <Link
-                      className={docsCardLink}
-                      href="https://academy.kadena.io"
-                    >
-                      Sign up for the Kadena Academy
-                    </Link>
-                    <Link
-                      className={docsCardLink}
-                      href="https://www.youtube.com/kadenablockchain"
-                    >
-                      Visit the Kadena video library
-                    </Link>
-                    <Link
-                      className={docsCardLink}
-                      href="https://www.kadena.io/blog"
-                    >
-                      Read recent articles
-                    </Link>
-                  </BrowseSection>
-                </DocsCard>
+                <Link className={docsCardLink} href="/solutions">
+                  <DocsCard label="Solutions showcase" />
+                </Link>
               </GridItem>
             </Grid>
           </Box>
