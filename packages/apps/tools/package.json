@@ -76,6 +76,7 @@
     "@types/react-dom": "^18.2.25",
     "@vanilla-extract/next-plugin": "2.1.2",
     "@vanilla-extract/vite-plugin": "4.0.7",
+    "@vitejs/plugin-react": "^4.3.1",
     "@vitest/coverage-v8": "^1.6.0",
     "@walletconnect/types": "~2.8.1",
     "@webpro/next-translate-plugin": "^2.6.3",
