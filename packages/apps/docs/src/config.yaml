@@ -444,6 +444,12 @@ pages:
           client-utils:
             url: /client-utils
             file: /reference/kadena-client/client-utils.md
+          built-in:
+            url: /built-in-utils
+            file: /reference/kadena-client/built-in-utils.md
+          core:
+            url: /core-utils
+            file: /reference/kadena-client/core-utils.md
           pactjs-old:
             url: /pactjs-old
             file: /reference/kadena-client/pactjs-api.md

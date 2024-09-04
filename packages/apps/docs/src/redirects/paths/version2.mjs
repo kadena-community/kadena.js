@@ -583,4 +583,24 @@ export const version2PathUrlRedirects = [
     destination: '/reference/property-checking/list',
     permanent: true,
   },
+  {
+    source: '/reference/chainweb-ref',
+    destination: '/reference/chainweb-api',
+    permanent: true,
+  },
+  {
+    source: '/reference/chainweb-ref/:slug',
+    destination: '/reference/chainweb-api/',
+    permanent: true,
+  },
+  {
+    source: '/reference/chainweb-ref/:slug1/:slug2',
+    destination: '/reference/chainweb-api',
+    permanent: true,
+  },
+  {
+    source: '/reference/chainweb-api/mempool',
+    destination: '/reference/chainweb-api/mempool',
+    permanent: true,
+  },
 ];

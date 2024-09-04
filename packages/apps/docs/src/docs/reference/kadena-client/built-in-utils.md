@@ -12,7 +12,7 @@ tags: ['TypeScript', 'Kadena client', 'frontend']
 # Built-in utilities
 
 The `@kadena/client-utils` library includes several modules to provide a TypeScript-based application programming interface (API) for interacting with Pact smart contracts and the Kadena network.
-The built-in module provides basic functions to return module descriptions and create princiipal accounts.
+The `built-in` module provides basic functions to return module descriptions and create principal accounts.
 These functions are broadly useful for any type of application that access the Kadena blockchain.
 
 ## Before you begin
