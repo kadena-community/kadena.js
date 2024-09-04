@@ -228,8 +228,17 @@ type GraphConfiguration {
   minimumBlockHeight: BigInt
 }
 
+"""A guard"""
+union Guard = JsonString | Keyset
+
+"""A JSON string."""
+type JsonString {
+  type: String!
+  value: String!
+}
+
 """Guard for an account."""
-type Guard {
+type Keyset {
   keys: [String!]!
   predicate: String!
 }
@@ -240,6 +249,12 @@ type MinerKey implements Node {
   blockHash: String!
   id: ID!
   key: String!
+}
+
+"""A reference to a module."""
+type ModuleReference {
+  name: String!
+  namespace: String!
 }
 
 """Information about the network."""
@@ -318,13 +333,6 @@ type NonFungibleChainAccountTransactionsConnectionEdge {
   node: Transaction!
 }
 
-"""Information related to a token."""
-type NonFungibleToken {
-  precision: Int!
-  supply: Int!
-  uri: String!
-}
-
 """The token identifier and its balance."""
 type NonFungibleTokenBalance implements Node {
   accountName: String!
@@ -332,9 +340,17 @@ type NonFungibleTokenBalance implements Node {
   chainId: String!
   guard: Guard!
   id: ID!
-  info: NonFungibleToken
+  info: NonFungibleTokenInfo
   tokenId: String!
   version: String!
+}
+
+"""Information related to a token."""
+type NonFungibleTokenInfo {
+  policies: [Policy!]!
+  precision: Int!
+  supply: Int!
+  uri: String!
 }
 
 input PactQuery {
@@ -362,6 +378,12 @@ type PageInfo {
   hasNextPage: Boolean!
   hasPreviousPage: Boolean!
   startCursor: String
+}
+
+"""A policy that defines the rules for a non-fungible token."""
+type Policy {
+  refName: ModuleReference!
+  refSpec: [ModuleReference!]!
 }
 
 """Floats that will have a value greater than 0."""

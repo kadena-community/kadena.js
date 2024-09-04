@@ -42,11 +42,15 @@ export async function deployMarmaladeContracts(
   argumentConfig.network = networkData.networkId;
 
   logger.info('Validating repository data...');
-  validateConfig(
-    marmaladeRepository,
-    marmaladeLocalConfig,
-    marmaladeRemoteConfig,
-  );
+  if (
+    !validateConfig(
+      marmaladeRepository,
+      marmaladeLocalConfig,
+      marmaladeRemoteConfig,
+    )
+  ) {
+    throw new Error('Invalid repository data');
+  }
 
   logger.info('Preparing directories...');
   await handleDirectorySetup(
@@ -367,8 +371,10 @@ export function validateConfig(
   repositoryConfig: IMarmaladeRepository,
   localConfig: IMarmaladeLocalConfig,
   remoteConfig: IMarmaladeRemoteConfig,
-): void {
-  validateObjectProperties(repositoryConfig, 'Repository');
-  validateObjectProperties(localConfig, 'Local');
-  validateObjectProperties(remoteConfig, 'Remote');
+): boolean {
+  return (
+    validateObjectProperties(repositoryConfig, 'Repository') &&
+    validateObjectProperties(localConfig, 'Local') &&
+    validateObjectProperties(remoteConfig, 'Remote')
+  );
 }

@@ -1,5 +1,5 @@
 import type { IFungibleChainAccountDetails } from '@services/chainweb-node/fungible-account-details';
-import { getFungibleAccountDetails } from '@services/chainweb-node/fungible-account-details';
+import { getFungibleAccountDetailsWithRetry } from '@services/chainweb-node/fungible-account-details';
 import DataLoader from 'dataloader';
 
 interface IFungibleAccountDetailsKey {
@@ -14,7 +14,7 @@ export const fungibleAccountDetailsLoader = new DataLoader<
 >(async (keys: readonly IFungibleAccountDetailsKey[]) => {
   const results = await Promise.all(
     keys.map(({ fungibleName, accountName, chainId }) =>
-      getFungibleAccountDetails(fungibleName, accountName, chainId),
+      getFungibleAccountDetailsWithRetry(fungibleName, accountName, chainId),
     ),
   );
 

@@ -2,7 +2,8 @@ import { details } from '@kadena/client-utils/coin';
 import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
 import { networkData } from '@utils/network';
-import type { IGuard } from '../../graph/types/graphql-types';
+import { withRetry } from '@utils/withRetry';
+import type { IKeyset } from '../../graph/types/graphql-types';
 import { PactCommandError } from './utils';
 
 export interface IFungibleChainAccountDetails {
@@ -10,7 +11,7 @@ export interface IFungibleChainAccountDetails {
   balance: number;
   guard: {
     keys: string[];
-    pred: IGuard['predicate'];
+    pred: IKeyset['predicate'];
   };
 }
 
@@ -18,8 +19,6 @@ export async function getFungibleAccountDetails(
   fungibleName: string,
   accountName: string,
   chainId: string,
-  retries = dotenv.CHAINWEB_NODE_RETRY_ATTEMPTS,
-  delay = dotenv.CHAINWEB_NODE_RETRY_DELAY,
 ): Promise<IFungibleChainAccountDetails | null> {
   let result;
 
@@ -45,17 +44,13 @@ export async function getFungibleAccountDetails(
     ) {
       return null;
     } else {
-      if (retries > 0) {
-        await new Promise((resolve) => setTimeout(resolve, delay));
-        return getFungibleAccountDetails(
-          fungibleName,
-          accountName,
-          chainId,
-          retries - 1,
-        );
-      } else {
-        throw new PactCommandError('Pact Command failed with error', result);
-      }
+      throw new PactCommandError('Pact Command failed with error', error);
     }
   }
 }
+
+export const getFungibleAccountDetailsWithRetry = withRetry(
+  getFungibleAccountDetails,
+  dotenv.CHAINWEB_NODE_RETRY_ATTEMPTS,
+  dotenv.CHAINWEB_NODE_RETRY_DELAY,
+);

@@ -217,10 +217,13 @@ const ChainAccount: React.FC = () => {
                       <strong>Guard Predicate</strong>
                     </Cell>
                     <Cell>
-                      {
+                      {fungibleChainAccountData.fungibleChainAccount.guard
+                        .__typename === 'Keyset' ? (
                         fungibleChainAccountData.fungibleChainAccount.guard
                           .predicate
-                      }
+                      ) : (
+                        <span style={{ color: 'lightgray' }}>N/A</span>
+                      )}
                     </Cell>
                   </Row>
                   <Row>
@@ -228,7 +231,15 @@ const ChainAccount: React.FC = () => {
                       <strong>Guard Keys</strong>
                     </Cell>
                     <Cell>
-                      {fungibleChainAccountData.fungibleChainAccount.guard.keys}
+                      <Cell>
+                        {fungibleChainAccountData.fungibleChainAccount.guard
+                          .__typename === 'Keyset' ? (
+                          fungibleChainAccountData.fungibleChainAccount.guard
+                            .keys
+                        ) : (
+                          <span style={{ color: 'lightgray' }}>N/A</span>
+                        )}
+                      </Cell>
                     </Cell>
                   </Row>
                 </TableBody>

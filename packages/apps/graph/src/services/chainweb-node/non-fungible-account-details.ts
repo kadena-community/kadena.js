@@ -1,69 +1,55 @@
-import type { IClient } from '@kadena/client';
-import { Pact, createClient } from '@kadena/client';
-import type { ChainId } from '@kadena/types';
+import { getNonFungibleTokenDetails } from '@services/token-service';
 import { dotenv } from '@utils/dotenv';
-import { networkData } from '@utils/network';
-import type { IGuard } from '../../graph/types/graphql-types';
+import { withRetry } from '@utils/withRetry';
+import type { IJsonString, IKeyset } from '../../graph/types/graphql-types';
 import { PactCommandError } from './utils';
 
 export interface INonFungibleChainAccountDetails {
   id: string;
   account: string;
   balance: number;
-  guard: {
-    keys: string[];
-    pred: IGuard['predicate'];
-  };
-}
-
-function getClient(chainId: string): IClient {
-  return createClient(
-    `${dotenv.NETWORK_HOST}/chainweb/${networkData.apiVersion}/${networkData.networkId}/chain/${chainId}/pact`,
-  );
+  guard: IKeyset | IJsonString;
 }
 
 export async function getNonFungibleAccountDetails(
   tokenId: string,
   accountName: string,
   chainId: string,
+  version?: string,
 ): Promise<INonFungibleChainAccountDetails | null> {
-  let result;
-
   try {
-    let commandResult;
-
-    commandResult = await getClient(chainId).dirtyRead(
-      Pact.builder
-        .execution(
-          Pact.modules['marmalade.ledger'].details(tokenId, accountName),
-        )
-        .setMeta({
-          chainId: chainId as ChainId,
-        })
-        .setNetworkId(networkData.networkId)
-        .createTransaction(),
+    const commandResult = await getNonFungibleTokenDetails(
+      tokenId,
+      accountName,
+      chainId,
+      version,
     );
-
-    if (commandResult.result.status === 'failure') {
-      commandResult = await getClient(chainId).dirtyRead(
-        Pact.builder
-          .execution(
-            Pact.modules['marmalade-v2.ledger'].details(tokenId, accountName),
-          )
-          .setMeta({
-            chainId: chainId as ChainId,
-          })
-          .setNetworkId(networkData.networkId)
-          .createTransaction(),
-      );
-    }
 
     const result =
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (commandResult.result as unknown as any).data as unknown as any;
+      commandResult as unknown as any as unknown as any;
 
     if (typeof result.balance === 'object') {
       result.balance = parseFloat(result.balance.decimal);
+    }
+
+    if ('guard' in result) {
+      if (
+        'keys' in result.guard &&
+        typeof result.guard.keys === 'object' &&
+        'pred' in result.guard &&
+        typeof result.guard.pred === 'string'
+      ) {
+        result.guard = {
+          keys: result.guard.keys,
+          predicate: result.guard.pred,
+        };
+      } else {
+        result.guard = {
+          type: 'Guard',
+          value: JSON.stringify(result.guard),
+        };
+      }
     }
 
     return result as INonFungibleChainAccountDetails;
@@ -73,7 +59,13 @@ export async function getNonFungibleAccountDetails(
     ) {
       return null;
     } else {
-      throw new PactCommandError('Pact Command failed with error', result);
+      throw new PactCommandError('Pact Command failed with error', error);
     }
   }
 }
+
+export const getNonFungibleAccountDetailsWithRetry = withRetry(
+  getNonFungibleAccountDetails,
+  dotenv.CHAINWEB_NODE_RETRY_ATTEMPTS,
+  dotenv.CHAINWEB_NODE_RETRY_DELAY,
+);
