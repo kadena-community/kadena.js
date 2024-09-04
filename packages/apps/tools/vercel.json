@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/faucet",
+      "schedule": "0 10,11 * * *"
+    }
+  ]
+}
