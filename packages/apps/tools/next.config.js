@@ -12,8 +12,8 @@ const config = {
   reactStrictMode: true,
   pageExtensions:
     process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test'
-      ? ['(?<!(spec|test).)tsx']
-      : ['tsx'],
+      ? ['tsx', 'route.ts']
+      : ['tsx', 'route.ts'],
   transpilePackages: ['@kadena/kode-ui'],
   env: {
     KADENA_API_TTIL: process.env.KADENA_API_TTIL,
@@ -47,6 +47,19 @@ const config = {
         source: '/transactions/module-explorer',
         destination: '/modules/explorer',
         permanent: true,
+      },
+    ];
+  },
+  async headers() {
+    return [
+      {
+        source: '/api/faucet',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-store, max-age=0',
+          },
+        ],
       },
     ];
   },
