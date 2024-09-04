@@ -22,8 +22,10 @@ export const ContentHeader: FC<IContentHeaderProps> = ({
       {description ? (
         <div className={descriptionClass}>
           {typeof description === 'string' ? (
-          <Text as="p">{description}</Text>
-          ) : description}
+            <Text as="p">{description}</Text>
+          ) : (
+            description
+          )}
         </div>
       ) : null}
     </div>

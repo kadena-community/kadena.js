@@ -59,7 +59,11 @@ export const DescriptionComponent: Story = {
   args: {
     icon: <MonoCAccount />,
     heading: 'Incoming Transactions',
-    description: <span>Description with <strong>styled</strong> content.</span>,
+    description: (
+      <span>
+        Description with <strong>styled</strong> content.
+      </span>
+    ),
   },
   render: ({ icon, heading, description }) => {
     return (
