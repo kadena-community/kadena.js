@@ -50,6 +50,19 @@ const config = {
       },
     ];
   },
+  async headers() {
+    return [
+      {
+        source: '/api/faucet',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-store, max-age=0',
+          },
+        ],
+      },
+    ];
+  },
 };
 
 module.exports = withVanillaExtract(nextTranslate(config));

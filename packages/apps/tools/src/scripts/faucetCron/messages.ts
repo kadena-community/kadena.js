@@ -2,13 +2,13 @@ import { creatLowChainsString, lowFaucetChains } from '.';
 import type { IAccount } from './constants';
 import { MINBALANCE, channelId, tokenId } from './constants';
 
-export const sendMessage = async (data: IAccount): Promise<any> => {
+export const sendMessage = async (data: IAccount): Promise<void> => {
   const lowChains = lowFaucetChains(
     data.data?.fungibleAccount.chainAccounts,
     MINBALANCE,
   );
 
-  const result = await fetch('https://slack.com/api/chat.postMessage', {
+  await fetch('https://slack.com/api/chat.postMessage', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
@@ -54,9 +54,6 @@ export const sendMessage = async (data: IAccount): Promise<any> => {
       ]),
     }),
   });
-
-  const d = await result.json();
-  return d;
 };
 export const sendErrorMessage = async (): Promise<void> => {
   await fetch('https://slack.com/api/chat.postMessage', {
