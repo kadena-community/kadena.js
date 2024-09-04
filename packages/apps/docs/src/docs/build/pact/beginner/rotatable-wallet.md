@@ -363,7 +363,7 @@ For more information on deploying this smart contract, view the following
 tutorials.
 
 - [Hello World with Pact](/build/pact/hello-world)
-- [Set up a local development network](/build/pact/dev-network)
+- [Set up a local development network](/build/dev-network)
 - [Develop with Atom SDK](/build/pact/atom-sdk)
 
 ## Review

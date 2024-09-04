@@ -12,7 +12,7 @@ tags: [pact, typescript, account, transactions, utils]
 
 ---
 
-# Build applications for the Kadena ecosystem
+# Documentation for smart contract authors and application builders
 
 Building applications to run on a blockchain doesn't have to be hard, time-consuming, or expensive. 
 Get started with the basics through hands-on tutorials. 
@@ -20,7 +20,8 @@ Learn how to set up a development network, create and fund a development wallet,
 
 ## Onboard
 
-If you're curious about what it's like to interact with a public blockchain, try these introductory applications in [Explore the blockchain](/build/onboard) that enable you to explore the blockchain as a user and see blockchain activity as it happens.
+If you want to experiment with interacting with a public blockchain, try the introductory applications in [Explore the blockchain](/build/onboard).
+These applications enable you to explore the blockchain as a user and see blockchain activity as it happens.
 In the onboarding experience, you'll:
 
 - Add your name to the Kadena blockchain.
@@ -29,7 +30,11 @@ In the onboarding experience, you'll:
 - Fund the account wallet.
 - Play and score points.
 
-When you're ready to start building, take the first step with the [Deploy your first contract - Quick start](/build/quickstart) to set up a development environment and deploy your first smart contract on Kadena.
+You can also follow the links in the documentation to explore the source code for each of these blockchain applications.
+
+## Get started
+
+When you're ready to start building, take the first step with the developer [Quick start](/build/quickstart) or [Deploy your first contract](/build/deploy-first-contract) to set up a development environment, write a simple contract, and deploy your first smart contract on a local blockchain network.
 In the Quick start, you'll learn how to:
 
 - Set up the development environment on a local computer.

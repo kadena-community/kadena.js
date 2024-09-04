@@ -253,7 +253,7 @@
         "children": [
           {
             "children": [],
-            "root": "/build/pact/dev-network",
+            "root": "/build/dev-network",
             "lastModifiedDate": "Fri, 31 May 2024 11:40:11 GMT",
             "title": "Set up a local development network",
             "description": "Kadena makes blockchain work for everyone.",

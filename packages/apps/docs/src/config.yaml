@@ -48,6 +48,9 @@ pages:
       quickstart:
         url: /quickstart
         file: /quick-start.md
+      devnet:
+        url: /dev-network
+        file: /build/dev-network.md
       buildcli:
         url: /dev-with-cli
         file: /build/dev-with-cli.md
@@ -55,9 +58,6 @@ pages:
         url: /pact
         file: /build/pact/get-started-with-pact.md
         children:
-          devnet:
-            url: /dev-network
-            file: /build/pact/beginner/dev-network.md
           helloworld:
             url: /hello-world
             file: /build/pact/beginner/hello-world.md

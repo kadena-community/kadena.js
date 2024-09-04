@@ -10,7 +10,7 @@ tags: ['pact', 'language basics']
 
 # Explore basic functions
 
-In [Set up a local development network](/build/pact/dev-network), you learned how to set up a local development environment with a local blockchain node and the Pact smart contract programming language. 
+In [Set up a local development network](/build/dev-network), you learned how to set up a local development environment with a local blockchain node and the Pact smart contract programming language. 
 When you installed Pact, you also installed the Pact read-eval-print-loop (REPL) interpreter.
 The Pact REPL enables you to write and execute Pact code interactively from the command-line. but its real power lies in the ability to execute code in smart contract modules—that is, `.pact` files—or in test modules with the `.repl` file extension for testing your code as you go.
 With test modules, you can take advantage of features that are only available to use `.repl` file in the Pact REPL interpreter.
@@ -41,7 +41,7 @@ built-in function.
 To try it yourself:
 
 1. Open a terminal shell on your local computer.
-2. Start the Pact REPL interpreter you installed in [Install Pact](/build/pact/dev-network#install-pacth1989060372) by running the following command:
+2. Start the Pact REPL interpreter you installed in [Install Pact](/build/dev-network#install-pacth1989060372) by running the following command:
    
    ```bash
    pact
@@ -74,7 +74,7 @@ For more information about using a single quotation mark for function or table n
 To work with strings:
 
 1. Open a terminal shell on your local computer.
-2. Start the Pact REPL interpreter you installed in [Install Pact](/build/pact/dev-network#install-pacth1989060372) by running the following command:
+2. Start the Pact REPL interpreter you installed in [Install Pact](/build/dev-network#install-pacth1989060372) by running the following command:
    
    ```bash
    pact
@@ -109,7 +109,7 @@ Pact objects are similar to JavaScript objects defined using key-value pairs.
 To create lists and objects:
 
 1. Open a terminal shell on your local computer.
-2. Start the Pact REPL interpreter you installed in [Install Pact](/build/pact/dev-network#install-pacth1989060372) by running the following command:
+2. Start the Pact REPL interpreter you installed in [Install Pact](/build/dev-network#install-pacth1989060372) by running the following command:
    
    ```bash
    pact
@@ -226,7 +226,7 @@ To list the Pact built-in functions:
 
    Now that you have a general sense of the functions that are available, you're ready to start experimenting with the functions in the Pact REPL interpreter.
 
-3. Start the Pact REPL interpreter you installed in [Install Pact](/build/pact/dev-network#install-pacth1989060372) by running the following command:
+3. Start the Pact REPL interpreter you installed in [Install Pact](/build/dev-network#install-pacth1989060372) by running the following command:
    
    ```bash
    pact
@@ -268,7 +268,7 @@ Let's try a few simple examples.
 To use arithmetic operators:
 
 1. Open a terminal shell on your local computer.
-2. Start the Pact REPL interpreter you installed in [Install Pact](/build/pact/dev-network#install-pacth1989060372) by running the following command:
+2. Start the Pact REPL interpreter you installed in [Install Pact](/build/dev-network#install-pacth1989060372) by running the following command:
    
    ```bash
    pact
@@ -373,7 +373,7 @@ Let's try a few simple examples to see how these functions work.
 To use the common general functions:
 
 1. Open a terminal shell on your local computer.
-2. Start the Pact REPL interpreter you installed in [Install Pact](/build/pact/dev-network#install-pacth1989060372) by running the following command:
+2. Start the Pact REPL interpreter you installed in [Install Pact](/build/dev-network#install-pacth1989060372) by running the following command:
    
    ```bash
    pact

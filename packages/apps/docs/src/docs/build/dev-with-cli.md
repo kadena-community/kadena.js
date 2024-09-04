@@ -1,15 +1,15 @@
 ---
-title: Build with Command-line interface
+title: Develop using the Kadena CLI
 description:
   The `@kadena/kadena-cli` library provides a complete set of commands for creating applications and interacting with the Kadena network interactively or by using scripts from the command-line.
-menu: Build with kadena-cli
-label: Build with kadena-cli
+menu: Develop using the Kadena CLI
+label: Develop using the Kadena CLI
 order: 2
 layout: full
 tags: ['TypeScript', 'Kadena command-line interface', 'frontend frameworks']
 ---
 
-# Build with kadena-cli
+# Develop using the Kadena CLI
 
 The Kadena command-line interface (`kadena-cli`) provides direct access to the Kadena blockchain and to commands that help you create, test, deploy, and manage applications for the Kadena network.
 You can use the Kadena command-line interface to perform tasks interactively or in scripts and automated workflows that don't allow interactive input.

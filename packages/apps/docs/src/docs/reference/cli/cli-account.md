@@ -319,7 +319,7 @@ kadena account fund --account="myalias" --amount="20" --network="devnet" --chain
 ```
 
 This command requires you to have the development network running on your local host or accessible from your local computer.
-For information about setting up a local development network, see [Set up a local development network](/build/pact/dev-network).
+For information about setting up a local development network, see [Set up a local development network](/build/dev-network).
 
 You can specify a range of chain identifiers to fund an account across multiple chains.
 Use a comma to specify discrete chains or a hyphen to specify a continuous range of chain identifiers.

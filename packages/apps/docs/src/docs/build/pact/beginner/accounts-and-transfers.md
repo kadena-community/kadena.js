@@ -289,7 +289,7 @@ If you choose to deploy this locally, you’ll need the REPL file which you can 
 
 For help getting started and deploying in each of these environments, try the following tutorials.
 
-- [Set up a local development network](/build/pact/dev-network)
+- [Set up a local development network](/build/dev-network)
 - [Develop with Atom SDK](/build/pact/atom-sdk)
 
 ## Review

@@ -114,7 +114,7 @@ modules.
 
 ### Example Modules
 
-You can find examples using the Module Explorer in [Set up a local development network](/build/pact/dev-network).
+You can find examples using the Module Explorer in [Set up a local development network](/build/dev-network).
 
 #### Hello World
 

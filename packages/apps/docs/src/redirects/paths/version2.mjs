@@ -1,7 +1,7 @@
 export const version2PathUrlRedirects = [
   {
     source: '/pact/beginner/web-editor',
-    destination: '/build/pact/dev-network',
+    destination: '/build/dev-network',
     permanent: true,
   },
   {
@@ -498,7 +498,7 @@ export const version2PathUrlRedirects = [
   },
   {
     source: '/tutorials/dev-network',
-    destination: '/build/pact/dev-network',
+    destination: '/build/dev-network',
     permanent: true,
   },
   {

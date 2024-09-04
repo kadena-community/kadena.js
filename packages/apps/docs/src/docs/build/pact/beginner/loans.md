@@ -539,7 +539,7 @@ inside of the repository you cloned.
 For help getting started and deploying in each of these environments, try the
 following tutorials.
 
-- [Set up a local development network](/build/pact/dev-network)
+- [Set up a local development network](/build/dev-network)
 - [Develop with Atom SDK](/build/pact/atom-sdk)
 
 ## Review
