@@ -36,9 +36,6 @@ export function handlePromptError(error: unknown): never {
 
 export async function getExistingNetworks(): Promise<ICustomNetworkChoice[]> {
   const networkDir = getNetworkDirectory();
-  if (networkDir === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
 
   await services.filesystem.ensureDirectoryExists(networkDir);
 
@@ -208,3 +205,14 @@ export function handleNoKadenaDirectory(error: unknown): boolean {
   }
   return false;
 }
+
+export const arrayNotEmpty = <T extends unknown>(
+  array: T[],
+): array is [T, ...T[]] => array.length > 0;
+
+/** check against null, undefined, and empty string */
+export const isEmpty = (value: unknown): value is null | undefined | '' =>
+  value === null || value === undefined || value === '';
+
+export const isNotEmpty = <T>(value: T | null | undefined): value is T =>
+  value !== null && value !== undefined;

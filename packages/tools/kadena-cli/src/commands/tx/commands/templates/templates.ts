@@ -1,6 +1,5 @@
 import path from 'node:path';
 import { services } from '../../../../services/index.js';
-import { KadenaError } from '../../../../services/service-error.js';
 import { getTxTemplateDirectory } from '../../utils/txHelpers.js';
 
 const transferTemplate = `
@@ -98,9 +97,6 @@ export const defaultTemplates = {
 
 export const writeTemplatesToDisk = async (): Promise<string[]> => {
   const templateFolder = getTxTemplateDirectory();
-  if (templateFolder === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
   await services.filesystem.ensureDirectoryExists(templateFolder);
   const templatesAdded = [];
   for (const [name, template] of Object.entries(defaultTemplates)) {
@@ -116,9 +112,6 @@ export const writeTemplatesToDisk = async (): Promise<string[]> => {
 
 export const getTemplate = async (filename: string): Promise<string> => {
   const templateFolder = getTxTemplateDirectory();
-  if (templateFolder === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
   const cwdFile = await services.filesystem.readFile(filename);
   if (cwdFile !== null) {
     return cwdFile;
@@ -133,9 +126,6 @@ export const getTemplate = async (filename: string): Promise<string> => {
 
 export const getTemplates = async (): Promise<Record<string, string>> => {
   const templateFolder = getTxTemplateDirectory();
-  if (templateFolder === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
   const files = await services.filesystem.readDir(templateFolder);
   const templates: Record<string, string> = {};
   for (const file of files) {

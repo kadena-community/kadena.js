@@ -2,7 +2,6 @@ import type { Command } from 'commander';
 import path from 'path';
 
 import { services } from '../../../services/index.js';
-import { KadenaError } from '../../../services/service-error.js';
 import { createCommand } from '../../../utils/createCommand.js';
 import { log } from '../../../utils/logger.js';
 import { networkOptions } from '../networkOptions.js';
@@ -25,9 +24,6 @@ export const createNetworksCommand: (
   async (option, { collect }) => {
     const kadenaDir = services.config.getDirectory();
     const networkDir = getNetworkDirectory();
-    if (networkDir === null || kadenaDir === null) {
-      throw new KadenaError('no_kadena_directory');
-    }
 
     const config = await collect(option);
     log.debug('network-create:action', config);

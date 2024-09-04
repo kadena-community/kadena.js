@@ -1,5 +1,3 @@
-import yaml from 'js-yaml';
-import { extname, join } from 'node:path';
 import type {
   ZodError,
   ZodIssue,
@@ -7,21 +5,12 @@ import type {
   ZodIssueOptionalMessage,
 } from 'zod';
 import { z } from 'zod';
-import type { IAliasAccountData } from '../types.js';
 
 import type { ChainId } from '@kadena/types';
 import { MAX_FUND_AMOUNT } from '../../../constants/account.js';
-import { ACCOUNT_DIR, MAX_CHAIN_VALUE } from '../../../constants/config.js';
+import { MAX_CHAIN_VALUE } from '../../../constants/config.js';
 import { services } from '../../../services/index.js';
-import { KadenaError } from '../../../services/service-error.js';
 import { isNotEmptyString, notEmpty } from '../../../utils/globalHelpers.js';
-
-export const accountAliasFileSchema = z.object({
-  name: z.string(),
-  fungible: z.string(),
-  publicKeys: z.array(z.string()).nonempty(),
-  predicate: z.string(),
-});
 
 export const formatZodErrors = (errors: ZodError): string => {
   return errors.errors
@@ -38,93 +27,13 @@ export const formatZodErrors = (errors: ZodError): string => {
     .join('\n');
 };
 
-export const getAccountDirectory = (): string | null => {
-  const directory = services.config.getDirectory();
-  return notEmpty(directory) ? join(directory, ACCOUNT_DIR) : null;
-};
-
-export const readAccountFromFile = async (
-  accountFile: string,
-): Promise<IAliasAccountData> => {
-  const accountDir = getAccountDirectory();
-  if (accountDir === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
-  const ext = extname(accountFile);
-  const fileWithExt =
-    !ext || ext !== '.yaml' ? `${accountFile}.yaml` : accountFile;
-  const filePath = join(accountDir, fileWithExt);
-
-  if (!(await services.filesystem.fileExists(filePath))) {
-    throw new Error(`Account alias "${accountFile}" file not exist`);
-  }
-
-  const content = await services.filesystem.readFile(filePath);
-  const account = content !== null ? yaml.load(content) : null;
-  try {
-    const parsedContent = accountAliasFileSchema.parse(account);
-    return {
-      ...parsedContent,
-      alias: fileWithExt,
-    };
-  } catch (error) {
-    if (!isNotEmptyString(content)) {
-      throw new Error(
-        `Error parsing alias file: ${accountFile}, file is empty`,
-      );
-    }
-
-    const errorMessage = formatZodErrors(error);
-    throw new Error(`Error parsing alias file: ${accountFile} ${errorMessage}`);
-  }
-};
-
-export async function ensureAccountAliasDirectoryExists(): Promise<boolean> {
-  const accountDir = getAccountDirectory();
-  if (accountDir === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
-  return await services.filesystem.directoryExists(accountDir);
-}
-
-export async function ensureAccountAliasFilesExists(): Promise<boolean> {
-  if (!(await ensureAccountAliasDirectoryExists())) {
-    return false;
-  }
-  const accountDir = getAccountDirectory();
-  if (accountDir === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
-  const files = await services.filesystem.readDir(accountDir);
-
-  return files.length > 0;
-}
-
-export async function getAllAccounts(): Promise<IAliasAccountData[]> {
-  if (!(await ensureAccountAliasDirectoryExists())) {
-    return [];
-  }
-
-  const accountDir = getAccountDirectory();
-  if (accountDir === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
-  const files = await services.filesystem.readDir(accountDir);
-
-  const allAccounts = await Promise.all(
-    files.map((file) => readAccountFromFile(file).catch(() => null)),
-  );
-
-  return allAccounts.flat().filter(notEmpty);
-}
-
 export async function getAllAccountNames(): Promise<
   {
     alias: string;
     name: string;
   }[]
 > {
-  const allAccountDetails = await getAllAccounts();
+  const allAccountDetails = await services.account.list();
   return allAccountDetails.map(({ alias, name }) => ({ alias, name }));
 }
 

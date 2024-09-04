@@ -9,7 +9,6 @@ import {
   WORKING_DIRECTORY,
 } from '../../../constants/config.js';
 import { services } from '../../../services/index.js';
-import { KadenaError } from '../../../services/service-error.js';
 import type { CommandResult } from '../../../utils/command.util.js';
 import { assertCommandError } from '../../../utils/command.util.js';
 import { createCommand } from '../../../utils/createCommand.js';
@@ -110,10 +109,7 @@ export const createTransactionCommandNew = createCommand(
     globalOptions.outFileJson(),
   ],
   async (option, { values, stdin }) => {
-    if (TX_TEMPLATE_FOLDER === null) {
-      throw new KadenaError('no_kadena_directory');
-    }
-
+    services.config.getDirectory();
     const templatesAdded = await writeTemplatesToDisk();
     if (templatesAdded.length > 0) {
       log.info(
