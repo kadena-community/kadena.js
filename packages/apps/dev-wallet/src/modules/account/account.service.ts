@@ -5,8 +5,22 @@ import { PactNumber } from '@kadena/pactjs';
 import { keySourceManager } from '../key-source/key-source-manager';
 import { IAccount, IKeySet, accountRepository } from './account.repository';
 
-import type { BuiltInPredicate, ChainId } from '@kadena/client';
+import {
+  createSignWithKeypair,
+  createTransaction,
+  type BuiltInPredicate,
+  type ChainId,
+} from '@kadena/client';
+import {
+  fundExistingAccountOnTestnetCommand,
+  fundNewAccountOnTestnetCommand,
+  readHistory,
+} from '@kadena/client-utils';
+import { genKeyPair } from '@kadena/cryptography-utils';
+import { transactionRepository } from '../transaction/transaction.repository';
 import type { IKeyItem, IKeySource } from '../wallet/wallet.repository';
+
+import * as transactionService from '@/modules/transaction/transaction.service';
 
 export type IDiscoveredAccount = {
   chainId: ChainId;
@@ -210,3 +224,58 @@ export const syncAllAccounts = async (profileId: string) => {
   console.log('syncing accounts', accounts);
   return Promise.all(accounts.map(syncAccount));
 };
+
+export async function fundAccount({
+  address,
+  keyset,
+  profileId,
+}: Pick<IAccount, 'address' | 'keyset' | 'chains' | 'profileId'>) {
+  if (!keyset) {
+    throw new Error('No keyset found');
+  }
+
+  const randomKeyPair = genKeyPair();
+
+  const randomChainId = Math.floor(Math.random() * 20).toString();
+
+  const isCreated = await readHistory(address, randomChainId as ChainId)
+    .then(() => true)
+    .catch(() => false);
+
+  const command = isCreated
+    ? fundExistingAccountOnTestnetCommand({
+        account: address,
+        signerKeys: [randomKeyPair.publicKey],
+        amount: 20,
+        chainId: randomChainId as ChainId,
+      })
+    : fundNewAccountOnTestnetCommand({
+        account: address,
+        keyset: keyset?.guard,
+        signerKeys: [randomKeyPair.publicKey],
+        amount: 20,
+        chainId: randomChainId as ChainId,
+      });
+
+  const tx = createTransaction(command());
+
+  const signedTx = await createSignWithKeypair(randomKeyPair)(tx);
+
+  const groupId = crypto.randomUUID();
+
+  const result = await transactionService.addTransaction(
+    signedTx,
+    profileId,
+    'testnet04',
+    groupId,
+  );
+
+  const updatedTransaction = {
+    ...result,
+    status: 'signed',
+  } as const;
+
+  await transactionRepository.updateTransaction(updatedTransaction);
+
+  return updatedTransaction;
+}

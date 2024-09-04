@@ -2,13 +2,20 @@ import { accountRepository } from '@/modules/account/account.repository';
 import { useNetwork } from '@/modules/network/network.hook';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { ChainId, ISigner, createTransaction } from '@kadena/client';
+import {
+  ChainId,
+  ISigner,
+  IUnsignedCommand,
+  createTransaction,
+} from '@kadena/client';
 import {
   discoverAccount,
   safeTransferCreateCommand,
+  transferAllCommand,
   transferCreateCommand,
 } from '@kadena/client-utils/coin';
-import { composePactCommand } from '@kadena/client/fp';
+import { estimateGas } from '@kadena/client-utils/core';
+import { composePactCommand, setMeta } from '@kadena/client/fp';
 import {
   Button,
   Checkbox,
@@ -25,7 +32,7 @@ import {
 import classNames from 'classnames';
 import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { DiscoverdAccounts } from './components/DiscoverdAccounts';
 import { card, disabledItemClass, linkClass } from './style.css';
 import {
@@ -41,10 +48,12 @@ interface SendForm {
   receiver: string;
   amount: string;
   isSafeTransfer: boolean;
+  transferAll: boolean;
 }
 
 export function Transfer() {
   const { accounts, fungibles, getPublicKeyData, profile } = useWallet();
+  const accountId = useSearchParams()[0].get('accountId');
   const { activeNetwork } = useNetwork();
   const [receiverAccount, setReceiverAccount] =
     useState<IReceiverAccount | null>(null);
@@ -84,6 +93,7 @@ export function Transfer() {
     handleSubmit,
     getValues,
     formState: { isValid },
+    setValue,
   } = useForm<SendForm>({
     defaultValues: {
       contract: 'coin',
@@ -91,12 +101,24 @@ export function Transfer() {
       receiver: '',
       amount: '0',
       isSafeTransfer: true,
+      transferAll: false,
     },
   });
 
-  const contracts = accounts
-    .map((account) => account.contract)
-    .filter((ct, idx, list) => list.indexOf(ct) === idx);
+  useEffect(() => {
+    if (accountId) {
+      const account = accounts.find((account) => account.uuid === accountId);
+      if (account) {
+        setValue('sender', account.uuid);
+        setValue('contract', account.contract);
+      }
+    } else {
+      setValue('sender', '');
+      setValue('contract', 'coin');
+    }
+  }, [accountId, setValue, accounts]);
+
+  const contracts = fungibles.map((f) => f.contract);
 
   const getSymbol = (contract: string) => {
     const fungible = fungibles.find((f) => f.contract === contract);
@@ -122,36 +144,71 @@ export function Transfer() {
       throw new Error('Receiver not found');
     }
 
-    const transferFn = isSafeTransfer
-      ? safeTransferCreateCommand
-      : transferCreateCommand;
+    let commands: IUnsignedCommand[];
+    if (transferAll) {
+      commands = await Promise.all(
+        account.chains.map(async ({ chainId, balance }) => {
+          const amount = balance.toString().includes('.')
+            ? `${balance}`
+            : `${balance}.0`;
+          const command = composePactCommand(
+            transferAllCommand({
+              sender: {
+                account: account.address,
+                publicKeys: account.keyset!.guard.keys.map(mapKeys),
+              },
+              receiver: {
+                account: receiverAccount.address,
+                keyset: receiverAccount.keyset.guard,
+              },
+              amount,
+              chainId,
+            }),
+            {
+              networkId: activeNetwork.networkId,
+              meta: {
+                chainId,
+              },
+            },
+          );
 
-    const commands = optimalTransfers.map((optimal) => {
-      const command = composePactCommand(
-        transferFn({
-          amount: optimal.amount,
-          contract: contract,
-          chainId: optimal.chainId,
-          sender: {
-            account: account.address,
-            publicKeys: account.keyset!.guard.keys.map(mapKeys),
-          },
-          receiver: {
-            account: receiverAccount.address,
-            keyset: receiverAccount.keyset.guard,
-          },
+          const gas = await estimateGas(command);
+
+          return createTransaction(composePactCommand(command, setMeta(gas))());
         }),
-        {
-          networkId: activeNetwork.networkId,
-          meta: {
+      );
+    } else {
+      const transferFn = isSafeTransfer
+        ? safeTransferCreateCommand
+        : transferCreateCommand;
+
+      commands = optimalTransfers.map((optimal) => {
+        const command = composePactCommand(
+          transferFn({
+            amount: optimal.amount,
+            contract: contract,
             chainId: optimal.chainId,
-            gasLimit: optimal.gasLimit,
-            gasPrice: optimal.gasPrice,
+            sender: {
+              account: account.address,
+              publicKeys: account.keyset!.guard.keys.map(mapKeys),
+            },
+            receiver: {
+              account: receiverAccount.address,
+              keyset: receiverAccount.keyset.guard,
+            },
+          }),
+          {
+            networkId: activeNetwork.networkId,
+            meta: {
+              chainId: optimal.chainId,
+              gasLimit: optimal.gasLimit,
+              gasPrice: optimal.gasPrice,
+            },
           },
-        },
-      )();
-      return createTransaction(command);
-    });
+        )();
+        return createTransaction(command);
+      });
+    }
 
     // const partiallySignedCommands = await sign(commands);
 
@@ -227,11 +284,28 @@ export function Transfer() {
 
   const amount = watch('amount');
   const isSafeTransfer = watch('isSafeTransfer');
+  const transferAll = watch('transferAll');
 
   useEffect(() => {
     const check = async () => {
-      if (!amount || !account || !receiverAccount || !activeNetwork?.networkId)
+      if (!amount && !transferAll) {
         return;
+      }
+      if (!account || !receiverAccount || !activeNetwork?.networkId) return;
+      if (transferAll) {
+        const optx: IOptimalTransfer[] = account.chains.map(
+          ({ chainId, balance }) => ({
+            amount: balance.toString().includes('.')
+              ? `${balance}`
+              : `${balance}.0`,
+            chainId: chainId,
+            gasLimit: 2500,
+            gasPrice: 1.0e-8,
+          }),
+        );
+        setOptimalTransfers(optx);
+        return;
+      }
       console.log('Checking optimal transfer');
       const optimals = simpleOptimalTransfer(account, amount);
       console.log({ optimals });
@@ -248,6 +322,7 @@ export function Transfer() {
     activeNetwork,
     mapKeys,
     isSafeTransfer,
+    transferAll,
   ]);
 
   console.log({
@@ -294,69 +369,96 @@ export function Transfer() {
                   </Select>
                 )}
               />
-              <TextField
-                type="number"
-                label="Amount"
-                placeholder="Enter amount"
-                {...register('amount')}
-              />
-            </Stack>
-            <Controller
-              name="sender"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <Select
-                  label="From"
-                  size="sm"
-                  selectedKey={field.value}
-                  onSelectionChange={(accountId) => {
-                    const account = accounts.find(
-                      (acc) => acc.uuid === accountId,
-                    );
-                    if (
-                      !account ||
-                      +account.overallBalance < +getValues('amount')
-                    )
-                      return;
-                    field.onChange(accountId);
-                  }}
-                >
-                  {accounts
-                    .filter(
-                      (account) =>
-                        account.contract === 'coin' &&
-                        +account.overallBalance > 0,
-                    )
-                    .map((account) => (
-                      <SelectItem key={account.uuid}>
-                        <span
-                          className={classNames(
-                            +account.overallBalance < +getValues('amount') &&
-                              disabledItemClass,
-                          )}
-                        >
-                          {account.address}
-                        </span>
-                      </SelectItem>
-                    ))}
-                </Select>
-              )}
-            />
-            <Stack justifyContent={'space-between'}>
-              <Text size="small">
-                {account?.overallBalance
-                  ? `Balance ${account?.overallBalance}`
-                  : ''}
-              </Text>
-              <Stack gap={'sm'}>
-                <Text size="small">
-                  {optimalTransfers.length
-                    ? `Source chains: (${optimalTransfers.map(({ chainId }) => chainId).join(', ')})`
-                    : ''}
+              <Stack flexDirection={'column'} gap={'sm'}>
+                <Controller
+                  name="sender"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <Select
+                      label="From"
+                      size="sm"
+                      selectedKey={field.value}
+                      onSelectionChange={(accountId) => {
+                        const account = accounts.find(
+                          (acc) => acc.uuid === accountId,
+                        );
+                        if (
+                          !account ||
+                          +account.overallBalance < +getValues('amount')
+                        )
+                          return;
+                        field.onChange(accountId);
+                      }}
+                    >
+                      {accounts
+                        .filter(
+                          (account) =>
+                            account.contract === 'coin' &&
+                            +account.overallBalance > 0,
+                        )
+                        .map((account) => (
+                          <SelectItem key={account.uuid}>
+                            <span
+                              className={classNames(
+                                +account.overallBalance <
+                                  +getValues('amount') && disabledItemClass,
+                              )}
+                            >
+                              {account.address}
+                            </span>
+                          </SelectItem>
+                        ))}
+                    </Select>
+                  )}
+                />
+                <Stack justifyContent={'space-between'}>
+                  <Text size="small">
+                    {account?.overallBalance
+                      ? `Balance ${account?.overallBalance}`
+                      : ''}
+                  </Text>
+                  <Stack gap={'sm'}>
+                    <Text size="small">
+                      {optimalTransfers.length
+                        ? `Source chains: (${optimalTransfers.map(({ chainId }) => chainId).join(', ')})`
+                        : ''}
+                    </Text>
+                  </Stack>
+                </Stack>
+              </Stack>
+              <Stack gap={'sm'} flexDirection={'column'}>
+                <Text bold color="emphasize" size="small">
+                  Amount
                 </Text>
+                <Stack alignItems={'flex-end'} gap={'sm'}>
+                  <TextField
+                    type="number"
+                    placeholder="Enter amount"
+                    {...register('amount')}
+                  />
+                  <Stack
+                    gap={'lg'}
+                    flexDirection={'column'}
+                    paddingBlock={'sm'}
+                  >
+                    <Controller
+                      control={control}
+                      name="transferAll"
+                      render={({ field }) => (
+                        <Checkbox
+                          isSelected={field.value}
+                          onChange={field.onChange}
+                        >
+                          Max
+                        </Checkbox>
+                      )}
+                    />
+                  </Stack>
+                </Stack>
               </Stack>
             </Stack>
+
             <Controller
               control={control}
               name="receiver"

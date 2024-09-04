@@ -44,37 +44,45 @@ export function Transactions() {
   return (
     <Box className={panelClass} marginBlockStart="xs">
       <Heading as="h4">Transactions</Heading>
-      <Box marginBlockStart="md">
-        {transactions.length ? (
-          <ul className={listClass}>
-            {transactions.map((tx) => (
-              <li key={tx.uuid}>
-                <Stack
-                  justifyContent="space-between"
-                  alignItems={'center'}
-                  className={listItemClass}
-                >
-                  <Link to={`/transaction/${tx.groupId}`}>
-                    <Text>
-                      <MonoOpenInNew />
-                    </Text>
-                  </Link>
-                  <Text className={hashStyle}>{tx.hash}</Text>
-                  <Text className={hashStyle}>{tx.groupId}</Text>
-                  <Text>{tx.status}</Text>
-
-                  <Text>
-                    {new Date(
-                      ((JSON.parse(tx.cmd) as IPactCommand).meta.creationTime ||
-                        0) * 1000,
-                    ).toLocaleString()}
-                  </Text>
-                </Stack>
-              </li>
-            ))}
-          </ul>
-        ) : null}
-      </Box>
+      <TransactionList transactions={transactions} />
     </Box>
   );
 }
+
+export const TransactionList = ({
+  transactions,
+}: {
+  transactions: ITransaction[];
+}) => (
+  <Box marginBlockStart="md">
+    {transactions.length ? (
+      <ul className={listClass}>
+        {transactions.map((tx) => (
+          <li key={tx.uuid}>
+            <Stack
+              justifyContent="space-between"
+              alignItems={'center'}
+              className={listItemClass}
+            >
+              <Link to={`/transaction/${tx.groupId}`}>
+                <Text>
+                  <MonoOpenInNew />
+                </Text>
+              </Link>
+              <Text className={hashStyle}>{tx.hash}</Text>
+              <Text className={hashStyle}>{tx.groupId}</Text>
+              <Text>{tx.status}</Text>
+
+              <Text>
+                {new Date(
+                  ((JSON.parse(tx.cmd) as IPactCommand).meta.creationTime ||
+                    0) * 1000,
+                ).toLocaleString()}
+              </Text>
+            </Stack>
+          </li>
+        ))}
+      </ul>
+    ) : null}
+  </Box>
+);

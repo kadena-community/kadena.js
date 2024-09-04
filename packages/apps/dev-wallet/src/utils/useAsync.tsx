@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 export function useAsync<T, A extends any[]>(
   factory: (...args: A) => Promise<T>,
-  ...args: A
+  args: A,
 ) {
   const [state, setState] = useState<T>();
   const [error, setError] = useState<Error>();

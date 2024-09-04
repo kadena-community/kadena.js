@@ -33,6 +33,7 @@ export interface IAccount {
     balance: string;
   }>;
   keyset?: IKeySet;
+  alias?: string;
 }
 
 const deleteKey = <Key extends string, T extends Partial<Record<Key, unknown>>>(

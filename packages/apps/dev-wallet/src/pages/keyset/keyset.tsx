@@ -16,7 +16,8 @@ import {
 import {
   fundExistingAccountOnTestnetCommand,
   fundNewAccountOnTestnetCommand,
-} from '@kadena/client-utils/coin';
+  readHistory,
+} from '@kadena/client-utils/faucet';
 import { genKeyPair } from '@kadena/cryptography-utils';
 import { MonoKey } from '@kadena/kode-icons/system';
 import { Box, Button, Heading, Stack, Text } from '@kadena/kode-ui';
@@ -39,7 +40,6 @@ export function Keyset() {
   async function fundAccount({
     address,
     keyset,
-    chains,
   }: Pick<IAccount, 'address' | 'keyset' | 'chains'>) {
     if (!keyset) {
       throw new Error('No keyset found');
@@ -47,26 +47,26 @@ export function Keyset() {
 
     const randomKeyPair = genKeyPair();
 
-    const randomChainId = '1'; // Math.floor(Math.random() * 20).toString();
+    const randomChainId = Math.floor(Math.random() * 20).toString();
 
-    const balanceOnChain =
-      chains.find((chain) => chain.chainId === randomChainId)?.balance ?? '0';
+    const isCreated = await readHistory(address, randomChainId as ChainId)
+      .then(() => true)
+      .catch(() => false);
 
-    const command =
-      +balanceOnChain > 0
-        ? fundExistingAccountOnTestnetCommand({
-            account: address,
-            signerKeys: [randomKeyPair.publicKey],
-            amount: 20,
-            chainId: randomChainId as ChainId,
-          })
-        : fundNewAccountOnTestnetCommand({
-            account: address,
-            keyset: keyset?.guard,
-            signerKeys: [randomKeyPair.publicKey],
-            amount: 20,
-            chainId: randomChainId as ChainId,
-          });
+    const command = isCreated
+      ? fundExistingAccountOnTestnetCommand({
+          account: address,
+          signerKeys: [randomKeyPair.publicKey],
+          amount: 20,
+          chainId: randomChainId as ChainId,
+        })
+      : fundNewAccountOnTestnetCommand({
+          account: address,
+          keyset: keyset?.guard,
+          signerKeys: [randomKeyPair.publicKey],
+          amount: 20,
+          chainId: randomChainId as ChainId,
+        });
 
     const tx = createTransaction(command());
 

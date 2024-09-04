@@ -12,8 +12,10 @@ import {
 
 import { CommunicationProvider } from '@/modules/communication/communication.provider';
 import { AccountDiscovery } from '@/pages/account-discovery/account-dsicovery';
+import { AccountPage } from '@/pages/account/account';
 import { Connect } from '@/pages/connect/connect';
 import { CreateAccount } from '@/pages/create-account/create-account';
+import { FungiblePage } from '@/pages/fungible/fungible';
 import { ImportWallet } from '@/pages/import-wallet/import-wallet';
 import { KeySources } from '@/pages/key-sources/key-sources';
 import { Keyset } from '@/pages/keyset/keyset';
@@ -112,6 +114,8 @@ export const Routes: FC = () => {
           <Route path="/transaction/:groupId" element={<Transaction />} />
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/keyset/:keysetId" element={<Keyset />} />
+          <Route path="/fungible/:contract" element={<FungiblePage />} />
+          <Route path="/account/:accountId" element={<AccountPage />} />
         </Route>
       </Route>
       <Route path="/ready" element={<Ready />} />

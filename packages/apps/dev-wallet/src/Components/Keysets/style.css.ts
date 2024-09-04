@@ -1,6 +1,19 @@
 import { cardColor, cardHoverColor } from '@/utils/color.ts';
-import { atoms } from '@kadena/kode-ui/styles';
+import { atoms, vars } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
+
+export const pageClass = style({
+  minHeight: 'calc(100vh - 90px)',
+});
+
+export const panelClass = style([
+  atoms({
+    padding: 'md',
+  }),
+  {
+    background: cardColor,
+  },
+]);
 
 export const listClass = style([
   atoms({
@@ -21,7 +34,6 @@ export const listItemClass = style([
   atoms({
     padding: 'md',
     marginBlockStart: 'xs',
-    textDecoration: 'none',
   }),
   {
     background: cardColor,
@@ -30,5 +42,16 @@ export const listItemClass = style([
         background: cardHoverColor,
       },
     },
+  },
+]);
+
+export const noStyleLinkClass = style({
+  textDecoration: 'none',
+  color: 'inherit',
+});
+
+export const chainClass = style([
+  {
+    background: vars.colors.$layoutSurfaceCard,
   },
 ]);

@@ -1,16 +1,19 @@
 import { Fungible, IAccount } from '@/modules/account/account.repository';
+import { noStyleLinkClass } from '@/pages/home/style.css';
 import { MonoSearch } from '@kadena/kode-icons/system';
 import {
   Button,
   Dialog,
   DialogContent,
   DialogHeader,
+  Heading,
   Stack,
   Text,
   TextField,
 } from '@kadena/kode-ui';
 import { PactNumber } from '@kadena/pactjs';
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { ListItem } from '../ListItem/ListItem';
 import { AddToken } from './AddToken';
 
@@ -57,7 +60,7 @@ export function Assets({
     );
   }, [accounts, fungibles, filter]);
   return (
-    <Stack flexDirection={'column'}>
+    <Stack flexDirection={'column'} gap={'md'}>
       <Dialog
         isOpen={showTokenModal}
         onOpenChange={setShowTokenModal}
@@ -68,15 +71,20 @@ export function Assets({
           <AddToken onAdd={() => setShowTokenModal(false)} />
         </DialogContent>
       </Dialog>
-      <Stack flexDirection={'row'}>
-        <TextField
+      <Stack
+        flexDirection={'row'}
+        justifyContent={'space-between'}
+        alignItems={'center'}
+      >
+        {/* <TextField
           startVisual={<MonoSearch />}
           placeholder="Search token"
           value={filter}
           onChange={(e) => {
             setFilter(e.target.value);
           }}
-        />
+        /> */}
+        <Heading as="h4">Your assets</Heading>
         {showAddToken && (
           <Button
             variant="outlined"
@@ -87,24 +95,28 @@ export function Assets({
           </Button>
         )}
       </Stack>
-      {assets.map(([contract, balance]) => (
-        <ListItem key={contract}>
-          <Stack
-            gap={'sm'}
-            flexDirection={'row'}
-            justifyContent={'space-between'}
-            flex={1}
-          >
-            <Text>
-              {fungibles.find((item) => item.contract === contract)?.symbol ??
-                contract}
-            </Text>
-            <Text color="emphasize" bold>
-              {balance}
-            </Text>
-          </Stack>
-        </ListItem>
-      ))}
+      <Stack flexDirection={'column'}>
+        {assets.map(([contract, balance]) => (
+          <Link to={`/fungible/${contract}`} className={noStyleLinkClass}>
+            <ListItem key={contract}>
+              <Stack
+                gap={'sm'}
+                flexDirection={'row'}
+                justifyContent={'space-between'}
+                flex={1}
+              >
+                <Text>
+                  {fungibles.find((item) => item.contract === contract)
+                    ?.symbol ?? contract}
+                </Text>
+                <Text color="emphasize" bold>
+                  {balance}
+                </Text>
+              </Stack>
+            </ListItem>
+          </Link>
+        ))}
+      </Stack>
     </Stack>
   );
 }

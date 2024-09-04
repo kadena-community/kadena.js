@@ -111,9 +111,11 @@ export const Layout: FC = () => {
       <main>
         <Stack
           className={pageClass}
-          style={{
-            backgroundImage: `radial-gradient(circle farthest-side at 50% 170%, ${accentColor}, transparent 75%)`,
-          }}
+          style={
+            {
+              // backgroundImage: `radial-gradient(circle farthest-side at 50% 170%, ${accentColor}, transparent 75%)`,
+            }
+          }
         >
           <Sidebar></Sidebar>
           <Box padding="n10" className={mainColumnStyle}>
