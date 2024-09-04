@@ -12,8 +12,8 @@ const config = {
   reactStrictMode: true,
   pageExtensions:
     process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test'
-      ? ['(?<!(spec|test).)tsx', 'ts']
-      : ['tsx', 'ts'],
+      ? ['tsx', 'route.ts']
+      : ['tsx', 'route.ts'],
   transpilePackages: ['@kadena/kode-ui'],
   env: {
     KADENA_API_TTIL: process.env.KADENA_API_TTIL,
