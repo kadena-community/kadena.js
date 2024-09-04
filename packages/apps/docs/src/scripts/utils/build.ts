@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import { exec } from 'child_process';
+import { env } from 'node:process';
 import { promisify } from 'util';
 import { Spinner } from '../spinner';
 import type { IScriptResult } from '../types';
@@ -32,11 +33,19 @@ export const initFunc = async (
   console.log(createString(description, true));
 
   const spinner = Spinner();
-  spinner.start();
+
+  const localEnv = env as unknown as { CI: 'true' | undefined };
+  const notCI = localEnv.CI !== 'true';
+
+  if (notCI) {
+    spinner.start();
+  }
 
   const { success, errors } = await fnc();
 
-  spinner.stop();
+  if (notCI) {
+    spinner.stop();
+  }
 
   if (errors.length) {
     errors.map((error) => {

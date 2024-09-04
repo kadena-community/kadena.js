@@ -10,7 +10,6 @@ import {
 } from '../commands/tx/utils/txHelpers.js';
 
 import { basename } from 'node:path';
-import { getAllAccounts } from '../commands/account/utils/accountHelpers.js';
 import { loadNetworkConfig } from '../commands/networks/utils/networkHelpers.js';
 import { getTemplates } from '../commands/tx/commands/templates/templates.js';
 import { MULTI_SELECT_INSTRUCTIONS } from '../constants/global.js';
@@ -41,17 +40,45 @@ export const SignatureOrUndefinedOrNull = z.union([
   z.null(),
 ]);
 
+const chainWeaverSignatureSchema = z.record(z.string(), z.string().nullable());
+
+const ICommandSignatureSchema = z.array(SignatureOrUndefinedOrNull);
+
 export const ICommandSchema = z.object({
   cmd: CommandPayloadStringifiedJSONSchema,
   hash: PactTransactionHashSchema,
-  sigs: z.array(SignatureOrUndefinedOrNull),
+  sigs: ICommandSignatureSchema,
 });
 
-export const IUnsignedCommandSchema = z.object({
-  cmd: CommandPayloadStringifiedJSONSchema,
-  hash: PactTransactionHashSchema,
-  sigs: z.array(SignatureOrUndefinedOrNull),
-});
+export const IUnsignedCommandSchema = z
+  .object({
+    cmd: CommandPayloadStringifiedJSONSchema,
+    hash: PactTransactionHashSchema,
+    sigs: ICommandSignatureSchema.or(chainWeaverSignatureSchema),
+  })
+  // Transform sings record to array
+  .transform((value) => {
+    if (Array.isArray(value.sigs)) {
+      return value as z.output<typeof ICommandSchema>;
+    }
+    const sigs = chainWeaverSignatureSchema.safeParse(value.sigs);
+    if (sigs.success) {
+      const cmd = z
+        .object({ signers: z.array(z.object({ pubKey: z.string() })) })
+        .safeParse(JSON.parse(value.cmd));
+      if (cmd.success) {
+        const keys = cmd.data.signers.map((signer) => signer.pubKey);
+        const result = {
+          ...value,
+          sigs: keys.map((key) =>
+            sigs.data[key] !== null ? { sig: sigs.data[key] } : null,
+          ),
+        };
+        return result;
+      }
+    }
+    throw new Error('Invalid signature schema');
+  });
 
 export const ISignedCommandSchema = z.object({
   cmd: CommandPayloadStringifiedJSONSchema,
@@ -188,7 +215,7 @@ const promptVariableValue = async (
 ): Promise<string> => {
   if (key.startsWith('account:')) {
     // search for account alias - needs account implementation
-    const accounts = await getAllAccounts().catch(() => []);
+    const accounts = await services.account.list();
 
     const hasAccount = accounts.length > 0;
     let value: string | null = null;
@@ -243,7 +270,7 @@ const promptVariableValue = async (
       0,
     );
     const plainKeys = await services.plainKey.list();
-    const accounts = await getAllAccounts().catch(() => []);
+    const accounts = await services.account.list();
 
     const hasKeys = walletKeysCount > 0 || plainKeys.length > 0;
     const hasAccounts = accounts.length > 0;
@@ -258,7 +285,7 @@ const promptVariableValue = async (
     const accountMatch = variables[`account:${pkName}`];
 
     if (accountMatch) {
-      const accounts = await getAllAccounts().catch(() => []);
+      const accounts = await services.account.list();
       const accountConfig = accounts.find((x) => x.name === accountMatch);
       if (accountConfig) {
         const selection = await select({

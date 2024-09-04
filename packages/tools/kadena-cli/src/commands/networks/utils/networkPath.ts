@@ -4,28 +4,23 @@ import {
   NETWORKS_DIR,
 } from '../../../constants/config.js';
 import { services } from '../../../services/index.js';
-import { notEmpty } from '../../../utils/globalHelpers.js';
 
-export const getDefaultSettingsDirectory = (): string | null => {
+export const getDefaultSettingsDirectory = (): string => {
   const kadenaDir = services.config.getDirectory();
-  return notEmpty(kadenaDir)
-    ? path.join(kadenaDir, DEFAULT_SETTINGS_PATH)
-    : null;
+  return path.join(kadenaDir, DEFAULT_SETTINGS_PATH);
 };
 
-export const getNetworkDirectory = (): string | null => {
+export const getNetworkDirectory = (): string => {
   const kadenaDir = services.config.getDirectory();
-  return notEmpty(kadenaDir) ? path.join(kadenaDir, NETWORKS_DIR) : null;
+  return path.join(kadenaDir, NETWORKS_DIR);
 };
 
-export const getNetworksDefaultSettingsDirectory = (): string | null => {
+export const getNetworksDefaultSettingsDirectory = (): string => {
   const defaultDir = getDefaultSettingsDirectory();
-  return notEmpty(defaultDir) ? path.join(defaultDir, NETWORKS_DIR) : null;
+  return path.join(defaultDir, NETWORKS_DIR);
 };
 
-export const getNetworksSettingsFilePath = (): string | null => {
+export const getNetworksSettingsFilePath = (): string => {
   const defaultNetworksDir = getNetworksDefaultSettingsDirectory();
-  return notEmpty(defaultNetworksDir)
-    ? path.join(defaultNetworksDir, '__default__.yaml')
-    : null;
+  return path.join(defaultNetworksDir, '__default__.yaml');
 };

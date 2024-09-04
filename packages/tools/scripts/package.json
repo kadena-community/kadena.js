@@ -14,10 +14,14 @@
     "chalk": "^5.2.0",
     "enquirer": "^2.4.1",
     "fast-glob": "^3.3.1",
+    "micromatch": "^4.0.8",
     "prettier": "~3.2.5"
   },
   "engines": {
     "node": ">=18",
     "pnpm": ">=8"
+  },
+  "dependencies": {
+    "zx": "^8.1.5"
   }
 }

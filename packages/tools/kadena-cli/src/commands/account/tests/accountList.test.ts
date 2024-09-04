@@ -1,4 +1,6 @@
+import path from 'node:path';
 import { beforeEach, describe, expect, it } from 'vitest';
+import { ACCOUNT_DIR, CWD_KADENA_DIR } from '../../../constants/config.js';
 import {
   mockPrompts,
   runCommand,
@@ -27,7 +29,8 @@ describe('account list', () => {
     expect(res).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          alias: 'account-one.yaml',
+          alias: 'account-one',
+          filepath: path.join(CWD_KADENA_DIR, ACCOUNT_DIR, 'account-one.yaml'),
           fungible: 'coin',
           name: 'k:55e10019549e047e68efaa18489ed785eca271642e2d0ce41d56ced2a30ccb84',
           predicate: 'keys-all',
@@ -36,7 +39,8 @@ describe('account list', () => {
           ],
         }),
         expect.objectContaining({
-          alias: 'account-two.yaml',
+          alias: 'account-two',
+          filepath: path.join(CWD_KADENA_DIR, ACCOUNT_DIR, 'account-two.yaml'),
           fungible: 'coin',
           name: 'w:yCvUbeS6RqdKsY3WBDB3cgK-6q790xkj4Hb-ABpu3gg:keys-all',
           predicate: 'keys-all',
@@ -59,7 +63,8 @@ describe('account list', () => {
     const res = await runCommandJson('account list');
     expect(res).toEqual(
       expect.objectContaining({
-        alias: 'account-one.yaml',
+        alias: 'account-one',
+        filepath: path.join(CWD_KADENA_DIR, ACCOUNT_DIR, 'account-one.yaml'),
         fungible: 'coin',
         name: 'k:55e10019549e047e68efaa18489ed785eca271642e2d0ce41d56ced2a30ccb84',
         predicate: 'keys-all',
@@ -76,7 +81,8 @@ describe('account list', () => {
     );
     expect(res).toEqual(
       expect.objectContaining({
-        alias: 'account-two.yaml',
+        alias: 'account-two',
+        filepath: path.join(CWD_KADENA_DIR, ACCOUNT_DIR, 'account-two.yaml'),
         fungible: 'coin',
         name: 'w:yCvUbeS6RqdKsY3WBDB3cgK-6q790xkj4Hb-ABpu3gg:keys-all',
         predicate: 'keys-all',

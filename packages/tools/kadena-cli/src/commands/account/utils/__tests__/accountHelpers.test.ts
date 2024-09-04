@@ -6,7 +6,6 @@ import {
   WORKING_DIRECTORY,
 } from '../../../../constants/config.js';
 import { services } from '../../../../services/index.js';
-import { readAccountFromFile } from '../accountHelpers.js';
 
 describe('readAccountFromFile', () => {
   const configPath = path.join(WORKING_DIRECTORY, '.kadena');
@@ -33,26 +32,30 @@ describe('readAccountFromFile', () => {
   });
 
   it('should read account data from file and return data with alias', async () => {
-    const account = await readAccountFromFile('account-add-test');
+    const account = await services.account.getByAlias('account-add-test');
     expect(account).toEqual({
       ...accountData,
-      alias: 'account-add-test.yaml',
+      filepath: accountAliasFile,
+      alias: 'account-add-test',
     });
   });
 
   it('should throw an error when account alias file does not exist', async () => {
     await expect(
-      async () => await readAccountFromFile('account-add-test-2'),
-    ).rejects.toThrowError('Account alias "account-add-test-2" file not exist');
+      async () =>
+        await services.account.get(
+          path.join(accountPath, 'account-add-test2.yaml'),
+        ),
+    ).rejects.toThrowError(
+      'Account file ".kadena/accounts/account-add-test2.yaml" not found',
+    );
   });
 
   it('should return file is empty error when file contains no content', async () => {
     await services.filesystem.writeFile(accountAliasFile, '');
     await expect(
-      async () => await readAccountFromFile('account-add-test'),
-    ).rejects.toThrowError(
-      'Error parsing alias file: account-add-test, file is empty',
-    );
+      async () => await services.account.get(accountAliasFile),
+    ).rejects.toThrowError('Error parsing account file: Can not be empty');
   });
 
   it('should throw zod errors when file content is invalid format ', async () => {
@@ -64,9 +67,9 @@ describe('readAccountFromFile', () => {
       }),
     );
     await expect(
-      async () => await readAccountFromFile('account-add-test'),
+      async () => await services.account.get(accountAliasFile),
     ).rejects.toThrowError(
-      'Error parsing alias file: account-add-test "publicKeys": expected array, received undefined\n"predicate": expected string, received undefined',
+      'Error parsing account file: publicKeys: Required\npredicate: Required',
     );
   });
 });

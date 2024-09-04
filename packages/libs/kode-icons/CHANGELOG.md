@@ -1,5 +1,11 @@
 # @kadena/kode-icons
 
+## 0.2.0
+
+### Minor Changes
+
+- de4fb13: New logo for Kadena SpireKey
+
 ## 0.1.0
 
 ### Minor Changes

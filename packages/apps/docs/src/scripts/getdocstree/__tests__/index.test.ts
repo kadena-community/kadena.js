@@ -67,7 +67,7 @@ describe('createDocsTree', () => {
   it('should fill the searchableDirs array with the parent pages', async () => {
     expect(SEARCHABLE_DIRS.length).toBe(0);
     await createDocsTree();
-    expect(SEARCHABLE_DIRS.length).toBe(6);
+    expect(SEARCHABLE_DIRS.length).toBe(5);
   });
 
   it('should create a dir and save file', async () => {

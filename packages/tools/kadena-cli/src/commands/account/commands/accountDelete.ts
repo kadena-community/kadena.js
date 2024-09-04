@@ -1,64 +1,8 @@
-import { join } from 'path';
-import { NO_ACCOUNTS_FOUND_ERROR_MESSAGE } from '../../../constants/account.js';
 import { services } from '../../../services/index.js';
-import { KadenaError } from '../../../services/service-error.js';
-import type { CommandResult } from '../../../utils/command.util.js';
-import { assertCommandError } from '../../../utils/command.util.js';
 import { createCommand } from '../../../utils/createCommand.js';
 import { isNotEmptyString } from '../../../utils/globalHelpers.js';
 import { log } from '../../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
-import {
-  ensureAccountAliasFilesExists,
-  getAccountDirectory,
-} from '../utils/accountHelpers.js';
-
-async function deleteAccountDir(): Promise<CommandResult<null>> {
-  const accountDir = getAccountDirectory();
-  if (accountDir === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
-
-  try {
-    await services.filesystem.deleteDirectory(accountDir);
-    return {
-      data: null,
-      status: 'success',
-    };
-  } catch (error) {
-    return {
-      status: 'error',
-      errors: ['Failed to delete all account aliases.'],
-    };
-  }
-}
-
-async function removeAccount(
-  accountAlias: string,
-): Promise<CommandResult<null>> {
-  const accountDir = getAccountDirectory();
-  if (accountDir === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
-
-  if (accountAlias === 'all') {
-    return await deleteAccountDir();
-  }
-
-  const filePath = join(accountDir, `${accountAlias}.yaml`);
-  if (await services.filesystem.fileExists(filePath)) {
-    await services.filesystem.deleteFile(filePath);
-    return {
-      data: null,
-      status: 'success',
-    };
-  } else {
-    return {
-      status: 'error',
-      errors: [`The account alias "${accountAlias}" does not exist`],
-    };
-  }
-}
 
 export const createAccountDeleteCommand = createCommand(
   'delete',
@@ -68,11 +12,6 @@ export const createAccountDeleteCommand = createCommand(
     accountOptions.accountDeleteConfirmation({ isOptional: false }),
   ],
   async (option) => {
-    const isAccountAliasesExist = await ensureAccountAliasFilesExists();
-    if (!isAccountAliasesExist) {
-      return log.error(NO_ACCOUNTS_FOUND_ERROR_MESSAGE);
-    }
-
     const { accountAlias } = await option.accountAlias();
 
     if (!isNotEmptyString(accountAlias.trim())) {
@@ -92,8 +31,25 @@ export const createAccountDeleteCommand = createCommand(
       return log.warning('The account alias will not be deleted.');
     }
 
-    const result = await removeAccount(accountAlias);
-    assertCommandError(result);
+    if (accountAlias === 'all') {
+      const accounts = await services.account.list();
+      if (accounts.length === 0) {
+        return log.error(
+          'No account aliases found. To add an account use `kadena account add` command.',
+        );
+      }
+      for (const account of accounts) {
+        await services.account.delete(account.filepath);
+      }
+    } else {
+      const account = await services.account.getByAlias(accountAlias);
+      if (!account) {
+        return log.error(`Account "${accountAlias}" not found`);
+      }
+
+      await services.account.delete(account.filepath);
+    }
+
     const deleteSuccessMsg =
       accountAlias === 'all'
         ? 'All account aliases has been deleted'

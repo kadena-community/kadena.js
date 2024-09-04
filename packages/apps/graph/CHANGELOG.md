@@ -1,5 +1,11 @@
 # @kadena/graph
 
+## 1.0.10
+
+### Patch Changes
+
+- 777a200: set the version to 5.16.1 so it won't fetch a newer version in nix
+
 ## 1.0.9
 
 ### Patch Changes

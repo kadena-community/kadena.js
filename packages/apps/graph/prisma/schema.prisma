@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["views", "relationJoins"]
+  previewFeatures = ["views"]
 }
 
 generator pothos {
