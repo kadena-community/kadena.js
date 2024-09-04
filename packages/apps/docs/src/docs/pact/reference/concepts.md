@@ -678,7 +678,7 @@ capability to unlock some protected operation, by means of a _manager function_.
 
 Since Pact 4.11 ([KIP 0028](https://github.com/kadena-io/KIPs/pull/57)), capabilities can be installed by *verifiers*, which are also
 scoped to those capabilities that they install. A verifier is a named plugin external
-to Pact that given some proof value (similar to a signature) can grant capabilities.
+to Pact that, given some proof value—similar to a signature—can grant capabilities to perform some action.
 Whereas a capability can check that it was granted by some signer using 
 `(enforce-guard g)` with a keyset guard `g` including that signer, a 
 capability can check that it was granted by some verifier using 
