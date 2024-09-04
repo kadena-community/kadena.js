@@ -8,6 +8,7 @@ export const sendMessage = async (data: IAccount): Promise<void> => {
     MINBALANCE,
   );
 
+  console.log('SEND MESSAGE');
   await fetch('https://slack.com/api/chat.postMessage', {
     method: 'POST',
     headers: {

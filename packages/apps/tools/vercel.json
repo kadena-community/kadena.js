@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/faucet",
-      "schedule": "50 10,11 * * *"
+      "schedule": "10 11,12 * * *"
     }
   ]
 }

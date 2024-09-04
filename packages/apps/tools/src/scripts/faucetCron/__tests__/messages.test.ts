@@ -26,6 +26,10 @@ describe('messages', () => {
     });
   });
   describe('sendMessages', () => {
+    beforeEach(() => {
+      const mocked = vi.fn(() => 0.1);
+      Math.random = mocked;
+    });
     it('should send the correct message with the correct chains', async () => {
       const account = {
         data: {
@@ -45,7 +49,7 @@ describe('messages', () => {
       expect(mocks.fetch).toBeCalledTimes(1);
       expect(body).toEqual({
         blocks:
-          '[{"type":"header","text":{"type":"plain_text","text":"Low Faucet alert! 🚨"}},{"type":"section","accessory":{"type":"image","image_url":"https://media.giphy.com/media/ZNnnp4wa17dZrDQKKI/giphy.gif?cid=790b7611li34xwh3ghrh6h6xwketcjop0mjayanqbp0n1enh&ep=v1_gifs_search&rid=giphy.gif&ct=g","alt_text":""},"text":{"type":"mrkdwn","text":"The faucet seems to be running low on funds (TESTNET):\\n *chain 0:* (500 KDA)\\n*chain 3:* (909 KDA)"}}]',
+          '[{"type":"header","text":{"type":"plain_text","text":"Low Faucet alert! 🚨"}},{"type":"section","accessory":{"type":"image","image_url":"https://media.giphy.com/media/ZNnnp4wa17dZrDQKKI/giphy.gif?cid=790b7611li34xwh3ghrh6h6xwketcjop0mjayanqbp0n1enh&ep=v1_gifs_search&rid=giphy.gif&ct=g","alt_text":"0.1"},"text":{"type":"mrkdwn","text":"The faucet seems to be running low on funds (TESTNET):\\n *chain 0:* (500 KDA)\\n*chain 2:* (1000 KDA)\\n*chain 3:* (909 KDA)"}}]',
         channel: 'C07KYLJ92E4',
       });
     });
