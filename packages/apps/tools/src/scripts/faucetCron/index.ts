@@ -54,23 +54,24 @@ const getFaucetAccount = async (): Promise<IAccount> => {
 };
 
 export const runJob = async () => {
-  const accountResult = await getFaucetAccount();
+  try {
+    const accountResult = await getFaucetAccount();
 
-  if (accountResult?.errors?.length) {
+    if (accountResult?.errors?.length) {
+      await sendErrorMessage();
+      return;
+    }
+
+    if (
+      !lowFaucetChains(
+        accountResult.data?.fungibleAccount.chainAccounts,
+        MINBALANCE,
+      ).length
+    )
+      return;
+
+    await sendMessage(accountResult);
+  } catch (e) {
     await sendErrorMessage();
-    return;
   }
-
-  if (
-    !lowFaucetChains(
-      accountResult.data?.fungibleAccount.chainAccounts,
-      MINBALANCE,
-    ).length
-  )
-    return;
-
-  await sendMessage(accountResult);
 };
-
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
-runJob();

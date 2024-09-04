@@ -21,7 +21,7 @@ export const sendMessage = async (data: IAccount): Promise<void> => {
           type: 'header',
           text: {
             type: 'plain_text',
-            text: 'Low Faucet alert! 🚨',
+            text: `Low Faucet alert! 🚨`,
           },
         },
         {
@@ -30,7 +30,7 @@ export const sendMessage = async (data: IAccount): Promise<void> => {
             type: 'image',
             image_url:
               'https://media.giphy.com/media/ZNnnp4wa17dZrDQKKI/giphy.gif?cid=790b7611li34xwh3ghrh6h6xwketcjop0mjayanqbp0n1enh&ep=v1_gifs_search&rid=giphy.gif&ct=g',
-            alt_text: '',
+            alt_text: `${Math.random()}`,
           },
           text: {
             type: 'mrkdwn',
