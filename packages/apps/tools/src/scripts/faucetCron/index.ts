@@ -70,7 +70,7 @@ export const runJob = async () => {
     )
       return;
 
-    await sendMessage(accountResult);
+    return await sendMessage(accountResult);
   } catch (e) {
     await sendErrorMessage();
   }
