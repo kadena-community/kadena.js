@@ -6,7 +6,6 @@ import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
 import { PageHelpful } from '../PageHelpful/PageHelpful';
-import { EditPage } from './components/EditPage';
 import { Subscribe } from './components/Subscribe';
 import {
   bottomWrapperClass,
