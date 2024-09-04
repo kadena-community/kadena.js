@@ -58,7 +58,7 @@ As of Pact 2.2, `use` statements can be issued within a module declaration. This
 
 Module names must be unique within a namespace.
 
-#### Interface Declaration
+#### Interface declaration
 
 [Interfaces](/build/pact/advanced#interfacesh394925690#interfaces) contain an API specification and data definitions for smart contracts. They are comprised of:
 
@@ -74,7 +74,7 @@ Interfaces represent an abstract api that a [module](/reference/syntax#moduleh-1
 
 Interface names must be unique within a namespace.
 
-#### Table Creation
+#### Table creation
 
 Tables are [created](/reference/functions/database#create-tableh447366077) at the same time as modules. While tables are _defined_ in modules, they are _created_ "after" modules, so that the module may be redefined later without having to necessarily re-create the table.
 
@@ -84,17 +84,17 @@ There is no restriction on how many tables may be created. Table names are names
 
 Tables can be typed with a [schema](/reference/syntax#defschemah-1003560474).
 
-### Transaction Execution
+### Transaction execution
 
 "Transactions" refer to business events enacted on the blockchain, like a payment, a sale, or a workflow step of a complex contractual agreement. A transaction is generally a single call to a module function. However there is no limit on how many statements can be executed. Indeed, the difference between "transactions" and "smart contract definition" is simply the _kind_ of code executed, not any actual difference in the code evaluation.
 
-### Queries and Local Execution
+### Queries and local execution
 
 Querying data is generally not a business event, and can involve data payloads that could impact performance, so querying is carried out as a _local execution_ on the node receiving the message. Historical queries use a _transaction ID_ as a point of reference, to avoid any race conditions and allow asynchronous query execution.
 
 Transactional vs local execution is accomplished by targeting different API endpoints; pact code has no ability to distinguish between transactional and local execution.
 
-## Database Interaction
+## Database interaction
 
 Pact presents a database metaphor reflecting the unique requirements of blockchain execution, which can be adapted to run on different back-ends.
 
@@ -102,13 +102,13 @@ Pact presents a database metaphor reflecting the unique requirements of blockcha
 
 A single message sent into the blockchain to be evaluated by Pact is _atomic_: the transaction succeeds as a unit, or does not succeed at all, known as "transactions" in database literature. There is no explicit support for rollback handling, except in [multi-step transactions](/reference/pacts).
 
-### Key-Row Model
+### Key-row model
 
-Blockchain execution can be likened to OLTP (online transaction processing) database workloads, which favor denormalized data written to a single table. Pact's data-access API reflects this by presenting a _key-row_ model, where a row of column values is accessed by a single key.
+Blockchain execution can be likened to online transaction processing database workloads, which favor denormalized data written to a single table. Pact's data-access API reflects this by presenting a _key-row_ model, where a row of column values is accessed by a single key.
 
 As a result, Pact does not support _joining_ tables, which is more suited for an OLAP (online analytical processing) database, populated from exports from the Pact database. This does not mean Pact cannot _record_ transactions using relational techniques -- for example, a Customer table whose keys are used in a Sales table would involve the code looking up the Customer record before writing to the Sales table.
 
-### Queries and Performance
+### Queries and performance
 
 As of Pact 2.3, Pact offers a powerful query mechanism for selecting multiple rows from a table. While visually similar to SQL, the [select](/build/pact/schemas-and-tables#selecth-1822154468) and [where](/reference/functions/general#whereh113097959) operations offer a _streaming interface_ to a table, where the user provides filter functions, and then operates on the rowset as a list data structure using [sort](/reference/functions/general#sorth3536286) and other functions.
 
@@ -134,11 +134,11 @@ In a transactional setting, Pact database interactions are optimized for single-
 
 The best practice is therefore to use select operations via local, non-transactional operations, and avoid using select on large tables in the transactional setting.
 
-### No Nulls
+### No nulls
 
 Pact has no concept of a NULL value in its database metaphor. The main function for computing on database results, [with-read](/reference/functions/database#with-readh866473533), will error if any column value is not found. Authors must ensure that values are present for any transactional read. This is a safety feature to ensure _totality_ and avoid needless, unsafe control-flow surrounding null values.
 
-### Versioned History
+### Versioned history
 
 The key-row model is augmented by every change to column values being versioned by transaction ID. For example, a table with three columns "name", "age", and "role" might update "name" in transaction #1, and "age" and "role" in transaction #2. Retrieving historical data will return just the change to "name" under transaction 1, and the change to "age" and "role" in transaction #2.
 
@@ -146,7 +146,7 @@ The key-row model is augmented by every change to column values being versioned 
 
 Pact guarantees identical, correct execution at the smart-contract layer within the blockchain. As a result, the backing store need not be identical on different consensus nodes. Pact's implementation allows for integration of industrial RDBMSs, to assist large migrations onto a blockchain-based system, by facilitating bulk replication of data to downstream systems.
 
-## Types and Schemas
+## Types and schemas
 
 With Pact 2.0, Pact gains explicit type specification, albeit optional. Pact 1.0 code without types still functions as before, and writing code without types is attractive for rapid prototyping.
 
@@ -154,15 +154,15 @@ Schemas provide the main impetus for types. A schema [is defined](/reference/syn
 
 Note that schemas also can be used on/specified for object types.
 
-### Runtime Type enforcement
+### Runtime type enforcement
 
 Any types declared in code are enforced at runtime. For table schemas, this means any write to a table will be typechecked against the schema. Otherwise, if a type specification is encountered, the runtime enforces the type when the expression is evaluated.
 
-### Static Type Inference on Modules
+### Static type inference on modules
 
 With the [typecheck](/reference/functions/repl-only-functions) repl command, the Pact interpreter will analyze a module and attempt to infer types on every variable, function application or const definition. Using this in project repl scripts is helpful to aid the developer in adding "just enough types" to make the typecheck succeed. Successful typechecking is usually a matter of providing schemas for all tables, and argument types for ancillary functions that call ambiguous or overloaded native functions.
 
-### Formal Verification
+### Formal verification
 
 Pact's typechecker is designed to output a fully typechecked and inlined AST for generating formal proofs in the SMT-LIB2 language. If the typecheck does not succeed, the module is not considered "provable".
 
@@ -170,7 +170,7 @@ We see, then, that Pact code can move its way up a "safety" gradient, starting w
 
 Note that as of Pact 2.0 the formal verification function is still under development.
 
-## Keysets and Authorization
+## Keysets and authorization
 
 Pact is inspired by Bitcoin scripts to incorporate public-key authorization directly into smart contract execution and administration. Pact seeks to take this further by making single- and multi-sig interactions ubiquitous and effortless with the concept of _keysets_, meaning that single-signature mode is never assumed: anywhere public-key signatures are used, single-sig and multi-sig can interoperate effortlessly. Finally, all crypto is handled by the Pact runtime to ensure programmers can't make mistakes "writing their own crypto".
 
@@ -199,7 +199,7 @@ Examples of valid keyset JSON productions:
 
 ```
 
-### Keyset Predicates
+### Keyset predicates
 
 A keyset predicate references a function by its (optionally qualified) name, and will compare the public keys in the keyset to the key or keys used to sign the blockchain message. The function accepts two arguments, "count" and "matched", where "count" is the number of keys in the keyset and "matched" is how many keys on the message signature matched a keyset key.
 
@@ -213,7 +213,7 @@ If a keyset predicate is not specified, [keys-all](/reference/functions/keysets#
 
 Keysets can be rotated, but only by messages authorized against the current keyset definition and predicate. Once authorized, the keyset can be easily [redefined](/reference/functions/keysets#define-keyseth1939391989).
 
-### Module Table Guards
+### Module table guards
 
 When [creating](/reference/functions/database#create-tableh447366077) a table, a module name must also be specified. By this mechanism, tables are "guarded" or "encapsulated" by the module, such that direct access to the table via [data-access functions](/reference/functions/database) is authorized only by the module's governance. However, _within module functions_, table access is unconstrained. This gives contract authors great flexibility in designing data access, and is intended to enshrine the module as the main "user data access API".
 
@@ -317,7 +317,7 @@ pact> (more-hello 3)
 
 ```
 
-## Guards, Capabilities and Events
+## Guards, capabilities and events
 
 Pact 3.0 introduces powerful new concepts to allow programmers to express and implement authorization schemes correctly and easily: _guards_, which generalize keysets, and _capabilities_, which generalize authorizations or rights. In Pact 3.7, capabilities also function as [events](/build/pact/advanced#eventsh2087505209).
 
@@ -422,13 +422,23 @@ This "scoping" allows the signer to safely call untrusted code. For instance, in
 
 With that sender's signature has `(GAS)` added to it, it is scoped within gas payments in the coin contract only. Third-party code is prohibited from accessing that account during the transaction.
 
-### Signatures and Managed Capabilities
+### Signatures and managed capabilities
 
 Signature capabilities are also a mechanism to _install_ capabilities, but only if that capability is _managed_. "Vanilla" capabilities are just tickets to show before you try some protected operation, but _managed_ capabilities are able to _change the state_ of a capability as it is brought into and out of scope. The ticket metaphor breaks down here, as this is now a dynamic object that mediates whether capabilities are acquired.
 
 If a signer attaches a managed capability to their signature list, the capability is "installed", which is not the same as "granted" or "acquired": if the capability's predicate function allows this signer to install the capability, the installed version will then govern any code needing the capability to unlock some protected operation, by means of a _manager function_.
 
-#### Capability management with a manager function
+### Verifiers and capabilities
+
+Since Pact 4.11 ([KIP 0028](https://github.com/kadena-io/KIPs/pull/57)), capabilities can be installed by *verifiers*, which are also
+scoped to those capabilities that they install. A verifier is a named plugin external
+to Pact that, given some proof value—similar to a signature—can grant capabilities to perform some action.
+Whereas a capability can check that it was granted by some signer using 
+`(enforce-guard g)` with a keyset guard `g` including that signer, a 
+capability can check that it was granted by some verifier using 
+`(enforce-verifier 'name)`, given that `"name"` is the name of that verifier.
+
+### Capability management with a manager function
 
 A managed capability allows for safe interoperation with otherwise untrusted code. By signing with a managed capability, you are _allowing_ some untrusted code to _request_ grant of the capability; if the capability was not in the signature list, the untrusted code cannot request it.
 
@@ -464,7 +474,7 @@ In the following example, the capability will have "one-shot" automatic manageme
   (validate-member member))
 ```
 
-### Guards vs Capabilities
+### Guards vs capabilities
 
 Guards and capabilities can be confusing: given we have guards like keysets, what do we need the capability concept for?
 
