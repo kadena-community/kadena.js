@@ -35,6 +35,7 @@ const Transaction: React.FC = () => {
   const { loading, data, error } = useTransactionRequestKeyQuery({
     variables: transactionRequestKeyQueryVariables,
     skip: !router.query.requestKey,
+    errorPolicy: 'all',
   });
 
   useEffect(() => {
@@ -61,24 +62,13 @@ const Transaction: React.FC = () => {
       setIsLoading(false);
     }
 
-    console.log(666, data);
     if (data) {
-      console.log(444);
       setTimeout(() => {
-        console.log(22);
         setIsLoading(false);
         setInnerData(data);
       }, 200);
     }
   }, [loading, data, error, setIsLoading]);
-
-  if (error) {
-    return (
-      <Layout>
-        <LayoutHeader>An error occured</LayoutHeader>
-      </Layout>
-    );
-  }
 
   return (
     <Layout>
