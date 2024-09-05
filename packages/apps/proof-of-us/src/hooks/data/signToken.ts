@@ -16,12 +16,12 @@ export const useSignToken = () => {
     getSignature,
     isInitiator,
   } = useProofOfUs();
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [data] = useState<IProofOfUs | undefined>(undefined);
   const { account } = useAccount();
   const router = useRouter();
-  const { doSubmit } = useSubmit();
+  const { doSubmit, setIsLoading, isStatusLoading } = useSubmit();
 
   const signToken = async () => {
     if (!proofOfUs || !account || !signees) return;
@@ -29,14 +29,20 @@ export const useSignToken = () => {
     setIsLoading(true);
     setHasError(false);
 
+    console.log(proofOfUs.tx);
     try {
+      setIsLoading(true);
+
+      console.log(22);
       const { transactions, isReady } = await signSpireKey(
         [JSON.parse(proofOfUs.tx)],
-        signees as unknown as OptimalTransactionsAccount[],
+        [account],
       );
 
+      console.log('before');
       await isReady();
 
+      console.log(transactions);
       const signature = await getSignature(transactions[0]);
 
       await updateSignee({ signerStatus: 'success', signature }, true);
@@ -56,8 +62,10 @@ export const useSignToken = () => {
           }`,
         );
       }
-    } catch (e) {}
+    } catch (e) {
+      setIsLoading(false);
+    }
   };
 
-  return { isLoading, hasError, data, signToken };
+  return { isLoading: isStatusLoading, hasError, data, signToken };
 };

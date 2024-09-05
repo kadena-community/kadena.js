@@ -29,7 +29,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   const { claim } = useClaimAttendanceToken();
   const { account, isMounted, login } = useAccount();
   const { addMintingData, tokens } = useTokens();
-  const { doSubmit, isStatusLoading } = useSubmit();
+  const { doSubmit, isStatusLoading, setIsLoading } = useSubmit();
 
   const tokenId = useMemo(() => {
     const token = tokens?.find((t) => t.info?.uri === data.manifestUri);
@@ -65,6 +65,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     if (!transaction || !account) return;
 
     try {
+      setIsLoading(true);
       const { transactions, isReady } = await sign([transaction], [account]);
       await isReady();
 
@@ -77,7 +78,9 @@ export const ScanAttendanceEvent: FC<IProps> = ({
           proof,
         );
       });
-    } catch (e) {}
+    } catch (e) {
+      setIsLoading(false);
+    }
   };
 
   const startDate = new Date(data.startDate * 1000);

@@ -18,6 +18,7 @@ export const useSubmit = () => {
   const { proofOfUs, getSignees } = useProofOfUs();
   const [result, setResult] = useState<any>({});
   const [status, setStatus] = useState(SubmitStatus.IDLE);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const doSubmit = async (txArg?: string, proof?: IProofOfUsData) => {
@@ -73,6 +74,7 @@ export const useSubmit = () => {
     result,
     status,
     SubmitStatus,
-    isStatusLoading,
+    isStatusLoading: isLoading,
+    setIsLoading,
   };
 };
