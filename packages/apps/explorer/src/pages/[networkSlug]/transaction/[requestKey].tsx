@@ -35,7 +35,6 @@ const Transaction: React.FC = () => {
   const { loading, data, error } = useTransactionRequestKeyQuery({
     variables: transactionRequestKeyQueryVariables,
     skip: !router.query.requestKey,
-    errorPolicy: 'all',
   });
 
   useEffect(() => {
