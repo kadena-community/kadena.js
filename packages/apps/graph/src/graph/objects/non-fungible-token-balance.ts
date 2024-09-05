@@ -43,10 +43,8 @@ export default builder.node(
       chainId: t.exposeString('chainId'),
       version: t.exposeString('version'),
       guard: t.field({
-        type: 'Guard',
-        resolve(parent) {
-          return parent.guard;
-        },
+        type: 'KeysetGuard',
+        resolve: (parent) => parent.guard,
       }),
       info: t.field({
         type: NonFungibleToken,
