@@ -1,9 +1,12 @@
 import type { Signer, Transaction, Transfer } from '@prisma/client';
 
 export interface IGuard {
-  keys: string[];
-  predicate: 'keys-all' | 'keys-any' | 'keys-two';
+  keys: string[] | null;
+  predicate: 'keys-all' | 'keys-any' | 'keys-two' | null;
+  raw: string;
 }
+
+export interface IKeysetGuard extends IGuard {}
 
 export interface IGasLimitEstimation {
   amount: number;
@@ -11,6 +14,12 @@ export interface IGasLimitEstimation {
   usedPreflight: boolean;
   usedSignatureVerification: boolean;
   transaction: string;
+}
+
+export interface IInterfaceGuard {
+  keys: string[] | null;
+  predicate: 'keys-all' | 'keys-any' | 'keys-two' | null;
+  raw: string;
 }
 
 export const NonFungibleTokenBalanceName: 'NonFungibleTokenBalance' =

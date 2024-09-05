@@ -27,7 +27,7 @@ import { complexityPlugin } from './plugins/complexity';
 import { extensionsPlugin } from './plugins/extensions';
 import { writeSchema } from './utils/write-schema';
 
-if (dotenv.NODE_ENV === 'development') {
+if (dotenv.NODE_ENV !== 'production') {
   writeSchema();
 }
 
