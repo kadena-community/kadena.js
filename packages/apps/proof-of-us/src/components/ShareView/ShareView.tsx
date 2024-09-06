@@ -149,12 +149,9 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
     const transactionData = await createTx();
 
     if (!transactionData) return;
-    const transaction = Buffer.from(
-      JSON.stringify(transactionData.transaction),
-    ).toString('base64');
 
     updateProofOfUs({
-      tx: transaction,
+      tx: JSON.stringify(transactionData.transaction),
       requestKey: transactionData.transaction?.hash,
       tokenId: transactionData.tokenId,
       manifestData: JSON.stringify(transactionData.manifest),
