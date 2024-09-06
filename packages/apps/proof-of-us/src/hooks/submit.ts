@@ -63,12 +63,12 @@ export const useSubmit = () => {
     }
   };
 
-  const isStatusLoading =
-    status !== SubmitStatus.IDLE &&
-    status !== SubmitStatus.INCOMPLETE &&
-    status !== SubmitStatus.SUBMITABLE &&
-    status !== SubmitStatus.SUCCESS &&
-    status !== SubmitStatus.ERROR;
+  // const isStatusLoading =
+  //   status !== SubmitStatus.IDLE &&
+  //   status !== SubmitStatus.INCOMPLETE &&
+  //   status !== SubmitStatus.SUBMITABLE &&
+  //   status !== SubmitStatus.SUCCESS &&
+  //   status !== SubmitStatus.ERROR;
   return {
     doSubmit,
     result,
