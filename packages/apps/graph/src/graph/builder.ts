@@ -30,7 +30,6 @@ import type {
   IFungibleChainAccount,
   IGasLimitEstimation,
   IGraphConfiguration,
-  IGuard,
   IInterfaceGuard,
   IKeysetGuard,
   INetworkInfo,
@@ -46,6 +45,24 @@ import type {
   ITransactionResult,
   ITransactionSignature,
 } from './types/graphql-types';
+import type {
+  CapabilityGuard,
+  Guard,
+  Keyset,
+  KeysetRef,
+  ModuleGuard,
+  PactGuard,
+  PactValue,
+  PvCapToken,
+  PvGuard,
+  PvList,
+  PvLiteral,
+  PvModRef,
+  PvObject,
+  PvTime,
+  UserGuard,
+} from './types/guard';
+import { PvBool, PvDecimal, PvInteger, PvString } from './types/guard';
 
 interface IDefaultTypesExtension {
   Scalars: {
@@ -64,6 +81,22 @@ interface IDefaultTypesExtension {
     PositiveFloat: {
       Input: number;
       Output: number;
+    };
+    PvString: {
+      Input: string;
+      Output: string;
+    };
+    PvInteger: {
+      Input: PvInteger;
+      Output: PvInteger;
+    };
+    PvDecimal: {
+      Input: PvDecimal;
+      Output: PvDecimal;
+    };
+    PvBool: {
+      Input: PvBool;
+      Output: PvBool;
     };
   };
 }
@@ -92,7 +125,7 @@ export const builder = new SchemaBuilder<
       FungibleChainAccount: IFungibleChainAccount;
       GasLimitEstimation: IGasLimitEstimation;
       GraphConfiguration: IGraphConfiguration;
-      Guard: IGuard;
+      Guard: Guard;
       NonFungibleAccount: INonFungibleAccount;
       NonFungibleChainAccount: INonFungibleChainAccount;
       NonFungibleTokenBalance: INonFungibleTokenBalance;
@@ -109,6 +142,20 @@ export const builder = new SchemaBuilder<
       NetworkInfo: INetworkInfo;
       BlockNeighbor: IBlockNeighbor;
       KeysetGuard: IKeysetGuard;
+      PvLiteral: PvLiteral;
+      PvList: PvList;
+      PvGuard: PvGuard;
+      PvObject: PvObject;
+      PvModRef: PvModRef;
+      PvTime: PvTime;
+      PvCapToken: PvCapToken;
+      Keyset: Keyset;
+      KeysetRef: KeysetRef;
+      UserGuard: UserGuard;
+      CapabilityGuard: CapabilityGuard;
+      ModuleGuard: ModuleGuard;
+      PactGuard: PactGuard;
+      PactValue: PactValue;
     };
     Interfaces: {
       IGuard: IInterfaceGuard;
