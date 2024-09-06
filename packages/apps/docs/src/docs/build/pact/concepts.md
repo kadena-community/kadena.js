@@ -432,7 +432,7 @@ If a signer attaches a managed capability to their signature list, the capabilit
 
 Since Pact 4.11 ([KIP 0028](https://github.com/kadena-io/KIPs/pull/57)), capabilities can be installed by *verifiers*, which are also
 scoped to those capabilities that they install. A verifier is a named plugin external
-to Pact that, given some proof value—similar to a signature—can grant capabilities to perform some action.
+to Pact that, given some proof value—for example, a signature—can grant capabilities to perform some action.
 Whereas a capability can check that it was granted by some signer using 
 `(enforce-guard g)` with a keyset guard `g` including that signer, a 
 capability can check that it was granted by some verifier using 
@@ -928,7 +928,7 @@ Modrefs introduce indirection which increases overall complexity, making the sys
 
 ### Important concerns when using modrefs.
 
-#### Late Binding
+#### Late binding
 
 Modrefs are "late-binding", which means that the latest upgraded version of a module will be used when a module operation is invoked.
 
@@ -1034,11 +1034,11 @@ Using a module reference in a function is accomplished by specifying the type of
 (foo impl) ;; 'impl' references the module defined above, of type 'module{baz}'
 ```
 
-## Computational Model
+## Computational model
 
 Here we cover various aspects of Pact's approach to computation.
 
-### Turing-Incomplete
+### Turing-incomplete
 
 Pact is turing-incomplete. The language doesn't allow recursion. Recursion is detected before execution and results in an error. Pact also doesn't allow code to loop indefinitely. Pact does support operations on list structures using [map](/reference/functions/general#maph107868), [fold](/reference/functions/general#foldh3148801#fold) and [filter](/reference/functions/general#filterh-1274492040), but since there is no ability to define infinite lists, these are necessarily bounded.
 
@@ -1106,7 +1106,7 @@ The latter will execute slightly faster, as there is less code to interpret at t
 
 With table schemas, Pact will be strongly typed for most use cases, but functions that do not use the database might still need types. Use the [typecheck](/reference/functions/repl-only-functions) REPL function to add the necessary types. There is a small cost for type enforcement at runtime, and too many type signatures can harm readability. However types can help document an API, so this is a judgement call.
 
-### Control Flow
+### Control flow
 
 Pact supports conditionals via [if](/reference/functions/general#ifh3357), bounded looping, and of course function application.
 
@@ -1122,7 +1122,7 @@ Note that [enforce-one](/reference/functions/general#enforce-oneh281764347) (add
 
 The built-in keyset functions [keys-all](/reference/functions/keysets#keys-allh517472840), [keys-any](/reference/functions/keysets), [keys-2](/reference/functions/keysets#keys-2h-1134655847) are hardcoded in the interpreter to execute quickly. Custom keysets require runtime resolution which is slower.
 
-### Functional Concepts
+### Functional concepts
 
 Pact includes the functional-programming "greatest hits": [map](/reference/functions/general#maph107868), [fold](/reference/functions/general#foldh3148801) and [filter](/reference/functions/general#filterh-1274492040). These all employ [partial application](/reference/syntax#partial-applicationh1147799825), where the list item is appended onto the application arguments in order to serially execute the function.
 
