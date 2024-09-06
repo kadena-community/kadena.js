@@ -13,6 +13,9 @@ pages:
       blockchain:
         url: /what-is-a-blockchain
         file: /learn/what-is-a-blockchain.md
+      onboard:
+        url: /onboard
+        file: /explore-on-chain.md
       whybuild:
         url: /why-build
         file: /learn/why-build.md
@@ -42,9 +45,6 @@ pages:
     url: /build
     file: /build/build.md
     children:
-      onboard:
-        url: /onboard
-        file: /explore-on-chain.md
       quickstart:
         url: /quickstart
         file: /quick-start.md
@@ -54,6 +54,9 @@ pages:
       buildcli:
         url: /dev-with-cli
         file: /build/dev-with-cli.md
+      firstcontract:
+        url: /deploy-first-contract
+        file: /deploy-first-contract.md
       pact:
         url: /pact
         file: /build/pact/get-started-with-pact.md

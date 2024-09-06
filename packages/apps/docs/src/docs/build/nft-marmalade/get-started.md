@@ -28,8 +28,8 @@ Before you start this tutorial, verify the following basic requirements:
 
 - You have an account in the Chainweaver desktop or web application.
 
-  If you followed the [Quick start](/build/quickstart), you might already have a Chainweaver account.
-  If you don't have an account yet, follow the instructions in [Create an account wallet](/build/quickstart#create-an-account-wallet) to create one.
+  If you followed the steps in [Deploy you first contract](/build/deploy-first-contract), you might already have a Chainweaver account.
+  If you don't have an account yet, follow the instructions in [Create an account wallet](/build/deploy-first-contract#create-an-account-wallet) to create one.
 
 - You should have funds in an account on the Kadena test network.
   You can fund a new or existing account on the test network by accessing [Developer Tools](https://tools.kadena.io) in a web browser.

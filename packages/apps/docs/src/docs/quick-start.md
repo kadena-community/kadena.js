@@ -36,7 +36,7 @@ If you have everything you need, you can set up your development environment and
 
 ## Install Pact
 
-The Pact smart contract programming language is specifically designed for writing [smart contracts](/resources/glossary) to run safely and efficiently on the Kadena blockchain network. 
+The Pact smart contract programming language is specifically designed for writing [smart contracts](/learn/glossary) to run safely and efficiently on the Kadena blockchain network. 
 Follow the appropriate instructions for your operating system to Pact.
 
 - [Install Pact on Linux]()
@@ -52,10 +52,10 @@ The Kadena development network allows you to run a standalone local blockchain n
 To set up the local network, open a terminal shell on your computer then run the following commands to get the development network Docker image and start the network in a Docker container:
 
 ```bash
-{`git clone https://github.com/kadena-io/devnet
+git clone https://github.com/kadena-io/devnet
 cd devnet
 npm install
-docker run --rm --interactive --tty --publish 8080:8080 --volume kadena_devnet:/data --name devnet kadena/devnet`}
+docker run --rm --interactive --tty --publish 8080:8080 --volume kadena_devnet:/data --name devnet kadena/devnet
 ```
 
 For more information about starting the Kadena development network in a Docker container, see [Set up the local network](/build/dev-network).
@@ -67,10 +67,10 @@ You can use the Kadena command-line interface interactively or in scripts and au
 
 To install and configure the `kadena-cli` program, open a terminal shell on your computer then run the following commands:
 
-<CodeBlock language="bash">
-{`npm install --global kadena-cli
-kadena config init`}
-</CodeBlock>
+```bash
+npm install --global kadena-cli
+kadena config init
+```
 
 This command creates the `.kadena` configuration folder location is your current working directory and adds default network settings to a `networks` subfolder, then prompts you to create a wallet.
 Wallets are an important part of interacting with any blockchain, so you can create one now as part of your initial configuration steps.
@@ -92,7 +92,7 @@ You can now write and execute a simple `greeting` smart contract using the Pact 
 
 2. Copy and paste the following simple `greeting` module code, then press return:
 
-   <CodeBlock language="pact">
+   ```pact
    (namespace 'free)
    (module greeting GOVERNANCE
      (defcap GOVERNANCE () true)
@@ -100,27 +100,30 @@ You can now write and execute a simple `greeting` smart contract using the Pact 
        (format "Hello, {}! ~ from Kadena" [name])
      )
    )
-   </CodeBlock>
+   ```
    
    You should see the module loaded with output similar to the following:
 
-   <CodeBlock language="pact">
+   ```pact
    "Loaded module greeting, hash f1yyXqj5HstOni1QdZmuagUJXbu72VmYiwXua7Vp4-0"
-   </CodeBlock>
+   ```
 
-1. Call the `say-hello` function with a string similar to the following:
+3. Call the `say-hello` function with a string similar to the following:
 
-   <CodeBlock language="pact">
+   ```pact
    (say-hello "Pistolas")
-   </CodeBlock>
+   ```
 
    The function returns a greeting similar to the following:
 
-   <CodeBlock language="pact">
+   ```pact
    "Hello, Pistolas! ~ from Kadena"
-   </CodeBlock>
+   ```
 
    You can exit the Pact interpreter by pressing control-d on the keyboard.
+
+   For more information about getting started with Pact smart contracts, see [Get started with Pact](/build/pact).
+
 
 ## Next steps
 
@@ -130,9 +133,9 @@ You also got a first look at how to write and execute a simple Pact contract in 
 You can learn more about these topics in the [Build](/build) documentation for developers. 
 Here are some suggested next steps:
 
-- Start learning the Pact programming language with [Get started with Pact](/build/pact/get-started-with-pact).
-- Explore hands-on coding projects in [Coding projects](/coding-projects/coding-projects).
-- Learn how to interact with the blockchain and deployed contracts using [Kadena API](/api) calls and [call templates](/guides/craft-api-call).
+- Start learning the Pact programming language with [Get started with Pact](/build/pact).
+- Explore hands-on coding projects like the [Election workshoop](/build/election) or the [Goliath faucet contract](/build/faucet).
+- Learn how to interact with the blockchain and deployed contracts using [Pact REST API](/reference/rest-api), [Chainweb API](/reference/chainweb-api), and [call templates](/build/templates).
 - Join the [Kadena Discord community](https://discord.gg/kadena) for support and discussions.
 
 

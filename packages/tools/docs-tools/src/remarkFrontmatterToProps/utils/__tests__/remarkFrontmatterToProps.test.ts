@@ -37,7 +37,7 @@ describe('remarkFrontmatterToProps', () => {
       data: {},
       messages: [],
       history: [
-        '/Users/straatemans/Documents/projects/kadena/kadena.js/packages/apps/docs/src/pages/build/onboard/index.md',
+        '/Users/straatemans/Documents/projects/kadena/kadena.js/packages/apps/docs/src/pages/learn/onboard/index.md',
       ],
       value:
         '---\n' +

@@ -42,91 +42,76 @@ const Home: FC<IProps> = ({ popularPages, changelogs }) => {
             <Grid gap="lg" columns={{ sm: 1, md: 2 }}>
               <GridItem>
                 <DocsCard
-                  label="Engage"
-                  description="Start here to learn the basics, including blockchain fundamentals and the core concepts of the Kadena network."
+                  label="Quick start"
+                  description="Start by setting up a local development environment with the tools you need to write a simple smart contract for the Kadena network."
                 >
                   <BrowseSection marker="none">
-                    <Link
-                      className={docsCardLink}
-                      href="/learn/what-is-a-blockchain"
-                    >
-                      What is a blockchain?
-                    </Link>
-
-                    <Link className={docsCardLink} href="/learn/why-build">
-                      Why build on a blockchain?
-                    </Link>
-
-                    <Link className={docsCardLink} href="/learn/why-kadena">
-                      Why Kadena?
-                    </Link>
-
-                    <Link className={docsCardLink} href="/learn/accounts">
-                      Accounts, keys, and principals
+                    <Link className={docsCardLink} href="/build/quickstart">
+                      Quick start for Kadena developers
                     </Link>
                   </BrowseSection>
                 </DocsCard>
               </GridItem>
               <GridItem>
                 <DocsCard
-                  label="Onboard"
-                  description="Try Kadena as a first time user or start your journey as a developer with a guided tour."
+                  label="Build"
+                  description="Get started as a smart contract author or application builder with the Pact programming language, Kadena CLI, and Kadena client libraries."
                 >
                   <BrowseSection marker="none">
-                    <Link className={docsCardLink} href="/build/onboard">
-                      Explore the blockchain
+                    <Link className={docsCardLink} href="/build/pact">
+                      Get started
                     </Link>
-                    <Link className={docsCardLink} href="/build/quickstart">
+                    <Link className={docsCardLink} href="/build/pact">
+                      Develop using the Kadena CLI
+                    </Link>
+                    <Link
+                      className={docsCardLink}
+                      href="/build/deploy-first-contract"
+                    >
                       Deploy your first contract
                     </Link>
-                    <Link className={docsCardLink} href="/build/pact">
-                      Get started with Pact smart contract language
-                    </Link>
                   </BrowseSection>
                 </DocsCard>
               </GridItem>
               <GridItem>
                 <DocsCard
-                  label="Coach"
-                  description="Take your game to the next level with tools, sample code, and how-to guides."
+                  label="API"
+                  description="Use API endpoints to interact with smart contracts and connect to the Kadena blockchain."
                 >
                   <BrowseSection marker="none">
-                    <Link className={docsCardLink} href="/build/pact">
-                      Smart contracts
-                    </Link>
-                    <Link className={docsCardLink} href="/build/nft-marmalade">
-                      Non-fungible tokens
-                    </Link>
-                    <Link className={docsCardLink} href="/build/templates">
-                      Code templates
-                    </Link>
-                    <Link className={docsCardLink} href="/build/frontend">
-                      Command-line interface
-                    </Link>
-                  </BrowseSection>
-                </DocsCard>
-              </GridItem>
-              <GridItem>
-                <DocsCard
-                  label="Propel"
-                  description="Deploy your smart contracts on the network or support the infrastructure by deploying a Chainweb node."
-                >
-                  <BrowseSection marker="none">
-                    <Link className={docsCardLink} href="/deploy">
-                      Prepare to deploy
+                    <Link className={docsCardLink} href="/reference/rest-api">
+                      Pact REST API
                     </Link>
                     <Link
                       className={docsCardLink}
-                      href="/deploy/chainweb-get-started"
+                      href="/reference/chainweb-api"
                     >
-                      Manage a Chainweb node
+                      Chainweb REST API
+                    </Link>
+                    <Link
+                      className={docsCardLink}
+                      href="/reference/kadena-client"
+                    >
+                      Kadena client libraries
+                    </Link>
+                  </BrowseSection>
+                </DocsCard>
+              </GridItem>
+              <GridItem>
+                <DocsCard
+                  label="How-to guides"
+                  description="Follow the examples in the How-to guides to learn how to perform common tasks."
+                >
+                  <BrowseSection marker="none">
+                    <Link className={docsCardLink} href="/build/templates">
+                      Create a new account
+                    </Link>
+                    <Link className={docsCardLink} href="/build/templates">
+                      Get an account balance
                     </Link>
 
-                    <Link className={docsCardLink} href="/learn/chainweb">
-                      Chainweb consensus protocol
-                    </Link>
-                    <Link className={docsCardLink} href="/reference/syntax">
-                      Pact smart contract language
+                    <Link className={docsCardLink} href="/build/templates">
+                      Make a simple transfer
                     </Link>
                   </BrowseSection>
                 </DocsCard>
@@ -134,23 +119,33 @@ const Home: FC<IProps> = ({ popularPages, changelogs }) => {
 
               <GridItem rowSpan={1}>
                 <DocsCard
-                  label="Embrace"
-                  description="Find out about community programs, grants, partnerships, and business development opportunities,
-              to grow the Kadena ecosystem and how you can contribute."
+                  label="Built-in functions"
+                  description="Pact provides a large number of native built-in functions to handle different types of common tasks."
                 >
                   <BrowseSection marker="none">
-                    <Link className={docsCardLink} href="/participate">
-                      How to get involved
-                    </Link>
-                    <Link className={docsCardLink} href="/participate/docs">
-                      Contribute to doc
-                    </Link>
-
                     <Link
                       className={docsCardLink}
-                      href="https://kadena.io/grants/"
+                      href="/reference/functions/general"
                     >
-                      Grants
+                      General purpose functions
+                    </Link>
+                    <Link
+                      className={docsCardLink}
+                      href="/reference/functions/database"
+                    >
+                      Database functions
+                    </Link>
+                    <Link
+                      className={docsCardLink}
+                      href="/reference/functions/time"
+                    >
+                      Time functions and formats
+                    </Link>
+                    <Link
+                      className={docsCardLink}
+                      href="/reference/functions/operators"
+                    >
+                      Operators
                     </Link>
                   </BrowseSection>
                 </DocsCard>
@@ -158,33 +153,24 @@ const Home: FC<IProps> = ({ popularPages, changelogs }) => {
 
               <GridItem>
                 <DocsCard
-                  label="Explore beyond"
-                  description="Explore videos, whitepapers, discussion forums, and other sites and tools that are outside the scope of documentation."
+                  label="Solutions showcase"
+                  description="Explore Kadena tools and sample applications that illustrate what you can build with Kadena libraries and components."
                 >
                   <BrowseSection marker="none">
                     <Link
                       className={docsCardLink}
                       href="https://tools.kadena.io"
                     >
-                      Get KDA and developer tools
+                      Developer tools
                     </Link>
-                    <Link
-                      className={docsCardLink}
-                      href="https://academy.kadena.io"
-                    >
-                      Sign up for the Kadena Academy
+                    <Link className={docsCardLink} href="/build/nft-marmalade">
+                      Non-fungible and poly-fungible tokens
                     </Link>
-                    <Link
-                      className={docsCardLink}
-                      href="https://www.youtube.com/kadenablockchain"
-                    >
-                      Visit the Kadena video library
+                    <Link className={docsCardLink} href="/build/authentication">
+                      Authentication with Kadena SpireKey
                     </Link>
-                    <Link
-                      className={docsCardLink}
-                      href="https://www.kadena.io/blog"
-                    >
-                      Read recent articles
+                    <Link className={docsCardLink} href="/build/frontend">
+                      Kadena client libraries
                     </Link>
                   </BrowseSection>
                 </DocsCard>

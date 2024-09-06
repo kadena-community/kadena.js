@@ -12,7 +12,7 @@ tags: [pact, typescript, account, transactions, utils]
 
 ---
 
-# Documentation for smart contract authors and application builders
+# Smart contract and application builders
 
 Building applications to run on a blockchain doesn't have to be hard, time-consuming, or expensive. 
 Get started with the basics through hands-on tutorials. 
@@ -20,7 +20,7 @@ Learn how to set up a development network, create and fund a development wallet,
 
 ## Onboard
 
-If you want to experiment with interacting with a public blockchain, try the introductory applications in [Explore the blockchain](/build/onboard).
+If you want to experiment with interacting with a public blockchain, try the introductory applications in [Explore the blockchain](/learn/onboard).
 These applications enable you to explore the blockchain as a user and see blockchain activity as it happens.
 In the onboarding experience, you'll:
 

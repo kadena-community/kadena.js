@@ -195,7 +195,7 @@
     "children": [
       {
         "children": [],
-        "root": "/build/onboard",
+        "root": "/learn/onboard",
         "lastModifiedDate": "Fri, 31 May 2024 11:40:11 GMT",
         "title": "Explore the blockchain",
         "description": "Add your name to the Kadena Memory Wall on the public blockchain, see the blockchain in action using a block explorer, and create a wallet on the test network to play a game.",
