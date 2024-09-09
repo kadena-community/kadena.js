@@ -520,15 +520,21 @@ pages:
           blockheader:
             url: /blockheader
             file: /reference/chainweb/chainweb-blockheader.md
+          updates:
+            url: updates
+            files: /reference/chainweb/chainweb-block-updates.md
+          backups:
+            url: /backups
+            file: /reference/chainweb/chainweb-service-backup.md
+          nodehealth:
+            url: /node
+            file: /reference/chainweb/chainweb-service-node.md
           mining:
             url: /mining
             file: /reference/chainweb/chainweb-service-mining.md
           rosetta:
             url: /rosetta
             file: /reference/chainweb/chainweb-service-rosetta.md
-          misc:
-            url: /misc
-            file: /reference/chainweb/chainweb-service-misc.md
           datamodels:
             url: /data-models
             file: /reference/chainweb/chainweb-data-models.md

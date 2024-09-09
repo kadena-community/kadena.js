@@ -109,10 +109,12 @@ The Chainweb service API includes the following endpoints:
 - [Full block endpoints](/reference/chainweb-api/service-block)
 - [Block hash endpoints](/reference/chainweb-api/blockhash)
 - [Block header endpoints](/reference/chainweb-api/blockheader)
+- [Block updates endpoint](/reference/chainweb-api/updates)
+- [Backup endpoints](/reference/chainweb-api/backups)
+- [Node health and information](/reference/chainweb-api/node)
 - [Mining service endpoints](/reference/chainweb-api/mining)
 - [Pact REST API endpoints](/reference/rest-api)
 - [Rosetta endpoints](/reference/chainweb-api/rosetta)
-- [Maintenance and other services endpoints](/reference/chainweb-api/misc)
 
 ### Base URL
 
