@@ -20,7 +20,7 @@ The Chainweb node API consists of two distinct APIs: the peer-to-peer (P2P) API 
 - The **peer-to-peer API** contains the RPC endpoints that nodes must expose to support consensus and the queueing and processing of transactions. 
   The peer-to-peer endpoints are intended primarily for communication between Chainweb nodes.
   These endpoints are typically more efficient than the service API endpoints for most use cases. 
-  However, peer-to-peer endpoints only expose features that are required for the the peer-to-eer network to function.
+  However, peer-to-peer endpoints only expose features that are required for the peer-to-peer network to function.
   For most use cases, you should send API requests to service API endpoints.
 
 - The **service API** allows querying and control of Chainweb nodes by clients outside of the blockchain network.
