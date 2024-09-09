@@ -106,7 +106,7 @@ As a node operator, you can also choose to expose the endpoints locally or throu
 
 The Chainweb service API includes the following endpoints:
 
-- [Full block endpoints](/reference/chainweb-api/service-block)
+- [Full block endpoints](/reference/chainweb-api/full-block)
 - [Block hash endpoints](/reference/chainweb-api/blockhash)
 - [Block header endpoints](/reference/chainweb-api/blockheader)
 - [Block updates endpoint](/reference/chainweb-api/updates)

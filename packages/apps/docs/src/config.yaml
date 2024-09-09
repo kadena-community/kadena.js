@@ -512,7 +512,7 @@ pages:
             url: /config
             file: /reference/chainweb/chainweb-config.md
           block:
-            url: /service-block
+            url: /full-block
             file: /reference/chainweb/chainweb-full-block.md
           blockhash:
             url: /blockhash
@@ -528,7 +528,7 @@ pages:
             file: /reference/chainweb/chainweb-db-backups.md
           nodehealth:
             url: /node
-            file: /reference/chainweb/chainweb-service-node.md
+            file: /reference/chainweb/chainweb-node-health.md
           mining:
             url: /mining
             file: /reference/chainweb/chainweb-service-mining.md
