@@ -1,1 +1,0 @@
-export { HoverTag } from './HoverTag';
