@@ -4,9 +4,9 @@
 !.gitignore
 !_error.tsx
 !_document.tsx
+!/changelogs/*
 !_app.tsx
 !/search/*
 !/api/*
-!/changelogs/*
 
 
