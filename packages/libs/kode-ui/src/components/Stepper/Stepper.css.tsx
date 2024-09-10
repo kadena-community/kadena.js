@@ -4,7 +4,7 @@ import { globalStyle, style } from '../../styles/utils';
 const COLORS = {
   inactive: token('color.icon.base.@disabled'),
   inactiveBorder: token('color.icon.base.@disabled'),
-  inactiveBullet: token('color.icon.base.@disabled'),
+  inactiveBullet: tokens.kda.foundation.color.icon.brand.primary['@disabled'],
   active: tokens.kda.foundation.color.text.brand.primary.default,
   activeBorder: token('color.accent.brand.primary'),
   activeBullet: token('color.accent.brand.primary'),
