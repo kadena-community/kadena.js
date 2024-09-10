@@ -2,9 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { getVariants } from '../../storyDecorators/getVariants';
 
+import { MonoCheck, MonoClear } from '@kadena/kode-icons/system';
 import type { IStepProps } from './Step';
 import { Step } from './Step';
-import type { IStepperProps } from './Stepper';
 import { Stepper } from './Stepper';
 import { stepClass } from './Stepper.css';
 
@@ -42,8 +42,31 @@ export const Primary: Story = {
   render: (args) => {
     return (
       <Stepper {...args}>
-        <Step>Prince Adam</Step>
-        <Step active status={args.status}>
+        <Step icon={<MonoCheck />}>Prince Adam</Step>
+        <Step active status={args.status} icon={<MonoClear />}>
+          Power Sword
+        </Step>
+        <Step>He-man</Step>
+        <Step>Master of the Universe</Step>
+      </Stepper>
+    );
+  },
+};
+
+export const Horizontal: Story = {
+  name: 'Stepper Horizontal',
+  args: {
+    status: 'valid',
+  },
+  render: (args) => {
+    return (
+      <Stepper {...args} direction="horizontal">
+        <Step icon={<MonoCheck />}>Prince Adam</Step>
+        <Step
+          active
+          status={args.status}
+          icon={args.status === 'error' ? <MonoClear /> : <MonoCheck />}
+        >
           Power Sword
         </Step>
         <Step>He-man</Step>

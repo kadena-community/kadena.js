@@ -1,7 +1,5 @@
-import { MonoCheck } from '@kadena/kode-icons/system';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
-import classNames from 'classnames';
-import type { ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import React from 'react';
 import { Stack } from '../Layout/Stack/Stack';
 import { bulletClass, checkClass, stepClass } from './Stepper.css';
@@ -12,11 +10,13 @@ export interface IStepProps {
   status?: Variants['status'];
   children: ReactNode;
   active?: Variants['active'];
+  icon?: ReactElement;
 }
 export const Step = ({
   children,
   active = false,
   status = 'valid',
+  icon,
 }: IStepProps) => {
   return (
     <Stack
@@ -27,9 +27,9 @@ export const Step = ({
       data-active={active}
     >
       <Stack className={bulletClass({ status, active })} />
-      <Stack marginInlineStart="lg" gap="sm">
+      <Stack marginInlineStart="lg" gap="sm" alignItems="center">
         {children}
-        <MonoCheck className={checkClass} fontSize="lg" />
+        {icon && <Stack className={checkClass}>{icon}</Stack>}
       </Stack>
     </Stack>
   );

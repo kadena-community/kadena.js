@@ -1,14 +1,32 @@
-import { recipe, token } from '../../styles';
+import { recipe, token, tokens } from '../../styles';
 import { globalStyle, style } from '../../styles/utils';
 
-export const stepperClass = style({});
+export const stepperClass = recipe({
+  base: {},
+  variants: {
+    direction: {
+      vertical: {},
+      horizontal: {},
+    },
+  },
+});
 
 const COLORS = {
   inactive: token('color.icon.base.@disabled'),
-  active: token('color.accent.brand.primary'),
-  valid: token('color.accent.brand.primary'),
-  error: token('color.icon.semantic.negative.@active'),
-  disabled: token('color.icon.base.@disabled'),
+  inactiveBorder: token('color.icon.base.@disabled'),
+  inactiveBullet: token('color.icon.base.@disabled'),
+  active: tokens.kda.foundation.color.text.brand.primary.default,
+  activeBorder: token('color.accent.brand.primary'),
+  activeBullet: token('color.accent.brand.primary'),
+  valid: tokens.kda.foundation.color.text.brand.primary.default,
+  validBorder: token('color.accent.brand.primary'),
+  validBullet: token('color.accent.brand.primary'),
+  error: tokens.kda.foundation.color.text.semantic.negative.default,
+  errorBorder: token('color.icon.semantic.negative.@active'),
+  errorBullet: tokens.kda.foundation.color.icon.semantic.negative['@active'],
+  disabled: tokens.kda.foundation.color.text.base['@disabled'],
+  disabledBorder: token('color.icon.base.@disabled'),
+  disabledBullet: token('color.icon.base.@disabled'),
 } as const;
 
 export const stepClass = recipe({
@@ -17,6 +35,7 @@ export const stepClass = recipe({
     position: 'relative',
     paddingBlock: token('spacing.md'),
     color: COLORS.valid,
+    fontSize: token('typography.fontSize.sm'),
 
     selectors: {
       '&:before, &:after': {
@@ -27,7 +46,7 @@ export const stepClass = recipe({
         borderWidth: '0',
         borderInlineEndStyle: 'solid',
         borderInlineEndWidth: '1px',
-        borderInlineEndColor: COLORS.valid,
+        borderInlineEndColor: COLORS.validBorder,
         height: '50%',
       },
       '&:before': {
@@ -48,7 +67,7 @@ export const stepClass = recipe({
       inactive: {
         color: COLORS.inactive,
         '&:after': {
-          borderInlineEndColor: COLORS.inactive,
+          borderInlineEndColor: COLORS.inactiveBorder,
         },
       },
       active: {},
@@ -58,7 +77,7 @@ export const stepClass = recipe({
         selectors: {
           '&:after': {
             borderInlineEndStyle: 'dashed',
-            borderInlineEndColor: COLORS.error,
+            borderInlineEndColor: COLORS.errorBorder,
           },
         },
       },
@@ -67,7 +86,7 @@ export const stepClass = recipe({
         selectors: {
           '&:after': {
             borderInlineEndStyle: 'dashed',
-            borderInlineEndColor: COLORS.disabled,
+            borderInlineEndColor: COLORS.disabledBorder,
           },
         },
       },
@@ -90,16 +109,20 @@ export const bulletClass = recipe({
       [`${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.inactive} ~ ${stepClass.classNames.base} &, 
         ${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.valid} ~ ${stepClass.classNames.base} &`]:
         {
-          backgroundColor: COLORS.inactive,
+          backgroundColor: COLORS.inactiveBullet,
         },
       [`${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.active} ~ ${stepClass.classNames.base} &`]:
         {
-          backgroundColor: COLORS.disabled,
+          backgroundColor: COLORS.disabledBullet,
+        },
+      [`${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.error} ~ ${stepClass.classNames.base} &`]:
+        {
+          backgroundColor: COLORS.disabledBullet,
         },
       [`${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.error} ~ ${stepClass.classNames.base} &,
         ${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.disabled} ~ ${stepClass.classNames.base} &`]:
         {
-          backgroundColor: COLORS.disabled,
+          backgroundColor: COLORS.disabledBullet,
         },
     },
   },
@@ -116,19 +139,19 @@ export const bulletClass = recipe({
     },
     status: {
       inactive: {
-        backgroundColor: COLORS.inactive,
+        backgroundColor: COLORS.inactiveBullet,
       },
       active: {
-        backgroundColor: COLORS.active,
+        backgroundColor: COLORS.activeBullet,
       },
       valid: {
-        backgroundColor: COLORS.valid,
+        backgroundColor: COLORS.validBullet,
       },
       error: {
-        backgroundColor: COLORS.error,
+        backgroundColor: COLORS.errorBullet,
       },
       disabled: {
-        backgroundColor: COLORS.disabled,
+        backgroundColor: COLORS.disabledBullet,
       },
     },
   },
@@ -143,13 +166,13 @@ globalStyle(
 globalStyle(
   `${stepClass.classNames.variants.active.true} ~ ${stepClass.classNames.base}:before`,
   {
-    borderColor: COLORS.disabled,
+    borderColor: COLORS.disabledBorder,
   },
 );
 globalStyle(
   `${stepClass.classNames.variants.active.true} ~ ${stepClass.classNames.base}:after`,
   {
-    borderColor: COLORS.disabled,
+    borderColor: COLORS.disabledBorder,
   },
 );
 
@@ -172,6 +195,7 @@ globalStyle(
 );
 
 export const checkClass = style({
+  fontSize: token('typography.fontSize.xs'),
   selectors: {
     [`${stepClass.classNames.variants.active.true} &`]: {
       display: 'none',
