@@ -124,7 +124,10 @@ export const dotenv: {
     false,
   ),
   TRACING_LOG_FILENAME: or(process.env.TRACING_LOG_FILENAME, 'traces.log'),
-  SENTRY_DSN: or(process.env.SENTRY_DSN, undefined),
+  SENTRY_DSN: or(
+    process.env.SENTRY_DSN,
+    'https://0a574470a6b7100e63deb885e9a81f4b@o4507570953584640.ingest.de.sentry.io/4507571249676368',
+  ),
   SIMULATE_DEFAULT_CHAIN_ID: or(
     process.env.SIMULATE_DEFAULT_CHAIN_ID as ChainId,
     '0' as ChainId,

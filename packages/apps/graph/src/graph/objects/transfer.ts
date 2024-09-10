@@ -87,8 +87,10 @@ export default builder.prismaNode(Prisma.ModelName.Transfer, {
 
           if (parent.senderAccount === '') {
             if (!parent.transaction?.pactId) {
-              console.log('this should not happen');
-              throw new Error('unexpected crosschain transfer');
+              const msg =
+                'Unexpected crosschain transfer: Crosschain transfer without pactId';
+              console.log(msg);
+              throw new Error(msg);
             }
             // this is the receiving side of the crosschain transfer
             // we're looking for a transaction that has the same requestKey as the pactId
@@ -97,19 +99,17 @@ export default builder.prismaNode(Prisma.ModelName.Transfer, {
             };
           }
 
-          const counterpartTx = await prismaClient.transaction.findFirstOrThrow(
-            {
-              where,
-              include: {
-                transfers: {
-                  where: {
-                    amount: parent.amount,
-                  },
-                  take: 1,
+          const counterpartTx = await prismaClient.transaction.findFirst({
+            where,
+            include: {
+              transfers: {
+                where: {
+                  amount: parent.amount,
                 },
+                take: 1,
               },
             },
-          );
+          });
 
           if (counterpartTx) {
             return counterpartTx.transfers[0];
