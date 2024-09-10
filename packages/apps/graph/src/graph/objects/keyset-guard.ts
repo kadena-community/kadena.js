@@ -1,25 +1,16 @@
 import { builder } from '../builder';
-import { GenericGuard } from './guard';
+import { Guard, IGuard } from './guard';
 
 // KeysetGuard
 //   {"keys":Array[String] ,"pred":String }
-export class KeysetGuard extends GenericGuard {
-  constructor(
-    public raw: string,
-    public predicate: string,
-    public keys: string[],
-  ) {
-    super(raw, predicate, keys);
-  }
-}
 
-builder.objectType(KeysetGuard, {
-  name: 'KeysetGuard',
-  interfaces: [GenericGuard],
+builder.objectType(Guard, {
+  name: 'Guard',
+  interfaces: [IGuard],
   fields: (t) => ({
     raw: t.expose('raw', { type: 'String' }),
-    predicate: t.expose('predicate', { type: 'String', nullable: true }),
-    keys: t.exposeStringList('keys', { nullable: true }),
+    predicate: t.expose('predicate', { type: 'String' }),
+    keys: t.exposeStringList('keys'),
   }),
 });
 

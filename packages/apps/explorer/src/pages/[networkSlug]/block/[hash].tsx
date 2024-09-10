@@ -192,11 +192,11 @@ const Block: React.FC = () => {
                 },
                 {
                   key: 'Public Keys',
-                  value: innerData.block.minerAccount.guard.keys,
+                  value: innerData.block.minerAccount.guard.keys ?? '',
                 },
                 {
                   key: 'Predicate',
-                  value: innerData.block.minerAccount.guard.predicate,
+                  value: innerData.block.minerAccount.guard.predicate ?? '',
                 },
               ]}
             />

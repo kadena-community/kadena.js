@@ -51,8 +51,19 @@ export const FungibleChainAccountTable = (
                   {chainAccount.balance}
                 </Link>
               </Cell>
-              <Cell>{chainAccount.guard.predicate}</Cell>
-              <Cell>{chainAccount.guard.keys.join(', ')}</Cell>
+              {chainAccount.guard.predicate !== undefined &&
+              chainAccount.guard.keys !== undefined &&
+              chainAccount.guard.keys !== null ? (
+                <>
+                  <Cell>{chainAccount.guard.predicate}</Cell>
+                  <Cell>{chainAccount.guard.keys.join(', ')}</Cell>
+                </>
+              ) : (
+                <>
+                  <Cell>{chainAccount.guard.raw}</Cell>
+                  <Cell>{''}</Cell>
+                </>
+              )}
             </Row>
           ))}
         </TableBody>

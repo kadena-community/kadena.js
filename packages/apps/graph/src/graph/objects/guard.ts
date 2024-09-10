@@ -1,25 +1,17 @@
 import { builder } from '../builder';
+import { IInterfaceGuard } from '../types/graphql-types';
 
-export class GenericGuard {
+export class Guard implements IInterfaceGuard {
   constructor(
     public raw: string,
-    public predicate: string | null,
-    public keys: string[] | null,
+    public predicate: IInterfaceGuard['predicate'],
+    public keys: string[] = [],
   ) {}
 }
 
 // Union Guard =
 //   Keyset | KeysetRef | UserGuard | CapabilityGuard | ModuleGuard | PactGuard
-export enum GuardTypes {
-  KEYSET,
-  KEYSETREF,
-  USERGUARD,
-  CAPABILITYGUARD,
-  MODULEGUARD,
-  PACTGUARD,
-}
-
-builder.interfaceType(GenericGuard, {
+export const IGuard = builder.interfaceType(Guard, {
   name: 'IGuard',
   description:
     'A guard. Has values `keys`, `predicate` to provide backwards compatibility for `KeysetGuard`.',
@@ -29,18 +21,12 @@ builder.interfaceType(GenericGuard, {
         JSON.stringify({ keys: parent.keys, predicate: parent.predicate }),
     }),
     predicate: t.string({
-      nullable: true,
       deprecationReason:
         'Use `... on KeysetGuard { keys predicate }` instead when working with Keysets',
     }),
     keys: t.stringList({
-      nullable: true,
       deprecationReason:
         'Use `... on KeysetGuard { keys predicate }` instead when working with Keysets',
     }),
   }),
-});
-
-builder.enumType(GuardTypes, {
-  name: 'GuardType',
 });

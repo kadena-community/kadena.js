@@ -30,7 +30,7 @@ import type {
   IFungibleChainAccount,
   IGasLimitEstimation,
   IGraphConfiguration,
-  IGuard,
+  Guard,
   IInterfaceGuard,
   IKeysetGuard,
   INetworkInfo,
@@ -92,7 +92,7 @@ export const builder = new SchemaBuilder<
       FungibleChainAccount: IFungibleChainAccount;
       GasLimitEstimation: IGasLimitEstimation;
       GraphConfiguration: IGraphConfiguration;
-      Guard: IGuard;
+      Guard: Guard;
       NonFungibleAccount: INonFungibleAccount;
       NonFungibleChainAccount: INonFungibleChainAccount;
       NonFungibleTokenBalance: INonFungibleTokenBalance;

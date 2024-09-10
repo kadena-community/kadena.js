@@ -1,12 +1,12 @@
 import type { Signer, Transaction, Transfer } from '@prisma/client';
 
-export interface IGuard {
+export interface Guard {
   keys: string[] | null;
   predicate: 'keys-all' | 'keys-any' | 'keys-two' | null;
   raw: string;
 }
 
-export interface IKeysetGuard extends IGuard {}
+export interface IKeysetGuard extends Guard {}
 
 export interface IGasLimitEstimation {
   amount: number;
@@ -17,8 +17,8 @@ export interface IGasLimitEstimation {
 }
 
 export interface IInterfaceGuard {
-  keys: string[] | null;
-  predicate: 'keys-all' | 'keys-any' | 'keys-two' | null;
+  keys: string[];
+  predicate: 'keys-all' | 'keys-any' | 'keys-two';
   raw: string;
 }
 
@@ -31,7 +31,7 @@ export interface INonFungibleTokenBalance {
   balance: number;
   accountName: string;
   chainId: string;
-  guard: IGuard;
+  guard: Guard;
   info?: INonFungibleToken;
   version: string;
 }
@@ -52,7 +52,7 @@ export interface IFungibleChainAccount {
   chainId: string;
   fungibleName: string;
   accountName: string;
-  guard: IGuard;
+  guard: Guard;
   balance: number;
   transactions: Transaction[];
   transfers: Transfer[];
