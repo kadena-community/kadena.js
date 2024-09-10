@@ -75,6 +75,9 @@ export const createWalletConnectQuicksign: typeof createQuicksignWithWalletConne
 export const createWalletConnectSign: typeof createSignWithWalletConnect;
 
 // @public
+export type EckoStatus = 'success' | 'fail';
+
+// @public
 export const getHostUrl: (hostBaseUrl: string) => ({ networkId, chainId }: INetworkOptions) => string;
 
 // @public (undocumented)
@@ -134,6 +137,8 @@ export { ICommandResult }
 // @public
 export interface ICommonEckoFunctions {
     // (undocumented)
+    checkStatus: (networkId: string) => Promise<IEckoConnectOrStatusResponse | undefined>;
+    // (undocumented)
     connect: (networkId: string) => Promise<boolean>;
     // (undocumented)
     isConnected: (networkId: string) => Promise<boolean>;
@@ -172,6 +177,20 @@ export interface ICreateSignWithKeypair {
     (key: IKeyPair): ISignFunction;
     // (undocumented)
     (keys: IKeyPair[]): ISignFunction;
+}
+
+// @public
+export interface IEckoConnectOrStatusResponse {
+    // (undocumented)
+    account?: {
+        account: string;
+        publicKey: string;
+        connectedSites: string[];
+    };
+    // (undocumented)
+    message?: string;
+    // (undocumented)
+    status: EckoStatus;
 }
 
 // @public

@@ -498,15 +498,58 @@ pages:
       spirekey:
         url: /spirekey
         file: /reference/spirekey-ref.md
+      chainwebapi:
+        url: /chainweb-api
+        file: /reference/chainweb/chainweb-api.md
+        children:
+          cut:
+            url: /cut
+            file: /reference/chainweb/chainweb-cut.md
+          payload:
+            url: /payload
+            file: /reference/chainweb/chainweb-payload.md
+          mempool:
+            url: /mempool
+            file: /reference/chainweb/chainweb-mempool.md
+          peer:
+            url: /peer
+            file: /reference/chainweb/chainweb-peer.md
+          config:
+            url: /config
+            file: /reference/chainweb/chainweb-config.md
+          block:
+            url: /service-block
+            file: /reference/chainweb/chainweb-service-block.md
+          blockhash:
+            url: /blockhash
+            file: /reference/chainweb/chainweb-blockhash.md
+          blockheader:
+            url: /blockheader
+            file: /reference/chainweb/chainweb-blockheader.md
+          mining:
+            url: /mining
+            file: /reference/chainweb/chainweb-service-mining.md
+          rosetta:
+            url: /rosetta
+            file: /reference/chainweb/chainweb-service-rosetta.md
+          misc:
+            url: /misc
+            file: /reference/chainweb/chainweb-service-misc.md
+          datamodels:
+            url: /data-models
+            file: /reference/chainweb/chainweb-data-models.md
+          binary:
+            url: /binary-encoding
+            file: /reference/chainweb/chainweb-encoding.md
       chainwebref:
         url: /chainweb-ref
-        file: /reference/chainweb/api/chainweb-api.tsx
+        file: /reference/chainweb/chainweb-clients.md
         children:
           nodeclient:
             url: /node-client
-            file: /reference/chainweb/chainweb-node.md
+            file: /reference/chainweb/chainweb-node-client.md
           streamclient:
-            file: /reference/chainweb/chainweb-stream.md
+            file: /reference/chainweb/chainweb-stream-client.md
             url: /stream-client
           jsbindings:
             file: /reference/chainweb/chainwebjs.md

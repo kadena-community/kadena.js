@@ -1,8 +1,10 @@
+import { IUnsignedCommand } from '@kadena/client';
+
 export const setSignatures = (
-  tx: string,
+  tx: any,
   signees: IProofOfUsSignee[] = [],
-): string => {
-  const innerTx = JSON.parse(Buffer.from(tx, 'base64').toString());
+): IUnsignedCommand => {
+  const innerTx = tx;
   const { signers } = JSON.parse(innerTx.cmd);
   const sigs = signers.reduce((acc: any, val: any) => {
     const pubKey = val.pubKey;
@@ -16,5 +18,5 @@ export const setSignatures = (
     return acc;
   }, []);
 
-  return Buffer.from(JSON.stringify({ ...innerTx, sigs })).toString('base64');
+  return { ...innerTx, sigs };
 };

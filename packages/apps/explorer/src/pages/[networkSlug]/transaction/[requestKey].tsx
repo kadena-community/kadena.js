@@ -58,15 +58,27 @@ const Transaction: React.FC = () => {
         label: 'Something went wrong',
         body: 'Loading of transaction requestkey data failed',
       });
+      setIsLoading(false);
     }
 
+    console.log(666, data);
     if (data) {
+      console.log(444);
       setTimeout(() => {
+        console.log(22);
         setIsLoading(false);
         setInnerData(data);
       }, 200);
     }
-  }, [loading, data, error]);
+  }, [loading, data, error, setIsLoading]);
+
+  if (error) {
+    return (
+      <Layout>
+        <LayoutHeader>An error occured</LayoutHeader>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
