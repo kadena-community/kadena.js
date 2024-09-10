@@ -463,7 +463,7 @@ export const version2PathUrlRedirects = [
   },
   {
     source: '/reference/chainweb-api/misc',
-    destination: '/reference/chainweb-api/',
+    destination: '/reference/chainweb-api/updates',
     permanent: true,
   },
   {
