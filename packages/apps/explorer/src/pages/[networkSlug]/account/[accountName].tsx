@@ -101,6 +101,7 @@ const Account: FC = () => {
             key: key,
             balance: val.balance,
             predicate: val.guard.predicate,
+            raw: val.guard.raw,
             chainId: val.chainId,
           };
         });

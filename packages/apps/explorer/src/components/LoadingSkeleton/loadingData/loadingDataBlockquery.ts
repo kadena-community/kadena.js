@@ -15,6 +15,7 @@ export const loadingData: BlockQuery = {
       guard: {
         predicate: '',
         keys: ['0'],
+        raw: '',
       },
     },
     neighbors: [
