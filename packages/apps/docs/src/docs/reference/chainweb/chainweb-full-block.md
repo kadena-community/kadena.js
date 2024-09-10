@@ -1,17 +1,17 @@
 ---
-title: Block endpoints
+title: Full block endpoints
 description:
   Provides reference information for the chainweb-node service API block endpoints.
 menu: Chainweb API
-label: Block service endpoints
+label: Full block endpoints
 order: 2
 layout: full
 tags: ['chainweb', 'node api', 'chainweb api', 'api reference']
 ---
 
-# Block service endpoints
+# Full block endpoints
 
-Block service API endpoints return whole blocks—headers and payloads—from the chain database.
+Block service API endpoints return full blocks—headers and payloads—from the chain database.
 Generally, blocks are returned in **ascending** order and include orphaned blocks.
 
 If you only want to query blocks that are included in the winning branch of the chain, you can call the `branch` endpoints.

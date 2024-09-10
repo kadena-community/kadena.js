@@ -21,6 +21,13 @@ export const checkIgnoredRepos = (repo: string) => {
 
 export const copyPage = (parentDir: string, page: IConfigTreeItem): void => {
   const dir = `${parentDir}${page.url}`;
+
+  if (!page.file) {
+    throw new Error(
+      `page.file does not exist in following object: ${JSON.stringify(page, null, 2)}`,
+    );
+  }
+
   const file = `${dir}/index.${getFileExtension(page.file)}`;
 
   fs.mkdirSync(`./src/pages${dir}`, { recursive: true });
