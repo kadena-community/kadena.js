@@ -1,5 +1,14 @@
 # @kadena/graph
 
+## 1.0.11
+
+### Patch Changes
+
+- 7ef4a06: Fix issue where missing crosschain transfer would error
+- Updated dependencies \[d07b424]
+  - @kadena/client\@1.14.0
+  - @kadena/client-utils\@0.9.1
+
 ## 1.0.10
 
 ### Patch Changes
