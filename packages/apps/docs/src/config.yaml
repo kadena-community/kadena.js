@@ -522,7 +522,7 @@ pages:
             file: /reference/chainweb/chainweb-blockheader.md
           updates:
             url: /updates
-            files: /reference/chainweb/chainweb-block-updates.md
+            file: /reference/chainweb/chainweb-block-updates.md
           backups:
             url: /backups
             file: /reference/chainweb/chainweb-db-backups.md
