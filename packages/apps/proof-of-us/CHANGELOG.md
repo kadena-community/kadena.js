@@ -1,5 +1,17 @@
 # @kadena/proof-of-us
 
+## 0.5.7
+
+### Patch Changes
+
+- 73dc734: update the spirekey package
+- Updated dependencies \[ae3dbc7]
+- Updated dependencies \[d07b424]
+- Updated dependencies \[7ef4a06]
+  - @kadena/kode-ui\@0.15.0
+  - @kadena/client\@1.14.0
+  - @kadena/graph\@1.0.11
+
 ## 0.5.6
 
 ### Patch Changes
