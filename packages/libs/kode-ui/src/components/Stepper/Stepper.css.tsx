@@ -3,12 +3,20 @@ import { globalStyle, style } from '../../styles/utils';
 
 export const stepperClass = style({});
 
+const COLORS = {
+  inactive: token('color.icon.base.@disabled'),
+  active: token('color.accent.brand.primary'),
+  valid: token('color.accent.brand.primary'),
+  error: token('color.icon.semantic.negative.@active'),
+  disabled: token('color.icon.base.@disabled'),
+} as const;
+
 export const stepClass = recipe({
   base: {
     display: 'flex',
     position: 'relative',
     paddingBlock: token('spacing.md'),
-    color: token('color.text.brand.primary.default'),
+    color: COLORS.valid,
 
     selectors: {
       '&:before, &:after': {
@@ -19,9 +27,7 @@ export const stepClass = recipe({
         borderWidth: '0',
         borderInlineEndStyle: 'solid',
         borderInlineEndWidth: '1px',
-        borderInlineEndColor: token(
-          'color.background.accent.primary.inverse.default',
-        ),
+        borderInlineEndColor: COLORS.valid,
         height: '50%',
       },
       '&:before': {
@@ -39,22 +45,29 @@ export const stepClass = recipe({
   },
   variants: {
     status: {
-      inactive: {},
+      inactive: {
+        color: COLORS.inactive,
+        '&:after': {
+          borderInlineEndColor: COLORS.inactive,
+        },
+      },
       active: {},
       valid: {},
       error: {
+        color: COLORS.error,
         selectors: {
           '&:after': {
             borderInlineEndStyle: 'dashed',
-            borderInlineEndColor: token('color.icon.semantic.negative.@active'),
+            borderInlineEndColor: COLORS.error,
           },
         },
       },
       disabled: {
+        color: COLORS.disabled,
         selectors: {
           '&:after': {
             borderInlineEndStyle: 'dashed',
-            borderInlineEndColor: token('color.icon.base.@disabled'),
+            borderInlineEndColor: COLORS.disabled,
           },
         },
       },
@@ -66,25 +79,6 @@ export const stepClass = recipe({
   },
 });
 
-globalStyle(
-  `${stepClass.classNames.variants.active.true} ~ ${stepClass.classNames.base}`,
-  {
-    color: token('color.text.gray.default'),
-  },
-);
-globalStyle(
-  `${stepClass.classNames.variants.active.true} ~ ${stepClass.classNames.base}:before`,
-  {
-    borderColor: token('color.icon.brand.primary.@disabled'),
-  },
-);
-globalStyle(
-  `${stepClass.classNames.variants.active.true} ~ ${stepClass.classNames.base}:after`,
-  {
-    borderColor: token('color.icon.brand.primary.@disabled'),
-  },
-);
-
 export const bulletClass = recipe({
   base: {
     position: 'absolute',
@@ -92,6 +86,22 @@ export const bulletClass = recipe({
 
     transform: 'translateX(-50%)',
     zIndex: 1,
+    selectors: {
+      [`${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.inactive} ~ ${stepClass.classNames.base} &, 
+        ${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.valid} ~ ${stepClass.classNames.base} &`]:
+        {
+          backgroundColor: COLORS.inactive,
+        },
+      [`${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.active} ~ ${stepClass.classNames.base} &`]:
+        {
+          backgroundColor: COLORS.disabled,
+        },
+      [`${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.error} ~ ${stepClass.classNames.base} &,
+        ${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.disabled} ~ ${stepClass.classNames.base} &`]:
+        {
+          backgroundColor: COLORS.disabled,
+        },
+    },
   },
   variants: {
     active: {
@@ -106,42 +116,58 @@ export const bulletClass = recipe({
     },
     status: {
       inactive: {
-        backgroundColor: token('color.icon.base.@disabled'),
+        backgroundColor: COLORS.inactive,
       },
       active: {
-        backgroundColor: token('color.accent.brand.primary'),
+        backgroundColor: COLORS.active,
       },
       valid: {
-        backgroundColor: token('color.accent.brand.primary'),
+        backgroundColor: COLORS.valid,
       },
       error: {
-        backgroundColor: token('color.icon.semantic.negative.@active'),
+        backgroundColor: COLORS.error,
       },
       disabled: {
-        backgroundColor: token('color.icon.base.@disabled'),
+        backgroundColor: COLORS.disabled,
       },
     },
   },
 });
 
 globalStyle(
-  `${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.active} ~ ${stepClass.classNames.base} ${bulletClass.classNames.base}`,
+  `${stepClass.classNames.variants.active.true} ~ ${stepClass.classNames.base}`,
   {
-    backgroundColor: token('color.icon.base.@disabled'),
+    color: COLORS.inactive,
+  },
+);
+globalStyle(
+  `${stepClass.classNames.variants.active.true} ~ ${stepClass.classNames.base}:before`,
+  {
+    borderColor: COLORS.disabled,
+  },
+);
+globalStyle(
+  `${stepClass.classNames.variants.active.true} ~ ${stepClass.classNames.base}:after`,
+  {
+    borderColor: COLORS.disabled,
   },
 );
 
 globalStyle(
-  `${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.error} ~ ${stepClass.classNames.base} ${bulletClass.classNames.base}`,
+  `${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.disabled} ~ ${stepClass.classNames.base},
+  ${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.error} ~ ${stepClass.classNames.base}`,
   {
-    backgroundColor: token('color.icon.base.@disabled'),
+    color: COLORS.disabled,
   },
 );
 
 globalStyle(
-  `${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.disabled} ~ ${stepClass.classNames.base} ${bulletClass.classNames.base}`,
+  `${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.error} ~ ${stepClass.classNames.base}:after,
+  ${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.error} ~ ${stepClass.classNames.base}:before,
+  ${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.disabled} ~ ${stepClass.classNames.base}:after,
+  ${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.disabled} ~ ${stepClass.classNames.base}:before`,
   {
-    backgroundColor: token('color.icon.base.@disabled'),
+    borderInlineEndStyle: 'dashed',
   },
 );
 
