@@ -1,12 +1,12 @@
 import { builder } from '../builder';
-import { Guard, IGuard } from './guard';
+import { Guard, InterfaceGuard } from './guard';
 
 // KeysetGuard
 //   {"keys":Array[String] ,"pred":String }
 
 builder.objectType(Guard, {
   name: 'Guard',
-  interfaces: [IGuard],
+  interfaces: [InterfaceGuard],
   fields: (t) => ({
     raw: t.expose('raw', { type: 'String' }),
     predicate: t.expose('predicate', { type: 'String' }),

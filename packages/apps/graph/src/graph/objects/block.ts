@@ -8,7 +8,7 @@ import {
 import { normalizeError } from '@utils/errors';
 import { networkData } from '@utils/network';
 import { builder } from '../builder';
-import type { Guard } from '../types/graphql-types';
+import type { IGuard } from '../types/graphql-types';
 import { FungibleChainAccountName } from '../types/graphql-types';
 import FungibleChainAccount from './fungible-chain-account';
 
@@ -69,7 +69,7 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
               },
             })
           )?.map((x) => x.key),
-          predicate: parent.predicate as Guard['predicate'],
+          predicate: parent.predicate as IGuard['predicate'],
           raw: '',
         },
         balance: 0,

@@ -72,8 +72,8 @@ export async function getTokenDetails(
         tokenId: event.token,
         chainId: finalChainId,
         guard: {
-          keys: accountDetails?.guard.keys ?? null,
-          predicate: accountDetails?.guard.pred ?? null,
+          keys: accountDetails?.guard.keys ?? [],
+          predicate: accountDetails?.guard.pred ?? '',
           raw: JSON.stringify(accountDetails!.guard),
         },
         version: event.version!,

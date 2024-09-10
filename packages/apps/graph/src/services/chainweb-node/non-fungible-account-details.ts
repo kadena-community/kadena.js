@@ -3,7 +3,7 @@ import { Pact, createClient } from '@kadena/client';
 import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
 import { networkData } from '@utils/network';
-import type { Guard } from '../../graph/types/graphql-types';
+import type { IGuard } from '../../graph/types/graphql-types';
 import { PactCommandError } from './utils';
 
 export interface INonFungibleChainAccountDetails {
@@ -12,7 +12,7 @@ export interface INonFungibleChainAccountDetails {
   balance: number;
   guard: {
     keys: string[];
-    pred: Guard['predicate'];
+    pred: IGuard['predicate'];
     raw: string;
   };
 }

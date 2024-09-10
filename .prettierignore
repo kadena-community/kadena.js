@@ -1,5 +1,5 @@
 .github/CODEOWNERS
 .github/workflows
 .github/actions
-.changeset
+!.changeset
 pnpm-lock.yaml

@@ -26,8 +26,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 export interface IKeyProps {
   chainId: string;
-  key?: string;
-  predicate?: string;
+  key: string;
+  predicate: string;
 }
 
 const Account: FC = () => {

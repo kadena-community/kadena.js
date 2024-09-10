@@ -1,17 +1,25 @@
 import { builder } from '../builder';
-import { IInterfaceGuard } from '../types/graphql-types';
+import type { IGuard } from '../types/graphql-types';
 
-export class Guard implements IInterfaceGuard {
-  constructor(
-    public raw: string,
-    public predicate: IInterfaceGuard['predicate'],
-    public keys: string[] = [],
-  ) {}
+export class Guard implements IGuard {
+  public raw: string;
+  public predicate: IGuard['predicate'];
+  public keys: string[] = [];
+
+  public constructor(
+    raw: string,
+    predicate: IGuard['predicate'],
+    keys: string[] = [],
+  ) {
+    this.raw = raw;
+    this.predicate = predicate;
+    this.keys = keys;
+  }
 }
 
 // Union Guard =
 //   Keyset | KeysetRef | UserGuard | CapabilityGuard | ModuleGuard | PactGuard
-export const IGuard = builder.interfaceType(Guard, {
+export const InterfaceGuard = builder.interfaceType(Guard, {
   name: 'IGuard',
   description:
     'A guard. Has values `keys`, `predicate` to provide backwards compatibility for `KeysetGuard`.',

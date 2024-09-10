@@ -2,7 +2,7 @@ import { details } from '@kadena/client-utils/coin';
 import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
 import { networkData } from '@utils/network';
-import type { Guard } from '../../graph/types/graphql-types';
+import type { IGuard } from '../../graph/types/graphql-types';
 import { PactCommandError } from './utils';
 
 export interface IFungibleChainAccountDetails {
@@ -10,7 +10,7 @@ export interface IFungibleChainAccountDetails {
   balance: number;
   guard: {
     keys: string[];
-    pred: Guard['predicate'];
+    pred: IGuard['predicate'];
   };
 }
 
