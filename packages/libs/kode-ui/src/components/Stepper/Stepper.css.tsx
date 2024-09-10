@@ -1,16 +1,6 @@
 import { recipe, token, tokens } from '../../styles';
 import { globalStyle, style } from '../../styles/utils';
 
-export const stepperClass = recipe({
-  base: {},
-  variants: {
-    direction: {
-      vertical: {},
-      horizontal: {},
-    },
-  },
-});
-
 const COLORS = {
   inactive: token('color.icon.base.@disabled'),
   inactiveBorder: token('color.icon.base.@disabled'),
@@ -26,39 +16,89 @@ const COLORS = {
   errorBullet: tokens.kda.foundation.color.icon.semantic.negative['@active'],
   disabled: tokens.kda.foundation.color.text.base['@disabled'],
   disabledBorder: token('color.icon.base.@disabled'),
-  disabledBullet: token('color.icon.base.@disabled'),
+  disabledBullet: tokens.kda.foundation.color.icon.brand.primary['@disabled'],
 } as const;
+
+export const stepperClass = recipe({
+  base: {},
+  variants: {
+    direction: {
+      vertical: {
+        flexDirection: 'column',
+      },
+      horizontal: {
+        width: '100%',
+        flexDirection: 'row',
+      },
+    },
+  },
+});
+
+export const steppContentClass = style({
+  display: '-webkit-box!important',
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: 'vertical',
+  overflow: 'hidden',
+  textAlign: 'center',
+  selectors: {
+    [`${stepperClass.classNames.variants.direction.vertical} &`]: {
+      marginInlineStart: token('spacing.lg'),
+    },
+    [`${stepperClass.classNames.variants.direction.horizontal} &`]: {
+      marginBlockStart: token('spacing.lg'),
+    },
+  },
+});
 
 export const stepClass = recipe({
   base: {
+    flex: 1,
     display: 'flex',
     position: 'relative',
     paddingBlock: token('spacing.md'),
     color: COLORS.valid,
     fontSize: token('typography.fontSize.sm'),
-
     selectors: {
+      [`${stepperClass.classNames.variants.direction.horizontal} &`]: {
+        flexDirection: 'column',
+      },
+      [`${stepperClass.classNames.variants.direction.vertical} &`]: {
+        flexDirection: 'row',
+      },
+
       '&:before, &:after': {
         content: '',
         position: 'absolute',
-        borderColor: 'transparent',
-        borderStyle: 'none',
+        borderStyle: 'solid',
         borderWidth: '0',
-        borderInlineEndStyle: 'solid',
-        borderInlineEndWidth: '1px',
-        borderInlineEndColor: COLORS.validBorder,
-        height: '50%',
+        borderColor: COLORS.validBorder,
       },
-      '&:before': {
+      [`${stepperClass.classNames.variants.direction.vertical} &:before`]: {
         transform: 'translateX(-50%) translateY(-50%)',
       },
-      '&:after': {
+      [`${stepperClass.classNames.variants.direction.vertical} &:after`]: {
         transform: 'translateX(-50%) translateY(50%)',
       },
+      [`${stepperClass.classNames.variants.direction.vertical} &:before, ${stepperClass.classNames.variants.direction.vertical} &:after`]:
+        {
+          height: '50%',
+          borderInlineEndWidth: '1px',
+        },
 
-      '&:last-child:after, &:first-child:before': {
+      [`${stepperClass.classNames.variants.direction.horizontal} &:before`]: {
+        transform: 'translateX(-50%) translateY(-50%)',
+      },
+      [`${stepperClass.classNames.variants.direction.horizontal} &:after`]: {
+        transform: 'translateX(50%) translateY(50%)',
+      },
+      [`${stepperClass.classNames.variants.direction.horizontal} &:before, ${stepperClass.classNames.variants.direction.horizontal} &:after`]:
+        {
+          width: '50%',
+          borderBlockEndWidth: '1px',
+        },
+      [`&:last-child:after, &:first-child:before`]: {
         borderInlineEndWidth: '0',
-        height: '0',
+        borderBlockEndWidth: '0',
       },
     },
   },
@@ -67,7 +107,7 @@ export const stepClass = recipe({
       inactive: {
         color: COLORS.inactive,
         '&:after': {
-          borderInlineEndColor: COLORS.inactiveBorder,
+          borderColor: COLORS.inactiveBorder,
         },
       },
       active: {},
@@ -76,8 +116,8 @@ export const stepClass = recipe({
         color: COLORS.error,
         selectors: {
           '&:after': {
-            borderInlineEndStyle: 'dashed',
-            borderInlineEndColor: COLORS.errorBorder,
+            borderStyle: 'dashed',
+            borderColor: COLORS.errorBorder,
           },
         },
       },
@@ -85,8 +125,8 @@ export const stepClass = recipe({
         color: COLORS.disabled,
         selectors: {
           '&:after': {
-            borderInlineEndStyle: 'dashed',
-            borderInlineEndColor: COLORS.disabledBorder,
+            borderStyle: 'dashed',
+            borderColor: COLORS.disabledBorder,
           },
         },
       },
@@ -103,9 +143,14 @@ export const bulletClass = recipe({
     position: 'absolute',
     borderRadius: token('radius.round'),
 
-    transform: 'translateX(-50%)',
     zIndex: 1,
     selectors: {
+      [`${stepperClass.classNames.variants.direction.vertical} &`]: {
+        transform: 'translateX(-50%)',
+      },
+      [`${stepperClass.classNames.variants.direction.horizontal} &`]: {
+        transform: 'translateY(-50%)',
+      },
       [`${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.inactive} ~ ${stepClass.classNames.base} &, 
         ${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.valid} ~ ${stepClass.classNames.base} &`]:
         {
@@ -190,12 +235,12 @@ globalStyle(
   ${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.disabled} ~ ${stepClass.classNames.base}:after,
   ${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.disabled} ~ ${stepClass.classNames.base}:before`,
   {
-    borderInlineEndStyle: 'dashed',
+    borderStyle: 'dashed',
   },
 );
 
 export const checkClass = style({
-  fontSize: token('typography.fontSize.xs'),
+  fontSize: token('typography.fontSize.xxs'),
   selectors: {
     [`${stepClass.classNames.variants.active.true} &`]: {
       display: 'none',

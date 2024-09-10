@@ -3,7 +3,12 @@ import type { RecipeVariants } from '@vanilla-extract/recipes';
 import type { ReactElement, ReactNode } from 'react';
 import React from 'react';
 import { Stack } from '../Layout/Stack/Stack';
-import { bulletClass, checkClass, stepClass } from './Stepper.css';
+import {
+  bulletClass,
+  checkClass,
+  stepClass,
+  steppContentClass,
+} from './Stepper.css';
 
 type Variants = NonNullable<RecipeVariants<typeof stepClass>>;
 
@@ -22,14 +27,15 @@ export const Step = ({
   return (
     <Stack
       className={stepClass({ active, status })}
-      flexDirection="row"
       alignItems="center"
       gap="md"
       data-active={active}
     >
       <Stack className={bulletClass({ status, active })} />
-      <Stack marginInlineStart="lg" gap="sm" alignItems="center">
-        {children}
+      <Stack gap="sm" alignItems="center">
+        <Stack as="span" className={steppContentClass}>
+          {children}
+        </Stack>
         {icon && <Stack className={checkClass}>{icon}</Stack>}
       </Stack>
     </Stack>
