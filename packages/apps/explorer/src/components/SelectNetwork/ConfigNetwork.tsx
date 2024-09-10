@@ -129,13 +129,9 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
   };
 
   useEffect(() => {
-    if (!network.slug) {
-      setGraphUrl('');
-      return;
-    }
-    setGraphUrl(network.graphUrl);
+    setGraphUrl(network?.graphUrl);
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    validateNetwork(network.graphUrl);
+    validateNetwork(network?.graphUrl);
   }, [network?.slug]);
 
   return (
