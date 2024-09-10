@@ -1,10 +1,10 @@
+import { MonoCheck, MonoClear } from '@kadena/kode-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { getVariants } from '../../storyDecorators/getVariants';
-
-import { MonoCheck, MonoClear } from '@kadena/kode-icons/system';
 import type { IStepProps } from './Step';
 import { Step } from './Step';
+
 import { Stepper } from './Stepper';
 import { stepClass } from './Stepper.css';
 

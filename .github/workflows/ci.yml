@@ -30,11 +30,6 @@ jobs:
       - name: Runner setup
         uses: ./.github/actions/runner-setup
 
-      - name: Install rust dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install libgtk-3-dev libsoup2.4-dev javascriptcoregtk-4.1
-
       - name: Lint monorepo root
         run: pnpm run lint
 

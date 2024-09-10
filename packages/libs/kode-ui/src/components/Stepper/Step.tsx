@@ -1,3 +1,4 @@
+import { MonoCheck } from '@kadena/kode-icons/system';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 import type { ReactElement, ReactNode } from 'react';
 import React from 'react';

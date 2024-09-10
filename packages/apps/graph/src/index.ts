@@ -60,7 +60,7 @@ const tracingPlugin: Plugin = {
 
 if (dotenv.SENTRY_DSN) {
   console.log(
-    ` ✔ starting with sentry ${dotenv.NODE_ENV}-${dotenv.ENVIRONMENT}`,
+    ` ✔ starting with Sentry ${dotenv.NODE_ENV}-${dotenv.ENVIRONMENT}`,
   );
   Sentry.init({
     dsn: dotenv.SENTRY_DSN,
