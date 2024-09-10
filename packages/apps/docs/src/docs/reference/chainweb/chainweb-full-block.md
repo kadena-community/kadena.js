@@ -3,7 +3,7 @@ title: Full block endpoints
 description:
   Provides reference information for the chainweb-node service API block endpoints.
 menu: Chainweb API
-label: Block service endpoints
+label: Full block endpoints
 order: 2
 layout: full
 tags: ['chainweb', 'node api', 'chainweb api', 'api reference']
