@@ -14,7 +14,11 @@ export const Stepper = ({
   direction = 'vertical',
 }: IStepperProps) => {
   return (
-    <Stack className={stepperClass({ direction })} marginInlineStart="sm">
+    <Stack
+      as="ul"
+      className={stepperClass({ direction })}
+      marginInlineStart="sm"
+    >
       {children}
     </Stack>
   );

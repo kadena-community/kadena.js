@@ -20,7 +20,9 @@ const COLORS = {
 } as const;
 
 export const stepperClass = recipe({
-  base: {},
+  base: {
+    paddingInline: '0',
+  },
   variants: {
     direction: {
       vertical: {
@@ -63,6 +65,12 @@ export const stepClass = recipe({
     color: COLORS.valid,
     fontSize: token('typography.fontSize.sm'),
     selectors: {
+      '&[data-isclickable="true"]': {
+        cursor: 'pointer',
+      },
+      '&[data-isclickable="true"]:hover': {
+        opacity: '.8',
+      },
       [`${stepperClass.classNames.variants.direction.horizontal} &`]: {
         flexDirection: 'column',
       },

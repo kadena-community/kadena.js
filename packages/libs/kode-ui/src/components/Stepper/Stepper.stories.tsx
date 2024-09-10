@@ -42,7 +42,9 @@ export const Primary: Story = {
   render: (args) => {
     return (
       <Stepper {...args}>
-        <Step icon={<MonoCheck />}>Prince Adam</Step>
+        <Step icon={<MonoCheck />} onClick={() => alert('1')}>
+          Prince Adam
+        </Step>
         <Step
           active
           status={args.status}

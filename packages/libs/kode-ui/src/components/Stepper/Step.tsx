@@ -17,19 +17,23 @@ export interface IStepProps {
   children: ReactNode;
   active?: Variants['active'];
   icon?: ReactElement;
+  onClick?: () => void;
 }
 export const Step = ({
   children,
   active = false,
   status = 'valid',
   icon,
+  onClick,
 }: IStepProps) => {
   return (
     <Stack
+      as="li"
       className={stepClass({ active, status })}
       alignItems="center"
       gap="md"
-      data-active={active}
+      data-isclickable={!!onClick}
+      onClick={onClick}
     >
       <Stack className={bulletClass({ status, active })} />
       <Stack
