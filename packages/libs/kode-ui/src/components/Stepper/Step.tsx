@@ -8,6 +8,7 @@ import {
   checkClass,
   stepClass,
   steppContentClass,
+  steppContentWrapperClass,
 } from './Stepper.css';
 
 type Variants = NonNullable<RecipeVariants<typeof stepClass>>;
@@ -32,7 +33,12 @@ export const Step = ({
       data-active={active}
     >
       <Stack className={bulletClass({ status, active })} />
-      <Stack gap="sm" alignItems="center">
+      <Stack
+        gap="xs"
+        alignItems="center"
+        className={steppContentWrapperClass}
+        paddingInline="sm"
+      >
         <Stack as="span" className={steppContentClass}>
           {children}
         </Stack>

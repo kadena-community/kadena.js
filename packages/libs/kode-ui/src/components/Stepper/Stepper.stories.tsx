@@ -43,7 +43,11 @@ export const Primary: Story = {
     return (
       <Stepper {...args}>
         <Step icon={<MonoCheck />}>Prince Adam</Step>
-        <Step active status={args.status} icon={<MonoClear />}>
+        <Step
+          active
+          status={args.status}
+          icon={args.status === 'error' ? <MonoClear /> : <MonoCheck />}
+        >
           Power Sword
         </Step>
         <Step>He-man</Step>

@@ -34,11 +34,7 @@ export const stepperClass = recipe({
   },
 });
 
-export const steppContentClass = style({
-  display: '-webkit-box!important',
-  WebkitLineClamp: 2,
-  WebkitBoxOrient: 'vertical',
-  overflow: 'hidden',
+export const steppContentWrapperClass = style({
   textAlign: 'center',
   selectors: {
     [`${stepperClass.classNames.variants.direction.vertical} &`]: {
@@ -48,6 +44,14 @@ export const steppContentClass = style({
       marginBlockStart: token('spacing.lg'),
     },
   },
+});
+
+export const steppContentClass = style({
+  display: '-webkit-box!important',
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: 'vertical',
+  overflow: 'hidden',
+  textAlign: 'center',
 });
 
 export const stepClass = recipe({
@@ -74,10 +78,10 @@ export const stepClass = recipe({
         borderColor: COLORS.validBorder,
       },
       [`${stepperClass.classNames.variants.direction.vertical} &:before`]: {
-        transform: 'translateX(-50%) translateY(-50%)',
+        transform: 'translateY(-50%)',
       },
       [`${stepperClass.classNames.variants.direction.vertical} &:after`]: {
-        transform: 'translateX(-50%) translateY(50%)',
+        transform: 'translateY(50%)',
       },
       [`${stepperClass.classNames.variants.direction.vertical} &:before, ${stepperClass.classNames.variants.direction.vertical} &:after`]:
         {
@@ -86,19 +90,19 @@ export const stepClass = recipe({
         },
 
       [`${stepperClass.classNames.variants.direction.horizontal} &:before`]: {
-        transform: 'translateX(-50%) translateY(-50%)',
+        transform: 'translateX(-50%) ',
       },
       [`${stepperClass.classNames.variants.direction.horizontal} &:after`]: {
-        transform: 'translateX(50%) translateY(50%)',
+        transform: 'translateX(50%) ',
       },
       [`${stepperClass.classNames.variants.direction.horizontal} &:before, ${stepperClass.classNames.variants.direction.horizontal} &:after`]:
         {
           width: '50%',
-          borderBlockEndWidth: '1px',
+          borderBlockStartWidth: '1px',
         },
       [`&:last-child:after, &:first-child:before`]: {
         borderInlineEndWidth: '0',
-        borderBlockEndWidth: '0',
+        borderBlockStartWidth: '0',
       },
     },
   },
