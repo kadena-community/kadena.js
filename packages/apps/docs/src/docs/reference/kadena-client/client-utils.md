@@ -25,51 +25,24 @@ The client-utils package contains functions exported into the following modules:
 - core
 - marmalade
 - nodejs
+- webauthn
 
 ## Built-in utilities
 
-The Kadena `client-utils` package includes the following `built-in` helper functions:
+The Kadena `client-utils` package includes a `built-in` module with basic functions to create principal accounts, deploy contracts, and return module information.
+These functions are broadly useful for any type of application that accesses the Kadena blockchain.
+The `built-in` module includes the following helper functions:
 
-- [createPrincipal](#built-in-utilities)
-- [describeModule](#built-in-utilities)
+- createPrincipal
+- deployContract
+- describeModule
+- listModules
 
-### createPrincipal
-
-Use `createPrincipal` to create a principal account based on one public key.
-
-#### Basic usage
-
-#### Parameters
-
-#### Return value
-
-#### Example
-
-### describeModule
-
-Use `describeModule` to return detailed information about a specified Pact module.
-
-#### Basic usage
-
-describeModule _module_
-
-#### Parameters
-
-| Parameter | Type   | Description                                   |
-| --------- | ------ | --------------------------------------------- |
-| module    | string | Specifies the name of the module to describe. |
-
-#### Return values
-
-This function returns the following information:
-
-blessed: string[]; code: string; hash: string; interfaces: string[]; keyset: string; name: string;
-
-#### Example
+For details about the `built-in` functions in the Kadena client library, see [Built-in utilities](/reference/kadena-client/built-in-utils).
 
 ## Coin module utilities
 
-The Kadena `client-utils` package provides access the following `coin` module functions:
+The Kadena `client-utils` package provides access to the following `coin` module functions by using the Kadena client interface to connect to the Kadena blockchain:
 
 - createAccount
 - details
@@ -77,234 +50,42 @@ The Kadena `client-utils` package provides access the following `coin` module fu
 - rotate
 - safeTransfer
 - transferCreate
-- transferCrosschain
+- transferCrossChain
 - transfer
 
 ## Core utilities
 
-The Kadena `client-utils` package includes the following `core` helper functions:
+The Kadena `client-utils` package includes a `core` module that provides helper functions to perform basic tasks that enable an application to interact with the blockchain.
+
+You can use many of the `core` utilities to develop custom functions that connect to the Kadena blockchain through the Kadena client interface, including functions that can be used for any type of smart contract.
+For example, the core module includes the following functions:
 
 - asyncPipe
-- client-helpers
-- cross-chain
+- crossChainClient
 - estimateGas
-- preflight
+- preflightClient
+- queryAllChainsClient
 - readDirtyClient
 - submitClient
 
-### asyncPipe
-
-Use `asyncPipe` to open a connection to the Kadena network and execute multiple functions in order to return a single result. This utility enables you to pass the output from the first function as input to a second function and return the combined results.
-
-#### Basic usage
-
-```typescript
-asyncPipe( function(), function())
-```
-
-#### Parameters
-
-#### Return value
-
-#### Example
-
-The following example pipes the result from the `appendAsync` function to the `asyncPipe` function and returns the combined results.
-
-```
-const asyncAppend = (append: string) => (input: string) =>
-      Promise.resolve(`${input} ${append}`);
-
-    const appendAsync = asyncPipe(
-      asyncAlways,
-      asyncAppend('one'),
-      asyncAppend('two'),
-    );
-    const result = await appendAsync('hello');
-    expect(result).toEqual('hello one two');
-  });
-```
-
-### crossChainClient
-
-Use `crossChainClient` to ...
-
-#### Basic usage
-
-#### Parameters
-
-#### Return value
-
-#### Example
-
-### dirtyReadClient
-
-Use `dirtyReadClient` to read a raw result from the Kadena blockchain without submittinga transaction.
-
-#### Basic usage
-
-#### Parameters
-
-#### Return value
-
-#### Example
-
-### estimateGas
-
-Use `estimateGas` to ...
-
-#### Basic usage
-
-#### Parameters
-
-#### Return value
-
-#### Example
-
-### preflightClient
-
-Use `preflightClient` to prepare a preflight request for a signed transaction to connect to the Kadena blockchain without submitting a transaction. The response to the preflight request contains information about the expected success of the transaction and the how much gas the transaction requires. Preflight requests help to ensure that clients don't send transactions to the blockchain that are likely to fail.
-
-Because you must for pay processing any transaction request even if a transaction fails, you should use a preflight request for any computationally expensive transactions—like deploying a module—before sending the actual transaction to the blockchain.
-
-#### Basic usage
-
-#### Parameters
-
-#### Return value
-
-#### Example
-
-### submitClient
-
-Use `submitClient` to call the `submit` endpoint on a Chainweb node and return the result for the specified chain, network, and request key.
-
-#### Basic usage
-
-```typescript
-submitClient _chainId_ _networkId_ _requestKey_
-```
-
-#### Parameters
-
-You must pass the following arguments to the `submitClient` command:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `chainId` | string | Specifies the chain for the client to connect to using the chain identifier. Valid values are strings representing chain “0” through chain “19”. |
-| `networkId` | string | Specifies the network identifier for the client to connect to. Valid values are development, Testnet, and Mainnet. |
-| `requestKey` | string | Specifies the request key to determine if the request was successful. |
-
-#### Return value
-
-The `submitClient` call returns the following if successfully executed.
-
-#### Example
-
-The following example submits a mock transaction using chainId "1" and the networkId "test-network" to test the submitClient call.
-
-```typescript
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-
-import type { ILocalCommandResult } from '@kadena/chainweb-node-client';
-import type { IClient, ITransactionDescriptor } from '@kadena/client';
-import {
-  addSigner,
-  composePactCommand,
-  execution,
-  setMeta,
-} from '@kadena/client/fp';
-import { submitClient } from '../client-helpers';
-
-describe('submitClient', () => {
-  beforeEach(() => {
-    vi.useFakeTimers().setSystemTime(new Date('2023-10-26'));
-  });
-
-  afterEach(() => {
-    vi.useRealTimers();
-  });
-
-  it('calls the submit endpoint and returns the result', async () => {
-    const client: IClient = {
-      preflight: vi.fn().mockResolvedValue({
-        result: { status: 'success', data: 'test-data' },
-      } as ILocalCommandResult),
-      submitOne: vi.fn().mockResolvedValue({
-        chainId: '1',
-        networkId: 'test-network',
-        requestKey: 'test-request-key',
-      } as ITransactionDescriptor),
-      listen: vi.fn().mockResolvedValue({
-        result: { status: 'success', data: 'test-data' },
-      } as ILocalCommandResult),
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any;
-    const sign = vi.fn((tx) => ({ ...tx, sigs: [{ sig: 'sig-hash' }] }));
-    const submit = submitClient(
-      { sign, defaults: { networkId: 'test-network' } },
-      client,
-    );
-    const result = await submit(
-      composePactCommand(
-        execution('(test 1 2 3)'),
-        addSigner('pk'),
-        setMeta({ chainId: '1' }),
-      ),
-    )
-      .on('sign', (tx) => {
-        expect(tx).toEqual({
-          cmd: '{"payload":{"exec":{"code":"(test 1 2 3)","data":{}}},"signers":[{"pubKey":"pk","scheme":"ED25519"}],"meta":{"gasLimit":2500,"gasPrice":1e-8,"sender":"","ttl":28800,"creationTime":1698278400,"chainId":"1"},"nonce":"kjs:nonce:1698278400000","networkId":"test-network"}',
-          hash: 'ABVQq4j4C4atHw9SzbY7QuSzhyXIkOGo_MI0m9_wT4s',
-          sigs: [
-            {
-              sig: 'sig-hash',
-            },
-          ],
-        });
-      })
-      .on('preflight', (result) => {
-        expect(result).toEqual({
-          result: { status: 'success', data: 'test-data' },
-        });
-      })
-      .on('submit', (trDesc) => {
-        expect(trDesc).toEqual({
-          chainId: '1',
-          networkId: 'test-network',
-          requestKey: 'test-request-key',
-        });
-      })
-      .on('listen', (result) => {
-        expect(result).toEqual({
-          result: { status: 'success', data: 'test-data' },
-        });
-      });
-
-    await expect(result.execute()).resolves.toEqual('test-data');
-  });
-});
-```
+For details about the `core` functions in the Kadena client library, see [Core utilities](/reference/kadena-client/core-utils).
 
 ## Marmalade utilities
 
-### createTokenId
-
-#### Basic usage
-
-#### Parameters
-
-#### Return value
-
-#### Example
+The Kadena `client-utils` package includes utilities for all Marmalade token standard functions, including the functions to create, mint, and transfer tokens.
+For details about the Marmalade client library functions, see [Marmalade client utilities](/reference/nft-ref/client-utils).
 
 ## Nodejs utilities
 
-### yamlConverter
+The Kadena `client-utils` package includes a `nodejs` module that provides helper functions to support the deployment of applications that use the Kadena client interface.
 
-#### Basic usage
+- deployFromDirectory
+- deployTemplate
+- yamlConverter
 
-#### Parameters
+## WebAuthn utilities
 
-#### Return value
+The Kadena `client-utils` package includes a `webauthn` module that provides helper functions to support WebAuthn authentication using the Kadena client interface.
 
-#### Example
+- getWebauthnAccount
+- getWebauthnGuard
