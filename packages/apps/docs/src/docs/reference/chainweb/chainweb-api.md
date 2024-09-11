@@ -17,10 +17,15 @@ Because Chainweb scales horizontally by using multiple chains, the Kadena networ
 
 The Chainweb node API consists of two distinct APIs: the peer-to-peer (P2P) API and the service API. 
 
-- The **peer-to-peer API** contains the RPC endpoints that nodes must expose to support consensus and the queueing and processing of transactions. The peer-to-peer endpoints are intended primarily for communication between Chainweb nodes and are typically more efficient than the service API endpoints for most use cases. 
+- The **peer-to-peer API** contains the RPC endpoints that nodes must expose to support consensus and the queueing and processing of transactions. 
+  The peer-to-peer endpoints are intended primarily for communication between Chainweb nodes.
+  These endpoints are typically more efficient than the service API endpoints for most use cases. 
+  However, peer-to-peer endpoints only expose features that are required for the peer-to-peer network to function.
+  For most use cases, you should send API requests to service API endpoints.
 
-- The **service API** contains endpoints that can be used to connect to Chainweb nodes from clients outside of the blockchain network.
-How you connect to the endpoints in these two APIs depends on the configuration of the Chainweb node.
+- The **service API** allows querying and control of Chainweb nodes by clients outside of the blockchain network.
+  Node operators must explicitly enable access to the service API and expose its endpoints on a different network interface than the peer-to-peer API.
+  The specific service API endpoints that are exposed for any node depend on the node configuration settings.
 
 For more information about the peer-to-peer API and its endpoints, see [Peer-to-peer API](#peer-to-peer-api).
 For more information about the service API and its endpoints, see [Service API](#service-api).
@@ -77,7 +82,7 @@ You can also make P2P API endpoints available for other clients by exposing the 
 The Chainweb peer-to-peer API includes the following endpoints:
 
 - [Cut endpoints](/reference/chainweb-api/cut)
-- [Block payload endpoints](/reference/chainweb-api/payload)
+- [Payload endpoints](/reference/chainweb-api/payload)
 - [Mempool endpoints](/reference/chainweb-api/mempool)
 - [Peer endpoints](/reference/chainweb-api/peer)
 - [Configuration endpoint](/reference/chainweb-api/config)
@@ -101,13 +106,15 @@ As a node operator, you can also choose to expose the endpoints locally or throu
 
 The Chainweb service API includes the following endpoints:
 
-- [Block service endpoints](/reference/chainweb-api/service-block)
+- [Full block endpoints](/reference/chainweb-api/full-block)
 - [Block hash endpoints](/reference/chainweb-api/blockhash)
 - [Block header endpoints](/reference/chainweb-api/blockheader)
+- [Block updates endpoint](/reference/chainweb-api/updates)
+- [Backup endpoints](/reference/chainweb-api/backups)
+- [Node health and information](/reference/chainweb-api/node)
 - [Mining service endpoints](/reference/chainweb-api/mining)
 - [Pact REST API endpoints](/reference/rest-api)
 - [Rosetta endpoints](/reference/chainweb-api/rosetta)
-- [Maintenance and other services endpoints](/reference/chainweb-api/misc)
 
 ### Base URL
 

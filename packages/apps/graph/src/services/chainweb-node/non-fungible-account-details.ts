@@ -13,6 +13,7 @@ export interface INonFungibleChainAccountDetails {
   guard: {
     keys: string[];
     pred: IGuard['predicate'];
+    raw: string;
   };
 }
 

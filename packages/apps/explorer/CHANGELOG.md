@@ -1,5 +1,15 @@
 # @kadena/explorer
 
+## 0.8.2
+
+### Patch Changes
+
+- 2d6573b: a fix for adding a network
+- Updated dependencies \[ae3dbc7]
+- Updated dependencies \[7ef4a06]
+  - @kadena/kode-ui\@0.15.0
+  - @kadena/graph\@1.0.11
+
 ## 0.8.1
 
 ### Patch Changes

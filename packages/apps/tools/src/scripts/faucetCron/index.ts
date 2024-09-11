@@ -1,6 +1,6 @@
 import type { IAccount, IChainAccount } from './constants';
 import { MINBALANCE, faucetAccount } from './constants';
-import { sendErrorMessage, sendMessage } from './messages';
+import { sendErrorMessage, sendMessage, sendPingMessage } from './messages';
 
 export const lowFaucetChains = (
   chainAccounts: IChainAccount[] | undefined,
@@ -17,7 +17,7 @@ export const lowFaucetChains = (
 export const creatLowChainsString = (chains: IChainAccount[]) => {
   return chains
     .map((chain) => {
-      return `*chain ${chain.chainId}:* (${chain.balance} KDA)`;
+      return `*chain ${chain.chainId}:* (${chain.balance.toLocaleString()} KDA)`;
     })
     .join('\n');
 };
@@ -67,8 +67,10 @@ export const runJob = async () => {
         accountResult.data?.fungibleAccount.chainAccounts,
         MINBALANCE,
       ).length
-    )
+    ) {
+      await sendPingMessage();
       return;
+    }
 
     await sendMessage(accountResult);
   } catch (e) {

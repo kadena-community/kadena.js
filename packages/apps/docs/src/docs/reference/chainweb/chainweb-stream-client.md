@@ -1,5 +1,5 @@
 ---
-title: Stream client A
+title: Streaming client
 description:
   The Chainweb stream client API provides a TypeScript based application programming interface API for calling Chainweb node endpoints.
 menu: Chainweb clients

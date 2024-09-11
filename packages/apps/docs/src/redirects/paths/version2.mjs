@@ -457,6 +457,16 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
+    source: '/reference/chainweb-api/service-block',
+    destination: '/reference/chainweb-api/full-block',
+    permanent: true,
+  },
+  {
+    source: '/reference/chainweb-api/misc',
+    destination: '/reference/chainweb-api/updates',
+    permanent: true,
+  },
+  {
     source: '/contribute',
     destination: '/participate',
     permanent: true,

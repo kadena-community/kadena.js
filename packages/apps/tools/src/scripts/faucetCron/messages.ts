@@ -1,6 +1,6 @@
 import { creatLowChainsString, lowFaucetChains } from '.';
 import type { IAccount } from './constants';
-import { MINBALANCE, channelId, tokenId } from './constants';
+import { MINBALANCE, channelId, faucetAccount, tokenId } from './constants';
 
 export const sendMessage = async (data: IAccount): Promise<void> => {
   const lowChains = lowFaucetChains(
@@ -34,23 +34,9 @@ export const sendMessage = async (data: IAccount): Promise<void> => {
           },
           text: {
             type: 'mrkdwn',
-            text: `The faucet seems to be running low on funds (TESTNET):\n ${creatLowChainsString(lowChains)}`,
+            text: `The faucet (\`${faucetAccount}\`) seems to be running low on funds (TESTNET):\n ${creatLowChainsString(lowChains)}`,
           },
         },
-
-        // {
-        //   type: 'actions',
-        //   elements: [
-        //     {
-        //       type: 'button',
-        //       text: {
-        //         type: 'plain_text',
-        //         text: 'Click Me',
-        //       },
-        //       url: 'https://google.com',
-        //     },
-        //   ],
-        // },
       ]),
     }),
   });
@@ -70,6 +56,27 @@ export const sendErrorMessage = async (): Promise<void> => {
           text: {
             type: 'mrkdwn',
             text: 'We were unable to retrieve the faucet account balance. \n There seems to be an issue with the Graph',
+          },
+        },
+      ]),
+    }),
+  });
+};
+export const sendPingMessage = async (): Promise<void> => {
+  await fetch('https://slack.com/api/chat.postMessage', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: `Bearer ${tokenId}`,
+    },
+    body: JSON.stringify({
+      channel: `${channelId}`,
+      blocks: JSON.stringify([
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: `All chains of the faucet (\`${faucetAccount}\`) have a balance above the threshold (\`> ${MINBALANCE.toLocaleString()} KDA\`)`,
           },
         },
       ]),

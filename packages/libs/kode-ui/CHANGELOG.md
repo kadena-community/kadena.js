@@ -1,5 +1,11 @@
 # @kadena/kode-ui
 
+## 0.15.0
+
+### Minor Changes
+
+- ae3dbc7: Feature to add components in the description
+
 ## 0.14.3
 
 ### Patch Changes

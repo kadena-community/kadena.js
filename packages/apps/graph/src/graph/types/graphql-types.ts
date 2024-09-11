@@ -2,8 +2,11 @@ import type { Signer, Transaction, Transfer } from '@prisma/client';
 
 export interface IGuard {
   keys: string[];
-  predicate: 'keys-all' | 'keys-any' | 'keys-two';
+  predicate: 'keys-all' | 'keys-any' | 'keys-two' | '';
+  raw: string;
 }
+
+export interface IKeysetGuard extends IGuard {}
 
 export interface IGasLimitEstimation {
   amount: number;

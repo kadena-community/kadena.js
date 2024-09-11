@@ -17,7 +17,7 @@ describe('faucetCron Utils', () => {
         },
       ];
       const result = creatLowChainsString(chains);
-      expect(result).toEqual('*chain 1:* (1000 KDA)');
+      expect(result).toEqual('*chain 1:* (1,000 KDA)');
 
       const chains2: IChainAccount[] = [
         {
@@ -30,7 +30,7 @@ describe('faucetCron Utils', () => {
         },
       ];
       const result2 = creatLowChainsString(chains2);
-      expect(result2).toEqual('*chain 1:* (1000 KDA)\n*chain 9:* (1977 KDA)');
+      expect(result2).toEqual('*chain 1:* (1,000 KDA)\n*chain 9:* (1,977 KDA)');
     });
   });
 
@@ -158,11 +158,14 @@ describe('faucetCron Utils', () => {
       });
 
       await runJob();
-      expect(mocks.fetch).toBeCalledTimes(1);
+      expect(mocks.fetch).toBeCalledTimes(2);
       expect(mocks.sendErrorMessage).toBeCalledTimes(0);
       expect(mocks.sendMessage).toBeCalledTimes(0);
       expect(mocks.fetch.mock.calls[0][0]).toEqual(
         'https://graph.testnet.kadena.network/graphql',
+      );
+      expect(mocks.fetch.mock.calls[1][0]).toEqual(
+        'https://slack.com/api/chat.postMessage',
       );
     });
 
