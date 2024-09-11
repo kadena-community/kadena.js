@@ -87,10 +87,10 @@ export const stepClass = recipe({
         borderColor: COLORS.validBorder,
       },
       [`${stepperClass.classNames.variants.direction.vertical} &:before`]: {
-        transform: 'translateY(-50%)',
+        transform: 'translateY(-50%) translateX(-0.5px)',
       },
       [`${stepperClass.classNames.variants.direction.vertical} &:after`]: {
-        transform: 'translateY(50%)',
+        transform: 'translateY(50%) translateX(-0.5px)',
       },
       [`${stepperClass.classNames.variants.direction.vertical} &:before, ${stepperClass.classNames.variants.direction.vertical} &:after`]:
         {
