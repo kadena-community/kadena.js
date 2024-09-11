@@ -19,8 +19,8 @@ import {
   TextareaField,
 } from '@kadena/kode-ui';
 import { PactNumber } from '@kadena/pactjs';
-import { useCallback, useMemo, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Controller, get, useForm } from 'react-hook-form';
 import { linkClass } from '../transfer/style.css';
 import { CHAINS, getTransfers } from './utils';
 
@@ -65,11 +65,15 @@ export function TransferV2() {
   );
 
   const senderAddress = watch('account');
-  const senderAccount = filteredAccounts.find(
-    (account) => account.uuid === senderAddress,
+  const senderAccount = useMemo(
+    () => filteredAccounts.find((account) => account.uuid === senderAddress),
+    [filteredAccounts, senderAddress],
   );
 
-  const chains = senderAccount?.chains ?? [];
+  const chains = useMemo(
+    () => senderAccount?.chains ?? [],
+    [senderAccount?.chains],
+  );
 
   const watchReceivers = watch('receivers');
 
@@ -79,13 +83,13 @@ export function TransferV2() {
     return acc + +receiver.amount;
   }, 0);
 
-  const evaluateTransactions = () => {
-    console.log('evaluateTransactions');
+  const evaluateTransactions = useCallback(() => {
     const receivers = getValues('receivers');
     const gasPrice = getValues('gasPrice');
     const gasLimit = getValues('gasLimit');
     const gasPayer = getValues('gasPayer');
     const selectedChain = getValues('chain');
+    console.log('evaluateTransactions');
     setRedistribution([]);
     setError(null);
     try {
@@ -114,6 +118,14 @@ export function TransferV2() {
         'message' in (e as Error) ? (e as Error).message : JSON.stringify(e),
       );
     }
+  }, [chains, getValues, senderAccount, setValue]);
+
+  const withEvaluate = <T, R>(cb: (...args: T[]) => R) => {
+    return (...args: T[]) => {
+      const result = cb(...args);
+      evaluateTransactions();
+      return result;
+    };
   };
 
   return (
@@ -133,7 +145,7 @@ export function TransferV2() {
               placeholder="Fungible Type"
               size="sm"
               selectedKey={field.value}
-              onSelectionChange={field.onChange}
+              onSelectionChange={withEvaluate(field.onChange)}
             >
               {fungibles.map((f) => (
                 <SelectItem key={f.contract}>{f.symbol}</SelectItem>
@@ -150,7 +162,7 @@ export function TransferV2() {
               placeholder="From Account"
               size="sm"
               selectedKey={field.value}
-              onSelectionChange={field.onChange}
+              onSelectionChange={withEvaluate(field.onChange)}
             >
               {filteredAccounts.map((account) => (
                 <SelectItem key={account.uuid}>
@@ -170,7 +182,7 @@ export function TransferV2() {
               placeholder="Chain"
               size="sm"
               selectedKey={field.value}
-              onSelectionChange={field.onChange}
+              onSelectionChange={withEvaluate(field.onChange)}
             >
               {senderAccount
                 ? [
@@ -218,7 +230,9 @@ export function TransferV2() {
             render={({ field }) => (
               <Combobox
                 inputValue={field.value}
-                onInputChange={(value) => field.onChange(value || '')}
+                onInputChange={withEvaluate((value) =>
+                  field.onChange(value || ''),
+                )}
                 placeholder={`Receiver ${index + 1}`}
                 size="sm"
                 onSelectionChange={field.onChange}
@@ -245,7 +259,10 @@ export function TransferV2() {
           />
 
           <TextField
-            {...register(`receivers.${index}.amount`, { required: true })}
+            {...register(`receivers.${index}.amount`, {
+              required: true,
+              onChange: evaluateTransactions,
+            })}
             placeholder="Amount"
             size="sm"
             type="number"
@@ -261,7 +278,7 @@ export function TransferV2() {
                   size="sm"
                   placeholder="Chains"
                   selectedKey={field.value}
-                  onSelectionChange={field.onChange}
+                  onSelectionChange={withEvaluate(field.onChange)}
                 >
                   {['', ...CHAINS].map((chain) => (
                     <SelectItem key={chain}>
@@ -291,12 +308,12 @@ export function TransferV2() {
               <Button
                 isCompact
                 variant="outlined"
-                onClick={() => {
+                onClick={withEvaluate(() => {
                   console.log('deleting', index);
                   const receivers = getValues('receivers');
                   receivers.splice(index, 1);
                   setValue('receivers', [...receivers]);
-                }}
+                })}
               >
                 <MonoDelete />
               </Button>
@@ -336,7 +353,7 @@ export function TransferV2() {
               size="sm"
               placeholder="Gas Payer"
               selectedKey={field.value}
-              onSelectionChange={field.onChange}
+              onSelectionChange={withEvaluate(field.onChange)}
             >
               {[
                 ...(senderAccount
@@ -359,7 +376,7 @@ export function TransferV2() {
           )}
         />
         <TextField
-          {...register('gasPrice')}
+          {...register('gasPrice', { onChange: evaluateTransactions })}
           placeholder="Gas Price"
           size="sm"
           defaultValue="0.00000001"
@@ -367,7 +384,7 @@ export function TransferV2() {
           step="0.00000001"
         />
         <TextField
-          {...register('gasLimit')}
+          {...register('gasLimit', { onChange: evaluateTransactions })}
           placeholder="Gas Limit"
           size="sm"
           defaultValue="2500"
@@ -386,15 +403,15 @@ export function TransferV2() {
       <Heading variant="h5">Description</Heading>
       <TextareaField {...register('description')} placeholder="Description" />
       {error && (
-        <Notification role="alert" intent="warning">
-          total amount ({totalAmount}) is more than the available balance,
+        <Notification role="alert" intent="negative">
+          Total amount ({totalAmount}) is more than the available balance,
           please check your input, also you should consider the gas fee
         </Notification>
       )}
       {redistribution.length > 0 && (
         <Notification role="alert" intent="info" type="inline">
           <Stack flexDirection={'column'} gap={'sm'}>
-            before proceeding with the transfer, the following redistribution
+            Before proceeding with the transfer, the following redistribution
             will happen:
             <Stack flexDirection={'column'} gap={'sm'}>
               {redistribution.map((r) => (
