@@ -69,6 +69,7 @@ export const stepClass = recipe({
         cursor: 'pointer',
       },
       '&[data-isclickable="true"]:hover': {
+        textDecoration: 'underline',
         opacity: '.8',
       },
       [`${stepperClass.classNames.variants.direction.horizontal} &`]: {
