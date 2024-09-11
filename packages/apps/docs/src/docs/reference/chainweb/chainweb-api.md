@@ -123,7 +123,8 @@ For bootstrap nodes, service API endpoints typically take the form of `api.<host
 Similarly, the base URL for service API endpoints in the Kadena test network is typically `api.testnet.<hostname>/chainweb/0.0/testnet04` where the `<hostname>` is the IP address or domain name of a Chainweb node in the Kadena test network.
 If you're running a local development environment, you can typically replace `<hostname>` with `localhost:8080` to connect to the API and, if necessary, specify `development` as the network name.
 
-Note that the Pact endpoints for any given chain identifier use the route prefix `/chain/{chainId}/pact/` in addition to the base URL.
+Note that if you send requests to Pact endpoints through the service API to query information from a specific chain, you should include the chain identifier in the route prefix.
+For example, the URL should include `/chain/{chainId}/pact/` in addition to the base URL.
 For more information about Pact endpoints, see the [Pact REST API](/reference/rest-api) or the [Pact OpenAPI](https://api.chainweb.com/openapi/pact.html) specification.
 
 ### Resource consumption and vulnerability

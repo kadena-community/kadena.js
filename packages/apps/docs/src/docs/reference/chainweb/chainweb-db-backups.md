@@ -59,7 +59,6 @@ You can then use the identifier to check the status of the job to determine if t
 
 If a backup job is already in progress, this endpoint returns the UNIX timestamp job identifier instead of starting a new backup job.
 
-
 ### Query parameters
 
 | Parameter | Description
