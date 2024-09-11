@@ -3,8 +3,8 @@ import { shorten } from '@/utils/helpers';
 
 import { fundAccount } from '@/modules/account/account.service';
 
-import { chainClass } from '@/Components/Accounts/style.css';
-import { MonoKey, MonoLink } from '@kadena/kode-icons/system';
+import { Chain } from '@/Components/Badge/Badge';
+import { MonoKey } from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { noStyleLinkClass } from '../home/style.css';
@@ -53,17 +53,7 @@ export function AccountPage() {
             .map((chain, index, list) => (
               <Text size="smallest">
                 <Stack alignItems={'center'} gap={'sm'}>
-                  <Stack
-                    alignItems={'center'}
-                    className={chainClass}
-                    paddingInlineStart={'xs'}
-                    paddingInlineEnd={'xs'}
-                    borderRadius="sm"
-                    gap={'xxs'}
-                  >
-                    <MonoLink />
-                    {chain.chainId}
-                  </Stack>
+                  <Chain chainId={chain.chainId} />
                   <Text size="smallest">{chain.balance} KDA</Text>
                   {index < list.length - 1 && <Text>|</Text>}
                 </Stack>

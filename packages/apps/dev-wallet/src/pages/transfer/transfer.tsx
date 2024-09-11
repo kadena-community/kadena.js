@@ -33,6 +33,7 @@ import classNames from 'classnames';
 import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { ChainAmount } from './components/ChainAmount';
 import { DiscoverdAccounts } from './components/DiscoverdAccounts';
 import { card, disabledItemClass, linkClass } from './style.css';
 import {
@@ -55,6 +56,8 @@ export function Transfer() {
   const { accounts, fungibles, getPublicKeyData, profile } = useWallet();
   const accountId = useSearchParams()[0].get('accountId');
   const { activeNetwork } = useNetwork();
+  const [showSourceChains, setShowSourceChains] = useState(false);
+  const [showTargetChains, setShowTargetChains] = useState(false);
   const [receiverAccount, setReceiverAccount] =
     useState<IReceiverAccount | null>(null);
   const [discoveredReceivers, setDiscoverReceivers] = useState<
@@ -119,6 +122,7 @@ export function Transfer() {
   }, [accountId, setValue, accounts]);
 
   const contracts = fungibles.map((f) => f.contract);
+  const contract = watch('contract');
 
   const getSymbol = (contract: string) => {
     const fungible = fungibles.find((f) => f.contract === contract);
@@ -298,6 +302,7 @@ export function Transfer() {
             amount: balance.toString().includes('.')
               ? `${balance}`
               : `${balance}.0`,
+            balance,
             chainId: chainId,
             gasLimit: 2500,
             gasPrice: 1.0e-8,
@@ -394,7 +399,7 @@ export function Transfer() {
                       {accounts
                         .filter(
                           (account) =>
-                            account.contract === 'coin' &&
+                            account.contract === contract &&
                             +account.overallBalance > 0,
                         )
                         .map((account) => (
@@ -418,13 +423,55 @@ export function Transfer() {
                       ? `Balance ${account?.overallBalance}`
                       : ''}
                   </Text>
-                  <Stack gap={'sm'}>
+
+                  <Stack gap="sm" flexDirection={'column'}>
+                    {optimalTransfers.length > 0 && (
+                      <>
+                        <Stack gap="sm" justifyContent={'flex-end'}>
+                          <Text size="small">
+                            {`chains: (${optimalTransfers.map(({ chainId }) => chainId).join(', ')})`}
+                          </Text>
+                          <button
+                            className={linkClass}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setShowSourceChains((val) => !val);
+                            }}
+                          >
+                            change
+                          </button>
+                        </Stack>
+                        {showSourceChains && (
+                          <ChainAmount
+                            chainsAmount={optimalTransfers}
+                            amount={amount}
+                            onChange={(amount) => setValue('amount', amount)}
+                          />
+                        )}
+                      </>
+                    )}
+                  </Stack>
+
+                  {/* <Stack gap={'sm'}>
                     <Text size="small">
                       {optimalTransfers.length
-                        ? `Source chains: (${optimalTransfers.map(({ chainId }) => chainId).join(', ')})`
+                        ? `chains: (${optimalTransfers.map(({ chainId }) => chainId).join(', ')})`
                         : ''}
                     </Text>
-                  </Stack>
+                    <button
+                      className={linkClass}
+                      onClick={() => setShowSourceChains(true)}
+                    >
+                      change
+                    </button>
+                    {showSourceChains && (
+                      <ChainAmount
+                        chainsAmount={optimalTransfers}
+                        amount={amount}
+                        onChange={(amount) => setValue('amount', amount)}
+                      />
+                    )}
+                  </Stack> */}
                 </Stack>
               </Stack>
               <Stack gap={'sm'} flexDirection={'column'}>
@@ -479,7 +526,10 @@ export function Transfer() {
                   }}
                 >
                   {accounts
-                    .filter((acc) => acc.uuid !== account?.uuid)
+                    .filter(
+                      (acc) =>
+                        acc.uuid !== account?.uuid && acc.contract === contract,
+                    )
                     .map((account) => (
                       <ComboboxItem key={account.address}>
                         {account.address}
@@ -495,12 +545,32 @@ export function Transfer() {
                   ? `Balance ${receiverAccount?.overallBalance}`
                   : ' '}
               </Text>
-              <Stack gap="sm">
-                <Text size="small">
-                  {optimalTransfers.length
-                    ? `Target chains: (${optimalTransfers.map(({ chainId }) => chainId).join(', ')})`
-                    : ' '}
-                </Text>
+              <Stack gap="sm" flexDirection={'column'}>
+                {optimalTransfers.length > 0 && (
+                  <>
+                    <Stack gap="sm" justifyContent={'flex-end'}>
+                      <Text size="small">
+                        {`chains: (${optimalTransfers.map(({ chainId }) => chainId).join(', ')})`}
+                      </Text>
+                      <button
+                        className={linkClass}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setShowTargetChains((val) => !val);
+                        }}
+                      >
+                        change
+                      </button>
+                    </Stack>
+                    {showTargetChains && (
+                      <ChainAmount
+                        chainsAmount={optimalTransfers}
+                        amount={amount}
+                        onChange={(amount) => setValue('amount', amount)}
+                      />
+                    )}
+                  </>
+                )}
               </Stack>
             </Stack>
 

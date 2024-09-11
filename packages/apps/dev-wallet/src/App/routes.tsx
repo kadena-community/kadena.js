@@ -25,6 +25,7 @@ import { Ready } from '@/pages/ready/ready';
 import { SignatureBuilder } from '@/pages/signature-builder/signature-builder';
 import { Transaction } from '@/pages/transaction/Transaction';
 import { Transactions } from '@/pages/transactions/transactions';
+import { TransferV2 } from '@/pages/transfer-v2/transfer-v2';
 import { Heading } from '@kadena/kode-ui';
 import { useWallet } from '../modules/wallet/wallet.hook';
 import { BackupRecoveryPhrase } from '../pages/backup-recovery-phrase/backup-recovery-phrase';
@@ -116,6 +117,7 @@ export const Routes: FC = () => {
           <Route path="/keyset/:keysetId" element={<Keyset />} />
           <Route path="/fungible/:contract" element={<FungiblePage />} />
           <Route path="/account/:accountId" element={<AccountPage />} />
+          <Route path="/bulk-transfer" element={<TransferV2 />} />
         </Route>
       </Route>
       <Route path="/ready" element={<Ready />} />
