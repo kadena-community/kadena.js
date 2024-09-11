@@ -6,11 +6,15 @@ const COLORS = {
   inactiveBorder: token('color.icon.base.@disabled'),
   inactiveBullet: tokens.kda.foundation.color.icon.brand.primary['@disabled'],
   active: tokens.kda.foundation.color.text.brand.primary.default,
-  activeBorder: token('color.accent.brand.primary'),
-  activeBullet: token('color.accent.brand.primary'),
+  activeBorder:
+    tokens.kda.foundation.color.background.accent.primary.inverse.default,
+  activeBullet:
+    tokens.kda.foundation.color.background.accent.primary.inverse.default,
   valid: tokens.kda.foundation.color.text.brand.primary.default,
-  validBorder: token('color.accent.brand.primary'),
-  validBullet: token('color.accent.brand.primary'),
+  validBorder:
+    tokens.kda.foundation.color.background.accent.primary.inverse.default,
+  validBullet:
+    tokens.kda.foundation.color.background.accent.primary.inverse.default,
   error: tokens.kda.foundation.color.text.semantic.negative.default,
   errorBorder: token('color.icon.semantic.negative.@active'),
   errorBullet: tokens.kda.foundation.color.icon.semantic.negative['@active'],
