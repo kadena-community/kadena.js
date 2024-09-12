@@ -2,7 +2,7 @@ import { recipe, token, tokens } from '../../styles';
 import { globalStyle, style } from '../../styles/utils';
 
 const COLORS = {
-  inactive: token('color.icon.base.@disabled'),
+  inactive: tokens.kda.foundation.color.text.gray.default,
   inactiveBorder: token('color.icon.base.@disabled'),
   inactiveBullet: tokens.kda.foundation.color.icon.brand.primary['@disabled'],
   active: tokens.kda.foundation.color.text.brand.primary.default,
@@ -168,7 +168,7 @@ export const bulletClass = recipe({
       [`${stepperClass.classNames.variants.direction.horizontal} &`]: {
         transform: 'translateY(-50%)',
       },
-      [`${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.inactive} ~ ${stepClass.classNames.base} &, 
+      [`${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.inactive} ~ ${stepClass.classNames.base} &,
         ${stepClass.classNames.variants.active.true}${stepClass.classNames.variants.status.valid} ~ ${stepClass.classNames.base} &`]:
         {
           backgroundColor: COLORS.inactiveBullet,
