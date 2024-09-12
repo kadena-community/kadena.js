@@ -1,11 +1,8 @@
 import { Accounts } from '@/Components/Accounts/Accounts';
-import { ListItem } from '@/Components/ListItem/ListItem';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { getAccountName } from '@/utils/helpers';
-import { Box, Heading, Stack, Text } from '@kadena/kode-ui';
+import { Heading, Stack } from '@kadena/kode-ui';
 import { PactNumber } from '@kadena/pactjs';
-import { Link, useParams } from 'react-router-dom';
-import { listClass, noStyleLinkClass } from '../home/style.css';
+import { useParams } from 'react-router-dom';
 
 export function FungiblePage() {
   const { contract } = useParams<{ contract: string }>();

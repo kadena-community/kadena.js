@@ -1,6 +1,5 @@
 import { Fungible, IAccount } from '@/modules/account/account.repository';
 import { noStyleLinkClass } from '@/pages/home/style.css';
-import { MonoSearch } from '@kadena/kode-icons/system';
 import {
   Button,
   Dialog,
@@ -9,7 +8,6 @@ import {
   Heading,
   Stack,
   Text,
-  TextField,
 } from '@kadena/kode-ui';
 import { PactNumber } from '@kadena/pactjs';
 import { useMemo, useState } from 'react';
@@ -27,7 +25,6 @@ export function Assets({
   showAddToken?: boolean;
 }) {
   const [showTokenModal, setShowTokenModal] = useState(false);
-  const [filter, setFilter] = useState('');
   const assets = useMemo(() => {
     return Object.entries(
       accounts.reduce(
@@ -39,26 +36,16 @@ export function Assets({
             ...rest,
           };
         },
-        fungibles
-          .filter(({ title, symbol, contract }) => {
-            const lowerCaseFilter = filter.toLocaleLowerCase();
-            return (
-              !filter ||
-              title.toLocaleLowerCase().search(lowerCaseFilter) !== -1 ||
-              symbol.toLocaleLowerCase().search(lowerCaseFilter) !== -1 ||
-              contract.toLocaleLowerCase().search(lowerCaseFilter) !== -1
-            );
-          })
-          .reduce(
-            (acc, item) => ({
-              [item.contract]: '0.0',
-              ...acc,
-            }),
-            {} as Record<string, string>,
-          ),
+        fungibles.reduce(
+          (acc, item) => ({
+            [item.contract]: '0.0',
+            ...acc,
+          }),
+          {} as Record<string, string>,
+        ),
       ),
     );
-  }, [accounts, fungibles, filter]);
+  }, [accounts, fungibles]);
   return (
     <Stack flexDirection={'column'} gap={'md'}>
       <Dialog
@@ -76,14 +63,6 @@ export function Assets({
         justifyContent={'space-between'}
         alignItems={'center'}
       >
-        {/* <TextField
-          startVisual={<MonoSearch />}
-          placeholder="Search token"
-          value={filter}
-          onChange={(e) => {
-            setFilter(e.target.value);
-          }}
-        /> */}
         <Heading as="h4">Your assets</Heading>
         {showAddToken && (
           <Button

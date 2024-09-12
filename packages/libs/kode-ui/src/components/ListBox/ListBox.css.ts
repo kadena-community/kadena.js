@@ -91,3 +91,7 @@ export const listSectionHeadingClass = style({
   cursor: 'default',
   alignSelf: 'stretch',
 });
+
+export const itemWrapper = style({
+  flex: 1,
+});

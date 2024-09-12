@@ -1,5 +1,24 @@
-import { ChainId } from '@kadena/client';
+import {
+  accountRepository,
+  IAccount,
+} from '@/modules/account/account.repository';
+import * as transactionService from '@/modules/transaction/transaction.service';
+import {
+  ChainId,
+  createTransaction,
+  ISigner,
+  IUnsignedCommand,
+} from '@kadena/client';
+import {
+  discoverAccount,
+  safeTransferCreateCommand,
+  transferAllCommand,
+  transferCreateCommand,
+} from '@kadena/client-utils/coin';
+import { estimateGas } from '@kadena/client-utils/core';
+import { composePactCommand, setMeta } from '@kadena/client/fp';
 import { PactNumber } from '@kadena/pactjs';
+import { getAccount, IReceiverAccount } from '../transfer/utils';
 
 export const CHAINS: ChainId[] = [
   '0',
@@ -152,10 +171,10 @@ export function getTransfers(
       },
     ],
   }));
-  const sortedBalances = balances.sort(
-    (a, b) => Number(b.balance) - Number(a.balance),
-  );
   const dynamicTransfers = dynamicChain.map((tr) => {
+    const sortedBalances = balances.sort(
+      (a, b) => Number(b.balance) - Number(a.balance),
+    );
     const chunks: Array<{
       chainId: ChainId;
       amount: string;
@@ -194,3 +213,193 @@ export function getTransfers(
 
   return [merged, redistributionRequests] as const;
 }
+
+export const discoverReceiver = async (
+  receiver: string,
+  networkId: string,
+  contract: string,
+  mapKeys: (key: ISigner) => ISigner,
+) => {
+  const result = await discoverAccount(
+    receiver,
+    networkId,
+    undefined,
+    contract,
+  ).execute();
+
+  const rec = getAccount(
+    receiver,
+    result as Array<{
+      chainId: ChainId;
+      result: { balance: string; guard: any };
+    }>,
+  );
+
+  if (rec.length === 0) {
+    console.log('Receiver not found!');
+    const [fromDb] = await accountRepository.getAccountByAddress(receiver);
+    if (fromDb) {
+      console.log('Receiver found in DB');
+      rec.push(fromDb);
+    } else if (receiver.startsWith('k:')) {
+      console.log("Add K account to receiver's list");
+      rec.push({
+        address: receiver,
+        overallBalance: '0',
+        chains: [],
+        keyset: {
+          guard: {
+            pred: 'keys-all' as const,
+            keys: [receiver.split('k:')[1]],
+          },
+        },
+      });
+    }
+  }
+
+  rec.forEach((r) => {
+    r.keyset.guard.keys = r.keyset.guard.keys.map(mapKeys);
+  });
+
+  return rec;
+};
+
+export interface IReceiver {
+  amount: string;
+  address: string;
+  chain: ChainId | '';
+  chunks: {
+    chainId: ChainId;
+    amount: string;
+  }[];
+  discoveredAccounts: IReceiverAccount[];
+  discoveryStatus: 'not-started' | 'in-progress' | 'done';
+  transferMax?: true;
+}
+
+export const createTransactions = async ({
+  account,
+  receivers,
+  isSafeTransfer,
+  networkId,
+  contract,
+  profileId,
+  mapKeys,
+  gasPrice,
+  gasLimit,
+}: {
+  account: IAccount;
+  receivers: IReceiver[];
+  isSafeTransfer: boolean;
+  networkId: string;
+  contract: string;
+  profileId: string;
+  mapKeys: (key: ISigner) => ISigner;
+  gasPrice: number;
+  gasLimit: number;
+}) => {
+  if (!account || +account.overallBalance < 0 || !networkId || !profileId) {
+    throw new Error('INVALID_INPUTs');
+  }
+  const groupId = crypto.randomUUID();
+  const txs = await Promise.all(
+    receivers.map(async (receiverAccount) => {
+      if (
+        !receiverAccount ||
+        !receiverAccount.address ||
+        receiverAccount.discoveredAccounts.length === 0
+      ) {
+        console.log(`Receiver not found, ${JSON.stringify(receiverAccount)}`);
+        throw new Error(
+          `Receiver not found, ${JSON.stringify(receiverAccount)}`,
+        );
+      }
+
+      if (receiverAccount.discoveredAccounts.length > 1) {
+        throw new Error(
+          `Multiple accounts found with the same address (${receiverAccount.address}), resolve manually`,
+        );
+      }
+      const discoveredAccount = receiverAccount.discoveredAccounts[0];
+
+      let commands: IUnsignedCommand[];
+      if (receiverAccount.transferMax) {
+        commands = await Promise.all(
+          account.chains.map(async ({ chainId, balance }) => {
+            const amount = balance.toString().includes('.')
+              ? `${balance}`
+              : `${balance}.0`;
+            const command = composePactCommand(
+              transferAllCommand({
+                sender: {
+                  account: account.address,
+                  publicKeys: account.keyset!.guard.keys.map(mapKeys),
+                },
+                receiver: {
+                  account: discoveredAccount.address,
+                  keyset: discoveredAccount.keyset.guard,
+                },
+                amount,
+                chainId,
+              }),
+              {
+                networkId: networkId,
+                meta: {
+                  chainId,
+                },
+              },
+            );
+
+            const gas = await estimateGas(command);
+
+            return createTransaction(
+              composePactCommand(command, setMeta(gas))(),
+            );
+          }),
+        );
+      } else {
+        const transferFn = isSafeTransfer
+          ? safeTransferCreateCommand
+          : transferCreateCommand;
+
+        commands = receiverAccount.chunks.map((optimal) => {
+          const command = composePactCommand(
+            transferFn({
+              amount: optimal.amount,
+              contract: contract,
+              chainId: optimal.chainId,
+              sender: {
+                account: account.address,
+                publicKeys: account.keyset!.guard.keys.map(mapKeys),
+              },
+              receiver: {
+                account: receiverAccount.address,
+                keyset: discoveredAccount.keyset.guard,
+              },
+            }),
+            {
+              networkId: networkId,
+              meta: {
+                chainId: optimal.chainId,
+                gasLimit: gasLimit,
+                gasPrice: gasPrice,
+              },
+            },
+          )();
+          return createTransaction(command);
+        });
+      }
+
+      // const partiallySignedCommands = await sign(commands);
+
+      console.log('commands', commands);
+
+      return await Promise.all(
+        commands.map((tx) =>
+          transactionService.addTransaction(tx, profileId, networkId, groupId),
+        ),
+      );
+    }),
+  );
+  return [groupId, txs] as const;
+};

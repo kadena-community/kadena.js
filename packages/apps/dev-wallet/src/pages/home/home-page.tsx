@@ -1,6 +1,5 @@
 import { Assets } from '@/Components/Assets/Assets';
 import { Fungible, IAccount } from '@/modules/account/account.repository';
-import { useNetwork } from '@/modules/network/network.hook';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { panelClass } from '@/pages/home/style.css.ts';
 

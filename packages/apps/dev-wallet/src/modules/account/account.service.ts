@@ -15,7 +15,7 @@ import {
   fundExistingAccountOnTestnetCommand,
   fundNewAccountOnTestnetCommand,
   readHistory,
-} from '@kadena/client-utils';
+} from '@kadena/client-utils/faucet';
 import { genKeyPair } from '@kadena/cryptography-utils';
 import { transactionRepository } from '../transaction/transaction.repository';
 import type { IKeyItem, IKeySource } from '../wallet/wallet.repository';

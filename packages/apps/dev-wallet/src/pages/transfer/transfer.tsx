@@ -33,7 +33,6 @@ import classNames from 'classnames';
 import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ChainAmount } from './components/ChainAmount';
 import { DiscoverdAccounts } from './components/DiscoverdAccounts';
 import { card, disabledItemClass, linkClass } from './style.css';
 import {
@@ -56,8 +55,6 @@ export function Transfer() {
   const { accounts, fungibles, getPublicKeyData, profile } = useWallet();
   const accountId = useSearchParams()[0].get('accountId');
   const { activeNetwork } = useNetwork();
-  const [showSourceChains, setShowSourceChains] = useState(false);
-  const [showTargetChains, setShowTargetChains] = useState(false);
   const [receiverAccount, setReceiverAccount] =
     useState<IReceiverAccount | null>(null);
   const [discoveredReceivers, setDiscoverReceivers] = useState<
@@ -431,23 +428,7 @@ export function Transfer() {
                           <Text size="small">
                             {`chains: (${optimalTransfers.map(({ chainId }) => chainId).join(', ')})`}
                           </Text>
-                          <button
-                            className={linkClass}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setShowSourceChains((val) => !val);
-                            }}
-                          >
-                            change
-                          </button>
                         </Stack>
-                        {showSourceChains && (
-                          <ChainAmount
-                            chainsAmount={optimalTransfers}
-                            amount={amount}
-                            onChange={(amount) => setValue('amount', amount)}
-                          />
-                        )}
                       </>
                     )}
                   </Stack>
@@ -552,23 +533,7 @@ export function Transfer() {
                       <Text size="small">
                         {`chains: (${optimalTransfers.map(({ chainId }) => chainId).join(', ')})`}
                       </Text>
-                      <button
-                        className={linkClass}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setShowTargetChains((val) => !val);
-                        }}
-                      >
-                        change
-                      </button>
                     </Stack>
-                    {showTargetChains && (
-                      <ChainAmount
-                        chainsAmount={optimalTransfers}
-                        amount={amount}
-                        onChange={(amount) => setValue('amount', amount)}
-                      />
-                    )}
                   </>
                 )}
               </Stack>

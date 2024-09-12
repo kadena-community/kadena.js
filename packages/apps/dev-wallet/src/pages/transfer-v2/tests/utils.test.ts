@@ -21,7 +21,7 @@ describe('processRedistribute', () => {
         demand: '3.0',
       },
     ];
-    const [list, transfers] = processRedistribute(chains);
+    const [list, transfers] = processRedistribute(chains, '0.0001');
     expect(list).toEqual([
       {
         balance: '2.0',

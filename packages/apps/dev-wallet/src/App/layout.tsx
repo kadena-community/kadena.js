@@ -5,7 +5,6 @@ import {
   selectNetworkClass,
 } from '@/App/layout.css.ts';
 import { Sidebar } from '@/Components/Sidebar/Sidebar.tsx';
-import { LayoutContext } from '@/modules/layout/layout.provider.tsx';
 import { useNetwork } from '@/modules/network/network.hook';
 import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
 import { pageClass } from '@/pages/home/style.css.ts';
@@ -24,7 +23,7 @@ import {
   useTheme,
 } from '@kadena/kode-ui';
 import { atoms } from '@kadena/kode-ui/styles';
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
 export const Layout: FC = () => {
@@ -46,8 +45,6 @@ export const Layout: FC = () => {
 
   const { isUnlocked, lockProfile } = useWallet();
 
-  const { layoutContext } = useContext(LayoutContext) ?? [];
-  const accentColor = layoutContext?.accentColor;
   const handleLogOut = () => {
     lockProfile();
   };

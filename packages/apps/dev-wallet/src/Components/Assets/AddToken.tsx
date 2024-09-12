@@ -3,10 +3,9 @@ import {
   Fungible,
 } from '@/modules/account/account.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { queryAllChainsClient } from '@kadena/client-utils';
-import { describeModule } from '@kadena/client-utils/built-in';
+import { queryAllChainsClient } from '@kadena/client-utils/core';
 import { composePactCommand, execution } from '@kadena/client/fp';
-import { Button, Notification, Stack, Text, TextField } from '@kadena/kode-ui';
+import { Button, Notification, Stack, TextField } from '@kadena/kode-ui';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 

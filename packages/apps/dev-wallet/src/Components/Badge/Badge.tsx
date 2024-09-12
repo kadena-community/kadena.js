@@ -19,9 +19,11 @@ export const Badge: FC<PropsWithChildren> = ({ children }) => {
 };
 
 export const Chain: FC<{ chainId: string }> = ({ chainId }) => (
-  <Badge>
-    <MonoLink /> {chainId}
-  </Badge>
+  <Stack>
+    <Badge>
+      <MonoLink /> {chainId}
+    </Badge>
+  </Stack>
 );
 
 export const AutoBadge: FC = () => (

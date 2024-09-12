@@ -27,8 +27,15 @@ import { panelClass } from './style.css';
 export function Keyset() {
   const { keysetId } = useParams();
   const { profile, activeNetwork, fungibles } = useWallet();
-  const [keyset] = useAsync(accountRepository.getKeyset, keysetId!);
-  const [accounts] = useAsync(accountRepository.getAccountByKeyset, keysetId!);
+  const [keyset] = useAsync(
+    (id) => (id ? accountRepository.getKeyset(id) : Promise.reject('no ide')),
+    [keysetId],
+  );
+  const [accounts] = useAsync(
+    (id) =>
+      id ? accountRepository.getAccountByKeyset(id) : Promise.reject('no id'),
+    [keysetId],
+  );
   const navigate = useNavigate();
 
   if (!keyset || !accounts || !profile || keyset.profileId !== profile.uuid) {
