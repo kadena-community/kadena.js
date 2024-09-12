@@ -156,6 +156,12 @@
     "path": "packages/libs/pactjs-generator"
   },
   {
+    "name": "@kadena/wallet-sdk",
+    "version": "0.0.0",
+    "private": true,
+    "path": "packages/libs/wallet-sdk"
+  },
+  {
     "name": "@kadena/proof-of-us",
     "version": "0.5.7",
     "private": true,
