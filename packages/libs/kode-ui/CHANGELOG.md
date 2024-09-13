@@ -1,5 +1,15 @@
 # @kadena/kode-ui
 
+## 0.16.0
+
+### Minor Changes
+
+- 0bcccf1: add the stepper component
+
+### Patch Changes
+
+- b751065: Fix for the stepper component label. Incorrect token usage.
+
 ## 0.15.0
 
 ### Minor Changes
