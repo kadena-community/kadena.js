@@ -34,9 +34,8 @@ import {
   TRANSACTIONS_PATH,
   TX_TEMPLATE_FOLDER,
 } from '../../../constants/config.js';
-import { ICommandSchema } from '../../../prompts/tx.js';
+import { IUnsignedCommandSchema } from '../../../prompts/tx.js';
 import { services } from '../../../services/index.js';
-import { KadenaError } from '../../../services/service-error.js';
 import type {
   IWallet,
   IWalletKey,
@@ -119,9 +118,11 @@ export async function getAllTransactions(
           const content = await services.filesystem.readFile(filePath);
           if (content === null) return null;
           const JSONParsedContent = JSON.parse(content);
-          const parsed = ICommandSchema.safeParse(JSONParsedContent);
+          const parsed = IUnsignedCommandSchema.safeParse(JSONParsedContent);
           if (parsed.success) {
-            const isSignedTx = isSignedTransaction(JSONParsedContent);
+            const isSignedTx = isSignedTransaction(
+              parsed.data as IUnsignedCommand,
+            );
             return {
               fileName,
               signed: isSignedTx,
@@ -138,13 +139,6 @@ export async function getAllTransactions(
     log.error(`Error reading transaction directory: ${error}`);
     throw error;
   }
-}
-
-export async function getAllTransactionFileNames(
-  directory: string,
-): Promise<string[]> {
-  const transactionFiles = await getAllTransactions(directory);
-  return transactionFiles.map((tx) => tx.fileName);
 }
 
 /**
@@ -310,9 +304,11 @@ export async function getTransactionFromFile(
       throw Error(`Failed to read file at path: ${transactionFilePath}`);
     }
     const transaction = JSON.parse(fileContent);
-    const parsedTransaction = ICommandSchema.parse(transaction);
+    const parsedTransaction = IUnsignedCommandSchema.parse(transaction);
     if (signed) {
-      const isSignedTx = isSignedTransaction(transaction);
+      const isSignedTx = isSignedTransaction(
+        parsedTransaction as IUnsignedCommand,
+      );
       if (!isSignedTx) {
         throw Error(`${transactionFile} is not a signed transaction`);
       }
@@ -698,9 +694,9 @@ export async function logTransactionDetails(command: ICommand): Promise<void> {
   }
 }
 
-export const getTxTemplateDirectory = (): string | null => {
+export const getTxTemplateDirectory = (): string => {
   const kadenaDir = services.config.getDirectory();
-  return notEmpty(kadenaDir) ? path.join(kadenaDir, TX_TEMPLATE_FOLDER) : null;
+  return path.join(kadenaDir, TX_TEMPLATE_FOLDER);
 };
 
 /**
@@ -791,11 +787,9 @@ export const createTransactionWithDetails = async (
   return transactionsWithDetails;
 };
 
-export const getTransactionDirectory = (): string | null => {
+export const getTransactionDirectory = (): string => {
   const kadenaDirectory = services.config.getDirectory();
-  return notEmpty(kadenaDirectory)
-    ? path.join(kadenaDirectory, TRANSACTIONS_PATH)
-    : null;
+  return path.join(kadenaDirectory, TRANSACTIONS_PATH);
 };
 
 export interface IUpdateTransactionsLogPayload {
@@ -846,8 +840,6 @@ export const saveTransactionsToFile = async (
 ): Promise<void> => {
   try {
     const transactionDir = getTransactionDirectory();
-    if (!notEmpty(transactionDir)) throw new KadenaError('no_kadena_directory');
-
     await services.filesystem.ensureDirectoryExists(transactionDir);
     const transactionFilePath = path.join(
       transactionDir,
@@ -906,8 +898,6 @@ export const updateTransactionStatus = async (
 ): Promise<void> => {
   try {
     const transactionDir = getTransactionDirectory();
-    if (!notEmpty(transactionDir)) throw new KadenaError('no_kadena_directory');
-
     const transactionFilePath = path.join(
       transactionDir,
       TRANSACTIONS_LOG_FILE,

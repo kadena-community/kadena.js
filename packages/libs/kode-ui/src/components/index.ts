@@ -109,6 +109,8 @@ export {
 } from './Notification';
 export { Pagination } from './Pagination';
 export { ProgressCircle } from './ProgressCircle';
+export { Step, Stepper } from './Stepper';
+export type { IStepProps, IStepperProps } from './Stepper';
 export { Cell, Column, Row, Table, TableBody, TableHeader } from './Table';
 export { TabItem, Tabs } from './Tabs';
 export { Tag, TagGroup, TagItem } from './Tag';

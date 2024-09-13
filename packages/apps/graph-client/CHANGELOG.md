@@ -1,5 +1,73 @@
 # @kadena/graph-client
 
+## 0.4.1
+
+### Patch Changes
+
+- Updated dependencies \[0bcccf1]
+- Updated dependencies \[b751065]
+  - @kadena/kode-ui\@0.16.0
+
+## 0.4.0
+
+### Minor Changes
+
+- 9d2227e: Prepare `type Guard` for `interface InterfaceGuard` to support all
+  guard types
+
+  Instead of using a `union Guard = { ... } | { ... }` we've opted to use an
+  interface that dictates that every Guard has to provide a
+  `keys: string[], predicate: string` property. For all guards except
+  `KeysetGuard` this will be an empty array `keys = []` or empty string
+  `predicate = ""`.
+
+  This way we don't break the current signature. The `Guard`s properties `keys`
+  and `predicate` are now `@deprecated` and will be removed in the next major
+  version.
+
+  DEPRECATION NOTICE: The `keys` and `predicate` properties of the generic
+  `Guard` type. Use `guard { ... on KeysetGuard { keys predicate } }` instead.
+
+### Patch Changes
+
+- Updated dependencies \[ae3dbc7]
+- Updated dependencies \[7ef4a06]
+  - @kadena/kode-ui\@0.15.0
+  - @kadena/graph\@1.0.11
+
+## 0.3.6
+
+### Patch Changes
+
+- Updated dependencies \[777a200]
+  - @kadena/graph\@1.0.10
+
+## 0.3.5
+
+### Patch Changes
+
+- Updated dependencies \[de4fb13]
+  - @kadena/kode-icons\@0.2.0
+  - @kadena/kode-ui\@0.14.3
+
+## 0.3.4
+
+### Patch Changes
+
+- Updated dependencies \[8121019]
+- Updated dependencies \[a5db08b]
+  - @kadena/kode-ui\@0.14.2
+
+## 0.3.3
+
+### Patch Changes
+
+- Updated dependencies \[c5c1605]
+- Updated dependencies \[27ecc26]
+  - @kadena/graph\@1.0.9
+  - @kadena/kode-ui\@0.14.1
+  - @kadena/kode-icons\@0.1.0
+
 ## 0.3.2
 
 ### Patch Changes

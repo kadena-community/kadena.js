@@ -1,6 +1,7 @@
 import { BUILDSTATUS } from '@/constants';
 import { child, get, off, onValue, ref, set, update } from 'firebase/database';
 import type { Dispatch, SetStateAction } from 'react';
+import { cleanAccountForStore } from '../cleanAccountForStore';
 import { convertSignersObjectToArray } from '../convertSignersObjectToArray';
 import { database, dbRef } from '../firebase';
 import { isAlreadySigning } from '../isAlreadySigning';
@@ -53,11 +54,17 @@ const ProofOfUsStore = () => {
       date: Date.now(),
     };
 
-    await set(ref(database, `signees/${proofOfUsId}/${account.accountName}`), {
-      ...account,
-      signerStatus: 'init',
-      initiator: true,
-    });
+    await set(
+      ref(
+        database,
+        `signees/${proofOfUsId}/${cleanAccountForStore(account.accountName)}`,
+      ),
+      {
+        ...account,
+        signerStatus: 'init',
+        initiator: true,
+      },
+    );
     await set(ref(database, `data/${proofOfUsId}`), obj);
   };
 
@@ -166,7 +173,10 @@ const ProofOfUsStore = () => {
     };
 
     return await update(
-      ref(database, `signees/${proofOfUs.proofOfUsId}/${account.accountName}`),
+      ref(
+        database,
+        `signees/${proofOfUs.proofOfUsId}/${cleanAccountForStore(account.accountName)}`,
+      ),
       signee,
     );
   };
@@ -176,7 +186,10 @@ const ProofOfUsStore = () => {
     account: IProofOfUsSignee,
   ) => {
     return await set(
-      ref(database, `signees/${proofOfUs.proofOfUsId}/${account.accountName}`),
+      ref(
+        database,
+        `signees/${proofOfUs.proofOfUsId}/${cleanAccountForStore(account.accountName)}`,
+      ),
       null,
     );
   };
@@ -190,7 +203,7 @@ const ProofOfUsStore = () => {
     return await set(
       ref(
         database,
-        `signees/${proofOfUs.proofOfUsId}/${account.accountName}/signerStatus`,
+        `signees/${proofOfUs.proofOfUsId}/${cleanAccountForStore(account.accountName)}/signerStatus`,
       ),
       newStatus,
     );
@@ -201,7 +214,10 @@ const ProofOfUsStore = () => {
     account: IProofOfUsSignee,
   ) => {
     return await set(
-      ref(database, `signees/${proofOfUs.proofOfUsId}/${account.accountName}`),
+      ref(
+        database,
+        `signees/${proofOfUs.proofOfUsId}/${cleanAccountForStore(account.accountName)}`,
+      ),
       account,
     );
   };
@@ -213,7 +229,7 @@ const ProofOfUsStore = () => {
     return await set(
       ref(
         database,
-        `signees/${proofOfUs.proofOfUsId}/${signee.accountName}/lastPingTime`,
+        `signees/${proofOfUs.proofOfUsId}/${cleanAccountForStore(signee.accountName)}/lastPingTime`,
       ),
       Date.now(),
     );
@@ -226,7 +242,10 @@ const ProofOfUsStore = () => {
     const promises = signees.map((signee) => {
       delete signee.signature;
       return set(
-        ref(database, `signees/${proofOfUs.proofOfUsId}/${signee.accountName}`),
+        ref(
+          database,
+          `signees/${proofOfUs.proofOfUsId}/${cleanAccountForStore(signee.accountName)}`,
+        ),
         {
           ...signee,
           signerStatus:
@@ -287,7 +306,10 @@ const ProofOfUsStore = () => {
     if (!account) return;
     const accData = { alias: account.alias, accountName: account.accountName };
 
-    await update(ref(database, `accounts/${account.accountName}`), accData);
+    await update(
+      ref(database, `accounts/${cleanAccountForStore(account.accountName)}`),
+      accData,
+    );
   };
   const saveLeaderboardAccounts = async (accounts: IAccountLeaderboard[]) => {
     const obj = accounts.reduce(

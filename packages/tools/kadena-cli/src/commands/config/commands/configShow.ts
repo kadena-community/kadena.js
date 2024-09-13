@@ -8,7 +8,6 @@ import {
   WALLET_DIR,
 } from '../../../constants/config.js';
 import { services } from '../../../services/index.js';
-import { KadenaError } from '../../../services/service-error.js';
 import { createCommand } from '../../../utils/createCommand.js';
 import { getDefaultNetworkName } from '../../../utils/helpers.js';
 import { log } from '../../../utils/logger.js';
@@ -83,10 +82,6 @@ export const createConfigShowCommand: (
     log.debug('config show');
 
     const kadenaDir = services.config.getDirectory();
-    if (kadenaDir === null) {
-      throw new KadenaError('no_kadena_directory');
-    }
-
     log.info(log.color.green('Currently using the following config:'));
     const configPaths = getConfigPaths(kadenaDir);
     const directoryFileCounts = await calculateDirectoryFileCounts(configPaths);

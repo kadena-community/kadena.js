@@ -14,7 +14,7 @@ export const options = [
   globalOptions.directory({ disableQuestion: true }),
   txOptions.txUnsignedTransactionFiles(),
 
-  globalOptions.legacy({ isOptional: true, disableQuestion: true }),
+  txOptions.chainweaverSignatures({ isOptional: true, disableQuestion: true }),
 
   // sign with keypair
   globalOptions.keyPairs(),

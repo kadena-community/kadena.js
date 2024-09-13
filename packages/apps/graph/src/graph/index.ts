@@ -6,6 +6,7 @@ import './objects/fungible-chain-account';
 import './objects/gas-limit-estimation';
 import './objects/graph-configuration';
 import './objects/guard';
+import './objects/keyset-guard';
 import './objects/miner-key';
 import './objects/network-info';
 import './objects/non-fungible-account';

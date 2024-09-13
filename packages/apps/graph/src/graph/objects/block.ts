@@ -70,6 +70,7 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
             })
           )?.map((x) => x.key),
           predicate: parent.predicate as IGuard['predicate'],
+          raw: '',
         },
         balance: 0,
         transactions: [],

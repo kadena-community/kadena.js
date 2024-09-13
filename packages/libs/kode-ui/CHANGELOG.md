@@ -1,5 +1,43 @@
 # @kadena/kode-ui
 
+## 0.16.0
+
+### Minor Changes
+
+- 0bcccf1: add the stepper component
+
+### Patch Changes
+
+- b751065: Fix for the stepper component label. Incorrect token usage.
+
+## 0.15.0
+
+### Minor Changes
+
+- ae3dbc7: Feature to add components in the description
+
+## 0.14.3
+
+### Patch Changes
+
+- Updated dependencies \[de4fb13]
+  - @kadena/kode-icons\@0.2.0
+
+## 0.14.2
+
+### Patch Changes
+
+- 8121019: Fixed Card Pattern heading and responsive styles
+- a5db08b: Updated primaryFont and secondaryFont to Inter
+
+## 0.14.1
+
+### Patch Changes
+
+- 27ecc26: Updated the CardPattern component to allow for more flexible
+  customization
+  - @kadena/kode-icons\@0.1.0
+
 ## 0.14.0
 
 ### Minor Changes

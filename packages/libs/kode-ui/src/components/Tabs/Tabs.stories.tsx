@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import type { Key } from 'react-aria';
 import type { Node } from 'react-stately';
-import { onLayer2 } from '../../storyDecorators';
+import { onLayer1 } from '../../storyDecorators';
 import { Stack } from '../Layout';
 import type { ITabsProps } from '../Tabs';
 import { TabItem, Tabs } from '../Tabs';
@@ -39,7 +39,7 @@ const ExampleManyTabs = [
 const meta: Meta<ITabsProps<object>> = {
   title: 'Layout/Tabs',
   component: Tabs,
-  decorators: [onLayer2],
+  decorators: [onLayer1],
   parameters: {
     status: { type: 'stable' },
     docs: {
@@ -124,7 +124,12 @@ export const TabsStory: Story = {
     };
 
     return (
-      <Tabs {...props} aria-label={props['aria-label']} onClose={handleClose}>
+      <Tabs
+        {...props}
+        aria-label={props['aria-label']}
+        onClose={handleClose}
+        isContained
+      >
         {items.map((tab) => (
           <TabItem key={tab.title} title={tab.title}>
             {tab.content}

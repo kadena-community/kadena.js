@@ -31,6 +31,7 @@ import type {
   IGasLimitEstimation,
   IGraphConfiguration,
   IGuard,
+  IKeysetGuard,
   INetworkInfo,
   INonFungibleAccount,
   INonFungibleChainAccount,
@@ -106,6 +107,10 @@ export const builder = new SchemaBuilder<
       PactQueryResponse: IPactQueryResponse;
       NetworkInfo: INetworkInfo;
       BlockNeighbor: IBlockNeighbor;
+      KeysetGuard: IKeysetGuard;
+    };
+    Interfaces: {
+      IGuard: IGuard;
     };
   }
 >({

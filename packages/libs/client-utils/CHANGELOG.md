@@ -1,5 +1,13 @@
 # @kadena/client-utils
 
+## 0.9.1
+
+### Patch Changes
+
+- Updated dependencies \[d07b424]
+  - @kadena/client\@1.14.0
+  - @kadena/pactjs-cli\@1.14.0
+
 ## 0.9.0
 
 ### Minor Changes

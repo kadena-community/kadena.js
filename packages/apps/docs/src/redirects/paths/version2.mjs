@@ -378,7 +378,7 @@ export const version2PathUrlRedirects = [
   },
   {
     source: '/pact/intermediate/pact-and-javascript',
-    destination: '/tutorials/pact-and-javascript',
+    destination: '/build/pact/pact-and-javascript',
     permanent: true,
   },
   {
@@ -457,6 +457,16 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
+    source: '/reference/chainweb-api/service-block',
+    destination: '/reference/chainweb-api/full-block',
+    permanent: true,
+  },
+  {
+    source: '/reference/chainweb-api/misc',
+    destination: '/reference/chainweb-api/updates',
+    permanent: true,
+  },
+  {
     source: '/contribute',
     destination: '/participate',
     permanent: true,
@@ -491,6 +501,33 @@ export const version2PathUrlRedirects = [
     destination: '/participate',
     permanent: true,
   },
+  {
+    source: '/tutorials',
+    destination: '/build/quickstart',
+    permanent: true,
+  },
+  {
+    source: '/tutorials/dev-network',
+    destination: '/build/pact/dev-network',
+    permanent: true,
+  },
+  {
+    source: '/tutorials/language-basics',
+    destination: '/build/pact/language-basics',
+    permanent: true,
+  },
+
+  {
+    source: '/tutorials/hello-world',
+    destination: '/build/pact/language-basics',
+    permanent: true,
+  },
+  {
+    source: '/tutorials/pact-and-javascript',
+    destination: '/build/pact/pact-and-javascript',
+    permanent: true,
+  },
+
   {
     source: '/pact/reference/:slug1/:slug2',
     destination: '/reference/:slug1/:slug2',

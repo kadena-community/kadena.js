@@ -28,6 +28,13 @@ export class ProofOfUsAppIndex {
     return shareUrl;
   }
 
+  public async loginToMintWith(actor: Page): Promise<void> {
+    await actor.getByRole('button', { name: 'Login to mint' }).click();
+  }
+  public async loginToMintWithSigner(actor: Page): Promise<void> {
+    await actor.getByRole('button', { name: 'Login' }).click();
+  }
+
   public async disableSigningFor(
     actor: Page,
     targetSignee: string,
@@ -51,7 +58,7 @@ export class ProofOfUsAppIndex {
     await actor.getByRole('button', { name: 'SIGN' }).first().click();
   }
 
-  public async uploadProofWith(actor: Page): Promise<void> {
+  public async signAndMintWith(actor: Page): Promise<void> {
     await actor.getByRole('button', { name: 'SIGN & MINT' }).waitFor();
     await actor.getByRole('button', { name: 'SIGN & MINT' }).first().click();
   }
@@ -62,5 +69,14 @@ export class ProofOfUsAppIndex {
     await expect(actor.locator('.swipeable-list-item')).toHaveCount(
       expectedSigneeCount,
     );
+  }
+
+  public async logBlockExplorerUrl(actor: Page): Promise<void> {
+    const blockExplorerUrl = await actor
+      .getByRole('link', { name: 'Click Here' })
+      .first()
+      .getAttribute('href');
+
+    console.log(blockExplorerUrl);
   }
 }

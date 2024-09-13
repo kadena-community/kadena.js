@@ -128,14 +128,26 @@ export const Footer: FC = () => {
       >
         <Text>@Kadena LCC @{year}</Text>
         <Stack flex={1} />
-        <a className={footerLinkClass} href="https://kadena.io/privacy-policy">
-          <Text>Privacy Policy</Text>
-        </a>
         <a
           className={footerLinkClass}
           href="https://www.kadena.io/terms-and-conditions"
         >
-          <Text> Terms and Conditions</Text>
+          <Text>Terms and Conditions</Text>
+        </a>
+        <a
+          className={footerLinkClass}
+          href="https://www.kadena.io/privacy-policy"
+        >
+          <Text>Privacy Policy</Text>
+        </a>
+        <a className={footerLinkClass} href="https://www.kadena.io/media-kit">
+          <Text>Media Kit</Text>
+        </a>
+        <a
+          className={footerLinkClass}
+          href="https://job-boards.greenhouse.io/kadenallc"
+        >
+          <Text>Careers</Text>
         </a>
       </Stack>
     </Stack>

@@ -1,5 +1,32 @@
 # @kadena/graph
 
+## 1.0.11
+
+### Patch Changes
+
+- 7ef4a06: Fix issue where missing crosschain transfer would error
+- Updated dependencies \[d07b424]
+  - @kadena/client\@1.14.0
+  - @kadena/client-utils\@0.9.1
+
+## 1.0.10
+
+### Patch Changes
+
+- 777a200: set the version to 5.16.1 so it won't fetch a newer version in nix
+
+## 1.0.9
+
+### Patch Changes
+
+- c5c1605: Improve performance by adding indexes for transactions.sender, and
+  transfers.to_acct and transfers.from_acct, all with height DESC
+  - @kadena/chainweb-node-client\@0.6.3
+  - @kadena/client\@1.13.0
+  - @kadena/client-utils\@0.9.0
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/pactjs\@0.4.3
+
 ## 1.0.8
 
 ### Patch Changes

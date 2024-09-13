@@ -6,12 +6,11 @@ import {
   getDefaultConnectionComplexity,
 } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
+import { bigintSortFn } from '../../utils/bigintSortFn';
 import { builder } from '../builder';
 import { fungibleAccountDetailsLoader } from '../data-loaders/fungible-account-details';
 import type { IFungibleChainAccount } from '../types/graphql-types';
 import { FungibleChainAccountName } from '../types/graphql-types';
-import { bigintSortFn } from './fungible-account';
-import Guard from './guard';
 
 export default builder.node(
   builder.objectRef<IFungibleChainAccount>(FungibleChainAccountName),
@@ -50,7 +49,7 @@ export default builder.node(
       accountName: t.exposeString('accountName'),
       fungibleName: t.exposeString('fungibleName'),
       guard: t.field({
-        type: Guard,
+        type: 'Guard',
         complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
         async resolve(parent) {
           try {
@@ -61,6 +60,7 @@ export default builder.node(
             });
 
             return {
+              raw: JSON.stringify(accountDetails?.guard),
               keys: accountDetails!.guard.keys,
               predicate: accountDetails!.guard.pred,
             };

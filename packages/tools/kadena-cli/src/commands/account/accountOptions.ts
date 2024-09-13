@@ -4,11 +4,13 @@ import { z } from 'zod';
 import { CHAIN_ID_RANGE_ERROR_MESSAGE } from '../../constants/account.js';
 import { actionAskForDeployFaucet } from '../../prompts/genericActionPrompts.js';
 import { account } from '../../prompts/index.js';
+import { services } from '../../services/index.js';
 import { createOption } from '../../utils/createOption.js';
 import {
   formatZodError,
   generateAllChainIds,
 } from '../../utils/globalHelpers.js';
+import { isEmpty } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import type { IAliasAccountData } from './types.js';
 import {
@@ -17,9 +19,7 @@ import {
   formatZodFieldErrors,
   isValidMaxAccountFundParams,
   parseChainIdRange,
-  readAccountFromFile,
 } from './utils/accountHelpers.js';
-import { isEmpty } from './utils/addHelpers.js';
 
 export const accountOptions = {
   accountFromSelection: createOption({
@@ -83,7 +83,7 @@ export const accountOptions = {
     option: new Option('-a, --account <account>', 'Account alias name'),
     expand: async (accountAlias: string): Promise<IAliasAccountData | null> => {
       try {
-        const accountDetails = await readAccountFromFile(accountAlias);
+        const accountDetails = await services.account.getByAlias(accountAlias);
         return accountDetails;
       } catch (error) {
         if (error.message.includes('file not exist') === true) {

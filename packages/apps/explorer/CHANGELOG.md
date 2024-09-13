@@ -1,5 +1,74 @@
 # @kadena/explorer
 
+## 0.8.3
+
+### Patch Changes
+
+- Updated dependencies \[0bcccf1]
+- Updated dependencies \[b751065]
+  - @kadena/kode-ui\@0.16.0
+
+## 0.8.2
+
+### Patch Changes
+
+- 2d6573b: a fix for adding a network
+- Updated dependencies \[ae3dbc7]
+- Updated dependencies \[7ef4a06]
+  - @kadena/kode-ui\@0.15.0
+  - @kadena/graph\@1.0.11
+
+## 0.8.1
+
+### Patch Changes
+
+- Updated dependencies \[777a200]
+  - @kadena/graph\@1.0.10
+
+## 0.8.0
+
+### Minor Changes
+
+- 013a55a: filter event chains also in range (ex: 1-5)
+- 41bd12c: add filter functionality for events
+
+### Patch Changes
+
+- Updated dependencies \[de4fb13]
+  - @kadena/kode-icons\@0.2.0
+  - @kadena/kode-ui\@0.14.3
+
+## 0.7.0
+
+### Minor Changes
+
+- fb12a2e: style the transition page
+- 9afb0c5: add ability to finish the crosschain transfer
+- e57350b: style the block hash page
+- 2dbe962: show an indicator icon if transaction is crosschain
+
+### Patch Changes
+
+- Updated dependencies \[8121019]
+- Updated dependencies \[a5db08b]
+  - @kadena/kode-ui\@0.14.2
+
+## 0.6.0
+
+### Minor Changes
+
+- 50c4cd5: fixing the caching of the home page block table
+- eb17e31: add functionality and styling of accountpage
+
+### Patch Changes
+
+- f2eaf1a: several minor IOS styling fixes
+- Updated dependencies \[c5c1605]
+- Updated dependencies \[27ecc26]
+  - @kadena/graph\@1.0.9
+  - @kadena/kode-ui\@0.14.1
+  - @kadena/kode-icons\@0.1.0
+
 ## 0.5.0
 
 ### Minor Changes
