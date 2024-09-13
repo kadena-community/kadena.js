@@ -11,7 +11,7 @@ export const CORE_ACCOUNT_FIELDS: DocumentNode = gql`
       guard {
         keys
         predicate
-        raw
+        # raw
       }
     }
   }
