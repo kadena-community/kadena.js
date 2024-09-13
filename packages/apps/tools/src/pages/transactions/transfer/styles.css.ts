@@ -30,7 +30,7 @@ export const marginBottomOnError = style([atoms({ marginBlockEnd: 'sm' })]);
 export const infoNotificationColor = style([
   atoms({
     textTransform: 'uppercase',
-    fontWeight: 'primaryFont.black',
+    fontWeight: 'primaryFont.bold',
     color: 'inherit',
   }),
 ]);
