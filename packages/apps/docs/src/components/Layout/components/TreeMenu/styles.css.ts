@@ -200,8 +200,7 @@ export const treeItemPseudoVariantClass = styleVariants({
         position: 'absolute',
         right: tokens.kda.foundation.spacing.xs,
         content: '+',
-        fontWeight:
-          tokens.kda.foundation.typography.weight.primaryFont.regular,
+        fontWeight: tokens.kda.foundation.typography.weight.primaryFont.regular,
         transform: 'translate(0, 0) rotate(0)',
         transition: 'transform .2s ease',
       },
@@ -213,8 +212,7 @@ export const treeItemPseudoVariantClass = styleVariants({
         position: 'absolute',
         right: tokens.kda.foundation.spacing.xs,
         content: '+',
-        fontWeight:
-          tokens.kda.foundation.typography.weight.primaryFont.regular,
+        fontWeight: tokens.kda.foundation.typography.weight.primaryFont.regular,
         transform: 'translate(0, 0) rotate(0)',
         transition: 'transform .2s ease',
       },
