@@ -236,6 +236,9 @@ export const darkThemeValues = {
           },
           overlay: {
             default: tokens.kda.foundation.color.neutral['n5@alpha95'],
+            context: {
+              default: tokens.kda.foundation.color.neutral['n5@alpha80'],
+            },
             '@hover': tokens.kda.foundation.color.neutral.n5,
           },
           surface: {
@@ -522,6 +525,9 @@ export const darkThemeValues = {
           tint: {
             outline: tokens.kda.foundation.color.palette.blue.n60,
             '@focus': tokens.kda.foundation.color.palette.aqua['n20@alpha80'],
+          },
+          overlay: {
+            context: tokens.kda.foundation.color.neutral['n20@alpha80'],
           },
         },
         brand: {
@@ -1297,7 +1303,6 @@ export const darkThemeValues = {
       typography: {
         family: {
           primaryFont: 'Inter',
-          secondaryFont: 'Inter',
           monospaceFont: 'Kode Mono',
         },
         fontSize: {
@@ -1337,12 +1342,6 @@ export const darkThemeValues = {
             medium: '500',
             semiBold: '600',
             bold: '700',
-          },
-          secondaryFont: {
-            regular: '400',
-            medium: '500',
-            bold: '600',
-            black: '700',
           },
           monospaceFont: {
             regular: '400',
