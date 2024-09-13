@@ -1,5 +1,13 @@
 # @kadena/graph-client
 
+## 0.4.1
+
+### Patch Changes
+
+- Updated dependencies \[0bcccf1]
+- Updated dependencies \[b751065]
+  - @kadena/kode-ui\@0.16.0
+
 ## 0.4.0
 
 ### Minor Changes
