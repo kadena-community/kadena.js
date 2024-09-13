@@ -23,7 +23,7 @@ import { CreateNetwork } from '@/pages/networks/create-network';
 import { Networks } from '@/pages/networks/networks';
 import { Ready } from '@/pages/ready/ready';
 import { SignatureBuilder } from '@/pages/signature-builder/signature-builder';
-import { Transaction } from '@/pages/transaction/Transaction';
+import { Transaction, TransactionPage } from '@/pages/transaction/Transaction';
 import { Transactions } from '@/pages/transactions/transactions';
 import { TransferV2 } from '@/pages/transfer-v2/transfer-v2';
 import { Heading } from '@kadena/kode-ui';
@@ -104,20 +104,18 @@ export const Routes: FC = () => {
         </Route>
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
-          <Route path="/accounts/:account" element={<p>Account</p>} />
           <Route path="/sig-builder" element={<SignatureBuilder />} />
           <Route path="/networks" element={<Networks />} />
           <Route path="/networks/create" element={<CreateNetwork />} />
           <Route path="/connect/:requestId" element={<Connect />} />
           <Route path="/key-sources" element={<KeySources />} />
           <Route path="/create-account" element={<CreateAccount />} />
-          <Route path="/transfer" element={<Transfer />} />
-          <Route path="/transaction/:groupId" element={<Transaction />} />
+          <Route path="/transaction/:groupId" element={<TransactionPage />} />
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/keyset/:keysetId" element={<Keyset />} />
           <Route path="/fungible/:contract" element={<FungiblePage />} />
           <Route path="/account/:accountId" element={<AccountPage />} />
-          <Route path="/bulk-transfer" element={<TransferV2 />} />
+          <Route path="/transfer" element={<TransferV2 />} />
         </Route>
       </Route>
       <Route path="/ready" element={<Ready />} />

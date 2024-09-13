@@ -9,7 +9,8 @@ import {
   Button,
   Combobox,
   ComboboxItem,
-  Divider,
+  Dialog,
+  DialogContent,
   Heading,
   Notification,
   Radio,
@@ -23,7 +24,8 @@ import {
 import { PactNumber } from '@kadena/pactjs';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Transaction } from '../transaction/Transaction';
 import { DiscoverdAccounts } from '../transfer/components/DiscoverdAccounts';
 import { linkClass } from '../transfer/style.css';
 import { IReceiverAccount } from '../transfer/utils';
@@ -32,6 +34,7 @@ import { Keyset } from './Components/keyset';
 import {
   CHAINS,
   IReceiver,
+  createRedistributionTxs,
   createTransactions,
   discoverReceiver,
   getTransfers,
@@ -50,8 +53,10 @@ interface Transfer {
 }
 
 export function TransferV2() {
+  const accountId = useSearchParams()[0].get('accountId');
   const navigate = useNavigate();
   const timer = useRef<NodeJS.Timeout>();
+  const [redistributionGroupId, setRedistributionGroupId] = useState<string>();
   const {
     accounts: allAccounts,
     fungibles,
@@ -59,11 +64,12 @@ export function TransferV2() {
     activeNetwork,
     profile,
   } = useWallet();
-  const [isAdvanced, setIsAdvanced, AdvancedMode] = useShow(true);
+  const [isAdvanced, setIsAdvanced, AdvancedMode] = useShow(false);
   const [accountToResolve, setAccountToResolve] = useState<{
     account: Transfer['receivers'][number];
     index: number;
   }>();
+  const urlAccount = allAccounts.find((account) => account.uuid === accountId);
   const {
     control,
     register,
@@ -74,8 +80,8 @@ export function TransferV2() {
     formState,
   } = useForm<Transfer>({
     defaultValues: {
-      fungibleType: fungibles[0].contract,
-      account: '',
+      fungibleType: urlAccount?.contract ?? fungibles[0].contract,
+      account: accountId ?? '',
       chain: '',
       receivers: [
         {
@@ -90,7 +96,7 @@ export function TransferV2() {
       gasPayer: '',
       gasPrice: '1e-8',
       gasLimit: '2500',
-      type: 'safeTransfer',
+      type: 'normalTransfer',
     },
   });
 
@@ -175,9 +181,30 @@ export function TransferV2() {
     };
   };
 
+  async function doRedistribution() {
+    if (redistribution.length > 0) {
+      if (!senderAccount || !senderAccount.keyset) return;
+      const [gid, txs] = await createRedistributionTxs({
+        account: senderAccount,
+        redistribution,
+        gasLimit: +getValues('gasLimit'),
+        gasPrice: +getValues('gasPrice'),
+        networkId: activeNetwork?.networkId ?? 'mainnet01',
+        mapKeys,
+      });
+      if (txs.length > 0) {
+        setRedistributionGroupId(gid);
+      }
+    }
+  }
+
   async function createTransaction(data: Transfer) {
     console.log('data', data);
     if (!senderAccount || !profile) return;
+    if (redistribution.length > 0) {
+      setError('Please redistribute the amount before proceeding');
+      return;
+    }
     const [groupId, txs] = await createTransactions({
       account: senderAccount,
       contract: data.fungibleType,
@@ -230,23 +257,36 @@ export function TransferV2() {
           }}
         />
       )}
+      {redistributionGroupId && (
+        <Dialog
+          isOpen
+          size="lg"
+          onOpenChange={(isOpen) =>
+            !isOpen && setRedistributionGroupId(undefined)
+          }
+        >
+          <DialogContent>
+            <Transaction groupId={redistributionGroupId} />
+          </DialogContent>
+        </Dialog>
+      )}
       <Stack flexDirection="column" gap="md">
-        <Stack justifyContent={'space-between'} gap="sm">
+        <Stack gap="sm" flexDirection={'column'}>
           <Heading variant="h2">Transfer</Heading>
           <button
             className={linkClass}
-            onClick={() => setIsAdvanced((val) => !val)}
+            onClick={(e) => {
+              e.preventDefault();
+              setIsAdvanced((val) => !val);
+            }}
           >
-            {isAdvanced ? 'hide advance options' : 'show advance options'}
+            {isAdvanced ? 'switch to simple mode' : 'switch to advanced mode'}
           </button>
         </Stack>
-        <Divider />
-        <Heading variant="h5">From</Heading>
-        <Stack
-          justifyContent={'flex-start'}
-          gap={'sm'}
-          alignItems={'flex-start'}
-        >
+        <Stack marginBlockStart={'lg'}>
+          <Heading variant="h5">From</Heading>
+        </Stack>
+        <Stack gap={'sm'} flexDirection={'column'}>
           <Controller
             name="fungibleType"
             control={control}
@@ -290,54 +330,56 @@ export function TransferV2() {
               </Stack>
             )}
           />
-          <Stack flex={1}>
-            <Controller
-              name="chain"
-              control={control}
-              render={({ field }) => (
-                <Select
-                  placeholder="Chain"
-                  size="sm"
-                  selectedKey={field.value}
-                  onSelectionChange={withEvaluate(field.onChange)}
-                >
-                  {senderAccount
-                    ? [
-                        <SelectItem key={''}>
-                          <Stack
-                            flexDirection="row"
-                            alignItems="center"
-                            gap="sm"
-                          >
-                            <AutoBadge />
-                            {chains.length ? (
-                              <Chain
-                                chainId={chains
-                                  .map((chain) => chain.chainId)
-                                  .join(' , ')}
-                              />
-                            ) : null}
-                            (balance: {senderAccount?.overallBalance})
-                          </Stack>
-                        </SelectItem>,
-                        ...chains.map((chain) => (
-                          <SelectItem key={chain.chainId}>
+          <AdvancedMode>
+            <Stack flex={1}>
+              <Controller
+                name="chain"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    placeholder="Chain"
+                    size="sm"
+                    selectedKey={field.value}
+                    onSelectionChange={withEvaluate(field.onChange)}
+                  >
+                    {senderAccount
+                      ? [
+                          <SelectItem key={''}>
                             <Stack
                               flexDirection="row"
                               alignItems="center"
                               gap="sm"
                             >
-                              <Chain chainId={chain.chainId} />
-                              (balance: {chain.balance})
+                              <AutoBadge />
+                              {chains.length ? (
+                                <Chain
+                                  chainId={chains
+                                    .map((chain) => chain.chainId)
+                                    .join(' , ')}
+                                />
+                              ) : null}
+                              (balance: {senderAccount?.overallBalance})
                             </Stack>
-                          </SelectItem>
-                        )),
-                      ]
-                    : []}
-                </Select>
-              )}
-            />
-          </Stack>
+                          </SelectItem>,
+                          ...chains.map((chain) => (
+                            <SelectItem key={chain.chainId}>
+                              <Stack
+                                flexDirection="row"
+                                alignItems="center"
+                                gap="sm"
+                              >
+                                <Chain chainId={chain.chainId} />
+                                (balance: {chain.balance})
+                              </Stack>
+                            </SelectItem>
+                          )),
+                        ]
+                      : []}
+                  </Select>
+                )}
+              />
+            </Stack>
+          </AdvancedMode>
 
           {/* <Stack flex={1}>
           {senderAccount && (
@@ -345,8 +387,9 @@ export function TransferV2() {
           )}
         </Stack> */}
         </Stack>
-        <Divider />
-        <Heading variant="h5">To</Heading>
+        <Stack marginBlockStart={'lg'}>
+          <Heading variant="h5">To</Heading>
+        </Stack>
         {watchReceivers.map((rec, index) => {
           const availableChains = ['', ...CHAINS].filter((ch) => {
             // if the receiver is not the sender, then transfer is allowed from any chain
@@ -363,9 +406,8 @@ export function TransferV2() {
             <Stack flexDirection={'column'} gap={'sm'}>
               <Stack
                 key={index}
-                flexDirection="row"
+                flexDirection={watchReceivers.length > 1 ? 'row' : 'column'}
                 gap="sm"
-                alignItems="flex-start"
                 justifyContent={'flex-start'}
               >
                 <Controller
@@ -413,7 +455,7 @@ export function TransferV2() {
                             'done',
                           );
                         }}
-                        placeholder={`Receiver ${index + 1}`}
+                        placeholder={`Receiver ${watchReceivers.length > 1 ? index + 1 : ''}`}
                         size="sm"
                         onSelectionChange={(key) => {
                           field.onChange(key);
@@ -598,39 +640,7 @@ export function TransferV2() {
             </Stack>
           );
         })}
-        {error && (
-          <Notification role="alert" intent="negative">
-            Total amount ({totalAmount}) is more than the available balance,
-            please check your input, also you should consider the gas fee
-          </Notification>
-        )}
-        {redistribution.length > 0 && (
-          <Notification role="alert" intent="info">
-            <Stack flexDirection={'column'} gap={'sm'}>
-              Before proceeding with the transfer, the following redistribution
-              will happen:
-              <Box>{senderAccount?.address}</Box>
-              <Stack flexDirection={'column'} gap={'sm'}>
-                {redistribution.map((r) => (
-                  <Stack
-                    key={r.source + r.target}
-                    gap={'sm'}
-                    alignItems={'center'}
-                  >
-                    {'From '}
-                    <Chain chainId={r.source} />
-                    {'to '}
-                    <Chain chainId={r.target} />
-                    {r.amount}{' '}
-                    {fungibles.find((ct) => ct.contract === watchFungibleType)
-                      ?.symbol ?? watchFungibleType}
-                  </Stack>
-                ))}
-              </Stack>
-            </Stack>
-          </Notification>
-        )}
-        <Stack justifyContent={'flex-end'}>
+        <Stack>
           <button
             className={linkClass}
             onClick={() => {
@@ -648,13 +658,21 @@ export function TransferV2() {
               ]);
             }}
           >
-            + More Receiver
+            + Add Receiver
           </button>
         </Stack>
+        {error && (
+          <Notification role="alert" intent="negative">
+            Total amount ({totalAmount}) is more than the available balance,
+            please check your input, also you should consider the gas fee
+          </Notification>
+        )}
+
         <AdvancedMode>
-          <Divider />
-          <Heading variant="h5">Gas Information</Heading>
-          <Stack flexDirection="row" gap="sm">
+          <Stack marginBlockStart={'lg'}>
+            <Heading variant="h5">Gas Information</Heading>
+          </Stack>
+          <Stack flexDirection="column" gap="sm">
             <Controller
               name="gasPayer"
               control={control}
@@ -701,20 +719,51 @@ export function TransferV2() {
               type="number"
             />
           </Stack>
+          <Stack marginBlockStart={'lg'}>
+            <Heading variant="h5">Sign options</Heading>
+          </Stack>
+          <RadioGroup direction={'column'} defaultValue={'normalTransfer'}>
+            <Radio {...register('type')} value="normalTransfer">
+              Sign by sender
+            </Radio>
+            <Radio {...register('type')} value="safeTransfer">
+              Sign by both sender and receiver (safe transfer)
+            </Radio>
+          </RadioGroup>
         </AdvancedMode>
-        <Divider />
-        <Heading variant="h5">Sign options</Heading>
-        <RadioGroup direction={'column'} defaultValue={'safeTransfer'}>
-          <Radio {...register('type')} value="normalTransfer">
-            Sign by sender
-          </Radio>
-          <Radio {...register('type')} value="safeTransfer">
-            Sign by both sender and receiver (safe transfer)
-          </Radio>
-        </RadioGroup>
-        <Stack justifyContent={'flex-start'} gap="sm">
-          <Button type="submit">Create Transactions</Button>
-        </Stack>
+        {redistribution.length > 0 ? (
+          <Notification role="alert" intent="info">
+            <Stack flexDirection={'column'} gap={'sm'}>
+              Before proceeding with the transfer, the following redistribution
+              should happen:
+              <Box>{senderAccount?.address}</Box>
+              <Stack flexDirection={'column'} gap={'sm'}>
+                {redistribution.map((r) => (
+                  <Stack
+                    key={r.source + r.target}
+                    gap={'sm'}
+                    alignItems={'center'}
+                  >
+                    {'From '}
+                    <Chain chainId={r.source} />
+                    {'to '}
+                    <Chain chainId={r.target} />
+                    {r.amount}{' '}
+                    {fungibles.find((ct) => ct.contract === watchFungibleType)
+                      ?.symbol ?? watchFungibleType}
+                  </Stack>
+                ))}
+              </Stack>
+              <Stack marginBlockStart={'lg'}>
+                <Button onClick={doRedistribution}>Redistribute</Button>
+              </Stack>
+            </Stack>
+          </Notification>
+        ) : (
+          <Stack justifyContent={'flex-start'} gap="sm" marginBlockStart={'lg'}>
+            <Button type="submit">Create Transactions</Button>
+          </Stack>
+        )}
       </Stack>
     </form>
   );

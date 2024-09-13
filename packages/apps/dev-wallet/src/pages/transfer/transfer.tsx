@@ -432,27 +432,6 @@ export function Transfer() {
                       </>
                     )}
                   </Stack>
-
-                  {/* <Stack gap={'sm'}>
-                    <Text size="small">
-                      {optimalTransfers.length
-                        ? `chains: (${optimalTransfers.map(({ chainId }) => chainId).join(', ')})`
-                        : ''}
-                    </Text>
-                    <button
-                      className={linkClass}
-                      onClick={() => setShowSourceChains(true)}
-                    >
-                      change
-                    </button>
-                    {showSourceChains && (
-                      <ChainAmount
-                        chainsAmount={optimalTransfers}
-                        amount={amount}
-                        onChange={(amount) => setValue('amount', amount)}
-                      />
-                    )}
-                  </Stack> */}
                 </Stack>
               </Stack>
               <Stack gap={'sm'} flexDirection={'column'}>

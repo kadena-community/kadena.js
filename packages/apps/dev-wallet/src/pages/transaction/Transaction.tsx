@@ -50,8 +50,7 @@ const getOverallStep = (list: ITransaction[]) =>
     ['persisted', 0] as const,
   );
 
-export function Transaction() {
-  const { groupId } = useParams();
+export function Transaction({ groupId }: { groupId?: string }) {
   const [Txs, setTxs] = useState<ITransaction[] | null>(null);
   const [step, setStep] = useState<TransactionStatus | null>(null);
   const [selectedTxIndex, setSelectedTxIndex] = useState<number>(0);
@@ -361,3 +360,8 @@ export function Transaction() {
     </Stack>
   );
 }
+
+export const TransactionPage = () => {
+  const { groupId } = useParams();
+  return <Transaction groupId={groupId} />;
+};

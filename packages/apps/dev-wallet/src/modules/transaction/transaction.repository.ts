@@ -25,6 +25,7 @@ export type ITransaction = {
     | undefined
   >;
   groupId?: string;
+  blockedBy?: string;
 } & (
   | {
       height?: number;

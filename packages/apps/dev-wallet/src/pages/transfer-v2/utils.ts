@@ -10,6 +10,7 @@ import {
   IUnsignedCommand,
 } from '@kadena/client';
 import {
+  createCrossChainCommand,
   discoverAccount,
   safeTransferCreateCommand,
   transferAllCommand,
@@ -403,3 +404,55 @@ export const createTransactions = async ({
   );
   return [groupId, txs] as const;
 };
+
+export async function createRedistributionTxs({
+  redistribution,
+  account,
+  mapKeys,
+  networkId,
+  gasLimit,
+  gasPrice,
+}: {
+  redistribution: Array<{ source: ChainId; target: ChainId; amount: string }>;
+  account: IAccount;
+  mapKeys: (key: ISigner) => ISigner;
+  networkId: string;
+  gasLimit: number;
+  gasPrice: number;
+}) {
+  const groupId = crypto.randomUUID();
+  const txs = redistribution.map(({ source, target, amount }) => {
+    const command = composePactCommand(
+      createCrossChainCommand({
+        sender: {
+          account: account.address,
+          publicKeys: account.keyset!.guard.keys.map(mapKeys),
+        },
+        receiver: {
+          account: account.address,
+          keyset: account.keyset!.guard,
+        },
+        amount: amount,
+        targetChainId: target,
+        chainId: source,
+        contract: 'coin',
+      }),
+      {
+        networkId: networkId,
+        meta: {
+          chainId: source,
+          gasLimit: gasLimit,
+          gasPrice: gasPrice,
+        },
+      },
+    );
+    const tx = createTransaction(command());
+    return transactionService.addTransaction(
+      tx,
+      account.profileId,
+      networkId,
+      groupId,
+    );
+  });
+  return [groupId, await Promise.all(txs)] as const;
+}

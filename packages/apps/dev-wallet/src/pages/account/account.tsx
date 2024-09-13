@@ -8,6 +8,7 @@ import { MonoKey } from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { noStyleLinkClass } from '../home/style.css';
+import { linkClass } from '../transfer/style.css';
 import { panelClass } from './style.css';
 
 export function AccountPage() {
@@ -30,17 +31,19 @@ export function AccountPage() {
         <Stack justifyContent={'space-between'}>
           <Heading variant="h2">{shorten(account.address, 15)}</Heading>
         </Stack>
-        <Stack flexWrap="wrap" flexDirection={'row'} gap="md">
-          <Text>{keyset.guard.pred}:</Text>
-          {keyset.guard.keys.map((key) => (
-            <Stack key={key} gap="sm" alignItems={'center'}>
-              <Text>
-                <MonoKey />
-              </Text>
-              <Text variant="code">{shorten(key)}</Text>
-            </Stack>
-          ))}
-        </Stack>
+        <Link to={`/keyset/${keyset.uuid}`}>
+          <Stack flexWrap="wrap" flexDirection={'row'} gap="md">
+            <Text>{keyset.guard.pred}:</Text>
+            {keyset.guard.keys.map((key) => (
+              <Stack key={key} gap="sm" alignItems={'center'}>
+                <Text>
+                  <MonoKey />
+                </Text>
+                <Text variant="code">{shorten(key)}</Text>
+              </Stack>
+            ))}
+          </Stack>
+        </Link>
         <Stack flexDirection={'row'} gap="sm" alignItems={'center'}>
           <Text>Balance:</Text>
           <Heading variant="h3">
@@ -77,12 +80,6 @@ export function AccountPage() {
           </Button>
         </Link>
         <Button variant="info" isCompact>
-          Receive
-        </Button>
-        <Button variant="info" isCompact>
-          Buy
-        </Button>
-        <Button variant="info" isCompact>
           Chain Distribution
         </Button>
         {asset.contract === 'coin' &&
@@ -107,6 +104,17 @@ export function AccountPage() {
               Fund on Testnet
             </Button>
           )}
+        {asset.contract === 'coin' && (
+          <a
+            className={linkClass}
+            href="https://www.kadena.io/kda-token#:~:text=activities%2C%20and%20events.-,Where%20to%20Buy%20KDA,-Buy"
+            target="_blank"
+          >
+            <Button variant="outlined" isCompact>
+              Buy KDA
+            </Button>
+          </a>
+        )}
       </Stack>
       <Stack className={panelClass}>
         <Heading variant="h4">Account Activity</Heading>

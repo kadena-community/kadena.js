@@ -63,16 +63,6 @@ export const Sidebar: FC = () => {
               </NavLink>
             </li>
             <li className={sidebarMenuOptionClass}>
-              <NavLink to="/bulk-transfer" className={sidebarLinkClass}>
-                <Text>
-                  <Stack alignItems="center" gap="md">
-                    <MonoSwapHoriz />
-                    Bulk Transfer
-                  </Stack>
-                </Text>
-              </NavLink>
-            </li>
-            <li className={sidebarMenuOptionClass}>
               <NavLink to="/transactions" className={sidebarLinkClass}>
                 <Text>
                   <Stack alignItems="center" gap="md">
