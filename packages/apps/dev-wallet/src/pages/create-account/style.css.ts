@@ -25,7 +25,7 @@ export const cardClass = style([
     borderRadius: 'xs',
     padding: 'md',
     textAlign: 'center',
-    fontFamily: 'secondaryFont',
+    fontFamily: 'primaryFont',
   }),
   {
     cursor: 'pointer',

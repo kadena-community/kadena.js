@@ -84,7 +84,7 @@ export const levelItemVariantClass = styleVariants({
   l0: {
     display: 'block',
     cursor: 'pointer',
-    fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.medium,
+    fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
     padding: `${tokens.kda.foundation.spacing.md} 0 ${tokens.kda.foundation.spacing.sm}`,
     borderBottom: `1px solid  ${tokens.kda.foundation.color.border.base.boldest}`,
     fontSize: tokens.kda.foundation.typography.fontSize.lg,
@@ -92,7 +92,7 @@ export const levelItemVariantClass = styleVariants({
   l1: {
     display: 'block',
     cursor: 'pointer',
-    fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.regular,
+    fontWeight: tokens.kda.foundation.typography.weight.primaryFont.regular,
     padding: `${tokens.kda.foundation.spacing.md} 0 ${tokens.kda.foundation.spacing.sm}`,
     paddingInlineEnd: tokens.kda.foundation.spacing.md,
     borderBottom: `1px solid ${$$borderColor}`,
@@ -201,7 +201,7 @@ export const treeItemPseudoVariantClass = styleVariants({
         right: tokens.kda.foundation.spacing.xs,
         content: '+',
         fontWeight:
-          tokens.kda.foundation.typography.weight.secondaryFont.regular,
+          tokens.kda.foundation.typography.weight.primaryFont.regular,
         transform: 'translate(0, 0) rotate(0)',
         transition: 'transform .2s ease',
       },
@@ -214,7 +214,7 @@ export const treeItemPseudoVariantClass = styleVariants({
         right: tokens.kda.foundation.spacing.xs,
         content: '+',
         fontWeight:
-          tokens.kda.foundation.typography.weight.secondaryFont.regular,
+          tokens.kda.foundation.typography.weight.primaryFont.regular,
         transform: 'translate(0, 0) rotate(0)',
         transition: 'transform .2s ease',
       },

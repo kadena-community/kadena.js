@@ -21,7 +21,7 @@ export const dropdownItemClass = style([
     display: 'block',
     paddingBlock: 'xs',
     paddingInline: 'sm',
-    fontFamily: 'secondaryFont',
+    fontFamily: 'primaryFont',
     fontSize: 'sm',
   }),
   {
@@ -40,7 +40,7 @@ export const avatarClass = style([
     fontSize: '2xl',
     justifyContent: 'center',
     alignItems: 'center',
-    fontWeight: 'secondaryFont.bold',
+    fontWeight: 'primaryFont.bold',
   }),
   {
     background: 'green',

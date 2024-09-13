@@ -440,9 +440,9 @@ export const inputUiMobileRegular = style({
  * Small P @xs Description
  */
 export const bodySmallRegular = style({
-  fontFamily: tokens.kda.foundation.typography.family.secondaryFont,
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xs,
-  fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.regular,
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.regular,
   lineHeight: tokens.kda.foundation.typography.lineHeight.md,
   letterSpacing: tokens.kda.foundation.spacing.n0,
   '@media': {
@@ -465,9 +465,9 @@ export const bodySmallRegular = style({
  * Small P Bold @ xs Description
  */
 export const bodySmallBold = style({
-  fontFamily: tokens.kda.foundation.typography.family.secondaryFont,
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xs,
-  fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.medium,
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
   lineHeight: tokens.kda.foundation.typography.lineHeight.md,
   letterSpacing: tokens.kda.foundation.spacing.n0,
   '@media': {
@@ -490,9 +490,9 @@ export const bodySmallBold = style({
  * Smallest P @xs Description
  */
 export const bodySmallestRegular = style({
-  fontFamily: tokens.kda.foundation.typography.family.secondaryFont,
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xxs,
-  fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.regular,
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.regular,
   lineHeight: tokens.kda.foundation.typography.lineHeight.md,
   letterSpacing: tokens.kda.foundation.spacing.n0,
   '@media': {
@@ -515,9 +515,9 @@ export const bodySmallestRegular = style({
  * Smallest P Bold @ xs Description
  */
 export const bodySmallestBold = style({
-  fontFamily: tokens.kda.foundation.typography.family.secondaryFont,
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xxs,
-  fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.medium,
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
   lineHeight: tokens.kda.foundation.typography.lineHeight.md,
   letterSpacing: tokens.kda.foundation.spacing.n0,
   '@media': {
@@ -540,9 +540,9 @@ export const bodySmallestBold = style({
  * P @xs Description
  */
 export const bodyBaseRegular = style({
-  fontFamily: tokens.kda.foundation.typography.family.secondaryFont,
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.sm,
-  fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.regular,
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.regular,
   lineHeight: '1.375rem',
   letterSpacing: tokens.kda.foundation.spacing.n0,
   '@media': {
@@ -565,9 +565,9 @@ export const bodyBaseRegular = style({
  * P Bold @ xs Description
  */
 export const bodyBaseBold = style({
-  fontFamily: tokens.kda.foundation.typography.family.secondaryFont,
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.sm,
-  fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.medium,
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
   lineHeight: '1.375rem',
   letterSpacing: tokens.kda.foundation.spacing.n0,
   '@media': {
