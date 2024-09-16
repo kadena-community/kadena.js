@@ -22,29 +22,15 @@ describe('processRedistribute', () => {
       },
     ];
     const [list, transfers] = processRedistribute(chains, '0.0001');
+
     expect(list).toEqual([
-      {
-        balance: '2.0',
-        chainId: '1',
-        demand: '2.0',
-      },
-      {
-        balance: '1.0',
-        chainId: '2',
-        demand: '1.0',
-      },
-      {
-        balance: '4.0',
-        chainId: '2',
-        demand: '3.0',
-      },
+      { balance: '2.0001', chainId: '1', demand: '2.0' },
+      { balance: '1.0', chainId: '2', demand: '1.0' },
+      { balance: '3.9997', chainId: '2', demand: '3.0' },
     ]);
     expect(transfers).toEqual([
-      {
-        source: '2',
-        target: '1',
-        amount: '1.0',
-      },
+      { source: '2', target: '1', amount: '0.9999' },
+      { source: '2', target: '1', amount: '0.0002' },
     ]);
   });
 });
@@ -79,26 +65,43 @@ describe('getTransfers', () => {
     const transfers = getTransfers(chains, '0.0001', receivers);
 
     expect(transfers).toEqual([
-      {
-        source: '2',
-        target: '0',
-        amount: '0.0001',
-      },
-      {
-        source: '1',
-        target: '1',
-        amount: '0.0001',
-      },
-      {
-        source: '2',
-        target: '2',
-        amount: '0.0001',
-      },
-      {
-        source: '4',
-        target: '3',
-        amount: '0.0001',
-      },
+      [
+        {
+          chainId: '0',
+          amount: '2.0',
+          index: 0,
+          type: 'fixed',
+          chunks: [{ chainId: '0', amount: '2.0' }],
+        },
+        {
+          chainId: '1',
+          amount: '1.0',
+          index: 1,
+          type: 'fixed',
+          chunks: [{ chainId: '1', amount: '1.0' }],
+        },
+        {
+          chainId: '2',
+          amount: '1.0',
+          index: 2,
+          type: 'fixed',
+          chunks: [{ chainId: '2', amount: '1.0' }],
+        },
+        {
+          chainId: '',
+          amount: '1.0',
+          index: 3,
+          type: 'auto',
+          chunks: [
+            { chainId: '2', amount: '0.9998' },
+            { chainId: '3', amount: '0.0002' },
+          ],
+        },
+      ],
+      [
+        { source: '4', target: '0', amount: '1.5999' },
+        { source: '3', target: '0', amount: '0.4003' },
+      ],
     ]);
   });
 });

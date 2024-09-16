@@ -23,7 +23,7 @@ import { CreateNetwork } from '@/pages/networks/create-network';
 import { Networks } from '@/pages/networks/networks';
 import { Ready } from '@/pages/ready/ready';
 import { SignatureBuilder } from '@/pages/signature-builder/signature-builder';
-import { Transaction, TransactionPage } from '@/pages/transaction/Transaction';
+import { TransactionPage } from '@/pages/transaction/Transaction';
 import { Transactions } from '@/pages/transactions/transactions';
 import { TransferV2 } from '@/pages/transfer-v2/transfer-v2';
 import { Heading } from '@kadena/kode-ui';
@@ -33,7 +33,6 @@ import { WriteDownRecoveryPhrase } from '../pages/backup-recovery-phrase/write-d
 import { CreateProfile } from '../pages/create-profile/create-profile';
 import { HomePage } from '../pages/home/home-page';
 import { SelectProfile } from '../pages/select-profile/select-profile';
-import { Transfer } from '../pages/transfer/transfer';
 import { UnlockProfile } from '../pages/unlock-profile/unlock-profile';
 import { getScriptType } from '../utils/window';
 import { Layout } from './layout';

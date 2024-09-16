@@ -1,5 +1,4 @@
 import { ITransaction } from '@/modules/transaction/transaction.repository';
-import { parseAsPactValue } from '@kadena/client';
 import { MonoBrightness1 } from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
