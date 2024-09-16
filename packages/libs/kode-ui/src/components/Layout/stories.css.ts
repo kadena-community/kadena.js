@@ -5,7 +5,7 @@ export const itemClass = style([
   atoms({
     backgroundColor: 'semantic.info.default',
     color: 'text.semantic.info.default',
-    fontWeight: 'secondaryFont.medium',
+    fontWeight: 'primaryFont.medium',
     padding: 'sm',
     display: 'flex',
     alignItems: 'center',

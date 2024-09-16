@@ -96,7 +96,7 @@ export const contentClassRecipe = recipe({
 
 export const titleClass = style({
   fontSize: token('typography.fontSize.base'),
-  fontWeight: token('typography.weight.secondaryFont.bold'),
+  fontWeight: token('typography.weight.primaryFont.bold'),
   marginBlockEnd: token('spacing.xs'),
 });
 
@@ -130,7 +130,7 @@ export const actionButtonRecipe = recipe({
     margin: 0,
     padding: 0,
     fontSize: token('typography.fontSize.base'),
-    fontWeight: token('typography.weight.secondaryFont.bold'),
+    fontWeight: token('typography.weight.primaryFont.bold'),
     cursor: 'pointer',
   },
   variants: {

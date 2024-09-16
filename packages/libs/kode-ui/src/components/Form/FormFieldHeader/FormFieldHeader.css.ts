@@ -21,7 +21,7 @@ export const tagClass = style({
   borderRadius: token('radius.sm'),
   paddingInline: token('spacing.sm'),
   fontSize: token('typography.fontSize.xs'),
-  fontWeight: token('typography.weight.secondaryFont.bold'),
+  fontWeight: token('typography.weight.primaryFont.bold'),
   display: 'inline-block',
   paddingTop: '0.05rem',
   paddingBottom: '0.05rem',
@@ -30,13 +30,13 @@ export const tagClass = style({
 export const labelClass = style({
   fontSize: token('typography.fontSize.sm'),
   color: token('color.text.base.default'),
-  fontWeight: token('typography.weight.secondaryFont.bold'),
+  fontWeight: token('typography.weight.primaryFont.bold'),
 });
 
 export const disabledLabelClass = style({
   fontSize: token('typography.fontSize.sm'),
   pointerEvents: 'none',
-  fontWeight: token('typography.weight.secondaryFont.bold'),
+  fontWeight: token('typography.weight.primaryFont.bold'),
   color: token('color.text.base.@disabled'),
 });
 

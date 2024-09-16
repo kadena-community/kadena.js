@@ -62,7 +62,7 @@ export const listItemClass = style({
     '&[data-selected="true"]': {
       backgroundColor: token('color.background.accent.primary.inverse.default'),
       color: token('color.text.base.inverse.default'),
-      fontWeight: token('typography.weight.secondaryFont.bold'),
+      fontWeight: token('typography.weight.primaryFont.bold'),
     },
     '&[data-has-children="true"]': {
       padding: '0',
@@ -87,7 +87,7 @@ export const listSectionHeadingClass = style({
   paddingInline: token('spacing.sm'),
   color: token('color.text.base.default'),
   backgroundColor: token('color.background.surface.default'),
-  fontWeight: token('typography.weight.secondaryFont.bold'),
+  fontWeight: token('typography.weight.primaryFont.bold'),
   cursor: 'default',
   alignSelf: 'stretch',
 });
