@@ -106,6 +106,8 @@ export function CreateProfile() {
     await createKAccount(profile.uuid, activeNetwork.networkId, key.publicKey);
     // everything is created, now we can unlock the profile
     await unlockProfile(profile.uuid, pass);
+
+    // TODO: navigate to the backup recovery phrase page
   }
 
   async function createWebAuthnCredential() {

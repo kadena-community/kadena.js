@@ -77,6 +77,7 @@ export const getOptimalTransfers = (
     perChain.push({
       ...item,
       amount: fromChain.toString(),
+      balance: item.balance,
       gasLimit: safeLimit,
       gasPrice: item.gasPrice,
     });
@@ -160,6 +161,7 @@ export const getAccount = (
 export interface IOptimalTransfer {
   amount: string;
   chainId: ChainId;
+  balance: string;
   gasLimit: number;
   gasPrice: number;
 }
