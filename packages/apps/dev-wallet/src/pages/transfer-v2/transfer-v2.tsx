@@ -24,7 +24,6 @@ export function TransferV2() {
     activeNetwork,
     profile,
   } = useWallet();
-
   const [redistribution, setRedistribution] = useState(
     [] as {
       source: ChainId;
