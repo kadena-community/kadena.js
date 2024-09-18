@@ -76,6 +76,11 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
       { index: 'address' },
       { index: 'keysetId' },
       { index: 'profileId' },
+      {
+        index: 'keyset-asset',
+        indexKeyPath: ['keysetId', 'contract'],
+        unique: true,
+      },
     ]);
     create('network', 'uuid', [{ index: 'networkId', unique: true }]);
     create('fungible', 'contract', [{ index: 'symbol', unique: true }]);

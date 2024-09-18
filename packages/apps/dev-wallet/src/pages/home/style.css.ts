@@ -44,3 +44,8 @@ export const listItemClass = style([
     },
   },
 ]);
+
+export const noStyleLinkClass = style({
+  textDecoration: 'none',
+  color: 'inherit',
+});

@@ -6,5 +6,6 @@ export * from './rotate';
 export * from './safe-transfer';
 export * from './safe-transfer-create';
 export * from './transfer';
+export * from './transfer-all';
 export * from './transfer-create';
 export * from './transfer-crosschain';

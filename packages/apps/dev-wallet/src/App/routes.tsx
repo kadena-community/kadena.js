@@ -12,15 +12,20 @@ import {
 
 import { CommunicationProvider } from '@/modules/communication/communication.provider';
 import { AccountDiscovery } from '@/pages/account-discovery/account-dsicovery';
+import { AccountPage } from '@/pages/account/account';
 import { Connect } from '@/pages/connect/connect';
 import { CreateAccount } from '@/pages/create-account/create-account';
+import { FungiblePage } from '@/pages/fungible/fungible';
 import { ImportWallet } from '@/pages/import-wallet/import-wallet';
 import { KeySources } from '@/pages/key-sources/key-sources';
+import { Keyset } from '@/pages/keyset/keyset';
 import { CreateNetwork } from '@/pages/networks/create-network';
 import { Networks } from '@/pages/networks/networks';
 import { Ready } from '@/pages/ready/ready';
 import { SignatureBuilder } from '@/pages/signature-builder/signature-builder';
-import { Transaction } from '@/pages/transaction/Transaction';
+import { TransactionPage } from '@/pages/transaction/Transaction';
+import { Transactions } from '@/pages/transactions/transactions';
+import { TransferV2 } from '@/pages/transfer-v2/transfer-v2';
 import { Heading } from '@kadena/kode-ui';
 import { useWallet } from '../modules/wallet/wallet.hook';
 import { BackupRecoveryPhrase } from '../pages/backup-recovery-phrase/backup-recovery-phrase';
@@ -28,7 +33,6 @@ import { WriteDownRecoveryPhrase } from '../pages/backup-recovery-phrase/write-d
 import { CreateProfile } from '../pages/create-profile/create-profile';
 import { HomePage } from '../pages/home/home-page';
 import { SelectProfile } from '../pages/select-profile/select-profile';
-import { Transfer } from '../pages/transfer/transfer';
 import { UnlockProfile } from '../pages/unlock-profile/unlock-profile';
 import { getScriptType } from '../utils/window';
 import { Layout } from './layout';
@@ -99,15 +103,18 @@ export const Routes: FC = () => {
         </Route>
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
-          <Route path="/accounts/:account" element={<p>Account</p>} />
           <Route path="/sig-builder" element={<SignatureBuilder />} />
           <Route path="/networks" element={<Networks />} />
           <Route path="/networks/create" element={<CreateNetwork />} />
           <Route path="/connect/:requestId" element={<Connect />} />
           <Route path="/key-sources" element={<KeySources />} />
           <Route path="/create-account" element={<CreateAccount />} />
-          <Route path="/transfer" element={<Transfer />} />
-          <Route path="/transaction/:groupId" element={<Transaction />} />
+          <Route path="/transaction/:groupId" element={<TransactionPage />} />
+          <Route path="/transactions" element={<Transactions />} />
+          <Route path="/keyset/:keysetId" element={<Keyset />} />
+          <Route path="/fungible/:contract" element={<FungiblePage />} />
+          <Route path="/account/:accountId" element={<AccountPage />} />
+          <Route path="/transfer" element={<TransferV2 />} />
         </Route>
       </Route>
       <Route path="/ready" element={<Ready />} />

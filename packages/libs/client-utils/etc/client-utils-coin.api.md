@@ -165,6 +165,29 @@ event: "listen";
 data: ICommandResult;
 }], [], any>;
 
+// Warning: (ae-forgotten-export) The symbol "ITransferAllInput" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export const transferAll: (inputs: Omit<ITransferAllInput, 'amount'>, config: IClientConfig) => Promise<IEmitterWrapper<[{
+event: "command";
+data: IUnsignedCommand;
+}, {
+event: "sign";
+data: ICommand;
+}, {
+event: "preflight";
+data: ICommandResult;
+}, {
+event: "submit";
+data: ITransactionDescriptor;
+}, {
+event: "listen";
+data: ICommandResult;
+}], [], Promise<string> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]> | Promise<Record<string, any>>>>;
+
+// @alpha (undocumented)
+export const transferAllCommand: ({ sender, receiver, amount, gasPayer, chainId, contract, }: ITransferAllInput) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => Partial<IPartialPactCommand>;
+
 // @alpha (undocumented)
 export const transferCommand: ({ sender, receiver, amount, gasPayer, chainId, contract, }: ITransferInput) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => Partial<IPartialPactCommand>;
 
