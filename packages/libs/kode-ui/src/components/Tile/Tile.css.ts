@@ -13,12 +13,11 @@ export const tileClass = style([
   {
     backgroundColor: token('color.background.layer.default'),
     selectors: {
-      '&:not([data-disabled="true"]):hover, &:active:hover, &[data-status="active"]:hover':
-        {
-          backgroundColor: token('color.background.brand.primary.subtle'),
-          borderColor: token('color.border.base.@hover'),
-        },
-      '&:focus, &[data-status="focus"]': {
+      '&:not([data-disabled="true"]):hover, &:active:hover': {
+        backgroundColor: token('color.background.brand.primary.subtle'),
+        borderColor: token('color.border.base.@hover'),
+      },
+      '&:focus, &[data-focused="true"], &[data-focus-visible="true"]': {
         backgroundColor: token('color.background.layer.default'),
         borderColor: token('color.border.base.@hover'),
         borderWidth: '10px',

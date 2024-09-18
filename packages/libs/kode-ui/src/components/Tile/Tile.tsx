@@ -1,7 +1,7 @@
-import { mergeProps, useObjectRef } from '@react-aria/utils';
+import { mergeProps } from '@react-aria/utils';
 import type { ElementType, FC, PropsWithChildren } from 'react';
 import React from 'react';
-import { useButton, useFocusRing, useHover } from 'react-aria';
+import { useFocusRing } from 'react-aria';
 import { Stack } from '../Layout/Stack/Stack';
 import { tileClass } from './Tile.css';
 
@@ -19,20 +19,18 @@ export const Tile: FC<ITileProps> = ({
   isDisabled = false,
   hasFocus,
 }) => {
-  const { hoverProps, isHovered } = useHover({});
   const { focusProps, isFocused, isFocusVisible } = useFocusRing({
     autoFocus: hasFocus,
   });
 
   return (
     <Stack
-      {...mergeProps(hoverProps, focusProps)}
+      {...mergeProps(focusProps)}
       as={as}
       className={tileClass}
       data-disabled={isDisabled || undefined}
       data-focused={isFocused || undefined}
       data-focus-visible={isFocusVisible || undefined}
-      data-hovered={isHovered || undefined}
     >
       {children}
     </Stack>

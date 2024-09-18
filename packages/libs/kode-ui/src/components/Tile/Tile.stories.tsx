@@ -1,7 +1,5 @@
-import { MonoCheck, MonoClear } from '@kadena/kode-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { getVariants } from '../../storyDecorators/getVariants';
 import { Stack } from '../Layout';
 import { Text } from '../Typography';
 import type { ITileProps } from './Tile';
@@ -21,9 +19,6 @@ const meta: Meta<ITileProps> = {
   },
   argTypes: {
     isDisabled: {
-      control: { type: 'boolean' },
-    },
-    hasFocus: {
       control: { type: 'boolean' },
     },
     as: {
