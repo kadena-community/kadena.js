@@ -184,9 +184,9 @@ globalStyle(`${endAddonStyles.fullHeight} button`, {
 
 export const inputSizeVariants = {
   size: {
-    sm: { paddingBlock: '.75rem' },
-    md: { paddingBlock: '1rem' },
-    lg: { paddingBlock: '1.25rem' },
+    sm: { paddingBlock: '1px' },
+    md: { paddingBlock: '2px' },
+    lg: { paddingBlock: '3px' },
   },
 } as const;
 
