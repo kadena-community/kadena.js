@@ -10,7 +10,6 @@ import {
   style,
   styleVariants,
   token,
-  tokens,
   uiBaseRegular,
   uiSmallRegular,
   uiSmallestRegular,
@@ -185,9 +184,9 @@ globalStyle(`${endAddonStyles.fullHeight} button`, {
 
 export const inputSizeVariants = {
   size: {
-    sm: { paddingBlock: tokens.kda.foundation.size.n2 },
-    md: { paddingBlock: tokens.kda.foundation.size.n3 },
-    lg: { paddingBlock: tokens.kda.foundation.size.n4 },
+    sm: { paddingBlock: '.75rem' },
+    md: { paddingBlock: '1rem' },
+    lg: { paddingBlock: '1.25rem' },
   },
 } as const;
 
