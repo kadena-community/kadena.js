@@ -10,7 +10,7 @@ export type IProps = Pick<AriaButtonProps<'button'>, 'aria-label'> & {
   as?: ElementType;
   isDisabled?: boolean;
   hasFocus?: boolean;
-  onClick: React.MouseEventHandler;
+  onClick?: React.MouseEventHandler;
 };
 
 export type ITileProps = PropsWithChildren<IProps>;
