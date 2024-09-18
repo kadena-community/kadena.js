@@ -12,7 +12,7 @@ tags: ['pact', 'language reference', 'REPL commands']
 # Pact command-line interpreter
 
 Use the Pact command-line interpreter—also referred to as the Pact read–eval–print-loop (REPL) interactive shell program—to test Pact code and modules in an interactive terminal shell.
-The Pact command-line program also includes a built-in HTTP server and provides commands and options for working with transactions.
+The Pact command-line program also includes an HTTP server with a built-in REST API that provides commands and options for working with transactions in a simulated production environment.
 
 ## Basic usage
 
