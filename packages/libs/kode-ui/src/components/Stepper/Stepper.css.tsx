@@ -126,6 +126,9 @@ export const stepClass = recipe({
         '&:after': {
           borderColor: COLORS.inactiveBorder,
         },
+        '&:before': {
+          borderColor: COLORS.inactiveBorder,
+        },
       },
       active: {},
       valid: {},
