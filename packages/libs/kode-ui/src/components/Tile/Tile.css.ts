@@ -13,6 +13,9 @@ export const tileClass = style([
   {
     backgroundColor: token('color.background.layer.default'),
     selectors: {
+      'button&': {
+        cursor: 'pointer',
+      },
       '&:not([data-disabled="true"]):hover, &:active:hover': {
         backgroundColor: token('color.background.brand.primary.subtle'),
         borderColor: token('color.border.base.@hover'),

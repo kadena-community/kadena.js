@@ -1,15 +1,17 @@
 import { mergeProps } from '@react-aria/utils';
 import type { ElementType, FC, PropsWithChildren } from 'react';
 import React from 'react';
+import type { AriaButtonProps } from 'react-aria';
 import { useFocusRing } from 'react-aria';
 import { Stack } from '../Layout/Stack/Stack';
 import { tileClass } from './Tile.css';
 
-export interface IProps {
+export type IProps = Pick<AriaButtonProps<'button'>, 'aria-label'> & {
   as?: ElementType;
   isDisabled?: boolean;
   hasFocus?: boolean;
-}
+  onClick: React.MouseEventHandler;
+};
 
 export type ITileProps = PropsWithChildren<IProps>;
 
@@ -18,6 +20,8 @@ export const Tile: FC<ITileProps> = ({
   as = 'div',
   isDisabled = false,
   hasFocus,
+  onClick,
+  ...props
 }) => {
   const { focusProps, isFocused, isFocusVisible } = useFocusRing({
     autoFocus: hasFocus,
@@ -25,7 +29,8 @@ export const Tile: FC<ITileProps> = ({
 
   return (
     <Stack
-      {...mergeProps(focusProps)}
+      {...mergeProps(focusProps, props)}
+      onClick={onClick}
       as={as}
       className={tileClass}
       data-disabled={isDisabled || undefined}

@@ -51,3 +51,21 @@ export const Primary: Story = {
     );
   },
 };
+
+export const Buttons: Story = {
+  name: 'Tiles as Buttons',
+  args: {},
+  render: (args) => {
+    return (
+      <Stack as="div" flexDirection="column" gap="md">
+        <Tile as="button" {...args} onClick={() => alert('test')}>
+          <Text>This is a tile</Text>
+        </Tile>
+
+        <Tile as="button" {...args} onClick={() => alert('test')}>
+          <Text>This is a tile</Text>
+        </Tile>
+      </Stack>
+    );
+  },
+};
