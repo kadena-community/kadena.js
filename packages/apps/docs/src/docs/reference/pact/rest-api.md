@@ -12,19 +12,24 @@ tags: ['pact', 'rest api', 'pact api', 'pact api reference']
 
 # Pact REST API
 
-For full documentation of Pact endpoints for Chainweb nodes, including sample requests and responses, see the [Pact OpenAPI](https://api.chainweb.com/openapi/pact.html).
+These are two sets of Pact REST API endpoints:
 
-## local
+- Pact API endpoints that can be exposed by Chainweb nodes through the Chainweb service API.
+- Pact API endpoints that are exposed locally through the Pact built-in HTTP server.
 
-Use the `/local` endpoint to submit a synchronous command for non-transactional execution. 
-In a blockchain environment, this call would be a node-local “dirty read” that can act as a read-evaluate-print-loop for testing or a fully gassed transaction simulation and transaction validation. 
+Both sets of endpoints expose similar functionality, but the URLs you use to route API requests to each set of endpoints are different.
+You can find documentation for the Pact API endpoints that are exposed through the Chainweb service API, including sample requests and responses, in [Pact endpoint](/reference/chainweb/pact) and in [Pact OpenAPI](https://api.chainweb.com/openapi/pact.html).
+
+## Simulate a transaction
+
+Use the `POST http://{baseUrl}/chain/{chain}/pact/api/v1/local/` endpoint to submit a command to simulate the execution of a transaction. 
+Requests sent to the `/local` endpoint don't change the blockchain state. 
 Any database writes or changes to the environment are rolled back.
-
-`POST /local`
+You can use this type of call to perform a node-local “dirty read” for testing purposes or as a dry-run to validate a transaction. 
+The request body must contain a properly-formatted Pact command. 
+In response to the request, the endpoint returns the command result and hash. 
 
 ### Query parameters
-
-Content type: application/json
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
@@ -32,9 +37,7 @@ Content type: application/json
 | `rewindDepth`	| integer >= 0 | Rewind transaction execution environment by a number of block heights.
 | `signatureVerification`	| boolean | Require user signature verification when validating transaction metadata.
 
-### Request body schema
-
-Content type: application/json
+### Request schema
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
@@ -192,7 +195,7 @@ The command results for some of the request keys included in the `/poll` request
 ```
 ## listen
 
-Use the `/listen` endpoint to submit a blocking request for single transaction result.
+Use the `/listen` endpoint to submit a blocking request for the results of a single transaction.
 
 `POST /listen`
 
