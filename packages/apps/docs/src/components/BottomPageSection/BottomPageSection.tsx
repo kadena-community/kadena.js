@@ -6,7 +6,6 @@ import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
 import { PageHelpful } from '../PageHelpful/PageHelpful';
-import { EditPage } from './components/EditPage';
 import { Subscribe } from './components/Subscribe';
 import {
   bottomWrapperClass,
@@ -21,7 +20,6 @@ interface IProps {
 }
 
 export const BottomPageSection: FC<IProps> = ({
-  editLink,
   navigation,
   layout = 'default',
 }) => {
@@ -45,11 +43,8 @@ export const BottomPageSection: FC<IProps> = ({
 
   return (
     <footer className={classes}>
-      <Grid columns={{ xs: 1, lg: 3, xl: 4 }}>
-        <GridItem columnSpan={1}>
-          <EditPage editLink={editLink} />
-        </GridItem>
-        <GridItem columnSpan={{ xs: 1, lg: 2, xl: 3 }}>
+      <Grid columns={{ xs: 1, xl: 4 }}>
+        <GridItem columnSpan={{ xs: 1, xl: 4 }}>
           <Stack
             flexDirection="row"
             justifyContent="space-between"
@@ -62,8 +57,6 @@ export const BottomPageSection: FC<IProps> = ({
                 }
                 href={navigation?.previous.root}
               >
-                previous:
-                <br />
                 {navigation?.previous.title}
               </Link>
             )}
@@ -72,8 +65,6 @@ export const BottomPageSection: FC<IProps> = ({
                 onClick={() => onClickAction('next', navigation?.next?.root)}
                 href={navigation?.next.root}
               >
-                next:
-                <br />
                 {navigation?.next.title}
               </Link>
             )}
@@ -88,7 +79,7 @@ export const BottomPageSection: FC<IProps> = ({
         width="100%"
         gap={{ xs: 'xl', lg: 'xs' }}
       >
-        <PageHelpful editLink={editLink} />
+        <PageHelpful />
         <Subscribe />
       </Stack>
     </footer>
