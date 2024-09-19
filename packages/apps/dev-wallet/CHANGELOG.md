@@ -1,5 +1,23 @@
 # @kadena/dev-wallet
 
+## 0.4.0
+
+### Minor Changes
+
+- eb82843: Transfer page
+
+### Patch Changes
+
+- 0e08d23: Typography fix with rebranding (Primary to Inter)
+- Updated dependencies \[80ac706]
+- Updated dependencies \[5985ccc]
+- Updated dependencies \[eb82843]
+- Updated dependencies \[767c542]
+- Updated dependencies \[eb82843]
+- Updated dependencies \[0e08d23]
+  - @kadena/kode-ui\@0.17.0
+  - @kadena/client-utils\@0.10.0
+
 ## 0.3.6
 
 ### Patch Changes

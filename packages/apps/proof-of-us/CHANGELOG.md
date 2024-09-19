@@ -1,5 +1,18 @@
 # @kadena/proof-of-us
 
+## 0.5.9
+
+### Patch Changes
+
+- 0e08d23: Typography fix with rebranding (Primary to Inter)
+- Updated dependencies \[80ac706]
+- Updated dependencies \[5985ccc]
+- Updated dependencies \[767c542]
+- Updated dependencies \[eb82843]
+- Updated dependencies \[0e08d23]
+  - @kadena/kode-ui\@0.17.0
+  - @kadena/graph\@1.0.12
+
 ## 0.5.8
 
 ### Patch Changes
