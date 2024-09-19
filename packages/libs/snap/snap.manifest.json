@@ -1,0 +1,36 @@
+{
+  "version": "1.0.0",
+  "description": "Metamask snap to manage your Kadena accounts and KDA.",
+  "proposedName": "Kadena",
+  "source": {
+    "shasum": "3sN/k/rB5ppkYbr/mtopFy35kLWUro9Sl44z28LhHa8=",
+    "location": {
+      "npm": {
+        "filePath": "dist/bundle.js",
+        "iconPath": "images/icon.svg",
+        "packageName": "@kadena/snap",
+        "registry": "https://registry.npmjs.org/"
+      }
+    }
+  },
+  "initialPermissions": {
+    "snap_dialog": {},
+    "endowment:page-home": {},
+    "snap_getBip32Entropy": [
+      {
+        "path": [
+          "m",
+          "44'",
+          "626'"
+        ],
+        "curve": "ed25519"
+      }
+    ],
+    "snap_manageState": {},
+    "endowment:rpc": {
+      "dapps": true,
+      "snaps": false
+    }
+  },
+  "manifestVersion": "0.1"
+}

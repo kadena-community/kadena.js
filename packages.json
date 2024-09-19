@@ -244,5 +244,11 @@
     "version": "0.0.2",
     "private": true,
     "path": "packages/e2e/e2e-tools"
+  },
+  {
+    "name": "@kanena/snap",
+    "version": "1.0.0",
+    "private": false,
+    "path": "packages/libs/snap"
   }
 ]
