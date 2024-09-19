@@ -244,11 +244,5 @@
     "version": "0.0.2",
     "private": true,
     "path": "packages/e2e/e2e-tools"
-  },
-  {
-    "name": "kadena.js",
-    "version": "0.1.6",
-    "private": true,
-    "path": "packages/libs/kadena.js"
   }
 ]
