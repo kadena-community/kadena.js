@@ -1,8 +1,7 @@
----
+--
 title: Pact REST API
 description:
-  This document is a reference for the Pact smart-contract language, designed
-  for correct, transactional execution on a high-performance blockchain.
+  Reference information for Pact REST API endpoints that are exposed by Chainweb nodes through the Chainweb service API.
 menu: Pact REST API
 label: Pact REST API
 order: 2
@@ -12,300 +11,563 @@ tags: ['pact', 'rest api', 'pact api', 'pact api reference']
 
 # Pact REST API
 
-For full documentation of Pact endpoints for Chainweb nodes, including sample requests and responses, see the [Pact OpenAPI](https://api.chainweb.com/openapi/pact.html).
+There are two sets of Pact REST API endpoints:
 
-## local
+- Pact API endpoints that are exposed by Chainweb nodes through the Chainweb service API.
+- Pact API endpoints that are exposed locally through the Pact built-in HTTP server.
 
-Use the `/local` endpoint to submit a synchronous command for non-transactional execution. 
-In a blockchain environment, this call would be a node-local “dirty read” that can act as a read-evaluate-print-loop for testing or a fully gassed transaction simulation and transaction validation. 
+Both sets of endpoints provide similar functionality.
+However, the URLs you use to route API requests to each set of endpoints are different.
+This section describes the Pact API endpoints that are exposed through the Chainweb service API.
+You can also find documentation for these Pact endpoints, including sample requests and responses, in the [Pact OpenAPI](https://api.chainweb.com/openapi/pact.html) specification.
+For documentation about the Pact API endpoints that are exposed through the Pact built-in HTTP server, see [Pact command-line interpreter](/reference/pact-repl).
+
+## Simulate a transaction
+
+Use the `POST http://{baseUrl}/chain/{chain}/pact/api/v1/local/` endpoint to submit a command to simulate the execution of a transaction. 
+Requests sent to the `/local` endpoint don't change the blockchain state. 
 Any database writes or changes to the environment are rolled back.
+You can use this type of call to perform a node-local “dirty read” for testing purposes or as a dry-run to validate a transaction. 
+The request body must contain a properly-formatted Pact command. 
+In response to the request, the endpoint returns the command result and hash. 
 
-`POST /local`
+### Path parameters
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| chain&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to submit the command on the first chain (0), the request is `POST http://{baseURL}/chain/0/pact/api/v1/local`.
 
 ### Query parameters
 
-Content type: application/json
-
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| `preflight`	| boolean | Trigger fully-gassed mainnet transaction execution simulation and transaction metadata validations.
-| `rewindDepth`	| integer >= 0 | Rewind transaction execution environment by a number of block heights.
-| `signatureVerification`	| boolean | Require user signature verification when validating transaction metadata.
+| `preflight`	| boolean | Trigger a fully-gassed mainnet transaction execution simulation and transaction metadata validation.
+| `rewindDepth`	| integer >= 0 | Rewind transaction execution environment by a specified number of block heights.
+| `signatureVerification`	| boolean | Require user signature verification when validating the transaction metadata.
 
 ### Request body schema
 
-Content type: application/json
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `cmd` (required) | string | Stringified JSON payload object with signed transaction data that can't be modified.
+| `hash` (required) | string | An unpadded base64Url-encoded string created using the Blake2s-256 hash function for the `cmd` field value. Serves as a command request key because each transaction must be unique.
+| `sigs` (required) | Array of objects | List of signatures corresponding one-to-one with the signers array in the payload.
+
+### Responses
+
+Requests to `POST http://{baseURL}/chain/{chain}/pact/api/v1/local` return the following response codes:
+
+- **200 OK** indicates that the request succeeded and the response body includes either the command results or the preflight results. 
+
+- **400 Bad Request** indicates that the request failed. The response returns `text/plain` content with information about why the command couldn't be executed. For example, the response might indicate that the command wasn't executed because the request body specified an invalid gas payer, was missing required metadata, or there were other environment issues.
+
+If the request is successful, the response returns `application/json` content with the following information:
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| `cmd` (required) | string | Stringified JSON payload object. Canonic non-malleable signed transaction data.
-| `hash` (required) | string <base64url> | Unpadded Base64URL of Blake2s-256 hash of the cmd field value. Serves as a command requestKey since each transaction must be unique.
-| `sigs` (required) | Array of objects >= 0 items | List of signatures corresponding one-to-one with signers array in the payload.
-
-### Successful response (200) 
-
-Content type: application/json
-
-Executing the command returns either the command results or preflight results.
-
-#### Command results
-
-| Parameter | Type | Description
-| --------- | ---- | -----------
-| `reqKey` (required) | string <base64url> | Unique ID of a Pact transaction consisting of its hash. (Request Key) = 43 characters ^[a-zA-Z0-9_-]{43}$
+| `reqKey` (required) | string | Unique identifier for the Pact transaction. The transaction hash is a base64Url-encoded string that consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
 | `result` (required) | object | Success (object) or Failure (object).
-| `txId`	| number | Database-internal transaction tracking ID.
-| `logs` (required) | string | Backend-specific value providing image of database logs.
-| `metaData` (required) | object | Metadata included with the transaction.
-| `events` | Array of object | Array of event objects.
-| `continuation`	| object | Describes result of a `defpact` execution.
-| `gas` (required) | number | Gas required to execute the transaction.
-
-#### Preflight /local results
-
-| Parameter | Type | Description
-| --------- | ---- | -----------
-| `preflightResult` (required) | object (Command Result) | The result of attempting to execute a single well-formed Pact command.
-| `preflightWarnings` (required) | Array of strings | A list of warnings associated with deprecated features in upcoming Pact releases. 
-
-### Invalid command response (400) 
-
-Content type: text/plain
-
-The command was invalid.
-
-| Parameter | Type | Description
-| --------- | ---- | -----------
-| | string (Validation Failure) | Failure message of unexecuted command due to an invalid gas payer, metadata, or other environments issues.
-
-## send
-
-Use the `/send` endpoint for asynchronous submission of one or more public (unencrypted) commands to the blockchain for execution.
-
-`POST /send`
-
-### Request body schema
-
-Content type: application/json
-
-| Parameter | Type | Description
-| --------- | ---- | -----------
-| `cmds` (required) | Array of objects | Pact commands (non-empty).
-
-### Successful response (200) 
-
-Content type: application/json
-
-The commands were successfully submitted. 
-The response contains their request keys.
-
-| Parameter | Type | Description
-| --------- | ---- | -----------
-| `requestKeys` (required) | Array of strings | Request keys you can use with `poll` or `listen` to retrieve results. Request key = 43 characters ^[a-zA-Z0-9_-]{43}$.
-
-### Invalid command response (400) 
-
-Content type: text/plain
-
-The command was invalid.
-
-| Parameter | Type | Description
-| --------- | ---- | -----------
-| | string (Validation Failure) | Failure message of unexecuted command due to an invalid gas payer, metadata, or other environments issues.
-
-## poll
-
-Use the `/poll` endpoint to check for one or more command results by request key.
-
-`POST /poll`
-
-### Query parameters
-
-Content type: application/json
-
-| Parameter | Type | Description
-| --------- | ---- | -----------
-| `confirmationDepth`	| integer >= 0 | Configures how many blocks should be mined until the requested transaction is ready.
-
-### Request body schema
-
-Content type: application/json
-
-| Parameter | Type | Description
-| --------- | ---- | -----------
-| `requestKeys` (required) | Array of strings | Request keys (non-empty). [ items = 43 characters ^[a-zA-Z0-9_-]{43}$ ]
-
-#### Request example
-
-```json
-{
-  "requestKeys": [
-    "y3aWL72-3wAy7vL9wcegGXnstH0lHi-q-cfxkhD5JCw"
-  ]
-}
-```
-
-### Successful response (200) 
-
-Content type: application/json
-
-The command results for some of the request keys included in the `/poll` request.
-
-| Parameter | Type | Description
-| --------- | ---- | -----------
-| `property-name*` | object (Command Result) | The result of attempting to execute a single well-formed Pact command.
-| `reqKey` (required) | string <base64url> | Unique ID of a pact transaction consisting of its hash. Request key = 43 characters ^[a-zA-Z0-9_-]{43}$.
-| `result` (required) | object | Success (object) or Failure (object).
-| `txId` | number | Database-internal transaction tracking ID.
-| `logs` (required) | string | Backend-specific value providing image of database logs.
-| `metaData` (required) | object | Metadata included with the transaction.
-| `events` | Array of object | Array of event objects.
-| `continuation` | object | Describes result of a `defpact` execution.
-| `gas` (required) | number | Gas consumed by the transaction.
-| `events`
-
-#### Response example
-
-```json
-{
-  "property1": {
-    "gas": 123,
-    "result": {},
-    "reqKey": "cQ-guhschk0wTvMBtrqc92M7iYm4S2MYhipQ2vNKxoI",
-    "logs": "wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8",
-    "metaData": null,
-    "continuation": null,
-    "txId": "456",
-    "events": []
-  },
-  "property2": {
-    "gas": 123,
-    "result": {},
-    "reqKey": "cQ-guhschk0wTvMBtrqc92M7iYm4S2MYhipQ2vNKxoI",
-    "logs": "wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8",
-    "metaData": null,
-    "continuation": null,
-    "txId": "456",
-    "events": []
-  }
-}
-```
-## listen
-
-Use the `/listen` endpoint to submit a blocking request for single transaction result.
-
-`POST /listen`
-
-### Request body schema
-
-Content type: application/json
-
-| Parameter | Type | Description
-| --------- | ---- | -----------
-| `listen` (required) | string <base64url>| Unique ID of a Pact transaction consisting of its hash. Request key = 43 characters ^[a-zA-Z0-9_-]{43}$.
-
-### Successful response (200) 
-
-Content type: application/json
-
-The transaction result for the request key was found.
-
-| Parameter | Type | Description
-| --------- | ---- | -----------
-| `reqKey` (required) | string <base64url> | Unique ID of a pact transaction consisting of its hash. Request key = 43 characters ^[a-zA-Z0-9_-]{43}$.
-| `result` (required) | object | Success (object) or Failure (object).
-| `txId`	| number | Database-internal transaction tracking ID.
-| `logs` (required) | string | Backend-specific value providing image of database logs.
+| `txId`	| number | Database-internal transaction tracking identifier.
+| `logs` (required) | string | Backend-specific value providing an image of database logs.
 | `metaData` (required) | object | Metadata included with the transaction.
 | `events` | Array of objects | Array of event objects.
-| `continuation` | object | Describes result of a `defpact` execution.
+| `continuation`	| object | Describes the result of a `defpact` execution.
+| `gas` (required) | number | Gas required to execute the transaction.
+
+If you specify the `preflight` query parameter, the command results include the following additional parameters:
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `preflightResult` (required) | object | The result of attempting to execute a single well-formed Pact command.
+| `preflightWarnings` (required) | Array of strings | A list of warnings associated with deprecated features in upcoming Pact releases. 
+
+### Examples
+
+You can send a request to the Kadena test network and chain 1 by calling the `/local` endpoint like this:
+
+```Postman
+POST http://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/local/
+```
+
+The request body for this example looks like this:
+
+```json
+{"cmd":"{\"signers\":[{\"pubKey\":\"1d5a5e10eb15355422ad66b6c12167bdbb23b1e1ef674ea032175d220b242ed4\",\"clist\":[{\"name\":\"coin.TRANSFER\",\"args\":[\"k:1d5a5e10eb15355422ad66b6c12167bdbb23b1e1ef674ea032175d220b242ed4\",\"k:4fe7981d36997c2a327d0d3ce961d3ae0b2d38185ac5e5cd98ad90140bc284d0\",3]},{\"name\":\"coin.GAS\",\"args\":[]}]}],\"meta\":{\"creationTime\":1726525836,\"ttl\":32441,\"chainId\":\"1\",\"gasPrice\":1.9981e-7,\"gasLimit\":2320,\"sender\":\"k:1d5a5e10eb15355422ad66b6c12167bdbb23b1e1ef674ea032175d220b242ed4\"},\"nonce\":\"chainweaver\",\"networkId\":\"testnet04\",\"payload\":{\"exec\":{\"code\":\"(coin.transfer \\\"k:1d5a5e10eb15355422ad66b6c12167bdbb23b1e1ef674ea032175d220b242ed4\\\" \\\"k:4fe7981d36997c2a327d0d3ce961d3ae0b2d38185ac5e5cd98ad90140bc284d0\\\" 3.0)\",\"data\":null}}}","hash":"SLiinT5fAv8eCixT9qwbBHZgO4HxVB-p5rYyt_AxG94","sigs":[{"sig":"34de39e545f03116e7c8c1150e62be29874e0efd0e24ea906cb6cbd5adef28b137c01a85ac883489c7757f9335276ec360734ff74d98e195079d391a9105020d"}]}
+```
+
+The request returns command results similar to the following:
+
+```json
+{
+    "gas": 509,
+    "result": {
+        "status": "success",
+        "data": "Write succeeded"
+    },
+    "reqKey": "SLiinT5fAv8eCixT9qwbBHZgO4HxVB-p5rYyt_AxG94",
+    "logs": "wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8",
+    "events": [
+        {
+            "params": [
+                "k:1d5a5e10eb15355422ad66b6c12167bdbb23b1e1ef674ea032175d220b242ed4",
+                "k:4fe7981d36997c2a327d0d3ce961d3ae0b2d38185ac5e5cd98ad90140bc284d0",
+                3
+            ],
+            "name": "TRANSFER",
+            "module": {
+                "namespace": null,
+                "name": "coin"
+            },
+            "moduleHash": "klFkrLfpyLW-M3xjVPSdqXEMgxPPJibRt_D6qiBws6s"
+        }
+    ],
+    "metaData": {
+        "publicMeta": {
+            "creationTime": 1726525836,
+            "ttl": 32441,
+            "gasLimit": 2320,
+            "chainId": "1",
+            "gasPrice": 1.9981e-7,
+            "sender": "k:1d5a5e10eb15355422ad66b6c12167bdbb23b1e1ef674ea032175d220b242ed4"
+        },
+        "blockTime": 1726526473352615,
+        "prevBlockHash": "ubbt1utj-jVkNwAVCbqYduESQVlJwWwSipJOrRlXJJg",
+        "blockHeight": 4651215
+    },
+    "continuation": null,
+    "txId": null
+}
+```
+
+You can specify the `preflight` query parameter in the API request like this:
+
+```Postman
+http://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/local/?preflight=true
+```
+
+The request returns preflight results similar to the following:
+
+```json
+{
+    "preflightResult": {
+        "gas": 734,
+        "result": {
+            "status": "success",
+            "data": "Write succeeded"
+        },
+        "reqKey": "SLiinT5fAv8eCixT9qwbBHZgO4HxVB-p5rYyt_AxG94",
+        "logs": "aN6GME-Oea_smnQOrTozgww0Z81WFu_u3env3k8ksEc",
+        "events": [
+            {
+                "params": [
+                    "k:1d5a5e10eb15355422ad66b6c12167bdbb23b1e1ef674ea032175d220b242ed4",
+                    "NoMiner",
+                    1.4666054e-4
+                ],
+                "name": "TRANSFER",
+                "module": {
+                    "namespace": null,
+                    "name": "coin"
+                },
+                "moduleHash": "klFkrLfpyLW-M3xjVPSdqXEMgxPPJibRt_D6qiBws6s"
+            },
+            {
+                "params": [
+                    "k:1d5a5e10eb15355422ad66b6c12167bdbb23b1e1ef674ea032175d220b242ed4",
+                    "k:4fe7981d36997c2a327d0d3ce961d3ae0b2d38185ac5e5cd98ad90140bc284d0",
+                    3
+                ],
+                "name": "TRANSFER",
+                "module": {
+                    "namespace": null,
+                    "name": "coin"
+                },
+                "moduleHash": "klFkrLfpyLW-M3xjVPSdqXEMgxPPJibRt_D6qiBws6s"
+            }
+        ],
+        "metaData": {
+            "publicMeta": {
+                "creationTime": 1726525836,
+                "ttl": 32441,
+                "gasLimit": 2320,
+                "chainId": "1",
+                "gasPrice": 1.9981e-7,
+                "sender": "k:1d5a5e10eb15355422ad66b6c12167bdbb23b1e1ef674ea032175d220b242ed4"
+            },
+            "blockTime": 1726526253258103,
+            "prevBlockHash": "jQi8HNy73w1JxjdqTkkJnFZW7_lGYo2eHEmqxKNUBsM",
+            "blockHeight": 4651209
+        },
+        "continuation": null,
+        "txId": 6476127
+    },
+    "preflightWarnings": []
+}
+```
+
+## Send commands to be executed
+
+Use the `POST http://{baseUrl}/chain/{chain}/pact/api/v1/send` endpoint to submit one or more public unencrypted Pact commands to the blockchain for execution.
+
+### Path parameters
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| chain&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to submit the command on the first chain (0), the request is `POST http://{baseURL}/chain/0/pact/api/v1/send`.
+
+### Request body schema
+
+Content type: application/json
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `cmds` (required) | Array of objects | Specifies an array of individual Pact command objects.
+
+### Responses
+
+Requests to `POST http://{baseURL}/chain/{chain}/pact/api/v1/send` return the following response codes:
+
+- **200 OK** indicates that the request succeeded and the response body includes the request keys for each command successfully submitted.
+- **400 Bad Request** indicates that the request failed. The response returns `text/plain` content with information about why the command couldn't be submitted for execution. For example, the response might indicate that the command wasn't executed because the request body specified an invalid gas payer, was missing required metadata, or there were other environment issues.
+
+If the request is successful, the response returns `application/json` content with the following information:
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `requestKeys` (required) | Array of strings | Each request key is a base64Url-encoded string that consists of 43 characters from the [`a-zA-Z0-9_-`] character set. You can use these request keys with the `poll` or `listen` endpoints to retrieve transaction results.
+
+### Examples
+
+You can send a request to the Kadena test network and chain 1 by calling the `/send` endpoint like this:
+
+```Postman
+POST http://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/send
+```
+
+The request body for this example looks like this:
+
+```json
+{
+    "cmds": [
+        {
+          "cmd":"{\"signers\":[{\"pubKey\":\"58705e8699678bd15bbda2cf40fa236694895db614aafc82cf1c06c014ca963c\",\"clist\":[{\"name\":\"coin.TRANSFER\",\"args\":[\"k:58705e8699678bd15bbda2cf40fa236694895db614aafc82cf1c06c014ca963c\",\"k:4fe7981d36997c2a327d0d3ce961d3ae0b2d38185ac5e5cd98ad90140bc284d0\",2]},{\"name\":\"coin.GAS\",\"args\":[]}]}],\"meta\":{\"creationTime\":1726775463,\"ttl\":35628,\"chainId\":\"1\",\"gasPrice\":7.993e-8,\"gasLimit\":2320,\"sender\":\"k:58705e8699678bd15bbda2cf40fa236694895db614aafc82cf1c06c014ca963c\"},\"nonce\":\"chainweaver\",\"networkId\":\"testnet04\",\"payload\":{\"exec\":{\"code\":\"(coin.transfer \\\"k:58705e8699678bd15bbda2cf40fa236694895db614aafc82cf1c06c014ca963c\\\" \\\"k:4fe7981d36997c2a327d0d3ce961d3ae0b2d38185ac5e5cd98ad90140bc284d0\\\" 2.0)\",\"data\":null}}}","hash":"vnelRuUfVvSGOu7Lczv1MluELMICdPrBaevJzKOj-oo","sigs":[
+            {"sig":"cf0c345d06c251a34082ac95d06e34e9e96593799f18e743c8094de063c297bfbab5ec40a074e9ba257a32692cb6e7edf055f5abe8861c3b51150117736c5d0c"}
+          ]
+        }
+    ]
+}
+```
+
+This API request returns the request key for the transaction:
+
+```json
+{
+    "requestKeys": [
+        "vnelRuUfVvSGOu7Lczv1MluELMICdPrBaevJzKOj-oo"
+    ]
+}
+```
+
+You can use the request key returned to poll or listen for the transaction results.
+
+## Poll for transaction results
+
+Use the `POST http://{baseURL}/chain/{chain}/pact/api/v1/poll` endpoint to check for one or more command results by request key.
+
+### Path parameters
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| chain&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to submit the command on the first chain (0), the request is `POST http://{baseURL}/chain/0/pact/api/v1/poll`.
+
+### Query parameters
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `confirmationDepth`	| integer >= 0 | Configures how many blocks should be mined before the requested transaction results should be considered to be confirmed.
+
+### Request body schema
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `requestKeys` (required) | Array of strings | Each request key is a base64Url-encoded string that consists of 43 characters from the [`a-zA-Z0-9_-`] character set. 
+
+
+### Responses
+
+Requests to `POST http://{baseURL}/chain/{chain}/pact/api/v1/poll` return the following response codes:
+
+- **200 OK** indicates that the request succeeded and the response body includes the transaction results.
+- **400 Bad Request** indicates that the request failed. The response returns `text/plain` content with information about why the request failed. For example, the response might indicate that the command wasn't executed because the request body specified an invalid gas payer, was missing required metadata, or there were other environment issues.
+
+If the request is successful, the response returns `application/json` content with the following information for one or more of the request keys included in the request.
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
 | `gas` (required) | number | Gas consumed by the transaction.
+| `result` (required) | object | Success (object) or Failure (object).
+| `reqKey` (required) | string | Unique identifier for the Pact transaction. The transaction hash is a base64Url-encoded string that consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
+| `logs` (required) | string | Backend-specific value providing image of database logs.
+| `events` | Array of object | Array of event objects.
+| `metaData` (required) | object | Metadata included with the transaction.
+| `continuation` | object | Describes the result of a `defpact` execution.
+| `txId` | number | Database-internal transaction tracking identifier.
 
-## private
+### Examples
 
-Use the /private endpoint for asynchronous submission of a single command transmitted with end-to-end encryption between addressed entity nodes. 
+You can send a request to the Kadena test network and chain 1 by calling the `/poll` endpoint like this:
+
+```Postman
+POST http://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/poll?confirmationDepth=6
+```
+
+For this example, the request body specifies one request key:
+
+```json
+{
+    "requestKeys": [
+        "vnelRuUfVvSGOu7Lczv1MluELMICdPrBaevJzKOj-oo"
+    ]
+}   
+```
+
+This request returns the following results:
+
+```json
+{
+    "vnelRuUfVvSGOu7Lczv1MluELMICdPrBaevJzKOj-oo": {
+        "gas": 734,
+        "result": {
+            "status": "success",
+            "data": "Write succeeded"
+        },
+        "reqKey": "vnelRuUfVvSGOu7Lczv1MluELMICdPrBaevJzKOj-oo",
+        "logs": "TtlN_14Khzk6GhEx6JeeQsyPgeJ9ksGtFiA8-_DxGiA",
+        "events": [
+            {
+                "params": [
+                    "k:58705e8699678bd15bbda2cf40fa236694895db614aafc82cf1c06c014ca963c",
+                    "k:db776793be0fcf8e76c75bdb35a36e67f298111dc6145c66693b0133192e2616",
+                    5.866862e-5
+                ],
+                "name": "TRANSFER",
+                "module": {
+                    "namespace": null,
+                    "name": "coin"
+                },
+                "moduleHash": "klFkrLfpyLW-M3xjVPSdqXEMgxPPJibRt_D6qiBws6s"
+            },
+            {
+                "params": [
+                    "k:58705e8699678bd15bbda2cf40fa236694895db614aafc82cf1c06c014ca963c",
+                    "k:4fe7981d36997c2a327d0d3ce961d3ae0b2d38185ac5e5cd98ad90140bc284d0",
+                    2
+                ],
+                "name": "TRANSFER",
+                "module": {
+                    "namespace": null,
+                    "name": "coin"
+                },
+                "moduleHash": "klFkrLfpyLW-M3xjVPSdqXEMgxPPJibRt_D6qiBws6s"
+            }
+        ],
+        "metaData": {
+            "blockTime": 1726775907743891,
+            "prevBlockHash": "svYRszu1KyeVIWNZOdPNoVBrU6w6-ETm_xXwx4YiHmk",
+            "blockHash": "RgFXHrn4NESENpvwG1zWqJu_UloVLg6FAsdDK-oev-I",
+            "blockHeight": 4659524
+        },
+        "continuation": null,
+        "txId": 6485407
+    }
+}
+```
+
+## Listen for transaction results
+
+Use the `POST http://{baseURL}/chain/{chain}/pact/api/v1/listen` endpoint to submit a blocking request for the results of a single transaction.
+
+### Path parameters
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| chain&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to submit the command on the first chain (0), the request is `POST http://{baseURL}/chain/0/pact/api/v1/listen`.
+
+### Request body schema
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `listen` (required) | string | Unique identifier for the Pact transaction. The transaction hash is a base64Url-encoded string that consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
+
+### Responses 
+
+Requests to `POST http://{baseURL}/chain/{chain}/pact/api/v1/listen` return the following response codes:
+
+- **200 OK** indicates that the request succeeded and the response body includes the transaction results.
+- **400 Bad Request** indicates that the request failed. The response returns `text/plain` content with information about why the request failed. For example, the response might indicate that the command wasn't executed because the request body specified an invalid gas payer, was missing required metadata, or there were other environment issues.
+
+If the request is successful, the response returns `application/json` content with the following information for one or more of the request keys included in the request.
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `gas` (required) | number | Gas consumed by the transaction.
+| `result` (required) | object | Success (object) or Failure (object).
+| `reqKey` (required) | string | Unique identifier for the Pact transaction. The transaction hash is a base64Url-encoded string that consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
+| `logs` (required) | string | Backend-specific value providing image of database logs.
+| `events` | Array of object | Array of event objects.
+| `metaData` (required) | object | Metadata included with the transaction.
+| `continuation` | object | Describes the result of a `defpact` execution.
+| `txId` | number | Database-internal transaction tracking identifier.
+
+### Examples
+
+You can send a request to the Kadena test network and chain 1 by calling the `/listen` endpoint like this:
+
+```Postman
+POST http://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/listen
+```
+
+For this example, the request body specifies one request key to listen for:
+
+```json
+{
+    "listen": "qTDh3o3Gp3rQI2XVzptSA5BwvT6w28B1RvSuHmNXtN4"
+}
+```
+
+This request returns the following results:
+
+```json
+{
+    "gas": 710,
+    "result": {
+        "status": "success",
+        "data": "Write succeeded"
+    },
+    "reqKey": "qTDh3o3Gp3rQI2XVzptSA5BwvT6w28B1RvSuHmNXtN4",
+    "logs": "9BUxMgwkYJFU7fVAEfJKLYLEqx1gXdpwd-tSZhJRh3A",
+    "events": [
+        {
+            "params": [
+                "LG-testnet",
+                "k:db776793be0fcf8e76c75bdb35a36e67f298111dc6145c66693b0133192e2616",
+                5.67503e-5
+            ],
+            "name": "TRANSFER",
+            "module": {
+                "namespace": null,
+                "name": "coin"
+            },
+            "moduleHash": "klFkrLfpyLW-M3xjVPSdqXEMgxPPJibRt_D6qiBws6s"
+        },
+        {
+            "params": [
+                "LG-testnet",
+                "k:4fe7981d36997c2a327d0d3ce961d3ae0b2d38185ac5e5cd98ad90140bc284d0",
+                2
+            ],
+            "name": "TRANSFER",
+            "module": {
+                "namespace": null,
+                "name": "coin"
+            },
+            "moduleHash": "klFkrLfpyLW-M3xjVPSdqXEMgxPPJibRt_D6qiBws6s"
+        }
+    ],
+    "metaData": {
+        "blockTime": 1726778344125192,
+        "prevBlockHash": "zCvrrJrucuPgd9vY8cXbVn7GMjO9j-SsupGUMZ8gpoI",
+        "blockHash": "TpmPSutW06KQ5_0kdrvbIAFdFZQSRlUYWnNBjt1mOGc",
+        "blockHeight": 4659605
+    },
+    "continuation": null,
+    "txId": 6485506
+}
+```
+
+## Send a private Pact command
+
+Use the `POST http://{baseURL}/chain/{chain}/pact/api/v1/private` endpoint for asynchronous submission of a single command transmitted with end-to-end encryption between addressed entity nodes. 
 Private payload metadata is required.
 
-`POST /private`
-
 ### Request body schema
 
-Content type: application/json
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `cmd` (required) | string | Stringified JSON payload object with signed transaction data that can't be modified.
+| `hash` (required) | string | An unpadded base64Url-encoded string created using the Blake2s-256 hash function for the `cmd` field value. Serves as a command request key because each transaction must be unique.
+| `sigs` (required) | Array of objects | List of signatures corresponding one-to-one with the signers array in the payload.
+
+### Responses
+
+Requests to `POST http://{baseURL}/chain/{chain}/pact/api/v1/private` return the following response codes:
+
+- **200 OK** indicates that the request succeeded and the response body includes the command results.
+- **400 Bad Request** indicates that the request failed. The response returns `text/plain` content with information about why the request failed. For example, the response might indicate that the command wasn't executed because the request body specified an invalid gas payer, was missing required metadata, or there were other environment issues.
+
+If the request is successful and the command is accepted, the response returns `application/json` content with the following information:
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| `cmd` (required) | string | Stringified JSON payload object. Canonic non-malleable signed transaction data.
-| `hash` (required) | string <base64url> | Unpadded Base64URL of Blake2s-256 hash of the cmd field value. Serves as a command requestKey since each transaction must be unique.
-| `sigs` (required) | Array of objects >= 0 | List of signatures corresponding one-to-one with the signers array in the payload.
+| `requestKeys` (required) | Array of strings | Unique identifier for the Pact transaction. The transaction hash is a base64Url-encoded string that consists of 43 characters from the [`a-zA-Z0-9_-`] character set. You can use the request key to call the `poll` or `listen` endpoint to retrieve results.
 
-### Successful response (200) 
+## Fetch a simple payment verification (spv)
 
-Content type: application/json
-
-The command was accepted.
-
-| Parameter | Type | Description
-| --------- | ---- | -----------
-| `requestKeys` (required) | Array of strings | Request keys you can use with `poll` or `listen` to retrieve results. Request key = 43 characters ^[a-zA-Z0-9_-]{43}$.
-
-## spv
-
-Use the `/spv` endpoint to issue a blocking request to fetch a simple payment verificiation (spv) proof of a cross-chain transaction. 
+Use the `POST http://{baseURL}/chain/{chain}/pact/api/v1/spv` endpoint to issue a blocking request to fetch a simple payment verification (spv) proof of a cross-chain transaction. 
 The request must be sent to the chain where the transaction initiated.
 
-`POST /spv`
+### Path parameters
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| chain&nbsp;(required) | integer&nbsp;>=&nbsp;0 | Specifies the chain identifier of the chain you want to send the request to. Valid values are 0 to 19. For example, to submit the command on the first chain (0), the request is `POST http://{baseURL}/chain/0/pact/api/v1/spv`.
 
 ### Request body schema
 
-Content type: application/json
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `requestKey` (required) | string | Request key for the first step in a cross-chain transaction. This request key is the transaction hash generated on the source chain.
+| `targetChainId` (required) | string | Target chain identifier for the second step in the cross-chain transaction.
+
+### Response 
+
+Requests to `POST http://{baseURL}/chain/{chain}/pact/api/v1/spv` return the following response codes:
+
+- **200 OK** indicates that the request succeeded and the response body includes the requested payment verification proof.
+- **400 Bad Request** indicates that the request failed. The response returns `text/plain` content with information about why the request failed.
+
+If the request is successful and the command is accepted, the response returns `application/json` content with the following information:
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| `requestKey` (required) | string | Request Key of an initiated cross-chain transaction at the source chain.
-| `targetChainId` (required) | string | Target chain ID of the cross-chain transaction.
+| `spv` | string | Backend-specific data for continuing a cross-chain proof.
 
-### Successful response (200) 
+## Pact commands
 
-Content type: application/json
-
-The requested spv proof.
+Pact commands in an API request consist of the following parameters:
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| | string | Backend-specific data for continuing a cross-chain proof.
+| `cmd` (required) | string | Stringified JSON payload object with signed transaction data that can't be modified.
+| `hash` (required) | string | An unpadded base64Url-encoded string created using the Blake2s-256 hash function for the `cmd` field value. Serves as a command request key because each transaction must be unique.
+| `sigs` (required) | Array of objects | List of signatures corresponding one-to-one with the signers array in the payload.
 
-### Invalid command response (400) 
+## Pact results
 
-Content type: text/plain
-
-The requested spv proof could not be found.
-
-| Parameter | Type | Description
-| --------- | ---- | -----------
-| | string (Validation Failure) | Error message with the description of failed proof requests.
-
-## Pact commands, results, and payloads
-
-Pact commands consist of the following parameters:
+Pact response results consist of the following parameters:
 
 | Parameter | Type | Description
 | --------- | ---- | -----------
-| `cmd` (required) | string | Stringified JSON payload object. Canonic non-malleable signed transaction data.
-| `hash` (required) | string <base64url> | Unpadded Base64URL of Blake2s-256 hash of the cmd field value. Serves as a command requestKey since each transaction must be unique.
-| `sigs` (required) | Array of objects >= 0 | List of signatures corresponding one-to-one with the signers array in the payload.
-
-Pact results consist of the following parameters:
-
- Parameter | Type | Description
-| --------- | ---- | -----------
-| `reqKey` (required) | string <base64url> | Unique ID of a Pact transaction consisting of its hash. Request key = 43 characters ^[a-zA-Z0-9_-]{43}$.
-| `result` (required) | object | Success (object) or Failure (object).
-| `txId`	| number | Database-internal transaction tracking ID.
-| `logs` (required) | string | Backend-specific value providing image of database logs.
-| `metaData` (required) | object | Metadata included with the transaction.
-| `events` | Array of object | Array of event objects.
-| `continuation` | object | Describes result of a `defpact` execution.
 | `gas` (required) | number | Gas consumed by the transaction.
+| `result` (required) | object | Success (object) or Failure (object).
+| `reqKey` (required) | string | Unique identifier for the Pact transaction. The transaction hash is a base64Url-encoded string that consists of 43 characters from the [`a-zA-Z0-9_-`] character set.
+| `logs` (required) | string | Backend-specific value providing image of database logs.
+| `events` | Array of object | Array of event objects.
+| `metaData` (required) | object | Metadata included with the transaction.
+| `continuation` | object | Describes the result of a `defpact` execution.
+| `txId` | number | Database-internal transaction tracking identifier.
+
+## Pact payloads
 
 Pact command payloads consist of the following parameters:
 
@@ -313,245 +575,76 @@ Pact command payloads consist of the following parameters:
 | --------- | ---- | -----------
 | `payload` (required) | object | The `exec` message object or `continuation` message object.
 | `meta` (required) | object | Public Chainweb metadata object or private metadata object.
-| `signers` (required) | Array of objects | List of signers, corresponding with list of signatures in outer command.
+| `signers` (required) | Array of objects | List of signers, corresponding with the list of signatures in the outer command.
 | `networkId` (required) | string | Backend-specific identifier of the target network such as "mainnet01" or "testnet04".
-| `nonce` (required) | string | Arbitrary user-supplied value.
 
-## Pact built-in server
+## Formatting API requests in YAML
 
-Pact ships with a built-in HTTP server and SQLite backend. 
-To start up the server issue `pact -s config.yaml`, with a suitable config.
+Chainweb nodes expect Pact commands and transaction requests to be formatted as stringified JSON payload objects with signed transaction data.
+However, you can also create transaction requests using YAML files.
+You can create two types of transactions using the YAML API request format:
 
-## pact-lang-api JS Library
+- Single step transactions that provide the `exec` payload can use the _execution_ request format.
+- Transactions that have more than one step that provide the `cont` payload can use the _continuation_ request format.
 
-The `pact-lang-api` JS library is available as an [npm package](https://www.npmjs.com/package/pact-lang-api) for web
-development.
+### Exec request format
 
-## API request formatter
-
-The `pact` tool accepts the `--apireq` option to format an API request JSON using a YAML file as input to describe the request. 
-The output can then be used with a POST tool like Postman or even piping into `curl`.
-
-For example, you can create a `my-api-request.yaml` file with the following content:
+The execution request format supports the following keys:
 
 ```yaml
-code: '(+ 1 2)'
-data:
-  name: Stuart
-  language: Pact
-keyPairs:
-  - public: ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d
-    secret: 8693e641ae2bbe9ea802c736f42027b03f86afe63cae315e7169c9c496c17332
-```
-
-You can then pass this file to `pact` to create a valid API request like this:
-
-```bash
-$ pact -a tests/apireq.yaml -l
-{"hash":"444669038ea7811b90934f3d65574ef35c82d5c79cedd26d0931fddf837cccd2c9cf19392bf62c485f33535983f5e04c3e1a06b6b49e045c5160a637db8d7331","sigs":[{"sig":"9097304baed4c419002c6b9690972e1303ac86d14dc59919bf36c785d008f4ad7efa3352ac2b8a47d0b688fe2909dbf392dd162457c4837bc4dc92f2f61fd20d","scheme":"ED25519","pubKey":"ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d","addr":"ba54b224d1924dd98403f5c751abdd10de6cd81b0121800bf7bdbdcfaec7388d"}],"cmd":"{\"address\":null,\"payload\":{\"exec\":{\"data\":{\"name\":\"Stuart\",\"language\":\"Pact\"},\"code\":\"(+ 1 2)\"}},\"nonce\":\"\\\"2017-09-27 19:42:06.696533 UTC\\\"\"}"}
-
-```
-
-Here's an example of piping the output to `curl` and hitting a pact server running on port
-8080:
-
-```bash
-$ pact -a tests/apireq.yaml -l | curl -d @- http://localhost:8080/api/v1/local
-{"status":"success","response":{"status":"success","data":3}}
-```
-
-## Request YAML file format
-
-You can create two types of request yaml files:
-
-- An _execution_ request yaml file describes the `exec` payload.
-- A _continuation_ request yaml file describes the `cont` payload.
-
-### YAML exec command request
-
-The execution request yaml for a public blockchain takes the following keys:
-
-```yaml
-  code: Transaction code
-  codeFile: Transaction code file
-  data: JSON transaction data
-  dataFile: JSON transaction data file
-  keyPairs: list of key pairs for signing (use pact -g to generate): [
+code: Transaction code
+codeFile: Transaction code file
+data: JSON transaction data
+dataFile: JSON transaction data file
+keyPairs: list of key pairs for signing (use pact -g to generate): 
+  [
     public: base 16 public key
     secret: base 16 secret key
-    caps: [
+    caps: 
+    [
       optional managed capabilities
-      ]
     ]
-  nonce: optional request nonce, will use current time if not provided
-  networkId: string identifier for a blockchain network
-  publicMeta:
+  ]
+nonce: optional request nonce, will use current time if not provided
+networkId: string identifier for a blockchain network
+publicMeta:
     chainId: string chain id of the chain of execution
     sender: string denoting the sender of the transaction
     gasLimit: integer gas limit
     gasPrice: decimal gas price
     ttl: integer time-to-live value
     creationTime: optional integer tx execution time after offset
-  type: exec
+type: exec
 ```
 
-### YAML continuation command request
+### Cont request format
 
-The continuation request yaml for a public blockchain takes the following keys:
+The execution request format supports the following keys:
 
 ```yaml
-  pactTxHash: integer transaction id of pact
-  step: integer next step of a pact
-  rollback: boolean for rollingback a pact
-  proof: string spv proof of continuation (optional, cross-chain only)
-  data: JSON transaction data
-  dataFile: JSON transaction data file
-  keyPairs: list of key pairs for signing (use pact -g to generate): [
+pactTxHash: integer transaction id of pact
+step: integer next step of a pact
+rollback: boolean for rollingback a pact
+proof: string spv proof of continuation (optional, cross-chain only)
+data: JSON transaction data
+dataFile: JSON transaction data file
+keyPairs: list of key pairs for signing (use pact -g to generate): 
+  [
     public: string base 16 public key
     secret: string base 16 secret key
-    caps: [
+    caps: 
+    [
       optional managed capabilities
-      ]
     ]
-  networkId: string identifier for a blockchain network
-  publicMeta:
+  ]
+networkId: string identifier for a blockchain network
+publicMeta:
     chainId: string chain id of the chain of execution
     sender: string denoting the sender of the transaction
     gasLimit: integer gas limit
     gasPrice: decimal gas price
     ttl: integer time-to-live value
     creationTime: optional integer tx execution time after offset
-  nonce: optional request nonce, will use current time if not provided
-  type: cont
-```
-
-Note that the optional "proof" field only makes sense when using cross-chain
-continuations.
-
-## Signing transactions
-
-As of Pact 3.5.0, the `pact` command line tool now has several commands to
-facilitate signing transactions. Here's a full script showing how these commands
-can be used to prepare an unsigned version of the transaction and add signatures
-to it. This transcript assumes that the details of the transaction has been
-specified in a file called `tx.yaml`.
-
-```pact
-# At some earlier time generate and save some public/private key pairs.
-pact -g > alice-key.yaml
-pact -g > bob-key.yaml
-
-# Convert a transaction into an unsigned prepared form that is signatures can be added to
-pact -u tx.yaml > tx-unsigned.yaml
-
-# Sign the prepared transaction with one or more keys
-cat tx-unsigned.yaml | pact add-sig alice-key.yaml > tx-signed-alice.yaml
-cat tx-unsigned.yaml | pact add-sig bob-key.yaml > tx-signed-bob.yaml
-
-# Combine the signatures into a fully signed transaction ready to send to the blockchain
-pact combine-sigs tx-signed-alice.yaml tx-signed-bob.yaml > tx-final.json
-
-```
-
-The `add-sig` command takes the output of `pact -u` on standard input and one or
-more key files as command line arguments. It adds the appropriate signatures to
-to the transaction and prints the result to stdout.
-
-The `combine-sigs` command takes multiple unsigned (from `pact -u`) and signed
-(from `pact add-sig`) transaction files as command line arguments and outputs
-the command and all the signatures on stdout.
-
-Both `add-sig` and `combine-sigs` will output YAML if the output transaction
-hasn't accumulated enough signatures to be valid. If all the necessary
-signatures are present, then they will output JSON in final form that is ready
-to be sent to the blockchain on the `/send` endpoint. 
-If you would like to do a test run of the transaction, you can use the `-l` flag to generate
-output suitable for use with the `/local` endpoint.
-
-The above example adds signatures in parallel, but the `add-sig` command can
-also be used to add signatures sequentially in separate steps or all at once in
-a single step as shown in the following two examples:
-
-```shell
-cat tx-unsigned.yaml | pact add-sig alice-key.yaml | pact add-sig bob-key.yaml
-cat tx-unsigned.yaml | pact add-sig alice-key.yaml add-sig bob-key.yaml
-```
-
-### Offline signing with a cold wallet
-
-Some cold wallet signing procedures use QR codes to get transaction data on and
-off the cold wallet machine. Since QR codes can transmit a fairly limited amount
-of information these signing commands are also designed to work with a more
-compact data format that doesn't require the full command to generate
-signatures. Here's an example of what `tx-unsigned.yaml` might look like in the
-above example:
-
-```yaml
-hash: KY6RFunty4WazQiCsKsYD-ovu-_XQByfY6scTxi9gQQ
-sigs:
-  368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca: null
-  6be2f485a7af75fedb4b7f153a903f7e6000ca4aa501179c91a2450b777bd2a7: null
-cmd:
-  '{"networkId":"mainnet01","payload":{"exec":{"data":{"ks":{"pred":"keys-all","keys":["368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca"]}},"code":"(coin.transfer-create
-  \"alice\" \"bob\" (read-keyset \"ks\") 100.1)\n(coin.transfer \"bob\"
-  \"alice\"
-  0.1)"}},"signers":[{"pubKey":"6be2f485a7af75fedb4b7f153a903f7e6000ca4aa501179c91a2450b777bd2a7","clist":[{"args":["alice","bob",100.1],"name":"coin.TRANSFER"},{"args":[],"name":"coin.GAS"}]},{"pubKey":"368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca","clist":[{"args":["bob","alice",0.1],"name":"coin.TRANSFER"}]}],"meta":{"creationTime":1580316382,"ttl":7200,"gasLimit":1200,"chainId":"0","gasPrice":1.0e-5,"sender":"alice"},"nonce":"2020-01-29
-  16:46:22.916695 UTC"}'
-```
-
-To get a condensed version for signing on a cold wallet all you have to do is
-drop the `cmd` field. This can be done manually or scripted with
-`cat tx-unsigned.yaml | grep -v "^cmd:"`. The result would look like this:
-
-```yaml
-hash: KY6RFunty4WazQiCsKsYD-ovu-_XQByfY6scTxi9gQQ
-sigs:
-  368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca: null
-  6be2f485a7af75fedb4b7f153a903f7e6000ca4aa501179c91a2450b777bd2a7: null
-```
-
-Keep in mind that when you sign these condensed versions, you won't be able to
-submit the output directly to the blockchain. You'll have to use `combine-sigs`
-to combine those signatures with the original `tx-unsigned.yaml` file which has
-the full command.
-
-### Detached signature transaction format
-
-The YAML input expected by `pact -u` is similar to the
-[Public Blockchain YAML format](/reference/rest-api#detached-signature-transaction-formath-260011505)
-described above with one major difference. Instead of the `keyPairs` field which
-requires both the public and secret keys, `pact -u` expects a `signers` field
-that only needs a public key. This allows signatures to be added on
-incrementally as described above without needing private keys to all be present
-when the transaction is constructed.
-
-Here is an example of how the above `tx.yaml` file might look:
-
-```yaml
-code: |-
-  (coin.transfer-create "alice" "bob" (read-keyset "ks") 100.1)
-  (coin.transfer "bob" "alice" 0.1)
-data:
-  ks:
-    keys: [368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca]
-    pred: 'keys-all'
-publicMeta:
-  chainId: '0'
-  sender: alice
-  gasLimit: 1200
-  gasPrice: 0.0000000001
-  ttl: 7200
-networkId: 'mainnet01'
-signers:
-  - public: 6be2f485a7af75fedb4b7f153a903f7e6000ca4aa501179c91a2450b777bd2a7
-    caps:
-      - name: 'coin.TRANSFER'
-        args: ['alice', 'bob', 100.1]
-      - name: 'coin.GAS'
-        args: []
-  - public: 368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca
-    caps:
-      - name: 'coin.TRANSFER'
-        args: ['bob', 'alice', 0.1]
-type: exec
+nonce: optional request nonce, will use current time if not provided
+type: cont
 ```
