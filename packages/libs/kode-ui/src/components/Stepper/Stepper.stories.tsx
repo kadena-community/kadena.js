@@ -81,3 +81,25 @@ export const Horizontal: Story = {
     );
   },
 };
+export const NoActive: Story = {
+  name: 'Stepper no active',
+  args: {
+    status: 'valid',
+  },
+  render: (args) => {
+    return (
+      <Stepper {...args} direction="horizontal">
+        <Step icon={<MonoCheck />}>Prince Adam</Step>
+        <Step
+          active
+          status="inactive"
+          icon={args.status === 'error' ? <MonoClear /> : <MonoCheck />}
+        >
+          Power Sword
+        </Step>
+        <Step status="inactive">He-man</Step>
+        <Step status="inactive">Master of the Universe</Step>
+      </Stepper>
+    );
+  },
+};
