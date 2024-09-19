@@ -14,33 +14,56 @@ export interface IEnvFunctions {
 }
 
 export const transaction =
-  (state: any) =>
+  (state: any[]) =>
   (
     id: string,
-    name: string,
-    logic: (args: IEnvFunctions) => IPartialPactCommand,
-  ) => {};
+    description: string,
+    cb: (args: IEnvFunctions) => IPartialPactCommand,
+  ) => {
+    state.push({ id, description, cb, type: 'transaction' });
+  };
 
 export const inspect =
-  (state: any) =>
+  (state: any[]) =>
   (
     id: string,
     cb: (
       args: IEnvFunctions & { read: (code: string) => Promise<any> },
     ) => void,
-  ) => {};
-
-export const kadenaProcess = (config: {
-  pactApiUrl: string;
-  networkId: string;
-  chainId: string;
-  gasPayer: { account: string; keys: string[] };
-  sign: (tx: IUnsignedCommand) => ICommand;
-}) => {
-  const state = {};
-  return {
-    transaction: transaction(state),
-    inspect: inspect(state),
+  ) => {
+    state.push({ id, cb, type: 'inspect' });
   };
-};
-export const configure = (configs: any) => {};
+
+export const kadenaProcess =
+  (config: {
+    hostUrl: string;
+    defaults: IPartialPactCommand;
+    sign: (tx: IUnsignedCommand) => ICommand;
+  }) =>
+  (
+    cb: (functions: {
+      transaction: ReturnType<typeof transaction>;
+      inspect: ReturnType<typeof inspect>;
+    }) => void,
+  ) => {
+    const state: {
+      id: string;
+      description?: string;
+      cb: () => void;
+      result: any;
+    }[] = [];
+
+    cb({
+      transaction: transaction(state),
+      inspect: inspect(state),
+    });
+    const resultOf = (id: string) =>
+      state.find((item) => item.id === id)?.result;
+    for (const item of state) {
+      if (item.type === 'transaction') {
+        // Process transaction
+      } else if (item.type === 'inspect') {
+        // Process inspect
+      }
+    }
+  };

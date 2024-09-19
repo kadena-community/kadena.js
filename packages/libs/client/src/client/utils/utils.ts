@@ -63,6 +63,11 @@ export const kadenaHostGenerator = ({
         networkId,
         chainId,
       });
+    case 'testnet05':
+      return getHostUrl('https://api.testnet05.chainweb.com')({
+        networkId,
+        chainId,
+      });
     default:
       throw new Error(`UNKNOWN_NETWORK_ID: ${networkId}`);
   }
