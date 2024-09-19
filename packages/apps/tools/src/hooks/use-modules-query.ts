@@ -64,4 +64,4 @@ const useModulesQuery = (
   });
 };
 
-export { QUERY_KEY, fetchModules, useModulesQuery };
+export { fetchModules, QUERY_KEY, useModulesQuery };
