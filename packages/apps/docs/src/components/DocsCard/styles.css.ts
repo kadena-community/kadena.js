@@ -29,7 +29,7 @@ export const cardClass = style([
   }),
   {
     transition: 'all .3s ease',
-    backgroundColor: tokens.kda.foundation.color.neutral.n1,
+    backgroundColor: tokens.kda.foundation.color.palette.blue.n1,
     color: tokens.kda.foundation.color.text.base.default,
   },
 ]);
