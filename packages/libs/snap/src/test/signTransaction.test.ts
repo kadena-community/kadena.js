@@ -1,4 +1,4 @@
-import { installSnap } from '@metamask/snaps-jest';
+import { assertIsConfirmationDialog, installSnap } from '@metamask/snaps-jest';
 import { getAccounts } from './helpers/test-utils';
 
 describe('kda_signTransaction', () => {
@@ -149,6 +149,7 @@ describe('kda_signTransaction', () => {
         ],
       }
     `);
+    assertIsConfirmationDialog(ui);
     await ui.ok();
 
     expect(await response).toRespondWith(

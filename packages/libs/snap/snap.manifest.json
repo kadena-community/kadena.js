@@ -3,7 +3,7 @@
   "description": "Metamask snap to manage your Kadena accounts and KDA.",
   "proposedName": "Kadena",
   "source": {
-    "shasum": "jVQTbbgmQdpLFpNwKOwuzqc7WK2s0aInlVSY1egGxfc=",
+    "shasum": "d2BzBbG++vx/ueJ2WiU7WRCtZxR7HhFerFGufrIMmdU=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",

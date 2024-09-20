@@ -1,4 +1,4 @@
-import { installSnap } from '@metamask/snaps-jest';
+import { assertIsConfirmationDialog, installSnap } from '@metamask/snaps-jest';
 import { MOCK_MAINNET, MOCK_TESTNET } from './helpers/test-data';
 import { withId } from './helpers/test-utils';
 
@@ -27,6 +27,7 @@ describe('kda_storeNetwork', () => {
       },
     });
     const ui = await newNetworkResponse.getInterface({ timeout: 50000 });
+    assertIsConfirmationDialog(ui);
     await ui.ok();
     const newNetwork = await newNetworkResponse;
 
