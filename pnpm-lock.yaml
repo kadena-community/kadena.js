@@ -2713,6 +2713,9 @@ importers:
       '@jest/globals':
         specifier: ^29.5.0
         version: 29.7.0
+      '@kadena-dev/shared-config':
+        specifier: workspace:*
+        version: link:../../tools/shared-config
       '@kadena/pactjs-generator':
         specifier: workspace:*
         version: link:../pactjs-generator
