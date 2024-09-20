@@ -94,17 +94,19 @@ export function Signers({
                   ))}
               </Stack>
               {!signature && info && (
-                <Button
-                  isCompact
-                  onClick={async () => {
-                    const signed = (await sign(transaction, [
-                      signer.pubKey,
-                    ])) as IUnsignedCommand;
-                    onSign(signed.sigs ?? []);
-                  }}
-                >
-                  Sign
-                </Button>
+                <Stack>
+                  <Button
+                    isCompact
+                    onClick={async () => {
+                      const signed = (await sign(transaction, [
+                        signer.pubKey,
+                      ])) as IUnsignedCommand;
+                      onSign(signed.sigs ?? []);
+                    }}
+                  >
+                    Sign
+                  </Button>
+                </Stack>
               )}
               {!signature && !info && (
                 <form

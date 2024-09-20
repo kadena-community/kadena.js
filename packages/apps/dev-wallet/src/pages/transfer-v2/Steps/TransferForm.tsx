@@ -50,15 +50,10 @@ export type Redistribution = {
 
 interface TransferFormProps {
   accountId?: string | null;
-  onHasRedistribute: (has: boolean) => void;
   onSubmit: (formData: Transfer, redistribution: Redistribution[]) => void;
 }
 
-export function TransferForm({
-  accountId,
-  onSubmit,
-  onHasRedistribute,
-}: TransferFormProps) {
+export function TransferForm({ accountId, onSubmit }: TransferFormProps) {
   const timer = useRef<NodeJS.Timeout>();
   const {
     accounts: allAccounts,
@@ -147,7 +142,6 @@ export function TransferForm({
     const gasPayer = getValues('gasPayer');
     const selectedChain = getValues('chain');
     setRedistribution([]);
-    onHasRedistribute(false);
     setError(null);
     try {
       const [transfers, redistributionRequest] = getTransfers(
@@ -170,13 +164,12 @@ export function TransferForm({
         })),
       );
       setRedistribution(redistributionRequest);
-      onHasRedistribute(redistributionRequest.length > 0);
     } catch (e) {
       setError(
         'message' in (e as Error) ? (e as Error).message : JSON.stringify(e),
       );
     }
-  }, [chains, getValues, senderAccount, setValue, onHasRedistribute]);
+  }, [chains, getValues, senderAccount, setValue]);
 
   const withEvaluate = <T, R>(cb: (...args: T[]) => R) => {
     return (...args: T[]) => {
@@ -506,6 +499,12 @@ export function TransferForm({
                       render={({ field }) => (
                         <Select
                           // label={index === 0 ? 'Chain' : undefined}
+                          description={
+                            rec.chain &&
+                            redistribution.find((r) => r.target === rec.chain)
+                              ? `This will trigger balance redistribution`
+                              : ''
+                          }
                           size="sm"
                           placeholder="Chains"
                           selectedKey={field.value}

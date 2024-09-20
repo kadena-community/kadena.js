@@ -2,6 +2,7 @@ import {
   accountRepository,
   IAccount,
 } from '@/modules/account/account.repository';
+import { ITransaction } from '@/modules/transaction/transaction.repository';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import {
   ChainId,
@@ -396,13 +397,18 @@ export const createTransactions = async ({
       console.log('commands', commands);
 
       return await Promise.all(
-        commands.map((tx) =>
-          transactionService.addTransaction(tx, profileId, networkId, groupId),
+        commands.map((transaction) =>
+          transactionService.addTransaction({
+            transaction,
+            profileId,
+            networkId,
+            groupId,
+          }),
         ),
       );
     }),
   );
-  return [groupId, txs] as const;
+  return [groupId, txs.flat()] as [string, ITransaction[]];
 };
 
 export async function createRedistributionTxs({
@@ -447,12 +453,14 @@ export async function createRedistributionTxs({
       },
     );
     const tx = createTransaction(command());
-    return transactionService.addTransaction(
-      tx,
-      account.profileId,
+    return transactionService.addTransaction({
+      transaction: tx,
+      profileId: account.profileId,
       networkId,
       groupId,
-    );
+      autoContinue: true,
+      crossChainId: target,
+    });
   });
-  return [groupId, await Promise.all(txs)] as const;
+  return [groupId, await Promise.all(txs)] as [string, ITransaction[]];
 }

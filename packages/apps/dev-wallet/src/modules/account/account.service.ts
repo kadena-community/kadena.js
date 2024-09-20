@@ -263,12 +263,12 @@ export async function fundAccount({
 
   const groupId = crypto.randomUUID();
 
-  const result = await transactionService.addTransaction(
-    signedTx,
+  const result = await transactionService.addTransaction({
+    transaction: signedTx,
     profileId,
-    'testnet04',
+    networkId: 'testnet04',
     groupId,
-  );
+  });
 
   const updatedTransaction = {
     ...result,

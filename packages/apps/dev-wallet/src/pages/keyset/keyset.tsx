@@ -81,12 +81,12 @@ export function Keyset() {
 
     const groupId = crypto.randomUUID();
 
-    const result = await transactionService.addTransaction(
-      signedTx,
-      profile!.uuid,
-      'testnet04',
+    const result = await transactionService.addTransaction({
+      transaction: signedTx,
+      profileId: profile!.uuid,
+      networkId: 'testnet04',
       groupId,
-    );
+    });
 
     await transactionRepository.updateTransaction({
       ...result,

@@ -217,12 +217,12 @@ export function Transfer() {
 
     await Promise.all(
       commands.map((tx) =>
-        transactionService.addTransaction(
-          tx,
-          profile.uuid,
-          activeNetwork.networkId,
+        transactionService.addTransaction({
+          transaction: tx,
+          profileId: profile.uuid,
+          networkId: activeNetwork.networkId,
           groupId,
-        ),
+        }),
       ),
     );
 
