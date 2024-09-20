@@ -248,7 +248,7 @@
   {
     "name": "@kanena/snap",
     "version": "1.0.0",
-    "private": false,
+    "private": true,
     "path": "packages/libs/snap"
   }
 ]
