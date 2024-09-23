@@ -13,6 +13,7 @@
     "build": "mm-snap build",
     "build:clean": "pnpm clean && pnpm build",
     "clean": "rimraf dist",
+    "format": "echo 'TODO'",
     "lint": "pnpm lint:eslint && pnpm lint:misc --check",
     "lint:eslint": "eslint . --cache --ext js,ts",
     "lint:fix": "pnpm lint:eslint --fix && pnpm lint:misc --write",
