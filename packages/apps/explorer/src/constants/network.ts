@@ -32,4 +32,13 @@ export const networkConstants: INetwork[] = [
     wsGraphUrl: 'https://graph.testnet.kadena.network/graphql',
     explorerUrl: 'https://explorer.testnet.kadena.io/',
   },
+  {
+    networkId: 'testnet04',
+    label: 'Testnet04',
+    slug: 'testnet04',
+    chainwebUrl: 'api.testnet.chainweb.com',
+    graphUrl: 'https://graph.testnet.kadena.network/graphql',
+    wsGraphUrl: 'https://graph.testnet.kadena.network/graphql',
+    explorerUrl: 'https://explorer.testnet.kadena.io/',
+  },
 ];
