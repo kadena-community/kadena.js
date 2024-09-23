@@ -17,7 +17,7 @@
     "lint": "pnpm lint:eslint && pnpm lint:misc --check",
     "lint:eslint": "eslint . --cache --ext js,ts",
     "lint:fix": "pnpm lint:eslint --fix && pnpm lint:misc --write",
-    "lint:misc": "prettier '**/*.json' '**/*.md' '!CHANGELOG.md' --ignore-path .gitignore",
+    "lint:misc": "prettier '**/*.json' '**/*.md' '!CHANGELOG.md' --ignore-path .gitignore --ignore-path .prettierignore",
     "serve": "mm-snap serve",
     "start": "mm-snap watch",
     "test": "jest --detectOpenHandles"
