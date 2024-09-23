@@ -26,10 +26,11 @@ import { MonoSignature } from '@kadena/kode-icons/system';
 import { isSignedCommand } from '@kadena/pactjs';
 import React from 'react';
 import { set } from 'react-hook-form';
-import { TxTile, steps } from './TxTile';
+import { TxTile, statusPassed, steps } from './TxTile';
 import { containerClass } from './style.css';
 
 import * as transactionService from '@/modules/transaction/transaction.service';
+import { ExpandedTransaction } from './ExpandedTransaction';
 
 export function TxList({
   txs,
@@ -197,8 +198,17 @@ export function TxList({
           },
         };
         await transactionRepository.updateTransaction(updatedTx);
-        onUpdate();
+        // onUpdate();
         await onSubmit(contTx);
+        updatedTx = {
+          ...updatedTx,
+          continuation: {
+            ...updatedTx.continuation!,
+            done: true,
+          },
+        };
+        await transactionRepository.updateTransaction(updatedTx);
+        onUpdate();
       }
     }
     return updatedTx;
@@ -216,6 +226,7 @@ export function TxList({
             onView={() => setSelectedTxIndex(index)}
             onSubmit={() => onSubmit(tx)}
             onSign={() => onSign(tx)}
+            sendDisabled={sendDisabled}
           />
         ))}
         <Dialog
@@ -229,7 +240,7 @@ export function TxList({
           }}
         >
           {selectedTx && (
-            <ReviewTransaction
+            <ExpandedTransaction
               transaction={selectedTx}
               onSign={async (sigs) => {
                 const updated = {
@@ -244,11 +255,12 @@ export function TxList({
                 await transactionRepository.updateTransaction(updated);
                 onUpdate();
               }}
+              onSubmit={() => onSubmit(selectedTx)}
             />
           )}
         </Dialog>
       </Stack>
-      {!txs.every((tx) => tx.status === 'signed') && (
+      {!txs.every((tx) => statusPassed(tx.status, 'signed')) && (
         <Stack gap={'sm'} flexDirection={'column'}>
           <Text>You can sign all transactions at once.</Text>
           <Stack>
@@ -261,16 +273,19 @@ export function TxList({
           </Stack>
         </Stack>
       )}
-      {!sendDisabled && txs.every((tx) => tx.status === 'signed') && (
-        <Stack flexDirection={'column'} gap={'sm'}>
-          <Text>
-            All transactions are signed. Now you can send them to the blockchain
-          </Text>
-          <Stack>
-            <Button isCompact>Send transactions</Button>
+      {!sendDisabled &&
+        txs.every((tx) => statusPassed(tx.status, 'signed')) &&
+        txs.find((tx) => tx.status === 'signed') && (
+          <Stack flexDirection={'column'} gap={'sm'}>
+            <Text>
+              All transactions are signed. Now you can send them to the
+              blockchain
+            </Text>
+            <Stack>
+              <Button isCompact>Send transactions</Button>
+            </Stack>
           </Stack>
-        </Stack>
-      )}
+        )}
     </Stack>
   );
 }

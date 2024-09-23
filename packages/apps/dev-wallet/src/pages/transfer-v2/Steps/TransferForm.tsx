@@ -1,5 +1,6 @@
 import { AutoBadge, Chain } from '@/Components/Badge/Badge';
 import { IAccount } from '@/modules/account/account.repository';
+import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten } from '@/utils/helpers';
 import { useShow } from '@/utils/useShow';
@@ -51,6 +52,11 @@ export type Redistribution = {
 interface TransferFormProps {
   accountId?: string | null;
   onSubmit: (formData: Transfer, redistribution: Redistribution[]) => void;
+}
+
+export interface TrG {
+  groupId: string;
+  txs: ITransaction[];
 }
 
 export function TransferForm({ accountId, onSubmit }: TransferFormProps) {
@@ -694,14 +700,26 @@ export function TransferForm({ accountId, onSubmit }: TransferFormProps) {
           <Stack marginBlockStart={'lg'}>
             <Heading variant="h5">Sign options</Heading>
           </Stack>
-          <RadioGroup direction={'column'} defaultValue={'normalTransfer'}>
-            <Radio {...register('type')} value="normalTransfer">
-              Sign by sender
-            </Radio>
-            <Radio {...register('type')} value="safeTransfer">
-              Sign by both sender and receiver (safe transfer)
-            </Radio>
-          </RadioGroup>
+          <Controller
+            name="type"
+            control={control}
+            render={({ field }) => (
+              <RadioGroup
+                direction={'column'}
+                defaultValue={'normalTransfer'}
+                value={field.value}
+                onChange={(value) => {
+                  console.log('value', value);
+                  field.onChange(value);
+                }}
+              >
+                <Radio value="normalTransfer">Sign by sender</Radio>
+                <Radio value="safeTransfer">
+                  Sign by both sender and receiver (safe transfer)
+                </Radio>
+              </RadioGroup>
+            )}
+          />
         </AdvancedMode>
         <Stack justifyContent={'flex-start'} gap="sm" marginBlockStart={'lg'}>
           <Button type="submit">Create Transactions</Button>

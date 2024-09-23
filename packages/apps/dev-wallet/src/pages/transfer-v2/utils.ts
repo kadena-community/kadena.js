@@ -2,7 +2,10 @@ import {
   accountRepository,
   IAccount,
 } from '@/modules/account/account.repository';
-import { ITransaction } from '@/modules/transaction/transaction.repository';
+import {
+  ITransaction,
+  transactionRepository,
+} from '@/modules/transaction/transaction.repository';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import {
   ChainId,
@@ -324,7 +327,18 @@ export const createTransactions = async ({
       }
       const discoveredAccount = receiverAccount.discoveredAccounts[0];
 
-      let commands: IUnsignedCommand[];
+      let commands: [
+        IUnsignedCommand,
+        {
+          type: 'transfer';
+          data: {
+            amount: string;
+            totalAmount: string;
+            chainId: ChainId;
+            receiver: string;
+          };
+        },
+      ][];
       if (receiverAccount.transferMax) {
         commands = await Promise.all(
           account.chains.map(async ({ chainId, balance }) => {
@@ -354,9 +368,18 @@ export const createTransactions = async ({
 
             const gas = await estimateGas(command);
 
-            return createTransaction(
-              composePactCommand(command, setMeta(gas))(),
-            );
+            return [
+              createTransaction(composePactCommand(command, setMeta(gas))()),
+              {
+                type: 'transfer',
+                data: {
+                  amount: amount,
+                  totalAmount: receiverAccount.amount,
+                  chainId: chainId,
+                  receiver: receiverAccount.address,
+                },
+              },
+            ] as const;
           }),
         );
       } else {
@@ -388,7 +411,18 @@ export const createTransactions = async ({
               },
             },
           )();
-          return createTransaction(command);
+          return [
+            createTransaction(command),
+            {
+              type: 'transfer',
+              data: {
+                amount: optimal.amount,
+                totalAmount: receiverAccount.amount,
+                chainId: optimal.chainId,
+                receiver: receiverAccount.address,
+              },
+            },
+          ] as const;
         });
       }
 
@@ -397,14 +431,19 @@ export const createTransactions = async ({
       console.log('commands', commands);
 
       return await Promise.all(
-        commands.map((transaction) =>
-          transactionService.addTransaction({
-            transaction,
+        commands.map(([tx, purpose]) => {
+          const transaction: ITransaction = {
+            ...tx,
+            uuid: crypto.randomUUID(),
+            status: 'initiated',
             profileId,
             networkId,
             groupId,
-          }),
-        ),
+            purpose,
+          };
+          transactionRepository.addTransaction(transaction);
+          return transaction;
+        }),
       );
     }),
   );
@@ -427,7 +466,7 @@ export async function createRedistributionTxs({
   gasPrice: number;
 }) {
   const groupId = crypto.randomUUID();
-  const txs = redistribution.map(({ source, target, amount }) => {
+  const txs = redistribution.map(async ({ source, target, amount }) => {
     const command = composePactCommand(
       createCrossChainCommand({
         sender: {
@@ -453,14 +492,18 @@ export async function createRedistributionTxs({
       },
     );
     const tx = createTransaction(command());
-    return transactionService.addTransaction({
-      transaction: tx,
+    const transaction: ITransaction = {
+      ...tx,
+      uuid: crypto.randomUUID(),
       profileId: account.profileId,
       networkId,
+      status: 'initiated',
       groupId,
-      autoContinue: true,
-      crossChainId: target,
-    });
+      continuation: { crossChainId: target, autoContinue: true },
+      purpose: { type: 'redistribution', data: { source, target, amount } },
+    };
+    await transactionRepository.addTransaction(transaction);
+    return transaction;
   });
   return [groupId, await Promise.all(txs)] as [string, ITransaction[]];
 }

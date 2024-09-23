@@ -3,7 +3,18 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { ChainId, ISigner } from '@kadena/client';
 
 import { MonoSwapHoriz } from '@kadena/kode-icons/system';
-import { Divider, Heading, Stack, Step, Stepper, Text } from '@kadena/kode-ui';
+import {
+  Button,
+  Dialog,
+  DialogFooter,
+  DialogHeader,
+  Divider,
+  Heading,
+  Stack,
+  Step,
+  Stepper,
+  Text,
+} from '@kadena/kode-ui';
 import { useCallback, useState } from 'react';
 
 import {
@@ -14,22 +25,24 @@ import { useSearchParams } from 'react-router-dom';
 import { ReviewTransaction } from '../transaction/components/ReviewTransaction';
 import { TxList } from '../transaction/components/TxList';
 import { statusPassed } from '../transaction/components/TxTile';
-import { RedistributionPage } from './Steps/Redistribution';
-import { Redistribution, Transfer, TransferForm } from './Steps/TransferForm';
+import { Result } from './Steps/Result';
+import {
+  Redistribution,
+  TrG,
+  Transfer,
+  TransferForm,
+} from './Steps/TransferForm';
 import { createRedistributionTxs, createTransactions } from './utils';
-
-interface TrG {
-  groupId: string;
-  txs: ITransaction[];
-}
 
 const sortById = (a: { uuid: string }, b: { uuid: string }) =>
   a.uuid > b.uuid ? 1 : -1;
 
 export function TransferV2() {
   const accountId = useSearchParams()[0].get('accountId');
-  const [step, setStep] = useState('transfer');
-  const [txGroupId, setTxGroupId] = useState<{
+  const [step, setStep] = useState<'transfer' | 'sign' | 'result' | 'summary'>(
+    'transfer',
+  );
+  const [txGroups, setTxGroups] = useState<{
     redistribution: TrG;
     transfer: TrG;
   }>({
@@ -45,40 +58,39 @@ export function TransferV2() {
       redistribution: { groupId: '', txs: [] },
       transfer: { groupId: '', txs: [] },
     };
-    if (txGroupId.redistribution.groupId) {
+    if (txGroups.redistribution.groupId) {
       const txs = (
         await transactionRepository.getTransactionsByGroup(
-          txGroupId.redistribution.groupId,
+          txGroups.redistribution.groupId,
         )
       ).sort(sortById);
-      upd.redistribution = { groupId: txGroupId.redistribution.groupId, txs };
+      upd.redistribution = { groupId: txGroups.redistribution.groupId, txs };
     }
-    if (txGroupId.transfer.groupId) {
+    if (txGroups.transfer.groupId) {
       const txs = (
         await transactionRepository.getTransactionsByGroup(
-          txGroupId.transfer.groupId,
+          txGroups.transfer.groupId,
         )
       ).sort(sortById);
-      upd.transfer = { groupId: txGroupId.transfer.groupId, txs };
+      upd.transfer = { groupId: txGroups.transfer.groupId, txs };
     }
-    setTxGroupId(upd);
+    const transferIsDone = upd.transfer.txs.every(
+      (tx) =>
+        statusPassed(tx.status, 'success') ||
+        statusPassed(tx.status, 'failure'),
+    );
+    if (transferIsDone) {
+      setStep('result');
+    }
+    setTxGroups(upd);
   };
 
-  const [trForm, setTrForm] = useState<Required<Transfer>>();
   const {
     accounts: allAccounts,
     getPublicKeyData,
     activeNetwork,
     profile,
   } = useWallet();
-  const [redistribution, setRedistribution] = useState(
-    [] as {
-      source: ChainId;
-      target: ChainId;
-      amount: string;
-    }[],
-  );
-
   function createTransaction(data: Required<Transfer>) {
     if (!data.senderAccount || !profile) return;
     return createTransactions({
@@ -134,10 +146,10 @@ export function TransferV2() {
 
   const renderSignStep = () => {
     if (
-      txGroupId.redistribution.txs.length === 0 &&
-      txGroupId.transfer.txs.length === 1
+      txGroups.redistribution.txs.length === 0 &&
+      txGroups.transfer.txs.length === 1
     ) {
-      const selectedTx = txGroupId.transfer.txs[0];
+      const selectedTx = txGroups.transfer.txs[0];
       return (
         <ReviewTransaction
           transaction={selectedTx}
@@ -157,7 +169,9 @@ export function TransferV2() {
         />
       );
     }
-    const reTxs = txGroupId.redistribution.txs;
+    const reTxs = txGroups.redistribution.txs;
+    const submitIsDisabled =
+      reTxs.length > 0 && reTxs.some((tx) => !tx.continuation?.done);
     return (
       <Stack gap={'md'} flexDirection={'column'}>
         {reTxs.length > 0 && (
@@ -178,7 +192,7 @@ export function TransferV2() {
             <Divider />
           </>
         )}
-        {txGroupId.transfer.txs.length > 0 && (
+        {txGroups.transfer.txs.length > 0 && (
           <Stack flexDirection={'column'} gap={'lg'}>
             <Stack flexDirection={'column'} gap={'xxs'}>
               <Heading variant="h4">Transfer Transactions</Heading>
@@ -189,18 +203,14 @@ export function TransferV2() {
                 console.log('update');
                 reloadTxs();
               }}
-              txs={txGroupId.transfer.txs}
-              sendDisabled={
-                reTxs.length > 0 && reTxs.some((tx) => tx.status !== 'success')
-              }
+              txs={txGroups.transfer.txs}
+              sendDisabled={submitIsDisabled}
             />
-            {reTxs.length > 0 &&
-              reTxs.some((tx) => tx.status !== 'success') && (
-                <Text>
-                  You can only send this transactions after redistribute is
-                  done!
-                </Text>
-              )}
+            {submitIsDisabled && (
+              <Text>
+                You can only send this transactions after redistribute is done!
+              </Text>
+            )}
           </Stack>
         )}
       </Stack>
@@ -209,6 +219,14 @@ export function TransferV2() {
 
   return (
     <Stack flexDirection={'column'}>
+      {step === 'result' && (
+        <Dialog size="sm" isOpen>
+          <DialogHeader>Process is done!</DialogHeader>
+          <DialogFooter>
+            <Button onClick={() => setStep('summary')}>View result page</Button>
+          </DialogFooter>
+        </Dialog>
+      )}
       <Stepper direction="horizontal">
         <Step
           icon={<MonoSwapHoriz />}
@@ -220,7 +238,7 @@ export function TransferV2() {
           Transfer
         </Step>
         <Step active={step === 'sign'}>Transactions</Step>
-        <Step active={step === 'submit'}>Result</Step>
+        <Step active={step === 'result'}>Result</Step>
       </Stepper>
       {step === 'transfer' && (
         <TransferForm
@@ -231,8 +249,6 @@ export function TransferV2() {
             );
             if (!senderAccount) return;
             const formData = { ...data, senderAccount };
-            setRedistribution(redistribution);
-            setTrForm(formData);
             const getEmpty = () => ['', []] as [string, ITransaction[]];
             let redistributionGroup = getEmpty();
 
@@ -242,7 +258,7 @@ export function TransferV2() {
                 getEmpty();
             }
             const txGroup = (await createTransaction(formData)) ?? getEmpty();
-            setTxGroupId({
+            setTxGroups({
               redistribution: {
                 groupId: redistributionGroup[0] ?? '',
                 txs: redistributionGroup[1].sort(sortById) ?? [],
@@ -256,13 +272,8 @@ export function TransferV2() {
           }}
         />
       )}
-      {step === 'redistribution' && (
-        <RedistributionPage
-          redistribution={redistribution}
-          formData={trForm!}
-        />
-      )}
-      {step === 'sign' && renderSignStep()}
+      {(step === 'sign' || step === 'result') && renderSignStep()}
+      {step === 'summary' && <Result {...txGroups} />}
     </Stack>
   );
 }

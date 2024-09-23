@@ -20,6 +20,7 @@ export const codeClass = style({
   borderRadius: '3px',
   backgroundColor: tokens.kda.foundation.color.neutral.n10,
   flex: '1',
+  flexBasis: 0,
 });
 
 export const labelClass = style({
@@ -94,4 +95,8 @@ export const txTileClass = style({
   border: `1px solid ${vars.colors.$borderDefault}`,
   borderRadius: '5px',
   overflow: 'hidden',
+});
+
+export const txTileContentClass = style({
+  flexBasis: 0,
 });

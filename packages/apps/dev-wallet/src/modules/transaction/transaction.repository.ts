@@ -32,7 +32,9 @@ export type ITransaction = {
     proof?: string | null;
     continuationTxId?: string;
     tx?: ITransaction;
+    done?: boolean;
   };
+  purpose?: { type: string; data: Record<string, unknown> };
 } & (
   | {
       height?: number;
