@@ -142,6 +142,6 @@ e2e-proof-of-us:
 '@kadena/dev-wallet-example':
   - changed-files:
       - any-glob-to-any-file: packages/apps/dev-wallet-example/*
-'@kanena/snap':
+'@kadena/snap':
   - changed-files:
       - any-glob-to-any-file: packages/libs/snap/*
