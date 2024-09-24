@@ -1,5 +1,12 @@
 # @kadena/marmalade-marketplace
 
+## 0.1.9
+
+### Patch Changes
+
+- Updated dependencies \[33fbaae]
+  - @kadena/kode-ui\@0.17.1
+
 ## 0.1.8
 
 ### Patch Changes

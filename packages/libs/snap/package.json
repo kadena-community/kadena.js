@@ -1,6 +1,6 @@
 {
   "name": "@kadena/snap",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MetaMask snap to manage your Kadena accounts and KDA.",
   "license": "BSD-3-Clause",
   "main": "./dist/bundle.js",

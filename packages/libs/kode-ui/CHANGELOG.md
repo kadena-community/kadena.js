@@ -1,5 +1,11 @@
 # @kadena/kode-ui
 
+## 0.17.1
+
+### Patch Changes
+
+- 33fbaae: fix the selectedtabs border
+
 ## 0.17.0
 
 ### Minor Changes
