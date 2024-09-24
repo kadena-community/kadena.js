@@ -68,7 +68,8 @@ export const runJob = async () => {
         MINBALANCE,
       ).length
     ) {
-      await sendPingMessage();
+      // atm we dont want a ping
+      // await sendPingMessage();
       return;
     }
 
