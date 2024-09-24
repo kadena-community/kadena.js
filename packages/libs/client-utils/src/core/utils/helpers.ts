@@ -65,7 +65,7 @@ export interface IEmit {
 
 export interface IClientConfig {
   host?: string | ((options: INetworkOptions) => string);
-  defaults?: Partial<IPactCommand>;
+  defaults?: IPartialPactCommand;
   sign: ISignFunction;
 }
 

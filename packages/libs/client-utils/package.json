@@ -117,7 +117,8 @@
     "test:integration": "pnpm run test:integration:setup && vitest run -c ./vitest.integration.config.ts",
     "test:integration:local": "vitest run -c ./vitest.integration.config.ts",
     "test:integration:setup": "pnpm run build && ts-node src/scripts/setup-marmalade-test-env.ts",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "deploy:faucet": "ts-node src/scripts/deploy-faucet/deploy-faucet.ts"
   },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",
@@ -127,6 +128,7 @@
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/types": "workspace:*",
     "debug": "4.3.4",
+    "dotenv": "~16.4.5",
     "js-yaml": "~4.1.0",
     "ramda": "^0.29.0"
   },
