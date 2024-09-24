@@ -84,7 +84,7 @@ export function Keyset() {
     const result = await transactionService.addTransaction({
       transaction: signedTx,
       profileId: profile!.uuid,
-      networkId: 'testnet04',
+      networkId: 'testnet05',
       groupId,
     });
 
@@ -101,7 +101,7 @@ export function Keyset() {
       {!!keyset.alias && <Heading variant="h3">{keyset.alias}</Heading>}
       <Stack justifyContent={'space-between'}>
         <Heading variant="h2">{shorten(keyset.principal, 15)}</Heading>
-        {activeNetwork?.networkId === 'testnet04' && (
+        {activeNetwork?.networkId === 'testnet05' && (
           <Button
             variant="positive"
             isCompact

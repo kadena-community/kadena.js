@@ -49,6 +49,8 @@ export function ExpandedTransaction({
     [transaction],
   );
 
+  console.log('contTx', contTx);
+
   const copyTransactionAs = (format: 'json' | 'yaml') => () => {
     const transactionData = {
       hash: transaction.hash,

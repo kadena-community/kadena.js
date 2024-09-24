@@ -1,12 +1,9 @@
 import {
   ITransaction,
-  TransactionStatus,
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
 
 import { Button, Dialog, Stack, Text } from '@kadena/kode-ui';
-
-import { ReviewTransaction } from './ReviewTransaction';
 
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import {
@@ -15,7 +12,6 @@ import {
   createClient,
   createTransaction,
 } from '@kadena/client';
-import { submitClient } from '@kadena/client-utils';
 import {
   composePactCommand,
   continuation,
@@ -25,7 +21,6 @@ import {
 import { MonoSignature } from '@kadena/kode-icons/system';
 import { isSignedCommand } from '@kadena/pactjs';
 import React from 'react';
-import { set } from 'react-hook-form';
 import { TxTile, statusPassed, steps } from './TxTile';
 import { containerClass } from './style.css';
 

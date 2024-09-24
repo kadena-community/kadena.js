@@ -203,7 +203,9 @@ export const syncAccount = async (account: IAccount) => {
     .filter(({ result }) => Boolean(result))
     .map(({ chainId, result }) => ({
       chainId,
-      balance: result!.balance || '0',
+      balance: result!.balance
+        ? new PactNumber(result!.balance).toString()
+        : '0',
     }));
 
   updatedAccount.overallBalance = chainResult.reduce(
@@ -266,7 +268,7 @@ export async function fundAccount({
   const result = await transactionService.addTransaction({
     transaction: signedTx,
     profileId,
-    networkId: 'testnet04',
+    networkId: 'testnet05',
     groupId,
   });
 

@@ -6,7 +6,6 @@ import {
   ITransaction,
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
-import * as transactionService from '@/modules/transaction/transaction.service';
 import {
   ChainId,
   createTransaction,

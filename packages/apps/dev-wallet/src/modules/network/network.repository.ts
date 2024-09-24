@@ -68,14 +68,14 @@ export const addDefaultNetworks = async () => {
       ],
     });
   }
-  if (!networks.find((network) => network.networkId === 'testnet04')) {
+  if (!networks.find((network) => network.networkId === 'testnet05')) {
     await networkRepository.addNetwork({
       uuid: crypto.randomUUID(),
-      networkId: 'testnet04',
+      networkId: 'testnet05',
       name: 'Testnet',
       hosts: [
         {
-          url: 'https://api.testnet.chainweb.com',
+          url: 'http://api.testnet05.chainweb.com',
           submit: true,
           read: true,
           confirm: true,

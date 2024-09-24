@@ -50,7 +50,7 @@ export function AccountPage() {
             {account.overallBalance} {asset.symbol}
           </Heading>
         </Stack>
-        <Stack gap={'sm'}>
+        <Stack gap={'sm'} flexWrap={'wrap'}>
           {chains
             .filter(({ balance }) => +balance > 0)
             .map((chain, index, list) => (
@@ -83,7 +83,8 @@ export function AccountPage() {
           Chain Distribution
         </Button>
         {asset.contract === 'coin' &&
-          activeNetwork?.networkId === 'testnet04' && (
+          (activeNetwork?.networkId === 'testnet05' ||
+            activeNetwork?.networkId === 'testnet04') && (
             <Button
               variant="outlined"
               isCompact

@@ -1,6 +1,6 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
 
-import { ChainId, ISigner } from '@kadena/client';
+import { ISigner } from '@kadena/client';
 
 import { MonoSwapHoriz } from '@kadena/kode-icons/system';
 import {
@@ -147,7 +147,8 @@ export function TransferV2() {
   const renderSignStep = () => {
     if (
       txGroups.redistribution.txs.length === 0 &&
-      txGroups.transfer.txs.length === 1
+      txGroups.transfer.txs.length === 1 &&
+      null === undefined // bypass for now
     ) {
       const selectedTx = txGroups.transfer.txs[0];
       return (

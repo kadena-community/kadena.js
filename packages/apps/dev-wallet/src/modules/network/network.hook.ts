@@ -14,7 +14,7 @@ export function useNetwork() {
     const networks = (await networkRepository.getNetworkList()) ?? [];
     setNetworks(networks);
     setActiveNetwork(
-      networks.filter((network) => network.networkId === 'testnet04')[0],
+      networks.filter((network) => network.networkId === 'testnet05')[0],
     );
   }, [setActiveNetwork]);
 
