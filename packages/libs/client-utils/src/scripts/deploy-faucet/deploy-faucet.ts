@@ -17,7 +17,7 @@ async function deployFaucet() {
 
   for (const chainId of CHAIN_IDS) {
     const tx = transaction(chainId);
-    console.log(`Deploying faucet on chain ${chainId}`);
+    console.log(`creating namespace on chain ${chainId}`);
     const namespace = (await tx(
       principalNamespaceCommand(
         'admin-keyset',
@@ -26,6 +26,7 @@ async function deployFaucet() {
       ),
     )) as string;
     console.log(`Namespace: ${namespace}`);
+    console.log(`deploying contract on chain ${chainId}`);
     const result = await tx(
       composePactCommand(
         execution(contractCode),
@@ -33,7 +34,7 @@ async function deployFaucet() {
         addData('coin-faucet-admin-keyset-name', `${namespace}.admin-keyset`),
       ),
     );
-    console.log(result);
+    console.log('transaction result', result);
   }
 }
 
