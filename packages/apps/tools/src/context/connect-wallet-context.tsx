@@ -248,25 +248,30 @@ export const WalletConnectClientContextProvider: FC<
     [session, onSessionConnected],
   );
 
-  const createClient = useCallback(async () => {
-    try {
-      setIsInitializing(true);
+  const createClient = useCallback(
+    async () => {
+      try {
+        setIsInitializing(true);
 
-      const _client = await Client.init({
-        relayUrl: env('WALLET_CONNECT_RELAY_URL', ''),
-        projectId: env('WALLET_CONNECT_PROJECT_ID', ''),
-      });
+        // const _client = await Client.init({
+        //   relayUrl: env('WALLET_CONNECT_RELAY_URL', ''),
+        //   projectId: env('WALLET_CONNECT_PROJECT_ID', ''),
+        // });
 
-      setClient(_client);
-      await subscribeToEvents(_client);
-      await checkPersistedState(_client);
-      // eslint-disable-next-line no-useless-catch
-    } catch (err) {
-      throw err;
-    } finally {
-      setIsInitializing(false);
-    }
-  }, [checkPersistedState, subscribeToEvents]);
+        // setClient(_client);
+        // await subscribeToEvents(_client);
+        // await checkPersistedState(_client);
+        // eslint-disable-next-line no-useless-catch
+      } catch (err) {
+        throw err;
+      } finally {
+        setIsInitializing(false);
+      }
+    },
+    [
+      // checkPersistedState, subscribeToEvents
+    ],
+  );
 
   useEffect(() => {
     if (!client) {

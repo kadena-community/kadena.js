@@ -1,15 +1,17 @@
+import { kadenaConstants } from '@/constants/kadena';
 import type {
   ChainwebChainId,
   ChainwebNetworkId,
 } from '@kadena/chainweb-node-client';
 import { CHAINS } from '@kadena/chainweb-node-client';
+import { INetworkOptions } from '@kadena/client';
 import { listModules } from '@kadena/client-utils';
 import { useQuery } from '@tanstack/react-query';
 import { z } from 'zod';
 
 const transformModules = (
   data: string[][],
-  networkId: ChainwebNetworkId,
+  networkId: ChainwebNetworkId | 'testnet05',
   chainIds?: ChainwebChainId[],
 ) => {
   const chains = chainIds ?? CHAINS;
@@ -32,13 +34,14 @@ export const listsModulesSchema = z.array(listModulesSchema);
 export type ListsModulesOutput = z.infer<typeof listsModulesSchema>;
 
 const fetchModules = async (
-  networkId: ChainwebNetworkId,
+  networkId: ChainwebNetworkId | 'testnet05',
   chainIds?: ChainwebChainId[],
 ) => {
   const chains = chainIds ?? CHAINS;
 
   const promises = chains.map((chainId) =>
     listModules({
+      host: kadenaConstants[networkId as 'testnet04' | 'testnet05'].apiHost,
       defaults: { networkId, meta: { chainId } },
     }),
   );
@@ -53,7 +56,7 @@ const fetchModules = async (
 const QUERY_KEY = 'modules';
 
 const useModulesQuery = (
-  networkId: ChainwebNetworkId,
+  networkId: ChainwebNetworkId | 'testnet05',
   chainIds?: ChainwebChainId[],
 ) => {
   return useQuery({

@@ -11,7 +11,7 @@ import { PactNumber } from '@kadena/pactjs';
 
 import Debug from 'debug';
 
-import type { Network } from '@/constants/kadena';
+import { kadenaConstants, type Network } from '@/constants/kadena';
 import { env } from '@/utils/env';
 import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
@@ -22,7 +22,7 @@ const FAUCET_ACCOUNT = env(
 );
 const debug = Debug('kadena-transfer:services:faucet');
 
-const NAMESPACE = env(
+let NAMESPACE = env(
   'FAUCET_NAMESPACE',
   'n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49',
 );
@@ -41,6 +41,9 @@ export const fundCreateNewAccount = async (
   pred = 'keys-all',
 ): Promise<ITransactionDescriptor> => {
   debug(fundCreateNewAccount.name);
+  if (network === 'testnet05') {
+    NAMESPACE = 'n_f17eb6408bb84795b1c871efa678758882a8744a';
+  }
 
   const networkDto = networksData.find((item) => item.networkId === network);
 
@@ -87,15 +90,11 @@ export const fundCreateNewAccount = async (
     throw new Error('Failed to sign transaction');
   }
 
-  const apiHost = getApiHost({
-    api: networkDto.API,
-    networkId: networkDto.networkId,
-    chainId,
-  });
-
   transaction.sigs = [{ sig: signature.sig }];
 
-  const { submit } = createClient(apiHost);
+  const { submit } = createClient(
+    kadenaConstants[network as 'testnet04' | 'testnet05'].apiHost,
+  );
 
   if (!isSignedTransaction(transaction)) {
     throw new Error('Transaction is not signed');

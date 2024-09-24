@@ -1,6 +1,6 @@
 import { env } from '@/utils/env';
 
-export type DefinedNetwork = 'mainnet01' | 'testnet04';
+export type DefinedNetwork = 'mainnet01' | 'testnet04' | 'testnet05';
 export type Network = DefinedNetwork | string;
 export type DevOption = 'BASIC' | 'BACKEND' | 'DAPP';
 
@@ -33,6 +33,13 @@ export const kadenaConstants: KadenaConstants = {
       `https://${kadenaConstants.testnet04.API}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
     estatsHost: () =>
       env('KADENA_TESTNET_ESTATS', 'estats.testnet.chainweb.com'),
+  },
+  testnet05: {
+    label: 'Testnet05',
+    API: env('KADENA_TESTNET05_API', 'api.testnet05.chainweb.com'),
+    apiHost: ({ networkId, chainId }) =>
+      `http://${kadenaConstants.testnet05.API}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
+    estatsHost: () => '',
   },
   GAS_LIMIT: Number(env('GAS_LIMIT', 850)),
   GAS_PRICE: Number(env('GAS_PRICE', 0.00000001)),
