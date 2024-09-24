@@ -46,5 +46,10 @@ export const FAUCET_ADMINS: Array<{ name: string; publicKey: string }> = [
     publicKey:
       'cbfdc18532f8986658145a82f7337e6dd1fd90d3c224f153c92bf8b0ec70b4be',
   },
+  {
+    name: 'Jose Cardona',
+    publicKey:
+      '3e83213bedf6be0aaf8ed3f8e72ffb9a240930b8698b9646e8d913b61c93e4ab',
+  },
 ];
 export const FAUCET_GUARD_PREDICATE = 'keys-any';
