@@ -2,17 +2,13 @@ import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import { defaultAccentColor } from '@/modules/layout/layout.provider.tsx';
 import { recoverPublicKey, retrieveCredential } from '@/utils/webAuthn';
 import { IUnsignedCommand } from '@kadena/client';
-import { useCallback, useContext, useEffect } from 'react';
+import { useCallback, useContext } from 'react';
 import { UnlockPrompt } from '../../Components/UnlockPrompt/UnlockPrompt';
 import * as AccountService from '../account/account.service';
 import { BIP44Service } from '../key-source/hd-wallet/BIP44';
 import { ChainweaverService } from '../key-source/hd-wallet/chainweaver';
 import { keySourceManager } from '../key-source/key-source-manager';
-import {
-  ExtWalletContextType,
-  WalletContext,
-  syncAllAccounts,
-} from './wallet.provider';
+import { ExtWalletContextType, WalletContext } from './wallet.provider';
 import { IKeySource, IProfile } from './wallet.repository';
 import * as WalletService from './wallet.service';
 
@@ -234,12 +230,6 @@ export const useWallet = () => {
     },
     [],
   );
-
-  useEffect(() => {
-    if (context.profile?.uuid) {
-      syncAllAccounts(context.profile?.uuid);
-    }
-  }, [context.profile]);
 
   return {
     createProfile,

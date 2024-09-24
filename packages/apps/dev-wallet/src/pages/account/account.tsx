@@ -97,6 +97,7 @@ export function AccountPage() {
                   keyset,
                   chains: account?.chains ?? [],
                   profileId: keyset?.profileId,
+                  networkId: activeNetwork?.networkId,
                 });
 
                 navigate(`/transaction/${groupId}`);

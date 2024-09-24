@@ -204,6 +204,12 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     retrieveFungibles();
   }, [retrieveFungibles]);
 
+  useEffect(() => {
+    if (contextValue.profile?.uuid) {
+      syncAllAccounts(contextValue.profile?.uuid);
+    }
+  }, [contextValue.profile]);
+
   return (
     <WalletContext.Provider
       value={[contextValue, setProfile, setActiveNetwork]}

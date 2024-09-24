@@ -227,11 +227,16 @@ export const syncAllAccounts = async (profileId: string) => {
   return Promise.all(accounts.map(syncAccount));
 };
 
+// TODO: update this to work with both testnet04 and testnet05
 export async function fundAccount({
   address,
   keyset,
   profileId,
-}: Pick<IAccount, 'address' | 'keyset' | 'chains' | 'profileId'>) {
+  networkId = 'testnet04',
+}: Pick<
+  IAccount,
+  'address' | 'keyset' | 'chains' | 'profileId' | 'networkId'
+>) {
   if (!keyset) {
     throw new Error('No keyset found');
   }
@@ -250,6 +255,7 @@ export async function fundAccount({
         signerKeys: [randomKeyPair.publicKey],
         amount: 20,
         chainId: randomChainId as ChainId,
+        networkId,
       })
     : fundNewAccountOnTestnetCommand({
         account: address,
@@ -257,6 +263,7 @@ export async function fundAccount({
         signerKeys: [randomKeyPair.publicKey],
         amount: 20,
         chainId: randomChainId as ChainId,
+        networkId,
       });
 
   const tx = createTransaction(command());
@@ -268,7 +275,7 @@ export async function fundAccount({
   const result = await transactionService.addTransaction({
     transaction: signedTx,
     profileId,
-    networkId: 'testnet05',
+    networkId: networkId,
     groupId,
   });
 

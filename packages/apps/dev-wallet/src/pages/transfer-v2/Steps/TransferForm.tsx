@@ -5,7 +5,7 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten } from '@/utils/helpers';
 import { useShow } from '@/utils/useShow';
 import { ChainId, ISigner } from '@kadena/client';
-import { MonoDelete } from '@kadena/kode-icons/system';
+import { MonoCopyAll, MonoDelete } from '@kadena/kode-icons/system';
 import {
   Button,
   Combobox,
@@ -492,6 +492,7 @@ export function TransferForm({ accountId, onSubmit }: TransferFormProps) {
                     required: true,
                     onChange: evaluateTransactions,
                   })}
+                  value={rec.amount}
                   placeholder="Amount"
                   // label={index === 0 ? 'Amount' : undefined}
                   size="sm"
@@ -547,18 +548,47 @@ export function TransferForm({ accountId, onSubmit }: TransferFormProps) {
                     />
                   </AdvancedMode>
                   {watchReceivers.length > 1 && (
-                    <Button
-                      isCompact
-                      variant="outlined"
-                      onClick={withEvaluate(() => {
-                        console.log('deleting', index);
-                        const receivers = getValues('receivers');
-                        receivers.splice(index, 1);
-                        setValue('receivers', [...receivers]);
-                      })}
-                    >
-                      <MonoDelete />
-                    </Button>
+                    <>
+                      <Button
+                        isCompact
+                        variant="outlined"
+                        onClick={withEvaluate(() => {
+                          console.log('deleting', index);
+                          const receivers = getValues('receivers');
+                          receivers.splice(index, 1);
+                          setValue('receivers', [...receivers]);
+                        })}
+                      >
+                        <MonoDelete />
+                      </Button>
+                      <Button
+                        isCompact
+                        variant="transparent"
+                        isDisabled={!rec.address || !rec.amount}
+                        onClick={() => {
+                          const list = [...watchReceivers];
+                          const newItem = {
+                            amount: rec.amount,
+                            address: rec.address,
+                            chain: '',
+                            chunks: [],
+                            discoveredAccounts:
+                              rec.discoveryStatus === 'done'
+                                ? rec.discoveredAccounts
+                                : [],
+                            discoveryStatus:
+                              rec.discoveryStatus === 'done'
+                                ? 'done'
+                                : 'not-started',
+                          } as Transfer['receivers'][number];
+                          list.splice(index + 1, 0, newItem);
+                          setValue('receivers', list);
+                          evaluateTransactions();
+                        }}
+                      >
+                        <MonoCopyAll />
+                      </Button>
+                    </>
                   )}
                 </Stack>
               </Stack>
