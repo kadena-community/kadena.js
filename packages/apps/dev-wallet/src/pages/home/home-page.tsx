@@ -9,7 +9,16 @@ import { transactionRepository } from '@/modules/transaction/transaction.reposit
 import { getAccountName } from '@/utils/helpers';
 import { useAsync } from '@/utils/useAsync';
 import { IPactCommand } from '@kadena/client';
-import { Box, Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
+import { MonoContentCopy } from '@kadena/kode-icons/system';
+import {
+  Box,
+  Button,
+  Heading,
+  Stack,
+  TabItem,
+  Tabs,
+  Text,
+} from '@kadena/kode-ui';
 import { Link } from 'react-router-dom';
 import { listClass } from '../account/style.css';
 import { linkClass } from '../select-profile/select-profile.css';
@@ -88,24 +97,36 @@ export function RecentlyUsedAccounts({
       {accounts.length ? (
         <Box marginBlockStart="md">
           <ul className={listClass}>
-            {accounts.map(({ overallBalance, keyset, uuid, contract }) => (
-              <li key={keyset?.principal}>
-                <Link to={`/account/${uuid}`} className={noStyleLinkClass}>
-                  <ListItem>
-                    <Stack flexDirection={'column'} gap={'sm'}>
-                      <Text>
-                        {keyset?.alias || getAccountName(keyset!.principal)}
-                      </Text>
-                    </Stack>
-                    <Stack alignItems={'center'} gap={'sm'}>
-                      <Text>
-                        {overallBalance} {getSymbol(contract)}
-                      </Text>
-                    </Stack>
-                  </ListItem>
-                </Link>
-              </li>
-            ))}
+            {accounts.map(
+              ({ overallBalance, keyset, uuid, contract, address }) => (
+                <li key={keyset?.principal}>
+                  <Link to={`/account/${uuid}`} className={noStyleLinkClass}>
+                    <ListItem>
+                      <Stack flexDirection={'column'} gap={'sm'}>
+                        <Text>
+                          {keyset?.alias || getAccountName(keyset!.principal)}
+                        </Text>
+                      </Stack>
+                      <Stack alignItems={'center'} gap={'sm'}>
+                        <Text>
+                          {overallBalance} {getSymbol(contract)}
+                        </Text>
+                        <Button
+                          isCompact
+                          variant="transparent"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            navigator.clipboard.writeText(address);
+                          }}
+                        >
+                          <MonoContentCopy />
+                        </Button>
+                      </Stack>
+                    </ListItem>
+                  </Link>
+                </li>
+              ),
+            )}
           </ul>
         </Box>
       ) : null}

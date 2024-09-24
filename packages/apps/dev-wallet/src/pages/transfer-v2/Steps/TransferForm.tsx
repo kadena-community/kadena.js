@@ -452,12 +452,13 @@ export function TransferForm({ accountId, onSubmit }: TransferFormProps) {
                         {filteredAccounts
                           .filter(
                             (account) =>
-                              account.address !== senderAccount?.address &&
-                              !watchReceivers.some(
-                                (receiver, i) =>
-                                  i !== index &&
-                                  receiver.address === account.address,
-                              ),
+                              account.address !== senderAccount?.address,
+                            // &&
+                            //   !watchReceivers.some(
+                            //     (receiver, i) =>
+                            //       i !== index &&
+                            //       receiver.address === account.address,
+                            //   ),
                           )
                           .map((account) => (
                             <ComboboxItem
