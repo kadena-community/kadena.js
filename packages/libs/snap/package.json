@@ -2,6 +2,11 @@
   "name": "@kadena/snap",
   "version": "1.0.1",
   "description": "MetaMask snap to manage your Kadena accounts and KDA.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/libs/snap"
+  },
   "license": "BSD-3-Clause",
   "main": "./dist/bundle.js",
   "files": [
