@@ -1,6 +1,6 @@
 import type { IAccount, IChainAccount } from './constants';
 import { MINBALANCE, faucetAccount } from './constants';
-import { sendErrorMessage, sendMessage, sendPingMessage } from './messages';
+import { sendErrorMessage, sendMessage } from './messages';
 
 export const lowFaucetChains = (
   chainAccounts: IChainAccount[] | undefined,
