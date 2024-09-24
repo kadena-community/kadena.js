@@ -36,5 +36,15 @@ export const FAUCET_ADMINS: Array<{ name: string; publicKey: string }> = [
     publicKey:
       '1c835d4e67917fd25781b11db1c12efbc4296c5c7fe981d35bbcf4a46a53441f',
   },
+  {
+    name: 'Randy Daal',
+    publicKey:
+      'c86613482e5821f477821fd89526dfaaf6759a6e581c421309bfe8e9dd52e280',
+  },
+  {
+    name: 'Jermaine Jong',
+    publicKey:
+      'cbfdc18532f8986658145a82f7337e6dd1fd90d3c224f153c92bf8b0ec70b4be',
+  },
 ];
 export const FAUCET_GUARD_PREDICATE = 'keys-any';
