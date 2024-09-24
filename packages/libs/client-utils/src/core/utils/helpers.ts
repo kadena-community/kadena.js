@@ -2,7 +2,6 @@ import type {
   ICommand,
   ICommandResult,
   INetworkOptions,
-  IPactCommand,
   IPartialPactCommand,
   ISignFunction,
   ISigner,

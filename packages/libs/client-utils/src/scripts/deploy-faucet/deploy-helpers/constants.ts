@@ -21,5 +21,20 @@ export const FAUCET_ADMINS: Array<{ name: string; publicKey: string }> = [
     publicKey:
       'dfb16b13e4032a6878fd98506b22cb0d6e5932c541e656b7ee5d69d72e6eb76e',
   },
+  {
+    name: 'Albert Groothedde',
+    publicKey:
+      '554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+  },
+  {
+    name: 'Andy Tang',
+    publicKey:
+      'fab92c47ccb1fdd25173e2981ebb29de989acea88792e34cc87298f6a1578842',
+  },
+  {
+    name: 'Steven Straatemans',
+    publicKey:
+      '1c835d4e67917fd25781b11db1c12efbc4296c5c7fe981d35bbcf4a46a53441f',
+  },
 ];
 export const FAUCET_GUARD_PREDICATE = 'keys-any';
