@@ -13,10 +13,10 @@ import type { ITrProps } from './Tr';
 import { Tr } from './Tr';
 
 export type {
-  ITBodyProps,
-  ITHeadProps,
   ITableProps,
+  ITBodyProps,
   ITdProps,
+  ITHeadProps,
   IThProps,
   ITrProps,
 };

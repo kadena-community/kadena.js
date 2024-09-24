@@ -1,5 +1,4 @@
 import { ITransaction } from '@/modules/transaction/transaction.repository';
-import { parseAsPactValue } from '@kadena/client';
 import { MonoBrightness1 } from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
@@ -34,7 +33,9 @@ export function SubmittedStatus({
       <Stack gap={'sm'} flexDirection={'column'}>
         <Heading variant="h6">Preflight Result</Heading>
         <Value className={codeClass}>
-          {parseAsPactValue(transaction.preflight.result.data)}
+          <pre>
+            {JSON.stringify(transaction.preflight.result.data, null, 2)}
+          </pre>
         </Value>
       </Stack>
       <Stack gap={'sm'} flexDirection={'column'}>
@@ -56,11 +57,12 @@ export function SubmittedStatus({
           </Text>
         </Stack>
       </Stack>
+
       {transaction.result && transaction.result.result.status === 'success' && (
         <Stack gap={'sm'} flexDirection={'column'}>
           <Heading variant="h6">Transaction Result</Heading>
           <Value className={codeClass}>
-            {parseAsPactValue(transaction.result.result.data)}
+            <pre>{JSON.stringify(transaction.result.result.data, null, 2)}</pre>
           </Value>
         </Stack>
       )}
@@ -75,6 +77,17 @@ export function SubmittedStatus({
           </Button>
         )}
       </Stack>
+      {status === 'success' && transaction.result?.continuation && (
+        <Stack flexDirection={'column'} gap={'lg'}>
+          <Stack gap={'sm'} alignItems={'center'}>
+            <MonoBrightness1 className={pendingClass} />{' '}
+            <Text>Transaction need continuation</Text>
+          </Stack>
+          <Stack>
+            <Button>create continuation</Button>
+          </Stack>
+        </Stack>
+      )}
     </Stack>
   );
 }

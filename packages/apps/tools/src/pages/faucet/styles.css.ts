@@ -42,7 +42,7 @@ export const infoBoxStyle = style([
 
 export const infoTitleStyle = style([
   atoms({
-    fontWeight: 'secondaryFont.bold',
+    fontWeight: 'primaryFont.bold',
   }),
 ]);
 

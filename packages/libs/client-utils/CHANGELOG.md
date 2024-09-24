@@ -1,5 +1,12 @@
 # @kadena/client-utils
 
+## 0.10.0
+
+### Minor Changes
+
+- eb82843: Added faucet helpers to call the contract on testnet + added transfer
+  all to transfer all available balance form one account to another one
+
 ## 0.9.1
 
 ### Patch Changes

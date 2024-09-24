@@ -1,5 +1,25 @@
 # @kadena/explorer
 
+## 0.8.4
+
+### Patch Changes
+
+- Updated dependencies \[80ac706]
+- Updated dependencies \[5985ccc]
+- Updated dependencies \[767c542]
+- Updated dependencies \[eb82843]
+- Updated dependencies \[0e08d23]
+  - @kadena/kode-ui\@0.17.0
+  - @kadena/graph\@1.0.12
+
+## 0.8.3
+
+### Patch Changes
+
+- Updated dependencies \[0bcccf1]
+- Updated dependencies \[b751065]
+  - @kadena/kode-ui\@0.16.0
+
 ## 0.8.2
 
 ### Patch Changes

@@ -26,7 +26,7 @@ export const cardClass = style([
     borderRadius: 'xs',
     padding: 'md',
     textAlign: 'center',
-    fontFamily: 'secondaryFont',
+    fontFamily: 'primaryFont',
     width: '100%',
   }),
   {
@@ -67,7 +67,7 @@ export const aliasClass = style([
 export const initialsClass = style([
   atoms({
     fontSize: 'lg',
-    fontWeight: 'secondaryFont.bold',
+    fontWeight: 'primaryFont.bold',
     color: 'text.base.default',
   }),
 ]);
@@ -91,3 +91,5 @@ export const linkClass = style([
     },
   },
 ]);
+
+

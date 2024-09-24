@@ -1,96 +1,114 @@
+import { Assets } from '@/Components/Assets/Assets';
+import { Fungible, IAccount } from '@/modules/account/account.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import {
-  chainListClass,
-  listClass,
-  listItemClass,
-  panelClass,
-} from '@/pages/home/style.css.ts';
+import { panelClass } from '@/pages/home/style.css.ts';
+
+import { noStyleLinkClass } from '@/Components/Accounts/style.css';
+import { ListItem } from '@/Components/ListItem/ListItem';
+import { transactionRepository } from '@/modules/transaction/transaction.repository';
 import { getAccountName } from '@/utils/helpers';
-import { Box, Heading, Stack, Text } from '@kadena/kode-ui';
-import { PactNumber } from '@kadena/pactjs';
-import { useMemo, useState } from 'react';
+import { useAsync } from '@/utils/useAsync';
+import { IPactCommand } from '@kadena/client';
+import { Box, Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
 import { Link } from 'react-router-dom';
+import { listClass } from '../account/style.css';
 import { linkClass } from '../select-profile/select-profile.css';
+import { TransactionList } from '../transactions/transactions';
 
 export function HomePage() {
-  const { accounts, profile, fungibles } = useWallet();
-  const [selectedAccountIdx, setSelectedAccountIdx] = useState<number>(-1);
-  const assets = useMemo(() => {
-    return Object.entries(
-      accounts.reduce(
-        (acc, { contract, overallBalance }) => {
-          acc[contract] = new PactNumber(overallBalance)
-            .plus(acc[contract] ?? 0)
-            .toDecimal();
-          return acc;
-        },
-        {} as Record<string, string>,
-      ),
-    );
-  }, [accounts]);
+  const { accounts, profile, fungibles, activeNetwork } = useWallet();
+  console.log('activeNetwork', activeNetwork);
+
+  const [transactions] = useAsync(
+    async (profile, activeNetwork) => {
+      if (profile?.uuid && activeNetwork?.networkId) {
+        const txs = (
+          await transactionRepository.getTransactionList(
+            profile.uuid,
+            activeNetwork?.networkId,
+          )
+        )
+          .map((tx) => ({
+            ...tx,
+            creationDate:
+              (JSON.parse(tx.cmd) as IPactCommand).meta.creationTime || 0,
+          }))
+          .sort((a, b) => b.creationDate - a.creationDate);
+
+        return txs.slice(0, 5);
+      }
+    },
+    [profile, activeNetwork] as const,
+  );
 
   return (
-    <>
-      <Box>
-        <Text>Welcome back</Text>
-        <Heading as="h1">{profile?.name}</Heading>
+    <Box gap={'lg'}>
+      <Text>Welcome back</Text>
+      <Heading as="h1">{profile?.name}</Heading>
+      <Stack gap={'lg'} flexDirection={'column'}>
         <Box className={panelClass} marginBlockStart="xl">
-          <Heading as="h4">Your assets</Heading>
-          <Box marginBlockStart="md">
-            {assets.length > 0 &&
-              assets.map(([contract, balance]) => (
-                <Heading variant="h5" key={contract}>
-                  {fungibles.find((item) => item.contract === contract)?.symbol}
-                  : {balance}
-                </Heading>
-              ))}
+          <Box marginBlockStart={'sm'}>
+            <Assets accounts={accounts} fungibles={fungibles} showAddToken />
           </Box>
         </Box>
-        <Box className={panelClass} marginBlockStart="xs">
-          <Heading as="h4">{accounts.length} accounts</Heading>
-          <Link to="/create-account" className={linkClass}>
-            Create Account
-          </Link>
-          <Box marginBlockStart="md">
-            <Text>Owned ({accounts.length})</Text>
-            {accounts.length ? (
-              <ul className={listClass}>
-                {accounts.map(({ address, overallBalance, chains }, idx) => (
-                  <li key={address}>
-                    <Stack
-                      justifyContent="space-between"
-                      className={listItemClass}
-                      onClick={() => {
-                        setSelectedAccountIdx((cu) => {
-                          return cu === idx ? -1 : idx;
-                        });
-                      }}
-                    >
-                      <Text>{getAccountName(address) ?? 'No Address ;(!'}</Text>
-                      <Text>{overallBalance} KDA</Text>
+        <RecentlyUsedAccounts accounts={accounts} fungibles={fungibles} />
+        <Stack className={panelClass} flexDirection={'column'} gap={'lg'}>
+          <Heading variant="h4">Activities</Heading>
+          <Stack>
+            <Tabs>
+              <TabItem title="Transactions">
+                <TransactionList transactions={transactions || []} />
+                <Stack paddingBlockStart={'lg'}>
+                  <Link to="/transactions" className={linkClass}>
+                    All transactions
+                  </Link>
+                </Stack>
+              </TabItem>
+              <TabItem title="Transfers">WIP: Not implemented yet</TabItem>
+            </Tabs>
+          </Stack>
+        </Stack>
+      </Stack>
+    </Box>
+  );
+}
+
+export function RecentlyUsedAccounts({
+  accounts,
+  fungibles,
+}: {
+  accounts: IAccount[];
+  fungibles: Fungible[];
+}) {
+  const getSymbol = (contract: string) =>
+    fungibles.find((f) => f.contract === contract)?.symbol;
+  return (
+    <Box className={panelClass} marginBlockStart="xs">
+      <Heading as="h4">Recently used accounts</Heading>
+      {accounts.length ? (
+        <Box marginBlockStart="md">
+          <ul className={listClass}>
+            {accounts.map(({ overallBalance, keyset, uuid, contract }) => (
+              <li key={keyset?.principal}>
+                <Link to={`/account/${uuid}`} className={noStyleLinkClass}>
+                  <ListItem>
+                    <Stack flexDirection={'column'} gap={'sm'}>
+                      <Text>
+                        {keyset?.alias || getAccountName(keyset!.principal)}
+                      </Text>
                     </Stack>
-                    {selectedAccountIdx === idx && chains.length > 0 && (
-                      <ul className={chainListClass}>
-                        {chains.map(({ chainId, balance }) => (
-                          <li key={address}>
-                            <Stack
-                              justifyContent="space-between"
-                              className={listItemClass}
-                            >
-                              <Text>chain {chainId}</Text>
-                              <Text>{balance} KDA</Text>
-                            </Stack>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-          </Box>
+                    <Stack alignItems={'center'} gap={'sm'}>
+                      <Text>
+                        {overallBalance} {getSymbol(contract)}
+                      </Text>
+                    </Stack>
+                  </ListItem>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </Box>
-      </Box>
-    </>
+      ) : null}
+    </Box>
   );
 }

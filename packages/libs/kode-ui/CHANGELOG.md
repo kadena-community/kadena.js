@@ -1,5 +1,28 @@
 # @kadena/kode-ui
 
+## 0.17.0
+
+### Minor Changes
+
+- 80ac706: add the Tile component
+- eb82843: Added step to text filed; added inherit to color variants
+
+### Patch Changes
+
+- 5985ccc: fix padding of the select box component
+- 767c542: fix the steppers colors for the lines after the active step
+- 0e08d23: Typography fix with rebranding (Primary to Inter)
+
+## 0.16.0
+
+### Minor Changes
+
+- 0bcccf1: add the stepper component
+
+### Patch Changes
+
+- b751065: Fix for the stepper component label. Incorrect token usage.
+
 ## 0.15.0
 
 ### Minor Changes

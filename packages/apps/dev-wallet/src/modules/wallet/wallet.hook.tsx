@@ -26,7 +26,8 @@ const isUnlocked = (
 };
 
 export const useWallet = () => {
-  const [context, setProfile] = useContext(WalletContext) ?? [];
+  const [context, setProfile, setActiveNetwork] =
+    useContext(WalletContext) ?? [];
   const prompt = usePrompt();
   if (!context || !setProfile) {
     throw new Error('useWallet must be used within a WalletProvider');
@@ -251,10 +252,13 @@ export const useWallet = () => {
     askForPassword,
     getPublicKeyData,
     unlockKeySource,
+    setActiveNetwork,
+    activeNetwork: context.activeNetwork,
     isUnlocked: isUnlocked(context),
     profile: context.profile,
     profileList: context.profileList ?? [],
     accounts: context.accounts || [],
+    keysets: context.keysets || [],
     keySources: context.keySources || [],
     fungibles: context.fungibles || [],
   };

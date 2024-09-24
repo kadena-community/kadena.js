@@ -9,10 +9,11 @@ export const headerStyle = style({
 
 export const mainColumnStyle = style([
   atoms({
-    width: '100%',
+    overflow: 'auto',
     color: 'text.base.default',
     position: 'relative',
     zIndex: 0,
+    flex: 1,
   }),
 ]);
 

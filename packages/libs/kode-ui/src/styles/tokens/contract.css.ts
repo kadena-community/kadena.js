@@ -860,6 +860,13 @@ export const tokens = createThemeContract({
              * @dark {@link tokens.kda.foundation.color.neutral.n5@alpha95}
              */
             default: '',
+            context: {
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n1@alpha80}
+               * @dark {@link tokens.kda.foundation.color.neutral.n5@alpha80}
+               */
+              default: '',
+            },
             /**
              * @light {@link tokens.kda.foundation.color.neutral.n0}
              * @dark {@link tokens.kda.foundation.color.neutral.n5}
@@ -1842,6 +1849,13 @@ export const tokens = createThemeContract({
              * @dark {@link tokens.kda.foundation.color.palette.aqua.n20@alpha80}
              */
             '@focus': '',
+          },
+          overlay: {
+            /**
+             * @light {@link tokens.kda.foundation.color.neutral.n20@alpha80}
+             * @dark {@link tokens.kda.foundation.color.neutral.n20@alpha80}
+             */
+            context: '',
           },
         },
         brand: {
@@ -4957,11 +4971,6 @@ export const tokens = createThemeContract({
            */
           primaryFont: '',
           /**
-           * @light  `"Inter"`
-           * @dark  `"Inter"`
-           */
-          secondaryFont: '',
-          /**
            * @light  `"Kode Mono"`
            * @dark  `"Kode Mono"`
            */
@@ -5128,28 +5137,6 @@ export const tokens = createThemeContract({
              * @dark  `"700"`
              */
             bold: '',
-          },
-          secondaryFont: {
-            /**
-             * @light  `"400"`
-             * @dark  `"400"`
-             */
-            regular: '',
-            /**
-             * @light  `"500"`
-             * @dark  `"500"`
-             */
-            medium: '',
-            /**
-             * @light  `"600"`
-             * @dark  `"600"`
-             */
-            bold: '',
-            /**
-             * @light  `"700"`
-             * @dark  `"700"`
-             */
-            black: '',
           },
           monospaceFont: {
             /**

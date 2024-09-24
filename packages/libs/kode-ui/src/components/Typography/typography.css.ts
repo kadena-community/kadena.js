@@ -10,4 +10,5 @@ export const transformVariants = {
 export const colorVariants = {
   default: style({ color: token('color.text.subtlest.default') }),
   emphasize: style({ color: token('color.text.base.default') }),
+  inherit: style({ color: 'inherit' }),
 };

@@ -24,6 +24,7 @@ const localConfig = defineConfig({
         'src/scripts/**/*',
         // its a script and auxiliary files that deploys marmalade namespaces and contracts
         'src/nodejs/marmalade/deployment/**/*',
+        'src/webauthn/**/*',
       ],
       provider: 'v8',
       thresholds: {

@@ -1,5 +1,6 @@
 import { IPactCommand, IUnsignedCommand } from '@kadena/client';
 import { Button, Heading, Stack } from '@kadena/kode-ui';
+import yaml from 'js-yaml';
 import { useMemo } from 'react';
 import { cardClass, codeClass, containerClass } from './style.css.ts';
 
@@ -19,26 +20,28 @@ export function ReviewTransaction({
     () => JSON.parse(transaction.cmd),
     [transaction.cmd],
   );
+
+  const copyTransactionAs = (format: 'json' | 'yaml') => () => {
+    const transactionData = {
+      hash: transaction.hash,
+      cmd: transaction.cmd,
+      sigs: transaction.sigs,
+    };
+
+    let formattedData: string;
+    if (format === 'json') {
+      formattedData = JSON.stringify(transactionData, null, 2);
+    } else {
+      formattedData = yaml.dump(transactionData);
+    }
+
+    navigator.clipboard.writeText(formattedData);
+  };
   return (
     <Stack flexDirection={'column'} className={containerClass}>
       <Stack justifyContent={'space-between'}>
         <Heading>Confirm Transaction</Heading>
-        <Button
-          variant="transparent"
-          onClick={() => {
-            navigator.clipboard.writeText(
-              JSON.stringify(
-                {
-                  hash: transaction.hash,
-                  cmd: transaction.cmd,
-                  sigs: transaction.sigs,
-                },
-                null,
-                2,
-              ),
-            );
-          }}
-        >
+        <Button variant="transparent" onClick={copyTransactionAs('json')}>
           <MonoContentCopy />
         </Button>
       </Stack>
@@ -48,18 +51,38 @@ export function ReviewTransaction({
           <Value className={codeClass}>{transaction.hash}</Value>
         </Stack>
         {'exec' in command.payload && (
-          <Stack gap={'sm'} flexDirection={'column'}>
-            <Heading variant="h4">Code</Heading>
-            <Value className={codeClass}>{command.payload.exec.code}</Value>
-          </Stack>
+          <>
+            <Stack gap={'sm'} flexDirection={'column'}>
+              <Heading variant="h4">Code</Heading>
+              <Value className={codeClass}>{command.payload.exec.code}</Value>
+            </Stack>
+            {Object.keys(command.payload.exec.data).length > 0 && (
+              <Stack gap={'sm'} flexDirection={'column'}>
+                <Heading variant="h4">Data</Heading>
+                <pre className={codeClass}>
+                  {JSON.stringify(command.payload.exec.data, null, 2)}
+                </pre>
+              </Stack>
+            )}
+          </>
         )}
         {'cont' in command.payload && (
-          <Stack gap={'sm'} flexDirection={'column'}>
-            <Heading variant="h4">Continuation</Heading>
-            <Value>
-              {command.payload.cont.pactId}- step({command.payload.cont.step})
-            </Value>
-          </Stack>
+          <>
+            <Stack gap={'sm'} flexDirection={'column'}>
+              <Heading variant="h4">Continuation</Heading>
+              <Value>
+                {command.payload.cont.pactId}- step({command.payload.cont.step})
+              </Value>
+            </Stack>
+            {Object.keys(command.payload.cont.data || {}).length > 0 && (
+              <Stack gap={'sm'} flexDirection={'column'}>
+                <Heading variant="h4">Data</Heading>
+                <pre className={codeClass}>
+                  {JSON.stringify(command.payload.cont.data, null, 2)}
+                </pre>
+              </Stack>
+            )}
+          </>
         )}
         <Stack gap={'sm'} flexDirection={'column'}>
           <Heading variant="h4">Transaction Metadata</Heading>
@@ -118,7 +141,13 @@ export function ReviewTransaction({
             </Stack>
           </Stack>
         </Stack>
-        <Signers transaction={transaction} onSign={onSign} />
+        <Stack gap={'sm'} flexDirection={'column'}>
+          <Signers transaction={transaction} onSign={onSign} />
+          <Stack gap={'sm'} flexDirection={'row'}>
+            <Button onClick={copyTransactionAs('json')}>Copy as JSON</Button>
+            <Button onClick={copyTransactionAs('yaml')}>Copy as YAML</Button>
+          </Stack>
+        </Stack>
       </Stack>
     </Stack>
   );
