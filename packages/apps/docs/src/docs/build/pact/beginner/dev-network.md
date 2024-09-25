@@ -46,7 +46,7 @@ You can download and install [Pact](https://github.com/kadena-io/pact#installing
 
 ### Use Homebrew
 
-On macOS, you can install Pact using Homebrew byt running the following commands:
+On macOS, you can install Pact using Homebrew by running the following commands:
 
 ```shell
 brew update
