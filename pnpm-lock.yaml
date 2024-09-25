@@ -6,6 +6,11 @@ settings:
 
 pnpmfileChecksum: 6r6vujmcjqa74b4isi2xvsmb4u
 
+patchedDependencies:
+  '@metamask/snaps-utils@8.1.1':
+    hash: ouhglty5kihdspepkcpq4jbcwi
+    path: patches/@metamask__snaps-utils@8.1.1.patch
+
 importers:
 
   .:
@@ -24263,7 +24268,7 @@ snapshots:
       '@babel/preset-env': 7.24.7(@babel/core@7.24.7)
       '@babel/preset-typescript': 7.24.7(@babel/core@7.24.7)
       '@metamask/snaps-sdk': 6.5.1(webextension-polyfill@0.10.0)
-      '@metamask/snaps-utils': 8.1.1(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)(webextension-polyfill@0.10.0)
+      '@metamask/snaps-utils': 8.1.1(patch_hash=ouhglty5kihdspepkcpq4jbcwi)(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)(webextension-polyfill@0.10.0)
       '@metamask/snaps-webpack-plugin': 4.1.2(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)(webextension-polyfill@0.10.0)
       '@metamask/superstruct': 3.1.0
       '@metamask/utils': 9.2.1
@@ -24327,7 +24332,7 @@ snapshots:
       '@metamask/snaps-registry': 3.2.1
       '@metamask/snaps-rpc-methods': 11.1.1(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)(webextension-polyfill@0.10.0)
       '@metamask/snaps-sdk': 6.5.1(webextension-polyfill@0.10.0)
-      '@metamask/snaps-utils': 8.1.1(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)(webextension-polyfill@0.10.0)
+      '@metamask/snaps-utils': 8.1.1(patch_hash=ouhglty5kihdspepkcpq4jbcwi)(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)(webextension-polyfill@0.10.0)
       '@metamask/utils': 9.2.1
       '@xstate/fsm': 2.1.0
       browserify-zlib: 0.2.0
@@ -24354,7 +24359,7 @@ snapshots:
       '@metamask/providers': 17.2.0(webextension-polyfill@0.10.0)
       '@metamask/rpc-errors': 6.3.1
       '@metamask/snaps-sdk': 6.5.1(webextension-polyfill@0.10.0)
-      '@metamask/snaps-utils': 8.1.1(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)(webextension-polyfill@0.10.0)
+      '@metamask/snaps-utils': 8.1.1(patch_hash=ouhglty5kihdspepkcpq4jbcwi)(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)(webextension-polyfill@0.10.0)
       '@metamask/superstruct': 3.1.0
       '@metamask/utils': 9.2.1
       nanoid: 3.3.7
@@ -24411,7 +24416,7 @@ snapshots:
       '@metamask/permission-controller': 11.0.2(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)
       '@metamask/rpc-errors': 6.3.1
       '@metamask/snaps-sdk': 6.5.1(webextension-polyfill@0.10.0)
-      '@metamask/snaps-utils': 8.1.1(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)(webextension-polyfill@0.10.0)
+      '@metamask/snaps-utils': 8.1.1(patch_hash=ouhglty5kihdspepkcpq4jbcwi)(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)(webextension-polyfill@0.10.0)
       '@metamask/superstruct': 3.1.0
       '@metamask/utils': 9.2.1
       '@noble/hashes': 1.5.0
@@ -24458,7 +24463,7 @@ snapshots:
       '@metamask/snaps-controllers': 9.7.0(@babel/runtime@7.25.6)(@metamask/snaps-execution-environments@6.7.2(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)(webextension-polyfill@0.10.0))(webextension-polyfill@0.10.0)
       '@metamask/snaps-rpc-methods': 11.1.1(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)(webextension-polyfill@0.10.0)
       '@metamask/snaps-sdk': 6.5.1(webextension-polyfill@0.10.0)
-      '@metamask/snaps-utils': 8.1.1(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)(webextension-polyfill@0.10.0)
+      '@metamask/snaps-utils': 8.1.1(patch_hash=ouhglty5kihdspepkcpq4jbcwi)(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)(webextension-polyfill@0.10.0)
       '@metamask/superstruct': 3.1.0
       '@metamask/utils': 9.2.1
       '@reduxjs/toolkit': 1.9.7(react@18.3.1)
@@ -24519,7 +24524,7 @@ snapshots:
       - '@metamask/approval-controller'
       - supports-color
 
-  '@metamask/snaps-utils@8.1.1(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)(webextension-polyfill@0.10.0)':
+  '@metamask/snaps-utils@8.1.1(patch_hash=ouhglty5kihdspepkcpq4jbcwi)(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)(webextension-polyfill@0.10.0)':
     dependencies:
       '@babel/core': 7.24.7
       '@babel/types': 7.24.7
@@ -24553,7 +24558,7 @@ snapshots:
   '@metamask/snaps-webpack-plugin@4.1.2(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)(webextension-polyfill@0.10.0)':
     dependencies:
       '@metamask/snaps-sdk': 6.5.1(webextension-polyfill@0.10.0)
-      '@metamask/snaps-utils': 8.1.1(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)(webextension-polyfill@0.10.0)
+      '@metamask/snaps-utils': 8.1.1(patch_hash=ouhglty5kihdspepkcpq4jbcwi)(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)(webextension-polyfill@0.10.0)
       '@metamask/utils': 9.2.1
       webpack-sources: 3.2.3
     transitivePeerDependencies:
