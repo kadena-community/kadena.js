@@ -77,7 +77,7 @@ interface IWalletConnectClientContextProviderProps {
  */
 export const WalletConnectClientContextProvider: FC<
   IWalletConnectClientContextProviderProps
-> = ({ disablePolling = true, children }) => {
+> = ({ disablePolling = false, children }) => {
   const [client, setClient] = useState<Client>();
   const [pairings, setPairings] = useState<PairingTypes.Struct[]>([]);
   const [session, setSession] = useState<SessionTypes.Struct>();
@@ -253,13 +253,13 @@ export const WalletConnectClientContextProvider: FC<
     try {
       setIsInitializing(true);
 
-      const _client = await Client.init({
-        relayUrl: env('WALLET_CONNECT_RELAY_URL', ''),
-        projectId: env('WALLET_CONNECT_PROJECT_ID', ''),
-      });
-
-      setClient(_client);
       if (!disablePolling) {
+        const _client = await Client.init({
+          relayUrl: env('WALLET_CONNECT_RELAY_URL', ''),
+          projectId: env('WALLET_CONNECT_PROJECT_ID', ''),
+        });
+
+        setClient(_client);
         await subscribeToEvents(_client);
         await checkPersistedState(_client);
       }
