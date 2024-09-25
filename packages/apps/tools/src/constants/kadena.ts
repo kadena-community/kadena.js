@@ -38,7 +38,7 @@ export const kadenaConstants: KadenaConstants = {
     label: 'Testnet05',
     API: env('KADENA_TESTNET05_API', 'api.testnet05.chainweb.com'),
     apiHost: ({ networkId, chainId }) =>
-      `http://${kadenaConstants.testnet05.API}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
+      `https://${kadenaConstants.testnet05.API}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
     estatsHost: () => '',
   },
   GAS_LIMIT: Number(env('GAS_LIMIT', 850)),
