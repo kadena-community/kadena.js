@@ -8,7 +8,11 @@ import {
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { principalNamespaceCommand } from '../../built-in/create-principal-namespace';
-import { fundExistingAccountOnTestnetCommand } from '../../faucet';
+import {
+  fundExistingAccountOnTestnet,
+  fundExistingAccountOnTestnetCommand,
+  fundNewAccountOnTestnetCommand,
+} from '../../faucet';
 import {
   CHAIN_IDS,
   FAUCET_ADMINS,
@@ -82,6 +86,36 @@ export async function deployFaucet() {
   });
 }
 
+export async function requestNewFund() {
+  CHAIN_IDS.forEach(async (chainId) => {
+    const tx = transaction(chainId);
+    const account = await read(chainId)(
+      execution(
+        'n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT',
+      ),
+    );
+    console.log('account', account);
+    console.log(`transferring funds on chain ${chainId}`);
+    console.log('testing contract');
+    const test = await tx(
+      fundNewAccountOnTestnetCommand({
+        account: PRIVATE_SIGNER.PUBLIC_KEY,
+        keyset: {
+          keys: [PRIVATE_SIGNER.PUBLIC_KEY],
+          pred: 'keys-all',
+        },
+        faucetAccount: account as string,
+        amount: 10,
+        chainId: chainId,
+        contract: 'n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet',
+        signerKeys: [GAS_PAYER.PUBLIC_KEY],
+        networkId: 'testnet05',
+      }),
+    );
+    console.log('test result', test);
+  });
+}
+
 export async function requestFund() {
   CHAIN_IDS.forEach(async (chainId) => {
     const tx = transaction(chainId);
@@ -95,11 +129,13 @@ export async function requestFund() {
     console.log('testing contract');
     const test = await tx(
       fundExistingAccountOnTestnetCommand({
-        account: `k:${PRIVATE_SIGNER.PUBLIC_KEY}`,
+        account: PRIVATE_SIGNER.PUBLIC_KEY,
+        faucetAccount: account as string,
         amount: 10,
         chainId: chainId,
         contract: 'n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet',
         signerKeys: [GAS_PAYER.PUBLIC_KEY],
+        networkId: 'testnet05',
       }),
     );
     console.log('test result', test);
@@ -114,19 +150,23 @@ export async function transferFunds() {
         'n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT',
       ),
     );
+    const balance = await read(chainId)(
+      execution(`(coin.details "${account}")`),
+    );
+    console.log('balance', balance);
     console.log('account', account);
     console.log(`transferring funds on chain ${chainId}`);
     const result = await tx(
       composePactCommand(
         execution(
-          `(coin.transfer "k:${PRIVATE_SIGNER.PUBLIC_KEY}" n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT 10000.0)`,
+          `(coin.transfer "k:${PRIVATE_SIGNER.PUBLIC_KEY}" n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT 1.0)`,
         ),
         addSigner(PRIVATE_SIGNER.PUBLIC_KEY, (signFor) => [
           signFor(
             'coin.TRANSFER',
             `k:${PRIVATE_SIGNER.PUBLIC_KEY}`,
             account,
-            10000,
+            1,
           ),
         ]),
         setMeta({
@@ -143,7 +183,12 @@ export async function transferFunds() {
 //   process.exit(1);
 // });
 
-deployFaucet().catch((err) => {
+requestFund().catch((err) => {
   console.error(err);
   process.exit(1);
 });
+
+// deployFaucet().catch((err) => {
+//   console.error(err);
+//   process.exit(1);
+// });
