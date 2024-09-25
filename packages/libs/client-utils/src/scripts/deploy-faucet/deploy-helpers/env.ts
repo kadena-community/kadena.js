@@ -1,7 +1,9 @@
 import { config } from 'dotenv';
 import { join } from 'path';
 
-config({ path: join(__dirname, './.faucet.env') });
+config({
+  path: [join(__dirname, './.faucet.env'), join(__dirname, './.env')],
+});
 
 export const env = (key: string) => {
   if (process.env[key] === undefined) {
