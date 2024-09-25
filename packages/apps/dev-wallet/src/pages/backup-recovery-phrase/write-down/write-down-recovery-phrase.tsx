@@ -5,12 +5,11 @@ import {
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { Box, Button, Heading, Text } from '@kadena/kode-ui';
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ConfirmRecoveryPhrase } from './confirm-recovery-phrase';
 
 export function WriteDownRecoveryPhrase() {
   const { keySources, decryptSecret, askForPassword } = useWallet();
-  const { keySourceId } = useParams();
   const [mnemonic, setMnemonic] = useState('');
   const [error, setError] = useState('');
   const [readyForConfirmation, setReadyForConfirmation] = useState(false);
@@ -19,7 +18,7 @@ export function WriteDownRecoveryPhrase() {
     setError('');
     try {
       // TODO: this should check the source type of the keySource
-      const keySource = keySources.find((ks) => ks.uuid === keySourceId);
+      const keySource = keySources[0];
       if (!keySource) {
         throw new Error('Key source not found');
       }
@@ -66,7 +65,6 @@ export function WriteDownRecoveryPhrase() {
           you should consider everyone with the phrase have access to your
           assets
         </Text>
-        <Heading variant="h5">Enter your password to show the phrase</Heading>
         <Button type="submit" onClick={decryptMnemonic}>
           Show Phrase
         </Button>

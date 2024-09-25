@@ -9,7 +9,16 @@ import { transactionRepository } from '@/modules/transaction/transaction.reposit
 import { getAccountName } from '@/utils/helpers';
 import { useAsync } from '@/utils/useAsync';
 import { IPactCommand } from '@kadena/client';
-import { Box, Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
+import { MonoSave } from '@kadena/kode-icons';
+import {
+  Box,
+  Button,
+  Heading,
+  Stack,
+  TabItem,
+  Tabs,
+  Text,
+} from '@kadena/kode-ui';
 import { Link } from 'react-router-dom';
 import { listClass } from '../account/style.css';
 import { linkClass } from '../select-profile/select-profile.css';
@@ -44,7 +53,14 @@ export function HomePage() {
   return (
     <Box gap={'lg'}>
       <Text>Welcome back</Text>
-      <Heading as="h1">{profile?.name}</Heading>
+      <Heading as="h1">
+        {profile?.name}{' '}
+        <Link to={'/backup-recovery-phrase'}>
+          <Button variant="outlined" startVisual={MonoSave({})}>
+            Backup
+          </Button>
+        </Link>
+      </Heading>
       <Stack gap={'lg'} flexDirection={'column'}>
         <Box className={panelClass} marginBlockStart="xl">
           <Box marginBlockStart={'sm'}>
