@@ -1,3 +1,4 @@
+import { kadenaConstants } from '@/constants/kadena';
 import type {
   ChainwebChainId,
   ChainwebNetworkId,
@@ -39,6 +40,7 @@ const fetchModules = async (
 
   const promises = chains.map((chainId) =>
     listModules({
+      host: kadenaConstants[networkId as 'testnet04' | 'testnet05'].apiHost,
       defaults: { networkId, meta: { chainId } },
     }),
   );

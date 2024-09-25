@@ -20,6 +20,7 @@ export interface ITransaction {
 }
 const debug = Debug('kadena-transfer:services:get-transactions');
 
+// TODO: convert to use graphql
 export async function getTransactions(options: {
   network: Network;
   chain: ChainwebChainId;
