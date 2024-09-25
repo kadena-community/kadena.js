@@ -11,10 +11,10 @@ import { PactNumber } from '@kadena/pactjs';
 
 import Debug from 'debug';
 
-import { kadenaConstants, type Network } from '@/constants/kadena';
+import type { Network } from '@/constants/kadena';
+import { kadenaConstants } from '@/constants/kadena';
 import { env } from '@/utils/env';
 import type { INetworkData } from '@/utils/network';
-import { getApiHost } from '@/utils/network';
 
 const FAUCET_ACCOUNT = env(
   'FAUCET_USER',

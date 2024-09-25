@@ -69,6 +69,7 @@ const walletConnectModal = new WalletConnectModal({
 
 interface IWalletConnectClientContextProviderProps {
   children: ReactNode;
+  disablePolling?: boolean;
 }
 
 /**
@@ -76,7 +77,7 @@ interface IWalletConnectClientContextProviderProps {
  */
 export const WalletConnectClientContextProvider: FC<
   IWalletConnectClientContextProviderProps
-> = ({ children }) => {
+> = ({ disablePolling = true, children }) => {
   const [client, setClient] = useState<Client>();
   const [pairings, setPairings] = useState<PairingTypes.Struct[]>([]);
   const [session, setSession] = useState<SessionTypes.Struct>();
@@ -248,30 +249,27 @@ export const WalletConnectClientContextProvider: FC<
     [session, onSessionConnected],
   );
 
-  const createClient = useCallback(
-    async () => {
-      try {
-        setIsInitializing(true);
+  const createClient = useCallback(async () => {
+    try {
+      setIsInitializing(true);
 
-        // const _client = await Client.init({
-        //   relayUrl: env('WALLET_CONNECT_RELAY_URL', ''),
-        //   projectId: env('WALLET_CONNECT_PROJECT_ID', ''),
-        // });
+      const _client = await Client.init({
+        relayUrl: env('WALLET_CONNECT_RELAY_URL', ''),
+        projectId: env('WALLET_CONNECT_PROJECT_ID', ''),
+      });
 
-        // setClient(_client);
-        // await subscribeToEvents(_client);
-        // await checkPersistedState(_client);
-        // eslint-disable-next-line no-useless-catch
-      } catch (err) {
-        throw err;
-      } finally {
-        setIsInitializing(false);
+      setClient(_client);
+      if (!disablePolling) {
+        await subscribeToEvents(_client);
+        await checkPersistedState(_client);
       }
-    },
-    [
-      // checkPersistedState, subscribeToEvents
-    ],
-  );
+      // eslint-disable-next-line no-useless-catch
+    } catch (err) {
+      throw err;
+    } finally {
+      setIsInitializing(false);
+    }
+  }, [checkPersistedState, disablePolling, subscribeToEvents]);
 
   useEffect(() => {
     if (!client) {
