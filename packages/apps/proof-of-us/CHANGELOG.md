@@ -1,5 +1,12 @@
 # @kadena/proof-of-us
 
+## 0.5.11
+
+### Patch Changes
+
+- Updated dependencies \[c6d23b8]
+  - @kadena/graph\@1.0.13
+
 ## 0.5.10
 
 ### Patch Changes

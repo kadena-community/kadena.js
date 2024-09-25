@@ -1,6 +1,6 @@
 {
   "name": "@kadena/snap",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "MetaMask snap to manage your Kadena accounts and KDA.",
   "repository": {
     "type": "git",

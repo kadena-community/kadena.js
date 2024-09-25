@@ -1,5 +1,11 @@
 # @kadena/graph
 
+## 1.0.13
+
+### Patch Changes
+
+- c6d23b8: Adds check for statistics /stats endpoint.
+
 ## 1.0.12
 
 ### Patch Changes
