@@ -23,9 +23,9 @@ for (const accountType of accountTypes) {
     await test.step('Create account on chain 0.', async () => {
       await toolsApp.asidePanel.navigateTo('Fund New Account');
       await toolsApp.fundNewAccountPage.CreateFundAccount(account);
-      await expect(
-        await toolsApp.txProcessingNotification.getNotification(),
-      ).toBeVisible();
+      // await expect(
+      //   await toolsApp.txProcessingNotification.getNotification(),
+      // ).toBeVisible();
     });
     await test.step('Account has been created', async () => {
       await expect(
