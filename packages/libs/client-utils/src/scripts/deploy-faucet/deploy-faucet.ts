@@ -8,6 +8,7 @@ import {
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { principalNamespaceCommand } from '../../built-in/create-principal-namespace';
+import { transferCommand } from '../../coin';
 import {
   CHAIN_IDS,
   FAUCET_ADMINS,
@@ -78,7 +79,38 @@ async function deployFaucet() {
   }
 }
 
-deployFaucet().catch((err) => {
+async function transferFunds() {
+  CHAIN_IDS.forEach(async (chainId) => {
+    const tx = transaction(chainId);
+    const account = await read(chainId)(
+      execution(
+        'n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT',
+      ),
+    );
+    console.log(`transferring funds on chain ${chainId}`);
+    const result = await tx(
+      composePactCommand(
+        execution(
+          `(coin.transfer "k:${PRIVATE_SIGNER.PUBLIC_KEY}" n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT 10000.0)`,
+        ),
+        addSigner(PRIVATE_SIGNER.PUBLIC_KEY, (signFor) => [
+          signFor(
+            'coin.TRANSFER',
+            `k:${PRIVATE_SIGNER.PUBLIC_KEY}`,
+            account,
+            10000,
+          ),
+        ]),
+        setMeta({
+          gasLimit: 2500,
+        }),
+      ),
+    );
+    console.log('transaction result', result);
+  });
+}
+
+transferFunds().catch((err) => {
   console.error(err);
   process.exit(1);
 });
