@@ -8,24 +8,25 @@ import {
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { principalNamespaceCommand } from '../../built-in/create-principal-namespace';
-import { transferCommand } from '../../coin';
+import { fundExistingAccountOnTestnetCommand } from '../../faucet';
 import {
   CHAIN_IDS,
   FAUCET_ADMINS,
   FAUCET_GUARD_PREDICATE,
+  GAS_PAYER,
   PRIVATE_SIGNER,
 } from './deploy-helpers/constants';
 import { read, transaction } from './deploy-helpers/tx-helpers';
 
-async function deployFaucet() {
+export async function deployFaucet() {
   const contractCode = readFileSync(
     join(__dirname, './testnet-faucet.pact'),
     'utf8',
   );
-
-  for (const chainId of CHAIN_IDS) {
+  CHAIN_IDS.forEach(async (chainId) => {
+    // for (const chainId of CHAIN_IDS) {
     const tx = transaction(chainId);
-    let upgrade;
+    let upgrade = true;
     try {
       const namespace = 'n_f17eb6408bb84795b1c871efa678758882a8744a';
       const module = await read(chainId)(
@@ -34,7 +35,7 @@ async function deployFaucet() {
       console.log('chain:', chainId, module);
       upgrade = true;
       // continue for now; remove this line to upgrade the contract
-      // continue;
+      return;
     } catch (e) {
       upgrade = false;
       console.log(e);
@@ -50,18 +51,20 @@ async function deployFaucet() {
       ),
     )) as string;
 
-    try {
-      const namespace = 'coin-faucet';
-      const module = await read(chainId)(
-        execution(`(describe-module "${namespace}.coin-faucet")`),
-      );
-      console.log('module', module);
-      upgrade = true;
-    } catch (e) {
-      upgrade = false;
-      console.log(e);
-    }
-    console.log(`Namespace: ${namespace}`);
+    // const namespace = 'n_f17eb6408bb84795b1c871efa678758882a8744a';
+
+    // try {
+    //   const namespace = 'coin-faucet';
+    //   const module = await read(chainId)(
+    //     execution(`(describe-module "${namespace}.coin-faucet")`),
+    //   );
+    //   console.log('module', module);
+    //   upgrade = true;
+    // } catch (e) {
+    //   upgrade = false;
+    //   console.log(e);
+    // }
+    // console.log(`Namespace: ${namespace}`);
     console.log(`deploying contract on chain ${chainId}`);
     const result = await tx(
       composePactCommand(
@@ -76,10 +79,10 @@ async function deployFaucet() {
       ),
     );
     console.log('transaction result', result);
-  }
+  });
 }
 
-async function transferFunds() {
+export async function transferFunds() {
   CHAIN_IDS.forEach(async (chainId) => {
     const tx = transaction(chainId);
     const account = await read(chainId)(
@@ -87,30 +90,42 @@ async function transferFunds() {
         'n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT',
       ),
     );
+    console.log('account', account);
     console.log(`transferring funds on chain ${chainId}`);
-    const result = await tx(
-      composePactCommand(
-        execution(
-          `(coin.transfer "k:${PRIVATE_SIGNER.PUBLIC_KEY}" n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT 10000.0)`,
-        ),
-        addSigner(PRIVATE_SIGNER.PUBLIC_KEY, (signFor) => [
-          signFor(
-            'coin.TRANSFER',
-            `k:${PRIVATE_SIGNER.PUBLIC_KEY}`,
-            account,
-            10000,
-          ),
-        ]),
-        setMeta({
-          gasLimit: 2500,
-        }),
-      ),
+    // const result = await tx(
+    //   composePactCommand(
+    //     execution(
+    //       `(coin.transfer "k:${PRIVATE_SIGNER.PUBLIC_KEY}" n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT 10000.0)`,
+    //     ),
+    //     addSigner(PRIVATE_SIGNER.PUBLIC_KEY, (signFor) => [
+    //       signFor(
+    //         'coin.TRANSFER',
+    //         `k:${PRIVATE_SIGNER.PUBLIC_KEY}`,
+    //         account,
+    //         10000,
+    //       ),
+    //     ]),
+    //     setMeta({
+    //       gasLimit: 2500,
+    //     }),
+    //   ),
+    // );
+    // console.log('transaction result', result);
+    console.log('testing contract');
+    const test = await tx(
+      fundExistingAccountOnTestnetCommand({
+        account: `k:${PRIVATE_SIGNER.PUBLIC_KEY}`,
+        amount: 10,
+        chainId: chainId,
+        contract: 'n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet',
+        signerKeys: [GAS_PAYER.PUBLIC_KEY],
+      }),
     );
-    console.log('transaction result', result);
+    console.log('test result', test);
   });
 }
 
-transferFunds().catch((err) => {
+deployFaucet().catch((err) => {
   console.error(err);
   process.exit(1);
 });

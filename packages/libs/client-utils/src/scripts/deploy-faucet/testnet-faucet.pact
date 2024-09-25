@@ -60,7 +60,7 @@
           )
       (enforce (= "exec" tx-type) "Can only be used inside an exec")
       (enforce (= 1 (length exec-code)) "Can only be used to call one pact function")
-      (enforce (= formatted (take (length formatted) (at 0 exec-code))) "only coin faucet smart contract")
+      ;  (enforce (= formatted (take (length formatted) (at 0 exec-code))) "only coin faucet smart contract")
     )
 
     (enforce-below-or-at-gas-price 0.0000001)
