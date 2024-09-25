@@ -183,12 +183,12 @@ export async function transferFunds() {
 //   process.exit(1);
 // });
 
-requestFund().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
-
-// deployFaucet().catch((err) => {
+// requestFund().catch((err) => {
 //   console.error(err);
 //   process.exit(1);
 // });
+
+deployFaucet().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
