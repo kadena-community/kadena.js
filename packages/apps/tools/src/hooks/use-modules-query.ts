@@ -11,7 +11,7 @@ import { z } from 'zod';
 
 const transformModules = (
   data: string[][],
-  networkId: ChainwebNetworkId | 'testnet05',
+  networkId: ChainwebNetworkId,
   chainIds?: ChainwebChainId[],
 ) => {
   const chains = chainIds ?? CHAINS;
@@ -34,7 +34,7 @@ export const listsModulesSchema = z.array(listModulesSchema);
 export type ListsModulesOutput = z.infer<typeof listsModulesSchema>;
 
 const fetchModules = async (
-  networkId: ChainwebNetworkId | 'testnet05',
+  networkId: ChainwebNetworkId,
   chainIds?: ChainwebChainId[],
 ) => {
   const chains = chainIds ?? CHAINS;
@@ -56,7 +56,7 @@ const fetchModules = async (
 const QUERY_KEY = 'modules';
 
 const useModulesQuery = (
-  networkId: ChainwebNetworkId | 'testnet05',
+  networkId: ChainwebNetworkId,
   chainIds?: ChainwebChainId[],
 ) => {
   return useQuery({
