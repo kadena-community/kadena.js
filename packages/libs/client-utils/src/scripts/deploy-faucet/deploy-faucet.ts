@@ -9,7 +9,6 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { principalNamespaceCommand } from '../../built-in/create-principal-namespace';
 import {
-  fundExistingAccountOnTestnet,
   fundExistingAccountOnTestnetCommand,
   fundNewAccountOnTestnetCommand,
 } from '../../faucet';
@@ -119,11 +118,11 @@ export async function requestNewFund() {
 export async function requestFund() {
   CHAIN_IDS.forEach(async (chainId) => {
     const tx = transaction(chainId);
-    const account = await read(chainId)(
+    const account = (await read(chainId)(
       execution(
         'n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT',
       ),
-    );
+    )) as string;
     console.log('account', account);
     console.log(`transferring funds on chain ${chainId}`);
     console.log('testing contract');
