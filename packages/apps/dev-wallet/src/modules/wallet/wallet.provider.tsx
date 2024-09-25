@@ -71,13 +71,26 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     return keySources;
   }, []);
 
-  const retrieveAccounts = useCallback(async (profileId: string) => {
-    const accounts = await WalletService.getAccounts(profileId);
-    setContextValue((ctx) => ({
-      ...ctx,
-      accounts,
-    }));
-  }, []);
+  const retrieveAccounts = useCallback(
+    async (profileId: string) => {
+      if (!contextValue.activeNetwork?.networkId) {
+        setContextValue((ctx) => ({
+          ...ctx,
+          accounts: [],
+        }));
+        return;
+      }
+      const accounts = await WalletService.getAccounts(
+        profileId,
+        contextValue.activeNetwork?.networkId,
+      );
+      setContextValue((ctx) => ({
+        ...ctx,
+        accounts,
+      }));
+    },
+    [contextValue.activeNetwork?.networkId],
+  );
 
   const retrieveKeysets = useCallback(async (profileId: string) => {
     const keysets = await accountRepository.getKeysetsByProfileId(profileId);
@@ -155,7 +168,12 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
         await session.reset();
       }
       await session.set('profileId', profile.uuid);
-      const accounts = await WalletService.getAccounts(profile.uuid);
+      const accounts = contextValue.activeNetwork?.networkId
+        ? await WalletService.getAccounts(
+            profile.uuid,
+            contextValue.activeNetwork?.networkId,
+          )
+        : [];
       const keysets = await accountRepository.getKeysetsByProfileId(
         profile.uuid,
       );
@@ -208,7 +226,14 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     if (contextValue.profile?.uuid) {
       syncAllAccounts(contextValue.profile?.uuid);
     }
-  }, [contextValue.profile]);
+  }, [contextValue.profile, contextValue.activeNetwork?.networkId]);
+
+  useEffect(() => {
+    if (contextValue.profile?.uuid) {
+      console.log('retrieving accounts');
+      retrieveAccounts(contextValue.profile.uuid);
+    }
+  }, [contextValue.activeNetwork?.networkId]);
 
   return (
     <WalletContext.Provider

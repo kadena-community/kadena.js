@@ -15,7 +15,7 @@ export function useNetwork() {
     setNetworks(networks);
     setActiveNetwork(
       // TODO: this should be persisted in the wallet
-      networks.filter((network) => network.networkId === 'testnet05')[0],
+      networks.filter((network) => network.networkId === 'testnet04')[0],
     );
   }, [setActiveNetwork]);
 

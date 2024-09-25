@@ -11,7 +11,6 @@ import type { INetworkOptions } from '@kadena/client';
 import { IPactCommand } from '@kadena/client';
 import { IPactDecimal } from '@kadena/types';
 import { IPactInt } from '@kadena/types';
-import type { IPartialPactCommand } from '@kadena/client';
 import type { ISigner } from '@kadena/client';
 import type { ISignFunction } from '@kadena/client';
 import { ITransactionDescriptor } from '@kadena/client';

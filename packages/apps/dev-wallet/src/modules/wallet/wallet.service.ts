@@ -20,8 +20,10 @@ export function getProfile(profileId: string) {
   return walletRepository.getProfile(profileId);
 }
 
-export function getAccounts(profileId: string) {
-  return accountRepository.getAccountsByProfileId(profileId);
+export async function getAccounts(profileId: string, networkId: string) {
+  return (await accountRepository.getAccountsByProfileId(profileId)).filter(
+    (a) => a.networkId === networkId,
+  );
 }
 
 export async function sign(

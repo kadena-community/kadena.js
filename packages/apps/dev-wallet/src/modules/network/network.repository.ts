@@ -90,7 +90,7 @@ export const addDefaultNetworks = async () => {
       name: 'Testnet-Next',
       hosts: [
         {
-          url: 'http://api.testnet05.chainweb.com',
+          url: 'http://api1.testnet05.chainweb.com',
           submit: true,
           read: true,
           confirm: true,

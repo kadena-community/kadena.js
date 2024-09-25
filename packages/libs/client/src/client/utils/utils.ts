@@ -64,7 +64,7 @@ export const kadenaHostGenerator = ({
         chainId,
       });
     case 'testnet05':
-      return getHostUrl('http://api.testnet05.chainweb.com')({
+      return getHostUrl('https://api1.testnet05.chainweb.com')({
         networkId,
         chainId,
       });

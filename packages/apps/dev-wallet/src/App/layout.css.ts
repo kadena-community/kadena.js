@@ -18,7 +18,7 @@ export const mainColumnStyle = style([
 ]);
 
 export const selectNetworkClass = style({
-  maxWidth: '200px',
+  minWidth: '180px',
 });
 
 export const backgroundStyle = style([
