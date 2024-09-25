@@ -12,9 +12,9 @@ import { PactNumber } from '@kadena/pactjs';
 import Debug from 'debug';
 
 import type { Network } from '@/constants/kadena';
-import { kadenaConstants } from '@/constants/kadena';
 import { env } from '@/utils/env';
 import type { INetworkData } from '@/utils/network';
+import { getApiHost } from '@/utils/network';
 
 let FAUCET_ACCOUNT = env(
   'FAUCET_USER',
@@ -91,11 +91,15 @@ export const fundCreateNewAccount = async (
     throw new Error('Failed to sign transaction');
   }
 
+  const apiHost = getApiHost({
+    api: networkDto.API,
+    networkId: networkDto.networkId,
+    chainId,
+  });
+
   transaction.sigs = [{ sig: signature.sig }];
 
-  const { submit } = createClient(
-    kadenaConstants[network as 'testnet04' | 'testnet05'].apiHost,
-  );
+  const { submit } = createClient(apiHost);
 
   if (!isSignedTransaction(transaction)) {
     throw new Error('Transaction is not signed');
