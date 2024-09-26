@@ -120,7 +120,7 @@
     "test:watch": "vitest",
     "faucet:deploy": "TASK=deploy ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
     "faucet:transfer": "TASK=transfer ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
-    "faucet:fund-new": "TASK=fund-new ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
+    "faucet:fund-create": "TASK=fund-create ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
     "faucet:fund": "TASK=fund ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
     "faucet:balance": "TASK=balance ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
     "faucet:account-details": "TASK=account-details ts-node src/scripts/deploy-faucet/deploy-faucet.ts"

@@ -38,3 +38,5 @@ export const FAUCET_GUARD_PREDICATE = 'keys-any';
 export const TASK = env('TASK') ?? 'deploy';
 
 export const INCOMING_AMOUNT: string = env('INCOMING_AMOUNT') ?? '100';
+
+export const TO_FUND_PUBLIC_KEY = env('TO_FUND_PUBLIC_KEY');

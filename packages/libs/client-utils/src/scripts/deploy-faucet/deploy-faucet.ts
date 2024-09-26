@@ -21,6 +21,7 @@ import {
   INCOMING_AMOUNT,
   PRIVATE_SIGNER,
   TASK,
+  TO_FUND_PUBLIC_KEY,
   UPGRADE,
 } from './deploy-helpers/constants';
 import { read, transaction } from './deploy-helpers/tx-helpers';
@@ -89,9 +90,9 @@ async function requestNewFund() {
     console.log('testing contract');
     const test = await send(
       fundNewAccountOnTestnetCommand({
-        account: PRIVATE_SIGNER.PUBLIC_KEY,
+        account: `k:${TO_FUND_PUBLIC_KEY}`,
         keyset: {
-          keys: [PRIVATE_SIGNER.PUBLIC_KEY],
+          keys: [TO_FUND_PUBLIC_KEY],
           pred: 'keys-all',
         },
         faucetAccount: account as string,
@@ -118,7 +119,7 @@ async function requestFund() {
     console.log('testing contract');
     const test = await send(
       fundExistingAccountOnTestnetCommand({
-        account: PRIVATE_SIGNER.PUBLIC_KEY,
+        account: `k:${TO_FUND_PUBLIC_KEY}`,
         faucetAccount: account as string,
         amount: 10,
         chainId: chainId,
