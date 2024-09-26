@@ -5,10 +5,16 @@ config({
   path: [join(__dirname, './.faucet.env'), join(__dirname, './.env')],
 });
 
-export const env = (key: string) => {
-  if (process.env[key] === undefined) {
+export const env = (
+  key: string,
+  defaultValue: undefined | string = undefined,
+) => {
+  if (
+    (process.env[key] === undefined || process.env[key] === '') &&
+    defaultValue === undefined
+  ) {
     throw new Error(`Missing environment variable: ${key}`);
   }
   // console.log(key, process.env[key]);
-  return (process.env[key] || '') as any;
+  return (process.env[key] || defaultValue) as any;
 };

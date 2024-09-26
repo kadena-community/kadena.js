@@ -5,15 +5,15 @@ export const CHAINWEB_HOST = env('CHAINWEB_HOST');
 export const NETWORK_ID = env('NETWORK_ID');
 export const CHAIN_IDS = env('CHAIN_IDS').split(',') as ChainId[];
 
-export const GAS_PAYER = {
-  ACCOUNT: env('GAS_PAYER_ACCOUNT'),
-  PUBLIC_KEY: env('GAS_PAYER_PUBLIC_KEY'),
-  SECRET_KEY: env('GAS_PAYER_SECRET_KEY'),
-};
-
 export const PRIVATE_SIGNER = {
   PUBLIC_KEY: env('PRIVATE_SIGNER_PUBLIC_KEY'),
   SECRET_KEY: env('PRIVATE_SIGNER_SECRET_KEY'),
+};
+
+export const GAS_PAYER = {
+  ACCOUNT: env('GAS_PAYER_ACCOUNT', `k:${PRIVATE_SIGNER.PUBLIC_KEY}`),
+  PUBLIC_KEY: env('GAS_PAYER_PUBLIC_KEY', PRIVATE_SIGNER.PUBLIC_KEY),
+  SECRET_KEY: env('GAS_PAYER_SECRET_KEY', PRIVATE_SIGNER.SECRET_KEY),
 };
 
 export const DEBUG_MODE =
@@ -37,6 +37,9 @@ export const FAUCET_GUARD_PREDICATE = 'keys-any';
 
 export const TASK = env('TASK') ?? 'deploy';
 
-export const INCOMING_AMOUNT: string = env('INCOMING_AMOUNT') ?? '100';
+export const INCOMING_AMOUNT: string = env('INCOMING_AMOUNT', '100');
 
-export const TO_FUND_PUBLIC_KEY = env('TO_FUND_PUBLIC_KEY');
+export const TO_FUND_PUBLIC_KEY = env(
+  'TO_FUND_PUBLIC_KEY',
+  PRIVATE_SIGNER.PUBLIC_KEY,
+);
