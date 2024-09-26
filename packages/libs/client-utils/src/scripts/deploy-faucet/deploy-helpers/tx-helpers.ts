@@ -34,9 +34,7 @@ export const transaction =
           ...(chainId && { chainId }),
         }),
         setNetworkId(NETWORK_ID),
-        noSender
-          ? {}
-          : addSigner(GAS_PAYER.PUBLIC_KEY, (signFor) => [signFor('coin.GAS')]),
+        noSender ? {} : addSigner(GAS_PAYER.PUBLIC_KEY),
       )(),
       // replace this with other sign methods if needed
       sign: createSignWithKeypair([

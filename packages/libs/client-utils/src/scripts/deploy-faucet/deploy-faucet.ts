@@ -134,7 +134,7 @@ async function requestFund() {
 
 async function transferFunds() {
   CHAIN_IDS.forEach(async (chainId) => {
-    const send = transaction(chainId);
+    const send = transaction(chainId, true);
     const local = read(chainId);
     const account = await local(
       'n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT',
@@ -174,7 +174,9 @@ async function transferFunds() {
             decimal: transferAmount,
           }),
         ]),
+        addSigner(GAS_PAYER.PUBLIC_KEY, (signFor) => [signFor('coin.GAS')]),
         setMeta({
+          senderAccount: GAS_PAYER.ACCOUNT,
           gasLimit: 2500,
         }),
       ),
