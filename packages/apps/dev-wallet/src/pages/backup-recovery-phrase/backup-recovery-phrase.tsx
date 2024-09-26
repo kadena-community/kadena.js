@@ -1,27 +1,7 @@
-import { useWallet } from '@/modules/wallet/wallet.hook';
 import { Box, Heading, Text } from '@kadena/kode-ui';
 import { Link } from 'react-router-dom';
 
-declare const PasswordCredential: {
-  new (passwordCredentialInit: { id: string; password: string }): Credential;
-};
-
 export function BackupRecoveryPhrase() {
-  const supportPasswordCredential = 'PasswordCredential' in window;
-  const wallet = useWallet();
-  const storeRecoveryPhrase: React.MouseEventHandler<HTMLAnchorElement> = (
-    e,
-  ) => {
-    e.preventDefault();
-    if (supportPasswordCredential) {
-      const passwordCredential = new PasswordCredential({
-        id: `${wallet.profile}-dev-wallet-secret`,
-        password: 'my recovery phrase',
-      });
-
-      navigator.credentials.store(passwordCredential);
-    }
-  };
 
   return (
     <>
@@ -36,18 +16,6 @@ export function BackupRecoveryPhrase() {
           Write down the phrase
         </Link>
         <br />
-        <Link to={`/backup-recovery-phrase/export-encrypted`}>
-          Export encrypted phrase
-        </Link>
-        <br />
-        {supportPasswordCredential && (
-          <>
-            <a onClick={storeRecoveryPhrase} href="#">
-              Store encrypted in password storage
-            </a>
-            <br />
-          </>
-        )}
         <Link to="/">Skip for now</Link>
       </Box>
     </>

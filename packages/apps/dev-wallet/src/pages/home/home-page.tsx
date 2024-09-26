@@ -69,7 +69,7 @@ export function HomePage() {
         </Box>
         <RecentlyUsedAccounts accounts={accounts} fungibles={fungibles} />
         <Stack className={panelClass} flexDirection={'column'} gap={'lg'}>
-          <Heading variant="h4">Activities</Heading>
+          <Heading variant="h4">Wallet Activities</Heading>
           <Stack>
             <Tabs>
               <TabItem title="Transactions">
@@ -100,7 +100,7 @@ export function RecentlyUsedAccounts({
     fungibles.find((f) => f.contract === contract)?.symbol;
   return (
     <Box className={panelClass} marginBlockStart="xs">
-      <Heading as="h4">Recently used accounts</Heading>
+      <Heading as="h4">Your accounts</Heading>
       {accounts.length ? (
         <Box marginBlockStart="md">
           <ul className={listClass}>

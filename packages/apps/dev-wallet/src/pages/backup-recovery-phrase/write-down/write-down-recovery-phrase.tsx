@@ -3,7 +3,7 @@ import {
   IHDChainweaver,
 } from '@/modules/key-source/key-source.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { Box, Button, Heading, Text } from '@kadena/kode-ui';
+import { Box, Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ConfirmRecoveryPhrase } from './confirm-recovery-phrase';
@@ -55,7 +55,7 @@ export function WriteDownRecoveryPhrase() {
   }
   return (
     <>
-      <Box margin="md">
+      <Stack flexDirection={'column'}>
         <Heading variant="h5">Write your recovery phrase down</Heading>
         <Text>
           Make sure no one is watching you; consider some malware might take
@@ -65,20 +65,28 @@ export function WriteDownRecoveryPhrase() {
           you should consider everyone with the phrase have access to your
           assets
         </Text>
+      </Stack>
+      {mnemonic.length === 0 && (
         <Button type="submit" onClick={decryptMnemonic}>
           Show Phrase
         </Button>
-        {error && <Text>{error}</Text>}
-        <Text size="small">{mnemonic}</Text>
-        <Button
-          type="submit"
-          onPress={() => {
-            setReadyForConfirmation(true);
-          }}
-        >
-          Confirm
-        </Button>
+      )}
+      {error && <Text>{error}</Text>}
+      <Box>
+        {mnemonic.split(' ').map((word, index) => (
+          <>
+            <Text key={index}>
+              {word}
+              {' '}
+            </Text>
+          </>
+        ))}
       </Box>
+      {mnemonic.length > 0 && (
+        <Button type="submit" onClick={() => setReadyForConfirmation(true)}>
+          I have stored my mnemonic key in a safe place
+        </Button>
+      )}
     </>
   );
 }
