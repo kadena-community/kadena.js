@@ -3,31 +3,40 @@ import { createSignWithKeypair } from '@kadena/client';
 import {
   addSigner,
   composePactCommand,
+  execution,
   setMeta,
   setNetworkId,
 } from '@kadena/client/fp';
 import { dirtyReadClient, submitClient } from '../../../core/client-helpers';
 import {
   CHAINWEB_HOST,
+  DEBUG_MODE,
   GAS_PAYER,
   NETWORK_ID,
   PRIVATE_SIGNER,
 } from './constants';
-const log = (tag: string) => (data: any) =>
-  console.log(tag, JSON.stringify(data, null, 2));
+
+const consoleLog = (chainId?: ChainId) => (tag: string) => (data: any) =>
+  console.log(
+    chainId ? `ch #${chainId}` : '',
+    tag,
+    JSON.stringify(data, null, 2),
+  );
 
 export const transaction =
-  (chainId?: ChainId) =>
-  (command: IPartialPactCommand | (() => IPartialPactCommand)) =>
-    submitClient({
+  (chainId?: ChainId, noSender = false) =>
+  (command: IPartialPactCommand | (() => IPartialPactCommand)) => {
+    const client = submitClient({
       host: CHAINWEB_HOST,
       defaults: composePactCommand(
         setMeta({
-          // senderAccount: GAS_PAYER.ACCOUNT,
+          ...(noSender ? {} : { senderAccount: GAS_PAYER.ACCOUNT }),
           ...(chainId && { chainId }),
         }),
         setNetworkId(NETWORK_ID),
-        // addSigner(GAS_PAYER.PUBLIC_KEY, (signFor) => [signFor('coin.GAS')]),
+        noSender
+          ? {}
+          : addSigner(GAS_PAYER.PUBLIC_KEY, (signFor) => [signFor('coin.GAS')]),
       )(),
       // replace this with other sign methods if needed
       sign: createSignWithKeypair([
@@ -41,18 +50,27 @@ export const transaction =
         },
         // add more keypairs if needed
       ]),
-    })(command)
-      .on('sign', log('command'))
-      .on('preflight', log('preflight'))
-      .on('listen', log('poll'))
-      .on('submit', log('submit'))
-      .on('poll' as any, log('request'))
-      .execute();
+    })(command);
+
+    const log = consoleLog(chainId);
+
+    if (DEBUG_MODE) {
+      client
+        .on('sign', log('command'))
+        .on('preflight', log('preflight'))
+        .on('submit', log('send'))
+        .on('listen', log('result'))
+        .on('poll' as any, log('poll'));
+    }
+
+    return client.execute();
+  };
 
 export const read =
   (chainId?: ChainId) =>
-  (command: IPartialPactCommand | (() => IPartialPactCommand)) =>
-    dirtyReadClient({
+  (command: string | IPartialPactCommand | (() => IPartialPactCommand)) => {
+    const cmd = typeof command === 'string' ? execution(command) : command;
+    return dirtyReadClient({
       host: CHAINWEB_HOST,
       defaults: composePactCommand(
         setMeta({
@@ -61,7 +79,8 @@ export const read =
         setNetworkId(NETWORK_ID),
       )(),
       // replace this with other sign methods if needed
-    })(command).execute();
+    })(cmd).execute();
+  };
 
 export const addChain = (chainId: ChainId, command: IPartialPactCommand) =>
   composePactCommand(command, setMeta({ chainId }));

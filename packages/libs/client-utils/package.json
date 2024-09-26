@@ -118,7 +118,12 @@
     "test:integration:local": "vitest run -c ./vitest.integration.config.ts",
     "test:integration:setup": "pnpm run build && ts-node src/scripts/setup-marmalade-test-env.ts",
     "test:watch": "vitest",
-    "deploy:faucet": "ts-node src/scripts/deploy-faucet/deploy-faucet.ts"
+    "faucet:deploy": "TASK=deploy ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
+    "faucet:transfer": "TASK=transfer ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
+    "faucet:fund-new": "TASK=fund-new ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
+    "faucet:fund": "TASK=fund ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
+    "faucet:balance": "TASK=balance ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
+    "faucet:account-details": "TASK=account-details ts-node src/scripts/deploy-faucet/deploy-faucet.ts"
   },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",

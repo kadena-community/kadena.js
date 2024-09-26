@@ -16,6 +16,11 @@ export const PRIVATE_SIGNER = {
   SECRET_KEY: env('PRIVATE_SIGNER_SECRET_KEY'),
 };
 
+export const DEBUG_MODE =
+  env('DEBUG_MODE') === 'true' || env('DEBUG_MODE') === '1';
+
+export const UPGRADE = env('UPGRADE') === 'true' || env('UPGRADE') === '1';
+
 export const FAUCET_ADMINS = [
   '89f0a840e3bab4c32e07b14862f0a0f414543da036ecf339d3ed7ec93fa4a41b',
   '154d6f239864c19c43ef377c03cc8df8e0d1e792a143a01423503028ce963afa',
@@ -29,3 +34,7 @@ export const FAUCET_ADMINS = [
 ];
 
 export const FAUCET_GUARD_PREDICATE = 'keys-any';
+
+export const TASK = env('TASK') ?? 'deploy';
+
+export const INCOMING_AMOUNT: string = env('INCOMING_AMOUNT') ?? '100';

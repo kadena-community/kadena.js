@@ -9,6 +9,6 @@ export const env = (key: string) => {
   if (process.env[key] === undefined) {
     throw new Error(`Missing environment variable: ${key}`);
   }
-  console.log(key, process.env[key]);
+  // console.log(key, process.env[key]);
   return (process.env[key] || '') as any;
 };

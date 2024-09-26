@@ -5,12 +5,17 @@ import {
   execution,
 } from '@kadena/client/fp';
 
-export const principalNamespaceCommand = (
-  keysetName: string,
-  pred: string,
-  keys: string[],
-  signer: string,
-) => {
+export const principalNamespaceCommand = ({
+  keysetName,
+  pred,
+  keys,
+  signer,
+}: {
+  keysetName: string;
+  pred: string;
+  keys: string[];
+  signer: string;
+}) => {
   const pactCommand = `
     (let ((ns-name (ns.create-principal-namespace (read-keyset '${keysetName}))))
       (define-namespace
