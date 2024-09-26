@@ -139,10 +139,21 @@ async function transferFunds() {
     const account = await local(
       'n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT',
     );
-    const balance = await local(`(coin.details "${account}")`);
-    const sourceBalance = await local(
-      `(coin.get-balance "k:${PRIVATE_SIGNER.PUBLIC_KEY}")`,
+    const balance = new PactNumber(
+      (await local(`(coin.get-balance "${account}")`)) as string,
+    ).toDecimal();
+
+    console.log(
+      'account',
+      await local(`(coin.get-balance "k:${PRIVATE_SIGNER.PUBLIC_KEY}")`),
     );
+
+    const sourceBalance = new PactNumber(
+      (await local(
+        `(coin.get-balance "k:${PRIVATE_SIGNER.PUBLIC_KEY}")`,
+      )) as string,
+    ).toDecimal();
+    console.log({ balance, sourceBalance, INCOMING_AMOUNT });
     const transferAmount = new PactNumber(INCOMING_AMOUNT).toDecimal();
     if (new PactNumber(sourceBalance as string).lt(INCOMING_AMOUNT)) {
       console.error(
@@ -210,7 +221,7 @@ if (TASK === 'fund') {
   });
 }
 
-if (TASK === 'fund-new') {
+if (TASK === 'fund-create') {
   requestNewFund().catch((err) => {
     console.error(err);
     process.exit(1);
