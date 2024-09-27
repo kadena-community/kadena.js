@@ -24,23 +24,21 @@ import {
   TO_FUND_PUBLIC_KEY,
   UPGRADE,
 } from './deploy-helpers/constants';
-import { read, transaction } from './deploy-helpers/tx-helpers';
+import { kadenaContext } from './deploy-helpers/tx-helpers';
+
+const kadenaChains = kadenaContext(CHAIN_IDS);
 
 async function deployFaucet() {
   const contractCode = readFileSync(
     join(__dirname, './testnet-faucet.pact'),
     'utf8',
   );
-  CHAIN_IDS.forEach(async (chainId) => {
-    const send = transaction(chainId);
-    const local = read(chainId);
+  await kadenaChains(async ({ transaction, read, chainId }) => {
     let upgrade = true;
     try {
-      // the namespace based on the keyset; if the keyset changes, sent the correct one
+      // the namespace based on the keyset; if the keyset changes, set the correct one
       const namespace = 'n_f17eb6408bb84795b1c871efa678758882a8744a';
-      const module = await local(
-        `(describe-module "${namespace}.coin-faucet")`,
-      );
+      const module = await read(`(describe-module "${namespace}.coin-faucet")`);
       console.log('chain:', chainId, module);
       upgrade = true;
       if (!UPGRADE) {
@@ -52,7 +50,7 @@ async function deployFaucet() {
     }
 
     console.log(`creating namespace on chain ${chainId}`);
-    const namespace = (await send(
+    const namespace = (await transaction(
       principalNamespaceCommand({
         keysetName: 'admin-keyset',
         pred: FAUCET_GUARD_PREDICATE,
@@ -62,7 +60,7 @@ async function deployFaucet() {
     )) as string;
     console.log('namespace', namespace);
     console.log(`deploying contract on chain ${chainId}`);
-    const result = await send(
+    const result = await transaction(
       composePactCommand(
         execution(contractCode),
         addData('init', !upgrade),
@@ -74,21 +72,20 @@ async function deployFaucet() {
         }),
       ),
     );
-    console.log('transaction result', result);
+    console.log('transaction result', chainId, result);
   });
 }
 
 async function requestNewFund() {
-  CHAIN_IDS.forEach(async (chainId) => {
-    const send = transaction(chainId, true);
-    const local = read(chainId);
-    const account = await local(
+  const kadena = kadenaContext(CHAIN_IDS);
+  await kadena(async ({ transaction, read, chainId }) => {
+    const account = await read(
       'n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT',
     );
     console.log('account', account);
     console.log(`transferring funds on chain ${chainId}`);
     console.log('testing contract');
-    const test = await send(
+    const test = await transaction(
       fundNewAccountOnTestnetCommand({
         account: `k:${TO_FUND_PUBLIC_KEY}`,
         keyset: {
@@ -102,22 +99,21 @@ async function requestNewFund() {
         signerKeys: [GAS_PAYER.PUBLIC_KEY],
         networkId: 'testnet05',
       }),
+      { noDefaultSender: true },
     );
-    console.log('test result', test);
+    console.log('fund result:', chainId, test);
   });
 }
 
 async function requestFund() {
-  CHAIN_IDS.forEach(async (chainId) => {
-    const send = transaction(chainId, true);
-    const local = read(chainId);
-    const account = (await local(
+  await kadenaChains(async ({ transaction, read, chainId }) => {
+    const account = (await read(
       'n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT',
     )) as string;
     console.log('account', account);
     console.log(`transferring funds on chain ${chainId}`);
     console.log('testing contract');
-    const test = await send(
+    const test = await transaction(
       fundExistingAccountOnTestnetCommand({
         account: `k:${TO_FUND_PUBLIC_KEY}`,
         faucetAccount: account as string,
@@ -127,29 +123,28 @@ async function requestFund() {
         signerKeys: [GAS_PAYER.PUBLIC_KEY],
         networkId: 'testnet05',
       }),
+      { noDefaultSender: true },
     );
-    console.log('test result', test);
+    console.log('fund result:', chainId, test);
   });
 }
 
 async function transferFunds() {
-  CHAIN_IDS.forEach(async (chainId) => {
-    const send = transaction(chainId, true);
-    const local = read(chainId);
-    const account = await local(
+  await kadenaChains(async ({ transaction, read, chainId }) => {
+    const account = await read(
       'n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT',
     );
     const balance = new PactNumber(
-      (await local(`(coin.get-balance "${account}")`)) as string,
+      (await read(`(coin.get-balance "${account}")`)) as string,
     ).toDecimal();
 
     console.log(
       'account',
-      await local(`(coin.get-balance "k:${PRIVATE_SIGNER.PUBLIC_KEY}")`),
+      await read(`(coin.get-balance "k:${PRIVATE_SIGNER.PUBLIC_KEY}")`),
     );
 
     const sourceBalance = new PactNumber(
-      (await local(
+      (await read(
         `(coin.get-balance "k:${PRIVATE_SIGNER.PUBLIC_KEY}")`,
       )) as string,
     ).toDecimal();
@@ -164,7 +159,7 @@ async function transferFunds() {
     console.log('balance', balance);
     console.log('account', account);
     console.log(`transferring funds on chain ${chainId}`);
-    const result = await send(
+    const result = await transaction(
       composePactCommand(
         execution(
           `(coin.transfer "k:${PRIVATE_SIGNER.PUBLIC_KEY}" n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT ${transferAmount})`,
@@ -186,9 +181,8 @@ async function transferFunds() {
 }
 
 async function getBalance() {
-  CHAIN_IDS.forEach(async (chainId) => {
-    const local = read(chainId);
-    const balance = await local(
+  await kadenaChains(async ({ read, chainId }) => {
+    const balance = await read(
       `(coin.get-balance n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT )`,
     );
     console.log(
@@ -200,9 +194,8 @@ async function getBalance() {
 }
 
 async function getAccountDetails() {
-  CHAIN_IDS.forEach(async (chainId) => {
-    const local = read(chainId);
-    const balance = await local(
+  await kadenaChains(async ({ read, chainId }) => {
+    const balance = await read(
       `(coin.details n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT )`,
     );
     console.log('chain', chainId, balance);

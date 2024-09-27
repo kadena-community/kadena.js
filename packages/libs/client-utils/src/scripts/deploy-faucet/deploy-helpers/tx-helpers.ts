@@ -23,18 +23,21 @@ const consoleLog = (chainId?: ChainId) => (tag: string) => (data: any) =>
     JSON.stringify(data, null, 2),
   );
 
-export const transaction =
-  (chainId?: ChainId, noSender = false) =>
-  (command: IPartialPactCommand | (() => IPartialPactCommand)) => {
+const transaction =
+  (chainId?: ChainId) =>
+  (
+    command: IPartialPactCommand | (() => IPartialPactCommand),
+    { noDefaultSender } = { noDefaultSender: false },
+  ) => {
     const client = submitClient({
       host: CHAINWEB_HOST,
       defaults: composePactCommand(
         setMeta({
-          ...(noSender ? {} : { senderAccount: GAS_PAYER.ACCOUNT }),
+          ...(noDefaultSender ? {} : { senderAccount: GAS_PAYER.ACCOUNT }),
           ...(chainId && { chainId }),
         }),
         setNetworkId(NETWORK_ID),
-        noSender ? {} : addSigner(GAS_PAYER.PUBLIC_KEY),
+        noDefaultSender ? {} : addSigner(GAS_PAYER.PUBLIC_KEY),
       )(),
       // replace this with other sign methods if needed
       sign: createSignWithKeypair([
@@ -64,7 +67,7 @@ export const transaction =
     return client.execute();
   };
 
-export const read =
+const read =
   (chainId?: ChainId) =>
   (command: string | IPartialPactCommand | (() => IPartialPactCommand)) => {
     const cmd = typeof command === 'string' ? execution(command) : command;
@@ -80,5 +83,39 @@ export const read =
     })(cmd).execute();
   };
 
-export const addChain = (chainId: ChainId, command: IPartialPactCommand) =>
-  composePactCommand(command, setMeta({ chainId }));
+interface IKadenaContext {
+  (
+    chainId: ChainId,
+  ): <T>(
+    cb: (fns: {
+      chainId: ChainId;
+      transaction: ReturnType<typeof transaction>;
+      read: ReturnType<typeof read>;
+    }) => Promise<T>,
+  ) => Promise<T>;
+  (
+    chainIds: ChainId[],
+  ): <T>(
+    cb: (fns: {
+      chainId: ChainId;
+      transaction: ReturnType<typeof transaction>;
+      read: ReturnType<typeof read>;
+    }) => Promise<T>,
+  ) => Promise<T[]>;
+}
+
+export const kadenaContext = ((chainIds: ChainId | ChainId[]) => async (cb) => {
+  const chains = Array.isArray(chainIds) ? chainIds : [chainIds];
+  const results = await Promise.all(
+    chains.map(async (chainId) => {
+      const transactionFn = transaction(chainId);
+      const readFn = read(chainId);
+      return cb({
+        transaction: transactionFn,
+        read: readFn,
+        chainId,
+      });
+    }),
+  );
+  return Array.isArray(chainIds) ? results : results[0];
+}) as IKadenaContext;
