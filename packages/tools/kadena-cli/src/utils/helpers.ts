@@ -165,25 +165,30 @@ const defaultNetworkSchema = z.object({
 });
 
 export const getDefaultNetworkName = async (): Promise<string | undefined> => {
-  const defaultNetworksSettingsFilePath = getNetworksSettingsFilePath();
-  if (defaultNetworksSettingsFilePath === null) return;
+  try {
+    const defaultNetworksSettingsFilePath = getNetworksSettingsFilePath();
 
-  const isDefaultNetworkAvailable = await services.filesystem.fileExists(
-    defaultNetworksSettingsFilePath,
-  );
+    if (defaultNetworksSettingsFilePath === null) return;
 
-  if (!isDefaultNetworkAvailable) return;
+    const isDefaultNetworkAvailable = await services.filesystem.fileExists(
+      defaultNetworksSettingsFilePath,
+    );
 
-  const content = await services.filesystem.readFile(
-    defaultNetworksSettingsFilePath,
-  );
+    if (!isDefaultNetworkAvailable) return;
 
-  const network = content !== null ? load(content) : null;
+    const content = await services.filesystem.readFile(
+      defaultNetworksSettingsFilePath,
+    );
 
-  const parse = defaultNetworkSchema.safeParse(network);
+    const network = content !== null ? load(content) : null;
 
-  if (parse.success) {
-    return parse.data.name;
+    const parse = defaultNetworkSchema.safeParse(network);
+
+    if (parse.success) {
+      return parse.data.name;
+    }
+  } catch (e) {
+    return undefined;
   }
 };
 

@@ -5,7 +5,6 @@ import path from 'node:path';
 import sanitize from 'sanitize-filename';
 import {
   ACCOUNT_DIR,
-  ENV_KADENA_DIR,
   HOME_KADENA_DIR,
   IS_TEST,
   WALLET_DIR,
@@ -111,6 +110,7 @@ export class ConfigService implements IConfigService {
     }
 
     // Priority 2: ENV KADENA_DIR
+    const ENV_KADENA_DIR = process.env.KADENA_DIR;
     if (ENV_KADENA_DIR !== undefined) {
       if (directoryExists(ENV_KADENA_DIR)) {
         this.directory = ENV_KADENA_DIR;
@@ -141,7 +141,6 @@ export class ConfigService implements IConfigService {
 
   public getDirectory(): string {
     if (this.directory === null) throw new KadenaError('no_kadena_directory');
-    // console.log({ directory: this.directory });
     return this.directory;
   }
 

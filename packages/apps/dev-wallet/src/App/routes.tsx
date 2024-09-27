@@ -89,11 +89,11 @@ export const Routes: FC = () => {
       >
         <Route element={<LayoutMini />}>
           <Route
-            path="/backup-recovery-phrase/:keySourceId"
+            path="/backup-recovery-phrase"
             element={<BackupRecoveryPhrase />}
           />
           <Route
-            path="/backup-recovery-phrase/:keySourceId/write-down"
+            path="/backup-recovery-phrase/write-down"
             element={<WriteDownRecoveryPhrase />}
           />
           <Route

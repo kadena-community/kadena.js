@@ -138,7 +138,6 @@ export function Keyset() {
         justifyContent={'flex-end'}
       ></Stack>
       <Box className={panelClass} marginBlockStart="xl">
-        <Heading as="h4">Your assets</Heading>
         <Box marginBlockStart={'sm'}>
           <Assets accounts={accounts} fungibles={fungibles} />
         </Box>

@@ -1,8 +1,6 @@
 import { homedir } from 'node:os';
 import { join } from 'node:path';
 
-export const ENV_KADENA_DIR = process.env.KADENA_DIR;
-
 // app executable (for development run `npm link` or use the dev command)
 export const CLINAME = 'kadena';
 export const IS_TEST = process.env.VITEST === 'true';

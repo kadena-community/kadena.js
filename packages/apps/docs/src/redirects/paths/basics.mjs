@@ -5,6 +5,11 @@ export const basicsPathUrlRedirects = [
     permanent: true,
   },
   {
+    source: '/changelogs/kadenajs',
+    destination: '/changelogs',
+    permanent: true,
+  },
+  {
     source: '/changelogs/kode-icons',
     destination: '/changelogs/kode-icons',
     permanent: true,
