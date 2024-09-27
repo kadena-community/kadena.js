@@ -89,7 +89,7 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
       { index: 'principal' },
       {
         index: 'unique-keyset',
-        indexKeyPath: ['profileId', 'principal', 'networkId'],
+        indexKeyPath: ['profileId', 'principal'],
         unique: true,
       },
     ]);
