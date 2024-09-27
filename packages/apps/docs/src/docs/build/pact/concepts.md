@@ -430,13 +430,7 @@ If a signer attaches a managed capability to their signature list, the capabilit
 
 ### Verifiers and capabilities
 
-Since Pact 4.11 ([KIP 0028](https://github.com/kadena-io/KIPs/pull/57)), capabilities can be installed by *verifiers*, which are also
-scoped to those capabilities that they install. A verifier is a named plugin external
-to Pact that, given some proof value—for example, a signature—can grant capabilities to perform some action.
-Whereas a capability can check that it was granted by some signer using 
-`(enforce-guard g)` with a keyset guard `g` including that signer, a 
-capability can check that it was granted by some verifier using 
-`(enforce-verifier 'name)`, given that `"name"` is the name of that verifier.
+Since Pact 4.11 ([KIP 0028](https://github.com/kadena-io/KIPs/pull/57)), capabilities can be installed by _verifiers_, which are also scoped to those capabilities that they install. A verifier is a named plugin external to Pact that, given some proof value—for example, a signature—can grant capabilities to perform some action. Whereas a capability can check that it was granted by some signer using `(enforce-guard g)` with a keyset guard `g` including that signer, a capability can check that it was granted by some verifier using `(enforce-verifier 'name)`, given that `"name"` is the name of that verifier.
 
 ### Capability management with a manager function
 
@@ -656,8 +650,7 @@ The following example shows how a "hash timelock" guard can be made, to implemen
 
 ### Events
 
-In Pact, [events](/build/pact/advanced#eventsh2087505209) are emitted as part of transaction execution and are included in the transaction results. 
-With events, you can monitor transaction results to determine if a specific operation occurred and prove the outcome using a simple payment verification proof.
+In Pact, [events](/build/pact/advanced#eventsh2087505209) are emitted as part of transaction execution and are included in the transaction results. With events, you can monitor transaction results to determine if a specific operation occurred and prove the outcome using a simple payment verification proof.
 
 Events are treated as capabilities because they share the following characteristics:
 
@@ -1211,7 +1204,7 @@ Pact supports a number of features to manage a module's dependencies on other Pa
 
 ### Module Hashes
 
-Once loaded, a Pact module is associated with a hash computed from the module's source code text. This module hash uniquely identifies the version of the module. Hashes are base64url-encoded BLAKE2 256-bit hashes. Module hashes can be examined with [describe-module](/reference/functions/repl-only-functions#describe-moduleh-1618399314):
+Once loaded, a Pact module is associated with a hash computed from the module's source code text. This module hash uniquely identifies the version of the module. Hashes are base64url-encoded BLAKE2 256-bit hashes. Module hashes can be examined with [describe-module](/reference/functions/database#describe-module):
 
 ```bash
 pact> (at "hash" (describe-module 'accounts))
