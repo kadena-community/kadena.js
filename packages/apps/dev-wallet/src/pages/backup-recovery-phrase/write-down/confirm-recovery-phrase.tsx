@@ -25,7 +25,7 @@ export function ConfirmRecoveryPhrase({
         <Heading variant="h5">Confirm you wrote it down</Heading>
         <form onSubmit={handleSubmit(confirm)}>
           <label htmlFor="phrase">Enter phrase in the same order</label>
-          <TextField id="phrase" {...register('phrase')} />
+          <TextField type="password" id="phrase" {...register('phrase')} />
           <Button type="submit">Confirm</Button>
         </form>
         {error && <Text>{error}</Text>}

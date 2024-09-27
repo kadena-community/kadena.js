@@ -3,14 +3,13 @@ import {
   IHDChainweaver,
 } from '@/modules/key-source/key-source.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { Box, Button, Heading, Text } from '@kadena/kode-ui';
+import { Box, Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ConfirmRecoveryPhrase } from './confirm-recovery-phrase';
 
 export function WriteDownRecoveryPhrase() {
   const { keySources, decryptSecret, askForPassword } = useWallet();
-  const { keySourceId } = useParams();
   const [mnemonic, setMnemonic] = useState('');
   const [error, setError] = useState('');
   const [readyForConfirmation, setReadyForConfirmation] = useState(false);
@@ -19,7 +18,7 @@ export function WriteDownRecoveryPhrase() {
     setError('');
     try {
       // TODO: this should check the source type of the keySource
-      const keySource = keySources.find((ks) => ks.uuid === keySourceId);
+      const keySource = keySources[0];
       if (!keySource) {
         throw new Error('Key source not found');
       }
@@ -56,7 +55,7 @@ export function WriteDownRecoveryPhrase() {
   }
   return (
     <>
-      <Box margin="md">
+      <Stack flexDirection={'column'}>
         <Heading variant="h5">Write your recovery phrase down</Heading>
         <Text>
           Make sure no one is watching you; consider some malware might take
@@ -66,21 +65,28 @@ export function WriteDownRecoveryPhrase() {
           you should consider everyone with the phrase have access to your
           assets
         </Text>
-        <Heading variant="h5">Enter your password to show the phrase</Heading>
+      </Stack>
+      {mnemonic.length === 0 && (
         <Button type="submit" onClick={decryptMnemonic}>
           Show Phrase
         </Button>
-        {error && <Text>{error}</Text>}
-        <Text size="small">{mnemonic}</Text>
-        <Button
-          type="submit"
-          onPress={() => {
-            setReadyForConfirmation(true);
-          }}
-        >
-          Confirm
-        </Button>
+      )}
+      {error && <Text>{error}</Text>}
+      <Box>
+        {mnemonic.split(' ').map((word, index) => (
+          <>
+            <Text key={index}>
+              {word}
+              {' '}
+            </Text>
+          </>
+        ))}
       </Box>
+      {mnemonic.length > 0 && (
+        <Button type="submit" onClick={() => setReadyForConfirmation(true)}>
+          I have stored my mnemonic key in a safe place
+        </Button>
+      )}
     </>
   );
 }
