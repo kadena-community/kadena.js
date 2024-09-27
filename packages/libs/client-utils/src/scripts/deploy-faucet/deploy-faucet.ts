@@ -14,12 +14,12 @@ import {
   fundNewAccountOnTestnetCommand,
 } from '../../faucet';
 import {
+  AMOUNT_TO_TRANSFER_TO_FAUCET,
   CHAIN_IDS,
   FAUCET_ADMINS,
   FAUCET_GUARD_PREDICATE,
   GAS_PAYER,
-  INCOMING_AMOUNT,
-  PRIVATE_SIGNER,
+  SENDER,
   TASK,
   TO_FUND_PUBLIC_KEY,
   UPGRADE,
@@ -55,7 +55,7 @@ async function deployFaucet() {
         keysetName: 'admin-keyset',
         pred: FAUCET_GUARD_PREDICATE,
         keys: FAUCET_ADMINS,
-        signer: PRIVATE_SIGNER.PUBLIC_KEY,
+        signer: SENDER.PUBLIC_KEY,
       }),
     )) as string;
     console.log('namespace', namespace);
@@ -66,7 +66,7 @@ async function deployFaucet() {
         addData('init', !upgrade),
         addData('coin-faucet-namespace', namespace),
         addData('coin-faucet-admin-keyset-name', `${namespace}.admin-keyset`),
-        addSigner(PRIVATE_SIGNER.PUBLIC_KEY),
+        addSigner(SENDER.PUBLIC_KEY),
         setMeta({
           gasLimit: 100000,
         }),
@@ -140,19 +140,25 @@ async function transferFunds() {
 
     console.log(
       'account',
-      await read(`(coin.get-balance "k:${PRIVATE_SIGNER.PUBLIC_KEY}")`),
+      await read(`(coin.get-balance "k:${SENDER.PUBLIC_KEY}")`),
     );
 
     const sourceBalance = new PactNumber(
-      (await read(
-        `(coin.get-balance "k:${PRIVATE_SIGNER.PUBLIC_KEY}")`,
-      )) as string,
+      (await read(`(coin.get-balance "k:${SENDER.PUBLIC_KEY}")`)) as string,
     ).toDecimal();
-    console.log({ balance, sourceBalance, INCOMING_AMOUNT });
-    const transferAmount = new PactNumber(INCOMING_AMOUNT).toDecimal();
-    if (new PactNumber(sourceBalance as string).lt(INCOMING_AMOUNT)) {
+    console.log({
+      balance,
+      sourceBalance,
+      INCOMING_AMOUNT: AMOUNT_TO_TRANSFER_TO_FAUCET,
+    });
+    const transferAmount = new PactNumber(
+      AMOUNT_TO_TRANSFER_TO_FAUCET,
+    ).toDecimal();
+    if (
+      new PactNumber(sourceBalance as string).lt(AMOUNT_TO_TRANSFER_TO_FAUCET)
+    ) {
       console.error(
-        `the account balance (${sourceBalance}) is less than requested amount (${INCOMING_AMOUNT})`,
+        `the account balance (${sourceBalance}) is less than requested amount (${AMOUNT_TO_TRANSFER_TO_FAUCET})`,
       );
       return;
     }
@@ -162,10 +168,10 @@ async function transferFunds() {
     const result = await transaction(
       composePactCommand(
         execution(
-          `(coin.transfer "k:${PRIVATE_SIGNER.PUBLIC_KEY}" n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT ${transferAmount})`,
+          `(coin.transfer "k:${SENDER.PUBLIC_KEY}" n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT ${transferAmount})`,
         ),
-        addSigner(PRIVATE_SIGNER.PUBLIC_KEY, (signFor) => [
-          signFor('coin.TRANSFER', `k:${PRIVATE_SIGNER.PUBLIC_KEY}`, account, {
+        addSigner(SENDER.PUBLIC_KEY, (signFor) => [
+          signFor('coin.TRANSFER', `k:${SENDER.PUBLIC_KEY}`, account, {
             decimal: transferAmount,
           }),
         ]),

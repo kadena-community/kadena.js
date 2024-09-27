@@ -2,7 +2,7 @@ import { config } from 'dotenv';
 import { join } from 'path';
 
 config({
-  path: [join(__dirname, './.faucet.env'), join(__dirname, './.env')],
+  path: [join(__dirname, './.env')],
 });
 
 export const env = (
@@ -15,6 +15,5 @@ export const env = (
   ) {
     throw new Error(`Missing environment variable: ${key}`);
   }
-  // console.log(key, process.env[key]);
   return (process.env[key] || defaultValue) as any;
 };

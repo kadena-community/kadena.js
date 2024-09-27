@@ -13,7 +13,7 @@ import {
   DEBUG_MODE,
   GAS_PAYER,
   NETWORK_ID,
-  PRIVATE_SIGNER,
+  SENDER,
 } from './constants';
 
 const consoleLog = (chainId?: ChainId) => (tag: string) => (data: any) =>
@@ -46,8 +46,8 @@ const transaction =
           secretKey: GAS_PAYER.SECRET_KEY,
         },
         {
-          publicKey: PRIVATE_SIGNER.PUBLIC_KEY,
-          secretKey: PRIVATE_SIGNER.SECRET_KEY,
+          publicKey: SENDER.PUBLIC_KEY,
+          secretKey: SENDER.SECRET_KEY,
         },
         // add more keypairs if needed
       ]),
