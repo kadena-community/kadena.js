@@ -56,20 +56,33 @@ export function createChainweaverService() {
       profileId: string,
       mnemonic: string,
       password: string,
+      mnemonicIsRootkey: boolean = false,
     ): Promise<IHDChainweaver> => {
-      const encryptedMnemonic = await kadenaEncrypt(
-        password,
-        mnemonic,
-        'buffer',
-      );
-      const secretId = crypto.randomUUID();
       const rootKeyId = crypto.randomUUID();
-      const encryptedRootKey = await kadenaMnemonicToRootKeypair(
-        password,
-        mnemonic,
-        'buffer',
-      );
-      await keySourceRepository.addEncryptedValue(secretId, encryptedMnemonic);
+      const secretId = crypto.randomUUID();
+
+      let encryptedRootKey;
+
+      if (mnemonicIsRootkey) {
+        // when importing from Chainweaver export file,
+        //   we have no access to the mnemonic
+        encryptedRootKey = mnemonic;
+      } else {
+        const encryptedMnemonic = await kadenaEncrypt(
+          password,
+          mnemonic,
+          'buffer',
+        );
+        encryptedRootKey = await kadenaMnemonicToRootKeypair(
+          password,
+          mnemonic,
+          'buffer',
+        );
+        await keySourceRepository.addEncryptedValue(
+          secretId,
+          encryptedMnemonic,
+        );
+      }
       await keySourceRepository.addEncryptedValue(rootKeyId, encryptedRootKey);
       const keySource: IHDChainweaver = {
         uuid: crypto.randomUUID(),
@@ -120,6 +133,7 @@ export function createChainweaverService() {
     },
 
     createKey: async (keySourceId: string, index?: number) => {
+      console.log('createKey', keySourceId, index);
       if (!context) {
         throw new Error('Wallet not unlocked');
       }

@@ -2,9 +2,10 @@ import { convertFromChainweaver } from '@/utils/chainweaver/convertFromChainweav
 import { Button, Heading, Stack } from '@kadena/kode-ui';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { createProfileFromChainweaverData } from './createProfileFromChainweaverData';
 
 type Inputs = {
-  password: string;
+  password?: string;
   exportContents: FileList;
 };
 
@@ -32,10 +33,18 @@ type OptionType<
   value: T;
   id: string;
 };
-type ImportAccount = { network: string; account: string; notes?: string };
-type ImportKeypair = { private: string; public: string; index: number };
-type ImportToken = { network: string; namespace: string | null; name: string };
-type ImportNetwork = { network: string; hosts: string[] };
+export type ImportAccount = {
+  network: string;
+  account: string;
+  notes?: string;
+};
+export type ImportKeypair = { private: string; public: string; index: number };
+export type ImportToken = {
+  network: string;
+  namespace: string | null;
+  name: string;
+};
+export type ImportNetwork = { network: string; hosts: string[] };
 type ImportRootKey = { rootkey: string };
 
 const readFile = (file: File): Promise<string> => {
@@ -52,7 +61,9 @@ const readFile = (file: File): Promise<string> => {
   });
 };
 
-export const ImportChainweaverExport: React.FC = () => {
+export const ImportChainweaverExport: React.FC<{
+  setOrigin: (pathname: string) => void;
+}> = ({ setOrigin }) => {
   const { register, handleSubmit } = useForm<Inputs>();
   const [step, setStep] = useState<'upload' | 'select' | 'password'>('upload');
   const [selectionOptions, setSelectionOptions] = useState<{
@@ -83,7 +94,7 @@ export const ImportChainweaverExport: React.FC = () => {
             ...prev.accounts,
             {
               description: `${network} - ${account}`,
-              selected: false,
+              selected: true,
               value: { network, account, notes },
               id: `${network}-${account}`,
             },
@@ -100,7 +111,7 @@ export const ImportChainweaverExport: React.FC = () => {
           ...prev.keyPairs,
           {
             description: keyPair.public,
-            selected: false,
+            selected: true,
             value: keyPair,
             id: keyPair.public,
           },
@@ -116,7 +127,7 @@ export const ImportChainweaverExport: React.FC = () => {
             ...prev.tokens,
             {
               description: `${network} - ${token.namespace === null ? '' : `${token.namespace}.`}${token.name}`,
-              selected: false,
+              selected: true,
               value: { network, ...token },
               id: `${network}-${token.namespace}-${token.name}`,
             },
@@ -132,7 +143,7 @@ export const ImportChainweaverExport: React.FC = () => {
           ...prev.networks,
           {
             description: `${network} - ${hosts.join(', ')}`,
-            selected: false,
+            selected: true,
             value: { network, hosts },
             id: network,
           },
@@ -146,7 +157,7 @@ export const ImportChainweaverExport: React.FC = () => {
         rootKey: [
           {
             description: 'Root key',
-            selected: false,
+            selected: true,
             value: { rootkey: cwData.rootKey },
             id: 'rootkey',
           },
@@ -173,36 +184,21 @@ export const ImportChainweaverExport: React.FC = () => {
     });
   };
 
-  const storeSelection = async () => {
-    const selectedAccounts = selectionOptions.accounts.filter(
-      (account) => account.selected,
-    );
-    const selectedKeyPairs = selectionOptions.keyPairs.filter(
-      (keyPair) => keyPair.selected,
-    );
-    const selectedTokens = selectionOptions.tokens.filter(
-      (token) => token.selected,
-    );
-    const selectedNetworks = selectionOptions.networks.filter(
-      (network) => network.selected,
-    );
-    const selectedRootKey = selectionOptions.rootKey.filter(
-      (rootKey) => rootKey.selected,
-    );
+  const importSelection = async (data: Inputs) => {
+    const isSelected = (n: { selected: boolean }) => n.selected;
+    const selectedKeyPairs = selectionOptions.keyPairs.filter(isSelected);
+    const selectedRootKey = selectionOptions.rootKey.filter(isSelected);
 
-    console.log('selectedAccounts', selectedAccounts);
-    console.log('selectedKeyPairs', selectedKeyPairs);
-    console.log('selectedTokens', selectedTokens);
-    console.log('selectedNetworks', selectedNetworks);
-    console.log('selectedRootKey', selectedRootKey);
-
-    // if we want to import keypairs
     if (selectedRootKey.length > 0 || selectedKeyPairs.length > 0) {
-      setStep('password');
+      // if we want to import keypairs
+      if (!(data.password && data.password.length > 0)) {
+        // and there's no password yet
+        // request a password
+        setStep('password');
+        return;
+      }
     }
-  };
 
-  const importSelectionWithPassword = async (data: Inputs) => {
     const selectedOptions = {
       accounts: selectionOptions.accounts
         .filter((account) => account.selected)
@@ -221,10 +217,21 @@ export const ImportChainweaverExport: React.FC = () => {
         .reduce((_, rootKey) => rootKey.value.rootkey, ''),
     };
 
-    console.log('password', data.password);
-    console.log('importing', selectedOptions);
-
     setSelectedOptions(selectedOptions);
+    try {
+      if (!data.password) {
+        throw new Error('No password provided');
+      }
+      await createProfileFromChainweaverData(
+        selectedOptions,
+        data.password,
+        'Chainweaver-import', // TODO: use profile from user input
+      );
+      setOrigin('/');
+    } catch (e) {
+      console.error(e);
+      // throw new Error('Failed to create profile');
+    }
   };
 
   return (
@@ -246,7 +253,8 @@ export const ImportChainweaverExport: React.FC = () => {
       )}
 
       {step === 'select' && (
-        <form onSubmit={handleSubmit(storeSelection)}>
+        <form onSubmit={handleSubmit(importSelection)}>
+          <Button type="submit">Import</Button>
           <Stack flexDirection="column">
             {Object.keys(selectionOptions).map((key) => {
               const value =
@@ -301,12 +309,11 @@ export const ImportChainweaverExport: React.FC = () => {
               );
             })}
           </Stack>
-          <Button type="submit">Import</Button>
         </form>
       )}
 
       {step === 'password' && (
-        <form onSubmit={handleSubmit(importSelectionWithPassword)}>
+        <form onSubmit={handleSubmit(importSelection)}>
           <Stack flexDirection="column">
             <label htmlFor="password">Enter your password</label>
             <input type="password" {...register('password')} />

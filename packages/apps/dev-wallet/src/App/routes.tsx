@@ -118,7 +118,7 @@ export const Routes: FC = () => {
           <Route path="/transfer" element={<TransferV2 />} />
         </Route>
       </Route>
-      <Route path="/import-chainweaver" element={<ImportChainweaverExport />} />
+      <Route path="/import-chainweaver" element={<ImportChainweaverExport setOrigin={setOrigin} />} />
       <Route path="/ready" element={<Ready />} />
       <Route path="*" element={<Heading>Not found!</Heading>} />
     </Route>,
