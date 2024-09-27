@@ -102,6 +102,12 @@
     "dev:ae:coin": "api-extractor run --local --verbose -c ./config/api-extractor-coin.json",
     "dev:ae:core": "api-extractor run --local --verbose -c ./config/api-extractor-core.json",
     "dev:postinstall": "pnpm run pactjs:generate:contract && pnpm run pactjs:generate:faucet",
+    "faucet:account-details": "TASK=account-details ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
+    "faucet:balance": "TASK=balance ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
+    "faucet:deploy": "TASK=deploy ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
+    "faucet:fund": "TASK=fund ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
+    "faucet:fund-create": "TASK=fund-create ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
+    "faucet:transfer": "TASK=transfer ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
     "format": "pnpm run /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
@@ -117,13 +123,7 @@
     "test:integration": "pnpm run test:integration:setup && vitest run -c ./vitest.integration.config.ts",
     "test:integration:local": "vitest run -c ./vitest.integration.config.ts",
     "test:integration:setup": "pnpm run build && ts-node src/scripts/setup-marmalade-test-env.ts",
-    "test:watch": "vitest",
-    "faucet:deploy": "TASK=deploy ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
-    "faucet:transfer": "TASK=transfer ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
-    "faucet:fund-create": "TASK=fund-create ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
-    "faucet:fund": "TASK=fund ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
-    "faucet:balance": "TASK=balance ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
-    "faucet:account-details": "TASK=account-details ts-node src/scripts/deploy-faucet/deploy-faucet.ts"
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",
