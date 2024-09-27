@@ -56,7 +56,7 @@ export function ImportWallet({
         <form onSubmit={handleSubmit(confirm)}>
           <Stack flexDirection="column">
             <label htmlFor="phrase">Enter the 12 word recovery phrase</label>
-            <TextField id="phrase" type="phrase" {...register('phrase')} />
+            <TextField type="password" id="phrase" {...register('phrase')} />
 
             <Box>
               <input

@@ -1,5 +1,18 @@
 # @kadena/kadena-cli
 
+## 1.3.3
+
+### Patch Changes
+
+- ad4df92: Fixed error when there is no kadena directory
+
+## 1.3.2
+
+### Patch Changes
+
+- Updated dependencies \[eb82843]
+  - @kadena/client-utils\@0.10.0
+
 ## 1.3.1
 
 ### Patch Changes

@@ -1,5 +1,25 @@
 # @kadena/marmalade-marketplace
 
+## 0.1.9
+
+### Patch Changes
+
+- Updated dependencies \[33fbaae]
+  - @kadena/kode-ui\@0.17.1
+
+## 0.1.8
+
+### Patch Changes
+
+- Updated dependencies \[80ac706]
+- Updated dependencies \[5985ccc]
+- Updated dependencies \[eb82843]
+- Updated dependencies \[767c542]
+- Updated dependencies \[eb82843]
+- Updated dependencies \[0e08d23]
+  - @kadena/kode-ui\@0.17.0
+  - @kadena/client-utils\@0.10.0
+
 ## 0.1.7
 
 ### Patch Changes

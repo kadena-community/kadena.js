@@ -1,5 +1,5 @@
-import type { IAccount, IChainAccount } from '..';
 import { creatLowChainsString, lowFaucetChains, runJob } from '..';
+import type { IAccount, IChainAccount } from '../constants';
 
 describe('faucetCron Utils', () => {
   describe('creatLowChainsString', () => {
@@ -158,14 +158,11 @@ describe('faucetCron Utils', () => {
       });
 
       await runJob();
-      expect(mocks.fetch).toBeCalledTimes(2);
+      expect(mocks.fetch).toBeCalledTimes(1);
       expect(mocks.sendErrorMessage).toBeCalledTimes(0);
       expect(mocks.sendMessage).toBeCalledTimes(0);
       expect(mocks.fetch.mock.calls[0][0]).toEqual(
         'https://graph.testnet.kadena.network/graphql',
-      );
-      expect(mocks.fetch.mock.calls[1][0]).toEqual(
-        'https://slack.com/api/chat.postMessage',
       );
     });
 
@@ -183,7 +180,7 @@ describe('faucetCron Utils', () => {
                 ],
               },
             },
-          } as IAccount;
+          } as unknown as IAccount;
         },
       });
 

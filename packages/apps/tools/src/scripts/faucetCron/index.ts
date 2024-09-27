@@ -1,6 +1,6 @@
 import type { IAccount, IChainAccount } from './constants';
 import { MINBALANCE, faucetAccount } from './constants';
-import { sendErrorMessage, sendMessage, sendPingMessage } from './messages';
+import { sendErrorMessage, sendMessage } from './messages';
 
 export const lowFaucetChains = (
   chainAccounts: IChainAccount[] | undefined,
@@ -68,7 +68,8 @@ export const runJob = async () => {
         MINBALANCE,
       ).length
     ) {
-      await sendPingMessage();
+      // atm we dont want a ping
+      // await sendPingMessage();
       return;
     }
 

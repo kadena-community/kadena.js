@@ -32,7 +32,7 @@ const config = {
     {
       label: 'Internal production packages are pinned to `workspace:*`',
       packages: ['**'],
-      dependencies: ['kadena.js', '@kadena/*'],
+      dependencies: ['@kadena/*'],
       dependencyTypes: ['prod'],
       pinVersion: 'workspace:*',
     },

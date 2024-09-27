@@ -172,9 +172,9 @@ verbose: True
 
 ```
 
-Next, populate the **example.yaml** file with the example provided below. This
-code is also included in the Pact language documentation
-[here](/reference/rest-api#api-request-formatterh-1762879533).
+Next, populate the **example.yaml** file with the example provided below. 
+This code is also included in the Pact language documentation
+[Formatting API requests in YAML](/reference/rest-api#formatting-api-requests-in-yamlh-1442205183).
 
 Copy this text, paste it into your **example.yaml** file, and save the file.
 
@@ -200,17 +200,16 @@ Here you can see 5 fields.
 | Sqlite Pragmas    | The SQLite pragmas.                                                                                                                                                                  |
 | Verbose           | Specifies whether or not you want to provide log output using true or false.                                                                                                         |
 
-### Example.yaml Details
+### Example.yaml details
 
 Navigate back to the **example.yaml** file to view the details of this code.
 
-Here you can see the code that will be running on the Pact server. In this case
-it includes the code `1 + 2`, the name `Stuart`, and the language `Pact`. You
-can also view the keyPairs for this code.
+Here you can see the code that will be running on the Pact server. 
+In this example, the file includes the code `1 + 2`, the name `Stuart`, and the language `Pact`. 
+You can also view the keyPairs for this code.
 
-This code is formatted using the **Request YAML file format** specified in the
-Pact language documentation
-[here](/reference/rest-api#request-yaml-file-formath1595040947).
+This code is formatted using the **Request file format** specified in
+[Formatting API requests in YAML](/reference/rest-api#formatting-api-requests-in-yamlh-1442205183):
 
 ```bash title=" "
 code: Transaction code
@@ -226,21 +225,12 @@ from: entity name for addressing private messages
 to: entity names for addressing private messages
 ```
 
-Here you’ll see that the format includes keys such as code, codeFile, data,
-dataFile, keyPairs, nonce, from, and to.
+As you can see, the format includes keys such as `code`, `codeFile`, `data`,
+`dataFile`, `keyPairs`, `nonce`, `from`, and `to`.
 
-Each of these have their own use case but only the **code** and **keypairs** are
-required. Looking at your example.yaml file, you can see that these 2 keys are
-included.
-
-:::info
-
-Some things to note are that if you use the data key it defaults to an empty
-object, and nonce defaults to the current date and time. Other details about
-each of these keys can be found in the
-[documentation](/reference/rest-api#request-yaml-file-formath1595040947).
-
-:::
+Only the **code** and **keypairs** are required. 
+However, if you don't specify any values for the `data` key, it defaults to an empty object.
+If you don't specify a value for the `nonce` key, it defaults to the current date and time.
 
 ## Create Log folder
 

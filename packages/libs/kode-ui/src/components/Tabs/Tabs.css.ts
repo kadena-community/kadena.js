@@ -133,7 +133,7 @@ export const tabItemClass = recipe({
           left: 0,
           right: 0,
           height: '4px', // To cover the top border of the container
-          backgroundColor: 'white',
+          backgroundColor: token('color.background.layer.default'),
         },
       },
     },
