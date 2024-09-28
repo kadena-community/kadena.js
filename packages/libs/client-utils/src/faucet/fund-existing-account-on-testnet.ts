@@ -12,6 +12,7 @@ import {
 
 import { genKeyPair } from '@kadena/cryptography-utils';
 import { submitClient } from '../core/client-helpers';
+import type { IClientConfig } from '../core/utils/helpers';
 
 interface IFundExistingAccountOnTestnetCommandInput {
   account: string;
@@ -23,6 +24,7 @@ interface IFundExistingAccountOnTestnetCommandInput {
    * compatible contract with "faucet" module
    */
   contract?: string;
+  networkId?: string;
 }
 
 /**
@@ -35,6 +37,7 @@ export const fundExistingAccountOnTestnetCommand = ({
   signerKeys,
   faucetAccount = 'c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA',
   contract = 'n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49.coin-faucet',
+  networkId = 'testnet04',
 }: IFundExistingAccountOnTestnetCommandInput) =>
   composePactCommand(
     execution(
@@ -58,20 +61,21 @@ export const fundExistingAccountOnTestnetCommand = ({
       ),
     ]),
     setMeta({ senderAccount: faucetAccount, chainId }),
-    setNetworkId('testnet04'),
+    setNetworkId(networkId),
   );
 /**
  * @alpha
  */
 export const fundExistingAccountOnTestnet = (
   inputs: Omit<IFundExistingAccountOnTestnetCommandInput, 'signerKeys'>,
+  config: Omit<IClientConfig, 'sign'>,
 ) => {
   const keyPair = genKeyPair();
   submitClient<
     PactReturnType<
       IPactModules['n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49.coin-faucet']['request-coin']
     >
-  >({ sign: createSignWithKeypair(keyPair) })(
+  >({ ...config, sign: createSignWithKeypair(keyPair) })(
     fundExistingAccountOnTestnetCommand({
       ...inputs,
       signerKeys: [keyPair.publicKey],

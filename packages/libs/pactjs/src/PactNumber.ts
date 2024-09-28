@@ -55,8 +55,22 @@ BigNumber.prototype.toPactDecimal = function toPactDecimal() {
  * @alpha
  */
 export class PactNumber extends BigNumber {
-  public constructor(value: string | number) {
-    super(value);
-    if (isNaN(Number(value))) throw new Error('Value is NaN');
+  public constructor(
+    value: string | number | { int: string } | { decimal: string },
+  ) {
+    let num;
+    if (typeof value === 'object') {
+      if ('int' in value) {
+        num = value.int;
+      } else if ('decimal' in value) {
+        num = value.decimal;
+      } else {
+        throw new Error('Value is not a string or number');
+      }
+    } else {
+      num = value;
+    }
+    super(num);
+    if (isNaN(Number(num))) throw new Error('Value is NaN');
   }
 }

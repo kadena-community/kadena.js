@@ -21,7 +21,11 @@ export function isSignedCommand(command: IUnsignedCommand | ICommand): command i
 
 // @alpha
 export class PactNumber extends BigNumber {
-    constructor(value: string | number);
+    constructor(value: string | number | {
+        int: string;
+    } | {
+        decimal: string;
+    });
 }
 
 // (No @packageDocumentation comment for this package)
