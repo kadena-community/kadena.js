@@ -19,6 +19,8 @@ export const codeClass = style({
   padding: '10px',
   borderRadius: '3px',
   backgroundColor: tokens.kda.foundation.color.neutral.n10,
+  flex: '1',
+  flexBasis: 0,
 });
 
 export const labelClass = style({
@@ -84,4 +86,17 @@ export const tabClass = style({
       borderWidth: '2px',
     },
   },
+});
+
+export const txTileClass = style({
+  width: '250px',
+  height: '260px',
+  padding: '10px',
+  border: `1px solid ${vars.colors.$borderDefault}`,
+  borderRadius: '5px',
+  overflow: 'hidden',
+});
+
+export const txTileContentClass = style({
+  flexBasis: 0,
 });

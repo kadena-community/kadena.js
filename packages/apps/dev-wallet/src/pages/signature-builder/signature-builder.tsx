@@ -187,12 +187,12 @@ export function SignatureBuilder() {
                         onPress={async () => {
                           if (!unsignedTx || !profile || !activeNetwork) return;
                           const groupId = crypto.randomUUID();
-                          await transactionService.addTransaction(
-                            unsignedTx,
-                            profile.uuid,
-                            activeNetwork.networkId,
+                          await transactionService.addTransaction({
+                            transaction: unsignedTx,
+                            profileId: profile.uuid,
+                            networkId: activeNetwork.networkId,
                             groupId,
-                          );
+                          });
                           navigate(`/transaction/${groupId}`);
                         }}
                       >

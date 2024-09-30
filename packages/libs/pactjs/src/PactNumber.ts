@@ -65,7 +65,7 @@ export class PactNumber extends BigNumber {
       } else if ('decimal' in value) {
         num = value.decimal;
       } else {
-        throw new Error('Value is not a string or number');
+        throw new Error('Invalid PactNumber object');
       }
     } else {
       num = value;

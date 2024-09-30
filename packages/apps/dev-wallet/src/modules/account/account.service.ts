@@ -203,7 +203,9 @@ export const syncAccount = async (account: IAccount) => {
     .filter(({ result }) => Boolean(result))
     .map(({ chainId, result }) => ({
       chainId,
-      balance: result!.balance || '0',
+      balance: result!.balance
+        ? new PactNumber(result!.balance).toString()
+        : '0',
     }));
 
   updatedAccount.overallBalance = chainResult.reduce(
@@ -225,11 +227,16 @@ export const syncAllAccounts = async (profileId: string) => {
   return Promise.all(accounts.map(syncAccount));
 };
 
+// TODO: update this to work with both testnet04 and testnet05
 export async function fundAccount({
   address,
   keyset,
   profileId,
-}: Pick<IAccount, 'address' | 'keyset' | 'chains' | 'profileId'>) {
+  networkId = 'testnet04',
+}: Pick<
+  IAccount,
+  'address' | 'keyset' | 'chains' | 'profileId' | 'networkId'
+>) {
   if (!keyset) {
     throw new Error('No keyset found');
   }
@@ -248,6 +255,7 @@ export async function fundAccount({
         signerKeys: [randomKeyPair.publicKey],
         amount: 20,
         chainId: randomChainId as ChainId,
+        networkId,
       })
     : fundNewAccountOnTestnetCommand({
         account: address,
@@ -255,6 +263,7 @@ export async function fundAccount({
         signerKeys: [randomKeyPair.publicKey],
         amount: 20,
         chainId: randomChainId as ChainId,
+        networkId,
       });
 
   const tx = createTransaction(command());
@@ -263,12 +272,12 @@ export async function fundAccount({
 
   const groupId = crypto.randomUUID();
 
-  const result = await transactionService.addTransaction(
-    signedTx,
+  const result = await transactionService.addTransaction({
+    transaction: signedTx,
     profileId,
-    'testnet04',
+    networkId: networkId,
     groupId,
-  );
+  });
 
   const updatedTransaction = {
     ...result,

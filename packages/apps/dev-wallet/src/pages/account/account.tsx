@@ -31,26 +31,26 @@ export function AccountPage() {
         <Stack justifyContent={'space-between'}>
           <Heading variant="h2">{shorten(account.address, 15)}</Heading>
         </Stack>
-        <Link to={`/keyset/${keyset.uuid}`}>
-          <Stack flexWrap="wrap" flexDirection={'row'} gap="md">
-            <Text>{keyset.guard.pred}:</Text>
-            {keyset.guard.keys.map((key) => (
-              <Stack key={key} gap="sm" alignItems={'center'}>
-                <Text>
-                  <MonoKey />
-                </Text>
-                <Text variant="code">{shorten(key)}</Text>
-              </Stack>
-            ))}
-          </Stack>
-        </Link>
+
+        <Stack flexWrap="wrap" flexDirection={'row'} gap="md">
+          <Text>{keyset.guard.pred}:</Text>
+          {keyset.guard.keys.map((key) => (
+            <Stack key={key} gap="sm" alignItems={'center'}>
+              <Text>
+                <MonoKey />
+              </Text>
+              <Text variant="code">{shorten(key)}</Text>
+            </Stack>
+          ))}
+        </Stack>
+
         <Stack flexDirection={'row'} gap="sm" alignItems={'center'}>
           <Text>Balance:</Text>
           <Heading variant="h3">
             {account.overallBalance} {asset.symbol}
           </Heading>
         </Stack>
-        <Stack gap={'sm'}>
+        <Stack gap={'sm'} flexWrap={'wrap'}>
           {chains
             .filter(({ balance }) => +balance > 0)
             .map((chain, index, list) => (
@@ -83,7 +83,8 @@ export function AccountPage() {
           Chain Distribution
         </Button>
         {asset.contract === 'coin' &&
-          activeNetwork?.networkId === 'testnet04' && (
+          (activeNetwork?.networkId === 'testnet05' ||
+            activeNetwork?.networkId === 'testnet04') && (
             <Button
               variant="outlined"
               isCompact
@@ -96,6 +97,7 @@ export function AccountPage() {
                   keyset,
                   chains: account?.chains ?? [],
                   profileId: keyset?.profileId,
+                  networkId: activeNetwork?.networkId,
                 });
 
                 navigate(`/transaction/${groupId}`);

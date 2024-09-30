@@ -83,4 +83,19 @@ export const addDefaultNetworks = async () => {
       ],
     });
   }
+  if (!networks.find((network) => network.networkId === 'testnet05')) {
+    await networkRepository.addNetwork({
+      uuid: crypto.randomUUID(),
+      networkId: 'testnet05',
+      name: 'Testnet-Next',
+      hosts: [
+        {
+          url: 'http://api1.testnet05.chainweb.com',
+          submit: true,
+          read: true,
+          confirm: true,
+        },
+      ],
+    });
+  }
 };
