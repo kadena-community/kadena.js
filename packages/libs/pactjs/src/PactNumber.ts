@@ -58,12 +58,15 @@ export class PactNumber extends BigNumber {
   public constructor(
     value: string | number | { int: string } | { decimal: string },
   ) {
-    let num: string | number;
+    let num;
     if (typeof value === 'object') {
-      if (!('int' in value) && !('decimal' in value)) {
+      if ('int' in value) {
+        num = value.int;
+      } else if ('decimal' in value) {
+        num = value.decimal;
+      } else {
         throw new Error('Invalid PactNumber object');
       }
-      num = 'int' in value ? value.int : value.decimal;
     } else {
       num = value;
     }

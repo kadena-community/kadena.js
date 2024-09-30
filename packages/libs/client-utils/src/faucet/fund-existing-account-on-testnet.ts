@@ -12,6 +12,7 @@ import {
 
 import { genKeyPair } from '@kadena/cryptography-utils';
 import { submitClient } from '../core/client-helpers';
+import type { IClientConfig } from '../core/utils/helpers';
 
 interface IFundExistingAccountOnTestnetCommandInput {
   account: string;
@@ -67,13 +68,14 @@ export const fundExistingAccountOnTestnetCommand = ({
  */
 export const fundExistingAccountOnTestnet = (
   inputs: Omit<IFundExistingAccountOnTestnetCommandInput, 'signerKeys'>,
+  config: Omit<IClientConfig, 'sign'>,
 ) => {
   const keyPair = genKeyPair();
   submitClient<
     PactReturnType<
       IPactModules['n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49.coin-faucet']['request-coin']
     >
-  >({ sign: createSignWithKeypair(keyPair) })(
+  >({ ...config, sign: createSignWithKeypair(keyPair) })(
     fundExistingAccountOnTestnetCommand({
       ...inputs,
       signerKeys: [keyPair.publicKey],
