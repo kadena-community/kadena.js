@@ -1,4 +1,5 @@
 import { IDBService, dbService } from '@/modules/db/db.service';
+import { execInSequence } from '@/utils/helpers';
 import { BuiltInPredicate, ChainId } from '@kadena/client';
 
 export interface Fungible {
@@ -93,11 +94,11 @@ const createAccountRepository = ({
       );
       return accounts;
     },
-    async getAccountsByProfileId(profileId: string) {
+    async getAccountsByProfileId(profileId: string, networkId: string) {
       const accounts: IAccount[] = await getAll(
         'account',
-        profileId,
-        'profileId',
+        IDBKeyRange.only([profileId, networkId]),
+        'profile-network',
       );
       return Promise.all(accounts.map(appendKeyset));
     },
@@ -117,7 +118,7 @@ export const chainIds = [...Array(20).keys()].map((key) => `${key}` as ChainId);
 
 export const accountRepository = createAccountRepository(dbService);
 
-export async function addDefaultFungibles() {
+export const addDefaultFungibles = execInSequence(async () => {
   const fungible = await accountRepository.getFungible('coin');
 
   if (!fungible) {
@@ -130,4 +131,4 @@ export async function addDefaultFungibles() {
     };
     await accountRepository.addFungible(coin);
   }
-}
+});

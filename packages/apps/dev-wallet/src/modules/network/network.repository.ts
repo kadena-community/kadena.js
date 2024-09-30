@@ -1,3 +1,4 @@
+import { execInSequence } from '@/utils/helpers';
 import { IDBService, dbService } from '../db/db.service';
 
 export interface INetwork {
@@ -50,7 +51,7 @@ const createNetworkRepository = ({
 };
 export const networkRepository = createNetworkRepository(dbService);
 
-export const addDefaultNetworks = async () => {
+export const addDefaultNetworks = execInSequence(async () => {
   const networks = await networkRepository.getNetworkList();
 
   if (!networks.find((network) => network.networkId === 'mainnet01')) {
@@ -98,4 +99,4 @@ export const addDefaultNetworks = async () => {
       ],
     });
   }
-};
+});

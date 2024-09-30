@@ -14,7 +14,7 @@ import { execInSequence } from '@/utils/helpers';
 // while the database is still being created; so I use execInSequence.
 const createConnectionPool = (
   cb: () => Promise<IDBDatabase>,
-  length: number = 3,
+  length: number = 1,
 ) => {
   const pool: IDBDatabase[] = [];
   let turn = 0;
@@ -49,7 +49,7 @@ const createConnectionPool = (
 };
 
 const DB_NAME = 'dev-wallet';
-const DB_VERSION = 33;
+const DB_VERSION = 34;
 
 export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
   const result = await connect(DB_NAME, DB_VERSION);
@@ -76,6 +76,7 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
       { index: 'address' },
       { index: 'keysetId' },
       { index: 'profileId' },
+      { index: 'profile-network', indexKeyPath: ['profileId', 'networkId'] },
       {
         index: 'unique-account',
         indexKeyPath: ['keysetId', 'contract', 'networkId'],
@@ -102,6 +103,9 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
         index: 'network-status',
         indexKeyPath: ['profileId', 'networkId', 'status'],
       },
+    ]);
+    create('activity', 'uuid', [
+      { index: 'profile-network', indexKeyPath: ['profileId', 'networkId'] },
     ]);
   }
 
