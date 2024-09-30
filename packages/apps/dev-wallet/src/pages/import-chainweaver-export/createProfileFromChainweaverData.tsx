@@ -59,27 +59,12 @@ export async function createProfileFromChainweaverData(
     'HD-chainweaver',
   )) as ChainweaverService;
 
-  const cwWallet = await keyManager.register(
+  const cwWallet = await keyManager.import(
     profile.uuid,
     rootKey,
     password,
-    true,
+    keyPairs,
   );
-
-  const newKeypairsMatching = keyPairs
-    .map(async (keyPair) => {
-      if (keyPair.index === 0) {
-        return true;
-      }
-      const newKey = await keyManager.createKey(cwWallet.uuid, keyPair.index);
-      return newKey.publicKey === keyPair.public;
-    })
-    .every((matching) => matching);
-
-
-  if (!newKeypairsMatching) {
-    throw new Error('Something went wrong when importing keypairs');
-  }
 
   // process accounts
   const networksList = await networkRepository.getNetworkList();

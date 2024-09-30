@@ -1,9 +1,11 @@
 import { kadenaDecrypt, kadenaEncrypt, randomBytes } from '@kadena/hd-wallet';
 
 import {
+  kadenaChangePassword,
   kadenaGenKeypair,
   kadenaMnemonicToRootKeypair,
   kadenaSign,
+  legacyKadenaGenKeypair,
 } from '@kadena/hd-wallet/chainweaver';
 
 import { IKeySource } from '@/modules/wallet/wallet.repository';
@@ -47,11 +49,128 @@ export function createChainweaverService() {
     disconnect: () => {
       context = null;
     },
+
     clearCache: () => {
       if (context) {
         context.cache = new Map();
       }
     },
+
+    import: async (
+      profileId: string,
+      rootKey: string,
+      password: string,
+      keyPairs: { index: number; private: string; public: string }[],
+    ) => {
+      // check if password is correct
+      const checkKeyPair = keyPairs[0];
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const [__private, publickey] = await legacyKadenaGenKeypair(
+        password,
+        Buffer.from(rootKey, 'hex'),
+        0x80000000 + checkKeyPair.index,
+      );
+
+      if (checkKeyPair.public !== Buffer.from(publickey).toString('hex')) {
+        throw new Error('Invalid password');
+      }
+
+      // encrypt legacy rootKey
+      const rootKeyId = crypto.randomUUID();
+      const encryptedRootKeyBuffer = await kadenaEncrypt(
+        password,
+        Buffer.from(rootKey, 'hex'),
+        'buffer',
+      );
+      await keySourceRepository.addEncryptedValue(
+        rootKeyId,
+        encryptedRootKeyBuffer,
+      );
+
+      // store keys
+      const newKeyPairs = await Promise.all(
+        keyPairs.map(async (keyPair) => {
+          const secretId = crypto.randomUUID();
+          await keySourceRepository.addEncryptedValue(
+            secretId,
+            await kadenaEncrypt(password, Buffer.from(keyPair.private, 'hex')),
+          );
+          const key = {
+            index: keyPair.index,
+            publicKey: keyPair.public,
+            secretId,
+          };
+          return key;
+        }),
+      );
+
+      // store encrypted rootKey
+      const keySource: IHDChainweaver = {
+        uuid: crypto.randomUUID(),
+        profileId,
+        source: 'HD-chainweaver',
+        keys: newKeyPairs,
+        rootKeyId,
+      };
+      await keySourceRepository.addKeySource(keySource);
+
+      return keySource;
+    },
+
+    changePassword: async (
+      keysetId: string,
+      oldPassword: string,
+      newPassword: string,
+    ) => {
+      try {
+        const keySource = await keySourceRepository.getKeySource(keysetId);
+        if (keySource.source !== 'HD-chainweaver') {
+          return;
+        }
+        const rootKey = await keySourceRepository.getEncryptedValue(
+          keySource.rootKeyId,
+        );
+
+        const newRootKey = await kadenaChangePassword(
+          rootKey,
+          oldPassword,
+          newPassword,
+        );
+
+        const newKeys = await Promise.all(
+          keySource.keys.map(async (key) => {
+            const secretKey = await keySourceRepository.getEncryptedValue(
+              key.secretId,
+            );
+
+            const newSecretKey = await kadenaChangePassword(
+              secretKey,
+              oldPassword,
+              newPassword,
+            );
+
+            return () =>
+              keySourceRepository.updateEncryptedValue(
+                key.secretId,
+                newSecretKey,
+              );
+          }),
+        );
+
+        // update all keys in repository
+        return Promise.all([
+          newKeys.map((update) => update()),
+          keySourceRepository.updateEncryptedValue(
+            keySource.rootKeyId,
+            newRootKey,
+          ),
+        ]);
+      } catch (e) {
+        throw new Error(`Error changing password
+${(e as any).message}`);
+      }
+    },
+
     register: async (
       profileId: string,
       mnemonic: string,
@@ -62,7 +181,8 @@ export function createChainweaverService() {
       const secretId = crypto.randomUUID();
 
       let encryptedRootKey;
-
+      // TODO undo mnemonicIsRootkey
+      // take from main branch
       if (mnemonicIsRootkey) {
         // when importing from Chainweaver export file,
         //   we have no access to the mnemonic
