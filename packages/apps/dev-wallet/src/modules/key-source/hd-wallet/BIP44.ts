@@ -7,7 +7,10 @@ import {
   randomBytes,
 } from '@kadena/hd-wallet';
 
-import { IKeySource } from '@/modules/wallet/wallet.repository';
+import {
+  IKeySource,
+  walletRepository,
+} from '@/modules/wallet/wallet.repository';
 import { IHDBIP44, keySourceRepository } from '../key-source.repository';
 import { getNextAvailableIndex } from './utils';
 
@@ -44,7 +47,7 @@ export function createBIP44Service() {
   ): Promise<IHDBIP44> => {
     const encryptedMnemonic = await kadenaEncrypt(password, mnemonic, 'buffer');
     const secretId = crypto.randomUUID();
-    await keySourceRepository.addEncryptedValue(secretId, encryptedMnemonic);
+    await walletRepository.addEncryptedValue(secretId, encryptedMnemonic);
     const keySource: IHDBIP44 = {
       uuid: crypto.randomUUID(),
       profileId,
@@ -59,7 +62,7 @@ export function createBIP44Service() {
   };
 
   const connect = async (password: string, keySource: IHDBIP44) => {
-    const encryptedMnemonic = await keySourceRepository.getEncryptedValue(
+    const encryptedMnemonic = await walletRepository.getEncryptedValue(
       keySource.secretId,
     );
     const decryptedMnemonicBuffer = await kadenaDecrypt(

@@ -148,6 +148,7 @@ export interface IDBService {
     storeName: string,
     value: T,
     key?: string | undefined,
+    options?: { noCreationTime: boolean },
   ) => Promise<void>;
   update: <T>(
     storeName: string,

@@ -1,3 +1,5 @@
+const CREATION_TIME_KEY = 'creationTime';
+
 export const createStore =
   (db: IDBDatabase) =>
   (
@@ -87,7 +89,23 @@ export const getAllItems =
         reject(request.error);
       };
       request.onsuccess = () => {
-        resolve(request.result ?? []);
+        const result = request.result ?? [];
+        resolve(
+          result.sort((a: T, b: T) => {
+            if (
+              a &&
+              b &&
+              typeof a === 'object' &&
+              typeof b === 'object' &&
+              CREATION_TIME_KEY in a &&
+              CREATION_TIME_KEY in b &&
+              typeof a[CREATION_TIME_KEY] === 'number' &&
+              typeof b[CREATION_TIME_KEY] === 'number'
+            )
+              return b[CREATION_TIME_KEY] - a[CREATION_TIME_KEY];
+            return 0;
+          }),
+        );
       };
     });
   };
@@ -110,11 +128,19 @@ export const getOneItem =
 
 export const addItem =
   (db: IDBDatabase) =>
-  <T>(storeName: string, value: T, key?: string) => {
+  <T>(
+    storeName: string,
+    value: T,
+    key?: string,
+    { noCreationTime } = { noCreationTime: false },
+  ) => {
     return new Promise<void>((resolve, reject) => {
       const transaction = db.transaction(storeName, 'readwrite');
       const store = transaction.objectStore(storeName);
-      const request = store.add(value, key);
+      const request = store.add(
+        noCreationTime ? value : { ...value, [CREATION_TIME_KEY]: Date.now() },
+        key,
+      );
       request.onerror = () => {
         reject(request.error);
       };

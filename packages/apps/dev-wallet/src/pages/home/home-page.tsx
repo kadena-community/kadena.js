@@ -58,7 +58,13 @@ export function HomePage() {
       <Heading as="h1">
         {profile?.name}{' '}
         <Link to={'/backup-recovery-phrase'}>
-          <Button variant="outlined" startVisual={MonoSave({})}>
+          <Button
+            variant="outlined"
+            startVisual={<MonoSave />}
+            onPress={(e: any) => {
+              e.preventDefault();
+            }}
+          >
             Backup
           </Button>
         </Link>

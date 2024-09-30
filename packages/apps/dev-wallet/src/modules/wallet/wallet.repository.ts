@@ -59,7 +59,7 @@ const createWalletRepository = ({
       key: string,
       value: string | Uint8Array,
     ): Promise<void> => {
-      return add('encryptedValue', value, key);
+      return add('encryptedValue', value, key, { noCreationTime: true });
     },
     getProfileKeySources: async (profileId: string): Promise<IKeySource[]> => {
       return getAll('keySource', profileId, 'profileId');
