@@ -1,14 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { MonoChevronRight, MonoMoreVert } from '@kadena/kode-icons/system';
 import { Button } from '../Button';
+import { Stack } from '../Layout';
 import { iconControl } from './../../storyDecorators/iconControl';
-import type { IContextMenuUtemProps } from './ContenxtMenuItem';
+import type { IContextMenuItemProps } from './ContenxtMenuItem';
 import { ContextMenuItem } from './ContenxtMenuItem';
+import type { IContextMenuProps } from './ContextMenu';
 import { ContextMenu } from './ContextMenu';
 
-const meta: Meta<IContextMenuUtemProps> = {
+const meta: Meta<IContextMenuItemProps & IContextMenuProps> = {
   title: 'Components/ContextMenu',
   parameters: {
     status: { type: 'valid' },
@@ -26,11 +28,17 @@ const meta: Meta<IContextMenuUtemProps> = {
     isDisabled: {
       type: 'boolean',
     },
+    position: {
+      control: {
+        type: 'select',
+      },
+      options: ['topLeft', 'bottomLeft', 'topRight', 'bottomRight'],
+    },
   },
 };
 
 export default meta;
-type Story = StoryObj<IContextMenuUtemProps>;
+type Story = StoryObj<IContextMenuItemProps & IContextMenuProps>;
 
 export const Primary: Story = {
   name: 'ContextMenu',
@@ -38,25 +46,32 @@ export const Primary: Story = {
     label: 'Hello world',
     endVisual: <MonoChevronRight />,
     isDisabled: false,
+    position: 'bottomLeft',
   },
-  render: (props) => {
+  render: ({ position, ...props }) => {
+    const ref = useRef<HTMLButtonElement>(null);
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleMenu = () => {
       setIsOpen((v) => !v);
     };
     return (
-      <>
-        <Button onPress={toggleMenu} endVisual={<MonoMoreVert />} />
+      <Stack
+        justifyContent="center"
+        alignItems="center"
+        width="100%"
+        style={{ height: '90dvh' }}
+      >
+        <Button ref={ref} onPress={toggleMenu} endVisual={<MonoMoreVert />} />
         {!isOpen && (
-          <ContextMenu>
-            <ContextMenuItem label="menu item" />
+          <ContextMenu parentRef={ref} position={position}>
+            <ContextMenuItem onPress={() => alert('click')} label="menu item" />
             <ContextMenuItem {...props} />
             <ContextMenuItem isDisabled label="menu item 3" />
             <ContextMenuItem label="menu item 4" />
           </ContextMenu>
         )}
-      </>
+      </Stack>
     );
   },
 };

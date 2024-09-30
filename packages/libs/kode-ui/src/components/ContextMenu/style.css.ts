@@ -17,11 +17,14 @@ export const contextMenuClass = style([
 
 export const menuItemClass = style([
   atoms({
+    display: 'flex',
+    justifyContent: 'flex-start',
     paddingInlineStart: 'md',
   }),
   {
+    border: 0,
+    backgroundColor: 'transparent',
     maxWidth: '250px',
-
     selectors: {
       '&:hover:not([data-disabled="true"])': {
         backgroundColor: token('color.neutral.n10@alpha80'),
