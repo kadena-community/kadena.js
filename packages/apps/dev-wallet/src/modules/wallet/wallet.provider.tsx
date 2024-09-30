@@ -36,12 +36,13 @@ export type ExtWalletContextType = {
 export const WalletContext = createContext<
   | [
       ExtWalletContextType,
-      (profile: IProfile | undefined) => Promise<null | {
+      setProfile: (profile: IProfile | undefined) => Promise<null | {
         profile: IProfile;
         accounts: IAccount[];
         keySources: IKeySource[];
       }>,
-      (activeNetwork: INetwork | undefined) => void,
+      setActiveNetwork: (activeNetwork: INetwork | undefined) => void,
+      syncAllAccounts: () => void,
     ]
   | null
 >(null);
@@ -233,11 +234,17 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       console.log('retrieving accounts');
       retrieveAccounts(contextValue.profile.uuid);
     }
-  }, [contextValue.activeNetwork?.networkId]);
+  }, [retrieveAccounts, contextValue.profile?.uuid]);
+
+  const syncAllAccountsCb = useCallback(() => {
+    if (contextValue.profile?.uuid) {
+      syncAllAccounts(contextValue.profile?.uuid);
+    }
+  }, [contextValue.profile?.uuid]);
 
   return (
     <WalletContext.Provider
-      value={[contextValue, setProfile, setActiveNetwork]}
+      value={[contextValue, setProfile, setActiveNetwork, syncAllAccountsCb]}
     >
       {contextValue.loaded ? children : 'Loading wallet...'}
     </WalletContext.Provider>

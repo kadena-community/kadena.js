@@ -132,11 +132,14 @@ export const unlockProfile = async (profileId: string, password: string) => {
     const secret = await walletRepository.getEncryptedValue(profile.secretId);
     const decryptedSecret = await kadenaDecrypt(password, secret);
     const { secretId } = JSON.parse(new TextDecoder().decode(decryptedSecret));
+    console.log('secretId', secretId, profile);
     if (secretId === profile.secretId) {
       return profile;
     }
     return null;
   } catch (e) {
+    console.log('error unlocking profile', e);
+    console.error(e);
     return null;
   }
 };

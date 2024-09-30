@@ -22,7 +22,7 @@ const isUnlocked = (
 };
 
 export const useWallet = () => {
-  const [context, setProfile, setActiveNetwork] =
+  const [context, setProfile, setActiveNetwork, syncAllAccounts] =
     useContext(WalletContext) ?? [];
   const prompt = usePrompt();
   if (!context || !setProfile) {
@@ -50,6 +50,7 @@ export const useWallet = () => {
 
   const unlockProfile = useCallback(
     async (profileId: string, password: string) => {
+      console.log('unlockProfile', profileId, password);
       const profile = await WalletService.unlockProfile(profileId, password);
       if (profile) {
         return setProfile(profile);
@@ -251,5 +252,6 @@ export const useWallet = () => {
     keysets: context.keysets || [],
     keySources: context.keySources || [],
     fungibles: context.fungibles || [],
+    syncAllAccounts,
   };
 };
