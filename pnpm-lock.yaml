@@ -2720,8 +2720,8 @@ importers:
         specifier: workspace:*
         version: link:../../tools/shared-config
       '@kadena/pactjs-generator':
-        specifier: 1.14.0
-        version: 1.14.0
+        specifier: workspace:*
+        version: link:../pactjs-generator
       '@kadena/types':
         specifier: workspace:*
         version: link:../types
@@ -5654,9 +5654,6 @@ packages:
 
   '@kadena/kode-ui@0.14.3':
     resolution: {integrity: sha512-QkM1tD497wBNTFUPhVunS9ZaKtYOIWduW1eZzraQxX4JawHufRBrlxvIc8whrIIMhMBWoXiUso5gxhLXQAHBkw==}
-
-  '@kadena/pactjs-generator@1.14.0':
-    resolution: {integrity: sha512-2JpZTor27ey/5qp/d4veaUCZ/l3kK2hYbEXXmXceHTVVytytayv3ljflioQO8jpoxKi25wzYq3Pn5qCWd2M8DQ==}
 
   '@kadena/pactjs@0.4.3':
     resolution: {integrity: sha512-EYqIrhw5YbGz7+10rq4QnqC9I22OfApCRfNIvrcq6Lwg0I04grFXCspgEFrgZO1ThTvG4nN0gs8DZl72HBleGw==}
@@ -23725,12 +23722,6 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       react-stately: 3.31.1(react@18.3.1)
 
-  '@kadena/pactjs-generator@1.14.0':
-    dependencies:
-      memfs: 3.5.3
-      moo: 0.5.2
-      nearley: 2.20.1
-
   '@kadena/pactjs@0.4.3':
     dependencies:
       bignumber.js: 9.1.2
@@ -25321,15 +25312,13 @@ snapshots:
     transitivePeerDependencies:
       - '@parcel/core'
 
-  '@parcel/cache@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)':
+  '@parcel/cache@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))':
     dependencies:
       '@parcel/core': 2.12.0(@swc/helpers@0.5.11)
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/logger': 2.12.0
       '@parcel/utils': 2.12.0
       lmdb: 2.8.5
-    transitivePeerDependencies:
-      - '@swc/helpers'
 
   '@parcel/codeframe@2.12.0':
     dependencies:
@@ -25389,7 +25378,7 @@ snapshots:
   '@parcel/core@2.12.0(@swc/helpers@0.5.11)':
     dependencies:
       '@mischnic/json-sourcemap': 0.1.1
-      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
+      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
       '@parcel/diagnostic': 2.12.0
       '@parcel/events': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
@@ -25804,7 +25793,7 @@ snapshots:
 
   '@parcel/types@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)':
     dependencies:
-      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
+      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
       '@parcel/diagnostic': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
