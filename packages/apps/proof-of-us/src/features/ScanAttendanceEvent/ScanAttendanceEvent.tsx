@@ -19,12 +19,14 @@ interface IProps {
   eventId: string;
   isMinted: boolean;
   handleIsMinted: Dispatch<SetStateAction<boolean>>;
+  hideDashboard?: boolean;
 }
 
 export const ScanAttendanceEvent: FC<IProps> = ({
   data,
   eventId,
   isMinted,
+  hideDashboard = false,
 }) => {
   const { claim } = useClaimAttendanceToken();
   const { account, isMounted, login } = useAccount();
@@ -107,7 +109,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
                 {startDate.toLocaleTimeString()} to claim the nft
               </MessageBlock>
               <Stack gap="md">
-                {!isMinted && account && (
+                {!isMinted && account && !hideDashboard && (
                   <Stack>
                     <Link href="/user">
                       <Button>Go to dashboard</Button>
@@ -122,7 +124,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
           <Stack flexDirection="column" gap="md">
             <MessageBlock title={''}>The event has ended.</MessageBlock>
             <Stack gap="md">
-              {!isMinted && account && (
+              {!isMinted && account && !hideDashboard && (
                 <Stack>
                   <Link href="/user">
                     <Button>Go to dashboard</Button>
@@ -134,7 +136,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
         )}
         {showClaimButton && !isMinted && (
           <Stack gap="md">
-            {account && (
+            {account && !hideDashboard && (
               <Link href="/user">
                 <Button>Go to dashboard</Button>
               </Link>
