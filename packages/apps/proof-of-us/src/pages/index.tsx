@@ -33,7 +33,8 @@ const Page: FC = () => {
   }, [account]);
 
   if (!SPIREKEYNFTID) {
-    throw new Error('there is no spirekey nft found');
+    console.warn('there is no spirekey nft found');
+    return;
   }
 
   if (!isMounted || !data) return null;
