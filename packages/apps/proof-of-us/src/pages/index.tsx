@@ -1,5 +1,4 @@
 'use client';
-import { Button } from '@/components/Button/Button';
 import { Confirmation } from '@/components/Confirmation/Confirmation';
 import { IconButton } from '@/components/IconButton/IconButton';
 import { MainLoader } from '@/components/MainLoader/MainLoader';
@@ -12,9 +11,6 @@ import { useAccount } from '@/hooks/account';
 import { useGetAttendanceToken } from '@/hooks/data/getAttendanceToken';
 import { useHasMintedAttendaceToken } from '@/hooks/data/hasMintedAttendaceToken';
 import { MonoLogin, MonoLogout } from '@kadena/kode-icons';
-import { Stack } from '@kadena/kode-ui';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 
@@ -23,7 +19,6 @@ const SPIREKEYNFTID = process.env.NEXT_PUBLIC_SPIREKEYNEFTID ?? '';
 const Page: FC = () => {
   const [isMinted, setIsMinted] = useState(false);
   const { account, isMounted, login, logout } = useAccount();
-  const router = useRouter();
   const { data, isLoading, error } = useGetAttendanceToken(SPIREKEYNFTID);
 
   const { hasMinted } = useHasMintedAttendaceToken();
