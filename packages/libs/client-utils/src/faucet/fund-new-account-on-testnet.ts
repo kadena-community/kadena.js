@@ -21,7 +21,7 @@ interface IFundNewAccountOnTestnetCommandInput {
     pred: 'keys-all' | 'keys-2' | 'keys-any';
   };
   amount: number;
-  chainId: ChainId;
+  chainId?: ChainId;
   signerKeys: string[];
   faucetAccount?: string;
   /**
@@ -70,7 +70,7 @@ export const fundNewAccountOnTestnetCommand = ({
         new PactNumber(amount).toPactDecimal(),
       ),
     ]),
-    setMeta({ senderAccount: faucetAccount, chainId }),
+    setMeta({ senderAccount: faucetAccount, ...(chainId ? { chainId } : {}) }),
     setNetworkId(networkId),
   );
 /**

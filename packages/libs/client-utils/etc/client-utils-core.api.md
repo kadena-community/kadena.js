@@ -9,7 +9,7 @@ import { IClient } from '@kadena/client';
 import { ICommand } from '@kadena/types';
 import { ICommandResult } from '@kadena/chainweb-node-client';
 import type { INetworkOptions } from '@kadena/client';
-import { IPartialPactCommand } from '@kadena/client';
+import type { IPartialPactCommand } from '@kadena/client';
 import type { ISigner } from '@kadena/client';
 import type { ISignFunction } from '@kadena/client';
 import { ITransactionDescriptor } from '@kadena/client';
@@ -26,7 +26,7 @@ export const asyncPipe: IAsyncPipe;
 //
 // @alpha (undocumented)
 export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: IClient | undefined) => (targetChainId: ChainId, targetChainGasPayer: IAccount) => {
-    (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
+    (cmd?: InitialInput | undefined): IEmitterWrapper<[{
     event: "sign";
     data: ICommand;
     }, {
@@ -366,9 +366,9 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: I
     }], T extends Promise<any> ? T : Promise<T>>);
 };
 
-// @alpha (undocumented)
+// @alpha @deprecated (undocumented)
 export const dirtyReadClient: <T = PactValue>(args_0: Omit<IClientConfig, "sign">, client?: IClient | undefined) => {
-    (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
+    (input: string | InitialInput): IEmitterWrapper<[{
     event: "dirtyRead";
     data: ICommandResult;
     }], [], T extends Promise<any> ? T : Promise<T>>;
@@ -410,7 +410,7 @@ export interface IEmitterWrapper<T extends Array<{
 
 // @alpha (undocumented)
 export const preflightClient: <T = PactValue>(args_0: IClientConfig, client?: IClient | undefined) => {
-    (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
+    (cmd?: InitialInput | undefined): IEmitterWrapper<[{
     event: "sign";
     data: IUnsignedCommand;
     }, {
@@ -434,7 +434,7 @@ export const preflightClient: <T = PactValue>(args_0: IClientConfig, client?: IC
 
 // @alpha (undocumented)
 export const queryAllChainsClient: <T = PactValue>(args_0: Omit<IClientConfig, "sign">, client?: IClient | undefined) => {
-    (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
+    (cmd?: InitialInput | undefined): IEmitterWrapper<[{
     event: "query-result";
     data: {
     result: Awaited<T>; /**
@@ -504,6 +504,18 @@ export const queryAllChainsClient: <T = PactValue>(args_0: Omit<IClientConfig, "
 };
 
 // @alpha (undocumented)
+export const readClient: <T = PactValue>(args_0: Omit<IClientConfig, "sign">, client?: IClient | undefined) => {
+    (input: string | InitialInput): IEmitterWrapper<[{
+    event: "dirtyRead";
+    data: ICommandResult;
+    }], [], T extends Promise<any> ? T : Promise<T>>;
+    from: (event: "dirtyRead", data: ICommandResult) => IEmitterWrapper<[{
+    event: "dirtyRead";
+    data: ICommandResult;
+    }], [], T extends Promise<any> ? T : Promise<T>>;
+};
+
+// @alpha (undocumented)
 export const
 /**
 * @alpha
@@ -512,7 +524,7 @@ setGlobalConfig: (cfg: Partial<IClientConfig>) => void;
 
 // @alpha (undocumented)
 export const submitClient: <T = PactValue>(args_0: IClientConfig, client?: IClient | undefined) => {
-    (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
+    (cmd?: InitialInput | undefined): IEmitterWrapper<[{
     event: "command";
     data: IUnsignedCommand;
     }, {
@@ -625,6 +637,7 @@ export const withEmitter: WithEmitter;
 
 // Warnings were encountered during analysis:
 //
+// lib/esm/core/client-helpers.d.ts:229:5 - (ae-forgotten-export) The symbol "InitialInput" needs to be exported by the entry point index.d.ts
 // lib/esm/core/utils/with-emitter.d.ts:26:5 - (ae-forgotten-export) The symbol "Any" needs to be exported by the entry point index.d.ts
 // lib/esm/core/utils/with-emitter.d.ts:45:5 - (ae-forgotten-export) The symbol "ExtractEventType" needs to be exported by the entry point index.d.ts
 // lib/esm/core/utils/with-emitter.d.ts:46:5 - (ae-forgotten-export) The symbol "StartFrom" needs to be exported by the entry point index.d.ts

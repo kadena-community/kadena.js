@@ -17,9 +17,9 @@ import type { IClientConfig } from '../core/utils/helpers';
 interface IFundExistingAccountOnTestnetCommandInput {
   account: string;
   amount: number;
-  chainId: ChainId;
   signerKeys: string[];
   faucetAccount?: string;
+  chainId?: ChainId;
   /**
    * compatible contract with "faucet" module
    */
@@ -33,8 +33,8 @@ interface IFundExistingAccountOnTestnetCommandInput {
 export const fundExistingAccountOnTestnetCommand = ({
   account,
   amount,
-  chainId,
   signerKeys,
+  chainId,
   faucetAccount = 'c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA',
   contract = 'n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49.coin-faucet',
   networkId = 'testnet04',
@@ -60,7 +60,7 @@ export const fundExistingAccountOnTestnetCommand = ({
         new PactNumber(amount).toPactDecimal(),
       ),
     ]),
-    setMeta({ senderAccount: faucetAccount, chainId }),
+    setMeta({ senderAccount: faucetAccount, ...(chainId ? { chainId } : {}) }),
     setNetworkId(networkId),
   );
 /**

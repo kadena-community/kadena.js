@@ -26,8 +26,8 @@ interface ICreateTransferInput {
     };
   };
   amount: string;
-  gasPayer?: { account: string; publicKeys: ISigner[] };
-  chainId: ChainId;
+  gasPayer?: { account: string; publicKeys: ISigner[] } | null;
+  chainId?: ChainId;
   /**
    * compatible contract with fungible-v2; default is "coin"
    */
@@ -72,8 +72,13 @@ export const transferCreateCommand = ({
         },
       ),
     ]),
-    addSigner(gasPayer.publicKeys, (signFor) => [signFor('coin.GAS')]),
-    setMeta({ senderAccount: gasPayer.account, chainId }),
+    gasPayer
+      ? addSigner(gasPayer.publicKeys, (signFor) => [signFor('coin.GAS')])
+      : {},
+    setMeta({
+      ...(gasPayer ? { senderAccount: gasPayer.account } : {}),
+      ...(chainId ? { chainId } : {}),
+    }),
   );
 
 /**

@@ -30,7 +30,8 @@
     "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/client": "workspace:*",
     "@kadena/client-utils": "workspace:*",
-    "@kadena/pactjs": "workspace:*"
+    "@kadena/pactjs": "workspace:*",
+    "@kadena/cryptography-utils": "workspace:*"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",

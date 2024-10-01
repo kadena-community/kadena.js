@@ -23,7 +23,7 @@ interface ICreateAccountCommandInput {
     pred: 'keys-all' | 'keys-2' | 'keys-any';
   };
   gasPayer: { account: string; publicKeys: ISigner[] };
-  chainId: ChainId;
+  chainId?: ChainId;
   /**
    * compatible contract with fungible-v2; default is "coin"
    */
@@ -49,7 +49,10 @@ export const createAccountCommand = ({
     ),
     addKeyset('account-guard', keyset.pred, ...keyset.keys),
     addSigner(gasPayer.publicKeys, (signFor) => [signFor('coin.GAS')]),
-    setMeta({ senderAccount: gasPayer.account, chainId }),
+    setMeta({
+      senderAccount: gasPayer.account,
+      ...(chainId ? { chainId } : {}),
+    }),
   );
 /**
  * @alpha

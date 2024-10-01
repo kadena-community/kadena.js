@@ -30,9 +30,15 @@ export const preflightClient = <T = PactValue>(
 /**
  * @alpha
  */
-export const dirtyReadClient = <T = PactValue>(
+export const readClient = <T = PactValue>(
   ...args: Parameters<typeof dirtyRead<T>>
 ) => withEmitter(dirtyRead<T>(...args));
+
+/**
+ * @alpha
+ * @deprecated
+ */
+export const dirtyReadClient = readClient;
 
 /**
  * @alpha

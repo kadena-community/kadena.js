@@ -65,7 +65,7 @@ export interface IEmit {
 export interface IClientConfig {
   host?: string | ((options: INetworkOptions) => string);
   defaults?: IPartialPactCommand;
-  sign: ISignFunction;
+  sign?: ISignFunction;
 }
 
 export interface IAccount {
@@ -151,7 +151,7 @@ export const asyncLock = () => {
   return lock;
 };
 
-type InitialInput =
+export type InitialInput =
   | Partial<IPartialPactCommand>
   | (() => Partial<IPartialPactCommand>);
 
