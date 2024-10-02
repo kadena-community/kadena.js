@@ -56,7 +56,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   const session = useSession();
 
   const retrieveNetworks = useCallback(async () => {
-    const networks = (await networkRepository.getNetworkList()) ?? [];
+    const networks = (await networkRepository.getEnabledNetworkList()) ?? [];
     setContextValue((ctx) => ({
       ...ctx,
       networks,
