@@ -15,8 +15,9 @@ import {
   Stepper,
   Text,
 } from '@kadena/kode-ui';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
+import { activityRepository } from '@/modules/activity/activity.repository';
 import {
   ITransaction,
   transactionRepository,
@@ -34,11 +35,46 @@ import {
 } from './Steps/TransferForm';
 import { createRedistributionTxs, createTransactions } from './utils';
 
-const sortById = (a: { uuid: string }, b: { uuid: string }) =>
-  a.uuid > b.uuid ? 1 : -1;
-
 export function TransferV2() {
-  const accountId = useSearchParams()[0].get('accountId');
+  const [searchParams] = useSearchParams();
+  const accountId = searchParams.get('accountId');
+  const urlActivityId = searchParams.get('activityId');
+  useEffect(() => {
+    const run = async () => {
+      if (urlActivityId) {
+        const activity = await activityRepository.getActivity(urlActivityId);
+        if (activity) {
+          const loadedTxGroups = {
+            redistribution: {
+              groupId: activity.data.txGroups.redistribution.groupId,
+              txs: await transactionRepository.getTransactionsByGroup(
+                activity.data.txGroups.redistribution.groupId,
+              ),
+            },
+            transfer: {
+              groupId: activity.data.txGroups.transfer.groupId,
+              txs: await transactionRepository.getTransactionsByGroup(
+                activity.data.txGroups.transfer.groupId,
+              ),
+            },
+          };
+          setTxGroups(loadedTxGroups);
+          const transferIsDone = loadedTxGroups.transfer.txs.every(
+            (tx) =>
+              statusPassed(tx.status, 'success') ||
+              statusPassed(tx.status, 'failure'),
+          );
+          if (transferIsDone) {
+            setStep('summary');
+          } else {
+            setStep('sign');
+          }
+        }
+      }
+    };
+    run();
+  }, [accountId, urlActivityId]);
+
   const [step, setStep] = useState<'transfer' | 'sign' | 'result' | 'summary'>(
     'transfer',
   );
@@ -50,6 +86,27 @@ export function TransferV2() {
     transfer: { groupId: '', txs: [] },
   });
 
+  const {
+    accounts: allAccounts,
+    getPublicKeyData,
+    activeNetwork,
+    profile,
+  } = useWallet();
+  function createTransaction(data: Required<Transfer>) {
+    if (!data.senderAccount || !profile) return;
+    return createTransactions({
+      account: data.senderAccount,
+      contract: data.fungible,
+      gasLimit: +data.gasLimit,
+      gasPrice: +data.gasPrice,
+      receivers: data.receivers,
+      isSafeTransfer: data.type === 'safeTransfer',
+      networkId: activeNetwork?.networkId ?? 'mainnet01',
+      profileId: profile.uuid,
+      mapKeys,
+    });
+  }
+
   const reloadTxs = async () => {
     const upd: {
       redistribution: TrG;
@@ -59,19 +116,15 @@ export function TransferV2() {
       transfer: { groupId: '', txs: [] },
     };
     if (txGroups.redistribution.groupId) {
-      const txs = (
-        await transactionRepository.getTransactionsByGroup(
-          txGroups.redistribution.groupId,
-        )
-      ).sort(sortById);
+      const txs = await transactionRepository.getTransactionsByGroup(
+        txGroups.redistribution.groupId,
+      );
       upd.redistribution = { groupId: txGroups.redistribution.groupId, txs };
     }
     if (txGroups.transfer.groupId) {
-      const txs = (
-        await transactionRepository.getTransactionsByGroup(
-          txGroups.transfer.groupId,
-        )
-      ).sort(sortById);
+      const txs = await transactionRepository.getTransactionsByGroup(
+        txGroups.transfer.groupId,
+      );
       upd.transfer = { groupId: txGroups.transfer.groupId, txs };
     }
     const transferIsDone = upd.transfer.txs.every(
@@ -84,27 +137,6 @@ export function TransferV2() {
     }
     setTxGroups(upd);
   };
-
-  const {
-    accounts: allAccounts,
-    getPublicKeyData,
-    activeNetwork,
-    profile,
-  } = useWallet();
-  function createTransaction(data: Required<Transfer>) {
-    if (!data.senderAccount || !profile) return;
-    return createTransactions({
-      account: data.senderAccount,
-      contract: data.fungibleType,
-      gasLimit: +data.gasLimit,
-      gasPrice: +data.gasPrice,
-      receivers: data.receivers,
-      isSafeTransfer: data.type === 'safeTransfer',
-      networkId: activeNetwork?.networkId ?? 'mainnet01',
-      profileId: profile.uuid,
-      mapKeys,
-    });
-  }
 
   const mapKeys = useCallback(
     (key: ISigner) => {
@@ -244,11 +276,12 @@ export function TransferV2() {
       {step === 'transfer' && (
         <TransferForm
           accountId={accountId}
+          activityId={urlActivityId}
           onSubmit={async (data, redistribution) => {
             const senderAccount = allAccounts.find(
-              (acc) => acc.uuid === data.account,
+              (acc) => acc.uuid === data.accountId,
             );
-            if (!senderAccount) return;
+            if (!senderAccount?.keyset?.uuid) return;
             const formData = { ...data, senderAccount };
             const getEmpty = () => ['', []] as [string, ITransaction[]];
             let redistributionGroup = getEmpty();
@@ -259,15 +292,36 @@ export function TransferV2() {
                 getEmpty();
             }
             const txGroup = (await createTransaction(formData)) ?? getEmpty();
-            setTxGroups({
+            const updatedTxGroups = {
               redistribution: {
                 groupId: redistributionGroup[0] ?? '',
-                txs: redistributionGroup[1].sort(sortById) ?? [],
+                txs: redistributionGroup[1] ?? [],
               },
               transfer: {
                 groupId: txGroup[0] ?? '',
-                txs: txGroup[1].sort(sortById) ?? [],
+                txs: txGroup[1] ?? [],
               },
+            };
+            setTxGroups(updatedTxGroups);
+            const activityId = crypto.randomUUID();
+            await activityRepository.addActivity({
+              data: {
+                transferData: data,
+                txGroups: {
+                  transfer: {
+                    groupId: updatedTxGroups.transfer.groupId,
+                  },
+                  redistribution: {
+                    groupId: updatedTxGroups.redistribution.groupId,
+                  },
+                },
+              },
+              keysetId: senderAccount.keyset?.uuid,
+              networkId: activeNetwork?.networkId ?? 'mainnet01',
+              profileId: profile?.uuid ?? '',
+              status: 'Initiated',
+              type: 'Transfer',
+              uuid: activityId,
             });
             setStep('sign');
           }}

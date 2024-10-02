@@ -1,5 +1,6 @@
 import { AutoBadge, Chain } from '@/Components/Badge/Badge';
 import { IAccount } from '@/modules/account/account.repository';
+import { activityRepository } from '@/modules/activity/activity.repository';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten } from '@/utils/helpers';
@@ -21,7 +22,7 @@ import {
   TextField,
 } from '@kadena/kode-ui';
 import { PactNumber } from '@kadena/pactjs';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { DiscoverdAccounts } from '../../transfer/components/DiscoverdAccounts';
 import { linkClass } from '../../transfer/style.css';
@@ -31,8 +32,8 @@ import { Keyset } from '../Components/keyset';
 import { CHAINS, IReceiver, discoverReceiver, getTransfers } from '../utils';
 
 export interface Transfer {
-  fungibleType: string;
-  account: string;
+  fungible: string;
+  accountId: string;
   chain: ChainId | '';
   receivers: IReceiver[];
   gasPayer: string;
@@ -51,6 +52,7 @@ export type Redistribution = {
 
 interface TransferFormProps {
   accountId?: string | null;
+  activityId?: string | null;
   onSubmit: (formData: Transfer, redistribution: Redistribution[]) => void;
 }
 
@@ -59,7 +61,11 @@ export interface TrG {
   txs: ITransaction[];
 }
 
-export function TransferForm({ accountId, onSubmit }: TransferFormProps) {
+export function TransferForm({
+  accountId,
+  onSubmit,
+  activityId,
+}: TransferFormProps) {
   const timer = useRef<NodeJS.Timeout>();
   const {
     accounts: allAccounts,
@@ -79,13 +85,14 @@ export function TransferForm({ accountId, onSubmit }: TransferFormProps) {
     register,
     watch,
     setValue,
+    reset,
     getValues,
     handleSubmit,
     formState,
   } = useForm<Transfer>({
     defaultValues: {
-      fungibleType: urlAccount?.contract ?? fungibles[0].contract,
-      account: accountId ?? '',
+      fungible: urlAccount?.contract ?? fungibles[0].contract,
+      accountId: accountId ?? '',
       chain: '',
       receivers: [
         {
@@ -114,7 +121,7 @@ export function TransferForm({ accountId, onSubmit }: TransferFormProps) {
     }[],
   );
   const [error, setError] = useState<string | null>(null);
-  const watchFungibleType = watch('fungibleType');
+  const watchFungibleType = watch('fungible');
 
   const filteredAccounts = useMemo(
     () =>
@@ -122,10 +129,56 @@ export function TransferForm({ accountId, onSubmit }: TransferFormProps) {
     [allAccounts, watchFungibleType],
   );
 
-  const senderAddress = watch('account');
+  useEffect(() => {
+    const run = async () => {
+      if (activityId) {
+        const activity = await activityRepository.getActivity(activityId);
+        if (accountId) {
+          throw new Error('activityId and accountId can not be used together');
+        }
+        const account = allAccounts.find(
+          (a) => a.uuid === activity.data.transferData.accountId,
+        );
+        if (activity && account) {
+          reset({
+            fungible: account.contract,
+            accountId: activity.data.transferData.accountId,
+            chain: activity.data.transferData.chain,
+            receivers: activity.data.transferData.receivers.map((receiver) => ({
+              ...receiver,
+              chunks: [],
+            })),
+            gasPayer: activity.data.transferData.gasPayer,
+            gasPrice: activity.data.transferData.gasPrice,
+            gasLimit: activity.data.transferData.gasLimit,
+            type: activity.data.transferData.type,
+            ttl: activity.data.transferData.ttl,
+          });
+          evaluateTransactions();
+          // activity.data.transferData.receivers.forEach((receiver, index) => {
+          //   discoverReceiver(
+          //     receiver.address,
+          //     activeNetwork?.networkId ?? 'mainnet01',
+          //     watchFungibleType,
+          //     mapKeys,
+          //   ).then((discoveredAccounts) => {
+          //     setValue(
+          //       `receivers.${index}.discoveredAccounts`,
+          //       discoveredAccounts,
+          //     );
+          //     setValue(`receivers.${index}.discoveryStatus`, 'done');
+          //   });
+          // });
+        }
+      }
+    };
+    run();
+  }, [activityId, reset, allAccounts, accountId]);
+
+  const senderAccountId = watch('accountId');
   const senderAccount = useMemo(
-    () => filteredAccounts.find((account) => account.uuid === senderAddress),
-    [filteredAccounts, senderAddress],
+    () => filteredAccounts.find((account) => account.uuid === senderAccountId),
+    [filteredAccounts, senderAccountId],
   );
 
   const chains = useMemo(
@@ -246,7 +299,7 @@ export function TransferForm({ accountId, onSubmit }: TransferFormProps) {
         </Stack>
         <Stack gap={'sm'} flexDirection={'column'}>
           <Controller
-            name="fungibleType"
+            name="fungible"
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
@@ -264,7 +317,7 @@ export function TransferForm({ accountId, onSubmit }: TransferFormProps) {
             )}
           />
           <Controller
-            name="account"
+            name="accountId"
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
@@ -404,7 +457,7 @@ export function TransferForm({ accountId, onSubmit }: TransferFormProps) {
                           const discoveredAccounts = await discoverReceiver(
                             rec.address,
                             activeNetwork?.networkId ?? 'mainnet01',
-                            getValues('fungibleType'),
+                            getValues('fungible'),
                             mapKeys,
                           );
 

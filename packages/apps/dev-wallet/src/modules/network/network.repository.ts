@@ -5,6 +5,7 @@ export interface INetwork {
   uuid: string;
   networkId: string;
   name?: string;
+  default?: boolean;
   hosts: Array<{
     url: string;
     submit: boolean;
@@ -74,6 +75,7 @@ export const addDefaultNetworks = execInSequence(async () => {
       uuid: crypto.randomUUID(),
       networkId: 'testnet04',
       name: 'Testnet',
+      default: true,
       hosts: [
         {
           url: 'https://api.testnet.chainweb.com',

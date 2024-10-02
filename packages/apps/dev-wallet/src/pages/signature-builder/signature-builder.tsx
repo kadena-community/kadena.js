@@ -8,7 +8,6 @@ import {
 
 import { PactCodeView } from '@/Components/PactCodeView/PactCodeView';
 import { Wizard } from '@/Components/Wizard/Wizard';
-import { useNetwork } from '@/modules/network/network.hook';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { Box, Button, Card, Heading, Text } from '@kadena/kode-ui';
@@ -75,8 +74,7 @@ export function SignatureBuilder() {
   const [capsWithoutSigners, setCapsWithoutSigners] = useState<
     ISigningRequest['caps']
   >([]);
-  const { sign, profile } = useWallet();
-  const { activeNetwork } = useNetwork();
+  const { sign, profile, activeNetwork } = useWallet();
   const navigate = useNavigate();
 
   const exec =

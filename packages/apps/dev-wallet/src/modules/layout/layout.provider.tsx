@@ -1,4 +1,5 @@
 import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
+import { useTheme } from '@kadena/kode-ui';
 import {
   createContext,
   Dispatch,
@@ -28,6 +29,8 @@ export const LayoutContext = createContext<ILayoutContext>({
 
 export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
   const { profile } = useWallet();
+  // initialize the theme
+  useTheme();
   const [layoutContext, setLayoutContext] = useState<LayoutContextType>({
     accentColor: defaultAccentColor,
   });

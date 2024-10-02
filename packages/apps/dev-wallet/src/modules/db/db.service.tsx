@@ -106,6 +106,7 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
     ]);
     create('activity', 'uuid', [
       { index: 'profile-network', indexKeyPath: ['profileId', 'networkId'] },
+      { index: 'keyset-network', indexKeyPath: ['keysetId', 'networkId'] },
     ]);
   }
 

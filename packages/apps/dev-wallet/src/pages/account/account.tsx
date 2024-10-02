@@ -4,12 +4,14 @@ import { shorten } from '@/utils/helpers';
 import { fundAccount } from '@/modules/account/account.service';
 
 import { Chain } from '@/Components/Badge/Badge';
-import { MonoKey } from '@kadena/kode-icons/system';
-import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
+import { getTransferActivities } from '@/modules/activity/activity.service';
+import { useAsync } from '@/utils/useAsync';
+import { MonoKey, MonoOpenInNew } from '@kadena/kode-icons/system';
+import { Box, Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { noStyleLinkClass } from '../home/style.css';
 import { linkClass } from '../transfer/style.css';
-import { panelClass } from './style.css';
+import { listClass, listItemClass, panelClass } from './style.css';
 
 export function AccountPage() {
   const { accountId } = useParams();
@@ -18,6 +20,10 @@ export function AccountPage() {
   const navigate = useNavigate();
   const keyset = account?.keyset;
   const asset = fungibles.find((f) => f.contract === account?.contract);
+  const [activities = []] = useAsync(getTransferActivities, [
+    account?.keyset?.uuid,
+    activeNetwork?.networkId,
+  ]);
 
   if (!account || !keyset || !asset) {
     return null;
@@ -118,9 +124,47 @@ export function AccountPage() {
           </a>
         )}
       </Stack>
-      <Stack className={panelClass}>
-        <Heading variant="h4">Account Activity</Heading>
-      </Stack>
+      {activities.length > 0 && (
+        <Stack className={panelClass} flexDirection={'column'}>
+          <Heading variant="h4">Account Activity</Heading>
+          <Box marginBlockStart="md">
+            <ul className={listClass}>
+              {activities.map((activity) => (
+                <li key={activity.uuid}>
+                  <Link
+                    to={`/transfer?activityId=${activity.uuid}`}
+                    className={noStyleLinkClass}
+                  >
+                    <Stack
+                      alignItems={'center'}
+                      className={listItemClass}
+                      gap={'xxxl'}
+                    >
+                      <Text>
+                        <Stack>
+                          <MonoOpenInNew />
+                        </Stack>
+                      </Text>
+                      <Text>{activity.type}</Text>
+
+                      <Text>{activity.data.amount}</Text>
+
+                      <Stack flex={1}>
+                        <Text>
+                          Receiver(s):{' '}
+                          {activity.data.transferData.receivers
+                            .map(({ address }) => shorten(address, 10))
+                            .join(', ')}
+                        </Text>
+                      </Stack>
+                    </Stack>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Box>
+        </Stack>
+      )}
     </Stack>
   );
 }

@@ -1,13 +1,43 @@
+import { IReceiverAccount } from '@/pages/transfer/utils';
+import { ChainId } from '@kadena/client';
 import { dbService, IDBService } from '../db/db.service';
+
+export interface TransferData {
+  accountId: string;
+  chain: ChainId | '';
+  receivers: Array<{
+    amount: string;
+    address: string;
+    chain: ChainId | '';
+    discoveredAccounts: IReceiverAccount[];
+    discoveryStatus: 'not-started' | 'in-progress' | 'done';
+    transferMax?: boolean;
+  }>;
+  gasPayer: string;
+  gasPrice: string;
+  gasLimit: string;
+  type: 'safeTransfer' | 'normalTransfer';
+  ttl: number;
+}
 
 export interface IActivity {
   uuid: string;
   profileId: string;
   networkId: string;
+  keysetId: string;
   type: 'Transfer';
   status: 'Initiated' | 'InProgress' | 'Success' | 'Failure';
-  initiator: string;
-  data: Record<string, unknown>;
+  data: {
+    transferData: TransferData;
+    txGroups: {
+      transfer: {
+        groupId: string;
+      };
+      redistribution: {
+        groupId: string;
+      };
+    };
+  };
 }
 
 const createActivityRepository = ({
@@ -30,13 +60,23 @@ const createActivityRepository = ({
         'profile-network',
       );
     },
-    addActivity: async (keySource: IActivity): Promise<void> => {
-      return add('activity', keySource);
+    getKeysetActivities: async (
+      keysetId: string,
+      networkId: string,
+    ): Promise<IActivity[]> => {
+      return getAll(
+        'activity',
+        IDBKeyRange.only([keysetId, networkId]),
+        'keyset-network',
+      );
     },
-    updateActivity: async (keySource: IActivity): Promise<void> => {
-      return update('activity', keySource);
+    addActivity: async (activity: IActivity): Promise<void> => {
+      return add('activity', activity);
+    },
+    updateActivity: async (activity: IActivity): Promise<void> => {
+      return update('activity', activity);
     },
   };
 };
 
-export const keySourceRepository = createActivityRepository(dbService);
+export const activityRepository = createActivityRepository(dbService);
