@@ -6,7 +6,6 @@ import {
   IUnsignedCommand,
 } from '@kadena/client';
 import { kadenaDecrypt, kadenaEncrypt } from '@kadena/hd-wallet';
-import { accountRepository } from '../account/account.repository';
 import { keySourceManager } from '../key-source/key-source-manager';
 import { INetwork } from '../network/network.repository';
 import {
@@ -18,12 +17,6 @@ import {
 
 export function getProfile(profileId: string) {
   return walletRepository.getProfile(profileId);
-}
-
-export async function getAccounts(profileId: string, networkId: string) {
-  return (await accountRepository.getAccountsByProfileId(profileId)).filter(
-    (a) => a.networkId === networkId,
-  );
 }
 
 export async function sign(

@@ -7,13 +7,12 @@ import {
   IDiscoveredAccount,
   accountDiscovery,
 } from '@/modules/account/account.service';
-import { useNetwork } from '@/modules/network/network.hook';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 
 const NUMBER_OF_KEYS_TO_DISCOVER = 20;
 
 export function AccountDiscovery() {
-  const { profile, keySources, unlockKeySource } = useWallet();
+  const { profile, keySources, unlockKeySource, activeNetwork } = useWallet();
   const { keySourceId } = useParams();
   const [key, setKey] = useState<IKeyItem>();
   const [discoveryStatus, setDiscoveryStatus] = useState<
@@ -22,7 +21,6 @@ export function AccountDiscovery() {
   const [accounts, setAccounts] = useState<
     Array<IDiscoveredAccount | undefined>
   >([]);
-  const { activeNetwork } = useNetwork();
 
   async function start() {
     const keySource = keySources.find((ks) => ks.uuid === keySourceId);

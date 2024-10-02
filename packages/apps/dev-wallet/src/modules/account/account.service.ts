@@ -221,8 +221,11 @@ export const syncAccount = async (account: IAccount) => {
   return updatedAccount;
 };
 
-export const syncAllAccounts = async (profileId: string) => {
-  const accounts = await accountRepository.getAccountsByProfileId(profileId);
+export const syncAllAccounts = async (profileId: string, networkId: string) => {
+  const accounts = await accountRepository.getAccountsByProfileId(
+    profileId,
+    networkId,
+  );
   console.log('syncing accounts', accounts);
   return Promise.all(accounts.map(syncAccount));
 };

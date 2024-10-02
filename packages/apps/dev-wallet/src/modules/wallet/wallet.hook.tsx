@@ -245,6 +245,7 @@ export const useWallet = () => {
     unlockKeySource,
     setActiveNetwork,
     activeNetwork: context.activeNetwork,
+    networks: context.networks,
     isUnlocked: isUnlocked(context),
     profile: context.profile,
     profileList: context.profileList ?? [],

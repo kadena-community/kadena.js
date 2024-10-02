@@ -18,9 +18,8 @@ import {
 import * as AccountService from '../account/account.service';
 import { dbService } from '../db/db.service';
 import { keySourceManager } from '../key-source/key-source-manager';
-import { INetwork } from '../network/network.repository';
+import { INetwork, networkRepository } from '../network/network.repository';
 import { IKeySource, IProfile, walletRepository } from './wallet.repository';
-import * as WalletService from './wallet.service';
 
 export type ExtWalletContextType = {
   profile?: IProfile;
@@ -31,6 +30,7 @@ export type ExtWalletContextType = {
   fungibles?: Fungible[];
   loaded?: boolean;
   activeNetwork?: INetwork | undefined;
+  networks: INetwork[];
 };
 
 export const WalletContext = createContext<
@@ -50,8 +50,21 @@ export const WalletContext = createContext<
 export const syncAllAccounts = throttle(AccountService.syncAllAccounts, 10000);
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [contextValue, setContextValue] = useState<ExtWalletContextType>({});
+  const [contextValue, setContextValue] = useState<ExtWalletContextType>({
+    networks: [],
+  });
   const session = useSession();
+
+  const retrieveNetworks = useCallback(async () => {
+    const networks = (await networkRepository.getEnabledNetworkList()) ?? [];
+    setContextValue((ctx) => ({
+      ...ctx,
+      networks,
+      activeNetwork: ctx.activeNetwork ?? networks.find((n) => n.default),
+    }));
+
+    return networks;
+  }, []);
 
   const retrieveProfileList = useCallback(async () => {
     const profileList = (await walletRepository.getAllProfiles()).map(
@@ -81,7 +94,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
         }));
         return;
       }
-      const accounts = await WalletService.getAccounts(
+      const accounts = await accountRepository.getAccountsByProfileId(
         profileId,
         contextValue.activeNetwork?.networkId,
       );
@@ -137,6 +150,10 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
             retrieveKeysets(data.profileId);
           }
           break;
+
+        case 'network':
+          retrieveNetworks();
+          break;
         default:
           break;
       }
@@ -150,6 +167,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     retrieveAccounts,
     retrieveFungibles,
     retrieveKeysets,
+    retrieveNetworks,
   ]);
 
   const setProfile = useCallback(
@@ -168,11 +186,12 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       if (!noSession) {
         await session.reset();
       }
+      const networkId = contextValue.activeNetwork?.networkId;
       await session.set('profileId', profile.uuid);
-      const accounts = contextValue.activeNetwork?.networkId
-        ? await WalletService.getAccounts(
+      const accounts = networkId
+        ? await accountRepository.getAccountsByProfileId(
             profile.uuid,
-            contextValue.activeNetwork?.networkId,
+            networkId,
           )
         : [];
       const keysets = await accountRepository.getKeysetsByProfileId(
@@ -182,7 +201,9 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
         profile.uuid,
       );
       keySourceManager.reset();
-      syncAllAccounts(profile.uuid);
+      if (networkId) {
+        syncAllAccounts(profile.uuid, networkId);
+      }
       setContextValue((ctx) => ({
         ...ctx,
         profile,
@@ -224,10 +245,21 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [retrieveFungibles]);
 
   useEffect(() => {
-    if (contextValue.profile?.uuid) {
-      syncAllAccounts(contextValue.profile?.uuid);
+    retrieveNetworks();
+  }, [retrieveNetworks]);
+
+  const syncAllAccountsCb = useCallback(() => {
+    if (contextValue.profile?.uuid && contextValue.activeNetwork?.networkId) {
+      syncAllAccounts(
+        contextValue.profile?.uuid,
+        contextValue.activeNetwork?.networkId,
+      );
     }
-  }, [contextValue.profile, contextValue.activeNetwork?.networkId]);
+  }, [contextValue.profile?.uuid, contextValue.activeNetwork?.networkId]);
+
+  useEffect(() => {
+    syncAllAccountsCb();
+  }, [syncAllAccountsCb]);
 
   useEffect(() => {
     if (contextValue.profile?.uuid) {
@@ -235,12 +267,6 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       retrieveAccounts(contextValue.profile.uuid);
     }
   }, [retrieveAccounts, contextValue.profile?.uuid]);
-
-  const syncAllAccountsCb = useCallback(() => {
-    if (contextValue.profile?.uuid) {
-      syncAllAccounts(contextValue.profile?.uuid);
-    }
-  }, [contextValue.profile?.uuid]);
 
   return (
     <WalletContext.Provider

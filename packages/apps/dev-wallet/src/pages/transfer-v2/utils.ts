@@ -278,7 +278,7 @@ export interface IReceiver {
   }[];
   discoveredAccounts: IReceiverAccount[];
   discoveryStatus: 'not-started' | 'in-progress' | 'done';
-  transferMax?: true;
+  transferMax?: boolean;
 }
 
 export const createTransactions = async ({
