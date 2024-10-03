@@ -128,6 +128,7 @@ export function AccountPage() {
               size={150}
               value={JSON.stringify({
                 address: account.address,
+                contract: account.contract,
                 guard: keyset.guard,
               })}
             />
@@ -137,6 +138,12 @@ export function AccountPage() {
               paddingBlockStart={'sm'}
               gap={'lg'}
             >
+              <Stack flexDirection={'column'} gap={'sm'}>
+                <Text>Contract</Text>
+                <Text color="emphasize" variant="code">
+                  {account.contract}
+                </Text>
+              </Stack>
               <Stack flexDirection={'column'} gap={'sm'}>
                 <Text>Address</Text>
                 <Text color="emphasize" variant="code">
@@ -175,6 +182,12 @@ export function AccountPage() {
           </Stack>
         </TabItem>
         <TabItem key="account-activity" title="Account Activity">
+          {!activities.length && (
+            <Stack flexDirection={'column'} gap={'sm'}>
+              <Text color="emphasize">No activities yet</Text>
+              <Text>The transfers from this account will be listed here</Text>
+            </Stack>
+          )}
           {activities.length > 0 && <ActivityTable activities={activities} />}
         </TabItem>
       </Tabs>
