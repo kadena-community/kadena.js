@@ -10,23 +10,8 @@ interface IProps extends PropsWithChildren {
   fundAccount: (chainId: ChainId) => Promise<void>;
 }
 export const ChainList: FC<IProps> = ({ chains, fundAccount }) => {
-  const { low, high, value } = useMemo(() => {
-    const low = chains[0].chainId;
-    const high = chains[chains.length - 1].chainId;
-
-    const value = chains.reduce((acc, val) => {
-      return acc + (val.balance ?? 0);
-    }, 0);
-
-    return { high, low, value };
-  }, [chains]);
   return (
     <Stack flex={1} flexDirection="column" width="100%" gap="sm">
-      <Stack gap="xs">
-        <Badge style="highContrast">{`Chains ${low} - ${high}`}</Badge>
-        <Badge>{`${value} KDA`}</Badge>
-      </Stack>
-
       <Stack
         as="ul"
         flexDirection="column"

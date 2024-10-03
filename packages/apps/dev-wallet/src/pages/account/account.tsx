@@ -69,7 +69,7 @@ export function AccountPage() {
       <Stack flexDirection={'column'} gap={'sm'}>
         {account.alias && <Heading variant="h3">{account.alias}</Heading>}
         <Stack justifyContent={'space-between'}>
-          <Heading variant="h2">{shorten(account.address, 15)}</Heading>
+          <Heading variant="h5">{account.address}</Heading>
         </Stack>
 
         <Stack flexDirection={'row'} gap="sm" alignItems={'center'}>
@@ -122,7 +122,7 @@ export function AccountPage() {
       </Stack>
       <Tabs>
         <TabItem key="guard" title="Details">
-          <Stack gap="xxxl">
+          <Stack gap="lg">
             <QRCode
               ecLevel="L"
               size={150}
