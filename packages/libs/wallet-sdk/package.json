@@ -42,6 +42,9 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@kadena/client": "workspace:*",
+    "@kadena/client-utils": "workspace:*",
+    "@kadena/types": "workspace:*",
     "debug": "4.3.4"
   },
   "devDependencies": {
