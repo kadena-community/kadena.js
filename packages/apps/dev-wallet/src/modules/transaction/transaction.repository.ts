@@ -26,6 +26,15 @@ export type ITransaction = {
   >;
   groupId?: string;
   blockedBy?: string;
+  continuation?: {
+    autoContinue: boolean;
+    crossChainId?: ChainId;
+    proof?: string | null;
+    continuationTxId?: string;
+    tx?: ITransaction;
+    done?: boolean;
+  };
+  purpose?: { type: string; data: Record<string, unknown> };
 } & (
   | {
       height?: number;

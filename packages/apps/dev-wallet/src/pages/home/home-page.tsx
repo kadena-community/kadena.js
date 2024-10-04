@@ -9,7 +9,18 @@ import { transactionRepository } from '@/modules/transaction/transaction.reposit
 import { getAccountName } from '@/utils/helpers';
 import { useAsync } from '@/utils/useAsync';
 import { IPactCommand } from '@kadena/client';
-import { Box, Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
+import { MonoSave } from '@kadena/kode-icons';
+import { MonoContentCopy } from '@kadena/kode-icons/system';
+
+import {
+  Box,
+  Button,
+  Heading,
+  Stack,
+  TabItem,
+  Tabs,
+  Text,
+} from '@kadena/kode-ui';
 import { Link } from 'react-router-dom';
 import { listClass } from '../account/style.css';
 import { linkClass } from '../select-profile/select-profile.css';
@@ -44,7 +55,20 @@ export function HomePage() {
   return (
     <Box gap={'lg'}>
       <Text>Welcome back</Text>
-      <Heading as="h1">{profile?.name}</Heading>
+      <Heading as="h1">
+        {profile?.name}{' '}
+        <Link to={'/backup-recovery-phrase'}>
+          <Button
+            variant="outlined"
+            startVisual={<MonoSave />}
+            onPress={(e: any) => {
+              e.preventDefault();
+            }}
+          >
+            Backup
+          </Button>
+        </Link>
+      </Heading>
       <Stack gap={'lg'} flexDirection={'column'}>
         <Box className={panelClass} marginBlockStart="xl">
           <Box marginBlockStart={'sm'}>
@@ -53,7 +77,7 @@ export function HomePage() {
         </Box>
         <RecentlyUsedAccounts accounts={accounts} fungibles={fungibles} />
         <Stack className={panelClass} flexDirection={'column'} gap={'lg'}>
-          <Heading variant="h4">Activities</Heading>
+          <Heading variant="h4">Wallet Activities</Heading>
           <Stack>
             <Tabs>
               <TabItem title="Transactions">
@@ -84,28 +108,40 @@ export function RecentlyUsedAccounts({
     fungibles.find((f) => f.contract === contract)?.symbol;
   return (
     <Box className={panelClass} marginBlockStart="xs">
-      <Heading as="h4">Recently used accounts</Heading>
+      <Heading as="h4">Your accounts</Heading>
       {accounts.length ? (
         <Box marginBlockStart="md">
           <ul className={listClass}>
-            {accounts.map(({ overallBalance, keyset, uuid, contract }) => (
-              <li key={keyset?.principal}>
-                <Link to={`/account/${uuid}`} className={noStyleLinkClass}>
-                  <ListItem>
-                    <Stack flexDirection={'column'} gap={'sm'}>
-                      <Text>
-                        {keyset?.alias || getAccountName(keyset!.principal)}
-                      </Text>
-                    </Stack>
-                    <Stack alignItems={'center'} gap={'sm'}>
-                      <Text>
-                        {overallBalance} {getSymbol(contract)}
-                      </Text>
-                    </Stack>
-                  </ListItem>
-                </Link>
-              </li>
-            ))}
+            {accounts.map(
+              ({ overallBalance, keyset, uuid, contract, address }) => (
+                <li key={keyset?.principal}>
+                  <Link to={`/account/${uuid}`} className={noStyleLinkClass}>
+                    <ListItem>
+                      <Stack flexDirection={'column'} gap={'sm'}>
+                        <Text>
+                          {keyset?.alias || getAccountName(keyset!.principal)}
+                        </Text>
+                      </Stack>
+                      <Stack alignItems={'center'} gap={'sm'}>
+                        <Text>
+                          {overallBalance} {getSymbol(contract)}
+                        </Text>
+                        <Button
+                          isCompact
+                          variant="transparent"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            navigator.clipboard.writeText(address);
+                          }}
+                        >
+                          <MonoContentCopy />
+                        </Button>
+                      </Stack>
+                    </ListItem>
+                  </Link>
+                </li>
+              ),
+            )}
           </ul>
         </Box>
       ) : null}

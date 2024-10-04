@@ -1204,7 +1204,7 @@ Pact supports a number of features to manage a module's dependencies on other Pa
 
 ### Module Hashes
 
-Once loaded, a Pact module is associated with a hash computed from the module's source code text. This module hash uniquely identifies the version of the module. Hashes are base64url-encoded BLAKE2 256-bit hashes. Module hashes can be examined with [describe-module](/reference/functions/database#describe-moduleh-1618399314):
+Once loaded, a Pact module is associated with a hash computed from the module's source code text. This module hash uniquely identifies the version of the module. Hashes are base64url-encoded BLAKE2 256-bit hashes. Module hashes can be examined with [describe-module](/reference/functions/database#describe-module):
 
 ```bash
 pact> (at "hash" (describe-module 'accounts))

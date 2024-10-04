@@ -18,9 +18,8 @@ import {
 import * as AccountService from '../account/account.service';
 import { dbService } from '../db/db.service';
 import { keySourceManager } from '../key-source/key-source-manager';
-import { INetwork } from '../network/network.repository';
+import { INetwork, networkRepository } from '../network/network.repository';
 import { IKeySource, IProfile, walletRepository } from './wallet.repository';
-import * as WalletService from './wallet.service';
 
 export type ExtWalletContextType = {
   profile?: IProfile;
@@ -31,17 +30,19 @@ export type ExtWalletContextType = {
   fungibles?: Fungible[];
   loaded?: boolean;
   activeNetwork?: INetwork | undefined;
+  networks: INetwork[];
 };
 
 export const WalletContext = createContext<
   | [
       ExtWalletContextType,
-      (profile: IProfile | undefined) => Promise<null | {
+      setProfile: (profile: IProfile | undefined) => Promise<null | {
         profile: IProfile;
         accounts: IAccount[];
         keySources: IKeySource[];
       }>,
-      (activeNetwork: INetwork | undefined) => void,
+      setActiveNetwork: (activeNetwork: INetwork | undefined) => void,
+      syncAllAccounts: () => void,
     ]
   | null
 >(null);
@@ -49,8 +50,21 @@ export const WalletContext = createContext<
 export const syncAllAccounts = throttle(AccountService.syncAllAccounts, 10000);
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [contextValue, setContextValue] = useState<ExtWalletContextType>({});
+  const [contextValue, setContextValue] = useState<ExtWalletContextType>({
+    networks: [],
+  });
   const session = useSession();
+
+  const retrieveNetworks = useCallback(async () => {
+    const networks = (await networkRepository.getEnabledNetworkList()) ?? [];
+    setContextValue((ctx) => ({
+      ...ctx,
+      networks,
+      activeNetwork: ctx.activeNetwork ?? networks.find((n) => n.default),
+    }));
+
+    return networks;
+  }, []);
 
   const retrieveProfileList = useCallback(async () => {
     const profileList = (await walletRepository.getAllProfiles()).map(
@@ -71,13 +85,26 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     return keySources;
   }, []);
 
-  const retrieveAccounts = useCallback(async (profileId: string) => {
-    const accounts = await WalletService.getAccounts(profileId);
-    setContextValue((ctx) => ({
-      ...ctx,
-      accounts,
-    }));
-  }, []);
+  const retrieveAccounts = useCallback(
+    async (profileId: string) => {
+      if (!contextValue.activeNetwork?.networkId) {
+        setContextValue((ctx) => ({
+          ...ctx,
+          accounts: [],
+        }));
+        return;
+      }
+      const accounts = await accountRepository.getAccountsByProfileId(
+        profileId,
+        contextValue.activeNetwork?.networkId,
+      );
+      setContextValue((ctx) => ({
+        ...ctx,
+        accounts,
+      }));
+    },
+    [contextValue.activeNetwork?.networkId],
+  );
 
   const retrieveKeysets = useCallback(async (profileId: string) => {
     const keysets = await accountRepository.getKeysetsByProfileId(profileId);
@@ -123,6 +150,10 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
             retrieveKeysets(data.profileId);
           }
           break;
+
+        case 'network':
+          retrieveNetworks();
+          break;
         default:
           break;
       }
@@ -136,6 +167,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     retrieveAccounts,
     retrieveFungibles,
     retrieveKeysets,
+    retrieveNetworks,
   ]);
 
   const setProfile = useCallback(
@@ -154,8 +186,14 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       if (!noSession) {
         await session.reset();
       }
+      const networkId = contextValue.activeNetwork?.networkId;
       await session.set('profileId', profile.uuid);
-      const accounts = await WalletService.getAccounts(profile.uuid);
+      const accounts = networkId
+        ? await accountRepository.getAccountsByProfileId(
+            profile.uuid,
+            networkId,
+          )
+        : [];
       const keysets = await accountRepository.getKeysetsByProfileId(
         profile.uuid,
       );
@@ -163,7 +201,9 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
         profile.uuid,
       );
       keySourceManager.reset();
-      syncAllAccounts(profile.uuid);
+      if (networkId) {
+        syncAllAccounts(profile.uuid, networkId);
+      }
       setContextValue((ctx) => ({
         ...ctx,
         profile,
@@ -204,9 +244,33 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     retrieveFungibles();
   }, [retrieveFungibles]);
 
+  useEffect(() => {
+    retrieveNetworks();
+  }, [retrieveNetworks]);
+
+  const syncAllAccountsCb = useCallback(() => {
+    if (contextValue.profile?.uuid && contextValue.activeNetwork?.networkId) {
+      syncAllAccounts(
+        contextValue.profile?.uuid,
+        contextValue.activeNetwork?.networkId,
+      );
+    }
+  }, [contextValue.profile?.uuid, contextValue.activeNetwork?.networkId]);
+
+  useEffect(() => {
+    syncAllAccountsCb();
+  }, [syncAllAccountsCb]);
+
+  useEffect(() => {
+    if (contextValue.profile?.uuid) {
+      console.log('retrieving accounts');
+      retrieveAccounts(contextValue.profile.uuid);
+    }
+  }, [retrieveAccounts, contextValue.profile?.uuid]);
+
   return (
     <WalletContext.Provider
-      value={[contextValue, setProfile, setActiveNetwork]}
+      value={[contextValue, setProfile, setActiveNetwork, syncAllAccountsCb]}
     >
       {contextValue.loaded ? children : 'Loading wallet...'}
     </WalletContext.Provider>

@@ -1,5 +1,4 @@
 import { accountRepository } from '@/modules/account/account.repository';
-import { useNetwork } from '@/modules/network/network.hook';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import {
@@ -52,9 +51,9 @@ interface SendForm {
 }
 
 export function Transfer() {
-  const { accounts, fungibles, getPublicKeyData, profile } = useWallet();
+  const { accounts, fungibles, getPublicKeyData, profile, activeNetwork } =
+    useWallet();
   const accountId = useSearchParams()[0].get('accountId');
-  const { activeNetwork } = useNetwork();
   const [receiverAccount, setReceiverAccount] =
     useState<IReceiverAccount | null>(null);
   const [discoveredReceivers, setDiscoverReceivers] = useState<
@@ -217,12 +216,12 @@ export function Transfer() {
 
     await Promise.all(
       commands.map((tx) =>
-        transactionService.addTransaction(
-          tx,
-          profile.uuid,
-          activeNetwork.networkId,
+        transactionService.addTransaction({
+          transaction: tx,
+          profileId: profile.uuid,
+          networkId: activeNetwork.networkId,
           groupId,
-        ),
+        }),
       ),
     );
 

@@ -1,4 +1,3 @@
-import { useNetwork } from '@/modules/network/network.hook';
 import {
   ITransaction,
   transactionRepository,
@@ -14,8 +13,7 @@ import { listClass, listItemClass, panelClass } from '../home/style.css';
 import { hashStyle } from './style.css';
 
 export function Transactions() {
-  const { profile } = useWallet();
-  const { activeNetwork } = useNetwork();
+  const { profile, activeNetwork } = useWallet();
   const [transactions, setTransactions] = useState<
     (ITransaction & { creationDate: number })[]
   >([]);
