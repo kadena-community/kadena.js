@@ -381,6 +381,7 @@ export const version2PathUrlRedirects = [
     destination: '/build/pact/',
     permanent: true,
   },
+  
   {
     source: '/pact/intermediate/pact-and-javascript',
     destination: '/build/pact/pact-and-javascript',
