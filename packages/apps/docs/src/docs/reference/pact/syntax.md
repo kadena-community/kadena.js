@@ -457,7 +457,7 @@ Define a step within a [defpact](/reference/syntax#defpacth1545231271) similarly
 (use MODULE HASH IMPORTS)
 ```
 
-Import an existing MODULE into a namespace. Can only be issued at the top-level, or within a module declaration. MODULE can be a string, symbol or bare atom. With HASH, validate that the imported module's hash matches HASH, failing if not. Use [describe-module](/reference/functions/repl-only-functions#describe-moduleh-1618399314) to query for the hash of a loaded module on the chain.
+Import an existing MODULE into a namespace. Can only be issued at the top-level, or within a module declaration. MODULE can be a string, symbol or bare atom. With HASH, validate that the imported module's hash matches HASH, failing if not. Use [describe-module](/reference/functions/database#describe-moduleh-1618399314) to query for the hash of a loaded module on the chain.
 
 An optional list of IMPORTS consisting of function, constant, and schema names may be supplied. When this explicit import list is present, only those names will be made available for use in the module body. If no list is supplied, then every name in the imported module will be brought into scope. When two modules are defined in the same transaction, all names will be in scope for all modules, and import behavior will be defaulted to the entire module. IMPORTS may only be empty when a module hash is also supplied. If a module hash is not supplied, IMPORTS are required to be either a non-empty list, or left undeclared.
 
