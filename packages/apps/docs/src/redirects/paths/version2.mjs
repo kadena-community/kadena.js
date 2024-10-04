@@ -377,7 +377,7 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
-    source: '/pact/beginner/rotatable-wallet',
+    source: '/build/pact/rotatable-wallet',
     destination: '/build/pact/',
     permanent: true,
   },
