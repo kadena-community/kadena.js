@@ -1,15 +1,21 @@
 import { ChainId } from '@kadena/client';
-import { Badge, Stack } from '@kadena/kode-ui';
+import { Stack } from '@kadena/kode-ui';
 import type { FC, PropsWithChildren } from 'react';
-import { useMemo } from 'react';
 import { IViewChain } from '../processChainAccounts';
 import { ChainBalance } from './ChainBalance';
 
 interface IProps extends PropsWithChildren {
   chains: IViewChain[];
   fundAccount: (chainId: ChainId) => Promise<void>;
+  editable?: boolean;
+  onItemChange?: (key: string, value: any) => void;
 }
-export const ChainList: FC<IProps> = ({ chains, fundAccount }) => {
+export const ChainList: FC<IProps> = ({
+  chains,
+  fundAccount,
+  editable,
+  onItemChange,
+}) => {
   return (
     <Stack flex={1} flexDirection="column" width="100%" gap="sm">
       <Stack
@@ -26,6 +32,8 @@ export const ChainList: FC<IProps> = ({ chains, fundAccount }) => {
             chainAccount={chainAccount}
             chainId={chainAccount.chainId}
             fundAccount={fundAccount}
+            editable={editable}
+            onItemChange={onItemChange}
           />
         ))}
       </Stack>

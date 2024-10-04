@@ -9,24 +9,19 @@ import { getTransferActivities } from '@/modules/activity/activity.service';
 import { useAsync } from '@/utils/useAsync';
 import { ChainId } from '@kadena/client';
 import { MonoKey } from '@kadena/kode-icons/system';
-import {
-  Box,
-  Button,
-  Heading,
-  Stack,
-  TabItem,
-  Tabs,
-  Text,
-} from '@kadena/kode-ui';
-import { useMemo } from 'react';
+import { Button, Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
+import { useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { noStyleLinkClass } from '../home/style.css';
+import { TxList } from '../transaction/components/TxList';
 import { linkClass } from '../transfer/style.css';
 import { ActivityTable } from './Components/ActivityTable';
+import { Redistribute } from './Components/Redistribute';
 
 export function AccountPage() {
   const { accountId } = useParams();
   const { activeNetwork, fungibles, accounts } = useWallet();
+  const [redistributionGroupId, setRedistributionGroupId] = useState<string>();
   const account = accounts.find((account) => account.uuid === accountId);
   const navigate = useNavigate();
   const keyset = account?.keyset;
@@ -174,11 +169,24 @@ export function AccountPage() {
         </TabItem>
         <TabItem key={'chain-distribution'} title="Chain Distribution">
           <Stack gap={'sm'} flexWrap={'wrap'}>
-            <AccountBalanceDistribution
-              chains={chainsBalance}
-              overallBalance={+account.overallBalance}
-              fundAccount={fundAccountHandler}
-            />
+            {!redistributionGroupId ? (
+              <AccountBalanceDistribution
+                chains={chainsBalance}
+                overallBalance={account.overallBalance}
+                fundAccount={fundAccountHandler}
+                account={account}
+                onRedistribution={(groupId) =>
+                  setRedistributionGroupId(groupId)
+                }
+              />
+            ) : (
+              <Redistribute
+                groupId={redistributionGroupId}
+                onDone={() => {
+                  setRedistributionGroupId(undefined);
+                }}
+              />
+            )}
           </Stack>
         </TabItem>
         <TabItem key="account-activity" title="Account Activity">

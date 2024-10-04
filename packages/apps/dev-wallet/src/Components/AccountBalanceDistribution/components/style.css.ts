@@ -58,9 +58,13 @@ export const chainTextSubtleClass = style([
   }),
 ]);
 
-export const chainTextDisabledClass = style({ opacity: '.2' });
+export const chainTextDisabledClass = style({ opacity: '.6' });
 export const chainTextLargeClass = style([
   atoms({
     fontSize: 'lg',
   }),
 ]);
+
+export const chainInputClass = style({
+  direction: 'rtl',
+});
