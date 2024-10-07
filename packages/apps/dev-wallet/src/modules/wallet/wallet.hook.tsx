@@ -253,6 +253,6 @@ export const useWallet = () => {
     keysets: context.keysets || [],
     keySources: context.keySources || [],
     fungibles: context.fungibles || [],
-    syncAllAccounts,
+    syncAllAccounts: () => (syncAllAccounts ? syncAllAccounts() : undefined),
   };
 };
