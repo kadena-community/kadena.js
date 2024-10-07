@@ -139,7 +139,7 @@ const isConnected = await window.ethereum.request({
 });
 ```
 
-**Response**: `CheckConnectionResponse`
+**Response**: [`CheckConnectionResponse`](#type-definitions)
 
 ---
 
@@ -159,13 +159,13 @@ const account = await window.ethereum.request({
 });
 ```
 
-**Response**: `SnapAccount`
+**Response**: [`SnapAccount`](#type-definitions)
 
 ---
 
 ### kda_addHardwareAccount
 
-**Description**: Adds a new hardware account from the Kadena Ledger App. NOTE: The Snap doesn't currently support signing with these hardware accounts.
+**Description**: Adds a new hardware account from the Kadena Ledger App. Please note that the Snap doesn't currently support signing with these hardware accounts.
 
 **Request Example**:
 
@@ -186,7 +186,7 @@ const account = await window.ethereum.request({
 });
 ```
 
-**Response**: `SnapAccount`
+**Response**: [`SnapAccount`](#type-definitions)
 
 ---
 
@@ -252,13 +252,13 @@ const accounts = await window.ethereum.request({
 });
 ```
 
-**Response**: `SnapAccount[]`
+**Response**: [`SnapAccount[]`](#type-definitions)
 
 ---
 
 ### kda_getHardwareAccounts
 
-**Description**: Retrieves all hardware accounts from the Kadena Snap. NOTE: The Snap doesn't currently support signing with these hardware accounts.
+**Description**: Retrieves all hardware accounts from the Kadena Snap. Please note that the Snap doesn't currently support signing with these hardware accounts.
 
 **Request Example**:
 
@@ -272,7 +272,7 @@ const hardwareAccounts = await window.ethereum.request({
 });
 ```
 
-**Response**: `SnapAccount[]`
+**Response**: [`SnapAccount[]`](#type-definitions)
 
 ---
 
@@ -292,7 +292,7 @@ const networks = await window.ethereum.request({
 });
 ```
 
-**Response**: `SnapNetwork[]`
+**Response**: [`SnapNetwork[]`](#type-definitions)
 
 ---
 
@@ -325,7 +325,7 @@ await window.ethereum.request({
 });
 ```
 
-**Response**: `SnapNetwork`
+**Response**: [`SnapNetwork`](#type-definitions)
 
 ---
 
@@ -368,7 +368,7 @@ const activeNetwork = await window.ethereum.request({
 });
 ```
 
-**Response**: `GetActiveNetworkResponse`
+**Response**: [`GetActiveNetworkResponse`](#type-definitions)
 
 ---
 
@@ -449,7 +449,7 @@ await window.ethereum.request({
 
 ### kda_signTransaction
 
-**Description**: Signs a transaction using the Kadena Snap.
+**Description**: Signs a transaction using the Kadena Snap. The transaction is expected to be a stringified JSON of the type [`ICommandPayload`](https://github.com/kadena-community/kadena.js/blob/f88301538ee41b77b957edf58a8a5edb4fba44cb/packages/libs/types/src/PactCommand.ts#L176).
 
 **Request Example**:
 
@@ -469,7 +469,7 @@ const signature = await window.ethereum.request({
 });
 ```
 
-**Response**: `SignTransactionResponse`
+**Response**: [`SignTransactionResponse`](#type-definitions)
 
 ---
 
