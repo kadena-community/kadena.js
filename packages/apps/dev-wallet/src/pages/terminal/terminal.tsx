@@ -2,6 +2,7 @@ import { IAccount } from '@/modules/account/account.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import {
   ChainId,
+  createTransaction,
   ICap,
   IPartialPactCommand,
   ISignFunction,
@@ -59,15 +60,14 @@ const readData =
       // replace this with other sign methods if needed
     })(
       defaultGasPayer
-        ? addGasPayer(
+        ? addGasPayer(defaultGasPayer)(
             typeof command === 'string' ? execution(command) : command,
-            defaultGasPayer,
           )
         : command,
     );
   };
 
-const addGasPayer = (command: IPartialPactCommand, gasPayer?: IAccount) => {
+const addGasPayer = (gasPayer?: IAccount) => (command: IPartialPactCommand) => {
   let updCommand = { ...command };
   if (!updCommand.meta?.sender) {
     if (!gasPayer) {
@@ -116,7 +116,7 @@ const transaction =
     })({});
     return submitClient({
       sign: sign,
-    })(addGasPayer(updCommand, defaultGasPayer));
+    })(addGasPayer(defaultGasPayer)(updCommand));
   };
 
 interface IDefaultValues {
@@ -156,6 +156,7 @@ export function TerminalPage() {
     accounts,
     fungibles,
     activeNetwork,
+    setActiveNetwork,
     networks,
     sign,
     syncAllAccounts,
@@ -187,8 +188,8 @@ export function TerminalPage() {
   );
   const commands = {
     command: {
-      description: 'Start creating transaction',
-      usage: 'tx',
+      description: 'create a command object',
+      usage: 'command',
       fn: async () => {
         setTxStep('start');
       },
@@ -271,9 +272,33 @@ export function TerminalPage() {
           .catch((e) => {
             terminalRef.current?.pushToStdout(getError(e));
           });
-
-        return 'querying...';
-        // terminalRef.current?.pushToStdout(JSON.stringify(result, null, 2));
+      },
+    },
+    sign: {
+      description: 'sign a command',
+      usage: 'sign <string [default=command]>',
+      fn: async (...args: any[]) => {
+        const input = args.join(' ');
+        let cmd;
+        try {
+          if (input === 'command' || !input) {
+            if (!command) {
+              return 'No command found';
+            }
+            cmd = createTransaction(
+              composePactCommand(
+                command,
+                gasPayer ? addGasPayer(gasPayer) : {},
+              )({}),
+            );
+          } else {
+            cmd = JSON.parse(input);
+          }
+          const signed = await sign(cmd);
+          terminalRef.current?.pushToStdout(JSON.stringify(signed, null, 2));
+        } catch (e) {
+          terminalRef.current?.pushToStdout(getError(e));
+        }
       },
     },
     chain: {
@@ -291,9 +316,11 @@ export function TerminalPage() {
       description: 'switch to network',
       usage: 'network <networkId>',
       fn: (networkId: string) => {
-        if (!networks.find((n) => n.networkId === networkId)) {
+        const network = networks.find((n) => n.networkId === networkId);
+        if (!network) {
           return `Network ${networkId} not found`;
         }
+        setActiveNetwork(network);
         setDefaults({ networkId });
         return `Switched to network ${networkId}`;
       },
@@ -398,6 +425,11 @@ export function TerminalPage() {
           }
           commandCallback={(args: { rawInput: string }) => {
             if (!txStep) return;
+            if (args.rawInput === 'exit') {
+              terminalRef.current?.pushToStdout('Command cancelled');
+              setTxStep(null);
+              return;
+            }
             if (txStep === 'start') {
               terminalRef.current?.pushToStdout(
                 'Complete all the following steps to create a command',

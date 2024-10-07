@@ -8,6 +8,7 @@ import * as AccountService from '../account/account.service';
 import { BIP44Service } from '../key-source/hd-wallet/BIP44';
 import { ChainweaverService } from '../key-source/hd-wallet/chainweaver';
 import { keySourceManager } from '../key-source/key-source-manager';
+import { INetwork } from '../network/network.repository';
 import { ExtWalletContextType, WalletContext } from './wallet.provider';
 import { IKeySource, IProfile } from './wallet.repository';
 import * as WalletService from './wallet.service';
@@ -243,7 +244,8 @@ export const useWallet = () => {
     askForPassword,
     getPublicKeyData,
     unlockKeySource,
-    setActiveNetwork,
+    setActiveNetwork: (network: INetwork) =>
+      setActiveNetwork ? setActiveNetwork(network) : undefined,
     activeNetwork: context.activeNetwork,
     networks: context.networks,
     isUnlocked: isUnlocked(context),
