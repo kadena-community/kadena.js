@@ -1,5 +1,11 @@
 # @kadena/explorer
 
+## 0.8.7
+
+### Patch Changes
+
+- @kadena/graph\@1.0.14
+
 ## 0.8.6
 
 ### Patch Changes
