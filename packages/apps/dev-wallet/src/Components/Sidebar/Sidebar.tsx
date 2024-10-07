@@ -78,7 +78,7 @@ export const Sidebar: FC = () => {
                 <Text>
                   <Stack alignItems="center" gap="md">
                     <MonoTerminal />
-                    DW Terminal
+                    DX Terminal
                   </Stack>
                 </Text>
               </NavLink>

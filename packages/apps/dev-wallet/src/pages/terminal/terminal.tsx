@@ -1,11 +1,13 @@
 import { IAccount } from '@/modules/account/account.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { KeySourceType } from '@/modules/wallet/wallet.repository';
 import {
   ChainId,
   createTransaction,
   ICap,
   IPartialPactCommand,
   ISignFunction,
+  SignerScheme,
 } from '@kadena/client';
 import { readClient, submitClient } from '@kadena/client-utils';
 import {
@@ -135,13 +137,22 @@ interface ICommandParts {
   signer: Array<{ publicKey: string; clist: ICap[] }>;
 }
 
-const getCommand = (commandParts: ICommandParts): IPartialPactCommand => {
+const getCommand = (
+  commandParts: ICommandParts,
+  getPublicKeyData: (publicKey: string) => {
+    source: KeySourceType;
+    index?: number | string;
+    publicKey: string;
+    scheme?: SignerScheme;
+  } | null,
+): IPartialPactCommand => {
   return {
     payload: {
       exec: { code: commandParts.code, data: commandParts.data ?? {} },
     },
     signers: commandParts.signer.map(({ publicKey, clist }) => ({
       pubKey: publicKey,
+      scheme: getPublicKeyData(publicKey)?.scheme ?? 'ED25519',
       clist,
     })),
   };
@@ -160,6 +171,9 @@ export function TerminalPage() {
     networks,
     sign,
     syncAllAccounts,
+    keySources,
+    keysets,
+    getPublicKeyData,
   } = useWallet();
   const [commandParts, setCommandParts] = useState<ICommandParts>();
   const [command, setCommand] = useState<IPartialPactCommand>();
@@ -187,6 +201,30 @@ export function TerminalPage() {
     [networkId, chainId, gasPayer, sign],
   );
   const commands = {
+    chain: {
+      description: 'switch to chain',
+      usage: 'chain <chainId>',
+      fn: (chainId: ChainId) => {
+        if (![...Array(20).keys()].map(String).includes(chainId)) {
+          return `Chain ${chainId} not found`;
+        }
+        setDefaults({ chainId });
+        return `Switched to chain ${chainId}`;
+      },
+    },
+    network: {
+      description: 'switch to network',
+      usage: 'network <networkId>',
+      fn: (networkId: string) => {
+        const network = networks.find((n) => n.networkId === networkId);
+        if (!network) {
+          return `Network ${networkId} not found`;
+        }
+        setActiveNetwork(network);
+        setDefaults({ networkId });
+        return `Switched to network ${networkId}`;
+      },
+    },
     command: {
       description: 'create a command object',
       usage: 'command',
@@ -301,30 +339,7 @@ export function TerminalPage() {
         }
       },
     },
-    chain: {
-      description: 'switch to chain',
-      usage: 'chain <chainId>',
-      fn: (chainId: ChainId) => {
-        if (![...Array(20).keys()].map(String).includes(chainId)) {
-          return `Chain ${chainId} not found`;
-        }
-        setDefaults({ chainId });
-        return `Switched to chain ${chainId}`;
-      },
-    },
-    network: {
-      description: 'switch to network',
-      usage: 'network <networkId>',
-      fn: (networkId: string) => {
-        const network = networks.find((n) => n.networkId === networkId);
-        if (!network) {
-          return `Network ${networkId} not found`;
-        }
-        setActiveNetwork(network);
-        setDefaults({ networkId });
-        return `Switched to network ${networkId}`;
-      },
-    },
+
     accounts: {
       description: 'list accounts',
       usage: 'accounts <contract [default=coin]>',
@@ -367,6 +382,49 @@ export function TerminalPage() {
         return `Default Gas Payer" ${gasPayer}"`;
       },
     },
+    keys: {
+      description: 'list keys',
+      usage: 'keys',
+      fn: () => {
+        const lines = keySources.map((source) => {
+          const keys = source.keys.map((key) => {
+            const info = getPublicKeyData(key.publicKey);
+            return info
+              ? `${key.index}: ${key.publicKey} ${info.scheme ? `(${info.scheme})` : ''}`
+              : `${key.index}: ${key.publicKey} ${key.scheme ? `(${key.scheme})` : ''}`;
+          });
+          return [
+            `Source: ${source.source}`,
+            ...keys,
+            '-----------------',
+          ].join('\n');
+        });
+        return lines.join('\n');
+      },
+    },
+
+    keysets: {
+      description: 'list keysets',
+      usage: 'keysets',
+      fn: () => {
+        const lines = keysets.map((keyset) => {
+          const keys = keyset.guard.keys.map((key) => {
+            const info = getPublicKeyData(key);
+            return info
+              ? `${info.publicKey} ${info.scheme ? `(${info.scheme})` : ''}`
+              : key;
+          });
+          return [
+            `principal: ${keyset.principal}`,
+            `Keys:`,
+            ...keys,
+            `pred: ${keyset.guard.pred}`,
+            '-----------------',
+          ].join('\n');
+        });
+        return lines.join('\n');
+      },
+    },
   };
 
   const getStepLabel = (step: typeof txStep) => {
@@ -401,6 +459,7 @@ export function TerminalPage() {
             flexBasis: 'auto',
             flexGrow: 0,
             maxHeight: '100%',
+            minHeight: '100%',
             overflow: 'auto',
           }}
           inputAreaStyle={{
@@ -503,11 +562,12 @@ export function TerminalPage() {
               }
             }
             if (txStep === 'signer' && !args.rawInput) {
-              const cmd = getCommand(commandParts!) as IPartialPactCommand;
+              const cmd = getCommand(
+                commandParts!,
+                getPublicKeyData,
+              ) as IPartialPactCommand;
               setCommand(cmd);
-              terminalRef.current?.pushToStdout(
-                JSON.stringify(getCommand(commandParts!), null, 2),
-              );
+              terminalRef.current?.pushToStdout(JSON.stringify(cmd, null, 2));
               setTxStep(null);
               return;
             }

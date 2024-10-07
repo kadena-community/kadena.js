@@ -1,4 +1,4 @@
-import { style } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 export const TerminalContainerClass = style({
   position: 'absolute',
@@ -7,4 +7,8 @@ export const TerminalContainerClass = style({
   height: '100%',
   width: '100%',
   overflow: 'auto',
+});
+
+globalStyle(`${TerminalContainerClass} span`, {
+  display: 'block',
 });
