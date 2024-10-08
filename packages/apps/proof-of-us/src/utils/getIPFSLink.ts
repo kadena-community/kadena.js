@@ -10,7 +10,6 @@ export const getIPFSLink = (uri: string): string => {
   //   return `${env.URL}/pinata/${match2[1]}`;
   // }
 
-  if (uri.includes('localhost' ?? '')) return uri;
   const idAndTypeRegExp =
     /(?:https:\/\/)?([^\/.]+)\.ipfs\.(nftstorage|dweb)\.link\/(.+)/;
   const match = uri.match(idAndTypeRegExp);
