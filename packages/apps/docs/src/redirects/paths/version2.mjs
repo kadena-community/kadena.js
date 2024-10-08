@@ -117,27 +117,27 @@ export const version2PathUrlRedirects = [
   },
   {
     source: '/build/authentication',
-    destination: '/reference/spirekey-ref',
+    destination: '/reference/spirekey',
     permanent: true,
   },
   {
     source: '/build/authentication/register',
-    destination: '/reference/spirekey-ref',
+    destination: '/reference/spirekey',
     permanent: true,
   },
   {
     source: '/build/authentication/integrate',
-    destination: '/reference/spirekey-ref',
+    destination: '/reference/spirekey',
     permanent: true,
   },
   {
     source: '/build/authentication/transactions',
-    destination: '/reference/spirekey-ref',
+    destination: '/reference/spirekey',
     permanent: true,
   },
   {
     source: '/build/authentication/recover',
-    destination: '/reference/spirekey-ref',
+    destination: '/reference/spirekey',
     permanent: true,
   },
   {
