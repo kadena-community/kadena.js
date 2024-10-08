@@ -262,9 +262,6 @@ pages:
         url: /wallets
         file: /participate/wallets.md
         children:
-          spirekey:
-            url: /spirekey
-            file: /participate/spirekey.md
           chainweaver:
             url: /chainweaver
             file: /participate/chainweaver.md
