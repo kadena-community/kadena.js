@@ -9,7 +9,7 @@ import {
   ISignFunction,
   SignerScheme,
 } from '@kadena/client';
-import { readClient, submitClient } from '@kadena/client-utils/core';
+import { dirtyReadClient, submitClient } from '@kadena/client-utils/core';
 import {
   addSigner,
   composePactCommand,
@@ -52,7 +52,8 @@ const readData =
     defaultGasPayer?: IAccount;
   }) =>
   (command: string | IPartialPactCommand) => {
-    return readClient({
+    const cmd = typeof command === 'string' ? execution(command) : command;
+    return dirtyReadClient({
       defaults: {
         meta: {
           chainId,
@@ -60,13 +61,7 @@ const readData =
         networkId,
       },
       // replace this with other sign methods if needed
-    })(
-      defaultGasPayer
-        ? addGasPayer(defaultGasPayer)(
-            typeof command === 'string' ? execution(command) : command,
-          )
-        : command,
-    );
+    })(defaultGasPayer ? addGasPayer(defaultGasPayer)(cmd) : cmd);
   };
 
 const addGasPayer = (gasPayer?: IAccount) => (command: IPartialPactCommand) => {
