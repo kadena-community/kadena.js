@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren, useState } from 'react';
+import { FC, PropsWithChildren, useEffect, useState } from 'react';
 import {
   Navigate,
   Outlet,
@@ -56,6 +56,19 @@ const Redirect: FC<
 
   return <> {children ? children : <Outlet />}</>;
 };
+const RouteContext: FC = () => {
+  const { isUnlocked, syncAllAccounts } = useWallet();
+  const location = useLocation();
+
+  // listen to general route changes and sync all accounts
+  useEffect(() => {
+    if (isUnlocked && syncAllAccounts) {
+      syncAllAccounts();
+    }
+  }, [location.pathname, isUnlocked, syncAllAccounts]);
+
+  return <Outlet />;
+};
 
 export const Routes: FC = () => {
   const { isUnlocked } = useWallet();
@@ -68,57 +81,63 @@ export const Routes: FC = () => {
         <CommunicationProvider children={<Outlet />} setOrigin={setOrigin} />
       }
     >
-      <Route element={<LayoutMini />}>
-        <Route element={<Redirect if={!isLocked} to={origin} />}>
-          <Route path="/select-profile" element={<SelectProfile />} />
-          <Route path="/create-profile/*" element={<CreateProfile />} />
-          <Route
-            path="/unlock-profile/:profileId"
-            element={<UnlockProfile />}
-          />
-          <Route
-            path="/import-wallet"
-            element={<ImportWallet setOrigin={setOrigin} />}
-          />
-        </Route>
-      </Route>
-      <Route
-        element={
-          <Redirect if={isLocked} to="/select-profile" setOrigin={setOrigin} />
-        }
-      >
+      <Route element={<RouteContext />}>
         <Route element={<LayoutMini />}>
-          <Route
-            path="/backup-recovery-phrase"
-            element={<BackupRecoveryPhrase />}
-          />
-          <Route
-            path="/backup-recovery-phrase/write-down"
-            element={<WriteDownRecoveryPhrase />}
-          />
-          <Route
-            path="/account-discovery/:keySourceId"
-            element={<AccountDiscovery />}
-          />
+          <Route element={<Redirect if={!isLocked} to={origin} />}>
+            <Route path="/select-profile" element={<SelectProfile />} />
+            <Route path="/create-profile/*" element={<CreateProfile />} />
+            <Route
+              path="/unlock-profile/:profileId"
+              element={<UnlockProfile />}
+            />
+            <Route
+              path="/import-wallet"
+              element={<ImportWallet setOrigin={setOrigin} />}
+            />
+          </Route>
         </Route>
-        <Route element={<Layout />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/sig-builder" element={<SignatureBuilder />} />
-          <Route path="/networks" element={<Networks />} />
-          <Route path="/networks/create" element={<CreateNetwork />} />
-          <Route path="/connect/:requestId" element={<Connect />} />
-          <Route path="/key-sources" element={<KeySources />} />
-          <Route path="/create-account" element={<CreateAccount />} />
-          <Route path="/transaction/:groupId" element={<TransactionPage />} />
-          <Route path="/transactions" element={<Transactions />} />
-          <Route path="/keyset/:keysetId" element={<Keyset />} />
-          <Route path="/fungible/:contract" element={<FungiblePage />} />
-          <Route path="/account/:accountId" element={<AccountPage />} />
-          <Route path="/transfer" element={<TransferV2 />} />
+        <Route
+          element={
+            <Redirect
+              if={isLocked}
+              to="/select-profile"
+              setOrigin={setOrigin}
+            />
+          }
+        >
+          <Route element={<LayoutMini />}>
+            <Route
+              path="/backup-recovery-phrase"
+              element={<BackupRecoveryPhrase />}
+            />
+            <Route
+              path="/backup-recovery-phrase/write-down"
+              element={<WriteDownRecoveryPhrase />}
+            />
+            <Route
+              path="/account-discovery/:keySourceId"
+              element={<AccountDiscovery />}
+            />
+          </Route>
+          <Route element={<Layout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/sig-builder" element={<SignatureBuilder />} />
+            <Route path="/networks" element={<Networks />} />
+            <Route path="/networks/create" element={<CreateNetwork />} />
+            <Route path="/connect/:requestId" element={<Connect />} />
+            <Route path="/key-sources" element={<KeySources />} />
+            <Route path="/create-account" element={<CreateAccount />} />
+            <Route path="/transaction/:groupId" element={<TransactionPage />} />
+            <Route path="/transactions" element={<Transactions />} />
+            <Route path="/keyset/:keysetId" element={<Keyset />} />
+            <Route path="/fungible/:contract" element={<FungiblePage />} />
+            <Route path="/account/:accountId" element={<AccountPage />} />
+            <Route path="/transfer" element={<TransferV2 />} />
+          </Route>
         </Route>
+        <Route path="/ready" element={<Ready />} />
+        <Route path="*" element={<Heading>Not found!</Heading>} />
       </Route>
-      <Route path="/ready" element={<Ready />} />
-      <Route path="*" element={<Heading>Not found!</Heading>} />
     </Route>,
   );
 

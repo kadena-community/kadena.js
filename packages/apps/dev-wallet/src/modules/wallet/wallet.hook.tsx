@@ -2,17 +2,13 @@ import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import { defaultAccentColor } from '@/modules/layout/layout.provider.tsx';
 import { recoverPublicKey, retrieveCredential } from '@/utils/webAuthn';
 import { IUnsignedCommand } from '@kadena/client';
-import { useCallback, useContext, useEffect } from 'react';
+import { useCallback, useContext } from 'react';
 import { UnlockPrompt } from '../../Components/UnlockPrompt/UnlockPrompt';
 import * as AccountService from '../account/account.service';
 import { BIP44Service } from '../key-source/hd-wallet/BIP44';
 import { ChainweaverService } from '../key-source/hd-wallet/chainweaver';
 import { keySourceManager } from '../key-source/key-source-manager';
-import {
-  ExtWalletContextType,
-  WalletContext,
-  syncAllAccounts,
-} from './wallet.provider';
+import { ExtWalletContextType, WalletContext } from './wallet.provider';
 import { IKeySource, IProfile } from './wallet.repository';
 import * as WalletService from './wallet.service';
 
@@ -26,7 +22,7 @@ const isUnlocked = (
 };
 
 export const useWallet = () => {
-  const [context, setProfile, setActiveNetwork] =
+  const [context, setProfile, setActiveNetwork, syncAllAccounts] =
     useContext(WalletContext) ?? [];
   const prompt = usePrompt();
   if (!context || !setProfile) {
@@ -54,6 +50,7 @@ export const useWallet = () => {
 
   const unlockProfile = useCallback(
     async (profileId: string, password: string) => {
+      console.log('unlockProfile', profileId, password);
       const profile = await WalletService.unlockProfile(profileId, password);
       if (profile) {
         return setProfile(profile);
@@ -235,12 +232,6 @@ export const useWallet = () => {
     [],
   );
 
-  useEffect(() => {
-    if (context.profile?.uuid) {
-      syncAllAccounts(context.profile?.uuid);
-    }
-  }, [context.profile]);
-
   return {
     createProfile,
     unlockProfile,
@@ -254,6 +245,7 @@ export const useWallet = () => {
     unlockKeySource,
     setActiveNetwork,
     activeNetwork: context.activeNetwork,
+    networks: context.networks,
     isUnlocked: isUnlocked(context),
     profile: context.profile,
     profileList: context.profileList ?? [],
@@ -261,5 +253,6 @@ export const useWallet = () => {
     keysets: context.keysets || [],
     keySources: context.keySources || [],
     fungibles: context.fungibles || [],
+    syncAllAccounts,
   };
 };

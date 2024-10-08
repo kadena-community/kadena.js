@@ -1,9 +1,9 @@
-import { useNetwork } from '@/modules/network/network.hook';
+import { useWallet } from '@/modules/wallet/wallet.hook';
 import { Box, Heading, Text } from '@kadena/kode-ui';
 import { Link } from 'react-router-dom';
 
 export function Networks() {
-  const { networks } = useNetwork();
+  const { networks } = useWallet();
   return (
     <>
       <Box margin="md">

@@ -14,7 +14,7 @@ import { execInSequence } from '@/utils/helpers';
 // while the database is still being created; so I use execInSequence.
 const createConnectionPool = (
   cb: () => Promise<IDBDatabase>,
-  length: number = 3,
+  length: number = 1,
 ) => {
   const pool: IDBDatabase[] = [];
   let turn = 0;
@@ -49,7 +49,7 @@ const createConnectionPool = (
 };
 
 const DB_NAME = 'dev-wallet';
-const DB_VERSION = 33;
+const DB_VERSION = 34;
 
 export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
   const result = await connect(DB_NAME, DB_VERSION);
@@ -76,15 +76,24 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
       { index: 'address' },
       { index: 'keysetId' },
       { index: 'profileId' },
+      { index: 'profile-network', indexKeyPath: ['profileId', 'networkId'] },
       {
-        index: 'keyset-asset',
-        indexKeyPath: ['keysetId', 'contract'],
+        index: 'unique-account',
+        indexKeyPath: ['keysetId', 'contract', 'networkId'],
         unique: true,
       },
     ]);
     create('network', 'uuid', [{ index: 'networkId', unique: true }]);
     create('fungible', 'contract', [{ index: 'symbol', unique: true }]);
-    create('keyset', 'uuid', [{ index: 'profileId' }, { index: 'principal' }]);
+    create('keyset', 'uuid', [
+      { index: 'profileId' },
+      { index: 'principal' },
+      {
+        index: 'unique-keyset',
+        indexKeyPath: ['profileId', 'principal'],
+        unique: true,
+      },
+    ]);
     create('transaction', 'uuid', [
       { index: 'hash', unique: true },
       { index: 'profileId' },
@@ -94,6 +103,10 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
         index: 'network-status',
         indexKeyPath: ['profileId', 'networkId', 'status'],
       },
+    ]);
+    create('activity', 'uuid', [
+      { index: 'profile-network', indexKeyPath: ['profileId', 'networkId'] },
+      { index: 'keyset-network', indexKeyPath: ['keysetId', 'networkId'] },
     ]);
   }
 
@@ -140,6 +153,7 @@ export interface IDBService {
     storeName: string,
     value: T,
     key?: string | undefined,
+    options?: { noCreationTime: boolean },
   ) => Promise<void>;
   update: <T>(
     storeName: string,

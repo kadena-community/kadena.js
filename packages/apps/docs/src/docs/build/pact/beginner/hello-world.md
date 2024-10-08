@@ -16,403 +16,373 @@ tags:
   ]
 ---
 
-# Hello World
-
-Welcome to this Hello World with Pact Tutorial!
-
-In this tutorial, you'll learn how to create, deploy, and run functions on a
-Hello World smart contract with Pact.
-
-**Topics covered in this tutorial**
-
-- Hello World Overview
-- Write the Smart Contract
-- Deploy to the Testnet
-- Call the Deployed Contract
-
-The goal of this tutorial is to help you get familiar with the essential Pact
-concepts needed to write, deploy, and run a smart contract. Learning these
-concepts will help you to create more complex smart contracts later in the
-series.
-
-:::note Key Takeaway
-
-It’s simple to create and deploy a Hello World smart contract with Pact. You can
-deploy smart contracts from the online editor, call its functions, and view the
-output from the REPL.
-
-:::
-
-## Hello World with Pact Tutorial
-
-https://www.youtube.com/watch?v=bUqJJ3q-OLM
-
-Subscribe to our
-[YouTube channel](https://www.youtube.com/channel/UCB6-MaxD2hlcGLL70ukHotA) to
-access the latest Pact tutorials.
-
-## Hello World Overview
-
-To get started, navigate to the Pact online editor at
-[pact.kadena.io](http://pact.kadena.io). Once on the site, you can open the
-“Hello World” module. To do this, navigate to the module explorer on the tool
-panel and open the “Hello World” example.
-
-:::info
-
-If you’re not familiar with the module explorer, you can learn more
-[here](/build/pact/dev-network#module-explorerh-261281933).
-
-:::
-
-You can also copy the code below and paste it into your editor.
-
-```pact title=" "
-;;
-;; "Hello, world!" smart contract/module
-;;
-
-;;---------------------------------
-;;
-;;  Create an 'admin-keyset' and add some key, for loading this contract!
-;;
-;;  Make sure the message is signed with this added key as well.
-;;
-;;---------------------------------
-
-;; Keysets cannot be created in code, thus we read them in
-;; from the load message data.
-(define-keyset 'admin-keyset (read-keyset "admin-keyset"))
-
-;; Define the module.
-(module helloWorld 'admin-keyset
- "A smart contract to greet the world."
- (defun hello (name)
-   "Do the hello-world dance"
-   (format "Hello {}!" [name]))
-)
-
-;; and say hello!
-(hello "world")
-
-```
-
-This code can also be found
-[here](https://github.com/kadena-io/pact-examples/tree/master/hello-world) on
-our GitHub.
-
-## Write the Smart Contract
-
-### Create a Keyset
-
-As you can see, the “Hello World” smart contract starts by defining and reading
-a keyset. [Keysets](/reference/functions/keysets) are a way to specify
-credentials for a user of the smart contract. The code you write within the
-smart contract can restrict access to users that own the keysets you define. You
-will see this done in the Hello World module.
-
-Line 16 (shown below) defines and reads a keyset named admin-keyset.
-
-```pact title=" "
-
-(define-keyset 'admin-keyset (read-keyset "admin-keyset"))
-
-```
-
-:::danger Error
-
-If you look on line 16 line you will notice the following error. No such key in
-message: “admin-keyset”
-
-:::
-
-![1-error-message-image](/assets/docs/1-error-message-image.png)
-
-This error exists because you are reading a keyset that does not exist. To get
-rid of this error you need to create a keyset named **admin-keyset** using the
-panel on the right.
-
-##### Steps to create a keyset
-
-- Navigate to ENV > Data > Keysets from the right panel
-- Enter admin-keyset
-- Click Create
-
-![2-admin-keyset-create-image](/assets/docs/2-admin-keyset-create-image.png)
-
-The error message should now be gone.
-
-### Create the Module
-
-Now that you have created a keyset, it’s time to build the module for your smart
-contract. [Modules](/build/pact/advanced#module-declarationh676938214) are
-essential in Pact. They contain all the logic needed to run your smart contract.
-
-The syntax used to create a module is shown below. This line defines a module
-named helloWorld. It also gives the admin-keyset access to the code within this
-module.
-
-```pact title=" "
-(module helloWorld 'admin-keyset
-    ;; MODULE CODE GOES HERE
-)
-```
-
-### Define a Function
-
-The next step is to create the contract functions. Functions are defined within
-Pact modules using the keyword [defun](/reference/syntax#defunh95462750).
-For this smart contract, you’ll define a function named **hello** that takes a
-parameter called **name**.
-
-```pact title=" "
-(defun hello (name)
-    ;; FUNCTION CODE GOES HERE
-)
-```
-
-### Do The Hello World Dance
-
-Within this function, you’ll write a formatted line to output into the REPL. You
-can do this using the keyword
-[format](/reference/functions/general#formath-1268779017). Format allows you to
-manipulate strings and will help you specify the output of the function.
-
-```pact title=" "
-(format "Hello {}!" [name])
-```
-
-This line outputs a string to the REPL that says Hello followed by the string
-input to the function parameter **name**.
-
-The module for this smart contract is already complete! While this module is
-pretty simple, it gives you a great start to begin building more complex smart
-contracts.
-
-### Say Hello World!
-
-The final step in this smart contract is to write “Hello World” to the REPL. To
-do this, write a line below the module that calls the function and provide the
-input for name.
-
-```pact title=" "
-(hello "world")
-```
-
-The line above calls the function **hello** and specifies the **name** as
-“world”. You can change this input to any name you’d like.
-
-## Load into REPL
-
-Having written the smart contract, you are ready to load it into the REPL.
-
-A REPL is an interactive computing environment. It stands for read, eval, print,
-loop. This REPL exists within the online editor allowing you to run Pact code
-from within the browser.
-
-To load a contract into the REPL, select the Load into REPL button at the top of
-your editor.
-
-![3-load-into-repl-image](/assets/docs/3-load-into-repl-image.png)
-
-If everything is working correctly, you will see the REPL open up on the right
-side of your screen with the `Hello World` message as shown below.
-
-```bash title=" "
-
-;; Welcome to the Pact interactive repl
-;; Use 'LOAD into REPL' button to execute editor text
-;; then just type at the "pact>" prompt to interact!
-;;
-;; To reset the REPL type 'reset'!
-Hello world!
-pact>
-
-```
-
-If you can see this message, your Hello World smart contract is running from
-within the REPL.
-
-## Deploy to the Testnet
-
-Loading into the REPL helps you test that your contract is working correctly,
-but it doesn't deploy it to a blockchain. When you're ready, you'll need to
-complete a few more steps to deploy your Hello World smart contract.
-
-Here’s a quick summary of the steps needed to deploy to the blockchain.
-
-- **Step 1:** Update Module Name
-- **Step 2:** Update admin-keyset Name
-- **Step 3:** Update Code
-- **Step 4:** Create a Key
-- **Step 5:** Set your deployment settings
-
-### Update Module Name
-
-First, you need to update the module name. This name needs to be unique across
-all module names that exist on the blockchain.
-
-Choose any unique name you’d like. For example, my module name is
-helloWorld-tutorial (choose a unique name that is different than mine).
-
-```pact title=" "
-(module helloWorld-tutorial 'admin-keyset
-    ;; code goes here
-)
-```
-
-:::info
-
-This unique module name is a requirement caused by a feature in Pact that allows
-you to upgrade your smart contracts. You will explore this idea in further
-detail later when you learn about upgrading contracts.
-
-:::
-
-:::danger
-
-You may come across the following error message when you attempt to deploy your
-contract.
-`terminal ERROR: Command execution failed: (read-keyset "admin-keyset-hel...: Failure: No such key in message: "admin-keyset-helloworld" `
-This error means that an existing module on the blockchain already has the name
-you chose. Update the module name and redeploy the contract to resolve this
-error.
-
-:::
-
-### Update admin-keyset Name
-
-Along with a unique module name, you’ll also need a unique **keyset** name. This
-unique keyset ensures that only users with the keyset you define can gain access
-to the module. Delete the **admin-keyset** and create a new keyset with any
-unique name you like.
-
-The example below shows a new keyset named **admin-keyset-helloworld**.
-
-![5-admin-keyset-hello-world](/assets/docs/5-admin-keyset-hello-world.png)
-
-### Update Code
-
-Having created a new keyset, you now need to update the code to match the name
-of the keyset you created. This name appears a few times in the smart contract
-so be careful to update each one.
-
-```pact title=" "
-
-(define-keyset 'admin-keyset-helloworld (read-keyset "admin-keyset-helloworld"))
-
-(module helloWorld-tutorial 'admin-keyset-helloworld
-  (defun hello (name)
-    (format "Hello {}!" [name]))
-)
-
-(hello "world")
-
-```
-
-### Create a Key
-
-The purpose of the keyset is to hold keys that you can use to sign and verify
-your identity.
-
-When loading the contract to the REPL you were able to get away without having
-this key. To deploy your contract you need to make this key.
-
-You can create a key by completing the following steps.
-
-- Select **Enter Key Name**
-- Type the **Key name**
-- Click **Generate**
-
-A simple convention for creating your key is to name it similar to the keyset.
-
-![6-admin-key-helloworld](/assets/docs/6-admin-key-helloworld.png)
-
-After creating your key, you’ll see a checkbox appear under the **admin-keyset**
-with the name of the key. Select this checkbox to associate this key with the
-keyset.
-
-### Set your deployment settings
-
-At the top of the screen, select **Deploy**. This will open a box that allows
-you to set your deployment settings.
-
-Once in the deployment settings, select either **test-chain-01** or
-**test-chain-02** to deploy your contract. Next, select the checkbox to sign
-this deployment with the key you created. Finally, select "deploy contract".
-
-![7-deploy-a-contract](/assets/docs/7-deploy-a-contract.png)
-
-If everything worked correctly, you should now see the string “Hello World!”
-appear on the right panel as a message.
-
-At this point, you have deployed your Hello World smart contract with Pact.
-Congratulations!
-
-## Call the Deployed Contract
-
-A fantastic feature of deploying to the blockchain is that anyone can now run
-the deployed code. You can check for yourself and run the function available on
-your own “Hello World” smart contract.
-
-### Module Explorer
-
-To do this, you’ll need to first find the contract from the module explorer.
-
-Start by selecting the **module explorer** from the tool panel. Once there,
-navigate to the **Deployed Contracts** section and type the name of your
-contract. The name of your contract will be the same name as the module you
-created. After it appears, select view to see functions that are available for
-your smart contract.
-
-![8-find-the-contract](/assets/docs/8-find-the-contract.png)
-
-### Find Function
-
-After selecting **view**, you should see the function named **hello** as an
-available option. Click call to open the screen that allows you to place your
-inputs into this function.
-
-![9-find-function](/assets/docs/9-find-function.png)
-
-### Call Function
-
-Once on the **Function: hello** screen, you’re ready to call your function.
-
-**Steps to call a function**
-
-- Provide a string to pass in as an input. Be sure to surround this string in
-  quotes.
-- Select the checkbox to sign this call with the key.
-- Click call to call your function.
-
-![10-call-function](/assets/docs/10-call-function.png)
-
-### See the Output
-
-If everything worked out correctly, you should see the new function call appear
-as a new message!
-
-![11-see-the-output](/assets/docs/11-see-the-output.png)
-
-Now you can you call functions on the code you’ve written, and you can call that
-code after it exists on the blockchain.
-
-You can use this same idea to call functions on any other contracts that have
-been deployed to the blockchain. Try for yourself to see if you can make
-function calls on other smart contracts.
-
-## Review
-
-Congratulations on completing this tutorial!
-
-Throughout this tutorial you built, deployed, and ran functions on your Hello
-World smart contract with Pact. You’re now prepared to play around and try
-anything you’d like. You can create and define new keysets, change the
-parameters, or add anything that comes to mind.
-
-If you get lost, you can always go back to the module explorer to reload the
-original code. You can also visit the documentation using the link on the top
-right of the screen. Here you'll find more information about terminology,
-syntax, and other important ideas. If you’re up for it, you can also load in
-different modules using the explorer to see how a different program looks.
+# Hello, World! revisited
+
+In the [Quick start](/build/quickstart), you were introduced to a simple `hello-world` module. 
+As previously noted in [Get started with Pact](/build/pact), modules provide the basic foundation for all Pact smart contracts:
+
+A module defines the logic of a smart contract. The module contains the functions, pact definitions, tables, and schemas required to describe the business logic for the contract. |
+
+In fact, the term `module` is a reserved keyword that you use to define and install a module with a specified _name_, 
+
+The `hello-world` module defined a single function—one very much like the traditional Hello, World! program you see when learning any new programming language.
+
+In this tutorial, you'll take a closer look at the `hello-world` module, extend its functionality, and deploy it on the Kadena test network.
+
+## Before you begin
+
+Before starting this project, verify your environment meets the following basic requirements:
+
+- You have a GitHub account and can run `git` commands.
+- You have installed the Pact programming language and command-line interpreter.
+- You have installed the `kadena-cli` package and have a working directory with initial configuration settings.
+- You have a local development node that you can connect to that runs the `chainweb-node` program, either in a Docker container or on a physical or virtual computer.
+
+If you have these basics covered, you're ready to go.
+
+## Get the starter code
+
+To get started:
+
+1. Open a terminal shell on your computer.
+
+2. Clone the `pact-coding-projects` repository by running the following command:
+   
+   ```bash
+   git@github.com:kadena-docs/pact-coding-projects.git
+   ```
+
+3. Change to the `00-hello-world` directory by running the following command:
+   
+   ```bash
+   cd pact-coding-projects/00-hello-world
+   ```
+
+4. Open the `hello-world.pact` file in your code editor.
+   
+   ```pact
+   ;;
+   ;; "Hello, world!" module
+   ;; 
+   ;;-----------------------------------------------------------------------
+   ;;
+   ;;  Use semicolons (;) for comments in smart contracts.
+   ;;  By convention, use:
+   ;;  
+   ;;  - A single semicolon (;) for short notes on a single line of code. 
+   ;;  - Two semicolons (;;) to describe functions or other top-level forms.
+   ;;  - Three semicolons (;;;) to separate larger sections of code.
+   ;;
+   ;;-----------------------------------------------------------------------
+   
+   (module helloWorld GOVERNANCE
+       "You can also embed comments in smart contracts by using quoted strings."
+   
+       (defcap GOVERNANCE () true)
+         (defun say-hello(name:string)
+           (format "Hello, {}! ~ from Kadena" [name])
+       )
+   )
+   ```
+
+   A few things you should note about this starter code:
+   
+   - The `module` being defined is named `helloWorld`.
+   - Every module is governed by either a _keyset_ or a _capability_. 
+     In this example, the GOVERNANCE capability is used to control access to the module.
+     This capability must evaluate to true to grant access.
+   - The  `defun` reserved keyword signals the start of a function definition.
+     In this example, the function being defined is named `say-hello` and the function takes one variable, `name`, with a data type of `string`. 
+   - The `say-hello` function uses the built-in `format` function that allows you to format messages using a placeholder and a variable or a specified value.
+     The curly braces (`{}`) indicate the location of the value to be inserted and the [name] is the variable to be inserted in place of the curly braces (`{}`).
+   
+   To learn more, see the following topics:
+   
+   - [Syntax and keywords](/reference/syntax)
+   - [General built-in functions](/reference/functions/general#formath-1268779017)
+
+## Load and test the module
+
+The Pact command-line interpreter provides a read-evaluate-print-loop (REPL) for interactive testing of Pact commands and for executing tests defined in files.
+
+To load and test the `helloWorld` module interactively:
+
+1. Add a call to the `say-hello` function at the bottom of the `hello-world.pact` file in your code editor.
+   
+   ```pact
+   ;;
+   ;; "Hello, world!" module
+   ;; 
+   ;;-----------------------------------------------------------------------
+   ;;
+   ;;  Use semicolons (;) for comments in smart contracts.
+   ;;  By convention, use:
+   ;;  
+   ;;  - A single semicolon (;) for short notes on a single line of code. 
+   ;;  - Two semicolons (;;) to describe functions or other top-level forms.
+   ;;  - Three semicolons (;;;) to separate larger sections of code.
+   ;;
+   ;;-----------------------------------------------------------------------
+   
+   (module helloWorld GOVERNANCE
+       "You can also embed comments in smart contracts by using quoted strings."
+   
+       (defcap GOVERNANCE () true)
+         (defun say-hello(name:string)
+           (format "Hello, {}! ~ from Kadena" [name])
+       )
+   )
+
+   (say-hello "Pistolas") 
+   ```
+
+2. Open a terminal shell on your computer.
+
+3. Start the Pact interpreter by running the following command:
+
+   ```bash
+   pact
+   ```
+   
+   After running this command, the terminal displays the `pact >` prompt:
+
+   ```pact
+   pact >
+   ```
+
+4. Copy and paste the `helloWorld` module code into the terminal with the `pact >` prompt, then press Return on the keyboard to load the module.
+   
+   You should see that the module loads and the call to the `say-hello` function is executed with output similar to the following:
+
+   ```pact
+   "Loaded module helloWorld, hash fsYJQuzCtzdocWkgjS9yXFz6WAJlV0Aor1RmWhyfgc0"
+   pact> 
+   pact> (say-hello "Pistolas")
+   "Hello, Pistolas! ~ from Kadena"
+   ```
+
+1. Exit the Pact interpreter by pressing control-d on the keyboard.
+
+## Create a hello-world.repl file
+
+The Pact REPL environment accepts many built-in functions that are specifically for testing and debugging your Pact code.
+You can use these built-in functions in files that are similar to `.pact` files, like the `hello-world.pact` file you've been working with so far.
+However, the files you create for testing Pact functionality use the `.repl` file extension.
+
+To create a basic `hello-world.repl` file:
+
+1. Create a new file named `hello-world.repl` file in your code editor.
+   
+1. Use the built-in `(begin-tx)` and `(commit-tx)` functions to define a transaction that loads the `hello-world.pact` file:
+
+   ```pact
+   (begin-tx)
+     (load "hello-world.pact")
+   (commit-tx)
+   ```
+
+2. Open a terminal shell and execute the `hello-world.repl` file by running the following command:
+   
+   ```pact
+   pact --trace hello-world.repl
+   ```
+   
+   Notice that you are executing the file in a terminal shell and not in the Pact command-line interpreter.
+   This command executes the functions defined in the `hello-world.repl` file and displays output in the terminal similar to the following:
+
+   ```bash
+   hello-world.repl:1:0:Trace: Begin Tx 0
+   hello-world.repl:2:0:Trace: Loading hello-world.pact...
+   hello-world.pact:15:0:Trace: Loaded module helloWorld, hash Nci-2EJkgvvHnVLyfOJG-WKGuQ6-tLAYWRYVGPGW2cc
+   hello-world.pact:24:0:Trace: Hello, Pistolas! ~ from Kadena
+   hello-world.repl:3:0:Trace: Commit Tx 0
+   Load successful
+   ```
+
+   To learn more, see the following topics:
+   
+   - [Testing Pact programs](/build/pact/test-in-the-sdk)
+   - [REPL-only functions](/reference/functions/repl-only-functions)
+
+## Modify the module to store names
+
+One way to make the `helloWorld` module a more interesting sample project is to enable the contract to store greetings in a table.
+
+To modify the `helloWorld` module:
+
+1. Copy the `hello-world.pact` file to create a new file named `2-hello-world.pact` file in your code editor.
+
+1. Modify the module code to create a schema and table for storing greeting recipient values and add functions to write and read the value from the table.
+   
+   For example:
+
+   ```pact
+   ;;
+   ;; Modified "Hello, world!" module
+   ;; 
+   ;;-----------------------------------------------------------------------
+   ;;
+   ;;  Use semicolons (;) for comments in smart contracts.
+   ;;  By convention, use:
+   ;;  
+   ;;  - A single semicolon (;) for short notes on a single line of code. 
+   ;;  - Two semicolons (;;) to describe functions or other top-level forms.
+   ;;  - Three semicolons (;;;) to separate larger sections of code.
+   ;;
+   ;;  In this example, the module defines a table for storing greeting
+   ;;  names and two functions:
+   ;; 
+   ;;  - (say-hello-to "name")
+   ;;  - (greet)
+   ;;
+   ;;-----------------------------------------------------------------------
+   
+   (module helloWorld-mod GOVERNANCE
+     @doc "Update the hello-world project to store names."
+     
+     (defcap GOVERNANCE () true)
+     
+     (defschema hello-schema
+       @doc "Add a schema to store the 'name' variable for the greeting recipient."
+       name:string)
+   
+     (deftable names:{hello-schema})
+   
+     (defun say-hello-to (name)
+       @doc "Store 'name' to say hello with."
+       (write names "name" { 'name: name }))
+   
+     (defun greet ()
+       @doc "Say hello using the stored 'name' from the hellos table."
+       (with-read names "name" { "name" := name }
+         (format "Hello, {}!" [name])))
+   )
+   
+   (create-table names)
+   
+   (say-hello-to "world") ; store greeting recipient "world" in the names table
+   (greet)                ; say hello!
+   ```
+
+1. Create a new file named `2-hello-world.repl` file in your code editor.
+
+1. Use the built-in `(begin-tx)` and `(commit-tx)` functions to define a transaction that executes the `2-hello-world.pact` module:
+
+   ```pact
+   (begin-tx)
+     (load "2-hello-world.pact")
+   (commit-tx)
+   (begin-tx)
+     (helloWorld-mod.say-hello-to "Las Pistolas")
+     (helloWorld-mod.greet)
+   (commit-tx)
+   ```
+
+2. Open a terminal shell and execute the `2-hello-world.repl` file by running the following command:
+   
+   ```pact
+   pact --trace 2-hello-world.repl
+   ```
+
+   ```bash
+   2-hello-world.repl:1:0:Trace: Begin Tx 0
+   2-hello-world.repl:2:0:Trace: Loading 2-hello-world.pact...
+   2-hello-world.pact:15:0:Trace: Loaded module helloWorld-mod, hash ZcpdtgW86UIwvw_TjlgNreTErM2ECGEjh1m9nLu3AwA
+   2-hello-world.pact:36:0:Trace: TableCreated
+   2-hello-world.pact:38:0:Trace: Write succeeded
+   2-hello-world.pact:39:0:Trace: Hello, world!
+   2-hello-world.repl:3:0:Trace: Commit Tx 0
+   2-hello-world.repl:4:0:Trace: Begin Tx 1
+   2-hello-world.repl:5:0:Trace: Write succeeded
+   2-hello-world.repl:6:0:Trace: Hello, Las Pistolas!
+   2-hello-world.repl:7:0:Trace: Commit Tx 1
+   Load successful
+   ```
+
+## Deploy the contract
+
+After testing the contract using the Pact interpreter and the REPL file, you can deploy the contract on your development network or the Kadena test network.
+If you wanted to deploy this contract on the Kadena test network or a production network, you would first need to identify a _namespace_ for deploying the contract and ensure that the module name is unique across all of the modules that exist in that namespace.
+
+For simplicity, you can deploy this project locally on your development network without selecting a namespace or updating the module name.
+However, even on the local development network, you must have an account with funds and a key to sign the transaction that deploys the contract.
+
+You can use `kadena account` commands to configure and fund accounts for the local development network.
+You can also use `kadena tx` commands to create transactions to deploy contracts.
+However, one of the simplest ways to generate keys, manage accounts, and deploy contracts is by using the Chainweaver desktop or web-based application and its integrated development environment. 
+To complete the 00-hello-world project, you can use Chainweaver to deploy the hello-world contract on the Kadena test network.
+
+To deploy the contract on the Kadena test network using Chainweaver:
+
+1. Open the contract you want to deploy in your code editor.
+   
+   For example, open the `2-hello-world.pact` file in your code editor.
+
+2. Add the `free` namespace before the module definition in the file and update the module name to be unique.
+
+   For example:
+
+   ```pact
+   (namespace "free")
+   (module helloWorld-mod-pistolas GOVERNANCE
+     ...
+   )
+   ```
+
+3. Save the changes in the code editor.
+
+4. Open Chainweaver and select the **testnet** network.
+
+5. Click **Accounts** in the Chainweaver navigation pane and verify that you have at least one account with funds on at least one chain in the test network. 
+   
+   For example:
+
+   ![You must have an account with funds on a chain to continue](/assets/docs/deploy-testnet-account.png)
+
+   If you don't have keys and at least one account on any chain on the test network,you need to generate keys, create an account, and fund the account on at least one chain before continuing.
+
+6. Click **Contracts** in the Chainweaver navigation pane, then click **Open File** to select the contract you want to deploy.
+
+7. Click **Deploy** to display the Configuration tab:
+   
+   - Select the **Chain identifier** for the chain where you want to deploy the contract.
+   - Select a **Transaction Sender**.
+   - Click **Next**.
+
+8. On the Sign tab, select an **Unrestricted Signing Key**, then click **Next**.
+
+9. On the Preview tab, scroll to see the Raw Response is "Hello, world!", then click **Submit**.
+
+   After you click Submit, the transaction is sent to the blockchain. 
+   You can use the block explorer and the transaction request key to view the transaction results or wait for the transaction to be included in a block before closing the transaction submission dialog by clicking **Done**.
+   When the transaction is mined into a block, you will have deployed your Hello World smart contract on the Kadena test network.
+
+## Call the deployed contract
+
+After you deploy a contract, you can view its details and call its functions using Chainweaver.
+
+To view and call your contract:
+
+1. Click **Contracts** in the Chainweaver navigation pane, if necessary, then click **Module Explorer**.
+2. Under Deployed Contracts, search for your module name in the **free** namespace and chain where you deployed, then click **Refresh** to update the list of deployed contracts to display only your just-deployed contract.
+   
+   In this example, the unique module name is **free.helloWorld-mod-pistolas** and the contract was deployed on the testnet chain **1**. 
+   
+   ![Search for and view your deployed contract](/assets/docs/deploy-view-testnet.png)
+
+3. Click **View** to display the functions and capabilities defined in your contract.
+
+4. Click **Call** to call the contract functions.
+  
+   - Click **Call** for the **hello** function to specify a new string in quotes, then click **Next**.
+   - Click **Next**, select an **Unrestricted Signing Key** for this call, then click **Next**.
+   - Click **Submit** to submit the transaction and commit the change.
+  
+   After the transaction is included in a block:
+
+   - Click **Call** for the **greet** function, then click **Next**.
+   - Select an **Unrestricted Signing Key** for this call, then click **Next**.
+   - Scroll to see the **Raw Response** uses the string you specified for the **hello** function.
+   - Click **Submit** if you want to submit the transaction to the blockchain or close the function call without submitting the transaction.
+
+     ![Call the greet function](/assets/docs/deploy-greet.jpg)

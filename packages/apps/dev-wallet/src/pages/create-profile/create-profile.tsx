@@ -1,7 +1,6 @@
 import { AuthCard } from '@/Components/AuthCard/AuthCard.tsx';
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet';
 import { LayoutContext } from '@/modules/layout/layout.provider';
-import { useNetwork } from '@/modules/network/network.hook';
 import {
   PublicKeyCredentialCreate,
   createCredential,
@@ -25,6 +24,7 @@ export function CreateProfile() {
     createKAccount,
     profileList,
     unlockProfile,
+    activeNetwork,
   } = useWallet();
   const { createHDWallet } = useHDWallet();
   const isShortFlow = profileList.length === 0;
@@ -53,7 +53,6 @@ export function CreateProfile() {
   });
 
   const navigate = useNavigate();
-  const { activeNetwork } = useNetwork();
   const { setLayoutContext } = useContext(LayoutContext);
   const [webAuthnCredential, setWebAuthnCredential] =
     useState<PublicKeyCredentialCreate>();

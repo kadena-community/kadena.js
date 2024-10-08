@@ -10,7 +10,7 @@ export const Value: FC<PropsWithChildren<{ className?: string }>> = ({
   children,
   className,
 }) => (
-  <Text bold variant="code" className={className}>
+  <Text size="smallest" bold variant="code" className={className}>
     {children}
   </Text>
 );

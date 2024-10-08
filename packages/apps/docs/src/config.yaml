@@ -82,9 +82,6 @@ pages:
           contractinteraction:
             url: /contract-interaction
             file: /build/pact/beginner/contract-interaction.md
-          rotatablewallet:
-            url: /rotatable-wallet
-            file: /build/pact/beginner/rotatable-wallet.md
           loans:
             url: /loans
             file: /build/pact/beginner/loans.md

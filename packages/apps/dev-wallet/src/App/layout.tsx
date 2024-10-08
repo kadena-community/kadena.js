@@ -5,7 +5,6 @@ import {
   selectNetworkClass,
 } from '@/App/layout.css.ts';
 import { Sidebar } from '@/Components/Sidebar/Sidebar.tsx';
-import { useNetwork } from '@/modules/network/network.hook';
 import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
 import { pageClass } from '@/pages/home/style.css.ts';
 import { MonoContrast, MonoLogout, MonoPublic } from '@kadena/kode-icons';
@@ -27,13 +26,13 @@ import { FC } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
 export const Layout: FC = () => {
-  const { networks, activeNetwork, setActiveNetwork } = useNetwork();
+  const { networks, activeNetwork, setActiveNetwork } = useWallet();
 
   const { theme, setTheme } = useTheme();
 
   const handleNetworkUpdate = (value: string) => {
     const network = networks.find((network) => network.networkId === value);
-    if (network) {
+    if (network && setActiveNetwork) {
       setActiveNetwork(network);
     }
   };

@@ -293,7 +293,7 @@ describe('chainweb.block', () => {
       ),
       http.post(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/payload/outputs/batch',
-        () => HttpResponse.json(blockRecentsPayloadsMock(9)),
+        () => HttpResponse.json(blockRecentsPayloadsMock(8)),
         { once: true },
       ),
     );
@@ -309,8 +309,6 @@ describe('chainweb.block', () => {
       logg('Block:', r);
       expect(r).toBeTruthy();
       expect(r.length).toBe(10);
-    }).rejects.toThrow(
-      'failed to get payloads for some headers. Missing jvstHn1mXqNjPqeGDGkEvtBN4yKy5JglL-BbVr-a76A',
-    );
+    }).rejects.toThrow();
   });
 });

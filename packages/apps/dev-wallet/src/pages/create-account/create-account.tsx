@@ -6,7 +6,6 @@ import {
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.tsx';
 import { keySourceManager } from '@/modules/key-source/key-source-manager.ts';
 import { WebAuthnService } from '@/modules/key-source/web-authn/webauthn.ts';
-import { useNetwork } from '@/modules/network/network.hook.ts';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { KeySourceType } from '@/modules/wallet/wallet.repository.ts';
 import { createPrincipal } from '@kadena/client-utils/built-in';
@@ -31,8 +30,8 @@ import {
 
 export function CreateAccount() {
   const [created, setCreated] = useState(false);
-  const { keySources, createKey, profile, askForPassword } = useWallet();
-  const { activeNetwork } = useNetwork();
+  const { keySources, createKey, profile, askForPassword, activeNetwork } =
+    useWallet();
   const [selectedPred, setSelectedPred] = useState<
     'keys-all' | 'keys-any' | 'keys-2'
   >('keys-all');
