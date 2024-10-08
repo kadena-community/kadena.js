@@ -42,7 +42,7 @@ export function BackupMnemonic({
             you should consider everyone with the phrase have access to your
             assets
           </Text>
-          {
+          <Stack justifyContent={'space-between'}>
             <Button
               type="submit"
               onClick={async () => {
@@ -52,7 +52,10 @@ export function BackupMnemonic({
             >
               Show Phrase
             </Button>
-          }
+            <Button variant="transparent" onClick={onSkip}>
+              Skip
+            </Button>
+          </Stack>
         </Stack>
       )}
       {step === 'view' && (
