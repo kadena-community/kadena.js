@@ -1,4 +1,3 @@
-import { env } from '@/utils/env';
 import { store } from '@/utils/socket/store';
 import pinataSDK from '@pinata/sdk';
 import type { NextApiRequest, NextApiResponse } from 'next';
