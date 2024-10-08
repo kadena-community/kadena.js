@@ -1,5 +1,11 @@
 # @kadena/graph-client
 
+## 0.4.5
+
+### Patch Changes
+
+- @kadena/graph\@1.0.14
+
 ## 0.4.4
 
 ### Patch Changes

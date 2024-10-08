@@ -53,7 +53,8 @@ export const processRedistribute = (
     chainId: ChainId;
     demand: string;
   }[],
-  reservedGas: string,
+  crossChainGas: string,
+  finalTransferGas = crossChainGas,
 ) => {
   const transfers: Array<{
     source: ChainId;
@@ -88,10 +89,10 @@ export const processRedistribute = (
       if (candid.gap.isNegative()) {
         const amount = candid.gap
           .abs()
-          .minus(reservedGas)
-          .gte(item.gap.plus(reservedGas))
-          ? item.gap.plus(reservedGas)
-          : candid.gap.abs().minus(reservedGas);
+          .minus(crossChainGas)
+          .gte(item.gap.plus(finalTransferGas))
+          ? item.gap.plus(finalTransferGas)
+          : candid.gap.abs().minus(crossChainGas);
         if (amount.isZero()) continue;
         transfers.push({
           source: candid.chainId,
@@ -101,7 +102,7 @@ export const processRedistribute = (
         item.balance = amount.plus(item.balance).toDecimal();
         candid.balance = new PactNumber(candid.balance)
           .minus(amount)
-          .minus(reservedGas)
+          .minus(crossChainGas)
           .toDecimal();
       }
     }
@@ -278,7 +279,7 @@ export interface IReceiver {
   }[];
   discoveredAccounts: IReceiverAccount[];
   discoveryStatus: 'not-started' | 'in-progress' | 'done';
-  transferMax?: true;
+  transferMax?: boolean;
 }
 
 export const createTransactions = async ({

@@ -46,6 +46,9 @@ importers:
 
   packages/apps/dev-wallet:
     dependencies:
+      '@artsy/fresnel':
+        specifier: ^7.1.4
+        version: 7.1.4(react@18.3.1)
       '@hookform/resolvers':
         specifier: ^3.2.0
         version: 3.7.0(react-hook-form@7.52.1(react@18.3.1))
@@ -85,6 +88,9 @@ importers:
       '@vanilla-extract/css':
         specifier: 1.14.2
         version: 1.14.2
+      '@vanilla-extract/dynamic':
+        specifier: ^2.1.2
+        version: 2.1.2
       asn1js:
         specifier: ^3.0.5
         version: 3.0.5
@@ -97,6 +103,9 @@ importers:
       classnames:
         specifier: ^2.3.1
         version: 2.5.1
+      createRuntimeFn:
+        specifier: link:@vanilla-extract/recipes/createRuntimeFn
+        version: link:@vanilla-extract/recipes/createRuntimeFn
       ed25519-keygen:
         specifier: 0.4.8
         version: 0.4.8
@@ -109,12 +118,18 @@ importers:
       react:
         specifier: ^18.2.0
         version: 18.3.1
+      react-console-emulator:
+        specifier: ^5.0.2
+        version: 5.0.2(@types/react@18.3.3)(react@18.3.1)
       react-dom:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
       react-hook-form:
         specifier: ^7.45.4
         version: 7.52.1(react@18.3.1)
+      react-qrcode-logo:
+        specifier: ^2.9.0
+        version: 2.10.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-router-dom:
         specifier: ^6.15.0
         version: 6.24.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -17579,6 +17594,9 @@ packages:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
 
+  react-console-emulator@5.0.2:
+    resolution: {integrity: sha512-IqoL1lmvY+VS80GgXmOoSuFMVfitZY9NM5OYQ8nHBYzG3fPeqILJDwy3/sS5LIHq2Os1lrrDR5O/TF0LDcaB1Q==}
+
   react-device-detect@2.2.3:
     resolution: {integrity: sha512-buYY3qrCnQVlIFHrC5UcUoAj7iANs/+srdkwsnNjI7anr3Tt7UY6MqNxtMLlr0tMBied0O49UZVK8XKs3ZIiPw==}
     peerDependencies:
@@ -17614,11 +17632,23 @@ packages:
   react-error-overlay@6.0.9:
     resolution: {integrity: sha512-nQTTcUu+ATDbrSD1BZHr5kgSD4oF8OFjxun8uAaL8RwPBacGBNPf/yAuVVdx17N8XNzRDMrZ9XcKZHCjPW+9ew==}
 
+  react-fast-compare@3.2.2:
+    resolution: {integrity: sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==}
+
   react-hook-form@7.52.1:
     resolution: {integrity: sha512-uNKIhaoICJ5KQALYZ4TOaOLElyM+xipord+Ha3crEFhTntdLvWZqVY49Wqd/0GiVCA/f9NjemLeiNPjG7Hpurg==}
     engines: {node: '>=12.22.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
+
+  react-inner-html@1.0.1:
+    resolution: {integrity: sha512-q8d/OGRhk6gM6cfwzNj8IXwf5MKSDOpYAvpkCY5x/qHUCRmN4jVc4ah041QnsuEGakly4Gw7DhCQTswCf03rqg==}
+
+  react-innertext@1.1.5:
+    resolution: {integrity: sha512-PWAqdqhxhHIv80dT9znP2KvS+hfkbRovFp4zFYHFFlOoQLRiawIic81gKb3U1wEyJZgMwgs3JoLtwryASRWP3Q==}
+    peerDependencies:
+      '@types/react': '>=0.0.0 <=99'
+      react: '>=0.0.0 <=99'
 
   react-intersection-observer@9.10.3:
     resolution: {integrity: sha512-9NYfKwPZRovB6QJee7fDg0zz/SyYrqXtn5xTZU0vwLtLVBtfu9aZt1pVmr825REE49VPDZ7Lm5SNHjJBOTZHpA==}
@@ -40963,6 +40993,17 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
+  react-console-emulator@5.0.2(@types/react@18.3.3)(react@18.3.1):
+    dependencies:
+      defaults: 1.0.4
+      prop-types: 15.8.1
+      react-fast-compare: 3.2.2
+      react-inner-html: 1.0.1
+      react-innertext: 1.1.5(@types/react@18.3.3)(react@18.3.1)
+    transitivePeerDependencies:
+      - '@types/react'
+      - react
+
   react-device-detect@2.2.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       react: 18.3.1
@@ -41015,8 +41056,17 @@ snapshots:
 
   react-error-overlay@6.0.9: {}
 
+  react-fast-compare@3.2.2: {}
+
   react-hook-form@7.52.1(react@18.3.1):
     dependencies:
+      react: 18.3.1
+
+  react-inner-html@1.0.1: {}
+
+  react-innertext@1.1.5(@types/react@18.3.3)(react@18.3.1):
+    dependencies:
+      '@types/react': 18.3.3
       react: 18.3.1
 
   react-intersection-observer@9.10.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1):

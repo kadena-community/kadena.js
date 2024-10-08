@@ -77,8 +77,8 @@ export function RedistributionPage({
                   {'to '}
                   <Chain chainId={r.target} />
                   {r.amount}{' '}
-                  {fungibles.find((ct) => ct.contract === formData.fungibleType)
-                    ?.symbol ?? formData.fungibleType}
+                  {fungibles.find((ct) => ct.contract === formData.fungible)
+                    ?.symbol ?? formData.fungible}
                 </Stack>
               ))}
             </Stack>

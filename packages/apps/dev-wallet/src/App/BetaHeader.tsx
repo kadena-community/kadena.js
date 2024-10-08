@@ -1,8 +1,12 @@
+import { closeDatabaseConnections } from '@/modules/db/db.service';
+import { deleteDatabase } from '@/modules/db/indexeddb';
 import { MonoRemoveCircleOutline as DeleteIcon } from '@kadena/kode-icons';
 import { Button, Stack, Text } from '@kadena/kode-ui';
+import { useState } from 'react';
 
 export const BetaHeader = () => {
-  const cleanLocalDb = () => {
+  const [isDeleting, setIsDeleting] = useState(false);
+  const cleanLocalDb = async () => {
     const confirmDelete = confirm(
       [
         'This will DELETE your profiles! ' +
@@ -12,8 +16,12 @@ export const BetaHeader = () => {
       ].join('\n'),
     );
     if (!confirmDelete) return;
-    indexedDB.deleteDatabase('dev-wallet');
-    location.reload();
+    setIsDeleting(true);
+    closeDatabaseConnections();
+    setTimeout(async () => {
+      await deleteDatabase('dev-wallet');
+      location.reload();
+    }, 1000);
   };
 
   return (
@@ -36,6 +44,8 @@ export const BetaHeader = () => {
           endVisual={DeleteIcon({})}
           variant="negative"
           onPress={cleanLocalDb}
+          isLoading={isDeleting}
+          loadingLabel="Deleting..."
         >
           Delete Local Database
         </Button>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export function useAsync<T, A extends any[]>(
   factory: (...args: A) => Promise<T>,
@@ -8,7 +8,7 @@ export function useAsync<T, A extends any[]>(
   const [error, setError] = useState<Error>();
   const [pending, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
+  const run = useCallback(() => {
     setLoading(true);
     setError(undefined);
     setState(undefined);
@@ -18,7 +18,11 @@ export function useAsync<T, A extends any[]>(
       .finally(() => {
         setLoading(false);
       });
+  }, [args]);
+
+  useEffect(() => {
+    run();
   }, args);
 
-  return [state, error, pending] as const;
+  return [state, error, pending, run] as const;
 }
