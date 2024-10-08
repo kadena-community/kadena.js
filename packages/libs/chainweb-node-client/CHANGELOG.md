@@ -1,5 +1,11 @@
 # Change Log - @kadena/chainweb-node-client
 
+## 0.7.0
+
+### Minor Changes
+
+- 78e6f88: Adds 'testnet05' to ChainwebNetworkId
+
 ## 0.6.3
 
 ### Patch Changes

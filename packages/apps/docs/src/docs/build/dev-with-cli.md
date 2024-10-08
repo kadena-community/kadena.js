@@ -121,7 +121,7 @@ To configure initial settings:
    kadena config init
    ```
    
-   This command creates the `.kadena` configuration folder location is your current working directory confirmed and adds default network settings to a `networks` subfolder, then prompts you to create a wallet.
+   This command creates the `.kadena` configuration folder location in your current working directory and adds default network settings to a `networks` subfolder, then prompts you to create a wallet.
    For example:
    
    ```bash

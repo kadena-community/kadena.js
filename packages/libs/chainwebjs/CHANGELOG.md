@@ -1,5 +1,12 @@
 # Change Log - @kadena/chainwebjs
 
+## 0.1.4
+
+### Patch Changes
+
+- f9e5fe4: fix issue where chainweb-node is greedy and does not return the full
+  batch on /payload/outputs/batch
+
 ## 0.1.3
 
 ### Patch Changes
