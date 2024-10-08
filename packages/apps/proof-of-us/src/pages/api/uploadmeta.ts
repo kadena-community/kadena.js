@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 import pinataSDK from '@pinata/sdk';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -25,7 +26,7 @@ export const uploadMeta = async (metadata: any): Promise<IUploadResult> => {
   };
   const result = await pinata.pinJSONToIPFS(metadata, options);
   return {
-    url: `https://ipfs.io/ipfs/${result.IpfsHash}`,
+    url: `${env.PINATA_DOMAIN}/ipfs/${result.IpfsHash}`,
     cid: result.IpfsHash,
   };
 };

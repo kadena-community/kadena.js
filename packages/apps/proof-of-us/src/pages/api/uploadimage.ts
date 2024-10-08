@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 import { store } from '@/utils/socket/store';
 import pinataSDK from '@pinata/sdk';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -49,7 +50,7 @@ export const uploadImageString = async (
 
   const result = await pinata.pinFileToIPFS(stream, options);
   return {
-    url: `https://ipfs.io/ipfs/${result.IpfsHash}`,
+    url: `${env.PINATA_DOMAIN}/ipfs/${result.IpfsHash}`,
     cid: result.IpfsHash,
   };
 };

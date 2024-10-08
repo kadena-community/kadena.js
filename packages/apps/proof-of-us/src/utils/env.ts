@@ -11,6 +11,7 @@ const NAMESPACE = process.env.NEXT_PUBLIC_CONTRACT_NAMESPACE;
 const GRAHQLURL = process.env.NEXT_PUBLIC_GRAHQLURL;
 const CHAINWEBAPIURL = process.env.NEXT_PUBLIC_CHAINWEBAPIURL;
 const MAXSIGNERS = Number(process.env.NEXT_PUBLIC_MAXSIGNERS);
+const NEXT_PUBLIC_PINATA_DOMAIN = process.env.NEXT_PUBLIC_PINATA_DOMAIN;
 
 if (!TRACKING_ID) console.error('NEXT_PUBLIC_TRACKING_ID is not set');
 if (!TESTNUMBER) console.error('NEXT_PUBLIC_TESTNUMBER is not set');
@@ -22,8 +23,11 @@ if (!NETWORKNAME) console.error('NEXT_PUBLIC_NETWORKNAME is not set');
 if (!GRAHQLURL) console.error('NEXT_PUBLIC_GRAHQLURL is not set');
 if (!CHAINWEBAPIURL) console.error('NEXT_PUBLIC_CHAINWEBAPIURL is not set');
 if (!MAXSIGNERS) console.error('NEXT_PUBLIC_MAXSIGNERS is not set');
+if (!NEXT_PUBLIC_PINATA_DOMAIN)
+  console.error('NEXT_PUBLIC_PINATA_DOMAIN is not set');
 
 export const env = {
+  PINATA_DOMAIN: NEXT_PUBLIC_PINATA_DOMAIN ?? 'https://ipfs.io',
   MAXSIGNERS,
   TRACKING_ID,
   TESTNUMBER,
