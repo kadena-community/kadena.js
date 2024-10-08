@@ -1,5 +1,5 @@
-import { vanillaExtractPlugin as vanillaExtractVitePlugin } from "@vanilla-extract/vite-plugin";
-import { vanillaExtractPlugin as vanillaExtractEsbuildPlugin } from "@vanilla-extract/esbuild-plugin";
+import { vanillaExtractPlugin as vanillaExtractEsbuildPlugin } from '@vanilla-extract/esbuild-plugin';
+import { vanillaExtractPlugin as vanillaExtractVitePlugin } from '@vanilla-extract/vite-plugin';
 import react from '@vitejs/plugin-react-swc';
 import fs from 'fs';
 import path from 'path';
@@ -73,7 +73,7 @@ export const config: UserConfig = {
   // https://tauri.studio/v1/api/config#buildconfig.beforedevcommand
   envPrefix: ['VITE_', 'TAURI_'],
   resolve: {
-    // preserveSymlinks: true,
+    // preserveSymlinks: true,\
   },
 };
 

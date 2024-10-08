@@ -4,6 +4,7 @@ import {
   MonoSignature,
   MonoSwapHoriz,
   MonoTableRows,
+  MonoTerminal,
 } from '@kadena/kode-icons';
 import { Box, Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
@@ -68,6 +69,16 @@ export const Sidebar: FC = () => {
                   <Stack alignItems="center" gap="md">
                     <MonoTableRows />
                     Transactions
+                  </Stack>
+                </Text>
+              </NavLink>
+            </li>
+            <li className={sidebarMenuOptionClass}>
+              <NavLink to="/terminal" className={sidebarLinkClass}>
+                <Text>
+                  <Stack alignItems="center" gap="md">
+                    <MonoTerminal />
+                    DX Terminal
                   </Stack>
                 </Text>
               </NavLink>

@@ -31,10 +31,12 @@ export function TxList({
   txs,
   onUpdate,
   sendDisabled,
+  onDone,
 }: {
   txs: ITransaction[];
   onUpdate: () => void;
   sendDisabled?: boolean;
+  onDone?: () => void;
 }) {
   const [selectedTxIndex, setSelectedTxIndex] = React.useState<
     number | undefined
@@ -209,6 +211,14 @@ export function TxList({
     return updatedTx;
   };
 
+  const onSendAll = async () => {
+    const result = await Promise.all(txs.map(onSubmit));
+    if (onDone) {
+      onDone();
+    }
+    console.log(result);
+  };
+
   const selectedTx =
     selectedTxIndex !== undefined ? txs[selectedTxIndex] : undefined;
   return (
@@ -277,7 +287,9 @@ export function TxList({
               blockchain
             </Text>
             <Stack>
-              <Button isCompact>Send transactions</Button>
+              <Button isCompact onPress={() => onSendAll()}>
+                Send transactions
+              </Button>
             </Stack>
           </Stack>
         )}
