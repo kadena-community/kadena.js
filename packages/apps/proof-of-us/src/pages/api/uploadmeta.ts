@@ -26,7 +26,7 @@ export const uploadMeta = async (metadata: any): Promise<IUploadResult> => {
   };
   const result = await pinata.pinJSONToIPFS(metadata, options);
   return {
-    url: `${env.PINATA_DOMAIN}/ipfs/${result.IpfsHash}`,
+    url: `${process.env.NEXT_PUBLIC_PINATA_DOMAIN}/ipfs/${result.IpfsHash}`,
     cid: result.IpfsHash,
   };
 };
