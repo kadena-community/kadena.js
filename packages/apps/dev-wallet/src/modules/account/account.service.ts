@@ -236,19 +236,17 @@ export async function fundAccount({
   keyset,
   profileId,
   networkId = 'testnet04',
-}: Pick<
-  IAccount,
-  'address' | 'keyset' | 'chains' | 'profileId' | 'networkId'
->) {
+  chainId,
+}: Pick<IAccount, 'address' | 'keyset' | 'profileId' | 'networkId'> & {
+  chainId: ChainId;
+}) {
   if (!keyset) {
     throw new Error('No keyset found');
   }
 
   const randomKeyPair = genKeyPair();
 
-  const randomChainId = Math.floor(Math.random() * 20).toString();
-
-  const isCreated = await readHistory(address, randomChainId as ChainId)
+  const isCreated = await readHistory(address, chainId as ChainId)
     .then(() => true)
     .catch(() => false);
 
@@ -257,7 +255,7 @@ export async function fundAccount({
         account: address,
         signerKeys: [randomKeyPair.publicKey],
         amount: 20,
-        chainId: randomChainId as ChainId,
+        chainId: chainId as ChainId,
         networkId,
       })
     : fundNewAccountOnTestnetCommand({
@@ -265,7 +263,7 @@ export async function fundAccount({
         keyset: keyset?.guard,
         signerKeys: [randomKeyPair.publicKey],
         amount: 20,
-        chainId: randomChainId as ChainId,
+        chainId: chainId as ChainId,
         networkId,
       });
 
