@@ -2,6 +2,8 @@ export {
   kadenaCheckMnemonic,
   kadenaGenMnemonic,
   kadenaVerify,
+  kadenaChangePassword as legacyKadenaChangePassword,
+  kadenaGenKeypair as legacyKadenaGenKeypair,
 } from './kadena-crypto.js';
 
 export {

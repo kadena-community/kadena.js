@@ -81,12 +81,12 @@ export function Keyset() {
 
     const groupId = crypto.randomUUID();
 
-    const result = await transactionService.addTransaction(
-      signedTx,
-      profile!.uuid,
-      'testnet04',
+    const result = await transactionService.addTransaction({
+      transaction: signedTx,
+      profileId: profile!.uuid,
+      networkId: 'testnet05',
       groupId,
-    );
+    });
 
     await transactionRepository.updateTransaction({
       ...result,
@@ -101,7 +101,7 @@ export function Keyset() {
       {!!keyset.alias && <Heading variant="h3">{keyset.alias}</Heading>}
       <Stack justifyContent={'space-between'}>
         <Heading variant="h2">{shorten(keyset.principal, 15)}</Heading>
-        {activeNetwork?.networkId === 'testnet04' && (
+        {activeNetwork?.networkId === 'testnet05' && (
           <Button
             variant="positive"
             isCompact

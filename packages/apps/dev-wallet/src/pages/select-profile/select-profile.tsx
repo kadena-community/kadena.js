@@ -33,7 +33,10 @@ export function SelectProfile() {
     }
     const keys = await recoverPublicKey(credential);
     for (const key of keys) {
-      await unlockProfile(profile.uuid, key);
+      const result = await unlockProfile(profile.uuid, key);
+      if (result) {
+        return;
+      }
     }
     console.error('Failed to unlock profile');
   };

@@ -6,7 +6,6 @@ import {
   IUnsignedCommand,
 } from '@kadena/client';
 import { kadenaDecrypt, kadenaEncrypt } from '@kadena/hd-wallet';
-import { accountRepository } from '../account/account.repository';
 import { keySourceManager } from '../key-source/key-source-manager';
 import { INetwork } from '../network/network.repository';
 import {
@@ -18,10 +17,6 @@ import {
 
 export function getProfile(profileId: string) {
   return walletRepository.getProfile(profileId);
-}
-
-export function getAccounts(profileId: string) {
-  return accountRepository.getAccountsByProfileId(profileId);
 }
 
 export async function sign(
@@ -130,11 +125,14 @@ export const unlockProfile = async (profileId: string, password: string) => {
     const secret = await walletRepository.getEncryptedValue(profile.secretId);
     const decryptedSecret = await kadenaDecrypt(password, secret);
     const { secretId } = JSON.parse(new TextDecoder().decode(decryptedSecret));
+    console.log('secretId', secretId, profile);
     if (secretId === profile.secretId) {
       return profile;
     }
     return null;
   } catch (e) {
+    console.log('error unlocking profile', e);
+    console.error(e);
     return null;
   }
 };

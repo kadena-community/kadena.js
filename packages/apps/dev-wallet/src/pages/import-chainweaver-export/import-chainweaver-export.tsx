@@ -1,10 +1,9 @@
-import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { Button, Heading, Stack } from '@kadena/kode-ui';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { createProfileFromChainweaverData } from './createProfileFromChainweaverData';
 import { createSelectionOptions } from './createSelectionOptions';
+import { createProfileFromChainweaverData } from './createProfileFromChainweaverData';
 
 type Inputs = {
   password?: string;
@@ -60,7 +59,6 @@ const readFile = (file: File): Promise<string> => {
 
 export const ImportChainweaverExport: React.FC = () => {
   const { register, handleSubmit } = useForm<Inputs>();
-  const prompt = usePrompt();
   const [step, setStep] = useState<'upload' | 'select' | 'password'>('upload');
   const [selectionOptions, setSelectionOptions] = useState<{
     accounts: OptionType<ImportAccount>[];

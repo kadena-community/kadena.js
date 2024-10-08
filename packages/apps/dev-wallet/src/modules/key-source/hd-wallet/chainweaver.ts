@@ -8,7 +8,10 @@ import {
   legacyKadenaGenKeypair,
 } from '@kadena/hd-wallet/chainweaver';
 
-import { IKeySource } from '@/modules/wallet/wallet.repository';
+import {
+  IKeySource,
+  walletRepository,
+} from '@/modules/wallet/wallet.repository';
 import { IHDChainweaver, keySourceRepository } from '../key-source.repository';
 import { getNextAvailableIndex } from './utils';
 
@@ -82,7 +85,7 @@ export function createChainweaverService() {
         Buffer.from(rootKey, 'hex'),
         'buffer',
       );
-      await keySourceRepository.addEncryptedValue(
+      await walletRepository.addEncryptedValue(
         rootKeyId,
         encryptedRootKeyBuffer,
       );
@@ -91,7 +94,7 @@ export function createChainweaverService() {
       const newKeyPairs = await Promise.all(
         keyPairs.map(async (keyPair) => {
           const secretId = crypto.randomUUID();
-          await keySourceRepository.addEncryptedValue(
+          await walletRepository.addEncryptedValue(
             secretId,
             await kadenaEncrypt(password, Buffer.from(keyPair.private, 'hex')),
           );
@@ -127,7 +130,7 @@ export function createChainweaverService() {
         if (keySource.source !== 'HD-chainweaver') {
           return;
         }
-        const rootKey = await keySourceRepository.getEncryptedValue(
+        const rootKey = await walletRepository.getEncryptedValue(
           keySource.rootKeyId,
         );
 
@@ -139,7 +142,7 @@ export function createChainweaverService() {
 
         const newKeys = await Promise.all(
           keySource.keys.map(async (key) => {
-            const secretKey = await keySourceRepository.getEncryptedValue(
+            const secretKey = await walletRepository.getEncryptedValue(
               key.secretId,
             );
 
@@ -175,35 +178,21 @@ ${(e as any).message}`);
       profileId: string,
       mnemonic: string,
       password: string,
-      mnemonicIsRootkey: boolean = false,
     ): Promise<IHDChainweaver> => {
-      const rootKeyId = crypto.randomUUID();
+      const encryptedMnemonic = await kadenaEncrypt(
+        password,
+        mnemonic,
+        'buffer',
+      );
       const secretId = crypto.randomUUID();
-
-      let encryptedRootKey;
-      // TODO undo mnemonicIsRootkey
-      // take from main branch
-      if (mnemonicIsRootkey) {
-        // when importing from Chainweaver export file,
-        //   we have no access to the mnemonic
-        encryptedRootKey = mnemonic;
-      } else {
-        const encryptedMnemonic = await kadenaEncrypt(
-          password,
-          mnemonic,
-          'buffer',
-        );
-        encryptedRootKey = await kadenaMnemonicToRootKeypair(
-          password,
-          mnemonic,
-          'buffer',
-        );
-        await keySourceRepository.addEncryptedValue(
-          secretId,
-          encryptedMnemonic,
-        );
-      }
-      await keySourceRepository.addEncryptedValue(rootKeyId, encryptedRootKey);
+      const rootKeyId = crypto.randomUUID();
+      const encryptedRootKey = await kadenaMnemonicToRootKeypair(
+        password,
+        mnemonic,
+        'buffer',
+      );
+      await walletRepository.addEncryptedValue(secretId, encryptedMnemonic);
+      await walletRepository.addEncryptedValue(rootKeyId, encryptedRootKey);
       const keySource: IHDChainweaver = {
         uuid: crypto.randomUUID(),
         profileId,
@@ -218,7 +207,7 @@ ${(e as any).message}`);
     },
 
     connect: async (password: string, keySource: IHDChainweaver) => {
-      const encryptedRootKey = await keySourceRepository.getEncryptedValue(
+      const encryptedRootKey = await walletRepository.getEncryptedValue(
         keySource.rootKeyId,
       );
       await kadenaDecrypt(password, encryptedRootKey);
@@ -240,7 +229,7 @@ ${(e as any).message}`);
         throw new Error('Invalid key source');
       }
       const password = await decryptPassword(context);
-      const rootKey = await keySourceRepository.getEncryptedValue(
+      const rootKey = await walletRepository.getEncryptedValue(
         keySource.rootKeyId,
       );
       const key = await kadenaGenKeypair(password, rootKey, startIndex);
@@ -272,7 +261,7 @@ ${(e as any).message}`);
       }
 
       const password = await decryptPassword(context);
-      const rootKey = await keySourceRepository.getEncryptedValue(
+      const rootKey = await walletRepository.getEncryptedValue(
         keySource.rootKeyId,
       );
       const key = context.cache.has(`${keySourceId}-${keyIndex}`)
@@ -280,7 +269,7 @@ ${(e as any).message}`);
         : await kadenaGenKeypair(password, rootKey, keyIndex);
 
       const secretId = crypto.randomUUID();
-      await keySourceRepository.addEncryptedValue(
+      await walletRepository.addEncryptedValue(
         secretId,
         Buffer.from(key.secretKey, 'base64'),
       );
@@ -308,9 +297,7 @@ ${(e as any).message}`);
           .filter((key) => indexes.includes(key.index))
           .map(async (key) => ({
             ...key,
-            secretKey: await keySourceRepository.getEncryptedValue(
-              key.secretId,
-            ),
+            secretKey: await walletRepository.getEncryptedValue(key.secretId),
           })),
       );
 

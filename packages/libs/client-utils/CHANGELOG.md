@@ -1,5 +1,19 @@
 # @kadena/client-utils
 
+## 0.11.0
+
+### Minor Changes
+
+- eac8c84: Add script to deploy faucet contract
+
+### Patch Changes
+
+- Updated dependencies \[78e6f88]
+- Updated dependencies \[eccd46e]
+  - @kadena/chainweb-node-client\@0.7.0
+  - @kadena/client\@1.15.0
+  - @kadena/pactjs-cli\@1.15.0
+
 ## 0.10.0
 
 ### Minor Changes

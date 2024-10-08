@@ -29,7 +29,7 @@ describe('submitClient', () => {
         networkId: 'test-network',
         requestKey: 'test-request-key',
       } as ITransactionDescriptor),
-      listen: vi.fn().mockResolvedValue({
+      pollOne: vi.fn().mockResolvedValue({
         result: { status: 'success', data: 'test-data' },
       } as ILocalCommandResult),
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

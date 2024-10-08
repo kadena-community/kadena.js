@@ -42,12 +42,18 @@ export async function headers2blocks(
 ): Promise<IBlockPayloads<ITransactionElement>[]> {
   let missing = hdrs;
   const result: IBlockPayloads<ITransactionElement>[] = [];
+  // allow retrying for each block header
+  // in case cw is starving us and sending only one payload at a time
+  let allowedRetries = hdrs.length + 1;
 
-  while (missing.length > 0) {
+  while (missing.length > 0 && allowedRetries > 0) {
     const chainId = hdrs[0].chainId;
+
     const pays = await payloads(
       chainId,
-      hdrs.map((x) => x.payloadHash),
+      hdrs
+        .map((x) => x.payloadHash)
+        .filter((plh) => missing.map((m) => m.payloadHash).includes(plh)),
       network,
       host,
       retryOptions,
@@ -84,12 +90,17 @@ export async function headers2blocks(
         });
         return false;
       } else {
-        // return true;
-        throw new Error(
-          `failed to get payloads for some headers. Missing ${hdr.payloadHash}`,
-        );
+        return true;
       }
     });
+
+    allowedRetries = allowedRetries - 1;
+    if (allowedRetries <= 0) {
+      throw new Error(
+        `Retries exhausted; Failed to get payloads for some headers. ` +
+          `Missing ${missing.map((x) => x.payloadHash).join(', ')}`,
+      );
+    }
   }
 
   return result;

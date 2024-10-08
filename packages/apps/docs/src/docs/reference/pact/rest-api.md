@@ -11,12 +11,14 @@ tags: ['pact', 'rest api', 'pact api', 'pact api reference']
 
 # Pact REST API
 
-There are two sets of Pact REST API endpoints:
+The Pact REST API provides endpoints that enable you to execute contract functions, test transactions locally, submit transactions to the blockchain, and retrieve transactions results.
 
-- Pact API endpoints that are exposed by Chainweb nodes through the Chainweb service API.
-- Pact API endpoints that are exposed locally through the Pact built-in HTTP server.
+You can access Pact REST API endpoints in two different ways:
 
-Both sets of endpoints provide similar functionality.
+- By using the Pact API endpoints that are exposed by Chainweb nodes through the Chainweb service API.
+- By using the Pact API endpoints that are exposed locally through the Pact built-in HTTP server.
+
+Regardless of the method you use to access Pact endpoints, the core functionality is the same.
 However, the URLs you use to route API requests to each set of endpoints are different.
 This section describes the Pact API endpoints that are exposed through the Chainweb service API.
 You can also find documentation for these Pact endpoints, including sample requests and responses, in the [Pact OpenAPI](https://api.chainweb.com/openapi/pact.html) specification.
