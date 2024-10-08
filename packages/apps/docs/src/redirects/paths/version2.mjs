@@ -141,6 +141,11 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
+    source: '/participate/wallets/spirekey',
+    destination: '/reference/spirekey',
+    permanent: true,
+  },
+  {
     source: '/build/quickstart/:slug',
     destination: '/build/onboard',
     permanent: true,
