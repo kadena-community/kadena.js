@@ -22,7 +22,7 @@ import { useMemo, useRef, useState } from 'react';
 import Terminal from 'react-console-emulator';
 import { TerminalContainerClass } from './style.css';
 
-const createCapArgs = (arg: IParsedCode['args'][number]) => {
+const createCapArgs = (arg: IParsedCode['args'][number]): any => {
   if ('string' in arg) return arg.string;
   if ('int' in arg) return arg;
   if ('decimal' in arg) return arg;
