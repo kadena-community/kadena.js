@@ -72,7 +72,9 @@ export const Routes: FC = () => {
       <Route element={<LayoutMini />}>
         <Route element={<Redirect if={!isLocked} to={origin} />}>
           <Route path="/select-profile" element={<SelectProfile />} />
+
           <Route path="/create-profile/*" element={<CreateProfile />} />
+
           <Route
             path="/unlock-profile/:profileId"
             element={<UnlockProfile />}
@@ -80,6 +82,10 @@ export const Routes: FC = () => {
           <Route
             path="/import-wallet"
             element={<ImportWallet setOrigin={setOrigin} />}
+          />
+          <Route
+            path="/import-chainweaver"
+            element={<ImportChainweaverExport setOrigin={setOrigin} />}
           />
         </Route>
       </Route>
@@ -104,22 +110,34 @@ export const Routes: FC = () => {
         </Route>
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
+
           <Route path="/sig-builder" element={<SignatureBuilder />} />
+
           <Route path="/networks" element={<Networks />} />
+
           <Route path="/networks/create" element={<CreateNetwork />} />
+
           <Route path="/connect/:requestId" element={<Connect />} />
+
           <Route path="/key-sources" element={<KeySources />} />
+
           <Route path="/create-account" element={<CreateAccount />} />
+
           <Route path="/transaction/:groupId" element={<TransactionPage />} />
+
           <Route path="/transactions" element={<Transactions />} />
+
           <Route path="/keyset/:keysetId" element={<Keyset />} />
+
           <Route path="/fungible/:contract" element={<FungiblePage />} />
+
           <Route path="/account/:accountId" element={<AccountPage />} />
+
           <Route path="/transfer" element={<TransferV2 />} />
         </Route>
       </Route>
-      <Route path="/import-chainweaver" element={<ImportChainweaverExport setOrigin={setOrigin} />} />
       <Route path="/ready" element={<Ready />} />
+
       <Route path="*" element={<Heading>Not found!</Heading>} />
     </Route>,
   );

@@ -1,26 +1,18 @@
-import { convertFromChainweaver } from '@/utils/chainweaver/convertFromChainweaver';
+import { usePrompt } from '@/Components/PromptProvider/Prompt';
+import { useWallet } from '@/modules/wallet/wallet.hook';
 import { Button, Heading, Stack } from '@kadena/kode-ui';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { createProfileFromChainweaverData } from './createProfileFromChainweaverData';
+import { createSelectionOptions } from './createSelectionOptions';
 
 type Inputs = {
   password?: string;
+  profileName?: string;
   exportContents: FileList;
 };
 
-function forEachKey<T extends object>(
-  obj: T,
-  callback: (key: keyof T, value: T[keyof T]) => void,
-) {
-  for (const key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      callback(key as keyof T, obj[key]);
-    }
-  }
-}
-
-type OptionType<
+export type OptionType<
   T extends
     | ImportAccount
     | ImportKeypair
@@ -33,19 +25,24 @@ type OptionType<
   value: T;
   id: string;
 };
+
 export type ImportAccount = {
   network: string;
   account: string;
   notes?: string;
 };
+
 export type ImportKeypair = { private: string; public: string; index: number };
+
 export type ImportToken = {
   network: string;
   namespace: string | null;
   name: string;
 };
+
 export type ImportNetwork = { network: string; hosts: string[] };
-type ImportRootKey = { rootkey: string };
+
+export type ImportRootKey = { rootkey: string };
 
 const readFile = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -61,10 +58,9 @@ const readFile = (file: File): Promise<string> => {
   });
 };
 
-export const ImportChainweaverExport: React.FC<{
-  setOrigin: (pathname: string) => void;
-}> = ({ setOrigin }) => {
+export const ImportChainweaverExport: React.FC = () => {
   const { register, handleSubmit } = useForm<Inputs>();
+  const prompt = usePrompt();
   const [step, setStep] = useState<'upload' | 'select' | 'password'>('upload');
   const [selectionOptions, setSelectionOptions] = useState<{
     accounts: OptionType<ImportAccount>[];
@@ -73,6 +69,7 @@ export const ImportChainweaverExport: React.FC<{
     networks: OptionType<ImportNetwork>[];
     rootKey: OptionType<ImportRootKey>[];
   }>({ accounts: [], keyPairs: [], tokens: [], networks: [], rootKey: [] });
+
   const [selectedOptions, setSelectedOptions] = useState<{
     accounts: ImportAccount[];
     keyPairs: ImportKeypair[];
@@ -80,91 +77,11 @@ export const ImportChainweaverExport: React.FC<{
     networks: ImportNetwork[];
     rootKey: string;
   }>();
+  const { unlockProfile } = useWallet();
 
   const parseAndCreateSelectionOptions = async (data: Inputs) => {
     const cwExport = await readFile(data.exportContents[0] as File);
-    const chainweaverExport = JSON.parse(cwExport);
-    const cwData = convertFromChainweaver(chainweaverExport);
-
-    forEachKey(cwData.accounts, (network, value) => {
-      forEachKey(value, (account, { notes }) => {
-        setSelectionOptions((prev) => ({
-          ...prev,
-          accounts: [
-            ...prev.accounts,
-            {
-              description: `${network} - ${account}`,
-              selected: true,
-              value: { network, account, notes },
-              id: `${network}-${account}`,
-            },
-          ],
-        }));
-      });
-    });
-
-    cwData.encryptedKeyPairs.forEach((keyPair) => {
-      setSelectionOptions((prev) => ({
-        ...prev,
-        ...prev,
-        keyPairs: [
-          ...prev.keyPairs,
-          {
-            description: keyPair.public,
-            selected: true,
-            value: keyPair,
-            id: keyPair.public,
-          },
-        ],
-      }));
-    });
-
-    forEachKey(cwData.tokens, (network, tokens) => {
-      tokens.forEach((token) => {
-        setSelectionOptions((prev) => ({
-          ...prev,
-          tokens: [
-            ...prev.tokens,
-            {
-              description: `${network} - ${token.namespace === null ? '' : `${token.namespace}.`}${token.name}`,
-              selected: true,
-              value: { network, ...token },
-              id: `${network}-${token.namespace}-${token.name}`,
-            },
-          ],
-        }));
-      });
-    });
-
-    forEachKey(cwData.networks, (network, hosts) => {
-      setSelectionOptions((prev) => ({
-        ...prev,
-        networks: [
-          ...prev.networks,
-          {
-            description: `${network} - ${hosts.join(', ')}`,
-            selected: true,
-            value: { network, hosts },
-            id: network,
-          },
-        ],
-      }));
-    });
-
-    if (cwData.rootKey) {
-      setSelectionOptions((prev) => ({
-        ...prev,
-        rootKey: [
-          {
-            description: 'Root key',
-            selected: true,
-            value: { rootkey: cwData.rootKey },
-            id: 'rootkey',
-          },
-        ],
-      }));
-    }
-
+    setSelectionOptions(createSelectionOptions(cwExport));
     setStep('select');
   };
 
@@ -222,15 +139,19 @@ export const ImportChainweaverExport: React.FC<{
       if (!data.password) {
         throw new Error('No password provided');
       }
-      await createProfileFromChainweaverData(
+      if (!data.profileName) {
+        throw new Error('No profile name provided');
+      }
+      const profileId = await createProfileFromChainweaverData(
         selectedOptions,
         data.password,
-        'Chainweaver-import', // TODO: use profile from user input
+        data.profileName,
       );
-      setOrigin('/');
+      if (!profileId) throw new Error('Failed to create profile');
+
+      unlockProfile(profileId, data.password);
     } catch (e) {
       console.error(e);
-      // throw new Error('Failed to create profile');
     }
   };
 
@@ -315,8 +236,11 @@ export const ImportChainweaverExport: React.FC<{
       {step === 'password' && (
         <form onSubmit={handleSubmit(importSelection)}>
           <Stack flexDirection="column">
+            <label htmlFor="profileName">Enter your Profile Name</label>
+            <input type="profileName" {...register('profileName')} />
             <label htmlFor="password">Enter your password</label>
             <input type="password" {...register('password')} />
+            <Button type="submit">Import</Button>
           </Stack>
           <pre>{JSON.stringify(selectedOptions, null, 2)}</pre>
         </form>

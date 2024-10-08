@@ -1,5 +1,5 @@
-import { vanillaExtractPlugin as vanillaExtractVitePlugin } from "@vanilla-extract/vite-plugin";
-import { vanillaExtractPlugin as vanillaExtractEsbuildPlugin } from "@vanilla-extract/esbuild-plugin";
+import { vanillaExtractPlugin as vanillaExtractEsbuildPlugin } from '@vanilla-extract/esbuild-plugin';
+import { vanillaExtractPlugin as vanillaExtractVitePlugin } from '@vanilla-extract/vite-plugin';
 import react from '@vitejs/plugin-react-swc';
 import fs from 'fs';
 import path from 'path';
@@ -49,11 +49,20 @@ export const config: UserConfig = {
     // add all monorepo packages to optimizeDeps since they are commonjs
     include: [...monorepoPackages],
     esbuildOptions: {
+      minify: false,
       plugins: [vanillaExtractEsbuildPlugin({ runtime: true })],
     },
   },
 
   build: {
+    ssr: false,
+    minify: false,
+    sourcemap: 'inline',
+    rollupOptions: {
+      output: {
+        minifyInternalExports: false,
+      },
+    },
     commonjsOptions: {
       // add all monorepo packages path regex to commonjsOptions since they are commonjs
       include: [/node_modules/, ...monorepoPathsRegex],
