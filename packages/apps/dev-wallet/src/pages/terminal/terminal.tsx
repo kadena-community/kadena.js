@@ -9,7 +9,7 @@ import {
   ISignFunction,
   SignerScheme,
 } from '@kadena/client';
-import { readClient, submitClient } from '@kadena/client-utils';
+import { readClient, submitClient } from '@kadena/client-utils/core';
 import {
   addSigner,
   composePactCommand,
