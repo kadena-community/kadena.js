@@ -1,5 +1,4 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { shorten } from '@/utils/helpers';
 
 import { fundAccount } from '@/modules/account/account.service';
 
@@ -13,7 +12,6 @@ import { Button, Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
 import { useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { noStyleLinkClass } from '../home/style.css';
-import { TxList } from '../transaction/components/TxList';
 import { linkClass } from '../transfer/style.css';
 import { ActivityTable } from './Components/ActivityTable';
 import { Redistribute } from './Components/Redistribute';

@@ -212,7 +212,7 @@ export function TxList({
   };
 
   const onSendAll = async () => {
-    const result = await txs.map(onSubmit);
+    const result = await Promise.all(txs.map(onSubmit));
     if (onDone) {
       onDone();
     }

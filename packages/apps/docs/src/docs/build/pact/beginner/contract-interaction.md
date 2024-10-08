@@ -85,13 +85,6 @@ Each number in the image corresponds to one of the files you will work with.
 | **payments.pact** | Responsible for handling payments between users. |
 | **Payments.repl** | Loads and runs modules from both auth.pact and payments.pact. |
 
-:::info
-
-Both auth.pact and payments.pact are smart contracts that you have worked with in previous tutorials. If you would like to learn more about these smart contracts, feel free to view each of their tutorials.
-
-- **Auth Module:** [Project: Rotatable Wallet](/build/pact/rotatable-wallet)
-- **Payments Module:** [Accounts and Transfers](/build/pact/accounts-and-transfers) :::
-
 There’s not much code to write for this project. Most of it has been written previously in the tutorials linked above. For this tutorial, focus on understanding the interactions between the smart contracts, and to take some time to study how the functions are interacting with each other.
 
 Making the conceptual leap toward understanding the interactions between modules is going to be extremely valuable as you make more complicated smart contracts.
@@ -147,12 +140,6 @@ Define a function enforce-user-auth that you can use to verify user authorizatio
 
 - [Challenge](https://github.com/kadena-io/pact-lang.org-code/blob/master/interaction/2-challenges/1-auth-pact/1.1-enforce-user-auth/challenge.pact)
 - [Solution](https://github.com/kadena-io/pact-lang.org-code/blob/master/interaction/2-challenges/1-auth-pact/1.1-enforce-user-auth/solution.pact)
-
-:::
-
-:::info
-
-A function similar to this is covered in Challenge [4.2 in Project Rotatable Wallet](/build/pact/rotatable-wallet#42-enforce-user). You can look back to this challenge for more information to help get you started.
 
 :::
 
