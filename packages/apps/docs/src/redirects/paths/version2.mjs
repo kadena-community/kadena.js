@@ -116,6 +116,12 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
+    source: '/build/authentication/:slug',
+    destination: '/reference/spirekey-ref',
+    permanent: true,
+  },
+
+  {
     source: '/build/quickstart/:slug',
     destination: '/build/onboard',
     permanent: true,
