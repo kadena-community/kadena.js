@@ -2,7 +2,6 @@ import { atoms, globalStyle, style, token } from './../../styles';
 
 export const contextMenuClass = style([
   atoms({
-    position: 'absolute',
     flexDirection: 'column',
     borderStyle: 'solid',
     borderRadius: 'sm',
@@ -10,8 +9,7 @@ export const contextMenuClass = style([
   }),
   {
     borderColor: token('color.neutral.n20@alpha80'),
-    backgroundColor: token('color.neutral.n1@alpha80'),
-    transform: 'translateY(140px)',
+    backgroundColor: token('color.neutral.n5'),
   },
 ]);
 
@@ -20,8 +18,10 @@ export const menuItemClass = style([
     display: 'flex',
     justifyContent: 'flex-start',
     paddingInlineStart: 'md',
+    width: '100%',
   }),
   {
+    textAlign: 'start',
     border: 0,
     backgroundColor: 'transparent',
     maxWidth: '250px',
@@ -59,4 +59,9 @@ export const menuItemIconClass = style([
 
 globalStyle(`${menuItemIconClass} > svg`, {
   color: token('color.text.base.default'),
+});
+
+export const underlayClass = style({
+  position: 'fixed',
+  inset: 0,
 });

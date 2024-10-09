@@ -10,11 +10,12 @@ import {
 
 export type IContextMenuItemProps = Pick<
   AriaButtonProps<'button'>,
-  'aria-label' | 'onPress'
+  'aria-label'
 > & {
   label: string;
   isDisabled?: boolean;
   endVisual?: ReactElement;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
 };
 
 export const ContextMenuItem: FC<IContextMenuItemProps> = ({
@@ -25,6 +26,7 @@ export const ContextMenuItem: FC<IContextMenuItemProps> = ({
 }) => {
   return (
     <Stack
+      as="button"
       alignItems="center"
       data-disabled={isDisabled}
       className={menuItemClass}

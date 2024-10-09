@@ -1,11 +1,24 @@
 import { useNetwork } from '@/context/networksContext';
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
-import { MonoSettings } from '@kadena/kode-icons/system';
-import { Button, Select, SelectItem, Stack } from '@kadena/kode-ui';
+import { MonoMoreVert, MonoSettings } from '@kadena/kode-icons/system';
+import {
+  Button,
+  ContextMenu,
+  ContextMenuItem,
+  Stack,
+  Text,
+} from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useState } from 'react';
 import { Media } from '../Layout/media';
+import { buttonSizeClass } from '../Navbar/styles.css';
 import { ConfigNetwork } from './ConfigNetwork';
+import {
+  selectorButtonClass,
+  selectorClass,
+  selectorClassWrapper,
+  selectorDividerClass,
+} from './style.css';
 
 export const SelectNetwork: FC = () => {
   const { networks, activeNetwork, setActiveNetwork } = useNetwork();
@@ -24,34 +37,33 @@ export const SelectNetwork: FC = () => {
 
   return (
     <>
-      <Stack>
+      <Stack className={selectorClassWrapper}>
         <Media greaterThanOrEqual="md">
-          <Select
-            size="lg"
-            aria-label="Select network"
-            selectedKey={activeNetwork!.slug}
-            fontType="code"
-            onSelectionChange={handleSelectNetwork}
-          >
-            {
-              networks.map((network) => (
-                <SelectItem
-                  key={network.slug ?? network.label}
-                  textValue={network.label}
-                >
-                  <Stack paddingInlineEnd="md" style={{ whiteSpace: 'nowrap' }}>
-                    {network.label}
-                  </Stack>
-                </SelectItem>
-              )) as any
-            }
-          </Select>
+          <Text className={selectorClass}>{activeNetwork.label}</Text>
         </Media>
-        <Button
-          onPress={handlePress}
-          variant="transparent"
-          endVisual={<MonoSettings />}
-        />
+        <ContextMenu
+          trigger={
+            <Button
+              variant="transparent"
+              endVisual={<MonoMoreVert />}
+              className={selectorButtonClass}
+            />
+          }
+        >
+          {networks.map((network) => (
+            <ContextMenuItem
+              aria-label={network.label}
+              key={network.slug ?? network.label}
+              label={network.label}
+              onClick={() => handleSelectNetwork(network.label)}
+            />
+          ))}
+          <ContextMenuItem
+            label="Settings"
+            endVisual={<MonoSettings />}
+            onClick={handlePress}
+          />
+        </ContextMenu>
       </Stack>
       {isOpen && <ConfigNetwork handleOpen={setIsOpen} />}
     </>

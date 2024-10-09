@@ -1,5 +1,5 @@
 import { Link } from '@/components/Routing/Link';
-import { Stack } from '@kadena/kode-ui';
+import { ContextMenu, Stack } from '@kadena/kode-ui';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 import { GraphQLQueryDialog } from '../GraphqlQueryDialog/GraphqlQueryDialog';
