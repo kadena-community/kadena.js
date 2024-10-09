@@ -61,9 +61,14 @@ export const Primary: Story = {
           trigger={<Button endVisual={<MonoMoreVert />} />}
         >
           <ContextMenuItem onClick={() => alert('click')} label="menu item" />
-          <ContextMenuItem {...props} />
-          <ContextMenuItem isDisabled label="longer menu item 3" />
+          <ContextMenuItem onClick={() => alert('click 1')} {...props} />
           <ContextMenuItem
+            onClick={() => alert('click 2')}
+            isDisabled
+            label="longer menu item 3"
+          />
+          <ContextMenuItem
+            onClick={() => alert('click 3')}
             label="very very long title menu item 4"
             endVisual={<MonoMoreVert />}
           />

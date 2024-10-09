@@ -25,20 +25,19 @@ export const ContextMenu: FC<IContextMenuProps> = ({
     state,
     ref,
   );
-  const treeState = useTreeState({
-    ...menuWrapperProps,
-  } as AriaMenuProps<{}>);
-  const { menuProps } = useMenu(menuWrapperProps, treeState, ref);
 
-  const newMenuTriggerProps = {
-    ...menuTriggerProps,
-    autofocus: false,
-  };
+  const newMenuWrapperProps = { ...menuWrapperProps, autoFocus: false };
+
+  const treeState = useTreeState({
+    ...newMenuWrapperProps,
+  } as AriaMenuProps<{}>);
+  const { menuProps } = useMenu({ ...newMenuWrapperProps }, treeState, ref);
+
   return (
     <>
       {React.cloneElement(trigger, {
         ...trigger.props,
-        ...newMenuTriggerProps,
+        ...menuTriggerProps,
         ref,
       })}
       {state.isOpen && (
@@ -50,7 +49,7 @@ export const ContextMenu: FC<IContextMenuProps> = ({
               className={contextMenuClass}
               onClick={state.close}
             >
-              <FocusScope contain restoreFocus autoFocus>
+              <FocusScope contain autoFocus restoreFocus>
                 {children}
               </FocusScope>
             </div>

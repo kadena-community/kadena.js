@@ -59,7 +59,7 @@ export const SelectNetwork: FC<IProps> = ({ placement = 'bottom end' }) => {
               aria-label={network.label}
               key={network.slug ?? network.label}
               label={network.label}
-              onClick={() => handleSelectNetwork(network.label)}
+              onClick={() => handleSelectNetwork(network.slug)}
             />
           ))}
           <ContextMenuItem
