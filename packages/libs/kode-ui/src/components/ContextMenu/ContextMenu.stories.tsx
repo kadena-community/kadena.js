@@ -77,3 +77,42 @@ export const Primary: Story = {
     );
   },
 };
+
+export const IsOpen: Story = {
+  name: 'default Open',
+  args: {
+    label: 'Hello world',
+    endVisual: <MonoChevronRight />,
+    isDisabled: false,
+    placement: 'bottom end',
+  },
+  render: ({ ...props }) => {
+    return (
+      <Stack
+        justifyContent="center"
+        alignItems="center"
+        width="100%"
+        style={{ height: '90dvh' }}
+      >
+        <ContextMenu
+          defaultOpen
+          placement={props.placement}
+          trigger={<Button endVisual={<MonoMoreVert />} />}
+        >
+          <ContextMenuItem onClick={() => alert('click')} label="menu item" />
+          <ContextMenuItem onClick={() => alert('click 1')} {...props} />
+          <ContextMenuItem
+            onClick={() => alert('click 2')}
+            isDisabled
+            label="longer menu item 3"
+          />
+          <ContextMenuItem
+            onClick={() => alert('click 3')}
+            label="very very long title menu item 4"
+            endVisual={<MonoMoreVert />}
+          />
+        </ContextMenu>
+      </Stack>
+    );
+  },
+};

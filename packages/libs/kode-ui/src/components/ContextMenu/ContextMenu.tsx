@@ -9,6 +9,7 @@ import { contextMenuClass } from './style.css';
 export type IContextMenuProps = PropsWithChildren & {
   trigger: React.ReactElement;
   placement?: 'bottom start' | 'bottom end' | 'top start' | 'top end';
+  defaultOpen?: boolean;
 };
 
 export const ContextMenu: FC<IContextMenuProps> = ({
@@ -18,7 +19,7 @@ export const ContextMenu: FC<IContextMenuProps> = ({
 }) => {
   const ref = useRef(null);
   const menuReref = useRef(null);
-  const state = useMenuTriggerState({});
+  const state = useMenuTriggerState({ defaultOpen: props.defaultOpen });
 
   const { menuTriggerProps, menuProps: menuWrapperProps } = useMenuTrigger(
     {},

@@ -9,7 +9,7 @@ export const contextMenuClass = style([
   }),
   {
     borderColor: token('color.neutral.n20@alpha80'),
-    backgroundColor: token('color.neutral.n5'),
+    backgroundColor: token('color.background.overlay.context.default'),
   },
 ]);
 
