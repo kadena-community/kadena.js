@@ -1,14 +1,13 @@
 {
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Metamask snap to manage your Kadena accounts and KDA.",
   "proposedName": "Kadena",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kadena-community/kadena.js.git",
-    "directory": "packages/libs/snap"
+    "url": "https://github.com/kadena-community/kadena.js.git"
   },
   "source": {
-    "shasum": "US7nNpBu/CCsqMEt7EQr8F5Fp5CCVdVgnPnT5Xv0qgM=",
+    "shasum": "sVG18jeqBlhj+LgGEJr2w+tQmSPSxXUXp2Gy3cYNu5o=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
