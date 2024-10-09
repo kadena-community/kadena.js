@@ -22,7 +22,7 @@ export const selectorClassWrapper = style([
     paddingInlineStart: 'no',
     borderColor: 'base.subtle',
   }),
-  { paddingInlineEnd: '1px', borderWidth: 0 },
+  { paddingInlineEnd: '1px', borderWidth: 0, direction: 'rtl' },
   responsiveStyle({
     md: {
       paddingInlineStart: token('spacing.md'),

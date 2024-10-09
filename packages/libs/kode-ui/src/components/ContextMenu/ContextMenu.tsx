@@ -30,11 +30,15 @@ export const ContextMenu: FC<IContextMenuProps> = ({
   } as AriaMenuProps<{}>);
   const { menuProps } = useMenu(menuWrapperProps, treeState, ref);
 
+  const newMenuTriggerProps = {
+    ...menuTriggerProps,
+    autofocus: false,
+  };
   return (
     <>
       {React.cloneElement(trigger, {
         ...trigger.props,
-        ...menuTriggerProps,
+        ...newMenuTriggerProps,
         ref,
       })}
       {state.isOpen && (
