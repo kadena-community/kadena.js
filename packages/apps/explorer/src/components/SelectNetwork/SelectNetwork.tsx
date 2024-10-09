@@ -1,6 +1,7 @@
 import { useNetwork } from '@/context/networksContext';
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import { MonoMoreVert, MonoSettings } from '@kadena/kode-icons/system';
+import type { IContextMenuProps } from '@kadena/kode-ui';
 import {
   Button,
   ContextMenu,
@@ -11,16 +12,18 @@ import {
 import type { FC } from 'react';
 import React, { useState } from 'react';
 import { Media } from '../Layout/media';
-import { buttonSizeClass } from '../Navbar/styles.css';
 import { ConfigNetwork } from './ConfigNetwork';
 import {
   selectorButtonClass,
   selectorClass,
   selectorClassWrapper,
-  selectorDividerClass,
 } from './style.css';
 
-export const SelectNetwork: FC = () => {
+interface IProps {
+  placement?: IContextMenuProps['placement'];
+}
+
+export const SelectNetwork: FC<IProps> = ({ placement = 'bottom end' }) => {
   const { networks, activeNetwork, setActiveNetwork } = useNetwork();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -42,6 +45,7 @@ export const SelectNetwork: FC = () => {
           <Text className={selectorClass}>{activeNetwork.label}</Text>
         </Media>
         <ContextMenu
+          placement={placement}
           trigger={
             <Button
               variant="transparent"

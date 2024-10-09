@@ -39,14 +39,14 @@ export const NavBar: FC<
         )}
 
         <Media greaterThanOrEqual="md">
-          <SelectNetwork />
+          <SelectNetwork placement="bottom end" />
         </Media>
       </Stack>
       <Stack flex={1}>{children}</Stack>
 
       <Stack alignItems="center">
         <Media lessThan="md">
-          <SelectNetwork />
+          <SelectNetwork placement="bottom start" />
         </Media>
         <ThemeToggle />
         <GraphQLQueryDialog />

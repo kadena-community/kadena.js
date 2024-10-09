@@ -28,6 +28,12 @@ const meta: Meta<IContextMenuItemProps & IContextMenuProps> = {
     isDisabled: {
       type: 'boolean',
     },
+    placement: {
+      options: ['bottom start', 'bottom end', 'top start', 'top end'],
+      control: {
+        type: 'select',
+      },
+    },
   },
 };
 
@@ -40,6 +46,7 @@ export const Primary: Story = {
     label: 'Hello world',
     endVisual: <MonoChevronRight />,
     isDisabled: false,
+    placement: 'bottom end',
   },
   render: ({ ...props }) => {
     return (
@@ -49,7 +56,10 @@ export const Primary: Story = {
         width="100%"
         style={{ height: '90dvh' }}
       >
-        <ContextMenu trigger={<Button endVisual={<MonoMoreVert />} />}>
+        <ContextMenu
+          placement={props.placement}
+          trigger={<Button endVisual={<MonoMoreVert />} />}
+        >
           <ContextMenuItem onClick={() => alert('click')} label="menu item" />
           <ContextMenuItem {...props} />
           <ContextMenuItem isDisabled label="longer menu item 3" />

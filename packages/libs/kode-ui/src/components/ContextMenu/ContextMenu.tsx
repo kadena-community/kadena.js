@@ -8,6 +8,7 @@ import { contextMenuClass } from './style.css';
 
 export type IContextMenuProps = PropsWithChildren & {
   trigger: React.ReactElement;
+  placement?: 'bottom start' | 'bottom end' | 'top start' | 'top end';
 };
 
 export const ContextMenu: FC<IContextMenuProps> = ({
@@ -38,12 +39,7 @@ export const ContextMenu: FC<IContextMenuProps> = ({
       })}
       {state.isOpen && (
         <>
-          <Popover
-            {...props}
-            triggerRef={ref}
-            state={state}
-            placement="bottom end"
-          >
+          <Popover {...props} triggerRef={ref} state={state}>
             <div
               ref={menuReref}
               {...menuProps}
