@@ -10,7 +10,7 @@ import {
 import { useSession } from '@/App/session';
 import { throttle } from '@/utils/session';
 import { IClient, createClient } from '@kadena/client';
-import { setGlobalConfig } from '@kadena/client-utils';
+import { setGlobalConfig } from '@kadena/client-utils/core';
 import {
   Fungible,
   IAccount,

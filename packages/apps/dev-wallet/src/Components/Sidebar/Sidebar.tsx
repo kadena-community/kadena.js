@@ -1,5 +1,4 @@
 import {
-  MonoContactPage,
   MonoDataThresholding,
   MonoKey,
   MonoNetworkCheck,
