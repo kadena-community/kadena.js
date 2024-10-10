@@ -30,8 +30,8 @@ export const Layout: FC = () => {
 
   const { theme, setTheme } = useTheme();
 
-  const handleNetworkUpdate = (value: string) => {
-    const network = networks.find((network) => network.networkId === value);
+  const handleNetworkUpdate = (uuid: string) => {
+    const network = networks.find((network) => network.uuid === uuid);
     if (network && setActiveNetwork) {
       setActiveNetwork(network);
     }
@@ -82,13 +82,13 @@ export const Layout: FC = () => {
           </NavHeaderButton>
           <NavHeaderSelect
             aria-label="Select Network"
-            selectedKey={activeNetwork?.networkId}
-            onSelectionChange={(value) => handleNetworkUpdate(value as string)}
+            selectedKey={activeNetwork?.uuid}
+            onSelectionChange={(uuid) => handleNetworkUpdate(uuid as string)}
             startVisual={<MonoPublic />}
             className={selectNetworkClass}
           >
             {networks.map((network) => (
-              <SelectItem key={network.networkId} textValue={network.name}>
+              <SelectItem key={network.uuid} textValue={network.name}>
                 {network.name}
               </SelectItem>
             ))}

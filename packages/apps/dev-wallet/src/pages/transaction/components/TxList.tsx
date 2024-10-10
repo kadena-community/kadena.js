@@ -177,7 +177,7 @@ export function TxList({
         )();
         const contTx = await transactionService.addTransaction({
           transaction: createTransaction(continuationTx),
-          networkId: request.networkId,
+          networkUUID: tx.networkUUID,
           profileId: updatedTx.profileId,
           groupId: `${updatedTx.groupId}:continuation`,
         });

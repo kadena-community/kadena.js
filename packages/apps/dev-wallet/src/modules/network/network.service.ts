@@ -28,7 +28,7 @@ export const hostUrlGenerator = (networks: INetwork[]) => {
             const nodeVersion = await fetchNetworkId(host.url);
             return {
               ...host,
-              isHealthy: nodeVersion !== network.networkId,
+              isHealthy: nodeVersion === network.networkId,
               checkTime: Date.now(),
             };
           }),

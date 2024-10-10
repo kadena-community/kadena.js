@@ -103,14 +103,14 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       }
       const accounts = await accountRepository.getAccountsByProfileId(
         profileId,
-        contextValue.activeNetwork?.networkId,
+        contextValue.activeNetwork?.uuid,
       );
       setContextValue((ctx) => ({
         ...ctx,
         accounts,
       }));
     },
-    [contextValue.activeNetwork?.networkId],
+    [contextValue.activeNetwork?.uuid],
   );
 
   const retrieveKeysets = useCallback(async (profileId: string) => {
@@ -193,12 +193,12 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       if (!noSession) {
         await session.reset();
       }
-      const networkId = contextValue.activeNetwork?.networkId;
+      const networkUUID = contextValue.activeNetwork?.uuid;
       await session.set('profileId', profile.uuid);
-      const accounts = networkId
+      const accounts = networkUUID
         ? await accountRepository.getAccountsByProfileId(
             profile.uuid,
-            networkId,
+            networkUUID,
           )
         : [];
       const keysets = await accountRepository.getKeysetsByProfileId(
@@ -208,8 +208,8 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
         profile.uuid,
       );
       keySourceManager.reset();
-      if (networkId) {
-        syncAllAccounts(profile.uuid, networkId);
+      if (networkUUID) {
+        syncAllAccounts(profile.uuid, networkUUID);
       }
       setContextValue((ctx) => ({
         ...ctx,
@@ -259,7 +259,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     if (contextValue.profile?.uuid && contextValue.activeNetwork?.networkId) {
       syncAllAccounts(
         contextValue.profile?.uuid,
-        contextValue.activeNetwork?.networkId,
+        contextValue.activeNetwork?.uuid,
       );
     }
   }, [contextValue.profile?.uuid, contextValue.activeNetwork?.networkId]);

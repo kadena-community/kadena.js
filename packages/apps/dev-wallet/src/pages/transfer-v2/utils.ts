@@ -2,6 +2,7 @@ import {
   accountRepository,
   IAccount,
 } from '@/modules/account/account.repository';
+import { INetwork } from '@/modules/network/network.repository';
 import {
   ITransaction,
   transactionRepository,
@@ -286,7 +287,7 @@ export const createTransactions = async ({
   account,
   receivers,
   isSafeTransfer,
-  networkId,
+  network,
   contract,
   profileId,
   mapKeys,
@@ -296,14 +297,14 @@ export const createTransactions = async ({
   account: IAccount;
   receivers: IReceiver[];
   isSafeTransfer: boolean;
-  networkId: string;
+  network: INetwork;
   contract: string;
   profileId: string;
   mapKeys: (key: ISigner) => ISigner;
   gasPrice: number;
   gasLimit: number;
 }) => {
-  if (!account || +account.overallBalance < 0 || !networkId || !profileId) {
+  if (!account || +account.overallBalance < 0 || !network || !profileId) {
     throw new Error('INVALID_INPUTs');
   }
   const groupId = crypto.randomUUID();
@@ -359,7 +360,7 @@ export const createTransactions = async ({
                 chainId,
               }),
               {
-                networkId: networkId,
+                networkId: network.networkId,
                 meta: {
                   chainId,
                 },
@@ -403,7 +404,7 @@ export const createTransactions = async ({
               },
             }),
             {
-              networkId: networkId,
+              networkId: network.networkId,
               meta: {
                 chainId: optimal.chainId,
                 gasLimit: gasLimit,
@@ -437,7 +438,7 @@ export const createTransactions = async ({
             uuid: crypto.randomUUID(),
             status: 'initiated',
             profileId,
-            networkId,
+            networkUUID: network.uuid,
             groupId,
             purpose,
           };
@@ -454,14 +455,14 @@ export async function createRedistributionTxs({
   redistribution,
   account,
   mapKeys,
-  networkId,
+  network,
   gasLimit,
   gasPrice,
 }: {
   redistribution: Array<{ source: ChainId; target: ChainId; amount: string }>;
   account: IAccount;
   mapKeys: (key: ISigner) => ISigner;
-  networkId: string;
+  network: INetwork;
   gasLimit: number;
   gasPrice: number;
 }) {
@@ -483,7 +484,7 @@ export async function createRedistributionTxs({
         contract: 'coin',
       }),
       {
-        networkId: networkId,
+        networkId: network.networkId,
         meta: {
           chainId: source,
           gasLimit: gasLimit,
@@ -496,7 +497,7 @@ export async function createRedistributionTxs({
       ...tx,
       uuid: crypto.randomUUID(),
       profileId: account.profileId,
-      networkId,
+      networkUUID: network.uuid,
       status: 'initiated',
       groupId,
       continuation: { crossChainId: target, autoContinue: true },

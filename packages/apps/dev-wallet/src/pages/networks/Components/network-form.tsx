@@ -1,6 +1,7 @@
 import { displayContentsClass } from '@/Components/Sidebar/style.css';
 import { INetwork } from '@/modules/network/network.repository';
 import { fetchNetworkId } from '@/modules/network/network.service';
+import { UUID } from '@/modules/types';
 import { Label } from '@/pages/transaction/components/helpers';
 import {
   failureClass,
@@ -20,7 +21,7 @@ export type INetworkWithOptionalUuid =
   | INetwork;
 
 interface INewNetwork {
-  uuid: string | undefined;
+  uuid: UUID | undefined;
   networkId: string;
   name: string;
   hosts: {

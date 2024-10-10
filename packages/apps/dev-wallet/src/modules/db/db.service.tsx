@@ -76,10 +76,10 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
       { index: 'address' },
       { index: 'keysetId' },
       { index: 'profileId' },
-      { index: 'profile-network', indexKeyPath: ['profileId', 'networkId'] },
+      { index: 'profile-network', indexKeyPath: ['profileId', 'networkUUID'] },
       {
         index: 'unique-account',
-        indexKeyPath: ['keysetId', 'contract', 'networkId'],
+        indexKeyPath: ['keysetId', 'contract', 'networkUUID'],
         unique: true,
       },
     ]);
@@ -98,15 +98,15 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
       { index: 'hash', unique: true },
       { index: 'profileId' },
       { index: 'groupId' },
-      { index: 'network', indexKeyPath: ['profileId', 'networkId'] },
+      { index: 'network', indexKeyPath: ['profileId', 'networkUUID'] },
       {
         index: 'network-status',
-        indexKeyPath: ['profileId', 'networkId', 'status'],
+        indexKeyPath: ['profileId', 'networkUUID', 'status'],
       },
     ]);
     create('activity', 'uuid', [
-      { index: 'profile-network', indexKeyPath: ['profileId', 'networkId'] },
-      { index: 'keyset-network', indexKeyPath: ['keysetId', 'networkId'] },
+      { index: 'profile-network', indexKeyPath: ['profileId', 'networkUUID'] },
+      { index: 'keyset-network', indexKeyPath: ['keysetId', 'networkUUID'] },
     ]);
   }
 

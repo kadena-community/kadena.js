@@ -26,7 +26,7 @@ export function AccountPage() {
   const asset = fungibles.find((f) => f.contract === account?.contract);
   const [activities = []] = useAsync(getTransferActivities, [
     account?.keyset?.uuid,
-    activeNetwork?.networkId,
+    activeNetwork?.uuid,
   ]);
 
   const chains = account?.chains;
@@ -46,12 +46,15 @@ export function AccountPage() {
     if (!keyset) {
       throw new Error('No keyset found');
     }
+    if (!activeNetwork) {
+      throw new Error('No active network found');
+    }
     const { groupId } = await fundAccount({
       address: account?.address ?? keyset.principal,
       chainId,
       keyset,
       profileId: keyset?.profileId,
-      networkId: activeNetwork?.networkId ?? 'testnet04',
+      network: activeNetwork,
     });
 
     navigate(`/transaction/${groupId}`);

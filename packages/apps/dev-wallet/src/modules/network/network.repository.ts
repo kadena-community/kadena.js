@@ -1,12 +1,14 @@
 import { execInSequence } from '@/utils/helpers';
 import { IDBService, dbService } from '../db/db.service';
+import { UUID } from '../types';
 
 export interface INetwork {
-  uuid: string;
+  uuid: UUID;
   networkId: string;
   name?: string;
   default?: boolean;
   disabled?: boolean;
+  faucetContract?: string;
   hosts: Array<{
     url: string;
     submit: boolean;
@@ -18,10 +20,10 @@ export interface INetwork {
 export interface NetworkRepository {
   getEnabledNetworkList: () => Promise<INetwork[]>;
   getAllNetworks: () => Promise<INetwork[]>;
-  getNetwork: (networkId: string) => Promise<INetwork>;
+  getNetwork: (uuid: UUID) => Promise<INetwork>;
   addNetwork: (network: INetwork) => Promise<void>;
   updateNetwork: (network: INetwork) => Promise<void>;
-  deleteNetwork: (networkId: string) => Promise<void>;
+  deleteNetwork: (uuid: UUID) => Promise<void>;
 }
 
 const createNetworkRepository = ({
@@ -41,7 +43,7 @@ const createNetworkRepository = ({
       return getAll('network');
     },
 
-    getNetwork: async (uuid: string): Promise<INetwork> => {
+    getNetwork: async (uuid: UUID): Promise<INetwork> => {
       return getOne('network', uuid);
     },
     addNetwork: async (network: INetwork): Promise<void> => {
@@ -53,8 +55,8 @@ const createNetworkRepository = ({
     updateNetwork: async (network: INetwork): Promise<void> => {
       await update('network', network);
     },
-    deleteNetwork: async (networkId: string): Promise<void> => {
-      await remove('network', networkId);
+    deleteNetwork: async (uuid: UUID): Promise<void> => {
+      await remove('network', uuid);
     },
   };
 };
@@ -86,6 +88,7 @@ export const addDefaultNetworks = execInSequence(async () => {
       networkId: 'testnet04',
       name: 'Testnet',
       default: true,
+      faucetContract: 'n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49.coin-faucet',
       hosts: [
         {
           url: 'https://api.testnet.chainweb.com',
@@ -101,6 +104,7 @@ export const addDefaultNetworks = execInSequence(async () => {
       uuid: crypto.randomUUID(),
       networkId: 'testnet05',
       name: 'Testnet(Pact5)',
+      faucetContract: 'n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet',
       hosts: [
         {
           url: 'http://api1.testnet05.chainweb.com',

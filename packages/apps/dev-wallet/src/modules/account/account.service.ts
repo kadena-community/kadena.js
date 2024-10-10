@@ -1,9 +1,13 @@
 import { discoverAccount } from '@kadena/client-utils/coin';
-import { WithEmitter, withEmitter } from '@kadena/client-utils/core';
+import {
+  dirtyReadClient,
+  WithEmitter,
+  withEmitter,
+} from '@kadena/client-utils/core';
 import { PactNumber } from '@kadena/pactjs';
 
 import { keySourceManager } from '../key-source/key-source-manager';
-import { IAccount, IKeySet, accountRepository } from './account.repository';
+import { accountRepository, IAccount, IKeySet } from './account.repository';
 
 import {
   createSignWithKeypair,
@@ -21,6 +25,9 @@ import { transactionRepository } from '../transaction/transaction.repository';
 import type { IKeyItem, IKeySource } from '../wallet/wallet.repository';
 
 import * as transactionService from '@/modules/transaction/transaction.service';
+import { execution } from '@kadena/client/fp';
+import { INetwork, networkRepository } from '../network/network.repository';
+import { UUID } from '../types';
 
 export type IDiscoveredAccount = {
   chainId: ChainId;
@@ -38,7 +45,7 @@ export type IDiscoveredAccount = {
 
 export async function createKAccount(
   profileId: string,
-  networkId: string,
+  networkUUID: UUID,
   publicKey: string,
   contract: string = 'coin',
   chains: Array<{ chainId: ChainId; balance: string }> = [],
@@ -58,7 +65,7 @@ export async function createKAccount(
     profileId: profileId,
     address: `k:${publicKey}`,
     keysetId: keyset.uuid,
-    networkId,
+    networkUUID,
     contract,
     chains,
     overallBalance: chains.reduce(
@@ -91,7 +98,7 @@ export const accountDiscovery = (
 )(
   (emit) =>
     async (
-      networkId: string,
+      network: INetwork,
       keySource: IKeySource,
       profileId: string,
       numberOfKeys = 20,
@@ -112,7 +119,7 @@ export const accountDiscovery = (
         await emit('key-retrieved')(key);
         const chainResult = (await discoverAccount(
           `k:${key.publicKey}`,
-          networkId,
+          network.networkId,
           undefined,
           contract,
         )
@@ -137,7 +144,7 @@ export const accountDiscovery = (
           accounts.push({
             uuid: crypto.randomUUID(),
             profileId,
-            networkId,
+            networkUUID: network.uuid,
             contract,
             keysetId: keyset.uuid,
             address: `k:${key.publicKey}`,
@@ -184,11 +191,12 @@ export const accountDiscovery = (
 
 export const syncAccount = async (account: IAccount) => {
   console.log('syncing account', account.address);
+  const network = await networkRepository.getNetwork(account.networkUUID);
   const updatedAccount = { ...account };
 
   const chainResult = (await discoverAccount(
     updatedAccount.address,
-    updatedAccount.networkId,
+    network.networkId,
     undefined,
     updatedAccount.contract,
   )
@@ -221,10 +229,10 @@ export const syncAccount = async (account: IAccount) => {
   return updatedAccount;
 };
 
-export const syncAllAccounts = async (profileId: string, networkId: string) => {
+export const syncAllAccounts = async (profileId: string, networkUUID: UUID) => {
   const accounts = await accountRepository.getAccountsByProfileId(
     profileId,
-    networkId,
+    networkUUID,
   );
   console.log('syncing accounts', accounts);
   return Promise.all(accounts.map(syncAccount));
@@ -235,18 +243,38 @@ export async function fundAccount({
   address,
   keyset,
   profileId,
-  networkId = 'testnet04',
+  network,
   chainId,
-}: Pick<IAccount, 'address' | 'keyset' | 'profileId' | 'networkId'> & {
+}: Pick<IAccount, 'address' | 'keyset' | 'profileId'> & {
   chainId: ChainId;
+  network: INetwork;
 }) {
   if (!keyset) {
     throw new Error('No keyset found');
   }
+  if (!network.faucetContract) {
+    throw new Error(`No faucet contract in ${network.networkId}`);
+  }
 
   const randomKeyPair = genKeyPair();
 
-  const isCreated = await readHistory(address, chainId as ChainId)
+  const faucetAccount = (await dirtyReadClient({
+    defaults: {
+      networkId: network.networkId,
+      meta: {
+        chainId: chainId as ChainId,
+      },
+    },
+  })(
+    execution(`${network.faucetContract}.FAUCET_ACCOUNT`),
+  ).execute()) as string;
+
+  const isCreated = await readHistory(
+    address,
+    chainId as ChainId,
+    network.faucetContract,
+    network.networkId,
+  )
     .then(() => true)
     .catch(() => false);
 
@@ -256,7 +284,8 @@ export async function fundAccount({
         signerKeys: [randomKeyPair.publicKey],
         amount: 20,
         chainId: chainId as ChainId,
-        networkId,
+        faucetAccount,
+        networkId: network.networkId,
       })
     : fundNewAccountOnTestnetCommand({
         account: address,
@@ -264,7 +293,8 @@ export async function fundAccount({
         signerKeys: [randomKeyPair.publicKey],
         amount: 20,
         chainId: chainId as ChainId,
-        networkId,
+        faucetAccount,
+        networkId: network.networkId,
       });
 
   const tx = createTransaction(command());
@@ -276,7 +306,7 @@ export async function fundAccount({
   const result = await transactionService.addTransaction({
     transaction: signedTx,
     profileId,
-    networkId: networkId,
+    networkUUID: network.uuid,
     groupId,
   });
 
