@@ -276,12 +276,13 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [retrieveAccounts, contextValue.profile?.uuid]);
 
   useEffect(() => {
-    // filter network if the id is the same but the name is different
+    // filter network if the id is the same but the uuid is different
+    // e.g. multiple devnets
     const filteredNetworks = contextValue.networks.filter((network) => {
       if (!contextValue.activeNetwork) return true;
       return (
         network.networkId !== contextValue.activeNetwork.networkId ||
-        network.name === contextValue.activeNetwork.name
+        network.uuid === contextValue.activeNetwork.uuid
       );
     });
     const getHostUrl = hostUrlGenerator(filteredNetworks);
