@@ -56,7 +56,9 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   const session = useSession();
 
   const retrieveNetworks = useCallback(async () => {
-    const networks = (await networkRepository.getEnabledNetworkList()) ?? [];
+    const networks =
+      // show oldest first
+      (await networkRepository.getEnabledNetworkList()).reverse() ?? [];
     setContextValue((ctx) => ({
       ...ctx,
       networks,

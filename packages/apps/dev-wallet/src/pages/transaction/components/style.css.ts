@@ -28,6 +28,13 @@ export const labelClass = style({
   flex: '1',
 });
 
+export const labelBoldClass = style({
+  maxWidth: '200px',
+  fontWeight: '700',
+  color: tokens.kda.foundation.color.text.base.default,
+  flex: '1',
+});
+
 export const containerClass = style({
   padding: '30px',
   border: `1px solid ${vars.colors.$layoutSurfaceCard}`,
