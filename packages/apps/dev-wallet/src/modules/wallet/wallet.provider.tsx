@@ -9,6 +9,8 @@ import {
 
 import { useSession } from '@/App/session';
 import { throttle } from '@/utils/session';
+import { IClient, createClient } from '@kadena/client';
+import { setGlobalConfig } from '@kadena/client-utils';
 import {
   Fungible,
   IAccount,
@@ -19,6 +21,7 @@ import * as AccountService from '../account/account.service';
 import { dbService } from '../db/db.service';
 import { keySourceManager } from '../key-source/key-source-manager';
 import { INetwork, networkRepository } from '../network/network.repository';
+import { hostUrlGenerator } from '../network/network.service';
 import { IKeySource, IProfile, walletRepository } from './wallet.repository';
 
 export type ExtWalletContextType = {
@@ -31,6 +34,7 @@ export type ExtWalletContextType = {
   loaded?: boolean;
   activeNetwork?: INetwork | undefined;
   networks: INetwork[];
+  client: IClient;
 };
 
 export const WalletContext = createContext<
@@ -52,6 +56,7 @@ export const syncAllAccounts = throttle(AccountService.syncAllAccounts, 10000);
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   const [contextValue, setContextValue] = useState<ExtWalletContextType>({
     networks: [],
+    client: createClient(),
   });
   const session = useSession();
 
@@ -269,6 +274,22 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       retrieveAccounts(contextValue.profile.uuid);
     }
   }, [retrieveAccounts, contextValue.profile?.uuid]);
+
+  useEffect(() => {
+    // filter network if the id is the same but the name is different
+    const filteredNetworks = contextValue.networks.filter((network) => {
+      if (!contextValue.activeNetwork) return true;
+      return (
+        network.networkId !== contextValue.activeNetwork.networkId ||
+        network.name === contextValue.activeNetwork.name
+      );
+    });
+    const getHostUrl = hostUrlGenerator(filteredNetworks);
+    setGlobalConfig({
+      host: getHostUrl,
+    });
+    setContextValue((ctx) => ({ ...ctx, client: createClient(getHostUrl) }));
+  }, [contextValue.networks, contextValue.activeNetwork]);
 
   return (
     <WalletContext.Provider

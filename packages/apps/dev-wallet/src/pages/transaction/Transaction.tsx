@@ -5,7 +5,7 @@ import {
 } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten } from '@/utils/helpers';
-import { ICommand, IUnsignedCommand, createClient } from '@kadena/client';
+import { ICommand, IUnsignedCommand } from '@kadena/client';
 import { MonoBrightness1 } from '@kadena/kode-icons/system';
 import {
   Button,
@@ -57,7 +57,7 @@ export function Transaction({ groupId }: { groupId?: string }) {
   const [error, setError] = useState<string | null>(null);
   const [viewStep, setViewStep] = useState<'transaction' | 'result'>('result');
   const navigate = useNavigate();
-  const { sign } = useWallet();
+  const { sign, client } = useWallet();
 
   const loadTxs = useCallback(async (groupId: string) => {
     const list = await transactionRepository.getTransactionsByGroup(groupId);
@@ -91,7 +91,6 @@ export function Transaction({ groupId }: { groupId?: string }) {
   const submitTxs = useCallback(
     async (list: ITransaction[]) => {
       if (!groupId) return;
-      const client = createClient();
       if (!list.every(isSignedCommand)) return;
       const preflightValidation = await Promise.all(
         list.map((tx) =>
@@ -147,7 +146,6 @@ export function Transaction({ groupId }: { groupId?: string }) {
   useEffect(() => {
     async function run() {
       if (step === 'submitted' && groupId) {
-        const client = createClient();
         const listForSubmission = await loadTxs(groupId);
         await Promise.all(
           listForSubmission.map((tx) =>

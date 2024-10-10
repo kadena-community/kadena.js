@@ -1,4 +1,5 @@
 import { INetwork } from '@/modules/network/network.repository';
+import { fetchNetworkId } from '@/modules/network/network.service';
 import { Label } from '@/pages/transaction/components/helpers';
 import {
   failureClass,
@@ -30,21 +31,6 @@ interface INewNetwork {
     nodeVersion?: string;
   }[];
 }
-
-const fetchNetworkId = async (host: string) =>
-  fetch(host.endsWith('/') ? `${host}info` : `${host}/info`)
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error('Network is not healthy');
-    })
-    .then((data) => {
-      return data.nodeVersion;
-    })
-    .catch(() => {
-      return undefined;
-    });
 
 export function NetworkForm({
   network,
