@@ -48,9 +48,8 @@ export const hostUrlGenerator = (networks: INetwork[]) => {
     const network = healthyNetworks.find(
       (network) => network.networkId === networkId,
     );
-    const host = network?.hosts.find(
-      (host) => host.submit && host.read && host.confirm,
-    );
+    // TODO: we can add more logic here to handle multiple hosts
+    const host = network?.hosts[0];
     if (!host) {
       throw new Error('No healthy host found');
     }
