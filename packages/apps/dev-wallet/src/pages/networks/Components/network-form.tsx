@@ -1,3 +1,4 @@
+import { displayContentsClass } from '@/Components/Sidebar/style.css';
 import { INetwork } from '@/modules/network/network.repository';
 import { fetchNetworkId } from '@/modules/network/network.service';
 import { Label } from '@/pages/transaction/components/helpers';
@@ -87,12 +88,7 @@ export function NetworkForm({
   return (
     <>
       <Stack margin="md" gap={'md'} flexDirection={'column'}>
-        <form
-          onSubmit={handleSubmit(create)}
-          style={{
-            display: 'contents',
-          }}
-        >
+        <form onSubmit={handleSubmit(create)} className={displayContentsClass}>
           <TextField
             label="Network ID"
             aria-label="networkId"

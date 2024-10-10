@@ -11,6 +11,7 @@ import { Box, Divider, Heading, Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import {
+  fullHightClass,
   sidebarClass,
   sidebarLinkClass,
   sidebarMenuClass,
@@ -21,11 +22,7 @@ export const Sidebar: FC = () => {
   useParams();
   return (
     <Box paddingBlockStart="xxl" padding="xl" className={sidebarClass}>
-      <aside
-        style={{
-          height: '100%',
-        }}
-      >
+      <aside className={fullHightClass}>
         <Stack marginBlockStart="md" height="100%">
           <ul className={sidebarMenuClass}>
             <Stack flexDirection={'column'} gap={'xxs'}>

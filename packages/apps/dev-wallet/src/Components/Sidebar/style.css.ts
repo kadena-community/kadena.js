@@ -56,3 +56,11 @@ export const sidebarLinkClass = style([
     },
   },
 ]);
+
+export const fullHightClass = style({
+  height: '100%',
+});
+
+export const displayContentsClass = style({
+  display: 'contents',
+});
