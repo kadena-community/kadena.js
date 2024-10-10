@@ -14,6 +14,8 @@ export { Pact } from './pact';
 export type * from './interfaces/IPactCommand';
 export type * from './interfaces/ISigningRequest';
 
+export { isIPactDecimal, isIPactInt } from './utils/type-guards';
+
 export {
   ICommandResult,
   IPollResponse,
