@@ -20,7 +20,6 @@ import { ImportChainweaverExport } from '@/pages/import-chainweaver-export/impor
 import { ImportWallet } from '@/pages/import-wallet/import-wallet';
 import { KeySources } from '@/pages/key-sources/key-sources';
 import { Keyset } from '@/pages/keyset/keyset';
-import { CreateNetwork } from '@/pages/networks/create-network';
 import { Networks } from '@/pages/networks/networks';
 import { Ready } from '@/pages/ready/ready';
 import { SignatureBuilder } from '@/pages/signature-builder/signature-builder';
@@ -129,7 +128,6 @@ export const Routes: FC = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/sig-builder" element={<SignatureBuilder />} />
             <Route path="/networks" element={<Networks />} />
-            <Route path="/networks/create" element={<CreateNetwork />} />
             <Route path="/connect/:requestId" element={<Connect />} />
             <Route path="/key-sources" element={<KeySources />} />
             <Route path="/create-account" element={<CreateAccount />} />

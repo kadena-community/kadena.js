@@ -46,7 +46,7 @@ export function RedistributionPage({
         redistribution,
         gasLimit: +formData.gasLimit,
         gasPrice: +formData.gasPrice,
-        networkId: activeNetwork?.networkId ?? 'mainnet01',
+        network: activeNetwork!,
         mapKeys,
       });
       if (txs.length > 0) {

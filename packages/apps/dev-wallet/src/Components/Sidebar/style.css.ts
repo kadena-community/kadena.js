@@ -10,6 +10,7 @@ export const sidebarClass = style([
   {
     borderRight: `1px solid ${vars.colors.$layoutSurfaceCard}`,
     backgroundColor: tokens.kda.foundation.color.neutral.n1,
+    maxHeight: 'calc(100vh - 100px)',
   },
 ]);
 
@@ -20,7 +21,9 @@ export const sidebarMenuClass = style([
     listStyleType: 'none',
     display: 'flex',
     flexDirection: 'column',
-    gap: 'xs',
+    gap: 'xxl',
+    flex: 1,
+    justifyContent: 'space-between',
   }),
 ]);
 
@@ -53,3 +56,11 @@ export const sidebarLinkClass = style([
     },
   },
 ]);
+
+export const fullHightClass = style({
+  height: '100%',
+});
+
+export const displayContentsClass = style({
+  display: 'contents',
+});

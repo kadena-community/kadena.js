@@ -1,5 +1,6 @@
 import {
   ICommand,
+  IPactCommand,
   IPartialPactCommand,
   ISigningRequest,
   IUnsignedCommand,
@@ -74,7 +75,8 @@ export function SignatureBuilder() {
   const [capsWithoutSigners, setCapsWithoutSigners] = useState<
     ISigningRequest['caps']
   >([]);
-  const { sign, profile, activeNetwork } = useWallet();
+  const { sign, profile, activeNetwork, networks, setActiveNetwork } =
+    useWallet();
   const navigate = useNavigate();
 
   const exec =
@@ -184,11 +186,34 @@ export function SignatureBuilder() {
                       <Button
                         onPress={async () => {
                           if (!unsignedTx || !profile || !activeNetwork) return;
+                          const command: IPactCommand = JSON.parse(
+                            unsignedTx.cmd,
+                          );
+                          let networkUUID = activeNetwork.uuid;
+                          if (
+                            command.networkId &&
+                            activeNetwork.networkId !== command.networkId
+                          ) {
+                            const network = networks.filter(
+                              ({ networkId }) =>
+                                networkId === command.networkId,
+                            );
+                            if (network.length === 0) {
+                              throw new Error('Network not found');
+                            }
+                            if (network.length > 1) {
+                              throw new Error('Multiple networks found');
+                            }
+                            networkUUID = network[0].uuid;
+                            // switch network
+                            setActiveNetwork(network[0]);
+                          }
                           const groupId = crypto.randomUUID();
+
                           await transactionService.addTransaction({
                             transaction: unsignedTx,
                             profileId: profile.uuid,
-                            networkId: activeNetwork.networkId,
+                            networkUUID: networkUUID,
                             groupId,
                           });
                           navigate(`/transaction/${groupId}`);

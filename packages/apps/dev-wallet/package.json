@@ -7,7 +7,7 @@
   "scripts": {
     "prebuild": "npm run generate-coin-type",
     "build": "pnpm run prebuild && tsc && vite build",
-    "build-dev": "vite build --watch",
+    "build-dev": "tsc && vite build --mode development --watch",
     "dev": "vite --force",
     "dev:chainweaver": "concurrently \"chokidar './src/**' --command './node_modules/.bin/vite build' --initial\" \"pnpm run preview --port 3002\"",
     "generate-coin-type": "pactjs contract-generate --contract \"coin\" --api \"https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/14/pact\"",

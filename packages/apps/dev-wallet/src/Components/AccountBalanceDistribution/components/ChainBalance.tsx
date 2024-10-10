@@ -60,19 +60,16 @@ export const ChainBalance: FC<IProps> = ({
         >
           Chain {chainId}
         </Text>
-        {!editable &&
-          ['testnet04', 'testnet05'].includes(
-            activeNetwork?.networkId ?? '',
-          ) && (
-            <Button
-              isCompact
-              variant={chainAccount.balance ? 'primary' : 'transparent'}
-              className={fundButtonClass}
-              onPress={() => fundAccount(chainId as ChainId)}
-            >
-              Fund on Testnet
-            </Button>
-          )}
+        {!editable && activeNetwork?.faucetContract && (
+          <Button
+            isCompact
+            variant={chainAccount.balance ? 'primary' : 'transparent'}
+            className={fundButtonClass}
+            onPress={() => fundAccount(chainId as ChainId)}
+          >
+            Fund on Testnet
+          </Button>
+        )}
       </Stack>
 
       {!editable && (

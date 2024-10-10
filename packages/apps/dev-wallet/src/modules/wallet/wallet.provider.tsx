@@ -9,6 +9,8 @@ import {
 
 import { useSession } from '@/App/session';
 import { throttle } from '@/utils/session';
+import { IClient, createClient } from '@kadena/client';
+import { setGlobalConfig } from '@kadena/client-utils/core';
 import {
   Fungible,
   IAccount,
@@ -19,6 +21,7 @@ import * as AccountService from '../account/account.service';
 import { dbService } from '../db/db.service';
 import { keySourceManager } from '../key-source/key-source-manager';
 import { INetwork, networkRepository } from '../network/network.repository';
+import { hostUrlGenerator } from '../network/network.service';
 import { IKeySource, IProfile, walletRepository } from './wallet.repository';
 
 export type ExtWalletContextType = {
@@ -31,6 +34,7 @@ export type ExtWalletContextType = {
   loaded?: boolean;
   activeNetwork?: INetwork | undefined;
   networks: INetwork[];
+  client: IClient;
 };
 
 export const WalletContext = createContext<
@@ -52,11 +56,17 @@ export const syncAllAccounts = throttle(AccountService.syncAllAccounts, 10000);
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   const [contextValue, setContextValue] = useState<ExtWalletContextType>({
     networks: [],
+    // prevent using the client before it's initialized via the useEffect below
+    client: createClient(() => {
+      throw new Error('client is not initialized properly');
+    }),
   });
   const session = useSession();
 
   const retrieveNetworks = useCallback(async () => {
-    const networks = (await networkRepository.getEnabledNetworkList()) ?? [];
+    const networks =
+      // show oldest first
+      (await networkRepository.getEnabledNetworkList()).reverse() ?? [];
     setContextValue((ctx) => ({
       ...ctx,
       networks,
@@ -96,14 +106,14 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       }
       const accounts = await accountRepository.getAccountsByProfileId(
         profileId,
-        contextValue.activeNetwork?.networkId,
+        contextValue.activeNetwork?.uuid,
       );
       setContextValue((ctx) => ({
         ...ctx,
         accounts,
       }));
     },
-    [contextValue.activeNetwork?.networkId],
+    [contextValue.activeNetwork?.uuid],
   );
 
   const retrieveKeysets = useCallback(async (profileId: string) => {
@@ -186,12 +196,12 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       if (!noSession) {
         await session.reset();
       }
-      const networkId = contextValue.activeNetwork?.networkId;
+      const networkUUID = contextValue.activeNetwork?.uuid;
       await session.set('profileId', profile.uuid);
-      const accounts = networkId
+      const accounts = networkUUID
         ? await accountRepository.getAccountsByProfileId(
             profile.uuid,
-            networkId,
+            networkUUID,
           )
         : [];
       const keysets = await accountRepository.getKeysetsByProfileId(
@@ -201,8 +211,8 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
         profile.uuid,
       );
       keySourceManager.reset();
-      if (networkId) {
-        syncAllAccounts(profile.uuid, networkId);
+      if (networkUUID) {
+        syncAllAccounts(profile.uuid, networkUUID);
       }
       setContextValue((ctx) => ({
         ...ctx,
@@ -249,13 +259,13 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [retrieveNetworks]);
 
   const syncAllAccountsCb = useCallback(() => {
-    if (contextValue.profile?.uuid && contextValue.activeNetwork?.networkId) {
+    if (contextValue.profile?.uuid && contextValue.activeNetwork?.uuid) {
       syncAllAccounts(
         contextValue.profile?.uuid,
-        contextValue.activeNetwork?.networkId,
+        contextValue.activeNetwork?.uuid,
       );
     }
-  }, [contextValue.profile?.uuid, contextValue.activeNetwork?.networkId]);
+  }, [contextValue.profile?.uuid, contextValue.activeNetwork?.uuid]);
 
   useEffect(() => {
     syncAllAccountsCb();
@@ -267,6 +277,23 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       retrieveAccounts(contextValue.profile.uuid);
     }
   }, [retrieveAccounts, contextValue.profile?.uuid]);
+
+  useEffect(() => {
+    // filter network if the id is the same but the uuid is different
+    // e.g. multiple devnets
+    const filteredNetworks = contextValue.networks.filter((network) => {
+      if (!contextValue.activeNetwork) return true;
+      return (
+        network.networkId !== contextValue.activeNetwork.networkId ||
+        network.uuid === contextValue.activeNetwork.uuid
+      );
+    });
+    const getHostUrl = hostUrlGenerator(filteredNetworks);
+    setGlobalConfig({
+      host: getHostUrl,
+    });
+    setContextValue((ctx) => ({ ...ctx, client: createClient(getHostUrl) }));
+  }, [contextValue.networks, contextValue.activeNetwork]);
 
   return (
     <WalletContext.Provider

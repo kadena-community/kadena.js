@@ -105,9 +105,10 @@ export async function createProfileFromChainweaverData(
 
         console.warn(`Network ${account.network} not found`);
 
-        const networkId = networks.find(
+        const dbNetwork = networks.find(
           (network) => network.name === account.network,
-        )?.networkId;
+        );
+        const networkId = dbNetwork?.uuid;
 
         if (networkId === undefined) {
           // TODO: ask the user for the network with `account.network` name and
@@ -123,7 +124,7 @@ export async function createProfileFromChainweaverData(
           profileId: profile.uuid,
           address: account.account,
           keysetId: keySet.uuid,
-          networkId,
+          networkUUID: dbNetwork!.uuid,
           contract: 'coin',
           chains: [],
           overallBalance: '0',

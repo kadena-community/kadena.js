@@ -116,7 +116,7 @@ export function CreateProfile() {
 
     const key = await createKey(keySource);
 
-    await createKAccount(profile.uuid, activeNetwork.networkId, key.publicKey);
+    await createKAccount(profile.uuid, activeNetwork.uuid, key.publicKey);
 
     setMnemonic(mnemonic);
     setProfileId(profile.uuid);

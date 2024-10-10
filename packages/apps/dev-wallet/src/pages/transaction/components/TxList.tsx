@@ -6,12 +6,7 @@ import {
 import { Button, Dialog, Stack, Text } from '@kadena/kode-ui';
 
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import {
-  ICommand,
-  IUnsignedCommand,
-  createClient,
-  createTransaction,
-} from '@kadena/client';
+import { ICommand, IUnsignedCommand, createTransaction } from '@kadena/client';
 import {
   composePactCommand,
   continuation,
@@ -41,7 +36,7 @@ export function TxList({
   const [selectedTxIndex, setSelectedTxIndex] = React.useState<
     number | undefined
   >(undefined);
-  const { sign } = useWallet();
+  const { sign, client } = useWallet();
   const signAll = async () => {
     const signed = (await sign(txs)) as (IUnsignedCommand | ICommand)[];
 
@@ -79,7 +74,6 @@ export function TxList({
   };
 
   const onSubmit = async (tx: ITransaction) => {
-    const client = createClient();
     let updatedTx = await client
       .preflight({
         cmd: tx.cmd,
@@ -183,7 +177,7 @@ export function TxList({
         )();
         const contTx = await transactionService.addTransaction({
           transaction: createTransaction(continuationTx),
-          networkId: request.networkId,
+          networkUUID: tx.networkUUID,
           profileId: updatedTx.profileId,
           groupId: `${updatedTx.groupId}:continuation`,
         });

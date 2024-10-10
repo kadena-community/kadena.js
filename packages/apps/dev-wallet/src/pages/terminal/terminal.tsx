@@ -345,7 +345,8 @@ export function TerminalPage() {
         const result = accounts
           .filter(
             (account) =>
-              account.contract === contract && account.networkId === networkId,
+              account.contract === contract &&
+              account.networkUUID === networkId,
           )
           .map(
             (account) =>
@@ -368,7 +369,7 @@ export function TerminalPage() {
         const account = accounts.find(
           (a) =>
             a.address === gasPayer &&
-            a.networkId === networkId &&
+            a.networkUUID === networkId &&
             a.chains.find((ch) => ch.chainId === chainId)?.chainId,
         );
         if (!account)

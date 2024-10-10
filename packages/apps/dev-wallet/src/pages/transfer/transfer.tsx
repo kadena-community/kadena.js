@@ -219,7 +219,7 @@ export function Transfer() {
         transactionService.addTransaction({
           transaction: tx,
           profileId: profile.uuid,
-          networkId: activeNetwork.networkId,
+          networkUUID: activeNetwork.uuid,
           groupId,
         }),
       ),
