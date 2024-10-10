@@ -16,6 +16,7 @@ import { AccountPage } from '@/pages/account/account';
 import { Connect } from '@/pages/connect/connect';
 import { CreateAccount } from '@/pages/create-account/create-account';
 import { FungiblePage } from '@/pages/fungible/fungible';
+import { ImportChainweaverExport } from '@/pages/import-chainweaver-export/import-chainweaver-export';
 import { ImportWallet } from '@/pages/import-wallet/import-wallet';
 import { KeySources } from '@/pages/key-sources/key-sources';
 import { Keyset } from '@/pages/keyset/keyset';
@@ -93,6 +94,10 @@ export const Routes: FC = () => {
             <Route
               path="/import-wallet"
               element={<ImportWallet setOrigin={setOrigin} />}
+            />
+            <Route
+              path="/import-chainweaver"
+              element={<ImportChainweaverExport />}
             />
           </Route>
         </Route>
