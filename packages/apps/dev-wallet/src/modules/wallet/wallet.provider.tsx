@@ -56,7 +56,10 @@ export const syncAllAccounts = throttle(AccountService.syncAllAccounts, 10000);
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   const [contextValue, setContextValue] = useState<ExtWalletContextType>({
     networks: [],
-    client: createClient(),
+    // prevent using the client before it's initialized via the useEffect below
+    client: createClient(() => {
+      throw new Error('client is not initialized properly');
+    }),
   });
   const session = useSession();
 
@@ -256,13 +259,13 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [retrieveNetworks]);
 
   const syncAllAccountsCb = useCallback(() => {
-    if (contextValue.profile?.uuid && contextValue.activeNetwork?.networkId) {
+    if (contextValue.profile?.uuid && contextValue.activeNetwork?.uuid) {
       syncAllAccounts(
         contextValue.profile?.uuid,
         contextValue.activeNetwork?.uuid,
       );
     }
-  }, [contextValue.profile?.uuid, contextValue.activeNetwork?.networkId]);
+  }, [contextValue.profile?.uuid, contextValue.activeNetwork?.uuid]);
 
   useEffect(() => {
     syncAllAccountsCb();

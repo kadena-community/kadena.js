@@ -107,7 +107,7 @@ export const addDefaultNetworks = execInSequence(async () => {
       faucetContract: 'n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet',
       hosts: [
         {
-          url: 'http://api1.testnet05.chainweb.com',
+          url: 'https://api1.testnet05.chainweb.com',
           submit: true,
           read: true,
           confirm: true,

@@ -1,13 +1,14 @@
 import { getHostUrl, INetworkOptions } from '@kadena/client';
 import { INetwork } from './network.repository';
 
-export const fetchNetworkId = async (host: string) =>
-  fetch(host.endsWith('/') ? `${host}info` : `${host}/info`)
+export const fetchNetworkId = async (host: string) => {
+  const url = host.endsWith('/') ? `${host}info` : `${host}/info`;
+  return fetch(url)
     .then((response) => {
       if (response.ok) {
         return response.json();
       }
-      throw new Error('Network is not healthy');
+      return Promise.reject(new Error('Network is not healthy'));
     })
     .then((data) => {
       return data.nodeVersion;
@@ -15,6 +16,7 @@ export const fetchNetworkId = async (host: string) =>
     .catch(() => {
       return undefined;
     });
+};
 
 export const hostUrlGenerator = (networks: INetwork[]) => {
   let healthyNetworks = networks;
@@ -40,10 +42,14 @@ export const hostUrlGenerator = (networks: INetwork[]) => {
       }),
     );
   };
-  checkNetworks();
+  checkNetworks().catch((er) =>
+    console.log('Error while checking networks', er),
+  );
   return ({ networkId, chainId }: INetworkOptions) => {
     if (Date.now() - lastCheckTime > 30000) {
-      checkNetworks();
+      checkNetworks().catch((er) =>
+        console.log('Error while checking networks', er),
+      );
     }
     const network = healthyNetworks.find(
       (network) => network.networkId === networkId,

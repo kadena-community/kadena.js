@@ -286,6 +286,7 @@ export async function fundAccount({
         chainId: chainId as ChainId,
         faucetAccount,
         networkId: network.networkId,
+        contract: network.faucetContract,
       })
     : fundNewAccountOnTestnetCommand({
         account: address,
@@ -295,6 +296,7 @@ export async function fundAccount({
         chainId: chainId as ChainId,
         faucetAccount,
         networkId: network.networkId,
+        contract: network.faucetContract,
       });
 
   const tx = createTransaction(command());
