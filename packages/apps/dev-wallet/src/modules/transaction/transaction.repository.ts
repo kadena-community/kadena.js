@@ -1,6 +1,7 @@
 import { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import { ChainId, ICommandResult } from '@kadena/client';
 import { IDBService, dbService } from '../db/db.service';
+import { UUID } from '../types';
 
 type NotSubmittedTransactionStatus = 'initiated' | 'signed' | 'preflight';
 type SubmittedTransactionStatus =
@@ -15,7 +16,7 @@ export type TransactionStatus =
 
 export type ITransaction = {
   uuid: string;
-  networkId: string;
+  networkUUID: UUID;
   profileId: string;
   hash: string;
   cmd: string;
@@ -62,7 +63,7 @@ export type ITransaction = {
 export interface TransactionRepository {
   getTransactionList: (
     profileId: string,
-    networkId: string,
+    networkUUID: UUID,
     status?: TransactionStatus,
   ) => Promise<ITransaction[]>;
   getTransaction: (uuid: string) => Promise<ITransaction>;
@@ -83,19 +84,19 @@ const createTransactionRepository = ({
   return {
     getTransactionList: async (
       profileId: string,
-      networkId: string,
+      networkUUID: UUID,
       status?: TransactionStatus,
     ): Promise<ITransaction[]> => {
       if (status) {
         return getAll(
           'transaction',
-          IDBKeyRange.only([profileId, networkId, status]),
+          IDBKeyRange.only([profileId, networkUUID, status]),
           'network-status',
         );
       }
       return getAll(
         'transaction',
-        IDBKeyRange.only([profileId, networkId]),
+        IDBKeyRange.only([profileId, networkUUID]),
         'network',
       );
     },

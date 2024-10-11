@@ -1,6 +1,7 @@
 import { IDBService, dbService } from '@/modules/db/db.service';
 import { execInSequence } from '@/utils/helpers';
 import { BuiltInPredicate, ChainId } from '@kadena/client';
+import { UUID } from '../types';
 
 export interface Fungible {
   contract: string; // unique identifier
@@ -23,7 +24,7 @@ export interface IKeySet {
 
 export interface IAccount {
   uuid: string;
-  networkId: string;
+  networkUUID: UUID;
   profileId: string;
   contract: string;
   keysetId: string;
@@ -94,10 +95,10 @@ const createAccountRepository = ({
       );
       return accounts;
     },
-    async getAccountsByProfileId(profileId: string, networkId: string) {
+    async getAccountsByProfileId(profileId: string, networkUUID: UUID) {
       const accounts: IAccount[] = await getAll(
         'account',
-        IDBKeyRange.only([profileId, networkId]),
+        IDBKeyRange.only([profileId, networkUUID]),
         'profile-network',
       );
       return Promise.all(accounts.map(appendKeyset));

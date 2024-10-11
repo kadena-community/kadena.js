@@ -49,11 +49,20 @@ export const config: UserConfig = {
     // add all monorepo packages to optimizeDeps since they are commonjs
     include: [...monorepoPackages],
     esbuildOptions: {
+      minify: false,
       plugins: [vanillaExtractEsbuildPlugin({ runtime: true })],
     },
   },
 
   build: {
+    ssr: false,
+    minify: false,
+    sourcemap: 'inline',
+    rollupOptions: {
+      output: {
+        minifyInternalExports: false,
+      },
+    },
     commonjsOptions: {
       // add all monorepo packages path regex to commonjsOptions since they are commonjs
       include: [/node_modules/, ...monorepoPathsRegex],

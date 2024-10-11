@@ -13,13 +13,15 @@ import { pipe } from 'ramda';
 export const readHistory = (
   account: string,
   chainId: ChainId,
+  faucetContract: string = 'n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49.coin-faucet',
+  networkId: string = 'testnet04',
   host?: IClientConfig['host'],
 ) => {
   const getDetails = pipe(
     (name) =>
-      Pact.modules['n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49.coin-faucet'][
-        'read-history'
-      ](name),
+      Pact.modules[
+        faucetContract as 'n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49.coin-faucet'
+      ]['read-history'](name),
     execution,
     dirtyReadClient<
       PactReturnType<
@@ -28,7 +30,7 @@ export const readHistory = (
     >({
       host,
       defaults: {
-        networkId: 'testnet04',
+        networkId: networkId,
         meta: { chainId },
       },
     }),

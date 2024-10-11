@@ -20,11 +20,11 @@ export function Transactions() {
 
   useEffect(() => {
     const run = async () => {
-      if (profile?.uuid && activeNetwork?.networkId) {
+      if (profile?.uuid && activeNetwork?.uuid) {
         const txs = (
           await transactionRepository.getTransactionList(
             profile.uuid,
-            activeNetwork?.networkId,
+            activeNetwork?.uuid,
           )
         )
           .map((tx) => ({
@@ -38,7 +38,7 @@ export function Transactions() {
       }
     };
     run();
-  }, [profile?.uuid, activeNetwork?.networkId]);
+  }, [profile?.uuid, activeNetwork?.uuid]);
 
   return (
     <Box className={panelClass} marginBlockStart="xs">

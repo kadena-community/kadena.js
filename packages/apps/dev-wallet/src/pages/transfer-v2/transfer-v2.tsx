@@ -101,7 +101,7 @@ export function TransferV2() {
       gasPrice: +data.gasPrice,
       receivers: data.receivers,
       isSafeTransfer: data.type === 'safeTransfer',
-      networkId: activeNetwork?.networkId ?? 'mainnet01',
+      network: activeNetwork!,
       profileId: profile.uuid,
       mapKeys,
     });
@@ -170,7 +170,7 @@ export function TransferV2() {
         redistribution,
         gasLimit: +formData.gasLimit,
         gasPrice: +formData.gasPrice,
-        networkId: activeNetwork?.networkId ?? 'mainnet01',
+        network: activeNetwork!,
         mapKeys,
       });
     }
@@ -317,7 +317,7 @@ export function TransferV2() {
                 },
               },
               keysetId: senderAccount.keyset?.uuid,
-              networkId: activeNetwork?.networkId ?? 'mainnet01',
+              networkUUID: activeNetwork!.uuid,
               profileId: profile?.uuid ?? '',
               status: 'Initiated',
               type: 'Transfer',

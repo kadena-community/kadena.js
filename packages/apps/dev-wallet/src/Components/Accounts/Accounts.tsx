@@ -72,7 +72,7 @@ export function Accounts({
                       profileId: profile.uuid,
                       address: keyset?.principal,
                       keysetId: keyset.uuid,
-                      networkId: activeNetwork.networkId,
+                      networkUUID: activeNetwork.uuid,
                       contract: asset?.contract ?? 'coin',
                       chains: [],
                       overallBalance: '0',

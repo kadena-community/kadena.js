@@ -34,7 +34,7 @@ export function AccountDiscovery() {
     setDiscoveryStatus('discovering');
     await unlockKeySource(keySource);
     await accountDiscovery(
-      activeNetwork.networkId,
+      activeNetwork,
       keySource,
       profile.uuid,
       NUMBER_OF_KEYS_TO_DISCOVER,

@@ -20,6 +20,13 @@ export const PromptProvider: React.FC<PropsWithChildren> = ({ children }) => {
   );
 };
 
+export type PromptFunction = (
+  render: (
+    resolve: (data?: any) => void,
+    reject: (data?: any) => void,
+  ) => JSX.Element,
+) => Promise<unknown>;
+
 export const usePrompt = () => {
   const setPrompt = useContext(context);
   return useCallback(

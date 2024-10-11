@@ -1,17 +1,18 @@
 import { ChainId, IUnsignedCommand } from '@kadena/client';
+import { UUID } from '../types';
 import { ITransaction, transactionRepository } from './transaction.repository';
 
 export async function addTransaction({
   transaction,
   profileId,
-  networkId,
+  networkUUID,
   groupId,
   autoContinue = false,
   crossChainId,
 }: {
   transaction: IUnsignedCommand;
   profileId: string;
-  networkId: string;
+  networkUUID: UUID;
   groupId?: string;
   autoContinue?: boolean;
   crossChainId?: ChainId;
@@ -20,7 +21,7 @@ export async function addTransaction({
     ...transaction,
     uuid: crypto.randomUUID(),
     profileId,
-    networkId,
+    networkUUID,
     status: 'initiated' as const,
     groupId,
     ...(crossChainId || autoContinue

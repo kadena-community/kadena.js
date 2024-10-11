@@ -122,6 +122,9 @@ export function SelectProfile() {
         <Link to="/import-wallet" className={linkClass}>
           Setup a profile by wallet recovery
         </Link>
+        <Link to="/import-chainweaver" className={linkClass}>
+          Import from Chainweaver file
+        </Link>
       </Stack>
     </Box>
   );

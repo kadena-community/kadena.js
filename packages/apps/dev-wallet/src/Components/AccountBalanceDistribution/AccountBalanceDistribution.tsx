@@ -129,7 +129,7 @@ export const AccountBalanceDistribution: FC<IProps> = ({
       account,
       gasLimit,
       gasPrice,
-      networkId: activeNetwork!.networkId,
+      network: activeNetwork!,
       redistribution,
       mapKeys,
     });

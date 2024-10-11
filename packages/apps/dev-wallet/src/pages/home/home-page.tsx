@@ -32,11 +32,11 @@ export function HomePage() {
 
   const [transactions] = useAsync(
     async (profile, activeNetwork) => {
-      if (profile?.uuid && activeNetwork?.networkId) {
+      if (profile?.uuid && activeNetwork?.uuid) {
         const txs = (
           await transactionRepository.getTransactionList(
             profile.uuid,
-            activeNetwork?.networkId,
+            activeNetwork?.uuid,
           )
         )
           .map((tx) => ({
@@ -57,7 +57,7 @@ export function HomePage() {
       <Text>Welcome back</Text>
       <Heading as="h1">
         {profile?.name}{' '}
-        <Link to={'/backup-recovery-phrase'}>
+        <Link to={'/backup-recovery-phrase/write-down'}>
           <Button
             variant="outlined"
             startVisual={<MonoSave />}

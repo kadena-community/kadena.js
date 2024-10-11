@@ -456,7 +456,7 @@ export function TransferForm({
                           );
                           const discoveredAccounts = await discoverReceiver(
                             rec.address,
-                            activeNetwork?.networkId ?? 'mainnet01',
+                            activeNetwork!.networkId,
                             getValues('fungible'),
                             mapKeys,
                           );

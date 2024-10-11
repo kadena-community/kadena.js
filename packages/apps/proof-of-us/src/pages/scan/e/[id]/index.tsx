@@ -39,7 +39,7 @@ const Page: NextPage<IProps> = ({ params }) => {
     <UserLayout>
       <ScreenHeight>
         <ProofOfUsProvider proofOfUsId={params.id}>
-          <TitleHeader label="Attendance @" />
+          <TitleHeader label="Attendance NFT @" />
           {isLoading && <MainLoader />}
           {error && <div>...error</div>}
           <ScanAttendanceEvent

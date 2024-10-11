@@ -1,14 +1,15 @@
 import { PactNumber } from '@kadena/pactjs';
+import { UUID } from '../types';
 import { activityRepository } from './activity.repository';
 
 export async function getTransferActivities(
   keysetId?: string,
-  networkId?: string,
+  networkUUID?: UUID,
 ) {
-  console.log('getTransferActivities', keysetId, networkId);
-  if (!keysetId || !networkId) return [];
+  console.log('getTransferActivities', keysetId, networkUUID);
+  if (!keysetId || !networkUUID) return [];
   return activityRepository
-    .getKeysetActivities(keysetId, networkId)
+    .getKeysetActivities(keysetId, networkUUID)
     .then((activities) =>
       activities
         .filter((a) => a.type === 'Transfer')

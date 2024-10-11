@@ -100,7 +100,12 @@ export function CreateAccount() {
 
     const principal = await createPrincipal(
       { keyset: guard },
-      { defaults: { meta: { chainId: '0' }, networkId: 'mainnet01' } },
+      {
+        defaults: {
+          meta: { chainId: '0' },
+          networkId: activeNetwork.networkId,
+        },
+      },
     );
 
     const keySet: IKeySet = {
@@ -118,7 +123,7 @@ export function CreateAccount() {
       profileId: profile.uuid,
       address: principal,
       keysetId: keySet.uuid,
-      networkId: activeNetwork.networkId,
+      networkUUID: activeNetwork.uuid,
       contract: 'coin',
       chains: [],
       overallBalance: '0',

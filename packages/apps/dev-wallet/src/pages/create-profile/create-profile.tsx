@@ -1,21 +1,28 @@
 import { AuthCard } from '@/Components/AuthCard/AuthCard.tsx';
+import { BackupMnemonic } from '@/Components/BackupMnemonic/BackupMnemonic';
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet';
-import { LayoutContext } from '@/modules/layout/layout.provider';
 import {
   PublicKeyCredentialCreate,
   createCredential,
   extractPublicKeyHex,
 } from '@/utils/webAuthn';
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
-import { MonoCheck } from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, Text, TextField } from '@kadena/kode-ui';
-import { useContext, useRef, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
-import { colorOptionClass, listClass } from './styles.css';
+import { noStyleLinkClass } from '../home/style.css';
 
 const colorList = ['#42CEA4', '#42BDCE', '#4269CE', '#B242CE', '#CEA742'];
+
+const rotate = (max: number, start: number = 0) => {
+  let index = start;
+  return () => {
+    index = (index + 1) % max;
+    return index;
+  };
+};
 
 export function CreateProfile() {
   const {
@@ -26,12 +33,19 @@ export function CreateProfile() {
     unlockProfile,
     activeNetwork,
   } = useWallet();
+  const [step, setStep] = useState<
+    'profile' | 'set-password' | 'backup-mnemonic' | 'confirm'
+  >('profile');
   const { createHDWallet } = useHDWallet();
+  const [profileId, setProfileId] = useState<string | null>(null);
+  const [mnemonic, setMnemonic] = useState('');
+  const [password, setPassword] = useState('');
   const isShortFlow = profileList.length === 0;
   const formRef = useRef<HTMLFormElement>(null);
+  const rotateColor = useRef(rotate(colorList.length, profileList.length));
+  console.log('profileList', colorList.length, profileList.length);
 
   const {
-    control,
     register,
     handleSubmit,
     getValues,
@@ -47,13 +61,13 @@ export function CreateProfile() {
     defaultValues: {
       password: '',
       confirmation: '',
-      profileName: isShortFlow ? 'default' : '',
-      accentColor: colorList[0],
+      profileName: isShortFlow
+        ? 'default'
+        : `profile-${profileList.length + 1}`,
+      accentColor: colorList[rotateColor.current()],
     },
   });
 
-  const navigate = useNavigate();
-  const { setLayoutContext } = useContext(LayoutContext);
   const [webAuthnCredential, setWebAuthnCredential] =
     useState<PublicKeyCredentialCreate>();
 
@@ -102,9 +116,12 @@ export function CreateProfile() {
 
     const key = await createKey(keySource);
 
-    await createKAccount(profile.uuid, activeNetwork.networkId, key.publicKey);
-    // everything is created, now we can unlock the profile
-    await unlockProfile(profile.uuid, pass);
+    await createKAccount(profile.uuid, activeNetwork.uuid, key.publicKey);
+
+    setMnemonic(mnemonic);
+    setProfileId(profile.uuid);
+    setPassword(pass);
+    setStep('backup-mnemonic');
 
     // TODO: navigate to the backup recovery phrase page
   }
@@ -117,200 +134,165 @@ export function CreateProfile() {
       setWebAuthnCredential(result.credential);
       setValue('password', 'WEB_AUTHN_PROTECTED');
       setValue('confirmation', 'WEB_AUTHN_PROTECTED');
-      if (!isShortFlow) {
-        navigate('personalize-profile');
-      } else {
-        setTimeout(() => {
-          formRef.current?.requestSubmit();
-        }, 200);
-      }
+      setTimeout(() => {
+        formRef.current?.requestSubmit();
+      }, 200);
     } else {
       console.error('Error creating credential');
     }
+  }
+
+  async function onLockTheWallet() {
+    if (!profileId) {
+      throw new Error('Profile id is not set');
+    }
+    await unlockProfile(profileId, password);
   }
 
   return (
     <>
       <AuthCard>
         <form onSubmit={handleSubmit(create)} ref={formRef}>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <>
-                  <Heading variant="h4">How would you like to login</Heading>
-                  <Stack
-                    marginBlockStart="sm"
-                    flexDirection={'column'}
-                    gap={'lg'}
+          {step === 'profile' && (
+            <Stack flexDirection={'column'} gap={'lg'}>
+              <Stack>
+                <Link to="/" className={noStyleLinkClass}>
+                  <Button
+                    variant="outlined"
+                    isCompact
+                    type="button"
+                    onPress={() => {
+                      throw new Error('back');
+                    }}
                   >
-                    <Text>
-                      Your system supports <Text bold>WebAuthn</Text> so you can
-                      create a more secure and more convenient password-less
-                      profile!
-                    </Text>
-                  </Stack>
-                  <Stack flexDirection="row" gap={'sm'} marginBlockStart={'lg'}>
-                    <Button
-                      type="button"
-                      variant="transparent"
-                      onClick={() => navigate('set-password')}
-                    >
-                      Prefer password
-                    </Button>
-                    <Button
-                      variant="primary"
-                      onClick={() => {
-                        createWebAuthnCredential();
-                      }}
-                    >
-                      Password-less
-                    </Button>
-                  </Stack>
-                </>
-              }
-            ></Route>
-            {!webAuthnCredential && (
-              <Route
-                path="/set-password"
-                element={
-                  <>
-                    <Heading variant="h4">Choose a password</Heading>
-                    <Stack marginBlockStart="sm">
-                      <Text>
-                        Carefully select your password as this will be your main
-                        security of your wallet
-                      </Text>
-                    </Stack>
-                    <Stack flexDirection="column" marginBlock="md" gap="sm">
-                      <TextField
-                        id="password"
-                        type="password"
-                        label="Password"
-                        defaultValue={getValues('password')}
-                        // react-hook-form uses uncontrolled elements;
-                        // and because we add and remove the fields we need to add key to prevent confusion for react
-                        key="password"
-                        {...register('password', {
-                          required: {
-                            value: true,
-                            message: 'This field is required',
-                          },
-                          minLength: { value: 6, message: 'Minimum 6 symbols' },
-                        })}
-                        isInvalid={!isValid && !!errors.password}
-                        errorMessage={errors.password?.message}
-                      />
-                      <TextField
-                        id="confirmation"
-                        type="password"
-                        label="Confirm password"
-                        defaultValue={getValues('confirmation')}
-                        key="confirmation"
-                        {...register('confirmation', {
-                          validate: (value) => {
-                            return (
-                              getValues('password') === value ||
-                              'Passwords do not match'
-                            );
-                          },
-                        })}
-                        isInvalid={!isValid && !!errors.confirmation}
-                        errorMessage={errors.confirmation?.message}
-                      />
-                    </Stack>
-                    <Stack flexDirection="column">
-                      {isShortFlow && (
-                        <Button type="submit" isDisabled={!isValid}>
-                          Continue
-                        </Button>
-                      )}
-                      {!isShortFlow && (
-                        <Button
-                          type="button"
-                          onClick={() => navigate('personalize-profile')}
-                          isDisabled={Boolean(
-                            errors.confirmation?.message ||
-                              errors.password?.message ||
-                              !getValues('password') ||
-                              !getValues('confirmation'),
-                          )}
-                        >
-                          Continue
-                        </Button>
-                      )}
-                    </Stack>
-                  </>
-                }
-              />
-            )}
-
-            {!isShortFlow && (
-              <Route
-                path="personalize-profile"
-                element={
-                  <>
-                    <Heading variant="h4">Personalize profile</Heading>
-                    <Stack marginBlockStart="sm">
-                      <Text>
-                        The color will be a tool to visually differentiate your
-                        profiles when in use
-                      </Text>
-                    </Stack>
-                    <Stack flexDirection="column" marginBlock="md" gap="sm">
-                      <TextField
-                        id="profileName"
-                        type="text"
-                        label="Profile name"
-                        defaultValue={getValues('profileName')}
-                        key="profileName"
-                        {...register('profileName', {
-                          required: {
-                            value: true,
-                            message: 'This field is required',
-                          },
-                        })}
-                        isInvalid={!isValid && !!errors.profileName}
-                        errorMessage={
-                          errors.profileName && errors.profileName?.message
-                        }
-                      />
-                    </Stack>
-                    <Stack>
-                      <Controller
-                        control={control}
-                        defaultValue={getValues('accentColor')}
-                        rules={{ required: true }}
-                        render={({ field: { onChange, value } }) => (
-                          <ul className={listClass}>
-                            {colorList.map((color) => (
-                              <li
-                                key={color}
-                                style={{ background: color }}
-                                className={colorOptionClass}
-                                onClick={() => {
-                                  setLayoutContext({ accentColor: color });
-                                  onChange(color);
-                                }}
-                              >
-                                {value === color && <MonoCheck />}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                        name="accentColor"
-                      />
-                    </Stack>
-                    <Stack flexDirection="column">
-                      <Button type="submit" isDisabled={!isValid}>
-                        Continue
-                      </Button>
-                    </Stack>
-                  </>
-                }
-              />
-            )}
-          </Routes>
+                    Back
+                  </Button>
+                </Link>
+              </Stack>
+              <Stack flexDirection={'column'}>
+                <Heading variant="h4">Create Profile</Heading>
+                <Stack marginBlock="md" gap="sm" alignItems={'flex-end'}>
+                  <TextField
+                    id="profileName"
+                    type="text"
+                    label="Profile name"
+                    defaultValue={getValues('profileName')}
+                    key="profileName"
+                    {...register('profileName', {
+                      required: {
+                        value: true,
+                        message: 'This field is required',
+                      },
+                    })}
+                    isInvalid={!isValid && !!errors.profileName}
+                    errorMessage={
+                      errors.profileName && errors.profileName?.message
+                    }
+                  />
+                </Stack>
+              </Stack>
+              <Stack flexDirection={'column'} gap={'lg'}>
+                <Text size="smallest">
+                  Your system supports{' '}
+                  <Text bold size="smallest">
+                    WebAuthn
+                  </Text>{' '}
+                  so you can create a more secure and more convenient
+                  password-less profile!
+                </Text>
+              </Stack>
+              <Stack flexDirection="row" gap={'sm'}>
+                <Button
+                  type="button"
+                  variant="transparent"
+                  onClick={() => setStep('set-password')}
+                >
+                  Prefer password
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={() => {
+                    createWebAuthnCredential();
+                  }}
+                >
+                  Password-less
+                </Button>
+              </Stack>
+            </Stack>
+          )}
+          {step === 'set-password' && (
+            <Stack flexDirection={'column'} gap={'lg'}>
+              <Stack>
+                <Button
+                  variant="outlined"
+                  isCompact
+                  type="button"
+                  onPress={() => {
+                    setStep('profile');
+                  }}
+                >
+                  Back
+                </Button>
+              </Stack>
+              <Heading variant="h4">Choose a password</Heading>
+              <Stack marginBlockStart="sm">
+                <Text>
+                  Carefully select your password as this will be your main
+                  security of your wallet
+                </Text>
+              </Stack>
+              <Stack flexDirection="column" marginBlock="md" gap="sm">
+                <TextField
+                  id="password"
+                  type="password"
+                  label="Password"
+                  defaultValue={getValues('password')}
+                  // react-hook-form uses uncontrolled elements;
+                  // and because we add and remove the fields we need to add key to prevent confusion for react
+                  key="password"
+                  {...register('password', {
+                    required: {
+                      value: true,
+                      message: 'This field is required',
+                    },
+                    minLength: { value: 6, message: 'Minimum 6 symbols' },
+                  })}
+                  isInvalid={!isValid && !!errors.password}
+                  errorMessage={errors.password?.message}
+                />
+                <TextField
+                  id="confirmation"
+                  type="password"
+                  label="Confirm password"
+                  defaultValue={getValues('confirmation')}
+                  key="confirmation"
+                  {...register('confirmation', {
+                    validate: (value) => {
+                      return (
+                        getValues('password') === value ||
+                        'Passwords do not match'
+                      );
+                    },
+                  })}
+                  isInvalid={!isValid && !!errors.confirmation}
+                  errorMessage={errors.confirmation?.message}
+                />
+              </Stack>
+              <Stack flexDirection="column">
+                <Button type="submit" isDisabled={!isValid}>
+                  Continue
+                </Button>
+              </Stack>
+            </Stack>
+          )}
+          {step === 'backup-mnemonic' && (
+            <BackupMnemonic
+              mnemonic={mnemonic}
+              onSkip={() => onLockTheWallet()}
+              onDecrypt={() => Promise.resolve()}
+              onConfirm={() => onLockTheWallet()}
+            />
+          )}
         </form>
       </AuthCard>
     </>

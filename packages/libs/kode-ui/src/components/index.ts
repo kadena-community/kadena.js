@@ -129,3 +129,10 @@ export { GradientText } from './Typography';
 export type { ITableProps as ITableV1Props } from './TableV1';
 export type { ITreeProps } from './Tree';
 export type { IGradientTextProps } from './Typography';
+
+export {
+  ContextMenu,
+  ContextMenuItem,
+  IContextMenuItemProps,
+  IContextMenuProps,
+} from './ContextMenu';
