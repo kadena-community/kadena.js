@@ -33,7 +33,7 @@ export const AttendanceShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
   return (
     <UserLayout>
       <ScreenHeight>
-        <Stack paddingInline="md" flexDirection="column">
+        <Stack paddingInline={{ md: 'xxl' }}>
           <TitleHeader
             label={data.name}
             Append={() => (
@@ -45,7 +45,9 @@ export const AttendanceShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
               </>
             )}
           />
-          <AttendanceTicket data={data} />
+        </Stack>
+        <AttendanceTicket data={data} share />
+        <Stack paddingInline="md" flexDirection="column">
           <Stack flexDirection="column" marginBlockStart="lg">
             <Heading as="h4">Metadata</Heading>
             <MetaList>
