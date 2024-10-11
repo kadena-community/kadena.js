@@ -21,6 +21,10 @@ import type {
   SimpleCreateTransfer,
   Transfer,
 } from './interface.js';
+import {
+  kdnResolveAddressToName,
+  kdnResolveNameToAddress,
+} from './utils/kdnChainResolver.js';
 
 export class WalletSDK implements IWalletSDK {
   private _getHostUrl: HostAddressGenerator;
@@ -104,17 +108,65 @@ export class WalletSDK implements IWalletSDK {
     address: string,
     networkId: string,
   ): Promise<string | undefined> {
-    // const host = this._getHostUrl({ networkId, chainId: '15' });
-    return null as any;
+    try {
+      const host = this._getHostUrl({ networkId, chainId: '15' });
+      const result = await kdnResolveAddressToName(address, networkId, host);
+
+      if (result === undefined) {
+        console.warn(`No address found for name: ${address}`);
+      }
+      return result;
+    } catch (error) {
+      console.error(`Error in name resolving action: ${error.message}`);
+      // we could also return new Error(`Error in resolving address: ${error.message}`);
+      // if we wish to always make the implementing applicatio naware of the error
+      // that has occured instead of logging and still returning undefined
+      return undefined;
+    }
   }
 
   public async resolveNameToAddress(
     name: string,
     networkId: string,
   ): Promise<string | undefined> {
-    // const host = this._getHostUrl({ networkId, chainId: '15' });
-    return null as any;
+    try {
+      const host = this._getHostUrl({ networkId, chainId: '15' });
+      const result = await kdnResolveNameToAddress(name, networkId, host);
+
+      if (result === undefined) {
+        console.warn(`No address found for name: ${name}`);
+      }
+      return result;
+    } catch (error) {
+      console.error(`Error in name resolving action: ${error.message}`);
+      // we could also return new Error(`Error in resolving address: ${error.message}`);
+      // if we wish to always make the implementing applicatio naware of the error
+      // that has occured instead of logging and still returning undefined
+      return undefined;
+    }
   }
+
+  /*
+  example
+  public async resolveAddressToName(
+    address: string,
+    networkId: string,
+  ): Promise<string | null | Error> {
+    try {
+      const host = this._getHostUrl({ networkId, chainId: '15' });
+      const result = await kdnResolveAddressToName(address, networkId, host);
+
+      if (result === undefined) {
+        console.warn(`No address found for name: ${address}`);
+        return null;
+      }
+      return result;
+    } catch (error) {
+      console.error(`Error in name resolving action: ${error.message}`);
+      return new Error(`Error resolving address: ${error.message}`);
+    }
+  }
+  */
 
   public async getAccountDetails(
     accountName: string,
@@ -122,7 +174,6 @@ export class WalletSDK implements IWalletSDK {
     fungible: string,
     chainIds?: ChainId[],
   ): Promise<IAccountDetails[] | undefined> {
-    const host = this._getHostUrl({ networkId, chainId: '15' });
     const chains =
       chainIds ?? (await this.getChains(networkId)).map((c) => c.id);
     const results = await Promise.all(
@@ -132,7 +183,7 @@ export class WalletSDK implements IWalletSDK {
           networkId,
           chainId,
           tokenId: fungible,
-          host,
+          host: this._getHostUrl({ networkId, chainId }),
         }),
       ),
     );
