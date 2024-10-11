@@ -1,4 +1,4 @@
-import { createClient } from '@kadena/client';
+import { createClient, createTransaction } from '@kadena/client';
 import {
   createCrossChainCommand,
   estimateGas,
@@ -7,6 +7,7 @@ import {
   transferCreateCommand,
 } from '@kadena/client-utils';
 import type { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
+import * as v from 'valibot';
 import type { HostAddressGenerator } from './host.js';
 import { defaultHostAddressGenerator } from './host.js';
 import type {
@@ -21,10 +22,12 @@ import type {
   SimpleCreateTransfer,
   Transfer,
 } from './interface.js';
+import type { ResponseResult } from './schema.js';
+import { responseSchema } from './schema.js';
 import {
   kdnResolveAddressToName,
   kdnResolveNameToAddress,
-} from './utils/kdnChainResolver.js';
+} from './services/kdnChainResolver.js';
 
 export class WalletSDK implements IWalletSDK {
   private _getHostUrl: HostAddressGenerator;
@@ -35,23 +38,34 @@ export class WalletSDK implements IWalletSDK {
     this._getHostUrl = hostAddressGenerator;
   }
 
+  private async _getChains(
+    networkId: string,
+    chainIds?: ChainId[],
+  ): Promise<ChainId[]> {
+    return chainIds ?? (await this.getChains(networkId)).map((c) => c.id);
+  }
+
   /** Create a transfer that only accepts `k:` accounts */
   public createSimpleTransfer(
-    transfer: SimpleCreateTransfer,
+    transfer: SimpleCreateTransfer & { networkId: string },
   ): IUnsignedCommand {
-    return simpleTransferCreateCommand(transfer)();
+    const command = simpleTransferCreateCommand(transfer)();
+    return createTransaction({
+      ...command,
+      networkId: transfer.networkId,
+    });
   }
 
   /** create transfer that accepts any kind of account (requires keys/pred) */
   public createTransfer(transfer: CreateTransfer): IUnsignedCommand {
-    return transferCreateCommand(transfer)();
+    return createTransaction(transferCreateCommand(transfer)());
   }
 
   /** create cross-chain transfer */
   public createCrossChainTransfer(
     transfer: CreateCrossChainTransfer,
   ): IUnsignedCommand {
-    return createCrossChainCommand(transfer)();
+    return createTransaction(createCrossChainCommand(transfer)());
   }
 
   /** create cross-chain transfer finish */
@@ -68,6 +82,7 @@ export class WalletSDK implements IWalletSDK {
     chainId: ChainId,
   ): Promise<ITransactionDescriptor> {
     const host = this._getHostUrl({ networkId, chainId });
+    console.log('host:', host);
     const result = await createClient(() => host).submitOne(transaction);
     return result;
   }
@@ -92,16 +107,70 @@ export class WalletSDK implements IWalletSDK {
 
   public subscribeOnCrossChainComplete(
     transfers: ITransactionDescriptor[],
-    callback: (transfer: Transfer, transfers: Transfer[]) => void,
-  ): () => void {
-    return () => {};
+    callback: (transfer: Transfer) => void,
+  ): AbortController {
+    return null as any;
+  }
+
+  public async waitForPendingTransaction(
+    transaction: ITransactionDescriptor,
+    options?: { signal?: AbortSignal },
+  ): Promise<ResponseResult> {
+    const host = this._getHostUrl({
+      networkId: transaction.networkId,
+      chainId: transaction.chainId,
+    });
+    const listenUrl = new URL(`${host}/api/v1/listen`);
+    const data = await fetch(listenUrl.toString(), {
+      signal: options?.signal,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ listen: transaction.requestKey }),
+    })
+      .then((res) => res.json())
+      .catch(() => ({
+        result: {
+          status: 'failure',
+          error: {
+            message: 'Failed to get response from server',
+            type: 'NetworkFailure',
+          },
+        } as ResponseResult,
+      }));
+    const parsed = v.safeParse(responseSchema, data);
+    if (parsed.success === false) {
+      console.log(`Parsing issues:\n${v.flatten(parsed.issues)}`);
+      return {
+        status: 'failure',
+        error: {
+          type: 'ParseFailure',
+          message: 'Failed to parse response',
+        },
+      };
+    }
+    return parsed.output.result;
   }
 
   public subscribePendingTransactions(
     transactions: ITransactionDescriptor[],
-    callback: (transaction: ITransaction) => void,
-  ): () => void {
-    return () => {};
+    callback: (
+      transaction: ITransactionDescriptor,
+      result: ResponseResult,
+    ) => void,
+  ): AbortController {
+    const controller = new AbortController();
+    const promises = transactions.map(async (transaction) => {
+      const result = await this.waitForPendingTransaction(transaction, {
+        signal: controller.signal,
+      });
+      callback(transaction, result);
+    });
+
+    Promise.all(promises).catch((error) => {
+      console.log(error);
+    });
+
+    return controller;
   }
 
   public async resolveAddressToName(
@@ -151,7 +220,7 @@ export class WalletSDK implements IWalletSDK {
   public async resolveAddressToName(
     address: string,
     networkId: string,
-  ): Promise<string | null | Error> {
+  ): Promise<string | null > {
     try {
       const host = this._getHostUrl({ networkId, chainId: '15' });
       const result = await kdnResolveAddressToName(address, networkId, host);
@@ -163,7 +232,7 @@ export class WalletSDK implements IWalletSDK {
       return result;
     } catch (error) {
       console.error(`Error in name resolving action: ${error.message}`);
-      return new Error(`Error resolving address: ${error.message}`);
+      throw new Error(`Error resolving address: ${error.message}`);
     }
   }
   */
@@ -174,8 +243,7 @@ export class WalletSDK implements IWalletSDK {
     fungible: string,
     chainIds?: ChainId[],
   ): Promise<IAccountDetails[] | undefined> {
-    const chains =
-      chainIds ?? (await this.getChains(networkId)).map((c) => c.id);
+    const chains = await this._getChains(networkId, chainIds);
     const results = await Promise.all(
       chains.map(async (chainId) =>
         getAccountDetails({
@@ -227,7 +295,6 @@ export class WalletSDK implements IWalletSDK {
             '{getCoinGeckoTokenMarketDataByIds(coinGeckoTokenIds:["kadena"]){current_price}}',
         }),
       });
-
       const json = await response.json();
       const value =
         json?.data?.getCoinGeckoTokenMarketDataByIds?.[0]?.current_price;
@@ -237,3 +304,5 @@ export class WalletSDK implements IWalletSDK {
     }
   }
 }
+
+export const walletSdk = new WalletSDK();
