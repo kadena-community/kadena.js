@@ -1,4 +1,4 @@
-import { style } from "../../../styles";
+import { style } from '../../../styles';
 
 export const inheritedSizeClass = style({
   fontSize: 'inherit !important',

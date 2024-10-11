@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { Text } from './Text';
 import { Heading } from '../Heading/Heading';
+import { Text } from './Text';
 
 const meta: Meta<typeof Text> = {
   title: 'Typography/Text',
@@ -51,7 +51,9 @@ export const InheritText: Story = {
     size: 'inherit',
     color: 'emphasize',
   },
-  render: (props) => <Heading as="h1">
-    Header with <Text {...props}>{props.children}</Text> parent size
-  </Heading>,
+  render: (props) => (
+    <Heading as="h1">
+      Header with <Text {...props}>{props.children}</Text> parent size
+    </Heading>
+  ),
 };
