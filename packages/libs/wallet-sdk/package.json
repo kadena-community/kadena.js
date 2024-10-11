@@ -45,7 +45,8 @@
     "@kadena/client": "workspace:*",
     "@kadena/client-utils": "workspace:*",
     "@kadena/types": "workspace:*",
-    "debug": "4.3.4"
+    "debug": "4.3.4",
+    "valibot": "^0.42.1"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",

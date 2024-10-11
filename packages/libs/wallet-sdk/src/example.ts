@@ -34,12 +34,13 @@ const { data: transfers, refetch } = useQuery<Transfer[]>(() =>
   walletSdk.getTransfers(accountName, 'coin', 'mainnet01'),
 );
 useEffect(() => {
-  const unsubTransferChanges = walletSdk.subscribeOnCrossChainComplete(
+  const controller = walletSdk.subscribeOnCrossChainComplete(
     transfers.map((t) => transferToDescriptor(t, 'testnet04')),
     (transfer) => refetch(),
   );
-  return unsubTransferChanges;
+  return () => controller.abort();
 }, [transfers]);
+
 useEffect(() => {
   const unsubPendingTransactions = walletSdk.subscribePendingTransactions(
     pendingTransfers.map((t) => transferToDescriptor(t, 'testnet04')),

@@ -4,6 +4,7 @@ import type {
   simpleTransferCreateCommand,
   transferCreateCommand,
 } from '@kadena/client-utils';
+import type { ResponseResult } from './schema.js';
 
 interface IBaseTransfer {
   senderAccount: string;
@@ -92,8 +93,13 @@ export interface IWalletSDK {
    */
   subscribeOnCrossChainComplete(
     transfers: ITransactionDescriptor[],
-    callback: (transfer: Transfer, transfers: Transfer[]) => void,
-  ): () => void;
+    callback: (transfer: Transfer) => void,
+  ): AbortController;
+
+  waitForPendingTransaction(
+    transaction: ITransactionDescriptor,
+    options?: { signal?: AbortSignal },
+  ): Promise<ResponseResult>;
 
   // 1.6 transactions
   /**
@@ -106,7 +112,7 @@ export interface IWalletSDK {
   subscribePendingTransactions(
     transactions: ITransactionDescriptor[],
     callback: (transaction: ITransaction) => void,
-  ): () => void;
+  ): AbortController;
 
   // 1.7 kadena names support
   // chainId hardcoded to chain 15
