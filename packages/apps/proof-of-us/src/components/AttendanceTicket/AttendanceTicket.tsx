@@ -48,7 +48,7 @@ export const AttendanceTicket: FC<IProps> = ({ data }) => {
   const aspectRatio = getAspectRatio(imgWidth, imgHeight);
   if (!aspectRatio) return;
 
-  if (aspectRatio !== '1.8') {
+  if (aspectRatio !== '16/9') {
     return (
       <motion.div
         layoutId={data.image}
@@ -56,9 +56,8 @@ export const AttendanceTicket: FC<IProps> = ({ data }) => {
           backgroundImage: `url("${getIPFSLink(data.image)}")`,
           backgroundColor: data.properties?.avatar?.backgroundColor,
           width: imgWidth,
-
           maxWidth: '100%',
-          aspectRatio: '1/1',
+          aspectRatio: aspectRatio,
         }}
       ></motion.div>
     );
