@@ -1,9 +1,10 @@
+import { getAspectRatio } from '@/utils/getAspectRatio';
 import { getContrast } from '@/utils/getContrast';
 import { getIPFSLink } from '@/utils/getIPFSLink';
 import { Stack } from '@kadena/kode-ui';
 import { motion } from 'framer-motion';
 import type { FC } from 'react';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   dateClass,
   dateTitleClass,
@@ -23,12 +24,45 @@ interface IProps {
 const DATEIGNOREHASHES = ['QmXK1eoQwPoYrmNKowRCybBN9M6AejwaCeht2xoyJP7CxC'];
 
 export const AttendanceTicket: FC<IProps> = ({ data }) => {
+  const [imgWidth, setImgWidth] = useState<number>(0);
+  const [imgHeight, setImgHeight] = useState<number>(0);
   const color = data.properties?.avatar?.backgroundColor ?? 'white';
   const contrastColor = useMemo(() => getContrast(color), [color]);
 
   const ignoreDate = (imageUrl: string): boolean => {
     return !DATEIGNOREHASHES.find((hash) => imageUrl.includes(hash));
   };
+
+  useEffect(() => {
+    if (!data.image) return;
+    const img = new Image();
+
+    img.onload = () => {
+      setImgWidth(img.naturalWidth);
+      setImgHeight(img.naturalHeight);
+    };
+
+    img.src = data.image;
+  }, [data]);
+
+  const aspectRatio = getAspectRatio(imgWidth, imgHeight);
+  if (!aspectRatio) return;
+
+  if (aspectRatio !== '1.8') {
+    return (
+      <motion.div
+        layoutId={data.image}
+        style={{
+          backgroundImage: `url("${getIPFSLink(data.image)}")`,
+          backgroundColor: data.properties?.avatar?.backgroundColor,
+          width: imgWidth,
+
+          maxWidth: '100%',
+          aspectRatio: '1/1',
+        }}
+      ></motion.div>
+    );
+  }
 
   return (
     <motion.div
