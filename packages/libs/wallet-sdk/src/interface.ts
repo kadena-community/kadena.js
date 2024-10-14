@@ -13,23 +13,32 @@ interface IBaseTransfer {
   token: string;
   requestKey: string;
   success: boolean;
-}
-type ISameChainTransfer = IBaseTransfer & {
-  isCrossChainTransfer: false;
   chainId: ChainId;
-};
-type ICrossChainTransfer = IBaseTransfer & {
+}
+interface ISameChainTransfer extends IBaseTransfer {
+  isCrossChainTransfer: false;
+}
+
+interface ICrossChainTransfer extends IBaseTransfer {
   isCrossChainTransfer: true;
-  fromChainId: ChainId;
-  toChainId: ChainId;
+  targetChainId: ChainId;
   continuation: {
     requestKey: string;
     success: boolean;
   };
-};
+}
+export interface EthvmDevTokenInfo {
+  current_price?: number;
+  max_supply?: number;
+  total_supply?: number;
+  circulating_supply?: number;
+  low_24h?: number;
+  high_24h?: number;
+}
 
 export interface IChain {
   id: ChainId;
+  // Will add later: type: 'pact' | 'evm'
 }
 export type Transfer = ISameChainTransfer | ICrossChainTransfer;
 export type CreateFinishCrossChainTransfer = unknown;
@@ -61,6 +70,7 @@ export interface IWalletSDK {
     transfer: CreateCrossChainTransfer,
   ): IUnsignedCommand;
 
+  // TODO: needs spv proof, not sure how to do it currently
   createFinishCrossChainTransfer(
     transfer: CreateFinishCrossChainTransfer,
   ): IUnsignedCommand;
@@ -94,13 +104,16 @@ export interface IWalletSDK {
   subscribeOnCrossChainComplete(
     transfers: ITransactionDescriptor[],
     callback: (transfer: Transfer) => void,
-  ): AbortController;
+    options?: { signal?: AbortSignal },
+  ): void;
 
+  // Note: use /poll endpoint
   waitForPendingTransaction(
     transaction: ITransactionDescriptor,
     options?: { signal?: AbortSignal },
   ): Promise<ResponseResult>;
 
+  // optimization: /poll accepts multiple requestKeys to check for multiple transactions at once (per chain)
   // 1.6 transactions
   /**
    * Based on requestKeys, receive an update on the callback when the transaction finished.
@@ -112,21 +125,22 @@ export interface IWalletSDK {
   subscribePendingTransactions(
     transactions: ITransactionDescriptor[],
     callback: (transaction: ITransaction) => void,
-  ): AbortController;
+    options?: { signal?: AbortSignal },
+  ): void;
 
-  // 1.7 kadena names support
-  // chainId hardcoded to chain 15
-  resolveNameToAddress(
-    name: string,
-    networkId: string,
-  ): Promise<string | undefined>;
+  // kadenaNames: {
+  //   // 1.7 kadena names support
+  //   // chainId hardcoded to chain 15
+  //   /** be specific about this being part of `KadenaNames` */
+  //   nameToAddress(name: string, networkId: string): Promise<string | undefined>;
 
-  // 1.7 kadena names support
-  // chainId hardcoded to chain 15
-  resolveAddressToName(
-    address: string,
-    networkId: string,
-  ): Promise<string | undefined>;
+  //   // 1.7 kadena names support
+  //   // chainId hardcoded to chain 15
+  //   addressToName(
+  //     address: string,
+  //     networkId: string,
+  //   ): Promise<string | undefined>;
+  // };
 
   // 1.4 query balances
   getAccountDetails(
@@ -141,12 +155,27 @@ export interface IWalletSDK {
   // https://api.testnet.chainweb.com/info
   getChains(networkHost: string): Promise<IChain[]>;
 
+  // 1.5 get chains
+  // https://api.chainweb.com/info
+  // https://api.testnet.chainweb.com/info
+  getNetworkInfo(networkHost: string): Promise<{}>;
+
   // 1.3
-  getGasEstimate(
+  /** returns gasLimit */
+  getGasLimitEstimate(
     transaction: ICommand,
     networkId: string,
     networkHost: string,
   ): Promise<number>;
 
-  getUSDPrice(currency: string): Promise<number>;
+  // Out of scope for MVP
+  // getGasPriceEstimate can return gasPrice but needs to include an argument for in how many blocks it should be mined
+
+  exchange: {
+    // format `get<platform><fungible><currency>Price()`
+    getEthvmDevTokenInfo<T extends string>(
+      tokens: T[],
+    ): Promise<Record<T, EthvmDevTokenInfo | undefined>>;
+    // TODO: implement kdswap prices which includes other fungibles
+  };
 }
