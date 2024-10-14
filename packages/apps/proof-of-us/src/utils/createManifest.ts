@@ -19,7 +19,7 @@ export const createManifest = async (
 
   return {
     name: proofOfUs.title ?? '',
-    description: `${proofOfUs.title} was a great event`,
+    description: `You’ve successfully minted an NFT with your Kadena SpireKey Account.`,
     image: url,
     authors: signees.map((signee) => ({
       name: signee.name ? signee.name : signee.alias,

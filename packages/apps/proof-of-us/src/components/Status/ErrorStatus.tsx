@@ -27,7 +27,7 @@ export const ErrorStatus: FC<IProps> = ({ children, closeUrl, handleMint }) => {
         <Stack gap="md">
           {closeUrl && (
             <Link href={closeUrl}>
-              <Button>Go to dashboard</Button>
+              <Button>Dashboard</Button>
             </Link>
           )}
           {handleMint && (

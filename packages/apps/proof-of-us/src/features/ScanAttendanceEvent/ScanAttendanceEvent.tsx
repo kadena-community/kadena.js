@@ -112,7 +112,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
                 {!isMinted && account && !hideDashboard && (
                   <Stack>
                     <Link href="/user">
-                      <Button>Go to dashboard</Button>
+                      <Button>Dashboard</Button>
                     </Link>
                   </Stack>
                 )}
@@ -127,7 +127,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
               {!isMinted && account && !hideDashboard && (
                 <Stack>
                   <Link href="/user">
-                    <Button>Go to dashboard</Button>
+                    <Button>Dashboard</Button>
                   </Link>
                 </Stack>
               )}
@@ -138,16 +138,16 @@ export const ScanAttendanceEvent: FC<IProps> = ({
           <Stack gap="md">
             {account && !hideDashboard && (
               <Link href="/user">
-                <Button>Go to dashboard</Button>
+                <Button>Dashboard</Button>
               </Link>
             )}
-            <Button onPress={handleClaim}>Claim NFT</Button>
+            <Button onPress={handleClaim}>Mint NFT</Button>
           </Stack>
         )}
 
         {!account && isMounted && (
           <Stack width="100%">
-            <Button onClick={login}>Login to mint</Button>
+            <Button onClick={login}>Connect to mint</Button>
           </Stack>
         )}
         {isMinted && (
@@ -158,7 +158,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
 
             <Stack gap="md">
               <Button>
-                <Link href="/user">Go to dashboard</Link>
+                <Link href="/user">Dashboard</Link>
               </Button>
 
               <Button>
