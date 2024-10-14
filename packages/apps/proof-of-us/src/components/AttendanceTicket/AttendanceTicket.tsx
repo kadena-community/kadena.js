@@ -48,7 +48,7 @@ export const AttendanceTicket: FC<IProps> = ({ data, share }) => {
       setImgHeight(img.naturalHeight);
     };
 
-    img.src = data.image;
+    img.src = getIPFSLink(data.image);
   }, [data]);
 
   const aspectRatio = getAspectRatio(imgWidth, imgHeight);
