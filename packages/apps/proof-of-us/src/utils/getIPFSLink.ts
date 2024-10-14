@@ -14,7 +14,6 @@ export const getIPFSLink = (uri: string): string => {
     /(?:https:\/\/)?([^\/.]+)\.ipfs\.(nftstorage|dweb)\.link\/(.+)/;
   const match = uri.match(idAndTypeRegExp);
 
-  console.warn("DEBUGPRINT[1]: getIPFSLink.ts:16: uri=", uri)
   if (match) {
     return `${env.URL}/api/ipfs/${match[1]}/${match[2]}/${match[3]}`;
   }
