@@ -27,22 +27,24 @@ const client = ({
     `${networkHost}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
   );
 
-// The type generation should no longer happen in node modules
-export async function kdnResolveNameToAddress(
-  name: string,
+async function kdnResolve(
+  identifier: string,
   networkId: string,
   networkHost: string,
+  subject: 'address' | 'name',
 ): Promise<string | undefined> {
   try {
     const module = networkId.includes('testnet')
       ? KADENANAMES_NAMESPACE_TESTNET_MODULE
       : KADENANAMES_NAMESPACE_MAINNET_MODULE;
+    const method = subject === 'address' ? 'get-address' : 'get-name';
+    const param =
+      subject === 'address'
+        ? ensureKdaExtension(identifier.trim())
+        : identifier.trim();
+
     const transaction = Pact.builder
-      .execution(
-        (Pact as any).modules[module]['get-address'](
-          ensureKdaExtension(name.trim()),
-        ),
-      )
+      .execution(Pact.modules[module][method](param))
       .setMeta({ chainId })
       .setNetworkId(networkId)
       .createTransaction();
@@ -52,37 +54,26 @@ export async function kdnResolveNameToAddress(
       networkHost,
     }).dirtyRead(transaction);
 
-    return parseChainResponse<string>(response, 'address');
+    return parseChainResponse<string>(response, subject);
   } catch (error) {
     return undefined;
   }
 }
 
-// The type generation should no longer happen in node modules
+export async function kdnResolveNameToAddress(
+  name: string,
+  networkId: string,
+  networkHost: string,
+): Promise<string | undefined> {
+  return kdnResolve(name, networkId, networkHost, 'address');
+}
+
 export async function kdnResolveAddressToName(
   address: string,
   networkId: string,
   networkHost: string,
 ): Promise<string | undefined> {
-  try {
-    const module = networkId.includes('testnet')
-      ? KADENANAMES_NAMESPACE_TESTNET_MODULE
-      : KADENANAMES_NAMESPACE_MAINNET_MODULE;
-    const transaction = Pact.builder
-      .execution((Pact as any).modules[module]['get-name'](address.trim()))
-      .setMeta({ chainId })
-      .setNetworkId(networkId)
-      .createTransaction();
-
-    const response: ICommandResult = await client({
-      networkId,
-      networkHost,
-    }).dirtyRead(transaction);
-
-    return parseChainResponse<string>(response, 'name');
-  } catch (error) {
-    return undefined;
-  }
+  return kdnResolve(address, networkId, networkHost, 'name');
 }
 
 function parseChainResponse<T>(response: ICommandResult, subject: string): T {
