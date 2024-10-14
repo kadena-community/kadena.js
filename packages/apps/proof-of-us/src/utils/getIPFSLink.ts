@@ -18,7 +18,12 @@ export const getIPFSLink = (uri: string): string => {
     return `${env.URL}/api/ipfs/${match[1]}/${match[2]}/${match[3]}`;
   }
 
-  if (uri.startsWith('https://ipfs.io')) {
+  if (
+    uri.startsWith('https://ipfs.io') ||
+    uri.startsWith('https://jade-voluntary-tiglon-98.mypinata.cloud') ||
+    uri.startsWith('https://kadenaio.mypinata.cloud') ||
+    uri.startsWith(process.env.NEXT_PUBLIC_PINATA_DOMAIN ?? '')
+  ) {
     const arr = uri.split('/');
     return `${env.URL}/pinata/${arr[arr.length - 1]}`;
   }
