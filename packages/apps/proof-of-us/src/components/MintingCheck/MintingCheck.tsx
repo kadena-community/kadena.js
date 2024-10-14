@@ -94,7 +94,7 @@ export const MintingCheck: FC<IProps> = ({ token }) => {
       <Stack flex={1} />
       <Stack>
         <Link href="/user">
-          <Button>Go to dashboard</Button>
+          <Button>Dashboard</Button>
         </Link>
       </Stack>
     </Stack>

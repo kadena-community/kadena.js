@@ -19,12 +19,14 @@ interface IProps {
   eventId: string;
   isMinted: boolean;
   handleIsMinted: Dispatch<SetStateAction<boolean>>;
+  hideDashboard?: boolean;
 }
 
 export const ScanAttendanceEvent: FC<IProps> = ({
   data,
   eventId,
   isMinted,
+  hideDashboard = false,
 }) => {
   const { claim } = useClaimAttendanceToken();
   const { account, isMounted, login } = useAccount();
@@ -107,10 +109,10 @@ export const ScanAttendanceEvent: FC<IProps> = ({
                 {startDate.toLocaleTimeString()} to claim the nft
               </MessageBlock>
               <Stack gap="md">
-                {!isMinted && account && (
+                {!isMinted && account && !hideDashboard && (
                   <Stack>
                     <Link href="/user">
-                      <Button>Go to dashboard</Button>
+                      <Button>Dashboard</Button>
                     </Link>
                   </Stack>
                 )}
@@ -122,10 +124,10 @@ export const ScanAttendanceEvent: FC<IProps> = ({
           <Stack flexDirection="column" gap="md">
             <MessageBlock title={''}>The event has ended.</MessageBlock>
             <Stack gap="md">
-              {!isMinted && account && (
+              {!isMinted && account && !hideDashboard && (
                 <Stack>
                   <Link href="/user">
-                    <Button>Go to dashboard</Button>
+                    <Button>Dashboard</Button>
                   </Link>
                 </Stack>
               )}
@@ -134,18 +136,18 @@ export const ScanAttendanceEvent: FC<IProps> = ({
         )}
         {showClaimButton && !isMinted && (
           <Stack gap="md">
-            {account && (
+            {account && !hideDashboard && (
               <Link href="/user">
-                <Button>Go to dashboard</Button>
+                <Button>Dashboard</Button>
               </Link>
             )}
-            <Button onPress={handleClaim}>Claim NFT</Button>
+            <Button onPress={handleClaim}>Mint NFT</Button>
           </Stack>
         )}
 
         {!account && isMounted && (
           <Stack width="100%">
-            <Button onClick={login}>Login to mint</Button>
+            <Button onClick={login}>Connect to mint</Button>
           </Stack>
         )}
         {isMinted && (
@@ -156,7 +158,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
 
             <Stack gap="md">
               <Button>
-                <Link href="/user">Go to dashboard</Link>
+                <Link href="/user">Dashboard</Link>
               </Button>
 
               <Button>

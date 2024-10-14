@@ -35,8 +35,8 @@ const senderPubKey =
 const namespace = 'n_31cd1d224d06ca2b327f1b03f06763e305099250';
 const collectionId = process.env.NEXT_PUBLIC_CONNECTION_COLLECTIONID ?? '';
 
-const eventName = 'Welcome Kadenian!';
-const startTime = Math.round(new Date(2024, 9, 11, 13, 5).getTime() / 1000);
+const eventName = 'Kadena Spirekey Launch NFT';
+const startTime = Math.round(new Date(2024, 9, 14, 13, 20).getTime() / 1000);
 const endTime = Math.round(new Date(2199, 5, 15, 23, 15).getTime() / 1000);
 const bgColor = '#11151E';
 

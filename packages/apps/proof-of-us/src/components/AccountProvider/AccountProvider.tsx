@@ -60,7 +60,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     initSpireKey({
-      hostUrl: 'https://spirekey.kadena.io',
+      hostUrl: process.env.NEXT_PUBLIC_WALLET_URL,
     });
     setIsMounted(true);
   }, []);

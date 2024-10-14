@@ -91,8 +91,11 @@ export const dateClass = style([
 ]);
 
 export const wrapperClass = style([
-  {
+  atoms({
     width: '100%',
+    position: 'relative',
+  }),
+  {
     maxWidth: '100%',
   },
 ]);
