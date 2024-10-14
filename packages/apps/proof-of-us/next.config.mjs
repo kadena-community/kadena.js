@@ -34,7 +34,7 @@ const nextConfig = {
         source: '/graph',
         destination:
           process.env.NEXT_PUBLIC_GRAHQLURL ??
-          'https://graph.testnet.kadena.network/graphql',
+          'https://graph.kadena.network/graphql',
       },
     ];
   },
