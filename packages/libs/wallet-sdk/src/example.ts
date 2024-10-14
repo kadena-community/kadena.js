@@ -42,9 +42,11 @@ useEffect(() => {
 }, [transfers]);
 
 useEffect(() => {
-  const unsubPendingTransactions = walletSdk.subscribePendingTransactions(
+  const controller = new AbortController().signal;
+  walletSdk.subscribePendingTransactions(
     pendingTransfers.map((t) => transferToDescriptor(t, 'testnet04')),
     (event) => refetch(),
+    { singal: controller.signal },
   );
-  return unsubPendingTransactions;
+  return () => controller.abort();
 }, [pendingTransfers]);
