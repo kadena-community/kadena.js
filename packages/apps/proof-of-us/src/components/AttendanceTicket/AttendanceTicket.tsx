@@ -35,7 +35,6 @@ export const AttendanceTicket: FC<IProps> = ({ data, share }) => {
   const color = data.properties?.avatar?.backgroundColor ?? 'white';
   const contrastColor = useMemo(() => getContrast(color), [color]);
 
-  console.log('url', process.env.NEXT_PUBLIC_PINATA_DOMAIN);
   const ignoreDate = (imageUrl: string): boolean => {
     return !DATEIGNOREHASHES.find((hash) => imageUrl.includes(hash));
   };
