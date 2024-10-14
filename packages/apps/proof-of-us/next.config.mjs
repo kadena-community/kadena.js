@@ -28,7 +28,7 @@ const nextConfig = {
       },
       {
         source: '/pinata/:cid',
-        destination: `${process.env.NEXT_PUBLIC_PINATA_DOMAIN ?? 'https://ipfs.io'}/ipfs/:cid?pinataGatewayToken=${process.env.PINATA_GATEWAYTOKEN}`,
+        destination: `${process.env.NEXT_PUBLIC_PINATA_DOMAIN ?? 'https://ipfs.io'}/ipfs/:cid`,
       },
       {
         source: '/graph',
