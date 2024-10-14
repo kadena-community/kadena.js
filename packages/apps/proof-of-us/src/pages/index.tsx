@@ -44,7 +44,7 @@ const Page: FC = () => {
       <ScreenHeight>
         <ProofOfUsProvider proofOfUsId={SPIREKEYNFTID}>
           <TitleHeader
-            label="Welcome to Spirekey"
+            label="Kadena Spirekey Launch NFT"
             Append={() =>
               account ? (
                 <Confirmation
