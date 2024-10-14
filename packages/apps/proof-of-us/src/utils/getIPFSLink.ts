@@ -20,6 +20,7 @@ export const getIPFSLink = (uri: string): string => {
 
   if (
     uri.startsWith('https://ipfs.io') ||
+    uri.startsWith('https://jade-voluntary-tiglon-98.mypinata.cloud') ||
     uri.startsWith(process.env.NEXT_PUBLIC_PINATA_DOMAIN ?? '')
   ) {
     const arr = uri.split('/');

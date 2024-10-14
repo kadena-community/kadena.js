@@ -28,7 +28,7 @@ const nextConfig = {
       },
       {
         source: '/pinata/:cid',
-        destination: `${process.env.NEXT_PUBLIC_PINATA_DOMAIN ?? 'https://ipfs.io'}/ipfs/:cid`,
+        destination: `https://kadenaio.mypinata.cloud/ipfs/:cid`,
       },
       {
         source: '/graph',
