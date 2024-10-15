@@ -1,3 +1,4 @@
+/* eslint-disable @rushstack/no-new-null */
 import type { ChainId, ICommand, IUnsignedCommand } from '@kadena/client';
 import type {
   createCrossChainCommand,
@@ -49,7 +50,24 @@ export type CreateTransfer = Parameters<typeof transferCreateCommand>[0];
 export type CreateCrossChainTransfer = Parameters<
   typeof createCrossChainCommand
 >[0];
-export type IAccountDetails = unknown;
+export interface IAccountDetails {
+  chainId: string;
+  accountDetails: IAccountDetailsResult | null;
+}
+export interface IAccountDetailsResult {
+  guard: IGuard;
+  account: string;
+  balance:
+    | number
+    | {
+        decimal: number;
+      };
+}
+
+export interface IGuard {
+  keys: string[];
+  pred: string;
+}
 export interface ITransaction {
   requestKey: string;
   chainId: ChainId;
@@ -148,7 +166,7 @@ export interface IWalletSDK {
     networkId: string,
     fungible: string,
     chainIds?: ChainId[],
-  ): Promise<IAccountDetails[] | undefined>;
+  ): Promise<IAccountDetails[]>;
 
   // 1.5 get chains
   // https://api.chainweb.com/info
