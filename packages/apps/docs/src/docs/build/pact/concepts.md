@@ -209,10 +209,6 @@ Pact comes with built-in keyset predicates: [keys-all](/reference/functions/keys
 
 If a keyset predicate is not specified, [keys-all](/reference/functions/keysets#keys-allh517472840) is used by default.
 
-### Key rotation
-
-Keysets can be rotated, but only by messages authorized against the current keyset definition and predicate. Once authorized, the keyset can be easily [redefined](/reference/functions/keysets#define-keyseth1939391989).
-
 ### Module table guards
 
 When [creating](/reference/functions/database#create-tableh447366077) a table, a module name must also be specified. By this mechanism, tables are "guarded" or "encapsulated" by the module, such that direct access to the table via [data-access functions](/reference/functions/database) is authorized only by the module's governance. However, _within module functions_, table access is unconstrained. This gives contract authors great flexibility in designing data access, and is intended to enshrine the module as the main "user data access API".

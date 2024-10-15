@@ -69,7 +69,7 @@ For example, pacts are used to define multi-step operations like cross-chain tra
 - The **offer** operation signed by the seller.
 - The **buy** operation signed by the buyer.
 
-The pact definition enables each participant to only run a subset of functions while preserving the integrity of the transaction as a while in the contract.
+The pact definition enables each participant to only run a subset of functions while preserving the integrity of the transaction as a whole in the contract.
 
 ## Pact smart contracts
 
