@@ -80,6 +80,7 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
     });
 
     addNetwork(newNetwork);
+    handleOpen(false);
   };
 
   const handleChangeGraphUrl: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -129,10 +130,11 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
   };
 
   useEffect(() => {
+    if (network.isNew) return;
     setGraphUrl(network?.graphUrl);
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     validateNetwork(network?.graphUrl);
-  }, [network?.slug]);
+  }, [network.slug]);
 
   return (
     <Dialog
@@ -223,7 +225,7 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
                   <>
                     <TextField
                       isDisabled={!network.isNew}
-                      maxLength={15}
+                      maxLength={50}
                       label="Slug"
                       name="slug"
                       value={network?.slug}
@@ -233,7 +235,7 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
                       isRequired
                     ></TextField>
                     <TextField
-                      maxLength={15}
+                      maxLength={50}
                       label="Name"
                       name="label"
                       value={network?.label}
