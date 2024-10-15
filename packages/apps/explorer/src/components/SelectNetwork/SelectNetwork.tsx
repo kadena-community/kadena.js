@@ -1,6 +1,10 @@
 import { useNetwork } from '@/context/networksContext';
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
-import { MonoMoreVert, MonoSettings } from '@kadena/kode-icons/system';
+import {
+  MonoMoreVert,
+  MonoOpenInNew,
+  MonoSettings,
+} from '@kadena/kode-icons/system';
 import type { IContextMenuProps } from '@kadena/kode-ui';
 import {
   Button,
@@ -54,6 +58,7 @@ export const SelectNetwork: FC<IProps> = ({ placement = 'bottom end' }) => {
             />
           }
         >
+          <ContextMenuItem label="Networks" />
           {networks.map((network) => (
             <ContextMenuItem
               aria-label={network.label}
@@ -66,6 +71,25 @@ export const SelectNetwork: FC<IProps> = ({ placement = 'bottom end' }) => {
             label="Settings"
             endVisual={<MonoSettings />}
             onClick={handlePress}
+          />
+          <ContextMenuItem label="Changelogs" />
+          <ContextMenuItem
+            label="Changelog GraphQL"
+            endVisual={<MonoOpenInNew />}
+            onClick={() => {
+              window
+                .open('https://docs.kadena.io/changelogs/graph', '_blank')
+                ?.focus();
+            }}
+          />
+          <ContextMenuItem
+            label="Changelog Explorer"
+            endVisual={<MonoOpenInNew />}
+            onClick={() => {
+              window
+                .open('https://docs.kadena.io/changelogs/explorer', '_blank')
+                ?.focus();
+            }}
           />
         </ContextMenu>
       </Stack>
