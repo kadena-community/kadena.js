@@ -9,7 +9,6 @@ export const useHDWallet = () => {
     profileId: string,
     type: 'HD-BIP44' | 'HD-chainweaver',
     password: string,
-    mnemonic: string,
     derivationPathTemplate?: string,
   ) => {
     switch (type) {
@@ -17,7 +16,6 @@ export const useHDWallet = () => {
         const service = (await keySourceManager.get(type)) as BIP44Service;
         const keySource = await service.register(
           profileId,
-          mnemonic,
           password,
           derivationPathTemplate,
         );
@@ -30,7 +28,7 @@ export const useHDWallet = () => {
         const service = (await keySourceManager.get(
           type,
         )) as ChainweaverService;
-        const keySource = await service.register(profileId, mnemonic, password);
+        const keySource = await service.register(profileId, password);
         return keySource;
       }
       default:

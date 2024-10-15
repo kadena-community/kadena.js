@@ -4,13 +4,18 @@ import {
   createContext,
   useCallback,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 
 import { useSession } from '@/App/session';
+import { usePrompt } from '@/Components/PromptProvider/Prompt';
+import { UnlockPrompt } from '@/Components/UnlockPrompt/UnlockPrompt';
 import { throttle } from '@/utils/session';
+import { recoverPublicKey, retrieveCredential } from '@/utils/webAuthn';
 import { IClient, createClient } from '@kadena/client';
 import { setGlobalConfig } from '@kadena/client-utils/core';
+import { kadenaDecrypt, kadenaEncrypt, randomBytes } from '@kadena/hd-wallet';
 import {
   Fungible,
   IAccount,
@@ -23,6 +28,7 @@ import { keySourceManager } from '../key-source/key-source-manager';
 import { INetwork, networkRepository } from '../network/network.repository';
 import { hostUrlGenerator } from '../network/network.service';
 import { IKeySource, IProfile, walletRepository } from './wallet.repository';
+import * as WalletService from './wallet.service';
 
 export type ExtWalletContextType = {
   profile?: IProfile;
@@ -46,12 +52,175 @@ export const WalletContext = createContext<
         keySources: IKeySource[];
       }>,
       setActiveNetwork: (activeNetwork: INetwork | undefined) => void,
-      syncAllAccounts: () => void,
+      syncAllAccounts: (force?: boolean) => void,
+      askForPassword: (force?: boolean) => Promise<string | null>,
     ]
   | null
 >(null);
 
-export const syncAllAccounts = throttle(AccountService.syncAllAccounts, 10000);
+export const syncAllAccounts = throttle(AccountService.syncAllAccounts, 60000);
+
+function usePassword(profile: IProfile | undefined) {
+  const ref = useRef({
+    encryptionKey: null as Uint8Array | null,
+    encryptedPassword: null as Uint8Array | null,
+  });
+  const prompt = usePrompt();
+  const getPassword = useCallback(async () => {
+    const { encryptionKey, encryptedPassword } = ref.current;
+    if (!encryptionKey || !encryptedPassword) {
+      return null;
+    }
+    return new TextDecoder().decode(
+      await kadenaDecrypt(encryptionKey, encryptedPassword),
+    );
+  }, []);
+
+  const setPassword = useCallback(async (password: string) => {
+    const encryptionKey = randomBytes(32);
+    const encryptedPassword = await kadenaEncrypt(
+      encryptionKey,
+      password,
+      'buffer',
+    );
+    ref.current = { encryptionKey, encryptedPassword };
+  }, []);
+
+  const clearContext = useCallback(() => {
+    ref.current = { encryptionKey: null, encryptedPassword: null };
+  }, []);
+
+  const askForPassword = useCallback(
+    async (force = false): Promise<string | null> => {
+      if (!force) {
+        const password = await getPassword();
+        if (password) {
+          return password;
+        }
+      }
+      if (!profile) {
+        return null;
+      }
+      let unlockOptions: {
+        password: string;
+        keepOpen: 'session' | 'short-time' | 'never';
+      };
+      switch (profile.options.authMode) {
+        case 'PASSWORD': {
+          unlockOptions = (await prompt((resolve, reject) => (
+            <UnlockPrompt
+              resolve={resolve}
+              reject={reject}
+              showPassword
+              rememberPassword={profile.options.rememberPassword}
+            />
+          ))) as {
+            password: string;
+            keepOpen: 'session' | 'short-time' | 'never';
+          };
+          if (!unlockOptions.password) {
+            return null;
+          }
+          const result = await WalletService.unlockProfile(
+            profile.uuid,
+            unlockOptions.password,
+          );
+          if (!result) {
+            throw new Error('Failed to unlock profile');
+          }
+          break;
+        }
+        case 'WEB_AUTHN': {
+          const webAuthnUnlock = async ({
+            keepOpen,
+          }: {
+            keepOpen: 'session' | 'short-time' | 'never';
+          }) => {
+            const credentialId =
+              profile.options.authMode === 'WEB_AUTHN'
+                ? profile.options.webAuthnCredential
+                : null;
+            if (!credentialId) {
+              return null;
+            }
+            const credential = await retrieveCredential(credentialId);
+            if (!credential) {
+              return null;
+            }
+            const keys = await recoverPublicKey(credential);
+            for (const key of keys) {
+              const result = await WalletService.unlockProfile(
+                profile.uuid,
+                key,
+              );
+              if (result) {
+                return { password: key, keepOpen };
+              }
+            }
+            throw new Error('Failed to unlock profile');
+          };
+          unlockOptions = (await prompt((resolve, reject) => (
+            <UnlockPrompt
+              resolve={(data) =>
+                webAuthnUnlock(data).then(resolve).catch(reject)
+              }
+              reject={reject}
+              rememberPassword={profile.options.rememberPassword}
+            />
+          ))) as {
+            password: string;
+            keepOpen: 'session' | 'short-time' | 'never';
+          };
+          if (!unlockOptions.password) {
+            return null;
+          }
+          break;
+        }
+        default: {
+          throw new Error('Unsupported auth mode');
+        }
+      }
+      if (profile.options.rememberPassword !== unlockOptions.keepOpen) {
+        walletRepository.updateProfile({
+          ...profile,
+          options: {
+            ...profile.options,
+            rememberPassword: unlockOptions.keepOpen,
+          },
+        });
+      }
+      setPassword(unlockOptions.password);
+      if (unlockOptions.keepOpen === 'never') {
+        // clear the password after 10 seconds
+        // TODO: this need to be refactored in order to just allow password for the next action
+        setTimeout(() => {
+          console.log('clearing password', unlockOptions.keepOpen);
+          keySourceManager.reset();
+          clearContext();
+        }, 1000 * 5);
+      }
+      if (unlockOptions.keepOpen === 'short-time') {
+        setTimeout(
+          () => {
+            console.log('clearing password', unlockOptions.keepOpen);
+            keySourceManager.reset();
+            clearContext();
+          },
+          1000 * 60 * 5,
+        );
+      }
+      console.log('unlockOptions', unlockOptions);
+      return unlockOptions.password;
+    },
+    [profile, getPassword, prompt, setPassword, clearContext],
+  );
+
+  useEffect(() => {
+    clearContext();
+  }, [profile?.securityPhraseId, clearContext]);
+
+  return askForPassword;
+}
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   const [contextValue, setContextValue] = useState<ExtWalletContextType>({
@@ -62,6 +231,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     }),
   });
   const session = useSession();
+  const askForPassword = usePassword(contextValue.profile);
 
   const retrieveNetworks = useCallback(async () => {
     const networks =
@@ -97,7 +267,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const retrieveAccounts = useCallback(
     async (profileId: string) => {
-      if (!contextValue.activeNetwork?.networkId) {
+      if (!contextValue.activeNetwork?.uuid) {
         setContextValue((ctx) => ({
           ...ctx,
           accounts: [],
@@ -139,6 +309,14 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       switch (storeName) {
         case 'profile': {
           retrieveProfileList();
+          if (data.uuid === contextValue.profile?.uuid) {
+            // update the profile in the context
+            console.log('profile updated', data);
+            setContextValue((ctx) => ({
+              ...ctx,
+              profile: event === 'delete' ? null : data,
+            }));
+          }
           break;
         }
         case 'fungible': {
@@ -178,6 +356,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     retrieveFungibles,
     retrieveKeysets,
     retrieveNetworks,
+    contextValue.profile?.uuid,
   ]);
 
   const setProfile = useCallback(
@@ -258,14 +437,25 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     retrieveNetworks();
   }, [retrieveNetworks]);
 
-  const syncAllAccountsCb = useCallback(() => {
-    if (contextValue.profile?.uuid && contextValue.activeNetwork?.uuid) {
-      syncAllAccounts(
-        contextValue.profile?.uuid,
-        contextValue.activeNetwork?.uuid,
-      );
-    }
-  }, [contextValue.profile?.uuid, contextValue.activeNetwork?.uuid]);
+  const syncAllAccountsCb = useCallback(
+    (force: boolean = false) => {
+      if (contextValue.profile?.uuid && contextValue.activeNetwork?.uuid) {
+        if (force) {
+          // without throttling
+          AccountService.syncAllAccounts(
+            contextValue.profile?.uuid,
+            contextValue.activeNetwork?.uuid,
+          );
+        } else {
+          syncAllAccounts(
+            contextValue.profile?.uuid,
+            contextValue.activeNetwork?.uuid,
+          );
+        }
+      }
+    },
+    [contextValue.profile?.uuid, contextValue.activeNetwork?.uuid],
+  );
 
   useEffect(() => {
     syncAllAccountsCb();
@@ -297,7 +487,13 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <WalletContext.Provider
-      value={[contextValue, setProfile, setActiveNetwork, syncAllAccountsCb]}
+      value={[
+        contextValue,
+        setProfile,
+        setActiveNetwork,
+        syncAllAccountsCb,
+        askForPassword,
+      ]}
     >
       {contextValue.loaded ? children : 'Loading wallet...'}
     </WalletContext.Provider>

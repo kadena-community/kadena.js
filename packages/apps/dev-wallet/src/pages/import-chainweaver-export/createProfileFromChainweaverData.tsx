@@ -5,6 +5,7 @@ import {
   networkRepository,
 } from '@/modules/network/network.repository';
 import { ChainId } from '@kadena/client';
+import { kadenaEntropyToMnemonic } from '@kadena/hd-wallet';
 import {
   accountRepository,
   IAccount,
@@ -46,6 +47,11 @@ export async function createProfileFromChainweaverData(
     }),
   );
 
+  const rootKeyBuffer = new TextEncoder().encode(rootKey);
+  console.log('rootKeyBuffer length', rootKeyBuffer.length);
+  const rootKeyHash = await crypto.subtle.digest('SHA-256', rootKeyBuffer);
+  const mnemonic = await kadenaEntropyToMnemonic(new Uint8Array(rootKeyHash));
+
   try {
     // process profile
     const profile = await createProfile(
@@ -55,7 +61,9 @@ export async function createProfileFromChainweaverData(
       defaultAccentColor,
       {
         authMode: 'PASSWORD',
+        rememberPassword: 'session',
       },
+      mnemonic,
     );
     console.log(`new profile with id ${profile.uuid}`);
     profileId = profile.uuid;
