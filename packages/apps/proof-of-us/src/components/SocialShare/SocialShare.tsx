@@ -82,6 +82,7 @@ export const SocialShare: FC<IProps> = ({ data, tokenId }) => {
   const handleClick = async (): Promise<void> => {
     if (
       navigator &&
+      navigator.maxTouchPoints > 0 &&
       navigator.canShare &&
       (navigator.canShare() || !navigator.canShare())
     ) {
