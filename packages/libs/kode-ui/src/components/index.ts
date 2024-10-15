@@ -132,7 +132,9 @@ export type { IGradientTextProps } from './Typography';
 
 export {
   ContextMenu,
+  ContextMenuDivider,
   ContextMenuItem,
+  IContextMenuDividerProps,
   IContextMenuItemProps,
   IContextMenuProps,
 } from './ContextMenu';

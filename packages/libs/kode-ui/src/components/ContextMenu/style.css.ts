@@ -65,3 +65,25 @@ export const underlayClass = style({
   position: 'fixed',
   inset: 0,
 });
+
+export const menuDividerTextClass = style([
+  atoms({
+    paddingBlock: 'sm',
+  }),
+  {
+    opacity: '.4',
+  },
+]);
+
+export const menuDividerClass = style([
+  atoms({
+    flex: 1,
+    borderStyle: 'solid',
+  }),
+  {
+    height: '0px',
+    borderWidth: 0,
+    borderBlockEndWidth: '1px',
+    borderColor: token('color.neutral.n20@alpha80'),
+  },
+]);

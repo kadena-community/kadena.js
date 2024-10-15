@@ -20,7 +20,7 @@ export const selectorClassWrapper = style([
   responsiveStyle({
     md: {
       paddingInlineStart: token('spacing.md'),
-      borderWidth: token('border.hairline'),
+      borderWidth: '1px',
     },
   }),
 ]);
@@ -34,7 +34,7 @@ export const selectorClass = style([
     borderStyle: 'solid',
     borderWidth: 0,
     borderColor: token('color.border.base.subtle'),
-    borderInlineEndWidth: token('border.hairline'),
+    borderInlineEndWidth: '1px',
   },
 ]);
 
