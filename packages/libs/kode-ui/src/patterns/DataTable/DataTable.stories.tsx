@@ -1,11 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { onLayer2 } from '../../storyDecorators';
 import { MediaContextProvider } from './../../components';
 import type { IDataTableProps } from './DataTable';
 import { DataTable } from './DataTable';
 
 const meta: Meta<IDataTableProps> = {
   title: 'Patterns/DataTable',
+  decorators: [onLayer2],
   parameters: {
     status: { type: 'stable' },
     docs: {
@@ -15,7 +17,11 @@ const meta: Meta<IDataTableProps> = {
       },
     },
   },
-  argTypes: {},
+  argTypes: {
+    isLoading: {
+      type: 'boolean',
+    },
+  },
 };
 
 export default meta;
@@ -23,8 +29,10 @@ type Story = StoryObj<IDataTableProps>;
 
 export const Primary: Story = {
   name: 'DataTable Pattern',
-  args: {},
-  render: ({}) => {
+  args: {
+    isLoading: false,
+  },
+  render: ({ isLoading }) => {
     const data = [
       {
         node: {
@@ -35,10 +43,29 @@ export const Primary: Story = {
           },
         },
       },
+      {
+        node: {
+          requestKey: 'key2',
+          parameters: 'param2',
+          block: {
+            height: 11,
+          },
+        },
+      },
+      {
+        node: {
+          requestKey: 'key3',
+          parameters: 'param3',
+          block: {
+            height: 12,
+          },
+        },
+      },
     ];
     return (
       <MediaContextProvider>
         <DataTable
+          isLoading={isLoading}
           fields={[
             {
               label: 'Height',
