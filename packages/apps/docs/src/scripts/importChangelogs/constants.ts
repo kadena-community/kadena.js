@@ -20,12 +20,11 @@ export const REPOS: IRepo[] = [
   {
     name: 'Spirekey SDK',
     slug: 'spirekey',
-    repo: 'https://github.com/kadena-community/kadena.js.git',
-    directory: '/packages/apps/docs',
-    fileName: 'TEMPCHANGELOG.md',
-    owner: 'kadena-io',
-    repoName: 'pact',
-    repoBranch: '/chore/docs/spirekeyssdk_changelog',
+    repo: 'https://github.com/kadena-community/spirekey.git',
+    directory: '/sdk',
+    fileName: 'CHANGELOG.md',
+    owner: 'kadena-community',
+    repoName: 'spirekey',
   },
   {
     name: 'Pact 4',
@@ -34,7 +33,7 @@ export const REPOS: IRepo[] = [
     directory: '/',
     fileName: 'CHANGELOG.md',
     owner: 'kadena-io',
-    repoName: 'kadena.js',
+    repoName: 'pact',
   },
   {
     name: 'Marmalade V2',
