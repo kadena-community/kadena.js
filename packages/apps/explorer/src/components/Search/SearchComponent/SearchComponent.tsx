@@ -96,8 +96,7 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({
   const handleSearchValueChange = (
     e: React.KeyboardEvent<HTMLInputElement>,
   ): void => {
-    const value = e.currentTarget.value;
-
+    const value = e.currentTarget.value.trim();
     if (!value) {
       setSearchOption(null);
       setInnerSearchOption(null);
