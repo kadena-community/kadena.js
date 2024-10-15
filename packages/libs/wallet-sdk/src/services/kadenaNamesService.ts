@@ -27,7 +27,7 @@ const client = ({
     `${networkHost}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
   );
 
-async function kdnResolve(
+async function kdnResolver(
   identifier: string,
   networkId: string,
   networkHost: string,
@@ -60,20 +60,20 @@ async function kdnResolve(
   }
 }
 
-export async function kdnResolveNameToAddress(
+export async function nameToAddress(
   name: string,
   networkId: string,
   networkHost: string,
 ): Promise<string | undefined> {
-  return kdnResolve(name, networkId, networkHost, 'address');
+  return kdnResolver(name, networkId, networkHost, 'address');
 }
 
-export async function kdnResolveAddressToName(
+export async function addressToName(
   address: string,
   networkId: string,
   networkHost: string,
 ): Promise<string | undefined> {
-  return kdnResolve(address, networkId, networkHost, 'name');
+  return kdnResolver(address, networkId, networkHost, 'name');
 }
 
 function parseChainResponse<T>(response: ICommandResult, subject: string): T {

@@ -1,11 +1,12 @@
+// eslint-disable-next-line @rushstack/no-new-null
 import { createClient, createTransaction } from '@kadena/client';
 import {
   createCrossChainCommand,
   estimateGas,
-  getAccountDetails,
   simpleTransferCreateCommand,
   transferCreateCommand,
 } from '@kadena/client-utils';
+
 import type { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
 import * as v from 'valibot';
 import type { HostAddressGenerator } from './host.js';
@@ -25,10 +26,9 @@ import type {
 } from './interface.js';
 import type { ResponseResult } from './schema.js';
 import { responseSchema } from './schema.js';
-import {
-  kdnResolveAddressToName,
-  kdnResolveNameToAddress,
-} from './services/kdnChainResolver.js';
+
+import * as accountService from './services/accountService.js';
+import * as kadenaNamesService from './services/kadenaNamesService.js';
 
 class KadenaNames {
   private _sdk: WalletSDK;
@@ -40,45 +40,49 @@ class KadenaNames {
   public async nameToAddress(
     name: string,
     networkId: string,
-  ): Promise<string | undefined> {
+  ): Promise<string | null> {
     try {
       const host = this._sdk.hostUrlGenerator({
         networkId,
         chainId: '15',
       });
-      const result = await kdnResolveNameToAddress(name, networkId, host);
+      const result = await kadenaNamesService.nameToAddress(
+        name,
+        networkId,
+        host,
+      );
 
       if (result === undefined) {
         console.warn(`No address found for name: ${name}`);
+        return null;
       }
       return result;
     } catch (error) {
       console.error(`Error in name resolving action: ${error.message}`);
-      // we could also return new Error(`Error in resolving address: ${error.message}`);
-      // if we wish to always make the implementing applicatio naware of the error
-      // that has occured instead of logging and still returning undefined
-      return undefined;
+      throw new Error(`Error resolving address: ${error.message}`);
     }
   }
 
   public async addressToName(
     address: string,
     networkId: string,
-  ): Promise<string | undefined> {
+  ): Promise<string | null> {
     try {
       const host = this._sdk.hostUrlGenerator({ networkId, chainId: '15' });
-      const result = await kdnResolveAddressToName(address, networkId, host);
+      const result = await kadenaNamesService.addressToName(
+        address,
+        networkId,
+        host,
+      );
 
       if (result === undefined) {
         console.warn(`No address found for name: ${address}`);
+        return null;
       }
       return result;
     } catch (error) {
       console.error(`Error in name resolving action: ${error.message}`);
-      // we could also return new Error(`Error in resolving address: ${error.message}`);
-      // if we wish to always make the implementing applicatio naware of the error
-      // that has occured instead of logging and still returning undefined
-      return undefined;
+      throw new Error(`Error resolving address: ${error.message}`);
     }
   }
 }
@@ -284,47 +288,28 @@ export class WalletSDK implements IWalletSDK {
     return controller;
   }
 
-  /*
-  example
-  public async resolveAddressToName(
-    address: string,
-    networkId: string,
-  ): Promise<string | null > {
-    try {
-      const host = this._getHostUrl({ networkId, chainId: '15' });
-      const result = await kdnResolveAddressToName(address, networkId, host);
-
-      if (result === undefined) {
-        console.warn(`No address found for name: ${address}`);
-        return null;
-      }
-      return result;
-    } catch (error) {
-      console.error(`Error in name resolving action: ${error.message}`);
-      throw new Error(`Error resolving address: ${error.message}`);
-    }
-  }
-  */
-
   public async getAccountDetails(
     accountName: string,
     networkId: string,
     fungible: string,
     chainIds?: ChainId[],
-  ): Promise<IAccountDetails[] | undefined> {
-    const chains = await this._getChains(networkId, chainIds);
-    const results = await Promise.all(
-      chains.map(async (chainId) =>
-        getAccountDetails({
-          accountName,
-          networkId,
-          chainId,
-          tokenId: fungible,
-          host: this._getHostUrl({ networkId, chainId }),
-        }),
-      ),
-    );
-    return results;
+  ): Promise<IAccountDetails[]> {
+    try {
+      const chains = await this._getChains(networkId, chainIds);
+
+      const accountDetailsList = await accountService.getAccountDetails(
+        accountName,
+        networkId,
+        fungible,
+        chains,
+        this._getHostUrl,
+      );
+
+      return accountDetailsList;
+    } catch (error) {
+      console.error(`Error in fetching account details: ${error.message}`);
+      throw new Error(`Failed to get account details for ${accountName}`);
+    }
   }
 
   public async getChains(networkHost: string): Promise<IChain[]> {
