@@ -139,6 +139,7 @@ export const IsOpenWithDivider: Story = {
           placement={props.placement}
           trigger={<Button endVisual={<MonoMoreVert />} />}
         >
+          <ContextMenuDivider label="Top Section" />
           <ContextMenuItem onClick={() => alert('click')} label="menu item" />
           <ContextMenuItem onClick={() => alert('click 1')} {...props} />
           <ContextMenuDivider label="Section title" />

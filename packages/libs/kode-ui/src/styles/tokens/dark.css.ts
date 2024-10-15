@@ -188,6 +188,19 @@ export const darkThemeValues = {
         sticky: '100',
         toast: '10000',
       },
+      effect: {
+        shadow: {
+          level1: `4px 0.5rem ${tokens.kda.foundation.size.n2} 4px #000000`,
+          level2: `4rem 4rem ${tokens.kda.foundation.size.n2} 2rem #000000`,
+          level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
+        },
+      },
+      layout: {
+        content: {
+          minWidth: '33.75rem',
+          maxWidth: '42.5rem',
+        },
+      },
       color: {
         accent: {
           blue: tokens.kda.foundation.color.palette.blue.n50,
@@ -237,7 +250,7 @@ export const darkThemeValues = {
           overlay: {
             default: tokens.kda.foundation.color.neutral['n5@alpha95'],
             context: {
-              default: tokens.kda.foundation.color.neutral['n5@alpha80'],
+              default: tokens.kda.foundation.color.neutral['n5@alpha95'],
             },
             '@hover': tokens.kda.foundation.color.neutral.n5,
           },
@@ -1274,19 +1287,6 @@ export const darkThemeValues = {
             default: '#fec195',
             '@hover': '#fedec8',
           },
-        },
-      },
-      effect: {
-        shadow: {
-          level1: `4px 0.5rem ${tokens.kda.foundation.size.n2} 4px #000000`,
-          level2: `4rem 4rem ${tokens.kda.foundation.size.n2} 2rem #000000`,
-          level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
-        },
-      },
-      layout: {
-        content: {
-          minWidth: '33.75rem',
-          maxWidth: '42.5rem',
         },
       },
       icon: {

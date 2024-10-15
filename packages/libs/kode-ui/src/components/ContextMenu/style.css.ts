@@ -66,9 +66,14 @@ export const underlayClass = style({
   inset: 0,
 });
 
-export const menuDividerTextClass = style({
-  opacity: '.4',
-});
+export const menuDividerTextClass = style([
+  atoms({
+    paddingBlock: 'sm',
+  }),
+  {
+    opacity: '.4',
+  },
+]);
 
 export const menuDividerClass = style([
   atoms({
@@ -76,7 +81,7 @@ export const menuDividerClass = style([
     borderStyle: 'solid',
   }),
   {
-    height: '1px',
+    height: '0px',
     borderWidth: 0,
     borderBlockEndWidth: '1px',
     borderColor: token('color.neutral.n20@alpha80'),

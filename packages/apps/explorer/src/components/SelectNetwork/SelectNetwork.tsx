@@ -9,6 +9,7 @@ import type { IContextMenuProps } from '@kadena/kode-ui';
 import {
   Button,
   ContextMenu,
+  ContextMenuDivider,
   ContextMenuItem,
   Stack,
   Text,
@@ -58,7 +59,6 @@ export const SelectNetwork: FC<IProps> = ({ placement = 'bottom end' }) => {
             />
           }
         >
-          <ContextMenuItem label="Networks" />
           {networks.map((network) => (
             <ContextMenuItem
               aria-label={network.label}
@@ -72,7 +72,7 @@ export const SelectNetwork: FC<IProps> = ({ placement = 'bottom end' }) => {
             endVisual={<MonoSettings />}
             onClick={handlePress}
           />
-          <ContextMenuItem label="Changelogs" />
+          <ContextMenuDivider label="Changelogs" />
           <ContextMenuItem
             label="Changelog GraphQL"
             endVisual={<MonoOpenInNew />}
