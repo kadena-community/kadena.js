@@ -1,7 +1,10 @@
 import { details } from '@kadena/client-utils/coin';
 import type { ChainId } from '@kadena/types';
-import type { HostAddressGenerator } from '../host.js';
-import type { IAccountDetails, IAccountDetailsResult } from '../interface.js';
+import type { HostAddressGenerator } from '../sdk/host.js';
+import type {
+  IAccountDetails,
+  IAccountDetailsResult,
+} from '../sdk/interface.js';
 import { notEmpty } from '../utils/typeUtils.js';
 
 export async function getAccountDetails(

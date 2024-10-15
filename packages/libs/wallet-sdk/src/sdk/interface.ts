@@ -1,4 +1,3 @@
-/* eslint-disable @rushstack/no-new-null */
 import type { ChainId, ICommand, IUnsignedCommand } from '@kadena/client';
 import type {
   createCrossChainCommand,
@@ -28,13 +27,13 @@ interface ICrossChainTransfer extends IBaseTransfer {
     success: boolean;
   };
 }
-export interface EthvmDevTokenInfo {
-  current_price?: number;
-  max_supply?: number;
-  total_supply?: number;
-  circulating_supply?: number;
-  low_24h?: number;
-  high_24h?: number;
+export interface IEthvmDevTokenInfo {
+  currentPrice?: number;
+  maxSupply?: number;
+  totalSupply?: number;
+  circulatingSupply?: number;
+  low24h?: number;
+  high24h?: number;
 }
 
 export interface IChain {
@@ -79,6 +78,7 @@ export interface ITransactionDescriptor {
   networkId: string;
 }
 
+/** @deprecated should just be defined in the WalletSDK class */
 export interface IWalletSDK {
   /** create transfer that only accepts `k:` accounts */
   createSimpleTransfer(transfer: SimpleCreateTransfer): IUnsignedCommand;
@@ -176,7 +176,7 @@ export interface IWalletSDK {
   // 1.5 get chains
   // https://api.chainweb.com/info
   // https://api.testnet.chainweb.com/info
-  getNetworkInfo(networkHost: string): Promise<{}>;
+  getNetworkInfo(networkHost: string): Promise<unknown>;
 
   // 1.3
   /** returns gasLimit */
@@ -193,7 +193,7 @@ export interface IWalletSDK {
     // format `get<platform><fungible><currency>Price()`
     getEthvmDevTokenInfo<T extends string>(
       tokens: T[],
-    ): Promise<Record<T, EthvmDevTokenInfo | undefined>>;
+    ): Promise<Record<T, IEthvmDevTokenInfo | undefined>>;
     // TODO: implement kdswap prices which includes other fungibles
   };
 }

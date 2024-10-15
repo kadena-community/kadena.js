@@ -5,8 +5,8 @@ module.exports = {
   extends: ['@kadena-dev/eslint-config/profile/lib'],
   parserOptions: { tsconfigRootDir: __dirname },
   rules: {
-    '@typescript-eslint/explicit-function-return-type': 'off',
-    '@rushstack/typedef-var': 'off',
+    '@rushstack/no-new-null': 'off',
+    'no-console': 'warn',
   },
   ignorePatterns: ['vitest.*.ts'],
 };

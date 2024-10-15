@@ -14,22 +14,17 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": {
-        "browser": "./lib/esm/browser.js",
-        "default": "./lib/esm/index.js"
-      },
-      "require": {
-        "browser": "./lib/cjs/browser.js",
-        "default": "./lib/cjs/index.js"
-      },
-      "types": "./dist/wallet-sdk.d.ts"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
     }
   },
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
   "files": [
-    "lib"
+    "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.cjs.json && tsc && api-extractor run && cpy ./src/chainweaver/vendor/**/* ./lib/cjs/chainweaver/vendor/ && cpy ./src/chainweaver/vendor/**/* ./lib/esm/chainweaver/vendor/ && cp ./package.cjs.json ./lib/cjs/package.json",
+    "build": "unbuild",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
@@ -63,6 +58,7 @@
     "prettier": "~3.2.5",
     "ts-node": "~10.9.2",
     "typescript": "5.4.5",
+    "unbuild": "^2.0.0",
     "vitest": "^1.6.0"
   }
 }
