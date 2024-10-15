@@ -158,10 +158,6 @@ export const ScanAttendanceEvent: FC<IProps> = ({
 
             <Stack gap="md">
               <Button>
-                <Link href="/user">Dashboard</Link>
-              </Button>
-
-              <Button>
                 <Link href={`/user/proof-of-us/t/${tokenId}`}>
                   Go to Proof{' '}
                 </Link>
