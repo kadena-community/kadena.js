@@ -106,7 +106,6 @@ export const EventFilter: FC<IProps> = ({ onSubmit }) => {
     return v[1];
   });
 
-  console.log({ errors, values });
   return (
     <>
       <Heading as="h5">Filters</Heading>

@@ -138,3 +138,5 @@ export {
   IContextMenuItemProps,
   IContextMenuProps,
 } from './ContextMenu';
+
+export { Media, MediaContextProvider } from './Media';
