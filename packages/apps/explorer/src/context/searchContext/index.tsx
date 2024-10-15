@@ -56,7 +56,7 @@ const SearchContextProvider = (props: {
       case router.asPath.startsWith('/account'):
         setSearchOption(SEARCHOPTIONS.ACCOUNT);
         setOldSearchOption(SEARCHOPTIONS.ACCOUNT);
-        setSearchQuery((router.query.aacountName as string).trim());
+        setSearchQuery((router.query.accountName as string).trim());
         setOldSearchQuery(router.query.accountName as string);
         break;
       case router.asPath.startsWith('/block'):
