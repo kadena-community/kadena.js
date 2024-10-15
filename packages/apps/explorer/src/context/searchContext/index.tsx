@@ -50,31 +50,31 @@ const SearchContextProvider = (props: {
       case router.asPath.startsWith('/event'):
         setSearchOption(SEARCHOPTIONS.EVENT);
         setOldSearchOption(SEARCHOPTIONS.EVENT);
-        setSearchQuery(router.query.eventname as string);
+        setSearchQuery((router.query.eventname as string).trim());
         setOldSearchQuery(router.query.eventname as string);
         break;
       case router.asPath.startsWith('/account'):
         setSearchOption(SEARCHOPTIONS.ACCOUNT);
         setOldSearchOption(SEARCHOPTIONS.ACCOUNT);
-        setSearchQuery(router.query.accountName as string);
+        setSearchQuery((router.query.accountName as string).trim());
         setOldSearchQuery(router.query.accountName as string);
         break;
       case router.asPath.startsWith('/block'):
         setSearchOption(SEARCHOPTIONS.BLOCKHASH);
         setOldSearchOption(SEARCHOPTIONS.BLOCKHASH);
-        setSearchQuery(router.query.hash as string);
+        setSearchQuery((router.query.hash as string).trim());
         setOldSearchQuery(router.query.hash as string);
         break;
       case router.asPath.startsWith('/height'):
         setSearchOption(SEARCHOPTIONS.BLOCKHEIGHT);
         setOldSearchOption(SEARCHOPTIONS.BLOCKHEIGHT);
-        setSearchQuery(router.query.height as string);
+        setSearchQuery((router.query.height as string).trim());
         setOldSearchQuery(router.query.height as string);
         break;
       case router.asPath.startsWith('/transaction'):
         setSearchOption(SEARCHOPTIONS.REQUESTKEY);
         setOldSearchOption(SEARCHOPTIONS.REQUESTKEY);
-        setSearchQuery(router.query.requestKey as string);
+        setSearchQuery((router.query.requestKey as string).trim());
         setOldSearchQuery(router.query.requestKey as string);
         break;
       default:
