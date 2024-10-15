@@ -1,5 +1,14 @@
 # @kadena/dev-wallet
 
+## 0.4.3
+
+### Patch Changes
+
+- Updated dependencies \[b1e488c]
+- Updated dependencies \[7d063d6]
+  - @kadena/hd-wallet\@0.5.0
+  - @kadena/kode-ui\@0.18.0
+
 ## 0.4.2
 
 ### Patch Changes

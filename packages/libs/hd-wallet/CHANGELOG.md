@@ -1,5 +1,12 @@
 # @kadena/hd-wallet
 
+## 0.5.0
+
+### Minor Changes
+
+- b1e488c: Export utility functions for legacy chainweaver:
+  `legacyKadenaChangePassword` and `legacyKadenaGenKeypair`
+
 ## 0.4.2
 
 ### Patch Changes
