@@ -18,6 +18,15 @@ export enum VersionPosition {
 // TODO: we should add this to the config.yaml
 export const REPOS: IRepo[] = [
   {
+    name: 'Spirekey SDK',
+    slug: 'spirekey',
+    repo: 'https://github.com/kadena-community/spirekey.git',
+    directory: '/sdk',
+    fileName: 'CHANGELOG.md',
+    owner: 'kadena-community',
+    repoName: 'spirekey',
+  },
+  {
     name: 'Pact 4',
     slug: 'pact',
     repo: 'https://github.com/kadena-io/pact.git',
