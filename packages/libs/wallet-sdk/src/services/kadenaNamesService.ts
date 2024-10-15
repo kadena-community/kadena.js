@@ -44,7 +44,7 @@ async function kdnResolver(
         : identifier.trim();
 
     const transaction = Pact.builder
-      .execution(Pact.modules[module][method](param))
+      .execution((Pact as any).modules[module][method](param))
       .setMeta({ chainId })
       .setNetworkId(networkId)
       .createTransaction();

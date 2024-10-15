@@ -32,6 +32,4 @@ or
 yarn add @kadena/wallet-sdk
 ```
 
-
-
 [1]: ./docs/decisions/
