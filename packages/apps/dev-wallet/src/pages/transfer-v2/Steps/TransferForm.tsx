@@ -648,7 +648,7 @@ export function TransferForm({
               {!availableChains.length && (
                 <Notification role="alert" intent="negative">
                   the receiver is the same as sender, therefor you can not use
-                  automatic chian selection, please set the both chains manually
+                  automatic chain selection, please set the both chains manually
                 </Notification>
               )}
               {rec.discoveredAccounts.length > 1 && (

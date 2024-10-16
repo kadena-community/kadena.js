@@ -42,6 +42,7 @@ export function Signers({
     () => JSON.parse(transaction.cmd),
     [transaction.cmd],
   );
+
   return (
     <Stack flexDirection={'column'} gap={'sm'}>
       <Heading variant="h4">Signers</Heading>

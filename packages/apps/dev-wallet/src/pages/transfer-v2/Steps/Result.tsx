@@ -80,7 +80,7 @@ export function Result({
                 <Stack key={tx.uuid} gap={'lg'}>
                   <Text>tx: {shorten(tx.hash)}</Text>
                   <Text>{tx.continuation?.done ? 'success' : 'failure'}</Text>
-                  <Text>Source: chian {data.source}</Text>
+                  <Text>Source: chain {data.source}</Text>
                   <Text>target: chain {data.target}</Text>
                   <Text>amount: {data.amount}</Text>
                 </Stack>

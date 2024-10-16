@@ -16,10 +16,11 @@ export function SubmittedStatus({
 }: {
   transaction: ITransaction;
 }) {
+  console.log(transaction);
   if (!transaction.request?.requestKey) {
     return <Text>Request Key not found</Text>;
   }
-  if (transaction.preflight.result.status !== 'success') {
+  if (transaction.preflight?.result.status !== 'success') {
     return <Text>Preflight failed</Text>;
   }
   const status = transaction.status;
@@ -34,7 +35,7 @@ export function SubmittedStatus({
         <Heading variant="h6">Preflight Result</Heading>
         <Value className={codeClass}>
           <pre>
-            {JSON.stringify(transaction.preflight.result.data, null, 2)}
+            {JSON.stringify(transaction.preflight?.result.data, null, 2)}
           </pre>
         </Value>
       </Stack>

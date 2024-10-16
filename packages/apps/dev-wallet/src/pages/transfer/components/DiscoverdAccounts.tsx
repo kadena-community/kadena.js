@@ -20,7 +20,7 @@ export const DiscoverdAccounts: FC<{
       <Stack flexDirection={'column'} gap={'sm'}>
         <Text>
           There are {accounts.length} accounts associated with the same address
-          on the Blockchian. Please select the account you want to use.
+          on the Blockchain. Please select the account you want to use.
         </Text>
         <Text>Address: {accounts[0].address}</Text>
         <Stack flexDirection={'column'}>
