@@ -1,34 +1,34 @@
-import { MonoArrowOutward } from '@kadena/kode-icons';
-import { Stack, Text } from '@kadena/kode-ui';
+import { MonoArrowOutward } from '@kadena/kode-icons/system';
 import type { FC } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import {
   dataFieldClass,
   linkClass,
   linkIconClass,
   linkWrapperClass,
 } from '../styles.css';
+import { Stack, Text } from './../../../components';
 
-interface IProps {
+export interface IProps {
   value: string;
 }
 
-interface IOptions {
-  appendUrl: string;
+export interface IOptions {
+  url: string;
+  Wrapper?: React.ReactElement;
 }
 
-export const FormatLink = ({ appendUrl }: IOptions): FC<IProps> => {
+export const FormatLink = ({ url }: IOptions): FC<IProps> => {
   const Component: FC<IProps> = ({ value }) => (
-    <Stack alignItems="center" className={linkWrapperClass}>
-      <Link to={`${appendUrl}/${value}`} className={linkClass}>
+    <a href={url} className={linkClass}>
+      <Stack alignItems="center" className={linkWrapperClass}>
         <Text variant="code" className={dataFieldClass}>
           {value}
         </Text>
-      </Link>
-      <Link to={`${appendUrl}/${value}`} className={value}>
+
         <MonoArrowOutward className={linkIconClass} />
-      </Link>
-    </Stack>
+      </Stack>
+    </a>
   );
 
   return Component;

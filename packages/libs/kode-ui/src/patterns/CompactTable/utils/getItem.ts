@@ -4,6 +4,7 @@ export interface IFieldCellProps {
   field: ITableField;
   item: any;
   isLoading?: boolean;
+  isMobile?: boolean;
 }
 
 /**

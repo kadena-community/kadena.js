@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { maskValue } from './../../../components';
 
-interface IProps {
+export interface IProps {
   value: string;
 }
 

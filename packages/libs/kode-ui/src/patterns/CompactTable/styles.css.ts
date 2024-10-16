@@ -33,6 +33,7 @@ export const dataFieldLinkClass = style({
 });
 
 export const linkClass = style({
+  width: '100%',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
@@ -93,3 +94,9 @@ export const alignVariants = recipe({
 export const fullWidthClass = style({
   width: '100%',
 });
+
+export const mobileFieldClass = style([
+  {
+    minWidth: '-webkit-fill-available',
+  },
+]);

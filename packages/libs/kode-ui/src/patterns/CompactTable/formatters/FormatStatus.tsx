@@ -1,7 +1,8 @@
 import { MonoCheck, MonoClear } from '@kadena/kode-icons/system';
 import type { FC } from 'react';
+import React from 'react';
 
-interface IProps {
+export interface IProps {
   value: string;
 }
 

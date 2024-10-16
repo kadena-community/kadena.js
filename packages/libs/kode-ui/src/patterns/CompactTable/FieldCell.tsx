@@ -2,13 +2,14 @@ import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
 import { Text } from './../../components';
+import { FormatDefault } from './Formatters/FormatDefault';
 import { ValueLoader } from './LoadingSkeleton/ValueLoader/ValueLoader';
 import {
   alignVariants,
   dataFieldClass,
   dataFieldMultipleIconsClass,
+  mobileFieldClass,
 } from './styles.css';
-import { FormatDefault } from './utils/formatDefault';
 import type { IFieldCellProps } from './utils/getItem';
 import { getItem } from './utils/getItem';
 
@@ -16,6 +17,7 @@ export const FieldCell: FC<IFieldCellProps> = ({
   field,
   item,
   isLoading = false,
+  isMobile = false,
 }) => {
   if (
     typeof field.key === 'string' &&
@@ -30,6 +32,9 @@ export const FieldCell: FC<IFieldCellProps> = ({
         className={classNames(
           dataFieldClass,
           alignVariants({ align: field.align ?? 'start' }),
+          {
+            [mobileFieldClass]: isMobile,
+          },
         )}
       >
         <ValueLoader isLoading={isLoading} variant={field.loaderVariant}>
@@ -49,6 +54,9 @@ export const FieldCell: FC<IFieldCellProps> = ({
           dataFieldClass,
           dataFieldMultipleIconsClass,
           alignVariants({ align: field.align ?? 'start' }),
+          {
+            [mobileFieldClass]: isMobile,
+          },
         )}
       >
         {field.key.map((key, idx) => {

@@ -1,6 +1,7 @@
 import type { FC } from 'react';
+import React from 'react';
 
-interface IProps {
+export interface IProps {
   value: string;
 }
 
