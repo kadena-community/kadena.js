@@ -16,7 +16,6 @@ export function SubmittedStatus({
 }: {
   transaction: ITransaction;
 }) {
-  console.log(transaction);
   if (!transaction.request?.requestKey) {
     return <Text>Request Key not found</Text>;
   }
