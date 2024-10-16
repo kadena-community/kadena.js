@@ -1,0 +1,25 @@
+"""
+Project file that describes the structure of a pact project
+`pact-project.json`
+"""
+type PactConfig {
+  name: String
+	description: String
+
+  """
+  optional: sources if the pact smart contracts are external
+  Used to map the content of "source" to a "pact-project"
+  """
+  source: String
+  dependencies: [ConfigPointerString!]
+  dependencyTree: [SmartContract!]
+}
+
+type ConfigPointerString {
+  value: String
+}
+
+type SmartContract {
+  path: String!
+  dependencies: [SmartContract]
+}
