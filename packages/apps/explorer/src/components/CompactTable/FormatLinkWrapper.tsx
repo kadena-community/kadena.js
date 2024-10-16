@@ -1,7 +1,9 @@
 import { Link } from '@/components/Routing/Link';
-import type { ICompactTableFormatterProps } from '@kadena/kode-ui/patterns';
+import type {
+  ICompactTableFormatterLinkProps,
+  ICompactTableFormatterProps,
+} from '@kadena/kode-ui/patterns';
 import { CompactTableFormatters } from '@kadena/kode-ui/patterns';
-import type { ICompactTableFormatterLinkProps } from '@kadena/kode-ui/src/patterns';
 import type { FC } from 'react';
 import React from 'react';
 
