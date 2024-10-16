@@ -13,7 +13,7 @@ import { useSearch } from '@/context/searchContext';
 import { block } from '@/graphql/queries/block.graph';
 import { useRouter } from '@/hooks/router';
 import { truncateValues } from '@/services/format';
-import { DataTable } from '@kadena/kode-ui/patterns';
+import { CompactTable } from '@kadena/kode-ui/patterns';
 
 import React, { useEffect, useState } from 'react';
 
@@ -86,7 +86,7 @@ const Height: React.FC = () => {
       </LayoutHeader>
 
       <LayoutBody>
-        <DataTable
+        <CompactTable
           isLoading={isLoading}
           fields={[
             {

@@ -1,4 +1,4 @@
-import { Media } from '@/components/Layout/media';
+import { Media } from '@kadena/kode-ui';
 import React from 'react';
 import type { ITableField } from '../LoadingSkeleton/types';
 import { fullWidthClass } from '../globalstyles.css';

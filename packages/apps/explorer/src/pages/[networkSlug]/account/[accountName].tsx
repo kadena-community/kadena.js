@@ -20,7 +20,7 @@ import { useSearch } from '@/context/searchContext';
 import { account } from '@/graphql/queries/account.graph';
 import { useRouter } from '@/hooks/router';
 import { Badge, TabItem, Tabs } from '@kadena/kode-ui';
-import { DataTable } from '@kadena/kode-ui/patterns';
+import { CompactTable } from '@kadena/kode-ui/patterns';
 import type { FC, Key } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
 
@@ -153,7 +153,7 @@ const Account: FC = () => {
             }
             key="Keys"
           >
-            <DataTable
+            <CompactTable
               isLoading={isLoading}
               label="Keys table"
               fields={[

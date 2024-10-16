@@ -8,7 +8,7 @@ import { Layout } from '@/components/Layout/Layout';
 import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
 import { useEvents } from '@/hooks/events';
 import { TabItem, Tabs } from '@kadena/kode-ui';
-import { DataTable } from '@kadena/kode-ui/patterns';
+import { CompactTable } from '@kadena/kode-ui/patterns';
 import React from 'react';
 
 const Height: React.FC = () => {
@@ -32,7 +32,7 @@ const Height: React.FC = () => {
               {chainData.data.edges.length === 0 ? (
                 <NoSearchResults />
               ) : (
-                <DataTable
+                <CompactTable
                   isLoading={isLoading}
                   fields={[
                     {

@@ -17,7 +17,6 @@
     "verify": "tsc --noEmit"
   },
   "dependencies": {
-    "@artsy/fresnel": "^7.1.4",
     "@hookform/resolvers": "^3.2.0",
     "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/client": "workspace:*",

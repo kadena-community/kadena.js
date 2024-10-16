@@ -7,10 +7,9 @@ import {
   MonoLogoX,
   MonoMoreVert,
 } from '@kadena/kode-icons/system';
-import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
+import { Button, Heading, Media, Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useState } from 'react';
-import { Media } from '../Layout/media';
 import { Logo } from '../Logo/Logo';
 import { FooterColumn } from './FooterColumn';
 import {

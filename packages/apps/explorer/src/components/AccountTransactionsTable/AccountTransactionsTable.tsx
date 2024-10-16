@@ -4,14 +4,16 @@ import type {
 } from '@/__generated__/sdk';
 import { useAccountTransactionsQuery } from '@/__generated__/sdk';
 import { useQueryContext } from '@/context/queryContext';
-import { usePagination } from '@/hooks/usePagination';
 import { graphqlIdFor } from '@/utils/graphqlIdFor';
 import { Heading, Stack } from '@kadena/kode-ui';
-import { DataTable } from '@kadena/kode-ui/patterns';
+import {
+  CompactTable,
+  CompactTableFormatters,
+  usePagination,
+} from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import { FormatJsonParse, FormatLink } from '../CompactTable/utils/formatLink';
-import { FormatStatus } from '../CompactTable/utils/formatStatus';
 import { useToast } from '../Toast/ToastContext/ToastContext';
 import { accountTransactions } from './AccountTransactions.graph';
 import { loadingData } from './loadingDataAccountTransactionsquery';
@@ -74,7 +76,7 @@ export const AccountTransactionsTable: FC<{ accountName: string }> = ({
     );
 
   return (
-    <DataTable
+    <CompactTable
       setPage={handlePageChange}
       pageSize={pageSize}
       pageInfo={innerData.node!.transactions.pageInfo}
@@ -87,7 +89,7 @@ export const AccountTransactionsTable: FC<{ accountName: string }> = ({
           key: 'result.goodResult',
           variant: 'code',
           width: '10%',
-          render: FormatStatus(),
+          render: CompactTableFormatters.FormatStatus(),
         },
         {
           label: 'Sender',

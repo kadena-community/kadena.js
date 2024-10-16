@@ -11,12 +11,12 @@ import {
   ContextMenu,
   ContextMenuDivider,
   ContextMenuItem,
+  Media,
   Stack,
   Text,
 } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useState } from 'react';
-import { Media } from '../Layout/media';
 import { ConfigNetwork } from './ConfigNetwork';
 import {
   selectorButtonClass,

@@ -4,7 +4,7 @@ import { useQueryContext } from '@/context/queryContext';
 import { usePagination } from '@/hooks/usePagination';
 import { graphqlIdFor } from '@/utils/graphqlIdFor';
 import { Heading, Stack } from '@kadena/kode-ui';
-import { DataTable } from '@kadena/kode-ui/patterns';
+import { CompactTable } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import { FormatAmount } from '../CompactTable/utils/formatAmount';
@@ -70,7 +70,7 @@ export const AccountTransfersTable: FC<{ accountName: string }> = ({
     );
 
   return (
-    <DataTable
+    <CompactTable
       setPage={handlePageChange}
       pageSize={pageSize}
       pageInfo={innerData.node!.transfers.pageInfo}
