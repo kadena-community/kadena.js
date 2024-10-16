@@ -93,6 +93,8 @@ export {
   KadenaLogo,
   Link,
   MaskedValue,
+  Media,
+  MediaContextProvider,
   NavHeader,
   NavHeaderButton,
   NavHeaderButtonLink,

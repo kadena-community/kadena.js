@@ -1,9 +1,8 @@
 import { Link } from '@/components/Routing/Link';
-import { Stack } from '@kadena/kode-ui';
+import { Media, Stack } from '@kadena/kode-ui';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 import { GraphQLQueryDialog } from '../GraphqlQueryDialog/GraphqlQueryDialog';
-import { Media } from '../Layout/media';
 import { Logo } from '../Logo/Logo';
 import { MobileLogo } from '../Logo/MobileLogo';
 import { SelectNetwork } from '../SelectNetwork/SelectNetwork';

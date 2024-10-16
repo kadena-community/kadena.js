@@ -1,6 +1,6 @@
 import { Footer } from '@/components/Footer/Footer';
 import { Header } from '@/components/Header/Header';
-import { Stack } from '@kadena/kode-ui';
+import { Media, Stack } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
@@ -16,7 +16,6 @@ import {
   searchWrapperClass,
   searchWrapperVariants,
 } from './components/styles.css';
-import { Media } from './media';
 
 interface IProps {
   children?: ReactNode;

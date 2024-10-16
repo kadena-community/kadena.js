@@ -7,6 +7,7 @@ const localConfig = defineConfig({
   test: {
     setupFiles: ['vitest.setup.ts'],
     environment: 'happy-dom',
+    globals: true,
     coverage: {
       provider: 'v8',
       include: ['**/src/**.{test,spec}.{ts,tsx}'],

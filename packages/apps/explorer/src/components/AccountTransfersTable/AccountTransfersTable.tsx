@@ -1,14 +1,16 @@
 import type { AccountTransfersQuery, Transfer } from '@/__generated__/sdk';
 import { useAccountTransfersQuery } from '@/__generated__/sdk';
 import { useQueryContext } from '@/context/queryContext';
-import { usePagination } from '@/hooks/usePagination';
 import { graphqlIdFor } from '@/utils/graphqlIdFor';
 import { Heading, Stack } from '@kadena/kode-ui';
+import {
+  CompactTable,
+  CompactTableFormatters,
+  usePagination,
+} from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
-import { CompactTable } from '../CompactTable/CompactTable';
-import { FormatAmount } from '../CompactTable/utils/formatAmount';
-import { FormatLink } from '../CompactTable/utils/formatLink';
+import { FormatLinkWrapper } from '../CompactTable/FormatLinkWrapper';
 import { useToast } from '../Toast/ToastContext/ToastContext';
 import { accountTransfers } from './AccountTransfers.graph';
 import { loadingData } from './loadingDataAccountTransfersquery';
@@ -93,19 +95,19 @@ export const AccountTransfersTable: FC<{ accountName: string }> = ({
           label: 'RequestKey',
           key: 'requestKey',
           width: '20%',
-          render: FormatLink({ appendUrl: '/transaction' }),
+          render: FormatLinkWrapper({ url: '/transaction/:value' }),
         },
         {
           label: 'Sender',
           key: 'senderAccount',
           width: '20%',
-          render: FormatLink({ appendUrl: '/account' }),
+          render: FormatLinkWrapper({ url: '/account/:value' }),
         },
         {
           label: 'Receiver',
           key: 'receiverAccount',
           width: '20%',
-          render: FormatLink({ appendUrl: '/account' }),
+          render: FormatLinkWrapper({ url: '/account/:value' }),
         },
         {
           label: 'Amount',
@@ -113,7 +115,7 @@ export const AccountTransfersTable: FC<{ accountName: string }> = ({
           variant: 'code',
           align: 'end',
           width: '20%',
-          render: FormatAmount(),
+          render: CompactTableFormatters.FormatAmount(),
         },
       ]}
       data={innerData.node?.transfers.edges.map(

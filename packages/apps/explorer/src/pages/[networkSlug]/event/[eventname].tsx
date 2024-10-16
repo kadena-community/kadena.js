@@ -1,5 +1,4 @@
-import { CompactTable } from '@/components/CompactTable/CompactTable';
-import { FormatLink } from '@/components/CompactTable/utils/formatLink';
+import { FormatLinkWrapper } from '@/components/CompactTable/FormatLinkWrapper';
 import { EventFilter } from '@/components/EventFilter/EventFilter';
 import { LayoutAside } from '@/components/Layout/components/LayoutAside';
 import { LayoutBody } from '@/components/Layout/components/LayoutBody';
@@ -9,6 +8,7 @@ import { Layout } from '@/components/Layout/Layout';
 import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
 import { useEvents } from '@/hooks/events';
 import { TabItem, Tabs } from '@kadena/kode-ui';
+import { CompactTable } from '@kadena/kode-ui/patterns';
 import React from 'react';
 
 const Height: React.FC = () => {
@@ -44,7 +44,7 @@ const Height: React.FC = () => {
                       label: 'RequestKey',
                       key: 'node.requestKey',
                       width: '40%',
-                      render: FormatLink({ appendUrl: '/transaction' }),
+                      render: FormatLinkWrapper({ url: '/transaction/:value' }),
                     },
                     {
                       label: 'Parameters',

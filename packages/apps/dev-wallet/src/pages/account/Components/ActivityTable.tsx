@@ -1,8 +1,7 @@
 import { noStyleLinkClass } from '@/Components/Accounts/style.css';
-import { CompactTable } from '@/Components/CompactTable/CompactTable';
-import { usePagination } from '@/Components/CompactTable/usePagination';
 import { IActivity } from '@/modules/activity/activity.repository';
 import { MonoOpenInNew } from '@kadena/kode-icons/system';
+import { CompactTable, usePagination } from '@kadena/kode-ui/patterns';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
