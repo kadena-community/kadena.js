@@ -22,15 +22,19 @@ export interface IProfile {
   name: string;
   networks: INetwork[];
   secretId: string;
+  securityPhraseId: string;
   accentColor: string;
-  options:
+  options: {
+    rememberPassword: 'never' | 'session' | 'short-time';
+  } & (
     | {
         authMode: 'PASSWORD';
       }
     | {
         authMode: 'WEB_AUTHN';
         webAuthnCredential: ArrayBuffer;
-      };
+      }
+  );
 }
 
 const createWalletRepository = ({

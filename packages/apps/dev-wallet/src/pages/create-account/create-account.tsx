@@ -9,7 +9,7 @@ import { WebAuthnService } from '@/modules/key-source/web-authn/webauthn.ts';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { KeySourceType } from '@/modules/wallet/wallet.repository.ts';
 import { createPrincipal } from '@kadena/client-utils/built-in';
-import { kadenaGenMnemonic } from '@kadena/hd-wallet';
+
 import {
   Button,
   Heading,
@@ -69,13 +69,7 @@ export function CreateAccount() {
     if (!password) {
       return;
     }
-    const mnemonic = kadenaGenMnemonic();
-    const { uuid } = await createHDWallet(
-      profile?.uuid,
-      type,
-      password,
-      mnemonic,
-    );
+    const { uuid } = await createHDWallet(profile?.uuid, type, password);
     setSelectedKeySources([...selectedKeySources, uuid]);
   };
 

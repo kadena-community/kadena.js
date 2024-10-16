@@ -34,14 +34,20 @@ export function ImportWallet({
       return;
     }
     try {
-      const profile = await createProfile(name, password, undefined, {
-        authMode: 'PASSWORD',
-      });
+      const profile = await createProfile(
+        name,
+        password,
+        undefined,
+        {
+          authMode: 'PASSWORD',
+          rememberPassword: 'session',
+        },
+        phrase,
+      );
       const keySource = await createHDWallet(
         profile.uuid,
         fromChainweaver ? 'HD-chainweaver' : 'HD-BIP44',
         password,
-        phrase,
       );
       setOrigin(`/account-discovery/${keySource.uuid}`);
       await unlockProfile(profile.uuid, password);

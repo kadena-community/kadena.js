@@ -38,3 +38,20 @@ export async function kadenaMnemonicToSeed<
 
   return kadenaEncrypt(password, seedBuffer, encode);
 }
+/**
+ * Reversible: Converts raw entropy in form of byte array to mnemonic string.
+ * @param entropy - byte array
+ * @returns - 12-24 words
+ * @public
+ * @example
+
+* const ent = new Uint8Array([
+*   0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f,
+*   0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f
+* ]);
+* entropyToMnemonic(ent, wordlist);
+* // 'legal winner thank year wave sausage worth useful legal winner thank yellow'
+
+**/
+export const kadenaEntropyToMnemonic = (entropy: Uint8Array) =>
+  bip39.entropyToMnemonic(entropy, wordlist);
