@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import React from 'react';
-import type { IDataTableProps } from '../DataTable';
+import type { ICompactTableProps } from '../CompactTable';
 import { alignVariants } from '../styles.css';
 import {
   Cell,
@@ -11,15 +11,15 @@ import {
   TableBody,
   TableHeader,
 } from './../../../components';
-import { FieldCell } from './FieldCell';
+import { FieldCell } from './../FieldCell';
 import { tableBorderClass, tableClass } from './styles.css';
 
 type IProps = Omit<
-  IDataTableProps,
+  ICompactTableProps,
   'pageInfo' | 'setPage' | 'pageSize' | 'totalCount'
 >;
 
-export const DataTableDesktop: FC<IProps> = ({
+export const CompactTableDesktop: FC<IProps> = ({
   data,
   fields,
   label = 'Table',

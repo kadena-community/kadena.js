@@ -4,7 +4,6 @@ import { AccountAside } from '@/components/AccountAside/AccountAside';
 import { AccountBalanceDistribution } from '@/components/AccountBalanceDistribution/AccountBalanceDistribution';
 import { AccountTransactionsTable } from '@/components/AccountTransactionsTable/AccountTransactionsTable';
 import { AccountTransfersTable } from '@/components/AccountTransfersTable/AccountTransfersTable';
-import { CompactTable } from '@/components/CompactTable/CompactTable';
 import { FormatAmount } from '@/components/CompactTable/utils/formatAmount';
 import { tabsWidthClass } from '@/components/globalstyles.css';
 import { LayoutAside } from '@/components/Layout/components/LayoutAside';
@@ -21,6 +20,7 @@ import { useSearch } from '@/context/searchContext';
 import { account } from '@/graphql/queries/account.graph';
 import { useRouter } from '@/hooks/router';
 import { Badge, TabItem, Tabs } from '@kadena/kode-ui';
+import { DataTable } from '@kadena/kode-ui/patterns';
 import type { FC, Key } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
 
@@ -153,7 +153,7 @@ const Account: FC = () => {
             }
             key="Keys"
           >
-            <CompactTable
+            <DataTable
               isLoading={isLoading}
               label="Keys table"
               fields={[

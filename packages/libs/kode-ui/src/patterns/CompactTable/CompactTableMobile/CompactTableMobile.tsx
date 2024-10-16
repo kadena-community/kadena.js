@@ -1,15 +1,15 @@
 import type { FC } from 'react';
 import React from 'react';
-import type { IDataTableProps } from '../DataTable';
-import { FieldCell } from '../DataTableDesktop/FieldCell';
+import type { ICompactTableProps } from '../CompactTable';
+import { FieldCell } from '../FieldCell';
 import { headerClass, rowClass, sectionClass } from './styles.css';
 
 type IProps = Omit<
-  IDataTableProps,
+  ICompactTableProps,
   'pageInfo' | 'setPage' | 'pageSize' | 'totalCount'
 >;
 
-export const DataTableMobile: FC<IProps> = ({
+export const CompactTableMobile: FC<IProps> = ({
   data,
   fields,
   isLoading = false,

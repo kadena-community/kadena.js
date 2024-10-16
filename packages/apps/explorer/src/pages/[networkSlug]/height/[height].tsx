@@ -1,7 +1,6 @@
 import type { BlocksFromHeightQuery } from '@/__generated__/sdk';
 import { useBlocksFromHeightQuery } from '@/__generated__/sdk';
 import { blockHeightLoading } from '@/components/BlockTable/loadingBlockHeightData';
-import { CompactTable } from '@/components/CompactTable/CompactTable';
 import { FormatLink } from '@/components/CompactTable/utils/formatLink';
 import { LayoutBody } from '@/components/Layout/components/LayoutBody';
 import { LayoutHeader } from '@/components/Layout/components/LayoutHeader';
@@ -14,6 +13,7 @@ import { useSearch } from '@/context/searchContext';
 import { block } from '@/graphql/queries/block.graph';
 import { useRouter } from '@/hooks/router';
 import { truncateValues } from '@/services/format';
+import { DataTable } from '@kadena/kode-ui/patterns';
 
 import React, { useEffect, useState } from 'react';
 
@@ -86,7 +86,7 @@ const Height: React.FC = () => {
       </LayoutHeader>
 
       <LayoutBody>
-        <CompactTable
+        <DataTable
           isLoading={isLoading}
           fields={[
             {

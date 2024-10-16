@@ -7,9 +7,9 @@ import { useQueryContext } from '@/context/queryContext';
 import { usePagination } from '@/hooks/usePagination';
 import { graphqlIdFor } from '@/utils/graphqlIdFor';
 import { Heading, Stack } from '@kadena/kode-ui';
+import { DataTable } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
-import { CompactTable } from '../CompactTable/CompactTable';
 import { FormatJsonParse, FormatLink } from '../CompactTable/utils/formatLink';
 import { FormatStatus } from '../CompactTable/utils/formatStatus';
 import { useToast } from '../Toast/ToastContext/ToastContext';
@@ -74,7 +74,7 @@ export const AccountTransactionsTable: FC<{ accountName: string }> = ({
     );
 
   return (
-    <CompactTable
+    <DataTable
       setPage={handlePageChange}
       pageSize={pageSize}
       pageInfo={innerData.node!.transactions.pageInfo}

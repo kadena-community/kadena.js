@@ -1,13 +1,13 @@
 import React from 'react';
 import { Media } from './../../components/Media';
-import { DataTableDesktop } from './DataTableDesktop/DataTableDesktop';
-import { DataTableMobile } from './DataTableMobile/DataTableMobile';
+import { CompactTableDesktop } from './CompactTableDesktop/CompactTableDesktop';
+import { CompactTableMobile } from './CompactTableMobile/CompactTableMobile';
 import type { ITableField } from './LoadingSkeleton/types';
 import type { ITablePaginationPageOptions } from './TablePagination/TablePagination';
 import { TablePagination } from './TablePagination/TablePagination';
 import { fullWidthClass } from './styles.css';
 
-export interface IDataTableProps {
+export interface ICompactTableProps {
   label?: string;
   data: any[];
   fields: ITableField[];
@@ -23,7 +23,7 @@ export interface IDataTableProps {
   };
 }
 
-export const DataTable: React.FC<IDataTableProps> = ({
+export const CompactTable: React.FC<ICompactTableProps> = ({
   fields,
   data,
   label,
@@ -36,10 +36,10 @@ export const DataTable: React.FC<IDataTableProps> = ({
   return (
     <>
       <Media lessThan="sm" className={fullWidthClass}>
-        <DataTableMobile isLoading={isLoading} fields={fields} data={data} />
+        <CompactTableMobile isLoading={isLoading} fields={fields} data={data} />
       </Media>
       <Media greaterThanOrEqual="sm" className={fullWidthClass}>
-        <DataTableDesktop
+        <CompactTableDesktop
           isLoading={isLoading}
           fields={fields}
           data={data}

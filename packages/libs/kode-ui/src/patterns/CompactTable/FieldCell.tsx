@@ -1,16 +1,16 @@
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
-import { ValueLoader } from '../LoadingSkeleton/ValueLoader/ValueLoader';
+import { Text } from './../../components';
+import { ValueLoader } from './LoadingSkeleton/ValueLoader/ValueLoader';
 import {
   alignVariants,
   dataFieldClass,
   dataFieldMultipleIconsClass,
-} from '../styles.css';
-import { FormatDefault } from '../utils/formatDefault';
-import type { IFieldCellProps } from '../utils/getItem';
-import { getItem } from '../utils/getItem';
-import { Text } from './../../../components';
+} from './styles.css';
+import { FormatDefault } from './utils/formatDefault';
+import type { IFieldCellProps } from './utils/getItem';
+import { getItem } from './utils/getItem';
 
 export const FieldCell: FC<IFieldCellProps> = ({
   field,

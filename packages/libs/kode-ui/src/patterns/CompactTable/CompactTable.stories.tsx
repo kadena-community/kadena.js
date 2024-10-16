@@ -2,18 +2,18 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { onLayer2 } from '../../storyDecorators';
 import { MediaContextProvider } from './../../components';
-import type { IDataTableProps } from './DataTable';
-import { DataTable } from './DataTable';
+import type { ICompactTableProps } from './CompactTable';
+import { CompactTable } from './CompactTable';
 
-const meta: Meta<IDataTableProps> = {
-  title: 'Patterns/DataTable',
+const meta: Meta<ICompactTableProps> = {
+  title: 'Patterns/CompactTable',
   decorators: [onLayer2],
   parameters: {
     status: { type: 'stable' },
     docs: {
       description: {
         component:
-          'The DataTable is a specific way to show table data. On mobile the view switches to a different view, to show the data better',
+          'The CompactTable is a specific way to show table data. On mobile the view switches to a different view, to show the data better',
       },
     },
   },
@@ -25,10 +25,10 @@ const meta: Meta<IDataTableProps> = {
 };
 
 export default meta;
-type Story = StoryObj<IDataTableProps>;
+type Story = StoryObj<ICompactTableProps>;
 
 export const Primary: Story = {
-  name: 'DataTable Pattern',
+  name: 'CompactTable Pattern',
   args: {
     isLoading: false,
   },
@@ -64,7 +64,7 @@ export const Primary: Story = {
     ];
     return (
       <MediaContextProvider>
-        <DataTable
+        <CompactTable
           isLoading={isLoading}
           fields={[
             {

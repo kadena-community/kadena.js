@@ -1,5 +1,4 @@
-import { atoms, recipe, tokens } from '@kadena/kode-ui/styles';
-import { style } from '@vanilla-extract/css';
+import { atoms, recipe, style, tokens } from './../../styles';
 
 export const sectionClass = style([
   atoms({
