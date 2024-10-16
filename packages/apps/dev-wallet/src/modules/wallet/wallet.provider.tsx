@@ -189,21 +189,14 @@ function usePassword(profile: IProfile | undefined) {
           },
         });
       }
-      setPassword(unlockOptions.password);
       if (unlockOptions.keepOpen === 'never') {
-        // clear the password after 10 seconds
-        // TODO: this need to be refactored in order to just allow password for the next action
-        setTimeout(() => {
-          console.log('clearing password', unlockOptions.keepOpen);
-          keySourceManager.reset();
-          clearContext();
-        }, 1000 * 5);
+        return unlockOptions.password;
       }
+      setPassword(unlockOptions.password);
       if (unlockOptions.keepOpen === 'short-time') {
         setTimeout(
           () => {
             console.log('clearing password', unlockOptions.keepOpen);
-            keySourceManager.reset();
             clearContext();
           },
           1000 * 60 * 5,

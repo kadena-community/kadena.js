@@ -88,6 +88,13 @@ export const useWallet = () => {
     [askForPassword],
   );
 
+  const lockKeySource = useCallback(async (keySource: IKeySource) => {
+    const service = await keySourceManager.get(keySource.source);
+    if (service) {
+      service.disconnect();
+    }
+  }, []);
+
   const sign = useCallback(
     async (
       TXs: IUnsignedCommand | IUnsignedCommand[],
@@ -97,19 +104,23 @@ export const useWallet = () => {
         throw new Error('Wallet in not unlocked');
       }
       if (Array.isArray(TXs)) {
-        return WalletService.sign(
+        const res = await WalletService.sign(
           context.keySources,
           unlockKeySource,
           TXs,
           publicKeys,
         );
+        keySourceManager.disconnect();
+        return res;
       }
-      return WalletService.sign(
+      const res = await WalletService.sign(
         context.keySources,
         unlockKeySource,
         [TXs],
         publicKeys,
       ).then((res) => res[0]);
+      keySourceManager.disconnect();
+      return res;
     },
     [context, unlockKeySource],
   );
@@ -125,7 +136,9 @@ export const useWallet = () => {
   );
 
   const createKey = useCallback(async (keySource: IKeySource) => {
-    return WalletService.createKey(keySource, unlockKeySource);
+    const res = await WalletService.createKey(keySource, unlockKeySource);
+    keySourceManager.disconnect();
+    return res;
   }, []);
 
   const getPublicKeyData = useCallback(
@@ -174,6 +187,7 @@ export const useWallet = () => {
     askForPassword,
     getPublicKeyData,
     unlockKeySource,
+    lockKeySource,
     setActiveNetwork: (network: INetwork) =>
       setActiveNetwork ? setActiveNetwork(network) : undefined,
     activeNetwork: context.activeNetwork,

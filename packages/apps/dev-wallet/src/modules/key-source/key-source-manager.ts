@@ -4,11 +4,12 @@ import { IKeySourceService } from './interface';
 export interface IKeySourceManager {
   get(source: KeySourceType): Promise<IKeySourceService>;
   reset(): void;
+  disconnect(): void;
 }
 
 function createKeySourceManager(): IKeySourceManager {
   const services = new Map<string, IKeySourceService>();
-  return {
+  const manager = {
     async get(source: KeySourceType): Promise<IKeySourceService> {
       if (services.has(source)) {
         return services.get(source) as IKeySourceService;
@@ -38,13 +39,17 @@ function createKeySourceManager(): IKeySourceManager {
           throw new Error(`Key source service not found for ${source}`);
       }
     },
-    async reset() {
+    async disconnect() {
       await Promise.all(
         [...services.values()].map((service) => service.disconnect()),
       );
+    },
+    async reset() {
+      await manager.disconnect();
       services.clear();
     },
   };
+  return manager;
 }
 
 export const keySourceManager = createKeySourceManager();
