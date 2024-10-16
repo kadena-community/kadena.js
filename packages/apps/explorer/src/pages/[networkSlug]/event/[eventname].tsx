@@ -44,7 +44,7 @@ const Height: React.FC = () => {
                       label: 'RequestKey',
                       key: 'node.requestKey',
                       width: '40%',
-                      render: FormatLink({ appendUrl: '/transaction' }),
+                      render: FormatLink({ url: '/transaction/:value' }),
                     },
                     {
                       label: 'Parameters',

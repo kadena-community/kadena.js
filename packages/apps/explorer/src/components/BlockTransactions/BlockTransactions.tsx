@@ -9,7 +9,7 @@ import {
 } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
-import { FormatJsonParse, FormatLink } from '../CompactTable/utils/formatLink';
+import { FormatLink } from '../CompactTable/utils/formatLink';
 import { useToast } from '../Toast/ToastContext/ToastContext';
 import { loadingData } from './loadingDataBlocktransactionsquery';
 import { noTransactionsTitleClass } from './styles.css';
@@ -98,21 +98,21 @@ export const BlockTransactions: FC<IProps> = ({ hash }) => {
           key: 'cmd.meta.sender',
           variant: 'code',
           width: '25%',
-          render: FormatLink({ appendUrl: '/account' }),
+          render: FormatLink({ url: '/account/:value' }),
         },
         {
           label: 'RequestKey',
           key: 'hash',
           variant: 'code',
           width: '25%',
-          render: FormatLink({ appendUrl: '/transaction' }),
+          render: FormatLink({ url: '/transaction/:value' }),
         },
         {
           label: 'Code Preview',
           key: 'cmd.payload.code',
           variant: 'code',
           width: '40%',
-          render: FormatJsonParse(),
+          render: CompactTableFormatters.FormatJsonParse(),
         },
       ]}
       data={innerData.node.transactions.edges.map(

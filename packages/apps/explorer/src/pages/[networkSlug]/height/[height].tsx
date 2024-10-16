@@ -103,7 +103,7 @@ const Height: React.FC = () => {
               label: 'Hash',
               key: 'node.hash',
               width: '60%',
-              render: FormatLink({ appendUrl: '/block' }),
+              render: FormatLink({ url: '/block/:value' }),
             },
           ]}
           data={innerData?.blocksFromHeight.edges ?? []}

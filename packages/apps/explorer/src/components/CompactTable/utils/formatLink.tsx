@@ -15,18 +15,25 @@ interface IProps {
 }
 
 interface IOptions {
-  appendUrl: string;
+  url: string;
 }
 
-export const FormatLink = ({ appendUrl }: IOptions): FC<IProps> => {
+const formatURL = (url: string, value: string): string => {
+  if (url.includes(':value')) {
+    return url.replace(/:value/g, value);
+  }
+  return url;
+};
+
+export const FormatLink = ({ url }: IOptions): FC<IProps> => {
   const Component: FC<IProps> = ({ value }) => (
     <Stack alignItems="center" className={linkWrapperClass}>
-      <Link href={`${appendUrl}/${value}`} className={linkClass}>
+      <Link href={formatURL(url, value)} className={linkClass}>
         <Text variant="code" className={dataFieldClass}>
           {value}
         </Text>
       </Link>
-      <Link href={`${appendUrl}/${value}`} className={value}>
+      <Link href={formatURL(url, value)} className={value}>
         <MonoArrowOutward className={linkIconClass} />
       </Link>
     </Stack>

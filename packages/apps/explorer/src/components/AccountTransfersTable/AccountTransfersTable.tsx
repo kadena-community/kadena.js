@@ -1,10 +1,13 @@
 import type { AccountTransfersQuery, Transfer } from '@/__generated__/sdk';
 import { useAccountTransfersQuery } from '@/__generated__/sdk';
 import { useQueryContext } from '@/context/queryContext';
-import { usePagination } from '@/hooks/usePagination';
 import { graphqlIdFor } from '@/utils/graphqlIdFor';
 import { Heading, Stack } from '@kadena/kode-ui';
-import { CompactTable, CompactTableFormatters } from '@kadena/kode-ui/patterns';
+import {
+  CompactTable,
+  CompactTableFormatters,
+  usePagination,
+} from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import { FormatLink } from '../CompactTable/utils/formatLink';
@@ -92,19 +95,19 @@ export const AccountTransfersTable: FC<{ accountName: string }> = ({
           label: 'RequestKey',
           key: 'requestKey',
           width: '20%',
-          render: FormatLink({ appendUrl: '/transaction' }),
+          render: FormatLink({ url: '/transaction/:value' }),
         },
         {
           label: 'Sender',
           key: 'senderAccount',
           width: '20%',
-          render: FormatLink({ appendUrl: '/account' }),
+          render: FormatLink({ url: '/account/:value' }),
         },
         {
           label: 'Receiver',
           key: 'receiverAccount',
           width: '20%',
-          render: FormatLink({ appendUrl: '/account' }),
+          render: FormatLink({ url: '/account/:value' }),
         },
         {
           label: 'Amount',

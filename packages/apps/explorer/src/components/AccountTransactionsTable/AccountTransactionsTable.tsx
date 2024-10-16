@@ -96,14 +96,14 @@ export const AccountTransactionsTable: FC<{ accountName: string }> = ({
           key: 'cmd.meta.sender',
           variant: 'code',
           width: '25%',
-          render: FormatLink({ appendUrl: '/account' }),
+          render: FormatLink({ url: '/account/:value' }),
         },
         {
           label: 'RequestKey',
           key: 'hash',
           variant: 'code',
           width: '25%',
-          render: FormatLink({ appendUrl: '/transaction' }),
+          render: FormatLink({ url: '/transaction/:value' }),
         },
         {
           label: 'Code Preview',
