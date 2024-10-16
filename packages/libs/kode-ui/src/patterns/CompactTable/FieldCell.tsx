@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
 import { Text } from './../../components';
-import { FormatDefault } from './Formatters/FormatDefault';
 import { ValueLoader } from './LoadingSkeleton/ValueLoader/ValueLoader';
 import {
   alignVariants,
@@ -10,6 +9,7 @@ import {
   dataFieldMultipleIconsClass,
   mobileFieldClass,
 } from './styles.css';
+import { FormatDefault } from './TableFormatters/FormatDefault';
 import type { IFieldCellProps } from './utils/getItem';
 import { getItem } from './utils/getItem';
 

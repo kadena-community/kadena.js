@@ -13,4 +13,4 @@ export {
 
 export { usePagination } from './CompactTable/usePagination';
 
-export { CompactTableFormatters } from './CompactTable/Formatters';
+export { CompactTableFormatters } from './CompactTable/TableFormatters';

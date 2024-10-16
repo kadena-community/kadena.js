@@ -1,6 +1,7 @@
 import { FormatAccount } from './FormatAccount';
 import { FormatAmount } from './FormatAmount';
 import { FormatDefault } from './FormatDefault';
+import { FormatJsonParse } from './FormatJsonParse';
 import { FormatLink } from './FormatLink';
 import { FormatMultiStepTx } from './FormatMultiStepTx';
 import { FormatStatus } from './FormatStatus';
@@ -11,5 +12,6 @@ export const CompactTableFormatters = {
   FormatDefault,
   FormatLink,
   FormatMultiStepTx,
+  FormatJsonParse,
   FormatStatus,
 } as const;

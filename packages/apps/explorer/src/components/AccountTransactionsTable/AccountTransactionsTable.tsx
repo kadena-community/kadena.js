@@ -13,7 +13,7 @@ import {
 } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
-import { FormatJsonParse, FormatLink } from '../CompactTable/utils/formatLink';
+import { FormatLink } from '../CompactTable/utils/formatLink';
 import { useToast } from '../Toast/ToastContext/ToastContext';
 import { accountTransactions } from './AccountTransactions.graph';
 import { loadingData } from './loadingDataAccountTransactionsquery';
@@ -110,7 +110,7 @@ export const AccountTransactionsTable: FC<{ accountName: string }> = ({
           key: 'cmd.payload.code',
           variant: 'code',
           width: '40%',
-          render: FormatJsonParse(),
+          render: CompactTableFormatters.FormatJsonParse(),
         },
       ]}
       data={innerData.node!.transactions.edges.map(

@@ -4,10 +4,9 @@ import { useQueryContext } from '@/context/queryContext';
 import { usePagination } from '@/hooks/usePagination';
 import { graphqlIdFor } from '@/utils/graphqlIdFor';
 import { Heading, Stack } from '@kadena/kode-ui';
-import { CompactTable } from '@kadena/kode-ui/patterns';
+import { CompactTable, CompactTableFormatters } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
-import { FormatAmount } from '../CompactTable/utils/formatAmount';
 import { FormatLink } from '../CompactTable/utils/formatLink';
 import { useToast } from '../Toast/ToastContext/ToastContext';
 import { accountTransfers } from './AccountTransfers.graph';
@@ -113,7 +112,7 @@ export const AccountTransfersTable: FC<{ accountName: string }> = ({
           variant: 'code',
           align: 'end',
           width: '20%',
-          render: FormatAmount(),
+          render: CompactTableFormatters.FormatAmount(),
         },
       ]}
       data={innerData.node?.transfers.edges.map(
