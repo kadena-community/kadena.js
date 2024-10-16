@@ -1,7 +1,7 @@
 import type { BlocksFromHeightQuery } from '@/__generated__/sdk';
 import { useBlocksFromHeightQuery } from '@/__generated__/sdk';
 import { blockHeightLoading } from '@/components/BlockTable/loadingBlockHeightData';
-import { FormatLink } from '@/components/CompactTable/utils/formatLink';
+import { FormatLinkWrapper } from '@/components/CompactTable/FormatLinkWrapper';
 import { LayoutBody } from '@/components/Layout/components/LayoutBody';
 import { LayoutHeader } from '@/components/Layout/components/LayoutHeader';
 import { Layout } from '@/components/Layout/Layout';
@@ -103,7 +103,7 @@ const Height: React.FC = () => {
               label: 'Hash',
               key: 'node.hash',
               width: '60%',
-              render: FormatLink({ url: '/block/:value' }),
+              render: FormatLinkWrapper({ url: '/block/:value' }),
             },
           ]}
           data={innerData?.blocksFromHeight.edges ?? []}

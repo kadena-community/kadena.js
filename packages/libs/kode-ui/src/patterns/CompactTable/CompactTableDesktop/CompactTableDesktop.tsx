@@ -48,7 +48,7 @@ export const CompactTableDesktop: FC<IProps> = ({
         </TableHeader>
         <TableBody>
           {data.map((item, idx) => (
-            <Row key={idx}>
+            <Row key={item.toString() + idx}>
               {fields.map((field) => (
                 <Cell key={field.key.toString()}>
                   <FieldCell isLoading={isLoading} field={field} item={item} />

@@ -1,4 +1,4 @@
-import { FormatLink } from '@/components/CompactTable/utils/formatLink';
+import { FormatLinkWrapper } from '@/components/CompactTable/FormatLinkWrapper';
 import { EventFilter } from '@/components/EventFilter/EventFilter';
 import { LayoutAside } from '@/components/Layout/components/LayoutAside';
 import { LayoutBody } from '@/components/Layout/components/LayoutBody';
@@ -44,7 +44,7 @@ const Height: React.FC = () => {
                       label: 'RequestKey',
                       key: 'node.requestKey',
                       width: '40%',
-                      render: FormatLink({ url: '/transaction/:value' }),
+                      render: FormatLinkWrapper({ url: '/transaction/:value' }),
                     },
                     {
                       label: 'Parameters',

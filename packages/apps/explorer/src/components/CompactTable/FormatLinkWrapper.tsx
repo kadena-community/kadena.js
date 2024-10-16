@@ -10,6 +10,8 @@ import {
   linkWrapperClass,
 } from '../styles.css';
 
+import { CompactTableFormatters } from '@kadena/kode-ui/patterns';
+
 interface IProps {
   value: string;
 }
@@ -25,18 +27,11 @@ const formatURL = (url: string, value: string): string => {
   return url;
 };
 
-export const FormatLink = ({ url }: IOptions): FC<IProps> => {
+export const FormatLinkWrapper = ({ url }: IOptions): FC<IProps> => {
   const Component: FC<IProps> = ({ value }) => (
-    <Stack alignItems="center" className={linkWrapperClass}>
-      <Link href={formatURL(url, value)} className={linkClass}>
-        <Text variant="code" className={dataFieldClass}>
-          {value}
-        </Text>
-      </Link>
-      <Link href={formatURL(url, value)} className={value}>
-        <MonoArrowOutward className={linkIconClass} />
-      </Link>
-    </Stack>
+    <Link href={formatURL(url, value)} passHref legacyBehavior>
+      {CompactTableFormatters.FormatLink({ url })({ value })}
+    </Link>
   );
 
   return Component;

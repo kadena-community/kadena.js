@@ -10,7 +10,7 @@ import {
 } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
-import { FormatLink } from '../CompactTable/utils/formatLink';
+import { FormatLinkWrapper } from '../CompactTable/FormatLinkWrapper';
 import { useToast } from '../Toast/ToastContext/ToastContext';
 import { accountTransfers } from './AccountTransfers.graph';
 import { loadingData } from './loadingDataAccountTransfersquery';
@@ -95,19 +95,19 @@ export const AccountTransfersTable: FC<{ accountName: string }> = ({
           label: 'RequestKey',
           key: 'requestKey',
           width: '20%',
-          render: FormatLink({ url: '/transaction/:value' }),
+          render: FormatLinkWrapper({ url: '/transaction/:value' }),
         },
         {
           label: 'Sender',
           key: 'senderAccount',
           width: '20%',
-          render: FormatLink({ url: '/account/:value' }),
+          render: FormatLinkWrapper({ url: '/account/:value' }),
         },
         {
           label: 'Receiver',
           key: 'receiverAccount',
           width: '20%',
-          render: FormatLink({ url: '/account/:value' }),
+          render: FormatLinkWrapper({ url: '/account/:value' }),
         },
         {
           label: 'Amount',
