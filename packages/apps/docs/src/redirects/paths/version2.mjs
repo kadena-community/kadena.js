@@ -407,11 +407,6 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
-    source: '/build/pact/:slug',
-    destination: '/build/pact/:slug',
-    permanent: true,
-  },
-  {
     source: '/build/pact/rotatable-wallet',
     destination: '/build/pact',
     permanent: true,
