@@ -5,6 +5,10 @@ import { FormatJsonParse } from './FormatJsonParse';
 import { FormatLink } from './FormatLink';
 import { FormatMultiStepTx } from './FormatMultiStepTx';
 import { FormatStatus } from './FormatStatus';
+import type {
+  ICompactTableFormatterLinkProps,
+  ICompactTableFormatterProps,
+} from './types';
 
 export const CompactTableFormatters = {
   FormatAccount,
@@ -15,3 +19,5 @@ export const CompactTableFormatters = {
   FormatJsonParse,
   FormatStatus,
 } as const;
+
+export { ICompactTableFormatterLinkProps, ICompactTableFormatterProps };

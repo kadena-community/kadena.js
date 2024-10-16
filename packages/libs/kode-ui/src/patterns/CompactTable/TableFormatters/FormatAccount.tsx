@@ -1,11 +1,8 @@
 import type { FC } from 'react';
 import { maskValue } from './../../../components';
+import type { ICompactTableFormatterProps } from './types';
 
-export interface IProps {
-  value: string;
-}
-
-export const FormatAccount: () => FC<IProps> =
+export const FormatAccount: () => FC<ICompactTableFormatterProps> =
   () =>
   ({ value }) =>
     value && maskValue(value);

@@ -1,11 +1,10 @@
 import type { FC } from 'react';
 import React from 'react';
+import type { ICompactTableFormatterProps } from './types';
 
-export interface IProps {
-  value: string;
-}
-
-export const FormatDefault = (): FC<IProps> => {
-  const Component: FC<IProps> = ({ value }) => <>{value}</>;
+export const FormatDefault = (): FC<ICompactTableFormatterProps> => {
+  const Component: FC<ICompactTableFormatterProps> = ({ value }) => (
+    <>{value}</>
+  );
   return Component;
 };
