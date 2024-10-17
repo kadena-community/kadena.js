@@ -1,5 +1,5 @@
-import { token, tokens } from '@kadena/kode-ui/styles';
-import { style } from '@vanilla-extract/css';
+import { responsiveStyle, token } from '@kadena/kode-ui/styles';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 export const navHeader = style({
   backgroundColor: token('color.background.layer.default'),
@@ -8,3 +8,15 @@ export const navHeader = style({
 export const navHeaderLink = style({
   fontSize: 'clamp(12px, 1.1vw, 16px)',
 });
+
+export const accountButtonWrapperClass = style({});
+
+globalStyle(
+  `${accountButtonWrapperClass} button`,
+  responsiveStyle({
+    lg: {
+      borderEndStartRadius: 0,
+      borderStartStartRadius: 0,
+    },
+  }),
+);

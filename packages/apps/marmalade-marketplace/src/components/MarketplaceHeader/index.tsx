@@ -12,7 +12,6 @@ import {
   MonoControlPointDuplicate,
   MonoLogout,
   MonoMenuOpen,
-  MonoMoreVert,
 } from '@kadena/kode-icons';
 import {
   Badge,
@@ -92,106 +91,108 @@ export const MarketplaceHeader = () => {
       </NavHeaderLinkList>
 
       <NavHeaderButton onPress={toggleTheme} endVisual={<MonoContrast />} />
-      {account ? (
-        <ConnectWallet
-          showContextMenu={true}
-          account={account.accountName}
-          accountAlias={account.alias}
-          menuItems={[
-            {
-              title: 'Fund Account',
-              onClick: () => setShowNotification(true),
-              key: 'fund',
-              startVisual: <MonoControlPointDuplicate />,
-            },
-            {
-              title: 'Profile Settings',
-              onClick: () => router.push('/profile'),
-              key: 'profile',
-              startVisual: <MonoAccountCircle />,
-            },
-            {
-              title: 'Disconnect',
-              onClick: () => logout(),
-              key: 'disconnect',
-              startVisual: <MonoLogout />,
-            },
-          ]}
-        />
-      ) : (
-        <Button
-          onClick={login}
-          variant="primary"
-          isCompact={false}
-          startVisual={<SpireKeyKdacolorLogoWhite style={{ color: 'black' }} />}
-          endVisual={
-            <Badge style={'inverse'} size="sm">
-              Wallet
-            </Badge>
-          }
-        >
-          Connect
-        </Button>
-      )}
-      <Media lessThan="md">
-        <ContextMenu trigger={<Button endVisual={<MonoMenuOpen />} />}>
-          <ContextMenuItem
-            label="Marketplace"
-            onClick={() => router.push('/')}
-          />
-          <ContextMenuItem
-            label="Create"
-            onClick={() => router.push('/tokens')}
-            endVisual={
-              <Badge size="sm" style={'highContrast'}>
-                beta
-              </Badge>
-            }
-          />
-          <ContextMenuItem
-            label="Mint"
-            onClick={() => router.push('/mint')}
-            endVisual={
-              <Badge size="sm" style={'highContrast'}>
-                beta
-              </Badge>
-            }
-          />
-          <ContextMenuItem
-            label="My Tokens"
-            onClick={() => router.push('/mytokens')}
-          />
-        </ContextMenu>
-      </Media>
 
-      {showNotification && (
-        <div style={{ position: 'absolute', top: '65px', right: '50px' }}>
-          <Notification
-            intent="info"
-            isDismissable={false}
-            role="none"
-            type="stacked"
+      <Stack className={styles.accountButtonWrapperClass} gap="md">
+        {account ? (
+          <ConnectWallet
+            showContextMenu={true}
+            account={account.accountName}
+            accountAlias={account.alias}
+            menuItems={[
+              {
+                title: 'Fund Account',
+                onClick: () => setShowNotification(true),
+                key: 'fund',
+                startVisual: <MonoControlPointDuplicate />,
+              },
+              {
+                title: 'Profile Settings',
+                onClick: () => router.push('/profile'),
+                key: 'profile',
+                startVisual: <MonoAccountCircle />,
+              },
+              {
+                title: 'Disconnect',
+                onClick: () => logout(),
+                key: 'disconnect',
+                startVisual: <MonoLogout />,
+              },
+            ]}
+          />
+        ) : (
+          <Button
+            onClick={login}
+            variant="primary"
+            isCompact={false}
+            startVisual={
+              <SpireKeyKdacolorLogoWhite style={{ color: 'black' }} />
+            }
+            endVisual={
+              <Badge style={'inverse'} size="sm">
+                Wallet
+              </Badge>
+            }
           >
-            <NotificationHeading>Faucet</NotificationHeading>
-            Are you sure you want to fund your account with 20 KDA?
-            <NotificationFooter>
-              <NotificationButton
-                icon={<MonoCheck />}
-                intent="positive"
-                onClick={onFundAccount}
-              >
-                Confirm
-              </NotificationButton>
-              <NotificationButton
-                icon={<MonoClose />}
-                intent="negative"
-                onClick={() => setShowNotification(false)}
-              >
-                Cancel
-              </NotificationButton>
-            </NotificationFooter>
-          </Notification>
-        </div>
+            Connect
+          </Button>
+        )}
+        <Media lessThan="md">
+          <ContextMenu trigger={<Button endVisual={<MonoMenuOpen />} />}>
+            <ContextMenuItem
+              label="Marketplace"
+              onClick={() => router.push('/')}
+            />
+            <ContextMenuItem
+              label="Create"
+              onClick={() => router.push('/tokens')}
+              endVisual={
+                <Badge size="sm" style={'highContrast'}>
+                  beta
+                </Badge>
+              }
+            />
+            <ContextMenuItem
+              label="Mint"
+              onClick={() => router.push('/mint')}
+              endVisual={
+                <Badge size="sm" style={'highContrast'}>
+                  beta
+                </Badge>
+              }
+            />
+            <ContextMenuItem
+              label="My Tokens"
+              onClick={() => router.push('/mytokens')}
+            />
+          </ContextMenu>
+        </Media>
+      </Stack>
+      {showNotification && (
+        <Notification
+          intent="info"
+          isDismissable={false}
+          role="none"
+          type="stacked"
+        >
+          <NotificationHeading>Faucet</NotificationHeading>
+          Are you sure you want to fund your account with 20 KDA?
+          <NotificationFooter>
+            <NotificationButton
+              icon={<MonoCheck />}
+              intent="positive"
+              onClick={onFundAccount}
+            >
+              Confirm
+            </NotificationButton>
+            <NotificationButton
+              icon={<MonoClose />}
+              intent="negative"
+              onClick={() => setShowNotification(false)}
+            >
+              Cancel
+            </NotificationButton>
+          </NotificationFooter>
+        </Notification>
       )}
     </NavHeader>
   );
