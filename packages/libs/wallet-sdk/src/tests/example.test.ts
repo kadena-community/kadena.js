@@ -1,4 +1,4 @@
-import { assert, describe, expect, test } from 'vitest';
+import { assert, describe, test } from 'vitest';
 
 import type { ChainId } from '@kadena/client';
 import { addSignatures, isSignedTransaction } from '@kadena/client';

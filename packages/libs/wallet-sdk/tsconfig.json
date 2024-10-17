@@ -2,10 +2,9 @@
   "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {
     "module": "NodeNext",
-    "outDir": "lib/esm",
+    "outDir": "dist/esm",
     "moduleResolution": "NodeNext",
     "types": ["node"]
   },
-  "include": ["./src", "./src/**/*"],
-  "exclude": ["**/vendor/**/*"]
+  "include": ["./src", "./src/**/*"]
 }

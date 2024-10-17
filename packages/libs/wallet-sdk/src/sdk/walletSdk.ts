@@ -2,10 +2,10 @@
 import { createClient, createTransaction } from '@kadena/client';
 import {
   createCrossChainCommand,
-  estimateGas,
   simpleTransferCreateCommand,
   transferCreateCommand,
-} from '@kadena/client-utils';
+} from '@kadena/client-utils/coin';
+import { estimateGas } from '@kadena/client-utils/core';
 import type { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
 import * as v from 'valibot';
 

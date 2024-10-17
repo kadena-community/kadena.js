@@ -3,7 +3,7 @@ import type {
   createCrossChainCommand,
   simpleTransferCreateCommand,
   transferCreateCommand,
-} from '@kadena/client-utils';
+} from '@kadena/client-utils/coin';
 import type { ResponseResult } from './schema.js';
 
 interface IBaseTransfer {

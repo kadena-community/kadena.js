@@ -142,3 +142,6 @@ e2e-proof-of-us:
 '@kadena/dev-wallet-example':
   - changed-files:
       - any-glob-to-any-file: packages/apps/dev-wallet-example/*
+'@kadena/wallet-sdk':
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/wallet-sdk/*

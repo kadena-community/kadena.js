@@ -45,6 +45,7 @@ Overview of the main packages maintained in this repository:
 | [@kadena/pactjs-cli][53]             | [![version][55]][54] |
 | [@kadena/pactjs-generator][56]       | [![version][58]][57] |
 | [@kadena/types][59]                  | [![version][61]][60] |
+| [@kadena/wallet-sdk][62]             | [![version][64]][63] |
 
 <!--packageTable end -->
 
@@ -52,7 +53,7 @@ Overview of the main packages maintained in this repository:
 
 Special thanks to the wonderful people who have contributed to this project:
 
-[![Contributors][63]][62]
+[![Contributors][66]][65]
 
 [1]: https://docs.kadena.io
 [2]: https://discord.io/kadena
@@ -134,5 +135,9 @@ Special thanks to the wonderful people who have contributed to this project:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/types
 [60]: packages/libs/types/CHANGELOG.md
 [61]: https://img.shields.io/npm/v/@kadena/types.svg
-[62]: https://github.com/kadena-community/kadena.js/graphs/contributors
-[63]: https://contrib.rocks/image?repo=kadena-community/kadena.js
+[62]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/wallet-sdk
+[63]: packages/libs/wallet-sdk/CHANGELOG.md
+[64]: https://img.shields.io/npm/v/@kadena/wallet-sdk.svg
+[65]: https://github.com/kadena-community/kadena.js/graphs/contributors
+[66]: https://contrib.rocks/image?repo=kadena-community/kadena.js
