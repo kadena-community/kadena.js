@@ -3,12 +3,15 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { fundAccount } from '@/modules/account/account.service';
 
 import { AccountBalanceDistribution } from '@/Components/AccountBalanceDistribution/AccountBalanceDistribution';
+import { processChainAccounts } from '@/Components/AccountBalanceDistribution/processChainAccounts';
 import { QRCode } from '@/Components/QRCode/QRCode';
 import { getTransferActivities } from '@/modules/activity/activity.service';
 import { useAsync } from '@/utils/useAsync';
 import { ChainId } from '@kadena/client';
 import { MonoKey } from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
+import { ChainBalanceDistribution } from '@kadena/kode-ui/patterns';
+import { PactNumber } from '@kadena/pactjs';
 import { useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { noStyleLinkClass } from '../home/style.css';
@@ -171,15 +174,25 @@ export function AccountPage() {
         <TabItem key={'chain-distribution'} title="Chain Distribution">
           <Stack gap={'sm'} flexWrap={'wrap'}>
             {!redistributionGroupId ? (
-              <AccountBalanceDistribution
-                chains={chainsBalance}
-                overallBalance={account.overallBalance}
-                fundAccount={fundAccountHandler}
-                account={account}
-                onRedistribution={(groupId) =>
-                  setRedistributionGroupId(groupId)
-                }
-              />
+              <>
+                <ChainBalanceDistribution
+                  chains={processChainAccounts(
+                    chainsBalance,
+                    20,
+                    new PactNumber(account.overallBalance).toNumber(),
+                  )}
+                />
+
+                <AccountBalanceDistribution
+                  chains={chainsBalance}
+                  overallBalance={account.overallBalance}
+                  fundAccount={fundAccountHandler}
+                  account={account}
+                  onRedistribution={(groupId) =>
+                    setRedistributionGroupId(groupId)
+                  }
+                />
+              </>
             ) : (
               <Redistribute
                 groupId={redistributionGroupId}

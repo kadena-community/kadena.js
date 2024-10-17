@@ -1,10 +1,5 @@
 import { ChainId } from '@kadena/client';
-
-export interface IViewChain {
-  chainId: string;
-  percentage?: number;
-  balance?: number;
-}
+import { IChainBalanceProps } from '@kadena/kode-ui/patterns';
 
 /**
  * Checks the percentage of the chainbalance to the maxValue.
@@ -29,7 +24,7 @@ export const processChainAccounts = (
   }>,
   chainCount: number,
   overallBalance: number,
-): IViewChain[] => {
+): IChainBalanceProps[] => {
   return Array.from(Array(chainCount).keys()).map((idx) => {
     const chain = chains.find((c) => {
       return typeof c !== 'string' && c?.chainId === `${idx}`;
@@ -38,14 +33,14 @@ export const processChainAccounts = (
     if (!chain || typeof chain === 'string') {
       return {
         chainId: `${idx}`,
-      } as IViewChain;
+      } as IChainBalanceProps;
     }
 
     return {
       chainId: chain?.chainId,
       balance: chain?.balance,
       percentage: chainBalancePercentage(chain?.balance ?? 0, overallBalance),
-    } as IViewChain;
+    } as IChainBalanceProps;
   });
 };
 
@@ -54,10 +49,10 @@ export const processChainAccounts = (
  * and adds the balance values of the IChainAccounts in the correct place
  */
 export const divideChains = (
-  chains: IViewChain[],
+  chains: IChainBalanceProps[],
   listCount: number,
-): IViewChain[][] => {
-  const result: IViewChain[][] = [];
+): IChainBalanceProps[][] => {
+  const result: IChainBalanceProps[][] = [];
   const totalLength = chains.length;
   const baseSize = Math.floor(totalLength / listCount);
   const extraItems = totalLength % listCount;
