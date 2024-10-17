@@ -148,3 +148,6 @@ e2e-proof-of-us:
 '@kadena/snap':
   - changed-files:
       - any-glob-to-any-file: packages/libs/snap/*
+'@kadena/wallet-sdk':
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/wallet-sdk/*

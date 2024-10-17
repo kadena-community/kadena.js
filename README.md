@@ -45,7 +45,8 @@ Overview of the main packages maintained in this repository:
 | [@kadena/pactjs-cli][53]             | [![version][55]][54] |
 | [@kadena/pactjs-generator][56]       | [![version][58]][57] |
 | [@kadena/snap][59]                   | [![version][61]][60] |
-| [@kadena/types][62]                  | [![version][64]][63] |
+| [@kadena/types][62]                  | [![version][61]][60] |
+| [@kadena/wallet-sdk][62]             | [![version][64]][63] |
 
 <!--packageTable end -->
 

@@ -156,12 +156,6 @@
     "path": "packages/libs/pactjs-generator"
   },
   {
-    "name": "@kadena/wallet-sdk",
-    "version": "0.0.0",
-    "private": true,
-    "path": "packages/libs/wallet-sdk"
-  },
-  {
     "name": "@kadena/proof-of-us",
     "version": "0.5.16",
     "private": true,
@@ -196,6 +190,12 @@
     "version": "0.7.0",
     "private": false,
     "path": "packages/libs/types"
+  },
+  {
+    "name": "@kadena/wallet-sdk",
+    "version": "0.0.1",
+    "private": false,
+    "path": "packages/libs/wallet-sdk"
   },
   {
     "name": "@kadena-dev/e2e-base",

@@ -8,5 +8,5 @@ module.exports = {
     '@rushstack/no-new-null': 'off',
     'no-console': 'warn',
   },
-  ignorePatterns: ['vitest.*.ts'],
+  ignorePatterns: ['rollup.config.mjs', 'vitest.config.ts'],
 };
