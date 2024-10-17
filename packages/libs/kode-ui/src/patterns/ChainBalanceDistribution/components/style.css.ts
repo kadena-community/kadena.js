@@ -1,5 +1,5 @@
-import { atoms, tokens } from '@kadena/kode-ui/styles';
-import { createVar, style } from '@vanilla-extract/css';
+import { createVar } from '@vanilla-extract/css';
+import { atoms, style, tokens } from './../../../styles';
 
 export const percentageValueVar = createVar();
 

@@ -1,9 +1,9 @@
-import { Stack, Text } from '@kadena/kode-ui';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
-import type { IViewChain } from '../types';
+import type { IChainBalanceProps } from '../types';
+import { Stack, Text } from './../../../components';
 import {
   chainBalanceWrapperClass,
   chainTextBaseClass,
@@ -14,11 +14,12 @@ import {
 } from './style.css';
 
 interface IProps {
-  chainAccount: IViewChain;
+  chainAccount: IChainBalanceProps;
   idx: string;
 }
 
 export const ChainBalance: FC<IProps> = ({ chainAccount, idx }) => {
+  console.log(chainAccount.percentage);
   return (
     <Stack
       as="li"

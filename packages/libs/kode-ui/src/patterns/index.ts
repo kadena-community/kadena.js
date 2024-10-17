@@ -16,3 +16,9 @@ export {
   type ICompactTableFormatterProps,
 } from './CompactTable/TableFormatters';
 export { usePagination } from './CompactTable/usePagination';
+
+export { ChainBalanceDistribution } from './ChainBalanceDistribution/ChainBalanceDistribution';
+export {
+  type IChainBalanceDistributionProps,
+  type IChainBalanceProps,
+} from './ChainBalanceDistribution/types';

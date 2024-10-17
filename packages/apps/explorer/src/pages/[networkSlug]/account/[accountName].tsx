@@ -1,7 +1,6 @@
 import type { AccountQuery } from '@/__generated__/sdk';
 import { useAccountQuery } from '@/__generated__/sdk';
 import { AccountAside } from '@/components/AccountAside/AccountAside';
-import { AccountBalanceDistribution } from '@/components/AccountBalanceDistribution/AccountBalanceDistribution';
 import { AccountTransactionsTable } from '@/components/AccountTransactionsTable/AccountTransactionsTable';
 import { AccountTransfersTable } from '@/components/AccountTransfersTable/AccountTransfersTable';
 import { tabsWidthClass } from '@/components/globalstyles.css';
@@ -14,12 +13,18 @@ import { loadingData } from '@/components/LoadingSkeleton/loadingData/loadingDat
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
 import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
+import { CONSTANTS } from '@/constants/constants';
 import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { account } from '@/graphql/queries/account.graph';
 import { useRouter } from '@/hooks/router';
+import { processChainAccounts } from '@/utils/processChainAccounts';
 import { Badge, TabItem, Tabs } from '@kadena/kode-ui';
-import { CompactTable, CompactTableFormatters } from '@kadena/kode-ui/patterns';
+import {
+  ChainBalanceDistribution,
+  CompactTable,
+  CompactTableFormatters,
+} from '@kadena/kode-ui/patterns';
 import type { FC, Key } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
 
@@ -184,9 +189,11 @@ const Account: FC = () => {
             />
           </TabItem>
           <TabItem title="Balance Distribution" key="Balance">
-            <AccountBalanceDistribution
-              accountName={accountName}
-              chains={fungibleAccount.chainAccounts ?? []}
+            <ChainBalanceDistribution
+              chains={processChainAccounts(
+                fungibleAccount.chainAccounts ?? [],
+                CONSTANTS.CHAINCOUNT,
+              )}
             />
           </TabItem>
           <TabItem title={`Transfers`} key="Transfers">

@@ -1,15 +1,13 @@
-import type { IViewChain } from '../processChainAccounts';
+import type { IChainBalanceProps } from '../../types';
 import {
   calculateMaxChainBalance,
   chainBalancePercentage,
   divideChains,
-  processChainAccounts,
 } from '../processChainAccounts';
-import type { IChainAccounts } from './../../components/ChainList';
 
 describe('divideChains', () => {
   it('should return an array with correct length', async () => {
-    const chains: IViewChain[] = [
+    const chains: IChainBalanceProps[] = [
       { chainId: '0' },
       { chainId: '1' },
       { chainId: '2' },
@@ -55,7 +53,7 @@ describe('divideChains', () => {
   });
 
   it('should return an array with correct length with uneven count', async () => {
-    const chains: IViewChain[] = [
+    const chains: IChainBalanceProps[] = [
       { chainId: '0' },
       { chainId: '1' },
       { chainId: '2' },
@@ -101,60 +99,10 @@ describe('divideChains', () => {
   });
 
   it('should return an empty array ', async () => {
-    const chains: IViewChain[] = [];
+    const chains: IChainBalanceProps[] = [];
     const result = divideChains(chains, 4);
 
     const expectedResult = [[], [], [], []];
-    expect(result).toEqual(expectedResult);
-  });
-});
-
-describe('processChainAccounts', () => {
-  it('should process the string and objects of the chain array to the correct format with percentages', () => {
-    const chains = [
-      '0',
-      { chainId: '1', balance: 20 },
-      { chainId: '2', balance: 2 },
-      { chainId: '6', balance: 5 },
-      { chainId: '7' },
-    ] as IChainAccounts;
-
-    const result = processChainAccounts(chains, 10);
-    const expectedResult = [
-      { chainId: '0' },
-      { balance: 20, chainId: '1', percentage: 100 },
-      {
-        balance: 2,
-        chainId: '2',
-        percentage: 10,
-      },
-      {
-        chainId: '3',
-      },
-      {
-        chainId: '4',
-      },
-      {
-        chainId: '5',
-      },
-      {
-        balance: 5,
-        chainId: '6',
-        percentage: 25,
-      },
-      {
-        balance: undefined,
-        chainId: '7',
-        percentage: 0,
-      },
-      {
-        chainId: '8',
-      },
-      {
-        chainId: '9',
-      },
-    ];
-
     expect(result).toEqual(expectedResult);
   });
 });
@@ -167,7 +115,7 @@ describe('calculateMaxChainBalance', () => {
       { chainId: '2', balance: 2 },
       { chainId: '3', balance: 5 },
       { chainId: '4' },
-    ] as IChainAccounts;
+    ] as IChainBalanceProps[];
     const result = calculateMaxChainBalance(chains);
     expect(result).toEqual(20);
   });

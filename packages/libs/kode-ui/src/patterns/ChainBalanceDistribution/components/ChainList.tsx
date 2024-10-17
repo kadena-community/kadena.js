@@ -1,14 +1,21 @@
-import { Badge, Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useMemo } from 'react';
-import type { IViewChain } from '../types';
+import type { IChainBalanceProps } from '../types';
+import { Badge, Stack } from './../../../components';
 import { ChainBalance } from './ChainBalance';
 
 interface IProps {
-  chains: IViewChain[];
+  chains: IChainBalanceProps[];
 }
 export const ChainList: FC<IProps> = ({ chains }) => {
   const { low, high, value } = useMemo(() => {
+    if (!chains.length) {
+      return {
+        high: 0,
+        low: 0,
+        value: 0,
+      };
+    }
     const low = chains[0].chainId;
     const high = chains[chains.length - 1].chainId;
 
@@ -18,6 +25,8 @@ export const ChainList: FC<IProps> = ({ chains }) => {
 
     return { high, low, value };
   }, [chains]);
+
+  console.log({ chains });
   return (
     <Stack flex={1} flexDirection="column" width="100%" gap="sm">
       <Stack gap="xs">
@@ -33,9 +42,9 @@ export const ChainList: FC<IProps> = ({ chains }) => {
         marginInline="no"
         paddingInline="no"
       >
-        {chains.map((chainAccount, idx) => (
+        {chains.map((chainAccount) => (
           <ChainBalance
-            key={`${idx}`}
+            key={`${chainAccount.chainId}`}
             chainAccount={chainAccount}
             idx={chainAccount.chainId}
           />

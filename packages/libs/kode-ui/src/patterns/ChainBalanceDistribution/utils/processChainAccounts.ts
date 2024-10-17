@@ -1,9 +1,12 @@
-import type { IViewChain } from '../types';
+import type { IChainBalanceProps } from '../types';
 
-export const calculateMaxChainBalance = (chains: IViewChain[]): number => {
+export const calculateMaxChainBalance = (
+  chains: IChainBalanceProps[],
+): number => {
   return chains.reduce((acc: number, val) => {
     if (typeof val === 'string') return acc;
-    return val.balance > acc ? val.balance : acc;
+    const balance = val.balance ?? 0;
+    return balance > acc ? balance : acc;
   }, 0);
 };
 
@@ -23,39 +26,15 @@ export const chainBalancePercentage = (
   return percentage < THRESHOLD ? THRESHOLD : percentage;
 };
 
-export const processChainAccounts = (
-  chains: IChainAccounts,
-  chainCount: number,
-): IViewChain[] => {
-  const maxChainBalance = calculateMaxChainBalance(chains);
-
-  return Array.from(Array(chainCount).keys()).map((idx) => {
-    const chain = chains.find((c) => {
-      return typeof c !== 'string' && c?.chainId === `${idx}`;
-    });
-
-    if (!chain || typeof chain === 'string') {
-      return {
-        chainId: `${idx}`,
-      } as IViewChain;
-    }
-    return {
-      chainId: chain?.chainId,
-      balance: chain?.balance,
-      percentage: chainBalancePercentage(chain?.balance ?? 0, maxChainBalance),
-    } as IViewChain;
-  });
-};
-
 /**
  * creates an array of all the available chains.
  * and adds the balance values of the IChainAccounts in the correct place
  */
 export const divideChains = (
-  chains: IViewChain[],
+  chains: IChainBalanceProps[],
   listCount: number,
-): IViewChain[][] => {
-  const result: IViewChain[][] = [];
+): IChainBalanceProps[][] => {
+  const result: IChainBalanceProps[][] = [];
   const totalLength = chains.length;
   const baseSize = Math.floor(totalLength / listCount);
   const extraItems = totalLength % listCount;

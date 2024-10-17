@@ -1,10 +1,8 @@
 export interface IChainBalanceDistributionProps {
-  accountName: string;
-  chains: IViewChain[];
-  maxChainCount: number;
+  chains: IChainBalanceProps[];
 }
 
-export interface IViewChain {
+export interface IChainBalanceProps {
   chainId: string;
   percentage?: number;
   balance?: number;

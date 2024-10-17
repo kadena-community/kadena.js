@@ -1,113 +1,9 @@
-import type { IChainAccounts } from '@/components/AccountBalanceDistribution/components/ChainList';
-import type { IViewChain } from '../processChainAccounts';
+import type { IChainBalanceProps } from '@kadena/kode-ui/patterns';
 import {
   calculateMaxChainBalance,
   chainBalancePercentage,
-  divideChains,
   processChainAccounts,
 } from '../processChainAccounts';
-
-describe('divideChains', () => {
-  it('should return an array with correct length', async () => {
-    const chains: IViewChain[] = [
-      { chainId: '0' },
-      { chainId: '1' },
-      { chainId: '2' },
-      { chainId: '3' },
-      { chainId: '4' },
-      { chainId: '5' },
-      { chainId: '6' },
-      { chainId: '7' },
-      { chainId: '8' },
-      { chainId: '9' },
-      { chainId: '10' },
-      { chainId: '11' },
-      { chainId: '12' },
-      { chainId: '13' },
-      { chainId: '14' },
-    ];
-
-    const result = divideChains(chains, 2);
-
-    const expectedResult = [
-      [
-        { chainId: '0' },
-        { chainId: '1' },
-        { chainId: '2' },
-        { chainId: '3' },
-        { chainId: '4' },
-        { chainId: '5' },
-        { chainId: '6' },
-        { chainId: '7' },
-      ],
-      [
-        { chainId: '8' },
-        { chainId: '9' },
-        { chainId: '10' },
-        { chainId: '11' },
-        { chainId: '12' },
-        { chainId: '13' },
-        { chainId: '14' },
-      ],
-    ];
-
-    expect(result).toEqual(expectedResult);
-  });
-
-  it('should return an array with correct length with uneven count', async () => {
-    const chains: IViewChain[] = [
-      { chainId: '0' },
-      { chainId: '1' },
-      { chainId: '2' },
-      { chainId: '3' },
-      { chainId: '4' },
-      { chainId: '5' },
-      { chainId: '6' },
-      { chainId: '7' },
-      { chainId: '8' },
-      { chainId: '9' },
-      { chainId: '10' },
-      { chainId: '11' },
-      { chainId: '12' },
-      { chainId: '13' },
-    ];
-
-    const result = divideChains(chains, 3);
-
-    const expectedResult = [
-      [
-        { chainId: '0' },
-        { chainId: '1' },
-        { chainId: '2' },
-        { chainId: '3' },
-        { chainId: '4' },
-      ],
-      [
-        { chainId: '5' },
-        { chainId: '6' },
-        { chainId: '7' },
-        { chainId: '8' },
-        { chainId: '9' },
-      ],
-      [
-        { chainId: '10' },
-        { chainId: '11' },
-        { chainId: '12' },
-        { chainId: '13' },
-      ],
-    ];
-
-    expect(result).toEqual(expectedResult);
-  });
-
-  it('should return an empty array ', async () => {
-    const chains: IViewChain[] = [];
-    const result = divideChains(chains, 4);
-
-    const expectedResult = [[], [], [], []];
-    expect(result).toEqual(expectedResult);
-  });
-});
 
 describe('processChainAccounts', () => {
   it('should process the string and objects of the chain array to the correct format with percentages', () => {
@@ -117,7 +13,7 @@ describe('processChainAccounts', () => {
       { chainId: '2', balance: 2 },
       { chainId: '6', balance: 5 },
       { chainId: '7' },
-    ] as IChainAccounts;
+    ] as IChainBalanceProps[];
 
     const result = processChainAccounts(chains, 10);
     const expectedResult = [
@@ -167,7 +63,7 @@ describe('calculateMaxChainBalance', () => {
       { chainId: '2', balance: 2 },
       { chainId: '3', balance: 5 },
       { chainId: '4' },
-    ] as IChainAccounts;
+    ] as IChainBalanceProps[];
     const result = calculateMaxChainBalance(chains);
     expect(result).toEqual(20);
   });

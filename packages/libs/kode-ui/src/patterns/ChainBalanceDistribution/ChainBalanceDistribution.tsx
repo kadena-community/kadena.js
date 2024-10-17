@@ -1,20 +1,15 @@
-import { Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useMemo } from 'react';
+import { Stack } from './../../components';
 import { ChainList } from './components/ChainList';
 import type { IChainBalanceDistributionProps } from './types';
-import {
-  divideChains,
-  processChainAccounts,
-} from './utils/processChainAccounts';
+import { divideChains } from './utils/processChainAccounts';
 
-export const AccountBalanceDistribution: FC<IChainBalanceDistributionProps> = ({
+export const ChainBalanceDistribution: FC<IChainBalanceDistributionProps> = ({
   chains = [],
-  maxChainCount = 20,
 }) => {
   const chainLists = useMemo(() => {
-    const enrichedChains = processChainAccounts(chains, maxChainCount);
-    return divideChains(enrichedChains, 2);
+    return divideChains(chains, 2);
   }, [chains]);
 
   return (
