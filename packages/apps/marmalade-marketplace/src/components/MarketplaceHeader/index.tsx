@@ -1,33 +1,45 @@
-import { useState } from 'react';
-import { useTheme } from 'next-themes'
-import { MonoAccountCircle, MonoCheck, MonoClose, MonoContrast, MonoLogout, MonoControlPointDuplicate } from '@kadena/kode-icons';
+import ConnectWallet from '@/components/ConnectWallet';
+import { MarmaladeMarketplaceLogo } from '@/components/MarmaladeMarketplaceLogo';
 import SpireKeyKdacolorLogoWhite from '@/components/SpireKeyKdacolorLogoWhite';
 import { useAccount } from '@/hooks/account';
 import { useTransaction } from '@/hooks/transaction';
-import { useRouter } from 'next/navigation';
-import { fundAccount } from '@/utils/fund'
+import { fundAccount } from '@/utils/fund';
 import {
-  NavHeader,
-  NavHeaderLinkList,
+  MonoAccountCircle,
+  MonoCheck,
+  MonoClose,
+  MonoContrast,
+  MonoControlPointDuplicate,
+  MonoLogout,
+  MonoMenuOpen,
+} from '@kadena/kode-icons';
+import {
+  Badge,
   Button,
-  NavHeaderButton,
-  Notification,
-  NotificationFooter,
-  NotificationButton,
-  NotificationHeading,
+  ContextMenu,
+  ContextMenuItem,
   Link,
-  Badge
+  Media,
+  NavHeader,
+  NavHeaderButton,
+  NavHeaderLinkList,
+  Notification,
+  NotificationButton,
+  NotificationFooter,
+  NotificationHeading,
+  Stack,
 } from '@kadena/kode-ui';
-import { MarmaladeMarketplaceLogo } from '@/components/MarmaladeMarketplaceLogo';
-import ConnectWallet from '@/components/ConnectWallet';
+import { useTheme } from 'next-themes';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import * as styles from './style.css';
 
-export const MarketplaceHeader= () => {
+export const MarketplaceHeader = () => {
   const [showNotification, setShowNotification] = useState(false);
   const { account, login, logout } = useAccount();
   const { setTransaction } = useTransaction();
   const router = useRouter();
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme } = useTheme();
 
   const onFundAccount = () => {
     setShowNotification(false);
@@ -42,79 +54,127 @@ export const MarketplaceHeader= () => {
   };
 
   return (
-    <NavHeader logo={
-      <a href="/">
-        <MarmaladeMarketplaceLogo height={56}/>
-      </a>
-    }>
-      <NavHeaderLinkList>
-        <Link
-          className={styles.navHeaderLink}
-          href="/"
-        >
-          Marketplace
+    <NavHeader
+      logo={
+        <Link href="/">
+          <MarmaladeMarketplaceLogo height={56} />
         </Link>
-        <Link
-          href="/tokens"
-          endVisual={<Badge size='sm' style={'highContrast'}>beta</Badge>}
-        >
-          Create
-        </Link>
-        <Link className={styles.navHeaderLink}
-          href="/mint"
-          endVisual={<Badge size='sm' style={'highContrast'}>beta</Badge>}
-        >
-          Mint
-        </Link>
-        {account ? (<Link className={styles.navHeaderLink}
-          href="/mytokens"
-        >
-          My Tokens
-        </Link>) : <></>}
-      </NavHeaderLinkList>
-      <NavHeaderButton onPress={toggleTheme}  endVisual={<MonoContrast />} />
-      {account
-        ? (           
-            <ConnectWallet 
-              showContextMenu={true} 
-              account={account.accountName} 
-              accountAlias={account.alias} 
-              menuItems={[
-                {
-                  title: 'Fund Account',
-                  onClick: () => setShowNotification(true),
-                  key: 'fund',
-                  startVisual: <MonoControlPointDuplicate />
-                },
-                {
-                  title: 'Profile Settings',
-                  onClick: () => router.push('/profile'),
-                  key: 'profile',
-                  startVisual: <MonoAccountCircle />
-                },
-                {
-                  title: 'Disconnect',
-                  onClick: () => logout(),
-                  key: 'disconnect',
-                  startVisual: <MonoLogout />
-                }
-              ]}
-            />
-          )
-        : <Button onClick={login} variant="primary" isCompact={false}
-        startVisual={<SpireKeyKdacolorLogoWhite style={{color: 'black'}}/>}
-        endVisual={<Badge style={'inverse'} size="sm" >Wallet</Badge>}>Connect</Button>
       }
-      {showNotification && <div style={{ position: 'absolute', top: '65px', right: "50px" }}>
+    >
+      <NavHeaderLinkList>
+        <Media lessThan="md">
+          <Stack flex={1}></Stack>
+        </Media>
+        <Media greaterThanOrEqual="md">
+          <Link className={styles.navHeaderLink} href="/">
+            Marketplace
+          </Link>
+          <Link
+            className={styles.navHeaderLink}
+            href="/tokens"
+            endVisual={
+              <Badge size="sm" style={'highContrast'}>
+                beta
+              </Badge>
+            }
+          >
+            Create
+          </Link>
+          {account ? (
+            <Link className={styles.navHeaderLink} href="/mytokens">
+              My Tokens
+            </Link>
+          ) : (
+            <></>
+          )}
+        </Media>
+      </NavHeaderLinkList>
+
+      <NavHeaderButton onPress={toggleTheme} endVisual={<MonoContrast />} />
+
+      <Stack className={styles.accountButtonWrapperClass} gap="md">
+        {account ? (
+          <ConnectWallet
+            showContextMenu={true}
+            account={account.accountName}
+            accountAlias={account.alias}
+            menuItems={[
+              {
+                title: 'Fund Account',
+                onClick: () => setShowNotification(true),
+                key: 'fund',
+                startVisual: <MonoControlPointDuplicate />,
+              },
+              {
+                title: 'Profile Settings',
+                onClick: () => router.push('/profile'),
+                key: 'profile',
+                startVisual: <MonoAccountCircle />,
+              },
+              {
+                title: 'Disconnect',
+                onClick: () => logout(),
+                key: 'disconnect',
+                startVisual: <MonoLogout />,
+              },
+            ]}
+          />
+        ) : (
+          <Button
+            onClick={login}
+            variant="primary"
+            isCompact={false}
+            startVisual={
+              <SpireKeyKdacolorLogoWhite style={{ color: 'black' }} />
+            }
+            endVisual={
+              <Badge style={'inverse'} size="sm">
+                Wallet
+              </Badge>
+            }
+          >
+            Connect
+          </Button>
+        )}
+        <Media lessThan="md">
+          <ContextMenu trigger={<Button endVisual={<MonoMenuOpen />} />}>
+            <ContextMenuItem
+              label="Marketplace"
+              onClick={() => router.push('/')}
+            />
+            <ContextMenuItem
+              label="Create"
+              onClick={() => router.push('/tokens')}
+              endVisual={
+                <Badge size="sm" style={'highContrast'}>
+                  beta
+                </Badge>
+              }
+            />
+            <ContextMenuItem
+              label="Mint"
+              onClick={() => router.push('/mint')}
+              endVisual={
+                <Badge size="sm" style={'highContrast'}>
+                  beta
+                </Badge>
+              }
+            />
+            <ContextMenuItem
+              label="My Tokens"
+              onClick={() => router.push('/mytokens')}
+            />
+          </ContextMenu>
+        </Media>
+      </Stack>
+      {showNotification && (
         <Notification
           intent="info"
           isDismissable={false}
           role="none"
           type="stacked"
         >
-          <NotificationHeading>
-            Faucet
-          </NotificationHeading>
+          <NotificationHeading>Faucet</NotificationHeading>
           Are you sure you want to fund your account with 20 KDA?
           <NotificationFooter>
             <NotificationButton
@@ -133,7 +193,7 @@ export const MarketplaceHeader= () => {
             </NotificationButton>
           </NotificationFooter>
         </Notification>
-      </div>}
+      )}
     </NavHeader>
   );
 };
