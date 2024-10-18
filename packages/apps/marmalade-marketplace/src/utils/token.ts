@@ -31,7 +31,8 @@ export const fetchData = async <Data = any>(
 };
 
 export const toIpfsGatewayUrl = (uri: string): string => {
-  return `https://gateway.pinata.cloud/ipfs/${uri.split('ipfs://')[1]}`;
+  const arr = uri.split('/');
+  return `/pinata/${arr[arr.length - 1]}`;
 };
 
 export const toArweaveGatewayUrl = (uri: string): string => {
@@ -61,7 +62,11 @@ export const getTokenImageUrl = (uri: string): string | null => {
     return null;
   }
 
-  if (uri.startsWith('ipfs:')) {
+  if (
+    uri.startsWith('ipfs:') ||
+    uri.includes('ipfs.io') ||
+    uri.includes('pinata')
+  ) {
     return toIpfsGatewayUrl(uri);
   }
 
