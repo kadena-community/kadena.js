@@ -1,7 +1,8 @@
 import { ConventionalAuction } from '@/components/Sale/ConventionalAuction';
 import { useAccount } from '@/hooks/account';
-import { Bid, getBids } from '@/hooks/getBids';
+import { Bid, useGetBids } from '@/hooks/getBids';
 import { Sale } from '@/hooks/getSales';
+import { IAccountContext } from '@/providers/AccountProvider/AccountProvider';
 import { getAuctionDetails } from '@kadena/client-utils/marmalade';
 import { render, screen, waitFor } from '@testing-library/react';
 import { expect, test } from 'vitest';
@@ -14,7 +15,7 @@ vi.mock('@kadena/client-utils/marmalade');
 
 const mockUseAccount = vi.mocked(useAccount);
 const mockGetAuctionDetails = vi.mocked(getAuctionDetails);
-const mockGetBids = vi.mocked(getBids);
+const mockGetBids = vi.mocked(useGetBids);
 
 // Mocking the Token component
 vi.mock('@/components/Token', () => ({
@@ -66,10 +67,12 @@ describe('ConventionalAuction component', () => {
       },
     ];
 
-    mockUseAccount.mockReturnValue(mockAccountContext);
+    mockUseAccount.mockReturnValue(
+      mockAccountContext as unknown as IAccountContext,
+    );
     mockGetAuctionDetails.mockReturnValue(Promise.resolve(mockAuctionDetails));
 
-    mockGetBids.mockReturnValue({
+    mockGetBids?.mockReturnValue({
       data: mockBids as Bid[],
       loading: false,
       error: null,
