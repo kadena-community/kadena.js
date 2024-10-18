@@ -30,6 +30,7 @@ import { linkClass } from '../transfer/style.css.ts';
 import { buttonListClass } from './style.css.ts';
 
 export function CreateAccount() {
+  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
   const [created, setCreated] = useState<IAccount | null>(null);
   const [searchParams] = useSearchParams();
   const urlContract = searchParams.get('contract');
@@ -144,16 +145,38 @@ export function CreateAccount() {
           ))}
         </Select>
         <TextField label="Alias" onChange={(e) => setAlias(e.target.value)} />
-        {contract && (
+        {
+          <Stack gap={'lg'}>
+            <Button
+              isDisabled={!contract}
+              onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
+              variant="outlined"
+            >
+              {showAdvancedOptions
+                ? 'Switch to simple mode'
+                : 'Use advanced options'}
+            </Button>
+            {!showAdvancedOptions && (
+              <Button
+                onClick={async () => {
+                  const keySource = keySources[0];
+                  const key = await createKey(keySource);
+                  await createAccountByKey(key);
+                }}
+                isDisabled={!contract}
+              >
+                Create Account
+              </Button>
+            )}
+          </Stack>
+        }
+        {contract && showAdvancedOptions && (
           <Stack flexDirection={'column'} gap={'md'}>
-            <Text color="emphasize" bold size="small">
-              Choose one option
-            </Text>
             <Tabs>
               <TabItem
                 title={
                   <Text size="small" bold color="emphasize">
-                    Select one of the existing keys
+                    Create or use a key
                   </Text>
                 }
               >
@@ -171,18 +194,23 @@ export function CreateAccount() {
                       >
                         <Heading variant="h4">{keySource.source}</Heading>
                         <Button
-                          startVisual={<MonoAdd />}
-                          variant="outlined"
-                          isCompact
+                          variant="info"
                           onPress={async () => {
                             const key = await createKey(keySource);
                             createAccountByKey(key);
                           }}
                         >
-                          New Key
+                          <Stack alignItems={'center'} gap={'sm'}>
+                            <MonoAdd />
+                            <span>Use a new key from {keySource.source}</span>
+                          </Stack>
                         </Button>
                       </Stack>
+                      <Text>
+                        Select on of the following keys to create account
+                      </Text>
                       <Stack flexDirection={'column'}>
+                        <Stack></Stack>
                         {keySource.keys.map((key) => {
                           const disabled = usedKeys.includes(key.publicKey);
                           return (
@@ -216,7 +244,7 @@ export function CreateAccount() {
               <TabItem
                 title={
                   <Text size="small" bold color="emphasize">
-                    Select one of the existing keysets
+                    Create or use a keyset
                   </Text>
                 }
               >
@@ -239,12 +267,14 @@ export function CreateAccount() {
                     <Button
                       startVisual={<MonoAdd />}
                       onPress={() => setShowCreateKeyset(true)}
-                      variant="outlined"
-                      isCompact
+                      variant="info"
                     >
-                      Key Set
+                      Use a new keyset
                     </Button>
                   </Stack>
+                  <Text>
+                    Select on of the following keysets to create account
+                  </Text>
                   <Stack flexDirection={'column'} gap={'sm'}>
                     <Stack flexDirection={'column'}>
                       {keysets
