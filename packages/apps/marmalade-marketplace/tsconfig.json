@@ -1,7 +1,12 @@
 {
   "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {
-    "types": ["node", "vitest/globals", "vitest-dom/extend-expect"],
+    "types": [
+      "node",
+      "vitest/globals",
+      "vitest-dom/extend-expect",
+      "@types/gtag.js"
+    ],
     "rootDir": ".",
     "baseUrl": ".",
     "target": "ES2020",
@@ -34,8 +39,5 @@
     "css.d.ts",
     "scripts"
   ],
-  "exclude": [
-    "node_modules",
-    "src/__generated__/**"
-  ]
+  "exclude": ["node_modules", "src/__generated__/**"]
 }
