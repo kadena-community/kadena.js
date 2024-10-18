@@ -1,21 +1,32 @@
+import { Stack, Text, TextField } from '@kadena/kode-ui';
 import React, { FC } from 'react';
-import { TextField } from '@kadena/kode-ui';
-import CrudCard from '@/components/CrudCard';
+
+import { CardContentBlock } from '@kadena/kode-ui/patterns';
 
 interface CollectionFormProps {
   collectionInput: { [key: string]: string };
   handleCollectionInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const CollectionForm: FC<CollectionFormProps> = ({ collectionInput, handleCollectionInputChange,  }) => (
-  <CrudCard
+const CollectionForm: FC<CollectionFormProps> = ({
+  collectionInput,
+  handleCollectionInputChange,
+}) => (
+  <CardContentBlock
     title="Collection"
-    description={[
-      "Provide a Collection ID"
-    ]}
+    supportingContent={
+      <Stack flexDirection="column" width="100%" gap="md">
+        <Text>Provide a Collection ID</Text>
+      </Stack>
+    }
   >
-    <TextField label="Collection ID" name="collectionId" value={collectionInput.collectionId} onChange={handleCollectionInputChange} />
-  </CrudCard>
+    <TextField
+      label="Collection ID"
+      name="collectionId"
+      value={collectionInput.collectionId}
+      onChange={handleCollectionInputChange}
+    />
+  </CardContentBlock>
 );
 
 export default CollectionForm;
