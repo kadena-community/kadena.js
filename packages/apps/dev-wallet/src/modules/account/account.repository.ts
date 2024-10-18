@@ -62,6 +62,17 @@ const createAccountRepository = ({
     keyset: await getKeyset(account.keysetId),
   });
   return {
+    async getKeysetByPrincipal(
+      principal: string,
+      profileId: string,
+    ): Promise<IKeySet> {
+      const list: IKeySet[] = await getAll(
+        'keyset',
+        IDBKeyRange.only([profileId, principal]),
+        'unique-keyset',
+      );
+      return list[0];
+    },
     addKeyset: async (keyset: IKeySet): Promise<void> => {
       return add('keyset', keyset);
     },

@@ -472,10 +472,16 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       );
     });
     const getHostUrl = hostUrlGenerator(filteredNetworks);
+
     setGlobalConfig({
       host: getHostUrl,
+      defaults: {
+        meta: { chainId: '0' },
+        networkId: contextValue.activeNetwork?.networkId,
+      },
     });
     setContextValue((ctx) => ({ ...ctx, client: createClient(getHostUrl) }));
+    console.log('networks changed', contextValue.activeNetwork);
   }, [contextValue.networks, contextValue.activeNetwork]);
 
   return (

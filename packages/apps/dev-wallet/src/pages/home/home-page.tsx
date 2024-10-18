@@ -9,7 +9,6 @@ import { transactionRepository } from '@/modules/transaction/transaction.reposit
 import { getAccountName } from '@/utils/helpers';
 import { useAsync } from '@/utils/useAsync';
 import { IPactCommand } from '@kadena/client';
-import { MonoSave } from '@kadena/kode-icons';
 import { MonoContentCopy } from '@kadena/kode-icons/system';
 
 import {
@@ -55,27 +54,14 @@ export function HomePage() {
   return (
     <Box gap={'lg'}>
       <Text>Welcome back</Text>
-      <Heading as="h1">
-        {profile?.name}{' '}
-        <Link to={'/backup-recovery-phrase/write-down'}>
-          <Button
-            variant="outlined"
-            startVisual={<MonoSave />}
-            onPress={(e: any) => {
-              e.preventDefault();
-            }}
-          >
-            Backup
-          </Button>
-        </Link>
-      </Heading>
+      <Heading as="h1">{profile?.name} </Heading>
       <Stack gap={'lg'} flexDirection={'column'}>
         <Box className={panelClass} marginBlockStart="xl">
           <Box marginBlockStart={'sm'}>
             <Assets accounts={accounts} fungibles={fungibles} showAddToken />
           </Box>
         </Box>
-        <RecentlyUsedAccounts accounts={accounts} fungibles={fungibles} />
+        <Accounts accounts={accounts} fungibles={fungibles} />
         <Stack className={panelClass} flexDirection={'column'} gap={'lg'}>
           <Heading variant="h4">Wallet Activities</Heading>
           <Stack>
@@ -97,7 +83,7 @@ export function HomePage() {
   );
 }
 
-export function RecentlyUsedAccounts({
+export function Accounts({
   accounts,
   fungibles,
 }: {
@@ -109,6 +95,9 @@ export function RecentlyUsedAccounts({
   return (
     <Box className={panelClass} marginBlockStart="xs">
       <Heading as="h4">Your accounts</Heading>
+      <Link to="/create-account" className={linkClass}>
+        Create Account
+      </Link>
       {accounts.length ? (
         <Box marginBlockStart="md">
           <ul className={listClass}>
@@ -116,28 +105,35 @@ export function RecentlyUsedAccounts({
               ({ overallBalance, keyset, uuid, contract, address }) => (
                 <li key={keyset?.principal}>
                   <Link to={`/account/${uuid}`} className={noStyleLinkClass}>
-                    <ListItem>
-                      <Stack flexDirection={'column'} gap={'sm'}>
-                        <Text>
-                          {keyset?.alias || getAccountName(keyset!.principal)}
-                        </Text>
-                      </Stack>
-                      <Stack alignItems={'center'} gap={'sm'}>
-                        <Text>
-                          {overallBalance} {getSymbol(contract)}
-                        </Text>
-                        <Button
-                          isCompact
-                          variant="transparent"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            navigator.clipboard.writeText(address);
-                          }}
-                        >
-                          <MonoContentCopy />
-                        </Button>
-                      </Stack>
-                    </ListItem>
+                    <Stack
+                      gap={'sm'}
+                      flex={undefined}
+                      justifyContent={'center'}
+                      alignItems={'center'}
+                    >
+                      <ListItem>
+                        <Stack flexDirection={'column'} gap={'sm'}>
+                          <Text>
+                            {keyset?.alias || getAccountName(keyset!.principal)}
+                          </Text>
+                        </Stack>
+                        <Stack alignItems={'center'} gap={'sm'}>
+                          <Text>
+                            {overallBalance} {getSymbol(contract)}
+                          </Text>
+                          <Button
+                            isCompact
+                            variant="transparent"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              navigator.clipboard.writeText(address);
+                            }}
+                          >
+                            <MonoContentCopy />
+                          </Button>
+                        </Stack>
+                      </ListItem>
+                    </Stack>
                   </Link>
                 </li>
               ),

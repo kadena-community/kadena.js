@@ -1,44 +1,29 @@
-import {
-  accountRepository,
-  Fungible,
-  IAccount,
-  IKeySet,
-} from '@/modules/account/account.repository';
+import { IAccount } from '@/modules/account/account.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { panelClass } from '@/pages/home/style.css';
 import { linkClass } from '@/pages/select-profile/select-profile.css';
 import { getAccountName } from '@/utils/helpers';
 import { Box, Heading, Stack, Text } from '@kadena/kode-ui';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ListItem } from '../ListItem/ListItem';
-import {
-  listClass,
-  noStyleButtonClass,
-  noStyleLinkClass,
-  panelClass,
-} from './style.css';
+import { listClass, noStyleLinkClass } from './style.css';
 
 export function Accounts({
   accounts,
-  keysets,
-  asset,
+  contract,
 }: {
   accounts: IAccount[];
-  keysets: IKeySet[];
-  asset?: Fungible;
+  contract: string;
 }) {
   const { profile, activeNetwork } = useWallet();
-  const navigate = useNavigate();
-  const notUsedKeysets = keysets.filter(
-    (ks) => !accounts.find((acc) => acc.keysetId === ks.uuid),
-  );
-  const totalAccounts = accounts.length + notUsedKeysets.length;
+  const totalAccounts = accounts.length;
   if (!profile || !activeNetwork) {
     return null;
   }
   return (
     <Box className={panelClass} marginBlockStart="xs">
       <Heading as="h4">{totalAccounts} accounts</Heading>
-      <Link to="/create-account" className={linkClass}>
+      <Link to={`/create-account?contract=${contract}`} className={linkClass}>
         Create Account
       </Link>
       {totalAccounts ? (
@@ -59,40 +44,6 @@ export function Accounts({
                     </Stack>
                   </ListItem>
                 </Link>
-              </li>
-            ))}
-            {notUsedKeysets.map((keyset) => (
-              <li key={keyset?.principal}>
-                <button
-                  className={noStyleButtonClass}
-                  onClick={async (e) => {
-                    e.preventDefault();
-                    const account: IAccount = {
-                      uuid: crypto.randomUUID(),
-                      profileId: profile.uuid,
-                      address: keyset?.principal,
-                      keysetId: keyset.uuid,
-                      networkUUID: activeNetwork.uuid,
-                      contract: asset?.contract ?? 'coin',
-                      chains: [],
-                      overallBalance: '0',
-                    };
-
-                    await accountRepository.addAccount(account);
-                    navigate(`/account/${account.uuid}`);
-                  }}
-                >
-                  <ListItem>
-                    <Stack flexDirection={'column'} gap={'sm'}>
-                      <Text>
-                        {keyset?.alias || getAccountName(keyset!.principal)}
-                      </Text>
-                    </Stack>
-                    <Stack alignItems={'center'} gap={'sm'}>
-                      <Text>0 {asset?.symbol ?? 'KDA'}</Text>
-                    </Stack>
-                  </ListItem>
-                </button>
               </li>
             ))}
           </ul>

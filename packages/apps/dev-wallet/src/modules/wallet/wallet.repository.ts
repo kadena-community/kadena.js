@@ -66,7 +66,9 @@ const createWalletRepository = ({
       return add('encryptedValue', value, key, { noCreationTime: true });
     },
     getProfileKeySources: async (profileId: string): Promise<IKeySource[]> => {
-      return getAll('keySource', profileId, 'profileId');
+      return (
+        (await getAll('keySource', profileId, 'profileId')) as IKeySource[]
+      ).reverse();
     },
     getKeySource: async (keySourceId: string): Promise<IKeySource> => {
       return getOne('keySource', keySourceId);

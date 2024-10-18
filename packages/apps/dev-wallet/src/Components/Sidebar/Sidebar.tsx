@@ -6,6 +6,7 @@ import {
   MonoSwapHoriz,
   MonoTableRows,
   MonoTerminal,
+  MonoTextSnippet,
 } from '@kadena/kode-icons';
 import { Box, Divider, Heading, Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
@@ -69,7 +70,7 @@ export const Sidebar: FC = () => {
             </Stack>
             <Stack gap={'xxs'} flexDirection={'column'} marginBlockEnd={'n9'}>
               <Stack justifyContent={'center'} flexDirection={'column'}>
-                <Heading variant="h5">Dev Tools</Heading>
+                <Heading variant="h5">Advanced Tools</Heading>
                 <Divider variant="bold" />
               </Stack>
               <li className={sidebarMenuOptionClass}>
@@ -83,11 +84,25 @@ export const Sidebar: FC = () => {
                 </NavLink>
               </li>
               <li className={sidebarMenuOptionClass}>
-                <NavLink to="/key-sources" className={sidebarLinkClass}>
+                <NavLink
+                  to="/backup-recovery-phrase/write-down"
+                  className={sidebarLinkClass}
+                >
+                  <Text>
+                    <Stack alignItems="center" gap="md">
+                      <MonoTextSnippet />
+                      Backup
+                    </Stack>
+                  </Text>
+                </NavLink>
+              </li>
+
+              <li className={sidebarMenuOptionClass}>
+                <NavLink to="/key-management/keys" className={sidebarLinkClass}>
                   <Text>
                     <Stack alignItems="center" gap="md">
                       <MonoKey />
-                      Key sources
+                      Keys
                     </Stack>
                   </Text>
                 </NavLink>

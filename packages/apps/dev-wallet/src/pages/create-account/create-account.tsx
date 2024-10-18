@@ -1,230 +1,306 @@
 import {
+  accountRepository,
   IAccount,
   IKeySet,
-  accountRepository,
 } from '@/modules/account/account.repository.ts';
-import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.tsx';
-import { keySourceManager } from '@/modules/key-source/key-source-manager.ts';
-import { WebAuthnService } from '@/modules/key-source/web-authn/webauthn.ts';
+
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { KeySourceType } from '@/modules/wallet/wallet.repository.ts';
+import { IKeyItem } from '@/modules/wallet/wallet.repository.ts';
 import { createPrincipal } from '@kadena/client-utils/built-in';
 
+import { Key } from '@/Components/Key/Key.tsx';
+import { Keyset } from '@/Components/Keyset/Keyset.tsx';
+import { MonoAdd } from '@kadena/kode-icons/system';
 import {
   Button,
   Heading,
   Select,
   SelectItem,
   Stack,
+  TabItem,
+  Tabs,
   Text,
-  TextareaField,
+  TextField,
 } from '@kadena/kode-ui';
 import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
-import {
-  advanceOptions,
-  cardClass,
-  keyInput,
-  selectedClass,
-} from './style.css.ts';
+import { Link, Navigate, useSearchParams } from 'react-router-dom';
+import { panelClass } from '../home/style.css.ts';
+import { CreateKeySetDialog } from '../keys/Components/CreateKeySetDialog.tsx';
+import { linkClass } from '../transfer/style.css.ts';
+import { buttonListClass } from './style.css.ts';
 
 export function CreateAccount() {
-  const [created, setCreated] = useState(false);
-  const { keySources, createKey, profile, askForPassword, activeNetwork } =
-    useWallet();
-  const [selectedPred, setSelectedPred] = useState<
-    'keys-all' | 'keys-any' | 'keys-2'
-  >('keys-all');
-  const [showAdvanced, setShowAdvanced] = useState(false);
-  const [externalKeys, setExternalKeys] = useState('');
-  const [selectedKeySources, setSelectedKeySources] = useState<string[]>([]);
+  const [created, setCreated] = useState<IAccount | null>(null);
+  const [searchParams] = useSearchParams();
+  const urlContract = searchParams.get('contract');
+  const [contract, setContract] = useState<string | null>(urlContract);
+  const [alias, setAlias] = useState<string | null>(null);
+  const {
+    keySources,
+    createKey,
+    profile,
+    activeNetwork,
+    fungibles,
+    keysets,
+    accounts,
+  } = useWallet();
 
-  const { createHDWallet } = useHDWallet();
-  async function createWebAuthn() {
-    if (!profile) {
-      throw new Error('No profile found');
-    }
-    if (keySources.find((keySource) => keySource.source === 'web-authn')) {
-      // basically its possible to have multiple web-authn sources
-      // but for now just for simplicity we will only allow one
-      alert('WebAuthn already created');
-      throw new Error('WebAuthn already created');
-    }
-    const service = (await keySourceManager.get(
-      'web-authn',
-    )) as WebAuthnService;
+  const filteredAccounts = accounts.filter(
+    (account) => account.contract === contract,
+  );
 
-    const { uuid } = await service.register(profile.uuid);
-    setSelectedKeySources([...selectedKeySources, uuid]);
-  }
+  const usedKeys = filteredAccounts.map((account) => {
+    const keys = account.keyset?.guard.keys;
+    if (keys?.length === 1 && account.keyset?.guard.pred === 'keys-all') {
+      return keys[0];
+    }
+  });
 
-  const registerWallet = (type: KeySourceType) => async () => {
-    if (type === 'web-authn') {
-      return createWebAuthn();
-    }
-    if (!profile) {
-      return;
-    }
-    const password = await askForPassword();
-    if (!password) {
-      return;
-    }
-    const { uuid } = await createHDWallet(profile?.uuid, type, password);
-    setSelectedKeySources([...selectedKeySources, uuid]);
-  };
+  const usedKeysets = filteredAccounts.map((account) => account.keyset?.uuid);
 
-  const create = async () => {
-    if (!profile || !activeNetwork) {
+  const [showCreateKeyset, setShowCreateKeyset] = useState(false);
+
+  const createAccountByKeyset = async (keyset: IKeySet) => {
+    if (!profile || !activeNetwork || !contract) {
       throw new Error('Profile or active network not found');
     }
-    const keys = showAdvanced
-      ? externalKeys.split(/\r?\n/).filter((key) => key.length > 0)
-      : [];
-    for (const keySource of keySources.filter((keySource) =>
-      selectedKeySources.includes(keySource.uuid),
-    )) {
-      const key = await createKey(keySource);
-      keys.push(key.publicKey);
-    }
-
-    const guard = {
-      keys: keys,
-      pred: showAdvanced ? selectedPred : 'keys-all',
-    };
-
-    const principal = await createPrincipal(
-      { keyset: guard },
-      {
-        defaults: {
-          meta: { chainId: '0' },
-          networkId: activeNetwork.networkId,
-        },
-      },
-    );
-
-    const keySet: IKeySet = {
-      guard: {
-        keys: keys,
-        pred: selectedPred,
-      },
-      principal,
-      profileId: profile.uuid,
-      uuid: crypto.randomUUID(),
-    };
-
     const account: IAccount = {
       uuid: crypto.randomUUID(),
+      alias: alias || '',
       profileId: profile.uuid,
-      address: principal,
-      keysetId: keySet.uuid,
+      address: keyset.principal,
+      keysetId: keyset.uuid,
       networkUUID: activeNetwork.uuid,
-      contract: 'coin',
+      contract,
       chains: [],
       overallBalance: '0',
     };
 
-    await accountRepository.addKeyset(keySet);
     await accountRepository.addAccount(account);
 
-    setCreated(true);
+    setCreated(account);
+  };
+
+  const createAccountByKey = async (key: IKeyItem) => {
+    if (!profile || !activeNetwork || !contract) {
+      throw new Error('Profile or active network not found');
+    }
+
+    const guard = {
+      keys: [key.publicKey],
+      pred: 'keys-all' as const,
+    };
+
+    const principal = await createPrincipal({ keyset: guard }, {});
+
+    let keyset = await accountRepository.getKeysetByPrincipal(
+      principal,
+      profile.uuid,
+    );
+
+    if (!keyset) {
+      keyset = {
+        principal: principal,
+        guard: guard,
+        profileId: profile.uuid,
+        uuid: crypto.randomUUID(),
+      };
+      await accountRepository.addKeyset(keyset);
+    }
+
+    const account: IAccount = {
+      uuid: crypto.randomUUID(),
+      alias: alias || '',
+      profileId: profile.uuid,
+      address: principal,
+      keysetId: keyset.uuid,
+      networkUUID: activeNetwork.uuid,
+      contract,
+      chains: [],
+      overallBalance: '0',
+    };
+
+    await accountRepository.addAccount(account);
+
+    setCreated(account);
   };
   if (created) {
-    // useNavigate does not work some times so I had to use Navigate
-    return <Navigate to="/" />;
+    return <Navigate to={`/account/${created.uuid}`} />;
   }
 
-  const keysCount = showAdvanced
-    ? externalKeys.split(/\r?\n/).filter((key) => key.length > 0).length +
-      selectedKeySources.length
-    : selectedKeySources.length;
-
   return (
-    <Stack
-      flexDirection={'column'}
-      gap={'md'}
-      justifyContent={'flex-start'}
-      alignItems={'flex-start'}
-    >
+    <Stack flexDirection={'column'} gap={'xxl'}>
       <Heading variant="h3">Create Account</Heading>
-      <Text>You can guard an account with keys from the following sources</Text>
-      <Stack flexDirection={'row'} flex={1} gap={'lg'}>
-        {keySources.map((keySource) => (
-          <button
-            key={keySource.uuid}
-            className={`${selectedKeySources.includes(keySource.uuid) ? selectedClass : cardClass}`}
-            onClick={() => {
-              if (selectedKeySources.includes(keySource.uuid)) {
-                setSelectedKeySources(
-                  selectedKeySources.filter((uuid) => uuid !== keySource.uuid),
-                );
-              } else {
-                setSelectedKeySources([...selectedKeySources, keySource.uuid]);
-              }
-            }}
-          >
-            <Text>{keySource.source}</Text>
-          </button>
-        ))}
-        {['HD-BIP44', 'HD-chainweaver', 'web-authn']
-          .filter((type) => !keySources.find((k) => k.source === type))
-          .map((type) => (
-            <button
-              key={type}
-              className={cardClass}
-              onClick={registerWallet(type as KeySourceType)}
-            >
-              <Stack flexDirection={'column'}>
-                <Text>{type}</Text>
-                <Text size="smallest">Not installed yet </Text>
-              </Stack>
-            </button>
+      <Stack flexDirection={'column'} gap={'xxl'}>
+        <Select
+          label="Fungible Contract"
+          selectedKey={contract}
+          onSelectionChange={(key) => setContract(key as string)}
+        >
+          {fungibles.map((fungible) => (
+            <SelectItem key={fungible.contract} textValue={fungible.contract}>
+              {fungible.symbol} ({fungible.contract})
+            </SelectItem>
           ))}
-      </Stack>
-      <button
-        className={advanceOptions}
-        onClick={() => {
-          setShowAdvanced((prev) => !prev);
-        }}
-      >
-        {showAdvanced ? 'hide ' : 'show '} advance options
-      </button>
-      {showAdvanced && (
-        <>
-          <Stack flexDirection={'column'}>
-            <Heading variant="h6">External keys</Heading>
-            <Text variant="body" size="small">
-              Press <Text bold>Enter</Text> to separate each key
+        </Select>
+        <TextField label="Alias" onChange={(e) => setAlias(e.target.value)} />
+        {contract && (
+          <Stack flexDirection={'column'} gap={'md'}>
+            <Text color="emphasize" bold size="small">
+              Choose one option
             </Text>
+            <Tabs>
+              <TabItem
+                title={
+                  <Text size="small" bold color="emphasize">
+                    Select one of the existing keys
+                  </Text>
+                }
+              >
+                <Stack flexDirection={'column'} gap={'md'}>
+                  {keySources.map((keySource) => (
+                    <Stack
+                      key={keySource.uuid}
+                      gap={'md'}
+                      flexDirection={'column'}
+                      className={panelClass}
+                    >
+                      <Stack
+                        justifyContent={'space-between'}
+                        alignItems={'center'}
+                      >
+                        <Heading variant="h4">{keySource.source}</Heading>
+                        <Button
+                          startVisual={<MonoAdd />}
+                          variant="outlined"
+                          isCompact
+                          onPress={async () => {
+                            const key = await createKey(keySource);
+                            createAccountByKey(key);
+                          }}
+                        >
+                          New Key
+                        </Button>
+                      </Stack>
+                      <Stack flexDirection={'column'}>
+                        {keySource.keys.map((key) => {
+                          const disabled = usedKeys.includes(key.publicKey);
+                          return (
+                            <ButtonItem
+                              key={key.publicKey}
+                              onClick={() => createAccountByKey(key)}
+                              disabled={disabled}
+                            >
+                              <Stack gap={'sm'} alignItems={'center'}>
+                                <Stack gap={'sm'} flex={1}>
+                                  <Key
+                                    publicKey={key.publicKey}
+                                    shortening={40}
+                                  />
+                                </Stack>
+                                <Text size="small" color="emphasize">
+                                  {disabled ? 'Already used' : 'Use'}
+                                </Text>
+                              </Stack>
+                            </ButtonItem>
+                          );
+                        })}
+                      </Stack>
+                    </Stack>
+                  ))}
+                  <Link to={`/key-management/keys`} className={linkClass}>
+                    Key Management
+                  </Link>
+                </Stack>
+              </TabItem>
+              <TabItem
+                title={
+                  <Text size="small" bold color="emphasize">
+                    Select one of the existing keysets
+                  </Text>
+                }
+              >
+                {showCreateKeyset && (
+                  <CreateKeySetDialog
+                    isOpen={showCreateKeyset}
+                    close={() => setShowCreateKeyset(false)}
+                    onDone={(keyset) => {
+                      createAccountByKeyset(keyset);
+                    }}
+                  />
+                )}
+                <Stack
+                  flexDirection={'column'}
+                  gap={'md'}
+                  className={panelClass}
+                >
+                  <Stack justifyContent={'space-between'}>
+                    <Heading variant="h3">Key Sets</Heading>
+                    <Button
+                      startVisual={<MonoAdd />}
+                      onPress={() => setShowCreateKeyset(true)}
+                      variant="outlined"
+                      isCompact
+                    >
+                      Key Set
+                    </Button>
+                  </Stack>
+                  <Stack flexDirection={'column'} gap={'sm'}>
+                    <Stack flexDirection={'column'}>
+                      {keysets
+                        .filter(({ guard }) => guard.keys.length >= 2)
+                        .map((keyset) => {
+                          const disabled = usedKeysets.includes(keyset.uuid);
+                          return (
+                            <ButtonItem
+                              key={keyset.uuid}
+                              onClick={() => createAccountByKeyset(keyset)}
+                              disabled={disabled}
+                            >
+                              <Stack
+                                gap={'md'}
+                                justifyContent={'center'}
+                                alignItems={'center'}
+                              >
+                                <Stack flex={1}>
+                                  {<Keyset keySet={keyset} />}
+                                </Stack>
+                                {disabled && (
+                                  <Text size="small" color="emphasize">
+                                    Already used
+                                  </Text>
+                                )}
+                              </Stack>
+                            </ButtonItem>
+                          );
+                        })}
+                    </Stack>
+                  </Stack>
+                </Stack>
+                <Stack marginBlockStart={'md'}>
+                  <Link to={`/key-management/keysets`} className={linkClass}>
+                    Keyset Management
+                  </Link>
+                </Stack>
+              </TabItem>
+            </Tabs>
           </Stack>
-          <Stack width="100%">
-            <TextareaField
-              className={` ${keyInput}`}
-              name="externalKey"
-              value={externalKeys}
-              onChange={(e) => setExternalKeys(e.target.value)}
-            />
-          </Stack>
-          <Heading variant="h6">pred function</Heading>
-          <Select
-            selectedKey={selectedPred}
-            onSelectionChange={(opion) => {
-              setSelectedPred(opion as 'keys-all' | 'keys-any' | 'keys-2');
-            }}
-          >
-            <SelectItem key={'keys-all'}>All-keys</SelectItem>
-            <SelectItem key={'keys-any'}>One-Key</SelectItem>
-            <SelectItem key={'keys-two'}>two-Keys</SelectItem>
-          </Select>
-        </>
-      )}
-      <Text>
-        {!keysCount
-          ? 'Select at least one key source to create an account'
-          : `The account will be guarded by ${keysCount} keys`}
-      </Text>
-      <Button onClick={create} isDisabled={!keysCount}>
-        Create
-      </Button>
+        )}
+      </Stack>
     </Stack>
+  );
+}
+
+function ButtonItem({
+  children,
+  ...props
+}: React.DetailedHTMLProps<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  HTMLButtonElement
+>) {
+  return (
+    <button {...props} className={buttonListClass}>
+      {children}
+    </button>
   );
 }
