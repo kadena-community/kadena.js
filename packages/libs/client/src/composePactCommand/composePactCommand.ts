@@ -51,6 +51,9 @@ const finalizeCommand = (
       ...finalCommand.meta,
     };
   }
+  if (finalCommand.payload && 'cont' in finalCommand.payload) {
+    finalCommand.payload.cont.proof ??= null;
+  }
   return finalCommand;
 };
 
