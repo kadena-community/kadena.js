@@ -1,3 +1,4 @@
+import { token } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const containerClass = style([
@@ -13,5 +14,6 @@ export const notificationWrapperClass = style([
     maxWidth: '100%',
     position: 'relative',
     zIndex: 9999,
+    backgroundColor: token('color.neutral.n1'),
   },
 ]);
