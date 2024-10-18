@@ -18,7 +18,6 @@ import {
   Button,
   ContextMenu,
   ContextMenuItem,
-  Link,
   Media,
   NavHeader,
   NavHeaderButton,
@@ -28,8 +27,10 @@ import {
   NotificationFooter,
   NotificationHeading,
   Stack,
+  Link as UILink,
 } from '@kadena/kode-ui';
 import { useTheme } from 'next-themes';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import * as styles from './style.css';
@@ -66,23 +67,24 @@ export const MarketplaceHeader = () => {
           <Stack flex={1}></Stack>
         </Media>
         <Media greaterThanOrEqual="md">
-          <Link className={styles.navHeaderLink} href="/">
-            Marketplace
+          <Link href="/" passHref legacyBehavior>
+            <UILink className={styles.navHeaderLink}>Marketplace</UILink>
           </Link>
-          <Link
-            className={styles.navHeaderLink}
-            href="/tokens"
-            endVisual={
-              <Badge size="sm" style={'highContrast'}>
-                beta
-              </Badge>
-            }
-          >
-            Create
+          <Link href="/tokens" passHref legacyBehavior>
+            <UILink
+              className={styles.navHeaderLink}
+              endVisual={
+                <Badge size="sm" style={'highContrast'}>
+                  beta
+                </Badge>
+              }
+            >
+              Create
+            </UILink>
           </Link>
           {account ? (
-            <Link className={styles.navHeaderLink} href="/mytokens">
-              My Tokens
+            <Link href="/mytokens" passHref legacyBehavior>
+              <UILink className={styles.navHeaderLink}>My Tokens</UILink>
             </Link>
           ) : (
             <></>
