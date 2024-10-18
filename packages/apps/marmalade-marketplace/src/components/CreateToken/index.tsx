@@ -17,7 +17,7 @@ import React, { useEffect, useState } from 'react';
 
 // Import form components
 import CollectionForm from '@/components/CollectionForm';
-import CrudCard from '@/components/CrudCard';
+
 import GenerateURIForm from '@/components/GenerateURIForm';
 import GuardForm from '@/components/GuardForm';
 import PolicyForm from '@/components/PolicyForm';
@@ -41,7 +41,11 @@ import {
   createTokenId,
   ICreateTokenPolicyConfig,
 } from '@kadena/client-utils/marmalade';
-import { CardContentBlock, CardFixedContainer } from '@kadena/kode-ui/patterns';
+import {
+  CardContentBlock,
+  CardFixedContainer,
+  CardFooterGroup,
+} from '@kadena/kode-ui/patterns';
 
 function CreateTokenComponent() {
   const router = useRouter();
@@ -507,21 +511,21 @@ function CreateTokenComponent() {
             Error: {error}
           </Notification>
         )}
-      </CardFixedContainer>
 
-      <div className={styles.buttonRow}>
-        <Button variant="outlined" onPress={onCancelPress}>
-          Cancel
-        </Button>
-        <Button
-          isDisabled={uploading}
-          loadingLabel="Creating Token..."
-          isLoading={uploading}
-          onPress={handleSubmit}
-        >
-          Create Token
-        </Button>
-      </div>
+        <CardFooterGroup>
+          <Button variant="outlined" onPress={onCancelPress}>
+            Cancel
+          </Button>
+          <Button
+            isDisabled={uploading}
+            loadingLabel="Creating Token..."
+            isLoading={uploading}
+            onPress={handleSubmit}
+          >
+            Create Token
+          </Button>
+        </CardFooterGroup>
+      </CardFixedContainer>
     </div>
   );
 }
