@@ -12,7 +12,7 @@ import { groupClass, layoutClass } from './Checkbox.css';
 
 type Direction = NonNullable<RecipeVariants<typeof groupClass>>['direction'];
 
-export interface ICheckboxProps extends AriaCheckboxGroupProps {
+export interface ICheckboxGroupProps extends AriaCheckboxGroupProps {
   children: ReactElement[] | ReactElement;
   direction: Direction;
   info?: string;
@@ -25,7 +25,7 @@ export interface ICheckboxProps extends AriaCheckboxGroupProps {
 
 export const CheckboxContext = createContext<CheckboxGroupState | null>(null);
 
-export function CheckboxGroup(props: ICheckboxProps) {
+export function CheckboxGroup(props: ICheckboxGroupProps) {
   const {
     children,
     description,

@@ -3,6 +3,10 @@ export { Form, type IFormProps } from './Form';
 
 export { Checkbox, type ICheckboxProps } from './Checkbox/Checkbox';
 export {
+  CheckboxGroup,
+  type ICheckboxGroupProps,
+} from './Checkbox/CheckboxGroup';
+export {
   Combobox,
   ComboboxItem,
   type IComboboxProps,

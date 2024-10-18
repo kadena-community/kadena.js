@@ -12,6 +12,7 @@ export type {
   IDialogProps,
 } from './Dialog';
 export type {
+  ICheckboxGroupProps,
   ICheckboxProps,
   IComboboxProps,
   IFormProps,
@@ -73,6 +74,7 @@ export {
 export { Divider } from './Divider/Divider';
 export {
   Checkbox,
+  CheckboxGroup,
   Combobox,
   ComboboxItem,
   CopyButton,
