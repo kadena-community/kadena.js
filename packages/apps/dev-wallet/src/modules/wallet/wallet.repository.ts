@@ -22,15 +22,19 @@ export interface IProfile {
   name: string;
   networks: INetwork[];
   secretId: string;
+  securityPhraseId: string;
   accentColor: string;
-  options:
+  options: {
+    rememberPassword: 'never' | 'session' | 'short-time';
+  } & (
     | {
         authMode: 'PASSWORD';
       }
     | {
         authMode: 'WEB_AUTHN';
         webAuthnCredential: ArrayBuffer;
-      };
+      }
+  );
 }
 
 const createWalletRepository = ({
@@ -62,7 +66,9 @@ const createWalletRepository = ({
       return add('encryptedValue', value, key, { noCreationTime: true });
     },
     getProfileKeySources: async (profileId: string): Promise<IKeySource[]> => {
-      return getAll('keySource', profileId, 'profileId');
+      return (
+        (await getAll('keySource', profileId, 'profileId')) as IKeySource[]
+      ).reverse();
     },
     getKeySource: async (keySourceId: string): Promise<IKeySource> => {
       return getOne('keySource', keySourceId);

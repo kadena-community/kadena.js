@@ -7,7 +7,7 @@ import { useAsync } from '@/utils/useAsync';
 import { MonoKey } from '@kadena/kode-icons/system';
 import { Box, Heading, Stack, Text } from '@kadena/kode-ui';
 import { useParams } from 'react-router-dom';
-import { panelClass } from './style.css';
+import { panelClass } from '../home/style.css';
 
 export function Keyset() {
   const { keysetId } = useParams();

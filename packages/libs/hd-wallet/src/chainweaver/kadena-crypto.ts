@@ -1,4 +1,4 @@
-import * as kadenaCrypto from './vendor/kadena-crypto.cjs';
+import kadenaCrypto from './vendor/kadena-crypto.js';
 
 const nextTick = () => new Promise((resolve) => process.nextTick(resolve));
 
@@ -10,7 +10,7 @@ const makeAsync = <T extends (...args: any[]) => any>(
   return async (...args: any[]): Promise<any> => {
     // kadena-crypto internally loads a wasm module
     // which is an async operation, ensure it is completed
-    while (!kadenaCrypto.default.isLoaded()) {
+    while (!kadenaCrypto.isLoaded()) {
       await nextTick();
     }
     return cb(...args);

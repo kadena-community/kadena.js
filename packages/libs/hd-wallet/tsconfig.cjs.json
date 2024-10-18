@@ -1,9 +1,9 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "allowJs": true,
     "module": "CommonJS",
     "moduleResolution": "Node",
     "outDir": "lib/cjs"
-  },
-  "exclude": ["**/vendor/**/*"]
+  }
 }

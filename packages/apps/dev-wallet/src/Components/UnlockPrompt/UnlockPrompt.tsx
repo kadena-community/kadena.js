@@ -1,41 +1,93 @@
+import { IProfile } from '@/modules/wallet/wallet.repository.ts';
 import {
   Button,
   Dialog,
   Heading,
+  Radio,
+  RadioGroup,
   Stack,
   Text,
   TextField,
 } from '@kadena/kode-ui';
 import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { unlockPrompt } from './style.css.ts';
 
 export const UnlockPrompt: React.FC<{
-  resolve: (pass: string) => void;
+  showPassword?: boolean;
+  rememberPassword?: IProfile['options']['rememberPassword'];
+  resolve: ({
+    password,
+    keepOpen,
+  }: {
+    password: string;
+    keepOpen: 'session' | 'short-time' | 'never';
+  }) => void;
   reject: (reason: any) => void;
-}> = ({ resolve, reject }) => (
-  <Dialog size="sm" isOpen={true} className={unlockPrompt}>
-    <form
-      onSubmit={(event) => {
-        const formData = new FormData(event.target as HTMLFormElement);
-        resolve(formData.get('password') as string);
-      }}
+}> = ({ resolve, reject, showPassword, rememberPassword }) => {
+  const { control, register, handleSubmit } = useForm({
+    defaultValues: {
+      keepOpen: rememberPassword || 'session',
+      password: '',
+    },
+  });
+
+  console.log('rememberPassword', rememberPassword);
+  return (
+    <Dialog
+      size="sm"
+      isOpen={true}
+      className={unlockPrompt}
+      onOpenChange={(isOpen) => reject(isOpen)}
     >
-      <Stack flexDirection={'column'} gap={'md'}>
-        <Heading>Unlock hd-wallet</Heading>
-        <Text>
-          You need to unlock the hd-wallet key source in order to use it for
-          sign or account creation
-        </Text>
-        <TextField name="password" type="password" />
-        <Stack gap={'sm'}>
-          <Button variant="transparent" type="reset" onClick={reject}>
-            Cancel
-          </Button>
-          <Button variant="primary" type="submit">
-            Unlock
-          </Button>
+      <form
+        onSubmit={handleSubmit((data) => {
+          resolve(data);
+        })}
+      >
+        <Stack flexDirection={'column'} gap={'md'}>
+          <Heading>Unlock Security Module</Heading>
+          <Text>
+            You need to unlock the security module in order to use it for
+            sensitive actions (e.g. sign or account creation)
+          </Text>
+          {showPassword && (
+            <TextField
+              type="password"
+              {...register('password')}
+              label="Password"
+            />
+          )}
+          <Controller
+            name="keepOpen"
+            control={control}
+            render={({ field }) => (
+              <RadioGroup
+                label="Keep open"
+                direction={'column'}
+                defaultValue={rememberPassword || 'session'}
+                value={field.value}
+                onChange={(value) => {
+                  console.log('value', value);
+                  field.onChange(value);
+                }}
+              >
+                <Radio value="session">Keep open during this session</Radio>
+                <Radio value="short-time">Lock after 5 minutes</Radio>
+                <Radio value="never">always ask</Radio>
+              </RadioGroup>
+            )}
+          />
+          <Stack gap={'sm'}>
+            <Button variant="transparent" type="reset" onClick={reject}>
+              Cancel
+            </Button>
+            <Button variant="primary" type="submit">
+              Unlock
+            </Button>
+          </Stack>
         </Stack>
-      </Stack>
-    </form>
-  </Dialog>
-);
+      </form>
+    </Dialog>
+  );
+};

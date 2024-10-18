@@ -283,9 +283,9 @@ export function TerminalPage() {
         }
       },
     },
-    read: {
-      description: 'read data from blockchain',
-      usage: 'read <string>',
+    pact: {
+      description: 'pact data from blockchain',
+      usage: 'pact <string>',
       fn: async (...args: any[]) => {
         const input = args.join(' ');
         let exec;

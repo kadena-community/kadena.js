@@ -1,5 +1,5 @@
-import { cardColor, cardHoverColor } from '@/utils/color.ts';
-import { atoms } from '@kadena/kode-ui/styles';
+import { cardHoverColor } from '@/utils/color.ts';
+import { atoms, tokens } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const listClass = style([
@@ -19,12 +19,16 @@ export const chainListClass = style([
 
 export const listItemClass = style([
   atoms({
-    padding: 'md',
+    padding: 'sm',
+    paddingInline: 'md',
     marginBlockStart: 'xs',
     textDecoration: 'none',
   }),
   {
-    background: cardColor,
+    border: 'none',
+    flex: 1,
+    minHeight: '50px',
+    background: tokens.kda.foundation.color.background.surface.default,
     selectors: {
       '&:hover': {
         background: cardHoverColor,

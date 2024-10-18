@@ -1,6 +1,5 @@
 import {
   kadenaDecrypt,
-  kadenaEncrypt,
   kadenaGetPublic,
   kadenaMnemonicToSeed,
   kadenaSignWithSeed,
@@ -41,20 +40,29 @@ export function createBIP44Service() {
 
   const register = async (
     profileId: string,
-    mnemonic: string,
     password: string,
     derivationPathTemplate: string = DEFAULT_DERIVATION_PATH_TEMPLATE,
   ): Promise<IHDBIP44> => {
-    const encryptedMnemonic = await kadenaEncrypt(password, mnemonic, 'buffer');
-    const secretId = crypto.randomUUID();
-    await walletRepository.addEncryptedValue(secretId, encryptedMnemonic);
+    const profile = await walletRepository.getProfile(profileId);
+    if (!profile) {
+      throw new Error('Profile not found');
+    }
+    const encryptedMnemonic = await walletRepository.getEncryptedValue(
+      profile.securityPhraseId,
+    );
+    if (!encryptedMnemonic) {
+      throw new Error('No mnemonic found');
+    }
+    const mnemonic = new TextDecoder().decode(
+      await kadenaDecrypt(password, encryptedMnemonic),
+    );
     const keySource: IHDBIP44 = {
       uuid: crypto.randomUUID(),
       profileId,
       source: 'HD-BIP44',
       derivationPathTemplate,
       keys: [],
-      secretId: secretId,
+      secretId: profile.securityPhraseId,
     };
     await keySourceRepository.addKeySource(keySource);
     context = await createContext(mnemonic);

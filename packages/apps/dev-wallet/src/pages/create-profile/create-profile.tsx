@@ -100,19 +100,17 @@ export function CreateProfile() {
         ? {
             authMode: 'WEB_AUTHN',
             webAuthnCredential: webAuthnCredential.rawId,
+            rememberPassword: 'session',
           }
         : {
             authMode: 'PASSWORD',
+            rememberPassword: 'session',
           },
+      mnemonic,
     );
     // for now we only support slip10 so we just create the keySource and the first account by default for it
     // later we should change this flow to be more flexible
-    const keySource = await createHDWallet(
-      profile.uuid,
-      'HD-BIP44',
-      pass,
-      mnemonic,
-    );
+    const keySource = await createHDWallet(profile.uuid, 'HD-BIP44', pass);
 
     const key = await createKey(keySource);
 

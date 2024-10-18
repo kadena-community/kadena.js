@@ -7,6 +7,7 @@ import {
   IDiscoveredAccount,
   accountDiscovery,
 } from '@/modules/account/account.service';
+import { keySourceManager } from '@/modules/key-source/key-source-manager';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 
 const NUMBER_OF_KEYS_TO_DISCOVER = 20;
@@ -46,6 +47,7 @@ export function AccountDiscovery() {
         setAccounts((prev) => [...prev, data]);
       })
       .execute();
+    keySourceManager.disconnect();
     setDiscoveryStatus('finished');
   }
 

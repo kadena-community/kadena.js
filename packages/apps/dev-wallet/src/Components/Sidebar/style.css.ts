@@ -8,7 +8,7 @@ export const sidebarClass = style([
     zIndex: 1,
   }),
   {
-    borderRight: `1px solid ${vars.colors.$layoutSurfaceCard}`,
+    borderRight: `1px solid ${vars.colors.$borderDefault}`,
     backgroundColor: tokens.kda.foundation.color.neutral.n1,
     maxHeight: 'calc(100vh - 100px)',
   },
