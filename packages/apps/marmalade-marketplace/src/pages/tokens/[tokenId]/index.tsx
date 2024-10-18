@@ -472,10 +472,11 @@ export default function CreateSale() {
                       </Stack>
                     }
                   >
-                    <CheckboxGroup label="Policies">
+                    <CheckboxGroup label="Policies" direction="column">
                       <Checkbox
                         isReadOnly={true}
                         id="nonUpdatableURI"
+                        value="nonUpdatableURI"
                         isSelected={
                           checkConcretePolicies(tokenInfo.policies)
                             .nonUpdatableURI
@@ -486,6 +487,7 @@ export default function CreateSale() {
                       <Checkbox
                         isReadOnly={true}
                         id="guarded"
+                        value="guarded"
                         isSelected={
                           checkConcretePolicies(tokenInfo.policies)?.guarded
                         }
@@ -495,6 +497,7 @@ export default function CreateSale() {
                       <Checkbox
                         isReadOnly={true}
                         id="nonFungible"
+                        value="nonFungible"
                         isSelected={
                           checkConcretePolicies(tokenInfo.policies)?.nonFungible
                         }
@@ -504,6 +507,7 @@ export default function CreateSale() {
                       <Checkbox
                         isReadOnly={true}
                         id="hasRoyalty"
+                        value="hasRoyalty"
                         isSelected={
                           checkConcretePolicies(tokenInfo.policies)?.hasRoyalty
                         }
