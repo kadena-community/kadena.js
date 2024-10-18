@@ -30,9 +30,9 @@ export const ConventionalAuction = ({
 }: ConventionalAuctionProps) => {
   const router = useRouter() as AppRouterInstance;
   const { account } = useAccount();
-  const [auctionDetails, setAuctionDetails] = useState();
+  const [auctionDetails, setAuctionDetails] = useState<any>();
   const [mustCreateAuction, setMustCreateAuction] = useState(false);
-  const [highestBid, setHighestBid] = useState();
+  const [highestBid, setHighestBid] = useState<any>();
 
   const { data: bids } = useGetBids({ tokenId: sale.tokenId });
 

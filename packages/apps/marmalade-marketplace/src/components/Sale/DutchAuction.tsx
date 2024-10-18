@@ -28,7 +28,7 @@ export const DutchAuction = ({ tokenImageUrl, sale }: DutchAuctionProps) => {
   const router = useRouter() as AppRouterInstance;
   const { account } = useAccount();
 
-  const [auctionDetails, setAuctionDetails] = useState();
+  const [auctionDetails, setAuctionDetails] = useState<any>();
   const [currentPrice, setCurrentPrice] = useState(0);
   const [nextPriceChange, setNextPriceChange] = useState('');
 
