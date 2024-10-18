@@ -40,6 +40,7 @@
     "@testing-library/react": "~14.0.0",
     "@types/css-modules": "^1.0.5",
     "@types/formidable": "^3.4.5",
+    "@types/gtag.js": "~0.0.12",
     "@types/node": "^20.12.7",
     "@types/node-cron": "^3.0.11",
     "@types/react": "^18.2.79",

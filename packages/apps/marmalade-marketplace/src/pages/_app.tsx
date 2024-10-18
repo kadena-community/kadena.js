@@ -1,7 +1,8 @@
-import React, { FC } from 'react';
-import type { AppProps } from 'next/app';
-import { Providers } from '@/providers/Providers';
+import { Analytics } from '@/components/Analytics/Analytics';
 import Layout from '@/components/Layout';
+import { Providers } from '@/providers/Providers';
+import type { AppProps } from 'next/app';
+import React, { FC } from 'react';
 
 export const MyApp = ({
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -16,6 +17,7 @@ export const MyApp = ({
       <Layout>
         <Component {...pageProps} key={router.asPath} />
       </Layout>
+      <Analytics />
     </Providers>
   );
 };
