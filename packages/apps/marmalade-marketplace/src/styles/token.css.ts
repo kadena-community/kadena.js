@@ -1,5 +1,5 @@
 import { token, tokens } from '@kadena/kode-ui/styles';
-import { globalStyle, style } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
 
 export const container = style({
   margin: '160px 15% 0',

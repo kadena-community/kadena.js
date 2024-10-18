@@ -1,6 +1,6 @@
-import React, { FC, useRef } from 'react';
-import { Button } from '@kadena/kode-ui';
 import { MonoPermMedia, MonoUploadFile } from '@kadena/kode-icons';
+import { Button } from '@kadena/kode-ui';
+import React, { FC, useRef } from 'react';
 import * as styles from './style.css';
 
 interface GenerateURIProps {
@@ -19,7 +19,7 @@ const GenerateURIForm: FC<GenerateURIProps> = ({
   setFile,
   imagePreview,
   setImagePreview,
-  setError
+  setError,
 }) => {
   const inputFile = useRef<HTMLInputElement | null>(null);
 
@@ -32,7 +32,7 @@ const GenerateURIForm: FC<GenerateURIProps> = ({
         setFile(file);
         setImagePreview(URL.createObjectURL(file));
       } else {
-        throw new Error("No files selected");
+        throw new Error('No files selected');
       }
     } catch (e) {
       setError(e.message);
@@ -46,7 +46,7 @@ const GenerateURIForm: FC<GenerateURIProps> = ({
         setFile(file);
         setImagePreview(URL.createObjectURL(file));
       } else {
-        throw new Error("No files selected");
+        throw new Error('No files selected');
       }
     } catch (e) {
       setError(e.message);
@@ -63,25 +63,29 @@ const GenerateURIForm: FC<GenerateURIProps> = ({
 
   return (
     <>
-    <div className={styles.tokenImageContainer}>
-      <div
-        onDrop={handleFileDrop}
-        onDragOver={handleDragOver}
-        onClick={handleFileClick}
-      >
-        <input
-          type="file"
-          id="fileInput"
-          ref={inputFile}
-          style={{ display: 'none' }}
-          onChange={handleFileChange}
-        />
-        {imagePreview
-          ? <img src={imagePreview} alt="Uploaded Preview" />
-          : <div className={styles.uploadContainer}><MonoPermMedia className={styles.uploadIcon} /></div>}
+      <div className={styles.tokenImageContainer}>
+        <div
+          onDrop={handleFileDrop}
+          onDragOver={handleDragOver}
+          onClick={handleFileClick}
+        >
+          <input
+            type="file"
+            id="fileInput"
+            ref={inputFile}
+            style={{ display: 'none' }}
+            onChange={handleFileChange}
+          />
+          {imagePreview ? (
+            <img src={imagePreview} alt="Uploaded Preview" />
+          ) : (
+            <div className={styles.uploadContainer}>
+              <MonoPermMedia className={styles.uploadIcon} />
+            </div>
+          )}
+        </div>
       </div>
-    </div>
-    <Button
+      <Button
         startVisual={<MonoUploadFile />}
         onPress={handleFileClick}
         variant="outlined"

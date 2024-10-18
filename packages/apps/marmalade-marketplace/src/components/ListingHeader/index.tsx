@@ -7,8 +7,8 @@ export const ListingHeader: React.FC = () => {
       <img
         src={`/listingHeader.png`}
         alt="Header Image"
-        className={styles.listingImage}          
-      />  
+        className={styles.listingImage}
+      />
     </div>
   );
 };

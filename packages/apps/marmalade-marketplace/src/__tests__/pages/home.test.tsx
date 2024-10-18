@@ -1,12 +1,12 @@
-import { expect, test } from 'vitest'
+import { Sale, useGetSales } from '@/hooks/getSales';
+import Home from '@/pages/index';
 import { render, screen, waitFor } from '@testing-library/react';
-import Home from '@/pages/index'
-import { Sale, getSales } from '@/hooks/getSales';
+import { expect, test } from 'vitest';
 
 // Mocking the custom hooks and functions
 vi.mock('@/hooks/getSales');
 
-const mockGetSales = vi.mocked(getSales);
+const mockGetSales = vi.mocked(useGetSales);
 
 // Mocking the Token component
 vi.mock('@/components/Token', () => ({
@@ -22,17 +22,17 @@ describe('Home component', () => {
   test('renders the component and fetches sales', async () => {
     const mockSales = [
       {
-        tokenId: "t:E9e-YioI69qxedpzNgJfNv7H1dOcLY3ydKOeRPB96sE",
-        chainId: "0",
-        saleId: "8ORpk9kKkKwotwOzzS-370Yl0h9UY7lv7tLduou376I"
-      }
+        tokenId: 't:E9e-YioI69qxedpzNgJfNv7H1dOcLY3ydKOeRPB96sE',
+        chainId: '0',
+        saleId: '8ORpk9kKkKwotwOzzS-370Yl0h9UY7lv7tLduou376I',
+      },
     ];
 
     mockGetSales.mockReturnValue({
       data: mockSales as Sale[],
       loading: false,
       error: null,
-      refetch: () => Promise.resolve()
+      refetch: () => Promise.resolve(),
     });
 
     render(<Home />);
@@ -41,19 +41,18 @@ describe('Home component', () => {
 
     // Check if tokens are fetched and displayed
     await waitFor(() => {
-      mockSales.forEach(sale => {
+      mockSales.forEach((sale) => {
         expect(screen.getByText(sale.tokenId)).toBeInTheDocument();
       });
     });
   });
 
   test('displays "No sales found" when there are no sales indexed', async () => {
-
     mockGetSales.mockReturnValue({
       data: [],
       loading: false,
       error: null,
-      refetch: () => Promise.resolve()
+      refetch: () => Promise.resolve(),
     });
 
     render(<Home />);
