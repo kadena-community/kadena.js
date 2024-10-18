@@ -1,5 +1,4 @@
 import Bid from '@/components/Bid';
-import CrudCard from '@/components/CrudCard';
 import LabeledText from '@/components/LabeledText';
 import { RegularSale } from '@/components/Sale/RegularSale';
 import { TokenMetadata } from '@/components/Token';
@@ -444,15 +443,25 @@ export default function CreateSale() {
           </TabItem>
           {/* only show bid tab if saleId is present*/}
           <TabItem title="Buy" key="bid">
-            <CrudCard
-              title="Buy token"
-              description={[
-                `You can view and bid on the available offers here.`,
-                `Clicking 'Buy Now' will transfer the fungible payment to the sale's escrow account and transfer the token to your account.`,
-              ]}
-            >
-              <Bid saleId={saleId!} chainId={chainId} />
-            </CrudCard>
+            <Card>
+              <CardContentBlock
+                title="Buy token"
+                supportingContent={
+                  <Stack flexDirection="column" width="100%" gap="md">
+                    <Text>
+                      You can view and bid on the available offers here.
+                    </Text>
+                    <Text>
+                      Clicking 'Buy Now' will transfer the fungible payment to
+                      the sale's escrow account and transfer the token to your
+                      account.
+                    </Text>
+                  </Stack>
+                }
+              >
+                <Bid saleId={saleId!} chainId={chainId} />
+              </CardContentBlock>
+            </Card>
           </TabItem>
           <TabItem title="Configuration" key="policies">
             {tokenInfo?.policies ? (
@@ -534,33 +543,47 @@ export default function CreateSale() {
         </Tabs>
         {/* {saleData.saleType === "conventional" && ( */}
         {false && (
-          <CrudCard
-            title="Conventional Auction"
-            description={[
-              'Allow bidding on the token up untill a certain time',
-              'The highest bidder at the end of the auction wins the token',
-              'The seller can choose to set a reserve price',
-            ]}
-          >
-            <div>
-              <p>Form to setup conventional auction</p>
-            </div>
-          </CrudCard>
+          <Card>
+            <CardContentBlock
+              title="Conventional Auction"
+              supportingContent={
+                <Stack flexDirection="column" width="100%" gap="md">
+                  <Text>
+                    Allow bidding on the token up untill a certain time
+                  </Text>
+                  <Text>
+                    The highest bidder at the end of the auction wins the token
+                  </Text>
+                  <Text>The seller can choose to set a reserve price</Text>
+                </Stack>
+              }
+            >
+              <Text>Form to setup conventional auction</Text>
+            </CardContentBlock>
+          </Card>
         )}
         {/* {saleData.saleType === "dutch" && ( */}
         {false && (
-          <CrudCard
-            title="Dutch Auction"
-            description={[
-              'The price of the token is set high and decreases over time',
-              'The first bidder to accept the price wins the token',
-              'The seller can choose to set a start and reserve price',
-            ]}
-          >
-            <div>
-              <p>Form to setup dutch auction</p>
-            </div>
-          </CrudCard>
+          <Card>
+            <CardContentBlock
+              title="Dutch Auction"
+              supportingContent={
+                <Stack flexDirection="column" width="100%" gap="md">
+                  <Text>
+                    The price of the token is set high and decreases over time
+                  </Text>
+                  <Text>
+                    The first bidder to accept the price wins the token
+                  </Text>
+                  <Text>
+                    The seller can choose to set a start and reserve price
+                  </Text>
+                </Stack>
+              }
+            >
+              <Text>Form to setup dutch auction</Text>
+            </CardContentBlock>
+          </Card>
         )}
       </Stack>
       <Stack className={styles.buttonRowContainer}>
