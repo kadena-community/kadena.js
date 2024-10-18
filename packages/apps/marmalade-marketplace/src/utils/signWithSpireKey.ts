@@ -58,6 +58,7 @@ export interface IUser {
     Request Keys. The app needs to await them before submitting the returned
     transaction
 */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface ISignResponse {
   transaction: IUnsignedCommand;
   pendingTxIds: string[];
@@ -79,7 +80,7 @@ export function tryParse<T>(msg: string): T | typeof ERROR {
   } catch (e: any) {
     console.warn(
       `an error occurred while decoding the user from the querystring parameters${
-        'message' in e ? '\n' + e.message : ''
+        'message' in e ? `\n${e.message}` : ''
       }`,
     );
     if ('stack' in e) console.warn(e.stack);
@@ -145,12 +146,14 @@ export function createSignWithSpireKey(
   return signWithSpireKey;
 }
 
-export const createSignWithSpireKeySDK = (accounts: IAccount[], onSign?: (tx: IUnsignedCommand) => void
+export const createSignWithSpireKeySDK = (
+  accounts: IAccount[],
+  onSign?: (tx: IUnsignedCommand) => void,
 ): ISignFunction =>
   (async (tx: IUnsignedCommand[]) => {
     const { transactions, isReady } = await sign(tx, accounts);
     await isReady();
-    if(onSign) {
+    if (onSign) {
       onSign(transactions[0]);
     }
     return transactions[0];

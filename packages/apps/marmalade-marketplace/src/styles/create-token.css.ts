@@ -1,5 +1,5 @@
+import { token } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
-import { tokens, token } from '@kadena/kode-ui/styles';
 
 export const mainWrapperClass = style({
   display: 'grid',
@@ -117,7 +117,7 @@ export const buttonRowRight = style({
 export const textareaField = style({
   width: 100,
   height: 400,
-  resize: "none",
+  resize: 'none',
   // box-sizing: "border-box"
 });
 
@@ -167,27 +167,25 @@ export const errorBox = style({
   padding: '10px',
   margin: '10px 0',
   fontFamily: 'Arial, sans-serif',
-  fontSize: '14px'
+  fontSize: '14px',
 });
-
 
 export const resultBox = style({
   color: 'green',
   backgroundColor: '#e6ffe6',
-  border: "1px solid green",
+  border: '1px solid green',
   borderRadius: '5px',
   padding: '10px',
   margin: '10px 0',
   fontFamily: 'Arial, sans-serif',
-  fontSize: '14px'
+  fontSize: '14px',
 });
-
 
 export const checkboxStyle = style({
   flex: '1 1 50%',
   boxSizing: 'border-box',
   padding: '5px',
-})
+});
 
 export const container = style({
   margin: '160px 15% 0',

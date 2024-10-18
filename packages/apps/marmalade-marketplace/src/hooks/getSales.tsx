@@ -10,9 +10,9 @@ import {
   where,
 } from 'firebase/firestore';
 import { useCallback, useEffect, useState } from 'react';
-import { IPactDecimal, IPactInt } from '../../../../libs/types/dist/types';
+import { IPactInt } from '../../../../libs/types/dist/types';
 
-export type Sale = {
+export interface Sale {
   status: 'CREATED' | 'WITHDRAWN' | 'SOLD';
   requestKeys: Record<string, string>;
   saleId: string;
@@ -46,7 +46,7 @@ export type Sale = {
   priceInterval?: IPactInt;
   highestBid?: number;
   highestBidId?: string;
-};
+}
 
 interface GetSalesProps {
   chainIds?: number[];
@@ -61,7 +61,7 @@ interface GetSalesProps {
   }[];
 }
 
-export const getSales = (props?: GetSalesProps) => {
+export const useGetSales = (props?: GetSalesProps) => {
   const [data, setData] = useState<Sale[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);

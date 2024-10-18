@@ -1,9 +1,8 @@
-import {   TextField} from '@kadena/kode-ui';
-    import * as styles from "@/styles/global.css"
-  export const TokenInput= () => {
-    return (
-      <>
-        <TextField
+import { TextField } from '@kadena/kode-ui';
+export const TokenInput = () => {
+  return (
+    <>
+      <TextField
         description="Helper text"
         errorMessage=""
         fontType="ui"
@@ -15,7 +14,7 @@ import {   TextField} from '@kadena/kode-ui';
         tag="tag"
         value=""
         variant="default"
-        />
-      </>
-    );
-  };
+      />
+    </>
+  );
+};

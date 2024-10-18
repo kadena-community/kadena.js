@@ -31,7 +31,6 @@ import {
   formatAccount,
   formatGuardInput,
   formatRoyaltyInput,
-  generateSpireKeyGasCapability,
   getPolicies,
 } from '@/utils/helper';
 import { createSignWithSpireKeySDK } from '@/utils/signWithSpireKey';
@@ -47,7 +46,7 @@ import {
   CardFooterGroup,
 } from '@kadena/kode-ui/patterns';
 
-function CreateTokenComponent() {
+const CreateTokenComponent = () => {
   const router = useRouter();
   const { account } = useAccount();
   const { setTransaction } = useTransaction();
@@ -200,6 +199,15 @@ function CreateTokenComponent() {
     }
   };
 
+  const formatInput = (input: typeof tokenInput) => {
+    return {
+      ...input,
+      chainId: input.chainId as ChainId,
+      precision: createPrecision(input.precision),
+      creator: formatAccount(account?.accountName || '', account?.guard),
+    };
+  };
+
   const handleSubmit = async () => {
     setUploading(true);
     try {
@@ -249,6 +257,61 @@ function CreateTokenComponent() {
         }
       };
 
+      const uploadFile = async (fileToUpload: any) => {
+        try {
+          const formData = new FormData();
+          formData.append('file', fileToUpload, fileToUpload.name);
+          const res = await fetch('/api/files', {
+            method: 'POST',
+            body: formData,
+          });
+          const ipfsHash = await res.text();
+          return `ipfs://${ipfsHash}`;
+        } catch (e) {
+          console.error(e);
+          alert('Trouble uploading file');
+        }
+      };
+
+      const uploadMetadata = async (metadata: any) => {
+        try {
+          const formData = new FormData();
+          const metadataContent = JSON.stringify(metadata);
+          const metadataBlob = new Blob([metadataContent], {
+            type: 'application/json',
+          });
+          formData.append(
+            'file',
+            new File([metadataBlob], 'metadata.json', {
+              type: 'application/json',
+            }),
+            'metadata.json',
+          );
+
+          const res = await fetch('/api/metadata', {
+            method: 'POST',
+            body: formData,
+          });
+          const ipfsHash = await res.text();
+          return `ipfs://${ipfsHash}`;
+        } catch (e) {
+          console.error(e);
+          alert('Trouble uploading file');
+        }
+      };
+
+      const metadata = {
+        name: tokenInput.metadataName,
+        description: tokenInput.metadataDescription,
+        image: '',
+        authors: [tokenInput.metadataAuthors],
+        properties: tokenInput.metadataProperties,
+        collection: {
+          name: tokenInput.metadataCollectionName,
+          family: tokenInput.metadataCollectionFamily,
+        },
+      };
+
       const handleFileUpload = () => {
         return uploadFile(file)
           .then((imageUrl) => {
@@ -275,70 +338,8 @@ function CreateTokenComponent() {
     }
   };
 
-  const uploadMetadata = async (metadata: any) => {
-    try {
-      const formData = new FormData();
-      const metadataContent = JSON.stringify(metadata);
-      const metadataBlob = new Blob([metadataContent], {
-        type: 'application/json',
-      });
-      formData.append(
-        'file',
-        new File([metadataBlob], 'metadata.json', { type: 'application/json' }),
-        'metadata.json',
-      );
-
-      const res = await fetch('/api/metadata', {
-        method: 'POST',
-        body: formData,
-      });
-      const ipfsHash = await res.text();
-      return `ipfs://${ipfsHash}`;
-    } catch (e) {
-      console.error(e);
-      alert('Trouble uploading file');
-    }
-  };
-
-  const uploadFile = async (fileToUpload: any) => {
-    try {
-      const formData = new FormData();
-      formData.append('file', fileToUpload, fileToUpload.name);
-      const res = await fetch('/api/files', {
-        method: 'POST',
-        body: formData,
-      });
-      const ipfsHash = await res.text();
-      return `ipfs://${ipfsHash}`;
-    } catch (e) {
-      console.error(e);
-      alert('Trouble uploading file');
-    }
-  };
-
   const onCancelPress = () => {
     router.back();
-  };
-
-  const formatInput = (input: typeof tokenInput) => {
-    return {
-      ...input,
-      chainId: input.chainId as ChainId,
-      precision: createPrecision(input.precision),
-      creator: formatAccount(account?.accountName || '', account?.guard),
-    };
-  };
-
-  const metadata = {
-    name: tokenInput.metadataName,
-    description: tokenInput.metadataDescription,
-    image: '',
-    authors: [tokenInput.metadataAuthors],
-    properties: tokenInput.metadataProperties,
-    collection: {
-      name: tokenInput.metadataCollectionName,
-      family: tokenInput.metadataCollectionFamily,
-    },
   };
 
   return (
@@ -352,8 +353,7 @@ function CreateTokenComponent() {
               <Text>Create a new token</Text>
             </Stack>
           }
-        >
-          <div>
+          extendedContent={
             <GenerateURIForm
               handleTokenInputChange={handleTokenInputChange}
               tokenInput={tokenInput}
@@ -365,6 +365,9 @@ function CreateTokenComponent() {
               base64Image={base64Image}
               setBase64Image={setBase64Image}
             />
+          }
+        >
+          <div>
             <div className={styles.formContainer}>
               <TextField
                 label="Creation Guard"
@@ -496,8 +499,8 @@ function CreateTokenComponent() {
             supportingContent={
               <Stack flexDirection="column" width="100%" gap="md">
                 <Text>
-                  Enforces that token's URI is not updatable. If not selected, a
-                  URI guard is required
+                  Enforces that token&apos;s URI is not updatable. If not
+                  selected, a URI guard is required
                 </Text>
               </Stack>
             }
@@ -528,7 +531,7 @@ function CreateTokenComponent() {
       </CardFixedContainer>
     </div>
   );
-}
+};
 
 export default function CreateToken() {
   return <CreateTokenComponent />;

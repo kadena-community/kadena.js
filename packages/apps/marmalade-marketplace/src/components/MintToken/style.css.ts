@@ -1,5 +1,5 @@
-import { style, globalStyle } from '@vanilla-extract/css';
 import { tokens } from '@kadena/kode-ui/styles';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 export const checkboxRow = style({
   display: 'flex',
@@ -13,21 +13,21 @@ globalStyle(`${checkboxRow} label`, {
 });
 
 export const buttonRow = style({
-    display: 'flex',
-    justifyContent: 'space-between',
-    margin: `${tokens.kda.foundation.spacing.n6} 15% 0`,
-  });
+  display: 'flex',
+  justifyContent: 'space-between',
+  margin: `${tokens.kda.foundation.spacing.n6} 15% 0`,
+});
 
 export const container = style({
-    margin: '160px 15% 0',
-    backgroundColor: tokens.kda.foundation.color.background.layer.default,
-    borderRadius: tokens.kda.foundation.radius.sm,
-    border: `1px solid ${tokens.kda.foundation.color.border.base.subtle}`,
+  margin: '160px 15% 0',
+  backgroundColor: tokens.kda.foundation.color.background.layer.default,
+  borderRadius: tokens.kda.foundation.radius.sm,
+  border: `1px solid ${tokens.kda.foundation.color.border.base.subtle}`,
 });
 
 export const buttonRowContainer = style({
-    margin: `${tokens.kda.foundation.spacing.n6} 15% 0`,
-    justifyContent: 'space-between',
+  margin: `${tokens.kda.foundation.spacing.n6} 15% 0`,
+  justifyContent: 'space-between',
 });
 
 export const tokenImageContainer = style({
@@ -35,7 +35,7 @@ export const tokenImageContainer = style({
   justifyContent: 'center',
   alignItems: 'center',
   width: '100%',
-  minHeight: '336px',  
+  minHeight: '336px',
   margin: '-88px 0 20px',
 });
 
@@ -43,9 +43,9 @@ export const tokenImageClass = style({
   width: '100%',
   height: '100%',
   objectFit: 'cover',
-  borderRadius: tokens.kda.foundation.radius.lg,  
+  borderRadius: tokens.kda.foundation.radius.lg,
 });
-  
+
 export const formContainer = style({
   display: 'flex',
   flexDirection: 'column',
@@ -60,5 +60,5 @@ export const errorBox = style({
   padding: '10px',
   margin: '10px 0',
   fontFamily: 'Arial, sans-serif',
-  fontSize: '14px'
+  fontSize: '14px',
 });

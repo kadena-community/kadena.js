@@ -52,24 +52,14 @@ function MintTokenComponent() {
       }
     | undefined
   >(undefined);
-  const [tokenMetadata, setTokenMetadata] = useState<TokenMetadata | null>();
-  const [tokenInfo, setTokenInfo] = useState<{ uri: string }>({ uri: '' });
+  const [_tokenMetadata, setTokenMetadata] = useState<TokenMetadata | null>();
+  const [_tokenInfo, setTokenInfo] = useState<{ uri: string }>({ uri: '' });
   const [tokenImageUrl, setTokenImageUrl] = useState<string>('/no-image.webp');
 
   const onTransactionSigned = (transaction: IUnsignedCommand | ICommand) => {
     setTransaction(transaction);
     router.push(`/transaction?returnUrl=/tokens/${tokenId}?chainId=${`8`}`);
   };
-
-  useEffect(() => {
-    if (searchParams.has('tokenId')) {
-      const tokenId = searchParams.get('tokenId');
-      if (tokenId) {
-        setTokenId(tokenId);
-        fetchTokenInfo(tokenId);
-      }
-    }
-  }, [searchParams]);
 
   const config = {
     host: env.URL,
@@ -89,6 +79,16 @@ function MintTokenComponent() {
     setResult(checkConcretePolicies(res.policies));
     await fetch(res);
   };
+
+  useEffect(() => {
+    if (searchParams.has('tokenId')) {
+      const tokenId = searchParams.get('tokenId');
+      if (tokenId) {
+        setTokenId(tokenId);
+        fetchTokenInfo(tokenId);
+      }
+    }
+  }, [searchParams]);
 
   async function fetch(tokenInfo: any) {
     const metadata = await getTokenMetadata(tokenInfo.uri);
@@ -166,72 +166,56 @@ function MintTokenComponent() {
     }
   };
 
+  console.log(result);
+
   return (
     <>
-      {!result ? (
-        <CardFixedContainer>
-          <CardContentBlock
-            visual={<MonoAutoFixHigh />}
-            title="Mint Token"
-            extendedContent={
-              <img
-                src={tokenImageUrl}
-                alt="Token Image"
-                className={styles.tokenImageClass}
-              />
-            }
-            supportingContent={
-              <Stack flexDirection="column" width="100%" gap="md">
-                <Text>
-                  After creating the tokens, they are ready to be minted.
-                </Text>
-                <Text>
-                  Minting refers to increasing a token's supply and assigning it
-                  to specific accounts.
-                </Text>
-                <Text>
-                  Each token adheres to the rules established during its
-                  creation process.
-                </Text>
-                <Text>
-                  Once you mint a token to your account, you can either sell it
-                  or use it for various purposes within the ecosystem.
-                </Text>
-                <Text>Try minting your own nft!</Text>
-              </Stack>
-            }
-          >
-            <TextField
-              label="Token ID"
-              name="tokenId"
-              value={tokenId}
-              onChange={handleTokenInputChange}
-              onBlur={() => fetchTokenInfo(tokenId)}
+      <CardFixedContainer>
+        <CardContentBlock
+          visual={<MonoAutoFixHigh />}
+          title="Mint Token"
+          extendedContent={
+            <img
+              src={tokenImageUrl}
+              alt="Token Image"
+              className={styles.tokenImageClass}
             />
-            <NumberField
-              label="Amount"
-              value={amount}
-              onValueChange={handleAmountInputChange}
-            />
-
-            {error && (
-              <Notification intent="negative" role="status">
-                Error: {error}
-              </Notification>
-            )}
-          </CardContentBlock>
-
-          <CardFooterGroup>
-            <Button variant="outlined" onPress={onCancelPress}>
-              Cancel
-            </Button>
-            <Button type="submit" onClick={handleButtonClick}>
-              Mint Token
-            </Button>
-          </CardFooterGroup>
-        </CardFixedContainer>
-      ) : (
-        <CardFixedContainer>
+          }
+          supportingContent={
+            <Stack flexDirection="column" width="100%" gap="md">
+              <Text>
+                After creating the tokens, they are ready to be minted.
+              </Text>
+              <Text>
+                Minting refers to increasing a token&apos;s supply and assigning
+                it to specific accounts.
+              </Text>
+              <Text>
+                Each token adheres to the rules established during its creation
+                process.
+              </Text>
+              <Text>
+                Once you mint a token to your account, you can either sell it or
+                use it for various purposes within the ecosystem.
+              </Text>
+              <Text>Try minting your own nft!</Text>
+            </Stack>
+          }
+        >
+          <TextField
+            label="Token ID"
+            name="tokenId"
+            value={tokenId}
+            onChange={handleTokenInputChange}
+            onBlur={() => fetchTokenInfo(tokenId)}
+          />
+          <NumberField
+            label="Amount"
+            value={amount}
+            onValueChange={handleAmountInputChange}
+          />
+        </CardContentBlock>
+        {result && (
           <CardContentBlock
             title="Token Policy Information"
             supportingContent={
@@ -278,15 +262,26 @@ function MintTokenComponent() {
                 Collection
               </Checkbox>
             </CheckboxGroup>
-
-            {error && (
-              <Notification intent="negative" role="status">
-                Error: {error}
-              </Notification>
-            )}
           </CardContentBlock>
-        </CardFixedContainer>
-      )}
+        )}
+
+        {error && (
+          <Stack paddingBlockStart="lg">
+            <Notification intent="negative" role="status">
+              Error: {error}
+            </Notification>
+          </Stack>
+        )}
+
+        <CardFooterGroup>
+          <Button variant="outlined" onPress={onCancelPress}>
+            Cancel
+          </Button>
+          <Button type="submit" onClick={handleButtonClick}>
+            Mint Token
+          </Button>
+        </CardFooterGroup>
+      </CardFixedContainer>
     </>
   );
 }

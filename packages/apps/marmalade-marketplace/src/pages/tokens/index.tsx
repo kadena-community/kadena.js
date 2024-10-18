@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
 import CreateToken from '@/components/CreateToken';
+import React from 'react';
 
 export default function TokenPages() {
-  const [tokenFunction, setTokenFunction] = useState("Create Token")
   return (
     <>
-      <title>{tokenFunction}</title>
-      <CreateToken/>
+      <CreateToken />
     </>
-);
+  );
 }

@@ -3,7 +3,7 @@ import LabeledText from '@/components/LabeledText';
 import { RegularSale } from '@/components/Sale/RegularSale';
 import { TokenMetadata } from '@/components/Token';
 import { useAccount } from '@/hooks/account';
-import { getSale } from '@/hooks/getSale';
+import { useGetSale } from '@/hooks/getSale';
 import { useTransaction } from '@/hooks/transaction';
 import { IAccountContext } from '@/providers/AccountProvider/AccountProvider';
 import { getTimestampFromDays } from '@/utils/date';
@@ -50,7 +50,7 @@ import {
 } from '@kadena/kode-ui/patterns';
 import * as styles from '../../../styles/token.css';
 
-export default function CreateSale() {
+const CreateSale = () => {
   const params = useParams();
   const { setTransaction } = useTransaction();
   const router = useRouter();
@@ -101,10 +101,10 @@ export default function CreateSale() {
     uri: string;
   }
 
-  const { data } = getSale(saleId as string);
+  const { data } = useGetSale(saleId as string);
 
   useEffect(() => {
-    const tokenIdParam = params?.['tokenId'];
+    const tokenIdParam = params?.tokenId;
     const chainIdParam = searchParams.get('chainId');
     const saleIdParam = searchParams.get('saleId');
 
@@ -143,7 +143,7 @@ export default function CreateSale() {
 
         setTokenMetadata(metadata);
 
-        if (!!metadata?.image?.length) {
+        if (metadata?.image?.length) {
           const tokenImageUrl = getTokenImageUrl(metadata.image);
 
           if (tokenImageUrl) {
@@ -452,8 +452,8 @@ export default function CreateSale() {
                       You can view and bid on the available offers here.
                     </Text>
                     <Text>
-                      Clicking 'Buy Now' will transfer the fungible payment to
-                      the sale's escrow account and transfer the token to your
+                      Clicking `Buy Now` will transfer the fungible payment to
+                      the sale`s escrow account and transfer the token to your
                       account.
                     </Text>
                   </Stack>
@@ -600,4 +600,6 @@ export default function CreateSale() {
       </Stack>
     </div>
   );
-}
+};
+
+export default CreateSale;

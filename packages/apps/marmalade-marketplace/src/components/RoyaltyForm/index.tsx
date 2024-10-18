@@ -1,5 +1,5 @@
-import { Card, Stack, Text, TextField } from '@kadena/kode-ui';
-import { CardContentBlock, CardFixedContainer } from '@kadena/kode-ui/patterns';
+import { Stack, Text, TextField } from '@kadena/kode-ui';
+import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import React, { FC } from 'react';
 
 interface RoyaltyFormProps {

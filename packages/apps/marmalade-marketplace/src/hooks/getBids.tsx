@@ -1,9 +1,17 @@
-import { database } from "@/utils/firebase";
-import { BuiltInPredicate, ChainId } from "@kadena/client";
-import { OrderByDirection, collection, getDocs, limit, orderBy, query, where } from "firebase/firestore";
-import { useCallback, useEffect, useState } from "react";
+import { database } from '@/utils/firebase';
+import { BuiltInPredicate, ChainId } from '@kadena/client';
+import {
+  OrderByDirection,
+  collection,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  where,
+} from 'firebase/firestore';
+import { useCallback, useEffect, useState } from 'react';
 
-export type Bid = {
+export interface Bid {
   bid: number;
   bidId: string;
   bidder: {
@@ -16,8 +24,8 @@ export type Bid = {
   block: number;
   chainId: ChainId;
   requestKey: string;
-  tokenId: string
-};
+  tokenId: string;
+}
 
 interface GetBidsProps {
   chainIds?: number[];
@@ -27,11 +35,11 @@ interface GetBidsProps {
   bidId?: string;
   sort?: {
     field: keyof Bid;
-    direction?: OrderByDirection
-  }[]
+    direction?: OrderByDirection;
+  }[];
 }
 
-export const getBids = (props?: GetBidsProps) => {
+export const useGetBids = (props?: GetBidsProps) => {
   const [data, setData] = useState<Bid[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
@@ -40,28 +48,27 @@ export const getBids = (props?: GetBidsProps) => {
     setLoading(true);
     setError(null);
     try {
-
       const constraints = [];
 
-      if (props?.chainIds) constraints.push(where("chainId", "in", props.chainIds));
+      if (props?.chainIds)
+        constraints.push(where('chainId', 'in', props.chainIds));
 
-      if (props?.block) constraints.push(where("block", "==", props.block));
+      if (props?.block) constraints.push(where('block', '==', props.block));
 
-      if (props?.tokenId) constraints.push(where("tokenId", "==", props.tokenId));
+      if (props?.tokenId)
+        constraints.push(where('tokenId', '==', props.tokenId));
 
-      if (props?.bidId) constraints.push(where("bidId", "==", props.bidId));
+      if (props?.bidId) constraints.push(where('bidId', '==', props.bidId));
 
-      if (props?.sort?.length) props.sort.forEach(sort =>
-        constraints.push(orderBy(sort.field, sort.direction || "asc"))
-      )
+      if (props?.sort?.length)
+        props.sort.forEach((sort) =>
+          constraints.push(orderBy(sort.field, sort.direction || 'asc')),
+        );
 
       if (props?.limit) constraints.push(limit(props.limit));
 
       const querySnapshot = await getDocs(
-        query(
-          collection(database, "bids"),
-          ...constraints
-        )
+        query(collection(database, 'bids'), ...constraints),
       );
       const docs: Bid[] = [];
       querySnapshot.forEach((doc) => {
@@ -69,7 +76,7 @@ export const getBids = (props?: GetBidsProps) => {
       });
       setData(docs);
     } catch (err) {
-      console.log(err)
+      console.log(err);
       setError(err as Error);
     } finally {
       setLoading(false);

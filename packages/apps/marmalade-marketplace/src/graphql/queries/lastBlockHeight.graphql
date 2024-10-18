@@ -1,3 +1,3 @@
-query lastBlockHeight{
+query lastBlockHeight {
   lastBlockHeight
 }

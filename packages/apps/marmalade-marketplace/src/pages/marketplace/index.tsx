@@ -1,5 +1,5 @@
-import {Heading} from '@kadena/kode-ui';
-import * as styles from "@/styles/global.css"
+import * as styles from '@/styles/global.css';
+import { Heading } from '@kadena/kode-ui';
 
 export default function Marketplace() {
   return (
@@ -10,8 +10,7 @@ export default function Marketplace() {
 
       <main className={styles.mainWrapperClass}>
         <h1>Conventional Auction</h1>
-        <div className={styles.mainWrapperClass}>
-        </div>
+        <div className={styles.mainWrapperClass}></div>
       </main>
     </div>
   );

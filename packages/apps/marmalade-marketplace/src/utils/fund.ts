@@ -1,7 +1,7 @@
 import { env } from '@/utils/env';
 import { Pact } from '@kadena/client';
-import { PactNumber } from '@kadena/pactjs';
 import { genKeyPair, sign } from '@kadena/cryptography-utils';
+import { PactNumber } from '@kadena/pactjs';
 
 export const fundAccount = (accountName: string) => {
   const keyPair = genKeyPair();
@@ -33,8 +33,8 @@ export const fundAccount = (accountName: string) => {
     .setNetworkId(env.NETWORKID)
     .createTransaction();
 
-    const signature = sign(transaction.cmd, keyPair);
-    transaction.sigs = [{ sig: signature.sig || '' }];
+  const signature = sign(transaction.cmd, keyPair);
+  transaction.sigs = [{ sig: signature.sig || '' }];
 
-    return transaction;
+  return transaction;
 };

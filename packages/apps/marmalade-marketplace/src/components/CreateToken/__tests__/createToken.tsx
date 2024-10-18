@@ -1,7 +1,7 @@
+import CreateToken from '@/components/CreateToken'; // Adjust the import path as necessary
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { expect, test, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import CreateToken from '@/components/CreateToken'; // Adjust the import path as necessary
 
 test('CreateToken renders token information form', () => {
   render(<CreateToken />);
@@ -28,7 +28,9 @@ test('CreateToken handles URI input change', () => {
 test('CreateToken handles precision input change', () => {
   render(<CreateToken />);
 
-  const precisionInputElement = screen.getByLabelText('Precision') as HTMLInputElement;
+  const precisionInputElement = screen.getByLabelText(
+    'Precision',
+  ) as HTMLInputElement;
 
   fireEvent.change(precisionInputElement, { target: { value: '1' } });
 
@@ -39,7 +41,9 @@ test('CreateToken toggles URI input', () => {
   render(<CreateToken />);
 
   const uriInputElement = screen.getByLabelText('URI') as HTMLInputElement;
-  const checkboxElement = screen.getByLabelText("Don't have URI") as HTMLInputElement;
+  const checkboxElement = screen.getByLabelText(
+    "Don't have URI",
+  ) as HTMLInputElement;
 
   expect(uriInputElement.disabled).toBe(false);
 
@@ -100,7 +104,9 @@ test('CreateToken handles guarded policy tab interactions', () => {
 test('CreateToken handles royalty policy tab interactions', () => {
   render(<CreateToken />);
 
-  const royaltyCheckbox = screen.getByLabelText('Has Royalty') as HTMLInputElement;
+  const royaltyCheckbox = screen.getByLabelText(
+    'Has Royalty',
+  ) as HTMLInputElement;
   fireEvent.click(royaltyCheckbox);
 
   const royaltyFormTab = screen.getByText('Royalty');
@@ -115,7 +121,9 @@ test('CreateToken handles royalty policy tab interactions', () => {
 test('CreateToken handles collection policy tab interactions', () => {
   render(<CreateToken />);
 
-  const collectionCheckbox = screen.getByLabelText('Collection') as HTMLInputElement;
+  const collectionCheckbox = screen.getByLabelText(
+    'Collection',
+  ) as HTMLInputElement;
   fireEvent.click(collectionCheckbox);
 
   const collectionFormTab = screen.getByText('Collection');

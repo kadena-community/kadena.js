@@ -1,5 +1,5 @@
-import { IPactInt } from '../../../../libs/types/dist/types';
 import { PactNumber } from '@kadena/pactjs';
+import { IPactInt } from '../../../../libs/types/dist/types';
 
 export const parsePactDate = (date: IPactInt) =>
   date ? new Date(Number(date.int) * 1000) : null;
@@ -32,6 +32,8 @@ export const getTimeUntilNextPriceChange = (
   return timeString.trim();
 };
 
-export const getTimestampFromDays = (days:number) => {
-  return new PactNumber(Math.floor(new Date().getTime()/1000) + days * 24 * 60 * 60).toPactInteger()
-}
+export const getTimestampFromDays = (days: number) => {
+  return new PactNumber(
+    Math.floor(new Date().getTime() / 1000) + days * 24 * 60 * 60,
+  ).toPactInteger();
+};

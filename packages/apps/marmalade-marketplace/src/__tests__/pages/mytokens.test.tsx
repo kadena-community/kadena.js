@@ -1,13 +1,13 @@
-import { expect, test } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react';
-import { useAccount } from '@/hooks/account';
 import { getTokens } from '@/graphql/queries/client';
-import MyTokens from '@/pages/mytokens'
+import { useAccount } from '@/hooks/account';
+import MyTokens from '@/pages/mytokens';
+import { render, screen, waitFor } from '@testing-library/react';
+import { expect, test } from 'vitest';
 
 // Mocking the custom hooks and functions
 vi.mock('@/hooks/account');
 vi.mock('@/graphql/queries/client');
-vi.mock("@kadena/client-utils/webauthn");
+vi.mock('@kadena/client-utils/webauthn');
 
 const mockUseAccount = vi.mocked(useAccount);
 const mockGetTokens = vi.mocked(getTokens);
@@ -48,7 +48,12 @@ describe('MyTokens component', () => {
     const mockAccountContext = { ...dummyAccountContext, account: mockAccount };
 
     const mockTokens = [
-      { accountName: 'r:test-account', balance: 15, tokenId: '1', chainId: '1' },
+      {
+        accountName: 'r:test-account',
+        balance: 15,
+        tokenId: '1',
+        chainId: '1',
+      },
       { accountName: 'r:test-account', balance: 1, tokenId: '2', chainId: '1' },
     ];
 
@@ -62,7 +67,7 @@ describe('MyTokens component', () => {
 
     // Check if tokens are fetched and displayed
     await waitFor(() => {
-      mockTokens.forEach(token => {
+      mockTokens.forEach((token) => {
         expect(screen.getByText(token.tokenId)).toBeInTheDocument();
       });
     });

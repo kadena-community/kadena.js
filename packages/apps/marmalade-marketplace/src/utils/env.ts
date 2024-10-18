@@ -61,5 +61,5 @@ export const env = {
     `https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact`,
   FAUCET_CONTRACT,
   FAUCET_ACCOUNT,
-  WEBAUTHN_WALLET
+  WEBAUTHN_WALLET,
 };
