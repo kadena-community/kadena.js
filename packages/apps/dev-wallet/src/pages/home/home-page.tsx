@@ -6,12 +6,14 @@ import { panelClass } from '@/pages/home/style.css.ts';
 import { noStyleLinkClass } from '@/Components/Accounts/style.css';
 import { ListItem } from '@/Components/ListItem/ListItem';
 import { transactionRepository } from '@/modules/transaction/transaction.repository';
-import { getAccountName } from '@/utils/helpers';
+import { getAccountName, shorten } from '@/utils/helpers';
 import { useAsync } from '@/utils/useAsync';
 import { IPactCommand } from '@kadena/client';
 import { MonoContentCopy } from '@kadena/kode-icons/system';
 
+import { AccountItem } from '@/Components/AccountItem/AccountItem';
 import {
+  AccordionItem,
   Box,
   Button,
   Heading,
@@ -61,7 +63,7 @@ export function HomePage() {
             <Assets accounts={accounts} fungibles={fungibles} showAddToken />
           </Box>
         </Box>
-        <Accounts accounts={accounts} fungibles={fungibles} />
+        <Accounts accounts={accounts} />
         <Stack className={panelClass} flexDirection={'column'} gap={'lg'}>
           <Heading variant="h4">Wallet Activities</Heading>
           <Stack>
@@ -83,15 +85,7 @@ export function HomePage() {
   );
 }
 
-export function Accounts({
-  accounts,
-  fungibles,
-}: {
-  accounts: IAccount[];
-  fungibles: Fungible[];
-}) {
-  const getSymbol = (contract: string) =>
-    fungibles.find((f) => f.contract === contract)?.symbol;
+export function Accounts({ accounts }: { accounts: IAccount[] }) {
   return (
     <Box className={panelClass} marginBlockStart="xs">
       <Heading as="h4">Your accounts</Heading>
@@ -101,43 +95,11 @@ export function Accounts({
       {accounts.length ? (
         <Box marginBlockStart="md">
           <ul className={listClass}>
-            {accounts.map(
-              ({ overallBalance, keyset, uuid, contract, address }) => (
-                <li key={keyset?.principal}>
-                  <Link to={`/account/${uuid}`} className={noStyleLinkClass}>
-                    <Stack
-                      gap={'sm'}
-                      flex={undefined}
-                      justifyContent={'center'}
-                      alignItems={'center'}
-                    >
-                      <ListItem>
-                        <Stack flexDirection={'column'} gap={'sm'}>
-                          <Text>
-                            {keyset?.alias || getAccountName(keyset!.principal)}
-                          </Text>
-                        </Stack>
-                        <Stack alignItems={'center'} gap={'sm'}>
-                          <Text>
-                            {overallBalance} {getSymbol(contract)}
-                          </Text>
-                          <Button
-                            isCompact
-                            variant="transparent"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              navigator.clipboard.writeText(address);
-                            }}
-                          >
-                            <MonoContentCopy />
-                          </Button>
-                        </Stack>
-                      </ListItem>
-                    </Stack>
-                  </Link>
-                </li>
-              ),
-            )}
+            {accounts.map((account) => (
+              <li key={account.uuid}>
+                <AccountItem account={account} />
+              </li>
+            ))}
           </ul>
         </Box>
       ) : null}

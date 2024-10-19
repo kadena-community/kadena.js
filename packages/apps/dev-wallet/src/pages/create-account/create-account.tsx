@@ -113,7 +113,7 @@ export function CreateAccount() {
       uuid: crypto.randomUUID(),
       alias: alias || '',
       profileId: profile.uuid,
-      address: principal,
+      address: keyset.principal,
       keysetId: keyset.uuid,
       networkUUID: activeNetwork.uuid,
       contract,
