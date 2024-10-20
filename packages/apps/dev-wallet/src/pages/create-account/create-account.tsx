@@ -225,6 +225,7 @@ export function CreateAccount() {
                               key={key.publicKey}
                               onClick={() => createAccountByKey(key)}
                               disabled={disabled}
+                              title={disabled ? 'Already used' : 'Use this key'}
                             >
                               <Stack gap={'sm'} alignItems={'center'}>
                                 <Stack gap={'sm'} flex={1}>
@@ -293,6 +294,11 @@ export function CreateAccount() {
                               key={keyset.uuid}
                               onClick={() => createAccountByKeyset(keyset)}
                               disabled={disabled}
+                              title={
+                                disabled
+                                  ? 'Already used'
+                                  : 'Use this keyset for Account'
+                              }
                             >
                               <Stack
                                 gap={'md'}
@@ -302,11 +308,6 @@ export function CreateAccount() {
                                 <Stack flex={1}>
                                   {<Keyset keySet={keyset} />}
                                 </Stack>
-                                {disabled && (
-                                  <Text size="small" color="emphasize">
-                                    Already used
-                                  </Text>
-                                )}
                               </Stack>
                             </ButtonItem>
                           );
