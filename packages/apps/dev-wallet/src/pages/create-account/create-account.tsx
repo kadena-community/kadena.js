@@ -160,6 +160,13 @@ export function CreateAccount() {
               <Button
                 onClick={async () => {
                   const keySource = keySources[0];
+                  const availableKey = keySource.keys.find(
+                    (key) => !usedKeys.includes(key.publicKey),
+                  );
+                  if (availableKey) {
+                    return createAccountByKey(availableKey);
+                  }
+                  // If no available key, create a new one
                   const key = await createKey(keySource);
                   await createAccountByKey(key);
                 }}

@@ -21,7 +21,7 @@ export function AssetsCard() {
       flexDirection={'column'}
     >
       <Assets
-        accounts={filteredAccounts}
+        accounts={accounts}
         fungibles={fungibles}
         showAddToken
         selectedContract={selectedContract}
