@@ -1,17 +1,15 @@
-import { Assets } from '@/Components/Assets/Assets';
 import { accountRepository } from '@/modules/account/account.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten } from '@/utils/helpers';
 import { useAsync } from '@/utils/useAsync';
 
 import { MonoKey } from '@kadena/kode-icons/system';
-import { Box, Heading, Stack, Text } from '@kadena/kode-ui';
+import { Heading, Stack, Text } from '@kadena/kode-ui';
 import { useParams } from 'react-router-dom';
-import { panelClass } from '../home/style.css';
 
 export function Keyset() {
   const { keysetId } = useParams();
-  const { profile, fungibles } = useWallet();
+  const { profile } = useWallet();
   const [keyset] = useAsync(
     (id) => (id ? accountRepository.getKeyset(id) : Promise.reject('no ide')),
     [keysetId],
@@ -43,17 +41,6 @@ export function Keyset() {
           </Stack>
         ))}
       </Stack>
-
-      <Stack
-        alignItems={'center'}
-        gap={'sm'}
-        justifyContent={'flex-end'}
-      ></Stack>
-      <Box className={panelClass} marginBlockStart="xl">
-        <Box marginBlockStart={'sm'}>
-          <Assets accounts={accounts} fungibles={fungibles} />
-        </Box>
-      </Box>
     </Stack>
   );
 }

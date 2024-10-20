@@ -121,7 +121,7 @@ const createAccountRepository = ({
       return getOne('fungible', contract);
     },
     getAllFungibles: async (): Promise<Fungible[]> => {
-      return getAll('fungible');
+      return ((await getAll('fungible')) as Fungible[]).reverse();
     },
   };
 };

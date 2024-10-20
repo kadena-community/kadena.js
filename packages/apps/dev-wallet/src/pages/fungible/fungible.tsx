@@ -1,7 +1,6 @@
 import { AccountItem } from '@/Components/AccountItem/AccountItem';
-import { Accounts } from '@/Components/Accounts/Accounts';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { AccordionItem, Box, Heading, Stack, Text } from '@kadena/kode-ui';
+import { Box, Heading, Stack } from '@kadena/kode-ui';
 import { PactNumber } from '@kadena/pactjs';
 import { Link, useParams } from 'react-router-dom';
 import { listClass, panelClass } from '../home/style.css';

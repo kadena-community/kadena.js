@@ -1,54 +1,51 @@
 import { IAccount } from '@/modules/account/account.repository';
-import { useWallet } from '@/modules/wallet/wallet.hook';
 import { panelClass } from '@/pages/home/style.css';
 import { linkClass } from '@/pages/select-profile/select-profile.css';
-import { getAccountName } from '@/utils/helpers';
-import { Box, Heading, Stack, Text } from '@kadena/kode-ui';
+import { Heading, Stack, Text } from '@kadena/kode-ui';
+import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-import { ListItem } from '../ListItem/ListItem';
-import { listClass, noStyleLinkClass } from './style.css';
+import { AccountItem } from '../AccountItem/AccountItem';
+import { listClass } from './style.css';
 
 export function Accounts({
   accounts,
   contract,
 }: {
   accounts: IAccount[];
-  contract: string;
+  contract?: string;
 }) {
-  const { profile, activeNetwork } = useWallet();
-  const totalAccounts = accounts.length;
-  if (!profile || !activeNetwork) {
-    return null;
-  }
   return (
-    <Box className={panelClass} marginBlockStart="xs">
-      <Heading as="h4">{totalAccounts} accounts</Heading>
-      <Link to={`/create-account?contract=${contract}`} className={linkClass}>
-        Create Account
-      </Link>
-      {totalAccounts ? (
-        <Box marginBlockStart="md">
-          <Text>Owned ({totalAccounts})</Text>
-          <ul className={listClass}>
-            {accounts.map(({ overallBalance, keyset, uuid }) => (
-              <li key={keyset?.principal}>
-                <Link to={`/account/${uuid}`} className={noStyleLinkClass}>
-                  <ListItem>
-                    <Stack flexDirection={'column'} gap={'sm'}>
-                      <Text>
-                        {keyset?.alias || getAccountName(keyset!.principal)}
-                      </Text>
-                    </Stack>
-                    <Stack alignItems={'center'} gap={'sm'}>
-                      <Text>{overallBalance} KDA</Text>
-                    </Stack>
-                  </ListItem>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </Box>
-      ) : null}
-    </Box>
+    <Stack flexDirection={'column'}>
+      <Stack justifyContent={'space-between'}>
+        <Heading as="h5">Accounts</Heading>
+        <Link
+          to={
+            contract
+              ? `/create-account${contract ? `?contract=${contract}` : ''}`
+              : '/create-account'
+          }
+          className={linkClass}
+        >
+          Create Account
+        </Link>
+      </Stack>
+      {accounts.length ? (
+        <ul className={listClass}>
+          {accounts.map((account) => (
+            <li key={account.uuid}>
+              <AccountItem account={account} />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <Stack
+          padding={'sm'}
+          marginBlockStart="md"
+          className={classNames(panelClass)}
+        >
+          <Text>No accounts created yet!</Text>
+        </Stack>
+      )}
+    </Stack>
   );
 }
