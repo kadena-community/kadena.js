@@ -1,4 +1,9 @@
-import type { ChainId, ICommand, IUnsignedCommand } from '@kadena/client';
+import type {
+  ChainId,
+  ICommand,
+  IPartialPactCommand,
+  IUnsignedCommand,
+} from '@kadena/client';
 import type {
   createCrossChainCommand,
   simpleTransferCreateCommand,
@@ -180,11 +185,11 @@ export interface IWalletSDK {
 
   // 1.3
   /** returns gasLimit */
-  getGasLimitEstimate(
-    transaction: ICommand,
+  getGasEstimate(
+    transaction: ICommand | IUnsignedCommand,
     networkId: string,
-    networkHost: string,
-  ): Promise<number>;
+    chainId: ChainId,
+  ): Promise<{ gasLimit: number; gasPrice: number }>;
 
   // Out of scope for MVP
   // getGasPriceEstimate can return gasPrice but needs to include an argument for in how many blocks it should be mined
