@@ -9,5 +9,5 @@ export const stickyHeader = style({
 });
 
 export const mainContainer = style({
-  margin: '120px 5% 0'
+  margin: '120px 5% 0',
 });

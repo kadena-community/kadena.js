@@ -1,5 +1,5 @@
-import { style, globalStyle } from '@vanilla-extract/css';
 import { tokens } from '@kadena/kode-ui/styles';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 export const checkboxRow = style({
   display: 'flex',

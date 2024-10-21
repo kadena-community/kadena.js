@@ -11,7 +11,6 @@ interface GuardFormProps {
 
 const GuardForm: FC<GuardFormProps> = ({
   guardInput,
-  handleGuardInputChange,
   handleGuardExcludeChange,
   excluded,
 }) => (

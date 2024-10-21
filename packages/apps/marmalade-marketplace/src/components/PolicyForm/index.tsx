@@ -1,6 +1,5 @@
 import { Checkbox, CheckboxGroup } from '@kadena/kode-ui';
 import React, { FC } from 'react';
-import * as styles from './style.css';
 
 interface PolicyFormProps {
   handleCheckboxChange: (name: string, checked: boolean) => void;

@@ -3,4 +3,5 @@ import { TransactionContext } from '@/providers/TransactionProvider/TransactionP
 
 import { useContext } from 'react';
 
-export const useTransaction = (): ITransactionContext => useContext(TransactionContext);
+export const useTransaction = (): ITransactionContext =>
+  useContext(TransactionContext);

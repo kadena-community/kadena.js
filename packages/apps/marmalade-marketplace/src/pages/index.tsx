@@ -1,23 +1,21 @@
-import { useEffect, useState } from "react";
-import { Token } from "@/components/Token";
-import { ListingHeader } from "@/components/ListingHeader";
-import { getSales } from "@/hooks/getSales";
-import { Grid, GridItem, Heading, ProgressCircle } from "@kadena/kode-ui";
+import { ListingHeader } from '@/components/ListingHeader';
+import { Token } from '@/components/Token';
+import { useGetSales } from '@/hooks/getSales';
+import { Grid, GridItem, Heading, ProgressCircle } from '@kadena/kode-ui';
+import { useEffect, useState } from 'react';
 
+const Home = () => {
+  const [saleState, _] = useState<'ACTIVE' | 'PAST'>('ACTIVE');
 
-export default function Home() {
-
-  const [saleState, setSaleState] = useState<'ACTIVE' | 'PAST'>("ACTIVE");
-
-  const { data, loading, error, refetch } = getSales({
+  const { data, loading, error, refetch } = useGetSales({
     limit: 8,
     state: saleState,
     sort: [
       {
-        field: "block",
-        direction: "desc"
-      }
-    ]
+        field: 'block',
+        direction: 'desc',
+      },
+    ],
   });
 
   useEffect(() => {
@@ -28,13 +26,19 @@ export default function Home() {
     <div>
       <ListingHeader />
       <div>
-        <div style={{marginTop: '40px', marginBottom: '20px'}}>
+        <div style={{ marginTop: '40px', marginBottom: '20px' }}>
           <Heading as="h3">Active Sales</Heading>
-        </div>   
-        
-        {error && <div>Error: <pre>{JSON.stringify(error, null, 2)}</pre></div>}
+        </div>
+
+        {error && (
+          <div>
+            Error: <pre>{JSON.stringify(error, null, 2)}</pre>
+          </div>
+        )}
         {loading && <ProgressCircle size="lg" isIndeterminate />}
-        {!loading && !error && data.length === 0 && <Heading as="h5">No sales found</Heading>}   
+        {!loading && !error && data.length === 0 && (
+          <Heading as="h5">No sales found</Heading>
+        )}
 
         <Grid
           columns={{
@@ -43,16 +47,25 @@ export default function Home() {
             sm: 2,
             xs: 1,
           }}
-          gap="xl">
+          gap="xl"
+        >
           {data.map((sale, index) => (
             <GridItem key={index}>
-              <a href={`/tokens/${sale.tokenId}?saleId=${sale.saleId}&chainId=${sale.chainId}`}>
-                <Token tokenId={sale.tokenId} chainId={sale.chainId} sale={sale} />
+              <a
+                href={`/tokens/${sale.tokenId}?saleId=${sale.saleId}&chainId=${sale.chainId}`}
+              >
+                <Token
+                  tokenId={sale.tokenId}
+                  chainId={sale.chainId}
+                  sale={sale}
+                />
               </a>
             </GridItem>
           ))}
-        </Grid>           
+        </Grid>
       </div>
     </div>
   );
-}
+};
+
+export default Home;

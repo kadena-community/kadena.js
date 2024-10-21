@@ -1,7 +1,7 @@
+import CollectionForm from '@/components/CollectionForm'; // Adjust the import path as necessary
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { expect, test, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import CollectionForm from '@/components/CollectionForm'; // Adjust the import path as necessary
 
 test('CollectionForm renders and handles input changes', () => {
   const mockHandleCollectionInputChange = vi.fn();
@@ -11,10 +11,12 @@ test('CollectionForm renders and handles input changes', () => {
     <CollectionForm
       collectionInput={collectionInput}
       handleCollectionInputChange={mockHandleCollectionInputChange}
-    />
+    />,
   );
 
-  const inputElement = screen.getByLabelText('Collection ID') as HTMLInputElement;
+  const inputElement = screen.getByLabelText(
+    'Collection ID',
+  ) as HTMLInputElement;
   expect(inputElement).toBeDefined();
   expect(inputElement.value).toBe('123');
 
