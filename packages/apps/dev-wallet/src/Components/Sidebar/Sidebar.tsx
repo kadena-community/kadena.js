@@ -1,5 +1,4 @@
 import {
-  MonoContacts,
   MonoDataThresholding,
   MonoKey,
   MonoNetworkCheck,
@@ -44,10 +43,6 @@ export const Sidebar: FC = () => {
                 <MonoTableRows />
                 Transactions
               </SidebarItem>
-              {/* <SidebarItem route="/contacts">
-                <MonoContacts />
-                Contacts
-              </SidebarItem> */}
             </Stack>
             <Stack gap={'xxs'} flexDirection={'column'} marginBlockEnd={'n9'}>
               <Stack justifyContent={'center'} flexDirection={'column'}>

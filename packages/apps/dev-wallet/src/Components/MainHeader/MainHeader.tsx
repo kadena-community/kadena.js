@@ -2,7 +2,6 @@ import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
 import { noStyleLinkClass } from '@/pages/home/style.css';
 import { MonoContrast, MonoLogout, MonoPublic } from '@kadena/kode-icons';
 import {
-  Heading,
   KadenaLogo,
   NavHeader,
   NavHeaderButton,
