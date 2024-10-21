@@ -12,6 +12,8 @@ export const ScreenHeight: FC<PropsWithChildren> = ({ children }) => {
       gap="md"
     >
       {children}
+
+      <Stack marginBlock="md">&nbsp;</Stack>
     </Stack>
   );
 };
