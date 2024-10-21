@@ -1,5 +1,11 @@
 # @kadena/kode-ui
 
+## 0.18.0
+
+### Minor Changes
+
+- 7d063d6: add the contextMenu component
+
 ## 0.17.1
 
 ### Patch Changes
