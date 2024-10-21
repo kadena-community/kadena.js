@@ -36,10 +36,14 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   const login = useCallback(async () => {
-    const account = await connect(env.NETWORKID, chainId);
-    setIsMounted(true);
-    setAccount(account);
-    localStorage.setItem(getAccountCookieName(), JSON.stringify(account));
+    try {
+      const account = await connect(env.NETWORKID, chainId);
+      setIsMounted(true);
+      setAccount(account);
+      localStorage.setItem(getAccountCookieName(), JSON.stringify(account));
+    } catch (e) {
+      localStorage.removeItem(getAccountCookieName());
+    }
   }, [connect]);
 
   const logout = useCallback(() => {

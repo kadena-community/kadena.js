@@ -26,6 +26,7 @@ import RoyaltyForm from '@/components/RoyaltyForm';
 // Import client
 import { useAccount } from '@/hooks/account';
 import { useTransaction } from '@/hooks/transaction';
+import { layoutClass } from '@/styles/layout.css';
 import {
   createPrecision,
   formatAccount,
@@ -343,7 +344,7 @@ const CreateTokenComponent = () => {
   };
 
   return (
-    <div>
+    <Stack width="100%" className={layoutClass}>
       <CardFixedContainer>
         <CardContentBlock
           title="Create Token"
@@ -529,7 +530,7 @@ const CreateTokenComponent = () => {
           </Button>
         </CardFooterGroup>
       </CardFixedContainer>
-    </div>
+    </Stack>
   );
 };
 
