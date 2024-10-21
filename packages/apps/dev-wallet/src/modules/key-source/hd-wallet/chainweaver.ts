@@ -176,29 +176,37 @@ ${(e as any).message}`);
 
     register: async (
       profileId: string,
-      mnemonic: string,
       password: string,
     ): Promise<IHDChainweaver> => {
-      const encryptedMnemonic = await kadenaEncrypt(
-        password,
-        mnemonic,
-        'buffer',
+      const profile = await walletRepository.getProfile(profileId);
+      if (!profile) {
+        throw new Error('Profile not found');
+      }
+      const encryptedMnemonic = await walletRepository.getEncryptedValue(
+        profile.securityPhraseId,
       );
-      const secretId = crypto.randomUUID();
+      if (!encryptedMnemonic) {
+        throw new Error('No mnemonic found');
+      }
+      const mnemonic = new TextDecoder().decode(
+        await kadenaDecrypt(password, encryptedMnemonic),
+      );
+      if (!mnemonic) {
+        throw new Error('No mnemonic found');
+      }
       const rootKeyId = crypto.randomUUID();
       const encryptedRootKey = await kadenaMnemonicToRootKeypair(
         password,
         mnemonic,
         'buffer',
       );
-      await walletRepository.addEncryptedValue(secretId, encryptedMnemonic);
       await walletRepository.addEncryptedValue(rootKeyId, encryptedRootKey);
       const keySource: IHDChainweaver = {
         uuid: crypto.randomUUID(),
         profileId,
         source: 'HD-chainweaver',
         keys: [],
-        secretId: secretId,
+        secretId: profile.securityPhraseId,
         rootKeyId,
       };
       await keySourceRepository.addKeySource(keySource);

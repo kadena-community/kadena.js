@@ -1,4 +1,5 @@
+const colorList = ['#42CEA4', '#42BDCE', '#4269CE', '#B242CE', '#CEA742'];
 export const config = {
-  flags: ["registry"],
-  networkId: "development",
+  colorList,
+  defaultAccentColor: colorList[0],
 };

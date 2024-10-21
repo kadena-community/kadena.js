@@ -1,4 +1,3 @@
-import { defaultAccentColor } from '@/modules/layout/layout.provider.tsx';
 import {
   addSignatures,
   ICommand,
@@ -95,6 +94,7 @@ export async function createProfile(
   networks: INetwork[],
   accentColor: string,
   options: IProfile['options'],
+  securityTerm: string | Uint8Array,
 ) {
   const secretId = crypto.randomUUID();
   // create this in order to verify the password later
@@ -105,13 +105,18 @@ export async function createProfile(
   );
   await walletRepository.addEncryptedValue(secretId, secret);
   const uuid = crypto.randomUUID();
+  const encryptedTerm = await kadenaEncrypt(password, securityTerm, 'buffer');
+  const securityPhraseId = crypto.randomUUID();
+
+  await walletRepository.addEncryptedValue(securityPhraseId, encryptedTerm);
 
   const profile: IProfile = {
     uuid,
     name: profileName,
     networks,
     secretId,
-    accentColor: accentColor || defaultAccentColor,
+    securityPhraseId,
+    accentColor: accentColor,
     options,
   };
 
@@ -125,7 +130,6 @@ export const unlockProfile = async (profileId: string, password: string) => {
     const secret = await walletRepository.getEncryptedValue(profile.secretId);
     const decryptedSecret = await kadenaDecrypt(password, secret);
     const { secretId } = JSON.parse(new TextDecoder().decode(decryptedSecret));
-    console.log('secretId', secretId, profile);
     if (secretId === profile.secretId) {
       return profile;
     }

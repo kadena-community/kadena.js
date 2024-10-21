@@ -1,9 +1,6 @@
-import { usePrompt } from '@/Components/PromptProvider/Prompt';
-import { defaultAccentColor } from '@/modules/layout/layout.provider.tsx';
-import { recoverPublicKey, retrieveCredential } from '@/utils/webAuthn';
+import { config } from '@/config';
 import { IUnsignedCommand } from '@kadena/client';
 import { useCallback, useContext } from 'react';
-import { UnlockPrompt } from '../../Components/UnlockPrompt/UnlockPrompt';
 import * as AccountService from '../account/account.service';
 import { BIP44Service } from '../key-source/hd-wallet/BIP44';
 import { ChainweaverService } from '../key-source/hd-wallet/chainweaver';
@@ -24,10 +21,14 @@ const isUnlocked = (
 };
 
 export const useWallet = () => {
-  const [context, setProfile, setActiveNetwork, syncAllAccounts] =
-    useContext(WalletContext) ?? [];
-  const prompt = usePrompt();
-  if (!context || !setProfile) {
+  const [
+    context,
+    setProfile,
+    setActiveNetwork,
+    syncAllAccounts,
+    askForPassword,
+  ] = useContext(WalletContext) ?? [];
+  if (!context || !setProfile || !askForPassword) {
     throw new Error('useWallet must be used within a WalletProvider');
   }
 
@@ -35,15 +36,17 @@ export const useWallet = () => {
     async (
       profileName: string = 'default',
       password: string,
-      accentColor: string = defaultAccentColor,
+      accentColor: string | undefined,
       options: IProfile['options'],
+      securityPhrase: string | Uint8Array,
     ) => {
       const profile = await WalletService.createProfile(
         profileName,
         password,
         [],
-        accentColor,
+        accentColor ?? config.defaultAccentColor,
         options,
+        securityPhrase,
       );
       return profile;
     },
@@ -68,96 +71,29 @@ export const useWallet = () => {
 
   const unlockKeySource = useCallback(
     async (keySource: IKeySource) => {
-      const { profile } = context;
-      // for now we use the same password as the profile password
-      // later we have different password for key sources. we need to handle that.
-      // we check the auth mode of the profile and use the appropriate password/web-authn to unlock the key source
-      switch (profile?.options.authMode) {
-        case 'PASSWORD': {
-          const pass = await prompt((resolve, reject) => (
-            <UnlockPrompt resolve={resolve} reject={reject} />
-          ));
-          if (!pass) {
-            throw new Error('Password is required');
-          }
-          const service = (await keySourceManager.get(keySource.source)) as
-            | ChainweaverService
-            | BIP44Service;
+      const password = await askForPassword();
+      if (!password) {
+        throw new Error('Password is required');
+      }
+      const service = (await keySourceManager.get(keySource.source)) as
+        | ChainweaverService
+        | BIP44Service;
 
-          await service.connect(pass as string, keySource as any);
-          break;
-        }
-        case 'WEB_AUTHN': {
-          const credentialId = profile.options.webAuthnCredential;
-          const credential = await retrieveCredential(credentialId);
-          if (!credential) {
-            throw new Error('Failed to retrieve credential');
-          }
-          const keys = await recoverPublicKey(credential);
-          const service = (await keySourceManager.get(keySource.source)) as
-            | ChainweaverService
-            | BIP44Service;
-          for (const key of keys) {
-            try {
-              await service.connect(key, keySource as any);
-              break;
-            } catch (e) {
-              continue;
-            }
-          }
-          if (!service.isConnected()) {
-            throw new Error('Failed to unlock key source');
-          }
-          break;
-        }
-        default: {
-          throw new Error('Unsupported auth mode');
-        }
+      await service.connect(password, keySource as any);
+
+      if (!service.isConnected()) {
+        throw new Error('Failed to unlock key source');
       }
     },
-    [context, prompt],
+    [askForPassword],
   );
 
-  const askForPassword = useCallback(async (): Promise<string | null> => {
-    const { profile } = context;
-    if (!profile) {
-      return null;
+  const lockKeySource = useCallback(async (keySource: IKeySource) => {
+    const service = await keySourceManager.get(keySource.source);
+    if (service) {
+      service.disconnect();
     }
-    // for now we use the same password as the profile password
-    // later we have different password for key sources. we need to handle that.
-    // we check the auth mode of the profile and use the appropriate password/web-authn to unlock the key source
-    switch (profile.options.authMode) {
-      case 'PASSWORD': {
-        const pass = (await prompt((resolve, reject) => (
-          <UnlockPrompt resolve={resolve} reject={reject} />
-        ))) as string;
-        if (!pass) {
-          return null;
-        }
-        const result = await WalletService.unlockProfile(profile.uuid, pass);
-        if (!result) return null;
-        return pass;
-      }
-      case 'WEB_AUTHN': {
-        const credentialId = profile.options.webAuthnCredential;
-        const credential = await retrieveCredential(credentialId);
-        if (!credential) {
-          return null;
-        }
-        const keys = await recoverPublicKey(credential);
-        for (const key of keys) {
-          const result = await WalletService.unlockProfile(profile.uuid, key);
-          if (result) {
-            return key;
-          }
-        }
-        return null;
-      }
-      default: {
-        throw new Error('Unsupported auth mode');
-      }
-    }
-  }, [context, prompt]);
+  }, []);
 
   const sign = useCallback(
     async (
@@ -168,19 +104,23 @@ export const useWallet = () => {
         throw new Error('Wallet in not unlocked');
       }
       if (Array.isArray(TXs)) {
-        return WalletService.sign(
+        const res = await WalletService.sign(
           context.keySources,
           unlockKeySource,
           TXs,
           publicKeys,
         );
+        keySourceManager.disconnect();
+        return res;
       }
-      return WalletService.sign(
+      const res = await WalletService.sign(
         context.keySources,
         unlockKeySource,
         [TXs],
         publicKeys,
       ).then((res) => res[0]);
+      keySourceManager.disconnect();
+      return res;
     },
     [context, unlockKeySource],
   );
@@ -196,7 +136,9 @@ export const useWallet = () => {
   );
 
   const createKey = useCallback(async (keySource: IKeySource) => {
-    return WalletService.createKey(keySource, unlockKeySource);
+    const res = await WalletService.createKey(keySource, unlockKeySource);
+    keySourceManager.disconnect();
+    return res;
   }, []);
 
   const getPublicKeyData = useCallback(
@@ -245,6 +187,7 @@ export const useWallet = () => {
     askForPassword,
     getPublicKeyData,
     unlockKeySource,
+    lockKeySource,
     setActiveNetwork: (network: INetwork) =>
       setActiveNetwork ? setActiveNetwork(network) : undefined,
     activeNetwork: context.activeNetwork,

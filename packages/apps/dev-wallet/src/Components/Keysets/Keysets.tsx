@@ -1,10 +1,11 @@
 import { IKeySet } from '@/modules/account/account.repository';
+import { panelClass } from '@/pages/home/style.css';
 import { linkClass } from '@/pages/select-profile/select-profile.css';
 import { getAccountName } from '@/utils/helpers';
 import { Box, Heading, Stack, Text } from '@kadena/kode-ui';
 import { Link } from 'react-router-dom';
 import { ListItem } from '../ListItem/ListItem';
-import { listClass, noStyleLinkClass, panelClass } from './style.css';
+import { listClass, noStyleLinkClass } from './style.css';
 
 export function Keysets({ keysets }: { keysets: IKeySet[] }) {
   return (

@@ -18,7 +18,7 @@ import { CreateAccount } from '@/pages/create-account/create-account';
 import { FungiblePage } from '@/pages/fungible/fungible';
 import { ImportChainweaverExport } from '@/pages/import-chainweaver-export/import-chainweaver-export';
 import { ImportWallet } from '@/pages/import-wallet/import-wallet';
-import { KeySources } from '@/pages/key-sources/key-sources';
+import { KeysPage } from '@/pages/keys/keys-page';
 import { Keyset } from '@/pages/keyset/keyset';
 import { Networks } from '@/pages/networks/networks';
 import { Ready } from '@/pages/ready/ready';
@@ -110,7 +110,20 @@ export const Routes: FC = () => {
             />
           }
         >
-          <Route element={<LayoutMini />}>
+          <Route element={<Layout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/sig-builder" element={<SignatureBuilder />} />
+            <Route path="/networks" element={<Networks />} />
+            <Route path="/connect/:requestId" element={<Connect />} />
+            <Route path="/key-management/:tab" element={<KeysPage />} />
+            <Route path="/create-account" element={<CreateAccount />} />
+            <Route path="/transaction/:groupId" element={<TransactionPage />} />
+            <Route path="/transactions" element={<Transactions />} />
+            <Route path="/keyset/:keysetId" element={<Keyset />} />
+            <Route path="/fungible/:contract" element={<FungiblePage />} />
+            <Route path="/account/:accountId" element={<AccountPage />} />
+            <Route path="/transfer" element={<TransferV2 />} />
+            <Route path="/terminal" element={<TerminalPage />} />
             <Route
               path="/backup-recovery-phrase"
               element={<BackupRecoveryPhrase />}
@@ -124,24 +137,11 @@ export const Routes: FC = () => {
               element={<AccountDiscovery />}
             />
           </Route>
-          <Route element={<Layout />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/sig-builder" element={<SignatureBuilder />} />
-            <Route path="/networks" element={<Networks />} />
-            <Route path="/connect/:requestId" element={<Connect />} />
-            <Route path="/key-sources" element={<KeySources />} />
-            <Route path="/create-account" element={<CreateAccount />} />
-            <Route path="/transaction/:groupId" element={<TransactionPage />} />
-            <Route path="/transactions" element={<Transactions />} />
-            <Route path="/keyset/:keysetId" element={<Keyset />} />
-            <Route path="/fungible/:contract" element={<FungiblePage />} />
-            <Route path="/account/:accountId" element={<AccountPage />} />
-            <Route path="/transfer" element={<TransferV2 />} />
-            <Route path="/terminal" element={<TerminalPage />} />
-          </Route>
         </Route>
-        <Route path="/ready" element={<Ready />} />
-        <Route path="*" element={<Heading>Not found!</Heading>} />
+        <Route element={<LayoutMini />}>
+          <Route path="/ready" element={<Ready />} />
+          <Route path="*" element={<Heading>Not found!</Heading>} />
+        </Route>
       </Route>
     </Route>,
   );

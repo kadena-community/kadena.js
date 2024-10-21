@@ -1,12 +1,14 @@
-import { Accounts } from '@/Components/Accounts/Accounts';
+import { AccountItem } from '@/Components/AccountItem/AccountItem';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { Heading, Stack } from '@kadena/kode-ui';
+import { Box, Heading, Stack } from '@kadena/kode-ui';
 import { PactNumber } from '@kadena/pactjs';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { listClass, panelClass } from '../home/style.css';
+import { linkClass } from '../transfer/style.css';
 
 export function FungiblePage() {
   const { contract } = useParams<{ contract: string }>();
-  const { fungibles, accounts, keysets } = useWallet();
+  const { fungibles, accounts } = useWallet();
   const asset = fungibles.find((f) => f.contract === contract);
 
   if (!asset) {
@@ -20,6 +22,10 @@ export function FungiblePage() {
     return acc;
   }, new PactNumber('0.0'));
 
+  if (!contract) {
+    throw new Error('No contract');
+  }
+
   return (
     <Stack flexDirection={'column'} gap={'lg'}>
       <Stack flexDirection={'column'}>
@@ -28,11 +34,23 @@ export function FungiblePage() {
         </Heading>
         <Heading variant="h5">contract: {asset.contract}</Heading>
       </Stack>
-      <Accounts
-        accounts={accounts.filter((account) => account.contract === contract)}
-        keysets={keysets}
-        asset={asset}
-      />
+      <Box className={panelClass} marginBlockStart="xs">
+        <Heading as="h4">Your accounts</Heading>
+        <Link to={`/create-account/${contract}`} className={linkClass}>
+          Create Account
+        </Link>
+        {accounts.length ? (
+          <Box marginBlockStart="md">
+            <ul className={listClass}>
+              {accounts.map((account) => (
+                <li key={account.uuid}>
+                  <AccountItem account={account} />
+                </li>
+              ))}
+            </ul>
+          </Box>
+        ) : null}
+      </Box>
     </Stack>
   );
 }

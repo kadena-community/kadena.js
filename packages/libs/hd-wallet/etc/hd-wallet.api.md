@@ -22,6 +22,9 @@ export function kadenaDecrypt(password: BinaryLike, encryptedData: BinaryLike): 
 // @public
 export function kadenaEncrypt<TEncode extends 'base64' | 'buffer' = 'base64', TReturn = TEncode extends 'base64' ? EncryptedString : Uint8Array>(password: BinaryLike, message: BinaryLike, encode?: TEncode): Promise<TReturn>;
 
+// @public
+export const kadenaEntropyToMnemonic: (entropy: Uint8Array) => string;
+
 // @public (undocumented)
 export function kadenaGenKeypairFromSeed(password: BinaryLike, seed: EncryptedString, index: number, derivationPathTemplate?: string): Promise<[string, EncryptedString]>;
 
