@@ -1,6 +1,5 @@
 import { MediaContextProvider } from '@/Components/Media/media';
 import { DatabaseProvider } from '@/modules/db/db.provider';
-import { LayoutProvider } from '@/modules/layout/layout.provider.tsx';
 import { WalletProvider } from '@/modules/wallet/wallet.provider';
 import { useEffect } from 'react';
 import { PromptProvider } from '../Components/PromptProvider/Prompt';
@@ -19,9 +18,7 @@ function Providers({ children }: { children: React.ReactNode }) {
       <DatabaseProvider>
         <PromptProvider>
           <WalletProvider>
-            <MediaContextProvider>
-              <LayoutProvider>{children}</LayoutProvider>
-            </MediaContextProvider>
+            <MediaContextProvider>{children}</MediaContextProvider>
           </WalletProvider>
         </PromptProvider>
       </DatabaseProvider>

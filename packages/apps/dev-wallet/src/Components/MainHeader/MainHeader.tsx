@@ -47,72 +47,65 @@ export const MainHeader: FC = () => {
     <>
       <NavHeader
         logo={
-          <Link to="/">
-            <KadenaLogo height={40} />
+          <Link to="/" className={noStyleLinkClass}>
+            <Stack alignItems={'center'} gap={'md'}>
+              <KadenaLogo height={40} />
+              <Text>DX Wallet</Text>
+            </Stack>
           </Link>
         }
         className={headerStyle}
       >
-        {isUnlocked && (
-          <NavHeaderLinkList>
-            <NavHeaderLink asChild>
-              <Link to="/">DX Wallet</Link>
-            </NavHeaderLink>
-            <NavHeaderLink asChild>
-              <Link to="/networks">Network</Link>
-            </NavHeaderLink>
-          </NavHeaderLinkList>
-        )}
-        {!isUnlocked && (
-          <Stack flex={1} justifyContent={'center'} alignItems={'center'}>
-            <Heading as="h5">DX Wallet</Heading>
+        <Stack flex={1} justifyContent={'flex-end'}>
+          <Stack alignItems="center">
+            <NavHeaderButton
+              aria-label="Toggle theme"
+              title="Toggle theme"
+              onPress={() => toggleTheme()}
+              className={atoms({ marginInlineEnd: 'sm' })}
+            >
+              <MonoContrast
+                className={atoms({
+                  color: 'text.base.default',
+                })}
+              />
+            </NavHeaderButton>
+            {!isUnlocked && (
+              <NavHeaderLinkList>
+                {[
+                  <NavHeaderLink href="https://kadena.io">
+                    Go to Kadena.io
+                  </NavHeaderLink>,
+                ]}
+              </NavHeaderLinkList>
+            )}
+            {isUnlocked && (
+              <>
+                <NavHeaderSelect
+                  aria-label="Select Network"
+                  selectedKey={activeNetwork?.uuid}
+                  onSelectionChange={(uuid) =>
+                    handleNetworkUpdate(uuid as string)
+                  }
+                  startVisual={<MonoPublic />}
+                  className={selectNetworkClass}
+                >
+                  {networks.map((network) => (
+                    <SelectItem key={network.uuid} textValue={network.name}>
+                      {network.name}
+                    </SelectItem>
+                  ))}
+                </NavHeaderSelect>
+                <NavHeaderButton
+                  aria-label="Logout"
+                  title="Logout"
+                  onPress={() => handleLogOut()}
+                >
+                  <MonoLogout />
+                </NavHeaderButton>
+              </>
+            )}
           </Stack>
-        )}
-
-        <Stack alignItems="center">
-          <NavHeaderButton
-            aria-label="Toggle theme"
-            title="Toggle theme"
-            onPress={() => toggleTheme()}
-            className={atoms({ marginInlineEnd: 'sm' })}
-          >
-            <MonoContrast
-              className={atoms({
-                color: 'text.base.default',
-              })}
-            />
-          </NavHeaderButton>
-          {!isUnlocked && (
-            <a href="https://kadena.io" className={noStyleLinkClass}>
-              <Text>Go to Kadena.io</Text>
-            </a>
-          )}
-          {isUnlocked && (
-            <>
-              <NavHeaderSelect
-                aria-label="Select Network"
-                selectedKey={activeNetwork?.uuid}
-                onSelectionChange={(uuid) =>
-                  handleNetworkUpdate(uuid as string)
-                }
-                startVisual={<MonoPublic />}
-                className={selectNetworkClass}
-              >
-                {networks.map((network) => (
-                  <SelectItem key={network.uuid} textValue={network.name}>
-                    {network.name}
-                  </SelectItem>
-                ))}
-              </NavHeaderSelect>
-              <NavHeaderButton
-                aria-label="Logout"
-                title="Logout"
-                onPress={() => handleLogOut()}
-              >
-                <MonoLogout />
-              </NavHeaderButton>
-            </>
-          )}
         </Stack>
       </NavHeader>
     </>

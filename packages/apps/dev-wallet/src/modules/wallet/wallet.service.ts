@@ -1,4 +1,3 @@
-import { defaultAccentColor } from '@/modules/layout/layout.provider.tsx';
 import {
   addSignatures,
   ICommand,
@@ -117,7 +116,7 @@ export async function createProfile(
     networks,
     secretId,
     securityPhraseId,
-    accentColor: accentColor || defaultAccentColor,
+    accentColor: accentColor,
     options,
   };
 

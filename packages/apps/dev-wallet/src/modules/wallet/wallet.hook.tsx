@@ -1,4 +1,4 @@
-import { defaultAccentColor } from '@/modules/layout/layout.provider.tsx';
+import { config } from '@/config';
 import { IUnsignedCommand } from '@kadena/client';
 import { useCallback, useContext } from 'react';
 import * as AccountService from '../account/account.service';
@@ -36,7 +36,7 @@ export const useWallet = () => {
     async (
       profileName: string = 'default',
       password: string,
-      accentColor: string = defaultAccentColor,
+      accentColor: string | undefined,
       options: IProfile['options'],
       securityPhrase: string | Uint8Array,
     ) => {
@@ -44,7 +44,7 @@ export const useWallet = () => {
         profileName,
         password,
         [],
-        accentColor,
+        accentColor ?? config.defaultAccentColor,
         options,
         securityPhrase,
       );

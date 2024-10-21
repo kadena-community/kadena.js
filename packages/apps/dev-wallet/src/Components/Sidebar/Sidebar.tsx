@@ -44,10 +44,10 @@ export const Sidebar: FC = () => {
                 <MonoTableRows />
                 Transactions
               </SidebarItem>
-              <SidebarItem route="/contacts">
+              {/* <SidebarItem route="/contacts">
                 <MonoContacts />
                 Contacts
-              </SidebarItem>
+              </SidebarItem> */}
             </Stack>
             <Stack gap={'xxs'} flexDirection={'column'} marginBlockEnd={'n9'}>
               <Stack justifyContent={'center'} flexDirection={'column'}>

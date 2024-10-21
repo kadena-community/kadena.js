@@ -1,5 +1,5 @@
+import { config } from '@/config';
 import { ChainweaverService } from '@/modules/key-source/hd-wallet/chainweaver';
-import { defaultAccentColor } from '@/modules/layout/layout.provider';
 import {
   INetwork,
   networkRepository,
@@ -58,7 +58,7 @@ export async function createProfileFromChainweaverData(
       profileName,
       password,
       networks,
-      defaultAccentColor,
+      config.defaultAccentColor,
       {
         authMode: 'PASSWORD',
         rememberPassword: 'session',
