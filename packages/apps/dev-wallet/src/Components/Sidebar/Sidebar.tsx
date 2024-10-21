@@ -1,4 +1,5 @@
 import {
+  MonoContacts,
   MonoDataThresholding,
   MonoKey,
   MonoNetworkCheck,
@@ -9,7 +10,7 @@ import {
   MonoTextSnippet,
 } from '@kadena/kode-icons';
 import { Box, Divider, Heading, Stack, Text } from '@kadena/kode-ui';
-import type { FC } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import {
   fullHightClass,
@@ -27,96 +28,48 @@ export const Sidebar: FC = () => {
         <Stack marginBlockStart="md" height="100%">
           <ul className={sidebarMenuClass}>
             <Stack flexDirection={'column'} gap={'xxs'}>
-              <li className={sidebarMenuOptionClass}>
-                <NavLink to="/" className={sidebarLinkClass}>
-                  <Text>
-                    <Stack alignItems="center" gap="md">
-                      <MonoDataThresholding />
-                      Dashboard
-                    </Stack>
-                  </Text>
-                </NavLink>
-              </li>
-              <li className={sidebarMenuOptionClass}>
-                <NavLink to="/sig-builder" className={sidebarLinkClass}>
-                  <Text>
-                    <Stack alignItems="center" gap="md">
-                      <MonoSignature />
-                      Sig Builder
-                    </Stack>
-                  </Text>
-                </NavLink>
-              </li>
-              <li className={sidebarMenuOptionClass}>
-                <NavLink to="/transfer" className={sidebarLinkClass}>
-                  <Text>
-                    <Stack alignItems="center" gap="md">
-                      <MonoSwapHoriz />
-                      Transfer
-                    </Stack>
-                  </Text>
-                </NavLink>
-              </li>
-              <li className={sidebarMenuOptionClass}>
-                <NavLink to="/transactions" className={sidebarLinkClass}>
-                  <Text>
-                    <Stack alignItems="center" gap="md">
-                      <MonoTableRows />
-                      Transactions
-                    </Stack>
-                  </Text>
-                </NavLink>
-              </li>
+              <SidebarItem route="/">
+                <MonoDataThresholding />
+                Dashboard
+              </SidebarItem>
+              <SidebarItem route="/sig-builder">
+                <MonoSignature />
+                Sig Builder
+              </SidebarItem>
+              <SidebarItem route="/transfer">
+                <MonoSwapHoriz />
+                Transfer
+              </SidebarItem>
+              <SidebarItem route="/transactions">
+                <MonoTableRows />
+                Transactions
+              </SidebarItem>
+              <SidebarItem route="/contacts">
+                <MonoContacts />
+                Contacts
+              </SidebarItem>
             </Stack>
             <Stack gap={'xxs'} flexDirection={'column'} marginBlockEnd={'n9'}>
               <Stack justifyContent={'center'} flexDirection={'column'}>
                 <Heading variant="h5">Advanced Tools</Heading>
                 <Divider variant="bold" />
               </Stack>
-              <li className={sidebarMenuOptionClass}>
-                <NavLink to="/networks" className={sidebarLinkClass}>
-                  <Text>
-                    <Stack alignItems="center" gap="md">
-                      <MonoNetworkCheck />
-                      Networks
-                    </Stack>
-                  </Text>
-                </NavLink>
-              </li>
-              <li className={sidebarMenuOptionClass}>
-                <NavLink
-                  to="/backup-recovery-phrase/write-down"
-                  className={sidebarLinkClass}
-                >
-                  <Text>
-                    <Stack alignItems="center" gap="md">
-                      <MonoTextSnippet />
-                      Backup
-                    </Stack>
-                  </Text>
-                </NavLink>
-              </li>
-
-              <li className={sidebarMenuOptionClass}>
-                <NavLink to="/key-management/keys" className={sidebarLinkClass}>
-                  <Text>
-                    <Stack alignItems="center" gap="md">
-                      <MonoKey />
-                      Keys
-                    </Stack>
-                  </Text>
-                </NavLink>
-              </li>
-              <li className={sidebarMenuOptionClass}>
-                <NavLink to="/terminal" className={sidebarLinkClass}>
-                  <Text>
-                    <Stack alignItems="center" gap="md">
-                      <MonoTerminal />
-                      Dev Console
-                    </Stack>
-                  </Text>
-                </NavLink>
-              </li>
+              <SidebarItem route="/networks">
+                <MonoNetworkCheck />
+                Networks
+              </SidebarItem>
+              <SidebarItem route="/backup-recovery-phrase/write-down">
+                <MonoTextSnippet />
+                Backup
+              </SidebarItem>
+              <SidebarItem route="/key-management/keys">
+                <MonoKey />
+                Keys
+              </SidebarItem>
+              <SidebarItem route="/terminal">
+                <MonoTerminal />
+                Dev Console
+              </SidebarItem>
             </Stack>
           </ul>
         </Stack>
@@ -124,3 +77,18 @@ export const Sidebar: FC = () => {
     </Box>
   );
 };
+
+const SidebarItem: FC<PropsWithChildren<{ route: string }>> = ({
+  children,
+  route,
+}) => (
+  <li className={sidebarMenuOptionClass}>
+    <NavLink to={route} className={sidebarLinkClass}>
+      <Text>
+        <Stack alignItems="center" gap="md">
+          {children}
+        </Stack>
+      </Text>
+    </NavLink>
+  </li>
+);

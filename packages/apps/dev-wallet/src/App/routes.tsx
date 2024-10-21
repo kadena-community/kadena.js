@@ -138,8 +138,10 @@ export const Routes: FC = () => {
             />
           </Route>
         </Route>
-        <Route path="/ready" element={<Ready />} />
-        <Route path="*" element={<Heading>Not found!</Heading>} />
+        <Route element={<LayoutMini />}>
+          <Route path="/ready" element={<Ready />} />
+          <Route path="*" element={<Heading>Not found!</Heading>} />
+        </Route>
       </Route>
     </Route>,
   );
