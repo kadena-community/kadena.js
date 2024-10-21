@@ -245,14 +245,23 @@ export class WalletSDK implements IWalletSDK {
     return null;
   }
 
-  public async getGasLimitEstimate(
-    transaction: ICommand,
+  public async getGasEstimate(
+    transaction: ICommand | IUnsignedCommand,
     networkId: string,
     chainId: ChainId,
-  ): Promise<number> {
-    const host = this._getHostUrl({ networkId, chainId });
-    const result = await estimateGas(JSON.parse(transaction.cmd), host);
-    return result.gasPrice;
+  ): Promise<{ gasLimit: number; gasPrice: number }> {
+    try {
+      const host = this._getHostUrl({ networkId, chainId });
+      const result = await estimateGas(JSON.parse(transaction.cmd), host);
+      return result;
+    } catch (error) {
+      this._logger.error(
+        `Failed to estimate gas for transaction: ${error.message}`,
+      );
+      throw new Error(
+        `Gas estimation failed for transaction: ${transaction.hash}`,
+      );
+    }
   }
 }
 
