@@ -4,6 +4,7 @@ import React from 'react';
 
 import { colorVariants, transformVariants } from '../typography.css';
 import { fontMap } from './constants';
+import { inheritedSizeClass } from './Text.css';
 
 export interface ITextProps {
   as?: 'p' | 'span' | 'code';
@@ -11,7 +12,7 @@ export interface ITextProps {
   className?: string;
   color?: keyof typeof colorVariants;
   bold?: boolean;
-  size?: 'small' | 'smallest' | 'base';
+  size?: 'inherit' | 'small' | 'smallest' | 'base';
   transform?: keyof typeof transformVariants;
   variant?: 'body' | 'code' | 'ui';
   ariaLabel?: HTMLAttributes<HTMLSpanElement>['aria-label'];
@@ -42,8 +43,16 @@ export const Text = ({
   bold,
   id,
 }: ITextProps) => {
+  let isInheritedSize = false;
+
+  if (size === 'inherit') {
+    isInheritedSize = true;
+    size = 'base';
+  }
+
   const classList = classNames(
     fontMap[variant][size][bold ? 'bold' : 'regular'],
+    isInheritedSize ? inheritedSizeClass : '',
     colorVariants[color],
     transformVariants[transform],
     className,
