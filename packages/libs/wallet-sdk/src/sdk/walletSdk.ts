@@ -111,7 +111,6 @@ export class WalletSDK implements IWalletSDK {
     chainId: ChainId,
   ): Promise<ITransactionDescriptor> {
     const host = this._getHostUrl({ networkId, chainId });
-    console.log('host:', host);
     const result = await createClient(() => host).submitOne(transaction);
     return result;
   }

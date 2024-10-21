@@ -1,4 +1,9 @@
-import type { ChainId, IClient, ICommandResult } from '@kadena/client';
+import type {
+  ChainId,
+  IClient,
+  ICommandResult,
+  IUnsignedCommand,
+} from '@kadena/client';
 import { Pact, createClient } from '@kadena/client';
 import {
   KADENANAMES_NAMESPACE_MAINNET_MODULE,
@@ -37,17 +42,31 @@ async function kdnResolver(
     const module = networkId.includes('testnet')
       ? KADENANAMES_NAMESPACE_TESTNET_MODULE
       : KADENANAMES_NAMESPACE_MAINNET_MODULE;
-    const method = subject === 'address' ? 'get-address' : 'get-name';
+
     const param =
       subject === 'address'
         ? ensureKdaExtension(identifier.trim())
         : identifier.trim();
 
-    const transaction = Pact.builder
-      .execution((Pact as any).modules[module][method](param))
-      .setMeta({ chainId })
-      .setNetworkId(networkId)
-      .createTransaction();
+    let transaction: IUnsignedCommand | undefined;
+
+    if (subject === 'address') {
+      transaction = Pact.builder
+        .execution(`(${module}.get-address "${param}")`)
+        .setMeta({ chainId })
+        .setNetworkId(networkId)
+        .createTransaction();
+    } else if (subject === 'name') {
+      transaction = Pact.builder
+        .execution(`(${module}.get-name "${param}")`)
+        .setMeta({ chainId })
+        .setNetworkId(networkId)
+        .createTransaction();
+    }
+
+    if (!transaction) {
+      throw new Error(`Failed to create transaction for ${subject}`);
+    }
 
     const response: ICommandResult = await client({
       networkId,
