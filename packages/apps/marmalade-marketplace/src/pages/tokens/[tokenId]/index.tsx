@@ -43,6 +43,7 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 //styles
+import { layoutClass } from '@/styles/layout.css';
 import {
   CardContentBlock,
   CardFixedContainer,
@@ -297,7 +298,7 @@ const CreateSale = () => {
   };
 
   return (
-    <div>
+    <Stack width="100%" className={layoutClass}>
       <CardFixedContainer>
         <CardContentBlock
           visual={<MonoSelectAll width={36} height={36} />}
@@ -342,7 +343,12 @@ const CreateSale = () => {
         </CardFooterGroup>
       </CardFixedContainer>
 
-      <Stack flex={1} flexDirection="column" className={styles.secondContainer}>
+      <Stack
+        flex={1}
+        flexDirection="column"
+        className={styles.secondContainer}
+        width="100%"
+      >
         <Tabs
           className={styles.tabsContainer}
           tabPanelClassName={styles.tabContainer}
@@ -598,7 +604,7 @@ const CreateSale = () => {
           <RegularSale tokenImageUrl={tokenImageUrl} sale={data!} />
         ) : null}
       </Stack>
-    </div>
+    </Stack>
   );
 };
 
