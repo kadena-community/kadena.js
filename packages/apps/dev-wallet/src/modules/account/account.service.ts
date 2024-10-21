@@ -235,7 +235,12 @@ export const syncAllAccounts = async (profileId: string, networkUUID: UUID) => {
     networkUUID,
   );
   console.log('syncing accounts', accounts);
-  return Promise.all(accounts.map(syncAccount));
+  // sync all accounts sequentially to avoid rate limiting
+  const result = [];
+  for (const account of accounts) {
+    result.push(await syncAccount(account));
+  }
+  return result;
 };
 
 // TODO: update this to work with both testnet04 and testnet05

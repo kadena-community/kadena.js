@@ -1,4 +1,4 @@
-import { cardColor } from '@/utils/color';
+import { cardColor, cardHoverColor } from '@/utils/color';
 import { atoms, tokens } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
@@ -43,3 +43,28 @@ export const passwordDialog = style([
 ]);
 
 export const selectedClass = style([cardClass, { backgroundColor: '#478842' }]);
+
+export const buttonListClass = style([
+  atoms({
+    padding: 'sm',
+    paddingInline: 'md',
+    marginBlockStart: 'xs',
+    textDecoration: 'none',
+  }),
+  {
+    border: 'none',
+    cursor: 'pointer',
+    flex: 1,
+    minHeight: '50px',
+    background: tokens.kda.foundation.color.background.surface.default,
+    selectors: {
+      '&:hover': {
+        background: cardHoverColor,
+      },
+      '&:disabled': {
+        opacity: 0.5,
+        cursor: 'not-allowed',
+      },
+    },
+  },
+]);

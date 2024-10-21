@@ -1,109 +1,16 @@
-import {
-  backgroundStyle,
-  headerStyle,
-  mainColumnStyle,
-  selectNetworkClass,
-} from '@/App/layout.css.ts';
+import { backgroundStyle, mainColumnStyle } from '@/App/layout.css.ts';
+import { MainHeader } from '@/Components/MainHeader/MainHeader';
 import { Sidebar } from '@/Components/Sidebar/Sidebar.tsx';
-import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
 import { pageClass } from '@/pages/home/style.css.ts';
-import { MonoContrast, MonoLogout, MonoPublic } from '@kadena/kode-icons';
-import {
-  Box,
-  KadenaLogo,
-  NavHeader,
-  NavHeaderButton,
-  NavHeaderLink,
-  NavHeaderLinkList,
-  NavHeaderSelect,
-  SelectItem,
-  Stack,
-  Themes,
-  useTheme,
-} from '@kadena/kode-ui';
-import { atoms } from '@kadena/kode-ui/styles';
+
+import { Box, Stack } from '@kadena/kode-ui';
 import { FC } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 export const Layout: FC = () => {
-  const { networks, activeNetwork, setActiveNetwork } = useWallet();
-
-  const { theme, setTheme } = useTheme();
-
-  const handleNetworkUpdate = (uuid: string) => {
-    const network = networks.find((network) => network.uuid === uuid);
-    if (network && setActiveNetwork) {
-      setActiveNetwork(network);
-    }
-  };
-
-  const toggleTheme = (): void => {
-    const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
-    setTheme(newTheme);
-  };
-
-  const { isUnlocked, lockProfile } = useWallet();
-
-  const handleLogOut = () => {
-    lockProfile();
-  };
-
   return (
     <>
-      <NavHeader
-        logo={
-          <Link to="/">
-            <KadenaLogo height={40} />
-          </Link>
-        }
-        className={headerStyle}
-      >
-        <NavHeaderLinkList>
-          <NavHeaderLink asChild>
-            <Link to="/">DX Wallet</Link>
-          </NavHeaderLink>
-          <NavHeaderLink asChild>
-            <Link to="/networks">Network</Link>
-          </NavHeaderLink>
-        </NavHeaderLinkList>
-
-        <Stack alignItems="center">
-          <NavHeaderButton
-            aria-label="Toggle theme"
-            title="Toggle theme"
-            onPress={() => toggleTheme()}
-            className={atoms({ marginInlineEnd: 'sm' })}
-          >
-            <MonoContrast
-              className={atoms({
-                color: 'text.base.default',
-              })}
-            />
-          </NavHeaderButton>
-          <NavHeaderSelect
-            aria-label="Select Network"
-            selectedKey={activeNetwork?.uuid}
-            onSelectionChange={(uuid) => handleNetworkUpdate(uuid as string)}
-            startVisual={<MonoPublic />}
-            className={selectNetworkClass}
-          >
-            {networks.map((network) => (
-              <SelectItem key={network.uuid} textValue={network.name}>
-                {network.name}
-              </SelectItem>
-            ))}
-          </NavHeaderSelect>
-          {isUnlocked && (
-            <NavHeaderButton
-              aria-label="Logout"
-              title="Logout"
-              onPress={() => handleLogOut()}
-            >
-              <MonoLogout />
-            </NavHeaderButton>
-          )}
-        </Stack>
-      </NavHeader>
+      <MainHeader />
       <main>
         <Stack
           className={pageClass}

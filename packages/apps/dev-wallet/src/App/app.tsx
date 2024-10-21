@@ -1,5 +1,4 @@
 import { DatabaseProvider } from '@/modules/db/db.provider';
-import { LayoutProvider } from '@/modules/layout/layout.provider.tsx';
 import { WalletProvider } from '@/modules/wallet/wallet.provider';
 import { MediaContextProvider } from '@kadena/kode-ui';
 import { useEffect } from 'react';
@@ -19,9 +18,7 @@ function Providers({ children }: { children: React.ReactNode }) {
       <DatabaseProvider>
         <PromptProvider>
           <WalletProvider>
-            <MediaContextProvider>
-              <LayoutProvider>{children}</LayoutProvider>
-            </MediaContextProvider>
+            <MediaContextProvider>{children}</MediaContextProvider>
           </WalletProvider>
         </PromptProvider>
       </DatabaseProvider>

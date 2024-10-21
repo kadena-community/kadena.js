@@ -1,5 +1,6 @@
 import { AuthCard } from '@/Components/AuthCard/AuthCard.tsx';
 import { BackupMnemonic } from '@/Components/BackupMnemonic/BackupMnemonic';
+import { config } from '@/config';
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet';
 import {
   PublicKeyCredentialCreate,
@@ -13,8 +14,6 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
 import { noStyleLinkClass } from '../home/style.css';
-
-const colorList = ['#42CEA4', '#42BDCE', '#4269CE', '#B242CE', '#CEA742'];
 
 const rotate = (max: number, start: number = 0) => {
   let index = start;
@@ -42,8 +41,9 @@ export function CreateProfile() {
   const [password, setPassword] = useState('');
   const isShortFlow = profileList.length === 0;
   const formRef = useRef<HTMLFormElement>(null);
-  const rotateColor = useRef(rotate(colorList.length, profileList.length));
-  console.log('profileList', colorList.length, profileList.length);
+  const rotateColor = useRef(
+    rotate(config.colorList.length, profileList.length),
+  );
 
   const {
     register,
@@ -64,7 +64,7 @@ export function CreateProfile() {
       profileName: isShortFlow
         ? 'default'
         : `profile-${profileList.length + 1}`,
-      accentColor: colorList[rotateColor.current()],
+      accentColor: config.colorList[rotateColor.current()],
     },
   });
 
@@ -78,7 +78,7 @@ export function CreateProfile() {
   }: {
     profileName?: string;
     password: string;
-    accentColor?: string;
+    accentColor: string;
   }) {
     let pass = password;
     if (!activeNetwork) {
@@ -100,19 +100,17 @@ export function CreateProfile() {
         ? {
             authMode: 'WEB_AUTHN',
             webAuthnCredential: webAuthnCredential.rawId,
+            rememberPassword: 'session',
           }
         : {
             authMode: 'PASSWORD',
+            rememberPassword: 'session',
           },
+      mnemonic,
     );
     // for now we only support slip10 so we just create the keySource and the first account by default for it
     // later we should change this flow to be more flexible
-    const keySource = await createHDWallet(
-      profile.uuid,
-      'HD-BIP44',
-      pass,
-      mnemonic,
-    );
+    const keySource = await createHDWallet(profile.uuid, 'HD-BIP44', pass);
 
     const key = await createKey(keySource);
 

@@ -1,11 +1,11 @@
 {
   "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {
+    "allowJs": true,
     "module": "NodeNext",
     "outDir": "lib/esm",
     "moduleResolution": "NodeNext",
     "types": ["node"]
   },
-  "include": ["./src", "./src/**/*"],
-  "exclude": ["**/vendor/**/*"]
+  "include": ["./src", "./src/**/*"]
 }
