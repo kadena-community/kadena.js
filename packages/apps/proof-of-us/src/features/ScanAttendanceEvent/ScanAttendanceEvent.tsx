@@ -157,11 +157,9 @@ export const ScanAttendanceEvent: FC<IProps> = ({
             </MessageBlock>
 
             <Stack gap="md">
-              <Button>
-                <Link href={`/user/proof-of-us/t/${tokenId}`}>
-                  Go to Proof{' '}
-                </Link>
-              </Button>
+              <Link href={`/user/proof-of-us/t/${tokenId}`}>
+                <Button>Go to Proof</Button>
+              </Link>
             </Stack>
           </Stack>
         )}
