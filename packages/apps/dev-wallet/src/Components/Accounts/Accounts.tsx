@@ -106,6 +106,7 @@ export function Accounts({
                 const accountsToWatch: IWatchedAccount[] = accounts.map(
                   (account) => ({
                     uuid: crypto.randomUUID(),
+                    alias: account.alias ?? '',
                     profileId: profile!.uuid,
                     address: account.address,
                     chains: account.chains,

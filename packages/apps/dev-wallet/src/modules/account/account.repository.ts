@@ -173,3 +173,9 @@ export const addDefaultFungibles = execInSequence(async () => {
     await accountRepository.addFungible(coin);
   }
 });
+
+export const isWatchedAccount = (
+  account: IWatchedAccount | IAccount | undefined,
+): account is IWatchedAccount => {
+  return Boolean(account && 'watched' in account && account.watched);
+};

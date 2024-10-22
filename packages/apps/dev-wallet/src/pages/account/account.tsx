@@ -4,10 +4,11 @@ import { fundAccount } from '@/modules/account/account.service';
 
 import { AccountBalanceDistribution } from '@/Components/AccountBalanceDistribution/AccountBalanceDistribution';
 import { QRCode } from '@/Components/QRCode/QRCode';
+import { isWatchedAccount } from '@/modules/account/account.repository';
 import { getTransferActivities } from '@/modules/activity/activity.service';
 import { useAsync } from '@/utils/useAsync';
 import { ChainId } from '@kadena/client';
-import { MonoKey } from '@kadena/kode-icons/system';
+import { MonoKey, MonoRemoveRedEye } from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
 import { useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -18,14 +19,18 @@ import { Redistribute } from './Components/Redistribute';
 
 export function AccountPage() {
   const { accountId } = useParams();
-  const { activeNetwork, fungibles, accounts, profile } = useWallet();
+  const { activeNetwork, fungibles, accounts, profile, watchAccounts } =
+    useWallet();
   const [redistributionGroupId, setRedistributionGroupId] = useState<string>();
-  const account = accounts.find((account) => account.uuid === accountId);
+  const account =
+    accounts.find((account) => account.uuid === accountId) ??
+    watchAccounts.find((account) => account.uuid === accountId);
+
   const navigate = useNavigate();
   const keyset = account?.keyset;
   const asset = fungibles.find((f) => f.contract === account?.contract);
   const [activities = []] = useAsync(getTransferActivities, [
-    account?.keyset?.uuid,
+    !isWatchedAccount(account) ? account?.keyset?.uuid : '',
     activeNetwork?.uuid,
   ]);
 
@@ -43,7 +48,8 @@ export function AccountPage() {
   }
 
   const fundAccountHandler = async (chainId: ChainId) => {
-    if (!keyset) {
+    if ('watched' in account && account.watched) return;
+    if (!keyset || !('principal' in keyset)) {
       throw new Error('No keyset found');
     }
     if (!activeNetwork) {
@@ -59,6 +65,8 @@ export function AccountPage() {
 
     navigate(`/transaction/${groupId}`);
   };
+  const isOwnedAccount =
+    !isWatchedAccount(account) && account.profileId === profile?.uuid;
 
   return (
     <Stack flexDirection={'column'} gap={'lg'}>
@@ -73,8 +81,14 @@ export function AccountPage() {
             {account.overallBalance} {asset.symbol}
           </Heading>
         </Stack>
+        {!isOwnedAccount && (
+          <Stack alignItems={'center'} gap={'sm'}>
+            <MonoRemoveRedEye />
+            <Heading variant="h6">Watched Account</Heading>
+          </Stack>
+        )}
       </Stack>
-      {account.profileId === profile?.uuid && (
+      {isOwnedAccount && (
         <Stack gap="md">
           <Link
             to={`/transfer?accountId=${account.uuid}`}

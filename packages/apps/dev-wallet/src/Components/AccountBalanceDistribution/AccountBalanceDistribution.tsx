@@ -1,4 +1,8 @@
-import { IAccount } from '@/modules/account/account.repository';
+import {
+  IAccount,
+  isWatchedAccount,
+  IWatchedAccount,
+} from '@/modules/account/account.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import {
   createRedistributionTxs,
@@ -20,7 +24,7 @@ interface IProps extends PropsWithChildren {
   }[];
   overallBalance: string;
   fundAccount: (chainId: ChainId) => Promise<void>;
-  account: IAccount;
+  account: IAccount | IWatchedAccount;
   onRedistribution: (groupId: string) => void;
 }
 export const AccountBalanceDistribution: FC<IProps> = ({
@@ -113,6 +117,7 @@ export const AccountBalanceDistribution: FC<IProps> = ({
   );
 
   async function onSubmit(data: { chains: typeof flatChains }) {
+    if (isWatchedAccount(account)) return;
     const chainBalance = data.chains.map((chain) => ({
       chainId: chain.chainId as ChainId,
       demand: chain.balance,
@@ -126,7 +131,7 @@ export const AccountBalanceDistribution: FC<IProps> = ({
       '0',
     );
     const [groupId] = await createRedistributionTxs({
-      account,
+      account: account as IAccount,
       gasLimit,
       gasPrice,
       network: activeNetwork!,
@@ -165,7 +170,8 @@ export const AccountBalanceDistribution: FC<IProps> = ({
     setValue('chains', chainsWithTxFees);
   }
 
-  const isOwnedAccount = account.profileId === profile?.uuid;
+  const isOwnedAccount =
+    !isWatchedAccount(account) && account.profileId === profile?.uuid;
 
   return (
     <Stack flexDirection={'column'} flex={1} gap={'sm'}>

@@ -29,7 +29,8 @@ export function WatchAccountsDialog({
   onClose: () => void;
   onWatch: (account: IReceiverAccount[]) => void;
 }) {
-  const { contacts } = useWallet();
+  const { contacts, fungibles } = useWallet();
+  const asset = fungibles.find((f) => f.contract === contract);
   const [account, setAccount] = useState<IReceiverAccount>();
   const [selectedContacts, setSelectedContacts] = useState<IContact[]>([]);
   return (
@@ -41,7 +42,7 @@ export function WatchAccountsDialog({
             You can watch any account on the network.
           </Heading>
           <Stack gap={'md'} flexDirection={'column'}>
-            <Heading variant="h6">Enter Address</Heading>
+            <Heading variant="h6">Enter a {asset?.symbol} Address</Heading>
             <AccountInput
               onAccount={setAccount}
               account={account}
@@ -99,6 +100,7 @@ export function WatchAccountsDialog({
               account,
               ...selectedContacts.map((data) => {
                 const acc: IReceiverAccount = {
+                  alias: data.name,
                   chains: [],
                   overallBalance: '0.0',
                   address: data.account.address,
