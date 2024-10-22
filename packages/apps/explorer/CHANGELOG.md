@@ -1,5 +1,19 @@
 # @kadena/explorer
 
+## 0.8.8
+
+### Patch Changes
+
+- d0397b1: fix the selectnetwork edit option
+- 2558abd: trim the input value of search
+- 0fb834c: add links to changelogs
+- Updated dependencies \[d533d39]
+- Updated dependencies \[de87d1c]
+- Updated dependencies \[94ce674]
+- Updated dependencies \[7d063d6]
+  - @kadena/kode-icons\@0.3.0
+  - @kadena/kode-ui\@0.18.0
+
 ## 0.8.7
 
 ### Patch Changes
