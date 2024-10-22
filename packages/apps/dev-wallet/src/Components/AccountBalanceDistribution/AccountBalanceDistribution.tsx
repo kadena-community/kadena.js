@@ -223,6 +223,7 @@ export const AccountBalanceDistribution: FC<IProps> = ({
                         setEditable((val) => !val);
                       }}
                       variant={'outlined'}
+                      isDisabled={new PactNumber(account.overallBalance).lte(0)}
                     >
                       Edit Distribution
                     </Button>

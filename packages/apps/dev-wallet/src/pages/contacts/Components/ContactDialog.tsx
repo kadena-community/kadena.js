@@ -1,4 +1,5 @@
 import { AccountInput } from '@/Components/AccountInput/AccountInput';
+import { ConfirmDeletion } from '@/Components/ConfirmDeletion/ConfirmDeletion';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import { displayContentsClass } from '@/Components/Sidebar/style.css';
 import {
@@ -166,7 +167,9 @@ export function ContactDialog({
                       const confirm = await prompt((resolve, reject) => (
                         <ConfirmDeletion
                           onCancel={() => reject()}
-                          onConfirm={() => resolve(true)}
+                          onDelete={() => resolve(true)}
+                          title="Delete Contact"
+                          description="Are you sure you want to delete this contact?"
                         />
                       ));
                       if (confirm) {
@@ -194,26 +197,3 @@ export function ContactDialog({
     </>
   );
 }
-
-export const ConfirmDeletion = ({
-  onConfirm,
-  onCancel,
-}: {
-  onConfirm: () => void;
-  onCancel: () => void;
-}) => (
-  <Dialog isOpen size="sm">
-    <DialogHeader>Deleting Contact</DialogHeader>
-    <DialogContent>
-      <Text>Are you sure you want to delete the contact?</Text>
-    </DialogContent>
-    <DialogFooter>
-      <Button variant="transparent" onClick={onCancel}>
-        Cancel
-      </Button>
-      <Button onClick={onConfirm} variant="negative">
-        Delete
-      </Button>
-    </DialogFooter>
-  </Dialog>
-);

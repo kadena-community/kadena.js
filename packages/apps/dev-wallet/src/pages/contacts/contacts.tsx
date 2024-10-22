@@ -1,3 +1,4 @@
+import { ConfirmDeletion } from '@/Components/ConfirmDeletion/ConfirmDeletion';
 import { ListItem } from '@/Components/ListItem/ListItem';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import {
@@ -21,7 +22,7 @@ import {
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { noStyleLinkClass, panelClass } from '../home/style.css';
-import { ConfirmDeletion, ContactDialog } from './Components/ContactDialog';
+import { ContactDialog } from './Components/ContactDialog';
 
 export function Contacts() {
   const { contacts } = useWallet();
@@ -100,7 +101,9 @@ export function Contacts() {
                       const confirm = await prompt((resolve, reject) => (
                         <ConfirmDeletion
                           onCancel={() => reject()}
-                          onConfirm={() => resolve(true)}
+                          onDelete={() => resolve(true)}
+                          title="Delete Contact"
+                          description="Are you sure you want to delete this contact?"
                         />
                       ));
                       if (confirm) {

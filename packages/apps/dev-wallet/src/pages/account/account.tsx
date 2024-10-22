@@ -3,22 +3,38 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { fundAccount } from '@/modules/account/account.service';
 
 import { AccountBalanceDistribution } from '@/Components/AccountBalanceDistribution/AccountBalanceDistribution';
+import { ConfirmDeletion } from '@/Components/ConfirmDeletion/ConfirmDeletion';
+import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import { QRCode } from '@/Components/QRCode/QRCode';
-import { isWatchedAccount } from '@/modules/account/account.repository';
+import {
+  accountRepository,
+  isWatchedAccount,
+} from '@/modules/account/account.repository';
 import { getTransferActivities } from '@/modules/activity/activity.service';
 import { useAsync } from '@/utils/useAsync';
 import { ChainId } from '@kadena/client';
 import { MonoKey, MonoRemoveRedEye } from '@kadena/kode-icons/system';
-import { Button, Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
+import {
+  Button,
+  Dialog,
+  DialogFooter,
+  DialogHeader,
+  Heading,
+  Stack,
+  TabItem,
+  Tabs,
+  Text,
+} from '@kadena/kode-ui';
 import { useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { noStyleLinkClass } from '../home/style.css';
+import { noStyleLinkClass, panelClass } from '../home/style.css';
 import { linkClass } from '../transfer/style.css';
 import { ActivityTable } from './Components/ActivityTable';
 import { Redistribute } from './Components/Redistribute';
 
 export function AccountPage() {
   const { accountId } = useParams();
+  const prompt = usePrompt();
   const { activeNetwork, fungibles, accounts, profile, watchAccounts } =
     useWallet();
   const [redistributionGroupId, setRedistributionGroupId] = useState<string>();
@@ -215,6 +231,62 @@ export function AccountPage() {
           )}
           {activities.length > 0 && <ActivityTable activities={activities} />}
         </TabItem>
+        {
+          (isOwnedAccount && (
+            <TabItem key="settings" title="Settings">
+              <Stack flexDirection={'column'} gap={'xxl'}>
+                <Stack
+                  flexDirection={'column'}
+                  gap={'md'}
+                  className={panelClass}
+                  alignItems={'flex-start'}
+                >
+                  <Heading variant="h4">Migrate Account</Heading>
+                  <Text>
+                    You can not change the keyset guard of this account but you
+                    still are bale to use account migration which transfers all
+                    balance to a newly created account with the new keyset
+                  </Text>
+                  <Button variant="outlined">Migrate</Button>
+                </Stack>
+                <Stack
+                  flexDirection={'column'}
+                  gap={'md'}
+                  className={panelClass}
+                  alignItems={'flex-start'}
+                >
+                  <Heading variant="h4">Delete Account</Heading>
+                  <Text>
+                    You don't want to use this account anymore? You can delete
+                    it from your wallet. This will be deleted locally not from
+                    the blockchain.
+                  </Text>
+                  <Button
+                    variant="negative"
+                    onClick={async () => {
+                      const confirm = await prompt((resolve) => {
+                        return (
+                          <ConfirmDeletion
+                            onCancel={() => resolve(false)}
+                            onDelete={() => resolve(true)}
+                            title="Delete Account"
+                            description=" Are you sure you want to delete this account? If you need to add it again you will need to use account creation process."
+                          />
+                        );
+                      });
+                      if (confirm) {
+                        await accountRepository.deleteAccount(account.uuid);
+                        navigate('/');
+                      }
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </Stack>
+              </Stack>
+            </TabItem>
+          )) as any
+        }
       </Tabs>
     </Stack>
   );

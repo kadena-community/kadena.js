@@ -357,6 +357,10 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     const unsubscribe = dbService.subscribe((event, storeName, data) => {
       if (!['add', 'update', 'delete'].includes(event)) return;
+      const profileId =
+        data && typeof data === 'object' && 'profileId' in data
+          ? data.profileId
+          : contextValue.profile?.uuid;
       // update the context when the db changes
       switch (storeName) {
         case 'profile': {
@@ -376,23 +380,23 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
           break;
         }
         case 'keySource':
-          if (data && (data as IKeySource).profileId) {
-            retrieveKeySources(data.profileId);
+          if (profileId) {
+            retrieveKeySources(profileId);
           }
           break;
         case 'account':
-          if (data && (data as IAccount).profileId) {
-            retrieveAccounts(data.profileId);
+          if (profileId) {
+            retrieveAccounts(profileId);
           }
           break;
         case 'watched-account':
-          if (data && (data as IWatchedAccount).profileId) {
-            retrieveWatchedAccounts(data.profileId);
+          if (profileId) {
+            retrieveWatchedAccounts(profileId);
           }
           break;
         case 'keyset':
-          if (data && (data as IKeySet).profileId) {
-            retrieveKeysets(data.profileId);
+          if (profileId) {
+            retrieveKeysets(profileId);
           }
           break;
         case 'contact':

@@ -62,6 +62,7 @@ const createAccountRepository = ({
   getOne,
   add,
   update,
+  remove,
 }: IDBService) => {
   const getKeyset = async (id: string): Promise<IKeySet> => {
     return getOne('keyset', id);
@@ -100,6 +101,9 @@ const createAccountRepository = ({
 
     updateAccount: async (account: IAccount): Promise<void> => {
       return update('account', deleteKey(account, 'keyset'));
+    },
+    deleteAccount: async (uuid: string): Promise<void> => {
+      return remove('account', uuid);
     },
     getAccount: async (id: string) => {
       const account: IAccount = await getOne('account', id);
