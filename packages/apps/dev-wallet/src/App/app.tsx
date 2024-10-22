@@ -15,13 +15,15 @@ function Providers({ children }: { children: React.ReactNode }) {
   }, []);
   return (
     <SessionProvider>
-      <DatabaseProvider>
-        <PromptProvider>
+      <PromptProvider>
+        <DatabaseProvider>
           <WalletProvider>
-            <MediaContextProvider>{children}</MediaContextProvider>
+            <PromptProvider>
+              <MediaContextProvider>{children}</MediaContextProvider>
+            </PromptProvider>
           </WalletProvider>
-        </PromptProvider>
-      </DatabaseProvider>
+        </DatabaseProvider>
+      </PromptProvider>
     </SessionProvider>
   );
 }

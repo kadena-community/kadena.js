@@ -10,7 +10,7 @@ export function Key({
   shortening?: number;
 }) {
   return (
-    <Stack gap={'sm'}>
+    <Stack gap={'sm'} alignItems={'center'}>
       <Text>
         <MonoKey />
       </Text>

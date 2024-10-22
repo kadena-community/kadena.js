@@ -1,3 +1,4 @@
+import { config } from '@/config';
 import {
   addItem,
   connect,
@@ -48,8 +49,7 @@ const createConnectionPool = (
   };
 };
 
-const DB_NAME = 'dev-wallet';
-const DB_VERSION = 34;
+const { DB_NAME, DB_VERSION } = config.DB;
 
 export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
   const result = await connect(DB_NAME, DB_VERSION);
@@ -83,6 +83,16 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
         unique: true,
       },
     ]);
+    create('watched-account', 'uuid', [
+      { index: 'address' },
+      { index: 'profileId' },
+      { index: 'profile-network', indexKeyPath: ['profileId', 'networkUUID'] },
+      {
+        index: 'unique-account',
+        indexKeyPath: ['profileId', 'contract', 'address', 'networkUUID'],
+        unique: true,
+      },
+    ]);
     create('network', 'uuid', [{ index: 'networkId' }]);
     create('fungible', 'contract', [{ index: 'symbol', unique: true }]);
     create('keyset', 'uuid', [
@@ -108,6 +118,7 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
       { index: 'profile-network', indexKeyPath: ['profileId', 'networkUUID'] },
       { index: 'keyset-network', indexKeyPath: ['keysetId', 'networkUUID'] },
     ]);
+    create('contact', 'uuid', [{ index: 'name', unique: true }]);
   }
 
   return db;

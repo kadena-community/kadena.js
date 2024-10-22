@@ -14,7 +14,7 @@ export const DiscoverdAccounts: FC<{
   accounts: IReceiverAccount[];
   onSelect: (selected: IReceiverAccount) => void;
 }> = ({ accounts, onSelect }) => (
-  <Dialog size="lg" isOpen={true}>
+  <Dialog size="sm" isOpen={true}>
     <DialogHeader>Select the receiver account</DialogHeader>
     <DialogContent>
       <Stack flexDirection={'column'} gap={'sm'}>
@@ -36,7 +36,9 @@ export const DiscoverdAccounts: FC<{
               </Text>
               <pre>{JSON.stringify(account.keyset.guard, null, 2)}</pre>
               <Stack justifyContent={'flex-end'}>
-                <Button onPress={() => onSelect(account)}>Select</Button>
+                <Button variant="outlined" onPress={() => onSelect(account)}>
+                  Select
+                </Button>
               </Stack>
             </Stack>
           ))}

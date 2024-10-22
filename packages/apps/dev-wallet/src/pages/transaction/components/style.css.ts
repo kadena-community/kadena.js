@@ -29,10 +29,8 @@ export const labelClass = style({
 });
 
 export const labelBoldClass = style({
-  maxWidth: '200px',
   fontWeight: '700',
   color: tokens.kda.foundation.color.text.base.default,
-  flex: '1',
 });
 
 export const containerClass = style({

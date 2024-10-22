@@ -7,7 +7,12 @@ import {
 import { PactNumber } from '@kadena/pactjs';
 
 import { keySourceManager } from '../key-source/key-source-manager';
-import { accountRepository, IAccount, IKeySet } from './account.repository';
+import {
+  accountRepository,
+  IAccount,
+  IKeySet,
+  IWatchedAccount,
+} from './account.repository';
 
 import {
   createSignWithKeypair,
@@ -189,7 +194,7 @@ export const accountDiscovery = (
     },
 );
 
-export const syncAccount = async (account: IAccount) => {
+export const syncAccount = async (account: IAccount | IWatchedAccount) => {
   console.log('syncing account', account.address);
   const network = await networkRepository.getNetwork(account.networkUUID);
   const updatedAccount = { ...account };
@@ -223,8 +228,13 @@ export const syncAccount = async (account: IAccount) => {
         : acc,
     '0',
   );
-
-  await accountRepository.updateAccount(updatedAccount);
+  if ('watched' in updatedAccount) {
+    if (updatedAccount.watched) {
+      await accountRepository.updateWatchedAccount(updatedAccount);
+    }
+  } else {
+    await accountRepository.updateAccount(updatedAccount as IAccount);
+  }
   console.log('updated account', updatedAccount);
   return updatedAccount;
 };
@@ -234,10 +244,17 @@ export const syncAllAccounts = async (profileId: string, networkUUID: UUID) => {
     profileId,
     networkUUID,
   );
+  const watchedAccounts = await accountRepository.getWatchedAccountsByProfileId(
+    profileId,
+    networkUUID,
+  );
   console.log('syncing accounts', accounts);
   // sync all accounts sequentially to avoid rate limiting
   const result = [];
   for (const account of accounts) {
+    result.push(await syncAccount(account));
+  }
+  for (const account of watchedAccounts) {
     result.push(await syncAccount(account));
   }
   return result;

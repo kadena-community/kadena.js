@@ -1,5 +1,5 @@
 import { cardColor, cardHoverColor } from '@/utils/color.ts';
-import { atoms, vars } from '@kadena/kode-ui/styles';
+import { atoms, tokens, vars } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const pageClass = style({
@@ -57,3 +57,27 @@ export const noStyleButtonClass = style({
   cursor: 'pointer',
   width: '100%',
 });
+
+export const accountTypeClass = style([
+  atoms({
+    paddingInline: 'sm',
+    marginBlockStart: 'xs',
+    textDecoration: 'none',
+  }),
+  {
+    cursor: 'pointer',
+    border: 'none',
+    // background: tokens.kda.foundation.color.background.surface.default,
+    selectors: {
+      '&:hover': {
+        outline: `solid 1px ${tokens.kda.foundation.color.border.base.default}`,
+        background: tokens.kda.foundation.color.background.surface.default,
+      },
+      '&.selected': {
+        cursor: 'default',
+        outline: `solid 1px ${tokens.kda.foundation.color.border.base.default}`,
+        background: tokens.kda.foundation.color.background.surface.default,
+      },
+    },
+  },
+]);

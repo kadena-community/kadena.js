@@ -30,7 +30,7 @@ export const AccountBalanceDistribution: FC<IProps> = ({
   account,
   onRedistribution,
 }) => {
-  const { activeNetwork, getPublicKeyData } = useWallet();
+  const { activeNetwork, getPublicKeyData, profile } = useWallet();
   const [availableBalance, setAvailableBalance] = useState(overallBalance);
   const chainLists = useMemo(() => {
     const enrichedChains = processChainAccounts(
@@ -165,61 +165,65 @@ export const AccountBalanceDistribution: FC<IProps> = ({
     setValue('chains', chainsWithTxFees);
   }
 
+  const isOwnedAccount = account.profileId === profile?.uuid;
+
   return (
     <Stack flexDirection={'column'} flex={1} gap={'sm'}>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack gap={'sm'} flexDirection={'column'}>
-            <Stack
-              gap={'sm'}
-              alignItems={'center'}
-              justifyContent={'space-between'}
-            >
-              <Text>
-                See your balance distribution across the chains, you can edit
-                the distribution
-              </Text>
-              <Stack gap={'sm'}>
-                {editable && (
-                  <>
-                    {sum.eq(availableBalance) && (
-                      <Button isCompact type="submit">
-                        Submit Changes
+            {isOwnedAccount && (
+              <Stack
+                gap={'sm'}
+                alignItems={'center'}
+                justifyContent={'space-between'}
+              >
+                <Text>
+                  See your balance distribution across the chains, you can edit
+                  the distribution
+                </Text>
+                <Stack gap={'sm'}>
+                  {editable && (
+                    <>
+                      {sum.eq(availableBalance) && (
+                        <Button isCompact type="submit">
+                          Submit Changes
+                        </Button>
+                      )}
+                      <Button
+                        isCompact
+                        variant="info"
+                        onClick={distributeEqually}
+                      >
+                        Distribute Equally
                       </Button>
-                    )}
+                      <Button
+                        isCompact
+                        type="reset"
+                        onClick={() => {
+                          setEditable((val) => !val);
+                          reset();
+                        }}
+                        variant={'outlined'}
+                      >
+                        Reset
+                      </Button>
+                    </>
+                  )}
+                  {!editable && (
                     <Button
                       isCompact
-                      variant="info"
-                      onClick={distributeEqually}
-                    >
-                      Distribute Equally
-                    </Button>
-                    <Button
-                      isCompact
-                      type="reset"
                       onClick={() => {
                         setEditable((val) => !val);
-                        reset();
                       }}
                       variant={'outlined'}
                     >
-                      Reset
+                      Edit Distribution
                     </Button>
-                  </>
-                )}
-                {!editable && (
-                  <Button
-                    isCompact
-                    onClick={() => {
-                      setEditable((val) => !val);
-                    }}
-                    variant={'outlined'}
-                  >
-                    Edit Distribution
-                  </Button>
-                )}
+                  )}
+                </Stack>
               </Stack>
-            </Stack>
+            )}
             {!sum.eq(availableBalance) && (
               <Notification role="alert" intent="warning">
                 <Text>
@@ -242,8 +246,8 @@ export const AccountBalanceDistribution: FC<IProps> = ({
                 <ChainList
                   key={idx}
                   chains={chainList}
-                  fundAccount={fundAccount}
-                  editable={editable}
+                  fundAccount={isOwnedAccount ? fundAccount : undefined}
+                  editable={isOwnedAccount && editable}
                 />
               ))}
             </Stack>

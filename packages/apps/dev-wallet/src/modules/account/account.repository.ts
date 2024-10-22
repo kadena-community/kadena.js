@@ -38,6 +38,16 @@ export interface IAccount {
   alias?: string;
 }
 
+export type IWatchedAccount = Omit<IAccount, 'keysetId' | 'keyset'> & {
+  keyset: {
+    guard: {
+      keys: string[];
+      pred: BuiltInPredicate;
+    };
+  };
+  watched: true;
+};
+
 const deleteKey = <Key extends string, T extends Partial<Record<Key, unknown>>>(
   obj: T,
   key: Key,
@@ -87,15 +97,20 @@ const createAccountRepository = ({
     addAccount: async (account: IAccount): Promise<void> => {
       return add('account', deleteKey(account, 'keyset' as const));
     },
+
     updateAccount: async (account: IAccount): Promise<void> => {
       return update('account', deleteKey(account, 'keyset'));
     },
     getAccount: async (id: string) => {
       const account: IAccount = await getOne('account', id);
-      return appendKeyset(account);
+      return appendKeyset(account as IAccount);
     },
     getAccountByAddress: async (address: string) => {
-      const account: IAccount[] = await getAll('account', address, 'address');
+      const account: Array<IAccount> = await getAll(
+        'account',
+        address,
+        'address',
+      );
       return Promise.all(account.map(appendKeyset));
     },
     getAccountByKeyset: async (keysetId: string) => {
@@ -107,7 +122,7 @@ const createAccountRepository = ({
       return accounts;
     },
     async getAccountsByProfileId(profileId: string, networkUUID: UUID) {
-      const accounts: IAccount[] = await getAll(
+      const accounts: Array<IAccount> = await getAll(
         'account',
         IDBKeyRange.only([profileId, networkUUID]),
         'profile-network',
@@ -122,6 +137,20 @@ const createAccountRepository = ({
     },
     getAllFungibles: async (): Promise<Fungible[]> => {
       return ((await getAll('fungible')) as Fungible[]).reverse();
+    },
+    addWatchedAccount: async (account: IWatchedAccount): Promise<void> => {
+      return add('watched-account', account);
+    },
+    updateWatchedAccount: async (account: IWatchedAccount): Promise<void> => {
+      return update('watched-account', account);
+    },
+    async getWatchedAccountsByProfileId(profileId: string, networkUUID: UUID) {
+      const accounts: Array<IWatchedAccount> = await getAll(
+        'watched-account',
+        IDBKeyRange.only([profileId, networkUUID]),
+        'profile-network',
+      );
+      return accounts;
     },
   };
 };

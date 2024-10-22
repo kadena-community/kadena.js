@@ -18,7 +18,7 @@ import { Redistribute } from './Components/Redistribute';
 
 export function AccountPage() {
   const { accountId } = useParams();
-  const { activeNetwork, fungibles, accounts } = useWallet();
+  const { activeNetwork, fungibles, accounts, profile } = useWallet();
   const [redistributionGroupId, setRedistributionGroupId] = useState<string>();
   const account = accounts.find((account) => account.uuid === accountId);
   const navigate = useNavigate();
@@ -74,48 +74,50 @@ export function AccountPage() {
           </Heading>
         </Stack>
       </Stack>
-      <Stack gap="md">
-        <Link
-          to={`/transfer?accountId=${account.uuid}`}
-          className={noStyleLinkClass}
-        >
-          <Button
-            isCompact
-            isDisabled={+account.overallBalance === 0}
-            onPress={(e: any) => {
-              e.preventDefault();
-            }}
+      {account.profileId === profile?.uuid && (
+        <Stack gap="md">
+          <Link
+            to={`/transfer?accountId=${account.uuid}`}
+            className={noStyleLinkClass}
           >
-            Transfer
-          </Button>
-        </Link>
-        {asset.contract === 'coin' &&
-          (activeNetwork?.networkId === 'testnet05' ||
-            activeNetwork?.networkId === 'testnet04') && (
             <Button
-              variant="outlined"
               isCompact
-              onPress={() =>
-                fundAccountHandler(
-                  Math.floor(Math.random() * 20).toString() as ChainId,
-                )
-              }
+              isDisabled={+account.overallBalance === 0}
+              onPress={(e: any) => {
+                e.preventDefault();
+              }}
             >
-              Fund on Testnet
+              Transfer
             </Button>
+          </Link>
+          {asset.contract === 'coin' &&
+            (activeNetwork?.networkId === 'testnet05' ||
+              activeNetwork?.networkId === 'testnet04') && (
+              <Button
+                variant="outlined"
+                isCompact
+                onPress={() =>
+                  fundAccountHandler(
+                    Math.floor(Math.random() * 20).toString() as ChainId,
+                  )
+                }
+              >
+                Fund on Testnet
+              </Button>
+            )}
+          {asset.contract === 'coin' && (
+            <a
+              className={linkClass}
+              href="https://www.kadena.io/kda-token#:~:text=activities%2C%20and%20events.-,Where%20to%20Buy%20KDA,-Buy"
+              target="_blank"
+            >
+              <Button variant="outlined" isCompact>
+                Buy KDA
+              </Button>
+            </a>
           )}
-        {asset.contract === 'coin' && (
-          <a
-            className={linkClass}
-            href="https://www.kadena.io/kda-token#:~:text=activities%2C%20and%20events.-,Where%20to%20Buy%20KDA,-Buy"
-            target="_blank"
-          >
-            <Button variant="outlined" isCompact>
-              Buy KDA
-            </Button>
-          </a>
-        )}
-      </Stack>
+        </Stack>
+      )}
       <Tabs>
         <TabItem key="guard" title="Details">
           <Stack gap="lg">

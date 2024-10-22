@@ -1,4 +1,7 @@
-import { IAccount } from '@/modules/account/account.repository';
+import {
+  IAccount,
+  IWatchedAccount,
+} from '@/modules/account/account.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { noStyleLinkClass } from '@/pages/home/style.css';
 import { MonoContentCopy } from '@kadena/kode-icons/system';
@@ -9,7 +12,7 @@ import { ListItem } from '../ListItem/ListItem';
 export function AccountItem({
   account: { uuid, alias, address, overallBalance, contract },
 }: {
-  account: IAccount;
+  account: IAccount | IWatchedAccount;
 }) {
   const { fungibles } = useWallet();
   const getSymbol = (contract: string) =>

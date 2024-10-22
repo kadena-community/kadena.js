@@ -6,7 +6,7 @@ import { ChainBalance } from './ChainBalance';
 
 interface IProps extends PropsWithChildren {
   chains: IViewChain[];
-  fundAccount: (chainId: ChainId) => Promise<void>;
+  fundAccount?: (chainId: ChainId) => Promise<void>;
   editable?: boolean;
   onItemChange?: (key: string, value: any) => void;
 }

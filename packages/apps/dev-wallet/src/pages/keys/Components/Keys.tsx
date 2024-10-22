@@ -169,8 +169,10 @@ export function Keys() {
                       }
                     >
                       <ContextMenuItem
-                        label="Create KDA account"
-                        onClick={() => {}}
+                        label="Copy"
+                        onClick={() => {
+                          navigator.clipboard.writeText(key.publicKey);
+                        }}
                       />
                       <ContextMenuItem label="Disable key" onClick={() => {}} />
                     </ContextMenu>
