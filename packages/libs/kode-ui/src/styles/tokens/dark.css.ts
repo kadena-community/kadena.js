@@ -195,12 +195,6 @@ export const darkThemeValues = {
           level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
         },
       },
-      layout: {
-        content: {
-          minWidth: '33.75rem',
-          maxWidth: '42.5rem',
-        },
-      },
       color: {
         accent: {
           blue: tokens.kda.foundation.color.palette.blue.n50,
@@ -1287,6 +1281,12 @@ export const darkThemeValues = {
             default: '#fec195',
             '@hover': '#fedec8',
           },
+        },
+      },
+      layout: {
+        content: {
+          minWidth: '33.75rem',
+          maxWidth: '42.5rem',
         },
       },
       icon: {

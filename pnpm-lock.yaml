@@ -1081,8 +1081,8 @@ importers:
         specifier: workspace:*
         version: link:../../libs/pactjs
       '@kadena/spirekey-sdk':
-        specifier: 0.0.1-dev-15
-        version: 0.0.1-dev-15(encoding@0.1.13)
+        specifier: 0.0.1-dev-16
+        version: 0.0.1-dev-16(encoding@0.1.13)
       '@pinata/sdk':
         specifier: ^2.1.0
         version: 2.1.0
@@ -5700,8 +5700,8 @@ packages:
   '@kadena/spirekey-sdk@0.0.1-dev-12':
     resolution: {integrity: sha512-jSys4wSIixY7GeSuJ1PjWA0oMXytl1r28arZ0JNL6IkcV6TcQni/ymWI+Efz/Ves6hU3Roox1zIC3g1WAJqTwA==}
 
-  '@kadena/spirekey-sdk@0.0.1-dev-15':
-    resolution: {integrity: sha512-Ha1PcT7jnAM7nwDa0/0ealuuL6+Vog6+ujTUWUpoK/Dgrw20CmEkfa9NyalmRyFrUz7f1IS5xR2NODGVcaW4fg==}
+  '@kadena/spirekey-sdk@0.0.1-dev-16':
+    resolution: {integrity: sha512-7rytH7mXX5R4VeMsaaW8PSSeKHQZCzy+ftVYAXb78sXHEMO6DBnZIxe8XDVO9x/tLuusw5vENNmQ268g38fdvw==}
 
   '@kamilkisiela/fast-url-parser@1.1.4':
     resolution: {integrity: sha512-gbkePEBupNydxCelHCESvFSFM8XPh1Zs/OAVRW/rKpEqPAl5PbOM90Si8mv9bvnR53uPD2s/FiRxdvSejpRJew==}
@@ -23824,7 +23824,7 @@ snapshots:
       - uWebSockets.js
       - utf-8-validate
 
-  '@kadena/spirekey-sdk@0.0.1-dev-15(encoding@0.1.13)':
+  '@kadena/spirekey-sdk@0.0.1-dev-16(encoding@0.1.13)':
     dependencies:
       '@kadena/client': 1.13.0(encoding@0.1.13)
       '@vanilla-extract/css': 1.15.3
@@ -25383,13 +25383,15 @@ snapshots:
     transitivePeerDependencies:
       - '@parcel/core'
 
-  '@parcel/cache@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))':
+  '@parcel/cache@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)':
     dependencies:
       '@parcel/core': 2.12.0(@swc/helpers@0.5.11)
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/logger': 2.12.0
       '@parcel/utils': 2.12.0
       lmdb: 2.8.5
+    transitivePeerDependencies:
+      - '@swc/helpers'
 
   '@parcel/codeframe@2.12.0':
     dependencies:
@@ -25449,7 +25451,7 @@ snapshots:
   '@parcel/core@2.12.0(@swc/helpers@0.5.11)':
     dependencies:
       '@mischnic/json-sourcemap': 0.1.1
-      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/diagnostic': 2.12.0
       '@parcel/events': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
@@ -25864,7 +25866,7 @@ snapshots:
 
   '@parcel/types@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)':
     dependencies:
-      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/diagnostic': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
