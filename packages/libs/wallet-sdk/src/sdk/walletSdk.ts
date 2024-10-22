@@ -10,6 +10,7 @@ import type { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
 import * as v from 'valibot';
 
 import * as accountService from '../services/accountService.js';
+import { getTransfers } from '../services/graphql/getTransfers.js';
 import { exchange } from './exchange.js';
 import type { HostAddressGenerator } from './host.js';
 import { defaultHostAddressGenerator } from './host.js';
@@ -127,10 +128,18 @@ export class WalletSDK implements IWalletSDK {
 
   public async getTransfers(
     accountName: string,
-    fungible: string,
     networkId: string,
+    fungible?: string,
     chainsIds?: ChainId[],
   ): Promise<Transfer[]> {
+    const networks = {
+      testnet04: 'https://graph.testnet.kadena.network/graphql',
+    } as Record<string, string>;
+    if (!networks[networkId]) {
+      throw new Error(`Network ${networkId} not supported`);
+    }
+    const transfers = getTransfers(networks[networkId], accountName, fungible);
+    console.log(transfers);
     return [];
   }
 
