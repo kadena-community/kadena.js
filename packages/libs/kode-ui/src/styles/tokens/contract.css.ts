@@ -710,20 +710,6 @@ export const tokens = createThemeContract({
           level3: '',
         },
       },
-      layout: {
-        content: {
-          /**
-           * @light  `"33.75rem"`
-           * @dark  `"33.75rem"`
-           */
-          minWidth: '',
-          /**
-           * @light  `"42.5rem"`
-           * @dark  `"42.5rem"`
-           */
-          maxWidth: '',
-        },
-      },
       color: {
         accent: {
           /**
@@ -4922,6 +4908,20 @@ export const tokens = createThemeContract({
              */
             '@hover': '',
           },
+        },
+      },
+      layout: {
+        content: {
+          /**
+           * @light  `"33.75rem"`
+           * @dark  `"33.75rem"`
+           */
+          minWidth: '',
+          /**
+           * @light  `"42.5rem"`
+           * @dark  `"42.5rem"`
+           */
+          maxWidth: '',
         },
       },
       icon: {
