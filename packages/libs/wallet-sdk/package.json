@@ -21,7 +21,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "rm -rf ./dist/ && pnpm rollup -c rollup.config.mjs",
+    "build": "graphql-codegen && rm -rf ./dist/ && pnpm rollup -c rollup.config.mjs",
+    "codegen": "graphql-codegen",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
@@ -37,10 +38,15 @@
     "@kadena/client": "workspace:*",
     "@kadena/client-utils": "workspace:*",
     "@kadena/types": "workspace:*",
+    "@urql/core": "^5.0.8",
     "debug": "4.3.4",
+    "graphql": "~16.8.1",
     "valibot": "^0.42.1"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "5.0.2",
+    "@graphql-codegen/client-preset": "^4.4.0",
+    "@graphql-typed-document-node/core": "^3.2.0",
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
