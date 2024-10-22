@@ -1,5 +1,17 @@
 # @kadena/hd-wallet
 
+## 0.5.0
+
+### Minor Changes
+
+- 84d9130: Export entropy to mnemonic function
+- b1e488c: Export utility functions for legacy chainweaver:
+  `legacyKadenaChangePassword` and `legacyKadenaGenKeypair`
+
+### Patch Changes
+
+- 84d9130: convert lagacy kadena-crypto to esm; this will fix rollup build
+
 ## 0.4.2
 
 ### Patch Changes

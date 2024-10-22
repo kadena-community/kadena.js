@@ -1,5 +1,11 @@
 # @kadena/kode-icons
 
+## 0.3.0
+
+### Minor Changes
+
+- d533d39: Updated Icons
+
 ## 0.2.0
 
 ### Minor Changes

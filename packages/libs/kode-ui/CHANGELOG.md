@@ -1,5 +1,19 @@
 # @kadena/kode-ui
 
+## 0.18.0
+
+### Minor Changes
+
+- d533d39: Updated Icons
+- de87d1c: add the DataTable Component
+- 7d063d6: add the contextMenu component
+
+### Patch Changes
+
+- 94ce674: add the checkbox group component
+- Updated dependencies \[d533d39]
+  - @kadena/kode-icons\@0.3.0
+
 ## 0.17.1
 
 ### Patch Changes
