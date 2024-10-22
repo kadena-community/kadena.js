@@ -10,7 +10,7 @@ export const container = style({
 });
 
 export const secondContainer = style({
-  margin: '50px 15% 0',
+  margin: '50px 0',
   backgroundColor: token('color.background.base.default'),
 });
 
@@ -33,7 +33,7 @@ export const formContainer = style({
 });
 
 export const buttonRowContainer = style({
-  margin: `${token('spacing.n6')} 15% 0`,
+  margin: `${token('spacing.n6')} 0`,
   justifyContent: 'space-between',
 });
 

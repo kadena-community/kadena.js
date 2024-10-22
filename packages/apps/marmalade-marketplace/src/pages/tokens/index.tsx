@@ -1,10 +1,12 @@
 import CreateToken from '@/components/CreateToken';
 import React from 'react';
 
-export default function TokenPages() {
+const CreateTokenPage = () => {
   return (
     <>
       <CreateToken />
     </>
   );
-}
+};
+
+export default CreateTokenPage;
