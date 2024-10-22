@@ -194,6 +194,14 @@ export const accountDiscovery = (
     },
 );
 
+const hasSameGuard = (a?: IKeySet['guard'], b?: IKeySet['guard']) => {
+  return (
+    a?.keys.length === b?.keys.length &&
+    a?.keys.every((key) => b?.keys.includes(key)) &&
+    a?.pred === b?.pred
+  );
+};
+
 export const syncAccount = async (account: IAccount | IWatchedAccount) => {
   console.log('syncing account', account.address);
   const network = await networkRepository.getNetwork(account.networkUUID);
@@ -212,16 +220,17 @@ export const syncAccount = async (account: IAccount | IWatchedAccount) => {
 
   console.log('chainResult', account.address, chainResult);
 
-  updatedAccount.chains = chainResult
-    .filter(({ result }) => Boolean(result))
-    .map(({ chainId, result }) => ({
-      chainId,
-      balance: result!.balance
-        ? new PactNumber(result!.balance).toString()
-        : '0',
-    }));
+  const filteredResult = chainResult.filter(
+    ({ result }) =>
+      Boolean(result) && hasSameGuard(result?.guard, account.keyset?.guard),
+  );
 
-  updatedAccount.overallBalance = chainResult.reduce(
+  updatedAccount.chains = filteredResult.map(({ chainId, result }) => ({
+    chainId,
+    balance: result!.balance ? new PactNumber(result!.balance).toString() : '0',
+  }));
+
+  updatedAccount.overallBalance = filteredResult.reduce(
     (acc, { result }) =>
       result?.balance
         ? new PactNumber(result.balance).plus(acc).toDecimal()

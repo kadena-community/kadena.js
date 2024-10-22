@@ -63,7 +63,7 @@ export const WalletContext = createContext<
   | null
 >(null);
 
-export const syncAllAccounts = throttle(AccountService.syncAllAccounts, 60000);
+export const syncAllAccounts = throttle(AccountService.syncAllAccounts, 10000);
 
 function usePassword(profile: IProfile | undefined) {
   const ref = useRef({
