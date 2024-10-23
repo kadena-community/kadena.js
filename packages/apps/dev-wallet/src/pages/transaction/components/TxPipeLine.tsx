@@ -54,9 +54,29 @@ export function TxPipeLine({
         : Promise.resolve(null),
     [tx],
   );
+  const showAfterCont = !contTx || variant === 'expanded';
   return (
-    <Stack flexDirection={'column'}>
-      {!contTx && statusPassed(tx.status, 'signed') && (
+    <Stack flexDirection={'column'} gap={'md'}>
+      <Stack justifyContent={'space-between'}>
+        <Text>
+          {tx.continuation?.autoContinue ? 'exec' : 'hash'}:{' '}
+          {shorten(tx.hash, 6)}
+        </Text>
+        <MonoBrightness1 className={classNames(getStatusClass(tx.status))} />
+      </Stack>
+      {showAfterCont &&
+        variant === 'expanded' &&
+        !statusPassed(tx.status, 'signed') && (
+          <Stack>
+            <Text size={textSize} className={pendingClass}>
+              <Stack alignItems={'center'} gap={'xs'}>
+                <MonoLoading />
+                ready for sign
+              </Stack>
+            </Text>
+          </Stack>
+        )}
+      {showAfterCont && statusPassed(tx.status, 'signed') && (
         <Stack>
           <Text size={textSize} className={successClass}>
             <Stack alignItems={'center'} gap={'xs'}>
@@ -66,7 +86,20 @@ export function TxPipeLine({
           </Text>
         </Stack>
       )}
-      {!contTx && statusPassed(tx.status, 'preflight') && (
+      {showAfterCont &&
+        variant === 'expanded' &&
+        statusPassed(tx.status, 'signed') &&
+        !statusPassed(tx.status, 'preflight') && (
+          <Stack>
+            <Text size={textSize} className={pendingClass}>
+              <Stack alignItems={'center'} gap={'xs'}>
+                <MonoLoading />
+                Ready to send
+              </Stack>
+            </Text>
+          </Stack>
+        )}
+      {showAfterCont && statusPassed(tx.status, 'preflight') && (
         <Stack>
           <Text size={textSize} className={successClass}>
             <Stack alignItems={'center'} gap={'xs'}>
@@ -76,7 +109,7 @@ export function TxPipeLine({
           </Text>
         </Stack>
       )}
-      {!contTx && statusPassed(tx.status, 'submitted') && (
+      {showAfterCont && statusPassed(tx.status, 'submitted') && (
         <Stack>
           <Text size={textSize} className={successClass}>
             <Stack alignItems={'center'} gap={'xs'}>
@@ -86,7 +119,7 @@ export function TxPipeLine({
           </Text>
         </Stack>
       )}
-      {!contTx &&
+      {showAfterCont &&
         statusPassed(tx.status, 'submitted') &&
         (!('result' in tx) || !tx.result) && (
           <Stack>

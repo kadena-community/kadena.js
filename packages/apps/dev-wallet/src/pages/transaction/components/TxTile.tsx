@@ -39,13 +39,6 @@ export const TxTile = ({
       gap={'sm'}
     >
       <Stack flexDirection={'column'} gap={'sm'} flex={1}>
-        <Stack justifyContent={'space-between'}>
-          <Text>
-            {tx.continuation?.autoContinue ? 'exec' : 'hash'}:{' '}
-            {shorten(tx.hash, 6)}
-          </Text>
-          <MonoBrightness1 className={classNames(getStatusClass(tx.status))} />
-        </Stack>
         <TxPipeLine tx={tx} variant="tile" />
         {tx.status === 'initiated' && (
           <>

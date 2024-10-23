@@ -66,7 +66,7 @@ export const pendingClass = style({
 });
 
 export const successClass = style({
-  color: vars.colors.$positiveAccent,
+  color: vars.colors.$positiveSurface,
 });
 
 export const failureClass = style({

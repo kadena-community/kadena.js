@@ -5,6 +5,7 @@ import {
   DialogFooter,
   DialogHeader,
   Heading,
+  Notification,
   Stack,
 } from '@kadena/kode-ui';
 import yaml from 'js-yaml';
@@ -89,15 +90,19 @@ export function ExpandedTransaction({
             gap={'lg'}
             flexDirection={'column'}
             style={{
-              width: '400px',
-              maxWidth: '400px',
+              flexBasis: '500px',
             }}
             className={panelClass}
           >
             <Heading variant="h6">Tx Status</Heading>
             <TxPipeLine tx={transaction} variant={'expanded'} />
           </Stack>
-          <Stack gap={'sm'} flexDirection={'column'} className={panelClass}>
+          <Stack
+            flex={1}
+            gap={'sm'}
+            flexDirection={'column'}
+            className={panelClass}
+          >
             {!statusPassed(transaction.status, 'preflight') && (
               <Stack flexDirection={'column'} gap={'xl'}>
                 <Stack gap={'sm'} flexDirection={'column'}>
@@ -252,21 +257,36 @@ export function ExpandedTransaction({
         >
           {!statusPassed(transaction.status, 'signed') && (
             <Stack>
-              <Button onClick={signAll} variant="outlined">
-                Sign all possible signers
-              </Button>
+              <Button onClick={signAll}>Sign all possible signers</Button>
             </Stack>
           )}
-          {transaction.status === 'signed' && !sendDisabled && (
-            <Stack>
-              <Button variant="outlined" onClick={onSubmit}>
-                Send transactions
-              </Button>
-            </Stack>
-          )}
-          <Stack gap={'sm'}>
-            <Button onClick={copyTransactionAs('yaml')}>Copy as YAML</Button>
-            <Button onClick={copyTransactionAs('json')}>Copy as JSON</Button>
+          <Stack>
+            {transaction.status === 'signed' && !sendDisabled && (
+              <Button onClick={onSubmit}>Send transaction</Button>
+            )}
+            {statusPassed(transaction.status, 'success') &&
+              (!transaction.continuation?.autoContinue ||
+                (contTx && statusPassed(contTx.status, 'success'))) && (
+                <Notification intent="positive" role="status">
+                  Transaction is successful
+                </Notification>
+              )}
+          </Stack>
+          <Stack gap={'sm'} alignItems={'center'}>
+            <Button
+              isCompact
+              variant="outlined"
+              onClick={copyTransactionAs('yaml')}
+            >
+              Copy as YAML
+            </Button>
+            <Button
+              isCompact
+              variant="outlined"
+              onClick={copyTransactionAs('json')}
+            >
+              Copy as JSON
+            </Button>
           </Stack>
         </Stack>
       </DialogFooter>

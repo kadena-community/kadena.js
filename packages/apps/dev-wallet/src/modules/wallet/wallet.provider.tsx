@@ -487,6 +487,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
         await setProfile(profile, true);
       }
       setContextValue((ctx) => ({ ...ctx, loaded: true }));
+      globalThis.dispatchEvent(new CustomEvent('wallet-loaded'));
     };
     loadSession();
   }, [retrieveProfileList, session, setProfile]);

@@ -82,6 +82,7 @@ export function TxList({
         hash: tx.hash,
       } as ICommand)
       .then(async (result) => {
+        console.log('preflight', result);
         const updatedTx = {
           ...tx,
           status: 'preflight',
@@ -105,8 +106,8 @@ export function TxList({
         hash: tx.hash,
       } as ICommand)
       .then(async (request) => {
-        const updatedTx = {
-          ...tx,
+        updatedTx = {
+          ...updatedTx,
           status: 'submitted',
           request,
         } as ITransaction;

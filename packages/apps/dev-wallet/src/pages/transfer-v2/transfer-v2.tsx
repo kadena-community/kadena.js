@@ -3,18 +3,7 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { ISigner } from '@kadena/client';
 
 import { MonoSwapHoriz } from '@kadena/kode-icons/system';
-import {
-  Button,
-  Dialog,
-  DialogFooter,
-  DialogHeader,
-  Divider,
-  Heading,
-  Stack,
-  Step,
-  Stepper,
-  Text,
-} from '@kadena/kode-ui';
+import { Divider, Heading, Stack, Step, Stepper, Text } from '@kadena/kode-ui';
 import { useCallback, useEffect, useState } from 'react';
 
 import { activityRepository } from '@/modules/activity/activity.repository';
@@ -26,7 +15,6 @@ import { useSearchParams } from 'react-router-dom';
 import { ReviewTransaction } from '../transaction/components/ReviewTransaction';
 import { TxList } from '../transaction/components/TxList';
 import { statusPassed } from '../transaction/components/TxPipeLine';
-import { Result } from './Steps/Result';
 import {
   Redistribution,
   TrG,
@@ -252,14 +240,6 @@ export function TransferV2() {
 
   return (
     <Stack flexDirection={'column'}>
-      {step === 'result' && (
-        <Dialog size="sm" isOpen>
-          <DialogHeader>Process is done!</DialogHeader>
-          <DialogFooter>
-            <Button onClick={() => setStep('summary')}>View result page</Button>
-          </DialogFooter>
-        </Dialog>
-      )}
       <Stepper direction="horizontal">
         <Step
           icon={<MonoSwapHoriz />}
@@ -333,7 +313,6 @@ export function TransferV2() {
         </Stack>
       )}
       {(step === 'sign' || step === 'result') && renderSignStep()}
-      {step === 'summary' && <Result {...txGroups} />}
     </Stack>
   );
 }
