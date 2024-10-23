@@ -25,7 +25,7 @@ import {
 import { useSearchParams } from 'react-router-dom';
 import { ReviewTransaction } from '../transaction/components/ReviewTransaction';
 import { TxList } from '../transaction/components/TxList';
-import { statusPassed } from '../transaction/components/TxTile';
+import { statusPassed } from '../transaction/components/TxPipeLine';
 import { Result } from './Steps/Result';
 import {
   Redistribution,

@@ -222,7 +222,7 @@ export function TransferForm({
       return (...args: T[]) => {
         const result = cb(...args);
         clearTimeout(timer.current);
-        timer.current = setTimeout(evaluateTransactions, 100);
+        timer.current = setTimeout(evaluateTransactions, 1000);
         return result;
       };
     },

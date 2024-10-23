@@ -14,17 +14,7 @@ import { getTransferActivities } from '@/modules/activity/activity.service';
 import { useAsync } from '@/utils/useAsync';
 import { ChainId } from '@kadena/client';
 import { MonoKey, MonoRemoveRedEye } from '@kadena/kode-icons/system';
-import {
-  Button,
-  Dialog,
-  DialogFooter,
-  DialogHeader,
-  Heading,
-  Stack,
-  TabItem,
-  Tabs,
-  Text,
-} from '@kadena/kode-ui';
+import { Button, Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
 import { useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { noStyleLinkClass, panelClass } from '../home/style.css';

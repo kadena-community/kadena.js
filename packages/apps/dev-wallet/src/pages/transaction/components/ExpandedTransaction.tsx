@@ -9,18 +9,19 @@ import {
 } from '@kadena/kode-ui';
 import yaml from 'js-yaml';
 import { useMemo } from 'react';
-import { cardClass, codeClass, successClass } from './style.css.ts';
+import { cardClass, codeClass } from './style.css.ts';
 
 import {
   ITransaction,
   transactionRepository,
 } from '@/modules/transaction/transaction.repository.ts';
 import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
+import { panelClass } from '@/pages/home/style.css.ts';
 import { useAsync } from '@/utils/useAsync.tsx';
-import { MonoCheck, MonoContentCopy } from '@kadena/kode-icons/system';
-import { Signers } from './Signers.tsx';
-import { statusPassed } from './TxTile.tsx';
+import { MonoContentCopy } from '@kadena/kode-icons/system';
 import { Label, Value } from './helpers.tsx';
+import { Signers } from './Signers.tsx';
+import { statusPassed, TxPipeLine } from './TxPipeLine.tsx';
 
 export function ExpandedTransaction({
   transaction,
@@ -83,172 +84,164 @@ export function ExpandedTransaction({
         </Stack>
       </DialogHeader>
       <DialogContent>
-        {!statusPassed(transaction.status, 'preflight') && (
-          <Stack flexDirection={'column'} gap={'xl'}>
-            <Stack gap={'sm'} flexDirection={'column'}>
-              {statusPassed(transaction.status, 'signed') && (
-                <Heading variant="h4" className={successClass}>
-                  <Stack alignItems={'center'}>
-                    <MonoCheck />
-                    All Signed
-                  </Stack>
-                </Heading>
-              )}
-              <Heading variant="h4">hash (request-key)</Heading>
-              <Value className={codeClass}>{transaction.hash}</Value>
-            </Stack>
-            {'exec' in command.payload && (
-              <>
+        <Stack gap={'lg'}>
+          <Stack
+            gap={'lg'}
+            flexDirection={'column'}
+            style={{
+              width: '400px',
+              maxWidth: '400px',
+            }}
+            className={panelClass}
+          >
+            <Heading variant="h6">Tx Status</Heading>
+            <TxPipeLine tx={transaction} variant={'expanded'} />
+          </Stack>
+          <Stack gap={'sm'} flexDirection={'column'} className={panelClass}>
+            {!statusPassed(transaction.status, 'preflight') && (
+              <Stack flexDirection={'column'} gap={'xl'}>
                 <Stack gap={'sm'} flexDirection={'column'}>
-                  <Heading variant="h4">Code</Heading>
-                  <Value className={codeClass}>
-                    {command.payload.exec.code}
-                  </Value>
+                  <Heading variant="h4">hash (request-key)</Heading>
+                  <Value className={codeClass}>{transaction.hash}</Value>
                 </Stack>
-                {Object.keys(command.payload.exec.data).length > 0 && (
-                  <Stack gap={'sm'} flexDirection={'column'}>
-                    <Heading variant="h4">Data</Heading>
-                    <pre className={codeClass}>
-                      {JSON.stringify(command.payload.exec.data, null, 2)}
-                    </pre>
-                  </Stack>
+                {'exec' in command.payload && (
+                  <>
+                    <Stack gap={'sm'} flexDirection={'column'}>
+                      <Heading variant="h4">Code</Heading>
+                      <Value className={codeClass}>
+                        {command.payload.exec.code}
+                      </Value>
+                    </Stack>
+                    {Object.keys(command.payload.exec.data).length > 0 && (
+                      <Stack gap={'sm'} flexDirection={'column'}>
+                        <Heading variant="h4">Data</Heading>
+                        <pre className={codeClass}>
+                          {JSON.stringify(command.payload.exec.data, null, 2)}
+                        </pre>
+                      </Stack>
+                    )}
+                  </>
                 )}
-              </>
-            )}
-            {'cont' in command.payload && (
-              <>
+                {'cont' in command.payload && (
+                  <>
+                    <Stack gap={'sm'} flexDirection={'column'}>
+                      <Heading variant="h4">Continuation</Heading>
+                      <Value>
+                        {command.payload.cont.pactId}- step(
+                        {command.payload.cont.step})
+                      </Value>
+                    </Stack>
+                    {Object.keys(command.payload.cont.data || {}).length >
+                      0 && (
+                      <Stack gap={'sm'} flexDirection={'column'}>
+                        <Heading variant="h4">Data</Heading>
+                        <pre className={codeClass}>
+                          {JSON.stringify(command.payload.cont.data, null, 2)}
+                        </pre>
+                      </Stack>
+                    )}
+                  </>
+                )}
                 <Stack gap={'sm'} flexDirection={'column'}>
-                  <Heading variant="h4">Continuation</Heading>
-                  <Value>
-                    {command.payload.cont.pactId}- step(
-                    {command.payload.cont.step})
-                  </Value>
-                </Stack>
-                {Object.keys(command.payload.cont.data || {}).length > 0 && (
-                  <Stack gap={'sm'} flexDirection={'column'}>
-                    <Heading variant="h4">Data</Heading>
-                    <pre className={codeClass}>
-                      {JSON.stringify(command.payload.cont.data, null, 2)}
-                    </pre>
+                  <Heading variant="h4">Transaction Metadata</Heading>
+                  <Stack flexDirection={'column'} className={cardClass}>
+                    <Stack gap={'sm'}>
+                      <Label>Network</Label>
+                      <Value>{command.networkId}</Value>
+                    </Stack>
+                    <Stack gap={'sm'}>
+                      <Label>Chain</Label>
+                      <Value>{command.meta.chainId}</Value>
+                    </Stack>
+                    <Stack gap={'sm'}>
+                      <Label>Creation time</Label>
+                      <Value>
+                        {command.meta.creationTime} (
+                        {new Date(
+                          command.meta.creationTime! * 1000,
+                        ).toLocaleString()}
+                        )
+                      </Value>
+                    </Stack>
+                    <Stack gap={'sm'}>
+                      <Label>TTL</Label>
+                      <Value>
+                        {command.meta.ttl} (
+                        {new Date(
+                          (command.meta.ttl! + command.meta.creationTime!) *
+                            1000,
+                        ).toLocaleString()}
+                        )
+                      </Value>
+                    </Stack>
+                    <Stack gap={'sm'}>
+                      <Label>Nonce</Label>
+                      <Value>{command.nonce}</Value>
+                    </Stack>
                   </Stack>
-                )}
-              </>
+                </Stack>
+                <Stack gap={'sm'} flexDirection={'column'}>
+                  <Heading variant="h4">Gas Info</Heading>
+                  <Stack flexDirection={'column'} className={cardClass}>
+                    <Stack gap={'sm'}>
+                      <Label>Gas Payer</Label>
+                      <Value>{command.meta.sender}</Value>
+                    </Stack>
+                    <Stack gap={'sm'}>
+                      <Label>Gas Price</Label>
+                      <Value>{command.meta.gasPrice}</Value>
+                    </Stack>
+                    <Stack gap={'sm'}>
+                      <Label>Gas Limit</Label>
+                      <Value>{command.meta.gasLimit}</Value>
+                    </Stack>
+                    <Stack gap={'sm'}>
+                      <Label>Max Gas Cost</Label>
+                      <Value>
+                        {command.meta.gasLimit! * command.meta.gasPrice!} KDA
+                      </Value>
+                    </Stack>
+                  </Stack>
+                </Stack>
+                <Signers transaction={transaction} onSign={onSign} />
+              </Stack>
             )}
-            <Stack gap={'sm'} flexDirection={'column'}>
-              <Heading variant="h4">Transaction Metadata</Heading>
-              <Stack flexDirection={'column'} className={cardClass}>
-                <Stack gap={'sm'}>
-                  <Label>Network</Label>
-                  <Value>{command.networkId}</Value>
-                </Stack>
-                <Stack gap={'sm'}>
-                  <Label>Chain</Label>
-                  <Value>{command.meta.chainId}</Value>
-                </Stack>
-                <Stack gap={'sm'}>
-                  <Label>Creation time</Label>
-                  <Value>
-                    {command.meta.creationTime} (
-                    {new Date(
-                      command.meta.creationTime! * 1000,
-                    ).toLocaleString()}
-                    )
-                  </Value>
-                </Stack>
-                <Stack gap={'sm'}>
-                  <Label>TTL</Label>
-                  <Value>
-                    {command.meta.ttl} (
-                    {new Date(
-                      (command.meta.ttl! + command.meta.creationTime!) * 1000,
-                    ).toLocaleString()}
-                    )
-                  </Value>
-                </Stack>
-                <Stack gap={'sm'}>
-                  <Label>Nonce</Label>
-                  <Value>{command.nonce}</Value>
+            {statusPassed(transaction.status, 'preflight') && (
+              <Stack gap={'sm'} flexDirection={'column'}>
+                <Stack gap={'sm'} flexDirection={'column'}>
+                  <Heading variant="h4">Preflight Result</Heading>
+                  <pre className={codeClass}>
+                    {JSON.stringify(transaction.preflight, null, 2)}
+                  </pre>
                 </Stack>
               </Stack>
-            </Stack>
-            <Stack gap={'sm'} flexDirection={'column'}>
-              <Heading variant="h4">Gas Info</Heading>
-              <Stack flexDirection={'column'} className={cardClass}>
-                <Stack gap={'sm'}>
-                  <Label>Gas Payer</Label>
-                  <Value>{command.meta.sender}</Value>
-                </Stack>
-                <Stack gap={'sm'}>
-                  <Label>Gas Price</Label>
-                  <Value>{command.meta.gasPrice}</Value>
-                </Stack>
-                <Stack gap={'sm'}>
-                  <Label>Gas Limit</Label>
-                  <Value>{command.meta.gasLimit}</Value>
-                </Stack>
-                <Stack gap={'sm'}>
-                  <Label>Max Gas Cost</Label>
-                  <Value>
-                    {command.meta.gasLimit! * command.meta.gasPrice!} KDA
-                  </Value>
+            )}
+            {statusPassed(transaction.status, 'submitted') && (
+              <Stack gap={'sm'} flexDirection={'column'}>
+                <Stack gap={'sm'} flexDirection={'column'}>
+                  <Heading variant="h4">Request</Heading>
+                  <pre className={codeClass}>
+                    {JSON.stringify(transaction.request, null, 2)}
+                  </pre>
                 </Stack>
               </Stack>
-            </Stack>
-            <Signers transaction={transaction} onSign={onSign} />
+            )}
+            {statusPassed(transaction.status, 'success') && (
+              <Stack gap={'sm'} flexDirection={'column'}>
+                <Stack gap={'sm'} flexDirection={'column'}>
+                  <Heading variant="h4">Result</Heading>
+                  <pre className={codeClass}>
+                    {JSON.stringify(
+                      'result' in transaction ? transaction.result : {},
+                      null,
+                      2,
+                    )}
+                  </pre>
+                </Stack>
+              </Stack>
+            )}
           </Stack>
-        )}
-        {statusPassed(transaction.status, 'preflight') && (
-          <Stack gap={'sm'} flexDirection={'column'}>
-            <Heading variant="h4" className={successClass}>
-              <Stack alignItems={'center'}>
-                <MonoCheck />
-                Preflight Passed
-              </Stack>
-            </Heading>
-            <Stack gap={'sm'} flexDirection={'column'}>
-              <Heading variant="h4">Result</Heading>
-              <pre className={codeClass}>
-                {JSON.stringify(transaction.preflight, null, 2)}
-              </pre>
-            </Stack>
-          </Stack>
-        )}
-        {statusPassed(transaction.status, 'submitted') && (
-          <Stack gap={'sm'} flexDirection={'column'}>
-            <Heading variant="h4" className={successClass}>
-              <Stack alignItems={'center'}>
-                <MonoCheck />
-                Transaction Mined
-              </Stack>
-            </Heading>
-            <Stack gap={'sm'} flexDirection={'column'}>
-              <Heading variant="h4">Request</Heading>
-              <pre className={codeClass}>
-                {JSON.stringify(transaction.request, null, 2)}
-              </pre>
-            </Stack>
-          </Stack>
-        )}
-        {statusPassed(transaction.status, 'success') && (
-          <Stack gap={'sm'} flexDirection={'column'}>
-            <Heading variant="h4" className={successClass}>
-              <Stack alignItems={'center'}>
-                <MonoCheck />
-                Transaction Mined
-              </Stack>
-            </Heading>
-            <Stack gap={'sm'} flexDirection={'column'}>
-              <Heading variant="h4">Result</Heading>
-              <pre className={codeClass}>
-                {JSON.stringify(
-                  'result' in transaction ? transaction.result : {},
-                  null,
-                  2,
-                )}
-              </pre>
-            </Stack>
-          </Stack>
-        )}
+        </Stack>
       </DialogContent>
       <DialogFooter>
         <Stack

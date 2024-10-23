@@ -16,11 +16,12 @@ import {
 import { MonoSignature } from '@kadena/kode-icons/system';
 import { isSignedCommand } from '@kadena/pactjs';
 import React from 'react';
-import { TxTile, statusPassed, steps } from './TxTile';
+import { TxTile } from './TxTile';
 import { containerClass } from './style.css';
 
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { ExpandedTransaction } from './ExpandedTransaction';
+import { statusPassed, steps } from './TxPipeLine';
 
 export function TxList({
   txs,
