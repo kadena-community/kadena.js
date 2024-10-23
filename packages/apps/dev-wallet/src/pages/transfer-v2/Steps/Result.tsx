@@ -1,9 +1,9 @@
 import { ListItem } from '@/Components/ListItem/ListItem';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
+import { statusPassed } from '@/pages/transaction/components/TxPipeLine';
 import { shorten } from '@/utils/helpers';
 import { ChainId } from '@kadena/client';
 import { Heading, Notification, Stack, Text } from '@kadena/kode-ui';
-import { statusPassed } from '../../transaction/components/TxTile';
 import { TrG } from './TransferForm';
 
 export function Result({

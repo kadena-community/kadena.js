@@ -19,7 +19,7 @@ import {
 interface IProps extends PropsWithChildren {
   chainAccount: IViewChain;
   chainId: string;
-  fundAccount: (chainId: ChainId) => Promise<void>;
+  fundAccount?: (chainId: ChainId) => Promise<void>;
   editable?: boolean;
   onItemChange?: (key: string, value: any) => void;
 }
@@ -60,7 +60,7 @@ export const ChainBalance: FC<IProps> = ({
         >
           Chain {chainId}
         </Text>
-        {!editable && activeNetwork?.faucetContract && (
+        {!editable && activeNetwork?.faucetContract && fundAccount && (
           <Button
             isCompact
             variant={chainAccount.balance ? 'primary' : 'transparent'}

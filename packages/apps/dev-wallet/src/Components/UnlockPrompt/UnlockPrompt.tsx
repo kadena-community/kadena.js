@@ -31,8 +31,6 @@ export const UnlockPrompt: React.FC<{
       password: '',
     },
   });
-
-  console.log('rememberPassword', rememberPassword);
   return (
     <Dialog
       size="sm"

@@ -15,13 +15,16 @@ function Providers({ children }: { children: React.ReactNode }) {
   }, []);
   return (
     <SessionProvider>
-      <DatabaseProvider>
-        <PromptProvider>
+      <PromptProvider>
+        <DatabaseProvider>
           <WalletProvider>
-            <MediaContextProvider>{children}</MediaContextProvider>
+            {/* TODO: fixed the issue with prompt and remove this one in favor of the one above */}
+            <PromptProvider>
+              <MediaContextProvider>{children}</MediaContextProvider>
+            </PromptProvider>
           </WalletProvider>
-        </PromptProvider>
-      </DatabaseProvider>
+        </DatabaseProvider>
+      </PromptProvider>
     </SessionProvider>
   );
 }

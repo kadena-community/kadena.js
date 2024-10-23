@@ -14,6 +14,7 @@ import { CommunicationProvider } from '@/modules/communication/communication.pro
 import { AccountDiscovery } from '@/pages/account-discovery/account-dsicovery';
 import { AccountPage } from '@/pages/account/account';
 import { Connect } from '@/pages/connect/connect';
+import { Contacts } from '@/pages/contacts/contacts';
 import { CreateAccount } from '@/pages/create-account/create-account';
 import { FungiblePage } from '@/pages/fungible/fungible';
 import { ImportChainweaverExport } from '@/pages/import-chainweaver-export/import-chainweaver-export';
@@ -124,6 +125,7 @@ export const Routes: FC = () => {
             <Route path="/account/:accountId" element={<AccountPage />} />
             <Route path="/transfer" element={<TransferV2 />} />
             <Route path="/terminal" element={<TerminalPage />} />
+            <Route path="/contacts" element={<Contacts />} />
             <Route
               path="/backup-recovery-phrase"
               element={<BackupRecoveryPhrase />}

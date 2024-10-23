@@ -33,6 +33,7 @@ import { keyColumnClass, keyItemClass } from './style.css';
 interface IKeysetForm {
   existingKey: string;
   externalKey: string;
+  contactKey: string;
   predicate: BuiltInPredicate;
   alias: string;
 }
@@ -51,15 +52,24 @@ export function CreateKeySetDialog({
       defaultValues: {
         existingKey: '',
         externalKey: '',
+        contactKey: '',
         predicate: 'keys-all',
         alias: '',
       },
     });
   const [error, setError] = useState<string | null>(null);
-  const { keySources, createKey, profile, keysets } = useWallet();
+  const { keySources, createKey, profile, keysets, contacts } = useWallet();
   const flattenKeys = keySources
     .map((keySource) => keySource.keys.map((key) => ({ key, keySource })))
     .flat();
+
+  const flattenContactKeys =
+    contacts
+      .filter((contact) => contact.account.keyset)
+      .map((contact) =>
+        contact.account.keyset!.keys.map((key) => ({ key, contact })),
+      )
+      .flat() ?? [];
   const [addedKeys, setAddedKeys] = useState<string[]>([]);
   const addKey = (key: string) => {
     if (addedKeys.includes(key)) return;
@@ -131,7 +141,7 @@ export function CreateKeySetDialog({
                 Add keys to the keyset by using the following options
               </Heading>
               <Stack flexDirection={'column'} gap={'sm'}>
-                <Heading variant="h6">Choose from existing keys</Heading>
+                <Heading variant="h6">Choose from your existing keys</Heading>
                 <Stack gap={'sm'}>
                   <Controller
                     name="existingKey"
@@ -185,6 +195,63 @@ export function CreateKeySetDialog({
                           onPress={() => {
                             addKey(getValues('existingKey'));
                             setValue('existingKey', '');
+                          }}
+                          isDisabled={!field.value}
+                        >
+                          <MonoAdd />
+                        </Button>
+                      </>
+                    )}
+                  />
+                </Stack>
+              </Stack>
+              <Stack flexDirection={'column'} gap={'sm'}>
+                <Heading variant="h6">Choose from your contacts keys</Heading>
+                <Stack gap={'sm'}>
+                  <Controller
+                    name="contactKey"
+                    control={control}
+                    render={({ field }) => (
+                      <>
+                        <Combobox
+                          inputValue={field.value}
+                          onInputChange={(val) => {
+                            field.onChange(val);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              addKey(getValues('contactKey'));
+                              setValue('contactKey', '');
+                            }
+                          }}
+                        >
+                          {flattenContactKeys.map(({ key, contact }) => (
+                            <ComboboxItem key={key} textValue={key}>
+                              <Stack
+                                gap={'sm'}
+                                justifyContent={'space-between'}
+                              >
+                                <Stack gap={'sm'}>
+                                  <Text color="inherit">
+                                    <MonoKey />
+                                  </Text>
+                                  <Text color="inherit">
+                                    {shorten(key, 12)}
+                                  </Text>
+                                </Stack>
+                                <Stack gap={'sm'}>
+                                  <Badge size="sm">{contact.name}</Badge>
+                                </Stack>
+                              </Stack>
+                            </ComboboxItem>
+                          ))}
+                        </Combobox>
+                        <Button
+                          variant="outlined"
+                          onPress={() => {
+                            addKey(getValues('contactKey'));
+                            setValue('contactKey', '');
                           }}
                           isDisabled={!field.value}
                         >

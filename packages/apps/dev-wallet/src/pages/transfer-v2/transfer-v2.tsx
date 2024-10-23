@@ -25,7 +25,7 @@ import {
 import { useSearchParams } from 'react-router-dom';
 import { ReviewTransaction } from '../transaction/components/ReviewTransaction';
 import { TxList } from '../transaction/components/TxList';
-import { statusPassed } from '../transaction/components/TxTile';
+import { statusPassed } from '../transaction/components/TxPipeLine';
 import { Result } from './Steps/Result';
 import {
   Redistribution,
@@ -274,58 +274,63 @@ export function TransferV2() {
         <Step active={step === 'result'}>Result</Step>
       </Stepper>
       {step === 'transfer' && (
-        <TransferForm
-          accountId={accountId}
-          activityId={urlActivityId}
-          onSubmit={async (data, redistribution) => {
-            const senderAccount = allAccounts.find(
-              (acc) => acc.uuid === data.accountId,
-            );
-            if (!senderAccount?.keyset?.uuid) return;
-            const formData = { ...data, senderAccount };
-            const getEmpty = () => ['', []] as [string, ITransaction[]];
-            let redistributionGroup = getEmpty();
+        <Stack justifyContent={'center'}>
+          <Stack gap={'lg'} flexDirection={'column'} style={{ width: '670px' }}>
+            <TransferForm
+              accountId={accountId}
+              activityId={urlActivityId}
+              onSubmit={async (data, redistribution) => {
+                const senderAccount = allAccounts.find(
+                  (acc) => acc.uuid === data.accountId,
+                );
+                if (!senderAccount?.keyset?.uuid) return;
+                const formData = { ...data, senderAccount };
+                const getEmpty = () => ['', []] as [string, ITransaction[]];
+                let redistributionGroup = getEmpty();
 
-            if (redistribution.length > 0) {
-              redistributionGroup =
-                (await createRedistribution(formData, redistribution)) ??
-                getEmpty();
-            }
-            const txGroup = (await createTransaction(formData)) ?? getEmpty();
-            const updatedTxGroups = {
-              redistribution: {
-                groupId: redistributionGroup[0] ?? '',
-                txs: redistributionGroup[1] ?? [],
-              },
-              transfer: {
-                groupId: txGroup[0] ?? '',
-                txs: txGroup[1] ?? [],
-              },
-            };
-            setTxGroups(updatedTxGroups);
-            const activityId = crypto.randomUUID();
-            await activityRepository.addActivity({
-              data: {
-                transferData: data,
-                txGroups: {
-                  transfer: {
-                    groupId: updatedTxGroups.transfer.groupId,
-                  },
+                if (redistribution.length > 0) {
+                  redistributionGroup =
+                    (await createRedistribution(formData, redistribution)) ??
+                    getEmpty();
+                }
+                const txGroup =
+                  (await createTransaction(formData)) ?? getEmpty();
+                const updatedTxGroups = {
                   redistribution: {
-                    groupId: updatedTxGroups.redistribution.groupId,
+                    groupId: redistributionGroup[0] ?? '',
+                    txs: redistributionGroup[1] ?? [],
                   },
-                },
-              },
-              keysetId: senderAccount.keyset?.uuid,
-              networkUUID: activeNetwork!.uuid,
-              profileId: profile?.uuid ?? '',
-              status: 'Initiated',
-              type: 'Transfer',
-              uuid: activityId,
-            });
-            setStep('sign');
-          }}
-        />
+                  transfer: {
+                    groupId: txGroup[0] ?? '',
+                    txs: txGroup[1] ?? [],
+                  },
+                };
+                setTxGroups(updatedTxGroups);
+                const activityId = crypto.randomUUID();
+                await activityRepository.addActivity({
+                  data: {
+                    transferData: data,
+                    txGroups: {
+                      transfer: {
+                        groupId: updatedTxGroups.transfer.groupId,
+                      },
+                      redistribution: {
+                        groupId: updatedTxGroups.redistribution.groupId,
+                      },
+                    },
+                  },
+                  keysetId: senderAccount.keyset?.uuid,
+                  networkUUID: activeNetwork!.uuid,
+                  profileId: profile?.uuid ?? '',
+                  status: 'Initiated',
+                  type: 'Transfer',
+                  uuid: activityId,
+                });
+                setStep('sign');
+              }}
+            />
+          </Stack>
+        </Stack>
       )}
       {(step === 'sign' || step === 'result') && renderSignStep()}
       {step === 'summary' && <Result {...txGroups} />}

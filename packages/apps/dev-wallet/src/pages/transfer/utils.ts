@@ -91,6 +91,7 @@ export const getOptimalTransfers = (
 };
 
 export interface IReceiverAccount {
+  alias?: string;
   address: string;
   chains: Array<{ chainId: ChainId; balance: string }>;
   overallBalance: string;

@@ -44,6 +44,7 @@ export function CreateAccount() {
     fungibles,
     keysets,
     accounts,
+    askForPassword,
   } = useWallet();
 
   const filteredAccounts = accounts.filter(
@@ -163,6 +164,8 @@ export function CreateAccount() {
                   const availableKey = keySource.keys.find(
                     (key) => !usedKeys.includes(key.publicKey),
                   );
+                  // prompt for password anyway for account creation even if the key is available.
+                  await askForPassword();
                   if (availableKey) {
                     return createAccountByKey(availableKey);
                   }

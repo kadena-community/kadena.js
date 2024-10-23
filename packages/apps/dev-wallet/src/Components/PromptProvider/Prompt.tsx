@@ -14,8 +14,8 @@ export const PromptProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [prompt, setPrompt] = useState<JSX.Element | null>(null);
   return (
     <context.Provider value={setPrompt}>
+      {prompt && <div className="prompt-container">{prompt}</div>}
       {children}
-      {prompt}
     </context.Provider>
   );
 };
