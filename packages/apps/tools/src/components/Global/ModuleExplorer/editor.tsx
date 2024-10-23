@@ -81,6 +81,7 @@ const Editor = ({
         activeModule={activeModule}
         onModuleChange={onActiveModuleChange}
       />
+      <StatusBar module={activeModule} />
       <div style={{ flex: 1 }}>
         <AceViewer
           code={activeModule.code}
@@ -90,7 +91,6 @@ const Editor = ({
           mode={mode}
         />
       </div>
-      <StatusBar module={activeModule} />
     </Stack>
   );
 };
