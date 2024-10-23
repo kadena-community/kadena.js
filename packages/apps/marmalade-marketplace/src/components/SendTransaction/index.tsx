@@ -48,6 +48,7 @@ const SendTransaction: FC<SendTransactionFormProps> = ({
   const handlePreview = async () => {
     try {
       const res: any = await preview();
+
       const result =
         res?.result.status === 'success' ? res?.result.status : undefined;
       if (result === 'success') {

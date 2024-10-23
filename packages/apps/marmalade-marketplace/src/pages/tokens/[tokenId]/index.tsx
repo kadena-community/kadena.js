@@ -450,23 +450,11 @@ const CreateSale = () => {
           {/* only show bid tab if saleId is present*/}
           <TabItem title="Buy" key="bid">
             <Card>
-              <CardContentBlock
-                title="Buy token"
-                supportingContent={
-                  <Stack flexDirection="column" width="100%" gap="md">
-                    <Text>
-                      You can view and bid on the available offers here.
-                    </Text>
-                    <Text>
-                      Clicking `Buy Now` will transfer the fungible payment to
-                      the sale`s escrow account and transfer the token to your
-                      account.
-                    </Text>
-                  </Stack>
-                }
-              >
-                <Bid saleId={saleId!} chainId={chainId} />
-              </CardContentBlock>
+              <Bid
+                saleId={saleId!}
+                chainId={chainId}
+                tokenImageUrl={tokenImageUrl}
+              />
             </Card>
           </TabItem>
           <TabItem title="Configuration" key="policies">

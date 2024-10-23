@@ -2,11 +2,22 @@ import LabeledText from '@/components/LabeledText';
 import { useGetSale } from '@/hooks/getSale';
 import { Radio, RadioGroup, Stack, Text } from '@kadena/kode-ui';
 
+import { NormalBid } from './NormalBid';
 import * as styles from './style.css';
 
-const Bid = ({ saleId }: { saleId: string; chainId: string }) => {
+const Bid = ({
+  saleId,
+  tokenImageUrl,
+}: {
+  saleId: string;
+  tokenImageUrl: string;
+}) => {
   const { data } = useGetSale(saleId as string);
-  console.log(data?.saleType === '');
+
+  if (data?.saleType === '') {
+    return <NormalBid data={data} tokenImageUrl={tokenImageUrl} />;
+  }
+
   return (
     <>
       <Stack flex={1} flexDirection="column">
