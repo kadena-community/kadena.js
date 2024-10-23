@@ -1,21 +1,17 @@
 import { ITransaction } from '@/modules/transaction/transaction.repository';
 
-import { shorten } from '@/utils/helpers';
 import {
-  MonoBrightness1,
   MonoOpenInFull,
   MonoSignature,
   MonoViewInAr,
 } from '@kadena/kode-icons/system';
 import { Button, Stack, Text } from '@kadena/kode-ui';
 
-import classNames from 'classnames';
-
 import { IPactCommand } from '@kadena/client';
 
 import { Value } from './helpers';
 import { codeClass, txTileClass, txTileContentClass } from './style.css';
-import { getStatusClass, TxPipeLine } from './TxPipeLine';
+import { TxPipeLine } from './TxPipeLine';
 
 export const TxTile = ({
   tx,
