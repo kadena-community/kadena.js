@@ -26,20 +26,22 @@ import {
 } from './deploy-helpers/constants';
 import { kadenaContext } from './deploy-helpers/tx-helpers';
 
-const kadenaChains = kadenaContext(CHAIN_IDS);
+const forEachChain = kadenaContext(CHAIN_IDS);
 
 async function deployFaucet() {
   const contractCode = readFileSync(
     join(__dirname, './testnet-faucet.pact'),
     'utf8',
   );
-  await kadenaChains(async ({ transaction, read, chainId }) => {
+  await forEachChain(async ({ transaction, read, chainId }) => {
     let upgrade = true;
     try {
       // the namespace based on the keyset; if the keyset changes, set the correct one
       const namespace = 'n_f17eb6408bb84795b1c871efa678758882a8744a';
-      const module = await read(`(describe-module "${namespace}.coin-faucet")`);
-      console.log('chain:', chainId, module);
+      const { hash, interfaces, name, tx_hash } = (await read(
+        `(describe-module "${namespace}.coin-faucet")`,
+      )) as any;
+      console.log('chain:', chainId, { hash, interfaces, name, tx_hash });
       upgrade = true;
       if (!UPGRADE) {
         return;
@@ -106,7 +108,7 @@ async function requestNewFund() {
 }
 
 async function requestFund() {
-  await kadenaChains(async ({ transaction, read, chainId }) => {
+  await forEachChain(async ({ transaction, read, chainId }) => {
     const account = (await read(
       'n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT',
     )) as string;
@@ -130,7 +132,7 @@ async function requestFund() {
 }
 
 async function transferFunds() {
-  await kadenaChains(async ({ transaction, read, chainId }) => {
+  await forEachChain(async ({ transaction, read, chainId }) => {
     const account = await read(
       'n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT',
     );
@@ -187,7 +189,7 @@ async function transferFunds() {
 }
 
 async function getBalance() {
-  await kadenaChains(async ({ read, chainId }) => {
+  await forEachChain(async ({ read, chainId }) => {
     const balance = await read(
       `(coin.get-balance n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT )`,
     );
@@ -200,7 +202,7 @@ async function getBalance() {
 }
 
 async function getAccountDetails() {
-  await kadenaChains(async ({ read, chainId }) => {
+  await forEachChain(async ({ read, chainId }) => {
     const balance = await read(
       `(coin.details n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet.FAUCET_ACCOUNT )`,
     );
