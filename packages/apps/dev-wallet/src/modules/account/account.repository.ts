@@ -107,7 +107,7 @@ const createAccountRepository = ({
     },
     getAccount: async (id: string) => {
       const account: IAccount = await getOne('account', id);
-      return appendKeyset(account as IAccount);
+      return appendKeyset(account);
     },
     getAccountByAddress: async (address: string) => {
       const account: Array<IAccount> = await getAll(
