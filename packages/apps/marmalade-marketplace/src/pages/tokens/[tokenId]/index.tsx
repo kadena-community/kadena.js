@@ -1,6 +1,5 @@
 import Bid from '@/components/Bid';
 import LabeledText from '@/components/LabeledText';
-import { RegularSale } from '@/components/Sale/RegularSale';
 import { TokenMetadata } from '@/components/Token';
 import { useAccount } from '@/hooks/account';
 import { useGetSale } from '@/hooks/getSale';
@@ -170,6 +169,7 @@ const CreateSale = () => {
           networkId: env.NETWORKID,
           host: env.CHAINWEB_API_HOST,
         });
+
         if (details.balance) setBalance(details.balance);
       } catch (e) {
         console.log('error fetching account', e);
@@ -177,10 +177,6 @@ const CreateSale = () => {
     }
     fetch();
   }, [account, chainId]);
-
-  const onCancelPress = () => {
-    router.back();
-  };
 
   const onTransactionSigned = (transaction: IUnsignedCommand | ICommand) => {
     setTransaction(transaction);
@@ -448,15 +444,13 @@ const CreateSale = () => {
             </Card>
           </TabItem>
           {/* only show bid tab if saleId is present*/}
-          <TabItem title="Buy" key="bid">
+
+          <TabItem title="Buy" isDisabled={!balance} key="bid">
             <Card>
-              <Bid
-                saleId={saleId!}
-                chainId={chainId}
-                tokenImageUrl={tokenImageUrl}
-              />
+              <Bid saleId={saleId!} tokenImageUrl={tokenImageUrl} />
             </Card>
           </TabItem>
+
           <TabItem title="Configuration" key="policies">
             {tokenInfo?.policies ? (
               checkConcretePolicies(tokenInfo.policies) && (
@@ -581,15 +575,10 @@ const CreateSale = () => {
         )}
       </Stack>
       <Stack className={styles.buttonRowContainer}>
-        <Button variant="outlined" onPress={onCancelPress}>
-          Cancel
-        </Button>
         {selectedKey === 'sale' ? (
           <Button onPress={onCreateSalePress} isDisabled={!isSaleValid()}>
             Create Sale
           </Button>
-        ) : selectedKey === 'bid' ? (
-          <RegularSale tokenImageUrl={tokenImageUrl} sale={data!} />
         ) : null}
       </Stack>
     </Stack>
