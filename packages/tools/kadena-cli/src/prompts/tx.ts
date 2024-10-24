@@ -187,11 +187,11 @@ export const selectTemplate: IPrompt<
   const choices = [
     {
       value: 'filepath',
-      name: 'Select file path',
+      name: 'Enter custom file path',
     },
     ...templates.map((template) => ({
       value: template.filename,
-      name: `${template.filename} (Path: ${template.path})`, // since we seelct the path, we should show it right? we now only show the filename
+      name: template.filename,
     })),
   ];
 

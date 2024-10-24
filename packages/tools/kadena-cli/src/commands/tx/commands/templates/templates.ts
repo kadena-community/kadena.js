@@ -1,4 +1,4 @@
-import path from 'node:path';
+import path, { isAbsolute } from 'node:path';
 import { services } from '../../../../services/index.js';
 import { getTxTemplateDirectory } from '../../utils/txHelpers.js';
 
@@ -118,7 +118,11 @@ export const getTemplate = async (
 
   const cwdFile = await services.filesystem.readFile(filename);
   if (cwdFile !== null) {
-    return { template: cwdFile, path: filename, cwd };
+    return {
+      template: cwdFile,
+      path: isAbsolute(filename) ? path.relative(cwd, filename) : filename,
+      cwd,
+    };
   }
 
   const filePath = path.join(templateFolder, filename);

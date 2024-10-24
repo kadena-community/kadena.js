@@ -54,7 +54,9 @@ export async function getVariablesByTemplate(
   // option 2. --template="./transfer.ktpl"
   // option 3. cat send.yaml | kadena tx create-transaction
 
-  let template: string;
+  let template: { template: string; path: string; cwd: string } | string;
+  console.log('template: ', templateInput);
+  console.log('args: ', args);
 
   if (templateInput === '-' && isNotEmptyString(args.stdin)) {
     log.debug('using stdin');

@@ -49,7 +49,7 @@ export const createTransaction = async (
     const { path, cwd } = template;
     command = await createPactCommandFromTemplate(path, updatedVariables, cwd);
   } else {
-    throw new Error('A template or valid templateWithData is required.');
+    throw new Error('A valid template is required.');
   }
 
   const fixed = fixTemplatePactCommand(command);
