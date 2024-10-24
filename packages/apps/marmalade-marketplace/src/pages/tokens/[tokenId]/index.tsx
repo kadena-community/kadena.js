@@ -2,7 +2,6 @@ import Bid from '@/components/Bid';
 import LabeledText from '@/components/LabeledText';
 import { TokenMetadata } from '@/components/Token';
 import { useAccount } from '@/hooks/account';
-import { useGetSale } from '@/hooks/getSale';
 import { useTransaction } from '@/hooks/transaction';
 import { IAccountContext } from '@/providers/AccountProvider/AccountProvider';
 import { getTimestampFromDays } from '@/utils/date';
