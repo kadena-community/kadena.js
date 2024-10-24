@@ -12,6 +12,7 @@ import { PactNumber } from '@kadena/pactjs';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
+import { ConnectButton } from '../ConnectWallet/ConnectButton';
 export interface RegularSaleProps {
   tokenImageUrl: string;
   sale: Sale;
@@ -43,7 +44,6 @@ export const RegularSale = ({ sale }: RegularSaleProps) => {
     sign: createSignWithSpireKeySDK([account], onTransactionSigned),
   };
 
-  console.log(env);
   const handleBuyNow = async () => {
     if (!account) {
       alert('Please connect your wallet first to buy.');
@@ -107,6 +107,8 @@ export const RegularSale = ({ sale }: RegularSaleProps) => {
       console.error(error);
     }
   };
+
+  if (!account) return <ConnectButton />;
 
   return (
     <Button variant="primary" onClick={handleBuyNow}>

@@ -116,8 +116,6 @@ const TokenComponent = () => {
   }, [account, chainId]);
 
   const handleTabChange = (key: any) => {
-    if (!saleId && key === 'bid') return;
-    if (balance === 0 && key === 'sale') return;
     setSelectedKey(key);
   };
 

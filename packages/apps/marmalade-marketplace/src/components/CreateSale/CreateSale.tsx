@@ -19,9 +19,11 @@ import {
   Text,
 } from '@kadena/kode-ui';
 import { CardContentBlock, CardFooterGroup } from '@kadena/kode-ui/patterns';
+import { atoms } from '@kadena/kode-ui/styles';
 import { PactNumber } from '@kadena/pactjs';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { FC, useEffect, useState } from 'react';
+import { ConnectButton } from '../ConnectWallet/ConnectButton';
 
 export interface CreateSaleInput {
   saleType?: string;
@@ -192,6 +194,25 @@ export const CreateSale: FC<IProps> = ({
       setChainId(chainIdParam);
     }
   }, [searchParams]);
+
+  if (balance === 0) {
+    return (
+      <Stack width="100%">
+        <CardContentBlock
+          className={atoms({ width: '100%' })}
+          title="Create a Sale"
+          supportingContent={
+            <Stack flexDirection="column" width="100%" gap="md">
+              <Text>This token is not yours to sell.</Text>
+              {!account && <Text>You are not connected</Text>}
+            </Stack>
+          }
+        >
+          {!account.account && <ConnectButton />}
+        </CardContentBlock>
+      </Stack>
+    );
+  }
 
   return (
     <CardContentBlock
