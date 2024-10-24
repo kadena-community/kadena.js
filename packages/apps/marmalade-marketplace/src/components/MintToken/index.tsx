@@ -33,7 +33,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import React, { FormEvent, useEffect, useState } from 'react';
 import * as styles from './style.css';
 
-function MintTokenComponent() {
+const MintTokenComponent = () => {
   const router = useRouter();
   const { account } = useAccount();
   const searchParams = useSearchParams();
@@ -94,7 +94,7 @@ function MintTokenComponent() {
     const metadata = await getTokenMetadata(tokenInfo.uri);
     setTokenMetadata(metadata);
     try {
-      if (!!metadata?.image?.length) {
+      if (metadata?.image?.length) {
         const tokenImageUrl = getTokenImageUrl(metadata.image);
         if (tokenImageUrl) {
           setTokenImageUrl(tokenImageUrl);
@@ -284,8 +284,6 @@ function MintTokenComponent() {
       </CardFixedContainer>
     </>
   );
-}
+};
 
-export default function MintToken() {
-  return <MintTokenComponent />;
-}
+export default MintTokenComponent;

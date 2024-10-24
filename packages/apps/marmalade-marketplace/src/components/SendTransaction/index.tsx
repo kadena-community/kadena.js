@@ -37,6 +37,7 @@ const SendTransaction: FC<SendTransactionFormProps> = ({
   };
 
   useEffect(() => {
+    console.log(searchParams.get('returnUrl'));
     if (searchParams.has('returnUrl')) {
       const url = searchParams.get('returnUrl');
       if (url) {
@@ -93,7 +94,7 @@ const SendTransaction: FC<SendTransactionFormProps> = ({
         setPreviewStatus(true);
         setResult(JSON.stringify(pollResult.result));
         if (returnUrl) {
-          window.location.href = returnUrl;
+          router.push(returnUrl);
         }
       } else {
         throw new Error(JSON.stringify(pollResult));
