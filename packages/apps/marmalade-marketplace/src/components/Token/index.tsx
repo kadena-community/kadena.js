@@ -80,21 +80,27 @@ export const Token: React.FC<TokenProps> = ({
           />
         </div>
         <div className={styles.titleContainer}>
-          <Text>{`${tokenId?.slice(0, 5)}...${tokenId?.slice(-5)}`}</Text>
+          <Text
+            className={styles.subTitle}
+          >{`${tokenId?.slice(0, 5)}...${tokenId?.slice(-5)}`}</Text>
           <Heading as="h6">{tokenMetadata?.name || 'Marmalade Token'}</Heading>
-        </div>
-        <div className={styles.metaContainer}>
-          <div>
-            <Text as="p">{balance ? 'Balance' : 'Price'}</Text>
-            <Text as="p" color="emphasize">
-              {balance ? balance : sale?.startPrice}
-            </Text>
-          </div>
-          <div>
-            <Text as="p">Chain</Text>
-            <Text as="p" color="emphasize">
-              {chainId}
-            </Text>
+          <div className={styles.metaContainer}>
+            <div>
+              <Text className={styles.subTitle} as="p">
+                {balance ? 'Balance' : 'Price'}
+              </Text>
+              <Text variant="code" as="p" color="emphasize">
+                {balance ? balance : sale?.startPrice}
+              </Text>
+            </div>
+            <div>
+              <Text className={styles.subTitle} as="p">
+                Chain
+              </Text>
+              <Text variant="code" as="p" color="emphasize">
+                {chainId}
+              </Text>
+            </div>
           </div>
         </div>
       </div>

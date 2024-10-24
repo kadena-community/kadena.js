@@ -72,7 +72,6 @@ const TokenComponent = () => {
         })) as ITokenInfo;
 
         // if token info is not valid, redirect to the home
-
         setTokenInfo(tokenInfo);
         setTokenPrecision(Number(tokenInfo.precision.int));
         setPolicyConfig(checkConcretePolicies(tokenInfo.policies));
@@ -217,6 +216,7 @@ const TokenComponent = () => {
                 tokenPrecision={tokenPrecision}
                 account={account}
                 policyConfig={policyConfig}
+                saleId={saleId!}
               />
             </Stack>
           </TabItem>

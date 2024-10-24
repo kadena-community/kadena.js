@@ -17,7 +17,6 @@ const Bid = ({
 }) => {
   const { data } = useGetSale(saleId as string);
   const { account } = useAccount();
-  console.log({ data, account });
 
   if (!saleId) {
     return (
