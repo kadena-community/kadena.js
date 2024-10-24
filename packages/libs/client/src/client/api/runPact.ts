@@ -7,6 +7,7 @@ export function runPact(
   hostUrl: string,
   code: string,
   data: Record<string, unknown> = {},
+  requestOptions: { headers?: Record<string, string> } = {},
 ): Promise<ICommandResult> {
   const pactCommand = composePactCommand(execution(code), {
     payload: { exec: { data } },
@@ -23,6 +24,7 @@ export function runPact(
     {
       preflight: false,
       signatureVerification: false,
+      ...requestOptions,
     },
   );
 }

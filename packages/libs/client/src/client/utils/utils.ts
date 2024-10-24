@@ -153,10 +153,13 @@ export const sleep = (duration: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, duration));
 
 export const groupByHost = (
-  items: Array<{ requestKey: string; hostUrl: string }>,
+  items: Array<{
+    requestKey: string;
+    host: string;
+  }>,
 ): [string, string[]][] => {
   const byHost = new Map<string, string[]>();
-  items.forEach(({ hostUrl, requestKey }) => {
+  items.forEach(({ host: hostUrl, requestKey }) => {
     const prev = byHost.get(hostUrl) ?? [];
     byHost.set(hostUrl, [...prev, requestKey]);
   });

@@ -16,8 +16,9 @@ import { fetch } from './utils/fetch';
 export async function send(
   requestBody: ISendRequestBody,
   apiHost: string,
+  { headers }: { headers?: Record<string, string> } = {},
 ): Promise<SendResponse> {
-  const request = stringifyAndMakePOSTRequest(requestBody);
+  const request = stringifyAndMakePOSTRequest(requestBody, headers);
   const sendUrl = new URL(`${apiHost}/api/v1/send`);
 
   const response = await fetch(sendUrl.toString(), request);
