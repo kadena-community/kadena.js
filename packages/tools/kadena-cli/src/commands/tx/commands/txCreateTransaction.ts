@@ -128,6 +128,7 @@ export const createTransactionCommandNew = createCommand(
       );
     }
     const template = await option.template({ stdin });
+
     const showHoles = await option.holes();
 
     if (showHoles.holes === true) {

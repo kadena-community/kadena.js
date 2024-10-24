@@ -44,7 +44,7 @@ export function getTemplateVariables(template: string): string[] {
 }
 
 export async function getVariablesByTemplate(
-  templateInput: string,
+  templateInput: { template: string; path: string; cwd: string } | string,
   args: Record<string, unknown>,
 ): Promise<{
   template: string;
@@ -54,32 +54,23 @@ export async function getVariablesByTemplate(
   // option 2. --template="./transfer.ktpl"
   // option 3. cat send.yaml | kadena tx create-transaction
 
-  let template: { template: string; path: string; cwd: string } | string;
-  console.log('template: ', templateInput);
-  console.log('args: ', args);
+  let template: string | undefined;
 
   if (templateInput === '-' && isNotEmptyString(args.stdin)) {
     log.debug('using stdin');
     template = args.stdin;
-  } else {
+  } else if (typeof templateInput === 'string') {
     const data = await getTemplate(templateInput);
     template = data.template;
+  } else if (typeof templateInput === 'object') {
+    template = templateInput.template;
   }
 
   if (template === undefined) {
-    // not in template list, try to load from file
-    const templatePath = join(process.cwd(), templateInput);
-    const file = await services.filesystem.readFile(templatePath);
-    if (file === null) {
-      // not in file either, error
-      throw Error(`Template "${templateInput}" not found`);
-    }
-
-    template = file;
+    throw new Error('Template not found');
   }
 
   const variables = getTemplateVariables(template);
-
   return { template, variables };
 }
 

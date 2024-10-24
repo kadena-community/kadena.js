@@ -129,7 +129,7 @@ export const getTemplate = async (
 
   const template = await services.filesystem.readFile(filePath);
   if (template !== null) {
-    return { template, path: filePath, cwd: templateFolder };
+    return { template, path: filename, cwd: templateFolder };
   }
   throw new Error(`Template "${filename}" not found`);
 };
