@@ -16,6 +16,7 @@ import { fetch } from './utils/fetch';
 export interface ILocalOptions {
   preflight?: boolean;
   signatureVerification?: boolean;
+  headers?: Record<string, string>;
 }
 
 /**
@@ -41,7 +42,11 @@ export async function local<T extends ILocalOptions>(
   apiHost: string,
   options?: T,
 ): Promise<LocalResponse<T>> {
-  const { signatureVerification = true, preflight = true } = options ?? {};
+  const {
+    signatureVerification = true,
+    preflight = true,
+    headers = {},
+  } = options ?? {};
 
   if (!signatureVerification) {
     requestBody = convertIUnsignedTransactionToNoSig(requestBody);
@@ -51,6 +56,7 @@ export async function local<T extends ILocalOptions>(
   const result = await localRaw(body, apiHost, {
     preflight,
     signatureVerification,
+    headers,
   });
 
   return parsePreflight(result);
@@ -72,9 +78,14 @@ export async function localRaw(
   {
     preflight,
     signatureVerification,
-  }: { signatureVerification: boolean; preflight: boolean },
+    headers = {},
+  }: {
+    signatureVerification: boolean;
+    preflight: boolean;
+    headers?: Record<string, string>;
+  },
 ): Promise<IPreflightResult | ICommandResult> {
-  const request = stringifyAndMakePOSTRequest(requestBody);
+  const request = stringifyAndMakePOSTRequest(requestBody, headers);
   const localUrlWithQueries = new URL(`${apiHost}/api/v1/local`);
 
   localUrlWithQueries.searchParams.append('preflight', preflight.toString());

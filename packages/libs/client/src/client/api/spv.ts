@@ -8,8 +8,9 @@ export async function getSpv(
   host: string,
   requestKey: string,
   targetChainId: ChainId,
+  requestOptions: { headers?: Record<string, string> } = {},
 ): Promise<SPVResponse> {
-  const proof = await spv({ requestKey, targetChainId }, host);
+  const proof = await spv({ requestKey, targetChainId }, host, requestOptions);
   if (typeof proof !== 'string') throw new Error('PROOF_IS_NOT_AVAILABLE');
   return proof;
 }

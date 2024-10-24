@@ -13,8 +13,9 @@ import { fetch } from './utils/fetch';
 export async function listen(
   requestBody: IListenRequestBody,
   apiHost: string,
+  { headers }: { headers?: Record<string, string> } = {},
 ): Promise<ICommandResult> {
-  const request = stringifyAndMakePOSTRequest(requestBody);
+  const request = stringifyAndMakePOSTRequest(requestBody, headers);
   const listenUrl = new URL(`${apiHost}/api/v1/listen`);
 
   const response = await fetch(listenUrl.toString(), request);

@@ -166,7 +166,11 @@ export interface ICreateClient {
     (hostAddressGenerator?: (options: {
         chainId: ChainId;
         networkId: string;
-    }) => string, defaults?: {
+        type?: 'local' | 'send' | 'poll' | 'listen' | 'spv';
+    }) => string | {
+        host: string;
+        headers: Record<string, string>;
+    }, defaults?: {
         confirmationDepth?: number;
     }): IClient;
 }
@@ -280,6 +284,8 @@ export interface IPartialPactCommand extends AllPartial<IPactCommand> {
 export interface IPollOptions {
     // (undocumented)
     confirmationDepth?: number;
+    // (undocumented)
+    headers?: Record<string, string>;
     // Warning: (ae-incompatible-release-tags) The symbol "interval" is marked as @public, but its signature references "Milliseconds" which is marked as @alpha
     //
     // (undocumented)

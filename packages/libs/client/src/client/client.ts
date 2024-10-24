@@ -267,10 +267,20 @@ export interface ICreateClient {
     hostAddressGenerator?: (options: {
       chainId: ChainId;
       networkId: string;
-    }) => string,
+      type?: 'local' | 'send' | 'poll' | 'listen' | 'spv';
+    }) => string | { hostUrl: string; headers: Record<string, string> },
     defaults?: { confirmationDepth?: number },
   ): IClient;
 }
+
+const getHostData = (
+  hostObject: string | { hostUrl: string; headers: Record<string, string> },
+) => {
+  const hostUrl =
+    typeof hostObject === 'string' ? hostObject : hostObject.hostUrl;
+  const headers = typeof hostObject === 'object' ? hostObject.headers : {};
+  return { hostUrl, headers };
+};
 
 /**
  * Creates Chainweb client
@@ -286,11 +296,15 @@ export const createClient: ICreateClient = (
   const client: IBaseClient = {
     local(body, options) {
       const cmd: IPactCommand = JSON.parse(body.cmd);
-      const hostUrl = getHost({
+      const hostObject = getHost({
         chainId: cmd.meta.chainId,
         networkId: cmd.networkId,
       });
-      return local(body, hostUrl, options);
+      const { hostUrl, headers } = getHostData(hostObject);
+      return local(body, hostUrl, {
+        ...options,
+        headers: headers,
+      });
     },
     submit: (async (body) => {
       const isList = Array.isArray(body);
@@ -300,11 +314,16 @@ export const createClient: ICreateClient = (
         throw new Error('EMPTY_COMMAND_LIST');
       }
       const cmd: IPactCommand = JSON.parse(first.cmd);
-      const hostUrl = getHost({
+      const hostObject = getHost({
         chainId: cmd.meta.chainId,
         networkId: cmd.networkId,
       });
-      const { requestKeys } = await send({ cmds: commands }, hostUrl);
+
+      const { hostUrl, headers } = getHostData(hostObject);
+
+      const { requestKeys } = await send({ cmds: commands }, hostUrl, {
+        headers,
+      });
 
       const transactionDescriptors = requestKeys.map((key) => ({
         requestKey: key,
@@ -322,13 +341,23 @@ export const createClient: ICreateClient = (
         ? transactionDescriptors
         : [transactionDescriptors];
       const results = groupByHost(
-        requestsList.map(({ requestKey, chainId, networkId }) => ({
-          requestKey,
-          hostUrl: getHost({ chainId, networkId }),
-        })),
-      ).map(([hostUrl, requestKeys]) =>
-        pollStatus(hostUrl, requestKeys, { confirmationDepth, ...options }),
-      );
+        requestsList.map(({ requestKey, chainId, networkId }) => {
+          const hostObject = getHost({ chainId, networkId, type: 'poll' });
+          const { hostUrl, headers } = getHostData(hostObject);
+          const host = JSON.stringify({ host: hostUrl, headers });
+          return {
+            requestKey,
+            host,
+          };
+        }),
+      ).map(([host, requestKeys]) => {
+        const { hostUrl, headers } = JSON.parse(host);
+        return pollStatus(hostUrl, requestKeys, {
+          confirmationDepth,
+          ...options,
+          headers,
+        });
+      });
 
       // merge all of the result in one object
       const mergedPollRequestPromises = mergeAllPollRequestPromises(results);
@@ -342,10 +371,15 @@ export const createClient: ICreateClient = (
 
       const results = await Promise.all(
         groupByHost(
-          requestsList.map(({ requestKey, chainId, networkId }) => ({
-            requestKey,
-            hostUrl: getHost({ chainId, networkId }),
-          })),
+          requestsList.map(({ requestKey, chainId, networkId }) => {
+            const hostObject = getHost({ chainId, networkId, type: 'poll' });
+            const { hostUrl, headers } = getHostData(hostObject);
+            const host = JSON.stringify({ host: hostUrl, headers });
+            return {
+              requestKey,
+              host,
+            };
+          }),
         ).map(([hostUrl, requestKeys]) => poll({ requestKeys }, hostUrl)),
       );
 
@@ -356,21 +390,26 @@ export const createClient: ICreateClient = (
     },
 
     async listen({ requestKey, chainId, networkId }) {
-      const hostUrl = getHost({ chainId, networkId });
-
-      const result = await listen({ listen: requestKey }, hostUrl);
+      const hostObject = getHost({ chainId, networkId, type: 'listen' });
+      const { hostUrl, headers } = getHostData(hostObject);
+      const result = await listen({ listen: requestKey }, hostUrl, { headers });
 
       return result;
     },
 
     pollCreateSpv({ requestKey, chainId, networkId }, targetChainId, options) {
-      const hostUrl = getHost({ chainId, networkId });
-      return pollSpv(hostUrl, requestKey, targetChainId, options);
+      const hostObject = getHost({ chainId, networkId, type: 'spv' });
+      const { hostUrl, headers } = getHostData(hostObject);
+      return pollSpv(hostUrl, requestKey, targetChainId, {
+        ...options,
+        headers,
+      });
     },
 
     async createSpv({ requestKey, chainId, networkId }, targetChainId) {
-      const hostUrl = getHost({ chainId, networkId });
-      return getSpv(hostUrl, requestKey, targetChainId);
+      const hostObject = getHost({ chainId, networkId, type: 'spv' });
+      const { hostUrl, headers } = getHostData(hostObject);
+      return getSpv(hostUrl, requestKey, targetChainId, { headers });
     },
   };
 
@@ -396,9 +435,11 @@ export const createClient: ICreateClient = (
       });
     },
     runPact: (code, data, options) => {
-      const hostUrl = getHost(options);
+      const hostObject = getHost(options);
+      const { hostUrl, headers } = getHostData(hostObject);
       if (hostUrl === '') throw new Error('NO_HOST_URL');
-      return runPact(hostUrl, code, data);
+
+      return runPact(hostUrl, code, data, { headers });
     },
     send: client.submit,
     getPoll: client.getStatus,

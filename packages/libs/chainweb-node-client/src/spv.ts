@@ -14,8 +14,9 @@ import { fetch } from './utils/fetch';
 export async function spv(
   requestBody: ISPVRequestBody,
   apiHost: string,
+  { headers }: { headers?: Record<string, string> } = {},
 ): Promise<SPVResponse | Response> {
-  const request = stringifyAndMakePOSTRequest(requestBody);
+  const request = stringifyAndMakePOSTRequest(requestBody, headers);
   const spvUrl = new URL(`${apiHost}/spv`);
 
   const response = await fetch(spvUrl.toString(), request);

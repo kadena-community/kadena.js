@@ -22,6 +22,7 @@ export interface IPollOptions {
   timeout?: Milliseconds;
   interval?: Milliseconds;
   confirmationDepth?: number;
+  headers?: Record<string, string>;
 }
 
 /**

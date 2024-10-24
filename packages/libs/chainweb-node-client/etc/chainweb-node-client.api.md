@@ -88,6 +88,8 @@ export interface ILocalCommandResult {
 // @alpha (undocumented)
 export interface ILocalOptions {
     // (undocumented)
+    headers?: Record<string, string>;
+    // (undocumented)
     preflight?: boolean;
     // (undocumented)
     signatureVerification?: boolean;
@@ -153,7 +155,9 @@ export interface ISPVRequestBody {
 }
 
 // @alpha
-export function listen(requestBody: IListenRequestBody, apiHost: string): Promise<ICommandResult>;
+export function listen(requestBody: IListenRequestBody, apiHost: string, { headers }?: {
+    headers?: Record<string, string>;
+}): Promise<ICommandResult>;
 
 // @alpha (undocumented)
 export type ListenResponse = ICommandResult;
@@ -162,9 +166,10 @@ export type ListenResponse = ICommandResult;
 export function local<T extends ILocalOptions>(requestBody: LocalRequestBody, apiHost: string, options?: T): Promise<LocalResponse<T>>;
 
 // @alpha
-export function localRaw(requestBody: LocalRequestBody, apiHost: string, { preflight, signatureVerification, }: {
+export function localRaw(requestBody: LocalRequestBody, apiHost: string, { preflight, signatureVerification, headers, }: {
     signatureVerification: boolean;
     preflight: boolean;
+    headers?: Record<string, string>;
 }): Promise<IPreflightResult | ICommandResult>;
 
 // @alpha (undocumented)
@@ -191,22 +196,34 @@ export function parseResponse<T>(response: Response): Promise<T>;
 export function parseResponseTEXT(response: Response): Promise<string>;
 
 // @alpha
-export function poll(requestBody: IPollRequestBody, apiHost: string, confirmationDepth?: number): Promise<IPollResponse>;
+export function poll(requestBody: IPollRequestBody, apiHost: string, confirmationDepth?: number, { headers }?: {
+    headers?: Record<string, string>;
+}): Promise<IPollResponse>;
 
 // @alpha
-export function send(requestBody: ISendRequestBody, apiHost: string): Promise<SendResponse>;
+export function send(requestBody: ISendRequestBody, apiHost: string, { headers }?: {
+    headers?: Record<string, string>;
+}): Promise<SendResponse>;
 
 // @alpha
 export type SendResponse = IRequestKeys;
 
 // @alpha
-export function spv(requestBody: ISPVRequestBody, apiHost: string): Promise<SPVResponse | Response>;
+export function spv(requestBody: ISPVRequestBody, apiHost: string, { headers }?: {
+    headers?: Record<string, string>;
+}): Promise<SPVResponse | Response>;
 
 // @alpha
 export type SPVResponse = SPVProof;
 
 // @alpha
-export function stringifyAndMakePOSTRequest<T>(body: T): object;
+export function stringifyAndMakePOSTRequest<T>(body: T, headers?: Record<string, string>): {
+    headers: {
+        'Content-Type': string;
+    };
+    method: string;
+    body: string;
+};
 
 // (No @packageDocumentation comment for this package)
 
