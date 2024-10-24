@@ -508,7 +508,7 @@ export default async function handler(
     }
 
     const blocksToProcess = Math.min(
-      1000,
+      10,
       latestBlockNumber - latestProcessedBlockNumber,
     );
     await sync(
