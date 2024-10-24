@@ -176,18 +176,23 @@ export const transactionsSelectPrompt: IPrompt<string[]> = async (args) => {
 //   });
 // }
 
-export const selectTemplate: IPrompt<string> = async (args) => {
+export const selectTemplate: IPrompt<
+  { template: string; path: string; cwd: string } | string
+> = async (args) => {
   const stdin = args.stdin as string | undefined;
   if (stdin !== undefined && stdin !== '') return '-';
+
   const templates = await getTemplates();
-  const defaultTemplateKeys = Object.keys(templates);
 
   const choices = [
     {
       value: 'filepath',
       name: 'Select file path',
     },
-    ...defaultTemplateKeys.map((x) => ({ value: x, name: x })),
+    ...templates.map((template) => ({
+      value: template.filename,
+      name: `${template.filename} (Path: ${template.path})`, // since we seelct the path, we should show it right? we now only show the filename
+    })),
   ];
 
   const result = await select({
@@ -196,13 +201,22 @@ export const selectTemplate: IPrompt<string> = async (args) => {
   });
 
   if (result === 'filepath') {
-    const result = await input({
+    const filePathResult = await input({
       message: 'File path:',
     });
-    return result;
+
+    return filePathResult;
   }
 
-  return result;
+  const selectedTemplate = templates.find(
+    (template) => template.filename === result,
+  );
+
+  if (selectedTemplate) {
+    return selectedTemplate;
+  }
+
+  throw new Error(`Template "${result}" not found`);
 };
 
 // aliases in templates need to select aliases for keys and/or accounts

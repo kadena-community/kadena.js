@@ -60,7 +60,8 @@ export async function getVariablesByTemplate(
     log.debug('using stdin');
     template = args.stdin;
   } else {
-    template = await getTemplate(templateInput);
+    const data = await getTemplate(templateInput);
+    template = data.template;
   }
 
   if (template === undefined) {
@@ -74,6 +75,7 @@ export async function getVariablesByTemplate(
 
     template = file;
   }
+
   const variables = getTemplateVariables(template);
 
   return { template, variables };

@@ -110,29 +110,47 @@ export const writeTemplatesToDisk = async (): Promise<string[]> => {
   return templatesAdded;
 };
 
-export const getTemplate = async (filename: string): Promise<string> => {
+export const getTemplate = async (
+  filename: string,
+): Promise<{ template: string; path: string; cwd: string }> => {
   const templateFolder = getTxTemplateDirectory();
+  const cwd = process.cwd();
+
   const cwdFile = await services.filesystem.readFile(filename);
   if (cwdFile !== null) {
-    return cwdFile;
+    return { template: cwdFile, path: filename, cwd };
   }
+
   const filePath = path.join(templateFolder, filename);
+
   const template = await services.filesystem.readFile(filePath);
   if (template !== null) {
-    return template;
+    return { template, path: filePath, cwd: templateFolder };
   }
   throw new Error(`Template "${filename}" not found`);
 };
 
-export const getTemplates = async (): Promise<Record<string, string>> => {
+export const getTemplates = async (): Promise<
+  Array<{ filename: string; template: string; path: string; cwd: string }>
+> => {
   const templateFolder = getTxTemplateDirectory();
   const files = await services.filesystem.readDir(templateFolder);
-  const templates: Record<string, string> = {};
+  const templates: Array<{
+    filename: string;
+    template: string;
+    path: string;
+    cwd: string;
+  }> = [];
+
   for (const file of files) {
-    const template = await getTemplate(file).catch(() => null);
-    if (template !== null) {
-      templates[file] = template;
+    const templateObj = await getTemplate(file).catch(() => null);
+    if (templateObj !== null) {
+      templates.push({
+        filename: file,
+        ...templateObj,
+      });
     }
   }
+
   return templates;
 };

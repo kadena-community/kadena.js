@@ -34,9 +34,9 @@ describe('template to live test', () => {
 
     await services.filesystem.ensureDirectoryExists(process.cwd());
     const transaction = await createAndWriteTransaction(
-      defaultTemplates.transfer,
       variables,
       'transaction-test.json',
+      defaultTemplates.transfer,
     );
     assertCommandError(transaction);
 
