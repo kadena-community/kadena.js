@@ -168,40 +168,46 @@ export function ExpandedTransaction({
                   <JsonView title="Result" data={transaction.result} />
                 </TabItem>
               )}
-              {contTx && (
-                <>
-                  <TabItem title="cont: Command Details">
-                    <Stack gap={'sm'} flexDirection={'column'}>
-                      <Heading variant="h4">Command Details</Heading>
-                      <CommandView transaction={contTx} onSign={onSign} />
-                    </Stack>
-                  </TabItem>
-                  {contTx.preflight && (
-                    <TabItem title="cont: Preflight Result">
-                      <JsonView
-                        title="Continuation Preflight Result"
-                        data={contTx.preflight}
-                      />
-                    </TabItem>
-                  )}
-                  {contTx.request && (
-                    <TabItem title="cont: Request">
-                      <JsonView
-                        title="Continuation Request"
-                        data={contTx.request}
-                      />
-                    </TabItem>
-                  )}
-                  {'result' in contTx && contTx.result && (
-                    <TabItem title="cont: Result">
-                      <JsonView
-                        title="Continuation Result"
-                        data={contTx.result}
-                      />
-                    </TabItem>
-                  )}
-                </>
+              {transaction.continuation?.proof && (
+                <TabItem title="SPV Proof">
+                  <JsonView
+                    title="Result"
+                    data={transaction.continuation?.proof}
+                  />
+                </TabItem>
               )}
+              {contTx && [
+                <TabItem title="cont: Command Details">
+                  <Stack gap={'sm'} flexDirection={'column'}>
+                    <Heading variant="h4">Command Details</Heading>
+                    <CommandView transaction={contTx} onSign={onSign} />
+                  </Stack>
+                </TabItem>,
+                contTx.preflight && (
+                  <TabItem title="cont: Preflight Result">
+                    <JsonView
+                      title="Continuation Preflight Result"
+                      data={contTx.preflight}
+                    />
+                  </TabItem>
+                ),
+                contTx.request && (
+                  <TabItem title="cont: Request">
+                    <JsonView
+                      title="Continuation Request"
+                      data={contTx.request}
+                    />
+                  </TabItem>
+                ),
+                'result' in contTx && contTx.result && (
+                  <TabItem title="cont: Result">
+                    <JsonView
+                      title="Continuation Result"
+                      data={contTx.result}
+                    />
+                  </TabItem>
+                ),
+              ]}
             </Tabs>
           </Stack>
         </Stack>
@@ -235,7 +241,11 @@ const JsonView = ({ title, data }: { title: string; data: any }) => (
         <Heading variant="h4">{title}</Heading>
         <CopyButton data={data} />
       </Stack>
-      <pre className={codeClass}>{JSON.stringify(data, null, 2)}</pre>
+      <pre className={codeClass}>
+        {data && typeof data === 'object'
+          ? JSON.stringify(data, null, 2)
+          : data}
+      </pre>
     </Stack>
   </Stack>
 );

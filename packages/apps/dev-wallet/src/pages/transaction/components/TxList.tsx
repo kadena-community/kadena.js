@@ -277,6 +277,7 @@ export function TxList({
               transaction={selectedTx}
               onSign={onExpandedSign(selectedTx)}
               onSubmit={() => onSubmit(selectedTx)}
+              sendDisabled={sendDisabled}
             />
           )}
         </Dialog>

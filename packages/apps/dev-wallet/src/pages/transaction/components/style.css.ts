@@ -77,6 +77,14 @@ export const pendingText = style({
   opacity: 0.5,
 });
 
+export const textEllipsis = style({
+  overflow: 'hidden',
+  minHeight: '2.2em',
+  // overflowY: 'hidden',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+});
+
 export const tabTextClass = style({
   width: '50px',
   overflow: 'hidden',

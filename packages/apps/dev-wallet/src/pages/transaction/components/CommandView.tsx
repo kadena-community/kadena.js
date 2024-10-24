@@ -1,10 +1,12 @@
+import { CopyButton } from '@/Components/CopyButton/CopyButton';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { IPactCommand } from '@kadena/client';
-import { Heading, Stack } from '@kadena/kode-ui';
+import { Heading, Stack, Text } from '@kadena/kode-ui';
+import classNames from 'classnames';
 import { useMemo } from 'react';
 import { Label, Value } from './helpers';
 import { Signers } from './Signers';
-import { cardClass, codeClass } from './style.css';
+import { cardClass, codeClass, textEllipsis } from './style.css';
 
 export function CommandView({
   transaction,
@@ -55,6 +57,20 @@ export function CommandView({
               <pre className={codeClass}>
                 {JSON.stringify(command.payload.cont.data, null, 2)}
               </pre>
+            </Stack>
+          )}
+          {command.payload.cont.proof && (
+            <Stack gap={'sm'} flexDirection={'column'}>
+              <Stack justifyContent={'space-between'}>
+                <Heading variant="h4">Proof</Heading>
+                <CopyButton data={command.payload.cont.proof} />
+              </Stack>
+              <Text
+                variant="code"
+                className={classNames(codeClass, textEllipsis)}
+              >
+                {command.payload.cont.proof}
+              </Text>
             </Stack>
           )}
         </>

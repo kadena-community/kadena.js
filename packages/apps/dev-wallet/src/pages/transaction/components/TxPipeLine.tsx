@@ -119,18 +119,18 @@ export function TxPipeLine({
             <Text size={textSize} className={pendingClass}>
               <Stack alignItems={'center'} gap={'xs'}>
                 <MonoPauseCircle />
-                Ready to send
+                {sendDisabled ? 'Send is pending' : 'Ready to send'}
               </Stack>
             </Text>
-            {!sendDisabled && (
-              <Button
-                isCompact
-                onClick={onSubmit}
-                startVisual={<MonoViewInAr />}
-              >
-                Send transaction
-              </Button>
-            )}
+
+            <Button
+              isCompact
+              onClick={onSubmit}
+              isDisabled={sendDisabled}
+              startVisual={<MonoViewInAr />}
+            >
+              Send transaction
+            </Button>
           </Stack>
         )}
       {showAfterCont && statusPassed(tx.status, 'preflight') && (
