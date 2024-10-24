@@ -33,6 +33,10 @@ const Bid = ({
     );
   }
 
+  if (data?.saleType === '') {
+    return <NormalBid data={data} tokenImageUrl={tokenImageUrl} />;
+  }
+
   if (saleId) {
     return (
       <CardContentBlock
@@ -71,10 +75,6 @@ const Bid = ({
         }
       ></CardContentBlock>
     );
-  }
-
-  if (data?.saleType === '') {
-    return <NormalBid data={data} tokenImageUrl={tokenImageUrl} />;
   }
 
   return (
