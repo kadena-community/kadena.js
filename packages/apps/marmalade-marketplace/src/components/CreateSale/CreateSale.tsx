@@ -124,6 +124,10 @@ export const CreateSale: FC<IProps> = ({
     setSaleData((v) => ({ ...v, [key]: value }));
   };
 
+  const onSaleTypeChange = (key: string | number) => {
+    onSaleDataChange('saleType', key);
+  };
+
   const onCreateSalePress = async () => {
     if (!account.account || !saleData.timeout || !saleData.amount)
       throw new Error('Not all required fields are provided');
@@ -195,7 +199,6 @@ export const CreateSale: FC<IProps> = ({
     }
   }, [searchParams]);
 
-  console.log({ saleId, data, account });
   if (saleId && data?.seller.account === account.account?.accountName) {
     return (
       <Stack width="100%">
@@ -257,7 +260,7 @@ export const CreateSale: FC<IProps> = ({
       }
     >
       <Stack flex={1} flexDirection="column" gap="md">
-        {/* <RadioGroup
+        <RadioGroup
           label="Auction Type"
           direction="row"
           onChange={onSaleTypeChange}
@@ -267,7 +270,7 @@ export const CreateSale: FC<IProps> = ({
           <Radio value="conventional">Conventional</Radio>
           <Radio value="dutch">Dutch</Radio>
           <Radio value="none">None</Radio>
-        </RadioGroup> */}
+        </RadioGroup>
 
         <NumberField
           label="Amount"
@@ -291,7 +294,7 @@ export const CreateSale: FC<IProps> = ({
           variant={saleInputValid.price ? 'default' : 'negative'}
         />
 
-        {/* <NumberField
+        <NumberField
           label="Timeout"
           value={saleData.timeout}
           onValueChange={(value: number) => {
@@ -300,7 +303,7 @@ export const CreateSale: FC<IProps> = ({
           minValue={1}
           info="Set valid sale days"
           variant={saleInputValid.timeout ? 'default' : 'negative'}
-        /> */}
+        />
       </Stack>
       <CardFooterGroup>
         <Button onPress={onCreateSalePress} isDisabled={!isSaleValid()}>
