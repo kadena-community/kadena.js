@@ -896,6 +896,7 @@ export function TransferForm({
                     field.onChange(+e.target.value);
                   }}
                   type="number"
+                  size="sm"
                 />
               )}
             />
