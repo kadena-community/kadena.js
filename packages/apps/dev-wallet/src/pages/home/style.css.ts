@@ -12,6 +12,7 @@ export const panelClass = style([
   }),
   {
     background: tokens.kda.foundation.color.background.surface.default,
+    textAlign: 'start',
   },
 ]);
 

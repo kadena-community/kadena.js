@@ -116,14 +116,16 @@ export const accountDiscovery = (
       const accounts: IAccount[] = [];
       const keysets: IKeySet[] = [];
       const usedKeys: IKeyItem[] = [];
+      const saveCallbacks: Array<() => Promise<void>> = [];
       for (let i = 0; i < numberOfKeys; i++) {
         const key = await keySourceService.getPublicKey(keySource, i);
         if (!key) {
           return;
         }
         await emit('key-retrieved')(key);
+        const principal = `k:${key.publicKey}`;
         const chainResult = (await discoverAccount(
-          `k:${key.publicKey}`,
+          principal,
           network.networkId,
           undefined,
           contract,
@@ -134,10 +136,14 @@ export const accountDiscovery = (
           .execute()) as IDiscoveredAccount[];
 
         if (chainResult.filter(({ result }) => Boolean(result)).length > 0) {
+          const availableKeyset = await accountRepository.getKeysetByPrincipal(
+            principal,
+            profileId,
+          );
           usedKeys.push(key);
-          const keyset: IKeySet = {
+          const keyset: IKeySet = availableKeyset || {
             uuid: crypto.randomUUID(),
-            principal: `k:${key.publicKey}`,
+            principal,
             profileId,
             guard: {
               keys: [key.publicKey],
@@ -145,13 +151,16 @@ export const accountDiscovery = (
             },
             alias: '',
           };
-          keysets.push(keyset);
-          accounts.push({
+          if (!availableKeyset) {
+            keysets.push(keyset);
+          }
+          const account: IAccount = {
             uuid: crypto.randomUUID(),
             profileId,
             networkUUID: network.uuid,
             contract,
             keysetId: keyset.uuid,
+            keyset,
             address: `k:${key.publicKey}`,
             chains: chainResult
               .filter(({ result }) => Boolean(result))
@@ -166,26 +175,26 @@ export const accountDiscovery = (
                   : acc,
               '0',
             ),
+          };
+          accounts.push(account);
+          saveCallbacks.push(async () => {
+            if (!keySource.keys.find((k) => k.publicKey === key.publicKey)) {
+              await keySourceService.createKey(
+                keySource.uuid,
+                key.index as number,
+              );
+            }
+            if (!availableKeyset) {
+              await accountRepository.addKeyset(keyset);
+            }
+            await accountRepository.addAccount(account);
           });
         }
       }
 
       await emit('query-done')(accounts);
 
-      // store keys; key creation needs to be in sequence so I used a for loop instead of Promise.all
-      for (const key of usedKeys) {
-        await keySourceService.createKey(keySource.uuid, key.index as number);
-      }
-
-      // store accounts
-      await Promise.all([
-        ...accounts.map(async (account) =>
-          accountRepository.addAccount(account),
-        ),
-        ...keysets.map(async (keyset) =>
-          accountRepository.addKeyset(keyset).catch(console.log),
-        ),
-      ]);
+      await Promise.all(saveCallbacks.map((cb) => cb().catch(console.error)));
 
       keySourceService.clearCache();
       await emit('accounts-saved')(accounts);

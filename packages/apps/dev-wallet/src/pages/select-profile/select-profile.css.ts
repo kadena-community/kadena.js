@@ -2,9 +2,10 @@ import {
   cardBackgroundColorHover,
   cardColor,
   cardColorHover,
+  cardHoverColor,
   linkBlockColor,
 } from '@/utils/color.ts';
-import { atoms, tokens } from '@kadena/kode-ui/styles';
+import { atoms, tokens, vars } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const titleClass = style([
@@ -31,12 +32,12 @@ export const cardClass = style([
   }),
   {
     cursor: 'pointer',
-    backgroundColor: cardColor,
-    border: `1px solid ${cardColor}`,
+    backgroundColor: tokens.kda.foundation.color.background.base['@focus'],
+    border: `solid 1px ${tokens.kda.foundation.color.neutral.n5}`,
     selectors: {
       [`&:hover`]: {
-        backgroundColor: cardBackgroundColorHover,
-        borderColor: cardColorHover,
+        backgroundColor: tokens.kda.foundation.color.background.base['@hover'],
+        border: `solid 1px ${vars.colors.$borderSubtle}`,
       },
     },
   },
@@ -91,5 +92,3 @@ export const linkClass = style([
     },
   },
 ]);
-
-
