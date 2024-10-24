@@ -101,8 +101,6 @@ const CreateSale = () => {
     uri: string;
   }
 
-  const { data } = useGetSale(saleId as string);
-
   useEffect(() => {
     const tokenIdParam = params?.tokenId;
     const chainIdParam = searchParams.get('chainId');
