@@ -1,8 +1,6 @@
 import { getPartsAndHoles } from '@kadena/client-utils/nodejs';
 import yaml from 'js-yaml';
-import { join } from 'path';
 import z, { ZodError } from 'zod';
-import { services } from '../../../services/index.js';
 import { CommandError } from '../../../utils/command.util.js';
 import {
   formatZodError,
