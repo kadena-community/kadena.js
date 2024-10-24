@@ -138,7 +138,9 @@ export const getTemplates = async (): Promise<
   Array<{ filename: string; template: string; path: string; cwd: string }>
 > => {
   const templateFolder = getTxTemplateDirectory();
-  const files = await services.filesystem.readDir(templateFolder);
+  const files = (await services.filesystem.readDir(templateFolder)).filter(
+    (file) => file.endsWith('.ktpl'),
+  );
   const templates: Array<{
     filename: string;
     template: string;
