@@ -3,18 +3,7 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { ISigner } from '@kadena/client';
 
 import { MonoSwapHoriz } from '@kadena/kode-icons/system';
-import {
-  Button,
-  Dialog,
-  DialogFooter,
-  DialogHeader,
-  Divider,
-  Heading,
-  Stack,
-  Step,
-  Stepper,
-  Text,
-} from '@kadena/kode-ui';
+import { Divider, Heading, Stack, Step, Stepper, Text } from '@kadena/kode-ui';
 import { useCallback, useEffect, useState } from 'react';
 
 import { activityRepository } from '@/modules/activity/activity.repository';
@@ -26,7 +15,6 @@ import { useSearchParams } from 'react-router-dom';
 import { ReviewTransaction } from '../transaction/components/ReviewTransaction';
 import { TxList } from '../transaction/components/TxList';
 import { statusPassed } from '../transaction/components/TxPipeLine';
-import { Result } from './Steps/Result';
 import {
   Redistribution,
   TrG,
@@ -205,9 +193,21 @@ export function TransferV2() {
     const reTxs = txGroups.redistribution.txs;
     const submitIsDisabled =
       reTxs.length > 0 && reTxs.some((tx) => !tx.continuation?.done);
+
+    const onlyOneTx = txGroups.transfer.txs.length === 1 && reTxs.length === 0;
     return (
       <Stack gap={'md'} flexDirection={'column'}>
-        {reTxs.length > 0 && (
+        {onlyOneTx && (
+          <TxList
+            onUpdate={() => {
+              console.log('update');
+              reloadTxs();
+            }}
+            txs={txGroups.transfer.txs}
+            showExpanded={true}
+          />
+        )}
+        {!onlyOneTx && reTxs.length > 0 && (
           <>
             <Stack flexDirection={'column'} gap={'lg'}>
               <Stack flexDirection={'column'} gap={'xs'}>
@@ -225,7 +225,7 @@ export function TransferV2() {
             <Divider />
           </>
         )}
-        {txGroups.transfer.txs.length > 0 && (
+        {!onlyOneTx && txGroups.transfer.txs.length > 0 && (
           <Stack flexDirection={'column'} gap={'lg'}>
             <Stack flexDirection={'column'} gap={'xxs'}>
               <Heading variant="h4">Transfer Transactions</Heading>
@@ -252,14 +252,6 @@ export function TransferV2() {
 
   return (
     <Stack flexDirection={'column'}>
-      {step === 'result' && (
-        <Dialog size="sm" isOpen>
-          <DialogHeader>Process is done!</DialogHeader>
-          <DialogFooter>
-            <Button onClick={() => setStep('summary')}>View result page</Button>
-          </DialogFooter>
-        </Dialog>
-      )}
       <Stepper direction="horizontal">
         <Step
           icon={<MonoSwapHoriz />}
@@ -333,7 +325,6 @@ export function TransferV2() {
         </Stack>
       )}
       {(step === 'sign' || step === 'result') && renderSignStep()}
-      {step === 'summary' && <Result {...txGroups} />}
     </Stack>
   );
 }

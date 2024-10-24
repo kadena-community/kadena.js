@@ -50,43 +50,45 @@ export function WatchAccountsDialog({
               contract={contract}
             />
           </Stack>
-          <Stack flexDirection={'column'}>
-            <Stack marginBlockEnd={'sm'}>
-              <Heading variant="h6">Watch your contacts</Heading>
-            </Stack>
-            {contacts.map((contact) => (
-              <ListItem>
-                <Stack
-                  alignItems={'center'}
-                  flex={1}
-                  gap={'md'}
-                  onClick={() => {
-                    setSelectedContacts((prev) =>
-                      prev.find((c) => c.uuid === contact.uuid)
-                        ? prev.filter((c) => c.uuid !== contact.uuid)
-                        : [...prev, contact],
-                    );
-                  }}
-                >
-                  <Checkbox
-                    isSelected={
-                      !!selectedContacts.find((c) => c.uuid === contact.uuid)
-                    }
-                    onChange={(isSelected) => {
+          {contacts.length > 0 && (
+            <Stack flexDirection={'column'}>
+              <Stack marginBlockEnd={'sm'}>
+                <Heading variant="h6">Watch your contacts</Heading>
+              </Stack>
+              {contacts.map((contact) => (
+                <ListItem>
+                  <Stack
+                    alignItems={'center'}
+                    flex={1}
+                    gap={'md'}
+                    onClick={() => {
                       setSelectedContacts((prev) =>
-                        isSelected
-                          ? [...prev, contact]
-                          : prev.filter((c) => c.uuid !== contact.uuid),
+                        prev.find((c) => c.uuid === contact.uuid)
+                          ? prev.filter((c) => c.uuid !== contact.uuid)
+                          : [...prev, contact],
                       );
                     }}
                   >
-                    {' '}
-                  </Checkbox>
-                  <ContactItem contact={contact} />
-                </Stack>
-              </ListItem>
-            ))}
-          </Stack>
+                    <Checkbox
+                      isSelected={
+                        !!selectedContacts.find((c) => c.uuid === contact.uuid)
+                      }
+                      onChange={(isSelected) => {
+                        setSelectedContacts((prev) =>
+                          isSelected
+                            ? [...prev, contact]
+                            : prev.filter((c) => c.uuid !== contact.uuid),
+                        );
+                      }}
+                    >
+                      {' '}
+                    </Checkbox>
+                    <ContactItem contact={contact} />
+                  </Stack>
+                </ListItem>
+              ))}
+            </Stack>
+          )}
         </Stack>
       </DialogContent>
       <DialogFooter>

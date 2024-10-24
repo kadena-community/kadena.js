@@ -19,7 +19,7 @@ import { isSignedCommand } from '@kadena/pactjs';
 import classNames from 'classnames';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ReviewTransaction } from './components/ReviewTransaction';
+import { CommandView } from './components/CommandView';
 import { SubmittedStatus } from './components/SubmittedStatus';
 import {
   failureClass,
@@ -289,7 +289,7 @@ export function Transaction({ groupId }: { groupId?: string }) {
                 </Stack>
               }
             >
-              <ReviewTransaction
+              <CommandView
                 transaction={tx}
                 onSign={(sigs) => {
                   patchTransaction(tx, {

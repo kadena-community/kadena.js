@@ -31,6 +31,7 @@ import { IReceiverAccount } from '../../transfer/utils';
 import { AccountItem } from '../Components/AccountItem';
 import { Keyset } from '../Components/keyset';
 import { CHAINS, IReceiver, discoverReceiver, getTransfers } from '../utils';
+import { labelClass } from './style.css';
 
 export interface Transfer {
   fungible: string;
@@ -43,6 +44,7 @@ export interface Transfer {
   type: 'safeTransfer' | 'normalTransfer';
   ttl: string;
   senderAccount?: IAccount;
+  totalAmount: number;
 }
 
 export type Redistribution = {
@@ -61,6 +63,12 @@ export interface TrG {
   groupId: string;
   txs: ITransaction[];
 }
+
+const Label = ({ children }: { children: React.ReactNode }) => (
+  <Text size="small" className={labelClass}>
+    {children}
+  </Text>
+);
 
 export function TransferForm({
   accountId,
@@ -83,7 +91,6 @@ export function TransferForm({
   const urlAccount = allAccounts.find((account) => account.uuid === accountId);
   const {
     control,
-    register,
     watch,
     setValue,
     reset,
@@ -110,6 +117,7 @@ export function TransferForm({
       gasLimit: '2500',
       type: 'normalTransfer',
       ttl: (2 * 60 * 60).toString(),
+      totalAmount: 0,
     },
   });
 
@@ -154,6 +162,7 @@ export function TransferForm({
             gasLimit: activity.data.transferData.gasLimit,
             type: activity.data.transferData.type,
             ttl: activity.data.transferData.ttl,
+            totalAmount: 0,
           });
           evaluateTransactions();
         }
@@ -173,13 +182,14 @@ export function TransferForm({
     [senderAccount?.chains],
   );
 
-  const watchReceivers = watch('receivers');
+  // console.log(watchReceivers);
+  // const watchReceivers = watch('receivers');
 
-  console.log(watchReceivers);
+  // const totalAmount = watchReceivers.reduce((acc, receiver) => {
+  //   return acc + +receiver.amount;
+  // }, 0);
 
-  const totalAmount = watchReceivers.reduce((acc, receiver) => {
-    return acc + +receiver.amount;
-  }, 0);
+  const totalAmount = watch('totalAmount');
 
   const evaluateTransactions = useCallback(() => {
     const receivers = getValues('receivers');
@@ -187,6 +197,11 @@ export function TransferForm({
     const gasLimit = getValues('gasLimit');
     const gasPayer = getValues('gasPayer');
     const selectedChain = getValues('chain');
+    const totalAmount = receivers.reduce(
+      (acc, receiver) => acc + +receiver.amount,
+      0,
+    );
+    setValue('totalAmount', totalAmount);
     setRedistribution([]);
     setError(null);
     try {
@@ -222,7 +237,7 @@ export function TransferForm({
       return (...args: T[]) => {
         const result = cb(...args);
         clearTimeout(timer.current);
-        timer.current = setTimeout(evaluateTransactions, 1000);
+        timer.current = setTimeout(evaluateTransactions, 100);
         return result;
       };
     },
@@ -292,7 +307,8 @@ export function TransferForm({
               render={({ field }) => (
                 <Select
                   // label="Token"
-                  placeholder="Fungible Type"
+                  placeholder="Asset"
+                  startVisual={<Label>Asset:</Label>}
                   size="sm"
                   selectedKey={field.value}
                   onSelectionChange={withEvaluate(field.onChange)}
@@ -310,8 +326,9 @@ export function TransferForm({
               render={({ field }) => (
                 <Stack flex={1} flexDirection={'column'}>
                   <Select
-                    placeholder="From Account"
+                    startVisual={<Label>Address:</Label>}
                     // label="Account"
+                    placeholder="Select and address"
                     size="sm"
                     selectedKey={field.value}
                     onSelectionChange={withEvaluate(field.onChange)}
@@ -337,9 +354,10 @@ export function TransferForm({
                   control={control}
                   render={({ field }) => (
                     <Select
-                      placeholder="Chain"
+                      startVisual={<Label>Chain:</Label>}
                       // label="Chain"
                       size="sm"
+                      placeholder="Select a chain"
                       selectedKey={field.value}
                       onSelectionChange={withEvaluate(field.onChange)}
                     >
@@ -389,344 +407,398 @@ export function TransferForm({
         </Stack> */}
           </Stack>
         </Stack>
-        <Stack
-          gap="sm"
-          flexDirection={'column'}
-          className={panelClass}
-          paddingBlockEnd={'xxl'}
-        >
-          <Stack marginBlockStart={'md'}>
-            <Heading variant="h5">To</Heading>
-          </Stack>
 
-          {watchReceivers.map((rec, index) => {
-            const availableChains = ['', ...CHAINS].filter((ch) => {
-              // if the receiver is not the sender, then transfer is allowed from any chain
-              if (rec.address !== senderAccount?.address) {
-                return true;
-              }
-              // if the receiver is the sender, then the chains should be selected manually
-              if (!ch || !senderChain) return false;
-
-              // source and target chain should not be the same
-              return ch !== senderChain;
-            });
+        <Controller
+          control={control}
+          name="receivers"
+          render={({ field: { value: watchReceivers } }) => {
             return (
-              <Stack flexDirection={'column'} gap={'sm'}>
-                <Stack
-                  key={index}
-                  flexDirection={watchReceivers.length > 1 ? 'row' : 'column'}
-                  gap="sm"
-                  justifyContent={'flex-start'}
-                >
-                  <Controller
-                    name={`receivers.${index}.address`}
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <Stack flex={1} flexDirection={'column'}>
-                        <Combobox
-                          // label={index === 0 ? 'Account' : undefined}
-                          inputValue={field.value ?? ''}
-                          onInputChange={withEvaluate((value) => {
-                            console.log('value', value);
-                            field.onChange(value || '');
-                            setValue(
-                              `receivers.${index}.discoveredAccounts`,
-                              [],
-                            );
-                            setValue(
-                              `receivers.${index}.discoveryStatus`,
-                              'not-started',
-                            );
-                          })}
-                          onBlur={async () => {
-                            if (!field.value) return;
-                            if (
-                              getValues(
-                                `receivers.${index}.discoveryStatus`,
-                              ) === 'done'
-                            ) {
-                              return;
-                            }
-                            setValue(
-                              `receivers.${index}.discoveryStatus`,
-                              'in-progress',
-                            );
-                            const discoveredAccounts = await discoverReceiver(
-                              rec.address,
-                              activeNetwork!.networkId,
-                              getValues('fungible'),
-                              mapKeys,
-                            );
+              <>
+                {watchReceivers.map((rec, index) => {
+                  const availableChains = ['', ...CHAINS].filter((ch) => {
+                    // if the receiver is not the sender, then transfer is allowed from any chain
+                    if (rec.address !== senderAccount?.address) {
+                      return true;
+                    }
+                    // if the receiver is the sender, then the chains should be selected manually
+                    if (!ch || !senderChain) return false;
 
-                            setValue(
-                              `receivers.${index}.discoveredAccounts`,
-                              discoveredAccounts,
-                            );
-                            setValue(
-                              `receivers.${index}.discoveryStatus`,
-                              'done',
-                            );
-                          }}
-                          placeholder={`Receiver ${watchReceivers.length > 1 ? index + 1 : ''}`}
-                          size="sm"
-                          onSelectionChange={(key) => {
-                            field.onChange(key);
-                            if (key) {
-                              const account = filteredAccounts.find(
-                                (account) => account.address === key,
-                              );
-                              if (account?.keyset) {
-                                setValue(
-                                  `receivers.${index}.discoveredAccounts`,
-                                  [
-                                    {
-                                      ...account,
-                                      keyset: account.keyset,
-                                    },
-                                  ],
-                                );
-                              } else {
-                                setValue(
-                                  `receivers.${index}.discoveredAccounts`,
-                                  [],
-                                );
-                                setValue(
-                                  `receivers.${index}.discoveryStatus`,
-                                  'not-started',
-                                );
-                              }
-                            }
-                          }}
-                          allowsCustomValue
+                    // source and target chain should not be the same
+                    return ch !== senderChain;
+                  });
+                  return (
+                    <>
+                      <Stack
+                        gap="sm"
+                        flexDirection={'column'}
+                        className={panelClass}
+                        paddingBlockEnd={'xxl'}
+                      >
+                        <Stack
+                          marginBlockStart={'md'}
+                          justifyContent={'space-between'}
                         >
-                          {filteredAccounts
-                            .filter(
-                              (account) =>
-                                account.address !== senderAccount?.address,
-                              // &&
-                              //   !watchReceivers.some(
-                              //     (receiver, i) =>
-                              //       i !== index &&
-                              //       receiver.address === account.address,
-                              //   ),
-                            )
-                            .map((account) => (
-                              <ComboboxItem
-                                key={account.address}
-                                textValue={account.address}
+                          <Heading variant="h5">
+                            Receiver{' '}
+                            {watchReceivers.length > 1 ? `(${index + 1})` : ''}
+                          </Heading>
+                          <Stack>
+                            <>
+                              {watchReceivers.length > 1 && (
+                                <Button
+                                  isCompact
+                                  variant="transparent"
+                                  onClick={withEvaluate(() => {
+                                    console.log('deleting', index);
+                                    const receivers = getValues('receivers');
+                                    receivers.splice(index, 1);
+                                    setValue('receivers', [...receivers]);
+                                  })}
+                                >
+                                  <MonoDelete />
+                                </Button>
+                              )}
+                              <Button
+                                isCompact
+                                variant="transparent"
+                                isDisabled={!rec.address || !rec.amount}
+                                onClick={() => {
+                                  const list = [...watchReceivers];
+                                  const newItem = {
+                                    amount: rec.amount,
+                                    address: rec.address,
+                                    chain: '',
+                                    chunks: [],
+                                    discoveredAccounts:
+                                      rec.discoveryStatus === 'done'
+                                        ? rec.discoveredAccounts
+                                        : [],
+                                    discoveryStatus:
+                                      rec.discoveryStatus === 'done'
+                                        ? 'done'
+                                        : 'not-started',
+                                  } as Transfer['receivers'][number];
+                                  list.splice(index + 1, 0, newItem);
+                                  setValue('receivers', list);
+                                  evaluateTransactions();
+                                }}
                               >
-                                <AccountItem account={account} />
-                              </ComboboxItem>
-                            ))}
-                        </Combobox>
-
-                        {rec.discoveryStatus === 'in-progress' && (
-                          <Stack paddingInline={'md'} marginBlock={'xs'}>
-                            <Text variant="code" size="smallest">
-                              Discovering...
-                            </Text>
+                                <MonoCopyAll />
+                              </Button>
+                            </>
                           </Stack>
-                        )}
-                        {rec.discoveryStatus === 'done' &&
-                          rec.discoveredAccounts.length === 1 && (
-                            <Keyset
-                              guard={rec.discoveredAccounts[0].keyset.guard}
-                            />
-                          )}
-                      </Stack>
-                    )}
-                  />
+                        </Stack>
 
-                  <TextField
-                    {...register(`receivers.${index}.amount`, {
-                      required: true,
-                      onChange: evaluateTransactions,
-                    })}
-                    value={rec.amount}
-                    placeholder="Amount"
-                    // label={index === 0 ? 'Amount' : undefined}
-                    size="sm"
-                    type="number"
-                    step="1"
-                  />
-                  <AdvancedMode>
-                    <Stack flex={1} gap="sm">
-                      <Controller
-                        name={`receivers.${index}.chain`}
-                        control={control}
-                        render={({ field }) => (
-                          <Select
-                            // label={index === 0 ? 'Chain' : undefined}
-                            description={
-                              rec.chain &&
-                              redistribution.find((r) => r.target === rec.chain)
-                                ? `This will trigger balance redistribution`
-                                : ''
-                            }
-                            size="sm"
-                            placeholder="Chains"
-                            selectedKey={field.value}
-                            onSelectionChange={withEvaluate(field.onChange)}
+                        <Stack flexDirection={'column'} gap={'sm'}>
+                          <Stack
+                            key={index}
+                            flexDirection={'column'}
+                            gap="sm"
+                            justifyContent={'flex-start'}
                           >
-                            {(rec.amount ? availableChains : []).map(
-                              (chain) => (
-                                <SelectItem key={chain}>
-                                  {chain ? (
-                                    <Chain chainId={chain} />
-                                  ) : (
-                                    <Stack
-                                      gap="sm"
-                                      title={rec.chunks
-                                        .map(
-                                          (c) =>
-                                            `chain ${c.chainId}: ${c.amount}`,
-                                        )
-                                        .join('\n')}
+                            <Controller
+                              name={`receivers.${index}.address`}
+                              control={control}
+                              rules={{ required: true }}
+                              render={({ field }) => {
+                                return (
+                                  <Stack flexDirection={'column'}>
+                                    <Combobox
+                                      // label={index === 0 ? 'Account' : undefined}
+                                      inputValue={field.value ?? ''}
+                                      placeholder="Select ot enter an address"
+                                      startVisual={<Label>Address:</Label>}
+                                      onInputChange={(value) => {
+                                        console.log('value', value);
+                                        field.onChange(value || '');
+                                        setValue(
+                                          `receivers.${index}.discoveredAccounts`,
+                                          [],
+                                        );
+                                        setValue(
+                                          `receivers.${index}.discoveryStatus`,
+                                          'not-started',
+                                        );
+                                      }}
+                                      onBlur={async () => {
+                                        if (!field.value) return;
+                                        if (
+                                          getValues(
+                                            `receivers.${index}.discoveryStatus`,
+                                          ) === 'done'
+                                        ) {
+                                          return;
+                                        }
+                                        setValue(
+                                          `receivers.${index}.discoveryStatus`,
+                                          'in-progress',
+                                        );
+                                        const discoveredAccounts =
+                                          await discoverReceiver(
+                                            rec.address,
+                                            activeNetwork!.networkId,
+                                            getValues('fungible'),
+                                            mapKeys,
+                                          );
+
+                                        setValue(
+                                          `receivers.${index}.discoveredAccounts`,
+                                          discoveredAccounts,
+                                        );
+                                        setValue(
+                                          `receivers.${index}.discoveryStatus`,
+                                          'done',
+                                        );
+                                      }}
+                                      size="sm"
+                                      onSelectionChange={(value) => {
+                                        console.log('value', value);
+                                        field.onChange(value || '');
+                                        setValue(
+                                          `receivers.${index}.discoveredAccounts`,
+                                          [],
+                                        );
+                                        setValue(
+                                          `receivers.${index}.discoveryStatus`,
+                                          'not-started',
+                                        );
+                                      }}
+                                      allowsCustomValue
                                     >
-                                      <AutoBadge />
-                                      {rec.chunks.length > 0 && (
-                                        <Chain
-                                          chainId={rec.chunks
-                                            .map((c) => c.chainId)
-                                            .join(' , ')}
-                                        />
+                                      {filteredAccounts
+                                        .filter(
+                                          (account) =>
+                                            account.address !==
+                                            senderAccount?.address,
+                                          // &&
+                                          //   !watchReceivers.some(
+                                          //     (receiver, i) =>
+                                          //       i !== index &&
+                                          //       receiver.address === account.address,
+                                          //   ),
+                                        )
+                                        .map((account) => (
+                                          <ComboboxItem
+                                            key={account.address}
+                                            textValue={account.address}
+                                          >
+                                            <AccountItem account={account} />
+                                          </ComboboxItem>
+                                        ))}
+                                    </Combobox>
+
+                                    <Controller
+                                      name={`receivers.${index}.discoveryStatus`}
+                                      control={control}
+                                      render={({ field }) => {
+                                        const discoveryStatus = field.value;
+                                        const discoveredAccounts = getValues(
+                                          `receivers.${index}.discoveredAccounts`,
+                                        );
+                                        return (
+                                          <>
+                                            {discoveryStatus ===
+                                              'in-progress' && (
+                                              <Stack
+                                                paddingInline={'md'}
+                                                marginBlock={'xs'}
+                                              >
+                                                <Text
+                                                  variant="code"
+                                                  size="smallest"
+                                                >
+                                                  Discovering...
+                                                </Text>
+                                              </Stack>
+                                            )}
+                                            {discoveryStatus === 'done' &&
+                                              discoveredAccounts.length ===
+                                                1 && (
+                                                <Keyset
+                                                  guard={
+                                                    discoveredAccounts[0].keyset
+                                                      .guard
+                                                  }
+                                                />
+                                              )}
+                                          </>
+                                        );
+                                      }}
+                                    />
+                                  </Stack>
+                                );
+                              }}
+                            />
+                            <Controller
+                              control={control}
+                              name={`receivers.${index}.amount`}
+                              rules={{
+                                min: 0,
+                                required: true,
+                              }}
+                              render={({ field }) => (
+                                <TextField
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    field.onChange(value);
+                                  }}
+                                  placeholder="Enter the amount"
+                                  startVisual={<Label>Amount:</Label>}
+                                  onBlur={evaluateTransactions}
+                                  value={field.value}
+                                  size="sm"
+                                  type="number"
+                                  step="1"
+                                />
+                              )}
+                            />
+                            <AdvancedMode>
+                              <Stack flex={1} gap="sm">
+                                <Controller
+                                  name={`receivers.${index}.chain`}
+                                  control={control}
+                                  render={({ field }) => (
+                                    <Select
+                                      startVisual={<Label>Chain:</Label>}
+                                      // label={index === 0 ? 'Chain' : undefined}
+                                      placeholder="Select a chain"
+                                      description={
+                                        rec.chain &&
+                                        redistribution.find(
+                                          (r) => r.target === rec.chain,
+                                        )
+                                          ? `This will trigger balance redistribution`
+                                          : ''
+                                      }
+                                      size="sm"
+                                      selectedKey={field.value}
+                                      onSelectionChange={withEvaluate(
+                                        field.onChange,
                                       )}
-                                    </Stack>
+                                    >
+                                      {(rec.amount ? availableChains : []).map(
+                                        (chain) => (
+                                          <SelectItem key={chain}>
+                                            {chain ? (
+                                              <Chain chainId={chain} />
+                                            ) : (
+                                              <Stack
+                                                gap="sm"
+                                                title={rec.chunks
+                                                  .map(
+                                                    (c) =>
+                                                      `chain ${c.chainId}: ${c.amount}`,
+                                                  )
+                                                  .join('\n')}
+                                              >
+                                                <AutoBadge />
+                                                {rec.chunks.length > 0 && (
+                                                  <Chain
+                                                    chainId={rec.chunks
+                                                      .map((c) => c.chainId)
+                                                      .join(' , ')}
+                                                  />
+                                                )}
+                                              </Stack>
+                                            )}
+                                          </SelectItem>
+                                        ),
+                                      )}
+                                    </Select>
                                   )}
-                                </SelectItem>
-                              ),
+                                />
+                              </Stack>
+                            </AdvancedMode>
+                          </Stack>
+                          {!availableChains.length && (
+                            <Notification role="alert" intent="negative">
+                              the receiver is the same as sender, therefor you
+                              can not use automatic chain selection, please set
+                              the both chains manually
+                            </Notification>
+                          )}
+                          {rec.discoveredAccounts.length > 1 && (
+                            <Notification role="alert" intent="warning">
+                              <Stack gap="sm">
+                                <span>
+                                  more than one account found with this address,
+                                  please resolve the ambiguity{' '}
+                                  <button
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      setAccountToResolve({
+                                        account: rec,
+                                        index: index,
+                                      });
+                                    }}
+                                  >
+                                    Select correct
+                                  </button>
+                                </span>
+                              </Stack>
+                            </Notification>
+                          )}
+                          {rec.discoveryStatus === 'done' &&
+                            rec.discoveredAccounts.length === 0 && (
+                              <Notification role="alert" intent="warning">
+                                <Stack gap="sm">
+                                  <span>
+                                    This account is not found on the blockchain
+                                    or address book. Please check the address
+                                    and try again. or add missing guard by
+                                    clicking on{' '}
+                                    <button
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                      }}
+                                    >
+                                      Add account guard
+                                    </button>
+                                  </span>
+                                </Stack>
+                              </Notification>
                             )}
-                          </Select>
+                        </Stack>
+
+                        {error && (
+                          <Notification role="alert" intent="negative">
+                            Total amount ({totalAmount}) is more than the
+                            available balance, please check your input, also you
+                            should consider the gas fee
+                          </Notification>
                         )}
-                      />
-                    </Stack>
-                  </AdvancedMode>
-                  <Stack>
-                    {watchReceivers.length > 1 && (
-                      <>
-                        <Button
-                          isCompact
-                          variant="outlined"
-                          onClick={withEvaluate(() => {
-                            console.log('deleting', index);
-                            const receivers = getValues('receivers');
-                            receivers.splice(index, 1);
-                            setValue('receivers', [...receivers]);
-                          })}
-                        >
-                          <MonoDelete />
-                        </Button>
-                        <Button
-                          isCompact
-                          variant="transparent"
-                          isDisabled={!rec.address || !rec.amount}
-                          onClick={() => {
-                            const list = [...watchReceivers];
-                            const newItem = {
-                              amount: rec.amount,
-                              address: rec.address,
-                              chain: '',
-                              chunks: [],
-                              discoveredAccounts:
-                                rec.discoveryStatus === 'done'
-                                  ? rec.discoveredAccounts
-                                  : [],
-                              discoveryStatus:
-                                rec.discoveryStatus === 'done'
-                                  ? 'done'
-                                  : 'not-started',
-                            } as Transfer['receivers'][number];
-                            list.splice(index + 1, 0, newItem);
-                            setValue('receivers', list);
-                            evaluateTransactions();
-                          }}
-                        >
-                          <MonoCopyAll />
-                        </Button>
-                      </>
-                    )}
-                  </Stack>
-                </Stack>
-                {!availableChains.length && (
-                  <Notification role="alert" intent="negative">
-                    the receiver is the same as sender, therefor you can not use
-                    automatic chain selection, please set the both chains
-                    manually
-                  </Notification>
-                )}
-                {rec.discoveredAccounts.length > 1 && (
-                  <Notification role="alert" intent="warning">
-                    <Stack gap="sm">
-                      <span>
-                        more than one account found with this address, please
-                        resolve the ambiguity{' '}
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setAccountToResolve({
-                              account: rec,
-                              index: index,
-                            });
-                          }}
-                        >
-                          Select correct
-                        </button>
-                      </span>
-                    </Stack>
-                  </Notification>
-                )}
-                {rec.discoveryStatus === 'done' &&
-                  rec.discoveredAccounts.length === 0 && (
-                    <Notification role="alert" intent="warning">
-                      <Stack gap="sm">
-                        <span>
-                          This account is not found on the blockchain or address
-                          book. Please check the address and try again. or add
-                          missing guard by clicking on{' '}
+                      </Stack>
+                      {index === watchReceivers.length - 1 && (
+                        <Stack>
                           <button
-                            onClick={(e) => {
-                              e.preventDefault();
+                            className={linkClass}
+                            onClick={() => {
+                              const receivers = getValues('receivers');
+                              setValue('receivers', [
+                                ...receivers,
+                                {
+                                  amount: '',
+                                  address: '',
+                                  chain: '',
+                                  chunks: [],
+                                  discoveredAccounts: [],
+                                  discoveryStatus: 'not-started',
+                                },
+                              ]);
                             }}
                           >
-                            Add account guard
+                            + Add Receiver
                           </button>
-                        </span>
-                      </Stack>
-                    </Notification>
-                  )}
-              </Stack>
+                        </Stack>
+                      )}
+                    </>
+                  );
+                })}
+              </>
             );
-          })}
-          <Stack>
-            <button
-              className={linkClass}
-              onClick={() => {
-                const receivers = getValues('receivers');
-                setValue('receivers', [
-                  ...receivers,
-                  {
-                    amount: '',
-                    address: '',
-                    chain: '',
-                    chunks: [],
-                    discoveredAccounts: [],
-                    discoveryStatus: 'not-started',
-                  },
-                ]);
-              }}
-            >
-              + Add Receiver
-            </button>
-          </Stack>
-          {error && (
-            <Notification role="alert" intent="negative">
-              Total amount ({totalAmount}) is more than the available balance,
-              please check your input, also you should consider the gas fee
-            </Notification>
-          )}
-        </Stack>
+          }}
+        />
+
         <Stack
           gap="sm"
           flexDirection={'column'}
@@ -743,8 +815,9 @@ export function TransferForm({
                 control={control}
                 render={({ field }) => (
                   <Select
+                    startVisual={<Label>Gas Payer:</Label>}
+                    placeholder="Select the gas payer"
                     size="sm"
-                    placeholder="Gas Payer"
                     selectedKey={field.value}
                     onSelectionChange={withEvaluate(field.onChange)}
                   >
@@ -773,13 +846,14 @@ export function TransferForm({
                 control={control}
                 render={({ field }) => (
                   <TextField
+                    startVisual={<Label>Gas Price:</Label>}
+                    placeholder="Enter gas price"
                     value={field.value}
                     onChange={(e) => {
                       field.onChange(e.target.value);
                       // evaluateTransactions();
                     }}
                     onBlur={evaluateTransactions}
-                    placeholder="Gas Price"
                     size="sm"
                     defaultValue="0.00000001"
                     type="number"
@@ -792,12 +866,13 @@ export function TransferForm({
                 control={control}
                 render={({ field }) => (
                   <TextField
+                    placeholder="Enter gas limit"
+                    startVisual={<Label>Gas Limit:</Label>}
                     value={field.value}
                     onChange={(e) => {
                       field.onChange(e.target.value);
                     }}
                     onBlur={evaluateTransactions}
-                    placeholder="Gas Limit"
                     size="sm"
                     defaultValue="2500"
                     type="number"
@@ -813,13 +888,15 @@ export function TransferForm({
               control={control}
               render={({ field }) => (
                 <TextField
+                  startVisual={<Label>TTL:</Label>}
+                  placeholder="Enter TTL (Timer to live)"
                   value={field.value}
                   defaultValue={field.value}
                   onChange={(e) => {
                     field.onChange(+e.target.value);
                   }}
-                  placeholder="TTL (time to live)"
                   type="number"
+                  size="sm"
                 />
               )}
             />
@@ -853,7 +930,7 @@ export function TransferForm({
                     {
                       (
                         <Stack alignItems={'center'} gap={'sm'}>
-                          Normal transfer{' '}
+                          Normal transfer
                           <Text size="small">Sign by sender</Text>
                         </Stack>
                       ) as any
@@ -864,7 +941,7 @@ export function TransferForm({
                     {
                       (
                         <Stack alignItems={'center'} gap={'sm'}>
-                          Sate transfer{' '}
+                          Safe transfer
                           <Text size="small">
                             Sign by both sender and receiver
                           </Text>

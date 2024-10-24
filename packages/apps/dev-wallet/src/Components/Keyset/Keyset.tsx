@@ -5,7 +5,7 @@ import { Stack, Text } from '@kadena/kode-ui';
 
 export function Keyset({ keySet }: { keySet: IKeySet }) {
   return (
-    <Stack justifyContent={'space-between'} flex={1}>
+    <Stack justifyContent={'space-between'} gap="md" flex={1}>
       <Stack key={keySet.uuid} gap={'sm'}>
         <Text>{keySet.alias}</Text>
         <Text>{keySet.principal}</Text>
