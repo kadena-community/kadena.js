@@ -1,6 +1,5 @@
 import ConnectWallet from '@/components/ConnectWallet';
 import { MarmaladeMarketplaceLogo } from '@/components/MarmaladeMarketplaceLogo';
-import SpireKeyKdacolorLogoWhite from '@/components/SpireKeyKdacolorLogoWhite';
 import { useAccount } from '@/hooks/account';
 import { useTransaction } from '@/hooks/transaction';
 import { fundAccount } from '@/utils/fund';
@@ -33,12 +32,13 @@ import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { ConnectButton } from '../ConnectWallet/ConnectButton';
 import { CookieConsent } from '../CookieConsent/CookieConsent';
 import * as styles from './style.css';
 
 export const MarketplaceHeader = () => {
   const [showNotification, setShowNotification] = useState(false);
-  const { account, login, logout } = useAccount();
+  const { account, logout } = useAccount();
   const { setTransaction } = useTransaction();
   const router = useRouter();
   const { theme, setTheme } = useTheme();
@@ -125,21 +125,7 @@ export const MarketplaceHeader = () => {
               ]}
             />
           ) : (
-            <Button
-              onClick={login}
-              variant="primary"
-              isCompact={false}
-              startVisual={
-                <SpireKeyKdacolorLogoWhite style={{ color: 'black' }} />
-              }
-              endVisual={
-                <Badge style={'inverse'} size="sm">
-                  Wallet
-                </Badge>
-              }
-            >
-              Connect
-            </Button>
+            <ConnectButton />
           )}
           <Media lessThan="md">
             <ContextMenu trigger={<Button endVisual={<MonoMenuOpen />} />}>

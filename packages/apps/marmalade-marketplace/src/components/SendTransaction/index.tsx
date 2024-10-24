@@ -48,8 +48,10 @@ const SendTransaction: FC<SendTransactionFormProps> = ({
   const handlePreview = async () => {
     try {
       const res: any = await preview();
+
       const result =
         res?.result.status === 'success' ? res?.result.status : undefined;
+
       if (result === 'success') {
         setError(false);
         setPreviewStatus(true);
@@ -62,7 +64,13 @@ const SendTransaction: FC<SendTransactionFormProps> = ({
       setError(true);
       setIsPreview(true);
       setPreviewStatus(true);
-      setResult(JSON.parse(e.message).result.error.message);
+
+      if (e.message.toString().includes('BuyGasFailure')) {
+        setResult('The account does not have enough balance to pay the Gas');
+      } else {
+        setResult(e.message);
+      }
+
       console.error('Error previewing transaction:', e);
     }
   };

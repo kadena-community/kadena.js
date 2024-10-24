@@ -1,5 +1,6 @@
 import { useAccount } from '@/hooks/account';
 import { Sale } from '@/hooks/getSales';
+import { useRemoveSale } from '@/hooks/removeSale';
 import { useTransaction } from '@/hooks/transaction';
 import { env } from '@/utils/env';
 import { createSignWithSpireKeySDK } from '@/utils/signWithSpireKey';
@@ -11,6 +12,7 @@ import { PactNumber } from '@kadena/pactjs';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
+import { ConnectButton } from '../ConnectWallet/ConnectButton';
 export interface RegularSaleProps {
   tokenImageUrl: string;
   sale: Sale;
@@ -22,6 +24,7 @@ export const RegularSale = ({ sale }: RegularSaleProps) => {
   const router = useRouter() as AppRouterInstance;
   const searchParams = useSearchParams();
   const { account } = useAccount();
+  const { deleteSale } = useRemoveSale(sale.saleId);
 
   useEffect(() => {
     const transaction = searchParams.get('transaction');
@@ -41,7 +44,6 @@ export const RegularSale = ({ sale }: RegularSaleProps) => {
     sign: createSignWithSpireKeySDK([account], onTransactionSigned),
   };
 
-  console.log(env);
   const handleBuyNow = async () => {
     if (!account) {
       alert('Please connect your wallet first to buy.');
@@ -100,10 +102,13 @@ export const RegularSale = ({ sale }: RegularSaleProps) => {
           },
         },
       ).execute();
+      deleteSale();
     } catch (error) {
       console.error(error);
     }
   };
+
+  if (!account) return <ConnectButton />;
 
   return (
     <Button variant="primary" onClick={handleBuyNow}>
