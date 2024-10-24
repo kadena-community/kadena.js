@@ -54,7 +54,6 @@ const Bid = ({
   return (
     <>
       <Stack flex={1} flexDirection="column">
-        <br />
         <div className={styles.tokenDetailsInnerContainer}>
           <div style={{ marginBottom: '8px' }}>
             <div className={styles.labelTitle}>

@@ -64,12 +64,10 @@ export const Token: React.FC<TokenProps> = ({
     fetch();
   }, [tokenId]);
 
-  if (!sale) return null;
-
   return (
     <Link
       className={styles.tokenLink}
-      href={`/tokens/${sale.tokenId}?saleId=${sale.saleId}&chainId=${sale.chainId}`}
+      href={`/tokens/${tokenId}?saleId=${sale?.saleId ?? ''}&chainId=${chainId}`}
     >
       <div className={styles.mainContainer}>
         <div className={styles.tokenImageContainer}>

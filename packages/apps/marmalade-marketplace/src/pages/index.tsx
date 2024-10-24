@@ -9,7 +9,6 @@ import {
   ProgressCircle,
   Stack,
 } from '@kadena/kode-ui';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 const Home = () => {
@@ -63,8 +62,8 @@ const Home = () => {
         }}
         gap="xl"
       >
-        {data.map((sale, index) => (
-          <GridItem key={index}>
+        {data.map((sale) => (
+          <GridItem key={sale.saleId}>
             <Token tokenId={sale.tokenId} chainId={sale.chainId} sale={sale} />
           </GridItem>
         ))}
