@@ -1,5 +1,11 @@
 # @kadena/kode-ui
 
+## 0.19.0
+
+### Minor Changes
+
+- 14e809a: Text size extended with inherit
+
 ## 0.18.0
 
 ### Minor Changes

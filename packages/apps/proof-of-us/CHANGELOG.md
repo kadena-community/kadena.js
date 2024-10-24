@@ -1,5 +1,12 @@
 # @kadena/proof-of-us
 
+## 0.5.14
+
+### Patch Changes
+
+- Updated dependencies \[14e809a]
+  - @kadena/kode-ui\@0.19.0
+
 ## 0.5.13
 
 ### Patch Changes
