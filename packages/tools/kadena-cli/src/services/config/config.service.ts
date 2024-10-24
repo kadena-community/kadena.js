@@ -12,9 +12,8 @@ import {
   YAML_EXT,
 } from '../../constants/config.js';
 import {
-  detectArrayFileParseType,
   formatZodError,
-  getFileParser,
+  loadUnknownFile,
   notEmpty,
   safeYamlParse,
 } from '../../utils/globalHelpers.js';
@@ -146,14 +145,9 @@ export class ConfigService implements IConfigService {
 
   public async getPlainKey(
     filepath: string,
-    /* How to parse file, defaults to yaml */
-    type?: 'yaml' | 'json',
   ): ReturnType<IConfigService['getPlainKey']> {
-    const file = await this.services.filesystem.readFile(filepath);
-    if (file === null || type === undefined) return null;
-
-    const parser = getFileParser(type);
-    const parsed = plainKeySchema.safeParse(parser(file));
+    const file = await loadUnknownFile(filepath);
+    const parsed = plainKeySchema.safeParse(file);
     if (!parsed.success) return null;
 
     const alias = path.basename(filepath);
@@ -171,12 +165,8 @@ export class ConfigService implements IConfigService {
   ): ReturnType<IConfigService['getPlainKeys']> {
     const dir = directory ?? process.cwd();
     const files = await this.services.filesystem.readDir(dir);
-    const filepaths = files.map((file) => path.join(dir, file));
-    const parsableFiles = detectArrayFileParseType(filepaths);
     const keys = await Promise.all(
-      parsableFiles.map(async (file) =>
-        this.getPlainKey(file.filepath, file.type),
-      ),
+      files.map(async (file) => this.getPlainKey(path.join(dir, file))),
     );
     return keys.filter(notEmpty);
   }
