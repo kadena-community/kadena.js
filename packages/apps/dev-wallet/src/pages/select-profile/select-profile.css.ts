@@ -1,10 +1,4 @@
-import {
-  cardBackgroundColorHover,
-  cardColor,
-  cardColorHover,
-  cardHoverColor,
-  linkBlockColor,
-} from '@/utils/color.ts';
+import { cardColor, linkBlockColor } from '@/utils/color.ts';
 import { atoms, tokens, vars } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 

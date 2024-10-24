@@ -3,10 +3,8 @@ import {
   transactionRepository,
   TransactionStatus,
 } from '@/modules/transaction/transaction.repository';
-import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten } from '@/utils/helpers';
 import { useAsync } from '@/utils/useAsync';
-import { ICommand, IUnsignedCommand } from '@kadena/client';
 import {
   MonoBrightness1,
   MonoCheck,
@@ -48,13 +46,21 @@ export function TxPipeLine({
   signAll,
   onSubmit,
   sendDisabled,
-}: {
-  tx: ITransaction;
-  variant: 'tile' | 'expanded';
-  signAll: () => Promise<void>;
-  onSubmit: () => Promise<ITransaction>;
-  sendDisabled?: boolean;
-}) {
+}:
+  | {
+      tx: ITransaction;
+      variant: 'tile';
+      signAll?: () => Promise<void>;
+      onSubmit?: () => Promise<ITransaction>;
+      sendDisabled?: boolean;
+    }
+  | {
+      tx: ITransaction;
+      variant: 'expanded';
+      signAll: () => Promise<void>;
+      onSubmit: () => Promise<ITransaction>;
+      sendDisabled?: boolean;
+    }) {
   const textSize = variant === 'tile' ? 'smallest' : 'base';
   const [contTx] = useAsync(
     (transaction) =>

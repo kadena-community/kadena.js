@@ -21,8 +21,6 @@ import {
   Select,
   SelectItem,
   Stack,
-  TabItem,
-  Tabs,
   Text,
   TextField,
 } from '@kadena/kode-ui';

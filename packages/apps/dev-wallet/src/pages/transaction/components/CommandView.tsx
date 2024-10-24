@@ -1,4 +1,3 @@
-import { CopyButton } from '@/Components/CopyButton/CopyButton';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { IPactCommand } from '@kadena/client';
 import { Heading, Stack } from '@kadena/kode-ui';

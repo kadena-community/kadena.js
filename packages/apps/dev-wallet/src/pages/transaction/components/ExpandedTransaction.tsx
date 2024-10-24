@@ -24,11 +24,7 @@ import {
 import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
 import { panelClass } from '@/pages/home/style.css.ts';
 import { useAsync } from '@/utils/useAsync.tsx';
-import {
-  MonoMoreVert,
-  MonoSignature,
-  MonoViewInAr,
-} from '@kadena/kode-icons/system';
+import { MonoMoreVert } from '@kadena/kode-icons/system';
 import { CommandView } from './CommandView.tsx';
 import { statusPassed, TxPipeLine } from './TxPipeLine.tsx';
 
@@ -217,19 +213,7 @@ export function ExpandedTransaction({
           justifyContent={'space-between'}
           flex={1}
         >
-          {/* {!statusPassed(transaction.status, 'signed') && (
-            <Stack>
-              <Button onClick={signAll} startVisual={<MonoSignature />}>
-                Sign all possible signers
-              </Button>
-            </Stack>
-          )} */}
           <Stack>
-            {/* {transaction.status === 'signed' && !sendDisabled && (
-              <Button onClick={onSubmit} startVisual={<MonoViewInAr />}>
-                Send transaction
-              </Button>
-            )} */}
             {statusPassed(transaction.status, 'success') &&
               (!transaction.continuation?.autoContinue ||
                 (contTx && statusPassed(contTx.status, 'success'))) && (
