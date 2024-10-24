@@ -8,6 +8,8 @@ import {
   Select,
   SelectItem,
   Stack,
+  Step,
+  Stepper,
   Text,
   TextareaField,
   TextField,
@@ -534,6 +536,16 @@ const CreateTokenComponent = () => {
   );
 };
 
-export default function CreateToken() {
-  return <CreateTokenComponent />;
-}
+const CreateToken = () => {
+  return (
+    <>
+      <Stepper direction="horizontal">
+        <Step active>Create Token</Step>
+        <Step>Mint Token</Step>
+      </Stepper>
+      <CreateTokenComponent />;
+    </>
+  );
+};
+
+export default CreateToken;

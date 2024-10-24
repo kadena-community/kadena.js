@@ -72,18 +72,6 @@ export const offerContainer = style({
   gap: token('spacing.n4'),
 });
 
-export const tabsContainer = style({});
-
-export const tabContainer = style({
-  padding: '0',
-  display: 'flex',
-  gap: token('spacing.n2'),
-  border: `1px solid ${token('color.border.base.subtle')}`,
-  borderTop: 'none',
-  borderRadius: token('radius.sm'),
-  backgroundColor: token('color.background.layer.default'),
-});
-
 export const flexContainer = style({
   display: 'flex',
   width: '100%',

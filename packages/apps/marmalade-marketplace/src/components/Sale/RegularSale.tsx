@@ -1,5 +1,6 @@
 import { useAccount } from '@/hooks/account';
 import { Sale } from '@/hooks/getSales';
+import { useRemoveSale } from '@/hooks/removeSale';
 import { useTransaction } from '@/hooks/transaction';
 import { env } from '@/utils/env';
 import { createSignWithSpireKeySDK } from '@/utils/signWithSpireKey';
@@ -22,6 +23,7 @@ export const RegularSale = ({ sale }: RegularSaleProps) => {
   const router = useRouter() as AppRouterInstance;
   const searchParams = useSearchParams();
   const { account } = useAccount();
+  const { deleteSale } = useRemoveSale(sale.saleId);
 
   useEffect(() => {
     const transaction = searchParams.get('transaction');
@@ -100,6 +102,7 @@ export const RegularSale = ({ sale }: RegularSaleProps) => {
           },
         },
       ).execute();
+      deleteSale();
     } catch (error) {
       console.error(error);
     }

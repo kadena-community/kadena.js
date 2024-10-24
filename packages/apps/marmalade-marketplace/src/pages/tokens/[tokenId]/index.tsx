@@ -346,15 +346,13 @@ const CreateSale = () => {
         width="100%"
       >
         <Tabs
-          className={styles.tabsContainer}
-          tabPanelClassName={styles.tabContainer}
-          isContained={true}
+          isContained
           inverse={false}
           selectedKey={selectedKey}
           onSelectionChange={handleTabChange}
         >
           <TabItem title="General Info" key="info">
-            <div className={styles.flexContainer}>
+            <Stack className={styles.flexContainer}>
               <div className={styles.flexItem}>
                 <LabeledText label={`ID`} value={tokenId!} />
                 <LabeledText label={`Name`} value={tokenMetadata?.name!} />
@@ -366,10 +364,10 @@ const CreateSale = () => {
                 />
                 <LabeledText label={`Supply`} value={tokenInfo?.supply!} />
               </div>
-            </div>
+            </Stack>
           </TabItem>
           <TabItem title="Sale" key="sale">
-            <Card>
+            <Stack className={styles.flexContainer}>
               <CardContentBlock
                 title="Create a Sale"
                 supportingContent={
@@ -441,20 +439,20 @@ const CreateSale = () => {
                   />
                 </Stack>
               </CardContentBlock>
-            </Card>
+            </Stack>
           </TabItem>
           {/* only show bid tab if saleId is present*/}
 
-          <TabItem title="Buy" isDisabled={!balance} key="bid">
-            <Card>
+          <TabItem title="Buy" key="bid">
+            <Stack className={styles.flexContainer}>
               <Bid saleId={saleId!} tokenImageUrl={tokenImageUrl} />
-            </Card>
+            </Stack>
           </TabItem>
 
           <TabItem title="Configuration" key="policies">
             {tokenInfo?.policies ? (
               checkConcretePolicies(tokenInfo.policies) && (
-                <Card>
+                <Stack className={styles.flexContainer}>
                   <CardContentBlock
                     title="Token Policies"
                     supportingContent={
@@ -522,7 +520,7 @@ const CreateSale = () => {
                       </Checkbox>
                     </CheckboxGroup>
                   </CardContentBlock>
-                </Card>
+                </Stack>
               )
             ) : (
               <></>

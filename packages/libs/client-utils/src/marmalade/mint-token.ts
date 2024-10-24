@@ -124,7 +124,9 @@ const mintTokenCommand = ({
   }
 };
 
-export const mintToken = (inputs: IMintTokenInput, config: IClientConfig) =>
-  submitClient<PactReturnType<IPactModules['marmalade-v2.ledger']['mint']>>(
-    config,
-  )(mintTokenCommand(inputs));
+export const mintToken = (inputs: IMintTokenInput, config: IClientConfig) => {
+  fetch('/api/cron').catch(console.log);
+  return submitClient<
+    PactReturnType<IPactModules['marmalade-v2.ledger']['mint']>
+  >(config)(mintTokenCommand(inputs));
+};

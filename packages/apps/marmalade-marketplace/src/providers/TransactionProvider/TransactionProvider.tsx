@@ -66,9 +66,7 @@ export const TransactionProvider: FC<PropsWithChildren> = ({ children }) => {
   const preview = async () => {
     if (!transaction) return;
     if (isSignedTransaction(transaction)) {
-      const res = await local(transaction).catch((e) => {
-        console.log({ e });
-      });
+      const res = await local(transaction);
 
       return res;
     }

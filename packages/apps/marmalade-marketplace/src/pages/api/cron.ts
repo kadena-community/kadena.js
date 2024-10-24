@@ -500,13 +500,15 @@ export default async function handler(
       return;
     }
 
+    console.log(latestProcessedBlockNumber, latestBlockNumber);
+
     if (latestProcessedBlockNumber >= latestBlockNumber) {
       res.status(200).json({ message: 'IN SYNC' });
       return;
     }
 
     const blocksToProcess = Math.min(
-      10,
+      1000,
       latestBlockNumber - latestProcessedBlockNumber,
     );
     await sync(
