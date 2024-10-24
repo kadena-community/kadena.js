@@ -1,17 +1,22 @@
-import { ICommand, IPactCommand, IUnsignedCommand } from '@kadena/client';
+import { ICommand, IUnsignedCommand } from '@kadena/client';
 import {
   Button,
+  ContextMenu,
+  ContextMenuItem,
   DialogContent,
   DialogFooter,
   DialogHeader,
   Heading,
   Notification,
   Stack,
+  TabItem,
+  Tabs,
 } from '@kadena/kode-ui';
 import yaml from 'js-yaml';
-import { useMemo } from 'react';
-import { cardClass, codeClass } from './style.css.ts';
 
+import { codeClass } from './style.css.ts';
+
+import { CopyButton } from '@/Components/CopyButton/CopyButton.tsx';
 import {
   ITransaction,
   transactionRepository,
@@ -19,9 +24,12 @@ import {
 import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
 import { panelClass } from '@/pages/home/style.css.ts';
 import { useAsync } from '@/utils/useAsync.tsx';
-import { MonoContentCopy } from '@kadena/kode-icons/system';
-import { Label, Value } from './helpers.tsx';
-import { Signers } from './Signers.tsx';
+import {
+  MonoMoreVert,
+  MonoSignature,
+  MonoViewInAr,
+} from '@kadena/kode-icons/system';
+import { CommandView } from './CommandView.tsx';
 import { statusPassed, TxPipeLine } from './TxPipeLine.tsx';
 
 export function ExpandedTransaction({
@@ -36,10 +44,6 @@ export function ExpandedTransaction({
   sendDisabled?: boolean;
 }) {
   const { sign } = useWallet();
-  const command: IPactCommand = useMemo(
-    () => JSON.parse(transaction.cmd),
-    [transaction.cmd],
-  );
 
   const [contTx] = useAsync(
     (tx) =>
@@ -74,14 +78,16 @@ export function ExpandedTransaction({
     const signedTx = (await sign(transaction)) as IUnsignedCommand | ICommand;
     onSign(signedTx.sigs);
   };
+  const txCommand = {
+    hash: transaction.hash,
+    cmd: transaction.cmd,
+    sigs: transaction.sigs,
+  };
   return (
     <>
       <DialogHeader>
         <Stack justifyContent={'space-between'}>
           <Heading>View Transaction</Heading>
-          <Button variant="transparent" onClick={copyTransactionAs('json')}>
-            <MonoContentCopy />
-          </Button>
         </Stack>
       </DialogHeader>
       <DialogContent>
@@ -90,161 +96,117 @@ export function ExpandedTransaction({
             gap={'lg'}
             flexDirection={'column'}
             style={{
-              flexBasis: '500px',
+              flexBasis: '260px',
+              minWidth: '260px',
             }}
             className={panelClass}
           >
             <Heading variant="h6">Tx Status</Heading>
-            <TxPipeLine tx={transaction} variant={'expanded'} />
+            <TxPipeLine
+              tx={transaction}
+              variant={'expanded'}
+              signAll={signAll}
+              onSubmit={onSubmit}
+              sendDisabled={sendDisabled}
+            />
           </Stack>
           <Stack
             flex={1}
-            gap={'sm'}
+            gap={'xxl'}
             flexDirection={'column'}
             className={panelClass}
           >
-            {!statusPassed(transaction.status, 'preflight') && (
-              <Stack flexDirection={'column'} gap={'xl'}>
+            <Tabs isContained>
+              <TabItem title="Command Details">
                 <Stack gap={'sm'} flexDirection={'column'}>
-                  <Heading variant="h4">hash (request-key)</Heading>
-                  <Value className={codeClass}>{transaction.hash}</Value>
-                </Stack>
-                {'exec' in command.payload && (
-                  <>
-                    <Stack gap={'sm'} flexDirection={'column'}>
-                      <Heading variant="h4">Code</Heading>
-                      <Value className={codeClass}>
-                        {command.payload.exec.code}
-                      </Value>
-                    </Stack>
-                    {Object.keys(command.payload.exec.data).length > 0 && (
-                      <Stack gap={'sm'} flexDirection={'column'}>
-                        <Heading variant="h4">Data</Heading>
-                        <pre className={codeClass}>
-                          {JSON.stringify(command.payload.exec.data, null, 2)}
-                        </pre>
-                      </Stack>
-                    )}
-                  </>
-                )}
-                {'cont' in command.payload && (
-                  <>
-                    <Stack gap={'sm'} flexDirection={'column'}>
-                      <Heading variant="h4">Continuation</Heading>
-                      <Value>
-                        {command.payload.cont.pactId}- step(
-                        {command.payload.cont.step})
-                      </Value>
-                    </Stack>
-                    {Object.keys(command.payload.cont.data || {}).length >
-                      0 && (
-                      <Stack gap={'sm'} flexDirection={'column'}>
-                        <Heading variant="h4">Data</Heading>
-                        <pre className={codeClass}>
-                          {JSON.stringify(command.payload.cont.data, null, 2)}
-                        </pre>
-                      </Stack>
-                    )}
-                  </>
-                )}
-                <Stack gap={'sm'} flexDirection={'column'}>
-                  <Heading variant="h4">Transaction Metadata</Heading>
-                  <Stack flexDirection={'column'} className={cardClass}>
+                  <Stack justifyContent={'space-between'}>
+                    <Heading variant="h4">Command Details</Heading>
                     <Stack gap={'sm'}>
-                      <Label>Network</Label>
-                      <Value>{command.networkId}</Value>
-                    </Stack>
-                    <Stack gap={'sm'}>
-                      <Label>Chain</Label>
-                      <Value>{command.meta.chainId}</Value>
-                    </Stack>
-                    <Stack gap={'sm'}>
-                      <Label>Creation time</Label>
-                      <Value>
-                        {command.meta.creationTime} (
-                        {new Date(
-                          command.meta.creationTime! * 1000,
-                        ).toLocaleString()}
-                        )
-                      </Value>
-                    </Stack>
-                    <Stack gap={'sm'}>
-                      <Label>TTL</Label>
-                      <Value>
-                        {command.meta.ttl} (
-                        {new Date(
-                          (command.meta.ttl! + command.meta.creationTime!) *
-                            1000,
-                        ).toLocaleString()}
-                        )
-                      </Value>
-                    </Stack>
-                    <Stack gap={'sm'}>
-                      <Label>Nonce</Label>
-                      <Value>{command.nonce}</Value>
+                      <CopyButton data={txCommand} />
+                      <ContextMenu
+                        placement="bottom end"
+                        trigger={
+                          <Button
+                            endVisual={<MonoMoreVert />}
+                            variant="transparent"
+                            isCompact
+                          />
+                        }
+                      >
+                        <ContextMenuItem
+                          label="Copy as JSON"
+                          onClick={copyTransactionAs('json')}
+                        />
+                        <ContextMenuItem
+                          label="Copy as YAML"
+                          onClick={copyTransactionAs('yaml')}
+                        />
+                        <ContextMenuItem
+                          label="Copy as CMS"
+                          onClick={copyTransactionAs('json')}
+                        />
+                      </ContextMenu>
                     </Stack>
                   </Stack>
+                  <CommandView transaction={transaction} onSign={onSign} />
                 </Stack>
-                <Stack gap={'sm'} flexDirection={'column'}>
-                  <Heading variant="h4">Gas Info</Heading>
-                  <Stack flexDirection={'column'} className={cardClass}>
-                    <Stack gap={'sm'}>
-                      <Label>Gas Payer</Label>
-                      <Value>{command.meta.sender}</Value>
+              </TabItem>
+
+              {transaction.preflight &&
+                ((
+                  <TabItem title="Preflight Result">
+                    <JsonView
+                      title="Preflight Result"
+                      data={transaction.preflight}
+                    />
+                  </TabItem>
+                ) as any)}
+
+              {transaction.request && (
+                <TabItem title="Request">
+                  <JsonView title="Request" data={transaction.request} />
+                </TabItem>
+              )}
+              {'result' in transaction && transaction.result && (
+                <TabItem title="Result">
+                  <JsonView title="Result" data={transaction.result} />
+                </TabItem>
+              )}
+              {contTx && (
+                <>
+                  <TabItem title="cont: Command Details">
+                    <Stack gap={'sm'} flexDirection={'column'}>
+                      <Heading variant="h4">Command Details</Heading>
+                      <CommandView transaction={contTx} onSign={onSign} />
                     </Stack>
-                    <Stack gap={'sm'}>
-                      <Label>Gas Price</Label>
-                      <Value>{command.meta.gasPrice}</Value>
-                    </Stack>
-                    <Stack gap={'sm'}>
-                      <Label>Gas Limit</Label>
-                      <Value>{command.meta.gasLimit}</Value>
-                    </Stack>
-                    <Stack gap={'sm'}>
-                      <Label>Max Gas Cost</Label>
-                      <Value>
-                        {command.meta.gasLimit! * command.meta.gasPrice!} KDA
-                      </Value>
-                    </Stack>
-                  </Stack>
-                </Stack>
-                <Signers transaction={transaction} onSign={onSign} />
-              </Stack>
-            )}
-            {statusPassed(transaction.status, 'preflight') && (
-              <Stack gap={'sm'} flexDirection={'column'}>
-                <Stack gap={'sm'} flexDirection={'column'}>
-                  <Heading variant="h4">Preflight Result</Heading>
-                  <pre className={codeClass}>
-                    {JSON.stringify(transaction.preflight, null, 2)}
-                  </pre>
-                </Stack>
-              </Stack>
-            )}
-            {statusPassed(transaction.status, 'submitted') && (
-              <Stack gap={'sm'} flexDirection={'column'}>
-                <Stack gap={'sm'} flexDirection={'column'}>
-                  <Heading variant="h4">Request</Heading>
-                  <pre className={codeClass}>
-                    {JSON.stringify(transaction.request, null, 2)}
-                  </pre>
-                </Stack>
-              </Stack>
-            )}
-            {statusPassed(transaction.status, 'success') && (
-              <Stack gap={'sm'} flexDirection={'column'}>
-                <Stack gap={'sm'} flexDirection={'column'}>
-                  <Heading variant="h4">Result</Heading>
-                  <pre className={codeClass}>
-                    {JSON.stringify(
-                      'result' in transaction ? transaction.result : {},
-                      null,
-                      2,
-                    )}
-                  </pre>
-                </Stack>
-              </Stack>
-            )}
+                  </TabItem>
+                  {contTx.preflight && (
+                    <TabItem title="cont: Preflight Result">
+                      <JsonView
+                        title="Continuation Preflight Result"
+                        data={contTx.preflight}
+                      />
+                    </TabItem>
+                  )}
+                  {contTx.request && (
+                    <TabItem title="cont: Request">
+                      <JsonView
+                        title="Continuation Request"
+                        data={contTx.request}
+                      />
+                    </TabItem>
+                  )}
+                  {'result' in contTx && contTx.result && (
+                    <TabItem title="cont: Result">
+                      <JsonView
+                        title="Continuation Result"
+                        data={contTx.result}
+                      />
+                    </TabItem>
+                  )}
+                </>
+              )}
+            </Tabs>
           </Stack>
         </Stack>
       </DialogContent>
@@ -255,15 +217,19 @@ export function ExpandedTransaction({
           justifyContent={'space-between'}
           flex={1}
         >
-          {!statusPassed(transaction.status, 'signed') && (
+          {/* {!statusPassed(transaction.status, 'signed') && (
             <Stack>
-              <Button onClick={signAll}>Sign all possible signers</Button>
+              <Button onClick={signAll} startVisual={<MonoSignature />}>
+                Sign all possible signers
+              </Button>
             </Stack>
-          )}
+          )} */}
           <Stack>
-            {transaction.status === 'signed' && !sendDisabled && (
-              <Button onClick={onSubmit}>Send transaction</Button>
-            )}
+            {/* {transaction.status === 'signed' && !sendDisabled && (
+              <Button onClick={onSubmit} startVisual={<MonoViewInAr />}>
+                Send transaction
+              </Button>
+            )} */}
             {statusPassed(transaction.status, 'success') &&
               (!transaction.continuation?.autoContinue ||
                 (contTx && statusPassed(contTx.status, 'success'))) && (
@@ -272,24 +238,20 @@ export function ExpandedTransaction({
                 </Notification>
               )}
           </Stack>
-          <Stack gap={'sm'} alignItems={'center'}>
-            <Button
-              isCompact
-              variant="outlined"
-              onClick={copyTransactionAs('yaml')}
-            >
-              Copy as YAML
-            </Button>
-            <Button
-              isCompact
-              variant="outlined"
-              onClick={copyTransactionAs('json')}
-            >
-              Copy as JSON
-            </Button>
-          </Stack>
         </Stack>
       </DialogFooter>
     </>
   );
 }
+
+const JsonView = ({ title, data }: { title: string; data: any }) => (
+  <Stack gap={'sm'} flexDirection={'column'}>
+    <Stack gap={'sm'} flexDirection={'column'}>
+      <Stack justifyContent={'space-between'}>
+        <Heading variant="h4">{title}</Heading>
+        <CopyButton data={data} />
+      </Stack>
+      <pre className={codeClass}>{JSON.stringify(data, null, 2)}</pre>
+    </Stack>
+  </Stack>
+);

@@ -3,15 +3,20 @@ import {
   transactionRepository,
   TransactionStatus,
 } from '@/modules/transaction/transaction.repository';
+import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten } from '@/utils/helpers';
 import { useAsync } from '@/utils/useAsync';
+import { ICommand, IUnsignedCommand } from '@kadena/client';
 import {
   MonoBrightness1,
   MonoCheck,
   MonoClose,
   MonoLoading,
+  MonoPauseCircle,
+  MonoSignature,
+  MonoViewInAr,
 } from '@kadena/kode-icons/system';
-import { Stack, Text } from '@kadena/kode-ui';
+import { Button, Stack, Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import { failureClass, pendingClass, successClass } from './style.css';
 
@@ -40,9 +45,15 @@ export const getStatusClass = (status: ITransaction['status']) => {
 export function TxPipeLine({
   tx,
   variant,
+  signAll,
+  onSubmit,
+  sendDisabled,
 }: {
   tx: ITransaction;
   variant: 'tile' | 'expanded';
+  signAll: () => Promise<void>;
+  onSubmit: () => Promise<ITransaction>;
+  sendDisabled?: boolean;
 }) {
   const textSize = variant === 'tile' ? 'smallest' : 'base';
   const [contTx] = useAsync(
@@ -62,18 +73,26 @@ export function TxPipeLine({
           {tx.continuation?.autoContinue ? 'exec' : 'hash'}:{' '}
           {shorten(tx.hash, 6)}
         </Text>
-        <MonoBrightness1 className={classNames(getStatusClass(tx.status))} />
       </Stack>
       {showAfterCont &&
         variant === 'expanded' &&
         !statusPassed(tx.status, 'signed') && (
-          <Stack>
+          <Stack flexDirection={'column'} gap={'md'}>
             <Text size={textSize} className={pendingClass}>
               <Stack alignItems={'center'} gap={'xs'}>
-                <MonoLoading />
-                ready for sign
+                <MonoPauseCircle />
+                Waiting for sign
               </Stack>
             </Text>
+            <Stack>
+              <Button
+                isCompact
+                onClick={() => signAll()}
+                startVisual={<MonoSignature />}
+              >
+                Sign all possible signers
+              </Button>
+            </Stack>
           </Stack>
         )}
       {showAfterCont && statusPassed(tx.status, 'signed') && (
@@ -90,20 +109,40 @@ export function TxPipeLine({
         variant === 'expanded' &&
         statusPassed(tx.status, 'signed') &&
         !statusPassed(tx.status, 'preflight') && (
-          <Stack>
+          <Stack flexDirection={'column'} gap={'md'}>
             <Text size={textSize} className={pendingClass}>
               <Stack alignItems={'center'} gap={'xs'}>
-                <MonoLoading />
+                <MonoPauseCircle />
                 Ready to send
               </Stack>
             </Text>
+            {!sendDisabled && (
+              <Button
+                isCompact
+                onClick={onSubmit}
+                startVisual={<MonoViewInAr />}
+              >
+                Send transaction
+              </Button>
+            )}
           </Stack>
         )}
       {showAfterCont && statusPassed(tx.status, 'preflight') && (
         <Stack>
-          <Text size={textSize} className={successClass}>
+          <Text
+            size={textSize}
+            className={
+              tx.preflight?.result.status === 'success'
+                ? successClass
+                : failureClass
+            }
+          >
             <Stack alignItems={'center'} gap={'xs'}>
-              <MonoCheck />
+              {tx.preflight?.result.status === 'success' ? (
+                <MonoCheck />
+              ) : (
+                <MonoClose />
+              )}
               preflight
             </Stack>
           </Text>

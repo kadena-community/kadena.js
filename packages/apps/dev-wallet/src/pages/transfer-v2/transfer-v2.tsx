@@ -193,9 +193,21 @@ export function TransferV2() {
     const reTxs = txGroups.redistribution.txs;
     const submitIsDisabled =
       reTxs.length > 0 && reTxs.some((tx) => !tx.continuation?.done);
+
+    const onlyOneTx = txGroups.transfer.txs.length === 1 && reTxs.length === 0;
     return (
       <Stack gap={'md'} flexDirection={'column'}>
-        {reTxs.length > 0 && (
+        {onlyOneTx && (
+          <TxList
+            onUpdate={() => {
+              console.log('update');
+              reloadTxs();
+            }}
+            txs={txGroups.transfer.txs}
+            showExpanded={true}
+          />
+        )}
+        {!onlyOneTx && reTxs.length > 0 && (
           <>
             <Stack flexDirection={'column'} gap={'lg'}>
               <Stack flexDirection={'column'} gap={'xs'}>
@@ -213,7 +225,7 @@ export function TransferV2() {
             <Divider />
           </>
         )}
-        {txGroups.transfer.txs.length > 0 && (
+        {!onlyOneTx && txGroups.transfer.txs.length > 0 && (
           <Stack flexDirection={'column'} gap={'lg'}>
             <Stack flexDirection={'column'} gap={'xxs'}>
               <Heading variant="h4">Transfer Transactions</Heading>

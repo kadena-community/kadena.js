@@ -98,6 +98,7 @@ export function Signers({
                 <Stack>
                   <Button
                     isCompact
+                    variant="info"
                     onClick={async () => {
                       const signed = (await sign(transaction, [
                         signer.pubKey,

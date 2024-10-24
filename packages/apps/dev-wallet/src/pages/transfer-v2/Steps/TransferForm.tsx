@@ -31,6 +31,7 @@ import { IReceiverAccount } from '../../transfer/utils';
 import { AccountItem } from '../Components/AccountItem';
 import { Keyset } from '../Components/keyset';
 import { CHAINS, IReceiver, discoverReceiver, getTransfers } from '../utils';
+import { labelClass } from './style.css';
 
 export interface Transfer {
   fungible: string;
@@ -62,6 +63,12 @@ export interface TrG {
   groupId: string;
   txs: ITransaction[];
 }
+
+const Label = ({ children }: { children: React.ReactNode }) => (
+  <Text size="small" className={labelClass}>
+    {children}
+  </Text>
+);
 
 export function TransferForm({
   accountId,
@@ -300,7 +307,8 @@ export function TransferForm({
               render={({ field }) => (
                 <Select
                   // label="Token"
-                  placeholder="Fungible Type"
+                  placeholder="Asset"
+                  startVisual={<Label>Asset:</Label>}
                   size="sm"
                   selectedKey={field.value}
                   onSelectionChange={withEvaluate(field.onChange)}
@@ -318,8 +326,9 @@ export function TransferForm({
               render={({ field }) => (
                 <Stack flex={1} flexDirection={'column'}>
                   <Select
-                    placeholder="From Account"
+                    startVisual={<Label>Address:</Label>}
                     // label="Account"
+                    placeholder="Select and address"
                     size="sm"
                     selectedKey={field.value}
                     onSelectionChange={withEvaluate(field.onChange)}
@@ -345,9 +354,10 @@ export function TransferForm({
                   control={control}
                   render={({ field }) => (
                     <Select
-                      placeholder="Chain"
+                      startVisual={<Label>Chain:</Label>}
                       // label="Chain"
                       size="sm"
+                      placeholder="Select a chain"
                       selectedKey={field.value}
                       onSelectionChange={withEvaluate(field.onChange)}
                     >
@@ -496,6 +506,8 @@ export function TransferForm({
                                     <Combobox
                                       // label={index === 0 ? 'Account' : undefined}
                                       inputValue={field.value ?? ''}
+                                      placeholder="Select ot enter an address"
+                                      startVisual={<Label>Address:</Label>}
                                       onInputChange={(value) => {
                                         console.log('value', value);
                                         field.onChange(value || '');
@@ -538,7 +550,6 @@ export function TransferForm({
                                           'done',
                                         );
                                       }}
-                                      placeholder={`Receiver ${watchReceivers.length > 1 ? index + 1 : ''}`}
                                       size="sm"
                                       onSelectionChange={(value) => {
                                         console.log('value', value);
@@ -631,9 +642,10 @@ export function TransferForm({
                                     const value = e.target.value;
                                     field.onChange(value);
                                   }}
+                                  placeholder="Enter the amount"
+                                  startVisual={<Label>Amount:</Label>}
                                   onBlur={evaluateTransactions}
                                   value={field.value}
-                                  placeholder="Amount"
                                   size="sm"
                                   type="number"
                                   step="1"
@@ -647,7 +659,9 @@ export function TransferForm({
                                   control={control}
                                   render={({ field }) => (
                                     <Select
+                                      startVisual={<Label>Chain:</Label>}
                                       // label={index === 0 ? 'Chain' : undefined}
+                                      placeholder="Select a chain"
                                       description={
                                         rec.chain &&
                                         redistribution.find(
@@ -657,7 +671,6 @@ export function TransferForm({
                                           : ''
                                       }
                                       size="sm"
-                                      placeholder="Chains"
                                       selectedKey={field.value}
                                       onSelectionChange={withEvaluate(
                                         field.onChange,
@@ -802,8 +815,9 @@ export function TransferForm({
                 control={control}
                 render={({ field }) => (
                   <Select
+                    startVisual={<Label>Gas Payer:</Label>}
+                    placeholder="Select the gas payer"
                     size="sm"
-                    placeholder="Gas Payer"
                     selectedKey={field.value}
                     onSelectionChange={withEvaluate(field.onChange)}
                   >
@@ -832,13 +846,14 @@ export function TransferForm({
                 control={control}
                 render={({ field }) => (
                   <TextField
+                    startVisual={<Label>Gas Price:</Label>}
+                    placeholder="Enter gas price"
                     value={field.value}
                     onChange={(e) => {
                       field.onChange(e.target.value);
                       // evaluateTransactions();
                     }}
                     onBlur={evaluateTransactions}
-                    placeholder="Gas Price"
                     size="sm"
                     defaultValue="0.00000001"
                     type="number"
@@ -851,12 +866,13 @@ export function TransferForm({
                 control={control}
                 render={({ field }) => (
                   <TextField
+                    placeholder="Enter gas limit"
+                    startVisual={<Label>Gas Limit:</Label>}
                     value={field.value}
                     onChange={(e) => {
                       field.onChange(e.target.value);
                     }}
                     onBlur={evaluateTransactions}
-                    placeholder="Gas Limit"
                     size="sm"
                     defaultValue="2500"
                     type="number"
@@ -872,12 +888,13 @@ export function TransferForm({
               control={control}
               render={({ field }) => (
                 <TextField
+                  startVisual={<Label>TTL:</Label>}
+                  placeholder="Enter TTL (Timer to live)"
                   value={field.value}
                   defaultValue={field.value}
                   onChange={(e) => {
                     field.onChange(+e.target.value);
                   }}
-                  placeholder="TTL (time to live)"
                   type="number"
                 />
               )}
