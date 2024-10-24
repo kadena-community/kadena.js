@@ -4,6 +4,7 @@ import { getTokenImageUrl, getTokenMetadata } from '@/utils/token';
 import { ChainId } from '@kadena/client';
 import { getTokenInfo } from '@kadena/client-utils/marmalade';
 import { Heading, Text } from '@kadena/kode-ui';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import * as styles from './style.css';
 
@@ -63,33 +64,40 @@ export const Token: React.FC<TokenProps> = ({
     fetch();
   }, [tokenId]);
 
+  if (!sale) return null;
+
   return (
-    <div className={styles.mainContainer}>
-      <div className={styles.tokenImageContainer}>
-        <img
-          src={tokenImageUrl}
-          alt="Token Image"
-          className={styles.tokenImageClass}
-        />
-      </div>
-      <div className={styles.titleContainer}>
-        <Text>{`${tokenId?.slice(0, 5)}...${tokenId?.slice(-5)}`}</Text>
-        <Heading as="h6">{tokenMetadata?.name || 'Marmalade Token'}</Heading>
-      </div>
-      <div className={styles.metaContainer}>
-        <div>
-          <Text as="p">{balance ? 'Balance' : 'Price'}</Text>
-          <Text as="p" color="emphasize">
-            {balance ? balance : sale?.startPrice}
-          </Text>
+    <Link
+      className={styles.tokenLink}
+      href={`/tokens/${sale.tokenId}?saleId=${sale.saleId}&chainId=${sale.chainId}`}
+    >
+      <div className={styles.mainContainer}>
+        <div className={styles.tokenImageContainer}>
+          <img
+            src={tokenImageUrl}
+            alt="Token Image"
+            className={styles.tokenImageClass}
+          />
         </div>
-        <div>
-          <Text as="p">Chain</Text>
-          <Text as="p" color="emphasize">
-            {chainId}
-          </Text>
+        <div className={styles.titleContainer}>
+          <Text>{`${tokenId?.slice(0, 5)}...${tokenId?.slice(-5)}`}</Text>
+          <Heading as="h6">{tokenMetadata?.name || 'Marmalade Token'}</Heading>
+        </div>
+        <div className={styles.metaContainer}>
+          <div>
+            <Text as="p">{balance ? 'Balance' : 'Price'}</Text>
+            <Text as="p" color="emphasize">
+              {balance ? balance : sale?.startPrice}
+            </Text>
+          </div>
+          <div>
+            <Text as="p">Chain</Text>
+            <Text as="p" color="emphasize">
+              {chainId}
+            </Text>
+          </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };

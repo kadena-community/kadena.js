@@ -2,6 +2,7 @@ import { ListingHeader } from '@/components/ListingHeader';
 import { Token } from '@/components/Token';
 import { useGetSales } from '@/hooks/getSales';
 import { Grid, GridItem, Heading, ProgressCircle } from '@kadena/kode-ui';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 const Home = () => {
@@ -51,15 +52,11 @@ const Home = () => {
         >
           {data.map((sale, index) => (
             <GridItem key={index}>
-              <a
-                href={`/tokens/${sale.tokenId}?saleId=${sale.saleId}&chainId=${sale.chainId}`}
-              >
-                <Token
-                  tokenId={sale.tokenId}
-                  chainId={sale.chainId}
-                  sale={sale}
-                />
-              </a>
+              <Token
+                tokenId={sale.tokenId}
+                chainId={sale.chainId}
+                sale={sale}
+              />
             </GridItem>
           ))}
         </Grid>

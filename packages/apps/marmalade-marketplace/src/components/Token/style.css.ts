@@ -8,6 +8,17 @@ export const mainContainer = style({
   borderRadius: tokens.kda.foundation.radius.sm,
   backgroundColor: tokens.kda.foundation.color.background.layer.default,
   cursor: 'pointer',
+  opacity: 1,
+  transition: 'opacity .4s ease',
+  selectors: {
+    '&:hover': {
+      opacity: '.8',
+    },
+  },
+});
+
+export const tokenLink = style({
+  textDecoration: 'none',
 });
 
 export const tokenImageContainer = style({
@@ -20,6 +31,13 @@ export const tokenImageClass = style({
   height: '100%',
   objectFit: 'cover',
   borderRadius: '16px',
+  transform: 'scale(100%)',
+  transition: 'transform .4s ease',
+  selectors: {
+    '&:hover': {
+      transform: 'scale(105%)',
+    },
+  },
 });
 
 export const titleContainer = style({
