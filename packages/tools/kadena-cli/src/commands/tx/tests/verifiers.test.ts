@@ -47,7 +47,7 @@ describe('tx add', () => {
     });
   });
   it('Prompts values and writes the transaction file', async () => {
-    const transaction = await createAndWriteTransaction(template, {}, null);
+    const transaction = await createAndWriteTransaction({}, null, template);
     assertCommandError(transaction);
 
     const cmd = JSON.parse(transaction.data.transaction.cmd);

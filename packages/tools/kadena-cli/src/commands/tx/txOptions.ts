@@ -22,7 +22,14 @@ export const txOptions = {
       '-t, --template <template>',
       'Filepath of ktpl template to create a transaction from',
     ),
-    validation: z.string(),
+    validation: z.union([
+      z.object({
+        template: z.string(),
+        path: z.string(),
+        cwd: z.string(),
+      }),
+      z.string(),
+    ]),
     prompt: tx.selectTemplate,
     expand: getVariablesByTemplate,
   }),

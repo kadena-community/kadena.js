@@ -43,7 +43,6 @@ describe('tx send', () => {
     await runCommand(['config', 'init']);
 
     const transaction = await createAndWriteTransaction(
-      defaultTemplates.transfer,
       {
         'account:from': `k:${publicKey}`,
         'account:to': targetAccount,
@@ -53,6 +52,7 @@ describe('tx send', () => {
         'network:networkId': 'testnet04',
       },
       null,
+      defaultTemplates.transfer,
     );
 
     assertCommandError(transaction);
@@ -96,7 +96,6 @@ describe('tx send', () => {
       'k:00b34067644479c769b48b4cc9b2c732e48fc9aeb82d06ecd52dc783550de54d';
 
     const transaction = await createAndWriteTransaction(
-      defaultTemplates.transfer,
       {
         'account:from': `k:${publicKey}`,
         'account:to': targetAccount,
@@ -106,6 +105,7 @@ describe('tx send', () => {
         'network:networkId': 'testnet04',
       },
       null,
+      defaultTemplates.transfer,
     );
     assertCommandError(transaction);
 
@@ -151,7 +151,6 @@ describe('tx send', () => {
       'k:00b34067644479c769b48b4cc9b2c732e48fc9aeb82d06ecd52dc783550de54d';
 
     const transaction = await createAndWriteTransaction(
-      defaultTemplates.transfer,
       {
         'account:from': `k:${publicKey}`,
         'account:to': targetAccount,
@@ -161,6 +160,7 @@ describe('tx send', () => {
         'network:networkId': 'testnet04',
       },
       null,
+      defaultTemplates.transfer,
     );
 
     assertCommandError(transaction);
@@ -197,7 +197,6 @@ describe('tx send', () => {
       'k:00b34067644479c769b48b4cc9b2c732e48fc9aeb82d06ecd52dc783550de54d';
 
     const transaction = await createAndWriteTransaction(
-      defaultTemplates.transfer,
       {
         'account:from': `k:${publicKey}`,
         'account:to': targetAccount,
@@ -207,6 +206,7 @@ describe('tx send', () => {
         'network:networkId': 'testnet04',
       },
       null,
+      defaultTemplates.transfer,
     );
 
     assertCommandError(transaction);
