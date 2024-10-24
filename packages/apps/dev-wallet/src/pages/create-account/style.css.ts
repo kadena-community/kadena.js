@@ -65,6 +65,10 @@ export const buttonListClass = style([
         opacity: 0.5,
         cursor: 'not-allowed',
       },
+      '&.selected': {
+        background: cardHoverColor,
+        border: `1px solid ${tokens.kda.foundation.color.border.base['@active']}`,
+      },
     },
   },
 ]);
