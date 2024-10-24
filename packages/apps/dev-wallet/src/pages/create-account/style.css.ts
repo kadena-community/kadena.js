@@ -52,7 +52,7 @@ export const buttonListClass = style([
     textDecoration: 'none',
   }),
   {
-    border: 'none',
+    border: 'solid 1px transparent',
     cursor: 'pointer',
     flex: 1,
     minHeight: '50px',

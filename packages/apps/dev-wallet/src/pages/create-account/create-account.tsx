@@ -177,7 +177,10 @@ export function CreateAccount() {
           <RadioGroup
             direction="column"
             value={accountType}
-            onChange={(type) => setAccountType(type as AccountType)}
+            onChange={(type) => {
+              setSelectedItem(undefined);
+              setAccountType(type as AccountType);
+            }}
           >
             <Stack
               flexDirection={'column'}
@@ -234,182 +237,167 @@ export function CreateAccount() {
           </RadioGroup>
 
           {contract && (
-            <Stack flexDirection={'column'} gap={'md'}>
-              <Tabs isContained>
-                {...[
-                  ['k:account', 'w:account'].includes(accountType) &&
-                    filteredKeySources.length && (
-                      <TabItem
-                        title={
-                          <Text size="small" bold color="emphasize">
-                            Create or use a key
-                          </Text>
-                        }
+            <Stack flexDirection={'column'} gap={'xxl'}>
+              {accountType === 'w:account' && (
+                <Stack flexDirection={'column'} gap={'md'}>
+                  {showCreateKeyset && (
+                    <CreateKeySetDialog
+                      isOpen={showCreateKeyset}
+                      close={() => setShowCreateKeyset(false)}
+                      onDone={(keyset) => {
+                        setSelectedItem({
+                          item: keyset,
+                          type: 'keyset',
+                        });
+                      }}
+                    />
+                  )}
+                  <Heading variant="h4">Keysets</Heading>
+                  <Stack
+                    flexDirection={'column'}
+                    gap={'md'}
+                    className={panelClass}
+                  >
+                    <Stack justifyContent={'space-between'}>
+                      <Heading variant="h4">Create or use a keyset</Heading>
+                      <Button
+                        isCompact
+                        startVisual={<MonoAdd />}
+                        onPress={() => setShowCreateKeyset(true)}
+                        variant="outlined"
                       >
-                        <Stack flexDirection={'column'} gap={'md'}>
-                          {filteredKeySources.map((keySource) => {
-                            const filteredKeys = keySource.keys.filter(
-                              (key) => !usedKeys.includes(key.publicKey),
-                            );
-                            return (
+                        Create a new keyset
+                      </Button>
+                    </Stack>
+                    <Text>
+                      {filteredKeysets.length === 0
+                        ? 'There is not keyset available to select, create a new one'
+                        : 'Select on of the following keysets to create account'}
+                    </Text>
+                    <Stack flexDirection={'column'} gap={'sm'}>
+                      <Stack flexDirection={'column'}>
+                        {filteredKeysets.map((keyset) => {
+                          return (
+                            <ButtonItem
+                              key={keyset.uuid}
+                              selected={
+                                selectedItem?.type === 'keyset' &&
+                                selectedItem?.item.uuid === keyset.uuid
+                              }
+                              onClick={() =>
+                                setSelectedItem({
+                                  item: keyset,
+                                  type: 'keyset',
+                                })
+                              }
+                            >
                               <Stack
-                                key={keySource.uuid}
                                 gap={'md'}
-                                flexDirection={'column'}
-                                className={panelClass}
+                                justifyContent={'center'}
+                                alignItems={'center'}
                               >
-                                <Stack
-                                  justifyContent={'space-between'}
-                                  alignItems={'center'}
-                                >
-                                  <Heading variant="h4">
-                                    {keySource.source}
-                                  </Heading>
-                                  <Button
-                                    variant="outlined"
-                                    isCompact
-                                    onPress={async () => {
-                                      const key = await createKey(keySource);
-                                      setSelectedItem({
-                                        item: key,
-                                        type: 'key',
-                                      });
-                                    }}
-                                  >
-                                    <Stack alignItems={'center'} gap={'sm'}>
-                                      <MonoAdd />
-                                      <span>
-                                        Create a new key from {keySource.source}
-                                      </span>
-                                    </Stack>
-                                  </Button>
-                                </Stack>
-                                <Text>
-                                  {filteredKeys.length === 0
-                                    ? 'There is not key available to select, create a new one'
-                                    : 'Select on of the following keys to create account'}
-                                </Text>
-                                <Stack flexDirection={'column'}>
-                                  <Stack></Stack>
-                                  {keySource.keys
-                                    .filter(
-                                      (key) =>
-                                        !usedKeys.includes(key.publicKey),
-                                    )
-                                    .map((key) => {
-                                      return (
-                                        <ButtonItem
-                                          key={key.publicKey}
-                                          selected={
-                                            selectedItem?.type === 'key' &&
-                                            selectedItem?.item.publicKey ===
-                                              key.publicKey
-                                          }
-                                          onClick={() =>
-                                            setSelectedItem({
-                                              item: key,
-                                              type: 'key',
-                                            })
-                                          }
-                                        >
-                                          <Stack
-                                            gap={'sm'}
-                                            alignItems={'center'}
-                                          >
-                                            <Stack gap={'sm'} flex={1}>
-                                              <Key
-                                                publicKey={key.publicKey}
-                                                shortening={40}
-                                              />
-                                            </Stack>
-                                          </Stack>
-                                        </ButtonItem>
-                                      );
-                                    })}
+                                <Stack flex={1}>
+                                  {<Keyset keySet={keyset} />}
                                 </Stack>
                               </Stack>
-                            );
-                          })}
-                        </Stack>
-                      </TabItem>
-                    ),
-                  accountType === 'w:account' && (
-                    <TabItem
-                      title={
-                        <Text size="small" bold color="emphasize">
-                          Create or use a keyset
-                        </Text>
-                      }
-                    >
-                      {showCreateKeyset && (
-                        <CreateKeySetDialog
-                          isOpen={showCreateKeyset}
-                          close={() => setShowCreateKeyset(false)}
-                          onDone={(keyset) => {
-                            setSelectedItem({
-                              item: keyset,
-                              type: 'keyset',
-                            });
-                          }}
-                        />
-                      )}
-                      <Stack
-                        flexDirection={'column'}
-                        gap={'md'}
-                        className={panelClass}
-                      >
-                        <Stack justifyContent={'space-between'}>
-                          <Heading variant="h3">Key Sets</Heading>
-                          <Button
-                            isCompact
-                            startVisual={<MonoAdd />}
-                            onPress={() => setShowCreateKeyset(true)}
-                            variant="outlined"
-                          >
-                            Create a new keyset
-                          </Button>
-                        </Stack>
-                        <Text>
-                          {filteredKeysets.length === 0
-                            ? 'There is not keyset available to select, create a new one'
-                            : 'Select on of the following keysets to create account'}
-                        </Text>
-                        <Stack flexDirection={'column'} gap={'sm'}>
-                          <Stack flexDirection={'column'}>
-                            {filteredKeysets.map((keyset) => {
-                              return (
-                                <ButtonItem
-                                  key={keyset.uuid}
-                                  selected={
-                                    selectedItem?.type === 'keyset' &&
-                                    selectedItem?.item.uuid === keyset.uuid
-                                  }
-                                  onClick={() =>
-                                    setSelectedItem({
-                                      item: keyset,
-                                      type: 'keyset',
-                                    })
-                                  }
-                                >
-                                  <Stack
-                                    gap={'md'}
-                                    justifyContent={'center'}
-                                    alignItems={'center'}
-                                  >
-                                    <Stack flex={1}>
-                                      {<Keyset keySet={keyset} />}
-                                    </Stack>
-                                  </Stack>
-                                </ButtonItem>
-                              );
-                            })}
-                          </Stack>
-                        </Stack>
+                            </ButtonItem>
+                          );
+                        })}
                       </Stack>
-                    </TabItem>
-                  ),
-                ].filter(Boolean) as any}
-              </Tabs>
+                    </Stack>
+                  </Stack>
+                </Stack>
+              )}
+              {['k:account', 'w:account'].includes(accountType) &&
+                filteredKeySources.length && (
+                  <Stack
+                    // className={panelClass}
+                    flexDirection={'column'}
+                    gap={'md'}
+                    flex={1}
+                  >
+                    <Heading variant="h4">Keys</Heading>
+                    <Stack flexDirection={'column'} gap={'md'}>
+                      {filteredKeySources.map((keySource) => {
+                        const filteredKeys = keySource.keys.filter(
+                          (key) => !usedKeys.includes(key.publicKey),
+                        );
+                        return (
+                          <Stack
+                            key={keySource.uuid}
+                            gap={'md'}
+                            flexDirection={'column'}
+                            className={panelClass}
+                          >
+                            <Stack
+                              justifyContent={'space-between'}
+                              alignItems={'center'}
+                            >
+                              <Heading variant="h4">{keySource.source}</Heading>
+                              <Button
+                                variant="outlined"
+                                isCompact
+                                onPress={async () => {
+                                  const key = await createKey(keySource);
+                                  setSelectedItem({
+                                    item: key,
+                                    type: 'key',
+                                  });
+                                }}
+                              >
+                                <Stack alignItems={'center'} gap={'sm'}>
+                                  <MonoAdd />
+                                  <span>
+                                    Create a new key from {keySource.source}
+                                  </span>
+                                </Stack>
+                              </Button>
+                            </Stack>
+                            <Text>
+                              {filteredKeys.length === 0
+                                ? 'There is not key available to select, create a new one'
+                                : 'Select on of the following keys to create account'}
+                            </Text>
+                            <Stack flexDirection={'column'}>
+                              <Stack></Stack>
+                              {keySource.keys
+                                .filter(
+                                  (key) => !usedKeys.includes(key.publicKey),
+                                )
+                                .map((key) => {
+                                  return (
+                                    <ButtonItem
+                                      key={key.publicKey}
+                                      selected={
+                                        selectedItem?.type === 'key' &&
+                                        selectedItem?.item.publicKey ===
+                                          key.publicKey
+                                      }
+                                      onClick={() =>
+                                        setSelectedItem({
+                                          item: key,
+                                          type: 'key',
+                                        })
+                                      }
+                                    >
+                                      <Stack gap={'sm'} alignItems={'center'}>
+                                        <Stack gap={'sm'} flex={1}>
+                                          <Key
+                                            publicKey={key.publicKey}
+                                            shortening={20}
+                                          />
+                                        </Stack>
+                                      </Stack>
+                                    </ButtonItem>
+                                  );
+                                })}
+                            </Stack>
+                          </Stack>
+                        );
+                      })}
+                    </Stack>
+                  </Stack>
+                )}
             </Stack>
           )}
         </Stack>
@@ -425,7 +413,10 @@ export function CreateAccount() {
               }
             }}
           >
-            Create Account
+            <>
+              Create {accountType}{' '}
+              {selectedItem?.type ? `with ${selectedItem.type}` : ''}
+            </>
           </Button>
         </Stack>
       </Stack>
