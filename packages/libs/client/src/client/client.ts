@@ -268,15 +268,16 @@ export interface ICreateClient {
       chainId: ChainId;
       networkId: string;
       type?: 'local' | 'send' | 'poll' | 'listen' | 'spv';
-    }) => string | { host: string; headers: Record<string, string> },
+    }) => string | { hostUrl: string; headers: Record<string, string> },
     defaults?: { confirmationDepth?: number },
   ): IClient;
 }
 
 const getHostData = (
-  hostObject: string | { host: string; headers: Record<string, string> },
+  hostObject: string | { hostUrl: string; headers: Record<string, string> },
 ) => {
-  const hostUrl = typeof hostObject === 'string' ? hostObject : hostObject.host;
+  const hostUrl =
+    typeof hostObject === 'string' ? hostObject : hostObject.hostUrl;
   const headers = typeof hostObject === 'object' ? hostObject.headers : {};
   return { hostUrl, headers };
 };
@@ -295,17 +296,15 @@ export const createClient: ICreateClient = (
   const client: IBaseClient = {
     local(body, options) {
       const cmd: IPactCommand = JSON.parse(body.cmd);
-      const hostUrl = getHost({
+      const hostObject = getHost({
         chainId: cmd.meta.chainId,
         networkId: cmd.networkId,
       });
-      if (typeof hostUrl === 'object') {
-        return local(body, hostUrl.host, {
-          ...options,
-          headers: hostUrl.headers,
-        });
-      }
-      return local(body, hostUrl, options);
+      const { hostUrl, headers } = getHostData(hostObject);
+      return local(body, hostUrl, {
+        ...options,
+        headers: headers,
+      });
     },
     submit: (async (body) => {
       const isList = Array.isArray(body);
@@ -320,9 +319,7 @@ export const createClient: ICreateClient = (
         networkId: cmd.networkId,
       });
 
-      const hostUrl =
-        typeof hostObject === 'string' ? hostObject : hostObject.host;
-      const headers = typeof hostObject === 'object' ? hostObject.headers : {};
+      const { hostUrl, headers } = getHostData(hostObject);
 
       const { requestKeys } = await send({ cmds: commands }, hostUrl, {
         headers,
