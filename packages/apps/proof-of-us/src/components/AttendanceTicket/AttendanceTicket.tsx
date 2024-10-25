@@ -59,15 +59,20 @@ export const AttendanceTicket: FC<IProps> = ({ data, share }) => {
       <Stack
         className={classNames(wrapperClass, { [shareWrapperClass]: share })}
       >
-        <motion.div
-          layoutId={data.image}
-          className={shareClass}
-          style={{
-            backgroundImage: `url("${getIPFSLink(data.image)}")`,
-            backgroundColor: data.properties?.avatar?.backgroundColor,
-            aspectRatio: aspectRatio,
-          }}
-        ></motion.div>
+        {imgWidth && (
+          <motion.div
+            layoutId={data.image}
+            transition={{ delay: 1, duration: 0.5 }}
+            initial={{ opacity: 0, y: '-50%' }}
+            animate={{ opacity: 1, y: 0 }}
+            className={shareClass}
+            style={{
+              backgroundImage: `url("${getIPFSLink(data.image)}")`,
+              backgroundColor: data.properties?.avatar?.backgroundColor,
+              aspectRatio: aspectRatio,
+            }}
+          ></motion.div>
+        )}
         <div className={gradientClass}></div>
       </Stack>
     );
