@@ -1,7 +1,14 @@
 import { ListingHeader } from '@/components/ListingHeader';
 import { Token } from '@/components/Token';
 import { useGetSales } from '@/hooks/getSales';
-import { Grid, GridItem, Heading, ProgressCircle } from '@kadena/kode-ui';
+import {
+  Badge,
+  Grid,
+  GridItem,
+  Heading,
+  ProgressCircle,
+  Stack,
+} from '@kadena/kode-ui';
 import { useEffect, useState } from 'react';
 
 const Home = () => {
@@ -23,48 +30,45 @@ const Home = () => {
   }, [saleState]);
 
   return (
-    <div>
+    <>
       <ListingHeader />
-      <div>
-        <div style={{ marginTop: '40px', marginBottom: '20px' }}>
-          <Heading as="h3">Active Sales</Heading>
+
+      <Stack
+        marginBlockStart="lg"
+        marginBlockEnd="lg"
+        gap="sm"
+        alignItems="center"
+      >
+        <Heading as="h3">Active Listings</Heading>
+        <Badge style="highContrast">{data.length}</Badge>
+      </Stack>
+
+      {error && (
+        <div>
+          Error: <pre>{JSON.stringify(error, null, 2)}</pre>
         </div>
+      )}
+      {loading && <ProgressCircle size="lg" isIndeterminate />}
+      {!loading && !error && data.length === 0 && (
+        <Heading as="h5">No sales found</Heading>
+      )}
 
-        {error && (
-          <div>
-            Error: <pre>{JSON.stringify(error, null, 2)}</pre>
-          </div>
-        )}
-        {loading && <ProgressCircle size="lg" isIndeterminate />}
-        {!loading && !error && data.length === 0 && (
-          <Heading as="h5">No sales found</Heading>
-        )}
-
-        <Grid
-          columns={{
-            lg: 4,
-            md: 3,
-            sm: 2,
-            xs: 1,
-          }}
-          gap="xl"
-        >
-          {data.map((sale, index) => (
-            <GridItem key={index}>
-              <a
-                href={`/tokens/${sale.tokenId}?saleId=${sale.saleId}&chainId=${sale.chainId}`}
-              >
-                <Token
-                  tokenId={sale.tokenId}
-                  chainId={sale.chainId}
-                  sale={sale}
-                />
-              </a>
-            </GridItem>
-          ))}
-        </Grid>
-      </div>
-    </div>
+      <Grid
+        columns={{
+          lg: 4,
+          md: 3,
+          sm: 2,
+          xs: 1,
+        }}
+        gap="xl"
+      >
+        {data.map((sale) => (
+          <GridItem key={sale.saleId}>
+            <Token tokenId={sale.tokenId} chainId={sale.chainId} sale={sale} />
+          </GridItem>
+        ))}
+      </Grid>
+    </>
   );
 };
 

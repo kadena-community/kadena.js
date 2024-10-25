@@ -35,7 +35,10 @@ export const RegularSale = ({ sale }: RegularSaleProps) => {
 
   const onTransactionSigned = (transaction: IUnsignedCommand | ICommand) => {
     setTransaction(transaction);
-    router.push(`/transaction?returnUrl=/tokens`);
+    deleteSale();
+    router.push(
+      `/transaction?returnUrl=/tokens/${sale.tokenId}?chainId=${sale.chainId}`,
+    );
   };
   const config = {
     host: env.URL,
@@ -102,7 +105,6 @@ export const RegularSale = ({ sale }: RegularSaleProps) => {
           },
         },
       ).execute();
-      deleteSale();
     } catch (error) {
       console.error(error);
     }

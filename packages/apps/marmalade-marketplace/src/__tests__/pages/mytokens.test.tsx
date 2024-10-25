@@ -16,6 +16,9 @@ const mockGetTokens = vi.mocked(getTokens);
 vi.mock('@/components/Token', () => ({
   Token: ({ tokenId }: { tokenId: string }) => <div>{tokenId}</div>,
 }));
+vi.mock('@/utils/fetchOnSaleTokens', () => ({
+  fetchOnSaleTokens: console.log,
+}));
 
 const dummyAccountContext = {
   account: null,

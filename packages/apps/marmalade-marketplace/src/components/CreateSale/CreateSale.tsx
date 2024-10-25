@@ -1,3 +1,4 @@
+import { useGetSale } from '@/hooks/getSale';
 import { useTransaction } from '@/hooks/transaction';
 import { IAccountContext } from '@/providers/AccountProvider/AccountProvider';
 import { getTimestampFromDays } from '@/utils/date';
@@ -46,6 +47,7 @@ interface IProps {
   tokenPrecision: number;
   account: IAccountContext;
   policyConfig: ISaleTokenPolicyConfig;
+  saleId?: string;
 }
 
 export const CreateSale: FC<IProps> = ({
@@ -53,10 +55,12 @@ export const CreateSale: FC<IProps> = ({
   tokenPrecision,
   account,
   policyConfig,
+  saleId,
 }) => {
   const { setTransaction } = useTransaction();
   const params = useParams();
   const router = useRouter();
+  const { data } = useGetSale(saleId as string);
   const searchParams = useSearchParams();
   const [tokenId, setTokenId] = useState<string>('');
   const [chainId, setChainId] = useState<string>('');
@@ -194,6 +198,24 @@ export const CreateSale: FC<IProps> = ({
       setChainId(chainIdParam);
     }
   }, [searchParams]);
+
+  if (saleId && data?.seller.account === account.account?.accountName) {
+    return (
+      <Stack width="100%">
+        <CardContentBlock
+          className={atoms({ width: '100%' })}
+          title="Create a Sale"
+          supportingContent={
+            <Stack flexDirection="column" width="100%" gap="md">
+              <Text>This token is already on sale</Text>
+            </Stack>
+          }
+        >
+          {!account.account && <ConnectButton />}
+        </CardContentBlock>
+      </Stack>
+    );
+  }
 
   if (balance === 0) {
     return (
