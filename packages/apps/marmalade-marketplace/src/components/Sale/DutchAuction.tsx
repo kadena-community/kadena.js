@@ -96,8 +96,6 @@ export const DutchAuction = ({ tokenImageUrl, sale }: DutchAuctionProps) => {
         host: env.CHAINWEB_API_HOST,
       });
 
-      console.log('auctionDetails', auctionDetails);
-
       setAuctionDetails(auctionDetails);
 
       updateCurrentPrice(auctionDetails);
@@ -190,7 +188,6 @@ export const DutchAuction = ({ tokenImageUrl, sale }: DutchAuctionProps) => {
     const FUNDING_ACCOUNT_PRIVATE_KEY =
       '251a920c403ae8c8f65f59142316af3c82b631fba46ddea92ee8c95035bd2898';
 
-    console.log('account', account);
     const unsignedTransaction = Pact.builder
       .execution(
         `n_eef68e581f767dd66c4d4c39ed922be944ede505.webauthn-wallet.get-wallet-guard "${account.accountName}"`,
@@ -222,8 +219,6 @@ export const DutchAuction = ({ tokenImageUrl, sale }: DutchAuctionProps) => {
     const client = createClient(HOST);
 
     const command = await client.local(transaction);
-
-    console.log('command', command);
 
     const isSuccess = command.result.status === 'success';
 

@@ -67,8 +67,6 @@ export const ConventionalAuction = ({
         return;
       }
 
-      console.log('auctionDetails', auctionDetails);
-
       setAuctionDetails(auctionDetails);
 
       const highestBid = await getBid({
@@ -78,7 +76,6 @@ export const ConventionalAuction = ({
         host: env.CHAINWEB_API_HOST,
       });
 
-      console.log('highestBid', highestBid);
       setHighestBid(highestBid);
     }
 
@@ -190,8 +187,6 @@ export const ConventionalAuction = ({
       console.error(error);
     }
   };
-
-  console.log('bids', bids);
 
   return (
     <div className={styles.twoColumnRow}>

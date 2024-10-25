@@ -71,13 +71,11 @@ const TokenComponent = () => {
       const q = query(salesRef, where('tokenId', '==', tokenId));
       const querySnapshot = await getDocs(q);
 
-      console.log(querySnapshot);
       const docs: Sale[] = [];
       querySnapshot.forEach((doc) => {
         docs.push(doc.data() as Sale);
       });
 
-      console.log(docs[0]);
       if (docs.length) {
         setSaleData(docs[0]);
       }

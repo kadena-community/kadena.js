@@ -33,7 +33,6 @@ const MyTokens = () => {
       );
       const querySnapshot = await getDocs(q);
 
-      console.log(querySnapshot);
       const docs: NonFungibleTokenBalance[] = [];
       querySnapshot.forEach((doc) => {
         docs.push(doc.data() as NonFungibleTokenBalance);
@@ -56,7 +55,6 @@ const MyTokens = () => {
     fetchOnSaleTokens(account?.accountName);
   }, [account?.accountName]);
 
-  console.log({ tokens });
   return (
     <>
       <Stack flex={1} flexDirection="column">
