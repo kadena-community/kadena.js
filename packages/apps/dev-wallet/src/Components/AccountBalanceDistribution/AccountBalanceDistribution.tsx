@@ -3,6 +3,7 @@ import {
   isWatchedAccount,
   IWatchedAccount,
 } from '@/modules/account/account.repository';
+import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import {
   createRedistributionTxs,
@@ -23,7 +24,7 @@ interface IProps extends PropsWithChildren {
     balance: number;
   }[];
   overallBalance: string;
-  fundAccount: (chainId: ChainId) => Promise<void>;
+  fundAccount: (chainId: ChainId) => Promise<ITransaction>;
   account: IAccount | IWatchedAccount;
   onRedistribution: (groupId: string) => void;
 }

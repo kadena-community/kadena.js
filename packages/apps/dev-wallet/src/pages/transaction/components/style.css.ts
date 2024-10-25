@@ -113,3 +113,9 @@ export const txTileClass = style({
 export const txTileContentClass = style({
   flexBasis: 0,
 });
+
+export const txMinimizedClass = style({
+  padding: '3px',
+  paddingLeft: '5px',
+  border: `1px solid ${tokens.kda.foundation.color.border.base.default}`,
+});

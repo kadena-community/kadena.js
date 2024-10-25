@@ -7,9 +7,10 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IUnsignedCommand } from '@kadena/client';
 import { Dialog } from '@kadena/kode-ui';
 import { isSignedCommand } from '@kadena/pactjs';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ExpandedTransaction } from './ExpandedTransaction';
 import { containerClass } from './style.css';
+import { TxMinimized } from './TxMinimized';
 import { steps } from './TxPipeLine';
 import { TxTile } from './TxTile';
 
@@ -19,11 +20,13 @@ export const TxContainer = React.memo(
     as,
     sendDisabled,
     onUpdate,
+    onDone,
   }: {
     transaction: ITransaction;
-    as: 'tile' | 'expanded';
+    as: 'tile' | 'expanded' | 'minimized';
     sendDisabled?: boolean;
     onUpdate?: (tx: ITransaction) => void;
+    onDone?: (tx: ITransaction) => void;
   }) => {
     const [localTransaction, setLocalTransaction] =
       useState<ITransaction | null>(null);
@@ -73,17 +76,21 @@ export const TxContainer = React.memo(
         }
       };
 
-    const onSubmit = async (tx: ITransaction) => {
-      const result = await transactionService.onSubmitTransaction(
-        tx,
-        client,
-        (updatedTx) => {
-          setLocalTransaction(updatedTx);
-        },
-      );
-      if (onUpdate) onUpdate(result);
-      return result;
-    };
+    const onSubmit = useCallback(
+      async (tx: ITransaction) => {
+        const result = await transactionService.onSubmitTransaction(
+          tx,
+          client,
+          (updatedTx) => {
+            setLocalTransaction(updatedTx);
+          },
+        );
+        if (onUpdate) onUpdate(result);
+        if (onDone) onDone(result);
+        return result;
+      },
+      [client, onDone, onUpdate],
+    );
 
     if (!localTransaction) return null;
     const renderExpanded = () => (
@@ -95,7 +102,7 @@ export const TxContainer = React.memo(
         showTitle={as === 'tile'}
       />
     );
-    if (as === 'tile')
+    if (as === 'tile' || as === 'minimized')
       return (
         <>
           {expandedModal && (
@@ -112,19 +119,35 @@ export const TxContainer = React.memo(
               {renderExpanded()}
             </Dialog>
           )}
-          <TxTile
-            tx={localTransaction}
-            sendDisabled={sendDisabled}
-            onSign={() => {
-              onSign(localTransaction);
-            }}
-            onSubmit={() => onSubmit(localTransaction)}
-            onView={async () => {
-              setExpandedModal(true);
-            }}
-          />
+          {as === 'tile' && (
+            <TxTile
+              tx={localTransaction}
+              sendDisabled={sendDisabled}
+              onSign={() => {
+                onSign(localTransaction);
+              }}
+              onSubmit={() => onSubmit(localTransaction)}
+              onView={async () => {
+                setExpandedModal(true);
+              }}
+            />
+          )}
+          {as === 'minimized' && (
+            <TxMinimized
+              tx={localTransaction}
+              sendDisabled={sendDisabled}
+              onSign={() => {
+                onSign(localTransaction);
+              }}
+              onSubmit={() => onSubmit(localTransaction)}
+              onView={async () => {
+                setExpandedModal(true);
+              }}
+            />
+          )}
         </>
       );
+
     return renderExpanded();
   },
 );

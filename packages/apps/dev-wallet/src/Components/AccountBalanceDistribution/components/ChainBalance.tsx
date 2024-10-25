@@ -1,6 +1,8 @@
+import { FundOnTestnetButton } from '@/Components/FundOnTestnet/FundOnTestnet';
+import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { ChainId } from '@kadena/client';
-import { Button, Stack, Text, TextField } from '@kadena/kode-ui';
+import { Stack, Text, TextField } from '@kadena/kode-ui';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 import classNames from 'classnames';
 import type { FC, PropsWithChildren } from 'react';
@@ -18,8 +20,8 @@ import {
 
 interface IProps extends PropsWithChildren {
   chainAccount: IViewChain;
-  chainId: string;
-  fundAccount?: (chainId: ChainId) => Promise<void>;
+  chainId: ChainId;
+  fundAccount?: (chainId: ChainId) => Promise<ITransaction>;
   editable?: boolean;
   onItemChange?: (key: string, value: any) => void;
 }
@@ -61,14 +63,12 @@ export const ChainBalance: FC<IProps> = ({
           Chain {chainId}
         </Text>
         {!editable && activeNetwork?.faucetContract && fundAccount && (
-          <Button
-            isCompact
-            variant={chainAccount.balance ? 'primary' : 'transparent'}
-            className={fundButtonClass}
-            onPress={() => fundAccount(chainId as ChainId)}
-          >
-            Fund on Testnet
-          </Button>
+          <span className={fundButtonClass}>
+            <FundOnTestnetButton
+              fundAccountHandler={fundAccount}
+              chainId={chainId}
+            />
+          </span>
         )}
       </Stack>
 
