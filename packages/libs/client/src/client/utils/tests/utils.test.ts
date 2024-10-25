@@ -69,7 +69,7 @@ describe('client utils', () => {
       expect(
         kadenaHostGenerator({ networkId: 'testnet05', chainId: '14' }),
       ).toBe(
-        'https://api1.testnet05.chainweb.com/chainweb/0.0/testnet05/chain/14/pact',
+        'https://api.testnet05.chainweb.com/chainweb/0.0/testnet05/chain/14/pact',
       );
     });
 
