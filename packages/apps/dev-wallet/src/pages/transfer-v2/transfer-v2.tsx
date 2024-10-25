@@ -199,11 +199,11 @@ export function TransferV2() {
       <Stack gap={'md'} flexDirection={'column'}>
         {onlyOneTx && (
           <TxList
-            onUpdate={() => {
+            onDone={() => {
               console.log('update');
               reloadTxs();
             }}
-            txs={txGroups.transfer.txs}
+            txIds={txGroups.transfer.txs.map(({ uuid }) => uuid)}
             showExpanded={true}
           />
         )}
@@ -215,11 +215,11 @@ export function TransferV2() {
                 <Text>First we send required tokens to the target chains</Text>
               </Stack>
               <TxList
-                onUpdate={() => {
+                onDone={() => {
                   console.log('update');
                   reloadTxs();
                 }}
-                txs={reTxs}
+                txIds={reTxs.map(({ uuid }) => uuid)}
               />
             </Stack>
             <Divider />
@@ -232,11 +232,11 @@ export function TransferV2() {
               <Text>These are the transactions for the final transfers</Text>
             </Stack>
             <TxList
-              onUpdate={() => {
+              onDone={() => {
                 console.log('update');
                 reloadTxs();
               }}
-              txs={txGroups.transfer.txs}
+              txIds={txGroups.transfer.txs.map(({ uuid }) => uuid)}
               sendDisabled={submitIsDisabled}
             />
             {submitIsDisabled && (

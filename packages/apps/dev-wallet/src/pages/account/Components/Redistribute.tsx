@@ -9,19 +9,10 @@ export function Redistribute({
   groupId: string;
   onDone: () => void;
 }) {
-  const [reTxs, , , reloadTxs] = useAsync(
+  const [reTxs] = useAsync(
     async (gid) => transactionRepository.getTransactionsByGroup(gid),
     [groupId],
   );
   if (!reTxs) return null;
-  return (
-    <TxList
-      onUpdate={() => {
-        console.log('update');
-        reloadTxs();
-      }}
-      txs={reTxs}
-      onDone={onDone}
-    />
-  );
+  return <TxList txIds={reTxs.map((tx) => tx.uuid)} onDone={onDone} />;
 }

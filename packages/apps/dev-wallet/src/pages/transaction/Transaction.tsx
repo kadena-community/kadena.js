@@ -5,10 +5,12 @@ import {
 } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten } from '@/utils/helpers';
+import { useAsync } from '@/utils/useAsync';
 import { ICommand, IUnsignedCommand } from '@kadena/client';
 import { MonoBrightness1 } from '@kadena/kode-icons/system';
 import {
   Button,
+  Heading,
   Notification,
   Stack,
   TabItem,
@@ -21,6 +23,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CommandView } from './components/CommandView';
 import { SubmittedStatus } from './components/SubmittedStatus';
+import { TxList } from './components/TxList';
 import {
   failureClass,
   pendingClass,
@@ -361,5 +364,29 @@ export function Transaction({ groupId }: { groupId?: string }) {
 
 export const TransactionPage = () => {
   const { groupId } = useParams();
-  return <Transaction groupId={groupId} />;
+  const [txs = []] = useAsync(
+    (gid) =>
+      gid
+        ? transactionRepository.getTransactionsByGroup(gid)
+        : Promise.resolve([]),
+    [groupId],
+  );
+  return (
+    <Stack flexDirection={'column'} gap={'lg'}>
+      <Stack flexDirection={'column'} gap={'sm'}>
+        <Heading>Transactions</Heading>
+        {txs.length === 0 && <Text>No transactions</Text>}
+        {txs.length >= 2 && (
+          <Text>This is a group of {txs.length} Transactions</Text>
+        )}
+      </Stack>
+      <TxList
+        onDone={() => {
+          console.log('done');
+        }}
+        txIds={txs.map((tx) => tx.uuid)}
+        showExpanded={txs.length === 1}
+      />
+    </Stack>
+  );
 };
