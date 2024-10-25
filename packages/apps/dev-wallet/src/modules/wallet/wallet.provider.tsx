@@ -197,7 +197,7 @@ function usePassword(profile: IProfile | undefined) {
       if (unlockOptions.keepOpen === 'never') {
         return unlockOptions.password;
       }
-      setPassword(unlockOptions.password);
+      await setPassword(unlockOptions.password);
       if (unlockOptions.keepOpen === 'short-time') {
         setTimeout(
           () => {
