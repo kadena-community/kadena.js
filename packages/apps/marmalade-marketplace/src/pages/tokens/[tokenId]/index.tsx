@@ -27,13 +27,24 @@ import { useParams, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 //styles
+import { Sale } from '@/hooks/getSales';
 import { layoutClass } from '@/styles/layout.css';
+import { database } from '@/utils/firebase';
 import {
   CardContentBlock,
   CardFixedContainer,
   CardFooterGroup,
 } from '@kadena/kode-ui/patterns';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import * as styles from '../../../styles/token.css';
+
+interface ITokenInfo {
+  id: string;
+  policies: Policy[];
+  precision: { int: string };
+  supply: number;
+  uri: string;
+}
 
 const TokenComponent = () => {
   const params = useParams();
@@ -41,6 +52,7 @@ const TokenComponent = () => {
   const [balance, setBalance] = useState<number>(0);
   const [tokenId, setTokenId] = useState<string>('');
   const [saleId, setSaleId] = useState<string | null>(null);
+  const [saleData, setSaleData] = useState<Sale | null>(null);
   const [chainId, setChainId] = useState<string>('');
   const [tokenInfo, setTokenInfo] = useState<ITokenInfo | null>();
   const [tokenImageUrl, setTokenImageUrl] = useState<string>('/no-image.webp');
@@ -52,13 +64,30 @@ const TokenComponent = () => {
 
   const [selectedKey, setSelectedKey] = useState(saleId ? 'bid' : 'info');
 
-  interface ITokenInfo {
-    id: string;
-    policies: Policy[];
-    precision: { int: string };
-    supply: number;
-    uri: string;
-  }
+  const fetchOnSaleTokens = async (tokenId?: string) => {
+    if (tokenId) {
+      //const querySnapshot = await getDocs(query(collection(database, 'sales')));
+      const salesRef = collection(database, 'sales');
+      const q = query(salesRef, where('tokenId', '==', tokenId));
+      const querySnapshot = await getDocs(q);
+
+      console.log(querySnapshot);
+      const docs: Sale[] = [];
+      querySnapshot.forEach((doc) => {
+        docs.push(doc.data() as Sale);
+      });
+
+      console.log(docs[0]);
+      if (docs.length) {
+        setSaleData(docs[0]);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (!tokenId) return;
+    fetchOnSaleTokens(tokenId);
+  }, [tokenId]);
 
   useEffect(() => {
     async function fetch() {
@@ -216,7 +245,7 @@ const TokenComponent = () => {
                 tokenPrecision={tokenPrecision}
                 account={account}
                 policyConfig={policyConfig}
-                saleId={saleId!}
+                saleId={saleData?.saleId!}
               />
             </Stack>
           </TabItem>
@@ -224,7 +253,7 @@ const TokenComponent = () => {
 
           <TabItem title="Buy" key="bid">
             <Stack className={styles.flexContainer}>
-              <Bid saleId={saleId!} tokenImageUrl={tokenImageUrl} />
+              <Bid saleId={saleData?.saleId!} tokenImageUrl={tokenImageUrl} />
             </Stack>
           </TabItem>
 

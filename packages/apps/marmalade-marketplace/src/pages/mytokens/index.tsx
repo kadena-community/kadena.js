@@ -2,6 +2,7 @@ import { ListingHeader } from '@/components/ListingHeader';
 import { Token } from '@/components/Token';
 import { getTokens, NonFungibleTokenBalance } from '@/graphql/queries/client';
 import { useAccount } from '@/hooks/account';
+import { database } from '@/utils/firebase';
 import { ChainId } from '@kadena/client';
 import {
   Badge,
@@ -11,12 +12,35 @@ import {
   ProgressCircle,
   Stack,
 } from '@kadena/kode-ui';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
 const MyTokens = () => {
   const [tokens, setTokens] = useState<Array<NonFungibleTokenBalance>>([]);
+  const [onSaleTokens, setOnSaleTokens] = useState<
+    Array<NonFungibleTokenBalance>
+  >([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { account } = useAccount();
+
+  const fetchOnSaleTokens = async (accountName?: string) => {
+    if (accountName) {
+      //const querySnapshot = await getDocs(query(collection(database, 'sales')));
+      const salesRef = collection(database, 'sales');
+      const q = await query(
+        salesRef,
+        where('seller.account', '==', account?.accountName),
+      );
+      const querySnapshot = await getDocs(q);
+
+      console.log(querySnapshot);
+      const docs: NonFungibleTokenBalance[] = [];
+      querySnapshot.forEach((doc) => {
+        docs.push(doc.data() as NonFungibleTokenBalance);
+      });
+      setOnSaleTokens(docs);
+    }
+  };
 
   const fetchTokens = async (accountName?: string) => {
     if (accountName) {
@@ -29,6 +53,7 @@ const MyTokens = () => {
   useEffect(() => {
     setIsLoading(true);
     fetchTokens(account?.accountName);
+    fetchOnSaleTokens(account?.accountName);
   }, [account?.accountName]);
 
   console.log({ tokens });
@@ -60,7 +85,7 @@ const MyTokens = () => {
           {isLoading ? (
             <ProgressCircle size="lg" isIndeterminate />
           ) : (
-            tokens.map((token) => (
+            [...tokens, ...onSaleTokens].map((token) => (
               <GridItem key={token.tokenId}>
                 <Token
                   tokenId={token.tokenId}
