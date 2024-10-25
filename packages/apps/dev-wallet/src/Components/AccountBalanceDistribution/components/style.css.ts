@@ -44,6 +44,9 @@ export const fundButtonClass = style({
     '&:focus': {
       opacity: 1,
     },
+    '&.pending': {
+      opacity: 1,
+    },
   },
 });
 
