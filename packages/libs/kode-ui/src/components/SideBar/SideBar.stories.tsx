@@ -3,8 +3,10 @@ import React from 'react';
 
 import type { ISideBar } from './SideBar';
 import { SideBar } from './SideBar';
-import { SideBarHeader } from './components/SideBarFooter';
+import { SideBarFooter } from './components/SideBarFooter';
+import { SideBarHeader } from './components/SideBarHeader';
 import { SideBarItem } from './components/SideBarItem';
+import { SideBarNavigation } from './components/SideBarNavigation';
 
 const sampleNetworkItems: string[] = ['Mainnet', 'Testnet'];
 
@@ -34,10 +36,16 @@ export const Primary: IStory = {
   args: {},
   render: () => {
     return (
-      <SideBar>
+      <SideBar isExpanded={true}>
         <SideBarHeader>
-          <SideBarItem label="item 1" />
+          <SideBarItem label="headeritem 1" />
         </SideBarHeader>
+        <SideBarNavigation>
+          <SideBarItem label="nav item 1" />
+        </SideBarNavigation>
+        <SideBarFooter>
+          <SideBarItem label="footer item 1" />
+        </SideBarFooter>
       </SideBar>
     );
   },
