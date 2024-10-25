@@ -83,6 +83,9 @@ export const AttendanceTicket: FC<IProps> = ({ data, share }) => {
       <motion.div
         layoutId={data.image}
         className={ticketClass}
+        transition={{ delay: 1, duration: 0.5 }}
+        initial={{ opacity: 0, y: '-50%' }}
+        animate={{ opacity: 1, y: 0 }}
         style={{
           backgroundImage: `url("${getIPFSLink(data.image)}")`,
           backgroundColor: data.properties?.avatar?.backgroundColor,
