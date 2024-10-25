@@ -28,8 +28,10 @@ export function TxList({
   onUpdate,
   sendDisabled,
   onDone,
+  showExpanded,
 }: {
   txs: ITransaction[];
+  showExpanded?: boolean;
   onUpdate: () => void;
   sendDisabled?: boolean;
   onDone?: () => void;
@@ -82,6 +84,7 @@ export function TxList({
         hash: tx.hash,
       } as ICommand)
       .then(async (result) => {
+        console.log('preflight', result);
         const updatedTx = {
           ...tx,
           status: 'preflight',
@@ -98,6 +101,9 @@ export function TxList({
     ) {
       return updatedTx;
     }
+    if (updatedTx.preflight?.result.status === 'failure') {
+      return updatedTx;
+    }
     updatedTx = await client
       .submitOne({
         cmd: tx.cmd,
@@ -105,8 +111,8 @@ export function TxList({
         hash: tx.hash,
       } as ICommand)
       .then(async (request) => {
-        const updatedTx = {
-          ...tx,
+        updatedTx = {
+          ...updatedTx,
           status: 'submitted',
           request,
         } as ITransaction;
@@ -216,19 +222,46 @@ export function TxList({
 
   const selectedTx =
     selectedTxIndex !== undefined ? txs[selectedTxIndex] : undefined;
+
+  const onExpandedSign =
+    (tx: ITransaction) => async (sigs: ITransaction['sigs']) => {
+      const updated = {
+        ...tx,
+        sigs,
+        status: sigs.every((data) => data?.sig)
+          ? steps.indexOf(tx.status) < steps.indexOf('signed')
+            ? 'signed'
+            : tx.status
+          : tx.status,
+      } as ITransaction;
+      await transactionRepository.updateTransaction(updated);
+      onUpdate();
+    };
   return (
     <Stack flexDirection={'column'} gap={'lg'}>
       <Stack flexDirection={'row'} flexWrap="wrap" gap="md">
         {txs.length === 0 && <Text>No transactions</Text>}
-        {txs.map((tx, index) => (
-          <TxTile
-            tx={tx}
-            onView={() => setSelectedTxIndex(index)}
-            onSubmit={() => onSubmit(tx)}
-            onSign={() => onSign(tx)}
-            sendDisabled={sendDisabled}
-          />
-        ))}
+        {!showExpanded &&
+          txs.map((tx, index) => (
+            <TxTile
+              tx={tx}
+              onView={() => setSelectedTxIndex(index)}
+              onSubmit={() => onSubmit(tx)}
+              onSign={() => onSign(tx)}
+              sendDisabled={sendDisabled}
+            />
+          ))}
+        {showExpanded &&
+          txs.map((tx) => (
+            <Stack flexDirection={'column'} justifyContent={'flex-start'}>
+              <ExpandedTransaction
+                transaction={tx}
+                onSign={onExpandedSign(tx)}
+                onSubmit={() => onSubmit(tx)}
+                sendDisabled={sendDisabled}
+              />
+            </Stack>
+          ))}
         <Dialog
           className={containerClass}
           isOpen={selectedTxIndex !== undefined}
@@ -242,38 +275,29 @@ export function TxList({
           {selectedTx && (
             <ExpandedTransaction
               transaction={selectedTx}
-              onSign={async (sigs) => {
-                const updated = {
-                  ...selectedTx,
-                  sigs,
-                  status: sigs.every((data) => data?.sig)
-                    ? steps.indexOf(selectedTx.status) < steps.indexOf('signed')
-                      ? 'signed'
-                      : selectedTx.status
-                    : selectedTx.status,
-                } as ITransaction;
-                await transactionRepository.updateTransaction(updated);
-                onUpdate();
-              }}
+              onSign={onExpandedSign(selectedTx)}
               onSubmit={() => onSubmit(selectedTx)}
+              sendDisabled={sendDisabled}
             />
           )}
         </Dialog>
       </Stack>
-      {!txs.every((tx) => statusPassed(tx.status, 'signed')) && (
-        <Stack gap={'sm'} flexDirection={'column'}>
-          <Text>You can sign all transactions at once.</Text>
-          <Stack>
-            <Button isCompact onClick={signAll}>
-              <Stack>
-                <MonoSignature scale={0.5} />
-                Sign All Transactions
-              </Stack>
-            </Button>
+      {!showExpanded &&
+        !txs.every((tx) => statusPassed(tx.status, 'signed')) && (
+          <Stack gap={'sm'} flexDirection={'column'}>
+            <Text>You can sign all transactions at once.</Text>
+            <Stack>
+              <Button isCompact onClick={signAll}>
+                <Stack>
+                  <MonoSignature scale={0.5} />
+                  Sign All Transactions
+                </Stack>
+              </Button>
+            </Stack>
           </Stack>
-        </Stack>
-      )}
-      {!sendDisabled &&
+        )}
+      {!showExpanded &&
+        !sendDisabled &&
         txs.every((tx) => statusPassed(tx.status, 'signed')) &&
         txs.find((tx) => tx.status === 'signed') && (
           <Stack flexDirection={'column'} gap={'sm'}>

@@ -52,7 +52,7 @@ export const buttonListClass = style([
     textDecoration: 'none',
   }),
   {
-    border: 'none',
+    border: 'solid 1px transparent',
     cursor: 'pointer',
     flex: 1,
     minHeight: '50px',
@@ -64,6 +64,10 @@ export const buttonListClass = style([
       '&:disabled': {
         opacity: 0.5,
         cursor: 'not-allowed',
+      },
+      '&.selected': {
+        background: cardHoverColor,
+        border: `1px solid ${tokens.kda.foundation.color.border.base['@active']}`,
       },
     },
   },

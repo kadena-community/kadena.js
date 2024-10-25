@@ -10,8 +10,11 @@ import {
   MonoCheck,
   MonoClose,
   MonoLoading,
+  MonoPauseCircle,
+  MonoSignature,
+  MonoViewInAr,
 } from '@kadena/kode-icons/system';
-import { Stack, Text } from '@kadena/kode-ui';
+import { Button, Stack, Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import { failureClass, pendingClass, successClass } from './style.css';
 
@@ -40,10 +43,24 @@ export const getStatusClass = (status: ITransaction['status']) => {
 export function TxPipeLine({
   tx,
   variant,
-}: {
-  tx: ITransaction;
-  variant: 'tile' | 'expanded';
-}) {
+  signAll,
+  onSubmit,
+  sendDisabled,
+}:
+  | {
+      tx: ITransaction;
+      variant: 'tile';
+      signAll?: () => Promise<void>;
+      onSubmit?: () => Promise<ITransaction>;
+      sendDisabled?: boolean;
+    }
+  | {
+      tx: ITransaction;
+      variant: 'expanded';
+      signAll: () => Promise<void>;
+      onSubmit: () => Promise<ITransaction>;
+      sendDisabled?: boolean;
+    }) {
   const textSize = variant === 'tile' ? 'smallest' : 'base';
   const [contTx] = useAsync(
     (transaction) =>
@@ -54,9 +71,37 @@ export function TxPipeLine({
         : Promise.resolve(null),
     [tx],
   );
+  const showAfterCont = !contTx || variant === 'expanded';
   return (
-    <Stack flexDirection={'column'}>
-      {!contTx && statusPassed(tx.status, 'signed') && (
+    <Stack flexDirection={'column'} gap={'md'}>
+      <Stack justifyContent={'space-between'}>
+        <Text>
+          {tx.continuation?.autoContinue ? 'exec' : 'hash'}:{' '}
+          {shorten(tx.hash, 6)}
+        </Text>
+      </Stack>
+      {showAfterCont &&
+        variant === 'expanded' &&
+        !statusPassed(tx.status, 'signed') && (
+          <Stack flexDirection={'column'} gap={'md'}>
+            <Text size={textSize} className={pendingClass}>
+              <Stack alignItems={'center'} gap={'xs'}>
+                <MonoPauseCircle />
+                Waiting for sign
+              </Stack>
+            </Text>
+            <Stack>
+              <Button
+                isCompact
+                onClick={() => signAll()}
+                startVisual={<MonoSignature />}
+              >
+                Sign all possible signers
+              </Button>
+            </Stack>
+          </Stack>
+        )}
+      {showAfterCont && statusPassed(tx.status, 'signed') && (
         <Stack>
           <Text size={textSize} className={successClass}>
             <Stack alignItems={'center'} gap={'xs'}>
@@ -66,17 +111,50 @@ export function TxPipeLine({
           </Text>
         </Stack>
       )}
-      {!contTx && statusPassed(tx.status, 'preflight') && (
+      {showAfterCont &&
+        variant === 'expanded' &&
+        statusPassed(tx.status, 'signed') &&
+        !statusPassed(tx.status, 'preflight') && (
+          <Stack flexDirection={'column'} gap={'md'}>
+            <Text size={textSize} className={pendingClass}>
+              <Stack alignItems={'center'} gap={'xs'}>
+                <MonoPauseCircle />
+                {sendDisabled ? 'Send is pending' : 'Ready to send'}
+              </Stack>
+            </Text>
+
+            <Button
+              isCompact
+              onClick={onSubmit}
+              isDisabled={sendDisabled}
+              startVisual={<MonoViewInAr />}
+            >
+              Send transaction
+            </Button>
+          </Stack>
+        )}
+      {showAfterCont && statusPassed(tx.status, 'preflight') && (
         <Stack>
-          <Text size={textSize} className={successClass}>
+          <Text
+            size={textSize}
+            className={
+              tx.preflight?.result.status === 'success'
+                ? successClass
+                : failureClass
+            }
+          >
             <Stack alignItems={'center'} gap={'xs'}>
-              <MonoCheck />
+              {tx.preflight?.result.status === 'success' ? (
+                <MonoCheck />
+              ) : (
+                <MonoClose />
+              )}
               preflight
             </Stack>
           </Text>
         </Stack>
       )}
-      {!contTx && statusPassed(tx.status, 'submitted') && (
+      {showAfterCont && statusPassed(tx.status, 'submitted') && (
         <Stack>
           <Text size={textSize} className={successClass}>
             <Stack alignItems={'center'} gap={'xs'}>
@@ -86,7 +164,7 @@ export function TxPipeLine({
           </Text>
         </Stack>
       )}
-      {!contTx &&
+      {showAfterCont &&
         statusPassed(tx.status, 'submitted') &&
         (!('result' in tx) || !tx.result) && (
           <Stack>

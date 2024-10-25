@@ -66,7 +66,7 @@ export const pendingClass = style({
 });
 
 export const successClass = style({
-  color: vars.colors.$positiveAccent,
+  color: vars.colors.$positiveSurface,
 });
 
 export const failureClass = style({
@@ -75,6 +75,14 @@ export const failureClass = style({
 
 export const pendingText = style({
   opacity: 0.5,
+});
+
+export const textEllipsis = style({
+  overflow: 'hidden',
+  minHeight: '2.2em',
+  // overflowY: 'hidden',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
 });
 
 export const tabTextClass = style({

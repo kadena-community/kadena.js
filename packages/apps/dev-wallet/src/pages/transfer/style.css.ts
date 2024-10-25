@@ -1,8 +1,8 @@
-import { tokens } from '@kadena/kode-ui/styles';
+import { tokens, vars } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const linkClass = style({
-  color: tokens.kda.foundation.color.palette.aqua.n50,
+  color: vars.colors.$positiveSurface,
   background: 'transparent',
   textAlign: 'left',
   border: 'none',

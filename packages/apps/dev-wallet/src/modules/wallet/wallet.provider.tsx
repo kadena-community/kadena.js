@@ -197,7 +197,7 @@ function usePassword(profile: IProfile | undefined) {
       if (unlockOptions.keepOpen === 'never') {
         return unlockOptions.password;
       }
-      setPassword(unlockOptions.password);
+      await setPassword(unlockOptions.password);
       if (unlockOptions.keepOpen === 'short-time') {
         setTimeout(
           () => {
@@ -487,6 +487,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
         await setProfile(profile, true);
       }
       setContextValue((ctx) => ({ ...ctx, loaded: true }));
+      globalThis.dispatchEvent(new CustomEvent('wallet-loaded'));
     };
     loadSession();
   }, [retrieveProfileList, session, setProfile]);
