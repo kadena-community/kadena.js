@@ -11,7 +11,6 @@ interface IProps {
 }
 
 export const NormalBid: FC<IProps> = ({ data, tokenImageUrl }) => {
-  console.log({ data });
   return (
     <CardContentBlock
       title="Buy token"
