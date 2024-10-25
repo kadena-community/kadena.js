@@ -1,4 +1,3 @@
-import { cleanup } from '@testing-library/react';
 import '@vanilla-extract/css/disableRuntimeStyles';
 import { afterEach, beforeAll, vi } from 'vitest';
 import 'vitest-dom/extend-expect';
@@ -7,9 +6,7 @@ beforeAll(() => {
   vi.mock('next/router', () => import('next-router-mock'));
 });
 
-afterEach(() => {
-  cleanup();
-});
+afterEach(() => {});
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
