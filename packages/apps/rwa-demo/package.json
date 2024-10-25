@@ -27,8 +27,6 @@
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
-    "@testing-library/react": "~14.0.0",
-    "@testing-library/react-hooks": "^8.0.1",
     "@types/node": "^20.12.7",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
