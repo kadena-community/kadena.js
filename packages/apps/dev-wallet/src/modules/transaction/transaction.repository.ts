@@ -70,6 +70,11 @@ export interface TransactionRepository {
   getTransaction: (uuid: string) => Promise<ITransaction>;
   getTransactionByHash: (hash: string) => Promise<ITransaction>;
   getTransactionsByGroup: (groupId: string) => Promise<ITransaction[]>;
+  getTransactionByHashNetworkProfile: (
+    profileId: string,
+    networkUUID: UUID,
+    hash: string,
+  ) => Promise<ITransaction>;
   addTransaction: (transaction: ITransaction) => Promise<void>;
   updateTransaction: (transaction: ITransaction) => Promise<void>;
   deleteTransaction: (transactionId: string) => Promise<void>;
@@ -107,6 +112,21 @@ const createTransactionRepository = ({
     getTransactionByHash: async (hash: string): Promise<ITransaction> => {
       const tx = getAll('transaction', hash, 'hash');
       return Array.isArray(tx) ? tx[0] : undefined;
+    },
+    getTransactionByHashNetworkProfile: async (
+      profileId: string,
+      networkUUID: UUID,
+      hash: string,
+    ) => {
+      const txs = (await getAll(
+        'transaction',
+        IDBKeyRange.only([profileId, networkUUID, hash]),
+        'unique-tx',
+      )) as ITransaction[];
+      if (txs.length > 1) {
+        throw new Error('Multiple transactions with the same hash');
+      }
+      return txs[0];
     },
     getTransactionsByGroup: async (
       groupId: string,
