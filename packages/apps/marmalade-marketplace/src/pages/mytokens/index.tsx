@@ -66,8 +66,10 @@ const MyTokens = () => {
           gap="sm"
           alignItems="center"
         >
-          <Heading as="h3">Active Listings</Heading>
-          <Badge style="highContrast">{tokens.length}</Badge>
+          <Heading as="h3">My Tokens</Heading>
+          <Badge style="highContrast">
+            {[...tokens, ...onSaleTokens].length}
+          </Badge>
         </Stack>
 
         <Grid
