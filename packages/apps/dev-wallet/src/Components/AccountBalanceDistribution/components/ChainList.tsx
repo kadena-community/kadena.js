@@ -1,3 +1,4 @@
+import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { ChainId } from '@kadena/client';
 import { Stack } from '@kadena/kode-ui';
 import type { FC, PropsWithChildren } from 'react';
@@ -6,7 +7,7 @@ import { ChainBalance } from './ChainBalance';
 
 interface IProps extends PropsWithChildren {
   chains: IViewChain[];
-  fundAccount?: (chainId: ChainId) => Promise<void>;
+  fundAccount?: (chainId: ChainId) => Promise<ITransaction>;
   editable?: boolean;
   onItemChange?: (key: string, value: any) => void;
 }

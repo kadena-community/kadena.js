@@ -36,6 +36,7 @@ export type ITransaction = {
     done?: boolean;
   };
   purpose?: { type: string; data: Record<string, unknown> };
+  result?: ICommandResult;
 } & (
   | {
       height?: number;

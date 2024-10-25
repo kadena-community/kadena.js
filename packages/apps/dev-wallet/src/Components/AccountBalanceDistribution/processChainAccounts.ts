@@ -1,7 +1,7 @@
 import { ChainId } from '@kadena/client';
 
 export interface IViewChain {
-  chainId: string;
+  chainId: ChainId;
   percentage?: number;
   balance?: number;
 }

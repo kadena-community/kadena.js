@@ -4,7 +4,6 @@ import {
   ContextMenu,
   ContextMenuItem,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   Heading,
   Notification,
@@ -33,11 +32,13 @@ export function ExpandedTransaction({
   onSign,
   sendDisabled,
   onSubmit,
+  showTitle,
 }: {
   transaction: ITransaction;
   onSign: (sig: ITransaction['sigs']) => void;
   onSubmit: () => Promise<ITransaction>;
   sendDisabled?: boolean;
+  showTitle?: boolean;
 }) {
   const { sign } = useWallet();
 
@@ -83,7 +84,7 @@ export function ExpandedTransaction({
     <>
       <DialogHeader>
         <Stack justifyContent={'space-between'}>
-          <Heading>View Transaction</Heading>
+          {showTitle && <Heading>View Transaction</Heading>}
         </Stack>
       </DialogHeader>
       <DialogContent>
@@ -112,6 +113,24 @@ export function ExpandedTransaction({
             flexDirection={'column'}
             className={panelClass}
           >
+            {statusPassed(transaction.status, 'success') &&
+              (!transaction.continuation?.autoContinue ||
+                (contTx && statusPassed(contTx.status, 'success'))) && (
+                <Stack>
+                  <Notification intent="positive" role="status">
+                    Transaction is successful
+                  </Notification>
+                </Stack>
+              )}
+            {transaction.status === 'failure' &&
+              (!transaction.continuation?.autoContinue ||
+                (contTx && contTx.status === 'failure')) && (
+                <Stack>
+                  <Notification intent="negative" role="status">
+                    Transaction is failed
+                  </Notification>
+                </Stack>
+              )}
             <Tabs isContained>
               <TabItem title="Command Details">
                 <Stack gap={'sm'} flexDirection={'column'}>
@@ -212,24 +231,6 @@ export function ExpandedTransaction({
           </Stack>
         </Stack>
       </DialogContent>
-      <DialogFooter>
-        <Stack
-          gap={'sm'}
-          flexDirection={'row'}
-          justifyContent={'space-between'}
-          flex={1}
-        >
-          <Stack>
-            {statusPassed(transaction.status, 'success') &&
-              (!transaction.continuation?.autoContinue ||
-                (contTx && statusPassed(contTx.status, 'success'))) && (
-                <Notification intent="positive" role="status">
-                  Transaction is successful
-                </Notification>
-              )}
-          </Stack>
-        </Stack>
-      </DialogFooter>
     </>
   );
 }

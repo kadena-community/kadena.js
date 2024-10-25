@@ -4,6 +4,7 @@ import { fundAccount } from '@/modules/account/account.service';
 
 import { AccountBalanceDistribution } from '@/Components/AccountBalanceDistribution/AccountBalanceDistribution';
 import { ConfirmDeletion } from '@/Components/ConfirmDeletion/ConfirmDeletion';
+import { FundOnTestnetButton } from '@/Components/FundOnTestnet/FundOnTestnet';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import { QRCode } from '@/Components/QRCode/QRCode';
 import {
@@ -54,14 +55,16 @@ export function AccountPage() {
   }
 
   const fundAccountHandler = async (chainId: ChainId) => {
-    if ('watched' in account && account.watched) return;
+    if ('watched' in account && account.watched) {
+      throw new Error('Can not fund watched account');
+    }
     if (!keyset || !('principal' in keyset)) {
       throw new Error('No keyset found');
     }
     if (!activeNetwork) {
       throw new Error('No active network found');
     }
-    const { groupId } = await fundAccount({
+    const tx = await fundAccount({
       address: account?.address ?? keyset.principal,
       chainId,
       keyset,
@@ -69,7 +72,7 @@ export function AccountPage() {
       network: activeNetwork,
     });
 
-    navigate(`/transaction/${groupId}`);
+    return tx;
   };
   const isOwnedAccount =
     !isWatchedAccount(account) && account.profileId === profile?.uuid;
@@ -95,13 +98,12 @@ export function AccountPage() {
         )}
       </Stack>
       {isOwnedAccount && (
-        <Stack gap="md">
+        <Stack gap="md" alignItems={'center'}>
           <Link
             to={`/transfer?accountId=${account.uuid}`}
             className={noStyleLinkClass}
           >
             <Button
-              isCompact
               isDisabled={+account.overallBalance === 0}
               onPress={(e: any) => {
                 e.preventDefault();
@@ -113,17 +115,10 @@ export function AccountPage() {
           {asset.contract === 'coin' &&
             (activeNetwork?.networkId === 'testnet05' ||
               activeNetwork?.networkId === 'testnet04') && (
-              <Button
-                variant="outlined"
-                isCompact
-                onPress={() =>
-                  fundAccountHandler(
-                    Math.floor(Math.random() * 20).toString() as ChainId,
-                  )
-                }
-              >
-                Fund on Testnet
-              </Button>
+              <FundOnTestnetButton
+                account={account}
+                fundAccountHandler={fundAccountHandler}
+              />
             )}
           {asset.contract === 'coin' && (
             <a
@@ -131,9 +126,7 @@ export function AccountPage() {
               href="https://www.kadena.io/kda-token#:~:text=activities%2C%20and%20events.-,Where%20to%20Buy%20KDA,-Buy"
               target="_blank"
             >
-              <Button variant="outlined" isCompact>
-                Buy KDA
-              </Button>
+              <Button variant="outlined">Buy KDA</Button>
             </a>
           )}
         </Stack>
