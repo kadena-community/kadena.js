@@ -4,23 +4,32 @@ import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { TxContainer } from '@/pages/transaction/components/TxContainer';
 import { ChainId } from '@kadena/client';
-import { Button } from '@kadena/kode-ui';
+import { MonoAutorenew } from '@kadena/kode-icons/system';
+import { Button, Stack } from '@kadena/kode-ui';
+import classNames from 'classnames';
 import { useState } from 'react';
 
 export function FundOnTestnetButton({
   account,
   chainId,
   fundAccountHandler,
+  className,
 }: {
   account?: IAccount;
   chainId?: ChainId;
   fundAccountHandler: (chainId: ChainId) => Promise<ITransaction>;
+  className?: string;
 }) {
   const [fundTx, setFundTx] = useState<ITransaction>();
   const { syncAllAccounts } = useWallet();
+  const [done, setDone] = useState(false);
 
   return (
-    <>
+    <Stack
+      gap={'sm'}
+      alignItems={'center'}
+      className={classNames(className, fundTx && 'pending')}
+    >
       {!fundTx && (
         <Button
           variant="outlined"
@@ -46,12 +55,22 @@ export function FundOnTestnetButton({
             } else {
               syncAllAccounts();
             }
-            if (tx.result?.result.status === 'success') {
-              setTimeout(() => setFundTx(undefined), 2000);
-            }
+            setDone(true);
           }}
         />
       )}
-    </>
+      {fundTx && done && (
+        <Button
+          isCompact
+          variant="transparent"
+          onClick={() => {
+            setFundTx(undefined);
+            setDone(false);
+          }}
+        >
+          <MonoAutorenew />
+        </Button>
+      )}
+    </Stack>
   );
 }

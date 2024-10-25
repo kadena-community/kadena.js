@@ -7,4 +7,5 @@ export const labelClass = style({
   background: tokens.kda.foundation.color.background.surface.default,
   padding: '8px',
   marginLeft: '-12px',
+  fontWeight: '700',
 });

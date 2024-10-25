@@ -1,5 +1,4 @@
 import {
-  ICommand,
   IPactCommand,
   IPartialPactCommand,
   ISigningRequest,
@@ -7,16 +6,23 @@ import {
   createTransaction,
 } from '@kadena/client';
 
-import { PactCodeView } from '@/Components/PactCodeView/PactCodeView';
-import { Wizard } from '@/Components/Wizard/Wizard';
+import { transactionRepository } from '@/modules/transaction/transaction.repository';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { Box, Button, Card, Heading, Text } from '@kadena/kode-ui';
+import {
+  Box,
+  Button,
+  Heading,
+  Notification,
+  Stack,
+  Text,
+} from '@kadena/kode-ui';
 import { execCodeParser } from '@kadena/pactjs-generator';
+import classNames from 'classnames';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { codeArea } from './style.css';
-import { normalizeSigs, normalizeTx } from './utils/normalizeSigs';
+import { normalizeTx } from './utils/normalizeSigs';
 
 type requestScheme =
   | 'invalid'
@@ -75,8 +81,7 @@ export function SignatureBuilder() {
   const [capsWithoutSigners, setCapsWithoutSigners] = useState<
     ISigningRequest['caps']
   >([]);
-  const { sign, profile, activeNetwork, networks, setActiveNetwork } =
-    useWallet();
+  const { profile, activeNetwork, networks, setActiveNetwork } = useWallet();
   const navigate = useNavigate();
 
   const exec =
@@ -88,6 +93,13 @@ export function SignatureBuilder() {
     () => (exec.code ? execCodeParser(exec.code) : undefined),
     [exec.code],
   );
+
+  console.log('parsedCode', {
+    parsedCode,
+    capsWithoutSigners,
+    signed,
+    setSignedTx,
+  });
 
   function processSig(inputData: string) {
     setInput(inputData);
@@ -125,225 +137,79 @@ export function SignatureBuilder() {
     setSchema(schema);
   }
 
-  async function signTransaction() {
-    if (unsignedTx) {
-      const normalizedTx = { ...unsignedTx, sigs: normalizeSigs(unsignedTx) };
-      const tx = (await sign(normalizedTx)) as ICommand;
-      setSignedTx(tx);
-    }
-  }
-
   return (
-    <>
-      <Wizard>
-        <Wizard.Render>
-          {({ step, goTo }) => (
-            <Box>
-              <Button
-                variant="transparent"
-                isDisabled={step < 0}
-                onPress={() => goTo(0)}
-              >{`Paste Data`}</Button>
-              {schema === 'signingRequest' && (
-                <Button
-                  variant="transparent"
-                  isDisabled={step < 1}
-                  onPress={() => goTo(1)}
-                >{`Add Signers`}</Button>
-              )}
-              <Button
-                variant="transparent"
-                isDisabled={step < 2}
-                onPress={() => goTo(2)}
-              >{`Review Transaction`}</Button>
-              <Button
-                variant="transparent"
-                isDisabled={step < 3}
-                onPress={() => goTo(3)}
-              >{`Sign Transaction`}</Button>
-            </Box>
-          )}
-        </Wizard.Render>
-        <Wizard.Step>
-          {({ goTo }) => (
+    <Stack flexDirection={'column'} gap={'md'}>
+      <Heading variant="h5">Paste SigData, CommandSigData, or Payload</Heading>
+      <textarea
+        value={input}
+        className={classNames(codeArea)}
+        onChange={(e) => {
+          e.preventDefault();
+          processSig(e.target.value);
+        }}
+      />
+      <Box>{schema && <Text>{`Schema: ${schema}`}</Text>}</Box>
+      <Box>
+        <Box>
+          {['PactCommand', 'quickSignRequest'].includes(schema!) && (
             <>
-              <Heading variant="h5">
-                Paste SigData, CommandSigData, or Payload
-              </Heading>
-              <textarea
-                value={input}
-                className={codeArea}
-                onChange={(e) => {
-                  e.preventDefault();
-                  processSig(e.target.value);
-                }}
-              />
-              <Box>{schema && <Text>{`Schema: ${schema}`}</Text>}</Box>
-              <Box>
-                <Box>
-                  {['PactCommand', 'quickSignRequest'].includes(schema!) && (
-                    <>
-                      <Button
-                        onPress={async () => {
-                          if (!unsignedTx || !profile || !activeNetwork) return;
-                          const command: IPactCommand = JSON.parse(
-                            unsignedTx.cmd,
-                          );
-                          let networkUUID = activeNetwork.uuid;
-                          if (
-                            command.networkId &&
-                            activeNetwork.networkId !== command.networkId
-                          ) {
-                            const network = networks.filter(
-                              ({ networkId }) =>
-                                networkId === command.networkId,
-                            );
-                            if (network.length === 0) {
-                              throw new Error('Network not found');
-                            }
-                            if (network.length > 1) {
-                              throw new Error('Multiple networks found');
-                            }
-                            networkUUID = network[0].uuid;
-                            // switch network
-                            setActiveNetwork(network[0]);
-                          }
-                          const groupId = crypto.randomUUID();
-
-                          await transactionService.addTransaction({
-                            transaction: unsignedTx,
-                            profileId: profile.uuid,
-                            networkUUID: networkUUID,
-                            groupId,
-                          });
-                          navigate(`/transaction/${groupId}`);
-                        }}
-                      >
-                        Review Transaction
-                      </Button>
-                    </>
-                  )}
-                  {schema === 'signingRequest' && (
-                    <Button onPress={() => goTo(1)}>Add Signers</Button>
-                  )}
-                </Box>
-              </Box>
-            </>
-          )}
-        </Wizard.Step>
-        <Wizard.Step>
-          {({ back, next }) => (
-            <>
-              <Heading variant="h5">Edit Transaction</Heading>
-              <pre>{JSON.stringify(pactCommand, null, 2)}</pre>
-              {capsWithoutSigners && (
-                <pre>{JSON.stringify(capsWithoutSigners, null, 2)}</pre>
-              )}
-              <Button onPress={() => back()} variant="transparent">
-                Back to Input
-              </Button>
-              <Button onPress={() => next()}>Review Transaction</Button>
-            </>
-          )}
-        </Wizard.Step>
-        <Wizard.Step>
-          {({ back, next, goTo }) => (
-            <>
-              <Heading variant="h5">Review Transaction</Heading>
-              <Box>
-                <Text bold>Hash: </Text>
-                <Text>{unsignedTx?.hash}</Text>
-              </Box>
-              <Heading variant="h6">Code</Heading>
-              {parsedCode &&
-                parsedCode.map((pc) => (
-                  <Card>
-                    <PactCodeView parsedCode={pc} />
-                  </Card>
-                ))}
-
-              <Heading variant="h6">Data</Heading>
-              <pre>{JSON.stringify(exec.data, null, 2)}</pre>
-              <Text bold>Transaction Metadata & Information</Text>
-              <Box>
-                Network :<Text>{pactCommand?.networkId}</Text>
-              </Box>
-              <Box>
-                Chain :<Text>{pactCommand?.meta?.chainId}</Text>
-              </Box>
-              <Box>
-                Gas Payer:
-                <Text>{pactCommand?.meta?.sender}</Text>
-              </Box>
-              <Box>
-                Gas Limit: <Text>{pactCommand?.meta?.gasLimit}</Text>
-              </Box>
-              <Box>
-                Gas Price: <Text>{pactCommand?.meta?.gasPrice}</Text>
-              </Box>
-              <Box>
-                Max Gas Cost:{' '}
-                <Text>
-                  {Number(pactCommand?.meta?.gasPrice) *
-                    Number(pactCommand?.meta?.gasLimit)}
-                </Text>
-              </Box>
-              <Box>
-                Creation Time <Text>{pactCommand?.meta?.creationTime}</Text>
-              </Box>
-              <Box>
-                TTL : <Text>{pactCommand?.meta?.ttl}</Text>
-              </Box>
-              <Box>
-                Nonce : <Text>{pactCommand?.nonce}</Text>
-              </Box>
-              <Box>
-                Tx Type :
-                <Text>
-                  {'cont' in (pactCommand?.payload ?? {}) ? 'Cont' : 'Exec'}
-                </Text>
-              </Box>
-
-              <Heading variant="h6">Transaction</Heading>
-              <Card>
-                <pre>{JSON.stringify(unsignedTx, null, 2)}</pre>
-              </Card>
-              {schema !== 'quickSignRequest' ? (
-                <Button onPress={() => back()} variant="transparent">
-                  Back to Edit Transaction
-                </Button>
-              ) : (
-                <Button onPress={() => goTo(0)} variant="transparent">
-                  Back to Input
-                </Button>
-              )}
               <Button
                 onPress={async () => {
-                  await signTransaction();
-                  next();
+                  if (!unsignedTx || !profile || !activeNetwork) return;
+                  const command: IPactCommand = JSON.parse(unsignedTx.cmd);
+                  let networkUUID = activeNetwork.uuid;
+                  if (
+                    command.networkId &&
+                    activeNetwork.networkId !== command.networkId
+                  ) {
+                    const network = networks.filter(
+                      ({ networkId }) => networkId === command.networkId,
+                    );
+                    if (network.length === 0) {
+                      throw new Error('Network not found');
+                    }
+                    if (network.length > 1) {
+                      throw new Error('Multiple networks found');
+                    }
+                    networkUUID = network[0].uuid;
+                    // switch network
+                    setActiveNetwork(network[0]);
+                  }
+                  const groupId = crypto.randomUUID();
+
+                  // check if transaction already exists
+                  const tx =
+                    await transactionRepository.getTransactionByHashNetworkProfile(
+                      profile.uuid,
+                      networkUUID,
+                      unsignedTx.hash,
+                    );
+
+                  if (tx) {
+                    navigate(`/transaction/${tx.groupId}`);
+                    return;
+                  }
+
+                  await transactionService.addTransaction({
+                    transaction: unsignedTx,
+                    profileId: profile.uuid,
+                    networkUUID: networkUUID,
+                    groupId,
+                  });
+                  navigate(`/transaction/${groupId}`);
                 }}
               >
-                Sign Transaction
+                Review Transaction
               </Button>
             </>
           )}
-        </Wizard.Step>
-        <Wizard.Step>
-          {({ back }) => (
-            <>
-              <Heading variant="h5">Signed Transaction</Heading>
-              <Card>
-                <pre style={{ whiteSpace: 'break-spaces' }}>
-                  {JSON.stringify(signed, null, 2)}
-                </pre>
-              </Card>
-              <Button onPress={() => back()} variant="transparent">
-                Back to Review Transaction
-              </Button>
-            </>
+          {schema === 'signingRequest' && (
+            <Notification intent="info" role="status">
+              SigningRequest is not supported yet, We are working on it.
+            </Notification>
           )}
-        </Wizard.Step>
-      </Wizard>
-    </>
+        </Box>
+      </Box>
+    </Stack>
   );
 }

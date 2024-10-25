@@ -63,12 +63,11 @@ export const ChainBalance: FC<IProps> = ({
           Chain {chainId}
         </Text>
         {!editable && activeNetwork?.faucetContract && fundAccount && (
-          <span className={fundButtonClass}>
-            <FundOnTestnetButton
-              fundAccountHandler={fundAccount}
-              chainId={chainId}
-            />
-          </span>
+          <FundOnTestnetButton
+            className={fundButtonClass}
+            fundAccountHandler={fundAccount}
+            chainId={chainId}
+          />
         )}
       </Stack>
 
