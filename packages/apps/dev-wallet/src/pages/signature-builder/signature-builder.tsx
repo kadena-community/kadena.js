@@ -1,5 +1,4 @@
 import {
-  ICommand,
   IPactCommand,
   IPartialPactCommand,
   ISigningRequest,
@@ -7,15 +6,12 @@ import {
   createTransaction,
 } from '@kadena/client';
 
-import { PactCodeView } from '@/Components/PactCodeView/PactCodeView';
-import { Wizard } from '@/Components/Wizard/Wizard';
 import { transactionRepository } from '@/modules/transaction/transaction.repository';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import {
   Box,
   Button,
-  Card,
   Heading,
   Notification,
   Stack,
@@ -25,9 +21,8 @@ import { execCodeParser } from '@kadena/pactjs-generator';
 import classNames from 'classnames';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { panelClass } from '../home/style.css';
 import { codeArea } from './style.css';
-import { normalizeSigs, normalizeTx } from './utils/normalizeSigs';
+import { normalizeTx } from './utils/normalizeSigs';
 
 type requestScheme =
   | 'invalid'
@@ -86,8 +81,7 @@ export function SignatureBuilder() {
   const [capsWithoutSigners, setCapsWithoutSigners] = useState<
     ISigningRequest['caps']
   >([]);
-  const { sign, profile, activeNetwork, networks, setActiveNetwork } =
-    useWallet();
+  const { profile, activeNetwork, networks, setActiveNetwork } = useWallet();
   const navigate = useNavigate();
 
   const exec =
@@ -99,6 +93,13 @@ export function SignatureBuilder() {
     () => (exec.code ? execCodeParser(exec.code) : undefined),
     [exec.code],
   );
+
+  console.log('parsedCode', {
+    parsedCode,
+    capsWithoutSigners,
+    signed,
+    setSignedTx,
+  });
 
   function processSig(inputData: string) {
     setInput(inputData);
@@ -141,7 +142,7 @@ export function SignatureBuilder() {
       <Heading variant="h5">Paste SigData, CommandSigData, or Payload</Heading>
       <textarea
         value={input}
-        className={classNames(codeArea, panelClass)}
+        className={classNames(codeArea)}
         onChange={(e) => {
           e.preventDefault();
           processSig(e.target.value);
