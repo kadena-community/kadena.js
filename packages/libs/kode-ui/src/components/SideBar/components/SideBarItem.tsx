@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import React from 'react';
-import { Text } from 'src/components/Typography';
+import { Text } from './../../Typography';
 
 export interface ISideBarItem {
   label: string;

@@ -4,6 +4,7 @@ import React from 'react';
 import type { ISideBar } from './SideBar';
 import { SideBar } from './SideBar';
 import { SideBarHeader } from './components/SideBarFooter';
+import { SideBarItem } from './components/SideBarItem';
 
 const sampleNetworkItems: string[] = ['Mainnet', 'Testnet'];
 
@@ -32,7 +33,13 @@ export const Primary: IStory = {
   name: 'SideBar',
   args: {},
   render: () => {
-    return <>sdffsd</>;
+    return (
+      <SideBar>
+        <SideBarHeader>
+          <SideBarItem label="item 1" />
+        </SideBarHeader>
+      </SideBar>
+    );
   },
 };
 
