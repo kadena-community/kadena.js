@@ -36,7 +36,7 @@ export const kadenaConstants: KadenaConstants = {
   },
   testnet05: {
     label: 'Testnet05',
-    API: env('KADENA_TESTNET05_API', 'api1.testnet05.chainweb.com'),
+    API: env('KADENA_TESTNET05_API', 'api.testnet05.chainweb.com'),
     apiHost: ({ networkId, chainId }) =>
       `https://${kadenaConstants.testnet05.API}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
     estatsHost: () => '',
