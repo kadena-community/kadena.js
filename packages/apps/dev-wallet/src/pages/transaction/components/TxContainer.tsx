@@ -1,3 +1,4 @@
+import { dbService } from '@/modules/db/db.service';
 import {
   ITransaction,
   transactionRepository,
@@ -34,6 +35,25 @@ export const TxContainer = React.memo(
     const { sign, client } = useWallet();
 
     useEffect(() => {
+      if (transaction.uuid) return;
+      transactionService.syncTransactionStatus(transaction, client);
+    }, [transaction.uuid]);
+
+    useEffect(() => {
+      if (!transaction) return;
+      dbService.subscribe((event, table, data) => {
+        if (table !== 'transaction' || event !== 'update') return;
+        if (data.uuid === transaction.uuid) {
+          setLocalTransaction(data);
+          return;
+        }
+        if (data.continuation?.continuationTxId === transaction.uuid) {
+          setLocalTransaction({ ...data });
+        }
+      });
+    }, [transaction.uuid, localTransaction?.continuation?.continuationTxId]);
+
+    useEffect(() => {
       if (!transaction) return;
       transactionRepository
         .getTransaction(transaction.uuid)
@@ -52,7 +72,7 @@ export const TxContainer = React.memo(
           : tx.status,
       } as ITransaction;
       await transactionRepository.updateTransaction(updated);
-      setLocalTransaction(updated);
+      // setLocalTransaction(updated);
       if (onUpdate) {
         onUpdate(updated);
       }
@@ -70,7 +90,7 @@ export const TxContainer = React.memo(
             : tx.status,
         } as ITransaction;
         await transactionRepository.updateTransaction(updated);
-        setLocalTransaction(updated);
+        // setLocalTransaction(updated);
         if (onUpdate) {
           onUpdate(updated);
         }
@@ -81,9 +101,9 @@ export const TxContainer = React.memo(
         const result = await transactionService.onSubmitTransaction(
           tx,
           client,
-          (updatedTx) => {
-            setLocalTransaction(updatedTx);
-          },
+          // (updatedTx) => {
+          //   // setLocalTransaction(updatedTx);
+          // },
         );
         if (onUpdate) onUpdate(result);
         if (onDone) onDone(result);
