@@ -49,13 +49,13 @@ const createConnectionPool = (
   };
 };
 
-const { DB_NAME, DB_VERSION } = config.DB;
+const { DB_NAME, DB_VERSION, DB_WIPE_ON_VERSION_CHANGE } = config.DB;
 
 export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
   const result = await connect(DB_NAME, DB_VERSION);
   let db = result.db;
   if (result.needsUpgrade) {
-    if (import.meta.env.DEV) {
+    if (import.meta.env.DEV || DB_WIPE_ON_VERSION_CHANGE) {
       console.log(
         'in development we delete the database if schema is changed for now since we are still in early stage of development',
       );
