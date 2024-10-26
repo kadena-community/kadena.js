@@ -11,6 +11,7 @@ import {
   setMeta,
   setNetworkId,
 } from '@kadena/client/fp';
+import { isSignedCommand } from '@kadena/pactjs';
 import { UUID } from '../types';
 import { ITransaction, transactionRepository } from './transaction.repository';
 
@@ -34,7 +35,7 @@ export async function addTransaction({
     uuid: crypto.randomUUID(),
     profileId,
     networkUUID,
-    status: 'initiated' as const,
+    status: isSignedCommand(transaction) ? 'signed' : 'initiated',
     groupId,
     ...(crossChainId || autoContinue
       ? { continuation: { crossChainId, autoContinue } }
