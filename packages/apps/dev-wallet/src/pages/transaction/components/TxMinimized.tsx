@@ -9,6 +9,7 @@ import { txMinimizedClass } from './style.css';
 
 export const TxMinimized = ({
   tx,
+  contTx,
   onSign,
   onSubmit,
   onView,
@@ -16,6 +17,7 @@ export const TxMinimized = ({
   interactive = false,
 }: {
   tx: ITransaction;
+  contTx?: ITransaction;
   onSign: () => void;
   onSubmit: () => Promise<ITransaction>;
   onView: () => void;
@@ -37,7 +39,7 @@ export const TxMinimized = ({
       alignItems={'center'}
     >
       <Stack gap={'sm'}>
-        <TxPipeLine tx={tx} variant="minimized" />
+        <TxPipeLine tx={tx} variant="minimized" contTx={contTx} />
         {interactive && tx.status === 'initiated' && (
           <Button isCompact variant="info" onClick={() => onSign()}>
             Sign

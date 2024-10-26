@@ -15,18 +15,21 @@ import { TxPipeLine } from './TxPipeLine';
 
 export const TxTile = ({
   tx,
+  contTx,
   onSign,
   onSubmit,
   onView,
   sendDisabled,
 }: {
   tx: ITransaction;
+  contTx?: ITransaction;
   onSign: () => void;
   onSubmit: () => Promise<ITransaction>;
   onView: () => void;
   sendDisabled?: boolean;
 }) => {
   const command: IPactCommand = JSON.parse(tx.cmd);
+
   return (
     <Stack
       flexDirection={'column'}
@@ -35,7 +38,7 @@ export const TxTile = ({
       gap={'sm'}
     >
       <Stack flexDirection={'column'} gap={'sm'} flex={1}>
-        <TxPipeLine tx={tx} variant="tile" />
+        <TxPipeLine tx={tx} variant="tile" contTx={contTx} />
         {tx.status === 'initiated' && (
           <>
             {'exec' in command.payload && (

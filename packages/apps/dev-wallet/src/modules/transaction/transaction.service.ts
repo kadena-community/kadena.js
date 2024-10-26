@@ -3,6 +3,7 @@ import {
   createTransaction,
   IClient,
   ICommand,
+  IPactCommand,
   ITransactionDescriptor,
   IUnsignedCommand,
 } from '@kadena/client';
@@ -68,10 +69,10 @@ export async function syncTransactionStatus(
     if (!network) {
       throw new Error('Network not found');
     }
-    const cmd = JSON.parse(tx.cmd);
+    const cmd: IPactCommand = JSON.parse(tx.cmd);
     const txDescriptor: ITransactionDescriptor = tx.request || {
       networkId: network.networkId,
-      chainId: cmd.chainId,
+      chainId: cmd.meta.chainId,
       requestKey: tx.hash,
     };
     const pollResponse = await client.getStatus(txDescriptor);

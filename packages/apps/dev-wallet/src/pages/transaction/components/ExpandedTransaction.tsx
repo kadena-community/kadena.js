@@ -16,43 +16,30 @@ import yaml from 'js-yaml';
 import { codeClass } from './style.css.ts';
 
 import { CopyButton } from '@/Components/CopyButton/CopyButton.tsx';
-import {
-  ITransaction,
-  transactionRepository,
-} from '@/modules/transaction/transaction.repository.ts';
+import { ITransaction } from '@/modules/transaction/transaction.repository.ts';
 import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
 import { panelClass } from '@/pages/home/style.css.ts';
-import { useAsync } from '@/utils/useAsync.tsx';
+
 import { MonoMoreVert } from '@kadena/kode-icons/system';
 import { CommandView } from './CommandView.tsx';
 import { statusPassed, TxPipeLine } from './TxPipeLine.tsx';
 
 export function ExpandedTransaction({
   transaction,
+  contTx,
   onSign,
   sendDisabled,
   onSubmit,
   showTitle,
 }: {
   transaction: ITransaction;
+  contTx?: ITransaction;
   onSign: (sig: ITransaction['sigs']) => void;
   onSubmit: () => Promise<ITransaction>;
   sendDisabled?: boolean;
   showTitle?: boolean;
 }) {
   const { sign } = useWallet();
-
-  const [contTx] = useAsync(
-    (tx) =>
-      tx.continuation?.continuationTxId
-        ? transactionRepository.getTransaction(
-            tx.continuation?.continuationTxId,
-          )
-        : Promise.resolve(null),
-    [transaction],
-  );
-
-  console.log('contTx', contTx);
 
   const copyTransactionAs = (format: 'json' | 'yaml') => () => {
     const transactionData = {
@@ -101,6 +88,7 @@ export function ExpandedTransaction({
             <Heading variant="h6">Tx Status</Heading>
             <TxPipeLine
               tx={transaction}
+              contTx={contTx}
               variant={'expanded'}
               signAll={signAll}
               onSubmit={onSubmit}
