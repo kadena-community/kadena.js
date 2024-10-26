@@ -1,12 +1,9 @@
 import {
   ITransaction,
-  transactionRepository,
   TransactionStatus,
 } from '@/modules/transaction/transaction.repository';
 import { shorten } from '@/utils/helpers';
-import { useAsync } from '@/utils/useAsync';
 import {
-  MonoBrightness1,
   MonoCheck,
   MonoClose,
   MonoLoading,
@@ -15,7 +12,6 @@ import {
   MonoViewInAr,
 } from '@kadena/kode-icons/system';
 import { Button, Stack, Text } from '@kadena/kode-ui';
-import classNames from 'classnames';
 import { failureClass, pendingClass, successClass } from './style.css';
 
 export const steps: TransactionStatus[] = [
@@ -42,26 +38,19 @@ export const getStatusClass = (status: ITransaction['status']) => {
 
 export function TxPipeLine({
   tx,
+  contTx,
   variant,
   signAll,
   onSubmit,
   sendDisabled,
 }: {
   tx: ITransaction;
+  contTx?: ITransaction;
   variant: 'tile' | 'expanded' | 'minimized';
   signAll?: () => void;
   onSubmit?: () => void;
   sendDisabled?: boolean;
 }) {
-  const [contTx] = useAsync(
-    (transaction) =>
-      transaction.continuation?.continuationTxId
-        ? transactionRepository.getTransaction(
-            transaction.continuation?.continuationTxId,
-          )
-        : Promise.resolve(null),
-    [tx],
-  );
   const showAfterCont = !contTx || variant === 'expanded';
   return (
     <Stack flexDirection={'column'} gap={'md'}>
@@ -240,30 +229,40 @@ function TxStatusList({
           </Text>
         </Stack>
       ),
-      tx.continuation?.autoContinue && tx.continuation.proof && (
-        <Stack>
-          <Text size={textSize} className={successClass}>
-            <Stack alignItems={'center'} gap={'xs'}>
-              <MonoCheck />
-              proof fetched
-            </Stack>
-          </Text>
-        </Stack>
-      ),
-      contTx && [
-        variant !== 'minimized' && (
-          <Stack justifyContent={'space-between'}>
-            <Text>cont: {shorten(contTx.hash, 6)}</Text>
-            <MonoBrightness1
-              className={classNames(getStatusClass(contTx.status))}
-            />
-          </Stack>
-        ),
-        statusPassed(contTx.status, 'preflight') && (
+      showAfterCont &&
+        tx.continuation?.autoContinue &&
+        tx.continuation.proof && (
           <Stack>
             <Text size={textSize} className={successClass}>
               <Stack alignItems={'center'} gap={'xs'}>
                 <MonoCheck />
+                proof fetched
+              </Stack>
+            </Text>
+          </Stack>
+        ),
+      contTx && [
+        variant !== 'minimized' && (
+          <Stack justifyContent={'space-between'}>
+            <Text>cont: {shorten(contTx.hash, 6)}</Text>
+          </Stack>
+        ),
+        statusPassed(contTx.status, 'preflight') && (
+          <Stack>
+            <Text
+              size={textSize}
+              className={
+                contTx.preflight?.result.status === 'success'
+                  ? successClass
+                  : failureClass
+              }
+            >
+              <Stack alignItems={'center'} gap={'xs'}>
+                {contTx.preflight?.result.status === 'success' ? (
+                  <MonoCheck />
+                ) : (
+                  <MonoClose />
+                )}
                 preflight
               </Stack>
             </Text>

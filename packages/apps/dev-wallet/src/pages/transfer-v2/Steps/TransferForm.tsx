@@ -1,5 +1,7 @@
 import { AutoBadge, Chain } from '@/Components/Badge/Badge';
-import { IAccount } from '@/modules/account/account.repository';
+import { KeySetDialog } from '@/Components/KeysetDialog/KeySetDialog';
+import { usePrompt } from '@/Components/PromptProvider/Prompt';
+import { IAccount, IKeySet } from '@/modules/account/account.repository';
 import { activityRepository } from '@/modules/activity/activity.repository';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
@@ -76,6 +78,11 @@ export function TransferForm({
   activityId,
 }: TransferFormProps) {
   const timer = useRef<NodeJS.Timeout>();
+  // somehow react-hook-form does not trigger re-render when the value of the form is changed
+  // also for performance reason I don't want to re-render the whole form on every change
+  // so I use this state to force re-render on specific changes
+  // TODO: find a better way to handle this
+  const [, forceRender] = useState(0);
   const {
     accounts: allAccounts,
     fungibles,
@@ -83,6 +90,7 @@ export function TransferForm({
     activeNetwork,
     profile,
   } = useWallet();
+  const prompt = usePrompt();
   const [, , AdvancedMode] = useShow(true);
   const [accountToResolve, setAccountToResolve] = useState<{
     account: Transfer['receivers'][number];
@@ -286,6 +294,7 @@ export function TransferForm({
           }}
         />
       )}
+
       <Stack flexDirection="column" gap="md" flex={1}>
         <Stack gap="sm" flexDirection={'column'}>
           <Heading variant="h2">Transfer</Heading>
@@ -414,7 +423,8 @@ export function TransferForm({
           render={({ field: { value: watchReceivers } }) => {
             return (
               <>
-                {watchReceivers.map((rec, index) => {
+                {watchReceivers.map((__, index) => {
+                  const rec = getValues(`receivers.${index}`);
                   const availableChains = ['', ...CHAINS].filter((ch) => {
                     // if the receiver is not the sender, then transfer is allowed from any chain
                     if (rec.address !== senderAccount?.address) {
@@ -521,7 +531,10 @@ export function TransferForm({
                                         );
                                       }}
                                       onBlur={async () => {
-                                        if (!field.value) return;
+                                        const address = getValues(
+                                          `receivers.${index}.address`,
+                                        );
+                                        if (!address) return;
                                         if (
                                           getValues(
                                             `receivers.${index}.discoveryStatus`,
@@ -535,7 +548,7 @@ export function TransferForm({
                                         );
                                         const discoveredAccounts =
                                           await discoverReceiver(
-                                            rec.address,
+                                            address,
                                             activeNetwork!.networkId,
                                             getValues('fungible'),
                                             mapKeys,
@@ -549,6 +562,7 @@ export function TransferForm({
                                           `receivers.${index}.discoveryStatus`,
                                           'done',
                                         );
+                                        forceRender((prev) => prev + 1);
                                       }}
                                       size="sm"
                                       onSelectionChange={(value) => {
@@ -748,8 +762,33 @@ export function TransferForm({
                                     and try again. or add missing guard by
                                     clicking on{' '}
                                     <button
-                                      onClick={(e) => {
+                                      onClick={async (e) => {
                                         e.preventDefault();
+                                        const guard = (await prompt(
+                                          (resolve, reject) => (
+                                            <KeySetDialog
+                                              close={reject}
+                                              onDone={resolve}
+                                              isOpen
+                                            />
+                                          ),
+                                        )) as IKeySet['guard'];
+                                        if (guard) {
+                                          setValue(
+                                            `receivers.${index}.discoveredAccounts`,
+                                            [
+                                              {
+                                                address: getValues(
+                                                  `receivers.${index}.address`,
+                                                ),
+                                                keyset: { guard },
+                                                chains: [],
+                                                overallBalance: '0.0',
+                                              },
+                                            ],
+                                          );
+                                          forceRender((prev) => prev + 1);
+                                        }
                                       }}
                                     >
                                       Add account guard
