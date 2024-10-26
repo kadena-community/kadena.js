@@ -3,7 +3,7 @@ export const config = {
   colorList,
   defaultAccentColor: colorList[0],
   DB: {
-    DB_VERSION: 36,
+    DB_VERSION: 37,
     DB_NAME: 'dev-wallet',
   },
 };
