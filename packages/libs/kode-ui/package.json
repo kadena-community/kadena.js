@@ -80,6 +80,7 @@
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts,.tsx",
     "storybook": "storybook dev -p 6006",
+    "storybook:prod": "storybook",
     "test": "vitest run",
     "test:watch": "vitest",
     "tokens:sync": "design-sync sync",

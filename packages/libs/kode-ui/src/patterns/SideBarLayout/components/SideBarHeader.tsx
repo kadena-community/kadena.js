@@ -3,18 +3,18 @@ import classNames from 'classnames';
 import type { FC, ReactElement } from 'react';
 import React from 'react';
 import type { PressEvent } from 'react-aria';
-import { useSideBar } from '../SideBarProvider';
 import {
   headerClass,
   headerExpandedClass,
   headerWrapperClass,
   menuMenuIconClass,
-} from '../style.css';
+} from '../sidebar.css';
+import { Button } from './../../../components/Button';
+import { Stack } from './../../../components/Layout';
 import { Media } from './../../../components/Media';
-import { Button } from './../../Button';
-import { Stack } from './../../Layout';
 import { KLogo } from './Logo/KLogo';
 import { KadenaLogo } from './Logo/KadenaLogo';
+import { useSideBar } from './SideBarProvider';
 
 interface IProps {
   logo?: ReactElement;

@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 import { Stack } from './../../components';
-import { SideBarHeader } from './../../components/SideBar/components/SideBarHeader';
-import { useSideBar } from './../../components/SideBar/SideBarProvider';
+import { SideBarHeader } from './components/SideBarHeader';
+import { useSideBar } from './components/SideBarProvider';
 import { layoutExpandedWrapperClass, layoutWrapperClass } from './styles.css';
 
 export interface ISideBarLayout extends PropsWithChildren {}

@@ -7,15 +7,15 @@ import {
   MonoLightMode,
   MonoWifiTethering,
 } from '@kadena/kode-icons/system';
-import type { ISideBar } from 'src/components/SideBar/SideBar';
 import { Button, MediaContextProvider } from './../../components';
-import { SideBar } from './../../components/SideBar/SideBar';
-import { SideBarAppContext } from './../../components/SideBar/components/SideBarAppContext';
-import { SideBarContext } from './../../components/SideBar/components/SideBarContext';
-import { SideBarFooter } from './../../components/SideBar/components/SideBarFooter';
-import { SideBarItem } from './../../components/SideBar/components/SideBarItem';
-import { SideBarItemsInline } from './../../components/SideBar/components/SideBarItemsInline';
-import { SideBarNavigation } from './../../components/SideBar/components/SideBarNavigation';
+import { SideBarAppContext } from './components/SideBarAppContext';
+import { SideBarContext } from './components/SideBarContext';
+import { SideBarFooter } from './components/SideBarFooter';
+import { SideBarItem } from './components/SideBarItem';
+import { SideBarItemsInline } from './components/SideBarItemsInline';
+import { SideBarNavigation } from './components/SideBarNavigation';
+import type { ISideBar } from './SideBar';
+import { SideBar } from './SideBar';
 import { SideBarLayout } from './SideBarLayout';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -1,8 +1,7 @@
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
-import { footerWrapperClass } from '../style.css';
-
-import { Stack } from './../../Layout';
+import { footerWrapperClass } from '../sidebar.css';
+import { Stack } from './../../../components';
 
 interface IProps extends PropsWithChildren {}
 

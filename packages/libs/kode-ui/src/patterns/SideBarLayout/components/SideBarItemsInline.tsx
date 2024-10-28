@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
-import { useSideBar } from '../SideBarProvider';
 import {
   listClass,
   listItemInlineClass,
   listNotExpandedClass,
-} from '../style.css';
+} from '../sidebar.css';
+import { useSideBar } from './SideBarProvider';
 
 export interface ISideBarItemsInline extends PropsWithChildren {}
 export const SideBarItemsInline: FC<ISideBarItemsInline> = ({ children }) => {

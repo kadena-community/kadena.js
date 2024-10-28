@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
-import { useSideBar } from '../SideBarProvider';
-import { listClass, menuNavWrapperClass } from '../style.css';
+import { listClass, menuNavWrapperClass } from '../sidebar.css';
+import { useSideBar } from './SideBarProvider';
 
 export interface ISideBarNavigation extends PropsWithChildren {}
 

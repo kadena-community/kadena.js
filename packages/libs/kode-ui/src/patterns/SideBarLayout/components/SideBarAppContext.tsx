@@ -1,19 +1,19 @@
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
-import { useSideBar } from '../SideBarProvider';
-import { listClass } from '../style.css';
+import { listClass } from '../sidebar.css';
+import { useSideBar } from './SideBarProvider';
 
-export interface ISideBarContext extends PropsWithChildren {}
+export interface ISideBarAppContext extends PropsWithChildren {}
 
-export const SideBarContext: FC<ISideBarContext> = ({ children }) => {
+export const SideBarAppContext: FC<ISideBarAppContext> = ({ children }) => {
   const { isExpanded } = useSideBar();
   return (
-    <footer>
+    <header>
       <ul
         className={listClass({ direction: 'vertical', expanded: isExpanded })}
       >
         {children}
       </ul>
-    </footer>
+    </header>
   );
 };
