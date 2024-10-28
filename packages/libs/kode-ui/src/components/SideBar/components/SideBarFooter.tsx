@@ -1,25 +1,17 @@
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
-import { listClass } from '../style.css';
+import { footerWrapperClass } from '../style.css';
 
-export interface ISideBarFooter extends PropsWithChildren {
-  isExpanded?: boolean;
-}
+import { Stack } from './../../Layout';
 
-export const SideBarFooter: FC<ISideBarFooter> = ({
-  children,
-  isExpanded = false,
-}) => {
+interface IProps extends PropsWithChildren {}
+
+export const SideBarFooter: FC<IProps> = ({ children }) => {
   return (
-    <footer>
-      <ul
-        className={listClass({ direction: 'vertical', expanded: isExpanded })}
-      >
-        {React.Children.map(children, (child) => {
-          if (!React.isValidElement(child)) return null;
-          return React.cloneElement(child, { ...child.props, isExpanded });
-        })}
-      </ul>
-    </footer>
+    <header className={footerWrapperClass}>
+      <Stack width="100%" justifyContent="space-between" alignItems="center">
+        {children}
+      </Stack>
+    </header>
   );
 };

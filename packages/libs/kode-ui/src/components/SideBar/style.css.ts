@@ -1,17 +1,26 @@
 import { globalStyle } from '@vanilla-extract/css';
-import { atoms, recipe, style } from './../../styles';
+import { atoms, recipe, responsiveStyle, style } from './../../styles';
 
 export const menuWrapperClass = recipe({
   base: [
     atoms({
       position: 'relative',
-      display: 'flex',
+
       flexDirection: 'column',
+      flex: 1,
     }),
     {
-      border: '1px solid red',
-      height: '100dvh',
+      gridArea: 'sidebarlayout-sidebar',
+      height: '100%',
     },
+    responsiveStyle({
+      xs: {
+        display: 'none',
+      },
+      md: {
+        display: 'flex',
+      },
+    }),
   ],
   variants: {
     expanded: {
@@ -108,9 +117,7 @@ export const listItemClass = style([
   atoms({
     display: 'flex',
   }),
-  {
-    // width: '100%',
-  },
+  {},
 ]);
 export const listItemInlineClass = style([
   atoms({
@@ -121,4 +128,21 @@ export const listItemInlineClass = style([
   },
 ]);
 
-//globalStyle(`${listItemClass} > *`, { flex: 1 });
+globalStyle(`${listItemClass} > *`, { flex: 1 });
+
+export const headerWrapperClass = style({
+  gridArea: 'sidebarlayout-header',
+});
+export const footerWrapperClass = style([
+  {
+    gridArea: 'sidebarlayout-footer',
+  },
+  responsiveStyle({
+    xs: {
+      display: 'flex',
+    },
+    md: {
+      display: 'none',
+    },
+  }),
+]);

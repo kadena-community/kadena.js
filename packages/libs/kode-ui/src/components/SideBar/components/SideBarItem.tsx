@@ -1,20 +1,15 @@
 import type { FC, PropsWithChildren, ReactElement } from 'react';
 import React from 'react';
+import { useSideBar } from '../SideBarProvider';
 import { listItemClass } from '../style.css';
 import { Button } from './../../Button';
 
 export interface ISideBarItem extends PropsWithChildren {
-  label?: string;
   visual?: ReactElement;
-  isExpanded?: boolean;
 }
 
-export const SideBarItem: FC<ISideBarItem> = ({
-  label,
-  isExpanded = false,
-  visual,
-  children,
-}) => {
+export const SideBarItem: FC<ISideBarItem> = ({ visual, children }) => {
+  const { isExpanded } = useSideBar();
   return (
     <li className={listItemClass}>
       {!isExpanded ? (
