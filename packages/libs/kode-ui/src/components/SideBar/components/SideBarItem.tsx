@@ -1,21 +1,27 @@
-import type { FC } from 'react';
+import type { FC, PropsWithChildren, ReactElement } from 'react';
 import React from 'react';
-import { Text } from './../../Typography';
+import { listItemClass } from '../style.css';
+import { Button } from './../../Button';
 
-export interface ISideBarItem {
-  label: string;
+export interface ISideBarItem extends PropsWithChildren {
+  label?: string;
+  visual?: ReactElement;
   isExpanded?: boolean;
 }
 
 export const SideBarItem: FC<ISideBarItem> = ({
   label,
   isExpanded = false,
+  visual,
+  children,
 }) => {
   return (
-    <li>
-      <Text>
-        {label} {isExpanded.toString()}
-      </Text>
+    <li className={listItemClass}>
+      {!isExpanded ? (
+        <Button variant="transparent" startVisual={visual} />
+      ) : (
+        children
+      )}
     </li>
   );
 };

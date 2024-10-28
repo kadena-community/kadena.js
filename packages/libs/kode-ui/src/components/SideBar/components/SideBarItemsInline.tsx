@@ -1,25 +1,24 @@
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
-import { listClass } from '../style.css';
+import { listClass, listItemInlineClass } from '../style.css';
 
-export interface ISideBarHeader extends PropsWithChildren {
+export interface ISideBarItemsInline extends PropsWithChildren {
   isExpanded?: boolean;
 }
-
-export const SideBarHeader: FC<ISideBarHeader> = ({
+export const SideBarItemsInline: FC<ISideBarItemsInline> = ({
   children,
   isExpanded = false,
 }) => {
   return (
-    <header>
+    <li className={listItemInlineClass}>
       <ul
-        className={listClass({ direction: 'vertical', expanded: isExpanded })}
+        className={listClass({ direction: 'horizontal', expanded: isExpanded })}
       >
         {React.Children.map(children, (child) => {
           if (!React.isValidElement(child)) return null;
           return React.cloneElement(child, { ...child.props, isExpanded });
         })}
       </ul>
-    </header>
+    </li>
   );
 };
