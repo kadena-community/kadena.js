@@ -16,3 +16,15 @@ export {
   type ICompactTableFormatterProps,
 } from './CompactTable/TableFormatters';
 export { usePagination } from './CompactTable/usePagination';
+
+export {
+  SideBar,
+  SideBarAppContext,
+  SideBarContext,
+  SideBarFooter,
+  SideBarItem,
+  SideBarItemsInline,
+  SideBarLayout,
+  useSideBar,
+} from './SideBarLayout';
+export type { ISideBar, ISideBarItem } from './SideBarLayout';
