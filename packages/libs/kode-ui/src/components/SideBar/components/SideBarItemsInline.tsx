@@ -1,7 +1,12 @@
+import classNames from 'classnames';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 import { useSideBar } from '../SideBarProvider';
-import { listClass, listItemInlineClass } from '../style.css';
+import {
+  listClass,
+  listItemInlineClass,
+  listNotExpandedClass,
+} from '../style.css';
 
 export interface ISideBarItemsInline extends PropsWithChildren {}
 export const SideBarItemsInline: FC<ISideBarItemsInline> = ({ children }) => {
@@ -9,7 +14,10 @@ export const SideBarItemsInline: FC<ISideBarItemsInline> = ({ children }) => {
   return (
     <li className={listItemInlineClass}>
       <ul
-        className={listClass({ direction: 'horizontal', expanded: isExpanded })}
+        className={classNames(
+          listClass({ direction: 'horizontal', expanded: isExpanded }),
+          { [listNotExpandedClass]: !isExpanded },
+        )}
       >
         {children}
       </ul>

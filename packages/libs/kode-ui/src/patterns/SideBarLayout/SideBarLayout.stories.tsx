@@ -44,6 +44,7 @@ type IStory = StoryObj<ISideBar>;
 
 export const Primary: IStory = {
   name: 'SideBar',
+
   args: {},
   render: () => {
     return (

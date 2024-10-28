@@ -1,62 +1,63 @@
 import { globalStyle } from '@vanilla-extract/css';
-import { atoms, recipe, responsiveStyle, style } from './../../styles';
+import { atoms, recipe, responsiveStyle, style, token } from './../../styles';
 
 export const menuWrapperClass = recipe({
   base: [
     atoms({
-      position: 'relative',
-
       flexDirection: 'column',
       flex: 1,
     }),
     {
-      gridArea: 'sidebarlayout-sidebar',
+      backgroundColor: 'red',
+
       height: '100%',
     },
     responsiveStyle({
       xs: {
-        display: 'none',
+        height: 'calc(100dvh - 60px)',
+        width: '100dvw',
+        display: 'flex',
+        willChange: 'transform',
+        transition: 'transform .4s ease',
+        transform: 'translateX(-100%)',
+        position: 'fixed',
+        gridArea: 'auto',
+        inset: 0,
+        top: '60px',
+        zIndex: token('zIndex.overlay'),
       },
       md: {
         display: 'flex',
+        width: '50px',
+        padding: 'md',
+        paddingInline: 'xs',
+        gridArea: 'sidebarlayout-sidebar',
+        transform: 'translateX(0%)',
       },
     }),
   ],
   variants: {
     expanded: {
-      true: [
-        atoms({
-          padding: 'md',
-        }),
-        {
-          width: '200px',
-        },
-      ],
-      false: [
-        atoms({
-          paddingInline: 'xs',
-        }),
-        {
-          width: '40px',
-        },
-      ],
+      true: [atoms({}), {}],
+      false: [atoms({}), {}],
     },
   },
 });
 
-export const menuMenuIconClass = recipe({
-  base: {
-    transition: 'all .2s ease',
-    transform: 'translateX(0px)',
-  },
-  variants: {
-    expanded: {
-      true: {},
-      false: {
-        transform: 'translateX(50px)',
-      },
+export const menuWrapperMobileExpandedClass = style([
+  responsiveStyle({
+    xs: {
+      transform: 'translateX(0%)',
     },
-  },
+    md: {
+      width: '200px',
+      paddingInline: 'md',
+    },
+  }),
+]);
+
+export const menuMenuIconClass = style({
+  gridArea: 'header-toggle',
 });
 
 export const menuNavWrapperClass = style([
@@ -107,7 +108,7 @@ export const listClass = recipe({
         expanded: false,
       },
       style: {
-        flexDirection: 'column',
+        flexDirection: 'row',
       },
     },
   ],
@@ -116,6 +117,8 @@ export const listClass = recipe({
 export const listItemClass = style([
   atoms({
     display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
   }),
   {},
 ]);
@@ -128,11 +131,77 @@ export const listItemInlineClass = style([
   },
 ]);
 
-globalStyle(`${listItemClass} > *`, { flex: 1 });
+export const listNotExpandedClass = style([
+  {},
+  responsiveStyle({
+    md: {
+      flexDirection: 'column',
+    },
+  }),
+]);
 
-export const headerWrapperClass = style({
-  gridArea: 'sidebarlayout-header',
+globalStyle(`${listItemClass} > *`, {
+  flex: 1,
+  width: '100%',
+  display: 'flex',
 });
+globalStyle(`${listItemClass} button`, { flex: 1 });
+
+export const headerWrapperClass = style([
+  {
+    gridArea: 'sidebarlayout-header',
+    background: 'purple',
+  },
+
+  responsiveStyle({
+    xs: {
+      gridTemplateColumns: 'auto',
+      gridTemplateRows: '60px auto 60px',
+      gridTemplateAreas: `
+    "sidebarlayout-header"
+    "sidebarlayout-main"
+    "sidebarlayout-footer"
+  `,
+    },
+    md: {
+      gridTemplateColumns: '50px auto 50px',
+      gridTemplateRows: 'auto',
+      gridTemplateAreas: `
+    "header-logo header-toggle header-crumbs"
+  `,
+    },
+  }),
+]);
+export const headerClass = style([
+  atoms({
+    position: 'fixed',
+    display: 'grid',
+  }),
+
+  responsiveStyle({
+    xs: {
+      gridTemplateColumns: '50px auto 50px',
+      gridTemplateAreas: `
+    "header-logo header-crumbs header-toggle"
+  `,
+    },
+    md: {
+      gridTemplateColumns: '150px 50px auto',
+      gridTemplateAreas: `
+    "header-logo header-toggle header-crumbs"
+  `,
+    },
+  }),
+]);
+
+export const headerExpandedClass = style([
+  responsiveStyle({
+    md: {
+      gridTemplateColumns: '50px 50px auto',
+    },
+  }),
+]);
+
 export const footerWrapperClass = style([
   {
     gridArea: 'sidebarlayout-footer',

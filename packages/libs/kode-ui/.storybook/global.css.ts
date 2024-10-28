@@ -9,3 +9,7 @@ globalStyle('pre.prismjs > div, pre.prismjs > div span, code', {
 globalStyle('code', {
   fontWeight: vars.fontWeights.$semiBold,
 });
+
+globalStyle('body', {
+  padding: '0!important',
+});

@@ -5,10 +5,12 @@ import React from 'react';
 import type { PressEvent } from 'react-aria';
 import { useSideBar } from '../SideBarProvider';
 import {
+  headerClass,
+  headerExpandedClass,
   headerWrapperClass,
-  menuLogoClass,
   menuMenuIconClass,
 } from '../style.css';
+import { Media } from './../../../components/Media';
 import { Button } from './../../Button';
 import { Stack } from './../../Layout';
 import { KLogo } from './Logo/KLogo';
@@ -27,7 +29,7 @@ export const SideBarHeader: FC<IProps> = ({ logo }) => {
   };
 
   const ShowLogo = !isExpanded ? (
-    <KLogo className={menuLogoClass} height={40} />
+    <KLogo height={40} />
   ) : logo ? (
     logo
   ) : (
@@ -36,17 +38,29 @@ export const SideBarHeader: FC<IProps> = ({ logo }) => {
 
   return (
     <header className={headerWrapperClass}>
-      <Stack width="100%" justifyContent="space-between" alignItems="center">
-        {ShowLogo}
-        <Stack
-          className={classNames(menuMenuIconClass({ expanded: isExpanded }))}
-        >
+      <Stack
+        className={classNames(headerClass, {
+          [headerExpandedClass]: !isExpanded,
+        })}
+        width="100%"
+        alignItems="center"
+      >
+        <Stack style={{ gridArea: 'header-logo' }}>
+          <>
+            <Media lessThan="md">
+              <KLogo height={40} />
+            </Media>
+            <Media greaterThanOrEqual="md">{ShowLogo}</Media>
+          </>
+        </Stack>
+        <Stack className={classNames(menuMenuIconClass)}>
           <Button
             variant="transparent"
             onPress={handleExpand}
             startVisual={isExpanded ? <MonoMenuOpen /> : <MonoMenu />}
           />
         </Stack>
+        <Stack style={{ gridArea: 'header-crumbs' }}>breadcrumbs</Stack>
       </Stack>
     </header>
   );
