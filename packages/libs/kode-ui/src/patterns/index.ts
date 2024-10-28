@@ -25,6 +25,7 @@ export {
   SideBarItem,
   SideBarItemsInline,
   SideBarLayout,
+  SideBarNavigation,
   useSideBar,
 } from './SideBarLayout';
 export type { ISideBar, ISideBarItem } from './SideBarLayout';

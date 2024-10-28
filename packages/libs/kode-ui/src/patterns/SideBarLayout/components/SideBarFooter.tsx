@@ -7,10 +7,10 @@ interface IProps extends PropsWithChildren {}
 
 export const SideBarFooter: FC<IProps> = ({ children }) => {
   return (
-    <header className={footerWrapperClass}>
+    <footer className={footerWrapperClass}>
       <Stack width="100%" justifyContent="space-between" alignItems="center">
         {children}
       </Stack>
-    </header>
+    </footer>
   );
 };

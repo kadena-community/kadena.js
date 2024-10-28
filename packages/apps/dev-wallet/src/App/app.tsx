@@ -3,7 +3,6 @@ import { WalletProvider } from '@/modules/wallet/wallet.provider';
 import { MediaContextProvider } from '@kadena/kode-ui';
 import { useEffect } from 'react';
 import { PromptProvider } from '../Components/PromptProvider/Prompt';
-import { BetaHeader } from './BetaHeader';
 import { Routes } from './routes';
 import { SessionProvider } from './session';
 
@@ -31,7 +30,6 @@ function Providers({ children }: { children: React.ReactNode }) {
 
 export const App = () => (
   <Providers>
-    <BetaHeader />
     <Routes />
   </Providers>
 );

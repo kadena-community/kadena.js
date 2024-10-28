@@ -1,9 +1,9 @@
 import { atoms, responsiveStyle, style } from './../../styles';
 
 export const layoutWrapperClass = style([
-  atoms({ width: '100%', display: 'grid' }),
+  atoms({ width: '100%', display: 'grid', flex: 1 }),
   {
-    height: '100dvh',
+    minHeight: '100%',
   },
 
   responsiveStyle({

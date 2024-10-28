@@ -9,29 +9,29 @@ export const menuWrapperClass = recipe({
     }),
     {
       backgroundColor: 'red',
-
       height: '100%',
     },
     responsiveStyle({
       xs: {
-        height: 'calc(100dvh - 60px)',
+        flex: 1,
         width: '100dvw',
         display: 'flex',
         willChange: 'transform',
         transition: 'transform .4s ease',
         transform: 'translateX(-100%)',
-        position: 'fixed',
-        gridArea: 'auto',
+        position: 'relative',
+        gridArea: 'sidebarlayout-main',
+        gridRow: '2/4',
         inset: 0,
-        top: '60px',
         zIndex: token('zIndex.overlay'),
       },
       md: {
         display: 'flex',
         width: '50px',
-        padding: 'md',
-        paddingInline: 'xs',
+        padding: token('spacing.md'),
+        paddingInline: token('spacing.xs'),
         gridArea: 'sidebarlayout-sidebar',
+        gridRow: '2/3',
         transform: 'translateX(0%)',
       },
     }),
@@ -51,7 +51,7 @@ export const menuWrapperMobileExpandedClass = style([
     },
     md: {
       width: '200px',
-      paddingInline: 'md',
+      paddingInline: token('spacing.md'),
     },
   }),
 ]);
@@ -146,9 +146,14 @@ globalStyle(`${listItemClass} > *`, {
   display: 'flex',
 });
 globalStyle(`${listItemClass} button`, { flex: 1 });
+globalStyle(`${listItemClass} a`, { flex: 1 });
 
 export const headerWrapperClass = style([
   {
+    display: 'flex',
+    position: 'absolute',
+    width: '100%',
+    height: '60px',
     gridArea: 'sidebarlayout-header',
     background: 'purple',
   },
@@ -174,7 +179,6 @@ export const headerWrapperClass = style([
 ]);
 export const headerClass = style([
   atoms({
-    position: 'fixed',
     display: 'grid',
   }),
 
