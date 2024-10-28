@@ -1,6 +1,13 @@
 import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
+import { useWalletConnect } from '@/modules/walletconnect/hooks/useWalletConnect';
 import { noStyleLinkClass } from '@/pages/home/style.css';
-import { MonoContrast, MonoLogout, MonoPublic } from '@kadena/kode-icons';
+import {
+  MonoAddLink,
+  MonoContrast,
+  MonoLogout,
+  MonoPublic,
+  MonoWifiFind,
+} from '@kadena/kode-icons';
 import {
   KadenaLogo,
   NavHeader,
@@ -21,6 +28,7 @@ import { headerStyle, selectNetworkClass } from './style.css';
 
 export const MainHeader: FC = () => {
   const { networks, activeNetwork, setActiveNetwork } = useWallet();
+  const walletConnect = useWalletConnect();
 
   const { theme, setTheme } = useTheme();
 
@@ -102,6 +110,24 @@ export const MainHeader: FC = () => {
                 >
                   <MonoLogout />
                 </NavHeaderButton>
+                {walletConnect.isActive || (
+                  <NavHeaderButton
+                    aria-label="Activate WalletConnect"
+                    title="Activate WalletConnect"
+                    onPress={() => walletConnect.setActive()}
+                  >
+                    <MonoAddLink />
+                  </NavHeaderButton>
+                )}
+                {walletConnect.isConnected || (
+                  <NavHeaderButton
+                    aria-label="Connect a DApp"
+                    title="Connect a DApp"
+                    onPress={() => walletConnect.showConnectionModal()}
+                  >
+                    <MonoWifiFind />
+                  </NavHeaderButton>
+                )}
               </>
             )}
           </Stack>
