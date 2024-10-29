@@ -37,7 +37,7 @@ import { HomePage } from '../pages/home/home-page';
 import { SelectProfile } from '../pages/select-profile/select-profile';
 import { UnlockProfile } from '../pages/unlock-profile/unlock-profile';
 import { getScriptType } from '../utils/window';
-import { Layout } from './layout';
+import { Layout } from './Layout/Layout';
 import { LayoutMini } from './layout-mini';
 
 const Redirect: FC<

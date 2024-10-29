@@ -5,14 +5,17 @@ import {
   ContextMenu,
   ContextMenuDivider,
   ContextMenuItem,
+  IButtonProps,
   Stack,
 } from '@kadena/kode-ui';
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export const NetworkSelector: FC<{ showLabel?: boolean }> = ({
-  showLabel = true,
-}) => {
+export const NetworkSelector: FC<{
+  showLabel?: boolean;
+  variant: IButtonProps['variant'];
+  isCompact?: IButtonProps['isCompact'];
+}> = ({ showLabel = true, variant, isCompact = false }) => {
   const { networks, activeNetwork, setActiveNetwork } = useWallet();
   const navigate = useNavigate();
 
@@ -37,7 +40,11 @@ export const NetworkSelector: FC<{ showLabel?: boolean }> = ({
       )}
       <ContextMenu
         trigger={
-          <Button variant="transparent" endVisual={<MonoWifiTethering />} />
+          <Button
+            variant={variant}
+            isCompact={isCompact}
+            endVisual={<MonoWifiTethering />}
+          />
         }
       >
         {networks.map((network) => (

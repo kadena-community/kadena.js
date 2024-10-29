@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import {
   MonoAccountTree,
@@ -17,6 +17,7 @@ import { SideBarFooterItem } from './components/SideBarFooterItem';
 import { SideBarItem } from './components/SideBarItem';
 import { SideBarItemsInline } from './components/SideBarItemsInline';
 import { SideBarNavigation } from './components/SideBarNavigation';
+import { useSideBar } from './components/SideBarProvider';
 import type { ISideBar } from './SideBar';
 import { SideBar } from './SideBar';
 import { SideBarLayout } from './SideBarLayout';
@@ -45,6 +46,97 @@ const meta: Meta<ISideBar> = {
 
 type IStory = StoryObj<ISideBar>;
 
+const InnerLayout = () => {
+  const { setAppContext } = useSideBar();
+
+  useEffect(() => {
+    setAppContext({
+      visual: <MonoAccountTree />,
+      label: 'New Transfer',
+      onPress: () => {},
+    });
+  });
+
+  return (
+    <>
+      <SideBar>
+        <SideBarAppContext>
+          <SideBarItem
+            visual={<MonoWifiTethering />}
+            label="Mainnet"
+            onPress={() => {}}
+          />
+        </SideBarAppContext>
+        <SideBarNavigation>
+          <SideBarItem
+            visual={<MonoControlPointDuplicate />}
+            label="Dashboard"
+            onPress={() => {}}
+          />
+          <SideBarItem
+            visual={<MonoControlPointDuplicate />}
+            label="Dashboard"
+            onPress={() => {}}
+          />
+        </SideBarNavigation>
+        <SideBarContext>
+          <SideBarItem
+            visual={<MonoControlPointDuplicate />}
+            label="New Transfer"
+            onPress={() => {}}
+          />
+
+          <SideBarItemsInline>
+            <SideBarItem
+              visual={<MonoAccountTree />}
+              label="Profile"
+              onPress={() => {}}
+            />
+
+            <SideBarItem
+              visual={<MonoLightMode />}
+              label="Change theme"
+              onPress={() => {}}
+            >
+              <Button
+                aria-label="Change theme"
+                variant="transparent"
+                startVisual={<MonoLightMode />}
+                onPress={() => {}}
+              />
+            </SideBarItem>
+          </SideBarItemsInline>
+        </SideBarContext>
+      </SideBar>
+
+      <main style={{ gridArea: 'sidebarlayout-main' }}>content</main>
+
+      <SideBarFooter>
+        <SideBarFooterItem
+          visual={<MonoWindow />}
+          onPress={() => {}}
+          label="option 1"
+        />
+        <SideBarFooterItem
+          visual={<MonoWifiTethering />}
+          onPress={() => {}}
+          label="option 2"
+        />
+        <SideBarFooterItem
+          visual={<MonoWorkspaces />}
+          onPress={() => {}}
+          label="option 3"
+        />
+        <SideBarFooterItem
+          visual={<MonoLightMode />}
+          onPress={() => {}}
+          label="option 4"
+        />
+      </SideBarFooter>
+    </>
+  );
+};
+
 export const Primary: IStory = {
   name: 'SideBar',
 
@@ -52,83 +144,7 @@ export const Primary: IStory = {
   render: () => {
     return (
       <SideBarLayout>
-        <SideBar>
-          <SideBarAppContext>
-            <SideBarItem visual={<MonoWifiTethering />}>
-              <Button variant="outlined" startVisual={<MonoWifiTethering />}>
-                Mainnet
-              </Button>
-            </SideBarItem>
-            <SideBarItem visual={<MonoControlPointDuplicate />}>
-              <Button
-                variant="outlined"
-                startVisual={<MonoControlPointDuplicate />}
-              >
-                New Transfer
-              </Button>
-            </SideBarItem>
-          </SideBarAppContext>
-          <SideBarNavigation>
-            <SideBarItem>Dashboard</SideBarItem>
-            <SideBarItem>Dashboard</SideBarItem>
-            <SideBarItem>Dashboard</SideBarItem>
-            <SideBarItem>Dashboard</SideBarItem>
-            <SideBarItem>Dashboard</SideBarItem>
-            <SideBarItem>Dashboard</SideBarItem>
-            <SideBarItem>Dashboard</SideBarItem>
-            <SideBarItem>Dashboard</SideBarItem>
-            <SideBarItem>Dashboard</SideBarItem>
-            <SideBarItem>Dashboard</SideBarItem>
-            <SideBarItem>Dashboard</SideBarItem>
-            <SideBarItem>Dashboard</SideBarItem>
-            <SideBarItem>Dashboard</SideBarItem>
-            <SideBarItem>Dashboard</SideBarItem>
-            <SideBarItem>Dashboard</SideBarItem>
-            <SideBarItem>Dashboard</SideBarItem>
-            <SideBarItem>Dashboard</SideBarItem>
-            <SideBarItem>Dashboard</SideBarItem>
-            <SideBarItem>Dashboard</SideBarItem>
-          </SideBarNavigation>
-          <SideBarContext>
-            <SideBarItem visual={<MonoControlPointDuplicate />}>
-              <Button
-                variant="outlined"
-                startVisual={<MonoControlPointDuplicate />}
-              >
-                New Transfer
-              </Button>
-            </SideBarItem>
-
-            <SideBarItemsInline>
-              <SideBarItem visual={<MonoAccountTree />}>
-                <Button variant="outlined" startVisual={<MonoAccountTree />}>
-                  Profile
-                </Button>
-              </SideBarItem>
-              <SideBarItem visual={<MonoLightMode />}>
-                <Button variant="transparent" startVisual={<MonoLightMode />} />
-              </SideBarItem>
-            </SideBarItemsInline>
-          </SideBarContext>
-        </SideBar>
-
-        <main style={{ gridArea: 'sidebarlayout-main' }}>content</main>
-
-        <SideBarFooter>
-          <SideBarFooterItem startVisual={<MonoWindow />} onPress={() => {}} />
-          <SideBarFooterItem
-            startVisual={<MonoWifiTethering />}
-            onPress={() => {}}
-          />
-          <SideBarFooterItem
-            startVisual={<MonoWorkspaces />}
-            onPress={() => {}}
-          />
-          <SideBarFooterItem
-            startVisual={<MonoLightMode />}
-            onPress={() => {}}
-          />
-        </SideBarFooter>
+        <InnerLayout />
       </SideBarLayout>
     );
   },

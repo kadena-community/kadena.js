@@ -12,11 +12,14 @@ export const SideBarFooter: FC<IProps> = ({ children }) => {
 
   return (
     <footer className={footerWrapperClass}>
+      {buttonCount === 0 && appContext && (
+        <SideBarFooterItem {...appContext} isAppContext />
+      )}
       {React.Children.map(children, (child, idx) => {
         if (idx === Math.floor(buttonCount / 2) && appContext) {
           return (
             <>
-              <SideBarFooterItem {...appContext} />
+              <SideBarFooterItem {...appContext} isAppContext />
               <>{child}</>
             </>
           );

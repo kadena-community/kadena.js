@@ -1,20 +1,29 @@
-import type { FC } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
-import type { IButtonProps } from './../../../components';
+import type { PressEvent } from './../../../components';
 import { Button } from './../../../components';
 
-export type ISideBarFooterItemProps = Pick<
-  IButtonProps,
-  'startVisual' | 'aria-label' | 'onPress'
-> & {
-  render?: React.ReactElement;
-};
+export interface ISideBarFooterItemProps extends PropsWithChildren {
+  visual: React.ReactElement;
+  label: string;
+  onPress: (e: PressEvent) => void;
+  isAppContext?: boolean;
+}
 
 export const SideBarFooterItem: FC<ISideBarFooterItemProps> = ({
-  startVisual,
-  render,
-  ...props
+  visual,
+  children,
+  isAppContext = false,
+  label,
+  onPress,
 }) => {
-  if (render) return render;
-  return <Button {...props} startVisual={startVisual} variant="transparent" />;
+  if (children) return children;
+  return (
+    <Button
+      onPress={onPress}
+      aria-label={label}
+      startVisual={visual}
+      variant={isAppContext ? 'primary' : 'transparent'}
+    />
+  );
 };

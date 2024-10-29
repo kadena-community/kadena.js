@@ -42,8 +42,8 @@ export function Networks() {
 
   useEffect(() => {
     setAppContext({
-      startVisual: <Mono123 />,
-      'aria-label': 'test',
+      visual: <Mono123 />,
+      label: 'test',
       onPress: () => alert(111),
     });
   }, []);

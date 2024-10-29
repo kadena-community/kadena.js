@@ -3,8 +3,8 @@ import React, { createContext, useContext, useState } from 'react';
 import type { PressEvent } from 'react-aria';
 
 export interface IAppContextProps {
-  startVisual: React.ReactElement;
-  'aria-label': string;
+  visual: React.ReactElement;
+  label: string;
   onPress: () => void;
 }
 export interface ISideBarContext {

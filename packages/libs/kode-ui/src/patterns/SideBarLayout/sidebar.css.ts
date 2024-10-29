@@ -1,4 +1,3 @@
-import { globalStyle } from '@vanilla-extract/css';
 import { atoms, recipe, responsiveStyle, style, token } from './../../styles';
 
 export const menuWrapperClass = recipe({
@@ -6,9 +5,9 @@ export const menuWrapperClass = recipe({
     atoms({
       flexDirection: 'column',
       flex: 1,
+      gap: 'sm',
     }),
     {
-      backgroundColor: 'red',
       height: '100%',
     },
     responsiveStyle({
@@ -66,7 +65,6 @@ export const menuNavWrapperClass = style([
   }),
   {
     overflowY: 'scroll',
-    background: 'yellow',
   },
 ]);
 
@@ -140,13 +138,13 @@ export const listNotExpandedClass = style([
   }),
 ]);
 
-globalStyle(`${listItemClass} > *`, {
-  flex: 1,
-  width: '100%',
-  display: 'flex',
-});
-globalStyle(`${listItemClass} button`, { flex: 1 });
-globalStyle(`${listItemClass} a`, { flex: 1 });
+// globalStyle(`${listItemClass} > *`, {
+//   flex: 1,
+//   width: '100%',
+//   display: 'flex',
+// });
+// globalStyle(`${listItemClass} button`, { flex: 1 });
+// globalStyle(`${listItemClass} a`, { flex: 1 });
 
 export const headerWrapperClass = style([
   {
@@ -155,7 +153,6 @@ export const headerWrapperClass = style([
     width: '100%',
     height: '60px',
     gridArea: 'sidebarlayout-header',
-    background: 'purple',
   },
 
   responsiveStyle({
