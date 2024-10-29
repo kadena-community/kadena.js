@@ -6,7 +6,6 @@ import {
   ContextMenuDivider,
   ContextMenuItem,
   IButtonProps,
-  Stack,
 } from '@kadena/kode-ui';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -31,33 +30,31 @@ export const NetworkSelector: FC<{
   };
 
   return (
-    <Stack>
-      <ContextMenu
-        trigger={
-          <Button
-            variant={variant}
-            isCompact={isCompact}
-            endVisual={<MonoWifiTethering />}
-          >
-            {showLabel ? activeNetwork?.name : undefined}
-          </Button>
-        }
-      >
-        {networks.map((network) => (
-          <ContextMenuItem
-            aria-label={network.name}
-            key={network.networkId}
-            label={network.name ?? network.networkId}
-            onClick={() => handleNetworkUpdate(network.uuid)}
-          />
-        ))}
-        <ContextMenuDivider />
+    <ContextMenu
+      trigger={
+        <Button
+          variant={variant}
+          isCompact={isCompact}
+          startVisual={<MonoWifiTethering />}
+        >
+          {showLabel ? activeNetwork?.name : undefined}
+        </Button>
+      }
+    >
+      {networks.map((network) => (
         <ContextMenuItem
-          label="Settings"
-          endVisual={<MonoSettings />}
-          onClick={handlePress}
+          aria-label={network.name}
+          key={network.networkId}
+          label={network.name ?? network.networkId}
+          onClick={() => handleNetworkUpdate(network.uuid)}
         />
-      </ContextMenu>
-    </Stack>
+      ))}
+      <ContextMenuDivider />
+      <ContextMenuItem
+        label="Settings"
+        endVisual={<MonoSettings />}
+        onClick={handlePress}
+      />
+    </ContextMenu>
   );
 };

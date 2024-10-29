@@ -27,6 +27,8 @@ export {
   SideBarItemsInline,
   SideBarLayout,
   SideBarNavigation,
+  SideBarTree,
+  SideBarTreeItem,
   useSideBar,
 } from './SideBarLayout';
 export type { ISideBarItemProps, ISideBarProps } from './SideBarLayout';

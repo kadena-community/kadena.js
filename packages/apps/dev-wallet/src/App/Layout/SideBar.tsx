@@ -1,15 +1,13 @@
 import {
   MonoContacts,
   MonoContrast,
+  MonoDashboardCustomize,
   MonoDataThresholding,
-  MonoKey,
   MonoLogout,
   MonoNetworkCheck,
-  MonoSignature,
   MonoSwapHoriz,
   MonoTableRows,
-  MonoTerminal,
-  MonoTextSnippet,
+  MonoWallet,
 } from '@kadena/kode-icons/system';
 
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
@@ -27,6 +25,8 @@ import {
   SideBarItem,
   SideBarItemsInline,
   SideBarNavigation,
+  SideBarTree,
+  SideBarTreeItem,
   SideBar as SideBarUI,
   useSideBar,
 } from '@kadena/kode-ui/patterns';
@@ -35,7 +35,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const SideBar: FC = () => {
   const { theme, setTheme } = useTheme();
-  const { appContext, isExpanded } = useSideBar();
+  const { isExpanded } = useSideBar();
   const navigate = useNavigate();
   const { lockProfile } = useWallet();
 
@@ -61,7 +61,6 @@ export const SideBar: FC = () => {
             isCompact={!isExpanded}
           />
         </SideBarItem>
-        {appContext && <SideBarItem {...appContext} />}
       </SideBarAppContext>
       <SideBarNavigation>
         <SideBarItem
@@ -70,11 +69,32 @@ export const SideBar: FC = () => {
           onPress={() => navigate('/')}
         />
 
-        <SideBarItem
-          visual={<MonoSignature />}
-          label="Sig Builder"
-          onPress={() => navigate('/sig-builder')}
-        />
+        <SideBarTree visual={<MonoWallet />} label="My Wallets">
+          <SideBarTreeItem
+            label="Keys"
+            onPress={() => navigate('/key-management/keys')}
+          />
+        </SideBarTree>
+        <SideBarTree visual={<MonoTableRows />} label="Transactions">
+          <SideBarTreeItem
+            label="History"
+            onPress={() => navigate('/transactions')}
+          />
+        </SideBarTree>
+        <SideBarTree visual={<MonoDashboardCustomize />} label="Utilities">
+          <SideBarTreeItem
+            label="Sig Builder"
+            onPress={() => navigate('/sig-builder')}
+          />
+          <SideBarTreeItem
+            label="Dev Console"
+            onPress={() => navigate('/terminal')}
+          />
+          <SideBarTreeItem
+            label="Backup"
+            onPress={() => navigate('/backup-recovery-phrase/write-down')}
+          />
+        </SideBarTree>
 
         <SideBarItem
           visual={<MonoSwapHoriz />}
@@ -85,33 +105,9 @@ export const SideBar: FC = () => {
         />
 
         <SideBarItem
-          visual={<MonoTableRows />}
-          label="Transactions"
-          onPress={() => navigate('/transactions')}
-        />
-
-        <SideBarItem
           visual={<MonoContacts />}
           label="Contacts"
           onPress={() => navigate('/contacts')}
-        />
-
-        <SideBarItem
-          visual={<MonoTextSnippet />}
-          label="Backup"
-          onPress={() => navigate('/backup-recovery-phrase/write-down')}
-        />
-
-        <SideBarItem
-          visual={<MonoKey />}
-          label="Keys"
-          onPress={() => navigate('/key-management/keys')}
-        />
-
-        <SideBarItem
-          visual={<MonoTerminal />}
-          label="Dev Console"
-          onPress={() => navigate('/terminal')}
         />
       </SideBarNavigation>
 

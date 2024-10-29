@@ -7,6 +7,8 @@ export type { ISideBarItemProps } from './components/SideBarItem';
 export { SideBarItemsInline } from './components/SideBarItemsInline';
 export { SideBarNavigation } from './components/SideBarNavigation';
 export { useSideBar } from './components/SideBarProvider';
+export { SideBarTree } from './components/SideBarTree';
+export { SideBarTreeItem } from './components/SideBarTreeItem';
 export { SideBar } from './SideBar';
 export type { ISideBarProps } from './SideBar';
 export { SideBarLayout } from './SideBarLayout';
