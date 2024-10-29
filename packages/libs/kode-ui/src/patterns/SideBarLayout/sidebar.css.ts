@@ -31,11 +31,13 @@ export const menuWrapperClass = recipe({
         inset: 0,
         zIndex: token('zIndex.overlay'),
         backgroundColor: token('color.background.base.default'),
+        padding: token('spacing.lg'),
       },
       md: {
         display: 'flex',
-        width: '50px',
+        width: '40px',
         padding: token('spacing.md'),
+        paddingBlockStart: '0',
         paddingInline: token('spacing.xs'),
         gridArea: 'sidebarlayout-sidebar',
         gridRow: '2/3',
@@ -148,8 +150,11 @@ export const listNotExpandedClass = style([
   }),
 ]);
 
-globalStyle(`${listItemClass} button`, { flex: 1 });
-globalStyle(`${listItemClass} a`, { flex: 1 });
+globalStyle(`${listItemClass} button`, {
+  justifyContent: 'flex-start',
+  flex: 1,
+});
+globalStyle(`${listItemClass} a`, { justifyContent: 'flex-start', flex: 1 });
 
 export const headerWrapperClass = style([
   {

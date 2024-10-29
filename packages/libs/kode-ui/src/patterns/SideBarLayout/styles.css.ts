@@ -17,7 +17,7 @@ export const layoutWrapperClass = style([
     `,
     },
     md: {
-      gridTemplateColumns: '50px auto',
+      gridTemplateColumns: '40px auto',
       gridTemplateRows: '60px auto',
       gridTemplateAreas: `
       "sidebarlayout-header sidebarlayout-header"

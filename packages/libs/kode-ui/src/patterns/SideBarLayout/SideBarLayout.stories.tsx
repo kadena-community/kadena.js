@@ -5,6 +5,7 @@ import {
   MonoAccountTree,
   MonoControlPointDuplicate,
   MonoLightMode,
+  MonoWallet,
   MonoWifiTethering,
   MonoWindow,
   MonoWorkspaces,
@@ -18,6 +19,8 @@ import { SideBarItem } from './components/SideBarItem';
 import { SideBarItemsInline } from './components/SideBarItemsInline';
 import { SideBarNavigation } from './components/SideBarNavigation';
 import { useSideBar } from './components/SideBarProvider';
+import { SideBarTree } from './components/SideBarTree';
+import { SideBarTreeItem } from './components/SideBarTreeItem';
 import type { ISideBarProps } from './SideBar';
 import { SideBar } from './SideBar';
 import { SideBarLayout } from './SideBarLayout';
@@ -68,11 +71,10 @@ const InnerLayout = () => {
           />
         </SideBarAppContext>
         <SideBarNavigation>
-          <SideBarItem
-            visual={<MonoControlPointDuplicate />}
-            label="Dashboard"
-            onPress={() => {}}
-          />
+          <SideBarTree visual={<MonoWallet />} label="My Wallet">
+            <SideBarTreeItem label="Accounts" onPress={() => {}} />
+            <SideBarTreeItem label="Assets" onPress={() => {}} />
+          </SideBarTree>
           <SideBarItem
             visual={<MonoControlPointDuplicate />}
             label="Dashboard"
