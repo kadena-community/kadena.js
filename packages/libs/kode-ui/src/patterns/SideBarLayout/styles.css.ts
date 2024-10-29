@@ -56,6 +56,7 @@ export const layoutExpandedWrapperClass = style([
 
 export const mainClass = recipe({
   base: {
+    overflowY: 'hidden',
     gridArea: 'sidebarlayout-main',
   },
   variants: {
