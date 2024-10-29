@@ -11,14 +11,10 @@ import {
   MonoWorkspaces,
 } from '@kadena/kode-icons/system';
 import { Breadcrumbs, BreadcrumbsItem, Button } from './../../components';
-import { SideBarAppContext } from './components/SideBarAppContext';
-import { SideBarContext } from './components/SideBarContext';
 import { SideBarFooter } from './components/SideBarFooter';
 import { SideBarFooterItem } from './components/SideBarFooterItem';
-import { SideBarHeader } from './components/SideBarHeader';
 import { SideBarItem } from './components/SideBarItem';
 import { SideBarItemsInline } from './components/SideBarItemsInline';
-import { SideBarNavigation } from './components/SideBarNavigation';
 import { SideBarProvider, useSideBar } from './components/SideBarProvider';
 import { SideBarTree } from './components/SideBarTree';
 import { SideBarTreeItem } from './components/SideBarTreeItem';
