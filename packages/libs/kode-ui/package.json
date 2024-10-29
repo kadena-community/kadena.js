@@ -108,7 +108,8 @@
     "react": "^18.2.0",
     "react-aria": "^3.31.1",
     "react-dom": "^18.2.0",
-    "react-stately": "^3.29.1"
+    "react-stately": "^3.29.1",
+    "react-use": "^17.4.0"
   },
   "devDependencies": {
     "@crackle/cli": "^0.15.1",

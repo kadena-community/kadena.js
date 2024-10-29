@@ -18,14 +18,14 @@ import { SideBarItem } from './components/SideBarItem';
 import { SideBarItemsInline } from './components/SideBarItemsInline';
 import { SideBarNavigation } from './components/SideBarNavigation';
 import { useSideBar } from './components/SideBarProvider';
-import type { ISideBar } from './SideBar';
+import type { ISideBarProps } from './SideBar';
 import { SideBar } from './SideBar';
 import { SideBarLayout } from './SideBarLayout';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const sampleNetworkItems: string[] = ['Mainnet', 'Testnet'];
 
-const meta: Meta<ISideBar> = {
+const meta: Meta<ISideBarProps> = {
   title: 'Patterns/SideBarLayout',
   parameters: {
     status: {
@@ -44,10 +44,10 @@ const meta: Meta<ISideBar> = {
   argTypes: {},
 };
 
-type IStory = StoryObj<ISideBar>;
+type IStory = StoryObj<ISideBarProps>;
 
 const InnerLayout = () => {
-  const { setAppContext } = useSideBar();
+  const { setAppContext, isExpanded } = useSideBar();
 
   useEffect(() => {
     setAppContext({
@@ -55,7 +55,7 @@ const InnerLayout = () => {
       label: 'New Transfer',
       onPress: () => {},
     });
-  });
+  }, []);
 
   return (
     <>
@@ -100,7 +100,8 @@ const InnerLayout = () => {
             >
               <Button
                 aria-label="Change theme"
-                variant="transparent"
+                variant={isExpanded ? 'transparent' : 'outlined'}
+                isCompact={!isExpanded}
                 startVisual={<MonoLightMode />}
                 onPress={() => {}}
               />

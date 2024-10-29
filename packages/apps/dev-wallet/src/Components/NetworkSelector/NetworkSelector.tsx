@@ -32,19 +32,15 @@ export const NetworkSelector: FC<{
 
   return (
     <Stack>
-      {showLabel && (
-        <>
-          <MonoWifiTethering />
-          {activeNetwork?.name}
-        </>
-      )}
       <ContextMenu
         trigger={
           <Button
             variant={variant}
             isCompact={isCompact}
             endVisual={<MonoWifiTethering />}
-          />
+          >
+            {showLabel ? activeNetwork?.name : undefined}
+          </Button>
         }
       >
         {networks.map((network) => (

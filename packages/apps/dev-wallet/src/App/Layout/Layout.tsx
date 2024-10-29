@@ -1,7 +1,3 @@
-import { backgroundStyle, mainColumnStyle } from '@/App/layout.css.ts';
-import { MainHeader } from '@/Components/MainHeader/MainHeader';
-import { Sidebar } from '@/Components/Sidebar/Sidebar.tsx';
-import { pageClass } from '@/pages/home/style.css.ts';
 import {
   MonoLightMode,
   MonoWifiTethering,
@@ -10,7 +6,7 @@ import {
 } from '@kadena/kode-icons/system';
 
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
-import { Box, Stack, Themes, useTheme } from '@kadena/kode-ui';
+import { Themes, useTheme } from '@kadena/kode-ui';
 import {
   SideBarFooter,
   SideBarFooterItem,
@@ -65,23 +61,7 @@ export const Layout: FC = () => {
           />
         </SideBarFooter>
       </SideBarLayout>
-      <MainHeader />
-      <main>
-        <Stack
-          className={pageClass}
-          style={
-            {
-              // backgroundImage: `radial-gradient(circle farthest-side at 50% 170%, ${accentColor}, transparent 75%)`,
-            }
-          }
-        >
-          <Sidebar></Sidebar>
-          <Box padding="n10" className={mainColumnStyle}>
-            <div className={backgroundStyle}></div>
-            <Outlet />
-          </Box>
-        </Stack>
-      </main>
+
       <div id="modalportal"></div>
     </>
   );

@@ -1,4 +1,11 @@
-import { atoms, recipe, responsiveStyle, style, token } from './../../styles';
+import {
+  atoms,
+  globalStyle,
+  recipe,
+  responsiveStyle,
+  style,
+  token,
+} from './../../styles';
 
 export const menuWrapperClass = recipe({
   base: [
@@ -23,6 +30,7 @@ export const menuWrapperClass = recipe({
         gridRow: '2/4',
         inset: 0,
         zIndex: token('zIndex.overlay'),
+        backgroundColor: token('color.background.base.default'),
       },
       md: {
         display: 'flex',
@@ -32,6 +40,7 @@ export const menuWrapperClass = recipe({
         gridArea: 'sidebarlayout-sidebar',
         gridRow: '2/3',
         transform: 'translateX(0%)',
+        backgroundColor: 'transparent',
       },
     }),
   ],
@@ -120,6 +129,7 @@ export const listItemClass = style([
   }),
   {},
 ]);
+
 export const listItemInlineClass = style([
   atoms({
     display: 'flex',
@@ -138,13 +148,8 @@ export const listNotExpandedClass = style([
   }),
 ]);
 
-// globalStyle(`${listItemClass} > *`, {
-//   flex: 1,
-//   width: '100%',
-//   display: 'flex',
-// });
-// globalStyle(`${listItemClass} button`, { flex: 1 });
-// globalStyle(`${listItemClass} a`, { flex: 1 });
+globalStyle(`${listItemClass} button`, { flex: 1 });
+globalStyle(`${listItemClass} a`, { flex: 1 });
 
 export const headerWrapperClass = style([
   {

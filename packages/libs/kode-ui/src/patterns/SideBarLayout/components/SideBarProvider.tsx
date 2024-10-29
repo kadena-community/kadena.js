@@ -1,5 +1,5 @@
 import type { FC, PropsWithChildren } from 'react';
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useCallback, useContext, useState } from 'react';
 import type { PressEvent } from 'react-aria';
 
 export interface IAppContextProps {
@@ -10,12 +10,14 @@ export interface IAppContextProps {
 export interface ISideBarContext {
   isExpanded: boolean;
   handleToggleExpand: (e: PressEvent) => void;
+  handleSetExpanded: (value: boolean) => void;
   appContext?: IAppContextProps;
   setAppContext: (context: IAppContextProps) => void;
 }
 export const SideBarContext = createContext<ISideBarContext>({
   isExpanded: true,
   handleToggleExpand: () => {},
+  handleSetExpanded: () => {},
   appContext: undefined,
   setAppContext: () => {},
 });
@@ -29,16 +31,25 @@ export const SideBarProvider: FC<ISideBarProvider> = ({ children }) => {
     IAppContextProps | undefined
   >();
 
-  const handleToggleExpand = (e: PressEvent) => {
+  const handleToggleExpand = useCallback((e: PressEvent) => {
     setIsExpanded((v) => !v);
-  };
+  }, []);
+  const handleSetExpanded = useCallback((value: boolean) => {
+    setIsExpanded(value);
+  }, []);
 
-  const setAppContext = (context: IAppContextProps) => {
+  const setAppContext = useCallback((context: IAppContextProps) => {
     setAppContextState(context);
-  };
+  }, []);
   return (
     <SideBarContext.Provider
-      value={{ isExpanded, handleToggleExpand, appContext, setAppContext }}
+      value={{
+        isExpanded,
+        handleToggleExpand,
+        handleSetExpanded,
+        appContext,
+        setAppContext,
+      }}
     >
       {children}
     </SideBarContext.Provider>
