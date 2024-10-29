@@ -1,7 +1,7 @@
 import { ListItem } from '@/Components/ListItem/ListItem';
 import { networkRepository } from '@/modules/network/network.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { Mono123 } from '@kadena/kode-icons/system';
+import { Mono123, MonoWifiTethering } from '@kadena/kode-icons/system';
 import {
   Button,
   Dialog,
@@ -35,7 +35,7 @@ const getNewNetwork = (): INetworkWithOptionalUuid => ({
 
 export function Networks() {
   const { networks } = useWallet();
-  const { setAppContext } = useSideBar();
+  const { setAppContext, setBreadCrumbs } = useSideBar();
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const [selectedNetwork, setSelectedNetwork] =
     useState<INetworkWithOptionalUuid>(() => getNewNetwork());
@@ -46,6 +46,10 @@ export function Networks() {
       label: 'test',
       onPress: () => alert(111),
     });
+
+    setBreadCrumbs([
+      { label: 'Networks', visual: <MonoWifiTethering />, url: '/networks' },
+    ]);
   }, []);
   return (
     <>

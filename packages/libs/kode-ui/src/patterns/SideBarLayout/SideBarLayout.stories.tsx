@@ -10,7 +10,7 @@ import {
   MonoWindow,
   MonoWorkspaces,
 } from '@kadena/kode-icons/system';
-import { Button } from './../../components';
+import { Breadcrumbs, BreadcrumbsItem, Button } from './../../components';
 import { SideBarAppContext } from './components/SideBarAppContext';
 import { SideBarContext } from './components/SideBarContext';
 import { SideBarFooter } from './components/SideBarFooter';
@@ -51,7 +51,7 @@ const meta: Meta<ISideBarProps> = {
 type IStory = StoryObj<ISideBarProps>;
 
 const InnerLayout = () => {
-  const { setAppContext, isExpanded, setBreadCrumbs } = useSideBar();
+  const { setAppContext, isExpanded } = useSideBar();
 
   useEffect(() => {
     setAppContext({
@@ -59,17 +59,17 @@ const InnerLayout = () => {
       label: 'New Transfer',
       onPress: () => {},
     });
-
-    setBreadCrumbs([
-      { visual: <MonoAccountTree />, label: 'He-man', url: '/accounts' },
-      { label: 'Skeletor', url: '/accounts' },
-    ]);
   }, []);
 
   return (
     <SideBarLayout
       topBanner={<div>topbanner</div>}
-      breadcrumbs={<div>sdfsf</div>}
+      breadcrumbs={
+        <Breadcrumbs icon={<MonoAccountTree />}>
+          <BreadcrumbsItem href="/accounts">He-man</BreadcrumbsItem>
+          <BreadcrumbsItem href="/accounts/2">Skeletor</BreadcrumbsItem>
+        </Breadcrumbs>
+      }
       sidebar={
         <SideBar
           appContext={

@@ -18,7 +18,7 @@ export interface ISideBarContext {
   handleToggleExpand: (e: PressEvent) => void;
   handleSetExpanded: (value: boolean) => void;
   appContext?: IAppContextProps;
-  setAppContext: (context: IAppContextProps) => void;
+  setAppContext: (context?: IAppContextProps) => void;
   breadCrumbs: ISideBarBreadCrumb[];
   setBreadCrumbs: (value: ISideBarBreadCrumb[]) => void;
 }
@@ -49,7 +49,7 @@ export const SideBarProvider: FC<ISideBarProvider> = ({ children }) => {
     setIsExpanded(value);
   }, []);
 
-  const setAppContext = useCallback((context: IAppContextProps) => {
+  const setAppContext = useCallback((context?: IAppContextProps) => {
     setAppContextState(context);
   }, []);
 

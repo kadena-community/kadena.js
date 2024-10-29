@@ -6,21 +6,34 @@ import {
 } from '@kadena/kode-icons/system';
 
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
+import { BreadCrumbs } from '@/pages/BreadCrumbs/BreadCrumbs';
 import { Themes, useTheme } from '@kadena/kode-ui';
 import {
   SideBarFooter,
   SideBarFooterItem,
   SideBarLayout,
+  useSideBar,
 } from '@kadena/kode-ui/patterns';
-import { FC } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { FC, useEffect } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { BetaHeader } from './../BetaHeader';
 import { SideBar } from './SideBar';
 
 export const Layout: FC = () => {
   const { theme, setTheme } = useTheme();
-
+  const { breadCrumbs, setBreadCrumbs, setAppContext } = useSideBar();
+  const location = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (
+      breadCrumbs.length > 0 &&
+      location.pathname !== breadCrumbs[breadCrumbs.length - 1].url
+    ) {
+      setBreadCrumbs([]);
+      setAppContext();
+    }
+  }, [location]);
 
   const toggleTheme = (): void => {
     const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
@@ -30,6 +43,7 @@ export const Layout: FC = () => {
     <>
       <SideBarLayout
         topBanner={<BetaHeader />}
+        breadcrumbs={<BreadCrumbs />}
         sidebar={<SideBar />}
         footer={
           <SideBarFooter>
