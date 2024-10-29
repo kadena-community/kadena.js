@@ -42,6 +42,7 @@ interface ITemplateTransaction {
   meta?: IPublicMeta;
   publicMeta?: IPublicMeta;
   networkId: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: Record<string, any>;
   signers: Array<{ public: string }>;
   nonce: string;
@@ -137,7 +138,7 @@ export const parseYamlToKdaTx =
     const { filledYamlString } = ctx;
     const kdaToolTx = loadYaml(filledYamlString);
 
-    if (!('codeFile' in kdaToolTx && kdaToolTx.codeFile)) {
+    if (!('codeFile' in kdaToolTx && kdaToolTx.codeFile !== undefined)) {
       return kdaToolTx;
     }
 
@@ -160,6 +161,7 @@ export const convertTemplateTxToPactCommand = (
 
   const execPayload: IExecutionPayloadObject = {
     exec: {
+      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
       data: data ? data : {},
       code: kdaToolTx.code!,
     },
@@ -225,6 +227,7 @@ function publicToPubkey(value: { public: string }): {
   pubKey: string;
 } {
   const pubKey = value.public;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   delete (value as any).public;
   return {
     ...value,

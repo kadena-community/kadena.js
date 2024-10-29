@@ -1,11 +1,11 @@
 import type { IPactCommand, IUnsignedCommand } from '@kadena/client';
 import { createTransaction as kadenaCreateTransaction } from '@kadena/client';
+import { PactNumber } from '@kadena/pactjs';
+import path from 'path';
 import {
   createPactCommandFromStringTemplate,
   createPactCommandFromTemplate,
-} from '@kadena/client-utils';
-import { PactNumber } from '@kadena/pactjs';
-import path from 'path';
+} from '../../../services/utils/yaml-converter.js';
 
 import {
   TX_TEMPLATE_FOLDER,

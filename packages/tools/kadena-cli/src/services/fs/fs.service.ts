@@ -1,4 +1,5 @@
 import type { Dirent, Stats } from 'fs';
+import fsSync from 'fs';
 import fs from 'node:fs/promises';
 
 export interface IFileSystemService {
@@ -13,9 +14,17 @@ export interface IFileSystemService {
   readDirWithTypes: (path: string) => Promise<Dirent[]>;
   appendFile: (path: string, data: string) => Promise<void>;
   lstat: (path: string) => Promise<Stats>;
+  readFileSync: (path: string) => string | null;
 }
 
 export const fileSystemService: IFileSystemService = {
+  readFileSync(path: string): string | null {
+    try {
+      return fsSync.readFileSync(path, 'utf8');
+    } catch (e) {
+      return null;
+    }
+  },
   async readFile(path: string) {
     try {
       return await fs.readFile(path, 'utf8');
