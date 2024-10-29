@@ -3,10 +3,10 @@ import type {
   IExecutionPayloadObject,
   IPactCommand,
 } from '@kadena/client';
-import { readFileSync } from 'fs';
+import { asyncPipe } from '@kadena/client-utils';
 import yaml from 'js-yaml';
 import { join } from 'path';
-import { asyncPipe } from '../core/utils/asyncPipe';
+import { services } from '../../services/index.js';
 
 interface ITplHoleTriple {
   literal: string;
@@ -77,8 +77,13 @@ export const getPartsAndHolesInCtx = (
   tplPath: string,
   cwd: string = process.cwd(),
 ): ITemplateContext => {
-  const file = readFileSync(join(cwd, tplPath), 'utf-8').toString();
-  const tplString = getPartsAndHoles(file);
+  const file = services.filesystem.readFileSync(join(cwd, tplPath));
+
+  if (file === null) {
+    throw new Error(`Failed to read file at path: ${join(cwd, tplPath)}`);
+  }
+
+  const tplString = getPartsAndHoles(file.toString());
 
   return {
     tplPath,
@@ -143,7 +148,15 @@ export const parseYamlToKdaTx =
     }
 
     const { codeFile, ...kdaToolTxWithoutCodeFile } = kdaToolTx;
-    const codeWithHoles = readFileSync(join(ctx.cwd, codeFile), 'utf-8');
+    const codeWithHoles = services.filesystem.readFileSync(
+      join(ctx.cwd, codeFile),
+    );
+
+    if (codeWithHoles === null) {
+      throw new Error(
+        `Failed to read code file at path: ${join(ctx.cwd, codeFile)}`,
+      );
+    }
 
     const code = replaceHoles(args)(getPartsAndHoles(codeWithHoles));
 
@@ -161,8 +174,7 @@ export const convertTemplateTxToPactCommand = (
 
   const execPayload: IExecutionPayloadObject = {
     exec: {
-      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-      data: data ? data : {},
+      data: data ?? {},
       code: kdaToolTx.code!,
     },
   };
