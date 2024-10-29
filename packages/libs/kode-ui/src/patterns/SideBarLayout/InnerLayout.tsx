@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import type { FC, PropsWithChildren, ReactElement } from 'react';
+import type { FC, PropsWithChildren, ReactNode } from 'react';
 import React from 'react';
 import { Stack } from './../../components';
 import { SideBarHeader } from './components/SideBarHeader';
@@ -7,7 +7,7 @@ import { useSideBar } from './components/SideBarProvider';
 import { layoutExpandedWrapperClass, layoutWrapperClass } from './styles.css';
 
 export interface ISideBarLayout extends PropsWithChildren {
-  topBanner?: ReactElement;
+  topBanner?: ReactNode;
 }
 export const Innerlayout: FC<ISideBarLayout> = ({ children, topBanner }) => {
   const { isExpanded } = useSideBar();

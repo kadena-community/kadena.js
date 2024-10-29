@@ -207,8 +207,17 @@ export const headerExpandedClass = style([
 ]);
 
 export const footerWrapperClass = style([
+  atoms({
+    justifyContent: 'space-around',
+    paddingInline: 'md',
+    paddingBlock: 'sm',
+    borderStyle: 'solid',
+    borderColor: 'base.subtle',
+  }),
   {
     gridArea: 'sidebarlayout-footer',
+    borderWidth: 0,
+    borderBlockStartWidth: token('border.hairline'),
   },
   responsiveStyle({
     xs: {

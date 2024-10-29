@@ -1,11 +1,11 @@
-import type { FC, PropsWithChildren, ReactElement } from 'react';
+import type { FC, PropsWithChildren, ReactNode } from 'react';
 import React from 'react';
 import { MediaContextProvider } from './../../components';
 import { Innerlayout } from './InnerLayout';
 import { SideBarProvider } from './components/SideBarProvider';
 
 export interface ISideBarLayout extends PropsWithChildren {
-  topBanner?: ReactElement;
+  topBanner?: ReactNode;
 }
 export const SideBarLayout: FC<ISideBarLayout> = ({ children, topBanner }) => {
   return (

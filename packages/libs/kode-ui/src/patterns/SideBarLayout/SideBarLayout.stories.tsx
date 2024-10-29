@@ -6,11 +6,14 @@ import {
   MonoControlPointDuplicate,
   MonoLightMode,
   MonoWifiTethering,
+  MonoWindow,
+  MonoWorkspaces,
 } from '@kadena/kode-icons/system';
 import { Button } from './../../components';
 import { SideBarAppContext } from './components/SideBarAppContext';
 import { SideBarContext } from './components/SideBarContext';
 import { SideBarFooter } from './components/SideBarFooter';
+import { SideBarFooterItem } from './components/SideBarFooterItem';
 import { SideBarItem } from './components/SideBarItem';
 import { SideBarItemsInline } from './components/SideBarItemsInline';
 import { SideBarNavigation } from './components/SideBarNavigation';
@@ -48,15 +51,7 @@ export const Primary: IStory = {
   args: {},
   render: () => {
     return (
-      <SideBarLayout
-        topBanner={
-          <div>
-            sdsf
-            <p />
-            test
-          </div>
-        }
-      >
+      <SideBarLayout>
         <SideBar>
           <SideBarAppContext>
             <SideBarItem visual={<MonoWifiTethering />}>
@@ -117,13 +112,23 @@ export const Primary: IStory = {
           </SideBarContext>
         </SideBar>
 
-        <main
-          style={{ gridArea: 'sidebarlayout-main', backgroundColor: 'green' }}
-        >
-          content
-        </main>
+        <main style={{ gridArea: 'sidebarlayout-main' }}>content</main>
 
-        <SideBarFooter>sdf</SideBarFooter>
+        <SideBarFooter>
+          <SideBarFooterItem startVisual={<MonoWindow />} onPress={() => {}} />
+          <SideBarFooterItem
+            startVisual={<MonoWifiTethering />}
+            onPress={() => {}}
+          />
+          <SideBarFooterItem
+            startVisual={<MonoWorkspaces />}
+            onPress={() => {}}
+          />
+          <SideBarFooterItem
+            startVisual={<MonoLightMode />}
+            onPress={() => {}}
+          />
+        </SideBarFooter>
       </SideBarLayout>
     );
   },

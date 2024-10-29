@@ -1,11 +1,12 @@
 export { SideBarAppContext } from './components/SideBarAppContext';
 export { SideBarContext } from './components/SideBarContext';
 export { SideBarFooter } from './components/SideBarFooter';
+export { SideBarFooterItem } from './components/SideBarFooterItem';
 export { SideBarItem } from './components/SideBarItem';
-export type { ISideBarItem } from './components/SideBarItem';
+export type { ISideBarItemProps } from './components/SideBarItem';
 export { SideBarItemsInline } from './components/SideBarItemsInline';
 export { SideBarNavigation } from './components/SideBarNavigation';
 export { useSideBar } from './components/SideBarProvider';
 export { SideBar } from './SideBar';
-export type { ISideBar } from './SideBar';
+export type { ISideBarProps } from './SideBar';
 export { SideBarLayout } from './SideBarLayout';

@@ -1,16 +1,28 @@
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 import { footerWrapperClass } from '../sidebar.css';
-import { Stack } from './../../../components';
+import { SideBarFooterItem } from './SideBarFooterItem';
+import { useSideBar } from './SideBarProvider';
 
 interface IProps extends PropsWithChildren {}
 
 export const SideBarFooter: FC<IProps> = ({ children }) => {
+  const { appContext } = useSideBar();
+  const buttonCount = React.Children.count(children);
+
   return (
     <footer className={footerWrapperClass}>
-      <Stack width="100%" justifyContent="space-between" alignItems="center">
-        {children}
-      </Stack>
+      {React.Children.map(children, (child, idx) => {
+        if (idx === Math.floor(buttonCount / 2) && appContext) {
+          return (
+            <>
+              <SideBarFooterItem {...appContext} />
+              <>{child}</>
+            </>
+          );
+        }
+        return child;
+      })}
     </footer>
   );
 };

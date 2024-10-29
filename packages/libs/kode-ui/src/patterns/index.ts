@@ -22,10 +22,11 @@ export {
   SideBarAppContext,
   SideBarContext,
   SideBarFooter,
+  SideBarFooterItem,
   SideBarItem,
   SideBarItemsInline,
   SideBarLayout,
   SideBarNavigation,
   useSideBar,
 } from './SideBarLayout';
-export type { ISideBar, ISideBarItem } from './SideBarLayout';
+export type { ISideBarItemProps, ISideBarProps } from './SideBarLayout';

@@ -7,12 +7,12 @@ import {
   menuWrapperMobileExpandedClass,
 } from './sidebar.css';
 
-export interface ISideBar extends PropsWithChildren {
+export interface ISideBarProps extends PropsWithChildren {
   activeUrl?: string;
   logo?: ReactElement;
 }
 
-export const SideBar: FC<ISideBar> = ({ children }) => {
+export const SideBar: FC<ISideBarProps> = ({ children }) => {
   const { isExpanded } = useSideBar();
 
   return (

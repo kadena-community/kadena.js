@@ -1,6 +1,7 @@
 import { ListItem } from '@/Components/ListItem/ListItem';
 import { networkRepository } from '@/modules/network/network.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { Mono123 } from '@kadena/kode-icons/system';
 import {
   Button,
   Dialog,
@@ -10,7 +11,8 @@ import {
   Stack,
   Text,
 } from '@kadena/kode-ui';
-import { useState } from 'react';
+import { useSideBar } from '@kadena/kode-ui/patterns';
+import { useEffect, useState } from 'react';
 import { panelClass } from '../home/style.css';
 import {
   INetworkWithOptionalUuid,
@@ -33,9 +35,18 @@ const getNewNetwork = (): INetworkWithOptionalUuid => ({
 
 export function Networks() {
   const { networks } = useWallet();
+  const { setAppContext } = useSideBar();
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const [selectedNetwork, setSelectedNetwork] =
     useState<INetworkWithOptionalUuid>(() => getNewNetwork());
+
+  useEffect(() => {
+    setAppContext({
+      startVisual: <Mono123 />,
+      'aria-label': 'test',
+      onPress: () => alert(111),
+    });
+  }, []);
   return (
     <>
       <Stack margin="md" flexDirection={'column'}>

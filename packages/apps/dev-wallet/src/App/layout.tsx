@@ -7,29 +7,38 @@ import {
   MonoContrast,
   MonoDataThresholding,
   MonoKey,
+  MonoLightMode,
   MonoNetworkCheck,
   MonoSignature,
   MonoSwapHoriz,
   MonoTableRows,
   MonoTerminal,
   MonoTextSnippet,
+  MonoWifiTethering,
+  MonoWindow,
+  MonoWorkspaces,
 } from '@kadena/kode-icons/system';
 
+import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
 import { Box, Button, Link, Stack, Themes, useTheme } from '@kadena/kode-ui';
 import {
   SideBar,
+  SideBarAppContext,
   SideBarContext,
+  SideBarFooter,
+  SideBarFooterItem,
   SideBarItem,
   SideBarItemsInline,
   SideBarLayout,
   SideBarNavigation,
 } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
-import { Outlet, Link as RouterLink } from 'react-router-dom';
+import { Outlet, Link as RouterLink, useNavigate } from 'react-router-dom';
 import { BetaHeader } from './BetaHeader';
 
 export const Layout: FC = () => {
   const { theme, setTheme } = useTheme();
+  const navigate = useNavigate();
 
   const toggleTheme = (): void => {
     const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
@@ -39,6 +48,11 @@ export const Layout: FC = () => {
     <>
       <SideBarLayout topBanner={<BetaHeader />}>
         <SideBar>
+          <SideBarAppContext>
+            <SideBarItem visual={<MonoNetworkCheck />}>
+              <NetworkSelector />
+            </SideBarItem>
+          </SideBarAppContext>
           <SideBarNavigation>
             <SideBarItem visual={<MonoDataThresholding />}>
               <RouterLink to="/">
@@ -70,11 +84,6 @@ export const Layout: FC = () => {
               </RouterLink>
             </SideBarItem>
 
-            <SideBarItem visual={<MonoNetworkCheck />}>
-              <RouterLink to="/networks">
-                <Link startVisual={<MonoNetworkCheck />}>Networks</Link>
-              </RouterLink>
-            </SideBarItem>
             <SideBarItem visual={<MonoTextSnippet />}>
               <RouterLink to="/backup-recovery-phrase/write-down">
                 <Link startVisual={<MonoTextSnippet />}>Backup</Link>
@@ -94,7 +103,7 @@ export const Layout: FC = () => {
 
           <SideBarContext>
             <SideBarItemsInline>
-              <SideBarItem visual={<MonoTerminal />}>
+              <SideBarItem visual={<MonoContacts />}>
                 <Button
                   onPress={() => toggleTheme()}
                   endVisual={<MonoContacts />}
@@ -102,7 +111,7 @@ export const Layout: FC = () => {
                   Profile
                 </Button>
               </SideBarItem>
-              <SideBarItem visual={<MonoTerminal />}>
+              <SideBarItem visual={<MonoContrast />}>
                 <Button
                   onPress={() => toggleTheme()}
                   startVisual={<MonoContrast />}
@@ -116,6 +125,25 @@ export const Layout: FC = () => {
         >
           <Outlet />
         </main>
+        <SideBarFooter>
+          <SideBarFooterItem startVisual={<MonoWindow />} onPress={() => {}} />
+          <SideBarFooterItem
+            startVisual={<MonoWifiTethering />}
+            aria-label="Profile"
+            onPress={() => {
+              navigate('/profile');
+            }}
+          />
+          <SideBarFooterItem
+            startVisual={<MonoWorkspaces />}
+            aria-label="Profile"
+            render={<NetworkSelector showLabel={false} />}
+          />
+          <SideBarFooterItem
+            startVisual={<MonoLightMode />}
+            onPress={toggleTheme}
+          />
+        </SideBarFooter>
       </SideBarLayout>
       <MainHeader />
       <main>

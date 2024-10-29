@@ -5,11 +5,11 @@ import { Button } from './../../../components/Button';
 import { Media } from './../../../components/Media';
 import { useSideBar } from './SideBarProvider';
 
-export interface ISideBarItem extends PropsWithChildren {
+export interface ISideBarItemProps extends PropsWithChildren {
   visual?: ReactElement;
 }
 
-export const SideBarItem: FC<ISideBarItem> = ({ visual, children }) => {
+export const SideBarItem: FC<ISideBarItemProps> = ({ visual, children }) => {
   const { isExpanded } = useSideBar();
 
   return (
