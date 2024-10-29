@@ -1,18 +1,16 @@
-import { MainHeader } from '@/Components/MainHeader/MainHeader';
-
+import { SideBarLayout } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
 import { Outlet } from 'react-router-dom';
-import { containerStyle, mainStyle } from './layout-mini.css';
+import { containerStyle } from './layout-mini.css';
 
 export const LayoutMini: FC = () => {
   return (
     <>
-      <MainHeader />
-      <main className={mainStyle}>
+      <SideBarLayout variant="full">
         <div className={containerStyle}>
           <Outlet />
         </div>
-      </main>
+      </SideBarLayout>
       <div id="modalportal"></div>
     </>
   );

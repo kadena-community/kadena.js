@@ -20,11 +20,8 @@ import {
   useTheme,
 } from '@kadena/kode-ui';
 import {
-  SideBarAppContext,
-  SideBarContext,
   SideBarItem,
   SideBarItemsInline,
-  SideBarNavigation,
   SideBarTree,
   SideBarTreeItem,
   SideBar as SideBarUI,
@@ -48,8 +45,8 @@ export const SideBar: FC = () => {
     lockProfile();
   };
   return (
-    <SideBarUI>
-      <SideBarAppContext>
+    <SideBarUI
+      appContext={
         <SideBarItem
           visual={<MonoNetworkCheck />}
           label="Select network"
@@ -61,99 +58,102 @@ export const SideBar: FC = () => {
             isCompact={!isExpanded}
           />
         </SideBarItem>
-      </SideBarAppContext>
-      <SideBarNavigation>
-        <SideBarItem
-          visual={<MonoDataThresholding />}
-          label="Dashboard"
-          onPress={() => navigate('/')}
-        />
+      }
+      navigation={
+        <>
+          <SideBarItem
+            visual={<MonoDataThresholding />}
+            label="Dashboard"
+            onPress={() => navigate('/')}
+          />
 
-        <SideBarTree visual={<MonoWallet />} label="My Wallets">
-          <SideBarTreeItem
-            label="Keys"
-            onPress={() => navigate('/key-management/keys')}
-          />
-        </SideBarTree>
-        <SideBarTree visual={<MonoTableRows />} label="Transactions">
-          <SideBarTreeItem
-            label="History"
-            onPress={() => navigate('/transactions')}
-          />
-        </SideBarTree>
-        <SideBarTree visual={<MonoDashboardCustomize />} label="Utilities">
-          <SideBarTreeItem
-            label="Sig Builder"
-            onPress={() => navigate('/sig-builder')}
-          />
-          <SideBarTreeItem
-            label="Dev Console"
-            onPress={() => navigate('/terminal')}
-          />
-          <SideBarTreeItem
-            label="Backup"
-            onPress={() => navigate('/backup-recovery-phrase/write-down')}
-          />
-        </SideBarTree>
+          <SideBarTree visual={<MonoWallet />} label="My Wallets">
+            <SideBarTreeItem
+              label="Keys"
+              onPress={() => navigate('/key-management/keys')}
+            />
+          </SideBarTree>
+          <SideBarTree visual={<MonoTableRows />} label="Transactions">
+            <SideBarTreeItem
+              label="History"
+              onPress={() => navigate('/transactions')}
+            />
+          </SideBarTree>
+          <SideBarTree visual={<MonoDashboardCustomize />} label="Utilities">
+            <SideBarTreeItem
+              label="Sig Builder"
+              onPress={() => navigate('/sig-builder')}
+            />
+            <SideBarTreeItem
+              label="Dev Console"
+              onPress={() => navigate('/terminal')}
+            />
+            <SideBarTreeItem
+              label="Backup"
+              onPress={() => navigate('/backup-recovery-phrase/write-down')}
+            />
+          </SideBarTree>
 
-        <SideBarItem
-          visual={<MonoSwapHoriz />}
-          label="Transfer"
-          onPress={() => {
-            navigate('/transfer');
-          }}
-        />
+          <SideBarItem
+            visual={<MonoSwapHoriz />}
+            label="Transfer"
+            onPress={() => {
+              navigate('/transfer');
+            }}
+          />
 
-        <SideBarItem
-          visual={<MonoContacts />}
-          label="Contacts"
-          onPress={() => navigate('/contacts')}
-        />
-      </SideBarNavigation>
-
-      <SideBarContext>
-        <SideBarItemsInline>
           <SideBarItem
             visual={<MonoContacts />}
-            label="Profile"
-            onPress={() => {}}
-          >
-            <ContextMenu
-              trigger={
-                <Button
-                  isCompact={!isExpanded}
-                  variant="outlined"
-                  endVisual={<MonoContacts />}
-                >
-                  {isExpanded ? 'Profile' : undefined}
-                </Button>
-              }
+            label="Contacts"
+            onPress={() => navigate('/contacts')}
+          />
+        </>
+      }
+      context={
+        <>
+          <SideBarItemsInline>
+            <SideBarItem
+              visual={<MonoContacts />}
+              label="Profile"
+              onPress={() => {}}
             >
-              <ContextMenuItem
-                onClick={() => navigate('/profile')}
-                label="Profile"
+              <ContextMenu
+                trigger={
+                  <Button
+                    isCompact={!isExpanded}
+                    variant="outlined"
+                    endVisual={<MonoContacts />}
+                  >
+                    {isExpanded ? 'Profile' : undefined}
+                  </Button>
+                }
+              >
+                <ContextMenuItem
+                  onClick={() => navigate('/profile')}
+                  label="Profile"
+                />
+                <ContextMenuItem
+                  endVisual={<MonoLogout />}
+                  label="Logout"
+                  onClick={handleLogout}
+                />
+              </ContextMenu>
+            </SideBarItem>
+            <SideBarItem
+              visual={<MonoContrast />}
+              onPress={toggleTheme}
+              label="Change theme"
+            >
+              <Button
+                variant={isExpanded ? 'transparent' : 'outlined'}
+                onPress={() => toggleTheme()}
+                startVisual={<MonoContrast />}
+                isCompact={!isExpanded}
               />
-              <ContextMenuItem
-                endVisual={<MonoLogout />}
-                label="Logout"
-                onClick={handleLogout}
-              />
-            </ContextMenu>
-          </SideBarItem>
-          <SideBarItem
-            visual={<MonoContrast />}
-            onPress={toggleTheme}
-            label="Change theme"
-          >
-            <Button
-              variant={isExpanded ? 'transparent' : 'outlined'}
-              onPress={() => toggleTheme()}
-              startVisual={<MonoContrast />}
-              isCompact={!isExpanded}
-            />
-          </SideBarItem>
-        </SideBarItemsInline>
-      </SideBarContext>
-    </SideBarUI>
+            </SideBarItem>
+          </SideBarItemsInline>
+        </>
+      }
+    ></SideBarUI>
   );
 };

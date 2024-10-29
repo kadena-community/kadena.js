@@ -15,10 +15,11 @@ import { SideBarAppContext } from './components/SideBarAppContext';
 import { SideBarContext } from './components/SideBarContext';
 import { SideBarFooter } from './components/SideBarFooter';
 import { SideBarFooterItem } from './components/SideBarFooterItem';
+import { SideBarHeader } from './components/SideBarHeader';
 import { SideBarItem } from './components/SideBarItem';
 import { SideBarItemsInline } from './components/SideBarItemsInline';
 import { SideBarNavigation } from './components/SideBarNavigation';
-import { useSideBar } from './components/SideBarProvider';
+import { SideBarProvider, useSideBar } from './components/SideBarProvider';
 import { SideBarTree } from './components/SideBarTree';
 import { SideBarTreeItem } from './components/SideBarTreeItem';
 import type { ISideBarProps } from './SideBar';
@@ -50,7 +51,7 @@ const meta: Meta<ISideBarProps> = {
 type IStory = StoryObj<ISideBarProps>;
 
 const InnerLayout = () => {
-  const { setAppContext, isExpanded } = useSideBar();
+  const { setAppContext, isExpanded, setBreadCrumbs } = useSideBar();
 
   useEffect(() => {
     setAppContext({
@@ -58,85 +59,99 @@ const InnerLayout = () => {
       label: 'New Transfer',
       onPress: () => {},
     });
+
+    setBreadCrumbs([
+      { visual: <MonoAccountTree />, label: 'He-man', url: '/accounts' },
+      { label: 'Skeletor', url: '/accounts' },
+    ]);
   }, []);
 
   return (
-    <>
-      <SideBar>
-        <SideBarAppContext>
-          <SideBarItem
-            visual={<MonoWifiTethering />}
-            label="Mainnet"
-            onPress={() => {}}
-          />
-        </SideBarAppContext>
-        <SideBarNavigation>
-          <SideBarTree visual={<MonoWallet />} label="My Wallet">
-            <SideBarTreeItem label="Accounts" onPress={() => {}} />
-            <SideBarTreeItem label="Assets" onPress={() => {}} />
-          </SideBarTree>
-          <SideBarItem
-            visual={<MonoControlPointDuplicate />}
-            label="Dashboard"
-            onPress={() => {}}
-          />
-        </SideBarNavigation>
-        <SideBarContext>
-          <SideBarItem
-            visual={<MonoControlPointDuplicate />}
-            label="New Transfer"
-            onPress={() => {}}
-          />
-
-          <SideBarItemsInline>
+    <SideBarLayout
+      topBanner={<div>topbanner</div>}
+      breadcrumbs={<div>sdfsf</div>}
+      sidebar={
+        <SideBar
+          appContext={
             <SideBarItem
-              visual={<MonoAccountTree />}
-              label="Profile"
+              visual={<MonoWifiTethering />}
+              label="Mainnet"
               onPress={() => {}}
             />
-
-            <SideBarItem
-              visual={<MonoLightMode />}
-              label="Change theme"
-              onPress={() => {}}
-            >
-              <Button
-                aria-label="Change theme"
-                variant={isExpanded ? 'transparent' : 'outlined'}
-                isCompact={!isExpanded}
-                startVisual={<MonoLightMode />}
+          }
+          navigation={
+            <>
+              <SideBarTree visual={<MonoWallet />} label="My Wallet">
+                <SideBarTreeItem label="Accounts" onPress={() => {}} />
+                <SideBarTreeItem label="Assets" onPress={() => {}} />
+              </SideBarTree>
+              <SideBarItem
+                visual={<MonoControlPointDuplicate />}
+                label="Dashboard"
                 onPress={() => {}}
               />
-            </SideBarItem>
-          </SideBarItemsInline>
-        </SideBarContext>
-      </SideBar>
+            </>
+          }
+          context={
+            <>
+              <SideBarItem
+                visual={<MonoControlPointDuplicate />}
+                label="New Transfer"
+                onPress={() => {}}
+              />
 
-      <main style={{ gridArea: 'sidebarlayout-main' }}>content</main>
+              <SideBarItemsInline>
+                <SideBarItem
+                  visual={<MonoAccountTree />}
+                  label="Profile"
+                  onPress={() => {}}
+                />
 
-      <SideBarFooter>
-        <SideBarFooterItem
-          visual={<MonoWindow />}
-          onPress={() => {}}
-          label="option 1"
+                <SideBarItem
+                  visual={<MonoLightMode />}
+                  label="Change theme"
+                  onPress={() => {}}
+                >
+                  <Button
+                    aria-label="Change theme"
+                    variant={isExpanded ? 'transparent' : 'outlined'}
+                    isCompact={!isExpanded}
+                    startVisual={<MonoLightMode />}
+                    onPress={() => {}}
+                  />
+                </SideBarItem>
+              </SideBarItemsInline>
+            </>
+          }
         />
-        <SideBarFooterItem
-          visual={<MonoWifiTethering />}
-          onPress={() => {}}
-          label="option 2"
-        />
-        <SideBarFooterItem
-          visual={<MonoWorkspaces />}
-          onPress={() => {}}
-          label="option 3"
-        />
-        <SideBarFooterItem
-          visual={<MonoLightMode />}
-          onPress={() => {}}
-          label="option 4"
-        />
-      </SideBarFooter>
-    </>
+      }
+      footer={
+        <SideBarFooter>
+          <SideBarFooterItem
+            visual={<MonoWindow />}
+            onPress={() => {}}
+            label="option 1"
+          />
+          <SideBarFooterItem
+            visual={<MonoWifiTethering />}
+            onPress={() => {}}
+            label="option 2"
+          />
+          <SideBarFooterItem
+            visual={<MonoWorkspaces />}
+            onPress={() => {}}
+            label="option 3"
+          />
+          <SideBarFooterItem
+            visual={<MonoLightMode />}
+            onPress={() => {}}
+            label="option 4"
+          />
+        </SideBarFooter>
+      }
+    >
+      content
+    </SideBarLayout>
   );
 };
 
@@ -146,9 +161,26 @@ export const Primary: IStory = {
   args: {},
   render: () => {
     return (
-      <SideBarLayout>
+      <SideBarProvider>
         <InnerLayout />
-      </SideBarLayout>
+      </SideBarProvider>
+    );
+  },
+};
+
+const InnerLayoutFull = () => {
+  return <SideBarLayout variant="full">content</SideBarLayout>;
+};
+
+export const Full: IStory = {
+  name: 'Full centered layout',
+
+  args: {},
+  render: () => {
+    return (
+      <SideBarProvider>
+        <InnerLayoutFull />
+      </SideBarProvider>
     );
   },
 };

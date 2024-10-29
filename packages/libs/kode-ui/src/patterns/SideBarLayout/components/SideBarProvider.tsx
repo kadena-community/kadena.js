@@ -7,12 +7,20 @@ export interface IAppContextProps {
   label: string;
   onPress: () => void;
 }
+
+export interface ISideBarBreadCrumb {
+  label: string;
+  url: string;
+  visual?: React.ReactElement;
+}
 export interface ISideBarContext {
   isExpanded: boolean;
   handleToggleExpand: (e: PressEvent) => void;
   handleSetExpanded: (value: boolean) => void;
   appContext?: IAppContextProps;
   setAppContext: (context: IAppContextProps) => void;
+  breadCrumbs: ISideBarBreadCrumb[];
+  setBreadCrumbs: (value: ISideBarBreadCrumb[]) => void;
 }
 export const SideBarContext = createContext<ISideBarContext>({
   isExpanded: true,
@@ -20,6 +28,8 @@ export const SideBarContext = createContext<ISideBarContext>({
   handleSetExpanded: () => {},
   appContext: undefined,
   setAppContext: () => {},
+  setBreadCrumbs: () => {},
+  breadCrumbs: [],
 });
 export const useSideBar = (): ISideBarContext => useContext(SideBarContext);
 
@@ -30,6 +40,7 @@ export const SideBarProvider: FC<ISideBarProvider> = ({ children }) => {
   const [appContext, setAppContextState] = useState<
     IAppContextProps | undefined
   >();
+  const [breadCrumbs, setBreadCrumbsState] = useState<ISideBarBreadCrumb[]>([]);
 
   const handleToggleExpand = useCallback((e: PressEvent) => {
     setIsExpanded((v) => !v);
@@ -41,6 +52,11 @@ export const SideBarProvider: FC<ISideBarProvider> = ({ children }) => {
   const setAppContext = useCallback((context: IAppContextProps) => {
     setAppContextState(context);
   }, []);
+
+  const setBreadCrumbs = (value: ISideBarBreadCrumb[]) => {
+    setBreadCrumbsState(value);
+  };
+
   return (
     <SideBarContext.Provider
       value={{
@@ -49,6 +65,8 @@ export const SideBarProvider: FC<ISideBarProvider> = ({ children }) => {
         handleSetExpanded,
         appContext,
         setAppContext,
+        breadCrumbs,
+        setBreadCrumbs,
       }}
     >
       {children}

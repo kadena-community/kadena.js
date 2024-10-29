@@ -6,6 +6,7 @@ import {
   style,
   token,
 } from './../../styles';
+import { minHeaderHeight } from './styles.css';
 
 export const menuWrapperClass = recipe({
   base: [
@@ -35,7 +36,7 @@ export const menuWrapperClass = recipe({
       },
       md: {
         display: 'flex',
-        width: '40px',
+        width: '45px',
         padding: token('spacing.md'),
         paddingBlockStart: '0',
         paddingInline: token('spacing.xs'),
@@ -161,14 +162,14 @@ export const headerWrapperClass = style([
     display: 'flex',
     position: 'absolute',
     width: '100%',
-    height: '60px',
+    height: minHeaderHeight,
     gridArea: 'sidebarlayout-header',
   },
 
   responsiveStyle({
     xs: {
       gridTemplateColumns: 'auto',
-      gridTemplateRows: '60px auto 60px',
+      gridTemplateRows: `${minHeaderHeight} auto 60px`,
       gridTemplateAreas: `
     "sidebarlayout-header"
     "sidebarlayout-main"
@@ -176,7 +177,7 @@ export const headerWrapperClass = style([
   `,
     },
     md: {
-      gridTemplateColumns: '50px auto 50px',
+      gridTemplateColumns: `50px auto 50px`,
       gridTemplateRows: 'auto',
       gridTemplateAreas: `
     "header-logo header-toggle header-crumbs"
@@ -191,7 +192,7 @@ export const headerClass = style([
 
   responsiveStyle({
     xs: {
-      gridTemplateColumns: '50px auto 50px',
+      gridTemplateColumns: `50px auto 50px`,
       gridTemplateAreas: `
     "header-logo header-crumbs header-toggle"
   `,
@@ -218,13 +219,11 @@ export const footerWrapperClass = style([
     justifyContent: 'space-around',
     paddingInline: 'md',
     paddingBlock: 'sm',
-    borderStyle: 'solid',
-    borderColor: 'base.subtle',
   }),
   {
     gridArea: 'sidebarlayout-footer',
-    borderWidth: 0,
-    borderBlockStartWidth: token('border.hairline'),
+
+    borderBlockStart: token('border.hairline'),
   },
   responsiveStyle({
     xs: {

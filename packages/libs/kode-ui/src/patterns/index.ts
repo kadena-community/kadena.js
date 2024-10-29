@@ -19,14 +19,12 @@ export { usePagination } from './CompactTable/usePagination';
 
 export {
   SideBar,
-  SideBarAppContext,
-  SideBarContext,
   SideBarFooter,
   SideBarFooterItem,
   SideBarItem,
   SideBarItemsInline,
   SideBarLayout,
-  SideBarNavigation,
+  SideBarProvider,
   SideBarTree,
   SideBarTreeItem,
   useSideBar,

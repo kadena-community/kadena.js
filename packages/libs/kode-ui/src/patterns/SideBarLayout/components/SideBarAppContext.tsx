@@ -7,8 +7,8 @@ import { useSideBar } from './SideBarProvider';
 export interface ISideBarAppContext extends PropsWithChildren {}
 
 export const SideBarAppContext: FC<ISideBarAppContext> = ({ children }) => {
-  const { isExpanded } = useSideBar();
-  const { appContext } = useSideBar();
+  const { isExpanded, appContext } = useSideBar();
+
   return (
     <header>
       <ul

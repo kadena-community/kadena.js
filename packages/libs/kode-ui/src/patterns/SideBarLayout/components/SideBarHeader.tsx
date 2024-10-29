@@ -1,6 +1,6 @@
 import { MonoMenu, MonoMenuOpen } from '@kadena/kode-icons/system';
 import classNames from 'classnames';
-import type { FC, ReactElement } from 'react';
+import type { FC, PropsWithChildren, ReactElement } from 'react';
 import React from 'react';
 import type { PressEvent } from 'react-aria';
 import {
@@ -16,11 +16,17 @@ import { KLogo } from './Logo/KLogo';
 import { KadenaLogo } from './Logo/KadenaLogo';
 import { useSideBar } from './SideBarProvider';
 
-interface IProps {
+interface IProps extends PropsWithChildren {
   logo?: ReactElement;
+  breadcrumbs?: ReactElement;
+  hasSidebar?: boolean;
 }
 
-export const SideBarHeader: FC<IProps> = ({ logo }) => {
+export const SideBarHeader: FC<IProps> = ({
+  logo,
+  breadcrumbs,
+  hasSidebar = true,
+}) => {
   const { isExpanded, handleToggleExpand } = useSideBar();
   const handleExpand = (e: PressEvent) => {
     if (handleToggleExpand) {
@@ -28,13 +34,14 @@ export const SideBarHeader: FC<IProps> = ({ logo }) => {
     }
   };
 
-  const ShowLogo = !isExpanded ? (
-    <KLogo height={40} />
-  ) : logo ? (
-    logo
-  ) : (
-    <KadenaLogo height={40} />
-  );
+  const ShowLogo =
+    !isExpanded && hasSidebar ? (
+      <KLogo height={40} />
+    ) : logo ? (
+      logo
+    ) : (
+      <KadenaLogo height={40} />
+    );
 
   return (
     <header className={headerWrapperClass}>
@@ -48,19 +55,21 @@ export const SideBarHeader: FC<IProps> = ({ logo }) => {
         <Stack style={{ gridArea: 'header-logo' }}>
           <>
             <Media lessThan="md">
-              <KLogo height={40} />
+              {hasSidebar ? <KLogo height={40} /> : <KadenaLogo height={40} />}
             </Media>
             <Media greaterThanOrEqual="md">{ShowLogo}</Media>
           </>
         </Stack>
-        <Stack className={classNames(menuMenuIconClass)}>
-          <Button
-            variant="transparent"
-            onPress={handleExpand}
-            startVisual={isExpanded ? <MonoMenuOpen /> : <MonoMenu />}
-          />
-        </Stack>
-        <Stack style={{ gridArea: 'header-crumbs' }}>breadcrumbs</Stack>
+        {hasSidebar && (
+          <Stack className={classNames(menuMenuIconClass)}>
+            <Button
+              variant="transparent"
+              onPress={handleExpand}
+              startVisual={isExpanded ? <MonoMenuOpen /> : <MonoMenu />}
+            />
+          </Stack>
+        )}
+        <Stack style={{ gridArea: 'header-crumbs' }}>{breadcrumbs}</Stack>
       </Stack>
     </header>
   );

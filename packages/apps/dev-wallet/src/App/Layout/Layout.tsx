@@ -28,38 +28,39 @@ export const Layout: FC = () => {
   };
   return (
     <>
-      <SideBarLayout topBanner={<BetaHeader />}>
-        <SideBar />
-
-        <main style={{ gridArea: 'sidebarlayout-main' }}>
-          <Outlet />
-        </main>
-        <SideBarFooter>
-          <SideBarFooterItem
-            visual={<MonoWindow />}
-            label=""
-            onPress={() => {}}
-          />
-          <SideBarFooterItem
-            visual={<MonoWifiTethering />}
-            label="Profile"
-            onPress={() => {
-              navigate('/profile');
-            }}
-          />
-          <SideBarFooterItem
-            visual={<MonoWorkspaces />}
-            label="Select network"
-            onPress={() => {}}
-          >
-            <NetworkSelector variant="transparent" showLabel={false} />
-          </SideBarFooterItem>
-          <SideBarFooterItem
-            visual={<MonoLightMode />}
-            label="Change theme"
-            onPress={toggleTheme}
-          />
-        </SideBarFooter>
+      <SideBarLayout
+        topBanner={<BetaHeader />}
+        sidebar={<SideBar />}
+        footer={
+          <SideBarFooter>
+            <SideBarFooterItem
+              visual={<MonoWindow />}
+              label=""
+              onPress={() => {}}
+            />
+            <SideBarFooterItem
+              visual={<MonoWifiTethering />}
+              label="Profile"
+              onPress={() => {
+                navigate('/profile');
+              }}
+            />
+            <SideBarFooterItem
+              visual={<MonoWorkspaces />}
+              label="Select network"
+              onPress={() => {}}
+            >
+              <NetworkSelector variant="transparent" showLabel={false} />
+            </SideBarFooterItem>
+            <SideBarFooterItem
+              visual={<MonoLightMode />}
+              label="Change theme"
+              onPress={toggleTheme}
+            />
+          </SideBarFooter>
+        }
+      >
+        <Outlet />
       </SideBarLayout>
 
       <div id="modalportal"></div>
