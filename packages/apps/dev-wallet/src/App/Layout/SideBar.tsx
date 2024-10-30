@@ -28,7 +28,7 @@ import {
   useSideBar,
 } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const SideBar: FC = () => {
   const { theme, setTheme } = useTheme();
@@ -47,11 +47,7 @@ export const SideBar: FC = () => {
   return (
     <SideBarUI
       appContext={
-        <SideBarItem
-          visual={<MonoNetworkCheck />}
-          label="Select network"
-          onPress={() => {}}
-        >
+        <SideBarItem visual={<MonoNetworkCheck />} label="Select network">
           <NetworkSelector
             showLabel={isExpanded}
             variant="outlined"
@@ -64,59 +60,61 @@ export const SideBar: FC = () => {
           <SideBarItem
             visual={<MonoDataThresholding />}
             label="Dashboard"
-            onPress={() => navigate('/')}
+            component={Link}
+            href="/"
           />
 
           <SideBarTree visual={<MonoWallet />} label="My Wallets">
             <SideBarTreeItem
               label="Keys"
-              onPress={() => navigate('/key-management/keys')}
+              component={Link}
+              href="/key-management/keys"
             />
           </SideBarTree>
           <SideBarTree visual={<MonoTableRows />} label="Transactions">
             <SideBarTreeItem
               label="History"
-              onPress={() => navigate('/transactions')}
+              component={Link}
+              href="/transactions"
             />
           </SideBarTree>
           <SideBarTree visual={<MonoDashboardCustomize />} label="Utilities">
             <SideBarTreeItem
               label="Sig Builder"
-              onPress={() => navigate('/sig-builder')}
+              component={Link}
+              href="/sig-builder"
             />
             <SideBarTreeItem
               label="Dev Console"
-              onPress={() => navigate('/terminal')}
+              component={Link}
+              href="/terminal"
             />
             <SideBarTreeItem
               label="Backup"
-              onPress={() => navigate('/backup-recovery-phrase/write-down')}
+              component={Link}
+              href="/backup-recovery-phrase/write-down"
             />
           </SideBarTree>
 
           <SideBarItem
             visual={<MonoSwapHoriz />}
             label="Transfer"
-            onPress={() => {
-              navigate('/transfer');
-            }}
+            component={Link}
+            href="/transfer"
           />
 
           <SideBarItem
             visual={<MonoContacts />}
             label="Contacts"
-            onPress={() => navigate('/contacts')}
+            component={Link}
+            href="/contacts"
           />
         </>
       }
       context={
         <>
           <SideBarItemsInline>
-            <SideBarItem
-              visual={<MonoContacts />}
-              label="Profile"
-              onPress={() => {}}
-            >
+            <SideBarItem visual={<MonoContacts />} label="Profile">
               <ContextMenu
                 trigger={
                   <Button

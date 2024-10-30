@@ -1,13 +1,15 @@
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 import type { PressEvent } from './../../../components';
-import { Button } from './../../../components';
+import { Button, Link } from './../../../components';
 
 export interface ISideBarFooterItemProps extends PropsWithChildren {
   visual: React.ReactElement;
   label: string;
-  onPress: (e: PressEvent) => void;
+  onPress?: (e: PressEvent) => void;
   isAppContext?: boolean;
+  href?: string;
+  component?: any;
 }
 
 export const SideBarFooterItem: FC<ISideBarFooterItemProps> = ({
@@ -16,11 +18,22 @@ export const SideBarFooterItem: FC<ISideBarFooterItemProps> = ({
   isAppContext = false,
   label,
   onPress,
+  href,
+  component,
 }) => {
   if (children) return children;
+
+  const handlePress = (e: PressEvent) => {
+    if (onPress) onPress(e);
+  };
+
+  const Component = href ? Link : Button;
+
   return (
-    <Button
-      onPress={onPress}
+    <Component
+      component={component}
+      href={href}
+      onPress={handlePress}
       aria-label={label}
       startVisual={visual}
       variant={isAppContext ? 'primary' : 'transparent'}

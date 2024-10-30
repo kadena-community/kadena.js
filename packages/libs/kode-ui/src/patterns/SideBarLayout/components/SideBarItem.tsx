@@ -2,6 +2,7 @@ import type { FC, PropsWithChildren } from 'react';
 import React, { useEffect } from 'react';
 import { useMedia } from 'react-use';
 import { listItemClass } from '../sidebar.css';
+import { Link } from './../../../components';
 import type { PressEvent } from './../../../components/Button';
 import { Button } from './../../../components/Button';
 import { Media } from './../../../components/Media';
@@ -11,14 +12,18 @@ import { useSideBar } from './SideBarProvider';
 export interface ISideBarItemProps extends PropsWithChildren {
   visual: React.ReactElement;
   label: string;
-  onPress: (e: PressEvent) => void;
+  onPress?: (e: PressEvent) => void;
   isAppContext?: boolean;
+  href?: string;
+  component?: any;
 }
 export const SideBarItem: FC<ISideBarItemProps> = ({
   visual,
   label,
   onPress,
   children,
+  href,
+  component,
 }) => {
   const { isExpanded, handleSetExpanded } = useSideBar();
   const isMediumDevice = useMedia(breakpoints.md, true);
@@ -30,54 +35,89 @@ export const SideBarItem: FC<ISideBarItemProps> = ({
   const handlePress = (e: PressEvent) => {
     if (!isMediumDevice) handleSetExpanded(false);
 
-    onPress(e);
+    if (onPress) onPress(e);
+  };
+
+  const handleLinkClick = (e: any) => {
+    handlePress(e as unknown as PressEvent);
+  };
+
+  const renderChildren = () => {
+    return (
+      <>
+        <Media greaterThanOrEqual="md" style={{ flex: 1, display: 'flex' }}>
+          {children}
+        </Media>
+        <Media lessThan="md" style={{ flex: 1, display: 'flex' }}>
+          {children}
+        </Media>
+      </>
+    );
+  };
+
+  const renderMobile = () => {
+    const Component = href ? Link : Button;
+    return (
+      <Component
+        onPress={handleLinkClick}
+        href={href}
+        variant="outlined"
+        aria-label={label}
+        component={component}
+        startVisual={visual}
+      >
+        {label}
+      </Component>
+    );
+  };
+
+  const renderDeskTopNotExpanded = () => {
+    const Component = href ? Link : Button;
+    return (
+      <Component
+        onPress={handleLinkClick}
+        variant="outlined"
+        aria-label={label}
+        startVisual={visual}
+        isCompact
+        href={href}
+      />
+    );
+  };
+
+  const renderDeskTopExpanded = () => {
+    const Component = href ? Link : Button;
+    return (
+      <Component
+        onPress={handleLinkClick}
+        aria-label={label}
+        startVisual={visual}
+        variant="outlined"
+        href={href}
+      >
+        {label}
+      </Component>
+    );
   };
 
   return (
     <li className={listItemClass}>
-      {children ? (
-        <>
-          <Media greaterThanOrEqual="md" style={{ flex: 1, display: 'flex' }}>
-            {children}
-          </Media>
-          <Media lessThan="md" style={{ flex: 1, display: 'flex' }}>
-            {children}
-          </Media>
-        </>
-      ) : (
-        <>
-          <Media lessThan="md" style={{ flex: 1, display: 'flex' }}>
-            <Button
-              variant="outlined"
-              aria-label={label}
-              onPress={handlePress}
-              startVisual={visual}
-            >
-              {label}
-            </Button>
-          </Media>
-          <Media greaterThanOrEqual="md" style={{ flex: 1, display: 'flex' }}>
-            {!isExpanded ? (
-              <Button
-                variant="outlined"
-                aria-label={label}
-                onPress={handlePress}
-                startVisual={visual}
-                isCompact
-              />
-            ) : (
-              <Button
-                aria-label={label}
-                onPress={handlePress}
-                startVisual={visual}
-                variant="outlined"
-              >
-                {label}
-              </Button>
-            )}
-          </Media>
-        </>
-      )}
+      <>
+        {children ? (
+          renderChildren()
+        ) : (
+          <>
+            <Media lessThan="md" style={{ flex: 1, display: 'flex' }}>
+              {renderMobile()}
+            </Media>
+            <Media greaterThanOrEqual="md" style={{ flex: 1, display: 'flex' }}>
+              {!isExpanded
+                ? renderDeskTopNotExpanded()
+                : renderDeskTopExpanded()}
+            </Media>
+          </>
+        )}
+      </>
     </li>
   );
 };

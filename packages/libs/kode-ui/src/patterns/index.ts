@@ -29,4 +29,8 @@ export {
   SideBarTreeItem,
   useSideBar,
 } from './SideBarLayout';
-export type { ISideBarItemProps, ISideBarProps } from './SideBarLayout';
+export type {
+  ISideBarFooterItemProps,
+  ISideBarItemProps,
+  ISideBarProps,
+} from './SideBarLayout';

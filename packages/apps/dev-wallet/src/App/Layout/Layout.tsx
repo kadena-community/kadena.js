@@ -1,7 +1,7 @@
 import {
+  MonoKey,
   MonoLightMode,
   MonoWifiTethering,
-  MonoWindow,
   MonoWorkspaces,
 } from '@kadena/kode-icons/system';
 
@@ -15,7 +15,7 @@ import {
   useSideBar,
 } from '@kadena/kode-ui/patterns';
 import { FC, useEffect } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import { BetaHeader } from './../BetaHeader';
 import { SideBar } from './SideBar';
 
@@ -23,7 +23,6 @@ export const Layout: FC = () => {
   const { theme, setTheme } = useTheme();
   const { breadCrumbs, setBreadCrumbs, setAppContext } = useSideBar();
   const location = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (
@@ -48,21 +47,22 @@ export const Layout: FC = () => {
         footer={
           <SideBarFooter>
             <SideBarFooterItem
-              visual={<MonoWindow />}
-              label=""
-              onPress={() => {}}
-            />
-            <SideBarFooterItem
+              href="/"
+              component={Link}
               visual={<MonoWifiTethering />}
               label="Profile"
-              onPress={() => {
-                navigate('/profile');
-              }}
             />
+
+            <SideBarFooterItem
+              href="/key-management/keys"
+              component={Link}
+              visual={<MonoKey />}
+              label="Keys"
+            />
+
             <SideBarFooterItem
               visual={<MonoWorkspaces />}
               label="Select network"
-              onPress={() => {}}
             >
               <NetworkSelector variant="transparent" showLabel={false} />
             </SideBarFooterItem>

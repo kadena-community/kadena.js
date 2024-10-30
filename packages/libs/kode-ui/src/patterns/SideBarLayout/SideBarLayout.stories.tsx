@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import type { FC, PropsWithChildren } from 'react';
 import React, { useEffect } from 'react';
 
 import {
@@ -49,6 +50,13 @@ const meta: Meta<ISideBarProps> = {
 
 type IStory = StoryObj<ISideBarProps>;
 
+const LinkComponent: FC<PropsWithChildren<{ to: string }>> = ({
+  children,
+  ...props
+}) => {
+  return <a {...props}>{children}</a>;
+};
+
 const InnerLayout = () => {
   const { setAppContext, isExpanded } = useSideBar();
 
@@ -86,7 +94,7 @@ const InnerLayout = () => {
             <SideBarItem
               visual={<MonoWifiTethering />}
               label="Mainnet"
-              onPress={() => {}}
+              href="javascript:void()"
             />
           }
           navigation={
@@ -139,7 +147,8 @@ const InnerLayout = () => {
         <SideBarFooter>
           <SideBarFooterItem
             visual={<MonoWindow />}
-            onPress={() => {}}
+            component={LinkComponent}
+            href="https://kadena.io"
             label="option 1"
           />
           <SideBarFooterItem
