@@ -20,7 +20,7 @@ export const SideBarTreeItem: FC<ISideBarTreeItemProps> = ({
   href,
   component,
 }) => {
-  const { handleSetExpanded } = useSideBar();
+  const { handleSetExpanded, isActiveUrl } = useSideBar();
   const isMediumDevice = useMedia(breakpoints.md, true);
   const handlePress = (e: PressEvent) => {
     if (!isMediumDevice) handleSetExpanded(false);
@@ -34,6 +34,7 @@ export const SideBarTreeItem: FC<ISideBarTreeItemProps> = ({
         component={component}
         variant="transparent"
         isCompact
+        isDisabled={isActiveUrl(href)}
         href={href}
         onPress={handlePress}
       >

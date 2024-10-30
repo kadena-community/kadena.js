@@ -5,7 +5,8 @@ import type { PressEvent } from 'react-aria';
 export interface IAppContextProps {
   visual: React.ReactElement;
   label: string;
-  onPress: () => void;
+  onPress?: () => void;
+  href?: string;
 }
 
 export interface ISideBarBreadCrumb {
@@ -23,6 +24,7 @@ export interface ISideBarContext {
   setBreadCrumbs: (value: ISideBarBreadCrumb[]) => void;
   setActiveUrl: (value?: string) => void;
   activeUrl?: string;
+  isActiveUrl: (url?: string) => boolean;
 }
 export const SideBarContext = createContext<ISideBarContext>({
   isExpanded: true,
@@ -33,6 +35,7 @@ export const SideBarContext = createContext<ISideBarContext>({
   setBreadCrumbs: () => {},
   breadCrumbs: [],
   setActiveUrl: () => {},
+  isActiveUrl: () => {},
 });
 export const useSideBar = (): ISideBarContext => useContext(SideBarContext);
 
@@ -64,6 +67,10 @@ export const SideBarProvider: FC<ISideBarProvider> = ({ children }) => {
     setActiveUrlState(value);
   };
 
+  const isActiveUrl = (url?: string) => {
+    return !!url && url === activeUrl;
+  };
+
   return (
     <SideBarContext.Provider
       value={{
@@ -76,6 +83,7 @@ export const SideBarProvider: FC<ISideBarProvider> = ({ children }) => {
         setBreadCrumbs,
         setActiveUrl,
         activeUrl,
+        isActiveUrl,
       }}
     >
       {children}

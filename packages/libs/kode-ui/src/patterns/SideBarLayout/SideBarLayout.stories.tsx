@@ -64,7 +64,7 @@ const InnerLayout = () => {
     setAppContext({
       visual: <MonoAccountTree />,
       label: 'New Transfer',
-      onPress: () => {},
+      href: 'https://kadena.io',
     });
   }, []);
 
@@ -80,7 +80,7 @@ const InnerLayout = () => {
           <KLogo height={40} />
         </a>
       }
-      activeUrl="https://mastersoftheuniverse.com"
+      activeUrl="https://kadena.io"
       topBanner={<div>topbanner</div>}
       breadcrumbs={
         <Breadcrumbs icon={<MonoAccountTree />}>
@@ -100,7 +100,7 @@ const InnerLayout = () => {
           navigation={
             <>
               <SideBarTree visual={<MonoWallet />} label="My Wallet">
-                <SideBarTreeItem label="Accounts" onPress={() => {}} />
+                <SideBarTreeItem label="Accounts" href="https://kadena.io" />
                 <SideBarTreeItem label="Assets" onPress={() => {}} />
               </SideBarTree>
               <SideBarItem

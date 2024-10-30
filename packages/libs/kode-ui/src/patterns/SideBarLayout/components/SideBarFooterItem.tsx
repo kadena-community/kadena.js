@@ -2,6 +2,7 @@ import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 import type { PressEvent } from './../../../components';
 import { Button, Link } from './../../../components';
+import { useSideBar } from './SideBarProvider';
 
 export interface ISideBarFooterItemProps extends PropsWithChildren {
   visual: React.ReactElement;
@@ -21,6 +22,8 @@ export const SideBarFooterItem: FC<ISideBarFooterItemProps> = ({
   href,
   component,
 }) => {
+  const { isActiveUrl } = useSideBar();
+
   if (children) return children;
 
   const handlePress = (e: PressEvent) => {
@@ -36,6 +39,7 @@ export const SideBarFooterItem: FC<ISideBarFooterItemProps> = ({
       onPress={handlePress}
       aria-label={label}
       startVisual={visual}
+      isDisabled={isActiveUrl(href)}
       variant={isAppContext ? 'primary' : 'transparent'}
     />
   );

@@ -25,7 +25,7 @@ export const SideBarItem: FC<ISideBarItemProps> = ({
   href,
   component,
 }) => {
-  const { isExpanded, handleSetExpanded } = useSideBar();
+  const { isExpanded, handleSetExpanded, isActiveUrl } = useSideBar();
   const isMediumDevice = useMedia(breakpoints.md, true);
 
   useEffect(() => {
@@ -63,6 +63,7 @@ export const SideBarItem: FC<ISideBarItemProps> = ({
         href={href}
         variant="outlined"
         aria-label={label}
+        isDisabled={isActiveUrl(href)}
         component={component}
         startVisual={visual}
       >
@@ -78,6 +79,7 @@ export const SideBarItem: FC<ISideBarItemProps> = ({
         onPress={handleLinkClick}
         variant="outlined"
         aria-label={label}
+        isDisabled={isActiveUrl(href)}
         startVisual={visual}
         isCompact
         href={href}
@@ -91,6 +93,7 @@ export const SideBarItem: FC<ISideBarItemProps> = ({
       <Component
         onPress={handleLinkClick}
         aria-label={label}
+        isDisabled={isActiveUrl(href)}
         startVisual={visual}
         variant="outlined"
         href={href}
