@@ -18,12 +18,14 @@ import { useSideBar } from './SideBarProvider';
 
 interface IProps extends PropsWithChildren {
   logo?: ReactElement;
+  minifiedLogo?: ReactElement;
   breadcrumbs?: ReactElement;
   hasSidebar?: boolean;
 }
 
 export const SideBarHeader: FC<IProps> = ({
   logo,
+  minifiedLogo,
   breadcrumbs,
   hasSidebar = true,
 }) => {
@@ -34,14 +36,13 @@ export const SideBarHeader: FC<IProps> = ({
     }
   };
 
-  const ShowLogo =
-    !isExpanded && hasSidebar ? (
-      <KLogo height={40} />
-    ) : logo ? (
-      logo
-    ) : (
-      <KadenaLogo height={40} />
-    );
+  const ShowLogo = () => {
+    if (!isExpanded && hasSidebar) {
+      return minifiedLogo ? minifiedLogo : <KLogo height={40} />;
+    }
+
+    return logo ? logo : <KadenaLogo height={40} />;
+  };
 
   return (
     <header className={headerWrapperClass}>
@@ -54,10 +55,8 @@ export const SideBarHeader: FC<IProps> = ({
       >
         <Stack style={{ gridArea: 'header-logo' }}>
           <>
-            <Media lessThan="md">
-              {hasSidebar ? <KLogo height={40} /> : <KadenaLogo height={40} />}
-            </Media>
-            <Media greaterThanOrEqual="md">{ShowLogo}</Media>
+            <Media lessThan="md">{ShowLogo()}</Media>
+            <Media greaterThanOrEqual="md">{ShowLogo()}</Media>
           </>
         </Stack>
         {hasSidebar && (

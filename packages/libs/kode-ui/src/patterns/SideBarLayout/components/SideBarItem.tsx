@@ -16,7 +16,6 @@ export interface ISideBarItemProps extends PropsWithChildren {
 }
 export const SideBarItem: FC<ISideBarItemProps> = ({
   visual,
-  isAppContext = false,
   label,
   onPress,
   children,
@@ -27,6 +26,12 @@ export const SideBarItem: FC<ISideBarItemProps> = ({
   useEffect(() => {
     handleSetExpanded(isMediumDevice ? true : false);
   }, [isMediumDevice]);
+
+  const handlePress = (e: PressEvent) => {
+    if (!isMediumDevice) handleSetExpanded(false);
+
+    onPress(e);
+  };
 
   return (
     <li className={listItemClass}>
@@ -45,7 +50,7 @@ export const SideBarItem: FC<ISideBarItemProps> = ({
             <Button
               variant="outlined"
               aria-label={label}
-              onPress={onPress}
+              onPress={handlePress}
               startVisual={visual}
             >
               {label}
@@ -56,14 +61,14 @@ export const SideBarItem: FC<ISideBarItemProps> = ({
               <Button
                 variant="outlined"
                 aria-label={label}
-                onPress={onPress}
+                onPress={handlePress}
                 startVisual={visual}
                 isCompact
               />
             ) : (
               <Button
                 aria-label={label}
-                onPress={onPress}
+                onPress={handlePress}
                 startVisual={visual}
                 variant="outlined"
               >
@@ -75,22 +80,4 @@ export const SideBarItem: FC<ISideBarItemProps> = ({
       )}
     </li>
   );
-
-  //     return (
-  //     <Button
-  //       {...props}
-  //       startVisual={startVisual}
-  //       variant={isAppContext ? 'primary' : 'transparent'}
-  //     />
-  //     );
-  //     <Media lessThan="md">{children}</Media>
-  //     <Media greaterThanOrEqual="md">
-  //       {!isExpanded ? (
-  //         <Button variant="transparent" startVisual={visual} />
-  //       ) : (
-  //         children
-  //       )}
-  //     </Media>
-  //   </li>
-  // );
 };

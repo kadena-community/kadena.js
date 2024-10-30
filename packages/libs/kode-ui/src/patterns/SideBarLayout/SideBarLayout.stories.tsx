@@ -11,6 +11,8 @@ import {
   MonoWorkspaces,
 } from '@kadena/kode-icons/system';
 import { Breadcrumbs, BreadcrumbsItem, Button } from './../../components';
+import { KadenaLogo } from './components/Logo/KadenaLogo';
+import { KLogo } from './components/Logo/KLogo';
 import { SideBarFooter } from './components/SideBarFooter';
 import { SideBarFooterItem } from './components/SideBarFooterItem';
 import { SideBarItem } from './components/SideBarItem';
@@ -37,7 +39,8 @@ const meta: Meta<ISideBarProps> = {
     },
     docs: {
       description: {
-        component: 'A component can show the steps through a process',
+        component:
+          'A component that will set the layout for your app. All with header, footer and sidebar. The layout is setup that you can choose your own routing system. whether its Next or reactRouter. \nThe actual routes are set in your app',
       },
     },
   },
@@ -59,6 +62,17 @@ const InnerLayout = () => {
 
   return (
     <SideBarLayout
+      logo={
+        <a href="https://kadena.io" target="_blank" rel="noreferrer">
+          <KadenaLogo height={40} />
+        </a>
+      }
+      minifiedLogo={
+        <a href="https://kadena.io" target="_blank" rel="noreferrer">
+          <KLogo height={40} />
+        </a>
+      }
+      activeUrl="https://mastersoftheuniverse.com"
       topBanner={<div>topbanner</div>}
       breadcrumbs={
         <Breadcrumbs icon={<MonoAccountTree />}>
@@ -165,7 +179,18 @@ export const Primary: IStory = {
 };
 
 const InnerLayoutFull = () => {
-  return <SideBarLayout variant="full">content</SideBarLayout>;
+  return (
+    <SideBarLayout
+      logo={
+        <a href="https://kadena.io" target="_blank" rel="noreferrer">
+          <KadenaLogo height={40} />
+        </a>
+      }
+      variant="full"
+    >
+      content
+    </SideBarLayout>
+  );
 };
 
 export const Full: IStory = {

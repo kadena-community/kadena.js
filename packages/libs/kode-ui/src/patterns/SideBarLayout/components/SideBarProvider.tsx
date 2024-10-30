@@ -21,6 +21,8 @@ export interface ISideBarContext {
   setAppContext: (context?: IAppContextProps) => void;
   breadCrumbs: ISideBarBreadCrumb[];
   setBreadCrumbs: (value: ISideBarBreadCrumb[]) => void;
+  setActiveUrl: (value?: string) => void;
+  activeUrl?: string;
 }
 export const SideBarContext = createContext<ISideBarContext>({
   isExpanded: true,
@@ -30,6 +32,7 @@ export const SideBarContext = createContext<ISideBarContext>({
   setAppContext: () => {},
   setBreadCrumbs: () => {},
   breadCrumbs: [],
+  setActiveUrl: () => {},
 });
 export const useSideBar = (): ISideBarContext => useContext(SideBarContext);
 
@@ -37,6 +40,7 @@ export interface ISideBarProvider extends PropsWithChildren {}
 
 export const SideBarProvider: FC<ISideBarProvider> = ({ children }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [activeUrl, setActiveUrlState] = useState<string | undefined>();
   const [appContext, setAppContextState] = useState<
     IAppContextProps | undefined
   >();
@@ -56,6 +60,9 @@ export const SideBarProvider: FC<ISideBarProvider> = ({ children }) => {
   const setBreadCrumbs = (value: ISideBarBreadCrumb[]) => {
     setBreadCrumbsState(value);
   };
+  const setActiveUrl = (value?: string) => {
+    setActiveUrlState(value);
+  };
 
   return (
     <SideBarContext.Provider
@@ -67,6 +74,8 @@ export const SideBarProvider: FC<ISideBarProvider> = ({ children }) => {
         setAppContext,
         breadCrumbs,
         setBreadCrumbs,
+        setActiveUrl,
+        activeUrl,
       }}
     >
       {children}
