@@ -11,7 +11,12 @@ import {
   MonoWindow,
   MonoWorkspaces,
 } from '@kadena/kode-icons/system';
-import { Breadcrumbs, BreadcrumbsItem, Button } from './../../components';
+import {
+  Breadcrumbs,
+  BreadcrumbsItem,
+  Button,
+  Stack,
+} from './../../components';
 import { KadenaLogo } from './components/Logo/KadenaLogo';
 import { KLogo } from './components/Logo/KLogo';
 import { SideBarFooter } from './components/SideBarFooter';
@@ -76,7 +81,7 @@ const InnerLayout = () => {
         </a>
       }
       activeUrl="https://kadena.io"
-      topBanner={<div style={{ paddingBlock: '10px' }}>topbanner</div>}
+      // topBanner={<div style={{ paddingBlock: '10px' }}>topbanner</div>}
       breadcrumbs={
         <Breadcrumbs icon={<MonoAccountTree />}>
           <BreadcrumbsItem href="/accounts">He-man</BreadcrumbsItem>
@@ -174,7 +179,11 @@ const InnerLayout = () => {
         </SideBarFooter>
       }
     >
-      content
+      <Stack
+        style={{ maxWidth: '800px', background: 'yellow', height: '400px' }}
+      >
+        content
+      </Stack>
     </SideBarLayout>
   );
 };
@@ -202,7 +211,7 @@ const InnerLayoutFull = () => {
       }
       variant="full"
     >
-      content
+      <Stack style={{ maxWidth: '800px', background: 'yellow' }}>content</Stack>
     </SideBarLayout>
   );
 };

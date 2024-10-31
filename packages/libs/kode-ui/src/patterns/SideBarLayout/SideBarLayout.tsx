@@ -3,6 +3,7 @@ import type { FC, PropsWithChildren, ReactElement } from 'react';
 import React, { useEffect } from 'react';
 import { MediaContextProvider, Stack } from './../../components';
 
+import { SideBarAside } from './components/SideBarAside';
 import { SideBarHeader } from './components/SideBarHeader';
 import { useSideBar } from './components/SideBarProvider';
 import {
@@ -76,6 +77,7 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
           />
           {sidebar}
           <main className={mainClass({ variant })}>{children}</main>
+          <SideBarAside />
           {footer}
         </Stack>
       </Stack>

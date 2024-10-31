@@ -223,9 +223,7 @@ export const headerClass = style([
 
 export const headerExpandedClass = style([
   responsiveStyle({
-    md: {
-      gridTemplateColumns: '50px 50px auto',
-    },
+    md: { paddingInlineStart: '50px' },
   }),
 ]);
 

@@ -34,6 +34,14 @@ export const layoutWrapperClass = recipe({
             "sidebarlayout-sidebar sidebarlayout-main"
           `,
           },
+          xl: {
+            gridTemplateColumns: '45px 800px 1fr',
+            gridTemplateRows: `${minHeaderHeight} 1fr`,
+            gridTemplateAreas: `
+            "sidebarlayout-sidebar  sidebarlayout-header sidebarlayout-header"
+            "sidebarlayout-sidebar sidebarlayout-main  sidebarlayout-header"
+          `,
+          },
         }),
       ],
     },
@@ -93,6 +101,9 @@ export const layoutExpandedWrapperClass = style([
   responsiveStyle({
     md: {
       gridTemplateColumns: '200px auto',
+    },
+    xl: {
+      gridTemplateColumns: '200px 800px 1fr',
     },
   }),
 ]);
