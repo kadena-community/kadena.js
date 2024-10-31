@@ -1,25 +1,53 @@
+import { MonoClose } from '@kadena/kode-icons/system';
 import type { FC } from 'react';
-import React from 'react';
-import { asideWrapperClass, menuBackdropClass } from '../aside.css';
+import React, { useEffect } from 'react';
+import {
+  asideContentClass,
+  asideHeaderClass,
+  asideHeaderCloseButtonWrapperClass,
+  asideWrapperClass,
+  menuBackdropClass,
+} from '../aside.css';
 import type { PressEvent } from './../../../components';
-import { Stack } from './../../../components';
+import { Button, Heading, Stack } from './../../../components';
 import { useSideBar } from './SideBarProvider';
 
 export const SideBarAside: FC = () => {
-  const { handleToggleExpand } = useSideBar();
+  const { handleToggleAsideExpand, handleSetAsideExpanded, isAsideExpanded } =
+    useSideBar();
 
   const handleExpand = (e: PressEvent) => {
-    if (handleToggleExpand) {
-      handleToggleExpand(e);
+    if (handleToggleAsideExpand) {
+      handleToggleAsideExpand(e);
     }
   };
+
+  useEffect(() => {
+    const { hash } = window.location;
+    handleSetAsideExpanded(!!hash);
+    handleSetAsideExpanded(true);
+  }, []);
+
+  console.log(isAsideExpanded);
   return (
     <>
       <Stack
-        className={menuBackdropClass({ expanded: false })}
+        className={menuBackdropClass({ expanded: isAsideExpanded })}
         onClick={handleExpand}
       />
-      <aside className={asideWrapperClass()}>aside info</aside>
+      <aside className={asideWrapperClass({ expanded: isAsideExpanded })}>
+        <header className={asideHeaderClass}>
+          <Heading> </Heading>
+          <Stack className={asideHeaderCloseButtonWrapperClass}>
+            <Button
+              onPress={handleExpand}
+              variant="transparent"
+              startVisual={<MonoClose />}
+            />
+          </Stack>
+        </header>
+        <Stack className={asideContentClass}>aside info</Stack>
+      </aside>
     </>
   );
 };

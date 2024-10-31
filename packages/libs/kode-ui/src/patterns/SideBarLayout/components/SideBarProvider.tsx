@@ -15,9 +15,12 @@ export interface ISideBarBreadCrumb {
   visual?: React.ReactElement;
 }
 export interface ISideBarContext {
+  isAsideExpanded: boolean;
   isExpanded: boolean;
   handleToggleExpand: (e: PressEvent) => void;
   handleSetExpanded: (value: boolean) => void;
+  handleToggleAsideExpand: (e: PressEvent) => void;
+  handleSetAsideExpanded: (value: boolean) => void;
   appContext?: IAppContextProps;
   setAppContext: (context?: IAppContextProps) => void;
   breadCrumbs: ISideBarBreadCrumb[];
@@ -27,9 +30,12 @@ export interface ISideBarContext {
   isActiveUrl: (url?: string) => boolean;
 }
 export const SideBarContext = createContext<ISideBarContext>({
+  isAsideExpanded: false,
   isExpanded: true,
   handleToggleExpand: () => {},
   handleSetExpanded: () => {},
+  handleToggleAsideExpand: () => {},
+  handleSetAsidExpanded: () => {},
   appContext: undefined,
   setAppContext: () => {},
   setBreadCrumbs: () => {},
@@ -42,6 +48,7 @@ export const useSideBar = (): ISideBarContext => useContext(SideBarContext);
 export interface ISideBarProvider extends PropsWithChildren {}
 
 export const SideBarProvider: FC<ISideBarProvider> = ({ children }) => {
+  const [isAsideExpanded, setIsAsideExpanded] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeUrl, setActiveUrlState] = useState<string | undefined>();
   const [appContext, setAppContextState] = useState<
@@ -54,6 +61,13 @@ export const SideBarProvider: FC<ISideBarProvider> = ({ children }) => {
   }, []);
   const handleSetExpanded = useCallback((value: boolean) => {
     setIsExpanded(value);
+  }, []);
+
+  const handleToggleAsideExpand = useCallback((e: PressEvent) => {
+    setIsAsideExpanded((v) => !v);
+  }, []);
+  const handleSetAsideExpanded = useCallback((value: boolean) => {
+    setIsAsideExpanded(value);
   }, []);
 
   const setAppContext = useCallback((context?: IAppContextProps) => {
@@ -74,9 +88,12 @@ export const SideBarProvider: FC<ISideBarProvider> = ({ children }) => {
   return (
     <SideBarContext.Provider
       value={{
+        isAsideExpanded,
         isExpanded,
         handleToggleExpand,
         handleSetExpanded,
+        handleToggleAsideExpand,
+        handleSetAsideExpanded,
         appContext,
         setAppContext,
         breadCrumbs,
