@@ -8,6 +8,39 @@ import {
 } from './../../styles';
 import { minHeaderHeight } from './styles.css';
 
+export const menuBackdropClass = recipe({
+  base: [
+    responsiveStyle({
+      xs: {
+        display: 'flex',
+        position: 'absolute',
+        inset: 0,
+        background: token('color.neutral.n90@alpha20'),
+        zIndex: token('zIndex.overlay'),
+        backdropFilter: 'blur(8px)',
+        opacity: 0,
+        willChange: 'transform, opacity',
+        transition: 'transform .4s ease, opacity 1s ease',
+        transform: 'translateX(-100%)',
+      },
+      md: {
+        display: 'none!important',
+      },
+    }),
+  ],
+  variants: {
+    expanded: {
+      true: [
+        {
+          opacity: 1,
+          transform: 'translateX(0%)',
+        },
+      ],
+      false: [atoms({}), {}],
+    },
+  },
+});
+
 export const menuWrapperClass = recipe({
   base: [
     atoms({
@@ -21,6 +54,7 @@ export const menuWrapperClass = recipe({
     responsiveStyle({
       xs: {
         flex: 1,
+        maxWidth: '300px',
         width: '100dvw',
         display: 'flex',
         willChange: 'transform',
@@ -28,10 +62,10 @@ export const menuWrapperClass = recipe({
         transform: 'translateX(-100%)',
         position: 'relative',
         gridArea: 'sidebarlayout-main',
-        gridRow: '2/4',
+        gridRow: '1/5',
         inset: 0,
         zIndex: token('zIndex.overlay'),
-        backgroundColor: token('color.background.base.default'),
+        backgroundColor: token('color.background.layer.default'),
         padding: token('spacing.lg'),
       },
       md: {
@@ -41,7 +75,6 @@ export const menuWrapperClass = recipe({
         paddingBlockStart: '0',
         paddingInline: token('spacing.xs'),
         gridArea: 'sidebarlayout-sidebar',
-        gridRow: '2/3',
         transform: 'translateX(0%)',
         backgroundColor: 'transparent',
       },
@@ -160,28 +193,28 @@ globalStyle(`${listItemClass} a`, { justifyContent: 'flex-start', flex: 1 });
 export const headerWrapperClass = style([
   {
     display: 'flex',
-    position: 'absolute',
+    justifyContent: 'flex-start',
     width: '100%',
     height: minHeaderHeight,
     gridArea: 'sidebarlayout-header',
   },
 
   responsiveStyle({
-    xs: {
-      gridTemplateColumns: 'auto',
-      gridTemplateRows: `${minHeaderHeight} auto 60px`,
-      gridTemplateAreas: `
-    "sidebarlayout-header"
-    "sidebarlayout-main"
-    "sidebarlayout-footer"
-  `,
-    },
+    //   xs: {
+    //     gridTemplateColumns: 'auto',
+    //     gridTemplateRows: `${minHeaderHeight} auto 60px`,
+    //     gridTemplateAreas: `
+    //   "sidebarlayout-header"
+    //   "sidebarlayout-main"
+    //   "sidebarlayout-footer"
+    // `,
+    //   },
     md: {
-      gridTemplateColumns: `50px auto 50px`,
-      gridTemplateRows: 'auto',
-      gridTemplateAreas: `
-    "header-logo header-toggle header-crumbs"
-  `,
+      //     gridTemplateColumns: `50px auto 50px`,
+      //     gridTemplateRows: 'auto',
+      //     gridTemplateAreas: `
+      //   "header-logo header-toggle header-crumbs"
+      // `,
     },
   }),
 ]);
@@ -192,15 +225,16 @@ export const headerClass = style([
 
   responsiveStyle({
     xs: {
-      gridTemplateColumns: `50px auto 50px`,
+      gridTemplateColumns: `50px 1fr 50px`,
       gridTemplateAreas: `
     "header-logo header-crumbs header-toggle"
   `,
     },
     md: {
-      gridTemplateColumns: '150px 50px auto',
+      gridTemplateColumns: '1fr',
+      gridTemplateRows: 'auto',
       gridTemplateAreas: `
-    "header-logo header-toggle header-crumbs"
+    "header-crumbs"
   `,
     },
   }),

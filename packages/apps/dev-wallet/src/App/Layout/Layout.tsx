@@ -43,6 +43,7 @@ export const Layout: FC = () => {
       <SideBarLayout
         topBanner={<BetaHeader />}
         breadcrumbs={<BreadCrumbs />}
+        activeUrl={location.pathname}
         sidebar={<SideBar />}
         footer={
           <SideBarFooter>

@@ -6,6 +6,7 @@ import { MediaContextProvider, Stack } from './../../components';
 import { SideBarHeader } from './components/SideBarHeader';
 import { useSideBar } from './components/SideBarProvider';
 import {
+  bodyWrapperClass,
   layoutExpandedWrapperClass,
   layoutWrapperClass,
   mainClass,
@@ -47,14 +48,27 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
         width="100%"
         flexDirection="column"
         position="relative"
-        style={{ minHeight: '100dvh' }}
+        className={bodyWrapperClass}
       >
-        {topBanner}
         <Stack
-          className={classNames(layoutWrapperClass({ variant }), {
-            [layoutExpandedWrapperClass]: isExpanded,
-          })}
+          className={classNames(
+            layoutWrapperClass({ variant, hasTopBanner: !!topBanner }),
+            {
+              [layoutExpandedWrapperClass]: isExpanded,
+            },
+          )}
         >
+          {topBanner && (
+            <Stack
+              style={{
+                gridArea: 'sidebarlayout-topbanner',
+                overflowY: 'hidden',
+                background: 'green',
+              }}
+            >
+              {topBanner}
+            </Stack>
+          )}
           <SideBarHeader
             breadcrumbs={breadcrumbs}
             hasSidebar={!!sidebar}

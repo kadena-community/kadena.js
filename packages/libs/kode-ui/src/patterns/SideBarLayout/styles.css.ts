@@ -1,4 +1,4 @@
-import { atoms, recipe, responsiveStyle, style } from './../../styles';
+import { atoms, recipe, responsiveStyle, style, token } from './../../styles';
 
 export const minHeaderHeight = '60px';
 
@@ -9,23 +9,17 @@ export const layoutWrapperClass = recipe({
       minHeight: '100%',
     },
   ],
-  variants: {
-    variant: {
-      full: [
-        style({
-          gridTemplateColumns: 'auto',
-          gridTemplateRows: `${minHeaderHeight} auto`,
-          gridTemplateAreas: `
-            "sidebarlayout-header"
-            "sidebarlayout-main"
-          `,
-        }),
-      ],
-      default: [
+  compoundVariants: [
+    {
+      variants: {
+        variant: 'default',
+        hasTopBanner: false,
+      },
+      style: [
         responsiveStyle({
           xs: {
             gridTemplateColumns: 'auto',
-            gridTemplateRows: `${minHeaderHeight} auto 60px`,
+            gridTemplateRows: `${minHeaderHeight} 1fr 60px`,
             gridTemplateAreas: `
             "sidebarlayout-header"
             "sidebarlayout-main"
@@ -34,14 +28,63 @@ export const layoutWrapperClass = recipe({
           },
           md: {
             gridTemplateColumns: '45px auto',
-            gridTemplateRows: `${minHeaderHeight} auto`,
+            gridTemplateRows: `${minHeaderHeight} 1fr`,
             gridTemplateAreas: `
-            "sidebarlayout-header sidebarlayout-header"
+            "sidebarlayout-sidebar sidebarlayout-header"
             "sidebarlayout-sidebar sidebarlayout-main"
           `,
           },
         }),
       ],
+    },
+    {
+      variants: {
+        variant: 'default',
+        hasTopBanner: true,
+      },
+      style: [
+        responsiveStyle({
+          xs: {
+            gridTemplateColumns: 'auto',
+            gridTemplateRows: `minMax(0px, 60px) ${minHeaderHeight} 1fr 60px`,
+            gridTemplateAreas: `
+            "sidebarlayout-topbanner"
+            "sidebarlayout-header"
+            "sidebarlayout-main"
+            "sidebarlayout-footer"
+          `,
+          },
+          md: {
+            gridTemplateColumns: '45px auto',
+            gridTemplateRows: `minMax(0px, 60px) ${minHeaderHeight} 1fr`,
+            gridTemplateAreas: `
+            "sidebarlayout-topbanner sidebarlayout-topbanner"
+            "sidebarlayout-sidebar sidebarlayout-header"
+            "sidebarlayout-sidebar sidebarlayout-main"
+          `,
+          },
+        }),
+      ],
+    },
+  ],
+  variants: {
+    hasTopBanner: {
+      true: {},
+      false: {},
+    },
+    variant: {
+      full: [
+        style({
+          gridTemplateColumns: 'auto',
+          gridTemplateRows: `60px ${minHeaderHeight} 1fr`,
+          gridTemplateAreas: `
+            "sidebarlayout-topbanner"
+            "sidebarlayout-header"
+            "sidebarlayout-main"
+          `,
+        }),
+      ],
+      default: [],
     },
   },
 });
@@ -53,6 +96,11 @@ export const layoutExpandedWrapperClass = style([
     },
   }),
 ]);
+
+export const bodyWrapperClass = style({
+  minHeight: '100dvh',
+  backgroundColor: token('color.background.base.default'),
+});
 
 export const mainClass = recipe({
   base: {

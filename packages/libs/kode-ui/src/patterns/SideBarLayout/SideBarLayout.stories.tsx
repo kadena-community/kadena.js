@@ -70,18 +70,13 @@ const InnerLayout = () => {
 
   return (
     <SideBarLayout
-      logo={
-        <a href="https://kadena.io" target="_blank" rel="noreferrer">
-          <KadenaLogo height={40} />
-        </a>
-      }
       minifiedLogo={
         <a href="https://kadena.io" target="_blank" rel="noreferrer">
           <KLogo height={40} />
         </a>
       }
       activeUrl="https://kadena.io"
-      topBanner={<div>topbanner</div>}
+      // topBanner={<div style={{ paddingBlock: '10px' }}>topbanner</div>}
       breadcrumbs={
         <Breadcrumbs icon={<MonoAccountTree />}>
           <BreadcrumbsItem href="/accounts">He-man</BreadcrumbsItem>
@@ -90,6 +85,16 @@ const InnerLayout = () => {
       }
       sidebar={
         <SideBar
+          logo={
+            <a href="https://kadena.io" target="_blank" rel="noreferrer">
+              <KadenaLogo height={40} />
+            </a>
+          }
+          minifiedLogo={
+            <a href="https://kadena.io" target="_blank" rel="noreferrer">
+              <KLogo height={40} />
+            </a>
+          }
           appContext={
             <SideBarItem
               visual={<MonoWifiTethering />}

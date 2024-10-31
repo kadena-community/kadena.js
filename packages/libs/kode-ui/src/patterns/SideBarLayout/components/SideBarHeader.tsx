@@ -13,22 +13,15 @@ import { Button } from './../../../components/Button';
 import { Stack } from './../../../components/Layout';
 import { Media } from './../../../components/Media';
 import { KLogo } from './Logo/KLogo';
-import { KadenaLogo } from './Logo/KadenaLogo';
 import { useSideBar } from './SideBarProvider';
 
 interface IProps extends PropsWithChildren {
-  logo?: ReactElement;
-  minifiedLogo?: ReactElement;
   breadcrumbs?: ReactElement;
+  minifiedLogo?: ReactElement;
   hasSidebar?: boolean;
 }
 
-export const SideBarHeader: FC<IProps> = ({
-  logo,
-  minifiedLogo,
-  breadcrumbs,
-  hasSidebar = true,
-}) => {
+export const SideBarHeader: FC<IProps> = ({ breadcrumbs, minifiedLogo }) => {
   const { isExpanded, handleToggleExpand } = useSideBar();
   const handleExpand = (e: PressEvent) => {
     if (handleToggleExpand) {
@@ -37,11 +30,7 @@ export const SideBarHeader: FC<IProps> = ({
   };
 
   const ShowLogo = () => {
-    if (!isExpanded && hasSidebar) {
-      return minifiedLogo ? minifiedLogo : <KLogo height={40} />;
-    }
-
-    return logo ? logo : <KadenaLogo height={40} />;
+    return minifiedLogo ? minifiedLogo : <KLogo height={40} />;
   };
 
   return (
@@ -56,10 +45,9 @@ export const SideBarHeader: FC<IProps> = ({
         <Stack style={{ gridArea: 'header-logo' }}>
           <>
             <Media lessThan="md">{ShowLogo()}</Media>
-            <Media greaterThanOrEqual="md">{ShowLogo()}</Media>
           </>
         </Stack>
-        {hasSidebar && (
+        <Media lessThan="md">
           <Stack className={classNames(menuMenuIconClass)}>
             <Button
               variant="transparent"
@@ -67,7 +55,7 @@ export const SideBarHeader: FC<IProps> = ({
               startVisual={isExpanded ? <MonoMenuOpen /> : <MonoMenu />}
             />
           </Stack>
-        )}
+        </Media>
         <Stack style={{ gridArea: 'header-crumbs' }}>{breadcrumbs}</Stack>
       </Stack>
     </header>
