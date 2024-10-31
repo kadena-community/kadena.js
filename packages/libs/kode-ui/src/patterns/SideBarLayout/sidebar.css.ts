@@ -65,7 +65,7 @@ export const menuWrapperClass = recipe({
         gridRow: '1/5',
         inset: 0,
         zIndex: token('zIndex.overlay'),
-        backgroundColor: token('color.background.layer.default'),
+        backgroundColor: token('color.background.base.default'),
         padding: token('spacing.lg'),
       },
       md: {

@@ -6,7 +6,7 @@ export const asideWrapperClass = recipe({
     {
       gridArea: 'sidebarlayout-aside',
       gridRow: '1/5',
-      marginInlineEnd: token('spacing.md'),
+      backgroundColor: token('color.background.base.default'),
     },
     responsiveStyle({
       xs: {
@@ -30,6 +30,7 @@ export const asideWrapperClass = recipe({
         position: 'initial',
         opacity: 1,
         transform: 'translateX(0%)',
+        marginInlineEnd: token('spacing.md'),
       },
     }),
   ],
@@ -59,7 +60,7 @@ export const menuBackdropClass = recipe({
         transition: 'transform .4s ease, opacity 1s ease',
         transform: 'translateX(100%)',
       },
-      lg: {
+      xl: {
         display: 'none!important',
       },
     }),
@@ -86,6 +87,7 @@ export const asideHeaderClass = style([
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    minHeight: '50px',
   },
 ]);
 export const asideHeaderCloseButtonWrapperClass = style(
@@ -100,10 +102,17 @@ export const asideContentClass = style([
   atoms({
     padding: 'sm',
     paddingBlockStart: 'md',
-    border: 'hairline',
-    borderRadius: 'sm',
-    flex: 1,
 
-    backgroundColor: 'layer.default',
+    flex: 1,
+  }),
+  responsiveStyle({
+    xs: {
+      backgroundColor: token('color.background.layer.default'),
+    },
+    xl: {
+      border: token('border.hairline'),
+      borderRadius: token('spacing.sm'),
+      backgroundColor: token('color.background.layer.default'),
+    },
   }),
 ]);

@@ -179,11 +179,7 @@ const InnerLayout = () => {
         </SideBarFooter>
       }
     >
-      <Stack
-        style={{ maxWidth: '800px', background: 'yellow', height: '400px' }}
-      >
-        content
-      </Stack>
+      <Stack style={{ maxWidth: '800px', height: '400px' }}>content</Stack>
     </SideBarLayout>
   );
 };
@@ -211,7 +207,7 @@ const InnerLayoutFull = () => {
       }
       variant="full"
     >
-      <Stack style={{ maxWidth: '800px', background: 'yellow' }}>content</Stack>
+      <Stack style={{ maxWidth: '800px' }}>content</Stack>
     </SideBarLayout>
   );
 };
