@@ -63,7 +63,6 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
               style={{
                 gridArea: 'sidebarlayout-topbanner',
                 overflowY: 'hidden',
-                background: 'green',
               }}
             >
               {topBanner}

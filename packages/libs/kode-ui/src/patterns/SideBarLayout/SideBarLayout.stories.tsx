@@ -76,7 +76,7 @@ const InnerLayout = () => {
         </a>
       }
       activeUrl="https://kadena.io"
-      // topBanner={<div style={{ paddingBlock: '10px' }}>topbanner</div>}
+      topBanner={<div style={{ paddingBlock: '10px' }}>topbanner</div>}
       breadcrumbs={
         <Breadcrumbs icon={<MonoAccountTree />}>
           <BreadcrumbsItem href="/accounts">He-man</BreadcrumbsItem>

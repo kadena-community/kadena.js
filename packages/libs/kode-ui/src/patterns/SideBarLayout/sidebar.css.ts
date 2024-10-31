@@ -198,25 +198,6 @@ export const headerWrapperClass = style([
     height: minHeaderHeight,
     gridArea: 'sidebarlayout-header',
   },
-
-  responsiveStyle({
-    //   xs: {
-    //     gridTemplateColumns: 'auto',
-    //     gridTemplateRows: `${minHeaderHeight} auto 60px`,
-    //     gridTemplateAreas: `
-    //   "sidebarlayout-header"
-    //   "sidebarlayout-main"
-    //   "sidebarlayout-footer"
-    // `,
-    //   },
-    md: {
-      //     gridTemplateColumns: `50px auto 50px`,
-      //     gridTemplateRows: 'auto',
-      //     gridTemplateAreas: `
-      //   "header-logo header-toggle header-crumbs"
-      // `,
-    },
-  }),
 ]);
 export const headerClass = style([
   atoms({
