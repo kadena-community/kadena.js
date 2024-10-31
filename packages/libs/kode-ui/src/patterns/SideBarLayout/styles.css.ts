@@ -38,8 +38,8 @@ export const layoutWrapperClass = recipe({
             gridTemplateColumns: '45px 800px 1fr',
             gridTemplateRows: `${minHeaderHeight} 1fr`,
             gridTemplateAreas: `
-            "sidebarlayout-sidebar  sidebarlayout-header sidebarlayout-header"
-            "sidebarlayout-sidebar sidebarlayout-main  sidebarlayout-header"
+            "sidebarlayout-sidebar sidebarlayout-header sidebarlayout-header"
+            "sidebarlayout-sidebar sidebarlayout-main  sidebarlayout-aside"
           `,
           },
         }),
@@ -66,9 +66,9 @@ export const layoutWrapperClass = recipe({
             gridTemplateColumns: '45px auto',
             gridTemplateRows: `minMax(0px, 60px) ${minHeaderHeight} 1fr`,
             gridTemplateAreas: `
-            "sidebarlayout-topbanner sidebarlayout-topbanner"
-            "sidebarlayout-sidebar sidebarlayout-header"
-            "sidebarlayout-sidebar sidebarlayout-main"
+            "sidebarlayout-topbanner sidebarlayout-topbanner sidebarlayout-topbanner"
+            "sidebarlayout-sidebar sidebarlayout-header sidebarlayout-header"
+            "sidebarlayout-sidebar sidebarlayout-main sidebarlayout-aside"
           `,
           },
         }),

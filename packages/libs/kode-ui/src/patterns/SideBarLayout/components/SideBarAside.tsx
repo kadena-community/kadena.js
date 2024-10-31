@@ -12,7 +12,9 @@ import type { PressEvent } from './../../../components';
 import { Button, Heading, Stack } from './../../../components';
 import { useSideBar } from './SideBarProvider';
 
-export const SideBarAside: FC = () => {
+export const SideBarAside: FC<{ hasTopBanner?: boolean }> = ({
+  hasTopBanner,
+}) => {
   const { handleToggleAsideExpand, handleSetAsideExpanded, isAsideExpanded } =
     useSideBar();
 
@@ -28,14 +30,20 @@ export const SideBarAside: FC = () => {
     handleSetAsideExpanded(true);
   }, []);
 
-  console.log(isAsideExpanded);
   return (
     <>
       <Stack
-        className={menuBackdropClass({ expanded: isAsideExpanded })}
+        className={menuBackdropClass({
+          expanded: isAsideExpanded,
+        })}
         onClick={handleExpand}
       />
-      <aside className={asideWrapperClass({ expanded: isAsideExpanded })}>
+      <aside
+        className={asideWrapperClass({
+          expanded: isAsideExpanded,
+          hasTopBanner,
+        })}
+      >
         <header className={asideHeaderClass}>
           <Heading> </Heading>
           <Stack className={asideHeaderCloseButtonWrapperClass}>

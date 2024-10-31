@@ -1,7 +1,3 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import type { FC, PropsWithChildren } from 'react';
-import React, { useEffect } from 'react';
-
 import {
   MonoAccountTree,
   MonoControlPointDuplicate,
@@ -11,6 +7,9 @@ import {
   MonoWindow,
   MonoWorkspaces,
 } from '@kadena/kode-icons/system';
+import type { Meta, StoryObj } from '@storybook/react';
+import type { FC, PropsWithChildren } from 'react';
+import React, { useEffect } from 'react';
 import {
   Breadcrumbs,
   BreadcrumbsItem,
@@ -29,6 +28,7 @@ import { SideBarTreeItem } from './components/SideBarTreeItem';
 import type { ISideBarProps } from './SideBar';
 import { SideBar } from './SideBar';
 import { SideBarLayout } from './SideBarLayout';
+import './storybook.css';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const sampleNetworkItems: string[] = ['Mainnet', 'Testnet'];
@@ -81,7 +81,13 @@ const InnerLayout = () => {
         </a>
       }
       activeUrl="https://kadena.io"
-      // topBanner={<div style={{ paddingBlock: '10px' }}>topbanner</div>}
+      topBanner={
+        <div
+          style={{ paddingBlock: '10px', background: 'green', width: '100%' }}
+        >
+          topbanner
+        </div>
+      }
       breadcrumbs={
         <Breadcrumbs icon={<MonoAccountTree />}>
           <BreadcrumbsItem href="/accounts">He-man</BreadcrumbsItem>

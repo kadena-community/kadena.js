@@ -5,13 +5,13 @@ export const asideWrapperClass = recipe({
   base: [
     {
       gridArea: 'sidebarlayout-aside',
-      gridRow: '1/5',
+
       backgroundColor: token('color.background.base.default'),
     },
     responsiveStyle({
       xs: {
         flex: 1,
-        maxWidth: '300px',
+
         width: '100dvw',
         display: 'flex',
         flexDirection: 'column',
@@ -26,6 +26,9 @@ export const asideWrapperClass = recipe({
         right: 0,
         zIndex: token('zIndex.overlay'),
       },
+      sm: {
+        maxWidth: '370px',
+      },
       xl: {
         position: 'initial',
         opacity: 1,
@@ -35,6 +38,10 @@ export const asideWrapperClass = recipe({
     }),
   ],
   variants: {
+    hasTopBanner: {
+      false: { gridRow: '1/5' },
+      true: { gridRow: '2/5' },
+    },
     expanded: {
       true: {
         opacity: 1,

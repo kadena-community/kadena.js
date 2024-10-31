@@ -77,7 +77,7 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
           />
           {sidebar}
           <main className={mainClass({ variant })}>{children}</main>
-          <SideBarAside />
+          <SideBarAside hasTopBanner={!!topBanner} />
           {footer}
         </Stack>
       </Stack>
