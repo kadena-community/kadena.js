@@ -20,7 +20,7 @@ export const menuBackdropClass = recipe({
         backdropFilter: 'blur(8px)',
         opacity: 0,
         willChange: 'transform, opacity',
-        transition: 'transform .4s ease, opacity 1s ease',
+        transition: 'transform .2s ease, opacity 1s ease',
         transform: 'translateX(-100%)',
       },
       md: {
@@ -35,6 +35,11 @@ export const menuBackdropClass = recipe({
           opacity: 1,
           transform: 'translateX(0%)',
         },
+        responsiveStyle({
+          md: {
+            opacity: 0,
+          },
+        }),
       ],
       false: [atoms({}), {}],
     },

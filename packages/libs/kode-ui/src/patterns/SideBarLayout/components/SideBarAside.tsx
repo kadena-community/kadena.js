@@ -27,7 +27,6 @@ export const SideBarAside: FC<{ hasTopBanner?: boolean }> = ({
   useEffect(() => {
     const { hash } = window.location;
     handleSetAsideExpanded(!!hash);
-    handleSetAsideExpanded(true);
   }, []);
 
   return (

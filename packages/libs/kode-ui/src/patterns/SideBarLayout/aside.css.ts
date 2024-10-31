@@ -5,13 +5,12 @@ export const asideWrapperClass = recipe({
   base: [
     {
       gridArea: 'sidebarlayout-aside',
-
+      paddingBlockEnd: token('spacing.md'),
       backgroundColor: token('color.background.base.default'),
     },
     responsiveStyle({
       xs: {
         flex: 1,
-
         width: '100dvw',
         display: 'flex',
         flexDirection: 'column',
@@ -30,8 +29,7 @@ export const asideWrapperClass = recipe({
         maxWidth: '370px',
       },
       xl: {
-        position: 'initial',
-        opacity: 1,
+        position: 'absolute',
         transform: 'translateX(0%)',
         marginInlineEnd: token('spacing.md'),
       },
@@ -47,7 +45,11 @@ export const asideWrapperClass = recipe({
         opacity: 1,
         transform: 'translateX(0%)',
       },
-      false: [responsiveStyle({})],
+      false: [
+        {
+          opacity: 0,
+        },
+      ],
     },
   },
 });
