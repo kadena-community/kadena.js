@@ -188,13 +188,6 @@ export const lightThemeValues = {
         sticky: '100',
         toast: '10000',
       },
-      effect: {
-        shadow: {
-          level1: `4px 0.5rem ${tokens.kda.foundation.size.n2} 4px #000000`,
-          level2: `4rem 4rem ${tokens.kda.foundation.size.n2} 2rem #000000`,
-          level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
-        },
-      },
       color: {
         accent: {
           blue: tokens.kda.foundation.color.palette.blue.n50,
@@ -252,6 +245,12 @@ export const lightThemeValues = {
             default: tokens.kda.foundation.color.neutral['n99@alpha6'],
             inverse: {
               default: tokens.kda.foundation.color.neutral['n99@alpha80'],
+            },
+            subtle: {
+              default: tokens.kda.foundation.color.neutral['n99@alpha3'],
+              inverse: {
+                default: tokens.kda.foundation.color.neutral['n99@alpha80'],
+              },
             },
           },
           surfaceHighContrast: {
@@ -808,6 +807,8 @@ export const lightThemeValues = {
           'n1@alpha0': '#f5f5f500',
           'n1@alpha1': '#f5f5f503',
           'n1@alpha3': '#f5f5f508',
+          'n1@alpha4': '#f5f5f50a',
+          'n1@alpha5': '#f5f5f50d',
           'n1@alpha6': '#f5f5f50f',
           'n1@alpha10': '#f5f5f51a',
           'n1@alpha20': '#f5f5f533',
@@ -828,6 +829,8 @@ export const lightThemeValues = {
           'n99@alpha0': '#020e1b00',
           'n99@alpha1': '#020e1b03',
           'n99@alpha3': '#020e1b08',
+          'n99@alpha4': '#020e1b0a',
+          'n99@alpha5': '#020e1b0d',
           'n99@alpha6': '#020e1b0f',
           'n99@alpha10': '#020e1b1a',
           'n99@alpha20': '#020e1b33',
@@ -1283,12 +1286,6 @@ export const lightThemeValues = {
           },
         },
       },
-      layout: {
-        content: {
-          minWidth: '33.75rem',
-          maxWidth: '42.5rem',
-        },
-      },
       icon: {
         size: {
           xxs: tokens.kda.foundation.size.n3,
@@ -1298,6 +1295,19 @@ export const lightThemeValues = {
           lg: tokens.kda.foundation.size.n8,
           xl: tokens.kda.foundation.size.n10,
           xxl: tokens.kda.foundation.size.n16,
+        },
+      },
+      effect: {
+        shadow: {
+          level1: `4px 0.5rem ${tokens.kda.foundation.size.n2} 4px #000000`,
+          level2: `4rem 4rem ${tokens.kda.foundation.size.n2} 2rem #000000`,
+          level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
+        },
+      },
+      layout: {
+        content: {
+          minWidth: '33.75rem',
+          maxWidth: '42.5rem',
         },
       },
       typography: {

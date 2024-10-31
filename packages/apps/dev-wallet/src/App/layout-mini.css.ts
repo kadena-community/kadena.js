@@ -7,20 +7,6 @@ export const headerStyle = style({
   minHeight: minHeaderHeight,
 });
 
-export const mainStyle = style([
-  atoms({
-    width: '100%',
-    color: 'text.base.default',
-    display: 'flex',
-    alignItems: 'center',
-  }),
-  {
-    minHeight: `calc(100vh - ${minHeaderHeight})`,
-    background: 'transparent', // fallback in case radial-gradient is not working
-    backgroundRepeat: 'no-repeat',
-  },
-]);
-
 export const containerStyle = style([
   atoms({
     padding: 'sm',

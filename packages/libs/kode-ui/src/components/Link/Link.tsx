@@ -2,7 +2,7 @@ import { mergeProps, useObjectRef } from '@react-aria/utils';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 import classNames from 'classnames';
 import type { ForwardedRef, ReactElement } from 'react';
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useMemo } from 'react';
 import type { AriaButtonProps, AriaFocusRingProps } from 'react-aria';
 import { useFocusRing, useHover, useLink } from 'react-aria';
 import {
@@ -22,7 +22,10 @@ type Variants = NonNullable<RecipeVariants<typeof button>>;
 
 export type ILinkProps = Omit<AriaFocusRingProps, 'isTextInput'> &
   Variants &
-  Pick<AriaButtonProps<'button'>, 'aria-label' | 'href' | 'type' | 'target'> & {
+  Pick<
+    AriaButtonProps<'button'>,
+    'aria-label' | 'href' | 'type' | 'target' | 'onPress'
+  > & {
     className?: string;
     isLoading?: boolean;
     isDisabled?: boolean;
@@ -32,6 +35,7 @@ export type ILinkProps = Omit<AriaFocusRingProps, 'isTextInput'> &
     children?: string | number | ReactElement;
     startVisual?: ReactElement;
     endVisual?: ReactElement;
+    component?: any;
   };
 
 /**
@@ -49,6 +53,15 @@ export type ILinkProps = Omit<AriaFocusRingProps, 'isTextInput'> &
  * @param title - title to be shown as HTML tooltip
  */
 
+const Anchor = forwardRef<HTMLAnchorElement, ILinkProps>(
+  ({ children, ...props }, ref) => (
+    <a {...props} ref={ref}>
+      {children}
+    </a>
+  ),
+);
+Anchor.displayName = 'Anchor';
+
 const Link = forwardRef(
   (
     {
@@ -59,6 +72,7 @@ const Link = forwardRef(
       loadingLabel = 'Loading',
       variant = 'transparent',
       className,
+      component,
       ...props
     }: ILinkProps,
     forwardedRef: ForwardedRef<HTMLAnchorElement>,
@@ -70,6 +84,10 @@ const Link = forwardRef(
     const { hoverProps, isHovered } = useHover(props);
     const { focusProps, isFocused, isFocusVisible } = useFocusRing(props);
     const { isLoading, isDisabled, style, title } = props;
+
+    const LinkWrapper = useMemo(() => {
+      return component ?? Anchor;
+    }, [component]);
 
     const iconOnly = Boolean(
       // check if children is a ReactElement
@@ -86,7 +104,8 @@ const Link = forwardRef(
     } loading`.trim();
 
     return (
-      <a
+      <LinkWrapper
+        to={props.href}
         {...mergeProps(linkProps, hoverProps, focusProps)}
         className={classNames(
           button({
@@ -150,7 +169,7 @@ const Link = forwardRef(
             </span>
           )}
         </>
-      </a>
+      </LinkWrapper>
     );
   },
 );

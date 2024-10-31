@@ -27,6 +27,7 @@ export const BetaHeader = () => {
   return (
     <>
       <Stack
+        width="100%"
         as="header"
         alignItems="center"
         flexDirection="row"
