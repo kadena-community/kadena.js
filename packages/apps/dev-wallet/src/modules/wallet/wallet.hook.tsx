@@ -293,7 +293,12 @@ export const useWallet = () => {
     return createAccountByKey({ key, contract, alias });
   };
 
+  const getContact = (id: string) => {
+    return context.contacts.find((contact) => contact.uuid === id);
+  };
+
   return {
+    getContact,
     createProfile,
     unlockProfile,
     createKey,
