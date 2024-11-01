@@ -28,8 +28,8 @@ export const SideBarAside: FC<
   };
 
   useEffect(() => {
-    handleSetAsideExpanded(!!location.hash);
-  }, [location.hash]);
+    handleSetAsideExpanded(!!location?.hash);
+  }, [location?.hash]);
 
   return (
     <>

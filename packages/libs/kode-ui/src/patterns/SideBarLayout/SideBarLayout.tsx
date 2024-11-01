@@ -44,7 +44,7 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
   //and then saved in the layout
   useEffect(() => {
     setLocation(location);
-  }, [location.url]);
+  }, [location?.url, location?.hash]);
 
   return (
     <MediaContextProvider>
