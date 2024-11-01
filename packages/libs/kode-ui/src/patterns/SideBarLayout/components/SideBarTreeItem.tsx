@@ -50,8 +50,6 @@ export const SideBarTreeItem: FC<ISideBarTreeItemProps> = ({
     return href ? (component ? component : InnerAnchor) : InnerButton;
   }, [component, href]);
 
-  console.log(1111, { component, href });
-
   return (
     <li className={listItemClass}>
       <LinkWrapper
