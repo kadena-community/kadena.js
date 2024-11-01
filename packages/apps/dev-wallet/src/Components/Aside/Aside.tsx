@@ -7,6 +7,7 @@ const importView = async (key: string) =>
 export const Aside: FC = () => {
   const [view, setView] = useState<ReactElement | undefined>();
   const location = useLocation();
+  console.log({ location });
 
   const loadView = async (data: Record<string, string>) => {
     const Result = await importView(data.aside);

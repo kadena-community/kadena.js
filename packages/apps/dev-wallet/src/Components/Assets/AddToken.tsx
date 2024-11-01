@@ -1,7 +1,4 @@
-import {
-  accountRepository,
-  Fungible,
-} from '@/modules/account/account.repository';
+import { accountRepository } from '@/modules/account/account.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { queryAllChainsClient } from '@kadena/client-utils/core';
 import { composePactCommand, execution } from '@kadena/client/fp';
@@ -14,7 +11,7 @@ interface TokenForm {
   symbol: string;
 }
 
-export function AddToken({ onAdd }: { onAdd: (fungible: Fungible) => void }) {
+export function AddToken() {
   const { register, handleSubmit } = useForm<TokenForm>({
     defaultValues: {
       contract: '',

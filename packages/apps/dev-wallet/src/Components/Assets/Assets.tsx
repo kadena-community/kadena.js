@@ -1,18 +1,11 @@
 import { Fungible, IAccount } from '@/modules/account/account.repository';
+import { createAsideUrl } from '@/utils/createAsideUrl';
 import { MonoWallet } from '@kadena/kode-icons/system';
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  Heading,
-  Stack,
-  Text,
-} from '@kadena/kode-ui';
+import { Heading, Link as LinkUI, Stack, Text } from '@kadena/kode-ui';
 import { PactNumber } from '@kadena/pactjs';
 import classNames from 'classnames';
-import { useMemo, useState } from 'react';
-import { AddToken } from './AddToken';
+import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { assetBoxClass } from './style.css';
 
 export function Assets({
@@ -28,7 +21,6 @@ export function Assets({
   fungibles: Fungible[];
   showAddToken?: boolean;
 }) {
-  const [showTokenModal, setShowTokenModal] = useState(false);
   const assets = useMemo(() => {
     return fungibles.map((item) => {
       const acs = accounts.filter((a) => a.contract === item.contract);
@@ -44,16 +36,6 @@ export function Assets({
 
   return (
     <Stack flexDirection={'column'} gap={'md'}>
-      <Dialog
-        isOpen={showTokenModal}
-        onOpenChange={setShowTokenModal}
-        size="sm"
-      >
-        <DialogHeader>Add new token</DialogHeader>
-        <DialogContent>
-          <AddToken onAdd={() => setShowTokenModal(false)} />
-        </DialogContent>
-      </Dialog>
       <Stack
         flexDirection={'row'}
         justifyContent={'space-between'}
@@ -61,13 +43,11 @@ export function Assets({
       >
         <Heading as="h4">Your Assets</Heading>
         {showAddToken && (
-          <Button
-            variant="outlined"
-            isCompact
-            onPress={() => setShowTokenModal(true)}
-          >
-            Add new asset
-          </Button>
+          <Link to={createAsideUrl('NewAsset')}>
+            <LinkUI variant="outlined" isCompact>
+              Add new asset
+            </LinkUI>
+          </Link>
         )}
       </Stack>
       <Stack gap={'md'}>
