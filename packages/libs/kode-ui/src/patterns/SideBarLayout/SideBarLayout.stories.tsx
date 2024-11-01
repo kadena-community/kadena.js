@@ -208,6 +208,10 @@ export const Primary: IStory = {
 const InnerLayoutFull = () => {
   return (
     <SideBarLayout
+      location={{
+        url: 'https://kadena.io',
+        push: console.log,
+      }}
       logo={
         <a href="https://kadena.io" target="_blank" rel="noreferrer">
           <KadenaLogo height={40} />
