@@ -1,6 +1,7 @@
 import { atoms, recipe, responsiveStyle, style, token } from './../../styles';
 
 export const minHeaderHeight = '60px';
+export const sideBarWidth = '232px';
 
 export const layoutWrapperClass = recipe({
   base: [
@@ -100,10 +101,10 @@ export const layoutWrapperClass = recipe({
 export const layoutExpandedWrapperClass = style([
   responsiveStyle({
     md: {
-      gridTemplateColumns: '200px auto',
+      gridTemplateColumns: `${sideBarWidth} auto`,
     },
     xl: {
-      gridTemplateColumns: '200px 800px 1fr',
+      gridTemplateColumns: `${sideBarWidth} 800px 1fr`,
     },
   }),
 ]);
