@@ -80,7 +80,10 @@ const InnerLayout = () => {
           <KLogo height={40} />
         </a>
       }
-      activeUrl="https://kadena.io"
+      location={{
+        url: 'https://kadena.io',
+        push: console.log,
+      }}
       // topBanner={
       //   <div
       //     style={{ paddingBlock: '10px', background: 'green', width: '100%' }}

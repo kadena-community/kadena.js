@@ -12,6 +12,7 @@ import {
   layoutWrapperClass,
   mainClass,
 } from './styles.css';
+import type { ISideBarLayoutLocation } from './types';
 
 export interface ISideBarLayout extends PropsWithChildren {
   topBanner?: ReactElement;
@@ -20,8 +21,9 @@ export interface ISideBarLayout extends PropsWithChildren {
   breadcrumbs?: ReactElement;
   sidebar?: ReactElement;
   footer?: ReactElement;
+  aside?: ReactElement;
   variant?: 'default' | 'full';
-  activeUrl?: string;
+  location?: ISideBarLayoutLocation;
 }
 export const SideBarLayout: FC<ISideBarLayout> = ({
   children,
@@ -31,17 +33,18 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
   breadcrumbs,
   sidebar,
   footer,
+  aside,
   variant = 'default',
-  activeUrl,
+  location,
 }) => {
-  const { isExpanded, setActiveUrl } = useSideBar();
+  const { isExpanded, setLocation } = useSideBar();
 
   // set the active URL in your app.
   //we dont know what route system is being used so the active URL will be given as a prop to the component
   //and then saved in the layout
   useEffect(() => {
-    setActiveUrl(activeUrl);
-  }, [activeUrl]);
+    setLocation(location);
+  }, [location.url]);
 
   return (
     <MediaContextProvider>
@@ -77,7 +80,9 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
           />
           {sidebar}
           <main className={mainClass({ variant })}>{children}</main>
-          <SideBarAside hasTopBanner={!!topBanner} />
+          <SideBarAside location={location} hasTopBanner={!!topBanner}>
+            {aside}
+          </SideBarAside>
           {footer}
         </Stack>
       </Stack>
