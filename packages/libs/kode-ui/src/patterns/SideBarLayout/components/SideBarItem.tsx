@@ -61,9 +61,9 @@ export const SideBarItem: FC<ISideBarItemProps> = ({
       <Component
         onPress={handleLinkClick}
         href={href}
-        variant="outlined"
+        variant={isActiveUrl(href) ? 'primary' : 'outlined'}
         aria-label={label}
-        isDisabled={isActiveUrl(href)}
+        data-isactive={isActiveUrl(href)}
         component={component}
         startVisual={visual}
       >
@@ -77,11 +77,11 @@ export const SideBarItem: FC<ISideBarItemProps> = ({
     return (
       <Component
         onPress={handleLinkClick}
-        variant="outlined"
+        variant={isActiveUrl(href) ? 'primary' : 'outlined'}
         aria-label={label}
-        isDisabled={isActiveUrl(href)}
+        data-isactive={isActiveUrl(href)}
+        component={component}
         startVisual={visual}
-        isCompact
         href={href}
       />
     );
@@ -93,9 +93,10 @@ export const SideBarItem: FC<ISideBarItemProps> = ({
       <Component
         onPress={handleLinkClick}
         aria-label={label}
-        isDisabled={isActiveUrl(href)}
+        data-isactive={isActiveUrl(href)}
         startVisual={visual}
-        variant="outlined"
+        component={component}
+        variant={isActiveUrl(href) ? 'primary' : 'outlined'}
         href={href}
       >
         {label}

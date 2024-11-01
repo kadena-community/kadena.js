@@ -62,8 +62,10 @@ export const SideBar: FC<ISideBarProps> = ({
         })}
       >
         <Stack className={classNames(menuMenuIconClass)}>
-          <Media lessThan="md">{ShowLogo()}</Media>
-          <Media greaterThanOrEqual="md">{ShowLogo()}</Media>
+          <div>
+            <Media lessThan="md">{ShowLogo()}</Media>
+            <Media greaterThanOrEqual="md">{ShowLogo()}</Media>
+          </div>
 
           <Button
             variant="transparent"

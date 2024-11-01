@@ -4,18 +4,36 @@ import { useMedia } from 'react-use';
 import { listItemClass } from '../sidebar.css';
 import type { PressEvent } from './../../../components/Button';
 import { Button } from './../../../components/Button';
+import { Link } from './../../../components/Link';
 import { Media } from './../../../components/Media';
 import { breakpoints } from './../../../styles';
 import type { ISideBarItemProps } from './SideBarItem';
 import { useSideBar } from './SideBarProvider';
+import { sidebartreeListClass } from './sidebartree.css';
+
+const LOCALSTORAGEKEY = 'sidemenu';
+
+const setLocalStorageToggle = (label: string, isExpanded: boolean) => {
+  const storage = JSON.parse(localStorage.getItem(LOCALSTORAGEKEY) ?? '{}');
+  storage[`${label}`] = isExpanded;
+  localStorage.setItem(LOCALSTORAGEKEY, JSON.stringify(storage));
+};
+const getLocalStorageToggle = (label: string) => {
+  const storage = JSON.parse(localStorage.getItem(LOCALSTORAGEKEY) ?? '{}');
+  return storage[`${label}`] ?? true;
+};
 
 export type ISideBarTreeProps = Omit<ISideBarItemProps, 'onPress'>;
 export const SideBarTree: FC<ISideBarTreeProps> = ({
   visual,
   label,
   children,
+  href,
+  component,
 }) => {
   const { isExpanded, handleSetExpanded } = useSideBar();
+
+  const [isMounted, setIsMounted] = useState(false);
   const [treeisExpaned, setTreeIsExpanded] = useState(true);
   const isMediumDevice = useMedia(breakpoints.md, true);
 
@@ -25,48 +43,69 @@ export const SideBarTree: FC<ISideBarTreeProps> = ({
   }, [isMediumDevice]);
 
   useEffect(() => {
+    if (!isMounted) {
+      setTreeIsExpanded(getLocalStorageToggle(label));
+      setIsMounted(true);
+      return;
+    }
     if (!isExpanded) setTreeIsExpanded(false);
   }, [isExpanded]);
 
   const toggleTree = (e: PressEvent) => {
     if (!isExpanded) handleSetExpanded(true);
-    setTreeIsExpanded((v) => !v);
+
+    const innerExpanded = !treeisExpaned;
+    setLocalStorageToggle(label, innerExpanded);
+    setTreeIsExpanded(innerExpanded);
   };
+
+  const Component = href ? Link : Button;
+
   return (
     <li className={listItemClass}>
       <>
         <Media lessThan="md" style={{ flex: 1, display: 'flex' }}>
-          <Button
+          <Component
+            href={href}
+            component={component}
             variant="transparent"
             aria-label={label}
             onPress={toggleTree}
+            isCompact
             startVisual={visual}
           >
             {label}
-          </Button>
+          </Component>
         </Media>
         <Media greaterThanOrEqual="md" style={{ flex: 1, display: 'flex' }}>
           {!isExpanded ? (
-            <Button
+            <Component
+              href={href}
+              component={component}
               variant="transparent"
+              aria-label={label}
+              onPress={toggleTree}
+              isCompact
+              startVisual={visual}
+            />
+          ) : (
+            <Component
+              href={href}
+              component={component}
               aria-label={label}
               onPress={toggleTree}
               startVisual={visual}
               isCompact
-            />
-          ) : (
-            <Button
-              aria-label={label}
-              onPress={toggleTree}
-              startVisual={visual}
               variant="transparent"
             >
               {label}
-            </Button>
+            </Component>
           )}
         </Media>
 
-        {children && isExpanded && treeisExpaned && <ul>{children}</ul>}
+        {children && isExpanded && treeisExpaned && (
+          <ul className={sidebartreeListClass}>{children}</ul>
+        )}
       </>
     </li>
   );

@@ -6,7 +6,7 @@ import {
   style,
   token,
 } from './../../styles';
-import { minHeaderHeight } from './styles.css';
+import { minHeaderHeight, sideBarWidth } from './styles.css';
 
 export const menuBackdropClass = recipe({
   base: [
@@ -77,7 +77,6 @@ export const menuWrapperClass = recipe({
         display: 'flex',
         width: '45px',
         padding: token('spacing.md'),
-        paddingBlockStart: '0',
         paddingInline: token('spacing.xs'),
         gridArea: 'sidebarlayout-sidebar',
         transform: 'translateX(0%)',
@@ -99,7 +98,7 @@ export const menuWrapperMobileExpandedClass = style([
       transform: 'translateX(0%)',
     },
     md: {
-      width: '200px',
+      width: sideBarWidth,
       paddingInline: token('spacing.md'),
     },
   }),
@@ -107,6 +106,9 @@ export const menuWrapperMobileExpandedClass = style([
 
 export const menuMenuIconClass = style({
   gridArea: 'header-toggle',
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'space-between',
 });
 
 export const menuNavWrapperClass = style([

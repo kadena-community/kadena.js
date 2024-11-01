@@ -68,7 +68,7 @@ const InnerLayout = () => {
   useEffect(() => {
     setAppContext({
       visual: <MonoAccountTree />,
-      label: 'New Transfer',
+      label: 'New Transf.',
       href: 'https://kadena.io',
     });
   }, []);
@@ -117,13 +117,12 @@ const InnerLayout = () => {
             <>
               <SideBarTree visual={<MonoWallet />} label="My Wallet">
                 <SideBarTreeItem label="Accounts" href="https://kadena.io" />
-                <SideBarTreeItem label="Assets" onPress={() => {}} />
+                <SideBarTreeItem label="Assets" href="https://docs.kadena.io" />
               </SideBarTree>
-              <SideBarItem
-                visual={<MonoControlPointDuplicate />}
-                label="Dashboard"
-                onPress={() => {}}
-              />
+              <SideBarTree visual={<MonoWallet />} label="My Wallet 2">
+                <SideBarTreeItem label="Accounts" href="https://kadena.io" />
+                <SideBarTreeItem label="Assets" href="https://docs.kadena.io" />
+              </SideBarTree>
             </>
           }
           context={

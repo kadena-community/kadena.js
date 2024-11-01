@@ -1,12 +1,12 @@
 import type { FC } from 'react';
-import React from 'react';
+import React, { forwardRef, useMemo } from 'react';
 import { useMedia } from 'react-use';
 import { listItemClass } from '../sidebar.css';
-import { Link } from './../../../components';
-import type { PressEvent } from './../../../components/Button';
-import { Button } from './../../../components/Button';
+import type { ILinkProps } from './../../../components';
+import type { IButtonProps, PressEvent } from './../../../components/Button';
 import { breakpoints } from './../../../styles';
 import { useSideBar } from './SideBarProvider';
+import { sidebartreeItemClass } from './sidebartree.css';
 
 export interface ISideBarTreeItemProps {
   label: string;
@@ -14,6 +14,25 @@ export interface ISideBarTreeItemProps {
   href?: string;
   component?: any;
 }
+
+const InnerAnchor = forwardRef<HTMLAnchorElement, ILinkProps>(
+  ({ children, ...props }, ref) => (
+    <a {...props} ref={ref}>
+      {children}
+    </a>
+  ),
+);
+InnerAnchor.displayName = 'Anchor';
+
+const InnerButton = forwardRef<HTMLButtonElement, IButtonProps>(
+  ({ children, ...props }, ref) => (
+    <button {...props} ref={ref}>
+      {children}
+    </button>
+  ),
+);
+InnerButton.displayName = 'Anchor';
+
 export const SideBarTreeItem: FC<ISideBarTreeItemProps> = ({
   label,
   onPress,
@@ -27,19 +46,23 @@ export const SideBarTreeItem: FC<ISideBarTreeItemProps> = ({
     if (onPress) onPress(e);
   };
 
-  const Component = href ? Link : Button;
+  const LinkWrapper = useMemo(() => {
+    return href ? (component ? component : InnerAnchor) : InnerButton;
+  }, [component, href]);
+
+  console.log(1111, { component, href });
+
   return (
     <li className={listItemClass}>
-      <Component
-        component={component}
-        variant="transparent"
-        isCompact
-        isDisabled={isActiveUrl(href)}
+      <LinkWrapper
+        className={sidebartreeItemClass}
         href={href}
+        to={href}
         onPress={handlePress}
+        data-isactive={isActiveUrl(href)}
       >
         {label}
-      </Component>
+      </LinkWrapper>
     </li>
   );
 };
