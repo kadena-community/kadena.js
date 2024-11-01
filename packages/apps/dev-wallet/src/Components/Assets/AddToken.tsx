@@ -56,7 +56,6 @@ export function AddToken() {
       } as const;
 
       await accountRepository.addFungible(token);
-      onAdd(token);
     } catch (e: any) {
       setError(e?.message || e);
     }
