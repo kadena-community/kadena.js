@@ -1,15 +1,39 @@
 import { FC, lazy, ReactElement, Suspense, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const importView = async (key: string) =>
-  lazy(() => import(`./views/${key}`).catch(() => import(`./views/Error`)));
+const importView = async (key: string) => {
+  switch (key) {
+    case 'AddContact':
+      return lazy(() =>
+        import(`./views/AddContact`).catch(() => import(`./views/Error`)),
+      );
+
+    case 'KeySource':
+      return lazy(() =>
+        import(`./views/KeySource`).catch(() => import(`./views/Error`)),
+      );
+
+    case 'NewAsset':
+      return lazy(() =>
+        import(`./views/NewAsset`).catch(() => import(`./views/Error`)),
+      );
+
+    case 'NextAccount':
+      return lazy(() =>
+        import(`./views/NextAccount`).catch(() => import(`./views/Error`)),
+      );
+
+    default:
+      return lazy(() => import(`./views/Error`));
+  }
+};
 
 export const Aside: FC = () => {
   const [view, setView] = useState<ReactElement | undefined>();
   const location = useLocation();
 
   const loadView = async (data: Record<string, string>) => {
-    const Result = await importView(data.aside);
+    const Result: FC<any> = await importView(data.aside);
     setView(<Result {...data} />);
   };
   useEffect(() => {

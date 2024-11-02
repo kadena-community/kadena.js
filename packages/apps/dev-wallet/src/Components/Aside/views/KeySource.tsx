@@ -6,9 +6,9 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { AddKeySourceForm } from '@/pages/keys/Components/AddKeySourceForm';
 import { Notification, Stack } from '@kadena/kode-ui';
 import { useSideBar } from '@kadena/kode-ui/patterns';
-import { FC, useState } from 'react';
+import { useState } from 'react';
 
-const KeySource: FC = () => {
+const KeySource = () => {
   const { handleSetAsideExpanded } = useSideBar();
   const { keySources, profile, askForPassword } = useWallet();
   const [error, setError] = useState<string | null>(null);

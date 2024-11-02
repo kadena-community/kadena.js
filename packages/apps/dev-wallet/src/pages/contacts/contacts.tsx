@@ -30,11 +30,15 @@ export function Contacts() {
     <Stack flexDirection={'column'} className={panelClass} gap={'md'}>
       <Stack justifyContent={'space-between'}>
         <Heading variant="h3">Contacts</Heading>
-        <Link to={createAsideUrl('AddContact')}>
-          <LinkUI variant="outlined" isCompact>
-            Add Contact
-          </LinkUI>
-        </Link>
+
+        <LinkUI
+          component={Link}
+          href={createAsideUrl('AddContact')}
+          variant="outlined"
+          isCompact
+        >
+          Add Contact
+        </LinkUI>
       </Stack>
       <Stack flexDirection={'column'}>
         {contacts.map((contact) => (

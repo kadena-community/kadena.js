@@ -84,13 +84,13 @@ const InnerLayout = () => {
         url: 'https://kadena.io',
         push: console.log,
       }}
-      // topBanner={
-      //   <div
-      //     style={{ paddingBlock: '10px', background: 'green', width: '100%' }}
-      //   >
-      //     topbanner
-      //   </div>
-      // }
+      topBanner={
+        <div
+          style={{ paddingBlock: '10px', background: 'green', width: '100%' }}
+        >
+          topbanner
+        </div>
+      }
       breadcrumbs={
         <Breadcrumbs icon={<MonoAccountTree />}>
           <BreadcrumbsItem href="/accounts">He-man</BreadcrumbsItem>

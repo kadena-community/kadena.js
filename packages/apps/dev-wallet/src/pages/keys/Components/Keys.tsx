@@ -26,11 +26,15 @@ export function Keys() {
           <Stack marginBlock={'md'}>
             <Heading variant="h3">Your Keys</Heading>
           </Stack>
-          <Link to={createAsideUrl('KeySource')}>
-            <LinkUI variant="outlined" isCompact>
-              Add key Source
-            </LinkUI>
-          </Link>
+
+          <LinkUI
+            variant="outlined"
+            isCompact
+            href={createAsideUrl('KeySource')}
+            component={Link}
+          >
+            Add key Source
+          </LinkUI>
         </Stack>
 
         <Stack flexDirection={'column'} gap="md">

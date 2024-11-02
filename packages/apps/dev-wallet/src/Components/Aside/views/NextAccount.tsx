@@ -1,6 +1,4 @@
-import { FC } from 'react';
-
-const NextAccount: FC<{ contract: string }> = ({ contract }) => {
+const NextAccount = ({ contract }: { contract: string }) => {
   return <div>new account {contract}</div>;
 };
 

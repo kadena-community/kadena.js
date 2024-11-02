@@ -43,11 +43,14 @@ export function Assets({
       >
         <Heading as="h4">Your Assets</Heading>
         {showAddToken && (
-          <Link to={createAsideUrl('NewAsset')}>
-            <LinkUI variant="outlined" isCompact>
-              Add new asset
-            </LinkUI>
-          </Link>
+          <LinkUI
+            variant="outlined"
+            isCompact
+            href={createAsideUrl('NewAsset')}
+            component={Link}
+          >
+            Add new asset
+          </LinkUI>
         )}
       </Stack>
       <Stack gap={'md'}>

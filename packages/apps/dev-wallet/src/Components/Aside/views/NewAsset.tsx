@@ -1,7 +1,6 @@
 import { AddToken } from '@/Components/Assets/AddToken';
-import { FC } from 'react';
 
-const NewAsset: FC = () => {
+const NewAsset = () => {
   return (
     <div>
       <AddToken />

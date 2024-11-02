@@ -1,6 +1,4 @@
-import { FC } from 'react';
-
-const Error: FC = () => {
+const Error = () => {
   return <div>There was an error loading the view</div>;
 };
 
