@@ -125,7 +125,7 @@ export const Footer: FC = () => {
         gap={{ md: 'md' }}
         flexDirection={{ xs: 'column', md: 'row' }}
       >
-        <Text>@Kadena LCC @{year}</Text>
+        <Text>@Kadena LLC @{year}</Text>
         <Stack flex={1} />
         <a
           className={footerLinkClass}
