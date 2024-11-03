@@ -1,6 +1,7 @@
 import type { FC, PropsWithChildren } from 'react';
 import React, { createContext, useCallback, useContext, useState } from 'react';
 import type { PressEvent } from 'react-aria';
+import type { ISideBarLayoutLocation } from '../types';
 
 export interface IAppContextProps {
   visual: React.ReactElement;
@@ -25,8 +26,8 @@ export interface ISideBarContext {
   setAppContext: (context?: IAppContextProps) => void;
   breadCrumbs: ISideBarBreadCrumb[];
   setBreadCrumbs: (value: ISideBarBreadCrumb[]) => void;
-  setActiveUrl: (value?: string) => void;
-  activeUrl?: string;
+  setLocation: (location?: ISideBarLayoutLocation | undefined) => void;
+  location?: ISideBarLayoutLocation;
   isActiveUrl: (url?: string) => boolean;
 }
 export const SideBarContext = createContext<ISideBarContext>({
@@ -40,7 +41,7 @@ export const SideBarContext = createContext<ISideBarContext>({
   setAppContext: () => {},
   setBreadCrumbs: () => {},
   breadCrumbs: [],
-  setActiveUrl: () => {},
+  setLocation: () => {},
   isActiveUrl: () => {},
 });
 export const useSideBar = (): ISideBarContext => useContext(SideBarContext);
@@ -50,7 +51,9 @@ export interface ISideBarProvider extends PropsWithChildren {}
 export const SideBarProvider: FC<ISideBarProvider> = ({ children }) => {
   const [isAsideExpanded, setIsAsideExpanded] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [activeUrl, setActiveUrlState] = useState<string | undefined>();
+  const [location, setLocationState] = useState<
+    ISideBarLayoutLocation | undefined
+  >();
   const [appContext, setAppContextState] = useState<
     IAppContextProps | undefined
   >();
@@ -63,12 +66,26 @@ export const SideBarProvider: FC<ISideBarProvider> = ({ children }) => {
     setIsExpanded(value);
   }, []);
 
-  const handleToggleAsideExpand = useCallback((e: PressEvent) => {
-    setIsAsideExpanded((v) => !v);
-  }, []);
-  const handleSetAsideExpanded = useCallback((value: boolean) => {
-    setIsAsideExpanded(value);
-  }, []);
+  const handleToggleAsideExpand = useCallback(
+    (e: PressEvent) => {
+      if (isAsideExpanded) {
+        location?.push(`${location?.url}`);
+      }
+
+      setIsAsideExpanded((v) => !v);
+    },
+    [location?.url],
+  );
+
+  const handleSetAsideExpanded = useCallback(
+    (value: boolean) => {
+      if (!value) {
+        location?.push(`${location?.url}`);
+      }
+      setIsAsideExpanded(value);
+    },
+    [location?.url],
+  );
 
   const setAppContext = useCallback((context?: IAppContextProps) => {
     setAppContextState(context);
@@ -77,12 +94,12 @@ export const SideBarProvider: FC<ISideBarProvider> = ({ children }) => {
   const setBreadCrumbs = (value: ISideBarBreadCrumb[]) => {
     setBreadCrumbsState(value);
   };
-  const setActiveUrl = (value?: string) => {
-    setActiveUrlState(value);
+  const setLocation = (value?: ISideBarLayoutLocation | undefined) => {
+    setLocationState(value);
   };
 
   const isActiveUrl = (url?: string) => {
-    return !!url && url === activeUrl;
+    return !!url && url === location?.url;
   };
 
   return (
@@ -98,8 +115,8 @@ export const SideBarProvider: FC<ISideBarProvider> = ({ children }) => {
         setAppContext,
         breadCrumbs,
         setBreadCrumbs,
-        setActiveUrl,
-        activeUrl,
+        setLocation,
+        location,
         isActiveUrl,
       }}
     >

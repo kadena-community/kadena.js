@@ -80,14 +80,17 @@ const InnerLayout = () => {
           <KLogo height={40} />
         </a>
       }
-      activeUrl="https://kadena.io"
-      // topBanner={
-      //   <div
-      //     style={{ paddingBlock: '10px', background: 'green', width: '100%' }}
-      //   >
-      //     topbanner
-      //   </div>
-      // }
+      location={{
+        url: 'https://kadena.io',
+        push: console.log,
+      }}
+      topBanner={
+        <div
+          style={{ paddingBlock: '10px', background: 'green', width: '100%' }}
+        >
+          topbanner
+        </div>
+      }
       breadcrumbs={
         <Breadcrumbs icon={<MonoAccountTree />}>
           <BreadcrumbsItem href="/accounts">He-man</BreadcrumbsItem>
@@ -205,6 +208,10 @@ export const Primary: IStory = {
 const InnerLayoutFull = () => {
   return (
     <SideBarLayout
+      location={{
+        url: 'https://kadena.io',
+        push: console.log,
+      }}
       logo={
         <a href="https://kadena.io" target="_blank" rel="noreferrer">
           <KadenaLogo height={40} />

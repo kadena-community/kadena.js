@@ -5,6 +5,7 @@ import {
   MonoWorkspaces,
 } from '@kadena/kode-icons/system';
 
+import { Aside } from '@/Components/Aside/Aside';
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
 import { BreadCrumbs } from '@/pages/BreadCrumbs/BreadCrumbs';
 import { Themes, useTheme } from '@kadena/kode-ui';
@@ -14,8 +15,8 @@ import {
   SideBarLayout,
   useSideBar,
 } from '@kadena/kode-ui/patterns';
-import { FC, useEffect } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { FC, useEffect, useMemo } from 'react';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { BetaHeader } from './../BetaHeader';
 import { SideBar } from './SideBar';
 
@@ -23,6 +24,16 @@ export const Layout: FC = () => {
   const { theme, setTheme } = useTheme();
   const { breadCrumbs, setBreadCrumbs, setAppContext } = useSideBar();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const innerLocation = useMemo(
+    () => ({
+      url: location.pathname,
+      hash: location.hash,
+      push: navigate,
+    }),
+    [location],
+  );
 
   useEffect(() => {
     if (
@@ -38,12 +49,14 @@ export const Layout: FC = () => {
     const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
     setTheme(newTheme);
   };
+
   return (
     <>
       <SideBarLayout
+        aside={<Aside />}
         topBanner={<BetaHeader />}
         breadcrumbs={<BreadCrumbs />}
-        activeUrl={location.pathname}
+        location={innerLocation}
         sidebar={<SideBar />}
         footer={
           <SideBarFooter>

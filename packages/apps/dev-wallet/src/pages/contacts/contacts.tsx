@@ -1,11 +1,9 @@
 import { ConfirmDeletion } from '@/Components/ConfirmDeletion/ConfirmDeletion';
 import { ListItem } from '@/Components/ListItem/ListItem';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
-import {
-  contactRepository,
-  IContact,
-} from '@/modules/contact/contact.repository';
+import { contactRepository } from '@/modules/contact/contact.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { createAsideUrl } from '@/utils/createAsideUrl';
 import { shorten } from '@/utils/helpers';
 import {
   MonoAccountBalanceWallet,
@@ -16,41 +14,31 @@ import {
   ContextMenu,
   ContextMenuItem,
   Heading,
+  Link as LinkUI,
   Stack,
   Text,
 } from '@kadena/kode-ui';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { noStyleLinkClass, panelClass } from '../home/style.css';
-import { ContactDialog } from './Components/ContactDialog';
+import { Link, useNavigate } from 'react-router-dom';
+import { panelClass } from '../home/style.css';
 
 export function Contacts() {
+  const navigate = useNavigate();
   const { contacts } = useWallet();
   const prompt = usePrompt();
-  const [showAddContact, setShowAddContact] = useState(false);
-  const [editContact, setEditContact] = useState<IContact>();
-  const closeDialog = () => {
-    setShowAddContact(false);
-    setEditContact(undefined);
-  };
+
   return (
     <Stack flexDirection={'column'} className={panelClass} gap={'md'}>
-      {showAddContact && (
-        <ContactDialog
-          input={editContact}
-          onClose={closeDialog}
-          onDone={closeDialog}
-        />
-      )}
       <Stack justifyContent={'space-between'}>
         <Heading variant="h3">Contacts</Heading>
-        <Button
+
+        <LinkUI
+          component={Link}
+          href={createAsideUrl('AddContact')}
           variant="outlined"
           isCompact
-          onClick={() => setShowAddContact(true)}
         >
           Add Contact
-        </Button>
+        </LinkUI>
       </Stack>
       <Stack flexDirection={'column'}>
         {contacts.map((contact) => (
@@ -85,16 +73,14 @@ export function Contacts() {
                   <ContextMenuItem
                     label="Edit"
                     onClick={() => {
-                      setEditContact(contact);
-                      setShowAddContact(true);
+                      navigate(
+                        createAsideUrl('AddContact', {
+                          contactId: contact.uuid,
+                        }),
+                      );
                     }}
                   />
-                  <Link
-                    to={`/contacts/${contact.uuid}`}
-                    className={noStyleLinkClass}
-                  >
-                    <ContextMenuItem label="View" />
-                  </Link>
+
                   <ContextMenuItem
                     label="Delete"
                     onClick={async () => {

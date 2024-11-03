@@ -1,5 +1,5 @@
 import { MonoClose } from '@kadena/kode-icons/system';
-import type { FC } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import React, { useEffect } from 'react';
 import {
   asideContentClass,
@@ -8,26 +8,28 @@ import {
   asideWrapperClass,
   menuBackdropClass,
 } from '../aside.css';
+import type { ISideBarLayoutLocation } from '../types';
 import type { PressEvent } from './../../../components';
 import { Button, Heading, Stack } from './../../../components';
 import { useSideBar } from './SideBarProvider';
 
-export const SideBarAside: FC<{ hasTopBanner?: boolean }> = ({
-  hasTopBanner,
-}) => {
-  const { handleToggleAsideExpand, handleSetAsideExpanded, isAsideExpanded } =
-    useSideBar();
+export const SideBarAside: FC<
+  PropsWithChildren<{
+    hasTopBanner?: boolean;
+    location: ISideBarLayoutLocation;
+  }>
+> = ({ hasTopBanner, location, children }) => {
+  const { handleSetAsideExpanded, isAsideExpanded } = useSideBar();
 
   const handleExpand = (e: PressEvent) => {
-    if (handleToggleAsideExpand) {
-      handleToggleAsideExpand(e);
+    if (handleSetAsideExpanded) {
+      handleSetAsideExpanded(false);
     }
   };
 
   useEffect(() => {
-    const { hash } = window.location;
-    handleSetAsideExpanded(!!hash);
-  }, []);
+    handleSetAsideExpanded(!!location?.hash);
+  }, [location?.hash]);
 
   return (
     <>
@@ -53,7 +55,7 @@ export const SideBarAside: FC<{ hasTopBanner?: boolean }> = ({
             />
           </Stack>
         </header>
-        <Stack className={asideContentClass}>aside info</Stack>
+        <Stack className={asideContentClass}>{children}</Stack>
       </aside>
     </>
   );

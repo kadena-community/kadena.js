@@ -16,9 +16,10 @@ import {
   menuWrapperClass,
   menuWrapperMobileExpandedClass,
 } from './sidebar.css';
+import type { ISideBarLayoutLocation } from './types';
 
 export interface ISideBarProps extends PropsWithChildren {
-  activeUrl?: string;
+  location?: ISideBarLayoutLocation;
   appContext?: ReactElement;
   navigation?: ReactElement;
   context?: ReactElement;

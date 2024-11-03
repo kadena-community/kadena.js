@@ -72,6 +72,9 @@ export const layoutWrapperClass = recipe({
             "sidebarlayout-sidebar sidebarlayout-main sidebarlayout-aside"
           `,
           },
+          xl: {
+            position: 'relative',
+          },
         }),
       ],
     },
