@@ -4,6 +4,7 @@ import path from 'path';
 import sanitize from 'sanitize-filename';
 import type { ZodError } from 'zod';
 import { MAX_CHAIN_IDS, MAX_CHARACTERS_LENGTH } from '../constants/config.js';
+import { services } from '../services/index.js';
 
 /**
  * Assigns a value to an object's property if the value is neither undefined nor an empty string.
@@ -191,34 +192,27 @@ export const safeYamlParse = <T extends unknown>(value: string): T | null => {
   }
 };
 
-export function detectFileParseType(filepath: string): 'yaml' | 'json' | null {
+export function detectFileParseType(
+  filepath: string,
+): (<T extends unknown>(value: string) => T | null) | null {
   const ext = path.extname(filepath);
   if (ext === '.yaml' || ext === '.yml') {
-    return 'yaml';
+    return safeYamlParse;
   }
   if (ext === '.json') {
-    return 'json';
+    return safeJsonParse;
   }
   return null;
 }
 
-export function detectArrayFileParseType(
-  filepaths: string[],
-): { filepath: string; type: 'yaml' | 'json' }[] {
-  return filepaths.reduce(
-    (memo, filepath) => {
-      const type = detectFileParseType(filepath);
-      if (type) memo.push({ filepath, type });
-      return memo;
-    },
-    [] as { filepath: string; type: 'yaml' | 'json' }[],
-  );
-}
-
-export function getFileParser(
-  type: 'yaml' | 'json',
-): <T extends unknown>(value: string) => T | null {
-  return type === 'yaml' ? safeYamlParse : safeJsonParse;
+export async function loadUnknownFile(
+  filepath: string,
+): Promise<unknown | null> {
+  const parser = detectFileParseType(filepath);
+  if (parser === null) return null;
+  const file = await services.filesystem.readFile(filepath);
+  if (file === null) return null;
+  return parser(file);
 }
 
 export const generateAllChainIds = (): ChainId[] =>
