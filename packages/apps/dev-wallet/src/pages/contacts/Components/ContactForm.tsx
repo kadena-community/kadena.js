@@ -10,6 +10,7 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { labelBoldClass } from '@/pages/transaction/components/style.css';
 import { IReceiverAccount } from '@/pages/transfer/utils';
 import { Button, Notification, Stack, Text, TextField } from '@kadena/kode-ui';
+import { useLayout } from '@kadena/kode-ui/patterns';
 import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
@@ -28,6 +29,7 @@ export function ContactForm({
   onClose: () => void;
   onDone: (contect: IContact) => void;
 }) {
+  const { setAsideTitle } = useLayout();
   const prompt = usePrompt();
   const { activeNetwork } = useWallet();
   const [error, setError] = useState<string | null>(null);
@@ -36,8 +38,8 @@ export function ContactForm({
     control,
     getValues,
     handleSubmit,
-    reset,
     formState: { isValid },
+    reset,
   } = useForm<IContactFormData>({
     defaultValues: input ?? {
       name: '',
@@ -54,7 +56,8 @@ export function ContactForm({
         discoverdAccount: undefined,
       },
     );
-  }, [input]);
+    setAsideTitle(input?.uuid ? 'Edit Contact' : 'Add Contact');
+  }, [input?.uuid]);
 
   const createContact = useCallback(
     async ({ discoverdAccount, ...data }: IContactFormData) => {
@@ -103,7 +106,7 @@ export function ContactForm({
         className={displayContentsClass}
         onSubmit={handleSubmit(createContact)}
       >
-        <Stack gap={'lg'} flexDirection={'column'} width="100%">
+        <Stack gap={'lg'} flexDirection={'column'} gap="md">
           <TextField
             label="Name"
             defaultValue={getValues('name')}
@@ -142,43 +145,36 @@ export function ContactForm({
               {error}
             </Notification>
           )}
-        </Stack>
-
-        <Stack
-          width="100%"
-          gap="md"
-          justifyContent="flex-end"
-          marginBlockStart="md"
-        >
-          {input?.uuid && (
-            <Button
-              type="button"
-              variant="negative"
-              onClick={async () => {
-                const confirm = await prompt((resolve, reject) => (
-                  <ConfirmDeletion
-                    onCancel={() => reject()}
-                    onDelete={() => resolve(true)}
-                    title="Delete Contact"
-                    description="Are you sure you want to delete this contact?"
-                  />
-                ));
-                if (confirm) {
-                  await contactRepository.deleteContact(input.uuid);
-                  onClose();
-                }
-              }}
-            >
-              Delete
+          <Stack gap={'md'} width="100%" justifyContent="flex-end">
+            {input?.uuid && (
+              <Button
+                type="button"
+                variant="negative"
+                onClick={async () => {
+                  const confirm = await prompt((resolve, reject) => (
+                    <ConfirmDeletion
+                      onCancel={() => reject()}
+                      onDelete={() => resolve(true)}
+                      title="Delete Contact"
+                      description="Are you sure you want to delete this contact?"
+                    />
+                  ));
+                  if (confirm) {
+                    await contactRepository.deleteContact(input.uuid);
+                    onClose();
+                  }
+                }}
+              >
+                Delete
+              </Button>
+            )}
+            <Button onClick={onClose} type="reset" variant="transparent">
+              Cancel
             </Button>
-          )}
-
-          <Button onClick={onClose} type="reset" variant="transparent">
-            Cancel
-          </Button>
-          <Button type="submit" isDisabled={!isValid}>
-            Save
-          </Button>
+            <Button type="submit" isDisabled={!isValid}>
+              Save
+            </Button>
+          </Stack>
         </Stack>
       </form>
     </>

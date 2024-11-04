@@ -3,11 +3,6 @@ import { useLocation } from 'react-router-dom';
 
 const importView = async (key: string) => {
   switch (key) {
-    case 'AddContact':
-      return lazy(() =>
-        import(`./views/AddContact`).catch(() => import(`./views/Error`)),
-      );
-
     case 'KeySource':
       return lazy(() =>
         import(`./views/KeySource`).catch(() => import(`./views/Error`)),
