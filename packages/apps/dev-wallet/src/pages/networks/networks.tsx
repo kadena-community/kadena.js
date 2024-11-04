@@ -70,7 +70,9 @@ export function Networks() {
               isCompact
               onPress={() => {
                 setSelectedNetwork(getNewNetwork());
-                setIsRightAsideExpanded(true);
+                setTimeout(() => {
+                  setIsRightAsideExpanded(true);
+                }, 0);
               }}
             >
               Add Network
@@ -100,7 +102,9 @@ export function Networks() {
                     variant="outlined"
                     onPress={() => {
                       setSelectedNetwork(network);
-                      setIsRightAsideExpanded(true);
+                      setTimeout(() => {
+                        setIsRightAsideExpanded(true);
+                      }, 0);
                     }}
                   >
                     Edit

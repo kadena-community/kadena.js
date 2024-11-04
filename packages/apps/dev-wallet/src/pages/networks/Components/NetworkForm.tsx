@@ -126,14 +126,14 @@ export function NetworkForm({
               label="Network ID"
               aria-label="networkId"
               type="text"
-              value={getValues('networkId')}
+              defaultValue={getValues('networkId')}
               {...register('networkId')}
             />
             <TextField
               label="Title"
               aria-label="title"
               type="text"
-              value={getValues('name')}
+              defaultValue={getValues('name')}
               {...register('name')}
             />
             <Stack
