@@ -1,5 +1,5 @@
 // eslint-disable-next-line @rushstack/no-new-null
-import { createTransaction } from '@kadena/client';
+import { createClient, createTransaction } from '@kadena/client';
 import {
   createCrossChainCommand,
   transferCreateCommand,
