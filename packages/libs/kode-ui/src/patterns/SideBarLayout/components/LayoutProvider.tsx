@@ -48,7 +48,7 @@ export const useLayout = (): ILayoutContext => useContext(LayoutContext);
 
 export interface ILayoutProvider extends PropsWithChildren {}
 
-export const LayoutProvider: FC<ISideBarProvider> = ({ children }) => {
+export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   const [isAsideExpanded, setIsAsideExpanded] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [location, setLocationState] = useState<
