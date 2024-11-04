@@ -106,7 +106,7 @@ export function ContactForm({
         className={displayContentsClass}
         onSubmit={handleSubmit(createContact)}
       >
-        <Stack gap={'lg'} flexDirection={'column'} gap="md">
+        <Stack flexDirection={'column'} gap="md">
           <TextField
             label="Name"
             defaultValue={getValues('name')}
