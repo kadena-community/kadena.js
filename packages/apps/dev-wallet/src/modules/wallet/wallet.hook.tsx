@@ -294,7 +294,9 @@ export const useWallet = () => {
   };
 
   const getContact = (id: string) => {
-    return context.contacts.find((contact) => contact.uuid === id);
+    return context.contacts.find(
+      (contact) => contact.uuid?.toLowerCase() === id?.toLowerCase(),
+    );
   };
 
   return {

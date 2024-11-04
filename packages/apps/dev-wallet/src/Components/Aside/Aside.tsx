@@ -56,6 +56,7 @@ export const Aside: FC = () => {
     loadView(hashArray);
   }, [location.hash]);
 
+  console.log(view);
   return (
     <div>
       <Suspense fallback="Loading view...">{view}</Suspense>

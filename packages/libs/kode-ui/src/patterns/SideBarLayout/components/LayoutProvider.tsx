@@ -36,6 +36,8 @@ export interface ILayoutContext {
   setLocation: (location?: ISideBarLayoutLocation | undefined) => void;
   location?: ISideBarLayoutLocation;
   isActiveUrl: (url?: string) => boolean;
+  asideTitle?: string;
+  setAsideTitle: (value?: string) => void;
 }
 export const LayoutContext = createContext<ILayoutContext>({
   isAsideExpanded: false,
@@ -50,6 +52,7 @@ export const LayoutContext = createContext<ILayoutContext>({
   breadCrumbs: [],
   setLocation: () => {},
   isActiveUrl: () => {},
+  setAsideTitle: () => {},
 });
 
 export interface IuseLayoutProps extends ILayoutContext {
@@ -64,14 +67,25 @@ export const useLayout = (
   useEffect(() => {
     if (!props) return;
 
-    context.setAppContext(props.appContext);
-  }, [props?.appContext]);
+    if (props.appContext?.label !== context.appContext?.label) {
+      context.setAppContext(props.appContext);
+    }
 
-  useEffect(() => {
-    if (!props) return;
+    //check if the content of the breadcrumbs has changed
+    const breadCrumbsHasChanged = props.breadCrumbs.reduce((acc, val, idx) => {
+      const oldVal = context.breadCrumbs[idx];
+      if (val.url !== oldVal?.url) return true;
 
-    context.setBreadCrumbs(props.breadCrumbs);
-  }, [props?.breadCrumbs]);
+      return acc;
+    }, false);
+
+    if (
+      props.breadCrumbs.length !== context.breadCrumbs.length ||
+      breadCrumbsHasChanged
+    ) {
+      context.setBreadCrumbs(props.breadCrumbs);
+    }
+  }, [props?.appContext, props?.breadCrumbs]);
 
   return { ...context };
 };
@@ -80,6 +94,7 @@ export interface ILayoutProvider extends PropsWithChildren {}
 
 export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   const [isAsideExpanded, setIsAsideExpanded] = useState(false);
+  const [asideTitle, setAsideTitleState] = useState<string | undefined>('');
   const [isExpanded, setIsExpanded] = useState(false);
   const [location, setLocationState] = useState<
     ISideBarLayoutLocation | undefined
@@ -127,6 +142,9 @@ export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   const setLocation = (value?: ISideBarLayoutLocation | undefined) => {
     setLocationState(value);
   };
+  const setAsideTitle = (value?: string) => {
+    setAsideTitleState(value);
+  };
 
   const isActiveUrl = (url?: string) => {
     return !!url && url === location?.url;
@@ -148,6 +166,8 @@ export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
         setLocation,
         location,
         isActiveUrl,
+        asideTitle,
+        setAsideTitle,
       }}
     >
       {children}
