@@ -73,9 +73,7 @@ export const SideBarAside: FC<{
           </Stack>
         </header>
 
-        <Stack className={asideContentClass}>
-          <div ref={ref} />
-        </Stack>
+        <Stack ref={ref} className={asideContentClass} flexDirection="column" />
       </aside>
     </>
   );
