@@ -1,9 +1,9 @@
 {
   "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {
-    "module": "NodeNext",
+    "module": "ESNext",
     "outDir": "dist/esm",
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "Bundler",
     "types": ["node"]
   },
   "include": ["./src", "./src/**/*"]

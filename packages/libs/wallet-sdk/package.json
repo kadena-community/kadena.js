@@ -32,14 +32,13 @@
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
     "start": "ts-node --transpile-only src/index.ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "watch": "graphql-codegen && rm -rf ./dist/ && pnpm rollup -c rollup.config.mjs --watch"
   },
   "dependencies": {
     "@kadena/client": "workspace:*",
     "@kadena/client-utils": "workspace:*",
-    "@kadena/types": "workspace:*",
     "@urql/core": "^5.0.8",
-    "debug": "4.3.4",
     "graphql": "~16.8.1",
     "valibot": "^0.42.1"
   },
@@ -54,6 +53,7 @@
     "@kadena/types": "workspace:*",
     "@microsoft/api-extractor": "^7.43.1",
     "@rollup/plugin-commonjs": "^25.0.8",
+    "@rollup/plugin-inject": "^5.0.5",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-typescript": "^11.1.6",
@@ -65,6 +65,7 @@
     "eslint": "^8.45.0",
     "prettier": "~3.2.5",
     "rollup": "^4.17.2",
+    "rollup-plugin-polyfill-node": "^0.13.0",
     "ts-node": "~10.9.2",
     "typescript": "5.4.5",
     "vitest": "^1.6.0"
