@@ -44,7 +44,6 @@ export const SideBarAside: FC<
     handleSetAsideExpanded(!!location?.hash);
   }, [location?.hash]);
 
-  console.log(asideRef);
   return (
     <>
       <Stack
@@ -82,7 +81,7 @@ export const SideBarAside: FC<
         </header>
 
         <Stack className={asideContentClass}>
-          <div ref={ref}></div>
+          <div ref={ref} />
         </Stack>
       </aside>
     </>

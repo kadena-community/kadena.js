@@ -146,6 +146,7 @@ export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   const setAsideTitle = (value?: string) => {
     setAsideTitleState(value);
   };
+
   const setAsideRef = (value?: HTMLDivElement | null) => {
     setAsideRefState(value ? value : null);
   };

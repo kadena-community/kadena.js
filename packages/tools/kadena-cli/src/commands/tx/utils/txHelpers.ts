@@ -42,7 +42,11 @@ import type {
   IWalletKeyPair,
 } from '../../../services/wallet/wallet.types.js';
 import type { CommandResult } from '../../../utils/command.util.js';
-import { isNotEmptyObject, notEmpty } from '../../../utils/globalHelpers.js';
+import {
+  isNotEmptyObject,
+  loadUnknownFile,
+  notEmpty,
+} from '../../../utils/globalHelpers.js';
 import { log } from '../../../utils/logger.js';
 import { createTable } from '../../../utils/table.js';
 import type { ISavedTransaction } from './storage.js';
@@ -109,27 +113,26 @@ export async function getAllTransactions(
 ): Promise<{ fileName: string; signed: boolean }[]> {
   try {
     const files = await services.filesystem.readDir(directory);
+
     // Since naming convention is not enforced, we need to check the content of the files
     const transactionFiles = (
       await Promise.all(
         files.map(async (fileName) => {
-          if (!fileName.endsWith('.json')) return null;
-          const filePath = join(directory, fileName);
-          const content = await services.filesystem.readFile(filePath);
-          if (content === null) return null;
-          const JSONParsedContent = JSON.parse(content);
-          const parsed = IUnsignedCommandSchema.safeParse(JSONParsedContent);
-          if (parsed.success) {
-            const isSignedTx = isSignedTransaction(
-              parsed.data as IUnsignedCommand,
+          try {
+            const content = await loadUnknownFile(
+              path.join(directory, fileName),
             );
-            return {
-              fileName,
-              signed: isSignedTx,
-            };
+            const parsed = IUnsignedCommandSchema.safeParse(content);
+            if (parsed.success) {
+              const signed = isSignedTransaction(
+                parsed.data as IUnsignedCommand,
+              );
+              return { fileName, signed };
+            }
+            return null;
+          } catch (_error) {
+            return null;
           }
-
-          return null;
         }),
       )
     ).filter(notEmpty);
