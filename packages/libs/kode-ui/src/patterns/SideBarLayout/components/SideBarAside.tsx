@@ -1,6 +1,6 @@
 import { MonoClose } from '@kadena/kode-icons/system';
 import type { FC, PropsWithChildren } from 'react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   asideContentClass,
   asideHeaderClass,
@@ -20,7 +20,14 @@ export const SideBarAside: FC<
     location: ISideBarLayoutLocation;
   }>
 > = ({ hasTopBanner, location, children }) => {
-  const { handleSetAsideExpanded, isAsideExpanded, asideTitle } = useLayout();
+  const {
+    handleSetAsideExpanded,
+    isAsideExpanded,
+    asideTitle,
+    setAsideRef,
+    asideRef,
+  } = useLayout();
+  const ref = useRef<HTMLDivElement | null>();
 
   const handleExpand = (e: PressEvent) => {
     if (handleSetAsideExpanded) {
@@ -29,9 +36,15 @@ export const SideBarAside: FC<
   };
 
   useEffect(() => {
+    if (!ref.current) return;
+    setAsideRef(ref.current);
+  }, [ref.current]);
+
+  useEffect(() => {
     handleSetAsideExpanded(!!location?.hash);
   }, [location?.hash]);
 
+  console.log(asideRef);
   return (
     <>
       <Stack
@@ -68,7 +81,9 @@ export const SideBarAside: FC<
           </Stack>
         </header>
 
-        <Stack className={asideContentClass}>{children}</Stack>
+        <Stack className={asideContentClass}>
+          <div ref={ref}></div>
+        </Stack>
       </aside>
     </>
   );

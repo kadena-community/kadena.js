@@ -38,6 +38,8 @@ export interface ILayoutContext {
   isActiveUrl: (url?: string) => boolean;
   asideTitle?: string;
   setAsideTitle: (value?: string) => void;
+  asideRef?: HTMLDivElement | null;
+  setAsideRef: (value?: HTMLDivElement | null) => void;
 }
 export const LayoutContext = createContext<ILayoutContext>({
   isAsideExpanded: false,
@@ -55,9 +57,7 @@ export const LayoutContext = createContext<ILayoutContext>({
   setAsideTitle: () => {},
 });
 
-export interface IuseLayoutProps extends ILayoutContext {
-  initPage: (props: Pick<ILayoutContext, 'appContext' | 'breadCrumbs'>) => void;
-}
+export interface IuseLayoutProps extends ILayoutContext {}
 
 export const useLayout = (
   props?: Pick<ILayoutContext, 'appContext' | 'breadCrumbs'>,
@@ -93,6 +93,7 @@ export const useLayout = (
 export interface ILayoutProvider extends PropsWithChildren {}
 
 export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
+  const [asideRef, setAsideRefState] = useState<HTMLDivElement | null>(null);
   const [isAsideExpanded, setIsAsideExpanded] = useState(false);
   const [asideTitle, setAsideTitleState] = useState<string | undefined>('');
   const [isExpanded, setIsExpanded] = useState(false);
@@ -145,6 +146,9 @@ export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   const setAsideTitle = (value?: string) => {
     setAsideTitleState(value);
   };
+  const setAsideRef = (value?: HTMLDivElement | null) => {
+    setAsideRefState(value ? value : null);
+  };
 
   const isActiveUrl = (url?: string) => {
     return !!url && url === location?.url;
@@ -168,6 +172,8 @@ export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
         isActiveUrl,
         asideTitle,
         setAsideTitle,
+        asideRef,
+        setAsideRef,
       }}
     >
       {children}

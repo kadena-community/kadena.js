@@ -10,6 +10,7 @@ import {
 } from '@/pages/transaction/components/style.css';
 import { MonoCircle, MonoDelete, MonoWarning } from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, Text, TextField } from '@kadena/kode-ui';
+import { useLayout } from '@kadena/kode-ui/patterns';
 import classNames from 'classnames';
 import { useEffect } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
@@ -34,12 +35,28 @@ interface INewNetwork {
   }[];
 }
 
+export const getNewNetwork = (): INetworkWithOptionalUuid => ({
+  uuid: undefined,
+  networkId: '',
+  name: '',
+  hosts: [
+    {
+      url: '',
+      submit: false,
+      read: false,
+      confirm: false,
+    },
+  ],
+});
+
 export function NetworkForm({
   network,
+  onClose,
   onSave: onDone,
 }: {
   network: INetworkWithOptionalUuid;
   onSave: (network: INetworkWithOptionalUuid) => void;
+  onClose: () => void;
 }) {
   const {
     control,
@@ -49,10 +66,12 @@ export function NetworkForm({
     setValue,
     watch,
     formState,
+    reset,
   } = useForm<INewNetwork>({
     defaultValues: network,
     mode: 'all',
   });
+  const { setAsideTitle } = useLayout();
   const { fields, append, remove } = useFieldArray({ control, name: 'hosts' });
   async function create(updNetwork: INewNetwork) {
     const hosts = updNetwork.hosts.map(
@@ -64,6 +83,11 @@ export function NetworkForm({
       hosts,
     });
   }
+
+  useEffect(() => {
+    reset(network ?? getNewNetwork());
+    setAsideTitle(network.uuid ? 'Edit Network' : 'Add Network');
+  }, [network.uuid]);
 
   const hosts = watch('hosts');
   const networkId = watch('networkId');
@@ -87,20 +111,20 @@ export function NetworkForm({
 
   return (
     <>
-      <Stack margin="md" gap={'md'} flexDirection={'column'} width="100%">
+      <Stack gap={'md'} flexDirection={'column'} width="100%">
         <form onSubmit={handleSubmit(create)} className={displayContentsClass}>
           <TextField
             label="Network ID"
             aria-label="networkId"
             type="text"
-            defaultValue={getValues('networkId')}
+            value={getValues('networkId')}
             {...register('networkId')}
           />
           <TextField
             label="Title"
             aria-label="title"
             type="text"
-            defaultValue={getValues('name')}
+            value={getValues('name')}
             {...register('name')}
           />
           <Stack gap="md" justifyContent={'space-between'} paddingBlock={'lg'}>
@@ -179,12 +203,18 @@ export function NetworkForm({
               );
             })}
           </Stack>
-          <Button
-            type="submit"
-            isDisabled={!isNetworkIdValid || !formState.isDirty}
-          >
-            Save
-          </Button>
+
+          <Stack gap={'md'} width="100%" justifyContent="flex-end">
+            <Button variant="outlined" onPress={() => onClose()} type="reset">
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              isDisabled={!isNetworkIdValid || !formState.isDirty}
+            >
+              Save
+            </Button>
+          </Stack>
         </form>
       </Stack>
     </>
