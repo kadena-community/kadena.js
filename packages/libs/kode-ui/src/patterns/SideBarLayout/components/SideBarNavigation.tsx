@@ -1,12 +1,12 @@
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 import { listClass, menuNavWrapperClass } from '../sidebar.css';
-import { useSideBar } from './SideBarProvider';
+import { useLayout } from './LayoutProvider';
 
 export interface ISideBarNavigation extends PropsWithChildren {}
 
 export const SideBarNavigation: FC<ISideBarNavigation> = ({ children }) => {
-  const { isExpanded } = useSideBar();
+  const { isExpanded } = useLayout();
   return (
     <nav className={menuNavWrapperClass}>
       <ul

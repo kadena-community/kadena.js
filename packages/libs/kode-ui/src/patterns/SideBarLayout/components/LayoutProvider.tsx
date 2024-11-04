@@ -15,7 +15,7 @@ export interface ISideBarBreadCrumb {
   url: string;
   visual?: React.ReactElement;
 }
-export interface ISideBarContext {
+export interface ILayoutContext {
   isAsideExpanded: boolean;
   isExpanded: boolean;
   handleToggleExpand: (e: PressEvent) => void;
@@ -30,7 +30,7 @@ export interface ISideBarContext {
   location?: ISideBarLayoutLocation;
   isActiveUrl: (url?: string) => boolean;
 }
-export const SideBarContext = createContext<ISideBarContext>({
+export const LayoutContext = createContext<ILayoutContext>({
   isAsideExpanded: false,
   isExpanded: true,
   handleToggleExpand: () => {},
@@ -44,11 +44,11 @@ export const SideBarContext = createContext<ISideBarContext>({
   setLocation: () => {},
   isActiveUrl: () => {},
 });
-export const useSideBar = (): ISideBarContext => useContext(SideBarContext);
+export const useLayout = (): ILayoutContext => useContext(LayoutContext);
 
-export interface ISideBarProvider extends PropsWithChildren {}
+export interface ILayoutProvider extends PropsWithChildren {}
 
-export const SideBarProvider: FC<ISideBarProvider> = ({ children }) => {
+export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   const [isAsideExpanded, setIsAsideExpanded] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [location, setLocationState] = useState<
@@ -103,7 +103,7 @@ export const SideBarProvider: FC<ISideBarProvider> = ({ children }) => {
   };
 
   return (
-    <SideBarContext.Provider
+    <LayoutContext.Provider
       value={{
         isAsideExpanded,
         isExpanded,
@@ -121,6 +121,6 @@ export const SideBarProvider: FC<ISideBarProvider> = ({ children }) => {
       }}
     >
       {children}
-    </SideBarContext.Provider>
+    </LayoutContext.Provider>
   );
 };

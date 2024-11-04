@@ -5,7 +5,7 @@ import { listItemClass } from '../sidebar.css';
 import type { ILinkProps } from './../../../components';
 import type { IButtonProps, PressEvent } from './../../../components/Button';
 import { breakpoints } from './../../../styles';
-import { useSideBar } from './SideBarProvider';
+import { useLayout } from './LayoutProvider';
 import { sidebartreeItemClass } from './sidebartree.css';
 
 export interface ISideBarTreeItemProps {
@@ -39,7 +39,7 @@ export const SideBarTreeItem: FC<ISideBarTreeItemProps> = ({
   href,
   component,
 }) => {
-  const { handleSetExpanded, isActiveUrl } = useSideBar();
+  const { handleSetExpanded, isActiveUrl } = useLayout();
   const isMediumDevice = useMedia(breakpoints.md, true);
   const handlePress = (e: PressEvent) => {
     if (!isMediumDevice) handleSetExpanded(false);

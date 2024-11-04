@@ -26,7 +26,7 @@ export const itemClass = style([
         marginInline: token('spacing.sm'),
       },
       '&:not(:first-child):last-child::before': {
-        content: '∙',
+        content: '/',
         color: token('color.text.gray.default'),
         marginInline: token('spacing.sm'),
       },

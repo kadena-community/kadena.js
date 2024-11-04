@@ -11,7 +11,7 @@ import {
   Stack,
   Text,
 } from '@kadena/kode-ui';
-import { useSideBar } from '@kadena/kode-ui/patterns';
+import { useLayout } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { panelClass } from '../home/style.css';
 import {
@@ -35,7 +35,7 @@ const getNewNetwork = (): INetworkWithOptionalUuid => ({
 
 export function Networks() {
   const { networks } = useWallet();
-  const { setAppContext, setBreadCrumbs } = useSideBar();
+  const { setAppContext, setBreadCrumbs } = useLayout();
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const [selectedNetwork, setSelectedNetwork] =
     useState<INetworkWithOptionalUuid>(() => getNewNetwork());

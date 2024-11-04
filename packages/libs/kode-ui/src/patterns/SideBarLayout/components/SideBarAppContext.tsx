@@ -1,13 +1,13 @@
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 import { listClass } from '../sidebar.css';
+import { useLayout } from './LayoutProvider';
 import { SideBarItem } from './SideBarItem';
-import { useSideBar } from './SideBarProvider';
 
 export interface ISideBarAppContext extends PropsWithChildren {}
 
 export const SideBarAppContext: FC<ISideBarAppContext> = ({ children }) => {
-  const { isExpanded, appContext } = useSideBar();
+  const { isExpanded, appContext } = useLayout();
 
   return (
     <header>

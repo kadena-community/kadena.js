@@ -13,7 +13,7 @@ import {
   SideBarFooter,
   SideBarFooterItem,
   SideBarLayout,
-  useSideBar,
+  useLayout,
 } from '@kadena/kode-ui/patterns';
 import { FC, useEffect, useMemo } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -22,7 +22,7 @@ import { SideBar } from './SideBar';
 
 export const Layout: FC = () => {
   const { theme, setTheme } = useTheme();
-  const { breadCrumbs, setBreadCrumbs, setAppContext } = useSideBar();
+  const { breadCrumbs, setBreadCrumbs, setAppContext } = useLayout();
   const location = useLocation();
   const navigate = useNavigate();
 

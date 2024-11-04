@@ -1,9 +1,9 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { ContactForm } from '@/pages/contacts/Components/ContactForm';
-import { useSideBar } from '@kadena/kode-ui/patterns';
+import { useLayout } from '@kadena/kode-ui/patterns';
 
 const AddContact = ({ contactId }: { contactId: string }) => {
-  const { handleSetAsideExpanded } = useSideBar();
+  const { handleSetAsideExpanded } = useLayout();
   const { getContact } = useWallet();
   return (
     <>

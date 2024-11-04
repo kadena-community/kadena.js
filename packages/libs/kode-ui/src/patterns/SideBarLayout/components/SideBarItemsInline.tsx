@@ -6,11 +6,11 @@ import {
   listItemInlineClass,
   listNotExpandedClass,
 } from '../sidebar.css';
-import { useSideBar } from './SideBarProvider';
+import { useLayout } from './LayoutProvider';
 
 export interface ISideBarItemsInline extends PropsWithChildren {}
 export const SideBarItemsInline: FC<ISideBarItemsInline> = ({ children }) => {
-  const { isExpanded } = useSideBar();
+  const { isExpanded } = useLayout();
   return (
     <li className={listItemInlineClass}>
       <ul

@@ -1,13 +1,13 @@
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 import { footerWrapperClass } from '../sidebar.css';
+import { useLayout } from './LayoutProvider';
 import { SideBarFooterItem } from './SideBarFooterItem';
-import { useSideBar } from './SideBarProvider';
 
 interface IProps extends PropsWithChildren {}
 
 export const SideBarFooter: FC<IProps> = ({ children }) => {
-  const { appContext } = useSideBar();
+  const { appContext } = useLayout();
   const buttonCount = React.Children.count(children);
 
   return (

@@ -7,7 +7,7 @@ import type { PressEvent } from './../../../components/Button';
 import { Button } from './../../../components/Button';
 import { Media } from './../../../components/Media';
 import { breakpoints } from './../../../styles';
-import { useSideBar } from './SideBarProvider';
+import { useLayout } from './LayoutProvider';
 
 export interface ISideBarItemProps extends PropsWithChildren {
   visual: React.ReactElement;
@@ -25,7 +25,7 @@ export const SideBarItem: FC<ISideBarItemProps> = ({
   href,
   component,
 }) => {
-  const { isExpanded, handleSetExpanded, isActiveUrl } = useSideBar();
+  const { isExpanded, handleSetExpanded, isActiveUrl } = useLayout();
   const isMediumDevice = useMedia(breakpoints.md, true);
 
   useEffect(() => {

@@ -4,12 +4,11 @@ import type { FC, PropsWithChildren, ReactElement } from 'react';
 import React from 'react';
 import type { PressEvent } from './../../components';
 import { Button, Media, Stack } from './../../components';
+import { LayoutContext, useLayout } from './components/LayoutProvider';
 import { KLogo } from './components/Logo/KLogo';
 import { KadenaLogo } from './components/Logo/KadenaLogo';
 import { SideBarAppContext } from './components/SideBarAppContext';
-import { SideBarContext } from './components/SideBarContext';
 import { SideBarNavigation } from './components/SideBarNavigation';
-import { useSideBar } from './components/SideBarProvider';
 import {
   menuBackdropClass,
   menuMenuIconClass,
@@ -35,7 +34,7 @@ export const SideBar: FC<ISideBarProps> = ({
   logo,
   minifiedLogo,
 }) => {
-  const { isExpanded, handleToggleExpand } = useSideBar();
+  const { isExpanded, handleToggleExpand } = useLayout();
 
   const handleExpand = (e: PressEvent) => {
     if (handleToggleExpand) {
@@ -77,7 +76,7 @@ export const SideBar: FC<ISideBarProps> = ({
 
         {appContext && <SideBarAppContext>{appContext}</SideBarAppContext>}
         {navigation && <SideBarNavigation>{navigation}</SideBarNavigation>}
-        {context && <SideBarContext>{context}</SideBarContext>}
+        {context && <LayoutContext>{context}</LayoutContext>}
 
         {children}
       </aside>

@@ -16,13 +16,13 @@ import {
   Button,
   Stack,
 } from './../../components';
+import { LayoutProvider, useLayout } from './components/LayoutProvider';
 import { KadenaLogo } from './components/Logo/KadenaLogo';
 import { KLogo } from './components/Logo/KLogo';
 import { SideBarFooter } from './components/SideBarFooter';
 import { SideBarFooterItem } from './components/SideBarFooterItem';
 import { SideBarItem } from './components/SideBarItem';
 import { SideBarItemsInline } from './components/SideBarItemsInline';
-import { SideBarProvider, useSideBar } from './components/SideBarProvider';
 import { SideBarTree } from './components/SideBarTree';
 import { SideBarTreeItem } from './components/SideBarTreeItem';
 import type { ISideBarProps } from './SideBar';
@@ -63,7 +63,7 @@ const LinkComponent: FC<PropsWithChildren<{ to: string }>> = ({
 };
 
 const InnerLayout = () => {
-  const { setAppContext, isExpanded } = useSideBar();
+  const { setAppContext, isExpanded } = useLayout();
 
   useEffect(() => {
     setAppContext({
@@ -198,9 +198,9 @@ export const Primary: IStory = {
   args: {},
   render: () => {
     return (
-      <SideBarProvider>
+      <LayoutProvider>
         <InnerLayout />
-      </SideBarProvider>
+      </LayoutProvider>
     );
   },
 };
@@ -230,9 +230,9 @@ export const Full: IStory = {
   args: {},
   render: () => {
     return (
-      <SideBarProvider>
+      <LayoutProvider>
         <InnerLayoutFull />
-      </SideBarProvider>
+      </LayoutProvider>
     );
   },
 };
