@@ -13,11 +13,6 @@ const importView = async (key: string) => {
         import(`./views/KeySource`).catch(() => import(`./views/Error`)),
       );
 
-    case 'NewAsset':
-      return lazy(() =>
-        import(`./views/NewAsset`).catch(() => import(`./views/Error`)),
-      );
-
     default:
       return lazy(() => import(`./views/Error`));
   }

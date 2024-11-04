@@ -12,7 +12,7 @@ interface TokenForm {
   symbol: string;
 }
 
-export function AddToken() {
+export function AddTokenForm() {
   const { register, handleSubmit } = useForm<TokenForm>({
     defaultValues: {
       contract: '',
@@ -72,7 +72,17 @@ export function AddToken() {
         />
         <TextField label="Symbol" {...register('symbol', { required: true })} />
         {error && <Notification role="alert">{error}</Notification>}
-        <Stack width="100%" justifyContent="flex-end" gap="md">
+
+        <Stack gap={'md'} width="100%" justifyContent="flex-end">
+          <Button
+            variant="outlined"
+            onPress={() => {
+              handleSetAsideExpanded(false);
+            }}
+            type="reset"
+          >
+            Cancel
+          </Button>
           <Button type="submit">Add Token</Button>
         </Stack>
       </Stack>

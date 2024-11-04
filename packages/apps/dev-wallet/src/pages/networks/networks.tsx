@@ -12,7 +12,7 @@ import {
   getNewNetwork,
   INetworkWithOptionalUuid,
   NetworkForm,
-} from './Components/network-form';
+} from './Components/NetworkForm';
 
 export function Networks() {
   const { networks } = useWallet();
