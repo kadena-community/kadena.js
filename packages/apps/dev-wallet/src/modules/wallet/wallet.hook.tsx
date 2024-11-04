@@ -296,9 +296,13 @@ export const useWallet = () => {
   const getContact = (id: string) => {
     return context.contacts.find((contact) => contact.uuid === id);
   };
+  const getNetwork = (id: string) => {
+    return context.networks.find((network) => network.uuid === id);
+  };
 
   return {
     getContact,
+    getNetwork,
     createProfile,
     unlockProfile,
     createKey,

@@ -1,50 +1,18 @@
 import { ListItem } from '@/Components/ListItem/ListItem';
-import { networkRepository } from '@/modules/network/network.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { createAsideUrl } from '@/utils/createAsideUrl';
 import { MonoWifiTethering, MonoWorkspaces } from '@kadena/kode-icons/system';
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  Heading,
-  Link,
-  Stack,
-  Text,
-} from '@kadena/kode-ui';
+import { Heading, Link, Link as LinkUI, Stack, Text } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
-import { useState } from 'react';
 import { panelClass } from '../home/style.css';
-import {
-  INetworkWithOptionalUuid,
-  NetworkForm,
-} from './Components/network-form';
-
-const getNewNetwork = (): INetworkWithOptionalUuid => ({
-  uuid: undefined,
-  networkId: '',
-  name: '',
-  hosts: [
-    {
-      url: '',
-      submit: false,
-      read: false,
-      confirm: false,
-    },
-  ],
-});
 
 export function Networks() {
   const { networks } = useWallet();
-  const [showNetworkModal, setShowNetworkModal] = useState(false);
-  const [selectedNetwork, setSelectedNetwork] =
-    useState<INetworkWithOptionalUuid>(() => getNewNetwork());
   useLayout({
     appContext: {
       visual: <MonoWorkspaces />,
       label: 'Add Network',
-      href: createAsideUrl('KeySource'),
+      href: createAsideUrl('AddNetwork'),
       component: Link,
     },
     breadCrumbs: [
@@ -55,29 +23,6 @@ export function Networks() {
   return (
     <>
       <Stack margin="md" flexDirection={'column'}>
-        <Dialog
-          isOpen={showNetworkModal}
-          onOpenChange={setShowNetworkModal}
-          size="sm"
-        >
-          <DialogHeader>Add Network</DialogHeader>
-          <DialogContent>
-            <NetworkForm
-              onSave={async (updNetwork) => {
-                if (updNetwork.uuid) {
-                  await networkRepository.updateNetwork(updNetwork);
-                } else {
-                  await networkRepository.addNetwork({
-                    ...updNetwork,
-                    uuid: crypto.randomUUID(),
-                  });
-                }
-                setShowNetworkModal(false);
-              }}
-              network={selectedNetwork}
-            />
-          </DialogContent>
-        </Dialog>
         <Stack
           className={panelClass}
           marginBlockStart="xl"
@@ -91,16 +36,14 @@ export function Networks() {
           >
             <Heading as="h4">Networks</Heading>
 
-            <Button
+            <LinkUI
+              component={Link}
+              href={createAsideUrl('AddNetwork')}
               variant="outlined"
               isCompact
-              onPress={() => {
-                setSelectedNetwork(getNewNetwork());
-                setShowNetworkModal(true);
-              }}
             >
               Add Network
-            </Button>
+            </LinkUI>
           </Stack>
           {networks.map((network) => (
             <ListItem key={network.uuid}>
@@ -121,16 +64,16 @@ export function Networks() {
                       ? ` +${network.hosts.length - 1}`
                       : ''}
                   </Text>
-                  <Button
+                  <LinkUI
+                    component={Link}
+                    href={createAsideUrl('AddNetwork', {
+                      networkUuid: network.uuid,
+                    })}
                     isCompact
                     variant="outlined"
-                    onPress={() => {
-                      setSelectedNetwork(network);
-                      setShowNetworkModal(true);
-                    }}
                   >
                     Edit
-                  </Button>
+                  </LinkUI>
                 </Stack>
               </Stack>
             </ListItem>

@@ -69,6 +69,8 @@ export function NetworkForm({
   const hosts = watch('hosts');
   const networkId = watch('networkId');
 
+  console.log({ hosts, networkId });
+
   const isNetworkIdValid =
     hosts.length > 0 &&
     networkId.length > 0 &&

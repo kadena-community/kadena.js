@@ -52,9 +52,7 @@ export const LayoutContext = createContext<ILayoutContext>({
   isActiveUrl: () => {},
 });
 
-export interface IuseLayoutProps extends ILayoutContext {
-  initPage: (props: Pick<ILayoutContext, 'appContext' | 'breadCrumbs'>) => void;
-}
+export interface IuseLayoutProps extends ILayoutContext {}
 
 export const useLayout = (
   props?: Pick<ILayoutContext, 'appContext' | 'breadCrumbs'>,
@@ -64,14 +62,25 @@ export const useLayout = (
   useEffect(() => {
     if (!props) return;
 
-    context.setAppContext(props.appContext);
-  }, [props?.appContext]);
+    if (props.appContext?.href !== context.appContext?.href) {
+      context.setAppContext(props.appContext);
+    }
 
-  useEffect(() => {
-    if (!props) return;
+    //check if the content of the breadcrumbs has changed
+    const breadCrumbsHasChanged = props.breadCrumbs.reduce((acc, val, idx) => {
+      const oldVal = context.breadCrumbs[idx];
+      if (val.url !== oldVal?.url) return true;
 
-    context.setBreadCrumbs(props.breadCrumbs);
-  }, [props?.breadCrumbs]);
+      return acc;
+    }, false);
+
+    if (
+      props.breadCrumbs.length !== context.breadCrumbs.length ||
+      breadCrumbsHasChanged
+    ) {
+      context.setBreadCrumbs(props.breadCrumbs);
+    }
+  }, [props?.appContext, props?.breadCrumbs]);
 
   return { ...context };
 };
