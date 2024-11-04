@@ -2,23 +2,19 @@ import { AuthCard } from '@/Components/AuthCard/AuthCard';
 import { MonoDashboardCustomize } from '@kadena/kode-icons/system';
 import { Box, Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
-import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
 export function BackupRecoveryPhrase() {
-  const { initPage } = useLayout();
-  useMemo(() => {
-    initPage({
-      appContext: undefined,
-      breadCrumbs: [
-        {
-          label: 'Backup',
-          visual: <MonoDashboardCustomize />,
-          url: '/backup-recovery-phrase',
-        },
-      ],
-    });
-  }, []);
+  useLayout({
+    appContext: undefined,
+    breadCrumbs: [
+      {
+        label: 'Backup',
+        visual: <MonoDashboardCustomize />,
+        url: '/backup-recovery-phrase',
+      },
+    ],
+  });
 
   return (
     <>

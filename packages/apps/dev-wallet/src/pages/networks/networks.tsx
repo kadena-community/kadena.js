@@ -14,7 +14,7 @@ import {
   Text,
 } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { panelClass } from '../home/style.css';
 import {
   INetworkWithOptionalUuid,
@@ -40,21 +40,17 @@ export function Networks() {
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const [selectedNetwork, setSelectedNetwork] =
     useState<INetworkWithOptionalUuid>(() => getNewNetwork());
-  const { initPage } = useLayout();
-
-  useMemo(() => {
-    initPage({
-      appContext: {
-        visual: <MonoWorkspaces />,
-        label: 'Add Network',
-        href: createAsideUrl('KeySource'),
-        component: Link,
-      },
-      breadCrumbs: [
-        { label: 'Networks', visual: <MonoWifiTethering />, url: '/networks' },
-      ],
-    });
-  }, []);
+  useLayout({
+    appContext: {
+      visual: <MonoWorkspaces />,
+      label: 'Add Network',
+      href: createAsideUrl('KeySource'),
+      component: Link,
+    },
+    breadCrumbs: [
+      { label: 'Networks', visual: <MonoWifiTethering />, url: '/networks' },
+    ],
+  });
 
   return (
     <>

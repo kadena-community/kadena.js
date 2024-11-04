@@ -156,7 +156,16 @@ const getCommand = (
 };
 
 export function TerminalPage() {
-  const { initPage } = useLayout();
+  useLayout({
+    appContext: undefined,
+    breadCrumbs: [
+      {
+        label: 'Dev Console',
+        visual: <MonoDashboardCustomize />,
+        url: '/terminal',
+      },
+    ],
+  });
   const [txStep, setTxStep] = useState<
     null | 'start' | 'code' | 'data' | 'signer' | 'capability'
   >(null);
@@ -180,19 +189,6 @@ export function TerminalPage() {
       networkId: activeNetwork?.networkId ?? 'testnet04',
       chainId: '0' as ChainId,
     });
-
-  useMemo(() => {
-    initPage({
-      appContext: undefined,
-      breadCrumbs: [
-        {
-          label: 'Dev Console',
-          visual: <MonoDashboardCustomize />,
-          url: '/terminal',
-        },
-      ],
-    });
-  }, []);
 
   const setDefaults = (patch: Partial<IDefaultValues>) => {
     setDefaultValues((prev) => ({ ...prev, ...patch }));

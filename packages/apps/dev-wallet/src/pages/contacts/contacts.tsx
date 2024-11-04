@@ -20,27 +20,23 @@ import {
   Text,
 } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
-import { useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { panelClass } from '../home/style.css';
 
 export function Contacts() {
-  const { initPage } = useLayout();
+  useLayout({
+    appContext: undefined,
+    breadCrumbs: [
+      {
+        label: 'Contacts',
+        visual: <MonoContacts />,
+        url: '/contacts',
+      },
+    ],
+  });
   const navigate = useNavigate();
   const { contacts } = useWallet();
   const prompt = usePrompt();
-  useMemo(() => {
-    initPage({
-      appContext: undefined,
-      breadCrumbs: [
-        {
-          label: 'Contacts',
-          visual: <MonoContacts />,
-          url: '/contacts',
-        },
-      ],
-    });
-  }, []);
 
   return (
     <Stack flexDirection={'column'} className={panelClass} gap={'md'}>

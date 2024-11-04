@@ -2,32 +2,27 @@ import { createAsideUrl } from '@/utils/createAsideUrl';
 import { Mono123, MonoKey } from '@kadena/kode-icons/system';
 import { Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
-import { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Keys } from './Components/Keys';
 import { KeySets } from './Components/KeySets';
 
 export function KeysPage() {
   const { tab = 'keys' } = useParams();
-  const { initPage } = useLayout();
-
-  useMemo(() => {
-    initPage({
-      appContext: {
+  useLayout({
+    appContext: {
+      visual: <MonoKey />,
+      label: 'Add key Source',
+      href: createAsideUrl('KeySource'),
+      component: Link,
+    },
+    breadCrumbs: [
+      {
+        label: 'Manage Your Keys',
         visual: <MonoKey />,
-        label: 'Add key Source',
-        href: createAsideUrl('KeySource'),
-        component: Link,
+        url: '/key-management/keys',
       },
-      breadCrumbs: [
-        {
-          label: 'Manage Your Keys',
-          visual: <MonoKey />,
-          url: '/key-management/keys',
-        },
-      ],
-    });
-  }, []);
+    ],
+  });
 
   return (
     <Stack flexDirection={'column'} gap={'lg'}>

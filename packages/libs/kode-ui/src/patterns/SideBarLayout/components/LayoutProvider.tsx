@@ -1,5 +1,11 @@
 import type { FC, PropsWithChildren } from 'react';
-import React, { createContext, useCallback, useContext, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import type { PressEvent } from 'react-aria';
 import type { ISideBarLayoutLocation } from '../types';
 
@@ -50,21 +56,24 @@ export interface IuseLayoutProps extends ILayoutContext {
   initPage: (props: Pick<ILayoutContext, 'appContext' | 'breadCrumbs'>) => void;
 }
 
-export const useLayout = (): IuseLayoutProps => {
+export const useLayout = (
+  props?: Pick<ILayoutContext, 'appContext' | 'breadCrumbs'>,
+): IuseLayoutProps => {
   const context = useContext(LayoutContext);
 
-  const initPage = useCallback(
-    ({
-      appContext,
-      breadCrumbs,
-    }: Pick<ILayoutContext, 'appContext' | 'breadCrumbs'>) => {
-      context.setBreadCrumbs(breadCrumbs ?? []);
-      context.setAppContext(appContext);
-    },
-    [],
-  );
+  useEffect(() => {
+    if (!props) return;
 
-  return { ...context, initPage };
+    context.setAppContext(props.appContext);
+  }, [props?.appContext]);
+
+  useEffect(() => {
+    if (!props) return;
+
+    context.setBreadCrumbs(props.breadCrumbs);
+  }, [props?.breadCrumbs]);
+
+  return { ...context };
 };
 
 export interface ILayoutProvider extends PropsWithChildren {}

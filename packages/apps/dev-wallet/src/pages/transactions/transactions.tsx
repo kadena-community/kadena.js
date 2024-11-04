@@ -14,24 +14,20 @@ import { listClass, listItemClass, panelClass } from '../home/style.css';
 import { hashStyle } from './style.css';
 
 export function Transactions() {
-  const { initPage } = useLayout();
+  useLayout({
+    appContext: undefined,
+    breadCrumbs: [
+      {
+        label: 'Transactions',
+        visual: <MonoSwapHoriz />,
+        url: '/transactions',
+      },
+    ],
+  });
   const { profile, activeNetwork } = useWallet();
   const [transactions, setTransactions] = useState<
     (ITransaction & { creationDate: number })[]
   >([]);
-
-  useMemo(() => {
-    initPage({
-      appContext: undefined,
-      breadCrumbs: [
-        {
-          label: 'Transactions',
-          visual: <MonoSwapHoriz />,
-          url: '/transactions',
-        },
-      ],
-    });
-  }, []);
 
   useEffect(() => {
     const run = async () => {

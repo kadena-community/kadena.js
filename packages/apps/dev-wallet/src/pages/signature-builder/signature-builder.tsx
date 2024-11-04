@@ -85,20 +85,16 @@ export function SignatureBuilder() {
   >([]);
   const { profile, activeNetwork, networks, setActiveNetwork } = useWallet();
   const navigate = useNavigate();
-  const { initPage } = useLayout();
-
-  useMemo(() => {
-    initPage({
-      appContext: undefined,
-      breadCrumbs: [
-        {
-          label: 'Sig Builder',
-          visual: <MonoDashboardCustomize />,
-          url: '/sig-builder',
-        },
-      ],
-    });
-  }, []);
+  useLayout({
+    appContext: undefined,
+    breadCrumbs: [
+      {
+        label: 'Sig Builder',
+        visual: <MonoDashboardCustomize />,
+        url: '/sig-builder',
+      },
+    ],
+  });
 
   const exec =
     pactCommand && pactCommand.payload && 'exec' in pactCommand.payload
