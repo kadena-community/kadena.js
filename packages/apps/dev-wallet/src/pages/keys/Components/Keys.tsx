@@ -1,6 +1,8 @@
 import { ListItem } from '@/Components/ListItem/ListItem.tsx';
+import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.tsx';
+import { keySourceManager } from '@/modules/key-source/key-source-manager';
+import { WebAuthnService } from '@/modules/key-source/web-authn/webauthn';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { createAsideUrl } from '@/utils/createAsideUrl.ts';
 import { shorten } from '@/utils/helpers.ts';
 import { MonoAdd, MonoMoreVert } from '@kadena/kode-icons/system';
 import {
@@ -9,32 +11,97 @@ import {
   ContextMenuDivider,
   ContextMenuItem,
   Heading,
-  Link as LinkUI,
   Stack,
   Text,
 } from '@kadena/kode-ui';
-import { Link } from 'react-router-dom';
+import { useLayout } from '@kadena/kode-ui/patterns';
+import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { panelClass } from '../../home/style.css.ts';
+import { AddKeySourceForm } from './AddKeySourceForm.tsx';
 
 export function Keys() {
-  const { keySources, createKey } = useWallet();
+  const { keySources, profile, askForPassword, createKey } = useWallet();
+  const { handleSetAsideExpanded, isAsideExpanded, asideRef } = useLayout();
+  const [_, setError] = useState<string | null>(null);
+  const { createHDWallet } = useHDWallet();
+  async function createWebAuthn() {
+    if (!profile) {
+      throw new Error('No profile found');
+    }
+    if (keySources.find((keySource) => keySource.source === 'web-authn')) {
+      // basically its possible to have multiple web-authn sources
+      // but for now just for simplicity we will only allow one
+      alert('WebAuthn already created');
+      throw new Error('WebAuthn already created');
+    }
+    const service = (await keySourceManager.get(
+      'web-authn',
+    )) as WebAuthnService;
+
+    await service.register(profile.uuid);
+  }
+
+  const registerHDWallet =
+    (type: 'HD-BIP44' | 'HD-chainweaver') => async () => {
+      const password = await askForPassword();
+      if (!password || !profile) {
+        return;
+      }
+      await createHDWallet(profile?.uuid, type, password);
+    };
 
   return (
     <>
+      {isAsideExpanded &&
+        asideRef &&
+        createPortal(
+          <AddKeySourceForm
+            close={() => handleSetAsideExpanded(false)}
+            onSave={async (sourcesToInstall) => {
+              handleSetAsideExpanded(false);
+              try {
+                await Promise.all(
+                  sourcesToInstall.map(async (source) => {
+                    switch (source) {
+                      case 'HD-BIP44':
+                        await registerHDWallet('HD-BIP44')();
+                        break;
+                      case 'HD-chainweaver':
+                        await registerHDWallet('HD-chainweaver')();
+                        break;
+                      case 'web-authn':
+                        await createWebAuthn();
+                        break;
+                      default:
+                        throw new Error('Unsupported key source');
+                    }
+                  }),
+                );
+              } catch (error: any) {
+                setError(error?.message ?? JSON.stringify(error));
+              }
+              keySourceManager.disconnect();
+            }}
+            installed={keySources.map((k) => k.source)}
+          />,
+          asideRef,
+        )}
       <Stack flexDirection={'column'} gap={'lg'}>
         <Stack justifyContent={'space-between'} alignItems={'center'}>
           <Stack marginBlock={'md'}>
             <Heading variant="h3">Your Keys</Heading>
           </Stack>
 
-          <LinkUI
+          <Button
             variant="outlined"
             isCompact
-            href={createAsideUrl('KeySource')}
-            component={Link}
+            onPress={() => {
+              handleSetAsideExpanded(true);
+            }}
           >
             Add key Source
-          </LinkUI>
+          </Button>
         </Stack>
 
         <Stack flexDirection={'column'} gap="md">

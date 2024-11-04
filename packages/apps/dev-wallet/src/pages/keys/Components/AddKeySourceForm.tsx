@@ -1,18 +1,25 @@
 import { KeySourceType } from '@/modules/wallet/wallet.repository';
 import { Button, Checkbox, Divider, Stack, Text } from '@kadena/kode-ui';
-import { useState } from 'react';
+import { useLayout } from '@kadena/kode-ui/patterns';
+import { useEffect, useState } from 'react';
 
 export function AddKeySourceForm({
-  onClose,
+  close,
   onSave,
   installed,
 }: {
   installed: KeySourceType[];
-  onClose: () => void;
+  close: () => void;
   onSave: (sourcesToInstall: KeySourceType[]) => void;
 }) {
+  const { setAsideTitle } = useLayout();
   const [localInstalled, setLocalInstalled] =
     useState<KeySourceType[]>(installed);
+
+  useEffect(() => {
+    setAsideTitle('Add Key Source');
+  }, []);
+
   const onChange = (source: KeySourceType) => (isSelected: boolean) => {
     if (isSelected) {
       setLocalInstalled([...localInstalled, source]);
@@ -25,6 +32,7 @@ export function AddKeySourceForm({
     onChange: onChange(source),
     isSelected: localInstalled.includes(source),
   });
+
   return (
     <>
       <Stack flexDirection={'column'} gap={'sm'} paddingBlockStart={'lg'}>
@@ -56,25 +64,19 @@ export function AddKeySourceForm({
             device and cant be recovered with the wallet if lost the device
           </Text>
         </Stack>
-      </Stack>
-
-      <Stack
-        width="100%"
-        justifyContent="flex-end"
-        gap="md"
-        marginBlockStart={'lg'}
-      >
-        <Button variant="outlined" onPress={onClose}>
-          Cancel
-        </Button>
-        <Button
-          variant="primary"
-          onPress={() =>
-            onSave(localInstalled.filter((i) => !installed.includes(i)))
-          }
-        >
-          Save
-        </Button>
+        <Stack gap={'md'} width="100%" justifyContent="flex-end">
+          <Button variant="outlined" onPress={() => close()}>
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            onPress={() =>
+              onSave(localInstalled.filter((i) => !installed.includes(i)))
+            }
+          >
+            Save
+          </Button>
+        </Stack>
       </Stack>
     </>
   );
