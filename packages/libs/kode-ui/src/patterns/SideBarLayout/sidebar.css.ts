@@ -10,6 +10,9 @@ import { minHeaderHeight, sideBarWidth } from './styles.css';
 
 export const menuBackdropClass = recipe({
   base: [
+    {
+      border: 0,
+    },
     responsiveStyle({
       xs: {
         display: 'flex',

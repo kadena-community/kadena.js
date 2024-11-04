@@ -21,7 +21,7 @@ export function Assets({
   fungibles: Fungible[];
   showAddToken?: boolean;
 }) {
-  const { handleSetAsideExpanded, isAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const assets = useMemo(() => {
     return fungibles.map((item) => {
       const acs = accounts.filter((a) => a.contract === item.contract);
@@ -37,7 +37,7 @@ export function Assets({
 
   return (
     <>
-      <AddTokenForm isOpen={isAsideExpanded} />
+      <AddTokenForm isOpen={isRightAsideExpanded} />
       <Stack flexDirection={'column'} gap={'md'}>
         <Stack
           flexDirection={'row'}
@@ -50,7 +50,7 @@ export function Assets({
               variant="outlined"
               isCompact
               onPress={() => {
-                handleSetAsideExpanded(true);
+                setIsRightAsideExpanded(true);
               }}
             >
               Add new asset

@@ -27,7 +27,7 @@ export function AddTokenForm({ isOpen }: { isOpen: boolean }) {
   });
 
   const { activeNetwork } = useWallet();
-  const { handleSetAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded } = useLayout();
   const [error, setError] = useState<string | null>(null);
 
   async function onSubmit(data: TokenForm) {
@@ -63,7 +63,7 @@ export function AddTokenForm({ isOpen }: { isOpen: boolean }) {
       } as const;
 
       await accountRepository.addFungible(token);
-      handleSetAsideExpanded(false);
+      setIsRightAsideExpanded(false);
     } catch (e: any) {
       setError(e?.message || e);
     }
@@ -90,7 +90,7 @@ export function AddTokenForm({ isOpen }: { isOpen: boolean }) {
           <Button
             variant="outlined"
             onPress={() => {
-              handleSetAsideExpanded(false);
+              setIsRightAsideExpanded(false);
             }}
             type="reset"
           >

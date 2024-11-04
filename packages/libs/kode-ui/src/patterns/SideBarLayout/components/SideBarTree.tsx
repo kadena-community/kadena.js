@@ -109,22 +109,4 @@ export const SideBarTree: FC<ISideBarTreeProps> = ({
       </>
     </li>
   );
-
-  //     return (
-  //     <Button
-  //       {...props}
-  //       startVisual={startVisual}
-  //       variant={isAppContext ? 'primary' : 'transparent'}
-  //     />
-  //     );
-  //     <Media lessThan="md">{children}</Media>
-  //     <Media greaterThanOrEqual="md">
-  //       {!isExpanded ? (
-  //         <Button variant="transparent" startVisual={visual} />
-  //       ) : (
-  //         children
-  //       )}
-  //     </Media>
-  //   </li>
-  // );
 };

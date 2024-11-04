@@ -15,7 +15,7 @@ import {
 
 export function Networks() {
   const { networks } = useWallet();
-  const { handleSetAsideExpanded, isAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const [selectedNetwork, setSelectedNetwork] =
     useState<INetworkWithOptionalUuid>(() => getNewNetwork());
   useLayout({
@@ -34,9 +34,9 @@ export function Networks() {
     <>
       <Stack margin="md" flexDirection={'column'}>
         <NetworkForm
-          isOpen={isAsideExpanded}
+          isOpen={isRightAsideExpanded}
           onClose={() => {
-            handleSetAsideExpanded(false);
+            setIsRightAsideExpanded(false);
           }}
           onSave={async (updNetwork) => {
             if (updNetwork.uuid) {
@@ -47,7 +47,7 @@ export function Networks() {
                 uuid: crypto.randomUUID(),
               });
             }
-            handleSetAsideExpanded(false);
+            setIsRightAsideExpanded(false);
           }}
           network={selectedNetwork}
         />
@@ -70,7 +70,7 @@ export function Networks() {
               isCompact
               onPress={() => {
                 setSelectedNetwork(getNewNetwork());
-                handleSetAsideExpanded(true);
+                setIsRightAsideExpanded(true);
               }}
             >
               Add Network
@@ -100,7 +100,7 @@ export function Networks() {
                     variant="outlined"
                     onPress={() => {
                       setSelectedNetwork(network);
-                      handleSetAsideExpanded(true);
+                      setIsRightAsideExpanded(true);
                     }}
                   >
                     Edit

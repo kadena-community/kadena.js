@@ -53,9 +53,10 @@ export const SideBar: FC<ISideBarProps> = ({
 
   return (
     <>
-      <Stack
+      <button
+        type="button"
         className={menuBackdropClass({ expanded: isExpanded })}
-        onClick={handleExpand}
+        onClick={(e) => handleExpand(e as unknown as PressEvent)}
       />
       <aside
         className={classNames(menuWrapperClass({ expanded: isExpanded }), {

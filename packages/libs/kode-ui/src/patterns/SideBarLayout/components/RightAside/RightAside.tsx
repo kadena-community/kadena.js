@@ -9,12 +9,12 @@ export interface iRightAside extends PropsWithChildren {
 }
 
 export const RightAside: FC<iRightAside> = ({ children, isOpen }) => {
-  const { asideRef } = useLayout();
+  const { rightAsideRef } = useLayout();
 
-  if (!isOpen || !asideRef) return null;
+  if (!isOpen || !rightAsideRef) return null;
 
   return createPortal(
     <section className={rightAsideClass}>{children}</section>,
-    asideRef,
+    rightAsideRef,
   );
 };

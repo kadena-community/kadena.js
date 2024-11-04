@@ -21,7 +21,7 @@ import { AddKeySourceForm } from './AddKeySourceForm.tsx';
 
 export function Keys() {
   const { keySources, profile, askForPassword, createKey } = useWallet();
-  const { handleSetAsideExpanded, isAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setError] = useState<string | null>(null);
   const { createHDWallet } = useHDWallet();
@@ -54,10 +54,10 @@ export function Keys() {
   return (
     <>
       <AddKeySourceForm
-        isOpen={isAsideExpanded}
-        close={() => handleSetAsideExpanded(false)}
+        isOpen={isRightAsideExpanded}
+        close={() => setIsRightAsideExpanded(false)}
         onSave={async (sourcesToInstall) => {
-          handleSetAsideExpanded(false);
+          setIsRightAsideExpanded(false);
           try {
             await Promise.all(
               sourcesToInstall.map(async (source) => {
@@ -93,7 +93,7 @@ export function Keys() {
             variant="outlined"
             isCompact
             onPress={() => {
-              handleSetAsideExpanded(true);
+              setIsRightAsideExpanded(true);
             }}
           >
             Add key Source
@@ -146,7 +146,7 @@ export function Keys() {
                 </Stack>
               </Stack>
               {keySource.keys.map((key) => (
-                <ListItem>
+                <ListItem key={key.index}>
                   <Stack
                     key={key.index}
                     flexDirection={'row'}

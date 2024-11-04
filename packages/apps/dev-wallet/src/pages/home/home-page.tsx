@@ -13,14 +13,14 @@ import { TransactionList } from '../transactions/transactions';
 
 export function HomePage() {
   const { profile, activeNetwork } = useWallet();
-  const { handleSetAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded } = useLayout();
   useLayout({
     breadCrumbs: [],
     appContext: {
       visual: <MonoWallet />,
       label: 'Add Asset',
       onPress: () => {
-        handleSetAsideExpanded(true);
+        setIsRightAsideExpanded(true);
       },
     },
   });

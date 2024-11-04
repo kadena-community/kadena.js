@@ -44,7 +44,7 @@ type IKeySetType =
 
 type AccountType = 'k:account' | 'w:account' | 'r:account';
 export function CreateAccount() {
-  const { handleSetAsideExpanded, isAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const [selectedItem, setSelectedItem] = useState<IKeySetType>();
   const [created, setCreated] = useState<IAccount | null>(null);
   const [accountType, setAccountType] = useState<AccountType>('k:account');
@@ -157,8 +157,8 @@ export function CreateAccount() {
   return (
     <>
       <CreateKeySetForm
-        isOpen={isAsideExpanded}
-        close={() => handleSetAsideExpanded(false)}
+        isOpen={isRightAsideExpanded}
+        close={() => setIsRightAsideExpanded(false)}
         onDone={(keyset: IKeySet) => {
           setSelectedItem({
             item: keyset,
@@ -270,7 +270,7 @@ export function CreateAccount() {
                         <Button
                           isCompact
                           startVisual={<MonoAdd />}
-                          onPress={() => handleSetAsideExpanded(true)}
+                          onPress={() => setIsRightAsideExpanded(true)}
                           variant="outlined"
                         >
                           Create a new keyset

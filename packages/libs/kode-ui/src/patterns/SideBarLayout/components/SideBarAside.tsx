@@ -19,26 +19,24 @@ export const SideBarAside: FC<{
   location: ISideBarLayoutLocation;
 }> = ({ hasTopBanner, location }) => {
   const {
-    handleSetAsideExpanded,
-    isAsideExpanded,
+    setIsRightAsideExpanded,
+    isRightAsideExpanded,
     rightAsideTitle,
-    setAsideRef,
+    setRightAsideRef,
   } = useLayout();
   const ref = useRef<HTMLDivElement | null>();
 
   const handleExpand = (e: PressEvent) => {
-    if (handleSetAsideExpanded) {
-      handleSetAsideExpanded(false);
-    }
+    setIsRightAsideExpanded(false);
   };
 
   useEffect(() => {
     if (!ref.current) return;
-    setAsideRef(ref.current);
+    setRightAsideRef(ref.current);
   }, [ref.current]);
 
   useEffect(() => {
-    handleSetAsideExpanded(!!location?.hash);
+    setIsRightAsideExpanded(!!location?.hash);
   }, [location?.hash]);
 
   return (
@@ -46,13 +44,13 @@ export const SideBarAside: FC<{
       <Stack
         aria-label="background"
         className={menuBackdropClass({
-          expanded: isAsideExpanded,
+          expanded: isRightAsideExpanded,
         })}
         onClick={handleExpand}
       />
       <aside
         className={asideWrapperClass({
-          expanded: isAsideExpanded,
+          expanded: isRightAsideExpanded,
           hasTopBanner,
         })}
       >

@@ -7,19 +7,19 @@ import { useLayout } from '@kadena/kode-ui/patterns';
 import { CreateKeySetForm } from './CreateKeySetForm';
 
 export function KeySets() {
-  const { handleSetAsideExpanded, isAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const { keysets } = useWallet();
   return (
     <>
       <CreateKeySetForm
-        isOpen={isAsideExpanded}
-        close={() => handleSetAsideExpanded(false)}
+        isOpen={isRightAsideExpanded}
+        close={() => setIsRightAsideExpanded(false)}
       />
       <Stack flexDirection={'column'}>
         <Stack marginBlock={'md'} justifyContent={'space-between'}>
           <Heading variant="h3">Key Sets</Heading>
           <Button
-            onPress={() => handleSetAsideExpanded(true)}
+            onPress={() => setIsRightAsideExpanded(true)}
             variant="outlined"
             isCompact
           >
@@ -30,7 +30,7 @@ export function KeySets() {
           {keysets
             .filter(({ guard }) => guard.keys.length >= 2)
             .map((keySet) => (
-              <ListItem>
+              <ListItem key={keySet.uuid}>
                 <Stack justifyContent={'space-between'}>
                   <Stack key={keySet.uuid} gap={'sm'}>
                     <Text>{keySet.alias}</Text>

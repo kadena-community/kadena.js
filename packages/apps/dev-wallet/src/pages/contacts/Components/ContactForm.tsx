@@ -113,11 +113,13 @@ export function ContactForm({
         <RightAsideContent>
           <Stack width="100%" flexDirection="column" gap="md">
             <TextField
+              aria-label="Name"
               label="Name"
               defaultValue={getValues('name')}
               {...register('name', { required: true })}
             />
             <TextField
+              aria-label="Email"
               label="Email (optional)"
               defaultValue={getValues('email')}
               {...register('email')}

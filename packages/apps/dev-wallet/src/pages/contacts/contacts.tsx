@@ -26,12 +26,12 @@ import { panelClass } from '../home/style.css';
 import { ContactForm } from './Components/ContactForm';
 
 export function Contacts() {
-  const { handleSetAsideExpanded, isAsideExpanded } = useLayout({
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout({
     appContext: {
       visual: <MonoContacts />,
       label: 'Add Contact',
       onPress: () => {
-        handleSetAsideExpanded(true);
+        setIsRightAsideExpanded(true);
       },
     },
     breadCrumbs: [
@@ -47,7 +47,7 @@ export function Contacts() {
   const prompt = usePrompt();
 
   const closeForm = () => {
-    handleSetAsideExpanded(false);
+    setIsRightAsideExpanded(false);
     setEditContact(undefined);
   };
 
@@ -57,7 +57,7 @@ export function Contacts() {
         input={editContact}
         onClose={closeForm}
         onDone={closeForm}
-        isOpen={isAsideExpanded}
+        isOpen={isRightAsideExpanded}
       />
 
       <Stack flexDirection={'column'} className={panelClass} gap={'md'}>
@@ -67,7 +67,7 @@ export function Contacts() {
           <Button
             onPress={() => {
               setEditContact(undefined);
-              handleSetAsideExpanded(true);
+              setIsRightAsideExpanded(true);
             }}
             variant="outlined"
             isCompact
@@ -108,7 +108,7 @@ export function Contacts() {
                     <ContextMenuItem
                       label="Edit"
                       onClick={() => {
-                        handleSetAsideExpanded(true);
+                        setIsRightAsideExpanded(true);
                         setEditContact(contact);
                       }}
                     />
