@@ -1,5 +1,5 @@
 import { MonoClose } from '@kadena/kode-icons/system';
-import type { FC, PropsWithChildren } from 'react';
+import type { FC } from 'react';
 import React, { useEffect, useRef } from 'react';
 import {
   asideContentClass,
@@ -14,19 +14,12 @@ import type { PressEvent } from './../../../components';
 import { Button, Heading, Stack } from './../../../components';
 import { useLayout } from './LayoutProvider';
 
-export const SideBarAside: FC<
-  PropsWithChildren<{
-    hasTopBanner?: boolean;
-    location: ISideBarLayoutLocation;
-  }>
-> = ({ hasTopBanner, location, children }) => {
-  const {
-    handleSetAsideExpanded,
-    isAsideExpanded,
-    asideTitle,
-    setAsideRef,
-    asideRef,
-  } = useLayout();
+export const SideBarAside: FC<{
+  hasTopBanner?: boolean;
+  location: ISideBarLayoutLocation;
+}> = ({ hasTopBanner, location }) => {
+  const { handleSetAsideExpanded, isAsideExpanded, asideTitle, setAsideRef } =
+    useLayout();
   const ref = useRef<HTMLDivElement | null>();
 
   const handleExpand = (e: PressEvent) => {
