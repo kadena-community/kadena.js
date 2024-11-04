@@ -1,8 +1,7 @@
 // eslint-disable-next-line @rushstack/no-new-null
-import { createClient, createTransaction } from '@kadena/client';
+import { createTransaction } from '@kadena/client';
 import {
   createCrossChainCommand,
-  simpleTransferCreateCommand,
   transferCreateCommand,
 } from '@kadena/client-utils/coin';
 import { estimateGas } from '@kadena/client-utils/core';
@@ -12,8 +11,11 @@ import * as v from 'valibot';
 import * as accountService from '../services/accountService.js';
 import { getTransfers } from '../services/graphql/getTransfers.js';
 import { exchange } from './exchange.js';
-import type { HostAddressGenerator } from './host.js';
-import { defaultHostAddressGenerator } from './host.js';
+import type { ChainwebHostGenerator, GraphqlHostGenerator } from './host.js';
+import {
+  defaultChainwebHostGenerator,
+  defaultGraphqlHostGenerator,
+} from './host.js';
 import type {
   CreateCrossChainTransfer,
   CreateFinishCrossChainTransfer,
@@ -22,7 +24,6 @@ import type {
   IChain,
   ITransaction,
   ITransactionDescriptor,
-  IWalletSDK,
   SimpleCreateTransfer,
   Transfer,
 } from './interface.js';
@@ -31,22 +32,26 @@ import type { ILogTransport, LogLevel } from './logger.js';
 import { Logger } from './logger.js';
 import type { ResponseResult } from './schema.js';
 import { responseSchema } from './schema.js';
+import { simpleTransferCreateCommand } from './utils-tmp.js';
 
-export class WalletSDK implements IWalletSDK {
-  private _getHostUrl: HostAddressGenerator;
+export class WalletSDK {
+  private _chainwebHostGenerator: ChainwebHostGenerator;
+  private _graphqlHostGenerator: GraphqlHostGenerator;
   private _logger: Logger;
 
   public kadenaNames: KadenaNames;
   public exchange: typeof exchange = exchange;
 
-  public constructor(
-    hostAddressGenerator: HostAddressGenerator = defaultHostAddressGenerator,
-    options?: {
-      logTransport?: ILogTransport;
-      logLevel?: LogLevel;
-    },
-  ) {
-    this._getHostUrl = hostAddressGenerator;
+  public constructor(options?: {
+    chainwebHostGenerator?: ChainwebHostGenerator;
+    graphqlHostGenerator?: GraphqlHostGenerator;
+    logTransport?: ILogTransport;
+    logLevel?: LogLevel;
+  }) {
+    this._chainwebHostGenerator =
+      options?.chainwebHostGenerator ?? defaultChainwebHostGenerator;
+    this._graphqlHostGenerator =
+      options?.graphqlHostGenerator ?? defaultGraphqlHostGenerator;
     this._logger = new Logger(
       options?.logLevel ?? 'WARN',
       options?.logTransport,
@@ -54,8 +59,32 @@ export class WalletSDK implements IWalletSDK {
     this.kadenaNames = new KadenaNames(this);
   }
 
-  public get hostUrlGenerator(): HostAddressGenerator {
-    return this._getHostUrl;
+  public getChainwebUrl(
+    ...args: Parameters<ChainwebHostGenerator>
+  ): ReturnType<ChainwebHostGenerator> {
+    const result = this._chainwebHostGenerator(...args);
+    if (!result) {
+      throw new Error(
+        'Failed to generate chainweb url using chainwebHostGenerator method',
+      );
+    }
+    console.log('getChainwebUrl', result);
+    return result;
+  }
+
+  public getGraphqlUrl(
+    ...args: Parameters<GraphqlHostGenerator>
+  ): ReturnType<GraphqlHostGenerator> {
+    const result = this._graphqlHostGenerator(...args);
+    if (!result) {
+      console.log(
+        'Failed to generate graphql url using graphqlHostGenerator method',
+      );
+      throw new Error(
+        'Failed to generate chainweb url using graphqlHostGenerator method',
+      );
+    }
+    return result;
   }
 
   private async _getChains(
@@ -111,8 +140,9 @@ export class WalletSDK implements IWalletSDK {
     networkId: string,
     chainId: ChainId,
   ): Promise<ITransactionDescriptor> {
-    const host = this._getHostUrl({ networkId, chainId });
-    console.log('host:', host);
+    const parsed = JSON.parse(transaction.cmd);
+    console.log('parsed:', parsed);
+    const host = this.getChainwebUrl({ networkId, chainId });
     const result = await createClient(() => host).submitOne(transaction);
     return result;
   }
@@ -132,15 +162,12 @@ export class WalletSDK implements IWalletSDK {
     fungible?: string,
     chainsIds?: ChainId[],
   ): Promise<Transfer[]> {
-    const networks = {
-      testnet04: 'https://graph.testnet.kadena.network/graphql',
-    } as Record<string, string>;
-    if (!networks[networkId]) {
-      throw new Error(`Network ${networkId} not supported`);
-    }
-    const transfers = getTransfers(networks[networkId], accountName, fungible);
-    console.log(transfers);
-    return [];
+    console.log('get transfers1');
+    const url = this.getGraphqlUrl({ networkId });
+    console.log({ url });
+    const transfers = await getTransfers(url, accountName, fungible);
+    console.log('result:', transfers);
+    return transfers;
   }
 
   public subscribeOnCrossChainComplete(
@@ -155,7 +182,7 @@ export class WalletSDK implements IWalletSDK {
     transaction: ITransactionDescriptor,
     options?: { signal?: AbortSignal },
   ): Promise<ResponseResult> {
-    const host = this._getHostUrl({
+    const host = this.getChainwebUrl({
       networkId: transaction.networkId,
       chainId: transaction.chainId,
     });
@@ -227,7 +254,7 @@ export class WalletSDK implements IWalletSDK {
         networkId,
         fungible,
         chains,
-        this._getHostUrl,
+        this.getChainwebUrl.bind(this),
       );
 
       return accountDetailsList;
@@ -238,10 +265,6 @@ export class WalletSDK implements IWalletSDK {
   }
 
   public async getChains(networkHost: string): Promise<IChain[]> {
-    // return Array.from(
-    //   { length: 20 },
-    //   (_, index) => ({ id: index.toString() }) as Chain,
-    // );
     const res = await fetch(`${networkHost}/info`);
     const json: {
       nodeChains: string[];
@@ -259,7 +282,7 @@ export class WalletSDK implements IWalletSDK {
     networkId: string,
     chainId: ChainId,
   ): Promise<number> {
-    const host = this._getHostUrl({ networkId, chainId });
+    const host = this.getChainwebUrl({ networkId, chainId });
     const result = await estimateGas(JSON.parse(transaction.cmd), host);
     return result.gasPrice;
   }

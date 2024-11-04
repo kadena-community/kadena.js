@@ -1,6 +1,6 @@
 import { details } from '@kadena/client-utils/coin';
 import type { ChainId } from '@kadena/types';
-import type { HostAddressGenerator } from '../sdk/host.js';
+import type { ChainwebHostGenerator } from '../sdk/host.js';
 import type {
   IAccountDetails,
   IAccountDetailsResult,
@@ -12,17 +12,18 @@ export async function getAccountDetails(
   networkId: string,
   fungible: string,
   chains: ChainId[],
-  hostAddressGenerator: HostAddressGenerator,
+  hostAddressGenerator: ChainwebHostGenerator,
 ): Promise<IAccountDetails[]> {
   const resultList = await Promise.all(
     chains.map(async (chainId) => {
       try {
         const hostUrl = hostAddressGenerator({ networkId, chainId });
+        const url = new URL(hostUrl);
         const accountDetails = (await details(
           accountName,
           networkId,
           chainId,
-          hostUrl,
+          url.origin,
           fungible,
         )) as IAccountDetailsResult;
 
@@ -41,6 +42,7 @@ export async function getAccountDetails(
             accountDetails: null,
           };
         }
+        console.log('error:', error);
         console.error(
           `Error in account details resolving action for chain ${chainId}: ${error.message}`,
         );

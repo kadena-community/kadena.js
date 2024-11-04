@@ -1,5 +1,6 @@
 import { createClient, fetchExchange } from '@urql/core';
 import { graphql } from '../../gql/gql.js';
+import type { Transfer } from '../../sdk/interface.js';
 
 const accountTransfersQuery = graphql(`
   query accountTransfers($accountName: String!, $fungibleName: String) {
@@ -60,7 +61,7 @@ export async function getTransfers(
   graphqlUrl: string,
   accountName: string,
   fungibleName?: string,
-) {
+): Promise<Transfer[]> {
   const client = createClient({ url: graphqlUrl, exchanges: [fetchExchange] });
   const result = await client
     .query(accountTransfersQuery, { accountName, fungibleName })
@@ -68,5 +69,19 @@ export async function getTransfers(
   const nodes = result.data?.fungibleAccount?.transfers.edges.map(
     (edge) => edge.node,
   );
-  return nodes;
+
+  if (!nodes) return [];
+
+  return nodes?.map((node) => {
+    return {
+      amount: node.amount,
+      chainId: node.chainId,
+      requestKey: node.requestKey,
+      senderAccount: node.senderAccount,
+      receiverAccount: node.receiverAccount,
+      success: true,
+      token: fungibleName,
+      isCrossChainTransfer: false,
+    } as Transfer;
+  });
 }

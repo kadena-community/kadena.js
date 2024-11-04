@@ -16,7 +16,7 @@ export class KadenaNames {
     networkId: string,
   ): Promise<string | null> {
     try {
-      const host = this._sdk.hostUrlGenerator({
+      const host = this._sdk.getChainwebUrl({
         networkId,
         chainId: '15',
       });
@@ -38,7 +38,7 @@ export class KadenaNames {
     networkId: string,
   ): Promise<string | null> {
     try {
-      const host = this._sdk.hostUrlGenerator({ networkId, chainId: '15' });
+      const host = this._sdk.getChainwebUrl({ networkId, chainId: '15' });
       const result = await addressToName(address, networkId, host);
 
       if (result === undefined) {
