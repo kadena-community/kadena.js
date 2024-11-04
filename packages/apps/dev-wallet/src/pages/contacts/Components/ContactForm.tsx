@@ -10,7 +10,7 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { labelBoldClass } from '@/pages/transaction/components/style.css';
 import { IReceiverAccount } from '@/pages/transfer/utils';
 import { Button, Notification, Stack, Text, TextField } from '@kadena/kode-ui';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 interface IContactFormData {
@@ -28,7 +28,6 @@ export function ContactForm({
   onClose: () => void;
   onDone: (contect: IContact) => void;
 }) {
-  console.log({ input });
   const prompt = usePrompt();
   const { activeNetwork } = useWallet();
   const [error, setError] = useState<string | null>(null);
@@ -37,6 +36,7 @@ export function ContactForm({
     control,
     getValues,
     handleSubmit,
+    reset,
     formState: { isValid },
   } = useForm<IContactFormData>({
     defaultValues: input ?? {
@@ -45,6 +45,16 @@ export function ContactForm({
       discoverdAccount: undefined,
     },
   });
+
+  useEffect(() => {
+    reset(
+      input ?? {
+        name: '',
+        email: '',
+        discoverdAccount: undefined,
+      },
+    );
+  }, [input]);
 
   const createContact = useCallback(
     async ({ discoverdAccount, ...data }: IContactFormData) => {
