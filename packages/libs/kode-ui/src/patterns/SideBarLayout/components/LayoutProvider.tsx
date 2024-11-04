@@ -6,6 +6,7 @@ import type { ISideBarLayoutLocation } from '../types';
 export interface IAppContextProps {
   visual: React.ReactElement;
   label: string;
+  component?: any;
   onPress?: () => void;
   href?: string;
 }
@@ -44,7 +45,27 @@ export const LayoutContext = createContext<ILayoutContext>({
   setLocation: () => {},
   isActiveUrl: () => {},
 });
-export const useLayout = (): ILayoutContext => useContext(LayoutContext);
+
+export interface IuseLayoutProps extends ILayoutContext {
+  initPage: (props: Pick<ILayoutContext, 'appContext' | 'breadCrumbs'>) => void;
+}
+
+export const useLayout = (): IuseLayoutProps => {
+  const context = useContext(LayoutContext);
+
+  const initPage = useCallback(
+    ({
+      appContext,
+      breadCrumbs,
+    }: Pick<ILayoutContext, 'appContext' | 'breadCrumbs'>) => {
+      context.setBreadCrumbs(breadCrumbs ?? []);
+      context.setAppContext(appContext);
+    },
+    [],
+  );
+
+  return { ...context, initPage };
+};
 
 export interface ILayoutProvider extends PropsWithChildren {}
 

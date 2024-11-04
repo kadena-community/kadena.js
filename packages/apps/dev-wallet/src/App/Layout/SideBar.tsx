@@ -2,12 +2,12 @@ import {
   MonoContacts,
   MonoContrast,
   MonoDashboardCustomize,
-  MonoDataThresholding,
   MonoLogout,
   MonoNetworkCheck,
   MonoSwapHoriz,
   MonoTableRows,
   MonoWallet,
+  MonoWindow,
 } from '@kadena/kode-icons/system';
 
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
@@ -58,7 +58,7 @@ export const SideBar: FC = () => {
       navigation={
         <>
           <SideBarItem
-            visual={<MonoDataThresholding />}
+            visual={<MonoWindow />}
             label="Dashboard"
             component={Link}
             href="/"

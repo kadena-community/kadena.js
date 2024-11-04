@@ -1,15 +1,36 @@
 import { AuthCard } from '@/Components/AuthCard/AuthCard';
 import { BackupMnemonic } from '@/Components/BackupMnemonic/BackupMnemonic';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { MonoDashboardCustomize } from '@kadena/kode-icons/system';
 import { Notification } from '@kadena/kode-ui';
-import { useState } from 'react';
+import { useLayout } from '@kadena/kode-ui/patterns';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export function WriteDownRecoveryPhrase() {
+  const { initPage } = useLayout();
   const { decryptSecret, askForPassword, profile } = useWallet();
   const [mnemonic, setMnemonic] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  useMemo(() => {
+    initPage({
+      appContext: undefined,
+      breadCrumbs: [
+        {
+          label: 'Backup',
+          visual: <MonoDashboardCustomize />,
+          url: '/backup-recovery-phrase',
+        },
+        {
+          label: 'Recovery phrase',
+          url: '/backup-recovery-phrase/write-down',
+        },
+      ],
+    });
+  }, []);
+
   async function decryptMnemonic() {
     setError('');
     try {

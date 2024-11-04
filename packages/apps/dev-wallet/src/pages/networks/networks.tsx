@@ -1,18 +1,20 @@
 import { ListItem } from '@/Components/ListItem/ListItem';
 import { networkRepository } from '@/modules/network/network.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { Mono123, MonoWifiTethering } from '@kadena/kode-icons/system';
+import { createAsideUrl } from '@/utils/createAsideUrl';
+import { MonoWifiTethering, MonoWorkspaces } from '@kadena/kode-icons/system';
 import {
   Button,
   Dialog,
   DialogContent,
   DialogHeader,
   Heading,
+  Link,
   Stack,
   Text,
 } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { panelClass } from '../home/style.css';
 import {
   INetworkWithOptionalUuid,
@@ -35,22 +37,25 @@ const getNewNetwork = (): INetworkWithOptionalUuid => ({
 
 export function Networks() {
   const { networks } = useWallet();
-  const { setAppContext, setBreadCrumbs } = useLayout();
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const [selectedNetwork, setSelectedNetwork] =
     useState<INetworkWithOptionalUuid>(() => getNewNetwork());
+  const { initPage } = useLayout();
 
-  useEffect(() => {
-    setAppContext({
-      visual: <Mono123 />,
-      label: 'test',
-      onPress: () => alert(111),
+  useMemo(() => {
+    initPage({
+      appContext: {
+        visual: <MonoWorkspaces />,
+        label: 'Add Network',
+        href: createAsideUrl('KeySource'),
+        component: Link,
+      },
+      breadCrumbs: [
+        { label: 'Networks', visual: <MonoWifiTethering />, url: '/networks' },
+      ],
     });
-
-    setBreadCrumbs([
-      { label: 'Networks', visual: <MonoWifiTethering />, url: '/networks' },
-    ]);
   }, []);
+
   return (
     <>
       <Stack margin="md" flexDirection={'column'}>

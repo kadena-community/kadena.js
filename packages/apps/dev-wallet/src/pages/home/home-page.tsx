@@ -7,12 +7,23 @@ import { IPactCommand } from '@kadena/client';
 
 import { AssetsCard } from '@/Components/AssetsCard/AssetsCard';
 import { Box, Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
+import { useLayout } from '@kadena/kode-ui/patterns';
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { linkClass } from '../select-profile/select-profile.css';
 import { TransactionList } from '../transactions/transactions';
 
 export function HomePage() {
   const { profile, activeNetwork } = useWallet();
+  const { initPage } = useLayout();
+
+  useMemo(() => {
+    initPage({
+      appContext: undefined,
+      breadCrumbs: [],
+    });
+  }, []);
+
   console.log('activeNetwork', activeNetwork);
 
   const [transactions] = useAsync(

@@ -4,13 +4,14 @@ import { ISigner } from '@kadena/client';
 
 import { MonoSwapHoriz } from '@kadena/kode-icons/system';
 import { Divider, Heading, Stack, Step, Stepper, Text } from '@kadena/kode-ui';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { activityRepository } from '@/modules/activity/activity.repository';
 import {
   ITransaction,
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
+import { useLayout } from '@kadena/kode-ui/patterns';
 import { useSearchParams } from 'react-router-dom';
 import { ReviewTransaction } from '../transaction/components/ReviewTransaction';
 import { TxList } from '../transaction/components/TxList';
@@ -24,9 +25,23 @@ import {
 import { createRedistributionTxs, createTransactions } from './utils';
 
 export function TransferV2() {
+  const { initPage } = useLayout();
   const [searchParams] = useSearchParams();
   const accountId = searchParams.get('accountId');
   const urlActivityId = searchParams.get('activityId');
+  useMemo(() => {
+    initPage({
+      appContext: undefined,
+      breadCrumbs: [
+        {
+          label: 'Transfer',
+          visual: <MonoSwapHoriz />,
+          url: '/transfer',
+        },
+      ],
+    });
+  }, []);
+
   useEffect(() => {
     const run = async () => {
       if (urlActivityId) {
