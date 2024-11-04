@@ -23,6 +23,7 @@ import { AddKeySourceForm } from './AddKeySourceForm.tsx';
 export function Keys() {
   const { keySources, profile, askForPassword, createKey } = useWallet();
   const { handleSetAsideExpanded, isAsideExpanded, asideRef } = useLayout();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setError] = useState<string | null>(null);
   const { createHDWallet } = useHDWallet();
   async function createWebAuthn() {
