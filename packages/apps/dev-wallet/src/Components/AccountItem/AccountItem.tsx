@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 import { ListItem } from '../ListItem/ListItem';
 
 export function AccountItem({
-  account: { uuid, alias = 'test', address, overallBalance, contract },
+  account: { uuid, alias, address, overallBalance, contract },
 }: {
   account: IAccount | IWatchedAccount;
 }) {
