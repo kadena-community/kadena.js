@@ -1,6 +1,7 @@
 import { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import { ChainId, ICommandResult } from '@kadena/client';
 import { IDBService, dbService } from '../db/db.service';
+import { UUID } from '../types';
 
 type NotSubmittedTransactionStatus = 'initiated' | 'signed' | 'preflight';
 type SubmittedTransactionStatus =
@@ -15,7 +16,7 @@ export type TransactionStatus =
 
 export type ITransaction = {
   uuid: string;
-  networkId: string;
+  networkUUID: UUID;
   profileId: string;
   hash: string;
   cmd: string;
@@ -25,6 +26,17 @@ export type ITransaction = {
     | undefined
   >;
   groupId?: string;
+  blockedBy?: string;
+  continuation?: {
+    autoContinue: boolean;
+    crossChainId?: ChainId;
+    proof?: string | null;
+    continuationTxId?: string;
+    tx?: ITransaction;
+    done?: boolean;
+  };
+  purpose?: { type: string; data: Record<string, unknown> };
+  result?: ICommandResult;
 } & (
   | {
       height?: number;
@@ -52,12 +64,17 @@ export type ITransaction = {
 export interface TransactionRepository {
   getTransactionList: (
     profileId: string,
-    networkId: string,
+    networkUUID: UUID,
     status?: TransactionStatus,
   ) => Promise<ITransaction[]>;
   getTransaction: (uuid: string) => Promise<ITransaction>;
   getTransactionByHash: (hash: string) => Promise<ITransaction>;
   getTransactionsByGroup: (groupId: string) => Promise<ITransaction[]>;
+  getTransactionByHashNetworkProfile: (
+    profileId: string,
+    networkUUID: UUID,
+    hash: string,
+  ) => Promise<ITransaction>;
   addTransaction: (transaction: ITransaction) => Promise<void>;
   updateTransaction: (transaction: ITransaction) => Promise<void>;
   deleteTransaction: (transactionId: string) => Promise<void>;
@@ -73,19 +90,19 @@ const createTransactionRepository = ({
   return {
     getTransactionList: async (
       profileId: string,
-      networkId: string,
+      networkUUID: UUID,
       status?: TransactionStatus,
     ): Promise<ITransaction[]> => {
       if (status) {
         return getAll(
           'transaction',
-          IDBKeyRange.only([profileId, networkId, status]),
+          IDBKeyRange.only([profileId, networkUUID, status]),
           'network-status',
         );
       }
       return getAll(
         'transaction',
-        IDBKeyRange.only([profileId, networkId]),
+        IDBKeyRange.only([profileId, networkUUID]),
         'network',
       );
     },
@@ -95,6 +112,21 @@ const createTransactionRepository = ({
     getTransactionByHash: async (hash: string): Promise<ITransaction> => {
       const tx = getAll('transaction', hash, 'hash');
       return Array.isArray(tx) ? tx[0] : undefined;
+    },
+    getTransactionByHashNetworkProfile: async (
+      profileId: string,
+      networkUUID: UUID,
+      hash: string,
+    ) => {
+      const txs = (await getAll(
+        'transaction',
+        IDBKeyRange.only([profileId, networkUUID, hash]),
+        'unique-tx',
+      )) as ITransaction[];
+      if (txs.length > 1) {
+        throw new Error('Multiple transactions with the same hash');
+      }
+      return txs[0];
     },
     getTransactionsByGroup: async (
       groupId: string,

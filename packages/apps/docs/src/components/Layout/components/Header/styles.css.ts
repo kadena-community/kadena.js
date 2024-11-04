@@ -91,7 +91,7 @@ export const skipNavClass = style([
     position: 'absolute',
     top: 0,
     left: 0,
-    fontWeight: 'secondaryFont.bold',
+    fontWeight: 'primaryFont.bold',
     opacity: 0,
     paddingBlock: 'sm',
     paddingInline: 'md',

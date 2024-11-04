@@ -1,5 +1,48 @@
 # @kadena/kode-ui
 
+## 0.18.0
+
+### Minor Changes
+
+- d533d39: Updated Icons
+- de87d1c: add the DataTable Component
+- 7d063d6: add the contextMenu component
+
+### Patch Changes
+
+- 94ce674: add the checkbox group component
+- Updated dependencies \[d533d39]
+  - @kadena/kode-icons\@0.3.0
+
+## 0.17.1
+
+### Patch Changes
+
+- 33fbaae: fix the selectedtabs border
+
+## 0.17.0
+
+### Minor Changes
+
+- 80ac706: add the Tile component
+- eb82843: Added step to text filed; added inherit to color variants
+
+### Patch Changes
+
+- 5985ccc: fix padding of the select box component
+- 767c542: fix the steppers colors for the lines after the active step
+- 0e08d23: Typography fix with rebranding (Primary to Inter)
+
+## 0.16.0
+
+### Minor Changes
+
+- 0bcccf1: add the stepper component
+
+### Patch Changes
+
+- b751065: Fix for the stepper component label. Incorrect token usage.
+
 ## 0.15.0
 
 ### Minor Changes

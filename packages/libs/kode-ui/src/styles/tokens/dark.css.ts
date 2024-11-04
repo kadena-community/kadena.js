@@ -236,12 +236,21 @@ export const darkThemeValues = {
           },
           overlay: {
             default: tokens.kda.foundation.color.neutral['n5@alpha95'],
+            context: {
+              default: tokens.kda.foundation.color.neutral['n5@alpha95'],
+            },
             '@hover': tokens.kda.foundation.color.neutral.n5,
           },
           surface: {
             default: tokens.kda.foundation.color.neutral['n99@alpha6'],
             inverse: {
               default: tokens.kda.foundation.color.neutral['n99@alpha80'],
+            },
+            subtle: {
+              default: tokens.kda.foundation.color.neutral['n0@alpha20'],
+              inverse: {
+                default: tokens.kda.foundation.color.neutral['n99@alpha80'],
+              },
             },
           },
           surfaceHighContrast: {
@@ -523,6 +532,9 @@ export const darkThemeValues = {
             outline: tokens.kda.foundation.color.palette.blue.n60,
             '@focus': tokens.kda.foundation.color.palette.aqua['n20@alpha80'],
           },
+          overlay: {
+            context: tokens.kda.foundation.color.neutral['n20@alpha80'],
+          },
         },
         brand: {
           primary: {
@@ -795,6 +807,8 @@ export const darkThemeValues = {
           'n1@alpha0': '#020e1b00',
           'n1@alpha1': '#020e1b03',
           'n1@alpha3': '#020e1b08',
+          'n1@alpha4': '#020e1b0a',
+          'n1@alpha5': '#020e1b0d',
           'n1@alpha6': '#020e1b0f',
           'n1@alpha10': '#020e1b1a',
           'n1@alpha20': '#020e1b33',
@@ -815,6 +829,8 @@ export const darkThemeValues = {
           'n99@alpha0': '#f5f5f500',
           'n99@alpha1': '#f5f5f503',
           'n99@alpha3': '#f5f5f508',
+          'n99@alpha4': '#f5f5f50a',
+          'n99@alpha5': '#f5f5f50d',
           'n99@alpha6': '#f5f5f50f',
           'n99@alpha10': '#f5f5f51a',
           'n99@alpha20': '#f5f5f533',
@@ -1270,6 +1286,17 @@ export const darkThemeValues = {
           },
         },
       },
+      icon: {
+        size: {
+          xxs: tokens.kda.foundation.size.n3,
+          xs: tokens.kda.foundation.size.n4,
+          sm: tokens.kda.foundation.size.n5,
+          base: tokens.kda.foundation.size.n6,
+          lg: tokens.kda.foundation.size.n8,
+          xl: tokens.kda.foundation.size.n10,
+          xxl: tokens.kda.foundation.size.n16,
+        },
+      },
       effect: {
         shadow: {
           level1: `4px 0.5rem ${tokens.kda.foundation.size.n2} 4px #000000`,
@@ -1283,21 +1310,9 @@ export const darkThemeValues = {
           maxWidth: '42.5rem',
         },
       },
-      icon: {
-        size: {
-          xxs: tokens.kda.foundation.size.n3,
-          xs: tokens.kda.foundation.size.n4,
-          sm: tokens.kda.foundation.size.n5,
-          base: tokens.kda.foundation.size.n6,
-          lg: tokens.kda.foundation.size.n8,
-          xl: tokens.kda.foundation.size.n10,
-          xxl: tokens.kda.foundation.size.n16,
-        },
-      },
       typography: {
         family: {
           primaryFont: 'Inter',
-          secondaryFont: 'Inter',
           monospaceFont: 'Kode Mono',
         },
         fontSize: {
@@ -1337,12 +1352,6 @@ export const darkThemeValues = {
             medium: '500',
             semiBold: '600',
             bold: '700',
-          },
-          secondaryFont: {
-            regular: '400',
-            medium: '500',
-            bold: '600',
-            black: '700',
           },
           monospaceFont: {
             regular: '400',

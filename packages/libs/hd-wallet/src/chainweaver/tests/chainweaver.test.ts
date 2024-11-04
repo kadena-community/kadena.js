@@ -30,6 +30,7 @@ function validateEncryptedKeyPair(value: string) {
 
 describe('kadenaGenMnemonic', () => {
   it('should generate a mnemonic', () => {
+    console.log('kadenaGenMnemonic', kadenaGenMnemonic);
     const mnemonic = kadenaGenMnemonic();
     const wordsList = mnemonic.split(' ');
     expect(wordsList).toHaveLength(12);

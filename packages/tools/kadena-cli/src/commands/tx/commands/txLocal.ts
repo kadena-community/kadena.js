@@ -61,12 +61,15 @@ export const createTxLocalCommand: (program: Command, version: string) => void =
         return;
       }
 
-      const transaction = await createTransaction(arbitraryCodeTemplate, {
-        code,
-        'chain-id': templateChainId,
-        'network:networkId': network.networkId,
-        gasLimit: gasLimit ?? '3000',
-      });
+      const transaction = await createTransaction(
+        {
+          code,
+          'chain-id': templateChainId,
+          'network:networkId': network.networkId,
+          gasLimit: gasLimit ?? '3000',
+        },
+        arbitraryCodeTemplate,
+      );
 
       const client = createClient(
         generateClientUrl({

@@ -87,6 +87,7 @@ const ModuleExplorerPage = (
 
   const mainnetModulesQuery = useModulesQuery('mainnet01');
   const testnetModulesQuery = useModulesQuery('testnet04');
+  const testnet05ModulesQuery = useModulesQuery('testnet05');
 
   const setDeepLink = useCallback(
     (module: IncompleteModuleModel) => {
@@ -128,15 +129,22 @@ const ModuleExplorerPage = (
           {
             title: 'Mainnet',
             key: 'mainnet01',
-            data: mainnetModulesQuery.data!,
+            data: mainnetModulesQuery.data ?? [],
             isLoading: mainnetModulesQuery.isFetching,
             supportsReload: true,
           },
           {
             title: 'Testnet',
             key: 'testnet04',
-            data: testnetModulesQuery.data!,
+            data: testnetModulesQuery.data ?? [],
             isLoading: testnetModulesQuery.isFetching,
+            supportsReload: true,
+          },
+          {
+            title: 'Testnet05',
+            key: 'testnet05',
+            data: testnet05ModulesQuery.data ?? [],
+            isLoading: testnet05ModulesQuery.isFetching,
             supportsReload: true,
           },
         ]}

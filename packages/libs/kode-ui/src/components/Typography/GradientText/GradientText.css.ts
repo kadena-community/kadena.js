@@ -1,7 +1,7 @@
 import { style, token } from '../../../styles/index';
 
 export const gradientTextClass = style({
-  fontWeight: token('typography.weight.secondaryFont.bold'),
+  fontWeight: token('typography.weight.primaryFont.bold'),
   backgroundColor: 'inherit',
   backgroundImage: `linear-gradient(50deg, ${token('color.accent.brand.secondary')}, ${token('color.accent.brand.primary')} 90%)`,
   backgroundSize: '100%',

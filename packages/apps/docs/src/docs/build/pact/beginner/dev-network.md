@@ -46,7 +46,7 @@ You can download and install [Pact](https://github.com/kadena-io/pact#installing
 
 ### Use Homebrew
 
-On macOS, you can install Pact using Homebrew byt running the following commands:
+On macOS, you can install Pact using Homebrew by running the following commands:
 
 ```shell
 brew update
@@ -292,7 +292,7 @@ In this section, you set up your development environment with a local developmen
 
 Before moving on, you might want to use the code editor and Module Explorer to get a more detailed view of the modules defined in the example and deployed contracts.
 
-WHen you're ready, the next section introduces Pact with a simple "Hello, World!" contract. For the next steps, you'll:
+When you're ready, the next section introduces Pact with a simple "Hello, World!" contract. For the next steps, you'll:
 
 - Define a module for the `hello-world` contract.
 - Define an owner for the module using a keyset.

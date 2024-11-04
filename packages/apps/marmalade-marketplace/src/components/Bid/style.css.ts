@@ -1,5 +1,5 @@
+import { token } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
-import { tokens, token } from '@kadena/kode-ui/styles';
 
 export const tokenDetailsInnerContainer = style({
   display: 'flex',
@@ -7,7 +7,7 @@ export const tokenDetailsInnerContainer = style({
   justifyContent: 'space-between',
   gap: token('spacing.n1'),
   marginBottom: '8px',
-  width: '100%'
+  width: '100%',
 });
 
 export const labelTitle = style({

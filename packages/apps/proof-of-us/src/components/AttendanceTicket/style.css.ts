@@ -1,4 +1,4 @@
-import { atoms } from '@kadena/kode-ui/styles';
+import { atoms, responsiveStyle } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const ticketClass = style([
@@ -87,5 +87,38 @@ export const dateClass = style([
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
+  },
+]);
+
+export const wrapperClass = style([
+  atoms({
+    width: '100%',
+    position: 'relative',
+  }),
+  {
+    maxWidth: '100%',
+  },
+]);
+
+export const shareWrapperClass = style([
+  {
+    position: 'relative',
+    width: '100dvw',
+    maxWidth: '100dvw',
+    top: '-100px',
+    marginBottom: '-100px',
+    left: '-24px',
+  },
+  responsiveStyle({
+    md: {
+      left: 'auto',
+      maxWidth: '100%',
+    },
+  }),
+]);
+export const shareClass = style([
+  {
+    width: '100%',
+    backgroundSize: 'contain',
   },
 ]);

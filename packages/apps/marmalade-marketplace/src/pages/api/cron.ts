@@ -28,25 +28,25 @@ import {
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-type ResponseData = {
+interface ResponseData {
   message: string;
-};
+}
 
-type Settings = {
+interface Settings {
   isProcessing: boolean;
   latestProcessedBlockNumber: number;
-};
+}
 
-type Event = {
+interface Event {
   event: string;
   chainId: ChainId;
   block: number;
   occurredAt: number;
   parameters: any[];
   requestKey: string;
-};
+}
 
-type Bid = {
+interface Bid {
   bidId: string;
   tokenId: string;
   chainId: ChainId;
@@ -60,7 +60,7 @@ type Bid = {
     };
   };
   requestKey: string;
-};
+}
 
 export interface QuoteInfo {
   'sale-price': number;
@@ -234,6 +234,7 @@ async function parseEvents(
     }
 
     if (event.event === 'marmalade-v2.ledger.BUY') {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [tokenId, seller, buyer, amount, saleId] = event.parameters;
 
       saleRecords[saleId] = {
@@ -311,7 +312,7 @@ async function parseEvents(
         chainId: event.chainId,
         block: event.block,
         buyer: {
-          account: auctionDetails['buyer'],
+          account: auctionDetails.buyer,
           guard: auctionDetails['buyer-guard'],
         },
         sellPrice: auctionDetails['sell-price'],
@@ -392,9 +393,9 @@ async function parseEvents(
         block: event.block,
         bidId,
         tokenId: quoteInfo['token-id'],
-        bid: bidDetails['bid'],
+        bid: bidDetails.bid,
         bidder: {
-          account: bidDetails['bidder'],
+          account: bidDetails.bidder,
           guard: bidDetails['bidder-guard'],
         },
         requestKey: event.requestKey,
@@ -481,17 +482,6 @@ const sync = async (fromBlock: number, toBlock: number) => {
   await saveSettings({ isProcessing: false });
 };
 
-const getEndBlock = (startBlock: number, latestBlock: number) => {
-  const maxBlockDiff = 100;
-
-  if (latestBlock - startBlock > maxBlockDiff) {
-    if (startBlock + maxBlockDiff < latestBlock)
-      return startBlock + maxBlockDiff;
-  }
-
-  return latestBlock;
-};
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>,
@@ -510,12 +500,17 @@ export default async function handler(
       return;
     }
 
+    console.log(latestProcessedBlockNumber, latestBlockNumber);
+
     if (latestProcessedBlockNumber >= latestBlockNumber) {
       res.status(200).json({ message: 'IN SYNC' });
       return;
     }
 
-    const blocksToProcess = Math.min(10, latestBlockNumber - latestProcessedBlockNumber);
+    const blocksToProcess = Math.min(
+      1000,
+      latestBlockNumber - latestProcessedBlockNumber,
+    );
     await sync(
       latestProcessedBlockNumber + 1,
       latestProcessedBlockNumber + blocksToProcess + 1,
@@ -525,7 +520,7 @@ export default async function handler(
     res.end();
   } catch (error) {
     console.error('Error:', error);
-    res.status(500).json({ message: error?.['message'] ?? 'Error' });
+    res.status(500).json({ message: error?.message ?? 'Error' });
     return;
   }
 }

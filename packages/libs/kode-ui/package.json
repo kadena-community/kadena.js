@@ -1,6 +1,6 @@
 {
   "name": "@kadena/kode-ui",
-  "version": "0.15.0",
+  "version": "0.18.0",
   "description": "A react component library built on Kadena's Kode Design System",
   "repository": {
     "type": "git",
@@ -80,12 +80,14 @@
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts,.tsx",
     "storybook": "storybook dev -p 6006",
+    "storybook:prod": "storybook",
     "test": "vitest run",
     "test:watch": "vitest",
     "tokens:sync": "design-sync sync",
     "verify": "tsc --noEmit"
   },
   "dependencies": {
+    "@artsy/fresnel": "^7.1.4",
     "@kadena/kode-icons": "workspace:*",
     "@react-aria/accordion": "3.0.0-alpha.25",
     "@react-aria/focus": "^3.16.0",
@@ -106,7 +108,8 @@
     "react": "^18.2.0",
     "react-aria": "^3.31.1",
     "react-dom": "^18.2.0",
-    "react-stately": "^3.29.1"
+    "react-stately": "^3.29.1",
+    "react-use": "^17.4.0"
   },
   "devDependencies": {
     "@crackle/cli": "^0.15.1",

@@ -1,4 +1,3 @@
-import { defaultAccentColor } from '@/modules/layout/layout.provider.tsx';
 import {
   addSignatures,
   ICommand,
@@ -6,7 +5,6 @@ import {
   IUnsignedCommand,
 } from '@kadena/client';
 import { kadenaDecrypt, kadenaEncrypt } from '@kadena/hd-wallet';
-import { accountRepository } from '../account/account.repository';
 import { keySourceManager } from '../key-source/key-source-manager';
 import { INetwork } from '../network/network.repository';
 import {
@@ -18,10 +16,6 @@ import {
 
 export function getProfile(profileId: string) {
   return walletRepository.getProfile(profileId);
-}
-
-export function getAccounts(profileId: string) {
-  return accountRepository.getAccountsByProfileId(profileId);
 }
 
 export async function sign(
@@ -100,6 +94,7 @@ export async function createProfile(
   networks: INetwork[],
   accentColor: string,
   options: IProfile['options'],
+  securityTerm: string | Uint8Array,
 ) {
   const secretId = crypto.randomUUID();
   // create this in order to verify the password later
@@ -110,13 +105,18 @@ export async function createProfile(
   );
   await walletRepository.addEncryptedValue(secretId, secret);
   const uuid = crypto.randomUUID();
+  const encryptedTerm = await kadenaEncrypt(password, securityTerm, 'buffer');
+  const securityPhraseId = crypto.randomUUID();
+
+  await walletRepository.addEncryptedValue(securityPhraseId, encryptedTerm);
 
   const profile: IProfile = {
     uuid,
     name: profileName,
     networks,
     secretId,
-    accentColor: accentColor || defaultAccentColor,
+    securityPhraseId,
+    accentColor: accentColor,
     options,
   };
 
@@ -135,6 +135,8 @@ export const unlockProfile = async (profileId: string, password: string) => {
     }
     return null;
   } catch (e) {
+    console.log('error unlocking profile', e);
+    console.error(e);
     return null;
   }
 };

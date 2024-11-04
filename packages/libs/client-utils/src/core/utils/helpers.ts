@@ -2,7 +2,6 @@ import type {
   ICommand,
   ICommandResult,
   INetworkOptions,
-  IPactCommand,
   IPartialPactCommand,
   ISignFunction,
   ISigner,
@@ -65,7 +64,7 @@ export interface IEmit {
 
 export interface IClientConfig {
   host?: string | ((options: INetworkOptions) => string);
-  defaults?: Partial<IPactCommand>;
+  defaults?: IPartialPactCommand;
   sign: ISignFunction;
 }
 

@@ -77,6 +77,7 @@ export const getOptimalTransfers = (
     perChain.push({
       ...item,
       amount: fromChain.toString(),
+      balance: item.balance,
       gasLimit: safeLimit,
       gasPrice: item.gasPrice,
     });
@@ -90,6 +91,7 @@ export const getOptimalTransfers = (
 };
 
 export interface IReceiverAccount {
+  alias?: string;
   address: string;
   chains: Array<{ chainId: ChainId; balance: string }>;
   overallBalance: string;
@@ -126,7 +128,7 @@ export const getAccount = (
       if (!acc[key]) {
         const item: IReceiverAccount = {
           address,
-          overallBalance: data.result.balance,
+          overallBalance: new PactNumber(data.result.balance).toString(),
           keyset: { guard: data.result.guard },
           chains: [
             {
@@ -142,7 +144,7 @@ export const getAccount = (
         [key]: {
           ...acc[key],
           overallBalance: new PactNumber(acc[key]!.overallBalance ?? '0')
-            .plus(data.result.balance)
+            .plus(new PactNumber(data.result.balance))
             .toDecimal(),
           chains: acc[key]!.chains!.concat({
             chainId: data.chainId,
@@ -160,6 +162,7 @@ export const getAccount = (
 export interface IOptimalTransfer {
   amount: string;
   chainId: ChainId;
+  balance: string;
   gasLimit: number;
   gasPrice: number;
 }

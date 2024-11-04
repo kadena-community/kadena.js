@@ -30,10 +30,10 @@ const config = {
       pinVersion: 'workspace:*',
     },
     {
-      label: 'Internal production packages are pinned to `workspace:*`',
+      label: 'Internal packages are pinned to `workspace:*`',
       packages: ['**'],
-      dependencies: ['kadena.js', '@kadena/*'],
-      dependencyTypes: ['prod'],
+      dependencies: ['@kadena/*'],
+      dependencyTypes: ['prod', 'dev'],
       pinVersion: 'workspace:*',
     },
     {

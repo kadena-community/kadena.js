@@ -5,7 +5,7 @@ import React, { forwardRef } from 'react';
 import { useHover, useOption } from 'react-aria';
 import type { ListState, Node } from 'react-stately';
 import { ellipsis } from '../../styles';
-import { listItemClass } from './ListBox.css';
+import { itemWrapper, listItemClass } from './ListBox.css';
 
 interface IListBoxOptionProps<T> {
   item: Node<T>;
@@ -42,7 +42,7 @@ function ListBoxOptionBase<T extends object>(
       data-hovered={isHovered || undefined}
       className={classNames(listItemClass, className)}
     >
-      <span className={ellipsis}>{item.rendered}</span>
+      <span className={classNames(ellipsis, itemWrapper)}>{item.rendered}</span>
     </li>
   );
 }

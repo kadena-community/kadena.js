@@ -29,7 +29,7 @@ export const submitAndListen =
       ),
       client.submitOne,
       emit('submit'),
-      client.listen,
+      (data) => client.pollOne(data, { onPoll: emit('poll') }),
       emit('listen'),
       throwIfFails,
       extractResult<T>,

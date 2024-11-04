@@ -12,21 +12,6 @@ import { MAX_CHAIN_VALUE } from '../../../constants/config.js';
 import { services } from '../../../services/index.js';
 import { isNotEmptyString, notEmpty } from '../../../utils/globalHelpers.js';
 
-export const formatZodErrors = (errors: ZodError): string => {
-  return errors.errors
-    .map((error) => {
-      if (error.code === 'invalid_type') {
-        return `"${error.path}": expected ${error.expected}, received ${error.received}`;
-      }
-
-      if (error.code === 'too_small') {
-        return `"${error.path}": ${error.message}`;
-      }
-      return error.message;
-    })
-    .join('\n');
-};
-
 export async function getAllAccountNames(): Promise<
   {
     alias: string;

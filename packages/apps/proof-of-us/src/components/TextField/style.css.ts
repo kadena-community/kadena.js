@@ -8,7 +8,7 @@ export const textClass = style([
     borderRadius: 'sm',
     width: '100%',
     fontSize: 'base',
-    fontWeight: 'secondaryFont.regular',
+    fontWeight: 'primaryFont.regular',
   }),
   {
     color: deviceColors.kadenaFont,

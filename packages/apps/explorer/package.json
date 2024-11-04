@@ -1,6 +1,6 @@
 {
   "name": "@kadena/explorer",
-  "version": "0.8.2",
+  "version": "0.8.8",
   "private": true,
   "scripts": {
     "build": "pnpm run generate:sdk && next build",
@@ -27,7 +27,6 @@
   },
   "dependencies": {
     "@apollo/client": "~3.9.11",
-    "@artsy/fresnel": "^7.1.4",
     "@google-analytics/data": "~3.2.2",
     "@graphql-yoga/apollo-link": "~3.3.0",
     "@kadena/graph": "workspace:*",

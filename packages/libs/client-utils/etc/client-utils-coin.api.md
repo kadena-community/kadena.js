@@ -9,10 +9,10 @@ import { ChainId as ChainId_2 } from '@kadena/types';
 import { ICommand } from '@kadena/types';
 import { ICommandResult } from '@kadena/chainweb-node-client';
 import type { INetworkOptions } from '@kadena/client';
-import type { IPactCommand } from '@kadena/client';
 import { IPactDecimal } from '@kadena/types';
 import { IPactInt } from '@kadena/types';
 import { IPartialPactCommand } from '@kadena/client/lib/interfaces/IPactCommand';
+import type { IPartialPactCommand as IPartialPactCommand_2 } from '@kadena/client';
 import type { ISigner } from '@kadena/client';
 import type { ISignFunction } from '@kadena/client';
 import { ITransactionDescriptor } from '@kadena/client';
@@ -164,6 +164,29 @@ data: ITransactionDescriptor;
 event: "listen";
 data: ICommandResult;
 }], [], any>;
+
+// Warning: (ae-forgotten-export) The symbol "ITransferAllInput" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export const transferAll: (inputs: Omit<ITransferAllInput, 'amount'>, config: IClientConfig) => Promise<IEmitterWrapper<[{
+event: "command";
+data: IUnsignedCommand;
+}, {
+event: "sign";
+data: ICommand;
+}, {
+event: "preflight";
+data: ICommandResult;
+}, {
+event: "submit";
+data: ITransactionDescriptor;
+}, {
+event: "listen";
+data: ICommandResult;
+}], [], Promise<string> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]> | Promise<Record<string, any>>>>;
+
+// @alpha (undocumented)
+export const transferAllCommand: ({ sender, receiver, amount, gasPayer, chainId, contract, }: ITransferAllInput) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => Partial<IPartialPactCommand>;
 
 // @alpha (undocumented)
 export const transferCommand: ({ sender, receiver, amount, gasPayer, chainId, contract, }: ITransferInput) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => Partial<IPartialPactCommand>;

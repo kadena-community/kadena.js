@@ -1,5 +1,5 @@
-import { tokens, token } from '@kadena/kode-ui/styles';
 import '@kadena/kode-ui/global';
+import { token } from '@kadena/kode-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 
 globalStyle('body', {

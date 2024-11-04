@@ -28,8 +28,9 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
           <TokenProvider>
             <ThemeProvider
               attribute="class"
+              forcedTheme="dark"
               value={{
-                light: 'light',
+                light: darkThemeClass,
                 dark: darkThemeClass,
               }}
             >

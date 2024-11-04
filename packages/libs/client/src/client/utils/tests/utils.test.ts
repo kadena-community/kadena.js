@@ -66,6 +66,11 @@ describe('client utils', () => {
       ).toBe(
         'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/14/pact',
       );
+      expect(
+        kadenaHostGenerator({ networkId: 'testnet05', chainId: '14' }),
+      ).toBe(
+        'https://api.testnet05.chainweb.com/chainweb/0.0/testnet05/chain/14/pact',
+      );
     });
 
     it('throes exception if networkId is not either mainnet01 nor testnet04 ', () => {

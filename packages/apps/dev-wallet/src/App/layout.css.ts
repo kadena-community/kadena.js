@@ -1,24 +1,15 @@
-import { atoms, vars } from '@kadena/kode-ui/styles';
+import { atoms } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
-
-const minHeaderHeight = '90px';
-export const headerStyle = style({
-  borderBottom: `1px solid ${vars.colors.$layoutSurfaceCard}`,
-  minHeight: minHeaderHeight,
-});
 
 export const mainColumnStyle = style([
   atoms({
-    width: '100%',
+    overflow: 'auto',
     color: 'text.base.default',
     position: 'relative',
     zIndex: 0,
+    flex: 1,
   }),
 ]);
-
-export const selectNetworkClass = style({
-  maxWidth: '200px',
-});
 
 export const backgroundStyle = style([
   atoms({

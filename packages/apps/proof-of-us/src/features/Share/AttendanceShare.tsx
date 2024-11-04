@@ -1,6 +1,5 @@
 'use client';
 import { AttendanceTicket } from '@/components/AttendanceTicket/AttendanceTicket';
-import { IconButton } from '@/components/IconButton/IconButton';
 import { MetaDetails } from '@/components/MetaList/MetaDetails';
 import { MetaList } from '@/components/MetaList/MetaList';
 import { MetaTerm } from '@/components/MetaList/MetaTerm';
@@ -10,10 +9,8 @@ import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { Heading } from '@/components/Typography/Heading';
 import UserLayout from '@/components/UserLayout/UserLayout';
 import { env } from '@/utils/env';
-import { MonoClose } from '@kadena/kode-icons';
 import { Stack } from '@kadena/kode-ui';
 import { format } from 'date-fns';
-import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 
 interface IProps {
@@ -23,29 +20,23 @@ interface IProps {
 }
 
 export const AttendanceShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
-  const router = useRouter();
-
   if (!data) return null;
 
-  const handleClose = () => {
-    router.push('/user');
-  };
   return (
     <UserLayout>
       <ScreenHeight>
-        <Stack paddingInline="md" flexDirection="column">
+        <Stack paddingInline={{ md: 'xxl' }}>
           <TitleHeader
             label={data.name}
             Append={() => (
               <>
                 <SocialShare data={data} tokenId={tokenId} />
-                <IconButton onClick={handleClose}>
-                  <MonoClose />
-                </IconButton>
               </>
             )}
           />
-          <AttendanceTicket data={data} />
+        </Stack>
+        <AttendanceTicket data={data} share />
+        <Stack paddingInline="md" flexDirection="column">
           <Stack flexDirection="column" marginBlockStart="lg">
             <Heading as="h4">Metadata</Heading>
             <MetaList>

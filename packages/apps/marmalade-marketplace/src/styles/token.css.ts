@@ -1,5 +1,5 @@
-import {globalStyle,  style } from '@vanilla-extract/css';
-import { tokens, token } from '@kadena/kode-ui/styles';
+import { token, tokens } from '@kadena/kode-ui/styles';
+import { style } from '@vanilla-extract/css';
 
 export const container = style({
   margin: '160px 15% 0',
@@ -10,7 +10,7 @@ export const container = style({
 });
 
 export const secondContainer = style({
-  margin: '50px 15% 0',
+  margin: '50px 0',
   backgroundColor: token('color.background.base.default'),
 });
 
@@ -29,11 +29,11 @@ export const formContainer = style({
   flexDirection: 'column',
   justifyContent: 'space-between',
   gap: token('spacing.n4'),
-  width: '100%'
+  width: '100%',
 });
 
 export const buttonRowContainer = style({
-  margin: `${token('spacing.n6')} 15% 0`,
+  margin: `${token('spacing.n6')} 0`,
   justifyContent: 'space-between',
 });
 
@@ -42,7 +42,7 @@ export const tokenImageContainer = style({
   justifyContent: 'center',
   alignItems: 'center',
   width: '100%',
-  minHeight: '336px',  
+  minHeight: '336px',
   margin: '-88px 0 20px',
 });
 
@@ -50,7 +50,7 @@ export const tokenImageClass = style({
   width: '100%',
   height: '100%',
   objectFit: 'cover',
-  borderRadius: tokens.kda.foundation.radius.lg,  
+  borderRadius: tokens.kda.foundation.radius.lg,
 });
 
 export const propertyContainer = style({
@@ -72,34 +72,21 @@ export const offerContainer = style({
   gap: token('spacing.n4'),
 });
 
-export const tabsContainer = style({
-});
-
-export const tabContainer = style({
-  padding: '0',
-  display: 'flex',
-  gap:  token('spacing.n2'),
-  border: `1px solid ${token('color.border.base.subtle')}`,
-  borderTop: 'none',
-  borderRadius: token('radius.sm'),
-  backgroundColor: token('color.background.layer.default'),
-});
-
 export const flexContainer = style({
   display: 'flex',
   width: '100%',
   padding: '32px',
   borderRadius: token('radius.sm'),
   justifyContent: 'space-between',
-  gap:  token('spacing.n3'),
+  gap: token('spacing.n3'),
 });
 
 export const flexItem = style({
   display: 'flex',
   flexDirection: 'column',
-  gap:  token('spacing.n2'),
+  gap: token('spacing.n2'),
   flex: '1',
-})
+});
 
 export const checkboxColumn = style({
   display: 'flex',
@@ -107,18 +94,18 @@ export const checkboxColumn = style({
   marginBottom: token('spacing.n2'),
   marginTop: token('spacing.n2'),
   justifyContent: 'space-evenly',
-  height: '100%'
+  height: '100%',
 });
 
 export const configContainer = style({
-  display: "flex", 
-  flexDirection: 'row', 
-  justifyContent: 'space-between', 
-  height: '100px'
-})
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  height: '100px',
+});
 
 export const labelTitle = style({
   paddingTop: token('spacing.n2'),
   paddingBottom: token('spacing.n2'),
-  gap: token('spacing.n2')
+  gap: token('spacing.n2'),
 });

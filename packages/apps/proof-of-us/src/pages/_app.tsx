@@ -104,7 +104,7 @@ export const MyApp = ({
         </Head>
         <main className={mainWrapperClass}>
           <CookieConsent />
-          <AnimatePresence mode="popLayout" initial={false}>
+          <AnimatePresence mode="popLayout">
             <Component {...pageProps} key={router.asPath} />
           </AnimatePresence>
         </main>

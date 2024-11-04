@@ -1,9 +1,10 @@
 'use client';
-import type { FC, PropsWithChildren } from 'react';
-import { ThemeProvider } from 'next-themes';
+import { MediaContextProvider } from '@kadena/kode-ui';
 import { darkThemeClass } from '@kadena/kode-ui/styles';
+import { ThemeProvider } from 'next-themes';
+import type { FC, PropsWithChildren } from 'react';
 import { AccountProvider } from './AccountProvider/AccountProvider';
-import { TransactionProvider }  from './TransactionProvider/TransactionProvider';
+import { TransactionProvider } from './TransactionProvider/TransactionProvider';
 
 export const Providers: FC<PropsWithChildren> = ({ children }) => {
   return (
@@ -16,8 +17,9 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
           value={{
             light: 'light',
             dark: darkThemeClass,
-          }}>
-          {children}
+          }}
+        >
+          <MediaContextProvider>{children}</MediaContextProvider>
         </ThemeProvider>
       </TransactionProvider>
     </AccountProvider>

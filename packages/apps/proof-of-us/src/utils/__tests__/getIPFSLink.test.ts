@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { getIPFSLink } from '../getIPFSLink';
 
+vi.stubEnv('NEXT_PUBLIC_PINATA_DOMAIN', 'https://ipfs.com');
 const mocks = vi.hoisted(() => {
   return {
     env: {

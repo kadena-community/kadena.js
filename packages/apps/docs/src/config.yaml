@@ -82,9 +82,6 @@ pages:
           contractinteraction:
             url: /contract-interaction
             file: /build/pact/beginner/contract-interaction.md
-          rotatablewallet:
-            url: /rotatable-wallet
-            file: /build/pact/beginner/rotatable-wallet.md
           loans:
             url: /loans
             file: /build/pact/beginner/loans.md
@@ -161,22 +158,6 @@ pages:
           kadena-graph:
             url: /kadena-graph
             file: /build/frontend/kadena-graph.md
-      authentication:
-        url: /authentication
-        file: /build/authentication/authenticate-overview.md
-        children:
-          register:
-            url: /register
-            file: /build/authentication/register-an-account.md
-          integrate:
-            url: /integrate
-            file: /build/authentication/integrate-an-app.md
-          createtx:
-            url: /transactions
-            file: /build/authentication/create-transactions.md
-          recover:
-            url: /recover
-            file: /build/authentication/recover-account.md
       templates:
         url: /templates
         file: /build/code-templates.md
@@ -281,9 +262,6 @@ pages:
         url: /wallets
         file: /participate/wallets.md
         children:
-          spirekey:
-            url: /spirekey
-            file: /participate/spirekey.md
           chainweaver:
             url: /chainweaver
             file: /participate/chainweaver.md
@@ -444,6 +422,12 @@ pages:
           client-utils:
             url: /client-utils
             file: /reference/kadena-client/client-utils.md
+          built-in:
+            url: /built-in-utils
+            file: /reference/kadena-client/built-in-utils.md
+          core:
+            url: /core-utils
+            file: /reference/kadena-client/core-utils.md
           pactjs-old:
             url: /pactjs-old
             file: /reference/kadena-client/pactjs-api.md

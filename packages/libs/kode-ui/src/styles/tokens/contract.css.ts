@@ -860,6 +860,13 @@ export const tokens = createThemeContract({
              * @dark {@link tokens.kda.foundation.color.neutral.n5@alpha95}
              */
             default: '',
+            context: {
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n0@alpha95}
+               * @dark {@link tokens.kda.foundation.color.neutral.n5@alpha95}
+               */
+              default: '',
+            },
             /**
              * @light {@link tokens.kda.foundation.color.neutral.n0}
              * @dark {@link tokens.kda.foundation.color.neutral.n5}
@@ -878,6 +885,20 @@ export const tokens = createThemeContract({
                * @dark {@link tokens.kda.foundation.color.neutral.n99@alpha80}
                */
               default: '',
+            },
+            subtle: {
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n99@alpha3}
+               * @dark {@link tokens.kda.foundation.color.neutral.n0@alpha20}
+               */
+              default: '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.neutral.n99@alpha80}
+                 * @dark {@link tokens.kda.foundation.color.neutral.n99@alpha80}
+                 */
+                default: '',
+              },
             },
           },
           surfaceHighContrast: {
@@ -1842,6 +1863,13 @@ export const tokens = createThemeContract({
              * @dark {@link tokens.kda.foundation.color.palette.aqua.n20@alpha80}
              */
             '@focus': '',
+          },
+          overlay: {
+            /**
+             * @light {@link tokens.kda.foundation.color.neutral.n20@alpha80}
+             * @dark {@link tokens.kda.foundation.color.neutral.n20@alpha80}
+             */
+            context: '',
           },
         },
         brand: {
@@ -2906,6 +2934,18 @@ export const tokens = createThemeContract({
           'n1@alpha3': '',
           /**
            * [generated]
+           * @light  `"#f5f5f50a"`
+           * @dark  `"#020e1b0a"`
+           */
+          'n1@alpha4': '',
+          /**
+           * [generated]
+           * @light  `"#f5f5f50d"`
+           * @dark  `"#020e1b0d"`
+           */
+          'n1@alpha5': '',
+          /**
+           * [generated]
            * @light  `"#f5f5f50f"`
            * @dark  `"#020e1b0f"`
            */
@@ -3024,6 +3064,18 @@ export const tokens = createThemeContract({
            * @dark  `"#f5f5f508"`
            */
           'n99@alpha3': '',
+          /**
+           * [generated]
+           * @light  `"#020e1b0a"`
+           * @dark  `"#f5f5f50a"`
+           */
+          'n99@alpha4': '',
+          /**
+           * [generated]
+           * @light  `"#020e1b0d"`
+           * @dark  `"#f5f5f50d"`
+           */
+          'n99@alpha5': '',
           /**
            * [generated]
            * @light  `"#020e1b0f"`
@@ -4874,42 +4926,6 @@ export const tokens = createThemeContract({
           },
         },
       },
-      effect: {
-        shadow: {
-          /**
-           * This is the shadow 1 description
-           * @light  `"4px 0.5rem tokens.kda.foundation.size.n2 4px #000000"`
-           * @dark  `"4px 0.5rem tokens.kda.foundation.size.n2 4px #000000"`
-           */
-          level1: '',
-          /**
-           * This is the shadow 2 description
-           * @light  `"4rem 4rem tokens.kda.foundation.size.n2 2rem #000000"`
-           * @dark  `"4rem 4rem tokens.kda.foundation.size.n2 2rem #000000"`
-           */
-          level2: '',
-          /**
-           * This is the shadow 3 description updated
-           * @light  `"0px 0px tokens.kda.foundation.size.n2 24px #000000"`
-           * @dark  `"0px 0px tokens.kda.foundation.size.n2 24px #000000"`
-           */
-          level3: '',
-        },
-      },
-      layout: {
-        content: {
-          /**
-           * @light  `"33.75rem"`
-           * @dark  `"33.75rem"`
-           */
-          minWidth: '',
-          /**
-           * @light  `"42.5rem"`
-           * @dark  `"42.5rem"`
-           */
-          maxWidth: '',
-        },
-      },
       icon: {
         size: {
           /**
@@ -4949,6 +4965,42 @@ export const tokens = createThemeContract({
           xxl: '',
         },
       },
+      effect: {
+        shadow: {
+          /**
+           * This is the shadow 1 description
+           * @light  `"4px 0.5rem tokens.kda.foundation.size.n2 4px #000000"`
+           * @dark  `"4px 0.5rem tokens.kda.foundation.size.n2 4px #000000"`
+           */
+          level1: '',
+          /**
+           * This is the shadow 2 description
+           * @light  `"4rem 4rem tokens.kda.foundation.size.n2 2rem #000000"`
+           * @dark  `"4rem 4rem tokens.kda.foundation.size.n2 2rem #000000"`
+           */
+          level2: '',
+          /**
+           * This is the shadow 3 description updated
+           * @light  `"0px 0px tokens.kda.foundation.size.n2 24px #000000"`
+           * @dark  `"0px 0px tokens.kda.foundation.size.n2 24px #000000"`
+           */
+          level3: '',
+        },
+      },
+      layout: {
+        content: {
+          /**
+           * @light  `"33.75rem"`
+           * @dark  `"33.75rem"`
+           */
+          minWidth: '',
+          /**
+           * @light  `"42.5rem"`
+           * @dark  `"42.5rem"`
+           */
+          maxWidth: '',
+        },
+      },
       typography: {
         family: {
           /**
@@ -4956,11 +5008,6 @@ export const tokens = createThemeContract({
            * @dark  `"Inter"`
            */
           primaryFont: '',
-          /**
-           * @light  `"Inter"`
-           * @dark  `"Inter"`
-           */
-          secondaryFont: '',
           /**
            * @light  `"Kode Mono"`
            * @dark  `"Kode Mono"`
@@ -5128,28 +5175,6 @@ export const tokens = createThemeContract({
              * @dark  `"700"`
              */
             bold: '',
-          },
-          secondaryFont: {
-            /**
-             * @light  `"400"`
-             * @dark  `"400"`
-             */
-            regular: '',
-            /**
-             * @light  `"500"`
-             * @dark  `"500"`
-             */
-            medium: '',
-            /**
-             * @light  `"600"`
-             * @dark  `"600"`
-             */
-            bold: '',
-            /**
-             * @light  `"700"`
-             * @dark  `"700"`
-             */
-            black: '',
           },
           monospaceFont: {
             /**

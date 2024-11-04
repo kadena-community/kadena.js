@@ -1,5 +1,56 @@
 # @kadena/graph-client
 
+## 0.4.6
+
+### Patch Changes
+
+- Updated dependencies \[d533d39]
+- Updated dependencies \[de87d1c]
+- Updated dependencies \[94ce674]
+- Updated dependencies \[7d063d6]
+  - @kadena/kode-icons\@0.3.0
+  - @kadena/kode-ui\@0.18.0
+
+## 0.4.5
+
+### Patch Changes
+
+- @kadena/graph\@1.0.14
+
+## 0.4.4
+
+### Patch Changes
+
+- Updated dependencies \[c6d23b8]
+  - @kadena/graph\@1.0.13
+
+## 0.4.3
+
+### Patch Changes
+
+- Updated dependencies \[33fbaae]
+  - @kadena/kode-ui\@0.17.1
+
+## 0.4.2
+
+### Patch Changes
+
+- Updated dependencies \[80ac706]
+- Updated dependencies \[5985ccc]
+- Updated dependencies \[767c542]
+- Updated dependencies \[eb82843]
+- Updated dependencies \[0e08d23]
+  - @kadena/kode-ui\@0.17.0
+  - @kadena/graph\@1.0.12
+
+## 0.4.1
+
+### Patch Changes
+
+- Updated dependencies \[0bcccf1]
+- Updated dependencies \[b751065]
+  - @kadena/kode-ui\@0.16.0
+
 ## 0.4.0
 
 ### Minor Changes

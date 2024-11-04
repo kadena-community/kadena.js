@@ -1,5 +1,5 @@
-import { style } from '@vanilla-extract/css';
 import { tokens } from '@kadena/kode-ui/styles';
+import { style } from '@vanilla-extract/css';
 
 export const tokenImageContainer = style({
   width: '100%',
@@ -27,4 +27,3 @@ export const uploadIcon = style({
   height: '54px',
   color: tokens.kda.foundation.color.icon.base.default,
 });
-

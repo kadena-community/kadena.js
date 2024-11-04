@@ -14,13 +14,13 @@ export const DiscoverdAccounts: FC<{
   accounts: IReceiverAccount[];
   onSelect: (selected: IReceiverAccount) => void;
 }> = ({ accounts, onSelect }) => (
-  <Dialog size="lg" isOpen={true}>
+  <Dialog size="sm" isOpen={true}>
     <DialogHeader>Select the receiver account</DialogHeader>
     <DialogContent>
       <Stack flexDirection={'column'} gap={'sm'}>
         <Text>
           There are {accounts.length} accounts associated with the same address
-          on the Blockchian. Please select the account you want to use.
+          on the Blockchain. Please select the account you want to use.
         </Text>
         <Text>Address: {accounts[0].address}</Text>
         <Stack flexDirection={'column'}>
@@ -36,7 +36,9 @@ export const DiscoverdAccounts: FC<{
               </Text>
               <pre>{JSON.stringify(account.keyset.guard, null, 2)}</pre>
               <Stack justifyContent={'flex-end'}>
-                <Button onPress={() => onSelect(account)}>Select</Button>
+                <Button variant="outlined" onPress={() => onSelect(account)}>
+                  Select
+                </Button>
               </Stack>
             </Stack>
           ))}

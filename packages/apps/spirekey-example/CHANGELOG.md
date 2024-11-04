@@ -1,5 +1,12 @@
 # @kadena/spirekey-example
 
+## 0.0.11
+
+### Patch Changes
+
+- Updated dependencies \[eccd46e]
+  - @kadena/client\@1.15.0
+
 ## 0.0.10
 
 ### Patch Changes

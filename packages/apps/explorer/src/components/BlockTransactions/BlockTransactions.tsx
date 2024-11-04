@@ -1,14 +1,15 @@
 import type { BlockTransactionsQuery, Transaction } from '@/__generated__/sdk';
 import { useBlockTransactionsQuery } from '@/__generated__/sdk';
-import { usePagination } from '@/hooks/usePagination';
 import { graphqlIdFor } from '@/utils/graphqlIdFor';
 import { Heading, Stack } from '@kadena/kode-ui';
+import {
+  CompactTable,
+  CompactTableFormatters,
+  usePagination,
+} from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
-import { CompactTable } from '../CompactTable/CompactTable';
-import { FormatJsonParse, FormatLink } from '../CompactTable/utils/formatLink';
-import { formatMultiStepTx } from '../CompactTable/utils/formatMultiStepTx';
-import { FormatStatus } from '../CompactTable/utils/formatStatus';
+import { FormatLinkWrapper } from '../CompactTable/FormatLinkWrapper';
 import { useToast } from '../Toast/ToastContext/ToastContext';
 import { loadingData } from './loadingDataBlocktransactionsquery';
 import { noTransactionsTitleClass } from './styles.css';
@@ -86,7 +87,10 @@ export const BlockTransactions: FC<IProps> = ({ hash }) => {
           key: ['result.goodResult', 'result.continuation'],
           variant: 'code',
           width: '10%',
-          render: [FormatStatus(), formatMultiStepTx()],
+          render: [
+            CompactTableFormatters.FormatStatus(),
+            CompactTableFormatters.FormatMultiStepTx(),
+          ],
           loaderVariant: 'icon',
         },
         {
@@ -94,21 +98,21 @@ export const BlockTransactions: FC<IProps> = ({ hash }) => {
           key: 'cmd.meta.sender',
           variant: 'code',
           width: '25%',
-          render: FormatLink({ appendUrl: '/account' }),
+          render: FormatLinkWrapper({ url: '/account/:value' }),
         },
         {
           label: 'RequestKey',
           key: 'hash',
           variant: 'code',
           width: '25%',
-          render: FormatLink({ appendUrl: '/transaction' }),
+          render: FormatLinkWrapper({ url: '/transaction/:value' }),
         },
         {
           label: 'Code Preview',
           key: 'cmd.payload.code',
           variant: 'code',
           width: '40%',
-          render: FormatJsonParse(),
+          render: CompactTableFormatters.FormatJsonParse(),
         },
       ]}
       data={innerData.node.transactions.edges.map(

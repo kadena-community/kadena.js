@@ -1,3 +1,4 @@
+import { config } from '@/config';
 import {
   addItem,
   connect,
@@ -14,7 +15,7 @@ import { execInSequence } from '@/utils/helpers';
 // while the database is still being created; so I use execInSequence.
 const createConnectionPool = (
   cb: () => Promise<IDBDatabase>,
-  length: number = 3,
+  length: number = 1,
 ) => {
   const pool: IDBDatabase[] = [];
   let turn = 0;
@@ -48,14 +49,13 @@ const createConnectionPool = (
   };
 };
 
-const DB_NAME = 'dev-wallet';
-const DB_VERSION = 33;
+const { DB_NAME, DB_VERSION, DB_WIPE_ON_VERSION_CHANGE } = config.DB;
 
 export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
   const result = await connect(DB_NAME, DB_VERSION);
   let db = result.db;
   if (result.needsUpgrade) {
-    if (import.meta.env.DEV) {
+    if (import.meta.env.DEV || DB_WIPE_ON_VERSION_CHANGE) {
       console.log(
         'in development we delete the database if schema is changed for now since we are still in early stage of development',
       );
@@ -76,20 +76,54 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
       { index: 'address' },
       { index: 'keysetId' },
       { index: 'profileId' },
+      { index: 'profile-network', indexKeyPath: ['profileId', 'networkUUID'] },
+      {
+        index: 'unique-account',
+        indexKeyPath: ['keysetId', 'contract', 'networkUUID'],
+        unique: true,
+      },
+    ]);
+    create('watched-account', 'uuid', [
+      { index: 'address' },
+      { index: 'profileId' },
+      { index: 'profile-network', indexKeyPath: ['profileId', 'networkUUID'] },
+      {
+        index: 'unique-account',
+        indexKeyPath: ['profileId', 'contract', 'address', 'networkUUID'],
+        unique: true,
+      },
     ]);
     create('network', 'uuid', [{ index: 'networkId', unique: true }]);
     create('fungible', 'contract', [{ index: 'symbol', unique: true }]);
-    create('keyset', 'uuid', [{ index: 'profileId' }, { index: 'principal' }]);
-    create('transaction', 'uuid', [
-      { index: 'hash', unique: true },
+    create('keyset', 'uuid', [
       { index: 'profileId' },
-      { index: 'groupId' },
-      { index: 'network', indexKeyPath: ['profileId', 'networkId'] },
+      { index: 'principal' },
       {
-        index: 'network-status',
-        indexKeyPath: ['profileId', 'networkId', 'status'],
+        index: 'unique-keyset',
+        indexKeyPath: ['profileId', 'principal'],
+        unique: true,
       },
     ]);
+    create('transaction', 'uuid', [
+      { index: 'hash' },
+      { index: 'profileId' },
+      { index: 'groupId' },
+      { index: 'network', indexKeyPath: ['profileId', 'networkUUID'] },
+      {
+        index: 'unique-tx',
+        indexKeyPath: ['profileId', 'networkUUID', 'hash'],
+        unique: true,
+      },
+      {
+        index: 'network-status',
+        indexKeyPath: ['profileId', 'networkUUID', 'status'],
+      },
+    ]);
+    create('activity', 'uuid', [
+      { index: 'profile-network', indexKeyPath: ['profileId', 'networkUUID'] },
+      { index: 'keyset-network', indexKeyPath: ['keysetId', 'networkUUID'] },
+    ]);
+    create('contact', 'uuid', [{ index: 'name', unique: true }]);
   }
 
   return db;
@@ -135,6 +169,7 @@ export interface IDBService {
     storeName: string,
     value: T,
     key?: string | undefined,
+    options?: { noCreationTime: boolean },
   ) => Promise<void>;
   update: <T>(
     storeName: string,

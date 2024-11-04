@@ -1,9 +1,8 @@
 import { Link } from '@/components/Routing/Link';
-import { Stack } from '@kadena/kode-ui';
+import { Media, Stack } from '@kadena/kode-ui';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 import { GraphQLQueryDialog } from '../GraphqlQueryDialog/GraphqlQueryDialog';
-import { Media } from '../Layout/media';
 import { Logo } from '../Logo/Logo';
 import { MobileLogo } from '../Logo/MobileLogo';
 import { SelectNetwork } from '../SelectNetwork/SelectNetwork';
@@ -39,14 +38,14 @@ export const NavBar: FC<
         )}
 
         <Media greaterThanOrEqual="md">
-          <SelectNetwork />
+          <SelectNetwork placement="bottom end" />
         </Media>
       </Stack>
       <Stack flex={1}>{children}</Stack>
 
       <Stack alignItems="center">
         <Media lessThan="md">
-          <SelectNetwork />
+          <SelectNetwork placement="bottom start" />
         </Media>
         <ThemeToggle />
         <GraphQLQueryDialog />

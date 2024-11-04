@@ -9,6 +9,13 @@ export const fs: typeof vol.promises = vol.promises;
 export const memoryFsToJson = (): any => vol.toJSON();
 
 export const memoryFileSystemService: IFileSystemService = {
+  readFileSync(path: string): string | null {
+    try {
+      return vol.readFileSync(path, 'utf8') as string;
+    } catch (e) {
+      return null;
+    }
+  },
   async readFile(path: string) {
     try {
       return (await fs.readFile(path, 'utf8')) as string;

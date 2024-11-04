@@ -8,6 +8,7 @@ import { readdir } from 'fs/promises';
 import { Listr } from 'listr2';
 import path from 'path';
 import { mempoolGetPending } from './chainweb-node/mempool';
+import { getNetworkStatistics } from './network';
 
 export class SystemCheckError extends Error {
   public originalError?: Error;
@@ -96,6 +97,16 @@ export async function runSystemsCheck(): Promise<void> {
                 async task() {
                   try {
                     await mempoolGetPending();
+                  } catch (error) {
+                    throw new Error('Unable to connect to the mempool.');
+                  }
+                },
+              },
+              {
+                title: 'Checking for network statistics endpoint.',
+                async task() {
+                  try {
+                    await getNetworkStatistics();
                   } catch (error) {
                     throw new Error('Unable to connect to the mempool.');
                   }

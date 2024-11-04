@@ -5,7 +5,6 @@ import path from 'node:path';
 import sanitize from 'sanitize-filename';
 import {
   ACCOUNT_DIR,
-  ENV_KADENA_DIR,
   HOME_KADENA_DIR,
   IS_TEST,
   WALLET_DIR,
@@ -13,9 +12,8 @@ import {
   YAML_EXT,
 } from '../../constants/config.js';
 import {
-  detectArrayFileParseType,
   formatZodError,
-  getFileParser,
+  loadUnknownFile,
   notEmpty,
   safeYamlParse,
 } from '../../utils/globalHelpers.js';
@@ -111,6 +109,7 @@ export class ConfigService implements IConfigService {
     }
 
     // Priority 2: ENV KADENA_DIR
+    const ENV_KADENA_DIR = process.env.KADENA_DIR;
     if (ENV_KADENA_DIR !== undefined) {
       if (directoryExists(ENV_KADENA_DIR)) {
         this.directory = ENV_KADENA_DIR;
@@ -141,20 +140,14 @@ export class ConfigService implements IConfigService {
 
   public getDirectory(): string {
     if (this.directory === null) throw new KadenaError('no_kadena_directory');
-    // console.log({ directory: this.directory });
     return this.directory;
   }
 
   public async getPlainKey(
     filepath: string,
-    /* How to parse file, defaults to yaml */
-    type?: 'yaml' | 'json',
   ): ReturnType<IConfigService['getPlainKey']> {
-    const file = await this.services.filesystem.readFile(filepath);
-    if (file === null || type === undefined) return null;
-
-    const parser = getFileParser(type);
-    const parsed = plainKeySchema.safeParse(parser(file));
+    const file = await loadUnknownFile(filepath);
+    const parsed = plainKeySchema.safeParse(file);
     if (!parsed.success) return null;
 
     const alias = path.basename(filepath);
@@ -172,12 +165,8 @@ export class ConfigService implements IConfigService {
   ): ReturnType<IConfigService['getPlainKeys']> {
     const dir = directory ?? process.cwd();
     const files = await this.services.filesystem.readDir(dir);
-    const filepaths = files.map((file) => path.join(dir, file));
-    const parsableFiles = detectArrayFileParseType(filepaths);
     const keys = await Promise.all(
-      parsableFiles.map(async (file) =>
-        this.getPlainKey(file.filepath, file.type),
-      ),
+      files.map(async (file) => this.getPlainKey(path.join(dir, file))),
     );
     return keys.filter(notEmpty);
   }

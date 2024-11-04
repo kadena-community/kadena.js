@@ -55,7 +55,7 @@ export const sendErrorMessage = async (): Promise<void> => {
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: 'We were unable to retrieve the faucet account balance. \n There seems to be an issue with the Graph',
+            text: '*Faucet funds:*\nWe were unable to retrieve the faucet account balance. \n There seems to be an issue with the Graph',
           },
         },
       ]),
@@ -76,7 +76,7 @@ export const sendPingMessage = async (): Promise<void> => {
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `All chains of the faucet (\`${faucetAccount}\`) have a balance above the threshold (\`> ${MINBALANCE.toLocaleString()} KDA\`)`,
+            text: `*Faucet funds:*\nAll chains of the faucet (\`${faucetAccount}\`) have a balance above the threshold (\`> ${MINBALANCE.toLocaleString()} KDA\`)`,
           },
         },
       ]),

@@ -1,6 +1,6 @@
 {
   "name": "@kadena/proof-of-us",
-  "version": "0.5.7",
+  "version": "0.5.13",
   "private": true,
   "scripts": {
     "build": "pnpm run generate:sdk && next build",
@@ -31,7 +31,7 @@
     "@kadena/kode-icons": "workspace:*",
     "@kadena/kode-ui": "workspace:*",
     "@kadena/pactjs": "workspace:*",
-    "@kadena/spirekey-sdk": "0.0.1-dev-13",
+    "@kadena/spirekey-sdk": "0.0.1-dev-16",
     "@pinata/sdk": "^2.1.0",
     "@vanilla-extract/css": "1.14.2",
     "@vanilla-extract/recipes": "0.5.1",

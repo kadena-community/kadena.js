@@ -19,10 +19,6 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/pinata/:cid',
-        destination: 'https://ipfs.io/ipfs/:cid',
-      },
-      {
         source: '/api/ipfs/:id/:path/image',
         destination: `https://:id.ipfs.:path.link/image`,
       },
@@ -30,12 +26,15 @@ const nextConfig = {
         source: '/api/ipfs/:id/:path/metadata',
         destination: `https://:id.ipfs.:path.link/metadata`,
       },
-
+      {
+        source: '/pinata/:cid',
+        destination: `${process.env.NEXT_PUBLIC_PINATA_DOMAIN ?? 'https://ipfs.io'}/ipfs/:cid?pinataGatewayToken=${process.env.PINATA_GATEWAYTOKEN}`,
+      },
       {
         source: '/graph',
         destination:
           process.env.NEXT_PUBLIC_GRAHQLURL ??
-          'https://graph.testnet.kadena.network/graphql',
+          'https://graph.kadena.network/graphql',
       },
     ];
   },

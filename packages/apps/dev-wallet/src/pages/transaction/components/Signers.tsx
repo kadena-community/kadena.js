@@ -42,6 +42,7 @@ export function Signers({
     () => JSON.parse(transaction.cmd),
     [transaction.cmd],
   );
+
   return (
     <Stack flexDirection={'column'} gap={'sm'}>
       <Heading variant="h4">Signers</Heading>
@@ -94,17 +95,20 @@ export function Signers({
                   ))}
               </Stack>
               {!signature && info && (
-                <Button
-                  isCompact
-                  onClick={async () => {
-                    const signed = (await sign(transaction, [
-                      signer.pubKey,
-                    ])) as IUnsignedCommand;
-                    onSign(signed.sigs ?? []);
-                  }}
-                >
-                  Sign
-                </Button>
+                <Stack>
+                  <Button
+                    isCompact
+                    variant="info"
+                    onClick={async () => {
+                      const signed = (await sign(transaction, [
+                        signer.pubKey,
+                      ])) as IUnsignedCommand;
+                      onSign(signed.sigs ?? []);
+                    }}
+                  >
+                    Sign
+                  </Button>
+                </Stack>
               )}
               {!signature && !info && (
                 <form

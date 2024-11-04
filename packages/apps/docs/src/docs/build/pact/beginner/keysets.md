@@ -380,7 +380,7 @@ Investigate the smart contract to try and determine why you are getting the resp
 
 ### Deploy the Contract
 
-You are now ready to deploy the **Simple Payments** smart contract. For information on deploying a smart contract, view [Deploy to the Testnet](/build/pact/hello-world#deploy-to-the-testnet) from the Hello World with Pact tutorial.
+You are now ready to deploy the **Simple Payments** smart contract. For information on deploying a smart contract, see Deploy the contract in the [Hello World, revisited](/build/pact/hello-world) tutorial.
 
 ### Deployed Payments Contract Function Call
 

@@ -114,6 +114,9 @@ export const tabItemClass = recipe({
         '&[data-hovered="true"]': {
           color: token('color.text.base.@hover'),
         },
+        '&[data-isdisabled="true"]': {
+          opacity: 0.4,
+        },
         '.focusVisible &:focus-visible': {
           outline: `2px solid ${token('color.border.tint.outline')}`,
           outlineOffset: '-2px',
@@ -133,7 +136,7 @@ export const tabItemClass = recipe({
           left: 0,
           right: 0,
           height: '4px', // To cover the top border of the container
-          backgroundColor: 'white',
+          backgroundColor: token('color.background.layer.default'),
         },
       },
     },

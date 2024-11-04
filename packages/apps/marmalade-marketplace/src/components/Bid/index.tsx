@@ -1,42 +1,87 @@
-import { Stack, RadioGroup, Radio, Text } from '@kadena/kode-ui';
-import * as styles from "./style.css";
-import { useParams } from 'next/navigation';
-import { getSale } from '@/hooks/getSale';
-import LabeledText from "@/components/LabeledText";
+import LabeledText from '@/components/LabeledText';
+import { useGetSale } from '@/hooks/getSale';
+import { Radio, RadioGroup, Stack, Text } from '@kadena/kode-ui';
 
-interface TokenInfo {
-  uri: string;
-  supply: string;
-  id: string;
-}
+import { useAccount } from '@/hooks/account';
+import { CardContentBlock } from '@kadena/kode-ui/patterns';
+import { atoms } from '@kadena/kode-ui/styles';
+import { NormalBid } from './NormalBid';
+import * as styles from './style.css';
 
-export default function Bid({ saleId, chainId }: { saleId: string, chainId: string }) {
-  const params = useParams();
- 
-  const { data } = getSale(saleId as string);
-  console.log(data?.saleType==="")
+const Bid = ({
+  saleId,
+  tokenImageUrl,
+}: {
+  saleId: string;
+  tokenImageUrl: string;
+}) => {
+  const { data } = useGetSale(saleId as string);
+  const { account } = useAccount();
+
+  if (data?.seller.account === account?.accountName) {
+    return (
+      <CardContentBlock
+        className={atoms({ width: '100%' })}
+        title="This token is yours"
+        supportingContent={
+          <Stack flexDirection="column" width="100%" gap="md">
+            <Text>You are the seller of this token.</Text>
+            <Text>You can ot sell to yourself</Text>
+          </Stack>
+        }
+      ></CardContentBlock>
+    );
+  }
+
+  if (data?.saleType === '') {
+    return <NormalBid data={data} tokenImageUrl={tokenImageUrl} />;
+  }
+
+  if (saleId) {
+    return (
+      <CardContentBlock
+        className={atoms({ width: '100%' })}
+        title="Buy token"
+        supportingContent={
+          <Stack flexDirection="column" width="100%" gap="md">
+            <div className={styles.tokenDetailsInnerContainer}>
+              <div style={{ marginBottom: '8px' }}>
+                <div className={styles.labelTitle}>
+                  <Text as="span" size="small" variant="ui">
+                    {'Sale Type'}
+                  </Text>
+                </div>
+                <RadioGroup direction="row" value={data?.saleType}>
+                  <Radio
+                    isDisabled={data?.saleType !== 'conventional'}
+                    value="conventional"
+                  >
+                    Conventional
+                  </Radio>
+                  <Radio isDisabled={data?.saleType !== 'dutch'} value="dutch">
+                    Dutch
+                  </Radio>
+                  <Radio isDisabled={data?.saleType !== ''} value="">
+                    None
+                  </Radio>
+                </RadioGroup>
+              </div>
+              <LabeledText label="Sale Id" value={saleId} />
+              <LabeledText label="Seller" value={data?.seller.account!} />
+              <LabeledText label="Amount" value={String(data?.amount)} />
+              <LabeledText label="Price" value={String(data?.startPrice)} />
+            </div>
+          </Stack>
+        }
+      ></CardContentBlock>
+    );
+  }
+
   return (
     <>
-      <Stack flex={1} flexDirection="column">
-        <br />
-          <div className={styles.tokenDetailsInnerContainer}>
-            <div style={{marginBottom: '8px'}}>
-              <div className={styles.labelTitle}>
-                <Text as="span" size='small' variant='ui'>{'Sale Type'}</Text>
-              </div>
-              <RadioGroup direction="row" value={data?.saleType}> 
-                <Radio isDisabled={data?.saleType !== 'conventional'} value="conventional" >Conventional</Radio>
-                <Radio isDisabled={data?.saleType !== 'dutch'} value="dutch">Dutch</Radio>
-                <Radio isDisabled={data?.saleType !== ''}  value="" >None</Radio>
-              </RadioGroup>
-            </div>
-            <LabeledText label="Sale Id" value={saleId}/>  
-            <LabeledText label="Seller" value={data?.seller.account!}/>
-            <LabeledText label="Amount" value={String(data?.amount)}/>
-            <LabeledText label="Price" value={String(data?.startPrice)}/>
-          </div>
-
-      </Stack>
+      <Stack flex={1} flexDirection="column"></Stack>
     </>
   );
-}
+};
+
+export default Bid;

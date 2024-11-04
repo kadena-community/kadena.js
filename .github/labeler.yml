@@ -49,6 +49,9 @@ Github Config & Actions:
 '@kadena/explorer':
   - changed-files:
       - any-glob-to-any-file: packages/apps/explorer/*
+'@kadena/rwa-demo':
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/rwa-demo/*
 '@kadena/graph':
   - changed-files:
       - any-glob-to-any-file: packages/apps/graph/*
@@ -142,6 +145,6 @@ e2e-proof-of-us:
 '@kadena/dev-wallet-example':
   - changed-files:
       - any-glob-to-any-file: packages/apps/dev-wallet-example/*
-'@kadena/wallet-sdk':
+'@kadena/snap':
   - changed-files:
-      - any-glob-to-any-file: packages/libs/wallet-sdk/*
+      - any-glob-to-any-file: packages/libs/snap/*

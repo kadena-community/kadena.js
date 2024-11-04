@@ -1,13 +1,12 @@
 import { globalStyle, style } from '@vanilla-extract/css';
 
 globalStyle('body', {
-  color: 'white',  
+  color: 'white',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
   backgroundAttachment: 'fixed',
 });
-
 
 export const twoColumnRow = style({
   display: 'grid',
