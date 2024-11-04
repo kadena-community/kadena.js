@@ -11,7 +11,7 @@ import {
   ITransaction,
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ReviewTransaction } from '../transaction/components/ReviewTransaction';
 import { TxList } from '../transaction/components/TxList';
 import { statusPassed } from '../transaction/components/TxPipeLine';
@@ -24,6 +24,7 @@ import {
 import { createRedistributionTxs, createTransactions } from './utils';
 
 export function TransferV2() {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const accountId = searchParams.get('accountId');
   const urlActivityId = searchParams.get('activityId');
@@ -319,12 +320,15 @@ export function TransferV2() {
                   uuid: activityId,
                 });
                 setStep('sign');
+                // then the page will stay on the sign step if refresh
+                navigate(`/transfer?activityId=${activityId}`);
               }}
             />
           </Stack>
         </Stack>
       )}
-      {(step === 'sign' || step === 'result') && renderSignStep()}
+      {(step === 'sign' || step === 'result' || step === 'summary') &&
+        renderSignStep()}
     </Stack>
   );
 }

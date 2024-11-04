@@ -158,6 +158,17 @@ const injectDb = <R extends (...args: any[]) => Promise<any>>(
 type EventTypes = 'add' | 'update' | 'delete';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Listener = (type: EventTypes, storeName: string, ...data: any[]) => void;
+
+export interface ISubscribe {
+  /**
+   * Subscribe to changes in a store
+   */
+  (cb: Listener): () => void;
+  /**
+   * Subscribe to changes in a store
+   */
+  (storeName: string, uuid: string, cb: (data: any) => void): () => void;
+}
 export interface IDBService {
   getAll: <T>(
     storeName: string,
@@ -177,12 +188,32 @@ export interface IDBService {
     key?: string | undefined,
   ) => Promise<void>;
   remove: (storeName: string, key: string) => Promise<void>;
-  subscribe: (cb: Listener) => () => void;
+  subscribe: ISubscribe;
 }
 
 export const createDbService = () => {
   const listeners: Listener[] = [];
-  const subscribe: IDBService['subscribe'] = (cb) => {
+  const subscribe: ISubscribe = (
+    first: string | Listener,
+    second?: string,
+    third?: (data: any) => void,
+  ) => {
+    let cb: Listener;
+    if (typeof first === 'string' && second && third) {
+      cb = (event, storeName, data) => {
+        if (storeName === first && event) {
+          if (event === 'delete' && data === second) {
+            third(undefined);
+          } else if (data.uuid === second) {
+            third(data);
+          }
+        }
+      };
+    } else if (typeof first === 'function') {
+      cb = first;
+    } else {
+      throw new Error('Invalid arguments');
+    }
     listeners.push(cb);
     return () => {
       const index = listeners.indexOf(cb);

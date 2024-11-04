@@ -1,7 +1,5 @@
 import { IAccount } from '@/modules/account/account.repository';
-import { syncAccount } from '@/modules/account/account.service';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
-import { useWallet } from '@/modules/wallet/wallet.hook';
 import { TxContainer } from '@/pages/transaction/components/TxContainer';
 import { ChainId } from '@kadena/client';
 import { MonoAutorenew } from '@kadena/kode-icons/system';
@@ -10,7 +8,6 @@ import classNames from 'classnames';
 import { useState } from 'react';
 
 export function FundOnTestnetButton({
-  account,
   chainId,
   fundAccountHandler,
   className,
@@ -21,7 +18,6 @@ export function FundOnTestnetButton({
   className?: string;
 }) {
   const [fundTx, setFundTx] = useState<ITransaction>();
-  const { syncAllAccounts } = useWallet();
   const [done, setDone] = useState(false);
 
   return (
@@ -50,11 +46,6 @@ export function FundOnTestnetButton({
           as="minimized"
           onDone={(tx) => {
             setFundTx(tx);
-            if (account) {
-              syncAccount(account);
-            } else {
-              syncAllAccounts();
-            }
             setDone(true);
           }}
         />

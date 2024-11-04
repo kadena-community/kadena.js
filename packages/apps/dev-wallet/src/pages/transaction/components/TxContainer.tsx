@@ -1,4 +1,4 @@
-import { dbService } from '@/modules/db/db.service';
+import { useSubscribe } from '@/modules/db/useSubscribe';
 import {
   ITransaction,
   transactionRepository,
@@ -29,62 +29,46 @@ export const TxContainer = React.memo(
     onUpdate?: (tx: ITransaction) => void;
     onDone?: (tx: ITransaction) => void;
   }) => {
-    const [localTransaction, setLocalTransaction] =
-      useState<ITransaction | null>(null);
-
-    const [contTx, setContTx] = useState<ITransaction>();
     const [expandedModal, setExpandedModal] = useState(false);
     const { sign, client } = useWallet();
     const syncing = useRef(false);
+    const doneRef = useRef(false);
+
+    const localTransaction = useSubscribe<ITransaction>(
+      'transaction',
+      transaction.uuid,
+    );
+    const contTx = useSubscribe<ITransaction>(
+      'transaction',
+      transaction.continuation?.continuationTxId,
+    );
+
+    useEffect(() => {
+      if (
+        localTransaction &&
+        localTransaction.status === 'success' &&
+        (!localTransaction.continuation?.autoContinue ||
+          contTx?.status === 'success')
+      ) {
+        if (onDone && !doneRef.current) {
+          doneRef.current = true;
+          console.log('onDone', localTransaction);
+          onDone(localTransaction);
+        }
+      }
+      if (localTransaction?.status === 'submitted' && onUpdate) {
+        console.log('onUpdate', localTransaction);
+        onUpdate(localTransaction);
+      }
+    }, [localTransaction?.status, contTx?.status]);
 
     useEffect(() => {
       if (!transaction) return;
-      const unsubscribe = dbService.subscribe((event, table, data) => {
-        if (table !== 'transaction' || event !== 'update') return;
-        if (data.uuid === transaction.uuid) {
-          setLocalTransaction(data);
-          console.log(
-            'data.continuation?.continuationTxId',
-            data.continuation?.continuationTxId,
-            'contTx?.uuid',
-            contTx?.uuid,
-          );
-          if (data.continuation?.continuationTxId && !contTx?.uuid) {
-            console.log('fetching contTx');
-            transactionRepository
-              .getTransaction(data.continuation.continuationTxId)
-              .then(setContTx);
-          }
-          return;
-        }
-        if (contTx?.uuid === data.uuid) {
-          setContTx(data);
-          return;
-        }
-      });
-      if (!syncing.current) {
+      if (transaction && !syncing.current) {
         syncing.current = true;
         transactionService.syncTransactionStatus(transaction, client);
       }
-      return () => {
-        unsubscribe();
-      };
-    }, [transaction.uuid, contTx?.uuid, transaction, client]);
-
-    useEffect(() => {
-      if (!transaction) return;
-      const run = async () => {
-        const tx = await transactionRepository.getTransaction(transaction.uuid);
-        setLocalTransaction(tx);
-        if (tx.continuation?.continuationTxId) {
-          const cont = await transactionRepository.getTransaction(
-            tx.continuation.continuationTxId,
-          );
-          setContTx(cont);
-        }
-      };
-      run();
-    }, [transaction]);
+    }, [transaction.uuid]);
 
     const onSign = async (tx: ITransaction) => {
       const signed = (await sign(tx)) as IUnsignedCommand;
@@ -124,7 +108,7 @@ export const TxContainer = React.memo(
 
     const onSubmit = useCallback(
       async (tx: ITransaction) => {
-        const result = await transactionService.onSubmitTransaction(
+        const result = await transactionService.submitTransaction(
           tx,
           client,
           // (updatedTx) => {
@@ -132,10 +116,10 @@ export const TxContainer = React.memo(
           // },
         );
         if (onUpdate) onUpdate(result);
-        if (onDone) onDone(result);
+
         return result;
       },
-      [client, onDone, onUpdate],
+      [client, onUpdate],
     );
 
     if (!localTransaction) return null;
