@@ -2,12 +2,12 @@ import {
   MonoContacts,
   MonoContrast,
   MonoDashboardCustomize,
-  MonoDataThresholding,
   MonoLogout,
   MonoNetworkCheck,
   MonoSwapHoriz,
   MonoTableRows,
   MonoWallet,
+  MonoWindow,
 } from '@kadena/kode-icons/system';
 
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
@@ -25,14 +25,14 @@ import {
   SideBarTree,
   SideBarTreeItem,
   SideBar as SideBarUI,
-  useSideBar,
+  useLayout,
 } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 export const SideBar: FC = () => {
   const { theme, setTheme } = useTheme();
-  const { isExpanded } = useSideBar();
+  const { isExpanded } = useLayout();
   const navigate = useNavigate();
   const { lockProfile } = useWallet();
 
@@ -58,7 +58,7 @@ export const SideBar: FC = () => {
       navigation={
         <>
           <SideBarItem
-            visual={<MonoDataThresholding />}
+            visual={<MonoWindow />}
             label="Dashboard"
             component={Link}
             href="/"

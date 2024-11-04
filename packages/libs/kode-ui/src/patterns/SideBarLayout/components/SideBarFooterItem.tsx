@@ -2,7 +2,7 @@ import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 import type { PressEvent } from './../../../components';
 import { Button, Link } from './../../../components';
-import { useSideBar } from './SideBarProvider';
+import { useLayout } from './LayoutProvider';
 
 export interface ISideBarFooterItemProps extends PropsWithChildren {
   visual: React.ReactElement;
@@ -22,7 +22,7 @@ export const SideBarFooterItem: FC<ISideBarFooterItemProps> = ({
   href,
   component,
 }) => {
-  const { isActiveUrl } = useSideBar();
+  const { isActiveUrl } = useLayout();
 
   if (children) return children;
 

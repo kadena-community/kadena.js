@@ -11,6 +11,7 @@ import {
   ITransaction,
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
+import { useLayout } from '@kadena/kode-ui/patterns';
 import { useSearchParams } from 'react-router-dom';
 import { ReviewTransaction } from '../transaction/components/ReviewTransaction';
 import { TxList } from '../transaction/components/TxList';
@@ -24,9 +25,20 @@ import {
 import { createRedistributionTxs, createTransactions } from './utils';
 
 export function TransferV2() {
+  useLayout({
+    appContext: undefined,
+    breadCrumbs: [
+      {
+        label: 'Transfer',
+        visual: <MonoSwapHoriz />,
+        url: '/transfer',
+      },
+    ],
+  });
   const [searchParams] = useSearchParams();
   const accountId = searchParams.get('accountId');
   const urlActivityId = searchParams.get('activityId');
+
   useEffect(() => {
     const run = async () => {
       if (urlActivityId) {

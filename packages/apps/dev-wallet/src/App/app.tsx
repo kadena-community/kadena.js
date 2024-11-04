@@ -1,7 +1,7 @@
 import { DatabaseProvider } from '@/modules/db/db.provider';
 import { WalletProvider } from '@/modules/wallet/wallet.provider';
 import { MediaContextProvider } from '@kadena/kode-ui';
-import { SideBarProvider } from '@kadena/kode-ui/patterns';
+import { LayoutProvider } from '@kadena/kode-ui/patterns';
 import { useEffect } from 'react';
 import { PromptProvider } from '../Components/PromptProvider/Prompt';
 import { Routes } from './routes';
@@ -19,10 +19,10 @@ function Providers({ children }: { children: React.ReactNode }) {
         <PromptProvider>
           <DatabaseProvider>
             <WalletProvider>
-              <SideBarProvider>
+              <LayoutProvider>
                 {/* TODO: fixed the issue with prompt and remove this one in favor of the one above */}
                 <PromptProvider>{children}</PromptProvider>
-              </SideBarProvider>
+              </LayoutProvider>
             </WalletProvider>
           </DatabaseProvider>
         </PromptProvider>

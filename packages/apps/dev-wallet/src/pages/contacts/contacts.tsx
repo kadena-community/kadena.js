@@ -7,6 +7,7 @@ import { createAsideUrl } from '@/utils/createAsideUrl';
 import { shorten } from '@/utils/helpers';
 import {
   MonoAccountBalanceWallet,
+  MonoContacts,
   MonoMoreVert,
 } from '@kadena/kode-icons/system';
 import {
@@ -18,10 +19,21 @@ import {
   Stack,
   Text,
 } from '@kadena/kode-ui';
+import { useLayout } from '@kadena/kode-ui/patterns';
 import { Link, useNavigate } from 'react-router-dom';
 import { panelClass } from '../home/style.css';
 
 export function Contacts() {
+  useLayout({
+    appContext: undefined,
+    breadCrumbs: [
+      {
+        label: 'Contacts',
+        visual: <MonoContacts />,
+        url: '/contacts',
+      },
+    ],
+  });
   const navigate = useNavigate();
   const { contacts } = useWallet();
   const prompt = usePrompt();

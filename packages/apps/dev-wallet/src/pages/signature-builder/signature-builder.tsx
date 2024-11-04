@@ -9,6 +9,7 @@ import {
 import { transactionRepository } from '@/modules/transaction/transaction.repository';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { MonoDashboardCustomize } from '@kadena/kode-icons/system';
 import {
   Box,
   Button,
@@ -17,6 +18,7 @@ import {
   Stack,
   Text,
 } from '@kadena/kode-ui';
+import { useLayout } from '@kadena/kode-ui/patterns';
 import { execCodeParser } from '@kadena/pactjs-generator';
 import classNames from 'classnames';
 import { useMemo, useState } from 'react';
@@ -83,6 +85,16 @@ export function SignatureBuilder() {
   >([]);
   const { profile, activeNetwork, networks, setActiveNetwork } = useWallet();
   const navigate = useNavigate();
+  useLayout({
+    appContext: undefined,
+    breadCrumbs: [
+      {
+        label: 'Sig Builder',
+        visual: <MonoDashboardCustomize />,
+        url: '/sig-builder',
+      },
+    ],
+  });
 
   const exec =
     pactCommand && pactCommand.payload && 'exec' in pactCommand.payload

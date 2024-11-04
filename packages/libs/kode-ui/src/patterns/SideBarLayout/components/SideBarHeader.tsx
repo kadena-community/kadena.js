@@ -12,8 +12,8 @@ import {
 import { Button } from './../../../components/Button';
 import { Stack } from './../../../components/Layout';
 import { Media } from './../../../components/Media';
+import { useLayout } from './LayoutProvider';
 import { KLogo } from './Logo/KLogo';
-import { useSideBar } from './SideBarProvider';
 
 interface IProps extends PropsWithChildren {
   breadcrumbs?: ReactElement;
@@ -22,7 +22,7 @@ interface IProps extends PropsWithChildren {
 }
 
 export const SideBarHeader: FC<IProps> = ({ breadcrumbs, minifiedLogo }) => {
-  const { isExpanded, handleToggleExpand } = useSideBar();
+  const { isExpanded, handleToggleExpand } = useLayout();
   const handleExpand = (e: PressEvent) => {
     if (handleToggleExpand) {
       handleToggleExpand(e);

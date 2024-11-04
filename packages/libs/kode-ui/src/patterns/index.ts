@@ -18,16 +18,16 @@ export {
 export { usePagination } from './CompactTable/usePagination';
 
 export {
+  LayoutProvider,
   SideBar,
   SideBarFooter,
   SideBarFooterItem,
   SideBarItem,
   SideBarItemsInline,
   SideBarLayout,
-  SideBarProvider,
   SideBarTree,
   SideBarTreeItem,
-  useSideBar,
+  useLayout,
 } from './SideBarLayout';
 export type {
   ISideBarFooterItemProps,

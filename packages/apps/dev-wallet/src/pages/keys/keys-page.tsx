@@ -1,11 +1,29 @@
+import { createAsideUrl } from '@/utils/createAsideUrl';
 import { Mono123, MonoKey } from '@kadena/kode-icons/system';
 import { Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
-import { useParams } from 'react-router-dom';
+import { useLayout } from '@kadena/kode-ui/patterns';
+import { Link, useParams } from 'react-router-dom';
 import { Keys } from './Components/Keys';
 import { KeySets } from './Components/KeySets';
 
 export function KeysPage() {
   const { tab = 'keys' } = useParams();
+  useLayout({
+    appContext: {
+      visual: <MonoKey />,
+      label: 'Add key Source',
+      href: createAsideUrl('KeySource'),
+      component: Link,
+    },
+    breadCrumbs: [
+      {
+        label: 'Manage Your Keys',
+        visual: <MonoKey />,
+        url: '/key-management/keys',
+      },
+    ],
+  });
+
   return (
     <Stack flexDirection={'column'} gap={'lg'}>
       <Heading>Manage Your Keys</Heading>

@@ -16,7 +16,9 @@ import {
   execution,
   setMeta,
 } from '@kadena/client/fp';
+import { MonoDashboardCustomize } from '@kadena/kode-icons/system';
 import { Stack } from '@kadena/kode-ui';
+import { useLayout } from '@kadena/kode-ui/patterns';
 import { execCodeParser, IParsedCode } from '@kadena/pactjs-generator';
 import { useMemo, useRef, useState } from 'react';
 import Terminal from 'react-console-emulator';
@@ -154,6 +156,16 @@ const getCommand = (
 };
 
 export function TerminalPage() {
+  useLayout({
+    appContext: undefined,
+    breadCrumbs: [
+      {
+        label: 'Dev Console',
+        visual: <MonoDashboardCustomize />,
+        url: '/terminal',
+      },
+    ],
+  });
   const [txStep, setTxStep] = useState<
     null | 'start' | 'code' | 'data' | 'signer' | 'capability'
   >(null);
@@ -177,6 +189,7 @@ export function TerminalPage() {
       networkId: activeNetwork?.networkId ?? 'testnet04',
       chainId: '0' as ChainId,
     });
+
   const setDefaults = (patch: Partial<IDefaultValues>) => {
     setDefaultValues((prev) => ({ ...prev, ...patch }));
   };

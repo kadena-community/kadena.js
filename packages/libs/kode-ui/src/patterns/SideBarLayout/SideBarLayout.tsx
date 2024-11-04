@@ -3,9 +3,9 @@ import type { FC, PropsWithChildren, ReactElement } from 'react';
 import React, { useEffect } from 'react';
 import { MediaContextProvider, Stack } from './../../components';
 
+import { useLayout } from './components/LayoutProvider';
 import { SideBarAside } from './components/SideBarAside';
 import { SideBarHeader } from './components/SideBarHeader';
-import { useSideBar } from './components/SideBarProvider';
 import {
   bodyWrapperClass,
   layoutExpandedWrapperClass,
@@ -37,7 +37,7 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
   variant = 'default',
   location,
 }) => {
-  const { isExpanded, setLocation } = useSideBar();
+  const { isExpanded, setLocation } = useLayout();
 
   // set the active URL in your app.
   //we dont know what route system is being used so the active URL will be given as a prop to the component

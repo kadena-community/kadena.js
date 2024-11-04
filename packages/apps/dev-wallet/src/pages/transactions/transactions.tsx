@@ -5,14 +5,25 @@ import {
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten } from '@/utils/helpers';
 import { IPactCommand } from '@kadena/client';
-import { MonoOpenInNew } from '@kadena/kode-icons/system';
+import { MonoOpenInNew, MonoSwapHoriz } from '@kadena/kode-icons/system';
 import { Box, Heading, Stack, Text } from '@kadena/kode-ui';
+import { useLayout } from '@kadena/kode-ui/patterns';
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { listClass, listItemClass, panelClass } from '../home/style.css';
 import { hashStyle } from './style.css';
 
 export function Transactions() {
+  useLayout({
+    appContext: undefined,
+    breadCrumbs: [
+      {
+        label: 'Transactions',
+        visual: <MonoSwapHoriz />,
+        url: '/transactions',
+      },
+    ],
+  });
   const { profile, activeNetwork } = useWallet();
   const [transactions, setTransactions] = useState<
     (ITransaction & { creationDate: number })[]

@@ -77,6 +77,7 @@ export const menuWrapperClass = recipe({
         display: 'flex',
         width: '45px',
         padding: token('spacing.md'),
+        paddingBlockStart: token('spacing.sm'),
         paddingInline: token('spacing.xs'),
         gridArea: 'sidebarlayout-sidebar',
         transform: 'translateX(0%)',
@@ -220,7 +221,7 @@ export const headerClass = style([
     },
     md: {
       gridTemplateColumns: '1fr',
-      gridTemplateRows: 'auto',
+      gridTemplateRows: '1fr',
       gridTemplateAreas: `
     "header-crumbs"
   `,

@@ -13,16 +13,14 @@ import {
   SideBarFooter,
   SideBarFooterItem,
   SideBarLayout,
-  useSideBar,
 } from '@kadena/kode-ui/patterns';
-import { FC, useEffect, useMemo } from 'react';
+import { FC, useMemo } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { BetaHeader } from './../BetaHeader';
 import { SideBar } from './SideBar';
 
 export const Layout: FC = () => {
   const { theme, setTheme } = useTheme();
-  const { breadCrumbs, setBreadCrumbs, setAppContext } = useSideBar();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -34,16 +32,6 @@ export const Layout: FC = () => {
     }),
     [location],
   );
-
-  useEffect(() => {
-    if (
-      breadCrumbs.length > 0 &&
-      location.pathname !== breadCrumbs[breadCrumbs.length - 1].url
-    ) {
-      setBreadCrumbs([]);
-      setAppContext();
-    }
-  }, [location]);
 
   const toggleTheme = (): void => {
     const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;

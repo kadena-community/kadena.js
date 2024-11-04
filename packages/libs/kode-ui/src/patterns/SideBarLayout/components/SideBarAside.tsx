@@ -11,7 +11,7 @@ import {
 import type { ISideBarLayoutLocation } from '../types';
 import type { PressEvent } from './../../../components';
 import { Button, Heading, Stack } from './../../../components';
-import { useSideBar } from './SideBarProvider';
+import { useLayout } from './LayoutProvider';
 
 export const SideBarAside: FC<
   PropsWithChildren<{
@@ -19,7 +19,7 @@ export const SideBarAside: FC<
     location: ISideBarLayoutLocation;
   }>
 > = ({ hasTopBanner, location, children }) => {
-  const { handleSetAsideExpanded, isAsideExpanded } = useSideBar();
+  const { handleSetAsideExpanded, isAsideExpanded } = useLayout();
 
   const handleExpand = (e: PressEvent) => {
     if (handleSetAsideExpanded) {
