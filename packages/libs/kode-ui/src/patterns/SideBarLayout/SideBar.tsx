@@ -4,10 +4,11 @@ import type { FC, PropsWithChildren, ReactElement } from 'react';
 import React from 'react';
 import type { PressEvent } from './../../components';
 import { Button, Media, Stack } from './../../components';
-import { LayoutContext, useLayout } from './components/LayoutProvider';
+import { useLayout } from './components/LayoutProvider';
 import { KLogo } from './components/Logo/KLogo';
 import { KadenaLogo } from './components/Logo/KadenaLogo';
 import { SideBarAppContext } from './components/SideBarAppContext';
+import { SideBarContext } from './components/SideBarContext';
 import { SideBarNavigation } from './components/SideBarNavigation';
 import {
   menuBackdropClass,
@@ -76,7 +77,7 @@ export const SideBar: FC<ISideBarProps> = ({
 
         {appContext && <SideBarAppContext>{appContext}</SideBarAppContext>}
         {navigation && <SideBarNavigation>{navigation}</SideBarNavigation>}
-        {context && <LayoutContext>{context}</LayoutContext>}
+        {context && <SideBarContext>{context}</SideBarContext>}
 
         {children}
       </aside>
