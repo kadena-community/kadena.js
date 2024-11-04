@@ -3,6 +3,7 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { queryAllChainsClient } from '@kadena/client-utils/core';
 import { composePactCommand, execution } from '@kadena/client/fp';
 import { Button, Notification, Stack, TextField } from '@kadena/kode-ui';
+import { useLayout } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -20,7 +21,7 @@ export function AddToken() {
   });
 
   const { activeNetwork } = useWallet();
-
+  const { handleSetAsideExpanded } = useLayout();
   const [error, setError] = useState<string | null>(null);
 
   async function onSubmit(data: TokenForm) {
@@ -56,6 +57,7 @@ export function AddToken() {
       } as const;
 
       await accountRepository.addFungible(token);
+      handleSetAsideExpanded(false);
     } catch (e: any) {
       setError(e?.message || e);
     }
