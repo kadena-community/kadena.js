@@ -13,15 +13,14 @@
     "Bart Huijgen <bart@kadena.io>",
     "Danillo Felixdaal <danillo@kadena.io>"
   ],
-  "type": "module",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/esm/index.d.ts",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./lib/esm/index.d.ts",
   "files": [
-    "dist"
+    "lib"
   ],
   "scripts": {
-    "build": "graphql-codegen && rm -rf ./dist/ && pnpm rollup -c rollup.config.mjs",
+    "build": "tsc -p tsconfig.cjs.json && tsc && cp ./package.cjs.json ./lib/cjs/package.json && api-extractor run",
     "codegen": "graphql-codegen",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
@@ -50,6 +49,7 @@
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
+    "@kadena/hd-wallet": "workspace:*",
     "@kadena/types": "workspace:*",
     "@microsoft/api-extractor": "^7.43.1",
     "@rollup/plugin-commonjs": "^25.0.8",

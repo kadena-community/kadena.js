@@ -1,12 +1,47 @@
 import react from '@vitejs/plugin-react-swc';
-import { defineConfig } from 'vite';
-import { nodePolyfills } from 'vite-plugin-node-polyfills';
+import fs from 'fs';
+import path from 'path';
+import { defineConfig, UserConfig } from 'vite';
 
-export default defineConfig({
-  plugins: [react(), nodePolyfills()],
+/**
+ * Get list of monorepo packages from package.json non-dev-dependencies
+ * @returns {string[]} - list of package names
+ */
+function getMonorepoPackagesFromPackageJson() {
+  const packageJson = fs.readFileSync(
+    path.resolve(__dirname, './package.json'),
+    'utf-8',
+  );
+  const { dependencies } = JSON.parse(packageJson);
+  const packages = Object.keys(dependencies).filter((key) =>
+    dependencies[key].startsWith('workspace:'),
+  );
+
+  return packages;
+}
+
+const monorepoPackages = getMonorepoPackagesFromPackageJson();
+
+monorepoPackages.push('@kadena/client-utils');
+monorepoPackages.push('@kadena/cryptography-utils');
+
+const monorepoPathsRegex = monorepoPackages.map(
+  (pkg) => new RegExp(`${pkg.replace('@kadena/', '')}`),
+);
+monorepoPackages.push('@kadena/client/fp');
+
+export const config: UserConfig = {
+  plugins: [react()],
+  optimizeDeps: {
+    // add all monorepo packages to optimizeDeps since they are commonjs
+    include: [...monorepoPackages],
+  },
   build: {
-    rollupOptions: {
-      external: ['encoding'],
+    commonjsOptions: {
+      // add all monorepo packages path regex to commonjsOptions since they are commonjs
+      include: [/node_modules/, ...monorepoPathsRegex],
     },
   },
-});
+};
+
+export default defineConfig(config);
