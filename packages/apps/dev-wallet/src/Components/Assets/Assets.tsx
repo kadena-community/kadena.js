@@ -21,7 +21,7 @@ export function Assets({
   fungibles: Fungible[];
   showAddToken?: boolean;
 }) {
-  const { handleSetAsideExpanded, isAsideExpanded, asideRef } = useLayout();
+  const { handleSetAsideExpanded, isAsideExpanded } = useLayout();
   const assets = useMemo(() => {
     return fungibles.map((item) => {
       const acs = accounts.filter((a) => a.contract === item.contract);

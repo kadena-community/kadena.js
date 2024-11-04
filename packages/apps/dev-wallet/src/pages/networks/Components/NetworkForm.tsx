@@ -15,7 +15,6 @@ import {
   RightAsideContent,
   RightAsideFooter,
   RightAsideHeader,
-  useLayout,
 } from '@kadena/kode-ui/patterns';
 import classNames from 'classnames';
 import { useEffect } from 'react';
@@ -79,7 +78,6 @@ export function NetworkForm({
     defaultValues: network,
     mode: 'all',
   });
-  const { setRightAsideTitle } = useLayout();
   const { fields, append, remove } = useFieldArray({ control, name: 'hosts' });
   async function create(updNetwork: INewNetwork) {
     const hosts = updNetwork.hosts.map(
