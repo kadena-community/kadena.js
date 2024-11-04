@@ -25,13 +25,18 @@ const AddNetwork = ({ networkUuid }: { networkUuid: string }) => {
   const { handleSetAsideExpanded } = useLayout();
   const { getNetwork } = useWallet();
 
+  console.log({ networkUuid });
   const network = useMemo(() => {
+    if (!networkUuid) return getNewNetwork();
     return getNetwork(networkUuid) ?? getNewNetwork();
   }, [networkUuid]);
 
   return (
     <>
       <NetworkForm
+        onCancel={() => {
+          handleSetAsideExpanded(false);
+        }}
         onSave={async (updNetwork) => {
           if (updNetwork.uuid) {
             await networkRepository.updateNetwork(updNetwork);

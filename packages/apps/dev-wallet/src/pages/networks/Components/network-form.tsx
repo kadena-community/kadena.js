@@ -37,11 +37,12 @@ interface INewNetwork {
 export function NetworkForm({
   network,
   onSave: onDone,
+  onCancel,
 }: {
   network: INetworkWithOptionalUuid;
   onSave: (network: INetworkWithOptionalUuid) => void;
+  onCancel: () => void;
 }) {
-  console.log('network', network);
   const {
     control,
     register,
@@ -68,8 +69,6 @@ export function NetworkForm({
 
   const hosts = watch('hosts');
   const networkId = watch('networkId');
-
-  console.log({ hosts, networkId });
 
   const isNetworkIdValid =
     hosts.length > 0 &&
@@ -182,12 +181,17 @@ export function NetworkForm({
               );
             })}
           </Stack>
-          <Button
-            type="submit"
-            isDisabled={!isNetworkIdValid || !formState.isDirty}
-          >
-            Save
-          </Button>
+          <Stack width="100%">
+            <Button variant="outlined" type="reset" onPress={onCancel}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              isDisabled={!isNetworkIdValid || !formState.isDirty}
+            >
+              Save
+            </Button>
+          </Stack>
         </form>
       </Stack>
     </>

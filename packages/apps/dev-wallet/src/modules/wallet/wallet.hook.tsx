@@ -294,10 +294,14 @@ export const useWallet = () => {
   };
 
   const getContact = (id: string) => {
-    return context.contacts.find((contact) => contact.uuid === id);
+    return context.contacts.find(
+      (contact) => contact.uuid.toLocaleLowerCase() === id.toLocaleLowerCase(),
+    );
   };
   const getNetwork = (id: string) => {
-    return context.networks.find((network) => network.uuid === id);
+    return context.networks.find(
+      (network) => network.uuid.toLocaleLowerCase() === id?.toLowerCase(),
+    );
   };
 
   return {

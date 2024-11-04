@@ -62,7 +62,7 @@ export const useLayout = (
   useEffect(() => {
     if (!props) return;
 
-    if (props.appContext?.href !== context.appContext?.href) {
+    if (props.appContext?.label !== context.appContext?.label) {
       context.setAppContext(props.appContext);
     }
 
