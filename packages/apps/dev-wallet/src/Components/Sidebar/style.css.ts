@@ -63,4 +63,5 @@ export const fullHightClass = style({
 
 export const displayContentsClass = style({
   display: 'contents',
+  width: '100%',
 });

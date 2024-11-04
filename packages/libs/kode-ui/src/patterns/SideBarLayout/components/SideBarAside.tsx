@@ -5,6 +5,7 @@ import {
   asideContentClass,
   asideHeaderClass,
   asideHeaderCloseButtonWrapperClass,
+  asideHeadingClass,
   asideWrapperClass,
   menuBackdropClass,
 } from '../aside.css';
@@ -19,7 +20,7 @@ export const SideBarAside: FC<
     location: ISideBarLayoutLocation;
   }>
 > = ({ hasTopBanner, location, children }) => {
-  const { handleSetAsideExpanded, isAsideExpanded } = useLayout();
+  const { handleSetAsideExpanded, isAsideExpanded, asideTitle } = useLayout();
 
   const handleExpand = (e: PressEvent) => {
     if (handleSetAsideExpanded) {
@@ -34,6 +35,7 @@ export const SideBarAside: FC<
   return (
     <>
       <Stack
+        aria-label="background"
         className={menuBackdropClass({
           expanded: isAsideExpanded,
         })}
@@ -46,15 +48,26 @@ export const SideBarAside: FC<
         })}
       >
         <header className={asideHeaderClass}>
-          <Heading> </Heading>
-          <Stack className={asideHeaderCloseButtonWrapperClass}>
-            <Button
-              onPress={handleExpand}
-              variant="transparent"
-              startVisual={<MonoClose />}
-            />
+          <Stack
+            width="100%"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Heading variant="h6" as="h3" className={asideHeadingClass}>
+              {asideTitle}
+            </Heading>
+
+            <Stack className={asideHeaderCloseButtonWrapperClass}>
+              <Button
+                aria-label="close"
+                onPress={handleExpand}
+                variant="transparent"
+                startVisual={<MonoClose />}
+              />
+            </Stack>
           </Stack>
         </header>
+
         <Stack className={asideContentClass}>{children}</Stack>
       </aside>
     </>

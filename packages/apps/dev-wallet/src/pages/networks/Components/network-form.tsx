@@ -41,7 +41,6 @@ export function NetworkForm({
   network: INetworkWithOptionalUuid;
   onSave: (network: INetworkWithOptionalUuid) => void;
 }) {
-  console.log('network', network);
   const {
     control,
     register,
@@ -88,7 +87,7 @@ export function NetworkForm({
 
   return (
     <>
-      <Stack margin="md" gap={'md'} flexDirection={'column'}>
+      <Stack margin="md" gap={'md'} flexDirection={'column'} width="100%">
         <form onSubmit={handleSubmit(create)} className={displayContentsClass}>
           <TextField
             label="Network ID"

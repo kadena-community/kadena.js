@@ -10,7 +10,7 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { labelBoldClass } from '@/pages/transaction/components/style.css';
 import { IReceiverAccount } from '@/pages/transfer/utils';
 import { Button, Notification, Stack, Text, TextField } from '@kadena/kode-ui';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 interface IContactFormData {
@@ -36,6 +36,7 @@ export function ContactForm({
     control,
     getValues,
     handleSubmit,
+    reset,
     formState: { isValid },
   } = useForm<IContactFormData>({
     defaultValues: input ?? {
@@ -44,6 +45,16 @@ export function ContactForm({
       discoverdAccount: undefined,
     },
   });
+
+  useEffect(() => {
+    reset(
+      input ?? {
+        name: '',
+        email: '',
+        discoverdAccount: undefined,
+      },
+    );
+  }, [input]);
 
   const createContact = useCallback(
     async ({ discoverdAccount, ...data }: IContactFormData) => {
@@ -92,7 +103,7 @@ export function ContactForm({
         className={displayContentsClass}
         onSubmit={handleSubmit(createContact)}
       >
-        <Stack gap={'lg'} flexDirection={'column'}>
+        <Stack gap={'lg'} flexDirection={'column'} width="100%">
           <TextField
             label="Name"
             defaultValue={getValues('name')}
@@ -133,39 +144,41 @@ export function ContactForm({
           )}
         </Stack>
 
-        <Stack flex={1}>
-          <Stack flex={1}>
-            {input?.uuid && (
-              <Button
-                type="button"
-                variant="negative"
-                onClick={async () => {
-                  const confirm = await prompt((resolve, reject) => (
-                    <ConfirmDeletion
-                      onCancel={() => reject()}
-                      onDelete={() => resolve(true)}
-                      title="Delete Contact"
-                      description="Are you sure you want to delete this contact?"
-                    />
-                  ));
-                  if (confirm) {
-                    await contactRepository.deleteContact(input.uuid);
-                    onClose();
-                  }
-                }}
-              >
-                Delete
-              </Button>
-            )}
-          </Stack>
-          <Stack>
-            <Button onClick={onClose} type="reset" variant="transparent">
-              Cancel
+        <Stack
+          width="100%"
+          gap="md"
+          justifyContent="flex-end"
+          marginBlockStart="md"
+        >
+          {input?.uuid && (
+            <Button
+              type="button"
+              variant="negative"
+              onClick={async () => {
+                const confirm = await prompt((resolve, reject) => (
+                  <ConfirmDeletion
+                    onCancel={() => reject()}
+                    onDelete={() => resolve(true)}
+                    title="Delete Contact"
+                    description="Are you sure you want to delete this contact?"
+                  />
+                ));
+                if (confirm) {
+                  await contactRepository.deleteContact(input.uuid);
+                  onClose();
+                }
+              }}
+            >
+              Delete
             </Button>
-            <Button type="submit" isDisabled={!isValid}>
-              Save
-            </Button>
-          </Stack>
+          )}
+
+          <Button onClick={onClose} type="reset" variant="transparent">
+            Cancel
+          </Button>
+          <Button type="submit" isDisabled={!isValid}>
+            Save
+          </Button>
         </Stack>
       </form>
     </>

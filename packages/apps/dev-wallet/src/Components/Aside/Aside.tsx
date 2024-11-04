@@ -18,11 +18,6 @@ const importView = async (key: string) => {
         import(`./views/NewAsset`).catch(() => import(`./views/Error`)),
       );
 
-    case 'NextAccount':
-      return lazy(() =>
-        import(`./views/NextAccount`).catch(() => import(`./views/Error`)),
-      );
-
     default:
       return lazy(() => import(`./views/Error`));
   }
@@ -56,6 +51,7 @@ export const Aside: FC = () => {
     loadView(hashArray);
   }, [location.hash]);
 
+  console.log(view);
   return (
     <div>
       <Suspense fallback="Loading view...">{view}</Suspense>

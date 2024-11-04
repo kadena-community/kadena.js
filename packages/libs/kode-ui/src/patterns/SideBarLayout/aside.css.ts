@@ -1,5 +1,11 @@
 import { recipe } from '@vanilla-extract/recipes';
-import { atoms, responsiveStyle, style, token } from './../../styles';
+import {
+  atoms,
+  globalStyle,
+  responsiveStyle,
+  style,
+  token,
+} from './../../styles';
 
 export const asideWrapperClass = recipe({
   base: [
@@ -99,13 +105,7 @@ export const asideHeaderClass = style([
     minHeight: '50px',
   },
 ]);
-export const asideHeaderCloseButtonWrapperClass = style(
-  responsiveStyle({
-    xl: {
-      display: 'none!important',
-    },
-  }),
-);
+export const asideHeaderCloseButtonWrapperClass = style(responsiveStyle({}));
 
 export const asideContentClass = style([
   atoms({
@@ -124,4 +124,19 @@ export const asideContentClass = style([
       backgroundColor: token('color.background.layer.default'),
     },
   }),
+]);
+
+globalStyle(`${asideContentClass} > div`, {
+  width: '100%',
+});
+
+export const asideHeadingClass = style([
+  atoms({
+    color: 'text.gray.default',
+    fontSize: 'xs',
+    padding: 'no',
+    margin: 'no',
+    paddingInline: 'md',
+  }),
+  {},
 ]);
