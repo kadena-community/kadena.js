@@ -1,11 +1,7 @@
 import { AddToken } from '@/Components/Assets/AddToken';
 
 const NewAsset = () => {
-  return (
-    <div>
-      <AddToken />
-    </div>
-  );
+  return <AddToken />;
 };
 
 export default NewAsset;

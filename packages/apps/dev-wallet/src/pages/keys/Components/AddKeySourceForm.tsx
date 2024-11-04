@@ -58,17 +58,24 @@ export function AddKeySourceForm({
         </Stack>
       </Stack>
 
-      <Button variant="outlined" onPress={onClose}>
-        Cancel
-      </Button>
-      <Button
-        variant="primary"
-        onPress={() =>
-          onSave(localInstalled.filter((i) => !installed.includes(i)))
-        }
+      <Stack
+        width="100%"
+        justifyContent="flex-end"
+        gap="md"
+        marginBlockStart={'lg'}
       >
-        Save
-      </Button>
+        <Button variant="outlined" onPress={onClose}>
+          Cancel
+        </Button>
+        <Button
+          variant="primary"
+          onPress={() =>
+            onSave(localInstalled.filter((i) => !installed.includes(i)))
+          }
+        >
+          Save
+        </Button>
+      </Stack>
     </>
   );
 }

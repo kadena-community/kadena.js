@@ -6,13 +6,17 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { AddKeySourceForm } from '@/pages/keys/Components/AddKeySourceForm';
 import { Notification, Stack } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const KeySource = () => {
-  const { handleSetAsideExpanded } = useLayout();
+  const { handleSetAsideExpanded, setAsideTitle } = useLayout();
   const { keySources, profile, askForPassword } = useWallet();
   const [error, setError] = useState<string | null>(null);
   const { createHDWallet } = useHDWallet();
+
+  useEffect(() => {
+    setAsideTitle('Add Key Source');
+  }, []);
 
   async function createWebAuthn() {
     if (!profile) {

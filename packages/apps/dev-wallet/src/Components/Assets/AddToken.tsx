@@ -70,7 +70,7 @@ export function AddToken() {
         />
         <TextField label="Symbol" {...register('symbol', { required: true })} />
         {error && <Notification role="alert">{error}</Notification>}
-        <Stack gap={'md'}>
+        <Stack width="100%" justifyContent="flex-end" gap="md">
           <Button type="submit">Add Token</Button>
         </Stack>
       </Stack>
