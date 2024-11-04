@@ -1,6 +1,6 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
 
-import { fundAccount } from '@/modules/account/account.service';
+import { fundAccount, syncAccount } from '@/modules/account/account.service';
 
 import { AccountBalanceDistribution } from '@/Components/AccountBalanceDistribution/AccountBalanceDistribution';
 import { ConfirmDeletion } from '@/Components/ConfirmDeletion/ConfirmDeletion';
@@ -12,6 +12,7 @@ import {
   isWatchedAccount,
 } from '@/modules/account/account.repository';
 import { getTransferActivities } from '@/modules/activity/activity.service';
+import * as transactionService from '@/modules/transaction/transaction.service';
 import { useAsync } from '@/utils/useAsync';
 import { ChainId } from '@kadena/client';
 import { MonoKey, MonoRemoveRedEye } from '@kadena/kode-icons/system';
@@ -26,7 +27,7 @@ import { Redistribute } from './Components/Redistribute';
 export function AccountPage() {
   const { accountId } = useParams();
   const prompt = usePrompt();
-  const { activeNetwork, fungibles, accounts, profile, watchAccounts } =
+  const { activeNetwork, fungibles, accounts, profile, watchAccounts, client } =
     useWallet();
   const [redistributionGroupId, setRedistributionGroupId] = useState<string>();
   const account =
@@ -64,7 +65,7 @@ export function AccountPage() {
     if (!activeNetwork) {
       throw new Error('No active network found');
     }
-    const tx = await fundAccount({
+    const fundTx = await fundAccount({
       address: account?.address ?? keyset.principal,
       chainId,
       keyset,
@@ -72,7 +73,18 @@ export function AccountPage() {
       network: activeNetwork,
     });
 
-    return tx;
+    transactionService
+      .submitTransaction(fundTx, client)
+      .then((tx) => {
+        if (tx.result?.result.status === 'success') {
+          syncAccount(account);
+        }
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+
+    return fundTx;
   };
   const isOwnedAccount =
     !isWatchedAccount(account) && account.profileId === profile?.uuid;
@@ -200,6 +212,7 @@ export function AccountPage() {
                 groupId={redistributionGroupId}
                 onDone={() => {
                   setRedistributionGroupId(undefined);
+                  syncAccount(account);
                 }}
               />
             )}

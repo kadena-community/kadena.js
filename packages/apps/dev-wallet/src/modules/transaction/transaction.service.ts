@@ -166,7 +166,7 @@ export async function syncTransactionStatus(
         },
       };
       await transactionRepository.updateTransaction(updatedTx);
-      await onSubmitTransaction(contTx, client);
+      await submitTransaction(contTx, client);
       const txd = await transactionRepository.getTransaction(tx.uuid);
       const updatedTxd = {
         ...txd,
@@ -179,7 +179,7 @@ export async function syncTransactionStatus(
   return tx;
 }
 
-export const onSubmitTransaction = async (
+export const submitTransaction = async (
   tx: ITransaction,
   client: IClient,
   onUpdate: (tx: ITransaction) => void = () => {},
@@ -301,7 +301,7 @@ export const onSubmitTransaction = async (
       };
       await transactionRepository.updateTransaction(updatedTx);
       onUpdate(updatedTx);
-      await onSubmitTransaction(contTx, client, (tx) => {
+      await submitTransaction(contTx, client, (tx) => {
         updatedTx = {
           ...updatedTx,
           continuation: {

@@ -27,6 +27,7 @@ export const listItemClass = style([
   {
     border: 'none',
     flex: 1,
+    maxWidth: '100%',
     minHeight: '50px',
     background: tokens.kda.foundation.color.background.surface.default,
     selectors: {

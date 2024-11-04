@@ -283,9 +283,9 @@ export const useWallet = () => {
     const availableKey = keySource.keys.find(
       (key) => !usedKeys.includes(key.publicKey),
     );
-    // prompt for password anyway for account creation even if the key is available.
-    await askForPassword();
     if (availableKey) {
+      // prompt for password anyway for account creation even if the key is available.
+      await askForPassword();
       return createAccountByKey({ key: availableKey, contract, alias });
     }
     // If no available key, create a new one

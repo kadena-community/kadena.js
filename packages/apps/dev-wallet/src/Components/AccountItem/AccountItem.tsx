@@ -4,6 +4,8 @@ import {
 } from '@/modules/account/account.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { noStyleLinkClass } from '@/pages/home/style.css';
+import { hashStyle } from '@/pages/transactions/style.css';
+import { shorten } from '@/utils/helpers';
 import { MonoContentCopy } from '@kadena/kode-icons/system';
 import { Button, Stack, Text } from '@kadena/kode-ui';
 import { Link } from 'react-router-dom';
@@ -26,16 +28,15 @@ export function AccountItem({
         alignItems={'center'}
       >
         <ListItem>
-          <Stack flexDirection={'row'} gap={'sm'}>
-            {alias ? (
-              <>
-                <Text>{alias}</Text>
-                <Text>({address})</Text>
-              </>
-            ) : (
-              <Text>{address}</Text>
-            )}
-          </Stack>
+          {alias ? (
+            <Stack flexDirection={'row'} gap={'sm'} className={hashStyle}>
+              <Text>{alias}</Text>
+              <Text className={hashStyle}>({shorten(address, 10)})</Text>
+            </Stack>
+          ) : (
+            <Text className={hashStyle}>{shorten(address, 10)}</Text>
+          )}
+
           <Stack alignItems={'center'} gap={'sm'}>
             <Text>
               {overallBalance} {getSymbol(contract)}

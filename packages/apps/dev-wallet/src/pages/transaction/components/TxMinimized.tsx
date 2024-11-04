@@ -3,7 +3,6 @@ import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { MonoOpenInFull } from '@kadena/kode-icons/system';
 import { Button, Stack } from '@kadena/kode-ui';
 
-import { useEffect, useRef } from 'react';
 import { TxPipeLine } from './TxPipeLine';
 import { txMinimizedClass } from './style.css';
 
@@ -24,13 +23,6 @@ export const TxMinimized = ({
   sendDisabled?: boolean;
   interactive?: boolean;
 }) => {
-  const submittedRef = useRef(false);
-  useEffect(() => {
-    if (tx.status === 'signed' && !submittedRef.current) {
-      submittedRef.current = true;
-      onSubmit();
-    }
-  }, [onSubmit, tx.status]);
   return (
     <Stack
       flexDirection={'row'}
