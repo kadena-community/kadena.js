@@ -1,34 +1,42 @@
-import { style, token } from '../../styles';
+import { atoms, style, token } from '../../styles';
 
-export const containerClass = style({
-  display: 'flex',
-  padding: 0,
-  flexFlow: 'wrap',
-  listStyle: 'none',
-});
+export const containerClass = style([
+  atoms({
+    display: 'flex',
+    padding: 'no',
+  }),
+  {
+    listStyle: 'none',
+    flexFlow: 'wrap',
+  },
+]);
 
-export const itemClass = style({
-  display: 'flex',
-  padding: 0,
-  whiteSpace: 'nowrap',
-  selectors: {
-    '&:not(:first-child):not(:last-child)::before': {
-      content: '/',
-      marginInline: token('spacing.sm'),
-    },
-    '&:last-child::before': {
-      content: '∙',
-      marginInline: token('spacing.sm'),
-    },
-    '&:first-child': {
-      fontWeight: token('typography.weight.primaryFont.bold'),
+export const itemClass = style([
+  atoms({
+    fontSize: 'xxs',
+  }),
+  {
+    display: 'flex',
+    padding: 0,
+    whiteSpace: 'nowrap',
+    selectors: {
+      '&:not(:first-child):not(:last-child)::before': {
+        content: '/',
+        color: token('color.text.gray.default'),
+        marginInline: token('spacing.sm'),
+      },
+      '&:not(:first-child):last-child::before': {
+        content: '∙',
+        color: token('color.text.gray.default'),
+        marginInline: token('spacing.sm'),
+      },
     },
   },
-});
+]);
 
 export const linkClass = style({
   display: 'flex',
-  color: token('color.text.base.default'),
+  color: token('color.text.gray.default'),
   textDecoration: 'none',
   selectors: {
     '&:hover': {

@@ -53,7 +53,7 @@ export type ILinkProps = Omit<AriaFocusRingProps, 'isTextInput'> &
  * @param title - title to be shown as HTML tooltip
  */
 
-const Anchor = forwardRef<HTMLAnchorElement, ILinkProps>(
+export const Anchor = forwardRef<HTMLAnchorElement, ILinkProps>(
   ({ children, ...props }, ref) => (
     <a {...props} ref={ref}>
       {children}

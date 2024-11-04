@@ -12,10 +12,8 @@ export const BreadCrumbs: FC = () => {
     <BreadcrumbsUI icon={breadCrumbs[0].visual}>
       <>
         {breadCrumbs.map((crumb) => (
-          <BreadcrumbsItem href={crumb.url}>
-            <Link key={crumb.label} to={crumb.url}>
-              {crumb.label}
-            </Link>
+          <BreadcrumbsItem key={crumb.url} component={Link} href={crumb.url}>
+            {crumb.label}
           </BreadcrumbsItem>
         ))}
       </>
