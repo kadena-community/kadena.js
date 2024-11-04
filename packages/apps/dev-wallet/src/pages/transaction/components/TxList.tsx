@@ -75,7 +75,7 @@ export const TxList = React.memo(
 
     const onSendAll = async () => {
       const onSubmit = async (tx: ITransaction) => {
-        return transactionService.onSubmitTransaction(tx, client, updateTx);
+        return transactionService.submitTransaction(tx, client, updateTx);
       };
 
       const txs = await Promise.all(
