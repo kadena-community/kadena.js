@@ -16,13 +16,12 @@ import {
 } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
-import { createPortal } from 'react-dom';
 import { panelClass } from '../../home/style.css.ts';
 import { AddKeySourceForm } from './AddKeySourceForm.tsx';
 
 export function Keys() {
   const { keySources, profile, askForPassword, createKey } = useWallet();
-  const { handleSetAsideExpanded, isAsideExpanded, asideRef } = useLayout();
+  const { handleSetAsideExpanded, isAsideExpanded } = useLayout();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setError] = useState<string | null>(null);
   const { createHDWallet } = useHDWallet();
@@ -54,40 +53,36 @@ export function Keys() {
 
   return (
     <>
-      {isAsideExpanded &&
-        asideRef &&
-        createPortal(
-          <AddKeySourceForm
-            close={() => handleSetAsideExpanded(false)}
-            onSave={async (sourcesToInstall) => {
-              handleSetAsideExpanded(false);
-              try {
-                await Promise.all(
-                  sourcesToInstall.map(async (source) => {
-                    switch (source) {
-                      case 'HD-BIP44':
-                        await registerHDWallet('HD-BIP44')();
-                        break;
-                      case 'HD-chainweaver':
-                        await registerHDWallet('HD-chainweaver')();
-                        break;
-                      case 'web-authn':
-                        await createWebAuthn();
-                        break;
-                      default:
-                        throw new Error('Unsupported key source');
-                    }
-                  }),
-                );
-              } catch (error: any) {
-                setError(error?.message ?? JSON.stringify(error));
-              }
-              keySourceManager.disconnect();
-            }}
-            installed={keySources.map((k) => k.source)}
-          />,
-          asideRef,
-        )}
+      <AddKeySourceForm
+        isOpen={isAsideExpanded}
+        close={() => handleSetAsideExpanded(false)}
+        onSave={async (sourcesToInstall) => {
+          handleSetAsideExpanded(false);
+          try {
+            await Promise.all(
+              sourcesToInstall.map(async (source) => {
+                switch (source) {
+                  case 'HD-BIP44':
+                    await registerHDWallet('HD-BIP44')();
+                    break;
+                  case 'HD-chainweaver':
+                    await registerHDWallet('HD-chainweaver')();
+                    break;
+                  case 'web-authn':
+                    await createWebAuthn();
+                    break;
+                  default:
+                    throw new Error('Unsupported key source');
+                }
+              }),
+            );
+          } catch (error: any) {
+            setError(error?.message ?? JSON.stringify(error));
+          }
+          keySourceManager.disconnect();
+        }}
+        installed={keySources.map((k) => k.source)}
+      />
       <Stack flexDirection={'column'} gap={'lg'}>
         <Stack justifyContent={'space-between'} alignItems={'center'}>
           <Stack marginBlock={'md'}>

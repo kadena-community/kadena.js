@@ -18,8 +18,12 @@ export const SideBarAside: FC<{
   hasTopBanner?: boolean;
   location: ISideBarLayoutLocation;
 }> = ({ hasTopBanner, location }) => {
-  const { handleSetAsideExpanded, isAsideExpanded, asideTitle, setAsideRef } =
-    useLayout();
+  const {
+    handleSetAsideExpanded,
+    isAsideExpanded,
+    rightAsideTitle,
+    setAsideRef,
+  } = useLayout();
   const ref = useRef<HTMLDivElement | null>();
 
   const handleExpand = (e: PressEvent) => {
@@ -59,7 +63,7 @@ export const SideBarAside: FC<{
             alignItems="center"
           >
             <Heading variant="h6" as="h3" className={asideHeadingClass}>
-              {asideTitle}
+              {rightAsideTitle}
             </Heading>
 
             <Stack className={asideHeaderCloseButtonWrapperClass}>

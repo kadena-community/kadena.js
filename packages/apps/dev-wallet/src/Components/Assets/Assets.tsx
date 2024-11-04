@@ -5,7 +5,6 @@ import { useLayout } from '@kadena/kode-ui/patterns';
 import { PactNumber } from '@kadena/pactjs';
 import classNames from 'classnames';
 import { useMemo } from 'react';
-import { createPortal } from 'react-dom';
 import { AddTokenForm } from './AddTokenForm';
 import { assetBoxClass } from './style.css';
 
@@ -38,7 +37,7 @@ export function Assets({
 
   return (
     <>
-      {isAsideExpanded && asideRef && createPortal(<AddTokenForm />, asideRef)}
+      <AddTokenForm isOpen={isAsideExpanded} />
       <Stack flexDirection={'column'} gap={'md'}>
         <Stack
           flexDirection={'row'}

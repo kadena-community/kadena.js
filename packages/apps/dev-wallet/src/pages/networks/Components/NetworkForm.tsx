@@ -10,7 +10,13 @@ import {
 } from '@/pages/transaction/components/style.css';
 import { MonoCircle, MonoDelete, MonoWarning } from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, Text, TextField } from '@kadena/kode-ui';
-import { useLayout } from '@kadena/kode-ui/patterns';
+import {
+  RightAside,
+  RightAsideContent,
+  RightAsideFooter,
+  RightAsideHeader,
+  useLayout,
+} from '@kadena/kode-ui/patterns';
 import classNames from 'classnames';
 import { useEffect } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
@@ -53,10 +59,12 @@ export function NetworkForm({
   network,
   onClose,
   onSave: onDone,
+  isOpen,
 }: {
   network: INetworkWithOptionalUuid;
   onSave: (network: INetworkWithOptionalUuid) => void;
   onClose: () => void;
+  isOpen: boolean;
 }) {
   const {
     control,
@@ -71,7 +79,7 @@ export function NetworkForm({
     defaultValues: network,
     mode: 'all',
   });
-  const { setAsideTitle } = useLayout();
+  const { setRightAsideTitle } = useLayout();
   const { fields, append, remove } = useFieldArray({ control, name: 'hosts' });
   async function create(updNetwork: INewNetwork) {
     const hosts = updNetwork.hosts.map(
@@ -86,7 +94,6 @@ export function NetworkForm({
 
   useEffect(() => {
     reset(network ?? getNewNetwork());
-    setAsideTitle(network.uuid ? 'Edit Network' : 'Add Network');
   }, [network.uuid]);
 
   const hosts = watch('hosts');
@@ -110,113 +117,126 @@ export function NetworkForm({
   }, [networkId, getValues, setValue]);
 
   return (
-    <>
-      <Stack gap={'md'} flexDirection={'column'} width="100%">
-        <form onSubmit={handleSubmit(create)} className={displayContentsClass}>
-          <TextField
-            label="Network ID"
-            aria-label="networkId"
-            type="text"
-            value={getValues('networkId')}
-            {...register('networkId')}
-          />
-          <TextField
-            label="Title"
-            aria-label="title"
-            type="text"
-            value={getValues('name')}
-            {...register('name')}
-          />
-          <Stack gap="md" justifyContent={'space-between'} paddingBlock={'lg'}>
-            <Heading variant="h4">Host Urls</Heading>
-            <Button
-              variant="outlined"
-              isCompact
-              onPress={() =>
-                append({
-                  url: '',
-                  submit: true,
-                  read: true,
-                  confirm: true,
-                  isHealthy: undefined,
-                  nodeVersion: undefined,
-                })
-              }
+    <RightAside isOpen={isOpen}>
+      <form onSubmit={handleSubmit(create)} className={displayContentsClass}>
+        <RightAsideHeader
+          label={network.uuid ? 'Edit Network' : 'Add Network'}
+        />
+        <RightAsideContent>
+          <Stack width="100%" flexDirection="column" gap="md">
+            <TextField
+              label="Network ID"
+              aria-label="networkId"
+              type="text"
+              value={getValues('networkId')}
+              {...register('networkId')}
+            />
+            <TextField
+              label="Title"
+              aria-label="title"
+              type="text"
+              value={getValues('name')}
+              {...register('name')}
+            />
+            <Stack
+              gap="md"
+              justifyContent={'space-between'}
+              paddingBlock={'lg'}
             >
-              + host
-            </Button>
-          </Stack>
-          <Stack gap="md" flexDirection={'column'}>
-            {fields.map((field, index) => {
-              const nodeVersion = watch(`hosts.${index}.nodeVersion`);
-              const isHealthy = watch(`hosts.${index}.isHealthy`);
-              return (
-                <Stack key={field.id} flexDirection={'column'} gap={'md'}>
-                  <Label bold>Host {index + 1}</Label>
-                  <Stack gap={'sm'} alignItems={'center'}>
-                    <TextField
-                      id={`hosts.${index}.url`}
-                      type="text"
-                      aria-label="url"
-                      defaultValue={getValues(`hosts.${index}.url`)}
-                      {...register(`hosts.${index}.url`, {
-                        onBlur: () => {
-                          const host = getValues(`hosts.${index}.url`);
-                          if (!host) {
-                            return;
-                          }
-                          fetchNetworkId(host).then((nodeVersion) => {
-                            setValue(`hosts.${index}.nodeVersion`, nodeVersion);
-                            setValue(
-                              `hosts.${index}.isHealthy`,
-                              nodeVersion !== undefined,
-                            );
-                          });
-                        },
-                      })}
-                    />
-                    <MonoCircle
-                      className={classNames({
-                        [successClass]: isHealthy === true,
-                        [failureClass]: isHealthy === false,
-                        [pendingClass]: isHealthy === undefined,
-                      })}
-                    />
-                    <Button
-                      isDisabled={fields.length === 1}
-                      onPress={() => remove(index)}
-                      variant="transparent"
-                    >
-                      <MonoDelete />
-                    </Button>
+              <Heading variant="h4">Host Urls</Heading>
+              <Button
+                variant="outlined"
+                isCompact
+                onPress={() =>
+                  append({
+                    url: '',
+                    submit: true,
+                    read: true,
+                    confirm: true,
+                    isHealthy: undefined,
+                    nodeVersion: undefined,
+                  })
+                }
+              >
+                + host
+              </Button>
+            </Stack>
+            <Stack gap="md" flexDirection={'column'}>
+              {fields.map((field, index) => {
+                const nodeVersion = watch(`hosts.${index}.nodeVersion`);
+                const isHealthy = watch(`hosts.${index}.isHealthy`);
+                return (
+                  <Stack key={field.id} flexDirection={'column'} gap={'md'}>
+                    <Label bold>Host {index + 1}</Label>
+                    <Stack gap={'sm'} alignItems={'center'}>
+                      <TextField
+                        id={`hosts.${index}.url`}
+                        type="text"
+                        aria-label="url"
+                        defaultValue={getValues(`hosts.${index}.url`)}
+                        {...register(`hosts.${index}.url`, {
+                          onBlur: () => {
+                            const host = getValues(`hosts.${index}.url`);
+                            if (!host) {
+                              return;
+                            }
+                            fetchNetworkId(host).then((nodeVersion) => {
+                              setValue(
+                                `hosts.${index}.nodeVersion`,
+                                nodeVersion,
+                              );
+                              setValue(
+                                `hosts.${index}.isHealthy`,
+                                nodeVersion !== undefined,
+                              );
+                            });
+                          },
+                        })}
+                      />
+                      <MonoCircle
+                        className={classNames({
+                          [successClass]: isHealthy === true,
+                          [failureClass]: isHealthy === false,
+                          [pendingClass]: isHealthy === undefined,
+                        })}
+                      />
+                      <Button
+                        isDisabled={fields.length === 1}
+                        onPress={() => remove(index)}
+                        variant="transparent"
+                      >
+                        <MonoDelete />
+                      </Button>
+                    </Stack>
+                    {nodeVersion && nodeVersion !== networkId ? (
+                      <Text size="smallest">
+                        <Stack gap={'sm'}>
+                          <MonoWarning />
+                          the host networkId is <strong>
+                            {nodeVersion}
+                          </strong>{' '}
+                          but networkId field is <strong>{networkId}</strong>
+                        </Stack>
+                      </Text>
+                    ) : null}
                   </Stack>
-                  {nodeVersion && nodeVersion !== networkId ? (
-                    <Text size="smallest">
-                      <Stack gap={'sm'}>
-                        <MonoWarning />
-                        the host networkId is <strong>{nodeVersion}</strong> but
-                        networkId field is <strong>{networkId}</strong>
-                      </Stack>
-                    </Text>
-                  ) : null}
-                </Stack>
-              );
-            })}
+                );
+              })}
+            </Stack>
           </Stack>
-
-          <Stack gap={'md'} width="100%" justifyContent="flex-end">
-            <Button variant="outlined" onPress={() => onClose()} type="reset">
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              isDisabled={!isNetworkIdValid || !formState.isDirty}
-            >
-              Save
-            </Button>
-          </Stack>
-        </form>
-      </Stack>
-    </>
+        </RightAsideContent>
+        <RightAsideFooter>
+          <Button variant="outlined" onPress={() => onClose()} type="reset">
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            isDisabled={!isNetworkIdValid || !formState.isDirty}
+          >
+            Save
+          </Button>
+        </RightAsideFooter>
+      </form>
+    </RightAside>
   );
 }

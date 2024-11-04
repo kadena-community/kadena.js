@@ -1,7 +1,6 @@
 import { AccountInput } from '@/Components/AccountInput/AccountInput';
 import { ConfirmDeletion } from '@/Components/ConfirmDeletion/ConfirmDeletion';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
-import { displayContentsClass } from '@/Components/Sidebar/style.css';
 import {
   contactRepository,
   IContact,
@@ -10,7 +9,12 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { labelBoldClass } from '@/pages/transaction/components/style.css';
 import { IReceiverAccount } from '@/pages/transfer/utils';
 import { Button, Notification, Stack, Text, TextField } from '@kadena/kode-ui';
-import { useLayout } from '@kadena/kode-ui/patterns';
+import {
+  RightAside,
+  RightAsideContent,
+  RightAsideFooter,
+  RightAsideHeader,
+} from '@kadena/kode-ui/patterns';
 import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
@@ -24,12 +28,13 @@ export function ContactForm({
   onClose,
   onDone,
   input,
+  isOpen,
 }: {
   input?: IContact;
   onClose: () => void;
   onDone: (contect: IContact) => void;
+  isOpen: boolean;
 }) {
-  const { setAsideTitle } = useLayout();
   const prompt = usePrompt();
   const { activeNetwork } = useWallet();
   const [error, setError] = useState<string | null>(null);
@@ -56,7 +61,6 @@ export function ContactForm({
         discoverdAccount: undefined,
       },
     );
-    setAsideTitle(input?.uuid ? 'Edit Contact' : 'Add Contact');
   }, [input?.uuid]);
 
   const createContact = useCallback(
@@ -101,82 +105,84 @@ export function ContactForm({
   if (!activeNetwork) return null;
 
   return (
-    <>
-      <form
-        className={displayContentsClass}
-        onSubmit={handleSubmit(createContact)}
-      >
-        <Stack flexDirection={'column'} gap="md">
-          <TextField
-            label="Name"
-            defaultValue={getValues('name')}
-            {...register('name', { required: true })}
-          />
-          <TextField
-            label="Email (optional)"
-            defaultValue={getValues('email')}
-            {...register('email')}
-          />
-
-          <Stack flexDirection={'column'} gap={'sm'} marginBlockStart={'lg'}>
-            <Stack gap="sm" alignItems={'center'}>
-              <Text className={labelBoldClass}>KDA Account</Text>
-            </Stack>
-            <Controller
-              name="discoverdAccount"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <Stack flexDirection={'column'} gap={'sm'}>
-                  <AccountInput
-                    account={field.value}
-                    networkId={activeNetwork.networkId}
-                    contract={'coin'}
-                    onAccount={(value) => {
-                      field.onChange(value);
-                    }}
-                  />
-                </Stack>
-              )}
+    <RightAside isOpen={isOpen}>
+      <form onSubmit={handleSubmit(createContact)}>
+        <RightAsideHeader
+          label={input?.uuid ? 'Edit Contact' : 'Add Contact'}
+        />
+        <RightAsideContent>
+          <Stack width="100%" flexDirection="column" gap="md">
+            <TextField
+              label="Name"
+              defaultValue={getValues('name')}
+              {...register('name', { required: true })}
             />
-          </Stack>
-          {error && (
-            <Notification intent="negative" role="alert">
-              {error}
-            </Notification>
-          )}
-          <Stack gap={'md'} width="100%" justifyContent="flex-end">
-            {input?.uuid && (
-              <Button
-                type="button"
-                variant="negative"
-                onClick={async () => {
-                  const confirm = await prompt((resolve, reject) => (
-                    <ConfirmDeletion
-                      onCancel={() => reject()}
-                      onDelete={() => resolve(true)}
-                      title="Delete Contact"
-                      description="Are you sure you want to delete this contact?"
+            <TextField
+              label="Email (optional)"
+              defaultValue={getValues('email')}
+              {...register('email')}
+            />
+
+            <Stack flexDirection={'column'} gap={'sm'} marginBlockStart={'lg'}>
+              <Stack gap="sm" alignItems={'center'}>
+                <Text className={labelBoldClass}>KDA Account</Text>
+              </Stack>
+              <Controller
+                name="discoverdAccount"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <Stack flexDirection={'column'} gap={'sm'}>
+                    <AccountInput
+                      account={field.value}
+                      networkId={activeNetwork.networkId}
+                      contract={'coin'}
+                      onAccount={(value) => {
+                        field.onChange(value);
+                      }}
                     />
-                  ));
-                  if (confirm) {
-                    await contactRepository.deleteContact(input.uuid);
-                    onClose();
-                  }
-                }}
-              >
-                Delete
-              </Button>
+                  </Stack>
+                )}
+              />
+            </Stack>
+            {error && (
+              <Notification intent="negative" role="alert">
+                {error}
+              </Notification>
             )}
-            <Button onClick={onClose} type="reset" variant="transparent">
-              Cancel
-            </Button>
-            <Button type="submit" isDisabled={!isValid}>
-              Save
-            </Button>
           </Stack>
-        </Stack>
+        </RightAsideContent>
+        <RightAsideFooter>
+          {input?.uuid && (
+            <Button
+              type="button"
+              variant="negative"
+              onClick={async () => {
+                const confirm = await prompt((resolve, reject) => (
+                  <ConfirmDeletion
+                    onCancel={() => reject()}
+                    onDelete={() => resolve(true)}
+                    title="Delete Contact"
+                    description="Are you sure you want to delete this contact?"
+                  />
+                ));
+                if (confirm) {
+                  await contactRepository.deleteContact(input.uuid);
+                  onClose();
+                }
+              }}
+            >
+              Delete
+            </Button>
+          )}
+          <Button onClick={onClose} type="reset" variant="transparent">
+            Cancel
+          </Button>
+          <Button type="submit" isDisabled={!isValid}>
+            Save
+          </Button>
+        </RightAsideFooter>
       </form>
-    </>
+    </RightAside>
   );
 }

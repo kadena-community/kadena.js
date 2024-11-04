@@ -22,13 +22,18 @@ import {
 } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
-import { createPortal } from 'react-dom';
 import { panelClass } from '../home/style.css';
 import { ContactForm } from './Components/ContactForm';
 
 export function Contacts() {
-  const { handleSetAsideExpanded, isAsideExpanded, asideRef } = useLayout({
-    appContext: undefined,
+  const { handleSetAsideExpanded, isAsideExpanded } = useLayout({
+    appContext: {
+      visual: <MonoContacts />,
+      label: 'Add Contact',
+      onPress: () => {
+        handleSetAsideExpanded(true);
+      },
+    },
     breadCrumbs: [
       {
         label: 'Contacts',
@@ -48,16 +53,13 @@ export function Contacts() {
 
   return (
     <>
-      {isAsideExpanded &&
-        asideRef &&
-        createPortal(
-          <ContactForm
-            input={editContact}
-            onClose={closeForm}
-            onDone={closeForm}
-          />,
-          asideRef,
-        )}
+      <ContactForm
+        input={editContact}
+        onClose={closeForm}
+        onDone={closeForm}
+        isOpen={isAsideExpanded}
+      />
+
       <Stack flexDirection={'column'} className={panelClass} gap={'md'}>
         <Stack justifyContent={'space-between'}>
           <Heading variant="h3">Contacts</Heading>

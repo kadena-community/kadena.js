@@ -36,10 +36,13 @@ export interface ILayoutContext {
   setLocation: (location?: ISideBarLayoutLocation | undefined) => void;
   location?: ISideBarLayoutLocation;
   isActiveUrl: (url?: string) => boolean;
-  asideTitle?: string;
-  setAsideTitle: (value?: string) => void;
+  rightAsideTitle?: string;
+  setRightAsideTitle: (value?: string) => void;
   asideRef?: HTMLDivElement | null;
   setAsideRef: (value?: HTMLDivElement | null) => void;
+
+  isRightAsideExpanded: boolean;
+  setIsRightAsideExpanded: (value: boolean) => void;
 }
 export const LayoutContext = createContext<ILayoutContext>({
   isAsideExpanded: false,
@@ -54,7 +57,9 @@ export const LayoutContext = createContext<ILayoutContext>({
   breadCrumbs: [],
   setLocation: () => {},
   isActiveUrl: () => {},
-  setAsideTitle: () => {},
+  setRightAsideTitle: () => {},
+  isRightAsideExpanded: false,
+  setIsRightAsideExpanded: () => {},
 });
 
 export interface IuseLayoutProps extends ILayoutContext {}
@@ -95,7 +100,9 @@ export interface ILayoutProvider extends PropsWithChildren {}
 export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   const [asideRef, setAsideRefState] = useState<HTMLDivElement | null>(null);
   const [isAsideExpanded, setIsAsideExpanded] = useState(false);
-  const [asideTitle, setAsideTitleState] = useState<string | undefined>('');
+  const [rightAsideTitle, setRightAsideTitleState] = useState<
+    string | undefined
+  >('');
   const [isExpanded, setIsExpanded] = useState(false);
   const [location, setLocationState] = useState<
     ISideBarLayoutLocation | undefined
@@ -143,8 +150,8 @@ export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   const setLocation = (value?: ISideBarLayoutLocation | undefined) => {
     setLocationState(value);
   };
-  const setAsideTitle = (value?: string) => {
-    setAsideTitleState(value);
+  const setRightAsideTitle = (value?: string) => {
+    setRightAsideTitleState(value);
   };
 
   const setAsideRef = (value?: HTMLDivElement | null) => {
@@ -171,10 +178,12 @@ export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
         setLocation,
         location,
         isActiveUrl,
-        asideTitle,
-        setAsideTitle,
+        rightAsideTitle,
+        setRightAsideTitle,
         asideRef,
         setAsideRef,
+        isRightAsideExpanded: isAsideExpanded,
+        setIsRightAsideExpanded: handleSetAsideExpanded,
       }}
     >
       {children}

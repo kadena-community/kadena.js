@@ -4,20 +4,17 @@ import { shorten } from '@/utils/helpers';
 import { MonoKey } from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
-import { createPortal } from 'react-dom';
 import { CreateKeySetForm } from './CreateKeySetForm';
 
 export function KeySets() {
-  const { handleSetAsideExpanded, isAsideExpanded, asideRef } = useLayout();
+  const { handleSetAsideExpanded, isAsideExpanded } = useLayout();
   const { keysets } = useWallet();
   return (
     <>
-      {isAsideExpanded &&
-        asideRef &&
-        createPortal(
-          <CreateKeySetForm close={() => handleSetAsideExpanded(false)} />,
-          asideRef,
-        )}
+      <CreateKeySetForm
+        isOpen={isAsideExpanded}
+        close={() => handleSetAsideExpanded(false)}
+      />
       <Stack flexDirection={'column'}>
         <Stack marginBlock={'md'} justifyContent={'space-between'}>
           <Heading variant="h3">Key Sets</Heading>

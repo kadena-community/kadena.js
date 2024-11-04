@@ -27,7 +27,6 @@ import {
 import { useLayout } from '@kadena/kode-ui/patterns';
 import classNames from 'classnames';
 import { useState } from 'react';
-import { createPortal } from 'react-dom';
 import { Navigate, useSearchParams } from 'react-router-dom';
 import { panelClass } from '../home/style.css.ts';
 import { CreateKeySetForm } from '../keys/Components/CreateKeySetForm.tsx';
@@ -45,7 +44,7 @@ type IKeySetType =
 
 type AccountType = 'k:account' | 'w:account' | 'r:account';
 export function CreateAccount() {
-  const { handleSetAsideExpanded, isAsideExpanded, asideRef } = useLayout();
+  const { handleSetAsideExpanded, isAsideExpanded } = useLayout();
   const [selectedItem, setSelectedItem] = useState<IKeySetType>();
   const [created, setCreated] = useState<IAccount | null>(null);
   const [accountType, setAccountType] = useState<AccountType>('k:account');
@@ -157,20 +156,16 @@ export function CreateAccount() {
 
   return (
     <>
-      {isAsideExpanded &&
-        asideRef &&
-        createPortal(
-          <CreateKeySetForm
-            close={() => handleSetAsideExpanded(false)}
-            onDone={(keyset: IKeySet) => {
-              setSelectedItem({
-                item: keyset,
-                type: 'keyset',
-              });
-            }}
-          />,
-          asideRef,
-        )}
+      <CreateKeySetForm
+        isOpen={isAsideExpanded}
+        close={() => handleSetAsideExpanded(false)}
+        onDone={(keyset: IKeySet) => {
+          setSelectedItem({
+            item: keyset,
+            type: 'keyset',
+          });
+        }}
+      />
 
       <Card>
         <Stack flexDirection={'column'} gap={'xxl'}>

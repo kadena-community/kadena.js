@@ -6,7 +6,6 @@ import { MonoWifiTethering, MonoWorkspaces } from '@kadena/kode-icons/system';
 import { Button, Heading, Link, Stack, Text } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
-import { createPortal } from 'react-dom';
 import { panelClass } from '../home/style.css';
 import {
   getNewNetwork,
@@ -16,7 +15,7 @@ import {
 
 export function Networks() {
   const { networks } = useWallet();
-  const { asideRef, handleSetAsideExpanded, isAsideExpanded } = useLayout();
+  const { handleSetAsideExpanded, isAsideExpanded } = useLayout();
   const [selectedNetwork, setSelectedNetwork] =
     useState<INetworkWithOptionalUuid>(() => getNewNetwork());
   useLayout({
@@ -34,28 +33,24 @@ export function Networks() {
   return (
     <>
       <Stack margin="md" flexDirection={'column'}>
-        {isAsideExpanded &&
-          asideRef &&
-          createPortal(
-            <NetworkForm
-              onClose={() => {
-                handleSetAsideExpanded(false);
-              }}
-              onSave={async (updNetwork) => {
-                if (updNetwork.uuid) {
-                  await networkRepository.updateNetwork(updNetwork);
-                } else {
-                  await networkRepository.addNetwork({
-                    ...updNetwork,
-                    uuid: crypto.randomUUID(),
-                  });
-                }
-                handleSetAsideExpanded(false);
-              }}
-              network={selectedNetwork}
-            />,
-            asideRef,
-          )}
+        <NetworkForm
+          isOpen={isAsideExpanded}
+          onClose={() => {
+            handleSetAsideExpanded(false);
+          }}
+          onSave={async (updNetwork) => {
+            if (updNetwork.uuid) {
+              await networkRepository.updateNetwork(updNetwork);
+            } else {
+              await networkRepository.addNetwork({
+                ...updNetwork,
+                uuid: crypto.randomUUID(),
+              });
+            }
+            handleSetAsideExpanded(false);
+          }}
+          network={selectedNetwork}
+        />
 
         <Stack
           className={panelClass}
