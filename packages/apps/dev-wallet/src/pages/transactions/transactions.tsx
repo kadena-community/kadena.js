@@ -128,38 +128,6 @@ export const TransactionList = ({
         ]}
         data={txs}
       />
-
-      {txs.length ? (
-        <ul className={listClass}>
-          {txs.map((tx) => (
-            <li key={tx.uuid}>
-              <Stack
-                justifyContent="space-between"
-                alignItems={'center'}
-                className={listItemClass}
-                gap={'lg'}
-              >
-                <Text className={hashStyle}>
-                  <span
-                    title={tx.type === 'exec' ? tx.code : `cont: ${tx.code}`}
-                  >
-                    {tx.type === 'exec' ? tx.code : `cont: ${tx.code}`}
-                  </span>
-                </Text>
-
-                <Text>{tx.status}</Text>
-
-                <Text>
-                  {new Date(
-                    ((JSON.parse(tx.cmd) as IPactCommand).meta.creationTime ||
-                      0) * 1000,
-                  ).toLocaleString()}
-                </Text>
-              </Stack>
-            </li>
-          ))}
-        </ul>
-      ) : null}
     </Box>
   );
 };
