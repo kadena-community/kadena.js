@@ -19,6 +19,12 @@ import {
 import { LayoutProvider, useLayout } from './components/LayoutProvider';
 import { KadenaLogo } from './components/Logo/KadenaLogo';
 import { KLogo } from './components/Logo/KLogo';
+import {
+  RightAside,
+  RightAsideContent,
+  RightAsideFooter,
+  RightAsideHeader,
+} from './components/RightAside';
 import { SideBarFooter } from './components/SideBarFooter';
 import { SideBarFooterItem } from './components/SideBarFooterItem';
 import { SideBarItem } from './components/SideBarItem';
@@ -63,7 +69,12 @@ const LinkComponent: FC<PropsWithChildren<{ to: string }>> = ({
 };
 
 const InnerLayout = () => {
-  const { setAppContext, isExpanded } = useLayout();
+  const {
+    setAppContext,
+    isExpanded,
+    setIsRightAsideExpanded,
+    isRightAsideExpanded,
+  } = useLayout();
 
   useEffect(() => {
     setAppContext({
@@ -187,7 +198,34 @@ const InnerLayout = () => {
         </SideBarFooter>
       }
     >
-      <Stack style={{ maxWidth: '800px', height: '400px' }}>content</Stack>
+      <RightAside isOpen={isRightAsideExpanded}>
+        <RightAsideHeader label="test title" />
+        <RightAsideContent>more content</RightAsideContent>
+        <RightAsideFooter>
+          <Button
+            onPress={() => {
+              setIsRightAsideExpanded(false);
+            }}
+          >
+            Close
+          </Button>
+        </RightAsideFooter>
+      </RightAside>
+
+      <Stack
+        width="100%"
+        style={{ height: '400px' }}
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Button
+          onPress={() => {
+            setIsRightAsideExpanded(true);
+          }}
+        >
+          open sidebar
+        </Button>
+      </Stack>
     </SideBarLayout>
   );
 };
