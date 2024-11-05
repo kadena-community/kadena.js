@@ -68,7 +68,6 @@ export class WalletSDK {
         'Failed to generate chainweb url using chainwebHostGenerator method',
       );
     }
-    console.log('getChainwebUrl', result);
     return result;
   }
 
