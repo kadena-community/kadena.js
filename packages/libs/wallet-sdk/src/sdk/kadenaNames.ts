@@ -23,12 +23,14 @@ export class KadenaNames {
       const result = await nameToAddress(name, networkId, host);
 
       if (result === undefined) {
-        console.warn(`No address found for name: ${name}`);
+        this._sdk._logger.warn(`No address found for name: ${name}`);
         return null;
       }
       return result;
     } catch (error) {
-      console.error(`Error in name resolving action: ${error.message}`);
+      this._sdk._logger.error(
+        `Error in name resolving action: ${error.message}`,
+      );
       throw new Error(`Error resolving address: ${error.message}`);
     }
   }
@@ -42,12 +44,14 @@ export class KadenaNames {
       const result = await addressToName(address, networkId, host);
 
       if (result === undefined) {
-        console.warn(`No address found for name: ${address}`);
+        this._sdk._logger.warn(`No address found for name: ${address}`);
         return null;
       }
       return result;
     } catch (error) {
-      console.error(`Error in name resolving action: ${error.message}`);
+      this._sdk._logger.error(
+        `Error in name resolving action: ${error.message}`,
+      );
       throw new Error(`Error resolving address: ${error.message}`);
     }
   }

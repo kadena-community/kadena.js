@@ -4,7 +4,7 @@
     "module": "NodeNext",
     "outDir": "lib/esm",
     "moduleResolution": "NodeNext",
-    "types": ["node"]
+    "types": ["node", "vitest/globals"]
   },
   "include": ["./src", "./src/**/*"],
   "exclude": ["**/vendor/**/*"]
