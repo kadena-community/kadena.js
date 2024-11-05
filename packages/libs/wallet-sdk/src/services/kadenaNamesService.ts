@@ -16,16 +16,8 @@ export function ensureKdaExtension(name: string): string {
   return lowerCaseName;
 }
 
-const client = ({
-  networkId,
-  networkHost,
-}: {
-  networkId: string;
-  networkHost: string;
-}): IClient =>
-  createClient(
-    `${networkHost}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
-  );
+const client = ({ networkHost }: { networkHost: string }): IClient =>
+  createClient(networkHost);
 
 async function kdnResolver(
   identifier: string,
@@ -44,13 +36,13 @@ async function kdnResolver(
         : identifier.trim();
 
     const transaction = Pact.builder
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .execution((Pact as any).modules[module][method](param))
       .setMeta({ chainId })
       .setNetworkId(networkId)
       .createTransaction();
 
     const response: ICommandResult = await client({
-      networkId,
       networkHost,
     }).dirtyRead(transaction);
 

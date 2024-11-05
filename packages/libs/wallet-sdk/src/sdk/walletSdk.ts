@@ -37,7 +37,7 @@ import { simpleTransferCreateCommand } from './utils-tmp.js';
 export class WalletSDK {
   private _chainwebHostGenerator: ChainwebHostGenerator;
   private _graphqlHostGenerator: GraphqlHostGenerator;
-  private _logger: Logger;
+  public _logger: Logger;
 
   public kadenaNames: KadenaNames;
   public exchange: typeof exchange = exchange;
@@ -76,7 +76,7 @@ export class WalletSDK {
   ): ReturnType<GraphqlHostGenerator> {
     const result = this._graphqlHostGenerator(...args);
     if (!result) {
-      console.log(
+      this._logger.error(
         'Failed to generate graphql url using graphqlHostGenerator method',
       );
       throw new Error(
@@ -139,8 +139,7 @@ export class WalletSDK {
     networkId: string,
     chainId: ChainId,
   ): Promise<ITransactionDescriptor> {
-    const parsed = JSON.parse(transaction.cmd);
-    console.log('parsed:', parsed);
+    // const parsed = JSON.parse(transaction.cmd); // unused
     const host = this.getChainwebUrl({ networkId, chainId });
     const result = await createClient(() => host).submitOne(transaction);
     return result;
@@ -161,11 +160,8 @@ export class WalletSDK {
     fungible?: string,
     chainsIds?: ChainId[],
   ): Promise<Transfer[]> {
-    console.log('get transfers1');
     const url = this.getGraphqlUrl({ networkId });
-    console.log({ url });
     const transfers = await getTransfers(url, accountName, fungible);
-    console.log('result:', transfers);
     return transfers;
   }
 
@@ -235,7 +231,7 @@ export class WalletSDK {
     });
 
     Promise.all(promises).catch((error) => {
-      console.log(error);
+      // console.log(error);
     });
   }
 
@@ -258,7 +254,7 @@ export class WalletSDK {
 
       return accountDetailsList;
     } catch (error) {
-      console.error(`Error in fetching account details: ${error.message}`);
+      this._logger.error(`Error in fetching account details: ${error.message}`);
       throw new Error(`Failed to get account details for ${accountName}`);
     }
   }
