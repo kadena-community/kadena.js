@@ -1,13 +1,19 @@
+import { FormatCreationDateWrapper } from '@/Components/Table/FormatCreationDateWrapper';
 import {
   ITransaction,
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { shorten } from '@/utils/helpers';
+
+import { FormatHash } from '@/Components/Table/FormatHash';
 import { IPactCommand } from '@kadena/client';
-import { MonoOpenInNew, MonoSwapHoriz } from '@kadena/kode-icons/system';
+import { MonoSwapHoriz } from '@kadena/kode-icons/system';
 import { Box, Heading, Stack, Text } from '@kadena/kode-ui';
-import { useLayout } from '@kadena/kode-ui/patterns';
+import {
+  CompactTable,
+  CompactTableFormatters,
+  useLayout,
+} from '@kadena/kode-ui/patterns';
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { listClass, listItemClass, panelClass } from '../home/style.css';
@@ -86,6 +92,43 @@ export const TransactionList = ({
   );
   return (
     <Box marginBlockStart="md">
+      <CompactTable
+        fields={[
+          {
+            label: 'Status',
+            key: 'status',
+            variant: 'code',
+            width: '10%',
+            render: CompactTableFormatters.FormatStatus(),
+          },
+          {
+            label: 'GroupId',
+            key: 'groupId',
+            variant: 'code',
+            width: '30%',
+            render: CompactTableFormatters.FormatLinkWrapper({
+              url: '/transaction/:value',
+              linkComponent: Link,
+            }),
+          },
+          {
+            label: 'Hash',
+            key: 'hash',
+            variant: 'code',
+            width: '20%',
+            render: FormatHash(),
+          },
+          {
+            label: 'Date',
+            key: 'cmd',
+            variant: 'code',
+            width: '40%',
+            render: FormatCreationDateWrapper(),
+          },
+        ]}
+        data={txs}
+      />
+
       {txs.length ? (
         <ul className={listClass}>
           {txs.map((tx) => (
@@ -96,13 +139,6 @@ export const TransactionList = ({
                 className={listItemClass}
                 gap={'lg'}
               >
-                <Link to={`/transaction/${tx.groupId}`}>
-                  <Text>
-                    <MonoOpenInNew />
-                  </Text>
-                </Link>
-                <Text>{shorten(tx.hash)}</Text>
-
                 <Text className={hashStyle}>
                   <span
                     title={tx.type === 'exec' ? tx.code : `cont: ${tx.code}`}

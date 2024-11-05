@@ -4,4 +4,5 @@ export interface ICompactTableFormatterProps {
 
 export interface ICompactTableFormatterLinkProps {
   url: string;
+  linkComponent?: any;
 }
