@@ -3,41 +3,19 @@ import { networkRepository } from '@/modules/network/network.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { createAsideUrl } from '@/utils/createAsideUrl';
 import { MonoWifiTethering, MonoWorkspaces } from '@kadena/kode-icons/system';
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  Heading,
-  Link,
-  Stack,
-  Text,
-} from '@kadena/kode-ui';
+import { Button, Heading, Link, Stack, Text } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { panelClass } from '../home/style.css';
 import {
+  getNewNetwork,
   INetworkWithOptionalUuid,
   NetworkForm,
-} from './Components/network-form';
-
-const getNewNetwork = (): INetworkWithOptionalUuid => ({
-  uuid: undefined,
-  networkId: '',
-  name: '',
-  hosts: [
-    {
-      url: '',
-      submit: false,
-      read: false,
-      confirm: false,
-    },
-  ],
-});
+} from './Components/NetworkForm';
 
 export function Networks() {
   const { networks } = useWallet();
-  const [showNetworkModal, setShowNetworkModal] = useState(false);
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const [selectedNetwork, setSelectedNetwork] =
     useState<INetworkWithOptionalUuid>(() => getNewNetwork());
   useLayout({
@@ -55,29 +33,25 @@ export function Networks() {
   return (
     <>
       <Stack margin="md" flexDirection={'column'}>
-        <Dialog
-          isOpen={showNetworkModal}
-          onOpenChange={setShowNetworkModal}
-          size="sm"
-        >
-          <DialogHeader>Add Network</DialogHeader>
-          <DialogContent>
-            <NetworkForm
-              onSave={async (updNetwork) => {
-                if (updNetwork.uuid) {
-                  await networkRepository.updateNetwork(updNetwork);
-                } else {
-                  await networkRepository.addNetwork({
-                    ...updNetwork,
-                    uuid: crypto.randomUUID(),
-                  });
-                }
-                setShowNetworkModal(false);
-              }}
-              network={selectedNetwork}
-            />
-          </DialogContent>
-        </Dialog>
+        <NetworkForm
+          isOpen={isRightAsideExpanded}
+          onClose={() => {
+            setIsRightAsideExpanded(false);
+          }}
+          onSave={async (updNetwork) => {
+            if (updNetwork.uuid) {
+              await networkRepository.updateNetwork(updNetwork);
+            } else {
+              await networkRepository.addNetwork({
+                ...updNetwork,
+                uuid: crypto.randomUUID(),
+              });
+            }
+            setIsRightAsideExpanded(false);
+          }}
+          network={selectedNetwork}
+        />
+
         <Stack
           className={panelClass}
           marginBlockStart="xl"
@@ -96,7 +70,9 @@ export function Networks() {
               isCompact
               onPress={() => {
                 setSelectedNetwork(getNewNetwork());
-                setShowNetworkModal(true);
+                setTimeout(() => {
+                  setIsRightAsideExpanded(true);
+                }, 0);
               }}
             >
               Add Network
@@ -126,7 +102,9 @@ export function Networks() {
                     variant="outlined"
                     onPress={() => {
                       setSelectedNetwork(network);
-                      setShowNetworkModal(true);
+                      setTimeout(() => {
+                        setIsRightAsideExpanded(true);
+                      }, 0);
                     }}
                   >
                     Edit

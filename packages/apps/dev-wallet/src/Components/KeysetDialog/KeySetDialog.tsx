@@ -108,7 +108,7 @@ export function KeySetDialog({
                 <Stack flexDirection={'column'}>
                   {addedKeys.length === 0 && <Text>No keys added yet!</Text>}
                   {addedKeys.map((key) => (
-                    <ListItem>
+                    <ListItem key={key}>
                       <Stack
                         key={key}
                         flex={1}

@@ -23,12 +23,10 @@ export interface ISideBarBreadCrumb {
   visual?: React.ReactElement;
 }
 export interface ILayoutContext {
-  isAsideExpanded: boolean;
   isExpanded: boolean;
   handleToggleExpand: (e: PressEvent) => void;
   handleSetExpanded: (value: boolean) => void;
   handleToggleAsideExpand: (e: PressEvent) => void;
-  handleSetAsideExpanded: (value: boolean) => void;
   appContext?: IAppContextProps;
   setAppContext: (context?: IAppContextProps) => void;
   breadCrumbs: ISideBarBreadCrumb[];
@@ -36,11 +34,14 @@ export interface ILayoutContext {
   setLocation: (location?: ISideBarLayoutLocation | undefined) => void;
   location?: ISideBarLayoutLocation;
   isActiveUrl: (url?: string) => boolean;
-  asideTitle?: string;
-  setAsideTitle: (value?: string) => void;
+  rightAsideTitle?: string;
+  setRightAsideTitle: (value?: string) => void;
+  rightAsideRef?: HTMLDivElement | null;
+  setRightAsideRef: (value?: HTMLDivElement | null) => void;
+  isRightAsideExpanded: boolean;
+  setIsRightAsideExpanded: (value: boolean) => void;
 }
 export const LayoutContext = createContext<ILayoutContext>({
-  isAsideExpanded: false,
   isExpanded: true,
   handleToggleExpand: () => {},
   handleSetExpanded: () => {},
@@ -52,12 +53,12 @@ export const LayoutContext = createContext<ILayoutContext>({
   breadCrumbs: [],
   setLocation: () => {},
   isActiveUrl: () => {},
-  setAsideTitle: () => {},
+  setRightAsideTitle: () => {},
+  isRightAsideExpanded: false,
+  setIsRightAsideExpanded: () => {},
 });
 
-export interface IuseLayoutProps extends ILayoutContext {
-  initPage: (props: Pick<ILayoutContext, 'appContext' | 'breadCrumbs'>) => void;
-}
+export interface IuseLayoutProps extends ILayoutContext {}
 
 export const useLayout = (
   props?: Pick<ILayoutContext, 'appContext' | 'breadCrumbs'>,
@@ -93,8 +94,12 @@ export const useLayout = (
 export interface ILayoutProvider extends PropsWithChildren {}
 
 export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
-  const [isAsideExpanded, setIsAsideExpanded] = useState(false);
-  const [asideTitle, setAsideTitleState] = useState<string | undefined>('');
+  const [rightAsideRef, setRightAsideRefState] =
+    useState<HTMLDivElement | null>(null);
+  const [isRightAsideExpanded, setIsRightAsideExpanded] = useState(false);
+  const [rightAsideTitle, setRightAsideTitleState] = useState<
+    string | undefined
+  >('');
   const [isExpanded, setIsExpanded] = useState(false);
   const [location, setLocationState] = useState<
     ISideBarLayoutLocation | undefined
@@ -113,21 +118,21 @@ export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
 
   const handleToggleAsideExpand = useCallback(
     (e: PressEvent) => {
-      if (isAsideExpanded) {
+      if (isRightAsideExpanded) {
         location?.push(`${location?.url}`);
       }
 
-      setIsAsideExpanded((v) => !v);
+      setIsRightAsideExpanded((v) => !v);
     },
     [location?.url],
   );
 
-  const handleSetAsideExpanded = useCallback(
+  const handleSetRightAsideExpanded = useCallback(
     (value: boolean) => {
       if (!value) {
         location?.push(`${location?.url}`);
       }
-      setIsAsideExpanded(value);
+      setIsRightAsideExpanded(value);
     },
     [location?.url],
   );
@@ -142,8 +147,12 @@ export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   const setLocation = (value?: ISideBarLayoutLocation | undefined) => {
     setLocationState(value);
   };
-  const setAsideTitle = (value?: string) => {
-    setAsideTitleState(value);
+  const setRightAsideTitle = (value?: string) => {
+    setRightAsideTitleState(value);
+  };
+
+  const setRightAsideRef = (value?: HTMLDivElement | null) => {
+    setRightAsideRefState(value ? value : null);
   };
 
   const isActiveUrl = (url?: string) => {
@@ -153,12 +162,10 @@ export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   return (
     <LayoutContext.Provider
       value={{
-        isAsideExpanded,
         isExpanded,
         handleToggleExpand,
         handleSetExpanded,
         handleToggleAsideExpand,
-        handleSetAsideExpanded,
         appContext,
         setAppContext,
         breadCrumbs,
@@ -166,8 +173,12 @@ export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
         setLocation,
         location,
         isActiveUrl,
-        asideTitle,
-        setAsideTitle,
+        rightAsideTitle,
+        setRightAsideTitle,
+        rightAsideRef,
+        setRightAsideRef,
+        isRightAsideExpanded,
+        setIsRightAsideExpanded: handleSetRightAsideExpanded,
       }}
     >
       {children}

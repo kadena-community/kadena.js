@@ -3,7 +3,13 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { queryAllChainsClient } from '@kadena/client-utils/core';
 import { composePactCommand, execution } from '@kadena/client/fp';
 import { Button, Notification, Stack, TextField } from '@kadena/kode-ui';
-import { useLayout } from '@kadena/kode-ui/patterns';
+import {
+  RightAside,
+  RightAsideContent,
+  RightAsideFooter,
+  RightAsideHeader,
+  useLayout,
+} from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -12,7 +18,7 @@ interface TokenForm {
   symbol: string;
 }
 
-export function AddToken() {
+export function AddTokenForm({ isOpen }: { isOpen: boolean }) {
   const { register, handleSubmit } = useForm<TokenForm>({
     defaultValues: {
       contract: '',
@@ -21,7 +27,7 @@ export function AddToken() {
   });
 
   const { activeNetwork } = useWallet();
-  const { handleSetAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded } = useLayout();
   const [error, setError] = useState<string | null>(null);
 
   async function onSubmit(data: TokenForm) {
@@ -57,25 +63,42 @@ export function AddToken() {
       } as const;
 
       await accountRepository.addFungible(token);
-      handleSetAsideExpanded(false);
+      setIsRightAsideExpanded(false);
     } catch (e: any) {
       setError(e?.message || e);
     }
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack flexDirection={'column'} gap={'md'}>
-        <TextField
-          label="SmartContract"
-          {...register('contract', { required: true })}
-        />
-        <TextField label="Symbol" {...register('symbol', { required: true })} />
-        {error && <Notification role="alert">{error}</Notification>}
-        <Stack width="100%" justifyContent="flex-end" gap="md">
+    <RightAside isOpen={isOpen}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <RightAsideHeader label="Add New Asset" />
+        <RightAsideContent>
+          <Stack width="100%" flexDirection="column" gap="md">
+            <TextField
+              label="SmartContract"
+              {...register('contract', { required: true })}
+            />
+            <TextField
+              label="Symbol"
+              {...register('symbol', { required: true })}
+            />
+            {error && <Notification role="alert">{error}</Notification>}
+          </Stack>
+        </RightAsideContent>
+        <RightAsideFooter>
+          <Button
+            variant="outlined"
+            onPress={() => {
+              setIsRightAsideExpanded(false);
+            }}
+            type="reset"
+          >
+            Cancel
+          </Button>
           <Button type="submit">Add Token</Button>
-        </Stack>
-      </Stack>
-    </form>
+        </RightAsideFooter>
+      </form>
+    </RightAside>
   );
 }

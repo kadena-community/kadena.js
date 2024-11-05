@@ -9,5 +9,4 @@ export const keyItemClass = style({
 export const keyColumnClass = style({
   flex: 1,
   paddingInlineStart: tokens.kda.foundation.spacing.xxxl,
-  borderLeft: `1px solid ${tokens.kda.foundation.color.border.base.default}`,
 });

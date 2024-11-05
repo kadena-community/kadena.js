@@ -92,15 +92,15 @@ export function Result({
       <Stack flexDirection={'column'}>
         <Heading>Transfers</Heading>
         {Object.entries(groupedTransfers).map(([receiver, tx]) => (
-          <ListItem>
-            <Stack key={receiver} flexDirection={'column'}>
+          <ListItem key={receiver}>
+            <Stack flexDirection={'column'}>
               <Stack gap={'lg'}>
                 <Text>Receiver: {shorten(receiver)}</Text>
                 <Text>Total Amount: {tx[0].purpose.data.totalAmount}</Text>
               </Stack>
               {tx.map((t) => {
                 return (
-                  <ListItem>
+                  <ListItem key={t.hash}>
                     <Stack gap="lg">
                       <Text>Tx: {shorten(t.hash)}</Text>
                       <Text>Chain: {t.purpose.data.chainId}</Text>

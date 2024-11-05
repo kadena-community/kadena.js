@@ -1,7 +1,6 @@
 import { AccountInput } from '@/Components/AccountInput/AccountInput';
 import { ConfirmDeletion } from '@/Components/ConfirmDeletion/ConfirmDeletion';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
-import { displayContentsClass } from '@/Components/Sidebar/style.css';
 import {
   contactRepository,
   IContact,
@@ -10,6 +9,12 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { labelBoldClass } from '@/pages/transaction/components/style.css';
 import { IReceiverAccount } from '@/pages/transfer/utils';
 import { Button, Notification, Stack, Text, TextField } from '@kadena/kode-ui';
+import {
+  RightAside,
+  RightAsideContent,
+  RightAsideFooter,
+  RightAsideHeader,
+} from '@kadena/kode-ui/patterns';
 import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
@@ -23,10 +28,12 @@ export function ContactForm({
   onClose,
   onDone,
   input,
+  isOpen,
 }: {
   input?: IContact;
   onClose: () => void;
   onDone: (contect: IContact) => void;
+  isOpen: boolean;
 }) {
   const prompt = usePrompt();
   const { activeNetwork } = useWallet();
@@ -36,8 +43,8 @@ export function ContactForm({
     control,
     getValues,
     handleSubmit,
-    reset,
     formState: { isValid },
+    reset,
   } = useForm<IContactFormData>({
     defaultValues: input ?? {
       name: '',
@@ -54,7 +61,7 @@ export function ContactForm({
         discoverdAccount: undefined,
       },
     );
-  }, [input]);
+  }, [input?.uuid]);
 
   const createContact = useCallback(
     async ({ discoverdAccount, ...data }: IContactFormData) => {
@@ -98,58 +105,56 @@ export function ContactForm({
   if (!activeNetwork) return null;
 
   return (
-    <>
-      <form
-        className={displayContentsClass}
-        onSubmit={handleSubmit(createContact)}
-      >
-        <Stack gap={'lg'} flexDirection={'column'} width="100%">
-          <TextField
-            label="Name"
-            defaultValue={getValues('name')}
-            {...register('name', { required: true })}
-          />
-          <TextField
-            label="Email (optional)"
-            defaultValue={getValues('email')}
-            {...register('email')}
-          />
-
-          <Stack flexDirection={'column'} gap={'sm'} marginBlockStart={'lg'}>
-            <Stack gap="sm" alignItems={'center'}>
-              <Text className={labelBoldClass}>KDA Account</Text>
-            </Stack>
-            <Controller
-              name="discoverdAccount"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <Stack flexDirection={'column'} gap={'sm'}>
-                  <AccountInput
-                    account={field.value}
-                    networkId={activeNetwork.networkId}
-                    contract={'coin'}
-                    onAccount={(value) => {
-                      field.onChange(value);
-                    }}
-                  />
-                </Stack>
-              )}
+    <RightAside isOpen={isOpen}>
+      <form onSubmit={handleSubmit(createContact)}>
+        <RightAsideHeader
+          label={input?.uuid ? 'Edit Contact' : 'Add Contact'}
+        />
+        <RightAsideContent>
+          <Stack width="100%" flexDirection="column" gap="md">
+            <TextField
+              aria-label="Name"
+              label="Name"
+              defaultValue={getValues('name')}
+              {...register('name', { required: true })}
             />
-          </Stack>
-          {error && (
-            <Notification intent="negative" role="alert">
-              {error}
-            </Notification>
-          )}
-        </Stack>
+            <TextField
+              aria-label="Email"
+              label="Email (optional)"
+              defaultValue={getValues('email')}
+              {...register('email')}
+            />
 
-        <Stack
-          width="100%"
-          gap="md"
-          justifyContent="flex-end"
-          marginBlockStart="md"
-        >
+            <Stack flexDirection={'column'} gap={'sm'} marginBlockStart={'lg'}>
+              <Stack gap="sm" alignItems={'center'}>
+                <Text className={labelBoldClass}>KDA Account</Text>
+              </Stack>
+              <Controller
+                name="discoverdAccount"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <Stack flexDirection={'column'} gap={'sm'}>
+                    <AccountInput
+                      account={field.value}
+                      networkId={activeNetwork.networkId}
+                      contract={'coin'}
+                      onAccount={(value) => {
+                        field.onChange(value);
+                      }}
+                    />
+                  </Stack>
+                )}
+              />
+            </Stack>
+            {error && (
+              <Notification intent="negative" role="alert">
+                {error}
+              </Notification>
+            )}
+          </Stack>
+        </RightAsideContent>
+        <RightAsideFooter>
           {input?.uuid && (
             <Button
               type="button"
@@ -172,15 +177,14 @@ export function ContactForm({
               Delete
             </Button>
           )}
-
           <Button onClick={onClose} type="reset" variant="transparent">
             Cancel
           </Button>
           <Button type="submit" isDisabled={!isValid}>
             Save
           </Button>
-        </Stack>
+        </RightAsideFooter>
       </form>
-    </>
+    </RightAside>
   );
 }

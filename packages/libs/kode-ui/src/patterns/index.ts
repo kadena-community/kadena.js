@@ -34,3 +34,12 @@ export type {
   ISideBarItemProps,
   ISideBarProps,
 } from './SideBarLayout';
+
+export {
+  RightAside,
+  RightAsideContent,
+  RightAsideFooter,
+  RightAsideHeader,
+} from './SideBarLayout/components/RightAside';
+
+export type { iRightAsideHeader } from './SideBarLayout/components/RightAside';

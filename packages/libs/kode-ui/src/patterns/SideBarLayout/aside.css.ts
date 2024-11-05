@@ -111,9 +111,12 @@ export const asideContentClass = style([
   atoms({
     padding: 'sm',
     paddingBlockStart: 'md',
-
     flex: 1,
   }),
+  {
+    overflowY: 'scroll',
+    height: '100dvh',
+  },
   responsiveStyle({
     xs: {
       backgroundColor: token('color.background.layer.default'),

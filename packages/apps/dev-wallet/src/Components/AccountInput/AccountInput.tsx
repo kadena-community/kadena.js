@@ -61,6 +61,7 @@ export function AccountInput({
         />
       )}
       <TextField
+        aria-label="Account"
         startVisual={
           <Stack gap={'sm'}>
             <MonoAccountBalanceWallet />
@@ -90,7 +91,6 @@ export function AccountInput({
               contract,
               (key) => key,
             );
-            console.log(accounts);
             setDiscovering(false);
             if (accounts.length > 1) {
               setDiscoveredAccounts(accounts);

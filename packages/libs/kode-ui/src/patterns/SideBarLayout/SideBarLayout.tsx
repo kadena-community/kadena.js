@@ -21,7 +21,6 @@ export interface ISideBarLayout extends PropsWithChildren {
   breadcrumbs?: ReactElement;
   sidebar?: ReactElement;
   footer?: ReactElement;
-  aside?: ReactElement;
   variant?: 'default' | 'full';
   location?: ISideBarLayoutLocation;
 }
@@ -33,7 +32,6 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
   breadcrumbs,
   sidebar,
   footer,
-  aside,
   variant = 'default',
   location,
 }) => {
@@ -80,9 +78,7 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
           />
           {sidebar}
           <main className={mainClass({ variant })}>{children}</main>
-          <SideBarAside location={location} hasTopBanner={!!topBanner}>
-            {aside}
-          </SideBarAside>
+          <SideBarAside location={location} hasTopBanner={!!topBanner} />
           {footer}
         </Stack>
       </Stack>

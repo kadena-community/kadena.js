@@ -1,6 +1,6 @@
 import { MonoClose } from '@kadena/kode-icons/system';
-import type { FC, PropsWithChildren } from 'react';
-import React, { useEffect } from 'react';
+import type { FC } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   asideContentClass,
   asideHeaderClass,
@@ -14,22 +14,29 @@ import type { PressEvent } from './../../../components';
 import { Button, Heading, Stack } from './../../../components';
 import { useLayout } from './LayoutProvider';
 
-export const SideBarAside: FC<
-  PropsWithChildren<{
-    hasTopBanner?: boolean;
-    location: ISideBarLayoutLocation;
-  }>
-> = ({ hasTopBanner, location, children }) => {
-  const { handleSetAsideExpanded, isAsideExpanded, asideTitle } = useLayout();
+export const SideBarAside: FC<{
+  hasTopBanner?: boolean;
+  location: ISideBarLayoutLocation;
+}> = ({ hasTopBanner, location }) => {
+  const {
+    setIsRightAsideExpanded,
+    isRightAsideExpanded,
+    rightAsideTitle,
+    setRightAsideRef,
+  } = useLayout();
+  const ref = useRef<HTMLDivElement | null>();
 
   const handleExpand = (e: PressEvent) => {
-    if (handleSetAsideExpanded) {
-      handleSetAsideExpanded(false);
-    }
+    setIsRightAsideExpanded(false);
   };
 
   useEffect(() => {
-    handleSetAsideExpanded(!!location?.hash);
+    if (!ref.current) return;
+    setRightAsideRef(ref.current);
+  }, [ref.current]);
+
+  useEffect(() => {
+    setIsRightAsideExpanded(!!location?.hash);
   }, [location?.hash]);
 
   return (
@@ -37,13 +44,13 @@ export const SideBarAside: FC<
       <Stack
         aria-label="background"
         className={menuBackdropClass({
-          expanded: isAsideExpanded,
+          expanded: isRightAsideExpanded,
         })}
         onClick={handleExpand}
       />
       <aside
         className={asideWrapperClass({
-          expanded: isAsideExpanded,
+          expanded: isRightAsideExpanded,
           hasTopBanner,
         })}
       >
@@ -54,7 +61,7 @@ export const SideBarAside: FC<
             alignItems="center"
           >
             <Heading variant="h6" as="h3" className={asideHeadingClass}>
-              {asideTitle}
+              {rightAsideTitle}
             </Heading>
 
             <Stack className={asideHeaderCloseButtonWrapperClass}>
@@ -68,7 +75,7 @@ export const SideBarAside: FC<
           </Stack>
         </header>
 
-        <Stack className={asideContentClass}>{children}</Stack>
+        <Stack ref={ref} className={asideContentClass} flexDirection="column" />
       </aside>
     </>
   );

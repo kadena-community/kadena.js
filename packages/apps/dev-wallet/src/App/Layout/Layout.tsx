@@ -5,7 +5,6 @@ import {
   MonoWorkspaces,
 } from '@kadena/kode-icons/system';
 
-import { Aside } from '@/Components/Aside/Aside';
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
 import { BreadCrumbs } from '@/pages/BreadCrumbs/BreadCrumbs';
 import { Themes, useTheme } from '@kadena/kode-ui';
@@ -41,7 +40,6 @@ export const Layout: FC = () => {
   return (
     <>
       <SideBarLayout
-        aside={<Aside />}
         topBanner={<BetaHeader />}
         breadcrumbs={<BreadCrumbs />}
         location={innerLocation}

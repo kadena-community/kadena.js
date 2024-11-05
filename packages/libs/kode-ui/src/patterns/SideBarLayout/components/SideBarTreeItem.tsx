@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { FC, MouseEventHandler } from 'react';
 import React, { forwardRef, useMemo } from 'react';
 import { useMedia } from 'react-use';
 import { listItemClass } from '../sidebar.css';
@@ -41,8 +41,10 @@ export const SideBarTreeItem: FC<ISideBarTreeItemProps> = ({
 }) => {
   const { handleSetExpanded, isActiveUrl } = useLayout();
   const isMediumDevice = useMedia(breakpoints.md, true);
-  const handlePress = (e: PressEvent) => {
-    if (!isMediumDevice) handleSetExpanded(false);
+  const handlePress: MouseEventHandler<HTMLLIElement> = (e) => {
+    if (!isMediumDevice) {
+      handleSetExpanded(false);
+    }
     if (onPress) onPress(e);
   };
 
@@ -51,12 +53,11 @@ export const SideBarTreeItem: FC<ISideBarTreeItemProps> = ({
   }, [component, href]);
 
   return (
-    <li className={listItemClass}>
+    <li className={listItemClass} onClick={handlePress}>
       <LinkWrapper
         className={sidebartreeItemClass}
         href={href}
         to={href}
-        onPress={handlePress}
         data-isactive={isActiveUrl(href)}
       >
         {label}

@@ -1,5 +1,4 @@
 import { Key } from '@/Components/Key/Key';
-import { displayContentsClass } from '@/Components/Sidebar/style.css';
 import {
   accountRepository,
   IKeySet,
@@ -14,10 +13,6 @@ import {
   Button,
   Combobox,
   ComboboxItem,
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
   Heading,
   Notification,
   Select,
@@ -26,6 +21,12 @@ import {
   Text,
   TextField,
 } from '@kadena/kode-ui';
+import {
+  RightAside,
+  RightAsideContent,
+  RightAsideFooter,
+  RightAsideHeader,
+} from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { keyColumnClass, keyItemClass } from './style.css';
@@ -38,14 +39,14 @@ interface IKeysetForm {
   alias: string;
 }
 
-export function CreateKeySetDialog({
-  isOpen,
+export function CreateKeySetForm({
   close,
   onDone,
+  isOpen,
 }: {
-  isOpen: boolean;
   close: () => void;
   onDone?: (keyset: IKeySet) => void;
+  isOpen: boolean;
 }) {
   const { register, control, getValues, setValue, handleSubmit } =
     useForm<IKeysetForm>({
@@ -59,6 +60,7 @@ export function CreateKeySetDialog({
     });
   const [error, setError] = useState<string | null>(null);
   const { keySources, createKey, profile, keysets, contacts } = useWallet();
+
   const flattenKeys = keySources
     .map((keySource) => keySource.keys.map((key) => ({ key, keySource })))
     .flat();
@@ -120,22 +122,11 @@ export function CreateKeySetDialog({
   }
 
   return (
-    <Dialog
-      isOpen={isOpen}
-      size="lg"
-      onOpenChange={(open) => {
-        if (!open) {
-          close();
-        }
-      }}
-    >
-      <form
-        className={displayContentsClass}
-        onSubmit={handleSubmit(createKeySet)}
-      >
-        <DialogHeader>Create Key Set</DialogHeader>
-        <DialogContent>
-          <Stack flexDirection={'row'} gap={'xxxl'} flex={1}>
+    <RightAside isOpen={isOpen}>
+      <form onSubmit={handleSubmit(createKeySet)}>
+        <RightAsideHeader label="Add keys to keyset" />
+        <RightAsideContent>
+          <Stack width="100%" flexDirection="column" gap="md">
             <Stack flexDirection={'column'} gap={'lg'} flex={1}>
               <Heading variant="h5">
                 Add keys to the keyset by using the following options
@@ -394,8 +385,6 @@ export function CreateKeySetDialog({
               </Stack>
             </Stack>
           </Stack>
-        </DialogContent>
-        <DialogFooter>
           <Stack width="100%" flex={1} flexDirection={'column'}>
             {error && (
               <Stack>
@@ -411,22 +400,23 @@ export function CreateKeySetDialog({
             >
               {addedKeys.length < 2 && 'At least 2 keys are required'}
               {addedKeys.length >= 2 && `Selected Keys: ${addedKeys.length}`}
-              <Stack gap={'md'}>
-                <Button variant="outlined" onPress={() => close()} type="reset">
-                  Cancel
-                </Button>
-                <Button
-                  variant="primary"
-                  type="submit"
-                  isDisabled={addedKeys.length < 2}
-                >
-                  Save
-                </Button>
-              </Stack>
             </Stack>
           </Stack>
-        </DialogFooter>
+        </RightAsideContent>
+
+        <RightAsideFooter>
+          <Button variant="outlined" onPress={() => close()} type="reset">
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            type="submit"
+            isDisabled={addedKeys.length < 2}
+          >
+            Save
+          </Button>
+        </RightAsideFooter>
       </form>
-    </Dialog>
+    </RightAside>
   );
 }
