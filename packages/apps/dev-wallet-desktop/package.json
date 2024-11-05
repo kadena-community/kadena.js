@@ -6,12 +6,13 @@
   "type": "module",
   "scripts": {
     "dev": "tauri dev",
-    "release": "tauri build"
+    "release": "tauri build",
+    "tauri": "tauri"
   },
   "dependencies": {
     "@kadena/dev-wallet": "workspace:*"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.4.0"
+    "@tauri-apps/cli": "^2.0.4"
   }
 }

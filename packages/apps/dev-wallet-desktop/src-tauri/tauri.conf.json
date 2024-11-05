@@ -1,45 +1,35 @@
 {
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "dev-wallet-desktop",
+  "version": "0.1.0",
+  "identifier": "com.dev-wallet-desktop.app",
   "build": {
+    "frontendDist": "../node_modules/@kadena/dev-wallet/dist",
     "beforeDevCommand": "pnpm --filter dev-wallet dev --port 1420",
-    "devPath": "http://localhost:1420",
-    "distDir": "../node_modules/@kadena/dev-wallet/dist",
-    "withGlobalTauri": false
+    "devUrl": "http://localhost:1420"
   },
-  "package": {
-    "productName": "dev-wallet",
-    "version": "0.0.1"
-  },
-  "tauri": {
-    "allowlist": {
-      "all": false,
-      "shell": {
-        "all": false,
-        "open": true
-      }
-    },
-    "bundle": {
-      "active": true,
-      "targets": "all",
-      "identifier": "io.kadena.dev-wallet",
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ]
-    },
-    "security": {
-      "csp": null
-    },
+  "app": {
+    "withGlobalTauri": true,
     "windows": [
       {
-        "fullscreen": false,
-        "resizable": true,
-        "title": "desktop",
-        "width": 360,
+        "title": "dev-wallet-desktop",
+        "width": 800,
         "height": 600
       }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
     ]
   }
 }
