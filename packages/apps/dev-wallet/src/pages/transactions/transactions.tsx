@@ -8,7 +8,7 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { FormatHash } from '@/Components/Table/FormatHash';
 import { IPactCommand } from '@kadena/client';
 import { MonoSwapHoriz } from '@kadena/kode-icons/system';
-import { Box, Heading, Stack, Text } from '@kadena/kode-ui';
+import { Box, Heading } from '@kadena/kode-ui';
 import {
   CompactTable,
   CompactTableFormatters,
@@ -16,8 +16,7 @@ import {
 } from '@kadena/kode-ui/patterns';
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { listClass, listItemClass, panelClass } from '../home/style.css';
-import { hashStyle } from './style.css';
+import { panelClass } from '../home/style.css';
 
 export function Transactions() {
   useLayout({

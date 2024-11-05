@@ -1,12 +1,29 @@
 import { transactionRepository } from '@/modules/transaction/transaction.repository';
 
 import { useAsync } from '@/utils/useAsync';
+import { MonoSwapHoriz } from '@kadena/kode-icons/system';
 import { Heading, Stack, Text } from '@kadena/kode-ui';
+import { useLayout } from '@kadena/kode-ui/patterns';
 import { useParams } from 'react-router-dom';
 import { TxList } from './components/TxList';
 
 export const TransactionPage = () => {
   const { groupId } = useParams();
+  useLayout({
+    appContext: undefined,
+    breadCrumbs: [
+      {
+        label: 'Transactions',
+        visual: <MonoSwapHoriz />,
+        url: '/transactions',
+      },
+      {
+        label: 'Transaction group',
+        url: `/transaction/${groupId}`,
+      },
+    ],
+  });
+
   const [txs = []] = useAsync(
     (gid) =>
       gid
