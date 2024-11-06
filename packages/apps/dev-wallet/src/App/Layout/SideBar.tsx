@@ -4,7 +4,6 @@ import {
   MonoDashboardCustomize,
   MonoLogout,
   MonoNetworkCheck,
-  MonoSwapHoriz,
   MonoTableRows,
   MonoWallet,
   MonoWindow,
@@ -95,13 +94,6 @@ export const SideBar: FC = () => {
               href="/backup-recovery-phrase/write-down"
             />
           </SideBarTree>
-
-          <SideBarItem
-            visual={<MonoSwapHoriz />}
-            label="Transfer"
-            component={Link}
-            href="/transfer"
-          />
 
           <SideBarItem
             visual={<MonoContacts />}

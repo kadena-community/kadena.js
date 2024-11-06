@@ -86,7 +86,6 @@ export function SignatureBuilder() {
   const { profile, activeNetwork, networks, setActiveNetwork } = useWallet();
   const navigate = useNavigate();
   useLayout({
-    appContext: undefined,
     breadCrumbs: [
       {
         label: 'Sig Builder',

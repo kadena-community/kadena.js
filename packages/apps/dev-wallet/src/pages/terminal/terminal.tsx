@@ -157,7 +157,6 @@ const getCommand = (
 
 export function TerminalPage() {
   useLayout({
-    appContext: undefined,
     breadCrumbs: [
       {
         label: 'Dev Console',

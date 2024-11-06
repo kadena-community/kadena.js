@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 
 export function WriteDownRecoveryPhrase() {
   useLayout({
-    appContext: undefined,
     breadCrumbs: [
       {
         label: 'Backup',

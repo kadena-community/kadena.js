@@ -15,7 +15,6 @@ import { hashStyle } from './style.css';
 
 export function Transactions() {
   useLayout({
-    appContext: undefined,
     breadCrumbs: [
       {
         label: 'Transactions',

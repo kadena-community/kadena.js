@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import type { FC, PropsWithChildren, ReactElement } from 'react';
 import React, { useEffect } from 'react';
 import { MediaContextProvider, Stack } from './../../components';
-
 import { useLayout } from './components/LayoutProvider';
 import { SideBarAside } from './components/SideBarAside';
 import { SideBarHeader } from './components/SideBarHeader';
@@ -60,16 +59,6 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
             },
           )}
         >
-          {topBanner && (
-            <Stack
-              style={{
-                gridArea: 'sidebarlayout-topbanner',
-                overflowY: 'hidden',
-              }}
-            >
-              {topBanner}
-            </Stack>
-          )}
           <SideBarHeader
             breadcrumbs={breadcrumbs}
             hasSidebar={!!sidebar}
@@ -77,7 +66,18 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
             minifiedLogo={minifiedLogo}
           />
           {sidebar}
-          <main className={mainClass({ variant })}>{children}</main>
+          <main className={mainClass({ variant })}>
+            {topBanner && (
+              <Stack
+                style={{
+                  gridArea: 'sidebarlayout-topbanner',
+                }}
+              >
+                {topBanner}
+              </Stack>
+            )}
+            {children}
+          </main>
           <SideBarAside location={location} hasTopBanner={!!topBanner} />
           {footer}
         </Stack>

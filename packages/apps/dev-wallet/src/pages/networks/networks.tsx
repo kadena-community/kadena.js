@@ -1,9 +1,8 @@
 import { ListItem } from '@/Components/ListItem/ListItem';
 import { networkRepository } from '@/modules/network/network.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { createAsideUrl } from '@/utils/createAsideUrl';
-import { MonoWifiTethering, MonoWorkspaces } from '@kadena/kode-icons/system';
-import { Button, Heading, Link, Stack, Text } from '@kadena/kode-ui';
+import { MonoWifiTethering } from '@kadena/kode-icons/system';
+import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { panelClass } from '../home/style.css';
@@ -19,12 +18,6 @@ export function Networks() {
   const [selectedNetwork, setSelectedNetwork] =
     useState<INetworkWithOptionalUuid>(() => getNewNetwork());
   useLayout({
-    appContext: {
-      visual: <MonoWorkspaces />,
-      label: 'Add Network',
-      href: createAsideUrl('KeySource'),
-      component: Link,
-    },
     breadCrumbs: [
       { label: 'Networks', visual: <MonoWifiTethering />, url: '/networks' },
     ],

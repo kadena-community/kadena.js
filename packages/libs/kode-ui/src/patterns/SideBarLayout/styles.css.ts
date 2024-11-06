@@ -120,7 +120,6 @@ export const bodyWrapperClass = style({
 
 export const mainClass = recipe({
   base: {
-    overflowY: 'scroll',
     gridArea: 'sidebarlayout-main',
   },
   variants: {

@@ -4,7 +4,6 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { panelClass } from '@/pages/home/style.css.ts';
 import { useAsync } from '@/utils/useAsync';
 import { IPactCommand } from '@kadena/client';
-import { MonoWallet } from '@kadena/kode-icons/system';
 import { Box, Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
 import { Link } from 'react-router-dom';
@@ -13,16 +12,9 @@ import { TransactionList } from '../transactions/transactions';
 
 export function HomePage() {
   const { profile, activeNetwork } = useWallet();
-  const { setIsRightAsideExpanded } = useLayout();
+
   useLayout({
     breadCrumbs: [],
-    appContext: {
-      visual: <MonoWallet />,
-      label: 'Add Asset',
-      onPress: () => {
-        setIsRightAsideExpanded(true);
-      },
-    },
   });
 
   const [transactions] = useAsync(

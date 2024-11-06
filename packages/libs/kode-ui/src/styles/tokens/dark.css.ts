@@ -1286,15 +1286,10 @@ export const darkThemeValues = {
           },
         },
       },
-      icon: {
-        size: {
-          xxs: tokens.kda.foundation.size.n3,
-          xs: tokens.kda.foundation.size.n4,
-          sm: tokens.kda.foundation.size.n5,
-          base: tokens.kda.foundation.size.n6,
-          lg: tokens.kda.foundation.size.n8,
-          xl: tokens.kda.foundation.size.n10,
-          xxl: tokens.kda.foundation.size.n16,
+      layout: {
+        content: {
+          minWidth: '33.75rem',
+          maxWidth: '42.5rem',
         },
       },
       effect: {
@@ -1304,10 +1299,15 @@ export const darkThemeValues = {
           level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
         },
       },
-      layout: {
-        content: {
-          minWidth: '33.75rem',
-          maxWidth: '42.5rem',
+      icon: {
+        size: {
+          xxs: tokens.kda.foundation.size.n3,
+          xs: tokens.kda.foundation.size.n4,
+          sm: tokens.kda.foundation.size.n5,
+          base: tokens.kda.foundation.size.n6,
+          lg: tokens.kda.foundation.size.n8,
+          xl: tokens.kda.foundation.size.n10,
+          xxl: tokens.kda.foundation.size.n16,
         },
       },
       typography: {

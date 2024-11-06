@@ -26,7 +26,6 @@ import { createRedistributionTxs, createTransactions } from './utils';
 
 export function TransferV2() {
   useLayout({
-    appContext: undefined,
     breadCrumbs: [
       {
         label: 'Transfer',

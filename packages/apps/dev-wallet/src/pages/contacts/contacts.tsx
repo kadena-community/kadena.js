@@ -27,13 +27,6 @@ import { ContactForm } from './Components/ContactForm';
 
 export function Contacts() {
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout({
-    appContext: {
-      visual: <MonoContacts />,
-      label: 'Add Contact',
-      onPress: () => {
-        setIsRightAsideExpanded(true);
-      },
-    },
     breadCrumbs: [
       {
         label: 'Contacts',

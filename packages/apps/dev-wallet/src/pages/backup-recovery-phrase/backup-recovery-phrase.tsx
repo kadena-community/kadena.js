@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 
 export function BackupRecoveryPhrase() {
   useLayout({
-    appContext: undefined,
     breadCrumbs: [
       {
         label: 'Backup',
