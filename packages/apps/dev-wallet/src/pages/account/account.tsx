@@ -267,9 +267,9 @@ export function AccountPage() {
                 >
                   <Heading variant="h4">Migrate Account</Heading>
                   <Text>
-                    You can not change the keyset guard of this account but you
-                    still are bale to use account migration which transfers all
-                    balance to a newly created account with the new keyset
+                    You can use account migration to transfer all balances to a
+                    newly created account with a new keyset, even though the
+                    keyset guard for this account cannot be changed.
                   </Text>
                   <Button variant="outlined">Migrate</Button>
                 </Stack>

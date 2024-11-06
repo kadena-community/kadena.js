@@ -18,6 +18,7 @@ import {
 import { ITransaction } from '@/modules/transaction/transaction.repository.ts';
 import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
 import { normalizeSigs } from '@/pages/signature-builder/utils/normalizeSigs.ts';
+import { MonoContentCopy } from '@kadena/kode-icons/system';
 import classNames from 'classnames';
 
 const Value: FC<PropsWithChildren<{ className?: string }>> = ({
@@ -121,8 +122,26 @@ export function Signers({
                     let sigObject;
                     if (!signature) return;
                     try {
-                      const json: IUnsignedCommand = JSON.parse(signature);
-                      const sigs = normalizeSigs(json);
+                      const json:
+                        | IUnsignedCommand
+                        | {
+                            pubKey: string;
+                            sig?: string;
+                          } = JSON.parse(signature);
+
+                      let sigs: Array<{
+                        sig?: string;
+                        pubKey: string;
+                      }> = [];
+                      if ('sig' in json) {
+                        if (!json.pubKey) {
+                          json.pubKey = signer.pubKey;
+                        }
+                        sigs = [json];
+                      } else {
+                        sigs = normalizeSigs(json as IUnsignedCommand);
+                      }
+
                       const extSignature = sigs.find(
                         (item) => item.pubKey === signer.pubKey,
                       );
@@ -155,7 +174,26 @@ export function Signers({
               )}
               {signature && (
                 <>
-                  <Heading variant="h5">Signature</Heading>
+                  <Stack
+                    justifyContent={'space-between'}
+                    alignItems={'flex-start'}
+                    gap={'sm'}
+                  >
+                    <Heading variant="h5">Signature</Heading>
+                    <Button
+                      isCompact
+                      variant="transparent"
+                      startVisual={<MonoContentCopy />}
+                      onClick={() => {
+                        navigator.clipboard.writeText(
+                          JSON.stringify({
+                            sig: signature,
+                            pubKey: signer.pubKey,
+                          }),
+                        );
+                      }}
+                    />
+                  </Stack>
                   <Value className={classNames(breakAllClass, codeClass)}>
                     {signature}
                   </Value>

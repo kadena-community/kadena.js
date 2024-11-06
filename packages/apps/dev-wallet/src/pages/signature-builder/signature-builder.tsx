@@ -21,6 +21,7 @@ import {
 import { useLayout } from '@kadena/kode-ui/patterns';
 import { execCodeParser } from '@kadena/pactjs-generator';
 import classNames from 'classnames';
+import yaml from 'js-yaml';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { codeArea } from './style.css';
@@ -33,10 +34,12 @@ type requestScheme =
   | 'PactCommand';
 
 function determineSchema(input: string): requestScheme {
-  let json;
   try {
     // TODO: pase YAML as well
-    json = JSON.parse(input);
+    const json: any = yaml.load(input);
+    if (!json || typeof json !== 'object') {
+      return 'invalid';
+    }
     if ('cmd' in json) {
       JSON.parse(json.cmd);
       return 'quickSignRequest';
@@ -75,6 +78,7 @@ const signingRequestToPactCommand = (
 };
 
 export function SignatureBuilder() {
+  const [error, setError] = useState<string>();
   const [schema, setSchema] = useState<requestScheme>();
   const [input, setInput] = useState<string>('');
   const [pactCommand, setPactCommand] = useState<IPartialPactCommand>();
@@ -118,14 +122,14 @@ export function SignatureBuilder() {
     const schema = determineSchema(inputData);
     switch (schema) {
       case 'quickSignRequest': {
-        const parsed: IUnsignedCommand = JSON.parse(inputData);
+        const parsed = yaml.load(inputData) as IUnsignedCommand;
         setPactCommand(JSON.parse(parsed.cmd));
         setUnsignedTx(normalizeTx(parsed));
         setCapsWithoutSigners([]);
         break;
       }
       case 'PactCommand': {
-        const parsed: IPartialPactCommand = JSON.parse(inputData);
+        const parsed = yaml.load(inputData) as IPartialPactCommand;
         setPactCommand(parsed);
         const tx = createTransaction(parsed);
         setUnsignedTx(normalizeTx(tx));
@@ -133,7 +137,7 @@ export function SignatureBuilder() {
         break;
       }
       case 'signingRequest': {
-        const parsed: ISigningRequest = JSON.parse(inputData);
+        const parsed = yaml.load(inputData) as ISigningRequest;
         const pactCommand = signingRequestToPactCommand(parsed);
         setPactCommand(pactCommand);
         setCapsWithoutSigners(parsed.caps);
@@ -149,6 +153,52 @@ export function SignatureBuilder() {
     setSchema(schema);
   }
 
+  const reviewTransaction = async () => {
+    if (!unsignedTx || !profile || !activeNetwork) return;
+    const command: IPactCommand = JSON.parse(unsignedTx.cmd);
+    let networkUUID = activeNetwork.uuid;
+    if (command.networkId && activeNetwork.networkId !== command.networkId) {
+      const network = networks.filter(
+        ({ networkId }) => networkId === command.networkId,
+      );
+      if (network.length === 0) {
+        setError(
+          command.networkId === 'mainnet01'
+            ? 'MANNET_IS_DISABLED: Mainnet is disabled since the wallet is not fully tested; you can try other networks'
+            : 'NETWORK_NOT_FOUND: This network is not found',
+        );
+        throw new Error('Network not found');
+      }
+      if (network.length > 1) {
+        // TODO: open a dialog to select network
+      }
+      networkUUID = network[0].uuid;
+      // switch network
+      setActiveNetwork(network[0]);
+    }
+    const groupId = crypto.randomUUID();
+
+    // check if transaction already exists
+    const tx = await transactionRepository.getTransactionByHashNetworkProfile(
+      profile.uuid,
+      networkUUID,
+      unsignedTx.hash,
+    );
+
+    if (tx) {
+      navigate(`/transaction/${tx.groupId}`);
+      return;
+    }
+
+    await transactionService.addTransaction({
+      transaction: unsignedTx,
+      profileId: profile.uuid,
+      networkUUID: networkUUID,
+      groupId,
+    });
+    navigate(`/transaction/${groupId}`);
+  };
+
   return (
     <Stack flexDirection={'column'} gap={'md'}>
       <Heading variant="h5">Paste SigData, CommandSigData, or Payload</Heading>
@@ -157,68 +207,25 @@ export function SignatureBuilder() {
         className={classNames(codeArea)}
         onChange={(e) => {
           e.preventDefault();
+          setError(undefined);
           processSig(e.target.value);
         }}
       />
       <Box>{schema && <Text>{`Schema: ${schema}`}</Text>}</Box>
+      {schema === 'signingRequest' && (
+        <Notification intent="info" role="status">
+          SigningRequest is not supported yet, We are working on it.
+        </Notification>
+      )}
+      {error && (
+        <Notification intent="negative" role="alert">
+          {error}
+        </Notification>
+      )}
       <Box>
         <Box>
           {['PactCommand', 'quickSignRequest'].includes(schema!) && (
-            <>
-              <Button
-                onPress={async () => {
-                  if (!unsignedTx || !profile || !activeNetwork) return;
-                  const command: IPactCommand = JSON.parse(unsignedTx.cmd);
-                  let networkUUID = activeNetwork.uuid;
-                  if (
-                    command.networkId &&
-                    activeNetwork.networkId !== command.networkId
-                  ) {
-                    const network = networks.filter(
-                      ({ networkId }) => networkId === command.networkId,
-                    );
-                    if (network.length === 0) {
-                      throw new Error('Network not found');
-                    }
-                    if (network.length > 1) {
-                      throw new Error('Multiple networks found');
-                    }
-                    networkUUID = network[0].uuid;
-                    // switch network
-                    setActiveNetwork(network[0]);
-                  }
-                  const groupId = crypto.randomUUID();
-
-                  // check if transaction already exists
-                  const tx =
-                    await transactionRepository.getTransactionByHashNetworkProfile(
-                      profile.uuid,
-                      networkUUID,
-                      unsignedTx.hash,
-                    );
-
-                  if (tx) {
-                    navigate(`/transaction/${tx.groupId}`);
-                    return;
-                  }
-
-                  await transactionService.addTransaction({
-                    transaction: unsignedTx,
-                    profileId: profile.uuid,
-                    networkUUID: networkUUID,
-                    groupId,
-                  });
-                  navigate(`/transaction/${groupId}`);
-                }}
-              >
-                Review Transaction
-              </Button>
-            </>
-          )}
-          {schema === 'signingRequest' && (
-            <Notification intent="info" role="status">
-              SigningRequest is not supported yet, We are working on it.
-            </Notification>
+            <Button onPress={reviewTransaction}>Review Transaction</Button>
           )}
         </Box>
       </Box>

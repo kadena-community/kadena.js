@@ -6,7 +6,11 @@ import {
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { panelClass } from '@/pages/home/style.css';
 import { IReceiverAccount } from '@/pages/transfer/utils';
-import { MonoMoreVert } from '@kadena/kode-icons/system';
+import {
+  MonoAdd,
+  MonoMoreVert,
+  MonoRemoveRedEye,
+} from '@kadena/kode-icons/system';
 import {
   Button,
   ContextMenu,
@@ -36,6 +40,43 @@ export function Accounts({
   const { createNextAccount, activeNetwork, profile } = useWallet();
   const prompt = usePrompt();
   const accountsToShow = show === 'owned' ? accounts : watchedAccounts;
+
+  const onWatch = async () => {
+    const accounts = (await prompt((resolve, reject) => (
+      <WatchAccountsDialog
+        onWatch={resolve}
+        onClose={reject}
+        contract={contract}
+        networkId={activeNetwork!.networkId}
+      />
+    ))) as IReceiverAccount[];
+    const accountsToWatch: IWatchedAccount[] = accounts.map((account) => ({
+      uuid: crypto.randomUUID(),
+      alias: account.alias ?? '',
+      profileId: profile!.uuid,
+      address: account.address,
+      chains: account.chains,
+      overallBalance: account.overallBalance,
+      keyset: {
+        ...account.keyset,
+        guard: {
+          ...account.keyset.guard,
+          keys: account.keyset.guard.keys.map((key) =>
+            typeof key === 'string' ? key : key.pubKey,
+          ),
+        },
+      },
+      contract,
+      networkUUID: activeNetwork!.uuid,
+      watched: true,
+    }));
+    await Promise.all(
+      accountsToWatch.map((account) =>
+        accountRepository.addWatchedAccount(account),
+      ),
+    );
+  };
+
   return (
     <Stack flexDirection={'column'}>
       <Stack justifyContent={'space-between'}>
@@ -63,76 +104,49 @@ export function Accounts({
           </Stack>
         </Stack>
         <Stack gap={'sm'}>
-          {contract && (
-            <Button
-              variant="outlined"
-              isCompact
-              onClick={() => createNextAccount({ contract })}
-            >
-              Create Next Account
-            </Button>
-          )}
-          <ContextMenu
-            placement="bottom end"
-            trigger={
+          {contract &&
+            (show === 'owned' ? (
               <Button
-                endVisual={<MonoMoreVert />}
-                variant="transparent"
+                startVisual={<MonoAdd />}
+                variant="outlined"
                 isCompact
-              />
-            }
-          >
-            <Link
-              to={
-                contract
-                  ? `/create-account${contract ? `?contract=${contract}` : ''}`
-                  : '/create-account'
+                onClick={() => createNextAccount({ contract })}
+              >
+                Next Account
+              </Button>
+            ) : (
+              <Button
+                startVisual={<MonoRemoveRedEye />}
+                variant="outlined"
+                isCompact
+                onClick={() => onWatch()}
+              >
+                Watch Account
+              </Button>
+            ))}
+          {show === 'owned' && (
+            <ContextMenu
+              placement="bottom end"
+              trigger={
+                <Button
+                  endVisual={<MonoMoreVert />}
+                  variant="transparent"
+                  isCompact
+                />
               }
-              className={noStyleLinkClass}
             >
-              <ContextMenuItem label="Add Multisig/Advanced" />
-            </Link>
-            <ContextMenuItem
-              label="Watch Account"
-              onClick={async () => {
-                const accounts = (await prompt((resolve, reject) => (
-                  <WatchAccountsDialog
-                    onWatch={resolve}
-                    onClose={reject}
-                    contract={contract}
-                    networkId={activeNetwork!.networkId}
-                  />
-                ))) as IReceiverAccount[];
-                const accountsToWatch: IWatchedAccount[] = accounts.map(
-                  (account) => ({
-                    uuid: crypto.randomUUID(),
-                    alias: account.alias ?? '',
-                    profileId: profile!.uuid,
-                    address: account.address,
-                    chains: account.chains,
-                    overallBalance: account.overallBalance,
-                    keyset: {
-                      ...account.keyset,
-                      guard: {
-                        ...account.keyset.guard,
-                        keys: account.keyset.guard.keys.map((key) =>
-                          typeof key === 'string' ? key : key.pubKey,
-                        ),
-                      },
-                    },
-                    contract,
-                    networkUUID: activeNetwork!.uuid,
-                    watched: true,
-                  }),
-                );
-                await Promise.all(
-                  accountsToWatch.map((account) =>
-                    accountRepository.addWatchedAccount(account),
-                  ),
-                );
-              }}
-            />
-          </ContextMenu>
+              <Link
+                to={
+                  contract
+                    ? `/create-account${contract ? `?contract=${contract}` : ''}`
+                    : '/create-account'
+                }
+                className={noStyleLinkClass}
+              >
+                <ContextMenuItem label="+ Advanced Account" />
+              </Link>
+            </ContextMenu>
+          )}
         </Stack>
       </Stack>
       {accountsToShow.length ? (
