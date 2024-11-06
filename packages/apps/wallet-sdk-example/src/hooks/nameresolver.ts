@@ -1,4 +1,3 @@
-// useAddressToName.tsx
 import { walletSdk } from '@kadena/wallet-sdk';
 import { useEffect, useState } from 'react';
 import { useDebounce } from '../utils/useDebounce';
@@ -30,13 +29,14 @@ export const useAddressToName = () => {
           'mainnet01',
         );
         if (isCurrent) {
-          if (result !== undefined) {
+          if (result !== null) {
             setName(result);
           } else {
             setError('Name cannot be found');
           }
         }
       } catch (err) {
+        console.error(err);
         if (isCurrent) {
           setError('An error occurred while fetching the name');
         }
@@ -83,13 +83,14 @@ export const useNameToAddress = () => {
           'mainnet01',
         );
         if (isCurrent) {
-          if (result !== undefined) {
+          if (result !== null) {
             setAddress(result);
           } else {
             setError('Address cannot be found');
           }
         }
       } catch (err) {
+        console.error(err);
         if (isCurrent) {
           setError('An error occurred while fetching the address');
         }
