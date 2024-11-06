@@ -16,7 +16,6 @@ import * as transactionService from '@/modules/transaction/transaction.service';
 import { useAsync } from '@/utils/useAsync';
 import { ChainId } from '@kadena/client';
 import {
-  MonoAccountBalance,
   MonoKey,
   MonoRemoveRedEye,
   MonoTransform,
