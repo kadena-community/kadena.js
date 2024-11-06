@@ -36,50 +36,71 @@ export const Accounts = () => {
   };
 
   return (
-    <div>
-      <h3 className="text-2xl">Accounts:</h3>
-      <table>
-        <thead>
-          <tr>
-            <td>Index</td>
-            <td>Account</td>
-            <td>Balance</td>
-            <td>Fund</td>
-            <td>Active</td>
-          </tr>
-        </thead>
-        <tbody>
-          {wallet.accounts.map((account) => {
-            return (
-              <tr key={`account-${account.index}`}>
-                <td>{account.index}</td>
-                <td>{account.name}</td>
-                <td>
-                  {loadingBalance
-                    ? '...'
-                    : accountsBalances[account.name] ?? '0'}
-                </td>
-                <td>
-                  <button onClick={() => onFundAccount(account.index)}>
-                    Fund
-                  </button>
-                </td>
-                <td>
-                  {wallet.account?.index === account.index ? (
-                    <button disabled>Selected</button>
-                  ) : (
-                    <button onClick={() => wallet.selectAccount(account.index)}>
-                      Select
-                    </button>
-                  )}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <button onClick={() => wallet.generateAccount()}>
-        Generate new account
+    <div className="bg-dark-slate p-6 rounded-lg shadow-md w-full mx-auto">
+      <h3 className="text-2xl font-semibold text-white mb-6 text-center">
+        Accounts
+      </h3>
+
+      <div className="space-y-4 mb-6">
+        {wallet.accounts.map((account) => (
+          <div
+            key={`account-${account.index}`}
+            className="bg-medium-slate p-4 rounded-lg shadow-sm flex flex-col gap-2"
+          >
+            <div className="flex justify-between items-center">
+              <span className="font-semibold text-text-secondary">Index:</span>
+              <span className="text-white">{account.index}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="font-semibold text-text-secondary">
+                Account:
+              </span>
+              <span className="text-white">{account.name}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="font-semibold text-text-secondary">
+                Balance:
+              </span>
+              <span className="text-white">
+                {loadingBalance ? '...' : accountsBalances[account.name] ?? '0'}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="font-semibold text-text-secondary">Fund:</span>
+              <button
+                onClick={() => onFundAccount(account.index)}
+                className="bg-primary-green text-white font-semibold py-1 px-3 rounded-md hover:bg-secondary-green transition"
+              >
+                Fund
+              </button>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="font-semibold text-text-secondary">Active:</span>
+              {wallet.account?.index === account.index ? (
+                <button
+                  disabled
+                  className="bg-gray-500 text-white font-semibold py-1 px-3 rounded-md cursor-not-allowed"
+                >
+                  Selected
+                </button>
+              ) : (
+                <button
+                  onClick={() => wallet.selectAccount(account.index)}
+                  className="bg-primary-green text-white font-semibold py-1 px-3 rounded-md hover:bg-secondary-green transition"
+                >
+                  Select
+                </button>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <button
+        onClick={() => wallet.generateAccount()}
+        className="w-full bg-primary-green text-white font-semibold py-2 px-4 rounded-md hover:bg-secondary-green transition"
+      >
+        Generate New Account
       </button>
     </div>
   );

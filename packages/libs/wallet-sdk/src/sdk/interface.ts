@@ -1,9 +1,9 @@
 import type { ChainId } from '@kadena/client';
 import type {
   createCrossChainCommand,
-  simpleTransferCreateCommand,
   transferCreateCommand,
 } from '@kadena/client-utils/coin';
+import type { simpleTransferCreateCommand } from './utils-tmp';
 
 interface IBaseTransfer {
   senderAccount: string;

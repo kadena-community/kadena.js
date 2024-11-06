@@ -3,35 +3,209 @@
 @tailwind utilities;
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* Fonts */
+  font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* Colors */
+  --primary-green: #3BA583; /* Inspired by the green button */
+  --secondary-green: #5DB399; /* Slightly lighter green for hover states */
+  --dark-slate: #1E293B; /* Dark slate color for backgrounds */
+  --medium-slate: #3F4C5C; /* Medium slate for surfaces */
+  --border-gray: #CBD5E0; /* Light gray for borders */
+  --text-color: #FFFFFF; /* White text color for contrast */
+  --text-secondary: #A0AEC0; /* Light gray for secondary text */
+  --background-gray: #F7FAFC; /* Off-white for light areas */
+  --error-color: #E53E3E; /* Red for error messages */
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Shadows */
+  --shadow-elevation: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+body {
+  background-color: var(--dark-slate);
+  color: var(--text-color);
+  font-family: inherit;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-color);
+  margin: 0 0 0.5em 0;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+h1 { font-size: 2.25rem; } /* 36px */
+h2 { font-size: 1.875rem; } /* 30px */
+h3 { font-size: 1.5rem; } /* 24px */
+h4 { font-size: 1.25rem; } /* 20px */
+h5 { font-size: 1.125rem; } /* 18px */
+h6 { font-size: 1rem; } /* 16px */
+
+/* Links */
+a {
+  color: var(--primary-green);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+a:hover {
+  color: var(--secondary-green);
+}
+
+/* Buttons */
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-green);
+  color: var(--text-color);
+  border: none;
+  border-radius: 6px;
+  padding: 0.75em 1.5em;
   font-size: 1em;
   font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: background-color 0.2s, box-shadow 0.2s;
+  box-shadow: var(--shadow-elevation);
 }
 button:hover {
-  border-color: #646cff;
+  background-color: var(--secondary-green);
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(59, 165, 131, 0.5);
 }
+button:disabled {
+  background-color: var(--border-gray);
+  cursor: not-allowed;
+}
+
+/* Input Fields */
+input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="reset"]):not([type="button"]),
+textarea {
+  width: 100%;
+  background-color: var(--medium-slate);
+  color: var(--text-color);
+  border: 1px solid var(--border-gray);
+  border-radius: 6px;
+  padding: 0.75em 1em;
+  font-size: 1em;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-secondary);
+}
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 4px rgba(59, 165, 131, 0.3);
+}
+
+/* Checkbox and Radio Buttons */
+input[type="checkbox"],
+input[type="radio"] {
+  appearance: none;
+  background-color: var(--medium-slate);
+  margin: 0;
+  font: inherit;
+  color: var(--primary-green);
+  width: 1.15em;
+  height: 1.15em;
+  border: 1.5px solid var(--border-gray);
+  border-radius: 0.15em;
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+}
+input[type="checkbox"]::before,
+input[type="radio"]::before {
+  content: '';
+  width: 0.65em;
+  height: 0.65em;
+  transform: scale(0);
+  transition: transform 0.1s ease-in-out;
+  background-color: var(--primary-green);
+}
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+input[type="radio"] {
+  border-radius: 50%;
+}
+input[type="radio"]::before {
+  border-radius: 50%;
+}
+input[type="radio"]:checked::before {
+  transform: scale(0.6);
+}
+
+/* Select */
+select {
+  width: 100%;
+  background-color: var(--medium-slate);
+  color: var(--text-color);
+  border: 1px solid var(--border-gray);
+  border-radius: 6px;
+  padding: 0.75em 1em;
+  font-size: 1em;
+  appearance: none;
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg fill="%23A0AEC0" viewBox="0 0 20 20"><path d="M7 7l3-3 3 3H7zm0 6h6l-3 3-3-3z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 1em top 50%;
+  background-size: 1em;
+}
+select:focus {
+  outline: none;
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 4px rgba(59, 165, 131, 0.3);
+}
+
+/* Forms */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+  margin: 0 auto;
+}
+form .form-group {
+  display: flex;
+  flex-direction: column;
+}
+form .form-group label {
+  margin-bottom: 0.5em;
+  color: var(--text-secondary);
+  font-size: 0.9em;
+}
+form .form-group .error-message {
+  margin-top: 0.5em;
+  color: var(--error-color);
+  font-size: 0.85em;
+}
+
+/* Text */
+p {
+  margin: 0 0 1em 0;
+}
+
+/* Utility Classes */
+.container {
+  padding: 2em;
+}
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.mt-1 { margin-top: 0.25em; }
+.mt-2 { margin-top: 0.5em; }
+.mt-3 { margin-top: 0.75em; }
+.mt-4 { margin-top: 1em; }
+.mt-5 { margin-top: 1.5em; }
