@@ -10,39 +10,24 @@ import {
   kadenaMnemonicToSeed,
   kadenaSignWithSeed,
 } from '@kadena/hd-wallet';
-import { ITransactionDescriptor } from '@kadena/wallet-sdk';
 import { atom, useAtom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 import { useEffect, useMemo } from 'react';
 import { ICommandPayload } from '../../../../libs/types/dist/types';
 
-export type PendingTransfer = ITransactionDescriptor & {
-  receiverAccount: string;
-  senderAccount: string;
-  amount: string;
-  chain: ChainId;
-  requestKey: string;
-};
-
-export const pendingTransfersAtom = atomWithStorage<PendingTransfer[]>(
-  'pending_transfers',
-  [],
-);
-export const mnemonicWordsAtom = atomWithStorage<null | string>(
-  'mnemonic_words',
-  null,
-);
-export const selectedChainAtom = atomWithStorage<ChainId>('network_id', '0');
-export const selectedNetworkAtom = atomWithStorage('network_id', 'testnet04');
-export const selectedFungibleAtom = atomWithStorage(
-  'selected_fungible',
-  'coin',
-);
 export type Account = {
   index: number;
   publicKey: string;
   name: string;
 };
+
+const seedAtom = atomWithStorage<null | EncryptedString>(
+  'mmnemonic_seed',
+  null,
+);
+const selectedChainAtom = atomWithStorage<ChainId>('network_id', '0');
+const selectedNetworkAtom = atomWithStorage('network_id', 'testnet04');
+const selectedFungibleAtom = atomWithStorage('selected_fungible', 'coin');
 const accountsAtom = atomWithStorage<Account[]>('accounts', []);
 const selectedAccountAtom = atomWithStorage<null | number>(
   'selected_account',
@@ -50,39 +35,30 @@ const selectedAccountAtom = atomWithStorage<null | number>(
 );
 
 const passwordAtom = atom<null | string>(null);
-const seedAtom = atom<null | EncryptedString>(null);
 
 export const useWalletState = (initialPassword?: string) => {
   // Persisted state
-  const [mnemonicWords, setMnemonicWords] = useAtom(mnemonicWordsAtom);
   const [selectedFungible] = useAtom(selectedFungibleAtom);
   const [selectedNetwork] = useAtom(selectedNetworkAtom);
   const [selectedChain] = useAtom(selectedChainAtom);
   const [accounts, setAccounts] = useAtom(accountsAtom);
+  const [seed, setSeed] = useAtom(seedAtom);
   // Temporary state
   const [password, setPassword] = useAtom(passwordAtom);
-  const [seed, setSeed] = useAtom(seedAtom);
   const [selectedAccount, setSelectedAccount] = useAtom(selectedAccountAtom);
 
+  // Initialize state when password is available
   useEffect(() => {
     if (password === null && initialPassword !== undefined) {
       setPassword(initialPassword);
     }
   }, [password, initialPassword, setPassword]);
 
-  useEffect(() => {
-    if (password && mnemonicWords && !seed) {
-      kadenaMnemonicToSeed(password, mnemonicWords).then((seed) =>
-        setSeed(seed),
-      );
-    }
-  }, [password, mnemonicWords, seed, setSeed]);
-
   const privateGenerateAccount = async (
-    password: string,
     seed: EncryptedString,
     index: number,
   ) => {
+    if (!password) throw new Error('Password not set');
     const [publicKey] = await kadenaGenKeypairFromSeed(password, seed, index);
     const account = { index, publicKey, name: `k:${publicKey}` };
     setAccounts((prev) => [...prev, account]);
@@ -96,11 +72,13 @@ export const useWalletState = (initialPassword?: string) => {
     setSelectedAccount(index);
   };
 
-  const generateMnemonic = async () => {
-    if (!password) throw new Error('Password not set');
+  /**
+   * Generates a new mnemonic phrase, does not internally use it yet
+   * Prompt the user to store the phrase safely then pass it to `changeMnemonicWords`
+   */
+  const generateMnemonic = () => {
     const mnemonic = kadenaGenMnemonic();
-    setMnemonicWords(mnemonic);
-    await changeMnemonicWords(mnemonic);
+    return mnemonic;
   };
 
   const changeMnemonicWords = async (words: string) => {
@@ -108,15 +86,14 @@ export const useWalletState = (initialPassword?: string) => {
     const seed = await kadenaMnemonicToSeed(password, words);
     setAccounts([]);
     setSeed(seed);
-    const account = await privateGenerateAccount(password, seed, 0);
+    const account = await privateGenerateAccount(seed, 0);
     setSelectedAccount(account.index);
   };
 
   const generateAccount = async (indexParam?: number) => {
-    if (!password) throw new Error('Password not set');
     if (!seed) throw new Error('Seed not set');
     const index = indexParam ? indexParam : accounts.length;
-    await privateGenerateAccount(password, seed, index);
+    await privateGenerateAccount(seed, index);
   };
 
   const signTransaction = async (command: IUnsignedCommand) => {
@@ -155,7 +132,6 @@ export const useWalletState = (initialPassword?: string) => {
   return {
     account,
     accounts,
-    mnemonicWords,
     selectedFungible,
     selectedNetwork,
     selectedChain,
