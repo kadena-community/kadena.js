@@ -14,9 +14,16 @@ import { listClass, listItemClass, panelClass } from '../home/style.css';
 import { hashStyle } from './style.css';
 
 export function Transactions() {
+  const { profile, activeNetwork } = useWallet();
   useLayout({
     appContext: undefined,
     breadCrumbs: [
+      {
+        label:
+          activeNetwork?.name || activeNetwork?.networkId || 'Unknown Network',
+        url: '/',
+        visual: <MonoSwapHoriz />,
+      },
       {
         label: 'Transactions',
         visual: <MonoSwapHoriz />,
@@ -24,7 +31,6 @@ export function Transactions() {
       },
     ],
   });
-  const { profile, activeNetwork } = useWallet();
   const [transactions, setTransactions] = useState<
     (ITransaction & { creationDate: number })[]
   >([]);

@@ -75,7 +75,7 @@ export const useLayout = (
     //check if the content of the breadcrumbs has changed
     const breadCrumbsHasChanged = props.breadCrumbs.reduce((acc, val, idx) => {
       const oldVal = context.breadCrumbs[idx];
-      if (val.url !== oldVal?.url) return true;
+      if (val.url !== oldVal?.url || val.label !== oldVal.label) return true;
 
       return acc;
     }, false);

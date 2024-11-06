@@ -25,9 +25,21 @@ import {
 import { createRedistributionTxs, createTransactions } from './utils';
 
 export function TransferV2() {
+  const {
+    accounts: allAccounts,
+    getPublicKeyData,
+    activeNetwork,
+    profile,
+  } = useWallet();
   useLayout({
     appContext: undefined,
     breadCrumbs: [
+      {
+        label:
+          activeNetwork?.name || activeNetwork?.networkId || 'Unknown Network',
+        url: '/',
+        visual: <MonoSwapHoriz />,
+      },
       {
         label: 'Transfer',
         visual: <MonoSwapHoriz />,
@@ -87,12 +99,6 @@ export function TransferV2() {
     transfer: { groupId: '', txs: [] },
   });
 
-  const {
-    accounts: allAccounts,
-    getPublicKeyData,
-    activeNetwork,
-    profile,
-  } = useWallet();
   function createTransaction(data: Required<Transfer>) {
     if (!data.senderAccount || !profile) return;
     return createTransactions({

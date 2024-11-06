@@ -15,8 +15,15 @@ import { getTransferActivities } from '@/modules/activity/activity.service';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { useAsync } from '@/utils/useAsync';
 import { ChainId } from '@kadena/client';
-import { MonoKey, MonoRemoveRedEye } from '@kadena/kode-icons/system';
+import {
+  MonoAccountBalance,
+  MonoKey,
+  MonoRemoveRedEye,
+  MonoTransform,
+  MonoWallet,
+} from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
+import { useLayout } from '@kadena/kode-ui/patterns';
 import { useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { noStyleLinkClass, panelClass } from '../home/style.css';
@@ -35,6 +42,28 @@ export function AccountPage() {
     watchAccounts.find((account) => account.uuid === accountId);
 
   const navigate = useNavigate();
+  useLayout({
+    breadCrumbs: [
+      {
+        label:
+          activeNetwork?.name || activeNetwork?.networkId || 'Unknown Network',
+        url: '/',
+        visual: <MonoWallet />,
+      },
+      {
+        url: `/account/${accountId || ''}`,
+        label: `Account (${account?.alias || account?.address || 'Unknown Account'})`,
+      },
+    ],
+    appContext: {
+      visual: <MonoTransform />,
+      label: 'Add Asset',
+      onPress: () => {
+        navigate('/add-asset');
+      },
+    },
+  });
+
   const keyset = account?.keyset;
   const asset = fungibles.find((f) => f.contract === account?.contract);
   const [activities = []] = useAsync(getTransferActivities, [
