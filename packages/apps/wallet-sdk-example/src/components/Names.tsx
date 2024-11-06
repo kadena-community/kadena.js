@@ -1,4 +1,3 @@
-// AddressNameComponent.tsx
 import React from 'react';
 import { useAddressToName, useNameToAddress } from '../hooks/nameresolver';
 
