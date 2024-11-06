@@ -6,7 +6,6 @@ import {
 } from '@kadena/kode-icons/system';
 
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
-import { BreadCrumbs } from '@/pages/BreadCrumbs/BreadCrumbs';
 import { Themes, useTheme } from '@kadena/kode-ui';
 import {
   SideBarFooter,
@@ -16,6 +15,7 @@ import {
 import { FC, useMemo } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { BetaHeader } from './../BetaHeader';
+import { BreadCrumbs } from './BreadCrumbs';
 import { SideBar } from './SideBar';
 
 export const Layout: FC = () => {
