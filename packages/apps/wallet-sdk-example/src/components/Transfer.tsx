@@ -45,71 +45,62 @@ export const Transfer = () => {
   };
 
   return (
-    <div>
-      <h3 className="text-2xl">Send</h3>
-      <form
-        className="flex flex-row gap-4 w-[250px]"
-        onSubmit={onSubmitTransfer}
-      >
-        <table>
-          <tbody>
-            <tr>
-              <td>From</td>
-              <td>
-                <input type="text" value={wallet.account?.name} disabled />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label htmlFor="to">To</label>
-              </td>
-              <td>
-                <input
-                  name="to"
-                  placeholder="To"
-                  // Default to first non-selected account for testing
-                  defaultValue={
-                    wallet.accounts.find(
-                      (a) => a.index !== wallet.account?.index,
-                    )?.name
-                  }
-                ></input>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label htmlFor="amount">Amount</label>
-              </td>
-              <td>
-                <input
-                  name="amount"
-                  placeholder="Amount"
-                  defaultValue="0.01"
-                ></input>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label htmlFor="chain">Chain</label>
-              </td>
-              <td>
-                <input
-                  name="chain"
-                  placeholder="Chain"
-                  defaultValue="0"
-                ></input>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div>
-          <button
-            type="submit"
-            className="bg-gray-700 text-white rounded p-2 hover:bg-gray-600 transition"
-          >
-            Send
-          </button>
+    <div className="bg-dark-slate p-6 rounded-lg shadow-md w-full mx-auto">
+      <h3 className="text-2xl font-semibold text-white mb-4">Send</h3>
+      <form onSubmit={onSubmitTransfer} className="space-y-4 w-full">
+        <div className="flex flex-col w-full">
+          <label className="text-text-secondary mb-1" htmlFor="from">
+            From
+          </label>
+          <input
+            type="text"
+            value={wallet.account?.name}
+            disabled
+            className="bg-medium-slate border border-border-gray rounded-md py-2 px-3 text-white w-full"
+          />
         </div>
+        <div className="flex flex-col w-full">
+          <label className="text-text-secondary mb-1" htmlFor="to">
+            To
+          </label>
+          <input
+            name="to"
+            placeholder="To"
+            defaultValue={
+              wallet.accounts.find((a) => a.index !== wallet.account?.index)
+                ?.name
+            }
+            className="bg-medium-slate border border-border-gray rounded-md py-2 px-3 text-white w-full"
+          />
+        </div>
+        <div className="flex flex-col w-full">
+          <label className="text-text-secondary mb-1" htmlFor="amount">
+            Amount
+          </label>
+          <input
+            name="amount"
+            placeholder="Amount"
+            defaultValue="0.01"
+            className="bg-medium-slate border border-border-gray rounded-md py-2 px-3 text-white w-full"
+          />
+        </div>
+        <div className="flex flex-col w-full">
+          <label className="text-text-secondary mb-1" htmlFor="chain">
+            Chain
+          </label>
+          <input
+            name="chain"
+            placeholder="Chain"
+            defaultValue="0"
+            className="bg-medium-slate border border-border-gray rounded-md py-2 px-3 text-white w-full"
+          />
+        </div>
+        <button
+          type="submit"
+          className="w-full bg-primary-green text-white font-semibold rounded-md py-2 px-4 hover:bg-secondary-green transition"
+        >
+          Send
+        </button>
       </form>
     </div>
   );
