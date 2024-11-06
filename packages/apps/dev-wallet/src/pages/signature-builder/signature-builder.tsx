@@ -37,7 +37,6 @@ function determineSchema(input: string): requestScheme {
   try {
     // TODO: pase YAML as well
     const json: any = yaml.load(input);
-    console.log('json', json);
     if (!json || typeof json !== 'object') {
       return 'invalid';
     }
@@ -208,6 +207,7 @@ export function SignatureBuilder() {
         className={classNames(codeArea)}
         onChange={(e) => {
           e.preventDefault();
+          setError(undefined);
           processSig(e.target.value);
         }}
       />
