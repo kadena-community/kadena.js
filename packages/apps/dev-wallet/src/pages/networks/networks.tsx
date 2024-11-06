@@ -1,5 +1,5 @@
-import { Breadcrumbs } from '@/Components/Breadcrumbs/Breadcrumbs';
 import { ListItem } from '@/Components/ListItem/ListItem';
+import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { networkRepository } from '@/modules/network/network.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { MonoWifiTethering } from '@kadena/kode-icons/system';
@@ -21,12 +21,12 @@ export function Networks() {
 
   return (
     <>
-      <Breadcrumbs icon={<MonoWifiTethering />}>
+      <SideBarBreadcrumbs icon={<MonoWifiTethering />}>
         <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
         <SideBarBreadcrumbsItem href="/networks">
           Networks
         </SideBarBreadcrumbsItem>
-      </Breadcrumbs>
+      </SideBarBreadcrumbs>
 
       <Stack margin="md" flexDirection={'column'}>
         <NetworkForm

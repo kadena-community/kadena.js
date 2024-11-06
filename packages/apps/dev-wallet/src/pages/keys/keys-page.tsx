@@ -1,4 +1,4 @@
-import { Breadcrumbs } from '@/Components/Breadcrumbs/Breadcrumbs';
+import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { Mono123, MonoKey } from '@kadena/kode-icons/system';
 import { Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
@@ -11,12 +11,12 @@ export function KeysPage() {
 
   return (
     <>
-      <Breadcrumbs icon={<MonoKey />}>
+      <SideBarBreadcrumbs icon={<MonoKey />}>
         <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
         <SideBarBreadcrumbsItem href="/key-management/keys">
           Manage Your Keys
         </SideBarBreadcrumbsItem>
-      </Breadcrumbs>
+      </SideBarBreadcrumbs>
       <Stack flexDirection={'column'} gap={'lg'}>
         <Heading>Manage Your Keys</Heading>
         <Tabs defaultSelectedKey={tab}>

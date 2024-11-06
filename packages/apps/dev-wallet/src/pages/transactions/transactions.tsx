@@ -1,4 +1,4 @@
-import { Breadcrumbs } from '@/Components/Breadcrumbs/Breadcrumbs';
+import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import {
   ITransaction,
   transactionRepository,
@@ -44,12 +44,12 @@ export function Transactions() {
 
   return (
     <>
-      <Breadcrumbs icon={<MonoSwapHoriz />}>
+      <SideBarBreadcrumbs icon={<MonoSwapHoriz />}>
         <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
         <SideBarBreadcrumbsItem href="/transactions">
           Transactions
         </SideBarBreadcrumbsItem>
-      </Breadcrumbs>
+      </SideBarBreadcrumbs>
       <Box className={panelClass} marginBlockStart="xs">
         <Heading as="h4">Transactions</Heading>
         <TransactionList transactions={transactions} />

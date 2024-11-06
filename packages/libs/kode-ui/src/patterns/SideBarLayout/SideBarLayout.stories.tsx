@@ -9,13 +9,18 @@ import {
 } from '@kadena/kode-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { FC, PropsWithChildren } from 'react';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button, Stack } from './../../components';
 import { SideBarBreadcrumbs } from './components/Breadcrumbs/SideBarBreadcrumbs';
 import { SideBarBreadcrumbsItem } from './components/Breadcrumbs/SideBarBreadcrumbsItem';
 import { LayoutProvider, useLayout } from './components/LayoutProvider';
 import { KadenaLogo } from './components/Logo/KadenaLogo';
 import { KLogo } from './components/Logo/KLogo';
+import {
+  RightAside,
+  RightAsideContent,
+  RightAsideHeader,
+} from './components/RightAside';
 import { SideBarFooter } from './components/SideBarFooter';
 import { SideBarFooterItem } from './components/SideBarFooterItem';
 import { SideBarItem } from './components/SideBarItem';
@@ -60,208 +65,222 @@ const LinkComponent: FC<PropsWithChildren<{ to: string }>> = ({
 };
 
 const InnerLayout = () => {
-  const { setAppContext, isExpanded } = useLayout();
-
-  useEffect(() => {
-    setAppContext({
-      visual: <MonoAccountTree />,
-      label: 'New Transf.',
-      href: 'https://kadena.io',
-    });
-  }, []);
+  const { isExpanded, setIsRightAsideExpanded, isRightAsideExpanded } =
+    useLayout();
 
   return (
-    <SideBarLayout
-      minifiedLogo={
-        <a href="https://kadena.io" target="_blank" rel="noreferrer">
-          <KLogo height={40} />
-        </a>
-      }
-      location={{
-        url: 'https://kadena.io',
-        push: console.log,
-      }}
-      topBanner={
-        <div
-          style={{ paddingBlock: '10px', background: 'green', width: '100%' }}
-        >
-          topbanner
-        </div>
-      }
-      sidebar={
-        <SideBar
-          logo={
-            <a href="https://kadena.io" target="_blank" rel="noreferrer">
-              <KadenaLogo height={40} />
-            </a>
-          }
-          minifiedLogo={
-            <a href="https://kadena.io" target="_blank" rel="noreferrer">
-              <KLogo height={40} />
-            </a>
-          }
-          appContext={
-            <SideBarItem
-              visual={<MonoWifiTethering />}
-              label="Mainnet"
-              href="javascript:void()"
-            />
-          }
-          navigation={
-            <>
-              <SideBarTree visual={<MonoWallet />} label="My Wallet">
-                <SideBarTreeItem label="Accounts" href="https://kadena.io" />
-                <SideBarTreeItem label="Assets" href="https://docs.kadena.io" />
-              </SideBarTree>
-              <SideBarTree visual={<MonoWallet />} label="My Wallet 2">
-                <SideBarTreeItem label="Accounts" href="https://kadena.io" />
-                <SideBarTreeItem label="Assets" href="https://docs.kadena.io" />
-              </SideBarTree>
-            </>
-          }
-          context={
-            <>
+    <>
+      <RightAside isOpen={isRightAsideExpanded}>
+        <RightAsideHeader label="test header" />
+        <RightAsideContent>content</RightAsideContent>
+      </RightAside>
+      <SideBarLayout
+        minifiedLogo={
+          <a href="https://kadena.io" target="_blank" rel="noreferrer">
+            <KLogo height={40} />
+          </a>
+        }
+        location={{
+          url: 'https://kadena.io',
+          push: console.log,
+        }}
+        topBanner={
+          <div
+            style={{ paddingBlock: '10px', background: 'green', width: '100%' }}
+          >
+            topbanner
+          </div>
+        }
+        sidebar={
+          <SideBar
+            logo={
+              <a href="https://kadena.io" target="_blank" rel="noreferrer">
+                <KadenaLogo height={40} />
+              </a>
+            }
+            minifiedLogo={
+              <a href="https://kadena.io" target="_blank" rel="noreferrer">
+                <KLogo height={40} />
+              </a>
+            }
+            appContext={
               <SideBarItem
-                visual={<MonoControlPointDuplicate />}
-                label="New Transfer"
-                onPress={() => {}}
+                visual={<MonoWifiTethering />}
+                label="Mainnet"
+                href="javascript:void()"
               />
-
-              <SideBarItemsInline>
+            }
+            navigation={
+              <>
+                <SideBarTree visual={<MonoWallet />} label="My Wallet">
+                  <SideBarTreeItem label="Accounts" href="https://kadena.io" />
+                  <SideBarTreeItem
+                    label="Assets"
+                    href="https://docs.kadena.io"
+                  />
+                </SideBarTree>
+                <SideBarTree visual={<MonoWallet />} label="My Wallet 2">
+                  <SideBarTreeItem label="Accounts" href="https://kadena.io" />
+                  <SideBarTreeItem
+                    label="Assets"
+                    href="https://docs.kadena.io"
+                  />
+                </SideBarTree>
+              </>
+            }
+            context={
+              <>
                 <SideBarItem
-                  visual={<MonoAccountTree />}
-                  label="Profile"
+                  visual={<MonoControlPointDuplicate />}
+                  label="New Transfer"
                   onPress={() => {}}
                 />
 
-                <SideBarItem
-                  visual={<MonoLightMode />}
-                  label="Change theme"
-                  onPress={() => {}}
-                >
-                  <Button
-                    aria-label="Change theme"
-                    variant={isExpanded ? 'transparent' : 'outlined'}
-                    isCompact={!isExpanded}
-                    startVisual={<MonoLightMode />}
+                <SideBarItemsInline>
+                  <SideBarItem
+                    visual={<MonoAccountTree />}
+                    label="Profile"
                     onPress={() => {}}
                   />
-                </SideBarItem>
-              </SideBarItemsInline>
-            </>
-          }
-        />
-      }
-      footer={
-        <SideBarFooter>
-          <SideBarFooterItem
-            visual={<MonoWindow />}
-            component={LinkComponent}
-            href="https://kadena.io"
-            label="option 1"
+
+                  <SideBarItem
+                    visual={<MonoLightMode />}
+                    label="Change theme"
+                    onPress={() => {}}
+                  >
+                    <Button
+                      aria-label="Change theme"
+                      variant={isExpanded ? 'transparent' : 'outlined'}
+                      isCompact={!isExpanded}
+                      startVisual={<MonoLightMode />}
+                      onPress={() => {}}
+                    />
+                  </SideBarItem>
+                </SideBarItemsInline>
+              </>
+            }
           />
-          <SideBarFooterItem
-            visual={<MonoWifiTethering />}
-            onPress={() => {}}
-            label="option 2"
-          />
-          <SideBarFooterItem
-            visual={<MonoWorkspaces />}
-            onPress={() => {}}
-            label="option 3"
-          />
-          <SideBarFooterItem
-            visual={<MonoLightMode />}
-            onPress={() => {}}
-            label="option 4"
-          />
-        </SideBarFooter>
-      }
-    >
-      <Stack
-        flexDirection="column"
-        style={{ maxWidth: '800px', height: '400px' }}
+        }
+        footer={
+          <SideBarFooter>
+            <SideBarFooterItem
+              visual={<MonoWindow />}
+              component={LinkComponent}
+              href="https://kadena.io"
+              label="option 1"
+            />
+            <SideBarFooterItem
+              visual={<MonoWifiTethering />}
+              onPress={() => {}}
+              label="option 2"
+            />
+            <SideBarFooterItem
+              visual={<MonoWorkspaces />}
+              onPress={() => {}}
+              label="option 3"
+            />
+            <SideBarFooterItem
+              visual={<MonoLightMode />}
+              onPress={() => {}}
+              label="option 4"
+            />
+          </SideBarFooter>
+        }
       >
-        content
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-      </Stack>
-    </SideBarLayout>
+        <Stack
+          flexDirection="column"
+          style={{ maxWidth: '800px', height: '400px' }}
+        >
+          <Stack width="100%" justifyContent="center" margin="md">
+            <Button
+              onPress={() => {
+                setIsRightAsideExpanded(true);
+              }}
+            >
+              open sidebar
+            </Button>
+          </Stack>
+          content
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+        </Stack>
+      </SideBarLayout>
+    </>
   );
 };
 

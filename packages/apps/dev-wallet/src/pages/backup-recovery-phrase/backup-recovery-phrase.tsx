@@ -1,5 +1,5 @@
 import { AuthCard } from '@/Components/AuthCard/AuthCard';
-import { Breadcrumbs } from '@/Components/Breadcrumbs/Breadcrumbs';
+import { SideBarBreadcrumbs } from '@/Components/Breadcrumbs/Breadcrumbs';
 import { MonoDashboardCustomize } from '@kadena/kode-icons/system';
 import { Box, Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
@@ -8,12 +8,12 @@ import { Link } from 'react-router-dom';
 export function BackupRecoveryPhrase() {
   return (
     <>
-      <Breadcrumbs icon={<MonoDashboardCustomize />}>
+      <SideBarBreadcrumbs icon={<MonoDashboardCustomize />}>
         <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
         <SideBarBreadcrumbsItem href="/backup-recovery-phrase">
           Backup
         </SideBarBreadcrumbsItem>
-      </Breadcrumbs>
+      </SideBarBreadcrumbs>
       <AuthCard>
         <Box margin="md">
           <Heading variant="h5">Backup the recovery phrase</Heading>

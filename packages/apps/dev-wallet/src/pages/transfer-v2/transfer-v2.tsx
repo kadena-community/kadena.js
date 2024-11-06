@@ -6,7 +6,7 @@ import { MonoSwapHoriz } from '@kadena/kode-icons/system';
 import { Divider, Heading, Stack, Step, Stepper, Text } from '@kadena/kode-ui';
 import { useCallback, useEffect, useState } from 'react';
 
-import { Breadcrumbs } from '@/Components/Breadcrumbs/Breadcrumbs';
+import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { activityRepository } from '@/modules/activity/activity.repository';
 import {
   ITransaction,
@@ -257,12 +257,12 @@ export function TransferV2() {
 
   return (
     <>
-      <Breadcrumbs icon={<MonoSwapHoriz />}>
+      <SideBarBreadcrumbs icon={<MonoSwapHoriz />}>
         <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
         <SideBarBreadcrumbsItem href="/transfer">
           Transfer
         </SideBarBreadcrumbsItem>
-      </Breadcrumbs>
+      </SideBarBreadcrumbs>
       <Stack flexDirection={'column'}>
         <Stepper direction="horizontal">
           <Step

@@ -52,6 +52,7 @@ export const menuBackdropClass = recipe({
 export const menuWrapperClass = recipe({
   base: [
     atoms({
+      position: 'fixed',
       flexDirection: 'column',
       flex: 1,
       gap: 'sm',
@@ -68,7 +69,6 @@ export const menuWrapperClass = recipe({
         willChange: 'transform',
         transition: 'transform .4s ease',
         transform: 'translateX(-100%)',
-        position: 'relative',
         gridArea: 'sidebarlayout-main',
         gridRow: '1/5',
         inset: 0,

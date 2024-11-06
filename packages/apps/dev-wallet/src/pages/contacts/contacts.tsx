@@ -1,7 +1,7 @@
-import { Breadcrumbs } from '@/Components/Breadcrumbs/Breadcrumbs';
 import { ConfirmDeletion } from '@/Components/ConfirmDeletion/ConfirmDeletion';
 import { ListItem } from '@/Components/ListItem/ListItem';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
+import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import {
   contactRepository,
   IContact,
@@ -39,12 +39,12 @@ export function Contacts() {
 
   return (
     <>
-      <Breadcrumbs icon={<MonoContacts />}>
+      <SideBarBreadcrumbs icon={<MonoContacts />}>
         <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
         <SideBarBreadcrumbsItem href="/contacts">
           Contacts
         </SideBarBreadcrumbsItem>
-      </Breadcrumbs>
+      </SideBarBreadcrumbs>
 
       <ContactForm
         input={editContact}

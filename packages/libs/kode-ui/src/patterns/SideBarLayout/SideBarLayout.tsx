@@ -50,32 +50,30 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
         className={bodyWrapperClass}
       >
         <Stack
-          className={classNames(
-            layoutWrapperClass({ variant, hasTopBanner: !!topBanner }),
-            {
-              [layoutExpandedWrapperClass]: isExpanded,
-            },
-          )}
+          className={classNames(layoutWrapperClass({ variant }), {
+            [layoutExpandedWrapperClass]: isExpanded,
+          })}
         >
-          {topBanner && (
-            <Stack
-              style={{
-                gridArea: 'sidebarlayout-topbanner',
-                overflowY: 'hidden',
-              }}
-            >
-              {topBanner}
-            </Stack>
-          )}
-
           <SideBarHeader
             hasSidebar={!!sidebar}
             logo={logo}
             minifiedLogo={minifiedLogo}
           />
           {sidebar}
-          <main className={mainClass({ variant })}>{children}</main>
-          <SideBarAside location={location} hasTopBanner={!!topBanner} />
+          <main className={mainClass({ variant })}>
+            {topBanner && (
+              <Stack
+                style={{
+                  gridArea: 'sidebarlayout-topbanner',
+                  overflowY: 'hidden',
+                }}
+              >
+                {topBanner}
+              </Stack>
+            )}
+            {children}
+          </main>
+          <SideBarAside location={location} />
           {footer}
         </Stack>
       </Stack>

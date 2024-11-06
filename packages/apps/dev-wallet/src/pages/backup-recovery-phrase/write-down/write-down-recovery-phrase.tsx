@@ -1,6 +1,6 @@
 import { AuthCard } from '@/Components/AuthCard/AuthCard';
 import { BackupMnemonic } from '@/Components/BackupMnemonic/BackupMnemonic';
-import { Breadcrumbs } from '@/Components/Breadcrumbs/Breadcrumbs';
+import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { MonoDashboardCustomize } from '@kadena/kode-icons/system';
 import { Notification } from '@kadena/kode-ui';
@@ -42,12 +42,12 @@ export function WriteDownRecoveryPhrase() {
   }
   return (
     <>
-      <Breadcrumbs icon={<MonoDashboardCustomize />}>
+      <SideBarBreadcrumbs icon={<MonoDashboardCustomize />}>
         <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
         <SideBarBreadcrumbsItem href="/backup-recovery-phrase/write-down">
           Recovery phrase
         </SideBarBreadcrumbsItem>
-      </Breadcrumbs>
+      </SideBarBreadcrumbs>
       {
         <AuthCard>
           <BackupMnemonic

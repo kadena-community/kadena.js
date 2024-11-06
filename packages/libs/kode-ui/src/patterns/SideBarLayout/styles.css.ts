@@ -14,7 +14,6 @@ export const layoutWrapperClass = recipe({
     {
       variants: {
         variant: 'default',
-        hasTopBanner: false,
       },
       style: [
         responsiveStyle({
@@ -49,15 +48,13 @@ export const layoutWrapperClass = recipe({
     {
       variants: {
         variant: 'default',
-        hasTopBanner: true,
       },
       style: [
         responsiveStyle({
           xs: {
             gridTemplateColumns: 'auto',
-            gridTemplateRows: `minMax(0px, 60px) ${minHeaderHeight} 1fr 60px`,
+            gridTemplateRows: `${minHeaderHeight} 1fr 60px`,
             gridTemplateAreas: `
-            "sidebarlayout-topbanner"
             "sidebarlayout-header"
             "sidebarlayout-main"
             "sidebarlayout-footer"
@@ -65,9 +62,8 @@ export const layoutWrapperClass = recipe({
           },
           md: {
             gridTemplateColumns: '45px auto',
-            gridTemplateRows: `minMax(0px, 60px) ${minHeaderHeight} 1fr`,
+            gridTemplateRows: `${minHeaderHeight} 1fr`,
             gridTemplateAreas: `
-            "sidebarlayout-topbanner sidebarlayout-topbanner sidebarlayout-topbanner"
             "sidebarlayout-sidebar sidebarlayout-header sidebarlayout-header"
             "sidebarlayout-sidebar sidebarlayout-main sidebarlayout-aside"
           `,
@@ -80,17 +76,12 @@ export const layoutWrapperClass = recipe({
     },
   ],
   variants: {
-    hasTopBanner: {
-      true: {},
-      false: {},
-    },
     variant: {
       full: [
         style({
           gridTemplateColumns: 'auto',
-          gridTemplateRows: `60px ${minHeaderHeight} 1fr`,
+          gridTemplateRows: `${minHeaderHeight} 1fr`,
           gridTemplateAreas: `
-            "sidebarlayout-topbanner"
             "sidebarlayout-header"
             "sidebarlayout-main"
           `,

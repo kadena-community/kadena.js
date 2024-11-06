@@ -1,4 +1,4 @@
-import { Breadcrumbs } from '@/Components/Breadcrumbs/Breadcrumbs';
+import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { IAccount } from '@/modules/account/account.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { KeySourceType } from '@/modules/wallet/wallet.repository';
@@ -444,12 +444,12 @@ export function TerminalPage() {
 
   return (
     <>
-      <Breadcrumbs icon={<MonoDashboardCustomize />}>
+      <SideBarBreadcrumbs icon={<MonoDashboardCustomize />}>
         <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
         <SideBarBreadcrumbsItem href="/terminal">
           Dev Console
         </SideBarBreadcrumbsItem>
-      </Breadcrumbs>
+      </SideBarBreadcrumbs>
 
       <Stack
         flex={1}

@@ -1,5 +1,5 @@
 import { AssetsCard } from '@/Components/AssetsCard/AssetsCard';
-import { Breadcrumbs } from '@/Components/Breadcrumbs/Breadcrumbs';
+import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { transactionRepository } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { panelClass } from '@/pages/home/style.css.ts';
@@ -39,9 +39,9 @@ export function HomePage() {
 
   return (
     <>
-      <Breadcrumbs icon={<MonoDashboard />}>
+      <SideBarBreadcrumbs icon={<MonoDashboard />}>
         <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
-      </Breadcrumbs>
+      </SideBarBreadcrumbs>
       <Box gap={'lg'}>
         <Text>Welcome back</Text>
         <Heading as="h1">{profile?.name} </Heading>

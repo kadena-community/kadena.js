@@ -6,13 +6,13 @@ import {
   createTransaction,
 } from '@kadena/client';
 
+import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { transactionRepository } from '@/modules/transaction/transaction.repository';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { MonoDashboardCustomize } from '@kadena/kode-icons/system';
 import {
   Box,
-  Breadcrumbs,
   Button,
   Heading,
   Notification,
@@ -142,12 +142,12 @@ export function SignatureBuilder() {
 
   return (
     <>
-      <Breadcrumbs icon={<MonoDashboardCustomize />}>
+      <SideBarBreadcrumbs icon={<MonoDashboardCustomize />}>
         <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
         <SideBarBreadcrumbsItem href="/sig-builder">
           Sig Builder
         </SideBarBreadcrumbsItem>
-      </Breadcrumbs>
+      </SideBarBreadcrumbs>
 
       <Stack flexDirection={'column'} gap={'md'}>
         <Heading variant="h5">

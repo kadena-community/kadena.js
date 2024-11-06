@@ -1,6 +1,6 @@
 import { transactionRepository } from '@/modules/transaction/transaction.repository';
 
-import { Breadcrumbs } from '@/Components/Breadcrumbs/Breadcrumbs';
+import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { useAsync } from '@/utils/useAsync';
 import { MonoSwapHoriz } from '@kadena/kode-icons/system';
 import { Heading, Stack, Text } from '@kadena/kode-ui';
@@ -19,7 +19,7 @@ export const TransactionPage = () => {
   );
   return (
     <>
-      <Breadcrumbs icon={<MonoSwapHoriz />}>
+      <SideBarBreadcrumbs icon={<MonoSwapHoriz />}>
         <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
         <SideBarBreadcrumbsItem href={`/transactions`}>
           Transactions
@@ -27,7 +27,7 @@ export const TransactionPage = () => {
         <SideBarBreadcrumbsItem href={`/transactions/${groupId}`}>
           Transaction Group
         </SideBarBreadcrumbsItem>
-      </Breadcrumbs>
+      </SideBarBreadcrumbs>
 
       <Stack flexDirection={'column'} gap={'lg'}>
         <Stack flexDirection={'column'} gap={'sm'}>
