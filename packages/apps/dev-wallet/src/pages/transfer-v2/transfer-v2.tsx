@@ -26,6 +26,13 @@ import {
 import { createRedistributionTxs, createTransactions } from './utils';
 
 export function TransferV2() {
+  const {
+    accounts: allAccounts,
+    getPublicKeyData,
+    activeNetwork,
+    profile,
+  } = useWallet();
+
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const accountId = searchParams.get('accountId');
@@ -78,12 +85,6 @@ export function TransferV2() {
     transfer: { groupId: '', txs: [] },
   });
 
-  const {
-    accounts: allAccounts,
-    getPublicKeyData,
-    activeNetwork,
-    profile,
-  } = useWallet();
   function createTransaction(data: Required<Transfer>) {
     if (!data.senderAccount || !profile) return;
     return createTransactions({

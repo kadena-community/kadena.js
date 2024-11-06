@@ -35,6 +35,7 @@ export function AccountPage() {
     watchAccounts.find((account) => account.uuid === accountId);
 
   const navigate = useNavigate();
+
   const keyset = account?.keyset;
   const asset = fungibles.find((f) => f.contract === account?.contract);
   const [activities = []] = useAsync(getTransferActivities, [
