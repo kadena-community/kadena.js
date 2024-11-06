@@ -144,10 +144,6 @@ export function ExpandedTransaction({
                           label="Copy as YAML"
                           onClick={copyTransactionAs('yaml')}
                         />
-                        <ContextMenuItem
-                          label="Copy as CMS"
-                          onClick={copyTransactionAs('json')}
-                        />
                       </ContextMenu>
                     </Stack>
                   </Stack>
