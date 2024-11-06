@@ -21,6 +21,7 @@ import {
 import { useLayout } from '@kadena/kode-ui/patterns';
 import { execCodeParser } from '@kadena/pactjs-generator';
 import classNames from 'classnames';
+import yaml from 'js-yaml';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { codeArea } from './style.css';
@@ -33,10 +34,13 @@ type requestScheme =
   | 'PactCommand';
 
 function determineSchema(input: string): requestScheme {
-  let json;
   try {
     // TODO: pase YAML as well
-    json = JSON.parse(input);
+    const json: any = yaml.load(input);
+    console.log('json', json);
+    if (!json || typeof json !== 'object') {
+      return 'invalid';
+    }
     if ('cmd' in json) {
       JSON.parse(json.cmd);
       return 'quickSignRequest';
@@ -118,14 +122,14 @@ export function SignatureBuilder() {
     const schema = determineSchema(inputData);
     switch (schema) {
       case 'quickSignRequest': {
-        const parsed: IUnsignedCommand = JSON.parse(inputData);
+        const parsed = yaml.load(inputData) as IUnsignedCommand;
         setPactCommand(JSON.parse(parsed.cmd));
         setUnsignedTx(normalizeTx(parsed));
         setCapsWithoutSigners([]);
         break;
       }
       case 'PactCommand': {
-        const parsed: IPartialPactCommand = JSON.parse(inputData);
+        const parsed = yaml.load(inputData) as IPartialPactCommand;
         setPactCommand(parsed);
         const tx = createTransaction(parsed);
         setUnsignedTx(normalizeTx(tx));
@@ -133,7 +137,7 @@ export function SignatureBuilder() {
         break;
       }
       case 'signingRequest': {
-        const parsed: ISigningRequest = JSON.parse(inputData);
+        const parsed = yaml.load(inputData) as ISigningRequest;
         const pactCommand = signingRequestToPactCommand(parsed);
         setPactCommand(pactCommand);
         setCapsWithoutSigners(parsed.caps);

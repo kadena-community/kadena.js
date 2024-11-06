@@ -1,4 +1,5 @@
 import { IPactCommand, IUnsignedCommand } from '@kadena/client';
+import { hash } from '@kadena/cryptography-utils';
 
 type SigData = Record<string, string>;
 type CommandSigData = Array<{
@@ -69,4 +70,5 @@ export function normalizeSigs(
 export const normalizeTx = (tx: IUnsignedCommand) => ({
   ...tx,
   sigs: normalizeSigs(tx),
+  hash: tx.hash || hash(tx.cmd),
 });
