@@ -46,10 +46,12 @@ export const asideWrapperClass = recipe({
       true: {
         opacity: 1,
         transform: 'translateX(0%)',
+        pointerEvents: 'auto',
       },
       false: [
         {
           opacity: 0,
+          pointerEvents: 'none',
         },
       ],
     },
