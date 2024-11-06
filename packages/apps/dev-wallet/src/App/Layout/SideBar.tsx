@@ -85,11 +85,6 @@ export const SideBar: FC = () => {
               href="/sig-builder"
             />
             <SideBarTreeItem
-              label="Dev Console"
-              component={Link}
-              href="/terminal"
-            />
-            <SideBarTreeItem
               label="Backup"
               component={Link}
               href="/backup-recovery-phrase/write-down"
