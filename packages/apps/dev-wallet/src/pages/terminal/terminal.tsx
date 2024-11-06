@@ -1,3 +1,4 @@
+import { Breadcrumbs } from '@/Components/Breadcrumbs/Breadcrumbs';
 import { IAccount } from '@/modules/account/account.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { KeySourceType } from '@/modules/wallet/wallet.repository';
@@ -18,7 +19,7 @@ import {
 } from '@kadena/client/fp';
 import { MonoDashboardCustomize } from '@kadena/kode-icons/system';
 import { Stack } from '@kadena/kode-ui';
-import { useLayout } from '@kadena/kode-ui/patterns';
+import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { execCodeParser, IParsedCode } from '@kadena/pactjs-generator';
 import { useMemo, useRef, useState } from 'react';
 import Terminal from 'react-console-emulator';
@@ -156,15 +157,6 @@ const getCommand = (
 };
 
 export function TerminalPage() {
-  useLayout({
-    breadCrumbs: [
-      {
-        label: 'Dev Console',
-        visual: <MonoDashboardCustomize />,
-        url: '/terminal',
-      },
-    ],
-  });
   const [txStep, setTxStep] = useState<
     null | 'start' | 'code' | 'data' | 'signer' | 'capability'
   >(null);
@@ -451,139 +443,148 @@ export function TerminalPage() {
   };
 
   return (
-    <Stack
-      flex={1}
-      overflow="auto"
-      height="100%"
-      flexDirection={'column'}
-      position="relative"
-    >
-      <div className={TerminalContainerClass}>
-        <Terminal
-          noNewlineParsing
-          commands={commands}
-          ref={terminalRef}
-          style={{
-            flexBasis: 'auto',
-            flexGrow: 0,
-            maxHeight: '100%',
-            minHeight: '100%',
-            overflow: 'auto',
-          }}
-          inputAreaStyle={{
-            display: 'block',
-            wordBreak: 'break-word',
-          }}
-          promptLabelStyle={{
-            overflowWrap: 'none',
-            // background: 'red',
-            minWidth: '100px',
-            display: 'block',
-          }}
-          inputStyle={{
-            padding: '0',
-          }}
-          messageStyle={{
-            whiteSpace: 'pre',
-          }}
-          errorText={txStep ? ' ' : undefined}
-          promptLabel={
-            txStep ? getStepLabel(txStep) : `chain${chainId}@${networkId}:`
-          }
-          commandCallback={(args: { rawInput: string }) => {
-            if (!txStep) return;
-            if (args.rawInput === 'exit') {
-              terminalRef.current?.pushToStdout('Command cancelled');
-              setTxStep(null);
-              return;
+    <>
+      <Breadcrumbs icon={<MonoDashboardCustomize />}>
+        <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
+        <SideBarBreadcrumbsItem href="/terminal">
+          Dev Console
+        </SideBarBreadcrumbsItem>
+      </Breadcrumbs>
+
+      <Stack
+        flex={1}
+        overflow="auto"
+        height="100%"
+        flexDirection={'column'}
+        position="relative"
+      >
+        <div className={TerminalContainerClass}>
+          <Terminal
+            noNewlineParsing
+            commands={commands}
+            ref={terminalRef}
+            style={{
+              flexBasis: 'auto',
+              flexGrow: 0,
+              maxHeight: '100%',
+              minHeight: '100%',
+              overflow: 'auto',
+            }}
+            inputAreaStyle={{
+              display: 'block',
+              wordBreak: 'break-word',
+            }}
+            promptLabelStyle={{
+              overflowWrap: 'none',
+              // background: 'red',
+              minWidth: '100px',
+              display: 'block',
+            }}
+            inputStyle={{
+              padding: '0',
+            }}
+            messageStyle={{
+              whiteSpace: 'pre',
+            }}
+            errorText={txStep ? ' ' : undefined}
+            promptLabel={
+              txStep ? getStepLabel(txStep) : `chain${chainId}@${networkId}:`
             }
-            if (txStep === 'start') {
-              terminalRef.current?.pushToStdout(
-                'Complete all the following steps to create a command',
-              );
-            }
-            if (txStep === 'start') {
-              setTxStep('code');
-              return;
-            }
-            if (txStep === 'code') {
-              setCommandParts({ code: args.rawInput, data: {}, signer: [] });
-              setTxStep('data');
-              return;
-            }
-            if (txStep === 'data') {
-              if (!args.rawInput) {
-                setTxStep('signer');
+            commandCallback={(args: { rawInput: string }) => {
+              if (!txStep) return;
+              if (args.rawInput === 'exit') {
+                terminalRef.current?.pushToStdout('Command cancelled');
+                setTxStep(null);
                 return;
               }
-              const [key, value] = args.rawInput.split('=');
-              if (!key || !value) {
+              if (txStep === 'start') {
                 terminalRef.current?.pushToStdout(
-                  'type data in key=value format',
+                  'Complete all the following steps to create a command',
                 );
               }
-              let val;
-              try {
-                val = JSON.parse(value);
-              } catch (e) {
-                val = value;
-              }
-              setCommandParts(
-                (prev) =>
-                  prev && {
-                    ...prev,
-                    data: { ...prev.data, [key]: val },
-                  },
-              );
-            }
-            if (txStep === 'signer' && args.rawInput) {
-              setCommandParts(
-                (prev) =>
-                  prev && {
-                    ...prev,
-                    signer: [
-                      ...prev.signer,
-                      { publicKey: args.rawInput, clist: [] },
-                    ],
-                  },
-              );
-              setTxStep('capability');
-              return;
-            }
-            if (txStep === 'capability') {
-              if (!args.rawInput) {
-                setTxStep('signer');
+              if (txStep === 'start') {
+                setTxStep('code');
                 return;
               }
-              const sections = execCodeParser(args.rawInput);
-              const clist = sections?.map(
-                (section) =>
-                  ({
-                    name: `${getSection(section.function.namespace)}${getSection(section.function.module)}${section.function.name}`,
-                    args: section.args.map(createCapArgs),
-                  }) as ICap,
-              );
-              if (clist) {
-                const lastSigner = commandParts?.signer.at(-1);
-                lastSigner?.clist.push(...clist);
-                setCommandParts((prev) => ({ ...prev }) as ICommandParts);
+              if (txStep === 'code') {
+                setCommandParts({ code: args.rawInput, data: {}, signer: [] });
+                setTxStep('data');
+                return;
               }
-            }
-            if (txStep === 'signer' && !args.rawInput) {
-              const cmd = getCommand(
-                commandParts!,
-                getPublicKeyData,
-              ) as IPartialPactCommand;
-              setCommand(cmd);
-              terminalRef.current?.pushToStdout(JSON.stringify(cmd, null, 2));
-              setTxStep(null);
-              return;
-            }
-            // if (args.result || args.command === 'clear') return;
-            // // return args.join(' ');
-          }}
-        />
-      </div>
-    </Stack>
+              if (txStep === 'data') {
+                if (!args.rawInput) {
+                  setTxStep('signer');
+                  return;
+                }
+                const [key, value] = args.rawInput.split('=');
+                if (!key || !value) {
+                  terminalRef.current?.pushToStdout(
+                    'type data in key=value format',
+                  );
+                }
+                let val;
+                try {
+                  val = JSON.parse(value);
+                } catch (e) {
+                  val = value;
+                }
+                setCommandParts(
+                  (prev) =>
+                    prev && {
+                      ...prev,
+                      data: { ...prev.data, [key]: val },
+                    },
+                );
+              }
+              if (txStep === 'signer' && args.rawInput) {
+                setCommandParts(
+                  (prev) =>
+                    prev && {
+                      ...prev,
+                      signer: [
+                        ...prev.signer,
+                        { publicKey: args.rawInput, clist: [] },
+                      ],
+                    },
+                );
+                setTxStep('capability');
+                return;
+              }
+              if (txStep === 'capability') {
+                if (!args.rawInput) {
+                  setTxStep('signer');
+                  return;
+                }
+                const sections = execCodeParser(args.rawInput);
+                const clist = sections?.map(
+                  (section) =>
+                    ({
+                      name: `${getSection(section.function.namespace)}${getSection(section.function.module)}${section.function.name}`,
+                      args: section.args.map(createCapArgs),
+                    }) as ICap,
+                );
+                if (clist) {
+                  const lastSigner = commandParts?.signer.at(-1);
+                  lastSigner?.clist.push(...clist);
+                  setCommandParts((prev) => ({ ...prev }) as ICommandParts);
+                }
+              }
+              if (txStep === 'signer' && !args.rawInput) {
+                const cmd = getCommand(
+                  commandParts!,
+                  getPublicKeyData,
+                ) as IPartialPactCommand;
+                setCommand(cmd);
+                terminalRef.current?.pushToStdout(JSON.stringify(cmd, null, 2));
+                setTxStep(null);
+                return;
+              }
+              // if (args.result || args.command === 'clear') return;
+              // // return args.join(' ');
+            }}
+          />
+        </div>
+      </Stack>
+    </>
   );
 }

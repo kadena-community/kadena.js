@@ -17,7 +17,6 @@ export interface ISideBarLayout extends PropsWithChildren {
   topBanner?: ReactElement;
   logo?: ReactElement;
   minifiedLogo?: ReactElement;
-  breadcrumbs?: ReactElement;
   sidebar?: ReactElement;
   footer?: ReactElement;
   variant?: 'default' | 'full';
@@ -28,7 +27,6 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
   topBanner,
   logo,
   minifiedLogo,
-  breadcrumbs,
   sidebar,
   footer,
   variant = 'default',
@@ -59,25 +57,24 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
             },
           )}
         >
+          {topBanner && (
+            <Stack
+              style={{
+                gridArea: 'sidebarlayout-topbanner',
+                overflowY: 'hidden',
+              }}
+            >
+              {topBanner}
+            </Stack>
+          )}
+
           <SideBarHeader
-            breadcrumbs={breadcrumbs}
             hasSidebar={!!sidebar}
             logo={logo}
             minifiedLogo={minifiedLogo}
           />
           {sidebar}
-          <main className={mainClass({ variant })}>
-            {topBanner && (
-              <Stack
-                style={{
-                  gridArea: 'sidebarlayout-topbanner',
-                }}
-              >
-                {topBanner}
-              </Stack>
-            )}
-            {children}
-          </main>
+          <main className={mainClass({ variant })}>{children}</main>
           <SideBarAside location={location} hasTopBanner={!!topBanner} />
           {footer}
         </Stack>

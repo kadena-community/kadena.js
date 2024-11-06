@@ -6,7 +6,6 @@ import {
 } from '@kadena/kode-icons/system';
 
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
-import { BreadCrumbs } from '@/pages/BreadCrumbs/BreadCrumbs';
 import { Themes, useTheme } from '@kadena/kode-ui';
 import {
   SideBarFooter,
@@ -41,7 +40,6 @@ export const Layout: FC = () => {
     <>
       <SideBarLayout
         topBanner={<BetaHeader />}
-        breadcrumbs={<BreadCrumbs />}
         location={innerLocation}
         sidebar={<SideBar />}
         footer={

@@ -1,9 +1,10 @@
+import { Breadcrumbs } from '@/Components/Breadcrumbs/Breadcrumbs';
 import { ListItem } from '@/Components/ListItem/ListItem';
 import { networkRepository } from '@/modules/network/network.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { MonoWifiTethering } from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
-import { useLayout } from '@kadena/kode-ui/patterns';
+import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { panelClass } from '../home/style.css';
 import {
@@ -17,14 +18,16 @@ export function Networks() {
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const [selectedNetwork, setSelectedNetwork] =
     useState<INetworkWithOptionalUuid>(() => getNewNetwork());
-  useLayout({
-    breadCrumbs: [
-      { label: 'Networks', visual: <MonoWifiTethering />, url: '/networks' },
-    ],
-  });
 
   return (
     <>
+      <Breadcrumbs icon={<MonoWifiTethering />}>
+        <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
+        <SideBarBreadcrumbsItem href="/networks">
+          Networks
+        </SideBarBreadcrumbsItem>
+      </Breadcrumbs>
+
       <Stack margin="md" flexDirection={'column'}>
         <NetworkForm
           isOpen={isRightAsideExpanded}

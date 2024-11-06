@@ -6,12 +6,13 @@ import { MonoSwapHoriz } from '@kadena/kode-icons/system';
 import { Divider, Heading, Stack, Step, Stepper, Text } from '@kadena/kode-ui';
 import { useCallback, useEffect, useState } from 'react';
 
+import { Breadcrumbs } from '@/Components/Breadcrumbs/Breadcrumbs';
 import { activityRepository } from '@/modules/activity/activity.repository';
 import {
   ITransaction,
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
-import { useLayout } from '@kadena/kode-ui/patterns';
+import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ReviewTransaction } from '../transaction/components/ReviewTransaction';
 import { TxList } from '../transaction/components/TxList';
@@ -25,15 +26,6 @@ import {
 import { createRedistributionTxs, createTransactions } from './utils';
 
 export function TransferV2() {
-  useLayout({
-    breadCrumbs: [
-      {
-        label: 'Transfer',
-        visual: <MonoSwapHoriz />,
-        url: '/transfer',
-      },
-    ],
-  });
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const accountId = searchParams.get('accountId');
@@ -263,83 +255,95 @@ export function TransferV2() {
   };
 
   return (
-    <Stack flexDirection={'column'}>
-      <Stepper direction="horizontal">
-        <Step
-          icon={<MonoSwapHoriz />}
-          onClick={() => {
-            setStep('transfer');
-          }}
-          active={step === 'transfer'}
-        >
+    <>
+      <Breadcrumbs icon={<MonoSwapHoriz />}>
+        <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
+        <SideBarBreadcrumbsItem href="/transfer">
           Transfer
-        </Step>
-        <Step active={step === 'sign'}>Transactions</Step>
-        <Step active={step === 'result'}>Result</Step>
-      </Stepper>
-      {step === 'transfer' && (
-        <Stack justifyContent={'center'}>
-          <Stack gap={'lg'} flexDirection={'column'} style={{ width: '670px' }}>
-            <TransferForm
-              accountId={accountId}
-              activityId={urlActivityId}
-              onSubmit={async (data, redistribution) => {
-                const senderAccount = allAccounts.find(
-                  (acc) => acc.uuid === data.accountId,
-                );
-                if (!senderAccount?.keyset?.uuid) return;
-                const formData = { ...data, senderAccount };
-                const getEmpty = () => ['', []] as [string, ITransaction[]];
-                let redistributionGroup = getEmpty();
+        </SideBarBreadcrumbsItem>
+      </Breadcrumbs>
+      <Stack flexDirection={'column'}>
+        <Stepper direction="horizontal">
+          <Step
+            icon={<MonoSwapHoriz />}
+            onClick={() => {
+              setStep('transfer');
+            }}
+            active={step === 'transfer'}
+          >
+            Transfer
+          </Step>
+          <Step active={step === 'sign'}>Transactions</Step>
+          <Step active={step === 'result'}>Result</Step>
+        </Stepper>
+        {step === 'transfer' && (
+          <Stack justifyContent={'center'}>
+            <Stack
+              gap={'lg'}
+              flexDirection={'column'}
+              style={{ width: '670px' }}
+            >
+              <TransferForm
+                accountId={accountId}
+                activityId={urlActivityId}
+                onSubmit={async (data, redistribution) => {
+                  const senderAccount = allAccounts.find(
+                    (acc) => acc.uuid === data.accountId,
+                  );
+                  if (!senderAccount?.keyset?.uuid) return;
+                  const formData = { ...data, senderAccount };
+                  const getEmpty = () => ['', []] as [string, ITransaction[]];
+                  let redistributionGroup = getEmpty();
 
-                if (redistribution.length > 0) {
-                  redistributionGroup =
-                    (await createRedistribution(formData, redistribution)) ??
-                    getEmpty();
-                }
-                const txGroup =
-                  (await createTransaction(formData)) ?? getEmpty();
-                const updatedTxGroups = {
-                  redistribution: {
-                    groupId: redistributionGroup[0] ?? '',
-                    txs: redistributionGroup[1] ?? [],
-                  },
-                  transfer: {
-                    groupId: txGroup[0] ?? '',
-                    txs: txGroup[1] ?? [],
-                  },
-                };
-                setTxGroups(updatedTxGroups);
-                const activityId = crypto.randomUUID();
-                await activityRepository.addActivity({
-                  data: {
-                    transferData: data,
-                    txGroups: {
-                      transfer: {
-                        groupId: updatedTxGroups.transfer.groupId,
-                      },
-                      redistribution: {
-                        groupId: updatedTxGroups.redistribution.groupId,
+                  if (redistribution.length > 0) {
+                    redistributionGroup =
+                      (await createRedistribution(formData, redistribution)) ??
+                      getEmpty();
+                  }
+                  const txGroup =
+                    (await createTransaction(formData)) ?? getEmpty();
+                  const updatedTxGroups = {
+                    redistribution: {
+                      groupId: redistributionGroup[0] ?? '',
+                      txs: redistributionGroup[1] ?? [],
+                    },
+                    transfer: {
+                      groupId: txGroup[0] ?? '',
+                      txs: txGroup[1] ?? [],
+                    },
+                  };
+                  setTxGroups(updatedTxGroups);
+                  const activityId = crypto.randomUUID();
+                  await activityRepository.addActivity({
+                    data: {
+                      transferData: data,
+                      txGroups: {
+                        transfer: {
+                          groupId: updatedTxGroups.transfer.groupId,
+                        },
+                        redistribution: {
+                          groupId: updatedTxGroups.redistribution.groupId,
+                        },
                       },
                     },
-                  },
-                  keysetId: senderAccount.keyset?.uuid,
-                  networkUUID: activeNetwork!.uuid,
-                  profileId: profile?.uuid ?? '',
-                  status: 'Initiated',
-                  type: 'Transfer',
-                  uuid: activityId,
-                });
-                setStep('sign');
-                // then the page will stay on the sign step if refresh
-                navigate(`/transfer?activityId=${activityId}`);
-              }}
-            />
+                    keysetId: senderAccount.keyset?.uuid,
+                    networkUUID: activeNetwork!.uuid,
+                    profileId: profile?.uuid ?? '',
+                    status: 'Initiated',
+                    type: 'Transfer',
+                    uuid: activityId,
+                  });
+                  setStep('sign');
+                  // then the page will stay on the sign step if refresh
+                  navigate(`/transfer?activityId=${activityId}`);
+                }}
+              />
+            </Stack>
           </Stack>
-        </Stack>
-      )}
-      {(step === 'sign' || step === 'result' || step === 'summary') &&
-        renderSignStep()}
-    </Stack>
+        )}
+        {(step === 'sign' || step === 'result' || step === 'summary') &&
+          renderSignStep()}
+      </Stack>
+    </>
   );
 }

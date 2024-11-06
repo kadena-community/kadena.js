@@ -1,7 +1,10 @@
 import { transactionRepository } from '@/modules/transaction/transaction.repository';
 
+import { Breadcrumbs } from '@/Components/Breadcrumbs/Breadcrumbs';
 import { useAsync } from '@/utils/useAsync';
+import { MonoSwapHoriz } from '@kadena/kode-icons/system';
 import { Heading, Stack, Text } from '@kadena/kode-ui';
+import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { useParams } from 'react-router-dom';
 import { TxList } from './components/TxList';
 
@@ -15,21 +18,33 @@ export const TransactionPage = () => {
     [groupId],
   );
   return (
-    <Stack flexDirection={'column'} gap={'lg'}>
-      <Stack flexDirection={'column'} gap={'sm'}>
-        <Heading>Transactions</Heading>
-        {txs.length === 0 && <Text>No transactions</Text>}
-        {txs.length >= 2 && (
-          <Text>This is a group of {txs.length} Transactions</Text>
-        )}
+    <>
+      <Breadcrumbs icon={<MonoSwapHoriz />}>
+        <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
+        <SideBarBreadcrumbsItem href={`/transactions`}>
+          Transactions
+        </SideBarBreadcrumbsItem>
+        <SideBarBreadcrumbsItem href={`/transactions/${groupId}`}>
+          Transaction Group
+        </SideBarBreadcrumbsItem>
+      </Breadcrumbs>
+
+      <Stack flexDirection={'column'} gap={'lg'}>
+        <Stack flexDirection={'column'} gap={'sm'}>
+          <Heading>Transactions</Heading>
+          {txs.length === 0 && <Text>No transactions</Text>}
+          {txs.length >= 2 && (
+            <Text>This is a group of {txs.length} Transactions</Text>
+          )}
+        </Stack>
+        <TxList
+          onDone={() => {
+            console.log('done');
+          }}
+          txIds={txs.map((tx) => tx.uuid)}
+          showExpanded={txs.length === 1}
+        />
       </Stack>
-      <TxList
-        onDone={() => {
-          console.log('done');
-        }}
-        txIds={txs.map((tx) => tx.uuid)}
-        showExpanded={txs.length === 1}
-      />
-    </Stack>
+    </>
   );
 };

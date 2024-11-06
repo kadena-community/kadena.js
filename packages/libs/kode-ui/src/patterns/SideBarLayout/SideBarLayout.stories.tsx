@@ -16,6 +16,8 @@ import {
   Button,
   Stack,
 } from './../../components';
+import { SideBarBreadcrumbs } from './components/Breadcrumbs/SideBarBreadcrumbs';
+import { SideBarBreadcrumbsItem } from './components/Breadcrumbs/SideBarBreadcrumbsItem';
 import { LayoutProvider, useLayout } from './components/LayoutProvider';
 import { KadenaLogo } from './components/Logo/KadenaLogo';
 import { KLogo } from './components/Logo/KLogo';
@@ -90,12 +92,6 @@ const InnerLayout = () => {
         >
           topbanner
         </div>
-      }
-      breadcrumbs={
-        <Breadcrumbs icon={<MonoAccountTree />}>
-          <BreadcrumbsItem href="/accounts">He-man</BreadcrumbsItem>
-          <BreadcrumbsItem href="/accounts/2">Skeletor</BreadcrumbsItem>
-        </Breadcrumbs>
       }
       sidebar={
         <SideBar
@@ -281,6 +277,14 @@ export const Primary: IStory = {
   render: () => {
     return (
       <LayoutProvider>
+        <SideBarBreadcrumbs icon={<MonoAccountTree />}>
+          <SideBarBreadcrumbsItem href="/accounts">
+            He-man
+          </SideBarBreadcrumbsItem>
+          <SideBarBreadcrumbsItem href="/accounts/2">
+            Skeletor
+          </SideBarBreadcrumbsItem>
+        </SideBarBreadcrumbs>
         <InnerLayout />
       </LayoutProvider>
     );

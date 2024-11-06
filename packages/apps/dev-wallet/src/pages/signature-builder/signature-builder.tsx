@@ -12,13 +12,14 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { MonoDashboardCustomize } from '@kadena/kode-icons/system';
 import {
   Box,
+  Breadcrumbs,
   Button,
   Heading,
   Notification,
   Stack,
   Text,
 } from '@kadena/kode-ui';
-import { useLayout } from '@kadena/kode-ui/patterns';
+import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { execCodeParser } from '@kadena/pactjs-generator';
 import classNames from 'classnames';
 import { useMemo, useState } from 'react';
@@ -85,15 +86,6 @@ export function SignatureBuilder() {
   >([]);
   const { profile, activeNetwork, networks, setActiveNetwork } = useWallet();
   const navigate = useNavigate();
-  useLayout({
-    breadCrumbs: [
-      {
-        label: 'Sig Builder',
-        visual: <MonoDashboardCustomize />,
-        url: '/sig-builder',
-      },
-    ],
-  });
 
   const exec =
     pactCommand && pactCommand.payload && 'exec' in pactCommand.payload
@@ -149,78 +141,89 @@ export function SignatureBuilder() {
   }
 
   return (
-    <Stack flexDirection={'column'} gap={'md'}>
-      <Heading variant="h5">Paste SigData, CommandSigData, or Payload</Heading>
-      <textarea
-        value={input}
-        className={classNames(codeArea)}
-        onChange={(e) => {
-          e.preventDefault();
-          processSig(e.target.value);
-        }}
-      />
-      <Box>{schema && <Text>{`Schema: ${schema}`}</Text>}</Box>
-      <Box>
+    <>
+      <Breadcrumbs icon={<MonoDashboardCustomize />}>
+        <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
+        <SideBarBreadcrumbsItem href="/sig-builder">
+          Sig Builder
+        </SideBarBreadcrumbsItem>
+      </Breadcrumbs>
+
+      <Stack flexDirection={'column'} gap={'md'}>
+        <Heading variant="h5">
+          Paste SigData, CommandSigData, or Payload
+        </Heading>
+        <textarea
+          value={input}
+          className={classNames(codeArea)}
+          onChange={(e) => {
+            e.preventDefault();
+            processSig(e.target.value);
+          }}
+        />
+        <Box>{schema && <Text>{`Schema: ${schema}`}</Text>}</Box>
         <Box>
-          {['PactCommand', 'quickSignRequest'].includes(schema!) && (
-            <>
-              <Button
-                onPress={async () => {
-                  if (!unsignedTx || !profile || !activeNetwork) return;
-                  const command: IPactCommand = JSON.parse(unsignedTx.cmd);
-                  let networkUUID = activeNetwork.uuid;
-                  if (
-                    command.networkId &&
-                    activeNetwork.networkId !== command.networkId
-                  ) {
-                    const network = networks.filter(
-                      ({ networkId }) => networkId === command.networkId,
-                    );
-                    if (network.length === 0) {
-                      throw new Error('Network not found');
+          <Box>
+            {['PactCommand', 'quickSignRequest'].includes(schema!) && (
+              <>
+                <Button
+                  onPress={async () => {
+                    if (!unsignedTx || !profile || !activeNetwork) return;
+                    const command: IPactCommand = JSON.parse(unsignedTx.cmd);
+                    let networkUUID = activeNetwork.uuid;
+                    if (
+                      command.networkId &&
+                      activeNetwork.networkId !== command.networkId
+                    ) {
+                      const network = networks.filter(
+                        ({ networkId }) => networkId === command.networkId,
+                      );
+                      if (network.length === 0) {
+                        throw new Error('Network not found');
+                      }
+                      if (network.length > 1) {
+                        throw new Error('Multiple networks found');
+                      }
+                      networkUUID = network[0].uuid;
+                      // switch network
+                      setActiveNetwork(network[0]);
                     }
-                    if (network.length > 1) {
-                      throw new Error('Multiple networks found');
+                    const groupId = crypto.randomUUID();
+
+                    // check if transaction already exists
+                    const tx =
+                      await transactionRepository.getTransactionByHashNetworkProfile(
+                        profile.uuid,
+                        networkUUID,
+                        unsignedTx.hash,
+                      );
+
+                    if (tx) {
+                      navigate(`/transaction/${tx.groupId}`);
+                      return;
                     }
-                    networkUUID = network[0].uuid;
-                    // switch network
-                    setActiveNetwork(network[0]);
-                  }
-                  const groupId = crypto.randomUUID();
 
-                  // check if transaction already exists
-                  const tx =
-                    await transactionRepository.getTransactionByHashNetworkProfile(
-                      profile.uuid,
-                      networkUUID,
-                      unsignedTx.hash,
-                    );
-
-                  if (tx) {
-                    navigate(`/transaction/${tx.groupId}`);
-                    return;
-                  }
-
-                  await transactionService.addTransaction({
-                    transaction: unsignedTx,
-                    profileId: profile.uuid,
-                    networkUUID: networkUUID,
-                    groupId,
-                  });
-                  navigate(`/transaction/${groupId}`);
-                }}
-              >
-                Review Transaction
-              </Button>
-            </>
-          )}
-          {schema === 'signingRequest' && (
-            <Notification intent="info" role="status">
-              SigningRequest is not supported yet, We are working on it.
-            </Notification>
-          )}
+                    await transactionService.addTransaction({
+                      transaction: unsignedTx,
+                      profileId: profile.uuid,
+                      networkUUID: networkUUID,
+                      groupId,
+                    });
+                    navigate(`/transaction/${groupId}`);
+                  }}
+                >
+                  Review Transaction
+                </Button>
+              </>
+            )}
+            {schema === 'signingRequest' && (
+              <Notification intent="info" role="status">
+                SigningRequest is not supported yet, We are working on it.
+              </Notification>
+            )}
+          </Box>
         </Box>
-      </Box>
-    </Stack>
+      </Stack>
+    </>
   );
 }
