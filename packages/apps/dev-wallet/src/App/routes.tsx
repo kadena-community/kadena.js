@@ -24,7 +24,6 @@ import { Keyset } from '@/pages/keyset/keyset';
 import { Networks } from '@/pages/networks/networks';
 import { Ready } from '@/pages/ready/ready';
 import { SignatureBuilder } from '@/pages/signature-builder/signature-builder';
-import { TerminalPage } from '@/pages/terminal/terminal';
 import { TransactionPage } from '@/pages/transaction/Transaction';
 import { Transactions } from '@/pages/transactions/transactions';
 import { TransferV2 } from '@/pages/transfer-v2/transfer-v2';
@@ -124,7 +123,6 @@ export const Routes: FC = () => {
             <Route path="/fungible/:contract" element={<FungiblePage />} />
             <Route path="/account/:accountId" element={<AccountPage />} />
             <Route path="/transfer" element={<TransferV2 />} />
-            <Route path="/terminal" element={<TerminalPage />} />
             <Route path="/contacts" element={<Contacts />} />
             <Route
               path="/backup-recovery-phrase"
