@@ -1,14 +1,14 @@
-import { createClient, addSignatures, createTransaction } from "@kadena/client";
-import { transferCreateCommand } from "@kadena/client-utils/coin";
+import { addSignatures, createClient, createTransaction } from '@kadena/client';
+import { transferCreateCommand } from '@kadena/client-utils/coin';
 import {
   kadenaGenKeypairFromSeed,
   kadenaMnemonicToSeed,
   kadenaSignWithKeyPair,
-} from "@kadena/hd-wallet";
+} from '@kadena/hd-wallet';
 
 const phrase =
-  "hunt barrel sea feature before wood canoe stem govern vacuum rival sadness";
-const password = "password";
+  'hunt barrel sea feature before wood canoe stem govern vacuum rival sadness';
+const password = 'password';
 
 export async function main() {
   const seed = await kadenaMnemonicToSeed(password, phrase);
@@ -16,12 +16,12 @@ export async function main() {
   const [key2] = await kadenaGenKeypairFromSeed(password, seed, 1);
   const transaction = createTransaction({
     ...transferCreateCommand({
-      amount: "0.1",
-      chainId: "0",
+      amount: '0.1',
+      chainId: '0',
       receiver: {
         account: `k:${key2}`,
         keyset: {
-          pred: "keys-all",
+          pred: 'keys-all',
           keys: [key2],
         },
       },
@@ -30,16 +30,15 @@ export async function main() {
         publicKeys: [key1],
       },
     })(),
-    networkId: "testnet04",
+    networkId: 'testnet04',
   });
 
   const sig = await kadenaSignWithKeyPair(
     password,
     key1,
-    key1Secret
+    key1Secret,
   )(transaction.hash);
   const signed = addSignatures(transaction, sig);
-  console.log(JSON.stringify(signed, null, 2));
 
   const client = createClient();
   const result = await client.local(signed);

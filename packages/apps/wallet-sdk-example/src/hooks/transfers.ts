@@ -41,9 +41,7 @@ export const useTransfers = () => {
         removePendingTransfer(transfer);
         refetch();
       },
-      {
-        signal: controller.signal,
-      },
+      { signal: controller.signal },
     );
     return () => controller.abort();
   }, [pendingTransfers, refetch, removePendingTransfer]);

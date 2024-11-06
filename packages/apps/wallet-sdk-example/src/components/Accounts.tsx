@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { createAndTransferFund } from '../domain/fund';
 import { useAccountsBalances } from '../hooks/balances';
 import { useWalletState } from '../state/wallet';
+import { TextEllipsis } from './Text';
 
 export const Accounts = () => {
   const wallet = useWalletState();
@@ -55,7 +56,11 @@ export const Accounts = () => {
               <span className="font-semibold text-text-secondary">
                 Account:
               </span>
-              <span className="text-white">{account.name}</span>
+              <span className="text-white">
+                <TextEllipsis maxLength={15} withCopyButton>
+                  {account.name}
+                </TextEllipsis>
+              </span>
             </div>
             <div className="flex justify-between items-center">
               <span className="font-semibold text-text-secondary">

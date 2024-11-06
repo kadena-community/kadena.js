@@ -10,7 +10,7 @@ export function Wallet() {
   useWalletState('password');
 
   return (
-    <div className="w-full max-w-[800px] mx-auto p-6">
+    <div className="w-full max-w-[1000px] mx-auto p-6">
       {/* Header */}
       <header className="bg-dark-slate text-white p-4 rounded-lg shadow-md mb-8">
         <h1 className="text-3xl font-bold text-center text-primary-green">

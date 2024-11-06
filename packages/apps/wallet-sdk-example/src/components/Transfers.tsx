@@ -1,4 +1,5 @@
 import { useTransfers } from '../hooks/transfers';
+import { TextEllipsis } from './Text';
 
 export const Transfers = () => {
   const { transfers, pendingTransfers } = useTransfers();
@@ -50,10 +51,14 @@ export const Transfers = () => {
                     </td>
                     <td className="py-2 px-4 text-white">{transfer.chainId}</td>
                     <td className="py-2 px-4 text-white">
-                      {transfer.senderAccount}
+                      <TextEllipsis maxLength={15} withCopyButton>
+                        {transfer.senderAccount}
+                      </TextEllipsis>
                     </td>
                     <td className="py-2 px-4 text-white">
-                      {transfer.receiverAccount}
+                      <TextEllipsis maxLength={15} withCopyButton>
+                        {transfer.receiverAccount}
+                      </TextEllipsis>
                     </td>
                     <td className="py-2 px-4 text-white">{transfer.amount}</td>
                     <td className="py-2 px-4 text-primary-green">Pending</td>
@@ -108,10 +113,14 @@ export const Transfers = () => {
                     </td>
                     <td className="py-2 px-4 text-white">{transfer.chainId}</td>
                     <td className="py-2 px-4 text-white">
-                      {transfer.senderAccount}
+                      <TextEllipsis maxLength={15} withCopyButton>
+                        {transfer.senderAccount}
+                      </TextEllipsis>
                     </td>
                     <td className="py-2 px-4 text-white">
-                      {transfer.receiverAccount}
+                      <TextEllipsis maxLength={15} withCopyButton>
+                        {transfer.receiverAccount}
+                      </TextEllipsis>
                     </td>
                     <td className="py-2 px-4 text-white">{transfer.amount}</td>
                     <td className="py-2 px-4 text-secondary-green">Success</td>
