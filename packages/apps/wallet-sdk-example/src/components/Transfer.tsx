@@ -39,8 +39,6 @@ export const Transfer = () => {
       amount,
     };
 
-    console.log('pendingTransfer', pendingTransfer);
-
     addPendingTransfer(pendingTransfer);
   };
 
