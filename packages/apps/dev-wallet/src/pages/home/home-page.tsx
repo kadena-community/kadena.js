@@ -42,10 +42,10 @@ export function HomePage() {
       <SideBarBreadcrumbs icon={<MonoDashboard />}>
         <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
-      <Box gap={'lg'}>
+      <Box gap={'lg'} width="100%">
         <Text>Welcome back</Text>
-        <Heading as="h1">{profile?.name} </Heading>
-        <Stack gap={'lg'} flexDirection={'column'}>
+        <Heading as="h4">{profile?.name} </Heading>
+        <Stack gap={'lg'} flexDirection={'column'} width="100%">
           <AssetsCard />
           <Stack className={panelClass} flexDirection={'column'} gap={'lg'}>
             <Heading variant="h4">Wallet Activities</Heading>

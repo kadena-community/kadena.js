@@ -117,6 +117,7 @@ export const menuMenuIconClass = style({
 
 export const menuNavWrapperClass = style([
   atoms({
+    marginBlockStart: 'xxxl',
     flex: 1,
   }),
   {
@@ -149,6 +150,7 @@ export const listClass = recipe({
     direction: {
       horizontal: {
         flexDirection: 'row',
+        alignItems: 'center',
       },
       vertical: {
         flexDirection: 'column',
@@ -170,12 +172,70 @@ export const listClass = recipe({
 
 export const listItemClass = style([
   atoms({
-    display: 'flex',
-    flexDirection: 'column',
     width: '100%',
   }),
   {},
 ]);
+
+export const sidebartreeItemClass = recipe({
+  base: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    gap: token('spacing.md'),
+    borderRadius: token('spacing.sm'),
+    textDecoration: 'none',
+    fontSize: token('typography.fontSize.sm'),
+    fontWeight: token('typography.weight.primaryFont.semiBold'),
+    paddingBlock: token('spacing.sm'),
+    cursor: 'pointer',
+
+    selectors: {
+      '&:hover': {
+        backgroundColor: token('color.background.base.@active'),
+        color: token('color.text.base.@hover'),
+      },
+    },
+  },
+  variants: {
+    isExpanded: {
+      true: {
+        paddingInline: token('spacing.md'),
+      },
+      false: {
+        justifyContent: 'center',
+        paddingInline: 0,
+      },
+    },
+    isActive: {
+      true: {
+        backgroundColor: token('color.background.base.@active'),
+        color: token('color.link.base.default'),
+      },
+      false: {
+        color: token('color.text.gray.bolder'),
+        selector: {
+          '&:hover': {
+            color: token('color.text.base.@hover'),
+          },
+        },
+      },
+    },
+  },
+});
+
+globalStyle(`${sidebartreeItemClass()}[data-isactive="true"] svg`, {
+  color: token('color.link.base.default'),
+  width: '12px',
+});
+globalStyle(`${sidebartreeItemClass()}[data-isactive="false"] svg`, {
+  color: token('color.text.gray.bolder'),
+  width: '12px',
+});
+globalStyle(`${sidebartreeItemClass()}[data-isactive="false"]:hover svg`, {
+  color: token('color.text.base.@hover'),
+});
 
 export const listItemInlineClass = style([
   atoms({
@@ -195,12 +255,6 @@ export const listNotExpandedClass = style([
   }),
 ]);
 
-globalStyle(`${listItemClass} button`, {
-  justifyContent: 'flex-start',
-  flex: 1,
-});
-globalStyle(`${listItemClass} a`, { justifyContent: 'flex-start', flex: 1 });
-
 export const headerWrapperClass = recipe({
   base: [
     {
@@ -217,10 +271,24 @@ export const headerWrapperClass = recipe({
   variants: {
     sideBarExpanded: {
       true: {
-        paddingInlineStart: sideBarWidth,
+        ...responsiveStyle({
+          xs: {
+            paddingInlineStart: token('spacing.md'),
+          },
+          md: {
+            paddingInlineStart: sideBarWidth,
+          },
+        }),
       },
       false: {
-        paddingInlineStart: sideBarMinWidth,
+        ...responsiveStyle({
+          xs: {
+            paddingInlineStart: token('spacing.md'),
+          },
+          md: {
+            paddingInlineStart: sideBarMinWidth,
+          },
+        }),
       },
     },
   },

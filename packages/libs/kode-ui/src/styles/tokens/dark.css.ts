@@ -188,6 +188,24 @@ export const darkThemeValues = {
         sticky: '100',
         toast: '10000',
       },
+      effect: {
+        shadow: {
+          level1: `4px 0.5rem ${tokens.kda.foundation.size.n2} 4px #000000`,
+          level2: `4rem 4rem ${tokens.kda.foundation.size.n2} 2rem #000000`,
+          level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
+        },
+      },
+      icon: {
+        size: {
+          xxs: tokens.kda.foundation.size.n3,
+          xs: tokens.kda.foundation.size.n4,
+          sm: tokens.kda.foundation.size.n5,
+          base: tokens.kda.foundation.size.n6,
+          lg: tokens.kda.foundation.size.n8,
+          xl: tokens.kda.foundation.size.n10,
+          xxl: tokens.kda.foundation.size.n16,
+        },
+      },
       color: {
         accent: {
           blue: tokens.kda.foundation.color.palette.blue.n50,
@@ -904,8 +922,12 @@ export const darkThemeValues = {
           },
           gray: {
             default: tokens.kda.foundation.color.neutral['n100@alpha40'],
+            lighter: tokens.kda.foundation.color.neutral.n60,
+            bolder: tokens.kda.foundation.color.neutral.n80,
             inverse: {
               default: tokens.kda.foundation.color.neutral['n0@alpha40'],
+              lighter: tokens.kda.foundation.color.neutral.n40,
+              bolder: tokens.kda.foundation.color.neutral.n20,
             },
           },
           brand: {
@@ -1290,24 +1312,6 @@ export const darkThemeValues = {
         content: {
           minWidth: '33.75rem',
           maxWidth: '42.5rem',
-        },
-      },
-      effect: {
-        shadow: {
-          level1: `4px 0.5rem ${tokens.kda.foundation.size.n2} 4px #000000`,
-          level2: `4rem 4rem ${tokens.kda.foundation.size.n2} 2rem #000000`,
-          level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
-        },
-      },
-      icon: {
-        size: {
-          xxs: tokens.kda.foundation.size.n3,
-          xs: tokens.kda.foundation.size.n4,
-          sm: tokens.kda.foundation.size.n5,
-          base: tokens.kda.foundation.size.n6,
-          lg: tokens.kda.foundation.size.n8,
-          xl: tokens.kda.foundation.size.n10,
-          xxl: tokens.kda.foundation.size.n16,
         },
       },
       typography: {

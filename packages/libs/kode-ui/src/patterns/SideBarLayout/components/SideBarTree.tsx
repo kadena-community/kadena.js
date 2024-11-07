@@ -1,15 +1,12 @@
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import { useMedia } from 'react-use';
-import { listItemClass } from '../sidebar.css';
-import type { PressEvent } from './../../../components/Button';
-import { Link } from './../../../components/Link';
-import { Media } from './../../../components/Media';
+import { Stack } from './../../../components';
 import { breakpoints } from './../../../styles';
 import { useLayout } from './LayoutProvider';
 import type { ISideBarItemProps } from './SideBarItem';
+import { SideBarItem } from './SideBarItem';
 import { sidebartreeListClass } from './sidebartree.css';
-import { SideBarTreeWrapper } from './SideBarTreeWrapper';
 
 const LOCALSTORAGEKEY = 'sidemenu';
 
@@ -28,8 +25,6 @@ export const SideBarTree: FC<ISideBarTreeProps> = ({
   visual,
   label,
   children,
-  href,
-  component,
 }) => {
   const { isExpanded, handleSetExpanded } = useLayout();
 
@@ -48,10 +43,14 @@ export const SideBarTree: FC<ISideBarTreeProps> = ({
       setIsMounted(true);
       return;
     }
-    if (!isExpanded) setTreeIsExpanded(false);
+    if (!isExpanded) {
+      setTreeIsExpanded(false);
+    } else {
+      setTreeIsExpanded(getLocalStorageToggle(label));
+    }
   }, [isExpanded]);
 
-  const toggleTree = (e: PressEvent) => {
+  const toggleTree = () => {
     if (!isExpanded) handleSetExpanded(true);
 
     const innerExpanded = !treeisExpaned;
@@ -59,54 +58,17 @@ export const SideBarTree: FC<ISideBarTreeProps> = ({
     setTreeIsExpanded(innerExpanded);
   };
 
-  const Component = href ? Link : SideBarTreeWrapper;
-
   return (
-    <li className={listItemClass}>
-      <>
-        <Media lessThan="md" style={{ flex: 1, display: 'flex' }}>
-          <Component
-            href={href}
-            component={component}
-            variant="transparent"
-            aria-label={label}
-            onPress={toggleTree}
-            isCompact
-            startVisual={visual}
-          >
-            {label}
-          </Component>
-        </Media>
-        <Media greaterThanOrEqual="md" style={{ flex: 1, display: 'flex' }}>
-          {!isExpanded ? (
-            <Component
-              href={href}
-              component={component}
-              variant="transparent"
-              aria-label={label}
-              onPress={toggleTree}
-              isCompact
-              startVisual={visual}
-            />
-          ) : (
-            <Component
-              href={href}
-              component={component}
-              aria-label={label}
-              onPress={toggleTree}
-              startVisual={visual}
-              isCompact
-              variant="transparent"
-            >
-              {label}
-            </Component>
-          )}
-        </Media>
-
-        {children && isExpanded && treeisExpaned && (
-          <ul className={sidebartreeListClass}>{children}</ul>
-        )}
-      </>
-    </li>
+    <Stack onClick={toggleTree}>
+      <SideBarItem
+        visual={visual}
+        label={label}
+        tree={
+          !!(children && isExpanded && treeisExpaned) && (
+            <ul className={sidebartreeListClass}>{children}</ul>
+          )
+        }
+      ></SideBarItem>
+    </Stack>
   );
 };

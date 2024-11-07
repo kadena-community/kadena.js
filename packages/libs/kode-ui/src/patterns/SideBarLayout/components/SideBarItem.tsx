@@ -1,10 +1,9 @@
-import type { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren, ReactElement } from 'react';
 import React, { useEffect } from 'react';
 import { useMedia } from 'react-use';
-import { listItemClass } from '../sidebar.css';
-import { Link } from './../../../components';
+import { listItemClass, sidebartreeItemClass } from '../sidebar.css';
+import { Anchor } from '../utils';
 import type { PressEvent } from './../../../components/Button';
-import { Button } from './../../../components/Button';
 import { Media } from './../../../components/Media';
 import { breakpoints } from './../../../styles';
 import { useLayout } from './LayoutProvider';
@@ -16,6 +15,7 @@ export interface ISideBarItemProps extends PropsWithChildren {
   isAppContext?: boolean;
   href?: string;
   component?: any;
+  tree?: ReactElement | boolean;
 }
 export const SideBarItem: FC<ISideBarItemProps> = ({
   visual,
@@ -24,6 +24,7 @@ export const SideBarItem: FC<ISideBarItemProps> = ({
   children,
   href,
   component,
+  tree,
 }) => {
   const { isExpanded, handleSetExpanded, isActiveUrl } = useLayout();
   const isMediumDevice = useMedia(breakpoints.md, true);
@@ -42,86 +43,39 @@ export const SideBarItem: FC<ISideBarItemProps> = ({
     handlePress(e as unknown as PressEvent);
   };
 
-  const renderChildren = () => {
+  const render = (isExpanded: boolean) => {
+    const LinkWrapper = component ? component : Anchor;
     return (
-      <>
-        <Media greaterThanOrEqual="md" style={{ flex: 1, display: 'flex' }}>
-          {children}
-        </Media>
-        <Media lessThan="md" style={{ flex: 1, display: 'flex' }}>
-          {children}
-        </Media>
-      </>
-    );
-  };
-
-  const renderMobile = () => {
-    const Component = href ? Link : Button;
-    return (
-      <Component
+      <LinkWrapper
         onPress={handleLinkClick}
-        href={href}
-        variant={isActiveUrl(href) ? 'primary' : 'outlined'}
         aria-label={label}
         data-isactive={isActiveUrl(href)}
-        component={component}
-        startVisual={visual}
+        className={sidebartreeItemClass({
+          isActive: isActiveUrl(href),
+          isExpanded,
+        })}
+        href={href}
+        to={href}
+        title={label}
       >
-        {label}
-      </Component>
+        {visual && <span>{visual}</span>}
+        {isExpanded && label}
+      </LinkWrapper>
     );
   };
 
-  const renderDeskTopNotExpanded = () => {
-    const Component = href ? Link : Button;
-    return (
-      <Component
-        onPress={handleLinkClick}
-        variant={isActiveUrl(href) ? 'primary' : 'outlined'}
-        aria-label={label}
-        data-isactive={isActiveUrl(href)}
-        component={component}
-        startVisual={visual}
-        href={href}
-      />
-    );
-  };
-
-  const renderDeskTopExpanded = () => {
-    const Component = href ? Link : Button;
-    return (
-      <Component
-        onPress={handleLinkClick}
-        aria-label={label}
-        data-isactive={isActiveUrl(href)}
-        startVisual={visual}
-        component={component}
-        variant={isActiveUrl(href) ? 'primary' : 'outlined'}
-        href={href}
-      >
-        {label}
-      </Component>
-    );
-  };
+  if (children) return children;
 
   return (
     <li className={listItemClass}>
-      <>
-        {children ? (
-          renderChildren()
-        ) : (
-          <>
-            <Media lessThan="md" style={{ flex: 1, display: 'flex' }}>
-              {renderMobile()}
-            </Media>
-            <Media greaterThanOrEqual="md" style={{ flex: 1, display: 'flex' }}>
-              {!isExpanded
-                ? renderDeskTopNotExpanded()
-                : renderDeskTopExpanded()}
-            </Media>
-          </>
-        )}
-      </>
+      <Media lessThan="md" style={{ flex: 1, display: 'flex' }}>
+        {render(true)}
+      </Media>
+      <Media greaterThanOrEqual="md" style={{ flex: 1, display: 'flex' }}>
+        {render(isExpanded)}
+      </Media>
+
+      {tree}
     </li>
   );
 };
