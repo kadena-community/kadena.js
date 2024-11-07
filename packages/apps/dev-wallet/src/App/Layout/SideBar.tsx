@@ -1,11 +1,13 @@
 import {
+  MonoBackupTable,
   MonoContacts,
   MonoContrast,
-  MonoDashboardCustomize,
+  MonoKey,
   MonoLogout,
   MonoNetworkCheck,
+  MonoSignature,
+  MonoSwapHoriz,
   MonoTableRows,
-  MonoWallet,
   MonoWindow,
 } from '@kadena/kode-icons/system';
 
@@ -15,19 +17,19 @@ import {
   Button,
   ContextMenu,
   ContextMenuItem,
+  Stack,
   Themes,
   useTheme,
 } from '@kadena/kode-ui';
 import {
   SideBarItem,
   SideBarItemsInline,
-  SideBarTree,
-  SideBarTreeItem,
   SideBar as SideBarUI,
   useLayout,
 } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { BetaHeader } from '../BetaHeader';
 
 export const SideBar: FC = () => {
   const { theme, setTheme } = useTheme();
@@ -47,11 +49,13 @@ export const SideBar: FC = () => {
     <SideBarUI
       appContext={
         <SideBarItem visual={<MonoNetworkCheck />} label="Select network">
-          <NetworkSelector
-            showLabel={isExpanded}
-            variant="outlined"
-            isCompact={!isExpanded}
-          />
+          <Stack marginBlockEnd={'xl'} flex={1}>
+            <NetworkSelector
+              showLabel={isExpanded}
+              variant="outlined"
+              isCompact={!isExpanded}
+            />
+          </Stack>
         </SideBarItem>
       }
       navigation={
@@ -63,32 +67,33 @@ export const SideBar: FC = () => {
             href="/"
           />
 
-          <SideBarTree visual={<MonoWallet />} label="My Wallets">
-            <SideBarTreeItem
-              label="Keys"
-              component={Link}
-              href="/key-management/keys"
-            />
-          </SideBarTree>
-          <SideBarTree visual={<MonoTableRows />} label="Transactions">
-            <SideBarTreeItem
-              label="History"
-              component={Link}
-              href="/transactions"
-            />
-          </SideBarTree>
-          <SideBarTree visual={<MonoDashboardCustomize />} label="Utilities">
-            <SideBarTreeItem
-              label="Sig Builder"
-              component={Link}
-              href="/sig-builder"
-            />
-            <SideBarTreeItem
-              label="Backup"
-              component={Link}
-              href="/backup-recovery-phrase/write-down"
-            />
-          </SideBarTree>
+          <SideBarItem
+            visual={<MonoSwapHoriz />}
+            label="Transfer"
+            component={Link}
+            href="/transfer"
+          />
+
+          <SideBarItem
+            visual={<MonoSignature />}
+            label="Sig Builder"
+            component={Link}
+            href="/sig-builder"
+          />
+
+          <SideBarItem
+            visual={<MonoTableRows />}
+            label="Transactions"
+            component={Link}
+            href="/transactions"
+          />
+
+          <SideBarItem
+            label="Key Management"
+            component={Link}
+            href="/key-management/keys"
+            visual={<MonoKey />}
+          />
 
           <SideBarItem
             visual={<MonoContacts />}
@@ -96,10 +101,18 @@ export const SideBar: FC = () => {
             component={Link}
             href="/contacts"
           />
+
+          <SideBarItem
+            visual={<MonoBackupTable />}
+            label="Backup"
+            component={Link}
+            href="/backup-recovery-phrase/write-down"
+          />
         </>
       }
       context={
         <>
+          <BetaHeader />
           <SideBarItemsInline>
             <SideBarItem visual={<MonoContacts />} label="Profile">
               <ContextMenu

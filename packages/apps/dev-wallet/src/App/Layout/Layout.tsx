@@ -1,20 +1,8 @@
-import {
-  MonoKey,
-  MonoLightMode,
-  MonoWifiTethering,
-  MonoWorkspaces,
-} from '@kadena/kode-icons/system';
-
-import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
 import { Themes, useTheme } from '@kadena/kode-ui';
-import {
-  SideBarFooter,
-  SideBarFooterItem,
-  SideBarLayout,
-} from '@kadena/kode-ui/patterns';
+import { SideBarLayout } from '@kadena/kode-ui/patterns';
 import { FC, useMemo } from 'react';
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { BetaHeader } from './../BetaHeader';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { FooterNavigation } from './FooterNavigation';
 import { SideBar } from './SideBar';
 
 export const Layout: FC = () => {
@@ -39,38 +27,9 @@ export const Layout: FC = () => {
   return (
     <>
       <SideBarLayout
-        topBanner={<BetaHeader />}
         location={innerLocation}
         sidebar={<SideBar />}
-        footer={
-          <SideBarFooter>
-            <SideBarFooterItem
-              href="/"
-              component={Link}
-              visual={<MonoWifiTethering />}
-              label="Profile"
-            />
-
-            <SideBarFooterItem
-              href="/key-management/keys"
-              component={Link}
-              visual={<MonoKey />}
-              label="Keys"
-            />
-
-            <SideBarFooterItem
-              visual={<MonoWorkspaces />}
-              label="Select network"
-            >
-              <NetworkSelector variant="transparent" showLabel={false} />
-            </SideBarFooterItem>
-            <SideBarFooterItem
-              visual={<MonoLightMode />}
-              label="Change theme"
-              onPress={toggleTheme}
-            />
-          </SideBarFooter>
-        }
+        footer={<FooterNavigation toggleTheme={toggleTheme} />}
       >
         <Outlet />
       </SideBarLayout>
