@@ -35,8 +35,6 @@ export function ContactForm({
   onDone: (contect: IContact) => void;
   isOpen: boolean;
 }) {
-  console.log({ input });
-
   const prompt = usePrompt();
   const { activeNetwork } = useWallet();
   const [error, setError] = useState<string | null>(null);
@@ -56,8 +54,6 @@ export function ContactForm({
   });
 
   useEffect(() => {
-    console.log({ input });
-
     if (!input) {
       reset(
         {

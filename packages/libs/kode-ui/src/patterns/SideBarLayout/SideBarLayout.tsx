@@ -32,7 +32,12 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
   variant = 'default',
   location,
 }) => {
-  const { isExpanded, setLocation } = useLayout();
+  const {
+    isExpanded,
+    setLocation,
+    isRightAsideExpanded,
+    setIsRightAsideExpanded,
+  } = useLayout();
 
   // set the active URL in your app.
   //we dont know what route system is being used so the active URL will be given as a prop to the component
@@ -40,6 +45,11 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
   useEffect(() => {
     setLocation(location);
   }, [location?.url, location?.hash]);
+
+  useEffect(() => {
+    if (!isRightAsideExpanded) return;
+    setIsRightAsideExpanded(false);
+  }, [location?.url]);
 
   return (
     <MediaContextProvider>

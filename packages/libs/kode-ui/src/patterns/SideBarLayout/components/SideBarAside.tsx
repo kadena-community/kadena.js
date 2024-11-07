@@ -17,7 +17,7 @@ import { useLayout } from './LayoutProvider';
 
 export const SideBarAside: FC<{
   location: ISideBarLayoutLocation;
-}> = ({ location }) => {
+}> = () => {
   const {
     setIsRightAsideExpanded,
     isRightAsideExpanded,
@@ -34,10 +34,6 @@ export const SideBarAside: FC<{
     if (!ref.current) return;
     setRightAsideRef(ref.current);
   }, [ref.current]);
-
-  useEffect(() => {
-    setIsRightAsideExpanded(false);
-  }, [location.url]);
 
   return (
     <>

@@ -378,6 +378,7 @@ export function Transfer() {
                   render={({ field }) => (
                     <Select
                       label="From"
+                      aria-label="From"
                       size="sm"
                       selectedKey={field.value}
                       onSelectionChange={(accountId) => {
@@ -440,6 +441,7 @@ export function Transfer() {
                 <Stack alignItems={'flex-end'} gap={'sm'}>
                   <TextField
                     type="number"
+                    aria-label="Amount"
                     placeholder="Enter amount"
                     {...register('amount')}
                   />
@@ -453,6 +455,7 @@ export function Transfer() {
                       name="transferAll"
                       render={({ field }) => (
                         <Checkbox
+                          aria-label="Max Amount"
                           isSelected={field.value}
                           onChange={field.onChange}
                         >

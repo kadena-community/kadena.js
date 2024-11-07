@@ -14,7 +14,6 @@ import { Button, Stack } from './../../components';
 import { SideBarBreadcrumbs } from './components/Breadcrumbs/SideBarBreadcrumbs';
 import { SideBarBreadcrumbsItem } from './components/Breadcrumbs/SideBarBreadcrumbsItem';
 import { LayoutProvider, useLayout } from './components/LayoutProvider';
-import { KadenaLogo } from './components/Logo/KadenaLogo';
 import { KLogo } from './components/Logo/KLogo';
 import {
   RightAside,
@@ -75,7 +74,7 @@ const InnerLayout = () => {
         <RightAsideContent>content</RightAsideContent>
       </RightAside>
       <SideBarLayout
-        minifiedLogo={
+        logo={
           <a href="https://kadena.io" target="_blank" rel="noreferrer">
             <KLogo height={40} />
           </a>
@@ -94,11 +93,6 @@ const InnerLayout = () => {
         sidebar={
           <SideBar
             logo={
-              <a href="https://kadena.io" target="_blank" rel="noreferrer">
-                <KadenaLogo height={40} />
-              </a>
-            }
-            minifiedLogo={
               <a href="https://kadena.io" target="_blank" rel="noreferrer">
                 <KLogo height={40} />
               </a>
@@ -312,7 +306,7 @@ const InnerLayoutFull = () => {
       }}
       logo={
         <a href="https://kadena.io" target="_blank" rel="noreferrer">
-          <KadenaLogo height={40} />
+          <KLogo height={40} />
         </a>
       }
       variant="full"

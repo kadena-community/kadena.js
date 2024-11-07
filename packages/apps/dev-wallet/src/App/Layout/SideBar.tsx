@@ -6,7 +6,6 @@ import {
   MonoDarkMode,
   MonoKey,
   MonoLightMode,
-  MonoLogout,
   MonoNetworkCheck,
   MonoSignature,
   MonoSwapHoriz,
@@ -14,14 +13,8 @@ import {
 } from '@kadena/kode-icons/system';
 
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
-import { useWallet } from '@/modules/wallet/wallet.hook';
-import {
-  Button,
-  ContextMenu,
-  ContextMenuItem,
-  Themes,
-  useTheme,
-} from '@kadena/kode-ui';
+
+import { Button, Themes, useTheme } from '@kadena/kode-ui';
 import {
   SideBarItem,
   SideBarItemsInline,
@@ -30,22 +23,24 @@ import {
 } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
+import { KLogo } from './KLogo';
 
 export const SideBar: FC = () => {
   const { theme, setTheme } = useTheme();
   const { isExpanded } = useLayout();
-  const { lockProfile } = useWallet();
 
   const toggleTheme = (): void => {
     const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
     setTheme(newTheme);
   };
 
-  const handleLogout = () => {
-    lockProfile();
-  };
   return (
     <SideBarUI
+      logo={
+        <Link to="/">
+          <KLogo height={40} />
+        </Link>
+      }
       appContext={
         <SideBarItem visual={<MonoNetworkCheck />} label="Select network">
           <NetworkSelector
@@ -110,25 +105,6 @@ export const SideBar: FC = () => {
       context={
         <>
           <SideBarItemsInline>
-            <SideBarItem visual={<MonoContacts />} label="Profile">
-              <ContextMenu
-                trigger={
-                  <Button
-                    isCompact
-                    variant={isExpanded ? 'outlined' : 'transparent'}
-                    endVisual={<MonoContacts />}
-                  >
-                    {isExpanded ? 'Profile' : undefined}
-                  </Button>
-                }
-              >
-                <ContextMenuItem
-                  endVisual={<MonoLogout />}
-                  label="Logout"
-                  onClick={handleLogout}
-                />
-              </ContextMenu>
-            </SideBarItem>
             <SideBarItem
               visual={<MonoContrast />}
               onPress={toggleTheme}
