@@ -3,13 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { useMedia } from 'react-use';
 import { listItemClass } from '../sidebar.css';
 import type { PressEvent } from './../../../components/Button';
-import { Button } from './../../../components/Button';
 import { Link } from './../../../components/Link';
 import { Media } from './../../../components/Media';
 import { breakpoints } from './../../../styles';
 import { useLayout } from './LayoutProvider';
 import type { ISideBarItemProps } from './SideBarItem';
 import { sidebartreeListClass } from './sidebartree.css';
+import { SideBarTreeWrapper } from './SideBarTreeWrapper';
 
 const LOCALSTORAGEKEY = 'sidemenu';
 
@@ -59,7 +59,7 @@ export const SideBarTree: FC<ISideBarTreeProps> = ({
     setTreeIsExpanded(innerExpanded);
   };
 
-  const Component = href ? Link : Button;
+  const Component = href ? Link : SideBarTreeWrapper;
 
   return (
     <li className={listItemClass}>

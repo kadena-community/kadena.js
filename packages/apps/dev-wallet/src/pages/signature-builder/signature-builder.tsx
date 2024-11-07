@@ -6,6 +6,7 @@ import {
   createTransaction,
 } from '@kadena/client';
 
+import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { transactionRepository } from '@/modules/transaction/transaction.repository';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
@@ -18,7 +19,7 @@ import {
   Stack,
   Text,
 } from '@kadena/kode-ui';
-import { useLayout } from '@kadena/kode-ui/patterns';
+import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { execCodeParser } from '@kadena/pactjs-generator';
 import classNames from 'classnames';
 import yaml from 'js-yaml';
@@ -89,16 +90,6 @@ export function SignatureBuilder() {
   >([]);
   const { profile, activeNetwork, networks, setActiveNetwork } = useWallet();
   const navigate = useNavigate();
-  useLayout({
-    appContext: undefined,
-    breadCrumbs: [
-      {
-        label: 'Sig Builder',
-        visual: <MonoDashboardCustomize />,
-        url: '/sig-builder',
-      },
-    ],
-  });
 
   const exec =
     pactCommand && pactCommand.payload && 'exec' in pactCommand.payload
@@ -200,35 +191,46 @@ export function SignatureBuilder() {
   };
 
   return (
-    <Stack flexDirection={'column'} gap={'md'}>
-      <Heading variant="h5">Paste SigData, CommandSigData, or Payload</Heading>
-      <textarea
-        value={input}
-        className={classNames(codeArea)}
-        onChange={(e) => {
-          e.preventDefault();
-          setError(undefined);
-          processSig(e.target.value);
-        }}
-      />
-      <Box>{schema && <Text>{`Schema: ${schema}`}</Text>}</Box>
-      {schema === 'signingRequest' && (
-        <Notification intent="info" role="status">
-          SigningRequest is not supported yet, We are working on it.
-        </Notification>
-      )}
-      {error && (
-        <Notification intent="negative" role="alert">
-          {error}
-        </Notification>
-      )}
-      <Box>
+    <>
+      <SideBarBreadcrumbs icon={<MonoDashboardCustomize />}>
+        <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
+        <SideBarBreadcrumbsItem href="/sig-builder">
+          Sig Builder
+        </SideBarBreadcrumbsItem>
+      </SideBarBreadcrumbs>
+
+      <Stack flexDirection={'column'} gap={'md'}>
+        <Heading variant="h5">
+          Paste SigData, CommandSigData, or Payload
+        </Heading>
+        <textarea
+          value={input}
+          className={classNames(codeArea)}
+          onChange={(e) => {
+            e.preventDefault();
+            setError(undefined);
+            processSig(e.target.value);
+          }}
+        />
+        <Box>{schema && <Text>{`Schema: ${schema}`}</Text>}</Box>
+        {schema === 'signingRequest' && (
+          <Notification intent="info" role="status">
+            SigningRequest is not supported yet, We are working on it.
+          </Notification>
+        )}
+        {error && (
+          <Notification intent="negative" role="alert">
+            {error}
+          </Notification>
+        )}
         <Box>
-          {['PactCommand', 'quickSignRequest'].includes(schema!) && (
-            <Button onPress={reviewTransaction}>Review Transaction</Button>
-          )}
+          <Box>
+            {['PactCommand', 'quickSignRequest'].includes(schema!) && (
+              <Button onPress={reviewTransaction}>Review Transaction</Button>
+            )}
+          </Box>
         </Box>
-      </Box>
-    </Stack>
+      </Stack>
+    </>
   );
 }

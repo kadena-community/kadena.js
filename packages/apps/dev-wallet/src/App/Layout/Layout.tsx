@@ -15,7 +15,6 @@ import {
 import { FC, useMemo } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { BetaHeader } from './../BetaHeader';
-import { BreadCrumbs } from './BreadCrumbs';
 import { SideBar } from './SideBar';
 
 export const Layout: FC = () => {
@@ -41,7 +40,6 @@ export const Layout: FC = () => {
     <>
       <SideBarLayout
         topBanner={<BetaHeader />}
-        breadcrumbs={<BreadCrumbs />}
         location={innerLocation}
         sidebar={<SideBar />}
         footer={

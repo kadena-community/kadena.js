@@ -10,9 +10,11 @@ import {
 export const asideWrapperClass = recipe({
   base: [
     {
+      position: 'fixed',
       gridArea: 'sidebarlayout-aside',
       paddingBlockEnd: token('spacing.md'),
       backgroundColor: token('color.background.base.default'),
+      gridRow: '2/5',
     },
     responsiveStyle({
       xs: {
@@ -24,7 +26,6 @@ export const asideWrapperClass = recipe({
         willChange: 'transform',
         transition: 'transform .4s ease',
         transform: 'translateX(100%)',
-        position: 'absolute',
         opacity: 0,
         top: 0,
         bottom: 0,
@@ -35,25 +36,22 @@ export const asideWrapperClass = recipe({
         maxWidth: '370px',
       },
       xl: {
-        position: 'absolute',
         transform: 'translateX(0%)',
         marginInlineEnd: token('spacing.md'),
       },
     }),
   ],
   variants: {
-    hasTopBanner: {
-      false: { gridRow: '1/5' },
-      true: { gridRow: '2/5' },
-    },
     expanded: {
       true: {
         opacity: 1,
         transform: 'translateX(0%)',
+        pointerEvents: 'auto',
       },
       false: [
         {
           opacity: 0,
+          pointerEvents: 'none',
         },
       ],
     },
@@ -65,7 +63,7 @@ export const menuBackdropClass = recipe({
     responsiveStyle({
       xs: {
         display: 'flex',
-        position: 'absolute',
+        position: 'fixed',
         inset: 0,
         background: token('color.neutral.n90@alpha20'),
         zIndex: token('zIndex.overlay'),

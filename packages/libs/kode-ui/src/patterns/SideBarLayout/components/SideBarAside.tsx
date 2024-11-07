@@ -15,9 +15,8 @@ import { Button, Heading, Stack } from './../../../components';
 import { useLayout } from './LayoutProvider';
 
 export const SideBarAside: FC<{
-  hasTopBanner?: boolean;
   location: ISideBarLayoutLocation;
-}> = ({ hasTopBanner, location }) => {
+}> = ({ location }) => {
   const {
     setIsRightAsideExpanded,
     isRightAsideExpanded,
@@ -51,7 +50,6 @@ export const SideBarAside: FC<{
       <aside
         className={asideWrapperClass({
           expanded: isRightAsideExpanded,
-          hasTopBanner,
         })}
       >
         <header className={asideHeaderClass}>

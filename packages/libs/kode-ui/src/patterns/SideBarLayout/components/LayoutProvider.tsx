@@ -1,11 +1,5 @@
 import type { FC, PropsWithChildren } from 'react';
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { createContext, useCallback, useContext, useState } from 'react';
 import type { PressEvent } from 'react-aria';
 import type { ISideBarLayoutLocation } from '../types';
 
@@ -40,6 +34,8 @@ export interface ILayoutContext {
   setRightAsideRef: (value?: HTMLDivElement | null) => void;
   isRightAsideExpanded: boolean;
   setIsRightAsideExpanded: (value: boolean) => void;
+  breadcrumbsRef?: HTMLDivElement | null;
+  setBreadcrumbsRef: (value?: HTMLDivElement | null) => void;
 }
 export const LayoutContext = createContext<ILayoutContext>({
   isExpanded: true,
@@ -58,43 +54,15 @@ export const LayoutContext = createContext<ILayoutContext>({
   setIsRightAsideExpanded: () => {},
 });
 
-export interface IuseLayoutProps extends ILayoutContext {}
-
-export const useLayout = (
-  props?: Pick<ILayoutContext, 'appContext' | 'breadCrumbs'>,
-): IuseLayoutProps => {
-  const context = useContext(LayoutContext);
-
-  useEffect(() => {
-    if (!props) return;
-
-    if (props.appContext?.label !== context.appContext?.label) {
-      context.setAppContext(props.appContext);
-    }
-
-    //check if the content of the breadcrumbs has changed
-    const breadCrumbsHasChanged = props.breadCrumbs.reduce((acc, val, idx) => {
-      const oldVal = context.breadCrumbs[idx];
-      if (val.url !== oldVal?.url || val.label !== oldVal.label) return true;
-
-      return acc;
-    }, false);
-
-    if (
-      props.breadCrumbs.length !== context.breadCrumbs.length ||
-      breadCrumbsHasChanged
-    ) {
-      context.setBreadCrumbs(props.breadCrumbs);
-    }
-  }, [props?.appContext, props?.breadCrumbs]);
-
-  return { ...context };
-};
+export const useLayout = () => useContext(LayoutContext);
 
 export interface ILayoutProvider extends PropsWithChildren {}
 
 export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   const [rightAsideRef, setRightAsideRefState] =
+    useState<HTMLDivElement | null>(null);
+
+  const [breadcrumbsRef, setBreadcrumbsRefState] =
     useState<HTMLDivElement | null>(null);
   const [isRightAsideExpanded, setIsRightAsideExpanded] = useState(false);
   const [rightAsideTitle, setRightAsideTitleState] = useState<
@@ -155,6 +123,10 @@ export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
     setRightAsideRefState(value ? value : null);
   };
 
+  const setBreadcrumbsRef = (value?: HTMLDivElement | null) => {
+    setBreadcrumbsRefState(value ? value : null);
+  };
+
   const isActiveUrl = (url?: string) => {
     return !!url && url === location?.url;
   };
@@ -179,6 +151,8 @@ export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
         setRightAsideRef,
         isRightAsideExpanded,
         setIsRightAsideExpanded: handleSetRightAsideExpanded,
+        breadcrumbsRef,
+        setBreadcrumbsRef,
       }}
     >
       {children}

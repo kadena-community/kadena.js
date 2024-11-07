@@ -1,6 +1,7 @@
 import { ConfirmDeletion } from '@/Components/ConfirmDeletion/ConfirmDeletion';
 import { ListItem } from '@/Components/ListItem/ListItem';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
+import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import {
   contactRepository,
   IContact,
@@ -20,28 +21,13 @@ import {
   Stack,
   Text,
 } from '@kadena/kode-ui';
-import { useLayout } from '@kadena/kode-ui/patterns';
+import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { panelClass } from '../home/style.css';
 import { ContactForm } from './Components/ContactForm';
 
 export function Contacts() {
-  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout({
-    appContext: {
-      visual: <MonoContacts />,
-      label: 'Add Contact',
-      onPress: () => {
-        setIsRightAsideExpanded(true);
-      },
-    },
-    breadCrumbs: [
-      {
-        label: 'Contacts',
-        visual: <MonoContacts />,
-        url: '/contacts',
-      },
-    ],
-  });
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const [editContact, setEditContact] = useState<IContact>();
   const { contacts } = useWallet();
   const prompt = usePrompt();
@@ -53,6 +39,13 @@ export function Contacts() {
 
   return (
     <>
+      <SideBarBreadcrumbs icon={<MonoContacts />}>
+        <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
+        <SideBarBreadcrumbsItem href="/contacts">
+          Contacts
+        </SideBarBreadcrumbsItem>
+      </SideBarBreadcrumbs>
+
       <ContactForm
         input={editContact}
         onClose={closeForm}

@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import type { FC, PropsWithChildren, ReactElement } from 'react';
 import React, { useEffect } from 'react';
 import { MediaContextProvider, Stack } from './../../components';
-
 import { useLayout } from './components/LayoutProvider';
 import { SideBarAside } from './components/SideBarAside';
 import { SideBarHeader } from './components/SideBarHeader';
@@ -18,7 +17,6 @@ export interface ISideBarLayout extends PropsWithChildren {
   topBanner?: ReactElement;
   logo?: ReactElement;
   minifiedLogo?: ReactElement;
-  breadcrumbs?: ReactElement;
   sidebar?: ReactElement;
   footer?: ReactElement;
   variant?: 'default' | 'full';
@@ -29,7 +27,6 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
   topBanner,
   logo,
   minifiedLogo,
-  breadcrumbs,
   sidebar,
   footer,
   variant = 'default',
@@ -53,32 +50,30 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
         className={bodyWrapperClass}
       >
         <Stack
-          className={classNames(
-            layoutWrapperClass({ variant, hasTopBanner: !!topBanner }),
-            {
-              [layoutExpandedWrapperClass]: isExpanded,
-            },
-          )}
+          className={classNames(layoutWrapperClass({ variant }), {
+            [layoutExpandedWrapperClass]: isExpanded,
+          })}
         >
-          {topBanner && (
-            <Stack
-              style={{
-                gridArea: 'sidebarlayout-topbanner',
-                overflowY: 'hidden',
-              }}
-            >
-              {topBanner}
-            </Stack>
-          )}
           <SideBarHeader
-            breadcrumbs={breadcrumbs}
             hasSidebar={!!sidebar}
             logo={logo}
             minifiedLogo={minifiedLogo}
           />
           {sidebar}
-          <main className={mainClass({ variant })}>{children}</main>
-          <SideBarAside location={location} hasTopBanner={!!topBanner} />
+          <main className={mainClass({ variant })}>
+            {topBanner && (
+              <Stack
+                style={{
+                  gridArea: 'sidebarlayout-topbanner',
+                  overflowY: 'hidden',
+                }}
+              >
+                {topBanner}
+              </Stack>
+            )}
+            {children}
+          </main>
+          <SideBarAside location={location} />
           {footer}
         </Stack>
       </Stack>

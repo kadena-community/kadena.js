@@ -42,4 +42,9 @@ export {
   RightAsideHeader,
 } from './SideBarLayout/components/RightAside';
 
+export {
+  SideBarBreadcrumbs,
+  SideBarBreadcrumbsItem,
+} from './SideBarLayout/components/Breadcrumbs';
+
 export type { iRightAsideHeader } from './SideBarLayout/components/RightAside';

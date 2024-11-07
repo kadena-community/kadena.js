@@ -1,10 +1,10 @@
 import { ListItem } from '@/Components/ListItem/ListItem';
+import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { networkRepository } from '@/modules/network/network.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { createAsideUrl } from '@/utils/createAsideUrl';
-import { MonoWifiTethering, MonoWorkspaces } from '@kadena/kode-icons/system';
-import { Button, Heading, Link, Stack, Text } from '@kadena/kode-ui';
-import { useLayout } from '@kadena/kode-ui/patterns';
+import { MonoWifiTethering } from '@kadena/kode-icons/system';
+import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
+import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { panelClass } from '../home/style.css';
 import {
@@ -18,20 +18,16 @@ export function Networks() {
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const [selectedNetwork, setSelectedNetwork] =
     useState<INetworkWithOptionalUuid>(() => getNewNetwork());
-  useLayout({
-    appContext: {
-      visual: <MonoWorkspaces />,
-      label: 'Add Network',
-      href: createAsideUrl('KeySource'),
-      component: Link,
-    },
-    breadCrumbs: [
-      { label: 'Networks', visual: <MonoWifiTethering />, url: '/networks' },
-    ],
-  });
 
   return (
     <>
+      <SideBarBreadcrumbs icon={<MonoWifiTethering />}>
+        <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
+        <SideBarBreadcrumbsItem href="/networks">
+          Networks
+        </SideBarBreadcrumbsItem>
+      </SideBarBreadcrumbs>
+
       <Stack margin="md" flexDirection={'column'}>
         <NetworkForm
           isOpen={isRightAsideExpanded}

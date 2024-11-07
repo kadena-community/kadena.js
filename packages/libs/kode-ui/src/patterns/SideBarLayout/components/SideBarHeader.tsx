@@ -1,7 +1,7 @@
 import { MonoMenu, MonoMenuOpen } from '@kadena/kode-icons/system';
 import classNames from 'classnames';
 import type { FC, PropsWithChildren, ReactElement } from 'react';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import type { PressEvent } from 'react-aria';
 import {
   headerClass,
@@ -16,13 +16,13 @@ import { useLayout } from './LayoutProvider';
 import { KLogo } from './Logo/KLogo';
 
 interface IProps extends PropsWithChildren {
-  breadcrumbs?: ReactElement;
   minifiedLogo?: ReactElement;
   hasSidebar?: boolean;
 }
 
-export const SideBarHeader: FC<IProps> = ({ breadcrumbs, minifiedLogo }) => {
-  const { isExpanded, handleToggleExpand } = useLayout();
+export const SideBarHeader: FC<IProps> = ({ minifiedLogo }) => {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const { isExpanded, handleToggleExpand, setBreadcrumbsRef } = useLayout();
   const handleExpand = (e: PressEvent) => {
     if (handleToggleExpand) {
       handleToggleExpand(e);
@@ -32,6 +32,11 @@ export const SideBarHeader: FC<IProps> = ({ breadcrumbs, minifiedLogo }) => {
   const ShowLogo = () => {
     return minifiedLogo ? minifiedLogo : <KLogo height={40} />;
   };
+
+  useEffect(() => {
+    if (!ref.current) return;
+    setBreadcrumbsRef(ref.current);
+  }, [ref.current]);
 
   return (
     <header className={headerWrapperClass}>
@@ -56,7 +61,7 @@ export const SideBarHeader: FC<IProps> = ({ breadcrumbs, minifiedLogo }) => {
             />
           </Stack>
         </Media>
-        <Stack style={{ gridArea: 'header-crumbs' }}>{breadcrumbs}</Stack>
+        <Stack ref={ref} style={{ gridArea: 'header-crumbs' }}></Stack>
       </Stack>
     </header>
   );

@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { atoms, token } from './../../../styles';
+import { atoms, globalStyle, token } from './../../../styles';
 
 export const sidebartreeListClass = style([
   atoms({
@@ -40,3 +40,25 @@ export const sidebartreeItemClass = style([
     },
   },
 ]);
+
+export const sidebarTreeWrapperClass = style([
+  atoms({
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    width: '100%',
+    border: 'none',
+    cursor: 'pointer',
+    color: 'text.gray.default',
+    paddingBlock: 'sm',
+    paddingInline: 'xs',
+    gap: 'md',
+  }),
+  {
+    backgroundColor: 'transparent',
+  },
+]);
+
+globalStyle(`${sidebarTreeWrapperClass} svg`, {
+  width: '12px',
+});
