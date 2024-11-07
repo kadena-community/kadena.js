@@ -161,12 +161,19 @@ export function Signers({
                     onSign(sigs.sigs);
                   }}
                 >
-                  <Stack gap={'sm'} flex={1} flexDirection={'column'}>
-                    <TextareaField
-                      label="Signature or Signed Tx"
-                      name="signature"
-                    />
-                    <Button isCompact type="submit">
+                  <Stack
+                    gap={'sm'}
+                    flex={1}
+                    flexDirection={'column'}
+                    alignItems={'flex-start'}
+                  >
+                    <Stack width="100%">
+                      <TextareaField
+                        label="Signature or Signed Tx"
+                        name="signature"
+                      />
+                    </Stack>
+                    <Button variant="info" isCompact type="submit">
                       Add Signature
                     </Button>
                   </Stack>
