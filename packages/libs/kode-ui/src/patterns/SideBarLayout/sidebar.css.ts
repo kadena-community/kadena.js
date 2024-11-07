@@ -244,12 +244,6 @@ export const listNotExpandedClass = style([
   }),
 ]);
 
-// globalStyle(`${listItemClass} button`, {
-//   justifyContent: 'flex-start',
-//   flex: 1,
-// });
-// globalStyle(`${listItemClass} a`, { justifyContent: 'flex-start', flex: 1 });
-
 export const headerWrapperClass = recipe({
   base: [
     {
@@ -266,10 +260,24 @@ export const headerWrapperClass = recipe({
   variants: {
     sideBarExpanded: {
       true: {
-        paddingInlineStart: sideBarWidth,
+        ...responsiveStyle({
+          xs: {
+            paddingInlineStart: token('spacing.md'),
+          },
+          md: {
+            paddingInlineStart: sideBarWidth,
+          },
+        }),
       },
       false: {
-        paddingInlineStart: sideBarMinWidth,
+        ...responsiveStyle({
+          xs: {
+            paddingInlineStart: token('spacing.md'),
+          },
+          md: {
+            paddingInlineStart: sideBarMinWidth,
+          },
+        }),
       },
     },
   },

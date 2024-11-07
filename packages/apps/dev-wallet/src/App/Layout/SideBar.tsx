@@ -3,7 +3,9 @@ import {
   MonoBackupTable,
   MonoContacts,
   MonoContrast,
+  MonoDarkMode,
   MonoKey,
+  MonoLightMode,
   MonoLogout,
   MonoNetworkCheck,
   MonoSignature,
@@ -23,8 +25,6 @@ import {
 import {
   SideBarItem,
   SideBarItemsInline,
-  SideBarTree,
-  SideBarTreeItem,
   SideBar as SideBarUI,
   useLayout,
 } from '@kadena/kode-ui/patterns';
@@ -52,7 +52,7 @@ export const SideBar: FC = () => {
           <NetworkSelector
             showLabel={isExpanded}
             variant="outlined"
-            isCompact={!isExpanded}
+            isCompact
           />
         </SideBarItem>
       }
@@ -115,8 +115,8 @@ export const SideBar: FC = () => {
               <ContextMenu
                 trigger={
                   <Button
-                    isCompact={!isExpanded}
-                    variant="outlined"
+                    isCompact
+                    variant={isExpanded ? 'outlined' : 'transparent'}
                     endVisual={<MonoContacts />}
                   >
                     {isExpanded ? 'Profile' : undefined}
@@ -140,9 +140,11 @@ export const SideBar: FC = () => {
               label="Change theme"
             >
               <Button
-                variant={isExpanded ? 'transparent' : 'outlined'}
+                variant="transparent"
                 onPress={() => toggleTheme()}
-                startVisual={<MonoContrast />}
+                startVisual={
+                  theme === 'dark' ? <MonoDarkMode /> : <MonoLightMode />
+                }
                 isCompact={!isExpanded}
               />
             </SideBarItem>
