@@ -16,6 +16,7 @@ export interface ITextProps {
   transform?: keyof typeof transformVariants;
   variant?: 'body' | 'code' | 'ui';
   ariaLabel?: HTMLAttributes<HTMLSpanElement>['aria-label'];
+  style?: HTMLAttributes<HTMLSpanElement>['style'];
   id?: HTMLAttributes<HTMLSpanElement>['id'];
 }
 
@@ -42,6 +43,7 @@ export const Text = ({
   ariaLabel,
   bold,
   id,
+  style,
 }: ITextProps) => {
   let isInheritedSize = false;
 
@@ -62,7 +64,7 @@ export const Text = ({
   const Element = as ? as : variant === 'code' ? 'code' : 'span';
 
   return (
-    <Element className={classList} aria-label={ariaLabel} id={id}>
+    <Element className={classList} aria-label={ariaLabel} id={id} style={style}>
       {children}
     </Element>
   );

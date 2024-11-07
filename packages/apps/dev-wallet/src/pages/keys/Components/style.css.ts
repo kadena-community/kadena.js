@@ -10,3 +10,9 @@ export const keyColumnClass = style({
   flex: 1,
   paddingInlineStart: tokens.kda.foundation.spacing.xxxl,
 });
+
+export const ellipsisClass = style({
+  overflow: 'hidden',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+});

@@ -6,7 +6,7 @@ import {
   style,
   token,
 } from './../../styles';
-import { minHeaderHeight, sideBarWidth } from './styles.css';
+import { minHeaderHeight, sideBarMinWidth, sideBarWidth } from './styles.css';
 
 export const menuBackdropClass = recipe({
   base: [
@@ -201,15 +201,30 @@ globalStyle(`${listItemClass} button`, {
 });
 globalStyle(`${listItemClass} a`, { justifyContent: 'flex-start', flex: 1 });
 
-export const headerWrapperClass = style([
-  {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    width: '100%',
-    height: minHeaderHeight,
-    gridArea: 'sidebarlayout-header',
+export const headerWrapperClass = recipe({
+  base: [
+    {
+      position: 'fixed',
+      backgroundColor: token('color.background.base.default'),
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'flex-start',
+      height: minHeaderHeight,
+      gridArea: 'sidebarlayout-header',
+      zIndex: 1,
+    },
+  ],
+  variants: {
+    sideBarExpanded: {
+      true: {
+        paddingInlineStart: sideBarWidth,
+      },
+      false: {
+        paddingInlineStart: sideBarMinWidth,
+      },
+    },
   },
-]);
+});
 export const headerClass = style([
   atoms({
     display: 'grid',

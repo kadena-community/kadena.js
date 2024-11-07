@@ -54,26 +54,26 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
             [layoutExpandedWrapperClass]: isExpanded,
           })}
         >
-          <SideBarHeader
-            hasSidebar={!!sidebar}
-            logo={logo}
-            minifiedLogo={minifiedLogo}
-          />
+          <SideBarHeader logo={logo} minifiedLogo={minifiedLogo} />
           {sidebar}
           <main className={mainClass({ variant })}>
-            {topBanner && (
-              <Stack
-                style={{
-                  gridArea: 'sidebarlayout-topbanner',
-                  overflowY: 'hidden',
-                }}
-              >
-                {topBanner}
-              </Stack>
-            )}
-            {children}
+            <Stack width="100%" flexDirection="column" marginInlineEnd="sm">
+              {topBanner && (
+                <Stack
+                  style={{
+                    gridArea: 'sidebarlayout-topbanner',
+                    overflowY: 'hidden',
+                  }}
+                >
+                  {topBanner}
+                </Stack>
+              )}
+
+              <Stack flex={1}>{children}</Stack>
+            </Stack>
+            <SideBarAside location={location} />
           </main>
-          <SideBarAside location={location} />
+
           {footer}
         </Stack>
       </Stack>

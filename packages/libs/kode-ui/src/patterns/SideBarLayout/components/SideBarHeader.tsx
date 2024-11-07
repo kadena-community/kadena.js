@@ -17,7 +17,6 @@ import { KLogo } from './Logo/KLogo';
 
 interface IProps extends PropsWithChildren {
   minifiedLogo?: ReactElement;
-  hasSidebar?: boolean;
 }
 
 export const SideBarHeader: FC<IProps> = ({ minifiedLogo }) => {
@@ -39,7 +38,7 @@ export const SideBarHeader: FC<IProps> = ({ minifiedLogo }) => {
   }, [ref.current]);
 
   return (
-    <header className={headerWrapperClass}>
+    <header className={headerWrapperClass({ sideBarExpanded: isExpanded })}>
       <Stack
         className={classNames(headerClass, {
           [headerExpandedClass]: !isExpanded,
