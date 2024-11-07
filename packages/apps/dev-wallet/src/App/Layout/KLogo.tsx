@@ -1,5 +1,4 @@
 import type { FC } from 'react';
-import React from 'react';
 
 export const KLogo: FC<{ height: number; className?: string }> = (props) => (
   <svg
