@@ -117,6 +117,7 @@ export const menuMenuIconClass = style({
 
 export const menuNavWrapperClass = style([
   atoms({
+    marginBlockStart: 'xxxl',
     flex: 1,
   }),
   {
