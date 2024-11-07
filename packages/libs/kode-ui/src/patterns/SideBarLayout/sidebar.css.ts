@@ -150,6 +150,7 @@ export const listClass = recipe({
     direction: {
       horizontal: {
         flexDirection: 'row',
+        alignItems: 'center',
       },
       vertical: {
         flexDirection: 'column',
@@ -186,13 +187,14 @@ export const sidebartreeItemClass = recipe({
     borderRadius: token('spacing.sm'),
     textDecoration: 'none',
     fontSize: token('typography.fontSize.sm'),
+    fontWeight: token('typography.weight.primaryFont.semiBold'),
     paddingBlock: token('spacing.sm'),
     cursor: 'pointer',
 
     selectors: {
       '&:hover': {
         backgroundColor: token('color.background.base.@active'),
-        opacity: '.8',
+        color: token('color.text.base.@hover'),
       },
     },
   },
@@ -213,6 +215,11 @@ export const sidebartreeItemClass = recipe({
       },
       false: {
         color: token('color.text.gray.bolder'),
+        selector: {
+          '&:hover': {
+            color: token('color.text.base.@hover'),
+          },
+        },
       },
     },
   },
@@ -225,6 +232,9 @@ globalStyle(`${sidebartreeItemClass()}[data-isactive="true"] svg`, {
 globalStyle(`${sidebartreeItemClass()}[data-isactive="false"] svg`, {
   color: token('color.text.gray.bolder'),
   width: '12px',
+});
+globalStyle(`${sidebartreeItemClass()}[data-isactive="false"]:hover svg`, {
+  color: token('color.text.base.@hover'),
 });
 
 export const listItemInlineClass = style([
