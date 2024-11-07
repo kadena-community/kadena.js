@@ -8,6 +8,50 @@ import {
 } from './../../styles';
 import { minHeaderHeight } from './styles.css';
 
+export const asideWrapperTempClass = recipe({
+  base: [
+    {
+      position: 'relative',
+      paddingBlockEnd: token('spacing.md'),
+      backgroundColor: token('color.background.base.default'),
+    },
+    responsiveStyle({
+      xs: {
+        display: 'none',
+      },
+
+      xxl: {
+        display: 'flex',
+        width: '370px',
+        minWidth: '370px',
+        transform: 'translateX(0%)',
+        marginInlineEnd: token('spacing.md'),
+        zIndex: 0,
+      },
+    }),
+  ],
+  variants: {
+    expanded: {
+      true: {
+        opacity: 1,
+        transform: 'translateX(0%)',
+        pointerEvents: 'auto',
+      },
+      false: [
+        {
+          opacity: 0,
+          pointerEvents: 'none',
+        },
+        responsiveStyle({
+          xxl: {
+            display: 'none',
+          },
+        }),
+      ],
+    },
+  },
+});
+
 export const asideWrapperClass = recipe({
   base: [
     {
@@ -15,6 +59,7 @@ export const asideWrapperClass = recipe({
       paddingBlockEnd: token('spacing.md'),
       backgroundColor: token('color.background.base.default'),
       gridRow: '2/5',
+      zIndex: 1,
     },
     responsiveStyle({
       xs: {
@@ -35,12 +80,14 @@ export const asideWrapperClass = recipe({
         maxWidth: '370px',
       },
       xxl: {
-        position: 'relative',
+        position: 'fixed',
+        top: minHeaderHeight,
         width: '370px',
         minWidth: '370px',
         transform: 'translateX(0%)',
         marginInlineEnd: token('spacing.md'),
         zIndex: 0,
+        height: `calc(100dvh - ${minHeaderHeight})`,
       },
     }),
   ],

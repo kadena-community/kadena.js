@@ -7,6 +7,7 @@ import {
   asideHeaderCloseButtonWrapperClass,
   asideHeadingClass,
   asideWrapperClass,
+  asideWrapperTempClass,
   menuBackdropClass,
 } from '../aside.css';
 import type { ISideBarLayoutLocation } from '../types';
@@ -35,8 +36,8 @@ export const SideBarAside: FC<{
   }, [ref.current]);
 
   useEffect(() => {
-    setIsRightAsideExpanded(!!location?.hash);
-  }, [location?.hash]);
+    setIsRightAsideExpanded(false);
+  }, [location.url]);
 
   return (
     <>
@@ -47,6 +48,11 @@ export const SideBarAside: FC<{
         })}
         onClick={handleExpand}
       />
+      <Stack
+        className={asideWrapperTempClass({
+          expanded: isRightAsideExpanded,
+        })}
+      ></Stack>
       <aside
         className={asideWrapperClass({
           expanded: isRightAsideExpanded,

@@ -29,12 +29,11 @@ import {
   useLayout,
 } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export const SideBar: FC = () => {
   const { theme, setTheme } = useTheme();
   const { isExpanded } = useLayout();
-  const navigate = useNavigate();
   const { lockProfile } = useWallet();
 
   const toggleTheme = (): void => {
@@ -124,10 +123,6 @@ export const SideBar: FC = () => {
                 }
               >
                 <ContextMenuItem
-                  onClick={() => navigate('/profile')}
-                  label="Profile"
-                />
-                <ContextMenuItem
                   endVisual={<MonoLogout />}
                   label="Logout"
                   onClick={handleLogout}
@@ -140,12 +135,12 @@ export const SideBar: FC = () => {
               label="Change theme"
             >
               <Button
+                isCompact
                 variant="transparent"
                 onPress={() => toggleTheme()}
                 startVisual={
                   theme === 'dark' ? <MonoDarkMode /> : <MonoLightMode />
                 }
-                isCompact={!isExpanded}
               />
             </SideBarItem>
           </SideBarItemsInline>
