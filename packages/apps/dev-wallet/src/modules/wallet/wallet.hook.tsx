@@ -269,10 +269,15 @@ export const useWallet = () => {
     contract: string;
     alias?: string;
   }) => {
-    const { accounts } = context;
+    const { accounts, fungibles } = context;
+    const symbol = fungibles.find((f) => f.contract === contract)?.symbol;
     const filteredAccounts = accounts.filter(
       (account) => account.contract === contract,
     );
+
+    const accountAlias =
+      alias ||
+      `${contract === 'coin' ? '' : `${symbol} `}Account ${filteredAccounts.length + 1}`;
     const usedKeys = filteredAccounts.map((account) => {
       const keys = account.keyset?.guard.keys;
       if (keys?.length === 1 && account.keyset?.guard.pred === 'keys-all') {
@@ -286,11 +291,15 @@ export const useWallet = () => {
     if (availableKey) {
       // prompt for password anyway for account creation even if the key is available.
       await askForPassword();
-      return createAccountByKey({ key: availableKey, contract, alias });
+      return createAccountByKey({
+        key: availableKey,
+        contract,
+        alias: accountAlias,
+      });
     }
     // If no available key, create a new one
     const key = await createKey(keySource);
-    return createAccountByKey({ key, contract, alias });
+    return createAccountByKey({ key, contract, alias: accountAlias });
   };
 
   const getContact = (id: string) => {

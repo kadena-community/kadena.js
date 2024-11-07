@@ -15,17 +15,24 @@ import { getTransferActivities } from '@/modules/activity/activity.service';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { useAsync } from '@/utils/useAsync';
 import { ChainId } from '@kadena/client';
-import { MonoKey, MonoRemoveRedEye } from '@kadena/kode-icons/system';
+import {
+  MonoCreate,
+  MonoKey,
+  MonoRemoveRedEye,
+} from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
+import { useLayout } from '@kadena/kode-ui/patterns';
 import { useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { noStyleLinkClass, panelClass } from '../home/style.css';
 import { linkClass } from '../transfer/style.css';
 import { ActivityTable } from './Components/ActivityTable';
+import { AliasForm } from './Components/AliasForm';
 import { Redistribute } from './Components/Redistribute';
 
 export function AccountPage() {
   const { accountId } = useParams();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const prompt = usePrompt();
   const { activeNetwork, fungibles, accounts, profile, watchAccounts, client } =
     useWallet();
@@ -92,8 +99,22 @@ export function AccountPage() {
 
   return (
     <Stack flexDirection={'column'} gap={'lg'}>
+      <AliasForm show={isRightAsideExpanded} account={account} />
       <Stack flexDirection={'column'} gap={'sm'}>
-        {account.alias && <Heading variant="h3">{account.alias}</Heading>}
+        <Stack gap={'sm'} alignItems={'center'}>
+          <Heading variant="h3">{account.alias || '{ No Alias }'}</Heading>
+          {account.profileId === profile?.uuid && (
+            <Button
+              isCompact
+              variant="transparent"
+              startVisual={<MonoCreate />}
+              onPress={() => {
+                setIsRightAsideExpanded(!isRightAsideExpanded);
+              }}
+            />
+          )}
+        </Stack>
+
         <Stack justifyContent={'space-between'}>
           <Heading variant="h5">{account.address}</Heading>
         </Stack>
