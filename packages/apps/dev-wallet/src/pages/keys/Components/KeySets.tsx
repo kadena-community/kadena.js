@@ -5,7 +5,6 @@ import { MonoKey } from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
 import { CreateKeySetForm } from './CreateKeySetForm';
-import { ellipsisClass } from './style.css';
 
 export function KeySets() {
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
