@@ -15,7 +15,7 @@ import {
   RightAsideFooter,
   RightAsideHeader,
 } from '@kadena/kode-ui/patterns';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 interface IContactFormData {
@@ -35,6 +35,8 @@ export function ContactForm({
   onDone: (contect: IContact) => void;
   isOpen: boolean;
 }) {
+  console.log({ input });
+
   const prompt = usePrompt();
   const { activeNetwork } = useWallet();
   const [error, setError] = useState<string | null>(null);
@@ -47,60 +49,72 @@ export function ContactForm({
     reset,
   } = useForm<IContactFormData>({
     defaultValues: input ?? {
-      name: '',
-      email: '',
+      name: undefined,
+      email: undefined,
       discoverdAccount: undefined,
     },
   });
 
   useEffect(() => {
+    console.log({ input });
+
+    if (!input) {
+      reset(
+        {
+          name: undefined,
+          email: undefined,
+        },
+        { keepValues: false },
+      );
+      return;
+    }
     reset(
       input ?? {
-        name: '',
-        email: '',
+        name: undefined,
+        email: undefined,
         discoverdAccount: undefined,
       },
     );
   }, [input?.uuid]);
 
-  const createContact = useCallback(
-    async ({ discoverdAccount, ...data }: IContactFormData) => {
-      if (!discoverdAccount) {
-        setError('Please select an account');
-        return;
-      }
-      const account: IContact['account'] = {
-        address: discoverdAccount.address,
-        contract: 'coin',
-        keyset: {
-          keys: discoverdAccount.keyset.guard.keys.map((item) =>
-            typeof item === 'string' ? item : item.pubKey,
-          ),
-          pred: discoverdAccount.keyset.guard.pred,
-        },
-        networkUUID: activeNetwork!.uuid,
-      };
-      const contact = {
-        ...data,
-        account,
-        uuid: input?.uuid ?? crypto.randomUUID(),
-      };
-      try {
-        if (contact.name && contact.account) {
-          if (input?.uuid) {
-            await contactRepository.updateContact(contact);
-          } else {
-            await contactRepository.addContact(contact);
-          }
-          onDone(contact);
+  const createContact = async ({
+    discoverdAccount,
+    ...data
+  }: IContactFormData) => {
+    if (!discoverdAccount) {
+      setError('Please select an account');
+      return;
+    }
+    const account: IContact['account'] = {
+      address: discoverdAccount.address,
+      contract: 'coin',
+      keyset: {
+        keys: discoverdAccount.keyset.guard.keys.map((item) =>
+          typeof item === 'string' ? item : item.pubKey,
+        ),
+        pred: discoverdAccount.keyset.guard.pred,
+      },
+      networkUUID: activeNetwork!.uuid,
+    };
+    const contact = {
+      ...data,
+      account,
+      uuid: input?.uuid ?? crypto.randomUUID(),
+    };
+    try {
+      if (contact.name && contact.account) {
+        if (input?.uuid) {
+          await contactRepository.updateContact(contact);
+        } else {
+          await contactRepository.addContact(contact);
         }
-      } catch (e: any) {
-        setError((e && e.message) || JSON.stringify(e));
-        console.error(e);
+        onDone(contact);
       }
-    },
-    [activeNetwork, input?.uuid, onDone],
-  );
+    } catch (e: any) {
+      setError((e && e.message) || JSON.stringify(e));
+      console.error(e);
+    }
+  };
 
   if (!activeNetwork) return null;
 

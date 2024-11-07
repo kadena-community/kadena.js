@@ -28,7 +28,7 @@ import { ContactForm } from './Components/ContactForm';
 
 export function Contacts() {
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
-  const [editContact, setEditContact] = useState<IContact>();
+  const [editContact, setEditContact] = useState<IContact | undefined>();
   const { contacts } = useWallet();
   const prompt = usePrompt();
 
@@ -53,7 +53,12 @@ export function Contacts() {
         isOpen={isRightAsideExpanded}
       />
 
-      <Stack flexDirection={'column'} className={panelClass} gap={'md'}>
+      <Stack
+        width="100%"
+        flexDirection={'column'}
+        className={panelClass}
+        gap={'md'}
+      >
         <Stack justifyContent={'space-between'}>
           <Heading variant="h3">Contacts</Heading>
 
