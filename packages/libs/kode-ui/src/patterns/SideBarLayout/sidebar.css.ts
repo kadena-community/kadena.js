@@ -170,12 +170,61 @@ export const listClass = recipe({
 
 export const listItemClass = style([
   atoms({
-    display: 'flex',
-    flexDirection: 'column',
     width: '100%',
   }),
   {},
 ]);
+
+export const sidebartreeItemClass = recipe({
+  base: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    gap: token('spacing.md'),
+    borderRadius: token('spacing.sm'),
+    textDecoration: 'none',
+    fontSize: token('typography.fontSize.sm'),
+    paddingBlock: token('spacing.sm'),
+    cursor: 'pointer',
+
+    selectors: {
+      '&:hover': {
+        backgroundColor: token('color.background.base.@active'),
+        opacity: '.8',
+      },
+    },
+  },
+  variants: {
+    isExpanded: {
+      true: {
+        paddingInline: token('spacing.md'),
+      },
+      false: {
+        justifyContent: 'center',
+        paddingInline: 0,
+      },
+    },
+    isActive: {
+      true: {
+        backgroundColor: token('color.background.base.@active'),
+        color: token('color.link.base.default'),
+      },
+      false: {
+        color: token('color.text.gray.bolder'),
+      },
+    },
+  },
+});
+
+globalStyle(`${sidebartreeItemClass()}[data-isactive="true"] svg`, {
+  color: token('color.link.base.default'),
+  width: '12px',
+});
+globalStyle(`${sidebartreeItemClass()}[data-isactive="false"] svg`, {
+  color: token('color.text.gray.bolder'),
+  width: '12px',
+});
 
 export const listItemInlineClass = style([
   atoms({
@@ -195,11 +244,11 @@ export const listNotExpandedClass = style([
   }),
 ]);
 
-globalStyle(`${listItemClass} button`, {
-  justifyContent: 'flex-start',
-  flex: 1,
-});
-globalStyle(`${listItemClass} a`, { justifyContent: 'flex-start', flex: 1 });
+// globalStyle(`${listItemClass} button`, {
+//   justifyContent: 'flex-start',
+//   flex: 1,
+// });
+// globalStyle(`${listItemClass} a`, { justifyContent: 'flex-start', flex: 1 });
 
 export const headerWrapperClass = recipe({
   base: [

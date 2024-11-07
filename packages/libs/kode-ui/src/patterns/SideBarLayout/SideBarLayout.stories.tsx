@@ -103,15 +103,13 @@ const InnerLayout = () => {
                 <KLogo height={40} />
               </a>
             }
-            appContext={
-              <SideBarItem
-                visual={<MonoWifiTethering />}
-                label="Mainnet"
-                href="javascript:void()"
-              />
-            }
             navigation={
               <>
+                <SideBarItem
+                  visual={<MonoWifiTethering />}
+                  label="Mainnet"
+                  href="javascript:void()"
+                />
                 <SideBarTree visual={<MonoWallet />} label="My Wallet">
                   <SideBarTreeItem label="Accounts" href="https://kadena.io" />
                   <SideBarTreeItem

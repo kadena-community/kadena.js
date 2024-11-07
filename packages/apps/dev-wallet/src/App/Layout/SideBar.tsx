@@ -1,12 +1,14 @@
 import {
+  MonoApps,
+  MonoBackupTable,
   MonoContacts,
   MonoContrast,
-  MonoDashboardCustomize,
+  MonoKey,
   MonoLogout,
   MonoNetworkCheck,
+  MonoSignature,
+  MonoSwapHoriz,
   MonoTableRows,
-  MonoWallet,
-  MonoWindow,
 } from '@kadena/kode-icons/system';
 
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
@@ -57,44 +59,52 @@ export const SideBar: FC = () => {
       navigation={
         <>
           <SideBarItem
-            visual={<MonoWindow />}
+            visual={<MonoApps />}
             label="Dashboard"
             component={Link}
             href="/"
           />
 
-          <SideBarTree visual={<MonoWallet />} label="My Wallets">
-            <SideBarTreeItem
-              label="Keys"
-              component={Link}
-              href="/key-management/keys"
-            />
-          </SideBarTree>
-          <SideBarTree visual={<MonoTableRows />} label="Transactions">
-            <SideBarTreeItem
-              label="History"
-              component={Link}
-              href="/transactions"
-            />
-          </SideBarTree>
-          <SideBarTree visual={<MonoDashboardCustomize />} label="Utilities">
-            <SideBarTreeItem
-              label="Sig Builder"
-              component={Link}
-              href="/sig-builder"
-            />
-            <SideBarTreeItem
-              label="Backup"
-              component={Link}
-              href="/backup-recovery-phrase/write-down"
-            />
-          </SideBarTree>
+          <SideBarItem
+            visual={<MonoSwapHoriz />}
+            label="Transfer"
+            component={Link}
+            href="/transfer"
+          />
+
+          <SideBarItem
+            visual={<MonoSignature />}
+            label="Sig Builder"
+            component={Link}
+            href="/sig-builder"
+          />
+
+          <SideBarItem
+            visual={<MonoTableRows />}
+            label="Transactions"
+            component={Link}
+            href="/transactions"
+          />
+
+          <SideBarItem
+            label="Key Management"
+            component={Link}
+            href="/key-management/keys"
+            visual={<MonoKey />}
+          />
 
           <SideBarItem
             visual={<MonoContacts />}
             label="Contacts"
             component={Link}
             href="/contacts"
+          />
+
+          <SideBarItem
+            visual={<MonoBackupTable />}
+            label="Backup"
+            component={Link}
+            href="/backup-recovery-phrase/write-down"
           />
         </>
       }
