@@ -29,12 +29,11 @@ import {
   useLayout,
 } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export const SideBar: FC = () => {
   const { theme, setTheme } = useTheme();
   const { isExpanded } = useLayout();
-  const navigate = useNavigate();
   const { lockProfile } = useWallet();
 
   const toggleTheme = (): void => {
