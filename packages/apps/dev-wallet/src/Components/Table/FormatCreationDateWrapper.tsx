@@ -2,7 +2,11 @@ import { IPactCommand } from '@kadena/client';
 import { ICompactTableFormatterProps } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
 
-export const FormatCreationDateWrapper: () => FC<ICompactTableFormatterProps> =
+type IProps = Exclude<ICompactTableFormatterProps, 'value'> & {
+  value: string;
+};
+
+export const FormatCreationDateWrapper: () => FC<IProps> =
   () =>
   ({ value }) => {
     const date = new Date(

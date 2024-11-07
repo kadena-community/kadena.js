@@ -4,7 +4,6 @@ import type {
   ICompactTableFormatterProps,
 } from '@kadena/kode-ui/patterns';
 import { CompactTableFormatters } from '@kadena/kode-ui/patterns';
-import type { FC } from 'react';
 import React from 'react';
 
 const formatURL = (url: string, value: string): string => {
@@ -14,11 +13,20 @@ const formatURL = (url: string, value: string): string => {
   return url;
 };
 
-export const FormatLinkWrapper = ({
-  url,
-}: ICompactTableFormatterLinkProps): FC<ICompactTableFormatterProps> => {
-  const Component: FC<ICompactTableFormatterProps> = ({ value }) => (
-    <Link href={formatURL(url, value)} passHref legacyBehavior>
+export const valueToString = (value: string | string[]): string => {
+  if (typeof value === 'object') {
+    return value.reduce((acc, val) => {
+      if (!val) return acc;
+      return `${acc}${val} `;
+    }, '');
+  }
+
+  return value;
+};
+
+export const FormatLinkWrapper = ({ url }: ICompactTableFormatterLinkProps) => {
+  const Component = ({ value }: ICompactTableFormatterProps) => (
+    <Link href={formatURL(url, valueToString(value))} passHref legacyBehavior>
       {CompactTableFormatters.FormatLink({ url })({ value })}
     </Link>
   );

@@ -1,17 +1,15 @@
-import { IKeySet } from '@/modules/account/account.repository';
 import { shorten } from '@/utils/helpers';
 import { MonoKey } from '@kadena/kode-icons/system';
 import { Stack, Text } from '@kadena/kode-ui';
 import { ICompactTableFormatterProps } from '@kadena/kode-ui/patterns';
-import type { FC } from 'react';
 
-export const FormatKeys: () => FC<ICompactTableFormatterProps> =
+export const FormatKeys =
   () =>
-  ({ value }) => {
-    console.log(1111, value);
-    const keyset: string[] = value.length > 1 ? (value[1] as string) : [];
+  ({ value }: ICompactTableFormatterProps) => {
+    if (typeof value === 'string') return null;
+    const keyset: string[] =
+      value.length > 1 ? (value[1] as unknown as string[]) : [];
 
-    console.log(keyset);
     return (
       <Stack gap={'sm'} alignItems={'center'}>
         {value[0]}:

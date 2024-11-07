@@ -1,17 +1,10 @@
-import type { FC } from 'react';
 import React from 'react';
 import type { ICompactTableFormatterProps } from './types';
+import { valueToString } from './utils';
 
-export const FormatDefault = (): FC<ICompactTableFormatterProps> => {
-  const Component: FC<ICompactTableFormatterProps> = ({ value }) => {
-    if (typeof value === 'object') {
-      return value.reduce((acc, val) => {
-        if (!val) return acc;
-        return `${acc}${val} `;
-      }, '');
-    }
-
-    return <>{value}</>;
+export const FormatDefault = () => {
+  const Component = ({ value }: ICompactTableFormatterProps) => {
+    return <>{valueToString(value)}</>;
   };
   return Component;
 };

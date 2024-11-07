@@ -1,5 +1,4 @@
 import { MonoArrowOutward } from '@kadena/kode-icons/system';
-import type { FC } from 'react';
 import React, { forwardRef } from 'react';
 import {
   dataFieldClass,
@@ -13,6 +12,7 @@ import type {
   ICompactTableFormatterLinkProps,
   ICompactTableFormatterProps,
 } from './types';
+import { valueToString } from './utils';
 
 const formatURL = (url: string, value: string): string => {
   if (url.includes(':value')) {
@@ -33,14 +33,14 @@ InnerAnchor.displayName = 'Anchor';
 export const FormatLinkWrapper = ({
   url,
   linkComponent,
-}: ICompactTableFormatterLinkProps): FC<ICompactTableFormatterProps> => {
+}: ICompactTableFormatterLinkProps) => {
   const LinkWrapper = linkComponent ?? InnerAnchor;
 
-  const Component: FC<ICompactTableFormatterProps> = ({ value }) => (
+  const Component = ({ value }: ICompactTableFormatterProps) => (
     <Stack alignItems="center" className={linkWrapperClass}>
       <LinkWrapper
-        href={formatURL(url, value)}
-        to={formatURL(url, value)}
+        href={formatURL(url, valueToString(value))}
+        to={formatURL(url, valueToString(value))}
         passHref
         legacyBehavior
         className={linkClass}
@@ -51,8 +51,8 @@ export const FormatLinkWrapper = ({
       </LinkWrapper>
 
       <LinkWrapper
-        href={formatURL(url, value)}
-        to={formatURL(url, value)}
+        href={formatURL(url, valueToString(value))}
+        to={formatURL(url, valueToString(value))}
         passHref
         legacyBehavior
       >

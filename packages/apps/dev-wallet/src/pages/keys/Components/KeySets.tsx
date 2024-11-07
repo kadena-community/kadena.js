@@ -1,9 +1,6 @@
-import { ListItem } from '@/Components/ListItem/ListItem';
 import { FormatKeys } from '@/Components/Table/FormatKeys';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { shorten } from '@/utils/helpers';
-import { MonoKey } from '@kadena/kode-icons/system';
-import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
+import { Button, Heading, Stack } from '@kadena/kode-ui';
 import { CompactTable, useLayout } from '@kadena/kode-ui/patterns';
 import { CreateKeySetForm } from './CreateKeySetForm';
 
