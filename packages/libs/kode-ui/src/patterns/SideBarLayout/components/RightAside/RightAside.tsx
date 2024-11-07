@@ -1,5 +1,5 @@
 import type { FC, PropsWithChildren } from 'react';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { createPortal } from 'react-dom';
 import { useLayout } from '../LayoutProvider';
 import { rightAsideClass } from './style.css';
@@ -9,17 +9,7 @@ export interface iRightAside extends PropsWithChildren {
 }
 
 export const RightAside: FC<iRightAside> = ({ children, isOpen }) => {
-  const {
-    rightAsideRef,
-    location,
-    setIsRightAsideExpanded,
-    isRightAsideExpanded,
-  } = useLayout();
-
-  useEffect(() => {
-    if (!isRightAsideExpanded) return;
-    setIsRightAsideExpanded(false);
-  }, [location?.url]);
+  const { rightAsideRef } = useLayout();
 
   if (!isOpen || !rightAsideRef) return null;
 

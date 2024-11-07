@@ -25,7 +25,14 @@ import {
   TextField,
 } from '@kadena/kode-ui';
 import { PactNumber } from '@kadena/pactjs';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { DiscoverdAccounts } from '../../transfer/components/DiscoverdAccounts';
 import { linkClass } from '../../transfer/style.css';
@@ -316,6 +323,7 @@ export function TransferForm({
               render={({ field }) => (
                 <Select
                   // label="Token"
+                  aria-label="Asset"
                   placeholder="Asset"
                   startVisual={<Label>Asset:</Label>}
                   size="sm"
@@ -335,6 +343,7 @@ export function TransferForm({
               render={({ field }) => (
                 <Stack flex={1} flexDirection={'column'}>
                   <Select
+                    aria-label="Address"
                     startVisual={<Label>Address:</Label>}
                     // label="Account"
                     placeholder="Select and address"
@@ -363,6 +372,7 @@ export function TransferForm({
                   control={control}
                   render={({ field }) => (
                     <Select
+                      aria-label="Chain"
                       startVisual={<Label>Chain:</Label>}
                       // label="Chain"
                       size="sm"
@@ -437,7 +447,7 @@ export function TransferForm({
                     return ch !== senderChain;
                   });
                   return (
-                    <>
+                    <Fragment key={index}>
                       <Stack
                         gap="sm"
                         flexDirection={'column'}
@@ -515,6 +525,7 @@ export function TransferForm({
                                   <Stack flexDirection={'column'}>
                                     <Combobox
                                       // label={index === 0 ? 'Account' : undefined}
+                                      aria-label="Receiver Address"
                                       inputValue={field.value ?? ''}
                                       placeholder="Select ot enter an address"
                                       startVisual={<Label>Address:</Label>}
@@ -652,6 +663,7 @@ export function TransferForm({
                               }}
                               render={({ field }) => (
                                 <TextField
+                                  aria-label="Amount"
                                   onChange={(e) => {
                                     const value = e.target.value;
                                     field.onChange(value);
@@ -673,6 +685,7 @@ export function TransferForm({
                                   control={control}
                                   render={({ field }) => (
                                     <Select
+                                      aria-label="Chain"
                                       startVisual={<Label>Chain:</Label>}
                                       // label={index === 0 ? 'Chain' : undefined}
                                       placeholder="Select a chain"
@@ -830,7 +843,7 @@ export function TransferForm({
                           </button>
                         </Stack>
                       )}
-                    </>
+                    </Fragment>
                   );
                 })}
               </>
@@ -854,6 +867,7 @@ export function TransferForm({
                 control={control}
                 render={({ field }) => (
                   <Select
+                    aria-label="Gas Payer"
                     startVisual={<Label>Gas Payer:</Label>}
                     placeholder="Select the gas payer"
                     size="sm"
@@ -885,6 +899,7 @@ export function TransferForm({
                 control={control}
                 render={({ field }) => (
                   <TextField
+                    aria-label="Gas Price"
                     startVisual={<Label>Gas Price:</Label>}
                     placeholder="Enter gas price"
                     value={field.value}
@@ -905,6 +920,7 @@ export function TransferForm({
                 control={control}
                 render={({ field }) => (
                   <TextField
+                    aria-label="Enter gas limit"
                     placeholder="Enter gas limit"
                     startVisual={<Label>Gas Limit:</Label>}
                     value={field.value}
@@ -927,6 +943,7 @@ export function TransferForm({
               control={control}
               render={({ field }) => (
                 <TextField
+                  aria-label="TTL"
                   startVisual={<Label>TTL:</Label>}
                   placeholder="Enter TTL (Timer to live)"
                   value={field.value}
@@ -957,6 +974,7 @@ export function TransferForm({
               control={control}
               render={({ field }) => (
                 <RadioGroup
+                  aria-label="Sign Options"
                   direction={'column'}
                   defaultValue={'normalTransfer'}
                   value={field.value}
