@@ -124,10 +124,6 @@ export const SideBar: FC = () => {
                 }
               >
                 <ContextMenuItem
-                  onClick={() => navigate('/profile')}
-                  label="Profile"
-                />
-                <ContextMenuItem
                   endVisual={<MonoLogout />}
                   label="Logout"
                   onClick={handleLogout}
@@ -140,12 +136,12 @@ export const SideBar: FC = () => {
               label="Change theme"
             >
               <Button
+                isCompact
                 variant="transparent"
                 onPress={() => toggleTheme()}
                 startVisual={
                   theme === 'dark' ? <MonoDarkMode /> : <MonoLightMode />
                 }
-                isCompact={!isExpanded}
               />
             </SideBarItem>
           </SideBarItemsInline>
