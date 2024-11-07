@@ -266,3 +266,40 @@ export const FormatAmount: Story = {
     );
   },
 };
+
+export const FormatWithkeyArray: Story = {
+  name: 'Format Array Key',
+  args: {
+    isLoading: false,
+  },
+  render: ({ isLoading }) => {
+    return (
+      <MediaContextProvider>
+        <CompactTable
+          isLoading={isLoading}
+          fields={[
+            {
+              label: 'Height',
+              key: 'node.block.height',
+              width: '15%',
+            },
+            {
+              label: 'RequestKey',
+              key: 'node.requestKey',
+              width: '30%',
+              render: CompactTableFormatters.FormatLink({
+                url: `https://kadena.io`,
+              }),
+            },
+            {
+              label: 'Parameters',
+              key: ['node.parameters', 'node.balance.balance'],
+              width: '55%',
+            },
+          ]}
+          data={data}
+        />
+      </MediaContextProvider>
+    );
+  },
+};

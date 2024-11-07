@@ -2,6 +2,7 @@ import { atoms, recipe, responsiveStyle, style, token } from './../../styles';
 
 export const minHeaderHeight = '60px';
 export const sideBarWidth = '232px';
+export const sideBarMinWidth = '45px';
 
 export const layoutWrapperClass = recipe({
   base: [
@@ -27,49 +28,20 @@ export const layoutWrapperClass = recipe({
           `,
           },
           md: {
-            gridTemplateColumns: '45px auto',
+            gridTemplateColumns: `${sideBarMinWidth} auto`,
             gridTemplateRows: `${minHeaderHeight} 1fr`,
             gridTemplateAreas: `
             "sidebarlayout-sidebar sidebarlayout-header"
             "sidebarlayout-sidebar sidebarlayout-main"
           `,
           },
-          xl: {
-            gridTemplateColumns: '45px 800px 1fr',
+          xxl: {
+            gridTemplateColumns: `${sideBarMinWidth} 1fr`,
             gridTemplateRows: `${minHeaderHeight} 1fr`,
             gridTemplateAreas: `
-            "sidebarlayout-sidebar sidebarlayout-header sidebarlayout-header"
-            "sidebarlayout-sidebar sidebarlayout-main  sidebarlayout-aside"
+            "sidebarlayout-sidebar sidebarlayout-header"
+            "sidebarlayout-sidebar sidebarlayout-main"
           `,
-          },
-        }),
-      ],
-    },
-    {
-      variants: {
-        variant: 'default',
-      },
-      style: [
-        responsiveStyle({
-          xs: {
-            gridTemplateColumns: 'auto',
-            gridTemplateRows: `${minHeaderHeight} 1fr 60px`,
-            gridTemplateAreas: `
-            "sidebarlayout-header"
-            "sidebarlayout-main"
-            "sidebarlayout-footer"
-          `,
-          },
-          md: {
-            gridTemplateColumns: '45px auto',
-            gridTemplateRows: `${minHeaderHeight} 1fr`,
-            gridTemplateAreas: `
-            "sidebarlayout-sidebar sidebarlayout-header sidebarlayout-header"
-            "sidebarlayout-sidebar sidebarlayout-main sidebarlayout-aside"
-          `,
-          },
-          xl: {
-            position: 'relative',
           },
         }),
       ],
@@ -97,8 +69,8 @@ export const layoutExpandedWrapperClass = style([
     md: {
       gridTemplateColumns: `${sideBarWidth} auto`,
     },
-    xl: {
-      gridTemplateColumns: `${sideBarWidth} 800px 1fr`,
+    xxl: {
+      gridTemplateColumns: `${sideBarWidth} minmax(auto, calc(96rem + 377px))`,
     },
   }),
 ]);
@@ -112,6 +84,8 @@ export const bodyWrapperClass = style({
 export const mainClass = recipe({
   base: {
     gridArea: 'sidebarlayout-main',
+    display: 'flex',
+    flex: 1,
   },
   variants: {
     variant: {

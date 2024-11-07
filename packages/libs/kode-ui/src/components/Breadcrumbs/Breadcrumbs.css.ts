@@ -68,5 +68,4 @@ export const navClass = style([
 
 globalStyle(`${navClass} svg`, {
   width: '20px',
-  color: token('color.text.gray.default'),
 });

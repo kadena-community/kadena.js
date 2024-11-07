@@ -1,7 +1,8 @@
 export interface ICompactTableFormatterProps {
-  value: string;
+  value: string | string[];
 }
 
 export interface ICompactTableFormatterLinkProps {
   url: string;
+  linkComponent?: any;
 }

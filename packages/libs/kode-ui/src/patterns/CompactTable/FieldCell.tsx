@@ -20,7 +20,7 @@ export const FieldCell: FC<IFieldCellProps> = ({
   isMobile = false,
 }) => {
   if (
-    typeof field.key === 'string' &&
+    (typeof field.key === 'string' || typeof field.key === 'object') &&
     (typeof field.render === 'function' || !field.render)
   ) {
     const Render = field.render ? field.render : FormatDefault();

@@ -6,12 +6,12 @@ import {
   style,
   token,
 } from './../../styles';
+import { minHeaderHeight } from './styles.css';
 
 export const asideWrapperClass = recipe({
   base: [
     {
       position: 'fixed',
-      gridArea: 'sidebarlayout-aside',
       paddingBlockEnd: token('spacing.md'),
       backgroundColor: token('color.background.base.default'),
       gridRow: '2/5',
@@ -22,7 +22,6 @@ export const asideWrapperClass = recipe({
         width: '100dvw',
         display: 'flex',
         flexDirection: 'column',
-        height: '100%',
         willChange: 'transform',
         transition: 'transform .4s ease',
         transform: 'translateX(100%)',
@@ -35,9 +34,13 @@ export const asideWrapperClass = recipe({
       sm: {
         maxWidth: '370px',
       },
-      xl: {
+      xxl: {
+        position: 'relative',
+        width: '370px',
+        minWidth: '370px',
         transform: 'translateX(0%)',
         marginInlineEnd: token('spacing.md'),
+        zIndex: 0,
       },
     }),
   ],
@@ -53,6 +56,11 @@ export const asideWrapperClass = recipe({
           opacity: 0,
           pointerEvents: 'none',
         },
+        responsiveStyle({
+          xxl: {
+            display: 'none',
+          },
+        }),
       ],
     },
   },
@@ -73,7 +81,7 @@ export const menuBackdropClass = recipe({
         transition: 'transform .4s ease, opacity 1s ease',
         transform: 'translateX(100%)',
       },
-      xl: {
+      xxl: {
         display: 'none!important',
       },
     }),
@@ -113,13 +121,13 @@ export const asideContentClass = style([
   }),
   {
     overflowY: 'scroll',
-    height: '100dvh',
+    height: `calc(100dvh - ${minHeaderHeight})`,
   },
   responsiveStyle({
     xs: {
       backgroundColor: token('color.background.layer.default'),
     },
-    xl: {
+    xxl: {
       border: token('border.hairline'),
       borderRadius: token('spacing.sm'),
       backgroundColor: token('color.background.layer.default'),

@@ -17,7 +17,7 @@ export function KeysPage() {
           Manage Your Keys
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
-      <Stack flexDirection={'column'} gap={'lg'}>
+      <Stack flexDirection={'column'} gap={'lg'} width="100%">
         <Heading>Manage Your Keys</Heading>
         <Tabs defaultSelectedKey={tab}>
           <TabItem

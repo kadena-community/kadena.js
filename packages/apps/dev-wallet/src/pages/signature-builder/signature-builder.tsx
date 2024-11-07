@@ -199,10 +199,8 @@ export function SignatureBuilder() {
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
 
-      <Stack flexDirection={'column'} gap={'md'}>
-        <Heading variant="h5">
-          Paste SigData, CommandSigData, or Payload
-        </Heading>
+      <Stack flexDirection={'column'} gap={'md'} width="100%">
+        <Heading as="h4">Paste SigData, CommandSigData, or Payload</Heading>
         <textarea
           value={input}
           className={classNames(codeArea)}
