@@ -1,6 +1,7 @@
 import { useWalletState } from '../state/wallet';
 import { Accounts } from './Accounts';
-import { KadenaNames } from './Names';
+import { KadenaNamesRegister } from './KadenaNamesRegister';
+import { KadenaNames } from './KadenaNamesResolver';
 import { Transfer } from './Transfer';
 import { Transfers } from './Transfers';
 import { WordPhrase } from './WordPhrase';
@@ -25,6 +26,7 @@ export function Wallet() {
         <Transfer />
         <Transfers />
         <KadenaNames />
+        <KadenaNamesRegister />
       </div>
     </div>
   );
