@@ -47,31 +47,15 @@ export function ContactForm({
     reset,
   } = useForm<IContactFormData>({
     defaultValues: input ?? {
-      name: undefined,
-      email: undefined,
+      name: '',
+      email: '',
       discoverdAccount: undefined,
     },
   });
 
   useEffect(() => {
-    if (!input) {
-      reset(
-        {
-          name: undefined,
-          email: undefined,
-        },
-        { keepValues: false },
-      );
-      return;
-    }
-    reset(
-      input ?? {
-        name: undefined,
-        email: undefined,
-        discoverdAccount: undefined,
-      },
-    );
-  }, [input?.uuid]);
+    reset({ ...input, discoverdAccount: { address: input?.account.address } });
+  }, [input, reset]);
 
   const createContact = async ({
     discoverdAccount,
@@ -114,6 +98,7 @@ export function ContactForm({
 
   if (!activeNetwork) return null;
 
+  console.log({ input });
   return (
     <RightAside isOpen={isOpen}>
       <form onSubmit={handleSubmit(createContact)}>
@@ -143,18 +128,22 @@ export function ContactForm({
                 name="discoverdAccount"
                 control={control}
                 rules={{ required: true }}
-                render={({ field }) => (
-                  <Stack flexDirection={'column'} gap={'sm'}>
-                    <AccountInput
-                      account={field.value}
-                      networkId={activeNetwork.networkId}
-                      contract={'coin'}
-                      onAccount={(value) => {
-                        field.onChange(value);
-                      }}
-                    />
-                  </Stack>
-                )}
+                defaultValue={getValues('discoverdAccount')}
+                render={({ field }) => {
+                  console.log({ field });
+                  return (
+                    <Stack flexDirection={'column'} gap={'sm'}>
+                      <AccountInput
+                        account={field.value}
+                        networkId={activeNetwork.networkId}
+                        contract={'coin'}
+                        onAccount={(value) => {
+                          field.onChange(value);
+                        }}
+                      />
+                    </Stack>
+                  );
+                }}
               />
             </Stack>
             {error && (
