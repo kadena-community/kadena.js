@@ -88,10 +88,6 @@ export const Routes: FC = () => {
             <Route path="/select-profile" element={<SelectProfile />} />
             <Route path="/create-profile/*" element={<CreateProfile />} />
             <Route
-              path="/unlock-profile/:profileId"
-              element={<UnlockProfile />}
-            />
-            <Route
               path="/import-wallet"
               element={<ImportWallet setOrigin={setOrigin} />}
             />
@@ -139,6 +135,10 @@ export const Routes: FC = () => {
           </Route>
         </Route>
         <Route element={<LayoutMini />}>
+          <Route
+            path="/unlock-profile/:profileId"
+            element={<UnlockProfile origin={origin} />}
+          />
           <Route path="/ready" element={<Ready />} />
           <Route path="*" element={<Heading>Not found!</Heading>} />
         </Route>
