@@ -29,7 +29,7 @@ export const Profile: FC<IProps> = ({
         zIndex: idx ?? 0 + 1,
         transform:
           idx && hasMoreOptions
-            ? `translateX(-${60 * idx}%)`
+            ? `translateX(-${90 * idx}%)`
             : `translateX(-100%)`,
       }}
     >

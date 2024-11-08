@@ -15,9 +15,16 @@ import {
 
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
 
-import { ProfileChanger } from '@/Components/ProfileChanger/ProfileChanger';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { Button, Themes, useTheme } from '@kadena/kode-ui';
+import { unlockWithWebAuthn } from '@/utils/unlockWithWebAuthn';
+import {
+  Button,
+  ContextMenu,
+  ContextMenuDivider,
+  ContextMenuItem,
+  Themes,
+  useTheme,
+} from '@kadena/kode-ui';
 import {
   SideBarItem,
   SideBarItemsInline,
@@ -25,13 +32,14 @@ import {
   useLayout,
 } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { KLogo } from './KLogo';
 
 export const SideBar: FC = () => {
   const { theme, setTheme } = useTheme();
   const { isExpanded } = useLayout();
-  const { lockProfile } = useWallet();
+  const { lockProfile, profileList, unlockProfile } = useWallet();
+  const navigate = useNavigate();
 
   const toggleTheme = (): void => {
     const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
@@ -45,7 +53,6 @@ export const SideBar: FC = () => {
           <Link to="/">
             <KLogo height={40} />
           </Link>
-          <ProfileChanger />
         </>
       }
       appContext={
@@ -112,13 +119,38 @@ export const SideBar: FC = () => {
       context={
         <>
           <SideBarItemsInline>
-            <SideBarItem visual={<MonoLogout />} label="Logout">
-              <Button
-                isCompact
-                variant="transparent"
-                onPress={lockProfile}
-                startVisual={<MonoLogout />}
-              />
+            <SideBarItem visual={<MonoContacts />} label="Profile">
+              <ContextMenu
+                trigger={
+                  <Button
+                    isCompact
+                    variant={isExpanded ? 'outlined' : 'transparent'}
+                    endVisual={<MonoContacts />}
+                  >
+                    {isExpanded ? 'Profile' : undefined}
+                  </Button>
+                }
+              >
+                {profileList.map((profile) => (
+                  <ContextMenuItem
+                    key={profile.uuid}
+                    label={profile.name}
+                    onClick={async () => {
+                      if (profile.options.authMode === 'WEB_AUTHN') {
+                        await unlockWithWebAuthn(profile, unlockProfile);
+                      } else {
+                        navigate(`/unlock-profile/${profile.uuid}`);
+                      }
+                    }}
+                  />
+                ))}
+                <ContextMenuDivider />
+                <ContextMenuItem
+                  endVisual={<MonoLogout />}
+                  label="Logout"
+                  onClick={lockProfile}
+                />
+              </ContextMenu>
             </SideBarItem>
             <SideBarItem
               visual={<MonoContrast />}
