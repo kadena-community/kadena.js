@@ -46,12 +46,14 @@ export function Contacts() {
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
 
-      <ContactForm
-        input={editContact}
-        onClose={closeForm}
-        onDone={closeForm}
-        isOpen={isRightAsideExpanded}
-      />
+      {isRightAsideExpanded && (
+        <ContactForm
+          input={editContact}
+          onClose={closeForm}
+          onDone={closeForm}
+          isOpen={isRightAsideExpanded}
+        />
+      )}
 
       <Stack
         width="100%"

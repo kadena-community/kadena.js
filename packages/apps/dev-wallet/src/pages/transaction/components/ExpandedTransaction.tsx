@@ -10,6 +10,7 @@ import {
   Stack,
   TabItem,
   Tabs,
+  Tooltip,
 } from '@kadena/kode-ui';
 import yaml from 'js-yaml';
 
@@ -20,7 +21,9 @@ import { ITransaction } from '@/modules/transaction/transaction.repository.ts';
 import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
 import { panelClass } from '@/pages/home/style.css.ts';
 
-import { MonoMoreVert } from '@kadena/kode-icons/system';
+import { base64UrlEncodeArr } from '@kadena/cryptography-utils';
+import { MonoMoreVert, MonoShare } from '@kadena/kode-icons/system';
+import { useState } from 'react';
 import { CommandView } from './CommandView.tsx';
 import { statusPassed, TxPipeLine } from './TxPipeLine.tsx';
 
@@ -40,6 +43,7 @@ export function ExpandedTransaction({
   showTitle?: boolean;
 }) {
   const { sign } = useWallet();
+  const [showShareTooltip, setShowShareTooltip] = useState(false);
 
   const copyTransactionAs = (format: 'json' | 'yaml') => () => {
     const transactionData = {
@@ -85,7 +89,9 @@ export function ExpandedTransaction({
             }}
             className={panelClass}
           >
-            <Heading variant="h6">Tx Status</Heading>
+            <Stack justifyContent={'space-between'} alignItems={'center'}>
+              <Heading variant="h6">Tx Status</Heading>
+            </Stack>
             <TxPipeLine
               tx={transaction}
               contTx={contTx}
@@ -125,6 +131,34 @@ export function ExpandedTransaction({
                   <Stack justifyContent={'space-between'}>
                     <Heading variant="h4">Command Details</Heading>
                     <Stack gap={'sm'}>
+                      <Tooltip
+                        content="The transaction url is copied to to the clipboard."
+                        position="left"
+                        isOpen={showShareTooltip}
+                      >
+                        <Button
+                          startVisual={<MonoShare />}
+                          variant="transparent"
+                          onClick={() => {
+                            const encodedTx = base64UrlEncodeArr(
+                              new TextEncoder().encode(
+                                JSON.stringify({
+                                  hash: txCommand.hash,
+                                  cmd: txCommand.cmd,
+                                  sigs: txCommand.sigs,
+                                }),
+                              ),
+                            );
+                            const baseUrl = `${window.location.protocol}//${window.location.host}`;
+                            navigator.clipboard.writeText(
+                              `${baseUrl}/sig-builder?transaction=${encodedTx}`,
+                            );
+                            setShowShareTooltip(true);
+                            setTimeout(() => setShowShareTooltip(false), 5000);
+                          }}
+                          isCompact
+                        />
+                      </Tooltip>
                       <CopyButton data={txCommand} />
                       <ContextMenu
                         placement="bottom end"

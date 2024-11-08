@@ -7,6 +7,7 @@ import { ConfirmDeletion } from '@/Components/ConfirmDeletion/ConfirmDeletion';
 import { FundOnTestnetButton } from '@/Components/FundOnTestnet/FundOnTestnet';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import { QRCode } from '@/Components/QRCode/QRCode';
+import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import {
   accountRepository,
   isWatchedAccount,
@@ -19,9 +20,10 @@ import {
   MonoCreate,
   MonoKey,
   MonoRemoveRedEye,
+  MonoWallet,
 } from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
-import { useLayout } from '@kadena/kode-ui/patterns';
+import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
 import { useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { noStyleLinkClass, panelClass } from '../home/style.css';
@@ -99,20 +101,16 @@ export function AccountPage() {
 
   return (
     <Stack flexDirection={'column'} gap={'lg'}>
+      <SideBarBreadcrumbs icon={<MonoWallet />}>
+        <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
+        <SideBarBreadcrumbsItem href={`/account/${accountId}`}>
+          Account ({account.alias || account.address})
+        </SideBarBreadcrumbsItem>
+      </SideBarBreadcrumbs>
       <AliasForm show={isRightAsideExpanded} account={account} />
       <Stack flexDirection={'column'} gap={'sm'}>
         <Stack gap={'sm'} alignItems={'center'}>
           <Heading variant="h3">{account.alias || '{ No Alias }'}</Heading>
-          {account.profileId === profile?.uuid && (
-            <Button
-              isCompact
-              variant="transparent"
-              startVisual={<MonoCreate />}
-              onPress={() => {
-                setIsRightAsideExpanded(!isRightAsideExpanded);
-              }}
-            />
-          )}
         </Stack>
 
         <Stack justifyContent={'space-between'}>
@@ -249,62 +247,86 @@ export function AccountPage() {
           )}
           {activities.length > 0 && <ActivityTable activities={activities} />}
         </TabItem>
-        {
-          (isOwnedAccount && (
-            <TabItem key="settings" title="Settings">
-              <Stack flexDirection={'column'} gap={'xxl'}>
-                <Stack
-                  flexDirection={'column'}
-                  gap={'md'}
-                  className={panelClass}
-                  alignItems={'flex-start'}
-                >
-                  <Heading variant="h4">Migrate Account</Heading>
-                  <Text>
-                    You can use account migration to transfer all balances to a
-                    newly created account with a new keyset, even though the
-                    keyset guard for this account cannot be changed.
-                  </Text>
-                  <Button variant="outlined">Migrate</Button>
-                </Stack>
-                <Stack
-                  flexDirection={'column'}
-                  gap={'md'}
-                  className={panelClass}
-                  alignItems={'flex-start'}
-                >
-                  <Heading variant="h4">Delete Account</Heading>
-                  <Text>
-                    You don't want to use this account anymore? You can delete
-                    it from your wallet. This will be deleted locally not from
-                    the blockchain.
-                  </Text>
-                  <Button
-                    variant="negative"
-                    onClick={async () => {
-                      const confirm = await prompt((resolve) => {
-                        return (
-                          <ConfirmDeletion
-                            onCancel={() => resolve(false)}
-                            onDelete={() => resolve(true)}
-                            title="Delete Account"
-                            description=" Are you sure you want to delete this account? If you need to add it again you will need to use account creation process."
-                          />
-                        );
-                      });
-                      if (confirm) {
-                        await accountRepository.deleteAccount(account.uuid);
-                        navigate('/');
-                      }
-                    }}
+
+        <TabItem key="settings" title="Settings">
+          <Stack flexDirection={'column'} gap={'xxl'}>
+            <Stack
+              flexDirection={'column'}
+              gap={'md'}
+              className={panelClass}
+              alignItems={'flex-start'}
+            >
+              <Heading variant="h4">Account Alias</Heading>
+              <Text>
+                You can set or change the alias for this account. This will help
+                you to identify this account easily.
+              </Text>
+              <Button
+                variant="outlined"
+                startVisual={<MonoCreate />}
+                onPress={() => {
+                  setIsRightAsideExpanded(!isRightAsideExpanded);
+                }}
+              >
+                Edit Alias
+              </Button>
+            </Stack>
+            {
+              (isOwnedAccount && (
+                <>
+                  <Stack
+                    flexDirection={'column'}
+                    gap={'md'}
+                    className={panelClass}
+                    alignItems={'flex-start'}
                   >
-                    Delete
-                  </Button>
-                </Stack>
-              </Stack>
-            </TabItem>
-          )) as any
-        }
+                    <Heading variant="h4">Migrate Account</Heading>
+                    <Text>
+                      You can use account migration to transfer all balances to
+                      a newly created account with a new keyset, even though the
+                      keyset guard for this account cannot be changed.
+                    </Text>
+                    <Button variant="outlined">Migrate</Button>
+                  </Stack>
+                  <Stack
+                    flexDirection={'column'}
+                    gap={'md'}
+                    className={panelClass}
+                    alignItems={'flex-start'}
+                  >
+                    <Heading variant="h4">Delete Account</Heading>
+                    <Text>
+                      You don't want to use this account anymore? You can delete
+                      it from your wallet. This will be deleted locally not from
+                      the blockchain.
+                    </Text>
+                    <Button
+                      variant="negative"
+                      onClick={async () => {
+                        const confirm = await prompt((resolve) => {
+                          return (
+                            <ConfirmDeletion
+                              onCancel={() => resolve(false)}
+                              onDelete={() => resolve(true)}
+                              title="Delete Account"
+                              description=" Are you sure you want to delete this account? If you need to add it again you will need to use account creation process."
+                            />
+                          );
+                        });
+                        if (confirm) {
+                          await accountRepository.deleteAccount(account.uuid);
+                          navigate('/');
+                        }
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </Stack>
+                </>
+              )) as any
+            }
+          </Stack>
+        </TabItem>
       </Tabs>
     </Stack>
   );

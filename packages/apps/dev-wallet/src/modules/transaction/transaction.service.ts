@@ -52,9 +52,6 @@ export async function syncTransactionStatus(
   tx: ITransaction,
   client: IClient,
 ): Promise<ITransaction> {
-  if (tx.status === 'initiated') {
-    return tx;
-  }
   if (tx.status === 'failure') {
     return tx;
   }
@@ -64,7 +61,11 @@ export async function syncTransactionStatus(
   ) {
     return tx;
   }
-  if (tx.status === 'signed' || tx.status === 'preflight') {
+  if (
+    tx.status === 'signed' ||
+    tx.status === 'preflight' ||
+    tx.status === 'initiated'
+  ) {
     const network = await networkRepository.getNetwork(tx.networkUUID);
     if (!network) {
       throw new Error('Network not found');
@@ -80,6 +81,12 @@ export async function syncTransactionStatus(
     if (result) {
       const updatedTx: ITransaction = {
         ...tx,
+        sigs: tx.sigs.map((sigData) => ({
+          ...sigData,
+          sig:
+            sigData?.sig ||
+            'Signed by other party (Signature is not available)',
+        })),
         status: result.result.status,
         result: result,
         preflight: result,
