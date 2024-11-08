@@ -128,6 +128,6 @@ The primary different between these two types of transfers is who pays the trans
 
 With a cross-chain transfer, you interact with two different blockchains, which requires two separate transactions, one on each chain.
 
-If you attempt to send a cross-chain transfer to a recipient with no funds on the destination chain, the transfer operation won't be able to complete. However, anyone with funds on the destination chain can help to pay the required fee, allowing the transfer to finish as intended. Kadena has also set up **gas stations** cover the cost of transaction fees for cross-chain transfers. If you have an incomplete cross-chain transfer, you can use the [Transfer assistant](https://transfer.chainweb.com) to finish the transaction on the destination chain.
+If you attempt to send a cross-chain transfer to a recipient with no funds on the destination chain, the transfer operation won't be able to complete. However, anyone with funds on the destination chain can help to pay the required fee, allowing the transfer to finish as intended. Kadena has also set up **gas stations** to cover the cost of transaction fees for cross-chain transfers. If you have an incomplete cross-chain transfer, you can use the [Transfer assistant](https://transfer.chainweb.com) to finish the transaction on the destination chain.
 
 To learn more about transfers in Kadena, see [Getting started with transfers](https://medium.com/kadena-io/kadena-public-blockchain-getting-started-with-transfers-153bf87d6824).
