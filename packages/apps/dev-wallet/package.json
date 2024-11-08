@@ -31,6 +31,7 @@
     "@tauri-apps/api": "^1.4.0",
     "@vanilla-extract/css": "1.14.2",
     "@vanilla-extract/dynamic": "^2.1.2",
+    "@vanilla-extract/recipes": "0.5.1",
     "asn1js": "^3.0.5",
     "cbor-web": "^9.0.2",
     "chrome-types": "^0.1.248",
