@@ -7,7 +7,7 @@ import {
   MonoLoading,
 } from '@kadena/kode-icons/system';
 import { Button, Notification, Stack, TextField } from '@kadena/kode-ui';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { KeySetDialog } from '../KeysetDialog/KeySetDialog';
 
 export function AccountInput({
@@ -31,6 +31,44 @@ export function AccountInput({
   const [discovering, setDiscovering] = useState(false);
   const selectedAccount =
     discoveredAccounts.length === 1 ? discoveredAccounts[0] : undefined;
+
+  useEffect(() => {
+    if (account?.address) {
+      setAddress(account.address);
+      handleDiscover(account.address);
+    }
+  }, [account?.address]);
+
+  const handleDiscover = async (addressArg?: string) => {
+    const innerAddress = typeof addressArg === 'string' ? addressArg : address;
+    try {
+      if (!innerAddress) {
+        return;
+      }
+      setDiscovering(true);
+      setNeedToAddKeys(false);
+      const accounts = await discoverReceiver(
+        innerAddress,
+        networkId,
+        contract,
+        (key) => key,
+      );
+      setDiscovering(false);
+      if (accounts.length > 1) {
+        setDiscoveredAccounts(accounts);
+        return;
+      }
+      if (accounts.length === 0) {
+        setNeedToAddKeys(true);
+        return;
+      }
+      setDiscoveredAccounts(accounts);
+      onAccount(accounts[0]);
+    } catch (e: any) {
+      setError(e && e.message ? e : JSON.stringify(e));
+    }
+  };
+
   return (
     <Stack flexDirection={'column'}>
       {showKeysetDialog && (
@@ -78,34 +116,7 @@ export function AccountInput({
         }
         value={address}
         onChange={(e) => setAddress(e.target.value)}
-        onBlur={async () => {
-          try {
-            if (!address || address === account?.address) {
-              return;
-            }
-            setDiscovering(true);
-            setNeedToAddKeys(false);
-            const accounts = await discoverReceiver(
-              address,
-              networkId,
-              contract,
-              (key) => key,
-            );
-            setDiscovering(false);
-            if (accounts.length > 1) {
-              setDiscoveredAccounts(accounts);
-              return;
-            }
-            if (accounts.length === 0) {
-              setNeedToAddKeys(true);
-              return;
-            }
-            setDiscoveredAccounts(accounts);
-            onAccount(accounts[0]);
-          } catch (e: any) {
-            setError(e && e.message ? e : JSON.stringify(e));
-          }
-        }}
+        onBlur={() => handleDiscover()}
       />
       {selectedAccount && selectedAccount.keyset.guard && (
         <Keyset guard={selectedAccount.keyset.guard} />
