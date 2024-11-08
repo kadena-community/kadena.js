@@ -1,21 +1,23 @@
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { FormatCreationDateWrapper } from '@/Components/Table/FormatCreationDateWrapper';
-import { FormatHash } from '@/Components/Table/FormatHash';
 import {
   ITransaction,
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { shorten } from '@/utils/helpers';
 import { IPactCommand } from '@kadena/client';
-import { MonoSwapHoriz } from '@kadena/kode-icons/system';
-import { Heading, Stack } from '@kadena/kode-ui';
 import {
-  CompactTable,
-  CompactTableFormatters,
-  SideBarBreadcrumbsItem,
-} from '@kadena/kode-ui/patterns';
+  MonoArrowOutward,
+  MonoOpenInNew,
+  MonoSwapHoriz,
+} from '@kadena/kode-icons/system';
+import { Heading, Stack } from '@kadena/kode-ui';
+import { CompactTable, SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
+import { execCodeParser } from '@kadena/pactjs-generator';
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { noStyleLinkClass } from '../home/style.css';
 
 export function Transactions() {
   const { profile, activeNetwork } = useWallet();
@@ -72,6 +74,7 @@ export const TransactionList = ({
       transactions.map((tx) => {
         const cmd = JSON.parse(tx.cmd) as IPactCommand;
         if ('exec' in cmd.payload) {
+          const parsedCode = execCodeParser(cmd.payload.exec.code);
           return {
             ...tx,
             type: 'exec',
@@ -81,7 +84,7 @@ export const TransactionList = ({
           return {
             ...tx,
             type: 'cont',
-            code: cmd.payload.cont.pactId,
+            code: `cont: ${cmd.payload.cont.pactId}`,
           };
         }
       }),
@@ -91,34 +94,41 @@ export const TransactionList = ({
     <CompactTable
       fields={[
         {
+          label: 'Hash',
+          key: 'hash',
+          variant: 'body',
+          width: '10%',
+          render: ({ value }) => {
+            const tx = txs.find((tx) => tx.hash === value);
+            return (
+              <Link
+                to={`/transaction/${tx!.groupId}`}
+                className={noStyleLinkClass}
+              >
+                <Stack gap={'sm'} alignItems={'center'}>
+                  {shorten(value)} <MonoArrowOutward fontSize={'16'} />
+                </Stack>
+              </Link>
+            );
+          },
+        },
+        {
           label: 'Status',
           key: 'status',
           variant: 'code',
-          width: '10%',
-          render: CompactTableFormatters.FormatStatus(),
+          width: '15%',
         },
         {
-          label: 'GroupId',
-          key: 'groupId',
+          label: 'Code',
+          key: 'code',
           variant: 'code',
-          width: '30%',
-          render: CompactTableFormatters.FormatLinkWrapper({
-            url: '/transaction/:value',
-            linkComponent: Link,
-          }),
-        },
-        {
-          label: 'Hash',
-          key: 'hash',
-          variant: 'code',
-          width: '20%',
-          render: FormatHash(),
+          width: 'auto',
         },
         {
           label: 'Date',
           key: 'cmd',
           variant: 'code',
-          width: '40%',
+          width: '20%',
           render: FormatCreationDateWrapper(),
         },
       ]}

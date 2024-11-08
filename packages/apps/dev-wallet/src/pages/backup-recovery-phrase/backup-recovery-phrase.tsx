@@ -4,10 +4,7 @@ import { MonoDashboardCustomize } from '@kadena/kode-icons/system';
 import { Box, Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { Link } from 'react-router-dom';
-<SideBarBreadcrumbs icon={<MonoDashboardCustomize />}>
-  <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
-  <SideBarBreadcrumbsItem href="/terminal">Dev Console</SideBarBreadcrumbsItem>
-</SideBarBreadcrumbs>;
+
 export function BackupRecoveryPhrase() {
   return (
     <>
