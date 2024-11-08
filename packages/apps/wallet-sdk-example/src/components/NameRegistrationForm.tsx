@@ -1,6 +1,6 @@
 import { walletSdk } from '@kadena/wallet-sdk';
 import React, { useState } from 'react';
-import { executeNameRegistrationFlow } from '../actions/kadenaNamesActions';
+import { executeCreateRegisterNameTransaction } from '../actions/kadenaNamesActions';
 import { PRICE_MAP } from '../constants/kadenaNamesConstants';
 import { useWalletState } from '../state/wallet';
 
@@ -31,7 +31,7 @@ export const NameRegistrationForm: React.FC<NameRegistrationFormProps> = ({
     setError('');
 
     try {
-      const transaction = await executeNameRegistrationFlow(
+      const transaction = await executeCreateRegisterNameTransaction(
         owner,
         address,
         name,
