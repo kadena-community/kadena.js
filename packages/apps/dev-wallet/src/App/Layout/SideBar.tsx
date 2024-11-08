@@ -30,8 +30,8 @@ import { KLogo } from './KLogo';
 
 export const SideBar: FC = () => {
   const { theme, setTheme } = useTheme();
-  const { lockProfile } = useWallet();
   const { isExpanded } = useLayout();
+  const { lockProfile } = useWallet();
 
   const toggleTheme = (): void => {
     const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
@@ -112,7 +112,7 @@ export const SideBar: FC = () => {
       context={
         <>
           <SideBarItemsInline>
-            <SideBarItem visual={<MonoContrast />} label="Logout">
+            <SideBarItem visual={<MonoLogout />} label="Logout">
               <Button
                 isCompact
                 variant="transparent"

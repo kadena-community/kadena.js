@@ -1,12 +1,17 @@
-import { atoms, globalStyle, style } from './../../../../styles';
+import { atoms, globalStyle, style, token } from './../../../../styles';
 
 export const rightAsideClass = style([
   atoms({ display: 'flex', flexDirection: 'column', flex: 1 }),
   {},
 ]);
 export const rightAsideContentClass = style([
-  atoms({ flex: 1, display: 'flex', flexDirection: 'column', width: '100%' }),
-  {},
+  atoms({
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+  }),
+  { paddingInline: token('spacing.md') },
 ]);
 
 globalStyle(`${rightAsideClass} > form `, {

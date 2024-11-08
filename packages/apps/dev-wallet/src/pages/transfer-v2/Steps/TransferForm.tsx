@@ -302,7 +302,7 @@ export function TransferForm({
         />
       )}
 
-      <Stack flexDirection="column" gap="md" flex={1}>
+      <Stack flexDirection="column" gap="md" flex={1} width="100%">
         <Stack gap="sm" flexDirection={'column'}>
           <Heading variant="h2">Transfer</Heading>
         </Stack>
@@ -963,6 +963,7 @@ export function TransferForm({
           flexDirection={'column'}
           className={panelClass}
           paddingBlockEnd={'xxl'}
+          width="100%"
         >
           <AdvancedMode>
             <Stack marginBlockStart={'md'} marginBlockEnd={'sm'}>

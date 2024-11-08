@@ -263,7 +263,7 @@ export function TransferV2() {
           Transfer
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
-      <Stack flexDirection={'column'}>
+      <Stack flexDirection={'column'} width="100%">
         <Stepper direction="horizontal">
           <Step
             icon={<MonoSwapHoriz />}
@@ -282,7 +282,7 @@ export function TransferV2() {
             <Stack
               gap={'lg'}
               flexDirection={'column'}
-              style={{ width: '670px' }}
+              style={{ maxWidth: '670px', width: '100%' }}
             >
               <TransferForm
                 accountId={accountId}

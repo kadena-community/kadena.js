@@ -22,7 +22,7 @@ export function SelectProfile() {
   const redirect = params.get('redirect');
 
   return (
-    <Box>
+    <Box width="100%">
       <Heading variant="h1" className={titleClass}>
         Welcome to <br /> Chainweaver v3.0
       </Heading>
@@ -36,6 +36,7 @@ export function SelectProfile() {
         gap="sm"
         flexWrap="wrap"
         marginBlock="lg"
+        width="100%"
       >
         {profileList.map((profile) =>
           profile.options.authMode === 'WEB_AUTHN' ? (
