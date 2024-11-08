@@ -46,7 +46,7 @@ export const fetchSaleState = async (
       .setNetworkId(networkId)
       .createTransaction();
 
-    const response = await client.local(transaction);
+    const response = await client.dirtyRead(transaction);
     return (
       parseChainResponse<SaleState>(response, 'sale state') || {
         sellable: false,
@@ -85,7 +85,7 @@ export const fetchNameInfo = async (
       .setNetworkId(networkId)
       .createTransaction();
 
-    const response = await client.local(transaction);
+    const response = await client.dirtyRead(transaction);
     const result = parseChainResponse<NameInfo | null>(
       response,
       'name info',
@@ -203,7 +203,7 @@ export const createRegisterNameTransaction = (
   return transaction;
 };
 
-export const executeNameRegistrationFlow = async (
+export const executeCreateRegisterNameTransaction = async (
   owner: string,
   address: string,
   name: string,
