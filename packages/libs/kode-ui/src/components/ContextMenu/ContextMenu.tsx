@@ -34,6 +34,7 @@ export const ContextMenu: FC<IContextMenuProps> = ({
   } as AriaMenuProps<{}>);
   const { menuProps } = useMenu({ ...newMenuWrapperProps }, treeState, ref);
 
+  console.log({ trigger });
   return (
     <>
       {React.cloneElement(trigger, {

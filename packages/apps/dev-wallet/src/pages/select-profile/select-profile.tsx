@@ -1,5 +1,6 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IProfile } from '@/modules/wallet/wallet.repository';
+import { unlockWithWebAuthn } from '@/utils/unlockWithWebAuthn';
 import { recoverPublicKey, retrieveCredential } from '@/utils/webAuthn';
 import { MonoAdd } from '@kadena/kode-icons';
 import { Box, Heading, Stack } from '@kadena/kode-ui';
@@ -19,27 +20,6 @@ import {
 export function SelectProfile() {
   const { profileList, unlockProfile } = useWallet();
   const [params] = useSearchParams();
-
-  const unlockWithWebAuthn = async (
-    profile: Pick<IProfile, 'name' | 'uuid' | 'accentColor' | 'options'>,
-  ) => {
-    if (profile.options.authMode !== 'WEB_AUTHN') {
-      throw new Error('Profile does not support WebAuthn');
-    }
-    const credentialId = profile.options.webAuthnCredential;
-    const credential = await retrieveCredential(credentialId);
-    if (!credential) {
-      throw new Error('Failed to retrieve credential');
-    }
-    const keys = await recoverPublicKey(credential);
-    for (const key of keys) {
-      const result = await unlockProfile(profile.uuid, key);
-      if (result) {
-        return;
-      }
-    }
-    console.error('Failed to unlock profile');
-  };
 
   const redirect = params.get('redirect');
 
@@ -65,7 +45,7 @@ export function SelectProfile() {
               key={profile.uuid}
               className={cardClass}
               onClick={() => {
-                unlockWithWebAuthn(profile);
+                unlockWithWebAuthn(profile, unlockProfile);
               }}
             >
               <Stack alignItems="center" gap="md">
