@@ -290,6 +290,15 @@ export const Primary: IStory = {
           <SideBarBreadcrumbsItem href="/accounts/2">
             Skeletor
           </SideBarBreadcrumbsItem>
+          <SideBarBreadcrumbsItem href="/accounts/2">
+            Cringer
+          </SideBarBreadcrumbsItem>
+          <SideBarBreadcrumbsItem href="/accounts/2">
+            Orko
+          </SideBarBreadcrumbsItem>
+          <SideBarBreadcrumbsItem href="/accounts/2">
+            Masters of the Universe
+          </SideBarBreadcrumbsItem>
         </SideBarBreadcrumbs>
         <InnerLayout />
       </LayoutProvider>

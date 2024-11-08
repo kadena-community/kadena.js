@@ -2,10 +2,8 @@ import { atoms } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const authCard = style([
-  atoms({
-    padding: 'xxl',
-  }),
   {
+    width: '100%',
     borderRadius: '1px',
     textAlign: 'left',
     backgroundColor: 'rgba(255, 255, 255, 0.03)',

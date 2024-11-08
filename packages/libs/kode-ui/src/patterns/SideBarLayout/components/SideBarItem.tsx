@@ -47,7 +47,6 @@ export const SideBarItem: FC<ISideBarItemProps> = ({
     const LinkWrapper = component ? component : Anchor;
     return (
       <LinkWrapper
-        onPress={handleLinkClick}
         aria-label={label}
         data-isactive={isActiveUrl(href)}
         className={sidebartreeItemClass({
@@ -67,7 +66,7 @@ export const SideBarItem: FC<ISideBarItemProps> = ({
   if (children) return children;
 
   return (
-    <li className={listItemClass}>
+    <li className={listItemClass} onClick={handleLinkClick}>
       <Media lessThan="md" style={{ flex: 1, display: 'flex' }}>
         {render(true)}
       </Media>

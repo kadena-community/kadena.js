@@ -326,13 +326,6 @@ export function Transfer() {
     transferAll,
   ]);
 
-  console.log({
-    receiverAccount,
-    discoveredReceivers,
-    isValid,
-    optimalTransfers,
-  });
-
   return (
     <>
       {!receiverAccount && discoveredReceivers.length > 1 && (

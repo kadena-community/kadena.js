@@ -315,6 +315,23 @@ export const headerClass = style([
   }),
 ]);
 
+export const crumbsWrapperClass = style([
+  {
+    gridArea: 'header-crumbs',
+  },
+]);
+
+globalStyle(`${crumbsWrapperClass} > *`, {
+  ...responsiveStyle({
+    xs: {
+      display: 'none!important',
+    },
+    sm: {
+      display: 'flex!important',
+    },
+  }),
+});
+
 export const headerExpandedClass = style([
   responsiveStyle({
     md: { paddingInlineStart: '50px' },

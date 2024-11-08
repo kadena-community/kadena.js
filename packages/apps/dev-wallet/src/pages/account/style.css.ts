@@ -35,3 +35,8 @@ export const listItemClass = style([
     },
   },
 ]);
+
+export const addressBreakClass = style({
+  width: '90%',
+  wordBreak: 'break-all',
+});

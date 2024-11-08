@@ -6,6 +6,7 @@ import {
   MonoDarkMode,
   MonoKey,
   MonoLightMode,
+  MonoLogout,
   MonoNetworkCheck,
   MonoSignature,
   MonoSwapHoriz,
@@ -14,6 +15,7 @@ import {
 
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
 
+import { useWallet } from '@/modules/wallet/wallet.hook';
 import { Button, Themes, useTheme } from '@kadena/kode-ui';
 import {
   SideBarItem,
@@ -28,6 +30,7 @@ import { KLogo } from './KLogo';
 export const SideBar: FC = () => {
   const { theme, setTheme } = useTheme();
   const { isExpanded } = useLayout();
+  const { lockProfile } = useWallet();
 
   const toggleTheme = (): void => {
     const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
@@ -105,6 +108,14 @@ export const SideBar: FC = () => {
       context={
         <>
           <SideBarItemsInline>
+            <SideBarItem visual={<MonoLogout />} label="Logout">
+              <Button
+                isCompact
+                variant="transparent"
+                onPress={lockProfile}
+                startVisual={<MonoLogout />}
+              />
+            </SideBarItem>
             <SideBarItem
               visual={<MonoContrast />}
               onPress={toggleTheme}
