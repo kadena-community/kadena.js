@@ -8,11 +8,11 @@ import {
   TextField,
 } from '@kadena/kode-ui';
 import { useForm } from 'react-hook-form';
-import { Link, Navigate, useParams } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
 import { passwordContainer, profileContainer } from './styles.css.ts';
 
-export function UnlockProfile() {
+export function UnlockProfile({ origin }: { origin: string }) {
   const {
     register,
     handleSubmit,
@@ -20,7 +20,8 @@ export function UnlockProfile() {
     formState: { isValid, errors },
   } = useForm<{ password: string }>();
   const { profileId } = useParams();
-  const { profileList, unlockProfile } = useWallet();
+  const navigate = useNavigate();
+  const { profileList, unlockProfile, isUnlocked } = useWallet();
   const profile = profileList.find((p) => p.uuid === profileId);
   const incorrectPasswordMsg = 'Password is incorrect';
 
@@ -37,6 +38,11 @@ export function UnlockProfile() {
       const keySource = result.keySources[0];
       if (!keySource) {
         throw new Error('No key source found');
+      }
+      if (isUnlocked) {
+        navigate('/');
+      } else {
+        navigate(origin);
       }
     } catch (e) {
       console.log(e);
