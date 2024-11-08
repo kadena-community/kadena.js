@@ -98,7 +98,6 @@ export function ContactForm({
 
   if (!activeNetwork) return null;
 
-  console.log({ input });
   return (
     <RightAside isOpen={isOpen}>
       <form onSubmit={handleSubmit(createContact)}>

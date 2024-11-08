@@ -39,7 +39,7 @@ export function AccountInput({
     }
   }, [account?.address]);
 
-  const handleDiscover = async (addressArg: string) => {
+  const handleDiscover = async (addressArg?: string) => {
     const innerAddress = typeof addressArg === 'string' ? addressArg : address;
     try {
       if (!innerAddress) {
@@ -116,7 +116,7 @@ export function AccountInput({
         }
         value={address}
         onChange={(e) => setAddress(e.target.value)}
-        onBlur={handleDiscover}
+        onBlur={() => handleDiscover()}
       />
       {selectedAccount && selectedAccount.keyset.guard && (
         <Keyset guard={selectedAccount.keyset.guard} />
