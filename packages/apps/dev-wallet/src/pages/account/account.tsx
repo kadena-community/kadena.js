@@ -29,6 +29,7 @@ import { linkClass } from '../transfer/style.css';
 import { ActivityTable } from './Components/ActivityTable';
 import { AliasForm } from './Components/AliasForm';
 import { Redistribute } from './Components/Redistribute';
+import { addressBreakClass } from './style.css';
 
 export function AccountPage() {
   const { accountId } = useParams();
@@ -116,7 +117,9 @@ export function AccountPage() {
         </Stack>
 
         <Stack justifyContent={'space-between'}>
-          <Heading variant="h5">{account.address}</Heading>
+          <Heading variant="h5" className={addressBreakClass}>
+            {account.address}
+          </Heading>
         </Stack>
 
         <Stack flexDirection={'row'} gap="sm" alignItems={'center'}>
@@ -167,7 +170,7 @@ export function AccountPage() {
       )}
       <Tabs>
         <TabItem key="guard" title="Details">
-          <Stack gap="lg">
+          <Stack gap="lg" width="100%">
             <QRCode
               ecLevel="L"
               size={150}
@@ -185,11 +188,19 @@ export function AccountPage() {
             >
               <Stack flexDirection={'column'} gap={'sm'}>
                 <Text>Contract</Text>
-                <Text color="emphasize" variant="code">
+                <Text
+                  color="emphasize"
+                  variant="code"
+                  className={addressBreakClass}
+                >
                   {account.contract}
                 </Text>
               </Stack>
-              <Stack flexDirection={'column'} gap={'sm'}>
+              <Stack
+                flexDirection={'column'}
+                gap={'sm'}
+                className={addressBreakClass}
+              >
                 <Text>Address</Text>
                 <Text color="emphasize" variant="code">
                   {account.address}
@@ -204,7 +215,12 @@ export function AccountPage() {
               <Stack flexDirection={'column'} gap={'sm'}>
                 <Text>Keys</Text>
                 {keyset.guard.keys.map((key) => (
-                  <Stack key={key} gap="sm" alignItems={'center'}>
+                  <Stack
+                    key={key}
+                    gap="sm"
+                    alignItems={'center'}
+                    className={addressBreakClass}
+                  >
                     <Text>
                       <MonoKey />
                     </Text>

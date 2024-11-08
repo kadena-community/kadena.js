@@ -155,9 +155,9 @@ export function Keys() {
                     justifyContent={'space-between'}
                     alignItems={'center'}
                   >
-                    <Stack gap={'lg'}>
-                      <Text> Index: {key.index}</Text>
-                      <Text>{shorten(key.publicKey, 35)}</Text>
+                    <Stack gap={'md'}>
+                      <Text> Idx: {key.index}</Text>
+                      <Text>{shorten(key.publicKey, 20)}</Text>
                     </Stack>
                     <ContextMenu
                       placement="bottom end"

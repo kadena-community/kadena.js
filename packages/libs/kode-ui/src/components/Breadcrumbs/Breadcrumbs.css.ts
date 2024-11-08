@@ -19,16 +19,17 @@ export const itemClass = style([
     display: 'flex',
     padding: 0,
     whiteSpace: 'nowrap',
+    marginInlineEnd: token('spacing.sm'),
     selectors: {
       '&:not(:first-child):not(:last-child)::before': {
         content: '/',
         color: token('color.text.gray.default'),
-        marginInline: token('spacing.sm'),
+        marginInlineEnd: token('spacing.sm'),
       },
       '&:not(:first-child):last-child::before': {
         content: '/',
         color: token('color.text.gray.default'),
-        marginInline: token('spacing.sm'),
+        marginInlineEnd: token('spacing.sm'),
       },
     },
   },

@@ -4,6 +4,7 @@ import type { FC, PropsWithChildren, ReactElement } from 'react';
 import React, { useEffect, useRef } from 'react';
 import type { PressEvent } from 'react-aria';
 import {
+  crumbsWrapperClass,
   headerClass,
   headerExpandedClass,
   headerWrapperClass,
@@ -60,7 +61,7 @@ export const SideBarHeader: FC<IProps> = ({ minifiedLogo }) => {
             />
           </Stack>
         </Media>
-        <Stack ref={ref} style={{ gridArea: 'header-crumbs' }}></Stack>
+        <Stack className={crumbsWrapperClass} ref={ref}></Stack>
       </Stack>
     </header>
   );

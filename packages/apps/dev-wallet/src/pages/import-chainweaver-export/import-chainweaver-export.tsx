@@ -2,8 +2,8 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { Button, Heading, Stack } from '@kadena/kode-ui';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { createSelectionOptions } from './createSelectionOptions';
 import { createProfileFromChainweaverData } from './createProfileFromChainweaverData';
+import { createSelectionOptions } from './createSelectionOptions';
 
 type Inputs = {
   password?: string;
@@ -156,8 +156,11 @@ export const ImportChainweaverExport: React.FC = () => {
   return (
     <>
       {step === 'upload' && (
-        <form onSubmit={handleSubmit(parseAndCreateSelectionOptions)}>
-          <Stack flexDirection="column">
+        <form
+          onSubmit={handleSubmit(parseAndCreateSelectionOptions)}
+          style={{ width: '100%' }}
+        >
+          <Stack flexDirection="column" width="100%" gap="md">
             <label htmlFor="chainweaverFile">
               Upload the exported file from Chainweaver
             </label>
@@ -172,9 +175,12 @@ export const ImportChainweaverExport: React.FC = () => {
       )}
 
       {step === 'select' && (
-        <form onSubmit={handleSubmit(importSelection)}>
+        <form
+          onSubmit={handleSubmit(importSelection)}
+          style={{ width: '100%' }}
+        >
           <Button type="submit">Import</Button>
-          <Stack flexDirection="column">
+          <Stack flexDirection="column" width="100%">
             {Object.keys(selectionOptions).map((key) => {
               const value =
                 selectionOptions[key as keyof typeof selectionOptions];
@@ -232,8 +238,11 @@ export const ImportChainweaverExport: React.FC = () => {
       )}
 
       {step === 'password' && (
-        <form onSubmit={handleSubmit(importSelection)}>
-          <Stack flexDirection="column">
+        <form
+          onSubmit={handleSubmit(importSelection)}
+          style={{ width: '100%' }}
+        >
+          <Stack flexDirection="column" width="100%">
             <label htmlFor="profileName">Enter your Profile Name</label>
             <input type="profileName" {...register('profileName')} />
             <label htmlFor="password">Enter your password</label>
