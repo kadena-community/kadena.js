@@ -1,7 +1,7 @@
 import { ChainId } from '@kadena/client';
 import { walletSdk } from '@kadena/wallet-sdk';
 import { useEffect, useState } from 'react';
-import { Account } from '../state/wallet';
+import type { Account } from '../state/wallet';
 import { parseBalance } from '../utils/chainweb';
 
 export const useAccountsBalances = (
@@ -29,6 +29,7 @@ export const useAccountsBalances = (
           [account.name]: parseBalance(balance[0].accountDetails?.balance),
         }));
       } catch (e) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         setError(e as any);
       }
     });

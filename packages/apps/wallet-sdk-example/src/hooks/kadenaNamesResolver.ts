@@ -1,8 +1,10 @@
+/* work in progress */
+
 import { walletSdk } from '@kadena/wallet-sdk';
 import { useEffect, useState } from 'react';
 import { useDebounce } from '../utils/useDebounce';
 
-export const useAddressToName = () => {
+export const useAddressToName = (refreshKey = 0) => {
   const [address, setAddress] = useState<string>('');
   const debouncedAddress = useDebounce(address, 500);
 
@@ -32,7 +34,7 @@ export const useAddressToName = () => {
           if (result !== null) {
             setName(result);
           } else {
-            setError('Name cannot be found');
+            setError('Address cannot be found');
           }
         }
       } catch (err) {
@@ -51,7 +53,7 @@ export const useAddressToName = () => {
     return () => {
       isCurrent = false;
     };
-  }, [debouncedAddress]);
+  }, [debouncedAddress, refreshKey]);
 
   return { name, error, loading, setAddress, address };
 };
@@ -86,7 +88,7 @@ export const useNameToAddress = () => {
           if (result !== null) {
             setAddress(result);
           } else {
-            setError('Address cannot be found');
+            setError('Name cannot be found');
           }
         }
       } catch (err) {

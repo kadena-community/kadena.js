@@ -1,5 +1,8 @@
 import React from 'react';
-import { useAddressToName, useNameToAddress } from '../hooks/nameresolver';
+import {
+  useAddressToName,
+  useNameToAddress,
+} from '../hooks/kadenaNamesResolver';
 
 export const KadenaNames: React.FC = () => {
   const {

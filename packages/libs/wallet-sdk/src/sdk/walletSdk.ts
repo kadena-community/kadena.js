@@ -22,7 +22,6 @@ import type {
   CreateTransfer,
   IAccountDetails,
   IChain,
-  ITransaction,
   ITransactionDescriptor,
   SimpleCreateTransfer,
   Transfer,
@@ -143,15 +142,6 @@ export class WalletSDK {
     const host = this.getChainwebUrl({ networkId, chainId });
     const result = await createClient(() => host).submitOne(transaction);
     return result;
-  }
-
-  public async getTransactions(
-    accountName: string,
-    fungible: string,
-    networkId: string,
-    chainsIds?: ChainId[],
-  ): Promise<ITransaction[]> {
-    return [];
   }
 
   public async getTransfers(
