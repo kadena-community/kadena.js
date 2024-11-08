@@ -3,6 +3,7 @@ import {
   IPartialPactCommand,
   ISigningRequest,
   IUnsignedCommand,
+  addSignatures,
   createTransaction,
 } from '@kadena/client';
 
@@ -10,6 +11,7 @@ import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBread
 import { transactionRepository } from '@/modules/transaction/transaction.repository';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { base64UrlDecodeArr } from '@kadena/cryptography-utils';
 import { MonoDashboardCustomize } from '@kadena/kode-icons/system';
 import {
   Box,
@@ -23,8 +25,8 @@ import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { execCodeParser } from '@kadena/pactjs-generator';
 import classNames from 'classnames';
 import yaml from 'js-yaml';
-import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { codeArea } from './style.css';
 import { normalizeTx } from './utils/normalizeSigs';
 
@@ -79,6 +81,8 @@ const signingRequestToPactCommand = (
 };
 
 export function SignatureBuilder() {
+  const [searchParams] = useSearchParams();
+  const urlTransaction = searchParams.get('transaction');
   const [error, setError] = useState<string>();
   const [schema, setSchema] = useState<requestScheme>();
   const [input, setInput] = useState<string>('');
@@ -107,6 +111,14 @@ export function SignatureBuilder() {
     signed,
     setSignedTx,
   });
+
+  useEffect(() => {
+    if (urlTransaction) {
+      const data = new TextDecoder().decode(base64UrlDecodeArr(urlTransaction));
+      setInput(data);
+      processSig(data);
+    }
+  }, [urlTransaction]);
 
   function processSig(inputData: string) {
     setInput(inputData);
@@ -177,6 +189,19 @@ export function SignatureBuilder() {
     );
 
     if (tx) {
+      if (unsignedTx.sigs && unsignedTx.sigs.length > 0) {
+        const updatedTx = addSignatures(
+          tx,
+          ...(unsignedTx.sigs.filter((item) => item && item.sig) as Array<{
+            sig: string;
+            pubKey?: string;
+          }>),
+        );
+        await transactionRepository.updateTransaction({
+          ...tx,
+          sigs: updatedTx.sigs,
+        });
+      }
       navigate(`/transaction/${tx.groupId}`);
       return;
     }

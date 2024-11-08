@@ -2,16 +2,21 @@ import {
   ITransaction,
   TransactionStatus,
 } from '@/modules/transaction/transaction.repository';
+import { syncTransactionStatus } from '@/modules/transaction/transaction.service';
+import { useWallet } from '@/modules/wallet/wallet.hook';
+import { normalizeSigs } from '@/pages/signature-builder/utils/normalizeSigs';
 import { shorten } from '@/utils/helpers';
 import {
   MonoCheck,
   MonoClose,
   MonoLoading,
   MonoPauseCircle,
+  MonoRefresh,
   MonoSignature,
   MonoViewInAr,
 } from '@kadena/kode-icons/system';
 import { Button, Stack, Text } from '@kadena/kode-ui';
+import { useMemo } from 'react';
 import { failureClass, pendingClass, successClass } from './style.css';
 
 export const steps: TransactionStatus[] = [
@@ -86,7 +91,12 @@ function TxStatusList({
   sendDisabled?: boolean;
   contTx?: ITransaction | null;
 }) {
+  const { getPublicKeyData, client } = useWallet();
+  const signers = useMemo(() => normalizeSigs(tx), [tx]);
   const textSize = variant === 'tile' ? 'smallest' : 'base';
+  const signedByYou = !signers.find(
+    (sigData) => !sigData?.sig && getPublicKeyData(sigData?.pubKey),
+  );
   const statusList = [
     variant !== 'minimized' && (
       <Stack justifyContent={'space-between'}>
@@ -103,10 +113,23 @@ function TxStatusList({
           <Text size={textSize} className={pendingClass}>
             <Stack alignItems={'center'} gap={'xs'}>
               <MonoPauseCircle />
-              Waiting for sign
+              {signedByYou
+                ? 'Waiting for external signatures'
+                : 'Waiting for sign'}
             </Stack>
           </Text>
-          {variant === 'expanded' && (
+          {signedByYou && (
+            <Button
+              startVisual={<MonoRefresh />}
+              isCompact
+              onClick={() => {
+                syncTransactionStatus(tx, client);
+              }}
+            >
+              Sync With Chain
+            </Button>
+          )}
+          {variant === 'expanded' && !signedByYou && (
             <Stack>
               <Button
                 isCompact
