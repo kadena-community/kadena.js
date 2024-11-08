@@ -1,9 +1,11 @@
 import { CopyButton } from '@/Components/CopyButton/CopyButton';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
+import { shortenPactCode } from '@/utils/parsedCodeToPact';
 import { IPactCommand } from '@kadena/client';
-import { Heading, Stack, Text } from '@kadena/kode-ui';
+import { MonoTextSnippet } from '@kadena/kode-icons/system';
+import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import classNames from 'classnames';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Label, Value } from './helpers';
 import { Signers } from './Signers';
 import { cardClass, codeClass, textEllipsis } from './style.css';
@@ -19,6 +21,7 @@ export function CommandView({
     () => JSON.parse(transaction.cmd),
     [transaction.cmd],
   );
+  const [showShortenCode, setShowShortenCode] = useState(true);
   return (
     <Stack flexDirection={'column'} gap={'xl'}>
       <Stack gap={'sm'} flexDirection={'column'}>
@@ -29,8 +32,20 @@ export function CommandView({
       {'exec' in command.payload && (
         <>
           <Stack gap={'sm'} flexDirection={'column'}>
-            <Heading variant="h4">Code</Heading>
-            <Value className={codeClass}>{command.payload.exec.code}</Value>
+            <Stack gap={'sm'} justifyContent={'space-between'}>
+              <Heading variant="h4">Code</Heading>
+              <Button
+                onPress={() => setShowShortenCode(!showShortenCode)}
+                variant={'transparent'}
+                isCompact
+                startVisual={<MonoTextSnippet />}
+              />
+            </Stack>
+            <Value className={codeClass}>
+              {showShortenCode
+                ? shortenPactCode(command.payload.exec.code)
+                : command.payload.exec.code}
+            </Value>
           </Stack>
           {Object.keys(command.payload.exec.data).length > 0 && (
             <Stack gap={'sm'} flexDirection={'column'}>

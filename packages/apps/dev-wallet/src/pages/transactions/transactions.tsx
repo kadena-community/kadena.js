@@ -6,18 +6,15 @@ import {
 } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten } from '@/utils/helpers';
+import { shortenPactCode } from '@/utils/parsedCodeToPact';
 import { IPactCommand } from '@kadena/client';
-import {
-  MonoArrowOutward,
-  MonoOpenInNew,
-  MonoSwapHoriz,
-} from '@kadena/kode-icons/system';
-import { Heading, Stack } from '@kadena/kode-ui';
+import { MonoArrowOutward, MonoSwapHoriz } from '@kadena/kode-icons/system';
+import { Heading, Stack, Text } from '@kadena/kode-ui';
 import { CompactTable, SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
-import { execCodeParser } from '@kadena/pactjs-generator';
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { noStyleLinkClass } from '../home/style.css';
+import { codeClass } from './style.css';
 
 export function Transactions() {
   const { profile, activeNetwork } = useWallet();
@@ -74,11 +71,10 @@ export const TransactionList = ({
       transactions.map((tx) => {
         const cmd = JSON.parse(tx.cmd) as IPactCommand;
         if ('exec' in cmd.payload) {
-          const parsedCode = execCodeParser(cmd.payload.exec.code);
           return {
             ...tx,
             type: 'exec',
-            code: cmd.payload.exec.code,
+            code: shortenPactCode(cmd.payload.exec.code, 4),
           };
         } else {
           return {
@@ -97,16 +93,17 @@ export const TransactionList = ({
           label: 'Hash',
           key: 'hash',
           variant: 'body',
-          width: '10%',
+          width: '15%',
           render: ({ value }) => {
             const tx = txs.find((tx) => tx.hash === value);
             return (
               <Link
                 to={`/transaction/${tx!.groupId}`}
                 className={noStyleLinkClass}
+                style={{ textDecoration: 'underline' }}
               >
                 <Stack gap={'sm'} alignItems={'center'}>
-                  {shorten(value)} <MonoArrowOutward fontSize={'16'} />
+                  {shorten(value)} <MonoArrowOutward fontSize={16} />
                 </Stack>
               </Link>
             );
@@ -123,6 +120,11 @@ export const TransactionList = ({
           key: 'code',
           variant: 'code',
           width: 'auto',
+          render: ({ value }) => (
+            <Text variant="code" className={codeClass}>
+              {value}
+            </Text>
+          ),
         },
         {
           label: 'Date',

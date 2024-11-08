@@ -6,3 +6,7 @@ export const hashStyle = style({
   whiteSpace: 'nowrap',
   flex: 1,
 });
+
+export const codeClass = style({
+  whiteSpace: 'pre-wrap',
+});
