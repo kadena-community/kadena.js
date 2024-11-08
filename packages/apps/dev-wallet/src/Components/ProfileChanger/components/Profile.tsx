@@ -1,7 +1,6 @@
-import { IProfile } from '@/modules/wallet/wallet.repository';
 import { Stack } from '@kadena/kode-ui';
 import { FC, PropsWithChildren } from 'react';
-import { profileClass } from '../ProfileChanger.css';
+import { profileClass } from './style.css';
 
 interface IProps extends PropsWithChildren {
   idx?: number;

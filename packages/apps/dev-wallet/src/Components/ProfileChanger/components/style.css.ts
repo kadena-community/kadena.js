@@ -1,31 +1,32 @@
-import { recipe } from '@kadena/kode-ui';
-import { atoms, globalStyle, token } from '@kadena/kode-ui/styles';
-import { style } from '@vanilla-extract/css';
+import {
+  atoms,
+  globalStyle,
+  recipe,
+  style,
+  token,
+} from '@kadena/kode-ui/styles';
 
 export const profileClass = recipe({
-  base: [
-    atoms({
-      borderRadius: 'round',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontWeight: 'primaryFont.medium',
-      cursor: 'pointer',
-    }),
-    {
-      border: 0,
-      width: '32px',
-      height: '32px',
-      aspectRatio: '1/1',
-      color: token('color.background.base.default'),
-      willChange: 'transform',
-      transition: 'transform .4s ease',
-      selectors: {
-        '&:hover': {
-          opacity: '.8',
-        },
+  base: {
+    borderRadius: token('radius.round'),
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
+    fontWeight: token('typography.weight.primaryFont.medium'),
+
+    border: 0,
+    width: '32px',
+    height: '32px',
+    aspectRatio: '1/1',
+    color: token('color.background.base.default'),
+    willChange: 'transform',
+    transition: 'transform .4s ease',
+    selectors: {
+      '&:hover': {
+        opacity: '.8',
       },
     },
-  ],
+  },
   variants: {
     isActive: {
       true: {

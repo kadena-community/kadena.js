@@ -35,7 +35,6 @@
     "cbor-web": "^9.0.2",
     "chrome-types": "^0.1.248",
     "classnames": "^2.3.1",
-    "createRuntimeFn": "link:@vanilla-extract/recipes/createRuntimeFn",
     "ed25519-keygen": "0.4.8",
     "elliptic": "^6.5.5",
     "js-yaml": "~4.1.0",

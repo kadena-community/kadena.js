@@ -1,6 +1,5 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IProfilePicked, unlockWithWebAuthn } from '@/utils/unlockWithWebAuthn';
-import { recoverPublicKey, retrieveCredential } from '@/utils/webAuthn';
 import { MonoMoreHoriz } from '@kadena/kode-icons/system';
 import {
   Button,
@@ -12,7 +11,7 @@ import {
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Profile } from './components/Profile';
-import { profileClass, profileListClass } from './ProfileChanger.css';
+import { profileClass, profileListClass } from './components/style.css';
 
 const getInitial = (name: string): string => {
   return name.at(0)?.toUpperCase() ?? '-';

@@ -1,7 +1,5 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { IProfile } from '@/modules/wallet/wallet.repository';
 import { unlockWithWebAuthn } from '@/utils/unlockWithWebAuthn';
-import { recoverPublicKey, retrieveCredential } from '@/utils/webAuthn';
 import { MonoAdd } from '@kadena/kode-icons';
 import { Box, Heading, Stack } from '@kadena/kode-ui';
 import { tokens } from '@kadena/kode-ui/styles';
