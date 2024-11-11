@@ -2,9 +2,9 @@ import React from 'react';
 import {
   useAddressToName,
   useNameToAddress,
-} from '../hooks/kadenaNamesResolver';
+} from '../../hooks/kadenaNames/kadenaNamesResolver';
 
-import { useWalletState } from '../state/wallet';
+import { useWalletState } from '../../state/wallet';
 
 export const KadenaNames: React.FC = () => {
   const wallet = useWalletState();

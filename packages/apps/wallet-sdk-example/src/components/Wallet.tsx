@@ -1,7 +1,7 @@
 import { useWalletState } from '../state/wallet';
 import { Accounts } from './Accounts';
-import { KadenaNamesRegister } from './KadenaNamesRegister';
-import { KadenaNames } from './KadenaNamesResolver';
+import { KadenaNamesRegister } from './kadenaNames/KadenaNamesRegister';
+import { KadenaNames } from './kadenaNames/KadenaNamesResolver';
 import { Transfer } from './Transfer';
 import { Transfers } from './Transfers';
 import { WordPhrase } from './WordPhrase';

@@ -1,17 +1,20 @@
-import React from 'react';
-import { useAccountBalance } from '../hooks/balances';
-import type { Account } from '../state/wallet';
-import { useWalletState } from '../state/wallet';
+import React, { useMemo } from 'react';
+import { useAccountBalance } from '../../hooks/balances';
+import type { Account } from '../../state/wallet';
+import { useWalletState } from '../../state/wallet';
 import { NameRegistrationForm } from './NameRegistrationForm';
 
 export const KadenaNamesRegister: React.FC = () => {
   const wallet = useWalletState();
 
-  const defaultAccount: Account = {
-    index: 0,
-    publicKey: '',
-    name: '',
-  };
+  const defaultAccount: Account = useMemo(
+    () => ({
+      index: 0,
+      publicKey: '',
+      name: '',
+    }),
+    [],
+  );
 
   const { balance, error } = useAccountBalance(
     wallet.account || defaultAccount,
@@ -30,12 +33,7 @@ export const KadenaNamesRegister: React.FC = () => {
         <p className="text-error-color text-center">Error: {error.message}</p>
       )}
 
-      <NameRegistrationForm
-        balance={balance ? parseFloat(balance) : 0}
-        onRegistered={() => {
-          // Callback when registration is complete
-        }}
-      />
+      <NameRegistrationForm balance={balance ? parseFloat(balance) : 0} />
     </div>
   );
 };

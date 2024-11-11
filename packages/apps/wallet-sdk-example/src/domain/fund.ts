@@ -5,18 +5,18 @@ import {
   isSignedTransaction,
   Pact,
   readKeyset,
-} from "@kadena/client";
-import { ITransactionDescriptor } from "@kadena/wallet-sdk";
-import { kadenaKeyPairsFromRandom } from "@kadena/hd-wallet";
+} from '@kadena/client';
+import { kadenaKeyPairsFromRandom } from '@kadena/hd-wallet';
+import { ITransactionDescriptor } from '@kadena/wallet-sdk';
 
 export const NAMESPACES = {
-  DEV_NET: "n_34d947e2627143159ea73cdf277138fd571f17ac",
-  TEST_NET: "n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49",
+  DEV_NET: 'n_34d947e2627143159ea73cdf277138fd571f17ac',
+  TEST_NET: 'n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49',
 } as const;
 
 export const GAS_STATIONS = {
-  DEV_NET: "c:zWPXcVXoHwkNTzKhMU02u2tzN_yL6V3-XTEH1uJaVY4",
-  TEST_NET: "c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA",
+  DEV_NET: 'c:zWPXcVXoHwkNTzKhMU02u2tzN_yL6V3-XTEH1uJaVY4',
+  TEST_NET: 'c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA',
 } as const;
 
 export const GAS_STATIONS_MAP: { [key: string]: string } = {
@@ -29,10 +29,10 @@ export const NAMESPACES_MAP: { [key: string]: string } = {
   testnet04: NAMESPACES.TEST_NET,
 };
 
-const DEFAULT_CONTRACT_NAME = "coin-faucet";
+const DEFAULT_CONTRACT_NAME = 'coin-faucet';
 
 const toPactDecimal = (amount: string) => {
-  return { decimal: amount.includes(".") ? amount : `${amount}.0` };
+  return { decimal: amount.includes('.') ? amount : `${amount}.0` };
 };
 
 export async function createAndTransferFund({
@@ -54,7 +54,7 @@ export async function createAndTransferFund({
   try {
     const { chainId, amount, networkId } = config;
 
-    const KEYSET_NAME = "new_keyset";
+    const KEYSET_NAME = 'new_keyset';
     const { name: accountName, publicKeys, predicate } = account;
     const NAMESPACE = NAMESPACES_MAP[networkId];
     const FAUCET_ACCOUNT = GAS_STATIONS_MAP[networkId];
@@ -62,24 +62,26 @@ export async function createAndTransferFund({
     const [keyPair] = kadenaKeyPairsFromRandom(1);
     const transaction = Pact.builder
       .execution(
-        (Pact as any).modules[FAUCET_CONTRACT]["create-and-request-coin"](
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (Pact as any).modules[FAUCET_CONTRACT]['create-and-request-coin'](
           accountName,
           readKeyset(KEYSET_NAME),
-          toPactDecimal(amount)
-        )
+          toPactDecimal(amount),
+        ),
       )
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .addSigner(keyPair.publicKey, (withCapability: any) => [
         withCapability(
           `${FAUCET_CONTRACT}.GAS_PAYER`,
           accountName,
           { int: 1 },
-          { decimal: "1.0" }
+          { decimal: '1.0' },
         ),
         withCapability(
-          "coin.TRANSFER",
+          'coin.TRANSFER',
           FAUCET_ACCOUNT,
           accountName,
-          toPactDecimal(amount)
+          toPactDecimal(amount),
         ),
       ])
       .addKeyset(KEYSET_NAME, predicate, ...publicKeys)
@@ -92,14 +94,14 @@ export async function createAndTransferFund({
     const signedTx = await signWithKeyPair(transaction);
 
     if (!isSignedTransaction(signedTx)) {
-      throw new Error("Transaction is not signed");
+      throw new Error('Transaction is not signed');
     }
 
     const { submit, local } = createClient();
 
     // Validate the transaction locally before sending it to the network
     const localResult = await local(signedTx);
-    if (localResult.result.status === "failure") {
+    if (localResult.result.status === 'failure') {
       throw localResult.result.error;
     }
 
@@ -107,7 +109,7 @@ export async function createAndTransferFund({
   } catch (err) {
     const error = err instanceof Error ? err : new Error(String(err));
     throw Error(
-      `Failed to create an account and transfer fund: ${error.message}`
+      `Failed to create an account and transfer fund: ${error.message}`,
     );
   }
 }

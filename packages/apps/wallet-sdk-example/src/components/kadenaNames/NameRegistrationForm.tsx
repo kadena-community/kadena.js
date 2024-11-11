@@ -1,15 +1,15 @@
 import { ChainId } from '@kadena/client';
 import { walletSdk } from '@kadena/wallet-sdk';
 import React, { useCallback, useEffect, useState } from 'react';
-import { getChainIdByNetwork } from '../actions/host';
+import { getChainIdByNetwork } from '../../actions/host';
 import {
   executeCreateRegisterNameTransaction,
   fetchNameInfo,
   fetchPriceByPeriod,
-} from '../actions/kadenaNamesActions';
-import { PRICE_MAP } from '../constants/kadenaNamesConstants';
-import { useWalletState } from '../state/wallet';
-import { useDebounce } from '../utils/useDebounce';
+} from '../../actions/kadenaNamesActions';
+import { PRICE_MAP } from '../../constants/kadenaNamesConstants';
+import { useWalletState } from '../../state/wallet';
+import { useDebounce } from '../../utils/useDebounce';
 
 interface NameRegistrationFormProps {
   initialOwner?: string;
@@ -36,16 +36,14 @@ export const NameRegistrationForm: React.FC<NameRegistrationFormProps> = ({
   const [registering, setRegistering] = useState<boolean>(false);
   const [price, setPrice] = useState<number | null>(null);
   const [chains, setChains] = useState<ChainId[]>(
-    Array.from({ length: 20 }, (_, i) => `${i}` as ChainId), // Default to 20 chains
+    Array.from({ length: 20 }, (_, i) => `${i}` as ChainId),
   );
 
   const wallet = useWalletState();
   const { selectChain, selectedChain } = wallet;
 
-  // Debounce the name input to prevent rapid calls
   const debouncedName = useDebounce(name, 500);
 
-  // Fetch chains from the network and overwrite default if successful
   useEffect(() => {
     const fetchChains = async () => {
       try {
