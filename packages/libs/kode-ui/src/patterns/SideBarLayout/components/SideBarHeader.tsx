@@ -17,10 +17,10 @@ import { useLayout } from './LayoutProvider';
 import { KLogo } from './Logo/KLogo';
 
 interface IProps extends PropsWithChildren {
-  minifiedLogo?: ReactElement;
+  logo?: ReactElement;
 }
 
-export const SideBarHeader: FC<IProps> = ({ minifiedLogo }) => {
+export const SideBarHeader: FC<IProps> = ({ logo }) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const { isExpanded, handleToggleExpand, setBreadcrumbsRef } = useLayout();
   const handleExpand = (e: PressEvent) => {
@@ -30,7 +30,7 @@ export const SideBarHeader: FC<IProps> = ({ minifiedLogo }) => {
   };
 
   const ShowLogo = () => {
-    return minifiedLogo ? minifiedLogo : <KLogo height={40} />;
+    return logo ? logo : <KLogo height={40} />;
   };
 
   useEffect(() => {
