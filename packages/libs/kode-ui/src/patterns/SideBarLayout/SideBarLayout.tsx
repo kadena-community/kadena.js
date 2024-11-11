@@ -16,7 +16,6 @@ import type { ISideBarLayoutLocation } from './types';
 export interface ISideBarLayout extends PropsWithChildren {
   topBanner?: ReactElement;
   logo?: ReactElement;
-  minifiedLogo?: ReactElement;
   sidebar?: ReactElement;
   footer?: ReactElement;
   variant?: 'default' | 'full';
@@ -26,7 +25,6 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
   children,
   topBanner,
   logo,
-  minifiedLogo,
   sidebar,
   footer,
   variant = 'default',
@@ -64,7 +62,7 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
             [layoutExpandedWrapperClass]: isExpanded,
           })}
         >
-          <SideBarHeader logo={logo} minifiedLogo={minifiedLogo} />
+          <SideBarHeader logo={logo} />
           {sidebar}
           <main className={mainClass({ variant })}>
             <Stack width="100%" flexDirection="column" marginInlineEnd="sm">
