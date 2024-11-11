@@ -7,7 +7,10 @@ import { AccountItem } from './AccountItem';
 export const Accounts = () => {
   const wallet = useWalletState();
 
-  const chainIds = useMemo(() => ['0'] as ChainId[], []);
+  const chainIds = useMemo(
+    () => [wallet.selectedChain] as ChainId[],
+    [wallet.selectedChain],
+  );
   const { loading: loadingBalance, balances: accountsBalances } =
     useAccountsBalances(
       wallet.accounts,

@@ -1,10 +1,8 @@
-/* work in progress */
-
 import { walletSdk } from '@kadena/wallet-sdk';
 import { useEffect, useState } from 'react';
 import { useDebounce } from '../utils/useDebounce';
 
-export const useAddressToName = (refreshKey = 0) => {
+export const useAddressToName = (refreshKey = 0, selectedNetwork: string) => {
   const [address, setAddress] = useState<string>('');
   const debouncedAddress = useDebounce(address, 500);
 
@@ -28,7 +26,7 @@ export const useAddressToName = (refreshKey = 0) => {
       try {
         const result = await walletSdk.kadenaNames.addressToName(
           debouncedAddress,
-          'mainnet01',
+          selectedNetwork,
         );
         if (isCurrent) {
           if (result !== null) {
@@ -53,12 +51,12 @@ export const useAddressToName = (refreshKey = 0) => {
     return () => {
       isCurrent = false;
     };
-  }, [debouncedAddress, refreshKey]);
+  }, [debouncedAddress, refreshKey, selectedNetwork]);
 
   return { name, error, loading, setAddress, address };
 };
 
-export const useNameToAddress = () => {
+export const useNameToAddress = (refreshKey = 0, selectedNetwork: string) => {
   const [name, setName] = useState<string>('');
   const debouncedName = useDebounce(name, 500);
 
@@ -82,7 +80,7 @@ export const useNameToAddress = () => {
       try {
         const result = await walletSdk.kadenaNames.nameToAddress(
           debouncedName,
-          'mainnet01',
+          selectedNetwork,
         );
         if (isCurrent) {
           if (result !== null) {
@@ -107,7 +105,7 @@ export const useNameToAddress = () => {
     return () => {
       isCurrent = false;
     };
-  }, [debouncedName]);
+  }, [debouncedName, refreshKey, selectedNetwork]);
 
   return { address, error, loading, setName, name };
 };

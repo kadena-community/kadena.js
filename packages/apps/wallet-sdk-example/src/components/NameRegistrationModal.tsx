@@ -6,6 +6,7 @@ interface NameRegistrationModalProps {
   address: string;
   onClose: () => void;
   onRegistered?: () => void;
+  balance: number;
 }
 
 export const NameRegistrationModal: React.FC<NameRegistrationModalProps> = ({
@@ -13,6 +14,7 @@ export const NameRegistrationModal: React.FC<NameRegistrationModalProps> = ({
   address,
   onClose,
   onRegistered,
+  balance,
 }) => {
   return (
     <div
@@ -36,6 +38,7 @@ export const NameRegistrationModal: React.FC<NameRegistrationModalProps> = ({
             onRegistered?.();
             onClose();
           }}
+          balance={balance}
         />
         <button onClick={onClose} className="mt-4 text-white underline">
           Close

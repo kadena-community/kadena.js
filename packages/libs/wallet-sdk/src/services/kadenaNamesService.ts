@@ -5,8 +5,15 @@ import {
   KADENANAMES_NAMESPACE_TESTNET_MODULE,
 } from '../constants/kdn.js';
 
-// kadenanames running on chain 15
-const chainId: ChainId = '15';
+/*
+  Kadenanames running on chain:
+    mainnet: 15
+    testnet: 1
+*/
+
+export const getChainIdByNetwork = (networkId: string): ChainId => {
+  return networkId.includes('testnet') ? '1' : '15';
+};
 
 export function ensureKdaExtension(name: string): string {
   const lowerCaseName = name.toLowerCase();
@@ -38,7 +45,7 @@ async function kdnResolver(
     const transaction = Pact.builder
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .execution((Pact as any).modules[module][method](param))
-      .setMeta({ chainId })
+      .setMeta({ chainId: getChainIdByNetwork(networkId) })
       .setNetworkId(networkId)
       .createTransaction();
 

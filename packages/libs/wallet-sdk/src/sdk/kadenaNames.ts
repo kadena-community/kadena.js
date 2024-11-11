@@ -1,5 +1,6 @@
 import {
   addressToName,
+  getChainIdByNetwork,
   nameToAddress,
 } from '../services/kadenaNamesService.js';
 import type { WalletSDK } from './walletSdk.js';
@@ -18,7 +19,7 @@ export class KadenaNames {
     try {
       const host = this._sdk.getChainwebUrl({
         networkId,
-        chainId: '15',
+        chainId: getChainIdByNetwork(networkId),
       });
       const result = await nameToAddress(name, networkId, host);
 
@@ -40,7 +41,10 @@ export class KadenaNames {
     networkId: string,
   ): Promise<string | null> {
     try {
-      const host = this._sdk.getChainwebUrl({ networkId, chainId: '15' });
+      const host = this._sdk.getChainwebUrl({
+        networkId,
+        chainId: getChainIdByNetwork(networkId),
+      });
       const result = await addressToName(address, networkId, host);
 
       if (result === undefined) {

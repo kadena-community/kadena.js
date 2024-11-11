@@ -28,7 +28,7 @@ export const AccountItem: React.FC<AccountItemProps> = ({
     name: resolvedName,
     loading: nameLoading,
     setAddress,
-  } = useAddressToName(refreshKey);
+  } = useAddressToName(refreshKey, wallet.selectedNetwork);
 
   useEffect(() => {
     setAddress(account.name);
@@ -129,6 +129,7 @@ export const AccountItem: React.FC<AccountItemProps> = ({
             onRegistered();
             closeRegisterModal();
           }}
+          balance={parseInt(accountsBalances[account.name], 10) ?? 0}
         />
       )}
     </>
