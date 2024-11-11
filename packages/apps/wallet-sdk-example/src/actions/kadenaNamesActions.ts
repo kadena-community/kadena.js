@@ -168,6 +168,7 @@ export const createRegisterNameTransaction = (
   days: number,
   price: number,
   networkId: string,
+  account: string,
 ): IUnsignedCommand => {
   const module = getNamespaceModule(networkId);
   const chainId = getChainIdByNetwork(networkId);
@@ -184,7 +185,7 @@ export const createRegisterNameTransaction = (
       ),
     )
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .addSigner(owner, (withCapability: any) => [
+    .addSigner(account, (withCapability: any) => [
       withCapability('coin.GAS'),
       withCapability('coin.TRANSFER', owner, VAULT, price),
       withCapability(`${module}.ACCOUNT_GUARD`, owner),
@@ -192,9 +193,9 @@ export const createRegisterNameTransaction = (
     .setMeta({
       chainId,
       senderAccount: owner,
-      gasLimit: 60000,
-      gasPrice: 0.00000001,
-      ttl: 28800,
+      // gasLimit: 60000,
+      // gasPrice: 0.00000001,
+      // ttl: 28800,
     })
     .setNetworkId(networkId)
     .createTransaction();
@@ -208,6 +209,7 @@ export const executeCreateRegisterNameTransaction = async (
   name: string,
   registrationPeriod: keyof typeof PRICE_MAP,
   networkId: string,
+  account: string,
 ): Promise<IUnsignedCommand | null> => {
   const days = PRICE_MAP[registrationPeriod];
 
@@ -229,6 +231,7 @@ export const executeCreateRegisterNameTransaction = async (
     days,
     price,
     networkId,
+    account,
   );
 
   return transaction;

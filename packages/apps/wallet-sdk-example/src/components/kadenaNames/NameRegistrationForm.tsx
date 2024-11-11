@@ -8,7 +8,7 @@ import {
   fetchPriceByPeriod,
 } from '../../actions/kadenaNamesActions';
 import { PRICE_MAP } from '../../constants/kadenaNamesConstants';
-import { useWalletState } from '../../state/wallet';
+import { Account, useWalletState } from '../../state/wallet';
 import { useDebounce } from '../../utils/useDebounce';
 
 interface NameRegistrationFormProps {
@@ -125,6 +125,8 @@ export const NameRegistrationForm: React.FC<NameRegistrationFormProps> = ({
         name,
         registrationPeriod,
         wallet.selectedNetwork,
+        wallet.accounts.find((account: Account) => account.name === owner)
+          ?.publicKey || '',
       );
 
       if (transaction) {
