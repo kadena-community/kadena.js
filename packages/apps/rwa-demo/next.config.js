@@ -3,11 +3,9 @@ const withVanillaExtract = createVanillaExtractPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
+  swcMinify: true,
   transpilePackages: ['@kadena/kode-ui'],
-  env: {},
-  async redirects() {
-    return [];
-  },
 };
 
 module.exports = withVanillaExtract(nextConfig);

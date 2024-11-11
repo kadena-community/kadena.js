@@ -141,4 +141,4 @@ export {
   IContextMenuProps,
 } from './ContextMenu';
 
-export { Media, MediaContextProvider } from './Media';
+export { Media, MediaContextProvider, mediaProviderStyles } from './Media';
