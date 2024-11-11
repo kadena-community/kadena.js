@@ -1,4 +1,13 @@
-const colorList = ['#42CEA4', '#42BDCE', '#4269CE', '#B242CE', '#CEA742'];
+const colorList = [
+  '#2898bd',
+  '#5e4db2',
+  '#e56910',
+  '#943d73',
+  '#09326c',
+  '#8f7ee7',
+  '#50253f',
+  '#a54800',
+];
 export const config = {
   colorList,
   defaultAccentColor: colorList[0],

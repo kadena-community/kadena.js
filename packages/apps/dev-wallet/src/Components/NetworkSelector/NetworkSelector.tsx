@@ -1,5 +1,9 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { MonoSettings, MonoWifiTethering } from '@kadena/kode-icons/system';
+import {
+  MonoCheck,
+  MonoSettings,
+  MonoWifiTethering,
+} from '@kadena/kode-icons/system';
 import {
   Button,
   ContextMenu,
@@ -46,6 +50,9 @@ export const NetworkSelector: FC<{
           aria-label={network.name}
           key={network.networkId}
           label={network.name ?? network.networkId}
+          endVisual={
+            network.uuid === activeNetwork?.uuid ? <MonoCheck /> : undefined
+          }
           onClick={() => handleNetworkUpdate(network.uuid)}
         />
       ))}
