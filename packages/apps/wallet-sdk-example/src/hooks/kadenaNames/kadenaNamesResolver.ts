@@ -1,6 +1,6 @@
 import { walletSdk } from '@kadena/wallet-sdk';
 import { useEffect, useState } from 'react';
-import { useDebounce } from '../utils/useDebounce';
+import { useDebounce } from '../../utils/useDebounce';
 
 export const useAddressToName = (refreshKey = 0, selectedNetwork: string) => {
   const [address, setAddress] = useState<string>('');

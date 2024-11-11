@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { createAndTransferFund } from '../domain/fund';
-import { useAddressToName } from '../hooks/kadenaNamesResolver';
+import { useAddressToName } from '../hooks/kadenaNames/kadenaNamesResolver';
 import type { Account } from '../state/wallet';
 import { useWalletState } from '../state/wallet';
-import { NameRegistrationModal } from './NameRegistrationModal';
+import { NameRegistrationModal } from './kadenaNames/NameRegistrationModal';
 import { TextEllipsis } from './Text';
 
 interface AccountItemProps {
@@ -72,7 +72,9 @@ export const AccountItem: React.FC<AccountItemProps> = ({
         <div className="flex justify-between items-center">
           <span className="font-semibold text-text-secondary">Balance:</span>
           <span className="text-white">
-            {loadingBalance ? '...' : accountsBalances[account.name] ?? '0'}
+            {loadingBalance
+              ? 'Loading...'
+              : accountsBalances[account.name] ?? '0'}
           </span>
         </div>
         <div className="flex justify-between items-center">

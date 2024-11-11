@@ -1,5 +1,4 @@
-import { ChainId } from '@kadena/client';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useAccountsBalances } from '../hooks/balances';
 import { useWalletState } from '../state/wallet';
 import { AccountItem } from './AccountItem';
@@ -7,16 +6,12 @@ import { AccountItem } from './AccountItem';
 export const Accounts = () => {
   const wallet = useWalletState();
 
-  const chainIds = useMemo(
-    () => [wallet.selectedChain] as ChainId[],
-    [wallet.selectedChain],
-  );
   const { loading: loadingBalance, balances: accountsBalances } =
     useAccountsBalances(
       wallet.accounts,
       wallet.selectedNetwork,
       wallet.selectedFungible,
-      chainIds,
+      wallet.selectedChain,
     );
 
   const [refreshKey, setRefreshKey] = useState(0);

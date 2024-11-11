@@ -47,31 +47,39 @@ export const useAccountsBalances = (
   accounts: Account[],
   networkId: string,
   fungible: string,
-  chainId: ChainId[],
+  chainId: ChainId,
 ) => {
   const [loading, setLoading] = useState(false);
   const [balances, setBalances] = useState<Record<string, string>>({});
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    setLoading(true);
-    const promises = accounts.map(async (account) => {
+    const fetchBalances = async () => {
+      setLoading(true);
+      const updatedBalances: Record<string, string> = {};
+
       try {
-        const balance = await walletSdk.getAccountDetails(
-          account.name,
-          networkId,
-          fungible,
-          chainId,
-        );
-        setBalances((balances) => ({
-          ...balances,
-          [account.name]: parseBalance(balance[0].accountDetails?.balance),
-        }));
+        for (const account of accounts) {
+          const accountDetails = await walletSdk.getAccountDetails(
+            account.name,
+            networkId,
+            fungible,
+            [chainId],
+          );
+          const balance = accountDetails.length
+            ? parseBalance(accountDetails[0].accountDetails?.balance)
+            : '0';
+          updatedBalances[account.name] = balance;
+        }
+        setBalances(updatedBalances);
       } catch (e) {
-        setError(e as any);
+        setError(e as Error);
+      } finally {
+        setLoading(false);
       }
-    });
-    Promise.all(promises).then(() => setLoading(false));
+    };
+
+    fetchBalances();
   }, [accounts, networkId, fungible, chainId]);
 
   return { loading, balances, error };
