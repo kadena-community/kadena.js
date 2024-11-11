@@ -1,11 +1,9 @@
 'use client';
-import { SideBarLayout } from '@kadena/kode-ui/patterns';
 
-import { Link, mediaProviderStyles } from '@kadena/kode-ui';
+import { mediaProviderStyles } from '@kadena/kode-ui';
 import React from 'react';
-import { KLogo } from './KLogo';
+
 import { Providers } from './Providers';
-import { SideBar } from './SideBar';
 
 const RootLayout = ({
   children,
@@ -22,18 +20,7 @@ const RootLayout = ({
         />
       </head>
       <body>
-        <Providers>
-          <SideBarLayout
-            logo={
-              <Link href="/">
-                <KLogo height={40} />
-              </Link>
-            }
-            sidebar={<SideBar />}
-          >
-            {children}
-          </SideBarLayout>
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
