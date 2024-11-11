@@ -171,6 +171,8 @@ export class WalletSDK {
       networkId: transaction.networkId,
       chainId: transaction.chainId,
     });
+    // TODO: refactor to poll
+    // if options is in kadena client now, use that
     const listenUrl = new URL(`${host}/api/v1/listen`);
     const data = await fetch(listenUrl.toString(), {
       signal: options?.signal,

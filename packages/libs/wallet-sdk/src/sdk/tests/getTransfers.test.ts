@@ -4,7 +4,7 @@ import { walletSdk } from '../walletSdk.js';
 describe('getTransfers', () => {
   test('runs', async () => {
     const result = await walletSdk.getTransfers(
-      'k:58aa1853a0c1e53997c076ff9f274423f9f7548a1c22ea3210af3afeadc557e3',
+      'k:9d416e1accc280d9539314233c7827b08aa0154cd320873088e9b9ea74a37462',
       'testnet04',
     );
     console.log(result);

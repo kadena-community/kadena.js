@@ -24,6 +24,9 @@ export const Transfer = () => {
     });
 
     const signed = await wallet.signTransaction(transaction);
+    if (!confirm(`Send transaction?: \n ${JSON.stringify(signed, null, 2)}`)) {
+      return;
+    }
     const result = await walletSdk.sendTransaction(
       signed,
       wallet.selectedNetwork,
@@ -52,9 +55,9 @@ export const Transfer = () => {
           </label>
           <input
             type="text"
-            value={wallet.account?.name}
+            defaultValue={wallet.account?.name}
             disabled
-            className="bg-medium-slate border border-border-gray rounded-md py-2 px-3 text-white w-full"
+            className="bg-medium-slate border border-border-gray rounded-md py-2 px-3 text-gray-400 w-full"
           />
         </div>
         <div className="flex flex-col w-full">

@@ -1,8 +1,9 @@
+import clsx from 'clsx';
 import { useTransfers } from '../hooks/transfers';
 import { TextEllipsis } from './Text';
 
 export const Transfers = () => {
-  const { transfers, pendingTransfers } = useTransfers();
+  const { transfers, pendingTransfers, account } = useTransfers();
 
   return (
     <div className="bg-dark-slate p-6 rounded-lg shadow-md w-full mx-auto">
@@ -122,8 +123,30 @@ export const Transfers = () => {
                         {transfer.receiverAccount}
                       </TextEllipsis>
                     </td>
-                    <td className="py-2 px-4 text-white">{transfer.amount}</td>
-                    <td className="py-2 px-4 text-secondary-green">Success</td>
+                    <td className="py-2 px-4 text-white">
+                      <span
+                        className={clsx({
+                          'text-gray-400': transfer.success == false,
+                          'text-red-400':
+                            transfer.senderAccount === account &&
+                            transfer.success === true,
+                          'text-green-400':
+                            transfer.senderAccount !== account &&
+                            transfer.success === true,
+                        })}
+                      >
+                        {transfer.senderAccount === account
+                          ? `-${transfer.amount}`
+                          : `+${transfer.amount}`}
+                      </span>
+                      <br />
+                      <span className="text-red-400">
+                        {`-${transfer.transactionFeeTransfer?.amount}`}
+                      </span>
+                    </td>
+                    <td className="py-2 px-4 text-secondary-green">
+                      {transfer.success ? 'Success' : 'Failed'}
+                    </td>
                   </tr>
                 ))}
               </tbody>
