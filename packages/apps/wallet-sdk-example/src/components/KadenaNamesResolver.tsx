@@ -4,14 +4,17 @@ import {
   useNameToAddress,
 } from '../hooks/kadenaNamesResolver';
 
+import { useWalletState } from '../state/wallet';
+
 export const KadenaNames: React.FC = () => {
+  const wallet = useWalletState();
   const {
     name: resolvedName,
     error: nameError,
     loading: nameLoading,
     setAddress,
     address: inputAddress,
-  } = useAddressToName();
+  } = useAddressToName(0, wallet.selectedNetwork);
 
   const {
     address: resolvedAddress,
@@ -19,7 +22,7 @@ export const KadenaNames: React.FC = () => {
     loading: addressLoading,
     setName,
     name: inputName,
-  } = useNameToAddress();
+  } = useNameToAddress(0, wallet.selectedNetwork);
 
   return (
     <div className="bg-dark-slate p-6 rounded-lg shadow-md w-full mx-auto">

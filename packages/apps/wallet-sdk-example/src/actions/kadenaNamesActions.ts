@@ -1,13 +1,11 @@
-import { ChainId, IUnsignedCommand, Pact } from '@kadena/client';
-import {
-  getNamespaceModule,
-  PRICE_MAP,
-  VAULT,
-} from '../constants/kadenaNamesConstants';
+import { IUnsignedCommand, Pact } from '@kadena/client';
+import { PRICE_MAP, VAULT } from '../constants/kadenaNamesConstants';
 import { isNameExpired, transformPactDate } from '../utils/kadenanames/date';
 import { parseChainResponse } from '../utils/kadenanames/transactionParser';
 import { addExtentionToName } from '../utils/kadenanames/transform';
-import { getClient } from './host';
+import { getChainIdByNetwork, getClient } from './host';
+
+import { getNamespaceModule } from '../constants/kadenaNamesConstants';
 
 interface NameInfo {
   price: number;
@@ -26,10 +24,10 @@ interface SaleState {
 export const fetchSaleState = async (
   name: string,
   networkId: string,
-  chainId: ChainId,
 ): Promise<SaleState> => {
   const client = getClient(networkId);
   const module = getNamespaceModule(networkId);
+  const chainId = getChainIdByNetwork(networkId);
 
   try {
     const transaction = Pact.builder
@@ -59,16 +57,15 @@ export const fetchSaleState = async (
   }
 };
 
-// Fetch name info independently
 export const fetchNameInfo = async (
   name: string,
   networkId: string,
-  chainId: ChainId,
   owner: string,
 ): Promise<NameInfo> => {
   const formattedName = addExtentionToName(name.toLowerCase());
   const client = getClient(networkId);
   const module = getNamespaceModule(networkId);
+  const chainId = getChainIdByNetwork(networkId);
 
   try {
     const transaction = Pact.builder
@@ -107,10 +104,13 @@ export const fetchNameInfo = async (
         expiryDate,
       };
     } else {
-      const saleState = await fetchSaleState(formattedName, networkId, chainId);
+      const saleState = await fetchSaleState(formattedName, networkId);
       return {
         ...result,
-        isAvailable: false,
+        isAvailable:
+          saleState.sellable === false && saleState.price === 0
+            ? result.isAvailable
+            : saleState.sellable,
         isForSale: saleState.sellable,
         price: saleState.price,
         marketPrice: saleState.price ?? result.lastPrice ?? 0,
@@ -128,16 +128,15 @@ export const fetchNameInfo = async (
   }
 };
 
-// Fetch price independently based on registration period
 export const fetchPriceByPeriod = async (
   period: keyof typeof PRICE_MAP,
   networkId: string,
-  chainId: ChainId,
   owner: string,
 ): Promise<number> => {
   const days = PRICE_MAP[period];
   const client = getClient(networkId);
   const module = getNamespaceModule(networkId);
+  const chainId = getChainIdByNetwork(networkId);
 
   try {
     const transaction = Pact.builder
@@ -169,9 +168,9 @@ export const createRegisterNameTransaction = (
   days: number,
   price: number,
   networkId: string,
-  chainId: ChainId,
 ): IUnsignedCommand => {
   const module = getNamespaceModule(networkId);
+  const chainId = getChainIdByNetwork(networkId);
 
   const transaction = Pact.builder
     .execution(
@@ -209,21 +208,14 @@ export const executeCreateRegisterNameTransaction = async (
   name: string,
   registrationPeriod: keyof typeof PRICE_MAP,
   networkId: string,
-  chainId: ChainId,
 ): Promise<IUnsignedCommand | null> => {
   const days = PRICE_MAP[registrationPeriod];
 
-  const { price: newPrice } = await fetchNameInfo(
-    name,
-    networkId,
-    chainId,
-    owner,
-  );
+  const { price: newPrice } = await fetchNameInfo(name, networkId, owner);
 
   const storedPrice = await fetchPriceByPeriod(
     registrationPeriod,
     networkId,
-    chainId,
     owner,
   );
 
@@ -237,7 +229,6 @@ export const executeCreateRegisterNameTransaction = async (
     days,
     price,
     networkId,
-    chainId,
   );
 
   return transaction;
