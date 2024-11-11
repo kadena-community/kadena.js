@@ -42,9 +42,11 @@ export function CommandView({
               />
             </Stack>
             <Value className={codeClass}>
-              {showShortenCode
-                ? shortenPactCode(command.payload.exec.code)
-                : command.payload.exec.code}
+              {showShortenCode ? (
+                <pre> {shortenPactCode(command.payload.exec.code)}</pre>
+              ) : (
+                command.payload.exec.code
+              )}
             </Value>
           </Stack>
           {Object.keys(command.payload.exec.data).length > 0 && (

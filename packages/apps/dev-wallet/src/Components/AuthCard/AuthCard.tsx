@@ -7,5 +7,9 @@ interface IProps {
 }
 
 export const AuthCard: FC<IProps> = ({ children }) => {
-  return <Box className={authCard}>{children}</Box>;
+  return (
+    <Box padding={'md'} className={authCard}>
+      {children}
+    </Box>
+  );
 };

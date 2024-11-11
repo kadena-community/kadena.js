@@ -6,21 +6,28 @@ import {
 } from '@kadena/kode-icons/system';
 
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
-import { Themes, useTheme } from '@kadena/kode-ui';
+import { Stack, Themes, useTheme } from '@kadena/kode-ui';
 import {
   SideBarFooter,
   SideBarFooterItem,
   SideBarLayout,
+  useLayout,
 } from '@kadena/kode-ui/patterns';
+import classNames from 'classnames';
 import { FC, useMemo } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { BetaHeader } from './../BetaHeader';
 import { SideBar } from './SideBar';
+import {
+  isExpandedMainClass,
+  isNotExpandedClass,
+  mainContainerClass,
+} from './style.css';
 
 export const Layout: FC = () => {
   const { theme, setTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
+  const { isExpanded } = useLayout();
 
   const innerLocation = useMemo(
     () => ({
@@ -39,7 +46,6 @@ export const Layout: FC = () => {
   return (
     <>
       <SideBarLayout
-        topBanner={<BetaHeader />}
         location={innerLocation}
         sidebar={<SideBar />}
         footer={
@@ -72,7 +78,15 @@ export const Layout: FC = () => {
           </SideBarFooter>
         }
       >
-        <Outlet />
+        <Stack
+          flexDirection={'column'}
+          className={classNames(
+            mainContainerClass,
+            isExpanded ? isExpandedMainClass : isNotExpandedClass,
+          )}
+        >
+          <Outlet />
+        </Stack>
       </SideBarLayout>
 
       <div id="modalportal"></div>

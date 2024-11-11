@@ -17,12 +17,7 @@ export function AssetsCard() {
     ({ contract }) => contract === selectedContract,
   );
   return (
-    <Stack
-      className={panelClass}
-      marginBlockStart="xl"
-      gap={'xl'}
-      flexDirection={'column'}
-    >
+    <Stack className={panelClass} gap={'xl'} flexDirection={'column'}>
       <Assets
         accounts={accounts}
         fungibles={fungibles}

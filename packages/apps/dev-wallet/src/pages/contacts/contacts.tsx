@@ -91,7 +91,9 @@ export function Contacts() {
                 </Stack>
                 <Stack flexDirection={'row'} gap={'sm'} alignItems={'center'}>
                   <Stack gap={'sm'}>
-                    <MonoAccountBalanceWallet />{' '}
+                    <Text>
+                      <MonoAccountBalanceWallet />
+                    </Text>
                     <Text>{shorten(contact.account.address)}</Text>
                   </Stack>
 

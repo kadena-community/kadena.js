@@ -1,6 +1,4 @@
 import { AccountInput } from '@/Components/AccountInput/AccountInput';
-import { ConfirmDeletion } from '@/Components/ConfirmDeletion/ConfirmDeletion';
-import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import {
   contactRepository,
   IContact,
@@ -35,7 +33,6 @@ export function ContactForm({
   onDone: (contect: IContact) => void;
   isOpen: boolean;
 }) {
-  const prompt = usePrompt();
   const { activeNetwork } = useWallet();
   const [error, setError] = useState<string | null>(null);
   const {
@@ -153,28 +150,6 @@ export function ContactForm({
           </Stack>
         </RightAsideContent>
         <RightAsideFooter>
-          {input?.uuid && (
-            <Button
-              type="button"
-              variant="negative"
-              onClick={async () => {
-                const confirm = await prompt((resolve, reject) => (
-                  <ConfirmDeletion
-                    onCancel={() => reject()}
-                    onDelete={() => resolve(true)}
-                    title="Delete Contact"
-                    description="Are you sure you want to delete this contact?"
-                  />
-                ));
-                if (confirm) {
-                  await contactRepository.deleteContact(input.uuid);
-                  onClose();
-                }
-              }}
-            >
-              Delete
-            </Button>
-          )}
           <Button onClick={onClose} type="reset" variant="transparent">
             Cancel
           </Button>
