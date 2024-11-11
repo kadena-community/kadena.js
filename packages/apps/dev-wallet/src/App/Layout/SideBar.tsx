@@ -8,20 +8,27 @@ import {
   MonoLightMode,
   MonoLogout,
   MonoNetworkCheck,
+  MonoSettings,
   MonoSignature,
   MonoSwapHoriz,
   MonoTableRows,
+  MonoWarning,
 } from '@kadena/kode-icons/system';
 
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
 
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { getInitials } from '@/utils/get-initials';
 import { unlockWithWebAuthn } from '@/utils/unlockWithWebAuthn';
 import {
+  Avatar,
   Button,
   ContextMenu,
   ContextMenuDivider,
   ContextMenuItem,
+  Heading,
+  Stack,
+  Text,
   Themes,
   useTheme,
 } from '@kadena/kode-ui';
@@ -33,12 +40,13 @@ import {
 } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { BetaHeader } from '../BetaHeader';
 import { KLogo } from './KLogo';
 
 export const SideBar: FC = () => {
   const { theme, setTheme } = useTheme();
   const { isExpanded } = useLayout();
-  const { lockProfile, profileList, unlockProfile } = useWallet();
+  const { lockProfile, profileList, unlockProfile, profile } = useWallet();
   const navigate = useNavigate();
 
   const toggleTheme = (): void => {
@@ -118,6 +126,23 @@ export const SideBar: FC = () => {
       }
       context={
         <>
+          <>
+            {isExpanded ? (
+              <BetaHeader />
+            ) : (
+              <Stack
+                backgroundColor="semantic.warning.default"
+                justifyContent={'center'}
+                alignItems={'center'}
+                padding={'sm'}
+              >
+                <Text>
+                  <MonoWarning />
+                </Text>
+              </Stack>
+            )}
+          </>
+
           <SideBarItemsInline>
             <SideBarItem visual={<MonoContacts />} label="Profile">
               <ContextMenu
@@ -125,16 +150,38 @@ export const SideBar: FC = () => {
                   <Button
                     isCompact
                     variant={isExpanded ? 'outlined' : 'transparent'}
-                    endVisual={<MonoContacts />}
+                    startVisual={
+                      <Avatar
+                        name={getInitials(profile!.name)}
+                        color={'category1'}
+                      />
+                    }
                   >
-                    {isExpanded ? 'Profile' : undefined}
+                    {isExpanded ? profile?.name : undefined}
                   </Button>
                 }
               >
-                {profileList.map((profile) => (
+                <Stack
+                  paddingInline={'md'}
+                  paddingBlockStart={'md'}
+                  paddingBlockEnd={'sm'}
+                >
+                  <Heading variant="h6">Switch Profile</Heading>
+                </Stack>
+                {profileList.map((profile, index) => (
                   <ContextMenuItem
                     key={profile.uuid}
-                    label={profile.name}
+                    label={
+                      (
+                        <Stack gap="sm">
+                          <Avatar
+                            color={('category' + ((index + 1) % 8)) as any}
+                            name={getInitials(profile.name)}
+                          />
+                          <Text>{profile.name}</Text>
+                        </Stack>
+                      ) as any
+                    }
                     onClick={async () => {
                       if (profile.options.authMode === 'WEB_AUTHN') {
                         await unlockWithWebAuthn(profile, unlockProfile);
@@ -145,6 +192,11 @@ export const SideBar: FC = () => {
                   />
                 ))}
                 <ContextMenuDivider />
+                <ContextMenuItem
+                  endVisual={<MonoSettings />}
+                  label="Settings"
+                  isDisabled
+                />
                 <ContextMenuItem
                   endVisual={<MonoLogout />}
                   label="Logout"

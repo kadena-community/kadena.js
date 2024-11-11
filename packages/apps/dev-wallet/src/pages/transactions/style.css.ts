@@ -5,6 +5,7 @@ export const hashStyle = style({
   overflow: 'hidden',
   whiteSpace: 'nowrap',
   flex: 1,
+  minWidth: 70,
 });
 
 export const codeClass = style({

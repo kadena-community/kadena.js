@@ -1,4 +1,5 @@
 import { AssetsCard } from '@/Components/AssetsCard/AssetsCard';
+import { ListItem } from '@/Components/ListItem/ListItem';
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { transactionRepository } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
@@ -6,7 +7,7 @@ import { panelClass } from '@/pages/home/style.css.ts';
 import { useAsync } from '@/utils/useAsync';
 import { IPactCommand } from '@kadena/client';
 import { MonoDashboard } from '@kadena/kode-icons/system';
-import { Box, Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
+import { Heading, Stack, TabItem, Tabs } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { Link } from 'react-router-dom';
 import { linkClass } from '../select-profile/select-profile.css';
@@ -42,29 +43,33 @@ export function HomePage() {
       <SideBarBreadcrumbs icon={<MonoDashboard />}>
         <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
-      <Box gap={'lg'} width="100%">
-        <Text>Welcome back</Text>
-        <Heading as="h4">{profile?.name} </Heading>
-        <Stack gap={'lg'} flexDirection={'column'} width="100%">
-          <AssetsCard />
-          <Stack className={panelClass} flexDirection={'column'} gap={'lg'}>
-            <Heading variant="h4">Wallet Activities</Heading>
-            <Stack>
-              <Tabs>
-                <TabItem title="Transactions">
+
+      <Stack gap={'lg'} flexDirection={'column'} width="100%">
+        <AssetsCard />
+        <Stack className={panelClass} flexDirection={'column'} gap={'lg'}>
+          <Heading variant="h4">Wallet Activities</Heading>
+          <Stack>
+            <Tabs>
+              <TabItem title="Transactions">
+                {!transactions || !transactions.length ? (
+                  <ListItem>
+                    No transactions initiated yet; When you make transactions,
+                    it will appear here.
+                  </ListItem>
+                ) : (
                   <TransactionList transactions={transactions || []} />
-                  <Stack paddingBlockStart={'lg'}>
-                    <Link to="/transactions" className={linkClass}>
-                      All transactions
-                    </Link>
-                  </Stack>
-                </TabItem>
-                <TabItem title="Transfers">WIP: Not implemented yet</TabItem>
-              </Tabs>
-            </Stack>
+                )}
+                <Stack paddingBlockStart={'lg'}>
+                  <Link to="/transactions" className={linkClass}>
+                    All transactions
+                  </Link>
+                </Stack>
+              </TabItem>
+              <TabItem title="Transfers">WIP: Not implemented yet</TabItem>
+            </Tabs>
           </Stack>
         </Stack>
-      </Box>
+      </Stack>
     </>
   );
 }

@@ -6,6 +6,7 @@ import {
   Stack,
   Text,
   TextField,
+  Link as UiLink,
 } from '@kadena/kode-ui';
 import { useForm } from 'react-hook-form';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
@@ -55,13 +56,27 @@ export function UnlockProfile({ origin }: { origin: string }) {
   return (
     <>
       <AuthCard>
+        <Stack marginBlockEnd={'lg'}>
+          <UiLink
+            variant="outlined"
+            isCompact
+            type="button"
+            onPress={() => {
+              throw new Error('back');
+            }}
+            component={Link}
+            href="/"
+          >
+            Back
+          </UiLink>
+        </Stack>
         <Stack
           gap="md"
           padding="sm"
           display="inline-flex"
           className={profileContainer}
         >
-          <Avatar size="md" name={profile.name} /> {profile.name}
+          <Avatar size="md" name={profile.name} /> <Text>{profile.name}</Text>
         </Stack>
         <Heading variant="h5">Unlock your profile</Heading>
         <Text as="p">Enter your password to unlock access</Text>

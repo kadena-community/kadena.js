@@ -48,15 +48,11 @@ export function SelectProfile() {
               }}
             >
               <Stack alignItems="center" gap="md">
-                <div
-                  className={imgClass}
-                  style={{ backgroundColor: profile.accentColor }}
-                >
-                  <InitialsAvatar
-                    name={profile.name}
-                    accentColor={profile.accentColor}
-                  />
-                </div>
+                <InitialsAvatar
+                  name={profile.name}
+                  accentColor={profile.accentColor}
+                />
+
                 <div className={aliasClass}> {profile.name}</div>
               </Stack>
             </button>
