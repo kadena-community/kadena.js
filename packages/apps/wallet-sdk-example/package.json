@@ -14,6 +14,7 @@
     "@kadena/hd-wallet": "workspace:*",
     "@kadena/wallet-sdk": "workspace:*",
     "@tanstack/react-query": "^5.32.0",
+    "clsx": "^2.1.1",
     "jotai": "^2.10.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"

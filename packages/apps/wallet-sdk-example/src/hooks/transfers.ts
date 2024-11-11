@@ -13,8 +13,8 @@ export const useTransfers = () => {
     error,
     refetch,
   } = useQuery({
-    queryKey: ['transfers', wallet.account?.publicKey],
-    enabled: !!wallet.account,
+    queryKey: ['transfers', wallet.account?.name],
+    enabled: !!wallet.account?.name,
     queryFn: () =>
       walletSdk.getTransfers(
         wallet.account?.name ?? '',
@@ -46,5 +46,11 @@ export const useTransfers = () => {
     return () => controller.abort();
   }, [pendingTransfers, refetch, removePendingTransfer]);
 
-  return { transfers: transfers ?? [], error, pendingTransfers, refetch };
+  return {
+    transfers: transfers ?? [],
+    error,
+    pendingTransfers,
+    account: wallet.account?.name,
+    refetch,
+  };
 };

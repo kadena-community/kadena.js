@@ -5,16 +5,28 @@ import type {
 } from '@kadena/client-utils/coin';
 import type { simpleTransferCreateCommand } from './utils-tmp';
 
+interface ITransactionFeeTransfer extends IBaseTransfer {
+  /**
+   * If `true`, this transaction fee paid for multiple transfers.
+   * When displaying this value in the UI, it is advised to inform
+   * the user about this
+   */
+  isBulkTransfer: boolean;
+}
+
 interface IBaseTransfer {
   senderAccount: string;
   receiverAccount: string;
-  amount: string;
+  amount: number;
   token: string;
   requestKey: string;
   success: boolean;
   chainId: ChainId;
   networkId: string;
+  /** Only available when lookup account paid for transaction fee */
+  transactionFeeTransfer: ITransactionFeeTransfer | null;
 }
+
 interface ISameChainTransfer extends IBaseTransfer {
   isCrossChainTransfer: false;
 }
@@ -27,6 +39,7 @@ interface ICrossChainTransfer extends IBaseTransfer {
     success: boolean;
   };
 }
+
 export interface IEthvmDevTokenInfo {
   currentPrice?: number;
   maxSupply?: number;
