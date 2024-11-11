@@ -1264,18 +1264,30 @@ importers:
       '@kadena/kode-ui':
         specifier: workspace:*
         version: link:../../libs/kode-ui
+      '@kadena/spirekey-sdk':
+        specifier: ^1.0.0
+        version: 1.0.0(encoding@0.1.13)
       '@vanilla-extract/css':
         specifier: 1.14.2
         version: 1.14.2
+      '@vanilla-extract/css-utils':
+        specifier: ^0.1.3
+        version: 0.1.4
       '@vanilla-extract/next-plugin':
         specifier: 2.4.0
         version: 2.4.0(@types/node@20.16.5)(lightningcss@1.25.1)(next@14.2.2(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.1)(webpack@5.88.2)
       '@vanilla-extract/recipes':
         specifier: 0.5.1
         version: 0.5.1(@vanilla-extract/css@1.14.2)
+      '@vanilla-extract/sprinkles':
+        specifier: 1.6.1
+        version: 1.6.1(@vanilla-extract/css@1.14.2)
       next:
         specifier: 14.2.2
         version: 14.2.2(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next-themes:
+        specifier: ^0.2.1
+        version: 0.2.1(next@14.2.2(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -1304,6 +1316,9 @@ importers:
       '@vanilla-extract/vite-plugin':
         specifier: 4.0.7
         version: 4.0.7(@types/node@20.16.5)(lightningcss@1.25.1)(terser@5.31.1)(vite@5.3.3(@types/node@20.16.5)(lightningcss@1.25.1)(terser@5.31.1))
+      '@vanilla-extract/webpack-plugin':
+        specifier: 2.3.7
+        version: 2.3.7(@types/node@20.16.5)(lightningcss@1.25.1)(terser@5.31.1)(webpack@5.88.2)
       '@vitejs/plugin-react':
         specifier: ^4.3.1
         version: 4.3.1(vite@5.3.3(@types/node@20.16.5)(lightningcss@1.25.1)(terser@5.31.1))
@@ -5790,6 +5805,9 @@ packages:
 
   '@kadena/spirekey-sdk@0.0.1-dev-16':
     resolution: {integrity: sha512-7rytH7mXX5R4VeMsaaW8PSSeKHQZCzy+ftVYAXb78sXHEMO6DBnZIxe8XDVO9x/tLuusw5vENNmQ268g38fdvw==}
+
+  '@kadena/spirekey-sdk@1.0.0':
+    resolution: {integrity: sha512-4Un54uRvraKv654eb+OHdB0BXdmMM9v7eRMrPnH6C7XSX1D6Y+VocwSqfH2c1OEDxsIDmaGqac2Y+UXeEFHF5Q==}
 
   '@kamilkisiela/fast-url-parser@1.1.4':
     resolution: {integrity: sha512-gbkePEBupNydxCelHCESvFSFM8XPh1Zs/OAVRW/rKpEqPAl5PbOM90Si8mv9bvnR53uPD2s/FiRxdvSejpRJew==}
@@ -23913,6 +23931,31 @@ snapshots:
       - utf-8-validate
 
   '@kadena/spirekey-sdk@0.0.1-dev-16(encoding@0.1.13)':
+    dependencies:
+      '@kadena/client': 1.13.0(encoding@0.1.13)
+      '@vanilla-extract/css': 1.15.3
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@react-native-async-storage/async-storage'
+      - '@upstash/redis'
+      - '@vercel/kv'
+      - babel-plugin-macros
+      - bufferutil
+      - encoding
+      - ioredis
+      - supports-color
+      - uWebSockets.js
+      - utf-8-validate
+
+  '@kadena/spirekey-sdk@1.0.0(encoding@0.1.13)':
     dependencies:
       '@kadena/client': 1.13.0(encoding@0.1.13)
       '@vanilla-extract/css': 1.15.3
