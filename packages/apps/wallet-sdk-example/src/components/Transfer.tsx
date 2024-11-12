@@ -1,40 +1,41 @@
-import { ChainId, IUnsignedCommand } from '@kadena/client';
+import { ChainId, ICommand, IUnsignedCommand } from '@kadena/client';
 import { walletSdk } from '@kadena/wallet-sdk';
 import React, { useState } from 'react';
 import { useChains } from '../hooks/chains';
 import { PendingTransfer, usePendingTransfers } from '../state/pending';
 import { useWalletState } from '../state/wallet';
 
-interface TransferProps {
-  toggle: () => void;
-}
-
-export const Transfer = (props: TransferProps) => {
+export const Transfer = () => {
   const wallet = useWalletState();
   const { addPendingTransfer } = usePendingTransfers();
   const [isCrossChain, setIsCrossChain] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [estimatedGas, setEstimatedGas] = useState<number | null>(null);
+  const [signedTransaction, setSignedTransaction] = useState<ICommand | null>(
+    null,
+  );
+  const [transactionDetails, setTransactionDetails] = useState<{
+    receiverAccount: string;
+    amount: string;
+  } | null>(null);
 
-  const { chains } = useChains(wallet.selectedNetwork); // Use
+  const { chains } = useChains(wallet.selectedNetwork);
 
-  const onSubmitTransfer = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const prepareTransaction = async (
+    receiverAccount: string,
+    amount: string,
+  ) => {
     if (!wallet.account) return;
-
-    const formData = new FormData(e.currentTarget);
-    const receiverAccount = formData.get('to') as string;
-    const amount = formData.get('amount') as string;
     const fromChain = wallet.selectedChain;
     const toChain = isCrossChain ? wallet.selectedToChain : fromChain;
 
     if (isCrossChain && fromChain === toChain) {
-      setError('Cannot perform a cross-chain transfer to the same chain');
-      return;
+      throw new Error(
+        'Cannot perform a cross-chain transfer to the same chain',
+      );
     }
 
-    setError(null);
-
-    // @ bart hier de crosschain logica
     const transaction = isCrossChain
       ? ({} as IUnsignedCommand)
       : // ? walletSdk.createCrossChainTransfer({
@@ -53,27 +54,70 @@ export const Transfer = (props: TransferProps) => {
           networkId: wallet.selectedNetwork,
         });
 
-    const signed = await wallet.signTransaction(transaction);
-    if (!confirm(`Send transaction?: \n ${JSON.stringify(signed, null, 2)}`)) {
-      return;
+    return await wallet.signTransaction(transaction);
+  };
+
+  const onSubmitTransfer = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!wallet.account) return;
+
+    const formData = new FormData(e.currentTarget);
+    const receiverAccount = formData.get('to') as string;
+    const amount = formData.get('amount') as string;
+
+    try {
+      const signed = await prepareTransaction(receiverAccount, amount);
+      if (!signed) {
+        alert('Transaction was not signed');
+        return;
+      }
+
+      const gasLimit = await walletSdk.getGasLimitEstimate(
+        signed,
+        wallet.selectedNetwork,
+        wallet.selectedChain,
+      );
+
+      setSignedTransaction(signed);
+      setEstimatedGas(gasLimit);
+      setTransactionDetails({ receiverAccount, amount });
+      setIsModalOpen(true);
+      setError(null);
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : 'Failed to prepare transaction',
+      );
     }
-    const result = await walletSdk.sendTransaction(
-      signed,
-      wallet.selectedNetwork,
-      wallet.selectedChain,
-    );
+  };
 
-    const pendingTransfer: PendingTransfer = {
-      requestKey: result.requestKey,
-      networkId: result.networkId,
-      chainId: result.chainId,
-      senderAccount: wallet.account.name,
-      receiverAccount,
-      amount,
-    };
+  const confirmTransaction = async () => {
+    if (!wallet.account || !signedTransaction || !transactionDetails) return;
 
-    addPendingTransfer(pendingTransfer);
-    props.toggle();
+    try {
+      const result = await walletSdk.sendTransaction(
+        signedTransaction,
+        wallet.selectedNetwork,
+        wallet.selectedChain,
+      );
+
+      const pendingTransfer: PendingTransfer = {
+        requestKey: result.requestKey,
+        networkId: result.networkId,
+        chainId: result.chainId,
+        senderAccount: wallet.account.name,
+        receiverAccount: transactionDetails.receiverAccount,
+        amount: transactionDetails.amount,
+      };
+
+      addPendingTransfer(pendingTransfer);
+      setIsModalOpen(false);
+      setSignedTransaction(null);
+    } catch (error) {
+      console.warn(error);
+      setError('Failed to send transaction');
+    }
   };
 
   return (
@@ -178,6 +222,67 @@ export const Transfer = (props: TransferProps) => {
           Send
         </button>
       </form>
+
+      {isModalOpen && signedTransaction && (
+        <TransactionModal
+          estimatedGas={estimatedGas}
+          transactionJSON={JSON.stringify(signedTransaction, null, 2)}
+          onClose={() => setIsModalOpen(false)}
+          onConfirm={confirmTransaction}
+        />
+      )}
+    </div>
+  );
+};
+
+interface TransactionModalProps {
+  estimatedGas: number | null;
+  transactionJSON: string;
+  onClose: () => void;
+  onConfirm: () => void;
+}
+
+const TransactionModal: React.FC<TransactionModalProps> = ({
+  estimatedGas,
+  transactionJSON,
+  onClose,
+  onConfirm,
+}) => {
+  return (
+    <div
+      className="fixed inset-0 flex items-center justify-center bg-opacity-50 z-50"
+      style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+    >
+      <div
+        className="p-6 rounded-lg shadow-lg w-full max-w-md mx-auto"
+        style={{
+          backgroundColor: '#1B2330',
+          boxShadow: '0 10px 25px rgba(0, 0, 0, 0.3)',
+        }}
+      >
+        <h2 className="text-2xl font-semibold text-white mb-6 text-center">
+          Confirm Transaction
+        </h2>
+        <p className="text-white mb-4 text-center">
+          Estimated Gas Cost: {estimatedGas ?? 'Calculating...'}
+        </p>
+        <textarea
+          className="w-full h-40 p-2 mb-4 bg-gray-800 text-white rounded-md"
+          readOnly
+          value={transactionJSON}
+        ></textarea>
+        <div className="flex justify-around mt-6">
+          <button
+            onClick={onConfirm}
+            className="bg-primary-green text-white font-semibold rounded-md py-2 px-4 hover:bg-secondary-green transition"
+          >
+            Confirm
+          </button>
+          <button onClick={onClose} className="text-white underline">
+            Cancel
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

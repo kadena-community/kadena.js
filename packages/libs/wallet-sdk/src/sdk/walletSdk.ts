@@ -271,7 +271,7 @@ export class WalletSDK {
   ): Promise<number> {
     const host = this.getChainwebUrl({ networkId, chainId });
     const result = await estimateGas(JSON.parse(transaction.cmd), host);
-    return result.gasPrice;
+    return result.gasLimit;
   }
 }
 

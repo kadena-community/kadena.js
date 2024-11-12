@@ -10,15 +10,15 @@
   font-weight: 400;
 
   /* Colors */
-  --primary-green: #3BA583; /* Inspired by the green button */
-  --secondary-green: #5DB399; /* Slightly lighter green for hover states */
-  --dark-slate: #1E293B; /* Dark slate color for backgrounds */
-  --medium-slate: #3F4C5C; /* Medium slate for surfaces */
-  --border-gray: #CBD5E0; /* Light gray for borders */
-  --text-color: #FFFFFF; /* White text color for contrast */
-  --text-secondary: #A0AEC0; /* Light gray for secondary text */
-  --background-gray: #F7FAFC; /* Off-white for light areas */
-  --error-color: #E53E3E; /* Red for error messages */
+  --primary-green: #3BA583;
+  --secondary-green: #5DB399;
+  --dark-slate: #1E293B;
+  --medium-slate: #3F4C5C;
+  --border-gray: #CBD5E0;
+  --text-color: #FFFFFF;
+  --text-secondary: #A0AEC0;
+  --background-gray: #F7FAFC;
+  --error-color: #E53E3E;
 
   /* Shadows */
   --shadow-elevation: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -147,9 +147,9 @@ input[type="radio"]:checked::before {
   transform: scale(0.6);
 }
 
+
 /* Select */
 select {
-  width: 100%;
   background-color: var(--medium-slate);
   color: var(--text-color);
   border: 1px solid var(--border-gray);
@@ -161,7 +161,9 @@ select {
   background-repeat: no-repeat;
   background-position: right 1em top 50%;
   background-size: 1em;
+  width: 100%;
 }
+
 select:focus {
   outline: none;
   border-color: var(--primary-green);
@@ -209,11 +211,3 @@ p {
 .mt-3 { margin-top: 0.75em; }
 .mt-4 { margin-top: 1em; }
 .mt-5 { margin-top: 1.5em; }
-
-.transition-max-height {
-  max-height: 0;
-  overflow: hidden;
-}
-.transition-max-height.max-h-screen {
-  max-height: 100vh;
-}

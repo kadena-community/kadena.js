@@ -43,7 +43,7 @@ export const Accounts = () => {
         >
           {chains.map((chain) => (
             <option key={chain} value={chain}>
-              Chain {chain}
+              {chain}
             </option>
           ))}
         </select>
