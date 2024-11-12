@@ -16,6 +16,7 @@ interface NameRegistrationFormProps {
   initialAddress?: string;
   onRegistered?: () => void;
   balance?: number;
+  onOwnerAddressChange?: (address: string) => void;
 }
 
 export const NameRegistrationForm: React.FC<NameRegistrationFormProps> = ({
@@ -23,6 +24,7 @@ export const NameRegistrationForm: React.FC<NameRegistrationFormProps> = ({
   initialAddress = '',
   onRegistered,
   balance = 0,
+  onOwnerAddressChange,
 }) => {
   const [owner, setOwner] = useState(initialOwner);
   const [address, setAddress] = useState(initialAddress);
@@ -35,26 +37,13 @@ export const NameRegistrationForm: React.FC<NameRegistrationFormProps> = ({
   const [priceLoading, setPriceLoading] = useState<boolean>(false);
   const [registering, setRegistering] = useState<boolean>(false);
   const [price, setPrice] = useState<number | null>(null);
-  const [chains, setChains] = useState<ChainId[]>(
-    Array.from({ length: 20 }, (_, i) => `${i}` as ChainId),
-  );
 
   const wallet = useWalletState();
   const { selectChain, selectedChain } = wallet;
 
-  const debouncedName = useDebounce(name, 500);
+  const validChain = getChainIdByNetwork(wallet.selectedNetwork);
 
-  useEffect(() => {
-    const fetchChains = async () => {
-      try {
-        const chainList = await walletSdk.getChains(wallet.selectedNetwork);
-        setChains(chainList.map((chain) => chain.id));
-      } catch (err) {
-        console.error('Error fetching chains:', err);
-      }
-    };
-    fetchChains();
-  }, [wallet.selectedNetwork]);
+  const debouncedName = useDebounce(name, 500);
 
   const checkAvailabilityAndSetPrice = useCallback(async () => {
     if (!debouncedName) return;
@@ -134,7 +123,7 @@ export const NameRegistrationForm: React.FC<NameRegistrationFormProps> = ({
         const final = await walletSdk.sendTransaction(
           signedTransaction,
           wallet.selectedNetwork,
-          selectedChain ?? getChainIdByNetwork(wallet.selectedNetwork),
+          selectedChain ?? validChain,
         );
         console.info(final);
 
@@ -159,6 +148,15 @@ export const NameRegistrationForm: React.FC<NameRegistrationFormProps> = ({
     return 'Confirm Registration';
   };
 
+  const handleOwnerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const address = e.target.value;
+    setOwner(address);
+
+    if (onOwnerAddressChange) {
+      onOwnerAddressChange(address);
+    }
+  };
+
   return (
     <div>
       <p className="text-error-color mt-4">
@@ -172,7 +170,7 @@ export const NameRegistrationForm: React.FC<NameRegistrationFormProps> = ({
         <input
           type="text"
           value={owner}
-          onChange={(e) => setOwner(e.target.value)}
+          onChange={handleOwnerChange}
           className="bg-medium-slate border border-border-gray rounded-md py-2 px-3 text-white w-full"
           placeholder="Enter your Kadena address"
         />
@@ -190,16 +188,11 @@ export const NameRegistrationForm: React.FC<NameRegistrationFormProps> = ({
       <div className="mb-4">
         <label className="text-white">Chain:</label>
         <select
-          value={selectedChain ?? ''}
+          value={selectedChain ?? validChain}
           onChange={(e) => selectChain(e.target.value as ChainId)}
           className="bg-medium-slate border border-border-gray rounded-md py-2 px-3 text-white w-full"
         >
-          <option value="">Select a chain</option>
-          {chains.map((chain) => (
-            <option key={chain} value={chain}>
-              Chain {chain}
-            </option>
-          ))}
+          <option value={validChain}>Chain {validChain}</option>
         </select>
       </div>
       <div className="mb-4">

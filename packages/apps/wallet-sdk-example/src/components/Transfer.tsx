@@ -1,27 +1,57 @@
-import { ChainId } from '@kadena/client';
+import { ChainId, IUnsignedCommand } from '@kadena/client';
 import { walletSdk } from '@kadena/wallet-sdk';
+import React, { useState } from 'react';
+import { useChains } from '../hooks/chains';
 import { PendingTransfer, usePendingTransfers } from '../state/pending';
 import { useWalletState } from '../state/wallet';
 
-export const Transfer = () => {
+interface TransferProps {
+  toggle: () => void;
+}
+
+export const Transfer = (props: TransferProps) => {
   const wallet = useWalletState();
   const { addPendingTransfer } = usePendingTransfers();
+  const [isCrossChain, setIsCrossChain] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const { chains } = useChains(wallet.selectedNetwork); // Use
 
   const onSubmitTransfer = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!wallet.account) return;
+
     const formData = new FormData(e.currentTarget);
     const receiverAccount = formData.get('to') as string;
     const amount = formData.get('amount') as string;
-    const chain = formData.get('chain') as ChainId;
+    const fromChain = wallet.selectedChain;
+    const toChain = isCrossChain ? wallet.selectedToChain : fromChain;
 
-    const transaction = walletSdk.createSimpleTransfer({
-      amount: amount,
-      sender: wallet.account.name,
-      receiver: receiverAccount,
-      chainId: chain,
-      networkId: wallet.selectedNetwork,
-    });
+    if (isCrossChain && fromChain === toChain) {
+      setError('Cannot perform a cross-chain transfer to the same chain');
+      return;
+    }
+
+    setError(null);
+
+    // @ bart hier de crosschain logica
+    const transaction = isCrossChain
+      ? ({} as IUnsignedCommand)
+      : // ? walletSdk.createCrossChainTransfer({
+        //     amount,
+        //     sender: wallet.account.name,
+        //     receiver: receiverAccount,
+        //     chainId: fromChain,
+        //     toChainId: toChain!,
+        //     networkId: wallet.selectedNetwork,
+        //   })
+        walletSdk.createSimpleTransfer({
+          amount,
+          sender: wallet.account.name,
+          receiver: receiverAccount,
+          chainId: fromChain,
+          networkId: wallet.selectedNetwork,
+        });
 
     const signed = await wallet.signTransaction(transaction);
     if (!confirm(`Send transaction?: \n ${JSON.stringify(signed, null, 2)}`)) {
@@ -43,6 +73,7 @@ export const Transfer = () => {
     };
 
     addPendingTransfer(pendingTransfer);
+    props.toggle();
   };
 
   return (
@@ -85,17 +116,61 @@ export const Transfer = () => {
             className="bg-medium-slate border border-border-gray rounded-md py-2 px-3 text-white w-full"
           />
         </div>
+
+        <div className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            id="crossChain"
+            checked={isCrossChain}
+            onChange={() => setIsCrossChain(!isCrossChain)}
+          />
+          <label htmlFor="crossChain" className="text-text-secondary">
+            Cross-Chain Transfer
+          </label>
+        </div>
+
         <div className="flex flex-col w-full">
           <label className="text-text-secondary mb-1" htmlFor="chain">
-            Chain
+            {isCrossChain ? 'From Chain' : 'Chain'}
           </label>
-          <input
+          <select
             name="chain"
-            placeholder="Chain"
-            defaultValue="0"
+            value={wallet.selectedChain}
+            onChange={(e) => wallet.selectChain(e.target.value as ChainId)}
             className="bg-medium-slate border border-border-gray rounded-md py-2 px-3 text-white w-full"
-          />
+          >
+            {chains.map((chain) => (
+              <option key={chain} value={chain}>
+                {chain}
+              </option>
+            ))}
+          </select>
         </div>
+
+        {isCrossChain && (
+          <div className="flex flex-col w-full">
+            <label className="text-text-secondary mb-1" htmlFor="toChain">
+              To Chain
+            </label>
+            <select
+              name="toChain"
+              value={wallet.selectedToChain ?? ''}
+              onChange={(e) =>
+                wallet.setSelectedToChain(e.target.value as ChainId)
+              }
+              className="bg-medium-slate border border-border-gray rounded-md py-2 px-3 text-white w-full"
+            >
+              {chains.map((chain) => (
+                <option key={chain} value={chain}>
+                  {chain}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {error && <p className="text-red-500 text-sm">{error}</p>}
+
         <button
           type="submit"
           className="w-full bg-primary-green text-white font-semibold rounded-md py-2 px-4 hover:bg-secondary-green transition"
