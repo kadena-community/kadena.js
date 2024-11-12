@@ -52,7 +52,7 @@ export const AccountItem: React.FC<AccountItemProps> = ({
         predicate: 'keys-all',
       },
       config: {
-        amount: '10',
+        amount: '20',
         contract: 'coin',
         chainId: selectedChain,
         networkId: wallet.selectedNetwork,

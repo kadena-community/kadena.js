@@ -1,11 +1,14 @@
 import { IUnsignedCommand, Pact } from '@kadena/client';
-import { PRICE_MAP, VAULT } from '../constants/kadenaNamesConstants';
-import { isNameExpired, transformPactDate } from '../utils/kadenanames/date';
-import { parseChainResponse } from '../utils/kadenanames/transactionParser';
-import { addExtentionToName } from '../utils/kadenanames/transform';
-import { getChainIdByNetwork, getClient } from './host';
+import {
+  PRICE_MAP,
+  VAULT,
+} from '../../constants/kadenaNames/kadenaNamesConstants';
+import { isNameExpired, transformPactDate } from '../../utils/kadenanames/date';
+import { parseChainResponse } from '../../utils/kadenanames/transactionParser';
+import { addExtentionToName } from '../../utils/kadenanames/transform';
+import { getChainIdByNetwork, getClient } from '../host';
 
-import { getNamespaceModule } from '../constants/kadenaNamesConstants';
+import { getNamespaceModule } from '../../constants/kadenaNames/kadenaNamesConstants';
 
 interface NameInfo {
   price: number;
@@ -62,7 +65,7 @@ export const fetchNameInfo = async (
   networkId: string,
   owner: string,
 ): Promise<NameInfo> => {
-  const formattedName = addExtentionToName(name.toLowerCase());
+  const formattedName = addExtentionToName(name);
   const client = getClient(networkId);
   const module = getNamespaceModule(networkId);
   const chainId = getChainIdByNetwork(networkId);
@@ -172,6 +175,7 @@ export const createRegisterNameTransaction = (
 ): IUnsignedCommand => {
   const module = getNamespaceModule(networkId);
   const chainId = getChainIdByNetwork(networkId);
+  const formattedName = addExtentionToName(name);
 
   const transaction = Pact.builder
     .execution(
@@ -179,7 +183,7 @@ export const createRegisterNameTransaction = (
       (Pact as any).modules[module].register(
         owner,
         address,
-        name,
+        formattedName,
         { int: days },
         '',
       ),
@@ -193,9 +197,6 @@ export const createRegisterNameTransaction = (
     .setMeta({
       chainId,
       senderAccount: owner,
-      // gasLimit: 60000,
-      // gasPrice: 0.00000001,
-      // ttl: 28800,
     })
     .setNetworkId(networkId)
     .createTransaction();

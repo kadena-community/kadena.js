@@ -6,8 +6,8 @@ import {
   executeCreateRegisterNameTransaction,
   fetchNameInfo,
   fetchPriceByPeriod,
-} from '../../actions/kadenaNamesActions';
-import { PRICE_MAP } from '../../constants/kadenaNamesConstants';
+} from '../../actions/kadenaNames/kadenaNamesActions';
+import { PRICE_MAP } from '../../constants/kadenaNames/kadenaNamesConstants';
 import { Account, useWalletState } from '../../state/wallet';
 import { useDebounce } from '../../utils/useDebounce';
 

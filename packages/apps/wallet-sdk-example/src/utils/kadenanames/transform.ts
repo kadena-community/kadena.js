@@ -1,3 +1,4 @@
 export const addExtentionToName = (name: string): string => {
-  return name.includes('.') ? name : `${name}.kda`;
+  const lowerCaseName = name.toLowerCase();
+  return lowerCaseName.includes('.') ? name : `${name}.kda`;
 };
