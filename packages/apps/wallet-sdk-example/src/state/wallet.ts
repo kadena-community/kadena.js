@@ -33,6 +33,10 @@ const selectedAccountAtom = atomWithStorage<null | number>(
   'selected_account',
   null,
 );
+const selectedToChainAtom = atomWithStorage<ChainId | null>(
+  'to_chain_id',
+  null,
+);
 
 const passwordAtom = atom<null | string>(null);
 
@@ -46,6 +50,7 @@ export const useWalletState = (initialPassword?: string) => {
   // Temporary state
   const [password, setPassword] = useAtom(passwordAtom);
   const [selectedAccount, setSelectedAccount] = useAtom(selectedAccountAtom);
+  const [selectedToChain, setSelectedToChain] = useAtom(selectedToChainAtom);
 
   // Initialize state when password is available
   useEffect(() => {
@@ -122,8 +127,6 @@ export const useWalletState = (initialPassword?: string) => {
     }
   };
 
-  // console.log({ accounts, seed });
-
   const account = useMemo(
     () => accounts.find((account) => account.index === selectedAccount),
     [accounts, selectedAccount],
@@ -135,11 +138,13 @@ export const useWalletState = (initialPassword?: string) => {
     selectedFungible,
     selectedNetwork,
     selectedChain,
+    selectedToChain,
     generateMnemonic,
     selectAccount,
     selectChain,
     changeMnemonicWords,
     generateAccount,
     signTransaction,
+    setSelectedToChain,
   };
 };

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useAccountBalance } from '../../hooks/balances';
 import type { Account } from '../../state/wallet';
 import { useWalletState } from '../../state/wallet';
@@ -6,22 +6,28 @@ import { NameRegistrationForm } from './NameRegistrationForm';
 
 export const KadenaNamesRegister: React.FC = () => {
   const wallet = useWalletState();
+  const [ownerAddress, setOwnerAddress] = useState<string>('');
 
-  const defaultAccount: Account = useMemo(
-    () => ({
+  const ownerAccount: Account = useMemo(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, publicKey] = ownerAddress.split(':');
+    return {
       index: 0,
-      publicKey: '',
-      name: '',
-    }),
-    [],
-  );
+      publicKey: publicKey || '',
+      name: ownerAddress,
+    };
+  }, [ownerAddress]);
 
   const { balance, error } = useAccountBalance(
-    wallet.account || defaultAccount,
+    ownerAccount,
     wallet.selectedNetwork,
     wallet.selectedFungible,
     wallet.selectedChain,
   );
+
+  const handleOwnerAddressChange = useCallback((address: string) => {
+    setOwnerAddress(address);
+  }, []);
 
   return (
     <div className="bg-dark-slate p-6 rounded-lg shadow-md w-full mx-auto">
@@ -33,7 +39,10 @@ export const KadenaNamesRegister: React.FC = () => {
         <p className="text-error-color text-center">Error: {error.message}</p>
       )}
 
-      <NameRegistrationForm balance={balance ? parseFloat(balance) : 0} />
+      <NameRegistrationForm
+        balance={balance ? parseFloat(balance) : 0}
+        onOwnerAddressChange={handleOwnerAddressChange}
+      />
     </div>
   );
 };
