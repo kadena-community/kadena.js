@@ -10,7 +10,7 @@ export const isNotExpandedClass = style({
 
 export const isExpandedMainClass = style({
   vars: {
-    [contentWidth]: 'calc(100vw - 232px)',
+    [contentWidth]: 'min(1200px, calc(100vw - 232px))',
   },
 });
 

@@ -1,15 +1,19 @@
 import { transactionRepository } from '@/modules/transaction/transaction.repository';
 
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
+import { useRequests } from '@/modules/communication/communication.provider';
 import { useAsync } from '@/utils/useAsync';
 import { MonoSwapHoriz } from '@kadena/kode-icons/system';
 import { Heading, Stack, Text } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { TxList } from './components/TxList';
 
 export const TransactionPage = () => {
   const { groupId } = useParams();
+  const [searchParam] = useSearchParams();
+  const requestId = searchParam.get('request');
+  const requests = useRequests();
   const [txs = []] = useAsync(
     (gid) =>
       gid
@@ -29,7 +33,7 @@ export const TransactionPage = () => {
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
 
-      <Stack flexDirection={'column'} gap={'lg'}>
+      <Stack flexDirection={'column'} gap={'lg'} overflow="auto">
         <Stack flexDirection={'column'} gap={'sm'}>
           <Heading>Transactions</Heading>
           {txs.length === 0 && <Text>No transactions</Text>}
@@ -43,6 +47,15 @@ export const TransactionPage = () => {
           }}
           txIds={txs.map((tx) => tx.uuid)}
           showExpanded={txs.length === 1}
+          onSign={(tx) => {
+            if (requestId) {
+              const request = requests.get(requestId);
+              if (request) {
+                console.log('resolving request', request);
+                request.resolve({ status: 'signed', transaction: tx });
+              }
+            }
+          }}
         />
       </Stack>
     </>

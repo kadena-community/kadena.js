@@ -1,5 +1,6 @@
 import { CopyButton } from '@/Components/CopyButton/CopyButton';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
+import { shorten } from '@/utils/helpers';
 import { shortenPactCode } from '@/utils/parsedCodeToPact';
 import { IPactCommand } from '@kadena/client';
 import { MonoTextSnippet } from '@kadena/kode-icons/system';
@@ -43,7 +44,13 @@ export function CommandView({
             </Stack>
             <Value className={codeClass}>
               {showShortenCode ? (
-                <pre> {shortenPactCode(command.payload.exec.code)}</pre>
+                <pre
+                  style={{
+                    fontFamily: 'inherit',
+                  }}
+                >
+                  {shortenPactCode(command.payload.exec.code)}
+                </pre>
               ) : (
                 command.payload.exec.code
               )}
@@ -86,7 +93,7 @@ export function CommandView({
                 variant="code"
                 className={classNames(codeClass, textEllipsis)}
               >
-                {command.payload.cont.proof}
+                {shorten(command.payload.cont.proof, 40)}
               </Text>
             </Stack>
           )}

@@ -74,7 +74,11 @@ export const TransactionList = ({
           return {
             ...tx,
             type: 'exec',
-            code: shortenPactCode(cmd.payload.exec.code, 4),
+            code: shortenPactCode(cmd.payload.exec.code, {
+              shortening: 6,
+              withIndent: 0,
+              breakLines: false,
+            }),
           };
         } else {
           return {

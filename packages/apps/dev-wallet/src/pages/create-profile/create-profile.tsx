@@ -1,6 +1,7 @@
 import { AuthCard } from '@/Components/AuthCard/AuthCard.tsx';
 import { BackupMnemonic } from '@/Components/BackupMnemonic/BackupMnemonic';
 import { config } from '@/config';
+import { createKAccount } from '@/modules/account/account.service';
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet';
 import {
   PublicKeyCredentialCreate,
@@ -27,7 +28,6 @@ export function CreateProfile() {
   const {
     createProfile,
     createKey,
-    createKAccount,
     profileList,
     unlockProfile,
     activeNetwork,
@@ -114,7 +114,13 @@ export function CreateProfile() {
 
     const key = await createKey(keySource);
 
-    await createKAccount(profile.uuid, activeNetwork.uuid, key.publicKey);
+    await createKAccount({
+      profileId: profile.uuid,
+      networkUUID: activeNetwork.uuid,
+      publicKey: key.publicKey,
+      contract: 'coin',
+      alias: 'Account 1',
+    });
 
     setMnemonic(mnemonic);
     setProfileId(profile.uuid);

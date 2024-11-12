@@ -48,18 +48,26 @@ export type IDiscoveredAccount = {
       };
 };
 
-export async function createKAccount(
-  profileId: string,
-  networkUUID: UUID,
-  publicKey: string,
-  contract: string = 'coin',
-  chains: Array<{ chainId: ChainId; balance: string }> = [],
-) {
+export async function createKAccount({
+  profileId,
+  networkUUID,
+  publicKey,
+  contract = 'coin',
+  chains = [],
+  alias = '',
+}: {
+  profileId: string;
+  networkUUID: UUID;
+  publicKey: string;
+  contract: string;
+  chains?: Array<{ chainId: ChainId; balance: string }>;
+  alias?: string;
+}) {
   const keyset: IKeySet = {
     principal: `k:${publicKey}`,
     uuid: crypto.randomUUID(),
     profileId,
-    alias: '',
+    alias: alias || '',
     guard: {
       pred: 'keys-all',
       keys: [publicKey],
@@ -67,6 +75,7 @@ export async function createKAccount(
   };
   const account: IAccount = {
     uuid: crypto.randomUUID(),
+    alias: alias || '',
     profileId: profileId,
     address: `k:${publicKey}`,
     keysetId: keyset.uuid,

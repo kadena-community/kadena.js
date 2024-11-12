@@ -207,6 +207,24 @@ export const submitTransaction = async (
       } as ITransaction;
       await transactionRepository.updateTransaction(updatedTx);
       return updatedTx;
+    })
+    .catch(async (e) => {
+      console.error(e);
+      const updatedTx = {
+        ...tx,
+        status: 'preflight',
+        preflight: {
+          result: {
+            status: 'failure',
+            error: e.message ? JSON.stringify(e) : 'UNKNOWN_ERROR',
+          },
+        },
+        request: undefined,
+      };
+      await transactionRepository.updateTransaction(
+        updatedTx as unknown as ITransaction,
+      );
+      throw e;
     });
   onUpdate(updatedTx);
   if (
@@ -232,6 +250,24 @@ export const submitTransaction = async (
       } as ITransaction;
       await transactionRepository.updateTransaction(updatedTx);
       return updatedTx;
+    })
+    .catch(async (e) => {
+      console.error(e);
+      const updatedTx = {
+        ...tx,
+        status: 'submitted',
+        preflight: {
+          result: {
+            status: 'failure',
+            error: e.message ? JSON.stringify(e) : 'UNKNOWN_ERROR',
+          },
+        },
+        request: undefined,
+      };
+      await transactionRepository.updateTransaction(
+        updatedTx as unknown as ITransaction,
+      );
+      throw e;
     });
   onUpdate(updatedTx);
 

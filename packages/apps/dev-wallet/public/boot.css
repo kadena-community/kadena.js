@@ -14,7 +14,7 @@
 }
 .welcome-message-content {
   display: flex;
-  padding: 40px;
+  padding: 40px 100px;
   justify-content: center;
   align-items: center;
   flex-direction: column;

@@ -1,6 +1,7 @@
 import {
   MonoApps,
   MonoBackupTable,
+  MonoCheck,
   MonoContacts,
   MonoContrast,
   MonoDarkMode,
@@ -168,25 +169,33 @@ export const SideBar: FC = () => {
                 >
                   <Heading variant="h6">Switch Profile</Heading>
                 </Stack>
-                {profileList.map((profile, index) => (
+                {profileList.map((prf, index) => (
                   <ContextMenuItem
-                    key={profile.uuid}
+                    key={prf.uuid}
+                    endVisual={
+                      prf.uuid === profile?.uuid ? (
+                        <Text>
+                          <MonoCheck />
+                        </Text>
+                      ) : undefined
+                    }
                     label={
                       (
                         <Stack gap="sm">
                           <Avatar
                             color={('category' + ((index + 1) % 8)) as any}
-                            name={getInitials(profile.name)}
+                            name={getInitials(prf.name)}
                           />
-                          <Text>{profile.name}</Text>
+                          <Text>{prf.name}</Text>
                         </Stack>
                       ) as any
                     }
                     onClick={async () => {
-                      if (profile.options.authMode === 'WEB_AUTHN') {
-                        await unlockWithWebAuthn(profile, unlockProfile);
+                      if (prf.uuid === profile?.uuid) return;
+                      if (prf.options.authMode === 'WEB_AUTHN') {
+                        await unlockWithWebAuthn(prf, unlockProfile);
                       } else {
-                        navigate(`/unlock-profile/${profile.uuid}`);
+                        navigate(`/unlock-profile/${prf.uuid}`);
                       }
                     }}
                   />
