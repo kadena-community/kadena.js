@@ -265,7 +265,7 @@ export const headerWrapperClass = recipe({
       justifyContent: 'flex-start',
       height: minHeaderHeight,
       gridArea: 'sidebarlayout-header',
-      zIndex: 2,
+      zIndex: token('zIndex.overlay'),
     },
   ],
   variants: {
