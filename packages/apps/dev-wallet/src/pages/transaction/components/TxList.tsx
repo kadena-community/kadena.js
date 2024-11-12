@@ -125,7 +125,11 @@ export const TxList = React.memo(
             ))}
           {showExpanded &&
             transactions.map((tx) => (
-              <Stack flexDirection={'column'} justifyContent={'flex-start'}>
+              <Stack
+                flexDirection={'column'}
+                justifyContent={'flex-start'}
+                flex={1}
+              >
                 <TxContainer
                   key={tx.uuid}
                   as="expanded"

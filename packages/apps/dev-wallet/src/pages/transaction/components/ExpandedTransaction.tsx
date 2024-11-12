@@ -34,6 +34,7 @@ export function ExpandedTransaction({
   sendDisabled,
   onSubmit,
   showTitle,
+  isDialog,
 }: {
   transaction: ITransaction;
   contTx?: ITransaction;
@@ -41,6 +42,7 @@ export function ExpandedTransaction({
   onSubmit: () => Promise<ITransaction>;
   sendDisabled?: boolean;
   showTitle?: boolean;
+  isDialog?: boolean;
 }) {
   const { sign } = useWallet();
   const [showShareTooltip, setShowShareTooltip] = useState(false);
@@ -71,15 +73,17 @@ export function ExpandedTransaction({
     cmd: transaction.cmd,
     sigs: transaction.sigs,
   };
+  const Title = isDialog ? DialogHeader : Stack;
+  const Content = isDialog ? DialogContent : Stack;
   return (
     <>
-      <DialogHeader>
+      <Title>
         <Stack justifyContent={'space-between'}>
           {showTitle && <Heading>View Transaction</Heading>}
         </Stack>
-      </DialogHeader>
-      <DialogContent>
-        <Stack gap={'lg'}>
+      </Title>
+      <Content>
+        <Stack gap={'lg'} width="100%">
           <Stack
             gap={'lg'}
             flexDirection={'column'}
@@ -248,7 +252,7 @@ export function ExpandedTransaction({
             </Tabs>
           </Stack>
         </Stack>
-      </DialogContent>
+      </Content>
     </>
   );
 }
