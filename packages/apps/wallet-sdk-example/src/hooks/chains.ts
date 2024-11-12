@@ -12,14 +12,10 @@ export const useChains = (networkId: string) => {
     const fetchChains = async () => {
       try {
         const chainList = await walletSdk.getChains(networkId);
-        setChains(
-          chainList.length > 0
-            ? chainList.map((chain) => chain.id as ChainId)
-            : Array.from(
-                { length: defaultChains },
-                (_, i) => `${i}` as ChainId,
-              ),
-        );
+        if (chainList.length === 0) {
+          throw new Error('No chains found, using default chains');
+        }
+        setChains(chainList.map((chain) => chain.id as ChainId));
       } catch (e) {
         setError(e as Error);
         setChains(
