@@ -4,8 +4,8 @@ import {
 } from '@/modules/transaction/transaction.repository';
 import { syncTransactionStatus } from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { normalizeSigs } from '@/pages/signature-builder/utils/normalizeSigs';
 import { shorten } from '@/utils/helpers';
+import { normalizeSigs } from '@/utils/normalizeSigs';
 import {
   MonoCheck,
   MonoClose,
@@ -242,7 +242,7 @@ function TxStatusList({
       </Stack>
     ),
     statusPassed(tx.status, 'success') && [
-      tx.continuation?.autoContinue && !contTx && (
+      tx.continuation?.autoContinue && !tx.continuation.proof && (
         <Stack>
           <Text size={textSize} className={pendingClass}>
             <Stack alignItems={'center'} gap={'xs'}>

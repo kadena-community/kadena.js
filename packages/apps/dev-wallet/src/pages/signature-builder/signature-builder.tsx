@@ -1,16 +1,22 @@
 import {
+  addSignatures,
+  createTransaction,
   IPactCommand,
   IPartialPactCommand,
   ISigningRequest,
   IUnsignedCommand,
-  addSignatures,
-  createTransaction,
 } from '@kadena/client';
 
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { transactionRepository } from '@/modules/transaction/transaction.repository';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { normalizeTx } from '@/utils/normalizeSigs';
+import {
+  determineSchema,
+  RequestScheme,
+  signingRequestToPactCommand,
+} from '@/utils/transaction-scheme';
 import { base64UrlDecodeArr } from '@kadena/cryptography-utils';
 import { MonoDashboardCustomize } from '@kadena/kode-icons/system';
 import {
@@ -28,63 +34,12 @@ import yaml from 'js-yaml';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { codeArea } from './style.css';
-import { normalizeTx } from './utils/normalizeSigs';
-
-type requestScheme =
-  | 'invalid'
-  | 'quickSignRequest'
-  | 'signingRequest'
-  | 'PactCommand';
-
-function determineSchema(input: string): requestScheme {
-  try {
-    // TODO: pase YAML as well
-    const json: any = yaml.load(input);
-    if (!json || typeof json !== 'object') {
-      return 'invalid';
-    }
-    if ('cmd' in json) {
-      JSON.parse(json.cmd);
-      return 'quickSignRequest';
-    }
-    if ('code' in json) {
-      return 'signingRequest';
-    }
-    if ('payload' in json) {
-      return 'PactCommand';
-    }
-  } catch (e) {
-    return 'invalid';
-  }
-  return 'invalid';
-}
-
-const signingRequestToPactCommand = (
-  signingRequest: ISigningRequest,
-): IPartialPactCommand => {
-  return {
-    payload: {
-      exec: {
-        code: signingRequest.code,
-        data: signingRequest.data ?? {},
-      },
-    },
-    meta: {
-      chainId: signingRequest.chainId,
-      gasLimit: signingRequest.gasLimit,
-      gasPrice: signingRequest.gasPrice,
-      ttl: signingRequest.ttl,
-      sender: signingRequest.sender,
-    },
-    nonce: signingRequest.nonce,
-  };
-};
 
 export function SignatureBuilder() {
   const [searchParams] = useSearchParams();
   const urlTransaction = searchParams.get('transaction');
   const [error, setError] = useState<string>();
-  const [schema, setSchema] = useState<requestScheme>();
+  const [schema, setSchema] = useState<RequestScheme>();
   const [input, setInput] = useState<string>('');
   const [pactCommand, setPactCommand] = useState<IPartialPactCommand>();
   const [unsignedTx, setUnsignedTx] = useState<IUnsignedCommand>();

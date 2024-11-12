@@ -21,6 +21,7 @@ import { ITransaction } from '@/modules/transaction/transaction.repository.ts';
 import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
 import { panelClass } from '@/pages/home/style.css.ts';
 
+import { shorten } from '@/utils/helpers.ts';
 import { base64UrlEncodeArr } from '@kadena/cryptography-utils';
 import { MonoMoreVert, MonoShare } from '@kadena/kode-icons/system';
 import { useState } from 'react';
@@ -110,6 +111,9 @@ export function ExpandedTransaction({
             gap={'xxl'}
             flexDirection={'column'}
             className={panelClass}
+            style={{
+              maxWidth: 'calc(100% - 285px)',
+            }}
           >
             {statusPassed(transaction.status, 'success') &&
               (!transaction.continuation?.autoContinue ||
@@ -214,6 +218,7 @@ export function ExpandedTransaction({
                   <JsonView
                     title="Result"
                     data={transaction.continuation?.proof}
+                    shortening={40}
                   />
                 </TabItem>
               )}
@@ -257,7 +262,15 @@ export function ExpandedTransaction({
   );
 }
 
-const JsonView = ({ title, data }: { title: string; data: any }) => (
+const JsonView = ({
+  title,
+  data,
+  shortening = 0,
+}: {
+  title: string;
+  data: any;
+  shortening?: number;
+}) => (
   <Stack gap={'sm'} flexDirection={'column'}>
     <Stack gap={'sm'} flexDirection={'column'}>
       <Stack justifyContent={'space-between'}>
@@ -267,7 +280,9 @@ const JsonView = ({ title, data }: { title: string; data: any }) => (
       <pre className={codeClass}>
         {data && typeof data === 'object'
           ? JSON.stringify(data, null, 2)
-          : data}
+          : shortening
+            ? shorten(data, shortening)
+            : data}
       </pre>
     </Stack>
   </Stack>

@@ -17,7 +17,7 @@ import {
 
 import { ITransaction } from '@/modules/transaction/transaction.repository.ts';
 import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
-import { normalizeSigs } from '@/pages/signature-builder/utils/normalizeSigs.ts';
+import { normalizeSigs } from '@/utils/normalizeSigs.ts';
 import { MonoContentCopy } from '@kadena/kode-icons/system';
 import classNames from 'classnames';
 

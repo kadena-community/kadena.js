@@ -129,6 +129,7 @@ export const TxList = React.memo(
                 flexDirection={'column'}
                 justifyContent={'flex-start'}
                 flex={1}
+                style={{ maxWidth: '100%' }}
               >
                 <TxContainer
                   key={tx.uuid}

@@ -40,7 +40,7 @@ export const TxContainer = React.memo(
     );
     const contTx = useSubscribe<ITransaction>(
       'transaction',
-      transaction.continuation?.continuationTxId,
+      localTransaction?.continuation?.continuationTxId,
     );
 
     useEffect(() => {
