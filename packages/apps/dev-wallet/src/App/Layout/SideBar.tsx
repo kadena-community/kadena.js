@@ -162,6 +162,13 @@ export const SideBar: FC = () => {
                   </Button>
                 }
               >
+                <Stack
+                  paddingInline={'md'}
+                  paddingBlockStart={'md'}
+                  paddingBlockEnd={'sm'}
+                >
+                  <Heading variant="h6">Switch Profile</Heading>
+                </Stack>
                 {profileList.map((prf, index) => (
                   <ContextMenuItem
                     key={prf.uuid}
