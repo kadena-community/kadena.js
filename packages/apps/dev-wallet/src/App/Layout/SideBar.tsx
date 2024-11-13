@@ -127,7 +127,7 @@ export const SideBar: FC = () => {
       }
       context={
         <>
-          <>
+          <SideBarItem visual={<MonoWarning />} label="warning">
             {isExpanded ? (
               <BetaHeader />
             ) : (
@@ -142,7 +142,7 @@ export const SideBar: FC = () => {
                 </Text>
               </Stack>
             )}
-          </>
+          </SideBarItem>
 
           <SideBarItemsInline>
             <SideBarItem visual={<MonoContacts />} label="Profile">
@@ -162,13 +162,6 @@ export const SideBar: FC = () => {
                   </Button>
                 }
               >
-                <Stack
-                  paddingInline={'md'}
-                  paddingBlockStart={'md'}
-                  paddingBlockEnd={'sm'}
-                >
-                  <Heading variant="h6">Switch Profile</Heading>
-                </Stack>
                 {profileList.map((prf, index) => (
                   <ContextMenuItem
                     key={prf.uuid}

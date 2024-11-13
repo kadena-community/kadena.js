@@ -121,7 +121,7 @@ export const menuNavWrapperClass = style([
     flex: 1,
   }),
   {
-    overflowY: 'scroll',
+    overflowY: 'hidden',
   },
 ]);
 
