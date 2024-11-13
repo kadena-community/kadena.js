@@ -127,7 +127,7 @@ export const SideBar: FC = () => {
       }
       context={
         <>
-          <>
+          <SideBarItem visual={<MonoWarning />} label="warning">
             {isExpanded ? (
               <BetaHeader />
             ) : (
@@ -142,7 +142,7 @@ export const SideBar: FC = () => {
                 </Text>
               </Stack>
             )}
-          </>
+          </SideBarItem>
 
           <SideBarItemsInline>
             <SideBarItem visual={<MonoContacts />} label="Profile">
