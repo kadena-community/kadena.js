@@ -34,6 +34,8 @@ export function ActivityTable({ activities }: { activities: IActivity[] }) {
       })),
     [activities],
   );
+
+  console.log('data', data);
   return (
     <CompactTable
       setPage={handlePageChange}
@@ -43,7 +45,8 @@ export function ActivityTable({ activities }: { activities: IActivity[] }) {
         {
           label: '',
           key: 'open',
-          width: '5%',
+          width: '10%',
+          render: ({ value }) => value,
         },
         {
           label: 'Type',
@@ -61,12 +64,7 @@ export function ActivityTable({ activities }: { activities: IActivity[] }) {
         {
           label: 'Receivers',
           key: 'receivers',
-          width: '50%',
-        },
-        {
-          label: 'Status',
-          key: 'status',
-          width: '10%',
+          width: '70%',
         },
       ]}
       data={data}

@@ -40,7 +40,7 @@ export const TxContainer = React.memo(
     );
     const contTx = useSubscribe<ITransaction>(
       'transaction',
-      transaction.continuation?.continuationTxId,
+      localTransaction?.continuation?.continuationTxId,
     );
 
     useEffect(() => {
@@ -123,14 +123,15 @@ export const TxContainer = React.memo(
     );
 
     if (!localTransaction) return null;
-    const renderExpanded = () => (
+    const renderExpanded = (isDialog = false) => (
       <ExpandedTransaction
         transaction={localTransaction}
         contTx={contTx}
         onSign={onExpandedSign(localTransaction)}
         onSubmit={() => onSubmit(localTransaction)}
         sendDisabled={sendDisabled}
-        showTitle={as === 'tile'}
+        showTitle={as === 'tile' || isDialog}
+        isDialog={isDialog}
       />
     );
     if (as === 'tile' || as === 'minimized')
@@ -147,7 +148,7 @@ export const TxContainer = React.memo(
                 }
               }}
             >
-              {renderExpanded()}
+              {renderExpanded(true)}
             </Dialog>
           )}
           {as === 'tile' && (

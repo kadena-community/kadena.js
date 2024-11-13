@@ -21,11 +21,13 @@ export const TxList = React.memo(
     sendDisabled,
     onDone,
     showExpanded,
+    onSign,
   }: {
     txIds: string[];
     showExpanded?: boolean;
     sendDisabled?: boolean;
     onDone?: () => void;
+    onSign?: (tx: ICommand) => void;
   }) => {
     const { sign, client } = useWallet();
     const [transactions, setTransactions] = React.useState<ITransaction[]>([]);
@@ -42,11 +44,22 @@ export const TxList = React.memo(
 
     const updateTx = useCallback(
       (updatedTx: ITransaction) =>
-        setTransactions((prev) =>
-          prev.map((prevTx) =>
+        setTransactions((prev) => {
+          if (updatedTx.status === 'signed' && onSign) {
+            if (
+              prev.find((tx) => tx.uuid === updatedTx.uuid)?.status !== 'signed'
+            ) {
+              onSign({
+                cmd: updatedTx.cmd,
+                hash: updatedTx.hash,
+                sigs: updatedTx.sigs as ICommand['sigs'],
+              });
+            }
+          }
+          return prev.map((prevTx) =>
             prevTx.uuid === updatedTx.uuid ? updatedTx : prevTx,
-          ),
-        ),
+          );
+        }),
       [],
     );
 
@@ -59,7 +72,7 @@ export const TxList = React.memo(
       const updatedTxs = txs.map((tx) => {
         const signedTx = signed.find(({ hash }) => hash === tx.hash);
         if (!signedTx) return tx;
-        return {
+        const updatedTx = {
           ...tx,
           ...signedTx,
           status: isSignedCommand(signedTx)
@@ -68,6 +81,14 @@ export const TxList = React.memo(
               : tx.status
             : tx.status,
         } as ITransaction;
+        if (updatedTx.status === 'signed' && onSign) {
+          onSign({
+            cmd: updatedTx.cmd,
+            hash: updatedTx.hash,
+            sigs: updatedTx.sigs as ICommand['sigs'],
+          });
+        }
+        return updatedTx;
       });
       await updatedTxs.map(transactionRepository.updateTransaction);
       setTransactions(updatedTxs);
@@ -104,7 +125,12 @@ export const TxList = React.memo(
             ))}
           {showExpanded &&
             transactions.map((tx) => (
-              <Stack flexDirection={'column'} justifyContent={'flex-start'}>
+              <Stack
+                flexDirection={'column'}
+                justifyContent={'flex-start'}
+                flex={1}
+                style={{ maxWidth: '100%' }}
+              >
                 <TxContainer
                   key={tx.uuid}
                   as="expanded"

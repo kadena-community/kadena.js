@@ -7,12 +7,10 @@ import {
   IAccount,
   IKeySet,
 } from '../account/account.repository';
-import * as AccountService from '../account/account.service';
 import { BIP44Service } from '../key-source/hd-wallet/BIP44';
 import { ChainweaverService } from '../key-source/hd-wallet/chainweaver';
 import { keySourceManager } from '../key-source/key-source-manager';
 import { INetwork } from '../network/network.repository';
-import { UUID } from '../types';
 import { ExtWalletContextType, WalletContext } from './wallet.provider';
 import { IKeyItem, IKeySource, IProfile } from './wallet.repository';
 import * as WalletService from './wallet.service';
@@ -165,23 +163,6 @@ export const useWallet = () => {
     [context],
   );
 
-  const createKAccount = useCallback(
-    async (
-      profileId: string,
-      networkUUID: UUID,
-      publicKey: string,
-      contract?: string,
-    ) => {
-      return AccountService.createKAccount(
-        profileId,
-        networkUUID,
-        publicKey,
-        contract,
-      );
-    },
-    [],
-  );
-
   const createAccountByKeyset = async ({
     keyset,
     contract,
@@ -313,7 +294,6 @@ export const useWallet = () => {
     createProfile,
     unlockProfile,
     createKey,
-    createKAccount,
     sign,
     decryptSecret,
     lockProfile,
