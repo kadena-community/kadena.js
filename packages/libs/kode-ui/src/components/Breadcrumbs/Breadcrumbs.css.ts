@@ -8,6 +8,7 @@ export const containerClass = style([
   {
     listStyle: 'none',
     flexFlow: 'wrap',
+    marginBlockStart: '1px',
   },
 ]);
 
