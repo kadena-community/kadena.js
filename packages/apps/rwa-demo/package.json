@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "prebuild": "npm run generate",
     "build": "next build",
     "dev": "next dev",
     "generate": "pactjs contract-generate --contract \"RWA.agent-role\" --chain 0 --network development --api \"http://localhost:8080/chainweb/0.0/development/chain/0/pact\"",
