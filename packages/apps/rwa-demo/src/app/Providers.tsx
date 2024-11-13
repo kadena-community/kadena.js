@@ -1,6 +1,6 @@
 import { AccountProvider } from '@/components/AccountProvider/AccountProvider';
+import { AssetProvider } from '@/components/AssetProvider/AssetProvider';
 import { NetworkProvider } from '@/components/NetworkProvider/NetworkProvider';
-import { TokenProvider } from '@/components/TokenProvider/TokenProvider';
 import { MediaContextProvider } from '@kadena/kode-ui';
 import { LayoutProvider } from '@kadena/kode-ui/patterns';
 import { darkThemeClass } from '@kadena/kode-ui/styles';
@@ -22,7 +22,7 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
         <LayoutProvider>
           <NetworkProvider>
             <AccountProvider>
-              <TokenProvider>{children}</TokenProvider>
+              <AssetProvider>{children}</AssetProvider>
             </AccountProvider>
           </NetworkProvider>
         </LayoutProvider>
