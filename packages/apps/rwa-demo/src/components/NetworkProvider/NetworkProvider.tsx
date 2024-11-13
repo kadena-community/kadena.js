@@ -1,12 +1,14 @@
 'use client';
 import { env } from '@/utils/env';
+import type { ChainId } from '@kadena/client';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useState } from 'react';
 
-interface INetwork {
+export interface INetwork {
   name: string;
   networkId: string;
   host: string;
+  chainId: ChainId;
 }
 
 export interface INetworkContext {
@@ -19,22 +21,26 @@ const defaultContext: INetworkContext = {
     name: env.NETWORKNAME,
     networkId: env.NETWORKID,
     host: env.NETWORKHOST,
+    chainId: env.CHAINID,
   },
   networks: [
     {
       networkId: 'testnet05',
       name: 'Testnet(Pact5)',
       host: 'https://api.testnet05.chainweb.com',
+      chainId: '0',
     },
     {
       networkId: 'testnet04',
       name: 'Testnet',
       host: 'https://api.testnet.chainweb.com',
+      chainId: '0',
     },
     {
       networkId: 'development',
       name: 'development',
       host: 'https://localhost:8080',
+      chainId: '0',
     },
   ],
 };

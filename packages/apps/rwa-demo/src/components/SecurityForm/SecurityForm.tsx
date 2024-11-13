@@ -1,3 +1,6 @@
+import { useAccount } from '@/hooks/account';
+import { useNetwork } from '@/hooks/networks';
+import { createToken } from '@/services/createToken';
 import { Button, TextField } from '@kadena/kode-ui';
 import {
   RightAside,
@@ -10,7 +13,7 @@ import type { FC } from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-interface ISecurityFormProps {
+export interface ISecurityFormProps {
   name: string;
   symbol: string;
   kadenaId: string;
@@ -18,6 +21,9 @@ interface ISecurityFormProps {
 
 export const SecurityForm: FC = () => {
   const { setIsRightAsideExpanded } = useLayout();
+  const { activeNetwork } = useNetwork();
+  const { account } = useAccount();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState<string | null>(null);
   const { register, handleSubmit } = useForm<ISecurityFormProps>({
     defaultValues: {
@@ -26,9 +32,11 @@ export const SecurityForm: FC = () => {
   });
 
   const onSubmit = async (data: ISecurityFormProps) => {
-    const { name } = data;
+    console.log({ data });
     setError(null);
     try {
+      await createToken(data, activeNetwork, account!);
+
       // setIsRightAsideExpanded(false);
     } catch (e: any) {
       setError(e?.message || e);
