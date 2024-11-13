@@ -6,7 +6,9 @@ import { rightAsideContentClass } from './style.css';
 export const RightAsideContent: FC<PropsWithChildren> = ({ children }) => {
   return (
     <Stack as="main" className={rightAsideContentClass}>
-      {children}
+      <Stack width="100%" flexDirection="column">
+        {children}
+      </Stack>
     </Stack>
   );
 };

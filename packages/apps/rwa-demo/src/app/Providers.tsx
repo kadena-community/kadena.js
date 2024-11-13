@@ -1,4 +1,5 @@
 import { AccountProvider } from '@/components/AccountProvider/AccountProvider';
+import { NetworkProvider } from '@/components/NetworkProvider/NetworkProvider';
 import { MediaContextProvider } from '@kadena/kode-ui';
 import { LayoutProvider } from '@kadena/kode-ui/patterns';
 import { darkThemeClass } from '@kadena/kode-ui/styles';
@@ -18,7 +19,9 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
         enableColorScheme={true} // When enabled, we can't make the background of the embedded iframe transparent
       >
         <LayoutProvider>
-          <AccountProvider>{children}</AccountProvider>
+          <NetworkProvider>
+            <AccountProvider>{children}</AccountProvider>
+          </NetworkProvider>
         </LayoutProvider>
       </ThemeProvider>
     </MediaContextProvider>

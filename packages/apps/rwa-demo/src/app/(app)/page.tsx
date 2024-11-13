@@ -1,4 +1,6 @@
 'use client';
+import { SecurityForm } from '@/components/SecurityForm/SecurityForm';
+import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { useAccount } from '@/hooks/account';
 import { getClient } from '@/utils/client';
 import { env } from '@/utils/env';
@@ -12,50 +14,25 @@ import {
 } from '@kadena/client/fp';
 import { genKeyPair } from '@kadena/cryptography-utils';
 import { Button } from '@kadena/kode-ui';
+import { useLayout } from '@kadena/kode-ui/patterns';
 import { PactNumber } from '@kadena/pactjs';
 import { sign } from '@kadena/spirekey-sdk';
 
 const Home = () => {
   const { account } = useAccount();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
 
-  const handleCreateAsset = async () => {
+  const handleCheckBalance = async () => {
     const client = getClient();
 
     console.log({ account });
     const transaction = Pact.builder
       .execution(
-        `(RWA.agent-role.init (read-keyset 'owner_guard))
-        (RWA.identity-registry.init RWA.agent-role)
-        (RWA.mvp-token.init
-          "mvp-token"
-          "MVP"
-          0
-          "kadenaID"
-          "0.0"
-          RWA.agent-role
-          RWA.max-balance-compliance 
-          RWA.identity-registry 
-          false
-          )
-          (RWA.max-balance-compliance.init)
-      `,
+        Pact.modules['RWA.mvp-token'].details(
+          '9dd097513edb95a45af3211b9d3dc8c497991e4ef662b022267e126b804dce21',
+        ),
       )
-      .addData('owner_guard', {
-        keys: [
-          '8c806f9f6470a199718ba7bf336fb6c5723be132e2e6c0448f5fd7dff45e3386',
-        ],
-        pred: 'keys-all',
-      })
-      .addSigner(
-        'af9b8d9448c68b81519cda4879dab5308f3c5facef450ead7d45534ae1d257f8',
-      )
-      .addSigner(
-        '8c806f9f6470a199718ba7bf336fb6c5723be132e2e6c0448f5fd7dff45e3386',
-      )
-
       .setMeta({
-        sender:
-          'k:af9b8d9448c68b81519cda4879dab5308f3c5facef450ead7d45534ae1d257f8',
         chainId: env.CHAINID,
       })
       .setNetworkId(env.NETWORKID)
@@ -64,10 +41,6 @@ const Home = () => {
     console.log({ transaction });
     console.log(JSON.parse(transaction.cmd));
 
-    const { transactions, isReady } = await sign([transaction], [account]);
-    console.log({ transactions });
-    await isReady();
-
     const { result } = await client.local(transaction, {
       preflight: false,
       signatureVerification: false,
@@ -75,7 +48,8 @@ const Home = () => {
 
     console.log(result);
   };
-  const handleCheckBalance = async () => {
+
+  const handleCreateAsset = async () => {
     console.log(account);
 
     const amount = 20;
@@ -91,8 +65,8 @@ const Home = () => {
     const transaction = Pact.builder
       .execution(
         Pact.modules['RWA.agent-role']['add-agent'](
-          "(read-string 'agent)",
-          "(read-keyset 'agent_guard)",
+          () => "(read-string 'agent)",
+          () => "(read-keyset 'agent_guard)",
         ),
       )
       .setMeta({
@@ -111,7 +85,9 @@ const Home = () => {
         'k:929e05b703e610a1a85b2cbe22d449ef787bc02ef00b1a62c868b41820eee5ef',
       )
       .addData('agent_guard', {
-        key: '929e05b703e610a1a85b2cbe22d449ef787bc02ef00b1a62c868b41820eee5ef',
+        keys: [
+          '929e05b703e610a1a85b2cbe22d449ef787bc02ef00b1a62c868b41820eee5ef',
+        ],
         pred: 'keys-all',
       })
       .setNetworkId(env.NETWORKID)
@@ -122,6 +98,7 @@ const Home = () => {
       signatureVerification: false,
     });
 
+    console.log({ transaction });
     console.log(result);
 
     // const transaction = composePactCommand(
@@ -162,8 +139,17 @@ const Home = () => {
     // await isReady();
   };
 
+  const handleCheckNewSecurity = () => {
+    setIsRightAsideExpanded(true);
+  };
+
   return (
     <div>
+      <SideBarBreadcrumbs>
+        <></>
+      </SideBarBreadcrumbs>
+      {isRightAsideExpanded && <SecurityForm />}
+      <Button onClick={handleCheckNewSecurity}>Create New Security</Button>
       <Button onClick={handleCheckBalance}>CheckBalance</Button>
       <Button onClick={handleCreateAsset}>Create Agent</Button>
     </div>

@@ -14,6 +14,7 @@
     "test:watch": "vitest --coverage"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.2.0",
     "@kadena/client": "^1.15.0",
     "@kadena/cryptography-utils": "^0.4.4",
     "@kadena/kode-icons": "workspace:*",
@@ -28,7 +29,8 @@
     "next": "14.2.2",
     "next-themes": "^0.2.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.45.4"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",

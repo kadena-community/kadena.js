@@ -11,16 +11,18 @@ export const SideBarBreadcrumbs: FC<IBreadcrumbsProps> = ({
   const { activeNetwork } = useWallet();
 
   return (
-    <SideBarBreadcrumbsUI {...props}>
-      <>
+    <SideBarBreadcrumbsUI
+      {...props}
+      badge={
         <Badge size="sm" style="highContrast">{`${activeNetwork?.name}`}</Badge>
-        {React.Children.map(children, (child) => {
-          if (!React.isValidElement(child)) {
-            return null;
-          }
-          return React.cloneElement(child, { ...child.props, component: Link });
-        })}
-      </>
+      }
+    >
+      {React.Children.map(children, (child) => {
+        if (!React.isValidElement(child)) {
+          return null;
+        }
+        return React.cloneElement(child, { ...child.props, component: Link });
+      })}
     </SideBarBreadcrumbsUI>
   );
 };
