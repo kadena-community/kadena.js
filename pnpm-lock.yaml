@@ -1261,12 +1261,18 @@ importers:
       '@kadena/client':
         specifier: ^1.15.0
         version: 1.15.0(encoding@0.1.13)
+      '@kadena/cryptography-utils':
+        specifier: ^0.4.4
+        version: 0.4.4
       '@kadena/kode-icons':
         specifier: workspace:*
         version: link:../../libs/kode-icons
       '@kadena/kode-ui':
         specifier: workspace:*
         version: link:../../libs/kode-ui
+      '@kadena/pactjs':
+        specifier: ^0.4.3
+        version: 0.4.3
       '@kadena/spirekey-sdk':
         specifier: ^1.0.0
         version: 1.0.0(encoding@0.1.13)

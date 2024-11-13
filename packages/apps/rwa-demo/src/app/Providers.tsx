@@ -10,7 +10,6 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
     <MediaContextProvider>
       <ThemeProvider
         attribute="class"
-        forcedTheme="dark"
         value={{
           light: 'light',
           dark: darkThemeClass,
