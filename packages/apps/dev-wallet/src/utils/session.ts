@@ -1,3 +1,4 @@
+import { config } from '@/config';
 import { kadenaDecrypt, kadenaEncrypt } from '@kadena/hd-wallet';
 
 export async function encryptRecord(
@@ -48,28 +49,71 @@ export const throttle = <T extends (...args: any[]) => any>(
   };
 };
 
+type SessionValue = { expiration?: string; creationDate?: string } & Record<
+  string,
+  unknown
+>;
+
+interface ISessionSerialization {
+  serialize: (session: SessionValue) => Promise<string>;
+  deserialize: (session: string) => Promise<SessionValue>;
+}
+
+const encryptSession: ISessionSerialization = {
+  serialize: (session: SessionValue): Promise<string> =>
+    kadenaEncrypt(SESSION_PASS, JSON.stringify(session)),
+  deserialize: async (session: string) =>
+    JSON.parse(
+      new TextDecoder().decode(await kadenaDecrypt(SESSION_PASS, session)),
+    ) as SessionValue,
+};
+
+const serializeSession: ISessionSerialization = {
+  serialize: async (session: SessionValue) => JSON.stringify(session),
+  deserialize: async (session: string) => JSON.parse(session) as SessionValue,
+};
 export function createSession(
   key: string = 'session',
-  password: Uint8Array = SESSION_PASS,
-  useEncryption = true,
+  serialization = config.SESSION.ENCRYPT_SESSION
+    ? encryptSession
+    : serializeSession,
 ) {
   let loaded = false;
-  let session: { expiration?: string; creationDate?: string } & Record<
-    string,
-    unknown
-  > = {
+  let session: SessionValue = {
     creationDate: `${Date.now()}`,
-    expiration: `${Date.now() + 1000 * 60 * 30}`,
+    expiration: `${Date.now() + config.SESSION.TTL}`,
+  };
+  const isExpired = () => Date.now() >= Number(session.expiration);
+  const listeners = [] as Array<
+    (
+      event: 'loaded' | 'renewed' | 'expired' | 'cleared',
+      session?: SessionValue,
+    ) => void
+  >;
+  let expireTimeout: NodeJS.Timeout | null = null;
+  const renewData = async () => {
+    session.expiration = `${Date.now() + config.SESSION.TTL}`;
+    localStorage.setItem('session', await serialization.serialize(session));
+    listeners.forEach((cb) => cb('renewed', session));
   };
   const renew = async () => {
     // console.log('Renewing session', session);
-    session.expiration = `${Date.now() + 1000 * 60 * 30}`; // 30 minutes
-    localStorage.setItem(
-      'session',
-      useEncryption
-        ? await kadenaEncrypt(password, JSON.stringify(session))
-        : JSON.stringify(session),
-    );
+    if (expireTimeout) {
+      clearTimeout(expireTimeout);
+    }
+    if (isExpired()) {
+      localStorage.removeItem(key);
+      listeners.forEach((cb) => cb('expired'));
+      expireTimeout = null;
+    }
+    renewData();
+    expireTimeout = setTimeout(async () => {
+      if (isExpired()) {
+        localStorage.removeItem(key);
+        listeners.forEach((cb) => cb('expired'));
+        renewData();
+      }
+    }, config.SESSION.TTL);
   };
   return {
     load: async () => {
@@ -77,13 +121,9 @@ export function createSession(
 
       if (current) {
         try {
-          session = JSON.parse(
-            useEncryption
-              ? new TextDecoder().decode(await kadenaDecrypt(password, current))
-              : current,
-          );
+          session = await serialization.deserialize(current);
           // console.log('Loaded session', session);
-          if (Date.now() > Number(session.expiration)) {
+          if (isExpired()) {
             throw new Error('Session expired!');
           }
         } catch (e) {
@@ -93,13 +133,15 @@ export function createSession(
               : 'Error loading session',
           );
           console.log('Creating new session');
+          localStorage.removeItem(key);
         }
       }
 
       await renew();
+      listeners.forEach((cb) => cb('loaded', session));
       loaded = true;
     },
-    renew: throttle(renew, 1000 * 60), // 1 minute
+    renew: throttle(renew, 1000 * 1), // 1 minute
     set: async (key: string, value: unknown) => {
       session[key] = value;
       await renew();
@@ -109,6 +151,7 @@ export function createSession(
       localStorage.removeItem('session');
       session = {};
       loaded = false;
+      listeners.forEach((cb) => cb('cleared'));
     },
     reset: () => {
       session = {
@@ -117,6 +160,20 @@ export function createSession(
       return renew();
     },
     isLoaded: () => loaded,
+    subscribe: (
+      cb: (
+        event: 'loaded' | 'renewed' | 'expired' | 'cleared',
+        session?: SessionValue,
+      ) => void,
+    ) => {
+      listeners.push(cb);
+      return () => {
+        const index = listeners.indexOf(cb);
+        if (index > -1) {
+          listeners.splice(index, 1);
+        }
+      };
+    },
   };
 }
 

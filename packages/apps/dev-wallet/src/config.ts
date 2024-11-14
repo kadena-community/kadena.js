@@ -22,4 +22,8 @@ export const config = {
   ACCOUNTS: {
     SYNC_INTERVAL: 5 * 60 * 1000, // 5 minutes
   },
+  SESSION: {
+    TTL: 5 * 60 * 1000, // 30 minutes
+    ENCRYPT_SESSION: false,
+  },
 };

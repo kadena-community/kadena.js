@@ -12,7 +12,7 @@ import { useSession } from '@/App/session';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import { UnlockPrompt } from '@/Components/UnlockPrompt/UnlockPrompt';
 import { ISetPhraseResponse, ISetSecurityPhrase } from '@/service-worker/types';
-import { throttle } from '@/utils/session';
+import { Session, throttle } from '@/utils/session';
 import { IClient, createClient } from '@kadena/client';
 import { setGlobalConfig } from '@kadena/client-utils/core';
 import {
@@ -229,6 +229,18 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       // channel.close();
     };
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = Session.subscribe((event) => {
+      if (event === 'expired' && contextValue.profile) {
+        setProfile(undefined);
+        channel.postMessage({ action: 'switch-profile', payload: undefined });
+      }
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [contextValue.profile?.uuid]);
 
   const session = useSession();
   const askForPassword = usePassword(contextValue.profile);

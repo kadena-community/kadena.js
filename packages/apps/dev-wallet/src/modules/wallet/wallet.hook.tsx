@@ -80,7 +80,8 @@ export const useWallet = () => {
   const lockProfile = useCallback(() => {
     const run = async () => {
       await securityService.clearSecurityPhrase();
-      setProfile(undefined);
+      await setProfile(undefined);
+      channel.postMessage({ action: 'switch-profile', payload: undefined });
     };
     run();
   }, [setProfile]);
