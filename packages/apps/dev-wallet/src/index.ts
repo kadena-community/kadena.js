@@ -20,7 +20,10 @@ async function bootstrap() {
     }
     renderApp();
     globalThis.addEventListener('wallet-loaded', function () {
-      document.getElementById('welcome-message')?.remove();
+      const welcomeMessage = document.getElementById('welcome-message');
+      if (welcomeMessage) {
+        welcomeMessage.style.display = 'none';
+      }
       removeBootTheme();
     });
   });
@@ -62,7 +65,7 @@ function registerServiceWorker() {
       .catch((error) => {
         if (loadingContent) {
           loadingContent.innerHTML =
-            '<div>Service Worker registration failed!</div><div>using fallback mode</div><div>Loading UI...</div>';
+            '<div>Service Worker registration failed!</div><div>using fallback mode</div><div>Loading components...</div>';
         }
         console.error('Service Worker registration failed:', error);
       });
