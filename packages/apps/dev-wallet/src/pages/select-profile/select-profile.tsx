@@ -1,5 +1,5 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { unlockWithWebAuthn } from '@/utils/unlockWithWebAuthn';
+import { getWebAuthnPass } from '@/modules/wallet/wallet.service';
 import { MonoAdd } from '@kadena/kode-icons';
 import { Box, Heading, Stack } from '@kadena/kode-ui';
 import { tokens } from '@kadena/kode-ui/styles';
@@ -43,8 +43,11 @@ export function SelectProfile() {
             <button
               key={profile.uuid}
               className={cardClass}
-              onClick={() => {
-                unlockWithWebAuthn(profile, unlockProfile);
+              onClick={async () => {
+                const pass = await getWebAuthnPass(profile);
+                if (pass) {
+                  await unlockProfile(profile.uuid, pass);
+                }
               }}
             >
               <Stack alignItems="center" gap="md">

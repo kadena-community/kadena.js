@@ -16,6 +16,7 @@ import { unlockPrompt } from './style.css.ts';
 export const UnlockPrompt: React.FC<{
   showPassword?: boolean;
   rememberPassword?: IProfile['options']['rememberPassword'];
+  profile: IProfile;
   resolve: ({
     password,
     keepOpen,
@@ -24,7 +25,7 @@ export const UnlockPrompt: React.FC<{
     keepOpen: 'session' | 'short-time' | 'never';
   }) => void;
   reject: (reason: any) => void;
-}> = ({ resolve, reject, showPassword, rememberPassword }) => {
+}> = ({ resolve, reject, showPassword, rememberPassword, profile }) => {
   const { control, register, handleSubmit } = useForm({
     defaultValues: {
       keepOpen: rememberPassword || 'session',
@@ -48,6 +49,12 @@ export const UnlockPrompt: React.FC<{
           <Text>
             You need to unlock the security module in order to use it for
             sensitive actions (e.g. sign or account creation)
+          </Text>
+          <Text>
+            Profile:{' '}
+            <Text bold color="emphasize">
+              {profile.name}
+            </Text>
           </Text>
           {showPassword && (
             <TextField

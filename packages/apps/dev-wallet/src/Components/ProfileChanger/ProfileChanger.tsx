@@ -1,5 +1,6 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { IProfilePicked, unlockWithWebAuthn } from '@/utils/unlockWithWebAuthn';
+import { IProfile } from '@/modules/wallet/wallet.repository';
+import { getWebAuthnPass } from '@/modules/wallet/wallet.service';
 import { MonoMoreHoriz } from '@kadena/kode-icons/system';
 import {
   Button,
@@ -26,9 +27,12 @@ export const ProfileChanger: FC = () => {
   } = useWallet();
   const navigate = useNavigate();
 
-  const handleSelect = async (profile: IProfilePicked) => {
+  const handleSelect = async (profile: Pick<IProfile, 'options' | 'uuid'>) => {
     if (profile.options.authMode === 'WEB_AUTHN') {
-      await unlockWithWebAuthn(profile, unlockProfile);
+      const pass = await getWebAuthnPass(profile);
+      if (pass) {
+        await unlockProfile(profile.uuid, pass);
+      }
     } else {
       navigate(`/unlock-profile/${profile.uuid}`);
     }

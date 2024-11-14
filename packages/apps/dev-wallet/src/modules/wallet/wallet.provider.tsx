@@ -11,11 +11,10 @@ import {
 import { useSession } from '@/App/session';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import { UnlockPrompt } from '@/Components/UnlockPrompt/UnlockPrompt';
+import { ISetPhraseResponse, ISetSecurityPhrase } from '@/service-worker/types';
 import { throttle } from '@/utils/session';
-import { recoverPublicKey, retrieveCredential } from '@/utils/webAuthn';
 import { IClient, createClient } from '@kadena/client';
 import { setGlobalConfig } from '@kadena/client-utils/core';
-import { kadenaDecrypt, kadenaEncrypt, randomBytes } from '@kadena/hd-wallet';
 import {
   Fungible,
   IAccount,
@@ -29,6 +28,7 @@ import { dbService } from '../db/db.service';
 import { keySourceManager } from '../key-source/key-source-manager';
 import { INetwork, networkRepository } from '../network/network.repository';
 import { hostUrlGenerator } from '../network/network.service';
+import { securityService } from '../security/security.service';
 import { IKeySource, IProfile, walletRepository } from './wallet.repository';
 import * as WalletService from './wallet.service';
 
@@ -66,37 +66,34 @@ export const WalletContext = createContext<
 export const syncAllAccounts = throttle(AccountService.syncAllAccounts, 10000);
 
 function usePassword(profile: IProfile | undefined) {
-  const ref = useRef({
-    encryptionKey: null as Uint8Array | null,
-    encryptedPassword: null as Uint8Array | null,
-  });
+  const profileRef = useRef(profile);
+  profileRef.current = profile;
   const prompt = usePrompt();
   const getPassword = useCallback(async () => {
-    const { encryptionKey, encryptedPassword } = ref.current;
-    if (!encryptionKey || !encryptedPassword) {
-      return null;
-    }
-    return new TextDecoder().decode(
-      await kadenaDecrypt(encryptionKey, encryptedPassword),
-    );
+    const phrase = await securityService.getSecurityPhrase();
+    return phrase;
   }, []);
 
-  const setPassword = useCallback(async (password: string) => {
-    const encryptionKey = randomBytes(32);
-    const encryptedPassword = await kadenaEncrypt(
-      encryptionKey,
-      password,
-      'buffer',
-    );
-    ref.current = { encryptionKey, encryptedPassword };
-  }, []);
-
-  const clearContext = useCallback(() => {
-    ref.current = { encryptionKey: null, encryptedPassword: null };
-  }, []);
+  const setPassword = useCallback(
+    async (
+      password: string,
+      keepPolicy: ISetSecurityPhrase['payload']['keepPolicy'],
+    ) => {
+      const { result } = (await securityService.setSecurityPhrase({
+        phrase: password,
+        keepPolicy,
+      })) as ISetPhraseResponse;
+      if (result !== 'success') {
+        throw new Error('Failed to set password');
+      }
+    },
+    [],
+  );
 
   const askForPassword = useCallback(
     async (force = false): Promise<string | null> => {
+      const profile = profileRef.current;
+      console.log('asking for password', profile);
       if (!force) {
         const password = await getPassword();
         if (password) {
@@ -106,116 +103,80 @@ function usePassword(profile: IProfile | undefined) {
       if (!profile) {
         return null;
       }
-      let unlockOptions: {
+      const storeData = async (unlockOptions: {
         password: string;
         keepOpen: 'session' | 'short-time' | 'never';
+      }) => {
+        if (!unlockOptions.password) {
+          return null;
+        }
+        const result = await WalletService.unlockProfile(
+          profile.uuid,
+          unlockOptions.password,
+        );
+        if (!result) {
+          throw new Error('Failed to unlock profile');
+        }
+        if (profile.options.rememberPassword !== unlockOptions.keepOpen) {
+          walletRepository.updateProfile({
+            ...profile,
+            options: {
+              ...profile.options,
+              rememberPassword: unlockOptions.keepOpen,
+            },
+          });
+        }
+        if (unlockOptions.keepOpen === 'never') {
+          return unlockOptions.password;
+        }
+        await setPassword(unlockOptions.password, unlockOptions.keepOpen);
       };
       switch (profile.options.authMode) {
         case 'PASSWORD': {
-          unlockOptions = (await prompt((resolve, reject) => (
+          return (await prompt((resolve, reject) => (
             <UnlockPrompt
-              resolve={resolve}
+              resolve={async (unlockOptions) => {
+                try {
+                  await storeData(unlockOptions);
+                  resolve(unlockOptions.password);
+                } catch (e) {
+                  reject(e);
+                }
+              }}
               reject={reject}
               showPassword
               rememberPassword={profile.options.rememberPassword}
+              profile={profile}
             />
-          ))) as {
-            password: string;
-            keepOpen: 'session' | 'short-time' | 'never';
-          };
-          if (!unlockOptions.password) {
-            return null;
-          }
-          const result = await WalletService.unlockProfile(
-            profile.uuid,
-            unlockOptions.password,
-          );
-          if (!result) {
-            throw new Error('Failed to unlock profile');
-          }
-          break;
+          ))) as string;
         }
         case 'WEB_AUTHN': {
-          const webAuthnUnlock = async ({
-            keepOpen,
-          }: {
-            keepOpen: 'session' | 'short-time' | 'never';
-          }) => {
-            const credentialId =
-              profile.options.authMode === 'WEB_AUTHN'
-                ? profile.options.webAuthnCredential
-                : null;
-            if (!credentialId) {
-              return null;
-            }
-            const credential = await retrieveCredential(credentialId);
-            if (!credential) {
-              return null;
-            }
-            const keys = await recoverPublicKey(credential);
-            for (const key of keys) {
-              const result = await WalletService.unlockProfile(
-                profile.uuid,
-                key,
-              );
-              if (result) {
-                return { password: key, keepOpen };
-              }
-            }
-            throw new Error('Failed to unlock profile');
-          };
-          unlockOptions = (await prompt((resolve, reject) => (
+          return (await prompt((resolve, reject) => (
             <UnlockPrompt
-              resolve={(data) =>
-                webAuthnUnlock(data).then(resolve).catch(reject)
-              }
+              resolve={async ({ keepOpen }) => {
+                try {
+                  const pass = await WalletService.getWebAuthnPass(profile);
+                  if (!pass) reject('Failed to unlock profile');
+                  const unlockOptions = { password: pass, keepOpen };
+                  await storeData(unlockOptions);
+                  resolve(unlockOptions.password);
+                } catch (e) {
+                  reject(e);
+                }
+              }}
               reject={reject}
               rememberPassword={profile.options.rememberPassword}
+              profile={profile}
             />
-          ))) as {
-            password: string;
-            keepOpen: 'session' | 'short-time' | 'never';
-          };
-          if (!unlockOptions.password) {
-            return null;
-          }
-          break;
+          ))) as string;
         }
         default: {
           throw new Error('Unsupported auth mode');
         }
       }
-      if (profile.options.rememberPassword !== unlockOptions.keepOpen) {
-        walletRepository.updateProfile({
-          ...profile,
-          options: {
-            ...profile.options,
-            rememberPassword: unlockOptions.keepOpen,
-          },
-        });
-      }
-      if (unlockOptions.keepOpen === 'never') {
-        return unlockOptions.password;
-      }
-      await setPassword(unlockOptions.password);
-      if (unlockOptions.keepOpen === 'short-time') {
-        setTimeout(
-          () => {
-            console.log('clearing password', unlockOptions.keepOpen);
-            clearContext();
-          },
-          1000 * 60 * 5,
-        );
-      }
-      console.log('unlockOptions', unlockOptions);
-      return unlockOptions.password;
     },
-    [profile, getPassword, prompt, setPassword, clearContext],
+    [getPassword, prompt, setPassword],
   );
-
-  useEffect(() => {
-    clearContext();
-  }, [profile?.securityPhraseId, clearContext]);
 
   return askForPassword;
 }
@@ -250,10 +211,25 @@ const resetProfileRelatedData = (
   keysets: [],
 });
 
+export const channel = new BroadcastChannel('profile-activity');
+
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   const [contextValue, setContextValue] = useState<ExtWalletContextType>(() =>
     getDefaultContext(),
   );
+
+  useEffect(() => {
+    channel.onmessage = (event) => {
+      const { action, payload } = event.data;
+      if (action === 'switch-profile') {
+        setProfile(payload);
+      }
+    };
+    return () => {
+      // channel.close();
+    };
+  }, []);
+
   const session = useSession();
   const askForPassword = usePassword(contextValue.profile);
 
@@ -356,11 +332,11 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   // subscribe to db changes and update the context
   useEffect(() => {
     const unsubscribe = dbService.subscribe((event, storeName, data) => {
-      if (!['add', 'update', 'delete'].includes(event)) return;
       const profileId =
         data && typeof data === 'object' && 'profileId' in data
           ? data.profileId
           : contextValue.profile?.uuid;
+      if (profileId && profileId !== contextValue.profile?.uuid) return;
       // update the context when the db changes
       switch (storeName) {
         case 'profile': {
@@ -426,7 +402,9 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const setProfile = useCallback(
     async (profile: IProfile | undefined, noSession = false) => {
+      console.log('setting profile', profile);
       if (!profile) {
+        console.log('resetting profile');
         keySourceManager.reset();
         session.clear();
         setContextValue(resetProfileRelatedData);

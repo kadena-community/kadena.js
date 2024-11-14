@@ -10,6 +10,7 @@ const removeBootTheme = () => {
 // the entry file for the dev wallet app
 // TODO: we need to do setup app here like service worker, etc
 async function bootstrap() {
+  registerServiceWorker();
   addBootTheme();
   import('./App/main').then(async ({ renderApp }) => {
     renderApp();
@@ -25,6 +26,32 @@ async function bootstrap() {
       welcomeMessage.style.opacity = '1';
     }
   }, 200);
+}
+
+function registerServiceWorker() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then((registration) => {
+        console.log(
+          'Service Worker registered with scope:',
+          registration.scope,
+        );
+        registration.onupdatefound = () => {
+          const newWorker = registration.installing;
+          if (!newWorker) return;
+          newWorker.onstatechange = () => {
+            if (newWorker.state === 'activated') {
+              // If the service worker is activated, reload the page
+              window.location.reload();
+            }
+          };
+        };
+      })
+      .catch((error) => {
+        console.error('Service Worker registration failed:', error);
+      });
+  }
 }
 
 bootstrap();

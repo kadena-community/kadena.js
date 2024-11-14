@@ -191,6 +191,11 @@ export interface IDBService {
   subscribe: ISubscribe;
 }
 
+const dbChannel = new BroadcastChannel('db-channel');
+const broadcast = (event: EventTypes, storeName: string, data: any[]) => {
+  dbChannel.postMessage({ type: event, storeName, data });
+};
+
 export const createDbService = () => {
   const listeners: Listener[] = [];
   const subscribe: ISubscribe = (
@@ -222,11 +227,22 @@ export const createDbService = () => {
       }
     };
   };
+
+  dbChannel.onmessage = (event) => {
+    const {
+      type,
+      storeName,
+      data,
+    }: { type: EventTypes; storeName: string; data: any[] } = event.data;
+    listeners.forEach((cb) => cb(type, storeName, ...data));
+  };
+
   const notify =
     (event: EventTypes) =>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (storeName: string, ...rest: any[]) => {
       listeners.forEach((cb) => cb(event, storeName, ...rest));
+      broadcast(event, storeName, rest);
     };
   return {
     getAll: injectDb(getAllItems),

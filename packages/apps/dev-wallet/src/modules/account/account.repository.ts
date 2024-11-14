@@ -36,6 +36,7 @@ export interface IAccount {
   }>;
   keyset?: IKeySet;
   alias?: string;
+  syncTime?: number;
 }
 
 export type IWatchedAccount = Omit<IAccount, 'keysetId' | 'keyset'> & {
@@ -72,7 +73,7 @@ const createAccountRepository = ({
     ...account,
     keyset: await getKeyset(account.keysetId),
   });
-  return {
+  const actions = {
     async getKeysetByPrincipal(
       principal: string,
       profileId: string,
@@ -148,6 +149,28 @@ const createAccountRepository = ({
     updateWatchedAccount: async (account: IWatchedAccount): Promise<void> => {
       return update('watched-account', account);
     },
+
+    patchAccount: async (
+      uuid: string,
+      patch: Partial<IAccount>,
+    ): Promise<IAccount> => {
+      const account = await actions.getAccount(uuid);
+      const updatedAccount = { ...account, ...patch };
+      await actions.updateAccount(updatedAccount);
+      return updatedAccount;
+    },
+    patchWatchedAccount: async (
+      uuid: string,
+      patch: Partial<IWatchedAccount>,
+    ): Promise<IWatchedAccount> => {
+      const account = (await getOne(
+        'watched-account',
+        uuid,
+      )) as IWatchedAccount;
+      const updatedAccount = { ...account, ...patch };
+      await actions.updateWatchedAccount(updatedAccount);
+      return updatedAccount;
+    },
     async getWatchedAccountsByProfileId(profileId: string, networkUUID: UUID) {
       const accounts: Array<IWatchedAccount> = await getAll(
         'watched-account',
@@ -157,6 +180,7 @@ const createAccountRepository = ({
       return accounts;
     },
   };
+  return actions;
 };
 
 export const chainIds = [...Array(20).keys()].map((key) => `${key}` as ChainId);

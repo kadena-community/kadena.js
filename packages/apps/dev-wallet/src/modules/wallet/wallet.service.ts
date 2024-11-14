@@ -1,3 +1,4 @@
+import { recoverPublicKey, retrieveCredential } from '@/utils/webAuthn';
 import {
   addSignatures,
   ICommand,
@@ -162,3 +163,24 @@ export async function decryptSecret(password: string, secretId: string) {
   const mnemonic = new TextDecoder().decode(decryptedBuffer);
   return mnemonic;
 }
+
+export const getWebAuthnPass = async (
+  profile: Pick<IProfile, 'options' | 'uuid'>,
+) => {
+  if (profile.options.authMode !== 'WEB_AUTHN') {
+    throw new Error('Profile does not support WebAuthn');
+  }
+  const credentialId = profile.options.webAuthnCredential;
+  const credential = await retrieveCredential(credentialId);
+  if (!credential) {
+    throw new Error('Failed to retrieve credential');
+  }
+  const keys = await recoverPublicKey(credential);
+  for (const key of keys) {
+    const result = await unlockProfile(profile.uuid, key);
+    if (result) {
+      return key;
+    }
+  }
+  console.error('Failed to unlock profile');
+};

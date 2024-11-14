@@ -19,8 +19,8 @@ import {
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
 
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { getWebAuthnPass } from '@/modules/wallet/wallet.service';
 import { getInitials } from '@/utils/get-initials';
-import { unlockWithWebAuthn } from '@/utils/unlockWithWebAuthn';
 import {
   Avatar,
   Button,
@@ -193,7 +193,11 @@ export const SideBar: FC = () => {
                     onClick={async () => {
                       if (prf.uuid === profile?.uuid) return;
                       if (prf.options.authMode === 'WEB_AUTHN') {
-                        await unlockWithWebAuthn(prf, unlockProfile);
+                        const pass = await getWebAuthnPass(prf);
+                        if (pass) {
+                          lockProfile();
+                          await unlockProfile(prf.uuid, pass);
+                        }
                       } else {
                         navigate(`/unlock-profile/${prf.uuid}`);
                       }

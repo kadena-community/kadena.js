@@ -19,4 +19,7 @@ export const config = {
     // a migration script
     DB_WIPE_ON_VERSION_CHANGE: true,
   },
+  ACCOUNTS: {
+    SYNC_INTERVAL: 5 * 60 * 1000, // 5 minutes
+  },
 };

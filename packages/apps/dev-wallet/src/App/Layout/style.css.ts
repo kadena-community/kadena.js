@@ -16,6 +16,7 @@ export const isExpandedMainClass = style({
 
 export const mainContainerClass = style({
   display: 'flex',
+  padding: '0 10px',
   flexDirection: 'column',
   maxWidth: '100vw',
   width: '100%',
